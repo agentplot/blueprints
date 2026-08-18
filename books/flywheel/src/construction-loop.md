@@ -116,20 +116,17 @@ than being downgraded. One bolt carries units of different types.
 | Type | Shape |
 |---|---|
 | `bolt-default` | spec, build, verify, review — the standard path; the spec session creates each item's change |
-| `bolt-quick` | verify without reviews; plan mode available |
+| `bolt-quick` | verify without reviews |
 | `bolt-adversarial` | adds independent adversarial review before merge |
-| `bolt-direct` | build and merge only, the gate as the check; plan mode available |
+| `bolt-direct` | build and merge only, the gate as the check |
+| `bolt-plan` | no spec artifact: the build session opens in plan mode and the operator's plan approval stands as the spec, the gate as the check |
 
-The plan-only path is the unit's choice too, on the same line:
-`Mode: plan` opens each build session in plan mode, and the plan the
-operator approves in the pane stands as the spec — no spec artifact,
-so the work never reaches `openspec/specs/`. The mode runs only on a
-type that offers it (`bolt-quick`, `bolt-direct`); `Mode: plan` over
-a type without it pauses the batch, because the type is the scrutiny
-the approval bought and no program downgrades it. Nothing
-machine-read lives on the milestone — its description is prose, and
-the operator's `--plan-mode` flag on a loop outranks the cards in
-both directions.
+The construction path is part of the type — a type is a named loop
+configuration, and there is no mode beside it. A `bolt-plan` unit's
+work never reaches `openspec/specs/`, so it is invisible to future
+planning runs: right for pages and prose, wrong for machinery.
+Nothing machine-read lives on the milestone — its description is
+prose.
 
 ## Pauses
 
