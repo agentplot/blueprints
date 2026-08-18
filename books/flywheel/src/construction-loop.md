@@ -120,14 +120,16 @@ than being downgraded. One bolt carries units of different types.
 | `bolt-adversarial` | adds independent adversarial review before merge |
 | `bolt-direct` | build and merge only, the gate as the check; plan mode available |
 
-The plan-only path is the bolt's choice, on the summary's `Mode:`
-line: `Mode: plan` opens each build session in plan mode, and the
-plan the operator approves in the pane stands as the spec — no spec
-artifact, so the work never reaches `openspec/specs/`. The mode runs
-only on a unit whose type offers it (`bolt-quick`, `bolt-direct`);
-`Mode: plan` over a type without it pauses the batch, because the
-type is the scrutiny the approval bought and no program downgrades
-it.
+The plan-only path is the unit's choice too, on the same line:
+`Mode: plan` opens each build session in plan mode, and the plan the
+operator approves in the pane stands as the spec — no spec artifact,
+so the work never reaches `openspec/specs/`. The mode runs only on a
+type that offers it (`bolt-quick`, `bolt-direct`); `Mode: plan` over
+a type without it pauses the batch, because the type is the scrutiny
+the approval bought and no program downgrades it. Nothing
+machine-read lives on the milestone — its description is prose, and
+the operator's `--plan-mode` flag on a loop outranks the cards in
+both directions.
 
 ## Pauses
 
