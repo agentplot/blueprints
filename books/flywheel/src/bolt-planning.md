@@ -32,6 +32,18 @@ per run is the norm; a second bolt exists only for a genuinely
 separate delivery, because many small bolts is the failure mode this
 shape avoids.
 
+A unit is a proposal to a system, written from the user's
+perspective: it is named and opened as the capability a user of the
+system gains, and the book's chapters justify it rather than shape
+it. Its change rows are sized by implementation surface, never by
+sentence count — several assertions that land as one coherent commit
+in one repo share one row, because every row costs a full loop cycle
+of sessions and gates. Rows split where the trees split: a system
+whose book binds several built repos carries one row per repo the
+unit touches, since each repo runs its own change through its own
+gate, while a one-repo system's unit holds exactly as many rows as
+its tree has separable commits.
+
 ```mermaid
 flowchart LR
     book["design book"] --> plannerAgent["bolt planner"]
