@@ -70,6 +70,11 @@ the `loop:` block is invisible to it: the loop program reads
 the copy it writes — a repo customizing a type copies the schema
 directory rather than forking it.
 
+One bolt reads several of these blocks: the bound schema's is the
+bolt's own configuration, and each unit's `Type:` line names the
+schema whose block that unit's batches run under — the loop loads
+each named type's `schema.yaml` the same way, at drive time.
+
 ## Installation and distribution
 
 The plugin release carries the schemas, one version per machine:
