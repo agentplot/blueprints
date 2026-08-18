@@ -36,7 +36,7 @@ A unit is a proposal to a system, written from the user's
 perspective: it is named and opened as the capability a user of the
 system gains, and the book's chapters justify it rather than shape
 it. Each of its changes is sized by how much code it actually is,
-never by how many chapters it serves — assertions that would be
+never by how many chapters it serves — claims that would be
 implemented together as one small commit are one change, because
 every change costs a full loop cycle of sessions and gates. The work
 splits along repo lines and nowhere else: a system whose book covers
