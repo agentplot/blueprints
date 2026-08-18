@@ -120,7 +120,11 @@ already started, warm or dead.
 ## Worktrees
 
 A session that edits files gets a worktree on its own branch — one
-writer per branch. Design sessions write on `sess/*` branches;
+writer per branch. Every design session gets one whatever its type,
+edits expected or not: its close writes what it settled into the
+destination, and the write needs a tree to land in. A worktree left
+unchanged costs nothing at teardown, so the loop never has to guess
+which type will write. Design sessions write on `sess/*` branches;
 construction sessions write on `build/*` branches cut from the bolt
 branch. In both cases the loop merges the branch through the repo's
 merge gate; the session never merges its own branch and never writes

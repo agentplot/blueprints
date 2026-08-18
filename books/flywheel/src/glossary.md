@@ -34,7 +34,8 @@ options weighed and the reasons against the losers.
 
 **elaboration** — a batch of design work: a parent tracker item whose
 sub-issues are the questions and writing tasks one design session
-works.
+works. One elaboration is one round of its intent, and its title
+carries the round's number.
 
 **bolt** — the operator's delivery boundary: a milestone
 (`bolt/<slug>`) and a branch, alive for days, holding the units built

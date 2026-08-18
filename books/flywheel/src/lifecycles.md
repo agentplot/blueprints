@@ -98,7 +98,7 @@ archive, an ordinary commit through the repo's gate.
 |---|---|---|
 | the intent's first approved work | the directory is scaffolded (`opsx:new`) with `intent.md` | intent loop |
 | each session | `sessions/<date>-<type>/` gains the session's deliverables; question records land in `questions/` | the design session |
-| synthesis | decision content is written into the book's chapters; the decision file keeps only what a chapter cannot carry | the design session |
+| the session's close | the settlement is written into its destination — a chapter, a map node, a plan, a page — before the session settles; the decision file keeps only what the destination cannot carry | the design session |
 | the operator closes the milestone | one-shot archive files the change; the book already holds the destination | server |
 
 ## The bolt's changes

@@ -27,6 +27,15 @@ The batch parent sits on the org Project board and carries GitHub's
 native sub-issue progress bar; sub-issues stay off the board, and an
 item joins exactly one batch, ever.
 
+An intent carries at most one elaboration awaiting approval: while one
+sits at Backlog, newly queued questions join it rather than being born
+into a rival batch beside it. Each elaboration is titled
+`Elaboration: <slug> — round N`, where N is one more than the number
+of elaborations already on that milestone, open or closed; a batch
+that gains members after birth keeps the number it was born with. The
+number is the operator's reading of the thread — the board shows one
+row per round — and nothing consumes the title.
+
 ## `state:*` — the queue lifecycle
 
 | Label | Meaning |
