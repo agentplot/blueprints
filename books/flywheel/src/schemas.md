@@ -61,7 +61,7 @@ The type lives in the `loop:` block, a named configuration:
 | `bolt-default` | `new+ff` | spec, build, verify, review |
 | `bolt-quick` | `ff` | spec folded into build; plan mode available |
 | `bolt-adversarial` | `new+continue` | adds independent adversarial review before merge |
-| `bolt-direct` | `ff` | build and merge only — `stages: [spec, build, merge, land]` |
+| `bolt-direct` | `ff` | build and merge only — `stages: [spec, build, merge, land]`; plan mode available |
 
 The repo's merge gate is not a function of the type and runs
 unweakened on all four. `openspec` strips unknown top-level keys, so

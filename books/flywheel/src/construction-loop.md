@@ -105,17 +105,29 @@ verifies.
 
 ## Unit types
 
-The type is a unit's choice, named in its [unit
-document](bolt-planning.md): the loop configuration the unit's items
-run under — which review stages run, and how much ceremony the work
-deserves. One bolt carries units of different types.
+The type is a unit's choice, named on its unit document's `Type:`
+line — the plan template's structured field, chosen by the planner
+and frozen by the operator's approval. The loop reads that line from
+the unit card when it drives the unit's batches, so each batch runs
+under its own unit's stage set; a unit naming no type runs the bolt's
+bound type, and a type naming no known schema pauses the batch rather
+than being downgraded. One bolt carries units of different types.
 
 | Type | Shape |
 |---|---|
 | `bolt-default` | spec, build, verify, review — the standard path; the spec session creates each item's change |
-| `bolt-quick` | for born-ready work whose changes already exist: spec fast-forwards them |
+| `bolt-quick` | verify without reviews; plan mode available |
 | `bolt-adversarial` | adds independent adversarial review before merge |
-| `bolt-direct` | build and merge only; for mechanical, pre-judged work |
+| `bolt-direct` | build and merge only, the gate as the check; plan mode available |
+
+The plan-only path is the bolt's choice, on the summary's `Mode:`
+line: `Mode: plan` opens each build session in plan mode, and the
+plan the operator approves in the pane stands as the spec — no spec
+artifact, so the work never reaches `openspec/specs/`. The mode runs
+only on a unit whose type offers it (`bolt-quick`, `bolt-direct`);
+`Mode: plan` over a type without it pauses the batch, because the
+type is the scrutiny the approval bought and no program downgrades
+it.
 
 ## Pauses
 
