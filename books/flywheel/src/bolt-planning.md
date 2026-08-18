@@ -35,14 +35,15 @@ shape avoids.
 A unit is a proposal to a system, written from the user's
 perspective: it is named and opened as the capability a user of the
 system gains, and the book's chapters justify it rather than shape
-it. Its change rows are sized by implementation surface, never by
-sentence count — several assertions that land as one coherent commit
-in one repo share one row, because every row costs a full loop cycle
-of sessions and gates. Rows split where the trees split: a system
-whose book binds several built repos carries one row per repo the
-unit touches, since each repo runs its own change through its own
-gate, while a one-repo system's unit holds exactly as many rows as
-its tree has separable commits.
+it. Each of its changes is sized by how much code it actually is,
+never by how many chapters it serves — assertions that would be
+implemented together as one small commit are one change, because
+every change costs a full loop cycle of sessions and gates. The work
+splits along repo lines and nowhere else: a system whose book covers
+several built repos needs one change per repo the unit touches,
+since each repo runs its own change through its own merge gate,
+while a unit in a one-repo system holds only as many changes as its
+work has genuinely separate commits.
 
 ```mermaid
 flowchart LR
