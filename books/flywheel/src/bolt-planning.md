@@ -54,6 +54,15 @@ sources, and its cards cite those artifacts the way a book-sourced
 card cites chapters. The route is the same either way: cards at
 Backlog, the operator's approval, expansion.
 
+Not every change wants a spec artifact. A bolt whose summary declares
+the plan-mode path runs its work as plans the operator approves in
+the session pane — the approved plan stands as the spec, and the
+repo's merge gate is the check on the result. The declaration lives
+in the milestone description and the units bind `bolt-quick`, the
+type that carries the path. A plan-mode bolt leaves no implemented
+specs behind, so it is invisible to future planning runs: right for
+pages and prose, wrong for machinery.
+
 ```mermaid
 flowchart LR
     book["design book"] --> plannerAgent["bolt planner"]
