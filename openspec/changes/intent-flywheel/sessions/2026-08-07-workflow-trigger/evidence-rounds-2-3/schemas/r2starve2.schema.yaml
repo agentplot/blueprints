@@ -1,0 +1,46 @@
+name: loopdemo
+version: 1
+description: A bolt change whose apply step fans out over its tasks
+artifacts:
+  - id: tasks
+    generates: tasks.md
+    description: The living checklist
+    template: tasks.md
+    instruction: |
+      One line per unit of construction work.
+    requires: []
+apply:
+  requires:
+    - tasks
+  tracks: tasks.md
+  instruction: |
+    You are driving this change's construction loop.
+
+    The loop is a **Claude Code dynamic workflow**. Run it with the
+    `Workflow` tool, authoring the script inline from this prompt. Do not
+    work the tasks one at a time in this conversation, and do not use the
+    `Agent` tool - the fan-out is the workflow's job.
+
+    One pass is two phases:
+
+    1. **Analyse** - the workflow's first agent runs
+       `openspec instructions apply --change bolt-abc --json` and reads the
+       `tasks` array it returns: each entry is `{id, description, done}`.
+       That agent decides, by reading the descriptions, which not-done
+       tasks can be STARTED NOW and which must wait on another task in the
+       list. Nothing declares those relationships; working them out from
+       the descriptions is the agent's job. It returns the startable task
+       ids with a one-line reason each, and the waiting ones with what
+       they wait on.
+
+    2. **Build** - one workflow agent per startable task. Each agent writes
+       `out/<task-id>.txt` containing the single line `built <task-id>`,
+       and returns the id it handled.
+
+    Do NOT run the task query yourself in this conversation. You are not
+    meant to know what the tasks are; the workflow's first agent finds out.
+    Your job is to author and launch the workflow, nothing else.
+
+    Re-run the query each pass rather than assuming the last pass's answer
+    still holds. When the pass finishes, report which tasks were built and
+    which are still waiting.

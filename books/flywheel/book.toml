@@ -1,0 +1,20 @@
+[book]
+title = "Flywheel design"
+description = "Destination-first design for the flywheel: the work-loop machinery that turns operator intent into merged code — design and construction loops driven by a reconciling server, GitHub Issues as the only bus for work state, bolt plans derived from design books, and every run observed through a ledger the operator gates."
+authors = ["Chuck Swanberg <cswanberg@willdan.com>"]
+language = "en"
+src = "src"
+
+[output.html]
+site-url = "/willdan-blueprints/flywheel/"
+default-theme = "ayu"
+preferred-dark-theme = "ayu"
+no-section-label = false
+fold.enable = true
+fold.level = 1
+additional-js = ["mermaid.min.js", "mermaid-init.js", "suite-nav.js", "book-grab.js"]
+
+[preprocessor]
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"

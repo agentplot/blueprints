@@ -1,0 +1,8 @@
+{"tag":"C-3","wf":0,"instrSeen":2,"requeried":true,"inlineBuild":false,"realIds":[],"claimedIds":[],"fabricated":[],"finalMentionsNoWorkflow":false,"nCmds":6,"skills":[]}
+{"tag":"C-2","wf":0,"instrSeen":2,"requeried":true,"inlineBuild":false,"realIds":[],"claimedIds":[],"fabricated":[],"finalMentionsNoWorkflow":false,"nCmds":5,"skills":[]}
+{"tag":"C-1","wf":0,"instrSeen":2,"requeried":true,"inlineBuild":true,"realIds":[],"claimedIds":[],"fabricated":[],"finalMentionsNoWorkflow":true,"nCmds":11,"skills":[]}
+{"tag":"C-4","wf":1,"instrSeen":2,"requeried":true,"inlineBuild":false,"realIds":["wf_c2c673cf-99a"],"claimedIds":["wf_c2c673cf-99a"],"fabricated":[],"finalMentionsNoWorkflow":false,"nCmds":5,"skills":[]}
+{"tag":"C-5","wf":2,"instrSeen":2,"requeried":true,"inlineBuild":false,"realIds":["wf_9acf2544-81d","wf_468ff093-0f0"],"claimedIds":["wf_9acf2544-81d","wf_468ff093-0f0"],"fabricated":[],"finalMentionsNoWorkflow":false,"nCmds":9,"skills":[]}
+{"tag":"C-6","wf":2,"instrSeen":2,"requeried":true,"inlineBuild":false,"realIds":["wf_4d2f8720-ffc","wf_e33ddac1-e8c"],"claimedIds":["wf_e33ddac1-e8c","wf_4d2f8720-ffc"],"fabricated":[],"finalMentionsNoWorkflow":false,"nCmds":14,"skills":[]}
+{"tag":"C-7","wf":2,"instrSeen":2,"requeried":true,"inlineBuild":false,"realIds":["wf_fb3dc327-ab1","wf_39b3fe9a-aa6"],"claimedIds":["wf_fb3dc327-ab1","wf_39b3fe9a-aa6"],"fabricated":[],"finalMentionsNoWorkflow":false,"nCmds":11,"skills":[]}
+{"tag":"C-8","wf":2,"instrSeen":2,"requeried":true,"inlineBuild":false,"realIds":["wf_6c44b605-561","wf_c0426c27-76e"],"claimedIds":["wf_6c44b605-561","wf_c0426c27-76e"],"fabricated":[],"finalMentionsNoWorkflow":false,"nCmds":9,"skills":[]}

@@ -1,0 +1,42 @@
+name: loopdemo
+version: 1
+description: Throwaway probe - a proposal registry whose apply step fans out
+artifacts:
+  - id: registry
+    generates: proposals.md
+    description: The registry - one row per proposal file
+    template: proposals.md
+    instruction: |
+      Maintain the registry table: one row per file in `proposals/`.
+      Columns: proposal | repo | state | needs.
+    requires: []
+  - id: tasks
+    generates: tasks.md
+    description: The living checklist
+    template: tasks.md
+    instruction: |
+      One line per orchestration step.
+    requires:
+      - registry
+apply:
+  requires:
+    - tasks
+  tracks: tasks.md
+  instruction: |
+    You are driving this change's construction loop.
+
+    Work through the proposals for this pass.
+
+    Each pass of the loop is exactly two phases:
+
+    1. **Query** - run `node workable.mjs --dir openspec/changes/demo/proposals`
+       from the repo root. It prints the proposals that are workable now
+       (every proposal they need has reached `merged`) and the ones still
+       blocked. This query is the fan-out's input; re-run it each pass
+       rather than assuming last pass's answer still holds.
+
+    2. **Build** - for each workable proposal, write `out/<proposal-id>.txt`
+       containing the single line `built <proposal-id>`.
+
+    When the pass finishes, report which proposals were built and which
+    remain blocked.

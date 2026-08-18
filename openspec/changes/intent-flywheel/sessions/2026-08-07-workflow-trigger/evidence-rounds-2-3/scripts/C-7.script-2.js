@@ -1,0 +1,2 @@
+// no inline script; input was:
+// {"scriptPath":"/Users/chuck/.claude/projects/-private-tmp-wfprobe-runs-C-7/4f3ab0ea-0ced-4fc4-b9ed-62081d27e2e5/workflows/scripts/bolt-abc-construction-pass-wf_fb3dc327-ab1.js"}

@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="luxury">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Five decisions: chapters and channels</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/daisyui.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/themes.css">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.2.4/dist/index.global.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :where(.grid, .flex) > * { min-width: 0; }
+  :where(p, h1, h2, h3, h4, h5, h6, li, dd, blockquote, figcaption, td, th, .badge, .label) { overflow-wrap: anywhere; }
+  :where(img, svg, video, canvas, iframe) { max-width: 100%; height: auto; }
+
+  .fw-dec { scroll-margin-top: 1rem; }
+  .fw-num { font: 700 .72rem ui-sans-serif, system-ui, sans-serif; letter-spacing: .16em; opacity: .6; text-transform: uppercase; }
+  .fw-q { border-left: 3px solid var(--color-primary); padding: .15rem 0 .15rem 1rem; font-size: 1.02rem; line-height: 1.6; }
+  .fw-opt { border: 1px solid color-mix(in oklab, var(--color-base-content) 15%, transparent); border-radius: var(--radius-box, .75rem); overflow: hidden; }
+  .fw-opt-head { background: var(--color-base-200); padding: .65rem 1rem; display: flex; flex-wrap: wrap; gap: .5rem; align-items: baseline; }
+  .fw-opt-body { padding: .85rem 1rem; font-size: .89rem; line-height: 1.6; }
+  .fw-opt-lead { border-color: color-mix(in oklab, var(--color-primary) 55%, transparent); }
+  .fw-opt-lead .fw-opt-head { background: color-mix(in oklab, var(--color-primary) 14%, var(--color-base-200)); }
+  .fw-cost { display: block; margin-top: .45rem; opacity: .8; }
+  .fw-cost strong { opacity: 1; }
+  .fw-ripple li { margin: .2rem 0; }
+  .fw-ripple code { background: var(--color-base-200); padding: .05rem .35rem; border-radius: .3rem; font-size: .84em; }
+  code { background: var(--color-base-200); padding: .05rem .35rem; border-radius: .3rem; font-size: .86em; }
+  .fw-body p { line-height: 1.65; }
+  .fw-form { border: 1px dashed color-mix(in oklab, var(--color-base-content) 28%, transparent); border-radius: var(--radius-box, .75rem); padding: 1rem 1.15rem; background: color-mix(in oklab, var(--color-base-200) 55%, transparent); }
+  .fw-form label.fw-choice { display: flex; gap: .6rem; align-items: flex-start; padding: .4rem .1rem; cursor: pointer; line-height: 1.5; }
+  .mermaid { display: flex; justify-content: center; }
+  .fw-evi { font-size: .89rem; line-height: 1.6; }
+  .fw-evi ul { list-style: disc; padding-left: 1.15rem; }
+  .fw-evi li { margin: .2rem 0; }
+</style>
+</head>
+<body class="bg-base-100 text-base-content">
+<main class="max-w-5xl mx-auto px-5 py-10 space-y-14">
+
+<header class="space-y-3">
+  <p class="text-xs uppercase tracking-widest opacity-60">willdan-blueprints · intent <code>flywheel</code> · session 2026-08-06-chapters-and-channels</p>
+  <h1 class="text-3xl font-bold leading-tight">Five decisions: the channels, the launch points, and the chapters</h1>
+  <p class="text-base opacity-80 max-w-3xl">Everything decision-shaped left in the flywheel's fog, in one place. Two are about <strong>how you and an agent talk</strong> — which channel carries which question, and who opens a review surface. Two are about <strong>what the aidlc-design book and the other books look like</strong> once the loops carry the build list. One is about <strong>what happens right after the phase gate</strong> for a change too small to deserve a bolt.</p>
+  <p class="text-sm opacity-70 max-w-3xl">Each decision below carries the leading option, its alternatives with their real costs, a recommendation, and where the answer ripples. Annotate anything, or use the answer control at the bottom of each one — a queued answer is what closes the decision. The launch-points decision also carries <strong>three open sub-questions</strong> from your review of the schema's sessions instruction; those have options but deliberately no recommendation.</p>
+</header>
+
+<!-- ================= ORIENTATION ================= -->
+<section class="space-y-4">
+  <h2 class="text-xl font-bold">Where the five bite</h2>
+  <p class="text-sm opacity-80 max-w-3xl">The loop as it stands today, with the open questions marked at the points they actually change behavior. Nothing upstream of the phase gate is in question; what is in question is what feeds the build list, what happens just past the gate, and how you get pulled in along the way.</p>
+  <div class="card card-border bg-base-100 p-4 overflow-x-auto">
+    <pre class="mermaid">
+flowchart TD
+    idea["raw idea"] --> intake["intake agent<br/><i>routes it</i>"]
+    intake --> intent["intent change<br/>intent.md · tasks.md"]
+    intent --> sess["design session<br/>sessions/date-slug/"]
+    sess --> dec["decisions/"]
+    dec --> wb["writeback<br/>books + context map"]
+    dec --> ho["handoff task<br/><i>staged</i>"]
+    ho --> gate{"phase gate<br/><i>your word</i>"}
+    gate --> bolt["bolt change<br/>proposals registry"]
+    gate -.->|"D5: small enough?"| short["one reviewed branch<br/>off main, no bolt"]
+    bolt --> built["built repo<br/>spec-driven changes"]
+    short --> built
+    wb -.->|"D3: what feeds<br/>the build list?"| ho
+    wb -.->|"D4: which chapters<br/>survive?"| book["books/aidlc-design"]
+    intake -.->|"D1 · D2: which channel<br/>reaches you?"| you(["operator"])
+    sess -.-> you
+    built -.-> you
+
+    classDef stage fill:#1f3b1f,stroke:#22c55e,color:#dcfce7
+    classDef gatec fill:#3b2f1f,stroke:#d97706,color:#fde68a
+    classDef io fill:#1e3a5f,stroke:#3b82f6,color:#e0f2fe
+    class intake,intent,sess,dec,wb,bolt,built,short stage
+    class gate gatec
+    class idea,ho,book,you io
+    </pre>
+  </div>
+</section>
+
+<!-- ================= D1 ================= -->
+<section id="d1" class="fw-dec space-y-5">
+  <div class="space-y-2">
+    <p class="fw-num">Decision 1 · channels</p>
+    <h2 class="text-2xl font-bold">When does each human-in-the-loop channel apply?</h2>
+    <p class="fw-q">Discord is the async unblock channel — the inner loop churns, an agent hits a question worth one sentence, you answer from wherever you are; intake asks its routing questions the same way. Lavish and plannotator are the desk channels, where a design session and you work a surface together. An exchange started in one hands off to the other contextually. <strong>What is undecided is where each boundary actually falls.</strong></p>
+  </div>
+
+  <div class="card card-border bg-base-100 p-4 overflow-x-auto">
+    <pre class="mermaid">
+flowchart LR
+    q["an agent needs you"] --> shape{"what shape is<br/>the answer?"}
+    shape -->|"a sentence;<br/>nothing to read first"| dis["Discord DM<br/><i>async · agent keeps working</i>"]
+    shape -->|"margin notes on<br/>a document that exists"| pl["plannotator annotate<br/><i>blocking review round</i>"]
+    shape -->|"choices across several<br/>coupled decisions"| lv["lavish surface<br/><i>blocking working session</i>"]
+    dis -.->|"escalate: it needed<br/>a surface after all"| pl
+    dis -.-> lv
+    pl -.->|"escalate: this is<br/>a design question"| lv
+
+    classDef ch fill:#1e3a5f,stroke:#3b82f6,color:#e0f2fe
+    classDef gatec fill:#3b2f1f,stroke:#d97706,color:#fde68a
+    classDef io fill:#1f3b1f,stroke:#22c55e,color:#dcfce7
+    class dis,pl,lv ch
+    class shape gatec
+    class q io
+    </pre>
+  </div>
+
+  <div class="fw-body space-y-4">
+    <h3 class="font-bold text-lg">The three candidate boundaries</h3>
+    <div class="grid gap-4 md:grid-cols-3">
+      <div class="fw-opt fw-opt-lead">
+        <div class="fw-opt-head"><span class="badge badge-primary badge-sm">recommended</span><strong>By the shape of the answer</strong></div>
+        <div class="fw-opt-body">
+          The channel follows what you have to produce, not where you are. A sentence with nothing to read first is Discord. Notes in the margin of a document that already exists is plannotator. Choices across coupled decisions, or anything needing options side by side, is lavish.
+          <span class="fw-cost"><strong>Cost:</strong> an agent has to judge the shape before it asks. In practice the judgment is easy — "can I say the answer in one line without opening anything" is a question the agent can answer about its own question.</span>
+        </div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>By where you are</strong></div>
+        <div class="fw-opt-body">
+          At the desk → surfaces. Away → Discord.
+          <span class="fw-cost"><strong>Cost:</strong> makes the channel a function of something no agent can know, so it degrades into asking you which channel you want — and it produces walls of Discord text whenever you are out, because the fallback has no size limit.</span>
+        </div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>By which actor is asking</strong></div>
+        <div class="fw-opt-body">
+          Intake and inner-loop agents → Discord. Design sessions → lavish. Conductors → plannotator.
+          <span class="fw-cost"><strong>Cost:</strong> clean to state and wrong in the common case — a design session that hits a one-sentence blocker while you are out has no way to ask, and a bolt's review of a written proposal genuinely is a plannotator round.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-soft alert-info items-start">
+      <div class="space-y-2">
+        <p><strong>Recommendation — shape decides the channel; a second rule decides who waits.</strong></p>
+        <p class="text-sm">Discord is <em>non-blocking</em>: the agent asks and keeps working on anything the answer does not gate. The two desk channels are <em>blocking rounds</em>: the session stands at the surface until you have been through it. That second axis is what makes the boundary usable — if an agent would have to stop and wait anyway, the question was never a Discord question.</p>
+        <p class="text-sm"><strong>Handoff is escalation only.</strong> Take the cheapest channel that can carry the answer; when it turns out it cannot, say so and open the surface, leaving a pointer in the Discord thread. Never the other direction — a surface question does not get re-asked as a one-liner.</p>
+      </div>
+    </div>
+
+    <h3 class="font-bold text-lg pt-2">Sub-question 1a — bridge triggering</h3>
+    <div class="fw-evi space-y-3">
+      <p class="opacity-80">This one turned out to be documented rather than unknown. From the Discord plugin's own <code>ACCESS.md</code> (<code>~/.claude/plugins/cache/claude-plugins-official/discord/1.0.0/ACCESS.md</code>):</p>
+      <ul class="opacity-85">
+        <li><strong>DMs</strong> from an allowlisted sender trigger the session on <em>every</em> message. No mention needed.</li>
+        <li><strong>Guild channels</strong> are opt-in per channel and default to <code>requireMention: true</code> — an <code>@bot</code> mention, a reply to the bot, or a match against a configured <code>mentionPatterns</code> regex. <code>/discord:access group add &lt;id&gt; --no-mention</code> makes it fire on every message in that channel.</li>
+        <li>So "can it trigger on any message" is <strong>a config choice, not a limit</strong>. The real question underneath is <em>which session is bridged</em> — the plugin binds one Claude Code session per bot token, so two bridged sessions on one token both receive every message.</li>
+      </ul>
+      <div class="grid gap-4 md:grid-cols-3 pt-1">
+        <div class="fw-opt fw-opt-lead">
+          <div class="fw-opt-head"><span class="badge badge-primary badge-sm">recommended</span><strong>One bridged pane: intake</strong></div>
+          <div class="fw-opt-body">
+            DM policy <code>allowlist</code>, no guild channels. Intake is the singleton that is always up, so it is the standing thread. It answers its own routing questions and relays anything else with <code>herdr agent prompt</code> or the change's <code>inbox/</code> — the two paths that already exist.
+            <span class="fw-cost"><strong>Cost:</strong> one hop between the asking agent and you. Intake becomes a relay as well as a router.</span>
+          </div>
+        </div>
+        <div class="fw-opt">
+          <div class="fw-opt-head"><strong>Every conductor bridged</strong></div>
+          <div class="fw-opt-body">
+            A bot token and <code>DISCORD_STATE_DIR</code> per actor; one DM thread per conductor.
+            <span class="fw-cost"><strong>Cost:</strong> N Discord applications to provision and N threads to watch, and you have to know which thread is which actor before you can read the question.</span>
+          </div>
+        </div>
+        <div class="fw-opt">
+          <div class="fw-opt-head"><strong>A guild channel per actor</strong></div>
+          <div class="fw-opt-body">
+            One server, <code>#intent-flywheel</code>, <code>#bolt-rocs-records</code>, and so on.
+            <span class="fw-cost"><strong>Cost:</strong> does not work with one bot — every bridged session on that token receives every channel's traffic. It only becomes viable with per-actor tokens, at which point it costs what the middle option costs plus a server to keep tidy.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="font-bold text-lg pt-2">Sub-question 1b — a webhook receiver for remote intake</h3>
+    <div class="alert alert-soft alert-warning items-start">
+      <div class="space-y-1">
+        <p><strong>Recommendation: no, and say why in the book.</strong></p>
+        <p class="text-sm">A DM to the bot already <em>is</em> remote intake — it lands in the intake pane as a channel event with the sender checked against the allowlist. A webhook receiver adds a listener to run, an auth surface to get right, and a second delivery path for the same job. It earns its keep only when a non-Discord source needs to file intents (a form, a GitHub issue, email), and nothing has asked for that. Revisit if it is felt.</p>
+      </div>
+    </div>
+
+    <h3 class="font-bold text-lg pt-2">Where it ripples</h3>
+    <ul class="fw-ripple text-sm opacity-85">
+      <li><code>books/aidlc-design/src/conducting.md</code> — gains the channel table (shape → channel → who waits) and the escalation rule. <a class="link" href="http://localhost:14881/aidlc-design/conducting.html" target="_blank" rel="noreferrer">read the chapter</a></li>
+      <li><code>books/aidlc-design/src/authoring-capabilities.md</code> — the bridged-pane arrangement as part of intake's description. <a class="link" href="http://localhost:14881/aidlc-design/authoring-capabilities.html" target="_blank" rel="noreferrer">read the chapter</a></li>
+      <li><code>.claude/skills/flywheel-inception/SKILL.md</code> — the "Review surfaces" bullet grows a third channel and the escalation rule; intake's section names the bridge.</li>
+      <li><code>.claude/skills/flywheel-construction/SKILL.md</code> — inner-loop agents get Discord named as their unblock path.</li>
+      <li>Closes the research task on bridge triggering and the webhook receiver — the evidence above is its finding.</li>
+    </ul>
+  </div>
+
+  <form class="fw-form space-y-3" data-lavish-question="d1-channels" onsubmit="return fwQueue(event, 'D1 — when each human-in-the-loop channel applies', 'd1-channels');">
+    <p class="font-bold">Your answer — D1</p>
+    <label class="fw-choice"><input type="radio" name="d1" value="shape-decides" class="radio radio-sm radio-primary mt-1"><span><strong>Shape decides the channel</strong>, blocking vs non-blocking decides who waits, escalation only — as recommended. Plus: intake is the one bridged pane, and no webhook receiver.</span></label>
+    <label class="fw-choice"><input type="radio" name="d1" value="shape-decides-other-bridge" class="radio radio-sm mt-1"><span>Shape decides the channel as recommended, <strong>but the bridging arrangement is different</strong> — say how in the notes.</span></label>
+    <label class="fw-choice"><input type="radio" name="d1" value="by-location" class="radio radio-sm mt-1"><span>Draw the boundary by <strong>where I am</strong>, not by the shape of the answer.</span></label>
+    <label class="fw-choice"><input type="radio" name="d1" value="by-actor" class="radio radio-sm mt-1"><span>Draw the boundary by <strong>which actor is asking</strong>.</span></label>
+    <label class="fw-choice"><input type="radio" name="d1" value="other" class="radio radio-sm mt-1"><span>Something else — in the notes.</span></label>
+    <textarea name="notes" class="textarea textarea-bordered w-full" rows="3" placeholder="Rationale, corrections, or the boundary in your own words"></textarea>
+    <button type="submit" class="btn btn-primary btn-sm">Queue this answer</button>
+  </form>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= D2 ================= -->
+<section id="d2" class="fw-dec space-y-5">
+  <div class="space-y-2">
+    <p class="fw-num">Decision 2 · launch points</p>
+    <h2 class="text-2xl font-bold">Where are plannotator and lavish opened from, and by whom?</h2>
+    <p class="fw-q">Much of this is deterministic and only needs writing down: plannotator at review moments on written artifacts, lavish when a design session builds an interactive surface. <strong>What is genuinely open is whether plannotator can be a launch point in the other direction</strong> — does its feedback path, delivered to the conductor that ran <code>annotate</code>, reach far enough to spawn a design session against the intent?</p>
+    <p class="text-sm opacity-70">Grown since you first opened this page: three more open sub-questions from your review of the schema's sessions instruction — <a class="link" href="#d2a-anchor">2a the launch pointer</a>, <a class="link" href="#d2b-anchor">2b the criterion and profile count</a>, <a class="link" href="#d2c-anchor">2c presentation coaching</a>. They are below the main recommendation, and carry options but no recommendation.</p>
+  </div>
+
+  <div class="fw-body space-y-4">
+    <h3 class="font-bold text-lg">The deterministic half — the part that just needs stating</h3>
+    <div class="overflow-x-auto rounded-box border border-base-content/10 bg-base-100">
+      <table class="table table-zebra table-sm">
+        <thead><tr><th>Moment</th><th>Surface</th><th>Who opens it</th></tr></thead>
+        <tbody>
+          <tr><td>Intake has written <code>intent.md</code> and the operator is deciding whether to work it</td><td>plannotator</td><td>intake (it wrote the file)</td></tr>
+          <tr><td>A conductor has revised a canonical artifact after draining an inbox request</td><td>plannotator</td><td>the intent conductor</td></tr>
+          <tr><td>A session has a decision draft in its own directory</td><td>plannotator</td><td>the design session</td></tr>
+          <tr><td>A session's batch has coupled decisions, options to compare, or a diagram to work</td><td>lavish</td><td>the design session</td></tr>
+          <tr><td>A bolt's generated <code>proposal.md</code> is up for human review</td><td>plannotator</td><td>the bolt conductor</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-soft items-start">
+      <p class="text-sm">One rule generates that whole table: <strong>the file's sole writer runs the review on it.</strong> That is not a new rule — it is the sole-writer decision applied to review, and it removes the only ambiguous case (who annotates a session's decision draft: the session, because the draft lives in its directory).</p>
+    </div>
+
+    <h3 class="font-bold text-lg pt-2">The open half — can plannotator start a design session?</h3>
+    <div class="fw-evi space-y-2">
+      <p class="opacity-85"><strong>What the tool actually does:</strong> <code>plannotator annotate &lt;file&gt;</code> is a blocking command that returns your annotations to the session that ran it — <code>--json</code>, <code>--gate</code>, <code>--result-file</code> are all shapes of that same return. Feedback reaches exactly one place: the invoker. There is no fan-out and no addressing.</p>
+    </div>
+    <div class="grid gap-4 md:grid-cols-3">
+      <div class="fw-opt fw-opt-lead">
+        <div class="fw-opt-head"><span class="badge badge-primary badge-sm">recommended</span><strong>Yes — through the conductor, which is the only mechanism there is</strong></div>
+        <div class="fw-opt-body">
+          plannotator hands the annotations back to the conductor, which triages each one into exactly one of three: a correction it applies and re-walks forward; a decision your annotation closed on its own; or work that needs design, which becomes an appended <strong>Design</strong> task and then a session with a directory and a batch. So plannotator <em>is</em> a launch point, the same way the board is one — it produces the task; the conductor spawns the session.
+          <span class="fw-cost"><strong>Cost:</strong> none structurally; it is one more triage rule in the conductor's turn. It does mean a review round can end with "I opened a session for this" rather than a revised file, which should be said out loud when it happens.</span>
+        </div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>No — annotations only correct the artifact under review</strong></div>
+        <div class="fw-opt-body">
+          A review round is bounded: fix the file or reject it, nothing else.
+          <span class="fw-cost"><strong>Cost:</strong> your most natural review moment loses the ability to create design work, so a real question either gets crammed into the artifact as prose or gets dropped. This intent's own <code>design-catalog</code> decision came out of a plannotator round; under this option that round could not have produced it.</span>
+        </div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>plannotator spawns the session directly</strong></div>
+        <div class="fw-opt-body">
+          Wire a gate or hook so an annotation tagged as design starts a session.
+          <span class="fw-cost"><strong>Cost:</strong> breaks the sole-writer rule — a session would exist without a conductor having assigned it a directory, a batch, or a place in the intent. Also nothing to build it on: feedback goes to the invoker, so the "spawn" would still be code running inside the conductor.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-soft alert-warning items-start">
+      <p class="text-sm"><strong>Corollary worth writing down:</strong> plannotator output is never handed to another actor. No <code>--result-file</code> pointed into someone else's directory, no relaying raw annotations. The invoker owns the feedback and turns it into requests through the two paths that already exist.</p>
+    </div>
+
+    <div class="pt-4 space-y-3">
+      <h3 class="font-bold text-lg">Three more, from your review of the schema's sessions instruction</h3>
+      <p class="text-sm opacity-80 max-w-3xl">These arrived as annotations while this surface was being built. They belong here rather than as their own decision — all three are about what a session is told, and when, about opening a surface. No recommendation on any of them; they are open.</p>
+      <p class="text-sm opacity-70 max-w-3xl">Two of them (2a and 2c) are the same placement question about different content, so the trade-off axis below is worth reading once: an <strong>agent profile</strong> is loaded before any prompt and survives compaction, but the settled <code>agent-profiles</code> decision keeps profiles deliberately thin — identity and edit scope, pointing at skills. The <strong>inception skill</strong> is where practice lives, but only reaches a session that loads it. The <strong>schema instruction</strong> travels with every change and is what a bare opsx session reads — this intent's own schema-dogfood session proved that is the only contract reaching a session with no flywheel skill — but the schema is the authoring contract for artifacts, and anything mechanical duplicated there is a second place to update.</p>
+    </div>
+
+    <h4 id="d2a-anchor" class="font-bold pt-2 fw-dec">2a — should the sessions instruction point at the launch mechanics?</h4>
+    <p class="text-sm opacity-85 max-w-3xl">The schema's <code>sessions</code> instruction says what a session directory is called, who names it, what happens on collision, and how output is promoted. It says nothing about how a session comes to exist — the conductor launching it under the <code>flywheel-design-session</code> profile, per the inception skill. An opsx-only session therefore learns the conventions but not the launch.</p>
+    <div class="grid gap-4 md:grid-cols-3">
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>A pointer line in the instruction</strong></div>
+        <div class="fw-opt-body">Name the profile and the skill in one sentence, no command. Anyone reading the instruction knows where launches are described.<span class="fw-cost"><strong>Cost:</strong> a second place that mentions the profile name, so a profile rename touches the schema too.</span></div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>Only the shape, not the mechanism</strong></div>
+        <div class="fw-opt-body">The instruction says a conductor launches sessions and assigns the directory — which it partly implies already — and stops there, naming nothing launchable.<span class="fw-cost"><strong>Cost:</strong> a bare opsx session still cannot start one; it only knows one exists.</span></div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>Skill only</strong></div>
+        <div class="fw-opt-body">The schema stays strictly about artifacts; launch mechanics are practice and live in one place.<span class="fw-cost"><strong>Cost:</strong> the gap the annotation named stays open — a session reading only <code>openspec instructions</code> has no route to the actor model.</span></div>
+      </div>
+    </div>
+    <form class="fw-form space-y-3" data-lavish-question="d2a-launch-pointer" onsubmit="return fwQueue(event, 'D2a — does the sessions instruction point at launch mechanics', 'd2a-launch-pointer');">
+      <p class="font-bold">Your answer — 2a</p>
+      <label class="fw-choice"><input type="radio" name="d2a" value="pointer-line" class="radio radio-sm mt-1"><span>A <strong>pointer line</strong> naming the profile and the skill.</span></label>
+      <label class="fw-choice"><input type="radio" name="d2a" value="shape-only" class="radio radio-sm mt-1"><span><strong>The shape only</strong> — a conductor launches sessions; no profile, no command.</span></label>
+      <label class="fw-choice"><input type="radio" name="d2a" value="skill-only" class="radio radio-sm mt-1"><span><strong>Skill only.</strong> The schema stays about artifacts.</span></label>
+      <label class="fw-choice"><input type="radio" name="d2a" value="other" class="radio radio-sm mt-1"><span>Something else — in the notes.</span></label>
+      <textarea name="notes" class="textarea textarea-bordered w-full" rows="2" placeholder="How the line should read, or why it should not exist"></textarea>
+      <button type="submit" class="btn btn-primary btn-sm">Queue this answer</button>
+    </form>
+
+    <h4 id="d2b-anchor" class="font-bold pt-4 fw-dec">2b — is one criterion sentence and one profile enough?</h4>
+    <p class="text-sm opacity-85 max-w-3xl">Today the whole lavish-versus-plannotator guidance is one sentence in the inception skill — <em>operator reading a document → plannotator; operator working a surface → lavish</em> — carried by one <code>flywheel-design-session</code> profile, so a session picks per decision and may use both in one batch. Two questions in one: is the criterion enough, and is one profile the right count?</p>
+    <div class="alert alert-soft items-start"><p class="text-sm">Interaction worth seeing before you answer: <strong>D1's recommendation would replace this sentence</strong> with the shape-of-the-answer rule across all three channels. If D1 lands, the criterion here is absorbed rather than expanded — which is an argument for answering 2b after D1, or for answering it as "whatever D1 settles."</p></div>
+    <div class="grid gap-4 md:grid-cols-3">
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>One profile, one criterion</strong></div>
+        <div class="fw-opt-body">Leave it as is. The session judges per decision; both surfaces are available in one batch.<span class="fw-cost"><strong>Cost:</strong> one sentence is thin for a judgment made every session, and nothing shows a session what "working a surface" looks like in practice — which is what 2c is about.</span></div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>One profile, a fuller rule</strong></div>
+        <div class="fw-opt-body">Keep the single profile; expand the sentence into a short rule with worked examples of each.<span class="fw-cost"><strong>Cost:</strong> more text to keep true, and it overlaps whatever D1 settles unless the two are written together.</span></div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>Two profiles</strong></div>
+        <div class="fw-opt-body">Split into a document-review session and a surface-building session, each with its own coaching.<span class="fw-cost"><strong>Cost:</strong> the conductor now picks the profile at charge time, before it knows which surface the batch wants — and a batch that needs both takes two sessions or the wrong one.</span></div>
+      </div>
+    </div>
+    <form class="fw-form space-y-3" data-lavish-question="d2b-criterion-and-profiles" onsubmit="return fwQueue(event, 'D2b — is one criterion sentence and one profile enough', 'd2b-criterion-and-profiles');">
+      <p class="font-bold">Your answer — 2b</p>
+      <label class="fw-choice"><input type="radio" name="d2b" value="as-is" class="radio radio-sm mt-1"><span><strong>One profile, one criterion</strong> — leave it as is.</span></label>
+      <label class="fw-choice"><input type="radio" name="d2b" value="fuller-rule" class="radio radio-sm mt-1"><span><strong>One profile, a fuller rule</strong> with worked examples.</span></label>
+      <label class="fw-choice"><input type="radio" name="d2b" value="two-profiles" class="radio radio-sm mt-1"><span><strong>Two profiles</strong>, split by surface.</span></label>
+      <label class="fw-choice"><input type="radio" name="d2b" value="defer-to-d1" class="radio radio-sm mt-1"><span>One profile; <strong>the criterion is whatever D1 settles</strong> and is written once, there.</span></label>
+      <label class="fw-choice"><input type="radio" name="d2b" value="other" class="radio radio-sm mt-1"><span>Something else — in the notes.</span></label>
+      <textarea name="notes" class="textarea textarea-bordered w-full" rows="2" placeholder="What the criterion is missing, or how the split should work"></textarea>
+      <button type="submit" class="btn btn-primary btn-sm">Queue this answer</button>
+    </form>
+
+    <h4 id="d2c-anchor" class="font-bold pt-4 fw-dec">2c — should a session be coached on how to present, and where does that coaching live?</h4>
+    <p class="text-sm opacity-85 max-w-3xl">Nothing anywhere tells a session what a good surface contains — code samples, configuration examples, diagrams, conceptual SVGs — or when a quick plan reviewed in plannotator is the better answer. The repo already has one ready tool for part of it: the <code>branch-topology-diagram</code> skill, which draws branches-over-time figures as inline SVG that drop straight into a lavish artifact. Two questions: should the coaching exist at all, and if so, where.</p>
+    <div class="grid gap-4 md:grid-cols-2">
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>In the <code>flywheel-design-session</code> profile</strong></div>
+        <div class="fw-opt-body">Loaded before any prompt, survives compaction, so a session that has forgotten everything else still knows how to present.<span class="fw-cost"><strong>Cost:</strong> contradicts the settled <code>agent-profiles</code> decision, which keeps profiles to identity and edit scope and points at skills for practice. Presentation is practice.</span></div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>In the inception skill's session section</strong></div>
+        <div class="fw-opt-body">Where the rest of the session's practice already is, next to "batch decisions into one artifact", and it can name the tools by skill.<span class="fw-cost"><strong>Cost:</strong> only reaches a session that loaded the skill, and the section is already the longest in the file.</span></div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>In the schema's sessions instruction</strong></div>
+        <div class="fw-opt-body">Travels with every change; reaches a bare opsx session.<span class="fw-cost"><strong>Cost:</strong> presentation advice is not an authoring contract for an artifact, and it would be the second non-artifact thing in the instruction if 2a also lands there.</span></div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>Nowhere — no coaching</strong></div>
+        <div class="fw-opt-body">A session presents as it judges; the surface is reviewed by you anyway, and a weak one gets annotated.<span class="fw-cost"><strong>Cost:</strong> the review round pays for the miss every time, and the ready tools (like the topology-diagram skill) stay undiscovered by sessions that would have used them.</span></div>
+      </div>
+    </div>
+    <form class="fw-form space-y-3" data-lavish-question="d2c-presentation-coaching" onsubmit="return fwQueue(event, 'D2c — presentation coaching for lavish surfaces, and where it lives', 'd2c-presentation-coaching');">
+      <p class="font-bold">Your answer — 2c</p>
+      <label class="fw-choice"><input type="radio" name="d2c" value="profile" class="radio radio-sm mt-1"><span>Yes — in the <strong>agent profile</strong>.</span></label>
+      <label class="fw-choice"><input type="radio" name="d2c" value="skill" class="radio radio-sm mt-1"><span>Yes — in the <strong>inception skill's session section</strong>.</span></label>
+      <label class="fw-choice"><input type="radio" name="d2c" value="schema" class="radio radio-sm mt-1"><span>Yes — in the <strong>schema's sessions instruction</strong>.</span></label>
+      <label class="fw-choice"><input type="radio" name="d2c" value="none" class="radio radio-sm mt-1"><span><strong>No coaching</strong> — leave presentation to the session's judgment.</span></label>
+      <label class="fw-choice"><input type="radio" name="d2c" value="other" class="radio radio-sm mt-1"><span>Something else, or split across places — in the notes.</span></label>
+      <textarea name="notes" class="textarea textarea-bordered w-full" rows="2" placeholder="What the coaching should actually say, or which tools it should name"></textarea>
+      <button type="submit" class="btn btn-primary btn-sm">Queue this answer</button>
+    </form>
+
+    <h3 class="font-bold text-lg pt-4">Where it ripples</h3>
+    <ul class="fw-ripple text-sm opacity-85">
+      <li><code>books/aidlc-design/src/conducting.md</code> — the review-moment table and the sole-writer-runs-the-review rule; the conductor's triage of returned annotations.</li>
+      <li><code>.claude/skills/flywheel-inception/SKILL.md</code> — the "Review surfaces" bullet gains the invoker rule; the conductor section gains annotation triage.</li>
+      <li><code>openspec/schemas/flywheel-intent/schema.yaml</code> — the <code>decisions</code> instruction already says a decision closes on your word wherever given; the <code>tasks</code> instruction gains that a review round can append a Design task. The <code>sessions</code> instruction is what 2a and possibly 2c land in.</li>
+      <li><code>.claude/agents/flywheel-design-session.md</code> — touched by 2b (how many profiles) and possibly 2c (where coaching lives).</li>
+      <li><code>flywheel/E2E.md</code> §2 and §5 — name who runs <code>annotate</code> at each review moment.</li>
+    </ul>
+  </div>
+
+  <form class="fw-form space-y-3" data-lavish-question="d2-launch-points" onsubmit="return fwQueue(event, 'D2 — launch points for plannotator and lavish', 'd2-launch-points');">
+    <p class="font-bold">Your answer — D2</p>
+    <label class="fw-choice"><input type="radio" name="d2" value="via-conductor" class="radio radio-sm radio-primary mt-1"><span><strong>Yes, through the conductor</strong> — annotations triage into correction / closed decision / appended Design task. Plus the sole-writer-runs-the-review rule for the deterministic table.</span></label>
+    <label class="fw-choice"><input type="radio" name="d2" value="bounded" class="radio radio-sm mt-1"><span><strong>No</strong> — a review round only corrects the artifact under review.</span></label>
+    <label class="fw-choice"><input type="radio" name="d2" value="direct-spawn" class="radio radio-sm mt-1"><span>plannotator should <strong>spawn the session directly</strong>; work out the wiring.</span></label>
+    <label class="fw-choice"><input type="radio" name="d2" value="other" class="radio radio-sm mt-1"><span>Something else — in the notes.</span></label>
+    <textarea name="notes" class="textarea textarea-bordered w-full" rows="3" placeholder="Corrections to the review-moment table, or how the triage should read"></textarea>
+    <button type="submit" class="btn btn-primary btn-sm">Queue this answer</button>
+  </form>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= D3 ================= -->
+<section id="d3" class="fw-dec space-y-5">
+  <div class="space-y-2">
+    <p class="fw-num">Decision 3 · the books</p>
+    <h2 class="text-2xl font-bold">What replaces the books' <code>proposals.md</code> chapter?</h2>
+    <p class="fw-q"><code>books/CLAUDE.md</code> still requires one per system book as the bridge from chapters to <code>openspec/changes/</code>, and the book skills are built around it. The flywheel gives that role to intents' handoff tasks and bolts' registries, so the chapter and the skills that feed on it both need somewhere else to point.</p>
+  </div>
+
+  <div class="fw-body space-y-4">
+    <h3 class="font-bold text-lg">What is actually attached to that chapter</h3>
+    <div class="overflow-x-auto rounded-box border border-base-content/10 bg-base-100">
+      <table class="table table-zebra table-sm">
+        <thead><tr><th>Consumer</th><th>What it does with <code>proposals.md</code></th></tr></thead>
+        <tbody>
+          <tr><td><code>book-suite-scaffold</code>, <code>book-add-system</code></td><td>Create the chapter in every new system book.</td></tr>
+          <tr><td><code>book-chapter-ready</code></td><td>Lints the five-field entry shape and checks each <code>Verifications gate:</code> row names a real catalog id in <code>verifications.md</code>.</td></tr>
+          <tr><td><code>book-coherence-audit</code></td><td>Emits an <code>unmineable-proposal</code> finding for an entry <code>book-decompose</code> would reject.</td></tr>
+          <tr><td><code>book-decompose</code></td><td>Reads one entry plus <code>verifications.md</code> and <code>contracts.md</code>, and produces the <code>/opsx:new</code> line and a pre-filled proposal skeleton with verification and contract docking.</td></tr>
+          <tr><td><code>openspec-construction</code>'s propose skill</td><td>Reads it as one of three unit sources (GitHub issues · a book's proposals list · an ad-hoc list).</td></tr>
+          <tr><td><code>books/CLAUDE.md</code></td><td>Requires it per book, and describes the four-step book → OpenSpec pipeline built on it.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="font-bold text-lg pt-2">The options</h3>
+    <div class="grid gap-4 md:grid-cols-3">
+      <div class="fw-opt fw-opt-lead">
+        <div class="fw-opt-head"><span class="badge badge-primary badge-sm">recommended</span><strong>Retire the chapter; the loops hold the build list</strong></div>
+        <div class="fw-opt-body">
+          An intent's <strong>Handoff</strong> tasks are what is ready to build; a bolt's <code>proposals.md</code> registry is what is being built. <code>book-decompose</code> survives, retargeted: given a book and a chapter it produces a <em>handoff task line plus the proposal skeleton the bolt will use</em>, still reading <code>verifications.md</code> and <code>contracts.md</code> to fill the docking. <code>openspec-construction</code>'s propose skill reads the bolt registry instead of a book chapter. The scaffolding skills stop creating the chapter; the proposals lints in <code>book-chapter-ready</code> and the <code>unmineable-proposal</code> finding retire with it.
+          <span class="fw-cost"><strong>Cost:</strong> a book alone no longer shows what is left to build. That list was already the thing most likely to be stale — the book is the destination record and the frontier is in <code>openspec/</code>, which is the flywheel's premise. It also ends a name collision: a bolt's registry and a book chapter were both <code>proposals.md</code>.</span>
+        </div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>Keep it, redefined as candidates</strong></div>
+        <div class="fw-opt-body">
+          The chapter stops being commitments and becomes an inventory of units the design implies; intents mine from it.
+          <span class="fw-cost"><strong>Cost:</strong> two lists that have to agree, and no one is the sole writer of the book one. Every book carries a chapter that drifts from the intent tracking it, and the drift is invisible until someone builds from the wrong list.</span>
+        </div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>Keep it only outside the flywheel</strong></div>
+        <div class="fw-opt-body">
+          Books whose systems are tracked by an intent drop it; the rest keep it.
+          <span class="fw-cost"><strong>Cost:</strong> a convention with a condition, so every author has to know which books are which before they can read <code>books/CLAUDE.md</code> — and the set changes as intents open and close.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-soft alert-info items-start">
+      <div class="space-y-2">
+        <p><strong>The one thing that must survive the retirement:</strong> verification docking.</p>
+        <p class="text-sm">A proposals entry's <code>Verifications gate:</code> row is the only content the chapter carried that nothing else holds — the declaration of which fixtures a unit reuses, which it adds, and which harnesses it extends. Recommendation: that declaration moves onto the <strong>bolt's proposal</strong>, where it is actionable, with <code>book-decompose</code> still reading <code>verifications.md</code> to fill it in. The verification chapter itself is untouched; only the list that pointed at it moves.</p>
+      </div>
+    </div>
+
+    <h3 class="font-bold text-lg pt-2">Where it ripples</h3>
+    <ul class="fw-ripple text-sm opacity-85">
+      <li><code>books/CLAUDE.md</code> — the per-book structure section drops the proposals-chapter requirement; the "Proposal pipeline (book → OpenSpec)" section is rewritten as the flywheel path.</li>
+      <li>Skills: <code>book-suite-scaffold</code>, <code>book-add-system</code> (stop creating it) · <code>book-chapter-ready</code> (drop the proposals lints) · <code>book-coherence-audit</code> and its reviewer agent (drop <code>unmineable-proposal</code>) · <code>book-decompose</code> (retarget) · <code>openspec-construction</code>'s propose skill (new source).</li>
+      <li><code>books/aidlc-design/src/system-design-inception.md</code> documents all of the above — which is why this decision and D4 are one motion.</li>
+      <li>The existing <code>src/proposals.md</code> chapters in the kit books retire with their own books' edits, not in this intent — already staged that way on the writeback task.</li>
+      <li>aidlc-design's own <code>proposals.md</code> chapter goes too: the marketplace plugin's build list is this intent's handoff task.</li>
+    </ul>
+  </div>
+
+  <form class="fw-form space-y-3" data-lavish-question="d3-proposals-chapter" onsubmit="return fwQueue(event, 'D3 — what replaces the books proposals.md chapter', 'd3-proposals-chapter');">
+    <p class="font-bold">Your answer — D3</p>
+    <label class="fw-choice"><input type="radio" name="d3" value="retire" class="radio radio-sm radio-primary mt-1"><span><strong>Retire the chapter.</strong> Handoff tasks + bolt registries are the build list; <code>book-decompose</code> retargets to produce a handoff task and proposal skeleton; verification docking moves onto the bolt's proposal.</span></label>
+    <label class="fw-choice"><input type="radio" name="d3" value="retire-keep-decompose-as-is" class="radio radio-sm mt-1"><span>Retire the chapter, <strong>but retire <code>book-decompose</code> with it</strong> — the design session writes the handoff task by hand.</span></label>
+    <label class="fw-choice"><input type="radio" name="d3" value="candidates" class="radio radio-sm mt-1"><span>Keep the chapter, <strong>redefined as candidates</strong>, and let intents mine from it.</span></label>
+    <label class="fw-choice"><input type="radio" name="d3" value="conditional" class="radio radio-sm mt-1"><span>Keep it <strong>only for books no intent tracks</strong>.</span></label>
+    <label class="fw-choice"><input type="radio" name="d3" value="other" class="radio radio-sm mt-1"><span>Something else — in the notes.</span></label>
+    <textarea name="notes" class="textarea textarea-bordered w-full" rows="3" placeholder="Anything about verification docking, book-decompose's new output, or the skills"></textarea>
+    <button type="submit" class="btn btn-primary btn-sm">Queue this answer</button>
+  </form>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= D4 ================= -->
+<section id="d4" class="fw-dec space-y-5">
+  <div class="space-y-2">
+    <p class="fw-num">Decision 4 · the chapter set</p>
+    <h2 class="text-2xl font-bold">How do <code>system-design-inception.md</code> and <code>openspec-construction.md</code> fold into the loop chapters?</h2>
+    <p class="fw-q">Absorbed outright, or kept as dependencies the loops invoke? This is the decision the chapter rewrites are blocked on — two writeback tasks name it as their blocker.</p>
+  </div>
+
+  <div class="fw-body space-y-4">
+    <div class="fw-evi">
+      <p class="opacity-85">The two chapters hold two different kinds of content, and that is what resolves the question. <strong>Practice</strong> — what mining a chapter into a unit is, what OpenSpec's artifact sequence is, how a wave of units moves. <strong>Per-skill reference</strong> — eight skill entries with consumes / produces / bar, plus flags and invocations. The first is book content. The second is a second copy of a <code>SKILL.md</code> that rots the moment the skill changes.</p>
+    </div>
+
+    <div class="grid gap-4 md:grid-cols-3">
+      <div class="fw-opt fw-opt-lead">
+        <div class="fw-opt-head"><span class="badge badge-primary badge-sm">recommended</span><strong>Absorb the practice; stop re-documenting the skills</strong></div>
+        <div class="fw-opt-body">
+          One rule: <strong>the book describes the practice, the skill file describes the skill.</strong> A chapter names a capability and what it is for, one line, and points at its <code>SKILL.md</code>; it never restates flags, consumes/produces, or bars. Concretely: <code>openspec-construction.md</code>'s opsx table and binding-checklist mapping land in <code>spec-driven-construction.md</code>, which is being rebuilt around the five pipeline stages anyway, and its orchestration skills are superseded by the bolt loop rather than described. <code>system-design-inception.md</code>'s book skills become one-line capabilities in <code>authoring-capabilities.md</code>; its commissioning-inception half moves to <code>commissioning.md</code>, which already owns that seam. Both files delete, and <code>SUMMARY.md</code> loses the "Plugins &amp; skills" section entirely.
+          <span class="fw-cost"><strong>Cost:</strong> the per-skill detail leaves the book, so a reader who wants a skill's flags reads the skill. That is the same reason <code>catalog.md</code> and <code>agent-workspaces-plugin.md</code> are already going.</span>
+        </div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>Absorb outright, keep nothing</strong></div>
+        <div class="fw-opt-body">
+          Delete both; whatever the loop chapters do not already say is simply gone.
+          <span class="fw-cost"><strong>Cost:</strong> the opsx artifact sequence and the binding-checklist mapping are real practice a reader needs, and no other chapter states them today. Deleting without placing them loses content the book should hold.</span>
+        </div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>Keep them as dependency chapters</strong></div>
+        <div class="fw-opt-body">
+          <code>conducting.md</code> links out to them as the reference for the tools the loops invoke.
+          <span class="fw-cost"><strong>Cost:</strong> two chapters to rewrite every time a skill changes — and after D3, half of <code>system-design-inception.md</code> describes a <code>proposals.md</code> pipeline that no longer exists, so the rewrite is due immediately either way.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-border bg-base-100 p-4 overflow-x-auto">
+      <p class="text-sm font-bold pb-2">The chapter set under the recommendation</p>
+      <pre class="mermaid">
+flowchart LR
+    subgraph gone["deleted"]
+      c1["catalog.md"]
+      c2["agent-workspaces-plugin.md"]
+      c3["system-design-inception.md"]
+      c4["openspec-construction.md"]
+      c5["proposals.md"]
+    end
+    subgraph keep["rewritten as the loop chapters"]
+      k1["conducting.md<br/><i>actor model · channels · sessions</i>"]
+      k2["authoring-capabilities.md<br/><i>capabilities the loops call</i>"]
+      k3["spec-driven-construction.md<br/><i>the five pipeline stages</i>"]
+      k4["commissioning.md<br/><i>the commissioning design track</i>"]
+    end
+    c3 -->|"book skills, one line each"| k2
+    c3 -->|"commissioning-inception"| k4
+    c4 -->|"opsx sequence + binding checklist"| k3
+    c4 -->|"orchestration → the bolt loop"| k3
+    c1 -.->|"nothing survives"| k2
+    c2 -.->|"nothing survives"| k1
+    c5 -->|"D3: the build list"| k1
+
+    classDef del fill:#3f1d1d,stroke:#ef4444,color:#fee2e2
+    classDef live fill:#1f3b1f,stroke:#22c55e,color:#dcfce7
+    class c1,c2,c3,c4,c5 del
+    class k1,k2,k3,k4 live
+      </pre>
+    </div>
+
+    <h3 class="font-bold text-lg pt-2">Where it ripples</h3>
+    <ul class="fw-ripple text-sm opacity-85">
+      <li>Unblocks both blocked writeback tasks — the <code>conducting.md</code> / <code>authoring-capabilities.md</code> rewrite and the chapter-set retirement.</li>
+      <li><code>books/aidlc-design/src/SUMMARY.md</code> loses the "Plugins &amp; skills" section; <code>vocabulary.md</code>, <code>walkthrough.md</code>, <code>index.md</code> follow.</li>
+      <li><code>spec-driven-construction.md</code> gains the opsx artifact sequence and the binding-checklist mapping alongside the actor-and-branching figure. <a class="link" href="http://localhost:14881/aidlc-design/spec-driven-construction.html" target="_blank" rel="noreferrer">read the chapter</a></li>
+      <li><code>commissioning.md</code> gains the commissioning-inception skills as capabilities. <a class="link" href="http://localhost:14881/aidlc-design/commissioning.html" target="_blank" rel="noreferrer">read the chapter</a></li>
+      <li>Pairs with D3: <code>book-decompose</code>'s retarget gets written into <code>authoring-capabilities.md</code>, not into a chapter that is being deleted.</li>
+    </ul>
+  </div>
+
+  <form class="fw-form space-y-3" data-lavish-question="d4-chapter-fold" onsubmit="return fwQueue(event, 'D4 — how the two plugin chapters fold into the loop chapters', 'd4-chapter-fold');">
+    <p class="font-bold">Your answer — D4</p>
+    <label class="fw-choice"><input type="radio" name="d4" value="practice-not-skills" class="radio radio-sm radio-primary mt-1"><span><strong>Absorb the practice, stop re-documenting the skills.</strong> Both files delete; opsx sequence and binding checklist to <code>spec-driven-construction.md</code>; book skills to <code>authoring-capabilities.md</code>; commissioning-inception to <code>commissioning.md</code>.</span></label>
+    <label class="fw-choice"><input type="radio" name="d4" value="delete-clean" class="radio radio-sm mt-1"><span><strong>Delete both outright</strong> and keep only what the loop chapters already say.</span></label>
+    <label class="fw-choice"><input type="radio" name="d4" value="dependencies" class="radio radio-sm mt-1"><span><strong>Keep them</strong> as dependency chapters the loop chapters link out to.</span></label>
+    <label class="fw-choice"><input type="radio" name="d4" value="other" class="radio radio-sm mt-1"><span>A different placement — in the notes.</span></label>
+    <textarea name="notes" class="textarea textarea-bordered w-full" rows="3" placeholder="Anything about where a specific piece of content should land"></textarea>
+    <button type="submit" class="btn btn-primary btn-sm">Queue this answer</button>
+  </form>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= D5 ================= -->
+<section id="d5" class="fw-dec space-y-5">
+  <div class="space-y-2">
+    <p class="fw-num">Decision 5 · the phase gate</p>
+    <h2 class="text-2xl font-bold">May a lone generated proposal skip the bolt?</h2>
+    <p class="fw-q">Is "a lone generated proposal skips the bolt and runs one reviewed work branch off main" the written default for small changes, or does every released handoff go through a bolt?</p>
+  </div>
+
+  <div class="fw-body space-y-4">
+    <div class="fw-evi">
+      <p class="opacity-85"><strong>What a bolt costs:</strong> a change directory on blueprints main with <code>bolt.md</code>, a <code>proposals.md</code> registry and <code>tasks.md</code>; a long-lived conductor pane; a bolt branch in the built repo; a serial merge tail. <strong>What it buys:</strong> sequencing across more than one proposal, a registry of what landed, one archive unit, and a row on the board the intent can point at.</p>
+    </div>
+
+    <div class="grid gap-4 md:grid-cols-3">
+      <div class="fw-opt fw-opt-lead">
+        <div class="fw-opt-head"><span class="badge badge-primary badge-sm">recommended</span><strong>Short circuit, on a mechanical test</strong></div>
+        <div class="fw-opt-body">
+          A released handoff skips the bolt when <em>all three</em> hold: <strong>one built repo</strong>, <strong>one proposal</strong>, <strong>nothing else staged depends on it</strong>. Any one failing means a bolt. The rationale is what a bolt is for — it exists to sequence and track more than one proposal across a slice, so a bolt with a one-row registry is a directory that adds a hop. The handoff task line records the built repo's change id where it would have recorded a bolt id.
+          <span class="fw-cost"><strong>Cost:</strong> two paths to describe instead of one, and a test to apply at the gate. The test is mechanical, so it is a check, not a judgment call.</span>
+        </div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>Every handoff goes through a bolt</strong></div>
+        <div class="fw-opt-body">
+          One motion, no branching in the practice; every released slice appears on the board as a bolt.
+          <span class="fw-cost"><strong>Cost:</strong> a one-file doc fix carries a change directory, a registry with one row, and a long-lived pane. It also contradicts intake's third route, which already says some work gets no tracking at all.</span>
+        </div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>You decide at each gate</strong></div>
+        <div class="fw-opt-body">
+          The short circuit exists but is named per handoff, not by rule.
+          <span class="fw-cost"><strong>Cost:</strong> every release becomes two questions instead of one, and the answer is nearly always predictable from the three facts above — which is an argument for writing the test down rather than re-deciding it.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-soft alert-info items-start">
+      <div class="space-y-2">
+        <p><strong>Two follow-ons the recommendation needs an answer on:</strong></p>
+        <p class="text-sm"><strong>Who runs a short-circuited change?</strong> The sole-writer rule holds either way — the intent conductor requests, never writes. The lighter reading is that it starts a plain session in the built repo (<code>/opsx:ff</code> and the normal PR), rather than a named <code>bolt-</code> conductor, and records the change id on the handoff task line. The built repo's PR is the trail.</p>
+        <p class="text-sm"><strong>What if it grows?</strong> If a short-circuited change turns out to want a second proposal mid-flight, recommendation is that it finishes as it is and the second proposal becomes a new handoff task — which then fails the one-proposal test and gets a bolt. Cheaper than migrating a change into a bolt halfway through.</p>
+      </div>
+    </div>
+
+    <h3 class="font-bold text-lg pt-2">Where it ripples</h3>
+    <ul class="fw-ripple text-sm opacity-85">
+      <li><code>openspec/schemas/flywheel-intent/schema.yaml</code> — the <code>tasks</code> instruction's Handoff bullet states the test and what the task line records in each case.</li>
+      <li><code>.claude/skills/flywheel-inception/SKILL.md</code> — the handoff-is-a-request paragraph gains the short-circuit branch.</li>
+      <li><code>books/aidlc-design/src/conducting.md</code> and <code>spec-driven-construction.md</code> — the phase gate described with both exits.</li>
+      <li><code>flywheel/E2E.md</code> §4 — the walkthrough takes the bolt path; the short circuit is named as the other exit.</li>
+    </ul>
+  </div>
+
+  <form class="fw-form space-y-3" data-lavish-question="d5-small-change" onsubmit="return fwQueue(event, 'D5 — the small-change short circuit', 'd5-small-change');">
+    <p class="font-bold">Your answer — D5</p>
+    <label class="fw-choice"><input type="radio" name="d5" value="mechanical-test" class="radio radio-sm radio-primary mt-1"><span><strong>Short circuit on the three-part test</strong> (one repo · one proposal · nothing depends on it), run as a plain session in the built repo, and a grown change finishes as it is.</span></label>
+    <label class="fw-choice"><input type="radio" name="d5" value="mechanical-test-named-agent" class="radio radio-sm mt-1"><span>Short circuit on the three-part test, <strong>but it still gets a named agent</strong> rather than a plain session.</span></label>
+    <label class="fw-choice"><input type="radio" name="d5" value="always-bolt" class="radio radio-sm mt-1"><span><strong>Every released handoff goes through a bolt.</strong> One motion, no exceptions.</span></label>
+    <label class="fw-choice"><input type="radio" name="d5" value="per-gate" class="radio radio-sm mt-1"><span>The short circuit exists but <strong>I name it at each gate</strong>.</span></label>
+    <label class="fw-choice"><input type="radio" name="d5" value="other" class="radio radio-sm mt-1"><span>Something else — in the notes.</span></label>
+    <textarea name="notes" class="textarea textarea-bordered w-full" rows="3" placeholder="Corrections to the test, or what a short-circuited handoff should record"></textarea>
+    <button type="submit" class="btn btn-primary btn-sm">Queue this answer</button>
+  </form>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= CLOSING ================= -->
+<section class="space-y-4">
+  <h2 class="text-xl font-bold">What happens with your answers</h2>
+  <p class="text-sm opacity-85 max-w-3xl">Each answer you queue and send closes its decision. This session then writes one decision draft per closed decision into <code>sessions/2026-08-06-chapters-and-channels/</code>, plus a report of what closed and what stayed open, and hands both to the intent conductor — which finalizes the records into <code>decisions/</code>, gives this surface a row in <code>design.md</code>, checks the task lines, and appends the writeback and schema tasks the decisions imply. Nothing here moves; the conductor catalogues it where it sits.</p>
+  <p class="text-sm opacity-70 max-w-3xl">Annotations anywhere on the page work the same way — a note on an option, a strike through a recommendation, or a correction to a ripple list is your word just as much as a queued radio button.</p>
+</section>
+
+</main>
+
+<script>
+function fwQueue(event, title, key) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const data = new FormData(form);
+  const answer = data.get(form.querySelector('input[type=radio]').name);
+  const notes = (data.get('notes') || '').toString().trim();
+  if (!answer && !notes) return false;
+  const label = answer
+    ? form.querySelector('input[value="' + answer + '"]').closest('label').innerText.trim()
+    : '(no option selected)';
+  let prompt = title + ' — chose: ' + answer + '\n' + label;
+  if (notes) prompt += '\n\nNotes: ' + notes;
+  window.lavish.queuePrompt(prompt, {
+    tag: 'decision',
+    text: title + ': ' + (answer || 'notes only'),
+    element: form,
+    queueKey: key,
+    data: { question: key, answer: answer, notes: notes }
+  });
+  return false;
+}
+</script>
+
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.15.0/dist/mermaid.esm.min.mjs";
+
+  const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  const paint = document.createElement("canvas").getContext("2d");
+  function toRgba(color) {
+    paint.clearRect(0, 0, 1, 1);
+    paint.fillStyle = "#000";
+    paint.fillStyle = color;
+    paint.fillRect(0, 0, 1, 1);
+    return paint.getImageData(0, 0, 1, 1).data;
+  }
+  function compositeRgba(foreground, background) {
+    const fa = foreground[3] / 255;
+    const ba = background[3] / 255;
+    const alpha = fa + ba * (1 - fa);
+    if (alpha === 0) return [0, 0, 0, 0];
+    return [
+      (foreground[0] * fa + background[0] * ba * (1 - fa)) / alpha,
+      (foreground[1] * fa + background[1] * ba * (1 - fa)) / alpha,
+      (foreground[2] * fa + background[2] * ba * (1 - fa)) / alpha,
+      alpha * 255,
+    ];
+  }
+  function pageIsDark() {
+    const root = document.documentElement;
+    const rootBackground = toRgba(getComputedStyle(root).backgroundColor);
+    const bodyBackground = document.body ? toRgba(getComputedStyle(document.body).backgroundColor) : [0, 0, 0, 0];
+    const [r, g, b, a] = compositeRgba(bodyBackground, rootBackground);
+    if (a > 0) return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 < 0.5;
+    const cs = getComputedStyle(root).colorScheme;
+    if (cs.includes("dark") && !cs.includes("light")) return true;
+    if (cs.includes("light") && !cs.includes("dark")) return false;
+    return darkQuery.matches;
+  }
+
+  const diagrams = [...document.querySelectorAll(".mermaid")].map((el) => ({ el, src: el.textContent }));
+  let applied;
+  let rendering = false;
+  let queued = false;
+  function queueRender() {
+    queued = true;
+    if (rendering) return;
+    void render();
+  }
+  async function render() {
+    rendering = true;
+    try {
+      while (queued) {
+        queued = false;
+        const theme = pageIsDark() ? "dark" : "default";
+        if (theme === applied) continue;
+        mermaid.initialize({ startOnLoad: false, theme, securityLevel: "strict" });
+        for (const { el, src } of diagrams) {
+          el.removeAttribute("data-processed");
+          el.textContent = src;
+        }
+        try {
+          await mermaid.run({ nodes: diagrams.map((d) => d.el) });
+        } catch (error) {
+          console.error("Mermaid diagram render failed:", error);
+          return;
+        }
+        applied = theme;
+      }
+    } finally {
+      rendering = false;
+      if (queued) queueRender();
+    }
+  }
+  if (document.readyState === "complete") queueRender();
+  else window.addEventListener("load", queueRender, { once: true });
+  const themeObserver = new MutationObserver(queueRender);
+  for (const el of [document.documentElement, document.body]) {
+    if (!el) continue;
+    themeObserver.observe(el, { attributes: true, attributeFilter: ["data-theme", "class", "style"] });
+  }
+  document.addEventListener("change", queueRender, true);
+  document.addEventListener("transitionend", ({ propertyName }) => {
+    if (propertyName === "background-color") queueRender();
+  }, true);
+  darkQuery.addEventListener("change", queueRender);
+</script>
+</body>
+</html>

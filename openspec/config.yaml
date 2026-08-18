@@ -1,0 +1,78 @@
+schema: spec-driven
+
+context: |
+  This repo tracks flywheel changes: design intents (schema
+  flywheel-intent) and construction bolts (a bolt-* schema member —
+  bolt-default, bolt-quick, bolt-deep; older bolts bind flywheel-bolt) on
+  main,
+  plus spec-driven changes for the repo's own tooling. Built repos carry
+  their own spec-driven changes.
+
+  Instructions for any agent working a change here:
+  - Edit only the change you were charged with. Other changes are
+    read-only to you: to affect one, prompt its conductor
+    (herdr agent intent-<slug> / bolt-<slug>) or drop a request file in
+    that change's inbox/ (inbox/<date>-<from>-<slug>.md).
+  - When you drain your own change's inbox, a request is not an append:
+    revise the earliest artifact it touches, then re-walk the artifact
+    sequence forward so downstream artifacts stay coherent. Delete the
+    drained file in the same commit.
+  - Design writebacks follow books/CLAUDE.md (destination voice);
+    construction follows the bolt's own merge criteria.
+  - Commit after any artifact change, staging only the paths you wrote.
+    A sibling agent may share this working tree, and therefore this
+    index: `git add <your paths>`, then
+    `git commit -m "<subject>" -- <your paths>` so the commit carries your
+    paths whatever else is staged. Every flag goes BEFORE the `--`;
+    everything after it is a pathspec, so `git commit -- <paths> -m
+    "<msg>"` fails with `pathspec '-m' did not match`. Never `-a`, never
+    `add -A` or `add .`, never a pathspec-less commit. Anything
+    tree-wide — `git stash`, `git reset --hard`, `git checkout .` —
+    reaches a sibling's uncommitted work the same way.
+
+  The flywheel's private vocabulary is these six terms and no others.
+  Each names a thing with a schema, a directory and a lifecycle:
+
+  - intent — one design thread, tracked as a flywheel-intent change.
+  - bolt — one construction iteration, tracked as a change binding a
+    bolt-* schema member.
+  - decision — a closed question, recorded as decisions/<slug>.md.
+  - handoff — a settled slice released from an intent into construction.
+  - proposal — one row of a bolt's registry and the spec-driven change
+    it names in a built repo.
+  - writeback — carrying a settled destination into the books and the
+    context map.
+
+  The list is closed. A term outside this list that is not an ordinary
+  technical word is a defect; use the plain word or add the term to this
+  list in the same commit. What a conductor waits for at a release is an
+  approval, and the mechanism is asking for one with AskUserQuestion.
+
+  Actors exchange exactly three envelope kinds, one fenced block over
+  both transports — `herdr agent prompt <name>` when the target runs, a
+  file in its change's `inbox/` (`inbox/<date>-<from>-<slug>.md`) when it
+  does not, paste-identical or they drift apart. One header on all three:
+  `to` · `from` · `re` · `kind`, where `re` is a change-relative path —
+  the filesystem is the id space, so a reference either resolves or it
+  does not.
+
+  - respond — body: answer (≤3 sentences) · evidence[] · state. The
+    receiver moves the item along its ladder.
+  - extend-bolt — body: proposal · repo · claim · review · source. A bolt
+    conductor writes a new proposal; the bolt grows.
+  - extend-intent — body: record · type · question · turns-on-it ·
+    source. An intent conductor writes a question or assertion record.
+
+  Sending closes nothing: the sender keeps the item on its own list until
+  it observes the receiver carrying it. Actor-to-actor traffic travels
+  direct — the sender names the owning change and uses prompt or inbox.
+  Dispatch enters the path only when a human is at either end, or when
+  the sender cannot name the target change.
+
+rules:
+  tasks:
+    - >-
+      Typed sections are the contract (intent:
+      Design/Planning/Research/Prototype/Writeback/Handoff, plus Verify;
+      bolt: Spec/Review/Build/Test/Merge). New work appends; checked tasks
+      never reopen; blockers are named in-line as "(blocked by: ...)".

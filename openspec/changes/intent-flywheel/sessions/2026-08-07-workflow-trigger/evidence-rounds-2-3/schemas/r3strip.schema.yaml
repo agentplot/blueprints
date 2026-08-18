@@ -1,0 +1,35 @@
+name: loopdemo
+version: 1
+description: A bolt change whose apply step works its tasks in passes
+artifacts:
+  - id: tasks
+    generates: tasks.md
+    description: The living checklist
+    template: tasks.md
+    instruction: |
+      One line per unit of construction work.
+    requires: []
+apply:
+  requires:
+    - tasks
+  tracks: tasks.md
+  instruction: |
+    You are driving this change's construction loop.
+
+    One pass is two phases:
+
+    1. **Analyse** - the task list comes from
+       `openspec instructions apply --change bolt-abc --json`, whose `tasks`
+       array holds one entry per task as `{id, description, done}`. Decide,
+       by reading the descriptions, which not-done tasks can be STARTED NOW
+       and which must wait on another task in the list. Nothing declares
+       those relationships; working them out from the descriptions is part
+       of the job. Produce the startable task ids with a one-line reason
+       each, and the waiting ones with what they wait on.
+
+    2. **Build** - for each startable task, write `out/<task-id>.txt`
+       containing the single line `built <task-id>`.
+
+    Re-run the query each pass rather than assuming the last pass's answer
+    still holds. When the pass finishes, report which tasks were built and
+    which are still waiting.

@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The loop layer — design center</title>
+<style>
+:root{
+  --bg:#f4f6f9; --surface:#ffffff; --surface2:#eaeef4; --ink:#101827; --ink2:#3d4a61; --ink3:#66738a;
+  --line:#d3dae4; --card:#ffffff; --card-edge:#b9c3d1;
+  --band-contract:#f6f2fb; --band-state:#f3f4f2;
+  --lane-control:rgba(37,99,235,.055); --lane-data:rgba(13,148,136,.055);
+  --control:#2458c5; --data:#0b7f74; --amber:#a35b08; --warn:#b32020; --openq:#8f2fb3;
+  --sel:#1d4ed8; --edge-contract:#7c3aed; --edge-derives:#9333ea;
+  --chip:#eef2f7; --chip-ink:#3d4a61; --focusring:#1d4ed8;
+  --shadow:0 1px 3px rgba(16,24,39,.14); --d-add:#1a7f37; --codebg:#f7f9fc;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0d1220; --surface:#161d2e; --surface2:#1d2639; --ink:#e6ebf4; --ink2:#aab6ca; --ink3:#7c89a0;
+    --line:#2a3550; --card:#182036; --card-edge:#354364;
+    --band-contract:#1d1a30; --band-state:#1a2130;
+    --lane-control:rgba(96,145,255,.07); --lane-data:rgba(45,212,191,.06);
+    --control:#7ea6ff; --data:#3fd3c2; --amber:#e8a04c; --warn:#ff7b6b; --openq:#d187ec;
+    --sel:#8ab0ff; --edge-contract:#b48bfa; --edge-derives:#d187ec;
+    --chip:#212b42; --chip-ink:#aab6ca; --focusring:#8ab0ff;
+    --shadow:0 1px 4px rgba(0,0,0,.5); --d-add:#4ec97a; --codebg:#111827;
+  }
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;overflow-x:hidden;max-width:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+code,pre,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+:where(.grid)>*{min-width:0}
+:where(p,h1,h2,h3,h4,li,td,th){overflow-wrap:anywhere}
+svg{max-width:100%;height:auto;display:block}
+:focus-visible{outline:2px solid var(--focusring);outline-offset:2px}
+.wrap{max-width:1220px;margin:0 auto;padding:0 24px 100px}
+
+header.top{border-bottom:1px solid var(--line);background:linear-gradient(180deg,var(--surface),var(--bg));padding:30px 0 18px}
+header.top h1{font-size:32px;margin:0 0 8px;letter-spacing:-.02em}
+header.top .sub{color:var(--ink2);font-size:15px;margin:0;max-width:82ch}
+
+nav.tabs{position:sticky;top:0;z-index:40;background:var(--bg);border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+nav.tabs .row{max-width:1220px;margin:0 auto;padding:10px 24px;display:flex;gap:8px;overflow-x:auto}
+.tabbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink2);border-radius:999px;padding:7px 16px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.tabbtn:hover{border-color:var(--sel);color:var(--ink)}
+.tabbtn[aria-selected="true"]{background:var(--sel);border-color:var(--sel);color:#fff}
+section.panel{display:none}
+section.panel.active{display:block}
+
+.partbar{display:flex;align-items:baseline;gap:14px;margin:42px 0 6px;padding-bottom:10px;border-bottom:2px solid var(--control);flex-wrap:wrap}
+.partbar .n{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:var(--control);padding:3px 10px;border-radius:999px;font-weight:700}
+.partbar h2{font-size:23px;margin:0;letter-spacing:-.015em}
+.partbar .note2{margin-left:auto;font-size:12.5px;color:var(--ink3)}
+
+h3{font-size:16px;margin:30px 0 8px;letter-spacing:-.01em}
+h3 .tag{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:600;margin-left:8px}
+h4{font-size:14.5px;margin:24px 0 6px}
+p.intro{color:var(--ink2);max-width:82ch;margin:0 0 14px;font-size:14px}
+
+figure{margin:14px 0 22px;background:var(--surface);border:1px solid var(--card-edge);border-radius:12px;padding:16px;box-shadow:var(--shadow)}
+figcaption{font-size:12.5px;color:var(--ink3);margin-top:10px;border-top:1px solid var(--line);padding-top:9px}
+.diagwrap{overflow-x:auto;max-width:100%}
+
+.tablewrap{overflow-x:auto;max-width:100%;border:1px solid var(--card-edge);border-radius:11px;background:var(--card);margin:12px 0 20px}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:600px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{background:var(--surface2);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);font-weight:600;white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.mono{font-family:ui-monospace,Menlo,monospace;font-size:12px}
+td.k{font-family:ui-monospace,Menlo,monospace;font-size:12px;font-weight:600;color:var(--ink);white-space:nowrap}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.new{color:var(--amber);font-size:11px;font-weight:600}
+
+pre{background:var(--codebg);border:1px solid var(--line);border-radius:9px;padding:13px 15px;overflow-x:auto;max-width:100%;font-size:12.5px;line-height:1.55;margin:10px 0}
+pre .c{color:var(--ink3)} pre .k{color:var(--control)} pre .s{color:var(--data)}
+pre .hl{background:rgba(163,91,8,.14);border-radius:3px;padding:0 2px;font-weight:700}
+code:not(pre code){background:var(--chip);border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:.88em}
+.filelabel{display:flex;gap:9px;align-items:center;font-size:11px;color:var(--ink3);margin:14px 0 -2px;flex-wrap:wrap}
+.filelabel .path{font-family:ui-monospace,Menlo,monospace;color:var(--ink2)}
+.filelabel .tag{background:var(--chip);border:1px solid var(--line);border-radius:4px;padding:1px 7px;font-size:10px;letter-spacing:.05em;text-transform:uppercase}
+
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+
+.note{border-left:3px solid var(--amber);background:var(--band-contract);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:13px;color:var(--ink2)}
+.note b{color:var(--ink)}
+
+.commit{border:1px solid var(--card-edge);border-radius:11px;background:var(--card);padding:13px 16px;font-size:13px;color:var(--ink2)}
+.commit b{color:var(--ink);display:block;margin-bottom:4px;font-size:13.5px}
+
+.machine{border:1px solid var(--card-edge);border-radius:12px;background:var(--surface);padding:14px 16px 10px;margin:14px 0;box-shadow:var(--shadow)}
+.machine h4{margin:0 0 2px;font-size:15px}
+.machine .sub3{font-size:12px;color:var(--ink3);margin:0 0 4px}
+.ladder{display:flex;align-items:center;overflow-x:auto;padding:10px 2px;margin:4px 0 6px}
+.st{flex:none;border:1.5px solid var(--card-edge);background:var(--card);border-radius:8px;padding:5px 12px;font-family:ui-monospace,Menlo,monospace;font-size:12px;font-weight:600;color:var(--ink)}
+.st.hil{border-color:var(--amber);background:var(--band-contract)}
+.st.term{border-color:var(--d-add)}
+.st.ghost{border-style:dashed;color:var(--ink3);font-weight:400}
+.arr{flex:none;color:var(--ink3);font-size:13px;padding:0 6px;text-align:center;max-width:130px;line-height:1.25}
+.arr b{display:block;font-size:9.5px;color:var(--ink3);font-weight:600;letter-spacing:.02em}
+
+.who{display:inline-block;border-radius:5px;padding:0 7px;font-size:10.5px;font-weight:700;letter-spacing:.03em;margin-right:6px;vertical-align:1px;white-space:nowrap}
+.who.op{background:rgba(163,91,8,.16);color:var(--amber)}
+.who.dsp{background:rgba(143,47,179,.13);color:var(--openq)}
+.who.ic{background:rgba(37,99,235,.12);color:var(--control)}
+.who.bc{background:rgba(13,148,136,.12);color:var(--data)}
+.who.ses{background:var(--chip);color:var(--chip-ink)}
+.who.sys{background:var(--band-state);color:var(--ink3)}
+
+ol.uc{margin:10px 0 6px;padding-left:0;list-style:none;counter-reset:uc}
+ol.uc>li{counter-increment:uc;position:relative;padding:8px 12px 8px 46px;border:1px solid var(--line);border-radius:9px;background:var(--card);margin-bottom:8px;font-size:13.5px}
+ol.uc>li::before{content:counter(uc);position:absolute;left:12px;top:10px;width:22px;height:22px;border-radius:50%;background:var(--surface2);color:var(--ink2);font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
+
+details.ledger{border:1px solid var(--card-edge);border-radius:11px;background:var(--card);margin:16px 0;overflow:hidden}
+details.ledger>summary{cursor:pointer;padding:13px 16px;font-size:14px;font-weight:600;background:var(--surface2);list-style:none}
+details.ledger>summary::-webkit-details-marker{display:none}
+details.ledger>summary::before{content:"▸ ";color:var(--ink3)}
+details.ledger[open]>summary::before{content:"▾ "}
+details.ledger .body{padding:4px 16px 16px}
+.decision{border:1px solid var(--sel);border-radius:10px;background:var(--surface);padding:14px 16px;margin:16px 0}
+.decision h4{margin:0 0 8px;font-size:15px}
+.decision label{display:flex;gap:10px;align-items:flex-start;padding:8px 11px;border:1px solid var(--line);border-radius:7px;margin-bottom:7px;cursor:pointer;background:var(--card);font-size:13px}
+.decision label:hover{border-color:var(--sel)}
+.decision label input{margin-top:3px;flex:none}
+.decision label b{display:block}
+.decision textarea{width:100%;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--ink);padding:8px 11px;font:inherit;font-size:12.5px;margin-top:3px;min-height:48px;resize:vertical}
+.decision button{margin-top:10px;background:var(--sel);color:#fff;border:none;border-radius:7px;padding:8px 18px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.sent{margin-left:10px;font-size:12px;color:var(--d-add);font-weight:600}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <h1>The loop layer — design center</h1>
+    <p class="sub">
+      The flywheel's loop layer as settled by the 2026-08-11 tuning round: durable prose in git,
+      mutable state on the org's tracker, approvals as board gestures, sessions as vanilla agents.
+      Successor to the 2026-08-07 page, which stands as the trail.
+    </p>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Page sections">
+  <div class="row" role="tablist">
+    <button class="tabbtn" role="tab" data-tab="why">Why</button>
+    <button class="tabbtn" role="tab" data-tab="vocabulary">Vocabulary</button>
+    <button class="tabbtn" role="tab" data-tab="flows">Flows</button>
+    <button class="tabbtn" role="tab" data-tab="human">Human loop</button>
+    <button class="tabbtn" role="tab" data-tab="hosts">Hosts &amp; owners</button>
+    <button class="tabbtn" role="tab" data-tab="mechanics">Mechanics</button>
+    <button class="tabbtn" role="tab" data-tab="decisions">Decisions</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<!-- ================================================================ WHY -->
+<section class="panel" id="panel-why">
+
+<div class="partbar">
+  <span class="n">Why</span><h2>What this layer is for</h2>
+  <span class="note2">the model before the mechanism</span>
+</div>
+
+<p class="intro">
+  A few developers, a fleet of agents, and ideas arriving faster than they can be built. The loop
+  layer turns that stream into shipped code: every fragment is triaged the day it arrives,
+  uncertainty is burned into records before anything is built on top of it, and the operator's
+  attention is spent as a handful of board gestures instead of continuously. The tuning round's
+  diagnosis: most of the previous ceremony existed to make shared markdown files safe to edit
+  concurrently. The tracker dissolved that root cause.
+</p>
+
+<h3>Three commitments <span class="tag">everything else derives from these</span></h3>
+<div class="grid g3">
+  <div class="commit">
+    <b>1 · Durable prose in git; mutable state on the tracker.</b>
+    Records — the intent, decisions, questions, assertions, session reports — are files, written
+    once and reviewed. Work items, their states, the queue, dependencies, and the narrative are
+    GitHub Issues: changed by one API call, no worktree, no collision. Nothing is recorded in both
+    places; a file keeps only terminal facts.
+  </div>
+  <div class="commit">
+    <b>2 · The inner loop never writes the outer.</b>
+    Design (intents) and construction (bolts) corrupt each other when interleaved. A construction
+    finding travels back as a queued item on the intent's milestone — never as an edit to a design
+    record. The open item is the obligation; nothing needs a second ledger to avoid being lost.
+  </div>
+  <div class="commit">
+    <b>3 · Attention is batched, as board gestures.</b>
+    One batch moved to Ready per approval, never one approval per item. One annotation round
+    per page. Assignment reads in three native gestures: <b>assignee = whose word, Team = whose
+    machine, Ready = go</b> — all on one board, all doable from a phone.
+  </div>
+</div>
+
+<h3>The system, as one conveyor</h3>
+<p class="intro">
+  Raw input enters at dispatch, which triages it into tracker items and nothing else. The design
+  loop converts uncertainty into <b>decisions</b> and accretes direction as <b>assertions</b> —
+  and the assertion IS the proposal: written when work is identified, released as itself, specced
+  from directly, never restated. The conductor composes what is ready into a <b>Backlog batch</b> — a unit for construction, an elaboration for design;
+  the operator moves it to <b>Ready</b>; a <b>bolt</b> drives it to main. Findings flow back as
+  queued items. The books and the map receive the destination from the design loop only.
+</p>
+
+<h3>The whole layer, in one view</h3>
+<figure>
+  <div class="diagwrap">
+  <svg viewBox="0 0 1160 660" role="img" aria-label="The loop layer as nested layers across two loops">
+    <defs>
+      <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink3)"/></marker>
+    </defs>
+
+    <rect x="86" y="30" width="1064" height="52" rx="9" fill="var(--surface2)" stroke="var(--card-edge)" stroke-width="1.5"/>
+    <text x="8" y="60" font-size="10.5" fill="var(--ink3)" font-weight="700">HUMAN</text>
+    <text x="104" y="52" font-size="13.5" font-weight="700" fill="var(--ink)">the operator, at the board</text>
+    <text x="104" y="70" font-size="11.5" fill="var(--ink2)">moves batches to Ready · annotates rounds · answers a DM'd question · assigns Team and owner. One gesture per batch, never one per item.</text>
+
+    <rect x="86" y="106" width="1064" height="64" rx="9" fill="var(--band-contract)" stroke="var(--openq)" stroke-width="2"/>
+    <text x="8" y="136" font-size="10.5" fill="var(--ink3)" font-weight="700">TRACKER</text>
+    <text x="104" y="128" font-size="12.5" font-weight="700" fill="var(--openq)">GitHub Issues on the org's tracker repo — the one home of mutable state</text>
+    <text x="104" y="146" font-size="10.5" fill="var(--ink2)" font-family="ui-monospace,Menlo,monospace">items · state:queued/ready/in-progress · closed:* · milestones intent/&lt;slug&gt; bolt/&lt;slug&gt; · units + elaborations (sub-issues) · comments = narrative</text>
+    <text x="104" y="162" font-size="10.5" fill="var(--ink3)">every machinery write runs as the GitHub App via flywheel-token; the board (Projects) is a view, never a second store</text>
+
+    <rect x="86" y="194" width="330" height="76" rx="9" fill="var(--card)" stroke="var(--openq)" stroke-width="1.5"/>
+    <rect x="440" y="194" width="330" height="76" rx="9" fill="var(--lane-control)" stroke="var(--control)" stroke-width="1.5"/>
+    <rect x="794" y="194" width="356" height="76" rx="9" fill="var(--lane-data)" stroke="var(--data)" stroke-width="1.5"/>
+    <text x="8" y="226" font-size="10.5" fill="var(--ink3)" font-weight="700">ACTORS</text>
+    <text x="8" y="240" font-size="9" fill="var(--ink3)">opus[1m]</text>
+    <text x="104" y="216" font-size="12.5" font-weight="700" fill="var(--openq)">dispatch</text>
+    <text x="104" y="234" font-size="10.5" fill="var(--ink2)">GitHub-only · reactive · no checkout, no loop</text>
+    <text x="104" y="250" font-size="10.5" fill="var(--ink3)">triages 5 routes · relays HIL to the assignee</text>
+    <text x="458" y="216" font-size="12.5" font-weight="700" fill="var(--control)">intent-&lt;slug&gt;</text>
+    <text x="458" y="234" font-size="10.5" fill="var(--ink2)">works the ready set, stops at the queue</text>
+    <text x="458" y="250" font-size="10.5" fill="var(--ink3)">scaffolds its change via opsx:new / opsx:ff</text>
+    <text x="812" y="216" font-size="12.5" font-weight="700" fill="var(--data)">bolt-&lt;slug&gt;</text>
+    <text x="812" y="234" font-size="10.5" fill="var(--ink2)">works the ready set across built-repo bolt branches</text>
+    <text x="812" y="250" font-size="10.5" fill="var(--ink3)">the member picked at creation IS the bolt type</text>
+
+    <rect x="86" y="294" width="1064" height="58" rx="9" fill="var(--card)" stroke="var(--card-edge)" stroke-dasharray="5 3"/>
+    <text x="8" y="324" font-size="10.5" fill="var(--ink3)" font-weight="700">RECONCILER</text>
+    <text x="104" y="316" font-size="12" font-weight="700" fill="var(--ink)">flywheel reconcile — deterministic, no model, on an interval</text>
+    <text x="104" y="334" font-size="10.5" fill="var(--ink2)">ready items + no conductor → start one · ready items + idle conductor → nudge it · needs-operator + idle dispatch → nudge it · placement by the board's Team field</text>
+    <text x="104" y="348" font-size="10" fill="var(--ink3)">successor to flywheel up, whose hand-written actor rows are the interim</text>
+
+    <rect x="86" y="376" width="520" height="66" rx="9" fill="var(--card)" stroke="var(--card-edge)"/>
+    <rect x="630" y="376" width="520" height="66" rx="9" fill="var(--card)" stroke="var(--card-edge)"/>
+    <text x="8" y="406" font-size="10.5" fill="var(--ink3)" font-weight="700">RECORDS</text>
+    <text x="8" y="420" font-size="9" fill="var(--ink3)">in git</text>
+    <text x="104" y="398" font-size="11.5" fill="var(--ink)" font-family="ui-monospace,Menlo,monospace" font-weight="700">flywheel-intent</text>
+    <text x="104" y="417" font-size="10.5" fill="var(--ink2)">intent · decisions · questions · assertions · sessions · prototypes</text>
+    <text x="104" y="433" font-size="10.5" fill="var(--ink3)">tasks.md, design.md retired — the tracker is the state</text>
+    <text x="648" y="398" font-size="11.5" fill="var(--ink)" font-family="ui-monospace,Menlo,monospace" font-weight="700">bolt-default · quick · deep</text>
+    <text x="648" y="417" font-size="10.5" fill="var(--ink2)">bolt.md alone — items are the released assertions</text>
+    <text x="648" y="433" font-size="10.5" fill="var(--ink3)">proposals.md retired — the assertion is the proposal</text>
+
+    <rect x="86" y="466" width="520" height="80" rx="9" fill="var(--lane-control)" stroke="var(--control)" stroke-width="1.5"/>
+    <rect x="630" y="466" width="520" height="80" rx="9" fill="var(--lane-data)" stroke="var(--data)" stroke-width="1.5"/>
+    <text x="8" y="496" font-size="10.5" fill="var(--ink3)" font-weight="700">SESSIONS</text>
+    <text x="8" y="510" font-size="9" fill="var(--ink3)">vanilla</text>
+    <text x="8" y="522" font-size="9" fill="var(--ink3)">agents</text>
+    <text x="104" y="488" font-size="11.5" font-weight="700" fill="var(--control)">design — fable: planning · interactive; opus: prototype · writeback · handoff; opus[1m]: research</text>
+    <text x="104" y="506" font-size="10.5" fill="var(--ink2)">work order = change id · type · item numbers · a sentence or two of goal</text>
+    <text x="104" y="522" font-size="10.5" fill="var(--ink3)">a session that edits no files gets no worktree</text>
+    <text x="104" y="538" font-size="10.5" fill="var(--ink3)">discoveries are queued items; in-scope fixes are just work</text>
+    <text x="648" y="488" font-size="11.5" font-weight="700" fill="var(--data)">construction — fable: proposal-review; opus[1m]: spec-writing · build · test · code-review · human-code-review</text>
+    <text x="648" y="506" font-size="10.5" fill="var(--ink2)">proposal-writing survives only as the exception for unmineable assertions</text>
+    <text x="648" y="522" font-size="10.5" fill="var(--ink3)">progress is the item's comment history; the merge closes it closed:done</text>
+
+    <rect x="86" y="570" width="520" height="58" rx="9" fill="var(--card)" stroke="var(--control)" stroke-dasharray="5 3"/>
+    <rect x="630" y="570" width="520" height="58" rx="9" fill="var(--card)" stroke="var(--data)" stroke-dasharray="5 3"/>
+    <text x="8" y="602" font-size="10.5" fill="var(--ink3)" font-weight="700">OUTPUT</text>
+    <text x="104" y="592" font-size="12" font-weight="700" fill="var(--control)">the books · the context map · the design records</text>
+    <text x="104" y="610" font-size="10.5" fill="var(--ink3)">the design loop's exclusively — a bolt never edits a chapter</text>
+    <text x="648" y="592" font-size="12" font-weight="700" fill="var(--data)">the built repos</text>
+    <text x="648" y="610" font-size="10.5" fill="var(--ink3)">landed through the full release gate, one writer to main at a time</text>
+  </svg>
+  </div>
+  <figcaption>
+    The tracker layer is new, and it is what shrank everything around it: actors read and write state
+    by API call, so worktrees exist only where files are edited, and the write-scope liturgy became
+    three mechanisms — worktree isolation, the merge gate, and tracker attribution.
+  </figcaption>
+</figure>
+
+<h3>One idea, end to end <span class="tag">journey</span></h3>
+<figure>
+  <div class="diagwrap">
+  <svg viewBox="0 0 1160 210" role="img" aria-label="One idea travelling from dispatch to main">
+    <defs><marker id="j" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink3)"/></marker></defs>
+    <g font-size="10.5">
+      <rect x="6" y="40" width="122" height="60" rx="8" fill="var(--card)" stroke="var(--card-edge)"/>
+      <text x="18" y="60" font-size="11.5" font-weight="700" fill="var(--ink)">an idea</text>
+      <text x="18" y="78" fill="var(--ink3)">a sentence from</text><text x="18" y="91" fill="var(--ink3)">a developer</text>
+      <line x1="134" y1="70" x2="152" y2="70" stroke="var(--ink3)" marker-end="url(#j)"/>
+
+      <rect x="158" y="40" width="128" height="60" rx="8" fill="var(--card)" stroke="var(--openq)"/>
+      <text x="170" y="60" font-size="11.5" font-weight="700" fill="var(--openq)">dispatch</text>
+      <text x="170" y="78" fill="var(--ink3)">milestone + item,</text><text x="170" y="91" fill="var(--ink3)">assignee set</text>
+      <line x1="292" y1="70" x2="310" y2="70" stroke="var(--ink3)" marker-end="url(#j)"/>
+
+      <rect x="316" y="40" width="136" height="60" rx="8" fill="var(--lane-control)" stroke="var(--control)"/>
+      <text x="328" y="60" font-size="11.5" font-weight="700" fill="var(--control)">design sessions</text>
+      <text x="328" y="78" fill="var(--ink3)">decisions close;</text><text x="328" y="91" fill="var(--ink3)">assertions written</text>
+      <line x1="458" y1="70" x2="476" y2="70" stroke="var(--ink3)" marker-end="url(#j)"/>
+
+      <rect x="482" y="40" width="140" height="60" rx="8" fill="var(--surface2)" stroke="var(--amber)" stroke-width="2"/>
+      <text x="494" y="60" font-size="11.5" font-weight="700" fill="var(--amber)">Backlog → Ready</text>
+      <text x="494" y="78" fill="var(--ink3)">the operator moves</text><text x="494" y="91" fill="var(--ink3)">the batch — the gate</text>
+      <line x1="628" y1="70" x2="646" y2="70" stroke="var(--ink3)" marker-end="url(#j)"/>
+
+      <rect x="652" y="40" width="140" height="60" rx="8" fill="var(--lane-data)" stroke="var(--data)"/>
+      <text x="664" y="60" font-size="11.5" font-weight="700" fill="var(--data)">the bolt</text>
+      <text x="664" y="78" fill="var(--ink3)">items move to its</text><text x="664" y="91" fill="var(--ink3)">milestone; specs derive</text>
+      <line x1="798" y1="70" x2="816" y2="70" stroke="var(--ink3)" marker-end="url(#j)"/>
+
+      <rect x="822" y="40" width="150" height="60" rx="8" fill="var(--lane-data)" stroke="var(--data)"/>
+      <text x="834" y="60" font-size="11.5" font-weight="700" fill="var(--data)">build sessions</text>
+      <text x="834" y="78" fill="var(--ink3)">spec · build · review ·</text><text x="834" y="91" fill="var(--ink3)">test, batched</text>
+      <line x1="978" y1="70" x2="996" y2="70" stroke="var(--ink3)" marker-end="url(#j)"/>
+
+      <rect x="1002" y="40" width="150" height="60" rx="8" fill="var(--card)" stroke="var(--d-add)" stroke-width="2"/>
+      <text x="1014" y="60" font-size="11.5" font-weight="700" fill="var(--d-add)">main</text>
+      <text x="1014" y="78" fill="var(--ink3)">closed:done with the</text><text x="1014" y="91" fill="var(--ink3)">SHA; ref → assertion</text>
+
+      <rect x="158" y="126" width="464" height="64" rx="8" fill="var(--card)" stroke="var(--control)" stroke-dasharray="5 3"/>
+      <text x="170" y="146" font-size="11.5" font-weight="700" fill="var(--control)">in parallel — the destination is written</text>
+      <text x="170" y="164" fill="var(--ink2)">writeback items ride the intent milestone as type:writeback, batch into elaborations by thread, release as scheduling.</text>
+      <text x="170" y="180" fill="var(--ink3)">A bolt never edits a chapter; the design loop owns them exclusively.</text>
+
+      <rect x="652" y="126" width="500" height="64" rx="8" fill="var(--card)" stroke="var(--data)" stroke-dasharray="5 3"/>
+      <text x="664" y="146" font-size="11.5" font-weight="700" fill="var(--data)">back the other way — findings are queued items</text>
+      <text x="664" y="164" fill="var(--ink2)">a design-level finding lands on the source intent's milestone; the open item is the obligation.</text>
+      <text x="664" y="180" fill="var(--ink2)">work inside the released scope is just work — the drive-by rule; no item ceremony.</text>
+    </g>
+  </svg>
+  </div>
+  <figcaption>The operator appears as gestures: assignment at triage, the Ready move, annotation rounds, and answers. Everything between runs without them.</figcaption>
+</figure>
+
+<h3>How to read this page</h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>tab</th><th>question it answers</th></tr></thead>
+  <tbody>
+    <tr><td class="k"><a href="#tab=vocabulary">Vocabulary</a></td><td>What are the objects, who are the actors, and who may write what?</td></tr>
+    <tr><td class="k"><a href="#tab=flows">Flows</a></td><td>For each entity: its exact lifecycle, every path through the system, and every dead end.</td></tr>
+    <tr><td class="k"><a href="#tab=human">Human loop</a></td><td>Every moment a developer appears — gesture, channel, blocking or not, and what happens when they're away.</td></tr>
+    <tr><td class="k"><a href="#tab=hosts">Hosts &amp; owners</a></td><td>Assignee, Team, the reconciler, key custody, and the central-server destination.</td></tr>
+    <tr><td class="k"><a href="#tab=mechanics">Mechanics</a></td><td>The same objects as labels, milestones, bin tools and gh invocations.</td></tr>
+    <tr><td class="k"><a href="#tab=decisions">Decisions</a></td><td>What the tuning round settled, and what remains open.</td></tr>
+  </tbody>
+</table></div>
+
+</section>
+<!-- ========================================================= VOCABULARY -->
+<section class="panel" id="panel-vocabulary">
+
+<div class="partbar">
+  <span class="n">Vocabulary</span><h2>The words, the objects, the writers</h2>
+  <span class="note2">nail the nouns before tracing the flows</span>
+</div>
+
+<h3>The coined terms, and the list is closed <span class="tag">openspec/config.yaml → context:</span></h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>term</th><th>names</th><th>lives at</th></tr></thead>
+  <tbody>
+    <tr><td class="k">intent</td><td>one design thread — a change binding <code>flywheel-intent</code> plus the milestone <code>intent/&lt;slug&gt;</code></td><td class="mono">openspec/changes/&lt;slug&gt;/ + the tracker</td></tr>
+    <tr><td class="k">bolt</td><td>one construction iteration — a change binding a <code>bolt-*</code> member plus the milestone <code>bolt/&lt;slug&gt;</code>; grows, never spawns a sibling for its own scope</td><td class="mono">openspec/changes/bolt-&lt;slug&gt;/ + the tracker</td></tr>
+    <tr><td class="k">decision</td><td>one settled answer, with the why and the consequences</td><td class="mono">&lt;change&gt;/decisions/&lt;slug&gt;.md</td></tr>
+    <tr><td class="k">assertion</td><td>the durable claim of what must be built — <b>and the proposal itself</b>: written when work is identified, released as itself, specced from directly, never restated downstream</td><td class="mono">&lt;change&gt;/assertions/&lt;slug&gt;.md + its item</td></tr>
+    <tr><td class="k">handoff</td><td>bolt planning: a session reads the settled assertions its item names, drafts the bolt plan on the standard template — one section per bolt: bolt type, owner, repos, assertions, sequencing — runs one plannotator round with the operator, then moves the items to the bolt's milestone: that move IS the bolting</td><td class="mono">a session type</td></tr>
+    <tr><td class="k">writeback</td><td>carrying settled direction into the books and the context map</td><td class="mono">a session type</td></tr>
+  </tbody>
+</table></div>
+<div class="note"><b>Retired on the way here:</b> <i>proposal</i> as a separate object → the assertion is the
+proposal · <i>the proposals.md registry, tasks.md, design.md</i> → the tracker is the state · <i>inbox
+and envelopes</i> → items and comments · <i>the flip</i> → moving a batch on the board · <i>Released</i>
+as a status → <b>Ready</b>, because Released already means a deliverable in SDLC speech.</div>
+
+<h3>Tracker objects <span class="tag">the mutable half of every entity</span></h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>object</th><th>is</th><th>carries</th></tr></thead>
+  <tbody>
+    <tr><td class="k">item</td><td>one unit of work, as an issue</td><td>imperative title · 1–3 sentences + pointer to its record · milestone from birth · <code>type:*</code> and exactly one <code>state:*</code> label · <b>assignee</b> = whose word · native blocked-by dependencies · comments as its narrative</td></tr>
+    <tr><td class="k">batch</td><td>a parent issue, its items as sub-issues; the kind is what approving it authorizes — a <b>unit</b> (label <code>unit</code>, AI-DLC's unit of work) releases construction; an <b>elaboration</b> (label <code>elaboration</code>) authorizes design sessions</td><td>Project Status <b>Backlog</b> (proposed) or <b>Ready</b> (approved) · Start/Target defaulted to today, later only with a stated reason · small by construction, one batch each</td></tr>
+    <tr><td class="k">milestone</td><td>the change-sized container, exactly two forms</td><td><code>intent/&lt;slug&gt;</code> · <code>bolt/&lt;slug&gt;</code> — everything an intent owns rides its one milestone, distinguished by <code>type:*</code>; a due date puts it on the roadmap; the progress bar is the long list</td></tr>
+    <tr><td class="k">the board</td><td>the org Project — a view, never a second store</td><td>Status lanes for batches · Team = host · roadmap layout over milestones and batch dates</td></tr>
+  </tbody>
+</table></div>
+
+<h3>The item lifecycle <span class="tag">one ladder for every item</span></h3>
+<div class="machine">
+  <div class="ladder">
+    <span class="st">state:queued</span><span class="arr"><b>operator's word, or the batch's Ready move</b>→</span>
+    <span class="st hil">state:ready</span><span class="arr"><b>a session starts on it</b>→</span>
+    <span class="st">state:in-progress</span><span class="arr"><b>evidence lands</b>→</span>
+    <span class="st term">closed:done</span>
+  </div>
+  <p class="sub3">Exits at any rung: <code>closed:declined</code> · <code>closed:superseded</code> · <code>closed:parked</code> (waiting on an external event, reopenable — parking finally has a state).
+  Anyone queues; an item born of the operator's own word is <b>born ready</b> — approval derives from origin, not from a second gesture.</p>
+</div>
+
+<h3>The actors <span class="tag">who runs, and what they own</span></h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>actor</th><th>herdr name</th><th>model</th><th>owns</th><th>writes</th></tr></thead>
+  <tbody>
+    <tr><td class="k">dispatch</td><td class="mono">dispatch</td><td class="mono">opus[1m]</td><td>the standing singleton — reactive, no loop</td><td><b>the tracker only</b>: milestones, items, comments, labels, assignees. No checkout, no file, ever.</td></tr>
+    <tr><td class="k">intent conductor</td><td class="mono">intent-&lt;slug&gt;</td><td class="mono">opus[1m]</td><td>one intent</td><td>its change's records (scaffolded via <code>opsx:new</code>/<code>opsx:ff</code> on first start) · books · map · the tracker</td></tr>
+    <tr><td class="k">bolt conductor</td><td class="mono">bolt-&lt;slug&gt;</td><td class="mono">opus[1m]</td><td>one bolt</td><td>its bolt.md · merges every construction branch · the tracker · three direct edits: CLAUDE.md, ADRs, small self-evident machinery</td></tr>
+    <tr><td class="k">design session</td><td class="mono">&lt;slug&gt;-session-n</td><td class="mono">per type</td><td>a batch of items</td><td>its session dir · charged closures · books + map on writeback batches · comments</td></tr>
+    <tr><td class="k">construction session</td><td class="mono">&lt;slug&gt;-session-n</td><td class="mono">per type</td><td>a batch of items</td><td>the built repo in its worktree · comments · drive-by fixes inside the ready scope</td></tr>
+    <tr><td class="k">reconciler</td><td class="mono">—</td><td class="mono">no model</td><td>this host's fleet</td><td>nothing — it starts conductors and nudges idle ones; deterministic, on an interval</td></tr>
+  </tbody>
+</table></div>
+<div class="note" style="border-left-color:var(--control)"><b>Sessions are vanilla agents.</b> A work order is
+four things: the change id, the type, the item numbers, and a sentence or two of goal — worktree, directory
+and model are launch mechanics. Enforce with mechanisms, delete the prose rules they make redundant: the
+merge gate catches broken books, worktree isolation contains edits, tracker attribution names every writer.
+Discoveries are queued items, filed in a minute; escalation is for being blocked; the andon cord is for a
+contradiction no further work inside the batch can fix.</div>
+<div class="note"><b>Personas are org-owned lenses, not actors.</b> <code>.claude/agents/user-*.md</code> live
+with the org (blueprints today; each built repo grows its own user types) — a stand-in for someone who
+<em>uses</em> the built thing, run under proposal-review and code-review. The plugin ships none.</div>
+
+<h3>Session types and models <span class="tag">twelve types + one exception path</span></h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>model</th><th>types</th><th>why</th></tr></thead>
+  <tbody>
+    <tr><td class="k">fable</td><td class="mono">planning · interactive · proposal-review</td><td>adversarial reads and operator-facing decision surfaces — reasoning is the work</td></tr>
+    <tr><td class="k">opus[1m]</td><td class="mono">research · spec-writing · build · test · code-review · human-code-review</td><td>context-bound: large trees, long reads</td></tr>
+    <tr><td class="k">opus</td><td class="mono">prototype · writeback · handoff · proposal-writing</td><td>rule-following composition; proposal-writing is the exception path for unmineable assertions</td></tr>
+  </tbody>
+</table></div>
+<div class="note"><b>Nine Fable types became three.</b> By the time spec-writing runs, the reasoning happened —
+decisions closed, the assertion checkable. The Fable guard sits at proposal-review; any design-heavy item
+overrides per work order.</div>
+
+<h3>Who writes what <span class="tag">the write matrix — three mechanisms enforce it</span></h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>writer</th><th>may write</th><th>never writes</th></tr></thead>
+  <tbody>
+    <tr><td class="k">operator</td><td>board gestures: Ready moves, assignments, annotations, answers — and any record, because the word is the authority</td><td>—</td></tr>
+    <tr><td class="k">dispatch</td><td>the tracker</td><td>any file, anywhere</td></tr>
+    <tr><td class="k">intent conductor</td><td>its change's records · books · map · the tracker</td><td>another change's records · a bolt's</td></tr>
+    <tr><td class="k">bolt conductor</td><td>its bolt.md · the tracker · the three named direct edits</td><td>book chapters · the map · any intent's records</td></tr>
+    <tr><td class="k">any session</td><td>its outputs inside its worktree · comments on its items</td><td>main directly — the conductor's merge admits its work</td></tr>
+    <tr><td class="k">reconciler</td><td>nothing</td><td>everything — it only starts and nudges</td></tr>
+  </tbody>
+</table></div>
+
+</section>
+<!-- ============================================================== FLOWS -->
+<section class="panel" id="panel-flows">
+
+<div class="partbar">
+  <span class="n">Flows</span><h2>Every entity, every path, every dead end</h2>
+  <span class="note2">the dead ends are where things rot silently</span>
+</div>
+
+<p class="intro">
+  Each entity walked birth to end. Legend:
+  <span class="who op">operator</span> <span class="who dsp">dispatch</span>
+  <span class="who ic">intent conductor</span> <span class="who bc">bolt conductor</span>
+  <span class="who ses">session</span> <span class="who sys">reconciler</span>
+  — amber states are where a human appears; green states are terminal.
+</p>
+
+<div class="machine">
+  <h4>1 · Raw idea <span class="tag">the only object that exists outside a change</span></h4>
+  <p class="sub3">Dispatch reads it once and takes exactly one of five routes, saying which.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>route</th><th>dispatch does</th><th>picked up by</th></tr></thead>
+    <tbody>
+      <tr><td class="k">new intent</td><td>dedupes against open <code>intent/*</code> milestones; creates the milestone + originating item, assigns the owner</td><td>the reconciler starts <code>intent-&lt;slug&gt;</code>, which scaffolds the change via <code>opsx:new</code></td></tr>
+      <tr><td class="k">assertion on an intent</td><td>queues an item on that intent's milestone</td><td>the conductor writes the assertion record from it</td></tr>
+      <tr><td class="k">item on a running bolt</td><td>queues an item on the bolt's milestone</td><td>the bolt conductor, on its next query or nudge</td></tr>
+      <tr><td class="k">quick bolt</td><td>creates <code>bolt/&lt;slug&gt;</code> + one <b>ready</b> item on the operator's word at triage, on the board at Status Ready — the lone item carries the approval where a batch would</td><td>the reconciler starts <code>bolt-&lt;slug&gt;</code></td></tr>
+      <tr><td class="k">dropped</td><td>says so; records nothing</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+  <p class="sub3">Something genuinely one shell command is still one shell command; dispatch runs it and says so.</p>
+</div>
+
+<div class="machine">
+  <h4>2 · Question <span class="tag">questions/&lt;slug&gt;.md + its item, both at birth</span></h4>
+  <p class="sub3">Born from a session discovery, a bolt finding, a round, or the operator. Four doors out, three dead ends.</p>
+  <div class="ladder">
+    <span class="st">raised</span><span class="arr"><b>record + item at birth</b>→</span>
+    <span class="st">queued</span><span class="arr"><b>Ready move or born-ready</b>→</span>
+    <span class="st">worked</span><span class="arr"><b>one of four doors</b>→</span>
+    <span class="st term">decision record</span>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>door</th><th>how it closes</th></tr></thead>
+    <tbody>
+      <tr><td class="k">in conversation</td><td><span class="who op">operator</span>'s word settles it — the cheapest door, and not a lesser one; the record is written either way</td></tr>
+      <tr><td class="k">by reading</td><td><span class="who ic">conductor</span> or a research session finds the fact on disk</td></tr>
+      <tr><td class="k">by building</td><td>a prototype's finding note proves it</td></tr>
+      <tr><td class="k">by a round</td><td>options in front of the operator — plannotator or a lavish page</td></tr>
+    </tbody>
+  </table></div>
+  <p class="sub3">Dead ends: <code>closed:superseded</code> (scope moved) · absorbed into a sibling (comment says which) ·
+  <code>closed:parked</code> (external event; reopenable). A question never closes without its decision record.</p>
+</div>
+
+<div class="machine">
+  <h4>3 · Decision <span class="tag">decisions/&lt;slug&gt;.md — terminal in git</span></h4>
+  <p class="sub3">Born when a question closes, wherever the word was given. Its consequences fan out as queued items:
+  writeback items (<code>type:writeback</code> on the intent milestone) · new assertions · new questions · or nothing, the record being the whole outcome.
+  One answer per record; authoritative on its decision, provisional on its measurements.</p>
+</div>
+
+<div class="machine">
+  <h4>4 · Assertion — the proposal <span class="tag">assertions/&lt;slug&gt;.md + its item</span></h4>
+  <div class="ladder">
+    <span class="st">written + queued</span><span class="arr"><b>blockers close, no parent batch</b>→</span>
+    <span class="st">settled + unbolted</span><span class="arr"><b>handoff item names it; operator moves the unit</b>→</span>
+    <span class="st hil">Ready</span><span class="arr"><b>handoff session moves it to bolt/&lt;slug&gt;</b>→</span>
+    <span class="st">spec → build → review</span><span class="arr"><b>lands through the gate</b>→</span>
+    <span class="st term">closed:done + ref</span>
+  </div>
+  <p class="sub3">The record is written the moment work is identified; the spec derives from it and the decisions it
+  cites, read fresh from disk — nothing restates it. Progress is the item's comment history; the landing SHA is the
+  closing comment, and the terminal ref is appended to the record. Dead ends: superseded before release · split into
+  narrower assertions · declined by the bolt (back to the intent, queued). An unmineable assertion goes back to the
+  intent to fix — the proposal-writing exception drafts the split only when the work order says the split is the bolt's.</p>
+</div>
+
+<div class="machine">
+  <h4>4½ · The literal graph <span class="tag">one assertion, birth to landing — intent auth-hardening</span></h4>
+  <div class="tablewrap"><table>
+    <thead><tr><th>issue</th><th>what</th><th>labels</th><th>parent batch</th><th>milestone</th></tr></thead>
+    <tbody>
+      <tr><td class="k">#101</td><td>Decide the reset-token delivery channel</td><td class="mono">type:research · queued</td><td>#103</td><td class="mono">intent/auth-hardening</td></tr>
+      <tr><td class="k">#102</td><td>The auth page offers a forgot-password flow — body → <code>assertions/forgot-password.md</code>, blocked-by #101</td><td class="mono">type:assertion · queued</td><td>#105, once batched</td><td class="mono">intent/auth-hardening → bolt/forgot-password</td></tr>
+      <tr><td class="k">#103</td><td>[elaboration] Settle password-reset design — the <i>deciding</i>, batched</td><td class="mono">elaboration</td><td>—</td><td class="mono">intent/auth-hardening</td></tr>
+      <tr><td class="k">#104</td><td>Plan the bolt for the forgot-password assertion — born when #101 closes and #102 sits settled + unbolted</td><td class="mono">type:handoff · queued</td><td>#105</td><td class="mono">intent/auth-hardening</td></tr>
+      <tr><td class="k">#105</td><td>[unit] Handoff: forgot-password to construction — the checklist the operator flips is the list of assertions being released</td><td class="mono">unit</td><td>—</td><td class="mono">intent/auth-hardening</td></tr>
+    </tbody>
+  </table></div>
+  <p class="sub3">The operator moves #105 to Ready → the handoff session works #104: drafts <code>bolt-plan.md</code>
+  (member bolt-quick, owner from #102's assignee), one plannotator round, then the custody move —
+  <code>#102: milestone → bolt/forgot-password · state:ready</code>. The reconciler starts <code>bolt-forgot-password</code>;
+  construction accrues on #102 as comments; it closes <code>closed:done</code> with the landing SHA. #102 never joins a
+  elaboration — its one parent is the unit that releases it, and sub-issue links survive the milestone move, so #105's checklist
+  keeps tracking the batch to landing while <code>intent/auth-hardening</code> stays free to close when design is done.</p>
+</div>
+
+<div class="machine">
+  <h4>5 · Batch <span class="tag">unit or elaboration — the approval, and the gate itself</span></h4>
+  <div class="ladder">
+    <span class="st">composed</span><span class="arr"><b>flywheel-batch: sub-issues + board</b>→</span>
+    <span class="st">Backlog</span><span class="arr"><b>the operator's move</b>→</span>
+    <span class="st hil">Ready</span><span class="arr"><b>conductor relabels sub-issues ready</b>→</span>
+    <span class="st">worked</span><span class="arr"><b>all sub-issues closed</b>→</span>
+    <span class="st term">closed</span>
+  </div>
+  <p class="sub3"><span class="who ic">conductor</span> composes at the queue — grouped by <b>thread</b>, not by type:
+  a prototype, the questions it answers, and the writeback of its findings are one approval; <span class="who op">operator</span> moves;
+  <span class="who sys">reconciler</span> makes sure the move is seen. The release covers every session inside the
+  batch — the conductor partitions the sub-issues into typed sessions at work time. A released handoff item drafts the
+  bolt plan on the standard template and runs it past the operator in one plannotator round before custody moves.
+  Writeback elaborations release as scheduling — no permission existed to need. A batch pulled back to Backlog before
+  work starts is a retraction; nothing else demotes.</p>
+</div>
+
+<div class="machine">
+  <h4>6 · Session <span class="tag">a vanilla agent with a goal</span></h4>
+  <div class="ladder">
+    <span class="st">work order</span><span class="arr"><b>4 fields, 2 sentences</b>→</span>
+    <span class="st">working</span><span class="arr"><b>items commented, files committed</b>→</span>
+    <span class="st">report</span><span class="arr"><b>conductor merges + closes items</b>→</span>
+    <span class="st term">torn down</span>
+  </div>
+  <p class="sub3">A session that edits files gets a worktree and its branch merges through the full gate; a session
+  that only reads gets none — no branch, no merge, no teardown. Batch generously, partition by judgment: type is the
+  hard boundary (a session loads one type skill); within a type, related topics share a session, unrelated ones split,
+  prototypes ride alone. Exits: the andon cord (the batch builds on a disproved claim — stop, hold, report) ·
+  a blocked escalation to its conductor. Never: waiting on the operator mid-batch.</p>
+</div>
+
+<div class="machine">
+  <h4>7 · Bolt <span class="tag">born only past the gate</span></h4>
+  <div class="ladder">
+    <span class="st">handoff moves ready items in</span><span class="arr"><b>reconciler starts bolt-&lt;slug&gt;</b>→</span>
+    <span class="st">scaffolded</span><span class="arr"><b>opsx:new, member = depth</b>→</span>
+    <span class="st">worked</span><span class="arr"><b>merge criteria hold</b>→</span>
+    <span class="st">landed</span><span class="arr"><b>operator closes the milestone</b>→</span>
+    <span class="st term">archive job → archived</span>
+  </div>
+  <p class="sub3">One bolt branch + worktree per involved built repo, alive for the bolt's life; construction on nested
+  worktrees off them; batched acceptance on the bolt branch; each repo lands through the full release gate, one writer
+  to main at a time. The release that created the bolt covers every wave inside it. For work too small to warrant a
+  spec-driven change in the built repo, the build session starts in <code>--permission-mode plan</code> — every edit
+  mechanically blocked until the conductor approves the plan against the item's claim — with <code>bolt-no-spec</code>
+  a per-batch work-order choice, deliberately not a schema. Fold-time cleanup is mechanical (panes, worktrees,
+  branches go as they finish); the conductor is stopped when its milestone has no job, and closing the milestone on
+  GitHub is the archive signal — the reconciler charges a fresh session to <code>openspec archive</code>.</p>
+</div>
+
+<div class="machine">
+  <h4>8 · Escalation — HIL from the inner loop <span class="tag">the tracker carries the record, dispatch carries the DM</span></h4>
+  <div class="ladder">
+    <span class="st">session blocked</span><span class="arr"><b>herdr prompt to its conductor</b>→</span>
+    <span class="st">needs-operator</span><span class="arr"><b>comment + label on the item</b>→</span>
+    <span class="st hil">DM'd</span><span class="arr"><b>dispatch → the item's assignee</b>→</span>
+    <span class="st">answered</span><span class="arr"><b>comment; reconciler nudges the waiter</b>→</span>
+    <span class="st term">resumed</span>
+  </div>
+  <p class="sub3">One line of question, the options if any, a pointer to evidence — never a report. Dispatch is the
+  accelerator, not a dependency: the question sits visibly on the board with a GitHub @mention as the native fallback,
+  so a dead dispatch delays nothing the assignee can see and answer directly. A withdrawn escalation (the agent found
+  the answer) closes with a comment saying so. The outer loop never enters this machine — intent conductors reach the
+  operator directly on the desk channels.</p>
+</div>
+
+</section>
+<!-- ============================================================== HUMAN -->
+<section class="panel" id="panel-human">
+
+<div class="partbar">
+  <span class="n">Human loop</span><h2>Every moment a developer appears</h2>
+  <span class="note2">gestures, not meetings</span>
+</div>
+
+<p class="intro">
+  The full enumeration. If a moment is not in this table, no agent waits on a human there. Every
+  gesture lands on the tracker or a desk channel, so nothing depends on a developer being at a
+  terminal — the board works from a phone.
+</p>
+
+<div class="tablewrap"><table>
+  <thead><tr><th>moment</th><th>gesture</th><th>channel</th><th>blocking?</th><th>away?</th></tr></thead>
+  <tbody>
+    <tr><td class="k">an idea arrives</td><td>say it — a sentence, a transcript, a bug</td><td>Discord to dispatch, or any session</td><td>no</td><td>ideas queue; triage happens when heard</td></tr>
+    <tr><td class="k">triage needs a word</td><td>answer one routing question, or give the quick-bolt go</td><td>Discord, non-blocking</td><td>no</td><td>the idea waits at dispatch, visible</td></tr>
+    <tr><td class="k">a release</td><td>move the batch Backlog → Ready</td><td>the board</td><td>gates that batch only</td><td>the batch sits in Backlog; everything else proceeds</td></tr>
+    <tr><td class="k">writeback timing</td><td>move the writeback elaboration to Ready — scheduling, not permission</td><td>the board</td><td>no</td><td>chapters wait; nothing else does</td></tr>
+    <tr><td class="k">a document to mark up</td><td>annotate the round</td><td>plannotator</td><td>yes, for that session</td><td>the round stands open</td></tr>
+    <tr><td class="k">coupled choices</td><td>work the lavish page</td><td>lavish</td><td>yes, for that session</td><td>the page stands open</td></tr>
+    <tr><td class="k">an inner-loop question</td><td>answer the DM; or answer on the item directly</td><td>Discord via dispatch · GitHub @mention fallback</td><td>the asking item only</td><td>the needs-operator label sits visible on the board</td></tr>
+    <tr><td class="k">human code review</td><td>annotate the review document</td><td>plannotator</td><td>the batch under review</td><td>the round stands; the rest of the bolt proceeds</td></tr>
+    <tr><td class="k">placement</td><td>set Team on the batch or milestone's items</td><td>the board</td><td>no — default host otherwise</td><td>defaults hold</td></tr>
+    <tr><td class="k">ownership</td><td>assignee, set at triage, inherited by batches</td><td>the board</td><td>no</td><td>defaults to the filer</td></tr>
+    <tr><td class="k">closure</td><td>close the milestone on GitHub — the archive signal; the reconciler charges the archive run</td><td>the milestone's close button</td><td>no — the change idles complete until closed</td><td>the change idles complete</td></tr>
+  </tbody>
+</table></div>
+
+<div class="note"><b>The operator's word is applied directly, wherever it lands.</b> A meeting outcome, a
+correction, an instruction — whoever holds it edits the record or item it names, comments the change, and
+the conductor sees it on the next query or nudge. Items born of the word are born ready. No drain cycle, no
+relay ceremony, no approval of your own words.</div>
+
+<div class="note" style="border-left-color:var(--control)"><b>Escalation runs one way.</b> Take the cheapest
+channel that can carry the answer; never demote a question back down or re-ask it on a cheaper one. The
+outer loop is high-touch: intent conductors and their sessions reach the operator directly — dispatch
+relays only the inner loop's questions to a possibly-absent operator.</div>
+
+</section>
+<!-- ============================================================== HOSTS -->
+<section class="panel" id="panel-hosts">
+
+<div class="partbar">
+  <span class="n">Hosts &amp; owners</span><h2>Scaling past one machine — and one person</h2>
+  <span class="note2">assignee = whose word · Team = whose machine · Ready = go</span>
+</div>
+
+<h3>Ownership is the assignee</h3>
+<p class="intro">
+  The developer whose word settles a change is its items' <b>assignee</b> — set by dispatch at
+  triage, inherited by batches at composition, resolved by escalations for their DM target. One native
+  field, on every board view, nothing in git to go stale. Intents scale by designer, bolts by
+  builder; today one developer holds every assignment, and the design treats that as the N=1 case
+  with zero added ceremony.
+</p>
+
+<h3>Placement is the Team field</h3>
+<p class="intro">
+  Each host's reconciler starts conductors only for work whose board <b>Team</b> matches its own
+  host name; unclaimed work falls to the default host. Placement becomes an operator gesture on
+  the board — the same family as the Ready move — instead of a hand-edited actor row.
+</p>
+
+<h3>The reconciler <span class="tag">deterministic, no model, on an interval</span></h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>observes</th><th>does</th></tr></thead>
+  <tbody>
+    <tr><td>an <code>intent/*</code> or <code>bolt/*</code> milestone with actionable work — ready or in-progress items, or a batch moved to Ready — and no running conductor</td><td>starts the conductor (its profile + <code>opus[1m]</code>), which scaffolds its change if new</td></tr>
+    <tr><td>ready work and a settled conductor</td><td>nudges it: "your milestone has released work"</td></tr>
+    <tr><td>a <code>needs-operator</code> item and settled dispatch</td><td>nudges dispatch to relay</td></tr>
+    <tr><td>a manifest row wanted running and absent</td><td>starts it — the <code>flywheel up</code> pass runs first inside every reconcile</td></tr>
+    <tr><td>queued items with no open batch to carry them</td><td>starts or nudges the conductor to compose and present</td></tr>
+    <tr><td>a closed milestone whose change still sits in <code>openspec/changes/</code></td><td>charges a fresh conductor session to <code>openspec archive</code></td></tr>
+    <tr><td>open items with no milestone</td><td>nudges dispatch to triage</td></tr>
+    <tr><td>a settled conductor whose milestone has no job</td><td>stops it — a later job rehydrates a fresh session from the records</td></tr>
+  </tbody>
+</table></div>
+<div class="note"><b><code>flywheel reconcile</code> subsumes <code>flywheel up</code></b>: every pass converges
+the manifest's standing rows first, then the tracker-driven conductors. Each pass is a pure function of
+manifest + tracker + roster — run it by hand, on <code>--interval</code>, or from a webhook later; <code>--dry-run</code>
+prints the plan and touches nothing. <code>fleet.yaml</code> carries the standing rows plus placement:
+<code>tracker:</code>, <code>conductors_cwd:</code>, a <code>teams:</code> map from Team-field values to hosts.
+Cross-agent messaging survives only where it is in-flight — herdr prompts for work orders and
+reports, same host, ephemeral; everything durable is items and comments.</div>
+
+<h3>Credentials <span class="tag">the app, the key, the split</span></h3>
+<div class="grid g2">
+  <div class="commit">
+    <b>The app is org-owned and tracker-only.</b>
+    One GitHub App per org (willdan-flywheel; agentplot-flywheel is the sandbox) with Issues and
+    org Projects read/write, nothing else. Machinery writes run as the app's bot identity —
+    cleanly separated from human writes in every audit trail. Setup is ten minutes of IT time;
+    <code>flywheel-setup</code> converges labels, the Project and its fields idempotently.
+  </div>
+  <div class="commit">
+    <b>The key follows the fleet host, never the developers.</b>
+    Only the machinery mints tokens, and the machinery runs where the fleet runs — one
+    workstation today, the central server when it moves. Developers' own gestures ride their own
+    GitHub logins, which is the attribution an approval needs. A second host before the server:
+    a shared 1Password vault, rotated on GitHub's two concurrent keys. A checkout-free dispatch
+    plus a tracker-driven reconciler is what makes the server destination clean.
+  </div>
+</div>
+
+</section>
+<!-- ========================================================== MECHANICS -->
+<section class="panel" id="panel-mechanics">
+
+<div class="partbar">
+  <span class="n">Mechanics</span><h2>The same objects, as labels, tools and invocations</h2>
+  <span class="note2">everything here is exercised on the sandbox</span>
+</div>
+
+<h3>The label set <span class="tag">seeded by flywheel-setup, idempotently</span></h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>labels</th><th>meaning</th></tr></thead>
+  <tbody>
+    <tr><td class="mono">type:planning · interactive · research · prototype · writeback · handoff · proposal-writing · proposal-review · spec-writing · build · test · code-review · human-code-review</td><td>the session type that works the item; a question borrows the type of the session that answers it</td></tr>
+    <tr><td class="mono">type:assertion</td><td>the released claim itself — the bolt's work item; its construction stages live in its comments, never as items of their own</td></tr>
+    <tr><td class="mono">state:queued · state:ready · state:in-progress</td><td>exactly one at a time; the lifecycle</td></tr>
+    <tr><td class="mono">closed:done · closed:declined · closed:superseded · closed:parked</td><td>why an item ended</td></tr>
+    <tr><td class="mono">unit · elaboration · needs-operator · repo:&lt;built-repo&gt;</td><td>the two batch kinds · an HIL question waiting · the landing repo on construction items</td></tr>
+  </tbody>
+</table></div>
+
+<h3>The bin tools <span class="tag">the plugin's bin/, on PATH when installed</span></h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>tool</th><th>does</th></tr></thead>
+  <tbody>
+    <tr><td class="k">flywheel-token</td><td>mints and caches the app's installation token — key from <code>~/.config/flywheel/env</code>, a path, or <code>op:&lt;vault&gt;/&lt;item&gt;</code>; a warm cache needs no key. <code>GH_TOKEN=$(flywheel-token) gh …</code> is the one credential path for machinery writes.</td></tr>
+    <tr><td class="k">flywheel-setup</td><td>converges labels, the org Project (copied from the hand-built "Flywheel Template" with its Board/Roadmap/Triage views when one exists), Team/Quarter/Start/Target fields, and the Backlog/Ready status options. Run once per org, safe always. Org-level customization is deliberately out of scope.</td></tr>
+    <tr><td class="k">flywheel-batch</td><td>composes a Backlog batch (<code>--kind unit|elaboration</code>) from queued items in one call: parent issue, sub-issues, milestone (created, due today unless <code>--due</code>), the board, Status Backlog, Start/Target defaulted to today (<code>--start/--target</code> with a reason when bigger). Refuses items already batched. Never moves anything to Ready.</td></tr>
+    <tr><td class="k">flywheel-migrate</td><td>moves a change's unchecked tasks.md lines onto the tracker mid-flight: items typed from sections, RELEASED handoffs born ready, blockers quoted for wiring, one milestone per change. Deleting the migrated file is the operator's commit.</td></tr>
+    <tr><td class="k">flywheel up / status / reconcile</td><td>the fleet layer: <code>up</code> starts running-state manifest rows into the org's herdr session, verifying the first prompt actually submitted; <code>reconcile</code> runs that pass plus the tracker-driven conductors and nudges, one-shot or on <code>--interval</code>, with <code>--dry-run</code> printing the plan.</td></tr>
+  </tbody>
+</table></div>
+
+<h3>What lives on disk <span class="tag">after the retirements</span></h3>
+<div class="grid g2">
+<div>
+<div class="filelabel"><span class="tag">intent</span><span class="path">openspec/changes/&lt;slug&gt;/</span></div>
+<div class="tablewrap"><table style="min-width:0">
+  <thead><tr><th>artifact</th><th>holds</th></tr></thead>
+  <tbody>
+    <tr><td class="k">intent.md</td><td>destination · map · scope — three sections, no lists that go stale</td></tr>
+    <tr><td class="k">questions/</td><td>the prose; the item number; no State field — live state is the item's</td></tr>
+    <tr><td class="k">decisions/</td><td>one settled answer per file</td></tr>
+    <tr><td class="k">assertions/</td><td>the proposal: repo · item · claim · why · boundaries; the landing ref appended at close</td></tr>
+    <tr><td class="k">sessions/</td><td>one directory per session; closed dirs are never rewritten</td></tr>
+    <tr><td class="k">prototypes/</td><td>what each throwaway proved</td></tr>
+  </tbody>
+</table></div>
+</div>
+<div>
+<div class="filelabel"><span class="tag">bolt</span><span class="path">openspec/changes/bolt-&lt;slug&gt;/</span></div>
+<div class="tablewrap"><table style="min-width:0">
+  <thead><tr><th>artifact</th><th>holds</th></tr></thead>
+  <tbody>
+    <tr><td class="k">bolt.md</td><td>scope · sources · repos and branches · merge criteria — the whole record; items carry everything else</td></tr>
+  </tbody>
+</table></div>
+<div class="note" style="margin-top:8px"><b>Schemas are v2 and validate.</b> The apply instruction works the
+ready set to empty, composes batches at the queue, and stops — an empty ready set with a full queue is the
+correct resting state. Do not install the v2 user schemas for an org until its tracker exists and its live
+changes are migrated.</div>
+</div>
+</div>
+
+<h3>The invocations <span class="tag">the shared reference carries them</span></h3>
+<p class="intro">
+  <code>skills/_reference/herdr.md</code> holds the exercised forms: item create/flip/comment/close,
+  the ready-set query, the Ready-batches board query, batch composition, and the two gotchas paid
+  for once — sub-issues and dependencies take the <b>database id</b>, not the number, and an item
+  joins exactly one batch. Plus the herdr forms: rename-then-confirm, prompt-submission
+  verification, pathspec commits, the merge gate, teardown.
+</p>
+
+</section>
+<!-- ========================================================== DECISIONS -->
+<section class="panel" id="panel-decisions">
+
+<div class="partbar" style="border-bottom-color:var(--ink3)">
+  <span class="n" style="background:var(--ink3)">Stored</span><h2>Decisions</h2>
+  <span class="note2">what the tuning round settled · the 2026-08-07 ledger stands in the predecessor page</span>
+</div>
+
+<h3>Settled by the tuning round <span class="tag">2026-08-11</span></h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>decision</th><th>the short why</th></tr></thead>
+  <tbody>
+    <tr><td class="k">durable prose in git; mutable state on the tracker</td><td>the ceremony existed to make shared markdown safe; the tracker dissolves the root cause. tasks.md, proposals.md, design.md retire.</td></tr>
+    <tr><td class="k">the assertion is the proposal</td><td>one claim restated three times by three Fable sessions was the pipeline's waste; now nothing restates it. proposal-writing survives as the exception for unmineable assertions.</td></tr>
+    <tr><td class="k">one tracker, on the org's tracker repo</td><td>one place answers every query; the release flow never spans repos.</td></tr>
+    <tr><td class="k">questions get items at birth</td><td>otherwise untrackable.</td></tr>
+    <tr><td class="k">milestones + batches, statuses Backlog/Ready</td><td>milestones carry the long-lived containers with dates and progress; units and elaborations carry the approvals as sub-issue parents; Released collides with SDLC speech, Ready does not.</td></tr>
+    <tr><td class="k">approval is the board move, batched</td><td>Backlog → Ready, one per batch, never per item; born-ready for the operator's own word; writeback release is scheduling.</td></tr>
+    <tr><td class="k">vanilla sessions</td><td>enforce with mechanisms, delete the prose rules they make redundant; work orders are four fields and a goal; no worktree without file edits; drive-by fixes in ready scope are just work.</td></tr>
+    <tr><td class="k">models: three Fable types, opus[1m] standing actors</td><td>Fable where reasoning is the work (planning, interactive, proposal-review); context-bound work on opus[1m]; dispatch and conductors are read-heavy and long-lived.</td></tr>
+    <tr><td class="k">dispatch is GitHub-only and reactive</td><td>no checkout, no loop, five routes + relay; conductors scaffold their own changes via opsx; centralization becomes credentials + Discord.</td></tr>
+    <tr><td class="k">inbox and envelopes retired</td><td>items and comments are the durable channel; herdr prompts remain for in-flight work orders and reports.</td></tr>
+    <tr><td class="k">assignee = owner · Team = host</td><td>native fields over yaml lines; escalations DM the assignee; each host's reconciler serves its Team.</td></tr>
+    <tr><td class="k">provisioning is a deterministic reconciler</td><td>desired state derives from the tracker; no second LLM actor; it also nudges idle conductors and dispatch.</td></tr>
+    <tr><td class="k">the app is org-owned, the key follows the fleet host</td><td>the org controls its own credential; developers never hold the key; tracker-only token, user login for everything else.</td></tr>
+    <tr><td class="k">org-level customization out of scope</td><td>issue types are org-global and need admin beyond the app; type labels carry the taxonomy.</td></tr>
+  </tbody>
+</table></div>
+
+<h3>Open <span class="tag">the queue for the next rounds</span></h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>open item</th><th>waits on</th></tr></thead>
+  <tbody>
+    <tr><td class="k">willdan-flywheel app created and installed</td><td>IT — the setup doc is sent; then flywheel-setup, flywheel-migrate per live change, install-schemas, in that order</td></tr>
+    <tr><td class="k">webhooks over polling</td><td>an interval-driven <code>flywheel reconcile</code> proving the pass out first</td></tr>
+    <tr><td class="k">the flywheel repo's devenv claude.code block</td><td>a deliberate nix build — the first eval ground the machine; the patch is parked, settings.json rides its committed copy</td></tr>
+    <tr><td class="k">per-built-repo personas</td><td>the sample three moved to blueprints; atlas-kit, gvc-kit et al. grow their own user types later</td></tr>
+    <tr><td class="k">beat-by-beat fleet testing on the agentplot sandbox</td><td>beat 1 passed (dispatch state report, zero writes); beat 2 held at the operator's word</td></tr>
+  </tbody>
+</table></div>
+
+</section>
+
+</div>
+
+<script>
+(function(){
+  var TABS=['why','vocabulary','flows','human','hosts','mechanics','decisions'];
+  var btns=document.querySelectorAll('.tabbtn');
+  function current(){
+    var m=(location.hash||'').match(/tab=([a-z]+)/);
+    return m&&TABS.indexOf(m[1])>=0?m[1]:'why';
+  }
+  function show(t){
+    TABS.forEach(function(id){
+      var p=document.getElementById('panel-'+id);
+      if(p) p.classList.toggle('active', id===t);
+    });
+    btns.forEach(function(b){
+      b.setAttribute('aria-selected', b.dataset.tab===t ? 'true':'false');
+    });
+  }
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){
+      if(location.hash!=='#tab='+b.dataset.tab) location.hash='#tab='+b.dataset.tab;
+      else show(b.dataset.tab);
+    });
+  });
+  window.addEventListener('hashchange',function(){show(current());});
+  show(current());
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="luxury">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The flywheel: intents, bolts, and the phase gate</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/daisyui.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/themes.css">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.2.4/dist/index.global.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :where(.grid, .flex) > * { min-width: 0; }
+  :where(p, h1, h2, h3, h4, h5, h6, li, dd, blockquote, figcaption, td, th, .badge, .label) { overflow-wrap: anywhere; }
+  :where(img, svg, video, canvas, iframe) { max-width: 100%; height: auto; }
+
+  .lp-svg-wrap { overflow-x: auto; }
+  .lp-svg { width: 100%; height: auto; min-width: 760px; }
+  .lp-node { fill: var(--color-base-200); stroke: var(--color-base-content); stroke-opacity: .25; rx: 10; }
+  .lp-node-accent { fill: var(--color-base-200); stroke: var(--color-primary); stroke-width: 1.5; }
+  .lp-label { fill: var(--color-base-content); font: 600 15px ui-sans-serif, system-ui, sans-serif; }
+  .lp-sub { fill: var(--color-base-content); opacity: .65; font: 400 12.5px ui-sans-serif, system-ui, sans-serif; }
+  .lp-region { fill: var(--color-base-content); opacity: .5; font: 700 12px ui-sans-serif, system-ui, sans-serif; letter-spacing: .12em; }
+  .lp-edge { stroke: var(--color-base-content); stroke-opacity: .45; stroke-width: 1.6; fill: none; }
+  .lp-edge-accent { stroke: var(--color-primary); stroke-width: 2; fill: none; }
+  .lp-edge-label { fill: var(--color-base-content); opacity: .7; font: italic 12px ui-sans-serif, system-ui, sans-serif; }
+  .lp-platform { fill: var(--color-base-300); stroke: var(--color-base-content); stroke-opacity: .15; }
+  .lp-commit { fill: var(--color-base-100); stroke: var(--color-base-content); stroke-opacity: .5; stroke-width: 1.5; }
+  .lp-commit-main { fill: var(--color-primary); stroke: none; }
+  .lp-stage { fill: var(--color-base-content); font: 600 13px ui-sans-serif, system-ui, sans-serif; }
+
+  .lp-issue { border: 1px solid color-mix(in oklab, var(--color-base-content) 15%, transparent); border-radius: var(--radius-box, .75rem); overflow: hidden; }
+  .lp-issue-head { background: var(--color-base-200); padding: .8rem 1rem; display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+  .lp-issue-body { padding: 1rem 1.25rem; font-size: .9rem; line-height: 1.55; }
+  .lp-issue-body h4 { font-weight: 700; margin: .9rem 0 .3rem; font-size: .82rem; text-transform: uppercase; letter-spacing: .06em; opacity: .75; }
+  .lp-issue-body h4:first-child { margin-top: 0; }
+  .lp-issue-body ul { list-style: disc; padding-left: 1.2rem; margin: .25rem 0; }
+  .lp-issue-body li { margin: .15rem 0; }
+  .lp-issue-body code { background: var(--color-base-200); padding: .05rem .35rem; border-radius: .3rem; font-size: .82em; }
+  .lp-issue-comment { border-top: 1px dashed color-mix(in oklab, var(--color-base-content) 20%, transparent); padding: .6rem 1.25rem; font-size: .85rem; opacity: .85; }
+  .mermaid { display: flex; justify-content: center; }
+</style>
+</head>
+<body class="bg-base-100 text-base-content">
+<main class="max-w-5xl mx-auto px-5 py-10 space-y-14">
+
+<header class="space-y-3">
+  <p class="text-xs uppercase tracking-widest opacity-60">willdan-blueprints · the flywheel · for the aidlc-design book + the flywheel plugin</p>
+  <h1 class="text-3xl font-bold leading-tight">The flywheel: intents, bolts, and the phase gate between them</h1>
+  <p class="text-base opacity-80 max-w-3xl"><strong>OpenSpec is the foundation of both loops</strong>, as three schemas in one hierarchy: <strong>intents</strong> (design, on blueprints main) burn fog into decisions and book writebacks; at the operator's <strong>phase gate</strong> a settled slice is handed to a <strong>bolt</strong> (construction tracking, also on main), whose conductor drives spec-driven changes across bolt branches in the built repos. Sole-writer conductors own each change; everyone else requests via herdr prompt or the change's <code>inbox/</code>.</p>
+</header>
+
+<!-- ============================ HERO SVG ============================ -->
+<section class="space-y-4">
+  <h2 class="text-xl font-bold">The whole system on one page</h2>
+  <div class="lp-svg-wrap card card-border bg-base-100 p-4">
+  <svg class="lp-svg" viewBox="0 0 1200 560" role="img" aria-label="The flywheel actor model: blueprints-main actors driving bolt branches and nested construction worktrees in built repos">
+    <defs>
+      <marker id="lp-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--color-base-content)" fill-opacity=".55"/>
+      </marker>
+      <marker id="lp-arr-acc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--color-primary)"/>
+      </marker>
+    </defs>
+
+    <text x="40" y="34" class="lp-region">BLUEPRINTS MAIN — INTENTS + BOLTS TRACKED AS OPENSPEC CHANGES</text>
+    <text x="560" y="34" class="lp-region">BUILT REPOS — BOLT BRANCHES FOR THE BOLT'S LIFETIME</text>
+
+    <ellipse cx="120" cy="70" rx="52" ry="20" class="lp-node"/>
+    <text x="120" y="75" class="lp-label" text-anchor="middle">operator</text>
+
+    <rect x="40" y="112" width="330" height="52" rx="10" class="lp-node"/>
+    <text x="56" y="134" class="lp-label">Intake agent — singleton</text>
+    <text x="56" y="152" class="lp-sub">routes: new intent · request to a bolt · untracked chore</text>
+
+    <rect x="40" y="204" width="330" height="56" rx="10" class="lp-node"/>
+    <text x="56" y="226" class="lp-label">Intent conductor — one per intent</text>
+    <text x="56" y="245" class="lp-sub">sole writer of its intent change · spawns design sessions</text>
+
+    <rect x="40" y="300" width="330" height="52" rx="10" class="lp-node"/>
+    <text x="56" y="322" class="lp-label">Design session — per batch</text>
+    <text x="56" y="340" class="lp-sub">decisions · lavish or plannotator · prototypes die in the spike</text>
+
+    <rect x="40" y="396" width="330" height="70" rx="10" class="lp-node-accent"/>
+    <text x="56" y="420" class="lp-label">Bolt conductor — one per bolt, long-lived</text>
+    <text x="56" y="439" class="lp-sub">sole writer of its bolt change · drains inbox/ every turn</text>
+    <text x="56" y="456" class="lp-sub">cuts a bolt branch + worktree in each involved repo</text>
+
+    <path d="M120,90 L120,112" class="lp-edge" marker-end="url(#lp-arr)"/>
+    <path d="M160,164 L160,204" class="lp-edge" marker-end="url(#lp-arr)"/>
+    <text x="170" y="188" class="lp-edge-label">file intent — waits on the board until pulled</text>
+    <path d="M140,260 L140,300" class="lp-edge" marker-end="url(#lp-arr)"/>
+    <path d="M36,326 C10,326 10,232 36,232" class="lp-edge" marker-end="url(#lp-arr)"/>
+    <text x="24" y="282" class="lp-edge-label" transform="rotate(-90 24 282)" text-anchor="middle">writebacks</text>
+    <path d="M370,232 C430,232 430,414 374,414" class="lp-edge-accent" marker-end="url(#lp-arr-acc)"/>
+    <text x="428" y="330" class="lp-edge-label" transform="rotate(90 428 330)" text-anchor="middle">handoff request · the operator's phase gate</text>
+    <path d="M40,138 C6,138 6,428 36,428" class="lp-edge" marker-end="url(#lp-arr)"/>
+    <path d="M370,126 C480,126 480,88 560,88" class="lp-edge" stroke-dasharray="4 4" marker-end="url(#lp-arr)"/>
+    <text x="470" y="80" class="lp-edge-label" text-anchor="middle">pure chore: opsx direct, no tracking</text>
+
+    <!-- built repos: branch topology -->
+    <line x1="580" y1="470" x2="1150" y2="470" class="lp-edge" stroke-width="2.5"/>
+    <text x="588" y="494" class="lp-stage">main (each built repo)</text>
+    <circle cx="640" cy="470" r="7" class="lp-commit-main"/>
+    <circle cx="1110" cy="470" r="7" class="lp-commit-main"/>
+
+    <path d="M640,470 C680,470 680,340 730,340 L1010,340 C1070,340 1070,470 1110,470" class="lp-edge" stroke-width="2"/>
+    <text x="740" y="326" class="lp-stage">bolt branch — bolt/&lt;slug&gt;</text>
+    <circle cx="780" cy="340" r="6" class="lp-commit"/>
+    <circle cx="900" cy="340" r="6" class="lp-commit"/>
+
+    <path d="M760,340 C785,340 785,230 815,230 L880,230 C915,230 915,340 945,340" class="lp-edge"/>
+    <circle cx="830" cy="230" r="6" class="lp-commit"/>
+    <circle cx="862" cy="230" r="6" class="lp-commit"/>
+    <text x="800" y="208" class="lp-sub">nested construction worktrees — apply agents,</text>
+    <text x="800" y="192" class="lp-sub">concurrent or serial · commit stage every push</text>
+
+    <text x="700" y="380" class="lp-sub">spec agents (opsx ff) · review per registry row:</text>
+    <text x="700" y="397" class="lp-sub">agent, or human via plannotator</text>
+
+    <rect x="965" y="352" width="14" height="14" rx="3" transform="rotate(45 972 359)" fill="var(--color-primary)"/>
+    <text x="1035" y="392" class="lp-sub" text-anchor="middle">testing agents — acceptance</text>
+    <text x="1035" y="408" class="lp-sub" text-anchor="middle">batched on the bolt branch</text>
+
+    <text x="1108" y="435" class="lp-sub" text-anchor="middle">full release gate</text>
+    <text x="1108" y="450" class="lp-sub" text-anchor="middle">wt merge, full hooks</text>
+
+    <path d="M374,448 C520,448 560,344 636,344" class="lp-edge-accent" marker-end="url(#lp-arr-acc)"/>
+    <path d="M690,430 C560,510 430,500 370,466" class="lp-edge" marker-end="url(#lp-arr)"/>
+    <text x="560" y="530" class="lp-edge-label" text-anchor="middle">findings: construction-level → bolt tasks (inbox) · design-level → back through intake</text>
+  </svg>
+  </div>
+  <p class="text-sm opacity-70">The books and context map are the shared state both loops read. The outer loop is the only writer of design; the inner loop is the only writer of code. The phase gate is the one hand-off: design lives here; bolts track construction from here while the code lands in the built repos.</p>
+</section>
+
+<!-- ============================ OUTER LOOP ============================ -->
+<section class="space-y-5">
+  <h2 class="text-xl font-bold">Outer loop — intent changes on blueprints main</h2>
+  <p class="text-sm opacity-80 max-w-3xl">One intent = <strong>one OpenSpec change on blueprints main</strong>, under a custom intent schema. Wayfinder's discipline survives — the unit of work is a decision, the map's <code>settled / candidate / open</code> statuses are the fog gauge — but the tracking is OpenSpec's: <strong><code>tasks.md</code> is the frontier</strong>, checked off as work lands, growing as new decisions surface. That back-and-forth in the artifact sequence is what makes OpenSpec fit fog: progress is incremental in both directions, and archival is built in — closing an intent archives its whole record as one unit.</p>
+
+  <div class="grid lg:grid-cols-2 gap-4">
+    <div class="card card-border border-primary bg-base-100 p-4 text-sm space-y-2">
+      <p class="font-bold">The intent change — everything the intent produces, in one folder</p>
+      <div class="mockup-code text-xs"><pre><code>openspec/            (blueprints, main branch)
+  changes/
+    rocs-record-split/
+      intent.md        destination, scope, map refs
+      decisions/       one record per decision closed
+      design/          lavish reports from design sessions
+      prototypes/      notes + pointers (code stays in the spike)
+      tasks.md         the living checklist — the frontier
+    archive/           closed intents — archival built in</code></pre></div>
+      <p class="opacity-85">Lavish reports and prototype notes live <em>under the change</em>, so the session record archives with the intent. Artifacts outside any intent stay in <code>.lavish/</code> as before.</p>
+    </div>
+    <div class="card card-border bg-base-100 p-4 text-sm">
+      <p class="font-bold mb-2">Every kind of outer-loop work is a task in <code>tasks.md</code></p>
+      <div class="overflow-x-auto">
+        <table class="table table-xs">
+          <thead><tr><th>task type</th><th>produces</th></tr></thead>
+          <tbody>
+            <tr><td>research</td><td>an answer, recorded in the relevant decision record</td></tr>
+            <tr><td>design session</td><td>a lavish report under <code>design/</code>; closed decisions under <code>decisions/</code></td></tr>
+            <tr><td>prototype</td><td>proof in the spike repo; findings under <code>prototypes/</code></td></tr>
+            <tr><td>writeback — book</td><td>the chapter rewritten in destination voice</td></tr>
+            <tr><td>writeback — map</td><td>node statuses moved; <code>map-check --write</code> green</td></tr>
+            <tr><td>adr</td><td>an architecture decision record written into the built repo (log4brains), ahead of construction</td></tr>
+            <tr><td>handoff</td><td>a settled slice staged for construction — released through the phase gate into a bolt</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="opacity-85 mt-2">Decisions are <em>artifacts</em>, not tasks: a task closes a decision, and a closed decision often appends new tasks — writebacks, ADRs, handoffs, or fresh questions. The split: <code>decisions/</code> records are intent-scoped and live here; an ADR is the repo-scoped consequence, written where the code lives so the built repo's own history explains itself.</p>
+    </div>
+  </div>
+
+  <div class="card card-border bg-base-100 p-4">
+    <pre class="mermaid">
+flowchart TD
+    frontier["tasks.md across open intent changes<br/>unchecked tasks are the frontier"] --> pick["Design conductor picks a batch of tasks<br/>spawns a session per intent"]
+    pick --> session["Design session<br/>lavish artifact - a batch of decisions at once"]
+    session --> q{"Decision reached?"}
+    q -- "needs proof" --> proto["Prototype task - spike repo"] --> session
+    q -- "yes" --> rec["Decision recorded under decisions/"]
+    rec --> write["Writeback tasks<br/>book chapter rewritten - map updated"]
+    write --> check["Tasks checked off<br/>new fog appends new tasks"]
+    check --> frontier
+    write --> ready{"Slice settled enough to build?"}
+    ready -- "yes" --> jx["Handoff task staged<br/>the operator releases it at the phase gate"]
+    </pre>
+  </div>
+
+  <h3 class="text-base font-bold mt-2">Example — an intent's <code>tasks.md</code> and one decision record</h3>
+  <div class="grid lg:grid-cols-2 gap-4">
+    <div class="card card-border bg-base-100 p-0 overflow-hidden">
+      <div class="lp-issue-head"><span class="font-mono text-xs opacity-60">changes/rocs-record-split/tasks.md</span></div>
+      <div class="mockup-code text-xs"><pre><code>## Design
+- [x] research: how does the catalog admit jsonl records
+- [x] design session: registration vs run record split
+      → decisions/record-split.md · design/record-split.html
+- [x] prototype: registration yaml → producer run (spike)
+- [ ] design session: row state machine home (q-parked-state)
+
+## Writeback
+- [x] book: rewrite record-split.md in destination voice
+- [x] map: rc.registrations open → candidate · map-check green
+- [ ] book: machine-versions.md after the state-machine decision
+
+## ADR
+- [x] adr in rocs-kit: records move to the catalog (log4brains)
+      → rocs-kit docs/adr/0007-record-split.md
+
+## Handoff
+- [x] generate proposal in rocs-kit: registration records
+      → rocs-kit openspec: add-registration-records (batch 2)
+- [ ] generate proposal in rocs-kit: run records
+      (blocked by: registration records landing)</code></pre></div>
+    </div>
+    <div class="card card-border bg-base-100 p-0 overflow-hidden">
+      <div class="lp-issue-head"><span class="font-mono text-xs opacity-60">changes/rocs-record-split/decisions/record-split.md</span></div>
+      <div class="lp-issue-body">
+        <h4>Decision</h4>
+        <p>Registration identity, run history, edges, and audit become catalog items; DynamoDB narrows to what contends.</p>
+        <h4>Context</h4>
+        <ul>
+          <li>Map: <code>rc.tables</code> · <a>#map=target&amp;sel=rc.tables</a></li>
+          <li>Chapter: <code>books/rocs-kit/src/record-split.md</code></li>
+          <li>Session report: <code>design/record-split.html</code></li>
+        </ul>
+        <h4>Consequences</h4>
+        <ul>
+          <li>Appended writeback tasks: chapter + map</li>
+          <li>Appended handoff tasks: registration records, run records</li>
+          <li>New question surfaced: row state machine home → new design-session task</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="text-xs opacity-70">The working surface stays a lavish session presenting a batch of decisions at once, deep-linked to chapters and map nodes — the session checks off tasks and writes records as outcomes land. GitHub issues are not part of this loop's tracking; they remain where cross-repo human conversation needs them.</p>
+</section>
+
+<!-- ============================ JUNCTION ============================ -->
+<section class="space-y-5">
+  <h2 class="text-xl font-bold">The phase gate — design hands off to a bolt</h2>
+  <p class="text-sm opacity-80 max-w-3xl">Nothing enters construction on its own: the phase gate is <strong>the operator's word</strong>, given directly to the intent conductor. On release, the conductor <strong>requests the bolt</strong> — creating the <code>flywheel-bolt</code> change and auto-starting <code>bolt-&lt;slug&gt;</code> when none exists, prompting the running one otherwise — and never writes the bolt change itself. Batching related handoffs into one bolt is the normal move, and more work can be pushed into a live bolt at any time.</p>
+
+  <div class="grid md:grid-cols-3 gap-3">
+    <div class="card card-border bg-base-100 p-4 text-sm">
+      <p class="font-bold mb-1">Small, well-defined intent</p>
+      <p class="opacity-85">Short-circuits. Its change is born with handoff tasks only — no design sessions, no decision records. A record that costs more than the decision it captures is waste.</p>
+    </div>
+    <div class="card card-border bg-base-100 p-4 text-sm">
+      <p class="font-bold mb-1">Foggy intent</p>
+      <p class="opacity-85">Hands off <strong>task by task</strong>: a settled slice's handoff task can be released while the rest of <code>tasks.md</code> stays in fog. Waiting for a whole intent to finish means waiting forever; looping on it forever means vibing the prototype into the product. Prototypes prove decisions and die — the released slice is rebuilt from its generated proposal in the built repo.</p>
+    </div>
+    <div class="card card-border bg-base-100 p-4 text-sm">
+      <p class="font-bold mb-1">Intent that grew</p>
+      <p class="opacity-85">Decomposes into child intent changes. Intents never compose upward — composition is what the map is for.</p>
+    </div>
+  </div>
+
+  <h3 class="text-base font-bold">Monitoring — OpenSpec UI, no custom dashboard</h3>
+  <p class="text-sm opacity-80 max-w-3xl">The openspecui board on blueprints@main already shows intents and bolts as changes with task progress — the phase gate needs the operator's word, not a page. Releases are told to the conductor directly. Deferred gap, revisited only if felt in use: a cross-intent release queue with ripple prediction.</p>
+
+  <h3 class="text-base font-bold">From release to construction — what a release actually does</h3>
+  <div class="grid md:grid-cols-3 gap-3">
+    <div class="card card-border bg-base-100 p-4 text-sm">
+      <p class="font-bold mb-1">1 · Proposals generated + reviewed</p>
+      <p class="opacity-85">The conductor delegates an agent per released handoff task to generate the OpenSpec proposal in its built repo, then runs the batch spec review across all of them — cross-repo alignment while it is still cheap.</p>
+    </div>
+    <div class="card card-border bg-base-100 p-4 text-sm">
+      <p class="font-bold mb-1">2 · A bolt owns them</p>
+      <p class="opacity-85">The release names its target. <strong>New bolt:</strong> the intent conductor creates the flywheel-bolt change and its conductor auto-starts — a long-lived herdr session on blueprints main, the super-conduct successor, which cuts a bolt branch per involved repo and owns dispatch, merge-backs, batched acceptance, and landing. <strong>Running bolt:</strong> one herdr prompt (or an inbox/ file) and the proposals join its registry.</p>
+    </div>
+    <div class="card card-border bg-base-100 p-4 text-sm">
+      <p class="font-bold mb-1">3 · Completion flows back</p>
+      <p class="opacity-85">Landing a proposal checks off its handoff task in the intent's <code>tasks.md</code>; findings that alter the design append new tasks. The conductor archives the intent when its tasks empty and writebacks are green.</p>
+    </div>
+  </div>
+  <p class="text-sm opacity-80 max-w-3xl"><strong>Managing the intent sessions</strong> works the same way from the other direction: the design conductor starts and continues per-intent sessions through herdr. A second control surface is worth proving in the spike — the schema's custom instructions could make OpenSpec UI's kanban itself a trigger, so "continue" on an intent card starts the herdr session for it.</p>
+
+  <h3 class="text-base font-bold">The command center — herdr split view</h3>
+  <p class="text-sm opacity-80 max-w-3xl">The operator's standing layout: one herdr workspace on blueprints main with the two standing agents and the live worktree state. The OpenSpec UI board sits in a browser tab beside it.</p>
+  <div class="mockup-window border border-base-content/15 bg-base-100">
+    <div class="bg-neutral text-neutral-content font-mono text-xs">
+      <div class="grid md:grid-cols-2">
+        <div class="p-3 border-b md:border-r border-neutral-content/15 min-h-36">
+          <p class="opacity-50 mb-1">── intake · fable ─────────────────────</p>
+          <p><span class="text-success">●</span> filed changes/territory-tile-zoom (design)</p>
+          <p><span class="text-success">●</span> filed changes/atlas-sdk-retries (handoff-only)</p>
+          <p class="opacity-70">  dedupe checked vs map + open intents</p>
+          <p class="opacity-50">❯ idle — watching for new intents</p>
+        </div>
+        <div class="p-3 border-b border-neutral-content/15 min-h-36">
+          <p class="opacity-50 mb-1">── intent conductor · fable ───────────</p>
+          <p><span class="text-success">●</span> intent-rocs-record-split — session working</p>
+          <p class="opacity-70">  3 tasks checked this session · 1 decision recorded</p>
+          <p><span class="text-warning">●</span> next: gvc-fork-triangle (operator queued via dashboard)</p>
+          <p class="opacity-50">❯ rebuilding dashboard JSON after task check-off…</p>
+        </div>
+        <div class="p-3 border-b md:border-r border-neutral-content/15">
+          <p class="opacity-50 mb-1">── bolt-rocs-records · conductor ──────</p>
+          <p><span class="text-success">●</span> rocs-kit bolt/rocs-records · 2 construction worktrees</p>
+          <p class="opacity-70">  merge gate green · acceptance batch 3 queued</p>
+          <p class="opacity-50">❯ waiting on sub-b2 (herdr agent wait)</p>
+        </div>
+        <div class="p-3 border-b border-neutral-content/15">
+          <p class="opacity-50 mb-1">── wt list · all repos ────────────────</p>
+          <p>willdan-blueprints  main            :14881  —</p>
+          <p>rocs-kit            bolt/rocs-records :16204  gate ✓</p>
+          <p>rocs-kit            sub-b2          :17419  pre-commit ✓</p>
+          <p>atlas-kit           —               —       idle</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-border bg-base-100 p-4">
+    <pre class="mermaid">
+sequenceDiagram
+    participant OP as operator
+    participant IC as intent conductor<br/>(blueprints main)
+    participant BC as bolt conductor<br/>(blueprints main, long-lived)
+    participant BR as built repo<br/>(bolt branch + worktrees)
+
+    OP->>IC: release - the phase gate, given as a word
+    IC->>BC: request the bolt - herdr prompt, or create change + start bolt-<slug>
+    BC->>BR: cut bolt branch + worktree (per involved repo)
+    BC->>BR: spec agents - opsx ff per proposal
+    BC->>BC: review per registry row - agent, or human via plannotator
+    BC->>BR: apply agents on nested construction worktrees
+    BR-->>BC: blocked - needs a feature in a sibling repo
+    BC->>BR: sibling proposal on demand, sequenced, resume
+    BC->>BR: testing agent - acceptance batched on the bolt branch
+    BR-->>BC: findings - construction level to bolt tasks (inbox)
+    BC-->>IC: design-level findings routed back through intake
+    BC->>BR: merge criteria hold - land bolt branch on main, full gate
+    BC-->>IC: landed - intent conductor checks the handoff task
+    </pre>
+  </div>
+
+  <p class="text-sm opacity-80 max-w-3xl"><strong>Bolt conductors run in the blueprints repo.</strong> A bolt can span built repos, so its conductor sits where the cross-repo view lives — the map, the intents, its own change — and reaches out: bolt branches and worktrees in every affected repo (herdr works from anywhere via <code>--cwd</code>), cross-repo sequencing in one place, merges serialized per repo. The bolt stays alive between batches, waiting on the operator and accepting pushed work at any time.</p>
+
+  <h3 class="text-base font-bold">Ripple work — generated, never authored</h3>
+  <p class="text-sm opacity-80 max-w-3xl">"Update the atlas SDK → update the dev portal"; "change a framework → its dependents need updating." The dependency knowledge already exists as data: <strong>context-map edges</strong> and <strong>kit version pins</strong>. Ripple work is generated at build time, on demand: when a released change lands in a framework, the conductor queries the map for dependents and appends the ripple handoff tasks then — or, mid-build, a blocked change gets its sibling-repo proposal generated the moment the need appears (cortex blocks, spins up the gvc feature, resumes). No up-front waterfall of the whole cross-repo graph; the intent conductor names the predicted ripple (map edges out of a staged handoff) when it presents the release, so the operator sees the blast radius before giving the word.</p>
+  <p class="text-sm opacity-80 max-w-3xl"><strong>The books drop their <code>proposals.md</code> chapters.</strong> Chapters describe the destination; the build list lives in the intents' handoff tasks, and the generated proposal in each built repo cites the chapters directly. This is a books-convention change that rides along with this design — <code>books/CLAUDE.md</code> retires the proposals-chapter requirement (verification chapters stay).</p>
+
+  <h3 class="text-base font-bold">Example — the generated proposal (an OpenSpec change in the built repo)</h3>
+  <p class="text-sm opacity-75 max-w-3xl">A released handoff task produces this: an OpenSpec change in the built repo, generated by a delegated agent, validated there, reviewed as a batch. The design stays in blueprints — the book is <em>not</em> edited when the work lands, it already describes the destination. Working arrangement and verification plan are the <strong>conductor's recorded choices, with reasons</strong> — the skill supplies the criteria and the few invariants, never the steps.</p>
+  <div class="lp-issue">
+    <div class="lp-issue-head">
+      <span class="font-mono text-xs opacity-60">rocs-kit · openspec/changes/add-registration-records/proposal.md</span>
+      <span class="badge badge-sm badge-soft badge-secondary">phase: construction</span>
+      <span class="badge badge-sm badge-ghost">validated</span>
+    </div>
+    <div class="lp-issue-body">
+      <h4>Design sources</h4>
+      <ul>
+        <li>Chapter: <code>willdan-blueprints/books/rocs-kit/src/record-split.md</code> (status: settled)</li>
+        <li>Intent: <code>willdan-blueprints/openspec/changes/rocs-record-split/</code> — handoff task "registration records"</li>
+        <li>Map: <a>system-context-map.html#map=target&amp;sel=rc.registrations</a></li>
+        <li>Decision record: <code>rocs-record-split/decisions/record-split.md</code></li>
+      </ul>
+      <h4>Scope</h4>
+      <p>The <code>rocs_registrations</code> record ships as a catalog item schema; authoring path is <code>.atlas/registrations/*.yml</code> ingressed by a producer run; the control-plane tables stop storing registration identity.</p>
+      <h4>Out of scope</h4>
+      <p>Run records (<code>rocs_runs</code>) — separate proposal, blocked on this one.</p>
+      <h4>Working arrangement — conductor's choice</h4>
+      <p>Reviewed. <em>Reason: touches the admission contract, where a plausible-but-wrong success claim is the failure mode.</em> The skill's criteria weigh review independence against round-trip latency; the conductor decides per change and records why.</p>
+      <h4>Acceptance criteria</h4>
+      <ul>
+        <li>A registration authored in <code>.atlas/registrations/</code> round-trips: ingress → catalog item → resolved by the CLI</li>
+        <li>Registration reads no longer touch DynamoDB</li>
+        <li>Fixtures: reuses <code>scenario: registered-station</code>, adds <code>registration-yaml-v1</code> (per the book's verification chapter)</li>
+      </ul>
+      <h4>Verification plan — conductor's choice</h4>
+      <p>Derived from this repo's capabilities and this change's risk — not a fixed recipe. Invariants are few: every stage runs somewhere, acceptance is batched, the release gate is never weakened. Chosen here:</p>
+      <ul>
+        <li>Commit stage on every push (moon: lint, typecheck, unit, affected integration)</li>
+        <li>Merge gate on the rebased tree at merge-back</li>
+        <li>Acceptance suite in the next batch on the bolt branch — not run per-branch</li>
+      </ul>
+    </div>
+    <div class="lp-issue-comment"><strong>conductor</strong> — proposal generated + validated · review passed (human, plannotator) · dispatched to a construction worktree</div>
+    <div class="lp-issue-comment"><strong>conductor</strong> — landed <code>a41c9e0</code> · acceptance batch 3 green · change archived · handoff task checked off in <code>rocs-record-split/tasks.md</code></div>
+  </div>
+</section>
+
+<!-- ============================ INNER LOOP ============================ -->
+<section class="space-y-5">
+  <h2 class="text-xl font-bold">Inner loop — super-conduct's structure, industry vocabulary, tests at their natural times</h2>
+  <p class="text-sm opacity-80 max-w-3xl">Keep the orchestrator, the issue-graph backlog, delegated work branches, and batched deep testing. Drop the invented vocabulary and the fixed "bar" scheme: test suites are <strong>pipeline stages</strong> (continuous-delivery style), each run at the point in the merge topology where it pays for itself. Moon makes the stages repo-neutral — the skill says "run the commit stage", moon resolves what that means in this repo.</p>
+
+  <div class="lp-svg-wrap card card-border bg-base-100 p-4">
+  <svg class="lp-svg" viewBox="0 0 1200 360" role="img" aria-label="Branch topology with test stages at each merge point">
+    <defs>
+      <marker id="lp-arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--color-base-content)" fill-opacity=".55"/>
+      </marker>
+    </defs>
+
+    <!-- main -->
+    <line x1="50" y1="290" x2="1150" y2="290" class="lp-edge" stroke-width="2.5"/>
+    <text x="58" y="316" class="lp-stage">main</text>
+    <circle cx="120" cy="290" r="7" class="lp-commit-main"/>
+    <circle cx="1080" cy="290" r="7" class="lp-commit-main"/>
+
+    <!-- bolt branch -->
+    <path d="M120,290 C160,290 160,200 210,200 L940,200 C1010,200 1010,290 1080,290" class="lp-edge" stroke-width="2"/>
+    <text x="220" y="188" class="lp-stage">bolt branch (one per repo, for the bolt's lifetime)</text>
+    <circle cx="290" cy="200" r="6" class="lp-commit"/>
+    <circle cx="520" cy="200" r="6" class="lp-commit"/>
+    <circle cx="700" cy="200" r="6" class="lp-commit"/>
+    <circle cx="870" cy="200" r="6" class="lp-commit"/>
+
+    <!-- work branch A -->
+    <path d="M230,200 C255,200 255,110 285,110 L370,110 C405,110 405,200 435,200" class="lp-edge"/>
+    <circle cx="300" cy="110" r="6" class="lp-commit"/>
+    <circle cx="340" cy="110" r="6" class="lp-commit"/>
+    <text x="268" y="88" class="lp-sub">work branch (worktree)</text>
+
+    <!-- work branch B -->
+    <path d="M460,200 C485,200 485,110 515,110 L600,110 C635,110 635,200 665,200" class="lp-edge"/>
+    <circle cx="530" cy="110" r="6" class="lp-commit"/>
+    <circle cx="575" cy="110" r="6" class="lp-commit"/>
+
+    <!-- stage annotations -->
+    <path d="M320,102 C320,60 320,54 320,54" class="lp-edge" stroke-dasharray="3 3"/>
+    <text x="320" y="42" class="lp-stage" text-anchor="middle">① commit stage — every push</text>
+    <text x="320" y="60" class="lp-sub" text-anchor="middle">lint · typecheck · unit · affected integration (moon ci)</text>
+
+    <path d="M435,193 C435,160 435,150 435,150" class="lp-edge" stroke-dasharray="3 3"/>
+    <text x="452" y="140" class="lp-stage" text-anchor="middle">② merge gate</text>
+    <text x="452" y="157" class="lp-sub" text-anchor="middle">wt merge → affected suites on the rebased tree</text>
+
+    <rect x="740" y="222" width="14" height="14" rx="3" transform="rotate(45 747 229)" fill="var(--color-primary)"/>
+    <path d="M747,215 L747,205 L740,200" class="lp-edge" stroke-dasharray="3 3" fill="none"/>
+    <text x="800" y="245" class="lp-stage" text-anchor="middle">③ acceptance stage — batched</text>
+    <text x="800" y="262" class="lp-sub" text-anchor="middle">e2e suites after 2–3 merges, run by a test agent, never per-branch</text>
+
+    <path d="M1010,246 C1035,246 1035,246 1035,246" class="lp-edge" stroke-dasharray="3 3"/>
+    <text x="1035" y="235" class="lp-stage" text-anchor="middle">④ release gate</text>
+    <text x="1035" y="252" class="lp-sub" text-anchor="middle">full pipeline on the exact</text>
+    <text x="1035" y="267" class="lp-sub" text-anchor="middle">rebased tree (wt merge, full hooks)</text>
+
+    <text x="80" y="345" class="lp-stage">⑤ scheduled — nightly soak, long-running suites, flake detection (CI cron, off the critical path)</text>
+  </svg>
+  </div>
+  <p class="text-xs opacity-70"><span class="badge badge-xs badge-soft badge-primary align-middle mr-1">book figure</span> This diagram goes into the aidlc-design book — the pipeline-stages figure of the rewritten spec-driven-construction chapter.</p>
+
+  <div class="grid lg:grid-cols-2 gap-4">
+    <div>
+      <h3 class="text-base font-bold mb-2">Vocabulary — invented term → industry term</h3>
+      <div class="overflow-x-auto rounded-box border border-base-content/10 bg-base-100">
+        <table class="table table-sm">
+          <thead><tr><th>super-conduct said</th><th>the redesign says</th><th>rooted in</th></tr></thead>
+          <tbody>
+            <tr><td>the bar / reportable green</td><td>definition of done · passing its pipeline stage</td><td>Scrum / CD</td></tr>
+            <tr><td>fast bar (loaned)</td><td>commit stage</td><td>Continuous Delivery (Humble &amp; Farley)</td></tr>
+            <tr><td>rigor debt / batch pass</td><td>deferred acceptance stage, run in batches</td><td>CD pipeline stages</td></tr>
+            <tr><td>evidence</td><td>verification results — test reports, run links</td><td>plain language</td></tr>
+            <tr><td>lane</td><td>work branch (in a worktree)</td><td>trunk-based development</td></tr>
+            <tr><td>wave</td><td>batch / iteration</td><td>plain language</td></tr>
+            <tr><td>super branch</td><td>bolt branch</td><td>AIDLC / plain language</td></tr>
+            <tr><td>topology: pair / gated / solo</td><td>working arrangement: paired / reviewed / solo</td><td>code-review practice</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <h3 class="text-base font-bold mb-2">Test stages — what runs when, resolved by moon per repo</h3>
+      <div class="overflow-x-auto rounded-box border border-base-content/10 bg-base-100">
+        <table class="table table-sm">
+          <thead><tr><th>stage</th><th>trigger</th><th>how</th></tr></thead>
+          <tbody>
+            <tr><td>① commit</td><td>every push on a work branch</td><td><code>moon ci</code> via the wt pre-commit hook — affected projects only</td></tr>
+            <tr><td>② merge gate</td><td>merge back to integration</td><td><code>wt merge</code> runs the gate on the rebased tree</td></tr>
+            <tr><td>③ acceptance</td><td>after a batch of merges</td><td>test agent runs <code>moon run :test-e2e</code> on the bolt branch</td></tr>
+            <tr><td>④ release</td><td>landing on main</td><td><code>wt merge</code> with full hooks — nothing skipped</td></tr>
+            <tr><td>⑤ scheduled</td><td>nightly</td><td>CI cron — soak, long suites, flake hunting</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-xs opacity-70 mt-2">The e2e stall that bogged super-conduct down is solved structurally: acceptance suites never run inside a work branch — a branch that believes it needs broader proof escalates instead of upgrading its own stage.</p>
+      <p class="text-xs opacity-70 mt-2">The reorg reshapes this table: once projects break out into smaller repos, within-repo affected detection matters less and the acceptance stage increasingly means <em>cross-repo</em> integration — a kit change proven against the products that pin it, at pinned versions. The stage names stay; what each stage exercises shifts with repo size.</p>
+    </div>
+  </div>
+
+  <h3 class="text-base font-bold">A map of alternatives, not a prescription</h3>
+  <p class="text-sm opacity-80 max-w-3xl">The skill stops dictating step-by-step and instead states the decision points with criteria, letting the agent choose and record the choice in the issue:</p>
+  <div class="grid md:grid-cols-3 gap-3">
+    <div class="card card-border bg-base-100 p-4 text-sm">
+      <p class="font-bold mb-1">Branch shape</p>
+      <p class="opacity-85">Bolt branch + nested construction worktrees for a multi-proposal bolt; a single work branch straight off main for a lone small change. Criterion: how many changes share unfinished contracts.</p>
+    </div>
+    <div class="card card-border bg-base-100 p-4 text-sm">
+      <p class="font-bold mb-1">Working arrangement</p>
+      <p class="opacity-85">Solo / reviewed / paired per change. Criterion: cost of a plausible-but-wrong success claim vs the latency of review round-trips.</p>
+    </div>
+    <div class="card card-border bg-base-100 p-4 text-sm">
+      <p class="font-bold mb-1">Batch size</p>
+      <p class="opacity-85">Acceptance batches of 2–3 merges by default; batch of one when a change is high-risk. Criterion: blast radius of a red acceptance run across unmerged siblings.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FOUNDATIONS ============================ -->
+<section class="space-y-5">
+  <h2 class="text-xl font-bold">The foundations contract — what makes a repo orchestratable</h2>
+  <p class="text-sm opacity-80 max-w-3xl">This is the fix for super-conduct's repo-boundness. The skills never name a repo's commands; they name <strong>capabilities</strong>, and each repo satisfies them with standard tooling. Readiness becomes an audit, not a vibe — and the audit itself can be a skill.</p>
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+    <div class="card card-border bg-base-100 p-4 text-sm">
+      <p class="font-bold mb-1">worktrunk</p>
+      <ul class="list-disc pl-4 opacity-85 space-y-1">
+        <li><code>.config/wt.toml</code> gates per pipeline stage, calling moon</li>
+        <li>branch-derived ports/resources so parallel worktrees never collide</li>
+      </ul>
+    </div>
+    <div class="card card-border bg-base-100 p-4 text-sm">
+      <p class="font-bold mb-1">moon</p>
+      <ul class="list-disc pl-4 opacity-85 space-y-1">
+        <li>shared task names: <code>lint</code> · <code>test-unit</code> · <code>test-integration</code> · <code>test-e2e</code></li>
+        <li>affected detection (<code>moon ci</code>) + caching — the commit stage stays fast for free</li>
+      </ul>
+    </div>
+    <div class="card card-border border-primary bg-base-100 p-4 text-sm">
+      <p class="font-bold mb-1">OpenSpec — the foundation</p>
+      <ul class="list-disc pl-4 opacity-85 space-y-1">
+        <li>intent schema on blueprints main drives the outer loop; archival built in</li>
+        <li>generated proposals in every built repo drive construction, citing the chapters + intent they derive from</li>
+      </ul>
+    </div>
+    <div class="card card-border bg-base-100 p-4 text-sm">
+      <p class="font-bold mb-1">GitHub issues — conversation only</p>
+      <ul class="list-disc pl-4 opacity-85 space-y-1">
+        <li>cross-repo mentions, notifications, team discussion</li>
+        <li>never the tracking database — that is OpenSpec's job</li>
+      </ul>
+    </div>
+    <div class="card card-border bg-base-100 p-4 text-sm">
+      <p class="font-bold mb-1">herdr</p>
+      <ul class="list-disc pl-4 opacity-85 space-y-1">
+        <li>worktree + agent lifecycle, panes, monitoring</li>
+        <li>explicit worktree paths until the bare-layout naming fix lands</li>
+      </ul>
+    </div>
+    <div class="card card-border bg-base-100 p-4 text-sm">
+      <p class="font-bold mb-1">Repo self-description</p>
+      <ul class="list-disc pl-4 opacity-85 space-y-1">
+        <li>CLAUDE.md names the reset/bootstrap path and review surfaces</li>
+        <li>none of the kit repos run moon today — adoption joins the reorg roadmap</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="text-base font-bold">Standing services — the roster beyond the project's own dev servers</h3>
+  <p class="text-sm opacity-80 max-w-3xl">Best practice, not improvisation: every orchestrated worktree runs a standard set of services, each owned by a tether that dies with the worktree — never by a session's background shell. The project's dev servers are the repo's business; these are the orchestration's:</p>
+  <div class="overflow-x-auto rounded-box border border-base-content/10 bg-base-100">
+    <table class="table table-sm">
+      <thead><tr><th>service</th><th>scope</th><th>started by</th><th>purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Review preview</td><td>per worktree, branch-hashed port</td><td>SessionStart hook / post-start tether</td><td>the repo's review surface (books preview here; app previews in product repos) — up before anyone asks</td></tr>
+        <tr><td>OpenSpec UI tab</td><td>one machine daemon, one tab per worktree</td><td>post-start tether, self-registers</td><td>watch every repo's changes in one window across the whole hierarchy</td></tr>
+        <tr><td>OpenSpec UI board</td><td>blueprints@main, one daemon, tab per worktree</td><td>post-start tether, self-registers</td><td>the monitoring surface — intents and bolts as changes with task progress; no custom dashboard</td></tr>
+        <tr><td>Test resources</td><td>per worktree, branch-derived names/ports</td><td>the stage that needs them (wt hook)</td><td>databases, emulators, queues — parallel worktrees never share or collide</td></tr>
+        <tr><td>Nightly CI</td><td>per repo, on main</td><td>CI cron</td><td>soak and long suites off the critical path; findings arrive as issues</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================ PLUGIN + BOOK ============================ -->
+<section class="space-y-5">
+  <h2 class="text-xl font-bold">Where this lives — the flywheel plugin</h2>
+  <p class="text-sm opacity-80 max-w-3xl">The loops are designed as chapters of <code>books/aidlc-design</code> (the process book already frames inception → construction → operation, and its "Conducting" chapter is the seed of the outer loop). They distill into the <strong><code>flywheel</code> plugin</strong> with two skills that keep the marketplace's word+phase convention: <strong><code>flywheel-inception</code></strong> (the design loop) and <strong><code>flywheel-construction</code></strong> (the build loop, repo-readiness audit folded in). One plugin because the phase gate is exactly the point where the two skills must agree. Prototype as project skills here, move to willdan-marketplace once stable, iterate without publishing via a local marketplace (<code>/plugin marketplace add &lt;path-to-working-tree&gt;</code>).</p>
+
+  <h3 class="text-base font-bold">aidlc-design chapters — disposition</h3>
+  <div class="overflow-x-auto rounded-box border border-base-content/10 bg-base-100">
+    <table class="table table-sm">
+      <thead><tr><th>chapter</th><th>disposition</th><th>why</th></tr></thead>
+      <tbody>
+        <tr><td>phases · foundations · system-design · agent-workspaces · commissioning</td><td><span class="badge badge-sm badge-soft badge-success">keep</span></td><td>the frame and concepts still hold</td></tr>
+        <tr><td>choosing-worktrunk · worktrunk-substrate · session-management</td><td><span class="badge badge-sm badge-soft badge-success">keep</span></td><td>substrate chapters; extend with the moon foundation + standing services</td></tr>
+        <tr><td>conducting · authoring-capabilities</td><td><span class="badge badge-sm badge-soft badge-warning">rewrite</span></td><td>become the actor-model design (this artifact is their draft)</td></tr>
+        <tr><td>spec-driven-construction</td><td><span class="badge badge-sm badge-soft badge-warning">rewrite</span></td><td>absorbs the pipeline-stage testing model and the phase-gate hand-off</td></tr>
+        <tr><td>system-design-inception · openspec-construction</td><td><span class="badge badge-sm badge-soft badge-info">merge into the loops</span></td><td>how — still to figure out; the first is the design loop's book-scaffolding tooling (inception), the second becomes the build loop's spec stage (construction)</td></tr>
+        <tr><td>catalog · agent-workspaces-plugin</td><td><span class="badge badge-sm badge-soft badge-error">archive</span></td><td>per-plugin docs — stale context; plugin docs belong with the plugins</td></tr>
+        <tr><td>vocabulary · walkthrough · index</td><td><span class="badge badge-sm badge-soft badge-warning">rewrite</span></td><td>follow whatever the above settles</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================ DECISIONS ============================ -->
+<section class="space-y-5">
+  <h2 class="text-xl font-bold">Decisions still open</h2>
+  <p class="text-sm opacity-75">Settled: <strong>OpenSpec is the foundation</strong> — three schemas, intent → bolt → construction, all flywheel tracking on blueprints main · sole-writer conductors with herdr prompts + change-local <code>inbox/</code> mailboxes · bolts auto-start past the phase gate, intents wait to be pulled from the board · bolt conductors in blueprints, bolt branches per involved repo, construction on nested worktrees · monitoring is OpenSpec UI, no custom dashboard (deferred gap: cross-intent release queue with ripple prediction) · plannotator reviews written artifacts, lavish presents built surfaces · the books drop their proposals.md chapters · the <code>flywheel</code> plugin with skills <code>flywheel-inception</code> + <code>flywheel-construction</code> · GitHub issues are conversation only. Landed on explore-loop-pivot: both schemas, sample intent + bolt, both skills, the inbox round-trip. What remains:</p>
+
+  <div class="card card-border bg-base-100 p-4">
+    <p class="font-bold text-sm mb-2">Open questions (annotate to weigh in)</p>
+    <ul class="list-disc pl-5 text-sm opacity-85 space-y-1">
+      <li><strong>Discord bridge intake</strong> — can a bridge-connected session trigger on any channel message or only @-mentions; is a webhook receiver worth having for remote intake?</li>
+      <li><strong>Schema instructions solo test</strong> — does a fresh opsx session produce correct intent/bolt artifacts from the schema instructions alone, with no skill loaded?</li>
+      <li><strong>Merging the existing plugins</strong> — how system-design-inception folds into flywheel-inception and openspec-construction into flywheel-construction: absorb their skills, or keep them as dependencies the loops invoke?</li>
+      <li><strong>Small changes</strong> — a lone generated proposal can skip the bolt and run one reviewed work branch off main; is that the written default?</li>
+      <li><strong>Moon adoption order</strong> — which repo adopts moon first (the spike, since it has real tests, or atlas-kit, since it lands first in the reorg)?</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="text-xs opacity-60 pt-4 border-t border-base-content/10">
+  Sources: books/CLAUDE.md (proposal pipeline) · .claude/skills/conduct · knowledgebase-spike super-conduct · context-map/maps/target.js · wayfinder (mattpocock/skills) · research/kit-reorg-roadmap.md. The durable record is openspec/changes/add-flywheel-loops; this artifact is the design-session trail behind it.
+</footer>
+
+</main>
+
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.15.0/dist/mermaid.esm.min.mjs";
+  const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  const paint = document.createElement("canvas").getContext("2d");
+  function toRgba(color) {
+    paint.clearRect(0, 0, 1, 1);
+    paint.fillStyle = "#000";
+    paint.fillStyle = color;
+    paint.fillRect(0, 0, 1, 1);
+    return paint.getImageData(0, 0, 1, 1).data;
+  }
+  function compositeRgba(foreground, background) {
+    const fa = foreground[3] / 255, ba = background[3] / 255;
+    const a = fa + ba * (1 - fa);
+    if (a === 0) return [0, 0, 0, 0];
+    return [
+      (foreground[0] * fa + background[0] * ba * (1 - fa)) / a,
+      (foreground[1] * fa + background[1] * ba * (1 - fa)) / a,
+      (foreground[2] * fa + background[2] * ba * (1 - fa)) / a,
+      a * 255,
+    ];
+  }
+  function pageIsDark() {
+    const root = document.documentElement;
+    const rootBackground = toRgba(getComputedStyle(root).backgroundColor);
+    const bodyBackground = document.body ? toRgba(getComputedStyle(document.body).backgroundColor) : [0, 0, 0, 0];
+    const [r, g, b, a] = compositeRgba(bodyBackground, rootBackground);
+    if (a > 0) return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 < 0.5;
+    const colorScheme = getComputedStyle(root).colorScheme;
+    if (colorScheme.includes("dark") && !colorScheme.includes("light")) return true;
+    if (colorScheme.includes("light") && !colorScheme.includes("dark")) return false;
+    return darkQuery.matches;
+  }
+  const diagrams = [...document.querySelectorAll(".mermaid")].map((el) => ({ el, src: el.textContent }));
+  let applied;
+  let rendering = false;
+  let queued = false;
+  function queueRender() {
+    queued = true;
+    if (rendering) return;
+    void render();
+  }
+  async function render() {
+    rendering = true;
+    try {
+      while (queued) {
+        queued = false;
+        const theme = pageIsDark() ? "dark" : "default";
+        if (theme === applied) continue;
+        mermaid.initialize({ startOnLoad: false, theme, securityLevel: "strict" });
+        for (const { el, src } of diagrams) {
+          el.removeAttribute("data-processed");
+          el.textContent = src;
+        }
+        try {
+          await mermaid.run({ nodes: diagrams.map((d) => d.el) });
+        } catch (error) {
+          console.error("Mermaid diagram render failed:", error);
+          return;
+        }
+        applied = theme;
+      }
+    } finally {
+      rendering = false;
+      if (queued) queueRender();
+    }
+  }
+  if (document.readyState === "complete") queueRender();
+  else window.addEventListener("load", queueRender, { once: true });
+  const themeObserver = new MutationObserver(queueRender);
+  for (const el of [document.documentElement, document.body]) {
+    if (!el) continue;
+    themeObserver.observe(el, { attributes: true, attributeFilter: ["data-theme", "class", "style"] });
+  }
+  document.addEventListener("change", queueRender, true);
+  document.addEventListener("transitionend", ({ propertyName }) => {
+    if (propertyName === "background-color") queueRender();
+  }, true);
+  darkQuery.addEventListener("change", queueRender);
+</script>
+</body>
+</html>

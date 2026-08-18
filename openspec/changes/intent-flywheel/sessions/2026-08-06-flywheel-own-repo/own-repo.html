@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="luxury">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Three decisions: does flywheel move out</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/daisyui.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/themes.css">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.2.4/dist/index.global.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :where(.grid, .flex) > * { min-width: 0; }
+  :where(p, h1, h2, h3, h4, h5, h6, li, dd, blockquote, figcaption, td, th, .badge, .label) { overflow-wrap: anywhere; }
+  :where(img, svg, video, canvas, iframe) { max-width: 100%; height: auto; }
+
+  .fw-dec { scroll-margin-top: 1rem; }
+  .fw-num { font: 700 .72rem ui-sans-serif, system-ui, sans-serif; letter-spacing: .16em; opacity: .6; text-transform: uppercase; }
+  .fw-q { border-left: 3px solid var(--color-primary); padding: .15rem 0 .15rem 1rem; font-size: 1.02rem; line-height: 1.6; }
+  .fw-opt { border: 1px solid color-mix(in oklab, var(--color-base-content) 15%, transparent); border-radius: var(--radius-box, .75rem); overflow: hidden; display: flex; flex-direction: column; }
+  .fw-opt-head { background: var(--color-base-200); padding: .65rem 1rem; display: flex; flex-wrap: wrap; gap: .5rem; align-items: baseline; }
+  .fw-opt-body { padding: .85rem 1rem; font-size: .89rem; line-height: 1.6; }
+  .fw-opt-lead { border-color: color-mix(in oklab, var(--color-primary) 55%, transparent); }
+  .fw-opt-lead .fw-opt-head { background: color-mix(in oklab, var(--color-primary) 14%, var(--color-base-200)); }
+  .fw-cost { display: block; margin-top: .45rem; opacity: .8; }
+  .fw-cost strong { opacity: 1; }
+  code { background: var(--color-base-200); padding: .05rem .35rem; border-radius: .3rem; font-size: .86em; }
+  .fw-body p { line-height: 1.65; }
+  .fw-form { border: 1px dashed color-mix(in oklab, var(--color-base-content) 28%, transparent); border-radius: var(--radius-box, .75rem); padding: 1rem 1.15rem; background: color-mix(in oklab, var(--color-base-200) 55%, transparent); }
+  .fw-form label.fw-choice { display: flex; gap: .6rem; align-items: flex-start; padding: .4rem .1rem; cursor: pointer; line-height: 1.5; }
+  .mermaid { display: flex; justify-content: center; }
+  .fw-evi { font-size: .89rem; line-height: 1.6; }
+  .fw-evi ul { list-style: disc; padding-left: 1.15rem; }
+  .fw-evi li { margin: .2rem 0; }
+  .fw-tbl { font-size: .86rem; }
+  .fw-tbl td, .fw-tbl th { vertical-align: top; }
+  .fw-fact { border-left: 3px solid color-mix(in oklab, var(--color-base-content) 22%, transparent); padding: .1rem 0 .1rem .9rem; }
+  .fw-fact.ok { border-left-color: var(--color-success); }
+  .fw-fact.warn { border-left-color: var(--color-warning); }
+  .fw-fact.info { border-left-color: var(--color-info); }
+  .fw-kbd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .82em; }
+</style>
+</head>
+<body class="bg-base-100 text-base-content">
+<main class="max-w-5xl mx-auto px-5 py-10 space-y-14">
+
+<header class="space-y-3">
+  <p class="text-xs uppercase tracking-widest opacity-60">willdan-blueprints · intent <code>flywheel</code> · session 2026-08-06-flywheel-own-repo</p>
+  <h1 class="text-3xl font-bold leading-tight">Three decisions: does flywheel move out, what travels with it, and when</h1>
+  <p class="text-base opacity-80 max-w-3xl">The flywheel is machinery blueprints happens to host. These three decide whether it stays a guest, what it takes if it leaves, and whether it leaves before or after the two end-to-end runs. They are one decision in three parts — answer them together and the whole handoff list re-sorts once instead of three times.</p>
+  <div class="alert alert-soft alert-success items-start">
+    <div class="space-y-1">
+      <p><strong>Headline: the cost that was supposed to decide this is gone, and so is the cost that was supposed to sequence it.</strong></p>
+      <p class="text-sm">The development loop for a plugin under active edit is <code>--plugin-dir</code> + <code>/reload-plugins</code> — edit and reload, no publish cycle. And the namespace rename the research called "a blast radius" measures, when you actually count it, at <strong>eight lines across seven files, one of which is in one end-to-end script</strong>. Both blockers priced out at near zero. What is left to decide is not cost, it is <em>where this thing belongs</em>.</p>
+    </div>
+  </div>
+</header>
+
+<!-- ================= ORIENTATION ================= -->
+<section class="space-y-4">
+  <h2 class="text-xl font-bold">What "flywheel" is made of, and where a cut could fall</h2>
+  <p class="text-sm opacity-80 max-w-3xl">Two piles. The <strong>machinery</strong> is the thing that could ship — skills, profiles, schemas, the samples that teach them. The <strong>record</strong> is what the machinery produced and is still producing — the intent change, the book chapters, the two run scripts. Every option below is a different place to draw the line between them.</p>
+  <div class="card card-border bg-base-100 p-4 overflow-x-auto">
+    <pre class="mermaid">
+flowchart LR
+    subgraph MACH["machinery — could ship"]
+      sk["2 skills<br/>inception 139L · construction 110L"]
+      ag["4 agent profiles<br/>97L total"]
+      sc["2 openspec schemas<br/>intent 251L · bolt 135L"]
+      sam["2 sample changes<br/>rocs-record-split · bolt-rocs-records"]
+    end
+    subgraph REC["record — produced by the loop"]
+      ch["openspec/changes/flywheel/<br/>intent · tasks · 19 decisions · sessions"]
+      bk["books/aidlc-design/<br/>23 chapters · 4342L"]
+      e2e["2 end-to-end scripts<br/>101L + 125L"]
+    end
+    subgraph BP["blueprints keeps regardless"]
+      conv["books/CLAUDE.md · root CLAUDE.md"]
+      ops["opsx commands · openspec-* skills"]
+      map["context map · books toolchain · CI"]
+    end
+    MACH -.->|"D1: does this move?"| out(["a flywheel repo"])
+    REC -.->|"D2: does any of this<br/>go with it?"| out
+
+    classDef m fill:#1f3b1f,stroke:#22c55e,color:#dcfce7
+    classDef r fill:#1e3a5f,stroke:#3b82f6,color:#e0f2fe
+    classDef b fill:#3b2f1f,stroke:#d97706,color:#fde68a
+    class sk,ag,sc,sam m
+    class ch,bk,e2e r
+    class conv,ops,map b
+    </pre>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= EVIDENCE ================= -->
+<section class="space-y-4">
+  <h2 class="text-xl font-bold">The evidence, and what it did to the argument</h2>
+  <p class="text-sm opacity-80 max-w-3xl">Seven facts. Four came out of the research doc; three I verified by hand in this session because the answer changed the shape of the options. Two of them <strong>contradict the research</strong> in a way that matters.</p>
+
+  <div class="grid gap-4 md:grid-cols-2">
+
+    <div class="fw-fact ok space-y-1">
+      <p><span class="badge badge-success badge-sm">documented</span> <strong>The dev loop survives the move.</strong></p>
+      <p class="text-sm opacity-85"><code>claude --plugin-dir /path/to/flywheel</code> loads a plugin straight from a directory — no marketplace, no install. <code>/reload-plugins</code> picks up edits in a live session. The loop is edit → reload, not edit → publish → reinstall.</p>
+    </div>
+
+    <div class="fw-fact ok space-y-1">
+      <p><span class="badge badge-success badge-sm">verified here</span> <strong>Skills <em>are</em> namespaced.</strong></p>
+      <p class="text-sm opacity-85">Built a throwaway plugin, loaded it with <code>--plugin-dir</code>, asked the session to name its own skills. It answered <span class="fw-kbd">testplug:demo</span>. So <code>flywheel-inception</code> becomes <code>flywheel:inception</code> the day it ships. Confirms the research.</p>
+    </div>
+
+    <div class="fw-fact warn space-y-1">
+      <p><span class="badge badge-warning badge-sm">verified here — corrects the research</span> <strong>Agent launch names survive unchanged.</strong></p>
+      <p class="text-sm opacity-85"><code>claude --agent agent-creator</code> resolves to the installed plugin's <span class="fw-kbd">plugin-dev:agent-creator</span> — the bare name works, namespaced also works. So every <code>herdr agent start … -- --agent flywheel-intent-conductor</code> line in both end-to-end scripts, both skills, and the conduct skill <strong>does not change</strong>. The research assumed it would.</p>
+    </div>
+
+    <div class="fw-fact warn space-y-1">
+      <p><span class="badge badge-warning badge-sm">measured — corrects the research</span> <strong>The rename is eight lines, not a blast radius.</strong></p>
+      <p class="text-sm opacity-85">Because only <em>skill</em> names move, the real diff is: 4 profile bodies (one line each), 2 <code>SKILL.md</code> frontmatter names, 1 cross-reference inside <code>flywheel-inception</code>, and <strong>1 line in <code>E2E-construction.md</code></strong>. <code>E2E-design-loop.md</code>: <strong>zero</strong>. The schemas name no skills at all. This is the fact that dissolves decision 3's stated argument.</p>
+    </div>
+
+    <div class="fw-fact info space-y-1">
+      <p><span class="badge badge-info badge-sm">verified here</span> <strong>OpenSpec schemas travel better than skills do.</strong></p>
+      <p class="text-sm opacity-85"><code>openspec schema which --all</code> reports three sources: <code>project</code>, <code>user</code> (<code>~/.local/share/openspec/schemas/</code>), and <code>package</code>. You already have a user schema installed (<span class="fw-kbd">dev.codecorral.intent@2026-03-11.0</span> — note the reverse-DNS-and-version naming convention). The record carries a <code>shadows</code> field, so <strong>a project copy shadows a user copy</strong> — the exact in-place edit loop we have today, preserved after the schemas move out. There is also <code>openspec store</code> for registering standalone OpenSpec repos machine-wide.</p>
+    </div>
+
+    <div class="fw-fact info space-y-1">
+      <p><span class="badge badge-info badge-sm">verified here</span> <strong>A one-plugin repo with its own marketplace is a proven shape — you already run one.</strong></p>
+      <p class="text-sm opacity-85"><code>plannotator@plannotator</code> is a git-sourced marketplace whose <code>marketplace.json</code> declares exactly one plugin, and it is enabled in this repo's <code>.claude/settings.json</code> today. A <code>flywheel@flywheel</code> entry would be one more line in <code>devenv.nix</code>.</p>
+    </div>
+
+    <div class="fw-fact warn space-y-1 md:col-span-2">
+      <p><span class="badge badge-warning badge-sm">verified here — constrains D1</span> <strong>willdan-marketplace cannot host a plugin that lives elsewhere.</strong></p>
+      <p class="text-sm opacity-85">All 25 entries in its <code>marketplace.json</code> use <code>"source": "./plugins/&lt;name&gt;"</code>. Its own commissioning gate enforces that: <code>marketplace_audit.py</code> resolves <code>repo / source</code>, fails when it "resolves to no directory", then sweeps <code>plugins/</code> flagging any directory not listed as an orphan — and <code>tests/test_marketplace_manifest.py</code> asserts the exact <code>./plugins/&lt;name&gt;</code> string. So "flywheel lives in its own repo <em>and</em> ships from willdan-marketplace" is not a free combination; it costs a change to the audit engine, or a copy-on-publish step. Shipping from flywheel's own marketplace costs neither.</p>
+    </div>
+
+  </div>
+
+  <div class="alert alert-soft alert-info items-start">
+    <div class="space-y-1">
+      <p><strong>What the evidence leaves you deciding.</strong></p>
+      <p class="text-sm">Not "can we afford it" — you can. The live question is whether flywheel is <em>a general method that happens to be used at Willdan</em> or <em>Willdan tooling that happens to be generic-looking</em>. That is a judgement, not a measurement, and it is the only thing D1 actually turns on. Everything below prices the consequences of each answer honestly.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= D1 ================= -->
+<section id="d1" class="fw-dec space-y-5">
+  <div class="space-y-2">
+    <p class="fw-num">Decision 1 · the repo</p>
+    <h2 class="text-2xl font-bold">Does flywheel move into its own repo?</h2>
+    <p class="fw-q">Blueprints is <em>the single home for Willdan design books</em>. Flywheel is not a design book — it is a general loop for turning intent into built code, with two OpenSpec schemas, two skills, four agent profiles, and its own samples. Today it is a guest in the books repo, and being a guest is why <code>decisions/blueprints-is-a-built-repo.md</code> had to exist at all: an agent kept reading "we're in blueprints" as "this is not construction," twice, after reading the skill.</p>
+  </div>
+
+  <div class="card card-border bg-base-100 p-4 overflow-x-auto">
+    <pre class="mermaid">
+flowchart TD
+    A["A · own repo, own marketplace<br/><b>flywheel@flywheel</b>"]
+    B["B · stay in blueprints,<br/>publish into willdan-marketplace"]
+    C["C · move into willdan-marketplace<br/>as plugins/flywheel/"]
+    D["D · stay put, never ship"]
+
+    A --> a1["schemas, samples, book-shaped<br/>docs all have a home"]
+    A --> a2["cost: new repo — devenv, CI,<br/>history migration, one more thing alive"]
+    B --> b1["zero new infra today"]
+    B --> b2["cost: audit engine change or a<br/>copy-on-publish step; guest problem stays"]
+    C --> c1["all infra exists: manifest,<br/>audit, CI, books toolchain"]
+    C --> c2["cost: schemas and sample changes<br/>are not plugin components — they'd sit<br/>at repo root, i.e. a flywheel repo<br/>wearing marketplace clothes"]
+    D --> d1["nothing to do"]
+    D --> d2["cost: contradicts the intent's own<br/>Destination; the loop stays unshippable"]
+
+    classDef lead fill:#1f3b1f,stroke:#22c55e,color:#dcfce7
+    classDef alt fill:#1e3a5f,stroke:#3b82f6,color:#e0f2fe
+    classDef bad fill:#3b1f1f,stroke:#dc2626,color:#fee2e2
+    class A lead
+    class B,C alt
+    class D bad
+    </pre>
+  </div>
+
+  <div class="fw-body space-y-4">
+    <h3 class="font-bold text-lg">The four options, with their real costs</h3>
+    <div class="grid gap-4 md:grid-cols-2">
+
+      <div class="fw-opt fw-opt-lead">
+        <div class="fw-opt-head"><span class="badge badge-primary badge-sm">recommended</span><strong>A · Its own repo, carrying its own marketplace</strong></div>
+        <div class="fw-opt-body">
+          A sibling <code>flywheel</code> repo in the bare layout, holding <code>skills/</code>, <code>agents/</code>, <code>schemas/</code>, the two sample changes as fixtures, and a root <code>.claude-plugin/marketplace.json</code> declaring one plugin. Blueprints enables <code>flywheel@flywheel</code> in <code>devenv.nix</code>; day-to-day authoring uses <code>--plugin-dir ../../flywheel/main</code>.
+          <span class="fw-cost"><strong>Why this one:</strong> it is the only option where the schemas and the sample changes have a natural home — they are not plugin components and cannot live under a <code>plugins/&lt;name&gt;/</code> directory without the marketplace audit flagging them. It also makes flywheel's own construction ordinary: the conductor runs on blueprints main, the built repo is <code>flywheel</code>, exactly like <code>rocs-kit</code>. The special case that produced <code>blueprints-is-a-built-repo.md</code> stops being a special case for flywheel.</span>
+          <span class="fw-cost"><strong>Cost, stated plainly:</strong> one more repo to keep alive — devenv, CI, its own <code>wt.toml</code> gates, a history migration (<code>git filter-repo</code> or a clean-import). Call it one bolt's worth of work, not a weekend.</span>
+        </div>
+      </div>
+
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>C · Move into willdan-marketplace</strong></div>
+        <div class="fw-opt-body">
+          <code>plugins/flywheel/</code> beside the other 25. The marketplace's own <code>CLAUDE.md</code> already calls itself "the outer loop — its plugins author and audit the design books," which is very nearly flywheel's self-description.
+          <span class="fw-cost"><strong>Genuinely cheaper:</strong> nothing new to stand up. Manifest, commissioning book, audit gate, books toolchain, CI, devenv — all present and dogfooded.</span>
+          <span class="fw-cost"><strong>Cost:</strong> the two schemas and the two sample changes have nowhere to go inside a plugin directory, so they land at the marketplace repo root — at which point you have a flywheel repo with 25 unrelated plugins in it. And flywheel becomes permanently Willdan-scoped: a catalog entry, not a thing you could hand to someone.</span>
+        </div>
+      </div>
+
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>B · Stay in blueprints, publish outward</strong></div>
+        <div class="fw-opt-body">
+          Machinery stays where it is; the plugin is assembled into <code>willdan-marketplace/plugins/flywheel/</code> at release time.
+          <span class="fw-cost"><strong>Cost:</strong> a publish step that has to be written and then kept honest, and the source of truth and the shipped copy drift the moment anyone edits the wrong one — the <code>openspec-construction</code> family already shows this failure mode, where <code>plugin.json</code> says <code>zmx</code> and <code>marketplace.json</code> says <code>cmux</code> for the same plugin. And the guest problem — the reason <code>blueprints-is-a-built-repo.md</code> exists — is entirely unaddressed.</span>
+        </div>
+      </div>
+
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>D · Stay put and drop the plugin ambition</strong></div>
+        <div class="fw-opt-body">
+          Flywheel is blueprints' internal tooling forever. <code>.claude/</code> stays the delivery mechanism; nothing is namespaced; other repos never get the loop.
+          <span class="fw-cost"><strong>Cost:</strong> directly contradicts this intent's Destination ("the plugin is marketplace-ready") and the last two handoff tasks. Worth naming only so the option is on the table rather than assumed away — if the honest answer is "I only ever want this in blueprints," everything downstream gets much simpler and two handoff tasks retire.</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="alert alert-soft alert-info items-start">
+      <div class="space-y-2">
+        <p><strong>Recommendation: A — its own repo, its own single-plugin marketplace.</strong></p>
+        <p class="text-sm">The deciding argument is not cost, it is <em>fit</em>. Flywheel has four kinds of content — plugin components, OpenSpec schemas, sample changes, and a method — and only a repo holds all four. Both alternatives that avoid standing up a repo end up recreating one: C by putting flywheel's non-plugin content at the marketplace root, B by maintaining two copies of the same tree. The <code>plannotator@plannotator</code> shape is already installed and working on this machine, so the distribution path is proven, not theoretical.</p>
+        <p class="text-sm"><strong>The dispatch-to-cloud question rides on this.</strong> It is filed as "becomes an ADR in the flywheel repo once flywheel has one." Answer A and that task unblocks into a real destination; answer B, C, or D and it needs a new home named.</p>
+      </div>
+    </div>
+  </div>
+
+  <form class="fw-form space-y-3" data-lavish-question="d1-own-repo" onsubmit="return fwQueue(event, 'D1 — does flywheel move into its own repo', 'd1-own-repo');">
+    <p class="font-bold">Your answer — D1</p>
+    <label class="fw-choice"><input type="radio" name="d1" value="own-repo" class="radio radio-sm radio-primary mt-1"><span><strong>A — its own repo, carrying its own single-plugin marketplace.</strong> As recommended.</span></label>
+    <label class="fw-choice"><input type="radio" name="d1" value="into-marketplace" class="radio radio-sm mt-1"><span><strong>C — move into <code>willdan-marketplace</code></strong> as <code>plugins/flywheel/</code>. Cheaper; accept the scoping.</span></label>
+    <label class="fw-choice"><input type="radio" name="d1" value="stay-publish" class="radio radio-sm mt-1"><span><strong>B — stay in blueprints, publish outward</strong> into the marketplace at release time.</span></label>
+    <label class="fw-choice"><input type="radio" name="d1" value="stay-put" class="radio radio-sm mt-1"><span><strong>D — stay put, drop the plugin ambition.</strong> Flywheel is blueprints' internal tooling.</span></label>
+    <label class="fw-choice"><input type="radio" name="d1" value="other" class="radio radio-sm mt-1"><span>Something else — in the notes.</span></label>
+    <textarea name="notes" class="textarea textarea-bordered w-full" rows="3" placeholder="Rationale, the repo's name if A, or a different cut entirely"></textarea>
+    <button type="submit" class="btn btn-primary btn-sm">Queue this answer</button>
+  </form>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= D2 ================= -->
+<section id="d2" class="fw-dec space-y-5">
+  <div class="space-y-2">
+    <p class="fw-num">Decision 2 · the manifest</p>
+    <h2 class="text-2xl font-bold">What travels, and what stays in blueprints?</h2>
+    <p class="fw-q">Assuming something moves, here is every piece with a recommendation. The shape of the answer is short — <strong>the machinery travels; the record and the book stay</strong> — and the one row that is genuinely arguable is the book, which gets its own sub-question below.</p>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="table table-zebra fw-tbl">
+      <thead>
+        <tr><th>Piece</th><th>Size</th><th class="whitespace-nowrap">Recommendation</th><th>Why</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>.claude/skills/flywheel-inception/</code><br><code>.claude/skills/flywheel-construction/</code></td>
+          <td>139L<br>110L</td>
+          <td><span class="badge badge-success badge-sm">travels</span></td>
+          <td>They <em>are</em> the plugin. Land as <code>skills/inception/</code> and <code>skills/construction/</code> — dropping the <code>flywheel-</code> prefix, since the namespace supplies it: <code>flywheel:inception</code> reads better than <code>flywheel:flywheel-inception</code>.</td>
+        </tr>
+        <tr>
+          <td><code>.claude/agents/flywheel-{intake,intent-conductor,design-session,bolt-conductor}.md</code></td>
+          <td>97L total</td>
+          <td><span class="badge badge-success badge-sm">travels</span></td>
+          <td>"A marketplace plugin ships the skills and the profiles together, since a skill without its profile leaves the role unassigned" — <code>decisions/agent-profiles.md</code>. Keep the file names as they are: the bare <code>--agent</code> name still resolves, so no launch line anywhere changes.</td>
+        </tr>
+        <tr>
+          <td><code>openspec/schemas/flywheel-intent/</code><br><code>openspec/schemas/flywheel-bolt/</code></td>
+          <td>251L<br>135L</td>
+          <td><span class="badge badge-success badge-sm">travels</span></td>
+          <td>Published as <strong>user schemas</strong> into <code>~/.local/share/openspec/schemas/</code>. Blueprints keeps resolving them by name, and because project schemas shadow user schemas, a working copy under <code>openspec/schemas/</code> is still available for in-place editing when you want it. This is the one component where the split makes distribution <em>better</em> than it is today.</td>
+        </tr>
+        <tr>
+          <td><code>openspec/changes/rocs-record-split/</code><br><code>openspec/changes/bolt-rocs-records/</code></td>
+          <td>samples</td>
+          <td><span class="badge badge-success badge-sm">travels</span></td>
+          <td>They are fixtures that teach the schemas, not live work — <code>decisions/three-schemas.md</code> calls them "the sample intent" and "the sample bolt". They belong beside the schemas they demonstrate. <em>Alternative:</em> leave them so the OpenSpec board keeps showing worked examples.</td>
+        </tr>
+        <tr>
+          <td><code>openspec/changes/flywheel/</code> — this intent, its 19 decisions, its sessions</td>
+          <td>the record</td>
+          <td><span class="badge badge-warning badge-sm">stays</span></td>
+          <td>"One intent = one OpenSpec change on blueprints main" is the loop's own constitutional rule. Moving the change that <em>establishes</em> the rule would break it. Blueprints stays the coordination substrate for every repo's intents, flywheel's included.</td>
+        </tr>
+        <tr>
+          <td><code>openspec/changes/add-flywheel-loops/</code></td>
+          <td>landed</td>
+          <td><span class="badge badge-warning badge-sm">stays</span></td>
+          <td>A landed spec-driven change against blueprints. History does not follow the code out.</td>
+        </tr>
+        <tr>
+          <td>The two E2E scripts under <code>sessions/</code></td>
+          <td>101L + 125L</td>
+          <td><span class="badge badge-warning badge-sm">stays</span></td>
+          <td>"A closed session directory is never rewritten, because it is the trail" — <code>decisions/session-directories.md</code>. After the runs harden them, the plugin gets a <em>walkthrough</em> derived from them; the scripts themselves stay as the record of what was run.</td>
+        </tr>
+        <tr>
+          <td><code>books/CLAUDE.md</code>, root <code>CLAUDE.md</code></td>
+          <td>conventions</td>
+          <td><span class="badge badge-warning badge-sm">stays</span></td>
+          <td>Blueprints' own authoring conventions. The two in-flight handoff proposals against them are unaffected by the split.</td>
+        </tr>
+        <tr>
+          <td><code>.claude/commands/opsx/*</code>, the ten <code>openspec-*</code> skills, the three hooks</td>
+          <td>1723L + ~1800L</td>
+          <td><span class="badge badge-warning badge-sm">stays</span></td>
+          <td>Generic OpenSpec and books tooling. Zero references to any flywheel name. Not flywheel's to take.</td>
+        </tr>
+        <tr>
+          <td><code>books/aidlc-design/</code></td>
+          <td>23 chapters<br>4342L</td>
+          <td><span class="badge badge-info badge-sm">sub-question ↓</span></td>
+          <td>The only genuinely arguable row.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="fw-body space-y-4">
+    <h3 id="d2-book" class="font-bold text-lg fw-dec">Sub-question — does the design book go with it?</h3>
+    <p class="text-sm opacity-85 max-w-3xl">There is precedent both ways. <code>willdan-marketplace</code> carries its own <code>books/commissioning/</code>, and blueprints' own <code>CLAUDE.md</code> says per-target commissioning books stay co-located with the repo they commission — so a non-blueprints repo carrying a book is established practice. Against that: <code>aidlc-design</code> is <strong>23 chapters and 4342 lines</strong>, and the flywheel is only part of it. Phases, foundations, system design, agent workspaces, the worktrunk substrate, session management, commissioning, contracts, verifications — none of that is the flywheel.</p>
+
+    <div class="grid gap-4 md:grid-cols-3">
+      <div class="fw-opt fw-opt-lead">
+        <div class="fw-opt-head"><span class="badge badge-primary badge-sm">recommended</span><strong>Book stays whole</strong></div>
+        <div class="fw-opt-body">
+          <code>books/aidlc-design</code> stays in blueprints, unchanged in scope. The flywheel repo carries a README and the plugin's own docs, and <em>cites</em> the book chapters the way every other book cites its sources.
+          <span class="fw-cost"><strong>Why:</strong> the book is the AI-driven-development method for Willdan, of which the flywheel is one mechanism. Roughly four of its twenty-three chapters are loop chapters. And the three in-flight Writeback tasks target exactly those chapters — keeping the book put means the split does not stall the rewrites.</span>
+          <span class="fw-cost"><strong>Cost:</strong> the plugin ships without its design book in the same tree. Someone reading the flywheel repo has to follow a citation to find the design.</span>
+        </div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>Whole book travels</strong></div>
+        <div class="fw-opt-body">
+          <code>books/aidlc-design/</code> moves to the flywheel repo entire.
+          <span class="fw-cost"><strong>Cost:</strong> the new repo needs the entire books toolchain — <code>preview.py</code>, <code>check-mermaid.mjs</code>, the mdbook devenv, the Pages workflow, the landing-page generator, the <code>wt.toml</code> gates. Blueprints' landing page loses its method book. And nineteen chapters that have nothing to do with the flywheel emigrate with it.</span>
+        </div>
+      </div>
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>Split the book</strong></div>
+        <div class="fw-opt-body">
+          Loop chapters (<code>conducting</code>, <code>authoring-capabilities</code>, <code>spec-driven-construction</code>) become a new <code>books/flywheel/</code> in the flywheel repo; the rest stays.
+          <span class="fw-cost"><strong>Cost:</strong> the same toolchain bill as the option above, and now two books that cross-reference each other across a repo boundary — plus it lands mid-rewrite, since all three of those chapters are open Writeback tasks right now.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form class="fw-form space-y-3" data-lavish-question="d2-travels" onsubmit="return fwQueue(event, 'D2 — what travels and what stays', 'd2-travels');">
+    <p class="font-bold">Your answer — D2</p>
+    <label class="fw-choice"><input type="radio" name="d2" value="machinery-only" class="radio radio-sm radio-primary mt-1"><span><strong>Machinery travels; record and book stay.</strong> The table as recommended, and the book stays whole in blueprints.</span></label>
+    <label class="fw-choice"><input type="radio" name="d2" value="machinery-plus-book" class="radio radio-sm mt-1"><span>Table as recommended, <strong>but the whole <code>aidlc-design</code> book travels too</strong>.</span></label>
+    <label class="fw-choice"><input type="radio" name="d2" value="machinery-plus-split-book" class="radio radio-sm mt-1"><span>Table as recommended, <strong>and split the book</strong> — loop chapters go, the rest stays.</span></label>
+    <label class="fw-choice"><input type="radio" name="d2" value="amended" class="radio radio-sm mt-1"><span><strong>Amend specific rows</strong> — say which in the notes (schemas, samples, E2E scripts are the likely ones).</span></label>
+    <textarea name="notes" class="textarea textarea-bordered w-full" rows="3" placeholder="Row-level corrections, or where the line should actually fall"></textarea>
+    <button type="submit" class="btn btn-primary btn-sm">Queue this answer</button>
+  </form>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= D3 ================= -->
+<section id="d3" class="fw-dec space-y-5">
+  <div class="space-y-2">
+    <p class="fw-num">Decision 3 · the sequence</p>
+    <h2 class="text-2xl font-bold">Does the split land before or after the two end-to-end runs?</h2>
+    <p class="fw-q">This was framed as a rename question: ship as a plugin and every skill invocation is renamed, so the sequencing decides whether the E2E scripts get renamed once or twice. <strong>Measured, that argument does not hold.</strong> The rename touches one line of one script and zero lines of the other. Sequencing has to be decided on something real, and there is something real underneath it.</p>
+  </div>
+
+  <div class="fw-evi space-y-2">
+    <p class="opacity-85">What the runs are actually for, from <code>tasks.md</code>:</p>
+    <ul class="opacity-85">
+      <li>"one intent through the design loop end to end … <strong>every command works as written, or the skill, the profile, and the instructions move</strong>"</li>
+      <li>"one released handoff through construction end to end — <strong>the bolt loop under real load</strong>"</li>
+    </ul>
+    <p class="opacity-85">So the runs' product is <em>edits to the skills, the profiles, and the schema instructions</em>. That is the pivot: the runs are going to churn exactly the files the split moves. Packaging correctness — do the skills load, do the profiles resolve, does <code>${CLAUDE_PLUGIN_ROOT}</code> point at the right place — is a checklist you run once after installing, not something an end-to-end run discovers.</p>
+  </div>
+
+  <div class="card card-border bg-base-100 p-4 overflow-x-auto">
+    <pre class="mermaid">
+flowchart LR
+    now(["today"]) --> rn["bolt: dispatch rename<br/><i>already the unblocking bolt</i>"]
+    rn --> r1["run 1 — design loop<br/>§1–§3 · churns skills+profiles"]
+    r1 --> gate{"phase gate"}
+    gate --> r2["run 2 — construction<br/>§4–§7"]
+    r2 --> hard["6 hardening handoffs<br/>land in blueprints"]
+    hard --> split["bolt: split + publish<br/><i>one motion · rename once</i>"]
+    split --> done(["flywheel@flywheel"])
+
+    rn -.->|"option A: split here instead"| early["new repo, CI, history migration,<br/>7 handoffs retarget — all<br/><i>before</i> anything is proven"]
+
+    classDef s fill:#1f3b1f,stroke:#22c55e,color:#dcfce7
+    classDef g fill:#3b2f1f,stroke:#d97706,color:#fde68a
+    classDef alt fill:#1e3a5f,stroke:#3b82f6,color:#e0f2fe
+    class rn,r1,r2,hard,split s
+    class gate g
+    class early alt
+    class now,done alt
+    </pre>
+  </div>
+
+  <div class="fw-body space-y-4">
+    <div class="grid gap-4 md:grid-cols-3">
+
+      <div class="fw-opt fw-opt-lead">
+        <div class="fw-opt-head"><span class="badge badge-primary badge-sm">recommended</span><strong>After — runs first, then split and publish as one bolt</strong></div>
+        <div class="fw-opt-body">
+          The dispatch rename lands now in blueprints as planned (it is already the bolt both runs are blocked on). The runs go. The hardening handoffs they generate land in blueprints. Then <em>one</em> bolt does the split, the namespace rename, and the publish together.
+          <span class="fw-cost"><strong>Why:</strong> the runs churn the files the split moves, so moving them first means every run-driven fix lands in a repo whose gates, CI, and conventions are themselves brand new and unproven. Moving <em>settled</em> files is a mechanical <code>git filter-repo</code>; moving files that are still being edited is a merge problem. And the split-and-publish being one motion is what makes the namespace rename happen exactly once — which was the goal the "before" argument was reaching for.</span>
+          <span class="fw-cost"><strong>Cost:</strong> the runs validate the loop in its current packaging, not its shipped packaging. Mitigation is a named acceptance checklist on the split bolt: install <code>flywheel@flywheel</code> clean, launch all four profiles, invoke both skills by their namespaced names, resolve both schemas from the user source, confirm no absolute path survived. That is a checklist item, not a research task.</span>
+          <span class="fw-cost"><strong>Real risk:</strong> a decision made and not landed rots. If the runs slip, the split slips with them. Guard it by filing the split as a Handoff task <em>now</em>, blocked by the runs, so it is on the board rather than in someone's head.</span>
+        </div>
+      </div>
+
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>Before — split, then run</strong></div>
+        <div class="fw-opt-body">
+          The split bolt absorbs the dispatch rename, stands up the flywheel repo, and the runs then exercise the loop in its final home under its shipped names.
+          <span class="fw-cost"><strong>Genuine benefit:</strong> the runs prove the shipping path, not just the practice. Nothing is proven twice, and the decision cannot rot.</span>
+          <span class="fw-cost"><strong>Cost:</strong> puts a repo creation — devenv, CI, <code>wt.toml</code> gates, history migration, marketplace manifest, and seven handoff tasks retargeted — directly in front of the two runs that are the intent's whole de-risking step. The runs are what tell you whether the loop works at all; the split is what tells you where it lives. Doing the second before the first spends the schedule on the less informative one.</span>
+        </div>
+      </div>
+
+      <div class="fw-opt">
+        <div class="fw-opt-head"><strong>Between — split now, publish after</strong></div>
+        <div class="fw-opt-body">
+          Move the files to the flywheel repo immediately but keep loading them the old way (symlinks into <code>.claude/</code>), so nothing is namespaced yet; ship as a plugin only after the runs.
+          <span class="fw-cost"><strong>Cost:</strong> two migrations to buy one thing that measured at eight lines. It also depends on <code>.claude/skills/&lt;name&gt;</code> resolving through a symlink, which is <em>not</em> verified and would need checking first. This option was worth constructing to see whether decoupling helped; it does not, because the rename it defers is not expensive enough to be worth deferring.</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="alert alert-soft alert-warning items-start">
+      <div class="space-y-2">
+        <p><strong>The honest summary of D3.</strong></p>
+        <p class="text-sm">The stated reason to split early — avoid renaming twice — is worth about eight lines, and one of those lines is in an end-to-end script. The unstated reason to split early is better: <em>momentum, and the decision not rotting</em>. The reason to split late is that the runs exist to change the exact files the split moves, and you would rather move a proven tree than a moving one. If you weight momentum above that, "before" is a defensible answer and I would not argue hard against it — but I would then insist the split bolt <em>also</em> carries the dispatch rename, so the profiles are not renamed in blueprints and then moved.</p>
+      </div>
+    </div>
+  </div>
+
+  <form class="fw-form space-y-3" data-lavish-question="d3-sequence" onsubmit="return fwQueue(event, 'D3 — before or after the two end-to-end runs', 'd3-sequence');">
+    <p class="font-bold">Your answer — D3</p>
+    <label class="fw-choice"><input type="radio" name="d3" value="after" class="radio radio-sm radio-primary mt-1"><span><strong>After.</strong> Runs first; split and publish as one bolt, with the acceptance checklist named on it. File the split as a blocked Handoff task now.</span></label>
+    <label class="fw-choice"><input type="radio" name="d3" value="before" class="radio radio-sm mt-1"><span><strong>Before.</strong> Split first — and the split bolt absorbs the dispatch rename so the profiles move once.</span></label>
+    <label class="fw-choice"><input type="radio" name="d3" value="between" class="radio radio-sm mt-1"><span><strong>Between.</strong> Move the files now behind symlinks; namespace and publish after the runs.</span></label>
+    <label class="fw-choice"><input type="radio" name="d3" value="other" class="radio radio-sm mt-1"><span>Something else — in the notes.</span></label>
+    <textarea name="notes" class="textarea textarea-bordered w-full" rows="3" placeholder="Sequencing, or what would change your mind"></textarea>
+    <button type="submit" class="btn btn-primary btn-sm">Queue this answer</button>
+  </form>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= CONSEQUENCES ================= -->
+<section class="space-y-4">
+  <h2 class="text-xl font-bold">What each answer does to the task list</h2>
+  <p class="text-sm opacity-80 max-w-3xl">So you can see the blast radius on <code>tasks.md</code> before you answer rather than after. Nothing here is written by this session — the conductor folds it in.</p>
+
+  <div class="overflow-x-auto">
+    <table class="table table-zebra fw-tbl">
+      <thead><tr><th>If you answer</th><th>Then</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>D1 = A</strong> (own repo)</td>
+          <td>The deferred cloud-dispatch task unblocks — it becomes an ADR in the flywheel repo and can be filed. A new Handoff task appears: stand up the repo, migrate history, write its marketplace manifest. The final publish task retargets from <code>willdan-marketplace</code> to <code>flywheel</code>'s own marketplace. The <code>openspec-construction</code> retirement task stays pointed at <code>willdan-marketplace</code> either way.</td>
+        </tr>
+        <tr>
+          <td><strong>D1 = C</strong> (into the marketplace)</td>
+          <td>Same publish task, unchanged target. The cloud-dispatch ADR needs a home named — probably the marketplace repo. A new task appears for where the schemas and sample changes live, since they cannot sit under <code>plugins/</code>.</td>
+        </tr>
+        <tr>
+          <td><strong>D1 = D</strong> (stay put)</td>
+          <td>Two Handoff tasks retire: the flywheel plugin ship, and arguably the <code>openspec-construction</code> retirement. The cloud-dispatch task needs re-filing or dropping. D2 and D3 become moot.</td>
+        </tr>
+        <tr>
+          <td><strong>D2 = book stays</strong></td>
+          <td>The three Writeback tasks are untouched and can proceed independently of the split — which is most of the reason to prefer it.</td>
+        </tr>
+        <tr>
+          <td><strong>D2 = book travels</strong></td>
+          <td>The three Writeback tasks retarget to the new repo, and a Handoff task appears for the books toolchain there. The writebacks then block on the repo existing, which couples D2 to D3.</td>
+        </tr>
+        <tr>
+          <td><strong>D3 = after</strong></td>
+          <td>One new Handoff task, blocked by both runs, carrying split + rename + publish + the acceptance checklist. The existing publish task folds into it. Nothing else moves.</td>
+        </tr>
+        <tr>
+          <td><strong>D3 = before</strong></td>
+          <td>The dispatch-rename bolt is rewritten as a split-and-rename bolt, and both run tasks re-point their blocker at it. Six hardening handoffs retarget their built repo from <code>willdan-blueprints</code> to <code>flywheel</code>. Both E2E scripts get their namespaced-name edit now.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ================= CLOSING ================= -->
+<section class="space-y-4">
+  <h2 class="text-xl font-bold">What happens with your answers</h2>
+  <p class="text-sm opacity-85 max-w-3xl">Each answer you queue and send closes its decision. This session then writes one decision draft per closed decision into <code>sessions/2026-08-06-flywheel-own-repo/</code>, plus a report of what closed and what stayed open, and hands both to the intent conductor — which finalizes the records into <code>decisions/</code>, gives this surface a row in <code>design.md</code>, checks the task line, and appends the handoff and writeback tasks the decisions imply. Nothing here moves; the conductor catalogues it where it sits.</p>
+  <p class="text-sm opacity-70 max-w-3xl">Annotations anywhere on the page count the same as a queued answer — a note on an option, a strike through a recommendation, or a correction to a row in the travel table. Two things on this page are worth contradicting if you disagree: the claim that the namespace rename is cheap, and the claim that the design book should stay put.</p>
+  <p class="text-xs opacity-60 max-w-3xl">One thing this session did <em>not</em> verify and flags for the split bolt: whether <code>/plugin marketplace add &lt;local path&gt;</code> copies rather than symlinks, which a community issue reports breaks relative sources. It does not affect the <code>--plugin-dir</code> development loop, only the local test of the shipping path.</p>
+</section>
+
+</main>
+
+<script>
+function fwQueue(event, title, key) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const data = new FormData(form);
+  const answer = data.get(form.querySelector('input[type=radio]').name);
+  const notes = (data.get('notes') || '').toString().trim();
+  if (!answer && !notes) return false;
+  const label = answer
+    ? form.querySelector('input[value="' + answer + '"]').closest('label').innerText.trim()
+    : '(no option selected)';
+  let prompt = title + ' — chose: ' + answer + '\n' + label;
+  if (notes) prompt += '\n\nNotes: ' + notes;
+  window.lavish.queuePrompt(prompt, {
+    tag: 'decision',
+    text: title + ': ' + (answer || 'notes only'),
+    element: form,
+    queueKey: key,
+    data: { question: key, answer: answer, notes: notes }
+  });
+  return false;
+}
+</script>
+
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.15.0/dist/mermaid.esm.min.mjs";
+
+  const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  const paint = document.createElement("canvas").getContext("2d");
+  function toRgba(color) {
+    paint.clearRect(0, 0, 1, 1);
+    paint.fillStyle = "#000";
+    paint.fillStyle = color;
+    paint.fillRect(0, 0, 1, 1);
+    return paint.getImageData(0, 0, 1, 1).data;
+  }
+  function compositeRgba(foreground, background) {
+    const fa = foreground[3] / 255;
+    const ba = background[3] / 255;
+    const alpha = fa + ba * (1 - fa);
+    if (alpha === 0) return [0, 0, 0, 0];
+    return [
+      (foreground[0] * fa + background[0] * ba * (1 - fa)) / alpha,
+      (foreground[1] * fa + background[1] * ba * (1 - fa)) / alpha,
+      (foreground[2] * fa + background[2] * ba * (1 - fa)) / alpha,
+      alpha * 255,
+    ];
+  }
+  function pageIsDark() {
+    const root = document.documentElement;
+    const rootBackground = toRgba(getComputedStyle(root).backgroundColor);
+    const bodyBackground = document.body ? toRgba(getComputedStyle(document.body).backgroundColor) : [0, 0, 0, 0];
+    const [r, g, b, a] = compositeRgba(bodyBackground, rootBackground);
+    if (a > 0) return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 < 0.5;
+    const cs = getComputedStyle(root).colorScheme;
+    if (cs.includes("dark") && !cs.includes("light")) return true;
+    if (cs.includes("light") && !cs.includes("dark")) return false;
+    return darkQuery.matches;
+  }
+
+  const diagrams = [...document.querySelectorAll(".mermaid")].map((el) => ({ el, src: el.textContent }));
+  let applied;
+  let rendering = false;
+  let queued = false;
+  function queueRender() {
+    queued = true;
+    if (rendering) return;
+    void render();
+  }
+  async function render() {
+    rendering = true;
+    try {
+      while (queued) {
+        queued = false;
+        const theme = pageIsDark() ? "dark" : "default";
+        if (theme === applied) continue;
+        mermaid.initialize({ startOnLoad: false, theme, securityLevel: "strict" });
+        for (const { el, src } of diagrams) {
+          el.removeAttribute("data-processed");
+          el.textContent = src;
+        }
+        try {
+          await mermaid.run({ nodes: diagrams.map((d) => d.el) });
+        } catch (error) {
+          console.error("Mermaid diagram render failed:", error);
+          return;
+        }
+        applied = theme;
+      }
+    } finally {
+      rendering = false;
+      if (queued) queueRender();
+    }
+  }
+  if (document.readyState === "complete") queueRender();
+  else window.addEventListener("load", queueRender, { once: true });
+  const themeObserver = new MutationObserver(queueRender);
+  for (const el of [document.documentElement, document.body]) {
+    if (!el) continue;
+    themeObserver.observe(el, { attributes: true, attributeFilter: ["data-theme", "class", "style"] });
+  }
+  document.addEventListener("change", queueRender, true);
+  document.addEventListener("transitionend", ({ propertyName }) => {
+    if (propertyName === "background-color") queueRender();
+  }, true);
+  darkQuery.addEventListener("change", queueRender);
+</script>
+</body>
+</html>
