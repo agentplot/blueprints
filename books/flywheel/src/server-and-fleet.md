@@ -110,10 +110,10 @@ other: the binding names a checkout path, and chapter merges go
 through that repo's own gate. A binding needs no routing entry: its
 cards default to the fleet's own address, and a `runs_on:` override
 exists only for a system pinned to a specific machine. The book's
-repo is also the records' home: the loops cut their `intent/<slug>`
-and `bolt/<slug>` record branches there with worktrunk, and merge
-them through its gate — a built repo's `openspec/` never holds a
-loop's record.
+repo is also the records' home: the loops write their `intent-<slug>`
+and `bolt-<slug>` records onto its main as the work happens, each
+write a commit through its gate — a built repo's `openspec/` never
+holds a loop's record.
 
 ## Multi-host
 

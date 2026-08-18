@@ -88,11 +88,11 @@ org's choice — a dedicated blueprints repo that gathers the design
 books, or the built repo itself — and the records follow the book,
 never the other way: the loops' records live beside the books, and a
 built repo that does not hold the book holds only its construction
-changes and its implemented specs. The record's work rides branch
-`intent/<slug>` in the book's repo, a worktrunk worktree like any
-built repo's, and the operator's milestone close triggers the same
-archive-and-merge sequence through that repo's gate that lands a bolt
-in its built repo.
+changes and its implemented specs. The record is written onto the
+book repo's main as the sessions work — the book is a shared document
+every session and the planner read live, so nothing of it waits on a
+branch — and the operator's milestone close triggers the record's
+archive, an ordinary commit through the repo's gate.
 
 | Moment | What happens | By |
 |---|---|---|
@@ -107,14 +107,14 @@ Two kinds, different homes:
 
 | Change | Born | Dies |
 |---|---|---|
-| the bolt's record — `openspec/changes/bolt-<slug>/` beside the book: the charter `bolt.md` plus one `units/<slug>.md` per approved unit, bound to a `bolt-*` schema | the charter at scaffold, from the milestone's description; each unit artifact at its expansion, frozen by the approval | archived after the landing the close releases, merged through the book repo's gate |
+| the bolt's record — `openspec/changes/bolt-<slug>/` beside the book: the charter `bolt.md` plus one `units/<slug>.md` per approved unit, bound to a `bolt-*` schema | the charter at scaffold, from the milestone's description; each unit artifact at its expansion, frozen by the approval | archived after the landing the close releases |
 | one spec-driven change per work item, in the built repo | written by the spec session from the plan task and its cited chapters | archived by the loop at the item's merge — `openspec/specs/` advances in the same motion |
 
 Record directories mirror their milestones — `intent-<slug>`,
-`bolt-<slug>` — and ride branches named like them, `intent/<slug>` and
-`bolt/<slug>` in the book's repo. One operator gesture ends both
-sides: the milestone close lands the built repo's bolt branch on its
-main and triggers the record's archive and merge beside the book.
+`bolt-<slug>` — and live on the book repo's main. Construction is the
+only side with a branch layer: work accumulates on the built repo's
+`bolt/<slug>` until the milestone close lands it. The same close
+triggers the record's archive beside the book.
 
 The per-item archive is what keeps the next planning run honest: specs
 move at merge time, not at landing time, so a half-landed bolt already
