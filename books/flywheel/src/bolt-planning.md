@@ -45,6 +45,15 @@ since each repo runs its own change through its own merge gate,
 while a unit in a one-repo system holds only as many changes as its
 work has genuinely separate commits.
 
+The book is the usual source, not the only one. Some design never
+belongs in a book — a site's look settled through mock-up rounds, a
+build shaped by an intent's session artifacts — and that work still
+reaches construction only as plan cards. A run scoped by the
+operator's ask may take an intent's session deliverables as its
+sources, and its cards cite those artifacts the way a book-sourced
+card cites chapters. The route is the same either way: cards at
+Backlog, the operator's approval, expansion.
+
 ```mermaid
 flowchart LR
     book["design book"] --> plannerAgent["bolt planner"]
