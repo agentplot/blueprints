@@ -88,11 +88,13 @@ org's choice — a dedicated blueprints repo that gathers the design
 books, or the built repo itself — and the records follow the book,
 never the other way: the loops' records live beside the books, and a
 built repo that does not hold the book holds only its construction
-changes and its implemented specs. The record is written onto the
-book repo's main as the sessions work — the book is a shared document
-every session and the planner read live, so nothing of it waits on a
-branch — and the operator's milestone close triggers the record's
-archive, an ordinary commit through the repo's gate.
+changes and its implemented specs. The intent loop cuts every design
+session's [worktree](sessions.md) from the book repo, so a session's
+records and its chapter rewrites ride one `sess/*` branch through one
+merge gate: the record waits on that branch exactly as long as the
+session runs, and the loop's merge at collection is what makes it
+live. The operator's milestone close triggers the record's archive, an
+ordinary commit through the same gate.
 
 | Moment | What happens | By |
 |---|---|---|
@@ -111,10 +113,13 @@ Two kinds, different homes:
 | one spec-driven change per work item, in the built repo | written by the spec session from the plan task and its cited chapters | archived by the loop at the item's merge — `openspec/specs/` advances in the same motion |
 
 Record directories mirror their milestones — `intent-<slug>`,
-`bolt-<slug>` — and live on the book repo's main. Construction is the
-only side with a branch layer: work accumulates on the built repo's
-`bolt/<slug>` until the milestone close lands it. The same close
-triggers the record's archive beside the book.
+`bolt-<slug>` — and live beside the book. Nothing reaches the book
+repo's main except through its gate; the two sides differ only in how
+long the branch lives. A design session's `sess/*` lives as long as
+the session and merges at collection. Construction's spans a whole
+bolt: work accumulates on the built repo's `bolt/<slug>` until the
+milestone close lands it, and the same close triggers the record's
+archive beside the book.
 
 The per-item archive is what keeps the next planning run honest: specs
 move at merge time, not at landing time, so a half-landed bolt already

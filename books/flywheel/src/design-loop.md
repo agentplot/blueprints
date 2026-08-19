@@ -94,13 +94,17 @@ A chapter the session made stale is that session's to rewrite: in
 full, in destination voice, through the session's worktree and the
 book repo's merge gate, before the session settles. The book carries
 no iteration history. Every design type launches with a
-[worktree](sessions.md) so the write always has somewhere to land.
+[worktree](sessions.md) of the book repo, so the write always has
+somewhere to land and the chapter travels with the record that
+occasioned it.
 
-No session queues writing work for what it itself settled. Work is
-queued only where the settlement obligates something past the writer's
-own close — a chapter in a repo the session holds no worktree for, or
-a contradiction the write reveals — and that returns to the intent as
-an ordinary queued item.
+No session queues writing work for what it itself settled. Its own
+book is never out of reach — the worktree is cut from the repo that
+holds it. Work is queued only where the settlement obligates something
+past the writer's own close: a chapter in a different book, another
+intent's or another fleet's, whose repo the session holds no worktree
+for, or a contradiction the write reveals. That returns to the intent
+as an ordinary queued item.
 
 ## What the design loop does not do
 
