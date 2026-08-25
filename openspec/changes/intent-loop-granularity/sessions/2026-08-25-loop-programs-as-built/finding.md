@@ -258,9 +258,42 @@ learned the same lesson the hard way — `_flywheel_intent.py:476`:
 > live: the site intent's #301 and #302). The batch's first item number
 > makes the name per-batch
 
-**Consequence for the granularity question: pane names do not collide
-between units. The reuse-by-name rule is not an obstacle to per-unit
-processes, and it is not what serializes them today either.**
+**Two of the bolt loop's names are flatly milestone-scoped and DO
+collide.** `session_name("scaffold", self.params.slug)` (`:1851`) and
+`session_name("land", f"{self.params.slug}{suffix}")` (`:2866`) carry the
+milestone slug and nothing finer — correctly, since both are bolt-wide
+acts. The drive stages are safe: `batch.slug` is the change name, or
+`f"{slug}-{rest[0].number}"` for unparented items (`:792-794`), unique
+either way.
+
+**Why that matters more than it looks.** The reuse namespace is the whole
+herdr roster on the host — `HerdrRunner.agents()`, `_flywheel_sessions.py:290-299`,
+is `{name: row}` over `herdr agent list` with no org, milestone or repo
+qualifier — and the reuse path *sends no work order*
+(`_flywheel_sessions.py:303-305`):
+
+> Idempotent: an agent already under this name is reused, and its
+> work order is **NOT** re-sent.
+
+So two processes reaching `scaffold-<slug>` produce one session and one
+prompt, and the second process supervises and records an outcome for work
+it never dispatched. **That exact failure has already happened once**, on
+the intent side — `_flywheel_intent.py:482-488`:
+
+> a name shared BETWEEN batches did the opposite: round
+> two reused round one's idle pane, the reuse path sent no new order,
+> and the loop marked work settled that no session ever saw (observed
+> live: the site intent's #301 and #302).
+
+The intent loop's fix was to push the name one level finer, to the
+batch's first item number (`:490-492`). The bolt loop has not had that
+fix for its two bolt-wide names, and does not need it while one process
+owns the milestone.
+
+**Consequence for the granularity question:** the drive stages' names are
+not an obstacle to per-unit processes. `scaffold-<slug>` and `land-<slug>`
+are — and they are the names of the two acts §3.3–3.5 already show cannot
+be a unit's anyway. The collision is the same fact stated in the naming.
 
 ### 2.6 Where it already runs in parallel — and where it serializes
 
@@ -281,6 +314,26 @@ That is the whole of the serialization. It is **not** the merge gate:
 serializes —
 
 > Serialization is the caller's — `run` merges in a plain loop.
+
+**The two loops disagree about whether the batch parent is a batching
+key, and this matters for the question.** The bolt loop's `analyse`
+(`:752`) groups by `item.parent_batch` — the unit — then splits by change
+(§2.2). The intent loop's `batch_ready` (`_flywheel_intent.py:454-473`)
+does not:
+
+```python
+        key = (kind, item.number if TYPES[kind].alone else -1)
+```
+
+Type, plus a disambiguator for the types that ride alone, and nothing
+else. `IntentInbox.ready_units` is computed (`_flywheel_inbox.py:894-897`)
+and read nowhere in `_flywheel_intent.py`; `item.parent_batch` is read
+once in the whole module, for a report line (`:815`). So **two
+elaborations' ready items of the same type land in one intent session
+today.** On the design side the parallelism axis is the *type*; on the
+construction side it is the *unit-then-change*. Whatever granularity is
+chosen should be chosen knowing the two loops do not currently agree on
+what the grouping object is.
 
 **The intent loop, in the same repo, already does the other thing.**
 `_flywheel_intent.py:951-962`:
@@ -403,16 +456,48 @@ Each cycle's snapshot is repo-wide, not milestone-wide, before filtering:
   `sub_issues` GET per unit/elaboration (`:1544`), and one `blocked_by`
   GET **per open plan card repo-wide** (`:1562-1567`).
 
-N per-unit processes multiply all of that by N, every cycle, against one
-App token whose retry discipline is a single shared wrapper
-(`_flywheel_gh.py`). The design record already prices a false-positive
-process start as cheap (`loop-programs.md:46-49`); it does not price N
-concurrent full-repo snapshots.
+`snapshot()` is called at least twice per cycle — `_flywheel_bolt_loop.py:3125`,
+again at `:3136` if any guard wrote, and once more per run at `:3323`.
 
-### 3.7 Herdr panes and the session runner — **not a problem** (§2.5)
+N per-unit processes multiply all of that by N, every cycle, against a
+`gh` layer that has **no cache of any kind** — `_flywheel_gh.gh()`
+(`:51-72`) is a fresh `subprocess.run(["gh", …])` per call — and that
+**exits the process** on any unretryable failure (`:70-72`):
 
-Names are batch-scoped in both loops. This is the one shared resource the
-per-unit split does *not* have to solve.
+```python
+    if proc.returncode != 0:
+        sys.exit(f"flywheel: gh {' '.join(args[:2])} failed: "
+                 f"{proc.stderr.strip() or proc.stdout.strip()}")
+```
+
+Retries exist and are decent (`:38-69` — 2/8/30/60s jittered, `Retry-After`
+honoured to 300s, and only for `429|502|503|504|rate limit|secondary
+rate|abuse detection`), but there is no request accounting anywhere. The
+design record already prices a false-positive process start as cheap
+(`loop-programs.md:46-49`); it does not price N concurrent full-repo
+snapshots against a shared secondary-rate-limit budget.
+
+### 3.7 Herdr panes — **safe per stage, unsafe for the two bolt-wide names**
+
+Drive-stage names are per-batch and collide with nothing (§2.5). But the
+reuse namespace is the flat host-wide herdr roster
+(`_flywheel_sessions.py:290-299`) and reuse re-sends no order (`:303-305`),
+so `scaffold-<slug>` and `land-<slug>` — both milestone-scoped by
+construction — would silently converge across N unit processes into one
+session that only one of them prompted. That is the #301/#302 failure
+(`_flywheel_intent.py:482-488`) reproduced on the bolt side.
+
+Two further pane facts a per-unit split multiplies:
+
+- The loops create tabs with `herdr tab create --cwd … --label … --no-focus`
+  (`_flywheel_sessions.py:315-316`) and **never pass `--workspace`**; only
+  the fleet CLI does, for dispatch (`bin/flywheel:713-716`). N× the panes
+  with no organizing container.
+- A pane whose order failed to deliver is renamed
+  `<name>-undelivered` to free the name (`_flywheel_sessions.py:371-377`),
+  because "a corpse under this name wedges every later launch (#169,
+  observed live on spec-writing-stage-labels-133)". Under per-unit
+  processes a wedged bolt-wide name wedges every unit at once.
 
 ### 3.8 Routing — **the one thing per-unit genuinely fixes**
 
@@ -488,7 +573,23 @@ contradiction.
 >     typed design sessions -> collect deliverables ->
 >     merge sess/* branches -> re-query ... STOP
 
-The code silently substituted its own list. `grep -n "scaffold"
+The code silently substituted its own list. The CLI wrapper repeats the same
+stale list — `bin/flywheel-intent-loop:8-9`: "query and guards
+(flip-consume, / handoff birth, compose)".
+
+The live set is three, `_flywheel_intent.py:427-433`:
+
+```python
+def run_guards(writer, inbox, snapshot, config):
+    """All three, every cycle, in order, each idempotent. Returns its writes."""
+    mark = writer.mark()
+    apply_flip_consume(writer, inbox.queued_to_flip)
+    apply_ready_consume(writer, getattr(inbox, "spent_ready", ()))
+    apply_compose(writer, inbox.orphan_queued, config, snapshot)
+    return writer.since(mark)
+```
+
+`grep -n "scaffold"
 bin/_flywheel_intent.py` returns nothing: **the intent loop has no
 scaffold-if-missing guard**, contrary to `loop-programs.md:148-153`
 ("Guard 0 is scaffold-if-missing, exactly as on the bolt loop and as a
@@ -542,6 +643,21 @@ inside `verify_stage` (`:2449`), and `LoopConfig.stages`'s legal set is
 `DEFAULT_STAGES = ("spec", "build", "verify", "merge", "land")`
 (`:154`) — "review" is not a declarable stage. `LoopConfig.validate`
 (`:206`) would **raise** on a type declaring `stages: [... review ...]`.
+
+### 4.8 Two smaller drifts a granularity rewrite would inherit
+
+- **`flywheel approve` does not exist.** The book
+  (`books/flywheel/src/server-and-fleet.md`, "The CLI") lists it —
+  "releases one held scope's pending pass — `bolt/<slug>`,
+  `intent/<slug>`, or `dispatch`". `bin/flywheel`'s verb set is
+  `{"up", "status", "server", "down", "dispatch", "version"}` (`:1124-1125`),
+  and `grep -n approve bin/flywheel` matches only worktrunk hook
+  approvals. A per-scope release gesture is exactly the shape a per-unit
+  design would want, and it is not there to extend.
+- **`compose_unit` (`_flywheel_intent.py:362-375`) has no caller** —
+  `grep -rn compose_unit bin/ tests/` returns the definition alone. It
+  is the unit-flavoured sibling of `apply_compose`, and a rewrite
+  reaching for it would be reaching for dead code.
 
 ### 4.7 The record's own history already reversed a per-unit choice
 
@@ -607,6 +723,25 @@ estimate of effort.
 4. `_flywheel_ledger` scope (`:4`) — `bolt-<slug>-u<n>`, and whatever
    renders run reports learns to merge N scopes per bolt.
 5. `BoltParams` — a unit field; `BoltLoop.cycle` filters `batches` to it.
+
+**`fleet.yaml` needs nothing.** `_flywheel_manifest.py` has no
+per-milestone or per-unit entry at all — it carries `hosts:`, `teams:`,
+`dispatch:` and `books:` (`:108-110`), and `books:` is already keyed by
+*system*, which units already resolve against via their card's `System:`
+line (`_flywheel_server.py:392-399`). The routing that would have to move
+is on the tracker, not the manifest (§3.8).
+
+5b. **Rename `scaffold-<slug>` and `land-<slug>`, or elect one process to
+   own them** (§2.5, §3.7). The reuse path sends no order, so a collision
+   here is silent, not loud. Note the budget: herdr caps agent names at 32
+   characters and `SessionSpec.__post_init__` raises on a longer one
+   (`_flywheel_sessions.py:56-57`, `:143-147`), so a unit component in a
+   name is not free.
+
+5c. **`flywheel down` (`bin/flywheel:1089-1091`) kills by
+   `pgrep -f "flywheel-(bolt|intent)-loop .*--org {org}"`** — it can only
+   stop every loop for an org. Per-unit multiplies what that blunt verb
+   takes down at once.
 
 ### 5.2 The coordination that does not exist yet — not small
 

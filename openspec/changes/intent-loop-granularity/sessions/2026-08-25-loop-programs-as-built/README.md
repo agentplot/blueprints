@@ -31,7 +31,15 @@ bolt-wide — the bolt branch and its single unlocked worktree, the merge
 into it, the charter, and the landing — where they belong.
 
 The per-unit instinct is right about one thing a `for`-loop rewrite does
-not fix: unit-level host routing (finding §3.8, queued as an item).
+not fix: unit-level host routing (finding §3.8, queued as #371).
+
+Two corrections a reader should carry: two of the bolt loop's session
+names (`scaffold-<slug>`, `land-<slug>`) *are* flatly milestone-scoped
+and would collide silently under per-unit processes, because the
+reuse-by-name path sends no work order (§2.5, §3.7) — this is the
+#301/#302 failure the intent loop already suffered. And the two loops do
+not agree today on what the grouping object is: the bolt loop batches by
+unit-then-change, the intent loop batches by type alone (§2.6).
 
 ## What this session did not do
 
