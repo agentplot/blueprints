@@ -1,0 +1,711 @@
+<!doctype html>
+<!-- =====================================================================
+  The dispatch plan page — the one template (dispatch-plan.md is the
+  protocol; this file is the format, and it is ONE SURFACE of the plan:
+  the Discord digest renders the same payload as text, and both resolve
+  to the same decision contract).
+
+  An actor building a plan COPIES this file to the plan's own
+  plan.html — a design session's or findings-routing session's
+  sessions/<date>-<slug>/close/, or dispatch's
+  <org>/.flywheel/plans/<date>-round/ — and fills exactly two regions:
+
+    1. The PAYLOAD blocks — the <script type="text/markdown"> elements.
+       For a committing origin each one's content is byte-identical to a
+       markdown file committed beside the page (elaboration member
+       blocks, intent bodies, bolt summaries, units/<slug>.md). The page
+       renders them; the apply posts the .md files verbatim. Embedded
+       because lavish serves the page from a /session/ URL, so sibling
+       fetches do not resolve. Dispatch, which commits no files, embeds
+       its payload here and nowhere else.
+    2. The PLAN DATA object — the <script id="plan-data"> JSON: the
+       origin, the context lines, the containers with their rows, what
+       is left out.
+
+  Everything below the fill line is the format and is not edited per
+  plan — that is what makes every plan's page the same page. The content
+  shipped here is a worked example to replace.
+====================================================================== -->
+<html lang="en" data-theme="dim">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dispatch plan</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/daisyui.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/themes.css">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.2.4/dist/index.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :where(.grid, .flex) > * { min-width: 0; }
+  :where(p, h1, h2, h3, li, td, th) { overflow-wrap: anywhere; }
+  .md p, .md li { font-size: .84rem; line-height: 1.5; margin: .35rem 0; }
+  .md ul { padding-left: 1.1rem; }
+  .md h1, .md h2, .md h3 { display: none; }     /* the row header shows the title */
+  .md code { font-size: .76rem; background: color-mix(in oklab, var(--color-base-content) 10%, transparent); padding: .05rem .3rem; border-radius: .25rem; }
+  .md table { font-size: .78rem; border-collapse: collapse; margin: .5rem 0; white-space: nowrap; }
+  .md th, .md td { border: 1px solid color-mix(in oklab, var(--color-base-content) 18%, transparent); padding: .25rem .5rem; text-align: left; }
+  .md td:nth-child(3), .md th:nth-child(3) { white-space: normal; min-width: 14rem; }
+  .tablewrap { overflow-x: auto; }
+  .row { display: grid; grid-template-columns: 6.5rem 1fr 10.5rem; gap: .75rem 1rem; align-items: start; padding: .8rem 1rem; }
+  @media (max-width: 640px) { .row { grid-template-columns: 1fr; } }
+  details > summary { cursor: pointer; }
+</style>
+</head>
+<body class="bg-base-100 text-base-content min-h-screen">
+<div class="max-w-3xl mx-auto px-4 py-8 space-y-8 pb-40">
+  <header>
+    <h1 id="page-title" class="text-xl font-bold tracking-tight"></h1>
+    <p class="text-sm opacity-60 mt-1">Controls hold the plan's suggestion. Change any, then approve once — nothing exists on GitHub until you do.</p>
+  </header>
+  <section id="sec-context">
+    <h2 id="context-title" class="text-xs font-bold uppercase tracking-widest opacity-50 mb-2"></h2>
+    <ul id="context" class="text-sm space-y-1.5"></ul>
+  </section>
+  <div id="containers" class="space-y-8"></div>
+  <section id="sec-leftout">
+    <h2 class="text-xs font-bold uppercase tracking-widest opacity-50 mb-2">Left out of this plan</h2>
+    <ul id="leftout" class="text-sm opacity-70 space-y-1"></ul>
+  </section>
+  <section class="fixed bottom-0 inset-x-0 bg-base-300/95 backdrop-blur border-t border-base-content/10">
+    <div class="max-w-3xl mx-auto px-4 py-3 space-y-2">
+      <pre id="preview" class="text-[11px] leading-4 whitespace-pre-wrap m-0 font-mono opacity-70"></pre>
+      <div class="flex gap-2 items-center flex-wrap">
+        <button id="approve" class="btn btn-primary btn-sm">Approve</button>
+        <input id="sendback-note" class="input input-sm grow min-w-48" placeholder="…or say what's wrong and">
+        <button id="sendback" class="btn btn-outline btn-sm">Send back</button>
+        <span id="status" class="text-xs font-medium text-success"></span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============== FILL REGION 1: the payload markdown ==============
+     One block per row and per container body (a new intent's
+     originating item, a bolt's summary). For a design session the
+     content mirrors the committed close/*.md files exactly. -->
+<script type="text/markdown" id="src-bolt-the-loop-describes-itself">
+The flywheel stops describing itself wrongly in its own source. A
+released decision draft the book has already absorbed —
+`design/loop-programs.md` — gets the supersession header that tells a
+reader to go to the chapters, and the intent loop stops quoting that
+draft in two docstrings that neither match it nor match the code. The
+deliverable the operator sees: open any file in `bin/` that claims to
+say what a loop does, and the claim is true.
+
+1. `loop-programs-retired` — retire the record, correct the intent loop's self-description, drop its one uncalled function · `bolt-quick` · 3 changes · ~0.5 days
+
+Price: 3 changes · ~0.5 days.
+
+Derived from: book `e106f26` · specs `404feefa` · in flight: `add-flywheel-loops`, `observer`
+</script>
+<script type="text/markdown" id="src-unit-loop-programs-retired">
+# Unit: loop-programs-retired
+
+`design/loop-programs.md` was released to construction on 2026-08-13 and
+the book has since absorbed it, but nothing on the file says so — so it
+still reads as current, and two files in `bin/` quote it as if it were.
+Neither quotation is accurate: the module's list is the live guard set
+presented as the record's words, and the CLI's is a third list matching
+neither. This unit puts a supersession header on the record, rewrites
+both self-descriptions in the code's own voice, and removes the one
+function in the module that no caller reaches.
+
+Sequence: 1 of 1 · builds on: none
+Type: `bolt-quick` · Price: 3 changes · ~0.5 days
+System: flywheel
+
+| # | change | delivers | sources | after | why this bolt |
+|---|--------|----------|---------|-------|---------------|
+| 1 | `loop-programs-superseded` | a supersession header on `design/loop-programs.md` naming the chapters that carry each part, so a reader goes to the book instead of the draft | `books/flywheel/CLAUDE.md` ("Sources"); `books/flywheel/src/design-loop.md`, `construction-loop.md`, `server-and-fleet.md`, `sessions.md`; `openspec/changes/intent-loop-granularity/sessions/2026-08-26-loop-programs-record-disposition/disposition.md` §2–3 | — | the record is the false premise every reader of this bolt's other two changes starts from |
+| 2 | `intent-loop-self-description` | `bin/_flywheel_intent.py:3-7` and `bin/flywheel-intent-loop:8-9` describe the loop's live guards in their own voice, quoting no record | `_flywheel_intent.py:427-433` (`run_guards`); `openspec/changes/intent-loop-granularity/sessions/2026-08-25-loop-programs-as-built/finding.md` §4.2; disposition §4.1 | — | the two files are the loop's own account of itself, and it is wrong in three different ways at once |
+| 3 | `compose-unit-removed` | `compose_unit` deleted from `bin/_flywheel_intent.py` | `_flywheel_intent.py:362-375`; `grep -rn compose_unit bin/ tests/` returns the definition alone; finding §4.8 | `intent-loop-self-description` | it is the unit-flavoured sibling of `apply_compose` and the first thing a granularity rewrite would reach for — dead, and shaped like the answer |
+
+Change 3 waits on change 2 because both edit `bin/_flywheel_intent.py`;
+independently they would collide at the merge-back for nothing.
+
+```mermaid
+flowchart LR
+    rec["design/loop-programs.md<br/>RELEASED 2026-08-13"] -- "1: supersession header" --> book["books/flywheel/src/*<br/>the destination"]
+    mod["bin/_flywheel_intent.py:3-7<br/>quotes the record, wrongly"] -- "2: own voice" --> live["run_guards :427-433<br/>flip-consume · ready-consume · compose"]
+    cli["bin/flywheel-intent-loop:8-9<br/>a third guard list"] -- "2: own voice" --> live
+    dead["compose_unit :362-375<br/>no caller"] -- "3: removed" --> gone["gone"]
+```
+
+## Left out
+
+- **Anything that restates the loops' shape.** The book already states
+  it — five unit types, the type as a unit's choice, Review as a stage,
+  the merge gate as the serialization point. Nothing here rewrites a
+  chapter, and the record is retired rather than brought current: a
+  released decision is history, and history does not get edited to
+  match today's code.
+- **`flywheel approve`.** `books/flywheel/src/server-and-fleet.md` lists
+  the verb and `bin/flywheel:1124-1125` does not have it. That is the
+  book stating a destination the code has not reached — the planner's
+  gap, and a unit of its own whenever the operator wants it, not a
+  correction to make here.
+- **Everything the granularity ruling touches.** Whether the loop's unit
+  of drive is the milestone or the unit is open on
+  `intent/loop-granularity`; #369, the Design Center report, is the
+  operator's next surface. All three changes here are the same edit
+  whichever way it is ruled.
+
+Derived from: book `e106f26` · specs `404feefa` · in flight: `add-flywheel-loops`, `observer`
+</script>
+<script type="text/markdown" id="src-finished-374">
+### The loop-programs writeback closed with no chapter to move
+
+`design/loop-programs.md` is a decision draft in the built repo, not a
+chapter and not the map — and the book already states the destination
+for all five drifts the item listed plus both adjacent ones. Rewriting
+a released record to today's code would produce a third artifact that
+is neither the decision nor the destination. The record needs
+retirement, and that edit is construction: the bolt below.
+
+Record: `sessions/2026-08-26-loop-programs-record-disposition/disposition.md`.
+</script>
+
+<!-- ============== FILL REGION 2: the plan data ==============
+     origin.kind: "design-session" | "dispatch" | "construction" —
+       design-session shows the round numbers; the other two offer
+       retarget routes across same-kind containers.
+     context: what this plan is over — the round's closed decisions, the
+       raw ideas under triage, or the findings from the acceptance run.
+       The heading follows origin.kind.
+     containers[]: kind "intent" | "bolt" · status "existing" | "new".
+       A NEW container's slug is editable on the page (a rename rides
+       the contract). A bolt carries `deliverable` (what the operator
+       sees working — the naming rationale, rendered under the header),
+       optional `alternates` (open bolts the units could fold into —
+       rendered as a header select), and `stats`.
+     rows: intent rows carry badge/badgeClass (the item's type);
+       question: true puts the inline-answer input on the row. Bolt rows
+       carry type (seeds the overridable dropdown), system (the fleet
+       binding whose built repo the unit's construction runs in — written
+       into the card's System: line at apply), and changes[] (slug +
+       delivers per change row, visible at a glance — approving a unit
+       is approving its changes, so they are never hidden).
+     badgeClass by kind — writeback badge-warning · research badge-info
+       · planning badge-secondary · interactive badge-primary ·
+       prototype badge-neutral · bolt-default badge-accent ·
+       bolt-quick badge-success · other bolt types badge-accent.
+     A "close" container is the round's milestones-to-close section:
+       one row per close-ready milestone — rows: [{ key, milestone,
+       checked: true, title, oneliner }] (or those fields on the
+       container itself when there is exactly one) — each a pre-checked
+       checkbox led by the milestone name; unchecking means keep open
+       and writes nothing. Only unchecked rows reach the contract, as
+       closes: { "<milestone>": false }.
+     A "finished" container is the round's finished-elaborations
+       section — one row per closure payload: { key, title, oneliner,
+       srcId } with the session's outcome; seeded approve (stage:done on
+       the payload's done_items), and a typed note is the dead-end steer
+       (commented on the items, stage:done withheld, a fresh session
+       carries it).
+     An empty context or left_out hides that section. -->
+<script id="plan-data" type="application/json">
+{
+  "origin": {
+    "kind": "design-session",
+    "slug": "loop-granularity",
+    "round_closing": 2,
+    "round_next": 3
+  },
+  "context": [
+    {
+      "title": "design/loop-programs.md is not a writeback target — no chapter is stale",
+      "record": "sessions/2026-08-26-loop-programs-record-disposition/disposition.md"
+    },
+    {
+      "title": "The book already carries all five drifts; what is left is the record's retirement",
+      "record": "sessions/2026-08-26-loop-programs-record-disposition/disposition.md"
+    }
+  ],
+  "done_items": [
+    374
+  ],
+  "containers": [
+    {
+      "key": "finished/374",
+      "kind": "finished",
+      "title": "Finished this round",
+      "rows": [
+        {
+          "key": "finished: #374 loop-programs writeback",
+          "title": "#374 — Write design/loop-programs.md back to what the loops actually are",
+          "oneliner": "Closed with no chapter moved: the target is a built-repo decision draft, and the book already states the destination",
+          "srcId": "src-finished-374"
+        }
+      ]
+    },
+    {
+      "key": "bolt/the-loop-describes-itself",
+      "kind": "bolt",
+      "status": "new",
+      "deliverable": "open any file in bin/ that claims to say what a loop does, and the claim is true",
+      "stats": "1 unit · 3 changes · ~0.5 days",
+      "title": "A new bolt — successor to bolt/the-loop-obeys-itself",
+      "oneliner": "The other two open bolt milestones hold no open item; there is no live deliverable these serve",
+      "srcId": "src-bolt-the-loop-describes-itself",
+      "rows": [
+        {
+          "key": "unit: loop-programs-retired",
+          "type": "bolt-quick",
+          "system": "flywheel",
+          "badgeClass": "badge-success",
+          "title": "Unit: loop-programs-retired — 3 changes · ~0.5 days",
+          "oneliner": "Retire the released record, correct the intent loop's two stale self-quotes, drop its one uncalled function",
+          "srcId": "src-unit-loop-programs-retired",
+          "changes": [
+            {
+              "slug": "loop-programs-superseded",
+              "delivers": "a supersession header naming the chapters that carry each part"
+            },
+            {
+              "slug": "intent-loop-self-description",
+              "delivers": "_flywheel_intent.py:3-7 and flywheel-intent-loop:8-9 describe the live guards in their own voice"
+            },
+            {
+              "slug": "compose-unit-removed",
+              "delivers": "the uncalled compose_unit deleted"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "left_out": [
+    "The granularity ruling itself — whether the loop's unit of drive is the milestone or the unit is still open on this intent, and #369 (the Design Center report) is the operator's next surface. All three changes above are the same edit whichever way it is ruled.",
+    "`flywheel approve` — in books/flywheel/src/server-and-fleet.md's CLI table and not in bin/flywheel's verb set. That is the book stating a destination the code has not reached: the planner's gap, not a correction to make here.",
+    "#371 (route a bolt's units by their own Team) — the other item on this elaboration, already state:ready and needs-operator. Not this session's batch and untouched."
+  ]
+}
+</script>
+
+<!-- ============== THE FORMAT — not edited per plan ============== -->
+<script>
+  const PLAN = JSON.parse(document.getElementById("plan-data").textContent);
+  const md = id => document.getElementById(id).textContent.trim();
+  const render = text => {
+    const div = document.createElement("div");
+    div.className = "md";
+    div.innerHTML = marked.parse(text);
+    for (const t of div.querySelectorAll("table")) {
+      const wrap = document.createElement("div");
+      wrap.className = "tablewrap";
+      t.parentNode.insertBefore(wrap, t);
+      wrap.appendChild(t);
+    }
+    return div;
+  };
+
+  const ORIGIN = PLAN.origin || { kind: "design-session", slug: PLAN.slug };
+  const isDesign = ORIGIN.kind === "design-session";
+  document.title = `Dispatch plan — ${ORIGIN.slug}`;
+  document.getElementById("page-title").innerHTML =
+    `${ORIGIN.slug} <span class="opacity-50 font-normal">· ` +
+    (isDesign && ORIGIN.round_closing
+      ? `round ${ORIGIN.round_closing} closes`
+      : `dispatch plan`) + `</span>`;
+  document.getElementById("context-title").textContent =
+    isDesign ? "Closed this round"
+    : ORIGIN.kind === "construction" ? "Findings from the acceptance run"
+    : "Raw ideas in this triage";
+
+  for (const c of PLAN.context || []) {
+    const li = document.createElement("li");
+    li.className = "flex gap-2 items-baseline";
+    li.innerHTML = `<span class="text-success">✓</span><span class="font-medium"></span><span class="text-xs opacity-45 truncate"></span>`;
+    li.children[1].textContent = c.title;
+    li.children[2].textContent = c.record || "";
+    document.getElementById("context").append(li);
+  }
+  for (const l of PLAN.left_out || []) {
+    const li = document.createElement("li");
+    li.textContent = l;
+    document.getElementById("leftout").append(li);
+  }
+  if (!(PLAN.context || []).length) document.getElementById("sec-context").hidden = true;
+  if (!(PLAN.left_out || []).length) document.getElementById("sec-leftout").hidden = true;
+
+  // The decision contract — an omitted field means as-proposed, so only
+  // deltas from the seeded choices are recorded here.
+  const seeded = {};      // row key -> the payload's route
+  const routing = {};     // row key -> the chosen route
+  const answers = () => {
+    const out = {};
+    for (const inp of document.querySelectorAll("input[data-answer-for]")) {
+      const a = inp.value.trim();
+      if (a) out[inp.dataset.answerFor] = a;
+    }
+    return out;
+  };
+  const unitTypes = {};   // row key -> { chosen, suggested }
+  const renames = {};     // container key -> new slug / other open bolt
+  const closes = {};      // milestone -> false (only unchecked rows)
+
+  const BOLT_TYPES = ["bolt-default", "bolt-quick", "bolt-direct",
+                      "bolt-adversarial", "bolt-plan"];
+  // One route enum, aligned with the board's own words: approve files
+  // the row under its container, backlog parks it state:queued on the
+  // milestone, drop files nothing. On a non-design-origin plan a row
+  // also offers the other same-kind containers, because cross-routing
+  // is those origins' point. Needing more design first is a send-back
+  // with a note, never a routing value.
+  const ROUTES = { intent: ["approve", "backlog", "drop"],
+                   bolt: ["approve", "backlog", "drop"],
+                   finished: ["approve"] };
+
+  function routesFor(container) {
+    const routes = [...ROUTES[container.kind]];
+    if (!isDesign) {
+      for (const other of PLAN.containers) {
+        if (other.kind === container.kind && other.key !== container.key) {
+          routes.push(`→ ${other.key}`);
+        }
+      }
+    }
+    return routes;
+  }
+
+  function selectFor(key, routes) {
+    const sel = document.createElement("select");
+    sel.className = "select select-sm w-full";
+    for (const r of routes) sel.append(new Option(r, r));
+    seeded[key] = routes[0];
+    routing[key] = routes[0];
+    sel.addEventListener("change", () => { routing[key] = sel.value; preview(); });
+    return sel;
+  }
+
+  // One row = badge · title + one-liner (+ change list) + collapsed full
+  // text · controls.
+  function row(item, routes) {
+    const r = document.createElement("div");
+    r.className = "row";
+    const b = document.createElement("span");
+    b.className = "badge badge-sm " + item.badgeClass;
+    b.textContent = item.badge || item.type;
+    const mid = document.createElement("div");
+    const t = document.createElement("div");
+    t.className = "text-sm font-semibold leading-snug";
+    t.textContent = item.title;
+    const o = document.createElement("div");
+    o.className = "text-xs opacity-55 mt-0.5";
+    o.textContent = item.oneliner;
+    mid.append(t, o);
+    if (item.changes) {
+      // The unit's change rows, visible at a glance.
+      const ul = document.createElement("ul");
+      ul.className = "mt-1.5 space-y-0.5";
+      for (const c of item.changes) {
+        const li = document.createElement("li");
+        li.className = "text-xs flex gap-2 items-baseline";
+        li.innerHTML = `<code class="shrink-0 opacity-80"></code><span class="opacity-55"></span>`;
+        li.children[0].textContent = c.slug;
+        li.children[1].textContent = c.delivers;
+        ul.append(li);
+      }
+      mid.append(ul);
+    }
+    const det = document.createElement("details");
+    det.className = "mt-1";
+    const sum = document.createElement("summary");
+    sum.className = "text-xs opacity-50 hover:opacity-80";
+    sum.textContent = "full text";
+    det.append(sum, render(md(item.srcId)));
+    mid.append(det);
+    if (item.question) {
+      const inp = document.createElement("input");
+      inp.className = "input input-sm w-full mt-2";
+      inp.placeholder = "It's a question — type the answer to settle it now (recorded as a decision; no item filed)";
+      inp.dataset.answerFor = item.key;
+      inp.addEventListener("input", preview);
+      mid.append(inp);
+    }
+    const ctl = document.createElement("div");
+    ctl.className = "space-y-1.5";
+    ctl.append(selectFor(item.key, routes));
+    if (item.type) {
+      // The plan's chosen bolt type, overridable — the override is
+      // written into the card's Type: line at apply.
+      const tsel = document.createElement("select");
+      tsel.className = "select select-sm w-full";
+      for (const bt of BOLT_TYPES) tsel.append(new Option(bt, bt));
+      tsel.value = item.type;
+      unitTypes[item.key] = { chosen: item.type, suggested: item.type };
+      tsel.addEventListener("change", () => {
+        unitTypes[item.key].chosen = tsel.value;
+        preview();
+      });
+      ctl.append(tsel);
+      if (item.system) {
+        // The fleet binding the unit builds against — written into the
+        // card's System: line at apply. Correcting it is an annotation
+        // or a send-back, not a control.
+        const sys = document.createElement("div");
+        sys.className = "text-xs opacity-60 mt-1";
+        sys.textContent = `system: ${item.system}`;
+        ctl.append(sys);
+      }
+    }
+    r.append(b, mid, ctl);
+    return r;
+  }
+
+  // A container's header is the correctable naming surface: a NEW
+  // container's slug is an editable input, and a bolt with alternates
+  // gets a select over the open bolts its units could fold into.
+  function closeSection(c) {
+    // The round's close section: one pre-checked row per closable
+    // milestone — nested rows[] (each carrying milestone/checked), or
+    // the container itself as the single row. Unchecking writes nothing
+    // and the choice stands next round.
+    const sec = document.createElement("section");
+    const h = document.createElement("h2");
+    h.className = "text-xs font-bold uppercase tracking-widest opacity-50 mb-2";
+    h.textContent = "Ready to close — ";
+    sec.append(h);
+    const list = document.createElement("div");
+    list.className = "rounded-box border border-base-content/10 divide-y divide-base-content/10 bg-base-200";
+    const rows = (c.rows && c.rows.length) ? c.rows : [c];
+    for (const item of rows) {
+      const r = document.createElement("label");
+      r.className = "flex items-center gap-3 p-3 cursor-pointer";
+      const box = document.createElement("input");
+      box.type = "checkbox";
+      box.className = "checkbox checkbox-sm";
+      box.checked = item.checked !== false;
+      box.addEventListener("change", () => {
+        if (box.checked) delete closes[item.milestone];
+        else closes[item.milestone] = false;
+        preview();
+      });
+      const text = document.createElement("div");
+      const title = document.createElement("div");
+      title.className = "font-bold text-sm";
+      // The milestone IS the decision — it renders whatever the fill's
+      // title says, so a generic title can never hide which bolt closes.
+      const mono = document.createElement("span");
+      mono.className = "font-mono";
+      mono.textContent = item.milestone;
+      title.append(mono);
+      if (item.title && item.title !== item.milestone) {
+        title.append(document.createTextNode(` — ${item.title}`));
+      }
+      const line = document.createElement("div");
+      line.className = "text-xs opacity-60";
+      line.textContent = item.oneliner
+        || "every item merged, every card ruled — closing releases the landing";
+      text.append(title, line);
+      r.append(box, text);
+      list.append(r);
+    }
+    sec.append(list);
+    return sec;
+  }
+
+  function finishedSection(c) {
+    // Finished elaborations: the dead end made visible. Approve signs
+    // the session off (stage:done at apply); a typed note steers a
+    // fresh session instead.
+    const sec = document.createElement("section");
+    const h = document.createElement("h2");
+    h.className = "text-xs font-bold uppercase tracking-widest opacity-50 mb-2";
+    h.textContent = "Finished elaborations — ";
+    sec.append(h);
+    const list = document.createElement("div");
+    list.className = "rounded-box border border-base-content/10 divide-y divide-base-content/10 bg-base-200";
+    for (const item of c.rows || []) {
+      const r = document.createElement("div");
+      r.className = "p-3 flex flex-col gap-2";
+      const top = document.createElement("div");
+      top.className = "flex items-baseline gap-2";
+      const badge = document.createElement("span");
+      badge.className = "badge badge-sm badge-secondary";
+      badge.textContent = "session";
+      const title = document.createElement("span");
+      title.className = "font-bold text-sm";
+      title.textContent = item.title;
+      top.append(badge, title);
+      const line = document.createElement("div");
+      line.className = "text-xs opacity-60";
+      line.textContent = item.oneliner || "";
+      const note = document.createElement("input");
+      note.className = "input input-sm w-full";
+      note.placeholder = "approve as finished — or type a note to steer a fresh session";
+      note.dataset.answerFor = item.key;
+      note.addEventListener("input", preview);
+      r.append(top, line, note);
+      list.append(r);
+    }
+    sec.append(list);
+    return sec;
+  }
+
+  function containerSection(c) {
+    if (c.kind === "close") return closeSection(c);
+    if (c.kind === "finished") return finishedSection(c);
+    const sec = document.createElement("section");
+    const head = document.createElement("div");
+    head.className = "flex items-baseline justify-between mb-2 gap-3 flex-wrap";
+    const left = document.createElement("div");
+    left.className = "flex items-baseline gap-2 flex-wrap grow";
+    const h = document.createElement("h2");
+    h.className = "text-xs font-bold uppercase tracking-widest opacity-50";
+    h.textContent = c.kind === "intent"
+      ? (isDesign && ORIGIN.round_next
+         ? `Next round (${ORIGIN.round_next}) — `
+         : "Design — ")
+      : "Construction — ";
+    left.append(h);
+    if (c.status === "new") {
+      const inp = document.createElement("input");
+      inp.className = "input input-sm font-mono";
+      inp.value = c.key;
+      inp.addEventListener("input", () => {
+        if (inp.value.trim() && inp.value.trim() !== c.key) {
+          renames[c.key] = inp.value.trim();
+        } else {
+          delete renames[c.key];
+        }
+        preview();
+      });
+      const badge = document.createElement("span");
+      badge.className = "badge badge-sm badge-outline";
+      badge.textContent = "new";
+      left.append(inp, badge);
+    } else if (c.kind === "bolt" && (c.alternates || []).length) {
+      const sel = document.createElement("select");
+      sel.className = "select select-sm font-mono";
+      sel.append(new Option(c.key, c.key));
+      for (const alt of c.alternates) sel.append(new Option(alt, alt));
+      sel.addEventListener("change", () => {
+        if (sel.value !== c.key) renames[c.key] = sel.value;
+        else delete renames[c.key];
+        preview();
+      });
+      left.append(sel);
+    } else {
+      const k = document.createElement("span");
+      k.className = "text-xs font-mono opacity-70";
+      k.textContent = c.key;
+      left.append(k);
+    }
+    head.append(left);
+    if (c.stats) {
+      const s = document.createElement("span");
+      s.className = "text-xs opacity-60";
+      s.textContent = c.stats;
+      head.append(s);
+    }
+    sec.append(head);
+    if (c.oneliner || c.deliverable) {
+      const d = document.createElement("p");
+      d.className = "text-xs opacity-55 mb-2";
+      d.textContent = c.kind === "bolt"
+        ? `the deliverable: ${c.deliverable || c.oneliner}`
+        : c.oneliner;
+      sec.append(d);
+    }
+    const list = document.createElement("div");
+    list.className = "rounded-box border border-base-content/10 divide-y divide-base-content/10 bg-base-200";
+    for (const item of c.rows || []) list.append(row(item, routesFor(c)));
+    sec.append(list);
+    return sec;
+  }
+
+  for (const c of PLAN.containers || []) {
+    document.getElementById("containers").append(containerSection(c));
+  }
+
+  // The payload is always visible — a control change is never silently lost.
+  function contract() {
+    const out = { decision: "approve" };
+    const routeDelta = {};
+    const retargets = {};
+    for (const [key, value] of Object.entries(routing)) {
+      if (value === seeded[key]) continue;
+      if (value.startsWith("→ ")) retargets[key] = value.slice(2);
+      else routeDelta[key] = value;
+    }
+    const answered = answers();
+    for (const key of Object.keys(answered)) routeDelta[key] = "answered";
+    const types = {};
+    for (const [k, t] of Object.entries(unitTypes)) {
+      if (t.chosen !== t.suggested) types[k] = t.chosen;
+    }
+    if (Object.keys(routeDelta).length) out.routing = routeDelta;
+    if (Object.keys(answered).length) out.answers = answered;
+    if (Object.keys(types).length) out.unit_types = types;
+    if (Object.keys(renames).length) out.renames = { ...renames };
+    if (Object.keys(retargets).length) out.retargets = retargets;
+    if (Object.keys(closes).length) out.closes = { ...closes };
+    return out;
+  }
+  function preview() {
+    const c = contract();
+    const parts = [];
+    for (const [k, v] of Object.entries(c.routing || {})) parts.push(`${k}: ${v}`);
+    for (const [k, v] of Object.entries(c.retargets || {})) parts.push(`${k} → ${v}`);
+    for (const [k, v] of Object.entries(c.unit_types || {})) parts.push(`${k} as ${v}`);
+    for (const [k, v] of Object.entries(c.renames || {})) parts.push(`${k} renamed ${v}`);
+    for (const k of Object.keys(c.closes || {})) parts.push(`keep ${k} open`);
+    document.getElementById("preview").textContent =
+      "on approve → " + (parts.length ? parts.join(" · ") : "all as proposed")
+      + Object.entries(c.answers || {}).map(([k, a]) => `\nanswer (${k}): ${a}`).join("");
+  }
+
+  document.getElementById("approve").addEventListener("click", () => {
+    const c = contract();
+    const lines = [
+      ...Object.entries(c.routing || {}).map(([k, v]) => `${k} -> ${v}`),
+      ...Object.entries(c.retargets || {}).map(([k, v]) => `${k} retargeted to ${v}`),
+      ...Object.entries(c.unit_types || {}).map(([k, v]) => `${k} as ${v} — write it into the card's Type: line before filing`),
+      ...Object.entries(c.renames || {}).map(([k, v]) => `${k} renamed to ${v}`),
+      ...Object.keys(c.closes || {}).map((k) => `keep ${k} open — do not close that milestone`),
+    ];
+    window.lavish.queuePrompt(
+      "APPROVE the dispatch plan"
+      + (lines.length ? " with these corrections: " + lines.join("; ") : " as proposed — every seeded choice stands")
+      + Object.entries(c.answers || {}).map(([k, a]) => `. Inline answer for '${k}': "${a}"`).join("")
+      + ". Carry it out in the protocol's order.",
+      { tag: "approval",
+        text: "Approve: " + (lines.length ? lines.join("; ") : "all as proposed"),
+        data: c });
+    window.lavish.sendQueuedPrompts();
+    document.getElementById("status").textContent = "Approval sent.";
+  });
+
+  document.getElementById("sendback").addEventListener("click", () => {
+    const note = document.getElementById("sendback-note").value.trim();
+    if (!note) { document.getElementById("status").textContent = "Say what to change first."; return; }
+    window.lavish.queuePrompt(
+      "SEND BACK the dispatch plan for another pass: " + note,
+      { tag: "sendback", text: "Send back: " + note,
+        data: { decision: "sendback", note } });
+    window.lavish.sendQueuedPrompts();
+    document.getElementById("status").textContent = "Sent back.";
+  });
+
+  preview();
+</script>
+<script type="module">
+  // A unit body's mermaid fences render as diagrams, not as raw fence
+  // text — the one part of the format that needs a module import.
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: false, theme: "dark" });
+  let n = 0;
+  for (const code of document.querySelectorAll(".md pre code.language-mermaid")) {
+    try {
+      const { svg } = await mermaid.render(`mmd-${n++}`, code.textContent);
+      const holder = document.createElement("div");
+      holder.className = "tablewrap";
+      holder.innerHTML = svg;
+      code.parentElement.replaceWith(holder);
+    } catch { /* an unparsable fence stays visible as text */ }
+  }
+</script>
+</body>
+</html>
