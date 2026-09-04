@@ -275,6 +275,28 @@ model.
     two repositories is in scope for both, and each carries its own
     verdict.
 
+### 4.13 The status view and distributed hosts
+
+55. At any moment the operator can see every intent, elaboration,
+    bolt, unit, work item and session with its current state, grouped
+    by state: queued, in progress, waiting on the operator, done. This
+    is a view of the whole, separate from the plan, and it needs no
+    machinery running to be read.
+56. The status view is a projection of the same stores the machinery
+    reads. It is never a source of truth, and it is never written by
+    hand to make it look right.
+57. The status view is central: one place for the whole organization,
+    reachable from the phone, however many hosts run machinery.
+58. More than one host may run the machinery for one organization at
+    once. Every host works from the same main branch of every
+    repository and the same central state.
+59. Every object is owned by at most one host at a time, and the owner
+    is visible. Two hosts never work the same object. A host that goes
+    away leaves its objects visibly stale; another host takes them over
+    only by a rule the model states, never by racing.
+60. Which host runs which session, and whether each host is alive, is
+    part of the status view.
+
 ## 5. Invariants
 
 These hold at every moment, not just at the end of an operation.
@@ -290,13 +312,17 @@ These hold at every moment, not just at the end of an operation.
 - I8. The machinery never creates a bolt for a chore.
 - I9. Every as-built statement names a standing claim.
 - I10. No verdict is recomputed while its inputs are unchanged.
+- I11. Every object has at most one owning host, and the status view
+  shows it.
 
 ## 6. Non-goals
 
-- Replacing the tracking system, the git hosting, or the agent runtime.
+- Replacing the git hosting or the agent runtime. The tracking system
+  may be replaced only by something that still satisfies 4.13.
 - Multi-operator arbitration. One operator per organization.
 - Scheduling across hosts for performance. Correctness first.
-- A user interface beyond the plan page and the chat reply.
+- A user interface beyond the plan page, the status view, and the chat
+  reply.
 
 ## 7. Environment givens
 
@@ -318,7 +344,15 @@ Constraints of the world, not design choices.
 - The operator has a chat channel that reaches their phone, and a way
   to serve a page to themselves.
 - The machinery is a long-running process the operator starts on a
-  host. It can be restarted at any time.
+  host. It can be restarted at any time. There may be several hosts.
+- The current stack, which a model builds on unless it says why not:
+  the machinery is Python 3 with tests that use only the standard
+  library; agent sessions are Claude Code started with `claude --agent
+  <name>`, one per multiplexer pane; the multiplexer is herdr, driven
+  through its `herdr agent` commands; the tracker is GitHub issues,
+  milestones and a Projects board; the chat is a Discord bot; the books
+  are mdBook; changes and specifications are OpenSpec with custom
+  schemas; small durable tables may be recutils files in git.
 
 ## 8. Questions the model must answer
 
@@ -384,6 +418,13 @@ by walking each one.
   get not-applicable, stored, and are never judged again.
 - **S11.** A built repository takes forty commits in a week. No claim
   changed. No verdict was recomputed and the plan did not change.
+- **S12.** The operator opens the status view from their phone with no
+  machinery running and sees every bolt, unit, and session by state,
+  and which host holds each.
+- **S13.** Two hosts run the machinery. One loses power mid-build. The
+  other host does not touch that build. The status view shows the build
+  and its host as stale. When the host returns, the build resumes on
+  it, or is taken over by the stated rule, and never runs twice.
 
 ## 10. What to deliver
 
@@ -392,3 +433,9 @@ section 9 — as a written model plus diagrams in the house style
 (`design-diagram`), one per machine family, each stating its claim in
 the title. The diagram shows where plan rows are created and retracted
 on each machine, and where the ledger is read and written.
+
+Every part of the model names the real tool, library, service or file
+format it runs on, taken from the givens in section 7 or added with a
+reason. Where the model keeps a store, it says which system holds it
+and what one record looks like. A model that describes mechanisms
+without naming what runs them is incomplete.
