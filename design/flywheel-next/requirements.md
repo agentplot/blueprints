@@ -53,9 +53,8 @@ redefine these.
 - **unit type** — the named, operator-extensible machine that takes a
   unit from approved to landed: its stages, the sessions each stage
   runs, where an item goes back to when a stage judges it not done,
-  whether it needs a change directory, and whether it lands through a
-  bolt or directly. Chore, fast and default are types; so is anything
-  the operator adds.
+  whether it needs a change directory, and where its work lands. Chore,
+  fast and default are types; so is anything the operator adds.
 - **work item** — one task of a unit, worked through construction
   stages by sessions, merged into the bolt when complete.
 - **session** — one agent process working one job in one place, with a
@@ -67,7 +66,7 @@ redefine these.
   should not do itself, because it lies across a repository or branch
   boundary or outside its job. Offered; if accepted, it is a unit of
   the chore type: one agent scoped to the right place, no change
-  directory, no bolt.
+  directory, never a bolt of its own.
 - **the plan** — the single surface where everything awaiting the
   operator's word is presented, and where the word is given.
 - **curation** — the step that turns many raw signals into a few
@@ -242,10 +241,13 @@ the operator.
     merges, and never lands. A session that attempts one is refused,
     and the refusal is reported.
 28. A stage may run several sessions at once, each with its own
-    instruction and persona, over the same work. The type states the
-    join rule that completes the stage: all done, any done, or a count.
-    The sessions' exits are collected as one set, and every finding,
-    chore and signal each offered is recorded.
+    instruction and persona, over the same work. The type states how the
+    set is found — a fixed list, or a rule read against the repository
+    being worked, such as every persona definition matching a pattern
+    — and the join rule that completes the stage: all done, any done,
+    or a count. Which sessions ran is recorded with the item. Their
+    exits are collected as one set, and every finding, chore and signal
+    each offered is recorded.
 29. The catalogue of unit types is data, named, versioned, and changed
     by the operator without rebuilding the machinery. A type composed
     only of existing predicate and effect atoms is added with no code
@@ -263,9 +265,10 @@ the operator.
     offer them. It offers a chore only when the fix lies outside what it
     may touch.
 32. A chore is a unit of the chore type: no change directory, one
-    stage, one session scoped to the right repository and branch, landed
-    directly where it belongs with no bolt. Accepting one is a word on
-    the plan and nothing more. A chore never creates a bolt.
+    stage, one session scoped to the repository and line of work the fix
+    belongs on — a bolt's line when it was raised there, the shared line
+    otherwise — and merged there by the machinery. Accepting one is a
+    word on the plan and nothing more. A chore never creates a bolt.
 33. Updating agent instructions, citations, references, and similar
     housekeeping are chores, not units.
 34. A finding and a chore are artifacts of the change they arose in,
@@ -900,11 +903,12 @@ by walking each one. Each is tagged with the profiles it applies to.
   node, with the previous version beside it. Nothing was written by hand
   to produce the view.
 - **S26.** *(all profiles)* The operator adds a unit type whose test
-  stage runs three persona sessions at once and completes when all
-  three have exited. No code changed. The next unit proposed with that
-  type runs three sessions, and their findings, chores and signals are
-  all recorded. A unit already in flight under the old type is
-  untouched.
+  stage runs one session per persona definition found in the repository
+  being worked, and completes when all have exited. No code changed.
+  The next unit of that type in a repository holding three personas
+  runs three sessions; in a repository holding five, five. Which ran is
+  recorded, and their findings, chores and signals are all recorded. A
+  unit already in flight under the old type is untouched.
 
 ## 12. What to deliver
 
