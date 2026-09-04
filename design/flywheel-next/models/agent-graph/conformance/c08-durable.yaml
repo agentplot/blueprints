@@ -1,0 +1,32 @@
+kind: scenario
+name: "C08 — what a write reports as written survives the loss of every host at once"
+requirements: [B.2.120, C.1.141, C.2.145]
+profiles: [all]
+given:
+  proposals:
+    - {id: pr-el-atlas-research, kind: elaboration, intent: in-atlas-provider-limits, type: self-closing, generation: 1}
+  objects/intent:
+    - {id: in-atlas-provider-limits, approval: wd-rn-0900-1}
+  hosts:
+    - {id: mac-mini, bound: 2, alive: true}
+    - {id: studio, bound: 2, alive: true}
+when:
+  - {receive: {rendering: rn-A, row: 1, answer: "yes", by: chuck, via: chat}}
+  - {tick: {host: mac-mini}}                                       # instantiate writes the elaboration; an activation is taken
+  - {op: {host: mac-mini, call: write-effect, id: fx-place-prepare-pl-el-atlas-research-9b1e44c, effect: git.place.prepare, subject: el-atlas-research, reason: "elaboration approved", evidence: "line intent/in-atlas-provider-limits@9b1e44c", result: ok, as: w}}
+  - {crash: mac-mini}
+  - {crash: studio}
+  - {clock: "+1h"}
+  - {start: new-host}
+  - {op: {host: new-host, call: read, object: el-atlas-research, as: r}}
+then:
+  results:
+    - "w.written == true before the crash"
+    - "r.evidence holds the word, the elaboration record with its approval, the activation taken by mac-mini, and the effect fx-place-prepare-…"
+    - "nothing that a write reported as written is missing; nothing that was not reported as written is present"
+  states:
+    el-atlas-research: queued
+  rows:
+    - "host-stale: host mac-mini last seen 1h · holds el-atlas-research → takeover on new-host · wait"
+  report:
+    - "durability is the central service's, not a host's: the profile names the service (C.1: the tracker; C.2: the git host's shared line)"

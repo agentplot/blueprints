@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 1000" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="mN" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+    <marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+    <marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e9e5b"/></marker>
+    <marker id="mP" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7b5cb8"/></marker>
+    <marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+    <marker id="mR" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c05b5b"/></marker>
+    <marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+    <g id="gear"><circle r="9" fill="#fff" stroke="currentColor" stroke-width="2.4"/><circle r="3" fill="currentColor"/><g stroke="currentColor" stroke-width="2.4"><line y1="-9" y2="-13.5"/><line y1="9" y2="13.5"/><line x1="-9" x2="-13.5"/><line x1="9" x2="13.5"/><line x1="-6.4" y1="-6.4" x2="-9.5" y2="-9.5"/><line x1="6.4" y1="6.4" x2="9.5" y2="9.5"/><line x1="-6.4" y1="6.4" x2="-9.5" y2="9.5"/><line x1="6.4" y1="-6.4" x2="9.5" y2="-9.5"/></g></g>
+    <g id="cube" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M -16 -8 L 0 -17 L 16 -8 L 16 10 L 0 19 L -16 10 Z" fill="#fff"/><path d="M -16 -8 L 0 1 L 16 -8 M 0 1 L 0 19" fill="none"/></g>
+    <g id="cyl"><path d="M -24 -11 L -24 13 A 24 8 0 0 0 24 13 L 24 -11" fill="#f1f1ee" stroke="currentColor" stroke-width="1.6"/><ellipse cx="0" cy="-11" rx="24" ry="8" fill="#e3e3df" stroke="currentColor" stroke-width="1.6"/></g>
+    <g id="repo"><rect x="-26" y="-18" width="52" height="36" rx="7" fill="#fff" stroke="currentColor" stroke-width="2"/><circle cx="-9" cy="8" r="3.2" fill="currentColor"/><circle cx="9" cy="-8" r="3.2" fill="currentColor"/><path d="M -9 8 v-8 a 8 8 0 0 1 8 -8 h 1" fill="none" stroke="currentColor" stroke-width="2"/></g>
+    <g id="key"><rect x="-7" y="-2" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M -4 -2 v-3 a 4 4 0 0 1 8 0 v3" fill="none" stroke="currentColor" stroke-width="1.8"/></g>
+    <g id="cross"><circle r="10" fill="#fbeeee" stroke="#c05b5b" stroke-width="2"/><path d="M -4 -4 l 8 8 M 4 -4 l -8 8" fill="none" stroke="#a34848" stroke-width="2.5"/></g>
+    <g id="check" fill="none" stroke="#2e9e5b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M -6 0 L -2 4 L 6 -5"/></g>
+    <g id="browser"><rect x="-22" y="-14" width="44" height="28" rx="4" fill="#fff" stroke="currentColor" stroke-width="2"/><line x1="-22" y1="-6" x2="22" y2="-6" stroke="currentColor" stroke-width="2"/><circle cx="-16" cy="-10" r="1.6" fill="currentColor"/><circle cx="-11" cy="-10" r="1.6" fill="currentColor"/></g>
+    <g id="person"><circle cy="-6" r="4" fill="#fff" stroke="currentColor" stroke-width="1.8"/><path d="M -7 8 a 7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8"/></g>
+    <g id="rows" fill="#c9962e"><rect x="-16" y="-9" width="32" height="4" rx="1"/><rect x="-16" y="-2" width="32" height="4" rx="1"/><rect x="-16" y="5" width="20" height="4" rx="1"/></g>
+  </defs>
+  <rect width="1680" height="1000" fill="#fff"/>
+
+  <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">The runtime holds nothing — a tick reads, derives, fires nodes as leases and runs effects by id; two hosts race only on the take</text>
+  <text x="40" y="57" font-size="12" fill="#666">the plan is the same query on the same read · a restart re-derives the same states and finds every effect already written · the ledger is one store read like any other</text>
+
+  <!-- axis of moments -->
+  <line x1="120" y1="100" x2="1180" y2="100" stroke="#ddd" stroke-width="1.6"/>
+  <g font-size="10.5" fill="#999" text-anchor="middle">
+    <text x="180" y="86">read point</text><text x="360" y="86">observe</text><text x="540" y="86">derive</text><text x="720" y="86">rows</text><text x="900" y="86">fire</text><text x="1080" y="86">effects · write</text>
+  </g>
+  <g stroke="#ccc" stroke-width="1.4"><line x1="180" y1="94" x2="180" y2="106"/><line x1="360" y1="94" x2="360" y2="106"/><line x1="540" y1="94" x2="540" y2="106"/><line x1="720" y1="94" x2="720" y2="106"/><line x1="900" y1="94" x2="900" y2="106"/><line x1="1080" y1="94" x2="1080" y2="106"/></g>
+
+  <!-- ============ HOST mac-mini ============ -->
+  <text x="40" y="186" font-size="11.5" font-weight="700" fill="#7b5cb8">mac-mini</text>
+  <text x="40" y="200" font-size="8.5" fill="#999">bound 2 · heartbeat 2m</text>
+  <line x1="150" y1="182" x2="1180" y2="182" stroke="#7b5cb8" stroke-width="2" opacity="0.3"/>
+  <g id="node-runtime">
+    <use href="#gear" x="180" y="182" color="#7b5cb8"/>
+    <text x="180" y="210" font-size="9" fill="#666" text-anchor="middle">fetch · as-of</text>
+    <rect x="130" y="216" width="100" height="18" rx="9" fill="#7b5cb8"/>
+    <text x="180" y="229" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">main@3fa9c2e</text>
+  </g>
+  <g id="node-reconciler">
+    <use href="#gear" x="360" y="182" color="#7b5cb8"/>
+    <text x="360" y="210" font-size="9" fill="#666" text-anchor="middle">reconciler</text>
+    <text x="360" y="223" font-size="8.5" fill="#999" text-anchor="middle">herdr · wt · git host</text>
+  </g>
+  <use href="#cube" x="540" y="180" color="#2e9e5b"/>
+  <text x="540" y="210" font-size="9" fill="#666" text-anchor="middle">states</text>
+  <text x="540" y="223" font-size="8.5" fill="#999" text-anchor="middle">pure: derive(E)</text>
+  <g id="node-presenter">
+    <use href="#rows" x="720" y="182"/>
+    <text x="720" y="210" font-size="9" fill="#666" text-anchor="middle">rows(E, S)</text>
+    <text x="720" y="223" font-size="8.5" fill="#999" text-anchor="middle">presenter fires on a change</text>
+  </g>
+  <use href="#key" x="900" y="180" color="#7b5cb8"/>
+  <text x="900" y="210" font-size="9" fill="#666" text-anchor="middle">take activation</text>
+  <rect x="820" y="216" width="160" height="18" rx="9" fill="#7b5cb8"/>
+  <text x="900" y="229" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">stage/build · wi-418 · g1</text>
+  <use href="#check" x="1080" y="182"/>
+  <text x="1080" y="210" font-size="9" fill="#666" text-anchor="middle">won · run effects</text>
+  <text x="1080" y="223" font-size="8.5" fill="#999" text-anchor="middle">prepare place · start session</text>
+
+  <!-- ============ HOST studio ============ -->
+  <text x="40" y="306" font-size="11.5" font-weight="700" fill="#7b5cb8">studio</text>
+  <text x="40" y="320" font-size="8.5" fill="#999">same read, same derive</text>
+  <line x1="150" y1="302" x2="1180" y2="302" stroke="#7b5cb8" stroke-width="2" opacity="0.3"/>
+  <use href="#gear" x="180" y="302" color="#7b5cb8"/>
+  <rect x="130" y="316" width="100" height="18" rx="9" fill="#7b5cb8"/>
+  <text x="180" y="329" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">main@3fa9c2e</text>
+  <use href="#gear" x="360" y="302" color="#7b5cb8"/>
+  <use href="#cube" x="540" y="300" color="#2e9e5b"/>
+  <text x="540" y="330" font-size="8.5" fill="#999" text-anchor="middle">identical states</text>
+  <use href="#rows" x="720" y="302"/>
+  <text x="720" y="330" font-size="8.5" fill="#999" text-anchor="middle">identical rows · no render</text>
+  <use href="#key" x="900" y="300" color="#7b5cb8"/>
+  <text x="900" y="330" font-size="8.5" fill="#999" text-anchor="middle">same key, same instant</text>
+  <use href="#cross" x="1080" y="302"/>
+  <text x="1080" y="330" font-size="9" fill="#a34848" text-anchor="middle">lost · read again · next key</text>
+
+  <rect x="150" y="360" width="1030" height="26" rx="13" fill="#fbeeee" stroke="#c05b5b"/>
+  <text x="170" y="377" font-size="10.5" font-weight="700" fill="#a34848">1 activation · 1 session · 0 duplicate effects · the loser wrote nothing</text>
+
+  <!-- ============ CONTROL PLANE ============ -->
+  <rect x="40" y="430" width="1140" height="270" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="56" y="454" font-size="12" font-weight="700" fill="#5f6b7a">CONTROL PLANE</text>
+  <text x="180" y="454" font-size="10" fill="#999">the seven operations of B.1</text>
+
+  <g id="store-objects">
+    <use href="#cyl" x="130" y="530" color="#2e9e5b"/>
+    <text x="130" y="562" font-size="10" fill="#666" text-anchor="middle">objects</text>
+    <text x="130" y="575" font-size="8.5" fill="#999" text-anchor="middle">one file per object · records appended</text>
+  </g>
+  <g id="store-activations">
+    <use href="#cyl" x="330" y="530" color="#7b5cb8"/>
+    <text x="330" y="562" font-size="10" fill="#666" text-anchor="middle">activations</text>
+    <text x="330" y="575" font-size="8.5" fill="#999" text-anchor="middle">the lease is the firing</text>
+    <rect x="260" y="584" width="140" height="18" rx="9" fill="#7b5cb8"/>
+    <text x="330" y="597" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">(node, key, gen)</text>
+  </g>
+  <g id="store-effects">
+    <use href="#cyl" x="530" y="530" color="#2e9e5b"/>
+    <text x="530" y="562" font-size="10" fill="#666" text-anchor="middle">effects</text>
+    <text x="530" y="575" font-size="8.5" fill="#999" text-anchor="middle">id from its inputs · a repeat is a no-op</text>
+    <rect x="440" y="584" width="180" height="18" rx="9" fill="#2e9e5b"/>
+    <text x="530" y="597" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">fx-merge-wi-418-e1f0a2b</text>
+  </g>
+  <g id="store-words">
+    <use href="#cyl" x="730" y="530" color="#c9962e"/>
+    <text x="730" y="562" font-size="10" fill="#666" text-anchor="middle">words · renderings</text>
+    <text x="730" y="575" font-size="8.5" fill="#999" text-anchor="middle">(row, generation) · CAS</text>
+  </g>
+  <g id="store-hosts">
+    <use href="#cyl" x="930" y="530" color="#8a8a86"/>
+    <text x="930" y="562" font-size="10" fill="#666" text-anchor="middle">hosts · heartbeat</text>
+    <text x="930" y="575" font-size="8.5" fill="#999" text-anchor="middle">lease-ttl 15m · no history</text>
+  </g>
+  <g id="store-ledger">
+    <use href="#cyl" x="1100" y="530" color="#2b8a8a"/>
+    <text x="1100" y="562" font-size="10" fill="#666" text-anchor="middle">ledger · claims</text>
+    <text x="1100" y="575" font-size="8.5" fill="#999" text-anchor="middle">books main · read only here</text>
+  </g>
+  <text x="130" y="660" font-size="8.5" fill="#999">git-only: a commit that lands on main is the fact; the push is the compare-and-swap</text>
+  <text x="130" y="674" font-size="8.5" fill="#999">tracker: an issue per object; the lowest comment id per (node, key, gen) holds</text>
+
+  <!-- take sweeps: both hosts to activations; one wins -->
+  <path d="M 900 196 C 900 300, 420 440, 350 512" fill="none" stroke="#7b5cb8" stroke-width="2.2" marker-end="url(#mP)"/>
+  <path d="M 900 316 C 880 400, 440 460, 356 516" fill="none" stroke="#c05b5b" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mR)"/>
+  <text x="640" y="470" font-size="9.5" fill="#5a3f95" font-weight="600" text-anchor="middle">two takes · one lands · the other's base is stale</text>
+  <!-- effects written by the winner -->
+  <path d="M 1080 196 C 1080 320, 600 440, 548 512" fill="none" stroke="#2e9e5b" stroke-width="2" marker-end="url(#mG)"/>
+  <text x="1090" y="412" font-size="9" fill="#27824c" text-anchor="end">write effect · release</text>
+  <!-- reads feeding the tick -->
+  <path d="M 130 508 C 130 400, 160 260, 176 200" fill="none" stroke="#2e9e5b" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mG)"/>
+  <text x="96" y="400" font-size="9" fill="#27824c" text-anchor="end">list + read</text>
+  <path d="M 1100 508 C 1100 440, 1130 360, 1132 240 S 1120 200, 1098 192" fill="none" stroke="#2b8a8a" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mT)"/>
+
+  <!-- ============ THE OPERATOR SIDE ============ -->
+  <rect x="1220" y="84" width="420" height="616" rx="10" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"/>
+  <text x="1236" y="108" font-size="12" font-weight="700" fill="#a97e26">THE OPERATOR SIDE</text>
+  <text x="1380" y="108" font-size="10" fill="#999">present · receive · status</text>
+  <use href="#browser" x="1300" y="200" color="#c9962e"/>
+  <text x="1300" y="232" font-size="10" fill="#666" text-anchor="middle">plan page · chat</text>
+  <text x="1300" y="245" font-size="8.5" fill="#999" text-anchor="middle">same rows, same numbers</text>
+  <rect x="1250" y="254" width="100" height="18" rx="9" fill="#c9962e"/>
+  <text x="1300" y="267" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">rn-0912</text>
+  <use href="#person" x="1500" y="200" color="#c9962e"/>
+  <text x="1500" y="232" font-size="10" fill="#666" text-anchor="middle">the operator</text>
+  <text x="1500" y="245" font-size="8.5" fill="#999" text-anchor="middle">yes 2 · from a phone</text>
+  <path d="M 1326 200 L 1480 200" fill="none" stroke="#c9962e" stroke-width="2" marker-end="url(#mA)"/>
+  <use href="#gear" x="1400" y="360" color="#c9962e"/>
+  <text x="1400" y="390" font-size="10" fill="#666" text-anchor="middle">word writer</text>
+  <text x="1400" y="403" font-size="8.5" fill="#999" text-anchor="middle">acknowledges after the write lands</text>
+  <path d="M 1500 214 C 1500 280, 1440 320, 1412 346" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+  <path d="M 1380 374 C 1300 440, 900 470, 756 514" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+  <text x="985" y="494" font-size="9.5" fill="#a97e26" font-weight="600">word · applied once next tick</text>
+  <path d="M 736 196 C 900 140, 1100 170, 1276 192" fill="none" stroke="#c9962e" stroke-width="2" marker-end="url(#mA)"/>
+  <text x="1040" y="134" font-size="9" fill="#a97e26" text-anchor="middle">rendering written first, then presented</text>
+  <use href="#browser" x="1400" y="560" color="#8a8a86"/>
+  <text x="1400" y="592" font-size="10" fill="#666" text-anchor="middle">status view</text>
+  <text x="1400" y="605" font-size="8.5" fill="#999" text-anchor="middle">list + read only · served with no host running</text>
+  <rect x="1310" y="614" width="180" height="18" rx="9" fill="#8a8a86"/>
+  <text x="1400" y="627" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">as of 3fa9c2e · 16:02</text>
+
+  <!-- ============ NUMBERED WALK ============ -->
+  <rect x="40" y="730" width="1600" height="120" rx="10" fill="#fbfbfa" stroke="#d5d5d0"/>
+  <g font-size="9" font-weight="700">
+    <circle cx="70" cy="760" r="10" fill="#f2edfa" stroke="#7b5cb8" stroke-width="1.6"/><text x="70" y="763" fill="#5a3f95" text-anchor="middle">1</text>
+    <circle cx="70" cy="790" r="10" fill="#f2edfa" stroke="#7b5cb8" stroke-width="1.6"/><text x="70" y="793" fill="#5a3f95" text-anchor="middle">2</text>
+    <circle cx="70" cy="820" r="10" fill="#f2edfa" stroke="#7b5cb8" stroke-width="1.6"/><text x="70" y="823" fill="#5a3f95" text-anchor="middle">3</text>
+    <circle cx="860" cy="760" r="10" fill="#f2edfa" stroke="#7b5cb8" stroke-width="1.6"/><text x="860" y="763" fill="#5a3f95" text-anchor="middle">4</text>
+    <circle cx="860" cy="790" r="10" fill="#f2edfa" stroke="#7b5cb8" stroke-width="1.6"/><text x="860" y="793" fill="#5a3f95" text-anchor="middle">5</text>
+    <circle cx="860" cy="820" r="10" fill="#f2edfa" stroke="#7b5cb8" stroke-width="1.6"/><text x="860" y="823" fill="#5a3f95" text-anchor="middle">6</text>
+  </g>
+  <g font-size="10" fill="#555">
+    <text x="90" y="764">read point: fetch every shared line; the as-of sha names the evidence</text>
+    <text x="90" y="794">observe panes, worktrees, branch heads; write an observation only when it changes a derived state</text>
+    <text x="90" y="824">derive every object's state and the row set — pure functions over the edge artifacts</text>
+    <text x="880" y="764">present when the row fingerprint moved: write the rendering, then the page and the chat</text>
+    <text x="880" y="794">fire: per node and candidate key, take the activation; a lost take is a re-read, never a retry</text>
+    <text x="880" y="824">effects in order, each checked against its id; write what the node produced; release</text>
+  </g>
+
+  <!-- ============ LEGEND ============ -->
+  <rect x="40" y="876" width="1600" height="100" rx="10" fill="#fafafa" stroke="#d5d5d0"/>
+  <g font-size="10.5" fill="#555">
+    <use href="#gear" x="80" y="910" color="#7b5cb8"/><text x="102" y="914">runtime step</text>
+    <use href="#key" x="210" y="908" color="#7b5cb8"/><text x="230" y="914">lease</text>
+    <use href="#cyl" x="310" y="910" color="#2e9e5b"/><text x="344" y="914">edge store</text>
+    <use href="#cyl" x="450" y="910" color="#2b8a8a"/><text x="484" y="914">ledger</text>
+    <use href="#rows" x="570" y="910"/><text x="596" y="914">rows</text>
+    <use href="#check" x="660" y="910"/><text x="676" y="914">won</text>
+    <use href="#cross" x="740" y="910"/><text x="758" y="914">lost</text>
+    <use href="#browser" x="840" y="910" color="#8a8a86"/><text x="870" y="914">a served page</text>
+    <line x1="990" y1="910" x2="1030" y2="910" stroke="#7b5cb8" stroke-width="3"/><text x="1040" y="914">take</text>
+    <line x1="1100" y1="910" x2="1140" y2="910" stroke="#c05b5b" stroke-width="2" stroke-dasharray="4 3"/><text x="1150" y="914">stale base</text>
+    <line x1="1240" y1="910" x2="1280" y2="910" stroke="#2e9e5b" stroke-width="2" stroke-dasharray="2 5"/><text x="1290" y="914">read</text>
+    <line x1="1350" y1="910" x2="1390" y2="910" stroke="#c9962e" stroke-width="3"/><text x="1400" y="914">the word</text>
+  </g>
+  <text x="80" y="954" font-size="10.5" fill="#555">the engine knows read, write effect, lease, present and receive, notify, list, status — and no name of any flywheel object; every predicate and act is a domain atom</text>
+</svg>

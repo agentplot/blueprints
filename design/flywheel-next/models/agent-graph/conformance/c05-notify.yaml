@@ -1,0 +1,34 @@
+kind: scenario
+name: "C05 — a host is told that state changed within the profile's bound, without re-reading everything; a host never notified still converges by reading"
+requirements: [B.1.117, C.2.149, C.2.150]
+profiles: [all]
+given:
+  proposals:
+    - {id: pr-el-atlas-research, kind: elaboration, intent: in-atlas-provider-limits, type: self-closing, generation: 1}
+  objects/intent:
+    - {id: in-atlas-provider-limits, approval: wd-rn-0900-1}
+  hosts:
+    - {id: mac-mini, bound: 2, alive: true}
+    - {id: studio, bound: 2, alive: true}
+when:
+  - {op: {host: studio, call: notify-on, as: n}}
+  - {receive: {rendering: rn-A, row: 1, answer: "yes", by: chuck, via: chat}}     # recorded through mac-mini's writer
+  - {op: {host: studio, call: read, object: pr-el-atlas-research, as: r1}}     # after the notification arrives
+  - {op: {host: studio, call: notify-off}}
+  - {receive: {rendering: rn-A, row: 1, answer: "type standing", by: chuck, via: chat}}   # a second word on the same row is a duplicate row answer: acknowledged
+  - {direct: {by: chuck, act: "close the intent", object: in-atlas-provider-limits}}
+  - {clock: "+2m"}
+  - {tick: {host: studio}}                                                       # a tick reads before deciding
+then:
+  results:
+    - "n.bound is stated by the binding (seconds by webhook · 60 s by poll, or the profile's own figures)"
+    - "r1 reflects the word within n.bound of its recording, and studio read only the changed object, not every object"
+    - "with notification off, studio's tick still sees the direct close because a tick reads before it decides"
+  latency:
+    notify: "{n.bound}"
+  fired:
+    - "instantiate on the yes word (on whichever host took it)"
+  writes:
+    - "word(in-atlas-provider-limits, close, via=direct)"
+  report:
+    - "notification shortens the wait; it never carries state, and a host that misses it loses only time"

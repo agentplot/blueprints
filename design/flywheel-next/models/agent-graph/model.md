@@ -1022,6 +1022,8 @@ repositories for lines, places, and the as-built.
 
 ```
 objects/intent/in-…​.rec       object record, then activation, exit, word, effect records
+                              the object record's State: line is a projection the
+                              presenter rewrites each tick; a hand edit to it is a direct act
 objects/elaboration/el-….rec
 objects/bolt/bo-….rec
 objects/unit/un-….rec
@@ -1563,4 +1565,20 @@ the two claim blocks now exist there, so they derive `standing`.
 - `yes all` is bound to the rendering it answers.
 - The git-only profile is built first.
 - The house-style diagrams are hand-drawn and checked against the
-  definitions by a test on element ids, not generated (gaps.md).
+  definitions by a test on element ids (`diagrams/check.py`), not
+  generated (gaps.md).
+- The `forward` adapter writes one signal directly, the operator's one
+  word being the judgment; every other adapter writes only the capture
+  and leaves the signals to a session (A.15.102 against S21, gaps.md).
+- Every object file's first record carries a `State:` line as a
+  projection so that a hand edit to it can be read as the word (S19);
+  the derivation never reads it.
+- A type corrected after approval is a dictation: an elaboration's type
+  changes at its next activation; a unit's type is refused once an item
+  has an activation, and the word is reported unapplied (A.5.49).
+- A claim's scope corrected by word is a chore on the books shared
+  line, because scope lives in the claim block.
+- The conformance suite lives under `conformance/`, one file per
+  contract operation and guarantee plus the section 11 scenarios that
+  hit the control plane; the profile-specific scenarios of section 11
+  are walked in §17 and must pass on every profile all the same.

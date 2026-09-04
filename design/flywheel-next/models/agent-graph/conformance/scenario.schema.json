@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "flywheel-next/agent-graph/conformance/scenario.schema.json",
+  "title": "Conformance scenario",
+  "description": "A superset of machines/schema.json#/$defs/scenario. given seeds stores by abstract name; when is an ordered list of steps; then asserts states, firings, effects, writes, rows and bound results. No step or assertion may name a label, column, path, service or language.",
+  "type": "object",
+  "required": ["kind", "name", "requirements", "profiles", "given", "when", "then"],
+  "additionalProperties": false,
+  "properties": {
+    "kind": { "const": "scenario" },
+    "name": { "type": "string" },
+    "requirements": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "profiles": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "given": {
+      "type": "object",
+      "description": "store name (graph.yaml edges[].store) → list of records in abstract field names; plus `world` for the stand-in world and `settings` overrides",
+      "additionalProperties": { "type": ["array", "object"] }
+    },
+    "when": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/step" } },
+    "then": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "states": { "type": "object", "additionalProperties": { "type": "string" } },
+        "fired": { "type": "array", "items": { "type": "string" } },
+        "not-fired": { "type": "array", "items": { "type": "string" } },
+        "effects": { "type": "array", "items": { "type": "string" } },
+        "writes": { "type": "array", "items": { "type": "string" } },
+        "rows": { "type": "array", "items": { "type": "string" } },
+        "no-rows": { "type": "array", "items": { "type": "string" } },
+        "no-effects": { "type": "boolean" },
+        "no-writes": { "type": "boolean" },
+        "results": { "type": "array", "items": { "type": "string" }, "description": "assertions over values bound with as:" },
+        "latency": { "type": "object", "additionalProperties": { "type": "string" } },
+        "report": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "$defs": {
+    "step": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 1,
+      "properties": {
+        "tick": { "type": "object", "required": ["host"], "properties": { "host": { "type": "string" } } },
+        "receive": {
+          "type": "object",
+          "required": ["answer", "by", "via"],
+          "properties": {
+            "rendering": { "type": "string" }, "row": { "type": ["integer", "string"] },
+            "answer": { "type": "string" }, "args": { "type": "object" },
+            "by": { "type": "string" }, "via": { "type": "string" }
+          }
+        },
+        "direct": { "type": "object", "required": ["by", "act"], "properties": { "by": { "type": "string" }, "act": { "type": "string" }, "object": { "type": "string" } } },
+        "world": { "type": "object" },
+        "clock": { "type": "string", "pattern": "^\\+[0-9]+(s|m|h|d)$" },
+        "stop": { "type": "string" },
+        "start": { "type": "string" },
+        "crash": { "type": "string" },
+        "partition": { "type": "string" },
+        "reconnect": { "type": "string" },
+        "concurrent": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/step" } },
+        "op": {
+          "type": "object",
+          "required": ["host", "call"],
+          "properties": {
+            "host": { "type": "string" },
+            "call": { "enum": ["read", "list", "write-effect", "lease-take", "lease-renew", "lease-release", "present", "notify-off", "notify-on", "status-view", "write"] },
+            "as": { "type": "string" }
+          },
+          "additionalProperties": true
+        },
+        "expect-throttle": { "type": "object" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,225 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 1000" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="mN" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+    <marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+    <marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e9e5b"/></marker>
+    <marker id="mP" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7b5cb8"/></marker>
+    <marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+    <marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+    <g id="gear"><circle r="9" fill="#fff" stroke="currentColor" stroke-width="2.4"/><circle r="3" fill="currentColor"/><g stroke="currentColor" stroke-width="2.4"><line y1="-9" y2="-13.5"/><line y1="9" y2="13.5"/><line x1="-9" x2="-13.5"/><line x1="9" x2="13.5"/><line x1="-6.4" y1="-6.4" x2="-9.5" y2="-9.5"/><line x1="6.4" y1="6.4" x2="9.5" y2="9.5"/><line x1="-6.4" y1="6.4" x2="-9.5" y2="9.5"/><line x1="6.4" y1="-6.4" x2="9.5" y2="-9.5"/></g></g>
+    <g id="cube" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M -16 -8 L 0 -17 L 16 -8 L 16 10 L 0 19 L -16 10 Z" fill="#fff"/><path d="M -16 -8 L 0 1 L 16 -8 M 0 1 L 0 19" fill="none"/></g>
+    <g id="cyl"><path d="M -24 -11 L -24 13 A 24 8 0 0 0 24 13 L 24 -11" fill="#f1f1ee" stroke="currentColor" stroke-width="1.6"/><ellipse cx="0" cy="-11" rx="24" ry="8" fill="#e3e3df" stroke="currentColor" stroke-width="1.6"/></g>
+    <g id="person"><circle cy="-6" r="4" fill="#fff" stroke="currentColor" stroke-width="1.8"/><path d="M -7 8 a 7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8"/></g>
+    <g id="row" stroke="currentColor" stroke-width="1.6" fill="none"><rect x="-8" y="-6" width="16" height="12" rx="2"/><line x1="-4" y1="-1" x2="4" y2="-1"/><line x1="-4" y1="3" x2="1" y2="3"/></g>
+    <g id="clock"><circle r="9" fill="#fff" stroke="#c9962e" stroke-width="2"/><path d="M 0 -5 V 0 H 4" fill="none" stroke="#c9962e" stroke-width="2.2" stroke-linecap="round"/></g>
+  </defs>
+  <rect width="1680" height="1000" fill="#fff"/>
+
+  <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">The operator node — a plan row is an unanswered artifact on one of its in-edges, and nothing else</text>
+  <text x="40" y="57" font-size="12" fill="#666">created when its predicate first holds on a read · retracted by a word, or when the decision can no longer be made · the word is the only out-edge</text>
+
+  <!-- ============ PRODUCERS ============ -->
+  <rect x="40" y="84" width="480" height="770" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="56" y="108" font-size="12" font-weight="700" fill="#5f6b7a">PRODUCERS</text>
+  <text x="150" y="108" font-size="10" fill="#999">the nodes whose artifacts land on a row edge</text>
+
+  <g id="node-curation">
+    <use href="#gear" x="110" y="176" color="#4a7fb5"/>
+    <text x="110" y="206" font-size="10" fill="#666" text-anchor="middle">curation</text>
+    <text x="110" y="219" font-size="8.5" fill="#999" text-anchor="middle">signals → intent proposals</text>
+  </g>
+  <g id="node-planning">
+    <use href="#gear" x="110" y="262" color="#4a7fb5"/>
+    <text x="110" y="292" font-size="10" fill="#666" text-anchor="middle">planning</text>
+    <text x="110" y="305" font-size="8.5" fill="#999" text-anchor="middle">backlog → unit proposals</text>
+  </g>
+  <g id="store-ledger">
+    <use href="#cyl" x="330" y="330" color="#2b8a8a"/>
+    <text x="330" y="362" font-size="10" fill="#666" text-anchor="middle">ledger</text>
+    <text x="330" y="375" font-size="8.5" fill="#999" text-anchor="middle">ledger/atlas.rec · one file per repository</text>
+    <rect x="290" y="384" width="80" height="18" rx="9" fill="#2b8a8a"/>
+    <text x="330" y="397" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">partial</text>
+  </g>
+  <path d="M 306 318 C 250 300, 200 290, 126 274" fill="none" stroke="#2b8a8a" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mT)"/>
+  <text x="262" y="276" font-size="9" fill="#1f6e6e" text-anchor="middle">reads the backlog</text>
+  <path d="M 118 282 C 160 330, 230 346, 302 342" fill="none" stroke="#2b8a8a" stroke-width="2" marker-end="url(#mT)"/>
+  <text x="176" y="356" font-size="9" fill="#1f6e6e" text-anchor="middle">writes verdicts</text>
+
+  <g id="node-stage">
+    <use href="#gear" x="110" y="460" color="#4a7fb5"/>
+    <text x="110" y="490" font-size="10" fill="#666" text-anchor="middle">stage · elaboration</text>
+    <text x="110" y="503" font-size="8.5" fill="#999" text-anchor="middle">a session's exit block</text>
+  </g>
+  <path d="M 128 460 L 232 460" fill="none" stroke="#4a7fb5" stroke-width="2" marker-end="url(#mB)"/>
+  <g id="node-reconciler">
+    <use href="#gear" x="250" y="460" color="#7b5cb8"/>
+    <text x="250" y="490" font-size="10" fill="#666" text-anchor="middle">reconciler</text>
+    <text x="250" y="503" font-size="8.5" fill="#999" text-anchor="middle">parses five exit kinds</text>
+  </g>
+  <use href="#cube" x="400" y="458" color="#2e9e5b"/>
+  <text x="400" y="490" font-size="10" fill="#666" text-anchor="middle">exit</text>
+  <text x="400" y="503" font-size="8.5" fill="#999" text-anchor="middle">chore · blocked · finding</text>
+  <path d="M 268 460 L 380 460" fill="none" stroke="#2e9e5b" stroke-width="2" marker-end="url(#mG)"/>
+
+  <g id="node-derive">
+    <use href="#gear" x="110" y="600" color="#7b5cb8"/>
+    <text x="110" y="630" font-size="10" fill="#666" text-anchor="middle">derivations</text>
+    <text x="110" y="643" font-size="8.5" fill="#999" text-anchor="middle">close-offered · idle · moved</text>
+  </g>
+  <use href="#cube" x="330" y="598" color="#2b8a8a"/>
+  <text x="330" y="630" font-size="10" fill="#666" text-anchor="middle">claim</text>
+  <rect x="286" y="638" width="88" height="18" rx="9" fill="#2b8a8a"/>
+  <text x="330" y="651" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">v3 → v4</text>
+  <path d="M 306 600 L 132 600" fill="none" stroke="#2b8a8a" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mT)"/>
+  <text x="217" y="592" font-size="9" fill="#1f6e6e" text-anchor="middle">version moved</text>
+
+  <g id="node-runtime">
+    <use href="#gear" x="110" y="710" color="#7b5cb8"/>
+    <text x="110" y="740" font-size="10" fill="#666" text-anchor="middle">heartbeat</text>
+    <text x="110" y="753" font-size="8.5" fill="#999" text-anchor="middle">a host's liveness</text>
+    <rect x="200" y="700" width="112" height="18" rx="9" fill="#7b5cb8"/>
+    <text x="256" y="713" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">lease-ttl 15m</text>
+  </g>
+
+  <g id="node-presenter">
+    <use href="#gear" x="110" y="800" color="#7b5cb8"/>
+    <text x="110" y="830" font-size="10" fill="#666" text-anchor="middle">presenter</text>
+    <text x="110" y="843" font-size="8.5" fill="#999" text-anchor="middle">writes the rendering first</text>
+    <rect x="200" y="790" width="88" height="18" rx="9" fill="#2e9e5b"/>
+    <text x="244" y="803" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">rn-0912</text>
+    <text x="244" y="820" font-size="8.5" fill="#999" text-anchor="middle">the tail counts from its time</text>
+  </g>
+
+  <!-- ============ ROW EDGES ============ -->
+  <rect x="560" y="84" width="450" height="266" rx="10" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"/>
+  <text x="576" y="108" font-size="12" font-weight="700" fill="#a97e26">APPROVE</text>
+  <text x="650" y="108" font-size="10" fill="#999">yes is safe · counted</text>
+  <rect x="900" y="94" width="96" height="18" rx="9" fill="#c9962e"/>
+  <text x="948" y="107" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">yes all</text>
+  <g id="row-intent"><use href="#row" x="592" y="140" color="#c9962e"/><text x="612" y="144" font-size="10" font-weight="700" fill="#333">intent</text><text x="690" y="144" font-size="8.5" fill="#999">proposal, no word → word · signals re-moved</text></g>
+  <g id="row-elab"><use href="#row" x="592" y="172" color="#c9962e"/><text x="612" y="176" font-size="10" font-weight="700" fill="#333">elab</text><text x="690" y="176" font-size="8.5" fill="#999">proposal on open intent → word · intent closed</text></g>
+  <g id="row-unit"><use href="#row" x="592" y="204" color="#c9962e"/><text x="612" y="208" font-size="10" font-weight="700" fill="#333">unit</text><text x="690" y="208" font-size="8.5" fill="#999">proposal, no moved row → word</text></g>
+  <g id="row-baseline"><use href="#row" x="592" y="236" color="#c9962e"/><text x="612" y="240" font-size="10" font-weight="700" fill="#333">baseline</text><text x="690" y="240" font-size="8.5" fill="#999">first planning's set → word · pick</text></g>
+  <g id="row-chores"><use href="#row" x="592" y="268" color="#c9962e"/><text x="612" y="272" font-size="10" font-weight="700" fill="#333">chores</text><text x="690" y="272" font-size="8.5" fill="#999">chore exit, no word → word on each</text></g>
+  <g id="row-land"><use href="#row" x="592" y="300" color="#c9962e"/><text x="612" y="304" font-size="10" font-weight="700" fill="#333">land</text><text x="690" y="304" font-size="8.5" fill="#999">every unit finished, no hold → word · new unit</text></g>
+  <text x="576" y="336" font-size="8.5" fill="#a97e26">a yes starts machinery only: instantiate, git.land</text>
+
+  <rect x="560" y="370" width="450" height="140" rx="10" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"/>
+  <text x="576" y="394" font-size="12" font-weight="700" fill="#a97e26">DECIDE</text>
+  <text x="650" y="394" font-size="10" fill="#999">no default · counted</text>
+  <g id="row-close"><use href="#row" x="592" y="424" color="#c9962e"/><text x="612" y="428" font-size="10" font-weight="700" fill="#333">close</text><text x="690" y="428" font-size="8.5" fill="#999">all elaborations done → close · keep · new elab</text></g>
+  <g id="row-idle"><use href="#row" x="592" y="456" color="#c9962e"/><text x="612" y="460" font-size="10" font-weight="700" fill="#333">idle</text><text x="690" y="460" font-size="8.5" fill="#999">standing session idle → finish · keep · works</text></g>
+  <g id="row-moved"><use href="#row" x="592" y="488" color="#c9962e"/><text x="612" y="492" font-size="10" font-weight="700" fill="#333">moved</text><text x="690" y="492" font-size="8.5" fill="#999">unit covers old version → amend · follow · landed</text></g>
+
+  <rect x="560" y="530" width="450" height="76" rx="10" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"/>
+  <text x="576" y="554" font-size="12" font-weight="700" fill="#a97e26">ANSWER</text>
+  <text x="650" y="554" font-size="10" fill="#999">needs words · page</text>
+  <g id="row-blocked"><use href="#row" x="592" y="584" color="#c9962e"/><text x="612" y="588" font-size="10" font-weight="700" fill="#333">blocked</text><text x="690" y="588" font-size="8.5" fill="#999">blocked exit, unanswered → answer · dropped</text></g>
+
+  <rect x="560" y="626" width="450" height="108" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="576" y="650" font-size="12" font-weight="700" fill="#5f6b7a">ATTENTION</text>
+  <text x="670" y="650" font-size="10" fill="#999">read · outside the count</text>
+  <g id="row-host-stale"><use href="#row" x="592" y="680" color="#8a8a86"/><text x="612" y="684" font-size="10" font-weight="700" fill="#333">host-stale</text><text x="690" y="684" font-size="8.5" fill="#999">holds a session, heartbeat old → fresh · takeover</text></g>
+  <g id="row-unapplied"><use href="#row" x="592" y="712" color="#8a8a86"/><text x="612" y="716" font-size="10" font-weight="700" fill="#333">unapplied</text><text x="690" y="716" font-size="8.5" fill="#999">a word that could not apply → next rendering</text></g>
+
+  <rect x="560" y="754" width="450" height="76" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="576" y="778" font-size="12" font-weight="700" fill="#5f6b7a">SINCE</text>
+  <text x="640" y="778" font-size="10" fill="#999">the tail · outside the count</text>
+  <g id="row-since"><use href="#row" x="592" y="808" color="#8a8a86"/><text x="612" y="812" font-size="10" font-weight="700" fill="#333">since</text><text x="690" y="812" font-size="8.5" fill="#999">terminal after rn-0912 → next rendering</text></g>
+
+  <!-- producer → row sweeps -->
+  <path d="M 128 176 C 300 150, 420 140, 578 140" fill="none" stroke="#4a7fb5" stroke-width="2" marker-end="url(#mB)"/>
+  <path d="M 128 258 C 300 230, 440 210, 578 204" fill="none" stroke="#4a7fb5" stroke-width="2" marker-end="url(#mB)"/>
+  <path d="M 420 454 C 480 420, 520 290, 578 270" fill="none" stroke="#2e9e5b" stroke-width="2" marker-end="url(#mG)"/>
+  <path d="M 420 464 C 480 500, 520 570, 578 584" fill="none" stroke="#2e9e5b" stroke-width="2" marker-end="url(#mG)"/>
+  <path d="M 128 592 C 250 500, 420 440, 578 424" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <path d="M 130 596 C 260 530, 420 470, 578 456" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <path d="M 352 606 C 430 600, 500 520, 578 488" fill="none" stroke="#2b8a8a" stroke-width="2" marker-end="url(#mT)"/>
+  <path d="M 312 708 C 420 708, 500 682, 578 680" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <path d="M 290 800 C 400 800, 500 808, 578 808" fill="none" stroke="#2e9e5b" stroke-width="2" marker-end="url(#mG)"/>
+
+  <!-- ============ THE OPERATOR NODE ============ -->
+  <polygon points="1200,370 1290,460 1200,550 1110,460" fill="#fffdf6" stroke="#c9962e" stroke-width="2.4"/>
+  <use href="#person" x="1200" y="440" color="#c9962e"/>
+  <text x="1200" y="474" font-size="10.5" font-weight="700" fill="#8a6a1d" text-anchor="middle">OPERATOR</text>
+  <text x="1200" y="489" font-size="8.5" fill="#a97e26" text-anchor="middle">no firing rule</text>
+  <text x="1200" y="572" font-size="10" fill="#666" text-anchor="middle">phone · page · a direct act on the store</text>
+  <text x="1200" y="586" font-size="8.5" fill="#999" text-anchor="middle">the presenter is its adapter both ways</text>
+
+  <path d="M 1010 216 C 1060 216, 1090 380, 1128 432" fill="none" stroke="#c9962e" stroke-width="2.4" marker-end="url(#mA)"/>
+  <path d="M 1010 440 C 1050 440, 1080 450, 1108 458" fill="none" stroke="#c9962e" stroke-width="2.4" marker-end="url(#mA)"/>
+  <path d="M 1010 568 C 1060 568, 1090 520, 1122 486" fill="none" stroke="#c9962e" stroke-width="2.4" marker-end="url(#mA)"/>
+  <path d="M 1010 680 C 1070 680, 1100 570, 1138 508" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mN)"/>
+  <path d="M 1010 792 C 1090 792, 1120 620, 1160 530" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mN)"/>
+  <text x="1024" y="352" font-size="9.5" fill="#a97e26" font-weight="600">rows: an artifact + no word</text>
+
+  <!-- rendering into the operator -->
+  <use href="#cube" x="1200" y="270" color="#2e9e5b"/>
+  <text x="1200" y="302" font-size="10" fill="#666" text-anchor="middle">rendering</text>
+  <text x="1200" y="315" font-size="8.5" fill="#999" text-anchor="middle">page + one chat message · same numbers</text>
+  <path d="M 1200 322 L 1200 362" fill="none" stroke="#2e9e5b" stroke-width="2" marker-end="url(#mG)"/>
+
+  <!-- ============ APPLIERS ============ -->
+  <rect x="1320" y="84" width="320" height="770" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="1336" y="108" font-size="12" font-weight="700" fill="#5f6b7a">APPLIERS</text>
+  <text x="1420" y="108" font-size="10" fill="#999">the word's consumers</text>
+
+  <g id="store-words">
+    <use href="#cyl" x="1400" y="340" color="#2e9e5b"/>
+    <text x="1400" y="372" font-size="10" fill="#666" text-anchor="middle">words</text>
+    <text x="1400" y="385" font-size="8.5" fill="#999" text-anchor="middle">CAS · repeat acknowledged</text>
+    <rect x="1350" y="392" width="100" height="18" rx="9" fill="#2e9e5b"/>
+    <text x="1400" y="405" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">(row, gen)</text>
+  </g>
+  <path d="M 1290 460 C 1300 400, 1310 340, 1374 340" fill="none" stroke="#c9962e" stroke-width="2.4" marker-end="url(#mA)"/>
+  <text x="1312" y="424" font-size="9.5" fill="#a97e26" font-weight="600">word</text>
+
+  <g id="store-asks">
+    <use href="#cube" x="1400" y="600" color="#c9962e"/>
+    <text x="1400" y="632" font-size="10" fill="#666" text-anchor="middle">ask</text>
+    <text x="1400" y="645" font-size="8.5" fill="#999" text-anchor="middle">dictation · no row · applied directly</text>
+  </g>
+  <path d="M 1290 462 C 1320 490, 1340 560, 1378 590" fill="none" stroke="#c9962e" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mA)"/>
+
+  <g id="node-git">
+    <use href="#gear" x="1560" y="200" color="#7b5cb8"/>
+    <text x="1560" y="230" font-size="10" fill="#666" text-anchor="middle">git</text>
+    <text x="1560" y="243" font-size="8.5" fill="#999" text-anchor="middle">yes → land · close → archive</text>
+  </g>
+  <g id="node-instantiate">
+    <use href="#gear" x="1560" y="440" color="#7b5cb8"/>
+    <text x="1560" y="470" font-size="10" fill="#666" text-anchor="middle">instantiate</text>
+    <text x="1560" y="483" font-size="8.5" fill="#999" text-anchor="middle">objects that carry the word</text>
+  </g>
+  <g id="node-retire">
+    <use href="#gear" x="1560" y="600" color="#7b5cb8"/>
+    <text x="1560" y="630" font-size="10" fill="#666" text-anchor="middle">retire</text>
+    <text x="1560" y="643" font-size="8.5" fill="#999" text-anchor="middle">finish → session.retire</text>
+  </g>
+  <g id="node-runner">
+    <use href="#gear" x="1560" y="760" color="#7b5cb8"/>
+    <text x="1560" y="790" font-size="10" fill="#666" text-anchor="middle">runner</text>
+    <text x="1560" y="803" font-size="8.5" fill="#999" text-anchor="middle">answer → session.tell</text>
+  </g>
+  <path d="M 1424 332 C 1470 300, 1500 240, 1540 212" fill="none" stroke="#2e9e5b" stroke-width="2" marker-end="url(#mG)"/>
+  <path d="M 1426 344 C 1470 360, 1500 410, 1540 432" fill="none" stroke="#2e9e5b" stroke-width="2" marker-end="url(#mG)"/>
+  <path d="M 1424 352 C 1480 400, 1500 540, 1540 592" fill="none" stroke="#2e9e5b" stroke-width="2" marker-end="url(#mG)"/>
+  <path d="M 1420 358 C 1490 440, 1500 680, 1540 750" fill="none" stroke="#2e9e5b" stroke-width="2" marker-end="url(#mG)"/>
+  <path d="M 1420 596 C 1470 560, 1500 480, 1540 452" fill="none" stroke="#c9962e" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mA)"/>
+
+  <!-- ============ LEGEND ============ -->
+  <rect x="40" y="876" width="1600" height="100" rx="10" fill="#fafafa" stroke="#d5d5d0"/>
+  <g font-size="10.5" fill="#555">
+    <use href="#gear" x="80" y="910" color="#4a7fb5"/><text x="102" y="914">agent node</text>
+    <use href="#gear" x="210" y="910" color="#7b5cb8"/><text x="232" y="914">machinery node</text>
+    <use href="#row" x="370" y="910" color="#c9962e"/><text x="390" y="914">row edge</text>
+    <use href="#cube" x="480" y="908" color="#2e9e5b"/><text x="506" y="914">artifact</text>
+    <use href="#cyl" x="600" y="910" color="#2e9e5b"/><text x="634" y="914">edge store</text>
+    <use href="#cyl" x="740" y="910" color="#2b8a8a"/><text x="774" y="914">ledger</text>
+    <polygon points="860,896 874,910 860,924 846,910" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"/><text x="884" y="914">the operator</text>
+    <line x1="990" y1="910" x2="1030" y2="910" stroke="#c9962e" stroke-width="3"/><text x="1040" y="914">rows in · word out</text>
+    <line x1="1170" y1="910" x2="1210" y2="910" stroke="#2b8a8a" stroke-width="2" stroke-dasharray="2 5"/><text x="1220" y="914">read only</text>
+    <line x1="1310" y1="910" x2="1350" y2="910" stroke="#c9962e" stroke-width="2" stroke-dasharray="4 3"/><text x="1360" y="914">dictation</text>
+  </g>
+  <text x="80" y="954" font-size="10.5" fill="#555">a row is a fact about the stores, evaluated on every read — no process emits it, so no restart can lose it; the number is fixed by the rendering, so a late reply still names its row</text>
+</svg>

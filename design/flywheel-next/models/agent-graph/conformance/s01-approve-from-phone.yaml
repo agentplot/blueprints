@@ -1,0 +1,40 @@
+kind: scenario
+name: "S1 — the operator approves a proposed elaboration from the phone; work starts; nothing re-asks and nothing undoes the approval"
+requirements: [S1, A.1.1, A.1.5, A.2.12, I1]
+profiles: [all]
+given:
+  objects/intent:
+    - {id: in-atlas-provider-limits, approval: wd-rn-0900-1}
+  proposals:
+    - {id: pr-el-atlas-research, kind: elaboration, intent: in-atlas-provider-limits, type: self-closing, generation: 1}
+  renderings:
+    - {id: rn-0912, rows: [pr-el-atlas-research@1]}
+  hosts:
+    - {id: mac-mini, bound: 2, alive: true}
+  world:
+    line-head: {"intent/in-atlas-provider-limits": 9b1e44c, "books/main": 9b1e44c}
+when:
+  - {receive: {rendering: rn-0912, row: 1, answer: "yes", by: chuck, via: "chat"}}
+  - {tick: {host: mac-mini}}
+  - {receive: {rendering: rn-0912, row: 1, answer: "yes", by: chuck, via: "chat-retry"}}
+  - {tick: {host: mac-mini}}
+  - {world: {sessions: {se-ac-elaboration-el-atlas-research-1: working}}}
+  - {tick: {host: mac-mini}}
+  - {stop: mac-mini}
+  - {start: mac-mini}
+  - {tick: {host: mac-mini}}
+then:
+  writes:
+    - "word(pr-el-atlas-research@1, yes) — once"
+    - "elaboration(el-atlas-research, type=self-closing, approval=wd-rn-0912-1)"
+    - "activation(elaboration, el-atlas-research, gen 1, host mac-mini)"
+    - "session(se-ac-elaboration-el-atlas-research-1)"
+  effects:
+    - "git.place.prepare(pl-el-atlas-research, intent/in-atlas-provider-limits)"
+    - "session.start(ac-elaboration-el-atlas-research-1)"
+  states:
+    el-atlas-research: working
+  no-rows: [elab]
+  report:
+    - "second delivery acknowledged as duplicate; no second word; no second activation; the restart re-derived approved from the record and found every effect written"
+    - "no predicate anywhere asks whether the elaboration is approved except its derivation, which reads the record's approval"

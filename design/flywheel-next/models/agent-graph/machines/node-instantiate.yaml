@@ -24,6 +24,8 @@ produces:
   - "yes on baseline → as unit for every unit and chore in the set"
   - "dictation naming a bolt → unit(type=ask.type or default, bolt, approval=ask) + items from a one-item document"
   - "dictation 'revive <signal>' → the signal's move is followed by a revived record"
+  - "dictation 'elaboration <id> type <type>' → elaboration.type = type, in force at its next activation; a live session is untouched (A.4.24)"
+  - "dictation 'unit <id> type <type>' → unit.type = type only while no item of the unit has an activation; otherwise word.unapplied = in flight (A.5.33, A.5.49)"
   - "amend on moved → advance(item, to=stage 1, reason=amend, version) for each item of the unit; the follow-on proposal gets word=superseded"
   - "finish on idle → elaboration.finished=word (the derivation reads it as done)"
   - "takeover on host-stale → activation(generation+1, host=named) for each session activation of the stale host; the old marked superseded"

@@ -45,7 +45,7 @@ evidence:
   as-built:        "grep serves: in openspec/specs/**/spec.md at the repository's main"
   line-head:       "git ls-remote <repository> refs/heads/<line>"
   observed:        "herdr agent status <activation>; last output time against idle-window"
-  operator-present:"herdr agent status <activation> --input-age; or a word in/out comment"
+  operator-present: "herdr agent status <activation> --input-age; or a word in/out comment"
   gate-result:     "gh pr checks <url>"
   host-alive:      "the host issue's heartbeat comment updated_at within lease-ttl"
 

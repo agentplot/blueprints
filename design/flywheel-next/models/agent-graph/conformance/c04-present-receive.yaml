@@ -1,0 +1,37 @@
+kind: scenario
+name: "C04 — rows are presented; the word comes back attributed to its row, recorded before work follows, visible to the operator; a word that cannot apply is handed back, never dropped"
+requirements: [B.1.116, B.6.137, B.6.138, B.6.139, A.1.1, A.1.5, A.2.16]
+profiles: [all]
+given:
+  proposals:
+    - {id: pr-un-atlas-status-writer, kind: unit, generation: 2, repository: atlas, target-bolt: bo-plan-rows, type: "default@a91c0e2", routed-from: planning, document: "status writer: spec · build×2 · review"}
+    - {id: pr-in-atlas-provider-limits, kind: intent, generation: 1, elaborations: [{type: self-closing}, {type: standing}], signals: [sg-1, sg-2, sg-3], challenges: "providers/one-writer@7f3a2c1"}
+  objects/bolt:
+    - {id: bo-plan-rows, repository: atlas, name: plan-rows, approval: wd-rn-0800-1}
+  hosts:
+    - {id: mac-mini, bound: 2, alive: true}
+when:
+  - {tick: {host: mac-mini}}                                   # the presenter fires: rendering rn-A with two rows
+  - {op: {host: mac-mini, call: present, as: p}}
+  - {receive: {rendering: "{p.rendering}", row: 2, answer: "yes", args: {bolt: bo-plan-rows}, by: chuck, via: "chat"}}
+  - {op: {host: mac-mini, call: read, object: pr-un-atlas-status-writer, as: r1}}
+  - {tick: {host: mac-mini}}
+  - {direct: {by: chuck, act: "drop the intent proposal", object: pr-in-atlas-provider-limits}}
+  - {tick: {host: mac-mini}}
+  - {receive: {rendering: "{p.rendering}", row: 1, answer: "yes", by: chuck, via: "page"}}   # late: the row no longer holds
+  - {tick: {host: mac-mini}}
+then:
+  results:
+    - "p.rows has two entries, numbered 1 and 2, the same numbers on the chat rendering and the page; the chat rendering links to the page"
+    - "r1.evidence.words has one word with row == pr-un-atlas-status-writer@2, answer == yes, by == chuck, at set — recorded before any object was written from it"
+    - "the operator can see the word was recorded through the transport it came by (an acknowledgement on the message; the word on the row on the page) without asking a host"
+  writes:
+    - "word(pr-un-atlas-status-writer@2, yes)"
+    - "unit(un-atlas-status-writer, bolt=bo-plan-rows, approval=that word) and its items"
+    - "word(pr-in-atlas-provider-limits@1, drop, via=direct)"
+    - "word(pr-in-atlas-provider-limits@1, yes, via=page, unapplied=row no longer holds: dropped by direct act)"
+  rows:
+    - "unapplied: word \"yes 1\" could not apply · row dropped by a direct act"
+  no-rows: [unit, intent]
+  report:
+    - "the late yes is never applied and never dropped: it is a word with Unapplied set, shown once under ATTENTION"

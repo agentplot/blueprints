@@ -1,0 +1,50 @@
+kind: scenario
+name: "C11 — every state the engine decides upon is derivable from read and list; a restart changes no state and no plan and runs no effect"
+requirements: [B.2.123, A.2.6, A.8.64, I7, S5]
+profiles: [all]
+given:
+  proposals:
+    - {id: pr-in-atlas-provider-limits, kind: intent, generation: 1, elaborations: [{type: self-closing}], signals: [sg-1, sg-2], challenges: "providers/one-writer@7f3a2c1"}
+  objects/bolt:
+    - {id: bo-plan-rows, repository: atlas, name: plan-rows, approval: wd-rn-0800-1}
+  objects/unit:
+    - {id: un-status-writer, bolt: bo-plan-rows, type: "default@a91c0e2", after: [], approval: wd-rn-0800-1}
+  objects/item:
+    - {id: wi-417, unit: un-status-writer, bolt: bo-plan-rows, index: 1, after: [], place: pl-wi-417, approval: wd-rn-0800-1}
+  advances:
+    - {id: ad-wi-417-1, item: wi-417, from: none, to: build, attempt: 1, bound: 2}
+  objects/elaboration:
+    - {id: el-plan-derivation, intent: in-loop-granularity, type: standing, approval: wd-rn-0700-3}
+  activations:
+    - {id: ac-stage-build-wi-417-a1-m1, node: stage/build, key: "wi-417 · build · attempt 1 · member 1", host: mac-mini, generation: 1}
+    - {id: ac-elaboration-el-plan-derivation-1, node: elaboration, key: el-plan-derivation, host: mac-mini, generation: 1}
+  sessions:
+    - {id: se-ac-stage-build-wi-417-a1-m1, activation: ac-stage-build-wi-417-a1-m1, host: mac-mini}
+    - {id: se-ac-elaboration-el-plan-derivation-1, activation: ac-elaboration-el-plan-derivation-1, host: mac-mini}
+  observations:
+    - {subject: se-ac-elaboration-el-plan-derivation-1, saw: idle, since: "-14h"}
+  hosts:
+    - {id: mac-mini, bound: 2, alive: true}
+  world:
+    sessions: {se-ac-stage-build-wi-417-a1-m1: working, se-ac-elaboration-el-plan-derivation-1: idle}
+when:
+  - {tick: {host: mac-mini}}
+  - {op: {host: mac-mini, call: present, as: before}}
+  - {stop: mac-mini}
+  - {start: mac-mini}
+  - {tick: {host: mac-mini}}
+  - {op: {host: mac-mini, call: present, as: after}}
+then:
+  results:
+    - "before.rows == after.rows, same numbers, same rendering id (the fingerprint did not change, so the presenter did not fire)"
+    - "every session that was running is still running; no session was started, told or retired"
+  states:
+    wi-417: working
+    el-plan-derivation: offered
+  rows:
+    - "intent: atlas-provider-limits · curation · 2 signals"
+    - "idle: prototype plan-derivation · standing · idle 14h"
+  no-effects: true
+  no-writes: true
+  report:
+    - "the restarted host held nothing; it re-derived the same states from list and read and found every effect already recorded"

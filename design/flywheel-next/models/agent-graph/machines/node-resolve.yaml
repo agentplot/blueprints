@@ -11,7 +11,7 @@ session:
   work-order:
     - schema instruction for a conflict resolution commit
     - the resolve skill
-    - the conflict artifact: which take or rebase, which files, both heads
+    - "the conflict artifact: which take or rebase, which files, both heads"
     - the item or elaboration the place belongs to, with its work order
   exits: [done, blocked, finding, chore, stalled]
   stall-window: 1h

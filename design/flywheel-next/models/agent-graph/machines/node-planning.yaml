@@ -11,9 +11,9 @@ session:
   work-order:
     - schema instruction for a unit proposal document and a verdict, at the activation's books sha
     - the planning skill
-    - the backlog: every standing claim in scope with no satisfied or not-applicable current verdict, with chapter text and scenarios
+    - "the backlog: every standing claim in scope with no satisfied or not-applicable current verdict, with chapter text and scenarios"
     - the ledger of the repository (empty on first planning, which the work order says)
-    - the as-built: every serves line in the repository's OpenSpec specs at the shared head
+    - "the as-built: every serves line in the repository's OpenSpec specs at the shared head"
     - every open bolt of the repository with the units it holds and their states
     - the asks and routed signals naming the repository
   exits: [done, blocked, finding, chore, stalled]

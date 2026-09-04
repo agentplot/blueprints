@@ -1,0 +1,37 @@
+kind: scenario
+name: "S6 — a slow host takes two minutes to start a session; it starts once; nothing is duplicated and nothing is reported as failed"
+requirements: [S6, A.7.61, A.7.62]
+profiles: [all]
+given:
+  settings: {start-window: 5m}
+  objects/elaboration:
+    - {id: el-atlas-research, intent: in-atlas-provider-limits, type: self-closing, approval: wd-rn-0912-1}
+  effects:
+    - {id: fx-place-prepare-pl-el-atlas-research-9b1e44c, effect: git.place.prepare, subject: el-atlas-research, result: ok}
+  hosts:
+    - {id: slow-box, bound: 2, alive: true}
+  world:
+    place: {pl-el-atlas-research: {base: 9b1e44c}}
+    line-head: {"intent/in-atlas-provider-limits": 9b1e44c}
+when:
+  - {expect-throttle: {operation: session.start, delay: "2m", command-returns: timeout-at-60s}}
+  - {tick: {host: slow-box}}                       # activation taken; start issued; command times out at 60 s
+  - {clock: "+1m"}
+  - {tick: {host: slow-box}}                       # activation live, no session record yet; runner polls the multiplexer, does not start again
+  - {clock: "+1m"}
+  - {tick: {host: slow-box}}                       # the pane exists now: session record written
+  - {stop: slow-box}
+  - {start: slow-box}
+  - {tick: {host: slow-box}}
+then:
+  writes:
+    - "activation(elaboration, el-atlas-research, gen 1, host slow-box) — once"
+    - "session(se-ac-elaboration-el-atlas-research-1, started-at = +2m) — once"
+  effects:
+    - "session.start(ac-elaboration-el-atlas-research-1) — one effect record; its evidence is the pane seen in the multiplexer, not the command's return"
+  states:
+    el-atlas-research: working
+  no-rows: [blocked]
+  report:
+    - "the run report shows no failure and no stalled exit: a slow start is slow"
+    - "the restart after the pane existed found the session record and started nothing"

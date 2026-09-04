@@ -17,7 +17,7 @@ rows:
     subject: proposal
     create:  "and(proposal.kind == intent, not(word-on(proposal, proposal.generation)))"
     retract: "or(word-on(proposal, proposal.generation), all(s in proposal.signals, word-since(s, moved, proposal.generation)))"
-    answers: [yes, drop, split]
+    answers: ["yes", drop, split]
     yes-starts: "instantiate writes the intent and its elaborations approved; git.line.create; elaborations queue"
     line: "{n}  intent   {name}   curation · {weight}"
 
@@ -26,7 +26,7 @@ rows:
     subject: proposal
     create:  "and(proposal.kind == elaboration, state(proposal.intent) == open, not(word-on(proposal, proposal.generation)))"
     retract: "or(word-on(proposal, proposal.generation), state(proposal.intent) == closed)"
-    answers: [yes, drop, "type <type>"]
+    answers: ["yes", drop, "type <type>"]
     yes-starts: "instantiate writes the elaboration approved; it queues"
     line: "{n}  elab     {intent} · {type}   from {routed-from}"
 
@@ -35,7 +35,7 @@ rows:
     subject: proposal
     create:  "and(proposal.kind == unit, proposal.routed-from != first-planning, not(word-on(proposal, proposal.generation)), not(any(r in rows.moved, r.bolt == proposal.target-bolt)))"
     retract: "word-on(proposal, proposal.generation)"
-    answers: [yes, drop, "redo: <notes>", "bolt <name>", "new bolt <name>", "rename <name>"]
+    answers: ["yes", drop, "redo: <notes>", "bolt <name>", "new bolt <name>", "rename <name>"]
     yes-starts: "instantiate writes the unit and its items; a new bolt with its line and place when named; items with no unmet dependency queue at stage 1"
     line: "{n}  unit     {repository} · {name}   → {target}   · after: {after} · type {type}"
 
@@ -44,7 +44,7 @@ rows:
     subject: proposal
     create:  "and(proposal.kind == unit, proposal.routed-from == first-planning, not(word-on(proposal, proposal.generation)))"
     retract: "word-on(proposal, proposal.generation)"
-    answers: [yes, pick, later]
+    answers: ["yes", pick, later]
     yes-starts: "as unit, for every unit and chore in the set"
     line: "{n}  baseline {repository}   {unmet} claims unmet · {chores} chores · {units} units"
 
@@ -53,7 +53,7 @@ rows:
     subject: exit
     create:  "and(exit.kind == chore, not(word-on(exit, 1)))"
     retract: "word-on(exit, 1)"
-    answers: [yes, no, "pick <letters>"]
+    answers: ["yes", "no", "pick <letters>"]
     yes-starts: "instantiate writes a unit of the chore type on the line the offer names; one item; no bolt"
     line: "{n}  chores   {repository} · {count}   {letters-and-titles}"
 
@@ -62,7 +62,7 @@ rows:
     subject: bolt
     create:  "and(state(bolt) == open, count(u in units-of(bolt), true) >= 1, all(u in units-of(bolt), state(u) == finished), not(chores-outstanding(bolt)), not(word-since(bolt, hold, finished-set-fingerprint(bolt))))"
     retract: "or(word-on(bolt, finished-set-fingerprint(bolt)), not(all(u in units-of(bolt), state(u) == finished)))"
-    answers: [yes, hold]
+    answers: ["yes", hold]
     yes-starts: "git.line.take then git.land"
     line: "{n}  land     {repository}/{bolt}   {units} units merged · gates {gates}"
 

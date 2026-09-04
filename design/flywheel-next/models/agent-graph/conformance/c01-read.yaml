@@ -1,0 +1,33 @@
+kind: scenario
+name: "C01 — read returns evidence as of a named point; reading twice with nothing changed returns the same evidence and writes nothing"
+requirements: [B.1.113, A.8.67, B.2.123]
+profiles: [all]
+given:
+  objects/bolt:
+    - {id: bo-plan-rows, repository: atlas, name: plan-rows, approval: wd-rn-0900-2}
+  objects/unit:
+    - {id: un-status-writer, bolt: bo-plan-rows, type: "default@a91c0e2", after: [], approval: wd-rn-0900-2}
+  objects/item:
+    - {id: wi-418, unit: un-status-writer, bolt: bo-plan-rows, index: 2, after: [wi-417], place: pl-wi-418, approval: wd-rn-0900-2}
+  advances:
+    - {id: ad-wi-418-1, item: wi-418, from: none, to: spec, attempt: 1, bound: 2}
+  hosts:
+    - {id: mac-mini, bound: 2, alive: true}
+when:
+  - {op: {host: mac-mini, call: read, object: wi-418, as: r1}}
+  - {op: {host: mac-mini, call: read, object: wi-418, as: r2}}
+  - {tick: {host: mac-mini}}
+  - {op: {host: mac-mini, call: read, object: wi-418, as: r3}}
+then:
+  results:
+    - "r1.evidence == r2.evidence"
+    - "r1.as-of == r2.as-of"
+    - "r1.as-of names a point the profile can show (a commit, an updated-at)"
+    - "r1.evidence answers every predicate atom that reads [item, advance, activation, session, observation, exit, conflict, effect, word] for wi-418"
+    - "r3.evidence == r1.evidence — the tick decided nothing for a waiting item"
+  states:
+    wi-418: waiting
+  no-writes: true
+  no-effects: true
+  report:
+    - "three reads, zero writes: the read operation itself writes nothing to any store"

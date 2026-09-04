@@ -1,0 +1,53 @@
+kind: scenario
+name: "S29 — three items, the third after both others, a host bound of two: two run, the third waits, starts when the merges land and a slot frees, and a restart starts nothing twice"
+requirements: [S29, A.5.28, A.5.29, A.5.34, A.2.12]
+profiles: [all]
+given:
+  settings: {}
+  objects/bolt:
+    - {id: bo-plan-rows, repository: atlas, name: plan-rows, approval: wd-rn-0800-1}
+  objects/unit:
+    - {id: un-status-writer, bolt: bo-plan-rows, type: "fast@a91c0e2", after: [], approval: wd-rn-0800-1}
+  objects/item:
+    - {id: wi-1, unit: un-status-writer, bolt: bo-plan-rows, index: 1, after: [],           place: pl-wi-1, approval: wd-rn-0800-1}
+    - {id: wi-2, unit: un-status-writer, bolt: bo-plan-rows, index: 2, after: [],           place: pl-wi-2, approval: wd-rn-0800-1}
+    - {id: wi-3, unit: un-status-writer, bolt: bo-plan-rows, index: 3, after: [wi-1, wi-2], place: pl-wi-3, approval: wd-rn-0800-1}
+  advances:
+    - {id: ad-wi-1-1, item: wi-1, from: none, to: build, attempt: 1, bound: 1}
+    - {id: ad-wi-2-1, item: wi-2, from: none, to: build, attempt: 1, bound: 1}
+    - {id: ad-wi-3-1, item: wi-3, from: none, to: build, attempt: 1, bound: 1}
+  hosts:
+    - {id: mac-mini, bound: 2, alive: true}
+  world:
+    line-head: {"bolt/plan-rows": 9b1e44c}
+when:
+  - {tick: {host: mac-mini}}
+  - {op: {host: mac-mini, call: list, scope: activations, as: a1}}
+  - {stop: mac-mini}
+  - {start: mac-mini}
+  - {tick: {host: mac-mini}}
+  - {op: {host: mac-mini, call: list, scope: activations, as: a2}}
+  # both sessions finish build; review (one persona) passes; both items merge, one at a time, in order
+  - {world: {sessions: {se-wi-1-build: done, se-wi-2-build: done}, exits: {se-wi-1-build: {kind: done, verdict: done}, se-wi-2-build: {kind: done, verdict: done}}}}
+  - {tick: {host: mac-mini}}       # join → review
+  - {world: {sessions: {se-wi-1-review: done, se-wi-2-review: done}, exits: {se-wi-1-review: {kind: done, verdict: done}, se-wi-2-review: {kind: done, verdict: done}}}}
+  - {tick: {host: mac-mini}}       # join → merge; git.merge takes the line, merges wi-1
+  - {tick: {host: mac-mini}}       # merges wi-2; wi-3's dependencies are merged and a slot is free
+  - {stop: mac-mini}
+  - {start: mac-mini}
+  - {tick: {host: mac-mini}}
+then:
+  results:
+    - "a1 has exactly two live session activations: wi-1 build and wi-2 build; wi-3 has none"
+    - "a2 == a1 — the restart took nothing new: the bound was full and every activation was live"
+    - "the two merges are two effect records in order (wi-1 then wi-2), each under the line's single merge activation, never concurrent"
+  states:
+    wi-1: merged
+    wi-2: merged
+    wi-3: working
+  effects:
+    - "session.start(wi-1 build), session.start(wi-2 build) — first tick"
+    - "git.merge(pl-wi-1, bolt/plan-rows) then git.merge(pl-wi-2, bolt/plan-rows)"
+    - "git.place.prepare(pl-wi-3, bolt/plan-rows) at the line's new head, then session.start(wi-3 build) — once, after the merges"
+  report:
+    - "wi-3 waited on two facts, both derived: dependencies-merged and host-has-slot; no process remembered a queue"

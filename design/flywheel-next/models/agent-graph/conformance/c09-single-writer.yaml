@@ -1,0 +1,38 @@
+kind: scenario
+name: "C09 — two writers of one object cannot both succeed; the loser learns that it lost and reads again before deciding anything"
+requirements: [B.2.121, C.2.146, I15, S17]
+profiles: [all]
+given:
+  objects/unit:
+    - {id: un-status-writer, bolt: bo-plan-rows, type: "default@a91c0e2", after: [], approval: wd-rn-0800-1}
+  objects/item:
+    - {id: wi-417, unit: un-status-writer, bolt: bo-plan-rows, index: 1, after: [], place: pl-wi-417, approval: wd-rn-0800-1}
+  advances:
+    - {id: ad-wi-417-1, item: wi-417, from: none, to: spec, attempt: 1, bound: 2}
+  hosts:
+    - {id: mac-mini, bound: 2, alive: true}
+    - {id: studio, bound: 2, alive: true}
+  world:
+    place: {pl-wi-417: {base: 9b1e44c}}
+    line-head: {"bolt/plan-rows": 9b1e44c}
+when:
+  # both hosts derive wi-417 queued at spec and both try to take the activation in the same instant
+  - concurrent:
+      - {tick: {host: mac-mini}}
+      - {tick: {host: studio}}
+  - {op: {host: mac-mini, call: read, object: wi-417, as: r1}}
+  - {op: {host: studio,   call: read, object: wi-417, as: r2}}
+  # a second race on artifacts of the same object: both try to write an observation on the item in the same instant
+  - concurrent:
+      - {op: {host: mac-mini, call: write, store: observations, subject: wi-417, saw: idle, as: o1}}
+      - {op: {host: studio,   call: write, store: observations, subject: wi-417, saw: working, as: o2}}
+then:
+  results:
+    - "r1.evidence.activations == r2.evidence.activations and has exactly one live activation for (stage/spec, wi-417 · spec · attempt 1 · member 1, gen 1)"
+    - "the loser's tick trace shows: take lost → read again → key skipped; it started no session"
+    - "exactly one of o1.written, o2.written is true; the loser was told it lost and its trace shows a re-read before any further write"
+  effects:
+    - "session.start(ac-stage-spec-wi-417-a1-m1) — once, on the winner"
+  report:
+    - "S17: no unit was started twice; the loser moved on to other work"
+    - "the profile names its mechanism under adds: the push as compare-and-swap, or the lowest comment id"

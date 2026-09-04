@@ -1,0 +1,39 @@
+kind: scenario
+name: "C06 — a host that remembers nothing lists every object in scope and finds everything it must act on; objects outside the scope are invisible"
+requirements: [B.1.118, A.8.64, A.13.83]
+profiles: [all]
+given:
+  objects/intent:
+    - {id: in-atlas-provider-limits, approval: wd-rn-0900-1}
+  objects/elaboration:
+    - {id: el-atlas-research, intent: in-atlas-provider-limits, type: self-closing, approval: wd-rn-0912-1}
+  objects/bolt:
+    - {id: bo-plan-rows, repository: atlas, name: plan-rows, approval: wd-rn-0800-1}
+  objects/unit:
+    - {id: un-status-writer, bolt: bo-plan-rows, type: "default@a91c0e2", after: [], approval: wd-rn-0800-1}
+  objects/item:
+    - {id: wi-417, unit: un-status-writer, bolt: bo-plan-rows, index: 1, after: [], place: pl-wi-417, approval: wd-rn-0800-1}
+  proposals:
+    - {id: pr-un-atlas-retry-jitter, kind: unit, generation: 1, repository: atlas, new-bolt-name: atlas-retry-jitter, type: "fast@a91c0e2", routed-from: "ask ak-0913"}
+  asks:
+    - {id: ak-0913, text: "retries hammer the provider; add jitter", repository: atlas}
+  hosts:
+    - {id: studio, bound: 2, alive: true}
+  world:
+    out-of-scope: "the current flywheel's objects exist in the same organization and books repository"
+when:
+  - {start: studio}                                     # empty memory
+  - {op: {host: studio, call: list, scope: all, as: l}}
+  - {tick: {host: studio}}
+then:
+  results:
+    - "l contains exactly: in-atlas-provider-limits, el-atlas-research, bo-plan-rows, un-status-writer, wi-417, pr-un-atlas-retry-jitter, ak-0913, studio"
+    - "l contains nothing of the current flywheel's"
+    - "every candidate key the tick enumerated came from l and from reads of the listed objects"
+  fired:
+    - "elaboration for el-atlas-research (approved, no activation)"
+    - "stage/spec for wi-417 (queued, no unmet dependency)"
+  rows:
+    - "unit: atlas · retry-jitter → new bolt atlas-retry-jitter"
+  report:
+    - "an engine with empty memory found both pieces of ready work and the one row from list and read alone"
