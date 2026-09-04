@@ -431,6 +431,31 @@ the operator.
     shows the count and age of unmoved signals by source, and an unmoved
     signal is never discarded.
 
+### A.16 Default instructions and the review surface
+
+83. The instructions that shape what a session writes are data the
+    operator can change without a code change, and the boundary between
+    them and the engine is explicit: no instruction text exists in the
+    engine, and no engine behavior depends on an instruction's wording.
+84. The defaults are themselves specified. Unless the operator changes
+    them, the instructions in force make every session that settles a
+    design conclusion write the chapter that explains it and the claim it
+    adds or amends in the same commit; make every session that writes or
+    amends a claim update the system context map so the map stays
+    current; and make every construction session name the claim its work
+    serves.
+85. The system context map is versioned like the book, so two versions
+    can be compared and the difference read as a change to the design.
+86. The operator's review surface is the book and the context map. A
+    review view shows what changed in both since the operator last
+    reviewed, directs the reader to those chapters and nodes, and is
+    derived from history, never stored or hand-written.
+87. Changing a default instruction is a chore, and the change is
+    versioned so a session started before it and one started after can
+    be told apart.
+88. A test can show, for a given instruction version and a scenario,
+    what a session would be asked to write, without starting one.
+
 ## 5. Requirements — Part B, the control plane contract
 
 The data plane reaches durable, shared state and the operator only
@@ -438,110 +463,110 @@ through these operations, and depends only on these guarantees.
 
 ### B.1 The operations
 
-83. The control plane offers exactly these operations, and the engine
+89. The control plane offers exactly these operations, and the engine
     needs no others: read an object's evidence; write an effect; take,
     renew and release a lease on an object; present the plan's rows and
     receive the operator's word; notify a host that state has changed;
     list the objects in a scope; serve the status view. An engine that
     needs a further operation is a change to this contract, stated
     here.
-84. **Read.** Given an object's identity, the control plane returns the
+90. **Read.** Given an object's identity, the control plane returns the
     evidence the predicates ask for, as of a point it names. Reading
     twice with nothing changed returns the same evidence and writes
     nothing.
-85. **Write an effect.** Every effect is written with an identity of
+91. **Write an effect.** Every effect is written with an identity of
     its own. A repeat of an effect already written changes nothing, is
     not an error, and is not reported as a second write.
-86. **Lease.** A lease on an object is taken, renewed while its holder
+92. **Lease.** A lease on an object is taken, renewed while its holder
     works, and released by its holder or expired by a stated rule. Two
     would-be holders of one object cannot both hold it.
-87. **Present and receive.** Rows are presented to the operator and the
+93. **Present and receive.** Rows are presented to the operator and the
     word comes back attributed to the row it answers. A word that
     arrives twice is applied once. A word that cannot be applied is
     handed back to the engine, never dropped.
-88. **Notify.** The control plane tells a host that state has changed,
+94. **Notify.** The control plane tells a host that state has changed,
     within a bound the profile states, and without the host re-reading
     everything to find out. Notification only shortens the wait: a host
     that is never notified still converges by reading.
-89. **List.** The control plane enumerates the objects in a stated
+95. **List.** The control plane enumerates the objects in a stated
     scope, so that an engine which remembers nothing can still find
     everything it must act on.
-90. **Serve the status view.** The status view is served from the same
+96. **Serve the status view.** The status view is served from the same
     state the engine reads, and is readable with no machinery running
     anywhere.
 
 ### B.2 The guarantees
 
-91. **Durable.** What a write reports as written survives the loss of
+97. **Durable.** What a write reports as written survives the loss of
     every host, all at once, without warning.
-92. **Single writer per object.** Two writers of one object cannot both
+98. **Single writer per object.** Two writers of one object cannot both
     succeed. The loser learns that it lost, and reads again before
     deciding anything.
-93. **Atomic per write.** A write is wholly applied or not applied. No
+99. **Atomic per write.** A write is wholly applied or not applied. No
     reader ever sees half of one.
-94. **Derivable.** Every state the engine decides upon is derivable
+100. **Derivable.** Every state the engine decides upon is derivable
     from what read and list return. Nothing the control plane holds
     privately decides behavior.
-95. **The word, exactly once.** An operator's word takes effect once,
+101. **The word, exactly once.** An operator's word takes effect once,
     however many times it is delivered, and whatever restarts happen
     between its giving and its application.
 
 ### B.3 Evidence names and the profile binding
 
-96. A machine definition names the evidence it reads and the effects it
+102. A machine definition names the evidence it reads and the effects it
     writes by abstract name only. No definition names a label, a
     column, a field, a file path, a service, or an interface.
-97. A profile supplies a binding from every evidence name and every
+103. A profile supplies a binding from every evidence name and every
     effect name the definitions use to the operations of that profile's
     own storage. The binding is data, reviewable on its own, and the
     definitions do not change when the profile changes.
-98. An engine runs unchanged against any profile whose binding is
+104. An engine runs unchanged against any profile whose binding is
     complete. A binding that leaves an evidence or effect name
     unsatisfied is not a profile.
 
 ### B.4 The status view
 
-99. At any moment the operator can see every intent, elaboration,
+105. At any moment the operator can see every intent, elaboration,
     bolt, unit, work item and session with its current state, grouped
     by state: queued, in progress, waiting on the operator, done; and
     for each, which host holds it, which host runs it, and whether that
     host is alive. This is a view of the whole, separate from the plan,
     and it needs no machinery running to be read.
-100. The status view is a projection of the same state the engine reads.
+106. The status view is a projection of the same state the engine reads.
     It is never a source of truth, and it is never written by hand to
     make it look right.
-101. The status view is central: one place for the whole organization,
+107. The status view is central: one place for the whole organization,
     reachable from the phone, however many hosts run machinery.
-102. Discussion about an object — a question asked, an answer given, a
+108. Discussion about an object — a question asked, an answer given, a
     note a session left — is part of that object's state, and the status
     view shows it.
-103. A status view read while nothing is running shows the state as of
+109. A status view read while nothing is running shows the state as of
     the last write that reached the central service, and says as of
     when.
 
 ### B.5 Hosts and ownership
 
-104. More than one host may run the machinery for one organization at
+110. More than one host may run the machinery for one organization at
     once. Every host works from the same shared line of every
     repository and the same central state.
-105. Every object is owned by at most one host at a time, through a
+111. Every object is owned by at most one host at a time, through a
     lease, and the owner is visible. Two hosts never work the same
     object. A host that goes away leaves its objects visibly stale;
     another host takes them over only when the lease has expired by the
     stated rule, never by racing.
-106. A host that cannot reach the central service keeps working what it
+112. A host that cannot reach the central service keeps working what it
     already owns, records what it does locally, and reconciles when it
     reconnects. The model says what a disconnected host may and may not
     do.
 
 ### B.6 The operator's word in transit
 
-107. The word travels over a transport the profile names: a short reply
+113. The word travels over a transport the profile names: a short reply
     where the operator already is, or a choice on a served page. Either
     is sufficient for any decision.
-108. The word is recorded with the object it concerns, the row it
+114. The word is recorded with the object it concerns, the row it
      answers, who gave it and when, before any work follows from it.
-109. The operator can tell that their word was recorded, without asking
+115. The operator can tell that their word was recorded, without asking
      anyone.
 
 ## 6. Requirements — Part C, profiles
@@ -566,12 +591,12 @@ service.
 | list objects in scope | a query over the organization's items |
 | serve the status view | the board, plus a page served from the same items |
 
-110. The tracker holds every object's state, is durable, and is
+116. The tracker holds every object's state, is durable, and is
      readable with no host of the operator's running.
-111. An object's state is proven by the tracker's record of it. Anything
+117. An object's state is proven by the tracker's record of it. Anything
      else that shows that state is a projection, written from the
      tracker and never read as truth.
-112. The operator acting directly on the tracker — moving an item,
+118. The operator acting directly on the tracker — moving an item,
      answering on it, closing it — is the word, and the machinery treats
      it as the word at its next read.
 
@@ -592,29 +617,29 @@ reads or writes them.
 | list objects in scope | the layout of the state repositories, read as of the shared line |
 | serve the status view | a page built from the state, served without any host of the operator's running |
 
-113. All state is files in git repositories. The git host is the only
+119. All state is files in git repositories. The git host is the only
      central service. The model says which repositories hold state, how
      the files are laid out, and what one object's file looks like.
-114. A change of state is a commit. A commit that reaches the shared
+120. A change of state is a commit. A commit that reaches the shared
      line is the fact; a commit that has not is a local intention. The
      model says which line is shared and how a host learns that its
      commit landed.
-115. The push is the compare-and-swap. Two hosts that try to change the
+121. The push is the compare-and-swap. Two hosts that try to change the
      same object at the same time cannot both succeed, because the host
      rejects an update whose base is stale. The model states what the
      loser does.
-116. A lease is taken by a commit that lands, renewed while the host
+122. A lease is taken by a commit that lands, renewed while the host
      works, and expired by a rule the model states.
-117. The operator's word from a phone becomes a commit. The model names
+123. The operator's word from a phone becomes a commit. The model names
      the one writer that turns a short reply or a page choice into that
      commit, and how the operator can tell the commit landed.
-118. A host that cannot reach the git host keeps working on what it
+124. A host that cannot reach the git host keeps working on what it
      already owns, commits locally, and reconciles when it reconnects.
      The model says what it may and may not do while disconnected.
-119. Hosts learn of new state without reading the whole history each
+125. Hosts learn of new state without reading the whole history each
      time. The model states how — a call from the git host, a bounded
      poll, or a message — and what the latency bound is.
-120. Every write the machinery makes is a commit, and the commit
+126. Every write the machinery makes is a commit, and the commit
      carries its reason and the evidence it was based on. History is the
      audit record; nothing else is kept for that purpose.
 
@@ -623,15 +648,15 @@ reads or writes them.
 A placeholder. No third profile is specified; this states what one must
 provide to conform.
 
-121. A third profile conforms when it binds every evidence name and
+127. A third profile conforms when it binds every evidence name and
      every effect name the definitions use, satisfies every operation of
      B.1 with every guarantee of B.2, serves the status view with no
      host of the operator's running, and passes the conformance suite of
      section 12 unchanged.
-122. For each guarantee its storage does not give on its own, a profile
+128. For each guarantee its storage does not give on its own, a profile
      names the mechanism it adds to provide that guarantee, and where
      that mechanism's own state lives.
-123. A profile that cannot provide a guarantee is rejected as a
+129. A profile that cannot provide a guarantee is rejected as a
      profile. The data plane is never weakened to admit one.
 
 ## 7. Invariants
@@ -847,6 +872,11 @@ by walking each one. Each is tagged with the profiles it applies to.
 - **S24.** *(all profiles)* The operator revives a dropped signal by
   dictation. Its standing move is replaced, and the next run clusters
   it.
+- **S25.** *(all profiles)* An elaboration amends a claim. In one commit
+  the chapter, the claim, and the context map change. The operator opens
+  the review view from the phone and is taken to that chapter and that
+  node, with the previous version beside it. Nothing was written by hand
+  to produce the view.
 
 ## 12. What to deliver
 
