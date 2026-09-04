@@ -1,0 +1,197 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1820 1000" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="mN" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+    <marker id="mR" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c05b5b"/></marker>
+    <marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e9e5b"/></marker>
+    <g id="marker"> <circle r="7" fill="#fff" stroke="currentColor" stroke-width="2.2" /> <circle r="2.6" fill="currentColor" /> </g>
+    <g id="end"> <circle r="7" fill="#2e9e5b" stroke="#2e9e5b" stroke-width="2.2" /> <circle r="2.6" fill="#fff" /> </g>
+    <g id="person"> <circle cy="-6" r="4" fill="#fff" stroke="currentColor" stroke-width="1.8" /> <path d="M -7 8 a 7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8" /> </g>
+    <g id="cyl"> <path d="M -24 -11 L -24 13 A 24 8 0 0 0 24 13 L 24 -11" fill="#f1f1ee" stroke="#8a8a86" stroke-width="1.6" /> <ellipse cx="0" cy="-11" rx="24" ry="8" fill="#e3e3df" stroke="#8a8a86" stroke-width="1.6" /> </g>
+  </defs>
+  <rect width="1820" height="1000" fill="#fff"/>
+
+  <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Flywheel design — intent ⊃ elaboration ⊃ question ⊃ session: a child's end is the parent's guard</text>
+  <text x="40" y="57" font-size="12" fill="#666">one machine per kind, many instances · the intent loop runs all four for its intent every pass · triage and the round stand outside the nest and only write into it</text>
+
+  <!-- ================= INTENT LOOP (outer) ================= -->
+  <rect x="40" y="78" width="1400" height="770" rx="12" fill="#f8f5fc" stroke="#7b5cb8" stroke-width="1.6"/>
+  <text x="56" y="98" font-size="11.5" font-weight="700" fill="#5a3f95">INTENT LOOP — the pass · one process per intent with work</text>
+  <text x="56" y="116" font-size="9" fill="#999">derive each object's state from the stores · diff against its machine · write</text>
+  <use href="#cyl" transform="translate(1160,112) scale(0.7)"/>
+  <use href="#cyl" transform="translate(1230,112) scale(0.7)"/>
+  <use href="#cyl" transform="translate(1300,112) scale(0.7)"/>
+  <use href="#cyl" transform="translate(1370,112) scale(0.7)"/>
+  <text x="1160" y="138" font-size="9.5" fill="#666" text-anchor="middle">board</text>
+  <text x="1230" y="138" font-size="9.5" fill="#666" text-anchor="middle">tracker</text>
+  <text x="1300" y="138" font-size="9.5" fill="#666" text-anchor="middle">book repo</text>
+  <text x="1370" y="138" font-size="9.5" fill="#666" text-anchor="middle">panes</text>
+  <text x="1265" y="152" font-size="8.5" fill="#999" text-anchor="middle">evidence stores — no machine lives here</text>
+
+  <!-- ================= INTENT ================= -->
+  <rect x="70" y="160" width="1340" height="676" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="86" y="180" font-size="11.5" font-weight="700" fill="#333">INTENT</text>
+  <text x="86" y="194" font-size="8.5" fill="#999">intent/&lt;slug&gt; · one design thread · its record beside the book</text>
+  <text x="1394" y="180" font-size="8.5" fill="#999" text-anchor="end">evidence: milestone open · closed · change dir present</text>
+  <line x1="250" y1="236" x2="1250" y2="236" stroke="#8a8a86" stroke-width="2" opacity="0.4"/>
+  <use href="#marker" x="300" y="236" color="#8a8a86"/>
+  <use href="#marker" x="1100" y="236" color="#8a8a86"/>
+  <use href="#end" x="1250" y="236"/>
+  <text x="300" y="256" font-size="9.5" fill="#666" text-anchor="middle">open</text>
+  <text x="1100" y="256" font-size="9.5" fill="#666" text-anchor="middle">closed</text>
+  <text x="1250" y="256" font-size="9.5" fill="#666" text-anchor="middle">archived</text>
+  <text x="700" y="224" font-size="9" fill="#a34848" text-anchor="middle">the operator closes it when the thread is settled</text>
+  <text x="1175" y="224" font-size="9" fill="#a97e26" text-anchor="middle">server archives</text>
+  <text x="1100" y="270" font-size="8.5" fill="#999" text-anchor="middle">the book already holds the destination</text>
+
+  <!-- ================= ELABORATION ================= -->
+  <rect x="100" y="290" width="1280" height="530" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="116" y="310" font-size="11.5" font-weight="700" fill="#333">ELABORATION</text>
+  <text x="116" y="324" font-size="8.5" fill="#999">"Elaboration: &lt;slug&gt; — round N"</text>
+  <text x="1364" y="310" font-size="8.5" fill="#999" text-anchor="end">evidence: board Status · stage:done · its items</text>
+  <line x1="250" y1="372" x2="1150" y2="372" stroke="#8a8a86" stroke-width="2" opacity="0.4"/>
+  <use href="#marker" x="300" y="372" color="#8a8a86"/>
+  <use href="#marker" x="480" y="372" color="#8a8a86"/>
+  <use href="#marker" x="660" y="372" color="#8a8a86"/>
+  <use href="#marker" x="900" y="372" color="#c05b5b"/>
+  <use href="#end" x="1100" y="372"/>
+  <text x="300" y="392" font-size="9.5" fill="#666" text-anchor="middle">proposed</text>
+  <text x="480" y="392" font-size="9.5" fill="#666" text-anchor="middle">approved</text>
+  <text x="660" y="392" font-size="9.5" fill="#666" text-anchor="middle">in flight</text>
+  <text x="900" y="392" font-size="9.5" fill="#a34848" text-anchor="middle">finished</text>
+  <text x="1100" y="392" font-size="9.5" fill="#666" text-anchor="middle">done</text>
+  <text x="300" y="404" font-size="8.5" font-family="monospace" fill="#999" text-anchor="middle">Backlog</text>
+  <text x="480" y="404" font-size="8.5" font-family="monospace" fill="#999" text-anchor="middle">Ready</text>
+  <text x="660" y="404" font-size="8.5" font-family="monospace" fill="#999" text-anchor="middle">In Progress</text>
+  <text x="900" y="404" font-size="8.5" font-family="monospace" fill="#999" text-anchor="middle">stage:done</text>
+  <text x="1100" y="404" font-size="8.5" font-family="monospace" fill="#999" text-anchor="middle">Done</text>
+  <text x="390" y="360" font-size="9" fill="#a34848" text-anchor="middle">operator: Ready</text>
+  <text x="570" y="360" font-size="9" fill="#5f6b7a" text-anchor="middle">loop charges a session per type</text>
+  <text x="780" y="360" font-size="9" fill="#a34848" text-anchor="middle">operator rules it done · round or board</text>
+  <text x="1000" y="360" font-size="9" fill="#5f6b7a" text-anchor="middle">loop collects · closes the set</text>
+
+  <!-- ================= QUESTION ================= -->
+  <rect x="130" y="430" width="1220" height="360" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="146" y="450" font-size="11.5" font-weight="700" fill="#333">QUESTION</text>
+  <text x="146" y="464" font-size="8.5" fill="#999">a unit of uncertainty · also the writing tasks · one batch, ever</text>
+  <text x="1334" y="450" font-size="8.5" fill="#999" text-anchor="end">evidence: state · stage · closed labels</text>
+  <line x1="250" y1="522" x2="1150" y2="522" stroke="#8a8a86" stroke-width="2" opacity="0.4"/>
+  <use href="#marker" x="300" y="522" color="#8a8a86"/>
+  <use href="#marker" x="480" y="522" color="#8a8a86"/>
+  <use href="#marker" x="660" y="522" color="#7b5cb8"/>
+  <use href="#marker" x="900" y="522" color="#7b5cb8"/>
+  <use href="#end" x="1100" y="522"/>
+  <text x="300" y="542" font-size="9.5" fill="#666" text-anchor="middle">queued</text>
+  <text x="480" y="542" font-size="9.5" fill="#666" text-anchor="middle">ready</text>
+  <text x="660" y="542" font-size="9.5" fill="#6a4da3" text-anchor="middle">in-session</text>
+  <text x="900" y="542" font-size="9.5" fill="#6a4da3" text-anchor="middle">collected</text>
+  <text x="1100" y="542" font-size="9.5" fill="#666" text-anchor="middle">closed</text>
+  <text x="300" y="556" font-size="8.5" font-family="monospace" fill="#999" text-anchor="middle">state:queued</text>
+  <text x="480" y="556" font-size="8.5" font-family="monospace" fill="#999" text-anchor="middle">state:ready</text>
+  <text x="780" y="556" font-size="8.5" font-family="monospace" fill="#999" text-anchor="middle">state:in-progress · stage:*</text>
+  <text x="1100" y="556" font-size="8.5" font-family="monospace" fill="#999" text-anchor="middle">closed:done</text>
+  <text x="390" y="510" font-size="9" fill="#5f6b7a" text-anchor="middle">elaboration approved</text>
+  <text x="570" y="510" font-size="9" fill="#5f6b7a" text-anchor="middle">session charged</text>
+  <text x="780" y="510" font-size="9" fill="#6a4da3" text-anchor="middle">decision written · destination updated</text>
+  <text x="1000" y="510" font-size="9" fill="#5f6b7a" text-anchor="middle">the collect</text>
+  <line x1="300" y1="562" x2="300" y2="576" stroke="#c05b5b" stroke-width="1.6" marker-end="url(#mR)"/>
+  <use href="#marker" x="300" y="584" color="#c05b5b"/>
+  <text x="312" y="588" font-size="9.5" fill="#a34848">ended early · declined · parked · superseded</text>
+
+  <!-- ================= DESIGN SESSION ================= -->
+  <rect x="160" y="606" width="1160" height="170" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="176" y="626" font-size="11.5" font-weight="700" fill="#333">DESIGN SESSION</text>
+  <text x="176" y="640" font-size="8.5" fill="#999">planning · research · prototype · writeback · interactive</text>
+  <text x="1304" y="626" font-size="8.5" fill="#999" text-anchor="end">evidence: pane presence · agent status · branch</text>
+  <line x1="430" y1="690" x2="1150" y2="690" stroke="#8a8a86" stroke-width="2" opacity="0.4"/>
+  <use href="#marker" x="480" y="690" color="#8a8a86"/>
+  <use href="#marker" x="570" y="690" color="#8a8a86"/>
+  <use href="#marker" x="660" y="690" color="#8a8a86"/>
+  <use href="#marker" x="880" y="690" color="#8a8a86"/>
+  <use href="#end" x="1100" y="690"/>
+  <text x="480" y="710" font-size="9.5" fill="#666" text-anchor="middle">charged</text>
+  <text x="570" y="710" font-size="9.5" fill="#666" text-anchor="middle">working</text>
+  <text x="660" y="710" font-size="9.5" fill="#666" text-anchor="middle">settled</text>
+  <text x="880" y="710" font-size="9.5" fill="#666" text-anchor="middle">merged</text>
+  <text x="1100" y="710" font-size="9.5" fill="#666" text-anchor="middle">closed</text>
+  <text x="525" y="678" font-size="9" fill="#5f6b7a" text-anchor="middle">pane starts</text>
+  <text x="615" y="678" font-size="9" fill="#5f6b7a" text-anchor="middle">idle · done</text>
+  <text x="770" y="678" font-size="9" fill="#5f6b7a" text-anchor="middle">loop merges sess/* to main</text>
+  <text x="990" y="678" font-size="9" fill="#5f6b7a" text-anchor="middle">pane closed at the collect</text>
+  <line x1="570" y1="697" x2="570" y2="740" stroke="#c05b5b" stroke-width="1.6" marker-end="url(#mR)"/>
+  <use href="#marker" x="570" y="748" color="#c05b5b"/>
+  <text x="570" y="768" font-size="9.5" fill="#a34848" text-anchor="middle">paused · needs-operator</text>
+  <path d="M 578 698 C 620 770, 760 770, 870 750" fill="none" stroke="#8a8a86" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#mN)"/>
+  <use href="#marker" x="880" y="748" color="#8a8a86"/>
+  <text x="880" y="768" font-size="9.5" fill="#666" text-anchor="middle">reaped · its question retired</text>
+
+  <!-- ================= NESTING EDGES ================= -->
+  <line x1="300" y1="262" x2="300" y2="362" stroke="#8a8a86" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#mN)"/>
+  <text x="308" y="316" font-size="9" fill="#5f6b7a">dispatch queues work into one open elaboration</text>
+  <line x1="480" y1="410" x2="480" y2="512" stroke="#8a8a86" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#mN)"/>
+  <text x="488" y="470" font-size="9" fill="#5f6b7a">approval relabels its questions ready</text>
+  <line x1="480" y1="562" x2="480" y2="680" stroke="#8a8a86" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#mN)"/>
+  <text x="488" y="620" font-size="9" fill="#5f6b7a">one session per type</text>
+  <line x1="660" y1="680" x2="660" y2="550" stroke="#2e9e5b" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#mG)"/>
+  <text x="668" y="620" font-size="9" fill="#27824c">settled → awaits the operator's ruling</text>
+  <line x1="1100" y1="513" x2="1100" y2="414" stroke="#2e9e5b" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#mG)"/>
+  <text x="1108" y="470" font-size="9" fill="#27824c">every question closed → done</text>
+  <line x1="1100" y1="363" x2="1100" y2="280" stroke="#2e9e5b" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#mG)"/>
+  <text x="1108" y="322" font-size="9" fill="#27824c">every elaboration done → close-ready</text>
+
+  <!-- ================= TRIAGE ================= -->
+  <rect x="1460" y="78" width="320" height="200" rx="10" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"/>
+  <text x="1476" y="98" font-size="11.5" font-weight="700" fill="#a97e26">TRIAGE — dispatch's inbox machine</text>
+  <text x="1476" y="112" font-size="8.5" fill="#999">a raw idea · an open issue with no milestone</text>
+  <line x1="1510" y1="130" x2="1510" y2="210" stroke="#8a8a86" stroke-width="2" opacity="0.4"/>
+  <use href="#marker" x="1510" y="140" color="#c9962e"/>
+  <use href="#end" x="1510" y="200"/>
+  <path d="M 1514 146 C 1560 172, 1600 182, 1613 193" fill="none" stroke="#c05b5b" stroke-width="1.4" marker-end="url(#mR)"/>
+  <use href="#marker" x="1620" y="200" color="#c05b5b"/>
+  <text x="1526" y="144" font-size="9.5" fill="#666">filed</text>
+  <text x="1526" y="204" font-size="9.5" fill="#666">routed</text>
+  <text x="1636" y="204" font-size="9.5" fill="#a34848">dropped</text>
+  <text x="1476" y="240" font-size="8.5" fill="#999">routed → a new intent, or a question on an open one</text>
+  <text x="1476" y="254" font-size="8.5" fill="#999">proposed on the round · applied on the word</text>
+
+  <!-- ================= ROUND ================= -->
+  <rect x="1460" y="298" width="320" height="250" rx="10" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"/>
+  <text x="1476" y="318" font-size="11.5" font-weight="700" fill="#a97e26">ROUND — dispatch's machine</text>
+  <text x="1476" y="332" font-size="8.5" fill="#999">one at a time · always current</text>
+  <use href="#person" x="1720" y="348" color="#c05b5b"/>
+  <text x="1720" y="376" font-size="9.5" fill="#a34848" text-anchor="middle">operator</text>
+  <line x1="1510" y1="350" x2="1510" y2="520" stroke="#8a8a86" stroke-width="2" opacity="0.4"/>
+  <use href="#marker" x="1510" y="360" color="#c9962e"/>
+  <use href="#marker" x="1510" y="410" color="#c9962e"/>
+  <use href="#marker" x="1510" y="460" color="#c05b5b"/>
+  <use href="#end" x="1510" y="510"/>
+  <text x="1526" y="364" font-size="9.5" fill="#666">rendered</text>
+  <text x="1526" y="414" font-size="9.5" fill="#666">served · url.txt</text>
+  <text x="1526" y="464" font-size="9.5" fill="#666">answered</text>
+  <text x="1526" y="514" font-size="9.5" fill="#666">applied</text>
+  <text x="1640" y="390" font-size="9" fill="#a97e26">lavish serves it</text>
+  <text x="1640" y="440" font-size="9" fill="#a34848">page or Discord</text>
+  <text x="1640" y="490" font-size="9" fill="#5f6b7a">Ready · done · drop · close</text>
+  <text x="1476" y="536" font-size="8.5" fill="#999">applied → elaboration approved or done · intent closed</text>
+
+  <!-- ================= LEGEND ================= -->
+  <rect x="40" y="870" width="1740" height="70" rx="10" fill="#fafafa" stroke="#d5d5d0"/>
+  <g font-size="9.5" fill="#555">
+    <use href="#marker" x="70" y="896" color="#8a8a86"/>
+    <text x="86" y="900">a state</text>
+    <use href="#end" x="160" y="896"/>
+    <text x="176" y="900">an end state</text>
+    <line x1="270" y1="896" x2="310" y2="896" stroke="#c05b5b" stroke-width="2.2"/>
+    <text x="318" y="900">the operator's word</text>
+    <line x1="450" y1="896" x2="490" y2="896" stroke="#8a8a86" stroke-width="2.2"/>
+    <text x="498" y="900">the loop</text>
+    <line x1="580" y1="896" x2="620" y2="896" stroke="#c9962e" stroke-width="2.2"/>
+    <text x="628" y="900">server · dispatch</text>
+    <line x1="740" y1="896" x2="780" y2="896" stroke="#7b5cb8" stroke-width="2.2"/>
+    <text x="788" y="900">a design session's deliverable</text>
+    <line x1="980" y1="896" x2="1020" y2="896" stroke="#2e9e5b" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#mG)"/>
+    <text x="1028" y="900">a child's end guards the parent</text>
+    <line x1="1200" y1="896" x2="1240" y2="896" stroke="#8a8a86" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#mN)"/>
+    <text x="1248" y="900">a parent creates the child</text>
+    <text x="60" y="926" font-size="10.5" fill="#333">the four stores hold evidence, not machines: one intent loop reads them and runs every instance of the four nested machines for its intent — triage and the round only write into the nest</text>
+  </g>
+</svg>
