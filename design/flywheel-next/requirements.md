@@ -60,6 +60,12 @@ redefine these.
   an open one, or a new one with a proposed name.
 - **work item** — one task of a unit, worked through construction
   stages by sessions, merged into the bolt when complete.
+- **line** — a branch the machinery owns: each repository's shared
+  line, a bolt's line off a built repository's shared line, an intent's
+  line off the books' shared line.
+- **place** — a worktree the machinery prepares for one session off one
+  line: a work item's place off its bolt's line, an elaboration's place
+  off its intent's line, and a bolt's own place for the operator.
 - **session** — one agent process working one job in one place, with a
   bounded goal and a fixed set of ways to end.
 - **finding** — an idea a session has while doing its job that it
@@ -300,7 +306,40 @@ requirements, iterated against the running plan rather than on paper.
     one host never collide. How a repository starts its servers under
     that rule is the repository's own instruction (A.11); the machinery
     requires only the rule.
-42. A stage may run several sessions at once, each with its own
+42. The lines are the same shape on both sides. A built repository has
+    a shared line; a bolt is a line off it; a work item's place is off
+    the bolt's line. The books repository has a shared line; an intent
+    is a line off it; an elaboration's place is off the intent's line.
+    Proposed claims exist on the intent's line; standing claims exist
+    on the shared line, and archiving the intent is the landing of its
+    line.
+43. A line stays current by taking its parent: a bolt's line and an
+    intent's line take the shared line at least when a place is first
+    made off them, before they land, and on a cadence the operator sets
+    per repository. The take is a merge performed by the machinery,
+    never by a session.
+44. A place stays current by taking its line: after any sibling place
+    merges into the line, every other place off that line is rebased
+    onto it. The rebase is performed by the machinery while the place's
+    session is idle, never while it works, and a session is told what
+    moved under it before it continues.
+45. A take or a rebase that conflicts never leaves a half-done tree. The
+    conflict becomes a job for a session in that place, with the item
+    or elaboration it belongs to, and the machinery retries the take
+    when the session exits done. A conflict that outlasts the type's
+    retry bound waits on the operator.
+46. How a landing reaches the shared line — a pull request through the
+    repository's own gates, or a direct merge — is the repository's
+    policy, stated in the manifest, and the machinery performs whichever
+    it says. A bolt's close is not the landing: the landing is the
+    machinery's effect, and only a landing that passes the gates moves
+    the shared line.
+47. A standing elaboration's place is kept as long as its session; a
+    self-closing elaboration's place is merged into the intent's line
+    when the session exits done and then removed. An intent's line is
+    landed by the archive and removed; nothing of an intent lives on a
+    branch after it closes.
+48. A stage may run several sessions at once, each with its own
     instruction and persona, over the same work. The type states how the
     set is found — a fixed list, or a rule read against the repository
     being worked, such as every persona definition matching a pattern
@@ -308,7 +347,7 @@ requirements, iterated against the running plan rather than on paper.
     or a count. Which sessions ran is recorded with the item. Their
     exits are collected as one set, and every finding, chore and signal
     each offered is recorded.
-43. The catalogue of unit types is data, named, versioned, and changed
+49. The catalogue of unit types is data, named, versioned, and changed
     by the operator without rebuilding the machinery. A type composed
     only of existing predicate and effect atoms is added with no code
     change at all. A unit records the type version it started under, and
@@ -316,232 +355,232 @@ requirements, iterated against the running plan rather than on paper.
 
 ### A.6 Findings and chores
 
-44. A session may offer a finding at any time. A finding about the
+50. A session may offer a finding at any time. A finding about the
     session's own intent or bolt is a proposal on the plan for that
     thread. A finding about anything else is a signal (A.15). Neither
     is work until the operator says so, and neither interrupts the
     session that offered it.
-45. A session should make small fixes inside its own job rather than
+51. A session should make small fixes inside its own job rather than
     offer them. It offers a chore only when the fix lies outside what it
     may touch.
-46. A chore is a unit of the chore type: no change directory, one
+52. A chore is a unit of the chore type: no change directory, one
     stage, one session scoped to the repository and line of work the fix
     belongs on — a bolt's line when it was raised there, the shared line
     otherwise — and merged there by the machinery. Accepting one is a
     word on the plan and nothing more. A chore never creates a bolt.
-47. Updating agent instructions, citations, references, and similar
+53. Updating agent instructions, citations, references, and similar
     housekeeping are chores, not units.
-48. A finding and a chore are artifacts of the change they arose in,
+54. A finding and a chore are artifacts of the change they arose in,
     written where that change's other artifacts live, at the moment the
     session judged them, and archived with the change.
-49. Chores raised while a bolt is being built are collected at the bolt
+55. Chores raised while a bolt is being built are collected at the bolt
     and done by one session, on the bolt's own line of work, before the
     bolt lands. No process coordinates them; the bolt's own state is
     what says they are outstanding.
-50. The first proposal for a repository joining the fleet may contain
+56. The first proposal for a repository joining the fleet may contain
     chores as well as units, and a chore may satisfy a claim and
     produce a verdict.
 
 ### A.7 Sessions
 
-51. A session is given one job, one place, and a bounded goal. Inside
+57. A session is given one job, one place, and a bounded goal. Inside
     the job it is free; its only outputs to the machinery are a fixed
     set of exits: done with deliverables, blocked on a question,
     offering a finding, offering a chore, stalled.
-52. A session never moves the state of the machinery itself. It emits
+58. A session never moves the state of the machinery itself. It emits
     an exit; the machinery decides what the exit means.
-53. A session blocked on a question stops only itself. Its item waits on
+59. A session blocked on a question stops only itself. Its item waits on
     the plan; every other item, unit and bolt continues. The answer is
     recorded with the item and given to the same session if it still
     lives, otherwise to a fresh session that starts with it. How often
     each type and stage blocks is recorded, so a type that blocks too
     much is visible.
-54. The machinery never interrupts a session that is working. Anything
+60. The machinery never interrupts a session that is working. Anything
     it must tell a session waits until the session is idle.
-55. Starting a session on a slow host may take a long time. The
+61. Starting a session on a slow host may take a long time. The
     machinery treats a slow start as slow, not as failed; it retries;
     and it judges success by evidence that the session exists, never by
     the return of the command that started it.
-56. Every action the machinery takes on a session is safe to repeat: a
+62. Every action the machinery takes on a session is safe to repeat: a
     repeat of a completed action changes nothing.
-57. A session that is not the operator's to keep is retired when the
+63. A session that is not the operator's to keep is retired when the
     work it serves is retired, and its resources are released.
 
 ### A.8 State and evidence
 
-58. Every object's state is derivable from durable stores at any
+64. Every object's state is derivable from durable stores at any
     moment. Nothing held only in a process's memory decides behavior
     after that process restarts.
-59. For every state an object can be in, the model names exactly one
+65. For every state an object can be in, the model names exactly one
     source of truth that proves it. Other places that reflect the state
     are projections, written from the source, never read as truth.
-60. A state can never be proven by two stores that disagree. The model
+66. A state can never be proven by two stores that disagree. The model
     must say what happens when projections drift from the source.
-61. Reading the same stores twice with nothing changed produces the
+67. Reading the same stores twice with nothing changed produces the
     same conclusion and no writes.
 
 ### A.9 Observability
 
-62. Every write the machinery makes is recorded with its reason and
+68. Every write the machinery makes is recorded with its reason and
     the evidence it was based on.
-63. For every session, what was expected and what was delivered are
+69. For every session, what was expected and what was delivered are
     both recorded, and the difference is the first thing a report shows.
-64. Problems with the machinery itself are reported to the operator
+70. Problems with the machinery itself are reported to the operator
     through this record, never filed as work.
 
 ### A.10 The engine, the domain, and the model as an artifact
 
-65. The machines are defined as data in standalone files. The same
+71. The machines are defined as data in standalone files. The same
     definition is rendered into diagrams for people and executed by the
     machinery. The diagram cannot drift from the runtime.
-66. The definition is testable without any live service: given a
+72. The definition is testable without any live service: given a
     described state of the stores, the model's decisions can be
     asserted.
-67. Adding an elaboration type, a construction stage, or a plan row
+73. Adding an elaboration type, a construction stage, or a plan row
     kind is a change to the definition, not to the machinery's code.
-68. The engine is generic. It loads definitions, evaluates predicates
+74. The engine is generic. It loads definitions, evaluates predicates
     over evidence, chooses transitions, runs effects idempotently, and
     derives the plan's rows. It knows nothing of intents, elaborations,
     bolts, units, work items, claims or verdicts, and no name of any of
     them appears in it.
-69. The domain is the flywheel's machine definitions and the atoms
+75. The domain is the flywheel's machine definitions and the atoms
     those definitions name: one predicate atom per question asked of
     evidence, one effect atom per act on the world. New behavior is new
     definitions and new atoms; it is never a change to the engine.
 
 ### A.11 Instructions and skills as data
 
-70. The schemas an artifact must satisfy, the instructions for writing
+76. The schemas an artifact must satisfy, the instructions for writing
     each artifact, and the skill for each session type are data,
     versioned like anything else, and a session is given the versions
     in force when it starts.
-71. Every session's inputs are enumerable and closed: the schema
+77. Every session's inputs are enumerable and closed: the schema
     instruction, the type skill, its work order, and the artifacts of
     the change it works. Nothing else reaches it.
-72. A test can render the exact prompt a given scenario would produce,
+78. A test can render the exact prompt a given scenario would produce,
     without starting a session.
-73. Changing an instruction is a chore. The model says where the
+79. Changing an instruction is a chore. The model says where the
     instructions live and how a change to one reaches every host.
 
 ### A.12 Scenarios and testing as data
 
-74. Every machine is testable on its own against a stand-in control
+80. Every machine is testable on its own against a stand-in control
     plane, with no live service of any kind.
-75. A scenario is data: given this evidence, when this tick or event,
+81. A scenario is data: given this evidence, when this tick or event,
     then these transitions, these effects, and these rows. Scenarios
     live beside the definitions they check.
-76. A scenario can be dictated in the operator's own words, turned into
+82. A scenario can be dictated in the operator's own words, turned into
     that data, run, and rendered afterwards as a trace a person reads.
 
 ### A.13 Coexistence
 
-77. The new flywheel runs beside the current one, against the same
+83. The new flywheel runs beside the current one, against the same
     organization, without either interfering with the other. Its
     scope of objects is disjoint and explicit.
 
 ### A.14 Claims, as-built, and the ledger
 
-78. The chapter that explains a claim and the claim itself are one
+84. The chapter that explains a claim and the claim itself are one
     source. The prose, the diagram and the sample around a claim are
     what a construction session reads to know what the claim means;
     they cannot drift from it.
-79. Only standing claims are planned against. Proposed claims are
+85. Only standing claims are planned against. Proposed claims are
     visible and never built.
-80. Every as-built statement names the claim and claim version it
+86. Every as-built statement names the claim and claim version it
     serves. Construction never satisfies a claim it does not name.
-81. Whether a repository satisfies a claim is a judgment made by an
+87. Whether a repository satisfies a claim is a judgment made by an
     agent, not a computation, and it is stored as a verdict with the
     inputs it was made from.
-82. A verdict is reused until its claim's version moves or its evidence
+88. A verdict is reused until its claim's version moves or its evidence
     is gone. A repository changing does not by itself invalidate a
     verdict. Not-applicable is a verdict like any other, so a scope
     judgment is made once.
-83. A repository's construction backlog is derived from the ledger:
+89. A repository's construction backlog is derived from the ledger:
     every claim in scope with no satisfied or not-applicable verdict.
     It is never stored as a list.
-84. A claim amended after construction named it reaches the operator as
+90. A claim amended after construction named it reaches the operator as
     a choice: amend the open work, or let it land and follow it. The
     machinery never restarts or rewrites construction on its own.
-85. A repository joining the fleet has an empty ledger. Its first
+91. A repository joining the fleet has an empty ledger. Its first
     planning judges every claim in scope once and offers the unsatisfied
     set as one proposal.
-86. A claim's scope is part of the claim, chosen when it is written and
+92. A claim's scope is part of the claim, chosen when it is written and
     corrected by the operator's word. A claim about a contract between
     two repositories is in scope for both, and each carries its own
     verdict.
 
 ### A.15 Signals and curation
 
-87. Signals are appended by adapters, one record per signal, at any
+93. Signals are appended by adapters, one record per signal, at any
     rate. The machinery never reads a signal except through curation.
-88. Every signal has exactly one standing move, stored with the signal
+94. Every signal has exactly one standing move, stored with the signal
     id, the target, the reason, and the date. Curation runs over signals
     with no move and never re-judges one that has a move. Only the
     operator's word replaces a move: reviving a dropped signal, or
     splitting a cluster.
-89. Claims are the index curation clusters against. A signal either
+95. Claims are the index curation clusters against. A signal either
     fits an open intent, argues with a standing claim, or fits no
     claim; the move follows from which.
-90. A proposed intent from curation cites its signals and shows their
+96. A proposed intent from curation cites its signals and shows their
     weight: how many, from which sources, over what span. The operator
     sees one row per proposed intent, never a row per signal.
-91. Curation is a session with a bounded job and the fixed exits of
+97. Curation is a session with a bounded job and the fixed exits of
     A.7, charged on a cadence or when unmoved signals exceed a
     threshold. It never opens an intent. A person writing the same
     records by hand is also curation.
-92. A capture is the unit of provenance: one per source event, holding
+98. A capture is the unit of provenance: one per source event, holding
     the source, the time, who captured it, and a pointer to the raw
     material. Raw transcripts and logs stay outside version control; the
     capture cites them. Capturing the same source event twice yields one
     capture.
-93. Capture is one gesture from wherever the operator is: a forwarded
+99. Capture is one gesture from wherever the operator is: a forwarded
     message, one word on the phone, a file dropped in a folder. It costs
     no more than a sentence.
-94. A signal carries its capture, a kind from a small fixed set
+100. A signal carries its capture, a kind from a small fixed set
     (constraint, ask, question, commitment, reaction), who asserted it,
     subject tags, the assertion in a sentence, the verbatim excerpt with
     its position, and the claims it argues with when any exist. A signal
     is immutable once written.
-95. The signal and move record formats are versioned and stable. Any
+101. The signal and move record formats are versioned and stable. Any
     tool that writes them is an adapter; captures made before the
     flywheel existed are read without conversion.
-96. An adapter splits arithmetic from judgment. Enumerating source
+102. An adapter splits arithmetic from judgment. Enumerating source
     events and writing captures runs unattended. Turning a capture into
     signals is a session's judgment and never runs unattended.
-97. Every move has a stated consequence. Attach lands the signal as
+103. Every move has a stated consequence. Attach lands the signal as
     evidence on the intent. Challenge accumulates against the claim.
     Join produces or grows a proposed intent. Answered names the claim
     or record that settled it. Drop records the reason.
-98. Dropping a proposed intent gives each of its signals a move that
+104. Dropping a proposed intent gives each of its signals a move that
     records the drop. They are not clustered again unless new signals
     join them.
-99. Weight counts by event date, never by import date. The status view
+105. Weight counts by event date, never by import date. The status view
     shows the count and age of unmoved signals by source, and an unmoved
     signal is never discarded.
 
 ### A.16 Default instructions and the review surface
 
-100. The instructions that shape what a session writes are data the
+106. The instructions that shape what a session writes are data the
     operator can change without a code change, and the boundary between
     them and the engine is explicit: no instruction text exists in the
     engine, and no engine behavior depends on an instruction's wording.
-101. The defaults are themselves specified. Unless the operator changes
+107. The defaults are themselves specified. Unless the operator changes
     them, the instructions in force make every session that settles a
     design conclusion write the chapter that explains it and the claim it
     adds or amends in the same commit; make every session that writes or
     amends a claim update the system context map so the map stays
     current; and make every construction session name the claim its work
     serves.
-102. The system context map is versioned like the book, so two versions
+108. The system context map is versioned like the book, so two versions
     can be compared and the difference read as a change to the design.
-103. The operator's review surface is the book and the context map. A
+109. The operator's review surface is the book and the context map. A
     review view shows what changed in both since the operator last
     reviewed, directs the reader to those chapters and nodes, and is
     derived from history, never stored or hand-written.
-104. Changing a default instruction is a chore, and the change is
+110. Changing a default instruction is a chore, and the change is
     versioned so a session started before it and one started after can
     be told apart.
-105. A test can show, for a given instruction version and a scenario,
+111. A test can show, for a given instruction version and a scenario,
     what a session would be asked to write, without starting one.
 
 ## 5. Requirements — Part B, the control plane contract
@@ -551,87 +590,87 @@ through these operations, and depends only on these guarantees.
 
 ### B.1 The operations
 
-106. The control plane offers exactly these operations, and the engine
+112. The control plane offers exactly these operations, and the engine
     needs no others: read an object's evidence; write an effect; take,
     renew and release a lease on an object; present the plan's rows and
     receive the operator's word; notify a host that state has changed;
     list the objects in a scope; serve the status view. An engine that
     needs a further operation is a change to this contract, stated
     here.
-107. **Read.** Given an object's identity, the control plane returns the
+113. **Read.** Given an object's identity, the control plane returns the
     evidence the predicates ask for, as of a point it names. Reading
     twice with nothing changed returns the same evidence and writes
     nothing.
-108. **Write an effect.** Every effect is written with an identity of
+114. **Write an effect.** Every effect is written with an identity of
     its own. A repeat of an effect already written changes nothing, is
     not an error, and is not reported as a second write.
-109. **Lease.** A lease on an object is taken, renewed while its holder
+115. **Lease.** A lease on an object is taken, renewed while its holder
     works, and released by its holder or expired by a stated rule. Two
     would-be holders of one object cannot both hold it.
-110. **Present and receive.** Rows are presented to the operator and the
+116. **Present and receive.** Rows are presented to the operator and the
     word comes back attributed to the row it answers. A word that
     arrives twice is applied once. A word that cannot be applied is
     handed back to the engine, never dropped.
-111. **Notify.** The control plane tells a host that state has changed,
+117. **Notify.** The control plane tells a host that state has changed,
     within a bound the profile states, and without the host re-reading
     everything to find out. Notification only shortens the wait: a host
     that is never notified still converges by reading.
-112. **List.** The control plane enumerates the objects in a stated
+118. **List.** The control plane enumerates the objects in a stated
     scope, so that an engine which remembers nothing can still find
     everything it must act on.
-113. **Serve the status view.** The status view is served from the same
+119. **Serve the status view.** The status view is served from the same
     state the engine reads, and is readable with no machinery running
     anywhere.
 
 ### B.2 The guarantees
 
-114. **Durable.** What a write reports as written survives the loss of
+120. **Durable.** What a write reports as written survives the loss of
     every host, all at once, without warning.
-115. **Single writer per object.** Two writers of one object cannot both
+121. **Single writer per object.** Two writers of one object cannot both
     succeed. The loser learns that it lost, and reads again before
     deciding anything.
-116. **Atomic per write.** A write is wholly applied or not applied. No
+122. **Atomic per write.** A write is wholly applied or not applied. No
     reader ever sees half of one.
-117. **Derivable.** Every state the engine decides upon is derivable
+123. **Derivable.** Every state the engine decides upon is derivable
     from what read and list return. Nothing the control plane holds
     privately decides behavior.
-118. **The word, exactly once.** An operator's word takes effect once,
+124. **The word, exactly once.** An operator's word takes effect once,
     however many times it is delivered, and whatever restarts happen
     between its giving and its application.
 
 ### B.3 Evidence names and the profile binding
 
-119. A machine definition names the evidence it reads and the effects it
+125. A machine definition names the evidence it reads and the effects it
     writes by abstract name only. No definition names a label, a
     column, a field, a file path, a service, or an interface.
-120. A profile supplies a binding from every evidence name and every
+126. A profile supplies a binding from every evidence name and every
     effect name the definitions use to the operations of that profile's
     own storage. The binding is data, reviewable on its own, and the
     definitions do not change when the profile changes.
-121. An engine runs unchanged against any profile whose binding is
+127. An engine runs unchanged against any profile whose binding is
     complete. A binding that leaves an evidence or effect name
     unsatisfied is not a profile.
 
 ### B.4 The status view
 
-122. At any moment the operator can see every intent, elaboration,
+128. At any moment the operator can see every intent, elaboration,
     bolt, unit, work item and session with its current state, grouped
     by state: queued, in progress, waiting on the operator, done; and
     for each, which host holds it, which host runs it, and whether that
     host is alive. This is a view of the whole, separate from the plan,
     and it needs no machinery running to be read.
-123. The status view is a projection of the same state the engine reads.
+129. The status view is a projection of the same state the engine reads.
     It is never a source of truth, and it is never written by hand to
     make it look right.
-124. The status view is central: one place for the whole organization,
+130. The status view is central: one place for the whole organization,
     reachable from the phone, however many hosts run machinery.
-125. Discussion about an object — a question asked, an answer given, a
+131. Discussion about an object — a question asked, an answer given, a
     note a session left — is part of that object's state, and the status
     view shows it.
-126. A status view read while nothing is running shows the state as of
+132. A status view read while nothing is running shows the state as of
     the last write that reached the central service, and says as of
     when.
-127. The status view is derived from list and read alone. The first
+133. The status view is derived from list and read alone. The first
     build need not serve it, and the model must show that nothing more is
     needed to serve it later: for any object, its states, words and
     sessions in order; for any repository, what landed in a period; for
@@ -640,29 +679,29 @@ through these operations, and depends only on these guarantees.
 
 ### B.5 Hosts and ownership
 
-128. More than one host may run the machinery for one organization at
+134. More than one host may run the machinery for one organization at
     once. Every host works from the same shared line of every
     repository and the same central state.
-129. Every object is owned by at most one host at a time, through a
+135. Every object is owned by at most one host at a time, through a
     lease, and the owner is visible. Two hosts never work the same
     object. A host that goes away leaves its objects visibly stale;
     another host takes them over only when the lease has expired by the
     stated rule, never by racing.
-130. A host that cannot reach the central service keeps working what it
+136. A host that cannot reach the central service keeps working what it
     already owns, records what it does locally, and reconciles when it
     reconnects. The model says what a disconnected host may and may not
     do.
 
 ### B.6 The operator's word in transit
 
-131. The word travels over a transport the profile names: a short reply
+137. The word travels over a transport the profile names: a short reply
     where the operator already is, or a choice on a served page. Either
     is sufficient for any decision.
-132. The word is recorded with the object it concerns, the row it
+138. The word is recorded with the object it concerns, the row it
      answers, who gave it and when, before any work follows from it.
-133. The operator can tell that their word was recorded, without asking
+139. The operator can tell that their word was recorded, without asking
      anyone.
-134. The page is served on the operator's private network and works on a
+140. The page is served on the operator's private network and works on a
     phone; every chat rendering links to it. Where the chat platform
     offers rich rendering and built-in controls for answering, the
     profile uses them as the platform provides them. Nothing is
@@ -690,12 +729,12 @@ service.
 | list objects in scope | a query over the organization's items |
 | serve the status view | the board, plus a page served from the same items |
 
-135. The tracker holds every object's state, is durable, and is
+141. The tracker holds every object's state, is durable, and is
      readable with no host of the operator's running.
-136. An object's state is proven by the tracker's record of it. Anything
+142. An object's state is proven by the tracker's record of it. Anything
      else that shows that state is a projection, written from the
      tracker and never read as truth.
-137. The operator acting directly on the tracker — moving an item,
+143. The operator acting directly on the tracker — moving an item,
      answering on it, closing it — is the word, and the machinery treats
      it as the word at its next read.
 
@@ -716,33 +755,33 @@ reads or writes them.
 | list objects in scope | the layout of the state repositories, read as of the shared line |
 | serve the status view | a page built from the state, served without any host of the operator's running |
 
-138. All state is files in git repositories. The git host is the only
+144. All state is files in git repositories. The git host is the only
      central service. The model says which repositories hold state, how
      the files are laid out, and what one object's file looks like.
-139. A change of state is a commit. A commit that reaches the shared
+145. A change of state is a commit. A commit that reaches the shared
      line is the fact; a commit that has not is a local intention. The
      model says which line is shared and how a host learns that its
      commit landed.
-140. The push is the compare-and-swap. Two hosts that try to change the
+146. The push is the compare-and-swap. Two hosts that try to change the
      same object at the same time cannot both succeed, because the host
      rejects an update whose base is stale. The model states what the
      loser does.
-141. A lease is taken by a commit that lands, renewed while the host
+147. A lease is taken by a commit that lands, renewed while the host
      works, and expired by a rule the model states.
-142. The operator's word from a phone becomes a commit. The model names
+148. The operator's word from a phone becomes a commit. The model names
      the one writer that turns a short reply or a page choice into that
      commit, and how the operator can tell the commit landed.
-143. A host that cannot reach the git host keeps working on what it
+149. A host that cannot reach the git host keeps working on what it
      already owns, commits locally, and reconciles when it reconnects.
      The model says what it may and may not do while disconnected.
      Every host fetches and integrates the shared line on its own, on
      every notify and on a bounded interval, and before every tick; no
      host decides on a read older than that bound, and no person runs
      the sync by hand.
-144. Hosts learn of new state without reading the whole history each
+150. Hosts learn of new state without reading the whole history each
      time. The model states how — a call from the git host, a bounded
      poll, or a message — and what the latency bound is.
-145. Every write the machinery makes is a commit, and the commit
+151. Every write the machinery makes is a commit, and the commit
      carries its reason and the evidence it was based on. History is the
      audit record; nothing else is kept for that purpose.
 
@@ -751,15 +790,15 @@ reads or writes them.
 A placeholder. No third profile is specified; this states what one must
 provide to conform.
 
-146. A third profile conforms when it binds every evidence name and
+152. A third profile conforms when it binds every evidence name and
      every effect name the definitions use, satisfies every operation of
      B.1 with every guarantee of B.2, serves the status view with no
      host of the operator's running, and passes the conformance suite of
      section 12 unchanged.
-147. For each guarantee its storage does not give on its own, a profile
+153. For each guarantee its storage does not give on its own, a profile
      names the mechanism it adds to provide that guarantee, and where
      that mechanism's own state lives.
-148. A profile that cannot provide a guarantee is rejected as a
+154. A profile that cannot provide a guarantee is rejected as a
      profile. The data plane is never weakened to admit one.
 
 ## 7. Invariants
@@ -781,6 +820,8 @@ These hold at every moment, not just at the end of an operation.
   shows it.
 - I12. Every operation on a repository that changes a line of work or a
   place to work in is performed by the machinery, never by a session.
+- I16. No place off a line is rebased or merged while its session is
+  working, and no session starts in a place that is behind its line.
 - I13. No machine definition names a store, a service, a path, or a
   field. Storage detail exists only in a profile's binding.
 - I14. No state exists outside git. A host's memory and disk hold only
@@ -874,6 +915,8 @@ Not requirements; the places where the modeler's judgment is wanted.
 - Where does planning sit in the machines: a machine per repository,
   a stage of the bolt, or an elaboration type? What tells it that a
   repository's backlog changed, and how does it see the open bolts?
+- What is the cadence rule for a line taking its parent, and what
+  proves a place is current before its session starts?
 - Are claims OpenSpec requirement blocks included by anchor, or fenced
   claim blocks with a hash lock?
 - What is the layout of state in git: one repository or one per book;
@@ -1021,6 +1064,24 @@ by walking each one. Each is tagged with the profiles it applies to.
   07:40 and looks again at 16:00. Nothing was nudged. The plan's tail
   shows the unit's items built, reviewed and merged since 07:40, and the
   only new row is the bolt's close.
+- **S32.** *(all profiles)* Two units of one bolt build side by side.
+  The first merges into the bolt's line. The second's session is
+  working; nothing happens to its place. When it goes idle the machinery
+  rebases the place onto the line, tells the session what moved, and
+  the session continues. The rebase conflicts once; the session resolves
+  it in its place; the merge retries and lands.
+- **S33.** *(all profiles)* A bolt open for three weeks takes the
+  shared line every morning by the repository's cadence, and once more
+  before landing. The landing goes through the repository's pull
+  request and gates; the gates fail; the bolt stays open with the
+  failure on it, and no session is asked to do anything until the
+  operator's word.
+- **S34.** *(all profiles)* An intent has two elaborations: a research
+  elaboration that exits done and a standing prototype. The research
+  place merges into the intent's line and is removed; the prototype's
+  place is rebased onto the line while idle and kept. The archive lands
+  the intent's line on the books' shared line, and the two claims it
+  carried are now standing.
 
 ## 12. What to deliver
 
