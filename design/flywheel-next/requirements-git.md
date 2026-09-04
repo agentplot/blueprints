@@ -59,6 +59,14 @@ redefine these.
   operator's word is presented, and where the word is given.
 - **curation** — the step that turns many raw signals into a few
   intents worth elaborating.
+- **signal** — one raw piece of input from a source: an excerpt of a
+  meeting transcript, a log observation, a piece of user feedback, a
+  chat message, a session's finding about something outside its job.
+  A signal is a record with a source and a date; it is never work and
+  never a plan row on its own.
+- **move** — curation's stored judgment on one signal: attach to an
+  open intent, challenge a standing claim, join a proposed new intent,
+  or drop, with a reason.
 - **claim** — one statement in the design book of what is true at the
   destination: a boundary, an owner, a coupling, a store, an invariant,
   or a behavior. It has a stable name, a version that moves only when
@@ -184,9 +192,11 @@ model.
 
 ### 4.6 Findings and chores
 
-25. A session may offer a finding at any time. A finding is a proposal
-    on the plan; it is not work until the operator says so, and it never
-    interrupts the session that offered it.
+25. A session may offer a finding at any time. A finding about the
+    session's own intent or bolt is a proposal on the plan for that
+    thread. A finding about anything else is a signal (4.15). Neither
+    is work until the operator says so, and neither interrupts the
+    session that offered it.
 26. A session should make small fixes inside its own job rather than
     offer them. It offers a chore only when the fix lies outside what it
     may touch.
@@ -332,6 +342,24 @@ model.
     the one writer that turns a short reply or a page choice into that
     commit, and how the operator can tell the commit landed.
 
+### 4.15 Signals and curation
+
+65. Signals are appended by adapters, one record per signal, at any
+    rate. The machinery never reads a signal except through curation.
+66. Every signal receives exactly one move, stored with the signal id,
+    the target, the reason, and the date. Curation runs over signals
+    with no move and never re-judges one that has a move.
+67. Claims are the index curation clusters against. A signal either
+    fits an open intent, argues with a standing claim, or fits no
+    claim; the move follows from which.
+68. A proposed intent from curation cites its signals and shows their
+    weight: how many, from which sources, over what span. The operator
+    sees one row per proposed intent, never a row per signal.
+69. Curation is a session with a bounded job and the fixed exits of
+    4.7, charged on a cadence or when unmoved signals exceed a
+    threshold. It never opens an intent. A person writing the same
+    records by hand is also curation.
+
 ## 5. Invariants
 
 These hold at every moment, not just at the end of an operation.
@@ -456,8 +484,10 @@ by walking each one.
   intent's close. The operator says yes. The intent is closed and its
   records archived. Nothing else moved.
 - **S8.** Twenty signals arrive from a meeting transcript. Curation
-  turns them into two intents. The flywheel sees two proposals on the
-  plan, not twenty sessions.
+  attaches six to open intents, drops nine, and clusters five into two
+  proposed intents, one of which challenges a standing claim. The
+  plan shows two rows with their signal weight, not twenty. Every
+  signal has a stored move the operator can read.
 - **S9.** A build session learns that the boundary a claim draws is
   wrong. It finishes its job and offers a finding. The operator accepts;
   an elaboration amends the claim and its intent closes. The next
