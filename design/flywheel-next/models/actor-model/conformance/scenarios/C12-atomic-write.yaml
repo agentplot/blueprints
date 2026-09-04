@@ -1,0 +1,28 @@
+id: C12
+title: a transition write is wholly applied or not applied
+exercises: {operations: [write-effect], guarantees: [atomic]}
+profiles: [all]
+requirements: [122]
+given:
+  clock: "2026-09-04T07:40:00Z"
+  actors:
+    - {id: decision/unit/atlas/b-0142/u-3/approve, state: open, seq: 0, parent: unit/atlas/b-0142/u-3, class: approve, answers: [yes, drop]}
+    - {id: unit/atlas/b-0142/u-3, state: proposed, seq: 1, epoch: 1}
+  leases: [{actor: bolt/atlas/b-0142, holder: host/studio, epoch: 1}]
+  words: [{id: word/discord-4, decision: decision/unit/atlas/b-0142/u-3/approve, answer: yes, who: chuck}]
+when:
+  - {tick: host/studio, interrupt: during-write}    # the profile's write is cut off mid-way
+  - {read-as: host/mac-mini, actor: decision/unit/atlas/b-0142/u-3/approve, as: r1}
+  - {read-as: host/mac-mini, mailbox: unit/atlas/b-0142/u-3, as: m1}
+  - restart: host/studio
+  - tick: host/studio
+  - {read-as: host/mac-mini, actor: decision/unit/atlas/b-0142/u-3/approve, as: r2}
+  - {read-as: host/mac-mini, mailbox: unit/atlas/b-0142/u-3, as: m2}
+then:
+  either:
+    - {r1: {state: open, consumed: []}, m1: []}                                       # nothing applied
+    - {r1: {state: answered, consumed: [word/discord-4]}, m1: [{kind: decided}]}      # all applied
+  never:
+    - {r1: {state: answered}, m1: []}
+    - {r1: {state: open}, m1: [{kind: decided}]}
+  final: {r2: {state: answered, consumed: [word/discord-4]}, m2: [{kind: decided, count: 1}]}

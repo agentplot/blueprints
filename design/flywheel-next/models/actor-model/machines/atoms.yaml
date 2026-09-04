@@ -45,6 +45,10 @@ evidence:
   session.notes:          {args: [session-id], returns: note records the session has written}
   session.refusals:       {args: [session-id], returns: refusal records the place's hooks wrote}
   session.stalled:        {args: [session-id, bound], returns: bool, "idle longer than bound with no exit written"}
+  stage.sessions:         {args: [type, type-version, stage, repo], returns: "the stage's session set: the fixed list, or the rule evaluated against the repository (personas.matching)"}
+  stage.join-met:         {args: [item-id, stage], returns: bool, "all | any | {count} of the stage's sessions have a terminal exit"}
+  stage.verdict:          {args: [item-id, stage], returns: done|not-done, "the stage's exit set read by the type's verdict rule"}
+  place.published-ref:    {args: [place], returns: sha or none, "the last published head of the place (refs/places/<place>)"}
 
   # books, claims, ledger, as-built
   claims.standing:        {args: [], returns: "{claim-name: {version, scope, lock}} as of the books' shared line"}
@@ -89,10 +93,11 @@ effects:
   line.ensure:            {args: [repo, line, parent-line], note: "creates the branch at the parent's head if absent"}
   line.take-parent:       {args: [repo, line, parent-line], note: "merges the parent into the line; returns clean|conflict; conflict leaves the line untouched"}
   line.remove:            {args: [repo, line]}
-  place.ensure:           {args: [repo, line, place], note: "wt worktree at the line's head, hooks installed, ports tethered; no-op if present and current"}
+  place.ensure:           {args: [repo, line, place, "at-ref?"], note: "wt worktree at the line's head — or at at-ref, the place's published ref, when given — hooks installed, ports tethered; no-op if present and current"}
   place.rebase:           {args: [place, line], note: "returns clean|conflict; conflict aborts and leaves the place as it was"}
   place.merge-into-line:  {args: [place, line], note: "one at a time per line; returns clean|conflict"}
   place.remove:           {args: [place], note: "ends tethered processes, removes the worktree"}
+  place.publish:          {args: [place], note: "pushes the place's head to refs/places/<place>; idempotent by ref; a takeover host makes the place there"}
   landing.start:          {args: [repo, line, policy, landing-id], note: "pull request through gates, or direct merge; idempotent on landing-id"}
   archive.change:         {args: [repo, line, change], note: "OpenSpec archive on the line: proposed claims become standing text"}
   chore.merge:            {args: [repo, place, line], note: "a chore's place into its line; the shared line goes through landing.start"}

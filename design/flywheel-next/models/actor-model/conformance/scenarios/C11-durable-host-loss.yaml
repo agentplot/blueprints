@@ -1,0 +1,33 @@
+id: C11
+title: what a write reports as written survives the loss of every host
+exercises: {operations: [write-effect], guarantees: [durable]}
+profiles: [all]
+requirements: [120, I7]
+given:
+  clock: "2026-09-04T07:40:00Z"
+  org: {takeover: after 20m}
+  actors:
+    - {id: org, state: running, seq: 5, epoch: 1, fields: {takeover: after 20m}}
+    - {id: bolt/atlas/b-0142, state: open, seq: 8, epoch: 3, fields: {merge-queue: [wi/atlas/b-0142/u-3/1], merging: none}}
+    - {id: wi/atlas/b-0142/u-3/1, state: merge-ready, seq: 9, epoch: 3}
+    - {id: host/studio, state: alive, seq: 1}
+    - {id: host/mac-mini, state: alive, seq: 1}
+  leases: [{actor: bolt/atlas/b-0142, holder: host/mac-mini, epoch: 3}, {actor: org, holder: host/studio, epoch: 1}]
+  heartbeats: [{host: host/mac-mini, at: "2026-09-04T07:39:00Z"}, {host: host/studio, at: "2026-09-04T07:39:00Z"}]
+when:
+  - tick: host/mac-mini                   # bolt: merging = the item, sends merge-now
+  - {write-reported: bolt/atlas/b-0142, seq: 9}
+  - crash: [host/mac-mini, host/studio]   # every host, at once, without warning
+  - {clock: +25m}
+  - start: host/lab                       # a host that has never run
+  - tick: host/lab
+  - tick: host/lab
+  - tick: host/lab
+then:
+  reads-after-loss:
+    - {actor: bolt/atlas/b-0142, seq: 9, state: open, fields: {merging: wi/atlas/b-0142/u-3/1}}
+    - {mailbox: wi/atlas/b-0142/u-3/1, contains: [{kind: merge-now, sender: bolt/atlas/b-0142, seq: 9}]}
+  leases: [{actor: bolt/atlas/b-0142, holder: host/lab, epoch: 4}]     # by the org's rule, not by racing
+  transitions:
+    - {actor: wi/atlas/b-0142/u-3/1, from: merge-ready, to: merging}
+  lost-state: none

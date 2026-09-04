@@ -1,0 +1,192 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 1000" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+  <marker id="mN" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+  <marker id="mP" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7b5cb8"/></marker>
+  <marker id="mR" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c05b5b"/></marker>
+  <marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+  <marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e9e5b"/></marker>
+  <marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+  <marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+  <g id="cyl"><path d="M -24 -11 L -24 13 A 24 8 0 0 0 24 13 L 24 -11" fill="#f1f1ee" stroke="#8a8a86" stroke-width="1.6"/><ellipse cx="0" cy="-11" rx="24" ry="8" fill="#e3e3df" stroke="#8a8a86" stroke-width="1.6"/></g>
+  <g id="wave" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M -12 0 q 3 -7 6 0 t 6 0 t 6 0 t 6 0"/></g>
+  <g id="gate" stroke="#c05b5b" stroke-width="3" stroke-linecap="round"><line x1="-8" y1="-11" x2="-8" y2="11"/><line x1="8" y1="-11" x2="8" y2="11"/><line x1="-8" y1="-3" x2="8" y2="-3"/></g>
+  <g id="person"><circle cy="-6" r="4" fill="#fff" stroke="currentColor" stroke-width="1.8"/><path d="M -7 8 a 7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8"/></g>
+  <g id="gear"><circle r="9" fill="#fff" stroke="currentColor" stroke-width="2.4"/><circle r="3" fill="currentColor"/><g stroke="currentColor" stroke-width="2.4"><line y1="-9" y2="-13.5"/><line y1="9" y2="13.5"/><line x1="-9" x2="-13.5"/><line x1="9" x2="13.5"/><line x1="-6.4" y1="-6.4" x2="-9.5" y2="-9.5"/><line x1="6.4" y1="6.4" x2="9.5" y2="9.5"/><line x1="-6.4" y1="6.4" x2="-9.5" y2="9.5"/><line x1="6.4" y1="-6.4" x2="9.5" y2="-9.5"/></g></g>
+  <g id="repo"><rect x="-26" y="-18" width="52" height="36" rx="7" fill="#fff" stroke="currentColor" stroke-width="2"/><circle cx="-9" cy="8" r="3.2" fill="currentColor"/><circle cx="9" cy="-8" r="3.2" fill="currentColor"/><path d="M -9 8 v-8 a 8 8 0 0 1 8 -8 h 1" fill="none" stroke="currentColor" stroke-width="2"/></g>
+  <g id="cube" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M -16 -8 L 0 -17 L 16 -8 L 16 10 L 0 19 L -16 10 Z" fill="#fff"/><path d="M -16 -8 L 0 1 L 16 -8 M 0 1 L 0 19" fill="none"/></g>
+  <g id="pause"><circle r="9" fill="#fff" stroke="#c9962e" stroke-width="2"/><line x1="-2.8" y1="-4" x2="-2.8" y2="4" stroke="#c9962e" stroke-width="2.4" stroke-linecap="round"/><line x1="2.8" y1="-4" x2="2.8" y2="4" stroke="#c9962e" stroke-width="2.4" stroke-linecap="round"/></g>
+  <g id="tbl"><rect x="-11" y="-9" width="22" height="18" rx="2" fill="#fff" stroke="currentColor" stroke-width="1.8"/><line x1="-11" y1="-3" x2="11" y2="-3" stroke="currentColor" stroke-width="1.4"/><line x1="-11" y1="3" x2="11" y2="3" stroke="currentColor" stroke-width="1.4"/><line x1="-3" y1="-9" x2="-3" y2="9" stroke="currentColor" stroke-width="1.4"/></g>
+  <g id="key"><rect x="-7" y="-2" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M -4 -2 v-3 a 4 4 0 0 1 8 0 v3" fill="none" stroke="currentColor" stroke-width="1.8"/></g>
+  <g id="clock"><circle r="9" fill="#fff" stroke="#c9962e" stroke-width="2"/><path d="M 0 -5 V 0 H 4" fill="none" stroke="#c9962e" stroke-width="2.2" stroke-linecap="round"/></g>
+  <g id="check" fill="none" stroke="#2e9e5b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M -6 0 L -2 4 L 6 -5"/></g>
+  <g id="row" stroke="currentColor" stroke-width="1.6" fill="none"><rect x="-8" y="-6" width="16" height="12" rx="2"/><line x1="-4" y1="-1" x2="4" y2="-1"/><line x1="-4" y1="3" x2="1" y2="3"/></g>
+  <g id="rows" fill="#7b5cb8"><rect x="-16" y="-9" width="32" height="4" rx="1"/><rect x="-16" y="-2" width="32" height="4" rx="1"/><rect x="-16" y="5" width="20" height="4" rx="1"/></g>
+  <g id="marker"><circle r="7" fill="#fff" stroke="currentColor" stroke-width="2.2"/><circle r="2.6" fill="currentColor"/></g>
+  <g id="browser"><rect x="-22" y="-14" width="44" height="28" rx="4" fill="#fff" stroke="currentColor" stroke-width="2"/><line x1="-22" y1="-6" x2="22" y2="-6" stroke="currentColor" stroke-width="2"/><circle cx="-16" cy="-10" r="1.6" fill="currentColor"/><circle cx="-11" cy="-10" r="1.6" fill="currentColor"/></g>
+  <g id="cross"><circle r="10" fill="#fbeeee" stroke="#c05b5b" stroke-width="2"/><path d="M -4 -4 l 8 8 M 4 -4 l -8 8" fill="none" stroke="#a34848" stroke-width="2.5"/></g>
+</defs>
+<rect width="1680" height="1000" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">The word — one reply becomes one record keyed by its message id, consumed by one decision actor in one write; delivered twice, applied once</text>
+<text x="40" y="57" font-size="12" fill="#666">yes 2 at 07:41 on unit atlas · status-writer — every lane is a store or an actor, every event a record; the trace holds across a restart and a duplicate</text>
+
+<!-- axis -->
+<line x1="120" y1="110" x2="1620" y2="110" stroke="#ddd" stroke-width="1.6"/>
+<g font-size="10.5" fill="#999" text-anchor="middle">
+  <text x="230" y="96">07:40 rendering</text>
+  <text x="390" y="96">07:41 reply</text>
+  <text x="540" y="96">commit + push</text>
+  <text x="690" y="96">landed · ✅</text>
+  <text x="840" y="96">07:42 tick</text>
+  <text x="990" y="96">one write</text>
+  <text x="1140" y="96">07:43 spawn</text>
+  <text x="1290" y="96">07:45 again</text>
+  <text x="1440" y="96">16:00 look</text>
+</g>
+<g stroke="#ddd" stroke-width="1.2">
+  <line x1="230" y1="104" x2="230" y2="116"/><line x1="390" y1="104" x2="390" y2="116"/><line x1="540" y1="104" x2="540" y2="116"/><line x1="690" y1="104" x2="690" y2="116"/><line x1="840" y1="104" x2="840" y2="116"/><line x1="990" y1="104" x2="990" y2="116"/><line x1="1140" y1="104" x2="1140" y2="116"/><line x1="1290" y1="104" x2="1290" y2="116"/><line x1="1440" y1="104" x2="1440" y2="116"/>
+</g>
+
+<!-- lane: phone -->
+<text x="38" y="184" font-size="11.5" font-weight="700" fill="#8a8a86">phone</text>
+<line x1="170" y1="180" x2="1560" y2="180" stroke="#8a8a86" stroke-width="2" opacity="0.35"/>
+<use href="#browser" x="230" y="180" color="#8a8a86"/>
+<text x="230" y="210" font-size="9.5" fill="#666" text-anchor="middle">plan · 10 rows</text>
+<text x="230" y="223" font-size="8.5" fill="#999" text-anchor="middle">rendering.mark · row 2 = unit u-3</text>
+<use href="#person" x="300" y="180" color="#8a8a86"/>
+<text x="300" y="210" font-size="9.5" fill="#666" text-anchor="middle">chuck</text>
+<use href="#wave" x="390" y="180" color="#c05b5b"/>
+<text x="390" y="210" font-size="9.5" fill="#666" text-anchor="middle">Discord reply</text>
+<rect x="352" y="138" width="76" height="18" rx="9" fill="#c05b5b"/>
+<text x="390" y="151" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">yes 2</text>
+<use href="#check" x="690" y="180"/>
+<text x="690" y="210" font-size="9.5" fill="#666" text-anchor="middle">reaction</text>
+<text x="690" y="223" font-size="8.5" fill="#999" text-anchor="middle">only after the push lands</text>
+<use href="#wave" x="1290" y="180" color="#c05b5b"/>
+<text x="1290" y="210" font-size="9.5" fill="#666" text-anchor="middle">same reply, redelivered</text>
+<use href="#browser" x="1440" y="180" color="#8a8a86"/>
+<text x="1440" y="210" font-size="9.5" fill="#666" text-anchor="middle">plan · 9 rows</text>
+<text x="1440" y="223" font-size="8.5" fill="#999" text-anchor="middle">SINCE 07:40: u-3 merged · close row new</text>
+
+<!-- lane: word writer -->
+<text x="38" y="304" font-size="11.5" font-weight="700" fill="#c05b5b">word writer</text>
+<line x1="170" y1="300" x2="1560" y2="300" stroke="#c05b5b" stroke-width="2" opacity="0.35"/>
+<use href="#gear" x="390" y="300" color="#c05b5b"/>
+<text x="390" y="330" font-size="9.5" fill="#666" text-anchor="middle">bot on studio</text>
+<text x="390" y="343" font-size="8.5" fill="#999" text-anchor="middle">resolves 2 against the 07:40 rows</text>
+<use href="#cube" x="540" y="300" color="#c05b5b"/>
+<text x="540" y="330" font-size="9.5" fill="#666" text-anchor="middle">word record</text>
+<rect x="470" y="256" width="200" height="18" rx="9" fill="#c05b5b"/>
+<text x="570" y="269" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">words/discord-1423581234567890</text>
+<use href="#cross" x="1290" y="300"/>
+<text x="1290" y="330" font-size="9.5" fill="#666" text-anchor="middle">same path, same bytes</text>
+<text x="1290" y="343" font-size="8.5" fill="#999" text-anchor="middle">empty commit is not made</text>
+
+<!-- lane: flywheel-state main -->
+<text x="38" y="424" font-size="11.5" font-weight="700" fill="#4a7fb5">main</text>
+<line x1="170" y1="420" x2="1560" y2="420" stroke="#4a7fb5" stroke-width="2" opacity="0.35"/>
+<use href="#cyl" x="230" y="420"/>
+<text x="230" y="446" font-size="9.5" fill="#666" text-anchor="middle">flywheel-state</text>
+<text x="230" y="459" font-size="8.5" fill="#999" text-anchor="middle">one repository · main</text>
+<circle cx="540" cy="420" r="5" fill="#4a7fb5"/>
+<text x="540" y="446" font-size="9.5" fill="#666" text-anchor="middle">push · CAS</text>
+<text x="540" y="459" font-size="8.5" fill="#999" text-anchor="middle">stale base rejected · retried</text>
+<circle cx="690" cy="420" r="5" fill="#4a7fb5"/>
+<text x="690" y="446" font-size="9.5" fill="#666" text-anchor="middle">landed</text>
+<text x="690" y="459" font-size="8.5" fill="#999" text-anchor="middle">webhook · every host fetches</text>
+<use href="#gear" x="840" y="420" color="#4a7fb5"/>
+<text x="840" y="446" font-size="9.5" fill="#666" text-anchor="middle">studio fetches</text>
+<circle cx="990" cy="420" r="5" fill="#4a7fb5"/>
+<text x="990" y="446" font-size="9.5" fill="#666" text-anchor="middle">transition commit</text>
+<text x="990" y="459" font-size="8.5" fill="#999" text-anchor="middle">with trailers</text>
+<rect x="900" y="376" width="180" height="18" rx="9" fill="#4a7fb5"/>
+<text x="990" y="389" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">decision seq 0 → 1 · unit 1 → 2</text>
+<circle cx="1140" cy="420" r="5" fill="#4a7fb5"/>
+<text x="1140" y="446" font-size="9.5" fill="#666" text-anchor="middle">items spawned</text>
+<use href="#tbl" x="1440" y="420" color="#4a7fb5"/>
+<text x="1440" y="446" font-size="9.5" fill="#666" text-anchor="middle">history</text>
+<text x="1440" y="459" font-size="8.5" fill="#999" text-anchor="middle">the audit record · SINCE derived here</text>
+
+<!-- lane: decision actor -->
+<text x="38" y="544" font-size="11.5" font-weight="700" fill="#c9962e">decision</text>
+<line x1="170" y1="540" x2="1560" y2="540" stroke="#c9962e" stroke-width="2" opacity="0.35"/>
+<use href="#row" x="230" y="540" color="#c9962e"/>
+<text x="230" y="568" font-size="9.5" fill="#666" text-anchor="middle">open</text>
+<text x="230" y="581" font-size="8.5" fill="#999" text-anchor="middle">decision/unit/…/u-3/approve</text>
+<use href="#gear" x="840" y="540" color="#c9962e"/>
+<text x="840" y="568" font-size="9.5" fill="#666" text-anchor="middle">tick · words.for</text>
+<text x="840" y="581" font-size="8.5" fill="#999" text-anchor="middle">clause: open, on word, answer in answers</text>
+<polygon points="990,496 1034,540 990,584 946,540" fill="#fffdf6" stroke="#c9962e" stroke-width="2"/>
+<text x="990" y="537" font-size="10" font-weight="700" fill="#8a6a1d" text-anchor="middle">CONSUME</text>
+<text x="990" y="552" font-size="8.5" fill="#a97e26" text-anchor="middle">answered</text>
+<use href="#marker" x="1140" y="540" color="#c9962e"/>
+<text x="1140" y="568" font-size="9.5" fill="#666" text-anchor="middle">answered</text>
+<use href="#row" x="1290" y="540" color="#c9962e"/>
+<text x="1290" y="568" font-size="9.5" fill="#666" text-anchor="middle">already answered</text>
+<text x="1290" y="581" font-size="8.5" fill="#999" text-anchor="middle">consumed lists the id · nothing to do</text>
+
+<!-- lane: unit actor -->
+<text x="38" y="664" font-size="11.5" font-weight="700" fill="#4a7fb5">unit u-3</text>
+<line x1="170" y1="660" x2="1560" y2="660" stroke="#4a7fb5" stroke-width="2" opacity="0.35"/>
+<use href="#marker" x="230" y="660" color="#4a7fb5"/>
+<text x="230" y="688" font-size="9.5" fill="#666" text-anchor="middle">proposed</text>
+<use href="#rows" x="1040" y="660"/>
+<text x="1040" y="688" font-size="9.5" fill="#666" text-anchor="middle">mailbox: decided</text>
+<text x="1040" y="701" font-size="8.5" fill="#999" text-anchor="middle">same commit</text>
+<use href="#marker" x="1140" y="660" color="#2e9e5b"/>
+<text x="1140" y="688" font-size="9.5" fill="#666" text-anchor="middle">approved</text>
+<text x="1140" y="701" font-size="8.5" fill="#999" text-anchor="middle">approved-by = word id</text>
+<use href="#check" x="1440" y="660"/>
+<text x="1440" y="688" font-size="9.5" fill="#666" text-anchor="middle">merged</text>
+<text x="1440" y="701" font-size="8.5" fill="#999" text-anchor="middle">no further word was needed</text>
+
+<!-- count band -->
+<rect x="170" y="740" width="560" height="26" rx="13" fill="#fbeeee" stroke="#c05b5b"/>
+<text x="188" y="757" font-size="10.5" font-weight="700" fill="#a34848">2 deliveries · 1 word record · 1 consuming write · 0 re-asks · 0 nudges</text>
+<rect x="760" y="740" width="420" height="26" rx="13" fill="#fffdf6" stroke="#c9962e"/>
+<text x="778" y="757" font-size="10.5" font-weight="700" fill="#8a6a1d">restart between 07:41 and 07:42: the open row and the file both wait</text>
+
+<!-- right cards -->
+<rect x="1300" y="740" width="330" height="70" rx="9" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="1314" y="762" font-size="11" font-weight="700" fill="#333">tracker profile · same shape</text>
+<text x="1314" y="782" font-size="9.5" font-family="monospace" fill="#666">comment kind: word · id: discord-…</text>
+<text x="1314" y="800" font-size="9" fill="#5f6b7a" font-weight="700">epoch on the transition comment</text>
+
+<!-- edges -->
+<path d="M 390 218 C 390 240, 390 262, 390 284" fill="none" stroke="#c05b5b" stroke-width="2.2" marker-end="url(#mR)"/>
+<path d="M 410 300 C 450 300, 480 300, 516 300" fill="none" stroke="#c05b5b" stroke-width="2.2" marker-end="url(#mR)"/>
+<path d="M 540 338 C 540 365, 540 392, 540 412" fill="none" stroke="#c05b5b" stroke-width="2.2" marker-end="url(#mR)"/>
+<text x="552" y="380" font-size="9" fill="#a34848">one commit</text>
+<path d="M 548 420 C 600 420, 640 420, 682 420" fill="none" stroke="#4a7fb5" stroke-width="2.2" marker-end="url(#mB)"/>
+<path d="M 690 412 C 690 340, 690 280, 690 234" fill="none" stroke="#2e9e5b" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mG)"/>
+<text x="702" y="310" font-size="9" fill="#27824c">recorded, visibly</text>
+<path d="M 840 452 C 840 470, 840 500, 840 524" fill="none" stroke="#4a7fb5" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mB)"/>
+<text x="852" y="500" font-size="9" fill="#3f6d9c">read</text>
+<path d="M 700 420 C 740 420, 790 420, 820 420" fill="none" stroke="#4a7fb5" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mB)"/>
+<path d="M 246 540 C 400 540, 700 540, 816 540" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+<text x="500" y="532" font-size="9" fill="#a97e26">open since 07:40 · restart changes nothing</text>
+<path d="M 856 540 C 890 540, 910 540, 942 540" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+<path d="M 990 496 C 990 470, 990 450, 990 428" fill="none" stroke="#4a7fb5" stroke-width="2.4" marker-end="url(#mB)"/>
+<text x="1002" y="480" font-size="9" fill="#3f6d9c">answered + consumed + decided</text>
+<path d="M 1004 562 C 1020 600, 1030 630, 1036 646" fill="none" stroke="#7b5cb8" stroke-width="2.2" marker-end="url(#mP)"/>
+<path d="M 1060 660 C 1090 660, 1110 660, 1124 660" fill="none" stroke="#4a7fb5" stroke-width="2.2" marker-end="url(#mB)"/>
+<path d="M 1140 644 C 1140 560, 1140 480, 1140 428" fill="none" stroke="#4a7fb5" stroke-width="2.2" marker-end="url(#mB)"/>
+<text x="1150" y="600" font-size="9" fill="#3f6d9c">spawns items</text>
+<path d="M 1160 660 C 1250 660, 1360 660, 1424 660" fill="none" stroke="#2e9e5b" stroke-width="2.2" marker-end="url(#mG)"/>
+<text x="1240" y="652" font-size="9" fill="#27824c">stages · merges · by the machinery</text>
+<path d="M 1290 218 C 1290 240, 1290 262, 1290 284" fill="none" stroke="#c05b5b" stroke-width="2.2" stroke-dasharray="4 3" marker-end="url(#mR)"/>
+<path d="M 1290 316 C 1290 400, 1290 480, 1290 524" fill="none" stroke="#c05b5b" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mR)"/>
+<text x="1302" y="430" font-size="9" fill="#a34848">already in consumed</text>
+<path d="M 1440 404 C 1440 360, 1440 290, 1440 236" fill="none" stroke="#4a7fb5" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mB)"/>
+<text x="1452" y="310" font-size="9" fill="#3f6d9c">operator.since(07:40)</text>
+
+<!-- legend -->
+<rect x="40" y="840" width="1600" height="60" rx="9" fill="#fafafa" stroke="#e5e5e2"/>
+<line x1="60" y1="865" x2="100" y2="865" stroke="#c05b5b" stroke-width="2.4"/><text x="108" y="869" font-size="9.5" fill="#333">the word · its record</text>
+<line x1="250" y1="865" x2="290" y2="865" stroke="#4a7fb5" stroke-width="2.4"/><text x="298" y="869" font-size="9.5" fill="#333">commit on main · actor write</text>
+<line x1="490" y1="865" x2="530" y2="865" stroke="#c9962e" stroke-width="2.4"/><text x="538" y="869" font-size="9.5" fill="#333">decision actor · row</text>
+<line x1="700" y1="865" x2="740" y2="865" stroke="#7b5cb8" stroke-width="2.4"/><text x="748" y="869" font-size="9.5" fill="#333">message</text>
+<line x1="830" y1="865" x2="870" y2="865" stroke="#2e9e5b" stroke-width="2.4"/><text x="878" y="869" font-size="9.5" fill="#333">machinery · done</text>
+<line x1="1010" y1="865" x2="1050" y2="865" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5"/><text x="1058" y="869" font-size="9.5" fill="#333">read only</text>
+<line x1="1150" y1="865" x2="1190" y2="865" stroke="#c05b5b" stroke-width="2" stroke-dasharray="4 3"/><text x="1198" y="869" font-size="9.5" fill="#333">duplicate delivery</text>
+<text x="60" y="890" font-size="10.5" fill="#333">the record is keyed by the message id, the decision id is keyed by parent and kind, and both keys are checked inside the one write that applies the word</text>
+</svg>

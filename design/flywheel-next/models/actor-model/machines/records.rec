@@ -151,3 +151,36 @@ when: 2026-09-05T10:02:00Z
 text: unit on plan-rows: status page drops the host column when narrow
 target: bolt/atlas/b-0142
 applied: unit/atlas/b-0142/u-5
+
+%rec: Effect
+%doc: One outbox entry: a world effect the transition write recorded and the world may not yet show. Git-only: actors/<kind>/<id>/outbox.rec, the entry removed by the tick that finds the result in the world. Tracker: in the transition comment; listed as performed in the next.
+%key: id
+%mandatory: id name args
+
+id: session/wi/atlas/b-0142/u-3/1/build-1-builder/2/1
+name: session.start
+args: {"session":"session/wi/atlas/b-0142/u-3/1/build-1-builder","place":"wi/atlas/b-0142/u-3/1","template":"build","instructions":"9c1e4f0"}
+shows-as: session.process != absent
+
+%rec: Note
+%doc: Discussion about an object (requirement 131). Git-only: actors/<kind>/<id>/notes/<seq>.md with this header. Tracker: a comment `kind: note`.
+%key: id
+%mandatory: id actor who at
+
+id: note/wi/atlas/b-0142/u-3/1/4
+actor: wi/atlas/b-0142/u-3/1
+who: session/wi/atlas/b-0142/u-3/1/build-1-builder
+at: 2026-09-04T08:12:30Z
+text: Two readings of providers/one-writer sc.2 — does "one writer" bound retries per account or per process? Exiting blocked.
+
+%rec: Report
+%doc: The machinery's own problems, never work (requirement 70). report/<host>.rec, append-only; the plan shows attention-class entries once.
+%key: id
+%mandatory: id host at severity reason
+
+id: report/studio/2026-09-04T08:40:11Z/1
+host: host/studio
+at: 2026-09-04T08:40:11Z
+severity: warn
+reason: session attempted a line operation and was refused
+evidence: refusal/wi/atlas/b-0142/u-3/1/2 hook=pre-push branch=feature/x

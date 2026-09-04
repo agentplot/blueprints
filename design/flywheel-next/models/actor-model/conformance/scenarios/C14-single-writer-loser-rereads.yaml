@@ -1,0 +1,26 @@
+id: C14
+title: two writers of one object cannot both succeed; the loser learns it and reads again
+exercises: {operations: [lease, write-effect], guarantees: [single-writer]}
+profiles: [all]
+requirements: [121, 146, I15]
+given:
+  clock: "2026-09-04T07:40:00Z"
+  actors:
+    - {id: bolt/atlas/b-0142, state: open, seq: 8, epoch: 3, fields: {merge-queue: [wi/atlas/b-0142/u-3/1], merging: none}}
+    - {id: bolt/atlas/b-0150, state: open, seq: 2, epoch: 1, fields: {merge-queue: [], merging: none, last-take: "2026-09-03T06:00:00Z"}}
+  leases: [{actor: bolt/atlas/b-0142, holder: host/mac-mini, epoch: 3}, {actor: bolt/atlas/b-0150, holder: host/studio, epoch: 1}]
+  manifest: {atlas: {take-cadence: "0 6 * * *"}}
+when:
+  - concurrent:                                  # different objects, same base; and one stale-epoch write to the same object
+      - {tick: host/mac-mini}                    # b-0142: merging ← the item
+      - {tick: host/studio}                      # b-0150: the cadence take
+      - {write-as: host/studio, actor: bolt/atlas/b-0142, epoch: 2, state: closable}   # a stale epoch
+then:
+  writes-landed:
+    - {actor: bolt/atlas/b-0142, seq: 9, by: host/mac-mini}
+    - {actor: bolt/atlas/b-0150, seq: 3, by: host/studio}
+  refused: [{actor: bolt/atlas/b-0142, by: host/studio, reason: stale}]
+  loser-behaviour:
+    learned: true
+    re-read-before-next-decision: true
+  history: {merge-commits-on-main: 0}          # git-only: rebased, never merged

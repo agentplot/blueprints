@@ -63,6 +63,10 @@ evidence:
   session.notes:          "<place>/.flywheel/notes.rec"
   session.refusals:       "<place>/.flywheel/refusals.rec"
   session.stalled:        "idle and exits.rec mtime older than bound"
+  stage.sessions:         "types/unit-types.yaml at the pinned version; rule → personas.matching"
+  stage.join-met:         "count terminal exits over the item's sessions field against the stage's join"
+  stage.verdict:          "the stage's verdict rule over the exits in the item's ran field"
+  place.published-ref:    "git ls-remote origin refs/places/<place>"
   claims.standing:        "claims index generated from the books' shared line"
   claims.proposed:        "same on the intent's line"
   claim.scope-includes:   "scope field against the manifest"
@@ -102,6 +106,7 @@ effects:
   place.rebase:           "git rebase; conflict → abort"
   place.merge-into-line:  "merge --no-ff; push line"
   place.remove:           "wt remove"
+  place.publish:          "git push -f origin HEAD:refs/places/<place> from the place"
   landing.start:          "gh pr create + gh pr merge --auto, or git push shared"
   archive.change:         "openspec archive on the line"
   chore.merge:            as place.merge-into-line or landing.start

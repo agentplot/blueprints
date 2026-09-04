@@ -63,12 +63,13 @@ receive:
     on: tick
     when: ["exists terminal exit e in session.exits(self.id) not in self.exits-seen", "e.kind == done"]
     to: exited
-    effects: ["actor.set(exits-seen, +e.id)", "actor.set(delivered, e.deliverables)", "actor.send(parent, session.exited, {kind: done, deliverables: e.deliverables, session: self.id})"]
+    effects: ["actor.set(exits-seen, +e.id)", "actor.set(delivered, e.deliverables)", "place.publish(self.place)", "actor.send(parent, session.exited, {kind: done, deliverables: e.deliverables, session: self.id})"]
+    note: the place is published on every terminal exit so a takeover host restarts the stage from the last exit, not from the line's head (model §9.3)
   - in: [working, idle]
     on: tick
     when: ["exists exit e not seen", "e.kind == blocked"]
     to: blocked
-    effects: ["actor.set(exits-seen, +e.id)", "actor.send(parent, session.exited, {kind: blocked, question: e.question, session: self.id})"]
+    effects: ["actor.set(exits-seen, +e.id)", "place.publish(self.place)", "actor.send(parent, session.exited, {kind: blocked, question: e.question, session: self.id})"]
   - in: [working, idle]
     on: tick
     when: ["session.stalled(self.id, parent.type.stall-bound)"]

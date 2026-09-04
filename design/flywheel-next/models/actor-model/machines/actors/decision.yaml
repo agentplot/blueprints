@@ -7,6 +7,7 @@ doc: >
   is a message; the answer travels back to the parent as `decided`. The plan is
   the list of decision actors in `open` (requirement 6, 8); the row's class
   groups it (requirement 10).
+presented: true
 supervisor: any            # the actor that opened it
 lease: inherited
 fields:

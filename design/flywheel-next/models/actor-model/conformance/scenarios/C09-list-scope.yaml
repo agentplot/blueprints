@@ -1,0 +1,25 @@
+id: C09
+title: list returns every object in scope and nothing outside it
+exercises: {operations: [list], guarantees: [derivable]}
+profiles: [all]
+requirements: [118, 83]
+given:
+  clock: "2026-09-04T07:40:00Z"
+  actors:
+    - {id: bolt/atlas/b-0142, state: open, seq: 8, epoch: 3}
+    - {id: bolt/atlas/b-0143, state: landed, seq: 20, epoch: 5}
+    - {id: unit/atlas/b-0142/u-3, state: building, seq: 3, epoch: 3}
+    - {id: decision/bolt/atlas/b-0142/close/9f2a, state: open, seq: 0}
+  foreign:                                          # objects of the current flywheel, in the same organization
+    - {tracker-issue: {title: "Bolt: plan rows", milestone: b-0142}}
+    - {git-file: "loops/bolts/b-0142.md"}
+when:
+  - {list: {kind: bolt, parent: repo/atlas, states: [open, closable]}, as: l1}
+  - {list: {kind: decision, states: [open]}, as: l2}
+  - {list: {kind: "*"}, as: l3}
+then:
+  lists:
+    l1: [bolt/atlas/b-0142]
+    l2: [decision/bolt/atlas/b-0142/close/9f2a]
+    l3: {count: 4, contains-foreign: false}
+  writes: 0

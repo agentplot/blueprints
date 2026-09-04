@@ -34,6 +34,11 @@ receive:
       - "actor.spawn(unit, unit/<self.name>/shared/<msg.offer>, {type: chore, type-version: current, bolt: none, line: self.shared-line, document: msg.text, deps: []}) in approved"
     note: a chore on the shared line is a unit of the chore type with no bolt (invariant I8); its one item's place is off the shared line and lands by the repo's policy
   - in: tracked
+    on: merge-request
+    to: same
+    effects: ["actor.send(msg.item, merge-now)"]
+    note: a shared-line chore's item asks its unit's supervisor, which is this repo; the item's merge-now on a shared line is chore.merge = landing.start by the repo's policy (requirement 52)
+  - in: tracked
     on: tick
     when: ["not manifest.repos() contains self.name"]
     to: untracked

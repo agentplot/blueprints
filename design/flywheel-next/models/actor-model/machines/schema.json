@@ -28,6 +28,10 @@
     "doc": {
       "type": "string"
     },
+    "presented": {
+      "type": "boolean",
+      "description": "true for the one kind whose `open` instances the engine presents as rows and whose word-consuming clause is exactly-once; the engine knows the flag, not the kind's name"
+    },
     "supervisor": {
       "description": "the parent kind in the supervision tree; null only for the org root",
       "oneOf": [

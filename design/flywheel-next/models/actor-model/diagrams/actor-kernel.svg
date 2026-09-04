@@ -1,0 +1,194 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 1000" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+  <marker id="mN" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+  <marker id="mP" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7b5cb8"/></marker>
+  <marker id="mR" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c05b5b"/></marker>
+  <marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+  <marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e9e5b"/></marker>
+  <marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+  <marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+  <g id="cyl"><path d="M -24 -11 L -24 13 A 24 8 0 0 0 24 13 L 24 -11" fill="#f1f1ee" stroke="#8a8a86" stroke-width="1.6"/><ellipse cx="0" cy="-11" rx="24" ry="8" fill="#e3e3df" stroke="#8a8a86" stroke-width="1.6"/></g>
+  <g id="wave" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M -12 0 q 3 -7 6 0 t 6 0 t 6 0 t 6 0"/></g>
+  <g id="person"><circle cy="-6" r="4" fill="#fff" stroke="currentColor" stroke-width="1.8"/><path d="M -7 8 a 7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8"/></g>
+  <g id="gear"><circle r="9" fill="#fff" stroke="currentColor" stroke-width="2.4"/><circle r="3" fill="currentColor"/><g stroke="currentColor" stroke-width="2.4"><line y1="-9" y2="-13.5"/><line y1="9" y2="13.5"/><line x1="-9" x2="-13.5"/><line x1="9" x2="13.5"/><line x1="-6.4" y1="-6.4" x2="-9.5" y2="-9.5"/><line x1="6.4" y1="6.4" x2="9.5" y2="9.5"/><line x1="-6.4" y1="6.4" x2="-9.5" y2="9.5"/><line x1="6.4" y1="-6.4" x2="9.5" y2="-9.5"/></g></g>
+  <g id="repo"><rect x="-26" y="-18" width="52" height="36" rx="7" fill="#fff" stroke="currentColor" stroke-width="2"/><circle cx="-9" cy="8" r="3.2" fill="currentColor"/><circle cx="9" cy="-8" r="3.2" fill="currentColor"/><path d="M -9 8 v-8 a 8 8 0 0 1 8 -8 h 1" fill="none" stroke="currentColor" stroke-width="2"/></g>
+  <g id="tbl"><rect x="-11" y="-9" width="22" height="18" rx="2" fill="#fff" stroke="currentColor" stroke-width="1.8"/><line x1="-11" y1="-3" x2="11" y2="-3" stroke="currentColor" stroke-width="1.4"/><line x1="-11" y1="3" x2="11" y2="3" stroke="currentColor" stroke-width="1.4"/><line x1="-3" y1="-9" x2="-3" y2="9" stroke="currentColor" stroke-width="1.4"/></g>
+  <g id="key"><rect x="-7" y="-2" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M -4 -2 v-3 a 4 4 0 0 1 8 0 v3" fill="none" stroke="currentColor" stroke-width="1.8"/></g>
+  <g id="clock"><circle r="9" fill="#fff" stroke="#c9962e" stroke-width="2"/><path d="M 0 -5 V 0 H 4" fill="none" stroke="#c9962e" stroke-width="2.2" stroke-linecap="round"/></g>
+  <g id="row" stroke="currentColor" stroke-width="1.6" fill="none"><rect x="-8" y="-6" width="16" height="12" rx="2"/><line x1="-4" y1="-1" x2="4" y2="-1"/><line x1="-4" y1="3" x2="1" y2="3"/></g>
+  <g id="rows" fill="#7b5cb8"><rect x="-16" y="-9" width="32" height="4" rx="1"/><rect x="-16" y="-2" width="32" height="4" rx="1"/><rect x="-16" y="5" width="20" height="4" rx="1"/></g>
+  <g id="browser"><rect x="-22" y="-14" width="44" height="28" rx="4" fill="#fff" stroke="currentColor" stroke-width="2"/><line x1="-22" y1="-6" x2="22" y2="-6" stroke="currentColor" stroke-width="2"/><circle cx="-16" cy="-10" r="1.6" fill="currentColor"/><circle cx="-11" cy="-10" r="1.6" fill="currentColor"/></g>
+  <g id="cross"><circle r="10" fill="#fbeeee" stroke="#c05b5b" stroke-width="2"/><path d="M -4 -4 l 8 8 M 4 -4 l -8 8" fill="none" stroke="#a34848" stroke-width="2.5"/></g>
+  <g id="check" fill="none" stroke="#2e9e5b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M -6 0 L -2 4 L 6 -5"/></g>
+  <g id="marker"><circle r="7" fill="#fff" stroke="currentColor" stroke-width="2.2"/><circle r="2.6" fill="currentColor"/></g>
+</defs>
+<rect width="1680" height="1000" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Kernel — an actor is a name over stored state; a host runs it under a lease and remembers nothing</text>
+<text x="40" y="57" font-size="12" fill="#666">read mailbox + evidence · pick one clause · one atomic write carries state, consumed messages, outbox and rows · world effects after, at most once</text>
+
+<!-- OPERATOR zone -->
+<rect x="40" y="90" width="300" height="230" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+<text x="56" y="112" font-size="11.5" font-weight="700" fill="#5f6b7a">OPERATOR</text>
+<use href="#person" x="100" y="160" color="#8a8a86"/>
+<text x="100" y="188" font-size="9.5" fill="#666" text-anchor="middle">chuck</text>
+<use href="#wave" x="200" y="160" color="#c05b5b"/>
+<text x="200" y="188" font-size="9.5" fill="#666" text-anchor="middle">Discord</text>
+<use href="#browser" x="290" y="160" color="#8a8a86"/>
+<text x="290" y="188" font-size="9.5" fill="#666" text-anchor="middle">plan page</text>
+<rect x="150" y="215" width="100" height="18" rx="9" fill="#c05b5b"/>
+<text x="200" y="228" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">yes 2</text>
+<text x="200" y="250" font-size="8.5" fill="#999" text-anchor="middle">row 2 of the 07:40 rendering</text>
+<use href="#check" x="120" y="268"/>
+<text x="185" y="272" font-size="8.5" fill="#999">reaction after the push lands</text>
+
+<!-- CONTROL PLANE zone -->
+<rect x="380" y="90" width="900" height="470" rx="10" fill="#eef3f9" stroke="#4a7fb5" stroke-width="1.4"/>
+<text x="396" y="112" font-size="11.5" font-weight="700" fill="#3f6d9c">CONTROL PLANE — flywheel-state · main</text>
+<text x="396" y="128" font-size="8.5" fill="#999">git-only: files · tracker: an issue per actor, comments as journal · same tables</text>
+
+<!-- actor record group -->
+<rect x="400" y="150" width="420" height="180" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="414" y="170" font-size="10.5" font-weight="700" fill="#3f6d9c">one actor · bolt/atlas/b-0142</text>
+<use href="#cyl" x="455" y="220"/>
+<text x="455" y="250" font-size="9.5" fill="#666" text-anchor="middle">state.rec</text>
+<text x="455" y="263" font-size="8.5" fill="#999" text-anchor="middle">state · seq · epoch</text>
+<use href="#rows" x="575" y="218"/>
+<text x="575" y="250" font-size="9.5" fill="#666" text-anchor="middle">mailbox</text>
+<text x="575" y="263" font-size="8.5" fill="#999" text-anchor="middle">one file per message</text>
+<use href="#rows" x="690" y="218"/>
+<text x="690" y="250" font-size="9.5" fill="#666" text-anchor="middle">outbox</text>
+<text x="690" y="263" font-size="8.5" fill="#999" text-anchor="middle">effects not yet shown</text>
+<use href="#key" x="780" y="218" color="#c05b5b"/>
+<text x="780" y="250" font-size="9.5" fill="#666" text-anchor="middle">lease.rec</text>
+<text x="780" y="263" font-size="8.5" fill="#999" text-anchor="middle">holder · epoch</text>
+<rect x="414" y="290" width="96" height="18" rx="9" fill="#4a7fb5"/>
+<text x="462" y="303" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">seq 9 · ep 3</text>
+<text x="462" y="322" font-size="8.5" fill="#999" text-anchor="middle">a stale epoch is refused</text>
+
+<!-- decision actors -->
+<rect x="850" y="150" width="410" height="180" rx="8" fill="#fffdf6" stroke="#c9962e" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="864" y="170" font-size="10.5" font-weight="700" fill="#a97e26">decision actors · the plan is those in open</text>
+<use href="#row" x="900" y="215" color="#c9962e"/>
+<text x="900" y="245" font-size="9.5" fill="#666" text-anchor="middle">approve</text>
+<use href="#row" x="990" y="215" color="#c9962e"/>
+<text x="990" y="245" font-size="9.5" fill="#666" text-anchor="middle">decide</text>
+<use href="#row" x="1080" y="215" color="#c9962e"/>
+<text x="1080" y="245" font-size="9.5" fill="#666" text-anchor="middle">answer</text>
+<use href="#row" x="1170" y="215" color="#c9962e"/>
+<text x="1170" y="245" font-size="9.5" fill="#666" text-anchor="middle">attention</text>
+<rect x="866" y="270" width="290" height="18" rx="9" fill="#c9962e"/>
+<text x="1011" y="283" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">decision/unit/…/u-3/approve</text>
+<text x="1011" y="305" font-size="8.5" fill="#999" text-anchor="middle">id = parent + kind + key · open twice is once · answered is never re-asked</text>
+
+<!-- record tables -->
+<use href="#tbl" x="440" y="400" color="#c05b5b"/>
+<text x="440" y="428" font-size="9.5" fill="#666" text-anchor="middle">words</text>
+<text x="440" y="441" font-size="8.5" fill="#999" text-anchor="middle">keyed by message id</text>
+<use href="#tbl" x="560" y="400" color="#2b8a8a"/>
+<text x="560" y="428" font-size="9.5" fill="#666" text-anchor="middle">ledger</text>
+<text x="560" y="441" font-size="8.5" fill="#999" text-anchor="middle">verdicts · append-only</text>
+<use href="#tbl" x="680" y="400" color="#7b5cb8"/>
+<text x="680" y="428" font-size="9.5" fill="#666" text-anchor="middle">signals · moves</text>
+<text x="680" y="441" font-size="8.5" fill="#999" text-anchor="middle">one move per signal</text>
+<use href="#tbl" x="810" y="400" color="#8a8a86"/>
+<text x="810" y="428" font-size="9.5" fill="#666" text-anchor="middle">notes · report</text>
+<text x="810" y="441" font-size="8.5" fill="#999" text-anchor="middle">discussion · problems</text>
+<use href="#clock" x="1200" y="400"/>
+<text x="1200" y="428" font-size="9.5" fill="#666" text-anchor="middle">heartbeats</text>
+<text x="1200" y="441" font-size="8.5" fill="#999" text-anchor="middle">hosts/* · one amended commit</text>
+<use href="#browser" x="1060" y="400" color="#8a8a86"/>
+<text x="1060" y="428" font-size="9.5" fill="#666" text-anchor="middle">status page</text>
+<text x="1060" y="441" font-size="8.5" fill="#999" text-anchor="middle">projection · says as of</text>
+<text x="640" y="520" font-size="10.5" fill="#3f6d9c" text-anchor="middle">durable · single writer · atomic per write · derivable from list + read</text>
+<text x="640" y="538" font-size="8.5" fill="#999" text-anchor="middle">git-only: the push is the compare-and-swap · tracker: the earliest lease comment wins</text>
+
+<!-- centerpiece WRITE -->
+<polygon points="830,580 892,640 830,700 768,640" fill="#fffdf6" stroke="#c9962e" stroke-width="2"/>
+<text x="830" y="636" font-size="10" font-weight="700" fill="#8a6a1d" text-anchor="middle">WRITE</text>
+<text x="830" y="651" font-size="8.5" fill="#a97e26" text-anchor="middle">state · consumed · outbox</text>
+<text x="830" y="664" font-size="8.5" fill="#a97e26" text-anchor="middle">reason · evidence</text>
+
+<!-- HOSTS zone -->
+<rect x="40" y="720" width="1240" height="180" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+<text x="56" y="742" font-size="11.5" font-weight="700" fill="#5f6b7a">HOSTS   fetch before every tick · take free roots oldest first · run every actor under the leases held</text>
+
+<text x="60" y="790" font-size="11.5" font-weight="700" fill="#4a7fb5">studio</text>
+<use href="#gear" x="150" y="800" color="#4a7fb5"/>
+<text x="150" y="828" font-size="9.5" fill="#666" text-anchor="middle">tick</text>
+<text x="150" y="841" font-size="8.5" fill="#999" text-anchor="middle">60 s · or on notify</text>
+<use href="#clock" x="250" y="800"/>
+<text x="250" y="828" font-size="9.5" fill="#666" text-anchor="middle">heartbeat</text>
+<text x="250" y="841" font-size="8.5" fill="#999" text-anchor="middle">3 m · ttl 15 m</text>
+<use href="#key" x="370" y="800" color="#c05b5b"/>
+<text x="370" y="828" font-size="9.5" fill="#666" text-anchor="middle">roots held</text>
+<text x="370" y="841" font-size="8.5" fill="#999" text-anchor="middle">one taker wins</text>
+<use href="#gear" x="510" y="800" color="#2e9e5b"/>
+<use href="#gear" x="540" y="800" color="#2e9e5b"/>
+<text x="525" y="828" font-size="9.5" fill="#666" text-anchor="middle">herdr panes</text>
+<text x="525" y="841" font-size="8.5" fill="#999" text-anchor="middle">named by session id · bound 4</text>
+<use href="#repo" x="660" y="800" color="#8a8a86"/>
+<text x="660" y="828" font-size="9.5" fill="#666" text-anchor="middle">worktrees</text>
+<text x="660" y="841" font-size="8.5" fill="#999" text-anchor="middle">wt · one per session</text>
+
+<text x="760" y="790" font-size="11.5" font-weight="700" fill="#8a8a86">mac-mini</text>
+<use href="#gear" x="850" y="800" color="#8a8a86"/>
+<text x="850" y="828" font-size="9.5" fill="#666" text-anchor="middle">tick</text>
+<use href="#cross" x="950" y="800"/>
+<text x="950" y="828" font-size="9.5" fill="#666" text-anchor="middle">last seen 41 m</text>
+<text x="950" y="841" font-size="8.5" fill="#999" text-anchor="middle">roots stale · untouched</text>
+<use href="#key" x="1070" y="800" color="#c05b5b"/>
+<text x="1070" y="828" font-size="9.5" fill="#666" text-anchor="middle">epoch 3</text>
+<text x="1070" y="841" font-size="8.5" fill="#999" text-anchor="middle">fenced after takeover</text>
+<use href="#gear" x="1190" y="800" color="#2e9e5b"/>
+<text x="1190" y="828" font-size="9.5" fill="#666" text-anchor="middle">orphan pane</text>
+<text x="1190" y="841" font-size="8.5" fill="#999" text-anchor="middle">stopped on return</text>
+
+<!-- right cards -->
+<rect x="1310" y="150" width="330" height="84" rx="9" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="1324" y="174" font-size="11" font-weight="700" fill="#333">a row is an actor awaiting one word</text>
+<text x="1324" y="194" font-size="9.5" font-family="monospace" fill="#666">open → answered · decided → parent</text>
+<text x="1324" y="214" font-size="9" fill="#a97e26" font-weight="700">opened in the write that made the situation</text>
+
+<rect x="1310" y="260" width="330" height="84" rx="9" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+<text x="1324" y="284" font-size="11" font-weight="700" fill="#333">a word is applied exactly once</text>
+<text x="1324" y="304" font-size="9.5" font-family="monospace" fill="#666">words/discord-1423581234567890.rec</text>
+<text x="1324" y="324" font-size="9" fill="#a34848" font-weight="700">consumed + answered in one write</text>
+
+<rect x="1310" y="370" width="330" height="84" rx="9" fill="#fff" stroke="#2e9e5b" stroke-width="1.6"/>
+<text x="1324" y="394" font-size="11" font-weight="700" fill="#333">a world effect is applied at most once</text>
+<text x="1324" y="414" font-size="9.5" font-family="monospace" fill="#666">bolt/atlas/b-0142/9/2 → herdr · wt · git</text>
+<text x="1324" y="434" font-size="9" fill="#27824c" font-weight="700">result read as evidence before a repeat</text>
+
+<rect x="1310" y="480" width="330" height="84" rx="9" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="1324" y="504" font-size="11" font-weight="700" fill="#333">every host lost at once</text>
+<text x="1324" y="524" font-size="9.5" font-family="monospace" fill="#666">stores intact · leases expire · new host lists</text>
+<text x="1324" y="544" font-size="9" fill="#5f6b7a" font-weight="700">sessions read as lost · supervision decides</text>
+
+<!-- edges -->
+<path d="M 250 222 C 320 260, 360 340, 416 392" fill="none" stroke="#c05b5b" stroke-width="2.2" marker-end="url(#mR)"/>
+<text x="320" y="305" font-size="9" fill="#a34848" text-anchor="end">word writer commits</text>
+<path d="M 460 388 C 560 350, 780 360, 898 338" fill="none" stroke="#c05b5b" stroke-width="2.2" stroke-dasharray="4 3" marker-end="url(#mR)"/>
+<text x="600" y="376" font-size="9" fill="#a34848">consumed by its decision</text>
+<path d="M 852 232 C 800 300, 680 300, 596 236" fill="none" stroke="#7b5cb8" stroke-width="2.2" marker-end="url(#mP)"/>
+<text x="660" y="318" font-size="9" fill="#5a3f95">decided → parent mailbox</text>
+<path d="M 176 790 C 300 700, 500 680, 770 640" fill="none" stroke="#4a7fb5" stroke-width="2.2" stroke-dasharray="2 5" marker-end="url(#mB)"/>
+<text x="500" y="652" font-size="9" fill="#3f6d9c">reads state · mailbox · evidence</text>
+<path d="M 830 578 C 830 540, 700 400, 620 330" fill="none" stroke="#4a7fb5" stroke-width="2.4" marker-end="url(#mB)"/>
+<text x="745" y="505" font-size="9" fill="#3f6d9c" text-anchor="end">one commit · one push</text>
+<path d="M 856 596 C 900 520, 940 420, 980 330" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+<text x="946" y="470" font-size="9" fill="#a97e26">decision.open · withdraw</text>
+<path d="M 806 660 C 700 720, 560 740, 486 786" fill="none" stroke="#2e9e5b" stroke-width="2.2" marker-end="url(#mG)"/>
+<text x="600" y="700" font-size="9" fill="#27824c">outbox → world, after the write</text>
+
+<!-- legend -->
+<rect x="40" y="920" width="1600" height="60" rx="9" fill="#fafafa" stroke="#e5e5e2"/>
+<line x1="60" y1="945" x2="100" y2="945" stroke="#4a7fb5" stroke-width="2.4"/><text x="108" y="949" font-size="9.5" fill="#333">actor record · the write</text>
+<line x1="260" y1="945" x2="300" y2="945" stroke="#7b5cb8" stroke-width="2.4"/><text x="308" y="949" font-size="9.5" fill="#333">message</text>
+<line x1="390" y1="945" x2="430" y2="945" stroke="#c9962e" stroke-width="2.4"/><text x="438" y="949" font-size="9.5" fill="#333">decision · row · heartbeat</text>
+<line x1="610" y1="945" x2="650" y2="945" stroke="#c05b5b" stroke-width="2.4"/><text x="658" y="949" font-size="9.5" fill="#333">word · lease · fence</text>
+<line x1="800" y1="945" x2="840" y2="945" stroke="#2e9e5b" stroke-width="2.4"/><text x="848" y="949" font-size="9.5" fill="#333">world effect · session</text>
+<line x1="1010" y1="945" x2="1050" y2="945" stroke="#4a7fb5" stroke-width="2" stroke-dasharray="2 5"/><text x="1058" y="949" font-size="9.5" fill="#333">read only</text>
+<use href="#cyl" transform="translate(1160,946) scale(0.5)"/><text x="1180" y="949" font-size="9.5" fill="#333">store</text>
+<use href="#row" x="1250" y="945" color="#c9962e"/><text x="1266" y="949" font-size="9.5" fill="#333">row</text>
+<text x="60" y="970" font-size="10.5" fill="#333">nothing on a host decides behaviour — a restart lists, re-adopts its leases and ticks; the same stores give the same plan</text>
+</svg>

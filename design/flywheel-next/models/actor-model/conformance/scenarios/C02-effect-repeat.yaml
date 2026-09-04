@@ -1,0 +1,30 @@
+id: C02
+title: a repeated effect changes nothing and is not a second write
+exercises: {operations: [write-effect], guarantees: []}
+profiles: [all]
+requirements: [114, 62]
+given:
+  clock: "2026-09-04T07:40:00Z"
+  actors:
+    - {id: session/wi/atlas/b-0142/u-3/1/build-1-builder, state: starting, seq: 2, epoch: 1,
+       fields: {place: wi/atlas/b-0142/u-3/1, host: host/studio, started: "2026-09-04T07:38:00Z"},
+       outbox: [{id: session/wi/atlas/b-0142/u-3/1/build-1-builder/2/2, name: session.start, args: [session/wi/atlas/b-0142/u-3/1/build-1-builder, wi/atlas/b-0142/u-3/1, build, 9c1e4f0]}]}
+  leases: [{actor: bolt/atlas/b-0142, holder: host/studio, epoch: 1}]
+  world:
+    sessions: {}
+    places: {wi/atlas/b-0142/u-3/1: {exists: true, current: true, clean: true}}
+    start-latency: 120s        # the world shows the session only after two minutes
+when:
+  - perform-outbox: host/studio          # first attempt; the command times out
+  - {clock: +60s}
+  - tick: host/studio                    # start-retry-interval elapsed → the clause re-issues session.start
+  - perform-outbox: host/studio
+  - {clock: +60s}
+  - tick: host/studio
+then:
+  world:
+    sessions: {session/wi/atlas/b-0142/u-3/1/build-1-builder: working}
+    starts-issued: {session/wi/atlas/b-0142/u-3/1/build-1-builder: 1}   # the world dedups by pane name
+  transitions:
+    - {actor: session/wi/atlas/b-0142/u-3/1/build-1-builder, from: starting, to: working}
+  reports: []                             # nothing reported as failed (S6)

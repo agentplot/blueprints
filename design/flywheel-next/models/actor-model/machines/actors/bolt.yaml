@@ -93,9 +93,19 @@ receive:
     on: chore.accepted
     to: same
     effects:
-      - "actor.set(chores, chores + {offer: msg.offer, text: msg.text, done-by: none})"
-      - "if no unit of type chore on self in [approved, waiting, building]: actor.spawn(unit, unit/<self.id>/chores-<n>, {type: chore, type-version: current, bolt: self.id, deps: every other unit of self, document: outstanding chores}) in approved"
-    note: one session does the bolt's outstanding chores on the bolt's line before it lands; the bolt's state is what says they are outstanding (requirement 55). Its deps make it the last unit to run.
+      - "actor.set(chores, chores + {offer: msg.offer, text: msg.text, done-by: none, approved-by: msg.word-id})"
+  - in: open
+    on: tick
+    when: ["exists chore c in self.chores with done-by == none and unit == none", "actor.count(self, unit, type == chore, [approved, waiting, building]) == 0"]
+    to: same
+    effects:
+      - "actor.spawn(unit, unit/<self.id>/chores-<n>, {type: chore, type-version: current, bolt: self.id, deps: every other unit of self not merged, document: the chores with unit == none, approved-by: their words}) in approved"
+      - "actor.set(chores, each listed chore with unit = the new unit)"
+    note: >
+      one session does the bolt's outstanding chores on the bolt's line before it lands; the bolt's state is
+      what says they are outstanding (requirement 55). Its deps make it the last unit to run. A chore accepted
+      while a chore unit is building waits for it and gets the next one; the close predicate holds until every
+      chore has done-by. The approval each chore carries is the operator's word on its offer row (invariant I1).
   - in: open
     on: unit.merged
     when: ["msg.unit.type == chore"]
@@ -159,8 +169,11 @@ receive:
     on: tick
     when: ["cadence.due(repo.take-cadence, self.last-take)", "self.merging == none", "no item of self in placing"]
     to: same
-    effects: ["line.take-parent(built, self.line, shared)", "actor.set(last-take, clock.now())", "place.rebase(self.operator-place, self.line)", "for each item in a stage: actor.send(item, line-moved, {line: self.line})"]
-    note: the cadence the operator sets per repository (requirement 43, S33); a conflicting take leaves the line untouched and becomes a chore-type job on the bolt (requirement 45)
+    effects: ["line.take-parent(built, self.line, shared)", "actor.set(last-take, clock.now())", "if clean: place.rebase(self.operator-place, self.line)", "if clean: for each item in a stage: actor.send(item, line-moved, {line: self.line})", "if conflict: actor.spawn(offer, offer/<self.id>/take-<sha of shared head>, {kind: chore, text: 'reconcile the shared line into ' + self.line + ': ' + files, repo: self.repo, line: self.line, session: machinery}) in offered"]
+    note: >
+      the cadence the operator sets per repository (requirement 43, S33). A conflicting take leaves the line
+      untouched and is offered as a chore on the bolt, keyed by the shared head so it is offered once; the
+      operator's yes is the approval the job needs (requirement 45, invariant I1; see gaps.md on 45).
   - in: [open, closable]
     on: word.direct
     when: ["msg.state == landing"]

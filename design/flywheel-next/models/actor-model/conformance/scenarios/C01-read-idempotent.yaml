@@ -1,0 +1,29 @@
+id: C01
+title: reading twice with nothing changed returns the same evidence and writes nothing
+exercises: {operations: [read], guarantees: [derivable]}
+profiles: [all]
+requirements: [113, 67]
+given:
+  clock: "2026-09-04T07:40:00Z"
+  actors:
+    - {id: bolt/atlas/b-0142, state: open, seq: 8, epoch: 1, fields: {merge-queue: [], merging: none, chores: [], last-take: "2026-09-04T06:00:00Z"}}
+    - {id: unit/atlas/b-0142/u-3, state: building, seq: 3, epoch: 1}
+    - {id: wi/atlas/b-0142/u-3/1, state: staged, seq: 4, epoch: 1, fields: {stage: build, sessions: [session/wi/atlas/b-0142/u-3/1/build-1-builder]}}
+    - {id: session/wi/atlas/b-0142/u-3/1/build-1-builder, state: working, seq: 3, epoch: 1, fields: {place: wi/atlas/b-0142/u-3/1, host: host/studio}}
+  leases: [{actor: bolt/atlas/b-0142, holder: host/studio, epoch: 1}]
+  heartbeats: [{host: host/studio, at: "2026-09-04T07:39:00Z"}]
+  world:
+    sessions: {session/wi/atlas/b-0142/u-3/1/build-1-builder: working}
+    places: {wi/atlas/b-0142/u-3/1: {exists: true, current: true, clean: false}}
+    exits: {}
+when:
+  - {read: bolt/atlas/b-0142, as: r1}
+  - {read: bolt/atlas/b-0142, as: r2}
+  - tick: host/studio
+  - tick: host/studio
+then:
+  same: [r1, r2]
+  transitions: []
+  effects: []
+  writes-after: 0
+  rows: []

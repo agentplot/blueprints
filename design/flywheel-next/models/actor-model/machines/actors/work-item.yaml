@@ -56,15 +56,15 @@ receive:
     to: placing
     effects:
       - "line.take-parent(built, bolt.line, shared) if line.behind-parent and no place exists off the line yet"
-      - "place.ensure(built, bolt.line, self.place)"
-    note: the machinery prepares the place and hands it over (requirement 38, 39)
+      - "place.ensure(built, bolt.line, self.place, place.published-ref(self.place))"
+    note: the machinery prepares the place and hands it over (requirement 38, 39); a published ref means a takeover host resumes from the last exit
   - in: placing
     on: tick
     when: ["place.exists(self.place)", "place.current(self.place, bolt.line)", "place.clean(self.place)"]
     to: staged
     effects:
       - "actor.set(stage-seq, stage-seq + 1)"
-      - "actor.set(sessions, for each s in stage.sessions(resolved by stage.set rule): session/<self.id>/<stage>-<stage-seq>-<s.persona>)"
+      - "actor.set(sessions, for each s in stage.sessions(self.type, self.type-version, self.stage, repo): session/<self.id>/<stage>-<stage-seq>-<s.persona>)"
       - "for each: actor.spawn(session, id, {place: self.place, line: bolt.line, order: self.order + stage + persona, instruction-version: instructions.version()}) in requested"
       - "actor.set(ran, ran + {stage, sessions})"
     note: "a stage may run several sessions over the same work; the set is a fixed list or a rule read against the repository (requirement 48, S26). Personas: personas.matching(repo, stage.pattern)."
@@ -81,39 +81,39 @@ receive:
     effects: ["actor.set(blocks[last].answer, msg.text)", "note.append(self, operator, msg.text)", "actor.send(msg.session, resume, {answer: msg.text})"]
   - in: staged
     on: session.exited
-    when: ["msg.kind in [done, stalled]", "stage.join not yet met over self.sessions"]
+    when: ["msg.kind in [done, stalled]", "not stage.join-met(self, self.stage)"]
     to: same
     effects: ["actor.set(ran[stage].exits, +msg)"]
   - in: staged
     on: session.exited
-    when: ["msg.kind in [done, stalled]", "stage.join met over self.sessions (all | any | count)"]
+    when: ["msg.kind in [done, stalled]", "stage.join-met(self, self.stage)"]
     to: judging
     effects: ["actor.set(ran[stage].exits, +msg)", "for each session in self.sessions not exited: actor.send(s, retire)"]
   - in: judging
     on: tick
-    when: ["stage.verdict(exits) == done", "stage.records-verdict"]
+    when: ["stage.verdict(self, self.stage) == done", "stage.records-verdict"]
     to: same
     effects: ["for each verdict v in exits: verdict.record(repo, v.claim, v.claim-version, v.revision, v.verdict, v.evidence, session)"]
     note: the ledger is written here — from a session's judgment, by the machinery, with the inputs it was made from (requirement 87)
   - in: judging
     on: tick
-    when: ["stage.verdict(exits) == done", "stage has a next stage"]
+    when: ["stage.verdict(self, self.stage) == done", "stage has a next stage"]
     to: placing
     effects: ["actor.set(stage, next stage)", "for each session: actor.send(s, retire)"]
   - in: judging
     on: tick
-    when: ["stage.verdict(exits) == done", "stage is last"]
+    when: ["stage.verdict(self, self.stage) == done", "stage is last"]
     to: merge-ready
     effects: ["for each session: actor.send(s, retire)", "actor.send(bolt, merge-request, {item: self.id})"]
   - in: judging
     on: tick
-    when: ["stage.verdict(exits) == not-done", "self.retries < type.retry-bound"]
+    when: ["stage.verdict(self, self.stage) == not-done", "self.retries < type.retry-bound"]
     to: placing
     effects: ["actor.set(send-backs, +{from: stage, to: stage.back-to, reason})", "actor.set(retries, retries + 1)", "actor.set(stage, stage.back-to)", "for each session: actor.send(s, retire)"]
     note: the item's history shows every send-back and the count that permitted it (requirement 37, S14)
   - in: judging
     on: tick
-    when: ["stage.verdict(exits) == not-done", "self.retries >= type.retry-bound"]
+    when: ["stage.verdict(self, self.stage) == not-done", "self.retries >= type.retry-bound"]
     to: stopped
     effects: ["decision.open(stopped, retries, {stage, send-backs})"]
   - in: stopped
@@ -165,7 +165,7 @@ receive:
     when: ["self.retries < type.retry-bound"]
     to: placing
     effects: ["actor.set(retries, retries + 1)", "report.append(warn, 'session lost; restarting the stage in the same place', msg)"]
-    note: the place survives on the host's disk; a takeover host makes a fresh place at the line's head (S13)
+    note: the place survives on the host's disk; a takeover host makes the place at refs/places/<place> when published, else at the line's head (S13, model §9.3)
   - in: [staged, blocked, conflict]
     on: session.lost
     when: ["self.retries >= type.retry-bound"]

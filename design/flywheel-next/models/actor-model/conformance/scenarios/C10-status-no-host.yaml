@@ -1,0 +1,31 @@
+id: C10
+title: the status view is served with no host running and says as of when
+exercises: {operations: [serve-status], guarantees: [derivable]}
+profiles: [all]
+requirements: [119, 128, 130, 132, S12, S20]
+given:
+  clock: "2026-09-03T23:12:00Z"
+  actors:
+    - {id: bolt/atlas/b-0142, state: open, seq: 8, epoch: 3}
+    - {id: unit/atlas/b-0142/u-3, state: building, seq: 3, epoch: 3}
+    - {id: wi/atlas/b-0142/u-3/1, state: staged, seq: 4, epoch: 3}
+    - {id: session/wi/atlas/b-0142/u-3/1/build-1-builder, state: working, seq: 3, epoch: 3, fields: {host: host/mac-mini}}
+    - {id: elaboration/intent/atlas-provider-limits/2, state: idle, seq: 6, epoch: 2}
+  leases: [{actor: bolt/atlas/b-0142, holder: host/mac-mini, epoch: 3}, {actor: intent/atlas-provider-limits, holder: host/studio, epoch: 2}]
+  heartbeats: [{host: host/mac-mini, at: "2026-09-03T23:11:00Z"}, {host: host/studio, at: "2026-09-03T23:10:00Z"}]
+when:
+  - tick: host/studio                     # projects the status
+  - stop: [host/studio, host/mac-mini]
+  - {clock: +6h}
+  - {status: read, as: s}
+then:
+  status:
+    s:
+      as-of: {point: "2026-09-03T23:12:00Z", stated: true}
+      groups:
+        in-progress: [bolt/atlas/b-0142, unit/atlas/b-0142/u-3, wi/atlas/b-0142/u-3/1, session/wi/atlas/b-0142/u-3/1/build-1-builder]
+        waiting-on-operator: [elaboration/intent/atlas-provider-limits/2]
+      holders: {bolt/atlas/b-0142: host/mac-mini, elaboration/intent/atlas-provider-limits/2: host/studio}
+      runs: {session/wi/atlas/b-0142/u-3/1/build-1-builder: host/mac-mini}
+      alive: {host/mac-mini: false, host/studio: false}
+  hosts-running-during-read: 0

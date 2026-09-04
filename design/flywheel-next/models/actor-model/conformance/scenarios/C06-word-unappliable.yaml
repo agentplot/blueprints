@@ -1,0 +1,26 @@
+id: C06
+title: a word that cannot be applied is handed back and shown once, never dropped
+exercises: {operations: [present-receive], guarantees: [word-once]}
+profiles: [all]
+requirements: [5, 116]
+given:
+  clock: "2026-09-04T06:10:00Z"
+  actors:
+    - {id: unit/atlas/b-0142/u-3, state: dropped, seq: 2, epoch: 1}
+    - {id: decision/unit/atlas/b-0142/u-3/approve, state: withdrawn, seq: 1, parent: unit/atlas/b-0142/u-3}
+    - {id: operator/org, state: present, seq: 3, fields: {attention: []}}
+  leases: [{actor: bolt/atlas/b-0142, holder: host/studio, epoch: 1}, {actor: org, holder: host/studio, epoch: 1}]
+  rendering: {point: "2026-09-04T05:40:00Z", rows: {2: decision/unit/atlas/b-0142/u-3/approve}}
+when:
+  - word: {source: discord-2, text: "yes 2", who: chuck}
+  - tick: host/studio
+  - {present: plan, as: p1}
+  - tick: host/studio
+  - {present: plan, as: p2}
+then:
+  transitions: []                                   # the decision stays withdrawn
+  words: [{id: word/discord-2, consumed: true}]
+  messages: [{to: operator/org, kind: unappliable, count: 1}]
+  plan:
+    p1: {attention: [{word: word/discord-2, reason: withdrawn}]}
+    p2: {attention: []}                             # shown once

@@ -1,0 +1,39 @@
+# Index of the conformance suite. Coverage is by requirement number.
+version: 1
+operations:            # B.1
+  read:            [C01, C13]
+  write-effect:    [C02, C12]
+  lease:           [C03, C04, C14]
+  present-receive: [C05, C06, C07, C17]
+  notify:          [C08]
+  list:            [C09, C13]
+  serve-status:    [C10]
+guarantees:            # B.2
+  durable:         [C11]
+  single-writer:   [C03, C14, C04]
+  atomic:          [C12]
+  derivable:       [C01, C13, C10]
+  word-once:       [C05, C07]
+domain:                # the definitions run end to end; the shape a dictated scenario takes
+  S1:  [D01]
+  S29: [D02]
+  S19: [D03]
+scenarios:
+  - scenarios/C01-read-idempotent.yaml
+  - scenarios/C02-effect-repeat.yaml
+  - scenarios/C03-lease-exclusive.yaml
+  - scenarios/C04-lease-expiry-takeover.yaml
+  - scenarios/C05-word-once.yaml
+  - scenarios/C06-word-unappliable.yaml
+  - scenarios/C07-word-across-restart.yaml
+  - scenarios/C08-notify-bound.yaml
+  - scenarios/C09-list-scope.yaml
+  - scenarios/C10-status-no-host.yaml
+  - scenarios/C11-durable-host-loss.yaml
+  - scenarios/C12-atomic-write.yaml
+  - scenarios/C13-derivable-restart.yaml
+  - scenarios/C14-single-writer-loser-rereads.yaml
+  - scenarios/C17-direct-act-is-word.yaml
+  - scenarios/D01-s1-approve-from-phone.yaml
+  - scenarios/D02-s29-bound-and-restart.yaml
+  - scenarios/D03-s19-hand-edit.yaml
