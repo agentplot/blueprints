@@ -7,8 +7,8 @@ against, and everything else — the plan, the status view, the backlog,
 the reports — is a pure function of those machines' states read from
 durable stores.
 
-The model has one shape and it fits in a paragraph. Eleven machines are
-defined in `machines/*.toml`. Ten of them are **reconciled**: their state
+The model has one shape and it fits in a paragraph. Thirteen machines are
+defined in `machines/*.toml`. Twelve are **reconciled**: their state
 lives in a durable store, and a stateless pass recomputes what should
 happen and writes it, over and over, safely. One of them — `session` — is
 **event-driven**: it advances because something happened on a host. The
@@ -24,11 +24,12 @@ machinery validates rather than trusts.
 | file | what it is |
 |---|---|
 | `machines/_schema.toml` | the meta-definition every machine file satisfies, and the checks `fwn check` runs over them |
+| `machines/signal.toml` · `curation.toml` | the intake machines: the record an adapter appends, and the run that judges it |
 | `machines/intent.toml` · `elaboration.toml` · `finding.toml` · `chore.toml` | the design-side machines |
 | `machines/bolt.toml` · `unit.toml` · `work_item.toml` | the construction-side machines |
 | `machines/session.toml` | the one event-driven machine, and the exit alphabet |
 | `machines/ledger_cell.toml` · `lease.toml` · `word.toml` | the cross-cutting machines |
-| `flywheel-next-*.svg` | five diagrams, one per machine family; every state glyph carries a `data-fwn-state`, `data-fwn-row` or `data-fwn-machine` attribute that `fwn check --diagrams` matches against the TOML |
+| `flywheel-next-*.svg` | six diagrams, one per machine family; every state glyph carries a `data-fwn-state`, `data-fwn-row` or `data-fwn-machine` attribute that `fwn check --diagrams` matches against the TOML |
 
 ---
 
@@ -74,6 +75,18 @@ Stated because the requirements do not settle them.
    session on the plan rather than pretending otherwise.
 9. **One operator, per the non-goals.** Any word from any account other
    than the operator's is ignored and logged.
+10. **Signals, moves and clusters live on the `flywheel-state` branch,
+    not on `main`.** They are high-churn append-only operational records
+    written by many adapters at once, and putting them on `main` would
+    bury the design history under them. The branch already exists for
+    leases and its push is a compare-and-swap, which is exactly what
+    concurrent appenders need. What lands on `main` and on the tracker is
+    the *outcome*: the proposed intent, with its citations.
+11. **The curation cadence and threshold live in `policy.rec` on `main`
+    of the books repo.** Requirement 65 has the machinery charge a
+    curation run without a word, which invariant I1 would otherwise
+    forbid. That record is the approval I1 asks to be pointed to: the
+    operator wrote it, and turning curation off is an edit to it.
 
 ---
 
@@ -83,6 +96,8 @@ Section 8's first question.
 
 | carries a machine | why |
 |---|---|
+| `signal` | one record, two states, and exactly one move — the smallest machine in the model |
+| `curation` | one run: charged by a policy, worked by a session, settled when its snapshot has moves |
 | `intent` | it has an operator-owned close and a lifecycle independent of its children |
 | `elaboration` | it has an approval, a session, and a type-dependent end |
 | `finding` | it has one operator decision with three outcomes |
@@ -112,6 +127,16 @@ Section 8's first question.
 - **A repository's backlog**. A query, never a list (requirement 51).
 - **The elaboration type and the bolt's stage list**. Parameters that
   select transitions, not states.
+- **A move**. Not a machine: it is the *evidence* for `signal.moved`,
+  written once by curation and never revised. `%key: signal` in
+  `moves/*.rec` makes a second move for the same signal impossible, and
+  that file constraint is the whole of requirement 62.
+- **A cluster**. Not a machine either: it is the record
+  `intent.i.propose_from_cluster` reads to write one proposed-intent
+  issue, carrying the title, the challenged claim and the weight.
+- **A finding's subject**. A parameter, checked by the machinery against
+  the offering object's own thread, that selects one of two transitions:
+  a row on that thread, or a signal (requirement 25).
 
 ### How the machines relate
 
@@ -310,6 +335,13 @@ operator and forget to say so, because "waits on the operator" and
 "produces a row" are the same declaration checked two ways. The converse
 check runs too: every row's `when` must be reachable from some state.
 
+The check also settles the opposite question. `signal.toml` declares two
+states, neither of them `waiting_operator`, and therefore carries no
+`[[rows]]` at all. Requirement 64's "never a row per signal" is not a
+rule anyone has to remember; it is what the definition says, and adding a
+row for signals would mean first declaring a signal state that waits on
+the operator.
+
 **Grouping** (requirement 10). Each row carries a `group` — `intents`,
 `bolts`, `offers`, `standing`, `closes`, `questions`, `claims`, `hosts`,
 `machinery`. The Discord message posts one block per group, numbered
@@ -430,14 +462,28 @@ definitions, the design book.
   from the in-scope claim set — computed at read time, never stored
   (requirement 51).
 
+- `policy.rec` — the standing policy the operator set. One record:
+
+  ```
+  %rec: policy
+  %key: org
+
+  org: agentplot
+  curation_cadence: 24h
+  curation_threshold: 25
+  stall_window: 45m
+  lease_stale_after: 10m
+  ```
+
 - `machines/*.toml` — the definitions in this directory, installed at the
   books repo root so a definition change is a books-repo commit.
 
 ### 7.3 The books repository, orphan branch `flywheel-state`
 
-Source of truth for: host liveness and object ownership.
+Source of truth for: host liveness, object ownership, signals, moves and
+clusters.
 
-Two files, and the acquire is a `git push`. A non-fast-forward push is
+Five files, and the acquire is a `git push`. A non-fast-forward push is
 rejected by GitHub, which makes the push an **atomic compare-and-swap**
 against a shared store the model already has. Two hosts pushing at the
 same instant give one winner and one rejection; the loser refetches and
@@ -464,6 +510,58 @@ herdr_workspace: fwn-agentplot
 seen: 2026-09-04T08:14:02Z
 version: fwn 0.4.1
 ```
+
+The same compare-and-swap is what lets many signal adapters append at
+once. An append is keyed on `id`, so a rejected push is refetched and
+retried with no risk of a double record.
+
+```
+# signals/2026-09.rec
+%rec: signal
+%key: id
+
+id: sig-2026-09-03-0f31
+source: transcript
+ref: wisprflow://meeting/8821#t=00:41:12
+at: 2026-09-03T16:41:12Z
+adapter: fwn-signal-transcript 0.2.0
+text: the plan page takes eight seconds to render on the phone over
++ tailscale, and the operator gave up on it twice this week
+
+# moves/2026-09.rec
+%rec: move
+%key: signal
+%type: target enum attach challenge cluster drop
+
+signal: sig-2026-09-03-0f31
+target: cluster
+cluster: clu-2026-09-03-a7
+reason: three reports of plan-page latency; no standing claim covers it
+by: fwn-20260903-1800-9d2c
+at: 2026-09-03T18:04:51Z
+
+# clusters/2026-09.rec
+%rec: cluster
+%key: id
+
+id: clu-2026-09-03-a7
+title: the plan page must render on a phone in under two seconds
+challenges: none
+signals: 3
+sources: transcript(2), discord(1)
+span: 2026-08-28 .. 2026-09-03
+signal_id: sig-2026-09-03-0f31
+signal_id: sig-2026-09-01-b204
+signal_id: sig-2026-08-28-77aa
+reason: three independent reports over a week, no standing claim covers page latency
+by: fwn-20260903-1800-9d2c
+```
+
+`%key: signal` in the moves file is the whole of requirement 62: `recfix`
+refuses a second move for a signal, so a signal cannot be re-judged even
+by a session that tries. The cluster record carries the weight, so
+`intent.i.propose_from_cluster` never has to open the signals file
+(requirement 61).
 
 ### 7.4 Each built repository
 
@@ -512,25 +610,79 @@ survives even if a host's disk does not.
 
 ---
 
-## 8. Curation
+## 8. Signals, moves and curation
 
-Section 8's sixth question. **Curation is outside the flywheel, and the
-seam is one issue.**
+Section 8's sixth question. **The flywheel owns the records; it does not
+own the batching.** Signals go in a file, moves come out of a session,
+and no machine anywhere queues, rate-limits, or decides which raw
+material matters.
 
-The flywheel's entire intake is: an issue in `agentplot` labelled
-`fwn` + `fwn:intent`, in state `proposed`. Who opens it is not the
-flywheel's business. Today it is a person, or the existing dispatch agent
-reading a meeting transcript, or a `fwn-curation-session` the operator
-starts by hand, or `gh issue create` from any other tool. Twenty signals
-from a transcript are read by the curator, which opens two issues; the
-flywheel's next reconcile pass sees two objects in `proposed` and derives
-two rows (scenario S8).
+### 8.1 The three records
 
-The flywheel therefore never batches signals, never rate-limits them,
-never holds a queue of raw material, and gains nothing to restart. The
-one thing it does offer curation is a place to put a signal that is not
-yet an intent: a `fwn:signal` issue, which no machine reads. It is
-storage, not a machine.
+An adapter appends a **signal** with `fwn signal add` and pushes. That is
+the whole of intake. Four adapters ship: the `#fwn-signals` Discord
+channel, a meeting-transcript exporter, a log matcher, and a session's
+own offer whose subject is not its thread. Anyone else can write the same
+record; the file is the interface.
+
+Curation writes a **move** for each signal it judges: `attach` to an open
+intent, `challenge` a standing claim, `cluster` into a proposed new
+intent, or `drop` — each with a reason. Requirement 63's three-way test
+is literally the target field: fits an open intent, argues with a
+standing claim, or fits no claim.
+
+For every proposed intent it wants, curation also writes a **cluster**
+carrying the title, the challenged claim if any, the cited signal ids,
+and the weight: how many, from which sources, over what span.
+
+### 8.2 The one rule about reading
+
+Requirement 61 says the machinery never reads a signal except through
+curation, and the model enforces it rather than observing it. No guard or
+effect in any machine file except `curation.toml` may name a predicate on
+the `signal_` prefix, and `fwn check` fails a definition that does. The
+only thing readable outside a curation session is the *count* of unmoved
+records, which carries no content and is what charges the next run.
+
+That is also why the cluster record exists. `intent.i.propose_from_cluster`
+needs the weight to render the row, and taking it off the cluster means
+that transition opens no signal file.
+
+### 8.3 Why the run is a machine and not an outside step
+
+Requirement 65 makes curation a session with the fixed exits of 4.7,
+charged on a cadence or a threshold. So it is a machine here, with four
+states — `due`, `running`, `settled`, `stuck` — and one forbidden effect:
+it may not open an intent. `fwn check` enforces that the same way it
+enforces "a chore never creates a bolt".
+
+The thing that *opens* the proposed intent issue is
+`intent.i.propose_from_cluster`, a reconcile transition that transcribes
+a cluster into a row. It invents nothing — the title, the reason and the
+weight are all curation's — and it creates no work, because a proposed
+intent is a proposal and only the operator's word makes it an open
+thread.
+
+Invariant I1 asks that every piece of work point at an approval, and a
+run starts without a word. The approval it points at is `policy.rec` on
+`main` of the books repo, holding `curation_cadence` and
+`curation_threshold`. The operator wrote that record, `pause` sets the
+cadence to `off`, and the machinery reads it rather than deciding for
+itself when to run.
+
+### 8.4 What keeps a signal off the plan
+
+`signal.toml` has two states and neither is `waiting_operator`. The
+exhaustiveness check of §6 therefore asks nothing of it, and there is no
+row kind anywhere whose `when` names a signal. Requirement 64's "one row
+per proposed intent, never a row per signal" is a property of the
+definition that a reader can verify by grep, not a discipline anyone has
+to keep.
+
+A person doing all of this by hand — `recins` into `moves/` and
+`clusters/`, then push — is curation too, and the machinery cannot tell
+the difference. That is the point of putting the seam at the records
+instead of at the session.
 
 ---
 
@@ -617,6 +769,7 @@ once:
 | the page | `http.server.ThreadingHTTPServer` on `127.0.0.1:8787`, published by `tailscale serve` |
 | agent sessions | `claude --agent fwn-<kind>-session`, one per herdr pane |
 | the multiplexer | herdr, workspace `fwn-agentplot`, `herdr agent start / list --json / send / kill` |
+| signal intake | `fwn signal add`, plus the four shipped adapters of §8.1 |
 | worktrees | `git worktree add ~/Code/fwn/<repo>/<branch>` |
 | specs and changes | the `openspec` CLI, custom schemas, the archive step |
 | the book | mdBook, `books/flywheel-next/` |
@@ -641,7 +794,10 @@ objects are not.
 **Data — edit a file in `machines/`, ship nothing:** a state, a
 transition, a guard *expression* built from existing predicates, an
 elaboration type, a construction stage, a plan row kind, a row's surface
-or grouping, the exit alphabet, the lease timings (requirement 44).
+or grouping, the exit alphabet, the lease timings, a move target
+(requirement 44). The curation cadence and threshold are data too, but
+they live in `policy.rec` rather than here, because they are the
+operator's standing decision rather than the shape of a machine.
 
 **Code — `flywheel_next/`:** a new *predicate* atom (`guards.py`), a new
 *effect* atom (`effects.py`), a new store reader. `fwn check` asserts
@@ -680,7 +836,7 @@ herdr, no network. `unittest`, standard library only.
 | 9 | the seven kinds map to `row.intent.proposed` + `row.elaboration.proposed`, `row.unit.proposed`, `row.intent.close` + `row.bolt.close`, `row.elaboration.keep`, `row.finding.offered`, `row.chore.offered`, `row.*.question` |
 | 10 | rows carry `group`; Discord posts one block per group; `y all` answers a group, `y 3` one row |
 | 11 | dictation opens an intent in `proposed` or a chore in `accepted` directly, with a word and no row |
-| 12 | curation is outside; the seam is one `fwn:intent` issue (§8) |
+| 12 | signals land in a file at any rate; curation, not the elaboration machinery, writes the moves and clusters that become intents; a person doing it by hand is indistinguishable (§8) |
 | 13 | `el.approve` is guarded on the intent being open, and the reconciler refuses to open a second elaboration issue while one is `proposed`; new material edits that issue's body |
 | 14 | `i.ready` derives `close_ready` from `children_all:elaboration:done`; only `i.close`, an `on = "word"` transition, closes it |
 | 15 | every self-closing type's `deliverable` is a path under `books/flywheel-next/src/` or the intent's OpenSpec change; `el.finish_self_closing` is guarded on it being present |
@@ -693,7 +849,7 @@ herdr, no network. `unittest`, standard library only.
 | 22 | several items may be `stage_running`; `w.merge` is guarded by `merge_slot_free` (a lease on the bolt branch) and `first_in_merge_order` |
 | 23 | `b.ready` needs `children_all:unit:finished`; `b.land` is `on = "word"` |
 | 24 | `b.land_fail` writes the failure evidence and leaves the milestone open |
-| 25 | offers go to `offers.jsonl` and become issues on the next pass; the session is not told |
+| 25 | offers go to `offers.jsonl` and the session is not told; the `subject` param, checked against the offering object's own thread, selects `f.offer` (a row on that thread) or `f.as_signal` (a signal, no row) |
 | 26 | the agent definitions say: fix inside your job, offer only across a boundary; the chore template requires a `repo` and `branch` different from the session's own |
 | 27 | `c.start` requests one `fwn-chore-session` on a worktree of the named repo; `c.merge` merges to that repo's default branch |
 | 28 | instruction files, citations and references are chore templates in the agent definitions; nothing routes them to `unit` |
@@ -729,12 +885,17 @@ herdr, no network. `unittest`, standard library only.
 | 58 | every host reads the same `main` of every repository and the same board; `flywheel-state` is the shared coordination branch |
 | 59 | `lease.toml`; ownership is one record per object, visible as the `Host` field; takeover is CAS-push under the stated rule |
 | 60 | `Host` and `Host Seen` are board fields; `hosts.rec` heartbeats project into them |
+| 61 | adapters call `fwn signal add`, which appends one record and pushes; `fwn check` refuses any `signal_` predicate outside `curation.toml`, leaving only the unmoved *count* readable |
+| 62 | `%key: signal` in `moves/*.rec` makes a second move impossible; `curation`'s snapshot is the unmoved set, and `signal.sg.moved` is the only way out of `unmoved` |
+| 63 | the work order quotes the claim index and the open intents; the move's `target` records which of the three the signal was — `attach`, `challenge`, or `cluster` |
+| 64 | the cluster record carries the citations and the weight, `i.propose_from_cluster` renders them into one issue, and `signal.toml` has no `waiting_operator` state so no row can exist per signal |
+| 65 | `curation.toml`: `cu.due` fires on `policy.rec`'s cadence or threshold, `cu.start` requests one `fwn-curation-session`, and `forbidden_effects` refuses `open_issue:intent`; a person running `recins` writes the same records |
 
 ## 14. Invariants
 
 | inv | how it holds |
 |---|---|
-| I1 | every effect that creates work sits on a transition with `on = "word"`, or downstream of one (`u.explode` from `approved`, `el.start` from `approved`); `fwn check` walks the graph and fails if a work-creating effect is reachable from an initial state without passing a word transition |
+| I1 | every effect that creates work sits on a transition with `on = "word"`, or downstream of one (`u.explode` from `approved`, `el.start` from `approved`); `fwn check` walks the graph and fails if a work-creating effect is reachable from an initial state without passing a word transition. A curation run is the one thing the machinery starts unbidden, and the approval it points at is the cadence in `policy.rec` |
 | I2 | `word_id` collapses duplicate arrivals; applied-ness is read off the target, so re-application is a no-op and non-application becomes `row.word.unapplicable` |
 | I3 | one `when`, one `until` per `[[rows]]`; `fwn check` asserts they are mutually unsatisfiable |
 | I4 | each machine file names exactly one `truth`; every other place is listed under `projections` and no guard reads one |
@@ -779,12 +940,20 @@ then `c.start` adds a worktree of `agentplot/dispatch` at
 that repo's default branch once its own gates are green. No milestone was
 created, no unit issue, no stages — enforced by `forbidden_effects`.
 
-**S4 — a finding, dropped.** A session appends a finding offer.
-`f.offer` opens the issue in `offered`; `row.finding.offered` shows it as
-a candidate elaboration on intent #402. The operator replies `drop 4`.
-`f.drop` closes the issue as not planned. No elaboration issue was ever
-opened, because the only effect that opens one is `f.as_elaboration`,
-which is `on = "word"` with verb `elaborate`.
+**S4 — a finding, dropped.** A session on intent #402 appends a finding
+offer naming #402 as its thread. The machinery checks that name against
+the offering object's own intent, finds they match, and the `subject`
+param is `own_thread` — so `f.offer` runs, not `f.as_signal`. The issue
+opens in `offered` and `row.finding.offered` shows it as a candidate
+elaboration on #402. The operator replies `drop 4`. `f.drop` closes the
+issue as not planned. No elaboration issue was ever opened, because the
+only effect that opens one is `f.as_elaboration`, which is `on = "word"`
+with verb `elaborate`.
+
+Had the same session offered a thought about a different intent, or about
+no thread at all, the subject would have been `elsewhere`, `f.as_signal`
+would have appended a signal instead, and it would have reached the plan
+only if a curation run later clustered it (requirement 25).
 
 **S5 — restart mid-day.** `launchd` restarts `fwn serve`. The daemon has
 no state to lose. Sessions are herdr panes, not children of the daemon,
@@ -813,17 +982,44 @@ issue. The intent's claims are now standing and become plannable
 no other machine's guard mentions `intent.closed` except the claim
 standing derivation.
 
-**S8 — twenty signals.** The curator (a person or an agent, outside the
-flywheel) reads the transcript and opens two `fwn:intent` issues. The
-next reconcile pass sees two objects in `proposed` and derives two rows.
-The other eighteen signals live, if anywhere, as `fwn:signal` issues that
-no machine reads. The flywheel started no sessions, because the only
-session-starting transitions are downstream of a word.
+**S8 — twenty signals, and a move for every one.** The transcript adapter
+appends twenty records to `signals/2026-09.rec` and pushes. Each is a
+`signal` in `unmoved`. No row appears, because `signal.toml` has no state
+that waits on the operator. The count crosses `curation_threshold: 25`
+the following morning — or, sooner, the `24h` cadence elapses — and
+`cu.due` opens one curation-run issue whose body records the snapshot of
+those twenty ids. `cu.start` takes a lease and requests one
+`fwn-curation-session`, whose work order quotes the claim index and the
+open intents (requirement 63).
+
+The session writes twenty moves. Six are `attach`, naming the open
+intents they join; nine are `drop`, each with its reason; five are
+`cluster` or `challenge` across two cluster ids, one of which carries
+`challenges: plan-row-single-source@3`. It writes two cluster records
+with their titles, citations and weights, commits both files, and exits
+`done`.
+
+The next reconcile pass does four things. `sg.moved` takes all twenty
+signals to `moved` — no writes, the move records are the state.
+`cu.settle` fires because `moves_cover_snapshot` holds, and the run issue
+closes. `i.attach_signal` joins the six attached signals to their
+intents' one standing proposal each. `i.propose_from_cluster` opens two
+intent issues in `proposed`, each rendering its weight line off the
+cluster record.
+
+The plan therefore shows **two** rows, each reading like
+`intent #511 the plan page must render in under two seconds — 3 signals
+from transcript(2), discord(1) over 2026-08-28 .. 2026-09-03`. Not
+twenty. And every one of the twenty has a move the operator can read,
+whether the answer was attach, challenge, cluster or drop.
 
 **S9 — a claim moves under an open bolt.** A build session learns the
-boundary is wrong, finishes its job, offers a finding. The operator says
-`elaborate`; an elaboration on the relevant intent amends the claim's
-chapter, its `version` goes 3 → 4, `claims.lock` records the new hash,
+boundary is wrong, finishes its job, offers a finding naming its own
+bolt — the claim is the one its work item's spec delta cites, so the
+subject test passes and `f.offer` gives it a row rather than a signal.
+The operator says `elaborate`; an elaboration on the relevant intent
+amends the claim's chapter, its `version` goes 3 → 4, `claims.lock`
+records the new hash,
 the intent closes and the claim is standing at 4. Now two things derive
 at once. First, `ledger_cell` records naming `claim_hash` for version 3
 become `stale`, raising `row.ledger.stale` per repo. Second, the open
@@ -880,22 +1076,24 @@ different session id, and terminates. The item never runs twice.
 
 ## 16. The diagrams
 
-Five, one per machine family, in this directory. Each states its claim in
+Six, one per machine family, in this directory. Each states its claim in
 the title, marks where plan rows are created (a red `+row` chip) and
 retracted (a grey `−row` chip), and marks where the ledger is read (a
 dashed teal edge) and written (a solid teal edge).
 
 | file | family | claim |
 |---|---|---|
-| `flywheel-next-two-clocks.svg` | structure | one event machine, ten reconciled ones, meeting only at the work order and the exit record |
+| `flywheel-next-curation.svg` | flow | twenty signals in, one move each, two rows out |
+| `flywheel-next-two-clocks.svg` | structure | one event machine, twelve reconciled ones, meeting only at the work order and the exit record |
 | `flywheel-next-session.svg` | flow | the only free state in the model, entered by evidence and left by three verbs |
 | `flywheel-next-design.svg` | flow | intent and elaboration; the type's `end` is the only thing that differs |
 | `flywheel-next-construction.svg` | flow | approval is the only thing that makes work items; a chore never makes a bolt |
 | `flywheel-next-ledger.svg` | flow | a verdict dies only when its claim's text moves |
 
-Palette, held across all five: **purple** design objects (intent,
-elaboration, claim) · **blue** construction objects (bolt, unit, work
-item) · **green** sessions and agents · **red** the operator's word, plan
-rows, gates · **amber** derived and projected things (the plan, the
-status view, the backlog) · **teal** the ledger and as-built · **grey**
-hosts, stores and places.
+Palette, held across all six: **purple** design objects — signal,
+curation, intent, elaboration, finding, claim · **blue** construction
+objects — bolt, unit, work item, chore · **green** sessions and agents ·
+**red** the operator's word, plan rows and gates · **amber** the
+machinery's own waiting, timing and derivation — a tick, a cadence, a
+held state, the status view · **teal** the ledger, verdicts and as-built ·
+**grey** hosts, stores, records and places.

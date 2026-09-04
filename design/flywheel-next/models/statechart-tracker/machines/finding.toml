@@ -1,8 +1,19 @@
 # finding.toml — an idea a session had while doing its job, outside its
 # job, offered and never acted on by the session (requirement 25).
 #
-# A finding is a proposal. Its only transitions out of `offered` are the
-# operator's word. There is no transition that creates work.
+# Requirement 25 splits a finding by SUBJECT, and this file is where the
+# split is made:
+#
+#   about the session's own intent or bolt  -> a proposal on the plan for
+#                                              that thread, the `offered`
+#                                              state below;
+#   about anything else                     -> a signal, which reaches
+#                                              the plan only through
+#                                              curation, and never as a
+#                                              row of its own.
+#
+# Neither is work until the operator says so, and neither interrupts the
+# session that offered it.
 
 schema = 1
 machine = "finding"
@@ -12,12 +23,29 @@ truth = "github.issue.labels on the finding issue"
 projections = ["projects.field.Status", "a back-reference comment on the offering session's object"]
 scope = "label fwn AND label fwn:finding"
 
+# The subject test. The offer line names a thread; the machinery checks
+# that name against the offering object's own thread rather than
+# trusting the agent's word for it (the same reader-validates rule as
+# the exit alphabet).
+[[params]]
+name = "subject"
+from = "offers.jsonl `thread` field, compared with the offering object's own intent or bolt"
+values = ["own_thread", "elsewhere"]
+default = "elsewhere"
+note = "an offer that names no thread, or a thread that is not the session's own, is `elsewhere`"
+
 [[states]]
 name = "offered"
 kind = "waiting_operator"
 truth = "label fw:offered"
 board = "Proposed"
-note = "opened by the reconciler from run/<session>/offers.jsonl; the session that offered it kept working"
+note = "own_thread only; opened by the reconciler from run/<session>/offers.jsonl while the session kept working"
+
+[[states]]
+name = "routed_to_signal"
+kind = "terminal"
+truth = "a record in signals/<yyyy-mm>.rec whose `ref` names this offer id"
+note = "no issue is opened and no row appears; it waits for curation like any other signal (requirements 25, 61)"
 
 [[states]]
 name = "converted"
@@ -37,10 +65,22 @@ id = "f.offer"
 from = "none"
 to = "offered"
 on = "reconcile"
+params.subject = "own_thread"
 guard.all = ["offer_record_present:finding", "issue_absent_for_offer"]
 effect = ["open_issue:finding:offer_template", "comment:offered_by:<session>"]
-reason = "a session appended a finding offer; it becomes a proposal, not work (invariant I1)"
-note = "the offer file line carries a stable offer_id, so a re-read opens no second issue"
+reason = "a finding about the session's own intent or bolt is a proposal on that thread, not work (requirement 25, invariant I1)"
+note = "the offer line carries a stable offer_id, so a re-read opens no second issue"
+
+[[transitions]]
+id = "f.as_signal"
+from = "none"
+to = "routed_to_signal"
+on = "reconcile"
+params.subject = "elsewhere"
+guard.all = ["offer_record_present:finding", "offer_signal_absent"]
+effect = ["append_signal:from_offer"]
+reason = "a finding about anything but the session's own thread is a signal; it reaches the plan only through curation (requirement 25)"
+note = "no issue, no row; the offer_id becomes the signal's ref, so a re-read appends nothing twice"
 
 [[transitions]]
 id = "f.as_elaboration"
@@ -79,4 +119,5 @@ until.any = ["word:elaborate", "word:unit", "word:drop"]
 answers = ["elaborate", "unit", "drop"]
 surface = "chat+page"
 group = "offers"
-body = "finding from {session} on {source}: {summary} — pursue on intent #{suggested} or drop?"
+body = "finding from {session} on its own {thread}: {summary} — pursue or drop?"
+note = "only own_thread findings reach here; `routed_to_signal` has no row, by design (requirement 64)"

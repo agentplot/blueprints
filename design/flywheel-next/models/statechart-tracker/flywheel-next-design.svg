@@ -21,17 +21,17 @@
   <rect width="1680" height="1000" fill="#fff"/>
 
   <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Design — one intent, one proposal at a time, and a type whose only difference is how it ends</text>
-  <text x="40" y="57" font-size="12" fill="#666">curation stays outside · approval is the only thing that starts work · the book is where the destination lands</text>
+  <text x="40" y="57" font-size="12" fill="#666">curation writes the records · approval is the only thing that starts work · the book is where the destination lands</text>
 
-  <!-- ===================== CURATION ===================== -->
+  <!-- ===================== FROM CURATION ===================== -->
   <rect x="40" y="88" width="270" height="176" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4" stroke-dasharray="7 5"/>
-  <text x="58" y="114" font-size="11.5" font-weight="700" fill="#333">CURATION — outside</text>
-  <use href="#rows" x="100" y="160"/>
-  <text x="132" y="156" font-size="10.5" font-weight="700" fill="#333">signals</text>
-  <text x="132" y="170" font-size="8.5" fill="#999">transcripts · logs · feedback</text>
-  <use href="#people" x="100" y="216" color="#5f6b7a"/>
-  <text x="132" y="212" font-size="10.5" font-weight="700" fill="#333">a person or an agent</text>
-  <text x="132" y="226" font-size="8.5" fill="#999">twenty signals in, two intents out</text>
+  <text x="58" y="114" font-size="11.5" font-weight="700" fill="#333">FROM CURATION</text>
+  <use href="#cube" x="100" y="158" color="#7b5cb8"/>
+  <text x="132" y="154" font-size="10.5" font-weight="700" fill="#333">a cluster record</text>
+  <text x="132" y="168" font-size="8.5" fill="#999">title · challenged claim · weight</text>
+  <use href="#rows" x="100" y="216"/>
+  <text x="132" y="212" font-size="10.5" font-weight="700" fill="#333">its signals</text>
+  <text x="132" y="226" font-size="8.5" fill="#999">cited by id, each with its move</text>
   <path d="M 314 176 C 350 176, 366 176, 400 176" fill="none" stroke="#7b5cb8" stroke-width="2.2" marker-end="url(#mP)"/>
   <text x="358" y="168" font-size="9" fill="#5a3f95" text-anchor="middle">one issue</text>
 
@@ -40,7 +40,7 @@
   <line x1="420" y1="176" x2="1200" y2="176" stroke="#7b5cb8" stroke-width="2" opacity="0.3"/>
   <use href="#row" x="420" y="176" color="#7b5cb8" data-fwn-state="intent.proposed"/>
   <text x="420" y="210" font-size="10" fill="#555" text-anchor="middle">proposed</text>
-  <text x="420" y="223" font-size="8.5" fill="#999" text-anchor="middle">no work exists yet</text>
+  <text x="420" y="223" font-size="8.5" fill="#999" text-anchor="middle">3 signals · 2 sources · 6 days</text>
   <rect x="446" y="126" width="176" height="20" rx="4" fill="#fbeeee" stroke="#c05b5b"/>
   <text x="458" y="140" font-size="8.5" font-weight="700" fill="#a34848">+row approve or drop</text>
   <path d="M 452 148 L 432 162" fill="none" stroke="#c05b5b" stroke-width="1.6" marker-end="url(#mR)"/>
@@ -111,7 +111,7 @@
   <path d="M 1012 458 C 1050 496, 1080 528, 1114 534" fill="none" stroke="#8a8a86" stroke-width="2.2" marker-end="url(#mN)"/>
   <path d="M 760 430 C 748 470, 710 498, 678 522" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
   <use href="#row" x="660" y="540" color="#7b5cb8" data-fwn-state="finding.offered"/>
-  <text x="684" y="536" font-size="10.5" font-weight="700" fill="#333">finding offered</text>
+  <text x="684" y="536" font-size="10.5" font-weight="700" fill="#333">finding · its own intent</text>
   <text x="684" y="550" font-size="8.5" fill="#999">the session keeps working</text>
   <rect x="840" y="530" width="196" height="20" rx="4" fill="#fbeeee" stroke="#c05b5b"/>
   <text x="852" y="544" font-size="8.5" font-weight="700" fill="#a34848">+row pursue or drop</text>
@@ -162,7 +162,7 @@
     <use href="#gate" x="810" y="924"/><text x="828" y="928">archive step</text>
     <use href="#cube" x="960" y="924" color="#8a8a86"/><text x="984" y="928">a claim</text>
     <use href="#cyl" x="1090" y="924"/><text x="1122" y="928">the ledger</text>
-    <use href="#people" x="1240" y="924" color="#8a8a86"/><text x="1258" y="928">curation</text>
+    <use href="#rows" x="1240" y="924"/><text x="1264" y="928">signals</text>
   </g>
   <g font-size="10.5" fill="#555">
     <line x1="80" y1="962" x2="116" y2="962" stroke="#7b5cb8" stroke-width="3"/><text x="124" y="966">design objects</text>

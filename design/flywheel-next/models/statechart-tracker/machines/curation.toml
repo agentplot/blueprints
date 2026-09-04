@@ -1,0 +1,146 @@
+# curation.toml — one curation run. A session with a bounded job and the
+# fixed exits of 4.7, charged on a cadence or when unmoved signals cross
+# a threshold (requirement 65).
+#
+# It never opens an intent. `forbidden_effects` says so and `fwn check`
+# enforces it, the same way it enforces "a chore never creates a bolt".
+# What a run produces is records: one move per signal it judged, and one
+# cluster record per proposed intent it wants. The machinery transcribes
+# a cluster into a proposed intent issue; the judgment was the session's
+# and the approval is still the operator's.
+
+schema = 1
+machine = "curation"
+clock = "reconciled"
+carrier = "github.issue"
+truth = "github.issue.labels on the curation-run issue"
+projections = ["projects.field.Status / .Host / .Session"]
+scope = "label fwn AND label fwn:curation"
+forbidden_effects = ["open_issue:intent", "open_issue:elaboration", "open_issue:unit", "open_issue:bolt"]
+
+# The standing policy the operator set. This record IS the approval that
+# invariant I1 asks to be pointed to: the machinery charges a run because
+# the operator wrote a cadence, not because it invented work.
+[policy]
+file = "books repo, main: policy.rec"
+curation_cadence = "24h"
+curation_threshold = 25
+note = "changing either is an edit to policy.rec, which is the operator's own commit"
+
+[index]
+what = "the claim index and the open intents, both quoted into the work order"
+why = "requirement 63 — claims are what curation clusters against; a signal either fits an open intent, argues with a standing claim, or fits no claim"
+
+[[states]]
+name = "due"
+kind = "waiting_machine"
+truth = "an open issue with label fw:due and no live session"
+board = "Ready"
+note = "the run's snapshot — the ids of the unmoved signals it is charged with — is written into the issue body when the issue is opened"
+
+[[states]]
+name = "running"
+kind = "waiting_session"
+truth = "label fw:running AND a live session id on the issue"
+board = "Running"
+
+[[states]]
+name = "settled"
+kind = "terminal"
+truth = "issue CLOSED as completed AND every signal in the run's snapshot has a move"
+board = "Done"
+
+[[states]]
+name = "stuck"
+kind = "waiting_operator"
+truth = "label fw:stuck — two consecutive runs moved no signal"
+board = "Blocked"
+note = "a machinery problem, reported through the record and the ops channel, never filed as work"
+
+# ------------------------------------------------------------------------
+[[transitions]]
+id = "cu.due"
+from = "none"
+to = "due"
+on = "reconcile"
+guard.any = ["cadence_elapsed:policy.curation_cadence", "unmoved_signals_over:policy.curation_threshold"]
+guard.none = ["open_curation_run"]
+effect = ["open_issue:curation:run_template", "snapshot_unmoved_signal_ids"]
+reason = "the standing policy in policy.rec charges a run"
+note = "the guard reads the COUNT of unmoved signals and nothing else about them (requirement 61)"
+
+[[transitions]]
+id = "cu.start"
+from = "due"
+to = "running"
+on = "reconcile"
+guard.all = ["lease_mine", "no_live_session"]
+effect = ["lease_acquire", "request_session:fwn-curation-session:curate", "set_label:fw:running"]
+reason = "a due run with no live session gets one"
+
+[[transitions]]
+id = "cu.settle"
+from = "running"
+to = "settled"
+on = "reconcile"
+guard.all = ["state:session:exited", "exit_verb:done", "moves_cover_snapshot"]
+effect = ["comment:expected_vs_delivered", "retire_session", "lease_release", "close_issue:completed"]
+reason = "every signal in the run's snapshot now has exactly one move"
+
+[[transitions]]
+id = "cu.partial"
+from = "running"
+to = "settled"
+on = "reconcile"
+guard.all = ["state:session:exited", "exit_verb:done", "moved_at_least_one"]
+guard.none = ["moves_cover_snapshot"]
+effect = ["comment:unmoved_carried_forward", "retire_session", "lease_release", "close_issue:completed"]
+reason = "a run judges what it can; what it did not move stays unmoved and charges the next run"
+
+[[transitions]]
+id = "cu.stuck"
+from = "running"
+to = "stuck"
+on = "reconcile"
+guard.all = ["state:session:exited", "previous_run_moved_nothing"]
+guard.none = ["moved_at_least_one"]
+effect = ["set_label:fw:stuck", "ops_report:curation_moved_nothing"]
+reason = "two consecutive runs moved no signal, so the run is not making progress"
+
+[[transitions]]
+id = "cu.rerun"
+from = "stuck"
+to = "due"
+on = "word"
+word = "rerun"
+effect = ["clear_label:fw:stuck", "set_label:fw:due"]
+
+[[transitions]]
+id = "cu.pause"
+from = "stuck"
+to = "settled"
+on = "word"
+word = "pause"
+effect = ["policy_set:curation_cadence=off", "close_issue:not_planned"]
+reason = "operator paused curation; the policy record is the only thing that turns it back on"
+
+# ------------------------------------------------------------------------
+# The cluster record. One per proposed intent the run wants. It carries
+# the weight, so the transition that opens the intent issue never has to
+# read a signal (requirement 61 and requirement 64 together).
+# ------------------------------------------------------------------------
+[cluster]
+file = "books repo, branch flywheel-state: clusters/<yyyy-mm>.rec, %key: id"
+fields = ["id", "title", "challenges", "signals", "sources", "span", "signal_id (repeated)", "reason", "by"]
+consumed_by = "intent.i.propose_from_cluster"
+
+# ------------------------------------------------------------------------
+[[rows]]
+id = "row.curation.stuck"
+kind = "question"
+when.all = ["state:curation:stuck"]
+until.any = ["word:rerun", "word:pause"]
+answers = ["rerun", "pause"]
+surface = "chat"
+group = "machinery"
+body = "curation moved nothing on two runs; {k} signals are unmoved. rerun, or pause curation?"

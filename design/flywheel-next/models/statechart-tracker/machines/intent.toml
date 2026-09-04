@@ -1,9 +1,15 @@
 # intent.toml — one thread of design work about one subject.
 #
-# The flywheel's whole intake surface. Curation runs outside the flywheel
-# and connects here by opening one issue per intent it judges worth
-# pursuing (requirement 12, scenario S8). Twenty signals become two
-# issues before the flywheel ever sees them.
+# The flywheel's intake surface. A proposed intent arrives one of two
+# ways, and both end in the same `proposed` state:
+#
+#   from a cluster record a curation run wrote (i.propose_from_cluster);
+#   from the operator's own dictation or a person's `gh issue create`.
+#
+# `i.propose_from_cluster` transcribes a judgment curation already made
+# into an issue the operator can answer. It invents nothing: the title,
+# the reason, the challenged claim and the weight all come off the
+# cluster record, and it reads no signal (requirement 61).
 
 schema = 1
 machine = "intent"
@@ -21,7 +27,7 @@ name = "proposed"
 kind = "waiting_operator"
 truth = "label fw:proposed"
 board = "Proposed"
-note = "opened by curation; carries its proposed elaborations as a checklist in the body"
+note = "carries its proposed elaborations as a checklist, and its signal weight when it came from a cluster"
 
 [[states]]
 name = "open"
@@ -51,6 +57,27 @@ truth = "issue state CLOSED as not_planned"
 board = "Dropped"
 
 # ------------------------------------------------------------------------
+[[transitions]]
+id = "i.propose_from_cluster"
+from = "none"
+to = "proposed"
+on = "reconcile"
+guard.all = ["cluster_record_present", "issue_absent_for_cluster"]
+effect = ["open_issue:intent:cluster_template", "set_label:fw:proposed", "project_status:Proposed"]
+reason = "a curation run wrote a cluster; the operator gets one row for it"
+note = """the body renders title, reason, `challenges: <claim>@<v>` when the cluster
+argues with a standing claim, and the weight line — how many signals, from which
+sources, over what span — all read off the cluster record (requirement 64)"""
+
+[[transitions]]
+id = "i.attach_signal"
+from = "open"
+to = "open"
+on = "reconcile"
+guard.all = ["move_target_attach_for_this_intent", "not_yet_attached"]
+effect = ["comment:attached_from_curation", "join_standing_elaboration_proposal"]
+reason = "curation attached a signal to this open intent; new material joins the one proposal awaiting approval (requirement 13)"
+
 [[transitions]]
 id = "i.approve"
 from = "proposed"
@@ -117,8 +144,8 @@ until.any = ["word:approve", "word:drop"]
 answers = ["approve", "drop", "approve-with:<elaboration-list>"]
 surface = "chat+page"
 group = "intents"
-body = "intent #{n} {title} — {k} proposed elaborations: {types}"
-note = "the elaboration list is edited on the page; a bare approve is answerable from the phone"
+body = "intent #{n} {title} — {signals} signals from {sources} over {span}; {k} proposed elaborations: {types}"
+note = "one row per proposed intent, never one per signal (requirement 64); the page shows the cited signal ids and their moves"
 
 [[rows]]
 id = "row.intent.close"

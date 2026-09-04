@@ -1,0 +1,92 @@
+# signal.toml — one raw piece of input from a source, appended by an
+# adapter, never work and never a plan row on its own (requirement 61).
+#
+# The whole machine is two states. A signal is `unmoved` until a move
+# record names it and `moved` for ever after. That is the entirety of
+# requirement 62: exactly one move per signal, and curation runs over
+# the unmoved ones only.
+#
+# NO STATE IN THIS FILE HAS kind = "waiting_operator". That is not an
+# omission — it is what makes "one row per proposed intent, never a row
+# per signal" (requirement 64) a property of the definition, checked by
+# the same exhaustiveness pass that forces every waiting state to have a
+# row.
+
+schema = 1
+machine = "signal"
+clock = "reconciled"
+carrier = "rec.record"
+truth = "books repo, branch flywheel-state: signals/<yyyy-mm>.rec, %key: id"
+projections = ["the served page's curation table"]
+scope = "the file lives on the fwn coordination branch; no other flywheel writes it"
+
+# ------------------------------------------------------------------------
+# Requirement 61: the machinery never reads a signal except through
+# curation. `fwn check` enforces this literally: no guard or effect in
+# any machine file other than curation.toml may name a predicate on the
+# `signal_` prefix. The one thing readable outside a curation session is
+# the COUNT of unmoved records, which carries no content.
+# ------------------------------------------------------------------------
+[access]
+content_readable_by = ["fwn-curation-session"]
+count_readable_by = ["curation.cu.due"]
+forbidden_elsewhere = "any predicate whose name begins with signal_ — signal_text, signal_source, signal_ref"
+
+[adapters]
+command = "fwn signal add --source <s> --ref <url> --text -"
+shipped = [
+  "fwn-signal-discord — the #fwn-signals channel, one message per record",
+  "fwn-signal-transcript — a meeting export, one excerpt per record",
+  "fwn-signal-log — a matched line from a watched log, deduplicated by fingerprint",
+  "a session's own offer whose subject is not its thread (finding.f.as_signal)",
+]
+write = "recins into signals/<yyyy-mm>.rec, then git push flywheel-state"
+concurrency = "an append is idempotent on `id`; a rejected push is refetched and retried, so many adapters may write at once"
+
+[[states]]
+name = "unmoved"
+kind = "waiting_machine"
+truth = "a record in signals/<yyyy-mm>.rec with no record in moves/*.rec keyed on its id"
+note = "the count of these, and nothing else about them, charges a curation run"
+
+[[states]]
+name = "moved"
+kind = "terminal"
+truth = "a move record exists whose `signal` field is this id"
+note = "never re-judged; %key: signal in moves.rec makes a second move impossible (requirement 62)"
+
+# ------------------------------------------------------------------------
+[[transitions]]
+id = "sg.append"
+from = "none"
+to = "unmoved"
+on = "observation"
+guard.all = ["adapter_push_landed"]
+effect = []
+reason = "an adapter appended a record; the record's existence is the state, so the machinery writes nothing"
+evidence = "git log flywheel-state -- signals/"
+
+[[transitions]]
+id = "sg.moved"
+from = "unmoved"
+to = "moved"
+on = "reconcile"
+guard.all = ["move_record_present"]
+effect = []
+reason = "curation judged it; the move record is the state and was written by the session"
+
+# ------------------------------------------------------------------------
+# The move record. Written only by a curation session (or by a person
+# running recins by hand, which requirement 65 says is also curation).
+# ------------------------------------------------------------------------
+[move]
+file = "books repo, branch flywheel-state: moves/<yyyy-mm>.rec, %key: signal"
+targets = ["attach", "challenge", "cluster", "drop"]
+
+[move.targets_meaning]
+attach = "the signal fits an open intent; it joins that intent's one standing proposal (requirement 13). Carries `intent`."
+challenge = "the signal argues with a standing claim. Carries `claim`, `claim_version` and the `cluster` that will become the amending intent."
+cluster = "the signal fits no claim; it joins a proposed new intent. Carries `cluster`."
+drop = "not worth an intent. Carries `reason` like every other move."
+
+# `[[rows]]` is deliberately absent. See the header.
