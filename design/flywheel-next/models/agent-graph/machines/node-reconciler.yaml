@@ -1,0 +1,28 @@
+# Where event-driven behavior meets reconciliation: the reconciler is
+# the only node that reads the world (herdr, wt, local git, the git
+# host) and it writes what it saw as observation artifacts. Every other
+# node reads observations like any other evidence. A missed event is
+# recovered by the next observation.
+kind: node
+name: reconciler
+family: machinery
+key: "every tick, on this host"
+when: "true"
+in: [pane, worktree, line-head, session, activation, host, definition]
+out: [observation, exit, word, host]
+effects: []
+produces:
+  - "observation(session, working | idle | blocked | gone, since, evidence) from herdr agent status per pane named by an activation"
+  - "exit(session, kind, payload) parsed from a fenced exit block in the pane's last message; an unparseable ending → stalled with the text as evidence; kind not in the five → stalled"
+  - "observation(session, refusal, evidence) when the pane log shows a refused git operation"
+  - "observation(place, base, head) from wt and local git"
+  - "observation(bolt, gate: passed | failed | pending, url) from the git host after land"
+  - "observation(session, operator-present, since) from herdr's report of human input on the pane"
+  - "word(via=direct:<event>) when a projection differs from the source in a way the binding's direct-word table names; observation(drift) and an overwrite otherwise"
+  - "host heartbeat"
+release: after-effects
+notes: >
+  Observations reach the shared stores only when they change a derived
+  state (working→idle for a standing type, alive→gone, an exit, a
+  refusal, a gate result); other sightings stay in host memory and are
+  re-observed after a restart (I14).

@@ -1,0 +1,27 @@
+# S26: the operator adds this file and no code changes. The test stage
+# runs one session per persona definition found in the repository being
+# worked, and completes when all have exited.
+kind: unit-type
+name: persona-test
+change-directory: true
+lands-on: bolt-line
+stages:
+  - name: spec
+    agent: flywheel-spec-writing
+    members: {fixed: [{persona: default}]}
+    join: all
+    not-done: {return-to: spec, bound: 2}
+    gates: [asbuilt-names-standing-claims]
+  - name: build
+    agent: flywheel-build
+    members: {fixed: [{persona: default}]}
+    join: all
+    not-done: {return-to: spec, bound: 2}
+  - name: test
+    agent: flywheel-test
+    members: {rule: {files: "personas/*.md"}}
+    join: all
+    not-done: {return-to: build, bound: 2}
+    writes-verdict: true
+  - name: merge
+    machinery: git.merge

@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "flywheel-next/actor-model/machines/schema.json",
+  "title": "Actor definition",
+  "description": "One file per actor kind. An actor is a name over stored state with a durable mailbox. Its behaviour is the list of receive clauses: given the current state and one input (a stored message, or the unstored tick carrying evidence), the first clause whose `in`, `on` and `when` all hold fires; it moves the actor to `to` and appends `effects` to the outbox. Every predicate and effect is an abstract atom name from atoms.yaml; nothing here names a store, a field, a path or a service (requirement 125, invariant I13).",
+  "type": "object",
+  "required": [
+    "actor",
+    "version",
+    "supervisor",
+    "lease",
+    "states",
+    "initial",
+    "receive"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "actor": {
+      "type": "string",
+      "pattern": "^[a-z][a-z-]*$",
+      "description": "the actor kind; also the first segment of every actor id of this kind"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "moves when this file's behaviour moves; an actor records the version it started under"
+    },
+    "doc": {
+      "type": "string"
+    },
+    "supervisor": {
+      "description": "the parent kind in the supervision tree; null only for the org root",
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "lease": {
+      "type": "string",
+      "enum": [
+        "root",
+        "inherited",
+        "self"
+      ],
+      "description": "root: a host takes a lease on this actor and thereby on its whole subtree. inherited: run by whoever holds the nearest root ancestor's lease. self: the actor is its own host record (host kind only)."
+    },
+    "fields": {
+      "type": "object",
+      "description": "stored attributes of the actor beyond its state; name \u2192 type note",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "states": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "class"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "class": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "in-progress",
+              "waiting-on-operator",
+              "done",
+              "none"
+            ],
+            "description": "the status-view grouping (requirement 128)"
+          },
+          "doc": {
+            "type": "string"
+          },
+          "terminal": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "initial": {
+      "type": "string"
+    },
+    "decisions": {
+      "type": "object",
+      "description": "the plan row kinds this actor may open. Each is spawned as a `decision` actor whose id is <this actor id>/<kind>[/<key>], so a repeat of the opening effect is a no-op and an answered decision is never re-asked.",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "class",
+          "answers",
+          "opened-by",
+          "retracted-by"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "class": {
+            "type": "string",
+            "enum": [
+              "approve",
+              "decide",
+              "answer",
+              "attention"
+            ]
+          },
+          "key": {
+            "type": "string",
+            "description": "expression over evidence that makes a genuinely new situation a new decision id; absent means one per parent"
+          },
+          "answers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "opened-by": {
+            "type": "string",
+            "description": "the one creating condition (invariant I3)"
+          },
+          "retracted-by": {
+            "type": "string",
+            "description": "the one retracting condition besides the word itself (invariant I3)"
+          },
+          "row": {
+            "type": "string",
+            "description": "what the row says, in the plan mockup's words"
+          }
+        }
+      }
+    },
+    "receive": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "in",
+          "on",
+          "to"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "in": {
+            "description": "state or list of states; '*' for any",
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "on": {
+            "description": "a message kind such as `decided`, `session.exited`, `word.direct`, or a list of kinds; or `tick` (the unstored input carrying evidence)",
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "when": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "predicate atoms, all of which must hold; each is `name(args)` from atoms.yaml evidence"
+          },
+          "to": {
+            "type": "string",
+            "description": "the next state, or `same`"
+          },
+          "effects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "effect atoms `name(args)` appended to the outbox in order; ids are <actor>/<seq>/<n>"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "supervision": {
+      "type": "object",
+      "description": "what this actor does when a child's runtime attachment is lost (its process, its place, its host). State is never lost, so the choices are about the attachment only.",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "on-lost"
+        ],
+        "properties": {
+          "on-lost": {
+            "type": "string",
+            "enum": [
+              "restart-bounded",
+              "escalate",
+              "ignore",
+              "never"
+            ]
+          },
+          "bound": {
+            "type": "string",
+            "description": "atom or type field naming the retry bound"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

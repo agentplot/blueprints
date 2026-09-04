@@ -1,0 +1,44 @@
+actor: repo
+version: 1
+doc: >
+  One per tracked repository, books or built. It carries the manifest's facts
+  (shared line, landing policy, take cadence, capabilities) and supervises the
+  lines off its shared line: intents (books) or bolts and one planning actor
+  (built). Chores raised against the shared line are offers here. The ledger
+  is a record set keyed by this repo, not a child actor.
+supervisor: org
+lease: inherited
+fields:
+  kind: books | built
+  shared-line: the branch name the manifest gives
+  landing-policy: pull-request | direct
+  take-cadence: cron expression for lines taking the shared line (requirement 43)
+  capabilities: declared capabilities for claim scope (requirement 92)
+  joined: point the repo entered the manifest
+states:
+  tracked:   {class: none}
+  untracked: {class: done, terminal: true}
+initial: tracked
+receive:
+  - in: tracked
+    on: tick
+    when: ["self.kind == built", "not exists actor planning/<self.name>"]
+    to: same
+    effects: ["actor.spawn(planning, planning/<self.name>, {repo: self.name, last-digest: none})"]
+    note: a repo joining the fleet has an empty ledger, so its first digest differs from none and planning runs a baseline (requirement 91, S10)
+  - in: tracked
+    on: chore.accepted
+    when: ["msg.line == shared"]
+    to: same
+    effects:
+      - "actor.spawn(unit, unit/<self.name>/shared/<msg.offer>, {type: chore, type-version: current, bolt: none, line: self.shared-line, document: msg.text, deps: []}) in approved"
+    note: a chore on the shared line is a unit of the chore type with no bolt (invariant I8); its one item's place is off the shared line and lands by the repo's policy
+  - in: tracked
+    on: tick
+    when: ["not manifest.repos() contains self.name"]
+    to: untracked
+    effects: [report.append(info, "repo left the manifest", self.name)]
+supervision:
+  bolt: {on-lost: ignore}
+  intent: {on-lost: ignore}
+  planning: {on-lost: ignore}

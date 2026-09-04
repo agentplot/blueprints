@@ -1,0 +1,106 @@
+# One agent process working one job in one place (A.7). Template: run inside
+# an elaboration type, a stage, curation or planning. Event-driven life is read
+# as evidence each tick; the machinery never pushes anything into a working
+# session (I5). Its exits are the fixed set: done, blocked, stalled, plus the
+# offers it appends while working (finding, chore, signal).
+machine: session
+version: 1
+kind: template
+params:
+  agent: the agent definition to start
+  place: the place prepared for it
+  work_order: the closed set of inputs, rendered by the engine
+  keep_alive: whether idle keeps the process (standing) or the type ends it
+record:
+  id: session-id           # deterministic: <owner id>/<stage or type>/<attempt>
+  host: host-id
+  started_at: time
+  exit: enum
+  expected: list
+  delivered: list
+  blocks: int
+regions:
+  life:
+    initial: requested
+    states:
+      requested:
+        doc: the parent decided a session should exist here
+        transitions:
+          - when: {always: true}
+            to: starting
+            effects: [{do: start_session, args: {agent: $agent, place: $place, work_order: $work_order}}]
+      starting:
+        doc: slow is slow, not failed (A.7.61); the proof is the pane, never the start command's return
+        transitions:
+          - when: {ev: session.pane, is: present}
+            to: alive
+          - when: {always: true}
+            to: starting
+            effects: [{do: start_session, args: {agent: $agent, place: $place, work_order: $work_order}, note: retry by the same name; refused if it already exists}]
+      alive:
+        doc: the process exists; its inner state is what the multiplexer reports
+        regions:
+          activity:
+            initial: working
+            states:
+              working:
+                transitions:
+                  - when: {ev: session.offers_pending, is: true}
+                    to: working
+                    effects: [{do: record_offers, note: "findings, chores and signals are recorded the moment they are offered; the session is not interrupted"}]
+                  - when: {ev: session.refusals_pending, is: true}
+                    to: working
+                    effects: [{do: record_refusals}, {do: report, args: {text: a session attempted a line operation and was refused}}]
+                  - when: {ev: session.exit, is: blocked}
+                    to: blocked
+                    bump: blocks
+                    effects: [{do: record_exit}]
+                  - when: {ev: session.exit, in: [done, stalled, invalid]}
+                    to: exited
+                    effects: [{do: record_exit, note: "expected and delivered recorded together; an invalid exit is recorded as stalled with the raw text"}]
+                  - when: {ev: session.activity, is: idle}
+                    to: idle
+              idle:
+                doc: no exit written and no activity; the type decides what idle means
+                transitions:
+                  - when: {ev: session.activity, is: working}
+                    to: working
+                  - when: {ev: session.exit, is: blocked}
+                    to: blocked
+                    bump: blocks
+                    effects: [{do: record_exit}]
+                  - when: {ev: session.exit, in: [done, stalled, invalid]}
+                    to: exited
+                    effects: [{do: record_exit}]
+              blocked:
+                doc: the session stopped only itself; its question is a row (A.7.59)
+                row: {kind: question, group: answer, answers: ["<text>"], page_only: false}
+                transitions:
+                  - when: {word: "<text>"}
+                    to: working
+                    effects: [{do: deliver_answer, args: {text: $word}, note: "to the same session if it lives, else a fresh one that starts with it"}]
+          presence:
+            initial: unknown
+            states:
+              unknown:
+                transitions:
+                  - when: {ev: session.pane, is: absent}
+                    to: gone
+              gone:
+                doc: the pane vanished without an exit record; the owner decides whether to start again
+                final: true
+        transitions:
+          - when: {region: {name: activity, in: [exited]}}
+            to: exited
+          - when: {all: [{region: {name: presence, in: [gone]}}, {not: {ev: session.exit, in: [done, blocked, stalled, invalid]}}]}
+            to: lost
+      exited:
+        doc: exit recorded; the owner reads session.exit and decides what it means (A.7.58)
+        final: true
+      lost:
+        doc: process gone without an exit; standing owners restart it, stages start a fresh attempt
+        final: true
+      ended:
+        doc: reached only by the owner's explicit end (a type's rule or the operator's word, I6)
+        entry: [{do: end_session}]
+        final: true

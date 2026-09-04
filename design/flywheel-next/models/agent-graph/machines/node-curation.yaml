@@ -1,0 +1,27 @@
+kind: node
+name: curation
+family: agent
+key: "fingerprint(unmoved-signals())"          # the id-set of unmoved signals at fire time
+when: "and(curation-due(unmoved-signals()), not(live-activation(curation, key)), host-has-slot(host))"
+in: [signal, claim, intent, proposal]
+out: [exit]
+session:
+  agent: flywheel-curation
+  place: "off the books shared line"
+  work-order:
+    - schema instruction for moves and proposals, at the activation's books sha
+    - the curation skill, same sha
+    - the unmoved signals with their captures
+    - the standing claims with versions and scopes (the index it clusters against)
+    - the open intents and each one's awaiting proposal, if any
+  exits: [done, blocked, finding, chore, stalled]
+  stall-window: 2h
+produces:
+  - "for each judged signal: write.move(signal, move) — attach | challenge | join | answered | drop, with target and reason"
+  - "for each new cluster: write.proposal(kind=intent, elaborations, weight=signal-weight, challenges)"
+  - "for material joining an open intent: write.proposal(kind=elaboration, intent) or amend the awaiting one (generation+1)"
+release: on-terminal-exit
+notes: >
+  Never opens an intent (A.15.97). The queue is the set of signals with
+  no move; nothing in the flywheel batches signals. A person writing the
+  same move and proposal records by hand is this node too.

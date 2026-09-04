@@ -1,0 +1,17 @@
+kind: node
+name: runner
+family: machinery
+key: "agent-node activations on this host with no session record, or with a pending tell"
+when: "or(and(activation.host == host, activation.session == none), and(answered(exit), observed(exit.session) != gone, not(told(exit))))"
+in: [activation, observation, word, exit, definition]
+out: [session, effect]
+effects:
+  - "session.start — write the work order in the place; herdr agent start --name <activation>; poll herdr agent list within start-window; a second start with the same name is refused by herdr"
+  - "session.tell  — herdr agent send: an answer to a blocked question; what moved under a rebase; a conflict to resolve"
+produces:
+  - "session(activation, host, pane, started-at, expected) once the pane is seen"
+release: after-effects
+notes: >
+  A.7.61: success is the pane existing, never the command returning.
+  A.7.62: both effects are keyed so a repeat changes nothing. A.7.60:
+  tell requires observed != working.

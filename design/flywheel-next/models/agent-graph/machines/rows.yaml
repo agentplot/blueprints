@@ -1,0 +1,130 @@
+# The operator node's in-edges. A row exists exactly while `create`
+# holds and `retract` does not. Both are evaluated on every read, so a
+# row is a fact about the stores, never an event a process could miss.
+# Numbers are fixed by the rendering that presented the row.
+kind: rows
+
+groups:
+  - {name: APPROVE,   counted: true,  yes-all: true,  meaning: "yes is safe; nothing starts without it"}
+  - {name: DECIDE,    counted: true,  yes-all: false, meaning: "a choice with no default"}
+  - {name: ANSWER,    counted: true,  yes-all: false, meaning: "needs words; page only"}
+  - {name: ATTENTION, counted: false, yes-all: false, meaning: "read; one-word answers where shown"}
+  - {name: SINCE,     counted: false, yes-all: false, meaning: "what finished after the last rendering received"}
+
+rows:
+  - name: intent
+    group: APPROVE
+    subject: proposal
+    create:  "and(proposal.kind == intent, not(word-on(proposal, proposal.generation)))"
+    retract: "or(word-on(proposal, proposal.generation), all(s in proposal.signals, word-since(s, moved, proposal.generation)))"
+    answers: [yes, drop, split]
+    yes-starts: "instantiate writes the intent and its elaborations approved; git.line.create; elaborations queue"
+    line: "{n}  intent   {name}   curation · {weight}"
+
+  - name: elab
+    group: APPROVE
+    subject: proposal
+    create:  "and(proposal.kind == elaboration, state(proposal.intent) == open, not(word-on(proposal, proposal.generation)))"
+    retract: "or(word-on(proposal, proposal.generation), state(proposal.intent) == closed)"
+    answers: [yes, drop, "type <type>"]
+    yes-starts: "instantiate writes the elaboration approved; it queues"
+    line: "{n}  elab     {intent} · {type}   from {routed-from}"
+
+  - name: unit
+    group: APPROVE
+    subject: proposal
+    create:  "and(proposal.kind == unit, proposal.routed-from != first-planning, not(word-on(proposal, proposal.generation)), not(any(r in rows.moved, r.bolt == proposal.target-bolt)))"
+    retract: "word-on(proposal, proposal.generation)"
+    answers: [yes, drop, "redo: <notes>", "bolt <name>", "new bolt <name>", "rename <name>"]
+    yes-starts: "instantiate writes the unit and its items; a new bolt with its line and place when named; items with no unmet dependency queue at stage 1"
+    line: "{n}  unit     {repository} · {name}   → {target}   · after: {after} · type {type}"
+
+  - name: baseline
+    group: APPROVE
+    subject: proposal
+    create:  "and(proposal.kind == unit, proposal.routed-from == first-planning, not(word-on(proposal, proposal.generation)))"
+    retract: "word-on(proposal, proposal.generation)"
+    answers: [yes, pick, later]
+    yes-starts: "as unit, for every unit and chore in the set"
+    line: "{n}  baseline {repository}   {unmet} claims unmet · {chores} chores · {units} units"
+
+  - name: chores
+    group: APPROVE
+    subject: exit
+    create:  "and(exit.kind == chore, not(word-on(exit, 1)))"
+    retract: "word-on(exit, 1)"
+    answers: [yes, no, "pick <letters>"]
+    yes-starts: "instantiate writes a unit of the chore type on the line the offer names; one item; no bolt"
+    line: "{n}  chores   {repository} · {count}   {letters-and-titles}"
+
+  - name: land
+    group: APPROVE
+    subject: bolt
+    create:  "and(state(bolt) == open, count(u in units-of(bolt), true) >= 1, all(u in units-of(bolt), state(u) == finished), not(chores-outstanding(bolt)), not(word-since(bolt, hold, finished-set-fingerprint(bolt))))"
+    retract: "or(word-on(bolt, finished-set-fingerprint(bolt)), not(all(u in units-of(bolt), state(u) == finished)))"
+    answers: [yes, hold]
+    yes-starts: "git.line.take then git.land"
+    line: "{n}  land     {repository}/{bolt}   {units} units merged · gates {gates}"
+
+  - name: close
+    group: DECIDE
+    subject: intent
+    create:  "and(state(intent) == open, count(e in elaborations-of(intent), true) >= 1, all(e in elaborations-of(intent), state(e) == done), not(awaiting-proposal(intent)), not(word-since(intent, keep-open, fingerprint(elaborations-of(intent)))))"
+    retract: "or(word-on(intent, fingerprint(elaborations-of(intent))), awaiting-proposal(intent), any(e in elaborations-of(intent), state(e) != done))"
+    answers: [close, keep open]
+    yes-starts: "git.archive"
+    line: "{n}  close    intent {name}   all {count} elaborations done"
+
+  - name: idle
+    group: DECIDE
+    subject: elaboration
+    create:  "and(elaboration.type in [standing, with-operator], observed(elaboration.session) == idle, since(idle-since(elaboration.session)) >= idle-window, not(operator-present(elaboration.session)), not(word-since(elaboration, keep, idle-since(elaboration.session))))"
+    retract: "or(word-on(elaboration, idle-since(elaboration.session)), observed(elaboration.session) == working)"
+    answers: [finish, keep]
+    yes-starts: "finish: the elaboration is done; retire"
+    line: "{n}  idle     {type} {name}   standing · idle {age} · intent {intent}"
+
+  - name: moved
+    group: DECIDE
+    subject: unit
+    create:  "and(state(bolt-of(unit)) == open, unit-covers-moved-claim(unit), not(word-on(unit, claim-version(unit.claim))))"
+    retract: "or(word-on(unit, claim-version(unit.claim)), state(bolt-of(unit)) == landed)"
+    answers: [amend bolt, land and follow]
+    yes-starts: "amend: the unit's items advance to stage 1 with the new version; the follow-on proposal is superseded. follow: the bolt continues; the follow-on proposal's row appears"
+    line: "{n}  moved    claim {claim} {from}→{to}   bolt {bolt} cites {from} · {in-flight} items in flight"
+
+  - name: blocked
+    group: ANSWER
+    subject: exit
+    create:  "and(exit.kind == blocked, not(answered(exit)))"
+    retract: "or(answered(exit), state(exit.object) in [dropped, stopped])"
+    answers: ["<text>"]
+    yes-starts: "session.tell when the session lives, else answer-resume"
+    line: "{n}  blocked  {object} {stage} · {bolt}   \"{question}\"   session {alive}"
+
+  - name: host-stale
+    group: ATTENTION
+    subject: host
+    create:  "and(not(host-alive(host)), any(a in activations, and(a.host == host, a.session != none, not(a.released))))"
+    retract: "or(host-alive(host), not(any(a in activations, and(a.host == host, a.session != none, not(a.released)))))"
+    answers: ["takeover on <host>", wait]
+    yes-starts: "takeover: the activation's generation moves to the named host; a fresh place and session start there"
+    line: "host {host} last seen {age} · holds {objects}   → takeover on {other} · wait"
+
+  - name: unapplied
+    group: ATTENTION
+    subject: word
+    create:  "and(word.unapplied != none, not(any(r in renderings, word in r.unapplied-carried)))"
+    retract: "any(r in renderings, word in r.unapplied-carried)"
+    answers: [read]
+    yes-starts: "nothing"
+    line: "word \"{answer}\" from {time} could not apply   {reason}"
+
+  - name: since
+    group: SINCE
+    subject: advance
+    create:  "since-last-rendering() != empty"
+    retract: "rendering written"
+    answers: [read]
+    yes-starts: "nothing"
+    line: "{verb}   {object}   {detail}"

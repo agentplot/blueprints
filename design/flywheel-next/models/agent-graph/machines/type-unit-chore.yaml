@@ -1,0 +1,20 @@
+# A chore: one stage, one session, no change directory, merged by the
+# machinery on the line the offer named, never a bolt of its own (I8).
+kind: unit-type
+name: chore
+change-directory: false
+lands-on: named-line
+creates-bolt: false
+stages:
+  - name: fix
+    agent: flywheel-chore
+    members: {fixed: [{persona: default}]}
+    join: all
+    not-done: {return-to: fix, bound: 1}
+    writes-verdict: true            # A.6.56: a chore may satisfy a claim
+  - name: merge
+    machinery: git.merge            # into the bolt line when raised there, else the shared line by the repository's policy
+notes: >
+  Chores raised while a bolt is built are units of this type with
+  line=bolt; the land row requires none outstanding (A.6.55), and the
+  bolt's own state is what says so.

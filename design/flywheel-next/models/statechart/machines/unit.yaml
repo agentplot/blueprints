@@ -1,0 +1,80 @@
+# One approved piece of construction work (A.5.32-33). Proposed as one document
+# the operator reads whole; approval turns it into work items under the type
+# version in force. A chore is a unit of the chore type (A.6.52).
+machine: unit
+version: 1
+kind: object
+object: unit
+parent: bolt
+owns: [work-item]
+record:
+  type: string
+  type_version: int
+  document: ref
+  target: {bolt: bolt-id, new_name: string}
+  depends_on: list       # other units of the same bolt
+  claims: list           # claim@version the work serves
+  batch: string          # baseline id when proposed by a first planning; chores share the bolt id
+  redo_notes: string
+  needs_amend: bool
+regions:
+  life:
+    initial: proposed
+    states:
+      proposed:
+        doc: the row names the target bolt and what a yes starts, derived from the type's stages and the item count (A.2.12, A.2.14)
+        row: {kind: unit-proposed, group: approve, batch: batch,
+              answers: ["yes", drop, "redo: <notes>", "bolt <name>", "new bolt <name>", "rename <name>", "type <name>", "pick <letters>"],
+              shows: [unit.type, target, depends_on, claims]}
+        transitions:
+          - when: {word: "bolt <name>"}
+            to: proposed
+            effects: [{do: route_unit, args: {bolt: $word}}]
+          - when: {word: "new bolt <name>"}
+            to: proposed
+            effects: [{do: route_unit, args: {bolt: $word}}]
+          - when: {word: "rename <name>"}
+            to: proposed
+            effects: [{do: rename_bolt, args: {name: $word}, note: renames the proposed bolt; a name is never an identity}]
+          - when: {word: "type <name>"}
+            to: proposed
+            effects: [{do: set_type, args: {type: $word}}]
+          - when: {word: "yes"}
+            to: approved
+            effects:
+              - {do: create_bolt, args: {name: target.new_name, repository: parent.repository}, note: only when the target is a new bolt; a chore never creates one (I8)}
+              - {do: create_items, note: the type version in force is recorded with the unit (A.5.49)}
+          - when: {word: "redo: <notes>"}
+            to: withdrawn
+            effects: [{do: request_replan, args: {notes: $word}}]
+          - when: {word: drop}
+            to: dropped
+      approved:
+        transitions:
+          - when: {ev: unit.deps_merged, is: true}
+            to: in-flight
+          - when: {always: true}
+            to: waiting
+      waiting:
+        doc: a dependency of the same bolt is not merged yet (A.5.28)
+        transitions:
+          - when: {ev: unit.deps_merged, is: true}
+            to: in-flight
+      in-flight:
+        doc: items run the type's stage machine, side by side where their own dependencies allow
+        transitions:
+          - when: {children: {kind: work-item, all: [merged]}}
+            to: merged
+      merged:
+        tail: merged
+        transitions:
+          - when: {parent: {in: [landed]}}
+            to: landed
+      landed:
+        final: true
+      withdrawn:
+        doc: back to planning with the notes; the next proposal is a new unit
+        final: true
+      dropped:
+        tail: dropped
+        final: true

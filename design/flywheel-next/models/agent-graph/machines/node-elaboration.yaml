@@ -1,0 +1,27 @@
+kind: node
+name: elaboration
+family: agent
+key: "elaborations where state == approved or queued"
+when: "and(state(elaboration) in [approved, queued], place-current(elaboration.place), not(live-activation(elaboration, key)), host-has-slot(host))"
+in: [elaboration, observation, word, claim, definition]
+out: [exit]
+session:
+  agent: "flywheel-design-session --type <elaboration.type>"
+  place: "the elaboration's place off its intent's line (git.place.prepare fires first when absent)"
+  work-order:
+    - schema instruction for the book, the claim block and the context map, at the activation's books sha
+    - the type skill (research, writing, prototype, interactive, exploration)
+    - the elaboration record and its proposal text
+    - the intent's chapter(s) and claims as they stand on the intent line
+    - the change directory of the intent (OpenSpec) with prior findings and chores
+    - the answer to a prior blocked question, when one exists
+  exits: [done, blocked, finding, chore, stalled]
+  stall-window: 2h            # applies only to the self-closing type; standing types have no stall edge
+produces:
+  - "exit records via the reconciler; the type template says what done and idle mean (type-elab-*.yaml)"
+release: on-terminal-exit
+notes: >
+  One session, one conversation, one place (A.4.21). The elaboration
+  type is a template that sets how the done edge and the idle
+  observation are interpreted; the node itself is the same for all
+  three types.

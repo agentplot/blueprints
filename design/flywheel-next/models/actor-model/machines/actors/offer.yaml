@@ -1,0 +1,76 @@
+actor: offer
+version: 1
+doc: >
+  A finding or a chore a session offered. The content lives where the
+  change's artifacts live (the session wrote it there); this actor is its
+  state: offered, accepted, dropped. A finding about the session's own thread
+  is a row for that thread; a finding about anything else was appended as a
+  signal and has no actor (requirement 50).
+supervisor: any          # the thread: intent, bolt, or repo (shared-line chore)
+lease: inherited
+fields:
+  kind: finding | chore
+  text: the offer
+  thread: the intent or bolt it concerns
+  repo: for a chore, the repository
+  line: the bolt's line when raised there, the shared line otherwise (requirement 52)
+  session: who offered it
+  outcome: pursued-elaboration | pursued-unit | accepted | dropped
+states:
+  offered:  {class: waiting-on-operator}
+  accepted: {class: done, terminal: true}
+  dropped:  {class: done, terminal: true}
+initial: offered
+decisions:
+  finding:
+    class: approve
+    answers: [elaboration, unit, drop]
+    opened-by: the session's finding record about its own thread
+    retracted-by: the thread closes
+    row: "finding on intent atlas-provider-limits · \"a better approach to …\" → elaboration · unit · drop"
+  chore:
+    class: approve
+    answers: [yes, no]
+    opened-by: the session's chore record
+    retracted-by: the thread closes
+    row: "chores atlas · 3 · a stale AGENTS.md · b citation fix · c rename ref → yes · pick a c · no"
+receive:
+  - in: offered
+    on: tick
+    when: ["self.kind == finding", "not decision.open(self/finding)"]
+    to: same
+    effects: ["decision.open(finding, none, {text, thread})"]
+  - in: offered
+    on: tick
+    when: ["self.kind == chore", "not decision.open(self/chore)"]
+    to: same
+    effects: ["decision.open(chore, none, {text, repo, line})"]
+    note: the rendering groups open chore rows by repo into one line with pick letters; each is still its own decision
+  - in: offered
+    on: decided
+    when: ["msg.kind == finding", "msg.answer == elaboration"]
+    to: accepted
+    effects: ["actor.send(self.thread's intent, propose-elaboration, {type: msg.text or self-closing, brief: self.text, source: self.id})", "actor.set(outcome, pursued-elaboration)"]
+    note: the finding becomes a proposal on the intent, which is still not work (requirement 50)
+  - in: offered
+    on: decided
+    when: ["msg.kind == finding", "msg.answer == unit"]
+    to: accepted
+    effects: ["actor.send(planning/<repo>, route, {finding: self.id, text: self.text, bolt: self.thread})", "actor.set(outcome, pursued-unit)"]
+    note: planning proposes a unit on the open bolt (requirement 31, S28)
+  - in: offered
+    on: decided
+    when: ["msg.answer in [drop, no]"]
+    to: dropped
+    effects: ["actor.set(outcome, dropped)"]
+    note: nothing was created (S4)
+  - in: offered
+    on: decided
+    when: ["msg.kind == chore", "msg.answer == yes"]
+    to: accepted
+    effects: ["actor.send(self.thread if line is a bolt's else repo/<repo>, chore.accepted, {offer: self.id, text: self.text, line: self.line})"]
+    note: accepting is a word on the plan and nothing more; never a bolt (requirement 52, invariant I8)
+  - in: offered
+    on: withdraw
+    to: dropped
+    effects: ["decision.withdraw(self.kind, none)"]

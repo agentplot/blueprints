@@ -1,0 +1,103 @@
+actor: unit
+version: 1
+doc: >
+  One approved piece of construction work. Proposed as one document the
+  operator reads whole; approval breaks it into work items and pins the unit
+  type version it started under (requirement 32, 49). Dependencies are on
+  sibling units of the same bolt (requirement 28).
+supervisor: bolt          # or repo, for a chore on the shared line
+lease: inherited
+fields:
+  type: unit type name
+  type-version: pinned at approval; a type change never moves a unit in flight
+  bolt: bolt id, or none for a shared-line chore
+  target: "the proposal's target: {open: bolt-id} or {new: proposed-name}"
+  deps: unit ids that must be merged first
+  document: the proposal document (its own surface, annotated by the operator)
+  claims: claim@version the unit serves (requirement 86)
+  items: the work items the document lists, in order
+  approved-by: word id or dictation id (invariant I1)
+  seq: approval sequence within the bolt, for merge order
+states:
+  proposed: {class: waiting-on-operator, doc: a document on a row; no items exist}
+  approved: {class: queued}
+  waiting:  {class: queued, doc: a dependency is not merged}
+  building: {class: in-progress}
+  merged:   {class: done, terminal: true}
+  dropped:  {class: done, terminal: true}
+initial: proposed
+decisions:
+  approve:
+    class: approve
+    answers: [yes, drop, redo, bolt, new-bolt, rename]
+    opened-by: planning's applying step spawns the unit in `proposed`
+    retracted-by: the bolt lands or the unit is dropped by dictation
+    row: "unit atlas · status-writer → bolt plan-rows (open) · after: none · covers one-writer sc.1,2 · type default · yes starts: spec → build ×2 → review → merge"
+receive:
+  - in: proposed
+    on: tick
+    when: ["not decision.open(self/approve)", "self/approve never answered"]
+    to: same
+    effects: ["decision.open(approve, none, {target: self.target, deps: self.deps, type: self.type, claims: self.claims, starts: stage list of self.type, document: self.document})"]
+  - in: proposed
+    on: decided
+    when: ["msg.kind == approve", "msg.answer == yes"]
+    to: approved
+    effects:
+      - "actor.set(approved-by, msg.word-id)"
+      - "actor.set(type-version, current version of self.type)"
+      - "if self.target is {new: name}: actor.spawn(bolt, bolt/<repo>/<id>, {repo, name, line}) in proposed"
+      - "actor.set(bolt, resolved bolt id)"
+      - "actor.send(self.bolt, unit.approved, {unit: self.id})"
+      - "for each item i in self.document.items: actor.spawn(work-item, wi/<self.id>/<n>, {order: i, type: self.type, type-version, stage: first stage}) in queued"
+    note: approval turns the document into items; nothing before approval creates items (requirement 32, invariant I1)
+  - in: proposed
+    on: decided
+    when: ["msg.kind == approve", "msg.answer == drop"]
+    to: dropped
+    effects: ["if self.source is an offer: actor.send(self.source, outcome, dropped)"]
+  - in: proposed
+    on: decided
+    when: ["msg.kind == approve", "msg.answer == redo"]
+    to: dropped
+    effects: ["actor.send(planning/<repo>, redo, {unit: self.id, notes: msg.text, document: self.document})"]
+    note: redo with notes sends it back to planning; an annotation on the document is the same word
+  - in: proposed
+    on: decided
+    when: ["msg.kind == approve", "msg.answer in [bolt, new-bolt, rename]"]
+    to: same
+    effects:
+      - "if bolt: actor.set(target, {open: msg.text})"
+      - "if new-bolt: actor.set(target, {new: msg.text})"
+      - "if rename: actor.set(target, {new: msg.text}) or actor.send(target bolt, rename, {name: msg.text})"
+      - "decision.open(approve, none, payload with new target)"
+    note: routing words change the target and leave the row standing for its yes (requirement 14, S27); the reopened decision has the same id, so its prior answer is the routing word, not an approval
+  - in: approved
+    on: tick
+    when: ["every d in self.deps: actor.state(d) == merged"]
+    to: building
+    effects: ["for each item in queued: actor.send(item, go)"]
+  - in: approved
+    on: tick
+    when: ["some d in self.deps: actor.state(d) != merged"]
+    to: waiting
+    effects: []
+  - in: waiting
+    on: tick
+    when: ["every d in self.deps: actor.state(d) == merged"]
+    to: building
+    effects: ["for each item in queued: actor.send(item, go)"]
+    note: units with no unmet dependency run at once, side by side (requirement 28)
+  - in: building
+    on: tick
+    when: ["actor.count(self, work-item, [merged]) == count of items", "actor.count(self, work-item, not merged) == 0"]
+    to: merged
+    effects: ["actor.send(self.bolt or repo, unit.merged, {unit: self.id, type: self.type})"]
+  - in: [approved, waiting, building]
+    on: decided
+    when: ["msg.kind == drop"]
+    to: dropped
+    effects: ["for each item: actor.send(item, drop)"]
+    note: a dictated drop; the only way work already approved goes away
+supervision:
+  work-item: {on-lost: ignore, note: the item bounds its own session restarts by the type}

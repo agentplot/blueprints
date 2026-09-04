@@ -1,0 +1,15 @@
+kind: object
+name: item
+artifacts: [item, advance, activation, session, observation, exit, conflict, effect, word]
+states:
+  - {state: merged,         when: "any(f in effects, and(f.effect == git.merge, f.place == item.place, f.result == ok))",                          proof: effects, terminal: true}
+  - {state: dropped,        when: "word-on(item.unit, drop)",                                                                                      proof: words, terminal: true}
+  - {state: stopped,        when: "stage-of(item).stage == stopped",                                                                               proof: advances}
+  - {state: ready-to-merge, when: "stage-of(item).stage == merge",                                                                                 proof: advances}
+  - {state: conflicted,     when: "conflict-open(item.place)",                                                                                     proof: conflicts}
+  - {state: blocked,        when: "any(e in exits of item's live sessions, and(e.kind == blocked, not(answered(e))))",                             proof: exits}
+  - {state: joined,         when: "join-complete(item, stage-of(item).stage, stage-of(item).attempt)",                                            proof: exits}
+  - {state: working,        when: "any(s in sessions of item at stage, observed(s) == working)",                                                   proof: observations}
+  - {state: idle,           when: "any(s in sessions of item at stage, observed(s) == idle)",                                                      proof: observations}
+  - {state: queued,         when: "and(dependencies-merged(item), not(live-activation(stage, (item, stage-of(item)))))",                           proof: advances}
+  - {state: waiting,        when: "not(dependencies-merged(item))",                                                                                proof: objects/item}

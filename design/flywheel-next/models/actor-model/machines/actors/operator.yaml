@@ -1,0 +1,51 @@
+actor: operator
+version: 1
+doc: >
+  The operator's standing record: the last rendering they received (which
+  makes the plan's tail derivable, requirement 13), the row numbers that
+  rendering used (so "yes 2" resolves against the rendering it answers), the
+  dictation inbox (requirement 11), the unappliable words shown once
+  (requirement 5), and the last sha they reviewed the book at (requirement 109).
+supervisor: org
+lease: inherited
+fields:
+  last-rendering: {point, rows: {number: decision-id}, delivered-by: chat | page}
+  last-reviewed: sha of the books' shared line at the last review view
+  attention: unappliable words not yet rendered
+states:
+  present: {class: none}
+initial: present
+receive:
+  - in: present
+    on: tick
+    when: ["dictations.pending() non-empty"]
+    to: same
+    effects:
+      - "for each dictation d: apply-dictation(d)"
+    note: >
+      apply-dictation is not one atom but the dictation's target clause:
+      `idea` → capture.record + signal.append; `chore on <repo|bolt>` →
+      actor.spawn(offer, …, {kind: chore, accepted: true}) then actor.send(target, chore.accepted);
+      `unit on <bolt>` → actor.spawn(unit, …, {approved-by: d}) in `approved`;
+      `revive <signal>` → move.record(signal, revived); `split <intent>` → …;
+      `finish <elaboration>` → actor.send(elab, decided, {kind: idle, answer: finish});
+      `close <intent|bolt>` → the same word the row would carry. Each carries the dictation id as its word id.
+  - in: present
+    on: tick
+    when: ["the set of open decisions or the tail differs from last-rendering"]
+    to: same
+    effects: [plan.present(rendering), rendering.mark(clock.now(), rows)]
+    note: rendering.mark is written only after the chat send succeeds or the page is served to the operator
+  - in: present
+    on: unappliable
+    to: same
+    effects: ["actor.set(attention, attention + msg)"]
+  - in: present
+    on: rendered
+    to: same
+    effects: ["actor.set(attention, [])"]
+    note: ATTENTION items are shown once, then gone (plan mockup)
+  - in: present
+    on: reviewed
+    to: same
+    effects: [actor.set(last-reviewed, msg.sha)]

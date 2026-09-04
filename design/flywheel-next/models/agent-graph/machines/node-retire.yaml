@@ -1,0 +1,16 @@
+kind: node
+name: retire
+family: machinery
+key: "sessions whose object is terminal, and places whose work is merged or dropped"
+when: "and(state(session.object) in [done, merged, dropped, stopped, landed, closed], not(session.object.type in [standing, with-operator]) or word-on(session.object, finish), or(observed(session) != working, word.now))"
+in: [session, observation, item, elaboration, bolt, intent, word]
+out: [effect]
+effects:
+  - "session.retire — herdr agent stop"
+  - "git.place.remove — wt remove; tethered processes end"
+produces:
+  - "effect records"
+release: after-effects
+notes: >
+  A.7.63 and I6: a standing session is retired only by the word finish.
+  A.7.60: never while working, unless the word says now.

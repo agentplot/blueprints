@@ -1,0 +1,301 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "flywheel-next/agent-graph/machines/schema.json",
+  "title": "Agent-graph definitions",
+  "description": "Every file under machines/ is one YAML document with a top-level `kind` chosen from the oneOf below. Predicates are strings in the expression grammar: atoms `name(arg, ...)`, combinators `and(...)`, `or(...)`, `not(...)`, `all(var in set, pred)`, `any(var in set, pred)`, `count(var in set, pred) >= n`, `latest(set).field`, `since(time) >= duration`, `fingerprint(set)`. Atoms are declared in atoms.yaml. No definition may contain the keys `path`, `label`, `column`, `field`, `service`, `url` outside bindings/ (I13).",
+  "oneOf": [
+    { "$ref": "#/$defs/graph" },
+    { "$ref": "#/$defs/atoms" },
+    { "$ref": "#/$defs/rows" },
+    { "$ref": "#/$defs/node" },
+    { "$ref": "#/$defs/object" },
+    { "$ref": "#/$defs/unitType" },
+    { "$ref": "#/$defs/elabType" },
+    { "$ref": "#/$defs/binding" },
+    { "$ref": "#/$defs/scenario" }
+  ],
+  "$defs": {
+    "predicate": { "type": "string", "minLength": 1 },
+    "duration": { "type": "string", "pattern": "^[0-9]+(s|m|h|d)$" },
+    "name": { "type": "string", "pattern": "^[a-z][a-z0-9./-]*$" },
+
+    "graph": {
+      "type": "object",
+      "required": ["kind", "version", "edges", "nodes", "scheduling"],
+      "properties": {
+        "kind": { "const": "graph" },
+        "version": { "type": "string" },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "artifact", "from", "to", "store"],
+            "properties": {
+              "name": { "$ref": "#/$defs/name" },
+              "artifact": { "$ref": "#/$defs/name" },
+              "from": { "type": "array", "items": { "$ref": "#/$defs/name" }, "minItems": 1 },
+              "to": { "type": "array", "items": { "$ref": "#/$defs/name" }, "minItems": 1 },
+              "store": { "$ref": "#/$defs/name", "description": "abstract store name the binding must satisfy" },
+              "immutable": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "nodes": { "type": "array", "items": { "$ref": "#/$defs/name" } },
+        "scheduling": {
+          "type": "object",
+          "required": ["order", "bound"],
+          "properties": {
+            "order": { "type": "array", "items": { "type": "string" } },
+            "bound": { "$ref": "#/$defs/predicate" }
+          }
+        },
+        "settings": { "type": "object", "additionalProperties": { "type": ["string", "number", "boolean"] } }
+      },
+      "additionalProperties": false
+    },
+
+    "atoms": {
+      "type": "object",
+      "required": ["kind", "predicates", "effects"],
+      "properties": {
+        "kind": { "const": "atoms" },
+        "predicates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "args", "reads", "question"],
+            "properties": {
+              "name": { "$ref": "#/$defs/name" },
+              "args": { "type": "array", "items": { "type": "string" } },
+              "reads": { "type": "array", "items": { "$ref": "#/$defs/name" }, "description": "evidence names" },
+              "question": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "effects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "args", "identity", "act"],
+            "properties": {
+              "name": { "$ref": "#/$defs/name" },
+              "args": { "type": "array", "items": { "type": "string" } },
+              "identity": { "type": "string", "description": "the fields that make the effect id; a repeat with the same id changes nothing" },
+              "act": { "type": "string" },
+              "requires": { "$ref": "#/$defs/predicate" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "rows": {
+      "type": "object",
+      "required": ["kind", "groups", "rows"],
+      "properties": {
+        "kind": { "const": "rows" },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "counted", "yes-all"],
+            "properties": {
+              "name": { "type": "string" },
+              "counted": { "type": "boolean" },
+              "yes-all": { "type": "boolean" },
+              "meaning": { "type": "string" }
+            }
+          }
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "group", "subject", "create", "retract", "answers", "yes-starts"],
+            "properties": {
+              "name": { "$ref": "#/$defs/name" },
+              "group": { "type": "string" },
+              "subject": { "$ref": "#/$defs/name", "description": "the edge whose artifact is presented" },
+              "create": { "$ref": "#/$defs/predicate" },
+              "retract": { "$ref": "#/$defs/predicate" },
+              "answers": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+              "yes-starts": { "type": "string" },
+              "line": { "type": "string", "description": "the one-line chat rendering, with {placeholders}" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "node": {
+      "type": "object",
+      "required": ["kind", "name", "family", "key", "when", "in", "out"],
+      "properties": {
+        "kind": { "const": "node" },
+        "name": { "$ref": "#/$defs/name" },
+        "family": { "enum": ["agent", "machinery", "operator"] },
+        "key": { "type": "string", "description": "candidate enumeration: an atom returning keys" },
+        "when": { "$ref": "#/$defs/predicate" },
+        "in": { "type": "array", "items": { "$ref": "#/$defs/name" } },
+        "out": { "type": "array", "items": { "$ref": "#/$defs/name" } },
+        "effects": { "type": "array", "items": { "type": "string" }, "description": "effect atoms in order" },
+        "produces": { "type": "array", "items": { "type": "string" }, "description": "artifacts written from the exit or the inputs" },
+        "session": {
+          "type": "object",
+          "required": ["agent", "place", "work-order"],
+          "properties": {
+            "agent": { "type": "string" },
+            "place": { "type": "string" },
+            "work-order": { "type": "array", "items": { "type": "string" }, "description": "the closed set of inputs" },
+            "exits": { "type": "array", "items": { "enum": ["done", "blocked", "finding", "chore", "stalled"] } },
+            "stall-window": { "$ref": "#/$defs/duration" }
+          }
+        },
+        "release": { "enum": ["after-effects", "on-terminal-exit"] },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "object": {
+      "type": "object",
+      "required": ["kind", "name", "artifacts", "states"],
+      "properties": {
+        "kind": { "const": "object" },
+        "name": { "$ref": "#/$defs/name" },
+        "artifacts": { "type": "array", "items": { "$ref": "#/$defs/name" }, "description": "the edges whose artifacts name this object" },
+        "states": {
+          "type": "array",
+          "description": "first match wins",
+          "items": {
+            "type": "object",
+            "required": ["state", "when", "proof"],
+            "properties": {
+              "state": { "$ref": "#/$defs/name" },
+              "when": { "$ref": "#/$defs/predicate" },
+              "proof": { "$ref": "#/$defs/name", "description": "the one store that proves this state" },
+              "terminal": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "stage": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "$ref": "#/$defs/name" },
+        "agent": { "type": "string" },
+        "machinery": { "type": "string" },
+        "members": {
+          "type": "object",
+          "oneOf": [
+            { "required": ["fixed"], "properties": { "fixed": { "type": "array", "items": { "type": "object", "required": ["persona"], "properties": { "persona": { "type": "string" }, "instruction": { "type": "string" } } } } } },
+            { "required": ["rule"], "properties": { "rule": { "type": "object", "required": ["files"], "properties": { "files": { "type": "string", "description": "a glob read against the repository being worked" } } } } }
+          ]
+        },
+        "join": { "oneOf": [ { "enum": ["all", "any"] }, { "type": "object", "required": ["count"], "properties": { "count": { "type": "integer", "minimum": 1 } } } ] },
+        "not-done": {
+          "type": "object",
+          "required": ["return-to", "bound"],
+          "properties": { "return-to": { "$ref": "#/$defs/name" }, "bound": { "type": "integer", "minimum": 0 } }
+        },
+        "gates": { "type": "array", "items": { "$ref": "#/$defs/name" } },
+        "writes-verdict": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+
+    "unitType": {
+      "type": "object",
+      "required": ["kind", "name", "change-directory", "lands-on", "stages"],
+      "properties": {
+        "kind": { "const": "unit-type" },
+        "name": { "$ref": "#/$defs/name" },
+        "change-directory": { "type": "boolean" },
+        "lands-on": { "enum": ["bolt-line", "named-line"] },
+        "creates-bolt": { "type": "boolean", "default": true },
+        "stages": { "type": "array", "items": { "$ref": "#/$defs/stage" }, "minItems": 1 },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "elabType": {
+      "type": "object",
+      "required": ["kind", "name", "ends", "on-done", "on-idle", "place"],
+      "properties": {
+        "kind": { "const": "elaboration-type" },
+        "name": { "$ref": "#/$defs/name" },
+        "agent": { "type": "string" },
+        "ends": { "enum": ["by-session", "by-word"] },
+        "on-done": { "type": "string" },
+        "on-idle": { "type": "string" },
+        "idle-window": { "$ref": "#/$defs/duration" },
+        "stall-window": { "$ref": "#/$defs/duration" },
+        "suppress-idle-when": { "$ref": "#/$defs/predicate" },
+        "place": { "enum": ["merge-then-remove", "keep-while-session"] },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "binding": {
+      "type": "object",
+      "required": ["kind", "profile", "central-service", "stores", "evidence", "effects", "lease", "receive", "notify", "status-view", "direct-word", "adds"],
+      "properties": {
+        "kind": { "const": "binding" },
+        "profile": { "type": "string" },
+        "central-service": { "type": "string" },
+        "stores": { "type": "object", "additionalProperties": { "type": "object", "required": ["system", "record"], "properties": { "system": { "type": "string" }, "path": { "type": "string" }, "record": { "type": "string" }, "identity": { "type": "string" } } } },
+        "evidence": { "type": "object", "additionalProperties": { "type": "string" } },
+        "effects": { "type": "object", "additionalProperties": { "type": "string" } },
+        "lease": { "type": "object" },
+        "receive": { "type": "object" },
+        "notify": { "type": "object" },
+        "status-view": { "type": "object" },
+        "direct-word": { "type": "array", "items": { "type": "object", "required": ["sees", "word"] } },
+        "adds": { "type": "array", "items": { "type": "object", "required": ["guarantee", "mechanism", "state-lives"] }, "description": "C.3.153: mechanisms the storage does not give on its own" },
+        "scope": { "type": "object" }
+      },
+      "additionalProperties": false
+    },
+
+    "scenario": {
+      "type": "object",
+      "required": ["kind", "name", "given", "when", "then"],
+      "properties": {
+        "kind": { "const": "scenario" },
+        "name": { "type": "string" },
+        "requirements": { "type": "array", "items": { "type": "string" } },
+        "profiles": { "type": "array", "items": { "type": "string" } },
+        "given": { "type": "object", "description": "store name → list of records, in abstract field names" },
+        "when": { "type": "array", "items": { "type": "object" } },
+        "then": {
+          "type": "object",
+          "properties": {
+            "states": { "type": "object" },
+            "fired": { "type": "array", "items": { "type": "string" } },
+            "effects": { "type": "array", "items": { "type": "string" } },
+            "writes": { "type": "array", "items": { "type": "string" } },
+            "rows": { "type": "array", "items": { "type": "string" } },
+            "no-rows": { "type": "array", "items": { "type": "string" } },
+            "no-effects": { "type": "boolean" },
+            "no-writes": { "type": "boolean" },
+            "report": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

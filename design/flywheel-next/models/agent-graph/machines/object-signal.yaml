@@ -1,0 +1,6 @@
+kind: object
+name: signal
+artifacts: [capture, signal, move, word]
+states:
+  - {state: moved,   when: "latest(moves of signal) exists and latest(moves of signal).move != revived", proof: moves}
+  - {state: unmoved, when: "true",                                                                       proof: moves}

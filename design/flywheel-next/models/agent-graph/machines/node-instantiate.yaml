@@ -1,0 +1,35 @@
+# The node that turns a word into objects. It is the only producer of
+# intent, elaboration, bolt, unit and item artifacts, so I1 is held here:
+# every object it writes carries the word (or dictation) that approved it.
+kind: node
+name: instantiate
+family: machinery
+key: "words where applied == none"
+when: "and(word.applied == none, row-valid(word.row))"
+in: [word, ask, proposal, exit, definition]
+out: [intent, elaboration, bolt, unit, item, proposal, move, advance]
+effects:
+  - "write.object for each object the word makes"
+  - "write.move for a drop or split or revive"
+  - "write.proposal for an elaboration proposal from a finding"
+  - "write.advance for amend"
+produces:
+  - "yes on intent proposal → intent(approval=word) + elaboration(approved, type) per proposed elaboration"
+  - "drop on intent proposal → move(drop, reason=proposal dropped by word) on each cited signal"
+  - "split on intent proposal → moves(join, new proposal id) per the operator's partition; two proposals"
+  - "yes on elab proposal → elaboration(approved, type from proposal or the word's type arg)"
+  - "yes on unit proposal → unit(bolt=target or new, type, after, approval=word) + item per document item; bolt + git.line.create when new-bolt-name; rename → bolt.name"
+  - "redo on unit proposal → proposal.word=redo with notes; the next planning of the repository carries the notes (fingerprint includes redo notes)"
+  - "yes | pick on chores → unit(type=chore, line=exit.line, approval=word) + one item each"
+  - "yes on baseline → as unit for every unit and chore in the set"
+  - "dictation naming a bolt → unit(type=ask.type or default, bolt, approval=ask) + items from a one-item document"
+  - "dictation 'revive <signal>' → the signal's move is followed by a revived record"
+  - "amend on moved → advance(item, to=stage 1, reason=amend, version) for each item of the unit; the follow-on proposal gets word=superseded"
+  - "finish on idle → elaboration.finished=word (the derivation reads it as done)"
+  - "takeover on host-stale → activation(generation+1, host=named) for each session activation of the stale host; the old marked superseded"
+  - "when row-valid is false → word.unapplied=reason (an ATTENTION row once)"
+release: after-effects
+notes: >
+  Keyed by word id so a restart between recording and applying re-fires
+  once; every write has a deterministic identity so the second firing
+  changes nothing (A.1.5, B.2.124).

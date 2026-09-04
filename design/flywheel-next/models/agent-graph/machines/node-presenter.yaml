@@ -1,0 +1,19 @@
+kind: node
+name: presenter
+family: machinery
+key: "rows-fingerprint()"
+when: "rows-fingerprint() != latest(renderings).fingerprint"
+in: [proposal, word, exit, observation, unit, bolt, intent, elaboration, host, rendering, advance, effect]
+out: [rendering, effect]
+effects:
+  - "write.rendering — first, so the numbers are fixed before anything is shown"
+  - "present.page    — the plan page on the host's private-network address; the status page"
+  - "present.chat    — one Discord message: the same rows, numbers, one line each, a link to the page; the previous message edited as superseded"
+produces:
+  - "rendering(id, at, rows in order with generations, tail-since=previous rendering, unapplied words carried, delivered=[discord message id, page])"
+release: after-effects
+notes: >
+  The rendering is the recorded state A.2.13 asks for: the SINCE tail
+  is everything terminal after the last rendering's time. "yes all" is
+  bound to the rendering the reply answers. Projections the presenter
+  writes (board columns, page, chat) are never read as truth.

@@ -1,0 +1,10 @@
+kind: object
+name: session
+artifacts: [activation, session, observation, exit, effect]
+states:
+  - {state: retired,  when: "any(f in effects, and(f.effect == session.retire, f.subject == session, f.result == ok))", proof: effects, terminal: true}
+  - {state: gone,     when: "observed(session) == gone",                                                                 proof: observations, terminal: true}
+  - {state: blocked,  when: "and(latest(exits of session).kind == blocked, not(answered(latest(exits of session))))",   proof: exits}
+  - {state: idle,     when: "observed(session) == idle",                                                                 proof: observations}
+  - {state: working,  when: "observed(session) == working",                                                              proof: observations}
+  - {state: starting, when: "and(activation exists, activation.session == none)",                                        proof: activations}

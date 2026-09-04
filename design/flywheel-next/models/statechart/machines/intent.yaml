@@ -1,0 +1,96 @@
+# One thread of design work about one subject (A.3). Proposed by curation or by
+# the operator's dictation; closed only by the operator. Its line is off the
+# books' shared line; archiving is the landing of that line (A.5.42).
+machine: intent
+version: 1
+kind: object
+object: intent
+parent: null
+owns: [elaboration]
+record:
+  subject: string
+  signals: list          # cited signal ids; weight is derived from them by event date
+  challenges: list       # standing claims its signals argue with
+  close_declined_at: time
+regions:
+  life:
+    initial: proposed
+    states:
+      proposed:
+        doc: a row with its proposed elaborations folded in (A.2.9); dictation skips this state
+        row: {kind: intent-proposed, group: approve, answers: ["yes", drop, split], shows: [signals, challenges]}
+        transitions:
+          - when: {word: "yes"}
+            to: open
+            effects: [{do: open_intent}]
+          - when: {word: drop}
+            to: dropped
+            effects: [{do: drop_signals, args: {reason: intent dropped}, note: each signal keeps a move naming the drop (A.15.104)}]
+          - when: {word: split}
+            to: dropped
+            effects: [{do: split_intent, args: {partition: $word}, note: two proposed intents replace this one; signals re-moved to each}]
+      open:
+        doc: elaborations run here; the line region keeps the intent's line current
+        regions:
+          line:
+            initial: line
+            states:
+              line:
+                machine: line
+                params: {parent: books-shared-line, landing_policy: direct}
+          material:
+            initial: settled
+            states:
+              settled:
+                transitions:
+                  - when: {ev: intent.material_pending, is: true}
+                    to: settled
+                    effects: [{do: propose_elaboration, args: {material: pending, type: from-material}, note: new material joins the one proposal awaiting approval (A.3.18)}]
+          close:
+            initial: not-offered
+            states:
+              not-offered:
+                transitions:
+                  - when: {all: [{children: {kind: elaboration, none: [proposed, approved, placing, working, finishing]}},
+                                 {children: {kind: elaboration, any: [done]}},
+                                 {not: {ev: intent.close_declined_since_last_final, is: true}}]}
+                    to: offered
+              offered:
+                row: {kind: intent-close, group: decide, answers: [close, keep open]}
+                transitions:
+                  - when: {word: "keep open"}
+                    to: declined
+                  - when: {children: {kind: elaboration, any: [proposed, approved, placing, working, finishing]}}
+                    to: not-offered
+                    note: new work arrived; the decision can no longer be made as posed
+              declined:
+                doc: re-offered only when another elaboration reaches done
+                transitions:
+                  - when: {not: {ev: intent.close_declined_since_last_final, is: true}}
+                    to: not-offered
+        transitions:
+          - when: {all: [{region: {name: close, in: [offered]}}, {word: close}]}
+            to: archiving
+            enter: {line: landing}
+      archiving:
+        doc: the archive lands the intent's line on the books' shared line; proposed claims become standing (A.5.42, S34)
+        transitions:
+          - when: {all: [{ev: intent.archived, is: true}, {final: removed}]}
+            to: closed
+          - when: {final: land-failed}
+            to: archive-failed
+          - when: {not: {ev: intent.archived, is: true}}
+            to: archiving
+            effects: [{do: archive_intent, note: "the archive commit on the intent's line, before its landing"}]
+      archive-failed:
+        row: {kind: land-failed, group: decide, answers: [retry, hold]}
+        transitions:
+          - when: {word: retry}
+            to: archiving
+            enter: {line: landing}
+      closed:
+        tail: closed
+        final: true
+      dropped:
+        tail: dropped
+        final: true

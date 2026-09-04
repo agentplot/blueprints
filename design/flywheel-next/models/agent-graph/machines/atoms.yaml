@@ -1,0 +1,94 @@
+# The domain's atoms: one predicate per question asked of evidence, one
+# effect per act on the world. The engine has none of these; it has the
+# combinators of schema.json and the control-plane contract. A new
+# question or act is a new entry here and an implementation in
+# fw-domain; it is never a change to fw-engine.
+kind: atoms
+
+predicates:
+  # signals and curation
+  - {name: unmoved-signals,           args: [],                    reads: [signal, move],            question: which signals have no standing move}
+  - {name: curation-due,              args: [set],                 reads: [signal, activation],      question: is the unmoved set at threshold, or the cadence due with the set non-empty}
+  - {name: signal-weight,             args: [proposal],            reads: [signal],                  question: how many signals, from which sources, over what span by event date}
+
+  # words and proposals
+  - {name: word-on,                   args: [row, generation],     reads: [word],                    question: is there a word for this row and generation}
+  - {name: word-since,                args: [subject, answer, fingerprint], reads: [word],            question: was this answer given since the subject's fingerprint last changed}
+  - {name: awaiting-proposal,         args: [intent],              reads: [proposal, word],          question: does the intent carry a proposal with no word}
+  - {name: row-valid,                 args: [row],                 reads: [proposal, intent, bolt, unit, item, exit, word], question: can this row's decision still be made}
+
+  # objects
+  - {name: elaborations-of,           args: [intent],              reads: [elaboration],             question: the elaborations naming the intent}
+  - {name: units-of,                  args: [bolt],                reads: [unit],                    question: the units naming the bolt}
+  - {name: items-of,                  args: [unit],                reads: [item],                    question: the items naming the unit}
+  - {name: open-bolts,                args: [repository],          reads: [bolt, effect],            question: the bolts of the repository not landed}
+  - {name: dependencies-merged,       args: [item],                reads: [item, unit, advance, effect], question: are every unit and item this one is after merged}
+  - {name: stage-of,                  args: [item],                reads: [advance],                 question: the item's current stage and attempt from its latest advance}
+  - {name: stage-members,             args: [item, stage],         reads: [definition, as-built],    question: the member set for this stage, fixed or by rule against the repository}
+  - {name: join-complete,             args: [item, stage, attempt], reads: [exit, activation],       question: does the set of terminal exits satisfy the stage's join rule}
+  - {name: stage-verdict,             args: [item, stage, attempt], reads: [exit],                   question: did the joined exits judge the item done or not done}
+  - {name: retry-exhausted,           args: [item, stage],         reads: [advance, definition],     question: has the stage returned the item more times than its bound}
+  - {name: chores-outstanding,        args: [bolt],                reads: [unit, item, advance],     question: is any accepted chore unit of the bolt not merged}
+  - {name: finished-set-fingerprint,  args: [bolt],                reads: [unit, item, advance, effect], question: a hash of which units are finished}
+
+  # sessions and hosts
+  - {name: live-activation,           args: [node, key],           reads: [activation, host],        question: is there an unreleased activation whose holder's heartbeat is fresh, or is session-backed}
+  - {name: observed,                  args: [session],             reads: [observation],             question: the latest of working, idle, blocked, gone}
+  - {name: idle-since,                args: [session],             reads: [observation],             question: when the current idle episode began}
+  - {name: operator-present,          args: [session],             reads: [observation, word],       question: keystrokes within presence-window, or a word in without a word out}
+  - {name: terminal-exit,             args: [session],             reads: [exit],                    question: has the session a done or stalled exit}
+  - {name: answered,                  args: [exit],                reads: [word],                    question: does a blocked exit have an answer word}
+  - {name: host-alive,                args: [host],                reads: [host],                    question: is the host's heartbeat younger than lease-ttl}
+  - {name: host-has-slot,             args: [host],                reads: [activation, host],        question: is the host under its bound}
+  - {name: refusal-seen,              args: [session],             reads: [observation],             question: did the pane log a refused git operation}
+
+  # lines and places
+  - {name: line-behind-parent,        args: [line],                reads: [line-head],               question: is the parent's head not an ancestor of the line's head}
+  - {name: place-current,             args: [place],               reads: [observation, line-head],  question: does the place's base equal its line's head as of the read point}
+  - {name: take-due,                  args: [line],                reads: [manifest, effect],        question: is the repository's take cadence due for this line}
+  - {name: ready-to-merge,            args: [line],                reads: [item, advance, elaboration, exit], question: the places off the line whose work is joined at the merge stage, in order}
+  - {name: gate-result,               args: [bolt],                reads: [observation],             question: did the landing's gates pass, fail, or not finish}
+  - {name: conflict-open,             args: [place],               reads: [conflict, exit],          question: is there a conflict on the place with no done exit after it}
+
+  # claims and the ledger
+  - {name: standing-claims,           args: [repository],          reads: [claim, manifest],         question: the claims on the books shared line whose scope includes the repository, with versions}
+  - {name: claim-version,             args: [claim],               reads: [claim],                   question: the claim's current standing version}
+  - {name: verdict-current,           args: [repository, claim],   reads: [verdict, claim, as-built], question: a verdict at the current version whose evidence is present}
+  - {name: backlog-fingerprint,       args: [repository],          reads: [claim, verdict, as-built, ask, signal, manifest], question: a hash of the claims with no satisfied or not-applicable current verdict, and the asks and routed signals naming the repository}
+  - {name: last-planning-fingerprint, args: [repository],          reads: [activation, exit],        question: the fingerprint of the last completed planning of the repository}
+  - {name: unit-covers-moved-claim,   args: [unit],                reads: [proposal, claim],         question: does the unit's proposal cover a claim whose standing version differs}
+  - {name: asbuilt-names-standing-claims, args: [place],           reads: [as-built, claim],         question: does every serves line in the place resolve to a standing claim}
+
+  # plan
+  - {name: since-last-rendering,      args: [],                    reads: [rendering, advance, effect, word], question: terminal transitions after the last rendering}
+  - {name: rows-fingerprint,          args: [],                    reads: [proposal, word, exit, observation, unit, bolt, intent, host], question: a hash of the row set}
+
+effects:
+  # git — the only producer of lines and places
+  - {name: git.line.create,   args: [repository, line, parent],       identity: "repository line",                 act: "git branch <line> <parent>; push", requires: "not(line exists)"}
+  - {name: git.line.take,     args: [line],                           identity: "line parent-head",                act: "merge the parent into the line; abort on conflict and write a conflict artifact", requires: "line-behind-parent(line)"}
+  - {name: git.place.prepare, args: [place, line],                    identity: "place line-head",                 act: "wt add off the line; hooksPath to flywheel/hooks; ports by hash; tether", requires: "not(line-behind-parent(line))"}
+  - {name: git.place.rebase,  args: [place],                          identity: "place line-head",                 act: "rebase the place onto its line; abort on conflict and write a conflict artifact", requires: "observed(place.session) != working"}
+  - {name: git.place.remove,  args: [place],                          identity: "place",                           act: "wt remove; tethered processes end"}
+  - {name: git.merge,         args: [place, line],                    identity: "place-head line-head",            act: "merge the place into the line, one per activation, in order", requires: "place-current(place)"}
+  - {name: git.land,          args: [bolt],                           identity: "bolt line-head",                  act: "by manifest policy: gh pr create and wait for gates, or fast-forward push; record the result", requires: "not(line-behind-parent(bolt.line))"}
+  - {name: git.archive,       args: [intent],                         identity: "intent line-head",                act: "openspec archive on the intent line; land by the books policy; delete the line"}
+
+  # sessions
+  - {name: session.start,     args: [activation],                     identity: "activation",                      act: "write the work order in the place; herdr agent start --name <activation>; judge by herdr agent list", requires: "place-current(activation.place)"}
+  - {name: session.tell,      args: [session, message],               identity: "session message-hash",            act: "herdr agent send", requires: "observed(session) != working"}
+  - {name: session.retire,    args: [session],                        identity: "session",                         act: "herdr agent stop", requires: "or(observed(session) != working, word.now)"}
+
+  # records written from an exit or a word
+  - {name: write.move,        args: [signal, move],                   identity: "signal move-hash",                act: "append the move record"}
+  - {name: write.proposal,    args: [proposal],                       identity: "proposal generation",             act: "write or amend the proposal"}
+  - {name: write.object,      args: [object],                         identity: "object",                          act: "write the object record with its approval"}
+  - {name: write.advance,     args: [advance],                        identity: "item from to attempt",            act: "append the advance"}
+  - {name: write.verdict,     args: [verdict],                        identity: "repository claim claim-version revision", act: "append the verdict to the repository's ledger"}
+  - {name: write.signal,      args: [capture, signal],                identity: "capture signal-hash",             act: "append a capture (once) and a signal"}
+  - {name: write.word,        args: [word],                           identity: "row generation",                  act: "compare-and-swap the word"}
+  - {name: write.rendering,   args: [rendering],                      identity: "rows-fingerprint",                act: "record what was presented"}
+
+  # presentation
+  - {name: present.page,      args: [rendering],                      identity: "rendering",                       act: "rebuild the plan page and the status page"}
+  - {name: present.chat,      args: [rendering],                      identity: "rendering",                       act: "post one Discord message with the rows, numbers and link; mark the previous superseded"}

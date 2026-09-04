@@ -1,0 +1,38 @@
+# A back-and-forth the operator is in. The machinery neither ends it nor asks
+# about it while the operator is present (A.4.22); absent long enough, it is a
+# standing session.
+machine: with-operator
+version: 1
+kind: template
+params:
+  place: the elaboration's place
+  agent: the agent for the session
+regions:
+  work:
+    initial: session
+    states:
+      session:
+        machine: session
+        params: {agent: $agent, place: $place, work_order: rendered, keep_alive: true}
+        transitions:
+          - when: {all: [{region: {name: activity, in: [idle]}}, {not: {ev: session.operator_present, is: true}}, {ev: session.idle_since, older: 12h}]}
+            to: idle-offered
+          - when: {final: lost}
+            to: session
+      idle-offered:
+        row: {kind: idle, group: decide, answers: [finish, keep]}
+        transitions:
+          - when: {ev: session.operator_present, is: true}
+            to: session
+            note: the operator is back; no question is asked while they are present
+          - when: {word: finish}
+            to: finished
+          - when: {word: keep}
+            to: session
+      finished:
+        enter: {session: ended}
+        transitions:
+          - when: {final: ended}
+            to: done
+      done:
+        final: true

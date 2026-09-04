@@ -1,0 +1,170 @@
+actor: bolt
+version: 1
+doc: >
+  One delivery of construction work to one built repository: a line off the
+  shared line, the units on it, the operator's own place at its head, the
+  chores collected against it, and one landing when the operator closes it.
+  Merges into the line happen one at a time in a fixed order (requirement 34).
+  Nothing ages a bolt out (requirement 30). Its name is a field, never its id.
+supervisor: repo
+lease: root
+fields:
+  repo: built repository name
+  name: the operator's to change at any time
+  line: bolts/<id>
+  operator-place: the worktree kept at the line's head for the operator (requirement 40)
+  merge-queue: item ids in merge order (unit approval seq, then item seq)
+  merging: the one item being merged, or none
+  chores: accepted chore offers with done-by, or none (requirement 55)
+  last-take: point of the last line.take-parent
+  landing: current landing id, or none
+  landing-failed: reason of the last failed landing, or none
+states:
+  proposed:  {class: waiting-on-operator, doc: named in a unit proposal; exists as a proposal only (requirement 4)}
+  open:      {class: in-progress}
+  closable:  {class: waiting-on-operator, doc: every unit merged, no chore outstanding — the close row}
+  landing:   {class: in-progress}
+  landed:    {class: done, terminal: true}
+initial: proposed
+decisions:
+  close:
+    class: approve
+    key: "digest of merged unit ids"
+    answers: [yes, hold]
+    opened-by: every unit merged and no chore outstanding
+    retracted-by: a new unit is approved on the bolt
+    row: "land switchboard/plan-rows · 4 units merged · gates green → yes · hold"
+  claim-moved:
+    class: decide
+    key: "claim + old version"
+    answers: [amend, follow]
+    opened-by: a standing claim a unit of the bolt cites has a newer version than the one cited
+    retracted-by: the bolt lands, or the citing unit is dropped
+    row: "moved claim sessions/one-writer v3→v4 · bolt plan-rows cites v3 · 2 items in flight → amend bolt · land and follow"
+  land-failed:
+    class: decide
+    key: landing-id
+    answers: [retry, hold]
+    opened-by: the landing failed at the repository's gates
+    retracted-by: a later landing passes
+    row: "landing plan-rows failed · gates red · <reason> → retry · hold"
+receive:
+  - in: proposed
+    on: unit.approved
+    to: open
+    effects:
+      - "line.ensure(built, self.line, shared)"
+      - "line.take-parent(built, self.line, shared)"
+      - "place.ensure(built, self.line, self.operator-place)"
+    note: a bolt becomes real when the first unit targeting it is approved; before that it is a name on a row
+  - in: open
+    on: unit.approved
+    to: same
+    effects: ["decision.withdraw(close, every open key)"]
+  - in: [open, closable]
+    on: rename
+    to: same
+    effects: [actor.set(name, msg.name)]
+  - in: open
+    on: merge-request
+    to: same
+    effects: ["actor.set(merge-queue, merge-queue + msg.item, sorted by (unit seq, item seq))"]
+  - in: open
+    on: tick
+    when: ["self.merging == none", "self.merge-queue non-empty"]
+    to: same
+    effects: ["actor.set(merging, head of merge-queue)", "actor.send(head, merge-now)"]
+    note: one at a time (requirement 34); the item performs place.merge-into-line under the same lease and reports back
+  - in: open
+    on: item.merged
+    to: same
+    effects:
+      - "actor.set(merging, none)"
+      - "actor.set(merge-queue, merge-queue without msg.item)"
+      - "place.rebase(self.operator-place, self.line)"
+      - "for each sibling item of the bolt in a stage: actor.send(item, line-moved, {line: self.line})"
+    note: the operator's place is refreshed after each merge (requirement 40); siblings rebase when idle (requirement 44, S32)
+  - in: open
+    on: item.merge-conflict
+    to: same
+    effects: ["actor.set(merging, none)"]
+    note: the item goes to `conflict` and asks its session; it re-requests a merge when the session exits done (requirement 45)
+  - in: open
+    on: chore.accepted
+    to: same
+    effects:
+      - "actor.set(chores, chores + {offer: msg.offer, text: msg.text, done-by: none})"
+      - "if no unit of type chore on self in [approved, waiting, building]: actor.spawn(unit, unit/<self.id>/chores-<n>, {type: chore, type-version: current, bolt: self.id, deps: every other unit of self, document: outstanding chores}) in approved"
+    note: one session does the bolt's outstanding chores on the bolt's line before it lands; the bolt's state is what says they are outstanding (requirement 55). Its deps make it the last unit to run.
+  - in: open
+    on: unit.merged
+    when: ["msg.unit.type == chore"]
+    to: same
+    effects: ["actor.set(chores, each chore listed in the unit's document with done-by = msg.unit)"]
+  - in: open
+    on: tick
+    when:
+      - "actor.count(self, unit, [proposed, approved, waiting, building, stopped]) == 0"
+      - "actor.count(self, unit, [merged]) > 0"
+      - "no chore with done-by == none"
+      - "self.merging == none"
+    to: closable
+    effects: ["decision.open(close, digest of merged units, {units: count, gates: landing.result of the last dry run})"]
+    note: the close is proposed when every unit is finished (requirement 35)
+  - in: closable
+    on: unit.approved
+    to: open
+    effects: ["decision.withdraw(close, digest)"]
+  - in: closable
+    on: decided
+    when: ["msg.kind == close", "msg.answer == yes"]
+    to: landing
+    effects: ["line.take-parent(built, self.line, shared)", "actor.set(landing, self.id + '/land/' + n)", "landing.start(built, self.line, repo.landing-policy, self.landing)"]
+    note: a bolt takes the shared line once more before landing (requirement 43, S33); the close is the word, the landing is the effect (requirement 46)
+  - in: landing
+    on: tick
+    when: ["landing.result(built, self.landing) == passed"]
+    to: landed
+    effects: ["place.remove(self.operator-place)", "line.remove(built, self.line)", "actor.send(planning/<self.repo>, bolt.landed, {bolt: self.id})"]
+  - in: landing
+    on: tick
+    when: ["landing.result(built, self.landing) == failed"]
+    to: open
+    effects: ["actor.set(landing-failed, reason)", "decision.open(land-failed, self.landing, {reason})", "note.append(self, machinery, reason)"]
+    note: the bolt stays open with the failure on it and no session is asked to do anything (requirement 36, S33)
+  - in: open
+    on: decided
+    when: ["msg.kind == land-failed", "msg.answer == retry"]
+    to: closable
+    effects: ["decision.open(close, digest of merged units, {retry-of: msg.key})"]
+  - in: open
+    on: tick
+    when: ["exists unit u of self citing claim c@v", "claims.standing()[c].version > v", "not decision.open(self/claim-moved/c@v)", "self/claim-moved/c@v never answered"]
+    to: same
+    effects: ["decision.open(claim-moved, c@v, {claim: c, from: v, to: standing version, units: citing units, items-in-flight: count})"]
+    note: a claim amended after construction named it reaches the operator as a choice (requirement 90, S9); derived on every tick, so it cannot be missed
+  - in: open
+    on: decided
+    when: ["msg.kind == claim-moved", "msg.answer == amend"]
+    to: same
+    effects: ["actor.send(planning/<self.repo>, redo, {bolt: self.id, claim: msg.key, notes: msg.text})"]
+    note: planning proposes the amendment as units on this bolt; nothing is rewritten by the machinery
+  - in: open
+    on: decided
+    when: ["msg.kind == claim-moved", "msg.answer == follow"]
+    to: same
+    effects: ["note.append(self, operator, 'land and follow ' + msg.key)"]
+    note: the moved claim is already in the ledger backlog, so the next planning proposes the follow-up on its own
+  - in: [open, closable]
+    on: tick
+    when: ["cadence.due(repo.take-cadence, self.last-take)", "self.merging == none", "no item of self in placing"]
+    to: same
+    effects: ["line.take-parent(built, self.line, shared)", "actor.set(last-take, clock.now())", "place.rebase(self.operator-place, self.line)", "for each item in a stage: actor.send(item, line-moved, {line: self.line})"]
+    note: the cadence the operator sets per repository (requirement 43, S33); a conflicting take leaves the line untouched and becomes a chore-type job on the bolt (requirement 45)
+  - in: [open, closable]
+    on: word.direct
+    when: ["msg.state == landing"]
+    to: landing
+    effects: [word.consume(msg.word-id), "line.take-parent(built, self.line, shared)", "landing.start(built, self.line, repo.landing-policy, new id)"]
+supervision:
+  unit: {on-lost: ignore, note: units have no runtime attachment of their own}

@@ -1,0 +1,17 @@
+kind: node
+name: signal-writer
+family: machinery
+key: "finding exits whose subject is not the session's own intent or bolt"
+when: "and(exit.kind == finding, exit.subject not in [exit.session.intent, exit.session.bolt], not(any(s in signals, s.source-exit == exit)))"
+in: [exit, session]
+out: [signal, capture]
+effects:
+  - "write.signal — a capture per session (source=session, source-key=session id) and one signal with kind, assertion, excerpt, tags (bolt:<id> or repository:<name> when the finding names one), argues-with"
+produces:
+  - "capture + signal; nothing else; the session that offered it is untouched"
+release: after-effects
+notes: >
+  A.6.50: a finding about anything but the session's own thread is a
+  signal. A finding about its own intent or bolt goes to instantiate,
+  which writes an elaboration proposal (or amends the awaiting one) or a
+  unit proposal with routed-from=finding.

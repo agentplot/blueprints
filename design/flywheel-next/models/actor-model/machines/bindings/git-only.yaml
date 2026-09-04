@@ -1,0 +1,116 @@
+# Profile binding — git-only. Every piece of durable state is a file in the
+# organization's `flywheel-state` repository; its `main` is the shared line
+# and the git host (GitHub, used for pushes, ref updates and one webhook) is
+# the only central service.
+#
+# Layout of flywheel-state main:
+#   actors/<kind>/<id>/state.rec        the actor's snapshot: state, fields, seq, epoch
+#   actors/<kind>/<id>/lease.rec        holder, epoch, taken-at (taken by a commit that lands)
+#   actors/<kind>/<id>/mailbox/<msg-id>.rec   one file per pending message; consumed = deleted in the consuming commit
+#   actors/<kind>/<id>/notes/<seq>.md   discussion about the object (requirement 131)
+#   decisions/<parent...>/<kind>[/<key>]/state.rec   decision actors, same shape
+#   words/<word-id>.rec                 every word as it arrived, with who, when, source message id
+#   dictations/<id>.rec
+#   ledger/<repo>.rec                   one record per verdict, append-only
+#   captures/<key>.rec  signals/<id>.rec  moves/<signal-id>.rec
+#   report/<host>.rec                   the machinery's own problems
+#   status/index.html                   the status projection, rewritten by the writing host; never read as truth
+# Per-host refs, not on main:
+#   refs/heads/hosts/<host>             one commit, amended and force-pushed: the heartbeat
+# History is the audit record: every commit message carries `effect:`, `reason:` and `evidence:` trailers.
+profile: git-only
+version: 1
+central-service: the git host (GitHub) — branch updates with stale-base rejection, and a push webhook
+scope: the flywheel-state repository; the current flywheel's tracker items are never read or written (requirement 83)
+guarantees:
+  durable: a push that the host accepted is on main; every host fetches it
+  single-writer: "the push is the compare-and-swap (requirement 146): a host commits on top of the main it fetched and pushes without force; a stale base is rejected; the loser fetches, discards its commit and re-runs the tick over the new head"
+  atomic: one commit is one write; a transition changes state.rec, deletes consumed mailbox files and creates the messages it sends in one commit
+  derivable: everything is files on main; nothing else exists (invariant I14)
+  word-once: the word writer names each word file by the platform message id; a second delivery is the same path and the same content, so the second commit is empty and not made
+notify: "GitHub push webhook to the host with role serve, relayed to the other hosts as a Discord message in a machinery channel; plus a bounded poll of `git ls-remote` every 60 s; every host fetches before every tick (requirement 149); bound 60 s"
+lease-ttl: 15m
+heartbeat-interval: 3m
+sync: "fetch origin main before every tick; ticks never decide on a read older than the poll bound"
+
+evidence:
+  actor.state:            "actors/<kind>/<id>/state.rec on the fetched main"
+  actor.field:            same
+  actor.children:         "directory listing actors/<kind>/<parent-id>/… filtered by state.rec"
+  actor.count:            same
+  decision.open:          "decisions/<id>/state.rec state == open"
+  lease.holder:           "actors/<kind>/<id>/lease.rec"
+  lease.expired:          "host.heartbeat-age(holder) > lease-ttl"
+  host.heartbeat-age:     "now − committer date of refs/heads/hosts/<host> after fetch"
+  host.bound:             "actors/host/<host>/state.rec bound"
+  host.running:           "count of actors/session/* with host = host in starting|working|idle|blocked"
+  host.next-requested:    "actors/session/* in requested ordered by request-seq"
+  cadence.due:            cron against the field
+  clock.now:              the host clock
+  operator.last-rendering: "actors/operator/org/state.rec"
+  operator.since:         "git log main since the point for state.rec files entering a terminal state"
+  line.exists:            "git ls-remote on the repository"
+  line.head:              same
+  line.contains:          "git merge-base --is-ancestor after fetch"
+  line.behind-parent:     same
+  place.exists:           "wt list"
+  place.current:          "git merge-base --is-ancestor <line> HEAD in the place"
+  place.clean:            "git status --porcelain empty; no rebase/merge in progress"
+  place.ahead:            "git rev-list --count"
+  landing.result:         "gh pr view for pull-request policy (a read of the repository, not of a tracker); push result for direct"
+  session.process:        "herdr agent status <session-id>"
+  session.exits:          "<place>/.flywheel/exits.rec"
+  session.notes:          "<place>/.flywheel/notes.rec"
+  session.refusals:       "<place>/.flywheel/refusals.rec"
+  session.stalled:        "idle and exits.rec mtime older than bound"
+  claims.standing:        "claims index generated from the books' shared line"
+  claims.proposed:        "same on the intent's line"
+  claim.scope-includes:   "scope field against the manifest"
+  ledger.verdicts:        "ledger/<repo>.rec latest per claim"
+  ledger.backlog:         "derived as in tracker.yaml"
+  ledger.digest:          "sha256 over backlog + requests"
+  asbuilt.statements:     "openspec/specs on the built repo's shared line"
+  instructions.version:   "sha of flywheel/instructions/ on the books' shared line"
+  personas.matching:      glob in the repository being worked
+  manifest.repo:          "flywheel/manifest.yaml on the books' shared line"
+  manifest.repos:         same
+  signals.unmoved:        "signals/*.rec without moves/<id>.rec"
+  signals.of:             "moves/*.rec with target"
+  capture.exists:         "captures/<key>.rec"
+  words.for:              "words/*.rec with decision = id, not yet listed in the decision's consumed words; plus a state.rec changed by a commit whose author is not a host (word.direct)"
+  dictations.pending:     "dictations/*.rec without applied"
+
+effects:
+  actor.spawn:            "create actors/<kind>/<id>/state.rec in the transition commit"
+  actor.send:             "create actors/<target>/mailbox/<effect-id>.rec in the transition commit"
+  actor.set:              part of state.rec
+  decision.open:          "create decisions/<id>/state.rec"
+  decision.amend:         rewrite it
+  decision.withdraw:      rewrite it to withdrawn
+  note.append:            "actors/<id>/notes/<seq>.md"
+  report.append:          "append report/<host>.rec"
+  lease.take:             "write lease.rec, commit, push; a rejected push is the loss (S17)"
+  lease.release:          "write lease.rec holder = none"
+  heartbeat.renew:        "amend the single commit on refs/heads/hosts/<host>; push --force"
+  rendering.mark:         "actors/operator/org/state.rec"
+  plan.present:           "Discord message by the bot on the word-writer host; page served by `flywheel serve` on the private network; both link to status/index.html"
+  status.project:         "rewrite status/index.html in the same commit as the transition; readable with no host running through the git host's raw file URL"
+  line.ensure:            git branch + push
+  line.take-parent:       "merge in a scratch worktree; push; conflict → abort"
+  line.remove:            "git push --delete"
+  place.ensure:           "wt switch --create; hooks; tether"
+  place.rebase:           "git rebase; conflict → abort"
+  place.merge-into-line:  "merge --no-ff; push line"
+  place.remove:           "wt remove"
+  landing.start:          "gh pr create + gh pr merge --auto, or git push shared"
+  archive.change:         "openspec archive on the line"
+  chore.merge:            as place.merge-into-line or landing.start
+  session.start:          "herdr agent start --name <session-id> --cwd <place> -- claude --agent <template>"
+  session.deliver:        "herdr agent send, only while idle"
+  session.stop:           "herdr agent stop"
+  work-order.render:      "write <place>/.flywheel/work-order.md and materialize <place>/.claude/"
+  verdict.record:         "append ledger/<repo>.rec"
+  signal.append:          "signals/<id>.rec"
+  capture.record:         "captures/<key>.rec"
+  move.record:            "moves/<signal-id>.rec"
+  word.consume:           "the decision's state.rec lists the word id under consumed"

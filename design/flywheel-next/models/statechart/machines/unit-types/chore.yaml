@@ -1,0 +1,26 @@
+# The chore type (A.6.52): one stage, one session scoped to the line the fix
+# belongs on, no change directory, never a bolt of its own. The one session
+# gathers every accepted chore of the same bolt (A.6.55).
+machine: chore
+version: 1
+kind: template
+doc: unit type
+params:
+  place: the item's place
+record:
+  needs_change_directory: "false"
+  lands_on: chore.scope     # bolt-line when raised on a bolt, shared-line otherwise
+  gather: sibling-chores
+regions:
+  stages:
+    initial: fix
+    states:
+      fix:
+        machine: stage
+        params: {agents: [chore-fixer], join: all, on_fail: fix, max_send_backs: 1, deliverables: [commits, verdicts-for-named-claims]}
+        transitions:
+          - {when: {final: passed}, to: passed}
+          - {when: {final: sent-back}, to: fix}
+          - {when: {final: stopped}, to: stopped}
+      passed: {final: true}
+      stopped: {final: true}

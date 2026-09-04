@@ -1,0 +1,16 @@
+# An exploration, a prototype the operator wants to see running, an
+# interactive page. The session stays alive after it goes idle; only
+# the operator's word ends it (I6).
+kind: elaboration-type
+name: standing
+agent: flywheel-design-session
+ends: by-word
+on-done: "a done exit is a deliverable note, not an end: the session stays; the place stays; idle is offered"
+on-idle: "idle past idle-window → the idle row (finish · keep); no stall edge exists; keep suppresses the row until the next idle episode"
+idle-window: 15m
+place: keep-while-session
+notes: >
+  finish → the elaboration is done; retire fires (session.retire,
+  git.merge of the place into the intent line if it has commits, then
+  git.place.remove). A restart changes nothing: the pane, the
+  activation and the derivation are all still there.

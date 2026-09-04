@@ -1,0 +1,18 @@
+kind: unit-type
+name: fast
+change-directory: true
+lands-on: bolt-line
+stages:
+  - name: build
+    agent: flywheel-build
+    members: {fixed: [{persona: default}]}
+    join: all
+    not-done: {return-to: build, bound: 1}
+    gates: [asbuilt-names-standing-claims]
+  - name: review
+    agent: flywheel-code-review
+    members: {fixed: [{persona: default}]}
+    join: all
+    not-done: {return-to: build, bound: 2}
+  - name: merge
+    machinery: git.merge

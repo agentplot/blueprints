@@ -1,0 +1,67 @@
+actor: host
+version: 1
+doc: >
+  One per machine that runs the machinery. The host is the scheduler: it
+  renews one heartbeat, takes free root leases in a fixed order, runs the
+  receive functions of every actor under the leases it holds, starts requested
+  sessions up to its bound (requirement 29), and probes the multiplexer so
+  session actors can tick over evidence. A host's memory holds nothing that
+  decides behaviour (requirement 64): after a restart it lists, re-adopts its
+  own leases (same host id, same epoch) and ticks.
+supervisor: org
+lease: self
+fields:
+  bound: max sessions at once, a setting of the host
+  heartbeat: point of last renewal (kept on the host's own record, not on owned actors)
+  epoch: increments on every lease take by this host
+  roles: "[word-writer, serve, curation-runner] as the manifest assigns"
+states:
+  alive: {class: in-progress}
+  stale: {class: none, doc: derived by readers from heartbeat age; the host itself never writes `stale`}
+initial: alive
+receive:
+  - in: alive
+    on: tick
+    when: ["clock.now() - self.heartbeat >= heartbeat-interval"]
+    to: same
+    effects: [heartbeat.renew(self.id)]
+  - in: alive
+    on: tick
+    when: ["exists root actor r in scope with lease.holder(r) == none", "host.running(self) < host.bound(self) or r has no sessions"]
+    to: same
+    effects: ["lease.take(r, self.id)"]
+    note: >
+      roots are taken oldest-first by creation seq. lease.take succeeds for
+      exactly one host; the loser reads again and moves on (S17). A host never
+      takes an expired lease on its own; that is the org's takeover message.
+  - in: alive
+    on: takeover
+    to: same
+    effects: ["lease.take(each root held by msg.from, self.id)", "report.append(info, takeover, msg)"]
+    note: the take bumps the epoch; every later write by the old holder carries a stale epoch and is refused
+  - in: alive
+    on: tick
+    when: ["lease.holder(r) != self for some root r this host runs", "the old epoch is this host's"]
+    to: same
+    effects: ["session.stop(every session under r)", "report.append(warn, fenced, r)"]
+    note: a returning host that lost a root to takeover stops its orphan processes; their exits were already refused by the fence
+  - in: alive
+    on: tick
+    when: ["host.running(self) < host.bound(self)", "s = host.next-requested(self) exists", "place.current(s.place, s.line)", "place.clean(s.place)"]
+    to: same
+    effects: ["actor.send(s, start)"]
+    note: one start per tick, in request order; the session actor performs session.start itself so the effect id is the session's
+  - in: alive
+    on: tick
+    when: ["a session s under this host is in starting|working|idle|blocked"]
+    to: same
+    effects: []
+    note: the probe — session.process, session.exits, session.notes — is evidence read for the session actors' ticks; the host writes nothing for it
+  - in: alive
+    on: tick
+    when: ["self has role serve or word-writer"]
+    to: same
+    effects: [status.project()]
+    note: the projection is rewritten after any write under this host's leases; it is never read as truth
+supervision:
+  session: {on-lost: escalate, note: the session actor decides per its parent's type; the host only reports}

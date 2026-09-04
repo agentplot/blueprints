@@ -1,0 +1,69 @@
+# One unit of design work on an intent: one session, one conversation, one
+# place (A.4). Its type is a machine the operator can add; the type decides how
+# it ends.
+machine: elaboration
+version: 1
+kind: object
+object: elaboration
+parent: intent
+record:
+  type: string
+  type_version: int
+  sources: list          # the findings, signals or dictation that proposed it
+  document: ref          # the proposal the operator reads
+regions:
+  life:
+    initial: proposed
+    states:
+      proposed:
+        doc: a row of its own when the intent is open; folded into the intent's row when the intent is itself proposed
+        row: {kind: elaboration-proposed, group: approve, answers: ["yes", drop, "type <name>"], shows: [elaboration.type, sources]}
+        transitions:
+          - when: {ev: elaboration.shown_with_parent, is: true}
+            to: proposed
+            note: no row of its own; the intent's word carries it
+          - when: {word: "type <name>"}
+            to: proposed
+            effects: [{do: set_type, args: {type: $word}}]
+          - when: {word: "yes"}
+            to: approved
+          - when: {word: drop}
+            to: dropped
+      approved:
+        doc: approval given once is never re-asked (A.1.5); the record holds the type version in force
+        transitions:
+          - when: {parent: {in: [open]}}
+            to: placing
+      placing:
+        doc: the intent's line takes the shared line first if due; then the place is made and proven current
+        regions:
+          place:
+            initial: place
+            states:
+              place:
+                machine: place
+                params: {line: parent-line, inputs: work-order, keep: by-type}
+        transitions:
+          - when: {final: ready}
+            to: working
+      working:
+        doc: the type machine runs here with the session inside it
+        machine: $type
+        params: {place: own-place, agent: by-type}
+        transitions:
+          - when: {final: done}
+            to: finishing
+          - when: {final: kept}
+            to: working
+      finishing:
+        doc: a self-closing place merges into the intent's line and is removed; a standing place is kept until the operator finishes it, then merged the same way (A.5.47)
+        enter: {place: merging}
+        transitions:
+          - when: {final: removed}
+            to: done
+      done:
+        tail: done
+        final: true
+      dropped:
+        tail: dropped
+        final: true

@@ -1,0 +1,188 @@
+# The domain's atoms: one evidence name per question asked of the world, one
+# effect name per act on it (A.10.75). Machine definitions may use only these
+# names; a profile binds every one of them (B.3). Names are abstract: nothing
+# here is a label, column, path, service or interface (A.13 / B.3.125).
+#
+# Every effect names its proof: the evidence that shows it has already been
+# done. The engine performs an effect only when its proof is absent, so a
+# repeat of a completed effect changes nothing (A.7.62, B.1.114).
+format: flywheel-atoms/1
+
+evidence:
+  # ---- engine-provided for every object (read through the profile's `read`)
+  state:            {of: any, type: state, doc: the object's current state path per region}
+  entered_at:       {of: any, type: time, doc: when the current state was entered}
+  seq:              {of: any, type: int, doc: the object's write sequence; the compare-and-swap base}
+  applied_words:    {of: any, type: list, doc: ids of the words this object has applied}
+  now:              {of: any, type: time, doc: the point the read is as of}
+  # ---- host and lease (engine machines)
+  host.last_seen:   {of: host, type: time}
+  host.bound:       {of: host, type: int, doc: sessions this host may run at once}
+  host.running:     {of: host, type: int, doc: sessions this host runs now}
+  lease.holder:     {of: any, type: host-id, doc: the host recorded as holding the object, or none}
+  lease.renewed_at: {of: any, type: time}
+  lease.holder_is_me: {of: any, type: bool}
+  # ---- word and plan
+  word.row_present: {of: word, type: bool, doc: the row this word answers still stands}
+  word.applied:     {of: word, type: bool, doc: the object it concerns lists the word as applied}
+  word.reported:    {of: word, type: bool, doc: a rendering after the failure carried the attention line}
+  word.answer:      {of: word, type: string}
+  plan.rows_changed: {of: plan, type: bool, doc: derived rows differ from the last recorded rendering}
+  plan.delivery_due: {of: plan, type: bool, doc: the chat cadence or a request asks for a rendering}
+  # ---- session (bound to the multiplexer, the same in every profile)
+  session.pane:       {of: session, type: enum, values: [absent, present]}
+  session.activity:   {of: session, type: enum, values: [working, idle, none]}
+  session.idle_since: {of: session, type: time}
+  session.exit:       {of: session, type: enum, values: [none, done, blocked, stalled, invalid]}
+  session.exit_recorded: {of: session, type: bool, doc: the exit record has been copied into durable state}
+  session.offers_pending: {of: session, type: bool, doc: findings, chores or signals the session wrote and the state does not yet hold}
+  session.refusals_pending: {of: session, type: bool}
+  session.answer_delivered: {of: session, type: bool}
+  session.message_delivered: {of: session, type: bool, doc: the last message the machinery queued for the session reached it}
+  session.operator_present: {of: session, type: bool, doc: a person typed in the pane within the presence window}
+  session.host_alive: {of: session, type: bool}
+  session.expected:   {of: session, type: list, doc: deliverables the work order named}
+  session.delivered:  {of: session, type: list}
+  # ---- place and line (bound to git and the worktree tool, the same in every profile)
+  place.exists:        {of: place, type: bool}
+  place.contains_line: {of: place, type: bool, doc: the line's head is an ancestor of the place's head}
+  place.ahead_of_line: {of: place, type: bool, doc: the place has commits the line lacks}
+  place.conflicted:    {of: place, type: bool}
+  place.merge_slot:    {of: place, type: bool, doc: no sibling place earlier in the fixed order is merging}
+  place.merged:        {of: place, type: bool, doc: the line's head contains the place's head}
+  place.job_seeded:    {of: place, type: bool, doc: the conflict job is written into the place}
+  place.line_moved_told: {of: place, type: bool}
+  line.exists:           {of: line, type: bool}
+  line.contains_parent:  {of: line, type: bool, doc: the parent line's head is an ancestor of this line's head}
+  line.take_due:         {of: line, type: bool, doc: first place, pre-landing, or the repository's cadence says take now}
+  line.take_conflicts:   {of: line, type: bool, doc: a dry take of the parent reports conflicts}
+  line.landed:           {of: line, type: bool, doc: the parent line's head contains this line's head}
+  line.landing:          {of: line, type: enum, values: [none, pending, passed, failed], doc: the repository's own gates on the landing}
+  line.retries:          {of: line, type: int}
+  line.conflict_job_done: {of: line, type: bool}
+  # ---- design side
+  intent.material_pending: {of: intent, type: bool, doc: attached signals or findings no proposal yet holds}
+  intent.close_declined_since_last_final: {of: intent, type: bool}
+  intent.archived:   {of: intent, type: bool, doc: the change directory is archived and its claims are on the shared line}
+  elaboration.type:  {of: elaboration, type: string}
+  elaboration.type_version: {of: elaboration, type: int}
+  elaboration.shown_with_parent: {of: elaboration, type: bool, doc: the parent intent is itself proposed; the row folds into the intent's}
+  elaboration.kept_since: {of: elaboration, type: time}
+  # ---- claims and ledger (bound to the books repository and the ledger store)
+  claim.on_shared_line: {of: claim, type: bool}
+  claim.on_intent_line: {of: claim, type: bool}
+  claim.version:        {of: claim, type: int}
+  claim.scope_repos:    {of: claim, type: list}
+  cell.verdict:         {of: ledger-cell, type: enum, values: [none, satisfied, partial, not-satisfied, not-applicable]}
+  cell.verdict_claim_version: {of: ledger-cell, type: int}
+  cell.claim_version:   {of: ledger-cell, type: int}
+  cell.evidence_present: {of: ledger-cell, type: bool, doc: the evidence the verdict cites still exists at the repository's shared head}
+  # ---- planning and curation
+  planning.fingerprint:  {of: planning, type: hash, doc: hash of the repository's backlog inputs — standing claims in scope with versions, the ledger's cells, the open bolts, the asks naming it}
+  planning.planned_fingerprint: {of: planning, type: hash}
+  planning.redo_pending: {of: planning, type: bool, doc: a unit was sent back with notes}
+  planning.ledger_empty: {of: planning, type: bool}
+  curation.unmoved_count: {of: curation, type: int}
+  curation.threshold:     {of: curation, type: int}
+  curation.cadence_due:   {of: curation, type: bool}
+  capture.signals_present: {of: capture, type: bool}
+  signal.move: {of: signal, type: enum, values: [none, attach, challenge, join, answered, drop]}
+  # ---- construction side
+  bolt.chores_outstanding: {of: bolt, type: bool, doc: accepted chore units not yet merged}
+  bolt.citations_moved:    {of: bolt, type: bool, doc: a standing claim a unit of this bolt names has a newer version than the unit cites}
+  bolt.moved_claim:        {of: bolt, type: string}
+  bolt.hold_since_last_merge: {of: bolt, type: bool}
+  bolt.land_policy:        {of: bolt, type: enum, values: [pull-request, direct]}
+  unit.target_is_new_bolt: {of: unit, type: bool}
+  unit.deps_merged:        {of: unit, type: bool}
+  unit.type:               {of: unit, type: string}
+  unit.type_version:       {of: unit, type: int}
+  unit.batch:              {of: unit, type: string, doc: baseline id or none; equal values fold into one row}
+  item.deps_merged:        {of: work-item, type: bool}
+  item.slot_free:          {of: work-item, type: bool, doc: this host has a free slot and no earlier ready item is waiting for it}
+  item.send_backs:         {of: work-item, type: int}
+  item.retry_max:          {of: work-item, type: int, doc: from the type, for the current stage}
+  item.stage_is_last:      {of: work-item, type: bool}
+  stage.agents:            {of: stage, type: list, doc: the session set the type's rule resolves against the repository worked}
+  stage.join_met:          {of: stage, type: bool}
+  stage.verdict:           {of: stage, type: enum, values: [pending, pass, not-done, blocked, stalled]}
+  chore.scope:             {of: unit, type: enum, values: [bolt-line, shared-line]}
+
+  # ---- proofs: the evidence each effect leaves behind (read like any other evidence)
+  session.pane_absent:      {of: session, type: bool, proof_of: end_session}
+  session.offers_recorded:  {of: session, type: bool, proof_of: record_offers, doc: every offer the session wrote has a proposal or signal record}
+  session.refusals_recorded: {of: session, type: bool, proof_of: record_refusals}
+  line.conflict_job_seeded: {of: line, type: bool, proof_of: seed_take_conflict}
+  line.absent:              {of: line, type: bool, proof_of: remove_line}
+  place.ready:              {of: place, type: bool, proof_of: prepare_place, doc: exists, contains its line, holds the closed inputs and the refusing hooks}
+  place.absent:             {of: place, type: bool, proof_of: remove_place}
+  intent.change_open:       {of: intent, type: bool, proof_of: open_intent}
+  intent.signals_dropped:   {of: intent, type: bool, proof_of: drop_signals}
+  intent.split_done:        {of: intent, type: bool, proof_of: split_intent}
+  intent.material_held:     {of: intent, type: bool, proof_of: propose_elaboration}
+  elaboration.type_set:     {of: elaboration, type: bool, proof_of: set_type}
+  cell.verdict_recorded:    {of: ledger-cell, type: bool, proof_of: record_verdict, doc: a verdict with this claim version, revision and judged_at exists}
+  curation.moves_recorded:  {of: curation, type: bool, proof_of: record_moves}
+  curation.intents_proposed: {of: curation, type: bool, proof_of: propose_intents}
+  planning.units_proposed:  {of: planning, type: bool, proof_of: propose_units}
+  planning.fingerprint_recorded: {of: planning, type: bool, proof_of: record_fingerprint}
+  unit.bolt_exists:         {of: unit, type: bool, proof_of: create_bolt}
+  bolt.named:               {of: bolt, type: bool, proof_of: rename_bolt}
+  unit.routed:              {of: unit, type: bool, proof_of: route_unit}
+  unit.items_exist:         {of: unit, type: bool, proof_of: create_items}
+  bolt.choice_recorded:     {of: bolt, type: bool, proof_of: record_citation_choice}
+  plan.rendering_recorded:  {of: plan, type: bool, proof_of: record_rendering}
+  plan.rendering_delivered: {of: plan, type: bool, proof_of: deliver_rendering, doc: the channel holds a message carrying the rendering id}
+  plan.status_current:      {of: plan, type: bool, proof_of: render_status, doc: the projection carries the read's as-of point}
+  report.recorded:          {of: any, type: bool, proof_of: report}
+  host.leases_expired:      {of: host, type: bool, proof_of: expire_leases}
+  capture.source:           {of: capture, type: string}
+
+effects:
+  # ---- session (multiplexer)
+  start_session:   {of: session, args: [agent, place, work_order], proof: session.pane, doc: start the named agent in the place; the name is the session id, so a second start of the same name is refused by the multiplexer}
+  end_session:     {of: session, args: [], proof: session.pane_absent, doc: end the pane; only ever run from a state the operator's word or the type reached}
+  record_exit:     {of: session, args: [], proof: session.exit_recorded, doc: copy the exit record, expected and delivered, into durable state}
+  record_offers:   {of: session, args: [], proof: session.offers_recorded, doc: write each finding, chore and signal the session offered as a proposal or a signal record}
+  record_refusals: {of: session, args: [], proof: session.refusals_recorded}
+  deliver_answer:  {of: session, args: [text], proof: session.answer_delivered, doc: send the answer to the living session, or start a fresh one whose work order opens with it}
+  tell_moved:      {of: session, args: [], proof: place.line_moved_told, doc: tell an idle session what moved under it}
+  # ---- line and place (git and worktree tool)
+  create_line:     {of: line, args: [parent], proof: line.exists}
+  take_parent:     {of: line, args: [], proof: line.contains_parent, doc: merge the parent line into this line; aborted whole on conflict}
+  seed_take_conflict: {of: line, args: [], proof: line.conflict_job_seeded, doc: prepare a place off the line with the conflicting take applied, as a job}
+  land_line:       {of: line, args: [policy], proof: line.landed, doc: pull request through the gates, or direct merge, as the manifest says}
+  remove_line:     {of: line, args: [], proof: line.absent}
+  prepare_place:   {of: place, args: [line, agent_inputs], proof: place.ready, doc: worktree at the line's head, hooks that refuse line operations, the closed set of inputs written in}
+  rebase_place:    {of: place, args: [], proof: place.contains_line, doc: rebase onto the line; aborted whole on conflict}
+  seed_conflict_job: {of: place, args: [], proof: place.job_seeded}
+  merge_place:     {of: place, args: [], proof: place.merged, doc: merge the place into its line, one place at a time in the fixed order}
+  remove_place:    {of: place, args: [], proof: place.absent}
+  # ---- design objects
+  open_intent:     {of: intent, args: [], proof: intent.change_open, doc: create the intent's change directory on its line}
+  drop_signals:    {of: intent, args: [reason], proof: intent.signals_dropped, doc: give every cited signal a drop move naming this intent}
+  split_intent:    {of: intent, args: [partition], proof: intent.split_done}
+  archive_intent:  {of: intent, args: [], proof: intent.archived, doc: archive the change directory so its claims stand}
+  propose_elaboration: {of: intent, args: [material, type], proof: intent.material_held, doc: create the intent's one proposed elaboration, or join the material to it}
+  set_type:        {of: elaboration, args: [type], proof: elaboration.type_set}
+  # ---- claims and ledger
+  record_verdict:  {of: ledger-cell, args: [verdict, claim_version, revision, evidence], proof: cell.verdict_recorded}
+  # ---- planning and curation
+  record_moves:    {of: curation, args: [moves], proof: curation.moves_recorded}
+  propose_intents: {of: curation, args: [intents], proof: curation.intents_proposed}
+  propose_units:   {of: planning, args: [units], proof: planning.units_proposed}
+  record_fingerprint: {of: planning, args: [], proof: planning.fingerprint_recorded}
+  request_replan:  {of: planning, args: [notes], proof: planning.redo_pending}
+  # ---- construction objects
+  create_bolt:     {of: unit, args: [name, repository], proof: unit.bolt_exists}
+  rename_bolt:     {of: bolt, args: [name], proof: bolt.named}
+  route_unit:      {of: unit, args: [bolt], proof: unit.routed}
+  create_items:    {of: unit, args: [], proof: unit.items_exist, doc: one work item per task in the approved document, with the type version in force}
+  record_citation_choice: {of: bolt, args: [choice, claim], proof: bolt.choice_recorded}
+  # ---- plan, status, reports
+  record_rendering: {of: plan, args: [], proof: plan.rendering_recorded, doc: write the numbered rows and the time as the rendering the operator will receive}
+  deliver_rendering: {of: plan, args: [channel], proof: plan.rendering_delivered}
+  render_status:   {of: plan, args: [], proof: plan.status_current, doc: write the status projection from list and read}
+  report:          {of: any, args: [text], proof: report.recorded, doc: a machinery problem or a refusal, to the run record and the attention lines; never work}
+  expire_leases:   {of: host, args: [], proof: host.leases_expired}
+  ensure_signal:   {of: capture, args: [], proof: capture.signals_present, doc: a one-message capture is its own signal; no judgment is involved}

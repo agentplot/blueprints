@@ -1,0 +1,26 @@
+# The only producer of lines and places (I12). Each sub-node is one
+# effect atom with its own firing rule; the effect's identity is the
+# heads it acted on, so a repeat after a restart changes nothing.
+kind: node
+name: git
+family: machinery
+key: "lines and places, from intent, bolt, elaboration, item, and manifest"
+when: "see sub-nodes"
+in: [intent, bolt, elaboration, item, advance, word, observation, line-head, manifest, exit]
+out: [effect, conflict]
+effects:
+  - "line.create   — when: an intent or a bolt exists with no line effect. key: (repository, line)"
+  - "line.take     — when: line-behind-parent(line) and or(take-due(line), a place is about to be prepared off it, land or archive is about to fire). on conflict: abort, write conflict on the line's newest idle place"
+  - "place.prepare — when: an elaboration or item is approved or queued with no place effect, after line.take if behind. key: (place, line-head)"
+  - "place.rebase  — when: place base != line head and observed(place.session) != working. then session.tell(moved). on conflict: abort, write conflict on the place"
+  - "merge         — when: ready-to-merge(line) non-empty; one activation per line at a time; the first place in order; requires place-current. then place.rebase for the bolt's own place and every sibling when idle"
+  - "place.remove  — when: the place's work is merged (self-closing elaboration, item) or dropped, or the bolt landed; never while its session lives and is standing"
+  - "land          — when: word yes on the land row; line.take first; by manifest policy pr | direct; the reconciler observes the gates; result recorded on the bolt (S33)"
+  - "archive       — when: word close on the close row (or direct close); openspec archive on the intent line; land by the books policy; delete the line; proposed claims on it become standing by existing on main"
+produces:
+  - "effect(id, reason, evidence, result) per act"
+  - "conflict(place | line, kind, files, heads) when a take or rebase cannot complete"
+release: after-effects
+notes: >
+  A.5.38: deterministic and repeatable. A.5.45: a conflict never leaves
+  a half-done tree. A.5.43–44: the take and rebase rules are here.

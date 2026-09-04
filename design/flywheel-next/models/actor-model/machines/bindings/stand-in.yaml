@@ -1,0 +1,22 @@
+# Profile binding — stand-in. The in-memory control plane every scenario and
+# the conformance suite run against (requirement 72, 80, S16). It binds every
+# name to a table in the scenario's `given` block and every effect to an
+# append on the scenario's `effects` log. It gives every B.2 guarantee
+# trivially, and the suite also runs against the two real profiles.
+profile: stand-in
+version: 1
+central-service: none — the scenario file
+scope: the scenario
+guarantees:
+  durable: the trace is the store
+  single-writer: writes carry the holder's epoch; a stale epoch is refused and logged
+  atomic: one transition is one appended trace entry
+  derivable: yes
+  word-once: word ids are deduplicated in the decision's consumed list
+notify: immediate
+lease-ttl: 15m
+heartbeat-interval: 3m
+evidence:
+  "*": "given.<table> in the scenario file; session.process and place.* come from given.world"
+effects:
+  "*": "append {effect-id, name, args} to the trace; world effects also update given.world so later ticks see them (a started session exists; an ensured place is current)"

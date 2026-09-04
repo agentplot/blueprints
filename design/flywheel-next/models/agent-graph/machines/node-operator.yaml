@@ -1,0 +1,17 @@
+kind: node
+name: operator
+family: operator
+key: "rows()"
+when: "true"                       # fires whenever the operator speaks; the presenter is its adapter
+in: [proposal, bolt, intent, elaboration, unit, exit, host, word, rendering]   # the row kinds of rows.yaml, by subject
+out: [word, ask, review-mark]
+produces:
+  - "word(row, generation, answer, args, by, via, at) by write.word — compare-and-swap; a repeat is acknowledged, not applied"
+  - "ask(text, repository, bolt, type) when the word names no row — dictation skips the plan (A.2.11)"
+  - "review-mark(books-sha) on the word reviewed"
+notes: >
+  The only node whose outputs are words. A direct act on the store (an
+  issue closed by hand, a card moved, a state file edited and committed)
+  is read by the reconciler through the binding's direct-word table and
+  written as a word with via=direct:<event>; from there it is this node's
+  output like any other.

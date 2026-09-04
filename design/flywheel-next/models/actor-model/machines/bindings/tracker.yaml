@@ -1,0 +1,119 @@
+# Profile binding — tracker (GitHub issues, milestones, Projects v2).
+# Every evidence and effect name in atoms.yaml maps to one operation here;
+# a name left out would make this not a profile (requirement 127).
+#
+# Shape: an issue per actor in the organization's `flywheel-state` repository's
+# issue tracker (one repo holds all items so one query lists the scope).
+# Title `fw2 <kind> <id> · <name>`. The issue's comments are the actor's journal
+# and mailbox — append-only, server-ordered, each one record. The body is a
+# projection: the current state snapshot with `seq`, rewritten by the lease
+# holder after each transition and validated against the last comment's seq
+# before it is trusted. Milestone = the bolt or intent an item belongs to.
+# Project board columns = the four state classes. Sessions are issues too,
+# closed when retired. Record tables (ledger, signals, captures, moves, words
+# log, notes) are recutils files in the same `flywheel-state` repository's
+# `main` branch, committed by the lease holder — see git-only.yaml for their
+# layout, which is identical.
+profile: tracker
+version: 1
+central-service: GitHub organization — issues, milestones, Projects v2, plus the flywheel-state repository for record tables
+scope: "issues labelled by title prefix `fw2 ` in the flywheel-state repository and the project board `flywheel-next`; nothing else is read or written (requirement 83)"
+guarantees:
+  durable: GitHub stores issues and comments; a write that returns 201 is durable
+  single-writer: >
+    GitHub has no compare-and-swap on issue edits. Mechanism added: only the
+    lease holder writes an actor, the lease is taken by ordered append (the
+    earliest `lease` comment after the last release or expiry wins, by comment
+    id, which the server assigns monotonically), and every later comment
+    carries the holder's epoch. A comment whose epoch is not the current
+    lease's is ignored by every reader; its writer sees this on its next read
+    and reads again before deciding (requirement 121). Mechanism state: the
+    lease comments themselves.
+  atomic: one comment is one write; a transition is one comment carrying state, consumed message seqs and the outbox
+  derivable: the body is never trusted beyond the seq it names; readers fold the comments
+  word-once: the word comment carries the platform message id it came from; the decision actor consumes it once
+notify: GitHub webhook `issues` and `issue_comment` events to the host's URL, or a 60 s poll of `updated_since`; bound 60 s
+lease-ttl: 15m
+heartbeat-interval: 3m
+
+evidence:
+  actor.state:            "fold comments of the actor's issue (or trust body when body.seq == last comment seq)"
+  actor.field:            same
+  actor.children:         "search issues: title prefix `fw2 <kind> <parent-id>/` and board column in states"
+  actor.count:            same, count
+  decision.open:          "issue `fw2 decision <id>` exists and is open with state open"
+  lease.holder:           "latest lease comment on the issue with epoch; none if released"
+  lease.expired:          "host.heartbeat-age(holder) > lease-ttl"
+  host.heartbeat-age:     "now − `heartbeat:` field in the host issue's body (a body edit, not a comment)"
+  host.bound:             "`bound:` in the host issue body"
+  host.running:           "count of session issues with `host:` = host in starting|working|idle|blocked"
+  host.next-requested:    "session issues in requested with `host-hint` = host or unassigned, ordered by `request-seq`"
+  cadence.due:            "cron evaluated against the field"
+  clock.now:              "the host clock; skew tolerated by lease-ttl ≫ skew"
+  operator.last-rendering: "`fw2 operator org` issue body"
+  operator.since:         "issues whose latest terminal comment is after the point"
+  line.exists:            "git ls-remote on the repository's shared remote"
+  line.head:              same
+  line.contains:          "git merge-base --is-ancestor in the host's clone after fetch"
+  line.behind-parent:     same
+  place.exists:           "wt list on the host"
+  place.current:          "git merge-base --is-ancestor <line> HEAD in the place"
+  place.clean:            "git status --porcelain empty and no rebase/merge dir"
+  place.ahead:            "git rev-list --count line..HEAD"
+  landing.result:         "gh pr view --json mergeStateStatus,checks for the landing's PR; or the push result for direct"
+  session.process:        "herdr agent status <session-id>: absent | working | idle"
+  session.exits:          "<place>/.flywheel/exits.rec, records with id"
+  session.notes:          "<place>/.flywheel/notes.rec"
+  session.refusals:       "<place>/.flywheel/refusals.rec written by the place's git hooks"
+  session.stalled:        "session.process idle and mtime of exits.rec older than bound"
+  claims.standing:        "claims.rec generated from the books' shared line by `flywheel claims index`"
+  claims.proposed:        "same, on the intent's line"
+  claim.scope-includes:   "scope field against manifest.repo(repo).capabilities and kind"
+  ledger.verdicts:        "flywheel-state main: ledger/<repo>.rec, latest per claim by (date, seq)"
+  ledger.backlog:         "derived: claims.standing() in scope minus satisfied/not-applicable at the standing version, plus verdicts whose evidence-ref is gone from asbuilt"
+  ledger.digest:          "sha256 over ledger.backlog + planning requests"
+  asbuilt.statements:     "openspec/specs/**/*.md on the built repo's shared line, statements tagged `claim: name@version`"
+  instructions.version:   "sha of flywheel/instructions/ on the books' shared line"
+  personas.matching:      "glob in the repository being worked"
+  manifest.repo:          "flywheel/manifest.yaml on the books' shared line"
+  manifest.repos:         same
+  signals.unmoved:        "flywheel-state main: signals/*.rec with no moves/<signal-id>.rec"
+  signals.of:             "moves with target = intent"
+  capture.exists:         "captures/<source-event-key>.rec exists"
+  words.for:              "word comments on the decision's issue, or `fw2 word` comments the bot wrote from Discord, or board moves and closes on the decision's parent issue read from the issue timeline"
+  dictations.pending:     "flywheel-state main: dictations/*.rec without applied"
+
+effects:
+  actor.spawn:            "gh issue create with title `fw2 <kind> <id>`, body snapshot, milestone = thread; no-op if the title exists"
+  actor.send:             "gh issue comment on the target: `kind: message` with id, sender, seq, payload"
+  actor.set:              "part of the transition comment"
+  decision.open:          "issue `fw2 decision <parent>/<kind>/<key>`, board column Waiting on operator; no-op if it exists"
+  decision.amend:         "transition comment on the decision issue and body rewrite"
+  decision.withdraw:      "transition comment `withdrawn`, issue closed"
+  note.append:            "issue comment `kind: note`"
+  report.append:          "comment on the `fw2 report <host>` issue"
+  lease.take:             "comment `kind: lease` with host and epoch; then read: the earliest such comment after the last release/expiry wins"
+  lease.release:          "comment `kind: release`"
+  heartbeat.renew:        "edit the host issue body `heartbeat:`"
+  rendering.mark:         "operator issue body edit"
+  plan.present:           "Discord message via the bot with one line per row and the page link; page served by `flywheel serve` on the host with role serve"
+  status.project:         "move each actor's project card to its class column; write `fw2 status` issue body; serve /status"
+  line.ensure:            "git branch + push in the host's clone"
+  line.take-parent:       "git merge --no-ff parent in a scratch worktree of the line; push; conflict → abort, report"
+  line.remove:            "git push --delete"
+  place.ensure:           "wt switch --create <place> <line>; install hooks; wt tether"
+  place.rebase:           "git rebase <line> in the place; conflict → git rebase --abort"
+  place.merge-into-line:  "git merge --no-ff <place> into the line's scratch worktree; push line"
+  place.remove:           "wt remove <place>"
+  landing.start:          "pull-request: gh pr create --base shared --head line, then gh pr merge --auto; direct: git push shared"
+  archive.change:         "openspec archive <change> in the line's scratch worktree; commit"
+  chore.merge:            "as place.merge-into-line, or landing.start for the shared line"
+  session.start:          "herdr agent start --name <session-id> --cwd <place> -- claude --agent <template>; CLAUDE_CONFIG_DIR set to the place's materialized instruction set"
+  session.deliver:        "herdr agent send <session-id> <text>, only when session.process == idle"
+  session.stop:           "herdr agent stop <session-id>"
+  work-order.render:      "write <place>/.flywheel/work-order.md and materialize <place>/.claude/ from the instruction set at the version"
+  verdict.record:         "append to ledger/<repo>.rec; commit; push flywheel-state main"
+  signal.append:          "signals/<id>.rec; commit; push"
+  capture.record:         "captures/<key>.rec; commit; push"
+  move.record:            "moves/<signal-id>.rec (replaces the standing move); commit; push"
+  word.consume:           "the decision's transition comment lists the word id"

@@ -1,0 +1,83 @@
+# The typed graph. Format: YAML validated by schema.json.
+#
+# Why YAML: a graph is nested (nodes with in/out lists, templates with
+# stages), every language parses it (serde_yaml in Rust), it diffs by
+# line, and JSON Schema validates it off the shelf. Recutils, the
+# format of the durable tables, is flat and would not hold a template.
+# Predicates are strings in the grammar stated in schema.json; every
+# atom in them is declared in atoms.yaml and bound by a profile.
+kind: graph
+version: "2026-09-04"
+
+settings:
+  idle-window: 15m         # no output for this long = idle
+  stall-window: 2h         # idle this long with no terminal exit = stalled (self-closing and stages only)
+  start-window: 5m         # how long a slow start may take before it is retried
+  presence-window: 30m     # human keystrokes within this = operator present
+  lease-ttl: 15m           # a holder whose heartbeat is older than this has lost its lease
+  heartbeat-interval: 2m
+  curation-threshold: 10
+  curation-cadence: 1d
+
+# Every artifact kind, its one producing node kind, its consumers, and
+# the abstract store the binding must supply.
+edges:
+  - {name: capture,          artifact: capture,     from: [adapter],                       to: [curation],                                  store: captures,     immutable: true}
+  - {name: signal,           artifact: signal,      from: [adapter, signal-writer],         to: [curation, planning],                        store: signals,      immutable: true}
+  - {name: move,             artifact: move,        from: [curation, instantiate],          to: [curation, presenter],                       store: moves}
+  - {name: proposal,         artifact: proposal,    from: [curation, planning, instantiate], to: [operator, instantiate],                    store: proposals}
+  - {name: word,             artifact: word,        from: [operator],                       to: [instantiate, git, retire, runner, presenter], store: words}
+  - {name: ask,              artifact: ask,         from: [operator],                       to: [planning, instantiate],                     store: asks}
+  - {name: intent,           artifact: intent,      from: [instantiate],                    to: [git, presenter],                            store: objects/intent}
+  - {name: elaboration,      artifact: elaboration, from: [instantiate],                    to: [elaboration, git, retire],                  store: objects/elaboration}
+  - {name: bolt,             artifact: bolt,        from: [instantiate],                    to: [git, planning, presenter],                  store: objects/bolt}
+  - {name: unit,             artifact: unit,        from: [instantiate],                    to: [stage, join, git],                          store: objects/unit}
+  - {name: item,             artifact: item,        from: [instantiate],                    to: [stage, join, git, retire],                  store: objects/item}
+  - {name: activation,       artifact: activation,  from: [runtime],                        to: [runtime, runner, presenter],                store: activations}
+  - {name: session,          artifact: session,     from: [runner],                         to: [reconciler, retire, presenter],             store: sessions}
+  - {name: observation,      artifact: observation, from: [reconciler],                     to: [elaboration, stage, git, runner, retire, presenter], store: observations}
+  - {name: exit,             artifact: exit,        from: [reconciler],                     to: [join, instantiate, signal-writer, presenter], store: exits}
+  - {name: advance,          artifact: advance,     from: [join, instantiate],              to: [stage, git, presenter],                     store: advances}
+  - {name: verdict,          artifact: verdict,     from: [planning, stage],                to: [planning, presenter],                       store: ledger}
+  - {name: effect,           artifact: effect,      from: [git, runner, retire, presenter], to: [runtime, presenter],                        store: effects}
+  - {name: conflict,         artifact: conflict,    from: [git],                            to: [resolve, presenter],                        store: conflicts}
+  - {name: rendering,        artifact: rendering,   from: [presenter],                      to: [presenter, operator],                       store: renderings}
+  - {name: host,             artifact: host,        from: [runtime],                        to: [runtime, presenter],                        store: hosts}
+  - {name: review-mark,      artifact: review-mark, from: [operator],                       to: [presenter],                                 store: review-marks}
+  # read-only evidence, not stores of the flywheel
+  - {name: claim,            artifact: claim,       from: [world],                          to: [curation, planning, stage, presenter],      store: books-shared-line}
+  - {name: as-built,         artifact: as-built,    from: [world],                          to: [planning, stage],                           store: repo-shared-line}
+  - {name: definition,       artifact: definition,  from: [world],                          to: [runtime, runner],                           store: books-shared-line}
+  - {name: manifest,         artifact: manifest,    from: [world],                          to: [runtime, git, planning],                    store: books-shared-line}
+  - {name: line-head,        artifact: line-head,   from: [world],                          to: [git, reconciler],                           store: git-host}
+  - {name: pane,             artifact: pane,        from: [world],                          to: [reconciler],                                store: multiplexer}
+  - {name: worktree,         artifact: worktree,    from: [world],                          to: [reconciler],                                store: host-disk}
+
+nodes:
+  - operator
+  - curation
+  - elaboration
+  - planning
+  - stage
+  - resolve
+  - answer-resume
+  - instantiate
+  - join
+  - git
+  - runner
+  - reconciler
+  - presenter
+  - signal-writer
+  - retire
+
+# A.5.29: at the bound, ready work waits in this order; nothing is lost
+# or started twice because a start is an activation.
+scheduling:
+  order:
+    - answer-resume                       # an operator's answer waiting on a fresh session
+    - resolve                             # a conflict blocking a line
+    - stage                               # construction, by (bolt age, unit dependency order, item index, attempt)
+    - elaboration                         # by intent age
+    - planning
+    - curation
+  bound: "count(a in activations, and(a.host == host, a.session != none, not(a.released))) < host.bound"

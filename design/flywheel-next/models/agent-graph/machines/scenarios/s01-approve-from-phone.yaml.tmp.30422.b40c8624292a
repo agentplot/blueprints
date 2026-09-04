@@ -1,0 +1,33 @@
+kind: scenario
+name: "S1 — the operator approves a proposed elaboration from the phone; nothing re-asks"
+requirements: [A.1.1, A.1.5, A.2.12, S1]
+profiles: [all]
+given:
+  objects/intent:
+    - {id: in-atlas-provider-limits, state-line: open, approval: wd-rn-0900-1}
+  proposals:
+    - {id: pr-el-atlas-research, kind: elaboration, intent: in-atlas-provider-limits, type: self-closing, generation: 1}
+  renderings:
+    - {id: rn-0912, rows: [pr-el-atlas-research@1]}
+  hosts:
+    - {id: mac-mini, bound: 2, alive: true}
+when:
+  - {receive: {rendering: rn-0912, row: 1, answer: yes, by: chuck, via: "discord:msg_1178"}}
+  - {tick: {host: mac-mini}}
+  - {receive: {rendering: rn-0912, row: 1, answer: yes, by: chuck, via: "discord:msg_1178-retry"}}
+  - {tick: {host: mac-mini}}
+then:
+  writes:
+    - "word(pr-el-atlas-research@1, yes) — once"
+    - "elaboration(el-atlas-research, approved, approval=wd-rn-0912-1)"
+    - "activation(elaboration, el-atlas-research, gen 1, host mac-mini)"
+  effects:
+    - "git.line.take(intent/in-atlas-provider-limits) only if behind"
+    - "git.place.prepare(pl-el-atlas-research, intent/in-atlas-provider-limits)"
+    - "session.start(ac-elaboration-el-atlas-research-1)"
+  states:
+    el-atlas-research: queued
+  rows: []
+  no-rows: [elab]
+  report:
+    - "second delivery acknowledged as duplicate; no second word; no second activation"

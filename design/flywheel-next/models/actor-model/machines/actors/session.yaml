@@ -1,0 +1,131 @@
+actor: session
+version: 1
+doc: >
+  One agent process working one job in one place. The actor is the durable
+  record; the process is an ephemeral attachment read as evidence
+  (session.process, session.exits). Every exit the session writes is a record
+  in its place; the actor turns them into messages to its parent and never
+  moves any other state itself (requirement 57, 58). The host that owns the
+  parent's root lease runs this actor and starts the process on itself.
+supervisor: any          # elaboration | work-item | planning | curation
+lease: inherited
+fields:
+  place: the worktree
+  line: the line the place is off
+  order: the work order (job, bounded goal, stage, persona)
+  instruction-version: sha of the instruction set in force
+  host: the host that started it
+  request-seq: order among requested sessions on the host
+  started: point
+  exits-seen: ids of exit records already turned into messages
+  expected: what the work order asked for
+  delivered: what the exit reported (requirement 69)
+states:
+  requested: {class: queued, doc: waits for a slot on the host in request order}
+  starting:  {class: queued, doc: start issued; success is the process existing, however long that takes}
+  working:   {class: in-progress}
+  idle:      {class: in-progress}
+  blocked:   {class: waiting-on-operator}
+  exited:    {class: done, doc: a terminal exit record exists; the parent decides what it means}
+  lost:      {class: none, doc: the process is gone with no terminal exit}
+  retired:   {class: done, terminal: true}
+initial: requested
+receive:
+  - in: requested
+    on: start
+    to: starting
+    effects:
+      - "work-order.render(self.id, parent.type.template, {order: self.order, instructions: self.instruction-version, artifacts: self.place})"
+      - "session.start(self.id, self.place, self.order, self.instruction-version)"
+      - "actor.set(started, clock.now())"
+  - in: starting
+    on: tick
+    when: ["session.process(self.id) == absent", "clock.now() - self.started >= start-retry-interval"]
+    to: same
+    effects: ["session.start(self.id, self.place, self.order, self.instruction-version)"]
+    note: slow is slow, not failed; the start is idempotent on the pane name so a second issue finds the first (requirement 61, S6)
+  - in: starting
+    on: tick
+    when: ["session.process(self.id) != absent"]
+    to: working
+    effects: ["actor.send(parent, session.started, {host: self.host})"]
+  - in: [working, idle, blocked]
+    on: tick
+    when: ["exists exit e in session.exits(self.id) not in self.exits-seen", "e.kind in [finding, chore, signal]"]
+    to: same
+    effects:
+      - "actor.set(exits-seen, exits-seen + e.id)"
+      - "if e.kind == finding and e.about in parent's thread: actor.spawn(offer, offer/<self.id>/<e.id>, {kind: finding, text: e.text, thread: parent's thread, session: self.id}) in offered"
+      - "if e.kind == finding and e.about elsewhere: signal.append(capture of self, {kind: ask, assertion: e.text, asserted-by: self.id})"
+      - "if e.kind == chore: actor.spawn(offer, offer/<self.id>/<e.id>, {kind: chore, text: e.text, repo: e.repo, line: e.line, session: self.id}) in offered"
+    note: offers never interrupt the session that offered them (requirement 50); the record is written where the change's artifacts live and mirrored as an actor
+  - in: [working, idle]
+    on: tick
+    when: ["exists terminal exit e in session.exits(self.id) not in self.exits-seen", "e.kind == done"]
+    to: exited
+    effects: ["actor.set(exits-seen, +e.id)", "actor.set(delivered, e.deliverables)", "actor.send(parent, session.exited, {kind: done, deliverables: e.deliverables, session: self.id})"]
+  - in: [working, idle]
+    on: tick
+    when: ["exists exit e not seen", "e.kind == blocked"]
+    to: blocked
+    effects: ["actor.set(exits-seen, +e.id)", "actor.send(parent, session.exited, {kind: blocked, question: e.question, session: self.id})"]
+  - in: [working, idle]
+    on: tick
+    when: ["session.stalled(self.id, parent.type.stall-bound)"]
+    to: exited
+    effects: ["actor.send(parent, session.exited, {kind: stalled, session: self.id})"]
+    note: only for types that declare a stall bound; standing types declare none
+  - in: working
+    on: tick
+    when: ["session.process(self.id) == idle"]
+    to: idle
+    effects: ["actor.send(parent, session.idle, {at: clock.now()})"]
+  - in: idle
+    on: tick
+    when: ["session.process(self.id) == working"]
+    to: working
+    effects: ["actor.send(parent, session.working, {at: clock.now()})"]
+  - in: [working, idle, blocked]
+    on: tick
+    when: ["session.process(self.id) == absent", "no terminal exit"]
+    to: lost
+    effects: ["actor.send(parent, session.lost, {at: clock.now()})", "report.append(warn, 'process gone without exit', self.id)"]
+  - in: [working, idle, blocked]
+    on: tick
+    when: ["session.refusals(self.id) has a record not seen"]
+    to: same
+    effects: ["report.append(warn, 'session attempted a line operation and was refused', refusal)", "actor.set(exits-seen, +refusal.id)"]
+    note: S15 — the place's hooks refuse; the machinery reports
+  - in: [working, idle, blocked]
+    on: tick
+    when: ["session.notes(self.id) has a note not seen"]
+    to: same
+    effects: ["note.append(parent, self.id, note.text)"]
+  - in: blocked
+    on: resume
+    when: ["session.process(self.id) != absent"]
+    to: working
+    effects: ["session.deliver(self.id, answer, msg.answer)"]
+    note: the same session continues with the answer (S30)
+  - in: [blocked, lost]
+    on: resume
+    when: ["session.process(self.id) == absent"]
+    to: retired
+    effects: ["actor.spawn(session, session/<parent>/<n+1>, {place: self.place, line: self.line, order: self.order + {answer: msg.answer}, instruction-version: instructions.version()}) in requested"]
+    note: a fresh session starts with the answer (requirement 59)
+  - in: idle
+    on: rebase-when-idle
+    when: ["place.clean(self.place)"]
+    to: same
+    effects: ["place.rebase(self.place, msg.line)", "session.deliver(self.id, note, 'the line moved under you: ' + moved)"]
+    note: never while it works (requirement 44, invariant I16); a conflict aborts and is reported to the parent as `rebase-conflict`
+  - in: [working, blocked]
+    on: rebase-when-idle
+    to: same
+    effects: ["actor.set(rebase-pending, msg.line)"]
+    note: held until the next idle tick, which re-sends the clause above
+  - in: [exited, lost, working, idle, blocked, requested, starting]
+    on: retire
+    to: retired
+    effects: ["session.stop(self.id)"]
+    note: safe to repeat; a repeat of a completed stop changes nothing (requirement 62)

@@ -1,0 +1,36 @@
+# The plan as an object: one per organization. Engine machine. Its rows are
+# derived every tick from every object's state (A.2.6); this machine only
+# records renderings so replies attribute to numbered rows and the tail is
+# derivable (A.2.13).
+machine: plan
+version: 1
+kind: engine
+object: plan
+singleton: organization
+record:
+  last_rendering: rendering-id
+  last_rendered_at: time
+  last_delivered: {channel: rendering-id}
+regions:
+  render:
+    initial: current
+    states:
+      current:
+        transitions:
+          - when: {ev: plan.rows_changed, is: true}
+            to: rendering
+      rendering:
+        entry:
+          - {do: record_rendering, note: the numbered rows as of this read}
+          - {do: render_status, note: the status projection from the same read}
+        transitions:
+          - when: {ev: plan.delivery_due, is: true}
+            to: delivering
+          - when: {always: true}
+            to: current
+      delivering:
+        entry:
+          - {do: deliver_rendering, args: {channel: chat}}
+        transitions:
+          - when: {always: true}
+            to: current
