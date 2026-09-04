@@ -1,0 +1,82 @@
+# finding.toml — an idea a session had while doing its job, outside its
+# job, offered and never acted on by the session (requirement 25).
+#
+# A finding is a proposal. Its only transitions out of `offered` are the
+# operator's word. There is no transition that creates work.
+
+schema = 1
+machine = "finding"
+clock = "reconciled"
+carrier = "github.issue"
+truth = "github.issue.labels on the finding issue"
+projections = ["projects.field.Status", "a back-reference comment on the offering session's object"]
+scope = "label fwn AND label fwn:finding"
+
+[[states]]
+name = "offered"
+kind = "waiting_operator"
+truth = "label fw:offered"
+board = "Proposed"
+note = "opened by the reconciler from run/<session>/offers.jsonl; the session that offered it kept working"
+
+[[states]]
+name = "converted"
+kind = "terminal"
+truth = "issue CLOSED as completed, body links the created elaboration or unit issue"
+board = "Done"
+
+[[states]]
+name = "dropped"
+kind = "terminal"
+truth = "issue CLOSED as not_planned"
+board = "Dropped"
+
+# ------------------------------------------------------------------------
+[[transitions]]
+id = "f.offer"
+from = "none"
+to = "offered"
+on = "reconcile"
+guard.all = ["offer_record_present:finding", "issue_absent_for_offer"]
+effect = ["open_issue:finding:offer_template", "comment:offered_by:<session>"]
+reason = "a session appended a finding offer; it becomes a proposal, not work (invariant I1)"
+note = "the offer file line carries a stable offer_id, so a re-read opens no second issue"
+
+[[transitions]]
+id = "f.as_elaboration"
+from = "offered"
+to = "converted"
+on = "word"
+word = "elaborate"
+effect = ["open_issue:elaboration:from_finding", "close_issue:completed"]
+reason = "operator chose to pursue the finding as design work (scenario S9)"
+note = "the created elaboration starts in state `proposed`, so a second approval is still the operator's"
+
+[[transitions]]
+id = "f.as_unit"
+from = "offered"
+to = "converted"
+on = "word"
+word = "unit"
+effect = ["open_issue:unit:from_finding", "close_issue:completed"]
+reason = "operator chose to pursue the finding as construction work"
+
+[[transitions]]
+id = "f.drop"
+from = "offered"
+to = "dropped"
+on = "word"
+word = "drop"
+effect = ["close_issue:not_planned"]
+reason = "operator dropped it; nothing was created (scenario S4)"
+
+# ------------------------------------------------------------------------
+[[rows]]
+id = "row.finding.offered"
+kind = "finding"
+when.all = ["state:finding:offered"]
+until.any = ["word:elaborate", "word:unit", "word:drop"]
+answers = ["elaborate", "unit", "drop"]
+surface = "chat+page"
+group = "offers"
+body = "finding from {session} on {source}: {summary} — pursue on intent #{suggested} or drop?"

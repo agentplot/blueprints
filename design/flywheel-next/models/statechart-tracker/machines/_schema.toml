@@ -1,0 +1,127 @@
+# _schema.toml — the meta-definition every machine file in this directory
+# must satisfy. Read with tomllib (Python 3.12 stdlib). Enforced by
+# `fwn check`, which fails CI in the books repo when a machine file, a
+# guard name, an effect name, or a diagram drifts from this shape.
+#
+# Files here are DATA. The machinery contains no enum of state names, no
+# enum of elaboration types, no enum of construction stages and no enum
+# of plan row kinds. Adding any of those is an edit to a file in this
+# directory (requirement 44). Adding a new *predicate* or a new *effect*
+# is code, in flywheel_next/guards.py and flywheel_next/effects.py — the
+# boundary is stated in model.md §12.
+
+schema = 1
+kind = "meta"
+
+# ---------------------------------------------------------------- header
+[header]
+required = ["schema", "machine", "clock", "carrier", "truth", "scope"]
+
+[header.fields]
+machine = "snake_case name; one file per machine; unique in the directory"
+clock = "'reconciled' | 'event' — see model.md §3. Exactly one machine may set clock='event'."
+carrier = "the durable thing that carries the machine: github.issue | github.milestone | rec.record | herdr.pane"
+truth = "dotted path to the ONE store that proves this machine's state (invariant I4)"
+projections = "list of places the state is copied to, write-only; never read as truth (requirement 36)"
+scope = "the filter that makes this flywheel's objects disjoint from the current one (requirement 45)"
+params = "type parameters read off the carrier; they select transitions, they are not states"
+
+# ---------------------------------------------------------------- states
+[states]
+required = ["name", "kind", "truth"]
+
+[states.fields]
+name = "snake_case; unique within the machine"
+kind = "'initial' | 'work' | 'waiting_operator' | 'waiting_session' | 'waiting_machine' | 'terminal'"
+truth = "the literal value in the machine's truth store that proves this state"
+board = "the Status option this state projects to on the Projects v2 board"
+note = "one line, for the diagram caption and the status view tooltip"
+
+# Exhaustiveness rule, checked by `fwn check`:
+#   every state with kind = 'waiting_operator' MUST be named by the
+#   `when` of at least one [[rows]] entry in the same file.
+# This is what makes a plan row impossible to miss (model.md §6).
+waiting_states_must_have_rows = true
+
+# ----------------------------------------------------------- transitions
+[transitions]
+required = ["id", "from", "to", "on"]
+
+[transitions.fields]
+id = "machine-unique dotted id, quoted in commit messages, event log and diagrams"
+from = "state name, or a list of state names"
+to = "state name"
+on = "'word' | 'reconcile' | 'observation' | 'timer'"
+word = "when on='word': the verb the operator's word must carry"
+guard = "predicate tree: guard.all / guard.any / guard.none, leaves are predicate atoms"
+effect = "ordered list of effect atoms; every effect is idempotent (requirement 33)"
+params = "when set, the transition exists only for carriers whose param matches"
+reason = "the sentence written into the event log and into the GitHub comment (requirement 39)"
+evidence = "for on='observation': the command whose output proves the transition fired"
+
+# Predicate atoms (leaves of a guard tree). `fwn check` asserts every
+# atom used resolves to a registered predicate in flywheel_next/guards.py.
+#   state:<machine>:<name>      a related object is in a state
+#   word:<verb>                 an unapplied operator word of that verb exists
+#   label:<name>                the carrier issue carries the label
+#   field:<Field>=<value>       a Projects v2 field value
+#   children_all:<machine>:<state>
+#   children_none:<machine>:<state>
+#   lease_mine / lease_stale / lease_absent
+#   pane_present / pane_absent / agent_idle / agent_working
+#   idle_for:<duration>         herdr reports idle at least this long
+#   operator_present            human input in the pane inside 30m
+#   exit_valid / exit_missing   exit.json parses against the exit alphabet
+#   deliverable_present:<path>
+#   claim_standing / claim_hash_matches / verdict_absent / evidence_present
+#   manifest_in_scope
+
+# Effect atoms. Every one is a compare-then-write; re-running a completed
+# effect performs no write at all (requirement 38, invariant I7).
+#   set_label:<name> / clear_label:<name>
+#   project_status:<option> / project_field:<Field>=<value>
+#   comment:<template>
+#   open_issue:<machine>:<template>
+#   close_issue:<reason>
+#   request_session:<agent>:<goal-template>
+#   retire_session
+#   queue_message:<template>        delivered only when agent_idle (req 31)
+#   lease_acquire / lease_release / lease_heartbeat
+#   ledger_write:<state>            appends one verdict record (recins)
+#   merge_branch:<target>
+#   land_milestone
+
+# ------------------------------------------------------------------ rows
+# A plan row kind. Rows are NEVER stored. `fwn plan` recomputes them from
+# the same snapshot the transitions read (requirement 6, invariant I3).
+[rows]
+required = ["id", "kind", "when", "until", "answers", "surface"]
+
+[rows.fields]
+id = "globally unique across all machine files"
+kind = "the row kind named in requirement 9"
+when = "predicate tree — the ONE creating condition"
+until = "predicate tree — the ONE retracting condition"
+answers = "the words this row accepts; a chat reply must map onto one of them"
+surface = "'chat' | 'page' | 'chat+page' — 'page' when the answer needs more than a short reply (requirement 2)"
+group = "the grouping key; 'yes to all' answers one group (requirement 10)"
+body = "the template rendered onto the served page and into the Discord message"
+
+# Checked by `fwn check`:
+#   when AND until must be unsatisfiable together (invariant I3);
+#   every row id must be reachable from some state in the same file;
+#   every `answers` verb must be the `word` of some transition in the file.
+mutually_exclusive = ["when", "until"]
+
+# -------------------------------------------------------------- diagrams
+# The house-style SVGs beside this directory carry data-fwn attributes.
+# `fwn check --diagrams` asserts: every id in a data-fwn-state or
+# data-fwn-transition attribute exists in some machine file, and every
+# state and transition in every machine file appears in exactly one SVG.
+# That is how the picture is kept from drifting from the runtime
+# (requirement 42) without giving up the hand-drawn house style.
+[diagrams]
+attribute_state = "data-fwn-state"
+attribute_transition = "data-fwn-transition"
+attribute_row = "data-fwn-row"
+coverage = "total"

@@ -1,0 +1,227 @@
+# session.toml — the one event-driven machine in the model.
+#
+# A session is a herdr pane running `claude --agent <name>`. It is the
+# only place in the whole model where an agent reasons freely, and the
+# only machine whose transitions are caused by something happening in
+# the world rather than by a reconcile pass over the stores.
+#
+# A session never writes the state of any other machine (requirement 30).
+# Its single output to the machinery is the exit record; every durable
+# machine consumes that record on its next reconcile.
+
+schema = 1
+machine = "session"
+clock = "event"
+carrier = "herdr.pane"
+truth = "herdr.agent.list --json (liveness) + run/<session_id>/exit.json (outcome)"
+projections = [
+  "github.issue.comment on the owning object — the exit block, verbatim",
+  "projects.field.Host / projects.field.Session on the owning object",
+]
+scope = "herdr workspace fwn-<org>; pane title carries the fwn- session id"
+
+[[params]]
+name = "agent"
+from = "work_order.agent"
+values = [
+  "fwn-design-session",
+  "fwn-construction-session",
+  "fwn-chore-session",
+  "fwn-verdict-session",
+  "fwn-curation-session",
+]
+
+# ------------------------------------------------------------------------
+# The exit alphabet. This list IS the fixed set of ways a session may end
+# (requirement 29). exit.json is validated against it; anything else the
+# agent writes is read as `stalled`. Adding an exit is an edit here.
+# ------------------------------------------------------------------------
+[exits]
+terminal = ["done", "question", "stalled"]
+non_terminal = ["finding", "chore"]
+note = """finding and chore are OFFERS, emitted while the session runs and
+appended to run/<session_id>/offers.jsonl; they do not end the session and
+never interrupt it (requirements 25, 26)."""
+
+[exits.schema]
+exit = "one of the terminal verbs"
+session = "fwn session id"
+object = "the issue number of the object the session served"
+expected = "copied verbatim from the work order — what was asked"
+delivered = "what was produced: paths, commits, comment ids"
+question = "present iff exit == 'question'"
+evidence = "commands run and their outputs, for the report"
+
+# ------------------------------------------------------------------------
+[[states]]
+name = "requested"
+kind = "waiting_machine"
+truth = "run/<session_id>/work_order.md exists, no pane carries the id"
+note = "the work order is written before the launch; the id is chosen by the machinery, never by herdr"
+
+[[states]]
+name = "launching"
+kind = "waiting_machine"
+truth = "launch attempted, herdr agent list does not yet show the pane"
+note = "a slow host sits here for minutes; this is slow, not failed (requirement 32)"
+
+[[states]]
+name = "working"
+kind = "work"
+truth = "herdr agent list --json reports state=busy for the pane"
+board = "Running"
+note = "the one state in the model where an agent reasons freely"
+
+[[states]]
+name = "idle"
+kind = "waiting_machine"
+truth = "herdr agent list --json reports state=idle for the pane"
+board = "Running"
+note = "what the machinery has to say to the session is delivered here and only here (requirement 31)"
+
+[[states]]
+name = "exited"
+kind = "waiting_machine"
+truth = "run/<session_id>/exit.json parses against [exits]"
+note = "the owning machine consumes this on its next reconcile"
+
+[[states]]
+name = "stalled"
+kind = "waiting_operator"
+truth = "pane gone or idle past the stall window with no valid exit.json"
+board = "Waiting"
+note = "reported to the operator through the event record, never filed as work (requirement 41)"
+
+[[states]]
+name = "kept"
+kind = "work"
+truth = "pane alive, owning elaboration has type param end='standing'"
+board = "Running"
+note = "the machinery has no transition out of this state that is not a word (invariant I6)"
+
+[[states]]
+name = "reaped"
+kind = "terminal"
+truth = "no pane carries the id and the run dir is archived under run/_done/"
+
+# ------------------------------------------------------------------------
+[[transitions]]
+id = "s.launch"
+from = "requested"
+to = "launching"
+on = "reconcile"
+guard.all = ["lease_mine", "pane_absent"]
+effect = ["herdr_start:fwn-<org>:<agent>:<session_id>"]
+reason = "no pane carries this session id, so the launch has not happened"
+note = "guarded by pane_absent, so a repeat after a timeout starts nothing twice (requirement 33, scenario S6)"
+
+[[transitions]]
+id = "s.observed"
+from = "launching"
+to = "working"
+on = "observation"
+guard.all = ["pane_present"]
+evidence = "herdr agent list --json | jq '.[]|select(.title|startswith(\"fwn-\"))'"
+reason = "the pane exists; success is judged by evidence, never by the return of herdr agent start"
+
+[[transitions]]
+id = "s.launch_retry"
+from = "launching"
+to = "launching"
+on = "timer"
+guard.all = ["pane_absent", "elapsed:90s"]
+effect = ["herdr_start:fwn-<org>:<agent>:<session_id>"]
+reason = "slow host; retry the start, still guarded by pane_absent"
+
+[[transitions]]
+id = "s.settle"
+from = "working"
+to = "idle"
+on = "observation"
+guard.all = ["agent_idle"]
+evidence = "herdr agent list --json state field"
+
+[[transitions]]
+id = "s.resume"
+from = "idle"
+to = "working"
+on = "observation"
+guard.all = ["agent_working"]
+
+[[transitions]]
+id = "s.exit"
+from = ["idle", "working"]
+to = "exited"
+on = "observation"
+guard.all = ["exit_valid"]
+effect = ["comment:exit_block", "comment:expected_vs_delivered"]
+reason = "the session wrote a valid exit record"
+note = "the comment leads with the difference between expected and delivered (requirement 40)"
+
+[[transitions]]
+id = "s.keep"
+from = "idle"
+to = "kept"
+on = "reconcile"
+guard.all = ["param:agent=fwn-design-session", "owner_type_end:standing", "exit_missing"]
+reason = "a standing elaboration went idle; the session stays alive and the plan asks"
+
+[[transitions]]
+id = "s.finish_kept"
+from = "kept"
+to = "exited"
+on = "word"
+word = "finish"
+effect = ["queue_message:wrap_up", "comment:finished_by_operator"]
+reason = "only the operator ends a standing session (invariant I6)"
+
+[[transitions]]
+id = "s.stall"
+from = ["idle", "launching"]
+to = "stalled"
+on = "timer"
+guard.all = ["exit_missing", "idle_for:45m"]
+guard.none = ["owner_type_end:standing", "owner_type_end:with_operator", "operator_present"]
+effect = ["ops_report:stalled"]
+reason = "idle past the stall window with no exit record"
+
+[[transitions]]
+id = "s.reap"
+from = ["exited", "stalled"]
+to = "reaped"
+on = "reconcile"
+guard.all = ["owner_consumed_exit"]
+effect = ["herdr_kill:<session_id>", "lease_release", "archive_run_dir"]
+reason = "the owning object has consumed the exit; the pane and the worktree are released (requirement 34)"
+
+[[transitions]]
+id = "s.reap_retired"
+from = ["working", "idle", "launching", "requested"]
+to = "reaped"
+on = "reconcile"
+guard.all = ["owner_retired"]
+guard.none = ["owner_type_end:standing"]
+effect = ["herdr_kill:<session_id>", "lease_release", "archive_run_dir"]
+reason = "the work this session served was retired (requirement 34)"
+
+# ------------------------------------------------------------------------
+[[rows]]
+id = "row.session.stalled"
+kind = "question"
+when.all = ["state:session:stalled"]
+until.any = ["word:retry", "word:abandon", "state:session:reaped"]
+answers = ["retry", "abandon"]
+surface = "chat"
+group = "machinery"
+body = "session {id} on {object} stalled after {idle_for} with no exit. retry or abandon?"
+
+[[rows]]
+id = "row.session.question"
+kind = "question"
+when.all = ["state:session:exited", "exit_verb:question"]
+until.any = ["word:answer", "word:abandon"]
+answers = ["answer", "abandon"]
+surface = "page"
+group = "questions"
+body = "{object}: {question}"
+note = "an answer is longer than a short reply, so this row lives on the served page (requirement 2)"

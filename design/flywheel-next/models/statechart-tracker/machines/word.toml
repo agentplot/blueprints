@@ -1,0 +1,126 @@
+# word.toml — the operator's word: one decision, given once, applied once
+# (requirement 1, invariants I1 and I2).
+#
+# Every path the operator can use — a Discord reply, a click on the
+# served page, a card moved by hand on the Projects board — produces
+# exactly one artifact: a `flywheel-word` comment on the object's issue.
+# The board field is a projection of that comment and is never read as
+# truth; a board move made by the operator is an INPUT event that this
+# machine converts into a word comment, once, keyed by the timeline event
+# id (requirement 3).
+
+schema = 1
+machine = "word"
+clock = "reconciled"
+carrier = "github.issue.comment"
+truth = "the first flywheel-word comment on the target issue carrying this word_id"
+projections = ["projects.field.Status", "the Discord message's ✅ reaction", "the served page's answered state"]
+scope = "comment body begins with the fenced marker ```flywheel-word"
+
+[word_id]
+formula = "sha256(issue_number, row_id, verb, source_event_id)[:12]"
+why = "two arrivals of the same decision — a Discord reply and a board move — collapse to one id, so the word is applied exactly once (invariant I2)"
+
+[sources]
+chat = "Discord reply or reaction on the row message; parsed by a pure function, tested with stdlib only"
+page = "an HTTP POST from the served plan page"
+board = "operator changes a Status field by hand; read from the issue timeline, actor != the bot"
+dictation = "operator types 'add this idea' / 'do this chore' in the channel; skips the plan entirely (requirement 11)"
+
+[[states]]
+name = "given"
+kind = "waiting_machine"
+truth = "the flywheel-word comment exists; no transition has consumed it"
+
+[[states]]
+name = "applied"
+kind = "terminal"
+truth = "the target object is in a state this word's transition leads to"
+note = "applied-ness is read off the target, never off a flag on the word; re-reading applies nothing twice"
+
+[[states]]
+name = "unapplicable"
+kind = "waiting_operator"
+truth = "no transition in the target's machine matches (verb, current state) and the word is not applied"
+note = "a word is never silently discarded (requirement 5)"
+
+[[states]]
+name = "resolved"
+kind = "terminal"
+truth = "a flywheel-word-resolution comment cites the word_id"
+
+# ------------------------------------------------------------------------
+[[transitions]]
+id = "wd.record_chat"
+from = "none"
+to = "given"
+on = "observation"
+guard.all = ["discord_reply_matches_row", "no_word_with_id"]
+effect = ["comment:flywheel_word", "discord_react:✅"]
+reason = "the operator answered a row in the channel"
+evidence = "the Discord message id and the row id the reply cites"
+
+[[transitions]]
+id = "wd.record_board"
+from = "none"
+to = "given"
+on = "observation"
+guard.all = ["board_status_changed_by_operator", "no_word_with_id"]
+effect = ["comment:flywheel_word"]
+reason = "the operator moved the card themselves, which the machinery treats as the word (requirement 3)"
+evidence = "gh api graphql: the issue timeline's ProjectV2ItemFieldValueChangedEvent id and actor"
+
+[[transitions]]
+id = "wd.record_page"
+from = "none"
+to = "given"
+on = "observation"
+guard.all = ["page_post_signed", "no_word_with_id"]
+effect = ["comment:flywheel_word"]
+
+[[transitions]]
+id = "wd.apply"
+from = "given"
+to = "applied"
+on = "reconcile"
+guard.all = ["target_transition_exists", "target_guard_holds"]
+effect = ["fire_target_transition", "project_status:<target.board>"]
+reason = "the word names a transition the target can take right now"
+note = "the fired transition's own effects are compare-then-write, so a second pass writes nothing (requirement 38)"
+
+[[transitions]]
+id = "wd.unapplicable"
+from = "given"
+to = "unapplicable"
+on = "reconcile"
+guard.none = ["target_transition_exists", "target_already_there"]
+effect = ["comment:word_unapplicable_reason", "ops_report:unapplicable_word"]
+reason = "the target moved under the word — reported, not dropped (requirement 5)"
+
+[[transitions]]
+id = "wd.already"
+from = "given"
+to = "applied"
+on = "reconcile"
+guard.all = ["target_already_there"]
+effect = []
+reason = "the target is already where the word would put it; nothing to write, and nothing is re-asked (scenario S1)"
+
+[[transitions]]
+id = "wd.resolve"
+from = "unapplicable"
+to = "resolved"
+on = "word"
+word = "acknowledge"
+effect = ["comment:flywheel_word_resolution"]
+
+# ------------------------------------------------------------------------
+[[rows]]
+id = "row.word.unapplicable"
+kind = "question"
+when.all = ["state:word:unapplicable"]
+until.any = ["word:acknowledge", "state:word:applied"]
+answers = ["acknowledge", "reissue"]
+surface = "chat"
+group = "machinery"
+body = "your '{verb}' on #{n} no longer applies: {reason}. acknowledge, or reissue against the current state?"

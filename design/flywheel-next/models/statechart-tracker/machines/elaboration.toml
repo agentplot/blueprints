@@ -1,0 +1,264 @@
+# elaboration.toml — one unit of design work on one intent, worked by
+# exactly one session, one conversation, one place (requirement 16).
+#
+# The elaboration TYPE is a parameter, not a separate machine. The type's
+# `end` discipline selects which transition out of `session_idle` exists.
+# Adding a type is an edit to [[types]] here and nothing else
+# (requirement 44).
+
+schema = 1
+machine = "elaboration"
+clock = "reconciled"
+carrier = "github.issue"
+truth = "github.issue.labels on the elaboration issue"
+projections = [
+  "projects.field.Status / .Type / .Host / .Session",
+  "the parent intent's body checklist",
+]
+scope = "label fwn AND label fwn:elaboration"
+
+# ------------------------------------------------------------------------
+# The types. `end` is the only thing that differs between them
+# (requirement 17). `agent` names the Claude Code agent definition the
+# session is started with.
+# ------------------------------------------------------------------------
+[[types]]
+name = "research"
+end = "self_closing"
+agent = "fwn-design-session"
+deliverable = "books/flywheel-next/src/**.md or openspec/changes/<id>/research/*.md"
+
+[[types]]
+name = "writeback"
+end = "self_closing"
+agent = "fwn-design-session"
+deliverable = "books/flywheel-next/src/**.md — chapters rewritten whole, claims inside them"
+
+[[types]]
+name = "prototype-note"
+end = "self_closing"
+agent = "fwn-design-session"
+deliverable = "openspec/changes/<id>/findings/<slug>.md — the throwaway dies with the worktree"
+
+[[types]]
+name = "exploration"
+end = "standing"
+agent = "fwn-design-session"
+deliverable = "none required; the conversation is the artifact"
+
+[[types]]
+name = "prototype-live"
+end = "standing"
+agent = "fwn-design-session"
+deliverable = "a running process the operator opens; the session holds it up (scenario S2)"
+
+[[types]]
+name = "interactive"
+end = "standing"
+agent = "fwn-design-session"
+deliverable = "a served page the operator works; npx lavish-axi, held open by the session"
+
+[[types]]
+name = "planning"
+end = "with_operator"
+agent = "fwn-design-session"
+deliverable = "decision records under openspec/changes/<id>/decisions/"
+
+# ------------------------------------------------------------------------
+[[params]]
+name = "type"
+from = "projects.field.Type"
+selects = "transitions whose params.end matches this type's end"
+
+[[states]]
+name = "proposed"
+kind = "waiting_operator"
+truth = "label fw:proposed"
+board = "Proposed"
+note = "at most one per intent at a time; new material joins this proposal (requirement 13)"
+
+[[states]]
+name = "approved"
+kind = "waiting_machine"
+truth = "label fw:approved"
+board = "Ready"
+note = "the approval is a fact on the issue; nothing ever re-derives 'needs approval' from it (scenario S1)"
+
+[[states]]
+name = "running"
+kind = "waiting_session"
+truth = "label fw:running AND a session issue-comment names a live session id"
+board = "Running"
+
+[[states]]
+name = "session_idle"
+kind = "waiting_machine"
+truth = "label fw:running AND session machine in state idle"
+board = "Running"
+note = "the fork: the type's end discipline decides what happens here"
+
+[[states]]
+name = "keep_or_finish"
+kind = "waiting_operator"
+truth = "label fw:running AND session machine in state kept"
+board = "Waiting"
+note = "standing types only; the process keeps running while this row stands (scenario S2)"
+
+[[states]]
+name = "blocked"
+kind = "waiting_operator"
+truth = "label fw:blocked"
+board = "Blocked"
+
+[[states]]
+name = "done"
+kind = "terminal"
+truth = "issue CLOSED as completed with label fw:done"
+board = "Done"
+
+[[states]]
+name = "retracted"
+kind = "terminal"
+truth = "issue CLOSED as not_planned"
+board = "Dropped"
+
+# ------------------------------------------------------------------------
+[[transitions]]
+id = "el.approve"
+from = "proposed"
+to = "approved"
+on = "word"
+word = "approve"
+guard.all = ["state:intent:open"]
+effect = ["set_label:fw:approved", "clear_label:fw:proposed", "project_status:Ready"]
+reason = "operator approved the elaboration"
+
+[[transitions]]
+id = "el.retype"
+from = ["proposed", "approved", "running"]
+to = "self"
+on = "word"
+word = "retype"
+effect = ["project_field:Type=<value>"]
+reason = "operator corrected the type (requirement 19)"
+
+[[transitions]]
+id = "el.drop"
+from = "proposed"
+to = "retracted"
+on = "word"
+word = "drop"
+effect = ["close_issue:not_planned"]
+reason = "operator declined; nothing was created (scenario S4)"
+
+[[transitions]]
+id = "el.start"
+from = "approved"
+to = "running"
+on = "reconcile"
+guard.all = ["lease_mine", "no_live_session"]
+effect = ["lease_acquire", "request_session:<type.agent>:elaborate", "set_label:fw:running"]
+reason = "an approved elaboration with no live session gets one"
+note = "guarded by no_live_session, so a restart mid-launch starts nothing twice (scenario S5, S6)"
+
+[[transitions]]
+id = "el.settle"
+from = "running"
+to = "session_idle"
+on = "reconcile"
+guard.all = ["state:session:idle"]
+
+[[transitions]]
+id = "el.finish_self_closing"
+from = "session_idle"
+to = "done"
+on = "reconcile"
+params.end = "self_closing"
+guard.all = ["state:session:exited", "exit_verb:done", "deliverable_present:<type.deliverable>"]
+effect = ["comment:expected_vs_delivered", "close_issue:completed", "retire_session", "lease_release"]
+reason = "a self-closing type ends itself; the machinery only records it (requirement 17)"
+
+[[transitions]]
+id = "el.stand"
+from = "session_idle"
+to = "keep_or_finish"
+on = "reconcile"
+params.end = "standing"
+effect = ["project_status:Waiting"]
+reason = "a standing session went idle; the process stays up and the plan asks"
+note = "no effect touches the session; nothing here can end it (requirement 18, invariant I6)"
+
+[[transitions]]
+id = "el.hold_with_operator"
+from = "session_idle"
+to = "running"
+on = "reconcile"
+params.end = "with_operator"
+guard.all = ["operator_present"]
+reason = "the operator is in the conversation; the machinery neither ends it nor asks (requirement 17)"
+
+[[transitions]]
+id = "el.finish_standing"
+from = "keep_or_finish"
+to = "done"
+on = "word"
+word = "finish"
+effect = ["retire_session", "lease_release", "close_issue:completed"]
+reason = "only the operator's word ends a standing elaboration (invariant I6)"
+
+[[transitions]]
+id = "el.keep_standing"
+from = "keep_or_finish"
+to = "keep_or_finish"
+on = "word"
+word = "keep"
+effect = ["comment:kept_until:<date>", "row_snooze:<date>"]
+reason = "operator kept it; the row is snoozed, the session untouched"
+
+[[transitions]]
+id = "el.block"
+from = ["running", "session_idle"]
+to = "blocked"
+on = "reconcile"
+guard.all = ["state:session:exited", "exit_verb:question"]
+effect = ["project_status:Blocked"]
+
+[[transitions]]
+id = "el.unblock"
+from = "blocked"
+to = "approved"
+on = "word"
+word = "answer"
+effect = ["queue_message:answer", "project_status:Ready", "clear_label:fw:blocked"]
+reason = "the answer is queued and delivered when the session is idle (requirement 31)"
+
+# ------------------------------------------------------------------------
+[[rows]]
+id = "row.elaboration.proposed"
+kind = "proposed_elaboration"
+when.all = ["state:elaboration:proposed"]
+until.any = ["word:approve", "word:drop", "state:elaboration:retracted"]
+answers = ["approve", "drop", "retype"]
+surface = "chat+page"
+group = "intents"
+body = "intent #{parent}: {type} elaboration — {title}"
+
+[[rows]]
+id = "row.elaboration.keep"
+kind = "idle_standing_session"
+when.all = ["state:elaboration:keep_or_finish"]
+until.any = ["word:finish", "word:keep", "state:elaboration:done"]
+answers = ["finish", "keep"]
+surface = "chat"
+group = "standing"
+body = "{type} #{n} idle {idle_for}, still running on {host}. finish or keep?"
+
+[[rows]]
+id = "row.elaboration.blocked"
+kind = "question"
+when.all = ["state:elaboration:blocked"]
+until.any = ["word:answer", "word:drop"]
+answers = ["answer", "drop"]
+surface = "page"
+group = "questions"
+body = "{title} asks: {question}"

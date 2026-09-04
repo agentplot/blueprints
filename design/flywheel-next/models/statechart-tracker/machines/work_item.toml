@@ -1,0 +1,174 @@
+# work_item.toml — one task of a unit, worked through the bolt's stages
+# by one session per stage, then merged into the bolt branch
+# (requirements 21, 22).
+#
+# The stage list is NOT in this file. It is read off the owning bolt, so
+# two bolts may use different stages and adding a stage is data
+# (requirement 44). The machine has one stage cycle, walked once per
+# stage in the list.
+
+schema = 1
+machine = "work_item"
+clock = "reconciled"
+carrier = "github.issue"
+truth = "github.issue.labels: fw:stage=<name> and fw:stage-state=<name>"
+projections = ["projects.field.Status / .Stage / .Host / .Session", "the unit issue's task list"]
+scope = "label fwn AND label fwn:workitem"
+
+[[params]]
+name = "stages"
+from = "bolt.front_matter.stages"
+note = "an ordered list; `next_stage` is a predicate over it, not a hard-coded successor table"
+
+[[states]]
+name = "queued"
+kind = "waiting_machine"
+truth = "fw:stage-state=queued"
+board = "Ready"
+
+[[states]]
+name = "stage_running"
+kind = "waiting_session"
+truth = "fw:stage-state=running AND a live session id on the issue"
+board = "Running"
+note = "the free-reasoning state; the agent works inside it and leaves only by an exit"
+
+[[states]]
+name = "stage_done"
+kind = "waiting_machine"
+truth = "fw:stage-state=done"
+board = "Running"
+
+[[states]]
+name = "blocked"
+kind = "waiting_operator"
+truth = "fw:stage-state=blocked"
+board = "Blocked"
+
+[[states]]
+name = "merge_queued"
+kind = "waiting_machine"
+truth = "fw:stage-state=merge-queued"
+board = "Ready"
+note = "merges into the bolt branch happen one at a time, ordered by issue number (requirement 22)"
+
+[[states]]
+name = "merged"
+kind = "terminal"
+truth = "the work item branch is an ancestor of fwn/bolt-<slug>"
+board = "Done"
+
+[[states]]
+name = "abandoned"
+kind = "terminal"
+truth = "issue CLOSED as not_planned"
+board = "Dropped"
+
+# ------------------------------------------------------------------------
+[[transitions]]
+id = "w.start_stage"
+from = "queued"
+to = "stage_running"
+on = "reconcile"
+guard.all = ["lease_mine", "no_live_session", "stage_inputs_present"]
+effect = [
+  "lease_acquire",
+  "worktree_add:<repo>:fwn/wi-<n>",
+  "request_session:<stage.agent>:<stage>",
+  "label:fw:stage-state=running",
+]
+reason = "the item is at a stage with no live session"
+
+[[transitions]]
+id = "w.stage_exit"
+from = "stage_running"
+to = "stage_done"
+on = "reconcile"
+guard.all = ["state:session:exited", "exit_verb:done", "stage_deliverable_present"]
+effect = ["comment:expected_vs_delivered", "retire_session", "label:fw:stage-state=done"]
+reason = "the stage session delivered what its work order asked for (requirement 40)"
+
+[[transitions]]
+id = "w.next_stage"
+from = "stage_done"
+to = "queued"
+on = "reconcile"
+guard.all = ["has_next_stage"]
+effect = ["label:fw:stage=<next>", "label:fw:stage-state=queued", "lease_release"]
+reason = "advance to the next stage in the bolt's list"
+
+[[transitions]]
+id = "w.last_stage"
+from = "stage_done"
+to = "merge_queued"
+on = "reconcile"
+guard.none = ["has_next_stage"]
+effect = ["label:fw:stage-state=merge-queued", "lease_release"]
+
+[[transitions]]
+id = "w.merge"
+from = "merge_queued"
+to = "merged"
+on = "reconcile"
+guard.all = ["lease_mine", "merge_slot_free:<bolt>", "first_in_merge_order", "gates_green:<repo>"]
+effect = ["merge_branch:fwn/bolt-<slug>", "worktree_remove", "close_issue:completed", "lease_release"]
+reason = "this item is first in the bolt's merge order and the slot is free"
+note = "merge_slot_free is a lease on the bolt branch, so two hosts never merge at once (requirement 22, invariant I11)"
+
+[[transitions]]
+id = "w.block"
+from = "stage_running"
+to = "blocked"
+on = "reconcile"
+guard.all = ["state:session:exited", "exit_verb:question"]
+effect = ["label:fw:stage-state=blocked", "retire_session", "project_status:Blocked"]
+
+[[transitions]]
+id = "w.unblock"
+from = "blocked"
+to = "queued"
+on = "word"
+word = "answer"
+effect = ["comment:answer", "label:fw:stage-state=queued"]
+reason = "the answer becomes an input to the next session at this stage"
+
+[[transitions]]
+id = "w.abandon"
+from = ["queued", "blocked", "stage_done"]
+to = "abandoned"
+on = "word"
+word = "abandon"
+effect = ["retire_session", "worktree_remove", "close_issue:not_planned", "lease_release"]
+
+[[transitions]]
+id = "w.takeover"
+from = ["stage_running", "merge_queued"]
+to = "queued"
+on = "word"
+word = "takeover"
+guard.all = ["lease_stale"]
+effect = ["lease_steal", "label:fw:stage-state=queued", "comment:takeover_from:<host>"]
+reason = "the owning host is gone; the operator moved the item, and the new session id makes a double run impossible"
+note = "the old host's agent checks the lease before its first write and self-terminates (scenario S13)"
+
+# ------------------------------------------------------------------------
+[[rows]]
+id = "row.workitem.blocked"
+kind = "question"
+when.all = ["state:work_item:blocked"]
+until.any = ["word:answer", "word:abandon"]
+answers = ["answer", "abandon"]
+surface = "page"
+group = "questions"
+body = "{repo} wi-#{n} at stage {stage} asks: {question}"
+
+[[rows]]
+id = "row.workitem.takeover"
+kind = "question"
+when.all = ["lease_stale", "state:work_item:stage_running"]
+until.any = ["word:takeover", "word:wait", "lease_fresh"]
+answers = ["takeover", "wait"]
+surface = "chat"
+group = "hosts"
+body = "wi-#{n} held by {host}, last seen {stale_for}. take it over on {other_host}, or wait?"
+note = "a host never takes an object with a live session by racing; the word is the only path (requirement 59)"

@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 1000" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="mN" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+    <marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e9e5b"/></marker>
+    <marker id="mP" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7b5cb8"/></marker>
+    <marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+    <marker id="mR" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c05b5b"/></marker>
+    <marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+    <g id="cyl"> <path d="M -24 -11 L -24 13 A 24 8 0 0 0 24 13 L 24 -11" fill="#f1f1ee" stroke="#8a8a86" stroke-width="1.6"/> <ellipse cx="0" cy="-11" rx="24" ry="8" fill="#e3e3df" stroke="#8a8a86" stroke-width="1.6"/> </g>
+    <g id="repo"> <rect x="-26" y="-18" width="52" height="36" rx="7" fill="#fff" stroke="currentColor" stroke-width="2"/> <circle cx="-9" cy="8" r="3.2" fill="currentColor"/> <circle cx="9" cy="-8" r="3.2" fill="currentColor"/> <path d="M -9 8 v-8 a 8 8 0 0 1 8 -8 h 1" fill="none" stroke="currentColor" stroke-width="2"/> </g>
+    <g id="gear"> <circle r="9" fill="#fff" stroke="currentColor" stroke-width="2.4"/> <circle r="3" fill="currentColor"/> <g stroke="currentColor" stroke-width="2.4"> <line y1="-9" y2="-13.5"/><line y1="9" y2="13.5"/> <line x1="-9" x2="-13.5"/><line x1="9" x2="13.5"/> <line x1="-6.4" y1="-6.4" x2="-9.5" y2="-9.5"/><line x1="6.4" y1="6.4" x2="9.5" y2="9.5"/> <line x1="-6.4" y1="6.4" x2="-9.5" y2="9.5"/><line x1="6.4" y1="-6.4" x2="9.5" y2="-9.5"/> </g> </g>
+    <g id="cube" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"> <path d="M -16 -8 L 0 -17 L 16 -8 L 16 10 L 0 19 L -16 10 Z" fill="#fff"/> <path d="M -16 -8 L 0 1 L 16 -8 M 0 1 L 0 19" fill="none"/> </g>
+    <g id="row" stroke="currentColor" stroke-width="1.6" fill="none"><rect x="-8" y="-6" width="16" height="12" rx="2"/><line x1="-4" y1="-1" x2="4" y2="-1"/><line x1="-4" y1="3" x2="1" y2="3"/></g>
+    <g id="rows" fill="#8a8a86"> <rect x="-16" y="-9" width="32" height="4" rx="1"/><rect x="-16" y="-2" width="32" height="4" rx="1"/><rect x="-16" y="5" width="20" height="4" rx="1"/> </g>
+    <g id="people"> <circle cy="-5" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/> <path d="M -8 9 a 8 7 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="1.8"/> </g>
+    <g id="marker"> <circle r="7" fill="#fff" stroke="currentColor" stroke-width="2.2"/> <circle r="2.6" fill="currentColor"/> </g>
+    <g id="pause"> <circle r="9" fill="#fff" stroke="#c9962e" stroke-width="2"/> <line x1="-2.8" y1="-4" x2="-2.8" y2="4" stroke="#c9962e" stroke-width="2.4" stroke-linecap="round"/> <line x1="2.8" y1="-4" x2="2.8" y2="4" stroke="#c9962e" stroke-width="2.4" stroke-linecap="round"/> </g>
+    <g id="check" fill="none" stroke="#2e9e5b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"> <path d="M -6 0 L -2 4 L 6 -5"/> </g>
+    <g id="gate" stroke="#c05b5b" stroke-width="3" stroke-linecap="round"> <line x1="-8" y1="-11" x2="-8" y2="11"/><line x1="8" y1="-11" x2="8" y2="11"/><line x1="-8" y1="-3" x2="8" y2="-3"/> </g>
+  </defs>
+  <rect width="1680" height="1000" fill="#fff"/>
+
+  <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Design — one intent, one proposal at a time, and a type whose only difference is how it ends</text>
+  <text x="40" y="57" font-size="12" fill="#666">curation stays outside · approval is the only thing that starts work · the book is where the destination lands</text>
+
+  <!-- ===================== CURATION ===================== -->
+  <rect x="40" y="88" width="270" height="176" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4" stroke-dasharray="7 5"/>
+  <text x="58" y="114" font-size="11.5" font-weight="700" fill="#333">CURATION — outside</text>
+  <use href="#rows" x="100" y="160"/>
+  <text x="132" y="156" font-size="10.5" font-weight="700" fill="#333">signals</text>
+  <text x="132" y="170" font-size="8.5" fill="#999">transcripts · logs · feedback</text>
+  <use href="#people" x="100" y="216" color="#5f6b7a"/>
+  <text x="132" y="212" font-size="10.5" font-weight="700" fill="#333">a person or an agent</text>
+  <text x="132" y="226" font-size="8.5" fill="#999">twenty signals in, two intents out</text>
+  <path d="M 314 176 C 350 176, 366 176, 400 176" fill="none" stroke="#7b5cb8" stroke-width="2.2" marker-end="url(#mP)"/>
+  <text x="358" y="168" font-size="9" fill="#5a3f95" text-anchor="middle">one issue</text>
+
+  <!-- ===================== INTENT LANE ===================== -->
+  <text x="418" y="112" font-size="11.5" font-weight="700" fill="#7b5cb8">INTENT</text>
+  <line x1="420" y1="176" x2="1200" y2="176" stroke="#7b5cb8" stroke-width="2" opacity="0.3"/>
+  <use href="#row" x="420" y="176" color="#7b5cb8" data-fwn-state="intent.proposed"/>
+  <text x="420" y="210" font-size="10" fill="#555" text-anchor="middle">proposed</text>
+  <text x="420" y="223" font-size="8.5" fill="#999" text-anchor="middle">no work exists yet</text>
+  <rect x="446" y="126" width="176" height="20" rx="4" fill="#fbeeee" stroke="#c05b5b"/>
+  <text x="458" y="140" font-size="8.5" font-weight="700" fill="#a34848">+row approve or drop</text>
+  <path d="M 452 148 L 432 162" fill="none" stroke="#c05b5b" stroke-width="1.6" marker-end="url(#mR)"/>
+  <use href="#gear" x="700" y="176" color="#7b5cb8" data-fwn-state="intent.open"/>
+  <text x="700" y="210" font-size="10" fill="#555" text-anchor="middle">open</text>
+  <text x="700" y="223" font-size="8.5" fill="#999" text-anchor="middle">change open · claims proposed</text>
+  <use href="#pause" x="960" y="176" data-fwn-state="intent.close_ready"/>
+  <text x="960" y="210" font-size="10" fill="#555" text-anchor="middle">close ready</text>
+  <text x="960" y="223" font-size="8.5" fill="#999" text-anchor="middle">derived, not stored</text>
+  <rect x="880" y="126" width="160" height="20" rx="4" fill="#fbeeee" stroke="#c05b5b"/>
+  <text x="892" y="140" font-size="8.5" font-weight="700" fill="#a34848">+row close the thread</text>
+  <path d="M 960 148 L 960 162" fill="none" stroke="#c05b5b" stroke-width="1.6" marker-end="url(#mR)"/>
+  <use href="#check" x="1200" y="176" data-fwn-state="intent.closed"/>
+  <text x="1200" y="210" font-size="10" fill="#555" text-anchor="middle">closed</text>
+  <text x="1200" y="223" font-size="8.5" fill="#999" text-anchor="middle">archived · claims standing</text>
+  <path d="M 438 176 L 680 176" fill="none" stroke="#7b5cb8" stroke-width="2.2" marker-end="url(#mP)"/>
+  <text x="558" y="168" font-size="9" fill="#5a3f95" text-anchor="middle">word approve</text>
+  <path d="M 720 176 L 940 176" fill="none" stroke="#7b5cb8" stroke-width="2.2" marker-end="url(#mP)"/>
+  <text x="830" y="168" font-size="9" fill="#5a3f95" text-anchor="middle">every elaboration done</text>
+  <path d="M 980 176 L 1184 176" fill="none" stroke="#7b5cb8" stroke-width="2.2" marker-end="url(#mP)"/>
+  <text x="1082" y="168" font-size="9" fill="#5a3f95" text-anchor="middle">word close</text>
+  <path d="M 682 190 C 600 222, 484 250, 434 272" fill="none" stroke="#7b5cb8" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#mP)"/>
+  <text x="556" y="264" font-size="9" fill="#5a3f95" text-anchor="middle">its elaborations live below</text>
+
+  <!-- ===================== ELABORATION ===================== -->
+  <rect x="380" y="280" width="1240" height="340" rx="10" fill="#f8f5fc" stroke="#7b5cb8" stroke-width="1.6"/>
+  <text x="398" y="306" font-size="11.5" font-weight="700" fill="#5a3f95">ELABORATION</text>
+  <text x="510" y="306" font-size="9.5" fill="#999">one session · one conversation · one place · at most one proposal per intent</text>
+  <line x1="460" y1="410" x2="900" y2="410" stroke="#7b5cb8" stroke-width="2" opacity="0.3"/>
+  <use href="#row" x="460" y="410" color="#7b5cb8" data-fwn-state="elaboration.proposed"/>
+  <text x="460" y="444" font-size="10" fill="#555" text-anchor="middle">proposed</text>
+  <text x="460" y="457" font-size="8.5" fill="#999" text-anchor="middle">new material joins it</text>
+  <rect x="398" y="346" width="200" height="20" rx="4" fill="#fbeeee" stroke="#c05b5b"/>
+  <text x="410" y="360" font-size="8.5" font-weight="700" fill="#a34848">+row approve · retype · drop</text>
+  <path d="M 452 368 L 456 392" fill="none" stroke="#c05b5b" stroke-width="1.6" marker-end="url(#mR)"/>
+  <use href="#marker" x="610" y="410" color="#7b5cb8" data-fwn-state="elaboration.approved"/>
+  <text x="610" y="444" font-size="10" fill="#555" text-anchor="middle">approved</text>
+  <text x="610" y="457" font-size="8.5" fill="#999" text-anchor="middle">a fact, never re-derived</text>
+  <use href="#gear" x="760" y="410" color="#2e9e5b" data-fwn-state="elaboration.running"/>
+  <text x="784" y="440" font-size="10" fill="#555">running</text>
+  <text x="784" y="453" font-size="8.5" fill="#999">one live session</text>
+  <use href="#pause" x="900" y="410" data-fwn-state="elaboration.session_idle"/>
+  <text x="900" y="444" font-size="10" fill="#555" text-anchor="middle">idle</text>
+  <path d="M 478 410 L 592 410" fill="none" stroke="#7b5cb8" stroke-width="2.2" marker-end="url(#mP)"/>
+  <text x="535" y="402" font-size="9" fill="#5a3f95" text-anchor="middle">word approve</text>
+  <path d="M 628 410 L 742 410" fill="none" stroke="#2e9e5b" stroke-width="2.2" marker-end="url(#mG)"/>
+  <text x="685" y="402" font-size="9" fill="#27824c" text-anchor="middle">lease · start</text>
+  <path d="M 778 410 L 884 410" fill="none" stroke="#2e9e5b" stroke-width="2.2" marker-end="url(#mG)"/>
+  <path d="M 918 410 L 950 410" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+  <polygon points="1010,360 1066,410 1010,460 954,410" fill="#fffdf6" stroke="#c9962e" stroke-width="2.4"/>
+  <text x="1010" y="406" font-size="10.5" font-weight="700" fill="#a97e26" text-anchor="middle">END?</text>
+  <text x="1010" y="421" font-size="8.5" fill="#a97e26" text-anchor="middle">the type decides</text>
+  <rect x="1120" y="300" width="480" height="80" rx="8" fill="#fff" stroke="#2e9e5b" stroke-width="1.6"/>
+  <text x="1136" y="324" font-size="11" font-weight="700" fill="#333">self-closing</text>
+  <text x="1136" y="342" font-size="9.5" font-family="monospace" fill="#666">research · writeback · throwaway note</text>
+  <text x="1136" y="362" font-size="9" font-weight="700" fill="#27824c">the session ends itself · no row at all</text>
+  <rect x="1120" y="392" width="480" height="94" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.8"/>
+  <text x="1136" y="416" font-size="11" font-weight="700" fill="#333">standing</text>
+  <text x="1136" y="434" font-size="9.5" font-family="monospace" fill="#666">exploration · live prototype · page</text>
+  <text x="1136" y="454" font-size="9" font-weight="700" fill="#a34848">+row finish or keep — only a word ends it</text>
+  <text x="1136" y="472" font-size="8.5" fill="#999">the process stays up while the row stands</text>
+  <rect x="1120" y="498" width="480" height="80" rx="8" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+  <text x="1136" y="522" font-size="11" font-weight="700" fill="#333">with-operator</text>
+  <text x="1136" y="540" font-size="9.5" font-family="monospace" fill="#666">planning · a back-and-forth</text>
+  <text x="1136" y="560" font-size="9" font-weight="700" fill="#5f6b7a">no row while the operator is present</text>
+  <path d="M 1012 362 C 1050 336, 1080 340, 1114 340" fill="none" stroke="#2e9e5b" stroke-width="2.2" marker-end="url(#mG)"/>
+  <path d="M 1068 412 L 1114 428" fill="none" stroke="#c05b5b" stroke-width="2.2" marker-end="url(#mR)"/>
+  <path d="M 1012 458 C 1050 496, 1080 528, 1114 534" fill="none" stroke="#8a8a86" stroke-width="2.2" marker-end="url(#mN)"/>
+  <path d="M 760 430 C 748 470, 710 498, 678 522" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <use href="#row" x="660" y="540" color="#7b5cb8" data-fwn-state="finding.offered"/>
+  <text x="684" y="536" font-size="10.5" font-weight="700" fill="#333">finding offered</text>
+  <text x="684" y="550" font-size="8.5" fill="#999">the session keeps working</text>
+  <rect x="840" y="530" width="196" height="20" rx="4" fill="#fbeeee" stroke="#c05b5b"/>
+  <text x="852" y="544" font-size="8.5" font-weight="700" fill="#a34848">+row pursue or drop</text>
+  <path d="M 806 540 L 832 540" fill="none" stroke="#c05b5b" stroke-width="1.6" marker-end="url(#mR)"/>
+  <text x="398" y="596" font-size="9.5" font-weight="600" fill="#5a3f95">approval is a fact on the issue — nothing later re-derives "needs approval" from it</text>
+  <text x="1136" y="596" font-size="9" font-weight="700" fill="#5f6b7a">−row on the word, and on nothing else</text>
+
+  <!-- ===================== THE BOOK AND THE LEDGER ===================== -->
+  <rect x="40" y="650" width="1580" height="216" rx="10" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.6"/>
+  <text x="58" y="676" font-size="11.5" font-weight="700" fill="#1f6e6e">THE DESIGN BOOK — where the destination lands</text>
+  <use href="#repo" x="110" y="744" color="#7b5cb8"/>
+  <text x="148" y="740" font-size="10.5" font-weight="700" fill="#333">books repo</text>
+  <text x="148" y="754" font-size="8.5" fill="#999">mdBook chapters</text>
+  <path d="M 232 744 L 288 744" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <use href="#cube" x="318" y="744" color="#7b5cb8"/>
+  <text x="348" y="734" font-size="10.5" font-weight="700" fill="#333">a claim</text>
+  <text x="348" y="748" font-size="8.5" fill="#999">a fenced block inside its chapter</text>
+  <rect x="348" y="756" width="122" height="18" rx="9" fill="#7b5cb8"/>
+  <text x="409" y="769" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">v3 · 9c2b41e8</text>
+  <path d="M 546 744 L 600 744" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <use href="#gate" x="628" y="744"/>
+  <text x="652" y="734" font-size="10.5" font-weight="700" fill="#333">openspec archive</text>
+  <text x="652" y="748" font-size="8.5" fill="#999">fired by the intent's close</text>
+  <text x="652" y="762" font-size="8.5" fill="#999">proposed becomes standing</text>
+  <path d="M 812 744 L 866 744" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+  <use href="#cyl" x="900" y="744"/>
+  <text x="936" y="734" font-size="10.5" font-weight="700" fill="#333">ledger/*.rec</text>
+  <text x="936" y="748" font-size="8.5" fill="#999">one verdict per claim and repo</text>
+  <text x="936" y="762" font-size="8.5" fill="#999">recutils in the books repo</text>
+  <path d="M 1180 744 C 1230 744, 1250 744, 1290 744" fill="none" stroke="#2b8a8a" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mT)"/>
+  <text x="1235" y="736" font-size="9" fill="#1f6e6e" text-anchor="middle">read</text>
+  <use href="#cube" x="1330" y="744" color="#2b8a8a"/>
+  <text x="1360" y="740" font-size="10.5" font-weight="700" fill="#1f6e6e">the backlog</text>
+  <text x="1360" y="754" font-size="8.5" fill="#999">a query, never a stored list</text>
+  <rect x="940" y="686" width="216" height="20" rx="4" fill="#fbeeee" stroke="#c05b5b"/>
+  <text x="952" y="700" font-size="8.5" font-weight="700" fill="#a34848">+row rejudge or backlog it</text>
+  <path d="M 1000 708 L 924 726" fill="none" stroke="#c05b5b" stroke-width="1.6" marker-end="url(#mR)"/>
+  <text x="58" y="840" font-size="9.5" font-weight="600" fill="#1f6e6e">only standing claims are planned against — a claim's version moves when its text moves, and nothing else</text>
+
+  <!-- ===================== LEGEND ===================== -->
+  <rect x="40" y="890" width="1600" height="90" rx="10" fill="#fafafa" stroke="#d5d5d0"/>
+  <g font-size="10.5" fill="#555">
+    <use href="#row" x="80" y="924" color="#8a8a86"/><text x="98" y="928">object</text>
+    <use href="#marker" x="190" y="924" color="#8a8a86"/><text x="206" y="928">a fact recorded</text>
+    <use href="#gear" x="360" y="924" color="#8a8a86"/><text x="380" y="928">running</text>
+    <use href="#pause" x="490" y="924"/><text x="508" y="928">waiting on the operator</text>
+    <use href="#check" x="700" y="924"/><text x="716" y="928">closed</text>
+    <use href="#gate" x="810" y="924"/><text x="828" y="928">archive step</text>
+    <use href="#cube" x="960" y="924" color="#8a8a86"/><text x="984" y="928">a claim</text>
+    <use href="#cyl" x="1090" y="924"/><text x="1122" y="928">the ledger</text>
+    <use href="#people" x="1240" y="924" color="#8a8a86"/><text x="1258" y="928">curation</text>
+  </g>
+  <g font-size="10.5" fill="#555">
+    <line x1="80" y1="962" x2="116" y2="962" stroke="#7b5cb8" stroke-width="3"/><text x="124" y="966">design objects</text>
+    <line x1="250" y1="962" x2="286" y2="962" stroke="#2e9e5b" stroke-width="3"/><text x="294" y="966">sessions</text>
+    <line x1="400" y1="962" x2="436" y2="962" stroke="#c05b5b" stroke-width="3"/><text x="444" y="966">word and rows</text>
+    <line x1="580" y1="962" x2="616" y2="962" stroke="#2b8a8a" stroke-width="3"/><text x="624" y="966">ledger write</text>
+    <line x1="740" y1="962" x2="776" y2="962" stroke="#2b8a8a" stroke-width="2" stroke-dasharray="2 5"/><text x="784" y="966">ledger read</text>
+    <text x="920" y="966" font-weight="600" fill="#333">an intent carries at most one proposal — new material joins it rather than making a second</text>
+  </g>
+</svg>

@@ -1,0 +1,131 @@
+# intent.toml — one thread of design work about one subject.
+#
+# The flywheel's whole intake surface. Curation runs outside the flywheel
+# and connects here by opening one issue per intent it judges worth
+# pursuing (requirement 12, scenario S8). Twenty signals become two
+# issues before the flywheel ever sees them.
+
+schema = 1
+machine = "intent"
+clock = "reconciled"
+carrier = "github.issue"
+truth = "github.issue.labels on the intent issue in agentplot/*"
+projections = [
+  "projects.field.Status on board 'Flywheel Next'",
+  "books repo: openspec/changes/<intent-id>/ presence",
+]
+scope = "label fwn AND label fwn:intent"
+
+[[states]]
+name = "proposed"
+kind = "waiting_operator"
+truth = "label fw:proposed"
+board = "Proposed"
+note = "opened by curation; carries its proposed elaborations as a checklist in the body"
+
+[[states]]
+name = "open"
+kind = "work"
+truth = "label fw:open"
+board = "Running"
+note = "an OpenSpec change directory exists in the books repo; claims written here are PROPOSED (requirement 47)"
+
+[[states]]
+name = "close_ready"
+kind = "waiting_operator"
+truth = "label fw:open AND every child elaboration issue closed"
+board = "Waiting"
+note = "derived, not stored; the label does not move until the operator's word (requirement 14)"
+
+[[states]]
+name = "closed"
+kind = "terminal"
+truth = "issue state CLOSED with label fw:closed"
+board = "Done"
+note = "the OpenSpec change is archived; its claims become STANDING (requirement 47)"
+
+[[states]]
+name = "dropped"
+kind = "terminal"
+truth = "issue state CLOSED as not_planned"
+board = "Dropped"
+
+# ------------------------------------------------------------------------
+[[transitions]]
+id = "i.approve"
+from = "proposed"
+to = "open"
+on = "word"
+word = "approve"
+effect = [
+  "set_label:fw:open",
+  "clear_label:fw:proposed",
+  "project_status:Running",
+  "openspec_change_new:<intent-id>",
+  "explode_proposed_elaborations",
+]
+reason = "operator approved the intent and its first elaborations"
+
+[[transitions]]
+id = "i.drop"
+from = "proposed"
+to = "dropped"
+on = "word"
+word = "drop"
+effect = ["close_issue:not_planned"]
+reason = "operator declined the intent; nothing was created (scenario S4)"
+
+[[transitions]]
+id = "i.ready"
+from = "open"
+to = "close_ready"
+on = "reconcile"
+guard.all = ["children_all:elaboration:done"]
+guard.none = ["children_any:elaboration:proposed"]
+reason = "every elaboration is done, so the close becomes the operator's to make"
+
+[[transitions]]
+id = "i.reopen"
+from = "close_ready"
+to = "open"
+on = "reconcile"
+guard.any = ["children_any:elaboration:proposed", "children_any:elaboration:running"]
+reason = "new material joined the intent, so the close is no longer available (requirement 8 retraction)"
+
+[[transitions]]
+id = "i.close"
+from = "close_ready"
+to = "closed"
+on = "word"
+word = "close"
+effect = [
+  "openspec_archive:<intent-id>",
+  "claims_lock_refresh",
+  "set_label:fw:closed",
+  "close_issue:completed",
+  "project_status:Done",
+]
+reason = "operator closed the thread; its claims move from proposed to standing"
+note = "the archive step is the given OpenSpec one (section 7); claims_lock_refresh records each claim's text hash"
+
+# ------------------------------------------------------------------------
+[[rows]]
+id = "row.intent.proposed"
+kind = "proposed_intent"
+when.all = ["state:intent:proposed"]
+until.any = ["word:approve", "word:drop"]
+answers = ["approve", "drop", "approve-with:<elaboration-list>"]
+surface = "chat+page"
+group = "intents"
+body = "intent #{n} {title} — {k} proposed elaborations: {types}"
+note = "the elaboration list is edited on the page; a bare approve is answerable from the phone"
+
+[[rows]]
+id = "row.intent.close"
+kind = "thread_done"
+when.all = ["state:intent:close_ready"]
+until.any = ["word:close", "state:intent:open"]
+answers = ["close", "keep"]
+surface = "chat"
+group = "closes"
+body = "intent #{n} {title} — all {k} elaborations done. close?"
