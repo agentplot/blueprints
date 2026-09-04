@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "flywheel-next/statechart/scenario.schema.json",
+  "title": "Flywheel scenario",
+  "type": "object",
+  "required": ["scenario", "title", "profiles", "given", "when", "then"],
+  "additionalProperties": false,
+  "properties": {
+    "scenario": {"type": "string"},
+    "title": {"type": "string"},
+    "profiles": {"type": "array", "items": {"enum": ["all", "stand-in", "git-only", "tracker"]}},
+    "requirements": {"type": "array", "items": {"type": "string"}},
+    "machines": {"type": "string", "description": "machines directory to load; default ../machines; contract scenarios use ./contract/lamp"},
+    "given": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "objects": {"type": "array", "items": {"$ref": "#/$defs/object"}},
+        "evidence": {"$ref": "#/$defs/evidence"},
+        "leases": {"type": "array", "items": {"type": "object"}},
+        "hosts": {"type": "array", "items": {"type": "object"}},
+        "words": {"type": "array", "items": {"type": "object"}},
+        "renderings": {"type": "array", "items": {"type": "object"}},
+        "files": {"type": "object", "description": "books or built repository files the world reports"}
+      }
+    },
+    "when": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/step"}},
+    "then": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "transitions": {"type": "array", "items": {"type": "object", "required": ["object", "to"]}},
+        "no_transitions": {"type": "array", "items": {"type": "string"}},
+        "effects": {"type": "array", "items": {"type": "object", "required": ["do", "count"]}},
+        "effects_closed": {"type": "boolean"},
+        "rows": {"type": "array", "items": {"type": "object", "properties": {"after_step": {"type": "integer"}, "present": {"type": "array"}, "absent": {"type": "array"}, "count": {"type": "integer"}, "tail": {"type": "array"}}}},
+        "states": {"type": "object", "additionalProperties": {"type": "object"}},
+        "records": {"type": "object"},
+        "applied_words": {"type": "object"},
+        "writes": {"type": "object"},
+        "reports": {"type": "array", "items": {"type": "string"}},
+        "leases": {"type": "object"},
+        "status": {"type": "object"},
+        "control_plane": {"type": "object", "description": "assertions on the profile's own behavior (rejections, ids, as-of)"}
+      }
+    }
+  },
+  "$defs": {
+    "object": {"type": "object", "required": ["id", "machine", "state"], "properties": {"id": {"type": "string"}, "machine": {"type": "string"}, "parent": {"type": "string"}, "state": {"type": "object"}, "record": {"type": "object"}, "applied_words": {"type": "array"}}},
+    "evidence": {"type": "object", "additionalProperties": {"type": "object"}, "description": "evidence name -> {object id -> value}; '*' for every object"},
+    "step": {"type": "object", "minProperties": 1, "maxProperties": 1, "properties": {
+      "tick": {"type": "object"},
+      "word": {"type": "object", "required": ["row", "answer", "id"]},
+      "evidence": {"$ref": "#/$defs/evidence"},
+      "notify": {"type": "object"},
+      "restart": {"type": "object"},
+      "disconnect": {"type": "object"},
+      "reconnect": {"type": "object"},
+      "host": {"type": "object", "required": ["name"], "description": "the following steps run as this host until the next host step"},
+      "clock": {"type": "object", "required": ["advance"]},
+      "direct": {"type": "object", "description": "the operator acts on the store directly: a commit, a board move, an issue close"},
+      "files": {"type": "object"}
+    }}
+  }
+}

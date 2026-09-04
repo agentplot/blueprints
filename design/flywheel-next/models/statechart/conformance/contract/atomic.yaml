@@ -1,0 +1,20 @@
+scenario: B.2.122-atomic
+title: a write is wholly applied or not applied; no reader sees half of one
+profiles: [all]
+requirements: [B.2.122]
+machines: ./contract/lamp
+given:
+  objects: [{id: lamp/1, machine: lamp, state: {power: "off"}, record: {flips: 0}}]
+  evidence: {lamp.switch: {"*": down}}
+  hosts: [{name: a, bound: 1}, {name: b, bound: 1}]
+when:
+  - tick: {}
+  - word: {row: lamp/1/lamp-off, answer: "on", id: chat/1}
+  - host: {name: a, interrupt_write: midway}
+  - tick: {}
+  - host: {name: b}
+  - tick: {}
+then:
+  control_plane:
+    reader_saw_one_of: [{state: {power: "off"}, flips: 0, applied_words: []}, {state: {power: "on"}, flips: 1, applied_words: [chat/1]}]
+    reader_never_saw_mixed: true

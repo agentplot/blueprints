@@ -1,0 +1,17 @@
+scenario: B.1.113-read
+title: read returns evidence as of a named point and writes nothing
+profiles: [all]
+requirements: [B.1.113, A.8.67]
+machines: ./contract/lamp
+given:
+  objects: [{id: lamp/1, machine: lamp, state: {power: "off"}}]
+  evidence: {lamp.switch: {lamp/1: down}}
+when:
+  - tick: {}
+  - tick: {}
+then:
+  no_transitions: [lamp/1]
+  effects: []
+  effects_closed: true
+  writes: {total: 0}
+  control_plane: {read_as_of_named: true, two_reads_equal: true}

@@ -1,0 +1,16 @@
+scenario: B.2.121-single-writer
+title: two writers of one object cannot both succeed; the loser learns it lost and reads again
+profiles: [all]
+requirements: [B.2.121, C.2.146, I15, S17]
+machines: ./contract/lamp
+given:
+  objects: [{id: lamp/1, machine: lamp, state: {power: "off"}}]
+  evidence: {lamp.switch: {lamp/1: up}}
+  hosts: [{name: a, bound: 1}, {name: b, bound: 1}]
+when:
+  - host: {name: a, and: b, concurrent: true, bypass_lease: true}   # force both to attempt the write
+  - tick: {}
+then:
+  transitions: [{object: lamp/1, from: "off", to: "on"}]
+  control_plane: {writes_attempted: 2, writes_succeeded: 1, loser_told: true, loser_reread_before_deciding: true}
+  records: {lamp/1: {seq: 1}}

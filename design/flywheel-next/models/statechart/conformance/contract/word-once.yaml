@@ -1,0 +1,25 @@
+scenario: B.2.124-word-once
+title: an operator's word takes effect once however many times it is delivered and whatever restarts happen between
+profiles: [all]
+requirements: [B.2.124, A.1.1, A.1.5, I2, S1]
+machines: ./contract/lamp
+given:
+  objects: [{id: lamp/1, machine: lamp, state: {power: "off"}, record: {flips: 0}}]
+  evidence: {lamp.switch: {"*": down}}
+when:
+  - tick: {}
+  - word: {row: lamp/1/lamp-off, answer: "on", id: chat/7}
+  - restart: {}
+  - word: {row: lamp/1/lamp-off, answer: "on", id: chat/7}
+  - tick: {}
+  - restart: {}
+  - word: {row: lamp/1/lamp-off, answer: "on", id: chat/7}
+  - tick: {}
+  - evidence: {lamp.switch: {lamp/1: down}}
+  - tick: {}
+  - tick: {}
+then:
+  transitions: [{object: lamp/1, from: "off", to: "on", word: chat/7}, {object: lamp/1, from: "on", to: "off"}]
+  records: {lamp/1: {flips: 1}}
+  applied_words: {lamp/1: [chat/7]}
+  rows: [{after_step: 11, present: [lamp-off], count: 1}]

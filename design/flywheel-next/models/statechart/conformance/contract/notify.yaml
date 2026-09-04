@@ -1,0 +1,21 @@
+scenario: B.1.117-notify
+title: a host is told state changed within the bound and without re-reading everything; a never-notified host still converges
+profiles: [all]
+requirements: [B.1.117, C.2.150]
+machines: ./contract/lamp
+given:
+  objects: [{id: lamp/1, machine: lamp, state: {power: "off"}}, {id: lamp/2, machine: lamp, state: {power: "off"}}]
+  evidence: {lamp.switch: {"*": down}}
+  hosts: [{name: a, bound: 1}, {name: b, bound: 1, notify: none}]
+when:
+  - host: {name: a}
+  - direct: {object: lamp/1, set: {state: {power: "on"}}}       # someone else changed lamp/1 in the store
+  - host: {name: b}
+  - clock: {advance: 60s}
+  - tick: {}
+then:
+  control_plane:
+    notify_latency_bound: 30s
+    host_a_notified_objects: [lamp/1]
+    host_a_reads_after_notify: 1
+    host_b_converged_by_sweep: true

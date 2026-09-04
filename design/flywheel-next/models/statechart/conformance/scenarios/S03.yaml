@@ -1,0 +1,40 @@
+scenario: S3
+title: a construction session offers a stale-instruction fix as a chore; one word; one agent fixes it in place; no bolt, no change directory
+profiles: [all]
+requirements: [A.6.51, A.6.52, A.6.53, A.6.55, I8]
+given:
+  objects:
+    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, open.line: current, open.place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
+    - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 3}}
+    - {id: work-item/atlas/wi-418, machine: work-item, parent: unit/atlas/status-writer, state: {life: in-type, in-type.stages: build, build.run: sessions, session.life: alive, alive.activity: working}}
+  evidence:
+    session.offers_pending: {"work-item/atlas/wi-418/build/1": true}
+  files: {"place wi-418/.flywheel/offers/1.rec": "kind: chore\nabout: AGENTS.md cites a removed section\nscope: bolt-line"}
+when:
+  - tick: {}
+  - tick: {}
+  - word: {row: unit/atlas/chore-1/unit-proposed, answer: "yes", id: discord/2001}
+  - tick: {}
+  - tick: {}
+  - evidence: {place.ready: {"*": true}, item.deps_merged: {"*": true}, item.slot_free: {"*": true}}
+  - tick: {}
+  - tick: {}
+  - evidence: {stage.agents: {"*": [chore-fixer]}, session.pane: {"*": present}, session.exit: {"work-item/atlas/chore-1/1/fix/1": done}, stage.join_met: {"*": true}, stage.verdict: {"*": pass}}
+  - tick: {}
+  - tick: {}
+  - tick: {}
+  - evidence: {place.merge_slot: {"*": true}, place.merged: {"*": true}}
+  - tick: {}
+  - tick: {}
+then:
+  effects:
+    - {do: record_offers, count: 1}
+    - {do: create_bolt, count: 0}
+    - {do: create_items, count: 1}
+    - {do: start_session, count: 1}
+    - {do: merge_place, count: 1}
+  rows:
+    - {after_step: 1, present: [unit-proposed], count: 1}
+    - {after_step: 4, absent: [unit-proposed]}
+  records: {unit/atlas/chore-1: {type: chore, batch: bolt/atlas/plan-rows, scope: bolt-line}}
+  states: {work-item/atlas/chore-1/1: {life: merged}, work-item/atlas/wi-418: {life: in-type}}

@@ -1,0 +1,28 @@
+scenario: B.1.116-present-receive
+title: rows are presented, the word comes back attributed to its row, twice is once, an unapplicable word is handed back
+profiles: [all]
+requirements: [B.1.116, B.2.124, A.1.1, A.1.5, B.6.138, B.6.139, I2]
+machines: ./contract/lamp
+given:
+  objects: [{id: lamp/1, machine: lamp, state: {power: "off"}}, {id: lamp/2, machine: lamp, state: {power: "off"}}]
+  evidence: {lamp.switch: {"*": down}}
+when:
+  - tick: {}                                                      # rendering 1: rows 1 and 2
+  - word: {row: lamp/1/lamp-off, answer: "on", id: chat/100}
+  - word: {row: lamp/1/lamp-off, answer: "on", id: chat/100}      # delivered twice
+  - tick: {}
+  - evidence: {lamp.switch: {lamp/2: up}}
+  - tick: {}                                                      # lamp/2 turns on by evidence; its row is gone
+  - word: {row: lamp/2/lamp-off, answer: "on", id: chat/101}      # a word for a row that is gone
+  - tick: {}
+  - tick: {}
+then:
+  rows:
+    - {after_step: 1, present: [lamp-off, lamp-off], count: 2}
+    - {after_step: 4, present: [lamp-off], count: 1}
+    - {after_step: 8, present: [word-unapplicable], count: 1}
+    - {after_step: 9, absent: [word-unapplicable]}
+  transitions: [{object: lamp/1, from: "off", to: "on", word: chat/100}, {object: lamp/2, from: "off", to: "on"}]
+  applied_words: {lamp/1: [chat/100], lamp/2: []}
+  records: {lamp/1: {flips: 1}}
+  control_plane: {word_recorded_before_transition: true, word_acknowledged_to_operator: true, unapplicable_word_returned_to_engine: chat/101}

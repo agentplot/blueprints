@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 1000" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+  <marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+  <marker id="mR" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c05b5b"/></marker>
+  <marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e9e5b"/></marker>
+  <marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+  <marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+  <g id="cyl"><path d="M -24 -11 L -24 13 A 24 8 0 0 0 24 13 L 24 -11" fill="#fbeeee" stroke="#c05b5b" stroke-width="1.6"/><ellipse cx="0" cy="-11" rx="24" ry="8" fill="#f3dede" stroke="#c05b5b" stroke-width="1.6"/></g>
+  <g id="gear"><circle r="9" fill="#fff" stroke="currentColor" stroke-width="2.4"/><circle r="3" fill="currentColor"/><g stroke="currentColor" stroke-width="2.4"><line y1="-9" y2="-13.5"/><line y1="9" y2="13.5"/><line x1="-9" x2="-13.5"/><line x1="9" x2="13.5"/><line x1="-6.4" y1="-6.4" x2="-9.5" y2="-9.5"/><line x1="6.4" y1="6.4" x2="9.5" y2="9.5"/><line x1="-6.4" y1="6.4" x2="-9.5" y2="9.5"/><line x1="6.4" y1="-6.4" x2="9.5" y2="-9.5"/></g></g>
+  <g id="repo"><rect x="-26" y="-18" width="52" height="36" rx="7" fill="#fff" stroke="currentColor" stroke-width="2"/><circle cx="-9" cy="8" r="3.2" fill="currentColor"/><circle cx="9" cy="-8" r="3.2" fill="currentColor"/><path d="M -9 8 v-8 a 8 8 0 0 1 8 -8 h 1" fill="none" stroke="currentColor" stroke-width="2"/></g>
+  <g id="cube" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M -16 -8 L 0 -17 L 16 -8 L 16 10 L 0 19 L -16 10 Z" fill="#fff"/><path d="M -16 -8 L 0 1 L 16 -8 M 0 1 L 0 19" fill="none"/></g>
+  <g id="pause"><circle r="9" fill="#fff" stroke="#c9962e" stroke-width="2"/><line x1="-2.8" y1="-4" x2="-2.8" y2="4" stroke="#c9962e" stroke-width="2.4" stroke-linecap="round"/><line x1="2.8" y1="-4" x2="2.8" y2="4" stroke="#c9962e" stroke-width="2.4" stroke-linecap="round"/></g>
+  <g id="gate" stroke="#c05b5b" stroke-width="3" stroke-linecap="round"><line x1="-8" y1="-11" x2="-8" y2="11"/><line x1="8" y1="-11" x2="8" y2="11"/><line x1="-8" y1="-3" x2="8" y2="-3"/></g>
+  <g id="check" fill="none" stroke="#2e9e5b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M -6 0 L -2 4 L 6 -5"/></g>
+  <g id="marker"><circle r="7" fill="#fff" stroke="currentColor" stroke-width="2.2"/><circle r="2.6" fill="currentColor"/></g>
+  <g id="cross"><circle r="10" fill="#fbeeee" stroke="#c05b5b" stroke-width="2"/><path d="M -4 -4 l 8 8 M 4 -4 l -8 8" fill="none" stroke="#a34848" stroke-width="2.5"/></g>
+  <g id="people"><circle cy="-5" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M -8 9 a 8 7 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="1.8"/></g>
+</defs>
+<rect width="1680" height="1000" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Construction side — a unit's yes is the last word until the bolt's close; every stage is a state of a type the operator wrote</text>
+<text x="40" y="57" font-size="12" fill="#666">proposed → approved → items → stages → merged → landed · rows are states of the bolt, the unit, the item and the session · the ledger is written by a review's verdict and read by the bolt's citations</text>
+
+<!-- lane: bolt -->
+<text x="38" y="174" font-size="11.5" font-weight="700" fill="#4a7fb5">bolt</text>
+<line x1="150" y1="170" x2="1380" y2="170" stroke="#4a7fb5" stroke-width="2" opacity="0.35"/>
+<use href="#marker" x="200" y="170" color="#4a7fb5" data-state="bolt.open"/>
+<text x="200" y="196" font-size="9.5" fill="#666" text-anchor="middle">open</text>
+<text x="200" y="209" font-size="8.5" fill="#999" text-anchor="middle">line · operator place · citations · close</text>
+<use href="#pause" x="440" y="170" data-state="bolt.moved"/>
+<rect x="398" y="121" width="84" height="18" rx="9" fill="#c9962e"/><text x="440" y="134" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="claim-moved">claim-moved</text>
+<text x="440" y="196" font-size="9.5" fill="#666" text-anchor="middle">citations moved</text>
+<text x="440" y="209" font-size="8.5" fill="#999" text-anchor="middle">a cited claim has a newer version · amend / land and follow</text>
+<use href="#pause" x="720" y="170" data-state="bolt.offered"/>
+<rect x="685" y="121" width="70" height="18" rx="9" fill="#c9962e"/><text x="720" y="134" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="bolt-close">bolt-close</text>
+<text x="720" y="196" font-size="9.5" fill="#666" text-anchor="middle">close offered</text>
+<text x="720" y="209" font-size="8.5" fill="#999" text-anchor="middle">every unit merged · no chore outstanding · yes / hold</text>
+<polygon points="960,128 1006,170 960,212 914,170" fill="#fffdf6" stroke="#c9962e" stroke-width="2"/>
+<text x="960" y="168" font-size="10" font-weight="700" fill="#8a6a1d" text-anchor="middle">LAND</text>
+<text x="960" y="183" font-size="8.5" fill="#a97e26" text-anchor="middle">final take</text>
+<use href="#cross" x="1120" y="170" data-state="bolt.land-failed"/>
+<rect x="1080" y="121" width="80" height="18" rx="9" fill="#c9962e"/><text x="1120" y="134" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="land-failed">land-failed</text>
+<text x="1120" y="196" font-size="9.5" fill="#666" text-anchor="middle">gates failed</text>
+<text x="1120" y="209" font-size="8.5" fill="#999" text-anchor="middle">bolt stays open · retry / hold</text>
+<use href="#check" x="1280" y="170" data-state="bolt.landed"/>
+<text x="1280" y="196" font-size="9.5" fill="#666" text-anchor="middle">landed</text>
+<text x="1280" y="209" font-size="8.5" fill="#999" text-anchor="middle">tail · operator place removed</text>
+
+<!-- lane: unit -->
+<text x="38" y="314" font-size="11.5" font-weight="700" fill="#4a7fb5">unit</text>
+<line x1="150" y1="310" x2="1380" y2="310" stroke="#4a7fb5" stroke-width="2" opacity="0.35"/>
+<use href="#pause" x="200" y="310" data-state="unit.proposed"/>
+<rect x="150" y="261" width="100" height="18" rx="9" fill="#c9962e"/><text x="200" y="274" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="unit-proposed">unit-proposed</text>
+<text x="200" y="336" font-size="9.5" fill="#666" text-anchor="middle">proposed</text>
+<text x="200" y="349" font-size="8.5" fill="#999" text-anchor="middle">planning · finding · chore · names its bolt and what yes starts</text>
+<use href="#marker" x="440" y="310" color="#4a7fb5" data-state="unit.approved"/>
+<text x="440" y="336" font-size="9.5" fill="#666" text-anchor="middle">approved</text>
+<text x="440" y="349" font-size="8.5" fill="#999" text-anchor="middle">create_bolt if new · create_items @ type version</text>
+<use href="#marker" x="640" y="310" color="#4a7fb5" data-state="unit.waiting"/>
+<text x="640" y="336" font-size="9.5" fill="#666" text-anchor="middle">waiting</text>
+<text x="640" y="349" font-size="8.5" fill="#999" text-anchor="middle">a unit of the same bolt not merged</text>
+<use href="#gear" x="840" y="310" color="#4a7fb5" data-state="unit.in-flight"/>
+<text x="840" y="336" font-size="9.5" fill="#666" text-anchor="middle">in-flight</text>
+<text x="840" y="349" font-size="8.5" fill="#999" text-anchor="middle">items side by side</text>
+<use href="#check" x="1040" y="310" data-state="unit.merged"/>
+<text x="1040" y="336" font-size="9.5" fill="#666" text-anchor="middle">merged</text>
+<text x="1040" y="349" font-size="8.5" fill="#999" text-anchor="middle">tail · all items merged</text>
+<use href="#cross" x="1240" y="310" data-state="unit.withdrawn"/>
+<text x="1240" y="336" font-size="9.5" fill="#666" text-anchor="middle">withdrawn</text>
+<text x="1240" y="349" font-size="8.5" fill="#999" text-anchor="middle">redo: notes → planning · or dropped</text>
+
+<!-- lane: work item -->
+<text x="38" y="454" font-size="11.5" font-weight="700" fill="#4a7fb5">work item</text>
+<line x1="150" y1="450" x2="1380" y2="450" stroke="#4a7fb5" stroke-width="2" opacity="0.35"/>
+<use href="#marker" x="200" y="450" color="#4a7fb5" data-state="work-item.waiting"/>
+<text x="200" y="476" font-size="9.5" fill="#666" text-anchor="middle">waiting</text>
+<text x="200" y="489" font-size="8.5" fill="#999" text-anchor="middle">item deps of the same unit</text>
+<use href="#marker" x="380" y="450" color="#4a7fb5" data-state="work-item.ready"/>
+<text x="380" y="476" font-size="9.5" fill="#666" text-anchor="middle">ready</text>
+<text x="380" y="489" font-size="8.5" fill="#999" text-anchor="middle">host bound · fixed order</text>
+<use href="#cube" x="540" y="450" color="#2b8a8a" data-state="work-item.placing"/>
+<text x="540" y="481" font-size="9.5" fill="#666" text-anchor="middle">placing</text>
+<text x="540" y="494" font-size="8.5" fill="#999" text-anchor="middle">place off the bolt line</text>
+<use href="#gear" x="720" y="450" color="#4a7fb5" data-state="work-item.in-type"/>
+<text x="720" y="476" font-size="9.5" fill="#666" text-anchor="middle">in-type</text>
+<text x="720" y="489" font-size="8.5" fill="#999" text-anchor="middle">the type machine at the recorded version</text>
+<use href="#pause" x="920" y="450" data-state="work-item.stopped"/>
+<rect x="892" y="401" width="56" height="18" rx="9" fill="#c9962e"/><text x="920" y="414" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="stalled">stalled</text>
+<text x="920" y="476" font-size="9.5" fill="#666" text-anchor="middle">stopped</text>
+<text x="920" y="489" font-size="8.5" fill="#999" text-anchor="middle">retry bound reached · retry / drop</text>
+<use href="#marker" x="1100" y="450" color="#2b8a8a" data-state="work-item.merging"/>
+<text x="1100" y="476" font-size="9.5" fill="#666" text-anchor="middle">merging</text>
+<text x="1100" y="489" font-size="8.5" fill="#999" text-anchor="middle">one at a time · rebase first</text>
+<use href="#check" x="1280" y="450" data-state="work-item.merged"/>
+<text x="1280" y="476" font-size="9.5" fill="#666" text-anchor="middle">merged</text>
+<text x="1280" y="489" font-size="8.5" fill="#999" text-anchor="middle">tail</text>
+
+<!-- lane: type and stage -->
+<text x="38" y="594" font-size="11.5" font-weight="700" fill="#2e9e5b">type · stage</text>
+<line x1="150" y1="590" x2="1380" y2="590" stroke="#2e9e5b" stroke-width="2" opacity="0.35"/>
+<rect x="160" y="581" width="64" height="18" rx="9" fill="#4a7fb5"/><text x="192" y="594" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">default@3</text>
+<use href="#gear" x="300" y="590" color="#2e9e5b" data-state="default.spec"/>
+<text x="300" y="616" font-size="9.5" fill="#666" text-anchor="middle">spec</text>
+<use href="#gear" x="440" y="590" color="#2e9e5b" data-state="default.build"/>
+<text x="440" y="616" font-size="9.5" fill="#666" text-anchor="middle">build</text>
+<text x="440" y="629" font-size="8.5" fill="#999" text-anchor="middle">as-built names claim@v</text>
+<use href="#gear" x="600" y="590" color="#2e9e5b" data-state="default.review"/>
+<text x="600" y="616" font-size="9.5" fill="#666" text-anchor="middle">review</text>
+<text x="600" y="629" font-size="8.5" fill="#999" text-anchor="middle">on_fail build · max 3 · verdicts</text>
+<path d="M 592 578 C 560 540, 480 540, 448 578" fill="none" stroke="#2e9e5b" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mG)"/>
+<text x="520" y="546" font-size="9" fill="#27824c" text-anchor="middle">sent-back</text>
+<use href="#check" x="720" y="590" data-state="default.passed"/>
+<text x="720" y="616" font-size="9.5" fill="#666" text-anchor="middle">passed</text>
+<rect x="800" y="581" width="100" height="18" rx="9" fill="#4a7fb5"/><text x="850" y="594" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">persona-test@1</text>
+<use href="#people" x="960" y="590" color="#2e9e5b" data-state="persona-test.test"/>
+<text x="960" y="616" font-size="9.5" fill="#666" text-anchor="middle">test</text>
+<text x="960" y="629" font-size="8.5" fill="#999" text-anchor="middle">one session per personas/*.md · join all</text>
+<rect x="1080" y="581" width="60" height="18" rx="9" fill="#4a7fb5"/><text x="1110" y="594" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">chore@1</text>
+<use href="#gear" x="1180" y="590" color="#2e9e5b" data-state="chore.fix"/>
+<text x="1180" y="616" font-size="9.5" fill="#666" text-anchor="middle">fix</text>
+<text x="1180" y="629" font-size="8.5" fill="#999" text-anchor="middle">one stage · never a bolt</text>
+<use href="#cyl" x="1330" y="592"/>
+<text x="1330" y="622" font-size="9.5" fill="#666" text-anchor="middle">ledger</text>
+<text x="1330" y="635" font-size="8.5" fill="#999" text-anchor="middle">claim@v · revision · evidence</text>
+
+<!-- lane: session -->
+<text x="38" y="734" font-size="11.5" font-weight="700" fill="#2e9e5b">session</text>
+<line x1="150" y1="730" x2="1380" y2="730" stroke="#2e9e5b" stroke-width="2" opacity="0.35"/>
+<use href="#gear" x="200" y="730" color="#2e9e5b" data-state="session.working"/>
+<text x="200" y="756" font-size="9.5" fill="#666" text-anchor="middle">working</text>
+<text x="200" y="769" font-size="8.5" fill="#999" text-anchor="middle">free inside its job · never interrupted</text>
+<use href="#marker" x="400" y="730" color="#c9962e" data-effect="record_offers"/>
+<text x="400" y="756" font-size="9.5" fill="#666" text-anchor="middle">offers</text>
+<text x="400" y="769" font-size="8.5" fill="#999" text-anchor="middle">finding → elaboration or signal · chore → chore unit</text>
+<use href="#pause" x="620" y="730" data-state="session.blocked"/>
+<rect x="585" y="681" width="70" height="18" rx="9" fill="#c9962e"/><text x="620" y="694" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="question">question</text>
+<text x="620" y="756" font-size="9.5" fill="#666" text-anchor="middle">blocked</text>
+<text x="620" y="769" font-size="8.5" fill="#999" text-anchor="middle">only this item waits · answer to the same pane</text>
+<use href="#cross" x="820" y="730" data-effect="record_refusals"/>
+<text x="820" y="756" font-size="9.5" fill="#666" text-anchor="middle">refused</text>
+<text x="820" y="769" font-size="8.5" fill="#999" text-anchor="middle">hooks refuse branch, merge, push · reported</text>
+<use href="#check" x="1020" y="730" data-state="session.exited"/>
+<text x="1020" y="756" font-size="9.5" fill="#666" text-anchor="middle">exited</text>
+<text x="1020" y="769" font-size="8.5" fill="#999" text-anchor="middle">expected vs delivered recorded</text>
+
+<!-- destinations -->
+<rect x="1420" y="110" width="220" height="84" rx="9" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="1434" y="134" font-size="11" font-weight="700" fill="#333">atlas · shared line</text>
+<text x="1434" y="154" font-size="9.5" font-family="monospace" fill="#666">bolt/plan-rows → main</text>
+<text x="1434" y="174" font-size="9" fill="#a34848" font-weight="700">pull request · gates</text>
+<use href="#gate" x="1610" y="170"/>
+<path d="M 1006 170 C 1200 120, 1300 140, 1418 150" fill="none" stroke="#4a7fb5" stroke-width="2.2" marker-end="url(#mB)"/>
+<text x="1230" y="118" font-size="9" fill="#3f6d9c">land_line</text>
+
+<use href="#cube" x="1530" y="300" color="#2b8a8a"/>
+<text x="1530" y="331" font-size="9.5" fill="#666" text-anchor="middle">operator place</text>
+<text x="1530" y="344" font-size="8.5" fill="#999" text-anchor="middle">bolt's own worktree · reset after each merge</text>
+
+<path d="M 610 580 C 700 520, 1220 520, 1318 574" fill="none" stroke="#c05b5b" stroke-width="2.2" marker-end="url(#mR)"/>
+<text x="960" y="530" font-size="9" fill="#a34848" text-anchor="middle">record_verdict</text>
+<path d="M 1346 572 C 1400 520, 1400 300, 1400 100 L 470 100 C 450 100, 440 120, 440 158" fill="none" stroke="#c05b5b" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mR)"/>
+<text x="900" y="96" font-size="9" fill="#a34848" text-anchor="middle">version moved · the bolt reads the ledger</text>
+
+<!-- legend -->
+<rect x="40" y="880" width="1600" height="90" rx="10" fill="#fafafa" stroke="#e5e5e5"/>
+<use href="#pause" x="70" y="910"/><text x="88" y="914" font-size="10" fill="#333">a state with a row</text>
+<rect x="200" y="901" width="60" height="18" rx="9" fill="#c9962e"/><text x="230" y="914" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">row kind</text>
+<rect x="290" y="901" width="60" height="18" rx="9" fill="#4a7fb5"/><text x="320" y="914" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">type@v</text>
+<use href="#gear" x="400" y="910" color="#2e9e5b"/><text x="420" y="914" font-size="10" fill="#333">a session runs</text>
+<use href="#check" x="530" y="910"/><text x="546" y="914" font-size="10" fill="#333">tail state</text>
+<use href="#cross" x="640" y="910"/><text x="658" y="914" font-size="10" fill="#333">failed · refused</text>
+<use href="#cube" x="780" y="910" color="#2b8a8a"/><text x="804" y="914" font-size="10" fill="#333">place</text>
+<use href="#cyl" x="880" y="912"/><text x="914" y="914" font-size="10" fill="#333">ledger</text>
+<use href="#gate" x="990" y="910"/><text x="1008" y="914" font-size="10" fill="#333">repository gates</text>
+<line x1="1120" y1="910" x2="1160" y2="910" stroke="#c05b5b" stroke-width="2.2"/><text x="1168" y="914" font-size="10" fill="#333">ledger written</text>
+<line x1="1270" y1="910" x2="1310" y2="910" stroke="#c05b5b" stroke-width="2" stroke-dasharray="2 5"/><text x="1318" y="914" font-size="10" fill="#333">ledger read</text>
+<line x1="1410" y1="910" x2="1450" y2="910" stroke="#2e9e5b" stroke-width="2" stroke-dasharray="4 3"/><text x="1458" y="914" font-size="10" fill="#333">send-back</text>
+<text x="70" y="950" font-size="10.5" fill="#333">after a yes the only things that wait are a session's work and the next decision that is the operator's · a type change never moves a unit already in flight</text>
+</svg>

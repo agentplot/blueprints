@@ -79,6 +79,9 @@ regions:
                   - when: {word: "<text>"}
                     to: working
                     effects: [{do: deliver_answer, args: {text: $word}, note: "to the same session if it lives, else a fresh one that starts with it"}]
+              exited:
+                doc: an exit record was read and copied; the owner reads session.exit
+                final: true
           presence:
             initial: unknown
             states:

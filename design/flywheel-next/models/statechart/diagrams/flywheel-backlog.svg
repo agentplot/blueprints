@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 1000" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+  <marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+  <marker id="mP" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7b5cb8"/></marker>
+  <marker id="mR" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c05b5b"/></marker>
+  <marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e9e5b"/></marker>
+  <marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+  <g id="cyl"><path d="M -24 -11 L -24 13 A 24 8 0 0 0 24 13 L 24 -11" fill="#fbeeee" stroke="#c05b5b" stroke-width="1.6"/><ellipse cx="0" cy="-11" rx="24" ry="8" fill="#f3dede" stroke="#c05b5b" stroke-width="1.6"/></g>
+  <g id="gear"><circle r="9" fill="#fff" stroke="currentColor" stroke-width="2.4"/><circle r="3" fill="currentColor"/><g stroke="currentColor" stroke-width="2.4"><line y1="-9" y2="-13.5"/><line y1="9" y2="13.5"/><line x1="-9" x2="-13.5"/><line x1="9" x2="13.5"/><line x1="-6.4" y1="-6.4" x2="-9.5" y2="-9.5"/><line x1="6.4" y1="6.4" x2="9.5" y2="9.5"/><line x1="-6.4" y1="6.4" x2="-9.5" y2="9.5"/><line x1="6.4" y1="-6.4" x2="9.5" y2="-9.5"/></g></g>
+  <g id="repo"><rect x="-26" y="-18" width="52" height="36" rx="7" fill="#fff" stroke="currentColor" stroke-width="2"/><circle cx="-9" cy="8" r="3.2" fill="currentColor"/><circle cx="9" cy="-8" r="3.2" fill="currentColor"/><path d="M -9 8 v-8 a 8 8 0 0 1 8 -8 h 1" fill="none" stroke="currentColor" stroke-width="2"/></g>
+  <g id="pause"><circle r="9" fill="#fff" stroke="#c9962e" stroke-width="2"/><line x1="-2.8" y1="-4" x2="-2.8" y2="4" stroke="#c9962e" stroke-width="2.4" stroke-linecap="round"/><line x1="2.8" y1="-4" x2="2.8" y2="4" stroke="#c9962e" stroke-width="2.4" stroke-linecap="round"/></g>
+  <g id="check" fill="none" stroke="#2e9e5b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M -6 0 L -2 4 L 6 -5"/></g>
+  <g id="marker"><circle r="7" fill="#fff" stroke="currentColor" stroke-width="2.2"/><circle r="2.6" fill="currentColor"/></g>
+  <g id="cross"><circle r="10" fill="#fbeeee" stroke="#c05b5b" stroke-width="2"/><path d="M -4 -4 l 8 8 M 4 -4 l -8 8" fill="none" stroke="#a34848" stroke-width="2.5"/></g>
+  <g id="row" stroke="currentColor" stroke-width="1.6" fill="none"><rect x="-8" y="-6" width="16" height="12" rx="2"/><line x1="-4" y1="-1" x2="4" y2="-1"/><line x1="-4" y1="3" x2="1" y2="3"/></g>
+  <g id="rows" fill="currentColor"><rect x="-16" y="-9" width="32" height="4" rx="1"/><rect x="-16" y="-2" width="32" height="4" rx="1"/><rect x="-16" y="5" width="20" height="4" rx="1"/></g>
+  <g id="people"><circle cy="-5" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M -8 9 a 8 7 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="1.8"/></g>
+  <g id="lock" stroke="#c05b5b" stroke-width="1.8" fill="none"><rect x="-6" y="-2" width="12" height="10" rx="2" fill="#fbeaea"/><path d="M -4 -2 v-4 a 4 4 0 0 1 8 0 v4"/></g>
+</defs>
+<rect width="1680" height="1000" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Backlog — curation turns signals into intents, judgment turns claims into verdicts, and a stale cell cannot fail to become a row</text>
+<text x="40" y="57" font-size="12" fill="#666">capture → signal → move → intent · claim → cell → verdict → fingerprint → planning → unit · the ledger is written only from a session's exit and read by the cell and the fingerprint</text>
+
+<!-- lane: capture -->
+<text x="38" y="144" font-size="11.5" font-weight="700" fill="#8a8a86">capture</text>
+<line x1="150" y1="140" x2="1380" y2="140" stroke="#8a8a86" stroke-width="2" opacity="0.35"/>
+<use href="#row" x="200" y="140" color="#8a8a86" data-state="capture.captured"/>
+<text x="200" y="166" font-size="9.5" fill="#666" text-anchor="middle">captured</text>
+<text x="200" y="179" font-size="8.5" fill="#999" text-anchor="middle">one per source event · same key twice is one · raw stays outside git</text>
+<use href="#gear" x="480" y="140" color="#2e9e5b" data-state="capture.reading"/>
+<text x="480" y="166" font-size="9.5" fill="#666" text-anchor="middle">reading</text>
+<text x="480" y="179" font-size="8.5" fill="#999" text-anchor="middle">capture-reader session · judgment · never unattended</text>
+<use href="#check" x="720" y="140" data-state="capture.read"/>
+<text x="720" y="166" font-size="9.5" fill="#666" text-anchor="middle">read</text>
+<text x="720" y="179" font-size="8.5" fill="#999" text-anchor="middle">signals written once · immutable</text>
+<use href="#marker" x="960" y="140" color="#c9962e" data-effect="ensure_signal"/>
+<text x="960" y="166" font-size="9.5" fill="#666" text-anchor="middle">forwarded message</text>
+<text x="960" y="179" font-size="8.5" fill="#999" text-anchor="middle">one message · one signal · no judgment</text>
+
+<!-- lane: signal -->
+<text x="38" y="274" font-size="11.5" font-weight="700" fill="#7b5cb8">signal</text>
+<line x1="150" y1="270" x2="1380" y2="270" stroke="#7b5cb8" stroke-width="2" opacity="0.35"/>
+<use href="#marker" x="200" y="270" color="#7b5cb8" data-state="signal.unmoved"/>
+<text x="200" y="296" font-size="9.5" fill="#666" text-anchor="middle">unmoved</text>
+<text x="200" y="309" font-size="8.5" fill="#999" text-anchor="middle">counted by source and age · never discarded</text>
+<use href="#marker" x="480" y="270" color="#7b5cb8" data-state="signal.attached"/>
+<text x="480" y="296" font-size="9.5" fill="#666" text-anchor="middle">attached</text>
+<text x="480" y="309" font-size="8.5" fill="#999" text-anchor="middle">evidence on an open intent</text>
+<use href="#marker" x="660" y="270" color="#7b5cb8" data-state="signal.challenging"/>
+<text x="660" y="296" font-size="9.5" fill="#666" text-anchor="middle">challenging</text>
+<text x="660" y="309" font-size="8.5" fill="#999" text-anchor="middle">against a standing claim</text>
+<use href="#marker" x="840" y="270" color="#7b5cb8" data-state="signal.joined"/>
+<text x="840" y="296" font-size="9.5" fill="#666" text-anchor="middle">joined</text>
+<text x="840" y="309" font-size="8.5" fill="#999" text-anchor="middle">part of a proposed intent</text>
+<use href="#marker" x="1020" y="270" color="#7b5cb8" data-state="signal.answered"/>
+<text x="1020" y="296" font-size="9.5" fill="#666" text-anchor="middle">answered</text>
+<text x="1020" y="309" font-size="8.5" fill="#999" text-anchor="middle">names what settled it</text>
+<use href="#cross" x="1200" y="270" data-state="signal.dropped"/>
+<text x="1200" y="296" font-size="9.5" fill="#666" text-anchor="middle">dropped</text>
+<text x="1200" y="309" font-size="8.5" fill="#999" text-anchor="middle">with a reason · revived only by the word</text>
+
+<!-- lane: curation -->
+<text x="38" y="404" font-size="11.5" font-weight="700" fill="#2e9e5b">curation</text>
+<line x1="150" y1="400" x2="1380" y2="400" stroke="#2e9e5b" stroke-width="2" opacity="0.35"/>
+<use href="#marker" x="200" y="400" color="#2e9e5b" data-state="curation.idle"/>
+<text x="200" y="426" font-size="9.5" fill="#666" text-anchor="middle">idle</text>
+<text x="200" y="439" font-size="8.5" fill="#999" text-anchor="middle">threshold 12 or cadence · a person doing it by hand is curation too</text>
+<use href="#gear" x="480" y="400" color="#2e9e5b" data-state="curation.running"/>
+<text x="480" y="426" font-size="9.5" fill="#666" text-anchor="middle">running</text>
+<text x="480" y="439" font-size="8.5" fill="#999" text-anchor="middle">curator session · reads claims.json and the open intents</text>
+<use href="#marker" x="760" y="400" color="#2e9e5b" data-state="curation.applying"/>
+<text x="760" y="426" font-size="9.5" fill="#666" text-anchor="middle">applying</text>
+<text x="760" y="439" font-size="8.5" fill="#999" text-anchor="middle">record_moves · propose_intents · never open_intent</text>
+<path d="M 774 396 C 900 370, 1050 370, 1188 396" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+<use href="#pause" x="1200" y="400" data-state="intent.proposed"/>
+<rect x="1150" y="351" width="100" height="18" rx="9" fill="#c9962e"/><text x="1200" y="364" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="intent-proposed">intent-proposed</text>
+<text x="1200" y="426" font-size="9.5" fill="#666" text-anchor="middle">intent proposed</text>
+<text x="1200" y="439" font-size="8.5" fill="#999" text-anchor="middle">one row per intent · weight by event date · yes / drop / split</text>
+
+<!-- lane: claim -->
+<text x="38" y="534" font-size="11.5" font-weight="700" fill="#7b5cb8">claim</text>
+<line x1="150" y1="530" x2="1380" y2="530" stroke="#7b5cb8" stroke-width="2" opacity="0.35"/>
+<use href="#marker" x="200" y="530" color="#7b5cb8" data-state="claim.proposed"/>
+<text x="200" y="556" font-size="9.5" fill="#666" text-anchor="middle">proposed</text>
+<text x="200" y="569" font-size="8.5" fill="#999" text-anchor="middle">block on the intent line · visible · never built</text>
+<use href="#lock" x="480" y="526"/>
+<text x="480" y="556" font-size="9.5" fill="#666" text-anchor="middle">standing</text>
+<text x="480" y="569" font-size="8.5" fill="#999" text-anchor="middle">on the shared line · version moves only with the text · lock hash</text>
+<rect x="640" y="521" width="150" height="18" rx="9" fill="#7b5cb8"/><text x="715" y="534" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">providers/one-writer@3</text>
+<use href="#marker" x="1200" y="530" color="#7b5cb8" data-state="claim.retired"/>
+<text x="1200" y="556" font-size="9.5" fill="#666" text-anchor="middle">retired</text>
+
+<!-- lane: ledger cell -->
+<text x="38" y="664" font-size="11.5" font-weight="700" fill="#c05b5b">ledger cell</text>
+<line x1="150" y1="660" x2="1380" y2="660" stroke="#c05b5b" stroke-width="2" opacity="0.35"/>
+<use href="#marker" x="200" y="660" color="#c05b5b" data-state="ledger-cell.unjudged"/>
+<text x="200" y="686" font-size="9.5" fill="#666" text-anchor="middle">unjudged</text>
+<text x="200" y="699" font-size="8.5" fill="#999" text-anchor="middle">a joining repository has every cell here</text>
+<use href="#marker" x="480" y="660" color="#c05b5b" data-state="ledger-cell.judged"/>
+<text x="480" y="686" font-size="9.5" fill="#666" text-anchor="middle">judged</text>
+<text x="480" y="699" font-size="8.5" fill="#999" text-anchor="middle">satisfied · partial · not-satisfied · not-applicable</text>
+<rect x="630" y="651" width="200" height="18" rx="9" fill="#c05b5b"/><text x="730" y="664" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">atlas · satisfied @3 · 9c1e4f2</text>
+<use href="#cross" x="1000" y="660" data-state="ledger-cell.stale"/>
+<text x="1000" y="686" font-size="9.5" fill="#666" text-anchor="middle">stale</text>
+<text x="1000" y="699" font-size="8.5" fill="#999" text-anchor="middle">claim version moved · or evidence gone · forty commits change nothing</text>
+<path d="M 1010 650 C 1060 600, 1150 570, 1260 560" fill="none" stroke="#c05b5b" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mR)"/>
+<text x="1200" y="612" font-size="9" fill="#a34848" text-anchor="middle">reads claim.version</text>
+<rect x="1270" y="536" width="110" height="18" rx="9" fill="#7b5cb8"/><text x="1325" y="549" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">one-writer@4</text>
+
+<!-- lane: planning -->
+<text x="38" y="794" font-size="11.5" font-weight="700" fill="#4a7fb5">planning</text>
+<line x1="150" y1="790" x2="1380" y2="790" stroke="#4a7fb5" stroke-width="2" opacity="0.35"/>
+<use href="#marker" x="200" y="790" color="#4a7fb5" data-state="planning.current"/>
+<text x="200" y="816" font-size="9.5" fill="#666" text-anchor="middle">current</text>
+<text x="200" y="829" font-size="8.5" fill="#999" text-anchor="middle">one machine per built repository</text>
+<polygon points="420,748 466,790 420,832 374,790" fill="#fffdf6" stroke="#c9962e" stroke-width="2"/>
+<text x="420" y="788" font-size="10" font-weight="700" fill="#8a6a1d" text-anchor="middle">FINGERPRINT</text>
+<text x="420" y="803" font-size="8.5" fill="#a97e26" text-anchor="middle">differs → due</text>
+<text x="420" y="849" font-size="8.5" fill="#999" text-anchor="middle">claims in scope · cells · open bolts · asks · redo</text>
+<use href="#gear" x="660" y="790" color="#4a7fb5" data-state="planning.running"/>
+<text x="660" y="816" font-size="9.5" fill="#666" text-anchor="middle">running</text>
+<text x="660" y="829" font-size="8.5" fill="#999" text-anchor="middle">planner session · backlog · as-built · every open bolt</text>
+<use href="#marker" x="900" y="790" color="#4a7fb5" data-state="planning.applying"/>
+<text x="900" y="816" font-size="9.5" fill="#666" text-anchor="middle">applying</text>
+<text x="900" y="829" font-size="8.5" fill="#999" text-anchor="middle">record_verdict · propose_units · record_fingerprint</text>
+<path d="M 914 786 C 1000 760, 1100 760, 1188 786" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+<use href="#pause" x="1200" y="790" data-state="unit.proposed"/>
+<rect x="1150" y="741" width="100" height="18" rx="9" fill="#c9962e"/><text x="1200" y="754" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="unit-proposed">unit-proposed</text>
+<text x="1200" y="816" font-size="9.5" fill="#666" text-anchor="middle">unit proposed</text>
+<text x="1200" y="829" font-size="8.5" fill="#999" text-anchor="middle">target: an open bolt or a new name · a baseline folds into one row</text>
+
+<!-- ledger store and its edges -->
+<use href="#cyl" x="1530" y="660"/>
+<text x="1530" y="690" font-size="9.5" fill="#666" text-anchor="middle">ledger</text>
+<text x="1530" y="703" font-size="8.5" fill="#999" text-anchor="middle">ledger/atlas.rec · in the books</text>
+<path d="M 910 800 C 1000 870, 1400 870, 1520 690" fill="none" stroke="#c05b5b" stroke-width="2.2" marker-end="url(#mR)"/>
+<text x="1240" y="866" font-size="9" fill="#a34848" text-anchor="middle">record_verdict · from the session's exit</text>
+<path d="M 1506 668 C 1450 720, 1300 720, 1200 720 L 520 720 C 480 720, 440 730, 426 746" fill="none" stroke="#c05b5b" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mR)"/>
+<text x="800" y="734" font-size="9" fill="#a34848" text-anchor="middle">every cell is in the fingerprint</text>
+
+<!-- destinations -->
+<rect x="1420" y="110" width="220" height="84" rx="9" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+<text x="1434" y="134" font-size="11" font-weight="700" fill="#333">books · signals/</text>
+<text x="1434" y="154" font-size="9.5" font-family="monospace" fill="#666">captures · &lt;id&gt;/&lt;n&gt;.rec · moves</text>
+<text x="1434" y="174" font-size="9" fill="#5a3f95" font-weight="700">adapters append · versioned format</text>
+<rect x="1420" y="230" width="220" height="84" rx="9" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+<text x="1434" y="254" font-size="11" font-weight="700" fill="#333">books · claims.json</text>
+<text x="1434" y="274" font-size="9.5" font-family="monospace" fill="#666">name · version · scope · lock</text>
+<text x="1434" y="294" font-size="9" fill="#5a3f95" font-weight="700">the index curation clusters against</text>
+<rect x="1420" y="380" width="220" height="84" rx="9" fill="#fff" stroke="#c05b5b" stroke-width="1.6" stroke-dasharray="4 3"/>
+<text x="1434" y="404" font-size="11" font-weight="700" fill="#333">backlog · derived</text>
+<text x="1434" y="424" font-size="9.5" font-family="monospace" fill="#666">cells not satisfied / n-a</text>
+<text x="1434" y="444" font-size="9" fill="#a34848" font-weight="700">never stored as a list</text>
+
+<!-- legend -->
+<rect x="40" y="880" width="1600" height="90" rx="10" fill="#fafafa" stroke="#e5e5e5"/>
+<use href="#row" x="70" y="910" color="#8a8a86"/><text x="88" y="914" font-size="10" fill="#333">a record</text>
+<use href="#gear" x="170" y="910" color="#2e9e5b"/><text x="190" y="914" font-size="10" fill="#333">a session judges</text>
+<use href="#pause" x="310" y="910"/><text x="328" y="914" font-size="10" fill="#333">a row</text>
+<use href="#cross" x="400" y="910"/><text x="418" y="914" font-size="10" fill="#333">stale · dropped</text>
+<use href="#lock" x="530" y="906"/><text x="546" y="914" font-size="10" fill="#333">standing claim</text>
+<use href="#cyl" x="670" y="912"/><text x="704" y="914" font-size="10" fill="#333">ledger</text>
+<rect x="770" y="901" width="60" height="18" rx="9" fill="#7b5cb8"/><text x="800" y="914" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">claim@v</text>
+<rect x="850" y="901" width="60" height="18" rx="9" fill="#c05b5b"/><text x="880" y="914" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">verdict</text>
+<line x1="940" y1="910" x2="980" y2="910" stroke="#c05b5b" stroke-width="2.2"/><text x="988" y="914" font-size="10" fill="#333">ledger written</text>
+<line x1="1090" y1="910" x2="1130" y2="910" stroke="#c05b5b" stroke-width="2" stroke-dasharray="2 5"/><text x="1138" y="914" font-size="10" fill="#333">ledger read</text>
+<line x1="1230" y1="910" x2="1270" y2="910" stroke="#c9962e" stroke-width="2.2"/><text x="1278" y="914" font-size="10" fill="#333">a row is created</text>
+<text x="70" y="950" font-size="10.5" fill="#333">the machinery never reads a signal's content and never computes a verdict · stale is a state read every tick, the fingerprint moves, planning runs, the unit row stands</text>
+</svg>

@@ -1,0 +1,36 @@
+scenario: S13
+title: two hosts; one loses power mid-build; the other does not touch it; stale is shown; resume on return or takeover by rule; never twice
+profiles: [all]
+requirements: [B.5.134, B.5.135, I11, S13]
+given:
+  objects:
+    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, open.line: current, open.place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
+    - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 3}}
+    - {id: work-item/atlas/wi-418, machine: work-item, parent: unit/atlas/status-writer, state: {life: in-type, in-type.stages: build, build.run: sessions, session.life: alive, alive.activity: working}}
+  leases: [{object: work-item/atlas/wi-418, holder: mac-mini, renewed_at: now}]
+  hosts: [{name: mac-mini, bound: 3, last_seen: now}, {name: studio, bound: 2, last_seen: now}]
+  evidence: {session.pane: {"*": present}, session.activity: {"*": working}}
+when:
+  - host: {name: mac-mini, lose: true}
+  - host: {name: studio}
+  - clock: {advance: 6m}
+  - tick: {}
+  - clock: {advance: 25m}
+  - tick: {}
+  - word: {row: host/mac-mini/host-gone, answer: takeover, id: discord/6001}
+  - tick: {}
+  - tick: {}
+  - host: {name: mac-mini, return: true}
+  - tick: {}
+then:
+  transitions:
+    - {object: host/mac-mini, from: alive, to: stale}
+    - {object: lease/work-item/atlas/wi-418, from: held, to: stale}
+    - {object: host/mac-mini, from: stale, to: gone}
+    - {object: host/mac-mini, from: gone, to: released, word: discord/6001}
+    - {object: lease/work-item/atlas/wi-418, from: stale, to: expired}
+  rows: [{after_step: 6, present: [host-gone]}]
+  status: {after_step: 4, stale: [work-item/atlas/wi-418, mac-mini]}
+  effects: [{do: expire_leases, count: 1}, {do: start_session, count: 1}, {do: end_session, count: 1}]
+  leases: {work-item/atlas/wi-418: {holder_after_step_9: studio, touched_by_studio_before_expiry: false}}
+  control_plane: {sessions_running_at_end: 1, attempt_started_by_studio: 2, mac_mini_ended_own_pane_on_return: true}

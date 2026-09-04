@@ -24,7 +24,7 @@ regions:
       proposed:
         doc: the row names the target bolt and what a yes starts, derived from the type's stages and the item count (A.2.12, A.2.14)
         row: {kind: unit-proposed, group: approve, batch: batch,
-              answers: ["yes", drop, "redo: <notes>", "bolt <name>", "new bolt <name>", "rename <name>", "type <name>", "pick <letters>"],
+              answers: ["yes", drop, "redo: <notes>", "bolt <name>", "new bolt <name>", "rename <name>", "type <name>", "pick <letters>", later],
               shows: [unit.type, target, depends_on, claims]}
         transitions:
           - when: {word: "bolt <name>"}
@@ -47,6 +47,13 @@ regions:
           - when: {word: "redo: <notes>"}
             to: withdrawn
             effects: [{do: request_replan, args: {notes: $word}}]
+          - when: {word: later}
+            to: deferred
+      deferred:
+        doc: out of the count for a week, then offered again; nothing was approved (baseline row 6 of the mockup)
+        transitions:
+          - when: {ev: entered_at, older: 7d}
+            to: proposed
           - when: {word: drop}
             to: dropped
       approved:

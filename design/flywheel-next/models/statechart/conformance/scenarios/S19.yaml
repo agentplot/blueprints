@@ -1,0 +1,21 @@
+scenario: S19
+title: the operator edits an object's state file by hand and commits; the next pass on every host treats it as the word
+profiles: [git-only]
+requirements: [A.1.3, C.1.143, S19]
+given:
+  objects:
+    - {id: intent/loop-granularity, machine: intent, state: {life: open, open.line: current, open.material: settled, open.close: offered}}
+    - {id: elaboration/loop-granularity/e1, machine: elaboration, parent: intent/loop-granularity, state: {life: done}}
+  hosts: [{name: mac-mini, bound: 3}, {name: studio, bound: 2}]
+  evidence: {line.contains_parent: {"*": true}, intent.archived: {"*": false}}
+when:
+  - direct: {commit: {file: objects/intent/loop-granularity/object.rec, set: {state: "life=archiving"}, sha: abc123}}
+  - host: {name: mac-mini}
+  - tick: {}
+  - host: {name: studio}
+  - tick: {}
+then:
+  transitions: [{object: intent/loop-granularity, from: offered, to: archiving, word: commit/abc123}]
+  effects: [{do: archive_intent, count: 1}]
+  applied_words: {intent/loop-granularity: [commit/abc123]}
+  control_plane: {word_derived_from_fetch: true, processes_told: 0, hosts_agreeing: 2}

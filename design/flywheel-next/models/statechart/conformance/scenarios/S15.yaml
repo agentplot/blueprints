@@ -1,0 +1,21 @@
+scenario: S15
+title: a build session tries to create a line; refused and reported; the machinery prepared the place; the session commits inside it only
+profiles: [all]
+requirements: [A.5.38, A.5.39, I12, S15]
+given:
+  objects:
+    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, open.line: current, open.place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
+    - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 3}}
+    - {id: work-item/atlas/wi-418, machine: work-item, parent: unit/atlas/status-writer, state: {life: in-type, in-type.stages: build, build.run: sessions, session.life: alive, alive.activity: working}}
+  evidence: {session.pane: {"*": present}, session.activity: {"*": working}}
+when:
+  - files: {"place wi-418/.flywheel/refusals.log": "pre-push refused: refs/heads/feature-x"}
+  - evidence: {session.refusals_pending: {"work-item/atlas/wi-418/build/1": true}}
+  - tick: {}
+  - evidence: {session.refusals_pending: {"*": false}, session.refusals_recorded: {"*": true}}
+  - tick: {}
+then:
+  effects: [{do: record_refusals, count: 1}, {do: report, count: 1}, {do: create_line, count: 0}]
+  reports: ["a session attempted a line operation and was refused"]
+  states: {work-item/atlas/wi-418: {life: in-type, alive.activity: working}}
+  control_plane: {repository_refs_changed_by_session: 0, place_prepared_by: machinery}

@@ -32,7 +32,7 @@ evidence:
   place.merged:        {read: "`git merge-base --is-ancestor <place head> <line head>`"}
   place.job_seeded:    {read: "`.flywheel/conflict.rec` names the rebase and the paths"}
   place.line_moved_told: {read: "`.flywheel/inbox/<line head>.md` exists in the place and `herdr agent send` logged its delivery"}
-  place.ready:         {read: exists, contains its line, `.flywheel/work-order.md` and the hooks are present}
+  place.ready:         {read: "exists, contains its line, `.flywheel/work-order.md` and the hooks are present"}
   place.absent:        {read: "`wt worktree list` does not name it and the directory is gone"}
   line.exists:         {read: "`git ls-remote <repo> refs/heads/<line>` returns the ref"}
   line.contains_parent: {read: "`git merge-base --is-ancestor <parent head> <line head>` after `git fetch`"}

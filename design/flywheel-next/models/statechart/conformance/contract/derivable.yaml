@@ -1,0 +1,15 @@
+scenario: B.2.123-derivable
+title: every state the engine decides upon is derivable from read and list; nothing private decides behavior
+profiles: [all]
+requirements: [B.2.123, A.8.64, A.8.65, B.4.129]
+machines: ./contract/lamp
+given:
+  objects: [{id: lamp/1, machine: lamp, state: {power: "off"}}]
+  evidence: {lamp.switch: {lamp/1: up}}
+when:
+  - tick: {}
+  - direct: {projection: {object: lamp/1, set: {column: "off"}}}   # a projection drifts
+  - tick: {}
+then:
+  states: {lamp/1: {power: "on"}}
+  control_plane: {projection_rewritten_from_source: true, drift_reported: true, engine_reads_only: [read, list]}

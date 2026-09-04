@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 1000" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+  <marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+  <marker id="mP" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7b5cb8"/></marker>
+  <marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+  <marker id="mR" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c05b5b"/></marker>
+  <g id="repo"><rect x="-26" y="-18" width="52" height="36" rx="7" fill="#fff" stroke="currentColor" stroke-width="2"/><circle cx="-9" cy="8" r="3.2" fill="currentColor"/><circle cx="9" cy="-8" r="3.2" fill="currentColor"/><path d="M -9 8 v-8 a 8 8 0 0 1 8 -8 h 1" fill="none" stroke="currentColor" stroke-width="2"/></g>
+  <g id="cube" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M -16 -8 L 0 -17 L 16 -8 L 16 10 L 0 19 L -16 10 Z" fill="#fff"/><path d="M -16 -8 L 0 1 L 16 -8 M 0 1 L 0 19" fill="none"/></g>
+  <g id="pause"><circle r="9" fill="#fff" stroke="#c9962e" stroke-width="2"/><line x1="-2.8" y1="-4" x2="-2.8" y2="4" stroke="#c9962e" stroke-width="2.4" stroke-linecap="round"/><line x1="2.8" y1="-4" x2="2.8" y2="4" stroke="#c9962e" stroke-width="2.4" stroke-linecap="round"/></g>
+  <g id="gate" stroke="#c05b5b" stroke-width="3" stroke-linecap="round"><line x1="-8" y1="-11" x2="-8" y2="11"/><line x1="8" y1="-11" x2="8" y2="11"/><line x1="-8" y1="-3" x2="8" y2="-3"/></g>
+  <g id="check" fill="none" stroke="#2e9e5b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M -6 0 L -2 4 L 6 -5"/></g>
+  <g id="marker"><circle r="7" fill="#fff" stroke="currentColor" stroke-width="2.2"/><circle r="2.6" fill="currentColor"/></g>
+  <g id="cross"><circle r="10" fill="#fbeeee" stroke="#c05b5b" stroke-width="2"/><path d="M -4 -4 l 8 8 M 4 -4 l -8 8" fill="none" stroke="#a34848" stroke-width="2.5"/></g>
+  <g id="clock"><circle r="9" fill="#fff" stroke="#c9962e" stroke-width="2"/><path d="M 0 -5 V 0 H 4" fill="none" stroke="#c9962e" stroke-width="2.2" stroke-linecap="round"/></g>
+  <g id="person"><circle cy="-6" r="4" fill="#fff" stroke="currentColor" stroke-width="1.8"/><path d="M -7 8 a 7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8"/></g>
+  <g id="lock" stroke="#c05b5b" stroke-width="1.8" fill="none"><rect x="-6" y="-2" width="12" height="10" rx="2" fill="#fbeaea"/><path d="M -4 -2 v-4 a 4 4 0 0 1 8 0 v4"/></g>
+</defs>
+<rect width="1680" height="1000" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Lines and places — the same shape on both sides; every take, rebase, merge and landing is the machinery's; a session only commits in its place</text>
+<text x="40" y="57" font-size="12" fill="#666">shared line → line → place · a line takes its parent by cadence · a place takes its line while its session is idle · a conflict is a job for the place's own session, never a half-done tree</text>
+
+<!-- zone: built repository -->
+<rect x="40" y="80" width="790" height="320" rx="10" fill="#eef3f9" stroke="#4a7fb5" stroke-width="1.4"/>
+<text x="56" y="102" font-size="12" font-weight="700" fill="#3f6d9c">BUILT REPOSITORY · atlas</text>
+<use href="#repo" x="150" y="230" color="#4a7fb5"/>
+<text x="150" y="264" font-size="9.5" fill="#666" text-anchor="middle">shared line</text>
+<text x="150" y="277" font-size="8.5" fill="#999" text-anchor="middle">main · the ledger's evidence is read here</text>
+<use href="#gate" x="150" y="150"/>
+<text x="150" y="176" font-size="9.5" fill="#666" text-anchor="middle">gates</text>
+<path d="M 178 224 C 260 200, 300 200, 354 212" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+<text x="266" y="196" font-size="9" fill="#1f6e6e" text-anchor="middle">create_line</text>
+<use href="#repo" x="390" y="230" color="#2b8a8a"/>
+<rect x="352" y="266" width="76" height="18" rx="9" fill="#2b8a8a"/><text x="390" y="279" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">plan-rows</text>
+<text x="390" y="314" font-size="8.5" fill="#999" text-anchor="middle">bolt line · take_parent 06:00 daily</text>
+<path d="M 364 246 C 300 270, 240 270, 176 250" fill="none" stroke="#4a7fb5" stroke-width="2.2" marker-end="url(#mB)"/>
+<text x="270" y="296" font-size="9" fill="#3f6d9c" text-anchor="middle">land_line · pull request</text>
+<use href="#cube" x="620" y="140" color="#2b8a8a"/>
+<text x="666" y="138" font-size="9.5" fill="#666">wi-418</text>
+<text x="666" y="151" font-size="8.5" fill="#999">a work item's place</text>
+<use href="#cube" x="620" y="220" color="#2b8a8a"/>
+<text x="666" y="218" font-size="9.5" fill="#666">wi-419</text>
+<text x="666" y="231" font-size="8.5" fill="#999">rebased after 418 merges</text>
+<use href="#cube" x="620" y="310" color="#8a8a86"/>
+<use href="#person" x="590" y="296" color="#8a8a86"/>
+<text x="666" y="308" font-size="9.5" fill="#666">operator place</text>
+<text x="666" y="321" font-size="8.5" fill="#999">reset after each merge · no session</text>
+<path d="M 416 220 C 500 180, 540 150, 598 142" fill="none" stroke="#2b8a8a" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mT)"/>
+<path d="M 416 230 C 500 230, 540 222, 598 220" fill="none" stroke="#2b8a8a" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mT)"/>
+<path d="M 416 240 C 500 280, 540 306, 598 310" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="4 3"/>
+<path d="M 604 160 C 560 200, 480 222, 418 226" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+<text x="470" y="120" font-size="9" fill="#1f6e6e" text-anchor="middle">merge_place · one at a time</text>
+
+<!-- zone: books repository -->
+<rect x="850" y="80" width="790" height="320" rx="10" fill="#f2edfa" stroke="#7b5cb8" stroke-width="1.4"/>
+<text x="866" y="102" font-size="12" font-weight="700" fill="#5a3f95">BOOKS REPOSITORY · willdan-blueprints</text>
+<use href="#repo" x="960" y="230" color="#7b5cb8"/>
+<text x="960" y="264" font-size="9.5" fill="#666" text-anchor="middle">shared line</text>
+<text x="960" y="277" font-size="8.5" fill="#999" text-anchor="middle">claims standing · the ledger beside them</text>
+<use href="#lock" x="960" y="150"/>
+<text x="960" y="176" font-size="9.5" fill="#666" text-anchor="middle">claim lock</text>
+<path d="M 988 224 C 1070 200, 1110 200, 1164 212" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+<text x="1076" y="196" font-size="9" fill="#1f6e6e" text-anchor="middle">create_line</text>
+<use href="#repo" x="1200" y="230" color="#2b8a8a"/>
+<rect x="1130" y="266" width="140" height="18" rx="9" fill="#2b8a8a"/><text x="1200" y="279" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">atlas-provider-limits</text>
+<text x="1200" y="314" font-size="8.5" fill="#999" text-anchor="middle">intent line · claims proposed here</text>
+<path d="M 1174 246 C 1110 270, 1050 270, 986 250" fill="none" stroke="#7b5cb8" stroke-width="2.2" marker-end="url(#mP)"/>
+<text x="1040" y="296" font-size="9" fill="#5a3f95" text-anchor="middle">archive · direct landing</text>
+<use href="#cube" x="1430" y="160" color="#2b8a8a"/>
+<text x="1476" y="158" font-size="9.5" fill="#666">research</text>
+<text x="1476" y="171" font-size="8.5" fill="#999">self-closing · merged, then removed</text>
+<use href="#cube" x="1430" y="280" color="#2b8a8a"/>
+<text x="1476" y="278" font-size="9.5" fill="#666">prototype</text>
+<text x="1476" y="291" font-size="8.5" fill="#999">standing · kept · rebased while idle</text>
+<path d="M 1226 220 C 1310 180, 1350 165, 1408 162" fill="none" stroke="#2b8a8a" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mT)"/>
+<path d="M 1226 240 C 1310 270, 1350 278, 1408 280" fill="none" stroke="#2b8a8a" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mT)"/>
+<path d="M 1414 180 C 1370 215, 1290 228, 1228 228" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+<text x="1330" y="212" font-size="9" fill="#1f6e6e" text-anchor="middle">merge_place</text>
+
+<!-- lane: line machine -->
+<text x="38" y="504" font-size="11.5" font-weight="700" fill="#2b8a8a">line</text>
+<line x1="150" y1="500" x2="1600" y2="500" stroke="#2b8a8a" stroke-width="2" opacity="0.35"/>
+<use href="#marker" x="200" y="500" color="#2b8a8a" data-state="line.absent"/>
+<text x="200" y="526" font-size="9.5" fill="#666" text-anchor="middle">absent</text>
+<text x="200" y="539" font-size="8.5" fill="#999" text-anchor="middle">push expected-old zero</text>
+<use href="#marker" x="380" y="500" color="#2b8a8a" data-state="line.current"/>
+<text x="380" y="526" font-size="9.5" fill="#666" text-anchor="middle">current</text>
+<text x="380" y="539" font-size="8.5" fill="#999" text-anchor="middle">contains its parent as of the last take</text>
+<use href="#clock" x="580" y="500" data-state="line.taking"/>
+<text x="580" y="526" font-size="9.5" fill="#666" text-anchor="middle">taking</text>
+<text x="580" y="539" font-size="8.5" fill="#999" text-anchor="middle">merge --no-ff · aborted whole on conflict</text>
+<use href="#cross" x="780" y="500" data-state="line.conflict"/>
+<text x="780" y="526" font-size="9.5" fill="#666" text-anchor="middle">conflict</text>
+<text x="780" y="539" font-size="8.5" fill="#999" text-anchor="middle">seed_take_conflict · a job · 3 retries</text>
+<use href="#pause" x="960" y="500" data-state="line.conflict-stalled"/>
+<rect x="932" y="451" width="56" height="18" rx="9" fill="#c9962e"/><text x="960" y="464" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="stalled">stalled</text>
+<text x="960" y="526" font-size="9.5" fill="#666" text-anchor="middle">conflict-stalled</text>
+<text x="960" y="539" font-size="8.5" fill="#999" text-anchor="middle">retry / hold</text>
+<use href="#marker" x="1140" y="500" color="#2b8a8a" data-state="line.landing"/>
+<text x="1140" y="526" font-size="9.5" fill="#666" text-anchor="middle">landing</text>
+<text x="1140" y="539" font-size="8.5" fill="#999" text-anchor="middle">entered by the owner · final take · land_line</text>
+<use href="#cross" x="1320" y="500" data-state="line.land-failed"/>
+<text x="1320" y="526" font-size="9.5" fill="#666" text-anchor="middle">land-failed</text>
+<text x="1320" y="539" font-size="8.5" fill="#999" text-anchor="middle">gates failed · line stays</text>
+<use href="#check" x="1500" y="500" data-state="line.removed"/>
+<text x="1500" y="526" font-size="9.5" fill="#666" text-anchor="middle">landed · removed</text>
+
+<!-- lane: place machine -->
+<text x="38" y="664" font-size="11.5" font-weight="700" fill="#2b8a8a">place</text>
+<line x1="150" y1="660" x2="1600" y2="660" stroke="#2b8a8a" stroke-width="2" opacity="0.35"/>
+<use href="#marker" x="200" y="660" color="#2b8a8a" data-state="place.preparing"/>
+<text x="200" y="686" font-size="9.5" fill="#666" text-anchor="middle">preparing</text>
+<text x="200" y="699" font-size="8.5" fill="#999" text-anchor="middle">wt worktree add · hooks · work order</text>
+<use href="#cube" x="400" y="660" color="#2b8a8a" data-state="place.ready"/>
+<text x="400" y="691" font-size="9.5" fill="#666" text-anchor="middle">ready</text>
+<text x="400" y="704" font-size="8.5" fill="#999" text-anchor="middle">merge-base --is-ancestor · then a session</text>
+<use href="#marker" x="600" y="660" color="#2b8a8a" data-state="place.behind"/>
+<text x="600" y="686" font-size="9.5" fill="#666" text-anchor="middle">behind</text>
+<text x="600" y="699" font-size="8.5" fill="#999" text-anchor="middle">rebase while idle · tell_moved</text>
+<use href="#cross" x="800" y="660" data-state="place.conflict"/>
+<text x="800" y="686" font-size="9.5" fill="#666" text-anchor="middle">conflict</text>
+<text x="800" y="699" font-size="8.5" fill="#999" text-anchor="middle">rebase --abort · job for own session</text>
+<use href="#pause" x="980" y="660" data-state="place.conflict-stalled"/>
+<rect x="952" y="611" width="56" height="18" rx="9" fill="#c9962e"/><text x="980" y="624" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="stalled">stalled</text>
+<text x="980" y="686" font-size="9.5" fill="#666" text-anchor="middle">conflict-stalled</text>
+<text x="980" y="699" font-size="8.5" fill="#999" text-anchor="middle">3 retries · retry</text>
+<polygon points="1180,618 1226,660 1180,702 1134,660" fill="#fffdf6" stroke="#c9962e" stroke-width="2"/>
+<text x="1180" y="658" font-size="10" font-weight="700" fill="#8a6a1d" text-anchor="middle">MERGE</text>
+<text x="1180" y="673" font-size="8.5" fill="#a97e26" text-anchor="middle">one at a time</text>
+<text x="1180" y="722" font-size="8.5" fill="#999" text-anchor="middle">merging · fixed order · push expected-old</text>
+<use href="#marker" x="1360" y="660" color="#2b8a8a" data-state="place.merged"/>
+<text x="1360" y="686" font-size="9.5" fill="#666" text-anchor="middle">merged</text>
+<text x="1360" y="699" font-size="8.5" fill="#999" text-anchor="middle">line contains the place</text>
+<use href="#check" x="1520" y="660" data-state="place.removed"/>
+<text x="1520" y="686" font-size="9.5" fill="#666" text-anchor="middle">removed</text>
+<text x="1520" y="699" font-size="8.5" fill="#999" text-anchor="middle">wt worktree remove · tethered processes end</text>
+
+<!-- refusal band -->
+<rect x="150" y="770" width="620" height="26" rx="13" fill="#fbeeee" stroke="#c05b5b"/>
+<text x="168" y="787" font-size="10.5" font-weight="700" fill="#a34848">a session's branch, merge, push or worktree call · refused by the hooks · reported · 0 refs changed</text>
+<rect x="800" y="770" width="800" height="26" rx="13" fill="#e8f3f3" stroke="#2b8a8a"/>
+<text x="818" y="787" font-size="10.5" font-weight="700" fill="#1f6e6e">take before the first place · before landing · on the cadence   ·   rebase after any sibling merge, while idle   ·   never a half-done tree</text>
+
+<!-- legend -->
+<rect x="40" y="880" width="1600" height="90" rx="10" fill="#fafafa" stroke="#e5e5e5"/>
+<use href="#repo" x="80" y="910" color="#4a7fb5"/><text x="116" y="914" font-size="10" fill="#333">shared line</text>
+<use href="#repo" x="220" y="910" color="#2b8a8a"/><text x="256" y="914" font-size="10" fill="#333">a line the machinery owns</text>
+<use href="#cube" x="420" y="910" color="#2b8a8a"/><text x="444" y="914" font-size="10" fill="#333">a place</text>
+<use href="#pause" x="530" y="910"/><text x="548" y="914" font-size="10" fill="#333">a row</text>
+<use href="#cross" x="620" y="910"/><text x="638" y="914" font-size="10" fill="#333">conflict · failed</text>
+<use href="#gate" x="760" y="910"/><text x="778" y="914" font-size="10" fill="#333">repository gates</text>
+<use href="#lock" x="900" y="906"/><text x="916" y="914" font-size="10" fill="#333">claim lock hash</text>
+<line x1="1030" y1="910" x2="1070" y2="910" stroke="#2b8a8a" stroke-width="2.2"/><text x="1078" y="914" font-size="10" fill="#333">machinery effect</text>
+<line x1="1190" y1="910" x2="1230" y2="910" stroke="#2b8a8a" stroke-width="2" stroke-dasharray="4 3"/><text x="1238" y="914" font-size="10" fill="#333">off a line</text>
+<line x1="1320" y1="910" x2="1360" y2="910" stroke="#4a7fb5" stroke-width="2.2"/><text x="1368" y="914" font-size="10" fill="#333">landing by policy</text>
+<text x="70" y="950" font-size="10.5" fill="#333">line and place are the same two templates inside a bolt and inside an intent · the ledger is never written from here: it reads the shared line's head to see whether a verdict's evidence still exists</text>
+</svg>

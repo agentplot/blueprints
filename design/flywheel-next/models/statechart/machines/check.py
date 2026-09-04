@@ -74,8 +74,8 @@ def walk_region(mname, rname, region, where, all_regions):
         sub = st.get('regions') or {}
         for rn, rg in sub.items():
             walk_region(mname, rn, rg, f"{sw}[{rn}]", sub)
-        for i, t in enumerate(st.get('on') or []):
-            tw = f"{sw}.on[{i}]"
+        for i, t in enumerate(st.get('transitions') or []):
+            tw = f"{sw}.transitions[{i}]"
             walk_guard(t['when'], tw)
             walk_effects(t.get('effects'), tw)
             if t['to'] not in states:
@@ -106,7 +106,7 @@ for mname, (path, m) in machines.items():
         for s, st in region['states'].items():
             st = st or {}
             enters(st, f"{where}.{s}")
-            for i, t in enumerate(st.get('on') or []): enters(t, f"{where}.{s}.on[{i}]")
+            for i, t in enumerate(st.get('transitions') or []): enters(t, f"{where}.{s}.transitions[{i}]")
             for rg in st.get('regions', {}).values(): walk(rg, f"{where}.{s}")
     for region in m['regions'].values(): walk(region, mname)
 
@@ -129,15 +129,44 @@ for prof in sorted(glob.glob(os.path.join(ROOT, 'profiles', '*.yaml'))):
         continue
     bound_ev = set(p.get('evidence', {})) | set(p.get('inherits_evidence', []))
     bound_fx = set(p.get('effects', {})) | set(p.get('inherits_effects', []))
-    if p.get('inherits'):
-        base = yaml.safe_load(open(os.path.join(ROOT, 'profiles', p['inherits'] + '.yaml')))
-        bound_ev |= set(base.get('evidence', {})); bound_fx |= set(base.get('effects', {}))
+    inh = p.get("inherits") or []
+    for b in ([inh] if isinstance(inh, str) else inh):
+        base = yaml.safe_load(open(os.path.join(ROOT, "profiles", b + ".yaml")))
+        bound_ev |= set(base.get("evidence", {})); bound_fx |= set(base.get("effects", {}))
     proofs = {spec.get('proof') for spec in effects.values()}
     if p.get('complete', True):
         for e in sorted(evidence - bound_ev):
             bad.append(f"{os.path.basename(prof)}: evidence {e} not bound")
         for f in sorted(set(effects) - bound_fx):
             bad.append(f"{os.path.basename(prof)}: effect {f} not bound")
+
+# conformance scenarios must validate and name only real rows and effects
+sschema_path = os.path.join(ROOT, 'conformance', 'schema.json')
+if os.path.exists(sschema_path):
+    sschema = json.load(open(sschema_path))
+    nscen = 0
+    for path in sorted(glob.glob(os.path.join(ROOT, 'conformance', '**', '*.yaml'), recursive=True)):
+        if '/lamp/' in path:
+            continue
+        sc = yaml.safe_load(open(path))
+        try:
+            jsonschema.validate(sc, sschema)
+        except jsonschema.ValidationError as e:
+            bad.append(f"{os.path.relpath(path, ROOT)}: scenario schema: {e.message} at {'/'.join(map(str, e.path))}"); continue
+        nscen += 1
+        if sc.get('machines'):
+            continue  # a toy machine set; not checked against the flywheel's rows
+        then = sc.get('then', {})
+        for r in then.get('rows', []) or []:
+            for k in (r.get('present') or []) + (r.get('absent') or []):
+                if k not in rows: bad.append(f"{os.path.relpath(path, ROOT)}: row kind {k} does not exist")
+        for e in then.get('effects', []) or []:
+            if e['do'] not in effects: bad.append(f"{os.path.relpath(path, ROOT)}: effect {e['do']} does not exist")
+        for step in sc.get('when', []):
+            w = step.get('word')
+            if w and w['row'].rsplit('/', 1)[-1] not in rows:
+                bad.append(f"{os.path.relpath(path, ROOT)}: word row kind {w['row'].rsplit('/', 1)[-1]} does not exist")
+    print(f"scenarios: {nscen}")
 
 print(f"machines: {len(machines)} · evidence: {len(evidence)} · effects: {len(effects)} · row kinds: {len(rows)}")
 for k, v in sorted(rows.items()): print(f"  row {k}: {', '.join(v)}")

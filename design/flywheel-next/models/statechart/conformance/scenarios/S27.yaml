@@ -1,0 +1,27 @@
+scenario: S27
+title: an intent archives; two claims stand for two repositories; planning runs once per repository; a new bolt and a joined unit; rename and reroute both apply; no order between bolts
+profiles: [all]
+requirements: [A.5.25, A.5.26, A.5.27, A.2.14, S27]
+given:
+  objects:
+    - {id: planning/atlas, machine: planning, state: {run: current}, record: {planned_fingerprint: a0}}
+    - {id: planning/switchboard, machine: planning, state: {run: current}, record: {planned_fingerprint: s0}}
+    - {id: bolt/switchboard/plan-rows, machine: bolt, state: {life: open, open.line: current, open.place: ready, open.citations: current, open.close: not-offered}, record: {repository: switchboard}}
+  evidence: {planning.fingerprint: {planning/atlas: a1, planning/switchboard: s1}, planning.planned_fingerprint: {planning/atlas: a0, planning/switchboard: s0}}
+when:
+  - tick: {}
+  - evidence: {place.ready: {"*": true}, session.pane: {"*": present}, session.exit: {"*": done}}
+  - files: {"place planning/atlas exit": "units u1,u2 target new: atlas-retry-behaviour-and-jitter-limits", "place planning/switchboard exit": "unit u3 target bolt/switchboard/plan-rows"}
+  - tick: {}
+  - tick: {}
+  - tick: {}
+  - word: {row: unit/atlas/u1/unit-proposed, answer: "rename retry", id: discord/9001}
+  - word: {row: unit/switchboard/u3/unit-proposed, answer: "new bolt other", id: discord/9002}
+  - tick: {}
+  - word: {row: unit/atlas/u1/unit-proposed, answer: "yes", id: discord/9003}
+  - word: {row: unit/switchboard/u3/unit-proposed, answer: "yes", id: discord/9004}
+  - tick: {}
+then:
+  effects: [{do: propose_units, count: 2}, {do: rename_bolt, count: 1}, {do: route_unit, count: 1}, {do: create_bolt, count: 2}]
+  records: {unit/atlas/u1: {target_name: retry}, unit/switchboard/u3: {target_name: other}}
+  control_plane: {planning_runs: 2, bolt_records_with_predecessor_field: 0}

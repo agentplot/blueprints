@@ -1,0 +1,45 @@
+# The tracker profile (C.1). State lives in GitHub: one issue per object in
+# the organization's `flywheel-state` repository, a milestone per bolt and per
+# intent, and one Projects v2 board for the organization. The tracker is the
+# central service. Inherits the host, books and record-derived bindings.
+#
+# Tools: GitHub REST and GraphQL through the `octocrab` crate with a GitHub
+# App installation token per organization; the Discord bot through the
+# `serenity` crate; the plan and status pages through `axum` on the host that
+# holds the plan lease, reached over Tailscale. `gh` is not used.
+format: flywheel-profile/1
+name: tracker
+complete: true
+inherits: [host, books, record-derived]
+
+records:
+  where: "issue in `<org>/flywheel-state`, title `<kind> <id>`, body = one fenced ```flywheel block holding the record (the envelope of model.md 3.4); labels `kind:<kind>` and `state:<leaf>` and the board column are projections written after the body"
+  get:    "GET /repos/{org}/flywheel-state/issues/{n}; the fenced block parsed; the id -> issue number map is the issue title, found by list"
+  put:    "PATCH the body with the new block and seq+1; single writer is the lease (below), so no CAS is needed on the body; after the write the body is read back and its seq compared, a mismatch is a lost lease and is reported"
+  append: "POST a comment on the issue; the comment is the thread entry; comments are the status view's discussion (B.4.131)"
+  list:   "GET /repos/{org}/flywheel-state/issues?labels=kind:<kind>&state=all&since=<last list point>, paged; the board's items are never the source"
+  words:  "comments on the issue whose first line is `word:`; the word's id is the Discord message id, the page submission id, or the timeline event id of a direct action on the tracker"
+  leases: "the issue's lease comment (the comment whose first line is `lease:`); hosts() are the issues labelled kind:host"
+  renderings: "issues labelled kind:rendering, newest first; the fenced block holds the rows"
+
+contract:
+  read:     "get, comments, milestone and board item of the issue, as of the response's `Last-Modified`; a read writes nothing"
+  write_effect: "the body write, comment or milestone change carries the effect id in a `flywheel-effect:` trailer; a repeat is found by searching the trailer before writing and changes nothing"
+  lease:    "lease by ordered append: a host POSTs a comment `lease: <host> taken <t>`; it then lists the issue's comments and holds the lease only if its comment is the lowest-id lease comment newer than the last `release:` comment; a loser deletes its own comment and reads again. Renewal edits the holder's comment (`renewed <t>`), never a new comment. Release is a `release:` comment by the holder. Expiry: renewed_at older than 24h, or the holder host's gone row answered `takeover`; an expired lease may be replaced by the same protocol"
+  present:  "rows are rendered as one Discord message (embed with numbered lines, buttons for bare-word answers) and on the page; each row is also mirrored as a comment on its object's issue with the answers as a checklist"
+  receive:  "a Discord reply or button press (message id = word id), a page submission (submission id), or a direct action on the tracker: closing the issue is the row's `close`/`drop`/`finish`, moving the board item to `Approved` is `yes`, a comment starting with `word:` is any answer (timeline event id = word id). Each becomes a word comment on the object's issue before anything follows (B.6.138); the bot reacts ✅ on the chat message once the comment exists (B.6.139)"
+  notify:   "GitHub App webhooks (issues, issue_comment, projects_v2_item) delivered to each host's `/hook` over a Tailscale Funnel; without a reachable URL the host polls `issues?since=` every 30s. Bound: 30s. herdr pane events and Discord messages notify locally"
+  list:     "as records.list"
+  status:   "the Projects v2 board (columns = queued, in progress, waiting on operator, done; fields host, owner, alive) is a projection the machinery writes after each body write, readable on GitHub's phone app with no host running; the fuller page (section 4) is served by the plan lease holder and also committed as `status.html` to the repository so it can be read from GitHub when no host runs"
+
+guarantees:
+  durable:  "GitHub's own durability for issues, comments, milestones and projects"
+  single_writer: "the lease-by-ordered-append protocol above; comment creation is atomic and comment ids are totally ordered, so two hosts observe the same winner. The body write also compares seq on read-back and reports a mismatch"
+  atomic:   "one PATCH of the body is one write; the fenced block is replaced whole; a comment is one POST"
+  derivable: "the body block and comments are the only things read; labels, milestones and the board are written from them"
+  word_once: "the word id is the delivery id; the word comment is searched by id before posting (a second delivery finds it); the object's applied_words is written in the same body PATCH as the state change"
+
+evidence:
+  plan.rendering_delivered: {read: "the channel's message carrying the rendering id exists (Discord message search by the bot's own record in the rendering issue)"}
+effects:
+  deliver_rendering: {do: "post the rendering to Discord as one message with buttons; record the message id on the rendering issue; the page shows the same rendering"}

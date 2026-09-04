@@ -51,6 +51,7 @@ evidence:
   place.merge_slot:    {of: place, type: bool, doc: no sibling place earlier in the fixed order is merging}
   place.merged:        {of: place, type: bool, doc: the line's head contains the place's head}
   place.job_seeded:    {of: place, type: bool, doc: the conflict job is written into the place}
+  place.conflict_retries: {of: place, type: int, doc: the owner record counter}
   place.line_moved_told: {of: place, type: bool}
   line.exists:           {of: line, type: bool}
   line.contains_parent:  {of: line, type: bool, doc: the parent line's head is an ancestor of this line's head}
