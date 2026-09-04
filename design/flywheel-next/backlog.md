@@ -27,6 +27,10 @@ control-plane profiles inside it.
   names each stage's agent and its on-fail target, with a bounded retry.
 - A baseline proposal for a new repository may be chores as well as
   units; a chore may satisfy a claim and produce a verdict.
+- Every git operation on a repository (branch creation, worktree add and
+  remove, merge into the bolt branch, landing) is an effect the engine
+  performs deterministically. A session receives a prepared worktree
+  and commits inside it; it never creates branches, merges, or lands.
 
 ## Instructions and skills
 
