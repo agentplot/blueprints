@@ -5,6 +5,7 @@
 machine: claim
 version: 1
 kind: object
+satisfies: [22, 94, 95, 102, 118]
 object: claim
 parent: null
 record:
@@ -17,7 +18,7 @@ regions:
     initial: proposed
     states:
       proposed:
-        doc: visible, never built (A.14.85)
+        doc: visible, never built (95)
         transitions:
           - when: {ev: claim.on_shared_line, is: true}
             to: standing

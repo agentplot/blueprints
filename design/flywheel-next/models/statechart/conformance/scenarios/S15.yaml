@@ -1,16 +1,16 @@
 scenario: S15
 title: a build session tries to create a line; refused and reported; the machinery prepared the place; the session commits inside it only
 profiles: [all]
-requirements: [A.5.38, A.5.39, I12, S15]
+satisfies: [41, 42]
+invariants: [I12]
 given:
   objects:
-    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, open.line: current, open.place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
+    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
     - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 3}}
     - {id: work-item/atlas/wi-418, machine: work-item, parent: unit/atlas/status-writer, state: {life: in-type, in-type.stages: build, build.run: sessions, session.life: alive, alive.activity: working}}
   evidence: {session.pane: {"*": present}, session.activity: {"*": working}}
 when:
-  - files: {"place wi-418/.flywheel/refusals.log": "pre-push refused: refs/heads/feature-x"}
-  - evidence: {session.refusals_pending: {"work-item/atlas/wi-418/build/1": true}}
+  - script: {"work-item/atlas/wi-418/build/1": [{after: "0", refusal: "pre-push refused: refs/heads/feature-x"}]}
   - tick: {}
   - evidence: {session.refusals_pending: {"*": false}, session.refusals_recorded: {"*": true}}
   - tick: {}

@@ -2,13 +2,14 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "flywheel-next/statechart/machine.schema.json",
   "title": "Flywheel machine definition",
-  "description": "One hierarchical state machine defined as data. States, transitions, guards over named evidence, effects by abstract name. No store, service, path, label or field is named here (I13); every `ev` and `do` name must appear in atoms.yaml and be bound by a profile.",
+  "description": "One hierarchical state machine defined as data. States, transitions, guards over named evidence, effects by abstract name. No store, service, path, label or field is named here (I13); every `ev` and `do` name must appear in atoms.yaml and be bound by a profile. Every machine and every decision kind states the requirements it satisfies by number (section 12 of the requirements).",
   "type": "object",
   "required": [
     "machine",
     "version",
     "kind",
-    "regions"
+    "regions",
+    "satisfies"
   ],
   "additionalProperties": false,
   "properties": {
@@ -35,9 +36,10 @@
     "parent": {
       "type": [
         "string",
+        "array",
         "null"
       ],
-      "description": "the owning object kind; owned objects are listed through their parent"
+      "description": "the owning object kind (or kinds); owned objects are listed through their parent"
     },
     "owns": {
       "type": "array",
@@ -78,6 +80,15 @@
       "additionalProperties": {
         "$ref": "#/$defs/region"
       }
+    },
+    "satisfies": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "minItems": 1,
+      "description": "requirement numbers this machine satisfies; check.py fails when a number does not exist or a requirement is cited nowhere"
     }
   },
   "$defs": {
@@ -115,8 +126,8 @@
           "type": "boolean",
           "description": "a terminal state of this region; a submachine's finals are seen by the parent as {final: <name>}"
         },
-        "row": {
-          "$ref": "#/$defs/row"
+        "decision": {
+          "$ref": "#/$defs/decision"
         },
         "tail": {
           "enum": [
@@ -127,7 +138,7 @@
             "merged",
             "finished"
           ],
-          "description": "entering this state is reported in the plan's tail (A.2.13)"
+          "description": "entering this state is reported in the plan's tail, once per sink, after that sink's delivery mark (14)"
         },
         "entry": {
           "type": "array",
@@ -171,51 +182,6 @@
         }
       }
     },
-    "row": {
-      "type": "object",
-      "required": [
-        "kind",
-        "group",
-        "answers"
-      ],
-      "additionalProperties": false,
-      "description": "This state is a plan row. Created by entering the state; retracted by leaving it (I3).",
-      "properties": {
-        "kind": {
-          "type": "string"
-        },
-        "group": {
-          "enum": [
-            "approve",
-            "decide",
-            "answer",
-            "attention"
-          ]
-        },
-        "answers": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "minItems": 1,
-          "description": "the reply grammar: a bare word, or `word <arg>` / `word: <text>`"
-        },
-        "batch": {
-          "type": "string",
-          "description": "record field whose equal values fold rows into one numbered row (chores of a bolt, a baseline)"
-        },
-        "shows": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "evidence names rendered as the row's tail"
-        },
-        "page_only": {
-          "type": "boolean"
-        }
-      }
-    },
     "effect": {
       "type": "object",
       "required": [
@@ -231,7 +197,7 @@
         },
         "note": {
           "type": "string",
-          "description": "the reason recorded with the write (A.9.68)"
+          "description": "the reason recorded with the write (76)"
         }
       }
     },
@@ -267,7 +233,7 @@
           "additionalProperties": {
             "type": "string"
           },
-          "description": "child region or submachine state -> the state it is put in when this transition fires; the owner's one way to command a submachine (place: merging, line: landing, session: ended)"
+          "description": "child region or submachine state -> the state it is put in when this transition fires; the owner's one way to command a submachine (place: merging, place: removing, line: landing, session: ended)"
         }
       }
     },
@@ -362,13 +328,13 @@
         {
           "type": "object",
           "required": [
-            "word"
+            "response"
           ],
           "additionalProperties": false,
           "properties": {
-            "word": {
+            "response": {
               "type": "string",
-              "description": "an unapplied operator word on this object's current row, with this answer"
+              "description": "an unapplied operator response on this object with this answer: an answer to the object's active decision, or a dictation naming the object (12)"
             }
           }
         },
@@ -475,6 +441,65 @@
           }
         }
       ]
+    },
+    "decision": {
+      "type": "object",
+      "required": [
+        "kind",
+        "group",
+        "answers",
+        "satisfies"
+      ],
+      "additionalProperties": false,
+      "description": "This state is a plan decision. Created by entering the state; retracted by leaving it (I3, 9). Numbered once for the organization when first seen by the plan machine (15).",
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "group": {
+          "enum": [
+            "approve",
+            "decide",
+            "answer",
+            "attention"
+          ]
+        },
+        "answers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "description": "the reply grammar: a bare word, or `word <arg>` / `word: <text>`; the same grammar on the page and in chat (2, 18)"
+        },
+        "batch": {
+          "type": "string",
+          "description": "record field whose equal values fold decisions into one numbered decision (chores of a bolt, a baseline) (11)"
+        },
+        "shows": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "evidence names rendered under the decision"
+        },
+        "page_only": {
+          "type": "boolean"
+        },
+        "document": {
+          "type": "string",
+          "description": "record field naming a document presented for review on the surface the profile binds (plannotator); the operator's annotations return as the response (17, 126)"
+        },
+        "satisfies": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 1,
+          "description": "requirement numbers this decision kind satisfies"
+        }
+      }
     }
   }
 }

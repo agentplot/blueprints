@@ -10,9 +10,9 @@ regions:
     initial: "off"
     states:
       "off":
-        row: {kind: lamp-off, group: decide, answers: ["on"]}
+        decision: {kind: lamp-off, group: decide, answers: ["on"], satisfies: [9]}
         transitions:
-          - {when: {word: "on"}, to: "on", effects: [{do: light}], bump: flips}
+          - {when: {response: "on"}, to: "on", effects: [{do: light}], bump: flips}
           - {when: {ev: lamp.switch, is: up}, to: "on", effects: [{do: light}]}
       "on":
         tail: done

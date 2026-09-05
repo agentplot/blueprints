@@ -1,10 +1,11 @@
-# One stage of a unit type (A.5.48). Runs the stage's session set over the
+# One stage of a unit type (53). Runs the stage's session set over the
 # item's place, collects their exits as one set, and judges pass, not-done,
 # blocked or stalled by the join rule. The session set is a fixed list or a
 # rule read against the repository worked.
 machine: stage
 version: 1
 kind: template
+satisfies: [4, 40, 53, 67]
 params:
   agents: a fixed list of agent names, or a rule such as every persona definition matching a pattern
   join: all | any | count:<n>
@@ -27,7 +28,10 @@ regions:
         transitions:
           - when: {ev: stage.verdict, is: blocked}
             to: sessions
-            note: the blocked session's own row stands; the other sessions of the set continue
+            note: the blocked session's own decision stands; the other sessions of the set continue
+          - when: {response: "send back"}
+            to: sent-back
+            note: dictation sends the item back to the stage the type names (4); never forward
           - when: {all: [{ev: stage.join_met, is: true}, {ev: stage.verdict, is: pass}]}
             to: passed
           - when: {all: [{ev: stage.join_met, is: true}, {ev: stage.verdict, is: not-done}, {ev: item.send_backs, lt_ev: item.retry_max}]}

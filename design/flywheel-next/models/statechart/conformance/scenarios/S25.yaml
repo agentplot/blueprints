@@ -1,10 +1,10 @@
 scenario: S25
 title: an elaboration amends a claim; chapter, claim and context map change in one commit; the review view takes the operator there with the previous version beside
 profiles: [all]
-requirements: [A.16.107, A.16.108, A.16.109, A.14.84, S25]
+satisfies: [85, 87, 94, 116, 117, 118, 119, 120, 121]
 given:
   objects:
-    - {id: intent/atlas-provider-limits, machine: intent, state: {life: open, open.line: current, open.material: settled, open.close: not-offered}}
+    - {id: intent/atlas-provider-limits, machine: intent, state: {life: open, line: current, open.material: settled, open.close: not-offered}}
     - {id: elaboration/atlas-provider-limits/amend-1, machine: elaboration, parent: intent/atlas-provider-limits, state: {life: working, working.work: session, session.life: alive, alive.activity: working}, record: {type: self-closing, type_version: 1}}
   files: {"books flywheel/instructions/design-conclusion.md": "version books@a1b2: chapter + claim + context map in one commit"}
 when:

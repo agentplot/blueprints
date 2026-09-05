@@ -1,0 +1,543 @@
+<!--
+  Queue & Workstream — mockup of the flywheel plan as a card queue over a live workstream.
+  Seeded from plan-mockup.md (willdan · 2026-09-04 07:40 · decisions 412–421).
+
+  Decisions taken while building:
+  - APPROVE cards flick: right = yes, left = drop. On wide screens a card can also be dragged
+    onto a bolt lane; dropping a unit on a lane other than its own bolt sends "bolt <name>".
+  - DECIDE and ANSWER cards do not flick. They have no default, so both choices are buttons.
+  - "yes all" sends one response per APPROVE decision, in order, each with its own toast and log line.
+  - 417 baseline "pick" opens an inline field; the grammar does not say what is picked, so free text.
+  - 412 "split" is recorded as a bare response (the grammar takes no argument).
+  - The clock is simulated: it starts at 07:41 and advances a minute per response, to stay in the sample's day.
+  - The intent atlas-provider-limits already has a lane (419 says the idle prototype sits on it);
+    approving 412 adds its two proposed elaborations to that lane.
+  - Session state is colour and dot shape only: working (filled, pulsing), starting (dashed),
+    idle (hollow), blocked (amber ring). No state names beyond a one-word tag.
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Willdan Queue</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#EEF1F4; --surface:#FFFFFF; --sunk:#E3E8EC; --line:#CBD3DA; --line2:#DEE4E9;
+  --ink:#1A232C; --ink2:#4B5A68; --ink3:#7B8894;
+  --accent:#137A86; --accent-ink:#0D5A63; --accent-soft:#D6EEF0;
+  --yes:#2F7D4F; --yes-soft:#DCEFE2; --drop:#A63D4B; --drop-soft:#F4DDE0;
+  --warn:#B8791A; --warn-soft:#F6E9CF;
+  --shadow:0 12px 28px rgba(26,35,44,.18);
+  --sans:"Familjen Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r:5px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F151B; --surface:#171F27; --sunk:#111820; --line:#2E3A46; --line2:#242E38;
+    --ink:#E3E9EE; --ink2:#A3B0BC; --ink3:#6F7E8C;
+    --accent:#45B4BE; --accent-ink:#8ED6DC; --accent-soft:#12333A;
+    --yes:#4FB57A; --yes-soft:#153327; --drop:#E06A78; --drop-soft:#3D1B22;
+    --warn:#E0A544; --warn-soft:#3A2B10;
+    --shadow:0 12px 28px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F151B; --surface:#171F27; --sunk:#111820; --line:#2E3A46; --line2:#242E38;
+  --ink:#E3E9EE; --ink2:#A3B0BC; --ink3:#6F7E8C;
+  --accent:#45B4BE; --accent-ink:#8ED6DC; --accent-soft:#12333A;
+  --yes:#4FB57A; --yes-soft:#153327; --drop:#E06A78; --drop-soft:#3D1B22;
+  --warn:#E0A544; --warn-soft:#3A2B10;
+  --shadow:0 12px 28px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font:15px/1.45 var(--sans);-webkit-font-smoothing:antialiased;overscroll-behavior-y:contain}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+button:focus-visible,textarea:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:600}
+
+/* ---- top bar ---- */
+header{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line2);padding:10px 14px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+header h1{font-size:15px;font-weight:600;margin:0;letter-spacing:.01em}
+header .meta{font-family:var(--mono);font-size:12px;color:var(--ink2)}
+header .count{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--ink2)}
+header .count b{color:var(--ink);font-weight:600;font-size:14px}
+
+/* ---- layout ---- */
+main{display:grid;grid-template-columns:1fr;gap:0}
+main>*{min-width:0}
+#streamwrap{order:0}
+#queuewrap{order:1;padding:0 14px 120px}
+@media(min-width:900px){
+  main{grid-template-columns:420px minmax(0,1fr);gap:0;align-items:start}
+  #queuewrap{order:0;padding:0 18px 120px 18px;border-right:1px solid var(--line2);min-height:calc(100vh - 44px)}
+  #streamwrap{order:1;position:sticky;top:44px;max-height:calc(100vh - 44px);overflow:auto;padding:0 18px 40px}
+}
+
+/* ---- section eyebrows ---- */
+.eyebrow{display:flex;align-items:baseline;gap:10px;margin:18px 0 8px;flex-wrap:wrap}
+.eyebrow h2{font-size:12px;letter-spacing:.09em;text-transform:uppercase;font-weight:600;margin:0;color:var(--ink)}
+.eyebrow .tail{font-size:12px;color:var(--ink3)}
+.eyebrow .act{margin-left:auto;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent-ink);padding:3px 8px;border:1px solid var(--accent);border-radius:999px;background:var(--surface)}
+.eyebrow .act:hover{background:var(--accent-soft)}
+
+/* ---- cards ---- */
+.slot{position:relative;margin-bottom:10px;border-radius:var(--r)}
+.under{position:absolute;inset:0;border-radius:var(--r);display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:0;transition:opacity .12s}
+.under .l{color:var(--yes)}.under .r{color:var(--drop)}
+.slot.dragging .under{opacity:1}
+.slot.toyes .under{background:var(--yes-soft)}.slot.todrop .under{background:var(--drop-soft)}
+.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px 12px;touch-action:pan-y;user-select:none;-webkit-user-select:none;transition:transform .18s ease,box-shadow .18s,opacity .18s}
+.card[data-drag]{cursor:grab}
+.slot.dragging .card{transition:none;box-shadow:var(--shadow);z-index:30;cursor:grabbing}
+.card.fly{transition:transform .32s cubic-bezier(.2,.7,.3,1),opacity .3s;opacity:0}
+.card .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.card .n{font-family:var(--mono);font-size:19px;font-weight:600;letter-spacing:-.01em;line-height:1}
+.card .kind{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink2);font-weight:600}
+.card .name{font-size:17px;font-weight:600;line-height:1.2;margin:6px 0 4px;text-wrap:balance}
+.card .name i{font-style:normal;color:var(--ink3);font-weight:400}
+.card .weight{font-family:var(--mono);font-size:12px;color:var(--ink2);line-height:1.5}
+.card .weight b{font-weight:500;color:var(--ink)}
+.card .goes{font-size:13px;color:var(--ink2);margin-top:6px;line-height:1.4}
+.card .goes .bolt{box-decoration-break:clone;-webkit-box-decoration-break:clone;font-family:var(--mono);font-size:12px;color:var(--accent-ink);background:var(--accent-soft);padding:1px 6px;border-radius:3px}
+.card .goes .newb{border:1px dashed var(--accent);background:transparent}
+.card .starts{font-size:12px;color:var(--ink3);margin-top:4px}
+.card .starts .chain{font-family:var(--mono);color:var(--ink2)}
+.acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.acts .sp{flex:1}
+.b{font-family:var(--mono);font-size:12px;font-weight:600;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);line-height:1}
+.b:hover{border-color:var(--ink2)}
+.b.yes{border-color:var(--yes);color:var(--yes)}.b.yes:hover{background:var(--yes-soft)}
+.b.drop{border-color:var(--drop);color:var(--drop)}.b.drop:hover{background:var(--drop-soft)}
+.b.pri{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.b.quiet{border-color:transparent;color:var(--ink2)}
+.hint{font-size:11px;color:var(--ink3);margin-left:auto;font-family:var(--mono)}
+.hint b{color:var(--yes);font-weight:600}.hint i{font-style:normal;color:var(--drop);font-weight:600}
+.reply{margin-top:10px;display:none;gap:6px;align-items:flex-start}
+.reply.open{display:flex}
+.reply textarea,.reply input{flex:1;font:13px/1.4 var(--mono);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:4px;padding:8px 10px;resize:vertical;min-height:38px}
+.reply textarea::placeholder,.reply input::placeholder{color:var(--ink3)}
+.reply.always{display:flex}
+.reply select{font:12px var(--mono);color:var(--ink);background:var(--sunk);border:1px solid var(--line);border-radius:4px;padding:8px}
+.picks{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.pick{display:flex;align-items:center;gap:10px;font-size:14px;padding:6px 8px;border:1px solid var(--line2);border-radius:4px;cursor:pointer}
+.pick.on{border-color:var(--accent);background:var(--accent-soft)}
+.pick .lt{font-family:var(--mono);font-weight:600;width:18px;height:18px;border-radius:3px;border:1px solid var(--line);display:grid;place-items:center;font-size:11px}
+.pick.on .lt{background:var(--accent);color:#fff;border-color:var(--accent)}
+.card.decide{border-left:3px solid var(--ink2)}
+.card.answer{border-left:3px solid var(--warn)}
+.card .q{font-size:15px;margin:6px 0 2px;font-style:italic;color:var(--ink)}
+.att{background:transparent;border:1px dashed var(--line);border-radius:var(--r);padding:10px 12px;margin-bottom:8px;font-size:13px;color:var(--ink2)}
+.att b{color:var(--ink);font-weight:600}
+.att .acts{margin-top:8px}
+.empty{padding:22px 14px;border:1px dashed var(--line);border-radius:var(--r);color:var(--ink3);font-size:13px;text-align:center}
+
+/* ---- workstream ---- */
+.stream{padding:12px 14px 6px}
+.stream .eyebrow{margin-top:8px}
+.lanes{display:flex;gap:10px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+.lane{flex:0 0 232px;scroll-snap-align:start;background:var(--sunk);border-radius:var(--r);padding:10px 11px 11px;min-height:112px;border:1px solid transparent;transition:border-color .15s,background .15s}
+.lane.over{border-color:var(--yes);background:var(--yes-soft)}
+.lane.flash{animation:flash .6s}
+@keyframes flash{0%{background:var(--yes-soft)}100%{background:var(--sunk)}}
+.lane .lh{display:flex;align-items:baseline;gap:6px;margin-bottom:8px}
+.lane .lk{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink3);font-weight:600}
+.lane .ln{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.lane .lnote{font-family:var(--mono);font-size:11px;color:var(--ink2);margin-top:6px}
+.sess{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;padding:4px 0;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sess .dot{flex:none;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.sess.working .dot{animation:pulse 1.6s infinite}
+.sess.starting .dot{background:transparent;border:2px dashed var(--accent)}
+.sess.idle .dot{background:transparent;border:2px solid var(--ink3)}
+.sess.idle{color:var(--ink2)}
+.sess.blocked .dot{background:var(--warn);box-shadow:0 0 0 3px var(--warn-soft)}
+.sess.done .dot{background:var(--ink3)}
+.sess.done{color:var(--ink3)}
+.sess .tag{margin-left:auto;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+.sess.blocked .tag{color:var(--warn)}
+.sess .host{font-size:10px;color:var(--ink3)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@media(min-width:900px){
+  .lanes{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));overflow:visible}
+  .lane{flex:auto}
+}
+.since{margin-top:6px}
+.since ul{list-style:none;margin:0;padding:0;font-family:var(--mono);font-size:12px}
+.since li{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:5px 0;border-top:1px solid var(--line2);color:var(--ink2)}
+.since li b{font-weight:600;color:var(--ink)}
+.since li .w{color:var(--ink)}
+.since li.new{animation:fadein .5s}
+@keyframes fadein{from{background:var(--accent-soft)}to{background:transparent}}
+
+/* ---- log ---- */
+.log{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--surface);border-top:1px solid var(--line);max-height:44px;overflow:hidden;transition:max-height .2s}
+.log.open{max-height:46vh;overflow:auto}
+.log .lt{display:flex;align-items:center;gap:10px;padding:11px 14px;font-family:var(--mono);font-size:12px;color:var(--ink2);cursor:pointer;width:100%;text-align:left;position:sticky;top:0;background:var(--surface)}
+.log .lt b{color:var(--ink);font-weight:600}
+.log .lt .c{margin-left:auto}
+.log ul{list-style:none;margin:0;padding:0 14px 12px;font-family:var(--mono);font-size:12px}
+.log li{display:grid;grid-template-columns:44px 1fr 46px;gap:10px;padding:5px 0;border-top:1px solid var(--line2)}
+.log li .a{color:var(--ink)}.log li .t{color:var(--ink3);text-align:right}
+.log li.fail .a{color:var(--drop)}
+@media(min-width:900px){
+  .log{position:static;max-height:none;border:1px solid var(--line);border-radius:var(--r);margin-top:14px}
+  .log .lt{cursor:default}.log .lt .c{display:none}
+}
+
+/* ---- toast ---- */
+#toasts{position:fixed;left:50%;bottom:58px;transform:translateX(-50%);z-index:40;display:flex;flex-direction:column;gap:6px;align-items:center;pointer-events:none}
+@media(min-width:900px){#toasts{bottom:24px}}
+.toast{background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:12px;padding:8px 14px;border-radius:999px;box-shadow:var(--shadow);animation:tin .18s ease-out;white-space:nowrap}
+.toast.fail{background:var(--drop);color:#fff}
+@keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){
+  .card,.card.fly,.lane,.log,.toast{transition:none;animation:none}
+  .sess.working .dot,.lane.flash,.since li.new{animation:none}
+}
+</style>
+
+<header>
+  <h1>PLAN · willdan</h1>
+  <span class="meta" id="clock">2026-09-04 07:40</span>
+  <span class="count" id="count"></span>
+</header>
+
+<main>
+  <section id="queuewrap" aria-label="Decisions"></section>
+  <aside id="streamwrap" aria-label="Running work">
+    <div class="stream">
+      <div class="eyebrow"><h2>Workstream</h2><span class="tail">sessions by bolt or intent · flick a card here to start it</span></div>
+      <div class="lanes" id="lanes"></div>
+      <div class="since">
+        <div class="eyebrow"><h2>Since</h2><span class="tail" id="sincemark">2026-09-03 18:05 · what finished · outside the count</span></div>
+        <ul id="since"></ul>
+      </div>
+      <div class="log" id="log">
+        <button class="lt" id="logtoggle" aria-expanded="false"><span>Sent</span><b id="logn">0</b><span>· each response on its own</span><span class="c">▴</span></button>
+        <ul id="loglist"></ul>
+      </div>
+    </div>
+  </aside>
+</main>
+<div id="toasts" aria-live="polite"></div>
+
+<script>
+(() => {
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- sample state ---------- */
+const S = {
+  minutes: 7*60+41,
+  decisions: [
+    {n:412, group:'APPROVE', kind:'intent', name:'atlas-provider-limits',
+     weight:'curation · <b>7 signals</b> · 3 sources · 12d', sub:'elaborations: research (self-closing) · prototype (standing)<br>challenges claim providers/one-writer @v3',
+     answers:['yes','drop','split'], lane:'i-atlas'},
+    {n:413, group:'APPROVE', kind:'unit', name:'atlas · status-writer', bolt:'plan-decisions', boltState:'open', after:'none',
+     weight:'covers one-writer sc.1,2 · <b>completes it</b> · type default', starts:'spec → build ×2 → review → merge', startsTail:'no further response until the close',
+     answers:['yes','drop','redo','bolt','new bolt'], lane:'b-plan'},
+    {n:414, group:'APPROVE', kind:'unit', name:'atlas · retry-jitter', bolt:'atlas-retry-behaviour-and-jitter-limits', boltState:'new',
+     weight:'routed from ask <b>"retries hammer the provider"</b> · no intent · type fast', starts:'spec → build → merge',
+     answers:['yes','drop','rename','bolt'], lane:'b-retry'},
+    {n:415, group:'APPROVE', kind:'chores', name:'atlas · 3', chores:[['a','a stale AGENTS.md'],['b','citation fix'],['c','rename ref']], picked:[],
+     answers:['yes','pick','no'], lane:'c-atlas'},
+    {n:416, group:'APPROVE', kind:'land', name:'switchboard/plan-decisions', weight:'<b>4 units merged</b> · gates green',
+     answers:['yes','hold'], lane:'b-plan'},
+    {n:417, group:'APPROVE', kind:'baseline', name:'new-repo', weight:'<b>11 claims unmet</b> · 8 chores · 3 units',
+     answers:['yes','pick','later'], lane:'b-newrepo'},
+    {n:418, group:'DECIDE', kind:'close', name:'intent loop-granularity', weight:'all <b>4 elaborations</b> done', answers:['close','keep open'], lane:'i-loop'},
+    {n:419, group:'DECIDE', kind:'idle', name:'prototype plan-derivation', weight:'standing · <b>idle 14h</b> · intent atlas-provider-limits', answers:['finish','keep'], lane:'i-atlas'},
+    {n:420, group:'DECIDE', kind:'moved', name:'claim sessions/one-writer <i>v3→v4</i>', weight:'bolt plan-decisions cites v3 · <b>2 items in flight</b>', answers:['amend bolt','land and follow'], lane:'b-plan'},
+    {n:421, group:'ANSWER', kind:'blocked', name:'wi-#418 build · plan-decisions', q:'should Ready imply Backlog cleared?', weight:'session alive · other items of the bolt running', answers:['reply'], lane:'b-plan'},
+  ],
+  attention: [
+    {id:'host', text:'host <b>mac-mini</b> last seen 41m · holds wi-#418', answers:['takeover','wait'], q:'on studio'},
+    {id:'noapply', text:'response <b>"yes 413"</b> from 06:10 could not apply · unit already dropped by 05:58 edit', answers:['ok']},
+  ],
+  lanes: [
+    {id:'b-plan', kind:'bolt', name:'plan-decisions', note:'4 merged · gates green · cites one-writer v3',
+     sessions:[{id:'wi418',name:'wi-#418 build',state:'blocked',host:'mac-mini'},{id:'wi419',name:'wi-#419 spec',state:'working'},{id:'wi420',name:'wi-#420 review',state:'working'}]},
+    {id:'i-atlas', kind:'intent', name:'atlas-provider-limits', note:'1 standing elaboration',
+     sessions:[{id:'proto',name:'prototype plan-derivation',state:'idle',tag:'14h'}]},
+    {id:'i-loop', kind:'intent', name:'loop-granularity', note:'4 elaborations done · nothing running',
+     sessions:[{id:'l1',name:'research scope',state:'done'},{id:'l2',name:'planning rounds',state:'done'},{id:'l3',name:'prototype tick',state:'done'},{id:'l4',name:'writeback',state:'done'}]},
+  ],
+  since: [
+    {w:'merged', text:'plan-decisions · unit decision-grouping', tail:'3 items · review passed first time'},
+    {w:'landed', text:'switchboard/idle-timeout', tail:'gates green · 06:52'},
+    {w:'closed', text:'intent host-liveness', tail:'by your response 18:10'},
+    {w:'dropped', text:'chore atlas 2b', tail:'by your response 18:10'},
+  ],
+  log: [],
+};
+const openBolts = () => S.lanes.filter(l => l.kind==='bolt').map(l => l.name);
+
+/* ---------- clock ---------- */
+const hhmm = m => `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
+const tick = () => { S.minutes++; $('#clock').textContent = '2026-09-04 ' + hhmm(S.minutes); return hhmm(S.minutes); };
+
+/* ---------- toast + log ---------- */
+function toast(msg, fail){
+  const t = document.createElement('div'); t.className = 'toast' + (fail?' fail':''); t.textContent = msg;
+  $('#toasts').appendChild(t); setTimeout(() => t.remove(), 2400);
+}
+function record(n, answer, fail){
+  const t = tick();
+  S.log.unshift({n, answer, t, fail});
+  toast(`${n} → ${answer} · ${fail ? 'could not apply' : 'recorded'}`, fail);
+  renderLog();
+}
+
+/* ---------- effects on the workstream ---------- */
+const lane = id => S.lanes.find(l => l.id===id);
+function addSince(w, text, tail){ S.since.unshift({w, text, tail: tail || 'by your response ' + hhmm(S.minutes), fresh:true}); }
+function flashLane(id){ requestAnimationFrame(() => { const el = document.querySelector(`.lane[data-id="${id}"]`); if(el){ el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); el.scrollIntoView({inline:'nearest',block:'nearest'}); } }); }
+function settle(laneId, sid){ setTimeout(() => { const l = lane(laneId); const s = l && l.sessions.find(x => x.id===sid); if(s && s.state==='starting'){ s.state='working'; renderStream(); } }, 2200); }
+function startIn(laneId, sess){ const l = lane(laneId); l.sessions.push({state:'starting', ...sess}); flashLane(laneId); settle(laneId, sess.id); }
+function ensureBolt(id, name, note){ if(!lane(id)) S.lanes.push({id, kind:'bolt', name, note, sessions:[]}); return lane(id); }
+
+const effects = {
+  412: (d, a) => {
+    if(a==='yes'){ lane('i-atlas').note = '2 elaborations starting · 1 standing'; startIn('i-atlas',{id:'e-res',name:'research (self-closing)'}); startIn('i-atlas',{id:'e-pro',name:'prototype (standing)'}); }
+    else if(a==='drop') addSince('dropped','intent atlas-provider-limits');
+    else addSince('split','intent atlas-provider-limits','back to curation');
+  },
+  413: (d, a, arg) => {
+    if(a==='yes'){ startIn('b-plan',{id:'sw',name:'status-writer · spec'}); }
+    else if(a==='drop') addSince('dropped','unit atlas · status-writer');
+    else if(a==='redo') addSince('redo','unit atlas · status-writer','back to planning with notes');
+    else if(a==='bolt'){ const id = S.lanes.find(l => l.name===arg).id; startIn(id,{id:'sw',name:'status-writer · spec'}); }
+    else if(a==='new bolt'){ ensureBolt('b-'+arg, arg, 'new · 1 unit'); startIn('b-'+arg,{id:'sw',name:'status-writer · spec'}); }
+  },
+  414: (d, a, arg) => {
+    if(a==='yes'||a==='rename'){ const name = a==='rename' ? arg : d.bolt; ensureBolt('b-retry', name, 'new · type fast'); startIn('b-retry',{id:'rj',name:'retry-jitter · spec'}); }
+    else if(a==='drop') addSince('dropped','unit atlas · retry-jitter');
+    else if(a==='bolt'){ const id = S.lanes.find(l => l.name===arg).id; startIn(id,{id:'rj',name:'retry-jitter · spec'}); }
+  },
+  415: (d, a, arg) => {
+    if(a==='no'){ addSince('dropped','chores atlas a b c'); return; }
+    const letters = a==='yes' ? d.chores.map(c => c[0]) : arg.split(' ');
+    ensureBolt('c-atlas', 'chores · atlas', 'chore type · no bolt of their own').kind = 'chores';
+    letters.forEach(l => { const c = d.chores.find(x => x[0]===l); startIn('c-atlas',{id:'ch'+l, name:`${l} · ${c[1]}`}); });
+    const rest = d.chores.filter(c => !letters.includes(c[0])).map(c => c[0]);
+    if(rest.length) addSince('dropped', 'chores atlas ' + rest.join(' '));
+  },
+  416: (d, a) => {
+    if(a==='hold'){ lane('b-plan').note = 'held · 4 merged · gates green'; return; }
+    const l = lane('b-plan'); l.note = 'landing on main…'; flashLane('b-plan');
+    setTimeout(() => { S.lanes = S.lanes.filter(x => x.id!=='b-plan'); addSince('landed','switchboard/plan-decisions', 'gates green · ' + hhmm(S.minutes)); S.decisions = S.decisions.filter(x => x.lane!=='b-plan'); renderAll(); }, 2600);
+  },
+  417: (d, a, arg) => {
+    if(a==='later'){ addSince('deferred','baseline new-repo','asked again next plan'); return; }
+    ensureBolt('b-newrepo','new-repo · baseline', a==='pick' ? `picked: ${arg}` : '11 claims · 8 chores · 3 units');
+    startIn('b-newrepo',{id:'bl1',name:'baseline · claims sweep'}); if(a==='yes') startIn('b-newrepo',{id:'bl2',name:'baseline · chores ×8'});
+  },
+  418: (d, a) => { if(a==='close'){ S.lanes = S.lanes.filter(x => x.id!=='i-loop'); addSince('closed','intent loop-granularity'); } else lane('i-loop').note = 'kept open · nothing running'; },
+  419: (d, a) => { const l = lane('i-atlas'); if(a==='finish'){ l.sessions = l.sessions.filter(s => s.id!=='proto'); l.note = 'no standing elaboration'; addSince('finished','prototype plan-derivation'); } else { const s = l.sessions.find(x => x.id==='proto'); s.tag='kept'; } flashLane('i-atlas'); },
+  420: (d, a) => { const l = lane('b-plan'); l.note = a==='amend bolt' ? 'amending · one-writer v3 → v4 · 2 items re-spec' : 'lands on v3 · follow-up unit queued for v4'; flashLane('b-plan'); },
+  421: (d, a, arg) => { const s = lane('b-plan').sessions.find(x => x.id==='wi418'); if(s){ s.state='working'; s.answered = arg; } flashLane('b-plan'); },
+};
+
+/* ---------- the one send ---------- */
+function send(n, answer, arg){
+  const d = S.decisions.find(x => x.n===n);
+  if(!d){ record(n, answer, true); return; }
+  const wire = arg ? `${answer} ${arg}` : answer;
+  S.decisions = S.decisions.filter(x => x.n!==n);
+  record(n, wire);
+  const fx = effects[n]; if(fx) fx(d, answer, arg);
+  renderAll();
+}
+function sendAttention(id, answer){
+  S.attention = S.attention.filter(a => a.id!==id);
+  if(id==='host'){
+    const t = tick(); S.log.unshift({n:'host', answer, t}); toast(`host → ${answer} · recorded`);
+    const s = lane('b-plan').sessions.find(x => x.id==='wi418'); if(s && answer==='takeover'){ s.host='studio'; }
+  }
+  renderAll();
+}
+function yesAll(){
+  const ns = S.decisions.filter(d => d.group==='APPROVE').map(d => d.n);
+  ns.forEach((n, i) => setTimeout(() => send(n, 'yes'), i*420));
+}
+
+/* ---------- rendering: queue ---------- */
+const GROUPS = {
+  APPROVE: 'yes is safe · nothing starts without it',
+  DECIDE: 'a choice · no default · not touched by "yes all"',
+  ANSWER: 'needs text · page only',
+};
+function boltChip(d){
+  const cls = d.boltState==='new' ? 'bolt newb' : 'bolt';
+  return `<div class="goes">→ <span class="${cls}">${d.boltState==='new' ? 'new bolt ' : 'bolt '}${esc(d.bolt)}</span>${d.boltState==='open' ? ' <span class="mono">(open)</span>' : ''}${d.after ? ` · after: ${esc(d.after)}` : ''}</div>`;
+}
+function card(d){
+  const dragOk = d.group==='APPROVE';
+  const head = `<div class="head"><span class="n">${d.n}</span><span class="kind">${esc(d.kind)}</span></div>`;
+  let body = '', acts = '';
+  const B = (a, cls, data) => `<button class="b ${cls||''}" data-a="${esc(a)}" ${data||''}>${esc(a)}</button>`;
+  const replyBox = (kind, ph, submitLabel) => `<div class="reply" data-reply="${kind}"><textarea rows="1" placeholder="${esc(ph)}" aria-label="${esc(ph)}"></textarea><button class="b pri" data-submit="${kind}">${esc(submitLabel)}</button></div>`;
+  switch(d.kind){
+    case 'intent':
+      body = `<div class="name">${esc(d.name)}</div><div class="weight">${d.weight}</div><div class="starts">${d.sub}</div>`;
+      acts = B('yes','yes') + B('drop','drop') + B('split') + hint(); break;
+    case 'unit': {
+      const other = openBolts().filter(b => b!==d.bolt);
+      body = `<div class="name">${esc(d.name)}</div>${boltChip(d)}<div class="weight">${d.weight}</div>
+        <div class="starts">yes starts <span class="chain">${esc(d.starts)}</span>${d.startsTail ? ' · ' + esc(d.startsTail) : ''}</div>`;
+      acts = B('yes','yes') + B('drop','drop') + (d.n===413 ? B('redo','quiet') : B('rename','quiet')) + B('route','quiet') + hint();
+      body += replyBox(d.n===413 ? 'redo' : 'rename', d.n===413 ? 'notes for planning…' : 'new bolt name', d.n===413 ? 'redo' : 'rename');
+      body += `<div class="reply" data-reply="route"><select aria-label="route to bolt">${other.map(b => `<option value="bolt|${esc(b)}">bolt ${esc(b)}</option>`).join('')}${d.n===413 ? '<option value="new|">new bolt…</option>' : ''}</select><input type="text" placeholder="name" aria-label="new bolt name" hidden><button class="b pri" data-submit="route">route</button></div>`;
+      break; }
+    case 'chores':
+      body = `<div class="name">${esc(d.name)} <i>chores</i></div><div class="picks">${d.chores.map(([l,t]) => `<div class="pick${d.picked.includes(l)?' on':''}" data-pick="${l}" role="checkbox" aria-checked="${d.picked.includes(l)}" tabindex="0"><span class="lt">${l}</span>${esc(t)}</div>`).join('')}</div>`;
+      acts = B('do all','yes') + (d.picked.length ? B(`pick ${d.picked.join(' ')}`,'pri','data-a="pick"') : `<button class="b quiet" disabled>pick</button>`) + B('no','drop') + hint(); break;
+    case 'land':
+      body = `<div class="name">${esc(d.name)}</div><div class="weight">${d.weight}</div><div class="starts">yes lands the bolt on main · the lane leaves the workstream</div>`;
+      acts = B('yes','yes') + B('hold','quiet') + hint('hold'); break;
+    case 'baseline':
+      body = `<div class="name">${esc(d.name)}</div><div class="weight">${d.weight}</div>` + replyBox('pick','which claims, chores or units…','pick');
+      acts = B('yes','yes') + B('pick','quiet') + B('later','quiet') + hint('later'); break;
+    case 'close': case 'idle': case 'moved':
+      body = `<div class="name">${d.name}</div><div class="weight">${d.weight}</div>`;
+      acts = d.answers.map((a,i) => B(a, i===0 ? 'pri' : '')).join(''); break;
+    case 'blocked':
+      body = `<div class="name">${esc(d.name)}</div><div class="q">“${esc(d.q)}”</div><div class="weight">${d.weight}</div>
+        <div class="reply always" data-reply="text"><textarea rows="2" placeholder="your answer to the session…" aria-label="answer"></textarea><button class="b pri" data-submit="text">send</button></div>`;
+      acts = ''; break;
+  }
+  function hint(left){ return `<span class="hint">flick → <b>yes</b> · <i>${left||'drop'}</i> ←</span>`; }
+  const cls = 'card' + (d.group==='DECIDE' ? ' decide' : d.group==='ANSWER' ? ' answer' : '');
+  return `<div class="slot" data-n="${d.n}">${dragOk ? `<div class="under"><span class="r">${esc(d.kind==='chores'?'no':d.kind==='land'?'hold':d.kind==='baseline'?'later':'drop')}</span><span class="l">yes</span></div>` : ''}
+    <div class="${cls}" ${dragOk ? 'data-drag' : ''} data-n="${d.n}" tabindex="0">${head}${body}${acts ? `<div class="acts">${acts}</div>` : ''}</div></div>`;
+}
+function renderQueue(){
+  const groups = ['APPROVE','DECIDE','ANSWER'];
+  let html = '';
+  groups.forEach(g => {
+    const ds = S.decisions.filter(d => d.group===g);
+    if(!ds.length) return;
+    const yesall = g==='APPROVE' ? `<button class="act" id="yesall">yes all · ${ds.map(d=>d.n).join(' ')}</button>` : '';
+    html += `<div class="eyebrow"><h2>${g}</h2><span class="tail">${GROUPS[g]}</span>${yesall}</div>` + ds.map(card).join('');
+  });
+  if(!S.decisions.length) html += `<div class="empty" style="margin-top:18px">Nothing waits on you. The workstream runs on its own until the next decision is yours.</div>`;
+  if(S.attention.length){
+    html += `<div class="eyebrow"><h2>Attention</h2><span class="tail">read · one-word answers where shown · outside the count</span></div>`;
+    html += S.attention.map(a => `<div class="att" data-att="${a.id}">${a.text}${a.q ? ` → <span class="mono">${a.answers[0]} ${esc(a.q)}</span>` : ''}<div class="acts">${a.answers.map((x,i) => `<button class="b ${i===0 && a.q ? 'pri' : 'quiet'}" data-att-a="${esc(x)}">${esc(x)}</button>`).join('')}</div></div>`).join('');
+  }
+  $('#queuewrap').innerHTML = html;
+  const n = S.decisions.length;
+  $('#count').innerHTML = `<b>${n}</b> decision${n===1?'':'s'} · "yes all" answers ${S.decisions.filter(d=>d.group==='APPROVE').length}`;
+}
+
+/* ---------- rendering: workstream ---------- */
+function renderStream(){
+  $('#lanes').innerHTML = S.lanes.map(l => `<div class="lane" data-id="${l.id}" data-bolt="${l.kind==='bolt' ? esc(l.name) : ''}">
+    <div class="lh"><span class="lk">${l.kind}</span><span class="ln" title="${esc(l.name)}">${esc(l.name)}</span></div>
+    ${l.sessions.map(s => `<div class="sess ${s.state}" title="${esc(s.name)}${s.answered ? ' · answered: ' + esc(s.answered) : ''}"><span class="dot"></span><span>${esc(s.name)}</span>${s.host ? `<span class="host">@${esc(s.host)}</span>` : ''}<span class="tag">${esc(s.tag || (s.state==='working'?'':s.state))}</span></div>`).join('') || `<div class="sess idle"><span class="dot"></span><span>nothing running</span></div>`}
+    ${l.note ? `<div class="lnote">${esc(l.note)}</div>` : ''}
+  </div>`).join('') || `<div class="empty" style="flex:1">Nothing running.</div>`;
+  $('#since').innerHTML = S.since.map(s => `<li class="${s.fresh?'new':''}"><b>${esc(s.w)}</b><span><span class="w">${esc(s.text)}</span> · ${esc(s.tail)}</span></li>`).join('');
+  S.since.forEach(s => s.fresh = false);
+}
+function renderLog(){
+  $('#logn').textContent = S.log.length;
+  $('#loglist').innerHTML = S.log.map(e => `<li class="${e.fail?'fail':''}"><span class="num">${e.n}</span><span class="a">→ ${esc(e.answer)}${e.fail ? ' · could not apply: decision gone' : ''}</span><span class="t">${e.t}</span></li>`).join('') || `<li><span></span><span class="a" style="color:var(--ink3)">nothing sent yet</span><span></span></li>`;
+}
+function renderAll(){ renderQueue(); renderStream(); renderLog(); }
+
+/* ---------- gestures ---------- */
+let drag = null;
+const Q = $('#queuewrap');
+Q.addEventListener('pointerdown', e => {
+  const c = e.target.closest('.card[data-drag]'); if(!c || e.target.closest('button,textarea,input,select,.pick')) return;
+  drag = {c, slot:c.parentElement, x:e.clientX, y:e.clientY, dx:0, t:performance.now(), v:0, id:e.pointerId, moved:false};
+  c.setPointerCapture(e.pointerId);
+});
+Q.addEventListener('pointermove', e => {
+  if(!drag || e.pointerId!==drag.id) return;
+  const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+  if(!drag.moved){ if(Math.abs(dx) < 6 && Math.abs(dy) < 6) return; if(Math.abs(dy) > Math.abs(dx)*1.4){ drag = null; return; } drag.moved = true; drag.slot.classList.add('dragging'); }
+  const now = performance.now(); drag.v = (dx - drag.dx) / Math.max(1, now - drag.t); drag.t = now; drag.dx = dx;
+  const wide = matchMedia('(min-width:900px)').matches;
+  drag.c.style.transform = wide ? `translate(${dx}px,${dy}px) rotate(${dx/80}deg)` : `translateX(${dx}px) rotate(${dx/60}deg)`;
+  drag.slot.classList.toggle('toyes', dx > 60); drag.slot.classList.toggle('todrop', dx < -60);
+  document.querySelectorAll('.lane.over').forEach(l => l.classList.remove('over'));
+  if(wide){ drag.c.style.pointerEvents='none'; const l = document.elementFromPoint(e.clientX, e.clientY)?.closest('.lane'); drag.c.style.pointerEvents=''; if(l) l.classList.add('over'); drag.overLane = l ? l.dataset : null; if(l) drag.slot.classList.add('toyes'); }
+});
+function endDrag(e){
+  if(!drag || e.pointerId!==drag.id) return;
+  const d = drag; drag = null;
+  d.slot.classList.remove('dragging','toyes','todrop');
+  document.querySelectorAll('.lane.over').forEach(l => l.classList.remove('over'));
+  if(!d.moved){ return; }
+  const n = +d.c.dataset.n, dec = S.decisions.find(x => x.n===n);
+  const flick = Math.abs(d.v) > 0.6;
+  const yes = d.overLane || d.dx > 90 || (flick && d.v > 0);
+  const no  = !d.overLane && (d.dx < -90 || (flick && d.v < 0));
+  if(!yes && !no){ d.c.style.transform = ''; return; }
+  const negative = {chores:'no', land:'hold', baseline:'later'}[dec.kind] || 'drop';
+  let answer = yes ? 'yes' : negative, arg;
+  if(yes && d.overLane && dec.kind==='unit' && d.overLane.bolt && d.overLane.bolt!==dec.bolt){ answer = 'bolt'; arg = d.overLane.bolt; }
+  d.c.classList.add('fly');
+  d.c.style.transform = yes ? `translate(${(d.overLane ? 0 : 160)}px,-40px) rotate(4deg) scale(.9)` : 'translateX(-160%) rotate(-6deg)';
+  setTimeout(() => send(n, answer, arg), 220);
+}
+Q.addEventListener('pointerup', endDrag); Q.addEventListener('pointercancel', endDrag);
+
+/* ---------- buttons and fields ---------- */
+Q.addEventListener('click', e => {
+  const b = e.target.closest('button'); const pick = e.target.closest('.pick');
+  if(pick){ togglePick(pick); return; }
+  if(!b) return;
+  if(b.id==='yesall'){ yesAll(); return; }
+  const att = b.closest('.att'); if(att){ sendAttention(att.dataset.att, b.dataset.attA); return; }
+  const card = b.closest('.card'); if(!card) return; const n = +card.dataset.n; const d = S.decisions.find(x => x.n===n);
+  if(b.dataset.submit){ submitReply(card, d, b.dataset.submit); return; }
+  const a = b.dataset.a;
+  if(['redo','rename','route','pick'].includes(a) && d.kind!=='chores'){
+    const box = card.querySelector(`.reply[data-reply="${a}"]`); const open = box.classList.toggle('open');
+    if(open){ box.querySelector('textarea,select,input')?.focus(); } return;
+  }
+  if(a==='pick' && d.kind==='chores'){ send(n, 'pick', d.picked.join(' ')); return; }
+  if(a==='do all'){ send(n, 'yes'); return; }
+  send(n, a);
+});
+Q.addEventListener('change', e => {
+  const sel = e.target.closest('select'); if(!sel) return;
+  const inp = sel.parentElement.querySelector('input'); inp.hidden = !sel.value.startsWith('new|'); if(!inp.hidden) inp.focus();
+});
+Q.addEventListener('keydown', e => {
+  const pick = e.target.closest('.pick'); if(pick && (e.key===' '||e.key==='Enter')){ e.preventDefault(); togglePick(pick); return; }
+  if(e.target.matches('textarea') && (e.metaKey||e.ctrlKey) && e.key==='Enter'){ e.target.parentElement.querySelector('[data-submit]').click(); }
+  const c = e.target.closest('.card[data-drag]'); if(c && e.target===c){
+    if(e.key==='ArrowRight'){ c.querySelector('.b.yes')?.click(); } if(e.key==='ArrowLeft'){ c.querySelector('.b.drop')?.click(); }
+  }
+});
+function togglePick(el){
+  const card = el.closest('.card'); const d = S.decisions.find(x => x.n===+card.dataset.n); const l = el.dataset.pick;
+  d.picked = d.picked.includes(l) ? d.picked.filter(x => x!==l) : [...d.picked, l].sort();
+  renderQueue();
+}
+function submitReply(card, d, kind){
+  const box = card.querySelector(`.reply[data-reply="${kind}"]`);
+  if(kind==='route'){
+    const sel = box.querySelector('select').value; const [mode, name] = sel.split('|');
+    if(mode==='new'){ const v = box.querySelector('input').value.trim(); if(!v){ box.querySelector('input').focus(); return; } send(d.n, 'new bolt', v); }
+    else send(d.n, 'bolt', name);
+    return;
+  }
+  const ta = box.querySelector('textarea'); const v = ta.value.trim(); if(!v){ ta.focus(); return; }
+  if(kind==='text'){ send(d.n, ':', v); return; }
+  if(kind==='redo'){ send(d.n, 'redo:', v); return; }
+  send(d.n, kind, v);
+}
+
+/* ---------- log drawer ---------- */
+$('#logtoggle').addEventListener('click', () => { const l = $('#log'); const o = l.classList.toggle('open'); $('#logtoggle').setAttribute('aria-expanded', o); $('#logtoggle .c').textContent = o ? '▾' : '▴'; });
+
+renderAll();
+})();
+</script>

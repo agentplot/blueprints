@@ -1,10 +1,10 @@
 scenario: S14
 title: review sends an item back twice; the third review passes; the item merges; the bolt lands; history shows both send-backs and the bound
 profiles: [all]
-requirements: [A.5.37, A.5.34, A.5.35, S14]
+satisfies: [37, 38, 40]
 given:
   objects:
-    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, open.line: current, open.place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
+    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
     - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 3}}
     - {id: work-item/atlas/wi-418, machine: work-item, parent: unit/atlas/status-writer, state: {life: in-type, in-type.stages: review, review.run: sessions}, record: {send_backs: 0}}
   evidence: {item.retry_max: {"*": 3}, stage.agents: {"*": [reviewer]}, session.pane: {"*": present}, line.contains_parent: {"*": true}, place.contains_line: {"*": true}}
@@ -28,7 +28,7 @@ when:
   - tick: {}
   - tick: {}
   - tick: {}
-  - word: {row: bolt/atlas/plan-rows/bolt-close, answer: "yes", id: discord/7001}
+  - response: {decision: bolt/atlas/plan-rows/bolt-close, answer: "yes", id: discord/7001}
   - tick: {}
   - evidence: {line.landed: {"*": true}, line.absent: {"*": true}}
   - tick: {}
@@ -42,8 +42,8 @@ then:
     - {object: work-item/atlas/wi-418, from: review, to: passed}
     - {object: work-item/atlas/wi-418, from: in-type, to: merging}
     - {object: work-item/atlas/wi-418, from: merging, to: merged}
-    - {object: bolt/atlas/plan-rows, from: open, to: landing, word: discord/7001}
+    - {object: bolt/atlas/plan-rows, from: open, to: landing, response: discord/7001}
     - {object: bolt/atlas/plan-rows, from: landing, to: landed}
   records: {work-item/atlas/wi-418: {send_backs: 2, retry_max_seen: 3}}
   effects: [{do: merge_place, count: 1}, {do: land_line, count: 1}]
-  rows: [{after_step: 19, present: [bolt-close]}, {after_step: 24, tail: [merged, landed]}]
+  decisions: [{after_step: 19, present: [bolt-close]}, {after_step: 24, tail: [merged, landed]}]

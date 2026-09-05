@@ -1,17 +1,17 @@
 scenario: S7
 title: all elaborations done; the plan offers the intent's close; yes closes and archives it; nothing else moved
 profiles: [all]
-requirements: [A.3.19, A.5.42, A.5.47, S7]
+satisfies: [21, 46, 51]
 given:
   objects:
-    - {id: intent/loop-granularity, machine: intent, state: {life: open, open.line: current, open.material: settled, open.close: not-offered}}
+    - {id: intent/loop-granularity, machine: intent, state: {life: open, line: current, open.material: settled, open.close: not-offered}}
     - {id: elaboration/loop-granularity/e1, machine: elaboration, parent: intent/loop-granularity, state: {life: done}}
     - {id: elaboration/loop-granularity/e2, machine: elaboration, parent: intent/loop-granularity, state: {life: done}}
-    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, open.line: current, open.place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
+    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
   evidence: {line.contains_parent: {"*": true}, intent.archived: {"*": false}, line.landing: {"*": none}}
 when:
   - tick: {}
-  - word: {row: intent/loop-granularity/intent-close, answer: close, id: discord/4001}
+  - response: {decision: intent/loop-granularity/intent-close, answer: close, id: discord/4001}
   - tick: {}
   - evidence: {intent.archived: {"*": true}}
   - tick: {}
@@ -23,8 +23,8 @@ when:
 then:
   transitions:
     - {object: intent/loop-granularity, from: not-offered, to: offered}
-    - {object: intent/loop-granularity, from: open, to: archiving, word: discord/4001}
+    - {object: intent/loop-granularity, from: open, to: archiving, response: discord/4001}
     - {object: intent/loop-granularity, from: archiving, to: closed}
   effects: [{do: archive_intent, count: 1}, {do: land_line, count: 1}, {do: remove_line, count: 1}]
-  rows: [{after_step: 1, present: [intent-close], count: 1}, {after_step: 10, count: 0, tail: [closed]}]
+  decisions: [{after_step: 1, present: [intent-close], count: 1}, {after_step: 10, count: 0, tail: [closed]}]
   no_transitions: [bolt/atlas/plan-rows]

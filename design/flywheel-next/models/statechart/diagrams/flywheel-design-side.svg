@@ -17,14 +17,14 @@
   <g id="person"><circle cy="-6" r="4" fill="#fff" stroke="currentColor" stroke-width="1.8"/><path d="M -7 8 a 7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8"/></g>
 </defs>
 <rect width="1680" height="1000" fill="#fff"/>
-<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Design side — an intent is a line off the books, each elaboration a place off it, and every plan row is a state</text>
-<text x="40" y="57" font-size="12" fill="#666">proposed → open → archiving → closed · a row is created on entering its state and retracted by the word that leaves it · the archive is where claims become standing</text>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Design side — an intent is a line off the books, each elaboration a place off it, and every plan decision is a state</text>
+<text x="40" y="57" font-size="12" fill="#666">proposed → open → archiving → closed · a decision is created on entering its state and retracted by the response that leaves it · the archive is where claims become standing</text>
 
 <!-- lane: intent -->
 <text x="38" y="174" font-size="11.5" font-weight="700" fill="#7b5cb8">intent</text>
 <line x1="150" y1="170" x2="1380" y2="170" stroke="#7b5cb8" stroke-width="2" opacity="0.35"/>
 <use href="#pause" x="200" y="170" data-state="intent.proposed"/>
-<rect x="150" y="121" width="100" height="18" rx="9" fill="#c9962e"/><text x="200" y="134" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="intent-proposed">intent-proposed</text>
+<rect x="150" y="121" width="100" height="18" rx="9" fill="#c9962e"/><text x="200" y="134" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-decision="intent-proposed">intent-proposed</text>
 <text x="200" y="196" font-size="9.5" fill="#666" text-anchor="middle">proposed</text>
 <text x="200" y="209" font-size="8.5" fill="#999" text-anchor="middle">curation join · signal weight shown</text>
 <use href="#cross" x="290" y="215" data-state="intent.dropped"/>
@@ -34,7 +34,7 @@
 <text x="400" y="196" font-size="9.5" fill="#666" text-anchor="middle">open</text>
 <text x="400" y="209" font-size="8.5" fill="#999" text-anchor="middle">regions line · material · close</text>
 <use href="#pause" x="580" y="170" data-state="intent.offered"/>
-<rect x="538" y="121" width="84" height="18" rx="9" fill="#c9962e"/><text x="580" y="134" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="intent-close">intent-close</text>
+<rect x="538" y="121" width="84" height="18" rx="9" fill="#c9962e"/><text x="580" y="134" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-decision="intent-close">intent-close</text>
 <text x="580" y="196" font-size="9.5" fill="#666" text-anchor="middle">close offered</text>
 <text x="580" y="209" font-size="8.5" fill="#999" text-anchor="middle">all elaborations done · close / keep open</text>
 <use href="#marker" x="780" y="170" color="#7b5cb8" data-state="intent.archiving"/>
@@ -51,12 +51,12 @@
 <text x="38" y="314" font-size="11.5" font-weight="700" fill="#7b5cb8">elaboration</text>
 <line x1="150" y1="310" x2="1380" y2="310" stroke="#7b5cb8" stroke-width="2" opacity="0.35"/>
 <use href="#pause" x="200" y="310" data-state="elaboration.proposed"/>
-<rect x="132" y="261" width="136" height="18" rx="9" fill="#c9962e"/><text x="200" y="274" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="elaboration-proposed">elaboration-proposed</text>
+<rect x="132" y="261" width="136" height="18" rx="9" fill="#c9962e"/><text x="200" y="274" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-decision="elaboration-proposed">elaboration-proposed</text>
 <text x="200" y="336" font-size="9.5" fill="#666" text-anchor="middle">proposed</text>
 <text x="200" y="349" font-size="8.5" fill="#999" text-anchor="middle">a finding · new material · folds under a proposed intent</text>
 <use href="#marker" x="400" y="310" color="#7b5cb8" data-state="elaboration.approved"/>
 <text x="400" y="336" font-size="9.5" fill="#666" text-anchor="middle">approved</text>
-<text x="400" y="349" font-size="8.5" fill="#999" text-anchor="middle">word applied once · never re-asked</text>
+<text x="400" y="349" font-size="8.5" fill="#999" text-anchor="middle">response applied once · never re-asked</text>
 <use href="#cube" x="560" y="310" color="#2b8a8a" data-state="elaboration.placing"/>
 <text x="560" y="341" font-size="9.5" fill="#666" text-anchor="middle">placing</text>
 <text x="560" y="354" font-size="8.5" fill="#999" text-anchor="middle">place proven current first</text>
@@ -80,16 +80,16 @@
 <text x="460" y="476" font-size="9.5" fill="#666" text-anchor="middle">standing</text>
 <text x="460" y="489" font-size="8.5" fill="#999" text-anchor="middle">idle 30m → offered · lost → started again</text>
 <use href="#pause" x="640" y="450" data-state="standing.idle-offered"/>
-<rect x="612" y="401" width="56" height="18" rx="9" fill="#c9962e"/><text x="640" y="414" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="idle">idle</text>
+<rect x="612" y="401" width="56" height="18" rx="9" fill="#c9962e"/><text x="640" y="414" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-decision="idle">idle</text>
 <text x="640" y="476" font-size="9.5" fill="#666" text-anchor="middle">idle-offered</text>
 <text x="640" y="489" font-size="8.5" fill="#999" text-anchor="middle">finish · keep 7d · process untouched</text>
 <use href="#marker" x="820" y="450" color="#2e9e5b" data-state="standing.finished"/>
 <text x="820" y="476" font-size="9.5" fill="#666" text-anchor="middle">finished</text>
-<text x="820" y="489" font-size="8.5" fill="#999" text-anchor="middle">the one end_session · by the word</text>
+<text x="820" y="489" font-size="8.5" fill="#999" text-anchor="middle">the one end_session · by the response</text>
 <use href="#gear" x="1150" y="450" color="#2e9e5b" data-state="with-operator.session"/>
 <use href="#person" x="1180" y="436" color="#8a8a86"/>
 <text x="1150" y="476" font-size="9.5" fill="#666" text-anchor="middle">with-operator</text>
-<text x="1150" y="489" font-size="8.5" fill="#999" text-anchor="middle">asks nothing while the operator is present</text>
+<text x="1150" y="489" font-size="8.5" fill="#999" text-anchor="middle">never asked about · ends by dictation only</text>
 
 <!-- lane: session -->
 <text x="38" y="594" font-size="11.5" font-weight="700" fill="#2e9e5b">session</text>
@@ -103,12 +103,12 @@
 <text x="540" y="616" font-size="9.5" fill="#666" text-anchor="middle">alive</text>
 <text x="540" y="629" font-size="8.5" fill="#999" text-anchor="middle">working · idle · never interrupted</text>
 <use href="#pause" x="740" y="590" data-state="session.blocked"/>
-<rect x="705" y="541" width="70" height="18" rx="9" fill="#c9962e"/><text x="740" y="554" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="question">question</text>
+<rect x="705" y="541" width="70" height="18" rx="9" fill="#c9962e"/><text x="740" y="554" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-decision="question">question</text>
 <text x="740" y="616" font-size="9.5" fill="#666" text-anchor="middle">blocked</text>
 <text x="740" y="629" font-size="8.5" fill="#999" text-anchor="middle">answer on the page → same session</text>
 <use href="#check" x="900" y="590" data-state="session.exited"/>
 <text x="900" y="616" font-size="9.5" fill="#666" text-anchor="middle">exited</text>
-<text x="900" y="629" font-size="8.5" fill="#999" text-anchor="middle">exit.rec · done · stalled · invalid</text>
+<text x="900" y="629" font-size="8.5" fill="#999" text-anchor="middle">flywheel exit · done · stalled · invalid</text>
 <use href="#cross" x="1100" y="590" data-state="session.lost"/>
 <text x="1100" y="616" font-size="9.5" fill="#666" text-anchor="middle">lost</text>
 <text x="1100" y="629" font-size="8.5" fill="#999" text-anchor="middle">pane gone · owner decides</text>
@@ -159,12 +159,12 @@
 
 <use href="#person" x="1530" y="600" color="#8a8a86"/>
 <text x="1530" y="628" font-size="9.5" fill="#666" text-anchor="middle">operator</text>
-<text x="1530" y="641" font-size="8.5" fill="#999" text-anchor="middle">every amber row waits here</text>
+<text x="1530" y="641" font-size="8.5" fill="#999" text-anchor="middle">every amber decision waits here</text>
 
 <!-- legend -->
 <rect x="40" y="880" width="1600" height="90" rx="10" fill="#fafafa" stroke="#e5e5e5"/>
-<use href="#pause" x="70" y="910"/><text x="88" y="914" font-size="10" fill="#333">a state with a row</text>
-<rect x="200" y="901" width="60" height="18" rx="9" fill="#c9962e"/><text x="230" y="914" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">row kind</text>
+<use href="#pause" x="70" y="910"/><text x="88" y="914" font-size="10" fill="#333">a state with a decision</text>
+<rect x="200" y="901" width="60" height="18" rx="9" fill="#c9962e"/><text x="230" y="914" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">decision kind</text>
 <use href="#gear" x="320" y="910" color="#2e9e5b"/><text x="340" y="914" font-size="10" fill="#333">a session runs</text>
 <use href="#check" x="450" y="910"/><text x="466" y="914" font-size="10" fill="#333">tail state</text>
 <use href="#cross" x="560" y="910"/><text x="578" y="914" font-size="10" fill="#333">lost · dropped</text>
@@ -174,5 +174,5 @@
 <line x1="1000" y1="910" x2="1040" y2="910" stroke="#7b5cb8" stroke-width="2.2"/><text x="1048" y="914" font-size="10" fill="#333">design object</text>
 <line x1="1150" y1="910" x2="1190" y2="910" stroke="#2b8a8a" stroke-width="2.2" stroke-dasharray="4 3"/><text x="1198" y="914" font-size="10" fill="#333">owner commands a child</text>
 <line x1="1350" y1="910" x2="1390" y2="910" stroke="#c05b5b" stroke-width="2" stroke-dasharray="2 5"/><text x="1398" y="914" font-size="10" fill="#333">read only</text>
-<text x="70" y="950" font-size="10.5" fill="#333">a row exists exactly while its state is active, on every host and after every restart · the machinery never ends a standing session: finished is reached only by the word</text>
+<text x="70" y="950" font-size="10.5" fill="#333">a decision exists exactly while its state is active, on every host and after every restart · the machinery never ends a standing session: finished is reached only by the response</text>
 </svg>

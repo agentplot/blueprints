@@ -3,7 +3,7 @@ evidence:
   state: {of: any, type: state}
   entered_at: {of: any, type: time}
   seq: {of: any, type: int}
-  applied_words: {of: any, type: list}
+  applied_responses: {of: any, type: list}
   now: {of: any, type: time}
   lamp.switch: {of: lamp, type: enum, values: [up, down]}
   lamp.lit: {of: lamp, type: bool, proof_of: light}

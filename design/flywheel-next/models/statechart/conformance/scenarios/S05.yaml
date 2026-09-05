@@ -1,17 +1,19 @@
 scenario: S5
 title: the machinery restarts mid-day; every session still runs; the plan is identical; no object changed state
 profiles: [all]
-requirements: [A.2.6, A.8.64, A.8.67, I7]
+satisfies: [7, 72, 75]
+invariants: [I7]
 given:
   objects:
     - {id: intent/a, machine: intent, state: {life: proposed}}
-    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, open.line: current, open.place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
+    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
     - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 3}}
     - {id: work-item/atlas/wi-418, machine: work-item, parent: unit/atlas/status-writer, state: {life: in-type, in-type.stages: build, build.run: sessions, session.life: alive, alive.activity: working}}
     - {id: elaboration/b/prototype, machine: elaboration, parent: intent/b, state: {life: working, working.work: idle-offered}, record: {type: standing}}
-    - {id: intent/b, machine: intent, state: {life: open, open.line: current, open.material: settled, open.close: not-offered}}
+    - {id: intent/b, machine: intent, state: {life: open, line: current, open.material: settled, open.close: not-offered}}
   evidence: {session.pane: {"*": present}, session.activity: {"work-item/atlas/wi-418/build/1": working, "elaboration/b/prototype/standing/1": idle}, place.contains_line: {"*": true}, line.contains_parent: {"*": true}}
-  renderings: [{id: r-1, rows: [intent/a/intent-proposed, elaboration/b/prototype/idle], delivered: true}]
+  register: {intent/a/intent-proposed: 41, elaboration/b/prototype/idle: 42, next: 43}
+  marks: {chat: now, page: now}
 when:
   - tick: {}
   - restart: {}
@@ -23,4 +25,4 @@ then:
   effects: []
   effects_closed: true
   writes: {total: 0}
-  rows: [{after_step: 5, present: [intent-proposed, idle], count: 2}]
+  decisions: [{after_step: 5, present: [intent-proposed, idle], count: 2, numbers: {intent/a/intent-proposed: 41, elaboration/b/prototype/idle: 42}}]

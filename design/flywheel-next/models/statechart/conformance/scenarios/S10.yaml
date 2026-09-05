@@ -1,7 +1,8 @@
 scenario: S10
 title: a repository joins two months in; first planning judges every claim once and offers one proposal; not-applicable is stored and never judged again
 profiles: [all]
-requirements: [A.14.91, A.14.88, A.6.56, I10, S10]
+satisfies: [61, 98, 101]
+invariants: [I10]
 given:
   objects:
     - {id: planning/new-repo, machine: planning, state: {run: current}}
@@ -14,8 +15,7 @@ when:
   - evidence: {place.ready: {"*": true}, session.pane: {"*": present}}
   - tick: {}
   - tick: {}
-  - evidence: {session.exit: {"planning/new-repo/planner/1": done}}
-  - files: {"place planning/.flywheel/exit.rec": "verdicts: c1@1 not-satisfied, c2@2 not-applicable, c3@1 partial; units: 3 with batch baseline-1 (one a chore); target new: new-repo-baseline"}
+  - script: {"planning/new-repo/planner/1": [{after: "0", exit: done, deliverables: [verdicts, units], commits: ["verdicts: c1@1 not-satisfied, c2@2 not-applicable, c3@1 partial; units: 3 with batch baseline-1 (one a chore); target new: new-repo-baseline"]}]}
   - tick: {}
   - tick: {}
   - evidence: {cell.verdict: {ledger-cell/new-repo/c1: not-satisfied, ledger-cell/new-repo/c2: not-applicable, ledger-cell/new-repo/c3: partial}, cell.verdict_claim_version: {ledger-cell/new-repo/c1: 1, ledger-cell/new-repo/c2: 2, ledger-cell/new-repo/c3: 1}, cell.claim_version: {ledger-cell/new-repo/c1: 1, ledger-cell/new-repo/c2: 2, ledger-cell/new-repo/c3: 1}, cell.evidence_present: {"*": true}}
@@ -24,6 +24,6 @@ when:
   - tick: {}
 then:
   effects: [{do: record_verdict, count: 3}, {do: propose_units, count: 1}, {do: record_fingerprint, count: 1}]
-  rows: [{after_step: 8, present: [unit-proposed], count: 1}]
+  decisions: [{after_step: 8, present: [unit-proposed], count: 1}]
   states: {ledger-cell/new-repo/c2: {freshness: judged, judged.value: not-applicable}, ledger-cell/new-repo/c1: {freshness: judged, judged.value: not-satisfied}, planning/new-repo: {run: current}}
   control_plane: {backlog_after: [c1, c3], verdicts_recomputed_after_commits: 0}

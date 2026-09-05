@@ -1,15 +1,16 @@
 scenario: S31
-title: yes at 07:40, look again at 16:00; nothing nudged; the tail shows built, reviewed, merged since; the only new row is the bolt's close
+title: yes at 07:40, look again at 16:00; nothing nudged; the tail shows built, reviewed, merged since; the only new decision is the bolt's close
 profiles: [all]
-requirements: [A.2.12, A.2.13, S31]
+satisfies: [13, 14]
 given:
   objects:
-    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, open.line: current, open.place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
+    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
     - {id: unit/atlas/u, machine: unit, parent: bolt/atlas/plan-rows, state: {life: proposed}, record: {type: fast, type_version: 1, target: bolt/atlas/plan-rows}}
-  renderings: [{id: r-0740, at: "2026-09-04T07:40:00Z", rows: [unit/atlas/u/unit-proposed], delivered: true}]
+  register: {unit/atlas/u/unit-proposed: 57, next: 58}
+  marks: {chat: "2026-09-04T07:40:00Z", page: "2026-09-04T07:40:00Z"}
   evidence: {unit.deps_merged: {"*": true}, item.deps_merged: {"*": true}, item.slot_free: {"*": true}, line.contains_parent: {"*": true}}
 when:
-  - word: {row: unit/atlas/u/unit-proposed, answer: "yes", id: discord/11001}
+  - response: {number: 57, answer: "yes", id: discord/11001}    # "yes 57" in chat; the same number on the page
   - tick: {}
   - tick: {}
   - evidence: {place.ready: {"*": true}, session.pane: {"*": present}, stage.agents: {"*": [builder]}}
@@ -26,5 +27,5 @@ when:
   - clock: {advance: 8h}
   - tick: {}
 then:
-  rows: [{after_step: 16, present: [bolt-close], count: 1, tail: [merged, merged]}]
-  control_plane: {words_after_yes: 0, tail_since: "2026-09-04T07:40:00Z"}
+  decisions: [{after_step: 16, present: [bolt-close], count: 1, tail: [merged, merged]}]
+  control_plane: {responses_after_yes: 0, tail_since: "2026-09-04T07:40:00Z", bolt_close_number_is_new: true, number_57_reused: false, renderings_stored: 0}

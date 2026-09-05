@@ -4,6 +4,7 @@
 machine: elaboration
 version: 1
 kind: object
+satisfies: [4, 5, 23, 26, 51]
 object: elaboration
 parent: intent
 record:
@@ -16,22 +17,25 @@ regions:
     initial: proposed
     states:
       proposed:
-        doc: a row of its own when the intent is open; folded into the intent's row when the intent is itself proposed
-        row: {kind: elaboration-proposed, group: approve, answers: ["yes", drop, "type <name>"], shows: [elaboration.type, sources]}
+        doc: a decision of its own when the intent is open; folded into the intent's decision when the intent is itself proposed
+        decision: {kind: elaboration-proposed, group: approve, document: document, answers: ["yes", drop, "type <name>"], shows: [elaboration.type, sources], satisfies: [10, 26, 55]}
         transitions:
           - when: {ev: elaboration.shown_with_parent, is: true}
             to: proposed
-            note: no row of its own; the intent's word carries it
-          - when: {word: "type <name>"}
+            note: no decision of its own; the intent's response carries it
+          - when: {response: "type <name>"}
             to: proposed
-            effects: [{do: set_type, args: {type: $word}}]
-          - when: {word: "yes"}
+            effects: [{do: set_type, args: {type: $response}}]
+          - when: {response: "yes"}
             to: approved
-          - when: {word: drop}
+          - when: {response: drop}
             to: dropped
       approved:
-        doc: approval given once is never re-asked (A.1.5); the record holds the type version in force
+        doc: approval given once is never re-asked (6); the record holds the type version in force
         transitions:
+          - when: {response: drop}
+            to: dropped
+            note: dictation (4)
           - when: {parent: {in: [open]}}
             to: placing
       placing:
@@ -51,12 +55,14 @@ regions:
         machine: $type
         params: {place: own-place, agent: by-type}
         transitions:
+          - when: {response: drop}
+            to: dropped
+            enter: {session: ended, place: removing}
+            note: dictation undoes the work (4); the session is retired and the place released unless held
           - when: {final: done}
             to: finishing
-          - when: {final: kept}
-            to: working
       finishing:
-        doc: a self-closing place merges into the intent's line and is removed; a standing place is kept until the operator finishes it, then merged the same way (A.5.47)
+        doc: a self-closing place merges into the intent's line and is removed; a standing place is kept until the operator finishes it, then merged the same way (51)
         enter: {place: merging}
         transitions:
           - when: {final: removed}

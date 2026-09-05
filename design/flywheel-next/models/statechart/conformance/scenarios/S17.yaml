@@ -1,10 +1,11 @@
 scenario: S17
 title: two hosts see the same approved unit at once and both try to take it; exactly one does; the other moves on
 profiles: [git-only]
-requirements: [C.2.146, C.2.147, I15, S17]
+satisfies: [159, 160]
+invariants: [I15]
 given:
   objects:
-    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, open.line: current, open.place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
+    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
     - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: approved}}
   hosts: [{name: mac-mini, bound: 3}, {name: studio, bound: 2}]
   evidence: {unit.deps_merged: {"*": true}}

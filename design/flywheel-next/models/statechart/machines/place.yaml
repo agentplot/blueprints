@@ -1,9 +1,13 @@
-# A worktree the machinery prepares for one session off one line (A.5.44).
+# A worktree the machinery prepares for one session off one line (46).
 # Template run inside a work item, an elaboration, a bolt (the operator's own
-# place), curation and planning. Rebased only while its session is idle (I16).
+# place), an operator session, curation and planning. Rebased only while its
+# session is idle and no operator is typing in it (I16). Removed by the
+# machinery when the work it served is merged, dropped or retired, unless the
+# operator holds it; every removal is a recorded effect (52).
 machine: place
-version: 1
+version: 2
 kind: template
+satisfies: [4, 41, 44, 45, 48, 49, 52]
 params:
   line: the line it is off
   inputs: the closed set of session inputs to write into it
@@ -11,6 +15,8 @@ params:
 record:
   head: revision
   conflict_retries: int
+  endpoints: list          # what the processes tethered to the place serve; shown on the page beside the bolt (45)
+  held_at: time            # set by the operator's dictation; the place is not removed while held (52)
 regions:
   life:
     initial: absent
@@ -29,14 +35,17 @@ regions:
             to: preparing
             effects: [{do: prepare_place, args: {line: $line, agent_inputs: $inputs}}]
       ready:
-        doc: current with its line and holding no working session
+        doc: current with its line and holding no working session; the endpoints its processes serve are recorded with it (45)
         transitions:
           - when: {not: {ev: place.contains_line, is: true}}
             to: behind
+          - when: {not: {ev: place.endpoints_recorded, is: true}}
+            to: ready
+            effects: [{do: record_endpoints, note: the page shows them beside the bolt; publishing beyond the private network is never the machinery's}]
       behind:
-        doc: a sibling merged; this place is rebased when its session is idle or absent
+        doc: a sibling merged; this place is rebased when its session is idle and no one is typing in it
         transitions:
-          - when: {ev: session.activity, is: working}
+          - when: {any: [{ev: session.activity, is: working}, {ev: session.operator_present, is: true}]}
             to: behind
           - when: {ev: place.contains_line, is: true}
             to: ready
@@ -59,12 +68,12 @@ regions:
           - when: {ev: place.conflict_retries, gte: 3}
             to: conflict-stalled
       conflict-stalled:
-        row: {kind: stalled, group: decide, answers: [retry, hold], shows: [place.conflict_retries]}
+        decision: {kind: stalled, group: decide, answers: [retry, hold], shows: [place.conflict_retries], satisfies: [49]}
         transitions:
-          - when: {word: retry}
+          - when: {response: retry}
             to: behind
       merging:
-        doc: entered by the owner when its work is done; one place merges at a time in the fixed order (A.5.34)
+        doc: entered by the owner when its work is done; one place merges at a time in the fixed order (37)
         transitions:
           - when: {ev: place.merged, is: true}
             to: merged
@@ -77,7 +86,21 @@ regions:
       merged:
         transitions:
           - when: {always: true}
+            to: removing
+      removing:
+        doc: entered from merged, or by the owner when the work the place served was dropped or retired, or when the bolt landed; the removal is an effect recorded like any other (52)
+        transitions:
+          - when: {ev: place.held, is: true}
+            to: held
+          - when: {ev: place.absent, is: true}
             to: removed
-            effects: [{do: remove_place}]
+          - when: {always: true}
+            to: removing
+            effects: [{do: remove_place, note: tethered processes end with the place}]
+      held:
+        doc: the operator holds the place by dictation; nothing removes it while held; released by dictation (52)
+        transitions:
+          - when: {not: {ev: place.held, is: true}}
+            to: removing
       removed:
         final: true

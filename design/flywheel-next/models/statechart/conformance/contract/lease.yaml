@@ -1,7 +1,8 @@
-scenario: B.1.115-lease
+scenario: B.1.125-lease
 title: two would-be holders of one object cannot both hold it; the loser reads again
 profiles: [all]
-requirements: [B.1.115, B.2.121, B.5.135, I11, I15]
+satisfies: [125, 131, 147]
+invariants: [I11, I15]
 machines: ./contract/lamp
 given:
   objects: [{id: lamp/1, machine: lamp, state: {power: "off"}}]

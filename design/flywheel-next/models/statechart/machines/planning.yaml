@@ -1,12 +1,13 @@
 # Planning: one machine per built repository (section 10). Due when the
 # repository's backlog fingerprint differs from the one last planned against:
 # a claim in scope became standing, a verdict was recorded or fell stale, an
-# ask named the repository, or a unit came back with notes (A.5.25). It sees
+# ask named the repository, or a unit came back with notes (27). It sees
 # every open bolt of the repository because the fingerprint and the work order
 # both include them.
 machine: planning
 version: 1
 kind: object
+satisfies: [4, 27, 28, 61, 95, 99, 101]
 object: planning
 singleton: repository
 record:
@@ -47,6 +48,10 @@ regions:
             to: failed
           - when: {final: lost}
             to: failed
+          - when: {response: retire}
+            to: failed
+            enter: {session: ended, place: removing}
+            note: dictation retires the session (4); the run is due again on the next tick
       applying:
         doc: verdicts to the ledger, units to the plan, the fingerprint recorded, all in one write
         entry:

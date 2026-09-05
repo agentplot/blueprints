@@ -1,8 +1,9 @@
-# One raw piece of input (A.15.100). Immutable once written; exactly one
-# standing move, replaced only by the operator's word (A.15.94).
+# One raw piece of input (110). Immutable once written; exactly one
+# standing move, replaced only by the operator's response (104).
 machine: signal
 version: 1
 kind: object
+satisfies: [103, 104, 110, 111, 113, 115]
 object: signal
 parent: capture
 record:
@@ -19,7 +20,7 @@ regions:
     initial: unmoved
     states:
       unmoved:
-        doc: counted and aged by source on the status view; never discarded (A.15.105)
+        doc: counted and aged by source on the status view; never discarded (115)
         transitions:
           - {when: {ev: signal.move, is: attach}, to: attached}
           - {when: {ev: signal.move, is: challenge}, to: challenging}

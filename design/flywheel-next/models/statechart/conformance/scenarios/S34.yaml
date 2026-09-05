@@ -1,10 +1,10 @@
 scenario: S34
 title: research exits done and its place merges into the intent's line and is removed; the standing prototype's place is rebased and kept; the archive lands the line; two claims stand
 profiles: [all]
-requirements: [A.5.47, A.5.42, A.14.85, S34]
+satisfies: [46, 51, 95]
 given:
   objects:
-    - {id: intent/i, machine: intent, state: {life: open, open.line: current, open.material: settled, open.close: not-offered}}
+    - {id: intent/i, machine: intent, state: {life: open, line: current, open.material: settled, open.close: not-offered}}
     - {id: elaboration/i/research, machine: elaboration, parent: intent/i, state: {life: working, working.work: session, session.life: alive, alive.activity: working, placing.place: ready}, record: {type: self-closing, type_version: 1}}
     - {id: elaboration/i/prototype, machine: elaboration, parent: intent/i, state: {life: working, working.work: session, session.life: alive, alive.activity: idle, placing.place: ready}, record: {type: standing, type_version: 1, kept_at: now}}
     - {id: claim/c1, machine: claim, state: {standing: proposed}}
@@ -21,13 +21,13 @@ when:
   - tick: {}
   - evidence: {place.contains_line: {elaboration/i/prototype: true}}
   - tick: {}
-  - word: {row: elaboration/i/prototype/idle, answer: finish, id: discord/13001}
+  - response: {decision: elaboration/i/prototype/idle, answer: finish, id: discord/13001}
   - tick: {}
   - evidence: {session.pane_absent: {"*": true}, place.merged: {"*": true}, place.absent: {"*": true}}
   - tick: {}
   - tick: {}
   - tick: {}
-  - word: {row: intent/i/intent-close, answer: close, id: discord/13002}
+  - response: {decision: intent/i/intent-close, answer: close, id: discord/13002}
   - tick: {}
   - evidence: {intent.archived: {"*": true}, line.landed: {"*": true}, line.absent: {"*": true}, claim.on_shared_line: {"*": true}}
   - tick: {}
@@ -38,7 +38,7 @@ then:
     - {object: elaboration/i/research, from: finishing, to: done}
     - {object: elaboration/i/prototype, from: ready, to: behind}
     - {object: elaboration/i/prototype, from: behind, to: ready}
-    - {object: intent/i, from: open, to: archiving, word: discord/13002}
+    - {object: intent/i, from: open, to: archiving, response: discord/13002}
     - {object: intent/i, from: archiving, to: closed}
     - {object: claim/c1, from: proposed, to: standing}
     - {object: claim/c2, from: proposed, to: standing}

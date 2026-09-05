@@ -1,9 +1,10 @@
-# One source event as recorded (A.15.98). Captured by an adapter unattended;
-# read into signals by a session's judgment (A.15.102), except a forwarded
+# One source event as recorded (108). Captured by an adapter unattended;
+# read into signals by a session's judgment (112), except a forwarded
 # single message, which is its own excerpt and needs no judgment (S21).
 machine: capture
 version: 1
 kind: object
+satisfies: [4, 103, 108, 109, 111, 112]
 object: capture
 parent: null
 owns: [signal]
@@ -23,7 +24,7 @@ regions:
             to: read
           - when: {ev: capture.source, is: forwarded-message}
             to: captured
-            effects: [{do: ensure_signal, note: "one message, one signal, the kind the operator's word gave or ask"}]
+            effects: [{do: ensure_signal, note: "one message, one signal, the kind the operator's response gave or ask"}]
           - when: {always: true}
             to: reading
       reading:
@@ -47,5 +48,9 @@ regions:
           - when: {any: [{final: lost}, {all: [{final: exited}, {ev: session.exit, in: [stalled, invalid]}]}]}
             to: captured
             effects: [{do: report, args: {text: capture reader did not deliver}}]
+          - when: {response: retire}
+            to: captured
+            enter: {session: ended, place: removing}
+            note: dictation retires the reader (4)
       read:
         final: true

@@ -1,7 +1,7 @@
 scenario: S24
 title: the operator revives a dropped signal by dictation; its move is replaced and the next run clusters it
 profiles: [all]
-requirements: [A.15.94, A.2.11, S24]
+satisfies: [12, 104]
 given:
   objects:
     - {id: "signal/s3", machine: signal, state: {move: dropped}}
@@ -14,4 +14,4 @@ when:
   - tick: {}
 then:
   transitions: [{object: "signal/s3", from: dropped, to: unmoved}, {object: curation/willdan, from: idle, to: running}]
-  control_plane: {dictation_bypassed_plan: true, rows_created_by_dictation: 0}
+  control_plane: {dictation_bypassed_plan: true, decisions_created_by_dictation: 0}

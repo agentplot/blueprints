@@ -21,7 +21,7 @@
   <g id="bolt"><polygon points="-2.5,-11 5,-11 0.5,-2.5 6,-2.5 -4.5,11 -1,0.5 -6,0.5" fill="currentColor"/></g>
 </defs>
 <rect width="1680" height="1000" fill="#fff"/>
-<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Engine — one tick for every object: list, lease, read, guard, effect, write; rows are derived, never stored; a word applies once</text>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Engine — one tick for every object: list, lease, read, guard, effect, write; decisions are derived, never stored; a response applies once</text>
 <text x="40" y="57" font-size="12" fill="#666">the engine holds nothing between ticks · a notify only shortens the wait · the same tick runs unchanged on either profile because every name it reads is bound in the profile, not in the engine</text>
 
 <!-- zone: host -->
@@ -56,7 +56,7 @@
 <use href="#row" x="640" y="340" color="#c9962e"/>
 <circle cx="700" cy="340" r="10" fill="#f1f1ee" stroke="#8a8a86"/><text x="700" y="344" font-size="9" font-weight="700" fill="#5f6b7a" text-anchor="middle">6</text>
 <text x="640" y="366" font-size="9.5" fill="#666" text-anchor="middle">write</text>
-<text x="640" y="379" font-size="8.5" fill="#999" text-anchor="middle">state · applied_words · effect id · atomic</text>
+<text x="640" y="379" font-size="8.5" fill="#999" text-anchor="middle">state · applied_responses · effect id · atomic</text>
 <use href="#bolt" x="100" y="290" color="#8a8a86"/>
 <text x="100" y="316" font-size="9.5" fill="#666" text-anchor="middle">notify</text>
 <text x="100" y="329" font-size="8.5" fill="#999" text-anchor="middle">webhook · pane · chat</text>
@@ -71,7 +71,7 @@
 <text x="846" y="102" font-size="12" font-weight="700" fill="#5f6b7a">CONTROL PLANE · two bindings, one engine</text>
 <rect x="850" y="120" width="370" height="130" rx="9" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
 <text x="864" y="144" font-size="11" font-weight="700" fill="#333">tracker profile · GitHub</text>
-<text x="864" y="164" font-size="9.5" font-family="monospace" fill="#666">body = record · comments = thread, words</text>
+<text x="864" y="164" font-size="9.5" font-family="monospace" fill="#666">body = record · comments = thread, responses</text>
 <text x="864" y="184" font-size="9.5" font-family="monospace" fill="#666">lease = lowest lease comment · board</text>
 <text x="864" y="204" font-size="9" fill="#3f6d9c" font-weight="700">webhooks · 30s poll · octocrab</text>
 <text x="864" y="224" font-size="8.5" fill="#999">single writer by ordered append</text>
@@ -104,36 +104,36 @@
 <line x1="150" y1="500" x2="1380" y2="500" stroke="#c9962e" stroke-width="2" opacity="0.35"/>
 <use href="#marker" x="200" y="500" color="#c9962e" data-state="plan.current"/>
 <text x="200" y="526" font-size="9.5" fill="#666" text-anchor="middle">current</text>
-<text x="200" y="539" font-size="8.5" fill="#999" text-anchor="middle">active row states · folded · numbered</text>
-<use href="#rows" x="460" y="500" color="#c9962e" data-state="plan.rendering"/>
-<text x="460" y="526" font-size="9.5" fill="#666" text-anchor="middle">rendering</text>
-<text x="460" y="539" font-size="8.5" fill="#999" text-anchor="middle">record_rendering · render_status · tail</text>
-<rect x="545" y="491" width="180" height="18" rx="9" fill="#c9962e"/><text x="635" y="504" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">r-2026-09-04T07:40 · 10 rows</text>
-<use href="#marker" x="820" y="500" color="#c9962e" data-state="plan.delivering"/>
-<text x="820" y="526" font-size="9.5" fill="#666" text-anchor="middle">delivering</text>
-<text x="820" y="539" font-size="8.5" fill="#999" text-anchor="middle">Discord message · buttons · page link</text>
+<text x="200" y="539" font-size="8.5" fill="#999" text-anchor="middle">active decision states · folded · register</text>
+<use href="#rows" x="460" y="500" color="#c9962e" data-state="plan.numbering"/>
+<text x="460" y="526" font-size="9.5" fill="#666" text-anchor="middle">numbering</text>
+<text x="460" y="539" font-size="8.5" fill="#999" text-anchor="middle">number_decisions · once · never reused</text>
+<rect x="545" y="491" width="180" height="18" rx="9" fill="#c9962e"/><text x="635" y="504" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">#412 … #421 · 10 decisions</text>
+<use href="#marker" x="820" y="500" color="#c9962e" data-state="sink.delivering"/>
+<text x="820" y="526" font-size="9.5" fill="#666" text-anchor="middle">sink delivering</text>
+<text x="820" y="539" font-size="8.5" fill="#999" text-anchor="middle">chat · page · bell · the mark advances</text>
 <use href="#person" x="1040" y="500" color="#8a8a86"/>
 <text x="1040" y="526" font-size="9.5" fill="#666" text-anchor="middle">operator</text>
-<text x="1040" y="539" font-size="8.5" fill="#999" text-anchor="middle">yes 2 · from the phone</text>
+<text x="1040" y="539" font-size="8.5" fill="#999" text-anchor="middle">yes 413 · from the phone</text>
 <use href="#browser" x="1220" y="500" color="#8a8a86"/>
 <text x="1220" y="526" font-size="9.5" fill="#666" text-anchor="middle">plan page</text>
-<text x="1220" y="539" font-size="8.5" fill="#999" text-anchor="middle">axum · Tailscale · the unit document</text>
+<text x="1220" y="539" font-size="8.5" fill="#999" text-anchor="middle">axum · Tailscale · plannotator for documents</text>
 
-<!-- lane: word -->
-<text x="38" y="624" font-size="11.5" font-weight="700" fill="#c9962e">word</text>
+<!-- lane: response -->
+<text x="38" y="624" font-size="11.5" font-weight="700" fill="#c9962e">response</text>
 <line x1="150" y1="620" x2="1380" y2="620" stroke="#c9962e" stroke-width="2" opacity="0.35"/>
-<use href="#marker" x="200" y="620" color="#c9962e" data-state="word.given"/>
+<use href="#marker" x="200" y="620" color="#c9962e" data-state="response.given"/>
 <text x="200" y="646" font-size="9.5" fill="#666" text-anchor="middle">given</text>
 <text x="200" y="659" font-size="8.5" fill="#999" text-anchor="middle">id = delivery id · recorded first · ✅</text>
-<rect x="330" y="611" width="190" height="18" rx="9" fill="#c9962e"/><text x="425" y="624" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">discord/1421330001234 → row 2</text>
-<use href="#check" x="640" y="620" data-state="word.applied"/>
+<rect x="330" y="611" width="190" height="18" rx="9" fill="#c9962e"/><text x="425" y="624" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">discord/1421330001234 → #413</text>
+<use href="#check" x="640" y="620" data-state="response.applied"/>
 <text x="640" y="646" font-size="9.5" fill="#666" text-anchor="middle">applied</text>
-<text x="640" y="659" font-size="8.5" fill="#999" text-anchor="middle">in applied_words · twice is once</text>
-<use href="#pause" x="900" y="620" data-state="word.unapplicable"/>
-<rect x="838" y="571" width="124" height="18" rx="9" fill="#c9962e"/><text x="900" y="584" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="word-unapplicable">word-unapplicable</text>
+<text x="640" y="659" font-size="8.5" fill="#999" text-anchor="middle">in applied_responses · twice is once</text>
+<use href="#pause" x="900" y="620" data-state="response.unapplicable"/>
+<rect x="827" y="571" width="146" height="18" rx="9" fill="#c9962e"/><text x="900" y="584" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-decision="response-unapplicable">response-unapplicable</text>
 <text x="900" y="646" font-size="9.5" fill="#666" text-anchor="middle">unapplicable</text>
-<text x="900" y="659" font-size="8.5" fill="#999" text-anchor="middle">row gone · attention once · not dropped</text>
-<use href="#marker" x="1120" y="620" color="#c9962e" data-state="word.reported"/>
+<text x="900" y="659" font-size="8.5" fill="#999" text-anchor="middle">decision gone · attention once · not dropped</text>
+<use href="#marker" x="1120" y="620" color="#c9962e" data-state="response.reported"/>
 <text x="1120" y="646" font-size="9.5" fill="#666" text-anchor="middle">reported</text>
 
 <!-- lane: host -->
@@ -141,12 +141,12 @@
 <line x1="150" y1="740" x2="1380" y2="740" stroke="#8a8a86" stroke-width="2" opacity="0.35"/>
 <use href="#check" x="200" y="740" data-state="host.alive"/>
 <text x="200" y="766" font-size="9.5" fill="#666" text-anchor="middle">alive</text>
-<text x="200" y="779" font-size="8.5" fill="#999" text-anchor="middle">heartbeat each minute</text>
+<text x="200" y="779" font-size="8.5" fill="#999" text-anchor="middle">heartbeat each minute · strays removed</text>
 <use href="#clock" x="420" y="740" data-state="host.stale"/>
 <text x="420" y="766" font-size="9.5" fill="#666" text-anchor="middle">stale 5m</text>
 <text x="420" y="779" font-size="8.5" fill="#999" text-anchor="middle">status view shows it · objects untouched</text>
 <use href="#pause" x="680" y="740" data-state="host.gone"/>
-<rect x="645" y="691" width="70" height="18" rx="9" fill="#c9962e"/><text x="680" y="704" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="host-gone">host-gone</text>
+<rect x="645" y="691" width="70" height="18" rx="9" fill="#c9962e"/><text x="680" y="704" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-decision="host-gone">host-gone</text>
 <text x="680" y="766" font-size="9.5" fill="#666" text-anchor="middle">gone 30m</text>
 <text x="680" y="779" font-size="8.5" fill="#999" text-anchor="middle">takeover / wait · 24h expires by rule</text>
 <use href="#marker" x="940" y="740" color="#8a8a86" data-state="host.released"/>
@@ -158,6 +158,7 @@
 <line x1="150" y1="840" x2="1380" y2="840" stroke="#8a8a86" stroke-width="2" opacity="0.35"/>
 <use href="#marker" x="200" y="840" color="#8a8a86" data-state="lease.free"/>
 <text x="200" y="866" font-size="9.5" fill="#666" text-anchor="middle">free</text>
+<text x="200" y="879" font-size="8.5" fill="#999" text-anchor="middle">taken only within the declaration</text>
 <use href="#key" x="420" y="840" color="#8a8a86" data-state="lease.held"/>
 <text x="420" y="866" font-size="9.5" fill="#666" text-anchor="middle">held</text>
 <text x="420" y="879" font-size="8.5" fill="#999" text-anchor="middle">compare-and-swap · renewed each tick</text>
@@ -170,7 +171,7 @@
 
 <!-- legend -->
 <rect x="40" y="910" width="1600" height="70" rx="10" fill="#fafafa" stroke="#e5e5e5"/>
-<use href="#pause" x="70" y="940"/><text x="88" y="944" font-size="10" fill="#333">a row</text>
+<use href="#pause" x="70" y="940"/><text x="88" y="944" font-size="10" fill="#333">a decision</text>
 <use href="#gear" x="160" y="940" color="#c9962e"/><text x="180" y="944" font-size="10" fill="#333">effect</text>
 <use href="#key" x="250" y="940" color="#8a8a86"/><text x="266" y="944" font-size="10" fill="#333">lease</text>
 <use href="#cyl" x="340" y="942"/><text x="374" y="944" font-size="10" fill="#333">evidence</text>

@@ -18,7 +18,7 @@
   <g id="lock" stroke="#c05b5b" stroke-width="1.8" fill="none"><rect x="-6" y="-2" width="12" height="10" rx="2" fill="#fbeaea"/><path d="M -4 -2 v-4 a 4 4 0 0 1 8 0 v4"/></g>
 </defs>
 <rect width="1680" height="1000" fill="#fff"/>
-<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Backlog — curation turns signals into intents, judgment turns claims into verdicts, and a stale cell cannot fail to become a row</text>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Backlog — curation turns signals into intents, judgment turns claims into verdicts, and a stale cell cannot fail to become a decision</text>
 <text x="40" y="57" font-size="12" fill="#666">capture → signal → move → intent · claim → cell → verdict → fingerprint → planning → unit · the ledger is written only from a session's exit and read by the cell and the fingerprint</text>
 
 <!-- lane: capture -->
@@ -57,7 +57,7 @@
 <text x="1020" y="309" font-size="8.5" fill="#999" text-anchor="middle">names what settled it</text>
 <use href="#cross" x="1200" y="270" data-state="signal.dropped"/>
 <text x="1200" y="296" font-size="9.5" fill="#666" text-anchor="middle">dropped</text>
-<text x="1200" y="309" font-size="8.5" fill="#999" text-anchor="middle">with a reason · revived only by the word</text>
+<text x="1200" y="309" font-size="8.5" fill="#999" text-anchor="middle">with a reason · revived only by dictation</text>
 
 <!-- lane: curation -->
 <text x="38" y="404" font-size="11.5" font-weight="700" fill="#2e9e5b">curation</text>
@@ -73,9 +73,9 @@
 <text x="760" y="439" font-size="8.5" fill="#999" text-anchor="middle">record_moves · propose_intents · never open_intent</text>
 <path d="M 774 396 C 900 370, 1050 370, 1188 396" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
 <use href="#pause" x="1200" y="400" data-state="intent.proposed"/>
-<rect x="1150" y="351" width="100" height="18" rx="9" fill="#c9962e"/><text x="1200" y="364" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="intent-proposed">intent-proposed</text>
+<rect x="1150" y="351" width="100" height="18" rx="9" fill="#c9962e"/><text x="1200" y="364" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-decision="intent-proposed">intent-proposed</text>
 <text x="1200" y="426" font-size="9.5" fill="#666" text-anchor="middle">intent proposed</text>
-<text x="1200" y="439" font-size="8.5" fill="#999" text-anchor="middle">one row per intent · weight by event date · yes / drop / split</text>
+<text x="1200" y="439" font-size="8.5" fill="#999" text-anchor="middle">one decision per intent · weight by event date · yes / drop / split</text>
 
 <!-- lane: claim -->
 <text x="38" y="534" font-size="11.5" font-weight="700" fill="#7b5cb8">claim</text>
@@ -125,9 +125,9 @@
 <text x="900" y="829" font-size="8.5" fill="#999" text-anchor="middle">record_verdict · propose_units · record_fingerprint</text>
 <path d="M 914 786 C 1000 760, 1100 760, 1188 786" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
 <use href="#pause" x="1200" y="790" data-state="unit.proposed"/>
-<rect x="1150" y="741" width="100" height="18" rx="9" fill="#c9962e"/><text x="1200" y="754" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-row="unit-proposed">unit-proposed</text>
+<rect x="1150" y="741" width="100" height="18" rx="9" fill="#c9962e"/><text x="1200" y="754" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-decision="unit-proposed">unit-proposed</text>
 <text x="1200" y="816" font-size="9.5" fill="#666" text-anchor="middle">unit proposed</text>
-<text x="1200" y="829" font-size="8.5" fill="#999" text-anchor="middle">target: an open bolt or a new name · a baseline folds into one row</text>
+<text x="1200" y="829" font-size="8.5" fill="#999" text-anchor="middle">target: an open bolt or a new name · a baseline folds into one decision</text>
 
 <!-- ledger store and its edges -->
 <use href="#cyl" x="1530" y="660"/>
@@ -156,7 +156,7 @@
 <rect x="40" y="880" width="1600" height="90" rx="10" fill="#fafafa" stroke="#e5e5e5"/>
 <use href="#row" x="70" y="910" color="#8a8a86"/><text x="88" y="914" font-size="10" fill="#333">a record</text>
 <use href="#gear" x="170" y="910" color="#2e9e5b"/><text x="190" y="914" font-size="10" fill="#333">a session judges</text>
-<use href="#pause" x="310" y="910"/><text x="328" y="914" font-size="10" fill="#333">a row</text>
+<use href="#pause" x="310" y="910"/><text x="328" y="914" font-size="10" fill="#333">a decision</text>
 <use href="#cross" x="400" y="910"/><text x="418" y="914" font-size="10" fill="#333">stale · dropped</text>
 <use href="#lock" x="530" y="906"/><text x="546" y="914" font-size="10" fill="#333">standing claim</text>
 <use href="#cyl" x="670" y="912"/><text x="704" y="914" font-size="10" fill="#333">ledger</text>
@@ -164,6 +164,6 @@
 <rect x="850" y="901" width="60" height="18" rx="9" fill="#c05b5b"/><text x="880" y="914" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">verdict</text>
 <line x1="940" y1="910" x2="980" y2="910" stroke="#c05b5b" stroke-width="2.2"/><text x="988" y="914" font-size="10" fill="#333">ledger written</text>
 <line x1="1090" y1="910" x2="1130" y2="910" stroke="#c05b5b" stroke-width="2" stroke-dasharray="2 5"/><text x="1138" y="914" font-size="10" fill="#333">ledger read</text>
-<line x1="1230" y1="910" x2="1270" y2="910" stroke="#c9962e" stroke-width="2.2"/><text x="1278" y="914" font-size="10" fill="#333">a row is created</text>
-<text x="70" y="950" font-size="10.5" fill="#333">the machinery never reads a signal's content and never computes a verdict · stale is a state read every tick, the fingerprint moves, planning runs, the unit row stands</text>
+<line x1="1230" y1="910" x2="1270" y2="910" stroke="#c9962e" stroke-width="2.2"/><text x="1278" y="914" font-size="10" fill="#333">a decision is created</text>
+<text x="70" y="950" font-size="10.5" fill="#333">the machinery never reads a signal's content and never computes a verdict · stale is a state read every tick, the fingerprint moves, planning runs, the unit decision stands</text>
 </svg>

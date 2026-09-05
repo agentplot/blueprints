@@ -3,6 +3,7 @@
 machine: default
 version: 3
 kind: template
+satisfies: [36, 40, 96, 117]
 doc: unit type
 params:
   place: the item's place

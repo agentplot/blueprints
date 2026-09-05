@@ -1,7 +1,8 @@
-scenario: B.2.121-single-writer
+scenario: B.2.131-single-writer
 title: two writers of one object cannot both succeed; the loser learns it lost and reads again
 profiles: [all]
-requirements: [B.2.121, C.2.146, I15, S17]
+satisfies: [131, 159]
+invariants: [I15]
 machines: ./contract/lamp
 given:
   objects: [{id: lamp/1, machine: lamp, state: {power: "off"}}]

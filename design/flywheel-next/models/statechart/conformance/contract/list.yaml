@@ -1,7 +1,8 @@
-scenario: B.1.118-list
+scenario: B.1.128-list
 title: an engine that remembers nothing finds everything it must act on
 profiles: [all]
-requirements: [B.1.118, B.2.123, A.8.64, I7]
+satisfies: [72, 128, 133]
+invariants: [I7]
 machines: ./contract/lamp
 given:
   objects:
@@ -17,5 +18,5 @@ when:
 then:
   transitions: [{object: lamp/1, from: "off", to: "on"}, {object: lamp/2, from: "on", to: "off"}]
   effects: [{do: light, count: 1}, {do: dark, count: 1}]
-  rows: [{after_step: 4, present: [lamp-off, lamp-off], count: 2}]
+  decisions: [{after_step: 4, present: [lamp-off, lamp-off], count: 2}]
   control_plane: {list_returned: [lamp/1, lamp/2, lamp/3], second_tick_writes: 0}

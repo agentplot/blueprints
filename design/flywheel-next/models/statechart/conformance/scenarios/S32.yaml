@@ -1,10 +1,11 @@
 scenario: S32
 title: two units build side by side; the first merges; the second's place is untouched while working, rebased when idle, told what moved; one conflict resolved in place; the merge retries and lands
 profiles: [all]
-requirements: [A.5.44, A.5.45, I16, S32]
+satisfies: [48, 49]
+invariants: [I16]
 given:
   objects:
-    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, open.line: current, open.place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
+    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
     - {id: unit/atlas/a, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: fast, type_version: 1}}
     - {id: unit/atlas/b, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: fast, type_version: 1}}
     - {id: work-item/atlas/a/1, machine: work-item, parent: unit/atlas/a, state: {life: merging, merging.place: merging}, record: {ordinal: 1}}

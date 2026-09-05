@@ -1,9 +1,10 @@
-# The chore type (A.6.52): one stage, one session scoped to the line the fix
+# The chore type (57): one stage, one session scoped to the line the fix
 # belongs on, no change directory, never a bolt of its own. The one session
-# gathers every accepted chore of the same bolt (A.6.55).
+# gathers every accepted chore of the same bolt (60).
 machine: chore
 version: 1
 kind: template
+satisfies: [57, 58, 60, 88, 120]
 doc: unit type
 params:
   place: the item's place

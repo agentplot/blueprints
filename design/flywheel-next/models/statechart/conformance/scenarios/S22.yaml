@@ -1,7 +1,7 @@
 scenario: S22
 title: the same transcript imported on two days yields one capture with its signals read once
 profiles: [all]
-requirements: [A.15.98, S22]
+satisfies: [108]
 given:
   objects: [{id: capture/meeting-2026-09-02-willdan-weekly, machine: capture, state: {reading: read}, record: {event_key: meeting/2026-09-02/willdan-weekly}}]
   evidence: {capture.signals_present: {"*": true}}

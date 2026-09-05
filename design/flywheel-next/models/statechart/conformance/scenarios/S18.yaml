@@ -1,10 +1,10 @@
 scenario: S18
 title: a host's network drops for an hour; it finishes what it owned and commits locally; on reconnect its commits land and nothing of others is lost
 profiles: [git-only]
-requirements: [B.5.136, C.2.149, S18]
+satisfies: [148, 162]
 given:
   objects:
-    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, open.line: current, open.place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
+    - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
     - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 3}}
     - {id: work-item/atlas/wi-418, machine: work-item, parent: unit/atlas/status-writer, state: {life: in-type, in-type.stages: build, build.run: sessions, session.life: alive, alive.activity: working}}
     - {id: unit/atlas/retry-jitter, machine: unit, parent: bolt/atlas/plan-rows, state: {life: approved}}

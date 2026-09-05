@@ -1,7 +1,7 @@
-scenario: B.1.119-status
+scenario: B.1.129-status
 title: the status view is served from the same state the engine reads and is readable with no machinery running
 profiles: [all]
-requirements: [B.1.119, B.4.128, B.4.129, B.4.132, S12, S20]
+satisfies: [129, 138, 139, 142]
 machines: ./contract/lamp
 given:
   objects: [{id: lamp/1, machine: lamp, state: {power: "off"}}, {id: lamp/2, machine: lamp, state: {power: "on"}}]

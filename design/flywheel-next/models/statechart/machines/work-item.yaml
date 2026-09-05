@@ -1,10 +1,11 @@
 # One task of a unit, worked through the type's stages by sessions and merged
-# into the bolt when complete (A.5.37, A.5.34). The stage list comes from the
+# into the bolt when complete (40, 37). The stage list comes from the
 # unit's type at the version the unit recorded; a type change never moves an
-# item in flight (A.5.49).
+# item in flight (54).
 machine: work-item
 version: 1
 kind: object
+satisfies: [4, 31, 37, 40, 42, 54, 71]
 object: work-item
 parent: unit
 record:
@@ -20,6 +21,8 @@ regions:
     states:
       waiting:
         transitions:
+          - when: {parent: {in: [retired, dropped]}}
+            to: dropped
           - when: {ev: item.deps_merged, is: true}
             to: ready
       ready:
@@ -43,19 +46,31 @@ regions:
         machine: $unit.type@$unit.type_version
         params: {place: own-place}
         transitions:
+          - when: {parent: {in: [retired, dropped]}}
+            to: dropped
+            enter: {session: ended, place: removing}
+            note: the unit was dropped or the bolt retired; the session is retired with the work and its place released (71)
+          - when: {response: retire}
+            to: ready
+            enter: {session: ended, place: removing}
+            note: dictation retires the session (4); the item starts a fresh attempt in a fresh place; a pane killed by hand is read as a session gone, never as a response
           - when: {final: passed}
             to: merging
             enter: {place: merging}
           - when: {final: stopped}
             to: stopped
       stopped:
-        doc: the retry bound was reached; the item waits on the operator (A.5.37)
-        row: {kind: stalled, group: decide, answers: [retry, drop], shows: [item.send_backs, stage]}
+        doc: the retry bound was reached; the item waits on the operator (40)
+        decision: {kind: stalled, group: decide, answers: [retry, drop], shows: [item.send_backs, stage], satisfies: [40]}
         transitions:
-          - when: {word: retry}
+          - when: {response: retry}
             to: in-type
-          - when: {word: drop}
+          - when: {response: drop}
             to: dropped
+            enter: {session: ended, place: removing}
+          - when: {parent: {in: [retired, dropped]}}
+            to: dropped
+            enter: {session: ended, place: removing}
       merging:
         doc: one merge at a time in the fixed order; a rebase that conflicts is the session's job in its place (S32)
         transitions:
