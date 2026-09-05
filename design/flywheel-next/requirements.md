@@ -622,9 +622,10 @@ requirements, iterated against the running plan rather than on paper.
     corrected by the operator's response. A claim about a contract between
     two repositories is in scope for both, and each carries its own
     verdict.
-195. A repository's kinds and the capabilities it declares are stated in
-    the manifest beside the repository (section 9), and a claim's scope
-    names kinds, capabilities, repositories, or all (105). Adding a
+195. A repository's kinds and the capabilities it declares are stated on
+    the repository's node in the context map (198), which the manifest
+    entry names, and a claim's scope names kinds, capabilities,
+    repositories, or all (105). Adding a
     kind or a capability to a repository brings every claim scoped to
     it into that repository's scope, so planning becomes due (28) and
     its next proposal carries the newly unmet claims; removing one

@@ -392,9 +392,7 @@ the operator may reverse by a response on the file; an entry with
   is rendered from the attachment and sits outside the lock hash, the
   manifest's repository entry keeps only git details, and `flywheel map
   check` ties the manifest list and the repository nodes together.
-  **Decision**; 195's wording "stated in the manifest beside the
-  repository" now reads as "on the node the manifest entry names", and
-  195 should be amended to say so. The map schema
+  **Decision**. The map schema
   (`flywheel/schemas/context-map.md`: node kinds repository and system,
   node properties, edge relations, attachment rules) is sketched in
   `profiles/books.yaml` and written nowhere else. **Open**. Existing
