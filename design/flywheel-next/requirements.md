@@ -150,6 +150,14 @@ redefine these.
 - **effect** — one act on the world the engine performs on a
   transition, named by a machine definition, carried out through the
   control plane, written idempotently, and safe to repeat.
+- **tool** — one operation of the control plane the operator may
+  invoke, with a schema naming its arguments by object id: the one way
+  anything — a page control, a chat, the dispatch agent, the machinery
+  — moves an object. A dictation is a tool the operator invoked.
+- **interpreter** — what turns the operator's free text into exactly
+  one proposed tool call for the operator to confirm: the dispatch
+  agent for chat, a model in the page's browser, or nothing at all when
+  the operator used a control. The machinery never parses free text.
 
 ## 4. Requirements — Part A, the data plane
 
@@ -226,11 +234,11 @@ model.
 18. A chat rendering of the plan carries the same decisions and numbers as the
     page, one line each, and a link to the page.
 19. The page is also a capture surface. Text the operator types there is
-    a capture with one signal of kind ask, so curation sees it; text
-    with a prefix is a dictation — `intent: …` opens an intent,
-    `chore <repository>: …` proposes a chore, `bolt <name>: …` proposes
-    a unit on that bolt — and the page submission is the delivery, so it
-    is recorded once like any response.
+    a capture with one signal of kind ask, so curation sees it. The
+    operator may mark a capture as an intent, which is a judgment made
+    with a control, never a word parsed out of the text. The page
+    submission is the delivery, so it is recorded once like any
+    response.
 
 The catalogue of decisions, the reply grammar and the counting rules are
 mocked in `design/flywheel-next/plan-mockup.md`: one rendering of these
@@ -826,8 +834,9 @@ requirements, iterated against the running plan rather than on paper.
     once; each covered intent's elaboration is finished by the one
     session's exit.
 189. The operator may open an elaboration over several intents by
-    dictation, naming them, as a with-operator or standing session (25).
-    Its writeback is per covered intent (188). An intent covered by a
+    selecting them and invoking the operation (193), as a with-operator
+    or standing session (25). Its writeback is per covered intent
+    (188). An intent covered by a
     gathered elaboration carries no other elaboration awaiting approval
     meanwhile (21).
 
@@ -901,6 +910,13 @@ through these operations, and depends only on these guarantees.
 132. **Serve the status view.** The status view is served from the same
     state the engine reads, and is readable with no machinery running
     anywhere.
+193. Every operation the operator may invoke — capture, mark as intent,
+    answer a decision, drop, later, hold, rename, start or stop a
+    service, finish a session, explore over intents, and every other
+    transition 4 grants — is exposed by the control plane as a tool
+    with a schema naming its arguments by object id. The page's
+    controls, the chat, the dispatch agent and the machinery all call
+    the same tools; no caller has an operation the others lack.
 
 ### B.2 The guarantees
 
@@ -995,6 +1011,17 @@ through these operations, and depends only on these guarantees.
     offers rich rendering and built-in controls for answering, the
     profile uses them as the platform provides them. Nothing is
     invented, and the short reply grammar always works beside them.
+194. Free text from the operator, typed on the page or sent in chat, is
+    never parsed by the machinery. An interpreter — the organization's
+    dispatch agent for chat, a model running in the page's browser, or
+    none at all when the operator used a control — resolves names
+    against the live objects and proposes exactly one tool call, which
+    is shown to the operator as what will be sent; the operator's
+    confirmation is the response and is recorded once (153). A name
+    that resolves to nothing is asked about, never guessed. The
+    numbered reply grammar (`yes 412`, `421: <text>`) stays as the
+    deterministic path, because a decision number is unambiguous, and
+    is itself one of the tools: answer a decision.
 
 ## 6. Requirements — Part C, profiles
 

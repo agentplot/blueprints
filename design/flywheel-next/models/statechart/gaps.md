@@ -333,12 +333,24 @@ the operator may reverse by a response on the file; an entry with
   material there waits for the gathering to end rather than joining a
   session already running (21, 189). **Decision**.
 
-- **189 the explore dictation.** `explore <intents...>` writes an
-  elaboration record in `approved` with `covers` = the intents named,
-  parent = the first, type `with-operator` unless `standing` closes the
-  list, sources = the dictation id. Every intent named must be open;
-  one that is not is refused with the reason, like any dictation that
-  cannot be applied (6). **Decision**.
+- **189 the explore tool.** `explore` with arguments {intents, type}
+  writes an elaboration record in `approved` with `covers` = the
+  selected intents, parent = the first, type from the argument
+  (default `with-operator`), sources = the response id. Every intent
+  selected must be open; one that is not is refused with the reason,
+  like any tool call that cannot be applied (6). **Decision**.
+
+- **193 / 194 the tool surface and the interpreter.** The catalogue in
+  `profiles/surfaces.yaml` is the one list of operations; a machine's
+  `{response: <word>}` guards are the tool names, so a tool that no
+  machine guards is unapplicable by construction and a guard word that
+  no tool carries is unreachable — `check.py` does not yet check the
+  two against each other. **Open** in check.py. The page's interpreter
+  is a model shipped in the browser so no text leaves the operator's
+  network; which model, and whether a page without one (a phone with
+  no script) falls back to controls only, is the surface binding's.
+  **Open**. The chat interpreter is dispatch, so a chat without
+  dispatch running answers numbers only. **Decision**.
 
 - **190 producers per deliverable.** The shipped set is a profile
   partial (`profiles/deliverables.yaml`) rather than a machine: it

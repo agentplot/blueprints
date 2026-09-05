@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–192);
+Requirements are cited by their number in `requirements.md` (1–194);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -90,8 +90,8 @@ of some object, or a file the machinery reads as evidence.
   approval, endpoints, held_at, citation choices** — record fields of the
   object they belong to; counters bump on transitions and never define a
   state.
-- **ask** — the operator's dictation naming a repository ("do this in
-  atlas"). A record in the state store (`asks/<id>`) with `repository`,
+- **ask** — the operator's dictation naming a repository (the `ask`
+  tool, "do this in atlas"). A record in the state store (`asks/<id>`) with `repository`,
   `text`, `by`, `at`, `consumed_by`. It has no machine: planning's
   fingerprint includes every unconsumed ask, so it is planning's input,
   and `propose_units` sets `consumed_by`.
@@ -745,33 +745,46 @@ id>/<number>`). A response that arrives after its decision is gone is
 handed back as `unapplicable` and shown once under attention, never
 dropped (6, 129).
 
-### 5.7 Dictation
+### 5.7 Dictation, the tool surface and the interpreter
 
-Dictation skips the plan (12): "add this idea" writes an intent in
-`open` (with its first elaboration in `approved`) and the dictation id
-as the approval that can be pointed to (I1); "do this in bolt X" writes
-a unit in `approved` on that bolt with the dictation as its `approval`;
-"do this chore" writes a chore unit in `approved`; "revive signal N"
-clears the move; an ask that names a repository without a bolt is an
-`asks/` record for planning; "session: <text>" opens the operator's own
-session (69). The operator may also invoke by dictation any transition
-that undoes or defers work on any object — `drop <object>`, `hold
-place <object>` and `release place <object>`, `send back <item>`,
-`retire <item|planning|curation|capture>`, `takeover <host>` (on a
-stale host, before the 30-minute bound), `finish <elaboration>` (a
-standing session, without waiting for the idle decision), `end
-<session>`, `close` — and, on a bolt's declared service, `start
-<bolt>/<service>` and `stop <bolt>/<service>` (47, section 7.7) — and
-the machinery performs it with its effects
-and records it: the same transition the decision would have taken,
-with the same `enter:` commands to sessions and places; a dictation that would assert work was done (`done`,
-`pass`, `yes` on nothing) is unapplicable and reported (4). The bot's
-grammar is `idea: <text>`, `unit <bolt>: <text>`, `chore: <text>`, `ask
-<repo>: <text>`, `revive <signal>`, `session: <text>`, `explore
-<intents...>` (an elaboration in `approved` covering the named intents,
-its parent the first named, typed `with-operator` or, with `standing`
-after the list, standing; 189), `start|stop <bolt>/<service>`, and the
-undo verbs above.
+The engine never parses command words out of free text. Every
+operation the operator may invoke is a **tool** of the control plane
+with a schema naming its arguments by object id, and the page's
+controls, the chat, the dispatch agent and the machinery's own
+commands all call the same tools; no caller has an operation the
+others lack (193). The catalogue is in `profiles/surfaces.yaml`:
+`answer` (a decision by number), `capture`, `mark-intent`,
+`propose-unit`, `propose-chore`, `ask`, `explore`, `open-session`, and
+the undo-or-defer verbs of 4 — `drop`, `later`, `hold`, `release`,
+`rename`, `finish`, `end`, `close`, `send-back`, `retire`, `takeover`,
+`revive`, `take` — plus `start` and `stop` on a service, the pair 47
+grants. A **dictation** is a tool the operator invoked outside a
+decision (12): `mark-intent` writes an intent in `open` with its first
+elaboration in `approved` and the response id as the approval that can
+be pointed to (I1); `propose-unit` writes a unit in `approved` on the
+bolt with the response as its `approval`; `propose-chore` a chore unit
+in `approved`; `revive` clears a signal's move; `ask` is an `asks/`
+record for planning; `open-session` the operator's own session (69);
+`explore` an elaboration in `approved` covering the selected intents
+as a with-operator or standing session (189). An undo-or-defer tool
+takes the same transition the decision would have taken, with the same
+`enter:` commands to sessions and places, and is recorded like any
+response; a tool that would assert work was done does not exist, and a
+response that arrives claiming one is `unapplicable` and reported (4).
+
+Free text — typed on the page, sent in chat — goes to an
+**interpreter**, never to a parser (194): the dispatch agent for chat,
+a model running in the page's browser, or none at all when the operator
+used a control. The interpreter resolves the names against the live
+objects and proposes exactly one tool call, shown to the operator as
+what will be sent; the operator's confirmation is the response, and
+only the confirmed call is recorded, once (153). A name that resolves
+to nothing, or to more than one object, is asked about, never guessed.
+The numbered reply grammar — `yes 412`, `421: <text>` — stays as the
+deterministic path because a decision number is unambiguous, and is
+itself the `answer` tool. Text in the page's capture box is a capture
+with one signal of kind ask, unparsed; marking it as an intent is the
+operator's judgment made with a control (19).
 
 ## 6. Planning
 
@@ -1178,11 +1191,11 @@ view.
 
 ### 10.5 The operator's own session
 
-`session: <text>` by dictation creates an `operator-session`: a place
-off the books' (or a named repository's) shared line with the
-machinery's read tools and dictation in its work order, running the
+The `open-session` tool creates an `operator-session`: a place off the
+books' (or a named repository's) shared line with the machinery's read
+tools and the tool surface in its work order, running the
 `with-operator` type with the `operator-console` agent. It has no
-intent, no thread and no decision; it ends on `end <session>`, its
+intent, no thread and no decision; it ends on the `end` tool, its
 place going with it unless held (69).
 
 ### 10.6 Instructions as data
@@ -1641,8 +1654,8 @@ the second import writes nothing; the capture is already `read`.
 `drop_signals` writes `drop <intent>` moves for its five signals →
 `dropped`. Next curation lists unmoved signals: none of the five.
 
-**S24 — revive a signal.** Dictation `revive <signal>` removes the move
-file; `signal: dropped → unmoved`; the count moves; the next run
+**S24 — revive a signal.** The `revive` tool on the signal removes the
+move file; `signal: dropped → unmoved`; the count moves; the next run
 clusters it.
 
 **S25 — a claim amended in one commit.** The default instruction makes
@@ -1674,9 +1687,10 @@ another.
 
 **S28 — a three-week bolt.** The operator runs the system in the bolt's
 place (`bolt[place]`, reset after each merge); the place's endpoints
-are recorded and shown beside the bolt on the page (46). Dictation
-`unit plan-rows: <bug>` → a unit in `approved` with the dictation as
-its `approval` → items → sessions. Next day a finding from a session on
+are recorded and shown beside the bolt on the page (46). The
+`propose-unit` tool on bolt plan-rows, proposed by the interpreter from
+the operator's text and confirmed → a unit in `approved` with the
+response as its `approval` → items → sessions. Next day a finding from a session on
 another bolt is recorded as a signal (another thread), curation moves
 it `answered`/`attach`, or planning routes it: an ask naming the
 repository → planning proposes a unit targeting `plan-rows`
@@ -1922,9 +1936,10 @@ per covered intent: `working` reaches done → `writing-back`, where
 covered intent's change directory onto that intent's line and takes
 it out of the place; then `finishing` merges the place, carrying the
 parent's records and the book once, into the parent's line (188). The
-operator opens one by dictation, `explore <intents...>`, which writes
-an elaboration in `approved` covering the named intents as a
-with-operator or standing session (189); planning proposes units, not
+operator opens one with the `explore` tool, arguments the selected
+intents and a type, which writes an elaboration in `approved` covering
+them as a with-operator or standing session (189, 193); planning
+proposes units, not
 elaborations, so in this model gathering is curation's alone
 (`gaps.md`).
 
