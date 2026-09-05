@@ -31,15 +31,9 @@ regions:
           - when: {ev: item.slot_free, is: true}
             to: placing
       placing:
-        regions:
-          place:
-            initial: place
-            states:
-              place:
-                machine: place
-                params: {line: bolt-line, inputs: work-order, keep: false}
+        doc: the place region beside this one prepares the item's place; the item proceeds when it is proven current
         transitions:
-          - when: {final: ready}
+          - when: {region: {name: place.place.life, in: [ready]}}
             to: in-type
       in-type:
         doc: the unit type's machine at the recorded version; its states are the stages
@@ -74,9 +68,9 @@ regions:
       merging:
         doc: one merge at a time in the fixed order; a rebase that conflicts is the session's job in its place (S32)
         transitions:
-          - when: {final: removed}
+          - when: {region: {name: place.place.life, in: [removed]}}
             to: merged
-          - when: {final: conflict}
+          - when: {region: {name: place.place.life, in: [conflict]}}
             to: merging
             note: the place machine seeds the job and waits for the session; the merge retries when it exits done
       merged:
@@ -85,3 +79,14 @@ regions:
       dropped:
         tail: dropped
         final: true
+  place:
+    doc: the object's own place, a region beside its life so the owner can command it (merging, removing) after leaving placing; a region inside placing would be gone by then
+    initial: none
+    states:
+      none:
+        transitions:
+          - when: {region: {name: life, in: [placing]}}
+            to: place
+      place:
+        machine: place
+        params: {line: bolt-line, inputs: work-order, keep: false}
