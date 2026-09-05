@@ -295,6 +295,23 @@ the operator may reverse by a response on the file; an entry with
   one that is not is refused with the reason, like any dictation that
   cannot be applied (6). **Decision**.
 
+- **190 producers per deliverable.** The shipped set is a profile
+  partial (`profiles/deliverables.yaml`) rather than a machine: it
+  binds no evidence and no effect, so `check.py` does not check it
+  beyond parsing, and nothing yet verifies that the paths it names
+  exist in the books template or that a manifest override names a
+  real skill. **Open** in the books template. Construction deliverables
+  (commits, spec, review verdict, as-built statements) are `by-type`:
+  produced by the stage's type skill under the type's schema
+  instruction, with no review surface, because the requirement's
+  shipped set is the book-side set plus the proposal document and the
+  verdict. Whether an organization may give a construction deliverable
+  a producer of its own — the manifest override accepts any name — is
+  allowed by the resolution rule and untested. **Decision**. The
+  house style of the diagrams is fixed by their schemas, not by a
+  separate style file; a style change is a schema change and so a
+  chore. **Decision**.
+
 ## Part B
 
 - **129 annotations as the response.** A plannotator annotation set

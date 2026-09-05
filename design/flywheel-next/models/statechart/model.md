@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–189);
+Requirements are cited by their number in `requirements.md` (1–190);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -18,8 +18,9 @@ derives the plan; 6 to 11 cover planning, lines, the ledger, signals,
 sessions and hosts; 12 answers section 10 of the requirements one
 heading at a time; 13 gives the crate boundary; 14 walks S1 to S34; 15
 checks the invariants; 16 describes the diagrams; 17 covers the agent
-kinds, the pull-request landing, operation, and intents as changes
-with gathered elaborations (A.17 to A.20).
+kinds, the pull-request landing, operation, intents as changes with
+gathered elaborations, and deliverables with their producers (A.17 to
+A.21).
 
 `machines/check.py` validates every machine against `machines/schema.json`,
 every guard and effect name against `machines/atoms.yaml`, every profile
@@ -1181,9 +1182,11 @@ operator's files look like; the engine loads them from the books at
 the version the object recorded), and the manifest. `prepare_place`
 renders `.flywheel/work-order.md` from the closed inputs: the schema
 instruction, the type skill, the work order proper (job, deliverables,
-exit contract), and the artifacts of the change (the unit document or
-the intent's change directory, the cited chapters, the open bolts for
-planning). Nothing else is written into the place, and the place's
+exit contract), the producer skill, schema and review surface in force
+for each deliverable the type names (`profiles/deliverables.yaml`, its
+version in the header; 190), and the artifacts of the change (the unit
+document or the intent's change directory, the cited chapters, the
+open bolts for planning). Nothing else is written into the place, and the place's
 Claude Code settings deny reads outside it (89). Every input is named
 with its version (the books commit) in the work order's header.
 `flywheel render-order <scenario>` renders the exact prompt with no
@@ -1896,3 +1899,25 @@ an elaboration in `approved` covering the named intents as a
 with-operator or standing session (189); planning proposes units, not
 elaborations, so in this model gathering is curation's alone
 (`gaps.md`).
+
+**A.21 — deliverables and their producers.** A stage's and an
+elaboration type's `deliverables` are entries `{name, producer,
+schema, surface}`, passed through to the session template, which
+records the names as `session.expected`. The shipped set lives in
+`profiles/deliverables.yaml`, versioned as one thing: book chapter,
+claim, context map, conceptual and logical diagrams in the house style
+the schemas fix, proposal document, verdict — each with its producer
+skill, its schema (88) and the surface that reviews it (17): the review
+view of 122 for the book-side set, plannotator for the proposal
+document, the ledger for a verdict. An entry's `default` resolves to
+the manifest's `deliverables.<name>` override, else the shipped entry;
+`by-type` is the stage's own type skill and schema instruction with no
+review surface, which is what a construction stage's commits, spec and
+review verdict use. `prepare_place` resolves every entry at the books
+commit named in the work order's header and writes the producers in
+force into the place, so a session is handed them when it starts (89)
+and a test can render them without one (124). Changing a producer,
+shipped or overridden, is a chore on the books, and the binding's
+version in the header tells a session started before it from one
+started after (123). The engine reads only names and paths; no
+producer's text reaches it (119).

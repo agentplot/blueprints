@@ -816,6 +816,18 @@ requirements, iterated against the running plan rather than on paper.
     gathered elaboration carries no other elaboration awaiting approval
     meanwhile (21).
 
+### A.21 Deliverables and their producers
+
+190. An elaboration type or a stage names its deliverables, and for each
+    deliverable the skill that produces it, the schema it must satisfy
+    (88), and the surface that reviews it (17). The flywheel ships a
+    default set, versioned as one thing: book chapter, claim, context
+    map, conceptual and logical diagrams in a house style, proposal
+    document, verdict. An organization replaces or adds a producer per
+    deliverable in the manifest without touching the engine (119), and
+    a session is handed the producers in force when it starts (89).
+    Changing a producer is a chore (123).
+
 ## 5. Requirements — Part B, the control plane contract
 
 The data plane reaches durable, shared state and the operator only
