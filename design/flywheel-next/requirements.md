@@ -800,6 +800,11 @@ requirements, iterated against the running plan rather than on paper.
     request, an environment still up, a signal not yet moved — and for
     a bounded window after, then leaves every view and stays in
     history. Nothing is deleted; the views are derived (B.4).
+192. At landing the machinery writes, in the built repository beside the
+    as-built, the claims the bolt's units named with each claim's
+    scenarios, as one file any delivery system may read from git.
+    Generating and running a suite from it is the delivery system's;
+    the machinery writes the file and nothing more (181).
 
 ### A.20 Intents as changes; gathered elaborations
 

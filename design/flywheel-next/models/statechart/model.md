@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–191);
+Requirements are cited by their number in `requirements.md` (1–192);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -1882,7 +1882,16 @@ on the shared line when no bolt is open, which `propose_units` does for
 any ask or signal it consumes (60, 182). A signal that challenges a
 standing claim stales that claim's verdict in every repository holding
 one, so planning is due there and proposes citing the signal (101,
-116). A data
+116). What a landing leaves for operation is one file: the line's
+`landing` state, after the final take and before the policy's landing,
+runs `write_acceptance` on a bolt's line — `openspec/acceptance.yaml`
+beside the as-built, the claims the bolt's units cite at their
+versions with each claim's scenarios copied from the book — as one
+commit that lands with the work, so any delivery system reads from
+the shared line what the bolt claims to satisfy and how one would
+know; generating and running a suite from it is the delivery system's,
+and the machinery writes the file and nothing more (192). An intent's
+line has no such file: `line.acceptance_written` is true there. A data
 product is a repository in the manifest like any other. Operation is
 therefore a profile binding — the adapters that capture and the
 evidence that reads links — and not a machine (`gaps.md`).

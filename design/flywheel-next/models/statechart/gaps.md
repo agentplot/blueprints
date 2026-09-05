@@ -277,11 +277,16 @@ the operator may reverse by a response on the file; an entry with
   is open, planning routes a signal from operation as a chore on the
   shared line rather than opening a bolt for it (60). **Decision**.
 
-- **Pending Chuck's acceptance — the acceptance document.** A landing
-  would leave, in the built repository beside the as-built, the
-  scenarios of the claims the bolt's units named, as the acceptance
-  document a delivery system reads from git. Not a requirement yet;
-  no machine, effect or binding models it. **Pending**.
+- **192 the acceptance file.** `write_acceptance` runs in the line's
+  `landing` state on a bolt's line, after the final take and before
+  `land_line` or `open_request`, so the file is in the landing's
+  commit or request; under pull-request a review chore that merges
+  afterwards moves the line, and the file is rewritten only if the
+  bolt's cited claims changed, which its proof checks. The scenarios
+  are copied from the claim blocks at the cited versions rather than
+  referenced, so the file stands alone in the built repository. The
+  file's format (`flywheel-acceptance/1`) is named in the host binding
+  and specified nowhere else yet. **Decision**, format **open**.
 
 - **187 the proposal's document beside its record.** A proposal's and
   a unit's `document` is a path in the state store beside the proposal
