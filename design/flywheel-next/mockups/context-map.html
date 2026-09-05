@@ -187,7 +187,7 @@ path.edge.selected-edge{stroke-width:2.8}
 #canvas.delta g.ctxtitle.d-added .ctx-title{fill:var(--d-add)} #canvas.delta g.ctxtitle.d-changed .ctx-title{fill:var(--d-mod)} #canvas.delta g.ctxtitle.d-removed .ctx-title{fill:var(--d-del)}
 #canvas.delta path.edge.d-added{stroke:var(--d-add)} #canvas.delta path.edge.d-removed{stroke:var(--d-del);stroke-dasharray:6 4} #canvas.delta path.edge.d-changed{stroke:var(--d-mod)}
 /* review overlay */
-#canvas.review g.node:not(.rv){opacity:.28} #canvas.review g.ctxg .ctx-card{opacity:.6}
+#canvas.review.rvsome g.node:not(.rv){opacity:.28} #canvas.review.rvsome g.ctxg .ctx-card{opacity:.6}
 #canvas.review g.node.rv .nbox{stroke:var(--warn)!important;stroke-width:2.2} #canvas.review g.ctxtitle.rv .ctx-title{fill:var(--warn)}
 .rvnote{font:9px var(--mono);fill:var(--warn)} .rvnotebg{fill:var(--surface);stroke:var(--warn);stroke-width:.8}
 
@@ -2817,7 +2817,7 @@ function renderMap(){
     }
   }
   s += `<g id="edges">${edgesSvg(edges)}</g></g>`;
-  const cv = $('#canvas'); cv.innerHTML = s; cv.classList.toggle('has-sel', hasSel); cv.classList.toggle('delta', state.ov==='delta'); cv.classList.toggle('review', state.ov==='review'); cv.classList.toggle('homefilter', !!state.repoFilter); applyView();
+  const cv = $('#canvas'); cv.innerHTML = s; cv.classList.toggle('has-sel', hasSel); cv.classList.toggle('delta', state.ov==='delta'); cv.classList.toggle('review', state.ov==='review'); cv.classList.toggle('rvsome', Object.keys(REVIEW.notes).length>0); cv.classList.toggle('homefilter', !!state.repoFilter); applyView();
 }
 
 /* =====================================================================
@@ -2937,7 +2937,8 @@ const KEYS = {yes:'y', drop:'n', no:'n', later:'l'};
 function cardHtml(d){ const f = state.inflight[d.n]; return `<article class="card g-${d.g} ${f?'inflight':''}" data-n="${d.n}"><div class="ch"><span class="n">${d.n}</span><span class="kind">${esc(d.kind)}</span><span class="kind">${d.g}</span></div><div class="title">${d.title}</div><div class="tail">${d.tail}</div>${d.q?`<div class="q">“${esc(d.q)}”</div>`:''}<div class="acts">${d.answers.map(([a,l]) => `<button class="btn sm ${a==='yes'?'yes':(a==='drop'||a==='no')?'drop':''}" data-a="${esc(a)}" data-n="${d.n}">${esc(l)}${KEYS[a]?`<span class="k">${KEYS[a]}</span>`:''}</button>`).join('')}</div><div class="argbox" data-n="${d.n}"></div><div class="flight"><span class="spin"></span>sending ${esc(f?f.text:'')}…</div></article>`; }
 function renderPanel(){
   const p = $('#panel'); const t = state.panel;
-  if(!t){ const id = state.sel[state.sel.length-1]; if(!id){ p.innerHTML = `<h2>The map</h2><div class="blurb" style="margin-top:6px">Bounded contexts as cards, four bands each: published language · services in control and data lanes · state: seams and stores. No edges at rest. Every element cites a chapter; ⚠ marks a ref not in verifiedFiles.</div>${sec('what the flywheel adds', `<div class="blurb">Every node names its home (a git repository). Claims attach to elements; their scope is derived from the homes. Verdicts sit on the homes. Decisions are markers. Overlays: Δ current → target, since last review.</div>`)}${sec('decisions on the map · '+DECISIONS.length, DECISIONS.map(d => `<div class="row"><button class="tag" data-mark="${d.n}">${d.g===APPROVE?'✓':d.g===DECIDE?'?':'✎'} ${d.n}</button><span class="grow">${d.title}</span><span class="sub">${esc(elName(d.on))}</span></div>`).join(''), 'in rail-and-board this is the rail')}${sec('keys', `<div class="blurb"><kbd>m</kbd> current ⇄ target · <kbd>d</kbd> Δ overlay · <kbd>r</kbd> review overlay · <kbd>Esc</kbd> clear · <kbd>y</kbd> <kbd>n</kbd> <kbd>l</kbd> answer the open card</div>`)}`; return; }
+  const reviewSec = state.ov==='review' ? sec('since last review', `<div class="empty">mark ${esc(REVIEW.mark)} · derived from history · ${Object.keys(REVIEW.notes).length ? '' : 'nothing has changed since the mark'}</div><div class="rv-list">${Object.entries(REVIEW.notes).map(([id,ns]) => ns.map(n => `<div><button data-goto="${esc(id)}" style="font:inherit;color:var(--accent)">${esc(elName(id))}</button> · ${esc(n)}</div>`).join('')).join('')}</div><div class="acts" style="margin-top:6px"><button class="btn sm" id="review-mark">mark reviewed · ${hhmm(minutes)}</button></div>`, SM) : '';
+  if(!t){ const id = state.sel[state.sel.length-1]; if(!id){ p.innerHTML = reviewSec + `<h2>The map</h2><div class="blurb" style="margin-top:6px">Bounded contexts as cards, four bands each: published language · services in control and data lanes · state: seams and stores. No edges at rest. Every element cites a chapter; ⚠ marks a ref not in verifiedFiles.</div>${sec('what the flywheel adds', `<div class="blurb">Every node names its home (a git repository). Claims attach to elements; their scope is derived from the homes. Verdicts sit on the homes. Decisions are markers. Overlays: Δ current → target, since last review.</div>`)}${sec('decisions on the map · '+DECISIONS.length, DECISIONS.map(d => `<div class="row"><button class="tag" data-mark="${d.n}">${d.g===APPROVE?'✓':d.g===DECIDE?'?':'✎'} ${d.n}</button><span class="grow">${d.title}</span><span class="sub">${esc(elName(d.on))}</span></div>`).join(''), 'in rail-and-board this is the rail')}${sec('keys', `<div class="blurb"><kbd>m</kbd> current ⇄ target · <kbd>d</kbd> Δ overlay · <kbd>r</kbd> review overlay · <kbd>Esc</kbd> clear · <kbd>y</kbd> <kbd>n</kbd> <kbd>l</kbd> answer the open card</div>`)}`; return; }
     p.innerHTML = nodesById.has(id) ? panelNode(nodesById.get(id)) : ctxById.has(id) ? panelContext(ctxById.get(id)) : ''; return; }
   p.innerHTML = t.type==='repo' ? panelRepo(t.id) : t.type==='claim' ? panelClaim(claimById(t.id)) : t.type==='decision' ? panelDecision(DECISIONS.find(d => d.n===t.n)) : t.type==='add' ? panelAddRepo() : '';
 }
@@ -3009,6 +3010,7 @@ document.addEventListener('click', e => {
   if(b && b.id==='ar-cancel'){ state.addRepo = null; state.panel = null; render(); return; }
   if(b && b.id==='ar-add'){ addRepository(); return; }
   if(b && b.id==='fit'){ fitView(); return; }
+  if(b && b.id==='review-mark'){ REVIEW.mark = '09-04 '+hhmm(minutes); REVIEW.notes = {}; say(`reviewed · mark ${REVIEW.mark}`); render(); return; }
   const row = t.closest('tr[data-sel]'); if(row){ const id = row.dataset.sel; if(!nodesById.has(id)&&!ctxById.has(id)) state.ov = 'delta'; state.tab = 'map'; state.sel = [id]; state.panel = null; render(); focusOn(id); return; }
   const crow = t.closest('tr[data-claim]'); if(crow){ state.claimSel = crow.dataset.claim; render(); return; }
   const rrow = t.closest('tr[data-repo]'); if(rrow){ state.panel = {type:'repo', id:rrow.dataset.repo}; render(); return; }
