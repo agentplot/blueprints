@@ -713,38 +713,64 @@ requirements, iterated against the running plan rather than on paper.
     be told apart.
 124. A test can show, for a given instruction version and a scenario,
     what a session would be asked to write, without starting one.
-198. The system context map is the scope surface. It is the map of
-    bounded contexts the books describe: each context a card with four
-    layers — contract, service, seam and store — its services in a
-    control or a data lane; relations whose kind is fixed by the layer
-    pair they cross; every element citing the chapter that states it
-    (120); a current map and a target map, independent and complete,
-    whose difference the page computes; and a status of settled,
-    candidate or open, an open element paired with a question. The map
-    is data validated by its schema on every commit and versioned with
-    the book (121). A session that writes or amends a claim updates it
-    (120).
-199. Every node names the git repository it is built in, its home. A
-    repository's kinds and capabilities are derived from the nodes it
-    homes by a table the schema fixes, and are never declared by hand;
-    the manifest entry names only the repository's git details (195).
-    The map check fails a home naming no manifest entry and a manifest
-    entry that no node homes.
-200. A claim attaches to map elements: a context, a node, or a relation.
-    Its scope is the set of repositories homing what it attaches to,
-    derived and never chosen; a claim on a relation between two
-    contexts is in scope for both (105). Correcting a scope is
-    re-attaching the claim, one response through the scope tool (193).
-    A claim attached to nothing is not planned against (98).
-201. The page shows the target map with two overlays: current to target,
-    the design difference, and what changed since the operator's last
-    review (122). Each node's home carries the ledger verdict for the
-    claims attached there, and decisions are markers on the elements
-    they concern. An open element's question is shown with it and can
-    be captured in one gesture (112).
-202. A repository joins the fleet when a node names it as home (104).
-    Its first planning's baseline is the claims attached to what it
-    homes.
+198. The system context map is the scope surface. It is the map of the
+    bounded contexts the books describe, in the terms of domain-driven
+    design: a context, the elements it names, the relationships between
+    contexts typed by the DDD patterns with an upstream and a downstream
+    where the pattern has one, and links between elements. Element
+    kinds, link kinds and facets come from a vocabulary the flywheel
+    ships and the organization extends; the relationship patterns do
+    not. Every context, element, relationship and link has a stable id,
+    a name as the book writes it, the chapter that states it (120), and
+    a status of settled, candidate or open, an open one paired with a
+    question. A lane, a tier, a runtime or a store is a tag or a kind;
+    the map has no structure for them. The map is data validated
+    against the schema and the vocabulary on every commit and versioned
+    with the book (121). A session that writes or amends a claim
+    updates it (120).
+
+199. Every element names the git repository it is built in, its home,
+    or inherits the home its context sets; an external context sets none
+    and homes nothing. A repository's kinds and capabilities are derived
+    by a table the schema fixes from the elements it homes, its kinds
+    from their kinds and its capabilities from the contracts among them;
+    they are never declared by hand and never read by scope. The
+    manifest entry names only the repository's git details (195). The
+    map check fails a home naming no manifest entry and a manifest
+    entry that no element or context homes.
+
+200. A claim attaches to a context, an element, a relationship or a
+    link, and the attachment lives with the claim (97). Its scope is the
+    set of repositories homing what it attaches to, both ends of a
+    relationship or a link, derived from the target map and never chosen
+    (105). Correcting a scope is re-attaching the claim, one response
+    through the scope tool (193). A claim attached to nothing is not
+    planned against (98). A change to a vocabulary or to the derivation
+    table moves no verdict; only a home change, a re-attachment or a
+    claim version does.
+
+201. The map is two complete maps under one schema, current and target,
+    the same id naming the same thing in both. The page shows the target
+    with two overlays computed by one difference, keyed on id: current
+    to target, the design difference, and target at the operator's last
+    review to target now (122). Each home carries the ledger verdict for
+    the claims attached there, and decisions are markers on what they
+    concern. An open element's question is shown with it and can be
+    captured in one gesture (112). Tags filter, colour and group the
+    drawing and never change its structure.
+
+202. A repository joins the fleet when the target map first homes
+    something in it (104). Its first planning's baseline is the claims
+    attached to what it homes.
+211. The map is moved only through the tools of 193: attach and detach a
+    claim (200), set a home (199), add or amend a context, element,
+    relationship or link — refused without a chapter ref (120) —, set a
+    status with its question, capture a question (201), mark reviewed
+    (122), and add a repository (202). A session moves the map only in
+    a writeback that also writes the chapter (120); no session changes
+    an attachment or a home for work it is doing itself. Every
+    construction session's work order names the elements it builds,
+    their homes, and the claims attached there (89).
 
 ### A.17 Sessions charged by the machinery
 

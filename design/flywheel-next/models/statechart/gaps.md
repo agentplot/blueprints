@@ -386,30 +386,81 @@ the operator may reverse by a response on the file; an entry with
   (Claude Code, codex, opencode); a kind with none is trusted to the
   work order. **Decision**.
 
-- **198–202 the context map as the scope surface.** The map is the v1
-  context map (`context-map/schema.json` of the willdan blueprints,
-  shipped with the flywheel binary rather than kept in the books) with
-  three additions — the `repository` layer renamed `seam`, `home` on
-  every node, and `attachments` — and it is the one record of scope and
-  of a repository's kinds and capabilities: the claim block's `scope:`
-  line is rendered from the attachments and sits outside the lock
-  hash, the manifest's repository entry keeps only git details, and
-  `flywheel map check` ties homes and manifest entries together.
-  **Decision**. The derivation table — which homed node layers and
-  kinds give a repository which kinds and capabilities — is sketched in
-  `profiles/books.yaml` and fixed nowhere; its contents are **open**,
-  its shape (a pure function of the homed nodes) is decided. Migrating
-  a v1 map: rename `layer: repository` to `seam`, add `home` to every
-  node (one value per context is usually right), and lift each claim
-  block's scope line into attachments — a rule naming repositories
-  becomes an attachment to the context or nodes those repositories
-  home, and the rendered line then agrees; a claim whose old scope was
-  `all` attaches to every context. Not modelled; a one-off `flywheel
-  map migrate` in the binary. **Open**. A gesture on the map view
-  re-attaches to the one element gestured at; a claim meant for
-  several elements is attached to each in turn, one response each.
-  **Decision**. The v1 `configurations` companion, `seamRow` and
-  `verifiedFiles` are kept as they are. **Decision**.
+- **198–202 the map model adopted.** The first-principles model in
+  `models/context-map/` (model.md, schema.yaml, example.yaml) is the
+  binding: contexts, elements, relationships typed by the fixed DDD
+  patterns, links, a shipped vocabulary the organization extends in
+  `flywheel/map-vocabulary.yaml`, homes, attachments living with the
+  claim, scope computed through homes, derivation from kind and home
+  only, one id-keyed difference for current→target and since-review,
+  the ledger invariant. **Decision**. `context-map-review.md` is
+  superseded where it conflicts: no seam layer, no plane or lane field,
+  no runtime on edges, no seamRow, no configurations companion, no
+  verifiedFiles; where it agrees (drop the willdan-specific fields,
+  ids as diff keys, refs required) it still reads.
+
+  The model's open questions (model.md section 7), carried over:
+
+  1. A claim about every repository of a kind, such as "every service
+     has a health endpoint", has nothing to attach to. Options: attach
+     to the map itself, scope every homed repository; or attach to
+     every element of the kind, scope recomputed as elements are added.
+     The first is one attachment and reads kinds into scope, which
+     breaks 4.8 for that claim. The second keeps 4.8 and asks the claim
+     writer to name many ids. Recommend the second, with the scope tool
+     offering "all elements of kind K" as a way to write it.
+     **Decision**: the second; the attach tool offers "all elements of
+     kind K" and sends one attach per element.
+  2. Who moves the current map. A landing that satisfies a claim
+     changes what is built. Options: the construction session that
+     lands writes current in the same landing; a chore raised by the
+     verdict; the same session that moves a claim moves both maps.
+     Recommend the first, so current is as-built by the same hand that
+     builds. **Decision**: the landing construction session's writeback
+     moves the current map (bound in `map_edit`).
+  3. Which line the ref check reads for a candidate. A candidate's
+     chapter is on its intent's line and not yet on the books' shared
+     line. The check on the shared line would fail the ref. Recommend
+     the check accept a ref that resolves on any open intent's line,
+     and that landing the intent be what turns candidate to settled.
+     **Open**, recommendation stands.
+  4. Whether a link may cross a partnership or a shared kernel without
+     naming which. Currently yes. A stricter rule would ask a crossing
+     link to name the relationship id it crosses, so the page can show
+     a relationship's traffic. Left open until a map has enough links
+     to need it. **Open**.
+  5. Whether a relationship's kernel element ids must be homed in both
+     repositories, in one, or in a third. A shared kernel is often its
+     own repository. Recommend allowing any home, and scope of a claim
+     on the kernel be the union of the kernel's homes and both
+     contexts'. **Open**, recommendation bound in the scope table.
+  6. Whether external contexts may have a ref. An external system is
+     not stated by a chapter of the books. Recommend ref optional when
+     external is true, status still required. **Open**.
+  7. Whether the "moved" difference class should also cover a change
+     of context. Moving an element between contexts is a design change
+     of a different order than a rename. Recommend yes, called out as
+     "moved context". **Open**.
+  8. Whether the map page needs a third overlay, verdicts as of a past
+     revision, to answer "what got built since I last looked".
+     Derivable from the ledger's history. Not needed for 122; left
+     open. **Open**.
+
+  Migrating a v1 map (`context-map/maps/*.js`): lanes (`plane`) and
+  runtimes become tags (`lane:control`, `runtime:deployed`) under
+  facets the organization declares; seam-layer nodes become elements
+  of an organization kind (`seam extends service`, or dropped where
+  they only carried the runtime switch); the layer field is dropped
+  and kinds map to the vocabulary (api, worker, ui → service or its
+  extensions; contracts → contract; stores → store extends service;
+  events → domain-event); relations become links, with `backed-by` and
+  `fronts` folded into `uses` or the organization's kinds; contexts
+  gain a home and elements homes where they differ; claim blocks'
+  scope lines are lifted into `attaches:` lists — a named-repositories
+  scope becomes attachments to the contexts or elements those
+  repositories home, an `all` scope to every context; then
+  `flywheel map check`. A one-off `flywheel map migrate` in the
+  binary; not modelled. **Open**.
 
 - **203 where files live.** The ledger is not named in 203's list of
   what the machinery writes in the books, but the machinery writes it

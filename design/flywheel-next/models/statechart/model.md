@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–210);
+Requirements are cited by their number in `requirements.md` (1–211);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -621,15 +621,27 @@ body edit with a date). Per repository, what landed in a period
 (`bolt.landed` entries). Per bolt, its units by state, what waits, and
 the endpoints its place serves (46). Per host, its running sessions,
 its bound and its declaration. Unmoved signals by source with age. The
-map view (201): the target map with two overlays, current to target
-(the design difference the page computes from the two independent
-maps) and what changed since the operator's last `reviewed` mark
-(122); each node's home carrying the ledger verdicts for the claims
-attached there; the standing decisions as markers on the elements
-their objects concern; an open element's question shown with it, and
-captured in one gesture through the `capture` tool (112); and
-re-attachment as a gesture on an element that sends one `attach` call
-(193, 200). The
+map view (201, model.md section 5): the target map at rest — a card
+per context (hatched when big ball of mud, dashed when external), one
+edge per relationship with its pattern's name and U and D at the ends
+of a directional one, OHS and PL badges upstream and ACL downstream, a
+shared kernel drawn as a lens, separate ways as a dotted edge with a
+bar; on each card a count of elements per kind (names when five or
+fewer), a home chip per distinct home with a verdict dot coloured by
+the worst verdict among the claims in scope for that repository
+through this context, an attachment count chip, decision markers with
+their numbers, and status marks (candidate soft-bordered, open with a
+question mark). A context opens in place and the rest dims: its
+elements by kind with home chip and verdict dot, its links, its
+attachments as claim chips, its language, and an open element's
+question with the capture gesture beside it (112). Two overlays from
+one id-keyed difference: current to target, and target at the
+operator's last `reviewed` mark to target now (122), added with a
+plus, removed ghosted, changed with a delta and the fields on hover,
+moved with the old home struck through. Tags filter, colour and group
+as washes and never change structure; repositories are chips, claims
+are chips, the current map is an overlay, layout is computed and fit
+is the only camera command. The
 page says the as-of point of the read it was built from (145). It is
 never written by hand.
 
@@ -1067,40 +1079,53 @@ exists for every (standing claim, repository in scope) pair; `list`
 derives the pairs from `claims.json` and the manifest, so a cell needs
 no record until it is judged (a joining repository has every cell
 `unjudged` with no file, 104). Scope resolves through the system
-context map, which is the scope surface (198): the v1 map of bounded
-contexts in `context-map/` — each context a card of four layers,
-contract, service (control or data lane), seam and store; relations
-whose kind the layer pair fixes; every element citing its chapter; a
-current and a target map the page diffs; status settled, candidate or
-open with a question — validated by the schema the binary ships on
-every commit and versioned with the book (121), with three additions:
-every node names its `home`, the git repository it is built in (199);
-`attachments` say which claim attaches to which context, node or
-relation (200); and the `repository` layer is called `seam`, since
-repository means a git repository here. Nothing is declared by hand:
-a repository's kinds and capabilities are derived from the nodes it
-homes by the table the schema fixes, and a claim's scope is the set of
-repositories homing what it attaches to — both ends of a relation, so
-a contract claim is in scope for both (105, 199, 200). The map is the
-one record: the claim block's `scope:` line is rendered from the
-attachments, outside the lock hash, the manifest's repository entry
-carries only git details, and `flywheel map check` fails a home
-naming no entry or an entry no node homes. A repository joins the
-fleet when a node names it as home; its cells are the claims attached
-to what it homes, all `unjudged`, and its first planning's baseline is
-that set (104, 202). A node newly homed or an attachment newly
-reaching a repository brings claims into its scope — new cells
-`unjudged`, the fingerprint (which hashes the homed nodes and the
-attachments) moves, planning is due and its proposal carries the
-newly unmet claims; one removed sends the affected cells to
-`out-of-scope`, where the recorded verdict reads as not-applicable
+context map, which is the scope surface (198), bound to the model in
+`models/context-map/`: the bounded contexts the books describe in
+domain-driven design's terms — contexts, the elements they name,
+relationships between contexts typed by the fixed DDD patterns with
+an upstream and a downstream where the pattern has one, and links
+between elements; element kinds, link kinds and facets from a
+vocabulary the flywheel ships and the organization extends in
+`flywheel/map-vocabulary.yaml`; every id with a name as the book
+writes it, the chapter that states it, and a status of settled,
+candidate or open, an open one paired with a question; lanes, tiers,
+runtimes and stores as tags or kinds, never structure. Two complete
+YAML maps, `context-map/current.yaml` and `context-map/target.yaml`,
+validated against the schema and the vocabulary on every commit and
+versioned with the book (121). Every element names its home, the git
+repository it is built in, or inherits its context's; an external
+context homes nothing (199). A claim attaches to any id — context,
+element, relationship or link — and the attachment lives with the
+claim in its chapter block (97): its scope is the set of repositories
+homing what it attaches to, both ends of a relationship or a link,
+computed from the target map and never chosen (105, 200). A
+repository's kinds and capabilities are derived from the elements it
+homes by the table the schema fixes — kinds from their kinds,
+capabilities from the contracts among them — and scope never reads
+them, so a change to a tag, a kind, a facet, a derivation row or a
+vocabulary moves no verdict; only a home change, a re-attachment or a
+claim version does (the ledger invariant, model.md 4.8). The manifest
+entry carries only git details, and `flywheel map check` fails a home
+naming no entry or an entry nothing homes. A repository joins the
+fleet when the target map first homes something in it; its cells are
+the claims attached to what it homes, all `unjudged`, and its first
+planning's baseline is that set (104, 202). An element newly homed or
+an attachment newly reaching a repository brings claims into its
+scope — new cells `unjudged`, the fingerprint (which hashes the homed
+elements and the attachments) moves, planning is due and its proposal
+carries the newly unmet claims; one removed sends the affected cells
+to `out-of-scope`, where the recorded verdict reads as not-applicable
 and the cell is out of the backlog, returning to `judged` if scope
 returns. A claim attached to nothing has an empty scope and is not
-planned against (98). The `attach` tool on a claim (`attach_claim`)
-re-attaches it in the target map and re-renders the line without
-moving the text or the version; the page shows the map as a view of
-the status view (4.3), and its gesture on an element sends that one
-tool (193, 195, 200).
+planned against (98). The map moves only through the tools (211):
+`attach` and `detach` on a claim (`attach_claim`, `detach_claim`,
+writing the block's `attaches:` list outside the lock hash), `set-home`,
+`map-edit` (refused without a chapter ref), `set-status`, `capture`,
+`mark-reviewed` and `add-repository`; a session moves it only in a
+writeback that also writes the chapter, and the landing construction
+session's writeback moves the current map for what it built. A
+construction session's work order names the elements it builds, their
+homes and the claims attached there (89, 211).
 
 A verdict is written only by `record_verdict`, from a session's exit:
 the planning session (every cell in scope on a first planning, stale
@@ -1309,10 +1334,11 @@ The default instructions ship in the books repository template:
 `instructions/design-conclusion.md` (write the chapter and the claim in
 one commit; update the context map), `instructions/construction.md`
 (name the claim the work serves in every as-built statement). The
-context map is `context-map/maps/current.js` and `target.js`, the
-scope surface (198, section 8.2), rendered by the machinery into
-`flywheel/map/*.json` and into the book, all versioned with the
-book; the review view is `flywheel review` served at
+context map is `context-map/current.yaml` and `target.yaml` with the
+organization's `flywheel/map-vocabulary.yaml`, the scope surface (198,
+section 8.2), rendered by the machinery into `flywheel/map/*.json` and
+into the book, all versioned with the book; the review view is
+`flywheel review` served at
 `/review`: the chapters and map nodes changed since the operator's
 last `reviewed` mark (a response on the plan object), with the previous
 version beside each (S25, 122).
