@@ -3,44 +3,36 @@
 River of Work — operator surface mockup for the flywheel plan.
 
 Decisions taken while building (not asked):
-- Sample state is plan-mockup.md as of 2026-09-04 07:40, numbers 412–421. Its two internal
-  tensions are kept as-is: the standing prototype (419) sits on an intent (atlas-provider-limits)
-  that is itself still proposed (412), so that intent already has a lane; and 416 lands bolt
-  plan-decisions while 421's session is still alive on it, so landing leaves a ghost lane that
-  keeps its sessions and markers until they end.
-- Dragging starts on the grip (six dots) so a touch on the rest of a chip still scrolls the
-  page and taps still expand. With a mouse the whole chip drags.
-- The drain's meaning follows the chip: drop 413, no 415, hold 416, later 417, close 418,
-  finish 419. Its label says so while you hover.
-- A unit dropped on the spring asks for the bolt name inline (414 pre-fills its proposed name;
-  a changed name sends "414 rename <name>" instead of "yes 414").
-- Every action a drag can do is also a button on the expanded chip, so the page works without
-  drag and from a keyboard.
-- The clock starts at 07:40 and runs from there, so stamps stay coherent with the sample.
-- Bolt lanes take unit chips; intent lanes take elaboration chips; accepted chores get their
-  own "atlas · chores" lane because a chore is never a bolt of its own.
-- Attention items are markers on the lane they concern; "seen" on a could-not-apply marker is
-  not a response and is not logged.
-- Peek is an anchored popover, not an in-place expansion, so hovering never reflows the river
-  under the pointer. It opens on hover (fine pointer, 380 ms), on the chevron a chip or lane
-  header carries, or on a long-press on a token (touch). Hover-opened peeks close when the
-  pointer leaves; chevron- or long-press-opened peeks stay until a tap outside or Escape.
-- Drill takes over the screen with a back control. Reached from the peek's "open", the "open"
-  button on an expanded chip, or a double-tap on a chip, token or lane header. Tabs per object:
-  document and thread for a unit or intent, session and thread for a token, bolt and thread for
-  a lane. Service start and stop in the bolt view are dictations, each sent on its own with a
-  toast and logged beside the responses, marked "dictate".
-- Sample peek and drill content (signal excerpts, claim scenarios, items, hosts, logs, endpoints,
-  services, documents, threads) is invented and plausible, kept consistent with plan-mockup.md.
-  Every session log tail and thread is stamped with a who and a when.
+- Sample state is plan-mockup.md at 2026-09-04 07:40, numbers 412–421, tensions kept: the
+  standing prototype (419) sits on an intent still proposed (412), so that intent already has
+  a lane; 416 lands plan-decisions while 421's session lives on it, so landing leaves a ghost
+  lane that keeps its sessions and markers.
+- Drag starts on the grip (six dots) so touching the rest of a chip still scrolls and taps
+  still expand. With a mouse the whole chip drags.
+- The drain's meaning follows the chip (drop 413, no 415, hold 416, later 417, close 418,
+  finish 419) and its label says so while you hover.
+- A unit dropped on the spring asks for the bolt name inline; a changed name on 414 sends
+  "414 rename <name>" instead of "yes 414".
+- Every drag action is also a button on the expanded chip, so keyboard and no-drag work.
+- The clock starts at 07:40 and runs from there.
+- Accepted chores get an "atlas · chores" lane; a chore is never a bolt of its own.
+- Attention items are markers on their lane; "seen" on a could-not-apply marker is not logged.
+- Peek is an anchored popover, so it never reflows the river under the pointer. Opens on hover
+  (fine pointer, 380 ms), on the chevron a chip or lane header carries, or on a long-press on a
+  token. Hover peeks close when the pointer leaves; chevron or long-press peeks stay until a
+  tap outside or Escape.
+- Drill takes over the screen with a back control: from the peek's "open", the "open" button on
+  an expanded chip, or a double-tap on a chip, token or lane header. Tabs: document and thread
+  (unit, intent), session and thread (token), bolt and thread (lane). Service start and stop in
+  the bolt view are dictations, each sent on its own with a toast and logged as "dictate".
+- Peek and drill content (signals, scenarios, items, hosts, logs, endpoints, services,
+  documents, threads) is invented and plausible, consistent with plan-mockup.md.
 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>River of Work</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 :root{
@@ -141,7 +133,6 @@ textarea{width:100%;min-height:58px;resize:vertical}
 .chev{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;color:var(--ink-3);flex:none}
 .chev::before{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg)}
 .chev:hover{background:var(--surface-2);color:var(--ink)}
-.chip.k-blocked .chev,.chip.k-idle .chev{align-self:center}
 .grip{width:18px;height:22px;border-radius:4px;touch-action:none;cursor:grab;background-image:radial-gradient(circle,var(--ink-3) 1.2px,transparent 1.4px);background-size:6px 6px;background-position:3px 2px;opacity:.7}
 .grip:hover{opacity:1;background-color:var(--surface-2)}
 .chip .n{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--river);letter-spacing:.01em}
@@ -276,7 +267,6 @@ textarea{width:100%;min-height:58px;resize:vertical}
 .peek-t .n{font-family:var(--mono);color:var(--river);font-weight:500;margin-right:6px}
 .peek-t .k{font-size:10.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);margin-right:6px;font-family:var(--sans)}
 .x{width:24px;height:24px;border-radius:6px;color:var(--ink-3);font-size:17px;line-height:1;flex:none}
-.x:hover{background:var(--surface-2);color:var(--ink)}
 .sec{margin:0 0 10px}.sec:last-child{margin:0}
 .sec h4{margin:0 0 4px;font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:0;font-size:12.5px}
@@ -298,9 +288,9 @@ textarea{width:100%;min-height:58px;resize:vertical}
 .drill-t .dk{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);font-weight:600}
 .drill-t h2{font-family:var(--disp);font-size:18px;font-weight:700;overflow-wrap:anywhere}
 .drill-t .n{font-family:var(--mono);color:var(--river);font-weight:500}
+.drill-t .repo{color:var(--ink-3);font-size:12.5px}
 .tabs{margin-left:auto;display:flex;gap:4px}
 .tab{padding:5px 12px;border-radius:999px;font-size:13px;color:var(--ink-2)}
-.tab:hover{background:var(--surface-2)}
 .tab.on{background:var(--river);color:var(--river-ink)}
 .drill-b{padding:22px 16px 90px;max-width:840px;margin:0 auto}
 .doc{max-width:66ch;font-size:15px;line-height:1.6}
@@ -475,7 +465,7 @@ const PEEK = {
        {h:'items · in order', kv:[['1 jitter-window','no deps'],['2 retry-budget','after 1']]},
        {h:'type fast runs', kv:[['stages','build → review → merge · no spec stage']]},
        {h:'yes starts', kv:[['now','new line atlas-retry-behaviour-and-jitter-limits off atlas main · build session']]}],
-  415:[{h:'offered by', kv:[['a','wi-#420 review · AGENTS.md cites a removed script'],['b','wi-#419 spec · citation to sinks/one-mark points at @v1'],['c','proto plan-derivation · ref renamed in books, not in atlas']]},{h:'if accepted', kv:[['each','one chore session in its own place · no bolt · lands on atlas main']]}],
+  415:[{h:'offered by', kv:[['a','wi-#420 review · AGENTS.md cites a removed script'],['b','wi-#419 spec · citation points at sinks/one-mark @v1'],['c','proto plan-derivation · ref renamed in books, not atlas']]},{h:'if accepted', kv:[['each','one chore session · own place · no bolt']]}],
   416:[{h:'gates', kv:[['tests','1,212 passed · 0 skipped'],['review','4 units · all passed'],['as-built','4 statements · claims cited']]},{h:'yes starts', kv:[['now','merge plan-decisions line into switchboard main · line closed']]}],
   417:[{h:'unmet', kv:[['claims · 11','boundary 4 · owner 2 · invariant 3 · behavior 2'],['chores · 8','lint config, CI, AGENTS.md, three renames, two citations'],['units · 3','tracker adapter · status writer · gates']]}],
   418:[{h:'elaborations', kv:[['research','closed 08-28 · finding: one loop per bolt'],['planning','closed 08-30'],['prototype','finished 09-02 · by your response'],['writeback','closed 09-03 · books ch.7 rewritten']]},{h:'close means', kv:[['claims','loops/one-per-bolt @v1 becomes standing']]}],
@@ -506,7 +496,7 @@ const THREADS = {
   'dec:421':[['09-04 05:52','wi-#418 build','exit','tests green on Backlog transition'],['09-04 06:59','wi-#418 build','question','should Ready imply Backlog cleared?'],['09-04 06:59','machinery','decision','421 created · answer']],
   'tok:wi418':[['09-04 05:40','bolt loop','note','place prepared · item 2 of sink-delivery · host mac-mini'],['09-04 05:52','wi-#418 build','exit','spec applied · 14 tests green'],['09-04 06:59','wi-#418 build','question','should Ready imply Backlog cleared?'],['09-04 07:34','host watch','note','mac-mini last seen 06:59 · lease expires 07:59']],
   'tok:proto-1':[['09-03 16:58','intent loop','note','place prepared off line atlas-provider-limits'],['09-03 17:31','prototype','note','40 derivations run · 38 match'],['09-03 17:40','prototype','exit','idle · standing'],['09-04 07:40','machinery','decision','419 created · finish or keep']],
-  'lane:plan-decisions':[['08-28 10:00','operator','response','yes 388 · bolt plan-decisions opened'],['08-30 15:12','review','exit','unit plan-derivation · passed'],['09-01 09:40','review','exit','unit decision-numbers · passed'],['09-02 18:05','review','exit','unit response-apply · passed'],['09-04 07:21','review','exit','unit decision-grouping · passed first time · merged'],['09-04 07:40','machinery','decision','416 created · land']],
+  'lane:plan-decisions':[['08-28 10:00','operator','response','yes 388 · bolt plan-decisions opened'],['08-30 15:12','review','exit','unit plan-derivation · passed'],['09-02 18:05','review','exit','units decision-numbers, response-apply · passed'],['09-04 07:21','review','exit','unit decision-grouping · passed first time · merged'],['09-04 07:40','machinery','decision','416 created · land']],
   'lane:atlas-provider-limits':[['09-02 09:15','machinery','decision','412 created · intent proposed'],['09-03 16:58','intent loop','note','prototype plan-derivation started on mac-mini'],['09-03 17:40','prototype','exit','idle · standing']],
   'lane:loop-granularity':[['08-20 11:00','operator','response','yes 361 · intent opened'],['08-28 16:30','research','exit','finding: one loop per bolt'],['09-02 12:10','operator','response','377 finish · prototype finished'],['09-03 17:55','writeback','exit','books ch.7 rewritten · gates green'],['09-04 07:40','machinery','decision','418 created · close or keep open']],
 };
@@ -574,6 +564,7 @@ function respond(d, act, extra={}){
     case 'reply': { const t=lane(d.lane).tokens.find(t=>t.id===d.token); if(t){t.status='working'; t.decision=null; t.sub='answered '+now();}
       send(n+': '+extra.text, n+' → replied · recorded'); break; }
   }
+  const last=S.log[0]; if(last && !last.dict && !thread('dec:'+n).some(e=>e[3]===last.text && e[2]==='response')) thread('dec:'+n).push(['09-04 '+last.t,'operator','response',last.text]);
   retire(n); render();
 }
 function choresGo(d, letters){
@@ -633,10 +624,10 @@ function chipHTML(d){
       + `<div class="acts"><button class="btn primary sm" data-act="yes">yes · all of it</button><button class="btn sm" data-act="pickb" ${d.pickedSet.size?'':'disabled'}>pick</button><button class="btn quiet sm" data-act="later">later</button></div>`;
     if(d.choices) acts=d.choices.map(([l,a],i)=>`<button class="btn ${i?'':'primary'} sm" data-act="${a}">${l}</button>`).join('');
     if(d.reply) acts=`<p class="detail"><q>${esc(d.question)}</q></p><textarea data-f="text" placeholder="your answer goes straight to the session"></textarea><div class="acts"><button class="btn primary sm" data-act="reply">reply</button></div>`;
-    body=`<div class="chip-body">${det}<div class="acts">${acts}</div></div>`;
+    body=`<div class="chip-body">${det}<div class="acts">${acts}</div><div class="acts"><button class="btn quiet sm" data-drill="dec:${d.n}">open${DOCS[d.n]?' · document':' · thread'}</button></div></div>`;
   }
-  return `<div class="${cls}" data-n="${d.n}" tabindex="0" role="button" aria-expanded="${open}">
-    <div class="chip-row"><span class="grip" aria-hidden="true"></span><span class="n">${d.n}</span><span class="kind">${d.kind}</span><span class="title">${esc(d.title)}</span><span class="tail">${esc(d.tail)}</span></div>${body}</div>`;
+  return `<div class="${cls}" data-n="${d.n}" data-key="dec:${d.n}" tabindex="0" role="button" aria-expanded="${open}">
+    <div class="chip-row"><span class="grip" aria-hidden="true"></span><span class="n">${d.n}</span><span class="kind">${d.kind}</span><span class="title">${esc(d.title)}</span><button class="chev" data-peek="dec:${d.n}" aria-label="peek ${d.n}"></button><span class="tail">${esc(d.tail)}</span></div>${body}</div>`;
 }
 function renderHeadwater(){
   const h=$('#headwater'); let out='';
@@ -654,7 +645,7 @@ function laneHTML(L){
   const openId=S.laneOpen[L.id];
   const stat = L.kind==='bolt' ? `${L.units.filter(u=>u.state==='merged').length} merged · ${L.units.filter(u=>u.state!=='merged').length} open · ${L.tokens.length} ${L.tokens.length===1?'session':'sessions'}`
              : L.kind==='chores' ? `${L.tokens.length} running` : `${L.units.filter(u=>u.state==='merged').length}/${L.units.length} elaborations done · ${L.tokens.length} live`;
-  const tokens = L.tokens.length ? L.tokens.map((t,i)=>`<button class="token ${t.status} ${openId===t.id?'on':''}" data-token="${t.id}" style="left:${t.x}%;animation-delay:${-i*1.7}s" title="${esc(t.label)}"><span class="dot"></span>${esc(t.label)}${t.sub?`<span class="sub">${esc(t.sub)}</span>`:''}</button>`).join('')
+  const tokens = L.tokens.length ? L.tokens.map((t,i)=>`<button class="token ${t.status} ${openId===t.id?'on':''}" data-token="${t.id}" data-key="tok:${t.id}" style="left:${t.x}%;animation-delay:${-i*1.7}s"><span class="dot"></span>${esc(t.label)}${t.sub?`<span class="sub">${esc(t.sub)}</span>`:''}</button>`).join('')
     : `<span class="none">${L.landed?'landed · nothing runs here':'nothing running · all work done'}</span>`;
   const markers = L.markers.map(m=>`<button class="marker ${m.kind}" data-marker="${m.id}"><span class="f">${m.kind==='decide'?'?':'!'}</span>${esc(m.text)}</button>`).join('');
   let ask='';
@@ -662,15 +653,15 @@ function laneHTML(L){
     const t=L.tokens.find(t=>t.id===openId), m=L.markers.find(m=>m.id===openId);
     if(t && t.decision){ const d=dec(t.decision);
       if(d.reply) ask=`<div class="ask"><p class="q"><span class="n">${d.n}</span><q>${esc(d.question)}</q></p><p class="note">${esc(d.tail)}</p><textarea data-f="text" placeholder="your answer goes straight to the session"></textarea><div class="acts"><button class="btn primary sm" data-dec="${d.n}" data-act="reply">reply</button><button class="btn quiet sm" data-close="1">close</button></div></div>`;
-      else ask=`<div class="ask"><p class="q"><span class="n">${d.n}</span>${esc(d.title)}</p><p class="note">${esc(d.tail)}</p><div class="acts">${d.choices.map(([l,a],i)=>`<button class="btn ${i?'':'primary'} sm" data-dec="${d.n}" data-act="${a}">${l}</button>`).join('')}<button class="btn quiet sm" data-close="1">close</button></div></div>`;
-    } else if(t){ ask=`<div class="ask"><p class="q">${esc(t.label)} · ${t.status}</p><p class="note">${t.status==='working'?'nothing to answer · the machinery is on it':'standing session · no decision open'}</p><div class="acts"><button class="btn quiet sm" data-close="1">close</button></div></div>`; }
+      else ask=`<div class="ask"><p class="q"><span class="n">${d.n}</span>${esc(d.title)}</p><p class="note">${esc(d.tail)}</p><div class="acts">${d.choices.map(([l,a],i)=>`<button class="btn ${i?'':'primary'} sm" data-dec="${d.n}" data-act="${a}">${l}</button>`).join('')}<button class="btn quiet sm" data-drill="tok:${t.id}">open</button><button class="btn quiet sm" data-close="1">close</button></div></div>`;
+    } else if(t){ const ti=tokInfo(L,t); ask=`<div class="ask"><p class="q">${esc(t.label)} · ${t.status}</p><p class="note">${t.status==='working'?'nothing to answer · the machinery is on it':'standing session · no decision open'} · ${ti.stage} on ${ti.host} · ${dur(minsNow()-ti.since)}</p><div class="acts"><button class="btn quiet sm" data-drill="tok:${t.id}">open</button><button class="btn quiet sm" data-close="1">close</button></div></div>`; }
     else if(m && m.decision){ const d=dec(m.decision);
       ask=`<div class="ask"><p class="q"><span class="n">${d.n}</span>${esc(d.title)}</p><p class="note">${esc(d.tail)}</p><div class="acts">${d.choices.map(([l,a],i)=>`<button class="btn ${i?'':'primary'} sm" data-dec="${d.n}" data-act="${a}">${l}</button>`).join('')}<button class="btn quiet sm" data-close="1">close</button></div></div>`; }
     else if(m){ ask=`<div class="ask"><p class="q">${esc(m.text)}</p>${m.note?`<p class="note">${esc(m.note)}</p>`:''}<div class="acts">${m.acts.map(([l,a],i)=>`<button class="btn ${i?'':'primary'} sm" data-mact="${a}">${l}</button>`).join('')}<button class="btn quiet sm" data-close="1">close</button></div></div>`; }
   }
   const unitsWord = L.kind==='intent' ? 'elaborations' : L.kind==='chores' ? 'chores' : 'units';
   return `<article class="lane ${L.kind} ${L.landed?'ghost':''}" data-drop="lane" data-lane="${L.id}" aria-label="${L.kind} ${esc(L.name)}">
-    <header class="lane-h"><span class="lk">${L.kind}</span><h2>${esc(L.name)}</h2><span class="repo">${esc(L.repo)}</span>${L.landed?`<span class="landed">landed ${L.landed}</span>`:''}<span class="stat">${stat}</span></header>
+    <header class="lane-h" data-key="lane:${L.id}"><span class="lk">${L.kind}</span><h2>${esc(L.name)}</h2><span class="repo">${esc(L.repo)}</span>${L.landed?`<span class="landed">landed ${L.landed}</span>`:''}<span class="stat">${stat}</span><button class="chev" data-peek="lane:${L.id}" aria-label="peek ${esc(L.name)}"></button></header>
     ${markers?`<div class="markers">${markers}</div>`:''}
     <div class="water">${tokens}</div>
     <div class="units" aria-label="${unitsWord}">${L.units.map(u=>`<span class="unit ${u.state}">${esc(u.name)}${u.u?`<span class="u">${esc(u.u)}</span>`:''}</span>`).join('')}</div>
@@ -689,9 +680,9 @@ function renderSince(){
 }
 function renderLog(){
   $('#sent').textContent=S.log.length;
-  $('#loglist').innerHTML = S.log.length ? S.log.map(l=>`<li><time>${l.t}</time><span>${esc(l.text)}</span></li>`).join('') : '<li class="empty">no responses yet</li>';
+  $('#loglist').innerHTML = S.log.length ? S.log.map(l=>`<li class="${l.dict?'dict':''}"><time>${l.t}</time><span>${esc(l.text)}</span></li>`).join('') : '<li class="empty">no responses yet</li>';
 }
-function render(){ renderHeadwater(); renderLanes(); renderSince(); renderLog(); }
+function render(){ closePeek(); renderHeadwater(); renderLanes(); renderSince(); renderLog(); if(D) renderDrill(); }
 
 /* ---------- toasts ---------- */
 function toast(msg){
@@ -705,7 +696,7 @@ $('#headwater').addEventListener('click', e=>{
   const b=e.target.closest('button[data-act]'); const chip=e.target.closest('.chip'); if(!chip) return;
   const d=dec(+chip.dataset.n); if(!d) return;
   if(b){ e.stopPropagation(); doAct(d, b.dataset.act, chip, b); return; }
-  if(e.target.closest('input,textarea,label,.grip')) return;
+  if(e.target.closest('input,textarea,label,.grip,button')) return;
   S.open = S.open===d.n ? null : d.n; renderHeadwater();
 });
 $('#headwater').addEventListener('keydown', e=>{
@@ -771,7 +762,7 @@ document.addEventListener('pointermove', e=>{
 document.addEventListener('pointerup', e=>{ if(!drag || e.pointerId!==drag.id) return; if(drag.active) endDrag(); drag=null; });
 document.addEventListener('pointercancel', ()=>{ if(drag && drag.active) cancelDrag(); drag=null; });
 function beginDrag(e){
-  drag.active=true; document.body.classList.add('dragging'); drag.chip.classList.add('lifting');
+  drag.active=true; closePeek(); document.body.classList.add('dragging'); drag.chip.classList.add('lifting');
   const g=document.createElement('div'); g.className='ghost'; g.innerHTML=`<span class="n">${drag.d.n}</span><span>${esc(drag.d.title)}</span>`; document.body.appendChild(g); drag.ghost=g;
   document.querySelectorAll('[data-drop]').forEach(z=>{
     const r=dropFor(drag.d, z.dataset.drop, z.dataset.lane);
@@ -800,6 +791,118 @@ function endDrag(){
   if(target.dataset.drop==='spring' && d.kind==='unit') return;
   respond(d, r.act);
 }
+
+/* ---------- peek: anchored popover, never reflows the river ---------- */
+let P=null; // {key, anchor, pinned}
+const FINE = matchMedia('(hover:hover) and (pointer:fine)');
+const kvHTML = secs => secs.map(s=>`<div class="sec"><h4>${s.h}</h4>${s.kv?`<dl class="kv">${s.kv.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>`:''}${s.lines?`<ul class="lines">${s.lines.map(([t,l])=>`<li><time>${t}</time><span>${esc(l)}</span></li>`).join('')}</ul>`:''}</div>`).join('');
+function findTok(id){ for(const L of S.lanes){ const t=L.tokens.find(t=>t.id===id); if(t) return [L,t]; } return [null,null]; }
+function peekContent(key){
+  const [kind,id]=key.split(':');
+  if(kind==='dec'){ const d=dec(+id); if(!d) return null;
+    return {title:`<span class="n">${d.n}</span><span class="k">${d.kind}</span>${esc(d.title)}`, body:kvHTML(PEEK[d.n]||[{h:'about',kv:[['tail',esc(d.tail)]]}])}; }
+  if(kind==='tok'){ const [L,t]=findTok(id); if(!t) return null; const i=tokInfo(L,t);
+    return {title:`<span class="k">session</span>${esc(t.label)}`, body:kvHTML([{h:'session',kv:[['stage',i.stage],['host',i.host+(i.host==='mac-mini'&&t.id==='wi418'?' · last seen 41m':'')],['elapsed',dur(minsNow()-i.since)+' on '+L.name],['state',t.status+(t.sub?' · '+esc(t.sub):'')],['place',esc(i.place)]]},{h:'log · last 3',lines:i.log.slice(-3)}])}; }
+  if(kind==='lane'){ const L=lane(id); if(!L) return null; const I=infra(L); const open=L.units.filter(u=>u.state!=='merged');
+    return {title:`<span class="k">${L.kind}</span>${esc(L.name)}`, body:kvHTML([{h:(L.kind==='intent'?'open elaborations':'open units')+' · '+open.length, kv:open.length?open.map(u=>[esc(u.name),esc(u.u||u.state)]):[['none','all merged']]},{h:'served',kv:I.endpoints.map(e=>[`<span class="ep">${e}</span>`,'up'])},{h:'services',kv:I.services.map(s=>[`<span class="st ${s.s}"></span>${esc(s.n)}`,s.s])}])}; }
+  return null;
+}
+function showPeek(key, anchor, pinned){
+  const c=peekContent(key); if(!c) return;
+  P={key, anchor, pinned};
+  const p=$('#peek'); $('#peek-t').innerHTML=c.title; $('#peek-b').innerHTML=c.body; $('#peek-open').dataset.drill=key; p.hidden=false;
+  if(innerWidth<760){ p.style.left=''; p.style.top=''; return; }
+  const r=anchor.getBoundingClientRect(), pw=p.offsetWidth, ph=p.offsetHeight, vh=innerHeight-70;
+  let left, top;
+  if(anchor.classList.contains('chip') && r.right+pw+12<innerWidth){ left=r.right+8; top=Math.min(r.top, vh-ph-8); }
+  else { left=Math.min(Math.max(8,r.left), innerWidth-pw-8); top=r.bottom+6; if(top+ph>vh) top=Math.max(8, r.top-ph-6); }
+  p.style.left=left+'px'; p.style.top=Math.max(8,top)+'px';
+}
+function closePeek(){ if(!P) return; P=null; $('#peek').hidden=true; }
+$('#peek-x').addEventListener('click', closePeek);
+
+let hoverTimer=null, closeTimer=null;
+document.addEventListener('mousemove', e=>{
+  if(!FINE.matches || (drag&&drag.active) || D) return;
+  const inPeek=e.target.closest('#peek'); const el=e.target.closest('.chip,.token,.lane-h');
+  if(inPeek){ clearTimeout(closeTimer); clearTimeout(hoverTimer); return; }
+  if(el){ const key=el.dataset.key; clearTimeout(closeTimer);
+    if(P && P.key===key){ clearTimeout(hoverTimer); return; }
+    if(P && P.pinned) return;
+    clearTimeout(hoverTimer); hoverTimer=setTimeout(()=>{ if(!(drag&&drag.active)) showPeek(key, el, false); }, 380); return; }
+  clearTimeout(hoverTimer);
+  if(P && !P.pinned){ clearTimeout(closeTimer); closeTimer=setTimeout(closePeek, 260); }
+});
+// touch: long-press on a token
+let press=null;
+document.addEventListener('pointerdown', e=>{
+  const t=e.target.closest('.token'); if(!t || e.pointerType==='mouse') return;
+  press={t, x:e.clientX, y:e.clientY, fired:false, timer:setTimeout(()=>{ press.fired=true; showPeek(t.dataset.key, t, true); }, 450)};
+});
+document.addEventListener('pointermove', e=>{ if(press && Math.hypot(e.clientX-press.x,e.clientY-press.y)>8){ clearTimeout(press.timer); press=null; } });
+document.addEventListener('pointerup', ()=>{ if(press){ clearTimeout(press.timer); if(press.fired){ suppress=true; setTimeout(()=>{suppress=false;},400); } press=null; } });
+let suppress=false, lastTap={key:null,t:0};
+document.addEventListener('click', e=>{
+  if(suppress){ suppress=false; e.stopPropagation(); e.preventDefault(); return; }
+  const dr=e.target.closest('[data-drill]'); if(dr){ e.stopPropagation(); closePeek(); openDrill(dr.dataset.drill, dr.dataset.tab); return; }
+  const pk=e.target.closest('[data-peek]'); if(pk){ e.stopPropagation(); const key=pk.dataset.peek; if(P && P.key===key && P.pinned) closePeek(); else showPeek(key, pk.closest('.chip,.lane-h')||pk, true); return; }
+  if(P && !e.target.closest('#peek')) closePeek();
+  const el=e.target.closest('.chip,.token,.lane-h'); if(!el) { lastTap={key:null,t:0}; return; }
+  if(e.target.closest('input,textarea,label') || (e.target.closest('button') && !e.target.closest('.token'))) return;
+  const key=el.dataset.key, t=Date.now();
+  if(lastTap.key===key && t-lastTap.t<420){ lastTap={key:null,t:0}; e.stopPropagation(); closePeek(); openDrill(key); return; }
+  lastTap={key,t};
+}, true);
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ if(D) closeDrill(); else closePeek(); } });
+
+/* ---------- drill: the whole screen, with a way back ---------- */
+let D=null; // {key, tab}
+const TABS = {dec:['document','thread'], tok:['session','thread'], lane:['bolt','thread']};
+function openDrill(key, tab){
+  const [kind,id]=key.split(':'); if(!peekContent(key) && kind!=='dec') return;
+  const tabs=TABS[kind].slice(); if(kind==='dec' && !DOCS[+id]) tabs.shift();
+  D={key, tab:tab||tabs[0], tabs}; $('#drill').hidden=false; renderDrill(); $('#drill').scrollTop=0; $('#drill-back').focus();
+}
+function closeDrill(){ D=null; $('#drill').hidden=true; }
+$('#drill-back').addEventListener('click', closeDrill);
+function renderDrill(){
+  const [kind,id]=D.key.split(':'); let title='', body='';
+  if(kind==='dec'){ const d=dec(+id); const doc=DOCS[+id]; const nm=d?d.title:(doc?({413:'atlas · status-writer',414:'atlas · retry-jitter',412:'atlas-provider-limits'})[+id]:id);
+    title=`<span class="dk">${d?d.kind:'decided'}</span><h2><span class="n">${id}</span> ${esc(nm)}</h2>`;
+    if(D.tab==='document' && doc){
+      body=`<article class="doc"><p class="sub">${esc(doc.sub)}</p>${doc.h.map(([h,p])=>`<h3>${h}</h3>${p.startsWith('<ol')?p:`<p>${p}</p>`}`).join('')}
+        <div class="annot"><h4>Annotate</h4><p>${d ? (d.kind==='unit' ? `A note here is the response on this unit: it goes back to planning as <code>${id} redo: &lt;note&gt;</code>.` : `A note here is sent as <code>${id} split</code> with your reasoning, back to curation.`) : 'This decision is answered. A note here is a dictation on the object’s thread.'}</p>
+        <textarea data-f="annot" placeholder="what should change"></textarea><div class="acts"><button class="btn primary sm" data-annot="${id}">${d ? (d.kind==='unit'?'send redo with this note':'send split with this note') : 'send note'}</button></div></div></article>`;
+    } else body=timelineHTML(D.key);
+  }
+  if(kind==='tok'){ const [L,t]=findTok(id); if(!t){ closeDrill(); return; } const i=tokInfo(L,t);
+    title=`<span class="dk">session</span><h2>${esc(t.label)}</h2><span class="repo">on ${esc(L.name)}</span>`;
+    body = D.tab==='session' ? `<div class="bv"><section><h3>session</h3>${kvHTML([{kv:[['stage',i.stage],['host',i.host],['elapsed',dur(minsNow()-i.since)],['state',t.status+(t.sub?' · '+esc(t.sub):'')],['place',esc(i.place)]]}]).replace('<h4>undefined</h4>','')}</section><section><h3>log</h3><ul class="lines">${i.log.map(([tm,l])=>`<li><time>${tm}</time><span>${esc(l)}</span></li>`).join('')}</ul></section>${t.decision?`<section><h3>waiting on you</h3><div class="row"><span class="grow">decision ${t.decision} · ${esc(dec(t.decision).question||dec(t.decision).tail)}</span><button class="btn primary sm" data-answer="${L.id}:${t.id}">answer on the river</button></div></section>`:''}</div>` : timelineHTML(D.key);
+  }
+  if(kind==='lane'){ const L=lane(id); if(!L){ closeDrill(); return; } const I=infra(L);
+    title=`<span class="dk">${L.kind}</span><h2>${esc(L.name)}</h2><span class="repo">${esc(L.repo)}${L.landed?' · landed '+L.landed:''}</span>`;
+    body = D.tab==='bolt' ? `<div class="bv">
+      <section><h3>${L.kind==='intent'?'elaborations':'units'} · ${L.units.length}</h3>${L.units.map(u=>`<div class="row"><span class="unit ${u.state}">${esc(u.name)}</span><span class="grow m">${esc(u.u||'')}</span><span class="m">${u.state}</span></div>`).join('')||'<div class="row m">none</div>'}</section>
+      <section><h3>sessions · ${L.tokens.length}</h3>${L.tokens.map(t=>{const i=tokInfo(L,t);return `<div class="row"><span class="st ${t.status==='working'?'':'stopped'}" style="background:var(--${t.status==='working'?'ok':t.status})"></span><span class="grow">${esc(t.label)}</span><span class="m">${i.stage} · ${i.host} · ${dur(minsNow()-i.since)}</span><button class="btn quiet sm" data-drill="tok:${t.id}">open</button></div>`;}).join('')||'<div class="row m">nothing running</div>'}</section>
+      <section><h3>services · each start or stop is a dictation</h3>${I.services.map(s=>`<div class="row"><span class="st ${s.s}"></span><span class="grow">${esc(s.n)}</span><span class="m">${s.s}</span><button class="btn sm" data-svc="${esc(s.n)}" data-do="${s.s==='running'?'stop':'start'}">${s.s==='running'?'stop':'start'}</button></div>`).join('')}</section>
+      <section><h3>served from the place</h3>${I.endpoints.map(e=>`<div class="row"><span class="ep grow">${e}</span><span class="m">up</span></div>`).join('')}</section></div>` : timelineHTML(D.key);
+  }
+  $('#drill-t').innerHTML=title;
+  $('#drill-tabs').innerHTML=D.tabs.map(t=>`<button class="tab ${D.tab===t?'on':''}" data-tab="${t}">${t}</button>`).join('');
+  $('#drill-b').innerHTML=body;
+}
+const timelineHTML = key => `<ol class="tl">${thread(key).map(([t,who,k,text])=>`<li class="${k}"><time>${t}</time><span class="who">${esc(who)}</span><span class="what"><span class="kk">${k}</span>${esc(text)}</span></li>`).join('')}</ol>`;
+$('#drill').addEventListener('click', e=>{
+  const tab=e.target.closest('[data-tab]'); if(tab){ D.tab=tab.dataset.tab; renderDrill(); return; }
+  const svc=e.target.closest('[data-svc]'); if(svc){ const L=lane(D.key.split(':')[1]); const s=infra(L).services.find(s=>s.n===svc.dataset.svc); const act=svc.dataset.do;
+    s.s = act==='start'?'running':'stopped'; send(`${act} ${s.n} on ${L.id}`, `${act} ${s.n} · ${L.name} · recorded`, 'lane:'+L.id, true); renderDrill(); return; }
+  const an=e.target.closest('[data-annot]'); if(an){ const ta=$('[data-f="annot"]'); const note=ta.value.trim(); if(!note){ toast('write the note first'); ta.focus(); return; }
+    const d=dec(+an.dataset.annot); closeDrill();
+    if(d && d.kind==='unit') return respond(d,'redo',{notes:note});
+    if(d) { send(d.n+' split: '+note, d.n+' → split · recorded', 'dec:'+d.n); retire(d.n); render(); return; }
+    send('note '+an.dataset.annot+': '+note, 'note · recorded', 'dec:'+an.dataset.annot, true); return; }
+  const ans=e.target.closest('[data-answer]'); if(ans){ const [lid,tid]=ans.dataset.answer.split(':'); S.laneOpen[lid]=tid; closeDrill(); renderLanes(); return; }
+});
 
 /* ---------- clock ---------- */
 setInterval(()=>{ $('#clock').textContent=now(); }, 15000);
