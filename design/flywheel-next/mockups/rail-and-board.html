@@ -24,6 +24,17 @@
     borderless muted record with PR and checks as a stamp; a signal is a quote with a left rule.
     Sessions, hosts, repositories, deferred sheets, planning-in-progress and explorations keep
     their forms. The dock header takes the same form as the object.
+  - Each bead on a thread is its own target: it opens a dock page for that elaboration (kind
+    and type, state, its pending decision with the answer controls, its document excerpt and the
+    records it wrote into the intent's change directory, its session chip, "in gathering 424"
+    when covered, the countdown when finished) with a knot in the header and a back link to the
+    thread; ] and [ step through the beads of the intent in hand. A bead carries a leading kind
+    word (research · prototype · writeback · explore) and its state after its name, so it never
+    reads as a sub-intent; the head knot carries an "intent" kicker.
+  - Explore is a mode, not a standing checkbox: "explore…" at the head of Inception enters
+    selection; every intent head knot shows a tick target, a sticky bar at the lane's foot says
+    what will happen and offers with-operator or standing, start and cancel; Esc cancels. Beads
+    never show a tick.
   - Phase is the lane's; kind is the shape's. An object does not repeat its phase; colour stays
     as it was (accent, ok/warn/crit, the phase chip on rail cards). Shape does the new work.
   - Every decision is also a marker on its object ("? 418" on the intent, "! host" on the bolt,
@@ -161,7 +172,7 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
 .unit .it{flex-basis:100%;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:2px 0 0 6px}
 .unit{flex-wrap:wrap}
 .wi{cursor:default}
-.explore-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;border:1px dashed var(--accent);border-radius:7px;padding:6px 8px;margin:0 0 8px;font-size:12px;background:color-mix(in srgb,var(--accent-soft) 50%,transparent)}
+
 .explore-bar select{padding:2px 6px;font-size:12px}
 .explore-bar .n{font:600 11px var(--mono);color:var(--accent)}
 .capture .cf label{display:inline-flex;align-items:center;gap:5px;color:var(--ink2);cursor:pointer}
@@ -377,13 +388,14 @@ label.chore .f{margin-left:auto;font:11px var(--mono);color:var(--ink3)}
 .slip .sl-to .arrow{color:var(--ink3)}
 /* thread: an intent is a line off the books; a vertical stroke with elaborations as beads, no box */
 .thread{position:relative;padding:2px 4px 4px 4px;margin:0 0 12px;cursor:pointer}
-.thread .th-head{display:flex;align-items:center;gap:7px;position:relative;padding-left:20px;min-height:22px}
+.thread .th-head{display:flex;align-items:center;gap:4px 7px;position:relative;padding-left:20px;min-height:22px;flex-wrap:wrap}
 .thread .th-head::before{content:"";position:absolute;left:3px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--ink2)}
-.thread .th-head .pickbox{position:absolute;left:0;top:4px;width:14px;height:14px;margin:0;accent-color:var(--accent);opacity:0}
-.thread:hover .th-head .pickbox,.thread .th-head .pickbox:checked,.thread .th-head .pickbox:focus-visible{opacity:1}
+.thread .th-head .pickbox{position:absolute;left:0;top:4px;width:14px;height:14px;margin:0;accent-color:var(--accent)}
+.thread.pickable .th-head::before{display:none}
 .thread .th-head .pickbox:checked~.th-name{color:var(--accent)}
+.thread .th-k{font:600 9.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
 .thread:hover .th-head::before,.thread .th-head .pickbox:checked~*{}
-.thread .th-name{font-weight:700;font-size:13px;padding:0 3px;border-radius:3px}
+.thread .th-name{font-weight:700;font-size:13px;padding:0 3px;border-radius:3px;flex:1 1 auto;min-width:0}
 .thread .th-state{margin-left:auto;font:11px var(--mono);color:var(--ink3);white-space:nowrap}
 .thread .th-line{margin-left:8px;border-left:2px solid var(--ink2);padding:2px 0 4px 16px;min-height:14px}
 .thread .th-note{color:var(--ink2);font-size:12px;margin:0 0 3px}
@@ -395,6 +407,23 @@ label.chore .f{margin-left:auto;font:11px var(--mono);color:var(--ink3)}
 .thread .bead.queued::before{border-style:dashed}
 .thread .bead.gather::before,.thread .bead.explore::before{background:var(--accent-soft);border-color:var(--accent)}
 .thread .bead .en{font-weight:600}
+.thread .bead{cursor:pointer;border-radius:4px}
+.thread .bead:hover .en{color:var(--accent)}
+.thread .bead.open-in-dock .en{background:var(--accent-soft);box-shadow:0 0 0 2px var(--accent-soft);border-radius:3px}
+.thread .bead .bk{font:600 9.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);flex:none}
+.thread .bead .bs{font:11px var(--mono);color:var(--ink3)}
+.thread .bead .bs.leave.soon{color:var(--warn)}
+.thread .bead .bead-chip{display:inline-flex}
+@media (max-width:1400px){.thread .bead .bead-chip{flex-basis:100%}}
+.explore-foot{position:sticky;bottom:-60px;margin:12px -10px -60px;padding:8px 10px 66px;background:var(--surface);border-top:2px solid var(--accent);box-shadow:0 -8px 18px rgba(0,0,0,.08);z-index:3}
+.explore-foot .ef-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px}
+.explore-foot .ef-row b{font-family:var(--mono);font-size:12px}
+.explore-foot .ef-note{font-size:11.5px;color:var(--ink2);margin-top:5px;line-height:1.4}
+.explore-foot .seg button{padding:2px 8px;font-size:11.5px}
+.dk-h.dk-bead{box-shadow:inset 4px 0 0 var(--ink2);padding-left:22px}
+.dk-h.dk-bead h2::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;border:2px solid var(--ink2);background:var(--surface);margin:0 8px 2px 0;vertical-align:middle}
+.dk-h.dk-bead .tail button{font:inherit;color:var(--accent);font-weight:600}
+.records{font:11.5px var(--mono);color:var(--ink2)} .records div{padding:2px 0;border-top:1px solid var(--line2)} .records div:first-child{border-top:0}
 .thread .th-line.cap::after{content:"";display:block;width:16px;border-top:2px solid var(--ink2);margin:4px 0 0 -17px}
 .thread .th-tail{padding-left:24px;margin-top:2px}
 .thread.closed{opacity:.6} .thread.closed .th-name{text-decoration:line-through;text-decoration-color:var(--ink3);text-decoration-thickness:1px}
@@ -617,7 +646,7 @@ body.docked .dock{transform:none}
   <h1>Rail and Board</h1>
   <span class="meta">willdan · 2026-09-04 <span class="mono" id="clock">07:40</span></span>
   <div class="count"><b id="count">12</b><span>decisions</span><span class="hint" id="yesallhint">· "yes all" answers 412–417, 422, 424</span></div>
-  <span class="keys" style="display:flex;gap:10px;font-size:11px;color:var(--ink3)"><span><kbd>j</kbd><kbd>k</kbd> rail</span><span><kbd>↵</kbd> open</span><span><kbd>y</kbd><kbd>n</kbd><kbd>l</kbd> answer</span><span><kbd>m</kbd> map</span><span><kbd>/</kbd> capture</span><span><kbd>esc</kbd> close</span></span>
+  <span class="keys" style="display:flex;gap:10px;font-size:11px;color:var(--ink3)"><span><kbd>j</kbd><kbd>k</kbd> rail</span><span><kbd>↵</kbd> open</span><span><kbd>y</kbd><kbd>n</kbd><kbd>l</kbd> answer</span><span><kbd>]</kbd><kbd>[</kbd> beads</span><span><kbd>m</kbd> map</span><span><kbd>/</kbd> capture</span><span><kbd>esc</kbd> close</span></span>
   <button class="btn quiet theme" id="theme" title="theme">system</button>
   <button class="btn" id="logbtn" aria-expanded="false"><b id="sent">0</b> sent</button>
   <button class="btn pri" id="yesall">yes all</button>
@@ -724,7 +753,7 @@ const S = {
     {id:'provider-key-rotation', name:'provider-key-rotation', state:'open', note:'from the ops constraint · provider B rotates keys on the 1st', sessions:[]},
   ],
   gatherings:[{n:424, type:'research', state:'proposed', intents:['atlas-provider-limits','loop-cadence','provider-key-rotation']}],
-  explorations:[], planning:null, deferred:[], picked:new Set(),
+  explorations:[], planning:null, deferred:[], picked:new Set(), exploreMode:false, exploreKind:'with',
   repos:[
     {id:'atlas', kinds:['service','data-product'], caps:['http','worker','provider-calls','status-table'], manifest:'atlas/flywheel.yaml · landing: direct merge',
      claims:[['providers/one-writer @v3','not satisfied','kind:service','unit 413 proposed · completes it'],['providers/rate-envelope @v1','not satisfied','capability:provider-calls','3 intents argue with it · gathering 424'],['plan/sink-marks @v2','satisfied','all','tail-derive merged 09-03'],['plan/tail-cursor @v1','unjudged','all','standing since 05:40 · proposal 422 covers sc.1–3'],['repo/readme @v2','satisfied','all','—'],['repo/ci @v1','satisfied','all','gates on push'],['sessions/one-writer @v4','stale','capability:worker','judged at v3 · decision 420'],['ops/key-rotation @v1','not applicable','capability:queue','atlas declares no queue']]},
@@ -825,7 +854,27 @@ function allSessions(){
   out.push({...S.curation.session, id:'curation', owner:{key:'c:curation', name:'curation', phase:'inception'}});
   return out.filter(s => s.state!=='done' && s.state!=='queued');
 }
-const objOf = key => { const [t,id] = key.split(':'); return t==='d' ? dec(+id) : t==='b' ? bolt(id) : t==='i' ? intent(id) : t==='l' ? S.landed.find(l => l.id===id) : t==='h' ? host(id) : t==='a' ? S.attention.find(a => a.id===id) : t==='r' ? repo(id) : t==='e' ? mapNode(id) : t==='x' ? S.explorations.find(x => x.id===id) : t==='p' ? S.planning : t==='f' ? S.deferred.find(x => x.key===id) : null; };
+const objOf = key => { const [t,id] = key.split(':'); return t==='d' ? dec(+id) : t==='b' ? bolt(id) : t==='i' ? intent(id) : t==='l' ? S.landed.find(l => l.id===id) : t==='h' ? host(id) : t==='a' ? S.attention.find(a => a.id===id) : t==='r' ? repo(id) : t==='e' ? mapNode(id) : t==='x' ? S.explorations.find(x => x.id===id) : t==='p' ? S.planning : t==='f' ? S.deferred.find(x => x.key===id) : t==='v' ? elabOf(id) : null; };
+/* an elaboration on a thread: 'v:<intent>/<sess>' · sess is a session id, g<n> for a gathering bead, x<n> for an explore bead */
+const elabKind = s => s.kind || (/^research/.test(s.label) ? 'research' : /^prototype/.test(s.label) ? 'prototype' : /^writeback/.test(s.label) ? 'writeback' : /^planning/.test(s.label) ? 'planning' : /^explore/.test(s.label) ? 'explore' : 'research');
+const elabName = s => { const k = elabKind(s); let n = s.label.replace(new RegExp('^'+k+'\\s*'),'').trim().replace(/^\((.*)\)$/,'$1'); return n || ({research:'finding', prototype:'place', writeback:'chapter and claim', planning:'rounds'}[k] || 'session'); };
+const elabType = s => { const k = elabKind(s); return k==='research' ? 'self-closing' : k==='prototype' ? (/standing/.test(s.label) ? 'standing' : 'self-closing') : k==='writeback' ? 'writeback · per intent' : k==='planning' ? 'rounds' : 'with-operator'; };
+function threadBeads(i){ const g = gatheringOf(i.id), x = explorationOf(i.id); return [...i.sessions.map(s => s.id), ...(g ? ['g'+g.n] : []), ...(x ? [x.id] : [])]; }
+function elabOf(id){ const [iid, sid] = id.split('/'); const i = intent(iid); if(!i) return null;
+  if(/^g\d+$/.test(sid)){ const g = S.gatherings.find(x => 'g'+x.n===sid); if(!g) return null; return {type:'elab', key:'v:'+id, intent:i, sid, kind:g.type, name:'gathered · '+g.intents.join(' + '), etype:'self-closing · gathered', state:g.state, gathering:g}; }
+  if(/^x\d+$/.test(sid)){ const x = S.explorations.find(v => v.id===sid); if(!x) return null; return {type:'elab', key:'v:'+id, intent:i, sid, kind:'explore', name:x.names.join(' + '), etype:x.kind==='standing'?'standing':'with-operator', state:x.state, session:x.session, explore:x}; }
+  const s = i.sessions.find(v => v.id===sid); if(!s) return null; return {type:'elab', key:'v:'+id, intent:i, sid, kind:elabKind(s), name:elabName(s), etype:elabType(s), state:s.state, session:s}; }
+/* invented detail per elaboration, marked sample */
+const EX = {
+  proto:{excerpt:'A limiter in front of the worker, served on its own place. 40 derivations at 0.8 s each; 38 match the hand-derived plan. The two that differ are the two that cite a moved claim, which is the finding.', records:['records/prototype-plan-derivation.md','records/session-2026-09-01.md','records/derivation-runs.jsonl']},
+  'sm-res':{excerpt:'Three sinks deliver the plan: chat, page, bell. Each keeps its own mark; a mark is written on delivery and read on derive. The research reads the three delivery paths and names the one record that all three write.', records:['records/research-sink-marks.md','records/session-2026-09-04.md']},
+  'sm-wb':{excerpt:'Queued: writes chapter 5 (sinks) and claim plan/sink-marks @v3 when the research exits done.', records:[]},
+  lg1:{excerpt:'Finding: one loop per bolt. A bolt loop that owns every item of the bolt is simpler than one loop per item, and the merge order falls out of it.', records:['records/research-scope.md','findings/one-loop-per-bolt.md']},
+  lg2:{excerpt:'Rounds on the plannotator surface: two rounds closed the tick and the idle bound.', records:['records/planning-rounds.md']},
+  lg3:{excerpt:'A tick prototype: 200 ticks over the seeded scenarios, every decision retracted exactly when its state was left.', records:['records/prototype-tick.md','records/tick-runs.jsonl']},
+  lg4:{excerpt:'Chapter 7 rewritten in destination voice; three claims proposed on the intent line; map-check green.', records:['records/writeback.md','../books/switchboard/ch7-loops.md']},
+};
+function exOf(e){ if(EX[e.sid]) return EX[e.sid]; if(e.gathering) return {excerpt:'One research session over the covered intents: reads their signals and chapters, writes its records into each intent\'s change directory and its conclusions into the book once.', records:e.gathering.intents.map(i => `books/intents/${i}/records/research-gathered-${e.gathering.n}.md`)}; if(e.explore) return {excerpt:'One elaboration over the ticked intents, fed with their chapters, claims and records; earlier elaborations stay as they are.', records:e.explore.intents.map(i => `books/intents/${i}/records/explore-${e.explore.id}.md`)}; return {excerpt:'No excerpt yet; the session has written nothing the books can cite.', records:[]}; }
 
 /* ---------- invented detail, marked sample ---------- */
 const X = {
@@ -1088,11 +1137,14 @@ function renderRail(){
 const litObjs = () => { if(!S.focus) return []; const o = objOf(S.focus); return o ? (o.objs || (o.obj ? [o.obj] : [])) : []; };
 function objCls(key, form){ return [form||'sessrow', litObjs().includes(key)?'lit':'', S.open===key?'open-in-dock':''].join(' '); }
 const beadState = s => s.state==='with' ? 'with' : s.state;
-function bead(s){ const right = s.state==='done' ? `<span class="leave ${/^(today|1d|2d)$/.test(s.leaves||'')?'soon':''}">done · leaves ${s.leaves==='today'?'today':'in '+esc(s.leaves||'7d')}</span>` : s.state==='queued' ? `<span class="leave">queued · starts when research exits</span>` : sessChip(s); return `<div class="bead ${beadState(s)}"><span class="en">${esc(s.label)}</span>${right}</div>`; }
+function bead(s, iid){ const st = s.state==='done' ? `<span class="bs leave ${/^(today|1d|2d)$/.test(s.leaves||'')?'soon':''}">done · leaves ${s.leaves==='today'?'today':'in '+esc(s.leaves||'7d')}</span>` : s.state==='queued' ? `<span class="bs">queued · starts when research exits</span>` : `<span class="bs">${esc(s.state==='with' ? 'with you' : s.state==='idle' ? 'idle '+(s.tag||'') : s.state)}</span>`;
+  const chip = s.state==='done' || s.state==='queued' ? '' : `<span class="bead-chip">${sessChip(s)}</span>`; const key = 'v:'+iid+'/'+s.id;
+  return `<div class="bead ${beadState(s)} ${S.open===key?'open-in-dock':''}" data-bead="${iid}/${s.id}" title="open this elaboration"><span class="bk">${esc(elabKind(s))}</span><span class="en">${esc(elabName(s))}</span>${st}${chip}</div>`; }
 function threadHtml(i, full){
   const g = gatheringOf(i.id), x = explorationOf(i.id); const closed = i.state==='closed';
-  const beads = i.sessions.map(bead).join('') + (g ? `<div class="bead gather"><span class="en">${esc(g.type)} (self-closing)</span><span class="chip g">in gathering ${g.n}</span></div>` : '') + (x ? `<div class="bead explore"><span class="en">explore (${x.kind==='standing'?'standing':'with-operator'})</span><span class="chip x">explore · ${x.kind==='standing'?'standing':'with you'}</span></div>` : '');
-  return `<div class="${objCls('i:'+i.id,'thread')} ${closed?'closed':''}" data-obj="i:${i.id}" tabindex="0"><div class="th-head">${closed||full ? '' : `<input type="checkbox" class="pickbox" data-pick="${i.id}" ${S.picked.has(i.id)?'checked':''} aria-label="pick ${esc(i.name)} for explore">`}<span class="th-name">${esc(i.name)}</span><span class="th-state">${closed ? `<span class="leave">closed · leaves in ${esc(i.leaves||'7d')}</span>` : esc(i.state)}</span></div>
+  const beads = i.sessions.map(s => bead(s, i.id)).join('') + (g ? `<div class="bead gather ${S.open==='v:'+i.id+'/g'+g.n?'open-in-dock':''}" data-bead="${i.id}/g${g.n}"><span class="bk">${esc(g.type)}</span><span class="en">gathered</span><span class="bs">proposed</span><span class="chip g">in gathering ${g.n}</span></div>` : '') + (x ? `<div class="bead explore ${S.open==='v:'+i.id+'/'+x.id?'open-in-dock':''}" data-bead="${i.id}/${x.id}"><span class="bk">explore</span><span class="en">${x.names.map(esc).join(' + ')}</span><span class="bs">${x.kind==='standing'?'standing':'with you'}</span></div>` : '');
+  const pickable = S.exploreMode && !closed && !full;
+  return `<div class="${objCls('i:'+i.id,'thread')} ${closed?'closed':''} ${pickable?'pickable':''}" data-obj="i:${i.id}" tabindex="0"><div class="th-head">${pickable ? `<input type="checkbox" class="pickbox" data-pick="${i.id}" ${S.picked.has(i.id)?'checked':''} aria-label="pick ${esc(i.name)} for explore">` : ''}<span class="th-k">intent</span><span class="th-name">${esc(i.name)}</span><span class="th-state">${closed ? `<span class="leave">closed · leaves in ${esc(i.leaves||'7d')}</span>` : esc(i.state)}</span></div>
     <div class="th-line ${closed?'cap':''}"><div class="th-note">${esc(i.note)}${g ? ' · no elaboration proposed while gathered' : ''}</div>${beads || '<div class="bead queued"><span class="leave">no elaboration yet</span></div>'}</div>${marksFor('i:'+i.id)}</div>`;
 }
 function ledgerHtml(b, full){
@@ -1151,10 +1203,10 @@ function renderInception(){
     <div class="cf"><span class="will" id="capture-as">will send: <b>capture</b>${S.captureIntent?' · <b>intent</b>':''}</span><label><input type="checkbox" id="capture-intent" ${S.captureIntent?'checked':''}> this is an intent</label><button class="btn pri sm" id="capture-send">send</button></div></div>
     <div class="curation">unmoved signals <b>${S.curation.unmoved}</b><span>${esc(S.curation.by)}</span><span>oldest ${S.curation.oldest}</span>${sessChip(S.curation.session)}</div>`;
   const picked = [...S.picked].filter(id => intent(id));
-  const bar = `<div class="explore-bar"><span class="n">explore</span><span>${picked.length ? picked.map(id => esc(intent(id).name)).join(' + ') : 'tick intents below, then'}</span><select id="explore-type" aria-label="elaboration type"><option value="with">with-operator</option><option value="standing">standing</option></select><button class="btn pri sm" id="explore-go" ${picked.length?'':'disabled'}>explore ${picked.length||''}</button>${picked.length ? '<button class="btn quiet sm" id="explore-clear">clear</button>' : ''}</div>`;
+  const foot = S.exploreMode ? `<div class="explore-foot"><div class="ef-row"><b>Explore over ${picked.length} intent${picked.length===1?'':'s'}</b><span class="seg"><button data-xkind="with" aria-pressed="${S.exploreKind==='with'}">with-operator</button><button data-xkind="standing" aria-pressed="${S.exploreKind==='standing'}">standing</button></span><button class="btn pri sm" id="explore-go" ${picked.length?'':'disabled'}>start</button><button class="btn quiet sm" id="explore-cancel">cancel</button></div><div class="ef-note">opens one new elaboration covering the ticked intents, fed with their chapters, claims and records; earlier elaborations stay as they are (188, 189)</div></div>` : '';
   const xs = S.explorations.map(x => `<div class="${objCls('x:'+x.id)} explore ${x.state==='done'?'done':''}" data-obj="x:${x.id}" tabindex="0"><div class="oh"><span class="ok">${x.kind==='standing'?'explore · standing':'explore · with-operator'}</span><span class="on">${x.names.map(esc).join(' + ')}</span><span class="os">${x.state==='done' ? `<span class="leave">done · leaves in ${esc(x.leaves)}</span>` : 'since '+esc(x.since)}</span></div><div class="ot">${esc(x.last)}</div>${x.state==='done' ? '' : `<div class="el">${sessChip(x.session)}</div>`}</div>`).join('');
   const list = S.intents.map(i => threadHtml(i)).join('');
-  $('#lane-inception').innerHTML = laneHead('Inception','intents and their elaborations · capture here') + cap + bar + (xs ? `<div class="sec-h">explorations<span class="r">opened by you · over several intents</span></div>${xs}` : '') + `<div class="sec-h">intents<span class="r">lines off the books · tick the head to explore</span></div>` + (list || '<div class="empty">nothing open</div>');
+  $('#lane-inception').innerHTML = laneHead('Inception','intents and their elaborations · capture here', S.exploreMode ? `<span class="gate" style="border-color:var(--accent);color:var(--accent)">selecting</span>` : `<button class="btn sm" id="explore-open" title="open one elaboration over several intents">explore…</button>`) + cap + (xs ? `<div class="sec-h">explorations<span class="r">opened by you · over several intents</span></div>${xs}` : '') + `<div class="sec-h">intents<span class="r">lines off the books · a bead is an elaboration · click one</span></div>` + (list || '<div class="empty">nothing open</div>') + foot;
 }
 function renderPlan(){
   const P = S.proposal; const pd = dec(P.n);
@@ -1347,6 +1399,7 @@ function dockDecision(d){
     parts.push(sec(`claims unmet · ${unmet.length} · grouped by scope rule`, rules.map(rule => `<div class="row" style="align-items:flex-start"><span class="vd" style="margin-top:2px">${esc(rule)}</span><div class="grow kc">${unmet.filter(c => c[2]===rule).map(c => `<span class="lk"><b>${esc(c[0])}</b>${c[3]!=='—' ? ' · '+esc(c[3]) : ''}</span>`).join('')}</div></div>`).join('') + `<div class="acts" style="margin-top:8px"><button class="btn sm" data-openrepo="${d.repo}">open ${esc(d.repo)} · claims and scope</button></div>`, 'scope is part of the claim (105)')); }
   if(x.lineage) parts.push(sec('lineage · where this proposal comes from', `<div class="lin">${x.lineage.map((l,i) => `<div class="ln ${i===x.lineage.length-1?'here':''}"><span class="lk-k">${esc(l[0])}</span><span><span class="lk-w">${esc(l[1])}</span><span class="lk-t">${esc(l[2])}</span></span></div>`).join('')}</div>`, 'claim ← writeback ← elaboration ← intent'));
   if(x.log) parts.push(sec('session log · last lines', `<ul class="tl">${x.log.map(([t,l]) => `<li><time>${esc(t)}</time><span class="who"></span><span class="what">${esc(l)}</span></li>`).join('')}</ul>`, SM));
+  if(d.sess && d.obj && d.obj[0]==='i'){ const e = elabOf(d.obj.slice(2)+'/'+d.sess); if(e) parts.push(sec('the elaboration', `<div class="dtext">This decision is about the <b>${esc(e.kind)}</b> bead on intent ${esc(e.intent.name)}. <button class="btn sm" data-gotoobj="${e.key}">open the elaboration</button></div>`, 'a bead on the thread')); }
   const o = d.obj && d.obj!=='d:'+d.n ? objOf(d.obj) : null;
   if(o){ const list = d.obj[0]==='b' ? o.units.flatMap(u => u.items||[]) : o.sessions; parts.push(sec(`on ${esc(d.obj[0]==='b'?'bolt '+o.name:'intent '+o.name)} · sessions running`, sessionsHtml(d.sess ? list.filter(s => s.id===d.sess) : list, 'nothing running'), 'with host and last activity')); }
   else if(d.kind==='unit'||d.kind==='proposal') parts.push(sec('sessions running', sessionsHtml([], 'nothing starts before yes')));
@@ -1364,6 +1417,17 @@ function dockBolt(b){
     + sec(`services of the place · ${esc(b.repo)}/${esc(b.name)}`, servicesHtml(b.services, 'b:'+b.id), 'start and stop are dictations')
     + sec('served endpoints', `<div class="rows">${b.endpoints.map(e => `<div class="row"><span class="ep">${esc(e)}</span></div>`).join('')}</div>`)
     + sec('history', tlHtml(BX[b.id]||[['09-04 '+hhmm(S.minutes),'machinery','note','bolt created by your response']]), SM);
+}
+function dockElab(e){
+  const ex = exOf(e); const i = e.intent; const d = S.decisions.find(x => x.obj==='i:'+i.id && x.sess===e.sid);
+  const covered = gatheringOf(i.id); const st = e.session ? (e.session.state==='with' ? 'with you' : e.session.state==='idle' ? 'idle '+(e.session.tag||'') : e.session.state) : e.state;
+  return sec('the elaboration', `<div class="dtext"><b>${esc(e.kind)}</b> · ${esc(e.etype)} · ${esc(st)}. An elaboration works in a place off the intent's line; it writes its records into the intent's change directory as it goes and what it concludes into the book (187). ${e.kind==='research' ? 'A self-closing one ends with its finding.' : e.kind==='prototype' && /standing/.test(e.etype) ? 'A standing one ends when you finish it.' : e.kind==='writeback' ? 'Writeback writes the chapter and the claim in the same commit (120).' : ''}</div>`)
+    + (d ? sec(`decision ${d.n} · in the rail`, cardHtml(d) + '<div class="empty" style="font-size:11px">answered here or in the rail · one response</div>', d.g) : '')
+    + sec('document · excerpt', `<div class="doc"><div class="dm">${esc(e.kind)} · ${esc(i.name)} · ${SM}</div><p>${esc(ex.excerpt)}</p></div>`)
+    + sec(`records · books/intents/${esc(i.name)}/`, ex.records.length ? `<div class="records">${ex.records.map(r => `<div>${esc(r)}</div>`).join('')}</div>` : '<div class="empty" style="padding:2px 0">nothing written yet</div>', 'the intent\'s change directory')
+    + (e.session && e.session.state!=='done' ? sec('session', `<div class="rows"><div class="row"><div class="grow"><div class="nm">${esc(e.kind)} · ${esc(e.name)}</div><div class="last">${esc(e.session.last||'')}</div></div>${sessChip(e.session)}</div></div>`, 'with host and last activity') : '')
+    + (covered && (e.sid==='g'+covered.n || e.kind===covered.type) ? sec('covered', `<div class="dtext">This research is one session over ${covered.intents.length} intents (188): <button class="mark approve" data-mark="d:${covered.n}">✓ ${covered.n} gathered</button> in the rail. The intent proposes no other elaboration meanwhile.</div>`) : '')
+    + (e.state==='done' || (e.session && e.session.state==='done') ? sec('finished', `<div class="dtext">Record written. Stays on the thread <b>${esc((e.session||e).leaves==='today'?'today':'for '+((e.session||e).leaves||'7d'))}</b>, then leaves every view and stays in history (186).</div>`) : '');
 }
 function dockIntent(i){
   return sec('the thread', threadHtml(i, true).replace(/ tabindex="0"/,'').replace(/data-obj="[^"]*"/,''), 'a line off the books · elaborations as beads')
@@ -1419,6 +1483,7 @@ function dockFooter(key){
     return `<div class="fl">answer · one response each<span class="r">${d.g===APPROVE ? 'yes is safe' : d.g===DECIDE ? 'no default' : 'needs text'}</span></div>${acts}`; }
   if(t==='h'){ const h = host(id); return h.alive ? `<div class="fl">nothing to answer</div>` : `<div class="fl">attention · outside the count</div><div class="acts"><button class="btn sm yes" data-att="host" data-ak="takeover">takeover on studio</button><button class="btn sm" data-att="host" data-ak="wait">wait</button></div>`; }
   if(t==='b') return `<div class="fl">no decision here that is not in the rail<span class="r">the next is its close · drop, rename and services above are dictations</span></div>`;
+  if(t==='v'){ const e = objOf(key); const d = S.decisions.find(x => x.obj==='i:'+e.intent.id && x.sess===e.sid); if(d) return dockFooter('d:'+d.n); if(e.explore) return dockFooter('x:'+e.explore.id); return `<div class="fl">no decision on this elaboration<span class="r">${e.state==='done'||(e.session&&e.session.state==='done') ? 'finished' : 'its exits are the machinery\'s'}</span></div>`; }
   if(t==='x'){ const x = objOf(key); return x.state==='done' ? `<div class="fl">done<span class="r">stays ${esc(x.leaves)} · then history</span></div>` : `<div class="fl">no decision<span class="r">finish is a dictation</span></div><div class="acts"><button class="btn sm" data-xfinish="${x.id}">finish</button></div>`; }
   if(t==='f'){ const x = objOf(key); return `<div class="fl">deferred · outside the count</div><div class="acts"><button class="btn sm yes" data-askagain="${x.key}">ask again</button></div>`; }
   if(t==='p') return `<div class="fl">no decision yet<span class="r">the next proposal is the decision</span></div>`;
@@ -1434,7 +1499,8 @@ function renderDock(){
   let head, body, form = '';
   if(t==='d'){ form = o.kind==='proposal'||o.kind==='baseline' ? 'dk-sheet' : o.kind==='unit' ? 'dk-slip' : ''; head = `<div class="row"><span class="n">${o.n}</span><span class="kind">${esc(o.kind)}</span><span>${o.g}</span><span class="ph">${PH[o.phase]}</span>${nav}</div><h2 id="dk-title">${o.title}</h2><div class="tail">${o.tail}</div>`; body = dockDecision(o); }
   else if(t==='b'){ form = 'dk-ledger'; head = `<div class="row"><span class="kind">bolt</span><span class="ph">construction</span>${nav}</div><h2 id="dk-title">${esc(o.repo)}/${esc(o.name)}</h2><div class="tail">${esc(o.note)}</div>`; body = dockBolt(o); }
-  else if(t==='i'){ form = 'dk-thread'; head = `<div class="row"><span class="kind">intent</span><span class="ph">inception</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.state)}</div>`; body = dockIntent(o); }
+  else if(t==='i'){ form = 'dk-thread'; head = `<div class="row"><span class="kind">intent</span><span class="ph">inception</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.state)}${threadBeads(o).length ? ` · ${threadBeads(o).length} bead${threadBeads(o).length===1?'':'s'} · <kbd>]</kbd> opens the first` : ''}</div>`; body = dockIntent(o); }
+  else if(t==='v'){ form = 'dk-bead'; head = `<div class="row"><span class="kind">elaboration · ${esc(o.kind)}</span><span class="ph">inception</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.etype)} · on intent ${esc(o.intent.name)} · <button data-gotoobj="i:${o.intent.id}">‹ back to the thread</button> · <kbd>]</kbd><kbd>[</kbd> beads</div>`; body = dockElab(o); }
   else if(t==='l'){ form = 'dk-record'; head = `<div class="row"><span class="kind">landed</span><span class="ph">operation</span>${nav}</div><h2 id="dk-title">${esc(o.repo)}/${esc(o.name)}</h2><div class="tail">landed ${esc(o.at)} · PR #${o.pr.n}</div>`; body = dockLanded(o); }
   else if(t==='h'){ head = `<div class="row"><span class="kind">host</span>${nav}</div><h2 id="dk-title">${esc(o.id)}</h2><div class="tail">${o.alive?'alive':'gone '+o.gone} · bound ${o.bound}</div>`; body = dockHost(o); }
   else if(t==='e'){ head = `<div class="row"><span class="kind">external system</span><span class="ph">map</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.what)}</div>`; body = sec('on the map', `<div class="dtext">An external system the fleet meets. It carries no claims of its own; a claim about the contract with it is in scope for every repository that meets it (105).</div>`) + sec('met by', `<div class="rows">${S.map.edges.filter(e => e[1]===o.id || e[0]===o.id).map(e => `<div class="row"><span class="st">${esc(e[0]===o.id ? e[1] : e[0])}</span><span class="grow">${esc(e[2])}</span></div>`).join('')}</div>`); }
@@ -1489,11 +1555,15 @@ document.addEventListener('click', e => {
   if(b && b.dataset.openrepo){ openDock('r:'+b.dataset.openrepo); return; }
   if(b && b.dataset.askagain){ askAgain(b.dataset.askagain); return; }
   if(b && b.dataset.xfinish){ const x = S.explorations.find(v => v.id===b.dataset.xfinish); x.state='done'; x.leaves='7d'; x.at=hhmm(S.minutes); x.last=`${hhmm(S.minutes)} · finished by dictation · record written in each intent`; say(`finish explore ${x.names.join(', ')}`); since('finished',`explore ${x.names.join(' + ')}`,'records in each intent · writeback per intent'); render(); return; }
-  if(b && b.id==='explore-go'){ const ids = [...S.picked].filter(intent); if(!ids.length) return; const kind = $('#explore-type').value; const id = 'x'+(S.explorations.length+1);
+  if(b && b.id==='explore-open'){ S.exploreMode = true; S.picked.clear(); render(); return; }
+  if(b && b.id==='explore-cancel'){ S.exploreMode = false; S.picked.clear(); render(); return; }
+  if(b && b.dataset.xkind){ S.exploreKind = b.dataset.xkind; render(); return; }
+  if(b && b.dataset.gotoobj){ openDock(b.dataset.gotoobj); return; }
+  if(b && b.id==='explore-go'){ const ids = [...S.picked].filter(intent); if(!ids.length) return; const kind = S.exploreKind; const id = 'x'+(S.explorations.length+1);
     const names = ids.map(i => intent(i).name);
     S.explorations.unshift({id, kind, intents:ids, names, label:`explore · ${names.join(' + ')}`, since:hhmm(S.minutes), state:kind==='standing'?'standing':'with', session:{state:kind==='standing'?'working':'with', host:'studio', agent:'claude', model:'fable', pane:newPane('studio')}, last:`${hhmm(S.minutes)} · place prepared off the books shared line · ${kind==='standing'?'standing':'waiting for you'}`});
-    S.picked.clear(); logLine(`explore ${names.join(', ')} · ${kind==='standing'?'standing':'with-operator'}`, {say:true}); toast(`explore · ${kind==='standing'?'standing':'with-operator'} elaboration over ${ids.length} intent${ids.length===1?'':'s'} · opened`); openDock('x:'+id); return; }
-  if(b && b.id==='explore-clear'){ S.picked.clear(); render(); return; }
+    S.picked.clear(); S.exploreMode = false; logLine(`explore ${names.join(', ')} · ${kind==='standing'?'standing':'with-operator'}`, {say:true}); toast(`explore · ${kind==='standing'?'standing':'with-operator'} elaboration over ${ids.length} intent${ids.length===1?'':'s'} · opened`); openDock('x:'+id); return; }
+
   if(b && b.dataset.bdrop){ const bo = bolt(b.dataset.bdrop); const u = bo.units.find(x => x.name===b.dataset.unit); bo.units = bo.units.filter(x => x!==u); say(`drop ${bo.name}/${u.name}`); since('dropped',`unit ${u.name}`,`from bolt ${bo.name} by dictation`); render(); return; }
   if(b && b.dataset.brenamesend){ const bo = bolt(b.dataset.brenamesend); const v = $(`[data-brename="${bo.id}"]`).value.trim(); if(!v || v===bo.name) return; const old = bo.name; bo.name = v; say(`rename ${old} ${v}`); render(); return; }
   if(b && b.dataset.wrongsend){ const n = +b.dataset.wrongsend; const ta = b.closest('.wrong').querySelector('textarea'); const v = ta.value.trim(); if(!v){ ta.focus(); return; } send(n, 'redo', v); return; }
@@ -1523,6 +1593,7 @@ document.addEventListener('click', e => {
   if(node && !t.closest('button')){ const id = node.dataset.node; if(node.dataset.ext){ openDock('e:'+id); return; }
     if(S.scopeSel && id!=='books'){ if(S.scopeSet.has(id)) S.scopeSet.delete(id); else S.scopeSet.add(id); render(); return; }
     openDock('r:'+id); return; }
+  const bd = t.closest('[data-bead]'); if(bd && !t.closest('button,input,label')){ openDock('v:'+bd.dataset.bead); return; }
   const obj = t.closest('[data-obj]');
   if(obj && !t.closest('input,textarea,select,button,label')){ openDock(obj.dataset.obj); return; }
   if(!t.closest('#dock') && S.open && !t.closest('#log,#logbtn,.hosts,.map-panel,.board-h') && !t.closest('input,select,label')){ S.hostlit = null; closeDock(); }
@@ -1545,7 +1616,7 @@ document.addEventListener('change', e => {
 });
 document.addEventListener('keydown', e => {
   const typing = e.target.matches('input,textarea,select');
-  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
+  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.exploreMode){ S.exploreMode = false; S.picked.clear(); render(); return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
   if(typing){ if(e.key==='Enter' && !e.shiftKey && e.target.id==='capture'){ e.preventDefault(); capture(); } if(e.key==='Enter' && e.target.matches('input') && e.target.closest('.argbox')){ e.preventDefault(); e.target.closest('.argbox').querySelector('[data-send],[data-usend]').click(); } if(e.key==='Enter' && (e.target.dataset.bname || e.target.dataset.brename)){ e.preventDefault(); if(e.target.dataset.brename) $(`[data-brenamesend="${e.target.dataset.brename}"]`).click(); else e.target.blur(); } return; }
   if(e.metaKey||e.ctrlKey||e.altKey) return;
   const k = e.key;
@@ -1556,6 +1627,14 @@ document.addEventListener('keydown', e => {
     const a = d.answers.map(x => x[0]).find(x => KEYS[x]===k);
     if(!a){ toast(`${d.n} · no "${k}" answer on this card · ${d.answers.map(x=>x[0]).join(' · ')}`, true); return; }
     e.preventDefault(); send(d.n, a); return; }
+  if(k===']'||k==='['){ /* step through the beads of the intent in hand */
+    let iid = null, sid = null;
+    if(S.open && S.open.startsWith('v:')){ [iid, sid] = S.open.slice(2).split('/'); } else if(S.open && S.open.startsWith('i:')) iid = S.open.slice(2);
+    let fromFocus = false;
+    if(!iid && S.focus && S.focus[0]==='d'){ const d = dec(+S.focus.split(':')[1]); if(d && d.obj && d.obj[0]==='i'){ iid = d.obj.slice(2); sid = d.sess||null; fromFocus = true; } }
+    const i = iid && intent(iid); if(!i) return; e.preventDefault(); const beads = threadBeads(i); if(!beads.length){ toast(`${i.name} · no elaboration yet`, true); return; }
+    const at = sid ? beads.indexOf(sid) - (fromFocus ? 1 : 0) : -1; const next = k===']' ? Math.min(beads.length-1, at+1) : at-1;
+    if(next<0){ openDock('i:'+iid); return; } openDock('v:'+iid+'/'+beads[next]); return; }
   if(k==='m'){ e.preventDefault(); S.view = S.view==='map' ? 'phases' : 'map'; document.body.dataset.tab = 'board'; render(); return; }
   if(k==='/'){ e.preventDefault(); document.body.dataset.tab = 'board'; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab==='board'))); $('#capture')?.focus(); }
 });
@@ -1573,6 +1652,7 @@ $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset
 const Q = new URLSearchParams(location.search);
 if(Q.get('theme')){ document.documentElement.dataset.theme = Q.get('theme'); $('#theme').textContent = Q.get('theme'); }
 if(Q.get('view')==='map') S.view = 'map';
+if(Q.has('explore')) S.exploreMode = true;
 if(Q.get('claim')) selectClaim(Q.get('claim'));
 if(Q.get('review')) S.review.on = true;
 render();
