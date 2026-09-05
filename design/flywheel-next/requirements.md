@@ -107,7 +107,8 @@ redefine these.
   the pointer to the raw material, and the signals read from it.
 - **move** — curation's stored judgment on one signal: attach to an
   open intent, challenge a standing claim, join a proposed new intent,
-  answered by a decision made since, or drop, with a reason.
+  answered by a decision made since, route to the chore or the ask
+  curation offered for it, or drop, with a reason.
 - **claim** — one statement in the design book of what is true at the
   destination: a boundary, an owner, a coupling, a store, an invariant,
   or a behavior. It has a stable name, a version that moves only when
@@ -582,10 +583,13 @@ requirements, iterated against the running plan rather than on paper.
 100. Whether a repository satisfies a claim is a judgment made by an
     agent, not a computation, and it is stored as a verdict with the
     inputs it was made from.
-101. A verdict is reused until its claim's version moves or its evidence
-    is gone. A repository changing does not by itself invalidate a
-    verdict. Not-applicable is a verdict like any other, so a scope
-    judgment is made once.
+101. A verdict is reused until its claim's version moves, its evidence
+    is gone, or a challenge move (116) is recorded against the claim it
+    verifies. A verdict that falls stale for a challenge makes planning
+    (28) due for that repository, and its proposal cites the signal. A
+    repository changing does not by itself invalidate a verdict.
+    Not-applicable is a verdict like any other, so a scope judgment is
+    made once.
 102. A repository's construction backlog is derived from the ledger:
     every claim in scope with no satisfied or not-applicable verdict.
     It is never stored as a list.
@@ -604,8 +608,9 @@ requirements, iterated against the running plan rather than on paper.
 
 106. Signals are appended by adapters, one record per signal, at any
     rate. The machinery never reads a signal except through curation.
-107. Every signal has exactly one standing move, stored with the signal
-    id, the target, the reason, and the date. Curation runs over signals
+107. Every signal has exactly one standing move — attach, challenge,
+    join, answered, route or drop — stored with the signal id, the
+    target, the reason, and the date. Curation runs over signals
     with no move and never re-judges one that has a move. Only the
     operator's response replaces a move: reviving a dropped signal, or
     splitting a cluster.
@@ -639,9 +644,13 @@ requirements, iterated against the running plan rather than on paper.
     events and writing captures runs unattended. Turning a capture into
     signals is a session's judgment and never runs unattended.
 116. Every move has a stated consequence. Attach lands the signal as
-    evidence on the intent. Challenge accumulates against the claim.
-    Join produces or grows a proposed intent. Answered names the claim
-    or record that settled it. Drop records the reason.
+    evidence on the intent. Challenge accumulates against the claim and
+    stales the verdicts of the challenged claim in every repository
+    that has one (101). Join produces or grows a proposed intent.
+    Answered names the claim or record that settled it. Route records
+    the chore or the ask that curation, being a session (58–60),
+    offered for a signal that argues with no claim. Drop records the
+    reason.
 117. Dropping a proposed intent gives each of its signals a move that
     records the drop. They are not clustered again unless new signals
     join them.
@@ -781,9 +790,10 @@ requirements, iterated against the running plan rather than on paper.
     from git by any system.
 182. An anomaly, an incident or a review raised in operation enters as a
     signal. Curation decides whether it becomes an intent, and planning
-    may route it as a unit or a chore on an open bolt (34). A data
-    product is worked the same way as software: a repository, its
-    bolts, and an operation seen through signals.
+    may route it as a unit or a chore on an open bolt (34), or a chore
+    on the shared line when no bolt is open (60). A data product is
+    worked the same way as software: a repository, its bolts, and an
+    operation seen through signals.
 
 186. A landed bolt, an archived intent, or any other finished object
     stays in every view while something about it is live — an open
@@ -1002,6 +1012,13 @@ service.
 | notify | the tracker's own notification of a change to an item |
 | list objects in scope | a query over the organization's items |
 | serve the status view | the board, plus a page served from the same items |
+
+The organization's dispatch agent, running outside every host, is this
+profile's binding for signals appended by adapters (106) and for
+capture in one gesture (112): it is the capture endpoint a delivery
+system or a chat calls, and it appends the signal records. The data
+plane stays silent about dispatch; it reads signals through curation
+like any other.
 
 156. The tracker holds every object's state, is durable, and is
      readable with no host of the operator's running.

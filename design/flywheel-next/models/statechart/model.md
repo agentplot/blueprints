@@ -1038,13 +1038,18 @@ the date and the session (`judged_by`).
 
 ### 8.3 Stale, and the decision that cannot be missed
 
-`judged → stale` when `cell.verdict_claim_version ≠ cell.claim_version`
-or the cited evidence is gone from the repository's shared head (101).
-Forty commits that leave the evidence in place change nothing (S11,
-I10). A stale cell is in the backlog, the backlog is in planning's
-fingerprint, planning becomes due, its session proposes, and
-`unit.proposed` is a decision. Three transitions, each a state read on
-every tick, none a message that can be lost.
+`judged → stale` when `cell.verdict_claim_version ≠ cell.claim_version`,
+the cited evidence is gone from the repository's shared head, or a
+challenge move stands against the claim since the verdict was judged
+(`cell.challenged`; 101, 116) — the one way a signal reaches a
+repository's backlog without an intent, and it reaches every
+repository holding a verdict of that claim. Forty commits that leave
+the evidence in place change nothing (S11, I10). A stale cell is in the
+backlog, the backlog is in planning's fingerprint (which also hashes
+the standing challenges in scope), planning becomes due, its session
+proposes citing the signal, and `unit.proposed` is a decision. Three
+transitions, each a state read on every tick, none a message that can
+be lost. `stale → judged` needs a verdict judged after the challenge.
 
 A moved claim reaches the operator in three ways, by how far the citing
 unit got (35, 103): a proposed unit is `superseded` silently and
@@ -1087,9 +1092,13 @@ Curation is one machine per organization. It runs a `curator` session
 when the unmoved count crosses the manifest's threshold or the cadence
 fires; the work order lists the unmoved signals, `claims.json`, and
 the open intents. The session delivers one move per signal (attach,
-challenge, join, answered, drop, each with a reason) and one proposed
-intent per join cluster, with its proposed elaborations and typed by
-the material. Where one run proposes elaborations of one type on
+challenge, join, answered, route, drop, each with a reason) and one
+proposed intent per join cluster, with its proposed elaborations and
+typed by the material. The curation session is a session like any
+other (58–60): for a signal that argues with no claim it may offer a
+chore or an ask through `flywheel offer`, `record_offers` makes the
+proposed chore unit on the shared line or the ask record, and the
+signal's move is `route`, naming that offer (116). Where one run proposes elaborations of one type on
 several intents it may deliver them gathered, and `applying` writes
 one proposed elaboration on the first intent named, its `covers`
 naming all of them (`gather_elaborations`, 188); the other covered
@@ -1868,8 +1877,12 @@ binding reads (177); what goes out is the book, the claim blocks and
 the ledger, files on the books' shared line any system can read from
 git (181). An anomaly, an incident or a review raised in operation is a
 signal, curation's move decides whether it joins an intent, and
-planning may route it as a unit or a chore on an open bolt, which
-`propose_units` does for any ask or signal it consumes (183). A data
+planning may route it as a unit or a chore on an open bolt, or a chore
+on the shared line when no bolt is open, which `propose_units` does for
+any ask or signal it consumes (60, 182). A signal that challenges a
+standing claim stales that claim's verdict in every repository holding
+one, so planning is due there and proposes citing the signal (101,
+116). A data
 product is a repository in the manifest like any other. Operation is
 therefore a profile binding — the adapters that capture and the
 evidence that reads links — and not a machine (`gaps.md`).

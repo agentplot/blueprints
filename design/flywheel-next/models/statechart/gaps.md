@@ -243,6 +243,46 @@ the operator may reverse by a response on the file; an entry with
   more than a software repository does. The adapters themselves are
   not in this model, only the formats they write. **Decision**.
 
+- **101 / 116 a challenge stales a verdict.** `cell.challenged` holds
+  when a standing challenge move against the cell's claim is dated
+  after the verdict's `judged_at`, in every repository that has a
+  verdict of that claim; the cell goes `stale`, the fingerprint (which
+  hashes the standing challenges in scope) moves, planning is due, and
+  its proposal cites the signal. A verdict judged after the challenge
+  clears it without the operator; a verdict that finds the claim still
+  satisfied is such a verdict, so a challenge the code answers is
+  settled by planning's next verdict, and only a `not-satisfied` one
+  becomes work. A challenge the operator's response later moves away
+  (revive, split) un-stales the cell on the next read. **Decision**.
+
+- **116 the route move.** Curation is a session (58–60), so for a
+  signal that argues with no claim it offers a chore or an ask through
+  the command like any session; `record_offers` on the curation
+  session's exit makes the proposed chore unit on the shared line or
+  the ask record, and `record_moves` writes `route <offer entry id>`
+  on the signal. No new effect: the offer path already exists. A route
+  whose chore is declined leaves the signal routed, not unmoved; the
+  operator revives it to have it judged again (107). **Decision**.
+
+- **177 delivery links.** `line.request_links` is read only while the
+  bolt's request is open and never under the direct policy: a direct
+  landing has no request for a git host or an integration to publish
+  links on, and after the request merges the landed bolt's releases
+  and environments are operation's (181), reaching the flywheel only
+  as signals. Regression results a delivery system posts as check
+  runs on the request are read like any check (176) and need nothing
+  from the flywheel. **Decision**.
+
+- **182 a chore on the shared line.** When no bolt of the repository
+  is open, planning routes a signal from operation as a chore on the
+  shared line rather than opening a bolt for it (60). **Decision**.
+
+- **Pending Chuck's acceptance — the acceptance document.** A landing
+  would leave, in the built repository beside the as-built, the
+  scenarios of the claims the bolt's units named, as the acceptance
+  document a delivery system reads from git. Not a requirement yet;
+  no machine, effect or binding models it. **Pending**.
+
 - **187 the proposal's document beside its record.** A proposal's and
   a unit's `document` is a path in the state store beside the proposal
   record (`objects/proposal/<id>/document.md` in git-only, an
