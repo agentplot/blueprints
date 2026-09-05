@@ -58,6 +58,10 @@ redefine these.
 - **planning** — the session that reads one built repository's backlog,
   as-built and open bolts and proposes units, each with a target bolt:
   an open one, or a new one with a proposed name.
+- **proposal** — planning's document for one run: the bolts it
+  proposes, new or open, and the units in each with their types and
+  dependencies. One decision on the plan; nothing in it is a bolt or a
+  unit until its yes.
 - **work item** — one task of a unit, worked through construction
   stages by sessions, merged into the bolt when complete.
 - **service** — one process a repository declares that listens in a
@@ -66,6 +70,11 @@ redefine these.
 - **line** — a branch the machinery owns: each repository's shared
   line, a bolt's line off a built repository's shared line, an intent's
   line off the books' shared line.
+- **landing** — the machinery's effect that moves a line's work onto
+  its parent: a bolt's line onto the shared line by the repository's
+  policy, direct or pull-request; an intent's line by the archive. A
+  bolt is landing from the operator's close until the landing passes or
+  fails.
 - **place** — a worktree the machinery prepares for one session off one
   line: a work item's place off its bolt's line, an elaboration's place
   off its intent's line, and a bolt's own place for the operator.
@@ -664,6 +673,88 @@ requirements, iterated against the running plan rather than on paper.
     be told apart.
 124. A test can show, for a given instruction version and a scenario,
     what a session would be asked to write, without starting one.
+
+### A.17 Sessions charged by the machinery
+
+171. Every agent session is data plane. The engine runs no agent; it
+    charges sessions and reads what they leave. A session charged by an
+    approved unit or elaboration works the operator's work. A session
+    charged by the machinery itself — curation (110), planning (28), a
+    conflict fix (52), findings routing — works the machinery's
+    judgment. Both have the fixed exits of A.7, and both are refused
+    every state change (43).
+172. Planning delivers one proposal per run: a document showing the
+    bolts it proposes, new or open, and the units in each with their
+    types and dependencies. The proposal is one decision — yes, redo
+    with notes, later — and each unit in it is separately answerable
+    before the yes: bolt <name>, new bolt <name>, rename, type, drop.
+    Nothing becomes a bolt or a unit until the proposal's yes. A
+    proposal replaced by planning's next run is superseded silently
+    (35). The operator sees the proposal on the review surface as one
+    document (17, 36).
+173. A stage names the kind of agent that works it, and any agent the
+    multiplexer can start is a kind: claude, codex, opencode. The
+    machinery starts every kind through the same command, in a prepared
+    place, with the same instruction data (119). Nothing in the
+    machinery depends on one agent program's hooks, transcript or
+    files; a session's exits are read from what it leaves in its place
+    and from its report (A.7).
+174. Sessions have affinity to a multiplexer session, declared per host
+    in the manifest. With no declaration the defaults hold:
+    `flywheel-<org>-intents` for elaboration sessions,
+    `flywheel-<org>-bolts` for construction sessions, and
+    `flywheel-<org>-machinery` for sessions the machinery charges. A
+    declaration may route any kind or repository elsewhere. The
+    machinery creates the multiplexer session when it is absent.
+
+### A.18 Landing, pull requests and merge-back
+
+175. A bolt's landing policy is its repository's, from the manifest:
+    direct or pull-request. Direct: at close the machinery merges the
+    bolt line into the shared line with a merge commit. Pull-request:
+    at close the machinery opens the request from the bolt line, and
+    the bolt stays open, landing, until the request merges or is
+    closed. A closed request is a failed landing (40), and the bolt
+    stays open.
+176. While the request is open, its reviews and check results are
+    evidence on the bolt. A review that asks for a change is a finding
+    on the bolt (A.6). An accepted finding is a chore on the bolt line
+    (60–63), worked by a session in a place off the line, and its merge
+    into the line updates the request. The cycle repeats until the
+    request merges.
+177. Links the git host or an integration publishes for the request —
+    check runs, deployments, ephemeral environments — are surfaced on
+    the bolt by an adapter that reads them (114). The machinery neither
+    creates nor depends on them.
+178. Conversation on a request may be captured as signals by an adapter
+    (111–115). Nothing in a request changes an intent except through
+    curation (20).
+179. The history of an open line is never rewritten. Every take is a
+    merge (50), and an item's merge into its bolt line is a squash to
+    one commit that names the item, unless the manifest says otherwise
+    for that repository. A place is rebased onto its line only while no
+    session is working in it (51, 52). The landing's shape is the
+    repository's: a merge commit when direct, the repository's merge
+    setting when pull-request.
+180. A take or a merge that conflicts is a chore on the line (52). On a
+    busy line the resolution repeats: after each chore merges the take
+    is retried, up to a bound, and at the bound it is a decision: retry
+    or hold. The operator is never asked to choose between merge and
+    rebase; that choice is the manifest's, per repository.
+
+### A.19 Operation
+
+181. Operation is a phase the flywheel observes and never runs. A landed
+    bolt's releases, environments and runs belong to the delivery
+    system. What the flywheel receives from it are signals through
+    adapters (106) and links through evidence (177); what it offers it
+    are the book, the claims and the as-built ledger (A.14), readable
+    from git by any system.
+182. An anomaly, an incident or a review raised in operation enters as a
+    signal. Curation decides whether it becomes an intent, and planning
+    may route it as a unit or a chore on an open bolt (34). A data
+    product is worked the same way as software: a repository, its
+    bolts, and an operation seen through signals.
 
 ## 5. Requirements — Part B, the control plane contract
 

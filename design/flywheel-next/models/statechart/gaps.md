@@ -1,6 +1,6 @@
 # Gaps — requirements not satisfied, or found contradictory
 
-By requirement number (1–170 in `requirements.md`). Each entry says what
+By requirement number (1–182 in `requirements.md`). Each entry says what
 the model does instead and why. An entry with **decision** is a judgment
 the operator may reverse by a response on the file; an entry with
 **open** is unsatisfied.
@@ -190,6 +190,58 @@ the operator may reverse by a response on the file; an entry with
   organization's `plan` object, since there is no books object
   machine. Slight stretch of "the response is recorded with the object
   it concerns" (153).
+
+- **171 "findings routing".** There is no findings-routing session in
+  this model: `record_offers` turns each offer into a record pointing at
+  its document, mechanically, and the routing is the operator's answer
+  on the resulting proposal. A session that routes findings is one the
+  operator may add as a machinery-charged session; the affinity default
+  (174) already names where it would run. **Decision**.
+
+- **172 per-unit answers on one proposal.** A per-unit answer on the
+  proposal's decision is forwarded to the unit as an op-response of its
+  own (`forward_answer`), so the unit's guards are the same whether the
+  unit came from a proposal or from a finding. `rename` names the
+  proposed bolt and reaches every unit of the proposal targeting it.
+  The cost: a proposal's yes cascades over a tick, one unit per object,
+  and the plan may show the proposal `approved` a tick before its last
+  unit is. **Decision**. A unit dropped inside a proposal is gone
+  before the yes; the document still shows it, marked dropped on the
+  page.
+
+- **173 codex and opencode start commands.** The `kinds:` map in the
+  session binding is written from each program's documented flags and
+  verified against none; the operator edits the line when a program
+  changes. Whether each program honours a first message as the work
+  order, as Claude Code does, is **open**. Nothing else in the model
+  changes per kind.
+
+- **174 the multiplexer session flag.** `herdr agent start --session`
+  is assumed as the way to open a pane in a named herdr session, and
+  `herdr session new` as the way to create one. Not verified against
+  herdr in this model. **Open**.
+
+- **176 checks as findings.** A failed check run is read as a review
+  that asks for a change and becomes a proposed chore like a
+  CHANGES_REQUESTED review. A check that fails because the shared line
+  moved is therefore a chore the operator must decline, since the model
+  cannot tell a flake from a finding. **Decision**.
+
+- **179 squash by default.** An item's merge is `git merge --squash`
+  and one commit naming the item unless `item_merge: merge` in the
+  manifest. The commits the session made in its place are then only in
+  the place's reflog until the place is removed; a reviewer who wants
+  them reads the request's commits before the landing, which the
+  repository's own merge setting shapes. **Decision**.
+
+- **181 / 182 operation is a profile binding.** No machine runs after
+  a bolt lands. What operation contributes enters through the capture
+  adapters (an incident tracker, a log alert, a review thread, each an
+  adapter writing captures in the versioned format) and through
+  `line.request_links` read from the git host; what it consumes is the
+  books repository from git. A data product's repository declares no
+  more than a software repository does. The adapters themselves are
+  not in this model, only the formats they write. **Decision**.
 
 ## Part B
 

@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–170);
+Requirements are cited by their number in `requirements.md` (1–182);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -17,7 +17,8 @@ how the engine runs them; 3 names every store; 4 binds each profile; 5
 derives the plan; 6 to 11 cover planning, lines, the ledger, signals,
 sessions and hosts; 12 answers section 10 of the requirements one
 heading at a time; 13 gives the crate boundary; 14 walks S1 to S34; 15
-checks the invariants; 16 describes the diagrams.
+checks the invariants; 16 describes the diagrams; 17 covers the agent
+kinds, the pull-request landing and operation (A.17 to A.19).
 
 `machines/check.py` validates every machine against `machines/schema.json`,
 every guard and effect name against `machines/atoms.yaml`, every profile
@@ -55,7 +56,8 @@ of some object, or a file the machinery reads as evidence.
 | `capture` | object | one source event; read into signals once | — · signal | `machines/capture.yaml` |
 | `signal` | object | one raw input; exactly one standing move | capture · — | `machines/signal.yaml` |
 | `curation` | object, singleton per organization | the curation run | — | `machines/curation.yaml` |
-| `planning` | object, singleton per built repository | the planning run | — | `machines/planning.yaml` |
+| `planning` | object, singleton per built repository | the planning run | — · proposal | `machines/planning.yaml` |
+| `proposal` | object | one planning run's document: the bolts it proposes and the units in each; the one decision the run raises (172) | planning · — | `machines/proposal.yaml` |
 | `session` | template | one agent process in one place | instantiated by a type, a stage, curation, planning, capture, the operator session | `machines/session.yaml` |
 | `stage` | template | one stage of a unit type: its session set and join rule | instantiated by a unit type | `machines/stage.yaml` |
 | `line` | template | a branch the machinery owns | instantiated by bolt and intent | `machines/line.yaml` |
@@ -671,7 +673,8 @@ the chat both read the register, so they show the same number (18).
 |---|---|---|---|---|
 | `intent-proposed` | approve | `intent.proposed` (curation's join, or a session's finding that fits no intent) | yes → open; drop; split | yes · drop · split |
 | `elaboration-proposed` | approve | `elaboration.proposed` (a finding on the thread; new material on an open intent; dictation never) — folded into the intent's decision while the intent is proposed; its document is reviewed on the review surface | yes → approved; drop; `type <name>` keeps it | yes · drop · type |
-| `unit-proposed` | approve | `unit.proposed` (planning, a finding routed to a bolt, a chore offer); chores fold by bolt, a baseline folds by batch; its document is reviewed on the review surface and an annotation there is the response (17) | yes → approved (creates the bolt if new, then the items); drop; redo → withdrawn; later → deferred; a moved claim → superseded, silently (35); bolt/new bolt/rename/type/pick keep it | yes · drop · redo: · bolt · new bolt · rename · type · pick · later |
+| `proposal` | approve | `proposal.proposed`: planning's one document per run, the bolts it proposes and the units in each (172); reviewed on the review surface and an annotation there is the response (17) | yes → approved, and every unit in `in-proposal` follows; redo → withdrawn; later → deferred; planning's next run → superseded, silently (35); a per-unit answer (`<unit>: bolt`, `new bolt`, `rename`, `type`, `drop`) is forwarded to the unit and keeps it | yes · redo: · later · `<unit>: bolt` · `<unit>: new bolt` · `<unit>: rename` · `<unit>: type` · `<unit>: drop` |
+| `unit-proposed` | approve | `unit.proposed` (a finding routed to a bolt, a chore offer); chores fold by bolt; its document is reviewed on the review surface and an annotation there is the response (17) | yes → approved (creates the bolt if new, then the items); drop; redo → withdrawn; later → deferred; a moved claim → superseded, silently (35); bolt/new bolt/rename/type/pick keep it | yes · drop · redo: · bolt · new bolt · rename · type · pick · later |
 | `unit-claim-moved` | decide | `unit.claim-moved`: an approved, unstarted unit whose cited claim moved (35) | redo → withdrawn; keep → approved with the version pinned | redo · keep |
 | `bolt-close` | approve | `bolt.open[close].offered` when every unit is merged, no chore outstanding, no hold since the last merge | yes → landing; hold → held; new work → not-offered | yes · hold |
 | `intent-close` | decide | `intent.open[close].offered` when every elaboration is done | close → archiving; keep open → declined; new work → not-offered | close · keep open |
@@ -785,28 +788,39 @@ ledger: every cell in scope not `satisfied` or `not-applicable`), the
 as-built statements, and **every open bolt of the repository with its
 units and their states**. The session delivers, through `flywheel exit
 done`: verdicts (including `not-applicable`, each with the evidence it
-was judged from), and units, each with a type, a document, dependencies,
-cited claims, and a target: an open bolt id when the work belongs with
-what that bolt holds, otherwise `new: <proposed name>`. `applying`
-writes the verdicts to the ledger, the units to the plan, and the
-fingerprint, then returns to `current`.
+was judged from), and one **proposal**: a document showing the bolts it
+proposes, new or open, and the units in each, every unit with a type,
+dependencies, cited claims, and its target bolt (172). `applying`
+writes the verdicts to the ledger, the units in `in-proposal`, the
+proposal in `proposed`, and the fingerprint, then returns to `current`.
+The proposal is the one decision the run raises (`machines/proposal.yaml`);
+a unit in `in-proposal` raises none and reads the proposal's state
+through `unit.proposal`. On the proposal's yes every unit it names goes
+to `approved`, creating its bolt when the target is still new — several
+units naming the same new bolt make one — and its items. A per-unit
+answer on the proposal (`<unit>: bolt <name>`, `new bolt`, `rename`,
+`type`, `drop`) is forwarded to the unit as a response of its own
+(`forward_answer`), so the unit's guards apply it exactly as they would
+a finding's or a chore's, which are still proposed on their own as
+`unit-proposed` (58, 60).
 
 On a repository's first planning (`planning.ledger_empty`) every cell
-in scope is judged once and the units carry one `batch` id, so they
-fold into a single baseline decision (S10). Chores may be among them
-(64). A stale cell is planned against once per fingerprint: a proposal
-already standing for the same cell is cited by the session (the work
-order lists open units) and not proposed again.
+in scope is judged once and the proposal is the baseline: one decision
+by construction (S10). Chores may be among its units (64). A stale
+cell is planned against once per fingerprint: a proposal already
+standing for the same cell is cited by the session (the work order
+lists open units) and not proposed again.
 
-A proposed unit whose cited claim moved goes to `superseded` with no
-response and no tail entry: a proposal is not work, the fingerprint
-moved with the claim, and planning's next proposal replaces it (35).
+Planning's next run supersedes the standing proposal, and the units it
+named with it, with no response and no tail entry: a proposal is not
+work (35, 172). A unit proposed on its own whose cited claim moved goes
+to `superseded` the same way.
 
-The operator's response on a unit decision can rename the proposed
-bolt, route the unit to another open bolt, or give it a new bolt;
-`create_bolt` runs only on yes, and only when the target is still `new`
-(29, S27). No order among bolts is stored: a bolt record has no
-predecessor field and no guard reads another bolt (30).
+The operator's answer on the proposal can rename a proposed bolt, route
+a unit to another open bolt, or give it a new bolt; `create_bolt` runs
+only on yes, and only when the target is still `new` (29, S27). No
+order among bolts is stored: a bolt record has no predecessor field
+and no guard reads another bolt (30).
 
 ## 7. Lines and places
 
@@ -871,15 +885,21 @@ place is a region for the same reason.
 `merge_place` runs one place at a time in the fixed order (unit
 approval time, then item ordinal), via `place.merge_slot`. A place
 whose line moved under it while it waited goes back to `behind` first.
+An item's merge is a squash to one commit that names the item, unless
+the manifest's `item_merge` for the repository says `merge`; a take is
+always a merge commit; nothing on an open line is ever rewritten (179).
 After the merge the bolt's operator place is reset to the new head
 (44). Landing: `bolt.open → landing` on the operator's yes enters the
-line's `landing`, which takes the parent once more and then `land_line`
-by the manifest's policy: a pull request with auto-merge through the
-repository's gates, or a direct push with expected-old. A failed gate
-is `land-failed`, a decision, and nothing is asked of any session until
-the response (40, S33). A landed line goes to `removing` and is removed;
-the bolt's `landed` transition enters the operator's place in
-`removing` as well.
+line's `landing`, which takes the parent once more and then branches
+on `line.policy` (175). Direct: `land_line`, one merge commit into the
+shared line pushed with expected-old. Pull-request: `open_request`
+opens the request from the line and the line waits in `request-open`,
+the bolt staying in `landing`, until `line.request` is `merged` or
+`closed`; the repository's own merge setting lands it and the machinery
+sets none (179). A failed gate or a closed request is `land-failed`, a
+decision, and nothing is asked of any session until the response (40,
+S33). A landed line goes to `removing` and is removed; the bolt's
+`landed` transition enters the operator's place in `removing` as well.
 
 ### 7.5 Endpoints
 
@@ -1669,13 +1689,14 @@ send`); B's session resolves it, exits done → `conflict → behind`
 (retry 1) → `rebase_place` succeeds → `ready` (`tell_moved`). B's stage
 continues; on pass, `merging` → `merge_place` lands.
 
-**S33 — cadence and a failed gate.** Every morning `line.take_due` by
-the cron → `taking` (`take_parent`) → `current`. Close → `landing`:
-`take_parent` once more, `land_line` opens the pull request; the gates
-fail → `line.landing: failed` → `bolt.land-failed` (+`land-failed`,
-`landing_failure` on the record, delivered to the bell as well as the
-chat and page). No session is requested. `retry` → `landing` again;
-`hold` → `open`.
+**S33 — cadence and a closed request.** Every morning `line.take_due`
+by the cron → `taking` (`take_parent`) → `current`. Close → `landing`:
+`take_parent` once more, then `line.policy` is pull-request →
+`open_request` → `request-open`; the request is closed unmerged →
+`line.request: closed` → `line.land-failed` → `bolt.land-failed`
+(+`land-failed`, `landing_failure` on the record, delivered to the bell
+as well as the chat and page). No session is requested. `retry` →
+`landing` again, which reuses or reopens the request; `hold` → `open`.
 
 **S34 — two elaborations, one archive.** Research (self-closing) exits
 done → `elaboration.finishing` (`enter: place: merging`) → `merge_place`
@@ -1776,3 +1797,60 @@ response lane shows a reply resolved by number. Two decisions:
 decision of a lease, the 60-second sweep's interaction with leases (a
 host renews only the leases of objects it ticked), and the dispatcher
 as a presenter outside every host, all in sections 5.5 and 11.
+
+## 17. Agent kinds, the pull-request landing, and operation
+
+**A.17 — sessions charged by the machinery.** Every session is the
+same template (`machines/session.yaml`) whoever charged it: a stage of
+an approved unit, an elaboration type, curation, planning, capture
+reading or the fix of a take conflict. The engine runs no agent; it
+runs `start_session` and reads the pane, the exit entry and the place
+(171). The template takes a `kind` beside the agent name — `claude`,
+`codex` or `opencode`, default `claude` — and a stage's agent entry
+may carry one (173); the session binding's `kinds:` map gives each
+kind its start command, every kind started through the same `herdr
+agent start` in a prepared place with the same rendered work order,
+and the git hooks in the place are what refuse a line operation, so
+nothing depends on one program's own settings. Which multiplexer
+session a pane opens in is the binding's `multiplexer_sessions:`
+(174): `flywheel-<org>-intents` for elaboration sessions and the
+operator's own, `flywheel-<org>-bolts` for the stage sessions of
+approved units, `flywheel-<org>-machinery` for what the machinery
+charges, overridable per host by kind or by repository, created when
+absent. Planning's run delivers one `proposal` object (section 6),
+which is the one decision it raises (172).
+
+**A.18 — landing, pull requests and merge-back.** The line's `landing`
+branches on `line.policy` (7.4): direct is `land_line`, one merge
+commit; pull-request is `open_request` and the `request-open` state,
+where the line waits while `line.request` is open and the bolt stays
+in `landing` (175). While it waits, a review that asks for a change or
+a failed check is `line.request_review_pending`, and
+`seed_request_finding` records it as a proposed chore unit on the bolt
+pointing at the review; accepted, the chore's session works a place
+off the bolt line, `merge_place` moves the line, and the request
+follows the line (176). The request's links are `line.request_links`,
+read by the git host binding and shown under the bolt's decisions;
+the machinery creates none of them (177). Conversation on the request
+reaches the flywheel only as captures an adapter writes, and so only
+through curation (178). History on an open line is never rewritten:
+takes are merge commits, an item's merge is a squash naming the item
+unless the manifest says `item_merge: merge`, a place is rebased only
+while no session works in it, and the landing's shape is the
+repository's own (179). A conflicting take is the chore of 7.2, retried
+after each chore merges up to three times and then the `stalled`
+decision (retry, hold); merge against rebase is never the operator's
+question (180).
+
+**A.19 — operation.** Nothing in `machines/` runs after a bolt lands:
+releases, environments and runs are the delivery system's. What comes
+back is a signal an adapter captures (106) or a link the git host
+binding reads (177); what goes out is the book, the claim blocks and
+the ledger, files on the books' shared line any system can read from
+git (181). An anomaly, an incident or a review raised in operation is a
+signal, curation's move decides whether it joins an intent, and
+planning may route it as a unit or a chore on an open bolt, which
+`propose_units` does for any ask or signal it consumes (182). A data
+product is a repository in the manifest like any other. Operation is
+therefore a profile binding — the adapters that capture and the
+evidence that reads links — and not a machine (`gaps.md`).
