@@ -36,6 +36,18 @@
     with-operator elaboration over the named intents, shown as a session row in Inception
     with its covered intents; its dock notes that records go to each covered intent's change
     directory and conclusions to the book once. "finish" on it is a dictation.
+  - Every live session shows one chip, the same style everywhere: agent · model, host, activity
+    (working / starting / idle 14h / blocked / with you), and a pane link (a herdr pane; the
+    click only toasts here). Intent rows list their elaborations, each with its chip or its
+    state; running work items carry a chip each; the dock's session rows carry one too.
+    Machinery sessions (curation, planning per repository, conflict fixes when any) sit in a
+    "machinery" strip at the top beside SINCE and ATTENTION.
+  - A closed intent and a finished elaboration stay in Inception greyed, marked "closed ·
+    leaves in 7d" / "done · leaves in 7d" (§186); loop-granularity's four done elaborations
+    show the countdown at rest.
+  - The capture box says what it will send ("will send as: capture" or "dictation — <word>,
+    <effect>") and lists its grammar: explore <intents>, drop <unit>, rename <bolt> <name>,
+    service start|stop <bolt> <name>, session: <text>, plus intent:, chore <repo>:, bolt <name>:.
   - Keys: j/k and ↓/↑ move within a lane; h/l and ←/→ move to the nearest card in the next
     lane; the dock follows. y/n answer yes and drop/no; l answers "later" on a card that offers
     it (417) and moves right everywhere else.
@@ -106,7 +118,7 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
-body{background:var(--bg);color:var(--ink);font:14px/1.45 var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden;display:flex;flex-direction:column}
 h1,h2,h3,h4{margin:0;font-weight:600}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 button:focus-visible,[tabindex]:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -117,15 +129,19 @@ a{color:var(--accent-ink)}
 kbd{font-family:var(--mono);font-size:10.5px;padding:1px 5px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;background:var(--surface);color:var(--ink2)}
 
 /* ---- top bar ---- */
-.top{height:var(--top);display:flex;align-items:center;gap:18px;padding:0 20px;background:var(--surface);border-bottom:1px solid var(--line);position:relative;z-index:5}
+.top{flex:none;height:var(--top);display:flex;align-items:center;gap:18px;padding:0 20px;background:var(--surface);border-bottom:1px solid var(--line);position:relative;z-index:5}
 .brand{display:flex;align-items:baseline;gap:12px;min-width:0}
-.brand h1{font-size:16px;font-weight:700;letter-spacing:-.01em}
+.brand{flex:none}
+.brand h1{font-size:16px;font-weight:700;letter-spacing:-.01em;white-space:nowrap}
 .brand .meta{color:var(--ink2);font-size:12.5px;white-space:nowrap}
 .brand .meta .mono{color:var(--ink)}
 .count{margin-left:auto;display:flex;align-items:baseline;gap:8px;color:var(--ink2);font-size:12.5px;white-space:nowrap}
 .count b{font-family:var(--mono);font-weight:600;font-size:18px;color:var(--ink);letter-spacing:-.02em}
 .count .rule{color:var(--ink3)}
-.keys{display:flex;gap:10px;color:var(--ink3);font-size:11.5px;align-items:center}
+.keys{display:flex;gap:10px;color:var(--ink3);font-size:11.5px;align-items:center;white-space:nowrap}
+@media (max-width:1400px){.top .keys{display:none}}
+.count{min-width:0}
+#yesallhint{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:12.5px;font-weight:500;line-height:1.2;white-space:nowrap;transition:background .12s,border-color .12s}
 .btn:hover{border-color:var(--ink3);background:var(--sunk2)}
 .btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
@@ -140,12 +156,15 @@ kbd{font-family:var(--mono);font-size:10.5px;padding:1px 5px;border:1px solid va
 .logbtn b{font-family:var(--mono);font-weight:600}
 
 /* ---- strip: since + attention ---- */
-.strip{height:var(--strip);display:flex;align-items:center;gap:10px;padding:0 20px;background:var(--sunk2);border-bottom:1px solid var(--line2);overflow:hidden;position:relative;z-index:4}
+.strip{flex:none;min-height:var(--strip);display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;padding:5px 20px;background:var(--sunk2);border-bottom:1px solid var(--line2);overflow:hidden;position:relative;z-index:4}
 .strip .lab{font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);white-space:nowrap}
 .strip .lab b{color:var(--ink2);font-family:var(--mono);font-weight:500;letter-spacing:0;text-transform:none;margin-left:4px}
 .strip .items{display:flex;gap:6px;min-width:0;overflow:hidden;align-items:center}
-#since{flex:1 1 auto;mask-image:linear-gradient(90deg,#000 88%,transparent);-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent)}
-#attention{flex:0 1 auto;max-width:46%}
+#since{flex:1 1 120px;mask-image:linear-gradient(90deg,#000 88%,transparent);-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent)}
+#attention{flex:0 1 auto}
+#machinery{flex:none}
+.mc{display:inline-flex;align-items:center;gap:5px}
+.mc .mn{font-size:11.5px;font-weight:500;color:var(--ink)}
 .pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:3px 9px 3px 6px;border-radius:999px;border:1px solid var(--line);background:var(--surface);white-space:nowrap;color:var(--ink2)}
 .pill .v{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:1px 5px;border-radius:4px;background:var(--sunk);color:var(--ink2)}
 .pill .v.merged,.pill .v.landed,.pill .v.finished,.pill .v.answered,.pill .v.accepted{background:var(--yes-soft);color:var(--yes)}
@@ -156,11 +175,15 @@ kbd{font-family:var(--mono);font-size:10.5px;padding:1px 5px;border:1px solid va
 .pill.att{border-color:var(--warn);background:var(--warn-soft);color:var(--ink)}
 .pill.att .v{background:var(--warn);color:#fff}
 .pill .btn.sm{padding:1px 7px;font-size:11px;margin-left:2px}
-.strip .sep{width:1px;height:20px;background:var(--line);margin:0 6px;flex:none}
+.strip .sg{display:flex;align-items:center;gap:10px;min-width:0}
+.strip .sg.since{flex:1 1 260px}
+.strip .sg.att{flex:0 1 auto;max-width:100%}
+.strip .sg.mach{flex:none}
+.strip .sg+.sg{padding-left:12px;border-left:1px solid var(--line)}
 @keyframes arrive{from{transform:translateX(-8px);opacity:0}to{transform:none;opacity:1}}
 
 /* ---- board ---- */
-.board{display:grid;grid-template-columns:minmax(280px,1fr) minmax(300px,1.08fr) minmax(340px,1.3fr) minmax(280px,1fr);height:calc(100vh - var(--top) - var(--strip));position:relative}
+.board{flex:1;min-height:0;display:grid;grid-template-columns:minmax(280px,1fr) minmax(300px,1.08fr) minmax(340px,1.3fr) minmax(280px,1fr);position:relative}
 .lane{min-width:0;overflow-y:auto;overscroll-behavior:contain;padding:14px 14px 80px;border-right:1px solid var(--line2);scrollbar-width:thin}
 .lane:last-child{border-right:0}
 .lane-h{display:flex;align-items:baseline;gap:8px;margin:0 2px 12px;position:sticky;top:-14px;background:var(--bg);padding:14px 0 8px;z-index:2;margin-top:-14px}
@@ -190,6 +213,9 @@ kbd{font-family:var(--mono);font-size:10.5px;padding:1px 5px;border:1px solid va
 .capture .cf .as{font-size:11.5px;color:var(--ink3);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .capture .cf .as b{color:var(--ink2);font-weight:500}
 .capture .cf .as .mono{color:var(--accent-ink)}
+.capture .cf .as .kw{color:var(--drop)}
+.capture .gram{font-family:var(--mono);font-size:10.5px;color:var(--ink3);line-height:1.6;margin-top:6px}
+.capture .gram b{color:var(--ink2);font-weight:500}
 .curation{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;white-space:nowrap;font-size:11.5px;color:var(--ink3);padding:0 4px;margin:-4px 0 4px}
 .curation b{color:var(--ink2);font-family:var(--mono);font-weight:500}
 
@@ -306,6 +332,26 @@ kbd{font-family:var(--mono);font-size:10.5px;padding:1px 5px;border:1px solid va
 .dot.stopped{background:transparent;border:1.5px solid var(--ink3)}
 .dot.failed{background:var(--drop)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.sc{display:inline-flex;align-items:center;gap:0;font-family:var(--mono);font-size:10.5px;line-height:1;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink2);white-space:nowrap;vertical-align:middle;max-width:100%}
+.sc>*{padding:3px 6px;border-left:1px solid var(--line2)}
+.sc>*:first-child{border-left:0;padding-left:7px}
+.sc .dot{width:7px;height:7px;padding:0;margin:0 -1px 0 7px;border-left:0}
+.sc .ag{color:var(--ink);font-weight:500}
+.sc .hs{color:var(--ink3)}
+.sc .ac{color:var(--ink2)}
+.sc.working .ac{color:var(--run)}.sc.blocked .ac{color:var(--warn);font-weight:600}.sc.with .ac{color:var(--accent-ink);font-weight:600}.sc.idle .ac{color:var(--ink3)}.sc.scheduled .ac{color:var(--ink3)}
+.sc .pane{color:var(--accent-ink);font:inherit;padding:3px 8px 3px 6px;border-left:1px solid var(--line2);border-radius:0 999px 999px 0}
+.sc .pane:hover{background:var(--accent-soft)}
+.sc.done{opacity:.6}
+.el{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 0 0;font-size:12px}
+.el .en{color:var(--ink);font-weight:500;min-width:0}
+.el .leave{font-family:var(--mono);font-size:10.5px;color:var(--ink3)}
+.el .leave.soon{color:var(--warn)}
+.quiet.closed{opacity:.6}
+.quiet.closed .qn{text-decoration:line-through;text-decoration-color:var(--ink3);text-decoration-thickness:1px}
+.quiet .leave{font-family:var(--mono);font-size:10.5px;color:var(--ink3)}
+.quiet.explore.done{opacity:.6;border-color:var(--line);border-style:dashed}
+.unit .it{flex-basis:100%;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-left:4px}
 .wi{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10.5px;color:var(--ink2);padding:1px 6px;border-radius:999px;background:var(--sunk);white-space:nowrap}
 .wi.blocked{color:var(--warn);background:var(--warn-soft)}
 .bolt .svcline{display:flex;gap:10px;align-items:center;font-family:var(--mono);font-size:11px;color:var(--ink3);padding:0 4px 8px}
@@ -517,11 +563,9 @@ body.docked .dock{transform:none}
   <button class="btn pri" id="yesall">yes all</button>
 </header>
 <div class="strip">
-  <span class="lab">Since<b id="sincemark">09-03 18:05</b></span>
-  <div class="items" id="since"></div>
-  <span class="sep"></span>
-  <span class="lab">Attention</span>
-  <div class="items" id="attention"></div>
+  <div class="sg since"><span class="lab">Since<b id="sincemark">09-03 18:05</b></span><div class="items" id="since"></div></div>
+  <div class="sg att"><span class="lab">Attention</span><div class="items" id="attention"></div></div>
+  <div class="sg mach"><span class="lab">Machinery</span><div class="items" id="machinery"></div></div>
 </div>
 <main class="board" id="board">
   <section class="lane inception" id="lane-inception" aria-label="Inception"></section>
@@ -602,9 +646,9 @@ const S = {
     {v:'dropped', w:'chore atlas 2b', t:'by your response', at:'18:10', about:[415]},
   ],
   intents: [ /* open intents in flight with no decision */
-    {id:'atlas-provider-limits', name:'atlas-provider-limits', state:'proposed', note:'proposed · decision 412 · 1 standing session already on its line', sessions:[{id:'proto',name:'prototype plan-derivation',state:'idle',host:'studio',last:'09-03 17:30 · note: derivation is pure over state; nothing left to prove'}]},
-    {id:'loop-granularity', name:'loop-granularity', state:'done', note:'4 elaborations done · nothing running · decision 418', sessions:[]},
-    {id:'sink-marks', name:'sink-delivery-marks', state:'open', note:'research running · writeback queued', sessions:[{id:'sm-res',name:'research (self-closing)',state:'working',host:'studio',last:'07:33 · reading the three sinks\' delivery paths'}]},
+    {id:'atlas-provider-limits', name:'atlas-provider-limits', state:'proposed', note:'proposed · decision 412 · 1 standing session already on its line', sessions:[{id:'proto',name:'prototype plan-derivation (standing)',state:'idle',tag:'14h',host:'studio',agent:'claude',model:'fable',pane:'studio/2',last:'09-03 17:30 · note: derivation is pure over state; nothing left to prove'}]},
+    {id:'loop-granularity', name:'loop-granularity', state:'done', note:'4 elaborations done · nothing running · decision 418', sessions:[{id:'lg1',name:'research scope',state:'done',leaves:'today'},{id:'lg2',name:'planning rounds',state:'done',leaves:'2d'},{id:'lg3',name:'prototype tick',state:'done',leaves:'5d'},{id:'lg4',name:'writeback',state:'done',leaves:'6d'}]},
+    {id:'sink-marks', name:'sink-delivery-marks', state:'open', note:'research running · writeback queued', sessions:[{id:'sm-res',name:'research (self-closing)',state:'working',host:'studio',agent:'claude',model:'fable',pane:'studio/4',last:'07:33 · reading the three sinks\' delivery paths'},{id:'sm-wb',name:'writeback',state:'queued'}]},
     {id:'loop-cadence', name:'loop-cadence', state:'open', note:'sibling of loop-granularity · how often a loop asks a provider', sessions:[]},
     {id:'provider-key-rotation', name:'provider-key-rotation', state:'open', note:'from the ops constraint · provider B rotates keys on the 1st', sessions:[]},
   ],
@@ -613,7 +657,7 @@ const S = {
   bolts: [
     {id:'plan-decisions', name:'plan-decisions', repo:'atlas', line:'plan-decisions @ 9e21c4', note:'4 merged · 1 open · cites one-writer v3',
      units:[{name:'plan-derivation',state:'merged'},{name:'decision-numbers',state:'merged'},{name:'response-apply',state:'merged'},{name:'decision-grouping',state:'merged',t:'07:21'},
-            {name:'sink-delivery',state:'building',type:'default',items:[{id:'wi418',label:'wi-#418 build',state:'blocked',host:'mac-mini',last:'06:59 · asked: should Ready imply Backlog cleared?'},{id:'wi419',label:'wi-#419 spec',state:'working',host:'studio',last:'07:38 · asked the books for claim sinks/one-mark @v2 · found · cited'},{id:'wi420',label:'wi-#420 review',state:'working',host:'studio',last:'07:37 · two notes so far · none blocking'}]}],
+            {name:'sink-delivery',state:'building',type:'default',items:[{id:'wi418',label:'wi-#418 build',state:'blocked',host:'mac-mini',agent:'claude',model:'fable',pane:'mac-mini/1',last:'06:59 · asked: should Ready imply Backlog cleared?'},{id:'wi419',label:'wi-#419 spec',state:'working',host:'studio',agent:'claude',model:'fable',pane:'studio/5',last:'07:38 · asked the books for claim sinks/one-mark @v2 · found · cited'},{id:'wi420',label:'wi-#420 review',state:'working',host:'studio',agent:'claude',model:'opus',pane:'studio/6',last:'07:37 · two notes so far · none blocking'}]}],
      endpoints:['http://plan.plan-decisions.localhost:41231','http://rows.plan-decisions.localhost:41232'],
      services:[{n:'plan-api',s:'running',ep:'http://plan.plan-decisions.localhost:41231'},{n:'rows web',s:'running',ep:'http://rows.plan-decisions.localhost:41232'},{n:'postgres',s:'running',ep:'postgres://localhost:41233'},{n:'signal-worker',s:'stopped',ep:'—'}]},
     {id:'plan-rows', name:'plan-rows', repo:'switchboard', line:'plan-rows @ 7b2e91', note:'4 merged · nothing in flight · gates green',
@@ -622,7 +666,7 @@ const S = {
      services:[{n:'rows web',s:'running',ep:'http://rows.plan-rows.localhost:41235'},{n:'postgres',s:'running',ep:'postgres://localhost:41236'}]},
     {id:'plan-tail', name:'plan-tail', repo:'atlas', line:'plan-tail @ 3c8d0e', note:'1 merged · 1 building · 422 proposes 2 more',
      units:[{name:'tail-derive',state:'merged',t:'09-03'},
-            {name:'tail-marks',state:'building',type:'default',items:[{id:'wi425',label:'wi-#425 build',state:'working',host:'studio',last:'07:36 · mark table migration applied · 9 tests green'},{id:'wi426',label:'wi-#426 build',state:'starting',host:'studio',last:'07:39 · place prepared off plan-tail'}]}],
+            {name:'tail-marks',state:'building',type:'default',items:[{id:'wi425',label:'wi-#425 build',state:'working',host:'studio',agent:'claude',model:'fable',pane:'studio/7',last:'07:36 · mark table migration applied · 9 tests green'},{id:'wi426',label:'wi-#426 build',state:'starting',host:'studio',agent:'claude',model:'fable',pane:'studio/8',last:'07:39 · place prepared off plan-tail'}]}],
      endpoints:['http://atlas.plan-tail.localhost:41241'],
      services:[{n:'atlas-api',s:'running',ep:'http://atlas.plan-tail.localhost:41241'},{n:'atlas-worker',s:'stopped',ep:'—'}]},
   ],
@@ -642,7 +686,8 @@ const S = {
     {kind:'ask',src:'#ops chat · rhea',age:'3h',text:'can the prod status page show which bolt each row landed from?',move:'unmoved · curation at 08:00'},
     {kind:'constraint',src:'meeting · ops sync',age:'1d',text:'provider B rotates keys on the 1st; atlas must reload without a restart',move:'attached → intent atlas-provider-limits (412)'},
   ],
-  curation:{unmoved:5, by:'chat 2 · log 2 · meeting 1', oldest:'3d', next:'08:00 or at 8 unmoved'},
+  curation:{unmoved:5, by:'chat 2 · log 2 · meeting 1', oldest:'3d', next:'08:00 or at 8 unmoved', session:{name:'curation', state:'scheduled', act:'next 08:00', host:'studio', agent:'claude', model:'haiku', pane:'studio/1'}},
+  conflicts:[],
   proposal:{
     session:'planning · atlas · 2026-09-04 07:31', reads:'backlog change: claim plan/tail-cursor @v1 became standing at 05:40 (intent host-liveness writeback) · ask "the plan tail should survive a restart"',
     bolts:[
@@ -822,14 +867,30 @@ function cardHtml(d){
     <h3 class="title">${d.title}</h3><div class="tail">${d.tail}</div>${body}${actsHtml(d,'card')}${flightHtml(d.n)}</article>`;
 }
 const sessDot = s => `<span class="dot ${s.state}"></span>`;
+let paneN = 9; const newPane = host => `${host||'studio'}/${paneN++}`;
+function sessChip(s){
+  const st = s.state; const dot = st==='with' ? 'working' : st==='scheduled' ? 'idle' : st;
+  const act = s.act || (st==='idle' ? `idle ${s.tag||''}`.trim() : st==='with' ? 'with you' : st);
+  return `<span class="sc ${st}" title="${esc(s.last||'')}"><span class="dot ${dot}"></span><span class="ag">${esc(s.agent||'claude')} · ${esc(s.model||'fable')}</span><span class="hs">@${esc(s.host||'studio')}</span><span class="ac">${esc(act)}</span><button class="pane" data-pane="${esc(s.pane||'')}" title="open the pane">pane ↗</button></span>`;
+}
+function elabRow(s){
+  const right = s.state==='done' ? `<span class="leave ${/^(today|1d|2d)$/.test(s.leaves||'')?'soon':''}">done · leaves ${s.leaves==='today'?'today':'in '+esc(s.leaves||'7d')}</span>`
+    : s.state==='queued' ? `<span class="leave">queued · starts when research exits</span>`
+    : sessChip(s);
+  return `<div class="el"><span class="en">${esc(s.name)}</span>${right}</div>`;
+}
 function quietHtml(i){
-  const cls = ['quiet', S.focus===`i${i.id}`?'focused':'', S.open===`i${i.id}`?'open-in-dock':''].join(' ');
-  const ch = coverChips(i.id);
-  return `<div class="${cls}" data-nav="i${i.id}" tabindex="0"><div class="qh"><span class="qk">intent</span><span class="qn">${esc(i.name)}</span><span class="qr">${i.sessions.map(s => sessDot(s)).join(' ')||'—'}</span></div><div class="qt">${esc(i.note)}${gatheringOf(i.id) ? ' · no elaboration proposed while gathered' : ''}</div>${ch ? `<div class="chips">${ch}</div>` : ''}</div>`;
+  const g = gatheringOf(i.id);
+  const cls = ['quiet', i.state==='closed'?'closed':'', S.focus===`i${i.id}`?'focused':'', S.open===`i${i.id}`?'open-in-dock':''].join(' ');
+  const x = explorationOf(i.id);
+  const rows = i.sessions.map(elabRow).join('') + (g ? `<div class="el"><span class="en">${esc(g.type)} (self-closing)</span><span class="chip g">in gathering ${g.n}</span></div>` : '') + (x ? `<div class="el"><span class="en">explore (with-operator)</span><span class="chip x">explore · with you</span></div>` : '');
+  return `<div class="${cls}" data-nav="i${i.id}" tabindex="0"><div class="qh"><span class="qk">intent</span><span class="qn">${esc(i.name)}</span><span class="qr">${i.state==='closed' ? `<span class="leave">closed · leaves in ${esc(i.leaves||'7d')}</span>` : ''}</span></div><div class="qt">${esc(i.note)}${g ? ' · no elaboration proposed while gathered' : ''}</div>${rows || '<div class="el"><span class="leave">no elaboration yet</span></div>'}</div>`;
 }
 function exploreHtml(x){
-  const cls = ['quiet','explore', S.focus===`x${x.id}`?'focused':'', S.open===`x${x.id}`?'open-in-dock':''].join(' ');
-  return `<div class="${cls}" data-nav="x${x.id}" tabindex="0"><div class="qh"><span class="qk">explore · with-operator</span><span class="qn">${x.intents.map(i => esc(intentName(i))).join(' + ')}</span><span class="qr"><span class="dot working"></span> since ${esc(x.since)}</span></div><div class="qt">${esc(x.last)}</div><div class="chips">${x.intents.map(i => `<span class="chip i">${esc(intentName(i))}</span>`).join('')}</div></div>`;
+  const cls = ['quiet','explore', x.state==='done'?'done':'', S.focus===`x${x.id}`?'focused':'', S.open===`x${x.id}`?'open-in-dock':''].join(' ');
+  const title = x.kind==='session' ? esc(x.text) : x.intents.map(i => esc(intentName(i))).join(' + ');
+  const right = x.state==='done' ? `<span class="leave">done · leaves in ${esc(x.leaves||'7d')}</span>` : sessChip(x.session);
+  return `<div class="${cls}" data-nav="x${x.id}" tabindex="0"><div class="qh"><span class="qk">${x.kind==='session' ? 'session · with you · no thread' : 'explore · with-operator'}</span><span class="qn">${title}</span></div><div class="qt">${esc(x.last)}</div><div class="el">${right}</div>${x.intents.length ? `<div class="chips">${x.intents.map(i => `<span class="chip i">${esc(intentName(i))}</span>`).join('')}</div>` : ''}</div>`;
 }
 function laneHead(title, sub, count, extra=''){ return `<div class="lane-h"><h2>${title}</h2><span class="sub">${sub}</span>${extra}<span class="cnt ${count?'':'zero'}">${count||'no'} decision${count===1?'':'s'}</span></div>`; }
 function group(list, g, rule){ if(!list.length) return ''; return `<div class="sub-h ${g}">${g}<span class="r">${rule}</span></div>${list.map(cardHtml).join('')}`; }
@@ -838,7 +899,8 @@ const byG = (list) => [[APPROVE,'yes is safe · "yes all" takes these'],[DECIDE,
 function renderInception(){
   const ds = S.decisions.filter(d => d.phase==='inception');
   const cap = `<div class="capture"><textarea id="capture" rows="2" placeholder="Type an idea. Plain text is a capture with one signal (ask); intent: … opens an intent; chore atlas: … proposes a chore; bolt plan-tail: … proposes a unit there; explore atlas-provider-limits, sink-delivery-marks opens a with-operator elaboration over both."></textarea>
-    <div class="cf"><span class="as" id="capture-as">sends as <b>capture</b> · 1 signal · kind ask · curation sees it</span><span class="keys"><kbd>↵</kbd> send</span><button class="btn pri sm" id="capture-send">send</button></div></div>
+    <div class="cf"><span class="as" id="capture-as">will send as: <b>capture</b> (signal or intent)</span><span class="keys"><kbd>↵</kbd> send</span><button class="btn pri sm" id="capture-send">send</button></div>
+    <div class="gram">grammar · <b>explore</b> &lt;intents&gt; · <b>drop</b> &lt;unit&gt; · <b>rename</b> &lt;bolt&gt; &lt;name&gt; · <b>service</b> start|stop &lt;bolt&gt; &lt;name&gt; · <b>session:</b> &lt;text&gt; · <b>intent:</b> &lt;text&gt; · <b>chore</b> &lt;repo&gt;: &lt;text&gt; · <b>bolt</b> &lt;name&gt;: &lt;text&gt;</div></div>
     <div class="curation">unmoved signals <b>${S.curation.unmoved}</b><span>${esc(S.curation.by)}</span><span>oldest ${S.curation.oldest}</span><span>· curation at ${esc(S.curation.next)}</span></div>`;
   const xs = S.explorations.length ? `<div class="sub-h">with-operator<span class="r">dictated · over several intents</span></div>${S.explorations.map(exploreHtml).join('')}` : '';
   const inflight = xs + `<div class="sub-h">open intents<span class="r">no decision · in flight</span></div>${S.intents.map(quietHtml).join('')||'<div class="empty">nothing open</div>'}`;
@@ -858,7 +920,7 @@ function boltHtml(b){
   const hcls = ['bolt-h', S.focus===`b${b.id}`?'focused':'', S.open===`b${b.id}`?'open-in-dock':''].join(' ');
   const units = b.units.map(u => u.state==='merged'
     ? `<div class="unit merged"><span class="un">${esc(u.name)}</span><span class="ut">merged${u.t?' · '+u.t:''}</span></div>`
-    : `<div class="unit ${u.state}"><span class="un">${esc(u.name)}</span><span class="ut">${esc(u.type||'')} · ${esc(u.state)}</span><span class="sess">${(u.items||[]).map(i => `<span class="wi ${i.state}">${sessDot(i)}${esc(i.label)}</span>`).join('')}</span></div>`).join('');
+    : `<div class="unit ${u.state}"><span class="un">${esc(u.name)}</span><span class="ut">${esc(u.type||'')} · ${esc(u.state)}</span>${(u.items||[]).map(i => `<div class="it"><span class="wi ${i.state}">${esc(i.label)}</span>${sessChip(i)}</div>`).join('')}</div>`).join('');
   const svc = `<div class="svcline"><span>${b.services.filter(s=>s.s==='running').length}/${b.services.length} services</span><span class="ep">${esc(b.endpoints[0]||'no endpoint')}</span></div>`;
   return `<section class="${cls}"><div class="${hcls}" data-nav="b${b.id}" tabindex="0"><span class="bk">bolt</span><span class="bn">${esc(b.name)}</span><span class="br">· ${esc(b.repo)}</span><span class="bs">${b.landing?'<span class="landing">landing · PR #'+b.landing+'</span> · ':''}${running.length} running</span></div>
     <div class="units">${units}</div>${svc}${ds.length ? byG(ds) : `<div class="empty" style="padding:2px 4px 8px">no decision · next is the close, when every unit is finished</div>`}</section>`;
@@ -884,6 +946,10 @@ function renderOperation(){
 function renderStrip(){
   $('#since').innerHTML = S.since.map(s => `<span class="pill ${s.fresh?'new':''}"><span class="v ${s.v}">${esc(s.v)}</span><span class="w">${esc(s.w)}</span><span>· ${esc(s.t)} · ${esc(s.at)}</span></span>`).join('');
   S.since.forEach(s => delete s.fresh);
+  const mach = [`<span class="mc"><span class="mn">curation</span>${sessChip(S.curation.session)}</span>`]
+    .concat(S.planning ? [`<span class="mc"><span class="mn">planning · ${esc(S.planning.repo)}</span>${sessChip({state:'working', host:'studio', agent:'claude', model:'fable', pane:S.planning.pane, last:S.planning.last})}</span>`] : [])
+    .concat(S.conflicts.map(c => `<span class="mc"><span class="mn">conflict · ${esc(c.line)}</span>${sessChip(c.session)}</span>`));
+  $('#machinery').innerHTML = mach.join('');
   $('#attention').innerHTML = S.attention.map(a => `<span class="pill att"><span class="v">!</span><span>${a.text}</span>${a.acts.map(([k,l]) => `<button class="btn sm" data-att="${a.id}" data-ak="${k}">${esc(l)}</button>`).join('')}</span>`).join('') || '<span class="empty" style="padding:0">nothing</span>';
 }
 function renderTop(){
@@ -912,7 +978,7 @@ const kvHtml = rows => `<dl class="kv">${rows.map(([k,v]) => `<dt>${k}</dt><dd>$
 const stageLabel = {working:'working',starting:'starting',idle:'idle',blocked:'blocked',done:'done'};
 function sessionsHtml(list, note){
   if(!list.length) return `<div class="empty" style="padding:2px 0">${esc(note||'nothing running')}</div>`;
-  return `<div class="rows">${list.map(s => `<div class="row">${sessDot(s)}<div class="grow"><div class="nm">${esc(s.label||s.name)}<span class="m">@${esc(s.host||'?')}</span></div><div class="last">${esc(s.last||'')}</div></div><span class="st ${s.state}">${stageLabel[s.state]||s.state}</span></div>`).join('')}</div>`;
+  return `<div class="rows">${list.filter(s => s.state!=='queued').map(s => `<div class="row"><div class="grow"><div class="nm">${esc(s.label||s.name)}</div><div class="last">${esc(s.last||'')}</div></div>${sessChip(s)}</div>`).join('')}</div>`;
 }
 function servicesHtml(sv, ownerKey){
   if(!sv || !sv.list.length) return '';
@@ -1056,8 +1122,8 @@ function dockBolt(b){
     + sec('links', linksHtml(x.links||[]));
 }
 function dockIntent(i){
-  return sec('the intent', `<div class="dtext">Intent <span class="mono">${esc(i.name)}</span> is ${esc(i.state)}. ${esc(i.note)}. An intent is a line off the books' shared line; each elaboration works in a place off that line, and archiving the intent lands it.</div>`)
-    + sec('sessions running', sessionsHtml(i.sessions), 'with last activity')
+  return sec('the intent', `<div class="dtext">Intent <span class="mono">${esc(i.name)}</span> is ${esc(i.state)}. ${esc(i.note)}. An intent is a line off the books' shared line; each elaboration works in a place off that line, and archiving the intent lands it.${i.state==='closed' ? ` <b>Closed</b> · it stays in the view ${esc(i.leaves||'7d')} more, then leaves and stays in history (§186).` : ''}</div>`)
+    + sec('elaborations', `<div class="rows">${i.sessions.map(s => `<div class="row"><div class="grow"><div class="nm">${esc(s.name)}</div>${s.last ? `<div class="last">${esc(s.last)}</div>` : ''}</div>${s.state==='done' ? `<span class="leave">done · leaves ${s.leaves==='today'?'today':'in '+esc(s.leaves||'7d')}</span>` : s.state==='queued' ? '<span class="st">queued</span>' : sessChip(s)}</div>`).join('') || '<div class="empty" style="padding:2px 0">none yet</div>'}</div>`, 'each with its session')
     + sec('links', linksHtml([['intent',`books/intents/${i.id}.md`],['line',`books/${i.id}`]]));
 }
 function dockLanded(l){
@@ -1104,14 +1170,14 @@ function renderDock(){
     body = sec('the elaboration', `<div class="dtext">You opened one elaboration over ${x.intents.length} intents by dictation (§189): one session, one conversation, one place off the books' shared line, with you in it. Nothing on the plan waits for it; it ends when you finish it.</div>`)
       + sec('covered intents', `<div class="rows">${x.intents.map(id => `<div class="row"><span class="st">intent</span><div class="grow"><div class="nm">${esc(intentName(id))}</div><div class="last">records → books/intents/${esc(intentName(id))}/records/explore-${esc(x.id)}.md</div></div></div>`).join('')}</div>`)
       + sec('records per intent', `<div class="dtext">The session writes its records into <b>each</b> covered intent's change directory as it goes, and what it concludes into the book <b>once</b>; its writeback is per covered intent (§188). An intent it covers proposes no other elaboration meanwhile.</div>`)
-      + sec('sessions running', sessionsHtml([{label:'explore · with-operator', state:'working', host:'studio', last:x.last}]), 'with last activity')
+      + sec('sessions running', sessionsHtml(x.state==='done' ? [] : [{...x.session, label:x.kind==='session' ? 'session · with you' : 'explore · with-operator', last:x.last}], 'done · record written · leaves in 7d'), 'with last activity')
       + sec('links', linksHtml([['place',`~/places/books/_gathered/${x.id}`],...x.intents.map(id => ['intent',`books/intents/${intentName(id)}.md`])]));
-    foot = `<div class="fl">no decision<span class="r">finish is a dictation</span></div><div class="acts"><button class="btn" data-xfinish="${x.id}">finish</button></div>`;
+    foot = x.state==='done' ? `<div class="fl">done<span class="r">stays ${esc(x.leaves||'7d')} · then history</span></div>` : `<div class="fl">no decision<span class="r">finish is a dictation</span></div><div class="acts"><button class="btn" data-xfinish="${x.id}">finish</button></div>`;
   } else if(t.type==='planning'){ const p = t.obj;
     head = `<div class="row"><span class="kind">planning session</span><span class="phase">· bolt plan</span>${navHtml}</div><h2 id="dk-title">${esc(p.repo)} · charged again</h2><div class="tail">since ${esc(p.since)} · your notes travel with it</div>`;
     body = sec('the session', `<div class="dtext">Planning is a session of its own, run for one built repository when its backlog changes or when your redo sends a proposal back. It reads the backlog, the as-built and the open bolts, and proposes units. This run carries your notes; the proposal it writes arrives on the plan under a new number, and nothing was created by the withdrawn one.</div>`)
       + sec('your notes', `<div class="dsig">“${esc(p.notes)}”<small>redo · ${esc(p.since)}</small></div>`)
-      + sec('sessions running', sessionsHtml([{label:'planning · atlas', state:'working', host:'studio', last:p.last}]), 'with last activity')
+      + sec('sessions running', sessionsHtml([{label:'planning · atlas', state:'working', host:'studio', agent:'claude', model:'fable', pane:p.pane, last:p.last}]), 'with last activity')
       + sec('links', linksHtml([['place','~/places/atlas/planning'],['withdrawn','atlas/.flywheel/proposals/2026-09-04-plan.md · withdrawn']]));
     foot = `<div class="fl">no decision yet<span class="r">the next proposal is the decision</span></div>`;
   } else if(t.type==='intent'){ const i = t.obj;
@@ -1209,7 +1275,7 @@ function settle(n){
 function since(v, w, t, about){ S.since.unshift({v, w, t:t||'by your response', at:hhmm(S.minutes), fresh:true, about:about||[]}); }
 function say(text){ logLine(text, {say:true}); toast(`say → ${text} · applied`); }
 function addBolt(id, name, repo, note){ if(bolt(id)) return bolt(id); const b = {id, name, repo, line:`${name} @ new`, note, units:[], endpoints:[`http://${repo}.${name}.localhost:${41250+S.bolts.length}`], services:[{n:repo+'-api',s:'stopped',ep:'—'}]}; S.bolts.push(b); return b; }
-function startUnit(b, name, type, stage){ const id = 'wi'+S.nextWi; b.units.push({name, state:'building', type, items:[{id, label:`wi-#${S.nextWi++} ${stage}`, state:'starting', host:'studio', last:`${hhmm(S.minutes)} · place prepared off ${b.name}`}]}); setTimeout(() => { const it = b.units.find(u=>u.name===name)?.items.find(i=>i.id===id); if(it && it.state==='starting'){ it.state='working'; it.last=`${hhmm(S.minutes)} · reading the unit`; render(); } }, 2400); }
+function startUnit(b, name, type, stage){ const id = 'wi'+S.nextWi; b.units.push({name, state:'building', type, items:[{id, label:`wi-#${S.nextWi++} ${stage}`, state:'starting', host:'studio', agent:'claude', model:type==='chore'?'haiku':'fable', pane:newPane('studio'), last:`${hhmm(S.minutes)} · place prepared off ${b.name}`}]}); setTimeout(() => { const it = b.units.find(u=>u.name===name)?.items.find(i=>i.id===id); if(it && it.state==='starting'){ it.state='working'; it.last=`${hhmm(S.minutes)} · reading the unit`; render(); } }, 2400); }
 
 /* ---------- what a response does to the board ---------- */
 function effects(d, a, arg){
@@ -1224,12 +1290,12 @@ function effects(d, a, arg){
       if(a==='drop'){ g.state='dropped'; since('dropped','gathering 424','each intent proposes its own',[424]); break; }
       if(a==='pick'){ const keep = arg.split(' '); g.intents = g.intents.filter(i => keep.includes(i)); }
       if(a==='type') g.type = arg;
-      g.state='running'; const sess = {id:'g424', name:`${g.type} · gathered 424`, state:'starting', host:'studio', last:`${hhmm(S.minutes)} · place books/intents/_gathered/424 prepared`};
+      g.state='running'; const sess = {id:'g424', name:`${g.type} · gathered 424 (self-closing)`, state:'starting', host:'studio', agent:'claude', model:'fable', pane:newPane('studio'), last:`${hhmm(S.minutes)} · place books/intents/_gathered/424 prepared`};
       g.intents.forEach(id => { const i = S.intents.find(x => x.id===id); if(i){ i.sessions.push(sess); i.note = i.note.replace(/ · no elaboration.*$/,'') + ` · ${g.type} gathered in 424`; } });
       setTimeout(() => { if(sess.state==='starting'){ sess.state='working'; sess.last = `${hhmm(S.minutes)} · reading the three intents' signals`; render(); } }, 2400);
       since('started',`${g.type} · gathered 424`,`${g.intents.length} intents · one session`,[424]); break; }
-    case 418: if(a==='close'){ S.intents = S.intents.filter(i => i.id!=='loop-granularity'); since('closed','intent loop-granularity','3 claims standing',[418]); } else since('kept','intent loop-granularity','open',[418]); break;
-    case 419: { const i = S.intents.find(x => x.id==='atlas-provider-limits'); if(a==='finish'){ i.sessions = i.sessions.filter(s => s.id!=='proto'); i.note = i.note.replace('1 standing session already on its line','finding kept'); since('finished','prototype plan-derivation','place removed',[419]); } break; }
+    case 418: if(a==='close'){ const i = S.intents.find(x => x.id==='loop-granularity'); i.state='closed'; i.leaves='7d'; i.note='closed by your response · archived · 3 claims standing'; since('closed','intent loop-granularity','3 claims standing',[418]); } else since('kept','intent loop-granularity','open',[418]); break;
+    case 419: { const i = S.intents.find(x => x.id==='atlas-provider-limits'); if(a==='finish'){ const p = i.sessions.find(s => s.id==='proto'); if(p){ p.state='done'; p.leaves='7d'; p.last=`${hhmm(S.minutes)} · finished by your response · finding kept · place removed`; } i.note = i.note.replace('1 standing session already on its line','finding kept'); since('finished','prototype plan-derivation','record written · place removed',[419]); } break; }
     case 422: case 423: if(a==='yes'){
         P.units.forEach(u => { const s = propUnitState(u); if(s.drop) return; let b;
           if(s.bolt==='__new'){ const nm = s.newBolt||'unnamed'; b = addBolt('b-'+nm, nm, 'atlas', 'new · from 422'); }
@@ -1239,7 +1305,7 @@ function effects(d, a, arg){
         since('accepted','plan atlas','5 units on 2 bolts',[422,'plan-tail']);
       } else if(a==='drop') since('dropped','plan atlas','nothing created',[n]);
       else { since('redo',`plan atlas · ${n}`,'withdrawn · planning charged again',[n]); P.edits = {}; P.boltNames = {}; P.refuse = null;
-        S.planning = {repo:'atlas', notes:arg, since:hhmm(S.minutes), last:`${hhmm(S.minutes)} · reading your notes and the backlog`};
+        S.planning = {repo:'atlas', notes:arg, since:hhmm(S.minutes), pane:newPane('studio'), last:`${hhmm(S.minutes)} · reading your notes and the backlog`};
         setTimeout(() => { if(S.planning) S.planning.last = `${hhmm(S.minutes)} · re-reading open bolts plan-decisions, plan-tail`; render(); }, 2500);
         setTimeout(() => {
           const m = n+1, t = hhmm(S.minutes); S.planning = null;
@@ -1309,7 +1375,8 @@ document.addEventListener('click', e => {
   if(b && b.dataset.rok){ applyRefusal(); render(); return; }
   if(b && b.dataset.rcancel){ S.proposal.refuse = null; render(); return; }
   if(b && b.dataset.gdrop !== undefined){ const n = +b.dataset.n; if(S.inflight[n]){ refuse(n); return; } send(n, 'idrop', b.dataset.gdrop); return; }
-  if(b && b.dataset.xfinish){ const x = S.explorations.find(v => v.id===b.dataset.xfinish); S.explorations = S.explorations.filter(v => v!==x); say(`finish explore ${x.intents.map(intentName).join(', ')}`); since('finished',`explore ${x.intents.map(intentName).join(' + ')}`,'records in each intent · writeback per intent',[]); if(S.open===`x${x.id}`) closeDock(); else render(); return; }
+  if(b && b.dataset.xfinish){ const x = S.explorations.find(v => v.id===b.dataset.xfinish); x.state='done'; x.leaves='7d'; x.last=`${hhmm(S.minutes)} · finished by dictation · record written`; say(x.kind==='session' ? 'finish session' : `finish explore ${x.intents.map(intentName).join(', ')}`); since('finished', x.kind==='session' ? 'session · with you' : `explore ${x.intents.map(intentName).join(' + ')}`, x.kind==='session' ? 'record kept' : 'records in each intent · writeback per intent',[]); render(); return; }
+  if(b && b.dataset.pane !== undefined){ toast(`pane ${b.dataset.pane} · would open in herdr`); return; }
   if(b && b.dataset.wrongsend){ const n = +b.dataset.wrongsend; const ta = b.closest('.wrong').querySelector('textarea'); const v = ta.value.trim(); if(!v){ ta.focus(); return; } send(n, 'redo', v); return; }
   if(b && b.dataset.an !== undefined){ const d = dec(+S.open.slice(1)); if(!d) return; const box = $('#dk-f .argbox'); $$('.argbox').forEach(x => { x.innerHTML=''; delete x.dataset.arg; }); box.dataset.arg='redo'; box.innerHTML = argHtml(d,'redo'); const ta = box.querySelector('textarea'); ta.value = `[${b.dataset.an}] `; ta.focus(); return; }
 
@@ -1379,26 +1446,52 @@ function classify(v){
   if((m = v.match(/^chore\s+([\w-]+):\s*(.+)/i))) return {kind:'chore', repo:m[1], text:m[2]};
   if((m = v.match(/^bolt\s+([\w-]+):\s*(.+)/i))) return {kind:'bolt', bolt:m[1], text:m[2]};
   if((m = v.match(/^explore\s+(.+)/i))) return {kind:'explore', intents:m[1].split(/[\s,]+/).filter(Boolean)};
+  if((m = v.match(/^drop\s+([\w-]+)/i))) return {kind:'drop', unit:m[1]};
+  if((m = v.match(/^rename\s+([\w-]+)\s+([\w-]+)/i))) return {kind:'rename', bolt:m[1], name:m[2]};
+  if((m = v.match(/^service\s+(start|stop)\s+([\w-]+)\s+(.+)/i))) return {kind:'service', op:m[1].toLowerCase(), bolt:m[2], svc:m[3].trim()};
+  if((m = v.match(/^session:\s*(.+)/i))) return {kind:'session', text:m[1]};
   return {kind:'capture', text:v};
 }
 function captureAs(){
   const v = $('#capture').value.trim(); const c = classify(v); const as = $('#capture-as');
-  as.innerHTML = c.kind==='capture' ? 'sends as <b>capture</b> · 1 signal · kind ask · curation sees it'
-    : c.kind==='intent' ? 'sends as <b>dictation</b> · opens intent <span class="mono">'+esc(slug(c.text))+'</span> · no decision'
-    : c.kind==='chore' ? 'sends as <b>dictation</b> · proposes a chore on <span class="mono">'+esc(c.repo)+'</span>'
-    : c.kind==='explore' ? (() => { const bad = c.intents.filter(i => !knownIntent(i)); return 'sends as <b>dictation</b> · opens a with-operator elaboration over <span class="mono">'+c.intents.map(esc).join(', ')+'</span>' + (bad.length ? ' · <span style="color:var(--drop)">no intent '+bad.map(esc).join(', ')+'</span>' : ''); })()
-    : 'sends as <b>dictation</b> · proposes a unit on bolt <span class="mono">'+esc(c.bolt)+'</span>' + (S.bolts.some(b => b.name===c.bolt) ? '' : ' · <span style="color:var(--drop)">no open bolt by that name</span>');
+  const bad = t => ' · <span class="kw">'+t+'</span>';
+  const dict = (word, effect) => `will send as: <b>dictation</b> — ${word}, ${effect}`;
+  as.innerHTML = c.kind==='capture' ? 'will send as: <b>capture</b> (signal or intent)'
+    : c.kind==='intent' ? dict('intent', 'opens intent <span class="mono">'+esc(slug(c.text))+'</span> · no decision')
+    : c.kind==='chore' ? dict('chore', 'proposes a chore on <span class="mono">'+esc(c.repo)+'</span>')
+    : c.kind==='explore' ? dict('explore', 'opens a with-operator elaboration over <span class="mono">'+c.intents.map(esc).join(', ')+'</span>') + (c.intents.some(i => !knownIntent(i)) ? bad('no intent '+c.intents.filter(i => !knownIntent(i)).map(esc).join(', ')) : '')
+    : c.kind==='drop' ? (() => { const u = findUnit(c.unit); return dict('drop', u ? `drops unit <span class="mono">${esc(c.unit)}</span> ${u.where}` : 'drops a unit') + (u ? '' : bad('no unit '+esc(c.unit))); })()
+    : c.kind==='rename' ? dict('rename', `renames bolt <span class="mono">${esc(c.bolt)}</span> to <span class="mono">${esc(c.name)}</span>`) + (findBoltName(c.bolt) ? '' : bad('no bolt '+esc(c.bolt)))
+    : c.kind==='service' ? (() => { const b = S.bolts.find(x => x.name===c.bolt); const sv = b && b.services.find(x => x.n===c.svc); return dict('service', `${c.op}s <span class="mono">${esc(c.svc)}</span> on <span class="mono">${esc(c.bolt)}</span>`) + (sv ? '' : bad(b ? 'no service '+esc(c.svc) : 'no bolt '+esc(c.bolt))); })()
+    : c.kind==='session' ? dict('session', 'opens a with-operator session on no thread · ends by dictation')
+    : dict('bolt', 'proposes a unit on bolt <span class="mono">'+esc(c.bolt)+'</span>') + (S.bolts.some(b => b.name===c.bolt) ? '' : bad('no open bolt by that name'));
 }
 const intentId = x => (S.intents.find(i => i.id===x || i.name===x) || {}).id || (S.decisions.some(d => d.kind==='intent' && d.title===x) ? x : null);
 const knownIntent = x => !!intentId(x);
 const intentName = id => (S.intents.find(i => i.id===id) || {name:id}).name;
+function findUnit(name){
+  for(const b of S.bolts){ const u = b.units.find(x => x.name===name && x.state!=='merged'); if(u) return {bolt:b, unit:u, where:`on bolt ${b.name} (${u.state})`}; }
+  const pu = S.proposal.units.find(u => propUnitState(u).name===name);
+  if(pu && S.decisions.some(d => d.kind==='proposal')) return {prop:pu, where:`from proposal ${S.decisions.find(d => d.kind==='proposal').n} (staged)`};
+  return null;
+}
+const findBoltName = name => S.bolts.find(b => b.name===name) || (S.decisions.some(d => d.kind==='proposal') && S.proposal.bolts.find(b => (S.proposal.boltNames[b.id]||b.name)===name));
 const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').split('-').slice(0,4).join('-');
 function capture(){
   const ta = $('#capture'); const v = ta.value.trim(); if(!v){ ta.focus(); return; }
   const c = classify(v);
   if(c.kind==='capture'){ S.curation.unmoved++; S.curation.by = S.curation.by.replace(/page \d+/, m => 'page '+(+m.split(' ')[1]+1)) + (/page/.test(S.curation.by)?'':' · page 1'); logLine(`capture: ${v}`, {say:true}); toast('capture · 1 signal (ask) · curation sees it'); }
   else if(c.kind==='intent'){ const id = slug(c.text); S.intents.unshift({id, name:id, state:'open', note:'dictated · elaborations to come from planning', sessions:[]}); logLine(`intent: ${c.text}`, {say:true}); toast(`intent ${id} · opened`); }
-  else if(c.kind==='explore'){ const bad = c.intents.filter(i => !knownIntent(i)); if(bad.length){ toast(`no intent ${bad.join(', ')}`, true); return; } const id = 'x'+(S.explorations.length+1); S.explorations.unshift({id, intents:c.intents.map(intentId), since:hhmm(S.minutes), last:`${hhmm(S.minutes)} · place prepared off the books shared line · waiting for you`}); logLine(`explore ${c.intents.join(', ')}`, {say:true}); toast(`explore · with-operator elaboration over ${c.intents.length} intents · opened`); }
+  else if(c.kind==='explore'){ const bad = c.intents.filter(i => !knownIntent(i)); if(bad.length){ toast(`no intent ${bad.join(', ')}`, true); return; } const id = 'x'+(S.explorations.length+1); S.explorations.unshift({id, kind:'explore', intents:c.intents.map(intentId), since:hhmm(S.minutes), state:'with', session:{state:'with', host:'studio', agent:'claude', model:'fable', pane:newPane('studio')}, last:`${hhmm(S.minutes)} · place prepared off the books shared line · waiting for you`}); logLine(`explore ${c.intents.join(', ')}`, {say:true}); toast(`explore · with-operator elaboration over ${c.intents.length} intents · opened`); }
+  else if(c.kind==='session'){ const id = 'x'+(S.explorations.length+1); S.explorations.unshift({id, kind:'session', text:c.text, intents:[], since:hhmm(S.minutes), state:'with', session:{state:'with', host:'studio', agent:'claude', model:'fable', pane:newPane('studio')}, last:`${hhmm(S.minutes)} · read tools and dictation · no intent behind it`}); logLine(`session: ${c.text}`, {say:true}); toast('session · with you · opened on no thread'); }
+  else if(c.kind==='drop'){ const u = findUnit(c.unit); if(!u){ toast(`no unit ${c.unit}`, true); return; }
+    if(u.bolt){ u.bolt.units = u.bolt.units.filter(x => x!==u.unit); since('dropped',`unit ${c.unit}`,`from bolt ${u.bolt.name} by dictation`,[u.bolt.id]); logLine(`drop ${c.unit}`, {say:true}); toast(`unit ${c.unit} · dropped from ${u.bolt.name}`); }
+    else { S.proposal.refuse = null; if(tryDrop(u.prop.id)){ logLine(`drop ${c.unit}`, {say:true}); toast(`unit ${c.unit} · drop staged on the proposal`); } else { const r = S.proposal.refuse; S.proposal.refuse = null; toast(`refused · ${r.reason} · ${r.offer} on the proposal`, true); return; } } }
+  else if(c.kind==='rename'){ const b = S.bolts.find(x => x.name===c.bolt); const pb = !b && S.proposal.bolts.find(x => (S.proposal.boltNames[x.id]||x.name)===c.bolt);
+    if(b){ b.name = c.name; } else if(pb){ S.proposal.boltNames[pb.id] = c.name; } else { toast(`no bolt ${c.bolt}`, true); return; }
+    logLine(`rename ${c.bolt} ${c.name}`, {say:true}); toast(`bolt ${c.bolt} → ${c.name}${pb ? ' · staged on the proposal' : ''}`); }
+  else if(c.kind==='service'){ const b = S.bolts.find(x => x.name===c.bolt); const sv = b && b.services.find(x => x.n===c.svc); if(!sv){ toast(b ? `no service ${c.svc} on ${c.bolt}` : `no bolt ${c.bolt}`, true); return; }
+    sv.s = c.op==='stop' ? 'stopped' : 'starting'; say(`${c.op} ${sv.n} @ ${b.name}`); if(sv.s==='starting') setTimeout(() => { sv.s='running'; render(); }, 1500); }
   else if(c.kind==='chore'){ logLine(`chore ${c.repo}: ${c.text}`, {say:true}); toast(`chore on ${c.repo} · applied`); const b = addBolt('chores-'+c.repo,'chores',c.repo,'no bolt · one session each'); startUnit(b, 'chore · '+c.text.slice(0,28), 'chore', 'chore'); }
   else { const b = S.bolts.find(x => x.name===c.bolt); if(!b){ toast(`no open bolt "${c.bolt}"`, true); return; } logLine(`bolt ${c.bolt}: ${c.text}`, {say:true}); toast(`unit on ${c.bolt} · applied`); startUnit(b, slug(c.text), 'default', 'spec'); }
   ta.value=''; render(); captureAs();
