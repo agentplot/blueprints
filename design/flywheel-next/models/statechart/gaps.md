@@ -386,6 +386,27 @@ the operator may reverse by a response on the file; an entry with
   (Claude Code, codex, opencode); a kind with none is trusted to the
   work order. **Decision**.
 
+- **198 the context map as the scope surface.** The map
+  (`context-map.json`) is the one record of scope and of a
+  repository's kinds and capabilities: the claim block's `scope:` line
+  is rendered from the attachment and sits outside the lock hash, the
+  manifest's repository entry keeps only git details, and `flywheel map
+  check` ties the manifest list and the repository nodes together.
+  **Decision**; 195's wording "stated in the manifest beside the
+  repository" now reads as "on the node the manifest entry names", and
+  195 should be amended to say so. The map schema
+  (`flywheel/schemas/context-map.md`: node kinds repository and system,
+  node properties, edge relations, attachment rules) is sketched in
+  `profiles/books.yaml` and written nowhere else. **Open**. Existing
+  maps — `context-map.json` files written by the current flywheel's
+  writeback sessions without attachments, and claim blocks carrying
+  their own scope lines — need a migration that lifts each block's
+  scope line into an attachment and then re-renders; not modelled.
+  **Open**. The map view's gesture (select nodes, attach a claim) must
+  turn a selection into a rule — all, a kind, a capability or the named
+  repositories — and a selection that matches no single rule is sent
+  as named repositories. **Decision**.
+
 - **190 producers per deliverable.** The shipped set is a profile
   partial (`profiles/deliverables.yaml`) rather than a machine: it
   binds no evidence and no effect, so `check.py` does not check it

@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–197);
+Requirements are cited by their number in `requirements.md` (1–198);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -499,16 +499,13 @@ profile: tracker             # or git-only
 books: willdan/blueprints
 state: willdan/flywheel-state
 repositories:
-  - name: atlas
+  - name: atlas                # kinds and capabilities are on its context-map node (198)
     repo: willdan/atlas
-    kinds: [service]
-    capabilities: [provider-client]
     landing: pull-request
     take_cadence: "0 6 * * *"
     personas: "personas/*.md"
   - name: switchboard
     repo: willdan/switchboard
-    kinds: [service]
     landing: direct
     take_cadence: "0 6 * * *"
 hosts:                       # what each host takes (149); a host takes leases only within this
@@ -621,6 +618,12 @@ body edit with a date). Per repository, what landed in a period
 (`bolt.landed` entries). Per bolt, its units by state, what waits, and
 the endpoints its place serves (46). Per host, its running sessions,
 its bound and its declaration. Unmoved signals by source with age. The
+map view: the context map's nodes and edges, with the standing
+decisions as markers on the nodes their objects belong to, the claims
+attached to each node with the node's verdicts, what changed in the
+map and the chapters since the operator's last `reviewed` mark (122),
+and scope correction as a gesture — select nodes, attach a claim — that
+sends one `scope` call (193, 198). The
 page says the as-of point of the read it was built from (145). It is
 never written by hand.
 
@@ -1039,21 +1042,30 @@ cell per repository side by side (105). A `ledger-cell` object
 exists for every (standing claim, repository in scope) pair; `list`
 derives the pairs from `claims.json` and the manifest, so a cell needs
 no record until it is judged (a joining repository has every cell
-`unjudged` with no file, 104). Scope resolves against the manifest:
-each repository states its `kinds` and `capabilities` beside its
-entry, and a claim's `scope:` names kinds, capabilities, repositories
-or all (105, 195). Adding a kind or a capability to a repository is a
-books commit that brings every claim scoped to it into that
-repository's scope — new cells `unjudged`, the fingerprint (which
-hashes the kinds and capabilities) moves, planning is due and its
-proposal carries the newly unmet claims; removing one sends the
-affected cells to `out-of-scope`, where the recorded verdict reads as
-not-applicable and the cell is out of the backlog, returning to
-`judged` if scope returns. The `scope` tool on a claim
-(`set_claim_scope`) rewrites the block's scope line without moving the
-text or the version; the page's repository view shows the kinds and
-capabilities, the claims in scope with their verdicts, and each claim's
-scope beside that control (193, 195).
+`unjudged` with no file, 104). Scope resolves through the system
+context map, which is the scope surface (198): `context-map.json` in
+the books, validated against its schema by the pre-commit hook and
+versioned with the book (121), whose nodes are the repositories the
+flywheel tracks and the systems they meet. A repository's `kinds` and
+`capabilities` are properties of its node, and a claim's scope is its
+attachment — the rule the set of nodes matches: all, kinds,
+capabilities or named repositories (105, 195). The map is the one
+record: the claim block's `scope:` line is rendered from the
+attachment, outside the lock hash, and the manifest's repository entry
+carries only git details, the node of the same id carrying the rest
+(`flywheel map check` keeps the two lists one). Placing a new
+repository's node with its kinds and capabilities is how a repository
+joins the fleet (104). Adding a kind or a capability to a node brings
+every claim scoped to it into that repository's scope — new cells
+`unjudged`, the fingerprint (which hashes the node) moves, planning is
+due and its proposal carries the newly unmet claims; removing one
+sends the affected cells to `out-of-scope`, where the recorded verdict
+reads as not-applicable and the cell is out of the backlog, returning
+to `judged` if scope returns. The `scope` tool on a claim
+(`set_claim_scope`) rewrites the attachment and re-renders the line
+without moving the text or the version; the page shows the map as a
+view of the status view (4.3), and its gesture on nodes sends that one
+tool (193, 195, 198).
 
 A verdict is written only by `record_verdict`, from a session's exit:
 the planning session (every cell in scope on a first planning, stale
@@ -1262,8 +1274,9 @@ The default instructions ship in the books repository template:
 `instructions/design-conclusion.md` (write the chapter and the claim in
 one commit; update the context map), `instructions/construction.md`
 (name the claim the work serves in every as-built statement). The
-context map is `src/context-map.md` plus `context-map.json`, versioned
-with the book; the review view is `flywheel review` served at
+context map is `context-map.json`, the scope surface (198, section
+8.2), rendered into `src/context-map.md`, both versioned with the
+book; the review view is `flywheel review` served at
 `/review`: the chapters and map nodes changed since the operator's
 last `reviewed` mark (a response on the plan object), with the previous
 version beside each (S25, 122).

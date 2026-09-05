@@ -711,6 +711,19 @@ requirements, iterated against the running plan rather than on paper.
     be told apart.
 124. A test can show, for a given instruction version and a scenario,
     what a session would be asked to write, without starting one.
+198. The system context map is the scope surface. Its nodes are the
+    repositories the flywheel tracks and the systems they meet; a
+    repository's kinds and capabilities are properties of its node
+    (195); a claim's scope is the set of nodes it attaches to, stored
+    as the rule the set matches — all, a kind, a capability, or named
+    repositories (105). Planning and the ledger read scope through the
+    map, and the map is data the machinery validates against a schema
+    and versions with the book (121). The page shows the map as a view
+    of the status view (B.4): decisions as markers on nodes, claims and
+    verdicts per node, what changed since the last review (122), and
+    scope correction as a gesture on nodes that sends one response
+    (193). Placing a new repository's node with its kinds and
+    capabilities is how a repository joins the fleet (104).
 
 ### A.17 Sessions charged by the machinery
 
