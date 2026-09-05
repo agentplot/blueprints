@@ -50,6 +50,7 @@
     control. The clock starts at 07:40 and advances a minute per response. Detail beyond the
     seed is invented and marked sample. Review switches: ?theme=dark|light, ?nodock, ?open=<key>.
 -->
+<meta charset="utf-8">
 <title>Rail and Board</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -87,7 +88,8 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
 
 /* ---------- top ---------- */
 .top{height:var(--top);display:flex;align-items:center;gap:14px;padding:0 14px;background:var(--surface);border-bottom:1px solid var(--line)}
-.top h1{font-size:15px;font-weight:800;letter-spacing:-.01em}
+.top h1{font-size:15px;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+@media (max-width:1400px){.top .keys{display:none}}
 .top .meta{color:var(--ink3);font-size:12px}
 .top .count{margin-left:auto;display:flex;align-items:baseline;gap:8px;font-size:12.5px;color:var(--ink2)}
 .top .count b{font:700 20px var(--mono);color:var(--ink)}
@@ -115,14 +117,14 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
 .repo{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:3px 8px;font:600 12px var(--mono);white-space:nowrap}
 .repo .hm{font:11px var(--sans);color:var(--ink3);font-weight:500}
 .repo.open-in-dock{background:var(--accent-soft);border-color:var(--accent)}
-.sc{display:inline-flex;align-items:center;font:10.5px var(--mono);line-height:1;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink2);white-space:nowrap;vertical-align:middle;max-width:100%}
-.sc>*{padding:3px 6px;border-left:1px solid var(--line2)}
-.sc>*:first-child{border-left:0;padding-left:7px}
-.sc .dot{width:7px;height:7px;padding:0;margin:0 -1px 0 7px;border-left:0}
+.sc{display:inline-flex;align-items:center;font:10px var(--mono);line-height:1;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink2);white-space:nowrap;vertical-align:middle;max-width:100%}
+.sc>*{padding:2px 5px;border-left:1px solid var(--line2)}
+.sc>*:first-child{border-left:0;padding-left:6px}
+.sc .dot{width:7px;height:7px;padding:0;margin:0 -1px 0 6px;border-left:0}
 .sc .ag{color:var(--ink);font-weight:600}
 .sc .hs{color:var(--ink3)}
 .sc.working .ac{color:var(--ok)} .sc.blocked .ac{color:var(--warn);font-weight:600} .sc.with .ac{color:var(--accent);font-weight:600} .sc.idle .ac,.sc.scheduled .ac{color:var(--ink3)}
-.sc .pane{color:var(--accent);font:inherit;padding:3px 8px 3px 6px;border-left:1px solid var(--line2);border-radius:0 999px 999px 0}
+.sc .pane{color:var(--accent);font:inherit;padding:2px 7px 2px 5px;border-left:1px solid var(--line2);border-radius:0 999px 999px 0}
 .sc .pane:hover{background:var(--accent-soft)}
 .sc.hostlit{border-color:var(--accent);background:var(--accent-soft)} .sc.hostdim{opacity:.4}
 .el{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 0 0;font-size:12px}
@@ -183,7 +185,7 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
 /* ---------- frame ---------- */
 .wrap{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);height:calc(100vh - var(--top) - var(--hosts))}
 .rail{border-right:1px solid var(--line);background:var(--surface);overflow:auto;padding:10px 12px 60px}
-.board{display:grid;grid-template-columns:minmax(230px,1fr) minmax(190px,.62fr) minmax(300px,1.35fr) minmax(230px,1fr);position:relative;overflow:hidden}
+.board{display:grid;grid-template-columns:minmax(225px,.95fr) minmax(185px,.6fr) minmax(330px,1.45fr) minmax(215px,.9fr);position:relative;overflow:hidden}
 .lane{overflow:auto;padding:10px 10px 60px;border-right:1px solid var(--line2)}
 .lane:last-child{border-right:0}
 .lane.plan{background:repeating-linear-gradient(-45deg,transparent 0 8px,var(--accent-hatch) 8px 9px),var(--bg);border-left:1px dashed var(--line);border-right:1px dashed var(--line)}
@@ -201,11 +203,11 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
 .rail-h{display:flex;align-items:baseline;gap:8px;margin:2px 2px 8px}
 .rail-h h2{font-size:14px;font-weight:800}
 .rail-h .sub{font-size:11.5px;color:var(--ink3)}
-.grp{display:flex;align-items:baseline;gap:8px;margin:12px 2px 6px}
+.grp{display:flex;align-items:baseline;gap:4px 8px;margin:12px 2px 6px;flex-wrap:wrap}
 .grp .g{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:800}
 .grp.approve .g{color:var(--accent)} .grp.decide .g{color:var(--warn)} .grp.answer .g{color:var(--crit)} .grp.attention .g{color:var(--ink2)} .grp.since .g{color:var(--ink3)}
 .grp .r{font-size:11.5px;color:var(--ink3)}
-.grp .btn{margin-left:auto}
+.grp .btn{margin-left:auto;flex:none}
 .card{position:relative;border:1px solid var(--line);border-left-width:3px;border-radius:6px;background:var(--surface);padding:8px 10px 8px 12px;margin-bottom:6px;cursor:pointer;transition:transform .15s,opacity .2s}
 .card.g-approve{border-left-color:var(--accent)} .card.g-decide{border-left-color:var(--warn)} .card.g-answer{border-left-color:var(--crit)}
 .card.focused{background:var(--lit);border-color:var(--lit-line);border-left-color:var(--accent)}
@@ -535,7 +537,7 @@ const S = {
     {id:'switchboard', kinds:['service'], caps:['http','rows','sinks'], manifest:'switchboard/flywheel.yaml · landing: pull-request',
      claims:[['plan/sink-marks @v2','satisfied','capability:sinks','rows-cursor merged'],['sessions/idle-bound @v2','satisfied','all','idle-timeout landed 06:52'],['plan/tail-cursor @v1','unjudged','capability:sinks','planning due'],['repo/readme @v2','satisfied','all','—'],['repo/ci @v1','satisfied','all','—'],['providers/rate-envelope @v1','not applicable','capability:provider-calls','no provider calls']]},
     {id:'new-repo', kinds:['service'], caps:['http'], manifest:'new-repo/flywheel.yaml · joined 09-03 23:00 · ledger empty',
-     claims:[['repo/readme @v2','not satisfied','all','no README at root'],['repo/ci @v1','not satisfied','all','no gate runs on push'],['repo/as-built @v1','not satisfied','all','no as-built record'],['repo/agents-md @v1','not satisfied','all','no AGENTS.md'],['boundary/one-owner @v2','not satisfied','all','no CODEOWNERS'],['boundary/no-cross-import @v1','not satisfied','kind:service','—'],['boundary/config-outside @v1','not satisfied','kind:service','—'],['boundary/ports-derived @v1','not satisfied','kind:service','—'],['owner/named @v1','not satisfied','all','—'],['owner/oncall @v1','not satisfied','all','—'],['invariant/health-endpoint @v1','not satisfied','capability:http','—'],['invariant/graceful-stop @v1','not satisfied','capability:http','—'],['behavior/status-row @v1','not satisfied','named','named for new-repo by 09-03 ask'],['providers/rate-envelope @v1','not applicable','capability:provider-calls','no provider calls'],['plan/sink-marks @v2','not applicable','capability:sinks','no sinks']]},
+     claims:[['repo/readme @v2','not satisfied','all','no README at root'],['repo/ci @v1','not satisfied','all','no gate runs on push'],['repo/as-built @v1','not satisfied','all','no as-built record'],['repo/agents-md @v1','not satisfied','all','no AGENTS.md'],['boundary/one-owner @v2','not satisfied','all','no CODEOWNERS'],['boundary/no-cross-import @v1','not satisfied','kind:service','—'],['boundary/ports-derived @v1','not satisfied','kind:service','—'],['owner/named @v1','not satisfied','all','—'],['invariant/health-endpoint @v1','not satisfied','capability:http','—'],['invariant/graceful-stop @v1','not satisfied','capability:http','—'],['behavior/status-row @v1','not satisfied','named','named for new-repo by 09-03 ask'],['providers/rate-envelope @v1','not applicable','capability:provider-calls','no provider calls'],['plan/sink-marks @v2','not applicable','capability:sinks','no sinks']]},
     {id:'books', kinds:['books'], caps:[], manifest:'books/flywheel.yaml · the books repository · claims live here', claims:[]},
   ],
   bolts: [
@@ -679,8 +681,9 @@ function logLine(text, opts={}){ S.log.unshift({t:tick(), text, ...opts}); }
 function refuse(n){ $$(`.card[data-n="${n}"]`).forEach(el => { el.classList.remove('refused'); void el.offsetWidth; el.classList.add('refused'); }); toast(`${n} · already sending · wait for it to settle`, true); }
 function wire(n, a, arg){
   if(a==='yes') return `yes ${n}`; if(a==='no') return `no ${n}`;
-  if(a==='redo') return `${n} redo: ${arg}`; if(a==='reply') return `${n}: ${arg}`; if(a==='pick') return `${n} pick ${arg}`;
-  if(a==='bolt'||a==='rename'||a==='new bolt') return `${n} ${a} ${arg}`;
+  if(a==='redo') return dec(n).kind==='proposal' ? `redo ${n}: ${arg}` : `${n} redo: ${arg}`; if(a==='reply') return `${n}: ${arg}`; if(a==='pick') return `${n} pick ${arg}`;
+  if(a==='bolt'||a==='rename'||a==='new bolt'||a==='type') return `${n} ${a} ${arg}`;
+  if(a==='idrop') return `${n} ${arg}: drop`;
   return `${n} ${a}`;
 }
 function send(n, a, arg){
@@ -697,6 +700,7 @@ function settle(n){
   logLine(f.text, {n});
   toast(`${f.text.length>52 ? f.text.slice(0,50)+'…' : f.text} · recorded`);
   effects(d, f.a, f.arg);
+  if(f.a==='idrop'){ render(); return; }
   $$(`.card[data-n="${n}"]`).forEach(el => el.classList.add('gone'));
   const keys = railKeys(); const i = keys.indexOf('d:'+n);
   S.decisions = S.decisions.filter(x => x.n!==n);
@@ -709,7 +713,7 @@ function settle(n){
   }, 240);
 }
 function say(text){ logLine(text, {say:true}); toast(`say → ${text} · applied`); }
-function unitResponse(text, toastText){ logLine(text, {n:422}); toast(`${toastText||text} · recorded`); S.proposal.edits++; }
+function unitResponse(text, toastText){ logLine(text, {n:S.proposal.n}); toast(`${toastText||text} · recorded`); S.proposal.edits++; }
 function since(v, w, t){ S.since.unshift({v, w, t:t||'by your response', at:hhmm(S.minutes), fresh:true}); }
 function addBolt(id, name, repo, note){ if(bolt(id)) return bolt(id); const b = {id, name, repo, line:`${name} @ new`, note, units:[], endpoints:[`http://${repo}.${name}.localhost:${41250+S.bolts.length}`], services:[{n:repo+'-api',s:'stopped',ep:'—'}]}; S.bolts.push(b); return b; }
 function startUnit(b, name, type, stage){ const id = 'wi'+S.nextWi; b.units.push({name, state:'building', type, items:[{id, label:`wi-#${S.nextWi++} ${stage}`, state:'starting', host:'studio', last:`${hhmm(S.minutes)} · place prepared off ${b.name}`}]});
@@ -729,17 +733,24 @@ function effects(d, a, arg){
       else since('dropped','unit atlas · retry-jitter'); break;
     case 415: if(a==='no') since('dropped','chores atlas a b c');
       else { const letters = a==='yes' ? 'a b c' : arg; const b = addBolt('chores-atlas','chores','atlas','no bolt · one session each'); letters.split(' ').forEach(l => { const c = d.chores.find(x => x[0]===l); if(c) startUnit(b,'chore '+l+' · '+c[1],'chore','chore'); }); since('accepted','chores atlas '+letters); } break;
-    case 416: { const b = bolt('plan-decisions'); if(a==='yes'){ b.landing = 219; b.note = 'landing · PR #219 · checks running';
-        since('landing','switchboard/plan-decisions','PR #219 open · gates running');
-        setTimeout(() => { S.bolts = S.bolts.filter(x => x.id!=='plan-decisions'); S.landed.unshift({id:'plan-decisions', name:'plan-decisions', repo:'switchboard', at:hhmm(S.minutes)+' today', pr:{n:219,state:'merged'}, checks:[['lint','ok'],['tests','ok','1,214 passed'],['map-check','ok'],['as-built','ok','4 statements']], envs:[['prod','https://switchboard.willdan.internal']], units:['plan-derivation','decision-numbers','response-apply','decision-grouping'], signals:[], window:'stays 7 days · sink-delivery moved to a successor bolt'});
-          addBolt('plan-decisions-2','plan-decisions-2','switchboard','successor · carries unit sink-delivery').units.push({name:'sink-delivery',state:'building',type:'default',items:b.units.find(u=>u.name==='sink-delivery').items});
-          S.decisions.filter(x => x.obj==='b:plan-decisions').forEach(x => x.obj='b:plan-decisions-2'); S.attention.forEach(x => { if(x.obj==='b:plan-decisions') x.obj='b:plan-decisions-2'; });
-          since('landed','switchboard/plan-decisions','gates green'); render(); }, 4500); }
-      else since('held','switchboard/plan-decisions','bolt stays open'); break; }
+    case 416: { const b = bolt('plan-rows'); if(a==='yes'){ b.landing = 219; b.note = 'landing · PR #219 · checks running';
+        S.landed.unshift({id:'plan-rows', name:'plan-rows', repo:'switchboard', at:hhmm(S.minutes)+' today', pr:{n:219,state:'open'}, checks:[['lint','ok'],['tests','pend'],['map-check','pend'],['as-built','ok','4 statements']], envs:[['prod','https://switchboard.willdan.internal']], units:['rows-order','rows-sink','rows-window','rows-cursor'], signals:[], live:'PR open · checks running', leaves:'7d'});
+        since('landing','switchboard/plan-rows','PR #219 open · gates running');
+        setTimeout(() => { const l = S.landed.find(x => x.id==='plan-rows'); if(l){ l.pr.state='merged'; l.checks = l.checks.map(c => [c[0],'ok',c[2]]); l.live = null; } S.bolts = S.bolts.filter(x => x.id!=='plan-rows'); since('landed','switchboard/plan-rows','gates green · place removed'); render(); }, 4500); }
+      else since('held','switchboard/plan-rows','bolt stays open'); break; }
     case 417: if(a==='yes'||a==='pick'){ const b = addBolt('b-baseline','baseline','new-repo', a==='yes' ? '8 chores · 3 units' : `pick ${arg}`); startUnit(b,'ci-gate','default','spec'); b.units.push({name:'as-built-record',state:'queued',type:'default',items:[]},{name:'claim-sweep',state:'queued',type:'fast',items:[]}); since('started','baseline new-repo', a==='yes' ? 'all' : `pick ${arg}`); }
-      else since('later','baseline new-repo','standing without a decision'); break;
-    case 418: if(a==='close'){ S.intents = S.intents.filter(i => i.id!=='loop-granularity'); since('closed','intent loop-granularity','3 claims standing'); } else since('kept','intent loop-granularity','open'); break;
-    case 419: { const i = intent('atlas-provider-limits'); if(a==='finish'){ i.sessions = i.sessions.filter(s => s.id!=='proto'); i.note = i.note.replace('one standing session already on its line','finding kept on the intent'); since('finished','prototype plan-derivation','place removed'); } break; }
+      else defer(d); break;
+    case 418: if(a==='close'){ const i = intent('loop-granularity'); i.state='closed'; i.leaves='7d'; i.note='closed by your response · archived · 3 claims standing'; since('closed','intent loop-granularity','3 claims standing'); } else since('kept','intent loop-granularity','open'); break;
+    case 419: { const i = intent('atlas-provider-limits'); if(a==='finish'){ const p = i.sessions.find(s => s.id==='proto'); if(p){ p.state='done'; p.leaves='7d'; p.last=`${hhmm(S.minutes)} · finished by your response · finding kept · place removed`; } i.note = i.note.replace('one standing session already on its line','finding kept on the intent'); since('finished','prototype plan-derivation','record written · place removed'); } break; }
+    case 424: { const g = S.gatherings.find(x => x.n===424);
+      if(a==='idrop'){ g.intents = g.intents.filter(i => i!==arg); d.intents = g.intents; d.objs = g.intents.map(i => 'i:'+i); d.obj = d.objs[0]; d.tail = `curation · <b>${g.intents.length} intent${g.intents.length===1?'':'s'}</b> · one self-closing ${esc(d.type)} session`; since('dropped',`${arg} from gathering 424`,'it may propose its own'); break; }
+      if(a==='drop'){ g.state='dropped'; since('dropped','gathering 424','each intent proposes its own'); break; }
+      if(a==='pick'){ const keep = arg.split(' '); g.intents = g.intents.filter(i => keep.includes(i)); }
+      if(a==='type') g.type = arg;
+      g.state='running'; const sess = {id:'g424', label:`${g.type} · gathered 424 (self-closing)`, state:'starting', host:'studio', agent:'claude', model:'fable', pane:newPane('studio'), last:`${hhmm(S.minutes)} · place books/intents/_gathered/424 prepared`};
+      g.intents.forEach(id => { const i = intent(id); if(i){ i.sessions.push(sess); i.note = i.note + ` · ${g.type} gathered in 424`; } });
+      setTimeout(() => { if(sess.state==='starting'){ sess.state='working'; sess.last = `${hhmm(S.minutes)} · reading the three intents' signals`; render(); } }, 2400);
+      since('started',`${g.type} · gathered 424`,`${g.intents.length} intents · one session`); break; }
     case 420: { const b = bolt('plan-decisions'); if(!b) break; if(a==='amend bolt'){ b.note = 're-spec on v4 · wi-#418, #419 back to spec'; b.units.find(u => u.name==='sink-delivery').items.forEach(i => { if(i.id==='wi418'||i.id==='wi419'){ i.state='starting'; i.label = i.label.replace(/build|spec/,'spec'); i.last = `${hhmm(S.minutes)} · returned to spec on one-writer v4`; } }); } else b.note = 'lands on v3 · follow-up unit queued for v4'; break; }
     case 421: { const it = allSessions().find(s => s.id==='wi418'); const b = S.bolts.flatMap(b => b.units).flatMap(u => u.items||[]).find(i => i.id==='wi418'); if(b){ b.state = host('mac-mini').alive ? 'working' : 'starting'; b.last = `${hhmm(S.minutes)} · answered: “${arg.slice(0,40)}${arg.length>40?'…':''}” · ${host('mac-mini').alive ? 'continuing' : 'delivered when its place is reachable'}`; } since('answered','wi-#418 build · plan-decisions','session continues'); break; }
     case 422: if(a==='yes'){
@@ -747,8 +758,30 @@ function effects(d, a, arg){
           if(u.after.some(a2 => !P.units.find(x => x.id===a2).dropped)) b.units.push({name:u.name, state:'queued', type:u.type, items:[]}); else startUnit(b, u.name, u.type, 'spec'); });
         const pt = bolt('plan-tail'); if(pt) pt.note = '1 merged · 1 building · 2 from 422';
         since('accepted','plan atlas',`${P.units.filter(u=>!u.dropped).length} units on ${new Set(P.units.filter(u=>!u.dropped).map(u=>u.bolt)).size} bolts`);
-      } else if(a==='later') since('later','plan atlas','deferred · planning\'s next run supersedes it'); else since('redo','plan atlas','back to planning with notes'); break;
+      } else if(a==='later') defer(d);
+      else { since('redo',`plan atlas · ${n}`,'withdrawn · planning charged again'); P.refusal = null;
+        S.planning = {repo:'atlas', notes:arg, since:hhmm(S.minutes), session:{state:'working', host:'studio', agent:'claude', model:'fable', pane:newPane('studio')}, last:`${hhmm(S.minutes)} · reading your notes and the backlog`};
+        setTimeout(() => { if(S.planning){ S.planning.last = `${hhmm(S.minutes)} · re-reading open bolts plan-decisions, plan-tail`; render(); } }, 2500);
+        setTimeout(() => {
+          const m = n+1, t = hhmm(S.minutes); S.planning = null;
+          P.n = m; P.session = `planning · atlas · 2026-09-04 ${t} · after your notes`; P.edits = 0; P.units.forEach(u => { u.dropped = false; }); P.bolts = P.bolts.filter(b => !b.id.startsWith('nb-'));
+          X[m] = {...X[422], lineage:[...X[422].lineage.slice(0,-1), ['proposal',`${n}`,'withdrawn by your redo'],['response',`redo ${n}`,arg],['planning run',`atlas · ${t}`,'charged again with your notes'],['proposal',`${m}`,`${t} · this document`]],
+            hist:[...X[422].hist, ['09-04 '+t,'operator','response',`redo ${n}: ${esc(arg)}`],['09-04 '+t,'planning','note','proposal rewritten with your notes'],['09-04 '+t,'plan','decision',`${m} created · replaces ${n}`]]};
+          S.decisions.push({n:m, g:APPROVE, phase:'plan', kind:'proposal', title:'plan · atlas', obj:'d:'+m, tail:`planning ${t} · after your notes · <b>2 bolts</b> · 5 units · 4 dependencies`, answers:[['yes','yes'],['redo','redo'],['later','later']]});
+          toast(`${m} arrived · planning's new proposal for atlas`);
+          if(S.open==='p:planning'){ openDock('d:'+m); } else { render(); if(!S.focus) setFocus('d:'+m); }
+        }, 7000);
+      } break;
   }
+}
+/* later defers: leaves the count, stays in the gate greyed, not in SINCE */
+function defer(d){ S.deferred.push({key:'f'+d.n, n:d.n, kind:d.kind, title:d.title, tail:d.tail.replace(/<[^>]+>/g,''), at:hhmm(S.minutes), obj:d.obj, src:d}); }
+function askAgain(key){
+  const x = S.deferred.find(v => v.key===key); if(!x) return; S.deferred = S.deferred.filter(v => v!==x);
+  const m = Math.max(...S.decisions.map(d => d.n), ...S.deferred.map(v => v.n), S.proposal.n, 424) + 1;
+  const d = {...x.src, n:m, obj:x.src.obj==='d:'+x.n ? 'd:'+m : x.src.obj, tail:x.src.tail+` · asked again · was ${x.n}`}; if(d.kind==='proposal'){ S.proposal.n = m; }
+  X[m] = X[x.n]; S.decisions.push(d); logLine(`ask again ${x.n}`, {say:true}); toast(`${m} · raised again with a new number`);
+  if(S.open==='f:'+key) S.open = 'd:'+m; S.focus = 'd:'+m; render();
 }
 
 /* =====================================================================
@@ -802,7 +835,7 @@ function renderRail(){
   const groups = [[APPROVE,'yes is safe · "yes all" takes these'],[DECIDE,'a choice · no default'],[ANSWER,'needs text']];
   let html = `<div class="rail-h"><h2>Decisions</h2><span class="sub">one plan delivery · the order the chat prints · ${S.decisions.length} in the count</span></div>`;
   groups.forEach(([g,rule]) => { const ds = S.decisions.filter(d => d.g===g).sort((a,b) => a.n-b.n); if(!ds.length) return;
-    html += `<div class="grp ${g}"><span class="g">${g}</span><span class="r">${rule}</span>${g===APPROVE?`<button class="btn sm" id="yesall2">yes all · ${ds.map(d=>d.n).join(' ')}</button>`:''}</div>` + ds.map(cardHtml).join(''); });
+    html += `<div class="grp ${g}"><span class="g">${g}</span>${g===APPROVE?`<button class="btn sm" id="yesall2" title="yes ${ds.map(d=>d.n).join(', ')}">yes all · ${ds.length}</button>`:''}<span class="r" style="flex-basis:100%">${rule}</span></div>` + ds.map(cardHtml).join(''); });
   if(!S.decisions.length) html += `<div class="empty">Nothing waits on you. The board runs on its own until the next decision is yours.</div>`;
   html += `<div class="grp attention"><span class="g">attention</span><span class="r">outside the count · one-word answers</span></div>` + (S.attention.map(attHtml).join('') || '<div class="empty">nothing</div>');
   html += `<div class="grp since"><span class="g">since</span><span class="r">09-03 18:05 · outside the count</span></div><ul class="since">${S.since.map(s => `<li class="${s.fresh?'new':''}"><span class="v ${s.v}">${esc(s.v)}</span><span class="w">${esc(s.w)}<br><span style="color:var(--ink3);font-size:11.5px">${esc(s.t)}</span></span><span class="t">${esc(s.at)}</span></li>`).join('')}</ul>`;
@@ -838,8 +871,8 @@ function renderInception(){
     <div class="cf"><span class="will" id="capture-as">will send: <b>capture</b>${S.captureIntent?' · <b>intent</b>':''}</span><label><input type="checkbox" id="capture-intent" ${S.captureIntent?'checked':''}> this is an intent</label><button class="btn pri sm" id="capture-send">send</button></div></div>
     <div class="curation">unmoved signals <b>${S.curation.unmoved}</b><span>${esc(S.curation.by)}</span><span>oldest ${S.curation.oldest}</span>${sessChip(S.curation.session)}</div>`;
   const picked = [...S.picked].filter(id => intent(id));
-  const bar = `<div class="explore-bar"><span class="n">explore</span><span>${picked.length ? picked.join(' + ') : 'tick intents below, then'}</span><select id="explore-type" aria-label="elaboration type"><option value="with">with-operator</option><option value="standing">standing</option></select><button class="btn pri sm" id="explore-go" ${picked.length?'':'disabled'}>explore ${picked.length||''}</button>${picked.length ? '<button class="btn quiet sm" id="explore-clear">clear</button>' : ''}</div>`;
-  const xs = S.explorations.map(x => `<div class="${objCls('x:'+x.id)} explore ${x.state==='done'?'done':''}" data-obj="x:${x.id}" tabindex="0"><div class="oh"><span class="ok">${x.kind==='standing'?'explore · standing':'explore · with-operator'}</span><span class="on">${x.intents.map(esc).join(' + ')}</span><span class="os">${x.state==='done' ? `<span class="leave">done · leaves in ${esc(x.leaves)}</span>` : 'since '+esc(x.since)}</span></div><div class="ot">${esc(x.last)}</div>${x.state==='done' ? '' : `<div class="el">${sessChip(x.session)}</div>`}</div>`).join('');
+  const bar = `<div class="explore-bar"><span class="n">explore</span><span>${picked.length ? picked.map(id => esc(intent(id).name)).join(' + ') : 'tick intents below, then'}</span><select id="explore-type" aria-label="elaboration type"><option value="with">with-operator</option><option value="standing">standing</option></select><button class="btn pri sm" id="explore-go" ${picked.length?'':'disabled'}>explore ${picked.length||''}</button>${picked.length ? '<button class="btn quiet sm" id="explore-clear">clear</button>' : ''}</div>`;
+  const xs = S.explorations.map(x => `<div class="${objCls('x:'+x.id)} explore ${x.state==='done'?'done':''}" data-obj="x:${x.id}" tabindex="0"><div class="oh"><span class="ok">${x.kind==='standing'?'explore · standing':'explore · with-operator'}</span><span class="on">${x.names.map(esc).join(' + ')}</span><span class="os">${x.state==='done' ? `<span class="leave">done · leaves in ${esc(x.leaves)}</span>` : 'since '+esc(x.since)}</span></div><div class="ot">${esc(x.last)}</div>${x.state==='done' ? '' : `<div class="el">${sessChip(x.session)}</div>`}</div>`).join('');
   const list = S.intents.map(i => { const g = gatheringOf(i.id), x = explorationOf(i.id);
     const rows = i.sessions.map(elabRow).join('') + (g ? `<div class="el"><span class="en">${esc(g.type)} (self-closing)</span><span class="chip g">in gathering ${g.n}</span></div>` : '') + (x ? `<div class="el"><span class="en">explore (${x.kind==='standing'?'standing':'with-operator'})</span><span class="chip x">explore · ${x.kind==='standing'?'standing':'with you'}</span></div>` : '');
     return `<div class="${objCls('i:'+i.id)} ${i.state==='closed'?'closed':''}" data-obj="i:${i.id}" tabindex="0"><div class="oh">${i.state==='closed' ? '' : `<input type="checkbox" class="pickbox" data-pick="${i.id}" ${S.picked.has(i.id)?'checked':''} aria-label="pick ${esc(i.name)} for explore">`}<span class="ok">intent</span><span class="on">${esc(i.name)}</span><span class="os">${i.state==='closed' ? `<span class="leave">closed · leaves in ${esc(i.leaves||'7d')}</span>` : esc(i.state)}</span></div><div class="ot">${esc(i.note)}${g ? ' · no elaboration proposed while gathered' : ''}</div>
@@ -905,8 +938,9 @@ function render(){
 const sec = (title, html, r='') => html ? `<div class="sec"><h3>${title}${r?`<span class="r">${r}</span>`:''}</h3>${html}</div>` : '';
 const kvHtml = rows => `<dl class="kv">${rows.map(([k,v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>`;
 const tlHtml = rows => `<ul class="tl">${rows.map(([t,who,k,tx]) => `<li class="${k}"><time>${esc(t)}</time><span class="who">${esc(who)}<i>${k}</i></span><span class="what">${tx}</span></li>`).join('')}</ul>`;
-function sessionsHtml(list, note){ if(!list.length) return `<div class="empty" style="padding:2px 0">${esc(note||'nothing running')}</div>`;
-  return `<div class="rows">${list.map(s => `<div class="row"><span class="dot ${s.state}"></span><div class="grow"><div class="nm">${esc(s.label)}<span class="m">@${esc(s.host)}${s.owner?' · '+esc(s.owner.name):''}</span></div><div class="last">${esc(s.last||'')}</div></div><span class="st ${s.state}">${s.state}</span></div>`).join('')}</div>`; }
+function sessionsHtml(list, note){ list = list.filter(s => s.state!=='queued' && s.state!=='done'); if(!list.length) return `<div class="empty" style="padding:2px 0">${esc(note||'nothing running')}</div>`;
+  return `<div class="rows">${list.map(s => `<div class="row"><div class="grow"><div class="nm">${esc(s.label)}${s.owner?`<span class="m">${esc(s.owner.name)}</span>`:''}</div><div class="last">${esc(s.last||'')}</div></div>${sessChip(s)}</div>`).join('')}</div>`; }
+const linksHtml = ls => `<div class="links">${ls.map(([k,v]) => `<span class="lk"><b>${esc(k)}</b> ${esc(v)} ↗</span>`).join('')}</div>`;
 function servicesHtml(list, ownerKey){ return `<div class="rows">${list.map((v,i) => `<div class="row"><span class="dot ${v.s==='running'?'':v.s}"></span><div class="grow"><div class="nm">${esc(v.n)}</div><div class="ep">${esc(v.ep)}</div></div><span class="st ${v.s}">${v.s}</span><button class="btn sm ${v.s==='running'?'drop':'yes'}" data-svc="${ownerKey}" data-i="${i}">${v.s==='running'?'stop':'start'}</button></div>`).join('')}</div>`; }
 function docHtml(doc){ return `<div class="doc"><div class="dm">${esc(doc.dm)} · ${SM}</div>${doc.h.map(([h,p]) => `<h4>${esc(h)}<button class="an" data-an="${esc(h)}">note</button></h4><p>${p}</p>`).join('')}</div>`; }
 function itemsHtml(items, stages){ return `<div class="stage"><span class="st" style="font:600 10.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink3)">stages</span><span class="chain">${stages.map((s,i) => `<span class="s ${i===0?'now':''}">${s}</span>${i<stages.length-1?'<span class="a">→</span>':''}`).join('')}</span></div>
@@ -927,7 +961,7 @@ function unitMove(uid, toBolt, along){
     toast(`${uid} · refused · dependency would cross bolts`, true); renderDock(); return;
   }
   P.refusal = null;
-  group.forEach(id => { const x = P.units.find(y => y.id===id); if(x.bolt!==toBolt){ x.bolt = toBolt; unitResponse(`422 ${id}: bolt ${boltName(toBolt)}`); } });
+  group.forEach(id => { const x = P.units.find(y => y.id===id); if(x.bolt!==toBolt){ x.bolt = toBolt; unitResponse(`${P.n} ${id}: bolt ${boltName(toBolt)}`); } });
   render();
 }
 function unitNewBolt(uid, name){
@@ -938,7 +972,7 @@ function unitDrop(uid, along){
   const P = S.proposal; const deps = closure(uid).filter(id => !P.units.find(u => u.id===id).dropped);
   if(!along && deps.length){ P.refusal = {uid, text:`${uid} drop refused: ${deps.join(', ')} depend on it and a unit never depends on a dropped unit.`, fix:{label:`drop ${deps.join(', ')} too`, act:'drop'}}; toast(`${uid} · refused · ${deps.join(', ')} depend on it`, true); renderDock(); return; }
   P.refusal = null;
-  [uid, ...(along ? deps : [])].forEach(id => { const u = P.units.find(x => x.id===id); if(!u.dropped){ u.dropped = true; unitResponse(`422 ${id}: drop`); } });
+  [uid, ...(along ? deps : [])].forEach(id => { const u = P.units.find(x => x.id===id); if(!u.dropped){ u.dropped = true; unitResponse(`${P.n} ${id}: drop`); } });
   render();
 }
 function proposalHtml(){
@@ -956,7 +990,8 @@ function proposalHtml(){
     return `<div class="pblock"><div class="pbh"><span class="bk">bolt</span><input value="${esc(b.name)}" data-bname="${b.id}" aria-label="bolt name" title="a bolt's name is yours to change · Enter sends rename"><span class="bstate ${b.state}">${b.state}</span><span class="bs">${esc(b.holds)} · ${us.filter(u=>!u.dropped).length} proposed</span></div>${us.map(unitRow).join('') || '<div class="empty" style="padding:8px 10px">no units here · every unit moved elsewhere</div>'}</div>`; }).join('');
   const ready = P.units.filter(u => !u.dropped && !u.after.some(a => !P.units.find(x => x.id===a).dropped)).map(u => u.id);
   return `<div class="dtext" style="margin-bottom:10px"><b>Planning read</b> ${esc(P.reads)}.</div>${blocks}` +
-    sec('what a yes starts', `<div class="dtext">${ready.map(id=>`<span class="mono">${id}</span>`).join(', ')} start at once, side by side; the rest wait on their dependencies, which stay within one bolt. Every unit becomes items on its bolt's line; the next decision that is yours is each bolt's close.</div>`);
+    sec('what a yes starts', `<div class="dtext">${ready.map(id=>`<span class="mono">${id}</span>`).join(', ')} start at once, side by side; the rest wait on their dependencies, which stay within one bolt. Every unit becomes items on its bolt's line; the next decision that is yours is each bolt's close.</div>`) +
+    `<div class="wrong"><h4>that's all wrong</h4><p>Send the plan back whole: planning runs again on atlas with your notes, this proposal is withdrawn, and the next one arrives under a new number.</p><div class="field"><textarea rows="2" data-wrong placeholder="what planning got wrong…" aria-label="notes for planning"></textarea><button class="btn pri sm" data-wrongsend="${P.n}">redo ${P.n}</button></div></div>`;
 }
 
 function dockDecision(d){
@@ -970,6 +1005,14 @@ function dockDecision(d){
   if(x.kv) parts.push(sec(x.kvTitle||'detail', kvHtml(x.kv), SM));
   if(x.kv2) parts.push(sec(x.kv2Title||'more', kvHtml(x.kv2)));
   if(d.kind==='chores') parts.push(sec('chores · reason and file', kvHtml(d.chores.map(c => [c[0], `${esc(c[1])} · <span class="mono">${esc(c[2])}</span>`])), SM));
+  if(d.kind==='gathered'){
+    parts.push(sec('covered intents', `<div class="rows">${d.intents.map(id => { const i = intent(id); return `<div class="row"><div class="grow"><div class="nm">${esc(id)}</div><div class="last">${esc(i ? i.note : '')}</div></div><button class="btn sm drop" data-gdrop="${esc(id)}" data-n="${d.n}">${d.n} ${esc(id)}: drop</button></div>`; }).join('')}</div>`, 'one response each · the decision stays'));
+    parts.push(sec('why curation gathered them', kvHtml(x.why), SM));
+    parts.push(sec('deliverables and their producers', `<table class="deliv"><thead><tr><th>deliverable</th><th>producer</th><th>schema</th><th>reviewed on</th><th></th></tr></thead><tbody>${x.deliverables.map(r => `<tr><td>${esc(r[0])}</td><td class="mono">${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td><td><span class="origin ${r[4]}">${r[4]==='default'?'shipped default':'org override'}</span></td></tr>`).join('')}</tbody></table>`, '190 · handed to the session when it starts'));
+  }
+  if(d.kind==='baseline'){ const r = repo(d.repo); const unmet = r.claims.filter(c => c[1]==='not satisfied'); const rules = [...new Set(unmet.map(c => c[2]))];
+    parts.push(sec(`claims unmet · ${unmet.length} · grouped by scope rule`, rules.map(rule => `<div class="row" style="align-items:flex-start"><span class="vd" style="margin-top:2px">${esc(rule)}</span><div class="grow kc">${unmet.filter(c => c[2]===rule).map(c => `<span class="lk"><b>${esc(c[0])}</b>${c[3]!=='—' ? ' · '+esc(c[3]) : ''}</span>`).join('')}</div></div>`).join('') + `<div class="acts" style="margin-top:8px"><button class="btn sm" data-openrepo="${d.repo}">open ${esc(d.repo)} · claims and scope</button></div>`, 'scope is part of the claim (105)')); }
+  if(x.lineage) parts.push(sec('lineage · where this proposal comes from', `<div class="lin">${x.lineage.map((l,i) => `<div class="ln ${i===x.lineage.length-1?'here':''}"><span class="lk-k">${esc(l[0])}</span><span><span class="lk-w">${esc(l[1])}</span><span class="lk-t">${esc(l[2])}</span></span></div>`).join('')}</div>`, 'claim ← writeback ← elaboration ← intent'));
   if(x.log) parts.push(sec('session log · last lines', `<ul class="tl">${x.log.map(([t,l]) => `<li><time>${esc(t)}</time><span class="who"></span><span class="what">${esc(l)}</span></li>`).join('')}</ul>`, SM));
   const o = d.obj && d.obj!=='d:'+d.n ? objOf(d.obj) : null;
   if(o){ const list = d.obj[0]==='b' ? o.units.flatMap(u => u.items||[]) : o.sessions; parts.push(sec(`on ${esc(d.obj[0]==='b'?'bolt '+o.name:'intent '+o.name)} · sessions running`, sessionsHtml(d.sess ? list.filter(s => s.id===d.sess) : list, 'nothing running'), 'with host and last activity')); }
@@ -981,8 +1024,9 @@ function dockBolt(b){
   const sessions = b.units.flatMap(u => u.items||[]);
   return sec('the bolt', `<div class="dtext">Open bolt on <span class="mono">${esc(b.repo)}</span>, line <span class="mono">${esc(b.line)}</span>. Its place is kept on the host at the head of its line, refreshed after each merge, where you run and test the bolt with no session involved. ${esc(b.note)}.</div>`)
     + sec('decisions on this bolt', S.decisions.filter(d => d.obj==='b:'+b.id).map(d => `<div class="row"><button class="mark ${d.g}" data-mark="d:${d.n}">${d.n}</button><span class="grow">${d.title}</span><span class="t">${d.g}</span></div>`).join('') || '', 'in the rail, where you answer')
-    + sec('units', `<div class="rows">${b.units.map(u => `<div class="row"><span class="st">${u.state}</span><div class="grow"><div class="nm">${esc(u.name)}${u.type?` <span class="m">type ${u.type}</span>`:''}</div></div>${(u.items||[]).map(wiHtml).join('')}</div>`).join('')}</div>`)
-    + sec('sessions running', sessionsHtml(sessions), 'with host and last activity')
+    + sec('units', `<div class="rows">${b.units.map(u => `<div class="row" style="flex-wrap:wrap"><span class="st">${u.state}</span><div class="grow"><div class="nm">${esc(u.name)}${u.type?` <span class="m">type ${u.type}</span>`:''}</div></div>${u.state==='merged' ? '' : `<button class="btn sm quiet drop" data-bdrop="${b.id}" data-unit="${esc(u.name)}">drop</button>`}${(u.items||[]).map(wiHtml).join('')}</div>`).join('')}</div>`, 'drop is a dictation')
+    + sec('name', `<div class="field"><input value="${esc(b.name)}" data-brename="${b.id}" aria-label="bolt name"><button class="btn sm" data-brenamesend="${b.id}">send rename</button></div>`, 'a bolt\'s name is yours to change · one dictation')
+    + sec('sessions running', sessionsHtml(sessions.concat(b.machinery||[])), 'with host and last activity')
     + sec(`services of the place · ${esc(b.repo)}/${esc(b.name)}`, servicesHtml(b.services, 'b:'+b.id), 'start and stop are dictations')
     + sec('served endpoints', `<div class="rows">${b.endpoints.map(e => `<div class="row"><span class="ep">${esc(e)}</span></div>`).join('')}</div>`)
     + sec('history', tlHtml(BX[b.id]||[['09-04 '+hhmm(S.minutes),'machinery','note','bolt created by your response']]), SM);
@@ -999,6 +1043,32 @@ function dockLanded(l){
     + sec('units landed', kvHtml(l.units.map(u => [esc(u), 'merged'])))
     + sec('signals from operation', l.signals.length ? l.signals.map(s => `<div class="dsig">“${esc(s.text)}”<small>${esc(s.kind)} · ${esc(s.src)} · ${esc(s.age)} · ${s.move ? esc(s.move) : 'unmoved · curation sees it next run'}</small></div>`).join('') : '<div class="empty" style="padding:2px 0">nothing yet</div>');
 }
+function dockRepo(r){
+  const V = ['satisfied','not satisfied','not applicable','stale','unjudged'];
+  const counts = V.map(v => [v, r.claims.filter(c => c[1]===v).length]).filter(x => x[1]);
+  const scopeOpts = ['all', ...r.kinds.map(k => 'kind:'+k), ...r.caps.map(c => 'capability:'+c), 'named'];
+  return sec('the repository', `<div class="dtext">Repository <span class="mono">${esc(r.id)}</span> declares its kinds and capabilities in its manifest; a claim is in scope when its scope rule matches them, and each repository carries its own verdict per claim (105). ${esc(r.manifest)}.</div>`)
+    + sec('kinds and capabilities · from the manifest', `<div class="kc">${r.kinds.map(k => `<span class="lk"><b>kind</b> ${esc(k)}</span>`).join('')}${r.caps.map(c => `<span class="lk"><b>capability</b> ${esc(c)}</span>`).join('')}${!r.kinds.length && !r.caps.length ? '<span class="empty">none</span>' : ''}</div>`)
+    + (r.claims.length ? sec(`claims in scope · ${r.claims.length}`, `<div class="kc" style="margin-bottom:8px">${counts.map(([v,n]) => `<span class="vd ${v.replace(' ','-')}">${n} ${v}</span>`).join('')}</div><div class="claims">${r.claims.map(c => `<div class="claim"><span class="cn">${esc(c[0])}</span><span class="vd ${c[1].replace(' ','-')}">${esc(c[1])}</span><select data-scope="${esc(c[0])}" data-repo="${r.id}" aria-label="scope of ${esc(c[0])}">${scopeOpts.map(o => `<option ${o===c[2]?'selected':''}>${o}</option>`).join('')}${scopeOpts.includes(c[2])?'':`<option selected>${esc(c[2])}</option>`}</select>${c[3]!=='—' ? `<span class="ce">${esc(c[3])}</span>` : ''}</div>`).join('')}</div>`, 'verdict from the ledger · scope is yours to correct, one response each')
+      : sec('claims', `<div class="dtext">The books repository holds the claims; it carries no verdicts of its own.</div>`))
+    + sec('decisions on this repository', S.decisions.filter(d => d.repo===r.id || (d.kind==='proposal' && r.id==='atlas')).map(d => `<div class="row"><button class="mark ${d.g}" data-mark="d:${d.n}">${d.n}</button><span class="grow">${d.title}</span><span class="t">${d.g}</span></div>`).join('') || '<div class="empty" style="padding:2px 0">none in the count</div>', 'in the rail, where you answer');
+}
+function dockExplore(x){
+  return sec('the elaboration', `<div class="dtext">You opened one elaboration over ${x.intents.length} intent${x.intents.length===1?'':'s'} (189): one session, one conversation, one place off the books' shared line${x.kind==='standing' ? ', standing until you finish it' : ', with you in it'}. Nothing on the plan waits for it; it ends by the finish below.</div>`)
+    + sec('covered intents', `<div class="rows">${x.names.map(nm => `<div class="row"><div class="grow"><div class="nm">${esc(nm)}</div><div class="last">records → books/intents/${esc(nm)}/records/explore-${esc(x.id)}.md</div></div></div>`).join('')}</div>`)
+    + sec('records per intent', `<div class="dtext">The session writes its records into <b>each</b> covered intent's change directory as it goes, and what it concludes into the book <b>once</b>; its writeback is per covered intent (188). An intent it covers proposes no other elaboration meanwhile.</div>`)
+    + sec('sessions running', x.state==='done' ? sessionsHtml([], `done ${esc(x.at||'')} · record written · leaves in ${x.leaves}`) : sessionsHtml([{...x.session, label:x.label, last:x.last}]), 'with host and last activity')
+    + sec('links', linksHtml([['place',`~/places/books/_gathered/${x.id}`],...x.names.map(nm => ['intent',`books/intents/${nm}.md`])]));
+}
+function dockPlanning(p){
+  return sec('the session', `<div class="dtext">Planning is a session of its own, run for one built repository when its backlog changes or when your redo sends a proposal back (28, 6). It reads the backlog, the as-built and the open bolts, and proposes units. This run carries your notes; the proposal it writes arrives on the plan under a new number, and nothing was created by the withdrawn one.</div>`)
+    + sec('your notes', `<div class="dsig">“${esc(p.notes)}”<small>redo · ${esc(p.since)}</small></div>`)
+    + sec('sessions running', sessionsHtml([{...p.session, label:'planning · '+p.repo, last:p.last}]), 'with host and last activity');
+}
+function dockDeferred(x){
+  return sec('deferred', `<div class="dtext">You answered <b>later</b> on ${x.n} at ${esc(x.at)}. It left the count and stays here, greyed, until you ask again or planning's next run supersedes it silently (172, 35). It is not in SINCE: the tail lists done, landed, closed and dropped. <b>Ask again</b> raises it as a new decision with a new number (5.2).</div>`)
+    + sec('what it was', `<div class="dtext">${x.title} · ${x.tail}</div>`);
+}
 function dockHost(h){
   const mine = allSessions().filter(s => s.host===h.id);
   return sec('the host', `<div class="dtext">Host <span class="mono">${esc(h.id)}</span> ${h.alive ? `is alive, last heartbeat ${h.last}` : `has sent no heartbeat for <b>${h.gone}</b>, last seen ${h.last}`}. Its bound is ${h.bound} sessions at once; at the bound ready work waits in a stated order. ${esc(h.note)}.</div>`)
@@ -1012,7 +1082,11 @@ function dockFooter(key){
     const acts = d.kind==='blocked' ? actsHtml(d,'dock').replace(`<div class="argbox" data-n="${d.n}"></div>`, `<div class="argbox" data-n="${d.n}" data-arg="reply">${argHtml(d,'reply')}</div>`) : actsHtml(d,'dock');
     return `<div class="fl">answer · one response each<span class="r">${d.g===APPROVE ? 'yes is safe' : d.g===DECIDE ? 'no default' : 'needs text'}</span></div>${acts}`; }
   if(t==='h'){ const h = host(id); return h.alive ? `<div class="fl">nothing to answer</div>` : `<div class="fl">attention · outside the count</div><div class="acts"><button class="btn sm yes" data-att="host" data-ak="takeover">takeover on studio</button><button class="btn sm" data-att="host" data-ak="wait">wait</button></div>`; }
-  if(t==='b') return `<div class="fl">no decision here that is not in the rail<span class="r">the next is its close</span></div>`;
+  if(t==='b') return `<div class="fl">no decision here that is not in the rail<span class="r">the next is its close · drop, rename and services above are dictations</span></div>`;
+  if(t==='x'){ const x = objOf(key); return x.state==='done' ? `<div class="fl">done<span class="r">stays ${esc(x.leaves)} · then history</span></div>` : `<div class="fl">no decision<span class="r">finish is a dictation</span></div><div class="acts"><button class="btn sm" data-xfinish="${x.id}">finish</button></div>`; }
+  if(t==='f'){ const x = objOf(key); return `<div class="fl">deferred · outside the count</div><div class="acts"><button class="btn sm yes" data-askagain="${x.key}">ask again</button></div>`; }
+  if(t==='p') return `<div class="fl">no decision yet<span class="r">the next proposal is the decision</span></div>`;
+  if(t==='r') return `<div class="fl">scope corrections above are responses<span class="r">one each, sent when given</span></div>`;
   if(t==='l') return `<div class="fl">nothing to answer<span class="r">signals go to curation; a decision comes back on the plan</span></div>`;
   return `<div class="fl">no decision on this object</div>`;
 }
@@ -1026,6 +1100,10 @@ function renderDock(){
   else if(t==='i'){ head = `<div class="row"><span class="kind">intent</span><span class="ph">inception</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.state)}</div>`; body = dockIntent(o); }
   else if(t==='l'){ head = `<div class="row"><span class="kind">landed</span><span class="ph">operation</span>${nav}</div><h2 id="dk-title">${esc(o.repo)}/${esc(o.name)}</h2><div class="tail">landed ${esc(o.at)} · PR #${o.pr.n}</div>`; body = dockLanded(o); }
   else if(t==='h'){ head = `<div class="row"><span class="kind">host</span>${nav}</div><h2 id="dk-title">${esc(o.id)}</h2><div class="tail">${o.alive?'alive':'gone '+o.gone} · bound ${o.bound}</div>`; body = dockHost(o); }
+  else if(t==='r'){ head = `<div class="row"><span class="kind">repository</span>${nav}</div><h2 id="dk-title">${esc(o.id)}</h2><div class="tail">${o.kinds.length ? o.kinds.join(', ') : 'books'} · ${o.claims.length} claims in scope</div>`; body = dockRepo(o); }
+  else if(t==='x'){ head = `<div class="row"><span class="kind">elaboration</span><span class="ph">inception · ${o.kind==='standing'?'standing':'with-operator'}</span>${nav}</div><h2 id="dk-title">explore · ${o.names.map(esc).join(' + ')}</h2><div class="tail">opened ${esc(o.since)} by you</div>`; body = dockExplore(o); }
+  else if(t==='p'){ head = `<div class="row"><span class="kind">planning session</span><span class="ph">bolt plan</span>${nav}</div><h2 id="dk-title">${esc(o.repo)} · charged again</h2><div class="tail">since ${esc(o.since)} · your notes travel with it</div>`; body = dockPlanning(o); }
+  else if(t==='f'){ head = `<div class="row"><span class="kind">${esc(o.kind)}</span><span class="ph">bolt plan · deferred</span>${nav}</div><h2 id="dk-title">${o.title}</h2><div class="tail">deferred · ask again</div>`; body = dockDeferred(o); }
   else { head = `<div class="row"><span class="kind">attention</span>${nav}</div><h2 id="dk-title">${o.text}</h2>`; body = sec('what it means', `<div class="dtext">${o.id==='host' ? 'The host that holds wi-#418 has not sent a heartbeat. Takeover releases its leases now and restores the place on studio; wait lets the lease expire at 07:59, when the machinery does the same.' : 'Your earlier response named a decision that was gone. It was recorded, handed back as unapplicable and shown once here; nothing was dropped. The unit was re-proposed and kept its number.'}</div>`); }
   const keep = $('#dk-b').scrollTop;
   $('#dk-h').innerHTML = head; $('#dk-b').innerHTML = body; $('#dk-f').innerHTML = t==='a' ? `<div class="acts">${o.acts.map(([k,l]) => `<button class="btn sm ${k==='takeover'?'yes':''}" data-att="${o.id}" data-ak="${k}">${esc(l)}</button>`).join('')}</div>` : dockFooter(key);
@@ -1057,12 +1135,26 @@ document.addEventListener('click', e => {
     if(S.open==='a:'+(a&&a.id)) S.open = null, document.body.classList.remove('docked');
     if(S.focus==='a:'+(a&&a.id)) S.focus = railKeys()[0] || null;
     render(); return; }
+  if(b && b.dataset.gdrop !== undefined){ const n = +b.dataset.n; if(S.inflight[n]){ refuse(n); return; } send(n, 'idrop', b.dataset.gdrop); return; }
+  if(b && b.dataset.pane !== undefined){ toast(`pane ${b.dataset.pane} · would open in herdr`); return; }
+  if(b && b.dataset.repo){ openDock('r:'+b.dataset.repo); return; }
+  if(b && b.dataset.openrepo){ openDock('r:'+b.dataset.openrepo); return; }
+  if(b && b.dataset.askagain){ askAgain(b.dataset.askagain); return; }
+  if(b && b.dataset.xfinish){ const x = S.explorations.find(v => v.id===b.dataset.xfinish); x.state='done'; x.leaves='7d'; x.at=hhmm(S.minutes); x.last=`${hhmm(S.minutes)} · finished by dictation · record written in each intent`; say(`finish explore ${x.names.join(', ')}`); since('finished',`explore ${x.names.join(' + ')}`,'records in each intent · writeback per intent'); render(); return; }
+  if(b && b.id==='explore-go'){ const ids = [...S.picked].filter(intent); if(!ids.length) return; const kind = $('#explore-type').value; const id = 'x'+(S.explorations.length+1);
+    const names = ids.map(i => intent(i).name);
+    S.explorations.unshift({id, kind, intents:ids, names, label:`explore · ${names.join(' + ')}`, since:hhmm(S.minutes), state:kind==='standing'?'standing':'with', session:{state:kind==='standing'?'working':'with', host:'studio', agent:'claude', model:'fable', pane:newPane('studio')}, last:`${hhmm(S.minutes)} · place prepared off the books shared line · ${kind==='standing'?'standing':'waiting for you'}`});
+    S.picked.clear(); logLine(`explore ${names.join(', ')} · ${kind==='standing'?'standing':'with-operator'}`, {say:true}); toast(`explore · ${kind==='standing'?'standing':'with-operator'} elaboration over ${ids.length} intent${ids.length===1?'':'s'} · opened`); openDock('x:'+id); return; }
+  if(b && b.id==='explore-clear'){ S.picked.clear(); render(); return; }
+  if(b && b.dataset.bdrop){ const bo = bolt(b.dataset.bdrop); const u = bo.units.find(x => x.name===b.dataset.unit); bo.units = bo.units.filter(x => x!==u); say(`drop ${bo.name}/${u.name}`); since('dropped',`unit ${u.name}`,`from bolt ${bo.name} by dictation`); render(); return; }
+  if(b && b.dataset.brenamesend){ const bo = bolt(b.dataset.brenamesend); const v = $(`[data-brename="${bo.id}"]`).value.trim(); if(!v || v===bo.name) return; const old = bo.name; bo.name = v; say(`rename ${old} ${v}`); render(); return; }
+  if(b && b.dataset.wrongsend){ const n = +b.dataset.wrongsend; const ta = b.closest('.wrong').querySelector('textarea'); const v = ta.value.trim(); if(!v){ ta.focus(); return; } send(n, 'redo', v); return; }
   if(b && b.dataset.svc !== undefined){ const o = objOf(b.dataset.svc); const v = o.services[+b.dataset.i]; v.s = v.s==='running' ? 'stopped' : 'starting'; say(`${v.s==='stopped'?'stop':'start'} ${o.name}/${v.n}`); render(); if(v.s==='starting') setTimeout(() => { v.s='running'; render(); }, 1500); return; }
   /* proposal edits · each one response */
   if(b && b.dataset.udrop !== undefined){ unitDrop(b.dataset.udrop, false); return; }
   if(b && b.dataset.urename !== undefined){ const box = $(`.argbox[data-u="${b.dataset.urename}"]`); box.innerHTML = `<div class="field"><input placeholder="new unit name" aria-label="rename"><button class="btn pri sm" data-usend="rename" data-u="${b.dataset.urename}">send rename</button><button class="btn quiet sm" data-ucancel="1">cancel</button></div>`; box.querySelector('input').focus(); return; }
   if(b && b.dataset.usend){ const box = b.closest('.argbox'); const v = box.querySelector('input').value.trim(); if(!v){ box.querySelector('input').focus(); return; } const u = S.proposal.units.find(x => x.id===b.dataset.u);
-    if(b.dataset.usend==='rename'){ u.name = v; unitResponse(`422 ${u.id}: rename ${v}`); render(); } else unitNewBolt(u.id, v.replace(/\s+/g,'-')); return; }
+    if(b.dataset.usend==='rename'){ u.name = v; unitResponse(`${S.proposal.n} ${u.id}: rename ${v}`); render(); } else unitNewBolt(u.id, v.replace(/\s+/g,'-')); return; }
   if(b && b.dataset.ucancel){ b.closest('.argbox').innerHTML=''; renderDock(); return; }
   if(b && b.dataset.fix !== undefined){ const r = S.proposal.refusal; if(!r) return; r.fix.act==='move' ? unitMove(r.uid, r.fix.to, true) : unitDrop(r.uid, true); return; }
   if(b && b.dataset.fixno){ S.proposal.refusal = null; renderDock(); return; }
@@ -1080,8 +1172,8 @@ document.addEventListener('click', e => {
   const nav = t.closest('[data-nav]');
   if(nav && !t.closest('input,textarea,select,.argbox,.chores')){ const key = nav.dataset.nav; if(e.detail===2 || S.open) openDock(key); else setFocus(key); return; }
   const obj = t.closest('[data-obj]');
-  if(obj && !t.closest('input,textarea,select,button')){ openDock(obj.dataset.obj); return; }
-  if(!t.closest('#dock') && S.open && !t.closest('#log,#logbtn,.hosts')){ S.hostlit = null; closeDock(); }
+  if(obj && !t.closest('input,textarea,select,button,label')){ openDock(obj.dataset.obj); return; }
+  if(!t.closest('#dock') && S.open && !t.closest('#log,#logbtn,.hosts') && !t.closest('input,select,label')){ S.hostlit = null; closeDock(); }
   if(!t.closest('#log,#logbtn') && !$('#log').hidden){ $('#log').hidden = true; $('#logbtn').setAttribute('aria-expanded','false'); }
 });
 document.addEventListener('change', e => {
@@ -1089,14 +1181,16 @@ document.addEventListener('change', e => {
   if(t.dataset.ubolt){ const u = S.proposal.units.find(x => x.id===t.dataset.ubolt);
     if(t.value==='__new'){ const box = $(`.argbox[data-u="${u.id}"]`); box.innerHTML = `<div class="field"><input placeholder="name for the new bolt" aria-label="new bolt"><button class="btn pri sm" data-usend="newbolt" data-u="${u.id}">send new bolt</button><button class="btn quiet sm" data-ucancel="1">cancel</button></div>`; box.querySelector('input').focus(); return; }
     unitMove(u.id, t.value, false); return; }
-  if(t.dataset.utype){ const u = S.proposal.units.find(x => x.id===t.dataset.utype); if(t.value!==u.type){ u.type = t.value; unitResponse(`422 ${u.id}: type ${t.value}`); render(); } return; }
-  if(t.dataset.bname){ const b = S.proposal.bolts.find(x => x.id===t.dataset.bname); const v = t.value.trim(); if(v && v!==b.name){ const old = b.name; b.name = v; unitResponse(`422 rename ${old} ${v}`); render(); } }
+  if(t.dataset.utype){ const u = S.proposal.units.find(x => x.id===t.dataset.utype); if(t.value!==u.type){ u.type = t.value; unitResponse(`${S.proposal.n} ${u.id}: type ${t.value}`); render(); } return; }
+  if(t.dataset.bname){ const b = S.proposal.bolts.find(x => x.id===t.dataset.bname); const v = t.value.trim(); if(v && v!==b.name){ const old = b.name; b.name = v; unitResponse(`${S.proposal.n} rename ${old} ${v}`); render(); } }
+  if(t.id==='capture-intent'){ S.captureIntent = t.checked; $('#capture-as').innerHTML = `will send: <b>capture</b>${S.captureIntent?' · <b>intent</b>':''}`; return; }
+  if(t.dataset.pick){ if(t.checked) S.picked.add(t.dataset.pick); else S.picked.delete(t.dataset.pick); render(); return; }
+  if(t.dataset.scope){ const r = repo(t.dataset.repo); const c = r.claims.find(x => x[0]===t.dataset.scope); const old = c[2]; c[2] = t.value; logLine(`scope ${c[0]} ${t.value}`, {}); toast(`${c[0]} · scope ${old} → ${t.value} · recorded`); render(); return; }
 });
-document.addEventListener('input', e => { if(e.target.id==='capture') captureAs(); });
 document.addEventListener('keydown', e => {
   const typing = e.target.matches('input,textarea,select');
   if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
-  if(typing){ if(e.key==='Enter' && !e.shiftKey && e.target.id==='capture'){ e.preventDefault(); capture(); } if(e.key==='Enter' && e.target.matches('input') && e.target.closest('.argbox')){ e.preventDefault(); e.target.closest('.argbox').querySelector('[data-send],[data-usend]').click(); } if(e.key==='Enter' && e.target.dataset.bname){ e.preventDefault(); e.target.blur(); } return; }
+  if(typing){ if(e.key==='Enter' && !e.shiftKey && e.target.id==='capture'){ e.preventDefault(); capture(); } if(e.key==='Enter' && e.target.matches('input') && e.target.closest('.argbox')){ e.preventDefault(); e.target.closest('.argbox').querySelector('[data-send],[data-usend]').click(); } if(e.key==='Enter' && (e.target.dataset.bname || e.target.dataset.brename)){ e.preventDefault(); if(e.target.dataset.brename) $(`[data-brenamesend="${e.target.dataset.brename}"]`).click(); else e.target.blur(); } return; }
   if(e.metaKey||e.ctrlKey||e.altKey) return;
   const k = e.key;
   if(k==='j'||k==='ArrowDown'){ e.preventDefault(); step(1); return; }
@@ -1110,17 +1204,11 @@ document.addEventListener('keydown', e => {
 });
 function yesAll(){ const list = S.decisions.filter(d => d.g===APPROVE && !S.inflight[d.n]).map(d => d.n).sort((a,b) => a-b); list.forEach((n, i) => setTimeout(() => send(n, 'yes'), i*380)); }
 
-/* capture · typed text is a capture with one signal, or a dictation by prefix */
-function classify(v){ let m; if((m = v.match(/^intent:\s*(.+)/i))) return {kind:'intent', text:m[1]}; if((m = v.match(/^chore\s+([\w-]+):\s*(.+)/i))) return {kind:'chore', repo:m[1], text:m[2]}; if((m = v.match(/^bolt\s+([\w-]+):\s*(.+)/i))) return {kind:'bolt', bolt:m[1], text:m[2]}; return {kind:'capture', text:v}; }
-const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').split('-').slice(0,4).join('-');
-function captureAs(){ const v = $('#capture').value.trim(); const c = classify(v); const as = $('#capture-as');
-  as.innerHTML = c.kind==='capture' ? 'sends as <b>capture</b> · 1 signal · kind ask · curation sees it' : c.kind==='intent' ? 'sends as <b>dictation</b> · opens intent <span class="mono">'+esc(slug(c.text))+'</span> · no decision' : c.kind==='chore' ? 'sends as <b>dictation</b> · proposes a chore on <span class="mono">'+esc(c.repo)+'</span>' : 'sends as <b>dictation</b> · proposes a unit on bolt <span class="mono">'+esc(c.bolt)+'</span>' + (S.bolts.some(b => b.name===c.bolt) ? '' : ' · <span style="color:var(--crit)">no open bolt by that name</span>'); }
-function capture(){ const ta = $('#capture'); const v = ta.value.trim(); if(!v){ ta.focus(); return; } const c = classify(v);
-  if(c.kind==='capture'){ S.curation.unmoved++; S.curation.by += /page/.test(S.curation.by) ? '' : ' · page 1'; logLine(`capture: ${v}`, {say:true}); toast('capture · 1 signal (ask) · curation sees it'); }
-  else if(c.kind==='intent'){ const id = slug(c.text); S.intents.unshift({id, name:id, state:'open', note:'dictated · elaborations to come from planning', sessions:[]}); logLine(`intent: ${c.text}`, {say:true}); toast(`intent ${id} · opened`); }
-  else if(c.kind==='chore'){ logLine(`chore ${c.repo}: ${c.text}`, {say:true}); toast(`chore on ${c.repo} · applied`); startUnit(addBolt('chores-'+c.repo,'chores',c.repo,'no bolt · one session each'), 'chore · '+c.text.slice(0,28), 'chore', 'chore'); }
-  else { const b = S.bolts.find(x => x.name===c.bolt); if(!b){ toast(`no open bolt "${c.bolt}"`, true); return; } logLine(`bolt ${c.bolt}: ${c.text}`, {say:true}); toast(`unit on ${c.bolt} · applied`); startUnit(b, slug(c.text), 'default', 'spec'); }
-  ta.value=''; render(); }
+/* capture · typed text is a capture with one signal; the toggle makes it an intent capture (no grammar) */
+function capture(){ const ta = $('#capture'); const v = ta.value.trim(); if(!v){ ta.focus(); return; }
+  if(S.captureIntent){ const id = v.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').split('-').slice(0,4).join('-'); S.intents.unshift({id, name:id, state:'proposed', note:'captured by you as an intent · curation attaches signals · planning proposes its elaborations', sessions:[]}); logLine(`capture · intent: ${v}`, {say:true}); toast(`capture · intent ${id} · recorded`); }
+  else { S.curation.unmoved++; S.curation.by += /page/.test(S.curation.by) ? '' : ' · page 1'; logLine(`capture: ${v}`, {say:true}); toast('capture · 1 signal · curation sees it'); }
+  ta.value=''; S.captureIntent = false; render(); }
 
 /* first frame */
 document.body.dataset.tab = 'plan';
