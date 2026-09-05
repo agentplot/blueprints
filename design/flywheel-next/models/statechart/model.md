@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–195);
+Requirements are cited by their number in `requirements.md` (1–197);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -1161,6 +1161,27 @@ and `end_session` from `ended`, which only the operator's response, a
 type's rule or the retirement of the work reaches (I6, 74). A pane the
 operator kills by hand is `lost`, never a response (4).
 
+The pane and the agent are named by the session id, so `herdr agent
+list` is a status view of its own; the layout around them is the
+session binding's (`profiles/sessions.yaml` `layout:`): one
+multiplexer session per role (174), one workspace per bolt and per
+intent, one tab per unit and per elaboration, one pane per session, so
+a stage's sessions running side by side (56) are split panes of one
+tab, and the operator's own session is a workspace of its own.
+`start_session` creates the workspace, tab and pane when absent, and
+the host's reconciliation closes a tab or workspace whose object has
+left every view (`remove_stale_layout`, 186, 196). Sessions never
+message each other (197): a session speaks to the machinery only
+through the tools, each call carrying the identity token
+`start_session` issued and wrote into its work order, and the tool
+server refuses a call whose token does not belong to the pane it came
+from, so a session acts only in its own job (43, 89); the machinery
+speaks to a session only through its thread, delivered by the
+multiplexer (`deliver_answer`, `tell_moved`); a session the machinery
+charges to plan or curate reads records and calls tools like any other
+and addresses no session; the agent program's own messaging and the
+multiplexer's are not used by any session (173).
+
 ### 10.2 Free reasoning and the fixed exits
 
 Inside `alive.working` the agent is free. What reaches the machinery
@@ -1874,7 +1895,13 @@ operator's own, `flywheel-<org>-bolts` for the stage sessions of
 approved units, `flywheel-<org>-machinery` for what the machinery
 charges, overridable per host by kind or by repository, created when
 absent. Planning's run delivers one `proposal` object (section 6),
-which is the one decision it raises (172).
+which is the one decision it raises (172). Every pane and agent is
+named by its session id in a layout the session binding ships: a
+workspace per bolt and per intent, a tab per unit and per elaboration,
+a pane per session, created when absent and closed when the object
+leaves every view (196, section 10.1). Sessions never message each
+other: tools in, thread out, each call carrying the identity issued
+at start (197).
 
 **A.18 — landing, pull requests and merge-back.** The line's `landing`
 branches on `line.policy` (7.4): direct is `land_line`, one merge

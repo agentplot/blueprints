@@ -492,6 +492,17 @@ requirements, iterated against the running plan rather than on paper.
     repeat of a completed action changes nothing.
 74. A session that is not the operator's to keep is retired when the
     work it serves is retired, and its resources are released.
+197. Sessions never message each other. A session speaks to the
+    machinery only through the tools of 193, and each call carries the
+    session's identity, issued when the machinery started it; the tool
+    server refuses a call whose identity does not belong to the pane it
+    came from, so a session can act only in its own job (43, 89). The
+    machinery speaks to a session only through its thread, delivered by
+    the multiplexer (deliver_answer, tell_moved). A session charged to
+    supervise or plan (171) reads records and calls tools like any
+    other and never addresses a session. Messaging built into an agent
+    program, and the multiplexer's own messaging, are not used by any
+    session (173).
 
 ### A.8 State and evidence
 
@@ -737,6 +748,17 @@ requirements, iterated against the running plan rather than on paper.
     `flywheel-<org>-machinery` for sessions the machinery charges. A
     declaration may route any kind or repository elsewhere. The
     machinery creates the multiplexer session when it is absent.
+196. Every pane and every agent the machinery starts is named by the
+    object it works: a session's pane and its agent name are the
+    session id, so the multiplexer's listing is a status view of its
+    own (B.4). The multiplexer layout is a binding of the sessions
+    profile with a shipped default: one multiplexer session per
+    organization and role (174); inside it, one workspace per bolt and
+    per intent; one tab per unit and per elaboration; one pane per
+    session, so sessions of one unit running side by side are split
+    panes of one tab. The machinery creates a workspace, tab or pane
+    when absent and removes it when its object leaves every view (186).
+    An operator's own session (69) is a workspace of its own.
 
 ### A.18 Landing, pull requests and merge-back
 

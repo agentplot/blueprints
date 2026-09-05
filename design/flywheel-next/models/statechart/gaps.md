@@ -366,6 +366,26 @@ the operator may reverse by a response on the file; an entry with
   claim amendment on an intent's line instead is **open**; the
   operator's control on the page is the ruling for now. **Decision**.
 
+- **196 / 197 layout and identity.** The herdr workspace, tab and pane
+  commands in `profiles/sessions.yaml` (`herdr workspace create
+  --label`, `herdr tab create`, `herdr pane split`, `herdr agent start
+  --pane`) are written from the intended shape and verified against
+  none; if herdr has no tab or pane concept, a workspace per unit and a
+  pane per session is the fallback and the binding changes, not the
+  machine. **Open**. Tab and workspace removal is a host
+  reconciliation (`remove_stale_layout`) rather than an effect of the
+  object's own machine, because the object is final by then and runs
+  no transition; a workspace may therefore outlive its object by one
+  reconciliation tick. **Decision**. The identity token is checked by
+  the tool server against the pane the call came from through `herdr
+  agent status`; how the pane of a caller is known (a herdr-set
+  environment variable, a socket credential) is the multiplexer's, and
+  a multiplexer that cannot say which pane a process runs in weakens
+  the check to the token alone. **Open**. Denying an agent program's
+  own messaging is the place's settings for kinds that have them
+  (Claude Code, codex, opencode); a kind with none is trusted to the
+  work order. **Decision**.
+
 - **190 producers per deliverable.** The shipped set is a profile
   partial (`profiles/deliverables.yaml`) rather than a machine: it
   binds no evidence and no effect, so `check.py` does not check it
