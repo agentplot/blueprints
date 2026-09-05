@@ -1,7 +1,7 @@
 scenario: B.3.137-binding
 title: the same machine files run unchanged against every profile; a binding that leaves a name unbound is not a profile; a profile is admitted by passing this suite
 profiles: [all]
-satisfies: [81, 89, 122, 135, 136, 137, 165, 166, 167]
+satisfies: [81, 89, 122, 135, 136, 137, 165, 166, 167, 168, 169]
 machines: ./contract/lamp
 given:
   objects: [{id: lamp/1, machine: lamp, state: {power: "off"}}]

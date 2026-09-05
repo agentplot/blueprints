@@ -21,6 +21,18 @@ Decisions taken while building (not asked):
   own "atlas · chores" lane because a chore is never a bolt of its own.
 - Attention items are markers on the lane they concern; "seen" on a could-not-apply marker is
   not a response and is not logged.
+- Peek is an anchored popover, not an in-place expansion, so hovering never reflows the river
+  under the pointer. It opens on hover (fine pointer, 380 ms), on the chevron a chip or lane
+  header carries, or on a long-press on a token (touch). Hover-opened peeks close when the
+  pointer leaves; chevron- or long-press-opened peeks stay until a tap outside or Escape.
+- Drill takes over the screen with a back control. Reached from the peek's "open", the "open"
+  button on an expanded chip, or a double-tap on a chip, token or lane header. Tabs per object:
+  document and thread for a unit or intent, session and thread for a token, bolt and thread for
+  a lane. Service start and stop in the bolt view are dictations, each sent on its own with a
+  toast and logged beside the responses, marked "dictate".
+- Sample peek and drill content (signal excerpts, claim scenarios, items, hosts, logs, endpoints,
+  services, documents, threads) is invented and plausible, kept consistent with plan-mockup.md.
+  Every session log tail and thread is stamped with a who and a when.
 -->
 <html lang="en">
 <head>
@@ -121,10 +133,15 @@ textarea{width:100%;min-height:58px;resize:vertical}
 .chip{position:relative;background:var(--chip);border:1px solid var(--line);border-radius:10px;box-shadow:0 1px 1px rgba(23,38,45,.04);cursor:pointer;transition:box-shadow .15s,transform .15s}
 .chip:hover{box-shadow:var(--shadow)}
 .chip.lifting{opacity:.35}
-.chip-row{display:grid;grid-template-columns:18px auto auto 1fr;align-items:center;gap:8px;padding:8px 10px 8px 6px;min-height:40px}
-.chip.static .chip-row{grid-template-columns:auto auto 1fr;padding-left:12px}
+.chip-row{display:grid;grid-template-columns:18px auto auto 1fr 22px;align-items:center;gap:8px;padding:8px 8px 8px 6px;min-height:40px}
+.chip.static .chip-row{grid-template-columns:auto auto 1fr 22px;padding-left:12px}
 .chip.static .grip{display:none}
 .chip.static .tail{grid-column:1/-1}
+.chip .tail{grid-column:2/-1}
+.chev{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;color:var(--ink-3);flex:none}
+.chev::before{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg)}
+.chev:hover{background:var(--surface-2);color:var(--ink)}
+.chip.k-blocked .chev,.chip.k-idle .chev{align-self:center}
 .grip{width:18px;height:22px;border-radius:4px;touch-action:none;cursor:grab;background-image:radial-gradient(circle,var(--ink-3) 1.2px,transparent 1.4px);background-size:6px 6px;background-position:3px 2px;opacity:.7}
 .grip:hover{opacity:1;background-color:var(--surface-2)}
 .chip .n{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--river);letter-spacing:.01em}
@@ -249,8 +266,74 @@ textarea{width:100%;min-height:58px;resize:vertical}
 .toast.out{opacity:0;transition:opacity .4s}
 @keyframes toast-in{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
 
+/* peek */
+.token{-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
+.peek{position:fixed;z-index:45;width:min(380px,calc(100vw - 16px));max-height:min(62vh,540px);overflow:auto;background:var(--chip);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:10px 12px 12px;animation:peek-in .15s ease-out}
+@keyframes peek-in{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+@media (max-width:759px){.peek{left:8px !important;right:8px;width:auto;top:auto !important;bottom:calc(var(--dock) + 8px)}}
+.peek-h{display:flex;align-items:center;gap:8px;margin:0 0 8px}
+.peek-t{font-family:var(--disp);font-weight:700;font-size:14px;flex:1;min-width:0;overflow-wrap:anywhere}
+.peek-t .n{font-family:var(--mono);color:var(--river);font-weight:500;margin-right:6px}
+.peek-t .k{font-size:10.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);margin-right:6px;font-family:var(--sans)}
+.x{width:24px;height:24px;border-radius:6px;color:var(--ink-3);font-size:17px;line-height:1;flex:none}
+.x:hover{background:var(--surface-2);color:var(--ink)}
+.sec{margin:0 0 10px}.sec:last-child{margin:0}
+.sec h4{margin:0 0 4px;font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:0;font-size:12.5px}
+.kv dt{font-family:var(--mono);font-size:12px;color:var(--ink);white-space:nowrap}
+.kv dd{margin:0;color:var(--ink-2);overflow-wrap:anywhere}
+.kv dd q{quotes:"\201C" "\201D";font-style:italic}
+.lines{margin:0;padding:0;list-style:none;font-family:var(--mono);font-size:11.5px;color:var(--ink-2)}
+.lines li{padding:3px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:auto 1fr;gap:8px}
+.lines li:last-child{border:0}
+.lines li time{color:var(--ink-3)}
+.st{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-right:6px;vertical-align:middle}
+.st.stopped{background:var(--ink-3)}
+.ep{font-family:var(--mono);font-size:12px;color:var(--river);overflow-wrap:anywhere}
+
+/* drill */
+.drill{position:fixed;inset:0;z-index:60;background:var(--bg);overflow:auto;overscroll-behavior:contain}
+.drill-h{position:sticky;top:0;z-index:2;background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:10px 16px;flex-wrap:wrap}
+.drill-t{display:flex;align-items:baseline;gap:8px;min-width:0;flex-wrap:wrap}
+.drill-t .dk{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);font-weight:600}
+.drill-t h2{font-family:var(--disp);font-size:18px;font-weight:700;overflow-wrap:anywhere}
+.drill-t .n{font-family:var(--mono);color:var(--river);font-weight:500}
+.tabs{margin-left:auto;display:flex;gap:4px}
+.tab{padding:5px 12px;border-radius:999px;font-size:13px;color:var(--ink-2)}
+.tab:hover{background:var(--surface-2)}
+.tab.on{background:var(--river);color:var(--river-ink)}
+.drill-b{padding:22px 16px 90px;max-width:840px;margin:0 auto}
+.doc{max-width:66ch;font-size:15px;line-height:1.6}
+.doc .sub{color:var(--ink-3);font-size:12px;font-family:var(--mono);margin:0 0 18px}
+.doc h3{font-family:var(--disp);font-size:20px;font-weight:700;margin:24px 0 6px;text-wrap:balance}
+.doc h3:first-of-type{margin-top:0}
+.doc p{margin:0 0 12px}
+.doc .cl{font-family:var(--mono);font-size:13px;color:var(--river)}
+.doc ol{margin:0 0 12px;padding-left:22px}
+.annot{margin:28px 0 0;padding:14px;border:1px dashed var(--river);border-radius:12px;background:var(--river-soft);display:flex;flex-direction:column;gap:8px}
+.annot h4{margin:0;font-size:13.5px;font-family:var(--disp);font-weight:700}
+.annot p{margin:0;font-size:12.5px;color:var(--ink-2)}
+.tl{list-style:none;margin:0 0 0 6px;padding:0;border-left:2px solid var(--line)}
+.tl li{position:relative;padding:0 0 16px 18px;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13.5px;align-items:baseline}
+.tl li::before{content:"";position:absolute;left:-7px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--ink-3);border:2px solid var(--bg)}
+.tl li.exit::before{background:var(--ok)}
+.tl li.question::before{background:var(--blocked)}
+.tl li.response::before,.tl li.dictation::before{background:var(--river)}
+.tl time{font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+.tl .who{font-weight:500}
+.tl .what{grid-column:1/-1;color:var(--ink-2)}
+.tl .kk{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);margin-right:8px}
+.bv{display:grid;gap:14px}
+.bv section{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.bv h3{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);margin:0 0 6px;font-weight:600}
+.row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px;flex-wrap:wrap}
+.row:last-child{border:0}
+.row .grow{flex:1;min-width:0}
+.row .m{font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+.log li.dict span::before{content:"dictate · ";color:var(--ink-3)}
+
 @media (prefers-reduced-motion:reduce){
-  .token,.token.blocked .dot,.since li.new,.toast{animation:none}
+  .token,.token.blocked .dot,.since li.new,.toast,.peek{animation:none}
   .chip,.lane,.zone,.toast{transition:none}
 }
 </style>
@@ -288,6 +371,14 @@ textarea{width:100%;min-height:58px;resize:vertical}
   <ol id="loglist"></ol>
 </aside>
 <div class="toasts" id="toasts" aria-live="polite"></div>
+<div class="peek" id="peek" hidden role="dialog" aria-label="peek">
+  <div class="peek-h"><span class="peek-t" id="peek-t"></span><button class="btn sm" id="peek-open" data-drill="">open</button><button class="x" id="peek-x" aria-label="close">×</button></div>
+  <div id="peek-b"></div>
+</div>
+<div class="drill" id="drill" hidden role="dialog" aria-modal="true" aria-label="detail">
+  <header class="drill-h"><button class="btn sm" id="drill-back">← river</button><div class="drill-t" id="drill-t"></div><nav class="tabs" id="drill-tabs"></nav></header>
+  <div class="drill-b" id="drill-b"></div>
+</div>
 
 <script>
 (() => {
@@ -351,12 +442,80 @@ const S = {
   ],
   log: [], open:null, laneOpen:{}, pendingSpring:null, nextWi:422,
 };
-const dec = n => S.decisions.find(d => d.n===n);
+const dec = n => S.decisions.find(n2 => n2.n===n);
 const lane = id => S.lanes.find(l => l.id===id);
 
+/* ---------- sample detail (invented, plausible, consistent with plan-mockup.md) ---------- */
+const minsNow = () => BASE + Math.floor((Date.now()-T0)/60000);
+const dur = m => m<60 ? m+'m' : Math.floor(m/60)+'h '+pad(m%60)+'m';
+const TOK = {
+  wi419:{stage:'spec', host:'studio', since:BASE-32, place:'plan-decisions/sink-delivery/wi-419', log:[['07:09','read unit sink-delivery · 3 items · one delivery mark per sink'],['07:26','drafting spec for item 1 · mark written on delivery, read on derive'],['07:38','asked the books for claim sinks/one-mark @v2 · found · cited']]},
+  wi418:{stage:'build', host:'mac-mini', since:BASE-108, place:'plan-decisions/sink-delivery/wi-418', log:[['06:41','tests green on Backlog transition · 14 passed'],['06:55','Ready transition reads Backlog · spec §2 does not say whether it clears it'],['06:59','blocked · asked: should Ready imply Backlog cleared?']]},
+  wi420:{stage:'review', host:'studio', since:BASE-12, place:'plan-decisions/sink-delivery/wi-420', log:[['07:28','review of item 2 against spec §3 · started'],['07:33','checking one-writer sc.2 · handover path holds'],['07:37','two notes so far · none blocking']]},
+  'proto-1':{stage:'prototype', host:'mac-mini', since:BASE-840, place:'atlas-provider-limits/plan-derivation', log:[['17:02','serving at http://proto.atlas-provider-limits.localhost:41240'],['17:31','40 derivations · 0.8s each · 38 match the hand-derived plan'],['17:40','idle · standing · finish or keep is yours']]},
+};
+let nextPort=41250;
+const INFRA = {
+  'plan-decisions':{endpoints:['http://atlas.plan-decisions.localhost:41231','http://rows.plan-decisions.localhost:41232'], services:[{n:'atlas-api',s:'running'},{n:'plan-rows web',s:'running'},{n:'postgres',s:'running'},{n:'signal-worker',s:'stopped'}]},
+  'atlas-provider-limits':{endpoints:['http://books.atlas-provider-limits.localhost:41240'], services:[{n:'books preview',s:'running'},{n:'proto server',s:'running'}]},
+  'loop-granularity':{endpoints:['http://books.loop-granularity.localhost:41244'], services:[{n:'books preview',s:'stopped'}]},
+};
+const infra = L => INFRA[L.id] || (INFRA[L.id]={endpoints:[`http://${L.repo}.${L.id}.localhost:${nextPort++}`], services:[{n:L.repo+'-api',s:'stopped'},{n:'web',s:'stopped'}]});
+const tokInfo = (L,t) => TOK[t.id] || (TOK[t.id]={stage:t.label.split(' ').pop(), host:'studio', since:minsNow(), place:L.id+'/'+t.label.replace(/\s+/g,'-'), log:[[now(),'place prepared off line '+L.id],[now(),'session started · reading the unit'],[now(),'nothing to report yet']]});
+
+const PEEK = {
+  412:[{h:'signals · 3 of 7', kv:[['meeting · 08-23','<q>we hit the provider cap twice last week and nobody saw it until the retries stacked up</q> · ops sync'],['log · 08-29','429s from provider A: 1,204 in 6h · atlas-worker'],['chat · 09-01','<q>can we cap concurrent calls per provider rather than per worker?</q> · #atlas']]},
+       {h:'challenges', kv:[['providers/one-writer @v3','one status writer per bolt · sc.1 sc.2'],['providers/rate-envelope @v1','ceiling declared per provider, not enforced']]},
+       {h:'elaborations', kv:[['research','self-closing · ends with a finding'],['prototype','standing · ends when you finish it']]}],
+  413:[{h:'covers', kv:[['one-writer @v3 · sc.1','only one session writes status for a bolt at a time'],['one-writer @v3 · sc.2','the writer survives a host handover · completes the claim']]},
+       {h:'items · in order', kv:[['1 writer-core','no deps'],['2 handover','after 1'],['3 wire plan-decisions','after 1']]},
+       {h:'type default runs', kv:[['stages','spec → build ×2 → review → merge']]},
+       {h:'yes starts', kv:[['now','spec session on place plan-decisions/status-writer · host studio']]}],
+  414:[{h:'covers', kv:[['no claim','routed from an ask · a finding may name one later']]},
+       {h:'items · in order', kv:[['1 jitter-window','no deps'],['2 retry-budget','after 1']]},
+       {h:'type fast runs', kv:[['stages','build → review → merge · no spec stage']]},
+       {h:'yes starts', kv:[['now','new line atlas-retry-behaviour-and-jitter-limits off atlas main · build session']]}],
+  415:[{h:'offered by', kv:[['a','wi-#420 review · AGENTS.md cites a removed script'],['b','wi-#419 spec · citation to sinks/one-mark points at @v1'],['c','proto plan-derivation · ref renamed in books, not in atlas']]},{h:'if accepted', kv:[['each','one chore session in its own place · no bolt · lands on atlas main']]}],
+  416:[{h:'gates', kv:[['tests','1,212 passed · 0 skipped'],['review','4 units · all passed'],['as-built','4 statements · claims cited']]},{h:'yes starts', kv:[['now','merge plan-decisions line into switchboard main · line closed']]}],
+  417:[{h:'unmet', kv:[['claims · 11','boundary 4 · owner 2 · invariant 3 · behavior 2'],['chores · 8','lint config, CI, AGENTS.md, three renames, two citations'],['units · 3','tracker adapter · status writer · gates']]}],
+  418:[{h:'elaborations', kv:[['research','closed 08-28 · finding: one loop per bolt'],['planning','closed 08-30'],['prototype','finished 09-02 · by your response'],['writeback','closed 09-03 · books ch.7 rewritten']]},{h:'close means', kv:[['claims','loops/one-per-bolt @v1 becomes standing']]}],
+  419:[{h:'session', kv:[['host','mac-mini'],['idle since','yesterday 17:40'],['serves','http://proto.atlas-provider-limits.localhost:41240']]},{h:'finish means', kv:[['place','removed · finding note kept on the intent']]}],
+  420:[{h:'claim moved', kv:[['v3','one writer per bolt'],['v4','one writer per bolt, and the writer is the loop, not a session']]},{h:'in flight', kv:[['wi-#418','build · cites v3 in its spec'],['wi-#419','spec · cites v3']]}],
+  421:[{h:'session', kv:[['stage','build · item 2 of sink-delivery'],['host','mac-mini · last seen 41m'],['waiting','since 06:59']]}],
+};
+const DOCS = {
+  413:{sub:'unit proposal · atlas · type default · written by planning 09-02 14:10 · sample', h:[
+    ['Why','Two sessions on bolt plan-decisions wrote the bolt status within the same minute on 08-30 and the second write won. Claim <span class="cl">sessions/one-writer @v3</span> says only one session writes status for a bolt at a time and that the writer survives a host handover. Nothing in atlas enforces either scenario today.'],
+    ['What changes','A status writer becomes one job the bolt loop holds. Sessions send their exits to the writer over the place’s channel; the writer folds them and writes once per tick. A handover moves the writer with the loop’s lease, so a host that goes quiet loses the writer with the lease and the next host takes it up on renewal.'],
+    ['Items','<ol><li><b>writer-core</b> · the fold and the single write · sc.1</li><li><b>handover</b> · writer bound to the lease · sc.2 · after 1</li><li><b>wire plan-decisions</b> · switch the open bolt to the writer · after 1</li></ol>'],
+    ['What a yes starts','Spec, two builds, review and merge on bolt plan-decisions, all by the machinery. The next decision that is yours about this work is the bolt’s close.']]},
+  414:{sub:'unit proposal · atlas · type fast · routed from an ask 09-03 · sample', h:[
+    ['Why','You asked: retries hammer the provider. The atlas worker retries a failed call after a fixed 250 ms, so a burst of failures returns as the same burst four times.'],
+    ['What changes','Retries take a jittered window that grows with each attempt and a per-provider budget that caps concurrent retries. Both are settings on the provider record, with the defaults written in as-built.'],
+    ['Items','<ol><li><b>jitter-window</b> · exponential window with full jitter</li><li><b>retry-budget</b> · per-provider concurrent cap · after 1</li></ol>'],
+    ['Where it goes','A new bolt, proposed name atlas-retry-behaviour-and-jitter-limits. Rename it on the decision or route it to plan-decisions if you would rather land it with that work.']]},
+  412:{sub:'intent brief · curation 09-02 · 7 signals from 3 sources over 12 days · sample', h:[
+    ['The subject','Atlas treats every provider as unlimited. Seven signals since 08-23 say otherwise: two meeting excerpts, four log observations, one chat ask. Curation attached them to one thread: what a provider limit is, where it is declared, and who enforces it.'],
+    ['What the elaborations would do','Research reads the three providers’ published limits and how atlas hits them, and closes itself with a finding. The prototype stands: a limiter in front of the worker, served on its own place, that you can finish when it has told you enough.'],
+    ['Claims it challenges','<span class="cl">providers/one-writer @v3</span> and <span class="cl">providers/rate-envelope @v1</span>. Both would move if this intent closes with a new envelope claim.']]},
+};
+const THREADS = {
+  'dec:412':[['09-02 09:14','curation','note','7 signals attached · 2 dropped as duplicates'],['09-02 09:15','machinery','decision','412 created · approve intent'],['09-03 11:02','ops sync','note','signal 7 added from the 09-03 meeting excerpt']],
+  'dec:413':[['09-02 14:10','planning','note','proposed status-writer against one-writer sc.1,2 · target bolt plan-decisions'],['09-02 14:12','machinery','decision','413 created · approve unit'],['09-04 05:58','operator','edit','plan file edited by hand · unit dropped'],['09-04 06:10','operator','response','yes 413 · could not apply · unit already dropped'],['09-04 06:41','planning','note','edit reverted · unit re-derived · number kept']],
+  'dec:414':[['09-03 16:20','operator','dictation','ask: retries hammer the provider'],['09-03 16:24','planning','note','routed the ask to a unit · no intent · type fast · new bolt proposed'],['09-03 16:24','machinery','decision','414 created · approve unit']],
+  'dec:421':[['09-04 05:52','wi-#418 build','exit','tests green on Backlog transition'],['09-04 06:59','wi-#418 build','question','should Ready imply Backlog cleared?'],['09-04 06:59','machinery','decision','421 created · answer']],
+  'tok:wi418':[['09-04 05:40','bolt loop','note','place prepared · item 2 of sink-delivery · host mac-mini'],['09-04 05:52','wi-#418 build','exit','spec applied · 14 tests green'],['09-04 06:59','wi-#418 build','question','should Ready imply Backlog cleared?'],['09-04 07:34','host watch','note','mac-mini last seen 06:59 · lease expires 07:59']],
+  'tok:proto-1':[['09-03 16:58','intent loop','note','place prepared off line atlas-provider-limits'],['09-03 17:31','prototype','note','40 derivations run · 38 match'],['09-03 17:40','prototype','exit','idle · standing'],['09-04 07:40','machinery','decision','419 created · finish or keep']],
+  'lane:plan-decisions':[['08-28 10:00','operator','response','yes 388 · bolt plan-decisions opened'],['08-30 15:12','review','exit','unit plan-derivation · passed'],['09-01 09:40','review','exit','unit decision-numbers · passed'],['09-02 18:05','review','exit','unit response-apply · passed'],['09-04 07:21','review','exit','unit decision-grouping · passed first time · merged'],['09-04 07:40','machinery','decision','416 created · land']],
+  'lane:atlas-provider-limits':[['09-02 09:15','machinery','decision','412 created · intent proposed'],['09-03 16:58','intent loop','note','prototype plan-derivation started on mac-mini'],['09-03 17:40','prototype','exit','idle · standing']],
+  'lane:loop-granularity':[['08-20 11:00','operator','response','yes 361 · intent opened'],['08-28 16:30','research','exit','finding: one loop per bolt'],['09-02 12:10','operator','response','377 finish · prototype finished'],['09-03 17:55','writeback','exit','books ch.7 rewritten · gates green'],['09-04 07:40','machinery','decision','418 created · close or keep open']],
+};
+const thread = key => THREADS[key] || (THREADS[key]=[[('09-04 '+now()),'machinery','note','object seen on the river · no earlier thread in the sample']]);
+
 /* ---------- the send: one response, on its own, the moment it is given ---------- */
-function send(text, toastText){
-  S.log.unshift({t:now(), text});
+function send(text, toastText, key, dict){
+  S.log.unshift({t:now(), text, dict:!!dict});
+  if(key) thread(key).push(['09-04 '+now(), 'operator', dict?'dictation':'response', text]);
   toast(toastText || (text+' · recorded'));
 }
 function retire(n){ S.decisions = S.decisions.filter(d => d.n!==n); if(S.open===n) S.open=null; }

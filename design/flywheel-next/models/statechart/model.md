@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–167);
+Requirements are cited by their number in `requirements.md` (1–169);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -45,7 +45,8 @@ of some object, or a file the machinery reads as evidence.
 |---|---|---|---|---|
 | `intent` | object | one thread of design work; its line is a region of its own | — · elaboration, unit (take-conflict chores only) | `machines/intent.yaml` |
 | `elaboration` | object | one unit of design work; its type machine runs inside `working` | intent · — | `machines/elaboration.yaml` |
-| `bolt` | object | one delivery to a built repository; its `line` and the operator's `place` are regions of its own | — · unit | `machines/bolt.yaml` |
+| `bolt` | object | one delivery to a built repository; its `line`, the operator's `place` and its `services` are regions of its own | — · unit, service | `machines/bolt.yaml` |
+| `service` | object | one declared process in a bolt's place: stopped, starting, running, failed; the operator's `start` and `stop` and a session's command are one record (46, 47) | bolt · — | `machines/service.yaml` |
 | `unit` | object | one approved piece of construction; chores are units of the chore type | bolt or intent · work-item | `machines/unit.yaml` |
 | `work-item` | object | one task of a unit; the unit type's machine runs inside `in-type` | unit · — | `machines/work-item.yaml` |
 | `operator-session` | object | the operator's own session (66): with-operator, no thread, ends by dictation | — | `machines/operator-session.yaml` |
@@ -119,11 +120,14 @@ Three relations, and only three:
    submachine at any depth (an item's `session: ended` reaches the
    session inside its stage).
 2. **Orthogonal regions** — independent concerns of one object run side
-   by side: `intent` has `life` and `line`; `bolt` has `life`, `line` and
+   by side: `intent` has `life` and `line`; `bolt` has `life`, `line`,
+   `place` and `services`; `work-item` and `elaboration` have `life` and
    `place`; `intent.open` has `material` and `close`; `bolt.open` has
    `citations` and `close`; `session.alive` has `activity` and
    `presence`; `plan` has `register` and `status`. One transition per
-   region per tick.
+   region per tick. A region reads a sibling through `{region: {name,
+   in}}`, and the name may be a dotted path into a submachine run beside
+   it (`place.place.life`), never a path into another object.
 3. **Ownership** — `parent`/`owns`. Owned objects are listed through
    their parent; a parent's guard may read its children's states
    (`children: {kind: unit, none: [proposed, ...]}`) and a child may
@@ -192,8 +196,11 @@ resolves to this object's active decision state; as a **dictation**, it
 names the object outright (12). A dictation may name only a transition
 that undoes or defers work — `drop`, `hold`, `release`, `send back`,
 `retire`, `takeover`, `finish`, `close`, `end` — never one that asserts
-work was done (4); a dictation with any other answer is `unapplicable`
-and reported. Firing appends the id in the same write as the state
+work was done (4); a dictation with any other answer is `unapplicable` and reported. The one pair outside that list is `start`
+and `stop` on a service, which 46 gives the operator outright; a
+session's `flywheel service start|stop` writes the same op-response
+record, so the service machine sees one `{response: start}` whoever
+asked (47). Firing appends the id in the same write as the state
 change, so the response is applied exactly once whatever is delivered
 twice or restarted in between (134).
 
@@ -202,7 +209,10 @@ twice or restarted in between (134).
 `line` region's submachine when a state has more than one.
 `{children: {kind, all|any|none|count_gte}}` reads the listed children's
 `state`. `{region: {name, in}}` reads a sibling region of the same
-object.
+object; `name` may be a dotted path `<region>.<state>.<region>` into a
+submachine run in a sibling region (`place.place.life` is the `life`
+region of the place machine in the `place` region's `place` state), and
+never crosses objects.
 
 ### 2.3 Effects and proofs
 
@@ -257,7 +267,7 @@ needed to walk S1 to S34.
 |---|---|---|---|
 | **state store** | every object's record: state per region, `entered_at`, `seq`, record fields, `applied_responses`; the thread on the object (questions, answers, notes, exits, offers, refusals, moves); op-responses; leases; host heartbeats; the plan's register; the sinks' marks; asks; the run record | tracker profile: GitHub issues, milestones and a Projects v2 board in the organization's `flywheel-state` repository. git-only profile: the `flywheel-state` git repository, branch `main` | differs |
 | **books repository** | chapters with fenced claim blocks; the system context map; OpenSpec change directories (one per intent) and their archive; the manifest `flywheel.yaml`; instructions, schemas and skills; captures, signals and moves; the ledger; unit and elaboration type definitions | git repository, mdBook, OpenSpec, recutils files parsed by the binary | same in every profile |
-| **built repositories** | the shared line, bolt lines, places; as-built statements; OpenSpec change directories for units, holding the finding and chore documents; persona definitions | git repositories with their own merge gates | same |
+| **built repositories** | the shared line, bolt lines, places; as-built statements; OpenSpec change directories for units, holding the finding and chore documents; persona definitions; the service declarations `.flywheel/services.yaml` (46), read at the head of the bolt's place and changed only by a chore (47) | git repositories with their own merge gates | same |
 | **the multiplexer** | pane existence, activity and the last keystroke per session | herdr, read through `herdr agent status` | same; evidence only, never durable state |
 
 Nothing else. A host's memory holds only what it read this tick. The
@@ -279,6 +289,7 @@ worktree's presence — is not state and is re-observed after a restart
 | session exit, offers, refusals | the entries the session's command wrote on its thread, then the session record after `record_exit`, `record_offers`, `record_refusals` | — |
 | line `absent/current/taking/conflict/landing/landed/removing/removed` | git: the ref and `merge-base --is-ancestor` between heads; `landing` by the pull request's checks | the record's `head` field |
 | place `absent/preparing/ready/behind/conflict/merging/merged/removing/held/removed` | git and `wt worktree list` on the host that owns it, plus the record for the retry counters, the endpoints and the hold | the record's `head` |
+| service `stopped/starting/running/failed/gone` | the service's record for the intended state (moved only by a response); `wt tether status` and the readiness check for whether the process is present and serves | the page's service line beside the bolt, with its endpoint and controls |
 | claim `proposed/standing` | which line of the books repository holds the fenced block | the ledger's `claim_version` copy |
 | ledger-cell | the ledger record in the books repository | the backlog (derived, never stored) |
 | capture, signal, move | the recutils files in the books repository | the status view's unmoved counts |
@@ -514,7 +525,7 @@ shared, two are the profiles.
 
 | file | binds | same in every profile? |
 |---|---|---|
-| `profiles/host.yaml` | the world the machinery acts on: git, worktrunk `wt`, portless, OpenSpec, claim blocks, the manifest's declarations | yes |
+| `profiles/host.yaml` | the world the machinery acts on: git, worktrunk `wt` (worktrees and tethered processes), portless, OpenSpec, claim blocks, the manifest's declarations, the repositories' service declarations | yes |
 | `profiles/sessions.yaml` | the session binding: herdr panes, Claude Code, and the `flywheel exit\|offer\|note\|refuse` command sessions report through (64) | yes |
 | `profiles/sessions-stand-in.yaml` | the same names bound to a scripted player, swapped in by `flywheel scenario run` (90); never loaded by a host | test only |
 | `profiles/books.yaml` | the books repository as a store: ledger, captures, signals, moves, curation and planning inputs | yes |
@@ -744,13 +755,15 @@ place <object>` and `release place <object>`, `send back <item>`,
 `retire <item|planning|curation|capture>`, `takeover <host>` (on a
 stale host, before the 30-minute bound), `finish <elaboration>` (a
 standing session, without waiting for the idle decision), `end
-<session>`, `close` — and the machinery performs it with its effects
+<session>`, `close` — and, on a bolt's declared service, `start
+<bolt>/<service>` and `stop <bolt>/<service>` (46, section 7.7) — and
+the machinery performs it with its effects
 and records it: the same transition the decision would have taken,
 with the same `enter:` commands to sessions and places; a dictation that would assert work was done (`done`,
 `pass`, `yes` on nothing) is unapplicable and reported (4). The bot's
 grammar is `idea: <text>`, `unit <bolt>: <text>`, `chore: <text>`, `ask
-<repo>: <text>`, `revive <signal>`, `session: <text>`, and the undo
-verbs above.
+<repo>: <text>`, `revive <signal>`, `session: <text>`, `start|stop
+<bolt>/<service>`, and the undo verbs above.
 
 ## 6. Planning
 
@@ -844,6 +857,15 @@ whole, seeded as a job on the thread and in the place, and the place's
 own session resolves it; the rebase retries on its `done` exit; three
 retries then a decision.
 
+A work item's and an elaboration's place is a region beside `life`
+(`work-item.place`, `elaboration.place`), entered when `life` reaches
+`placing` and read back through `{region: {name: place.place.life, in:
+[ready]}}`. It is not nested inside `placing`: a region nested in a
+state ends when the state is left, and the owner must command the place
+(`place: merging`, `place: removing`) from `merging`, `stopped` and the
+dictation transitions long after `placing` is gone. The bolt's operator
+place is a region for the same reason.
+
 ### 7.4 Merging and landing
 
 `merge_place` runs one place at a time in the fixed order (unit
@@ -886,7 +908,49 @@ found by the host machine's reconciliation (`host.stray_places`, from
 `remove_stray_places`, one recorded effect per worktree, never while
 the owner is held.
 
-### 7.7 What a session may not do
+### 7.7 Services
+
+A built repository declares its services — a dev server, a worker,
+anything that listens — as data in `.flywheel/services.yaml`: a name,
+the command that starts it in a place, what it serves, and an optional
+readiness command (46; the file is named and shown in
+`profiles/host.yaml`). The bolt's `services` region reads the file at
+the head of the operator's place the first time that place is `ready`
+and runs `declare_services`: one `service` object per record, owned by
+the bolt, in `stopped`; the region re-runs the effect whenever the
+place's head gains a record, which is how a chore that adds a service
+reaches the page (47). A session cannot declare a service: the file
+changes only through a chore merged into the bolt's line.
+
+A service's record is its intended state and the tethered process is
+evidence. `stopped` means nothing under that name runs in the place: a
+process found by the tether name is stopped, never adopted. `start`
+enters `starting` and runs `start_service` — `wt tether` in the bolt's
+place, bound to the worktree, with the port portless derives from the
+place (44) — until the process is present; it is `running` once it
+also serves, and `running` records the endpoint portless routes into
+the service record so the page shows it beside the bolt as a link, with
+its state and its start and stop controls (45). A process that exits,
+or one that never serves within five minutes, is `failed`: a decision
+under attention whose answers are `start` and `stop`. `stop` from any
+live state runs `stop_service` and returns to `stopped`.
+
+`start` and `stop` are the operator's dictations on a service — the one
+pair 4's undo-or-defer rule does not cover, granted by 46. A session
+starts or stops a service only through `flywheel service start|stop
+<name>` in its place; the command resolves the place's line to its bolt
+and writes an op-response naming `service/<bolt>/<name>` with the
+session as `by`, the very record the dictation produces, so the
+machine has one `{response: start}` guard and the record's `moved_by`
+says who asked (47). The bolt's services are the bolt's place's: a
+session that wants a server in its own place starts one under the
+place's rule (44) and it is its own — tethered to that place, never
+shown, gone with it. When the bolt's place is removed the tether ends
+every service's process with the worktree (54) and each service goes
+to `gone` on `service.place_present` false; a held place keeps its
+services as they were.
+
+### 7.8 What a session may not do
 
 `prepare_place` installs `pre-push`, `reference-transaction` and
 `pre-merge-commit` hooks that refuse and run `flywheel refuse`, and

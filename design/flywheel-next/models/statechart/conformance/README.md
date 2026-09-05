@@ -13,7 +13,7 @@ Two directories:
   with a toy machine that shares no atom with the flywheel (`lamp`), so
   a profile is tested before the domain is loaded.
 - `scenarios/` — S1 to S34 of the requirements, run over the flywheel's
-  own machines; X1 to X8 for the requirements the numbered scenarios
+  own machines; X1 to X9 for the requirements the numbered scenarios
   do not reach; T1 for the tracker's direct action. The `profiles:`
   line of each says which profiles it applies to; `all` runs on the
   stand-in and on every real profile.

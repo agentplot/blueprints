@@ -1,6 +1,6 @@
 # Gaps — requirements not satisfied, or found contradictory
 
-By requirement number (1–167 in `requirements.md`). Each entry says what
+By requirement number (1–169 in `requirements.md`). Each entry says what
 the model does instead and why. An entry with **decision** is a judgment
 the operator may reverse by a response on the file; an entry with
 **open** is unsatisfied.
@@ -9,7 +9,8 @@ the operator may reverse by a response on the file; an entry with
 
 - **4 — dictation that undoes or defers, never asserts.** The model
   admits a dictation only for the answers `drop`, `hold`, `release`,
-  `send back`, `retire`, `takeover`, `finish`, `close`, `end`, and
+  `send back`, `retire`, `takeover`, `finish`, `close`, `end` — and
+  `start` and `stop` on a service, which 46 grants outright — and
   makes any other dictation `unapplicable`. "Send back to a stage"
   sends the item to the stage its type names for the current stage's
   `on_fail`, not to an arbitrary stage the operator picks. **Decision**:
@@ -66,6 +67,29 @@ the operator may reverse by a response on the file; an entry with
   reading the proposal sees it vanish and a new number appear. The
   register's retired entry lets a reply to the old number be reported
   as unapplicable. Stated; nothing better follows from "silently".
+
+- **46 services belong to the bolt's place only.** The requirement
+  says "every open bolt's place carries one service object per
+  declaration"; the model reads that literally and instantiates
+  declarations only for the operator's place, so a work item's or an
+  elaboration's place has no service objects. A session that needs the
+  system up in its own place starts it under 44's rule, and that
+  process is its own (47); a session that needs the *bolt's* system —
+  a test session running acceptance on the merged-back tree — starts
+  the bolt's service through the command. **Decision**: one object per
+  declaration per bolt; a per-place instantiation would multiply the
+  page's service lines by the items in flight and make 47's "one
+  record" ambiguous. Also **decision**: a service is never started by
+  its declaration alone; the first start is always a response, so
+  nothing listens on a host the operator did not ask for. A `start:
+  auto` field would be a one-line change to `declare_services` if the
+  operator wants it.
+
+- **47 the command's refusal of an undeclared name.** `flywheel
+  service start web` in a place whose bolt declares no `web` is refused
+  with the declared names and the refusal is a thread entry, like a
+  hook's. It is not carried to attention, since it is a session's
+  mistake and not a machinery problem. **Decision**.
 
 - **49 a take conflict on an intent's line.** The chore that resolves
   it is a unit owned by the intent (`unit.parent: [bolt, intent]`),
@@ -185,7 +209,7 @@ the operator may reverse by a response on the file; an entry with
   compare-and-swap on an issue body. The model adds the
   lease-by-ordered-append protocol (comment ids are totally ordered
   and creation is atomic) and a seq check on read-back. It is a
-  mechanism the profile adds, as 166 requires, and it is the decision
+  mechanism the profile adds, as 168 requires, and it is the decision
   in this model most in need of a test against the real service.
   **Decision**, flagged.
 
@@ -271,6 +295,15 @@ the operator may reverse by a response on the file; an entry with
   returns its annotations to a URL the presenter serves, and that
   lavish pages return feedback the same way. Not verified in this
   model.
+
+- **`wt tether` as the process binding.** The service binding assumes
+  `wt tether start --name <n> -- <cmd>`, `wt tether status <n>` with
+  present/exited and the exit status, `wt tether stop <n>`, `wt tether
+  log <n> --tail`, refusal of a duplicate name, and that `wt worktree
+  remove` ends every tether of the worktree. Not verified against
+  worktrunk in this model; if the tether has no status surface the
+  binding falls back to a pid file under the place's `.flywheel/` and
+  the port's listener.
 
 - **portless as the endpoint source.** `portless list` filtered by the
   worktree's hash is assumed to name every endpoint a place serves.

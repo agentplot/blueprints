@@ -64,6 +64,7 @@
         "question": {"type": "string"},
         "offers": {"type": "array", "items": {"type": "object", "required": ["kind", "document"]}},
         "refusal": {"type": "string"},
+        "service": {"type": "object", "description": "the session runs `flywheel service start|stop <name>` on its bolt's declared service (47): {start: <name>} or {stop: <name>}", "properties": {"start": {"type": "string"}, "stop": {"type": "string"}}, "minProperties": 1, "maxProperties": 1, "additionalProperties": false},
         "commits": {"type": "array", "description": "files the session commits in its place"}
       }}}
     },
