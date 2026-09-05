@@ -24,6 +24,18 @@
   - Operation keeps a landed bolt while its request, environments or a signal about it is live
     and for 7 days after; each card says "leaves in Nd" or why it stays. claim-index shows the
     edge: leaves in 2d.
+  - 424 is a gathered elaboration (A.20 §188): curation proposes one self-closing research
+    session over three intents that argue with the same claim. The card lists the covered
+    intents with a per-intent drop; the dock adds why they were gathered and the deliverables
+    the session produces with their producers, marked "shipped default" or "org override"
+    (A.21 §190). Answers: yes · drop · pick <intents> · <intent>: drop (the decision stays) ·
+    type <name> (approves with the type changed). A covered intent carries an "in gathering
+    424" chip and proposes no elaboration of its own meanwhile (§189); 412's research
+    elaboration is the gathering's.
+  - "explore <intent>, <intent>" in the capture box is the dictation of §189: it opens a
+    with-operator elaboration over the named intents, shown as a session row in Inception
+    with its covered intents; its dock notes that records go to each covered intent's change
+    directory and conclusions to the book once. "finish" on it is a dictation.
   - Keys: j/k and ↓/↑ move within a lane; h/l and ←/→ move to the nearest card in the next
     lane; the dock follows. y/n answer yes and drop/no; l answers "later" on a card that offers
     it (417) and moves right everywhere else.
@@ -247,6 +259,24 @@ kbd{font-family:var(--mono);font-size:10.5px;padding:1px 5px;border:1px solid va
 .quiet .qn{font-weight:600;font-size:13.5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .quiet .qr{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink3);white-space:nowrap}
 .quiet .qt{font-size:12px;color:var(--ink2);margin-top:3px}
+.quiet.explore{border-color:var(--run);border-style:solid;background:var(--surface)}
+.quiet.explore .qk{color:var(--run)}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.chip{display:inline-flex;align-items:center;font-family:var(--mono);font-size:10.5px;padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--ink2);background:var(--sunk2)}
+.chip.g{border-color:var(--accent);color:var(--accent-ink);background:var(--accent-soft)}
+.chip.x{border-color:var(--run);color:var(--run)}
+.chip.i{color:var(--ink2)}
+.gl{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.gi{display:inline-flex;align-items:center;gap:2px;font-family:var(--mono);font-size:11.5px;padding:2px 4px 2px 8px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-ink);background:var(--accent-soft)}
+.gi .gx{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;color:var(--ink3);font-size:12px;line-height:1}
+.gi .gx:hover{background:var(--drop-soft);color:var(--drop)}
+.deliv{width:100%;border-collapse:collapse;font-size:12px}
+.deliv th{text-align:left;font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);padding:0 8px 4px 0;border-bottom:1px solid var(--line2)}
+.deliv td{padding:5px 8px 5px 0;border-bottom:1px solid var(--line2);vertical-align:top;color:var(--ink2)}
+.deliv td:first-child{color:var(--ink);font-weight:500}
+.deliv td.mono{font-size:11px}
+.origin{font-family:var(--mono);font-size:10px;padding:1px 6px;border-radius:4px;white-space:nowrap;background:var(--sunk);color:var(--ink3)}
+.origin.override{background:var(--warn-soft);color:var(--warn)}
 
 /* ---- bolt groups (construction) ---- */
 .bolt{border:1px solid var(--line);border-radius:12px;background:var(--sunk2);padding:10px 10px 4px;margin-bottom:12px}
@@ -530,8 +560,11 @@ const S = {
   minutes: 7*60+40,
   decisions: [
     {n:412, g:APPROVE, phase:'inception', kind:'intent', title:'atlas-provider-limits',
-     tail:'curation · <b>7 signals</b> · 3 sources · 12d', goes:'elaborations: research (self-closing) · prototype (standing)', starts:'challenges claim providers/one-writer @v3',
+     tail:'curation · <b>7 signals</b> · 3 sources · 12d', goes:'elaborations: research → gathered in 424 · prototype (standing)', starts:'challenges claim providers/one-writer @v3',
      answers:[['yes','yes'],['drop','drop'],['split','split']]},
+    {n:424, g:APPROVE, phase:'inception', kind:'gathered', title:'research · provider envelopes', tail:'curation · <b>3 intents</b> · self-closing · type research',
+     intents:['atlas-provider-limits','loop-cadence','provider-key-rotation'], type:'research', subject:'what a provider limit is, where it is declared, and who enforces it',
+     answers:[['yes','yes'],['drop','drop'],['pick','pick'],['type','type']]},
     {n:418, g:DECIDE, phase:'inception', kind:'close', title:'intent loop-granularity', tail:'all <b>4 elaborations</b> done',
      answers:[['close','close'],['keep open','keep open']]},
     {n:419, g:DECIDE, phase:'inception', kind:'idle', title:'prototype plan-derivation', tail:'standing · <b>idle 14h</b> · intent atlas-provider-limits',
@@ -572,7 +605,11 @@ const S = {
     {id:'atlas-provider-limits', name:'atlas-provider-limits', state:'proposed', note:'proposed · decision 412 · 1 standing session already on its line', sessions:[{id:'proto',name:'prototype plan-derivation',state:'idle',host:'studio',last:'09-03 17:30 · note: derivation is pure over state; nothing left to prove'}]},
     {id:'loop-granularity', name:'loop-granularity', state:'done', note:'4 elaborations done · nothing running · decision 418', sessions:[]},
     {id:'sink-marks', name:'sink-delivery-marks', state:'open', note:'research running · writeback queued', sessions:[{id:'sm-res',name:'research (self-closing)',state:'working',host:'studio',last:'07:33 · reading the three sinks\' delivery paths'}]},
+    {id:'loop-cadence', name:'loop-cadence', state:'open', note:'sibling of loop-granularity · how often a loop asks a provider', sessions:[]},
+    {id:'provider-key-rotation', name:'provider-key-rotation', state:'open', note:'from the ops constraint · provider B rotates keys on the 1st', sessions:[]},
   ],
+  gatherings:[{n:424, type:'research', state:'proposed', intents:['atlas-provider-limits','loop-cadence','provider-key-rotation']}],
+  explorations:[],
   bolts: [
     {id:'plan-decisions', name:'plan-decisions', repo:'atlas', line:'plan-decisions @ 9e21c4', note:'4 merged · 1 open · cites one-writer v3',
      units:[{name:'plan-derivation',state:'merged'},{name:'decision-numbers',state:'merged'},{name:'response-apply',state:'merged'},{name:'decision-grouping',state:'merged',t:'07:21'},
@@ -630,7 +667,7 @@ const openBolts = () => S.bolts.map(b => b.name);
 
 /* ---------- dock detail per decision (invented, marked sample) ---------- */
 const X = {
-  412:{text:'Approve the intent. <b>Yes</b> opens <span class="mono">atlas-provider-limits</span> as a line off the books and starts both elaborations: research, self-closing, and a standing prototype. <b>Drop</b> gives each of the 7 signals a move that records the drop. <b>Split</b> sends the cluster back to curation.',
+  412:{text:'Approve the intent. <b>Yes</b> opens <span class="mono">atlas-provider-limits</span> as a line off the books and starts its standing prototype; its research is the gathered session of decision 424, so no research of its own waits here (§189). <b>Drop</b> gives each of the 7 signals a move that records the drop. <b>Split</b> sends the cluster back to curation.',
     doc:{dm:'intent brief · curation 09-02 09:14 · 7 signals from 3 sources over 12 days', h:[
       ['The subject','Atlas treats every provider as unlimited. Seven signals since 08-23 say otherwise: two meeting excerpts, four log observations, one chat ask. Curation attached them to one thread: what a provider limit is, where it is declared, and who enforces it.'],
       ['What the elaborations would do','Research reads the three providers’ published limits and how atlas hits them, and closes itself with a finding. The prototype stands: a limiter in front of the worker, served on its own place, that you finish when it has told you enough.'],
@@ -638,6 +675,12 @@ const X = {
     signals:[['meeting · ops sync · 08-23','we hit the provider cap twice last week and nobody saw it until the retries stacked up'],['log · atlas-worker · 08-29','429s from provider A: 1,204 in 6h'],['chat · #atlas · rhea · 09-01','can we cap concurrent calls per provider rather than per worker?']],
     sessions:()=>S.intents.find(i=>i.id==='atlas-provider-limits')?.sessions||[],
     links:[['intent','books/intents/atlas-provider-limits.md'],['signals','captures/2026-08/atlas-provider-*.json'],['claim','books/claims/providers/one-writer.md @v3']]},
+  424:{text:'Curation found three intents arguing with the same claim and proposes <b>one</b> research session over them: one session, one conversation, one place. <b>Yes</b> starts it; it writes its records into each covered intent\'s change directory and its conclusions into the book once, and its exit finishes the research elaboration of every intent it covers. <b>Drop</b> leaves each intent to propose its own. <b>Pick</b> keeps only the intents you name. <b>&lt;intent&gt;: drop</b> removes one intent and the decision stays. <b>Type</b> approves with another elaboration type.',
+    why:[['shared claim','providers/rate-envelope @v1 · all three argue with it'],['shared subject','what a provider limit is, where it is declared, and who enforces it'],['weight','atlas-provider-limits 7 signals · loop-cadence 3 · provider-key-rotation 2'],['one place','books/intents/_gathered/424 · off the books shared line']],
+    deliverables:[['research note','flywheel/research-note @v3','record · per covered intent','page','default'],['book chapter','flywheel/chapter-writer @v3','chapter schema','review surface','default'],['claim','flywheel/claim-writer @v3','claim schema · versioned','plan decision','default'],['context map','willdan/map-writer @v2','map schema','map-check','override'],['conceptual diagram','flywheel/diagram-conceptual @v3','house style','page','default'],['logical diagram','willdan/diagrams-mermaid @v1','house style','page','override']],
+    sessions:()=>[], sessionsNote:'nothing starts before yes · one session for three intents',
+    responses:[['09-02 09:14','curation','note','7 signals on atlas-provider-limits cluster with 3 on loop-cadence and 2 on provider-key-rotation'],['09-04 07:12','curation','note','all three argue with providers/rate-envelope @v1 · one research proposed over the three'],['09-04 07:40','plan','decision','424 created · approve the gathering']],
+    links:[['claim','books/claims/providers/rate-envelope.md @v1'],['place','books/intents/_gathered/424 · created by your yes'],['producers','willdan/flywheel.yaml · deliverables']]},
   418:{text:'Every elaboration on <span class="mono">loop-granularity</span> has exited done. <b>Close</b> archives the intent: its line lands on the books\' shared line and its 3 proposed claims become standing. <b>Keep open</b> leaves the line for another elaboration.',
     kv:[['research','scope · self-closed 08-28 · finding: one loop per bolt'],['planning','rounds · finished 08-30'],['prototype','tick · finished 09-02 by your response 377'],['writeback','books ch.7 rewritten · gates green 09-03 17:50']],
     kvTitle:'elaborations',
@@ -715,7 +758,14 @@ const BX = {
    ===================================================================== */
 const KEYS = {yes:'y', drop:'n', no:'n', later:'l'};
 const ACLS = a => a==='yes' ? 'yes' : (a==='drop'||a==='no') ? 'drop' : '';
-const needsArg = a => ({'redo':'text','reply':'text','rename':'text','new bolt':'text','bolt':'select','pick':'picks'}[a]);
+const needsArg = a => ({'redo':'text','reply':'text','rename':'text','new bolt':'text','bolt':'select','pick':'picks','type':'typesel'}[a]);
+const ELAB_TYPES = ['research','prototype','planning','interactive','writeback'];
+const gatheringOf = id => S.gatherings.find(g => g.state==='proposed' && g.intents.includes(id));
+const explorationOf = id => S.explorations.find(x => x.intents.includes(id));
+function coverChips(id){
+  const g = gatheringOf(id), x = explorationOf(id);
+  return (g ? `<span class="chip g">in gathering ${g.n}</span>` : '') + (x ? `<span class="chip x">explore · with-operator</span>` : '');
+}
 const navKey = el => el.dataset.nav;
 
 function actsHtml(d, where){
@@ -738,9 +788,13 @@ function argHtml(d, a){
     const opts = openBolts().filter(b => b!==d.bolt).map(b => `<option>${esc(b)}</option>`).join('');
     return `<div class="field"><select aria-label="bolt">${opts}</select><button class="btn pri sm" data-send="bolt" data-n="${d.n}">send</button><button class="btn quiet sm" data-cancel="1">cancel</button></div>`;
   }
+  if(kind==='typesel'){
+    return `<div class="field"><select aria-label="elaboration type">${ELAB_TYPES.map(t => `<option ${t===d.type?'selected':''}>${t}</option>`).join('')}</select><button class="btn pri sm" data-send="type" data-n="${d.n}">send</button><button class="btn quiet sm" data-cancel="1">cancel</button></div>`;
+  }
   if(kind==='picks'){
+    const picks = d.kind==='gathered' ? d.intents.map(i => [i, i]) : d.picks;
     const list = d.chores ? d.chores.map(c => `<label class="chore"><input type="checkbox" value="${c[0]}" hidden><span class="lt">${c[0]}</span>${esc(c[1])}<span class="f">${esc(c[2])}</span></label>`).join('')
-                          : d.picks.map(p => `<label class="chore"><input type="checkbox" value="${p[0]}" hidden><span class="lt">·</span>${esc(p[1])}</label>`).join('');
+                          : picks.map(p => `<label class="chore"><input type="checkbox" value="${p[0]}" hidden><span class="lt">·</span>${esc(p[1])}</label>`).join('');
     return `<div class="chores">${list}</div><div class="field"><button class="btn pri sm" data-send="pick" data-n="${d.n}">send pick</button><button class="btn quiet sm" data-cancel="1">cancel</button></div>`;
   }
   return '';
@@ -760,6 +814,9 @@ function cardHtml(d){
   if(d.kind==='blocked') body = `<div class="q">${esc(d.q)}</div>`;
   if(d.goes && d.kind!=='unit') body += `<div class="starts">${esc(d.goes)}</div>`;
   if(d.starts && d.kind==='intent') body += `<div class="starts">${esc(d.starts)}</div>`;
+  if(d.kind==='intent'){ const ch = coverChips(d.title); if(ch) body += `<div class="chips">${ch}</div>`; }
+  if(d.kind==='gathered') body = `<div class="gl">${d.intents.map(i => `<span class="gi"><span class="gn">${esc(i)}</span><button class="gx" data-gdrop="${esc(i)}" data-n="${d.n}" title="${d.n} ${esc(i)}: drop">×</button></span>`).join('')}</div>
+    <div class="goes">shared subject · ${esc(d.subject)}</div><div class="starts">yes starts <span class="chain">one ${esc(d.type)} session</span> · records into ${d.intents.length} change director${d.intents.length===1?'y':'ies'} · conclusions once · self-closing</div>`;
   return `<article class="${cls}" data-nav="d${d.n}" data-n="${d.n}" tabindex="0" aria-label="decision ${d.n}">
     <div class="ch"><span class="n">${d.n}</span><span class="kind">${esc(d.kind)}</span><span class="grp">${d.g}</span><button class="open" data-open="d${d.n}">open ›</button></div>
     <h3 class="title">${d.title}</h3><div class="tail">${d.tail}</div>${body}${actsHtml(d,'card')}${flightHtml(d.n)}</article>`;
@@ -767,7 +824,12 @@ function cardHtml(d){
 const sessDot = s => `<span class="dot ${s.state}"></span>`;
 function quietHtml(i){
   const cls = ['quiet', S.focus===`i${i.id}`?'focused':'', S.open===`i${i.id}`?'open-in-dock':''].join(' ');
-  return `<div class="${cls}" data-nav="i${i.id}" tabindex="0"><div class="qh"><span class="qk">intent</span><span class="qn">${esc(i.name)}</span><span class="qr">${i.sessions.map(s => sessDot(s)).join(' ')||'—'}</span></div><div class="qt">${esc(i.note)}</div></div>`;
+  const ch = coverChips(i.id);
+  return `<div class="${cls}" data-nav="i${i.id}" tabindex="0"><div class="qh"><span class="qk">intent</span><span class="qn">${esc(i.name)}</span><span class="qr">${i.sessions.map(s => sessDot(s)).join(' ')||'—'}</span></div><div class="qt">${esc(i.note)}${gatheringOf(i.id) ? ' · no elaboration proposed while gathered' : ''}</div>${ch ? `<div class="chips">${ch}</div>` : ''}</div>`;
+}
+function exploreHtml(x){
+  const cls = ['quiet','explore', S.focus===`x${x.id}`?'focused':'', S.open===`x${x.id}`?'open-in-dock':''].join(' ');
+  return `<div class="${cls}" data-nav="x${x.id}" tabindex="0"><div class="qh"><span class="qk">explore · with-operator</span><span class="qn">${x.intents.map(i => esc(intentName(i))).join(' + ')}</span><span class="qr"><span class="dot working"></span> since ${esc(x.since)}</span></div><div class="qt">${esc(x.last)}</div><div class="chips">${x.intents.map(i => `<span class="chip i">${esc(intentName(i))}</span>`).join('')}</div></div>`;
 }
 function laneHead(title, sub, count, extra=''){ return `<div class="lane-h"><h2>${title}</h2><span class="sub">${sub}</span>${extra}<span class="cnt ${count?'':'zero'}">${count||'no'} decision${count===1?'':'s'}</span></div>`; }
 function group(list, g, rule){ if(!list.length) return ''; return `<div class="sub-h ${g}">${g}<span class="r">${rule}</span></div>${list.map(cardHtml).join('')}`; }
@@ -775,10 +837,11 @@ const byG = (list) => [[APPROVE,'yes is safe · "yes all" takes these'],[DECIDE,
 
 function renderInception(){
   const ds = S.decisions.filter(d => d.phase==='inception');
-  const cap = `<div class="capture"><textarea id="capture" rows="2" placeholder="Type an idea. Plain text is a capture with one signal (ask); intent: … opens an intent; chore atlas: … proposes a chore; bolt plan-tail: … proposes a unit there."></textarea>
+  const cap = `<div class="capture"><textarea id="capture" rows="2" placeholder="Type an idea. Plain text is a capture with one signal (ask); intent: … opens an intent; chore atlas: … proposes a chore; bolt plan-tail: … proposes a unit there; explore atlas-provider-limits, sink-delivery-marks opens a with-operator elaboration over both."></textarea>
     <div class="cf"><span class="as" id="capture-as">sends as <b>capture</b> · 1 signal · kind ask · curation sees it</span><span class="keys"><kbd>↵</kbd> send</span><button class="btn pri sm" id="capture-send">send</button></div></div>
     <div class="curation">unmoved signals <b>${S.curation.unmoved}</b><span>${esc(S.curation.by)}</span><span>oldest ${S.curation.oldest}</span><span>· curation at ${esc(S.curation.next)}</span></div>`;
-  const inflight = `<div class="sub-h">open intents<span class="r">no decision · in flight</span></div>${S.intents.map(quietHtml).join('')||'<div class="empty">nothing open</div>'}`;
+  const xs = S.explorations.length ? `<div class="sub-h">with-operator<span class="r">dictated · over several intents</span></div>${S.explorations.map(exploreHtml).join('')}` : '';
+  const inflight = xs + `<div class="sub-h">open intents<span class="r">no decision · in flight</span></div>${S.intents.map(quietHtml).join('')||'<div class="empty">nothing open</div>'}`;
   $('#lane-inception').innerHTML = laneHead('Inception','intents and their elaborations · capture here',ds.length) + cap + byG(ds) + inflight;
 }
 function renderPlan(){
@@ -964,6 +1027,11 @@ function dockDecision(d){
   if(x.items) parts.push(sec('items and stages', itemsHtml(x.items, x.stages), SM));
   if(x.kv) parts.push(sec(x.kvTitle||'detail', kvHtml(x.kv), SM));
   if(x.kv2) parts.push(sec(x.kv2Title||'more', kvHtml(x.kv2)));
+  if(d.kind==='gathered'){
+    parts.push(sec('covered intents', `<div class="rows">${d.intents.map(id => { const i = S.intents.find(x => x.id===id); return `<div class="row"><span class="st">intent</span><div class="grow"><div class="nm">${esc(id)}</div><div class="last">${esc(i ? i.note : 'proposed · decision 412')}</div></div><button class="btn sm drop" data-gdrop="${esc(id)}" data-n="${d.n}">${d.n} ${esc(id)}: drop</button></div>`; }).join('')}</div>`, 'one response each · the decision stays'));
+    parts.push(sec('why curation gathered them', kvHtml(x.why), SM));
+    parts.push(sec('deliverables and their producers', `<table class="deliv"><thead><tr><th>deliverable</th><th>producer</th><th>schema</th><th>reviewed on</th><th></th></tr></thead><tbody>${x.deliverables.map(r => `<tr><td>${esc(r[0])}</td><td class="mono">${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td><td><span class="origin ${r[4]}">${r[4]==='default'?'shipped default':'org override'}</span></td></tr>`).join('')}</tbody></table>`, 'A.21 · handed to the session when it starts'));
+  }
   if(d.kind==='chores') parts.push(sec('chores · reason and file', kvHtml(d.chores.map(c => [c[0], `${esc(c[1])} · <span class="mono">${esc(c[2])}</span>`])), SM));
   if(d.kind==='unit'||d.kind==='land'||d.kind==='moved'||d.kind==='proposal'){ const b = bolt(d.boltId||d.bolt||'plan-decisions'); if(b && d.kind!=='proposal') parts.push(sec(`bolt ${esc(b.name)} · units`, `<div class="rows">${b.units.map(u => `<div class="row"><span class="st">${u.state}</span><div class="grow"><div class="nm">${esc(u.name)}</div></div>${(u.items||[]).map(i => `<span class="wi ${i.state}">${sessDot(i)}${esc(i.label)}</span>`).join('')}</div>`).join('')}</div>`)); }
   if(x.log) parts.push(sec('session log · last lines', `<ul class="tl">${x.log.map(([t,l]) => `<li><time>${esc(t)}</time><span class="who"></span><span class="what">${esc(l)}</span></li>`).join('')}</ul>`, SM));
@@ -1016,6 +1084,7 @@ function navTarget(key){
   if(t==='i') return {type:'intent', obj:S.intents.find(i => i.id===id)};
   if(t==='l') return {type:'landed', obj:S.landed.find(l => l.id===id)};
   if(t==='p') return {type:'planning', obj:S.planning};
+  if(t==='x') return {type:'explore', obj:S.explorations.find(x => x.id===id)};
 }
 function renderDock(){
   const key = S.open; if(!key) return;
@@ -1030,6 +1099,14 @@ function renderDock(){
   } else if(t.type==='bolt'){ const b = t.obj;
     head = `<div class="row"><span class="kind">bolt</span><span class="phase">· construction</span>${navHtml}</div><h2 id="dk-title">${esc(b.repo)}/${esc(b.name)}</h2><div class="tail">${esc(b.note)}</div>`;
     body = dockBolt(b); foot = `<div class="fl">no decision on this bolt<span class="r">the next is its close</span></div><div class="dtext" style="font-size:12.5px;color:var(--ink2)">Service start and stop above are dictations, applied directly and logged as "say".</div>`;
+  } else if(t.type==='explore'){ const x = t.obj;
+    head = `<div class="row"><span class="kind">elaboration</span><span class="phase">· inception · with-operator</span>${navHtml}</div><h2 id="dk-title">explore · ${x.intents.map(i => esc(intentName(i))).join(' + ')}</h2><div class="tail">dictated ${esc(x.since)} · standing until you finish it</div>`;
+    body = sec('the elaboration', `<div class="dtext">You opened one elaboration over ${x.intents.length} intents by dictation (§189): one session, one conversation, one place off the books' shared line, with you in it. Nothing on the plan waits for it; it ends when you finish it.</div>`)
+      + sec('covered intents', `<div class="rows">${x.intents.map(id => `<div class="row"><span class="st">intent</span><div class="grow"><div class="nm">${esc(intentName(id))}</div><div class="last">records → books/intents/${esc(intentName(id))}/records/explore-${esc(x.id)}.md</div></div></div>`).join('')}</div>`)
+      + sec('records per intent', `<div class="dtext">The session writes its records into <b>each</b> covered intent's change directory as it goes, and what it concludes into the book <b>once</b>; its writeback is per covered intent (§188). An intent it covers proposes no other elaboration meanwhile.</div>`)
+      + sec('sessions running', sessionsHtml([{label:'explore · with-operator', state:'working', host:'studio', last:x.last}]), 'with last activity')
+      + sec('links', linksHtml([['place',`~/places/books/_gathered/${x.id}`],...x.intents.map(id => ['intent',`books/intents/${intentName(id)}.md`])]));
+    foot = `<div class="fl">no decision<span class="r">finish is a dictation</span></div><div class="acts"><button class="btn" data-xfinish="${x.id}">finish</button></div>`;
   } else if(t.type==='planning'){ const p = t.obj;
     head = `<div class="row"><span class="kind">planning session</span><span class="phase">· bolt plan</span>${navHtml}</div><h2 id="dk-title">${esc(p.repo)} · charged again</h2><div class="tail">since ${esc(p.since)} · your notes travel with it</div>`;
     body = sec('the session', `<div class="dtext">Planning is a session of its own, run for one built repository when its backlog changes or when your redo sends a proposal back. It reads the backlog, the as-built and the open bolts, and proposes units. This run carries your notes; the proposal it writes arrives on the plan under a new number, and nothing was created by the withdrawn one.</div>`)
@@ -1103,7 +1180,7 @@ function refuse(n){ const el = document.querySelector(`.card[data-n="${n}"]`); i
 function send(n, a, arg){
   const d = dec(n); if(!d) return;
   if(S.inflight[n]){ refuse(n); return; }
-  let text = a==='yes' ? `yes ${n}` : a==='no' ? `no ${n}` : a==='redo' ? (d.kind==='proposal' ? `redo ${n}: ${arg}` : `${n} redo: ${arg}`) : a==='reply' ? `${n}: ${arg}` : a==='pick' ? `${n} pick ${arg}` : (a==='bolt'||a==='rename'||a==='new bolt') ? `${n} ${a} ${arg}` : `${n} ${a}`;
+  let text = a==='yes' ? `yes ${n}` : a==='no' ? `no ${n}` : a==='redo' ? (d.kind==='proposal' ? `redo ${n}: ${arg}` : `${n} redo: ${arg}`) : a==='reply' ? `${n}: ${arg}` : a==='pick' ? `${n} pick ${arg}` : a==='idrop' ? `${n} ${arg}: drop` : (a==='bolt'||a==='rename'||a==='new bolt'||a==='type') ? `${n} ${a} ${arg}` : `${n} ${a}`;
   if(a==='yes' && d.kind==='proposal'){ const e = editsSummary(); if(e.length) text += ' · ' + e.join(' · '); }
   S.inflight[n] = {a, arg, text};
   renderCardState(n); if(S.open===`d${n}`) renderDock();
@@ -1116,6 +1193,7 @@ function settle(n){
   logLine(f.text, {n});
   toast(`${f.text.length>48 ? f.text.slice(0,46)+'…' : f.text} · recorded`);
   effects(d, f.a, f.arg);
+  if(f.a==='idrop'){ render(); return; }
   const el = document.querySelector(`.card[data-n="${n}"]`); if(el) el.classList.add('gone');
   const wasOpen = S.open===`d${n}`;
   const list = navList(); const i = list.indexOf(`d${n}`);
@@ -1141,6 +1219,15 @@ function effects(d, a, arg){
       if(a==='yes'){ i.state='open'; i.note='2 elaborations starting · 1 standing'; i.sessions.push({id:'e-res',name:'research (self-closing)',state:'starting',host:'studio',last:`${hhmm(S.minutes)} · place prepared`},{id:'e-pro',name:'prototype limiter (standing)',state:'starting',host:'studio',last:`${hhmm(S.minutes)} · place prepared`}); since('started','intent atlas-provider-limits','2 elaborations',[412]); }
       else if(a==='drop'){ since('dropped','intent atlas-provider-limits','7 signals moved: dropped',[412]); }
       else since('split','intent atlas-provider-limits','back to curation',[412]); break; }
+    case 424: { const g = S.gatherings.find(x => x.n===424);
+      if(a==='idrop'){ g.intents = g.intents.filter(i => i!==arg); d.intents = g.intents; d.tail = `curation · <b>${g.intents.length} intent${g.intents.length===1?'':'s'}</b> · self-closing · type ${esc(d.type)}`; since('dropped',`${arg} from gathering 424`,'it may propose its own',[424]); break; }
+      if(a==='drop'){ g.state='dropped'; since('dropped','gathering 424','each intent proposes its own',[424]); break; }
+      if(a==='pick'){ const keep = arg.split(' '); g.intents = g.intents.filter(i => keep.includes(i)); }
+      if(a==='type') g.type = arg;
+      g.state='running'; const sess = {id:'g424', name:`${g.type} · gathered 424`, state:'starting', host:'studio', last:`${hhmm(S.minutes)} · place books/intents/_gathered/424 prepared`};
+      g.intents.forEach(id => { const i = S.intents.find(x => x.id===id); if(i){ i.sessions.push(sess); i.note = i.note.replace(/ · no elaboration.*$/,'') + ` · ${g.type} gathered in 424`; } });
+      setTimeout(() => { if(sess.state==='starting'){ sess.state='working'; sess.last = `${hhmm(S.minutes)} · reading the three intents' signals`; render(); } }, 2400);
+      since('started',`${g.type} · gathered 424`,`${g.intents.length} intents · one session`,[424]); break; }
     case 418: if(a==='close'){ S.intents = S.intents.filter(i => i.id!=='loop-granularity'); since('closed','intent loop-granularity','3 claims standing',[418]); } else since('kept','intent loop-granularity','open',[418]); break;
     case 419: { const i = S.intents.find(x => x.id==='atlas-provider-limits'); if(a==='finish'){ i.sessions = i.sessions.filter(s => s.id!=='proto'); i.note = i.note.replace('1 standing session already on its line','finding kept'); since('finished','prototype plan-derivation','place removed',[419]); } break; }
     case 422: case 423: if(a==='yes'){
@@ -1221,6 +1308,8 @@ document.addEventListener('click', e => {
   if(b && b.dataset.ureset !== undefined){ delete S.proposal.edits[b.dataset.ureset]; S.proposal.refuse = null; render(); return; }
   if(b && b.dataset.rok){ applyRefusal(); render(); return; }
   if(b && b.dataset.rcancel){ S.proposal.refuse = null; render(); return; }
+  if(b && b.dataset.gdrop !== undefined){ const n = +b.dataset.n; if(S.inflight[n]){ refuse(n); return; } send(n, 'idrop', b.dataset.gdrop); return; }
+  if(b && b.dataset.xfinish){ const x = S.explorations.find(v => v.id===b.dataset.xfinish); S.explorations = S.explorations.filter(v => v!==x); say(`finish explore ${x.intents.map(intentName).join(', ')}`); since('finished',`explore ${x.intents.map(intentName).join(' + ')}`,'records in each intent · writeback per intent',[]); if(S.open===`x${x.id}`) closeDock(); else render(); return; }
   if(b && b.dataset.wrongsend){ const n = +b.dataset.wrongsend; const ta = b.closest('.wrong').querySelector('textarea'); const v = ta.value.trim(); if(!v){ ta.focus(); return; } send(n, 'redo', v); return; }
   if(b && b.dataset.an !== undefined){ const d = dec(+S.open.slice(1)); if(!d) return; const box = $('#dk-f .argbox'); $$('.argbox').forEach(x => { x.innerHTML=''; delete x.dataset.arg; }); box.dataset.arg='redo'; box.innerHTML = argHtml(d,'redo'); const ta = box.querySelector('textarea'); ta.value = `[${b.dataset.an}] `; ta.focus(); return; }
 
@@ -1289,6 +1378,7 @@ function classify(v){
   if((m = v.match(/^intent:\s*(.+)/i))) return {kind:'intent', text:m[1]};
   if((m = v.match(/^chore\s+([\w-]+):\s*(.+)/i))) return {kind:'chore', repo:m[1], text:m[2]};
   if((m = v.match(/^bolt\s+([\w-]+):\s*(.+)/i))) return {kind:'bolt', bolt:m[1], text:m[2]};
+  if((m = v.match(/^explore\s+(.+)/i))) return {kind:'explore', intents:m[1].split(/[\s,]+/).filter(Boolean)};
   return {kind:'capture', text:v};
 }
 function captureAs(){
@@ -1296,14 +1386,19 @@ function captureAs(){
   as.innerHTML = c.kind==='capture' ? 'sends as <b>capture</b> · 1 signal · kind ask · curation sees it'
     : c.kind==='intent' ? 'sends as <b>dictation</b> · opens intent <span class="mono">'+esc(slug(c.text))+'</span> · no decision'
     : c.kind==='chore' ? 'sends as <b>dictation</b> · proposes a chore on <span class="mono">'+esc(c.repo)+'</span>'
+    : c.kind==='explore' ? (() => { const bad = c.intents.filter(i => !knownIntent(i)); return 'sends as <b>dictation</b> · opens a with-operator elaboration over <span class="mono">'+c.intents.map(esc).join(', ')+'</span>' + (bad.length ? ' · <span style="color:var(--drop)">no intent '+bad.map(esc).join(', ')+'</span>' : ''); })()
     : 'sends as <b>dictation</b> · proposes a unit on bolt <span class="mono">'+esc(c.bolt)+'</span>' + (S.bolts.some(b => b.name===c.bolt) ? '' : ' · <span style="color:var(--drop)">no open bolt by that name</span>');
 }
+const intentId = x => (S.intents.find(i => i.id===x || i.name===x) || {}).id || (S.decisions.some(d => d.kind==='intent' && d.title===x) ? x : null);
+const knownIntent = x => !!intentId(x);
+const intentName = id => (S.intents.find(i => i.id===id) || {name:id}).name;
 const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').split('-').slice(0,4).join('-');
 function capture(){
   const ta = $('#capture'); const v = ta.value.trim(); if(!v){ ta.focus(); return; }
   const c = classify(v);
   if(c.kind==='capture'){ S.curation.unmoved++; S.curation.by = S.curation.by.replace(/page \d+/, m => 'page '+(+m.split(' ')[1]+1)) + (/page/.test(S.curation.by)?'':' · page 1'); logLine(`capture: ${v}`, {say:true}); toast('capture · 1 signal (ask) · curation sees it'); }
   else if(c.kind==='intent'){ const id = slug(c.text); S.intents.unshift({id, name:id, state:'open', note:'dictated · elaborations to come from planning', sessions:[]}); logLine(`intent: ${c.text}`, {say:true}); toast(`intent ${id} · opened`); }
+  else if(c.kind==='explore'){ const bad = c.intents.filter(i => !knownIntent(i)); if(bad.length){ toast(`no intent ${bad.join(', ')}`, true); return; } const id = 'x'+(S.explorations.length+1); S.explorations.unshift({id, intents:c.intents.map(intentId), since:hhmm(S.minutes), last:`${hhmm(S.minutes)} · place prepared off the books shared line · waiting for you`}); logLine(`explore ${c.intents.join(', ')}`, {say:true}); toast(`explore · with-operator elaboration over ${c.intents.length} intents · opened`); }
   else if(c.kind==='chore'){ logLine(`chore ${c.repo}: ${c.text}`, {say:true}); toast(`chore on ${c.repo} · applied`); const b = addBolt('chores-'+c.repo,'chores',c.repo,'no bolt · one session each'); startUnit(b, 'chore · '+c.text.slice(0,28), 'chore', 'chore'); }
   else { const b = S.bolts.find(x => x.name===c.bolt); if(!b){ toast(`no open bolt "${c.bolt}"`, true); return; } logLine(`bolt ${c.bolt}: ${c.text}`, {say:true}); toast(`unit on ${c.bolt} · applied`); startUnit(b, slug(c.text), 'default', 'spec'); }
   ta.value=''; render(); captureAs();
