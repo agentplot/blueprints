@@ -8,11 +8,25 @@
   - Four lanes: Inception, Bolt plan, Construction, Operation. Bolt plan is drawn as the
     transition between Inception and Construction: hatched ground, chevron edges.
   - The dock opens over the board like a GitHub issue over a project board; the board does
-    not move. Esc, the × or a click outside closes it; j/k or ↓/↑ move to the next card while
+    not move. Esc, the × or a click outside closes it; the move keys change what it shows while
     it stays open; Enter opens the focused card.
   - 422 is planning's proposal for atlas: bolt plan-tail (open) gains 2 units, new bolt
     tail-cursor gets 3 units with dependencies. Per-unit edits (bolt, new bolt, rename, type,
     drop) are staged on the proposal and travel with the one yes: "yes 422 · u4 type fast".
+    Edits are validated live: moving or dropping a unit that others depend on is refused inline
+    with the reason and an offer to move or drop the dependents too; rename and type never
+    touch dependencies. "That's all wrong" sends "redo 422: <notes>", withdraws the proposal,
+    shows planning charged again with the notes, and a new proposal number (423) arrives later.
+    The proposal's history shows its lineage: intent → writeback (wrote the claim) → landing on
+    the books → planning run → this proposal.
+  - 416 lands bolt switchboard/plan-rows (every unit finished). atlas/plan-decisions stays open
+    with 413, 415, 420 and 421 on it.
+  - Operation keeps a landed bolt while its request, environments or a signal about it is live
+    and for 7 days after; each card says "leaves in Nd" or why it stays. claim-index shows the
+    edge: leaves in 2d.
+  - Keys: j/k and ↓/↑ move within a lane; h/l and ←/→ move to the nearest card in the next
+    lane; the dock follows. y/n answer yes and drop/no; l answers "later" on a card that offers
+    it (417) and moves right everywhere else.
   - 413, 414 and 417 are single proposals and sit in the Bolt plan lane beside 422.
     415 (chores offered by a review session) sits with Construction under the bolt whose
     session offered them.
@@ -286,6 +300,8 @@ kbd{font-family:var(--mono);font-size:10.5px;padding:1px 5px;border:1px solid va
 .lk.bad{color:var(--drop);border-color:color-mix(in srgb,var(--drop) 40%,var(--line))}
 .lk.pend{color:var(--warn)}
 .lk.env{color:var(--accent-ink)}
+.landed .leave{font-family:var(--mono);font-size:10.5px;color:var(--ink3);margin-top:6px}
+.landed .leave.soon{color:var(--warn)}
 .landed .sig{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line2);font-size:12.5px;color:var(--ink2)}
 .landed .sig i{font-style:italic;color:var(--ink)}
 .landed .sig .mv{display:block;font-family:var(--mono);font-size:10.5px;color:var(--ink3);margin-top:2px}
@@ -409,6 +425,30 @@ body.docked .dock{transform:none}
 .pu.edited{background:color-mix(in srgb,var(--warn-soft) 40%,transparent)}
 .pu .newname{grid-column:2;margin-top:4px}
 .pu .newname input{font-family:var(--mono);font-size:12px;padding:3px 6px;width:24ch}
+.refuse{grid-column:2/4;margin-top:6px;padding:8px 10px;border:1px solid var(--drop);border-radius:6px;background:var(--drop-soft);font-size:12.5px;color:var(--ink);display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.refuse b{color:var(--drop);font-weight:600}
+.refuse .ra{margin-left:auto;display:flex;gap:6px}
+.wrong{margin-top:6px;padding:12px 14px;border:1px dashed var(--drop);border-radius:10px;background:color-mix(in srgb,var(--drop-soft) 45%,transparent)}
+.wrong h4{font-size:12.5px;font-weight:600;color:var(--drop);margin:0 0 4px}
+.wrong p{margin:0;font-size:12.5px;color:var(--ink2)}
+.wrong .field{margin-top:8px}
+.lineage{display:flex;flex-direction:column;gap:0;margin:0 0 4px}
+.lineage .ln{display:grid;grid-template-columns:92px 1fr;gap:10px;align-items:baseline;padding:5px 0 5px 14px;position:relative;font-size:12.5px}
+.lineage .ln::before{content:"";position:absolute;left:3px;top:0;bottom:0;width:2px;background:var(--line2)}
+.lineage .ln::after{content:"";position:absolute;left:0;top:11px;width:8px;height:8px;border-radius:50%;background:var(--ink3);border:2px solid var(--surface)}
+.lineage .ln:first-child::before{top:11px}
+.lineage .ln:last-child::before{bottom:auto;height:11px}
+.lineage .ln.here::after{background:var(--accent)}
+.lineage .lk-k{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3)}
+.lineage .lk-w{font-weight:500}
+.lineage .lk-t{color:var(--ink2);font-weight:400;margin-left:6px}
+.planning{background:transparent;border:1px dashed var(--accent);border-radius:10px;padding:8px 12px;margin-bottom:8px;cursor:pointer}
+.planning.focused,.planning.open-in-dock{border-style:solid;box-shadow:0 0 0 2px var(--accent-soft)}
+.planning .qh{display:flex;align-items:baseline;gap:8px}
+.planning .qk{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--accent-ink)}
+.planning .qn{font-weight:600;font-size:13.5px}
+.planning .qr{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink3)}
+.planning .qt{font-size:12px;color:var(--ink2);margin-top:3px;font-style:italic}
 .deps{margin:6px 0 2px;background:var(--sunk2);border:1px solid var(--line2);border-radius:8px;padding:8px}
 .deps svg{display:block;width:100%;height:auto;font-family:var(--mono);font-size:10.5px}
 .deps .nd{fill:var(--surface);stroke:var(--line)}
@@ -442,7 +482,7 @@ body.docked .dock{transform:none}
 <header class="top">
   <div class="brand"><h1>Flywheel Workbench</h1><span class="meta">willdan · 2026-09-04 <span class="mono" id="clock">07:40</span></span></div>
   <div class="count"><b id="count">11</b><span>decisions</span><span class="rule">·</span><span id="yesallhint">"yes all" answers 412–417, 422</span></div>
-  <div class="keys"><span><kbd>j</kbd><kbd>k</kbd> move</span><span><kbd>↵</kbd> open</span><span><kbd>y</kbd><kbd>n</kbd><kbd>l</kbd> answer</span><span><kbd>esc</kbd> close</span></div>
+  <div class="keys"><span><kbd>j</kbd><kbd>k</kbd> in lane</span><span><kbd>h</kbd><kbd>l</kbd> across</span><span><kbd>↵</kbd> open</span><span><kbd>y</kbd><kbd>n</kbd><kbd>l</kbd> answer</span><span><kbd>esc</kbd> close</span></div>
   <button class="btn logbtn" id="logbtn" aria-expanded="false" aria-controls="log"><b id="sent">0</b> sent</button>
   <button class="btn pri" id="yesall">yes all</button>
 </header>
@@ -510,7 +550,7 @@ const S = {
     {n:415, g:APPROVE, phase:'construction', boltId:'plan-decisions', kind:'chores', title:'atlas · 3', tail:'offered by wi-#420 review · 06:31',
      chores:[['a','a stale AGENTS.md','atlas/AGENTS.md'],['b','citation fix','books/atlas/plan.md'],['c','rename ref','atlas/src/plan/refs.py']],
      answers:[['yes','yes'],['pick','pick'],['no','no']]},
-    {n:416, g:APPROVE, phase:'construction', boltId:'plan-decisions', kind:'land', title:'switchboard/plan-decisions', tail:'<b>4 units merged</b> · gates green',
+    {n:416, g:APPROVE, phase:'construction', boltId:'plan-rows', kind:'land', title:'switchboard/plan-rows', tail:'<b>4 units merged</b> · gates green · nothing in flight',
      goes:'yes lands the line on switchboard main through the repository\'s gates · hold keeps the bolt open',
      answers:[['yes','yes'],['hold','hold']]},
     {n:420, g:DECIDE, phase:'construction', boltId:'plan-decisions', kind:'moved', title:'claim sessions/one-writer <i>v3→v4</i>', tail:'bolt plan-decisions cites v3 · <b>2 items in flight</b>',
@@ -523,7 +563,7 @@ const S = {
     {id:'noapply', text:'<b>"yes 413"</b> from 06:10 could not apply · unit already dropped by the 05:58 edit', acts:[['ok','ok']]},
   ],
   since: [
-    {v:'merged', w:'plan-decisions · unit decision-grouping', t:'3 items · review passed first time', at:'07:21', about:['plan-decisions',416]},
+    {v:'merged', w:'plan-decisions · unit decision-grouping', t:'3 items · review passed first time', at:'07:21', about:['plan-decisions']},
     {v:'landed', w:'switchboard/idle-timeout', t:'gates green', at:'06:52', about:['idle-timeout']},
     {v:'closed', w:'intent host-liveness', t:'by your response', at:'18:10', about:[420]},
     {v:'dropped', w:'chore atlas 2b', t:'by your response', at:'18:10', about:[415]},
@@ -534,11 +574,15 @@ const S = {
     {id:'sink-marks', name:'sink-delivery-marks', state:'open', note:'research running · writeback queued', sessions:[{id:'sm-res',name:'research (self-closing)',state:'working',host:'studio',last:'07:33 · reading the three sinks\' delivery paths'}]},
   ],
   bolts: [
-    {id:'plan-decisions', name:'plan-decisions', repo:'switchboard', line:'plan-decisions @ 9e21c4', note:'4 merged · 1 open · cites one-writer v3',
+    {id:'plan-decisions', name:'plan-decisions', repo:'atlas', line:'plan-decisions @ 9e21c4', note:'4 merged · 1 open · cites one-writer v3',
      units:[{name:'plan-derivation',state:'merged'},{name:'decision-numbers',state:'merged'},{name:'response-apply',state:'merged'},{name:'decision-grouping',state:'merged',t:'07:21'},
             {name:'sink-delivery',state:'building',type:'default',items:[{id:'wi418',label:'wi-#418 build',state:'blocked',host:'mac-mini',last:'06:59 · asked: should Ready imply Backlog cleared?'},{id:'wi419',label:'wi-#419 spec',state:'working',host:'studio',last:'07:38 · asked the books for claim sinks/one-mark @v2 · found · cited'},{id:'wi420',label:'wi-#420 review',state:'working',host:'studio',last:'07:37 · two notes so far · none blocking'}]}],
      endpoints:['http://plan.plan-decisions.localhost:41231','http://rows.plan-decisions.localhost:41232'],
      services:[{n:'plan-api',s:'running',ep:'http://plan.plan-decisions.localhost:41231'},{n:'rows web',s:'running',ep:'http://rows.plan-decisions.localhost:41232'},{n:'postgres',s:'running',ep:'postgres://localhost:41233'},{n:'signal-worker',s:'stopped',ep:'—'}]},
+    {id:'plan-rows', name:'plan-rows', repo:'switchboard', line:'plan-rows @ 7b2e91', note:'4 merged · nothing in flight · gates green',
+     units:[{name:'rows-order',state:'merged',t:'08-30'},{name:'rows-sink',state:'merged',t:'09-01'},{name:'rows-window',state:'merged',t:'09-02'},{name:'rows-cursor',state:'merged',t:'09-03 22:40'}],
+     endpoints:['http://rows.plan-rows.localhost:41235'],
+     services:[{n:'rows web',s:'running',ep:'http://rows.plan-rows.localhost:41235'},{n:'postgres',s:'running',ep:'postgres://localhost:41236'}]},
     {id:'plan-tail', name:'plan-tail', repo:'atlas', line:'plan-tail @ 3c8d0e', note:'1 merged · 1 building · 422 proposes 2 more',
      units:[{name:'tail-derive',state:'merged',t:'09-03'},
             {name:'tail-marks',state:'building',type:'default',items:[{id:'wi425',label:'wi-#425 build',state:'working',host:'studio',last:'07:36 · mark table migration applied · 9 tests green'},{id:'wi426',label:'wi-#426 build',state:'starting',host:'studio',last:'07:39 · place prepared off plan-tail'}]}],
@@ -548,15 +592,14 @@ const S = {
   landed: [
     {id:'idle-timeout', name:'idle-timeout', repo:'switchboard', at:'06:52 today', pr:{n:212,state:'merged'}, checks:[['lint','ok'],['tests','ok','1,212 passed'],['map-check','ok'],['as-built','ok','2 statements']],
      envs:[['prod','https://switchboard.willdan.internal'],['staging','https://switchboard-staging.willdan.internal']],
-     units:['idle-tail','session-idle-bound'], signals:[]},
+     units:['idle-tail','session-idle-bound'], signals:[], live:null, leaves:'7d'},
     {id:'provider-status', name:'provider-status', repo:'atlas', at:'09-02 16:10', pr:{n:198,state:'merged'}, checks:[['lint','ok'],['tests','ok','388 passed'],['map-check','ok'],['as-built','ok','3 statements']],
      envs:[['staging','https://atlas-staging.willdan.internal']],
      units:['status-table','status-poller'],
-     signals:[{kind:'reaction',src:'log · atlas-staging',age:'2h',text:'429s from provider A at 0.4% of calls since the landing, up from 0.1%',move:'attached → intent atlas-provider-limits (412)'}]},
-    {id:'plan-rows', name:'plan-rows', repo:'switchboard', at:'08-30 11:20', pr:{n:204,state:'merged'}, checks:[['lint','ok'],['tests','ok'],['nightly','bad','flaky: rows_order_test'],['as-built','ok']],
-     envs:[['prod','https://switchboard.willdan.internal']],
-     units:['rows-order','rows-sink'],
-     signals:[{kind:'question',src:'ci · nightly',age:'9h',text:'rows_order_test failed 2 of the last 5 nightlies; passes on rerun',move:null}]},
+     signals:[{kind:'reaction',src:'log · atlas-staging',age:'2h',text:'429s from provider A at 0.4% of calls since the landing, up from 0.1%',move:'attached → intent atlas-provider-limits (412)'}], live:'signal live · 2h', leaves:'7d'},
+    {id:'claim-index', name:'claim-index', repo:'atlas', at:'08-28 15:05', pr:{n:190,state:'merged'}, checks:[['lint','ok'],['tests','ok','371 passed'],['map-check','ok'],['as-built','ok','3 statements']],
+     envs:[['staging','https://atlas-staging.willdan.internal']],
+     units:['claim-table','claim-lookup'], signals:[], live:null, leaves:'2d'},
   ],
   opsignals: [
     {kind:'ask',src:'#ops chat · rhea',age:'3h',text:'can the prod status page show which bolt each row landed from?',move:'unmoved · curation at 08:00'},
@@ -576,8 +619,9 @@ const S = {
       {id:'u4', name:'cursor-read', bolt:'tail-cursor', type:'default', after:['u3'], covers:'plan/tail-cursor @v1 · sc.2', why:'the plan derives the tail from the cursor, not from the delivery log', items:'spec · build · review · merge'},
       {id:'u5', name:'cursor-chat-link', bolt:'tail-cursor', type:'fast', after:['u3','u4'], covers:'plan/tail-cursor @v1 · sc.3', why:'the chat rendering carries a link to the page at the cursor', items:'spec · build · merge'},
     ],
-    edits:{}, boltNames:{},
+    edits:{}, boltNames:{}, refuse:null,
   },
+  planning:null,
   log:[], inflight:{}, focus:null, open:null, nextWi:431,
 };
 const dec = n => S.decisions.find(d => d.n===n);
@@ -606,7 +650,8 @@ const X = {
     services:{place:'books/intents/atlas-provider-limits/prototype', list:[{n:'proto server',s:'running',ep:'http://proto.atlas-provider-limits.localhost:41240'},{n:'books preview',s:'stopped',ep:'—'}]},
     links:[['place','~/places/books/atlas-provider-limits/prototype'],['finding','books/intents/atlas-provider-limits/findings/derivation.md']]},
   422:{text:'Planning read the atlas backlog after claim <span class="mono">plan/tail-cursor @v1</span> became standing and proposes this plan for the repository. <b>Yes</b> approves the whole plan with your edits: bolt <span class="mono">plan-tail</span> gains 2 units, bolt <span class="mono">tail-cursor</span> is created with 3. Units with no dependency start at once. <b>Redo</b> sends it back to planning with your notes. <b>Drop</b> discards the proposal; nothing was created.',
-    responses:[['09-04 05:40','writeback','exit','claim plan/tail-cursor moved to v1 by intent host-liveness'],['09-04 07:31','planning','note','proposal written · 2 bolts · 5 units · 4 dependencies'],['09-04 07:40','plan','decision','422 created · approve the plan']],
+    lineage:[['intent','host-liveness','opened 08-24 · closed by your response 09-03 18:10'],['elaboration','writeback','wrote claim plan/tail-cursor @v1 · moved sessions/one-writer to v4'],['landing','books shared line','the archive landed 09-04 05:40 · both claims standing'],['planning run','atlas · 07:31','charged by the backlog change and the ask “the plan tail should survive a restart”'],['proposal','422','07:40 · this document']],
+    responses:[['08-24 10:00','operator','response','yes 361 · intent host-liveness opened'],['09-03 17:20','writeback','exit','done · wrote plan/tail-cursor @v1 · moved sessions/one-writer v3→v4'],['09-03 18:10','operator','response','close · intent host-liveness archived'],['09-04 05:40','machinery','exit','archive landed on the books shared line · claims standing'],['09-04 07:31','planning','note','proposal written · 2 bolts · 5 units · 4 dependencies'],['09-04 07:40','plan','decision','422 created · approve the plan']],
     links:[['proposal','atlas/.flywheel/proposals/2026-09-04-plan.md'],['claim','books/claims/plan/tail-cursor.md @v1'],['ask','captures/2026-09/ask-restart-tail.json']]},
   413:{text:'Approve the unit. <b>Yes</b> creates 4 work items on bolt <span class="mono">plan-decisions</span> and starts wi-#431 spec; the next decision that is yours about this work is the bolt\'s close. <b>Redo</b> returns it to planning with notes. <b>Bolt</b> routes it to another open bolt; <b>new bolt</b> gives it one of its own.',
     doc:{dm:'unit proposal · planning 09-03 21:12 · type default · target bolt plan-decisions (open)', h:[
@@ -617,9 +662,9 @@ const X = {
     items:[['wi-#431','spec','the status table and the writer interface','none'],['wi-#432','build','the writer and the poller hand-off','#431'],['wi-#433','build','restart replay','#432'],['wi-#434','review','both builds against sc.1 and sc.2','#432 #433']],
     stages:['spec','build','build','review','merge'],
     sessions:()=>[], sessionsNote:'nothing starts before yes · the bolt\'s 3 running sessions are on unit sink-delivery',
-    services:()=>({place:'switchboard/plan-decisions', list:bolt('plan-decisions')?.services||[]}),
+    services:()=>({place:'atlas/plan-decisions', list:bolt('plan-decisions')?.services||[]}),
     responses:[['09-03 21:12','planning','note','proposed · covers one-writer sc.1, sc.2 · completes the claim on atlas'],['09-04 05:58','operator','edit','plan file edited by hand · unit dropped'],['09-04 06:10','operator','fail','yes 413 · could not apply · unit already dropped'],['09-04 06:41','planning','note','edit reverted · unit re-derived · number kept'],['09-04 07:40','plan','decision','413 stands · approve the unit']],
-    links:[['proposal','atlas/.flywheel/proposals/status-writer.md'],['claim','books/claims/providers/one-writer.md @v3'],['bolt line','switchboard/plan-decisions @ 9e21c4']]},
+    links:[['proposal','atlas/.flywheel/proposals/status-writer.md'],['claim','books/claims/providers/one-writer.md @v3'],['bolt line','atlas/plan-decisions @ 9e21c4']]},
   414:{text:'Approve the unit. <b>Yes</b> creates bolt <span class="mono">atlas-retry-behaviour-and-jitter-limits</span> off atlas main and starts wi-#440 spec. <b>Rename</b> gives the new bolt your name instead. <b>Bolt</b> puts the unit on an open bolt and creates none.',
     doc:{dm:'unit proposal · planning 09-03 21:20 · type fast · new bolt · routed from ask-#77', h:[
       ['Why','Every atlas host retries a failed provider call on the same fixed schedule, so after one outage all hosts retry in lockstep. The ask “retries hammer the provider” describes the result: a second wave of 429s at exactly the backoff interval.'],
@@ -638,13 +683,13 @@ const X = {
     sessions:()=>bolt('plan-decisions')?.units.find(u=>u.name==='sink-delivery')?.items.filter(i=>i.id==='wi420')||[],
     responses:[['09-04 06:31','wi-#420 review','note','offered 3 chores outside its job'],['09-04 07:40','plan','decision','415 created · accept or reject']],
     links:[['a','atlas/AGENTS.md · cites a removed rows command'],['b','books/atlas/plan.md · D-114 points at D-141'],['c','atlas/src/plan/refs.py · plan_rows']]},
-  416:{text:'Every merge criterion holds on bolt <span class="mono">plan-decisions</span>: 4 units merged, gates green. <b>Yes</b> lands it: the machinery opens the pull request switchboard\'s policy requires and merges when the gates pass. <b>Hold</b> keeps the bolt open with its place; the decision returns when something merges.',
-    kv:[['decision-grouping','3 items · 07:21 · review passed first time'],['decision-numbers','2 items · 09-03'],['response-apply','1 item · 09-03'],['plan-derivation','2 items · 09-02']], kvTitle:'merged units',
+  416:{text:'Every unit of bolt <span class="mono">plan-rows</span> is finished: 4 units merged, gates green, nothing in flight. <b>Yes</b> lands it: the machinery opens the pull request switchboard\'s policy requires and merges when the gates pass; the bolt\'s place is removed with the landing. <b>Hold</b> keeps the bolt open with its place; the decision returns when something merges.',
+    kv:[['rows-cursor','2 items · 09-03 22:40 · review passed first time'],['rows-window','3 items · 09-02'],['rows-sink','1 item · 09-01'],['rows-order','2 items · 08-30']], kvTitle:'merged units',
     kv2:[['lint','green'],['tests','1,212 passed · 0 skipped'],['map-check','green'],['as-built','4 statements · claims cited']], kv2Title:'gates on the line',
-    sessions:()=>bolt('plan-decisions')?.units.find(u=>u.name==='sink-delivery')?.items||[], sessionsNote:'unit sink-delivery is still in flight; the landing takes what is merged',
-    services:()=>({place:'switchboard/plan-decisions', list:bolt('plan-decisions')?.services||[]}),
-    responses:[['09-02 09:14','bolt loop','note','bolt opened off switchboard main @ 5b3e10'],['09-04 06:52','bolt loop','note','4 units merged · gates green · landing is yours'],['09-04 07:40','plan','decision','416 created · land or hold']],
-    links:[['line','switchboard/plan-decisions @ 9e21c4'],['gates run','ci/switchboard/plan-decisions/1187'],['policy','switchboard/flywheel.yaml · landing: pull-request']]},
+    sessions:()=>[], sessionsNote:'nothing in flight · every unit finished',
+    services:()=>({place:'switchboard/plan-rows', list:bolt('plan-rows')?.services||[]}),
+    responses:[['08-28 10:00','operator','response','yes 388 · bolt plan-rows opened off switchboard main @ 5b3e10'],['09-03 22:40','review','exit','unit rows-cursor · passed first time · merged'],['09-03 22:41','bolt loop','note','4 units merged · gates green · landing is yours'],['09-04 07:40','plan','decision','416 created · land or hold']],
+    links:[['line','switchboard/plan-rows @ 7b2e91'],['gates run','ci/switchboard/plan-rows/1187'],['policy','switchboard/flywheel.yaml · landing: pull-request']]},
   420:{text:'Claim <span class="mono">sessions/one-writer</span> moved from v3 to v4 while bolt <span class="mono">plan-decisions</span> cites v3 with two items in flight. <b>Amend bolt</b> sends both items back to spec on v4 before anything merges. <b>Land and follow</b> lands on v3 and queues a follow-up unit for v4.',
     kv:[['v3','one status writer per bolt'],['v4','one status writer per bolt, and the writer is the loop, not a session']], kvTitle:'what moved',
     kv2:[['wi-#418','build · sink-delivery · cites v3 in its spec'],['wi-#419','spec · sink-delivery · cites v3']], kv2Title:'in flight citing v3',
@@ -654,11 +699,13 @@ const X = {
     log:[['07:12','read spec wi-#418 · Ready column semantics'],['07:14','board API: Ready and Backlog are independent flags'],['07:15','spec says "Ready implies cleared"; code says no · asking']],
     sessions:()=>bolt('plan-decisions')?.units.find(u=>u.name==='sink-delivery')?.items.filter(i=>i.id==='wi418')||[],
     responses:[['09-04 05:40','bolt loop','note','place prepared · item 2 of sink-delivery · host mac-mini'],['09-04 05:52','wi-#418 build','exit','spec applied · 14 tests green'],['09-04 06:59','wi-#418 build','question','should Ready imply Backlog cleared?'],['09-04 07:34','host watch','note','mac-mini last seen 06:59 · lease expires 07:59']],
-    links:[['place','~/places/switchboard/plan-decisions/wi-418'],['spec','switchboard/.flywheel/specs/sink-delivery.md §2'],['item','tracker wi-#418']]},
+    links:[['place','~/places/atlas/plan-decisions/wi-418'],['spec','atlas/.flywheel/specs/sink-delivery.md §2'],['item','tracker wi-#418']]},
 };
 const BX = {
-  'plan-decisions':{responses:[['08-28 10:00','operator','response','yes 388 · bolt plan-decisions opened'],['08-30 15:12','review','exit','unit plan-derivation · passed'],['09-04 07:21','review','exit','unit decision-grouping · passed first time · merged'],['09-04 07:40','plan','decision','416 land · 420 claim moved · 421 blocked · 415 chores']],
-    links:[['line','switchboard/plan-decisions @ 9e21c4'],['place','~/places/switchboard/plan-decisions'],['gates run','ci/switchboard/plan-decisions/1187']]},
+  'plan-decisions':{responses:[['08-28 10:30','operator','response','yes 389 · bolt plan-decisions opened off atlas main'],['08-30 15:12','review','exit','unit plan-derivation · passed'],['09-04 07:21','review','exit','unit decision-grouping · passed first time · merged'],['09-04 07:40','plan','decision','420 claim moved · 421 blocked · 415 chores · 413 proposes a unit here']],
+    links:[['line','atlas/plan-decisions @ 9e21c4'],['place','~/places/atlas/plan-decisions'],['gates run','ci/atlas/plan-decisions/1187']]},
+  'plan-rows':{responses:[['08-28 10:00','operator','response','yes 388 · bolt plan-rows opened off switchboard main @ 5b3e10'],['09-03 22:40','review','exit','unit rows-cursor · passed first time · merged'],['09-04 07:40','plan','decision','416 · land or hold']],
+    links:[['line','switchboard/plan-rows @ 7b2e91'],['place','~/places/switchboard/plan-rows'],['gates run','ci/switchboard/plan-rows/1187']]},
   'plan-tail':{responses:[['09-01 14:02','operator','response','yes 401 · bolt plan-tail opened'],['09-03 18:40','review','exit','unit tail-derive · passed · merged'],['09-04 07:31','planning','note','proposal 422 adds 2 units here']],
     links:[['line','atlas/plan-tail @ 3c8d0e'],['place','~/places/atlas/plan-tail']]},
 };
@@ -738,7 +785,8 @@ function renderPlan(){
   const ds = S.decisions.filter(d => d.phase==='plan');
   const order = [422,413,414,417];
   ds.sort((a,b) => order.indexOf(a.n)-order.indexOf(b.n));
-  $('#lane-plan').innerHTML = laneHead('Bolt plan','planning\'s proposals · reviewed whole · one yes expands them',ds.length) + (ds.length ? `<div class="sub-h approve">approve<span class="r">nothing expands into bolts or items before yes</span></div>${ds.map(cardHtml).join('')}` : '<div class="empty">planning has nothing proposed · it runs when a backlog changes</div>');
+  const pl = S.planning ? `<div class="sub-h">planning<span class="r">charged again · a new number comes</span></div><div class="planning ${S.focus==='pplanning'?'focused':''} ${S.open==='pplanning'?'open-in-dock':''}" data-nav="pplanning" tabindex="0"><div class="qh"><span class="qk">planning session</span><span class="qn">${esc(S.planning.repo)}</span><span class="qr"><span class="dot working"></span> since ${esc(S.planning.since)}</span></div><div class="qt">“${esc(S.planning.notes)}”</div></div>` : '';
+  $('#lane-plan').innerHTML = laneHead('Bolt plan','planning\'s proposals · reviewed whole · one yes expands them',ds.length) + pl + (ds.length ? `<div class="sub-h approve">approve<span class="r">nothing expands into bolts or items before yes</span></div>${ds.map(cardHtml).join('')}` : (S.planning ? '' : '<div class="empty">planning has nothing proposed · it runs when a backlog changes</div>'));
 }
 function boltHtml(b){
   const ds = S.decisions.filter(d => d.phase==='construction' && d.boltId===b.id);
@@ -763,10 +811,11 @@ function landedHtml(l){
   const checks = `<span class="lk ${bad?'bad':pend?'pend':'ok'}"><span class="dot ${bad?'failed':pend?'starting':''}"></span>checks ${l.checks.length-bad-pend}/${l.checks.length}</span>`;
   return `<div class="${cls}" data-nav="l${l.id}" tabindex="0"><div class="lh"><span class="ln">${esc(l.repo)}/${esc(l.name)}</span><span class="lt">landed ${esc(l.at)}</span></div>
     <div class="links"><span class="lk ${l.pr.state==='merged'?'ok':'pend'}">PR #${l.pr.n} · ${l.pr.state}</span>${checks}${l.envs.map(e => `<span class="lk env">${e[0]} ↗</span>`).join('')}</div>
+    <div class="leave ${!l.live && /^[12]d$/.test(l.leaves)?'soon':''}">${l.live ? `stays · ${esc(l.live)}` : `leaves in ${esc(l.leaves)}`}</div>
     ${l.signals.map(s => `<div class="sig"><i>“${esc(s.text)}”</i><span class="mv">${esc(s.kind)} · ${esc(s.src)} · ${esc(s.age)} · ${s.move ? '<b>'+esc(s.move)+'</b>' : '<span style="color:var(--warn)">unmoved</span>'}</span></div>`).join('')}</div>`;
 }
 function renderOperation(){
-  $('#lane-operation').innerHTML = laneHead('Operation','landed bolts · what they serve · what comes back',0,'<span class="ro">read only</span>') + S.landed.map(landedHtml).join('') +
+  $('#lane-operation').innerHTML = laneHead('Operation','landed bolts · here while live and 7 days after',0,'<span class="ro">read only</span>') + S.landed.map(landedHtml).join('') +
     `<div class="sub-h">signals from operation<span class="r">to curation · with their move</span></div><ul class="sigs">${S.opsignals.map(s => `<li><div class="sk"><span class="kind">${esc(s.kind)}</span><span>${esc(s.src)}</span><span class="age">${esc(s.age)}</span></div><q>${esc(s.text)}</q><div class="mv ${/unmoved/.test(s.move)?'un':''}">${/→/.test(s.move) ? esc(s.move).replace(/→ (.*)$/, '→ <b>$1</b>') : esc(s.move)}</div></li>`).join('')}</ul>`;
 }
 function renderStrip(){
@@ -825,6 +874,35 @@ function responsesWithLog(n, base){
 
 /* --- the proposal editor: per-unit edits staged until the one yes --- */
 function propUnitState(u){ const e = S.proposal.edits[u.id]||{}; return {bolt:e.bolt||u.bolt, type:e.type||u.type, name:e.name||u.name, drop:!!e.drop, newBolt:e.newBolt||'', edited:Object.keys(e).length>0}; }
+const punit = id => S.proposal.units.find(u => u.id===id);
+const alive = id => !propUnitState(punit(id)).drop;
+function dependents(id){ const out = new Set(); const walk = x => S.proposal.units.forEach(u => { if(u.after.includes(x) && !out.has(u.id)){ out.add(u.id); walk(u.id); } }); walk(id); return [...out]; }
+function dependencies(id){ const out = new Set(); const walk = x => punit(x).after.forEach(a => { if(!out.has(a)){ out.add(a); walk(a); } }); walk(id); return [...out]; }
+const setEdit = (id, k, v) => { const e = (S.proposal.edits[id] ||= {}); if(v===undefined || v===null || v===false) delete e[k]; else e[k] = v; if(!Object.keys(e).length) delete S.proposal.edits[id]; };
+const boltLabel = b => b==='__new' ? 'a new bolt' : (S.proposal.boltNames[b] || S.proposal.bolts.find(x => x.id===b)?.name || b);
+/* an edit that would break a dependency is refused with the reason and an offer */
+function tryMove(id, target){
+  const u = punit(id); if(target===u.bolt) { setEdit(id,'bolt',undefined); setEdit(id,'newBolt',undefined); return true; }
+  const others = [...dependents(id), ...dependencies(id)].filter(o => alive(o) && propUnitState(punit(o)).bolt!==target);
+  if(others.length){ S.proposal.refuse = {uid:id, kind:'move', target, others, reason:`${others.join(', ')} ${others.length===1?'is':'are'} tied to ${id} by a dependency, and a dependency never crosses a bolt`, offer:`move ${dependents(id).some(o=>others.includes(o)) && dependencies(id).some(o=>others.includes(o)) ? 'them' : dependents(id).some(o=>others.includes(o)) ? 'dependents' : 'dependencies'} too`}; return false; }
+  setEdit(id,'bolt',target); return true;
+}
+function tryDrop(id){
+  const others = dependents(id).filter(alive);
+  if(others.length){ S.proposal.refuse = {uid:id, kind:'drop', others, reason:`${others.join(', ')} depend${others.length===1?'s':''} on ${id}`, offer:'drop dependents too'}; return false; }
+  setEdit(id,'drop',true); return true;
+}
+function tryRestore(id){
+  const others = dependencies(id).filter(o => !alive(o));
+  if(others.length){ S.proposal.refuse = {uid:id, kind:'restore', others, reason:`${id} depends on ${others.join(', ')}, which ${others.length===1?'is':'are'} dropped`, offer:'restore dependencies too'}; return false; }
+  setEdit(id,'drop',undefined); return true;
+}
+function applyRefusal(){
+  const r = S.proposal.refuse; if(!r) return; S.proposal.refuse = null;
+  if(r.kind==='move'){ [r.uid, ...r.others].forEach(id => { setEdit(id,'bolt', r.target===punit(id).bolt ? undefined : r.target); if(r.target!=='__new') setEdit(id,'newBolt',undefined); }); }
+  if(r.kind==='drop'){ [r.uid, ...r.others].forEach(id => setEdit(id,'drop',true)); }
+  if(r.kind==='restore'){ [r.uid, ...r.others].forEach(id => setEdit(id,'drop',undefined)); }
+}
 function depsSvg(units){
   const st = Object.fromEntries(units.map(u => [u.id, propUnitState(u)]));
   const depth = {}; const dz = u => depth[u.id] ?? (depth[u.id] = u.after.length ? 1+Math.max(...u.after.map(a => dz(units.find(x => x.id===a)))) : 0);
@@ -845,6 +923,7 @@ function proposalHtml(){
         <div class="pud">${esc(u.why)}</div>
         <div class="pum"><span>type <b>${esc(s.type)}</b></span><span>after <b>${u.after.length ? u.after.join(', ') : 'none'}</b></span><span>covers <b>${esc(u.covers)}</b></span><span>${esc(u.items)}</span></div>
         ${s.bolt==='__new' ? `<div class="newname"><input placeholder="name for the new bolt" value="${esc(s.newBolt)}" data-newbolt="${u.id}" aria-label="new bolt name"></div>` : ''}
+        ${P.refuse && P.refuse.uid===u.id ? `<div class="refuse"><b>refused</b> · ${esc(P.refuse.reason)}<span class="ra"><button class="btn sm pri" data-rok="1">${esc(P.refuse.offer)}</button><button class="btn sm quiet" data-rcancel="1">leave it</button></span></div>` : ''}
         <div class="pue"><select data-ubolt="${u.id}" aria-label="bolt for ${u.id}">${boltOpts(u.id).replace(`value="${s.bolt}"`, `value="${s.bolt}" selected`)}</select>
           <select data-utype="${u.id}" aria-label="type for ${u.id}">${['default','fast','chore'].map(t => `<option ${t===s.type?'selected':''}>${t}</option>`).join('')}</select>
           <span><button class="btn sm quiet" data-urename="${u.id}">rename</button><button class="btn sm ${s.drop?'yes':'quiet'}" data-udrop="${u.id}">${s.drop?'restore':'drop'}</button></span>
@@ -855,7 +934,9 @@ function proposalHtml(){
       ${us.map(unitRow).join('') || '<div class="empty" style="padding:8px 10px">no units here · every unit moved elsewhere</div>'}</div>`; }).join('')
     + (() => { const us = P.units.filter(u => propUnitState(u).bolt==='__new'); return us.length ? `<div class="pb"><div class="pb-h"><span class="bk">bolt</span><span class="bn">new bolts · named per unit</span><span class="bstate new">your edit</span><span class="bs">${us.length} unit${us.length===1?'':'s'}</span></div>${us.map(unitRow).join('')}</div>` : ''; })();
   const ready = P.units.filter(u => !propUnitState(u).drop && !u.after.length).map(u => u.id);
-  return `${blocks}${sec('dependencies · within a bolt', depsSvg(P.units), 'a unit starts when its dependencies are merged')}${sec('what a yes starts', `<div class="dtext">${ready.map(id=>`<span class="mono">${id}</span>`).join(', ')} start at once, side by side; the rest wait on their dependencies. Every unit becomes items on its bolt's line; the next decision that is yours is each bolt's close.</div>`)}`;
+  const n = S.open ? +S.open.slice(1) : 422;
+  return `${blocks}${sec('dependencies · within a bolt', depsSvg(P.units), 'rename and type never touch them')}${sec('what a yes starts', `<div class="dtext">${ready.map(id=>`<span class="mono">${id}</span>`).join(', ')} start at once, side by side; the rest wait on their dependencies. Every unit becomes items on its bolt's line; the next decision that is yours is each bolt's close.</div>`)}
+    <div class="wrong"><h4>that's all wrong</h4><p>Send the plan back whole. Planning runs again on atlas with your notes, this proposal is withdrawn, and the next one arrives under a new number.</p><div class="field"><textarea rows="2" data-wrong placeholder="what planning got wrong…" aria-label="notes for planning"></textarea><button class="btn pri sm" data-wrongsend="${n}">redo ${n}</button></div></div>`;
 }
 function editsSummary(){
   const P = S.proposal; const out = [];
@@ -889,6 +970,7 @@ function dockDecision(d){
   parts.push(sec('sessions running', sessionsHtml(sessions, x.sessionsNote), 'with last activity'));
   if(services) parts.push(sec(`services of the place · ${esc(services.place)}`, servicesHtml(services, `d${d.n}`), 'start and stop are dictations'));
   const sa = sinceAbout([d.n, d.boltId, d.bolt].filter(Boolean)); if(sa.length) parts.push(sec('since · about this', sinceHtml(sa), 'outside the count'));
+  if(x.lineage) parts.push(sec('lineage · where this proposal comes from', `<div class="lineage">${x.lineage.map((l,i) => `<div class="ln ${i===x.lineage.length-1?'here':''}"><span class="lk-k">${esc(l[0])}</span><span><span class="lk-w">${esc(l[1])}</span><span class="lk-t">${esc(l[2])}</span></span></div>`).join('')}</div>`));
   parts.push(sec('history · responses and what led here', tlHtml(responsesWithLog(d.n, x.responses||[['09-04 07:40','plan','decision',`${d.n} created`]])), SM));
   if(x.links) parts.push(sec('links', linksHtml(x.links)));
   return parts.join('');
@@ -912,6 +994,7 @@ function dockIntent(i){
 }
 function dockLanded(l){
   return sec('the landing', `<div class="dtext">Bolt <span class="mono">${esc(l.name)}</span> landed on <span class="mono">${esc(l.repo)}</span> main at ${esc(l.at)} through the repository's gates. Its place was removed with the landing; what it serves now is operation's, and what comes back from operation is a signal to curation.</div>`)
+    + sec('in this lane', `<div class="dtext">A landed bolt stays here while its request, its environments or a signal about it is live, and for 7 days after the last of them. ${l.live ? `<b>Stays</b> · ${esc(l.live)}.` : `<b>Leaves in ${esc(l.leaves)}</b> · nothing live since ${esc(l.at)}.`}</div>`)
     + sec('pull request and checks', `<div class="rows"><div class="row"><span class="lk ${l.pr.state==='merged'?'ok':'pend'}">PR #${l.pr.n}</span><div class="grow">${esc(l.pr.state)}</div><span class="t">${esc(l.repo)}</span></div>${l.checks.map(c => `<div class="row"><span class="dot ${c[1]==='ok'?'':c[1]==='bad'?'failed':'starting'}"></span><div class="grow"><div class="nm">${esc(c[0])}</div></div><span class="st ${c[1]==='bad'?'failed':''}">${c[1]==='ok'?'passed':c[1]==='bad'?'failing':'running'}${c[2]?' · '+esc(c[2]):''}</span></div>`).join('')}</div>`, SM)
     + sec('environments', `<div class="rows">${l.envs.map(e => `<div class="row"><span class="st">${esc(e[0])}</span><span class="ep">${esc(e[1])}</span><span class="t">↗</span></div>`).join('')}</div>`)
     + sec('units landed', kvHtml(l.units.map(u => [esc(u), 'merged'])))
@@ -932,13 +1015,14 @@ function navTarget(key){
   if(t==='b') return {type:'bolt', obj:bolt(id)};
   if(t==='i') return {type:'intent', obj:S.intents.find(i => i.id===id)};
   if(t==='l') return {type:'landed', obj:S.landed.find(l => l.id===id)};
+  if(t==='p') return {type:'planning', obj:S.planning};
 }
 function renderDock(){
   const key = S.open; if(!key) return;
   const t = navTarget(key);
   if(!t || !t.obj){ closeDock(); return; }
   const list = navList(); const pos = list.indexOf(key);
-  const navHtml = `<div class="nav"><button class="btn sm quiet" data-nav-step="-1" title="previous · k">‹</button><span class="pos">${pos+1} / ${list.length}</span><button class="btn sm quiet" data-nav-step="1" title="next · j">›</button><span class="keys" style="margin-left:6px"><kbd>j</kbd><kbd>k</kbd></span><button class="x" id="dk-x" aria-label="close · esc">×</button></div>`;
+  const navHtml = `<div class="nav"><button class="btn sm quiet" data-nav-step="-1" title="previous · k">‹</button><span class="pos">${pos+1} / ${list.length}</span><button class="btn sm quiet" data-nav-step="1" title="next · j">›</button><span class="keys" style="margin-left:6px"><kbd>j</kbd><kbd>k</kbd><kbd>h</kbd><kbd>l</kbd></span><button class="x" id="dk-x" aria-label="close · esc">×</button></div>`;
   let head, body, foot='';
   if(t.type==='dec'){ const d = t.obj;
     head = `<div class="row"><span class="n">${d.n}</span><span class="kind">${esc(d.kind)}</span><span class="grp">${d.g}</span><span class="phase">· ${d.phase==='plan'?'bolt plan':d.phase}</span>${navHtml}</div><h2 id="dk-title">${d.title}</h2><div class="tail">${d.tail}${d.kind==='unit'?` · → ${d.boltState==='new'?'new bolt ':'bolt '}${esc(d.bolt)}`:''}</div>`;
@@ -946,6 +1030,13 @@ function renderDock(){
   } else if(t.type==='bolt'){ const b = t.obj;
     head = `<div class="row"><span class="kind">bolt</span><span class="phase">· construction</span>${navHtml}</div><h2 id="dk-title">${esc(b.repo)}/${esc(b.name)}</h2><div class="tail">${esc(b.note)}</div>`;
     body = dockBolt(b); foot = `<div class="fl">no decision on this bolt<span class="r">the next is its close</span></div><div class="dtext" style="font-size:12.5px;color:var(--ink2)">Service start and stop above are dictations, applied directly and logged as "say".</div>`;
+  } else if(t.type==='planning'){ const p = t.obj;
+    head = `<div class="row"><span class="kind">planning session</span><span class="phase">· bolt plan</span>${navHtml}</div><h2 id="dk-title">${esc(p.repo)} · charged again</h2><div class="tail">since ${esc(p.since)} · your notes travel with it</div>`;
+    body = sec('the session', `<div class="dtext">Planning is a session of its own, run for one built repository when its backlog changes or when your redo sends a proposal back. It reads the backlog, the as-built and the open bolts, and proposes units. This run carries your notes; the proposal it writes arrives on the plan under a new number, and nothing was created by the withdrawn one.</div>`)
+      + sec('your notes', `<div class="dsig">“${esc(p.notes)}”<small>redo · ${esc(p.since)}</small></div>`)
+      + sec('sessions running', sessionsHtml([{label:'planning · atlas', state:'working', host:'studio', last:p.last}]), 'with last activity')
+      + sec('links', linksHtml([['place','~/places/atlas/planning'],['withdrawn','atlas/.flywheel/proposals/2026-09-04-plan.md · withdrawn']]));
+    foot = `<div class="fl">no decision yet<span class="r">the next proposal is the decision</span></div>`;
   } else if(t.type==='intent'){ const i = t.obj;
     head = `<div class="row"><span class="kind">intent</span><span class="phase">· inception</span>${navHtml}</div><h2 id="dk-title">${esc(i.name)}</h2><div class="tail">${esc(i.state)}</div>`;
     body = dockIntent(i); foot = `<div class="fl">no decision on this intent</div>`;
@@ -985,6 +1076,22 @@ function step(dir){
   const j = i<0 ? (dir>0 ? 0 : list.length-1) : Math.min(list.length-1, Math.max(0, i+dir));
   setFocus(list[j]);
 }
+const focusedEl = () => S.focus ? document.querySelector(`[data-nav="${S.focus}"]`) : null;
+function stepV(dir){
+  const el = focusedEl(); if(!el){ step(1); return; }
+  const list = $$('[data-nav]', el.closest('.lane')).map(navKey);
+  const i = list.indexOf(S.focus); const j = Math.min(list.length-1, Math.max(0, i+dir));
+  if(j!==i) setFocus(list[j]);
+}
+function stepH(dir){
+  const el = focusedEl(); if(!el){ step(1); return; }
+  const lanes = $$('.lane'); const top = el.getBoundingClientRect().top;
+  for(let k = lanes.indexOf(el.closest('.lane'))+dir; k>=0 && k<lanes.length; k+=dir){
+    const items = $$('[data-nav]', lanes[k]); if(!items.length) continue;
+    const best = items.reduce((a,b) => Math.abs(b.getBoundingClientRect().top-top) < Math.abs(a.getBoundingClientRect().top-top) ? b : a);
+    setFocus(navKey(best)); return;
+  }
+}
 
 /* =====================================================================
    The send · one response, on its own; in flight until it settles
@@ -996,7 +1103,7 @@ function refuse(n){ const el = document.querySelector(`.card[data-n="${n}"]`); i
 function send(n, a, arg){
   const d = dec(n); if(!d) return;
   if(S.inflight[n]){ refuse(n); return; }
-  let text = a==='yes' ? `yes ${n}` : a==='no' ? `no ${n}` : a==='redo' ? `${n} redo: ${arg}` : a==='reply' ? `${n}: ${arg}` : a==='pick' ? `${n} pick ${arg}` : (a==='bolt'||a==='rename'||a==='new bolt') ? `${n} ${a} ${arg}` : `${n} ${a}`;
+  let text = a==='yes' ? `yes ${n}` : a==='no' ? `no ${n}` : a==='redo' ? (d.kind==='proposal' ? `redo ${n}: ${arg}` : `${n} redo: ${arg}`) : a==='reply' ? `${n}: ${arg}` : a==='pick' ? `${n} pick ${arg}` : (a==='bolt'||a==='rename'||a==='new bolt') ? `${n} ${a} ${arg}` : `${n} ${a}`;
   if(a==='yes' && d.kind==='proposal'){ const e = editsSummary(); if(e.length) text += ' · ' + e.join(' · '); }
   S.inflight[n] = {a, arg, text};
   renderCardState(n); if(S.open===`d${n}`) renderDock();
@@ -1036,14 +1143,26 @@ function effects(d, a, arg){
       else since('split','intent atlas-provider-limits','back to curation',[412]); break; }
     case 418: if(a==='close'){ S.intents = S.intents.filter(i => i.id!=='loop-granularity'); since('closed','intent loop-granularity','3 claims standing',[418]); } else since('kept','intent loop-granularity','open',[418]); break;
     case 419: { const i = S.intents.find(x => x.id==='atlas-provider-limits'); if(a==='finish'){ i.sessions = i.sessions.filter(s => s.id!=='proto'); i.note = i.note.replace('1 standing session already on its line','finding kept'); since('finished','prototype plan-derivation','place removed',[419]); } break; }
-    case 422: if(a==='yes'){
+    case 422: case 423: if(a==='yes'){
         P.units.forEach(u => { const s = propUnitState(u); if(s.drop) return; let b;
           if(s.bolt==='__new'){ const nm = s.newBolt||'unnamed'; b = addBolt('b-'+nm, nm, 'atlas', 'new · from 422'); }
           else { const pb = P.bolts.find(x => x.id===s.bolt); const nm = P.boltNames[pb.id]||pb.name; b = bolt(pb.id) || addBolt(pb.id, nm, 'atlas', 'new · from 422'); if(bolt(pb.id) && P.boltNames[pb.id]) b.name = nm; }
           if(u.after.length) b.units.push({name:s.name, state:'queued', type:s.type, items:[]}); else startUnit(b, s.name, s.type, 'spec'); });
         S.bolts.forEach(b => { if(b.id==='plan-tail') b.note = '1 merged · 1 building · 2 from 422'; });
         since('accepted','plan atlas','5 units on 2 bolts',[422,'plan-tail']);
-      } else if(a==='drop') since('dropped','plan atlas','nothing created',[422]); else since('redo','plan atlas','back to planning with notes',[422]); break;
+      } else if(a==='drop') since('dropped','plan atlas','nothing created',[n]);
+      else { since('redo',`plan atlas · ${n}`,'withdrawn · planning charged again',[n]); P.edits = {}; P.boltNames = {}; P.refuse = null;
+        S.planning = {repo:'atlas', notes:arg, since:hhmm(S.minutes), last:`${hhmm(S.minutes)} · reading your notes and the backlog`};
+        setTimeout(() => { if(S.planning) S.planning.last = `${hhmm(S.minutes)} · re-reading open bolts plan-decisions, plan-tail`; render(); }, 2500);
+        setTimeout(() => {
+          const m = n+1, t = hhmm(S.minutes); S.planning = null;
+          X[m] = {...X[422], lineage:[...X[422].lineage.slice(0,-1), ['proposal',`${n}`,'withdrawn by your redo'],['response',`redo ${n}`,arg],['planning run',`atlas · ${t}`,'charged again with your notes'],['proposal',`${m}`,`${t} · this document`]],
+            responses:[...X[422].responses, ['09-04 '+t,'operator','response',`redo ${n}: ${esc(arg)}`],['09-04 '+t,'planning','note','proposal rewritten with your notes'],['09-04 '+t,'plan','decision',`${m} created · replaces ${n}`]]};
+          S.decisions.unshift({n:m, g:APPROVE, phase:'plan', kind:'proposal', title:'plan · atlas', tail:`planning ${t} · after your notes · <b>2 bolts</b> · 5 units · 4 dependencies`, proposal:true, answers:[['yes','yes'],['redo','redo:'],['drop','drop']]});
+          since('proposed',`plan atlas · ${m}`,`replaces ${n}`,[m]); toast(`${m} arrived · planning's new proposal for atlas`);
+          if(S.open==='pplanning'){ S.open = null; openDock(`d${m}`); } else { render(); if(!S.open) setFocus(`d${m}`); }
+        }, 7000);
+      } break;
     case 413: if(a==='yes'){ startUnit(bolt('plan-decisions'),'status-writer','default','spec'); }
       else if(a==='bolt'){ const b = S.bolts.find(x => x.name===arg); if(b) startUnit(b,'status-writer','default','spec'); }
       else if(a==='new bolt'){ startUnit(addBolt('b-'+arg, arg, 'atlas', 'new · 1 unit'),'status-writer','default','spec'); }
@@ -1055,8 +1174,8 @@ function effects(d, a, arg){
       else since('later','baseline new-repo','standing without a decision',[417]); break;
     case 415: if(a==='no'){ since('dropped','chores atlas a b c','',[415]); }
       else { const letters = a==='yes' ? 'a b c' : arg; const b = addBolt('chores-atlas','chores','atlas','no bolt · one session each'); letters.split(' ').forEach(l => { const c = d.chores.find(x => x[0]===l); if(c) startUnit(b,'chore '+l+' · '+c[1],'chore','chore'); }); since('accepted','chores atlas '+letters,'',[415]); } break;
-    case 416: { const b = bolt('plan-decisions'); if(a==='yes'){ b.landing = 219; b.note = 'landing · PR #219 · checks running'; S.landed.unshift({id:'plan-decisions', name:'plan-decisions', repo:'switchboard', at:hhmm(S.minutes)+' today', pr:{n:219,state:'open'}, checks:[['lint','ok'],['tests','pend'],['map-check','pend'],['as-built','ok','4 statements']], envs:[['prod','https://switchboard.willdan.internal']], units:['plan-derivation','decision-numbers','response-apply','decision-grouping'], signals:[]}); since('landing','switchboard/plan-decisions','PR #219 open · gates running',[416,'plan-decisions']); setTimeout(() => { const l = S.landed.find(x => x.id==='plan-decisions'); if(l){ l.pr.state='merged'; l.checks = l.checks.map(c => [c[0],'ok',c[2]]); since('landed','switchboard/plan-decisions','gates green',[416,'plan-decisions']); render(); } }, 5000); }
-      else since('held','switchboard/plan-decisions','bolt stays open',[416]); break; }
+    case 416: { const b = bolt('plan-rows'); if(a==='yes'){ b.landing = 219; b.note = 'landing · PR #219 · checks running'; S.landed.unshift({id:'plan-rows', name:'plan-rows', repo:'switchboard', at:hhmm(S.minutes)+' today', pr:{n:219,state:'open'}, checks:[['lint','ok'],['tests','pend'],['map-check','pend'],['as-built','ok','4 statements']], envs:[['prod','https://switchboard.willdan.internal']], units:['rows-order','rows-sink','rows-window','rows-cursor'], signals:[], live:'PR open · checks running', leaves:'7d'}); since('landing','switchboard/plan-rows','PR #219 open · gates running',[416,'plan-rows']); setTimeout(() => { const l = S.landed.find(x => x.id==='plan-rows'); if(l){ l.pr.state='merged'; l.checks = l.checks.map(c => [c[0],'ok',c[2]]); l.live = null; since('landed','switchboard/plan-rows','gates green · place removed',[416,'plan-rows']); S.bolts = S.bolts.filter(x => x.id!=='plan-rows'); render(); } }, 5000); }
+      else since('held','switchboard/plan-rows','bolt stays open',[416]); break; }
     case 420: { const b = bolt('plan-decisions'); if(a==='amend bolt'){ b.note = 're-spec on v4 · wi-#418, #419 back to spec'; b.units.find(u => u.name==='sink-delivery').items.forEach(i => { if(i.id==='wi418'||i.id==='wi419'){ i.state='starting'; i.label = i.label.replace(/build|spec/,'spec'); i.last = `${hhmm(S.minutes)} · returned to spec on one-writer v4`; } }); } else b.note = 'lands on v3 · follow-up unit queued for v4'; break; }
     case 421: { const it = bolt('plan-decisions')?.units.find(u => u.name==='sink-delivery')?.items.find(i => i.id==='wi418'); if(it){ it.state='working'; it.last = `${hhmm(S.minutes)} · answered: ${arg} · continuing`; } S.attention = S.attention.filter(x => x.id!=='host'); since('answered','wi-#418 build · plan-decisions','session continues',[421,'plan-decisions']); break; }
   }
@@ -1098,8 +1217,11 @@ document.addEventListener('click', e => {
 
   /* proposal editor */
   if(b && b.dataset.urename !== undefined){ const u = S.proposal.units.find(x => x.id===b.dataset.urename); const cur = propUnitState(u).name; const nm = prompt('rename unit '+u.id, cur); if(nm && nm!==u.name){ (S.proposal.edits[u.id] ||= {}).name = nm; } else if(nm===u.name && S.proposal.edits[u.id]){ delete S.proposal.edits[u.id].name; if(!Object.keys(S.proposal.edits[u.id]).length) delete S.proposal.edits[u.id]; } render(); return; }
-  if(b && b.dataset.udrop !== undefined){ const id = b.dataset.udrop; const e = (S.proposal.edits[id] ||= {}); if(e.drop) delete e.drop; else e.drop = true; if(!Object.keys(e).length) delete S.proposal.edits[id]; render(); return; }
-  if(b && b.dataset.ureset !== undefined){ delete S.proposal.edits[b.dataset.ureset]; render(); return; }
+  if(b && b.dataset.udrop !== undefined){ const id = b.dataset.udrop; S.proposal.refuse = null; if(propUnitState(punit(id)).drop) tryRestore(id); else tryDrop(id); render(); return; }
+  if(b && b.dataset.ureset !== undefined){ delete S.proposal.edits[b.dataset.ureset]; S.proposal.refuse = null; render(); return; }
+  if(b && b.dataset.rok){ applyRefusal(); render(); return; }
+  if(b && b.dataset.rcancel){ S.proposal.refuse = null; render(); return; }
+  if(b && b.dataset.wrongsend){ const n = +b.dataset.wrongsend; const ta = b.closest('.wrong').querySelector('textarea'); const v = ta.value.trim(); if(!v){ ta.focus(); return; } send(n, 'redo', v); return; }
   if(b && b.dataset.an !== undefined){ const d = dec(+S.open.slice(1)); if(!d) return; const box = $('#dk-f .argbox'); $$('.argbox').forEach(x => { x.innerHTML=''; delete x.dataset.arg; }); box.dataset.arg='redo'; box.innerHTML = argHtml(d,'redo'); const ta = box.querySelector('textarea'); ta.value = `[${b.dataset.an}] `; ta.focus(); return; }
 
   /* dock chrome */
@@ -1124,10 +1246,10 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('change', e => {
   const t = e.target;
-  if(t.dataset.ubolt){ const id = t.dataset.ubolt, u = S.proposal.units.find(x => x.id===id); const e2 = (S.proposal.edits[id] ||= {}); if(t.value===u.bolt){ delete e2.bolt; delete e2.newBolt; } else e2.bolt = t.value; if(!Object.keys(e2).length) delete S.proposal.edits[id]; render(); if(t.value==='__new') $(`[data-newbolt="${id}"]`)?.focus(); }
+  if(t.dataset.ubolt){ const id = t.dataset.ubolt; S.proposal.refuse = null; const ok = tryMove(id, t.value); render(); if(ok && t.value==='__new') $(`[data-newbolt="${id}"]`)?.focus(); }
   if(t.dataset.utype){ const id = t.dataset.utype, u = S.proposal.units.find(x => x.id===id); const e2 = (S.proposal.edits[id] ||= {}); if(t.value===u.type) delete e2.type; else e2.type = t.value; if(!Object.keys(e2).length) delete S.proposal.edits[id]; render(); }
   if(t.dataset.bname){ const b = S.proposal.bolts.find(x => x.id===t.dataset.bname); const v = t.value.trim(); if(v && v!==b.name) S.proposal.boltNames[b.id] = v; else delete S.proposal.boltNames[b.id]; render(); }
-  if(t.dataset.newbolt){ (S.proposal.edits[t.dataset.newbolt] ||= {}).newBolt = t.value.trim(); render(); }
+  if(t.dataset.newbolt){ const id = t.dataset.newbolt; const comp = [id, ...dependents(id), ...dependencies(id)].filter(o => propUnitState(punit(o)).bolt==='__new'); comp.forEach(o => setEdit(o,'newBolt',t.value.trim()||undefined)); render(); }
 });
 document.addEventListener('input', e => { if(e.target.id==='capture') captureAs(); });
 document.addEventListener('keydown', e => {
@@ -1140,14 +1262,15 @@ document.addEventListener('keydown', e => {
   if(typing){ if(e.key==='Enter' && !e.shiftKey && e.target.id==='capture'){ e.preventDefault(); capture(); } if(e.key==='Enter' && e.target.matches('input') && e.target.closest('.argbox')){ e.target.closest('.argbox').querySelector('[data-send]').click(); } return; }
   if(e.metaKey||e.ctrlKey||e.altKey) return;
   const k = e.key;
-  if(k==='j'||k==='ArrowDown'){ e.preventDefault(); step(1); return; }
-  if(k==='k'||k==='ArrowUp'){ e.preventDefault(); step(-1); return; }
+  if(k==='j'||k==='ArrowDown'){ e.preventDefault(); stepV(1); return; }
+  if(k==='k'||k==='ArrowUp'){ e.preventDefault(); stepV(-1); return; }
+  if(k==='h'||k==='ArrowLeft'){ e.preventDefault(); stepH(-1); return; }
+  if(k==='ArrowRight'){ e.preventDefault(); stepH(1); return; }
   if(k==='Enter'||k==='o'){ if(S.focus){ e.preventDefault(); openDock(S.focus); } return; }
   if(k==='y'||k==='n'||k==='l'){
-    if(!S.focus || S.focus[0]!=='d') return;
-    const d = dec(+S.focus.slice(1)); if(!d) return;
-    const a = d.answers.map(x => x[0]).find(x => KEYS[x]===k);
-    if(!a){ toast(`${d.n} · no "${k}" answer on this card · ${d.answers.map(x=>x[0]).join(' · ')}`, true); return; }
+    const d = S.focus && S.focus[0]==='d' ? dec(+S.focus.slice(1)) : null;
+    const a = d && d.answers.map(x => x[0]).find(x => KEYS[x]===k);
+    if(!a){ if(k==='l'){ e.preventDefault(); stepH(1); return; } if(d) toast(`${d.n} · no "${k}" answer on this card · ${d.answers.map(x=>x[0]).join(' · ')}`, true); return; }
     e.preventDefault(); send(d.n, a); return;
   }
   if(k==='/' ){ e.preventDefault(); $('#capture')?.focus(); }
