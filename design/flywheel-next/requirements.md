@@ -958,6 +958,44 @@ requirements, iterated against the running plan rather than on paper.
     outside its prefix except as the effect of a response. Raw
     material that captures cite stays outside every repository (111).
 
+### A.24 Bootstrapping and repositories
+
+204. Initialization is the machinery's, deterministic and repeatable. An
+    organization is an object with a machine of its own — absent, books
+    ready, state ready, connected, hosted — and `flywheel init` drives
+    it: create or adopt the books repository from the books template,
+    create the state repository with the profile's layout (C.2), record
+    that the organization's GitHub App must be installed (a secret the
+    operator places, never an agent), and register the first host.
+    Every step is an effect with a proof, so running it again changes
+    nothing, and the reconciler that advances work advances a
+    half-finished bootstrap.
+205. A host joins by one command and never by hand. It clones the state,
+    the books and every tracked built repository as bare repositories
+    under one root the manifest names, keeps one checkout of each
+    shared line for the machinery's own merges, and makes worktrees
+    only for places (43) and the operator's bolt places (44). The
+    layout on disk is the profile's; a host that finds a hand-made
+    layout refuses to start and says what differs.
+206. A repository is created by the machinery from a response, never by
+    a session. An elaboration or a dictation proposes it with its map
+    nodes and homes (199, 202); the yes creates it on the git host
+    under the organization from the built-repository template, writes
+    its manifest entry, its `flywheel/` declarations (203) and its map
+    nodes, and the first planning runs its baseline (104). Adopting an
+    existing repository is the same steps without the creation.
+207. One GitHub App is the connection. Its installation covers every
+    repository the manifest lists; adding a repository extends the
+    installation or surfaces as a decision under attention (149). No
+    host or session uses a personal token. A session in a place is
+    given a short-lived installation token scoped to that repository,
+    issued by the machinery into the place and written nowhere else.
+208. The books template, the built-repository template, the map schema
+    and derivation table (198, 199), and the shipped skills and
+    deliverables (190) are one versioned set released with the
+    flywheel. Initialization and creation stamp the version they used;
+    upgrading a repository's template is a chore (123).
+
 ## 5. Requirements — Part B, the control plane contract
 
 The data plane reaches durable, shared state and the operator only

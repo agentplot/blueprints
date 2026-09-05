@@ -14,6 +14,18 @@
     Operation. It holds objects, never the count. Bolt plan is a narrow hatched gate (one
     proposal per repository in steady state). Operation is read-only; a landed bolt stays while
     its request, environments or a signal about it is live and 7 days after (186), and says so.
+  - One silhouette per kind: never one card class with variants. A decision is the only
+    thing shaped like an answerable card (the rail). On the board a proposal is a sheet (title
+    line, section rules, mono metadata, taller than wide) with unit proposals hanging off it as
+    slips and a baseline as a sheet of its own; an intent is a drawn thread (a vertical stroke,
+    elaborations as beads, no box; closed is the same thread with an end cap); a bolt is a flat
+    square-cornered ledger (units as a left-to-right chain merged · building · queued, sessions
+    under the building unit, machinery on its own row, services at the foot); a landed bolt is a
+    borderless muted record with PR and checks as a stamp; a signal is a quote with a left rule.
+    Sessions, hosts, repositories, deferred sheets, planning-in-progress and explorations keep
+    their forms. The dock header takes the same form as the object.
+  - Phase is the lane's; kind is the shape's. An object does not repeat its phase; colour stays
+    as it was (accent, ok/warn/crit, the phase chip on rail cards). Shape does the new work.
   - Every decision is also a marker on its object ("? 418" on the intent, "! host" on the bolt,
     "✓ 424" on each covered intent). A focused rail card lights its object; a marker click
     focuses the card and opens the dock. Nothing is answered on the board.
@@ -143,11 +155,7 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
 .el{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 0 0;font-size:12px}
 .el .en{font-weight:600;min-width:0}
 .leave{font:10.5px var(--mono);color:var(--ink3)} .leave.soon{color:var(--warn)}
-.obj.closed{opacity:.6} .obj.closed .on{text-decoration:line-through;text-decoration-color:var(--ink3);text-decoration-thickness:1px}
-.obj.deferred{opacity:.6;border-style:dashed}
-.obj.explore{border-color:var(--accent)}
-.obj.explore.done{opacity:.6;border-style:dashed;border-color:var(--line)}
-.obj .pickbox{width:14px;height:14px;margin:0;accent-color:var(--accent);flex:none}
+
 .chip{display:inline-flex;align-items:center;font:10.5px var(--mono);padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--ink2);background:var(--surface2)}
 .chip.g{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)} .chip.x{border-color:var(--accent);color:var(--accent)}
 .unit .it{flex-basis:100%;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:2px 0 0 6px}
@@ -333,16 +341,111 @@ label.chore .f{margin-left:auto;font:11px var(--mono);color:var(--ink3)}
 .since .t{font:11px var(--mono);color:var(--ink3);white-space:nowrap}
 
 /* ---------- board objects ---------- */
-.obj{border:1px solid var(--line);border-radius:7px;background:var(--surface);padding:8px 10px;margin-bottom:8px;cursor:pointer}
-.obj.lit{background:var(--lit);border-color:var(--lit-line)}
-.obj.open-in-dock{box-shadow:inset 0 0 0 1px var(--accent)}
-.obj .oh{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.obj .ok{font:600 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
-.obj .on{font-weight:700;font-size:13px}
-.obj .or{font:11px var(--mono);color:var(--ink3)}
-.obj .os{margin-left:auto;font-size:11.5px;color:var(--ink3);white-space:nowrap}
-.obj .ot{color:var(--ink2);font-size:12px;margin-top:2px}
+/* session rows: planning-in-progress and explorations keep this form */
+.sessrow{border:1px solid var(--line);border-radius:7px;background:var(--surface);padding:8px 10px;margin-bottom:8px;cursor:pointer}
+.sessrow.lit{background:var(--lit);border-color:var(--lit-line)}
+.sessrow.open-in-dock{box-shadow:inset 0 0 0 1px var(--accent)}
+.sessrow .oh{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.sessrow .ok{font:600 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+.sessrow .on{font-weight:700;font-size:13px}
+.sessrow .os{margin-left:auto;font-size:11.5px;color:var(--ink3);white-space:nowrap}
+.sessrow .ot{color:var(--ink2);font-size:12px;margin-top:2px}
+.sessrow.explore{border-color:var(--accent)} .sessrow.explore.done{opacity:.6;border-style:dashed;border-color:var(--line)}
+/* sheet: a document (proposal, baseline); taller than wide, title line, section rules, mono metadata */
+.sheet{position:relative;background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--ink2);border-radius:1px;padding:10px 12px 9px;margin:0 8px 14px 4px;min-height:190px;box-shadow:3px 3px 0 var(--line2);cursor:pointer;display:flex;flex-direction:column}
+.sheet.lit{background:var(--lit);border-top-color:var(--lit-line);box-shadow:3px 3px 0 var(--lit-line)}
+.sheet.open-in-dock{outline:1px solid var(--accent);outline-offset:-1px}
+.sheet.deferred{opacity:.55;border-style:dashed;border-top-style:dashed;box-shadow:none}
+.sheet .sh-k{font:600 9.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.sheet .sh-title{font-family:var(--disp,var(--sans));font-size:15px;font-weight:800;letter-spacing:-.01em;border-bottom:1px solid var(--ink);padding:1px 0 4px;margin-bottom:5px;line-height:1.2}
+.sheet .sh-meta{font:11px var(--mono);color:var(--ink3);line-height:1.5}
+.sheet .sh-sec{border-top:1px solid var(--line2);padding:5px 0 4px;font-size:12px}
+.sheet .sh-h{display:flex;gap:6px;align-items:baseline;font:600 10.5px var(--mono);color:var(--ink2);margin-bottom:1px}
+.sheet .sh-h .new{color:var(--accent)}
+.sheet .sh-body{color:var(--ink2)}
+.sheet .sh-foot{margin-top:auto;padding-top:6px;border-top:1px solid var(--line2);font:11px var(--mono);color:var(--ink3)}
+.sheet .sh-foot b{color:var(--accent);font-weight:600}
+/* slip: a unit proposal hanging off the sheet above it */
+.slip{position:relative;margin:-8px 8px 12px 30px;background:var(--surface2);border:1px solid var(--line);border-left:0;border-radius:0 3px 3px 0;padding:5px 9px 6px;font-size:12px;cursor:pointer}
+.slip::before{content:"";position:absolute;left:-16px;top:-8px;width:15px;height:18px;border-left:2px solid var(--ink3);border-bottom:2px solid var(--ink3);border-radius:0 0 0 8px}
+.slip::after{content:"";position:absolute;left:-1px;top:6px;bottom:6px;width:2px;background:var(--ink3);border-radius:1px}
+.slip.lit{background:var(--lit);border-color:var(--lit-line)} .slip.lit::before,.slip.lit::after{border-color:var(--lit-line);background:var(--lit-line)}
+.slip.open-in-dock{outline:1px solid var(--accent);outline-offset:-1px}
+.slip .sl-k{font:600 9.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-right:6px}
+.slip .sl-n{font-weight:700;font-size:12.5px}
+.slip .sl-to{display:block;font:11px var(--mono);color:var(--ink2);margin-top:2px}
+.slip .sl-to .arrow{color:var(--ink3)}
+/* thread: an intent is a line off the books; a vertical stroke with elaborations as beads, no box */
+.thread{position:relative;padding:2px 4px 4px 4px;margin:0 0 12px;cursor:pointer}
+.thread .th-head{display:flex;align-items:center;gap:7px;position:relative;padding-left:20px;min-height:22px}
+.thread .th-head::before{content:"";position:absolute;left:3px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--ink2)}
+.thread .th-head .pickbox{position:absolute;left:0;top:4px;width:14px;height:14px;margin:0;accent-color:var(--accent);opacity:0}
+.thread:hover .th-head .pickbox,.thread .th-head .pickbox:checked,.thread .th-head .pickbox:focus-visible{opacity:1}
+.thread .th-head .pickbox:checked~.th-name{color:var(--accent)}
+.thread:hover .th-head::before,.thread .th-head .pickbox:checked~*{}
+.thread .th-name{font-weight:700;font-size:13px;padding:0 3px;border-radius:3px}
+.thread .th-state{margin-left:auto;font:11px var(--mono);color:var(--ink3);white-space:nowrap}
+.thread .th-line{margin-left:8px;border-left:2px solid var(--ink2);padding:2px 0 4px 16px;min-height:14px}
+.thread .th-note{color:var(--ink2);font-size:12px;margin:0 0 3px}
+.thread .bead{position:relative;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:3px 0;font-size:12px}
+.thread .bead::before{content:"";position:absolute;left:-22px;top:8px;width:8px;height:8px;border-radius:50%;background:var(--surface);border:2px solid var(--ink2);box-sizing:border-box}
+.thread .bead.working::before,.thread .bead.starting::before,.thread .bead.with::before{background:var(--ok);border-color:var(--ok)}
+.thread .bead.idle::before{background:var(--surface);border-color:var(--ink3)}
+.thread .bead.done::before{background:var(--ink3);border-color:var(--ink3)}
+.thread .bead.queued::before{border-style:dashed}
+.thread .bead.gather::before,.thread .bead.explore::before{background:var(--accent-soft);border-color:var(--accent)}
+.thread .bead .en{font-weight:600}
+.thread .th-line.cap::after{content:"";display:block;width:16px;border-top:2px solid var(--ink2);margin:4px 0 0 -17px}
+.thread .th-tail{padding-left:24px;margin-top:2px}
+.thread.closed{opacity:.6} .thread.closed .th-name{text-decoration:line-through;text-decoration-color:var(--ink3);text-decoration-thickness:1px}
+.thread.lit .th-name{background:var(--lit);box-shadow:0 0 0 2px var(--lit-line)} .thread.lit .th-line{border-color:var(--lit-line)} .thread.lit .th-head::before{background:var(--lit-line)}
+.thread.open-in-dock .th-line{box-shadow:-3px 0 0 var(--accent-soft)}
+/* ledger: a bolt is a machine; flat, square, units as a chain left to right */
+.ledger{background:var(--surface2);border:1px solid var(--ink3);border-radius:0;margin-bottom:12px;cursor:pointer;font-size:12px}
+.ledger.lit{background:var(--lit);border-color:var(--lit-line);box-shadow:0 0 0 2px var(--lit)}
+.ledger.open-in-dock{outline:1px solid var(--accent);outline-offset:-1px}
+.ledger.landing{border-color:var(--ok)}
+.ledger .lg-head{display:flex;align-items:baseline;gap:8px;padding:5px 9px;background:var(--surface);border-bottom:1px solid var(--ink3);font:600 12px var(--mono)}
+.ledger .lg-head .lg-repo{color:var(--ink3);font-weight:400}
+.ledger .lg-head .lg-run{margin-left:auto;font-weight:400;color:var(--ink2);white-space:nowrap}
+.ledger .lg-head .lg-run .landing{color:var(--ok);font-weight:600}
+.ledger .lg-chain{display:flex;flex-wrap:wrap;align-items:flex-start;padding:8px 9px 4px}
+.ledger .lg-unit{border:1px solid var(--line);background:var(--surface);padding:3px 7px;font:11.5px var(--mono);white-space:nowrap;max-width:100%;margin-bottom:4px}
+.ledger .lg-unit.merged{color:var(--ink3);background:transparent}
+.ledger .lg-unit.merged::before{content:"✓ ";color:var(--ok)}
+.ledger .lg-unit.building{border:1.5px solid var(--accent);color:var(--ink);white-space:normal;flex-basis:100%}
+.ledger .lg-unit.building .lg-un{font-weight:700}
+.ledger .lg-unit.building .lg-ut{color:var(--ink3);margin-left:6px}
+.ledger .lg-unit.queued{border-style:dashed;color:var(--ink2)}
+.ledger .lg-arrow{color:var(--ink3);font:11px var(--mono);padding:3px 4px;margin-bottom:4px}
+.ledger .lg-sess{display:flex;flex-direction:column;gap:3px;margin-top:5px;padding-top:5px;border-top:1px dashed var(--line)}
+.ledger .lg-sess .it{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ledger .lg-mach{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 9px;border-top:1px dashed var(--ink3);font:11px var(--mono);color:var(--ink3)}
+.ledger .lg-foot{display:flex;gap:10px;padding:5px 9px;border-top:1px solid var(--ink3);font:11px var(--mono);color:var(--ink3);overflow:hidden;background:var(--surface)}
+.ledger .lg-foot .ep{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ledger .marks{padding:0 9px 8px;margin-top:2px}
+/* record: a landed bolt is history; no border, muted, PR and checks as a stamp */
+.record{padding:8px 4px 10px;margin-bottom:2px;border-bottom:1px solid var(--line2);color:var(--ink2);cursor:pointer;background:transparent}
+.record.lit{background:var(--lit);border-radius:4px}
+.record.open-in-dock{box-shadow:inset 2px 0 0 var(--accent)}
+.record .rc-head{display:flex;align-items:baseline;gap:8px}
+.record .rc-name{font-weight:600;color:var(--ink2);font-size:13px}
+.record .rc-at{margin-left:auto;font:11px var(--mono);color:var(--ink3);white-space:nowrap}
+.record .rc-stamp{display:inline-block;margin:6px 0 2px;border:1.5px solid var(--ink3);border-radius:3px;padding:1px 7px;font:700 10.5px var(--mono);letter-spacing:.06em;color:var(--ink3);transform:rotate(-2deg);opacity:.85;text-transform:uppercase}
+.record .rc-stamp.bad{color:var(--crit);border-color:var(--crit);opacity:1}
+.record .rc-env{font:11px var(--mono);color:var(--ink3);margin-top:3px}
+.record .rc-env a{color:var(--ink2);text-decoration:none;border-bottom:1px dotted var(--ink3);margin-right:8px}
+.record .leave{margin-top:5px}
+.record .leave.soon{color:var(--warn)}
+/* quote: a signal; no box, the quotation and its left rule, curation's move under it */
+.quote{border-left:2px solid var(--line);padding:2px 0 2px 10px;margin:7px 0 4px;font-size:12px;color:var(--ink2)}
+.quote q{quotes:"“" "”";font-style:italic;color:var(--ink)}
+.quote .qm{display:block;font:11px var(--mono);color:var(--ink3);margin-top:3px}
+.quote .qm b{color:var(--ink2);font-weight:500}
+.quote .qm .un{color:var(--warn)}
+.quote.live{border-left-color:var(--accent)} .quote.live .qm b{color:var(--accent)}
 .marks{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.thread .marks{padding-left:24px}
 .mark{display:inline-flex;align-items:center;gap:4px;font:600 11px var(--mono);border:1px solid var(--line);border-radius:4px;padding:1px 6px;background:var(--surface2)}
 .mark.approve{color:var(--accent);border-color:var(--accent)} .mark.decide{color:var(--warn);border-color:var(--warn)} .mark.answer{color:var(--crit);border-color:var(--crit)} .mark.attention{color:var(--warn);border-color:var(--warn);background:color-mix(in srgb,var(--warn) 12%,transparent)}
 .mark.focused{background:var(--lit)}
@@ -380,10 +483,7 @@ label.chore .f{margin-left:auto;font:11px var(--mono);color:var(--ink3)}
 .sig .mv b{color:var(--ink2)}
 .sig .mv .un{color:var(--warn)}
 ul.sigs{list-style:none;margin:0;padding:0}
-ul.sigs li{border:1px solid var(--line);border-radius:7px;background:var(--surface);padding:7px 10px;margin-bottom:6px;font-size:12px}
-ul.sigs .sk{display:flex;gap:8px;font:11px var(--mono);color:var(--ink3);margin-bottom:3px}
-ul.sigs .sk .kind{color:var(--ink2);font-weight:600}
-ul.sigs q{quotes:"“" "”"}
+ul.sigs li{margin:0}
 
 /* ---------- dock ---------- */
 .scrim{position:absolute;inset:0;background:transparent;display:none;z-index:8}
@@ -391,6 +491,12 @@ body.docked .scrim{display:block}
 .dock{position:absolute;top:0;right:0;bottom:0;width:min(var(--dock),calc(100% - 200px));background:var(--surface);border-left:1px solid var(--line);box-shadow:var(--shadow);z-index:9;display:flex;flex-direction:column;transform:translateX(102%);transition:transform .2s cubic-bezier(.2,.7,.3,1)}
 body.docked .dock{transform:none}
 .dk-h{padding:12px 16px 10px;border-bottom:1px solid var(--line)}
+.dk-h.dk-sheet{border-top:3px solid var(--ink2);background:var(--surface)} .dk-h.dk-sheet h2{border-bottom:1px solid var(--ink);padding-bottom:5px} .dk-h.dk-sheet .tail{font:11.5px var(--mono)}
+.dk-h.dk-slip{background:var(--surface2);box-shadow:inset 4px 0 0 var(--ink3)}
+.dk-h.dk-thread{box-shadow:inset 4px 0 0 var(--ink2);padding-left:22px} .dk-h.dk-thread h2::before{content:"● ";color:var(--ink2);font-size:12px;vertical-align:middle}
+.dk-h.dk-ledger{background:var(--surface2);border-bottom:1px solid var(--ink3);border-top:1px solid var(--ink3)} .dk-h.dk-ledger h2{font-family:var(--mono);font-size:16px;letter-spacing:0}
+.dk-h.dk-record{background:transparent;border-bottom:1px solid var(--line2)} .dk-h.dk-record h2{color:var(--ink2);font-weight:600}
+.dk-b .lg-chain{padding:0;margin-bottom:4px} .dk-b .thread{cursor:default}
 .dk-h .row{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink3)}
 .dk-h .row .n{font:700 14px var(--mono);color:var(--ink)}
 .dk-h .row .kind{font-weight:700;color:var(--ink2)}
@@ -978,7 +1084,44 @@ function renderRail(){
   $('#rail').innerHTML = html;
 }
 const litObjs = () => { if(!S.focus) return []; const o = objOf(S.focus); return o ? (o.objs || (o.obj ? [o.obj] : [])) : []; };
-function objCls(key){ return ['obj', litObjs().includes(key)?'lit':'', S.open===key?'open-in-dock':''].join(' '); }
+function objCls(key, form){ return [form||'sessrow', litObjs().includes(key)?'lit':'', S.open===key?'open-in-dock':''].join(' '); }
+const beadState = s => s.state==='with' ? 'with' : s.state;
+function bead(s){ const right = s.state==='done' ? `<span class="leave ${/^(today|1d|2d)$/.test(s.leaves||'')?'soon':''}">done · leaves ${s.leaves==='today'?'today':'in '+esc(s.leaves||'7d')}</span>` : s.state==='queued' ? `<span class="leave">queued · starts when research exits</span>` : sessChip(s); return `<div class="bead ${beadState(s)}"><span class="en">${esc(s.label)}</span>${right}</div>`; }
+function threadHtml(i, full){
+  const g = gatheringOf(i.id), x = explorationOf(i.id); const closed = i.state==='closed';
+  const beads = i.sessions.map(bead).join('') + (g ? `<div class="bead gather"><span class="en">${esc(g.type)} (self-closing)</span><span class="chip g">in gathering ${g.n}</span></div>` : '') + (x ? `<div class="bead explore"><span class="en">explore (${x.kind==='standing'?'standing':'with-operator'})</span><span class="chip x">explore · ${x.kind==='standing'?'standing':'with you'}</span></div>` : '');
+  return `<div class="${objCls('i:'+i.id,'thread')} ${closed?'closed':''}" data-obj="i:${i.id}" tabindex="0"><div class="th-head">${closed||full ? '' : `<input type="checkbox" class="pickbox" data-pick="${i.id}" ${S.picked.has(i.id)?'checked':''} aria-label="pick ${esc(i.name)} for explore">`}<span class="th-name">${esc(i.name)}</span><span class="th-state">${closed ? `<span class="leave">closed · leaves in ${esc(i.leaves||'7d')}</span>` : esc(i.state)}</span></div>
+    <div class="th-line ${closed?'cap':''}"><div class="th-note">${esc(i.note)}${g ? ' · no elaboration proposed while gathered' : ''}</div>${beads || '<div class="bead queued"><span class="leave">no elaboration yet</span></div>'}</div>${marksFor('i:'+i.id)}</div>`;
+}
+function ledgerHtml(b, full){
+  const running = b.units.flatMap(u => u.items||[]);
+  const order = {merged:0, building:1, queued:2}; const units = b.units.slice().sort((a,b2) => (order[a.state]??1)-(order[b2.state]??1));
+  const chain = units.map((u,i) => (i ? '<span class="lg-arrow">→</span>' : '') + (u.state==='merged' ? `<span class="lg-unit merged" title="merged${u.t?' · '+u.t:''}">${esc(u.name)}</span>`
+    : u.state==='queued' ? `<span class="lg-unit queued">${esc(u.name)}</span>`
+    : `<span class="lg-unit building"><span class="lg-un">${esc(u.name)}</span><span class="lg-ut">${esc(u.type||'')} · ${esc(u.state)}</span>${(u.items||[]).length ? `<span class="lg-sess">${(u.items||[]).map(wiHtml).join('')}</span>` : ''}</span>`)).join('');
+  const mach = (b.machinery||[]).map(m => `<div class="lg-mach"><span>${esc(m.label)}</span>${sessChip(m)}</div>`).join('');
+  return `<div class="${objCls('b:'+b.id,'ledger')} ${b.landing?'landing':''}" data-obj="b:${b.id}" tabindex="0"><div class="lg-head"><span class="lg-name">${esc(b.name)}</span><span class="lg-repo">${esc(b.repo)}</span><span class="lg-run">${b.landing?'<span class="landing">landing · PR #'+b.landing+'</span> · ':''}${running.length} running</span></div>
+    <div class="lg-chain">${chain}</div>${mach}<div class="lg-foot"><span>${b.services.filter(s=>s.s==='running').length}/${b.services.length} services</span><span class="ep">${esc(b.endpoints[0]||'no endpoint')}</span></div>${marksFor('b:'+b.id)}</div>`;
+}
+const quoteHtml = (sg, live) => `<div class="quote ${live?'live':''}"><q>${esc(sg.text)}</q><span class="qm">${esc(sg.kind)} · ${esc(sg.src)} · ${esc(sg.age)} · ${sg.move ? (/→/.test(sg.move) ? esc(sg.move).replace(/→ (.*)$/, '→ <b>$1</b>') : '<span class="un">'+esc(sg.move)+'</span>') : '<span class="un">unmoved</span>'}</span></div>`;
+function recordHtml(l){
+  const bad = l.checks.filter(c => c[1]==='bad').length, pend = l.checks.filter(c => c[1]==='pend').length;
+  const ticks = l.checks.map(c => c[1]==='ok' ? '✓' : c[1]==='bad' ? '✗' : '·').join('');
+  return `<div class="${objCls('l:'+l.id,'record')}" data-obj="l:${l.id}" tabindex="0"><div class="rc-head"><span class="rc-name">${esc(l.repo)}/${esc(l.name)}</span><span class="rc-at">${esc(l.at)}</span></div>
+    <span class="rc-stamp ${bad?'bad':''}">PR #${l.pr.n} · ${esc(l.pr.state)} · ${ticks}${pend?' running':''}</span>
+    <div class="rc-env">${l.envs.map(e => `<a href="#" onclick="return false">${esc(e[0])} ↗</a>`).join('')}</div>
+    ${l.signals.map(sg => quoteHtml(sg, true)).join('')}
+    <div class="leave ${!l.live && /^[12]d$/.test(l.leaves)?'soon':''}">${l.live ? `stays · ${esc(l.live)}` : `leaves in ${esc(l.leaves)}`}</div></div>`;
+}
+function sheetHtml(d){
+  const P = S.proposal;
+  if(d.kind==='proposal'){ const secs = P.bolts.map(b => { const us = P.units.filter(u => u.bolt===b.id && !u.dropped); if(!us.length && b.id.startsWith('nb-')) return ''; return `<div class="sh-sec"><div class="sh-h">${b.state==='new'?'<span class="new">new bolt</span>':'bolt'} ${esc(b.name)}<span style="margin-left:auto;font-weight:400;color:var(--ink3)">${us.length} unit${us.length===1?'':'s'}</span></div><div class="sh-body">${us.map(u=>esc(u.name)).join(' · ')||'<i>no units</i>'}</div></div>`; }).join('');
+    return `<article class="${objCls('d:'+d.n,'sheet')}" data-obj="d:${d.n}" tabindex="0"><span class="sh-k">proposal · read whole</span><div class="sh-title">plan · atlas</div><div class="sh-meta">${esc(P.session)}<br>${P.units.filter(u=>!u.dropped).length} units · ${new Set(P.units.filter(u=>!u.dropped).map(u=>u.bolt)).size} bolts · 4 dependencies</div>${secs}<div class="sh-foot">${P.edits ? `<b>${P.edits}</b> per-unit response${P.edits===1?'':'s'} recorded · ` : ''}yes approves it as it stands</div>${marksFor('d:'+d.n)}</article>`; }
+  if(d.kind==='baseline'){ const r = repo(d.repo); const unmet = r ? r.claims.filter(c=>c[1]==='not satisfied') : []; const rules = [...new Set(unmet.map(c => c[2]))];
+    return `<article class="${objCls('d:'+d.n,'sheet')}" data-obj="d:${d.n}" tabindex="0"><span class="sh-k">baseline · first proposal for the repository</span><div class="sh-title">${d.title}</div><div class="sh-meta">${esc(r ? r.manifest : '')}<br>${unmet.length} claims unmet · judged once (104)</div>${rules.map(rule => `<div class="sh-sec"><div class="sh-h">${esc(rule)}<span style="margin-left:auto;font-weight:400;color:var(--ink3)">${unmet.filter(c=>c[2]===rule).length}</span></div><div class="sh-body">${unmet.filter(c=>c[2]===rule).map(c => esc(c[0].split(' @')[0])).join(' · ')}</div></div>`).join('')}<div class="sh-foot">yes starts everything as one bolt · pick takes part · later defers</div>${marksFor('d:'+d.n)}</article>`; }
+  return '';
+}
+function slipHtml(d){ return `<div class="${objCls('d:'+d.n,'slip')}" data-obj="d:${d.n}" tabindex="0"><span class="sl-k">unit</span><span class="sl-n">${d.title}</span><span class="sl-to"><span class="arrow">→</span> ${d.boltState==='new'?'new bolt ':'bolt '}${esc(d.bolt)} · ${d.n===413?'type default':'type fast'}</span>${marksFor('d:'+d.n)}</div>`; }
 let paneN = 9; const newPane = host => `${host||'studio'}/${paneN++}`;
 function sessChip(s){
   const st = s.state; const dot = st==='with' ? 'working' : st==='scheduled' ? 'idle' : st;
@@ -1008,41 +1151,22 @@ function renderInception(){
   const picked = [...S.picked].filter(id => intent(id));
   const bar = `<div class="explore-bar"><span class="n">explore</span><span>${picked.length ? picked.map(id => esc(intent(id).name)).join(' + ') : 'tick intents below, then'}</span><select id="explore-type" aria-label="elaboration type"><option value="with">with-operator</option><option value="standing">standing</option></select><button class="btn pri sm" id="explore-go" ${picked.length?'':'disabled'}>explore ${picked.length||''}</button>${picked.length ? '<button class="btn quiet sm" id="explore-clear">clear</button>' : ''}</div>`;
   const xs = S.explorations.map(x => `<div class="${objCls('x:'+x.id)} explore ${x.state==='done'?'done':''}" data-obj="x:${x.id}" tabindex="0"><div class="oh"><span class="ok">${x.kind==='standing'?'explore · standing':'explore · with-operator'}</span><span class="on">${x.names.map(esc).join(' + ')}</span><span class="os">${x.state==='done' ? `<span class="leave">done · leaves in ${esc(x.leaves)}</span>` : 'since '+esc(x.since)}</span></div><div class="ot">${esc(x.last)}</div>${x.state==='done' ? '' : `<div class="el">${sessChip(x.session)}</div>`}</div>`).join('');
-  const list = S.intents.map(i => { const g = gatheringOf(i.id), x = explorationOf(i.id);
-    const rows = i.sessions.map(elabRow).join('') + (g ? `<div class="el"><span class="en">${esc(g.type)} (self-closing)</span><span class="chip g">in gathering ${g.n}</span></div>` : '') + (x ? `<div class="el"><span class="en">explore (${x.kind==='standing'?'standing':'with-operator'})</span><span class="chip x">explore · ${x.kind==='standing'?'standing':'with you'}</span></div>` : '');
-    return `<div class="${objCls('i:'+i.id)} ${i.state==='closed'?'closed':''}" data-obj="i:${i.id}" tabindex="0"><div class="oh">${i.state==='closed' ? '' : `<input type="checkbox" class="pickbox" data-pick="${i.id}" ${S.picked.has(i.id)?'checked':''} aria-label="pick ${esc(i.name)} for explore">`}<span class="ok">intent</span><span class="on">${esc(i.name)}</span><span class="os">${i.state==='closed' ? `<span class="leave">closed · leaves in ${esc(i.leaves||'7d')}</span>` : esc(i.state)}</span></div><div class="ot">${esc(i.note)}${g ? ' · no elaboration proposed while gathered' : ''}</div>
-    ${rows || '<div class="el"><span class="leave">no elaboration yet</span></div>'}${marksFor('i:'+i.id)}</div>`; }).join('');
-  $('#lane-inception').innerHTML = laneHead('Inception','intents and their elaborations · capture here') + cap + bar + (xs ? `<div class="sec-h">explorations<span class="r">opened by you · over several intents</span></div>${xs}` : '') + `<div class="sec-h">intents<span class="r">lines off the books · tick to explore</span></div>` + (list || '<div class="empty">nothing open</div>');
+  const list = S.intents.map(i => threadHtml(i)).join('');
+  $('#lane-inception').innerHTML = laneHead('Inception','intents and their elaborations · capture here') + cap + bar + (xs ? `<div class="sec-h">explorations<span class="r">opened by you · over several intents</span></div>${xs}` : '') + `<div class="sec-h">intents<span class="r">lines off the books · tick the head to explore</span></div>` + (list || '<div class="empty">nothing open</div>');
 }
 function renderPlan(){
   const P = S.proposal; const pd = dec(P.n);
   const planning = S.planning ? `<div class="${objCls('p:planning')}" data-obj="p:planning" tabindex="0"><div class="oh"><span class="ok">planning</span><span class="on">${esc(S.planning.repo)}</span><span class="os">charged again ${esc(S.planning.since)}</span></div><div class="ot">“${esc(S.planning.notes)}”</div><div class="el">${sessChip({...S.planning.session, last:S.planning.last})}</div></div>` : '';
-  const prop = pd ? `<div class="${objCls('d:'+pd.n)}" data-obj="d:${pd.n}" tabindex="0"><div class="oh"><span class="ok">proposal</span><span class="on">atlas</span><span class="os">${esc(P.session.split(' · ').pop())}</span></div>
-    <div class="prop">${P.bolts.map(b => { const us = P.units.filter(u => u.bolt===b.id && !u.dropped); if(!us.length && b.id.startsWith('nb-')) return ''; return `<div class="pb"><span class="pbn ${b.state}">${b.state==='new'?'new ':''}${esc(b.name)}</span><span class="pus">${us.map(u=>esc(u.name)).join(' · ')||'<i>no units</i>'}</span></div>`; }).join('')}</div>
-    <div class="ot">${P.edits ? `${P.edits} per-unit response${P.edits===1?'':'s'} recorded · ` : ''}yes approves it as it stands</div>${marksFor('d:'+pd.n)}</div>` : '';
-  const singles = [413,414,417].map(dec).filter(Boolean).map(d => `<div class="${objCls('d:'+d.n)}" data-obj="d:${d.n}" tabindex="0"><div class="oh"><span class="ok">${esc(d.kind)}</span><span class="on">${d.title}</span></div>
-    ${d.kind==='unit' ? `<div class="ot mono"><span class="arrow">→</span> ${d.boltState==='new'?'new bolt ':'bolt '}${esc(d.bolt)}</div>` : `<div class="ot">first proposal for the repository · ${esc(repo('new-repo').claims.filter(c=>c[1]==='not satisfied').length)} claims unmet</div>`}${marksFor('d:'+d.n)}</div>`).join('');
-  const deferred = S.deferred.map(x => `<div class="${objCls('f:'+x.key)} deferred" data-obj="f:${x.key}" tabindex="0"><div class="oh"><span class="ok">${esc(x.kind)}</span><span class="on">${x.title}</span><span class="os">deferred · ask again</span></div><div class="ot">was ${x.n} · answered later ${esc(x.at)} · not in the count · planning's next run supersedes it</div></div>`).join('');
-  $('#lane-plan').innerHTML = laneHead('Bolt plan','the gate · proposals read whole','<span class="gate">transition</span>') + planning + (prop + singles + deferred || '<div class="empty">planning has nothing proposed · it runs when a backlog changes</div>');
+  const prop = pd ? sheetHtml(pd) : '';
+  const slips = S.decisions.filter(d => d.kind==='unit').map(slipHtml).join('');
+  const baselines = S.decisions.filter(d => d.kind==='baseline').map(sheetHtml).join('');
+  const deferred = S.deferred.map(x => `<article class="${objCls('f:'+x.key,'sheet')} deferred" data-obj="f:${x.key}" tabindex="0"><span class="sh-k">${esc(x.kind)} · deferred</span><div class="sh-title">${x.title}</div><div class="sh-meta">was ${x.n} · answered later ${esc(x.at)}</div><div class="sh-sec"><div class="sh-body">not in the count · planning's next run supersedes it</div></div><div class="sh-foot">ask again raises it with a new number</div></article>`).join('');
+  $('#lane-plan').innerHTML = laneHead('Bolt plan','the gate · a desk with paper on it','<span class="gate">transition</span>') + planning + (prop + slips + baselines + deferred || '<div class="empty">planning has nothing proposed · it runs when a backlog changes</div>');
 }
-function boltHtml(b){
-  const running = b.units.flatMap(u => u.items||[]);
-  const units = b.units.map(u => `<div class="unit ${u.state}"><span class="un">${esc(u.name)}</span><span class="ut">${u.state==='merged'?'merged'+(u.t?' · '+u.t:''):(u.type||'')+' · '+u.state}</span>${(u.items||[]).map(wiHtml).join('')}</div>`).join('');
-  const mach = (b.machinery||[]).map(m => `<div class="el"><span class="en" style="color:var(--ink3)">${esc(m.label)}</span>${sessChip(m)}</div>`).join('');
-  return `<div class="${objCls('b:'+b.id)}" data-obj="b:${b.id}" tabindex="0"><div class="oh"><span class="ok">bolt</span><span class="on">${esc(b.name)}</span><span class="or">${esc(b.repo)}</span><span class="os">${b.landing?'landing · PR #'+b.landing+' · ':''}${running.length} running</span></div>
-    <div class="units">${units}</div>${mach}<div class="svcline"><span>${b.services.filter(s=>s.s==='running').length}/${b.services.length} services</span><span class="ep">${esc(b.endpoints[0]||'no endpoint')}</span></div>${marksFor('b:'+b.id)}</div>`;
-}
-function renderConstruction(){ $('#lane-construction').innerHTML = laneHead('Construction','open bolts · units in flight · merges · the close') + S.bolts.map(boltHtml).join(''); }
-function landedHtml(l){
-  const bad = l.checks.filter(c => c[1]==='bad').length;
-  return `<div class="${objCls('l:'+l.id)} landed" data-obj="l:${l.id}" tabindex="0"><div class="oh"><span class="ok">landed</span><span class="on">${esc(l.repo)}/${esc(l.name)}</span><span class="os">${esc(l.at)}</span></div>
-    <div class="links"><span class="lk ${l.pr.state==='merged'?'ok':'pend'}">PR #${l.pr.n} · ${l.pr.state}</span><span class="lk ${bad?'bad':'ok'}">checks ${l.checks.length-bad}/${l.checks.length}</span>${l.envs.map(e => `<span class="lk">${e[0]} ↗</span>`).join('')}</div>
-    ${l.signals.map(s => `<div class="sig"><i>“${esc(s.text)}”</i><span class="mv">${esc(s.kind)} · ${esc(s.src)} · ${esc(s.age)} · ${s.move ? '<b>'+esc(s.move)+'</b>' : '<span class="un">unmoved</span>'}</span></div>`).join('')}
-    <div class="leave ${!l.live && /^[12]d$/.test(l.leaves)?'soon':''}" style="margin-top:6px">${l.live ? `stays · ${esc(l.live)}` : `leaves in ${esc(l.leaves)}`}</div></div>`;
-}
+function renderConstruction(){ $('#lane-construction').innerHTML = laneHead('Construction','open bolts · units in flight · merges · the close') + S.bolts.map(b => ledgerHtml(b)).join(''); }
 function renderOperation(){
-  $('#lane-operation').innerHTML = laneHead('Operation','landed bolts · here while live and 7 days after','<span class="ro">observed</span>') + S.landed.map(landedHtml).join('') +
-    `<div class="sec-h">signals from operation<span class="r">to curation · with their move</span></div><ul class="sigs">${S.opsignals.map(s => `<li><div class="sk"><span class="kind">${esc(s.kind)}</span><span>${esc(s.src)}</span><span>${esc(s.age)}</span></div><q>${esc(s.text)}</q><div class="sig" style="border:0;padding:0"><span class="mv">${/→/.test(s.move) ? esc(s.move).replace(/→ (.*)$/, '→ <b>$1</b>') : '<span class="un">'+esc(s.move)+'</span>'}</span></div></li>`).join('')}</ul>`;
+  $('#lane-operation').innerHTML = laneHead('Operation','landed bolts · here while live and 7 days after','<span class="ro">observed</span>') + S.landed.map(recordHtml).join('') +
+    `<div class="sec-h">signals from operation<span class="r">to curation · with their move</span></div><ul class="sigs">${S.opsignals.map(sg => `<li>${quoteHtml(sg, /→/.test(sg.move))}</li>`).join('')}</ul>`;
 }
 function renderHosts(){
   const all = allSessions();
@@ -1229,7 +1353,8 @@ function dockDecision(d){
 }
 function dockBolt(b){
   const sessions = b.units.flatMap(u => u.items||[]);
-  return sec('the bolt', `<div class="dtext">Open bolt on <span class="mono">${esc(b.repo)}</span>, line <span class="mono">${esc(b.line)}</span>. Its place is kept on the host at the head of its line, refreshed after each merge, where you run and test the bolt with no session involved. ${esc(b.note)}.</div>`)
+  return sec('the ledger', ledgerHtml(b, true).replace(/ tabindex="0"/,'').replace(/data-obj="[^"]*"/,''), 'units as a chain · merged → building → queued')
+    + sec('the bolt', `<div class="dtext">Open bolt on <span class="mono">${esc(b.repo)}</span>, line <span class="mono">${esc(b.line)}</span>. Its place is kept on the host at the head of its line, refreshed after each merge, where you run and test the bolt with no session involved. ${esc(b.note)}.</div>`)
     + sec('decisions on this bolt', S.decisions.filter(d => d.obj==='b:'+b.id).map(d => `<div class="row"><button class="mark ${d.g}" data-mark="d:${d.n}">${d.n}</button><span class="grow">${d.title}</span><span class="t">${d.g}</span></div>`).join('') || '', 'in the rail, where you answer')
     + sec('units', `<div class="rows">${b.units.map(u => `<div class="row" style="flex-wrap:wrap"><span class="st">${u.state}</span><div class="grow"><div class="nm">${esc(u.name)}${u.type?` <span class="m">type ${u.type}</span>`:''}</div></div>${u.state==='merged' ? '' : `<button class="btn sm quiet drop" data-bdrop="${b.id}" data-unit="${esc(u.name)}">drop</button>`}${(u.items||[]).map(wiHtml).join('')}</div>`).join('')}</div>`, 'drop is a dictation')
     + sec('name', `<div class="field"><input value="${esc(b.name)}" data-brename="${b.id}" aria-label="bolt name"><button class="btn sm" data-brenamesend="${b.id}">send rename</button></div>`, 'a bolt\'s name is yours to change · one dictation')
@@ -1239,12 +1364,14 @@ function dockBolt(b){
     + sec('history', tlHtml(BX[b.id]||[['09-04 '+hhmm(S.minutes),'machinery','note','bolt created by your response']]), SM);
 }
 function dockIntent(i){
-  return sec('the intent', `<div class="dtext">Intent <span class="mono">${esc(i.name)}</span> is ${esc(i.state)}. ${esc(i.note)}. An intent is a line off the books' shared line; each elaboration works in a place off that line, and archiving the intent lands it.</div>`)
+  return sec('the thread', threadHtml(i, true).replace(/ tabindex="0"/,'').replace(/data-obj="[^"]*"/,''), 'a line off the books · elaborations as beads')
+    + sec('the intent', `<div class="dtext">Intent <span class="mono">${esc(i.name)}</span> is ${esc(i.state)}. ${esc(i.note)}. An intent is a line off the books' shared line; each elaboration works in a place off that line, and archiving the intent lands it.</div>`)
     + sec('decisions on this intent', S.decisions.filter(d => d.obj==='i:'+i.id).map(d => `<div class="row"><button class="mark ${d.g}" data-mark="d:${d.n}">${d.n}</button><span class="grow">${d.title}</span><span class="t">${d.g}</span></div>`).join('') || '', 'in the rail, where you answer')
     + sec('sessions running', sessionsHtml(i.sessions), 'with host and last activity');
 }
 function dockLanded(l){
-  return sec('the landing', `<div class="dtext">Bolt <span class="mono">${esc(l.name)}</span> landed on <span class="mono">${esc(l.repo)}</span> main at ${esc(l.at)} through the repository's gates. Its place was removed with the landing; what it serves now is operation's, and what comes back from operation is a signal to curation. ${esc(l.window)}.</div>`)
+  return sec('the record', recordHtml(l).replace(/ tabindex="0"/,'').replace(/data-obj="[^"]*"/,''), 'history')
+    + sec('the landing', `<div class="dtext">Bolt <span class="mono">${esc(l.name)}</span> landed on <span class="mono">${esc(l.repo)}</span> main at ${esc(l.at)} through the repository's gates. Its place was removed with the landing; what it serves now is operation's, and what comes back from operation is a signal to curation. ${esc(l.window)}.</div>`)
     + sec('pull request and checks', `<div class="rows"><div class="row"><span class="lk ${l.pr.state==='merged'?'ok':'pend'}">PR #${l.pr.n}</span><div class="grow">${esc(l.pr.state)}</div></div>${l.checks.map(c => `<div class="row"><span class="dot ${c[1]==='ok'?'':c[1]==='bad'?'failed':'starting'}"></span><div class="grow"><div class="nm">${esc(c[0])}</div></div><span class="st ${c[1]==='bad'?'failed':''}">${c[1]==='ok'?'passed':c[1]==='bad'?'failing':'running'}${c[2]?' · '+esc(c[2]):''}</span></div>`).join('')}</div>`, SM)
     + sec('environments', `<div class="rows">${l.envs.map(e => `<div class="row"><span class="st">${esc(e[0])}</span><span class="ep">${esc(e[1])}</span><span class="t">↗</span></div>`).join('')}</div>`)
     + sec('units landed', kvHtml(l.units.map(u => [esc(u), 'merged'])))
@@ -1302,11 +1429,12 @@ function renderDock(){
   const key = S.open; if(!key) return; const [t,id] = key.split(':'); const o = objOf(key);
   if(!o){ closeDock(); return; }
   const nav = `<div class="nav"><span class="keys" style="font-size:11px;color:var(--ink3)"><kbd>j</kbd><kbd>k</kbd> rail · <kbd>esc</kbd></span><button class="x" id="dk-x" aria-label="close">×</button></div>`;
-  let head, body;
-  if(t==='d'){ head = `<div class="row"><span class="n">${o.n}</span><span class="kind">${esc(o.kind)}</span><span>${o.g}</span><span class="ph">${PH[o.phase]}</span>${nav}</div><h2 id="dk-title">${o.title}</h2><div class="tail">${o.tail}</div>`; body = dockDecision(o); }
-  else if(t==='b'){ head = `<div class="row"><span class="kind">bolt</span><span class="ph">construction</span>${nav}</div><h2 id="dk-title">${esc(o.repo)}/${esc(o.name)}</h2><div class="tail">${esc(o.note)}</div>`; body = dockBolt(o); }
-  else if(t==='i'){ head = `<div class="row"><span class="kind">intent</span><span class="ph">inception</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.state)}</div>`; body = dockIntent(o); }
-  else if(t==='l'){ head = `<div class="row"><span class="kind">landed</span><span class="ph">operation</span>${nav}</div><h2 id="dk-title">${esc(o.repo)}/${esc(o.name)}</h2><div class="tail">landed ${esc(o.at)} · PR #${o.pr.n}</div>`; body = dockLanded(o); }
+  let head, body, form = '';
+  if(t==='d'){ form = o.kind==='proposal'||o.kind==='baseline' ? 'dk-sheet' : o.kind==='unit' ? 'dk-slip' : ''; head = `<div class="row"><span class="n">${o.n}</span><span class="kind">${esc(o.kind)}</span><span>${o.g}</span><span class="ph">${PH[o.phase]}</span>${nav}</div><h2 id="dk-title">${o.title}</h2><div class="tail">${o.tail}</div>`; body = dockDecision(o); }
+  else if(t==='b'){ form = 'dk-ledger'; head = `<div class="row"><span class="kind">bolt</span><span class="ph">construction</span>${nav}</div><h2 id="dk-title">${esc(o.repo)}/${esc(o.name)}</h2><div class="tail">${esc(o.note)}</div>`; body = dockBolt(o); }
+  else if(t==='i'){ form = 'dk-thread'; head = `<div class="row"><span class="kind">intent</span><span class="ph">inception</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.state)}</div>`; body = dockIntent(o); }
+  else if(t==='l'){ form = 'dk-record'; head = `<div class="row"><span class="kind">landed</span><span class="ph">operation</span>${nav}</div><h2 id="dk-title">${esc(o.repo)}/${esc(o.name)}</h2><div class="tail">landed ${esc(o.at)} · PR #${o.pr.n}</div>`; body = dockLanded(o); }
+  else if(t==='f'){ form = 'dk-sheet'; }
   else if(t==='h'){ head = `<div class="row"><span class="kind">host</span>${nav}</div><h2 id="dk-title">${esc(o.id)}</h2><div class="tail">${o.alive?'alive':'gone '+o.gone} · bound ${o.bound}</div>`; body = dockHost(o); }
   else if(t==='e'){ head = `<div class="row"><span class="kind">external system</span><span class="ph">map</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.what)}</div>`; body = sec('on the map', `<div class="dtext">An external system the fleet meets. It carries no claims of its own; a claim about the contract with it is in scope for every repository that meets it (105).</div>`) + sec('met by', `<div class="rows">${S.map.edges.filter(e => e[1]===o.id || e[0]===o.id).map(e => `<div class="row"><span class="st">${esc(e[0]===o.id ? e[1] : e[0])}</span><span class="grow">${esc(e[2])}</span></div>`).join('')}</div>`); }
   else if(t==='r'){ head = `<div class="row"><span class="kind">repository</span>${nav}</div><h2 id="dk-title">${esc(o.id)}</h2><div class="tail">${o.kinds.length ? o.kinds.join(', ') : 'books'} · ${o.claims.length} claims in scope</div>`; body = dockRepo(o); }
@@ -1315,12 +1443,12 @@ function renderDock(){
   else if(t==='f'){ head = `<div class="row"><span class="kind">${esc(o.kind)}</span><span class="ph">bolt plan · deferred</span>${nav}</div><h2 id="dk-title">${o.title}</h2><div class="tail">deferred · ask again</div>`; body = dockDeferred(o); }
   else { head = `<div class="row"><span class="kind">attention</span>${nav}</div><h2 id="dk-title">${o.text}</h2>`; body = sec('what it means', `<div class="dtext">${o.id==='host' ? 'The host that holds wi-#418 has not sent a heartbeat. Takeover releases its leases now and restores the place on studio; wait lets the lease expire at 07:59, when the machinery does the same.' : 'Your earlier response named a decision that was gone. It was recorded, handed back as unapplicable and shown once here; nothing was dropped. The unit was re-proposed and kept its number.'}</div>`); }
   const keep = $('#dk-b').scrollTop;
-  $('#dk-h').innerHTML = head; $('#dk-b').innerHTML = body; $('#dk-f').innerHTML = t==='a' ? `<div class="acts">${o.acts.map(([k,l]) => `<button class="btn sm ${k==='takeover'?'yes':''}" data-att="${o.id}" data-ak="${k}">${esc(l)}</button>`).join('')}</div>` : dockFooter(key);
+  $('#dk-h').className = 'dk-h ' + form; $('#dk-h').innerHTML = head; $('#dk-b').innerHTML = body; $('#dk-f').innerHTML = t==='a' ? `<div class="acts">${o.acts.map(([k,l]) => `<button class="btn sm ${k==='takeover'?'yes':''}" data-att="${o.id}" data-ak="${k}">${esc(l)}</button>`).join('')}</div>` : dockFooter(key);
   $('#dk-b').scrollTop = keep;
 }
 function openDock(key){ const was = S.open===key; S.open = key; if(key[0]==='d' || key[0]==='a') S.focus = key; document.body.classList.add('docked'); render(); if(!was) $('#dk-b').scrollTop = 0; }
 function closeDock(){ S.open = null; document.body.classList.remove('docked'); render(); }
-function setFocus(key){ S.focus = key; if(S.open && (S.open[0]==='d'||S.open[0]==='a')) S.open = key; render(); const el = document.querySelector(`.rail [data-nav="${key}"]`); if(el){ el.scrollIntoView({block:'nearest'}); el.focus({preventScroll:true}); } const lit = $('.obj.lit'); if(lit) lit.scrollIntoView({block:'nearest'}); }
+function setFocus(key){ S.focus = key; if(S.open && (S.open[0]==='d'||S.open[0]==='a')) S.open = key; render(); const el = document.querySelector(`.rail [data-nav="${key}"]`); if(el){ el.scrollIntoView({block:'nearest'}); el.focus({preventScroll:true}); } const lit = $('[data-obj].lit'); if(lit) lit.scrollIntoView({block:'nearest'}); }
 function step(dir){ const list = railKeys(); if(!list.length) return; const i = list.indexOf(S.focus); const j = i<0 ? 0 : Math.min(list.length-1, Math.max(0, i+dir)); setFocus(list[j]); }
 
 /* =====================================================================

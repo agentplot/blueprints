@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–203);
+Requirements are cited by their number in `requirements.md` (1–208);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -20,7 +20,7 @@ heading at a time; 13 gives the crate boundary; 14 walks S1 to S34; 15
 checks the invariants; 16 describes the diagrams; 17 covers the agent
 kinds, the pull-request landing, operation, intents as changes with
 gathered elaborations, deliverables with their producers, endpoints
-and routing, and where files live (A.17 to A.23).
+and routing, where files live, and bootstrapping (A.17 to A.24).
 
 `machines/check.py` validates every machine against `machines/schema.json`,
 every guard and effect name against `machines/atoms.yaml`, every profile
@@ -66,6 +66,8 @@ of some object, or a file the machinery reads as evidence.
 | `place` | template | a worktree off a line; removed, held or kept under its owner's command | instantiated by work-item, elaboration, bolt, operator-session, curation, planning, capture | `machines/place.yaml` |
 | `self-closing`, `standing`, `with-operator` | template | elaboration types | instantiated by `elaboration.working` and `operator-session.open` | `machines/elaboration-types/` |
 | `chore`, `fast`, `default`, `persona-test` | template | unit types; their states are the stages | instantiated by `work-item.in-type` | `machines/unit-types/` |
+| `organization` | object, singleton | the bootstrap: absent, books ready, state ready, awaiting the App, connected, hosted (204) | — · repository | `machines/organization.yaml` |
+| `repository` | object | a built repository the flywheel tracks: proposed, creating, registering, covering, tracked (206) | organization · — | `machines/repository.yaml` |
 | `host`, `lease`, `response`, `plan`, `sink` | engine | a host, an object's ownership, one operator response, the plan's decision register, one delivery sink | — | `machines/engine/` |
 
 ### 1.2 What is an attribute, not a machine
@@ -1339,6 +1341,21 @@ A restart of the machinery reads everything again and reaches the same
 configuration; a running session is evidence (`session.pane` present),
 not memory, so it is still `alive` after the restart (S5, I7).
 
+A host joins by one command and never by hand (205): `flywheel host
+join` writes its record, and the host machine's `disk` region, beside
+`life`, runs `unchecked → cloning → ready`: `clone_repositories`
+clones the state, the books and every tracked built repository bare
+under the root the manifest names and checks out each shared line
+once for the machinery's own merges, and `flywheel host doctor`
+compares the root against the host binding's layout
+(`profiles/host.yaml` `disk:`) — `<root>/<org>/<repo>.git`,
+`<root>/<org>/<repo>/main`, bolt places under `bolts/`, session
+places under `places/`, worktrees for places only. Until the region is
+`ready` the host covers nothing (`lease.coverable`), and a root that
+differs is `refused`: the host takes nothing, and the `host-refused`
+decision under attention says the first path that differs and what
+was expected; `retry` after the operator fixes it.
+
 ## 12. Answers to section 10
 
 ### 12.1 Which objects carry a machine, and how do the machines relate?
@@ -2091,3 +2108,37 @@ by `prepare_place`. Tracked flywheel-facing files sit under
 `.flywheel/`. The machinery never writes outside its prefix except as
 the effect of a response, and raw material stays outside every
 repository (111).
+
+**A.24 — bootstrapping and repositories.** The `organization` object
+(`machines/organization.yaml`) is the bootstrap: `flywheel init`
+writes it in `absent` and the reconciler advances it like any object —
+`create_books` from the books template (or adopting a books repository
+by adding what the template requires), `create_state` with the
+profile's layout, `register_app` recording that the App's installation
+is required (the secret is the operator's, placed at
+`<root>/<org>/app.pem` and never by an agent; `awaiting-app` is a
+decision under attention until the git host shows the installation),
+`register_host` for the first host, then `hosted`. Every step has a
+proof, so a second init changes nothing and a half-finished bootstrap
+finishes on the next tick (204). A `repository` object
+(`machines/repository.yaml`) is how a built repository enters: an
+elaboration's offer or the `create-repository` tool proposes it with
+its map nodes and homes, the yes runs `create_repository` on the git
+host from the built-repository template (nothing when adopted through
+`adopt-repository`), `register_repository` writes the manifest entry,
+the `flywheel/` declarations and the map nodes in one books commit and
+puts the repository's planning so the baseline run is due (104, 199,
+202, 203, 206), and `covering` waits for the App's installation to list
+it — `extend_installation` where the App may, else the `app-coverage`
+decision (149, 207). A session in a place gets a short-lived
+installation token scoped to its repository, minted by `prepare_place`
+into the untracked `.flywheel/token` and written nowhere else; no host
+or session uses a personal token (207). The books template, the
+built-repository template, the map schema, the derivation table and the
+shipped skills and deliverables are one versioned set released with the
+binary (`profiles/host.yaml` `templates:`); `create_books` and
+`create_repository` stamp the version they used, and upgrading a
+repository's template is a chore (123, 208). The derivation table is
+shipped data in that set: changing it re-derives kinds and
+capabilities only and never moves or stales a verdict, since cells key
+on claim version and repository and scope comes from attachments.

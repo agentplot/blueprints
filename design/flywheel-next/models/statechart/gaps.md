@@ -425,6 +425,31 @@ the operator may reverse by a response on the file; an entry with
   machinery — the prefix names what is flywheel-facing, not who
   writes it. **Decision**.
 
+- **204–208 bootstrapping and repositories.** The git host must offer
+  repository creation under the organization to the App's installation
+  token (GitHub: the App needs `administration: write` on the
+  organization for `create_repository` and the installation-repository
+  endpoint for `extend_installation`); an App without those permissions
+  leaves creation to the operator by hand and `covering` to the
+  `app-coverage` decision — modelled as the decision, not as a second
+  path. **Decision**, permissions **open** against GitHub's current
+  App scopes. The template contents (`profiles/host.yaml` `templates:`)
+  are listed by path and written nowhere else; the books template's
+  `flywheel/` tree and the built template's `openspec/` layout are
+  **open** until the set is cut. Joining is a `disk` region beside the
+  host's `life` rather than a state before `alive`, so a host record
+  the stand-in seeds (already laid out) fires nothing and the scenario
+  timings hold; a real host's first tick reads the root and clones
+  what is missing. **Decision**. The derivation table (199) is
+  shipped data versioned with the set (208): a change re-derives kinds
+  and capabilities only, moves no verdict and stales no cell, because
+  cells key on claim version and repository and scope comes from
+  attachments; it can change what the page says a repository is and
+  what planning's work order carries. **Decision**. Adoption of a
+  books repository that already has a `flywheel/` tree from an older
+  set is an upgrade chore, not an init step; init adds only what is
+  missing. **Decision**.
+
 - **190 producers per deliverable.** The shipped set is a profile
   partial (`profiles/deliverables.yaml`) rather than a machine: it
   binds no evidence and no effect, so `check.py` does not check it
