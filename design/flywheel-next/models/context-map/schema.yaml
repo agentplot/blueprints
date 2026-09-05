@@ -1,0 +1,291 @@
+# Context map schema — a JSON-Schema-like sketch in YAML.
+# Three documents share this file: the map, the shipped vocabulary,
+# and the organization vocabulary. Each is versioned as model.md 4.9
+# says. Field rules follow model.md section 2; fixed things follow 3.4.
+
+$schema_version: flywheel-map/1
+
+# ---------------------------------------------------------------------
+# Shared definitions
+# ---------------------------------------------------------------------
+definitions:
+
+  id:
+    type: string
+    pattern: "^[a-z][a-z0-9.-]*$"
+    description: >
+      Stable, unique across every type in one map, never reused, kept
+      through a rename. The diff key and the attachment target.
+
+  ref:
+    type: string
+    pattern: "^[a-z0-9-]+/[a-z0-9-]+$"
+    description: The chapter that states this, as book/chapter (120).
+
+  status:
+    enum: [settled, candidate, open]
+
+  tag:
+    type: string
+    pattern: "^([a-z][a-z0-9-]*:)?[a-z0-9][a-z0-9.-]*$"
+    description: >
+      "facet:value" names a declared facet; a plain tag is free text.
+
+  repository:
+    type: string
+    description: A fleet manifest entry's name (199).
+
+  common:
+    description: Fields every context, element, relationship and link carries.
+    properties:
+      id:       { $ref: "#/definitions/id" }
+      name:     { type: string, description: Verbatim from the book. }
+      ref:      { $ref: "#/definitions/ref" }
+      status:   { $ref: "#/definitions/status" }
+      question: { type: string }
+      tags:     { type: array, items: { $ref: "#/definitions/tag" }, default: [] }
+    required: [id, name, status]
+    rules:
+      - status open requires question and forbids nothing else
+      - status settled or candidate requires ref and forbids question
+      - every facet:value tag names a facet declared in the union vocabulary;
+        a closed facet's value must be one of its declared values
+
+  # ---- Context ------------------------------------------------------
+  context:
+    allOf: [{ $ref: "#/definitions/common" }]
+    properties:
+      home:             { $ref: "#/definitions/repository" }
+      external:         { type: boolean, default: false }
+      big_ball_of_mud:  { type: boolean, default: false }
+      language:
+        type: array
+        description: The ubiquitous language, as far as the map states it.
+        items:
+          type: object
+          properties: { term: { type: string }, means: { type: string } }
+          required: [term, means]
+    rules:
+      - external true forbids home
+      - no kind field exists; contexts are not classified by structure
+
+  # ---- Element ------------------------------------------------------
+  element:
+    allOf: [{ $ref: "#/definitions/common" }]
+    properties:
+      context: { $ref: "#/definitions/id" }
+      kind:    { type: string, description: An element kind in the union vocabulary. }
+      home:    { $ref: "#/definitions/repository" }
+    required: [context, kind]
+    rules:
+      - context must name a context id in this map
+      - kind must be declared in the shipped or organization vocabulary
+      - effective home = home, else the context's home; required unless
+        the context is external, in which case home is forbidden
+
+  # ---- Relationship -------------------------------------------------
+  relationship:
+    allOf: [{ $ref: "#/definitions/common" }]
+    properties:
+      pattern:
+        enum: [partnership, shared-kernel, customer-supplier, conformist, separate-ways]
+        description: FIXED. Not extensible by any vocabulary.
+      contexts:
+        type: array
+        items: { $ref: "#/definitions/id" }
+        minItems: 2
+        maxItems: 2
+        description: Both ends, for symmetric patterns and separate ways.
+      upstream:   { $ref: "#/definitions/id" }
+      downstream: { $ref: "#/definitions/id" }
+      upstream_offers:
+        type: array
+        items: { enum: [open-host-service, published-language] }
+        description: FIXED end markers, upstream end.
+      downstream_guards:
+        type: array
+        items: { enum: [anticorruption-layer] }
+        description: FIXED end marker, downstream end.
+      kernel:
+        type: array
+        items: { $ref: "#/definitions/id" }
+        description: Shared kernel only; the element ids both contexts share.
+    required: [pattern]
+    rules:
+      - pattern in [partnership, shared-kernel, separate-ways] requires contexts,
+        forbids upstream, downstream, upstream_offers, downstream_guards
+      - pattern in [customer-supplier, conformist] requires upstream and
+        downstream, forbids contexts
+      - pattern conformist forbids downstream_guards
+      - pattern shared-kernel requires kernel; every kernel id is an element id
+      - separate-ways forbids kernel, offers and guards
+      - at most one relationship per unordered pair of contexts
+
+  # ---- Link ---------------------------------------------------------
+  link:
+    allOf: [{ $ref: "#/definitions/common" }]
+    properties:
+      kind: { type: string, description: A link kind in the union vocabulary. }
+      from: { $ref: "#/definitions/id" }
+      to:   { $ref: "#/definitions/id" }
+    required: [kind, from, to]
+    rules:
+      - from and to are element ids
+      - the link kind's end constraints, if any, hold for from and to
+      - when from and to are in different contexts, a relationship exists
+        between those contexts and its pattern is not separate-ways
+
+# ---------------------------------------------------------------------
+# The map document (current.yaml and target.yaml share this shape)
+# ---------------------------------------------------------------------
+map:
+  type: object
+  properties:
+    schema:        { const: flywheel-map/1 }
+    vocabulary:    { type: string, description: Path of the organization vocabulary, or absent for shipped only. }
+    contexts:      { type: array, items: { $ref: "#/definitions/context" } }
+    elements:      { type: array, items: { $ref: "#/definitions/element" } }
+    relationships: { type: array, items: { $ref: "#/definitions/relationship" } }
+    links:         { type: array, items: { $ref: "#/definitions/link" } }
+  required: [schema, contexts]
+  rules:
+    - ids are unique across all four arrays
+    - every home names a fleet manifest entry; every manifest entry is
+      homed by at least one element or context in target or current
+    - the map carries no claims and no attachments; those live with the
+      claim in its chapter (97, 105) and are joined by id
+
+# ---------------------------------------------------------------------
+# Vocabulary documents
+# ---------------------------------------------------------------------
+vocabulary:
+  type: object
+  properties:
+    schema:   { const: flywheel-map/1 }
+    extends:  { const: flywheel-map/1, description: Organization file only. }
+    element_kinds:
+      type: object
+      additionalProperties:
+        type: object
+        properties:
+          description: { type: string }
+          extends:     { type: string, description: A shipped or earlier organization kind. }
+          capability:  { type: boolean, default: false, description: Counts in derivation. }
+        required: [description]
+    link_kinds:
+      type: object
+      additionalProperties:
+        type: object
+        properties:
+          description: { type: string }
+          from:  { type: array, items: { type: string }, description: Allowed kinds at the from end; absent means any. }
+          to:    { type: array, items: { type: string } }
+        required: [description]
+    facets:
+      type: object
+      additionalProperties:
+        type: object
+        properties:
+          description: { type: string }
+          values:      { type: array, items: { type: string }, description: Closed list; absent means open. }
+        required: [description]
+  rules:
+    - an organization file may not redeclare a shipped kind, link kind or facet
+    - extends must name a kind declared earlier in the union
+    - a kind's capability flag is inherited unless the extending kind sets it
+
+# ---------------------------------------------------------------------
+# The shipped default vocabulary (ships with flywheel-map/1)
+# ---------------------------------------------------------------------
+shipped_vocabulary:
+  schema: flywheel-map/1
+  element_kinds:
+    aggregate:
+      description: A cluster of objects changed as one unit, with one root and one invariant boundary.
+    domain-event:
+      description: Something that happened in the context that other contexts may care about.
+    contract:
+      description: What the context offers across its boundary — an API, a schema, a message format.
+      capability: true
+    service:
+      description: A running thing — a process, a worker, a job, a store, a function. What a repository builds and operates.
+  link_kinds:
+    uses:
+      description: Depends on, in the most general sense.
+    implements:
+      description: The service serves that contract.
+      from: [service]
+      to: [contract]
+    emits:
+      description: The element raises the event.
+      to: [domain-event]
+    handles:
+      description: The element reacts to the event.
+      to: [domain-event]
+  facets: {}
+
+# ---------------------------------------------------------------------
+# An organization vocabulary — example extension file
+# ---------------------------------------------------------------------
+organization_vocabulary_example:
+  schema: flywheel-map/1
+  extends: flywheel-map/1
+  element_kinds:
+    store:
+      description: A service whose job is to keep state — a database, a cache, a bucket.
+      extends: service
+    topic:
+      description: A named channel events travel on. Others depend on it, so it counts as a capability.
+      extends: contract
+      capability: true
+    ui:
+      description: A user-facing surface.
+      extends: service
+  link_kinds:
+    persists-in:
+      description: The aggregate's state lives in that store.
+      from: [aggregate]
+      to: [store]
+  facets:
+    lane:
+      description: Which side of the house runs it.
+      values: [control, data]
+    tier:
+      description: How much of the business stops when it stops.
+      values: [1, 2, 3]
+    runtime:
+      description: Free — whatever the element runs on.
+
+# ---------------------------------------------------------------------
+# Derivation table (part of the schema version; never reads tags)
+# ---------------------------------------------------------------------
+derivation:
+  inputs: [element.kind, element.effective_home, element.context, vocabulary.element_kinds]
+  forbidden_inputs: [tags, facets, link_kinds]
+  repository:
+    kinds:        set of kind and every kind it extends, over the elements the repository homes
+    capabilities: set of element ids whose kind has capability true, over the elements it homes
+    contexts:     set of context ids of the elements it homes
+
+# ---------------------------------------------------------------------
+# Scope (never reads derivation)
+# ---------------------------------------------------------------------
+scope:
+  inputs: [attachment target id, element.effective_home, context.home, relationship ends, link ends]
+  forbidden_inputs: [derivation, tags, kinds]
+  target:
+    context:      context.home ∪ effective homes of its elements
+    element:      its effective home
+    relationship: scope(upstream or contexts[0]) ∪ scope(downstream or contexts[1]) ∪ homes of kernel
+    link:         scope(from) ∪ scope(to)
+
+# ---------------------------------------------------------------------
+# Difference (keyed on id; same engine for current→target and review→now)
+# ---------------------------------------------------------------------
+difference:
+  inputs: [map A, map B]
+  classes:
+    added:   in B not in A
+    removed: in A not in B
+    changed: in both, any field differs; fields listed
+    moved:   changed where the only differing field is home

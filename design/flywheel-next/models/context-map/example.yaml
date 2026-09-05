@@ -1,0 +1,135 @@
+# target.yaml — one example map.
+# Three contexts, two relationships of different patterns, five elements
+# with homes and tags across two repositories, one link, one open
+# element with a question. Attachments live with the claims (97, 105)
+# and are shown at the bottom as the page joins them.
+
+schema: flywheel-map/1
+vocabulary: books/vocabulary.yaml   # the organization file in schema.yaml
+
+contexts:
+  - id: ordering
+    name: Ordering
+    ref: ordering/boundary
+    status: settled
+    home: orders-svc
+    tags: ["lane:control"]
+    language:
+      - { term: order, means: "A customer's request to buy, from placed to fulfilled or cancelled." }
+      - { term: line, means: "One product and quantity on an order." }
+
+  - id: billing
+    name: Billing
+    ref: billing/boundary
+    status: settled
+    home: ledger-svc
+    tags: ["lane:data"]
+
+  - id: payments-gateway
+    name: Payments Gateway
+    status: settled
+    ref: billing/gateway
+    external: true                   # a third party; homes nothing
+    tags: ["vendor:stripe"]
+
+elements:
+  # --- ordering, homed in orders-svc by the context default -----------
+  - id: ordering.order
+    name: Order
+    context: ordering
+    kind: aggregate
+    ref: ordering/order-lifecycle
+    status: settled
+    tags: ["lane:control"]
+
+  - id: ordering.order-placed
+    name: OrderPlaced
+    context: ordering
+    kind: domain-event
+    ref: ordering/order-lifecycle
+    status: settled
+
+  - id: ordering.orders-api
+    name: Orders API
+    context: ordering
+    kind: contract                   # capability: true in the shipped vocabulary
+    ref: ordering/api
+    status: settled
+    tags: ["tier:1", "runtime:fastapi"]
+
+  # --- billing, split across two repositories -------------------------
+  - id: billing.invoice-worker
+    name: Invoice worker
+    context: billing
+    kind: service
+    home: ledger-svc                 # same as the context default; stated for the example
+    ref: billing/invoicing
+    status: candidate                # its chapter is on an open intent's line
+    tags: ["lane:data", "runtime:celery"]
+
+  - id: billing.invoice-store
+    name: Invoice store
+    context: billing
+    kind: store                      # organization kind, extends service
+    home: ledger-db                  # a second repository homed by this context
+    status: open
+    question: Is the invoice store its own repository, or a schema inside ledger-svc?
+    tags: ["lane:data", "tier:2"]
+
+relationships:
+  - id: ordering-billing
+    name: Ordering supplies Billing
+    ref: ordering/boundary
+    status: settled
+    pattern: customer-supplier
+    upstream: ordering
+    downstream: billing
+    upstream_offers: [open-host-service, published-language]
+    downstream_guards: [anticorruption-layer]
+
+  - id: billing-gateway
+    name: Billing conforms to the Payments Gateway
+    ref: billing/gateway
+    status: settled
+    pattern: conformist
+    upstream: payments-gateway
+    downstream: billing
+    upstream_offers: [published-language]
+    tags: ["vendor:stripe"]
+
+links:
+  - id: invoice-worker-handles-order-placed
+    name: Invoice worker handles OrderPlaced
+    ref: billing/invoicing
+    status: settled
+    kind: handles
+    from: billing.invoice-worker
+    to: ordering.order-placed        # crosses ordering-billing, which is not separate-ways
+
+# ---------------------------------------------------------------------
+# Attachments, as the claims in the chapters state them (not map data)
+# ---------------------------------------------------------------------
+# claim: billing/invoicing#invoice-per-order  version 3
+#   attaches: [billing.invoice-worker]
+#   scope (derived): {ledger-svc}
+#
+# claim: ordering/api#orders-contract-stable  version 1
+#   attaches: [ordering-billing]
+#   scope (derived): {orders-svc} ∪ {ledger-svc, ledger-db} = {orders-svc, ledger-svc, ledger-db}
+#   each repository carries its own verdict (105)
+#
+# Derivation, per repository (never reads tags):
+#   orders-svc   kinds: {aggregate, domain-event, contract}   capabilities: {ordering.orders-api}   contexts: {ordering}
+#   ledger-svc   kinds: {service}                             capabilities: {}                      contexts: {billing}
+#   ledger-db    kinds: {store, service}                      capabilities: {}                      contexts: {billing}
+#
+# Joining (202): ledger-db joined the fleet when billing.invoice-store
+# first named it as home. Its first planning's baseline is the claims
+# attached to what it homes: through the relationship ordering-billing,
+# orders-contract-stable v1.
+#
+# Ledger invariant (4.8): renaming facet lane, dropping tier, or
+# changing store to no longer extend service changes none of the
+# scopes above. Moving billing.invoice-store's home to ledger-svc
+# drops ledger-db from orders-contract-stable's scope and makes its
+# verdict there not applicable (195, 101).
