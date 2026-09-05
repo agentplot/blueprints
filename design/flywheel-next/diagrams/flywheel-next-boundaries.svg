@@ -41,25 +41,27 @@
   <text x="466" y="97" font-size="12" font-weight="700" fill="#a34848">OPERATOR · phone or page · the only one who opens or closes an intent</text>
   <use href="#person" x="500" y="145" color="#c05b5b"/>
   <text x="500" y="172" font-size="9.5" fill="#666" text-anchor="middle">operator</text>
-  <rect x="540" y="108" width="280" height="76" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
-  <text x="554" y="130" font-size="11" font-weight="700" fill="#333">the plan · decisions, now</text>
-  <text x="554" y="149" font-size="9.5" font-family="monospace" fill="#666">APPROVE · DECIDE · ANSWER · ATTENTION</text>
-  <text x="554" y="170" font-size="9" font-weight="700" fill="#a34848">one response · applied once (1, 6)</text>
-  <rect x="840" y="108" width="310" height="76" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
-  <text x="854" y="130" font-size="11" font-weight="700" fill="#333">only the operator</text>
-  <text x="854" y="149" font-size="9.5" font-family="monospace" fill="#666">opens · closes an intent · approves (5, 22)</text>
-  <text x="854" y="170" font-size="9" font-weight="700" fill="#a34848">elaboration · proposal · unit · every decision (107)</text>
-  <rect x="1170" y="108" width="200" height="76" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6" stroke-dasharray="6 4"/>
-  <text x="1184" y="130" font-size="11" font-weight="700" fill="#333">interpreter (194)</text>
-  <text x="1184" y="147" font-size="9.5" font-family="monospace" fill="#666">free text → one tool call</text>
-  <text x="1184" y="161" font-size="8.5" fill="#999">chat → dispatch · page → browser model</text>
-  <text x="1184" y="174" font-size="8.5" fill="#999">control → none · shown, then confirmed</text>
-  <path d="M 1370 146 L 1388 146" fill="none" stroke="#c05b5b" stroke-width="2" marker-end="url(#mR)"/>
-  <rect x="1390" y="108" width="350" height="76" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
-  <text x="1404" y="130" font-size="11" font-weight="700" fill="#333">TOOLS · one surface for page, chat, dispatch, machinery</text>
-  <text x="1404" y="147" font-size="9.5" font-family="monospace" fill="#666">answer a decision · mark capture as intent (19)</text>
-  <text x="1404" y="161" font-size="9.5" font-family="monospace" fill="#666">explore over intents (189)</text>
-  <text x="1404" y="176" font-size="9" font-weight="700" fill="#a34848">drop · later · hold · rename · start/stop · scope (193)</text>
+  <rect x="540" y="108" width="200" height="76" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+  <text x="554" y="130" font-size="11" font-weight="700" fill="#333">only the operator</text>
+  <text x="554" y="147" font-size="9.5" font-family="monospace" fill="#666">opens · closes an intent (22)</text>
+  <text x="554" y="161" font-size="8.5" fill="#999">approves elaboration · proposal · unit</text>
+  <text x="554" y="176" font-size="9" font-weight="700" fill="#a34848">every decision (5, 107)</text>
+  <rect x="760" y="108" width="400" height="76" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+  <text x="774" y="130" font-size="11" font-weight="700" fill="#333">the plan · decisions, now</text>
+  <text x="774" y="147" font-size="9.5" font-family="monospace" fill="#666">APPROVE · DECIDE · ANSWER · ATTENTION</text>
+  <text x="774" y="161" font-size="8.5" fill="#999">proposed intent · gathering · chore or ask · proposal · question</text>
+  <text x="774" y="176" font-size="9" font-weight="700" fill="#a34848">every decision is created below and answered here · once (1, 6)</text>
+  <rect x="1180" y="108" width="210" height="76" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <text x="1194" y="130" font-size="11" font-weight="700" fill="#333">interpreter (194)</text>
+  <text x="1194" y="147" font-size="9.5" font-family="monospace" fill="#666">free text → one tool call</text>
+  <text x="1194" y="161" font-size="8.5" fill="#999">chat → dispatch · page → browser model</text>
+  <text x="1194" y="174" font-size="8.5" fill="#999">control → none · shown, then confirmed</text>
+  <path d="M 1390 146 L 1408 146" fill="none" stroke="#c05b5b" stroke-width="2" marker-end="url(#mR)"/>
+  <rect x="1410" y="108" width="330" height="76" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+  <text x="1424" y="130" font-size="11" font-weight="700" fill="#333">TOOLS · page, chat, dispatch, machinery (193)</text>
+  <text x="1424" y="147" font-size="9.5" font-family="monospace" fill="#666">answer a decision · mark capture as intent (19)</text>
+  <text x="1424" y="161" font-size="9.5" font-family="monospace" fill="#666">explore over intents (189)</text>
+  <text x="1424" y="176" font-size="9" font-weight="700" fill="#a34848">drop · later · hold · rename · start/stop · scope (193)</text>
 
   <!-- DISPATCH AGENT -->
   <rect x="70" y="215" width="360" height="545" rx="10" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4"/>
@@ -99,8 +101,8 @@
 
   <!-- THE ENGINE frame -->
   <rect x="450" y="215" width="1310" height="545" rx="10" fill="#fff" stroke="#8a8a86" stroke-width="1.8"/>
-  <text x="466" y="237" font-size="12" font-weight="700" fill="#5f6b7a">THE ENGINE · control plane · runs no agent · charges every session, applies every response</text>
-  <text x="1716" y="752" font-size="9" fill="#999" text-anchor="end">reconciler tick · leases · idempotent effects (86, 128, 150, 171)</text>
+  <text x="466" y="237" font-size="12" font-weight="700" fill="#5f6b7a">THE ENGINE · the control plane</text>
+  <text x="1716" y="752" font-size="9" fill="#999" text-anchor="end">runs no agent · charges every session, applies every response · reconciler tick · leases · idempotent effects (86, 128, 150, 171)</text>
 
   <!-- RECORDS -->
   <rect x="466" y="250" width="230" height="480" rx="8" fill="#fbfbfa" stroke="none"/>
@@ -131,49 +133,61 @@
 
   <!-- CURATION -->
   <rect x="706" y="250" width="260" height="480" rx="8" fill="#f8f5fc" stroke="none"/>
-  <text x="720" y="268" font-size="10.5" font-weight="700" fill="#5a3f95">CURATION</text>
-  <text x="720" y="281" font-size="8.5" fill="#999">a session the machinery charges</text>
-  <text x="720" y="302" font-size="9" font-weight="700" fill="#5a3f95">writes moves · never opens an intent</text>
-  <text x="720" y="315" font-size="8.5" fill="#999">a person writing the same records is curation</text>
-  <text x="720" y="328" font-size="8.5" fill="#999">may run outside the flywheel (20, 110)</text>
-  <use href="#marker" x="940" y="340" color="#c05b5b"/>
-  <rect x="722" y="350" width="228" height="56" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
-  <text x="736" y="370" font-size="11" font-weight="700" fill="#333">proposed intent</text>
-  <text x="736" y="385" font-size="9.5" font-family="monospace" fill="#666">cites signals · weight by date</text>
-  <text x="736" y="398" font-size="8.5" fill="#999">one decision each, never per signal (109)</text>
-  <use href="#gear" x="790" y="504" color="#2e9e5b"/>
-  <text x="808" y="496" font-size="9.5" fill="#666">curation</text>
-  <text x="808" y="509" font-size="8.5" fill="#999">cadence or threshold (110)</text>
-  <text x="808" y="522" font-size="8.5" fill="#999">clusters unmoved signals</text>
-  <text x="808" y="535" font-size="8.5" fill="#999">against claims (108)</text>
-  <path d="M 790 486 L 790 410" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
-  <text x="798" y="452" font-size="9" fill="#5a3f95">join</text>
-  <use href="#marker" x="905" y="590" color="#c05b5b"/>
-  <rect x="722" y="600" width="208" height="56" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
-  <text x="736" y="620" font-size="11" font-weight="700" fill="#333">gathering</text>
-  <text x="736" y="635" font-size="9.5" font-family="monospace" fill="#666">one elaboration over intents</text>
-  <text x="736" y="648" font-size="8.5" fill="#999">names the intents it covers (188)</text>
-  <path d="M 790 522 L 790 596" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
-  <text x="782" y="566" font-size="9" fill="#5a3f95" text-anchor="end">proposes</text>
+  <text x="790" y="268" font-size="10.5" font-weight="700" fill="#5a3f95">CURATION</text>
+  <text x="790" y="281" font-size="8.5" fill="#999">a charged session</text>
+  <use href="#marker" x="775" y="340" color="#c05b5b"/>
+  <rect x="720" y="350" width="110" height="78" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+  <text x="730" y="368" font-size="10" font-weight="700" fill="#333">proposed intent</text>
+  <text x="730" y="382" font-size="8.5" fill="#666">cites signals</text>
+  <text x="730" y="394" font-size="8.5" fill="#666">weight by date</text>
+  <text x="730" y="406" font-size="8.5" fill="#999">one decision each</text>
+  <text x="730" y="418" font-size="8.5" fill="#999">never per signal</text>
+  <use href="#marker" x="897" y="340" color="#c05b5b"/>
+  <rect x="842" y="350" width="110" height="78" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+  <text x="852" y="368" font-size="10" font-weight="700" fill="#333">gathering</text>
+  <text x="852" y="382" font-size="8.5" fill="#666">one elaboration</text>
+  <text x="852" y="394" font-size="8.5" fill="#666">over many intents</text>
+  <text x="852" y="406" font-size="8.5" fill="#999">names the intents</text>
+  <text x="852" y="418" font-size="8.5" fill="#999">it covers (188)</text>
+  <use href="#gear" x="846" y="520" color="#2e9e5b"/>
+  <text x="846" y="548" font-size="9.5" fill="#666" text-anchor="middle">curation</text>
+  <text x="846" y="561" font-size="8.5" fill="#999" text-anchor="middle">cadence or threshold (110)</text>
+  <text x="846" y="574" font-size="8.5" fill="#999" text-anchor="middle">clusters unmoved signals against claims</text>
+  <path d="M 838 508 C 820 480, 790 460, 775 436" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <text x="812" y="496" font-size="9" fill="#5a3f95" text-anchor="end">join</text>
+  <path d="M 854 508 C 870 480, 890 460, 897 436" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <text x="870" y="490" font-size="9" fill="#5a3f95">proposes</text>
+  <text x="836" y="650" font-size="9" font-weight="700" fill="#5a3f95" text-anchor="middle">writes moves · never opens an intent</text>
+  <text x="836" y="665" font-size="8.5" fill="#999" text-anchor="middle">a person writing the same records is curation</text>
+  <text x="836" y="678" font-size="8.5" fill="#999" text-anchor="middle">may run outside the flywheel (20, 110)</text>
   <text x="836" y="720" font-size="8.5" fill="#999" text-anchor="middle">20 · 107–110 · 116 · 117 · 188</text>
 
   <!-- records <-> curation -->
-  <path d="M 607 470 C 680 470, 730 498, 770 502" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mN)"/>
+  <path d="M 607 470 C 700 470, 760 510, 826 516" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mN)"/>
   <text x="700" y="462" font-size="9" fill="#5f6b7a" text-anchor="middle">unmoved signals</text>
-  <path d="M 772 510 C 730 520, 705 550, 690 580" fill="none" stroke="#7b5cb8" stroke-width="2.2" marker-end="url(#mP)"/>
-  <text x="700" y="540" font-size="9" fill="#5a3f95" text-anchor="end">one move</text>
+  <path d="M 832 530 C 780 540, 730 560, 690 582" fill="none" stroke="#7b5cb8" stroke-width="2.2" marker-end="url(#mP)"/>
+  <text x="742" y="546" font-size="9" fill="#5a3f95" text-anchor="end">one move</text>
+
+  <!-- decisions rise to the plan -->
+  <path d="M 775 331 L 775 188" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+  <path d="M 897 331 L 897 188" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+  <text x="836" y="248" font-size="9" fill="#a97e26" text-anchor="middle">decisions</text>
+  <path d="M 858 514 C 930 512, 962 500, 962 470 L 962 188" fill="none" stroke="#7b5cb8" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#mP)"/>
+  <text x="954" y="440" font-size="9" fill="#5a3f95" text-anchor="end">route</text>
+  <text x="954" y="452" font-size="8.5" fill="#5a3f95" text-anchor="end">chore or ask</text>
+  <text x="954" y="464" font-size="8.5" fill="#5a3f95" text-anchor="end">(116, 60)</text>
 
   <!-- INTENTS · ELABORATIONS -->
   <rect x="976" y="250" width="260" height="480" rx="8" fill="#f8f5fc" stroke="none"/>
-  <text x="990" y="268" font-size="10.5" font-weight="700" fill="#5a3f95">INTENTS · ELABORATIONS</text>
-  <text x="990" y="281" font-size="8.5" fill="#999">inception · changes in the books repo</text>
+  <text x="1050" y="268" font-size="10.5" font-weight="700" fill="#5a3f95">INTENTS</text>
+  <text x="1050" y="281" font-size="10.5" font-weight="700" fill="#5a3f95">ELABORATIONS</text>
   <use href="#marker" x="1040" y="300" color="#c05b5b"/>
   <use href="#cube" x="1040" y="340" color="#7b5cb8"/>
   <text x="1040" y="372" font-size="9.5" fill="#666" text-anchor="middle">intent</text>
   <text x="1040" y="385" font-size="8.5" fill="#999" text-anchor="middle">opened, closed by the operator (22)</text>
   <use href="#marker" x="1170" y="300" color="#c05b5b"/>
   <use href="#gear" x="1170" y="340" color="#2e9e5b"/>
-  <text x="1170" y="372" font-size="9.5" fill="#666" text-anchor="middle">elaboration</text>
+  <text x="1170" y="372" font-size="9.5" fill="#666" text-anchor="middle">elaboration · gathering</text>
   <text x="1170" y="385" font-size="8.5" fill="#999" text-anchor="middle">one awaiting approval (21)</text>
   <path d="M 1060 340 C 1090 340, 1120 340, 1150 340" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
   <use href="#repo" x="1105" y="450" color="#7b5cb8"/>
@@ -190,29 +204,28 @@
   <text x="1106" y="625" font-size="8.5" fill="#999" text-anchor="middle">each covered intent, conclusions once (188)</text>
   <text x="1106" y="720" font-size="8.5" fill="#999" text-anchor="middle">21 · 22 · 23 · 120 · 187 · 188 · 189</text>
 
-  <!-- operator -> intents / decisions up / response down -->
-  <path d="M 1040 195 C 1040 240, 1040 260, 1040 290" fill="none" stroke="#c05b5b" stroke-width="2.2" marker-end="url(#mR)"/>
-  <text x="1048" y="248" font-size="9" fill="#a34848">opens · closes</text>
-  <path d="M 940 330 C 940 260, 940 240, 940 197" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
-  <text x="932" y="248" font-size="9" fill="#a97e26" text-anchor="end">decisions</text>
-  <path d="M 1170 195 C 1170 240, 1170 260, 1170 290" fill="none" stroke="#c05b5b" stroke-width="2" marker-end="url(#mR)"/>
-  <text x="1178" y="248" font-size="9" fill="#a34848">approves · explore</text>
-  <path d="M 1380 195 C 1380 240, 1380 260, 1380 296" fill="none" stroke="#c05b5b" stroke-width="2.2" marker-end="url(#mR)"/>
-  <text x="1388" y="248" font-size="9" fill="#a34848">the response</text>
+  <!-- the plan -> intents, elaboration, proposal; proposal -> the plan -->
+  <path d="M 1040 186 C 1040 240, 1040 260, 1040 290" fill="none" stroke="#c05b5b" stroke-width="2.2" marker-end="url(#mR)"/>
+  <text x="1048" y="208" font-size="9" fill="#a34848">opens · closes</text>
+  <path d="M 1116 186 C 1126 230, 1160 262, 1170 290" fill="none" stroke="#c05b5b" stroke-width="2" marker-end="url(#mR)"/>
+  <text x="1122" y="240" font-size="9" fill="#a34848" text-anchor="end">approves</text>
+  <path d="M 1150 186 C 1170 250, 1230 270, 1290 306" fill="none" stroke="#c05b5b" stroke-width="2.2" marker-end="url(#mR)"/>
+  <text x="1250" y="240" font-size="9" fill="#a34848">the response</text>
+  <path d="M 1430 308 L 1430 250 C 1430 205, 1300 195, 1164 190" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
   <path d="M 1560 296 C 1560 260, 1560 240, 1560 197" fill="none" stroke="#c9962e" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mA)"/>
   <text x="1568" y="210" font-size="9" fill="#a97e26">tests at the bolt's place (44)</text>
 
   <!-- PLANNING -->
   <rect x="1246" y="250" width="220" height="480" rx="8" fill="#fffdf6" stroke="none"/>
   <text x="1260" y="268" font-size="10.5" font-weight="700" fill="#a97e26">PLANNING</text>
-  <text x="1260" y="281" font-size="8.5" fill="#999">machinery-charged · per built repository</text>
-  <use href="#marker" x="1432" y="300" color="#c05b5b"/>
+  <text x="1260" y="281" font-size="8.5" fill="#999">the proposal (172) and the ledger</text>
+  <use href="#marker" x="1270" y="300" color="#c05b5b"/>
   <rect x="1258" y="310" width="182" height="60" rx="8" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
   <text x="1272" y="330" font-size="11" font-weight="700" fill="#333">proposal · one decision</text>
   <text x="1272" y="347" font-size="9.5" font-family="monospace" fill="#666">bolts, new or open · units</text>
   <text x="1272" y="361" font-size="8.5" fill="#999">each unit answerable first (172)</text>
   <polygon points="1356,420 1420,465 1356,510 1292,465" fill="#fffdf6" stroke="#c9962e" stroke-width="2"/>
-  <text x="1356" y="462" font-size="10.5" font-weight="700" fill="#8a6a1d" text-anchor="middle">PLAN</text>
+  <text x="1356" y="462" font-size="10.5" font-weight="700" fill="#8a6a1d" text-anchor="middle">PLANNING</text>
   <text x="1356" y="476" font-size="8.5" fill="#a97e26" text-anchor="middle">one run, one proposal</text>
   <path d="M 1356 418 L 1356 374" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
   <text x="1364" y="400" font-size="9" fill="#a97e26">proposes</text>
@@ -264,10 +277,6 @@
   <text x="1480" y="332" font-size="9" fill="#a97e26" text-anchor="middle">yes → units</text>
   <path d="M 1594 628 C 1520 630, 1450 560, 1424 472" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mN)"/>
   <text x="1520" y="575" font-size="9" fill="#5f6b7a">reads as-built · open bolts</text>
-
-  <!-- curation route -> planning (ask) or a chore -->
-  <path d="M 925 658 C 925 745, 930 745, 990 745 L 1300 745 C 1356 745, 1356 730, 1356 514" fill="none" stroke="#7b5cb8" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#mP)"/>
-  <text x="1150" y="736" font-size="9" fill="#5a3f95" text-anchor="middle">route · an ask that names the repository, or a chore on a line (116, 28, 60)</text>
 
   <!-- OPERATION -->
   <rect x="450" y="790" width="1310" height="76" rx="10" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4" stroke-dasharray="6 4"/>
