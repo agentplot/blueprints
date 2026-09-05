@@ -901,8 +901,10 @@ requirements, iterated against the running plan rather than on paper.
     session's exit.
 189. The operator may open an elaboration over several intents by
     selecting them and invoking the operation (193), as a with-operator
-    or standing session (25). Its writeback is per covered intent
-    (188). An intent covered by a
+    or standing session (25). The new elaboration is fed the covered
+    intents' chapters, claims and the records of their earlier
+    elaborations (89); those earlier elaborations are unchanged by it.
+    Its writeback is per covered intent (188). An intent covered by a
     gathered elaboration carries no other elaboration awaiting approval
     meanwhile (21).
 
@@ -1098,6 +1100,20 @@ through these operations, and depends only on these guarantees.
     sessions in order; for any repository, what landed in a period; for
     any bolt, what it holds and what waits; for any host, what it runs
     and its bound.
+209. On the status view every kind of object has one form of its own
+    and no two kinds share one: a decision is the only thing shaped as
+    an answerable card, a proposal reads as a document with its unit
+    proposals hanging off it, an intent as a thread with its
+    elaborations in order, a bolt as a ledger with its units in order,
+    a landed bolt as a record, a signal as a quote. The phase an object
+    is in is shown by where it sits, never by its form. A rendering of
+    the status view on any surface keeps these forms.
+210. An elaboration is a surface of its own, reached from its intent:
+    its type and state, its decision when one is pending, its document
+    and the records it wrote into the intent's change directory (187),
+    its session with last activity (65–68), and, when covered by a
+    gathering, the gathering it is in (188). The intent's surface lists
+    its elaborations in order and opens each.
 
 ### B.5 Hosts and ownership
 

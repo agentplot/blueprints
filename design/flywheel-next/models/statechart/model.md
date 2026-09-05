@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–208);
+Requirements are cited by their number in `requirements.md` (1–210);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -632,6 +632,22 @@ re-attachment as a gesture on an element that sends one `attach` call
 (193, 200). The
 page says the as-of point of the read it was built from (145). It is
 never written by hand.
+
+Every kind of object has one form and no two kinds share one (209): a
+decision is the only thing shaped as an answerable card; a proposal is
+a document with its unit proposals hanging off it; an intent is a
+thread with its elaborations in order; a bolt is a ledger with its
+units in order; a landed bolt is a record; a signal is a quote. Where
+an object sits — queued, in progress, waiting on the operator, done —
+says its phase; its form never does, so a bolt in `landing` and a bolt
+in `open` are the same ledger in different columns. The chat rendering
+keeps the forms one line each (18): a decision line is answerable and
+no other line is. An elaboration is a surface of its own reached from
+its intent's thread (210): its type and state, its decision when one
+is pending, its document and the records it wrote into the intent's
+change directory (187), its session with its last activity (65–68),
+and, when a gathering covers it, the gathering it is in (188); the
+intent's surface lists its elaborations in order and opens each.
 
 ## 5. The plan
 

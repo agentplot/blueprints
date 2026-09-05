@@ -450,6 +450,19 @@ the operator may reverse by a response on the file; an entry with
   set is an upgrade chore, not an init step; init adds only what is
   missing. **Decision**.
 
+- **209 / 210 one form per kind.** The forms are named in
+  `render_status` and the page binding and drawn nowhere yet; the
+  plan mockup (`plan-mockup.md`) predates 209 and shows decisions as
+  cards but proposals and bolts as lists, so it is behind. The chat
+  keeps the forms as one line each, which is 18's rule; a tracker's
+  board shows only placement, so the tracker profile's status view is
+  the page, not the board. **Decision**. A gathered elaboration's
+  surface is one surface reached from each covered intent's thread,
+  not one per intent. **Decision**. The explore session's work order
+  carries the earlier elaborations' records read-only; nothing in the
+  place enforces read-only beyond the writeback fanning out only what
+  the session left under each intent's directory (188). **Open**.
+
 - **190 producers per deliverable.** The shipped set is a profile
   partial (`profiles/deliverables.yaml`) rather than a machine: it
   binds no evidence and no effect, so `check.py` does not check it
