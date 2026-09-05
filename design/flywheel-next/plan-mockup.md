@@ -24,7 +24,7 @@ PLAN · willdan · 2026-09-04 07:40 · 10 decisions · "yes all" answers 412-417
 │  │      → yes · drop · rename <name> · bolt plan-decisions
 │  ├─ 415 chores   atlas · 3                        a stale AGENTS.md · b citation fix · c rename ref
 │  │      → yes · pick a c · no
-│  ├─ 416 land     switchboard/plan-decisions            4 units merged · gates green
+│  ├─ 416 land     switchboard/plan-rows                 4 units merged · gates green
 │  │      → yes · hold
 │  └─ 417 baseline new-repo                         11 claims unmet · 8 chores · 3 units
 │         → yes · pick · later

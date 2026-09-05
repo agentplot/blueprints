@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–183);
+Requirements are cited by their number in `requirements.md` (1–186);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says

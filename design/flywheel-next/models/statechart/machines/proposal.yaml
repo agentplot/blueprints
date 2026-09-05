@@ -10,7 +10,7 @@ version: 1
 kind: object
 object: proposal
 parent: planning
-satisfies: [17, 35, 36, 171, 172]
+satisfies: [184, 17, 35, 36, 171, 172]
 record:
   repository: string
   document: ref          # the proposal document the session delivered; presented for review (17)

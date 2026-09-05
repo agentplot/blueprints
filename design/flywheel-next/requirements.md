@@ -754,6 +754,23 @@ requirements, iterated against the running plan rather than on paper.
     tool generates text, such as a commit title, it runs under that
     written configuration and the result is recorded with the effect.
 
+184. An edit on a proposal before its yes — a unit moved to another
+    bolt, dropped, renamed, retyped — is checked before it is recorded:
+    a dependency never crosses bolts (31), so an edit that would leave
+    one crossing, or leave a unit depending on a dropped unit, is
+    refused with the reason, and the operator may take the dependents
+    along instead. A rename or a type change never touches a
+    dependency. The proposal's history names its lineage: the claims
+    the units serve, the elaborations that wrote them, and the intents
+    those served (A.14).
+185. Every commit the machinery writes carries a Conventional Commits
+    message: the type from the unit's type as the manifest maps it, the
+    scope the bolt, the subject the item's title, and the body naming
+    the unit, the item and the claims served. A direct landing's merge
+    commit and a pull request's title are written the same way, so
+    release tooling reading the shared line needs nothing from the
+    flywheel.
+
 ### A.19 Operation
 
 181. Operation is a phase the flywheel observes and never runs. A landed
@@ -767,6 +784,12 @@ requirements, iterated against the running plan rather than on paper.
     may route it as a unit or a chore on an open bolt (34). A data
     product is worked the same way as software: a repository, its
     bolts, and an operation seen through signals.
+
+186. A landed bolt, an archived intent, or any other finished object
+    stays in every view while something about it is live — an open
+    request, an environment still up, a signal not yet moved — and for
+    a bounded window after, then leaves every view and stays in
+    history. Nothing is deleted; the views are derived (B.4).
 
 ## 5. Requirements — Part B, the control plane contract
 
