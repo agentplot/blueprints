@@ -1,0 +1,181 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 960"
+     font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="mN" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+    <marker id="mR" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c05b5b"/></marker>
+    <marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+    <marker id="mP" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7b5cb8"/></marker>
+    <marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+    <g id="repo"> <rect x="-26" y="-18" width="52" height="36" rx="7" fill="#fff" stroke="currentColor" stroke-width="2" /> <circle cx="-9" cy="8" r="3.2" fill="currentColor" /> <circle cx="9" cy="-8" r="3.2" fill="currentColor" /> <path d="M -9 8 v-8 a 8 8 0 0 1 8 -8 h 1" fill="none" stroke="currentColor" stroke-width="2" /> </g>
+    <g id="cyl"> <path d="M -24 -11 L -24 13 A 24 8 0 0 0 24 13 L 24 -11" fill="#f1f1ee" stroke="#8a8a86" stroke-width="1.6" /> <ellipse cx="0" cy="-11" rx="24" ry="8" fill="#e3e3df" stroke="#8a8a86" stroke-width="1.6" /> </g>
+    <g id="marker"> <circle r="7" fill="#fff" stroke="currentColor" stroke-width="2.2" /> <circle r="2.6" fill="currentColor" /> </g>
+    <g id="pin"> <path d="M 0 10 L -6 0 A 6 6 0 1 1 6 0 Z" fill="#7b5cb8" stroke="#5a3f95" stroke-width="1.2"/> <circle cy="-1" r="2.2" fill="#fff"/> </g>
+    <g id="question"> <circle r="9" fill="#fffdf6" stroke="#c9962e" stroke-width="2"/> <text y="4" font-size="11" font-weight="700" fill="#a97e26" text-anchor="middle">?</text> </g>
+  </defs>
+  <rect width="1800" height="960" fill="#fff"/>
+  <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Flywheel next — the map model: one context card, nodes with homes, claims attached to elements, and scope derived, never chosen</text>
+  <text x="40" y="57" font-size="12" fill="#666">a bounded context is a card of four layers · every node names its home, the git repository it is built in · a claim attaches to a context, a node or a relation · its scope is the repositories homing what it attaches to</text>
+
+  <!-- CONTEXT CARD -->
+  <rect x="70" y="80" width="1030" height="700" rx="12" fill="#fbfbfa" stroke="#7b5cb8" stroke-width="1.8"/>
+  <text x="90" y="104" font-size="12.5" font-weight="700" fill="#5a3f95">CONTEXT · providers</text>
+  <text x="290" y="104" font-size="9.5" font-family="monospace" fill="#666">ref books/atlas/src/providers.md · status settled · one card per context (198)</text>
+
+  <!-- layer bands -->
+  <rect x="86" y="118" width="998" height="120" rx="8" fill="#fff" stroke="#e5e5e5"/>
+  <text x="98" y="136" font-size="10" font-weight="700" fill="#8a8a86">CONTRACT</text>
+  <text x="98" y="149" font-size="8.5" fill="#999">the context's published language</text>
+  <rect x="86" y="248" width="998" height="180" rx="8" fill="#fff" stroke="#e5e5e5"/>
+  <text x="98" y="266" font-size="10" font-weight="700" fill="#8a8a86">SERVICE</text>
+  <text x="98" y="279" font-size="8.5" fill="#999">things that run · two lanes</text>
+  <rect x="300" y="256" width="384" height="164" rx="6" fill="#f3f7fb" stroke="none"/>
+  <text x="312" y="272" font-size="9" font-weight="700" fill="#3f6d9c">control lane</text>
+  <rect x="692" y="256" width="384" height="164" rx="6" fill="#f2faf5" stroke="none"/>
+  <text x="704" y="272" font-size="9" font-weight="700" fill="#27824c">data lane</text>
+  <rect x="86" y="438" width="998" height="120" rx="8" fill="#fff" stroke="#e5e5e5"/>
+  <text x="98" y="456" font-size="10" font-weight="700" fill="#8a8a86">SEAM</text>
+  <text x="98" y="469" font-size="8.5" fill="#999">the access seam a service reaches state through</text>
+  <text x="98" y="481" font-size="8.5" fill="#999">(v1's repository layer, renamed)</text>
+  <rect x="86" y="568" width="998" height="120" rx="8" fill="#fff" stroke="#e5e5e5"/>
+  <text x="98" y="586" font-size="10" font-weight="700" fill="#8a8a86">STORE</text>
+  <text x="98" y="599" font-size="8.5" fill="#999">the actual bytes</text>
+
+  <!-- nodes -->
+  <rect x="380" y="150" width="200" height="60" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+  <text x="392" y="170" font-size="11" font-weight="700" fill="#333">provider-openapi</text>
+  <text x="392" y="186" font-size="9.5" font-family="monospace" fill="#666">openapi · settled</text>
+  <text x="392" y="200" font-size="8.5" fill="#999">home: atlas · ref providers.md#api</text>
+
+  <rect x="380" y="300" width="200" height="60" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+  <text x="392" y="320" font-size="11" font-weight="700" fill="#333">provider-api</text>
+  <text x="392" y="336" font-size="9.5" font-family="monospace" fill="#666">api · control · settled</text>
+  <text x="392" y="350" font-size="8.5" fill="#999">home: atlas</text>
+
+  <rect x="780" y="300" width="200" height="60" rx="8" fill="#fff" stroke="#2e9e5b" stroke-width="1.6"/>
+  <text x="792" y="320" font-size="11" font-weight="700" fill="#333">ingest-worker</text>
+  <text x="792" y="336" font-size="9.5" font-family="monospace" fill="#666">worker · data · settled</text>
+  <text x="792" y="350" font-size="8.5" fill="#999">home: switchboard</text>
+
+  <rect x="380" y="470" width="200" height="60" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+  <text x="392" y="490" font-size="11" font-weight="700" fill="#333">provider-writer</text>
+  <text x="392" y="506" font-size="9.5" font-family="monospace" fill="#666">writer · settled</text>
+  <text x="392" y="520" font-size="8.5" fill="#999">home: atlas</text>
+
+  <rect x="380" y="600" width="200" height="60" rx="8" fill="#fff" stroke="#c9962e" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <text x="392" y="620" font-size="11" font-weight="700" fill="#333">provider-table-store</text>
+  <text x="392" y="636" font-size="9.5" font-family="monospace" fill="#666">table-store · open</text>
+  <text x="392" y="650" font-size="8.5" fill="#999">home: switchboard · runtime deployed</text>
+  <use href="#question" x="590" y="612"/>
+
+  <!-- relations -->
+  <path d="M 480 300 L 480 212" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <text x="488" y="260" font-size="9" fill="#5a3f95">publishes-contract</text>
+  <path d="M 480 360 L 480 468" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <text x="488" y="420" font-size="9" fill="#5a3f95">uses-repository</text>
+  <path d="M 780 340 C 700 380, 640 440, 582 484" fill="none" stroke="#7b5cb8" stroke-width="2.4" marker-end="url(#mP)"/>
+  <text x="690" y="404" font-size="9" fill="#5a3f95">uses-repository · crosses the lanes</text>
+  <text x="690" y="416" font-size="8.5" fill="#999">a relation's kind is fixed by the layer pair it crosses (198)</text>
+  <path d="M 480 530 L 480 598" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <text x="488" y="570" font-size="9" fill="#5a3f95">backed-by · runtime deployed</text>
+
+  <!-- question -->
+  <rect x="700" y="596" width="376" height="70" rx="8" fill="#fffdf6" stroke="#c9962e" stroke-width="1.4"/>
+  <text x="712" y="616" font-size="10" font-weight="700" fill="#8a6a1d">Q1 · open, paired with the store</text>
+  <text x="712" y="632" font-size="9" fill="#666">which store backs the writer when deployed? the books disagree</text>
+  <text x="712" y="646" font-size="8.5" fill="#999">ref providers.md#stores · touches provider-table-store</text>
+  <text x="712" y="659" font-size="8.5" fill="#a97e26" font-weight="700">shown on the page with its element · captured in one gesture (201, 112)</text>
+  <path d="M 700 630 L 604 620" fill="none" stroke="#c9962e" stroke-width="1.6" stroke-dasharray="4 3"/>
+
+  <!-- claims attached -->
+  <use href="#pin" x="600" y="470"/>
+  <rect x="612" y="452" width="250" height="44" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+  <text x="624" y="470" font-size="10" font-family="monospace" font-weight="700" fill="#5a3f95">claim A · providers/one-writer@3</text>
+  <text x="624" y="486" font-size="8.5" fill="#666">attached to the node provider-writer (200)</text>
+
+  <use href="#pin" x="640" y="452" transform="translate(-10,-60)"/>
+  <rect x="642" y="378" width="270" height="44" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+  <text x="654" y="396" font-size="10" font-family="monospace" font-weight="700" fill="#5a3f95">claim B · ingest/one-path@1</text>
+  <text x="654" y="412" font-size="8.5" fill="#666">attached to the relation ingest-worker → provider-writer</text>
+
+  <text x="90" y="740" font-size="9" fill="#999">every element cites the chapter that states it (120) · status settled · candidate · open, an open element paired with a question · ids are the diff key between current and target</text>
+  <text x="90" y="756" font-size="9" fill="#999">the schema ships with the flywheel and runs on every commit (198, 121) · the layer-pair table fixes relation kinds · a session that writes or amends a claim updates the map (120)</text>
+  <text x="90" y="772" font-size="8.5" fill="#999">198 · 199 · 200 · 201 · 202</text>
+
+  <!-- HOMES -->
+  <rect x="1130" y="80" width="630" height="330" rx="12" fill="#fff" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="1146" y="104" font-size="12.5" font-weight="700" fill="#5f6b7a">HOMES · the git repositories the nodes are built in (199)</text>
+  <use href="#repo" x="1200" y="170" color="#7b5cb8"/>
+  <text x="1200" y="206" font-size="10.5" font-weight="700" fill="#333" text-anchor="middle">atlas</text>
+  <text x="1200" y="220" font-size="8.5" fill="#999" text-anchor="middle">manifest: repo, landing, cadence</text>
+  <rect x="1270" y="140" width="470" height="100" rx="8" fill="#fbfbfa" stroke="#e5e5e5"/>
+  <text x="1284" y="160" font-size="9.5" fill="#666">homes provider-openapi · provider-api · provider-writer</text>
+  <text x="1284" y="180" font-size="10" font-family="monospace" font-weight="700" fill="#5a3f95">kinds: [service]</text>
+  <text x="1284" y="196" font-size="10" font-family="monospace" font-weight="700" fill="#5a3f95">capabilities: [provider-openapi]</text>
+  <text x="1284" y="214" font-size="8.5" fill="#999">derived from the homed nodes by the table the schema fixes</text>
+  <text x="1284" y="227" font-size="8.5" fill="#999">never declared by hand · the manifest names git details only (199, 195)</text>
+
+  <use href="#repo" x="1200" y="300" color="#2e9e5b"/>
+  <text x="1200" y="336" font-size="10.5" font-weight="700" fill="#333" text-anchor="middle">switchboard</text>
+  <text x="1200" y="350" font-size="8.5" fill="#999" text-anchor="middle">manifest: repo, landing, cadence</text>
+  <rect x="1270" y="270" width="470" height="100" rx="8" fill="#fbfbfa" stroke="#e5e5e5"/>
+  <text x="1284" y="290" font-size="9.5" fill="#666">homes ingest-worker · provider-table-store</text>
+  <text x="1284" y="310" font-size="10" font-family="monospace" font-weight="700" fill="#5a3f95">kinds: [worker]</text>
+  <text x="1284" y="326" font-size="10" font-family="monospace" font-weight="700" fill="#5a3f95">capabilities: []</text>
+  <text x="1284" y="344" font-size="8.5" fill="#999">a node naming a repository as home is how it joins the fleet (202, 104)</text>
+  <text x="1284" y="357" font-size="8.5" fill="#999">its baseline: the claims attached to what it homes</text>
+  <text x="1146" y="394" font-size="8.5" fill="#999">the map check fails a home naming no manifest entry, and a manifest entry that no node homes (199)</text>
+
+  <!-- home arrows: node -> repo -->
+  <path d="M 580 180 C 800 160, 1000 150, 1172 166" fill="none" stroke="#8a8a86" stroke-width="1.6" stroke-dasharray="2 5" marker-end="url(#mN)"/>
+  <path d="M 580 330 C 760 330, 1000 240, 1172 176" fill="none" stroke="#8a8a86" stroke-width="1.6" stroke-dasharray="2 5" marker-end="url(#mN)"/>
+  <path d="M 980 320 C 1060 320, 1120 300, 1172 296" fill="none" stroke="#8a8a86" stroke-width="1.6" stroke-dasharray="2 5" marker-end="url(#mN)"/>
+  <path d="M 580 604 C 900 560, 1100 420, 1176 318" fill="none" stroke="#8a8a86" stroke-width="1.6" stroke-dasharray="2 5" marker-end="url(#mN)"/>
+  <text x="1010" y="146" font-size="9" fill="#5f6b7a">home</text>
+  <text x="1040" y="446" font-size="9" fill="#5f6b7a">home</text>
+
+  <!-- DERIVED SCOPE -->
+  <rect x="1130" y="430" width="630" height="350" rx="12" fill="#fffdf6" stroke="#c9962e" stroke-width="1.4"/>
+  <text x="1146" y="454" font-size="12.5" font-weight="700" fill="#8a6a1d">SCOPE · derived from the homes of what a claim attaches to (200)</text>
+  <rect x="1146" y="470" width="598" height="72" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+  <text x="1160" y="490" font-size="10" font-family="monospace" font-weight="700" fill="#5a3f95">claim A · providers/one-writer@3</text>
+  <text x="1160" y="506" font-size="9.5" fill="#666">attached to one node, homed in atlas</text>
+  <text x="1160" y="524" font-size="10.5" font-weight="700" fill="#8a6a1d">scope: atlas</text>
+  <text x="1300" y="524" font-size="9" fill="#999">→ one ledger cell: atlas × one-writer</text>
+  <rect x="1146" y="554" width="598" height="86" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+  <text x="1160" y="574" font-size="10" font-family="monospace" font-weight="700" fill="#5a3f95">claim B · ingest/one-path@1</text>
+  <text x="1160" y="590" font-size="9.5" fill="#666">attached to a relation whose ends are homed in two repositories</text>
+  <text x="1160" y="608" font-size="10.5" font-weight="700" fill="#8a6a1d">scope: atlas · switchboard</text>
+  <text x="1160" y="626" font-size="9" fill="#999">→ two ledger cells, one verdict each · a contract claim is in scope for both ends (105)</text>
+  <use href="#cyl" x="1190" y="690"/>
+  <text x="1190" y="720" font-size="9.5" fill="#666" text-anchor="middle">ledger</text>
+  <text x="1190" y="733" font-size="8.5" fill="#999" text-anchor="middle">verdict per claim × home</text>
+  <text x="1240" y="676" font-size="9" fill="#666">re-attaching is one response: the attach tool on an element of the page's map view (193, 200)</text>
+  <text x="1240" y="692" font-size="9" font-weight="700" fill="#a34848">never chosen · a claim attached to nothing is not planned against (98)</text>
+  <text x="1240" y="712" font-size="9" fill="#666">the page (201): target map · Δ current→target · changed since last review · verdicts on homes</text>
+  <text x="1240" y="726" font-size="9" fill="#666">decisions as markers on the elements they concern · an open question captured in one gesture</text>
+  <path d="M 1250 664 L 1210 668" fill="none" stroke="#c9962e" stroke-width="1.6" stroke-dasharray="2 5" marker-end="url(#mA)"/>
+  <text x="1146" y="764" font-size="8.5" fill="#999">a node newly homed or an attachment reaching a repository brings claims into scope; planning is due (195) · one removed: verdicts read not-applicable (101)</text>
+
+  <!-- claim -> scope arrows -->
+  <path d="M 862 474 C 960 490, 1060 500, 1144 506" fill="none" stroke="#c9962e" stroke-width="2" marker-end="url(#mA)"/>
+  <path d="M 912 400 C 1000 440, 1060 560, 1144 592" fill="none" stroke="#c9962e" stroke-width="2" marker-end="url(#mA)"/>
+  <text x="1000" y="484" font-size="9" fill="#a97e26">scope, derived</text>
+
+  <!-- legend -->
+  <rect x="40" y="810" width="1720" height="120" rx="10" fill="#fafafa"/>
+  <line x1="60" y1="834" x2="100" y2="834" stroke="#7b5cb8" stroke-width="2.4"/>
+  <text x="108" y="838" font-size="10" fill="#333">a relation · kind fixed by the layer pair</text>
+  <line x1="340" y1="834" x2="380" y2="834" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5"/>
+  <text x="388" y="838" font-size="10" fill="#333">home · node → git repository (199)</text>
+  <use href="#pin" x="610" y="828"/>
+  <text x="624" y="838" font-size="10" fill="#333">a claim attached to an element (200)</text>
+  <line x1="860" y1="834" x2="900" y2="834" stroke="#c9962e" stroke-width="2.4"/>
+  <text x="908" y="838" font-size="10" fill="#333">scope, derived · then a ledger cell per home</text>
+  <use href="#question" x="1200" y="834"/>
+  <text x="1216" y="838" font-size="10" fill="#333">open · paired with a question (198, 201)</text>
+  <rect x="1470" y="826" width="40" height="16" rx="4" fill="#f3f7fb"/><rect x="1516" y="826" width="40" height="16" rx="4" fill="#f2faf5"/>
+  <text x="1564" y="838" font-size="10" fill="#333">control lane · data lane</text>
+  <text x="60" y="868" font-size="10.5" fill="#333">the map is the v1 context map — four layers, two lanes, typed relations, refs, status, current and target — with three additions: seam for the repository layer, a home on every node, and attachments (198–200)</text>
+  <text x="60" y="888" font-size="10.5" fill="#333">nothing here is declared by hand: kinds and capabilities come from the homed nodes, scope comes from the attachments, and a repository joins the fleet when a node names it as home (199, 200, 202)</text>
+  <text x="60" y="908" font-size="10.5" fill="#333">the page shows the target map with the current→target and since-last-review overlays, verdicts on homes, decisions as markers, and the open questions, each capturable in one gesture (201)</text>
+</svg>
