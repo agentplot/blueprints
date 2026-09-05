@@ -692,13 +692,17 @@ requirements, iterated against the running plan rather than on paper.
     proposal replaced by planning's next run is superseded silently
     (35). The operator sees the proposal on the review surface as one
     document (17, 36).
-173. A stage names the kind of agent that works it, and any agent the
-    multiplexer can start is a kind: claude, codex, opencode. The
-    machinery starts every kind through the same command, in a prepared
-    place, with the same instruction data (119). Nothing in the
-    machinery depends on one agent program's hooks, transcript or
-    files; a session's exits are read from what it leaves in its place
-    and from its report (A.7).
+173. A stage names the kind of agent that works it and the model it
+    runs, and any agent the multiplexer can start is a kind: claude,
+    codex, opencode. Defaults are declared per role in the manifest:
+    one kind and model for elaboration sessions, one for construction
+    sessions, one for sessions the machinery charges; a unit type, a
+    stage or an elaboration type may name its own. The machinery starts
+    every kind through the same command, in a prepared place, with the
+    same instruction data (119). Nothing in the machinery depends on
+    one agent program's hooks, transcript or files; a session's exits
+    are read from what it leaves in its place and from its report
+    (A.7).
 174. Sessions have affinity to a multiplexer session, declared per host
     in the manifest. With no declaration the defaults hold:
     `flywheel-<org>-intents` for elaboration sessions,
@@ -741,6 +745,14 @@ requirements, iterated against the running plan rather than on paper.
     is retried, up to a bound, and at the bound it is a decision: retry
     or hold. The operator is never asked to choose between merge and
     rebase; that choice is the manifest's, per repository.
+
+183. Every tool the machinery drives — the worktree tool, the
+    multiplexer, git — is driven by explicit arguments and a
+    configuration the machinery writes from the manifest, never by the
+    tool's own configuration on the host or in the operator's home.
+    The same manifest on two hosts yields the same commands. Where a
+    tool generates text, such as a commit title, it runs under that
+    written configuration and the result is recorded with the effect.
 
 ### A.19 Operation
 

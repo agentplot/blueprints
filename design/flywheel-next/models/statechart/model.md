@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–182);
+Requirements are cited by their number in `requirements.md` (1–183);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -1850,7 +1850,7 @@ the ledger, files on the books' shared line any system can read from
 git (181). An anomaly, an incident or a review raised in operation is a
 signal, curation's move decides whether it joins an intent, and
 planning may route it as a unit or a chore on an open bolt, which
-`propose_units` does for any ask or signal it consumes (182). A data
+`propose_units` does for any ask or signal it consumes (183). A data
 product is a repository in the manifest like any other. Operation is
 therefore a profile binding — the adapters that capture and the
 evidence that reads links — and not a machine (`gaps.md`).
