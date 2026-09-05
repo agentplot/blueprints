@@ -1,0 +1,309 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 960"
+     font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="mN" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+    <marker id="mR" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c05b5b"/></marker>
+    <marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+    <marker id="mP" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7b5cb8"/></marker>
+    <marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+    <marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+    <g id="gear"> <circle r="9" fill="#fff" stroke="currentColor" stroke-width="2.4" /> <circle r="3" fill="currentColor" /> <g stroke="currentColor" stroke-width="2.4"> <line y1="-9" y2="-13.5" /><line y1="9" y2="13.5" /> <line x1="-9" x2="-13.5" /><line x1="9" x2="13.5" /> <line x1="-6.4" y1="-6.4" x2="-9.5" y2="-9.5" /><line x1="6.4" y1="6.4" x2="9.5" y2="9.5" /> <line x1="-6.4" y1="6.4" x2="-9.5" y2="9.5" /><line x1="6.4" y1="-6.4" x2="9.5" y2="-9.5" /> </g> </g>
+    <g id="repo"> <rect x="-26" y="-18" width="52" height="36" rx="7" fill="#fff" stroke="currentColor" stroke-width="2" /> <circle cx="-9" cy="8" r="3.2" fill="currentColor" /> <circle cx="9" cy="-8" r="3.2" fill="currentColor" /> <path d="M -9 8 v-8 a 8 8 0 0 1 8 -8 h 1" fill="none" stroke="currentColor" stroke-width="2" /> </g>
+    <g id="person"> <circle cy="-6" r="4" fill="#fff" stroke="currentColor" stroke-width="1.8" /> <path d="M -7 8 a 7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8" /> </g>
+    <g id="people"> <circle cy="-5" r="4" fill="none" stroke="currentColor" stroke-width="1.8" /> <path d="M -8 9 a 8 7 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="1.8" /> </g>
+    <g id="browser"> <rect x="-22" y="-14" width="44" height="28" rx="4" fill="#fff" stroke="currentColor" stroke-width="2" /> <line x1="-22" y1="-6" x2="22" y2="-6" stroke="currentColor" stroke-width="2" /> <circle cx="-16" cy="-10" r="1.6" fill="currentColor" /><circle cx="-11" cy="-10" r="1.6" fill="currentColor" /> </g>
+    <g id="cyl"> <path d="M -24 -11 L -24 13 A 24 8 0 0 0 24 13 L 24 -11" fill="#f1f1ee" stroke="#8a8a86" stroke-width="1.6" /> <ellipse cx="0" cy="-11" rx="24" ry="8" fill="#e3e3df" stroke="#8a8a86" stroke-width="1.6" /> </g>
+    <g id="marker"> <circle r="7" fill="#fff" stroke="currentColor" stroke-width="2.2" /> <circle r="2.6" fill="currentColor" /> </g>
+    <g id="rows" fill="#8a8a86"> <rect x="-16" y="-9" width="32" height="4" rx="1" /><rect x="-16" y="-2" width="32" height="4" rx="1" /><rect x="-16" y="5" width="20" height="4" rx="1" /> </g>
+    <g id="cube" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"> <path d="M -16 -8 L 0 -17 L 16 -8 L 16 10 L 0 19 L -16 10 Z" fill="#fff" /> <path d="M -16 -8 L 0 1 L 16 -8 M 0 1 L 0 19" fill="none" /> </g>
+    <g id="cloud" fill="#fff" stroke="currentColor" stroke-width="1.8"> <path d="M -14 8 a 7 7 0 0 1 1 -14 a 9 9 0 0 1 17 -3 a 7 7 0 0 1 10 6 a 6 6 0 0 1 -2 11 z" /> </g>
+  </defs>
+  <rect width="1800" height="960" fill="#fff"/>
+  <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Flywheel next — boundaries: dispatch writes records, curation writes moves, only the operator opens an intent, and the engine runs no agent</text>
+  <text x="40" y="57" font-size="12" fill="#666">source event → capture → signals → one move → intent → elaboration → claims → verdicts → planning → bolt → landing → operation → back to the sources · what crosses each line is written on it</text>
+
+  <!-- SOURCES -->
+  <rect x="70" y="75" width="360" height="120" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="86" y="97" font-size="12" font-weight="700" fill="#5f6b7a">SIGNAL SOURCES · outside</text>
+  <use href="#people" x="118" y="130" color="#8a8a86"/>
+  <text x="118" y="156" font-size="9.5" fill="#666" text-anchor="middle">people · meetings</text>
+  <use href="#browser" x="208" y="130" color="#8a8a86"/>
+  <text x="208" y="156" font-size="9.5" fill="#666" text-anchor="middle">chat</text>
+  <use href="#rows" x="298" y="130" color="#8a8a86"/>
+  <text x="298" y="156" font-size="9.5" fill="#666" text-anchor="middle">transcripts · logs</text>
+  <use href="#cube" x="388" y="130" color="#8a8a86"/>
+  <text x="388" y="162" font-size="9.5" fill="#666" text-anchor="middle">delivery events · PRs</text>
+  <text x="250" y="184" font-size="8.5" fill="#999" text-anchor="middle">they produce source events only · no judgment (§2) · switchboard, gvc, flywheel-cloud, a request opened by hand (178)</text>
+
+  <!-- OPERATOR -->
+  <rect x="450" y="75" width="1310" height="120" rx="10" fill="#fbeeee" stroke="#c05b5b" stroke-width="1.4"/>
+  <text x="466" y="97" font-size="12" font-weight="700" fill="#a34848">OPERATOR · phone or page · the only one who opens or closes an intent</text>
+  <use href="#person" x="500" y="145" color="#c05b5b"/>
+  <text x="500" y="172" font-size="9.5" fill="#666" text-anchor="middle">operator</text>
+  <rect x="540" y="108" width="380" height="72" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+  <text x="554" y="130" font-size="11" font-weight="700" fill="#333">the plan · the operator's decisions, now</text>
+  <text x="554" y="149" font-size="9.5" font-family="monospace" fill="#666">APPROVE · DECIDE · ANSWER · ATTENTION</text>
+  <text x="554" y="168" font-size="9" font-weight="700" fill="#a34848">one response · applied once (1, 6)</text>
+  <rect x="940" y="108" width="430" height="72" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+  <text x="954" y="130" font-size="11" font-weight="700" fill="#333">only the operator</text>
+  <text x="954" y="149" font-size="9.5" font-family="monospace" fill="#666">opens · closes an intent (22) · approves elaboration, unit, proposal, bolt (5)</text>
+  <text x="954" y="168" font-size="9" font-weight="700" fill="#a34848">answers every decision · revives a signal, splits a cluster (107)</text>
+  <rect x="1390" y="108" width="350" height="72" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+  <text x="1404" y="130" font-size="11" font-weight="700" fill="#333">dictation · no proposal behind it</text>
+  <text x="1404" y="149" font-size="9.5" font-family="monospace" fill="#666">idea: … · explore intents… · ask repo: …</text>
+  <text x="1404" y="168" font-size="9" font-weight="700" fill="#a34848">an intent, or an explore over intents, by hand (3, 189)</text>
+
+  <!-- DISPATCH AGENT -->
+  <rect x="70" y="215" width="360" height="545" rx="10" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4"/>
+  <text x="86" y="237" font-size="12" font-weight="700" fill="#1f6e6e">DISPATCH AGENT · the org's, outside every host</text>
+  <use href="#cloud" x="400" y="238" color="#2b8a8a"/>
+  <rect x="86" y="252" width="328" height="60" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+  <text x="100" y="272" font-size="11" font-weight="700" fill="#333">presenter · the chat sink</text>
+  <text x="100" y="289" font-size="9.5" font-family="monospace" fill="#666">shows the plan · relays the reply</text>
+  <text x="100" y="304" font-size="8.5" fill="#999">one presenter per sink, by lease or pinned (148)</text>
+  <rect x="86" y="332" width="328" height="74" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+  <text x="100" y="352" font-size="11" font-weight="700" fill="#333">capture endpoint · adapters, arithmetic only</text>
+  <text x="100" y="369" font-size="9.5" font-family="monospace" fill="#666">one capture per source event · same key → no-op</text>
+  <text x="100" y="384" font-size="8.5" fill="#999">source · event time · who captured · pointer to raw (111)</text>
+  <text x="100" y="398" font-size="8.5" fill="#999">raw transcripts and logs stay outside version control</text>
+  <use href="#gear" x="130" y="470" color="#2e9e5b"/>
+  <text x="160" y="466" font-size="11" font-weight="700" fill="#333">triage · the capture reader</text>
+  <text x="160" y="483" font-size="9.5" fill="#666">reads one capture, writes its signals once</text>
+  <text x="160" y="497" font-size="8.5" fill="#999">judgment · never unattended (115) · off the shared line</text>
+  <line x1="86" y1="530" x2="414" y2="530" stroke="#2b8a8a" stroke-width="1" opacity="0.5"/>
+  <text x="100" y="552" font-size="9" font-weight="700" fill="#1f6e6e">writes records only</text>
+  <text x="100" y="568" font-size="8.5" fill="#666">never opens an intent · never moves state (66, 110)</text>
+  <text x="100" y="582" font-size="8.5" fill="#666">the data plane never names it; it reads signals</text>
+  <text x="100" y="596" font-size="8.5" fill="#666">through curation like any other (C.1)</text>
+  <text x="100" y="620" font-size="9" font-weight="700" fill="#1f6e6e">callers of the endpoint</text>
+  <text x="100" y="636" font-size="8.5" fill="#666">a forwarded message · one word on the phone · a dropped file</text>
+  <text x="100" y="650" font-size="8.5" fill="#666">a delivery system's connector · a PR conversation (112, 178)</text>
+  <text x="100" y="740" font-size="8.5" fill="#999">106 · 111 · 112 · 114 · 115 · 148 · C.1</text>
+
+  <!-- sources -> dispatch -->
+  <path d="M 250 195 L 250 250" fill="none" stroke="#8a8a86" stroke-width="2" marker-end="url(#mN)"/>
+  <text x="258" y="226" font-size="9" fill="#5f6b7a">source events</text>
+  <!-- presenter <-> operator -->
+  <path d="M 414 268 C 440 250, 450 230, 470 197" fill="none" stroke="#c9962e" stroke-width="2" marker-end="url(#mA)"/>
+  <path d="M 500 197 C 480 235, 460 268, 416 292" fill="none" stroke="#c05b5b" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mR)"/>
+  <text x="455" y="245" font-size="9" fill="#a97e26" text-anchor="end">plan</text>
+  <text x="472" y="262" font-size="9" fill="#a34848">reply</text>
+
+  <!-- THE ENGINE frame -->
+  <rect x="450" y="215" width="1310" height="545" rx="10" fill="#fff" stroke="#8a8a86" stroke-width="1.8"/>
+  <text x="466" y="237" font-size="12" font-weight="700" fill="#5f6b7a">THE ENGINE · control plane · runs no agent · charges every session, applies every response, reads what sessions leave</text>
+  <text x="1744" y="237" font-size="9" fill="#999" text-anchor="end">reconciler tick over the state · leases · idempotent effects (86, 128, 150, 171)</text>
+
+  <!-- RECORDS -->
+  <rect x="466" y="250" width="230" height="480" rx="8" fill="#fbfbfa" stroke="none"/>
+  <text x="480" y="268" font-size="10.5" font-weight="700" fill="#5f6b7a">RECORDS</text>
+  <text x="480" y="281" font-size="8.5" fill="#999">what the machinery reads</text>
+  <use href="#cyl" x="581" y="360"/>
+  <text x="581" y="390" font-size="9.5" fill="#666" text-anchor="middle">captures</text>
+  <text x="581" y="403" font-size="8.5" fill="#999" text-anchor="middle">one per source event (111)</text>
+  <use href="#cyl" x="581" y="470"/>
+  <text x="581" y="500" font-size="9.5" fill="#666" text-anchor="middle">signals</text>
+  <text x="581" y="513" font-size="8.5" fill="#999" text-anchor="middle">immutable · kind · who · excerpt (113)</text>
+  <rect x="478" y="560" width="206" height="78" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+  <text x="492" y="582" font-size="11" font-weight="700" fill="#333">moves · one per signal</text>
+  <text x="492" y="601" font-size="9.5" font-family="monospace" fill="#666">attach · challenge · join</text>
+  <text x="492" y="614" font-size="9.5" font-family="monospace" fill="#666">answered · drop · route</text>
+  <text x="492" y="630" font-size="9" font-weight="700" fill="#5a3f95">only the response replaces one (107)</text>
+  <text x="581" y="670" font-size="8.5" fill="#999" text-anchor="middle">a signal is never read except</text>
+  <text x="581" y="683" font-size="8.5" fill="#999" text-anchor="middle">through curation (106)</text>
+  <text x="581" y="718" font-size="8.5" fill="#999" text-anchor="middle">106 · 107 · 111 · 113 · 114 · 118</text>
+
+  <!-- dispatch -> records -->
+  <path d="M 414 369 L 554 364" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+  <text x="484" y="356" font-size="9" fill="#1f6e6e" text-anchor="middle">capture</text>
+  <path d="M 556 372 C 470 400, 300 420, 148 458" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mN)"/>
+  <text x="380" y="440" font-size="9" fill="#5f6b7a" text-anchor="middle">reads the raw</text>
+  <path d="M 150 480 C 300 480, 450 476, 554 472" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+  <text x="440" y="492" font-size="9" fill="#1f6e6e" text-anchor="middle">signals · written once</text>
+
+  <!-- CURATION -->
+  <rect x="706" y="250" width="260" height="480" rx="8" fill="#f8f5fc" stroke="none"/>
+  <text x="720" y="268" font-size="10.5" font-weight="700" fill="#5a3f95">CURATION</text>
+  <text x="720" y="281" font-size="8.5" fill="#999">a session the machinery charges</text>
+  <use href="#marker" x="850" y="300" color="#c05b5b"/>
+  <rect x="722" y="310" width="228" height="56" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+  <text x="736" y="330" font-size="11" font-weight="700" fill="#333">proposed intent</text>
+  <text x="736" y="345" font-size="9.5" font-family="monospace" fill="#666">cites signals · weight by date</text>
+  <text x="736" y="358" font-size="8.5" fill="#999">one decision each, never per signal (109)</text>
+  <use href="#gear" x="836" y="470" color="#2e9e5b"/>
+  <text x="836" y="498" font-size="9.5" fill="#666" text-anchor="middle">curation</text>
+  <text x="836" y="511" font-size="8.5" fill="#999" text-anchor="middle">on a cadence or a threshold (110)</text>
+  <text x="836" y="524" font-size="8.5" fill="#999" text-anchor="middle">clusters unmoved signals against claims (108)</text>
+  <path d="M 836 452 L 836 370" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <text x="844" y="415" font-size="9" fill="#5a3f95">join</text>
+  <use href="#marker" x="850" y="556" color="#c05b5b"/>
+  <rect x="722" y="566" width="228" height="56" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+  <text x="736" y="586" font-size="11" font-weight="700" fill="#333">gathering</text>
+  <text x="736" y="601" font-size="9.5" font-family="monospace" fill="#666">one elaboration over intents</text>
+  <text x="736" y="614" font-size="8.5" fill="#999">names the intents it covers · one decision (188)</text>
+  <path d="M 836 488 L 836 562" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <text x="844" y="540" font-size="9" fill="#5a3f95">proposes</text>
+  <text x="836" y="650" font-size="9" font-weight="700" fill="#5a3f95" text-anchor="middle">writes moves · never opens an intent</text>
+  <text x="836" y="665" font-size="8.5" fill="#999" text-anchor="middle">a person writing the same records is curation too</text>
+  <text x="836" y="678" font-size="8.5" fill="#999" text-anchor="middle">may run outside the flywheel (20, 110)</text>
+  <text x="836" y="718" font-size="8.5" fill="#999" text-anchor="middle">20 · 107 · 108 · 109 · 110 · 116 · 117 · 188</text>
+
+  <!-- records <-> curation -->
+  <path d="M 607 470 C 680 470, 740 470, 816 470" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mN)"/>
+  <text x="712" y="462" font-size="9" fill="#5f6b7a" text-anchor="middle">unmoved signals</text>
+  <path d="M 818 478 C 760 520, 740 560, 688 590" fill="none" stroke="#7b5cb8" stroke-width="2.2" marker-end="url(#mP)"/>
+  <text x="742" y="548" font-size="9" fill="#5a3f95" text-anchor="end">one move</text>
+
+  <!-- INTENTS · ELABORATIONS -->
+  <rect x="976" y="250" width="260" height="480" rx="8" fill="#f8f5fc" stroke="none"/>
+  <text x="990" y="268" font-size="10.5" font-weight="700" fill="#5a3f95">INTENTS · ELABORATIONS</text>
+  <text x="990" y="281" font-size="8.5" fill="#999">inception · changes in the books repo</text>
+  <use href="#marker" x="1040" y="300" color="#c05b5b"/>
+  <use href="#cube" x="1040" y="340" color="#7b5cb8"/>
+  <text x="1040" y="372" font-size="9.5" fill="#666" text-anchor="middle">intent</text>
+  <text x="1040" y="385" font-size="8.5" fill="#999" text-anchor="middle">opened, closed by the operator (22)</text>
+  <use href="#marker" x="1170" y="300" color="#c05b5b"/>
+  <use href="#gear" x="1170" y="340" color="#2e9e5b"/>
+  <text x="1170" y="372" font-size="9.5" fill="#666" text-anchor="middle">elaboration</text>
+  <text x="1170" y="385" font-size="8.5" fill="#999" text-anchor="middle">one awaiting approval (21)</text>
+  <path d="M 1060 340 C 1090 340, 1120 340, 1150 340" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <use href="#repo" x="1105" y="450" color="#7b5cb8"/>
+  <text x="1105" y="483" font-size="9.5" fill="#666" text-anchor="middle">books repository</text>
+  <path d="M 1160 356 C 1150 400, 1140 415, 1128 432" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <text x="1160" y="412" font-size="9" fill="#5a3f95">writes</text>
+  <rect x="990" y="500" width="232" height="90" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+  <text x="1004" y="520" font-size="11" font-weight="700" fill="#333">the intent's change directory</text>
+  <text x="1004" y="537" font-size="9.5" font-family="monospace" fill="#666">records: notes · session · prototype</text>
+  <text x="1004" y="554" font-size="11" font-weight="700" fill="#333">the book</text>
+  <text x="1004" y="571" font-size="9.5" font-family="monospace" fill="#666">chapters · claims · context map</text>
+  <text x="1004" y="584" font-size="8.5" fill="#5a3f95" font-weight="700">conclusions go to the book, once (23, 187)</text>
+  <text x="1106" y="620" font-size="8.5" fill="#999" text-anchor="middle">a gathered elaboration writes records into</text>
+  <text x="1106" y="633" font-size="8.5" fill="#999" text-anchor="middle">each covered intent, conclusions once (188)</text>
+  <text x="1106" y="718" font-size="8.5" fill="#999" text-anchor="middle">21 · 22 · 23 · 120 · 187 · 188 · 189</text>
+
+  <!-- operator -> intents / decisions up / response down -->
+  <path d="M 1040 195 C 1040 240, 1040 260, 1040 290" fill="none" stroke="#c05b5b" stroke-width="2.2" marker-end="url(#mR)"/>
+  <text x="1048" y="246" font-size="9" fill="#a34848">opens · closes</text>
+  <path d="M 850 290 C 850 260, 850 240, 850 197" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+  <text x="842" y="246" font-size="9" fill="#a97e26" text-anchor="end">decisions</text>
+  <path d="M 1170 195 C 1170 240, 1170 260, 1170 290" fill="none" stroke="#c05b5b" stroke-width="2" marker-end="url(#mR)"/>
+  <text x="1178" y="246" font-size="9" fill="#a34848">approves · explore</text>
+  <path d="M 1380 195 C 1380 240, 1380 260, 1380 296" fill="none" stroke="#c05b5b" stroke-width="2.2" marker-end="url(#mR)"/>
+  <text x="1388" y="246" font-size="9" fill="#a34848">the response</text>
+  <path d="M 1560 296 C 1560 260, 1560 240, 1560 197" fill="none" stroke="#c9962e" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mA)"/>
+  <text x="1568" y="246" font-size="9" fill="#a97e26">tests at the bolt's place (44)</text>
+
+  <!-- PLANNING -->
+  <rect x="1246" y="250" width="220" height="480" rx="8" fill="#fffdf6" stroke="none"/>
+  <text x="1260" y="268" font-size="10.5" font-weight="700" fill="#a97e26">PLANNING</text>
+  <text x="1260" y="281" font-size="8.5" fill="#999">machinery-charged · per built repository</text>
+  <use href="#cyl" x="1356" y="330"/>
+  <text x="1356" y="360" font-size="9.5" fill="#666" text-anchor="middle">ledger</text>
+  <text x="1356" y="373" font-size="8.5" fill="#999" text-anchor="middle">verdict per claim × repo (100)</text>
+  <polygon points="1356,410 1420,455 1356,500 1292,455" fill="#fffdf6" stroke="#c9962e" stroke-width="2"/>
+  <text x="1356" y="452" font-size="10.5" font-weight="700" fill="#8a6a1d" text-anchor="middle">PLAN</text>
+  <text x="1356" y="466" font-size="8.5" fill="#a97e26" text-anchor="middle">one run, one proposal</text>
+  <use href="#gear" x="1356" y="530" color="#2e9e5b"/>
+  <text x="1356" y="556" font-size="9.5" fill="#666" text-anchor="middle">a session</text>
+  <path d="M 1356 386 L 1356 406" fill="none" stroke="#c9962e" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mA)"/>
+  <text x="1364" y="400" font-size="8.5" fill="#a97e26">backlog</text>
+  <use href="#marker" x="1444" y="570" color="#c05b5b"/>
+  <rect x="1258" y="580" width="196" height="60" rx="8" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+  <text x="1272" y="600" font-size="11" font-weight="700" fill="#333">proposal · one decision</text>
+  <text x="1272" y="617" font-size="9.5" font-family="monospace" fill="#666">bolts, new or open · units</text>
+  <text x="1272" y="631" font-size="8.5" fill="#999">each unit answerable before the yes (172)</text>
+  <text x="1356" y="662" font-size="8.5" fill="#999" text-anchor="middle">backlog = claims in scope with</text>
+  <text x="1356" y="675" font-size="8.5" fill="#999" text-anchor="middle">no satisfying verdict · never stored (102)</text>
+  <text x="1356" y="690" font-size="8.5" fill="#999" text-anchor="middle">first planning of a new repo: baseline (104)</text>
+  <text x="1356" y="718" font-size="8.5" fill="#999" text-anchor="middle">28 · 29 · 101 · 102 · 104 · 172</text>
+
+  <!-- books -> ledger (judged) ; curation challenge -> ledger -->
+  <path d="M 1226 555 C 1260 555, 1290 520, 1300 430" fill="none" stroke="#7b5cb8" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mP)"/>
+  <text x="1236" y="470" font-size="9" fill="#5a3f95" text-anchor="end">claims, judged (100)</text>
+  <path d="M 950 335 C 1010 300, 1240 290, 1330 322" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <text x="1140" y="292" font-size="9" fill="#5a3f95" text-anchor="middle">challenge · the verdict falls stale, planning is due (116, 101)</text>
+
+  <!-- CONSTRUCTION · LANDING -->
+  <rect x="1476" y="250" width="270" height="480" rx="8" fill="#eef3f9" stroke="none"/>
+  <text x="1490" y="268" font-size="10.5" font-weight="700" fill="#3f6d9c">CONSTRUCTION · LANDING</text>
+  <text x="1490" y="281" font-size="8.5" fill="#999">bolts, units, items · sessions on hosts</text>
+  <use href="#marker" x="1540" y="300" color="#c05b5b"/>
+  <use href="#cube" x="1540" y="340" color="#4a7fb5"/>
+  <text x="1540" y="372" font-size="9.5" fill="#666" text-anchor="middle">bolt</text>
+  <text x="1540" y="385" font-size="8.5" fill="#999" text-anchor="middle">one deliverable · lands once (30)</text>
+  <use href="#rows" x="1670" y="340" color="#4a7fb5"/>
+  <text x="1670" y="372" font-size="9.5" fill="#666" text-anchor="middle">units · items</text>
+  <text x="1670" y="385" font-size="8.5" fill="#999" text-anchor="middle">ordered inside (31)</text>
+  <use href="#gear" x="1605" y="430" color="#2e9e5b"/>
+  <text x="1605" y="458" font-size="9.5" fill="#666" text-anchor="middle">sessions · in a prepared place</text>
+  <text x="1605" y="471" font-size="8.5" fill="#999" text-anchor="middle">commit there only · never merge or land (43)</text>
+  <rect x="1490" y="500" width="242" height="60" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+  <text x="1504" y="520" font-size="11" font-weight="700" fill="#333">landing · the machinery's effect</text>
+  <text x="1504" y="537" font-size="9.5" font-family="monospace" fill="#666">direct: merge · PR: open, wait, merge</text>
+  <text x="1504" y="551" font-size="8.5" fill="#999">a closed request is a failed landing (175)</text>
+  <use href="#cyl" x="1605" y="610"/>
+  <text x="1605" y="640" font-size="9.5" fill="#666" text-anchor="middle">as-built · acceptance file</text>
+  <text x="1605" y="653" font-size="8.5" fill="#999" text-anchor="middle">written at landing, beside the code (A.14, 192)</text>
+  <text x="1610" y="718" font-size="8.5" fill="#999" text-anchor="middle">30 · 31 · 43 · 175 · 176 · 177 · 192</text>
+
+  <!-- planning -> construction ; reads back -->
+  <path d="M 1456 600 C 1470 600, 1478 590, 1500 560" fill="none" stroke="#4a7fb5" stroke-width="2.2" marker-end="url(#mB)"/>
+  <path d="M 1422 455 C 1450 455, 1480 400, 1516 355" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+  <text x="1462" y="420" font-size="9" fill="#a97e26" text-anchor="middle">yes → units on a bolt</text>
+  <path d="M 1580 615 C 1500 640, 1440 560, 1400 480" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mN)"/>
+  <text x="1484" y="655" font-size="9" fill="#5f6b7a" text-anchor="middle">reads as-built · open bolts</text>
+
+  <!-- curation route -> construction (chore or ask) -->
+  <path d="M 950 640 C 1100 700, 1400 710, 1520 570" fill="none" stroke="#7b5cb8" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#mP)"/>
+  <text x="1240" y="705" font-size="9" fill="#5a3f95" text-anchor="middle">route · a chore on a line or an ask that names the repository (116, 60, 34)</text>
+
+  <!-- OPERATION -->
+  <rect x="450" y="790" width="1310" height="76" rx="10" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <text x="466" y="812" font-size="12" font-weight="700" fill="#1f6e6e">OPERATION · observed, never run · outside</text>
+  <text x="466" y="832" font-size="9.5" font-family="monospace" fill="#666">releases · environments · runs · monitors · a person on a product page</text>
+  <text x="466" y="852" font-size="8.5" fill="#999">the delivery system's own (181) · data products the same as software (182)</text>
+  <rect x="1010" y="800" width="360" height="56" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+  <text x="1024" y="820" font-size="11" font-weight="700" fill="#333">offered outward · readable from git</text>
+  <text x="1024" y="837" font-size="9.5" font-family="monospace" fill="#666">the book · the claims · as-built · acceptance file</text>
+  <text x="1024" y="850" font-size="8.5" fill="#999">the flywheel writes the file and nothing more (181, 192)</text>
+  <text x="1744" y="832" font-size="9" fill="#1f6e6e" text-anchor="end" font-weight="700">two channels in, no third</text>
+  <text x="1744" y="850" font-size="8.5" fill="#999" text-anchor="end">a check run on the open request · a capture through dispatch</text>
+
+  <!-- lands: construction -> operation -->
+  <path d="M 1660 760 L 1660 788" fill="none" stroke="#4a7fb5" stroke-width="2.2" marker-end="url(#mB)"/>
+  <text x="1668" y="778" font-size="9" fill="#3f6d9c">lands</text>
+  <!-- check run: operation -> bolt -->
+  <path d="M 1540 788 C 1540 760, 1540 740, 1540 386" fill="none" stroke="#2b8a8a" stroke-width="2" marker-end="url(#mT)"/>
+  <text x="1532" y="778" font-size="9" fill="#1f6e6e" text-anchor="end">check run on the open request → finding on the bolt (176)</text>
+  <!-- as-built -> operation (read) -->
+  <path d="M 1190 788 C 1190 760, 1190 745, 1190 730" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5" marker-start="url(#mN)"/>
+  <!-- anomaly: operation -> dispatch -->
+  <path d="M 450 828 C 300 828, 250 810, 250 762" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+  <text x="330" y="820" font-size="9" fill="#1f6e6e" text-anchor="middle">anomaly · incident · review</text>
+  <text x="330" y="833" font-size="9" fill="#1f6e6e" text-anchor="middle">a source event → a capture (182)</text>
+  <!-- loop back to sources -->
+  <path d="M 560 866 C 560 900, 52 900, 52 130 C 52 120, 60 118, 68 118" fill="none" stroke="#8a8a86" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#mN)"/>
+  <text x="560" y="890" font-size="9" fill="#5f6b7a">what people see in operation becomes the next source event</text>
+
+  <!-- legend -->
+  <rect x="40" y="880" width="1720" height="64" rx="10" fill="#fafafa"/>
+  <line x1="60" y1="900" x2="100" y2="900" stroke="#2b8a8a" stroke-width="2.4"/>
+  <text x="108" y="904" font-size="10" fill="#333">dispatch and operation · outside every host</text>
+  <line x1="330" y1="900" x2="370" y2="900" stroke="#7b5cb8" stroke-width="2.4"/>
+  <text x="378" y="904" font-size="10" fill="#333">design · signals, moves, intents, claims</text>
+  <line x1="590" y1="900" x2="630" y2="900" stroke="#c9962e" stroke-width="2.4"/>
+  <text x="638" y="904" font-size="10" fill="#333">judgment · ledger, planning</text>
+  <line x1="800" y1="900" x2="840" y2="900" stroke="#4a7fb5" stroke-width="2.4"/>
+  <text x="848" y="904" font-size="10" fill="#333">construction · bolt, landing</text>
+  <line x1="1010" y1="900" x2="1050" y2="900" stroke="#c05b5b" stroke-width="2.4"/>
+  <text x="1058" y="904" font-size="10" fill="#333">the operator's response</text>
+  <use href="#marker" x="1210" y="900" color="#c05b5b"/>
+  <text x="1224" y="904" font-size="10" fill="#333">a plan decision is created here</text>
+  <use href="#gear" transform="translate(1420,900) scale(0.8)" color="#2e9e5b"/>
+  <text x="1438" y="904" font-size="10" fill="#333">a session</text>
+  <line x1="1520" y1="900" x2="1560" y2="900" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5"/>
+  <text x="1568" y="904" font-size="10" fill="#333">read</text>
+  <line x1="1620" y1="900" x2="1660" y2="900" stroke="#7b5cb8" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="1668" y="904" font-size="10" fill="#333">route</text>
+  <text x="60" y="932" font-size="10.5" fill="#333">dispatch writes captures and signals and never state · curation writes moves and proposes, never opens · only the operator opens or closes an intent · the engine charges sessions and applies the response, and runs no agent</text>
+</svg>

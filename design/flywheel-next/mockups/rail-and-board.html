@@ -1,0 +1,1132 @@
+<!--
+  Rail and Board — the plan as one rail beside the status view drawn by phase.
+  Seeded like the workbench: plan-mockup.md (willdan · 2026-09-04 07:40 · decisions 412–421)
+  plus 422 (planning's proposal for atlas) and 424 (a gathered elaboration). The workbench is
+  retired; this file carries its seed, its session chips and its later additions.
+
+  Decisions taken while building:
+  - The rail is one plan delivery (5.5), titled "Decisions": the numbered decisions in the
+    model's order (approve, decide, answer, then number), attention outside the count, then the
+    SINCE tail. It is the list the chat prints for `plan`, one line each, with the answers as
+    controls. One axis: j/k and ↓/↑ walk it, Enter opens the dock, y/n/l answer the focused
+    card. There is no h/l anywhere.
+  - The board is the status view (B.4) drawn by phase: Inception · Bolt plan · Construction ·
+    Operation. It holds objects, never the count. Bolt plan is a narrow hatched gate (one
+    proposal per repository in steady state). Operation is read-only; a landed bolt stays while
+    its request, environments or a signal about it is live and 7 days after (186), and says so.
+  - Every decision is also a marker on its object ("? 418" on the intent, "! host" on the bolt,
+    "✓ 424" on each covered intent). A focused rail card lights its object; a marker click
+    focuses the card and opens the dock. Nothing is answered on the board.
+  - Hosts are a strip above the lanes: alive or gone, sessions against the bound, last
+    heartbeat; a host pill lights its sessions in every lane and opens the host in the dock,
+    where takeover and wait are its footer when it is gone. The strip also lists the
+    repositories; a repository opens in the dock with its kinds, capabilities, claims in scope
+    with verdicts, and each claim's scope with a control that sends one response (104, 105).
+  - Every session shows one chip, the same everywhere: agent · model, @host, activity (working /
+    starting / idle 14h / blocked / with you / next 08:00), pane link. Machinery sessions sit by
+    phase: curation beside the unmoved-signals counter, planning inside the gate while it runs,
+    a conflict fix on the bolt it works.
+  - Every per-unit edit on the proposal (bolt, new bolt, rename, type, drop; rename on a bolt)
+    is its own response, sent the moment it is given (172, 184), logged, and applied to the
+    document. Nothing is staged. An edit that would leave a dependency crossing bolts, or a
+    unit depending on a dropped unit, is refused inline with the reason and an offer to take
+    the dependents along; each accepted dependent is its own response.
+  - "Later" defers: the proposal or baseline leaves the count and stays in the gate greyed as
+    "deferred · ask again"; it does not enter SINCE. "Ask again" is a dictation button in its
+    dock that raises it as a new decision with a new number (5.2).
+  - "Redo" on the proposal withdraws it, shows planning charged again with the notes inside the
+    gate, and a new proposal number arrives later. The proposal's dock shows its lineage:
+    intent → writeback (wrote the claim) → landing on the books → planning run → proposal.
+  - 424 is a gathered research elaboration over three intents (188): answers yes · drop · pick
+    · type · <intent>: drop (the decision stays). Each covered intent carries the 424 marker
+    and proposes no elaboration of its own meanwhile.
+  - No typed grammar anywhere. The capture box captures only: typed text becomes a capture
+    with one signal, and a "this is an intent" toggle makes it an intent capture; under the
+    box: "will send: capture" or "will send: capture · intent". Explore is a control: tick
+    intents in Inception and press explore (with-operator or standing). Drop, later, rename,
+    service start/stop, finish and ask-again are buttons in the dock.
+  - A closed intent and a finished elaboration stay in Inception greyed with "leaves in Nd".
+  - Under 760px the rail and the board are two tabs; the dock is full screen with a back
+    control. The clock starts at 07:40 and advances a minute per response. Detail beyond the
+    seed is invented and marked sample. Review switches: ?theme=dark|light, ?nodock, ?open=<key>.
+-->
+<title>Rail and Board</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#EEF1F4; --surface:#FFFFFF; --surface2:#F6F8FA; --ink:#16202A; --ink2:#4A5763; --ink3:#7A8794;
+  --line:#D5DBE1; --line2:#E4E8EC; --accent:#0B6E79; --accent-ink:#FFFFFF; --accent-soft:#D9EEF0; --accent-hatch:rgba(11,110,121,.10);
+  --ok:#2E8B57; --warn:#B7791F; --crit:#B3362B; --lit:#FFF3C4; --lit-line:#E5C34A;
+  --shadow:0 10px 30px rgba(22,32,42,.16); --top:46px; --hosts:40px; --rail:340px; --dock:600px;
+  --sans:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#12171C; --surface:#1A2128; --surface2:#20282F; --ink:#E6EBEF; --ink2:#A9B4BE; --ink3:#74818C;
+  --line:#2A333C; --line2:#232C34; --accent:#4FB3BF; --accent-ink:#0E1A1C; --accent-soft:#173A3E; --accent-hatch:rgba(79,179,191,.10);
+  --ok:#5CB57F; --warn:#D9A24A; --crit:#E0675B; --lit:#3A3416; --lit-line:#B89B2D; --shadow:0 10px 30px rgba(0,0,0,.5); color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#12171C; --surface:#1A2128; --surface2:#20282F; --ink:#E6EBEF; --ink2:#A9B4BE; --ink3:#74818C;
+  --line:#2A333C; --line2:#232C34; --accent:#4FB3BF; --accent-ink:#0E1A1C; --accent-soft:#173A3E; --accent-hatch:rgba(79,179,191,.10);
+  --ok:#5CB57F; --warn:#D9A24A; --crit:#E0675B; --lit:#3A3416; --lit-line:#B89B2D; --shadow:0 10px 30px rgba(0,0,0,.5); color-scheme:dark; }
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:13.5px/1.45 var(--sans);overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+input,textarea,select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+input:focus,textarea:focus,select:focus,button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+h1,h2,h3,h4{margin:0;font-weight:700;text-wrap:balance}
+.mono{font-family:var(--mono)}
+.tn{font-variant-numeric:tabular-nums}
+kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;color:var(--ink2);background:var(--surface2)}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:700}
+.sample{font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);border:1px dashed var(--line);border-radius:3px;padding:0 4px;vertical-align:middle}
+
+/* ---------- top ---------- */
+.top{height:var(--top);display:flex;align-items:center;gap:14px;padding:0 14px;background:var(--surface);border-bottom:1px solid var(--line)}
+.top h1{font-size:15px;font-weight:800;letter-spacing:-.01em}
+.top .meta{color:var(--ink3);font-size:12px}
+.top .count{margin-left:auto;display:flex;align-items:baseline;gap:8px;font-size:12.5px;color:var(--ink2)}
+.top .count b{font:700 20px var(--mono);color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:6px;padding:5px 10px;background:var(--surface);font-weight:600;font-size:12.5px;line-height:1.2;white-space:nowrap}
+.btn:hover{border-color:var(--ink3)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.yes{color:var(--accent);border-color:var(--accent)}
+.btn.drop{color:var(--crit)}
+.btn.quiet{border-color:transparent;color:var(--ink2)}
+.btn.sm{padding:3px 8px;font-size:12px}
+.btn:disabled{opacity:.45;cursor:default}
+.btn .k{font:10px var(--mono);color:inherit;opacity:.65;border:1px solid currentColor;border-radius:3px;padding:0 3px}
+
+/* ---------- hosts strip ---------- */
+.hosts{height:var(--hosts);display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid var(--line);background:var(--surface2);overflow-x:auto}
+.hosts .lab{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-right:4px;white-space:nowrap}
+.host{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 10px 3px 6px;font-size:12px;white-space:nowrap}
+.host .hn{font:600 12px var(--mono)}
+.host .hm{color:var(--ink3)}
+.host.gone{border-color:var(--warn)}
+.host.gone .hm b{color:var(--warn)}
+.host.lit,.host.open-in-dock{background:var(--accent-soft);border-color:var(--accent)}
+.hosts .note{margin-left:auto;font-size:11.5px;color:var(--ink3);white-space:nowrap}
+.hosts .sep{width:1px;height:20px;background:var(--line);margin:0 4px;flex:none}
+.repo{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:3px 8px;font:600 12px var(--mono);white-space:nowrap}
+.repo .hm{font:11px var(--sans);color:var(--ink3);font-weight:500}
+.repo.open-in-dock{background:var(--accent-soft);border-color:var(--accent)}
+.sc{display:inline-flex;align-items:center;font:10.5px var(--mono);line-height:1;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink2);white-space:nowrap;vertical-align:middle;max-width:100%}
+.sc>*{padding:3px 6px;border-left:1px solid var(--line2)}
+.sc>*:first-child{border-left:0;padding-left:7px}
+.sc .dot{width:7px;height:7px;padding:0;margin:0 -1px 0 7px;border-left:0}
+.sc .ag{color:var(--ink);font-weight:600}
+.sc .hs{color:var(--ink3)}
+.sc.working .ac{color:var(--ok)} .sc.blocked .ac{color:var(--warn);font-weight:600} .sc.with .ac{color:var(--accent);font-weight:600} .sc.idle .ac,.sc.scheduled .ac{color:var(--ink3)}
+.sc .pane{color:var(--accent);font:inherit;padding:3px 8px 3px 6px;border-left:1px solid var(--line2);border-radius:0 999px 999px 0}
+.sc .pane:hover{background:var(--accent-soft)}
+.sc.hostlit{border-color:var(--accent);background:var(--accent-soft)} .sc.hostdim{opacity:.4}
+.el{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 0 0;font-size:12px}
+.el .en{font-weight:600;min-width:0}
+.leave{font:10.5px var(--mono);color:var(--ink3)} .leave.soon{color:var(--warn)}
+.obj.closed{opacity:.6} .obj.closed .on{text-decoration:line-through;text-decoration-color:var(--ink3);text-decoration-thickness:1px}
+.obj.deferred{opacity:.6;border-style:dashed}
+.obj.explore{border-color:var(--accent)}
+.obj.explore.done{opacity:.6;border-style:dashed;border-color:var(--line)}
+.obj .pickbox{width:14px;height:14px;margin:0;accent-color:var(--accent);flex:none}
+.chip{display:inline-flex;align-items:center;font:10.5px var(--mono);padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--ink2);background:var(--surface2)}
+.chip.g{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)} .chip.x{border-color:var(--accent);color:var(--accent)}
+.unit .it{flex-basis:100%;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:2px 0 0 6px}
+.unit{flex-wrap:wrap}
+.wi{cursor:default}
+.explore-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;border:1px dashed var(--accent);border-radius:7px;padding:6px 8px;margin:0 0 8px;font-size:12px;background:color-mix(in srgb,var(--accent-soft) 50%,transparent)}
+.explore-bar select{padding:2px 6px;font-size:12px}
+.explore-bar .n{font:600 11px var(--mono);color:var(--accent)}
+.capture .cf label{display:inline-flex;align-items:center;gap:5px;color:var(--ink2);cursor:pointer}
+.capture .cf input{margin:0;accent-color:var(--accent)}
+.capture .will{font:11.5px var(--mono);color:var(--ink3)} .capture .will b{color:var(--ink);font-weight:600}
+.gl{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.gi{display:inline-flex;align-items:center;gap:2px;font:11.5px var(--mono);padding:2px 4px 2px 8px;border-radius:999px;border:1px solid var(--accent);color:var(--accent);background:var(--accent-soft)}
+.gi .gx{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;color:var(--ink3);font-size:12px;line-height:1}
+.gi .gx:hover{background:color-mix(in srgb,var(--crit) 15%,transparent);color:var(--crit)}
+.deliv{width:100%;border-collapse:collapse;font-size:12px}
+.deliv th{text-align:left;font:700 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);padding:0 8px 4px 0;border-bottom:1px solid var(--line2)}
+.deliv td{padding:5px 8px 5px 0;border-bottom:1px solid var(--line2);vertical-align:top;color:var(--ink2)}
+.deliv td:first-child{color:var(--ink);font-weight:600} .deliv td.mono{font-size:11px}
+.origin{font:10px var(--mono);padding:1px 6px;border-radius:4px;white-space:nowrap;background:var(--surface2);color:var(--ink3);border:1px solid var(--line2)}
+.origin.override{color:var(--warn);border-color:var(--warn)}
+.lin{display:flex;flex-direction:column}
+.lin .ln{display:grid;grid-template-columns:92px 1fr;gap:10px;align-items:baseline;padding:5px 0 5px 14px;position:relative;font-size:12.5px}
+.lin .ln::before{content:"";position:absolute;left:3px;top:0;bottom:0;width:2px;background:var(--line2)}
+.lin .ln::after{content:"";position:absolute;left:0;top:11px;width:8px;height:8px;border-radius:50%;background:var(--ink3);border:2px solid var(--surface)}
+.lin .ln:first-child::before{top:11px} .lin .ln:last-child::before{bottom:auto;height:11px} .lin .ln.here::after{background:var(--accent)}
+.lin .lk-k{font:700 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+.lin .lk-w{font-weight:600} .lin .lk-t{color:var(--ink2);margin-left:6px}
+.wrong{margin-top:10px;padding:10px 12px;border:1px dashed var(--crit);border-radius:8px;background:color-mix(in srgb,var(--crit) 6%,transparent)}
+.wrong h4{font-size:12.5px;color:var(--crit);margin-bottom:3px} .wrong p{margin:0 0 6px;font-size:12px;color:var(--ink2)}
+.vd{font:600 10.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:4px;border:1px solid var(--line);color:var(--ink3);white-space:nowrap}
+.vd.satisfied{color:var(--ok);border-color:var(--ok)} .vd.not-satisfied{color:var(--crit);border-color:var(--crit)} .vd.stale{color:var(--warn);border-color:var(--warn)} .vd.unjudged{color:var(--ink2)} .vd.not-applicable{color:var(--ink3);border-style:dashed}
+.claims{display:flex;flex-direction:column}
+.claim{display:grid;grid-template-columns:1fr auto auto;gap:4px 10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line2);font-size:12.5px}
+.claim .cn{font:600 12px var(--mono)} .claim .ce{grid-column:1/-1;color:var(--ink3);font-size:11.5px}
+.claim select{padding:2px 6px;font:11.5px var(--mono)}
+.kc{display:flex;flex-wrap:wrap;gap:4px}
+.mark.attention.gone{color:var(--crit);border-color:var(--crit)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none}
+.dot.working{background:var(--ok);animation:pulse 1.6s ease-in-out infinite}
+.dot.starting{background:transparent;border:2px dashed var(--ok);width:9px;height:9px;box-sizing:border-box}
+.dot.idle{background:transparent;border:2px solid var(--ink3);width:9px;height:9px;box-sizing:border-box}
+.dot.blocked{background:var(--warn);box-shadow:0 0 0 2px color-mix(in srgb,var(--warn) 30%,transparent)}
+.dot.failed,.dot.gone{background:var(--crit)}
+.dot.stopped{background:var(--ink3)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ---------- frame ---------- */
+.wrap{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);height:calc(100vh - var(--top) - var(--hosts))}
+.rail{border-right:1px solid var(--line);background:var(--surface);overflow:auto;padding:10px 12px 60px}
+.board{display:grid;grid-template-columns:minmax(230px,1fr) minmax(190px,.62fr) minmax(300px,1.35fr) minmax(230px,1fr);position:relative;overflow:hidden}
+.lane{overflow:auto;padding:10px 10px 60px;border-right:1px solid var(--line2)}
+.lane:last-child{border-right:0}
+.lane.plan{background:repeating-linear-gradient(-45deg,transparent 0 8px,var(--accent-hatch) 8px 9px),var(--bg);border-left:1px dashed var(--line);border-right:1px dashed var(--line)}
+.lane-h{display:flex;align-items:baseline;gap:8px;margin:2px 2px 10px;flex-wrap:wrap}
+.lane-h h2{font-size:14px;font-weight:800;letter-spacing:-.01em}
+.lane-h .sub{font-size:11.5px;color:var(--ink3)}
+.lane-h .n{margin-left:auto;font:600 11px var(--mono);color:var(--ink3)}
+.lane-h .gate{font:600 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:0 5px}
+.lane-h .ro{font:600 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);border:1px solid var(--line);border-radius:3px;padding:0 5px}
+.sec-h{display:flex;align-items:baseline;gap:8px;margin:14px 2px 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:700}
+.sec-h .r{letter-spacing:0;text-transform:none;font-weight:500;font-size:11.5px}
+.empty{color:var(--ink3);font-size:12.5px;padding:6px 4px}
+
+/* ---------- rail ---------- */
+.rail-h{display:flex;align-items:baseline;gap:8px;margin:2px 2px 8px}
+.rail-h h2{font-size:14px;font-weight:800}
+.rail-h .sub{font-size:11.5px;color:var(--ink3)}
+.grp{display:flex;align-items:baseline;gap:8px;margin:12px 2px 6px}
+.grp .g{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:800}
+.grp.approve .g{color:var(--accent)} .grp.decide .g{color:var(--warn)} .grp.answer .g{color:var(--crit)} .grp.attention .g{color:var(--ink2)} .grp.since .g{color:var(--ink3)}
+.grp .r{font-size:11.5px;color:var(--ink3)}
+.grp .btn{margin-left:auto}
+.card{position:relative;border:1px solid var(--line);border-left-width:3px;border-radius:6px;background:var(--surface);padding:8px 10px 8px 12px;margin-bottom:6px;cursor:pointer;transition:transform .15s,opacity .2s}
+.card.g-approve{border-left-color:var(--accent)} .card.g-decide{border-left-color:var(--warn)} .card.g-answer{border-left-color:var(--crit)}
+.card.focused{background:var(--lit);border-color:var(--lit-line);border-left-color:var(--accent)}
+.card.open-in-dock{box-shadow:inset 0 0 0 1px var(--accent)}
+.card.inflight{opacity:.6}
+.card.gone{transform:translateX(-12px);opacity:0}
+.card.refused{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.card .ch{display:flex;align-items:center;gap:7px;font-size:11px;margin-bottom:3px}
+.card .n{font:700 13px var(--mono);color:var(--ink)}
+.card .kind{color:var(--ink3);font-weight:600}
+.card .ph{margin-left:auto;font:500 10.5px var(--mono);color:var(--ink3);border:1px solid var(--line2);border-radius:3px;padding:0 5px;white-space:nowrap}
+.card .ph.plan{color:var(--accent);border-color:var(--accent)}
+.card .title{font-size:13.5px;font-weight:700;line-height:1.3}
+.card .title .pre{color:var(--ink3);font-weight:500}
+.card .tail{color:var(--ink2);font-size:12px;margin-top:2px}
+.card .q{font-style:italic;color:var(--ink);margin-top:4px;font-size:13px}
+.card .acts{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;align-items:center}
+.card .acts .hint{margin-left:auto;display:flex;gap:3px}
+.argbox:empty{display:none}
+.argbox{margin-top:8px}
+.field{display:flex;gap:6px;align-items:flex-start;flex-wrap:wrap}
+.field input,.field textarea,.field select{flex:1;min-width:140px}
+.chores{display:flex;flex-direction:column;gap:4px;margin:6px 0}
+label.chore{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:5px;padding:4px 8px;font-size:12.5px;cursor:pointer;background:var(--surface2)}
+label.chore.on{border-color:var(--accent);background:var(--accent-soft)}
+label.chore .lt{font:600 11px var(--mono);color:var(--ink3);width:12px}
+label.chore .f{margin-left:auto;font:11px var(--mono);color:var(--ink3)}
+.flight{display:none;align-items:center;gap:6px;font:11.5px var(--mono);color:var(--ink2);margin-top:6px}
+.card.inflight .flight{display:flex}
+.spin{width:10px;height:10px;border:2px solid var(--ink3);border-top-color:transparent;border-radius:50%;animation:spin .8s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.att{border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:6px;background:var(--surface);padding:7px 10px;margin-bottom:6px;font-size:12.5px;cursor:pointer}
+.att.crit{border-left-color:var(--crit)}
+.att.focused{background:var(--lit);border-color:var(--lit-line)}
+.att .acts{display:flex;gap:5px;margin-top:6px}
+.since{list-style:none;margin:0;padding:0}
+.since li{display:flex;gap:8px;align-items:baseline;padding:4px 2px;border-bottom:1px solid var(--line2);font-size:12.5px}
+.since li.new{background:var(--lit)}
+.since .v{font:600 10.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;width:64px;flex:none;color:var(--ink2)}
+.since .v.landed,.since .v.merged{color:var(--ok)} .since .v.dropped{color:var(--crit)}
+.since .w{flex:1;min-width:0}
+.since .t{font:11px var(--mono);color:var(--ink3);white-space:nowrap}
+
+/* ---------- board objects ---------- */
+.obj{border:1px solid var(--line);border-radius:7px;background:var(--surface);padding:8px 10px;margin-bottom:8px;cursor:pointer}
+.obj.lit{background:var(--lit);border-color:var(--lit-line)}
+.obj.open-in-dock{box-shadow:inset 0 0 0 1px var(--accent)}
+.obj .oh{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.obj .ok{font:600 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+.obj .on{font-weight:700;font-size:13px}
+.obj .or{font:11px var(--mono);color:var(--ink3)}
+.obj .os{margin-left:auto;font-size:11.5px;color:var(--ink3);white-space:nowrap}
+.obj .ot{color:var(--ink2);font-size:12px;margin-top:2px}
+.marks{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.mark{display:inline-flex;align-items:center;gap:4px;font:600 11px var(--mono);border:1px solid var(--line);border-radius:4px;padding:1px 6px;background:var(--surface2)}
+.mark.approve{color:var(--accent);border-color:var(--accent)} .mark.decide{color:var(--warn);border-color:var(--warn)} .mark.answer{color:var(--crit);border-color:var(--crit)} .mark.attention{color:var(--warn);border-color:var(--warn);background:color-mix(in srgb,var(--warn) 12%,transparent)}
+.mark.focused{background:var(--lit)}
+.sess{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.wi{display:inline-flex;align-items:center;gap:5px;font:11.5px var(--mono);border:1px solid var(--line2);border-radius:4px;padding:1px 6px;background:var(--surface2);white-space:nowrap}
+.wi .h{color:var(--ink3)}
+.wi.hostlit{border-color:var(--accent);background:var(--accent-soft)}
+.wi.hostdim{opacity:.4}
+.units{display:flex;flex-direction:column;gap:3px;margin-top:6px}
+.unit{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:2px 0}
+.unit .un{font-weight:600}
+.unit .ut{font:11px var(--mono);color:var(--ink3)}
+.unit.merged .un{color:var(--ink3);font-weight:500}
+.unit.queued .un{color:var(--ink2)}
+.unit .sess{margin:0 0 0 auto}
+.svcline{display:flex;gap:10px;font:11px var(--mono);color:var(--ink3);margin-top:6px;overflow:hidden}
+.svcline .ep{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.capture{border:1px solid var(--line);border-radius:7px;background:var(--surface);padding:8px;margin-bottom:8px}
+.capture textarea{width:100%;resize:vertical;min-height:44px;border:0;padding:2px 2px;background:transparent}
+.capture .cf{display:flex;align-items:center;gap:8px;margin-top:4px;font-size:11.5px;color:var(--ink3)}
+.capture .cf .btn{margin-left:auto}
+.curation{font-size:12px;color:var(--ink2);margin:0 2px 8px;display:flex;gap:8px;flex-wrap:wrap}
+.curation b{font-family:var(--mono)}
+.prop .pb{display:flex;align-items:baseline;gap:6px;font-size:12.5px;margin-top:4px;flex-wrap:wrap}
+.prop .pbn{font:600 12px var(--mono)}
+.prop .pbn.new{color:var(--accent)}
+.prop .pus{color:var(--ink2);font-size:12px}
+.arrow{color:var(--ink3)}
+.landed .links{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.lk{display:inline-flex;align-items:center;gap:4px;font:11px var(--mono);border:1px solid var(--line);border-radius:4px;padding:1px 6px;color:var(--ink2)}
+.lk.ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 50%,var(--line))} .lk.bad{color:var(--crit);border-color:var(--crit)} .lk.pend{color:var(--warn);border-color:var(--warn)}
+.sig{margin-top:6px;font-size:12px;border-left:2px solid var(--line);padding-left:8px}
+.sig i{color:var(--ink)}
+.sig .mv{display:block;font:11px var(--mono);color:var(--ink3);margin-top:2px}
+.sig .mv b{color:var(--ink2)}
+.sig .mv .un{color:var(--warn)}
+ul.sigs{list-style:none;margin:0;padding:0}
+ul.sigs li{border:1px solid var(--line);border-radius:7px;background:var(--surface);padding:7px 10px;margin-bottom:6px;font-size:12px}
+ul.sigs .sk{display:flex;gap:8px;font:11px var(--mono);color:var(--ink3);margin-bottom:3px}
+ul.sigs .sk .kind{color:var(--ink2);font-weight:600}
+ul.sigs q{quotes:"“" "”"}
+
+/* ---------- dock ---------- */
+.scrim{position:absolute;inset:0;background:transparent;display:none;z-index:8}
+body.docked .scrim{display:block}
+.dock{position:absolute;top:0;right:0;bottom:0;width:min(var(--dock),calc(100% - 200px));background:var(--surface);border-left:1px solid var(--line);box-shadow:var(--shadow);z-index:9;display:flex;flex-direction:column;transform:translateX(102%);transition:transform .2s cubic-bezier(.2,.7,.3,1)}
+body.docked .dock{transform:none}
+.dk-h{padding:12px 16px 10px;border-bottom:1px solid var(--line)}
+.dk-h .row{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink3)}
+.dk-h .row .n{font:700 14px var(--mono);color:var(--ink)}
+.dk-h .row .kind{font-weight:700;color:var(--ink2)}
+.dk-h .row .ph{font:500 10.5px var(--mono);border:1px solid var(--line2);border-radius:3px;padding:0 5px}
+.dk-h .nav{margin-left:auto;display:flex;align-items:center;gap:6px}
+.dk-h .x{font-size:18px;line-height:1;color:var(--ink3);padding:0 4px}
+.dk-h h2{font-size:18px;font-weight:800;letter-spacing:-.01em;margin-top:6px}
+.dk-h .tail{color:var(--ink2);font-size:12.5px;margin-top:2px}
+.dk-b{flex:1;overflow:auto;padding:6px 16px 20px}
+.dk-f{border-top:1px solid var(--line);padding:10px 16px 12px;background:var(--surface2)}
+.dk-f .fl{display:flex;align-items:baseline;gap:8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:6px}
+.dk-f .fl .r{letter-spacing:0;text-transform:none;font-weight:500;font-size:11.5px}
+.dk-f .acts{display:flex;flex-wrap:wrap;gap:6px}
+.sec{padding:12px 0;border-bottom:1px solid var(--line2)}
+.sec:last-child{border-bottom:0}
+.sec h3{display:flex;align-items:baseline;gap:8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:8px}
+.sec h3 .r{letter-spacing:0;text-transform:none;font-weight:500;font-size:11.5px}
+.dtext{font-size:13.5px;line-height:1.55;max-width:62ch}
+.dtext b{font-weight:700}
+.rows{display:flex;flex-direction:column;gap:4px}
+.row{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:4px 0}
+.row .grow{flex:1;min-width:0}
+.row .nm{font-weight:600}
+.row .nm .m{font:11px var(--mono);color:var(--ink3);font-weight:400;margin-left:6px}
+.row .last{color:var(--ink3);font-size:11.5px}
+.row .st{font:600 10.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);width:64px;flex:none}
+.row .st.blocked{color:var(--warn)} .row .st.working,.row .st.running{color:var(--ok)} .row .st.failed{color:var(--crit)}
+.row .ep{font:11.5px var(--mono);color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .t{font:11px var(--mono);color:var(--ink3);white-space:nowrap}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0;font-size:12.5px}
+.kv dt{font:500 11.5px var(--mono);color:var(--ink3)} .kv dd{margin:0}
+.doc{font-size:13.5px;line-height:1.55;max-width:62ch}
+.doc .dm{font:11.5px var(--mono);color:var(--ink3);margin-bottom:10px}
+.doc h4{font-size:13.5px;font-weight:800;margin:12px 0 2px;display:flex;align-items:baseline;gap:8px}
+.doc h4 .an{font:500 11px var(--mono);color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:0 5px;opacity:.7}
+.doc h4 .an:hover{opacity:1}
+.doc p{margin:0 0 6px}
+.doc .cl{font:500 12px var(--mono);color:var(--accent)}
+.tl{list-style:none;margin:0;padding:0}
+.tl li{display:grid;grid-template-columns:86px 110px 1fr;gap:8px;padding:4px 0;border-bottom:1px solid var(--line2);font-size:12.5px}
+.tl time{font:11px var(--mono);color:var(--ink3)}
+.tl .who{font-weight:600;color:var(--ink2)}
+.tl .who i{font:10px var(--mono);font-style:normal;color:var(--ink3);margin-left:5px;letter-spacing:.04em;text-transform:uppercase}
+.tl li.response .what{color:var(--accent);font-weight:600} .tl li.decision .what{color:var(--warn)} .tl li.fail .what{color:var(--crit)}
+.dsig{border-left:2px solid var(--line);padding:2px 10px;margin-bottom:8px;font-size:13px}
+.dsig small{display:block;font:11px var(--mono);color:var(--ink3);margin-top:2px}
+.links{display:flex;flex-wrap:wrap;gap:6px}
+.stage{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.chain{font:11.5px var(--mono);color:var(--ink2)}
+.chain .s.now{color:var(--accent);font-weight:600}
+.chain .a{color:var(--ink3);margin:0 4px}
+.refuse{border:1px solid var(--crit);border-radius:6px;padding:8px 10px;background:color-mix(in srgb,var(--crit) 8%,var(--surface));font-size:12.5px;margin:6px 0}
+.refuse .acts{display:flex;gap:6px;margin-top:6px}
+.pblock{border:1px solid var(--line);border-radius:7px;margin-bottom:10px;overflow:hidden}
+.pblock .pbh{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--surface2);border-bottom:1px solid var(--line2);font-size:12px}
+.pblock .pbh .bk{font:600 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+.pblock .pbh input{font:600 12.5px var(--mono);padding:2px 6px;width:220px}
+.pblock .pbh .bstate{font:600 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);border-radius:3px;padding:0 5px;color:var(--ink3)}
+.pblock .pbh .bstate.new{color:var(--accent);border-color:var(--accent)}
+.pblock .pbh .bs{margin-left:auto;color:var(--ink3);font-size:11.5px}
+.pu{padding:8px 10px;border-bottom:1px solid var(--line2);font-size:12.5px}
+.pu:last-child{border-bottom:0}
+.pu.dropped{opacity:.5}
+.pu.dropped .pun{text-decoration:line-through}
+.pu .pid{font:600 11px var(--mono);color:var(--ink3);margin-right:6px}
+.pu .pun{font-weight:700}
+.pu .pud{color:var(--ink2);margin-top:2px}
+.pu .pum{display:flex;flex-wrap:wrap;gap:10px;font:11px var(--mono);color:var(--ink3);margin-top:4px}
+.pu .pum b{color:var(--ink2);font-weight:500}
+.pu .pue{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
+.pu .pue select,.pu .pue input{padding:2px 6px;font-size:12px}
+.pu .pue .lab{font:11px var(--mono);color:var(--ink3)}
+.lineage{font:11.5px var(--mono);color:var(--ink3);margin-top:3px}
+.lineage b{color:var(--ink2);font-weight:500}
+
+/* ---------- log, toasts, tabs ---------- */
+.log{position:fixed;right:14px;top:calc(var(--top) + 6px);width:min(420px,calc(100vw - 28px));max-height:60vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:10px 12px;z-index:20}
+.log h3{font-size:12px;display:flex;gap:8px;align-items:baseline}
+.log h3 span{font-weight:500;color:var(--ink3);font-size:11.5px}
+.log ol{list-style:none;margin:8px 0 0;padding:0}
+.log li{display:flex;gap:10px;font-size:12.5px;padding:3px 0;border-bottom:1px solid var(--line2)}
+.log li time{font:11px var(--mono);color:var(--ink3)}
+.log li.say span{color:var(--ink2)}
+.log li.fail span{color:var(--crit)}
+.toasts{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);display:flex;flex-direction:column;gap:6px;z-index:30;pointer-events:none}
+.toast{background:var(--ink);color:var(--bg);font:12.5px var(--mono);padding:7px 12px;border-radius:6px;box-shadow:var(--shadow);animation:up .2s ease-out}
+.toast.fail{background:var(--crit);color:#fff}
+@keyframes up{from{transform:translateY(8px);opacity:0}}
+.tabs{display:none}
+.theme{font:11px var(--mono)}
+
+@media (max-width:759px){
+  :root{--hosts:38px}
+  .top .keys{display:none}
+  .top .count span.hint{display:none}
+  .wrap{grid-template-columns:1fr;height:calc(100vh - var(--top) - var(--hosts) - 50px)}
+  .rail{display:none;border-right:0}
+  .board{display:none;grid-template-columns:1fr;grid-auto-rows:auto;overflow:auto}
+  .lane{overflow:visible;border-right:0;border-bottom:1px solid var(--line);padding-bottom:16px}
+  body[data-tab="plan"] .rail{display:block}
+  body[data-tab="board"] .board{display:block}
+  .dock{width:100%;position:fixed;top:0;bottom:0;left:0;right:0}
+  .tabs{display:flex;position:fixed;left:0;right:0;bottom:0;height:50px;background:var(--surface);border-top:1px solid var(--line);z-index:15}
+  .tabs button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:12px;color:var(--ink3);font-weight:700}
+  .tabs button[aria-selected="true"]{color:var(--accent)}
+  .tabs button .bd{font:600 10px var(--mono);color:var(--ink3)}
+  .tl li{grid-template-columns:70px 1fr;grid-auto-flow:row}
+  .tl li .what{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
+</style>
+
+<header class="top">
+  <h1>Rail and Board</h1>
+  <span class="meta">willdan · 2026-09-04 <span class="mono" id="clock">07:40</span></span>
+  <div class="count"><b id="count">12</b><span>decisions</span><span class="hint" id="yesallhint">· "yes all" answers 412–417, 422, 424</span></div>
+  <span class="keys" style="display:flex;gap:10px;font-size:11px;color:var(--ink3)"><span><kbd>j</kbd><kbd>k</kbd> rail</span><span><kbd>↵</kbd> open</span><span><kbd>y</kbd><kbd>n</kbd><kbd>l</kbd> answer</span><span><kbd>/</kbd> capture</span><span><kbd>esc</kbd> close</span></span>
+  <button class="btn quiet theme" id="theme" title="theme">system</button>
+  <button class="btn" id="logbtn" aria-expanded="false"><b id="sent">0</b> sent</button>
+  <button class="btn pri" id="yesall">yes all</button>
+</header>
+<div class="hosts" id="hosts"></div>
+<main class="wrap">
+  <aside class="rail" id="rail" aria-label="Decisions"></aside>
+  <section class="board" id="board" aria-label="Status by phase">
+    <section class="lane inception" id="lane-inception" aria-label="Inception"></section>
+    <section class="lane plan" id="lane-plan" aria-label="Bolt plan"></section>
+    <section class="lane construction" id="lane-construction" aria-label="Construction"></section>
+    <section class="lane operation" id="lane-operation" aria-label="Operation"></section>
+    <div class="scrim" id="scrim"></div>
+    <aside class="dock" id="dock" role="dialog" aria-modal="false" aria-labelledby="dk-title">
+      <div class="dk-h" id="dk-h"></div>
+      <div class="dk-b" id="dk-b"></div>
+      <div class="dk-f" id="dk-f"></div>
+    </aside>
+  </section>
+</main>
+<nav class="tabs" role="tablist">
+  <button role="tab" data-tab="plan" aria-selected="true">Decisions<span class="bd" id="bd-plan"></span></button>
+  <button role="tab" data-tab="board" aria-selected="false">Board<span class="bd" id="bd-board"></span></button>
+</nav>
+<aside class="log" id="log" hidden><h3>Responses sent <span>each one on its own, the moment it was given</span></h3><ol id="loglist"></ol></aside>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+(() => {
+'use strict';
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SM = '<span class="sample">sample</span>';
+const pad = n => String(n).padStart(2,'0');
+const hhmm = m => pad(Math.floor(m/60)%24)+':'+pad(m%60);
+const APPROVE='approve', DECIDE='decide', ANSWER='answer';
+const PH = {inception:'inception', plan:'bolt plan', construction:'construction', operation:'operation'};
+
+/* =====================================================================
+   Sample state · plan-mockup.md at 2026-09-04 07:40 · 412–421, plus 422.
+   ===================================================================== */
+const S = {
+  minutes: 7*60+40,
+  decisions: [
+    {n:412, g:APPROVE, phase:'inception', kind:'intent', title:'atlas-provider-limits', obj:'i:atlas-provider-limits',
+     tail:'curation · <b>7 signals</b> · 3 sources · 12d · elaborations: research → gathered in 424 · prototype (standing)',
+     answers:[['yes','yes'],['drop','drop'],['split','split']]},
+    {n:413, g:APPROVE, phase:'plan', kind:'unit', title:'atlas · status-writer', bolt:'plan-decisions', boltState:'open', obj:'d:413',
+     tail:'covers one-writer sc.1,2 · <b>completes it</b> · type default · yes starts spec → build ×2 → review → merge',
+     answers:[['yes','yes'],['drop','drop'],['redo','redo'],['bolt','bolt'],['new bolt','new bolt']]},
+    {n:414, g:APPROVE, phase:'plan', kind:'unit', title:'atlas · retry-jitter', bolt:'atlas-retry-behaviour-and-jitter-limits', boltState:'new', obj:'d:414',
+     tail:'routed from ask <b>“retries hammer the provider”</b> · no intent · type fast',
+     answers:[['yes','yes'],['drop','drop'],['rename','rename'],['bolt','bolt']]},
+    {n:415, g:APPROVE, phase:'construction', kind:'chores', title:'atlas · 3 chores', obj:'b:plan-decisions', tail:'offered by wi-#420 review · 06:31',
+     chores:[['a','stale AGENTS.md','atlas/AGENTS.md'],['b','citation fix','books/atlas/plan.md'],['c','rename ref','atlas/src/plan/refs.py']],
+     answers:[['yes','yes'],['pick','pick'],['no','no']]},
+    {n:416, g:APPROVE, phase:'construction', kind:'land', title:'switchboard / plan-rows', obj:'b:plan-rows', tail:'<b>4 units merged</b> · gates green · nothing in flight · yes lands through the pull request',
+     answers:[['yes','yes'],['hold','hold']]},
+    {n:417, g:APPROVE, phase:'plan', kind:'baseline', title:'new-repo', obj:'d:417', repo:'new-repo', tail:'<b>11 claims unmet</b> · 8 chores · 3 units · planning\'s first proposal for the repository',
+     picks:[['claims','11 claims'],['chores','8 chores'],['units','3 units']],
+     answers:[['yes','yes'],['pick','pick'],['later','later']]},
+    {n:422, g:APPROVE, phase:'plan', kind:'proposal', title:'plan · atlas', obj:'d:422', tail:'planning 07:31 · <b>2 bolts</b> · 5 units · 4 dependencies · read whole; each unit answerable before the yes',
+     answers:[['yes','yes'],['redo','redo'],['later','later']]},
+    {n:424, g:APPROVE, phase:'inception', kind:'gathered', title:'research · provider envelopes', objs:['i:atlas-provider-limits','i:loop-cadence','i:provider-key-rotation'], obj:'i:atlas-provider-limits',
+     intents:['atlas-provider-limits','loop-cadence','provider-key-rotation'], type:'research', subject:'what a provider limit is, where it is declared, and who enforces it',
+     tail:'curation · <b>3 intents</b> · one self-closing research session · type research',
+     answers:[['yes','yes'],['drop','drop'],['pick','pick'],['type','type']]},
+    {n:418, g:DECIDE, phase:'inception', kind:'close', title:'intent loop-granularity', obj:'i:loop-granularity', tail:'all <b>4 elaborations</b> done · close makes 3 claims standing',
+     answers:[['close','close'],['keep open','keep open']]},
+    {n:419, g:DECIDE, phase:'inception', kind:'idle', title:'prototype plan-derivation', obj:'i:atlas-provider-limits', sess:'proto', tail:'standing · <b>idle 14h</b> · on intent atlas-provider-limits',
+     answers:[['finish','finish'],['keep','keep']]},
+    {n:420, g:DECIDE, phase:'construction', kind:'moved', title:'claim sessions/one-writer <i>v3→v4</i>', obj:'b:plan-decisions', tail:'bolt plan-decisions cites v3 · <b>2 items in flight</b>',
+     answers:[['amend bolt','amend bolt'],['land and follow','land and follow']]},
+    {n:421, g:ANSWER, phase:'construction', kind:'blocked', title:'wi-#418 build · plan-decisions', obj:'b:plan-decisions', sess:'wi418', q:'should Ready imply Backlog cleared?', tail:'session alive · other items of the bolt running',
+     answers:[['reply','reply']]},
+  ],
+  attention: [
+    {id:'host', cls:'', text:'host <b>mac-mini</b> last seen 41m · holds wi-#418', obj:'b:plan-decisions', host:'mac-mini', acts:[['takeover','takeover on studio'],['wait','wait']]},
+    {id:'noapply', cls:'crit', text:'<b>"yes 413"</b> from 06:10 could not apply · unit already dropped by the 05:58 edit · re-proposed as 413', obj:'d:413', acts:[['ok','ok']]},
+  ],
+  since: [
+    {v:'merged', w:'plan-decisions · unit decision-grouping', t:'3 items · review passed first time', at:'07:21'},
+    {v:'landed', w:'switchboard/idle-timeout', t:'gates green', at:'06:52'},
+    {v:'closed', w:'intent host-liveness', t:'by your response', at:'18:10'},
+    {v:'dropped', w:'chore atlas 2b', t:'by your response', at:'18:10'},
+  ],
+  hosts: [
+    {id:'studio', alive:true, bound:4, last:'07:39', note:'lease holder for plan, curation and the page'},
+    {id:'mac-mini', alive:false, bound:2, last:'06:59', gone:'41m', note:'lease expires 07:59 · then its sessions are released'},
+  ],
+  intents: [
+    {id:'atlas-provider-limits', name:'atlas-provider-limits', state:'proposed', note:'proposed · 7 signals · one standing session already on its line',
+     sessions:[{id:'proto', label:'prototype plan-derivation (standing)', state:'idle', tag:'14h', host:'studio', agent:'claude', model:'fable', pane:'studio/2', last:'09-03 17:30 · derivation is pure over state; nothing left to prove'}]},
+    {id:'loop-granularity', name:'loop-granularity', state:'done', note:'4 elaborations done · nothing running',
+     sessions:[{id:'lg1',label:'research scope',state:'done',leaves:'today'},{id:'lg2',label:'planning rounds',state:'done',leaves:'2d'},{id:'lg3',label:'prototype tick',state:'done',leaves:'5d'},{id:'lg4',label:'writeback',state:'done',leaves:'6d'}]},
+    {id:'sink-marks', name:'sink-delivery-marks', state:'open', note:'research running · writeback queued',
+     sessions:[{id:'sm-res', label:'research (self-closing)', state:'working', host:'studio', agent:'claude', model:'fable', pane:'studio/4', last:'07:33 · reading the three sinks\' delivery paths'},{id:'sm-wb', label:'writeback', state:'queued'}]},
+    {id:'loop-cadence', name:'loop-cadence', state:'open', note:'sibling of loop-granularity · how often a loop asks a provider', sessions:[]},
+    {id:'provider-key-rotation', name:'provider-key-rotation', state:'open', note:'from the ops constraint · provider B rotates keys on the 1st', sessions:[]},
+  ],
+  gatherings:[{n:424, type:'research', state:'proposed', intents:['atlas-provider-limits','loop-cadence','provider-key-rotation']}],
+  explorations:[], planning:null, deferred:[], picked:new Set(),
+  repos:[
+    {id:'atlas', kinds:['service','worker','cli'], caps:['http','provider-calls','status-table','retry'], manifest:'atlas/flywheel.yaml · landing: direct merge',
+     claims:[['providers/one-writer @v3','not satisfied','kind:service','unit 413 proposed · completes it'],['providers/rate-envelope @v1','not satisfied','capability:provider-calls','3 intents argue with it · gathering 424'],['plan/sink-marks @v2','satisfied','all','tail-derive merged 09-03'],['plan/tail-cursor @v1','unjudged','all','standing since 05:40 · proposal 422 covers sc.1–3'],['repo/readme @v2','satisfied','all','—'],['repo/ci @v1','satisfied','all','gates on push'],['sessions/one-writer @v4','stale','kind:worker','judged at v3 · decision 420'],['ops/key-rotation @v1','not applicable','capability:queue','atlas declares no queue']]},
+    {id:'switchboard', kinds:['service'], caps:['http','rows','sinks'], manifest:'switchboard/flywheel.yaml · landing: pull-request',
+     claims:[['plan/sink-marks @v2','satisfied','capability:sinks','rows-cursor merged'],['sessions/idle-bound @v2','satisfied','all','idle-timeout landed 06:52'],['plan/tail-cursor @v1','unjudged','capability:sinks','planning due'],['repo/readme @v2','satisfied','all','—'],['repo/ci @v1','satisfied','all','—'],['providers/rate-envelope @v1','not applicable','capability:provider-calls','no provider calls']]},
+    {id:'new-repo', kinds:['service'], caps:['http'], manifest:'new-repo/flywheel.yaml · joined 09-03 23:00 · ledger empty',
+     claims:[['repo/readme @v2','not satisfied','all','no README at root'],['repo/ci @v1','not satisfied','all','no gate runs on push'],['repo/as-built @v1','not satisfied','all','no as-built record'],['repo/agents-md @v1','not satisfied','all','no AGENTS.md'],['boundary/one-owner @v2','not satisfied','all','no CODEOWNERS'],['boundary/no-cross-import @v1','not satisfied','kind:service','—'],['boundary/config-outside @v1','not satisfied','kind:service','—'],['boundary/ports-derived @v1','not satisfied','kind:service','—'],['owner/named @v1','not satisfied','all','—'],['owner/oncall @v1','not satisfied','all','—'],['invariant/health-endpoint @v1','not satisfied','capability:http','—'],['invariant/graceful-stop @v1','not satisfied','capability:http','—'],['behavior/status-row @v1','not satisfied','named','named for new-repo by 09-03 ask'],['providers/rate-envelope @v1','not applicable','capability:provider-calls','no provider calls'],['plan/sink-marks @v2','not applicable','capability:sinks','no sinks']]},
+    {id:'books', kinds:['books'], caps:[], manifest:'books/flywheel.yaml · the books repository · claims live here', claims:[]},
+  ],
+  bolts: [
+    {id:'plan-decisions', name:'plan-decisions', repo:'atlas', line:'plan-decisions @ 9e21c4', note:'4 merged · 1 open · cites one-writer v3',
+     units:[{name:'plan-derivation',state:'merged'},{name:'decision-numbers',state:'merged'},{name:'response-apply',state:'merged'},{name:'decision-grouping',state:'merged',t:'07:21'},
+            {name:'sink-delivery',state:'building',type:'default',items:[
+              {id:'wi418',label:'wi-#418 build',state:'blocked',host:'mac-mini',agent:'claude',model:'fable',pane:'mac-mini/1',last:'06:59 · asked: should Ready imply Backlog cleared?'},
+              {id:'wi419',label:'wi-#419 spec',state:'working',host:'studio',agent:'claude',model:'fable',pane:'studio/5',last:'07:38 · asked the books for claim sinks/one-mark @v2 · found · cited'},
+              {id:'wi420',label:'wi-#420 review',state:'working',host:'studio',agent:'claude',model:'opus',pane:'studio/6',last:'07:37 · two notes so far · none blocking'}]}],
+     endpoints:['http://plan.plan-decisions.localhost:41231','http://rows.plan-decisions.localhost:41232'],
+     services:[{n:'plan-api',s:'running',ep:'http://plan.plan-decisions.localhost:41231'},{n:'rows web',s:'running',ep:'http://rows.plan-decisions.localhost:41232'},{n:'postgres',s:'running',ep:'postgres://localhost:41233'},{n:'signal-worker',s:'stopped',ep:'—'}]},
+    {id:'plan-tail', name:'plan-tail', repo:'atlas', line:'plan-tail @ 3c8d0e', note:'1 merged · 1 building · 422 proposes 2 more',
+     units:[{name:'tail-derive',state:'merged',t:'09-03'},
+            {name:'tail-marks',state:'building',type:'default',items:[
+              {id:'wi425',label:'wi-#425 build',state:'working',host:'studio',agent:'claude',model:'fable',pane:'studio/7',last:'07:36 · mark table migration applied · 9 tests green'},
+              {id:'wi426',label:'wi-#426 build',state:'starting',host:'mac-mini',agent:'claude',model:'fable',pane:'mac-mini/2',last:'07:39 · place prepared off plan-tail · host quiet'}]}],
+     machinery:[{id:'cf1',label:'conflict fix · take of atlas main',state:'working',host:'studio',agent:'claude',model:'haiku',pane:'studio/8',last:'07:38 · 2 files conflict in src/plan/tail.py · resolving'}],
+     endpoints:['http://atlas.plan-tail.localhost:41241'],
+     services:[{n:'atlas-api',s:'running',ep:'http://atlas.plan-tail.localhost:41241'},{n:'atlas-worker',s:'stopped',ep:'—'}]},
+    {id:'plan-rows', name:'plan-rows', repo:'switchboard', line:'plan-rows @ 7b2e91', note:'4 merged · nothing in flight · gates green',
+     units:[{name:'rows-order',state:'merged',t:'08-30'},{name:'rows-sink',state:'merged',t:'09-01'},{name:'rows-window',state:'merged',t:'09-02'},{name:'rows-cursor',state:'merged',t:'09-03 22:40'}],
+     endpoints:['http://rows.plan-rows.localhost:41235'],
+     services:[{n:'rows web',s:'running',ep:'http://rows.plan-rows.localhost:41235'},{n:'postgres',s:'running',ep:'postgres://localhost:41236'}]},
+  ],
+  landed: [
+    {id:'idle-timeout', name:'idle-timeout', repo:'switchboard', at:'06:52 today', pr:{n:212,state:'merged'}, checks:[['lint','ok'],['tests','ok','1,212 passed'],['map-check','ok'],['as-built','ok','2 statements']],
+     envs:[['prod','https://switchboard.willdan.internal'],['staging','https://switchboard-staging.willdan.internal']], units:['idle-tail','session-idle-bound'], signals:[], live:null, leaves:'7d'},
+    {id:'provider-status', name:'provider-status', repo:'atlas', at:'09-02 16:10', pr:{n:198,state:'merged'}, checks:[['lint','ok'],['tests','ok','388 passed'],['map-check','ok'],['as-built','ok','3 statements']],
+     envs:[['staging','https://atlas-staging.willdan.internal']], units:['status-table','status-poller'],
+     signals:[{kind:'reaction',src:'log · atlas-staging',age:'2h',text:'429s from provider A at 0.4% of calls since the landing, up from 0.1%',move:'attached → intent atlas-provider-limits (412)'}], live:'signal live · 2h', leaves:'7d'},
+    {id:'claim-index', name:'claim-index', repo:'atlas', at:'08-28 15:05', pr:{n:190,state:'merged'}, checks:[['lint','ok'],['tests','ok','371 passed'],['map-check','ok'],['as-built','ok','3 statements']],
+     envs:[['staging','https://atlas-staging.willdan.internal']], units:['claim-table','claim-lookup'], signals:[], live:null, leaves:'2d'},
+  ],
+  opsignals: [
+    {kind:'ask',src:'#ops chat · rhea',age:'3h',text:'can the prod status page show which bolt each row landed from?',move:'unmoved · curation at 08:00'},
+    {kind:'constraint',src:'meeting · ops sync',age:'1d',text:'provider B rotates keys on the 1st; atlas must reload without a restart',move:'attached → intent atlas-provider-limits (412)'},
+  ],
+  curation:{unmoved:5, by:'chat 2 · log 2 · meeting 1', oldest:'3d', next:'08:00 or at 8 unmoved', session:{label:'curation', state:'scheduled', act:'next 08:00', host:'studio', agent:'claude', model:'haiku', pane:'studio/1'}},
+  proposal:{
+    session:'planning · atlas · 2026-09-04 07:31',
+    reads:'backlog change: claim plan/tail-cursor @v1 became standing at 05:40 (writeback of intent host-liveness) · ask “the plan tail should survive a restart”',
+    bolts:[{id:'plan-tail', name:'plan-tail', state:'open', holds:'1 merged · 1 building'},{id:'tail-cursor', name:'tail-cursor', state:'new', holds:'created by your yes'}],
+    units:[
+      {id:'u1', name:'tail-marks-restart', bolt:'plan-tail', type:'default', after:[], covers:'plan/sink-marks @v2 · sc.3', why:'delivery marks are re-read on restart, so the SINCE tail after a restart is the same tail', from:'writeback · intent host-liveness · 09-03 17:50'},
+      {id:'u2', name:'tail-window', bolt:'plan-tail', type:'fast', after:['u1'], covers:'plan/sink-marks @v2 · sc.4', why:'the tail is bounded by the last mark per sink, never by a count', from:'writeback · intent host-liveness · 09-03 17:50'},
+      {id:'u3', name:'cursor-store', bolt:'tail-cursor', type:'default', after:[], covers:'plan/tail-cursor @v1 · sc.1', why:'one cursor per sink, written on delivery, in the plan store', from:'writeback · intent host-liveness · 09-04 05:40'},
+      {id:'u4', name:'cursor-read', bolt:'tail-cursor', type:'default', after:['u3'], covers:'plan/tail-cursor @v1 · sc.2', why:'the plan derives the tail from the cursor, not from the delivery log', from:'writeback · intent host-liveness · 09-04 05:40'},
+      {id:'u5', name:'cursor-chat-link', bolt:'tail-cursor', type:'fast', after:['u3','u4'], covers:'plan/tail-cursor @v1 · sc.3', why:'the chat rendering carries a link to the page at the cursor', from:'ask · 09-03 16:20'},
+    ],
+    edits:0, refusal:null, n:422,
+  },
+  log:[], inflight:{}, focus:'d:412', open:null, hostlit:null, nextWi:431,
+};
+const dec = n => S.decisions.find(d => d.n===n);
+const bolt = id => S.bolts.find(b => b.id===id);
+const intent = id => S.intents.find(i => i.id===id);
+const host = id => S.hosts.find(h => h.id===id);
+const repo = id => S.repos.find(r => r.id===id);
+const gatheringOf = id => S.gatherings.find(g => g.state==='proposed' && g.intents.includes(id));
+const explorationOf = id => S.explorations.find(x => x.state!=='done' && x.intents.includes(id));
+const railKeys = () => [...S.decisions.map(d => 'd:'+d.n), ...S.attention.map(a => 'a:'+a.id)];
+function allSessions(){
+  const out = [];
+  S.intents.forEach(i => i.sessions.forEach(s => out.push({...s, owner:{key:'i:'+i.id, name:'intent '+i.name, phase:'inception'}})));
+  S.bolts.forEach(b => b.units.forEach(u => (u.items||[]).forEach(s => out.push({...s, owner:{key:'b:'+b.id, name:'bolt '+b.name, phase:'construction'}, unit:u.name}))));
+  S.bolts.forEach(b => (b.machinery||[]).forEach(s => out.push({...s, owner:{key:'b:'+b.id, name:'bolt '+b.name, phase:'construction'}})));
+  S.explorations.filter(x => x.state!=='done').forEach(x => out.push({...x.session, id:x.id, label:x.label, owner:{key:'x:'+x.id, name:x.label, phase:'inception'}}));
+  if(S.planning) out.push({...S.planning.session, id:'planning', label:'planning · '+S.planning.repo, last:S.planning.last, owner:{key:'p:planning', name:'planning', phase:'plan'}});
+  out.push({...S.curation.session, id:'curation', owner:{key:'c:curation', name:'curation', phase:'inception'}});
+  return out.filter(s => s.state!=='done' && s.state!=='queued');
+}
+const objOf = key => { const [t,id] = key.split(':'); return t==='d' ? dec(+id) : t==='b' ? bolt(id) : t==='i' ? intent(id) : t==='l' ? S.landed.find(l => l.id===id) : t==='h' ? host(id) : t==='a' ? S.attention.find(a => a.id===id) : t==='r' ? repo(id) : t==='x' ? S.explorations.find(x => x.id===id) : t==='p' ? S.planning : t==='f' ? S.deferred.find(x => x.key===id) : null; };
+
+/* ---------- invented detail, marked sample ---------- */
+const X = {
+  412:{text:'Approve the intent. <b>Yes</b> opens <span class="mono">atlas-provider-limits</span> as a line off the books and starts both elaborations: research, self-closing, and a standing prototype. <b>Drop</b> gives each of the 7 signals a move that records the drop. <b>Split</b> sends the cluster back to curation.',
+    doc:{dm:'intent brief · curation 09-02 09:14 · 7 signals from 3 sources over 12 days', h:[
+      ['The subject','Atlas treats every provider as unlimited. Seven signals since 08-23 say otherwise: two meeting excerpts, four log observations, one chat ask. Curation attached them to one thread: what a provider limit is, where it is declared, and who enforces it.'],
+      ['What the elaborations would do','Research reads the three providers’ published limits and how atlas hits them, and closes itself with a finding. The prototype stands: a limiter in front of the worker, served on its own place, that you finish when it has told you enough.'],
+      ['Claims it challenges','<span class="cl">providers/one-writer @v3</span> and <span class="cl">providers/rate-envelope @v1</span>. Both move if this intent closes with a new envelope claim.']]},
+    signals:[['meeting · ops sync · 08-23','we hit the provider cap twice last week and nobody saw it until the retries stacked up'],['log · atlas-worker · 08-29','429s from provider A: 1,204 in 6h'],['chat · #atlas · rhea · 09-01','can we cap concurrent calls per provider rather than per worker?']],
+    hist:[['09-02 09:14','curation','note','7 signals attached · 2 dropped as duplicates'],['09-03 11:02','ops sync','note','signal 7 added from the meeting excerpt'],['09-04 07:40','plan','decision','412 created · approve the intent']]},
+  413:{text:'Approve the unit. <b>Yes</b> creates 4 work items on bolt <span class="mono">plan-decisions</span> and starts wi-#431 spec; the next decision that is yours about this work is the bolt\'s close. <b>Redo</b> returns it to planning with notes. <b>Bolt</b> routes it to another open bolt; <b>new bolt</b> gives it one of its own.',
+    doc:{dm:'unit proposal · planning 09-03 21:12 · type default · target bolt plan-decisions (open)', h:[
+      ['Why','Atlas keeps one status row per provider, but two code paths write it: the poller on each tick and the retry handler after a failure. With two hosts the rows drift, and claim <span class="cl">providers/one-writer @v3</span> stays unmet on atlas (scenarios 1 and 2).'],
+      ['What changes','One writer module owns the status table. The poller and the retry handler hand it events; it applies them in order and writes once per provider per tick. On restart it replays the last event per provider, which makes the rewrite idempotent.'],
+      ['Out of scope','Provider rate limits and retry jitter. Decision 414 covers the jitter; the limits are intent atlas-provider-limits, decision 412.']]},
+    items:[['wi-#431','spec','the status table and the writer interface','none'],['wi-#432','build','the writer and the poller hand-off','#431'],['wi-#433','build','restart replay','#432'],['wi-#434','review','both builds against sc.1 and sc.2','#432 #433']],
+    stages:['spec','build','build','review','merge'],
+    hist:[['09-03 21:12','planning','note','proposed · covers one-writer sc.1, sc.2 · completes the claim on atlas'],['09-04 05:58','operator','edit','plan file edited by hand · unit dropped'],['09-04 06:10','operator','fail','yes 413 · could not apply · unit already dropped'],['09-04 06:41','planning','note','edit reverted · unit re-derived · number kept'],['09-04 07:40','plan','decision','413 stands · approve the unit']]},
+  414:{text:'Approve the unit. <b>Yes</b> creates bolt <span class="mono">atlas-retry-behaviour-and-jitter-limits</span> off atlas main and starts wi-#440 spec. <b>Rename</b> gives the new bolt your name instead. <b>Bolt</b> puts the unit on an open bolt and creates none.',
+    doc:{dm:'unit proposal · planning 09-03 21:20 · type fast · new bolt · routed from ask-#77', h:[
+      ['Why','Every atlas host retries a failed provider call on the same fixed schedule, so after one outage all hosts retry in lockstep. The ask “retries hammer the provider” describes the result: a second wave of 429s at exactly the backoff interval.'],
+      ['What changes','Backoff gains a jitter term drawn per attempt within bounds the spec fixes (proposed: 0 to 40% of the base interval). Nothing else about the retry policy moves.']]},
+    items:[['wi-#440','spec','retry policy with jitter bounds','none'],['wi-#441','build','jittered backoff in the client','#440']],
+    stages:['spec','build','merge'],
+    hist:[['08-30 11:05','operator','dictation','ask: retries hammer the provider'],['09-03 21:20','planning','note','routed the ask to a unit · no open bolt fits · new bolt proposed'],['09-04 07:40','plan','decision','414 created · approve the unit']]},
+  415:{text:'A review session offered three chores outside its job. <b>Yes</b> accepts all three: each becomes a chore unit with its own session and place, on no bolt. <b>Pick</b> accepts the ones you mark. <b>No</b> drops all three with the reason recorded.',
+    hist:[['09-04 06:31','wi-#420 review','note','offered 3 chores outside its job'],['09-04 07:40','plan','decision','415 created · accept or reject']]},
+  416:{text:'Every unit of bolt <span class="mono">plan-rows</span> is finished: 4 units merged, gates green, nothing in flight. <b>Yes</b> lands it: the machinery opens the pull request switchboard\'s policy requires and merges when the gates pass; the bolt\'s place is removed with the landing. <b>Hold</b> keeps the bolt open with its place; the decision returns when something merges.',
+    kv:[['rows-cursor','2 items · 09-03 22:40 · review passed first time'],['rows-window','3 items · 09-02'],['rows-sink','1 item · 09-01'],['rows-order','2 items · 08-30']], kvTitle:'merged units',
+    kv2:[['lint','green'],['tests','1,212 passed · 0 skipped'],['map-check','green'],['as-built','4 statements · claims cited']], kv2Title:'gates on the line',
+    hist:[['08-28 10:00','operator','response','yes 388 · bolt plan-rows opened off switchboard main @ 5b3e10'],['09-03 22:40','review','exit','unit rows-cursor · passed first time · merged'],['09-03 22:41','bolt loop','note','4 units merged · gates green · landing is yours'],['09-04 07:40','plan','decision','416 created · land or hold']]},
+  417:{text:'<span class="mono">new-repo</span> joined the fleet with an empty ledger; its first planning judged every claim in scope once and offers the unsatisfied set as one proposal (104). <b>Yes</b> starts everything as one bolt. <b>Pick</b> takes part. <b>Later</b> defers it: it stays in the gate greyed until you ask again.',
+    kv2:[['8 chores','lint config, CI, AGENTS.md, three renames, two citations'],['3 units','ci gate · as-built record · claim sweep']], kv2Title:'proposed',
+    hist:[['09-03 23:00','planning','note','new-repo joined the fleet · baseline derived from the ledger'],['09-04 07:40','plan','decision','417 created · approve the baseline']]},
+  424:{text:'Curation found three intents arguing with the same claim and proposes <b>one</b> research session over them: one session, one conversation, one place (188). <b>Yes</b> starts it; it writes its records into each covered intent\'s change directory and its conclusions into the book once, and its exit finishes the research elaboration of every intent it covers. <b>Drop</b> leaves each intent to propose its own. <b>Pick</b> keeps only the intents you name. <b>&lt;intent&gt;: drop</b> removes one intent and the decision stays. <b>Type</b> approves with another elaboration type.',
+    why:[['shared claim','providers/rate-envelope @v1 · all three argue with it'],['shared subject','what a provider limit is, where it is declared, and who enforces it'],['weight','atlas-provider-limits 7 signals · loop-cadence 3 · provider-key-rotation 2'],['one place','books/intents/_gathered/424 · off the books shared line']],
+    deliverables:[['research note','flywheel/research-note @v3','record · per covered intent','page','default'],['book chapter','flywheel/chapter-writer @v3','chapter schema','review surface','default'],['claim','flywheel/claim-writer @v3','claim schema · versioned','plan decision','default'],['context map','willdan/map-writer @v2','map schema','map-check','override'],['conceptual diagram','flywheel/diagram-conceptual @v3','house style','page','default'],['logical diagram','willdan/diagrams-mermaid @v1','house style','page','override']],
+    hist:[['09-02 09:14','curation','note','7 signals on atlas-provider-limits cluster with 3 on loop-cadence and 2 on provider-key-rotation'],['09-04 07:12','curation','note','all three argue with providers/rate-envelope @v1 · one research proposed over the three'],['09-04 07:40','plan','decision','424 created · approve the gathering']]},
+  418:{text:'Every elaboration on <span class="mono">loop-granularity</span> has exited done. <b>Close</b> archives the intent: its line lands on the books\' shared line and its 3 proposed claims become standing. <b>Keep open</b> leaves the line for another elaboration.',
+    kv:[['research','scope · self-closed 08-28 · finding: one loop per bolt'],['planning','rounds · finished 08-30'],['prototype','tick · finished 09-02 by your response 377'],['writeback','books ch.7 rewritten · gates green 09-03 17:50']], kvTitle:'elaborations',
+    kv2:[['loops/one-per-bolt @v1','becomes standing'],['loops/tick @v1','becomes standing'],['sessions/idle-bound @v2','becomes standing · replaces v1']], kv2Title:'on close',
+    hist:[['08-24 10:00','operator','response','yes 361 · intent opened'],['09-03 17:50','writeback','exit','done · map-check green'],['09-04 07:40','plan','decision','418 created · close or keep open']]},
+  419:{text:'The standing prototype on <span class="mono">atlas-provider-limits</span> has been idle 14 hours. <b>Finish</b> ends the session, keeps its finding note on the intent and removes its place. <b>Keep</b> leaves it standing; the decision does not return until it is idle again after activity.',
+    log:[['09-03 17:02','serving at http://proto.atlas-provider-limits.localhost:41240'],['09-03 17:31','40 derivations · 0.8s each · 38 match the hand-derived plan'],['09-03 17:40','idle · standing · finish or keep is yours']],
+    hist:[['09-01 09:10','prototype','note','standing prototype started'],['09-03 17:40','prototype','exit','idle · standing'],['09-04 07:40','plan','decision','419 created · finish or keep']]},
+  420:{text:'Claim <span class="mono">sessions/one-writer</span> moved from v3 to v4 while bolt <span class="mono">plan-decisions</span> cites v3 with two items in flight. <b>Amend bolt</b> sends both items back to spec on v4 before anything merges. <b>Land and follow</b> lands on v3 and queues a follow-up unit for v4.',
+    kv:[['v3','one status writer per bolt'],['v4','one status writer per bolt, and the writer is the loop, not a session']], kvTitle:'what moved',
+    kv2:[['wi-#418','build · sink-delivery · cites v3 in its spec'],['wi-#419','spec · sink-delivery · cites v3']], kv2Title:'in flight citing v3',
+    hist:[['09-04 05:40','writeback','exit','claim sessions/one-writer moved to v4 by intent host-liveness'],['09-04 07:40','plan','decision','420 created · amend or follow']]},
+  421:{text:'The build session on wi-#418 cannot answer a question its spec leaves open, and it waits. Your reply is recorded now and delivered to the session in its place, or to a fresh session if the host stays gone; nothing else on the bolt waits for it.',
+    log:[['07:12','read spec wi-#418 · Ready column semantics'],['07:14','board API: Ready and Backlog are independent flags'],['07:15','spec says "Ready implies cleared"; code says no · asking']],
+    hist:[['09-04 05:40','bolt loop','note','place prepared · item 2 of sink-delivery · host mac-mini'],['09-04 06:59','wi-#418 build','question','should Ready imply Backlog cleared?'],['09-04 07:34','host watch','note','mac-mini last seen 06:59 · lease expires 07:59']]},
+  422:{text:'Planning read the atlas backlog after claim <span class="mono">plan/tail-cursor @v1</span> became standing and proposes this plan for the repository: bolt <span class="mono">plan-tail</span> gains 2 units, bolt <span class="mono">tail-cursor</span> is created with 3. The document is reviewed whole. Each unit is answerable on its own before the yes, and every such answer is one response, recorded when you give it. <b>Yes</b> approves the plan as it then stands. <b>Redo</b> withdraws it and charges planning again with your notes; the next proposal arrives under a new number. <b>Later</b> defers it: it stays in the gate greyed until you ask again, and planning\'s next run supersedes it silently.',
+    lineage:[['intent','host-liveness','opened 08-24 · closed by your response 09-03 18:10'],['elaboration','writeback','wrote claim plan/tail-cursor @v1 · moved sessions/one-writer to v4'],['landing','books shared line','the archive landed 09-04 05:40 · both claims standing'],['planning run','atlas · 07:31','charged by the backlog change and the ask “the plan tail should survive a restart”'],['proposal','422','07:40 · this document']],
+    hist:[['08-24 10:00','operator','response','yes 361 · intent host-liveness opened'],['09-03 17:20','writeback','exit','done · wrote plan/tail-cursor @v1 · moved sessions/one-writer v3→v4'],['09-03 18:10','operator','response','close · intent host-liveness archived'],['09-04 05:40','machinery','exit','archive landed on the books shared line · claims standing'],['09-04 07:31','planning','note','proposal written · 2 bolts · 5 units · 4 dependencies'],['09-04 07:40','plan','decision','422 created · approve the plan']]},
+};
+const BX = {
+  'plan-decisions':[['08-28 10:30','operator','response','yes 389 · bolt plan-decisions opened off atlas main'],['08-30 15:12','review','exit','unit plan-derivation · passed'],['09-04 07:21','review','exit','unit decision-grouping · passed first time · merged'],['09-04 07:40','plan','decision','420 claim moved · 421 blocked · 415 chores · 413 proposes a unit here']],
+  'plan-rows':[['08-28 10:00','operator','response','yes 388 · bolt plan-rows opened off switchboard main @ 5b3e10'],['09-03 22:40','review','exit','unit rows-cursor · passed first time · merged'],['09-04 07:40','plan','decision','416 · land or hold']],
+  'plan-tail':[['09-01 14:02','operator','response','yes 401 · bolt plan-tail opened'],['09-03 18:40','review','exit','unit tail-derive · passed · merged'],['09-04 07:31','planning','note','proposal 422 adds 2 units here']],
+};
+
+/* =====================================================================
+   The send · one response, on its own; in flight until it settles
+   ===================================================================== */
+const tick = () => { S.minutes++; return hhmm(S.minutes); };
+function toast(msg, fail){ const t = document.createElement('div'); t.className = 'toast'+(fail?' fail':''); t.textContent = msg; $('#toasts').appendChild(t); setTimeout(() => t.remove(), 2600); }
+function logLine(text, opts={}){ S.log.unshift({t:tick(), text, ...opts}); }
+function refuse(n){ $$(`.card[data-n="${n}"]`).forEach(el => { el.classList.remove('refused'); void el.offsetWidth; el.classList.add('refused'); }); toast(`${n} · already sending · wait for it to settle`, true); }
+function wire(n, a, arg){
+  if(a==='yes') return `yes ${n}`; if(a==='no') return `no ${n}`;
+  if(a==='redo') return `${n} redo: ${arg}`; if(a==='reply') return `${n}: ${arg}`; if(a==='pick') return `${n} pick ${arg}`;
+  if(a==='bolt'||a==='rename'||a==='new bolt') return `${n} ${a} ${arg}`;
+  return `${n} ${a}`;
+}
+function send(n, a, arg){
+  const d = dec(n); if(!d) return;
+  if(S.inflight[n]){ refuse(n); return; }
+  S.inflight[n] = {a, arg, text:wire(n,a,arg)};
+  $$(`.card[data-n="${n}"]`).forEach(el => el.classList.add('inflight'));
+  if(S.open==='d:'+n) renderDock();
+  setTimeout(() => settle(n), 950);
+}
+function settle(n){
+  const f = S.inflight[n], d = dec(n); if(!f || !d) return;
+  delete S.inflight[n];
+  logLine(f.text, {n});
+  toast(`${f.text.length>52 ? f.text.slice(0,50)+'…' : f.text} · recorded`);
+  effects(d, f.a, f.arg);
+  $$(`.card[data-n="${n}"]`).forEach(el => el.classList.add('gone'));
+  const keys = railKeys(); const i = keys.indexOf('d:'+n);
+  S.decisions = S.decisions.filter(x => x.n!==n);
+  setTimeout(() => {
+    const nk = railKeys(); const next = nk[Math.min(i, nk.length-1)] || null;
+    if(S.open==='d:'+n){ if(next) S.open = next; else S.open = null; }
+    if(S.focus==='d:'+n) S.focus = next;
+    if(!S.open) document.body.classList.remove('docked');
+    render();
+  }, 240);
+}
+function say(text){ logLine(text, {say:true}); toast(`say → ${text} · applied`); }
+function unitResponse(text, toastText){ logLine(text, {n:422}); toast(`${toastText||text} · recorded`); S.proposal.edits++; }
+function since(v, w, t){ S.since.unshift({v, w, t:t||'by your response', at:hhmm(S.minutes), fresh:true}); }
+function addBolt(id, name, repo, note){ if(bolt(id)) return bolt(id); const b = {id, name, repo, line:`${name} @ new`, note, units:[], endpoints:[`http://${repo}.${name}.localhost:${41250+S.bolts.length}`], services:[{n:repo+'-api',s:'stopped',ep:'—'}]}; S.bolts.push(b); return b; }
+function startUnit(b, name, type, stage){ const id = 'wi'+S.nextWi; b.units.push({name, state:'building', type, items:[{id, label:`wi-#${S.nextWi++} ${stage}`, state:'starting', host:'studio', last:`${hhmm(S.minutes)} · place prepared off ${b.name}`}]});
+  setTimeout(() => { const it = b.units.find(u=>u.name===name)?.items.find(i=>i.id===id); if(it && it.state==='starting'){ it.state='working'; it.last=`${hhmm(S.minutes)} · reading the unit`; render(); } }, 2400); }
+function effects(d, a, arg){
+  const n = d.n, P = S.proposal;
+  switch(n){
+    case 412: { const i = intent('atlas-provider-limits');
+      if(a==='yes'){ i.state='open'; i.note='2 elaborations starting · 1 standing'; i.sessions.push({id:'e-res',label:'research',state:'starting',host:'studio',last:`${hhmm(S.minutes)} · place prepared`},{id:'e-pro',label:'prototype limiter',state:'starting',host:'studio',last:`${hhmm(S.minutes)} · place prepared`}); since('started','intent atlas-provider-limits','2 elaborations'); }
+      else if(a==='drop') since('dropped','intent atlas-provider-limits','7 signals moved: dropped'); else since('split','intent atlas-provider-limits','back to curation'); break; }
+    case 413: if(a==='yes') startUnit(bolt('plan-decisions'),'status-writer','default','spec');
+      else if(a==='bolt'){ const b = S.bolts.find(x => x.name===arg); if(b) startUnit(b,'status-writer','default','spec'); }
+      else if(a==='new bolt') startUnit(addBolt('b-'+arg, arg, 'atlas', 'new · 1 unit'),'status-writer','default','spec');
+      else if(a==='drop') since('dropped','unit atlas · status-writer'); else since('redo','unit atlas · status-writer','back to planning with notes'); break;
+    case 414: if(a==='yes'||a==='rename'){ const nm = a==='rename' ? arg : d.bolt; startUnit(addBolt('b-retry', nm, 'atlas', 'new · type fast'),'retry-jitter','fast','spec'); }
+      else if(a==='bolt'){ const b = S.bolts.find(x => x.name===arg); if(b) startUnit(b,'retry-jitter','fast','spec'); }
+      else since('dropped','unit atlas · retry-jitter'); break;
+    case 415: if(a==='no') since('dropped','chores atlas a b c');
+      else { const letters = a==='yes' ? 'a b c' : arg; const b = addBolt('chores-atlas','chores','atlas','no bolt · one session each'); letters.split(' ').forEach(l => { const c = d.chores.find(x => x[0]===l); if(c) startUnit(b,'chore '+l+' · '+c[1],'chore','chore'); }); since('accepted','chores atlas '+letters); } break;
+    case 416: { const b = bolt('plan-decisions'); if(a==='yes'){ b.landing = 219; b.note = 'landing · PR #219 · checks running';
+        since('landing','switchboard/plan-decisions','PR #219 open · gates running');
+        setTimeout(() => { S.bolts = S.bolts.filter(x => x.id!=='plan-decisions'); S.landed.unshift({id:'plan-decisions', name:'plan-decisions', repo:'switchboard', at:hhmm(S.minutes)+' today', pr:{n:219,state:'merged'}, checks:[['lint','ok'],['tests','ok','1,214 passed'],['map-check','ok'],['as-built','ok','4 statements']], envs:[['prod','https://switchboard.willdan.internal']], units:['plan-derivation','decision-numbers','response-apply','decision-grouping'], signals:[], window:'stays 7 days · sink-delivery moved to a successor bolt'});
+          addBolt('plan-decisions-2','plan-decisions-2','switchboard','successor · carries unit sink-delivery').units.push({name:'sink-delivery',state:'building',type:'default',items:b.units.find(u=>u.name==='sink-delivery').items});
+          S.decisions.filter(x => x.obj==='b:plan-decisions').forEach(x => x.obj='b:plan-decisions-2'); S.attention.forEach(x => { if(x.obj==='b:plan-decisions') x.obj='b:plan-decisions-2'; });
+          since('landed','switchboard/plan-decisions','gates green'); render(); }, 4500); }
+      else since('held','switchboard/plan-decisions','bolt stays open'); break; }
+    case 417: if(a==='yes'||a==='pick'){ const b = addBolt('b-baseline','baseline','new-repo', a==='yes' ? '8 chores · 3 units' : `pick ${arg}`); startUnit(b,'ci-gate','default','spec'); b.units.push({name:'as-built-record',state:'queued',type:'default',items:[]},{name:'claim-sweep',state:'queued',type:'fast',items:[]}); since('started','baseline new-repo', a==='yes' ? 'all' : `pick ${arg}`); }
+      else since('later','baseline new-repo','standing without a decision'); break;
+    case 418: if(a==='close'){ S.intents = S.intents.filter(i => i.id!=='loop-granularity'); since('closed','intent loop-granularity','3 claims standing'); } else since('kept','intent loop-granularity','open'); break;
+    case 419: { const i = intent('atlas-provider-limits'); if(a==='finish'){ i.sessions = i.sessions.filter(s => s.id!=='proto'); i.note = i.note.replace('one standing session already on its line','finding kept on the intent'); since('finished','prototype plan-derivation','place removed'); } break; }
+    case 420: { const b = bolt('plan-decisions'); if(!b) break; if(a==='amend bolt'){ b.note = 're-spec on v4 · wi-#418, #419 back to spec'; b.units.find(u => u.name==='sink-delivery').items.forEach(i => { if(i.id==='wi418'||i.id==='wi419'){ i.state='starting'; i.label = i.label.replace(/build|spec/,'spec'); i.last = `${hhmm(S.minutes)} · returned to spec on one-writer v4`; } }); } else b.note = 'lands on v3 · follow-up unit queued for v4'; break; }
+    case 421: { const it = allSessions().find(s => s.id==='wi418'); const b = S.bolts.flatMap(b => b.units).flatMap(u => u.items||[]).find(i => i.id==='wi418'); if(b){ b.state = host('mac-mini').alive ? 'working' : 'starting'; b.last = `${hhmm(S.minutes)} · answered: “${arg.slice(0,40)}${arg.length>40?'…':''}” · ${host('mac-mini').alive ? 'continuing' : 'delivered when its place is reachable'}`; } since('answered','wi-#418 build · plan-decisions','session continues'); break; }
+    case 422: if(a==='yes'){
+        P.units.forEach(u => { if(u.dropped) return; const pb = P.bolts.find(x => x.id===u.bolt); const b = bolt(pb.id) || addBolt(pb.id, pb.name, 'atlas', 'new · from 422'); if(bolt(pb.id) && b.name!==pb.name) b.name = pb.name;
+          if(u.after.some(a2 => !P.units.find(x => x.id===a2).dropped)) b.units.push({name:u.name, state:'queued', type:u.type, items:[]}); else startUnit(b, u.name, u.type, 'spec'); });
+        const pt = bolt('plan-tail'); if(pt) pt.note = '1 merged · 1 building · 2 from 422';
+        since('accepted','plan atlas',`${P.units.filter(u=>!u.dropped).length} units on ${new Set(P.units.filter(u=>!u.dropped).map(u=>u.bolt)).size} bolts`);
+      } else if(a==='later') since('later','plan atlas','deferred · planning\'s next run supersedes it'); else since('redo','plan atlas','back to planning with notes'); break;
+  }
+}
+
+/* =====================================================================
+   Rendering
+   ===================================================================== */
+const KEYS = {yes:'y', drop:'n', no:'n', later:'l'};
+const ACLS = a => a==='yes' ? 'yes' : (a==='drop'||a==='no') ? 'drop' : '';
+const needsArg = a => ({'redo':'text','reply':'text','rename':'text','new bolt':'text','bolt':'select','pick':'picks','type':'typesel'}[a]);
+const ELAB_TYPES = ['research','prototype','planning','interactive','writeback'];
+function actsHtml(d, where){
+  const btns = d.answers.map(([a,label]) => `<button class="btn ${where==='card'?'sm':''} ${ACLS(a)}" data-a="${esc(a)}" data-n="${d.n}">${esc(label)}${KEYS[a]?`<span class="k">${KEYS[a]}</span>`:''}</button>`).join('');
+  const keys = d.answers.map(([a]) => KEYS[a]).filter(Boolean);
+  const hint = where==='card' ? `<span class="hint">${keys.length ? keys.map(k=>`<kbd>${k}</kbd>`).join('') : '<kbd>↵</kbd>'}</span>` : '';
+  return `<div class="acts">${btns}${hint}</div><div class="argbox" data-n="${d.n}"></div>`;
+}
+function argHtml(d, a){
+  const kind = needsArg(a);
+  if(kind==='text'){
+    const ph = a==='redo' ? 'what planning should change…' : a==='reply' ? 'your answer to the session…' : a==='rename' ? 'new bolt name' : 'name for the new bolt';
+    const multi = a==='redo' || a==='reply';
+    return `<div class="field">${multi ? `<textarea rows="2" placeholder="${ph}" aria-label="${esc(a)}"></textarea>` : `<input type="text" placeholder="${ph}" aria-label="${esc(a)}">`}<button class="btn pri sm" data-send="${esc(a)}" data-n="${d.n}">send</button><button class="btn quiet sm" data-cancel="1">cancel</button></div>`;
+  }
+  if(kind==='select'){
+    const opts = S.bolts.filter(b => b.name!==d.bolt && b.id!=='chores-atlas').map(b => `<option>${esc(b.name)}</option>`).join('');
+    return `<div class="field"><select aria-label="bolt">${opts}</select><button class="btn pri sm" data-send="bolt" data-n="${d.n}">send</button><button class="btn quiet sm" data-cancel="1">cancel</button></div>`;
+  }
+  if(kind==='typesel'){
+    return `<div class="field"><select aria-label="elaboration type">${ELAB_TYPES.map(t => `<option ${t===d.type?'selected':''}>${t}</option>`).join('')}</select><button class="btn pri sm" data-send="type" data-n="${d.n}">send</button><button class="btn quiet sm" data-cancel="1">cancel</button></div>`;
+  }
+  if(kind==='picks'){
+    const picks = d.kind==='gathered' ? d.intents.map(i => [i, i]) : d.picks;
+    const list = d.chores ? d.chores.map(c => `<label class="chore"><input type="checkbox" value="${c[0]}" hidden><span class="lt">${c[0]}</span>${esc(c[1])}<span class="f">${esc(c[2])}</span></label>`).join('')
+                          : picks.map(p => `<label class="chore"><input type="checkbox" value="${p[0]}" hidden><span class="lt">·</span>${esc(p[1])}</label>`).join('');
+    return `<div class="chores">${list}</div><div class="field"><button class="btn pri sm" data-send="pick" data-n="${d.n}">send pick</button><button class="btn quiet sm" data-cancel="1">cancel</button></div>`;
+  }
+  return '';
+}
+function cardHtml(d){
+  const cls = ['card','g-'+d.g, S.inflight[d.n]?'inflight':'', S.focus==='d:'+d.n?'focused':'', S.open==='d:'+d.n?'open-in-dock':''].join(' ');
+  const pre = d.kind==='unit' ? (d.boltState==='new' ? '→ new bolt ' : '→ bolt ') + d.bolt : '';
+  const gl = d.kind==='gathered' ? `<div class="gl">${d.intents.map(i => `<span class="gi">${esc(i)}<button class="gx" data-gdrop="${esc(i)}" data-n="${d.n}" title="${d.n} ${esc(i)}: drop">×</button></span>`).join('')}</div>` : '';
+  return `<article class="${cls}" data-nav="d:${d.n}" data-n="${d.n}" tabindex="0" aria-label="decision ${d.n}">
+    <div class="ch"><span class="n">${d.n}</span><span class="kind">${esc(d.kind)}</span><span class="ph ${d.phase}">${PH[d.phase]}</span></div>
+    <div class="title">${d.title}</div>${pre ? `<div class="tail mono">${esc(pre)}</div>` : ''}<div class="tail">${d.tail}</div>${gl}${d.q ? `<div class="q">“${esc(d.q)}”</div>` : ''}
+    ${actsHtml(d,'card')}<div class="flight"><span class="spin"></span>sending ${esc(S.inflight[d.n]?.text||'')}…</div></article>`;
+}
+function attHtml(a){
+  return `<div class="att ${a.cls} ${S.focus==='a:'+a.id?'focused':''}" data-nav="a:${a.id}" tabindex="0">${a.text}<div class="acts">${a.acts.map(([k,l]) => `<button class="btn sm ${k==='takeover'?'yes':''}" data-att="${a.id}" data-ak="${k}">${esc(l)}</button>`).join('')}</div></div>`;
+}
+function renderRail(){
+  const groups = [[APPROVE,'yes is safe · "yes all" takes these'],[DECIDE,'a choice · no default'],[ANSWER,'needs text']];
+  let html = `<div class="rail-h"><h2>Decisions</h2><span class="sub">one plan delivery · the order the chat prints · ${S.decisions.length} in the count</span></div>`;
+  groups.forEach(([g,rule]) => { const ds = S.decisions.filter(d => d.g===g).sort((a,b) => a.n-b.n); if(!ds.length) return;
+    html += `<div class="grp ${g}"><span class="g">${g}</span><span class="r">${rule}</span>${g===APPROVE?`<button class="btn sm" id="yesall2">yes all · ${ds.map(d=>d.n).join(' ')}</button>`:''}</div>` + ds.map(cardHtml).join(''); });
+  if(!S.decisions.length) html += `<div class="empty">Nothing waits on you. The board runs on its own until the next decision is yours.</div>`;
+  html += `<div class="grp attention"><span class="g">attention</span><span class="r">outside the count · one-word answers</span></div>` + (S.attention.map(attHtml).join('') || '<div class="empty">nothing</div>');
+  html += `<div class="grp since"><span class="g">since</span><span class="r">09-03 18:05 · outside the count</span></div><ul class="since">${S.since.map(s => `<li class="${s.fresh?'new':''}"><span class="v ${s.v}">${esc(s.v)}</span><span class="w">${esc(s.w)}<br><span style="color:var(--ink3);font-size:11.5px">${esc(s.t)}</span></span><span class="t">${esc(s.at)}</span></li>`).join('')}</ul>`;
+  S.since.forEach(s => delete s.fresh);
+  $('#rail').innerHTML = html;
+}
+const litObjs = () => { if(!S.focus) return []; const o = objOf(S.focus); return o ? (o.objs || (o.obj ? [o.obj] : [])) : []; };
+function objCls(key){ return ['obj', litObjs().includes(key)?'lit':'', S.open===key?'open-in-dock':''].join(' '); }
+let paneN = 9; const newPane = host => `${host||'studio'}/${paneN++}`;
+function sessChip(s){
+  const st = s.state; const dot = st==='with' ? 'working' : st==='scheduled' ? 'idle' : st;
+  const act = s.act || (st==='idle' ? `idle ${s.tag||''}`.trim() : st==='with' ? 'with you' : st);
+  const hl = S.hostlit ? (s.host===S.hostlit ? 'hostlit' : 'hostdim') : '';
+  return `<span class="sc ${st} ${hl}" title="${esc(s.last||'')}"><span class="dot ${dot}"></span><span class="ag">${esc(s.agent||'claude')} · ${esc(s.model||'fable')}</span><span class="hs">@${esc(s.host||'studio')}</span><span class="ac">${esc(act)}</span><button class="pane" data-pane="${esc(s.pane||'')}" title="open the pane">pane ↗</button></span>`;
+}
+function wiHtml(s){ return `<span class="it"><span class="wi ${s.state}">${esc(s.label)}</span>${sessChip(s)}</span>`; }
+function elabRow(s){
+  const right = s.state==='done' ? `<span class="leave ${/^(today|1d|2d)$/.test(s.leaves||'')?'soon':''}">done · leaves ${s.leaves==='today'?'today':'in '+esc(s.leaves||'7d')}</span>`
+    : s.state==='queued' ? `<span class="leave">queued · starts when research exits</span>` : sessChip(s);
+  return `<div class="el"><span class="en">${esc(s.label)}</span>${right}</div>`;
+}
+function marksFor(objKey, sessId){
+  const ds = S.decisions.filter(d => (d.obj===objKey || (d.objs||[]).includes(objKey)) && (!sessId || d.sess===sessId));
+  const as = sessId ? [] : S.attention.filter(a => a.obj===objKey);
+  const m = ds.map(d => `<button class="mark ${d.g} ${S.focus==='d:'+d.n?'focused':''}" data-mark="d:${d.n}" title="${esc(d.kind)}">${d.g===APPROVE?'✓':d.g===DECIDE?'?':'✎'} ${d.n} <span style="font-weight:500">${esc(d.kind)}</span></button>`)
+    .concat(as.map(a => `<button class="mark attention ${S.focus==='a:'+a.id?'focused':''}" data-mark="a:${a.id}">! ${a.id==='host'?'host '+a.host:'could not apply'}</button>`))
+    .concat(S.deferred.filter(x => x.obj===objKey).map(x => `<span class="mark" style="border-style:dashed">deferred · ${x.n}</span>`));
+  return m.length ? `<div class="marks">${m.join('')}</div>` : '';
+}
+function laneHead(title, sub, extra=''){ return `<div class="lane-h"><h2>${title}</h2><span class="sub">${sub}</span>${extra}</div>`; }
+function renderInception(){
+  const cap = `<div class="capture"><textarea id="capture" rows="2" placeholder="Type an idea. It becomes a capture with one signal; curation sees it."></textarea>
+    <div class="cf"><span class="will" id="capture-as">will send: <b>capture</b>${S.captureIntent?' · <b>intent</b>':''}</span><label><input type="checkbox" id="capture-intent" ${S.captureIntent?'checked':''}> this is an intent</label><button class="btn pri sm" id="capture-send">send</button></div></div>
+    <div class="curation">unmoved signals <b>${S.curation.unmoved}</b><span>${esc(S.curation.by)}</span><span>oldest ${S.curation.oldest}</span>${sessChip(S.curation.session)}</div>`;
+  const picked = [...S.picked].filter(id => intent(id));
+  const bar = `<div class="explore-bar"><span class="n">explore</span><span>${picked.length ? picked.join(' + ') : 'tick intents below, then'}</span><select id="explore-type" aria-label="elaboration type"><option value="with">with-operator</option><option value="standing">standing</option></select><button class="btn pri sm" id="explore-go" ${picked.length?'':'disabled'}>explore ${picked.length||''}</button>${picked.length ? '<button class="btn quiet sm" id="explore-clear">clear</button>' : ''}</div>`;
+  const xs = S.explorations.map(x => `<div class="${objCls('x:'+x.id)} explore ${x.state==='done'?'done':''}" data-obj="x:${x.id}" tabindex="0"><div class="oh"><span class="ok">${x.kind==='standing'?'explore · standing':'explore · with-operator'}</span><span class="on">${x.intents.map(esc).join(' + ')}</span><span class="os">${x.state==='done' ? `<span class="leave">done · leaves in ${esc(x.leaves)}</span>` : 'since '+esc(x.since)}</span></div><div class="ot">${esc(x.last)}</div>${x.state==='done' ? '' : `<div class="el">${sessChip(x.session)}</div>`}</div>`).join('');
+  const list = S.intents.map(i => { const g = gatheringOf(i.id), x = explorationOf(i.id);
+    const rows = i.sessions.map(elabRow).join('') + (g ? `<div class="el"><span class="en">${esc(g.type)} (self-closing)</span><span class="chip g">in gathering ${g.n}</span></div>` : '') + (x ? `<div class="el"><span class="en">explore (${x.kind==='standing'?'standing':'with-operator'})</span><span class="chip x">explore · ${x.kind==='standing'?'standing':'with you'}</span></div>` : '');
+    return `<div class="${objCls('i:'+i.id)} ${i.state==='closed'?'closed':''}" data-obj="i:${i.id}" tabindex="0"><div class="oh">${i.state==='closed' ? '' : `<input type="checkbox" class="pickbox" data-pick="${i.id}" ${S.picked.has(i.id)?'checked':''} aria-label="pick ${esc(i.name)} for explore">`}<span class="ok">intent</span><span class="on">${esc(i.name)}</span><span class="os">${i.state==='closed' ? `<span class="leave">closed · leaves in ${esc(i.leaves||'7d')}</span>` : esc(i.state)}</span></div><div class="ot">${esc(i.note)}${g ? ' · no elaboration proposed while gathered' : ''}</div>
+    ${rows || '<div class="el"><span class="leave">no elaboration yet</span></div>'}${marksFor('i:'+i.id)}</div>`; }).join('');
+  $('#lane-inception').innerHTML = laneHead('Inception','intents and their elaborations · capture here') + cap + bar + (xs ? `<div class="sec-h">explorations<span class="r">opened by you · over several intents</span></div>${xs}` : '') + `<div class="sec-h">intents<span class="r">lines off the books · tick to explore</span></div>` + (list || '<div class="empty">nothing open</div>');
+}
+function renderPlan(){
+  const P = S.proposal; const pd = dec(P.n);
+  const planning = S.planning ? `<div class="${objCls('p:planning')}" data-obj="p:planning" tabindex="0"><div class="oh"><span class="ok">planning</span><span class="on">${esc(S.planning.repo)}</span><span class="os">charged again ${esc(S.planning.since)}</span></div><div class="ot">“${esc(S.planning.notes)}”</div><div class="el">${sessChip({...S.planning.session, last:S.planning.last})}</div></div>` : '';
+  const prop = pd ? `<div class="${objCls('d:'+pd.n)}" data-obj="d:${pd.n}" tabindex="0"><div class="oh"><span class="ok">proposal</span><span class="on">atlas</span><span class="os">${esc(P.session.split(' · ').pop())}</span></div>
+    <div class="prop">${P.bolts.map(b => { const us = P.units.filter(u => u.bolt===b.id && !u.dropped); if(!us.length && b.id.startsWith('nb-')) return ''; return `<div class="pb"><span class="pbn ${b.state}">${b.state==='new'?'new ':''}${esc(b.name)}</span><span class="pus">${us.map(u=>esc(u.name)).join(' · ')||'<i>no units</i>'}</span></div>`; }).join('')}</div>
+    <div class="ot">${P.edits ? `${P.edits} per-unit response${P.edits===1?'':'s'} recorded · ` : ''}yes approves it as it stands</div>${marksFor('d:'+pd.n)}</div>` : '';
+  const singles = [413,414,417].map(dec).filter(Boolean).map(d => `<div class="${objCls('d:'+d.n)}" data-obj="d:${d.n}" tabindex="0"><div class="oh"><span class="ok">${esc(d.kind)}</span><span class="on">${d.title}</span></div>
+    ${d.kind==='unit' ? `<div class="ot mono"><span class="arrow">→</span> ${d.boltState==='new'?'new bolt ':'bolt '}${esc(d.bolt)}</div>` : `<div class="ot">first proposal for the repository · ${esc(repo('new-repo').claims.filter(c=>c[1]==='not satisfied').length)} claims unmet</div>`}${marksFor('d:'+d.n)}</div>`).join('');
+  const deferred = S.deferred.map(x => `<div class="${objCls('f:'+x.key)} deferred" data-obj="f:${x.key}" tabindex="0"><div class="oh"><span class="ok">${esc(x.kind)}</span><span class="on">${x.title}</span><span class="os">deferred · ask again</span></div><div class="ot">was ${x.n} · answered later ${esc(x.at)} · not in the count · planning's next run supersedes it</div></div>`).join('');
+  $('#lane-plan').innerHTML = laneHead('Bolt plan','the gate · proposals read whole','<span class="gate">transition</span>') + planning + (prop + singles + deferred || '<div class="empty">planning has nothing proposed · it runs when a backlog changes</div>');
+}
+function boltHtml(b){
+  const running = b.units.flatMap(u => u.items||[]);
+  const units = b.units.map(u => `<div class="unit ${u.state}"><span class="un">${esc(u.name)}</span><span class="ut">${u.state==='merged'?'merged'+(u.t?' · '+u.t:''):(u.type||'')+' · '+u.state}</span>${(u.items||[]).map(wiHtml).join('')}</div>`).join('');
+  const mach = (b.machinery||[]).map(m => `<div class="el"><span class="en" style="color:var(--ink3)">${esc(m.label)}</span>${sessChip(m)}</div>`).join('');
+  return `<div class="${objCls('b:'+b.id)}" data-obj="b:${b.id}" tabindex="0"><div class="oh"><span class="ok">bolt</span><span class="on">${esc(b.name)}</span><span class="or">${esc(b.repo)}</span><span class="os">${b.landing?'landing · PR #'+b.landing+' · ':''}${running.length} running</span></div>
+    <div class="units">${units}</div>${mach}<div class="svcline"><span>${b.services.filter(s=>s.s==='running').length}/${b.services.length} services</span><span class="ep">${esc(b.endpoints[0]||'no endpoint')}</span></div>${marksFor('b:'+b.id)}</div>`;
+}
+function renderConstruction(){ $('#lane-construction').innerHTML = laneHead('Construction','open bolts · units in flight · merges · the close') + S.bolts.map(boltHtml).join(''); }
+function landedHtml(l){
+  const bad = l.checks.filter(c => c[1]==='bad').length;
+  return `<div class="${objCls('l:'+l.id)} landed" data-obj="l:${l.id}" tabindex="0"><div class="oh"><span class="ok">landed</span><span class="on">${esc(l.repo)}/${esc(l.name)}</span><span class="os">${esc(l.at)}</span></div>
+    <div class="links"><span class="lk ${l.pr.state==='merged'?'ok':'pend'}">PR #${l.pr.n} · ${l.pr.state}</span><span class="lk ${bad?'bad':'ok'}">checks ${l.checks.length-bad}/${l.checks.length}</span>${l.envs.map(e => `<span class="lk">${e[0]} ↗</span>`).join('')}</div>
+    ${l.signals.map(s => `<div class="sig"><i>“${esc(s.text)}”</i><span class="mv">${esc(s.kind)} · ${esc(s.src)} · ${esc(s.age)} · ${s.move ? '<b>'+esc(s.move)+'</b>' : '<span class="un">unmoved</span>'}</span></div>`).join('')}
+    <div class="leave ${!l.live && /^[12]d$/.test(l.leaves)?'soon':''}" style="margin-top:6px">${l.live ? `stays · ${esc(l.live)}` : `leaves in ${esc(l.leaves)}`}</div></div>`;
+}
+function renderOperation(){
+  $('#lane-operation').innerHTML = laneHead('Operation','landed bolts · here while live and 7 days after','<span class="ro">observed</span>') + S.landed.map(landedHtml).join('') +
+    `<div class="sec-h">signals from operation<span class="r">to curation · with their move</span></div><ul class="sigs">${S.opsignals.map(s => `<li><div class="sk"><span class="kind">${esc(s.kind)}</span><span>${esc(s.src)}</span><span>${esc(s.age)}</span></div><q>${esc(s.text)}</q><div class="sig" style="border:0;padding:0"><span class="mv">${/→/.test(s.move) ? esc(s.move).replace(/→ (.*)$/, '→ <b>$1</b>') : '<span class="un">'+esc(s.move)+'</span>'}</span></div></li>`).join('')}</ul>`;
+}
+function renderHosts(){
+  const all = allSessions();
+  $('#hosts').innerHTML = `<span class="lab">hosts</span>` + S.hosts.map(h => { const n = all.filter(s => s.host===h.id).length;
+    return `<button class="host ${h.alive?'':'gone'} ${S.hostlit===h.id?'lit':''} ${S.open==='h:'+h.id?'open-in-dock':''}" data-host="${h.id}"><span class="dot ${h.alive?'':'gone'}"></span><span class="hn">${esc(h.id)}</span><span class="hm tn">${n}/${h.bound} sessions</span><span class="hm">${h.alive?'seen '+h.last:'<b>gone '+h.gone+'</b>'}</span></button>`; }).join('')
+    + `<span class="sep"></span><span class="lab">repos</span>` + S.repos.map(r => `<button class="repo ${S.open==='r:'+r.id?'open-in-dock':''}" data-repo="${r.id}">${esc(r.id)}<span class="hm">${r.claims.length ? r.claims.filter(c=>c[1]==='not satisfied').length+' unmet' : 'books'}</span></button>`).join('')
+    + `<span class="note">every session carries its host · a host pill lights its sessions · a repo opens its claims and scope</span>`;
+}
+function renderTop(){
+  const n = S.decisions.length; const ya = S.decisions.filter(d => d.g===APPROVE).map(d => d.n).sort((a,b)=>a-b);
+  $('#count').textContent = n;
+  $('#yesallhint').textContent = ya.length ? `· "yes all" answers ${ya.join(', ')}` : '· nothing left for "yes all"';
+  $('#yesall').disabled = !ya.length;
+  $('#sent').textContent = S.log.length; $('#clock').textContent = hhmm(S.minutes);
+  $('#bd-plan').textContent = n; $('#bd-board').textContent = allSessions().length + ' running';
+}
+function renderLog(){ $('#loglist').innerHTML = S.log.map(e => `<li class="${e.say?'say':''} ${e.fail?'fail':''}"><time>${e.t}</time><span>${esc(e.text)}</span></li>`).join('') || '<li><span class="empty">nothing sent yet</span></li>'; }
+function render(){
+  const keep = ['#rail','.lane'].flatMap(s => $$(s)).map(el => [el, el.scrollTop]);
+  renderTop(); renderHosts(); renderRail(); renderInception(); renderPlan(); renderConstruction(); renderOperation(); renderLog();
+  keep.forEach(([el,t]) => el.scrollTop = t);
+  if(S.open) renderDock();
+}
+
+/* =====================================================================
+   The dock
+   ===================================================================== */
+const sec = (title, html, r='') => html ? `<div class="sec"><h3>${title}${r?`<span class="r">${r}</span>`:''}</h3>${html}</div>` : '';
+const kvHtml = rows => `<dl class="kv">${rows.map(([k,v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>`;
+const tlHtml = rows => `<ul class="tl">${rows.map(([t,who,k,tx]) => `<li class="${k}"><time>${esc(t)}</time><span class="who">${esc(who)}<i>${k}</i></span><span class="what">${tx}</span></li>`).join('')}</ul>`;
+function sessionsHtml(list, note){ if(!list.length) return `<div class="empty" style="padding:2px 0">${esc(note||'nothing running')}</div>`;
+  return `<div class="rows">${list.map(s => `<div class="row"><span class="dot ${s.state}"></span><div class="grow"><div class="nm">${esc(s.label)}<span class="m">@${esc(s.host)}${s.owner?' · '+esc(s.owner.name):''}</span></div><div class="last">${esc(s.last||'')}</div></div><span class="st ${s.state}">${s.state}</span></div>`).join('')}</div>`; }
+function servicesHtml(list, ownerKey){ return `<div class="rows">${list.map((v,i) => `<div class="row"><span class="dot ${v.s==='running'?'':v.s}"></span><div class="grow"><div class="nm">${esc(v.n)}</div><div class="ep">${esc(v.ep)}</div></div><span class="st ${v.s}">${v.s}</span><button class="btn sm ${v.s==='running'?'drop':'yes'}" data-svc="${ownerKey}" data-i="${i}">${v.s==='running'?'stop':'start'}</button></div>`).join('')}</div>`; }
+function docHtml(doc){ return `<div class="doc"><div class="dm">${esc(doc.dm)} · ${SM}</div>${doc.h.map(([h,p]) => `<h4>${esc(h)}<button class="an" data-an="${esc(h)}">note</button></h4><p>${p}</p>`).join('')}</div>`; }
+function itemsHtml(items, stages){ return `<div class="stage"><span class="st" style="font:600 10.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink3)">stages</span><span class="chain">${stages.map((s,i) => `<span class="s ${i===0?'now':''}">${s}</span>${i<stages.length-1?'<span class="a">→</span>':''}`).join('')}</span></div>
+  <div class="rows">${items.map(([id,st,tx,after]) => `<div class="row"><span class="mono" style="font-size:11.5px;color:var(--ink3);width:56px">${esc(id)}</span><div class="grow"><div class="nm">${esc(st)} <span class="m">${esc(tx)}</span></div></div><span class="t">after ${esc(after)}</span></div>`).join('')}</div>`; }
+function histWithLog(n, base){ const rows = [...(base||[])]; S.log.filter(e => e.n===n).slice().reverse().forEach(e => rows.push(['09-04 '+e.t,'operator',e.fail?'fail':'response',esc(e.text)])); return rows; }
+
+/* --- the proposal: each edit is its own response --- */
+function closure(uid){ const P = S.proposal; const out = new Set(); const walk = id => P.units.forEach(u => { if(u.after.includes(id) && !out.has(u.id)){ out.add(u.id); walk(u.id); } }); walk(uid); return [...out]; }
+function depsOf(uid){ const P = S.proposal; const out = new Set(); const walk = id => P.units.find(u => u.id===id).after.forEach(a => { if(!out.has(a)){ out.add(a); walk(a); } }); walk(uid); return [...out]; }
+function unitMove(uid, toBolt, along){
+  const P = S.proposal; const u = P.units.find(x => x.id===uid);
+  const boltName = id => P.bolts.find(b => b.id===id).name;
+  const group = along ? [uid, ...depsOf(uid), ...closure(uid)].filter((v,i,a) => a.indexOf(v)===i) : [uid];
+  const crossing = P.units.filter(x => !x.dropped && !group.includes(x.id)).filter(x => x.after.some(a => group.includes(a)) || group.some(g => P.units.find(y => y.id===g).after.includes(x.id)));
+  if(!along && crossing.length){
+    const kin = [...depsOf(uid), ...closure(uid)].filter((v,i,a) => a.indexOf(v)===i);
+    P.refusal = {uid, text:`${uid} bolt ${boltName(toBolt)} refused: ${uid} and ${kin.join(', ')} depend on each other and a dependency never crosses bolts.`, fix:{label:`move ${kin.join(', ')} along`, act:'move', to:toBolt}};
+    toast(`${uid} · refused · dependency would cross bolts`, true); renderDock(); return;
+  }
+  P.refusal = null;
+  group.forEach(id => { const x = P.units.find(y => y.id===id); if(x.bolt!==toBolt){ x.bolt = toBolt; unitResponse(`422 ${id}: bolt ${boltName(toBolt)}`); } });
+  render();
+}
+function unitNewBolt(uid, name){
+  const P = S.proposal; const id = 'nb-'+name; if(!P.bolts.find(b => b.id===id)) P.bolts.push({id, name, state:'new', holds:'created by your yes'});
+  unitMove(uid, id, false);
+}
+function unitDrop(uid, along){
+  const P = S.proposal; const deps = closure(uid).filter(id => !P.units.find(u => u.id===id).dropped);
+  if(!along && deps.length){ P.refusal = {uid, text:`${uid} drop refused: ${deps.join(', ')} depend on it and a unit never depends on a dropped unit.`, fix:{label:`drop ${deps.join(', ')} too`, act:'drop'}}; toast(`${uid} · refused · ${deps.join(', ')} depend on it`, true); renderDock(); return; }
+  P.refusal = null;
+  [uid, ...(along ? deps : [])].forEach(id => { const u = P.units.find(x => x.id===id); if(!u.dropped){ u.dropped = true; unitResponse(`422 ${id}: drop`); } });
+  render();
+}
+function proposalHtml(){
+  const P = S.proposal;
+  const boltOpts = u => P.bolts.map(b => `<option value="${b.id}" ${b.id===u.bolt?'selected':''}>${esc(b.name)}${b.state==='new'?' (new)':''}</option>`).join('') + `<option value="__new">new bolt…</option>`;
+  const unitRow = u => `<div class="pu ${u.dropped?'dropped':''}" data-uid="${u.id}">
+      <span class="pid">${u.id}</span><span class="pun">${esc(u.name)}</span><span class="pid" style="margin-left:8px">type ${esc(u.type)}</span>
+      <div class="pud">${esc(u.why)}</div>
+      <div class="pum"><span>after <b>${u.after.length ? u.after.join(', ') : 'none'}</b></span><span>covers <b>${esc(u.covers)}</b></span></div>
+      <div class="lineage">lineage · claim <b>${esc(u.covers.split(' · ')[0])}</b> ← <b>${esc(u.from)}</b> ← intent host-liveness</div>
+      ${u.dropped ? `<div class="pum"><span>dropped by your response · planning's next run may propose it again</span></div>` : `<div class="pue"><span class="lab">bolt</span><select data-ubolt="${u.id}" aria-label="bolt for ${u.id}">${boltOpts(u)}</select><span class="lab">type</span><select data-utype="${u.id}" aria-label="type for ${u.id}">${['default','fast','chore'].map(t => `<option ${t===u.type?'selected':''}>${t}</option>`).join('')}</select><button class="btn sm quiet" data-urename="${u.id}">rename</button><button class="btn sm quiet drop" data-udrop="${u.id}">drop</button></div>`}
+      ${P.refusal && P.refusal.uid===u.id ? `<div class="refuse">${esc(P.refusal.text)}<div class="acts"><button class="btn sm pri" data-fix="${u.id}">${esc(P.refusal.fix.label)}</button><button class="btn sm quiet" data-fixno="1">leave it</button></div></div>` : ''}
+      <div class="argbox" data-u="${u.id}"></div></div>`;
+  const blocks = P.bolts.map(b => { const us = P.units.filter(u => u.bolt===b.id); if(!us.length && b.state==='new' && b.id.startsWith('nb-')) return '';
+    return `<div class="pblock"><div class="pbh"><span class="bk">bolt</span><input value="${esc(b.name)}" data-bname="${b.id}" aria-label="bolt name" title="a bolt's name is yours to change · Enter sends rename"><span class="bstate ${b.state}">${b.state}</span><span class="bs">${esc(b.holds)} · ${us.filter(u=>!u.dropped).length} proposed</span></div>${us.map(unitRow).join('') || '<div class="empty" style="padding:8px 10px">no units here · every unit moved elsewhere</div>'}</div>`; }).join('');
+  const ready = P.units.filter(u => !u.dropped && !u.after.some(a => !P.units.find(x => x.id===a).dropped)).map(u => u.id);
+  return `<div class="dtext" style="margin-bottom:10px"><b>Planning read</b> ${esc(P.reads)}.</div>${blocks}` +
+    sec('what a yes starts', `<div class="dtext">${ready.map(id=>`<span class="mono">${id}</span>`).join(', ')} start at once, side by side; the rest wait on their dependencies, which stay within one bolt. Every unit becomes items on its bolt's line; the next decision that is yours is each bolt's close.</div>`);
+}
+
+function dockDecision(d){
+  const x = X[d.n] || {}; const parts = [];
+  parts.push(sec('the decision', `<div class="dtext">${x.text||''}</div>`));
+  if(d.kind==='proposal') parts.push(sec('the proposal · every edit is one response, sent when given', proposalHtml(), esc(S.proposal.session)));
+  if(x.doc) parts.push(sec('document', docHtml(x.doc), 'a note on a section sends redo'));
+  if(x.signals) parts.push(sec('signals · 3 of 7', x.signals.map(([m,t]) => `<div class="dsig">“${esc(t)}”<small>${esc(m)}</small></div>`).join(''), SM));
+  if(d.kind==='blocked') parts.push(sec('the question', `<div class="dtext" style="font-size:16px;font-style:italic">“${esc(d.q)}”</div>`));
+  if(x.items) parts.push(sec('items and stages', itemsHtml(x.items, x.stages), SM));
+  if(x.kv) parts.push(sec(x.kvTitle||'detail', kvHtml(x.kv), SM));
+  if(x.kv2) parts.push(sec(x.kv2Title||'more', kvHtml(x.kv2)));
+  if(d.kind==='chores') parts.push(sec('chores · reason and file', kvHtml(d.chores.map(c => [c[0], `${esc(c[1])} · <span class="mono">${esc(c[2])}</span>`])), SM));
+  if(x.log) parts.push(sec('session log · last lines', `<ul class="tl">${x.log.map(([t,l]) => `<li><time>${esc(t)}</time><span class="who"></span><span class="what">${esc(l)}</span></li>`).join('')}</ul>`, SM));
+  const o = d.obj && d.obj!=='d:'+d.n ? objOf(d.obj) : null;
+  if(o){ const list = d.obj[0]==='b' ? o.units.flatMap(u => u.items||[]) : o.sessions; parts.push(sec(`on ${esc(d.obj[0]==='b'?'bolt '+o.name:'intent '+o.name)} · sessions running`, sessionsHtml(d.sess ? list.filter(s => s.id===d.sess) : list, 'nothing running'), 'with host and last activity')); }
+  else if(d.kind==='unit'||d.kind==='proposal') parts.push(sec('sessions running', sessionsHtml([], 'nothing starts before yes')));
+  parts.push(sec('history · what led here and your responses', tlHtml(histWithLog(d.n, x.hist||[])), SM));
+  return parts.join('');
+}
+function dockBolt(b){
+  const sessions = b.units.flatMap(u => u.items||[]);
+  return sec('the bolt', `<div class="dtext">Open bolt on <span class="mono">${esc(b.repo)}</span>, line <span class="mono">${esc(b.line)}</span>. Its place is kept on the host at the head of its line, refreshed after each merge, where you run and test the bolt with no session involved. ${esc(b.note)}.</div>`)
+    + sec('decisions on this bolt', S.decisions.filter(d => d.obj==='b:'+b.id).map(d => `<div class="row"><button class="mark ${d.g}" data-mark="d:${d.n}">${d.n}</button><span class="grow">${d.title}</span><span class="t">${d.g}</span></div>`).join('') || '', 'in the rail, where you answer')
+    + sec('units', `<div class="rows">${b.units.map(u => `<div class="row"><span class="st">${u.state}</span><div class="grow"><div class="nm">${esc(u.name)}${u.type?` <span class="m">type ${u.type}</span>`:''}</div></div>${(u.items||[]).map(wiHtml).join('')}</div>`).join('')}</div>`)
+    + sec('sessions running', sessionsHtml(sessions), 'with host and last activity')
+    + sec(`services of the place · ${esc(b.repo)}/${esc(b.name)}`, servicesHtml(b.services, 'b:'+b.id), 'start and stop are dictations')
+    + sec('served endpoints', `<div class="rows">${b.endpoints.map(e => `<div class="row"><span class="ep">${esc(e)}</span></div>`).join('')}</div>`)
+    + sec('history', tlHtml(BX[b.id]||[['09-04 '+hhmm(S.minutes),'machinery','note','bolt created by your response']]), SM);
+}
+function dockIntent(i){
+  return sec('the intent', `<div class="dtext">Intent <span class="mono">${esc(i.name)}</span> is ${esc(i.state)}. ${esc(i.note)}. An intent is a line off the books' shared line; each elaboration works in a place off that line, and archiving the intent lands it.</div>`)
+    + sec('decisions on this intent', S.decisions.filter(d => d.obj==='i:'+i.id).map(d => `<div class="row"><button class="mark ${d.g}" data-mark="d:${d.n}">${d.n}</button><span class="grow">${d.title}</span><span class="t">${d.g}</span></div>`).join('') || '', 'in the rail, where you answer')
+    + sec('sessions running', sessionsHtml(i.sessions), 'with host and last activity');
+}
+function dockLanded(l){
+  return sec('the landing', `<div class="dtext">Bolt <span class="mono">${esc(l.name)}</span> landed on <span class="mono">${esc(l.repo)}</span> main at ${esc(l.at)} through the repository's gates. Its place was removed with the landing; what it serves now is operation's, and what comes back from operation is a signal to curation. ${esc(l.window)}.</div>`)
+    + sec('pull request and checks', `<div class="rows"><div class="row"><span class="lk ${l.pr.state==='merged'?'ok':'pend'}">PR #${l.pr.n}</span><div class="grow">${esc(l.pr.state)}</div></div>${l.checks.map(c => `<div class="row"><span class="dot ${c[1]==='ok'?'':c[1]==='bad'?'failed':'starting'}"></span><div class="grow"><div class="nm">${esc(c[0])}</div></div><span class="st ${c[1]==='bad'?'failed':''}">${c[1]==='ok'?'passed':c[1]==='bad'?'failing':'running'}${c[2]?' · '+esc(c[2]):''}</span></div>`).join('')}</div>`, SM)
+    + sec('environments', `<div class="rows">${l.envs.map(e => `<div class="row"><span class="st">${esc(e[0])}</span><span class="ep">${esc(e[1])}</span><span class="t">↗</span></div>`).join('')}</div>`)
+    + sec('units landed', kvHtml(l.units.map(u => [esc(u), 'merged'])))
+    + sec('signals from operation', l.signals.length ? l.signals.map(s => `<div class="dsig">“${esc(s.text)}”<small>${esc(s.kind)} · ${esc(s.src)} · ${esc(s.age)} · ${s.move ? esc(s.move) : 'unmoved · curation sees it next run'}</small></div>`).join('') : '<div class="empty" style="padding:2px 0">nothing yet</div>');
+}
+function dockHost(h){
+  const mine = allSessions().filter(s => s.host===h.id);
+  return sec('the host', `<div class="dtext">Host <span class="mono">${esc(h.id)}</span> ${h.alive ? `is alive, last heartbeat ${h.last}` : `has sent no heartbeat for <b>${h.gone}</b>, last seen ${h.last}`}. Its bound is ${h.bound} sessions at once; at the bound ready work waits in a stated order. ${esc(h.note)}.</div>`)
+    + sec(`what it runs · ${mine.length}/${h.bound}`, sessionsHtml(mine, 'nothing on this host'), 'each with the object it works')
+    + sec('leases', kvHtml(h.id==='studio' ? [['plan','holder · renews every 30s'],['curation','holder'],['page','presenter for the page sink'],['plan-decisions','place at the head of the line']] : [['plan-decisions/wi-418','place · session blocked · lease expires 07:59'],['plan-tail/wi-426','place · session starting']]), SM);
+}
+function dockFooter(key){
+  const [t,id] = key.split(':');
+  if(t==='d'){ const d = dec(+id); const f = S.inflight[d.n];
+    if(f) return `<div class="fl">answer</div><div class="dtext" style="font-size:12.5px;color:var(--ink2)"><span class="spin"></span> sending ${esc(f.text)} · one response · the card refuses a second click until it settles</div>`;
+    const acts = d.kind==='blocked' ? actsHtml(d,'dock').replace(`<div class="argbox" data-n="${d.n}"></div>`, `<div class="argbox" data-n="${d.n}" data-arg="reply">${argHtml(d,'reply')}</div>`) : actsHtml(d,'dock');
+    return `<div class="fl">answer · one response each<span class="r">${d.g===APPROVE ? 'yes is safe' : d.g===DECIDE ? 'no default' : 'needs text'}</span></div>${acts}`; }
+  if(t==='h'){ const h = host(id); return h.alive ? `<div class="fl">nothing to answer</div>` : `<div class="fl">attention · outside the count</div><div class="acts"><button class="btn sm yes" data-att="host" data-ak="takeover">takeover on studio</button><button class="btn sm" data-att="host" data-ak="wait">wait</button></div>`; }
+  if(t==='b') return `<div class="fl">no decision here that is not in the rail<span class="r">the next is its close</span></div>`;
+  if(t==='l') return `<div class="fl">nothing to answer<span class="r">signals go to curation; a decision comes back on the plan</span></div>`;
+  return `<div class="fl">no decision on this object</div>`;
+}
+function renderDock(){
+  const key = S.open; if(!key) return; const [t,id] = key.split(':'); const o = objOf(key);
+  if(!o){ closeDock(); return; }
+  const nav = `<div class="nav"><span class="keys" style="font-size:11px;color:var(--ink3)"><kbd>j</kbd><kbd>k</kbd> rail · <kbd>esc</kbd></span><button class="x" id="dk-x" aria-label="close">×</button></div>`;
+  let head, body;
+  if(t==='d'){ head = `<div class="row"><span class="n">${o.n}</span><span class="kind">${esc(o.kind)}</span><span>${o.g}</span><span class="ph">${PH[o.phase]}</span>${nav}</div><h2 id="dk-title">${o.title}</h2><div class="tail">${o.tail}</div>`; body = dockDecision(o); }
+  else if(t==='b'){ head = `<div class="row"><span class="kind">bolt</span><span class="ph">construction</span>${nav}</div><h2 id="dk-title">${esc(o.repo)}/${esc(o.name)}</h2><div class="tail">${esc(o.note)}</div>`; body = dockBolt(o); }
+  else if(t==='i'){ head = `<div class="row"><span class="kind">intent</span><span class="ph">inception</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.state)}</div>`; body = dockIntent(o); }
+  else if(t==='l'){ head = `<div class="row"><span class="kind">landed</span><span class="ph">operation</span>${nav}</div><h2 id="dk-title">${esc(o.repo)}/${esc(o.name)}</h2><div class="tail">landed ${esc(o.at)} · PR #${o.pr.n}</div>`; body = dockLanded(o); }
+  else if(t==='h'){ head = `<div class="row"><span class="kind">host</span>${nav}</div><h2 id="dk-title">${esc(o.id)}</h2><div class="tail">${o.alive?'alive':'gone '+o.gone} · bound ${o.bound}</div>`; body = dockHost(o); }
+  else { head = `<div class="row"><span class="kind">attention</span>${nav}</div><h2 id="dk-title">${o.text}</h2>`; body = sec('what it means', `<div class="dtext">${o.id==='host' ? 'The host that holds wi-#418 has not sent a heartbeat. Takeover releases its leases now and restores the place on studio; wait lets the lease expire at 07:59, when the machinery does the same.' : 'Your earlier response named a decision that was gone. It was recorded, handed back as unapplicable and shown once here; nothing was dropped. The unit was re-proposed and kept its number.'}</div>`); }
+  const keep = $('#dk-b').scrollTop;
+  $('#dk-h').innerHTML = head; $('#dk-b').innerHTML = body; $('#dk-f').innerHTML = t==='a' ? `<div class="acts">${o.acts.map(([k,l]) => `<button class="btn sm ${k==='takeover'?'yes':''}" data-att="${o.id}" data-ak="${k}">${esc(l)}</button>`).join('')}</div>` : dockFooter(key);
+  $('#dk-b').scrollTop = keep;
+}
+function openDock(key){ const was = S.open===key; S.open = key; if(key[0]==='d' || key[0]==='a') S.focus = key; document.body.classList.add('docked'); render(); if(!was) $('#dk-b').scrollTop = 0; }
+function closeDock(){ S.open = null; document.body.classList.remove('docked'); render(); }
+function setFocus(key){ S.focus = key; if(S.open && (S.open[0]==='d'||S.open[0]==='a')) S.open = key; render(); const el = document.querySelector(`.rail [data-nav="${key}"]`); if(el){ el.scrollIntoView({block:'nearest'}); el.focus({preventScroll:true}); } const lit = $('.obj.lit'); if(lit) lit.scrollIntoView({block:'nearest'}); }
+function step(dir){ const list = railKeys(); if(!list.length) return; const i = list.indexOf(S.focus); const j = i<0 ? 0 : Math.min(list.length-1, Math.max(0, i+dir)); setFocus(list[j]); }
+
+/* =====================================================================
+   Events
+   ===================================================================== */
+document.addEventListener('click', e => {
+  const t = e.target, b = t.closest('button');
+  if(b && b.dataset.a !== undefined){ const n = +b.dataset.n, a = b.dataset.a, d = dec(n); if(!d) return;
+    if(S.inflight[n]){ refuse(n); return; }
+    if(needsArg(a)){ const box = b.closest('.acts').nextElementSibling; const open = box.dataset.arg===a; $$('.argbox[data-n]').forEach(x => { x.innerHTML=''; delete x.dataset.arg; }); if(!open){ box.dataset.arg = a; box.innerHTML = argHtml(d, a); box.querySelector('input,textarea,select')?.focus(); } return; }
+    send(n, a); return; }
+  if(b && b.dataset.send){ const n = +b.dataset.n, a = b.dataset.send, box = b.closest('.argbox'); let arg = '';
+    if(a==='pick'){ arg = $$('input:checked', box).map(i => i.value).join(' '); if(!arg){ toast('pick at least one', true); return; } }
+    else { const f = box.querySelector('input,textarea,select'); arg = f.value.trim(); if(!arg){ f.focus(); return; } }
+    box.innerHTML=''; delete box.dataset.arg; send(n, a, arg); return; }
+  if(b && b.dataset.cancel){ const box = b.closest('.argbox'); box.innerHTML=''; delete box.dataset.arg; return; }
+  if(b && b.dataset.att){ const a = S.attention.find(x => x.id===b.dataset.att); S.attention = S.attention.filter(x => x!==a);
+    if(b.dataset.ak==='ok'){ toast('seen · not logged'); }
+    else { logLine(b.dataset.ak, {}); toast(`${b.dataset.ak} · recorded`);
+      if(b.dataset.ak==='takeover'){ const h = host('mac-mini'); h.alive = true; h.last = hhmm(S.minutes); h.note = 'released by takeover · its sessions restored on studio'; S.bolts.flatMap(x => x.units).flatMap(u => u.items||[]).filter(i => i.host==='mac-mini').forEach(i => { i.host='studio'; i.last=`${hhmm(S.minutes)} · taken over on studio · place restored`; }); h.alive = false; h.gone = 'released'; } }
+    if(S.open==='a:'+(a&&a.id)) S.open = null, document.body.classList.remove('docked');
+    if(S.focus==='a:'+(a&&a.id)) S.focus = railKeys()[0] || null;
+    render(); return; }
+  if(b && b.dataset.svc !== undefined){ const o = objOf(b.dataset.svc); const v = o.services[+b.dataset.i]; v.s = v.s==='running' ? 'stopped' : 'starting'; say(`${v.s==='stopped'?'stop':'start'} ${o.name}/${v.n}`); render(); if(v.s==='starting') setTimeout(() => { v.s='running'; render(); }, 1500); return; }
+  /* proposal edits · each one response */
+  if(b && b.dataset.udrop !== undefined){ unitDrop(b.dataset.udrop, false); return; }
+  if(b && b.dataset.urename !== undefined){ const box = $(`.argbox[data-u="${b.dataset.urename}"]`); box.innerHTML = `<div class="field"><input placeholder="new unit name" aria-label="rename"><button class="btn pri sm" data-usend="rename" data-u="${b.dataset.urename}">send rename</button><button class="btn quiet sm" data-ucancel="1">cancel</button></div>`; box.querySelector('input').focus(); return; }
+  if(b && b.dataset.usend){ const box = b.closest('.argbox'); const v = box.querySelector('input').value.trim(); if(!v){ box.querySelector('input').focus(); return; } const u = S.proposal.units.find(x => x.id===b.dataset.u);
+    if(b.dataset.usend==='rename'){ u.name = v; unitResponse(`422 ${u.id}: rename ${v}`); render(); } else unitNewBolt(u.id, v.replace(/\s+/g,'-')); return; }
+  if(b && b.dataset.ucancel){ b.closest('.argbox').innerHTML=''; renderDock(); return; }
+  if(b && b.dataset.fix !== undefined){ const r = S.proposal.refusal; if(!r) return; r.fix.act==='move' ? unitMove(r.uid, r.fix.to, true) : unitDrop(r.uid, true); return; }
+  if(b && b.dataset.fixno){ S.proposal.refusal = null; renderDock(); return; }
+  if(b && b.dataset.an !== undefined){ const d = dec(+S.open.split(':')[1]); if(!d) return; const box = $('#dk-f .argbox'); $$('.argbox[data-n]').forEach(x => { x.innerHTML=''; delete x.dataset.arg; }); box.dataset.arg='redo'; box.innerHTML = argHtml(d,'redo'); const ta = box.querySelector('textarea'); ta.value = `[${b.dataset.an}] `; ta.focus(); return; }
+  /* markers, hosts, chrome */
+  if(b && b.dataset.mark){ openDock(b.dataset.mark); return; }
+  if(b && b.dataset.host){ const id = b.dataset.host; if(S.open==='h:'+id){ S.hostlit = null; closeDock(); } else { S.hostlit = id; openDock('h:'+id); } return; }
+  if(b && b.id==='dk-x'){ closeDock(); return; }
+  if(b && (b.id==='yesall'||b.id==='yesall2')){ yesAll(); return; }
+  if(b && b.id==='logbtn'){ const l = $('#log'); l.hidden = !l.hidden; b.setAttribute('aria-expanded', String(!l.hidden)); return; }
+  if(b && b.id==='capture-send'){ capture(); return; }
+  if(b && b.id==='theme'){ const r = document.documentElement; const cur = r.dataset.theme || 'system'; const next = cur==='system' ? 'light' : cur==='light' ? 'dark' : 'system'; if(next==='system') delete r.dataset.theme; else r.dataset.theme = next; b.textContent = next; return; }
+  if(b && b.dataset.tab){ document.body.dataset.tab = b.dataset.tab; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x===b))); return; }
+  if(t.closest('label.chore')){ setTimeout(() => $$('label.chore').forEach(l => l.classList.toggle('on', l.querySelector('input').checked)), 0); return; }
+  const nav = t.closest('[data-nav]');
+  if(nav && !t.closest('input,textarea,select,.argbox,.chores')){ const key = nav.dataset.nav; if(e.detail===2 || S.open) openDock(key); else setFocus(key); return; }
+  const obj = t.closest('[data-obj]');
+  if(obj && !t.closest('input,textarea,select,button')){ openDock(obj.dataset.obj); return; }
+  if(!t.closest('#dock') && S.open && !t.closest('#log,#logbtn,.hosts')){ S.hostlit = null; closeDock(); }
+  if(!t.closest('#log,#logbtn') && !$('#log').hidden){ $('#log').hidden = true; $('#logbtn').setAttribute('aria-expanded','false'); }
+});
+document.addEventListener('change', e => {
+  const t = e.target;
+  if(t.dataset.ubolt){ const u = S.proposal.units.find(x => x.id===t.dataset.ubolt);
+    if(t.value==='__new'){ const box = $(`.argbox[data-u="${u.id}"]`); box.innerHTML = `<div class="field"><input placeholder="name for the new bolt" aria-label="new bolt"><button class="btn pri sm" data-usend="newbolt" data-u="${u.id}">send new bolt</button><button class="btn quiet sm" data-ucancel="1">cancel</button></div>`; box.querySelector('input').focus(); return; }
+    unitMove(u.id, t.value, false); return; }
+  if(t.dataset.utype){ const u = S.proposal.units.find(x => x.id===t.dataset.utype); if(t.value!==u.type){ u.type = t.value; unitResponse(`422 ${u.id}: type ${t.value}`); render(); } return; }
+  if(t.dataset.bname){ const b = S.proposal.bolts.find(x => x.id===t.dataset.bname); const v = t.value.trim(); if(v && v!==b.name){ const old = b.name; b.name = v; unitResponse(`422 rename ${old} ${v}`); render(); } }
+});
+document.addEventListener('input', e => { if(e.target.id==='capture') captureAs(); });
+document.addEventListener('keydown', e => {
+  const typing = e.target.matches('input,textarea,select');
+  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
+  if(typing){ if(e.key==='Enter' && !e.shiftKey && e.target.id==='capture'){ e.preventDefault(); capture(); } if(e.key==='Enter' && e.target.matches('input') && e.target.closest('.argbox')){ e.preventDefault(); e.target.closest('.argbox').querySelector('[data-send],[data-usend]').click(); } if(e.key==='Enter' && e.target.dataset.bname){ e.preventDefault(); e.target.blur(); } return; }
+  if(e.metaKey||e.ctrlKey||e.altKey) return;
+  const k = e.key;
+  if(k==='j'||k==='ArrowDown'){ e.preventDefault(); step(1); return; }
+  if(k==='k'||k==='ArrowUp'){ e.preventDefault(); step(-1); return; }
+  if(k==='Enter'||k==='o'){ if(S.focus){ e.preventDefault(); openDock(S.focus); } return; }
+  if(k==='y'||k==='n'||k==='l'){ if(!S.focus || S.focus[0]!=='d') return; const d = dec(+S.focus.split(':')[1]); if(!d) return;
+    const a = d.answers.map(x => x[0]).find(x => KEYS[x]===k);
+    if(!a){ toast(`${d.n} · no "${k}" answer on this card · ${d.answers.map(x=>x[0]).join(' · ')}`, true); return; }
+    e.preventDefault(); send(d.n, a); return; }
+  if(k==='/'){ e.preventDefault(); document.body.dataset.tab = 'board'; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab==='board'))); $('#capture')?.focus(); }
+});
+function yesAll(){ const list = S.decisions.filter(d => d.g===APPROVE && !S.inflight[d.n]).map(d => d.n).sort((a,b) => a-b); list.forEach((n, i) => setTimeout(() => send(n, 'yes'), i*380)); }
+
+/* capture · typed text is a capture with one signal, or a dictation by prefix */
+function classify(v){ let m; if((m = v.match(/^intent:\s*(.+)/i))) return {kind:'intent', text:m[1]}; if((m = v.match(/^chore\s+([\w-]+):\s*(.+)/i))) return {kind:'chore', repo:m[1], text:m[2]}; if((m = v.match(/^bolt\s+([\w-]+):\s*(.+)/i))) return {kind:'bolt', bolt:m[1], text:m[2]}; return {kind:'capture', text:v}; }
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').split('-').slice(0,4).join('-');
+function captureAs(){ const v = $('#capture').value.trim(); const c = classify(v); const as = $('#capture-as');
+  as.innerHTML = c.kind==='capture' ? 'sends as <b>capture</b> · 1 signal · kind ask · curation sees it' : c.kind==='intent' ? 'sends as <b>dictation</b> · opens intent <span class="mono">'+esc(slug(c.text))+'</span> · no decision' : c.kind==='chore' ? 'sends as <b>dictation</b> · proposes a chore on <span class="mono">'+esc(c.repo)+'</span>' : 'sends as <b>dictation</b> · proposes a unit on bolt <span class="mono">'+esc(c.bolt)+'</span>' + (S.bolts.some(b => b.name===c.bolt) ? '' : ' · <span style="color:var(--crit)">no open bolt by that name</span>'); }
+function capture(){ const ta = $('#capture'); const v = ta.value.trim(); if(!v){ ta.focus(); return; } const c = classify(v);
+  if(c.kind==='capture'){ S.curation.unmoved++; S.curation.by += /page/.test(S.curation.by) ? '' : ' · page 1'; logLine(`capture: ${v}`, {say:true}); toast('capture · 1 signal (ask) · curation sees it'); }
+  else if(c.kind==='intent'){ const id = slug(c.text); S.intents.unshift({id, name:id, state:'open', note:'dictated · elaborations to come from planning', sessions:[]}); logLine(`intent: ${c.text}`, {say:true}); toast(`intent ${id} · opened`); }
+  else if(c.kind==='chore'){ logLine(`chore ${c.repo}: ${c.text}`, {say:true}); toast(`chore on ${c.repo} · applied`); startUnit(addBolt('chores-'+c.repo,'chores',c.repo,'no bolt · one session each'), 'chore · '+c.text.slice(0,28), 'chore', 'chore'); }
+  else { const b = S.bolts.find(x => x.name===c.bolt); if(!b){ toast(`no open bolt "${c.bolt}"`, true); return; } logLine(`bolt ${c.bolt}: ${c.text}`, {say:true}); toast(`unit on ${c.bolt} · applied`); startUnit(b, slug(c.text), 'default', 'spec'); }
+  ta.value=''; render(); }
+
+/* first frame */
+document.body.dataset.tab = 'plan';
+const Q = new URLSearchParams(location.search);
+if(Q.get('theme')){ document.documentElement.dataset.theme = Q.get('theme'); $('#theme').textContent = Q.get('theme'); }
+render();
+if(!Q.has('nodock')) openDock(Q.get('open') || 'd:422');
+})();
+</script>

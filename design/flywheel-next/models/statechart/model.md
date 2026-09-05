@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–194);
+Requirements are cited by their number in `requirements.md` (1–195);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -501,14 +501,14 @@ state: willdan/flywheel-state
 repositories:
   - name: atlas
     repo: willdan/atlas
-    kind: service
+    kinds: [service]
     capabilities: [provider-client]
     landing: pull-request
     take_cadence: "0 6 * * *"
     personas: "personas/*.md"
   - name: switchboard
     repo: willdan/switchboard
-    kind: service
+    kinds: [service]
     landing: direct
     take_cadence: "0 6 * * *"
 hosts:                       # what each host takes (149); a host takes leases only within this
@@ -1039,7 +1039,21 @@ cell per repository side by side (105). A `ledger-cell` object
 exists for every (standing claim, repository in scope) pair; `list`
 derives the pairs from `claims.json` and the manifest, so a cell needs
 no record until it is judged (a joining repository has every cell
-`unjudged` with no file, 104).
+`unjudged` with no file, 104). Scope resolves against the manifest:
+each repository states its `kinds` and `capabilities` beside its
+entry, and a claim's `scope:` names kinds, capabilities, repositories
+or all (105, 195). Adding a kind or a capability to a repository is a
+books commit that brings every claim scoped to it into that
+repository's scope — new cells `unjudged`, the fingerprint (which
+hashes the kinds and capabilities) moves, planning is due and its
+proposal carries the newly unmet claims; removing one sends the
+affected cells to `out-of-scope`, where the recorded verdict reads as
+not-applicable and the cell is out of the backlog, returning to
+`judged` if scope returns. The `scope` tool on a claim
+(`set_claim_scope`) rewrites the block's scope line without moving the
+text or the version; the page's repository view shows the kinds and
+capabilities, the claims in scope with their verdicts, and each claim's
+scope beside that control (193, 195).
 
 A verdict is written only by `record_verdict`, from a session's exit:
 the planning session (every cell in scope on a first planning, stale

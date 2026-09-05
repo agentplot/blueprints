@@ -352,6 +352,20 @@ the operator may reverse by a response on the file; an entry with
   **Open**. The chat interpreter is dispatch, so a chat without
   dispatch running answers numbers only. **Decision**.
 
+- **195 kinds and capabilities.** A repository lists `kinds:` (plural;
+  the earlier singular `kind:` is gone) and `capabilities:` in the
+  manifest, and `cell.in_scope` is read from the resolved scope at the
+  books' shared head. A cell that leaves scope keeps its record and
+  reads as not-applicable through the `out-of-scope` state rather than
+  by rewriting the verdict, so a scope that returns recovers the
+  verdict and the freshness rules judge it again. The `scope` tool
+  rewrites the block's scope line and lock without moving the version,
+  on the reading that scope is not the claim's text (105); a
+  construction session that cited the claim is untouched, and only the
+  fingerprints move. Whether a scope change should be a proposed
+  claim amendment on an intent's line instead is **open**; the
+  operator's control on the page is the ruling for now. **Decision**.
+
 - **190 producers per deliverable.** The shipped set is a profile
   partial (`profiles/deliverables.yaml`) rather than a machine: it
   binds no evidence and no effect, so `check.py` does not check it
