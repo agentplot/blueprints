@@ -61,7 +61,7 @@
   <text x="1424" y="130" font-size="11" font-weight="700" fill="#333">TOOLS · page, chat, dispatch, machinery (193)</text>
   <text x="1424" y="147" font-size="9.5" font-family="monospace" fill="#666">answer a decision · mark capture as intent (19)</text>
   <text x="1424" y="161" font-size="9.5" font-family="monospace" fill="#666">explore over intents (189)</text>
-  <text x="1424" y="176" font-size="9" font-weight="700" fill="#a34848">drop · later · hold · rename · start/stop · scope (193)</text>
+  <text x="1424" y="176" font-size="9" font-weight="700" fill="#a34848">drop · later · hold · rename · start/stop · attach (193)</text>
 
   <!-- DISPATCH AGENT -->
   <rect x="70" y="215" width="360" height="545" rx="10" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4"/>
@@ -194,15 +194,16 @@
   <text x="1105" y="483" font-size="9.5" fill="#666" text-anchor="middle">books repository</text>
   <path d="M 1160 356 C 1150 400, 1140 415, 1128 432" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
   <text x="1160" y="412" font-size="9" fill="#5a3f95">writes</text>
-  <rect x="990" y="500" width="232" height="90" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+  <rect x="990" y="500" width="232" height="106" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
   <text x="1004" y="520" font-size="11" font-weight="700" fill="#333">the intent's change directory</text>
   <text x="1004" y="537" font-size="9.5" font-family="monospace" fill="#666">records: notes · session · prototype</text>
   <text x="1004" y="554" font-size="11" font-weight="700" fill="#333">the book</text>
-  <text x="1004" y="571" font-size="9.5" font-family="monospace" fill="#666">chapters · claims · context map</text>
+  <text x="1004" y="571" font-size="9.5" font-family="monospace" fill="#666">chapters · claims · map: homes · attachments</text>
   <text x="1004" y="584" font-size="8.5" fill="#5a3f95" font-weight="700">conclusions go to the book, once (23, 187)</text>
-  <text x="1106" y="612" font-size="8.5" fill="#999" text-anchor="middle">a gathered elaboration writes records into</text>
-  <text x="1106" y="625" font-size="8.5" fill="#999" text-anchor="middle">each covered intent, conclusions once (188)</text>
-  <text x="1106" y="720" font-size="8.5" fill="#999" text-anchor="middle">21 · 22 · 23 · 120 · 187 · 188 · 189</text>
+  <text x="1004" y="598" font-size="8.5" fill="#999">the map is the scope surface (198)</text>
+  <text x="1106" y="624" font-size="8.5" fill="#999" text-anchor="middle">a gathered elaboration writes records into</text>
+  <text x="1106" y="637" font-size="8.5" fill="#999" text-anchor="middle">each covered intent, conclusions once (188)</text>
+  <text x="1106" y="720" font-size="8.5" fill="#999" text-anchor="middle">21 · 22 · 23 · 120 · 187 · 188 · 189 · 198 · 200</text>
 
   <!-- the plan -> intents, elaboration, proposal; proposal -> the plan -->
   <path d="M 1040 186 C 1040 240, 1040 260, 1040 290" fill="none" stroke="#c05b5b" stroke-width="2.2" marker-end="url(#mR)"/>
@@ -246,6 +247,8 @@
   <!-- books -> ledger (judged) ; curation challenge -> ledger -->
   <path d="M 1224 570 C 1240 590, 1252 610, 1264 632" fill="none" stroke="#7b5cb8" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mP)"/>
   <text x="1236" y="640" font-size="9" fill="#5a3f95" text-anchor="end">claims, judged</text>
+  <path d="M 1222 596 C 1244 610, 1256 634, 1266 656" fill="none" stroke="#7b5cb8" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#mP)"/>
+  <text x="1240" y="672" font-size="9" fill="#5a3f95" text-anchor="end">scope, derived (200)</text>
   <path d="M 798 516 C 805 580, 860 572, 930 572 C 960 572, 962 590, 962 620 C 980 690, 1150 700, 1264 650" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
   <text x="1110" y="702" font-size="9" fill="#5a3f95" text-anchor="middle">challenge · the verdict falls stale, planning is due (116, 101)</text>
 

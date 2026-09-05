@@ -618,21 +618,22 @@ requirements, iterated against the running plan rather than on paper.
 104. A repository joining the fleet has an empty ledger. Its first
     planning judges every claim in scope once and offers the unsatisfied
     set as one proposal.
-105. A claim's scope is part of the claim, chosen when it is written and
-    corrected by the operator's response. A claim about a contract between
-    two repositories is in scope for both, and each carries its own
+105. A claim's scope is part of the claim: what it attaches to on the
+    context map (200), attached when it is written and re-attached by
+    the operator's response. A claim about a contract between two
+    repositories is in scope for both, and each carries its own
     verdict.
-195. A repository's kinds and the capabilities it declares are stated on
-    the repository's node in the context map (198), which the manifest
-    entry names, and a claim's scope names kinds, capabilities,
-    repositories, or all (105). Adding a
-    kind or a capability to a repository brings every claim scoped to
-    it into that repository's scope, so planning becomes due (28) and
-    its next proposal carries the newly unmet claims; removing one
-    makes the affected verdicts not-applicable (101). The page shows,
-    for a repository, its kinds and capabilities, the claims in scope
-    with their verdicts, and each claim's scope with a control to
-    correct it (193).
+195. A repository's kinds and capabilities are derived from the nodes it
+    homes on the context map (199), never declared by hand, and a
+    claim's scope is derived from what the claim attaches to (200). A
+    node newly homed in a repository, or an attachment newly reaching
+    one, brings every claim attached there into that repository's
+    scope, so planning becomes due (28) and its next proposal carries
+    the newly unmet claims; a node or an attachment removed makes the
+    affected verdicts not-applicable (101). The page shows, for a
+    repository, its kinds and capabilities, the claims in scope with
+    their verdicts, and each claim's attachments with a control to
+    re-attach it (193).
 
 ### A.15 Signals and curation
 
@@ -712,19 +713,38 @@ requirements, iterated against the running plan rather than on paper.
     be told apart.
 124. A test can show, for a given instruction version and a scenario,
     what a session would be asked to write, without starting one.
-198. The system context map is the scope surface. Its nodes are the
-    repositories the flywheel tracks and the systems they meet; a
-    repository's kinds and capabilities are properties of its node
-    (195); a claim's scope is the set of nodes it attaches to, stored
-    as the rule the set matches — all, a kind, a capability, or named
-    repositories (105). Planning and the ledger read scope through the
-    map, and the map is data the machinery validates against a schema
-    and versions with the book (121). The page shows the map as a view
-    of the status view (B.4): decisions as markers on nodes, claims and
-    verdicts per node, what changed since the last review (122), and
-    scope correction as a gesture on nodes that sends one response
-    (193). Placing a new repository's node with its kinds and
-    capabilities is how a repository joins the fleet (104).
+198. The system context map is the scope surface. It is the map of
+    bounded contexts the books describe: each context a card with four
+    layers — contract, service, seam and store — its services in a
+    control or a data lane; relations whose kind is fixed by the layer
+    pair they cross; every element citing the chapter that states it
+    (120); a current map and a target map, independent and complete,
+    whose difference the page computes; and a status of settled,
+    candidate or open, an open element paired with a question. The map
+    is data validated by its schema on every commit and versioned with
+    the book (121). A session that writes or amends a claim updates it
+    (120).
+199. Every node names the git repository it is built in, its home. A
+    repository's kinds and capabilities are derived from the nodes it
+    homes by a table the schema fixes, and are never declared by hand;
+    the manifest entry names only the repository's git details (195).
+    The map check fails a home naming no manifest entry and a manifest
+    entry that no node homes.
+200. A claim attaches to map elements: a context, a node, or a relation.
+    Its scope is the set of repositories homing what it attaches to,
+    derived and never chosen; a claim on a relation between two
+    contexts is in scope for both (105). Correcting a scope is
+    re-attaching the claim, one response through the scope tool (193).
+    A claim attached to nothing is not planned against (98).
+201. The page shows the target map with two overlays: current to target,
+    the design difference, and what changed since the operator's last
+    review (122). Each node's home carries the ledger verdict for the
+    claims attached there, and decisions are markers on the elements
+    they concern. An open element's question is shown with it and can
+    be captured in one gesture (112).
+202. A repository joins the fleet when a node names it as home (104).
+    Its first planning's baseline is the claims attached to what it
+    homes.
 
 ### A.17 Sessions charged by the machinery
 
@@ -915,6 +935,28 @@ requirements, iterated against the running plan rather than on paper.
     router per host; the same repository declaration serves under
     every router; nothing beyond the private network is published
     unless the operator says so (46).
+
+### A.23 Where files live
+
+203. Three repositories, three owners. The state repository is the
+    machinery's alone: nothing a person or a session writes lives
+    there, and its layout is the profile's (C.2). The books repository
+    is the organization's: the book, the claims, the context map, the
+    manifest, the OpenSpec changes for intents and the elaboration
+    records inside them are written by people and sessions under the
+    book's own layout; the machinery writes there only under the
+    prefix `flywheel/` — captures, signals and moves, the rendered map
+    — and the OpenSpec change directory it creates when an intent
+    opens. A built repository is its owners': code and the
+    repository's declarations to the flywheel under `flywheel/`
+    (services, commit types) are theirs; the machinery writes only the
+    OpenSpec changes for units, the acceptance file beside the
+    as-built (192), and an untracked `.flywheel/` in each place for
+    the work order and handoff. Tracked flywheel-facing files sit
+    under `flywheel/` in any repository; untracked per-place files
+    under `.flywheel/`, excluded from git. The machinery never writes
+    outside its prefix except as the effect of a response. Raw
+    material that captures cite stays outside every repository (111).
 
 ## 5. Requirements — Part B, the control plane contract
 

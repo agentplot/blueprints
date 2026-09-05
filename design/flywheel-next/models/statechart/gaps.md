@@ -386,24 +386,44 @@ the operator may reverse by a response on the file; an entry with
   (Claude Code, codex, opencode); a kind with none is trusted to the
   work order. **Decision**.
 
-- **198 the context map as the scope surface.** The map
-  (`context-map.json`) is the one record of scope and of a
-  repository's kinds and capabilities: the claim block's `scope:` line
-  is rendered from the attachment and sits outside the lock hash, the
-  manifest's repository entry keeps only git details, and `flywheel map
-  check` ties the manifest list and the repository nodes together.
-  **Decision**. The map schema
-  (`flywheel/schemas/context-map.md`: node kinds repository and system,
-  node properties, edge relations, attachment rules) is sketched in
-  `profiles/books.yaml` and written nowhere else. **Open**. Existing
-  maps — `context-map.json` files written by the current flywheel's
-  writeback sessions without attachments, and claim blocks carrying
-  their own scope lines — need a migration that lifts each block's
-  scope line into an attachment and then re-renders; not modelled.
-  **Open**. The map view's gesture (select nodes, attach a claim) must
-  turn a selection into a rule — all, a kind, a capability or the named
-  repositories — and a selection that matches no single rule is sent
-  as named repositories. **Decision**.
+- **198–202 the context map as the scope surface.** The map is the v1
+  context map (`context-map/schema.json` of the willdan blueprints,
+  shipped with the flywheel binary rather than kept in the books) with
+  three additions — the `repository` layer renamed `seam`, `home` on
+  every node, and `attachments` — and it is the one record of scope and
+  of a repository's kinds and capabilities: the claim block's `scope:`
+  line is rendered from the attachments and sits outside the lock
+  hash, the manifest's repository entry keeps only git details, and
+  `flywheel map check` ties homes and manifest entries together.
+  **Decision**. The derivation table — which homed node layers and
+  kinds give a repository which kinds and capabilities — is sketched in
+  `profiles/books.yaml` and fixed nowhere; its contents are **open**,
+  its shape (a pure function of the homed nodes) is decided. Migrating
+  a v1 map: rename `layer: repository` to `seam`, add `home` to every
+  node (one value per context is usually right), and lift each claim
+  block's scope line into attachments — a rule naming repositories
+  becomes an attachment to the context or nodes those repositories
+  home, and the rendered line then agrees; a claim whose old scope was
+  `all` attaches to every context. Not modelled; a one-off `flywheel
+  map migrate` in the binary. **Open**. A gesture on the map view
+  re-attaches to the one element gestured at; a claim meant for
+  several elements is attached to each in turn, one response each.
+  **Decision**. The v1 `configurations` companion, `seamRow` and
+  `verifiedFiles` are kept as they are. **Decision**.
+
+- **203 where files live.** The ledger is not named in 203's list of
+  what the machinery writes in the books, but the machinery writes it
+  (`record_verdict`), so it lives under the prefix as
+  `flywheel/ledger/`; the rendered claims index `flywheel/claims.json`
+  the same. **Decision**. Commit types move from the manifest to the
+  built repository's `flywheel/commit-types.yaml`, with the manifest
+  as fallback, since 203 makes them the repository's declaration; the
+  manifest's `unit_types.<type>.commit_type` stays readable for a
+  repository that declares none. **Decision**. The shipped
+  instructions, schemas, skills and type files sit under the books'
+  `flywheel/` too, written by people through chores and read by the
+  machinery — the prefix names what is flywheel-facing, not who
+  writes it. **Decision**.
 
 - **190 producers per deliverable.** The shipped set is a profile
   partial (`profiles/deliverables.yaml`) rather than a machine: it

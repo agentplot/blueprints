@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–198);
+Requirements are cited by their number in `requirements.md` (1–203);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -19,8 +19,8 @@ sessions and hosts; 12 answers section 10 of the requirements one
 heading at a time; 13 gives the crate boundary; 14 walks S1 to S34; 15
 checks the invariants; 16 describes the diagrams; 17 covers the agent
 kinds, the pull-request landing, operation, intents as changes with
-gathered elaborations, deliverables with their producers, and endpoints
-and routing (A.17 to A.22).
+gathered elaborations, deliverables with their producers, endpoints
+and routing, and where files live (A.17 to A.23).
 
 `machines/check.py` validates every machine against `machines/schema.json`,
 every guard and effect name against `machines/atoms.yaml`, every profile
@@ -270,8 +270,8 @@ needed to walk S1 to S34.
 | store | holds | real system | profile |
 |---|---|---|---|
 | **state store** | every object's record: state per region, `entered_at`, `seq`, record fields, `applied_responses`; the thread on the object (questions, answers, notes, exits, offers, refusals, moves); op-responses; leases; host heartbeats; the plan's register; the sinks' marks; asks; the run record | tracker profile: GitHub issues, milestones and a Projects v2 board in the organization's `flywheel-state` repository. git-only profile: the `flywheel-state` git repository, branch `main` | differs |
-| **books repository** | chapters with fenced claim blocks; the system context map; OpenSpec change directories (one per intent) and their archive; the manifest `flywheel.yaml`; instructions, schemas and skills; captures, signals and moves; the ledger; unit and elaboration type definitions | git repository, mdBook, OpenSpec, recutils files parsed by the binary | same in every profile |
-| **built repositories** | the shared line, bolt lines, places; as-built statements; OpenSpec change directories for units, holding the finding and chore documents; persona definitions; the service declarations `.flywheel/services.yaml` (47), read at the head of the bolt's place and changed only by a chore (48) | git repositories with their own merge gates | same |
+| **books repository** | the organization's (203): chapters with fenced claim blocks, the system context map (`context-map/`, the scope surface), the manifest `flywheel.yaml`, OpenSpec change directories (one per intent) and their archive, the shipped instructions, schemas, skills and type files under `flywheel/`; the machinery's own, under `flywheel/` only: captures, signals and moves, the ledger, the rendered maps and claims index | git repository, mdBook, OpenSpec, recutils files parsed by the binary | same in every profile |
+| **built repositories** | its owners' (203): the shared line, bolt lines, places; code; as-built statements; persona definitions; the repository's declarations under `flywheel/` — `services.yaml` (47), read at the head of the bolt's place and changed only by a chore (48), `commit-types.yaml` (185); the machinery's own: OpenSpec change directories for units, holding the finding and chore documents, the acceptance file (192), and an untracked `.flywheel/` per place | git repositories with their own merge gates | same |
 | **the multiplexer** | pane existence, activity and the last keystroke per session | herdr, read through `herdr agent status` | same; evidence only, never durable state |
 
 Nothing else. A host's memory holds only what it read this tick. The
@@ -431,7 +431,7 @@ response: page/8f1c
 text: yes; Ready is a superset
 ```
 
-A ledger cell (`ledger/<repository>.rec` in the books repository):
+A ledger cell (`flywheel/ledger/<repository>.rec` in the books repository, 203):
 
 ```
 %rec: cell
@@ -446,8 +446,9 @@ judged_at: 2026-09-01T16:20:00Z
 judged_by: work-item/atlas/wi-402/review/1
 ```
 
-A capture, a signal and its move (`signals/captures/<key>.rec`,
-`signals/<capture key>/<n>.rec`, `signals/moves/<signal id>.rec`):
+A capture, a signal and its move (`flywheel/signals/captures/<key>.rec`,
+`flywheel/signals/<capture key>/<n>.rec`,
+`flywheel/signals/moves/<signal id>.rec`, 203):
 
 ```
 %rec: capture
@@ -499,7 +500,7 @@ profile: tracker             # or git-only
 books: willdan/blueprints
 state: willdan/flywheel-state
 repositories:
-  - name: atlas                # kinds and capabilities are on its context-map node (198)
+  - name: atlas                # kinds and capabilities are derived from the map nodes homed here (199)
     repo: willdan/atlas
     landing: pull-request
     take_cadence: "0 6 * * *"
@@ -618,12 +619,15 @@ body edit with a date). Per repository, what landed in a period
 (`bolt.landed` entries). Per bolt, its units by state, what waits, and
 the endpoints its place serves (46). Per host, its running sessions,
 its bound and its declaration. Unmoved signals by source with age. The
-map view: the context map's nodes and edges, with the standing
-decisions as markers on the nodes their objects belong to, the claims
-attached to each node with the node's verdicts, what changed in the
-map and the chapters since the operator's last `reviewed` mark (122),
-and scope correction as a gesture — select nodes, attach a claim — that
-sends one `scope` call (193, 198). The
+map view (201): the target map with two overlays, current to target
+(the design difference the page computes from the two independent
+maps) and what changed since the operator's last `reviewed` mark
+(122); each node's home carrying the ledger verdicts for the claims
+attached there; the standing decisions as markers on the elements
+their objects concern; an open element's question shown with it, and
+captured in one gesture through the `capture` tool (112); and
+re-attachment as a gesture on an element that sends one `attach` call
+(193, 200). The
 page says the as-of point of the read it was built from (145). It is
 never written by hand.
 
@@ -958,7 +962,8 @@ the owner is held.
 ### 7.7 Services
 
 A built repository declares its services — a dev server, a worker,
-anything that listens — as data in `.flywheel/services.yaml`: a name,
+anything that listens — as data in `flywheel/services.yaml`, tracked,
+the repository's own declaration (203): a name,
 the command that starts it in a place, what it serves, and an optional
 readiness command (47; the file is named and shown in
 `profiles/host.yaml`). The bolt's `services` region reads the file at
@@ -1018,8 +1023,9 @@ check` refuses a commit where a block's text changed and its version
 did not, or where the lock does not match, so "version moves only when
 its text moves" is enforced where the text lives (97). The mdBook
 preprocessor `mdbook-flywheel-claims` renders the block as a callout
-with its name, version and scope, and writes `claims.json` beside the
-book: the index curation clusters against (108) and planning reads.
+with its name, version and the scope rendered from its map attachments
+(200), and writes `flywheel/claims.json` under the machinery's prefix
+(203): the index curation clusters against (108) and planning reads.
 
 The claim's state is where its block is: on an intent's line only,
 `proposed`; on the books' shared line, `standing`; gone from the
@@ -1043,29 +1049,40 @@ exists for every (standing claim, repository in scope) pair; `list`
 derives the pairs from `claims.json` and the manifest, so a cell needs
 no record until it is judged (a joining repository has every cell
 `unjudged` with no file, 104). Scope resolves through the system
-context map, which is the scope surface (198): `context-map.json` in
-the books, validated against its schema by the pre-commit hook and
-versioned with the book (121), whose nodes are the repositories the
-flywheel tracks and the systems they meet. A repository's `kinds` and
-`capabilities` are properties of its node, and a claim's scope is its
-attachment — the rule the set of nodes matches: all, kinds,
-capabilities or named repositories (105, 195). The map is the one
-record: the claim block's `scope:` line is rendered from the
-attachment, outside the lock hash, and the manifest's repository entry
-carries only git details, the node of the same id carrying the rest
-(`flywheel map check` keeps the two lists one). Placing a new
-repository's node with its kinds and capabilities is how a repository
-joins the fleet (104). Adding a kind or a capability to a node brings
-every claim scoped to it into that repository's scope — new cells
-`unjudged`, the fingerprint (which hashes the node) moves, planning is
-due and its proposal carries the newly unmet claims; removing one
-sends the affected cells to `out-of-scope`, where the recorded verdict
-reads as not-applicable and the cell is out of the backlog, returning
-to `judged` if scope returns. The `scope` tool on a claim
-(`set_claim_scope`) rewrites the attachment and re-renders the line
-without moving the text or the version; the page shows the map as a
-view of the status view (4.3), and its gesture on nodes sends that one
-tool (193, 195, 198).
+context map, which is the scope surface (198): the v1 map of bounded
+contexts in `context-map/` — each context a card of four layers,
+contract, service (control or data lane), seam and store; relations
+whose kind the layer pair fixes; every element citing its chapter; a
+current and a target map the page diffs; status settled, candidate or
+open with a question — validated by the schema the binary ships on
+every commit and versioned with the book (121), with three additions:
+every node names its `home`, the git repository it is built in (199);
+`attachments` say which claim attaches to which context, node or
+relation (200); and the `repository` layer is called `seam`, since
+repository means a git repository here. Nothing is declared by hand:
+a repository's kinds and capabilities are derived from the nodes it
+homes by the table the schema fixes, and a claim's scope is the set of
+repositories homing what it attaches to — both ends of a relation, so
+a contract claim is in scope for both (105, 199, 200). The map is the
+one record: the claim block's `scope:` line is rendered from the
+attachments, outside the lock hash, the manifest's repository entry
+carries only git details, and `flywheel map check` fails a home
+naming no entry or an entry no node homes. A repository joins the
+fleet when a node names it as home; its cells are the claims attached
+to what it homes, all `unjudged`, and its first planning's baseline is
+that set (104, 202). A node newly homed or an attachment newly
+reaching a repository brings claims into its scope — new cells
+`unjudged`, the fingerprint (which hashes the homed nodes and the
+attachments) moves, planning is due and its proposal carries the
+newly unmet claims; one removed sends the affected cells to
+`out-of-scope`, where the recorded verdict reads as not-applicable
+and the cell is out of the backlog, returning to `judged` if scope
+returns. A claim attached to nothing has an empty scope and is not
+planned against (98). The `attach` tool on a claim (`attach_claim`)
+re-attaches it in the target map and re-renders the line without
+moving the text or the version; the page shows the map as a view of
+the status view (4.3), and its gesture on an element sends that one
+tool (193, 195, 200).
 
 A verdict is written only by `record_verdict`, from a session's exit:
 the planning session (every cell in scope on a first planning, stale
@@ -1114,7 +1131,7 @@ claim fails the repository's own `flywheel asbuilt check` gate (I9).
 ## 9. Signals and curation
 
 Adapters write captures and signals as recutils files in the books
-repository under `signals/` (section 3.4): `flywheel capture meeting
+repository under `flywheel/signals/` (section 3.4, 203): `flywheel capture meeting
 <file>`, `flywheel capture discord <channel> <day>`, a folder watcher
 on `~/captures`, and the Discord bot's `capture:` command for a
 forwarded message. The capture key is the source event's identity
@@ -1274,8 +1291,9 @@ The default instructions ship in the books repository template:
 `instructions/design-conclusion.md` (write the chapter and the claim in
 one commit; update the context map), `instructions/construction.md`
 (name the claim the work serves in every as-built statement). The
-context map is `context-map.json`, the scope surface (198, section
-8.2), rendered into `src/context-map.md`, both versioned with the
+context map is `context-map/maps/current.js` and `target.js`, the
+scope surface (198, section 8.2), rendered by the machinery into
+`flywheel/map/*.json` and into the book, all versioned with the
 book; the review view is `flywheel review` served at
 `/review`: the chapters and map nodes changed since the operator's
 last `reviewed` mark (a response on the plan object), with the previous
@@ -1388,8 +1406,8 @@ signal's content; a person writing the same files is curation too.
 
 ### 12.7 Where does the ledger live, who writes a verdict, and how does a stale verdict become a decision?
 
-`ledger/<repository>.rec` in the books repository in every profile
-(8.2). A verdict is written by `record_verdict` from a planning, review
+`flywheel/ledger/<repository>.rec` in the books repository in every
+profile (8.2, 203). A verdict is written by `record_verdict` from a planning, review
 or test session's exit, never computed. Stale is a state of the cell
 read every tick from the claim's version and the evidence's presence;
 it moves planning's fingerprint; planning proposes; `unit.proposed` is
@@ -1456,6 +1474,15 @@ loser fetches, rebases its one-file commit, and pushes again. Content
 never conflicts while leases hold; a lease race is two pushes to
 `lease/<id>` with expected-old zero, of which one is rejected, and the
 loser reads the winner (S17, I15).
+
+Three repositories, three owners (203, A.23): the state repository is
+the machinery's alone and laid out as the profile says; the books
+repository is the organization's, the machinery writing only under
+`flywheel/` and the intent's change directory it creates; a built
+repository is its owners', the machinery writing only the units'
+OpenSpec changes, the acceptance file and an untracked `.flywheel/`
+per place. Anything else the machinery writes in a tracked tree is
+the effect of a response.
 
 ### 12.14 How does the phone reply become a commit, and how is the status page served without a central process?
 
@@ -1690,7 +1717,7 @@ asserts work done on an item is refused the same way a dictation is
 on `main` at the git host, headed "as of <commit> at <time>".
 
 **S21 — a forwarded message.** Discord `capture: <forward>` → the bot
-writes `signals/captures/message-<id>.rec` with `raw` = the message
+writes `flywheel/signals/captures/message-<id>.rec` with `raw` = the message
 link; `capture.captured` self-transition `ensure_signal` writes one
 signal; the capture stays `captured` until `signals_present` → `read`.
 Nothing else: curation runs only on count or cadence.
@@ -1707,8 +1734,8 @@ move file; `signal: dropped → unmoved`; the count moves; the next run
 clusters it.
 
 **S25 — a claim amended in one commit.** The default instruction makes
-the session change the chapter, the claim block and the context map in
-one commit; the pre-commit hook checks the lock and the version bump.
+the session change the chapter, the claim block and the context map —
+the claim's attachment, so its scope derives (200) — in one commit; the pre-commit hook checks the lock and the version bump.
 `flywheel review` diffs `src/` and `context-map.json` from the last
 `reviewed` response to the intent's landing and serves the changed
 chapter and node with the previous version beside it.
@@ -2036,9 +2063,31 @@ the platform's ingress reaches the port on every interface, the
 endpoint read from the hostname or URL the platform hands the host,
 published within the operator's private network by the platform's own
 access control. `$PORT` and `$BIND` are the only things a declaration
-sees, so one `.flywheel/services.yaml` serves under every router;
+sees, so one `flywheel/services.yaml` serves under every router;
 `service.endpoint` and `place.endpoints_served` read through the
 router in force; the machinery publishes nothing wider than the
 private network under any of them (46). A reverse proxy inside the
 flywheel binary would be a fourth router, not a requirement
 (`gaps.md`).
+
+**A.23 — where files live.** Three repositories, three owners (203).
+The state repository is the machinery's: nothing a person or a session
+writes lives there, and its layout is the profile's (4.2, 12.13). The
+books repository is the organization's: the book, the claim blocks,
+the context map, the manifest, the OpenSpec changes for intents and
+the elaboration records inside them are written by people and sessions
+under the book's own layout; the machinery writes only under
+`flywheel/` — `flywheel/signals/` (captures, signals, moves),
+`flywheel/ledger/`, `flywheel/map/` (the rendered maps),
+`flywheel/claims.json` — and the change directory `open_intent`
+creates (`profiles/books.yaml` `layout:`). A built repository is its
+owners': code, and its declarations to the flywheel under `flywheel/`
+— `services.yaml` (47), `commit-types.yaml` (185) — are theirs; the
+machinery writes only the units' OpenSpec changes, the acceptance file
+beside the as-built (192), and an untracked `.flywheel/` in each place
+for the work order and handoff, excluded through `.git/info/exclude`
+by `prepare_place`. Tracked flywheel-facing files sit under
+`flywheel/` in any repository; untracked per-place files under
+`.flywheel/`. The machinery never writes outside its prefix except as
+the effect of a response, and raw material stays outside every
+repository (111).
