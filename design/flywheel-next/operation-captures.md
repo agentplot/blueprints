@@ -132,6 +132,41 @@ and Switchboard never sees a GVC commit.
 | Anomaly in a graph build: the identity-keyed build `(repo, head.sha, scope)` fails, or the catalog subgraph the builder wrote disagrees with what the readers expect | capture; when the build ran as a stack's custom resource, the same event is switchboard's `deploy.failed` and is captured once under that key | source `gvc/<repo>/build/<sha>/<scope>`, key the build identity · the build's run time · the job plane, or `integration-sync` for the stack path · the build log and the subgraph it wrote | kind ask · asserted by the builder · tags repository, head, scope, the app that bakes it · "build of `<repo>@<sha>` at scope `<scope>` `<failed | wrote a subgraph missing <label>>`" · the claims on the catalog subgraph contract | challenge → stale verdict → planning; chore or unit on the repository's line |
 | A vintage that publishes rows a newer vintage already claimed, seen at checkout | capture | source `gvc/<repo>/checkout/<id>`, key the checkout id · the checkout time · the workbench or the stack that read it · the checkout's resolution log | kind question · asserted by the reader · tags repository, the leaf `(item, partition, fp)` · "newest vintage did not win for `<key>` at `<sha>`" · the claim on vintage resolution | challenge; a chore when the book's rule is clear, else a question on a proposed intent |
 
+## What dispatch needs to exist
+
+Dispatch is the organization's cloud-hosted agent, running outside
+every host. It is four things at once: the chat presenter with a stable
+identity (148, 155), the capture endpoint a delivery system or a chat
+calls (106, 112, C.1), the capture-reading triage session (115), and
+the chat interpreter that turns free text into one proposed tool call
+(194). Each of those needs something to exist. The table names the
+need, why, where it is configured, and what it must never hold.
+
+| Need | Why | Where it is configured | What it must never hold |
+|---|---|---|---|
+| A GitHub App for the organization, installed on the books repository, every built repository the manifest lists, and the state repository. Permissions: contents read and write, pull requests read, checks read, deployments read. Webhooks: `push`, `pull_request`, `check_run`, `deployment_status`. | Contents write is how signal and capture records reach the books repository (157) and how a response becomes a commit under the git-only profile (164). Pull requests, checks and deployments read are the check-run channel and the links on an open request (176, 177). The webhooks are notify (130, 166): the capture endpoint is woken, never polled. | The manifest names the App id and the installation. The private key is a secret the operator places in the org's sealed store; dispatch reads it at start. | A token for any person. Repository admin. Write on anything but contents. A checkout of a built repository: dispatch writes records, never code. |
+| The Discord bot token and application id, and the equivalent for any other chat the profile binds (152, 155) | The presenter delivers the plan to the chat sink and receives the short reply; the bot is its stable identity (148). Rich controls are the platform's, used as provided (155). | The manifest names the application id, the guild and the channel per org. The bot token is a secret the operator places. | The operator's own account credentials. Any channel outside the org's guild. |
+| Model access: API keys, or Bedrock or Vertex credentials when the org runs its models there. One model per role, declared per the manifest's defaults (173): the interpreter's model, triage's model. | The interpreter resolves names against live objects and proposes one tool call (194). Triage is judgment, never unattended (115). Both are sessions the machinery charges and take the role's default (173). | The manifest names the kind and model per role. Keys and cloud credentials are secrets the operator places; when the org runs on Bedrock, the runtime's own role carries them and no key exists. | A key that reaches any host. A model choice that overrides a unit type's or stage's own (173). |
+| Membership in the operator's private network: a tailnet node, or the managed platform's ingress (191) | The page is served on the private network and every chat rendering links to it (155). Dispatch must reach the page to link it and, when it presents, serve it (148). Nothing beyond the private network is published unless the operator says so (46). | The manifest names the router per host; dispatch is one host of that declaration. The node key or the ingress binding is placed by the operator or issued by the platform. | A public hostname. A route to a place's services: dispatch reads the plan, never a running prototype. |
+| Credentials on the state repository: push as compare-and-swap (162) | Under the git-only profile the response and every effect are commits; the push is the single-writer guarantee (134, 162). Dispatch is the one named writer that turns a phone reply into a commit (164). | The App's contents permission on the state repository; no separate credential. | A deploy key or a personal token. Force-push. |
+| The capture endpoint's inbound secret for webhook callers: switchboard's `integration-sync`, Datadog's monitor webhook, the gvc job plane, flywheel-cloud | Captures are appended by adapters at any rate (106); the endpoint must know a caller is one of the org's producers and not the open internet. | The manifest names the callers. Each caller's secret is placed by the operator on both sides: in the org's sealed store for dispatch, and in the producer's own configuration. | One shared secret for every caller. Any secret in the capture record or the signal. |
+| Storage for the raw material captures cite: transcripts, logs, exports, the drawer conversation (111) | A capture holds a pointer to the raw material; the raw material stays outside version control (111). The reader session opens it; nothing else does. | The manifest names the bucket or folder per source. Access rides on dispatch's runtime identity. | The raw material itself in any record (62, 111). Retention shorter than the oldest unmoved signal (118). |
+| Its own lease as presenter (148) | Exactly one presenter delivers the plan to each sink at a time. Dispatch holds that lease or the manifest pins it. A host that takes the presenter role while dispatch holds the lease is a race, and races are forbidden (150). | The manifest either pins dispatch as presenter for the chat sink or lets it take the lease within its declaration (149). The lease is a record in the state, taken and renewed like any other (128). | A lease on any object a host works: intents, bolts, units, sessions. Dispatch presents and captures; it never runs a loop. |
+
+**What the manifest names.** The App id and installation, the chat
+application id and channel, the model per role, the router and the
+network dispatch sits on, the webhook callers, the raw-material store,
+and whether dispatch is pinned as presenter. All of that is data, read
+at start, reviewable in git.
+
+**What the operator places, and no agent invents or copies.** The
+App's private key, the bot token, model keys or cloud credentials, the
+network node key, and each caller's inbound secret. They live in the
+org's sealed store under the runtime's identity. No session sees them,
+no record cites them, and no agent may create, rotate, or move one; a
+missing secret is a decision under attention for the operator (149),
+never a value an agent supplies.
+
 ## Open questions
 
 - **Deduplication (111).** A switchboard finding is raised, cleared, and
