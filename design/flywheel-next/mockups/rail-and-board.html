@@ -409,17 +409,19 @@ label.chore .f{margin-left:auto;font:11px var(--mono);color:var(--ink3)}
 .ledger .lg-head .lg-repo{color:var(--ink3);font-weight:400}
 .ledger .lg-head .lg-run{margin-left:auto;font-weight:400;color:var(--ink2);white-space:nowrap}
 .ledger .lg-head .lg-run .landing{color:var(--ok);font-weight:600}
-.ledger .lg-chain{display:flex;flex-wrap:wrap;align-items:flex-start;padding:8px 9px 4px}
+.ledger .lg-chain{display:flex;flex-wrap:wrap;align-items:flex-start;padding:8px 6px 4px}
 .ledger .lg-unit{border:1px solid var(--line);background:var(--surface);padding:3px 7px;font:11.5px var(--mono);white-space:nowrap;max-width:100%;margin-bottom:4px}
 .ledger .lg-unit.merged{color:var(--ink3);background:transparent}
 .ledger .lg-unit.merged::before{content:"✓ ";color:var(--ok)}
-.ledger .lg-unit.building{border:1.5px solid var(--accent);color:var(--ink);white-space:normal;flex-basis:100%}
+.ledger .lg-unit.building{border:1.5px solid var(--accent);color:var(--ink);white-space:normal;flex-basis:100%;padding:3px 5px 5px;min-width:0}
 .ledger .lg-unit.building .lg-un{font-weight:700}
 .ledger .lg-unit.building .lg-ut{color:var(--ink3);margin-left:6px}
 .ledger .lg-unit.queued{border-style:dashed;color:var(--ink2)}
 .ledger .lg-arrow{color:var(--ink3);font:11px var(--mono);padding:3px 4px;margin-bottom:4px}
 .ledger .lg-sess{display:flex;flex-direction:column;gap:3px;margin-top:5px;padding-top:5px;border-top:1px dashed var(--line)}
-.ledger .lg-sess .it{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ledger .lg-sess .it{display:flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0}
+.ledger .lg-sess .sc{font-size:9.5px;max-width:100%}
+.ledger .lg-sess .sc>*{padding:2px 4px}
 .ledger .lg-mach{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 9px;border-top:1px dashed var(--ink3);font:11px var(--mono);color:var(--ink3)}
 .ledger .lg-foot{display:flex;gap:10px;padding:5px 9px;border-top:1px solid var(--ink3);font:11px var(--mono);color:var(--ink3);overflow:hidden;background:var(--surface)}
 .ledger .lg-foot .ep{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -1567,7 +1569,8 @@ function capture(){ const ta = $('#capture'); const v = ta.value.trim(); if(!v){
   ta.value=''; S.captureIntent = false; render(); }
 
 /* first frame */
-document.body.dataset.tab = 'plan';
+document.body.dataset.tab = new URLSearchParams(location.search).get('tab')==='board' ? 'board' : 'plan';
+$$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab===document.body.dataset.tab)));
 const Q = new URLSearchParams(location.search);
 if(Q.get('theme')){ document.documentElement.dataset.theme = Q.get('theme'); $('#theme').textContent = Q.get('theme'); }
 if(Q.get('view')==='map') S.view = 'map';

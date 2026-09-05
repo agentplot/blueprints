@@ -77,6 +77,15 @@ Feedback so far, in order:
   dock with its kinds, capabilities, claims with verdicts, and each
   claim's scope with a control that sends one response; the baseline
   decision 417 links to it.
+- The board cards all looked alike, which said "same kind of thing"
+  about very different things. Two rules now: one silhouette per kind
+  (a decision is the only answerable card; a proposal is a sheet with
+  unit proposals as slips and a baseline as a sheet of its own; an
+  intent is a drawn thread with elaborations as beads; a bolt is a flat
+  square ledger with its units as a chain; a landed bolt is a borderless
+  record with a PR-and-checks stamp; a signal is a quote with a left
+  rule), and phase is the lane's while kind is the shape's. The dock
+  header takes the object's form.
 
 The models behind the surface are in `../models/statechart/` (`model.md`
 first). The Rust prototype that serves a working version of this page
