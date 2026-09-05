@@ -41,18 +41,25 @@
   <text x="466" y="97" font-size="12" font-weight="700" fill="#a34848">OPERATOR · phone or page · the only one who opens or closes an intent</text>
   <use href="#person" x="500" y="145" color="#c05b5b"/>
   <text x="500" y="172" font-size="9.5" fill="#666" text-anchor="middle">operator</text>
-  <rect x="540" y="108" width="340" height="72" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
-  <text x="554" y="130" font-size="11" font-weight="700" fill="#333">the plan · the operator's decisions, now</text>
+  <rect x="540" y="108" width="280" height="76" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+  <text x="554" y="130" font-size="11" font-weight="700" fill="#333">the plan · decisions, now</text>
   <text x="554" y="149" font-size="9.5" font-family="monospace" fill="#666">APPROVE · DECIDE · ANSWER · ATTENTION</text>
-  <text x="554" y="168" font-size="9" font-weight="700" fill="#a34848">one response · applied once (1, 6)</text>
-  <rect x="900" y="108" width="480" height="72" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
-  <text x="914" y="130" font-size="11" font-weight="700" fill="#333">only the operator</text>
-  <text x="914" y="149" font-size="9.5" font-family="monospace" fill="#666">opens · closes an intent · approves elaboration, proposal, unit (5, 22)</text>
-  <text x="914" y="168" font-size="9" font-weight="700" fill="#a34848">answers every decision · revives a signal, splits a cluster (107)</text>
-  <rect x="1400" y="108" width="340" height="72" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
-  <text x="1414" y="130" font-size="11" font-weight="700" fill="#333">dictation · no proposal behind it</text>
-  <text x="1414" y="149" font-size="9.5" font-family="monospace" fill="#666">idea: … · explore intents… · ask repo: …</text>
-  <text x="1414" y="168" font-size="9" font-weight="700" fill="#a34848">an intent, or an explore over intents, by hand (3, 189)</text>
+  <text x="554" y="170" font-size="9" font-weight="700" fill="#a34848">one response · applied once (1, 6)</text>
+  <rect x="840" y="108" width="310" height="76" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+  <text x="854" y="130" font-size="11" font-weight="700" fill="#333">only the operator</text>
+  <text x="854" y="149" font-size="9.5" font-family="monospace" fill="#666">opens · closes an intent · approves (5, 22)</text>
+  <text x="854" y="170" font-size="9" font-weight="700" fill="#a34848">elaboration · proposal · unit · every decision (107)</text>
+  <rect x="1170" y="108" width="200" height="76" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <text x="1184" y="130" font-size="11" font-weight="700" fill="#333">interpreter (194)</text>
+  <text x="1184" y="147" font-size="9.5" font-family="monospace" fill="#666">free text → one tool call</text>
+  <text x="1184" y="161" font-size="8.5" fill="#999">chat → dispatch · page → browser model</text>
+  <text x="1184" y="174" font-size="8.5" fill="#999">control → none · shown, then confirmed</text>
+  <path d="M 1370 146 L 1388 146" fill="none" stroke="#c05b5b" stroke-width="2" marker-end="url(#mR)"/>
+  <rect x="1390" y="108" width="350" height="76" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+  <text x="1404" y="130" font-size="11" font-weight="700" fill="#333">TOOLS · one surface for page, chat, dispatch, machinery</text>
+  <text x="1404" y="147" font-size="9.5" font-family="monospace" fill="#666">answer a decision · mark capture as intent (19)</text>
+  <text x="1404" y="161" font-size="9.5" font-family="monospace" fill="#666">explore over intents (189)</text>
+  <text x="1404" y="176" font-size="9" font-weight="700" fill="#a34848">drop · later · hold · rename · start/stop · scope (193)</text>
 
   <!-- DISPATCH AGENT -->
   <rect x="70" y="215" width="360" height="545" rx="10" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4"/>
@@ -93,7 +100,7 @@
   <!-- THE ENGINE frame -->
   <rect x="450" y="215" width="1310" height="545" rx="10" fill="#fff" stroke="#8a8a86" stroke-width="1.8"/>
   <text x="466" y="237" font-size="12" font-weight="700" fill="#5f6b7a">THE ENGINE · control plane · runs no agent · charges every session, applies every response</text>
-  <text x="1744" y="752" font-size="9" fill="#999" text-anchor="end">reconciler tick · leases · idempotent effects (86, 128, 150, 171)</text>
+  <text x="1716" y="752" font-size="9" fill="#999" text-anchor="end">reconciler tick · leases · idempotent effects (86, 128, 150, 171)</text>
 
   <!-- RECORDS -->
   <rect x="466" y="250" width="230" height="480" rx="8" fill="#fbfbfa" stroke="none"/>
@@ -135,19 +142,19 @@
   <text x="736" y="385" font-size="9.5" font-family="monospace" fill="#666">cites signals · weight by date</text>
   <text x="736" y="398" font-size="8.5" fill="#999">one decision each, never per signal (109)</text>
   <use href="#gear" x="790" y="504" color="#2e9e5b"/>
-  <text x="808" y="500" font-size="9.5" fill="#666">curation</text>
-  <text x="808" y="514" font-size="8.5" fill="#999">cadence or threshold (110)</text>
-  <text x="808" y="528" font-size="8.5" fill="#999">clusters unmoved signals</text>
-  <text x="808" y="542" font-size="8.5" fill="#999">against claims (108)</text>
+  <text x="808" y="496" font-size="9.5" fill="#666">curation</text>
+  <text x="808" y="509" font-size="8.5" fill="#999">cadence or threshold (110)</text>
+  <text x="808" y="522" font-size="8.5" fill="#999">clusters unmoved signals</text>
+  <text x="808" y="535" font-size="8.5" fill="#999">against claims (108)</text>
   <path d="M 790 486 L 790 410" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
   <text x="798" y="452" font-size="9" fill="#5a3f95">join</text>
-  <use href="#marker" x="900" y="590" color="#c05b5b"/>
+  <use href="#marker" x="905" y="590" color="#c05b5b"/>
   <rect x="722" y="600" width="208" height="56" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
   <text x="736" y="620" font-size="11" font-weight="700" fill="#333">gathering</text>
   <text x="736" y="635" font-size="9.5" font-family="monospace" fill="#666">one elaboration over intents</text>
   <text x="736" y="648" font-size="8.5" fill="#999">names the intents it covers (188)</text>
   <path d="M 790 522 L 790 596" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
-  <text x="798" y="566" font-size="9" fill="#5a3f95">proposes</text>
+  <text x="782" y="566" font-size="9" fill="#5a3f95" text-anchor="end">proposes</text>
   <text x="836" y="720" font-size="8.5" fill="#999" text-anchor="middle">20 · 107–110 · 116 · 117 · 188</text>
 
   <!-- records <-> curation -->
@@ -226,7 +233,7 @@
   <!-- books -> ledger (judged) ; curation challenge -> ledger -->
   <path d="M 1224 570 C 1240 590, 1252 610, 1264 632" fill="none" stroke="#7b5cb8" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mP)"/>
   <text x="1236" y="640" font-size="9" fill="#5a3f95" text-anchor="end">claims, judged</text>
-  <path d="M 808 512 C 900 560, 960 560, 962 620 C 980 690, 1150 700, 1264 650" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
+  <path d="M 798 516 C 805 580, 860 572, 930 572 C 960 572, 962 590, 962 620 C 980 690, 1150 700, 1264 650" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
   <text x="1110" y="702" font-size="9" fill="#5a3f95" text-anchor="middle">challenge · the verdict falls stale, planning is due (116, 101)</text>
 
   <!-- CONSTRUCTION · LANDING -->
@@ -260,7 +267,7 @@
 
   <!-- curation route -> planning (ask) or a chore -->
   <path d="M 925 658 C 925 745, 930 745, 990 745 L 1300 745 C 1356 745, 1356 730, 1356 514" fill="none" stroke="#7b5cb8" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#mP)"/>
-  <text x="1150" y="738" font-size="9" fill="#5a3f95" text-anchor="middle">route · an ask that names the repository, or a chore on a line (116, 28, 60)</text>
+  <text x="1150" y="736" font-size="9" fill="#5a3f95" text-anchor="middle">route · an ask that names the repository, or a chore on a line (116, 28, 60)</text>
 
   <!-- OPERATION -->
   <rect x="450" y="790" width="1310" height="76" rx="10" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4" stroke-dasharray="6 4"/>
@@ -275,11 +282,12 @@
   <text x="1744" y="850" font-size="8.5" fill="#999" text-anchor="end">a check run on the open request · a capture through dispatch</text>
 
   <!-- lands: construction -> operation -->
-  <path d="M 1660 760 L 1660 788" fill="none" stroke="#4a7fb5" stroke-width="2.2" marker-end="url(#mB)"/>
-  <text x="1668" y="778" font-size="9" fill="#3f6d9c">lands</text>
+  <path d="M 1560 760 L 1560 788" fill="none" stroke="#4a7fb5" stroke-width="2.2" marker-end="url(#mB)"/>
+  <text x="1568" y="778" font-size="9" fill="#3f6d9c">lands</text>
   <!-- check run: operation -> bolt -->
-  <path d="M 1540 788 C 1540 760, 1540 740, 1540 386" fill="none" stroke="#2b8a8a" stroke-width="2" marker-end="url(#mT)"/>
-  <text x="1532" y="778" font-size="9" fill="#1f6e6e" text-anchor="end">check run on the open request → finding on the bolt (176)</text>
+  <path d="M 1735 788 C 1735 700, 1735 420, 1735 362 C 1735 348, 1725 342, 1694 342" fill="none" stroke="#2b8a8a" stroke-width="2" marker-end="url(#mT)"/>
+  <text x="1726" y="771" font-size="9" fill="#1f6e6e" text-anchor="end">check run on the open request</text>
+  <text x="1726" y="783" font-size="9" fill="#1f6e6e" text-anchor="end">→ a finding on the bolt (176)</text>
   <!-- book, claims, as-built -> operation (read from git) -->
   <path d="M 1150 730 L 1150 788" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mN)"/>
   <text x="1158" y="778" font-size="9" fill="#5f6b7a">read from git</text>
