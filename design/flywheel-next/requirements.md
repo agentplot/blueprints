@@ -791,6 +791,31 @@ requirements, iterated against the running plan rather than on paper.
     a bounded window after, then leaves every view and stays in
     history. Nothing is deleted; the views are derived (B.4).
 
+### A.20 Intents as changes; gathered elaborations
+
+187. An intent is a change in the books repository: its change directory
+    is where its elaborations record what they did — research notes,
+    session records, prototype notes, an interactive page — as records,
+    while what they conclude is written to the book and its claims (23).
+    A bolt has no change directory in the books; a unit's change lives
+    in its built repository and is written at the unit's first stage
+    (37). A proposal (172) is a record in the state with its document
+    beside it.
+188. Elaborations of one type proposed at the same time on different
+    intents may be gathered into one elaboration: one session, one
+    conversation, one place (24), covering several intents. Curation or
+    planning proposes the gathering and names the intents it covers;
+    the operator sees one decision, may pick which intents stay in it,
+    and may answer per intent. The session writes its records into each
+    covered intent's change directory and its conclusions into the book
+    once; each covered intent's elaboration is finished by the one
+    session's exit.
+189. The operator may open an elaboration over several intents by
+    dictation, naming them, as a with-operator or standing session (25).
+    Its writeback is per covered intent (188). An intent covered by a
+    gathered elaboration carries no other elaboration awaiting approval
+    meanwhile (21).
+
 ## 5. Requirements — Part B, the control plane contract
 
 The data plane reaches durable, shared state and the operator only

@@ -243,6 +243,58 @@ the operator may reverse by a response on the file; an entry with
   more than a software repository does. The adapters themselves are
   not in this model, only the formats they write. **Decision**.
 
+- **187 the proposal's document beside its record.** A proposal's and
+  a unit's `document` is a path in the state store beside the proposal
+  record (`objects/proposal/<id>/document.md` in git-only, an
+  attachment on the decision issue in the tracker), not in any change
+  directory; the finding and chore documents of 62 stay in the change
+  they arose in — the intent's in the books, the unit's in the built
+  repository. A bolt has no change directory anywhere. **Decision**.
+
+- **188 who gathers.** Planning proposes units against a built
+  repository's backlog and never an elaboration, so in this model the
+  gathering is curation's: a run that proposes elaborations of one
+  type on several intents — proposed in the same run, the requirement's
+  "at the same time" — may deliver them as one gathering, and
+  `gather_elaborations` writes one proposed elaboration on the first
+  intent named with `covers` naming all of them. Planning's half of
+  "curation or planning" has nothing to attach to until planning
+  proposes design work. **Decision**, open on planning's side. The
+  gathering is one object owned by the first intent; the other covered
+  intents read it through `intent.covered_by` rather than owning a
+  record of their own, so one session's exit finishes it once, and an
+  intent whose only work was a gathering is offered its close on
+  `intent.covered_by = done`, never on a child. The cost: an intent
+  covered twice in a row, the later gathering dropped, reads `none` and
+  is not offered its close until something else finishes on it; and
+  `close_declined_since_last_final` compares only against children,
+  so a decline after a gathering's finish is not re-offered by a later
+  gathering's finish. Both **open**, both rare. "Answer per intent" is
+  `<intent>: drop` — the intent leaves the gathering and its material
+  is pending again, to be proposed on its own when the cover ends; a
+  per-intent yes is the gathering's yes.
+
+- **188 / 189 records across lines.** A gathering's place is off the
+  parent intent's line, where the other covered intents' change
+  directories do not exist. The session writes its records for each
+  under `openspec/changes/<that intent id>/` in its place, and
+  `record_per_intent` commits them onto that intent's line and takes
+  them out of the place before `merge_place` runs, so the parent's line
+  carries only the parent's records and the book. The book is written
+  once, on the parent's line; the other covered intents get the
+  chapters only when the parent archives, or by a take of the shared
+  line after that. **Decision**. While a gathering is proposed or
+  active, `propose_elaboration` holds on every covered intent, so new
+  material there waits for the gathering to end rather than joining a
+  session already running (21, 189). **Decision**.
+
+- **189 the explore dictation.** `explore <intents...>` writes an
+  elaboration record in `approved` with `covers` = the intents named,
+  parent = the first, type `with-operator` unless `standing` closes the
+  list, sources = the dictation id. Every intent named must be open;
+  one that is not is refused with the reason, like any dictation that
+  cannot be applied (6). **Decision**.
+
 ## Part B
 
 - **129 annotations as the response.** A plannotator annotation set

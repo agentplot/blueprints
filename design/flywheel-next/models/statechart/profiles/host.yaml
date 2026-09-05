@@ -87,6 +87,7 @@ evidence:
   capture.source:      {read: the capture record's source field}
   intent.archived:     {read: "the intent's line holds the OpenSpec archive of its change (`openspec/changes/archive/<date>-<id>/`) and no open change of that id"}
   intent.change_open:  {read: "`openspec/changes/<intent-id>/` exists on the intent's line"}
+  elaboration.records_fanned_out: {read: "for every intent in covers beyond the parent, the place holds nothing under `openspec/changes/<that intent id>/` and that intent's line holds the commit naming this elaboration, or the session left nothing for it"}
   lease.coverable:     {read: "some host in `flywheel.yaml` hosts declares this object's kind, its repository (for a bolt, unit or item) and its unit type (for a unit or item); a sink is coverable when some host or the dispatcher declares it in `presents`"}
 effects:
   create_line:     {do: "`git push <repo> <parent head>:refs/heads/<line>` with expected-old = zero; the ref exists afterwards"}
@@ -108,3 +109,4 @@ effects:
   remove_stray_places: {do: "for each stray worktree under the places root: `wt worktree remove <path>`; one effect per removal, each recorded with the path and why it was stray"}
   archive_intent:  {do: "`openspec archive <intent-id>` in the intent's place, committed on the intent's line"}
   open_intent:     {do: "`openspec new <intent-id>` from the schema instruction in force, committed on the intent's line"}
+  record_per_intent: {do: "for each intent in covers beyond the parent: the files the session left under `openspec/changes/<that intent id>/` in its place are committed onto that intent's line, into that intent's change directory, one commit naming the elaboration, and removed from the place in a commit of its own, so the place's merge carries only the parent's records and the book; absent files are nothing to do"}

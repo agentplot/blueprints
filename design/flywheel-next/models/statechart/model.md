@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–186);
+Requirements are cited by their number in `requirements.md` (1–189);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -18,7 +18,8 @@ derives the plan; 6 to 11 cover planning, lines, the ledger, signals,
 sessions and hosts; 12 answers section 10 of the requirements one
 heading at a time; 13 gives the crate boundary; 14 walks S1 to S34; 15
 checks the invariants; 16 describes the diagrams; 17 covers the agent
-kinds, the pull-request landing and operation (A.17 to A.19).
+kinds, the pull-request landing, operation, and intents as changes
+with gathered elaborations (A.17 to A.20).
 
 `machines/check.py` validates every machine against `machines/schema.json`,
 every guard and effect name against `machines/atoms.yaml`, every profile
@@ -672,7 +673,7 @@ the chat both read the register, so they show the same number (18).
 | kind | group | created by entering | retracted by leaving on | answers |
 |---|---|---|---|---|
 | `intent-proposed` | approve | `intent.proposed` (curation's join, or a session's finding that fits no intent) | yes → open; drop; split | yes · drop · split |
-| `elaboration-proposed` | approve | `elaboration.proposed` (a finding on the thread; new material on an open intent; dictation never) — folded into the intent's decision while the intent is proposed; its document is reviewed on the review surface | yes → approved; drop; `type <name>` keeps it | yes · drop · type |
+| `elaboration-proposed` | approve | `elaboration.proposed` (a finding on the thread; new material on an open intent; curation's gathering over several intents; dictation never) — folded into the intent's decision while the intent is proposed; its document is reviewed on the review surface; shows every intent it covers (188) | yes → approved; drop; `type <name>`, `pick <intents>` and `<intent>: drop` keep it | yes · drop · type · pick · `<intent>: drop` |
 | `proposal` | approve | `proposal.proposed`: planning's one document per run, the bolts it proposes and the units in each (172); reviewed on the review surface and an annotation there is the response (17) | yes → approved, and every unit in `in-proposal` follows; redo → withdrawn; later → deferred; planning's next run → superseded, silently (35); a per-unit answer (`<unit>: bolt`, `new bolt`, `rename`, `type`, `drop`) is forwarded to the unit and keeps it | yes · redo: · later · `<unit>: bolt` · `<unit>: new bolt` · `<unit>: rename` · `<unit>: type` · `<unit>: drop` |
 | `unit-proposed` | approve | `unit.proposed` (a finding routed to a bolt, a chore offer); chores fold by bolt; its document is reviewed on the review surface and an annotation there is the response (17) | yes → approved (creates the bolt if new, then the items); drop; redo → withdrawn; later → deferred; a moved claim → superseded, silently (35); bolt/new bolt/rename/type/pick keep it | yes · drop · redo: · bolt · new bolt · rename · type · pick · later |
 | `unit-claim-moved` | decide | `unit.claim-moved`: an approved, unstarted unit whose cited claim moved (35) | redo → withdrawn; keep → approved with the version pinned | redo · keep |
@@ -765,8 +766,11 @@ and records it: the same transition the decision would have taken,
 with the same `enter:` commands to sessions and places; a dictation that would assert work was done (`done`,
 `pass`, `yes` on nothing) is unapplicable and reported (4). The bot's
 grammar is `idea: <text>`, `unit <bolt>: <text>`, `chore: <text>`, `ask
-<repo>: <text>`, `revive <signal>`, `session: <text>`, `start|stop
-<bolt>/<service>`, and the undo verbs above.
+<repo>: <text>`, `revive <signal>`, `session: <text>`, `explore
+<intents...>` (an elaboration in `approved` covering the named intents,
+its parent the first named, typed `with-operator` or, with `standing`
+after the list, standing; 189), `start|stop <bolt>/<service>`, and the
+undo verbs above.
 
 ## 6. Planning
 
@@ -1078,8 +1082,12 @@ fires; the work order lists the unmoved signals, `claims.json`, and
 the open intents. The session delivers one move per signal (attach,
 challenge, join, answered, drop, each with a reason) and one proposed
 intent per join cluster, with its proposed elaborations and typed by
-the material. `applying` writes the moves and the intents; the intents
-are decisions. A signal with a move is never re-judged; only the
+the material. Where one run proposes elaborations of one type on
+several intents it may deliver them gathered, and `applying` writes
+one proposed elaboration on the first intent named, its `covers`
+naming all of them (`gather_elaborations`, 188); the other covered
+intents read it through `intent.covered_by`. `applying` writes the
+moves and the intents; the intents are decisions. A signal with a move is never re-judged; only the
 operator's `revive <signal>` clears it (S24). Dropping a proposed intent
 gives each cited signal a `drop <intent>` move (S23). A person writing
 the same files by hand is curation too: the machine then finds nothing
@@ -1454,7 +1462,8 @@ the prototype keeps running under `wt tether`. Next morning the
 decision stands with the same number; the operator opens the place and
 the process is there (I6). `keep` → `session` with `kept_at`; `finish`
 → `finished` (`enter: session: ended`, `end_session`) → `done` →
-`elaboration.finishing` (`merge_place`, `removing`, `remove_place`) →
+`elaboration.writing-back` (`record_per_intent`, nothing to do for one
+intent) → `finishing` (`merge_place`, `removing`, `remove_place`) →
 `done` (tail).
 
 **S3 — a chore.** A build session writes
@@ -1699,8 +1708,9 @@ as well as the chat and page). No session is requested. `retry` →
 `landing` again, which reuses or reopens the request; `hold` → `open`.
 
 **S34 — two elaborations, one archive.** Research (self-closing) exits
-done → `elaboration.finishing` (`enter: place: merging`) → `merge_place`
-into the intent's line → `removing` → `remove_place` → `done`. The
+done → `elaboration.writing-back` → `finishing` (`enter: place:
+merging`) → `merge_place` into the intent's line → `removing` →
+`remove_place` → `done`. The
 prototype's place is `behind` → rebased while idle → `ready`, kept
 (`keep: by-type`). The intent's close offered; `close` → `archiving`:
 `archive_intent`, the line takes the books' shared line, lands
@@ -1854,3 +1864,35 @@ planning may route it as a unit or a chore on an open bolt, which
 product is a repository in the manifest like any other. Operation is
 therefore a profile binding — the adapters that capture and the
 evidence that reads links — and not a machine (`gaps.md`).
+
+**A.20 — intents as changes; gathered elaborations.** An intent is an
+OpenSpec change in the books (`open_intent`, `archive_intent`), and
+its change directory is where its elaborations leave their records —
+research notes, session records, prototype notes, an interactive page
+— while what they conclude goes to the chapters and the claim blocks
+(187). A bolt has no change in the books; a unit's change is in its
+built repository, written at the unit's first stage; a proposal's
+document sits beside the proposal record in the state store, so the
+unit record's `document` points there and never into a change
+directory. An elaboration record carries `covers`, the intents it is
+for, its parent first. Curation may deliver elaborations of one type
+proposed in the same run on several intents as one gathering, and
+`gather_elaborations` writes one proposed elaboration covering them;
+the `elaboration-proposed` decision shows `covers`, and `pick
+<intents>` or `<intent>: drop` narrows it (`set_covers`), the intent
+left out having its material pending again (188). The other covered
+intents see the gathering through `intent.covered_by` (none, proposed,
+active, done): while it is proposed or active, `propose_elaboration`
+holds on them, so none carries another elaboration awaiting approval
+meanwhile (21, 189), and the intent's close is not offered; once it is
+done, the close is offered as if a child had finished. The finish is
+per covered intent: `working` reaches done → `writing-back`, where
+`record_per_intent` commits what the session left under each other
+covered intent's change directory onto that intent's line and takes
+it out of the place; then `finishing` merges the place, carrying the
+parent's records and the book once, into the parent's line (188). The
+operator opens one by dictation, `explore <intents...>`, which writes
+an elaboration in `approved` covering the named intents as a
+with-operator or standing session (189); planning proposes units, not
+elaborations, so in this model gathering is curation's alone
+(`gaps.md`).
