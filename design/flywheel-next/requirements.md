@@ -945,6 +945,17 @@ requirements, iterated against the running plan rather than on paper.
     deliverable in the manifest without touching the engine (119), and
     a session is handed the producers in force when it starts (89).
     Changing a producer is a chore (123).
+212. A surface specification is a deliverable (190): the surfaces a
+    design settles, what each shows and never shows, the flows between
+    them as numbered steps, the form of each kind of object, the keys
+    and modes, and the rulings with their reasons, written so a
+    construction session builds from it without repeating the
+    exploration that produced it. It is versioned in the book, cites
+    the mockups it was drawn from as records in the intent's change
+    directory (187), and a claim about a surface cites its statements.
+    The flywheel ships it in the default set with a schema and a
+    producer, and every construction session whose work touches a
+    surface carries the specification in force in its work order (89).
 
 ### A.22 Endpoints and routing
 

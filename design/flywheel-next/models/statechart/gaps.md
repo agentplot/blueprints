@@ -514,6 +514,17 @@ the operator may reverse by a response on the file; an entry with
   place enforces read-only beyond the writeback fanning out only what
   the session left under each intent's directory (188). **Open**.
 
+- **212 the surface specification.** `design/flywheel-next/surfaces.md`
+  is the first instance, written by hand from the plan mockups rather
+  than produced by a session under the shipped producer and schema;
+  when the set is cut it should be checked against
+  `flywheel/schemas/surface-specification.md` and its mockup citations
+  pointed at the change directory records. **Open**. Which claims are
+  "about a surface" is read from the claim's attachments and its
+  chapter, not from a flag: a claim attached to an element whose kind
+  is a surface kind (`ui` in the example vocabulary) or stated in a
+  surface-specification chapter. **Decision**.
+
 - **190 producers per deliverable.** The shipped set is a profile
   partial (`profiles/deliverables.yaml`) rather than a machine: it
   binds no evidence and no effect, so `check.py` does not check it

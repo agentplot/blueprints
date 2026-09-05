@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–211);
+Requirements are cited by their number in `requirements.md` (1–212);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -2099,7 +2099,16 @@ review surface, which is what a construction stage's commits, spec and
 review verdict use. `prepare_place` resolves every entry at the books
 commit named in the work order's header and writes the producers in
 force into the place, so a session is handed them when it starts (89)
-and a test can render them without one (124). Changing a producer,
+and a test can render them without one (124). A surface specification
+is one deliverable of the set (212): the surfaces a design settles,
+what each shows and never shows, the flows as numbered steps, the form
+of each kind of object, the keys and modes, and the rulings with
+reasons, a chapter citing the mockups it was drawn from as records in
+the intent's change directory (187); a standing session — an
+exploration, an interactive page — lists it among its deliverables,
+a claim about a surface cites its statements, and a construction
+session whose unit cites such a claim carries the specification in
+force in its work order. Changing a producer,
 shipped or overridden, is a chore on the books, and the binding's
 version in the header tells a session started before it from one
 started after (123). The engine reads only names and paths; no
