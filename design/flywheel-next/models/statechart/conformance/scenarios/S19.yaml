@@ -1,7 +1,7 @@
 scenario: S19
 title: the operator edits an object's state file by hand and commits; the next pass on every host treats it as the response
 profiles: [git-only]
-satisfies: [3, 156, 157, 158, 161]
+satisfies: [3, 159, 160, 161, 164]
 given:
   objects:
     - {id: intent/loop-granularity, machine: intent, state: {life: open, line: current, open.material: settled, open.close: offered}}

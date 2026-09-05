@@ -10,8 +10,8 @@ the requirements.
 - every `machine:` reference names a machine file (or a `$param`)
 - every decision has a kind, group, answers and satisfies; decision kinds are collected for the plan catalogue
 - every diagram in ../diagrams/*.svg names states (data-state="machine.state"), decision kinds
-  (data-decision) and effects (data-effect) that exist, so a picture cannot drift from the runtime (80)
-- every profile marked complete binds every evidence and effect name (137)
+  (data-decision) and effects (data-effect) that exist, so a picture cannot drift from the runtime (83)
+- every profile marked complete binds every evidence and effect name (140)
 - every conformance scenario validates against ../conformance/schema.json and names only real decision
   kinds and effects
 - the requirement trace (section 12 of the requirements): every machine, decision kind, effect and
@@ -154,7 +154,7 @@ for mname, (path, m) in machines.items():
             for rg in st.get('regions', {}).values(): walk(rg, f"{where}.{s}")
     for region in m['regions'].values(): walk(region, mname)
 
-# diagrams must not drift from the definitions (80)
+# diagrams must not drift from the definitions (83)
 for svg in sorted(glob.glob(os.path.join(ROOT, 'diagrams', '*.svg'))):
     s = open(svg).read()
     for ref in re.findall(r'data-state="([^"]+)"', s):

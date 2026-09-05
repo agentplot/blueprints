@@ -1,7 +1,7 @@
 scenario: S23
 title: the operator drops a proposed intent carrying five signals; the next curation does not propose it again; each signal has a move naming the drop
 profiles: [all]
-satisfies: [104, 114]
+satisfies: [107, 117]
 given:
   objects:
     - {id: intent/status-copy, machine: intent, state: {life: proposed}, record: {signals: [s1, s2, s3, s4, s5]}}

@@ -1,7 +1,7 @@
-scenario: B.1.126-present-receive
+scenario: B.1.129-present-receive
 title: decisions are presented, the response comes back attributed to its decision, twice is once, an unapplicable response is handed back
 profiles: [all]
-satisfies: [1, 6, 126, 134, 150, 151]
+satisfies: [1, 6, 129, 137, 153, 154]
 invariants: [I2]
 machines: ./contract/lamp
 given:

@@ -1,7 +1,7 @@
 scenario: S30
 title: a build session exits blocked; only its item waits; siblings merge; the page answer reaches the same living session; the block and answer are on the item
 profiles: [all]
-satisfies: [64, 65, 67, 68, 141]
+satisfies: [67, 68, 70, 71, 144]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
@@ -10,7 +10,7 @@ given:
     - {id: work-item/atlas/wi-419, machine: work-item, parent: unit/atlas/u, state: {life: in-type, in-type.stages: review, review.run: sessions, session.life: alive, alive.activity: working}, record: {ordinal: 2}}
   evidence: {session.pane: {"*": present}, session.activity: {"*": working}}
 when:
-  - script: {"work-item/atlas/wi-418/build/1": [{after: "0", exit: blocked, question: "should Ready imply Backlog cleared?"}]}    # played through the exit command, which writes to the control plane (64)
+  - script: {"work-item/atlas/wi-418/build/1": [{after: "0", exit: blocked, question: "should Ready imply Backlog cleared?"}]}    # played through the exit command, which writes to the control plane (67)
   - tick: {}
   - evidence: {stage.join_met: {"work-item/atlas/wi-419/review/1": true}, stage.verdict: {"work-item/atlas/wi-419/review/1": pass}, place.merge_slot: {"*": true}, place.merged: {"*": true}}
   - tick: {}

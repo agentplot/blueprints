@@ -1,7 +1,7 @@
 scenario: X5
 title: an approved unit of a type no host declares is a decision under attention, not a silent wait; when the manifest covers it, a host takes it
 profiles: [all]
-satisfies: [146, 147]
+satisfies: [149, 150]
 invariants: [I11]
 given:
   objects:

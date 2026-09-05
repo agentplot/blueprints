@@ -1,7 +1,7 @@
 scenario: X4
 title: two hosts and a dispatcher; the manifest pins the chat sink to the dispatcher and leaves the page to the lease; exactly one presenter delivers each sink; both show the same numbers
 profiles: [all]
-satisfies: [15, 18, 145, 146]
+satisfies: [15, 18, 148, 149]
 invariants: [I11]
 given:
   objects:

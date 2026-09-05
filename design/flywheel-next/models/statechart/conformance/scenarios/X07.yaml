@@ -1,7 +1,7 @@
 scenario: X7
 title: a session blocks on a construction host; the host is silent; the question reaches the chat, the page and the bell on the named surface the manifest routes it to, and nothing is visible only on the host that noticed it
 profiles: [all]
-satisfies: [65, 67, 79]
+satisfies: [68, 70, 82]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}

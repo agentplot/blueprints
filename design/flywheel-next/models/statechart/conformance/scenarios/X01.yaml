@@ -1,7 +1,7 @@
 scenario: X1
 title: the operator opens a session of their own by dictation; no decision is ever raised about it; it ends by dictation and its place goes
 profiles: [all]
-satisfies: [12, 24, 65, 66]
+satisfies: [12, 25, 68, 69]
 invariants: [I5, I6]
 given:
   objects: []

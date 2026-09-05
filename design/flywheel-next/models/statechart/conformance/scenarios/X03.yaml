@@ -1,7 +1,7 @@
 scenario: X3
 title: a bolt's morning take conflicts; a chore on the bolt's line appears in approved with the cadence as its approval; its session resolves it; the take retries and lands; no decision was asked
 profiles: [all]
-satisfies: [47, 49, 57]
+satisfies: [50, 52, 60]
 invariants: [I1, I12]
 given:
   objects:

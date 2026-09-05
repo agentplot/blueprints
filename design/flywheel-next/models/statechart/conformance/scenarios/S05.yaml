@@ -1,7 +1,7 @@
 scenario: S5
 title: the machinery restarts mid-day; every session still runs; the plan is identical; no object changed state
 profiles: [all]
-satisfies: [7, 72, 75]
+satisfies: [7, 75, 78]
 invariants: [I7]
 given:
   objects:

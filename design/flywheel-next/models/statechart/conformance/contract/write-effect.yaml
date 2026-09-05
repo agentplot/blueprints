@@ -1,7 +1,7 @@
-scenario: B.1.124-write-effect
+scenario: B.1.127-write-effect
 title: an effect is written with an identity; a repeat changes nothing and is not a second write
 profiles: [all]
-satisfies: [70, 76, 124, 164]
+satisfies: [73, 79, 127, 167]
 machines: ./contract/lamp
 given:
   objects: [{id: lamp/1, machine: lamp, state: {power: "off"}}]

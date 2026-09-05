@@ -1,7 +1,7 @@
 scenario: X6
 title: a bolt lands; its place is removed and its tethered server ends; a stray worktree from a crashed session is found by reconciliation and removed; a place the operator holds by dictation stays; every removal is recorded
 profiles: [all]
-satisfies: [44, 52, 71]
+satisfies: [45, 55, 74]
 invariants: [I12]
 given:
   objects:

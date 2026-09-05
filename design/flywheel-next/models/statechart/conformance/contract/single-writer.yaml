@@ -1,7 +1,7 @@
-scenario: B.2.131-single-writer
+scenario: B.2.134-single-writer
 title: two writers of one object cannot both succeed; the loser learns it lost and reads again
 profiles: [all]
-satisfies: [131, 159]
+satisfies: [134, 162]
 invariants: [I15]
 machines: ./contract/lamp
 given:

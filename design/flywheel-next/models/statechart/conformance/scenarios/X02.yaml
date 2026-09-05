@@ -1,7 +1,7 @@
 scenario: X2
 title: a cited claim moves; the proposed unit is replaced silently by planning's next proposal; the approved unstarted unit is a decision, redo or keep; the started unit is the bolt's claim-moved decision
 profiles: [all]
-satisfies: [5, 34, 100]
+satisfies: [5, 35, 103]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}

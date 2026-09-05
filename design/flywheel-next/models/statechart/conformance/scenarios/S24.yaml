@@ -1,7 +1,7 @@
 scenario: S24
 title: the operator revives a dropped signal by dictation; its move is replaced and the next run clusters it
 profiles: [all]
-satisfies: [12, 104]
+satisfies: [12, 107]
 given:
   objects:
     - {id: "signal/s3", machine: signal, state: {move: dropped}}

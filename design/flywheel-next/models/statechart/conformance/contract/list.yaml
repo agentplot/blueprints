@@ -1,7 +1,7 @@
-scenario: B.1.128-list
+scenario: B.1.131-list
 title: an engine that remembers nothing finds everything it must act on
 profiles: [all]
-satisfies: [72, 128, 133]
+satisfies: [75, 131, 136]
 invariants: [I7]
 machines: ./contract/lamp
 given:

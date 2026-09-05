@@ -1,7 +1,7 @@
-scenario: B.1.125-lease
+scenario: B.1.128-lease
 title: two would-be holders of one object cannot both hold it; the loser reads again
 profiles: [all]
-satisfies: [125, 131, 147]
+satisfies: [128, 134, 150]
 invariants: [I11, I15]
 machines: ./contract/lamp
 given:

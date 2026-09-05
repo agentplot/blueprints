@@ -1,7 +1,7 @@
-scenario: B.2.132-atomic
+scenario: B.2.135-atomic
 title: a write is wholly applied or not applied; no reader sees half of one
 profiles: [all]
-satisfies: [132]
+satisfies: [135]
 machines: ./contract/lamp
 given:
   objects: [{id: lamp/1, machine: lamp, state: {power: "off"}, record: {flips: 0}}]

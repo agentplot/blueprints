@@ -1,7 +1,7 @@
 scenario: S34
 title: research exits done and its place merges into the intent's line and is removed; the standing prototype's place is rebased and kept; the archive lands the line; two claims stand
 profiles: [all]
-satisfies: [46, 51, 95]
+satisfies: [49, 54, 98]
 given:
   objects:
     - {id: intent/i, machine: intent, state: {life: open, line: current, open.material: settled, open.close: not-offered}}

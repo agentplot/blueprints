@@ -1,7 +1,7 @@
 scenario: S2
 title: a standing prototype goes idle; it keeps running; the plan offers finish or keep; next morning it is still there
 profiles: [all]
-satisfies: [24, 25]
+satisfies: [25, 26]
 invariants: [I5, I6]
 given:
   objects:

@@ -1,7 +1,7 @@
 scenario: S14
 title: review sends an item back twice; the third review passes; the item merges; the bolt lands; history shows both send-backs and the bound
 profiles: [all]
-satisfies: [37, 38, 40]
+satisfies: [38, 39, 41]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}

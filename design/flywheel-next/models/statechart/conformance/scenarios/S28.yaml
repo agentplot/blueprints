@@ -1,7 +1,7 @@
 scenario: S28
 title: a bolt open three weeks; a bug dictated straight to it; a finding routed to it as a proposal; both become units with dependencies; the operator closes it
 profiles: [all]
-satisfies: [12, 32, 33, 43]
+satisfies: [12, 33, 34, 44]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: held}, record: {repository: atlas, held_at: now}}

@@ -1,7 +1,7 @@
 scenario: S26
 title: an operator-added unit type runs one test session per persona in the repository; three or five as found; recorded; a unit in flight is untouched
 profiles: [all]
-satisfies: [53, 54, 82]
+satisfies: [56, 57, 85]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}

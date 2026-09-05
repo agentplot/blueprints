@@ -1,7 +1,7 @@
 scenario: S8
 title: twenty signals from a transcript; curation attaches six, drops nine, joins five into two proposed intents; two decisions; every signal has a move
 profiles: [all]
-satisfies: [103, 104, 105, 106, 107, 113]
+satisfies: [106, 107, 108, 109, 110, 116]
 given:
   objects:
     - {id: curation/willdan, machine: curation, state: {run: idle}, record: {threshold: 12}}

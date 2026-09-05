@@ -1,7 +1,7 @@
 scenario: S21
 title: the operator forwards a chat message with one response; a capture and one signal exist with a link back; nothing else happened
 profiles: [all]
-satisfies: [108, 109, 112]
+satisfies: [111, 112, 115]
 given:
   objects: [{id: curation/willdan, machine: curation, state: {run: idle}, record: {threshold: 12}}]
   evidence: {curation.unmoved_count: {curation/willdan: 0}}

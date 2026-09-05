@@ -1,7 +1,7 @@
 scenario: S13
 title: two hosts; one loses power mid-build; the other does not touch it; stale is shown; resume on return or takeover by rule; never twice
 profiles: [all]
-satisfies: [144, 147]
+satisfies: [147, 150]
 invariants: [I11]
 given:
   objects:

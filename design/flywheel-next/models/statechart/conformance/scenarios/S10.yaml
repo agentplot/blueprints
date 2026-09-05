@@ -1,7 +1,7 @@
 scenario: S10
 title: a repository joins two months in; first planning judges every claim once and offers one proposal; not-applicable is stored and never judged again
 profiles: [all]
-satisfies: [61, 98, 101]
+satisfies: [64, 101, 104]
 invariants: [I10]
 given:
   objects:

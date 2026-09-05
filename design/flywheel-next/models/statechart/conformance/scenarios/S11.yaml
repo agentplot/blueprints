@@ -1,7 +1,7 @@
 scenario: S11
 title: forty commits in a week, no claim changed; no verdict recomputed; the plan did not change
 profiles: [all]
-satisfies: [98]
+satisfies: [101]
 invariants: [I10]
 given:
   objects:

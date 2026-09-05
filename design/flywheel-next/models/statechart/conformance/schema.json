@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "flywheel-next/statechart/scenario.schema.json",
   "title": "Flywheel scenario",
-  "description": "One scenario as data (91): given this evidence, when these ticks, responses and events, then these transitions, effects and decisions. Every scenario states the requirements it satisfies by number.",
+  "description": "One scenario as data (94): given this evidence, when these ticks, responses and events, then these transitions, effects and decisions. Every scenario states the requirements it satisfies by number.",
   "type": "object",
   "required": ["scenario", "title", "profiles", "satisfies", "given", "when", "then"],
   "additionalProperties": false,
@@ -53,7 +53,7 @@
     "evidence": {"type": "object", "additionalProperties": {"type": "object"}, "description": "evidence name -> {object id -> value}; '*' for every object"},
     "script": {
       "type": "object",
-      "description": "what the stand-in session binding plays, per session id (90): the exits and offers a real session would report through the command, and the pane and activity the multiplexer would show. Only the session binding is faked; every other binding is real.",
+      "description": "what the stand-in session binding plays, per session id (93): the exits and offers a real session would report through the command, and the pane and activity the multiplexer would show. Only the session binding is faked; every other binding is real.",
       "additionalProperties": {"type": "array", "items": {"type": "object", "properties": {
         "after": {"type": "string", "description": "a delay from the session's start (30s, 2m) or the step number to play at"},
         "pane": {"enum": ["present", "absent"]},
@@ -64,7 +64,7 @@
         "question": {"type": "string"},
         "offers": {"type": "array", "items": {"type": "object", "required": ["kind", "document"]}},
         "refusal": {"type": "string"},
-        "service": {"type": "object", "description": "the session runs `flywheel service start|stop <name>` on its bolt's declared service (47): {start: <name>} or {stop: <name>}", "properties": {"start": {"type": "string"}, "stop": {"type": "string"}}, "minProperties": 1, "maxProperties": 1, "additionalProperties": false},
+        "service": {"type": "object", "description": "the session runs `flywheel service start|stop <name>` on its bolt's declared service (48): {start: <name>} or {stop: <name>}", "properties": {"start": {"type": "string"}, "stop": {"type": "string"}}, "minProperties": 1, "maxProperties": 1, "additionalProperties": false},
         "commits": {"type": "array", "description": "files the session commits in its place"}
       }}}
     },

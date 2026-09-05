@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–169);
+Requirements are cited by their number in `requirements.md` (1–170);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -23,7 +23,7 @@ checks the invariants; 16 describes the diagrams.
 every guard and effect name against `machines/atoms.yaml`, every profile
 for completeness, every diagram's `data-state`, `data-decision` and
 `data-effect` attributes against the machines so the pictures cannot
-drift from the runtime (80), and the requirement trace: every machine,
+drift from the runtime (83), and the requirement trace: every machine,
 decision kind, effect and conformance scenario carries `satisfies:
 [numbers]`, and the check fails when a number names no requirement or a
 requirement is cited nowhere (section 12 of the requirements):
@@ -37,7 +37,7 @@ uv run --with pyyaml --with jsonschema python3 machines/check.py
 ### 1.1 What carries a machine
 
 An object carries a machine when it has a lifecycle the machinery must
-remember between runs and share between hosts (72), or when it is a
+remember between runs and share between hosts (75), or when it is a
 place a plan decision can stand. Everything else is a record attribute
 of some object, or a file the machinery reads as evidence.
 
@@ -46,10 +46,10 @@ of some object, or a file the machinery reads as evidence.
 | `intent` | object | one thread of design work; its line is a region of its own | — · elaboration, unit (take-conflict chores only) | `machines/intent.yaml` |
 | `elaboration` | object | one unit of design work; its type machine runs inside `working` | intent · — | `machines/elaboration.yaml` |
 | `bolt` | object | one delivery to a built repository; its `line`, the operator's `place` and its `services` are regions of its own | — · unit, service | `machines/bolt.yaml` |
-| `service` | object | one declared process in a bolt's place: stopped, starting, running, failed; the operator's `start` and `stop` and a session's command are one record (46, 47) | bolt · — | `machines/service.yaml` |
+| `service` | object | one declared process in a bolt's place: stopped, starting, running, failed; the operator's `start` and `stop` and a session's command are one record (47, 48) | bolt · — | `machines/service.yaml` |
 | `unit` | object | one approved piece of construction; chores are units of the chore type | bolt or intent · work-item | `machines/unit.yaml` |
 | `work-item` | object | one task of a unit; the unit type's machine runs inside `in-type` | unit · — | `machines/work-item.yaml` |
-| `operator-session` | object | the operator's own session (66): with-operator, no thread, ends by dictation | — | `machines/operator-session.yaml` |
+| `operator-session` | object | the operator's own session (69): with-operator, no thread, ends by dictation | — | `machines/operator-session.yaml` |
 | `claim` | object | one statement in the book; proposed or standing by where its text is | — | `machines/claim.yaml` |
 | `ledger-cell` | object | one standing claim × one repository in scope; fresh or stale | — | `machines/ledger-cell.yaml` |
 | `capture` | object | one source event; read into signals once | — · signal | `machines/capture.yaml` |
@@ -73,7 +73,7 @@ of some object, or a file the machinery reads as evidence.
   signal's `move` region is the move's state.
 - **finding, chore offer** — documents a session writes in the change
   directory it works, at the moment it judges them, archived with the
-  change (59). The session announces each with `flywheel offer`, which
+  change (62). The session announces each with `flywheel offer`, which
   appends one entry to the session's thread through the control plane;
   `record_offers` turns that entry into one record that points at the
   document: a chore into a `unit` of the chore type in `proposed`, a
@@ -151,7 +151,7 @@ tick(scope):
   for each object in list(scope), in creation order:
     if no transition of its active configuration could fire on any
        evidence, skip                          # cheap: static analysis of the machine
-    if this host's declaration does not cover the object, skip (146)
+    if this host's declaration does not cover the object, skip (149)
     take or renew the lease; on losing it, skip
     ev  = read(object)                          # as of one named point
     cfg = ev.state                              # the active configuration
@@ -167,16 +167,16 @@ proof evidence is absent**; then write one atomic record: new state,
 `entered_at`, bumped counters, any `enter:` commands to child regions,
 and the id of the response the guard consumed appended to
 `applied_responses`. The write carries the effect ids, the transition's
-`note`, and the evidence values the guard read (76). A guard that holds
+`note`, and the evidence values the guard read (79). A guard that holds
 but whose target equals the source and whose effects are all proven is
-not written: reading twice with nothing changed writes nothing (75).
+not written: reading twice with nothing changed writes nothing (78).
 
 Ticks are caused by: a **notify** for one object (a webhook, a
 multiplexer event, a chat message, a session's `flywheel exit`), which
 ticks that object and its parent chain; and a **sweep** every 60 seconds
 over every scope the host has a lease or a candidate on, which is what
 makes every `older:` guard fire and what makes a never-notified host
-converge (127).
+converge (130).
 
 ### 2.2 Guards
 
@@ -197,12 +197,12 @@ names the object outright (12). A dictation may name only a transition
 that undoes or defers work — `drop`, `hold`, `release`, `send back`,
 `retire`, `takeover`, `finish`, `close`, `end` — never one that asserts
 work was done (4); a dictation with any other answer is `unapplicable` and reported. The one pair outside that list is `start`
-and `stop` on a service, which 46 gives the operator outright; a
+and `stop` on a service, which 47 gives the operator outright; a
 session's `flywheel service start|stop` writes the same op-response
 record, so the service machine sees one `{response: start}` whoever
-asked (47). Firing appends the id in the same write as the state
+asked (48). Firing appends the id in the same write as the state
 change, so the response is applied exactly once whatever is delivered
-twice or restarted in between (134).
+twice or restarted in between (137).
 
 `{final: X}` holds when the state's submachine has a region in a
 `final: true` state named `X`; `{final: line.removed}` names the
@@ -222,8 +222,8 @@ shows it was done (`start_session` is proven by `session.pane`;
 `remove_place` by `place.absent`). The engine performs an effect only
 when its proof is absent, and the control plane's `write_effect` carries
 an effect id (`<object>/<transition>/<proof evidence>/<evidence hash>`),
-so a repeat is recognised and not counted (124). This is what makes
-every action safe to repeat (70) and what makes S6 hold: a slow
+so a repeat is recognised and not counted (127). This is what makes
+every action safe to repeat (73) and what makes S6 hold: a slow
 `start_session` leaves `starting` until the pane is present, the retry
 is by the same deterministic session name, and the multiplexer refuses
 a second pane by that name.
@@ -241,13 +241,13 @@ The engine knows: machine files, the guard algebra, `$param`
 substitution, submachine instantiation, region semantics, proofs and
 effect ids, leases, the tick, decision derivation, the register and
 numbering, the scenario runner. It contains no string from `atoms.yaml`
-and no name from section 3 of the requirements (83); `machines/check.py`
+and no name from section 3 of the requirements (86); `machines/check.py`
 will grep the engine crate for both once it exists, and the crate's
 tests run the engine over a toy machine (`lamp: off → on`) that shares
 no atom with the flywheel.
 
 The domain is `atoms.yaml` plus every file under `machines/` except
-`engine/` (84). The five engine machines (`host`, `lease`, `response`,
+`engine/` (87). The five engine machines (`host`, `lease`, `response`,
 `plan`, `sink`) are shipped with the engine because they name no domain
 object; they are still data, so their windows (5m stale, 30m gone, 24h
 expiry, 30 days of register retention) are the operator's to change.
@@ -267,11 +267,11 @@ needed to walk S1 to S34.
 |---|---|---|---|
 | **state store** | every object's record: state per region, `entered_at`, `seq`, record fields, `applied_responses`; the thread on the object (questions, answers, notes, exits, offers, refusals, moves); op-responses; leases; host heartbeats; the plan's register; the sinks' marks; asks; the run record | tracker profile: GitHub issues, milestones and a Projects v2 board in the organization's `flywheel-state` repository. git-only profile: the `flywheel-state` git repository, branch `main` | differs |
 | **books repository** | chapters with fenced claim blocks; the system context map; OpenSpec change directories (one per intent) and their archive; the manifest `flywheel.yaml`; instructions, schemas and skills; captures, signals and moves; the ledger; unit and elaboration type definitions | git repository, mdBook, OpenSpec, recutils files parsed by the binary | same in every profile |
-| **built repositories** | the shared line, bolt lines, places; as-built statements; OpenSpec change directories for units, holding the finding and chore documents; persona definitions; the service declarations `.flywheel/services.yaml` (46), read at the head of the bolt's place and changed only by a chore (47) | git repositories with their own merge gates | same |
+| **built repositories** | the shared line, bolt lines, places; as-built statements; OpenSpec change directories for units, holding the finding and chore documents; persona definitions; the service declarations `.flywheel/services.yaml` (47), read at the head of the bolt's place and changed only by a chore (48) | git repositories with their own merge gates | same |
 | **the multiplexer** | pane existence, activity and the last keystroke per session | herdr, read through `herdr agent status` | same; evidence only, never durable state |
 
 Nothing else. A host's memory holds only what it read this tick. The
-place's disk is not a store (64): what a session leaves there is its
+place's disk is not a store (67): what a session leaves there is its
 work, and the work order handed into it is an input. A session reports
 its exit, its offers and its notes with the `flywheel` command, which
 writes an entry on the session's thread through the control plane;
@@ -303,7 +303,7 @@ worktree's presence — is not state and is re-observed after a restart
 
 A projection that disagrees with its source is rewritten from the
 source on the next tick of the object, and the rewrite is reported to
-the run record with both values (74). The engine never reads a
+the run record with both values (77). The engine never reads a
 projection; the profile binding lists what it reads, and every entry
 is a source. The one deliberate two-store state is a line or a place,
 where git is the truth and the record holds counters, endpoints and the
@@ -507,11 +507,11 @@ repositories:
     kind: service
     landing: direct
     take_cadence: "0 6 * * *"
-hosts:                       # what each host takes (146); a host takes leases only within this
+hosts:                       # what each host takes (149); a host takes leases only within this
   - {name: mac-mini, bound: 3, kinds: [all], repositories: [atlas, switchboard], unit_types: [default, fast, chore, persona-test], presents: [page, bell]}
   - {name: studio, bound: 2, kinds: [all], repositories: [atlas], unit_types: [default, fast, chore], presents: []}
   - {name: dispatcher, bound: 0, kinds: [], presents: [chat]}    # runs outside every host; presents only
-sinks:                       # where decisions and the tail go (79); one presenter each (145)
+sinks:                       # where decisions and the tail go (82); one presenter each (148)
   chat: {discord: {guild: 118..., channel: flywheel}, routes: [approve, decide, answer, attention], cadence: "0 7,12,17 * * *", presenter: dispatcher}
   page: {url: https://flywheel.tail1234.ts.net/plan, routes: [approve, decide, answer, attention]}
   bell: {surface: "herdr:operator-desk", routes: [answer, attention, land-failed]}
@@ -526,8 +526,8 @@ shared, two are the profiles.
 | file | binds | same in every profile? |
 |---|---|---|
 | `profiles/host.yaml` | the world the machinery acts on: git, worktrunk `wt` (worktrees and tethered processes), portless, OpenSpec, claim blocks, the manifest's declarations, the repositories' service declarations | yes |
-| `profiles/sessions.yaml` | the session binding: herdr panes, Claude Code, and the `flywheel exit\|offer\|note\|refuse` command sessions report through (64) | yes |
-| `profiles/sessions-stand-in.yaml` | the same names bound to a scripted player, swapped in by `flywheel scenario run` (90); never loaded by a host | test only |
+| `profiles/sessions.yaml` | the session binding: herdr panes, Claude Code, and the `flywheel exit\|offer\|note\|refuse` command sessions report through (67) | yes |
+| `profiles/sessions-stand-in.yaml` | the same names bound to a scripted player, swapped in by `flywheel scenario run` (93); never loaded by a host | test only |
 | `profiles/books.yaml` | the books repository as a store: ledger, captures, signals, moves, curation and planning inputs | yes |
 | `profiles/record-derived.yaml` | every evidence and effect that is a function of the object record and its thread, stated over six record operations (`get`, `put`, `append`, `list`, `responses`, `leases`) | yes |
 | `profiles/surfaces.yaml` | the sinks (chat, page, bell) and the review surfaces (plannotator for documents, lavish for rich pages) | yes |
@@ -535,8 +535,8 @@ shared, two are the profiles.
 | `profiles/git-only.yaml` | the same on the `flywheel-state` git repository, with the layout of section 3.4 | git-only |
 
 `check.py` refuses a profile marked `complete: true` that leaves any
-atom unbound, and a binding that names an atom no machine has (137).
-The machines do not change between the two (136); the diff between
+atom unbound, and a binding that names an atom no machine has (140).
+The machines do not change between the two (139); the diff between
 `tracker.yaml` and `git-only.yaml` is the whole difference between
 running on a tracker and running on git, and it is now only the record
 operations and the contract: everything about sessions, surfaces and
@@ -545,17 +545,17 @@ the world is shared.
 ### 4.1 The tracker profile, in short
 
 - **Object** = an issue in `<org>/flywheel-state`, body = one fenced
-  record block, for every object with a plan-facing lifecycle (154).
+  record block, for every object with a plan-facing lifecycle (157).
   Milestone per bolt and per intent. Board columns are projections.
 - **Decision** = one issue per numbered decision, labelled
   `kind:decision`, titled `#<number> <kind> <object>`, opened by the
   presenter when the register gains the entry and closed when it drops
-  it. A projection of the object's state (155); answering on it is the
-  response (156).
+  it. A projection of the object's state (158); answering on it is the
+  response (159).
 - **Lease** = lease by ordered append: a `lease:` comment; the lowest
   comment id after the last `release:` holds; renewal edits the
   comment; a loser deletes its own and reads again. A host attempts a
-  lease only within its declaration (146). Expiry 24h, or the host
+  lease only within its declaration (149). Expiry 24h, or the host
   decision answered `takeover`.
 - **Response** = an `op-response:` comment on the object's issue, id =
   the Discord message id, page submission id, plannotator annotation
@@ -615,9 +615,9 @@ running the session, and that host's `alive/stale/gone`. Per object,
 its thread in order and its state history (each `put` is a commit or a
 body edit with a date). Per repository, what landed in a period
 (`bolt.landed` entries). Per bolt, its units by state, what waits, and
-the endpoints its place serves (45). Per host, its running sessions,
+the endpoints its place serves (46). Per host, its running sessions,
 its bound and its declaration. Unmoved signals by source with age. The
-page says the as-of point of the read it was built from (142). It is
+page says the as-of point of the read it was built from (145). It is
 never written by hand.
 
 ## 5. The plan
@@ -671,17 +671,17 @@ the chat both read the register, so they show the same number (18).
 |---|---|---|---|---|
 | `intent-proposed` | approve | `intent.proposed` (curation's join, or a session's finding that fits no intent) | yes → open; drop; split | yes · drop · split |
 | `elaboration-proposed` | approve | `elaboration.proposed` (a finding on the thread; new material on an open intent; dictation never) — folded into the intent's decision while the intent is proposed; its document is reviewed on the review surface | yes → approved; drop; `type <name>` keeps it | yes · drop · type |
-| `unit-proposed` | approve | `unit.proposed` (planning, a finding routed to a bolt, a chore offer); chores fold by bolt, a baseline folds by batch; its document is reviewed on the review surface and an annotation there is the response (17) | yes → approved (creates the bolt if new, then the items); drop; redo → withdrawn; later → deferred; a moved claim → superseded, silently (34); bolt/new bolt/rename/type/pick keep it | yes · drop · redo: · bolt · new bolt · rename · type · pick · later |
-| `unit-claim-moved` | decide | `unit.claim-moved`: an approved, unstarted unit whose cited claim moved (34) | redo → withdrawn; keep → approved with the version pinned | redo · keep |
+| `unit-proposed` | approve | `unit.proposed` (planning, a finding routed to a bolt, a chore offer); chores fold by bolt, a baseline folds by batch; its document is reviewed on the review surface and an annotation there is the response (17) | yes → approved (creates the bolt if new, then the items); drop; redo → withdrawn; later → deferred; a moved claim → superseded, silently (35); bolt/new bolt/rename/type/pick keep it | yes · drop · redo: · bolt · new bolt · rename · type · pick · later |
+| `unit-claim-moved` | decide | `unit.claim-moved`: an approved, unstarted unit whose cited claim moved (35) | redo → withdrawn; keep → approved with the version pinned | redo · keep |
 | `bolt-close` | approve | `bolt.open[close].offered` when every unit is merged, no chore outstanding, no hold since the last merge | yes → landing; hold → held; new work → not-offered | yes · hold |
 | `intent-close` | decide | `intent.open[close].offered` when every elaboration is done | close → archiving; keep open → declined; new work → not-offered | close · keep open |
-| `idle` | decide | `standing.idle-offered` (idle 30m, or kept 7d ago); never for with-operator (24) | finish → ended; keep → session; activity → session | finish · keep |
-| `claim-moved` | decide | `bolt.open[citations].moved` when a started unit's cited claim moved (100) | amend bolt / land and follow → current | amend bolt · land and follow |
+| `idle` | decide | `standing.idle-offered` (idle 30m, or kept 7d ago); never for with-operator (25) | finish → ended; keep → session; activity → session | finish · keep |
+| `claim-moved` | decide | `bolt.open[citations].moved` when a started unit's cited claim moved (103) | amend bolt / land and follow → current | amend bolt · land and follow |
 | `land-failed` | decide | `bolt.land-failed`, `intent.archive-failed` | retry → landing; hold → open | retry · hold |
 | `stalled` | decide | `work-item.stopped` (retry bound), `self-closing.stalled`, `line.conflict-stalled`, `place.conflict-stalled` | retry; drop / hold | retry · drop / hold |
 | `question` | answer | `session.alive[activity].blocked` | the text → working, delivered to the same or a fresh session | `<text>` on the page or in chat |
 | `host-gone` | attention | `host.gone` (no heartbeat 30m) | takeover → released; the host returns → alive | takeover · wait |
-| `uncovered` | attention | `lease.uncovered`: no host's declaration covers the object (146) | a declaration covers it → free; ok → acknowledged | ok |
+| `uncovered` | attention | `lease.uncovered`: no host's declaration covers the object (149) | a declaration covers it → free; ok → acknowledged | ok |
 | `response-unapplicable` | attention | `response.unapplicable` (the decision was gone, or a dictation asserted work done) | reported once → reported | ok |
 
 The mockup's ten decisions are, in order: `intent-proposed`,
@@ -701,13 +701,13 @@ build ×2 → review → merge`). A decision with a `document:` (a unit or
 elaboration proposal) carries a link that opens the document on the
 review surface — plannotator for a document, lavish for a rich page —
 and the operator's annotations there come back as the response on it
-(17, 126).
+(17, 129).
 
 ### 5.5 Sinks, delivery and the tail
 
 A `sink` machine exists per sink the manifest names: the chat, the
 page, a bell on a named multiplexer surface. Each carries the decision
-kinds routed to it (79), a cadence, and its **delivery mark**. It is
+kinds routed to it (82), a cadence, and its **delivery mark**. It is
 `due` when a decision routed to it was numbered after its mark, when
 its cadence fired, or when the operator asked (`plan` in chat, a
 reload). `deliver_plan` delivers the numbered decisions routed to the
@@ -719,26 +719,26 @@ rendering is stored: the mark per sink is the only state (15), and the
 tail — every object that entered a `tail:` state after the mark, from
 the objects' own `entered_at` — is derived like the decisions (14,
 S31). A construction host is silent because it is no sink; nothing the
-machinery notices is visible only on the host that noticed it (79).
+machinery notices is visible only on the host that noticed it (82).
 
 Exactly one presenter delivers to each sink: the holder of the sink's
 lease, or the host the manifest pins (`presenter:`). A dispatcher
 running outside every host — a process whose declaration takes no
-object kinds and presents the chat — may be that presenter (145).
+object kinds and presents the chat — may be that presenter (148).
 
 ### 5.6 Responses
 
 A response is an op-response record: an answer names a decision number
 (`yes 413`, a button, a page choice, a plannotator annotation) and the
 register resolves it to the object and the decision state; a dictation
-names an object. The response is stored before anything follows (150);
+names an object. The response is stored before anything follows (153);
 the ✅ reaction, or the page's acknowledgement, is the operator's proof
-(151). The reply grammar of the mockup is the union of the `answers`
+(154). The reply grammar of the mockup is the union of the `answers`
 lists. `yes all` is expanded by the presenter into one response per
 approve decision it delivered, each with its own id (`<message
 id>/<number>`). A response that arrives after its decision is gone is
 handed back as `unapplicable` and shown once under attention, never
-dropped (6, 126).
+dropped (6, 129).
 
 ### 5.7 Dictation
 
@@ -749,14 +749,14 @@ a unit in `approved` on that bolt with the dictation as its `approval`;
 "do this chore" writes a chore unit in `approved`; "revive signal N"
 clears the move; an ask that names a repository without a bolt is an
 `asks/` record for planning; "session: <text>" opens the operator's own
-session (66). The operator may also invoke by dictation any transition
+session (69). The operator may also invoke by dictation any transition
 that undoes or defers work on any object — `drop <object>`, `hold
 place <object>` and `release place <object>`, `send back <item>`,
 `retire <item|planning|curation|capture>`, `takeover <host>` (on a
 stale host, before the 30-minute bound), `finish <elaboration>` (a
 standing session, without waiting for the idle decision), `end
 <session>`, `close` — and, on a bolt's declared service, `start
-<bolt>/<service>` and `stop <bolt>/<service>` (46, section 7.7) — and
+<bolt>/<service>` and `stop <bolt>/<service>` (47, section 7.7) — and
 the machinery performs it with its effects
 and records it: the same transition the decision would have taken,
 with the same `enter:` commands to sessions and places; a dictation that would assert work was done (`done`,
@@ -794,26 +794,26 @@ fingerprint, then returns to `current`.
 On a repository's first planning (`planning.ledger_empty`) every cell
 in scope is judged once and the units carry one `batch` id, so they
 fold into a single baseline decision (S10). Chores may be among them
-(61). A stale cell is planned against once per fingerprint: a proposal
+(64). A stale cell is planned against once per fingerprint: a proposal
 already standing for the same cell is cited by the session (the work
 order lists open units) and not proposed again.
 
 A proposed unit whose cited claim moved goes to `superseded` with no
 response and no tail entry: a proposal is not work, the fingerprint
-moved with the claim, and planning's next proposal replaces it (34).
+moved with the claim, and planning's next proposal replaces it (35).
 
 The operator's response on a unit decision can rename the proposed
 bolt, route the unit to another open bolt, or give it a new bolt;
 `create_bolt` runs only on yes, and only when the target is still `new`
-(28, S27). No order among bolts is stored: a bolt record has no
-predecessor field and no guard reads another bolt (29).
+(29, S27). No order among bolts is stored: a bolt record has no
+predecessor field and no guard reads another bolt (30).
 
 ## 7. Lines and places
 
 ### 7.1 Shape
 
 `line` and `place` are templates run inside the objects that own them,
-so both sides have the same shape (46):
+so both sides have the same shape (49):
 
 | owner | line off | places off the line |
 |---|---|---|
@@ -837,7 +837,7 @@ own place, pushed with expected-old. A take that conflicts is aborted
 whole; `seed_take_conflict` creates a **chore unit in `approved` on the
 line** — parent the bolt or the intent, scope `bolt-line` or
 `intent-line`, `approval` the cadence that fired the take or the
-response that ordered it (49, I1) — and prepares its item's place off
+response that ordered it (52, I1) — and prepares its item's place off
 the line with the conflicted take applied; its `chore-fixer` session
 resolves it and the chore merges like any other; `line.conflict_job_done`
 retries the take, three times, then `conflict-stalled` is a decision.
@@ -872,12 +872,12 @@ place is a region for the same reason.
 approval time, then item ordinal), via `place.merge_slot`. A place
 whose line moved under it while it waited goes back to `behind` first.
 After the merge the bolt's operator place is reset to the new head
-(43). Landing: `bolt.open → landing` on the operator's yes enters the
+(44). Landing: `bolt.open → landing` on the operator's yes enters the
 line's `landing`, which takes the parent once more and then `land_line`
 by the manifest's policy: a pull request with auto-merge through the
 repository's gates, or a direct push with expected-old. A failed gate
 is `land-failed`, a decision, and nothing is asked of any session until
-the response (39, S33). A landed line goes to `removing` and is removed;
+the response (40, S33). A landed line goes to `removing` and is removed;
 the bolt's `landed` transition enters the operator's place in
 `removing` as well.
 
@@ -886,15 +886,15 @@ the bolt's `landed` transition enters the operator's place in
 A process started in a place, by a session or by the operator, belongs
 to the place: `wt tether` ends it when the place is removed, and its
 ports are hashed from the worktree by portless so two places on one
-host never collide (44). The place machine's `ready` state records the
+host never collide (45). The place machine's `ready` state records the
 endpoints portless serves for the place into the owner record
 (`record_endpoints`), and the page shows them beside the bolt as links
-(45); publishing beyond the private network is never the machinery's.
+(46); publishing beyond the private network is never the machinery's.
 
 ### 7.6 Removal, holds and strays
 
 A place is removed by the machinery when the work it served is merged,
-dropped or retired (52): `merged → removing` inside the place machine;
+dropped or retired (55): `merged → removing` inside the place machine;
 an owner's `enter: {place: removing}` when its work is dropped or
 retired, or when the bolt lands or is dropped. `removing` runs
 `remove_place` (`wt worktree remove`; tethered processes end with it)
@@ -913,13 +913,13 @@ the owner is held.
 A built repository declares its services — a dev server, a worker,
 anything that listens — as data in `.flywheel/services.yaml`: a name,
 the command that starts it in a place, what it serves, and an optional
-readiness command (46; the file is named and shown in
+readiness command (47; the file is named and shown in
 `profiles/host.yaml`). The bolt's `services` region reads the file at
 the head of the operator's place the first time that place is `ready`
 and runs `declare_services`: one `service` object per record, owned by
 the bolt, in `stopped`; the region re-runs the effect whenever the
 place's head gains a record, which is how a chore that adds a service
-reaches the page (47). A session cannot declare a service: the file
+reaches the page (48). A session cannot declare a service: the file
 changes only through a chore merged into the bolt's line.
 
 A service's record is its intended state and the tethered process is
@@ -927,26 +927,26 @@ evidence. `stopped` means nothing under that name runs in the place: a
 process found by the tether name is stopped, never adopted. `start`
 enters `starting` and runs `start_service` — `wt tether` in the bolt's
 place, bound to the worktree, with the port portless derives from the
-place (44) — until the process is present; it is `running` once it
+place (45) — until the process is present; it is `running` once it
 also serves, and `running` records the endpoint portless routes into
 the service record so the page shows it beside the bolt as a link, with
-its state and its start and stop controls (45). A process that exits,
+its state and its start and stop controls (46). A process that exits,
 or one that never serves within five minutes, is `failed`: a decision
 under attention whose answers are `start` and `stop`. `stop` from any
 live state runs `stop_service` and returns to `stopped`.
 
 `start` and `stop` are the operator's dictations on a service — the one
-pair 4's undo-or-defer rule does not cover, granted by 46. A session
+pair 4's undo-or-defer rule does not cover, granted by 47. A session
 starts or stops a service only through `flywheel service start|stop
 <name>` in its place; the command resolves the place's line to its bolt
 and writes an op-response naming `service/<bolt>/<name>` with the
 session as `by`, the very record the dictation produces, so the
 machine has one `{response: start}` guard and the record's `moved_by`
-says who asked (47). The bolt's services are the bolt's place's: a
+says who asked (48). The bolt's services are the bolt's place's: a
 session that wants a server in its own place starts one under the
-place's rule (44) and it is its own — tethered to that place, never
+place's rule (45) and it is its own — tethered to that place, never
 shown, gone with it. When the bolt's place is removed the tether ends
-every service's process with the worktree (54) and each service goes
+every service's process with the worktree (55) and each service goes
 to `gone` on `service.place_present` false; a held place keeps its
 services as they were.
 
@@ -969,10 +969,10 @@ explains it (`src/**/*.md` of the books), carrying `name`, `version`,
 without the lock line>`. The books' pre-commit hook `flywheel claims
 check` refuses a commit where a block's text changed and its version
 did not, or where the lock does not match, so "version moves only when
-its text moves" is enforced where the text lives (94). The mdBook
+its text moves" is enforced where the text lives (97). The mdBook
 preprocessor `mdbook-flywheel-claims` renders the block as a callout
 with its name, version and scope, and writes `claims.json` beside the
-book: the index curation clusters against (105) and planning reads.
+book: the index curation clusters against (108) and planning reads.
 
 The claim's state is where its block is: on an intent's line only,
 `proposed`; on the books' shared line, `standing`; gone from the
@@ -981,34 +981,34 @@ shared line, `retired`. The `claim` machine writes nothing.
 OpenSpec keeps the intent's change directory (`openspec/changes/<intent
 id>/`: proposal, design, tasks, findings, chores) and its archive; the
 archive of the change is the commit before the intent's line lands, and
-the landing is what makes the claims standing (46, S34). OpenSpec
+the landing is what makes the claims standing (49, S34). OpenSpec
 requirement blocks are not the claims: they would put the claim in a
 spec file and its explanation in a chapter, two sources.
 
 ### 8.2 The ledger
 
 The ledger is `ledger/<repository>.rec` in the books repository, one
-record per cell, in every profile (section 3.4, 154). It lives with the
+record per cell, in every profile (section 3.4, 157). It lives with the
 claims because a verdict names a claim version, which is the books'
 history, and because a claim in scope for two repositories has one
-cell per repository side by side (102). A `ledger-cell` object
+cell per repository side by side (105). A `ledger-cell` object
 exists for every (standing claim, repository in scope) pair; `list`
 derives the pairs from `claims.json` and the manifest, so a cell needs
 no record until it is judged (a joining repository has every cell
-`unjudged` with no file, 101).
+`unjudged` with no file, 104).
 
 A verdict is written only by `record_verdict`, from a session's exit:
 the planning session (every cell in scope on a first planning, stale
 cells afterwards), a review or test stage whose deliverables include
 `verdicts-for-named-claims` (the default type's review, the chore
-type's fix), never by the machinery's own judgment (97). The record
+type's fix), never by the machinery's own judgment (100). The record
 holds the claim version, the repository revision, the evidence paths,
 the date and the session (`judged_by`).
 
 ### 8.3 Stale, and the decision that cannot be missed
 
 `judged → stale` when `cell.verdict_claim_version ≠ cell.claim_version`
-or the cited evidence is gone from the repository's shared head (98).
+or the cited evidence is gone from the repository's shared head (101).
 Forty commits that leave the evidence in place change nothing (S11,
 I10). A stale cell is in the backlog, the backlog is in planning's
 fingerprint, planning becomes due, its session proposes, and
@@ -1016,7 +1016,7 @@ fingerprint, planning becomes due, its session proposes, and
 every tick, none a message that can be lost.
 
 A moved claim reaches the operator in three ways, by how far the citing
-unit got (34, 100): a proposed unit is `superseded` silently and
+unit got (35, 103): a proposed unit is `superseded` silently and
 planning's next proposal replaces it; an approved unit that has not
 started enters `unit.claim-moved`, the `unit-claim-moved` decision
 (`redo` withdraws it to planning, `keep` records a citation choice
@@ -1026,13 +1026,13 @@ answer is recorded as a citation choice on the bolt; `amend` marks the
 citing units `needs_amend`, which is in the fingerprint, so planning
 proposes the amendment on the same bolt; `land and follow` leaves the
 bolt on its version and the cell stale, so planning follows after the
-landing. The machinery never rewrites construction (100).
+landing. The machinery never rewrites construction (103).
 
 ### 8.4 As-built
 
 As-built statements are files in the built repository
 (`openspec/specs/**/spec.md` blocks carrying `serves: <claim>@<v>`),
-written by build sessions under the default instruction (117).
+written by build sessions under the default instruction (120).
 `cell.evidence_present` reads them. A statement naming no standing
 claim fails the repository's own `flywheel asbuilt check` gate (I9).
 
@@ -1046,11 +1046,11 @@ forwarded message. The capture key is the source event's identity
 (`meeting/<date>/<name>`, `discord/<channel>/<day>`, `message/<id>`),
 so a second import of the same transcript is the same file and writes
 nothing (S22). The raw material stays outside git; the capture cites
-it (108). Enumerating and writing captures is arithmetic and runs
+it (111). Enumerating and writing captures is arithmetic and runs
 unattended; reading a capture into signals is a `capture-reader`
 session's judgment (`capture.reading`), except a forwarded single
 message, whose one signal `ensure_signal` writes with no judgment
-(S21, 112).
+(S21, 115).
 
 Curation is one machine per organization. It runs a `curator` session
 when the unmoved count crosses the manifest's threshold or the cadence
@@ -1064,7 +1064,7 @@ operator's `revive <signal>` clears it (S24). Dropping a proposed intent
 gives each cited signal a `drop <intent>` move (S23). A person writing
 the same files by hand is curation too: the machine then finds nothing
 unmoved. Weight is by event date from the signal records; the status
-view counts unmoved signals by source and age (115).
+view counts unmoved signals by source and age (118).
 
 The flywheel never batches signals: the threshold and cadence are the
 manifest's, the batching is the session's job, and the machinery's
@@ -1087,46 +1087,46 @@ pane. The machinery never sends anything to a session in `working`
 (I5): the only writes toward a session are `deliver_answer` from
 `blocked`, `tell_moved` from a place in `behind` whose session is idle,
 and `end_session` from `ended`, which only the operator's response, a
-type's rule or the retirement of the work reaches (I6, 71). A pane the
+type's rule or the retirement of the work reaches (I6, 74). A pane the
 operator kills by hand is `lost`, never a response (4).
 
 ### 10.2 Free reasoning and the fixed exits
 
 Inside `alive.working` the agent is free. What reaches the machinery
 is what the session reports through the command the machinery provides
-(64): `flywheel exit done|blocked|stalled` with deliverables, a
+(67): `flywheel exit done|blocked|stalled` with deliverables, a
 question or a note; `flywheel offer finding|chore|signal <document>
 --about <object>`; `flywheel note <text>`; and `flywheel refuse`, run by
 the hooks. Each appends one entry to the session's thread through the
 control plane and does nothing else; the machinery decides what the
-entry means (63). The exit entry is validated against the schema in
+entry means (66). The exit entry is validated against the schema in
 force; one that fails it is `invalid` and read as `stalled` with the
 raw text recorded, so the set of exits the machinery can see is closed
-by construction (62). A session is told, in its work order, that its
+by construction (65). A session is told, in its work order, that its
 deliverables are files in its place, its documents live in the change
 directory, and its reports go through the command; it is given no tool
 that moves state. Offers are recorded the moment they appear and never
-interrupt the session (55, 68).
+interrupt the session (58, 71).
 
 ### 10.3 Blocked
 
 `blocked` is a `question` decision on the item, answerable on the page
-or in chat; the operator need never open the pane (65). Only that
+or in chat; the operator need never open the pane (68). Only that
 session stops; the item's siblings, the unit, the bolt and every other
 object continue (S30). The answer is written to the item's thread, then
 delivered to the same session if its pane is present, else a fresh
 attempt starts with the answer at the top of its work order. `blocks`
 bumps on the session record; the status view sums it by type and stage
-(67).
+(70).
 
 ### 10.4 Elaboration types and presence
 
 `self-closing` finishes on `done` and stalls after two idle hours.
 `standing` ignores `done`, restarts a lost process in the kept place,
 and offers `idle` after thirty minutes (or seven days after a `keep`);
-only the operator's `finish` ends it (25, S2). `with-operator` raises no
+only the operator's `finish` ends it (26, S2). `with-operator` raises no
 decision at all: the machinery never asks about it, restarts it if
-lost, and ends it only on the dictation `end` (24). Present means a
+lost, and ends it only on the dictation `end` (25). Present means a
 human keystroke in the pane within the window the session binding
 states — thirty minutes — and the machinery infers nothing more from
 it: presence only holds a rebase off (7.3) and shows on the status
@@ -1139,7 +1139,7 @@ off the books' (or a named repository's) shared line with the
 machinery's read tools and dictation in its work order, running the
 `with-operator` type with the `operator-console` agent. It has no
 intent, no thread and no decision; it ends on `end <session>`, its
-place going with it unless held (66).
+place going with it unless held (69).
 
 ### 10.6 Instructions as data
 
@@ -1156,13 +1156,13 @@ instruction, the type skill, the work order proper (job, deliverables,
 exit contract), and the artifacts of the change (the unit document or
 the intent's change directory, the cited chapters, the open bolts for
 planning). Nothing else is written into the place, and the place's
-Claude Code settings deny reads outside it (86). Every input is named
+Claude Code settings deny reads outside it (89). Every input is named
 with its version (the books commit) in the work order's header.
 `flywheel render-order <scenario>` renders the exact prompt with no
-session (87, 121). Changing any of these is a chore on the books
+session (90, 124). Changing any of these is a chore on the books
 repository; hosts read the books' shared line, so a change reaches
 every host at its next fetch, and a session started before it carries
-the older commit in its header (88, 120).
+the older commit in its header (91, 123).
 
 The default instructions ship in the books repository template:
 `instructions/design-conclusion.md` (write the chapter and the claim in
@@ -1172,13 +1172,13 @@ context map is `src/context-map.md` plus `context-map.json`, versioned
 with the book; the review view is `flywheel review` served at
 `/review`: the chapters and map nodes changed since the operator's
 last `reviewed` mark (a response on the plan object), with the previous
-version beside each (S25, 119).
+version beside each (S25, 122).
 
 ## 11. Hosts and leases
 
 A host is one static binary (`flywheel host`) with a name, a bound and
 a **declaration** from the manifest: the object kinds, repositories and
-unit types it takes, and the sinks it presents (146). It heartbeats
+unit types it takes, and the sinks it presents (149). It heartbeats
 every minute. The `host` machine reads the heartbeat: `alive`, `stale`
 at 5 minutes, `gone` at 30 minutes (the `host-gone` attention
 decision), `released` when the operator answers `takeover` or 24 hours
@@ -1188,7 +1188,7 @@ the holder and renewal: `held`, `stale` at 5 minutes (shown on the
 status view; the holder may still renew and continue, S13), `expired`
 at 24 hours or on the host's release, `free` when released, and
 `uncovered` — an attention decision — when no host's declaration covers
-the object, so nothing waits silently (146).
+the object, so nothing waits silently (149).
 
 Which host acts on an object: the one holding its lease. A host takes
 a lease only on an object its declaration covers, with a transition
@@ -1203,12 +1203,12 @@ takeover starts attempt `n+1`, and the old host, on return, reads that
 its lease was replaced, ends its own pane for that object, and reports
 (S13). The takeover rule names the operator's response for work that
 has a session behind it: a lease behind a live pane expires by the
-`takeover` answer or the 24-hour bound, never by racing (147).
+`takeover` answer or the 24-hour bound, never by racing (150).
 
 Sinks are objects like any other: their lease is the presenter's, and a
 manifest pin restricts who may take it. A dispatcher is a host whose
 declaration takes no object kind and presents the chat; it runs the
-sink ticks and nothing else, outside every construction host (145).
+sink ticks and nothing else, outside every construction host (148).
 
 A restart of the machinery reads everything again and reaches the same
 configuration; a running session is evidence (`session.pane` present),
@@ -1238,7 +1238,7 @@ evidence on every tick (`session.pane`, `session.activity`,
 `session.exit`). Events drive reconciliation only by causing ticks
 sooner: a herdr pane hook, a webhook, a Discord message, the exit
 command each notify one object. A host that never receives an event
-converges by the 60-second sweep (127). So the answer to "how does one
+converges by the 60-second sweep (130). So the answer to "how does one
 drive the other" is: events shorten the wait; evidence decides.
 
 ### 12.3 Where does an agent's free reasoning sit?
@@ -1299,7 +1299,7 @@ conformance suite runs against a local bare repository with no network.
 The tracker profile follows as a second implementation of the same
 `ControlPlane` trait. The proof of conformance is `conformance/`: one
 set of scenario files run by `flywheel scenario run --profile <name>`
-with the session binding replaced by `sessions-stand-in.yaml` (90) —
+with the session binding replaced by `sessions-stand-in.yaml` (93) —
 against the stand-in control plane, then against each real profile in
 a sandbox (a temporary bare repository; a throwaway GitHub repository),
 with the machine files byte-identical (`check.py` hashes them into the
@@ -1368,7 +1368,7 @@ pruned thirty days after a decision is retracted; the counter alone
 grows. Verdicts are rewritten only when a claim's version moves. `main`
 grows by one small commit per state change, on the order of a few
 hundred a day, which git carries for years; history is the audit record
-and is never rewritten (164). In the tracker profile the lease comment
+and is never rewritten (167). In the tracker profile the lease comment
 is edited, not re-posted, and a decision issue is closed, not deleted.
 
 ### 12.16 What replaces the tracker's comment thread in git-only?
@@ -1377,7 +1377,7 @@ is edited, not re-posted, and a decision issue is closed, not deleted.
 answers, notes, exits, offers, refusals, moved entries and responses.
 A session leaves a note with `flywheel note`, which appends to its
 thread through the same commit path; the status view shows the thread
-under the object (141).
+under the object (144).
 
 ## 13. The Rust crate boundary
 
@@ -1444,7 +1444,7 @@ which appends an offer entry to its thread; `session.working`
 self-transition `record_offers` → `unit` of type `chore` in `proposed`
 pointing at the document, `batch` = the bolt id (+`unit-proposed`,
 folded with the bolt's other chores). The record holds the path, never
-the text (59). The session finishes its own job. `yes n` → `approved`
+the text (62). The session finishes its own job. `yes n` → `approved`
 with `approval` = the response id; `create_bolt` is proven absent by
 the type (I8); `create_items` makes one item; `work-item: waiting →
 ready → placing` (place off the bolt's line) `→ in-type` (`chore.fix`
@@ -1462,7 +1462,7 @@ session, no line was created: no effect ran before `approved` (5).
 reads and derives: every session in `alive` is proven by
 `session.pane`; every place by git; every decision by the states; every
 number by the register. Nothing is unnumbered and no sink is due, so
-nothing is written (75, I7).
+nothing is written (78, I7).
 
 **S6 — a slow host.** `session.requested → starting` runs
 `start_session` (`herdr agent start --name <id>`); each tick in
@@ -1524,7 +1524,7 @@ and the page). `lease: held → stale`. Host B's tick skips the object
 returns within 24h: heartbeat → `alive`, its lease renews → `held`, the
 session is still `alive` by the pane; the build resumes on A. Or the
 operator answers `takeover` — the response the takeover rule names for
-session-backed work (147) → `expire_leases` → `lease.expired` → B takes
+session-backed work (150) → `expire_leases` → `lease.expired` → B takes
 it by compare-and-swap and starts attempt 2; A on return reads it lost,
 `end_session` on its own pane, reports. Never twice: B's attempt 2 is a
 different session name, and A's attempt 1 is ended before A acts again.
@@ -1613,7 +1613,7 @@ records `type_version: 1`; its item's `test` stage `resolving` reads
 three `session` submachines by name `<item>/test/1/<persona>`; join
 `all`; each exit's offers recorded; the set recorded on the item. In a
 five-persona repository, five. A unit in flight under `default@3` reads
-its own `type_version` and is untouched (54).
+its own `type_version` and is untouched (57).
 
 **S27 — one intent, two repositories.** The archive makes two claims
 `standing`, in scope for `atlas` and `switchboard`; both planning
@@ -1627,7 +1627,7 @@ another.
 
 **S28 — a three-week bolt.** The operator runs the system in the bolt's
 place (`bolt[place]`, reset after each merge); the place's endpoints
-are recorded and shown beside the bolt on the page (45). Dictation
+are recorded and shown beside the bolt on the page (46). Dictation
 `unit plan-rows: <bug>` → a unit in `approved` with the dictation as
 its `approval` → items → sessions. Next day a finding from a session on
 another bolt is recorded as a signal (another thread), curation moves
@@ -1651,7 +1651,7 @@ the page and the bell). The item's `stage` stays in `sessions`; its
 siblings merge. The page answer → response → `blocked → working`,
 `deliver_answer` (`herdr agent send`, the pane is present). The thread
 holds the question and the answer; `blocks` on the session record is
-summed by the status view. The operator never opened the pane (65).
+summed by the status view. The operator never opened the pane (68).
 
 **S31 — yes at 07:40, look at 16:00.** `yes 57` in chat: the response
 names #57, the register resolves it, the unit's transition applies it;

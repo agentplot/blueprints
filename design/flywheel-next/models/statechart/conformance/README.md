@@ -1,7 +1,7 @@
 # Conformance suite
 
 One set of scenarios, run as data, that every profile must pass
-unchanged (requirements section 12, 165). A profile is admitted when
+unchanged (requirements section 12, 168). A profile is admitted when
 `flywheel scenario run --profile <name> conformance/` passes with the
 machine files byte-identical to `machines/` (their hash is written into
 the run record).
@@ -30,7 +30,7 @@ requirement is cited by nothing.
 scenario: S1
 title: approve a proposed elaboration from the phone
 profiles: [all]            # or [git-only], [tracker], [stand-in]
-satisfies: [1, 6, 13, 26]
+satisfies: [1, 6, 13, 24]
 invariants: [I1, I2]
 given:                     # the described state of the stores
   objects:
@@ -41,7 +41,7 @@ given:                     # the described state of the stores
     session.pane: {"elaboration/atlas-provider-limits/research-1/self-closing/1": absent}
   register: {elaboration/atlas-provider-limits/research-1/elaboration-proposed: 7, next: 8}
   marks: {chat: now}
-  script:                  # what the stand-in sessions play (90)
+  script:                  # what the stand-in sessions play (93)
     "elaboration/atlas-provider-limits/research-1/self-closing/1":
       - {after: 2m, pane: present, activity: working}
       - {after: 40m, exit: done, deliverables: [note], commits: [research.md]}
@@ -86,7 +86,7 @@ the script entries for it at their offsets: a pane appearing, activity,
 a keystroke, an exit reported by running the same `flywheel exit`
 command a session would, offers by `flywheel offer`, a refusal by
 `flywheel refuse`, commits made into the place with git. Only this
-binding is faked (90); the control plane, the engine, the git effects
+binding is faked (93); the control plane, the engine, the git effects
 on real (sandbox) repositories, the plan and the page run as built. A
 scenario may set the session evidence names directly in an `evidence`
 step instead; the script is the way to say what a session would have

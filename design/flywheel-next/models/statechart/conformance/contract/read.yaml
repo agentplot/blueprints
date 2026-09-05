@@ -1,7 +1,7 @@
-scenario: B.1.123-read
+scenario: B.1.126-read
 title: read returns evidence as of a named point and writes nothing
 profiles: [all]
-satisfies: [75, 123]
+satisfies: [78, 126]
 machines: ./contract/lamp
 given:
   objects: [{id: lamp/1, machine: lamp, state: {power: "off"}}]

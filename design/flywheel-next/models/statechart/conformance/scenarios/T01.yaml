@@ -1,7 +1,7 @@
 scenario: T1
 title: the operator moves a unit's board item to Approved on the tracker from the phone; the next read treats it as the response; signals and verdicts were never items
 profiles: [tracker]
-satisfies: [3, 153, 154, 155, 156]
+satisfies: [3, 156, 157, 158, 159]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}

@@ -1,7 +1,7 @@
-scenario: B.2.134-response-once
+scenario: B.2.137-response-once
 title: an operator's response takes effect once however many times it is delivered and whatever restarts happen between
 profiles: [all]
-satisfies: [1, 6, 134]
+satisfies: [1, 6, 137]
 invariants: [I2]
 machines: ./contract/lamp
 given:

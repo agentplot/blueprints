@@ -1,7 +1,7 @@
 scenario: S6
 title: a slow host takes two minutes to start a session; it starts once; nothing is reported failed
 profiles: [all]
-satisfies: [69, 70]
+satisfies: [72, 73]
 given:
   objects:
     - {id: intent/a, machine: intent, state: {life: open, line: current, open.material: settled, open.close: not-offered}}

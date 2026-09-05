@@ -1,7 +1,7 @@
 scenario: S12
 title: the status view from a phone with no machinery running shows every bolt, unit and session by state and holder
 profiles: [all]
-satisfies: [138, 140, 142, 143, 153]
+satisfies: [141, 143, 145, 146, 156]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}

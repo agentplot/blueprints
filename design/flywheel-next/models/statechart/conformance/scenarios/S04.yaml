@@ -1,7 +1,7 @@
 scenario: S4
 title: a session offers a finding on its own intent; the plan shows a proposed elaboration; the operator drops it; nothing was created
 profiles: [all]
-satisfies: [5, 55]
+satisfies: [5, 58]
 invariants: [I1]
 given:
   objects:

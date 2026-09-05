@@ -1,7 +1,7 @@
 scenario: S1
 title: the operator approves a proposed elaboration from their phone; work starts; nothing re-asks
 profiles: [all]
-satisfies: [1, 6, 13, 26]
+satisfies: [1, 6, 13, 24]
 invariants: [I1, I2]
 given:
   objects:

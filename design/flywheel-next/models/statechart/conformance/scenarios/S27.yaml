@@ -1,7 +1,7 @@
 scenario: S27
 title: an intent archives; two claims stand for two repositories; planning runs once per repository; a new bolt and a joined unit; rename and reroute both apply; no order between bolts
 profiles: [all]
-satisfies: [16, 27, 28, 29]
+satisfies: [16, 28, 29, 30]
 given:
   objects:
     - {id: planning/atlas, machine: planning, state: {run: current}, record: {planned_fingerprint: a0}}

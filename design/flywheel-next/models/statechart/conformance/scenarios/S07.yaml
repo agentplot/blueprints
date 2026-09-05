@@ -1,7 +1,7 @@
 scenario: S7
 title: all elaborations done; the plan offers the intent's close; yes closes and archives it; nothing else moved
 profiles: [all]
-satisfies: [21, 46, 51]
+satisfies: [22, 49, 54]
 given:
   objects:
     - {id: intent/loop-granularity, machine: intent, state: {life: open, line: current, open.material: settled, open.close: not-offered}}

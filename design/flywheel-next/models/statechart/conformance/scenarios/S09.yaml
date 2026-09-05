@@ -1,7 +1,7 @@
 scenario: S9
 title: a build session finds a claim's boundary wrong; the amended claim lands; the bolt gets the claim-moved decision; the operator picks; nothing rebuilt on its own
 profiles: [all]
-satisfies: [55, 100]
+satisfies: [58, 103]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}

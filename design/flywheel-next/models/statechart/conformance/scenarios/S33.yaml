@@ -1,7 +1,7 @@
 scenario: S33
 title: a bolt takes the shared line every morning and before landing; the pull request's gates fail; the bolt stays open with the failure; no session asked anything
 profiles: [all]
-satisfies: [39, 47, 50]
+satisfies: [40, 50, 53]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: offered}, record: {repository: atlas}}

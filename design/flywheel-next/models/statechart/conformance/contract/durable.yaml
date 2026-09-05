@@ -1,7 +1,7 @@
-scenario: B.2.130-durable
+scenario: B.2.133-durable
 title: what a write reports as written survives the loss of every host at once
 profiles: [all]
-satisfies: [130, 158]
+satisfies: [133, 161]
 machines: ./contract/lamp
 given:
   objects: [{id: lamp/1, machine: lamp, state: {power: "off"}}]

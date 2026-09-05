@@ -1,7 +1,7 @@
 scenario: S29
 title: three items, two independent and one dependent; a bound of two; the third waits, starts when merges land and a slot frees; nothing twice across a restart
 profiles: [all]
-satisfies: [30, 31]
+satisfies: [31, 32]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}

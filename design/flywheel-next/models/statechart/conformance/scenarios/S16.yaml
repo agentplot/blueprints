@@ -1,7 +1,7 @@
 scenario: S16
 title: a dictated scenario becomes data, runs against the stand-in, and renders as a trace
 profiles: [stand-in]
-satisfies: [81, 87, 89, 90, 91, 92]
+satisfies: [84, 90, 92, 93, 94, 95]
 given:
   files: {"dictation": "when the operator says keep on an idle prototype, the decision goes away and the session is not ended"}
 when:
