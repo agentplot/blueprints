@@ -1,0 +1,2349 @@
+<!--
+  Context Map · DDD — the system context map as the scope surface, drawn from the
+  first-principles model in ../models/context-map/model.md (section 5 followed exactly).
+
+  Seeded from ../models/context-map/example.yaml: its three contexts (Ordering, Billing,
+  Payments Gateway), five elements, two relationships, one link and two claims are kept
+  verbatim. The rest — six more contexts, thirty-three more elements, nine more
+  relationships, nine more links, nine more claims, the current map, the review history
+  and the decision markers (numbers 412–424 from rail-and-board's seed, retitled to this
+  map's objects) — is invented in the same voice and marked sample.
+
+  Decisions taken while building:
+  - Both maps are YAML in <script type="text/yaml"> blocks that read as schema.yaml, parsed by
+    a small inline YAML-subset parser. The organization vocabulary is a third block. Claims,
+    verdicts, decisions and the target map's history are JSON, because the map file carries
+    none of them (model 2, 4.2, 4.5).
+  - Contexts are the only units on the canvas. A layered layout ranks them upstream → downstream
+    (left to right), pulls sources toward their consumers, orders each column by barycenter and
+    centres the columns. Positions never change after that; fit is the one camera command.
+  - A relationship is one edge per pair: pattern name on the edge, U and D marks with an
+    arrowhead on directional patterns, OHS / PL beside the U, ACL beside the D, a lens with the
+    kernel's name on a shared kernel, a dotted edge with a bar on separate ways. An edge that
+    would cross a card bows over the top until it clears (the partnership and the shared kernel
+    arc over the map).
+  - A card opens in place and grows; the rest stays and dims. Elements are grouped by kind
+    (an organization kind shows what it extends: "store ⊂ service"). Links are drawn only while
+    a context is open: to an element row when the other context is open too, else to the other
+    card's edge with the target element named on the link.
+  - Facets (lane, runtime, tier) only filter, colour or wash. The control strip reports, after
+    every switch, that 0 contexts moved and 0 edges changed, computed by comparing the layout
+    and every edge path before and after.
+  - Overlays come from one id-keyed diff: current → target, and target at the review mark →
+    target now (the mark's map is rebuilt from the history, never stored). Added +, changed Δ
+    with the fields on hover, removed ghosted, moved with the old home struck through. The
+    Changes panel is a dock page with a link per entry; "mark reviewed" moves the mark to now.
+  - Repositories, claims and lanes are never nodes: repositories are chips on cards (with a
+    verdict dot) and a strip above the canvas; claims are attachment chips; lanes are tags.
+  - Scope is a gesture: "re-attach" on a claim arms the canvas; one click on any context,
+    element, edge or link sends one response and recomputes the scope line and verdicts.
+  - Add repository asks a name and which unhomed elements it homes (or a context to default),
+    derives kinds and capabilities live, lists the claims that fall into scope, and on add raises
+    a baseline decision with the next number as a rail stub.
+  - Keys: f fit · o overlay cycle · j/k focus among contexts · Enter open · Esc close.
+    Review switches: ?theme=dark|light, ?open=<context id>, ?overlay=current|review.
+-->
+<meta charset="utf-8">
+<title>Context Map · DDD</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#EEF1F4; --surface:#FFFFFF; --surface2:#F6F8FA; --ink:#16202A; --ink2:#4A5763; --ink3:#7A8794;
+  --line:#D5DBE1; --line2:#E4E8EC; --accent:#0B6E79; --accent-ink:#FFFFFF; --accent-soft:#D9EEF0; --accent-hatch:rgba(11,110,121,.10);
+  --ok:#2E8B57; --warn:#B7791F; --crit:#B3362B; --lit:#FFF3C4; --lit-line:#E5C34A;
+  --ov1:#0B6E79; --ov2:#8A4FBF; --mud:rgba(22,32,42,.09);
+  --f1:#0B6E79; --f2:#B7791F; --f3:#8A4FBF;
+  --shadow:0 10px 30px rgba(22,32,42,.16); --top:46px; --strip:40px; --controls:40px; --dock:600px;
+  --sans:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#12171C; --surface:#1A2128; --surface2:#20282F; --ink:#E6EBEF; --ink2:#A9B4BE; --ink3:#74818C;
+  --line:#2A333C; --line2:#232C34; --accent:#4FB3BF; --accent-ink:#0E1A1C; --accent-soft:#173A3E; --accent-hatch:rgba(79,179,191,.10);
+  --ok:#5CB57F; --warn:#D9A24A; --crit:#E0675B; --lit:#3A3416; --lit-line:#B89B2D; --ov1:#4FB3BF; --ov2:#B48AE0; --mud:rgba(230,235,239,.08);
+  --f1:#4FB3BF; --f2:#D9A24A; --f3:#B48AE0; --shadow:0 10px 30px rgba(0,0,0,.5); color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#12171C; --surface:#1A2128; --surface2:#20282F; --ink:#E6EBEF; --ink2:#A9B4BE; --ink3:#74818C;
+  --line:#2A333C; --line2:#232C34; --accent:#4FB3BF; --accent-ink:#0E1A1C; --accent-soft:#173A3E; --accent-hatch:rgba(79,179,191,.10);
+  --ok:#5CB57F; --warn:#D9A24A; --crit:#E0675B; --lit:#3A3416; --lit-line:#B89B2D; --ov1:#4FB3BF; --ov2:#B48AE0; --mud:rgba(230,235,239,.08);
+  --f1:#4FB3BF; --f2:#D9A24A; --f3:#B48AE0; --shadow:0 10px 30px rgba(0,0,0,.5); color-scheme:dark; }
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:13.5px/1.45 var(--sans);overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+input,textarea,select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+input:focus,textarea:focus,select:focus,button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+h1,h2,h3,h4{margin:0;font-weight:700;text-wrap:balance}
+a{color:var(--accent)}
+.mono{font-family:var(--mono)}
+kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;color:var(--ink2);background:var(--surface2)}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:700}
+.sample{font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);border:1px dashed var(--line);border-radius:3px;padding:0 4px;vertical-align:middle}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:6px;padding:5px 10px;background:var(--surface);font-weight:600;font-size:12.5px;line-height:1.2;white-space:nowrap}
+.btn:hover{border-color:var(--ink3)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.yes{color:var(--accent);border-color:var(--accent)}
+.btn.drop{color:var(--crit)}
+.btn.quiet{border-color:transparent;color:var(--ink2)}
+.btn.sm{padding:3px 8px;font-size:12px}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.armed{background:var(--lit);border-color:var(--lit-line)}
+
+/* ---------- top ---------- */
+.top{height:var(--top);display:flex;align-items:center;gap:14px;padding:0 14px;background:var(--surface);border-bottom:1px solid var(--line)}
+.top h1{font-size:15px;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+.top .meta{color:var(--ink3);font-size:12px;white-space:nowrap}
+.top .keys{display:flex;gap:10px;font-size:11px;color:var(--ink3);margin-left:auto}
+@media (max-width:1180px){.top .keys{display:none}}
+.top .r{margin-left:auto;display:flex;gap:8px;align-items:center}
+.top .keys + .r{margin-left:0}
+.theme{font:11px var(--mono)}
+
+/* ---------- strip: repositories, check ---------- */
+.strip{height:var(--strip);display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid var(--line);background:var(--surface2);overflow-x:auto}
+.strip .lab{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-right:4px;white-space:nowrap}
+.repo{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:3px 8px;font:600 12px var(--mono);white-space:nowrap;cursor:pointer}
+.repo .hm{font:11px var(--sans);color:var(--ink3);font-weight:500}
+.repo .um{font:700 10.5px var(--mono);padding:0 6px;border-radius:999px;border:1px solid var(--line);color:var(--ink3)}
+.repo .um.some{color:var(--warn);border-color:var(--warn)} .repo .um.many{color:#fff;background:var(--crit);border-color:var(--crit)} .repo .um.none{color:var(--ok);border-color:var(--ok)}
+.repo.open-in-dock{background:var(--accent-soft);border-color:var(--accent)}
+.repo.new{border-color:var(--ok)}
+.strip .sep{width:1px;height:20px;background:var(--line);margin:0 4px;flex:none}
+.strip .note{margin-left:auto;font-size:11.5px;color:var(--ink3);white-space:nowrap;display:flex;gap:10px;align-items:center}
+@media (max-width:1500px){.strip .note .wide{display:none}}
+.check{font:600 11px var(--mono);border:1px solid var(--line);border-radius:4px;padding:1px 6px;color:var(--ok);border-color:var(--ok);white-space:nowrap}
+.check.fail{color:var(--crit);border-color:var(--crit)}
+
+/* ---------- controls: facets, overlays ---------- */
+.controls{min-height:var(--controls);display:flex;align-items:center;gap:14px;padding:0 14px;border-bottom:1px solid var(--line2);background:var(--surface);font-size:12px;color:var(--ink3);flex-wrap:wrap;overflow-x:auto}
+.facet{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.facet .fn{font:600 11.5px var(--mono);color:var(--ink2)}
+.facet .fv{color:var(--ink3);font-size:11px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.seg button{padding:2px 8px;font-size:11.5px;font-weight:600;color:var(--ink2)}
+.seg button + button{border-left:1px solid var(--line2)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.seg button.ov1[aria-pressed="true"]{background:var(--ov1)} .seg button.ov2[aria-pressed="true"]{background:var(--ov2);color:#fff}
+.facet select{padding:1px 4px;font:11.5px var(--mono);border-radius:4px}
+.legend{display:inline-flex;gap:8px;align-items:center;font:11px var(--mono)}
+.legend .sw{display:inline-flex;align-items:center;gap:4px} .legend .sw i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.controls .r{margin-left:auto;display:flex;gap:10px;align-items:center;white-space:nowrap}
+.controls .inv{font:11px var(--mono);color:var(--ink3)} .controls .inv b{color:var(--ok);font-weight:600}
+.controls .inv.bad b{color:var(--crit)}
+.mark-note{font:11px var(--mono);color:var(--ink3)}
+
+/* ---------- board ---------- */
+.board{position:relative;height:calc(100vh - var(--top) - var(--strip) - var(--controls));overflow:hidden}
+.wrap{position:absolute;inset:0;overflow:auto;background:radial-gradient(circle at 1px 1px,var(--line2) 1px,transparent 1.5px) 0 0/22px 22px,var(--bg)}
+.stage{position:relative;transform-origin:0 0}
+.stage svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.stage svg.under{pointer-events:none;z-index:1}
+.stage svg.over{pointer-events:none;z-index:6}
+.stage .cards{position:absolute;inset:0;z-index:2}
+body.dimming .ctx:not(.open):not(.focused){opacity:.55}
+body.dimming .edge-g{opacity:.45}
+
+/* edges */
+.edge-g .hit{fill:none;stroke:transparent;stroke-width:16;pointer-events:stroke;cursor:pointer}
+.edge-g .ln{fill:none;stroke:var(--ink3);stroke-width:1.4}
+.edge-g.dir .ln{marker-end:url(#arrow)}
+.edge-g.sep .ln{stroke-dasharray:2 5;stroke-linecap:round}
+.edge-g.sym .ln{stroke-width:1.6}
+.edge-g.kernel .ln{stroke:var(--accent)}
+.edge-g.candidate .ln{stroke-dasharray:6 3}
+.edge-g.ghost .ln{stroke:var(--ovc);stroke-dasharray:3 4;opacity:.55} .edge-g.ghost .elabel{fill:var(--ovc)}
+.edge-g.changed .ln{stroke:var(--ovc);stroke-width:2}
+.edge-g.added .ln{stroke:var(--ovc);stroke-width:2}
+.edge-g.dim{opacity:.18}
+.edge-g.lit .ln{stroke:var(--lit-line);stroke-width:3}
+.edge-g.open-in-dock .ln{stroke:var(--accent);stroke-width:2.2}
+.edge-g.inscope .ln{stroke:var(--accent);stroke-width:2.6}
+.edge-g .elabel{font:600 10px var(--mono);fill:var(--ink2);text-anchor:middle;paint-order:stroke;stroke:var(--bg);stroke-width:4px;stroke-linejoin:round}
+.edge-g .ud{font:700 9px var(--mono);fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+.edge-g .udc{fill:var(--surface);stroke:var(--ink3);stroke-width:1}
+.edge-g .bd rect{fill:var(--surface);stroke:var(--ink3);stroke-width:1;rx:2}
+.edge-g .bd text{font:700 8.5px var(--mono);fill:var(--ink2);text-anchor:middle;dominant-baseline:central}
+.edge-g .bd.acl rect{stroke:var(--warn)} .edge-g .bd.acl text{fill:var(--warn)}
+.edge-g .lens{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.2}
+.edge-g .lens-t{font:600 9.5px var(--mono);fill:var(--accent);text-anchor:middle;dominant-baseline:central}
+.edge-g .bar{stroke:var(--ink3);stroke-width:2}
+.edge-g .att rect{fill:var(--surface2);stroke:var(--line);rx:8}
+.edge-g .att text{font:600 9.5px var(--mono);fill:var(--ink2);text-anchor:middle;dominant-baseline:central}
+.edge-g .mk rect{fill:var(--surface2);stroke:var(--warn);rx:3} .edge-g .mk text{font:600 9.5px var(--mono);fill:var(--warn);text-anchor:middle;dominant-baseline:central}
+.edge-g .mk.approve rect{stroke:var(--accent)} .edge-g .mk.approve text{fill:var(--accent)}
+.edge-g .mk.answer rect{stroke:var(--crit)} .edge-g .mk.answer text{fill:var(--crit)}
+.edge-g .mk.done rect{stroke:var(--line)} .edge-g .mk.done text{fill:var(--ink3)}
+.edge-g .ovm rect{fill:var(--ovc);rx:3} .edge-g .ovm text{font:700 10px var(--mono);fill:#fff;text-anchor:middle;dominant-baseline:central}
+.band{fill:var(--bc);opacity:.13;rx:16}
+.band-t{font:700 10px var(--mono);fill:var(--bc);letter-spacing:.06em;text-transform:uppercase;opacity:.9}
+.link-g .ln{fill:none;stroke:var(--ink2);stroke-width:1.2;stroke-dasharray:4 3;marker-end:url(#larrow)}
+.link-g .hit{fill:none;stroke:transparent;stroke-width:12;pointer-events:stroke;cursor:pointer}
+.link-g .llabel{font:500 9.5px var(--mono);fill:var(--ink2);text-anchor:middle;paint-order:stroke;stroke:var(--surface);stroke-width:3px}
+.link-g.ghost .ln{stroke:var(--ovc);opacity:.5} .link-g.added .ln{stroke:var(--ovc);stroke-width:1.8}
+.link-g.open-in-dock .ln{stroke:var(--accent);stroke-width:2}
+.link-g.inscope .ln{stroke:var(--accent);stroke-width:2.4}
+.link-g .att rect{fill:var(--surface2);stroke:var(--line);rx:8} .link-g .att text{font:600 9.5px var(--mono);fill:var(--ink2);text-anchor:middle;dominant-baseline:central}
+.arm-t{fill:var(--lit);opacity:.9}
+
+/* context card */
+.ctx{position:absolute;width:200px;min-height:124px;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:7px 9px 8px;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:opacity .15s;font-size:12px}
+.ctx.ext{border-style:dashed;background:var(--surface2)}
+.ctx.bbm{background:repeating-linear-gradient(-45deg,transparent 0 6px,var(--mud) 6px 7px),var(--surface)}
+.ctx.candidate{border-color:transparent;box-shadow:0 0 0 1px color-mix(in srgb,var(--line) 55%,transparent),0 1px 2px rgba(0,0,0,.05)}
+.ctx.open{width:340px;z-index:5;box-shadow:var(--shadow)}
+.ctx.focused{background:var(--lit);border-color:var(--lit-line)}
+.ctx.open-in-dock{box-shadow:inset 0 0 0 1px var(--accent),0 1px 2px rgba(0,0,0,.05)}
+.ctx.dim{opacity:.22}
+.ctx.inscope{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+.ctx.ghost{border-style:dashed;opacity:.5;border-color:var(--ovc)}
+.ctx.ov-added{box-shadow:0 0 0 2px var(--ovc)} .ctx.ov-changed{box-shadow:0 0 0 2px color-mix(in srgb,var(--ovc) 55%,transparent)}
+.ctx[data-col]{border-left-width:4px;border-left-color:var(--cc)}
+body.arming .ctx,body.arming .el{cursor:crosshair} body.arming .ctx:hover,body.arming .el:hover{outline:2px solid var(--lit-line)}
+.ctx .hd{display:flex;align-items:center;gap:6px;cursor:pointer;min-height:18px}
+.ctx .nn{font-weight:800;font-size:13px;letter-spacing:-.01em;line-height:1.2}
+.ctx .bb{font:700 9px var(--mono);letter-spacing:.06em;color:var(--ink2);border:1px solid var(--ink3);border-radius:3px;padding:0 3px;flex:none}
+.ctx .st{margin-left:auto;display:flex;align-items:center;gap:5px;flex:none}
+.ctx .q{font:700 10px var(--mono);color:var(--crit);border:1px solid var(--crit);border-radius:999px;width:15px;height:15px;display:grid;place-items:center;line-height:1}
+.ctx .cand{font:600 9px var(--mono);letter-spacing:.06em;color:var(--ink3);text-transform:uppercase}
+.ctx .ext-w{font:600 9px var(--mono);letter-spacing:.06em;color:var(--ink3);text-transform:uppercase;border:1px dashed var(--ink3);border-radius:3px;padding:0 3px}
+.ctx .row{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:5px}
+.ctx .cnt{font:10.5px var(--mono);color:var(--ink2);margin-top:5px;line-height:1.4}
+.ctx .cnt b{color:var(--ink);font-weight:600}
+.ctx .cnt .rm{color:var(--ovc);text-decoration:line-through;opacity:.7}
+.ctx .cnt .ad{color:var(--ovc)}
+.ctx .cnt .rmc{color:var(--ovc);opacity:.7}
+.sdot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ink3);flex:none}
+.sdot.settled{background:var(--ok)} .sdot.candidate{background:transparent;border:2px solid var(--warn);width:9px;height:9px} .sdot.open{background:var(--crit)}
+.home{display:inline-flex;align-items:center;gap:5px;font:600 10.5px var(--mono);padding:1px 6px 1px 5px;border-radius:6px;border:1px solid var(--line);color:var(--ink);background:var(--surface);cursor:pointer;white-space:nowrap}
+.home.inh{border-style:dotted;color:var(--ink2)}
+.home.none{border-style:dashed;color:var(--crit);border-color:var(--crit)}
+.home .old{text-decoration:line-through;color:var(--ovc);font-weight:500;margin-right:2px}
+.home.open-in-dock{border-color:var(--accent);background:var(--accent-soft)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none;background:var(--ok)}
+.dot.satisfied{background:var(--ok)} .dot.stale{background:var(--warn)} .dot.not-satisfied{background:var(--crit)}
+.dot.unjudged{background:transparent;border:2px solid var(--ink3);width:9px;height:9px;box-sizing:border-box}
+.dot.not-applicable,.dot.none{background:transparent;border:1px dashed var(--ink3);width:9px;height:9px;box-sizing:border-box}
+.chip{display:inline-flex;align-items:center;gap:4px;font:10.5px var(--mono);padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--ink2);background:var(--surface2);cursor:pointer;white-space:nowrap}
+.chip.att{color:var(--ink);font-weight:600}
+.chip.att.none{opacity:.5;font-weight:500;cursor:default}
+.chip.open-in-dock,.chip.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.tag{font:10px var(--mono);border:1px solid var(--line2);border-radius:3px;padding:0 4px;color:var(--ink2);background:var(--surface2);white-space:nowrap}
+.tag.fc{border-color:var(--cc);color:var(--cc)}
+.tag.ov{border-color:var(--ovc);color:var(--ovc)}
+.marks{display:inline-flex;flex-wrap:wrap;gap:4px}
+.mark{display:inline-flex;align-items:center;gap:4px;font:600 10.5px var(--mono);border:1px solid var(--line);border-radius:4px;padding:0 5px;background:var(--surface2);cursor:pointer;white-space:nowrap}
+.mark.approve{color:var(--accent);border-color:var(--accent)} .mark.decide{color:var(--warn);border-color:var(--warn)} .mark.answer{color:var(--crit);border-color:var(--crit)}
+.mark.done{color:var(--ink3);border-color:var(--line);text-decoration:none}
+.mark.focused{background:var(--lit)}
+.ovm{display:inline-grid;place-items:center;font:700 10px var(--mono);color:#fff;background:var(--ovc);border-radius:3px;min-width:15px;height:15px;padding:0 3px;cursor:default}
+.ovm.moved{background:transparent;color:var(--ovc);border:1px solid var(--ovc)}
+.ctx .lang{margin-top:8px;padding-top:6px;border-top:1px dashed var(--line2);font-size:11px;color:var(--ink2)}
+.ctx .lang dt{font:600 11px var(--mono);color:var(--ink);display:inline} .ctx .lang dd{display:inline;margin:0 0 0 4px} .ctx .lang div{margin-bottom:2px}
+.ctx .grp{margin-top:8px;display:flex;align-items:baseline;gap:6px;font:700 9.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--line2);padding-bottom:2px}
+.ctx .grp .ex{letter-spacing:0;text-transform:none;font-weight:500;color:var(--ink3)}
+.el{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:3px 2px;border-radius:4px;font-size:11.5px;cursor:pointer;position:relative}
+.el:hover{background:var(--surface2)}
+.el .en{font-weight:600;white-space:nowrap}
+.el.candidate .en{color:var(--ink2)} .el.candidate{box-shadow:inset 2px 0 0 color-mix(in srgb,var(--warn) 55%,transparent)}
+.el.open .en::after{content:" ?";color:var(--crit);font-weight:800}
+.el.ghost{opacity:.5} .el.ghost .en{text-decoration:line-through;color:var(--ovc)}
+.el.ov-added{box-shadow:inset 2px 0 0 var(--ovc)}
+.el.open-in-dock{background:var(--accent-soft)}
+.el.inscope{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.el.dim{opacity:.25}
+.el .r{margin-left:auto;display:inline-flex;gap:4px;align-items:center;flex:none}
+.el .qq{flex-basis:100%;font-style:italic;color:var(--ink2);font-size:11px;padding:1px 0 2px 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.el .qq .btn{margin-left:auto}
+.ctx .foot{margin-top:8px;padding-top:6px;border-top:1px dashed var(--line2);display:flex;gap:6px;align-items:center;font-size:11px;color:var(--ink3);flex-wrap:wrap}
+
+/* stacked list under 760 */
+.list{display:none}
+.list .ctx{position:static;width:auto;margin-bottom:8px}
+.list .ctx.open{width:auto}
+.list .rels{font:11px var(--mono);color:var(--ink2);margin-top:6px;padding-top:6px;border-top:1px dashed var(--line2)}
+.list .rels div{padding:1px 0}
+
+/* arming bar */
+.armbar{position:absolute;left:50%;top:10px;transform:translateX(-50%);z-index:7;background:var(--lit);border:1px solid var(--lit-line);border-radius:8px;padding:7px 12px;font-size:12.5px;box-shadow:var(--shadow);display:flex;gap:10px;align-items:center}
+.armbar b{font-family:var(--mono)}
+.armbar[hidden]{display:none}
+
+/* ---------- dock ---------- */
+.scrim{position:absolute;inset:0;display:none;z-index:8}
+body.docked .scrim{display:block}
+.dock{position:absolute;top:0;right:0;bottom:0;width:min(var(--dock),calc(100% - 200px));background:var(--surface);border-left:1px solid var(--line);box-shadow:var(--shadow);z-index:9;display:flex;flex-direction:column;transform:translateX(102%);transition:transform .2s cubic-bezier(.2,.7,.3,1)}
+body.docked .dock{transform:none}
+.dk-h{padding:12px 16px 10px;border-bottom:1px solid var(--line)}
+.dk-h .row{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink3)}
+.dk-h .row .kind{font-weight:700;color:var(--ink2)}
+.dk-h .row .id{font:500 11px var(--mono)}
+.dk-h .nav{margin-left:auto;display:flex;align-items:center;gap:6px}
+.dk-h .x{font-size:18px;line-height:1;color:var(--ink3);padding:0 4px}
+.dk-h h2{font-size:18px;font-weight:800;letter-spacing:-.01em;margin-top:6px}
+.dk-h .tail{color:var(--ink2);font-size:12.5px;margin-top:3px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.dk-h.dk-ctx{border-top:3px solid var(--ink2)}
+.dk-h.dk-ctx.bbm{background:repeating-linear-gradient(-45deg,transparent 0 6px,var(--mud) 6px 7px),var(--surface)}
+.dk-h.dk-el{box-shadow:inset 4px 0 0 var(--ink3)}
+.dk-h.dk-rel{border-top:3px dashed var(--ink3)}
+.dk-h.dk-claim{background:var(--surface2)} .dk-h.dk-claim h2{font-family:var(--mono);font-size:15px;letter-spacing:0;word-break:break-all}
+.dk-h.dk-repo{background:var(--surface2)} .dk-h.dk-repo h2{font-family:var(--mono);font-size:16px}
+.dk-b{flex:1;overflow:auto;padding:6px 16px 20px}
+.dk-f{border-top:1px solid var(--line);padding:10px 16px 12px;background:var(--surface2)}
+.dk-f .fl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:6px}
+.dk-f .acts{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.sec{padding:12px 0;border-bottom:1px solid var(--line2)}
+.sec:last-child{border-bottom:0}
+.sec h3{display:flex;align-items:baseline;gap:8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:8px}
+.sec h3 .r{letter-spacing:0;text-transform:none;font-weight:500;font-size:11.5px;margin-left:auto}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0;font-size:12.5px}
+.kv dt{font:500 11.5px var(--mono);color:var(--ink3)} .kv dd{margin:0}
+.ref{font:500 11.5px var(--mono);color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:0 5px;text-decoration:none;opacity:.8}
+.ref:hover{opacity:1}
+.stx{font:600 10.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:4px;border:1px solid var(--line);color:var(--ink2)}
+.stx.settled{color:var(--ok);border-color:var(--ok)} .stx.candidate{color:var(--warn);border-color:var(--warn)} .stx.open{color:var(--crit);border-color:var(--crit)}
+.qbox{border:1px solid var(--crit);border-radius:8px;padding:8px 10px;background:color-mix(in srgb,var(--crit) 6%,transparent);margin-top:6px;font-size:13px}
+.qbox i{display:block;margin-bottom:6px}
+.qbox .cap{font:11.5px var(--mono);color:var(--ink2)} .qbox .cap b{color:var(--ok)}
+.scope{font:12px var(--mono);color:var(--ink2);padding:6px 8px;border:1px solid var(--line2);border-radius:6px;background:var(--surface2);margin-top:6px;line-height:1.5}
+.scope b{color:var(--ink);font-weight:600}
+.scope .from{color:var(--ink3)}
+.vd{font:600 10.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:4px;border:1px solid var(--line);color:var(--ink3);white-space:nowrap}
+.vd.satisfied{color:var(--ok);border-color:var(--ok)} .vd.not-satisfied{color:var(--crit);border-color:var(--crit)} .vd.stale{color:var(--warn);border-color:var(--warn)} .vd.unjudged{color:var(--ink2)} .vd.not-applicable{color:var(--ink3);border-style:dashed}
+.claims{display:flex;flex-direction:column}
+.claim{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line2);font-size:12.5px;cursor:pointer}
+.claim:hover{background:var(--surface2)}
+.claim .cn{font:600 12px var(--mono);word-break:break-all} .claim .cv{font:11px var(--mono);color:var(--ink3);margin-left:6px;font-weight:400}
+.claim .ce{grid-column:1/-1;color:var(--ink3);font-size:11.5px}
+.claim .ce b{color:var(--ink2);font-weight:500}
+.claim .vds{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.rows{display:flex;flex-direction:column;gap:2px}
+.rowi{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:4px 0;border-bottom:1px solid var(--line2)}
+.rowi .nm{font-weight:600} .rowi .m{font:11px var(--mono);color:var(--ink3)}
+.rowi .r{margin-left:auto;display:flex;gap:6px;align-items:center}
+.rowi a.go{font:11px var(--mono);color:var(--accent);text-decoration:none;border-bottom:1px dotted}
+.kc{display:flex;flex-wrap:wrap;gap:4px}
+.derived{font:11px var(--mono);color:var(--ink3);margin-top:6px}
+.derived b{color:var(--warn);font-weight:600}
+.dtext{font-size:13.5px;line-height:1.55;max-width:62ch}
+.dtext b{font-weight:700}
+.ends{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;font-size:12.5px;margin-top:4px}
+.ends .e{border:1px solid var(--line);border-radius:6px;padding:6px 8px;background:var(--surface2)}
+.ends .e .k{font:700 10px var(--mono);letter-spacing:.06em;color:var(--ink3);text-transform:uppercase;display:flex;gap:6px;align-items:center}
+.ends .e .n{font-weight:700} .ends .e .bds{display:flex;gap:4px;margin-top:3px}
+.ends .arr{font:11px var(--mono);color:var(--ink3);text-align:center}
+.bdg{font:700 9px var(--mono);border:1px solid var(--ink3);border-radius:2px;padding:0 3px;color:var(--ink2)} .bdg.acl{color:var(--warn);border-color:var(--warn)}
+/* rail card inline (rail-and-board's decision card) */
+.card{position:relative;border:1px solid var(--line);border-left-width:3px;border-radius:6px;background:var(--surface);padding:8px 10px 8px 12px;margin-bottom:6px}
+.card.g-approve{border-left-color:var(--accent)} .card.g-decide{border-left-color:var(--warn)} .card.g-answer{border-left-color:var(--crit)}
+.card.inflight{opacity:.6} .card.done{opacity:.75;border-style:dashed}
+.card .ch{display:flex;align-items:center;gap:7px;font-size:11px;margin-bottom:3px}
+.card .n{font:700 13px var(--mono);color:var(--ink)}
+.card .kind{color:var(--ink3);font-weight:600}
+.card .ph{margin-left:auto;font:500 10.5px var(--mono);color:var(--ink3);border:1px solid var(--line2);border-radius:3px;padding:0 5px;white-space:nowrap}
+.card .ph.plan{color:var(--accent);border-color:var(--accent)}
+.card .title{font-size:13.5px;font-weight:700;line-height:1.3}
+.card .tail{color:var(--ink2);font-size:12px;margin-top:2px}
+.card .qq{font-style:italic;color:var(--ink);margin-top:4px;font-size:13px}
+.card .acts{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;align-items:center}
+.card .acts .hint{margin-left:auto;font:11px var(--mono);color:var(--ink3)}
+.card .flight{display:none;font:11.5px var(--mono);color:var(--ink3);margin-top:6px;align-items:center;gap:6px}
+.card.inflight .flight{display:flex}
+.card .sentl{font:11.5px var(--mono);color:var(--ok);margin-top:6px}
+.card .field{display:flex;gap:6px;margin-top:6px;align-items:center} .card .field input{flex:1;padding:3px 6px;font-size:12px}
+.spin{width:10px;height:10px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.stub{border:1px dashed var(--accent);border-radius:8px;padding:8px 10px;margin-top:8px;background:color-mix(in srgb,var(--accent-soft) 50%,transparent)}
+.stub .eyebrow{margin-bottom:6px}
+/* changes list */
+.chg{display:grid;grid-template-columns:64px 1fr;gap:4px 10px;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--line2);font-size:12.5px}
+.chg .cls{font:700 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ovc)}
+.chg .cls.removed{opacity:.7}
+.chg .what a{font-weight:600;color:var(--ink);text-decoration:none;border-bottom:1px dotted var(--ink3)}
+.chg .what .t{font:11px var(--mono);color:var(--ink3);margin-left:6px}
+.chg .flds{grid-column:2;font:11px var(--mono);color:var(--ink2)}
+.chg .flds s{color:var(--ovc)}
+/* add repo form */
+.addrepo .grid{display:flex;flex-direction:column;gap:4px;margin:4px 0 8px}
+.addrepo label{display:inline-flex;align-items:center;gap:6px;font:11.5px var(--mono);cursor:pointer}
+.addrepo input[type=checkbox]{margin:0;accent-color:var(--ok)}
+.addrepo input[type=text]{width:100%;font:12px var(--mono)}
+.addrepo .found{font-size:12px;color:var(--ink2);margin:6px 0} .addrepo .found b{color:var(--ok)}
+.fails div{font:11.5px var(--mono);color:var(--crit);padding:3px 6px;border-left:2px solid var(--crit);margin-bottom:3px}
+.fails div.ok{color:var(--ok);border-left-color:var(--ok)}
+/* log, toasts */
+.log{position:fixed;right:14px;top:calc(var(--top) + 6px);width:min(440px,calc(100vw - 28px));max-height:60vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:10px 12px;z-index:20}
+.log h3{font-size:12px;display:flex;gap:8px;align-items:baseline} .log h3 span{font-weight:500;color:var(--ink3);font-size:11.5px}
+.log ol{list-style:none;margin:8px 0 0;padding:0}
+.log li{display:flex;gap:10px;font-size:12.5px;padding:3px 0;border-bottom:1px solid var(--line2)} .log li time{font:11px var(--mono);color:var(--ink3)} .log li span{font-family:var(--mono)}
+.toasts{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);display:flex;flex-direction:column;gap:6px;z-index:30;pointer-events:none}
+.toast{background:var(--ink);color:var(--bg);font:12.5px var(--mono);padding:7px 12px;border-radius:6px;box-shadow:var(--shadow);animation:up .2s ease-out}
+@keyframes up{from{transform:translateY(8px);opacity:0}}
+
+@media (max-width:759px){
+  :root{--controls:auto}
+  .top .keys{display:none}
+  .board{height:auto;min-height:calc(100vh - var(--top) - var(--strip) - 80px);overflow:visible}
+  .wrap{display:none}
+  .list{display:block;padding:10px}
+  body{overflow:auto}
+  .dock{width:100%;position:fixed;top:0;bottom:0;left:0;right:0}
+  .scrim{position:fixed}
+  .ctx{width:auto}
+}
+@media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
+</style>
+
+<header class="top">
+  <h1>Context Map · DDD</h1>
+  <span class="meta">willdan · target @ <span class="mono" id="rev">c04d1e</span> · 2026-09-04 <span class="mono" id="clock">07:40</span></span>
+  <span class="keys"><span><kbd>f</kbd> fit</span><span><kbd>o</kbd> overlay</span><span><kbd>j</kbd><kbd>k</kbd> contexts</span><span><kbd>↵</kbd> open</span><span><kbd>esc</kbd> close</span></span>
+  <div class="r">
+    <button class="btn quiet theme" id="theme" title="theme">system</button>
+    <button class="btn" id="logbtn" aria-expanded="false"><b id="sent">0</b> sent</button>
+  </div>
+</header>
+<div class="strip" id="strip"></div>
+<div class="controls" id="controls"></div>
+<main class="board" id="board">
+  <div class="wrap" id="wrap"><div class="stage" id="stage">
+    <svg class="under" id="under"><defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker>
+      <marker id="larrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker>
+    </defs><g id="bands"></g><g id="edges"></g></svg>
+    <div class="cards" id="cards"></div>
+    <svg class="over" id="over"><g id="links"></g></svg>
+  </div></div>
+  <div class="list" id="list"></div>
+  <div class="armbar" id="armbar" hidden></div>
+  <div class="scrim" id="scrim"></div>
+  <aside class="dock" id="dock" role="dialog" aria-modal="false" aria-labelledby="dk-title">
+    <div class="dk-h" id="dk-h"></div>
+    <div class="dk-b" id="dk-b"></div>
+    <div class="dk-f" id="dk-f"></div>
+  </aside>
+</main>
+<aside class="log" id="log" hidden><h3>Responses sent <span>each one on its own, the moment it was given</span></h3><ol id="loglist"></ol></aside>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<!-- ------------------------------------------------------------------
+     The organization vocabulary (books/vocabulary.yaml), as schema.yaml's
+     organization_vocabulary_example, with runtime closed for this mockup.
+     ------------------------------------------------------------------ -->
+<script type="text/yaml" id="y-vocab">
+schema: flywheel-map/1
+extends: flywheel-map/1
+element_kinds:
+  store:
+    description: A service whose job is to keep state — a database, a cache, a bucket.
+    extends: service
+  topic:
+    description: A named channel events travel on. Others depend on it, so it counts as a capability.
+    extends: contract
+    capability: true
+  ui:
+    description: A user-facing surface.
+    extends: service
+link_kinds:
+  persists-in:
+    description: The aggregate's state lives in that store.
+    from: [aggregate]
+    to: [store]
+facets:
+  lane:
+    description: Which side of the house runs it.
+    values: [control, data]
+  runtime:
+    description: Where the element runs.
+    values: [deployed, local]
+  tier:
+    description: How much of the business stops when it stops.
+    values: [1, 2, 3]
+</script>
+
+<!-- ------------------------------------------------------------------
+     target.yaml — the map of what the books say. The first three contexts,
+     their five elements, two relationships and one link are example.yaml
+     verbatim; everything after them is sample.
+     ------------------------------------------------------------------ -->
+<script type="text/yaml" id="y-target">
+schema: flywheel-map/1
+vocabulary: books/vocabulary.yaml
+
+contexts:
+  - id: ordering
+    name: Ordering
+    ref: ordering/boundary
+    status: settled
+    home: orders-svc
+    tags: ["lane:control"]
+    language:
+      - { term: order, means: "A customer's request to buy, from placed to fulfilled or cancelled." }
+      - { term: line, means: "One product and quantity on an order." }
+
+  - id: billing
+    name: Billing
+    ref: billing/boundary
+    status: settled
+    home: ledger-svc
+    tags: ["lane:data"]
+    language:
+      - { term: invoice, means: "The amount owed for one order, issued once and never edited." }
+
+  - id: payments-gateway
+    name: Payments Gateway
+    status: settled
+    ref: billing/gateway
+    external: true                   # a third party; homes nothing
+    tags: ["vendor:stripe"]
+
+  - id: catalog
+    name: Catalog
+    ref: catalog/boundary
+    status: settled
+    home: platform-core
+    tags: ["lane:control"]
+    language:
+      - { term: product, means: "A thing the shop sells, with a price in one currency." }
+      - { term: summary, means: "The subset of a product every other context may read." }
+
+  - id: identity
+    name: Identity
+    ref: identity/boundary
+    status: settled
+    home: platform-core
+    tags: ["lane:control"]
+
+  - id: identity-provider
+    name: Identity Provider
+    ref: identity/provider
+    status: settled
+    external: true
+    tags: ["vendor:okta"]
+
+  - id: notifications
+    name: Notifications
+    ref: notifications/boundary
+    status: candidate                # its chapter is on an open intent's line
+    tags: ["lane:control"]           # no home default: each element names its own
+
+  - id: data-product
+    name: Data Product
+    ref: data-product/boundary
+    status: settled
+    home: pipeline
+    big_ball_of_mud: true
+    tags: ["lane:data"]
+
+  - id: portal
+    name: Portal
+    ref: portal/boundary
+    status: settled
+    home: platform-core
+    tags: ["lane:control"]
+
+elements:
+  # --- ordering, homed in orders-svc by the context default -----------
+  - id: ordering.order
+    name: Order
+    context: ordering
+    kind: aggregate
+    ref: ordering/order-lifecycle
+    status: settled
+    tags: ["lane:control"]
+
+  - id: ordering.order-placed
+    name: OrderPlaced
+    context: ordering
+    kind: domain-event
+    ref: ordering/order-lifecycle
+    status: settled
+
+  - id: ordering.order-cancelled
+    name: OrderCancelled
+    context: ordering
+    kind: domain-event
+    ref: ordering/cancellation
+    status: candidate
+
+  - id: ordering.orders-api
+    name: Orders API
+    context: ordering
+    kind: contract                   # capability: true in the shipped vocabulary
+    ref: ordering/api
+    status: settled
+    tags: ["tier:1", "runtime:deployed"]
+
+  - id: ordering.orders-worker
+    name: Orders worker
+    context: ordering
+    kind: service
+    ref: ordering/api
+    status: settled
+    tags: ["lane:control", "runtime:deployed"]
+
+  - id: ordering.order-store
+    name: Order store
+    context: ordering
+    kind: store
+    ref: ordering/persistence
+    status: settled
+    tags: ["lane:control", "runtime:deployed", "tier:1"]
+
+  # --- billing, split across two repositories -------------------------
+  - id: billing.invoice
+    name: Invoice
+    context: billing
+    kind: aggregate
+    ref: billing/invoicing
+    status: settled
+    tags: ["lane:data"]
+
+  - id: billing.invoice-issued
+    name: InvoiceIssued
+    context: billing
+    kind: domain-event
+    ref: billing/invoicing
+    status: settled
+
+  - id: billing.invoice-worker
+    name: Invoice worker
+    context: billing
+    kind: service
+    home: ledger-svc                 # same as the context default; stated for the example
+    ref: billing/invoicing
+    status: candidate                # its chapter is on an open intent's line
+    tags: ["lane:data", "runtime:deployed"]
+
+  - id: billing.invoice-store
+    name: Invoice store
+    context: billing
+    kind: store                      # organization kind, extends service
+    home: ledger-db                  # a second repository homed by this context
+    status: open
+    question: Is the invoice store its own repository, or a schema inside ledger-svc?
+    tags: ["lane:data", "tier:2"]
+
+  - id: billing.ledger-api
+    name: Ledger API
+    context: billing
+    kind: contract
+    ref: billing/api
+    status: settled
+    tags: ["runtime:deployed"]
+
+  - id: billing.invoice-events
+    name: Invoice events
+    context: billing
+    kind: topic                      # extends contract; counts as a capability
+    ref: billing/events
+    status: candidate
+    tags: ["lane:data", "runtime:deployed"]
+
+  # --- payments gateway: external, homes nothing ----------------------
+  - id: payments-gateway.charges-api
+    name: Charges API
+    context: payments-gateway
+    kind: contract
+    ref: billing/gateway
+    status: settled
+
+  - id: payments-gateway.charge-settled
+    name: ChargeSettled
+    context: payments-gateway
+    kind: domain-event
+    ref: billing/gateway
+    status: settled
+
+  # --- catalog, in the platform-core monolith -------------------------
+  - id: catalog.product
+    name: Product
+    context: catalog
+    kind: aggregate
+    ref: catalog/product
+    status: settled
+
+  - id: catalog.product-summary
+    name: Product summary
+    context: catalog
+    kind: contract                   # the shared kernel with the portal
+    ref: catalog/summary
+    status: settled
+    tags: ["tier:1"]
+
+  - id: catalog.catalog-api
+    name: Catalog API
+    context: catalog
+    kind: contract
+    ref: catalog/api
+    status: settled
+    tags: ["runtime:deployed"]
+
+  - id: catalog.price-changed
+    name: PriceChanged
+    context: catalog
+    kind: domain-event
+    ref: catalog/pricing
+    status: settled
+
+  - id: catalog.catalog-store
+    name: Catalog store
+    context: catalog
+    kind: store
+    ref: catalog/persistence
+    status: settled
+    tags: ["runtime:deployed", "tier:2"]
+
+  # --- identity -------------------------------------------------------
+  - id: identity.subject
+    name: Subject
+    context: identity
+    kind: aggregate
+    ref: identity/subjects
+    status: settled
+
+  - id: identity.token-api
+    name: Token API
+    context: identity
+    kind: contract
+    ref: identity/tokens
+    status: settled
+    tags: ["tier:1", "runtime:deployed"]
+
+  - id: identity.session-service
+    name: Session service
+    context: identity
+    kind: service
+    ref: identity/sessions
+    status: settled
+    tags: ["runtime:deployed"]
+
+  - id: identity-provider.oidc
+    name: OIDC
+    context: identity-provider
+    kind: contract
+    ref: identity/provider
+    status: settled
+
+  # --- notifications: no context default, elements name their homes ---
+  - id: notifications.notifier
+    name: Notifier
+    context: notifications
+    kind: service
+    home: orders-svc
+    ref: notifications/delivery
+    status: candidate
+    tags: ["lane:control", "runtime:deployed"]
+
+  - id: notifications.email-template
+    name: Email template
+    context: notifications
+    kind: aggregate
+    home: orders-svc
+    ref: notifications/templates
+    status: candidate
+
+  - id: notifications.notification-sent
+    name: NotificationSent
+    context: notifications
+    kind: domain-event
+    home: orders-svc
+    ref: notifications/delivery
+    status: candidate
+
+  - id: notifications.push-relay
+    name: Push relay
+    context: notifications
+    kind: service                    # no home yet: the check fails it
+    status: open
+    question: Which repository builds the push relay — orders-svc, or a repository of its own?
+    tags: ["runtime:deployed"]
+
+  - id: notifications.template-store
+    name: Template store
+    context: notifications
+    kind: store                      # no home yet: the check fails it
+    status: open
+    question: Do templates live in a store of their own, or in orders-svc's schema?
+    tags: ["tier:3"]
+
+  # --- data product: a big ball of mud in the pipeline repository -----
+  - id: data-product.ingest
+    name: Ingest
+    context: data-product
+    kind: service
+    ref: data-product/ingest
+    status: settled
+    tags: ["lane:data", "runtime:deployed"]
+
+  - id: data-product.warehouse
+    name: Warehouse
+    context: data-product
+    kind: store
+    ref: data-product/warehouse
+    status: settled
+    tags: ["lane:data", "runtime:deployed", "tier:2"]
+
+  - id: data-product.reports-api
+    name: Reports API
+    context: data-product
+    kind: contract
+    ref: data-product/reports
+    status: settled
+    tags: ["runtime:deployed"]
+
+  - id: data-product.revenue-fact
+    name: Revenue fact
+    context: data-product
+    kind: aggregate
+    ref: data-product/facts
+    status: settled
+    tags: ["lane:data"]
+
+  - id: data-product.nightly-rollup
+    name: Nightly rollup
+    context: data-product
+    kind: service
+    ref: data-product/rollups
+    status: settled
+    tags: ["lane:data", "runtime:local"]
+
+  - id: data-product.events-topic
+    name: Events topic
+    context: data-product
+    kind: topic
+    ref: data-product/ingest
+    status: settled
+    tags: ["lane:data", "runtime:deployed"]
+
+  # --- portal ---------------------------------------------------------
+  - id: portal.web
+    name: Portal web
+    context: portal
+    kind: ui
+    ref: portal/web
+    status: settled
+    tags: ["runtime:deployed", "tier:1"]
+
+  - id: portal.bff
+    name: Portal BFF
+    context: portal
+    kind: service
+    ref: portal/bff
+    status: settled
+    tags: ["runtime:deployed"]
+
+  - id: portal.account-page
+    name: Account page
+    context: portal
+    kind: ui
+    ref: portal/account
+    status: settled
+
+  - id: portal.reports-view
+    name: Reports view
+    context: portal
+    kind: ui
+    ref: portal/reports
+    status: candidate
+
+relationships:
+  - id: ordering-billing
+    name: Ordering supplies Billing
+    ref: ordering/boundary
+    status: settled
+    pattern: customer-supplier
+    upstream: ordering
+    downstream: billing
+    upstream_offers: [open-host-service, published-language]
+    downstream_guards: [anticorruption-layer]
+
+  - id: billing-gateway
+    name: Billing conforms to the Payments Gateway
+    ref: billing/gateway
+    status: settled
+    pattern: conformist
+    upstream: payments-gateway
+    downstream: billing
+    upstream_offers: [published-language]
+    tags: ["vendor:stripe"]
+
+  - id: catalog-ordering
+    name: Catalog supplies Ordering
+    ref: catalog/boundary
+    status: settled
+    pattern: customer-supplier
+    upstream: catalog
+    downstream: ordering
+    upstream_offers: [open-host-service, published-language]
+
+  - id: identity-provider-identity
+    name: Identity conforms to the Identity Provider
+    ref: identity/provider
+    status: settled
+    pattern: conformist
+    upstream: identity-provider
+    downstream: identity
+    upstream_offers: [open-host-service]
+    tags: ["vendor:okta"]
+
+  - id: identity-portal
+    name: Identity supplies the Portal
+    ref: identity/boundary
+    status: settled
+    pattern: customer-supplier
+    upstream: identity
+    downstream: portal
+    upstream_offers: [open-host-service]
+
+  - id: ordering-portal
+    name: Ordering and the Portal plan together
+    ref: portal/boundary
+    status: settled
+    pattern: partnership
+    contexts: [ordering, portal]
+
+  - id: catalog-portal
+    name: Catalog and the Portal share the product summary
+    ref: catalog/summary
+    status: settled
+    pattern: shared-kernel
+    contexts: [catalog, portal]
+    kernel: [catalog.product-summary]
+
+  - id: billing-data-product
+    name: Billing supplies the Data Product
+    ref: data-product/ingest
+    status: settled
+    pattern: customer-supplier
+    upstream: billing
+    downstream: data-product
+    downstream_guards: [anticorruption-layer]
+
+  - id: data-product-portal
+    name: The Portal reads reports through a guard
+    ref: portal/reports
+    status: candidate
+    pattern: customer-supplier
+    upstream: data-product
+    downstream: portal
+    downstream_guards: [anticorruption-layer]
+
+  - id: ordering-notifications
+    name: Notifications conforms to Ordering
+    ref: notifications/delivery
+    status: candidate
+    pattern: conformist
+    upstream: ordering
+    downstream: notifications
+
+  - id: catalog-billing
+    name: Billing never reads the Catalog
+    ref: billing/boundary
+    status: settled
+    pattern: separate-ways           # drawn so the absence is a decision
+    contexts: [catalog, billing]
+
+links:
+  - id: invoice-worker-handles-order-placed
+    name: Invoice worker handles OrderPlaced
+    ref: billing/invoicing
+    status: settled
+    kind: handles
+    from: billing.invoice-worker
+    to: ordering.order-placed        # crosses ordering-billing, which is not separate-ways
+
+  - id: notifier-handles-order-placed
+    name: Notifier handles OrderPlaced
+    ref: notifications/delivery
+    status: candidate
+    kind: handles
+    from: notifications.notifier
+    to: ordering.order-placed
+
+  - id: orders-worker-uses-catalog-api
+    name: Orders worker uses the Catalog API
+    ref: ordering/api
+    status: settled
+    kind: uses
+    from: ordering.orders-worker
+    to: catalog.catalog-api
+
+  - id: orders-worker-implements-orders-api
+    name: Orders worker implements the Orders API
+    ref: ordering/api
+    status: settled
+    kind: implements
+    from: ordering.orders-worker
+    to: ordering.orders-api
+
+  - id: order-persists-in-order-store
+    name: Order persists in the Order store
+    ref: ordering/persistence
+    status: settled
+    kind: persists-in
+    from: ordering.order
+    to: ordering.order-store
+
+  - id: ingest-handles-invoice-issued
+    name: Ingest handles InvoiceIssued
+    ref: data-product/ingest
+    status: settled
+    kind: handles
+    from: data-product.ingest
+    to: billing.invoice-issued
+
+  - id: invoice-worker-uses-charges-api
+    name: Invoice worker uses the Charges API
+    ref: billing/gateway
+    status: settled
+    kind: uses
+    from: billing.invoice-worker
+    to: payments-gateway.charges-api
+
+  - id: session-service-uses-oidc
+    name: Session service uses OIDC
+    ref: identity/provider
+    status: settled
+    kind: uses
+    from: identity.session-service
+    to: identity-provider.oidc
+
+  - id: portal-bff-uses-reports-api
+    name: Portal BFF uses the Reports API
+    ref: portal/reports
+    status: candidate
+    kind: uses
+    from: portal.bff
+    to: data-product.reports-api
+
+  - id: portal-bff-uses-token-api
+    name: Portal BFF uses the Token API
+    ref: portal/bff
+    status: settled
+    kind: uses
+    from: portal.bff
+    to: identity.token-api
+</script>
+
+<!-- ------------------------------------------------------------------
+     current.yaml — the map of what is built. A complete map under the same
+     schema, not a delta. It differs from target in fourteen places; the
+     page computes them (model 4.4) and never stores them.
+     ------------------------------------------------------------------ -->
+<script type="text/yaml" id="y-current">
+schema: flywheel-map/1
+vocabulary: books/vocabulary.yaml
+
+contexts:
+  - id: ordering
+    name: Ordering
+    ref: ordering/boundary
+    status: settled
+    home: orders-svc
+    tags: ["lane:control"]
+    language:
+      - { term: order, means: "A customer's request to buy, from placed to fulfilled or cancelled." }
+      - { term: line, means: "One product and quantity on an order." }
+
+  - id: billing
+    name: Billing
+    ref: billing/boundary
+    status: settled
+    home: ledger-svc
+    tags: ["lane:data"]
+    language:
+      - { term: invoice, means: "The amount owed for one order, issued once and never edited." }
+
+  - id: payments-gateway
+    name: Payments Gateway
+    status: settled
+    ref: billing/gateway
+    external: true
+    tags: ["vendor:stripe"]
+
+  - id: catalog
+    name: Catalog
+    ref: catalog/boundary
+    status: settled
+    home: platform-core
+    tags: ["lane:control"]
+    language:
+      - { term: product, means: "A thing the shop sells, with a price in one currency." }
+      - { term: summary, means: "The subset of a product every other context may read." }
+
+  - id: identity
+    name: Identity
+    ref: identity/boundary
+    status: settled
+    home: platform-core
+    tags: ["lane:control"]
+
+  - id: identity-provider
+    name: Identity Provider
+    ref: identity/provider
+    status: settled
+    external: true
+    tags: ["vendor:okta"]
+
+  - id: notifications
+    name: Notifications
+    ref: notifications/boundary
+    status: candidate
+    tags: ["lane:control"]
+
+  - id: data-product
+    name: Data Product
+    ref: data-product/boundary
+    status: settled
+    home: pipeline
+    big_ball_of_mud: true
+    tags: ["lane:data"]
+
+  - id: portal
+    name: Portal
+    ref: portal/boundary
+    status: settled
+    home: platform-core
+    tags: ["lane:control"]
+
+elements:
+  - id: ordering.order
+    name: Order
+    context: ordering
+    kind: aggregate
+    ref: ordering/order-lifecycle
+    status: settled
+    tags: ["lane:control"]
+
+  - id: ordering.order-placed
+    name: OrderPlaced
+    context: ordering
+    kind: domain-event
+    ref: ordering/order-lifecycle
+    status: settled
+
+  - id: ordering.orders-api
+    name: Orders API
+    context: ordering
+    kind: contract
+    ref: ordering/api
+    status: settled
+    tags: ["tier:1", "runtime:deployed"]
+
+  - id: ordering.legacy-orders-api
+    name: Legacy orders API           # still built; the books no longer name it
+    context: ordering
+    kind: contract
+    ref: ordering/api
+    status: settled
+    tags: ["runtime:deployed"]
+
+  - id: ordering.orders-worker
+    name: Orders worker
+    context: ordering
+    kind: service
+    ref: ordering/api
+    status: settled
+    tags: ["lane:control", "runtime:deployed"]
+
+  - id: ordering.order-store
+    name: Order store
+    context: ordering
+    kind: store
+    ref: ordering/persistence
+    status: settled
+    tags: ["lane:control", "runtime:deployed", "tier:1"]
+
+  - id: billing.invoice
+    name: Invoice
+    context: billing
+    kind: aggregate
+    ref: billing/invoicing
+    status: settled
+    tags: ["lane:data"]
+
+  - id: billing.invoice-issued
+    name: InvoiceIssued
+    context: billing
+    kind: domain-event
+    ref: billing/invoicing
+    status: settled
+
+  - id: billing.invoice-worker
+    name: Invoice worker
+    context: billing
+    kind: service
+    home: ledger-svc
+    ref: billing/invoicing
+    status: candidate
+    tags: ["lane:data", "runtime:deployed"]
+
+  - id: billing.invoice-store
+    name: Invoice store
+    context: billing
+    kind: store
+    home: ledger-svc                 # built as a schema in ledger-svc today
+    status: open
+    question: Is the invoice store its own repository, or a schema inside ledger-svc?
+    tags: ["lane:data", "tier:2"]
+
+  - id: billing.ledger-api
+    name: Ledger API
+    context: billing
+    kind: contract
+    ref: billing/api
+    status: settled
+    tags: ["runtime:deployed"]
+
+  - id: payments-gateway.charges-api
+    name: Charges API
+    context: payments-gateway
+    kind: contract
+    ref: billing/gateway
+    status: settled
+
+  - id: payments-gateway.charge-settled
+    name: ChargeSettled
+    context: payments-gateway
+    kind: domain-event
+    ref: billing/gateway
+    status: settled
+
+  - id: catalog.product
+    name: Catalogue item             # the books renamed it
+    context: catalog
+    kind: aggregate
+    ref: catalog/product
+    status: settled
+
+  - id: catalog.product-summary
+    name: Product summary
+    context: catalog
+    kind: contract
+    ref: catalog/summary
+    status: settled
+    tags: ["tier:1"]
+
+  - id: catalog.catalog-api
+    name: Catalog API
+    context: catalog
+    kind: contract
+    ref: catalog/api
+    status: settled
+    tags: ["runtime:deployed"]
+
+  - id: catalog.price-changed
+    name: PriceChanged
+    context: catalog
+    kind: domain-event
+    ref: catalog/pricing
+    status: settled
+
+  - id: catalog.catalog-store
+    name: Catalog store
+    context: catalog
+    kind: store
+    ref: catalog/persistence
+    status: settled
+    tags: ["runtime:deployed", "tier:2"]
+
+  - id: identity.subject
+    name: Subject
+    context: identity
+    kind: aggregate
+    ref: identity/subjects
+    status: settled
+
+  - id: identity.token-api
+    name: Token API
+    context: identity
+    kind: contract
+    ref: identity/tokens
+    status: settled
+    tags: ["tier:1", "runtime:deployed"]
+
+  - id: identity.session-service
+    name: Session service
+    context: identity
+    kind: service
+    ref: identity/sessions
+    status: settled
+    tags: ["runtime:deployed"]
+
+  - id: identity-provider.oidc
+    name: OIDC
+    context: identity-provider
+    kind: contract
+    ref: identity/provider
+    status: settled
+
+  - id: notifications.notifier
+    name: Notifier
+    context: notifications
+    kind: service
+    home: platform-core              # built in the monolith today; moving to orders-svc
+    ref: notifications/delivery
+    status: candidate
+    tags: ["lane:control", "runtime:deployed"]
+
+  - id: notifications.email-template
+    name: Email template
+    context: notifications
+    kind: aggregate
+    home: orders-svc
+    ref: notifications/templates
+    status: candidate
+
+  - id: notifications.notification-sent
+    name: NotificationSent
+    context: notifications
+    kind: domain-event
+    home: orders-svc
+    ref: notifications/delivery
+    status: candidate
+
+  - id: data-product.ingest
+    name: Ingest
+    context: data-product
+    kind: service
+    ref: data-product/ingest
+    status: settled
+    tags: ["lane:data", "runtime:deployed"]
+
+  - id: data-product.warehouse
+    name: Warehouse
+    context: data-product
+    kind: store
+    ref: data-product/warehouse
+    status: settled
+    tags: ["lane:data", "runtime:deployed", "tier:2"]
+
+  - id: data-product.reports-api
+    name: Reports API
+    context: data-product
+    kind: contract
+    ref: data-product/reports
+    status: settled
+    tags: ["runtime:deployed"]
+
+  - id: data-product.revenue-fact
+    name: Revenue fact
+    context: data-product
+    kind: aggregate
+    ref: data-product/facts
+    status: settled
+    tags: ["lane:data"]
+
+  - id: data-product.nightly-rollup
+    name: Nightly rollup
+    context: data-product
+    kind: service
+    ref: data-product/rollups
+    status: settled
+    tags: ["lane:data", "runtime:deployed"]   # target retags it runtime:local
+
+  - id: data-product.events-topic
+    name: Events topic
+    context: data-product
+    kind: topic
+    ref: data-product/ingest
+    status: settled
+    tags: ["lane:data", "runtime:deployed"]
+
+  - id: portal.web
+    name: Portal web
+    context: portal
+    kind: ui
+    ref: portal/web
+    status: settled
+    tags: ["runtime:deployed", "tier:1"]
+
+  - id: portal.bff
+    name: Portal BFF
+    context: portal
+    kind: service
+    ref: portal/bff
+    status: settled
+    tags: ["runtime:deployed"]
+
+  - id: portal.account-page
+    name: Account page
+    context: portal
+    kind: ui
+    ref: portal/account
+    status: settled
+
+relationships:
+  - id: ordering-billing
+    name: Ordering supplies Billing
+    ref: ordering/boundary
+    status: settled
+    pattern: customer-supplier
+    upstream: ordering
+    downstream: billing
+    upstream_offers: [open-host-service, published-language]
+    downstream_guards: [anticorruption-layer]
+
+  - id: billing-gateway
+    name: Billing conforms to the Payments Gateway
+    ref: billing/gateway
+    status: settled
+    pattern: conformist
+    upstream: payments-gateway
+    downstream: billing              # no published language yet in what is built
+    tags: ["vendor:stripe"]
+
+  - id: catalog-ordering
+    name: Catalog supplies Ordering
+    ref: catalog/boundary
+    status: settled
+    pattern: customer-supplier
+    upstream: catalog
+    downstream: ordering
+    upstream_offers: [open-host-service, published-language]
+
+  - id: identity-provider-identity
+    name: Identity conforms to the Identity Provider
+    ref: identity/provider
+    status: settled
+    pattern: conformist
+    upstream: identity-provider
+    downstream: identity
+    upstream_offers: [open-host-service]
+    tags: ["vendor:okta"]
+
+  - id: identity-portal
+    name: Identity supplies the Portal
+    ref: identity/boundary
+    status: settled
+    pattern: customer-supplier
+    upstream: identity
+    downstream: portal
+    upstream_offers: [open-host-service]
+
+  - id: ordering-portal
+    name: Ordering and the Portal plan together
+    ref: portal/boundary
+    status: settled
+    pattern: partnership
+    contexts: [ordering, portal]
+
+  - id: catalog-portal
+    name: Catalog and the Portal share the product summary
+    ref: catalog/summary
+    status: settled
+    pattern: shared-kernel
+    contexts: [catalog, portal]
+    kernel: [catalog.product-summary]
+
+  - id: billing-data-product
+    name: Billing supplies the Data Product
+    ref: data-product/ingest
+    status: settled
+    pattern: customer-supplier
+    upstream: billing
+    downstream: data-product
+    downstream_guards: [anticorruption-layer]
+
+  - id: portal-billing
+    name: The Portal reads Billing directly    # built today; the books drop it
+    ref: portal/reports
+    status: settled
+    pattern: conformist
+    upstream: billing
+    downstream: portal
+
+  - id: ordering-notifications
+    name: Ordering supplies Notifications
+    ref: notifications/delivery
+    status: candidate
+    pattern: customer-supplier       # target makes it conformist
+    upstream: ordering
+    downstream: notifications
+
+  - id: catalog-billing
+    name: Billing never reads the Catalog
+    ref: billing/boundary
+    status: settled
+    pattern: separate-ways
+    contexts: [catalog, billing]
+
+links:
+  - id: invoice-worker-handles-order-placed
+    name: Invoice worker handles OrderPlaced
+    ref: billing/invoicing
+    status: settled
+    kind: handles
+    from: billing.invoice-worker
+    to: ordering.order-placed
+
+  - id: notifier-handles-order-placed
+    name: Notifier handles OrderPlaced
+    ref: notifications/delivery
+    status: candidate
+    kind: handles
+    from: notifications.notifier
+    to: ordering.order-placed
+
+  - id: orders-worker-uses-catalog-api
+    name: Orders worker uses the Catalog API
+    ref: ordering/api
+    status: settled
+    kind: uses
+    from: ordering.orders-worker
+    to: catalog.catalog-api
+
+  - id: orders-worker-implements-orders-api
+    name: Orders worker implements the Orders API
+    ref: ordering/api
+    status: settled
+    kind: implements
+    from: ordering.orders-worker
+    to: ordering.orders-api
+
+  - id: order-persists-in-order-store
+    name: Order persists in the Order store
+    ref: ordering/persistence
+    status: settled
+    kind: persists-in
+    from: ordering.order
+    to: ordering.order-store
+
+  - id: ingest-handles-invoice-issued
+    name: Ingest handles InvoiceIssued
+    ref: data-product/ingest
+    status: settled
+    kind: handles
+    from: data-product.ingest
+    to: billing.invoice-issued
+
+  - id: invoice-worker-uses-charges-api
+    name: Invoice worker uses the Charges API
+    ref: billing/gateway
+    status: settled
+    kind: uses
+    from: billing.invoice-worker
+    to: payments-gateway.charges-api
+
+  - id: session-service-uses-oidc
+    name: Session service uses OIDC
+    ref: identity/provider
+    status: settled
+    kind: uses
+    from: identity.session-service
+    to: identity-provider.oidc
+
+  - id: portal-bff-uses-ledger-api
+    name: Portal BFF uses the Ledger API        # crosses portal-billing, which target drops
+    ref: portal/reports
+    status: settled
+    kind: uses
+    from: portal.bff
+    to: billing.ledger-api
+
+  - id: portal-bff-uses-token-api
+    name: Portal BFF uses the Token API
+    ref: portal/bff
+    status: settled
+    kind: uses
+    from: portal.bff
+    to: identity.token-api
+</script>
+
+<script>
+window.onerror = (m, src, line) => { document.title = 'ERROR ' + m + ' @' + line; };
+/* =====================================================================
+   1. A YAML subset parser: block mappings and sequences, flow [..] and
+   {..} on one line, quoted and plain scalars, comments. Enough to read
+   schema.yaml's map and vocabulary documents.
+   ===================================================================== */
+function parseYAML(text){
+  const raw = text.split('\n');
+  const lines = [];
+  raw.forEach(l => { const s = stripComment(l); if(s.trim()==='') return; lines.push({ind: s.match(/^ */)[0].length, t: s.trim()}); });
+  let i = 0;
+  function stripComment(l){ let q=null; for(let k=0;k<l.length;k++){ const c=l[k]; if(q){ if(c===q) q=null; continue; } if(c==='"'||c==="'") { q=c; continue; } if(c==='#' && (k===0 || /\s/.test(l[k-1]))) return l.slice(0,k); } return l; }
+  function scalar(s){
+    s = s.trim();
+    if(s==='') return null;
+    if(s[0]==='"' || s[0]==="'") return unquote(s);
+    if(s[0]==='[' || s[0]==='{') return flow(s, 0)[0];
+    if(s==='true') return true; if(s==='false') return false; if(s==='null'||s==='~') return null;
+    if(/^-?\d+(\.\d+)?$/.test(s)) return Number(s);
+    return s;
+  }
+  function unquote(s){ const q=s[0]; let out='', k=1; for(;k<s.length;k++){ const c=s[k]; if(c==='\\' && q==='"'){ out+=s[++k]; continue; } if(c===q){ if(q==="'" && s[k+1]==="'"){ out+="'"; k++; continue; } break; } out+=c; } return [out, k+1]; }
+  function flow(s, p){
+    const open = s[p]; const close = open==='[' ? ']' : '}'; const arr = open==='['; const out = arr ? [] : {}; p++;
+    for(;;){
+      while(s[p]===' '||s[p]===',') p++;
+      if(s[p]===close) return [out, p+1];
+      let key = null;
+      if(!arr){ const m = s.slice(p).match(/^([^:,\]}]+?)\s*:\s*/); key = m[1].trim(); p += m[0].length; }
+      let val;
+      if(s[p]==='"'||s[p]==="'"){ const [v,len] = unquote(s.slice(p)); val=v; p+=len; }
+      else if(s[p]==='['||s[p]==='{'){ const [v,np] = flow(s,p); val=v; p=np; }
+      else { let e=p; while(e<s.length && s[e]!==',' && s[e]!==close) e++; val = scalar(s.slice(p,e)); p=e; }
+      if(arr) out.push(val); else out[key]=val;
+    }
+  }
+  function block(ind){
+    if(i>=lines.length) return null;
+    return lines[i].t.startsWith('- ') || lines[i].t==='-' ? seq(ind) : map(ind);
+  }
+  function seq(ind){
+    const out = [];
+    while(i<lines.length && lines[i].ind===ind && (lines[i].t.startsWith('- ')||lines[i].t==='-')){
+      const rest = lines[i].t.slice(2).trim();
+      if(rest==='' ){ i++; out.push(block(lines[i].ind)); continue; }
+      if(/^[^"'\[{][^:]*:(\s|$)/.test(rest)){ // mapping starting on the dash line
+        lines[i] = {ind: ind+2, t: rest}; out.push(map(ind+2)); continue; }
+      out.push(scalar(rest)); i++;
+    }
+    return out;
+  }
+  function map(ind){
+    const out = {};
+    while(i<lines.length && lines[i].ind===ind && !lines[i].t.startsWith('- ')){
+      const m = lines[i].t.match(/^([^:]+?):(?:\s+(.*))?$/); if(!m) throw new Error('yaml: '+lines[i].t);
+      const key = m[1].trim(); const rest = (m[2]||'').trim(); i++;
+      if(rest!=='') out[key] = scalar(rest);
+      else if(i<lines.length && lines[i].ind>ind) out[key] = block(lines[i].ind);
+      else if(i<lines.length && lines[i].ind===ind && lines[i].t.startsWith('- ')) out[key] = seq(ind);
+      else out[key] = null;
+    }
+    return out;
+  }
+  return block(lines[0].ind);
+}
+const ytext = id => document.getElementById(id).textContent;
+
+/* =====================================================================
+   2. Data: the two maps and the vocabulary from YAML; the manifest, claims,
+   verdicts, decisions and the target's history as JSON (none is map data).
+   ===================================================================== */
+const SHIPPED = { element_kinds:{ aggregate:{}, 'domain-event':{}, contract:{capability:true}, service:{} },
+  link_kinds:{ uses:{}, implements:{from:['service'],to:['contract']}, emits:{to:['domain-event']}, handles:{to:['domain-event']} }, facets:{} };
+const ORG = parseYAML(ytext('y-vocab'));
+const VOCAB = { element_kinds:{...SHIPPED.element_kinds, ...ORG.element_kinds}, link_kinds:{...SHIPPED.link_kinds, ...ORG.link_kinds}, facets:{...SHIPPED.facets, ...ORG.facets} };
+const MAPS = { target: parseYAML(ytext('y-target')), current: parseYAML(ytext('y-current')) };
+
+const MANIFEST = ['orders-svc','ledger-svc','ledger-db','platform-core','pipeline'];
+const JOINED = {'orders-svc':'2026-06-02','ledger-svc':'2026-06-02','ledger-db':'2026-08-30','platform-core':'2026-06-02','pipeline':'2026-07-14'};
+
+// Claims live with their chapters (97, 105); the page joins them to the map by id.
+const CLAIMS = [
+  {id:'ordering/api#orders-contract-stable', v:1, text:'The Orders API changes only by addition; a downstream built against version n keeps working against n+1.', attaches:['ordering-billing']},
+  {id:'billing/invoicing#invoice-per-order', v:3, text:'Exactly one invoice is issued per fulfilled order, and never edited after it is issued.', attaches:['billing.invoice-worker']},
+  {id:'catalog/api#prices-carry-currency', v:2, text:'Every price the catalog publishes carries its currency; no consumer assumes one.', attaches:['catalog.catalog-api','catalog.product-summary']},
+  {id:'identity/tokens#tokens-expire-in-an-hour', v:1, text:'A token the Token API issues is good for sixty minutes and not a second more.', attaches:['identity.token-api']},
+  {id:'portal/boundary#portal-owns-no-domain-model', v:1, text:'The portal holds no aggregate of its own; everything it shows it reads through a published contract.', attaches:['portal']},
+  {id:'data-product/boundary#no-one-reads-the-warehouse-directly', v:1, text:'Nothing outside the data product reads the warehouse; the Reports API is the only way in.', attaches:['data-product']},
+  {id:'billing/invoicing#handle-order-placed-once', v:2, text:'A redelivered OrderPlaced produces no second invoice.', attaches:['invoice-worker-handles-order-placed']},
+  {id:'notifications/delivery#one-notification-per-event', v:1, text:'One domain event produces at most one notification per channel, however many times it is delivered.', attaches:['notifications.notifier','notifications.push-relay']},
+  {id:'ordering/order-lifecycle#cancel-before-fulfil', v:1, text:'An order may be cancelled until it is fulfilled, and never after.', attaches:['ordering.order','ordering.order-cancelled']},
+  {id:'platform/health#every-service-has-a-health-endpoint', v:1, text:'Every running service answers /healthz within 200 ms with its build id.', attaches:['ordering.orders-worker','billing.invoice-worker','notifications.notifier','data-product.ingest','data-product.nightly-rollup','identity.session-service','portal.bff']},
+  {id:'billing/gateway#retry-on-gateway-timeout', v:1, text:'A gateway timeout is retried three times with jitter before the invoice is parked.', attaches:['billing.invoice-worker']},
+];
+// The ledger: verdicts keyed by claim, version and repository (4.8).
+const VERDICTS = {
+  'ordering/api#orders-contract-stable':{'orders-svc':'satisfied','ledger-svc':'satisfied','ledger-db':'unjudged'},
+  'billing/invoicing#invoice-per-order':{'ledger-svc':'not-satisfied'},
+  'catalog/api#prices-carry-currency':{'platform-core':'satisfied'},
+  'identity/tokens#tokens-expire-in-an-hour':{'platform-core':'stale'},
+  'portal/boundary#portal-owns-no-domain-model':{'platform-core':'satisfied'},
+  'data-product/boundary#no-one-reads-the-warehouse-directly':{'pipeline':'not-satisfied'},
+  'billing/invoicing#handle-order-placed-once':{'ledger-svc':'satisfied','orders-svc':'satisfied'},
+  'notifications/delivery#one-notification-per-event':{'orders-svc':'unjudged'},
+  'ordering/order-lifecycle#cancel-before-fulfil':{'orders-svc':'unjudged'},
+  'platform/health#every-service-has-a-health-endpoint':{'orders-svc':'satisfied','ledger-svc':'not-satisfied','platform-core':'satisfied','pipeline':'stale'},
+  'billing/gateway#retry-on-gateway-timeout':{'ledger-svc':'satisfied'},
+};
+const APPROVE='approve', DECIDE='decide', ANSWER='answer';
+const PH = {inception:'Inception', plan:'Bolt plan', construction:'Construction'};
+// Decisions are markers on what they concern (5.1). Numbers from rail-and-board's seed.
+const DECISIONS = [
+  {n:412, g:APPROVE, phase:'inception', kind:'intent', title:'provider-limits', obj:'billing-gateway', tail:'curation · <b>7 signals</b> · 3 sources · 12d · 429s from the gateway at 0.4% of calls',
+   text:'Approve the intent. <b>Yes</b> opens <span class="mono">provider-limits</span> as a line off the books and starts a research elaboration over the gateway relationship. <b>Drop</b> gives each of the 7 signals a move that records the drop. <b>Split</b> sends the cluster back to curation.', answers:[['yes','yes'],['drop','drop'],['split','split']]},
+  {n:414, g:APPROVE, phase:'plan', kind:'unit', title:'ledger-svc · retry-jitter', obj:'billing.invoice-worker', tail:'→ new bolt <span class="mono">gateway-retry-and-jitter</span> · covers retry-on-gateway-timeout sc.1–3',
+   text:'Approve the unit. <b>Yes</b> creates bolt <span class="mono">gateway-retry-and-jitter</span> off ledger-svc main and starts wi-#440 spec. <b>Rename</b> gives the new bolt your name instead. <b>Bolt</b> puts the unit on an open bolt and creates none.', answers:[['yes','yes'],['rename','rename…'],['bolt','bolt…']]},
+  {n:418, g:DECIDE, phase:'inception', kind:'close', title:'intent notifications-delivery', obj:'notifications', tail:'all <b>3 elaborations</b> done · close makes the Notifications context and its 3 candidate elements settled',
+   text:'Every elaboration on <span class="mono">notifications-delivery</span> has exited done. <b>Close</b> archives the intent: its line lands on the books\' shared line, the context and its three candidate elements become settled, and the two open elements keep their questions. <b>Keep open</b> leaves the line for another elaboration.', answers:[['close','close'],['keep','keep open']]},
+  {n:420, g:DECIDE, phase:'construction', kind:'moved', title:'claim orders-contract-stable <i>v1→v2</i>', obj:'ordering-billing', tail:'bolt <span class="mono">orders-v2</span> cites v1 · <b>2 items in flight</b> · 3 verdicts fall stale on the yes',
+   text:'Claim <span class="mono">ordering/api#orders-contract-stable</span> moved from v1 to v2 while bolt <span class="mono">orders-v2</span> cites v1 with two items in flight. <b>Amend bolt</b> sends both items back to spec on v2 before anything merges. <b>Land and follow</b> lands on v1 and queues a follow-up unit for v2.', answers:[['amend','amend bolt'],['follow','land and follow']]},
+  {n:421, g:ANSWER, phase:'construction', kind:'blocked', title:'wi-#418 build · orders-v2', obj:'ordering', q:'may OrderCancelled fire after fulfilment for a returned order?', tail:'session alive · other items of the bolt running',
+   text:'The build session on wi-#418 cannot answer a question its spec leaves open, and it waits. Your reply is recorded now and delivered to the session in its place; nothing else on the bolt waits for it.', answers:[['reply','reply…']]},
+  {n:424, g:APPROVE, phase:'inception', kind:'gathered', title:'research · provider envelopes', obj:'identity-provider', objs:['identity-provider','payments-gateway'], tail:'curation · <b>2 external contexts</b> · one self-closing research session over both providers',
+   text:'Curation found two intents arguing with the same claim about what a provider limit is and proposes <b>one</b> research session over both external contexts (188). <b>Yes</b> starts it. <b>Drop</b> leaves each intent to propose its own. <b>Pick</b> keeps only the contexts you name.', answers:[['yes','yes'],['drop','drop'],['pick','pick…']]},
+];
+// The target map's history: newest first. Each entry records, per id, what the
+// object was before that revision (null = did not exist; $removed = the whole
+// object that revision removed). The review mark names a revision; the map at
+// the mark is rebuilt by walking back (4.5). Derived, never stored.
+const HISTORY = [
+  {rev:'c04d1e', at:'2026-09-04 05:40', by:'landing · intent host-liveness', before:{
+    'notifications.notifier': {home:'platform-core'},
+    'catalog.product': {name:'Catalogue item'} }},
+  {rev:'7b2e91', at:'2026-09-03 17:20', by:'writeback · intent notifications-delivery', before:{
+    'notifications.push-relay': null,
+    'notifications.template-store': null,
+    'ordering-notifications': {name:'Ordering supplies Notifications', pattern:'customer-supplier'},
+    'notifications.sms-relay': {$removed:{$type:'elements', id:'notifications.sms-relay', name:'SMS relay', context:'notifications', kind:'service', home:'orders-svc', ref:'notifications/delivery', status:'candidate', tags:['runtime:deployed']}} }},
+  {rev:'a1f3c0', at:'2026-09-02 09:14', by:'writeback · intent loop-granularity', mark:true, before:{
+    'ordering.order-cancelled': null,
+    'portal.reports-view': null }},
+  {rev:'5e0b77', at:'2026-08-30 11:05', by:'writeback · intent ledger-split', before:{ 'billing.invoice-store': {home:'ledger-svc'} }},
+];
+
+/* =====================================================================
+   3. The model: indexes, effective home, scope, derivation, difference,
+   the check, worst verdicts.
+   ===================================================================== */
+const TYPES = ['contexts','elements','relationships','links'];
+const TYPE1 = {contexts:'context', elements:'element', relationships:'relationship', links:'link'};
+function index(map){
+  const byId = {}, typeOf = {};
+  TYPES.forEach(t => (map[t]||[]).forEach(o => { byId[o.id]=o; typeOf[o.id]=t; }));
+  return {byId, typeOf, ...map};
+}
+const T = index(MAPS.target), C = index(MAPS.current);
+const ctxOf = (m,id) => m.byId[id] && m.typeOf[id]==='elements' ? m.byId[m.byId[id].context] : null;
+const effHome = (m,el) => { const c = m.byId[el.context]; if(!c || c.external) return null; return el.home || c.home || null; };
+const kindChain = k => { const out=[]; while(k){ out.push(k); k = (VOCAB.element_kinds[k]||{}).extends; } return out; };
+const isCap = k => { const chain = kindChain(k); for(const x of chain){ const d = VOCAB.element_kinds[x]; if(d && d.capability!==undefined) return !!d.capability; } return false; };
+const relEnds = r => r.pattern==='customer-supplier'||r.pattern==='conformist' ? [r.upstream, r.downstream] : (r.contexts||[]);
+const setOf = a => [...new Set(a.filter(Boolean))];
+function scopeOf(m, id){ // 4.2, from the target map
+  const t = m.typeOf[id]; const o = m.byId[id]; if(!o) return [];
+  if(t==='contexts') return setOf([o.home, ...m.elements.filter(e => e.context===id).map(e => effHome(m,e))]);
+  if(t==='elements') return setOf([effHome(m,o)]);
+  if(t==='relationships') return setOf([...relEnds(o).flatMap(c => scopeOf(m,c)), ...(o.kernel||[]).map(k => m.byId[k] && effHome(m,m.byId[k]))]);
+  if(t==='links') return setOf([...scopeOf(m,o.from), ...scopeOf(m,o.to)]);
+  return [];
+}
+function claimScope(cl){ return setOf(cl.attaches.flatMap(id => scopeOf(T,id))); }
+function derive(repo){ // 4.3: reads kind, effective home, context; never a tag
+  const els = T.elements.filter(e => effHome(T,e)===repo);
+  return { elements:els, kinds:setOf(els.flatMap(e => kindChain(e.kind))), kindsTop:setOf(els.map(e => e.kind)),
+    capabilities: els.filter(e => isCap(e.kind)).map(e => e.id), contexts:setOf(els.map(e => e.context)) };
+}
+function claimsInScope(repo){ return CLAIMS.filter(cl => claimScope(cl).includes(repo)); }
+function claimsOn(id){ return CLAIMS.filter(cl => cl.attaches.includes(id)); }
+const VORDER = ['not-satisfied','stale','unjudged','satisfied','not-applicable'];
+function verdict(cl, repo){ return (VERDICTS[cl.id]||{})[repo] || 'unjudged'; }
+function worst(vs){ return vs.length ? vs.slice().sort((a,b) => VORDER.indexOf(a)-VORDER.indexOf(b))[0] : 'none'; }
+function claimsThrough(ctxId){ // claims attached to the context, its elements, relationships and links touching it
+  const els = T.elements.filter(e => e.context===ctxId).map(e => e.id);
+  const rels = T.relationships.filter(r => relEnds(r).includes(ctxId)).map(r => r.id);
+  const lks = T.links.filter(l => els.includes(l.from)||els.includes(l.to)).map(l => l.id);
+  const ids = new Set([ctxId, ...els, ...rels, ...lks]);
+  return CLAIMS.filter(cl => cl.attaches.some(a => ids.has(a)));
+}
+function worstThrough(ctxId, repo){ return worst(claimsThrough(ctxId).filter(cl => claimScope(cl).includes(repo)).map(cl => verdict(cl,repo))); }
+function unmet(repo){ return claimsInScope(repo).filter(cl => ['not-satisfied','stale','unjudged'].includes(verdict(cl,repo))).length; }
+function homesOf(ctx){ return setOf([ctx.home, ...T.elements.filter(e => e.context===ctx.id).map(e => effHome(T,e))]); }
+function repos(){ return setOf([...MANIFEST, ...T.contexts.map(c => c.home), ...T.elements.map(e => effHome(T,e)), ...C.elements.map(e => effHome(C,e))]); }
+
+// 4.4: one difference, keyed on id, the same for current→target and mark→now.
+const norm = v => JSON.stringify(v, (k,x) => Array.isArray(x) && x.every(y => typeof y!=='object') ? x.slice().sort() : x);
+function diff(A, B){
+  const out = [];
+  const ids = setOf([...Object.keys(A.byId), ...Object.keys(B.byId)]);
+  ids.forEach(id => {
+    const a = A.byId[id], b = B.byId[id];
+    if(a && !b) return out.push({cls:'removed', id, type:A.typeOf[id], obj:a});
+    if(!a && b) return out.push({cls:'added', id, type:B.typeOf[id], obj:b});
+    const fields = setOf([...Object.keys(a), ...Object.keys(b)]).filter(f => norm(a[f])!==norm(b[f]));
+    if(!fields.length) return;
+    const cls = fields.length===1 && fields[0]==='home' ? 'moved' : 'changed';
+    out.push({cls, id, type:B.typeOf[id], obj:b, fields, from:a});
+  });
+  const order = {added:0, changed:1, moved:2, removed:3};
+  return out.sort((x,y) => order[x.cls]-order[y.cls] || TYPES.indexOf(x.type)-TYPES.indexOf(y.type));
+}
+function mapAt(rev){ // walk the history back from now to the revision
+  const m = JSON.parse(JSON.stringify(MAPS.target));
+  const byId = {}; TYPES.forEach(t => (m[t]||[]).forEach(o => byId[o.id]=o));
+  for(const h of HISTORY){ if(h.rev===rev) break;
+    Object.entries(h.before).forEach(([id, before]) => {
+      if(before===null){ TYPES.forEach(t => { m[t] = m[t].filter(o => o.id!==id); }); delete byId[id]; return; }
+      if(before.$removed){ const o = {...before.$removed}; const t = o.$type; delete o.$type; m[t].push(o); byId[id]=o; return; }
+      if(byId[id]) Object.assign(byId[id], before);
+    });
+  }
+  return index(m);
+}
+function check(){ // the map check, as model 2 and 4.1 state it
+  const f = [];
+  const all = TYPES.flatMap(t => T[t].map(o => o.id)); const seen = new Set();
+  all.forEach(id => { if(seen.has(id)) f.push(`duplicate id ${id}`); seen.add(id); });
+  TYPES.forEach(t => T[t].forEach(o => {
+    if(o.status==='open' && !o.question) f.push(`${o.id}: open without a question`);
+    if(o.status!=='open' && o.question) f.push(`${o.id}: ${o.status} with a question left behind`);
+    if((o.status==='settled'||o.status==='candidate') && !o.ref && !(t==='contexts' && o.external) && !(t==='elements' && (T.byId[o.context]||{}).external)) f.push(`${o.id}: ${o.status} without a ref`);
+    (o.tags||[]).forEach(tag => { const m = tag.match(/^([a-z][a-z0-9-]*):(.+)$/); if(!m) return; const fd = VOCAB.facets[m[1]]; if(!fd) return; if(fd.values && !fd.values.map(String).includes(m[2])) f.push(`${o.id}: ${tag} is not a value of facet ${m[1]}`); });
+  }));
+  T.contexts.forEach(c => { if(c.external && c.home) f.push(`${c.id}: external with a home`); });
+  T.elements.forEach(e => { const c = T.byId[e.context]; if(!c) return f.push(`${e.id}: no context ${e.context}`);
+    if(!VOCAB.element_kinds[e.kind]) f.push(`${e.id}: unknown kind ${e.kind}`);
+    if(c.external && e.home) f.push(`${e.id}: home in an external context`);
+    if(!c.external && !effHome(T,e)) f.push(`${e.id}: no home, and ${c.id} sets none`); });
+  const pairs = new Set();
+  T.relationships.forEach(r => { const k = relEnds(r).slice().sort().join('|'); if(pairs.has(k)) f.push(`${r.id}: a second relationship on ${k}`); pairs.add(k);
+    if(r.pattern==='conformist' && r.downstream_guards) f.push(`${r.id}: conformist with a guard`); });
+  T.links.forEach(l => { const a = ctxOf(T,l.from), b = ctxOf(T,l.to); if(!a||!b) return f.push(`${l.id}: an end is not an element`);
+    const lk = VOCAB.link_kinds[l.kind]; if(!lk) return f.push(`${l.id}: unknown link kind ${l.kind}`);
+    if(lk.from && !lk.from.some(k => kindChain(T.byId[l.from].kind).includes(k))) f.push(`${l.id}: ${l.kind} from a ${T.byId[l.from].kind}`);
+    if(lk.to && !lk.to.some(k => kindChain(T.byId[l.to].kind).includes(k))) f.push(`${l.id}: ${l.kind} to a ${T.byId[l.to].kind}`);
+    if(a.id!==b.id){ const r = T.relationships.find(r => { const e = relEnds(r); return e.includes(a.id)&&e.includes(b.id); }); if(!r) f.push(`${l.id}: crosses ${a.id}–${b.id}, which no relationship explains`); else if(r.pattern==='separate-ways') f.push(`${l.id}: crosses ${r.id}, which is separate ways`); } });
+  const homed = new Set([...T.contexts.map(c => c.home), ...T.elements.map(e => effHome(T,e)), ...C.elements.map(e => effHome(C,e))].filter(Boolean));
+  MANIFEST.forEach(r => { if(!homed.has(r)) f.push(`manifest entry ${r} homes nothing in target or current`); });
+  homed.forEach(r => { if(!MANIFEST.includes(r)) f.push(`home ${r} names no manifest entry`); });
+  return f;
+}
+
+/* =====================================================================
+   4. State and layout
+   ===================================================================== */
+const S = { open:new Set(), focus:null, dock:null, overlay:'none', mark:'a1f3c0', facets:{lane:'off', runtime:'off', tier:'off'}, facetVal:{lane:'control', runtime:'deployed', tier:'1'},
+  arming:null, inflight:{}, answered:{}, captured:new Set(), log:[], minutes:0, lit:new Set(), newRepos:[], nextN:425, theme:'system' };
+const esc = s => String(s??'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hhmm = m => { const t = 7*60+40+m; return String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0'); };
+const W=200, H=124, COL=290, ROWP=200;
+let L = null; // layout: {pos:{id:{x,y}}, order:[ids], size:{w,h}}
+function layout(){
+  const ids = T.contexts.map(c => c.id);
+  const dir = T.relationships.filter(r => r.upstream).map(r => [r.upstream, r.downstream]);
+  const rank = {}; ids.forEach(id => rank[id]=0);
+  for(let k=0;k<20;k++){ let moved=false; dir.forEach(([u,d]) => { if(rank[d] < rank[u]+1){ rank[d]=rank[u]+1; moved=true; } }); if(!moved) break; }
+  for(let k=0;k<20;k++){ let moved=false; ids.forEach(id => { const succ = dir.filter(([u]) => u===id).map(([,d]) => rank[d]); if(succ.length){ const want = Math.min(...succ)-1; if(rank[id] < want){ rank[id]=want; moved=true; } } }); if(!moved) break; }
+  const ncol = Math.max(...Object.values(rank))+1;
+  const cols = Array.from({length:ncol}, () => []);
+  ids.forEach(id => cols[rank[id]].push(id));
+  const nbrs = {}; ids.forEach(id => nbrs[id]=[]);
+  T.relationships.forEach(r => { const [a,b] = relEnds(r); if(a&&b){ nbrs[a].push(b); nbrs[b].push(a); } });
+  const row = {}; cols.forEach(c => c.forEach((id,i) => row[id]=i/(Math.max(c.length-1,1))));
+  const sortCol = (c, pick) => { const bary = {}; c.forEach(id => { const n = nbrs[id].filter(pick(id)); bary[id] = n.length ? n.reduce((s,x) => s+row[x],0)/n.length : row[id]; });
+    c.sort((a,b) => bary[a]-bary[b] || ids.indexOf(a)-ids.indexOf(b)); c.forEach((id,i) => row[id]=i/(Math.max(c.length-1,1))); };
+  cols.forEach(c => sortCol(c, id => x => rank[x] < rank[id]));            // seed: left neighbours only
+  for(let sweep=0; sweep<10; sweep++){ (sweep%2 ? cols.slice().reverse() : cols).forEach(c => sortCol(c, id => x => rank[x]!==rank[id])); }
+  const maxN = Math.max(...cols.map(c => c.length));
+  const yc = (maxN-1)/2*ROWP;
+  const pos = {};
+  cols.forEach((c,ci) => c.forEach((id,i) => { pos[id] = {x: 24 + ci*COL, y: 8 + yc + (i-(c.length-1)/2)*ROWP}; }));
+  return {pos, order: cols.flat(), cols, rank};
+}
+const rectOf = id => { const p = L.pos[id]; const el = document.querySelector(`.ctx[data-id="${id}"]`); const h = el ? el.offsetHeight : H; const w = el ? el.offsetWidth : W; return {x:p.x, y:p.y, w, h, cx:p.x+w/2, cy:p.y+h/2}; };
+const restRect = id => { const p = L.pos[id]; return {x:p.x, y:p.y, w:W, h:H, cx:p.x+W/2, cy:p.y+H/2}; };
+function borderPoint(r, tx, ty){ // where the ray from the rect centre to (tx,ty) leaves the rect
+  const dx = tx-r.cx, dy = ty-r.cy; if(!dx && !dy) return {x:r.cx, y:r.cy};
+  const sx = Math.abs(dx) > 1e-6 ? (r.w/2)/Math.abs(dx) : Infinity, sy = Math.abs(dy) > 1e-6 ? (r.h/2)/Math.abs(dy) : Infinity; const s = Math.min(sx, sy);
+  return {x:r.cx+dx*s, y:r.cy+dy*s};
+}
+const inRect = (p, r, pad) => p.x > r.x-pad && p.x < r.x+r.w+pad && p.y > r.y-pad && p.y < r.y+r.h+pad;
+function qpt(a, c, b, t){ const u=1-t; return {x:u*u*a.x+2*u*t*c.x+t*t*b.x, y:u*u*a.y+2*u*t*c.y+t*t*b.y}; }
+function edgeGeom(r, rects){ // straight unless it would cross a card; then bow over the top until clear
+  const [ia, ib] = relEnds(r); const ra = rects[ia], rb = rects[ib]; if(!ra||!rb) return null;
+  const others = Object.entries(rects).filter(([id]) => id!==ia && id!==ib).map(([,x]) => x);
+  let a = borderPoint(ra, rb.cx, rb.cy), b = borderPoint(rb, ra.cx, ra.cy), c = null;
+  const hits = (pt) => others.filter(o => inRect(pt, o, 10));
+  let crossing = []; for(let t=0.02;t<0.99;t+=0.03){ const u=1-t; crossing.push(...hits({x:u*a.x+t*b.x, y:u*a.y+t*b.y})); }
+  if(crossing.length){
+    a = {x:ra.cx, y:ra.y}; b = {x:rb.cx, y:rb.y};
+    let apex = Math.min(...crossing.map(o => o.y)) - 34;
+    for(let k=0;k<8;k++){
+      c = {x:(a.x+b.x)/2, y: 2*apex - (a.y+b.y)/2};
+      const bad = []; for(let t=0.02;t<0.99;t+=0.03) bad.push(...hits(qpt(a,c,b,t)));
+      if(!bad.length) break; apex = Math.min(...bad.map(o => o.y)) - 34;
+    }
+    edgeGeom.apexes = edgeGeom.apexes||[]; // keep arcs apart
+    while(edgeGeom.apexes.some(y => Math.abs(y-apex) < 26)) apex -= 28;
+    edgeGeom.apexes.push(apex); c = {x:(a.x+b.x)/2, y: 2*apex - (a.y+b.y)/2};
+  }
+  const pt = t => c ? qpt(a,c,b,t) : {x:a.x+(b.x-a.x)*t, y:a.y+(b.y-a.y)*t};
+  const len = c ? 1.15*Math.hypot(b.x-a.x, b.y-a.y) : Math.hypot(b.x-a.x, b.y-a.y);
+  const d = c ? `M${a.x} ${a.y}Q${c.x} ${c.y} ${b.x} ${b.y}` : `M${a.x} ${a.y}L${b.x} ${b.y}`;
+  const mid = pt(0.5); const m1 = pt(0.48), m2 = pt(0.52); const ang = Math.atan2(m2.y-m1.y, m2.x-m1.x);
+  let nx = -Math.sin(ang), ny = Math.cos(ang); if(ny > 0){ nx=-nx; ny=-ny; } // normal pointing up
+  return {a, b, c, d, pt, len, mid, ang, n:{x:nx,y:ny}, arc:!!c, ia, ib};
+}
+function tagVal(o, facet){ const t = (o.tags||[]).find(t => t.startsWith(facet+':')); return t ? t.slice(facet.length+1) : null; }
+const FCOL = ['--f1','--f2','--f3'];
+function facetColour(facet, val){ const vals = (VOCAB.facets[facet].values||[]).map(String); const i = vals.indexOf(String(val)); return i<0 ? 'var(--ink3)' : `var(${FCOL[i%3]})`; }
+function activeFacet(mode){ return Object.entries(S.facets).find(([,m]) => m===mode)?.[0] || null; }
+function carries(o, facet, val){ return tagVal(o, facet)===String(val); }
+function dimmedCtx(c){ const f = activeFacet('filter'); return f ? !carries(c, f, S.facetVal[f]) : false; }
+function dimmedEl(e){ const f = activeFacet('filter'); return f ? !carries(e, f, S.facetVal[f]) : false; }
+
+/* =====================================================================
+   5. Rendering: strip, controls, canvas (bands, edges, cards, links), list
+   ===================================================================== */
+const $ = id => document.getElementById(id);
+const OVC = () => S.overlay==='review' ? 'var(--ov2)' : 'var(--ov1)';
+let DIFF = [];
+function computeDiff(){ if(S.overlay==='current') DIFF = diff(C, T); else if(S.overlay==='review') DIFF = diff(mapAt(S.mark), T); else DIFF = []; }
+const diffOf = id => DIFF.find(d => d.id===id);
+const markRev = () => HISTORY.find(h => h.rev===S.mark);
+function decisionsOn(id){ return DECISIONS.filter(d => d.obj===id || (d.objs||[]).includes(id)); }
+function markHtml(d, extra=''){ const done = S.answered[d.n]; const sym = d.g===ANSWER ? '?' : d.g===DECIDE ? '!' : '✓'; return `<span class="mark ${done?'done':d.g} ${extra}" data-dec="${d.n}" title="decision ${d.n} · ${esc(d.title.replace(/<[^>]+>/g,''))}">${done?'✓':sym} ${d.n}</span>`; }
+function marksHtml(id){ return decisionsOn(id).map(d => markHtml(d)).join(''); }
+function ovHtml(id){ const d = diffOf(id); if(!d) return ''; if(d.cls==='added') return `<span class="ovm" title="added: in target, not in ${S.overlay==='review'?'the map at the mark':'current'}">+</span>`; if(d.cls==='changed') return `<span class="ovm" title="changed: ${esc(d.fields.map(f => `${f}: ${JSON.stringify(d.from[f])} → ${JSON.stringify(d.obj[f])}`).join(' · '))}">Δ</span>`; if(d.cls==='moved') return `<span class="ovm moved" title="moved: home ${esc(d.from.home||'(context default)')} → ${esc(d.obj.home)}">⇢</span>`; return ''; }
+function homeChip(repo, ctxId, inherited, oldHome){
+  if(!repo) return `<span class="home none" title="no home: the check fails this">no home</span>`;
+  const w = ctxId ? worstThrough(ctxId, repo) : 'none';
+  return `<span class="home ${inherited?'inh':''} ${S.dock==='repo:'+repo?'open-in-dock':''}" data-repo="${esc(repo)}" title="${inherited?'home from the context default':'home'} · worst verdict in scope through this context: ${w}">${oldHome?`<span class="old">${esc(oldHome)}</span>`:''}${esc(repo)}<span class="dot ${w}"></span></span>`;
+}
+function attChip(id, small){ const n = claimsOn(id).length; return `<span class="chip att ${n?'':'none'}" data-att="${esc(id)}" title="${n?claimsOn(id).map(c => c.id).join('\n'):'no claim attached'}">${n} claim${n===1?'':'s'}</span>`; }
+const kindLabel = k => { const d = VOCAB.element_kinds[k]||{}; return d.extends ? `${k} ⊂ ${d.extends}` : k; };
+const plural = k => ({aggregate:'aggregates','domain-event':'events',contract:'contracts',service:'services',store:'stores',topic:'topics',ui:'uis'})[k] || k+'s';
+function elementsOf(ctxId, mapx=T){ return mapx.elements.filter(e => e.context===ctxId); }
+function ghostElements(ctxId){ return DIFF.filter(d => d.cls==='removed' && d.type==='elements' && d.obj.context===ctxId).map(d => d.obj); }
+function countsHtml(c){
+  const els = elementsOf(c.id); const ghosts = ghostElements(c.id);
+  if(els.length + ghosts.length <= 5) return els.map(e => `<b>${esc(e.name)}</b>`).concat(ghosts.map(e => `<span class="rm">${esc(e.name)}</span>`)).join(', ') || '<span style="opacity:.6">no elements</span>';
+  const by = {}; els.forEach(e => { by[e.kind] = (by[e.kind]||0)+1; });
+  const added = DIFF.filter(d => d.cls==='added' && d.type==='elements' && d.obj.context===c.id).length;
+  return Object.entries(by).map(([k,n]) => `<b>${n}</b> ${n===1?k:plural(k)}`).join(', ') + (ghosts.length?`, <span class="rmc">${ghosts.length} removed</span>`:'') + (added?` <span class="ad">+${added}</span>`:'');
+}
+function colourVar(o){ const f = activeFacet('colour'); if(!f) return null; const v = tagVal(o,f); return v==null ? null : facetColour(f,v); }
+function elRow(e, ghost){
+  const home = effHome(T,e), inherited = !e.home && !!T.byId[e.context].home; const d = diffOf(e.id);
+  const v = home ? worst(claimsOn(e.id).map(cl => verdict(cl,home))) : 'none';
+  const cc = colourVar(e);
+  const cls = ['el', e.status, ghost?'ghost':'', d && d.cls==='added'?'ov-added':'', S.dock==='el:'+e.id?'open-in-dock':'', dimmedEl(e)?'dim':'', S.lit.has(e.id)?'inscope':''].join(' ');
+  const f = activeFacet('colour');
+  return `<div class="${cls}" data-el="${esc(e.id)}" ${cc?`style="--cc:${cc};box-shadow:inset 3px 0 0 ${cc}"`:''} title="${esc(e.id)}${e.question?' · '+esc(e.question):''}">
+    <span class="dot ${v}" title="worst verdict on this element's claims in ${esc(home||'no home')}: ${v}"></span><span class="en">${esc(e.name)}</span>${ghost?`<span class="tag ov">removed</span>`:''}${ovHtml(e.id)}${d&&d.cls==='changed'&&d.fields.includes('name')?`<span class="tag ov" title="was ${esc(d.from.name)}">was ${esc(d.from.name)}</span>`:''}
+    ${(T.byId[e.context].external) ? `<span class="tag" title="external context: no home">external</span>` : homeChip(home, null, inherited, d&&d.cls==='moved'?d.from.home:null)}
+    ${(e.tags||[]).map(t => `<span class="tag ${f && t.startsWith(f+':')?'fc':''}" style="--cc:${cc||'var(--ink3)'}">${esc(t)}</span>`).join('')}
+    <span class="r">${attChip(e.id)}${marksHtml(e.id)}</span>
+    ${e.status==='open' ? `<div class="qq">“${esc(e.question)}” ${S.captured.has(e.id) ? `<span class="tag" style="color:var(--ok);border-color:var(--ok)">captured</span>` : `<button class="btn sm" data-capture="${esc(e.id)}" ${S.inflight['cap:'+e.id]?'disabled':''}>${S.inflight['cap:'+e.id]?'sending…':'capture this question'}</button>`}</div>` : ''}
+  </div>`;
+}
+function ctxHtml(c, opts={}){
+  const open = S.open.has(c.id); const d = diffOf(c.id); const cc = colourVar(c);
+  const homes = homesOf(c); const els = elementsOf(c.id); const openQ = els.filter(e => e.status==='open');
+  const cls = ['ctx', c.status, c.external?'ext':'', c.big_ball_of_mud?'bbm':'', open?'open':'', S.focus===c.id?'focused':'', S.dock==='ctx:'+c.id?'open-in-dock':'', dimmedCtx(c)&&!open?'dim':'', S.lit.has(c.id)?'inscope':'', d&&d.cls==='added'?'ov-added':'', d&&d.cls==='changed'?'ov-changed':'', opts.ghost?'ghost':''].join(' ');
+  const f = activeFacet('colour');
+  const p = opts.list ? '' : `style="left:${L.pos[c.id].x}px;top:${L.pos[c.id].y}px;${cc?`--cc:${cc}`:''}"`;
+  let html = `<article class="${cls}" data-id="${esc(c.id)}" ${cc?'data-col="1"':''} ${p} ${opts.list&&cc?`style="--cc:${cc}"`:''} tabindex="0" aria-label="context ${esc(c.name)}">
+    <div class="hd" data-hd="${esc(c.id)}" title="${open?'close':'open in place'}"><span class="nn">${esc(c.name)}</span>${c.big_ball_of_mud?'<span class="bb" title="big ball of mud: nothing depends on its inside">BBoM</span>':''}${c.external?'<span class="ext-w">external</span>':''}${ovHtml(c.id)}
+      <span class="st">${c.status==='candidate'?'<span class="cand">cand.</span>':''}${openQ.length?`<span class="q" title="${esc(openQ.map(e => e.question).join('\n'))}">${openQ.length}</span>`:''}<span class="sdot ${c.status}" title="status ${c.status}"></span></span></div>
+    <div class="row">${c.external ? '<span class="tag" title="external: sets no home and homes nothing">homes nothing</span>' : (homes.length ? homes.map(h => homeChip(h, c.id, !c.home || h!==c.home ? false : false)).join('') : '<span class="home none" title="no default home; its elements name their own">no default</span>')}${attChip(c.id)}</div>
+    <div class="cnt">${countsHtml(c)}</div>
+    <div class="row">${(c.tags||[]).map(t => `<span class="tag ${f && t.startsWith(f+':')?'fc':''}" style="--cc:${cc||'var(--ink3)'}">${esc(t)}</span>`).join('')}<span class="marks">${marksHtml(c.id)}</span></div>`;
+  if(open){
+    const groups = {}; els.forEach(e => (groups[e.kind] = groups[e.kind]||[]).push(e)); ghostElements(c.id).forEach(e => (groups[e.kind] = groups[e.kind]||[]).push({...e, $ghost:true}));
+    const order = ['aggregate','domain-event','contract','topic','service','store','ui'];
+    Object.keys(groups).sort((a,b) => order.indexOf(a)-order.indexOf(b)).forEach(k => {
+      html += `<div class="grp">${esc(plural(k))}${VOCAB.element_kinds[k].extends?`<span class="ex">${esc(kindLabel(k))}</span>`:''}<span class="ex" style="margin-left:auto">${groups[k].filter(e => !e.$ghost).length}</span></div>` + groups[k].map(e => elRow(e, e.$ghost)).join('');
+    });
+    if(c.language) html += `<div class="lang"><span class="eyebrow">language</span>${c.language.map(l => `<div><dt>${esc(l.term)}</dt><dd>${esc(l.means)}</dd></div>`).join('')}</div>`;
+    html += `<div class="foot"><span>${esc(c.id)}</span>${c.ref?`<a class="ref" href="#books/${esc(c.ref)}" data-ref="1">${esc(c.ref)}</a>`:''}<span style="margin-left:auto">${els.filter(e => !T.byId[e.context].external && !effHome(T,e)).length ? `<span class="tag" style="color:var(--crit);border-color:var(--crit)">check fails: unhomed</span>` : ''}</span><button class="btn sm quiet" data-dockctx="${esc(c.id)}">open in dock →</button></div>`;
+  }
+  return html + `</article>`;
+}
+function svgEl(tag, attrs, inner=''){ return `<${tag} ${Object.entries(attrs).map(([k,v]) => `${k}="${v}"`).join(' ')}>${inner}</${tag}>`; }
+function labelBox(x, y, text, cls){ const w = text.length*5.9+10; return svgEl('g', {class:cls, transform:`translate(${x} ${y})`}, svgEl('rect',{x:-w/2, y:-7, width:w, height:14}) + svgEl('text',{x:0,y:0.5}, esc(text))); }
+const PNAME = {'customer-supplier':'customer–supplier', conformist:'conformist', partnership:'partnership', 'shared-kernel':'shared kernel', 'separate-ways':'separate ways'};
+function edgeSvg(r, g, ghost){
+  const d = diffOf(r.id); const dirn = !!r.upstream;
+  const cls = ['edge-g', dirn?'dir':'sym', r.pattern==='separate-ways'?'sep':'', r.pattern==='shared-kernel'?'kernel':'', r.status==='candidate'?'candidate':'', ghost?'ghost':'', d&&d.cls==='changed'?'changed':'', d&&d.cls==='added'?'added':'', S.dock==='rel:'+r.id?'open-in-dock':'', S.lit.has(r.id)?'inscope':''].join(' ');
+  const f = activeFacet('filter'); const dimA = f && !carries(T.byId[relEnds(r)[0]]||{}, f, S.facetVal[f]), dimB = f && !carries(T.byId[relEnds(r)[1]]||{}, f, S.facetVal[f]);
+  let s = '';
+  s += svgEl('path', {class:'ln', d:g.d});
+  const lab = PNAME[r.pattern] + (ghost?' · removed':'');
+  const lx = g.mid.x + g.n.x*12, ly = g.mid.y + g.n.y*12;
+  let deg = g.arc ? 0 : g.ang*180/Math.PI; if(deg > 90) deg -= 180; if(deg < -90) deg += 180;
+  const rot = deg ? `transform="rotate(${deg.toFixed(1)} ${lx} ${ly})"` : '';
+  if(r.pattern==='shared-kernel'){
+    const kn = (r.kernel||[]).map(k => T.byId[k]?.name||k).join(', ');
+    s += svgEl('g', {transform:`translate(${g.mid.x} ${g.mid.y})`}, svgEl('path',{class:'lens', d:'M-42 0 Q0 -16 42 0 Q0 16 -42 0z'}) + svgEl('text',{class:'lens-t', x:0, y:0.5}, esc(kn)));
+    s += svgEl('text', {class:'elabel', x:g.mid.x, y:g.mid.y-22}, esc(lab));
+  } else if(r.pattern==='separate-ways'){
+    s += svgEl('line', {class:'bar', x1:g.mid.x+g.n.x*7, y1:g.mid.y+g.n.y*7, x2:g.mid.x-g.n.x*7, y2:g.mid.y-g.n.y*7});
+    s += `<text class="elabel" x="${lx}" y="${ly-2}" ${rot}>${esc(lab)}</text>`;
+  } else s += `<text class="elabel" x="${lx}" y="${ly-2}" ${rot}>${esc(lab)}</text>`;
+  if(dirn){
+    const tU = g.arc?0.05:Math.min(0.2, 13/g.len), tD = g.arc?0.95:1-Math.min(0.2, 13/g.len);
+    const pu = g.pt(tU), pd = g.pt(tD);
+    // U and D sit beside the line at its ends; OHS, PL beside the U and ACL beside the D, one step further out
+    s += svgEl('g', {transform:`translate(${pu.x - g.n.x*10} ${pu.y - g.n.y*10})`}, svgEl('circle',{class:'udc', r:7}) + svgEl('text',{class:'ud', y:0.5},'U'));
+    s += svgEl('g', {transform:`translate(${pd.x - g.n.x*10} ${pd.y - g.n.y*10})`}, svgEl('circle',{class:'udc', r:7}) + svgEl('text',{class:'ud', y:0.5},'D'));
+    const offs = (r.upstream_offers||[]).map(o => o==='open-host-service'?'OHS':'PL');
+    offs.forEach((o,i) => { s += labelBox(pu.x - g.n.x*(27+i*15), pu.y - g.n.y*(27+i*15), o, 'bd'); });
+    (r.downstream_guards||[]).forEach(() => { s += labelBox(pd.x - g.n.x*27, pd.y - g.n.y*27, 'ACL', 'bd acl'); });
+  }
+  // attachment chip and decision markers on the other side of the line from the label
+  const n = claimsOn(r.id).length; let ox = g.mid.x - g.n.x*12, oy = g.mid.y - g.n.y*12;
+  if(!ghost){ const w = n ? 48 : 16; s += svgEl('g', {class:'att', transform:`translate(${ox} ${oy})`, 'data-att':r.id}, svgEl('rect',{x:-w/2,y:-7,width:w,height:14, style:n?'':'opacity:.55'}) + svgEl('text',{x:0,y:0.5}, n ? `${n} claim${n===1?'':'s'}` : '0')); oy += 16; }
+  decisionsOn(r.id).forEach(dc => { const done = S.answered[dc.n]; s += svgEl('g', {class:`mk ${done?'done':dc.g}`, transform:`translate(${ox} ${oy})`, 'data-dec':dc.n}, svgEl('rect',{x:-20,y:-7,width:40,height:14}) + svgEl('text',{x:0,y:0.5}, `${done?'✓':dc.g===ANSWER?'?':dc.g===DECIDE?'!':'✓'} ${dc.n}`)); oy += 16; });
+  if(d && d.cls==='changed') s += svgEl('g', {class:'ovm', transform:`translate(${lx-((lab.length*5.9)/2)-12} ${ly-8})`}, svgEl('title',{}, esc(d.fields.map(f => `${f}: ${JSON.stringify(d.from[f])} → ${JSON.stringify(d.obj[f])}`).join(' · '))) + svgEl('rect',{x:-7,y:-7,width:14,height:14}) + svgEl('text',{x:0,y:0.5},'Δ'));
+  if(d && d.cls==='added') s += svgEl('g', {class:'ovm', transform:`translate(${lx-((lab.length*5.9)/2)-12} ${ly-8})`}, svgEl('rect',{x:-7,y:-7,width:14,height:14}) + svgEl('text',{x:0,y:0.5},'+'));
+  s += svgEl('path', {class:'hit', d:g.d, 'data-rel':r.id});
+  return svgEl('g', {class:cls + (dimA&&dimB?' dim':''), 'data-relg':r.id}, s);
+}
+let EDGE_PATHS = {};
+function renderEdges(){
+  const rects = {}; T.contexts.forEach(c => rects[c.id] = rectOf(c.id));
+  edgeGeom.apexes = [];
+  let s = ''; EDGE_PATHS = {};
+  T.relationships.forEach(r => { const g = edgeGeom(r, rects); if(!g) return; EDGE_PATHS[r.id] = g.d; s += edgeSvg(r, g, false); });
+  DIFF.filter(d => d.cls==='removed' && d.type==='relationships').forEach(d => { const g = edgeGeom(d.obj, rects); if(!g) return; EDGE_PATHS[d.id]=g.d; s += edgeSvg(d.obj, g, true); });
+  $('edges').innerHTML = s;
+  // bands: a wash per value behind the contexts that carry it; never a container
+  const f = activeFacet('group'); let b = '';
+  if(f){ const vals = (VOCAB.facets[f].values||setOf(T.contexts.map(c => tagVal(c,f)))).map(String);
+    vals.forEach(v => { const cs = T.contexts.filter(c => carries(c,f,v)); if(!cs.length) return; const col = facetColour(f,v);
+      cs.forEach((c,i) => { const r = rects[c.id]; b += svgEl('rect', {class:'band', x:r.x-16, y:r.y-16, width:r.w+32, height:r.h+32, style:`--bc:${col}`}); if(i===0) b += svgEl('text', {class:'band-t', x:r.x-12, y:r.y-22, style:`--bc:${col}`}, `${f}:${v}`); }); });
+  }
+  $('bands').innerHTML = b;
+}
+function elRect(id){ // an element row's rect in stage coordinates, if its context is open
+  const row = document.querySelector(`.cards .el[data-el="${id}"]`); if(!row) return null;
+  const st = $('stage').getBoundingClientRect(), r = row.getBoundingClientRect(); const sc = S.scale||1;
+  return {x:(r.left-st.left)/sc, y:(r.top-st.top)/sc, w:r.width/sc, h:r.height/sc};
+}
+function renderLinks(){
+  let s = '';
+  const draw = (l, ghost) => {
+    const fe = (ghost?C:T).byId[l.from], te = (ghost?C:T).byId[l.to]; if(!fe||!te) return;
+    const fc = fe.context, tc = te.context; if(!S.open.has(fc) && !S.open.has(tc)) return;
+    const fr = elRect(l.from), tr = elRect(l.to);
+    // a row anchors on the side that faces the other end, so a link never crosses its own card
+    const side = (rr, other) => other && other.x + (other.w||0)/2 < rr.x + rr.w/2 ? {x:rr.x+2, y:rr.y+rr.h/2} : {x:rr.x+rr.w-6, y:rr.y+rr.h/2};
+    const fx = fr ? side(fr, tr || rectOf(tc)) : null, tx = tr ? side(tr, fr || rectOf(fc)) : null;
+    let a, b, label = l.kind;
+    if(fr && tr && fc===tc){ a = {x:fr.x+fr.w-30, y:fr.y+fr.h}; b = {x:tr.x+tr.w-30, y:tr.y}; }
+    else if(fr && tr){ a = fx; b = tx; }
+    else if(fr){ const R = rectOf(tc); a = fx; b = borderPoint(R, a.x, a.y); label = `${l.kind} → ${te.name}`; }
+    else { const R = rectOf(fc); b = tx; a = borderPoint(R, b.x, b.y); label = `${fe.name} ${l.kind} →`; }
+    const same = fc===tc && fr && tr; const d = same ? `M${a.x} ${a.y}C${a.x+20} ${a.y+10} ${b.x+20} ${b.y-10} ${b.x} ${b.y}` : `M${a.x} ${a.y}L${b.x} ${b.y}`;
+    const mid = {x:(a.x+b.x)/2, y:(a.y+b.y)/2}; const df = diffOf(l.id);
+    const cls = ['link-g', ghost?'ghost':'', df&&df.cls==='added'?'added':'', S.dock==='lk:'+l.id?'open-in-dock':'', S.lit.has(l.id)?'inscope':''].join(' ');
+    const n = claimsOn(l.id).length;
+    s += svgEl('g', {class:cls, 'data-lkg':l.id}, svgEl('path',{class:'ln', d}) + svgEl('text',{class:'llabel', x:mid.x, y:mid.y-5}, esc(label + (ghost?' · removed':''))) + (n?svgEl('g',{class:'att', transform:`translate(${mid.x} ${mid.y+10})`, 'data-att':l.id}, svgEl('rect',{x:-24,y:-7,width:48,height:14})+svgEl('text',{x:0,y:0.5},`${n} claim${n===1?'':'s'}`)):'') + svgEl('path',{class:'hit', d, 'data-lk':l.id}));
+  };
+  T.links.forEach(l => draw(l,false));
+  DIFF.filter(d => d.cls==='removed' && d.type==='links').forEach(d => draw(d.obj, true));
+  $('links').innerHTML = s;
+}
+function renderCards(){
+  let s = T.contexts.map(c => ctxHtml(c)).join('');
+  DIFF.filter(d => d.cls==='removed' && d.type==='contexts').forEach(d => { L.pos[d.id] = L.pos[d.id] || {x:(L.cols.length)*COL, y:0}; s += ctxHtml(d.obj, {ghost:true}); });
+  $('cards').innerHTML = s;
+  document.body.classList.toggle('dimming', S.open.size>0);
+}
+function renderList(){
+  $('list').innerHTML = T.contexts.map(c => { const rels = T.relationships.filter(r => relEnds(r).includes(c.id)).map(r => { const [a,b] = relEnds(r); const other = a===c.id ? b : a; const dirn = r.upstream ? (r.upstream===c.id ? `U → D ${esc(T.byId[other].name)}` : `D ← U ${esc(T.byId[other].name)}`) : `↔ ${esc(T.byId[other].name)}`; return `<div data-rel="${esc(r.id)}">${dirn} · ${PNAME[r.pattern]}${(r.upstream_offers||[]).length?' · '+r.upstream_offers.map(o => o==='open-host-service'?'OHS':'PL').join(' '):''}${(r.downstream_guards||[]).length?' · ACL':''}</div>`; }).join('');
+    return ctxHtml(c, {list:true}).replace('</article>', `<div class="rels">${rels||'<div>no relationships</div>'}</div></article>`); }).join('');
+}
+function stageSize(){ // from the layout at rest; an open card never changes the scale
+  let maxX=0, maxY=0, minY=0, realX=0, realY=0;
+  Object.values(L.pos).forEach(p => { maxX = Math.max(maxX, p.x+W); maxY = Math.max(maxY, p.y+H); });
+  [...document.querySelectorAll('.cards .ctx')].forEach(el => { realX = Math.max(realX, el.offsetLeft+el.offsetWidth); realY = Math.max(realY, el.offsetTop+el.offsetHeight); });
+  (edgeGeom.apexes||[]).forEach(y => { minY = Math.min(minY, y-24); });
+  return {w:maxX+40, h:maxY+40, minY, realW:Math.max(maxX,realX)+40, realH:Math.max(maxY,realY)+40};
+}
+function fit(){
+  const size = stageSize(); const st = $('stage'); const wrap = $('wrap');
+  const top = Math.max(0, -size.minY) + 16;
+  st.style.width = size.realW+'px'; st.style.height = (size.realH+top)+'px';
+  // the stage content is translated down so arcs above the top row stay visible
+  $('cards').style.top = top+'px'; $('under').style.top = top+'px'; $('over').style.top = top+'px';
+  const sc = Math.min(1, (wrap.clientWidth-8)/size.w, (wrap.clientHeight-8)/(size.h+top));
+  S.scale = sc; st.style.transform = `scale(${sc})`;
+  const open = [...S.open][S.open.size-1];
+  const dockW = document.body.classList.contains('docked') && window.innerWidth>759 ? Math.min(600, wrap.clientWidth-200) : 0;
+  const visW = wrap.clientWidth - dockW;
+  if(open){ const el = document.querySelector(`.ctx[data-id="${open}"]`); if(el){ const cx = (el.offsetLeft+el.offsetWidth/2)*sc, cy = (el.offsetTop+top+el.offsetHeight/2)*sc; wrap.scrollTo({left:Math.max(0,cx-visW/2), top:Math.max(0,cy-wrap.clientHeight/2), behavior:'smooth'}); } }
+  else wrap.scrollTo({left:0, top:0});
+}
+function renderStrip(){
+  const rs = repos();
+  const f = check();
+  $('strip').innerHTML = `<span class="lab">Repositories</span><button class="check ${f.length?'fail':''}" id="checkbtn" title="the map check, on every commit">check · ${f.length?f.length+' fail':'green'}</button><button class="btn sm" id="addrepo" style="border-style:dashed">+ repository</button><span class="sep"></span>` + rs.map(r => { const u = unmet(r); const dv = derive(r); const isNew = S.newRepos.includes(r);
+    return `<span class="repo ${S.dock==='repo:'+r?'open-in-dock':''} ${isNew?'new':''}" data-repo="${esc(r)}" title="${dv.elements.length} elements homed · ${dv.capabilities.length} capabilities · derived from what it homes"><span>${esc(r)}</span><span class="hm">${dv.elements.length} el · ${dv.capabilities.length} cap</span><span class="um ${u===0?'none':u>=3?'many':'some'}" title="claims in scope not yet satisfied">${u} unmet</span>${decisionsOn('repo:'+r).map(d => markHtml(d)).join('')}</span>`; }).join('')
+    + `<span class="note"><span class="sample">sample</span><span class="wide">never on the canvas: a repository is a chip, a claim an attachment, a lane a tag</span></span>`;
+}
+function renderControls(){
+  const facets = Object.keys(VOCAB.facets).map(f => { const vals = (VOCAB.facets[f].values||[]).map(String); const m = S.facets[f];
+    return `<span class="facet"><span class="fn">${esc(f)}</span><span class="fv">${vals.join(' | ')}</span><span class="seg" data-facet="${f}">${['off','filter','colour','group'].map(k => `<button aria-pressed="${m===k}" data-mode="${k}">${k}</button>`).join('')}</span>${m==='filter'?`<select data-fval="${f}">${vals.map(v => `<option ${S.facetVal[f]===v?'selected':''}>${v}</option>`).join('')}</select>`:''}</span>`; }).join('');
+  const cf = activeFacet('colour')||activeFacet('group');
+  const legend = cf ? `<span class="legend">${(VOCAB.facets[cf].values||[]).map(v => `<span class="sw"><i style="background:${facetColour(cf,v)}"></i>${cf}:${v}</span>`).join('')}<span class="sw"><i style="border:1px dashed var(--ink3)"></i>none</span></span>` : '';
+  const mk = markRev();
+  $('controls').innerHTML = facets + legend + `<span class="inv ${S.inv&&S.inv.bad?'bad':''}" id="inv" title="computed after every facet switch by comparing positions and edge paths">${S.inv ? `<b>${S.inv.moved} moved</b> · <b>${S.inv.edges} edges changed</b>` : 'facets filter, colour or wash · never move'}</span>
+    <span class="r"><span class="fn mono" style="font-size:11.5px;color:var(--ink2)">overlay</span><span class="seg" id="ovseg"><button aria-pressed="${S.overlay==='none'}" data-ov="none">none</button><button class="ov1" aria-pressed="${S.overlay==='current'}" data-ov="current">current → target</button><button class="ov2" aria-pressed="${S.overlay==='review'}" data-ov="review">since last review</button></span>
+    ${S.overlay!=='none' ? `<button class="btn sm" id="changes">changes · ${DIFF.length}</button>` : ''}${S.overlay==='review' ? `<span class="mark-note">mark ${esc(mk.rev)} · ${esc(mk.at)}${mk.rev==='a1f3c0'?' · 2 days ago':''}</span><button class="btn sm" id="markrev" ${S.mark===HISTORY[0].rev?'disabled':''}>mark reviewed</button>` : ''}
+    <button class="btn sm" id="fitbtn" title="the only camera command"><span class="k">f</span> fit</button></span>`;
+}
+function renderAll(){ computeDiff(); renderStrip(); renderControls(); renderCards(); renderEdges(); renderList(); fit(); renderLinks(); renderDock(); }
+function rerender(){ computeDiff(); renderStrip(); renderControls(); renderCards(); renderEdges(); renderList(); requestAnimationFrame(() => { renderLinks(); }); renderDock(); }
+
+/* =====================================================================
+   6. Responses, log, toasts
+   ===================================================================== */
+function toast(t, fail){ const d = document.createElement('div'); d.className = 'toast'+(fail?' fail':''); d.textContent = t; $('toasts').appendChild(d); setTimeout(() => d.remove(), 2600); }
+function logLine(text, say){ S.minutes++; S.log.unshift({t:hhmm(S.minutes), text, say}); $('clock').textContent = hhmm(S.minutes); $('sent').textContent = S.log.filter(l => !l.say).length;
+  $('loglist').innerHTML = S.log.map(l => `<li class="${l.say?'say':''}"><time>${l.t}</time><span>${esc(l.text)}</span></li>`).join(''); }
+function send(key, text, apply){ // one response, sent the moment it is given, applied exactly once
+  if(S.inflight[key]) return toast('one response is already in flight for this', true);
+  S.inflight[key] = text; logLine(text); toast(text); rerender();
+  setTimeout(() => { delete S.inflight[key]; apply(); rerender(); }, 900);
+}
+function answer(n, a, arg){
+  const d = DECISIONS.find(x => x.n===n); if(!d || S.answered[n]) return;
+  const text = `${a} ${n}${arg?': '+arg:''}`;
+  send('dec:'+n, text, () => { S.answered[n] = {a, arg, at:hhmm(S.minutes)};
+    if(n===418 && a==='close'){ const c = T.byId.notifications; c.status='settled'; elementsOf('notifications').forEach(e => { if(e.status==='candidate') e.status='settled'; }); }
+    if(n===420 && a==='amend'){ const cl = CLAIMS.find(c => c.id==='ordering/api#orders-contract-stable'); cl.v=2; Object.keys(VERDICTS[cl.id]).forEach(r => VERDICTS[cl.id][r]='stale'); }
+  });
+}
+function capture(id){ const e = T.byId[id]; send('cap:'+id, `capture · map ${$('rev').textContent} · ${id} · “${e.question.slice(0,48)}${e.question.length>48?'…':''}”`, () => { S.captured.add(id); }); }
+function attach(claimId, targetId){
+  const cl = CLAIMS.find(c => c.id===claimId); if(cl.attaches.includes(targetId)) return toast('already attached there', true);
+  const before = claimScope(cl);
+  send('att:'+claimId, `attach ${claimId} → ${targetId}`, () => { cl.attaches.push(targetId); const after = claimScope(cl); VERDICTS[cl.id] = VERDICTS[cl.id]||{};
+    after.filter(r => !before.includes(r)).forEach(r => { VERDICTS[cl.id][r] = 'unjudged'; }); S.arming = null; document.body.classList.remove('arming'); $('armbar').hidden = true; });
+}
+function detach(claimId, targetId){
+  const cl = CLAIMS.find(c => c.id===claimId); const before = claimScope(cl);
+  send('det:'+claimId, `detach ${claimId} ← ${targetId}`, () => { cl.attaches = cl.attaches.filter(a => a!==targetId); const after = claimScope(cl);
+    before.filter(r => !after.includes(r)).forEach(r => { VERDICTS[cl.id][r] = 'not-applicable'; }); });
+}
+function arm(claimId){ S.arming = claimId; document.body.classList.add('arming'); $('armbar').hidden = false; $('armbar').innerHTML = `re-attach <b>${esc(claimId)}</b> — click a context, an element, an edge or a link · <kbd>esc</kbd> cancels <button class="btn sm" id="disarm">cancel</button>`; closeDock(); }
+function disarm(){ S.arming = null; document.body.classList.remove('arming'); $('armbar').hidden = true; }
+
+/* =====================================================================
+   7. The dock
+   ===================================================================== */
+function openDock(key){ S.dock = key; document.body.classList.add('docked'); rerender(); }
+function closeDock(){ S.dock = null; document.body.classList.remove('docked'); rerender(); }
+const refLink = o => o.ref ? `<a class="ref" href="#books/${esc(o.ref)}" data-ref="1" title="the chapter that states it">${esc(o.ref)}</a>` : `<span class="tag">no ref</span>`;
+const stx = o => `<span class="stx ${o.status}">${o.status}</span>`;
+const goLink = (id, label) => `<a class="go" href="#" data-go="${esc(id)}">${esc(label||id)}</a>`;
+function scopeLine(id){ const sc = scopeOf(T,id); const t = T.typeOf[id]; const n = claimsOn(id).length; const why = t==='relationships' ? 'both ends' : t==='links' ? 'both elements' : t==='contexts' ? 'the context\'s home and every home of its elements' : (T.byId[id].home ? 'its own home' : 'its context\'s home');
+  return `<div class="scope">in scope: <b>${sc.length ? sc.join(', ') : 'nothing'}</b> <span class="from">— ${why}${n?` · ${n} attachment${n===1?'':'s'} here`:''}</span></div>`; }
+function claimRows(cls, viaId){ return cls.length ? `<div class="claims">${cls.map(cl => { const sc = claimScope(cl); return `<div class="claim" data-claim="${esc(cl.id)}"><span class="cn">${esc(cl.id)}<span class="cv">v${cl.v}</span></span><span class="vds">${sc.map(r => `<span class="vd ${verdict(cl,r)}" title="${esc(r)}">${esc(r)} · ${verdict(cl,r).replace('-',' ')}</span>`).join('')||'<span class="vd not-applicable">no scope</span>'}</span><span class="ce">attached to <b>${cl.attaches.map(a => esc(a)).join(', ')||'nothing'}</b> · scope from ${cl.attaches.length} attachment${cl.attaches.length===1?'':'s'}</span></div>`; }).join('')}</div>` : '<div class="derived">no claim attached</div>'; }
+function decisionsSec(id){ const ds = decisionsOn(id); return ds.length ? `<section class="sec"><h3>decisions <span class="r">markers on this object · the rail card inline</span></h3>${ds.map(railCard).join('')}</section>` : ''; }
+function railCard(d){
+  const done = S.answered[d.n], inflight = S.inflight['dec:'+d.n];
+  const acts = done ? `<div class="sentl">sent · ${esc(done.a)}${done.arg?': '+esc(done.arg):''} at ${done.at} · applied once</div>` :
+    `<div class="acts">${d.answers.map(([k,l]) => `<button class="btn sm ${k==='yes'||k==='close'?'yes':k==='drop'?'drop':''}" data-ans="${k}" data-n="${d.n}" ${inflight?'disabled':''}>${esc(l)}</button>`).join('')}<span class="hint">one response · refused while one is in flight</span></div><div class="argbox" id="arg-${d.n}"></div>`;
+  return `<article class="card g-${d.g} ${inflight?'inflight':''} ${done?'done':''}" data-n="${d.n}"><div class="ch"><span class="n">${d.n}</span><span class="kind">${esc(d.kind)}</span><span class="ph ${d.phase}">${PH[d.phase]}</span></div><div class="title">${d.title}</div><div class="tail">${d.tail}</div>${d.q?`<div class="qq">“${esc(d.q)}”</div>`:''}<div class="tail" style="margin-top:6px">${d.text}</div>${acts}<div class="flight"><span class="spin"></span>sending ${esc(inflight||'')}…</div></article>`;
+}
+function verdictsPerRepo(id){ const cls = claimsOn(id); const rs = setOf(cls.flatMap(claimScope)); if(!rs.length) return '<div class="derived">no verdicts: nothing attached here, or the scope is empty</div>';
+  return `<dl class="kv">${rs.map(r => `<dt>${esc(r)}</dt><dd><span class="dot ${worst(cls.filter(c => claimScope(c).includes(r)).map(c => verdict(c,r)))}"></span> ${cls.filter(c => claimScope(c).includes(r)).map(c => `<span class="vd ${verdict(c,r)}">${esc(c.id.split('#')[1])} · ${verdict(c,r).replace('-',' ')}</span>`).join(' ')}</dd>`).join('')}</dl>`; }
+function tagsHtml(o){ return (o.tags||[]).length ? `<span class="kc">${o.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</span>` : '<span class="derived">no tags</span>'; }
+function commonSecs(o, id){ return `<section class="sec"><dl class="kv"><dt>id</dt><dd class="mono">${esc(id)}</dd><dt>ref</dt><dd>${refLink(o)}</dd><dt>status</dt><dd>${stx(o)}</dd><dt>tags</dt><dd>${tagsHtml(o)}</dd></dl>
+  ${o.status==='open' ? `<div class="qbox"><i>“${esc(o.question)}”</i>${S.captured.has(id) ? `<span class="cap"><b>captured</b> · source the map · pointer ${esc(id)} @ ${$('rev').textContent} · routed to curation</span>` : `<button class="btn sm pri" data-capture="${esc(id)}" ${S.inflight['cap:'+id]?'disabled':''}>${S.inflight['cap:'+id]?'sending…':'capture this question'}</button> <span class="cap">one gesture · source the map, pointer ${esc(id)}, the question its one signal</span>`}</div>` : ''}</section>`; }
+function ovSec(id){ const d = diffOf(id); if(!d) return ''; return `<section class="sec"><h3>${S.overlay==='review'?'since last review':'current → target'}</h3><div class="chg"><span class="cls" style="--ovc:${OVC()}">${d.cls}</span><span class="what">${d.fields ? d.fields.map(f => `<span class="flds"><s>${esc(JSON.stringify(d.from[f]))}</s> → ${esc(JSON.stringify(d.obj[f]))} <span class="t">${f}</span></span>`).join('<br>') : d.cls==='added' ? 'in target, not in the other map' : 'in the other map, not in target'}</span></div></section>`; }
+function dockContext(c){
+  const els = elementsOf(c.id); const homes = homesOf(c);
+  return { head:`<div class="dk-h dk-ctx ${c.big_ball_of_mud?'bbm':''}"><div class="row"><span class="kind">context</span><span class="id">${esc(c.id)}</span>${c.external?'<span class="tag">external</span>':''}${c.big_ball_of_mud?'<span class="bb">BBoM</span>':''}<span class="nav"><button class="btn sm quiet" data-openctx="${esc(c.id)}">${S.open.has(c.id)?'close on map':'open on map'}</button><button class="x" data-close="1" title="close">×</button></span></div><h2 id="dk-title">${esc(c.name)}</h2><div class="tail">${refLink(c)} ${stx(c)}<span>${homes.length?homes.map(h => homeChip(h,c.id,false)).join(''):'<span class="tag">homes nothing</span>'}</span></div></div>`,
+    body: commonSecs(c, c.id) + ovSec(c.id) + `<section class="sec"><h3>home <span class="r">${c.external?'external: sets none, homes nothing':c.home?`default ${esc(c.home)}`:'no default: elements name their own'}</span></h3><dl class="kv">${homes.map(h => `<dt>${esc(h)}</dt><dd>${els.filter(e => effHome(T,e)===h).map(e => goLink(e.id, e.name)).join(', ')||'the context default only'}</dd>`).join('')}${els.filter(e => !c.external && !effHome(T,e)).length?`<dt style="color:var(--crit)">no home</dt><dd>${els.filter(e => !c.external && !effHome(T,e)).map(e => goLink(e.id, e.name)).join(', ')} · <span style="color:var(--crit)">the check fails these</span></dd>`:''}</dl></section>
+      ${c.language ? `<section class="sec"><h3>language</h3><dl class="kv">${c.language.map(l => `<dt>${esc(l.term)}</dt><dd>${esc(l.means)}</dd>`).join('')}</dl></section>`:''}
+      <section class="sec"><h3>elements <span class="r">${els.length}</span></h3><div class="rows">${els.map(e => `<div class="rowi"><span class="dot ${effHome(T,e)?worst(claimsOn(e.id).map(cl => verdict(cl,effHome(T,e)))):'none'}"></span><span class="nm">${goLink(e.id, e.name)}</span><span class="m">${esc(kindLabel(e.kind))}</span><span class="r">${stx(e)}${marksHtml(e.id)}</span></div>`).join('')}</div></section>
+      <section class="sec"><h3>relationships</h3><div class="rows">${T.relationships.filter(r => relEnds(r).includes(c.id)).map(r => `<div class="rowi"><span class="nm">${goLink(r.id, r.name)}</span><span class="m">${PNAME[r.pattern]}${r.upstream===c.id?' · upstream':r.downstream===c.id?' · downstream':''}</span><span class="r">${marksHtml(r.id)}</span></div>`).join('')}</div></section>
+      <section class="sec"><h3>attached claims <span class="r">${claimsOn(c.id).length} on the context · scope derived</span></h3>${scopeLine(c.id)}${claimRows(claimsOn(c.id))}</section>
+      <section class="sec"><h3>verdicts per repository <span class="r">claims attached to the context</span></h3>${verdictsPerRepo(c.id)}</section>` + decisionsSec(c.id),
+    foot:`<div class="fl">actions</div><div class="acts"><button class="btn sm" data-openctx="${esc(c.id)}">${S.open.has(c.id)?'close on map':'open on map'}</button><button class="btn sm" data-lit="${esc(c.id)}">light on map</button><span class="sample">sample</span></div>` };
+}
+function dockElement(e){
+  const c = T.byId[e.context]; const home = effHome(T,e);
+  const links = T.links.filter(l => l.from===e.id || l.to===e.id);
+  return { head:`<div class="dk-h dk-el"><div class="row"><span class="kind">element</span><span class="id">${esc(e.id)}</span><span class="tag">${esc(kindLabel(e.kind))}</span><span class="nav"><button class="btn sm quiet" data-go="${esc(c.id)}">${esc(c.name)} →</button><button class="x" data-close="1">×</button></span></div><h2 id="dk-title">${esc(e.name)}</h2><div class="tail">${refLink(e)} ${stx(e)} ${c.external?'<span class="tag">external: no home</span>':homeChip(home, null, !e.home && !!c.home)}</div></div>`,
+    body: commonSecs(e, e.id) + ovSec(e.id) + `<section class="sec"><h3>home</h3><dl class="kv"><dt>effective</dt><dd>${home?`<span class="mono">${esc(home)}</span> ${e.home?'':`<span class="derived">from ${esc(c.id)}'s default</span>`}`:c.external?'none: external context':'<span style="color:var(--crit)">none — the check fails this until a repository homes it</span>'}</dd><dt>kind</dt><dd>${esc(kindLabel(e.kind))} ${isCap(e.kind)?'<span class="tag" style="color:var(--accent);border-color:var(--accent)">capability</span>':''}</dd></dl></section>
+      <section class="sec"><h3>links <span class="r">${links.length}</span></h3><div class="rows">${links.map(l => `<div class="rowi"><span class="nm">${goLink(l.id, l.name)}</span><span class="m">${esc(l.kind)}</span></div>`).join('')||'<div class="derived">none</div>'}</div></section>
+      <section class="sec"><h3>attached claims <span class="r">scope derived</span></h3>${scopeLine(e.id)}${claimRows(claimsOn(e.id))}</section>
+      <section class="sec"><h3>verdicts per repository</h3>${verdictsPerRepo(e.id)}</section>` + decisionsSec(e.id),
+    foot:`<div class="fl">actions</div><div class="acts"><button class="btn sm" data-openctx="${esc(c.id)}" data-keep="1">${S.open.has(c.id)?'context is open':'open its context'}</button><button class="btn sm" data-lit="${esc(e.id)}">light on map</button><span class="sample">sample</span></div>` };
+}
+function dockRel(r){
+  const [a,b] = relEnds(r); const dirn = !!r.upstream; const A = T.byId[a], B = T.byId[b];
+  const bd = x => `<span class="bdg">${x}</span>`;
+  const crossing = T.links.filter(l => { const f = ctxOf(T,l.from), t = ctxOf(T,l.to); return f && t && f.id!==t.id && [f.id,t.id].includes(a) && [f.id,t.id].includes(b); });
+  return { head:`<div class="dk-h dk-rel"><div class="row"><span class="kind">relationship</span><span class="id">${esc(r.id)}</span><span class="tag">${PNAME[r.pattern]}</span><span class="nav"><button class="x" data-close="1">×</button></span></div><h2 id="dk-title">${esc(r.name)}</h2><div class="tail">${refLink(r)} ${stx(r)}</div></div>`,
+    body: commonSecs(r, r.id) + ovSec(r.id) + `<section class="sec"><h3>ends</h3><div class="ends"><div class="e"><div class="k">${dirn?'U · upstream':r.pattern==='separate-ways'?'no connection':'symmetric'}</div><div class="n">${goLink(A.id, A.name)}</div><div class="bds">${(r.upstream_offers||[]).map(o => bd(o==='open-host-service'?'OHS':'PL')).join('')}</div></div><div class="arr">${dirn?'→':r.pattern==='separate-ways'?'⊥':'↔'}<br>${PNAME[r.pattern]}</div><div class="e"><div class="k">${dirn?'D · downstream':r.pattern==='separate-ways'?'no connection':'symmetric'}</div><div class="n">${goLink(B.id, B.name)}</div><div class="bds">${(r.downstream_guards||[]).map(() => `<span class="bdg acl">ACL</span>`).join('')}</div></div></div>
+      ${r.kernel ? `<dl class="kv" style="margin-top:8px"><dt>kernel</dt><dd>${r.kernel.map(k => goLink(k, T.byId[k]?.name||k)).join(', ')} · changed only by agreement</dd></dl>` : ''}
+      <dl class="kv" style="margin-top:8px"><dt>links crossing</dt><dd>${crossing.map(l => goLink(l.id, l.name)).join(', ')||(r.pattern==='separate-ways'?'none, by rule':'none')}</dd></dl></section>
+      <section class="sec"><h3>attached claims <span class="r">scope derived: both ends</span></h3>${scopeLine(r.id)}${claimRows(claimsOn(r.id))}</section>
+      <section class="sec"><h3>verdicts per repository <span class="r">each end carries its own (105)</span></h3>${verdictsPerRepo(r.id)}</section>` + decisionsSec(r.id),
+    foot:`<div class="fl">actions</div><div class="acts"><button class="btn sm" data-lit="${esc(r.id)}">light on map</button><span class="sample">sample</span></div>` };
+}
+function dockLink(l){
+  const fe = T.byId[l.from], te = T.byId[l.to]; const fc = T.byId[fe.context], tc = T.byId[te.context];
+  const rel = fc.id!==tc.id ? T.relationships.find(r => { const e = relEnds(r); return e.includes(fc.id)&&e.includes(tc.id); }) : null;
+  return { head:`<div class="dk-h dk-el"><div class="row"><span class="kind">link</span><span class="id">${esc(l.id)}</span><span class="tag">${esc(l.kind)}</span><span class="nav"><button class="x" data-close="1">×</button></span></div><h2 id="dk-title">${esc(l.name)}</h2><div class="tail">${refLink(l)} ${stx(l)}</div></div>`,
+    body: commonSecs(l, l.id) + ovSec(l.id) + `<section class="sec"><h3>ends</h3><div class="ends"><div class="e"><div class="k">from · ${esc(fc.name)}</div><div class="n">${goLink(fe.id, fe.name)}</div></div><div class="arr">${esc(l.kind)}<br>→</div><div class="e"><div class="k">to · ${esc(tc.name)}</div><div class="n">${goLink(te.id, te.name)}</div></div></div>
+      <dl class="kv" style="margin-top:8px"><dt>crosses</dt><dd>${rel ? `${goLink(rel.id, rel.name)} · ${PNAME[rel.pattern]}` : 'nothing: both ends in one context'}</dd></dl></section>
+      <section class="sec"><h3>attached claims <span class="r">scope derived: both elements</span></h3>${scopeLine(l.id)}${claimRows(claimsOn(l.id))}</section>
+      <section class="sec"><h3>verdicts per repository</h3>${verdictsPerRepo(l.id)}</section>` + decisionsSec(l.id),
+    foot:`<div class="fl">actions</div><div class="acts"><button class="btn sm" data-openctx="${esc(fc.id)}" data-keep="1">open ${esc(fc.name)}</button><button class="btn sm" data-openctx="${esc(tc.id)}" data-keep="1">open ${esc(tc.name)}</button><button class="btn sm" data-lit="${esc(l.id)}">light on map</button></div>` };
+}
+function dockClaim(cl){
+  const sc = claimScope(cl);
+  return { head:`<div class="dk-h dk-claim"><div class="row"><span class="kind">claim</span><span class="tag">v${cl.v}</span><span class="nav"><button class="x" data-close="1">×</button></span></div><h2 id="dk-title">${esc(cl.id)}</h2><div class="tail"><a class="ref" href="#books/${esc(cl.id.split('#')[0])}" data-ref="1">${esc(cl.id.split('#')[0])}</a><span>the attachment lives with the claim, in its chapter</span></div></div>`,
+    body:`<section class="sec"><div class="dtext">${esc(cl.text)}</div></section>
+      <section class="sec"><h3>attached to <span class="r">${cl.attaches.length} attachment${cl.attaches.length===1?'':'s'}</span></h3><div class="rows">${cl.attaches.map(a => { const o = T.byId[a]; return `<div class="rowi"><span class="nm">${o?goLink(a, o.name):esc(a)}</span><span class="m">${o?TYPE1[T.typeOf[a]]:'not on the map'} · scope ${scopeOf(T,a).join(', ')||'nothing'}</span><span class="r"><button class="btn sm quiet" data-detach="${esc(a)}" data-claim="${esc(cl.id)}" ${S.inflight['det:'+cl.id]?'disabled':''}>detach</button></span></div>`; }).join('')||'<div class="derived">nothing: the claim is not planned against (98)</div>'}</div>
+      <div class="scope">in scope: <b>${sc.join(', ')||'nothing'}</b> <span class="from">— from ${cl.attaches.length} attachment${cl.attaches.length===1?'':'s'}; derived from the target map, never chosen</span></div></section>
+      <section class="sec"><h3>verdicts <span class="r">keyed by claim, version, repository</span></h3><dl class="kv">${sc.map(r => `<dt>${esc(r)}</dt><dd><span class="vd ${verdict(cl,r)}">${verdict(cl,r).replace('-',' ')}</span> <span class="derived" style="margin:0">v${cl.v}</span></dd>`).join('')}${Object.entries(VERDICTS[cl.id]||{}).filter(([r]) => !sc.includes(r)).map(([r,v]) => `<dt>${esc(r)}</dt><dd><span class="vd not-applicable">${v.replace('-',' ')}</span> <span class="derived" style="margin:0">left the scope</span></dd>`).join('')}</dl></section>`,
+    foot:`<div class="fl">scope tool <span style="letter-spacing:0;text-transform:none;font-weight:500">· correcting a scope is re-attaching, one response (193)</span></div><div class="acts"><button class="btn sm pri" data-arm="${esc(cl.id)}">re-attach…</button><button class="btn sm" data-litclaim="${esc(cl.id)}">show on map</button></div>` };
+}
+function dockRepo(r){
+  const dv = derive(r); const cls = claimsInScope(r); const u = unmet(r); const inManifest = MANIFEST.includes(r);
+  const retiring = !T.elements.some(e => effHome(T,e)===r) && !T.contexts.some(c => c.home===r);
+  return { head:`<div class="dk-h dk-repo"><div class="row"><span class="kind">repository</span>${inManifest?'<span class="tag">manifest entry</span>':'<span class="tag" style="color:var(--crit);border-color:var(--crit)">no manifest entry</span>'}${retiring?'<span class="tag">retiring: homed only in current</span>':''}<span class="nav"><button class="x" data-close="1">×</button></span></div><h2 id="dk-title">${esc(r)}</h2><div class="tail"><span>joined ${esc(JOINED[r]||'today')} · ${dv.elements.length} elements homed · ${dv.contexts.length} contexts</span><span class="um ${u?'some':'none'}" style="font:700 10.5px var(--mono);padding:0 6px;border-radius:999px;border:1px solid currentColor;color:${u?'var(--warn)':'var(--ok)'}">${u} unmet</span></div></div>`,
+    body:`<section class="sec"><h3>kinds <span class="r">derived, never declared</span></h3><div class="kc">${dv.kinds.map(k => `<span class="tag" style="border-color:var(--accent);color:var(--accent)">${esc(k)}</span>`).join('')||'<span class="derived">nothing homed</span>'}</div><div class="derived">read off the elements it homes and what their kinds extend${dv.kindsTop.filter(k => VOCAB.element_kinds[k].extends).map(k => ` · ${kindLabel(k)}`).join('')} · <b>a vocabulary change moves no verdict (4.8)</b></div></section>
+      <section class="sec"><h3>capabilities <span class="r">contract-kind elements it homes · derived, never declared</span></h3><div class="rows">${dv.capabilities.map(id => `<div class="rowi"><span class="nm">${goLink(id, T.byId[id].name)}</span><span class="m">${esc(kindLabel(T.byId[id].kind))} · ${esc(T.byId[id].context)}</span></div>`).join('')||'<div class="derived">none: it homes no contract</div>'}</div></section>
+      <section class="sec"><h3>contexts</h3><div class="kc">${dv.contexts.map(c => `<span class="chip" data-go="${esc(c)}">${esc(T.byId[c].name)}</span>`).join('')}</div></section>
+      <section class="sec"><h3>claims in scope <span class="r">${cls.length} · ${u} unmet · scope reads home, context and attachment only</span></h3>${claimRows(cls)}</section>
+      <section class="sec"><h3>homed elements <span class="r">${dv.elements.length}</span></h3><div class="rows">${dv.elements.map(e => `<div class="rowi"><span class="nm">${goLink(e.id, e.name)}</span><span class="m">${esc(kindLabel(e.kind))} · ${esc(e.context)}${e.home?'':' · by default'}</span></div>`).join('')}</div></section>`,
+    foot:`<div class="fl">actions</div><div class="acts">${decisionsOn('repo:'+r).map(d => `<button class="btn sm" data-decopen="${d.n}">decision ${d.n}</button>`).join('')}<span class="derived" style="margin:0">a repository is never on the canvas: it is a chip</span></div>` + (decisionsOn('repo:'+r).length ? `<div class="stub"><div class="eyebrow">rail · baseline</div>${decisionsOn('repo:'+r).map(railCard).join('')}</div>` : '') };
+}
+function dockChanges(){
+  const mk = markRev(); const cls = {added:'added',changed:'changed',moved:'moved',removed:'removed'};
+  return { head:`<div class="dk-h"><div class="row"><span class="kind">changes</span><span class="tag">${S.overlay==='review'?'since last review':'current → target'}</span><span class="nav"><button class="x" data-close="1">×</button></span></div><h2 id="dk-title">${DIFF.length} difference${DIFF.length===1?'':'s'}</h2><div class="tail">${S.overlay==='review' ? `target @ ${esc(mk.rev)} (${esc(mk.at)}, reviewed) → target @ ${$('rev').textContent}` : 'the map of what is built → the map of what the books say'} · one engine, keyed on id</div></div>`,
+    body:`<section class="sec">${DIFF.map(d => `<div class="chg"><span class="cls ${d.cls}" style="--ovc:${OVC()}">${cls[d.cls]}</span><span class="what">${goLink(d.id, d.obj.name||d.id)}<span class="t">${TYPE1[d.type]}${d.type==='elements'?' · '+esc(d.obj.context):''}${d.obj.ref?' · '+esc(d.obj.ref):''}</span></span>${d.fields?`<span class="flds">${d.fields.map(f => `${f}: <s>${esc(JSON.stringify(d.from[f]))}</s> → ${esc(JSON.stringify(d.obj[f]))}`).join(' · ')}</span>`:''}</div>`).join('')||'<div class="derived">nothing changed</div>'}</section>
+      ${S.overlay==='review' ? `<section class="sec"><h3>history <span class="r">derived from the target's revisions, never stored</span></h3><div class="rows">${HISTORY.map(h => `<div class="rowi"><span class="m">${esc(h.rev)}</span><span class="nm" style="font-weight:500">${esc(h.at)}</span><span class="m">${esc(h.by)}</span><span class="r">${h.rev===S.mark?'<span class="tag" style="color:var(--ov2);border-color:var(--ov2)">mark</span>':''}</span></div>`).join('')}</div></section>` : ''}`,
+    foot:`<div class="fl">actions</div><div class="acts">${S.overlay==='review' ? `<button class="btn sm pri" id="markrev2" ${S.mark===HISTORY[0].rev?'disabled':''}>mark reviewed · moves the mark to ${esc(HISTORY[0].rev)}</button>` : `<span class="derived" style="margin:0">a tag change is a change here and no change to any verdict</span>`}</div>` };
+}
+function dockCheck(){ const f = check(); return { head:`<div class="dk-h"><div class="row"><span class="kind">map check</span><span class="nav"><button class="x" data-close="1">×</button></span></div><h2 id="dk-title">${f.length?f.length+' failure'+(f.length===1?'':'s'):'green'}</h2><div class="tail">schema flywheel-map/1 · shipped + books/vocabulary.yaml · on every commit</div></div>`,
+  body:`<section class="sec"><div class="fails">${f.map(x => `<div>${esc(x)}</div>`).join('')||'<div class="ok">every id unique · every home a manifest entry · every crossing explained</div>'}</div></section>`, foot:`<div class="fl">fix</div><div class="acts"><button class="btn sm" id="addrepo2">+ repository homes the unhomed</button></div>` }; }
+function unhomed(){ return T.elements.filter(e => !T.byId[e.context].external && !effHome(T,e)); }
+function dockAddRepo(){
+  const f = S.addForm || (S.addForm = {name:'notify-svc', els:new Set(unhomed().map(e => e.id)), ctx:''});
+  const homedEls = T.elements.filter(e => f.els.has(e.id) || (f.ctx && e.context===f.ctx && !e.home));
+  const kinds = setOf(homedEls.flatMap(e => kindChain(e.kind))), caps = homedEls.filter(e => isCap(e.kind)).map(e => e.id);
+  const inScope = CLAIMS.filter(cl => cl.attaches.some(a => homedEls.some(e => e.id===a) || (f.ctx && a===f.ctx) || T.links.some(l => l.id===a && homedEls.some(e => e.id===l.from||e.id===l.to))));
+  const ctxNoHome = T.contexts.filter(c => !c.external && !c.home);
+  return { head:`<div class="dk-h dk-repo"><div class="row"><span class="kind">add repository</span><span class="nav"><button class="x" data-close="1">×</button></span></div><h2 id="dk-title">${esc(f.name||'…')}</h2><div class="tail">joins the fleet when the target map first homes something in it (202) · its ledger starts empty</div></div>`,
+    body:`<section class="sec addrepo"><h3>name <span class="r">the manifest entry</span></h3><input type="text" id="ar-name" value="${esc(f.name)}" placeholder="repository name">
+      <h3 style="margin-top:12px">homes these unhomed elements</h3><div class="grid">${unhomed().map(e => `<label><input type="checkbox" data-arel="${esc(e.id)}" ${f.els.has(e.id)?'checked':''}> ${esc(e.id)} <span class="tag">${esc(kindLabel(e.kind))}</span></label>`).join('')||'<span class="derived">no element is unhomed</span>'}</div>
+      <h3>or becomes the default home of a context</h3><select id="ar-ctx"><option value="">— none —</option>${ctxNoHome.map(c => `<option value="${esc(c.id)}" ${f.ctx===c.id?'selected':''}>${esc(c.name)} (${elementsOf(c.id).filter(e => !e.home).length} elements without their own home)</option>`).join('')}</select>
+      <div class="found">derives live · <b>${homedEls.length}</b> homed · kinds <b>${kinds.join(', ')||'none'}</b> · capabilities <b>${caps.length?caps.join(', '):'none'}</b> <span class="derived" style="margin:0">— derived, never declared</span></div></section>
+      <section class="sec"><h3>claims that fall into scope <span class="r">${inScope.length} · the first planning's baseline (202)</span></h3>${claimRows(inScope)}</section>`,
+    foot:`<div class="fl">one response</div><div class="acts"><button class="btn sm pri" id="ar-add" ${(!f.name || (!f.els.size && !f.ctx))?'disabled':''}>add ${esc(f.name||'repository')} · homes ${homedEls.length}</button><span class="derived" style="margin:0">raises a baseline decision with the next number</span></div>` };
+}
+function addRepo(){
+  const f = S.addForm; const name = f.name.trim(); if(!name) return;
+  send('addrepo', `add repository ${name} · homes ${[...f.els].join(', ')}${f.ctx?' · default for '+f.ctx:''}`, () => {
+    MANIFEST.push(name); S.newRepos.push(name); JOINED[name] = '2026-09-04 '+hhmm(S.minutes);
+    f.els.forEach(id => { T.byId[id].home = name; }); if(f.ctx) T.byId[f.ctx].home = name;
+    const cls = claimsInScope(name); cls.forEach(cl => { VERDICTS[cl.id] = VERDICTS[cl.id]||{}; VERDICTS[cl.id][name] = 'unjudged'; });
+    const n = S.nextN++;
+    DECISIONS.push({n, g:APPROVE, phase:'plan', kind:'baseline', title:name, obj:'repo:'+name, objs:setOf([...f.els].map(id => T.byId[id].context).concat(f.ctx?[f.ctx]:[])), tail:`<b>${cls.length} claims unmet</b> · planning's first proposal for the repository · baseline = the claims attached to what it homes`,
+      text:`<span class="mono">${esc(name)}</span> joined the fleet with an empty ledger; its first planning judged every claim in scope once and offers the unsatisfied set as one proposal (104). <b>Yes</b> starts everything as one bolt. <b>Pick</b> takes part. <b>Later</b> defers it.`, answers:[['yes','yes'],['pick','pick…'],['later','later']]});
+    S.addForm = null; S.dock = 'repo:'+name; toast(`${n} · baseline for ${name} raised`);
+  });
+}
+function renderDock(){
+  const k = S.dock; if(!k){ return; }
+  const [t, id] = [k.slice(0, k.indexOf(':')), k.slice(k.indexOf(':')+1)];
+  let page = null;
+  if(t==='ctx' && T.byId[id]) page = dockContext(T.byId[id]);
+  else if(t==='el' && T.byId[id]) page = dockElement(T.byId[id]);
+  else if(t==='rel' && T.byId[id]) page = dockRel(T.byId[id]);
+  else if(t==='lk' && T.byId[id]) page = dockLink(T.byId[id]);
+  else if(t==='claim') page = dockClaim(CLAIMS.find(c => c.id===id));
+  else if(t==='repo') page = dockRepo(id);
+  else if(t==='changes') page = dockChanges();
+  else if(t==='check') page = dockCheck();
+  else if(t==='addrepo') page = dockAddRepo();
+  else if(t==='ghost'){ const d = DIFF.find(d => d.id===id); const o = d ? d.obj : null; page = o ? { head:`<div class="dk-h"><div class="row"><span class="kind">${TYPE1[d.type]} · removed</span><span class="id">${esc(id)}</span><span class="nav"><button class="x" data-close="1">×</button></span></div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">in ${S.overlay==='review'?'the map at the mark':'current'}, not in target · drawn ghosted</div></div>`, body:`<section class="sec"><dl class="kv">${Object.entries(o).filter(([k]) => k!=='name').map(([k,v]) => `<dt>${esc(k)}</dt><dd class="mono">${esc(typeof v==='object'?JSON.stringify(v):v)}</dd>`).join('')}</dl></section>`, foot:'' } : null; }
+  if(!page){ closeDock(); return; }
+  $('dk-h').innerHTML = page.head; $('dk-b').innerHTML = page.body; $('dk-f').innerHTML = page.foot; $('dk-f').hidden = !page.foot;
+}
+function goTo(id){ // open the dock for any id; open an element's context in place
+  const t = T.typeOf[id];
+  if(t==='elements'){ S.open.add(T.byId[id].context); S.dock = 'el:'+id; }
+  else if(t==='contexts') S.dock = 'ctx:'+id; else if(t==='relationships') S.dock = 'rel:'+id; else if(t==='links'){ S.open.add(ctxOf(T,T.byId[id].from).id); S.dock = 'lk:'+id; }
+  else if(DIFF.find(d => d.id===id)) S.dock = 'ghost:'+id; else return;
+  document.body.classList.add('docked'); rerender(); if(t==='elements'||t==='links') requestAnimationFrame(() => { fit(); renderLinks(); });
+}
+
+/* =====================================================================
+   8. Events, keys, boot
+   ===================================================================== */
+function toggleOpen(id){ if(S.open.has(id)) S.open.delete(id); else S.open.add(id); rerender(); requestAnimationFrame(() => { fit(); renderLinks(); }); }
+function invariantCheck(fn){ const before = {pos:JSON.stringify(L.pos), edges:JSON.stringify(EDGE_PATHS)}; fn(); const after = {pos:JSON.stringify(L.pos), edges:JSON.stringify(EDGE_PATHS)};
+  let moved = 0, edges = 0; const a = JSON.parse(before.pos), b = JSON.parse(after.pos); Object.keys(b).forEach(k => { if(!a[k] || a[k].x!==b[k].x || a[k].y!==b[k].y) moved++; });
+  const ea = JSON.parse(before.edges), eb = JSON.parse(after.edges); Object.keys(eb).forEach(k => { if(ea[k]!==eb[k]) edges++; });
+  S.inv = {moved, edges, bad: moved||edges}; renderControls(); }
+document.addEventListener('click', ev => {
+  const t = ev.target.closest('[data-hd],[data-el],[data-rel],[data-lk],[data-att],[data-dec],[data-repo],[data-close],[data-go],[data-openctx],[data-dockctx],[data-capture],[data-ans],[data-arm],[data-detach],[data-litclaim],[data-lit],[data-claim],[data-decopen],[data-mode],[data-ov],#changes,#markrev,#markrev2,#fitbtn,#addrepo,#addrepo2,#checkbtn,#ar-add,#disarm,#logbtn,#theme,.scrim,.ctx,[data-ref]');
+  if(!t) return;
+  if(t.matches('[data-ref]')){ ev.preventDefault(); toast(`opens the book: ${t.getAttribute('href').slice(1)}`); return; }
+  if(t.id==='theme'){ S.theme = S.theme==='system'?'dark':S.theme==='dark'?'light':'system'; document.documentElement.toggleAttribute('data-theme', S.theme!=='system'); if(S.theme!=='system') document.documentElement.setAttribute('data-theme', S.theme); t.textContent = S.theme; return; }
+  if(t.id==='logbtn'){ $('log').hidden = !$('log').hidden; t.setAttribute('aria-expanded', String(!$('log').hidden)); return; }
+  if(t.id==='fitbtn'){ fit(); return; }
+  if(t.id==='disarm'){ disarm(); return; }
+  if(t.matches('.scrim') || t.matches('[data-close]')){ closeDock(); return; }
+  // arming: one click on any target attaches
+  if(S.arming){
+    const target = ev.target.closest('[data-el],[data-rel],[data-lk],[data-hd],.ctx'); if(!target) return;
+    const id = target.dataset.el || target.dataset.rel || target.dataset.lk || target.dataset.hd || target.dataset.id; if(!id) return;
+    const claim = S.arming; attach(claim, id); setTimeout(() => { S.dock = 'claim:'+claim; document.body.classList.add('docked'); rerender(); }, 950); return;
+  }
+  if(t.matches('[data-mode]')){ const f = t.closest('[data-facet]').dataset.facet; const mode = t.dataset.mode; invariantCheck(() => { Object.keys(S.facets).forEach(k => { if(mode!=='off' && mode!=='filter' && S.facets[k]===mode) S.facets[k]='off'; }); S.facets[f] = mode; renderCards(); renderEdges(); renderList(); requestAnimationFrame(renderLinks); }); return; }
+  if(t.matches('[data-ov]')){ S.overlay = t.dataset.ov; if(S.dock==='changes:') S.dock = null; rerender(); requestAnimationFrame(() => { fit(); renderLinks(); }); return; }
+  if(t.id==='changes'){ openDock('changes:'); return; }
+  if(t.id==='markrev' || t.id==='markrev2'){ send('mark', `mark reviewed · target @ ${HISTORY[0].rev}`, () => { S.mark = HISTORY[0].rev; }); return; }
+  if(t.id==='checkbtn'){ openDock('check:'); return; }
+  if(t.id==='addrepo' || t.id==='addrepo2'){ openDock('addrepo:'); return; }
+  if(t.id==='ar-add'){ addRepo(); return; }
+  if(t.matches('[data-ans]')){ const n = +t.dataset.n, a = t.dataset.ans; const d = DECISIONS.find(x => x.n===n);
+    if(['rename','bolt','pick','reply'].includes(a)){ const box = $('arg-'+n); if(!box) return; box.innerHTML = `<div class="field"><input type="text" placeholder="${a==='reply'?'your reply':a==='bolt'?'which bolt':a==='pick'?'which contexts':'new bolt name'}" id="argin-${n}"><button class="btn pri sm" data-send="${a}" data-n="${n}">send</button></div>`; box.querySelector('input').focus();
+      box.querySelector('[data-send]').onclick = () => { const v = $('argin-'+n).value.trim(); if(v) answer(n, a, v); }; return; }
+    answer(n, a); return; }
+  if(t.matches('[data-capture]')){ capture(t.dataset.capture); return; }
+  if(t.matches('[data-arm]')){ arm(t.dataset.arm); return; }
+  if(t.matches('[data-detach]')){ detach(t.dataset.claim, t.dataset.detach); return; }
+  if(t.matches('[data-litclaim]')){ const cl = CLAIMS.find(c => c.id===t.dataset.litclaim); S.lit = new Set(cl.attaches); rerender(); setTimeout(() => { S.lit = new Set(); rerender(); }, 2500); return; }
+  if(t.matches('[data-lit]')){ S.lit = new Set([t.dataset.lit]); rerender(); setTimeout(() => { S.lit = new Set(); rerender(); }, 2500); return; }
+  if(t.matches('[data-claim]')){ openDock('claim:'+t.dataset.claim); return; }
+  if(t.matches('[data-decopen]')){ return; }
+  if(t.matches('[data-go]')){ ev.preventDefault(); goTo(t.dataset.go); return; }
+  if(t.matches('[data-openctx]')){ const id = t.dataset.openctx; if(t.dataset.keep){ if(!S.open.has(id)) toggleOpen(id); } else toggleOpen(id); return; }
+  if(t.matches('[data-dockctx]')){ openDock('ctx:'+t.dataset.dockctx); return; }
+  if(t.matches('[data-dec]')){ const d = DECISIONS.find(x => x.n===+t.dataset.dec); goTo(d.obj); return; }
+  if(t.matches('[data-att]')){ const id = t.dataset.att; const cls = claimsOn(id); if(cls.length===1) openDock('claim:'+cls[0].id); else goTo(id); return; }
+  if(t.matches('[data-repo]')){ openDock('repo:'+t.dataset.repo); return; }
+  if(t.matches('[data-el]')){ openDock('el:'+t.dataset.el); return; }
+  if(t.matches('[data-rel]')){ const id = t.dataset.rel; if(T.byId[id]) openDock('rel:'+id); else openDock('ghost:'+id); return; }
+  if(t.matches('[data-lk]')){ const id = t.dataset.lk; if(T.byId[id]) openDock('lk:'+id); else openDock('ghost:'+id); return; }
+  if(t.matches('[data-hd]')){ const id = t.dataset.hd; if(T.byId[id]){ S.focus = id; toggleOpen(id); } return; }
+  if(t.matches('.ctx')){ const id = t.dataset.id; if(T.byId[id]){ S.focus = id; openDock('ctx:'+id); } else openDock('ghost:'+id); return; }
+});
+document.addEventListener('input', ev => {
+  const t = ev.target;
+  if(t.matches('[data-fval]')){ S.facetVal[t.dataset.fval] = t.value; invariantCheck(() => { renderCards(); renderEdges(); renderList(); requestAnimationFrame(renderLinks); }); return; }
+  if(t.id==='ar-name'){ S.addForm.name = t.value; $('dk-title').textContent = t.value||'…'; $('ar-add').disabled = !t.value || (!S.addForm.els.size && !S.addForm.ctx); $('ar-add').textContent = `add ${t.value||'repository'}`; return; }
+  if(t.matches('[data-arel]')){ if(t.checked) S.addForm.els.add(t.dataset.arel); else S.addForm.els.delete(t.dataset.arel); renderDock(); return; }
+  if(t.id==='ar-ctx'){ S.addForm.ctx = t.value; renderDock(); return; }
+});
+document.addEventListener('keydown', ev => {
+  if(ev.target.matches('input,textarea,select')) { if(ev.key==='Escape') ev.target.blur(); return; }
+  const k = ev.key;
+  if(k==='Escape'){ if(S.arming) return disarm(); if(S.dock) return closeDock(); if(S.open.size){ S.open.clear(); rerender(); requestAnimationFrame(() => { fit(); renderLinks(); }); } return; }
+  if(k==='f'){ fit(); return; }
+  if(k==='o'){ S.overlay = S.overlay==='none'?'current':S.overlay==='current'?'review':'none'; rerender(); requestAnimationFrame(() => { fit(); renderLinks(); }); return; }
+  if(k==='j' || k==='k' || k==='ArrowDown' || k==='ArrowUp'){ const ids = L.order; let i = ids.indexOf(S.focus); i = S.focus==null ? 0 : (k==='j'||k==='ArrowDown') ? Math.min(ids.length-1, i+1) : Math.max(0, i-1); S.focus = ids[i]; renderCards(); renderEdges(); requestAnimationFrame(renderLinks); document.querySelector(`.ctx[data-id="${S.focus}"]`)?.focus({preventScroll:true}); ev.preventDefault(); return; }
+  if(k==='Enter' && S.focus){ toggleOpen(S.focus); return; }
+});
+window.addEventListener('resize', () => { fit(); renderLinks(); });
+(function boot(){
+  const q = new URLSearchParams(location.search);
+  if(q.get('theme')){ S.theme = q.get('theme'); document.documentElement.setAttribute('data-theme', S.theme); $('theme').textContent = S.theme; }
+  L = layout(); S.focus = null;
+  if(q.get('overlay')) S.overlay = q.get('overlay');
+  (q.get('open')||'').split(',').filter(Boolean).forEach(id => { if(T.byId[id]) S.open.add(id); });
+  if(q.get('dock')) { S.dock = q.get('dock'); document.body.classList.add('docked'); }
+  renderAll();
+  // the layout is final: nothing after this moves a context
+  requestAnimationFrame(() => { fit(); renderLinks(); if(!S.inv){ S.inv = {moved:0, edges:0}; renderControls(); } });
+})();
+</script>
