@@ -828,6 +828,24 @@ requirements, iterated against the running plan rather than on paper.
     a session is handed the producers in force when it starts (89).
     Changing a producer is a chore (123).
 
+### A.22 Endpoints and routing
+
+191. How a place's services are reached is a binding of the host, never
+    of the machinery: the machinery gives each service a port derived
+    from its place (45) and an address to bind, and asks the host's
+    router for the URL it records (46). A router is one of at least: a
+    local router on the operator's machine that names the place
+    (portless: https://<place>.localhost); a private-network router
+    that names the host on the operator's network (a tailnet hostname,
+    with the host's own proxy or the network's serve feature giving
+    each service a name); and a managed platform that runs the host,
+    exposes it, and hands the machinery the hostname or the URL, where
+    services bind every interface and the platform's ingress publishes
+    them within the operator's private network. The manifest names the
+    router per host; the same repository declaration serves under
+    every router; nothing beyond the private network is published
+    unless the operator says so (46).
+
 ## 5. Requirements — Part B, the control plane contract
 
 The data plane reaches durable, shared state and the operator only

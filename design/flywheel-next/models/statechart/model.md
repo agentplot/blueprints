@@ -9,7 +9,7 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–190);
+Requirements are cited by their number in `requirements.md` (1–191);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -19,8 +19,8 @@ sessions and hosts; 12 answers section 10 of the requirements one
 heading at a time; 13 gives the crate boundary; 14 walks S1 to S34; 15
 checks the invariants; 16 describes the diagrams; 17 covers the agent
 kinds, the pull-request landing, operation, intents as changes with
-gathered elaborations, and deliverables with their producers (A.17 to
-A.21).
+gathered elaborations, deliverables with their producers, and endpoints
+and routing (A.17 to A.22).
 
 `machines/check.py` validates every machine against `machines/schema.json`,
 every guard and effect name against `machines/atoms.yaml`, every profile
@@ -911,10 +911,16 @@ S33). A landed line goes to `removing` and is removed; the bolt's
 A process started in a place, by a session or by the operator, belongs
 to the place: `wt tether` ends it when the place is removed, and its
 ports are hashed from the worktree by portless so two places on one
-host never collide (45). The place machine's `ready` state records the
-endpoints portless serves for the place into the owner record
-(`record_endpoints`), and the page shows them beside the bolt as links
-(46); publishing beyond the private network is never the machinery's.
+host never collide (45). How those ports are reached is the host
+binding's router, never the machinery's (191): the machinery hands the
+process `$PORT` and `$BIND` and asks the router in force for the URL —
+`https://<place>.localhost` from portless on the operator's machine,
+a tailnet name on a host in the operator's network, or the URL a
+managed platform's ingress publishes. The place machine's `ready`
+state records the endpoints the router names for the place into the
+owner record (`record_endpoints`), and the page shows them beside the
+bolt as links (46); publishing beyond the private network is never the
+machinery's.
 
 ### 7.6 Removal, holds and strays
 
@@ -1921,3 +1927,27 @@ shipped or overridden, is a chore on the books, and the binding's
 version in the header tells a session started before it from one
 started after (123). The engine reads only names and paths; no
 producer's text reaches it (119).
+
+**A.22 — endpoints and routing.** The service machine gives a process
+a port derived from its place and an address to bind, and records as
+its endpoint whatever URL the host's router names; it knows no router
+(191). `profiles/host.yaml` binds three under `router:`, chosen per
+host in the manifest. `portless`, the operator's own machine: bind
+127.0.0.1, the port from `portless port`, the endpoint
+`https://<place>.localhost` as `portless list` names it. `tailnet`, a
+host on the operator's private network: bind 127.0.0.1, the same port
+derivation, and a name per service on the host — a path under the
+host's tailnet hostname through `tailscale serve`, registered on
+`start_service` and cleared on `stop_service`, or a hostname per
+service through the host's own caddy driven by its admin API, holding
+the tailnet certificate. `platform`, a managed host: bind 0.0.0.0 so
+the platform's ingress reaches the port on every interface, the
+endpoint read from the hostname or URL the platform hands the host,
+published within the operator's private network by the platform's own
+access control. `$PORT` and `$BIND` are the only things a declaration
+sees, so one `.flywheel/services.yaml` serves under every router;
+`service.endpoint` and `place.endpoints_served` read through the
+router in force; the machinery publishes nothing wider than the
+private network under any of them (46). A reverse proxy inside the
+flywheel binary would be a fourth router, not a requirement
+(`gaps.md`).

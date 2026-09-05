@@ -426,6 +426,24 @@ the operator may reverse by a response on the file; an entry with
   binding falls back to a pid file under the place's `.flywheel/` and
   the port's listener.
 
-- **portless as the endpoint source.** `portless list` filtered by the
-  worktree's hash is assumed to name every endpoint a place serves.
-  Not verified.
+- **portless as the endpoint source.** Under the portless router,
+  `portless list` filtered by the worktree's hash is assumed to name
+  every endpoint a place serves. Not verified.
+
+- **191 the routers.** Three routers are bound in `profiles/host.yaml`
+  and none is verified: the `tailscale serve --set-path` form and its
+  `status --json` output, caddy's admin API route shape, and what a
+  managed platform hands a host (an environment variable, a metadata
+  endpoint) are written from each tool's documentation. Under the
+  tailnet and platform routers the port is hashed from the place's
+  path by the machinery itself, the same derivation portless uses, so a
+  repository moved between hosts keeps its ports; that derivation is
+  the machinery's one piece of routing and it stays a pure function of
+  the path. A reverse proxy owned by the flywheel binary — the host
+  running its own listener and routing `<place>-<service>` names to
+  ports — would be a fourth router the binding could add without a
+  machine change; it is an **option, not required**, since every host
+  the model runs on already has one of the three. Whether a platform's
+  ingress can address one port per place or needs a path per service
+  is the platform's; the binding's `endpoint` read takes either.
+  **Open** until a host of each kind runs.
