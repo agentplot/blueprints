@@ -43,18 +43,21 @@
 <use href="#marker" x="200" y="270" color="#7b5cb8" data-state="signal.unmoved"/>
 <text x="200" y="296" font-size="9.5" fill="#666" text-anchor="middle">unmoved</text>
 <text x="200" y="309" font-size="8.5" fill="#999" text-anchor="middle">counted by source and age · never discarded</text>
-<use href="#marker" x="480" y="270" color="#7b5cb8" data-state="signal.attached"/>
-<text x="480" y="296" font-size="9.5" fill="#666" text-anchor="middle">attached</text>
-<text x="480" y="309" font-size="8.5" fill="#999" text-anchor="middle">evidence on an open intent</text>
-<use href="#marker" x="660" y="270" color="#7b5cb8" data-state="signal.challenging"/>
-<text x="660" y="296" font-size="9.5" fill="#666" text-anchor="middle">challenging</text>
-<text x="660" y="309" font-size="8.5" fill="#999" text-anchor="middle">against a standing claim</text>
-<use href="#marker" x="840" y="270" color="#7b5cb8" data-state="signal.joined"/>
-<text x="840" y="296" font-size="9.5" fill="#666" text-anchor="middle">joined</text>
-<text x="840" y="309" font-size="8.5" fill="#999" text-anchor="middle">part of a proposed intent</text>
-<use href="#marker" x="1020" y="270" color="#7b5cb8" data-state="signal.answered"/>
-<text x="1020" y="296" font-size="9.5" fill="#666" text-anchor="middle">answered</text>
-<text x="1020" y="309" font-size="8.5" fill="#999" text-anchor="middle">names what settled it</text>
+<use href="#marker" x="400" y="270" color="#7b5cb8" data-state="signal.attached"/>
+<text x="400" y="296" font-size="9.5" fill="#666" text-anchor="middle">attached</text>
+<text x="400" y="309" font-size="8.5" fill="#999" text-anchor="middle">evidence on an open intent</text>
+<use href="#marker" x="560" y="270" color="#7b5cb8" data-state="signal.challenging"/>
+<text x="560" y="296" font-size="9.5" fill="#666" text-anchor="middle">challenging</text>
+<text x="560" y="309" font-size="8.5" fill="#999" text-anchor="middle">against a claim · stales its verdicts</text>
+<use href="#marker" x="720" y="270" color="#7b5cb8" data-state="signal.joined"/>
+<text x="720" y="296" font-size="9.5" fill="#666" text-anchor="middle">joined</text>
+<text x="720" y="309" font-size="8.5" fill="#999" text-anchor="middle">part of a proposed intent</text>
+<use href="#marker" x="880" y="270" color="#7b5cb8" data-state="signal.answered"/>
+<text x="880" y="296" font-size="9.5" fill="#666" text-anchor="middle">answered</text>
+<text x="880" y="309" font-size="8.5" fill="#999" text-anchor="middle">names what settled it</text>
+<use href="#marker" x="1040" y="270" color="#7b5cb8" data-state="signal.routed"/>
+<text x="1040" y="296" font-size="9.5" fill="#666" text-anchor="middle">routed</text>
+<text x="1040" y="309" font-size="8.5" fill="#999" text-anchor="middle">chore or ask the session offered</text>
 <use href="#cross" x="1200" y="270" data-state="signal.dropped"/>
 <text x="1200" y="296" font-size="9.5" fill="#666" text-anchor="middle">dropped</text>
 <text x="1200" y="309" font-size="8.5" fill="#999" text-anchor="middle">with a reason · revived only by dictation</text>
@@ -70,7 +73,7 @@
 <text x="480" y="439" font-size="8.5" fill="#999" text-anchor="middle">curator session · reads claims.json and the open intents</text>
 <use href="#marker" x="760" y="400" color="#2e9e5b" data-state="curation.applying"/>
 <text x="760" y="426" font-size="9.5" fill="#666" text-anchor="middle">applying</text>
-<text x="760" y="439" font-size="8.5" fill="#999" text-anchor="middle">record_moves · propose_intents · never open_intent</text>
+<text x="760" y="439" font-size="8.5" fill="#999" text-anchor="middle">record_moves (six moves) · propose_intents · never open_intent</text>
 <path d="M 774 396 C 900 370, 1050 370, 1188 396" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
 <use href="#pause" x="1200" y="400" data-state="intent.proposed"/>
 <rect x="1150" y="351" width="100" height="18" rx="9" fill="#c9962e"/><text x="1200" y="364" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle" data-decision="intent-proposed">intent-proposed</text>
@@ -102,7 +105,7 @@
 <rect x="630" y="651" width="200" height="18" rx="9" fill="#c05b5b"/><text x="730" y="664" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">atlas · satisfied @3 · 9c1e4f2</text>
 <use href="#cross" x="1000" y="660" data-state="ledger-cell.stale"/>
 <text x="1000" y="686" font-size="9.5" fill="#666" text-anchor="middle">stale</text>
-<text x="1000" y="699" font-size="8.5" fill="#999" text-anchor="middle">claim version moved · or evidence gone · forty commits change nothing</text>
+<text x="1000" y="699" font-size="8.5" fill="#999" text-anchor="middle">claim version moved · evidence gone · or a challenge stands · forty commits change nothing</text>
 <path d="M 1010 650 C 1060 600, 1150 570, 1260 560" fill="none" stroke="#c05b5b" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mR)"/>
 <text x="1200" y="612" font-size="9" fill="#a34848" text-anchor="middle">reads claim.version</text>
 <rect x="1270" y="536" width="110" height="18" rx="9" fill="#7b5cb8"/><text x="1325" y="549" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">one-writer@4</text>
