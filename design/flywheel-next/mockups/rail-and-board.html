@@ -46,6 +46,19 @@
     intents in Inception and press explore (with-operator or standing). Drop, later, rename,
     service start/stop, finish and ask-again are buttons in the dock.
   - A closed intent and a finished elaboration stay in Inception greyed with "leaves in Nd".
+  - The board has two views, switched in its header or with m: "phases" (the lanes) and
+    "map", the system context map as the scope surface (198, accepted; not yet in
+    requirements.md). The map draws willdan's repositories and the external systems they meet;
+    a repository node carries its kinds and capabilities, a claim summary (standing · unmet,
+    coloured by unmet), and the same decision markers as the lanes; a focused rail card lights
+    its node; a node click opens the repository dock, whose claims gain "show on map".
+    Scope is a gesture: select a claim (side panel or repo dock), the nodes in its scope light;
+    click nodes to toggle them in or out; the panel names the rule the set matches (all ·
+    kind:<k> · capability:<c> · named) and "send scope" logs one response; a repository pulled
+    into or out of scope changes its unmet count at once and is marked "planning due".
+    "Since last review" (122) dims unchanged nodes and edges and outlines the changed ones with
+    a note. "Add repository" places a node, asks kinds and capabilities, shows the claims that
+    fall into scope, and a baseline decision with a new number appears in the rail (104).
   - Under 760px the rail and the board are two tabs; the dock is full screen with a back
     control. The clock starts at 07:40 and advances a minute per response. Detail beyond the
     seed is invented and marked sample. Review switches: ?theme=dark|light, ?nodock, ?open=<key>.
@@ -168,7 +181,7 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
 .vd{font:600 10.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:4px;border:1px solid var(--line);color:var(--ink3);white-space:nowrap}
 .vd.satisfied{color:var(--ok);border-color:var(--ok)} .vd.not-satisfied{color:var(--crit);border-color:var(--crit)} .vd.stale{color:var(--warn);border-color:var(--warn)} .vd.unjudged{color:var(--ink2)} .vd.not-applicable{color:var(--ink3);border-style:dashed}
 .claims{display:flex;flex-direction:column}
-.claim{display:grid;grid-template-columns:1fr auto auto;gap:4px 10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line2);font-size:12.5px}
+.claim{display:grid;grid-template-columns:1fr auto auto auto;gap:4px 8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line2);font-size:12.5px}
 .claim .cn{font:600 12px var(--mono)} .claim .ce{grid-column:1/-1;color:var(--ink3);font-size:11.5px}
 .claim select{padding:2px 6px;font:11.5px var(--mono)}
 .kc{display:flex;flex-wrap:wrap;gap:4px}
@@ -185,7 +198,74 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
 /* ---------- frame ---------- */
 .wrap{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);height:calc(100vh - var(--top) - var(--hosts))}
 .rail{border-right:1px solid var(--line);background:var(--surface);overflow:auto;padding:10px 12px 60px}
-.board{display:grid;grid-template-columns:minmax(225px,.95fr) minmax(185px,.6fr) minmax(330px,1.45fr) minmax(215px,.9fr);position:relative;overflow:hidden}
+.board{display:flex;flex-direction:column;position:relative;overflow:hidden;min-width:0}
+.board-h{flex:none;display:flex;align-items:center;gap:10px;padding:6px 12px;border-bottom:1px solid var(--line2);background:var(--surface2);font-size:12px;color:var(--ink3);min-height:36px;flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.seg button{padding:3px 10px;font-size:12px;font-weight:600;color:var(--ink2)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.board-h .r{margin-left:auto;display:flex;gap:8px;align-items:center}
+.board-h label{display:inline-flex;align-items:center;gap:5px;color:var(--ink2);cursor:pointer}
+.board-h input[type=checkbox]{margin:0;accent-color:var(--accent)}
+.lanes{flex:1;min-height:0;display:grid;grid-template-columns:minmax(225px,.95fr) minmax(185px,.6fr) minmax(330px,1.45fr) minmax(215px,.9fr)}
+.map{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 300px}
+.map[hidden],.lanes[hidden]{display:none}
+.map-stage-wrap{position:relative;overflow:auto;background:radial-gradient(circle at 1px 1px,var(--line2) 1px,transparent 1.5px) 0 0/22px 22px,var(--bg)}
+.map-stage{position:relative;width:980px;height:690px;transform-origin:0 0}
+.map-stage svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.map-stage .edge{fill:none;stroke:var(--ink3);stroke-width:1.4;marker-end:url(#arrow);opacity:.75}
+.map-stage .edge.direct{stroke-dasharray:4 3}
+.map-stage .edge.dim{opacity:.15}
+.map-stage .edge.changed{stroke:var(--warn);stroke-width:2;opacity:1}
+.map-stage .edge.removed{stroke:var(--crit);stroke-dasharray:3 3;opacity:1}
+.map-stage .elabel{font:10px var(--mono);fill:var(--ink3)}
+.map-stage .elabel.changed{fill:var(--warn)} .map-stage .elabel.removed{fill:var(--crit)}
+.node{position:absolute;width:190px;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:7px 9px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:opacity .15s}
+.node.ext{width:150px;border-style:dashed;background:var(--surface2)}
+.node .nh{display:flex;align-items:baseline;gap:6px}
+.node .nk{font:600 9.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+.node .nn{font-weight:800;font-size:13px}
+.node .tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px}
+.node .tag{font:10px var(--mono);border:1px solid var(--line2);border-radius:3px;padding:0 4px;color:var(--ink2);background:var(--surface2)}
+.node .tag.kind{border-color:var(--accent);color:var(--accent);background:transparent}
+.node .cs{display:flex;align-items:center;gap:6px;margin-top:6px;font:11px var(--mono);color:var(--ink2)}
+.node .cs .um{font-weight:700;padding:0 6px;border-radius:999px;border:1px solid var(--line);color:var(--ink3)}
+.node .cs .um.some{color:var(--warn);border-color:var(--warn)} .node .cs .um.many{color:#fff;background:var(--crit);border-color:var(--crit)}
+.node .marks{margin-top:5px}
+.node.lit{background:var(--lit);border-color:var(--lit-line)}
+.node.open-in-dock{box-shadow:inset 0 0 0 1px var(--accent)}
+.node.inscope{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+.node.outscope{opacity:.45}
+.node.dim{opacity:.3}
+.node.changed{border-color:var(--warn);box-shadow:0 0 0 2px color-mix(in srgb,var(--warn) 35%,transparent);opacity:1}
+.node .rnote{margin-top:6px;font:10px var(--mono);color:var(--warn);border-top:1px dashed var(--warn);padding-top:4px;line-height:1.35}
+.node .rnote.rm{color:var(--crit);border-color:var(--crit)}
+.node .due{font:600 10px var(--mono);color:var(--warn);margin-top:4px}
+.node.new{border-color:var(--ok);box-shadow:0 0 0 2px color-mix(in srgb,var(--ok) 30%,transparent)}
+.map-panel{border-left:1px solid var(--line);background:var(--surface);overflow:auto;padding:10px 12px 40px;font-size:12.5px}
+.map-panel h3{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin:10px 0 6px;display:flex;gap:8px;align-items:baseline}
+.map-panel h3 .r{margin-left:auto;letter-spacing:0;text-transform:none;font-weight:500;font-size:11px}
+.cl-list{display:flex;flex-direction:column;gap:2px;max-height:38vh;overflow:auto;border:1px solid var(--line2);border-radius:6px;padding:4px}
+.cl-list button{display:flex;align-items:center;gap:6px;text-align:left;padding:3px 6px;border-radius:4px;font:11.5px var(--mono);color:var(--ink)}
+.cl-list button:hover{background:var(--surface2)}
+.cl-list button.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.cl-list button .n{margin-left:auto;font-size:10px;color:var(--ink3)}
+.scope-box{border:1px solid var(--accent);border-radius:8px;padding:8px 10px;background:color-mix(in srgb,var(--accent-soft) 60%,transparent);margin-top:6px}
+.scope-box .cn{font:700 12.5px var(--mono);color:var(--accent);word-break:break-all}
+.scope-box .rule{font:700 13px var(--mono);margin:6px 0 2px}
+.scope-box .rule.named{color:var(--warn)}
+.scope-box .set{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 8px}
+.scope-box .set .lk.on{color:var(--accent);border-color:var(--accent)} .scope-box .set .lk.off{opacity:.5;text-decoration:line-through}
+.scope-box .acts{display:flex;gap:6px;flex-wrap:wrap}
+.addrepo{border:1px dashed var(--ok);border-radius:8px;padding:8px 10px;margin-top:8px}
+.addrepo .grid{display:flex;flex-wrap:wrap;gap:4px 8px;margin:4px 0 8px}
+.addrepo label{display:inline-flex;align-items:center;gap:4px;font:11.5px var(--mono);cursor:pointer}
+.addrepo input[type=checkbox]{margin:0;accent-color:var(--ok)}
+.addrepo input[type=text]{width:100%;font:12px var(--mono)}
+.addrepo .found{font-size:12px;color:var(--ink2);margin:6px 0}
+.addrepo .found b{color:var(--ok)}
+.rev-list{display:flex;flex-direction:column;gap:3px}
+.rev-list div{font:11.5px var(--mono);color:var(--ink2);padding:3px 6px;border-left:2px solid var(--warn)}
+.rev-list div.rm{border-left-color:var(--crit)}
 .lane{overflow:auto;padding:10px 10px 60px;border-right:1px solid var(--line2)}
 .lane:last-child{border-right:0}
 .lane.plan{background:repeating-linear-gradient(-45deg,transparent 0 8px,var(--accent-hatch) 8px 9px),var(--bg);border-left:1px dashed var(--line);border-right:1px dashed var(--line)}
@@ -408,7 +488,9 @@ body.docked .dock{transform:none}
   .top .count span.hint{display:none}
   .wrap{grid-template-columns:1fr;height:calc(100vh - var(--top) - var(--hosts) - 50px)}
   .rail{display:none;border-right:0}
-  .board{display:none;grid-template-columns:1fr;grid-auto-rows:auto;overflow:auto}
+  .board{display:none;overflow:auto}
+  .lanes{grid-template-columns:1fr;grid-auto-rows:auto;overflow:visible}
+  .map{grid-template-columns:1fr;grid-auto-rows:auto}
   .lane{overflow:visible;border-right:0;border-bottom:1px solid var(--line);padding-bottom:16px}
   body[data-tab="plan"] .rail{display:block}
   body[data-tab="board"] .board{display:block}
@@ -427,7 +509,7 @@ body.docked .dock{transform:none}
   <h1>Rail and Board</h1>
   <span class="meta">willdan · 2026-09-04 <span class="mono" id="clock">07:40</span></span>
   <div class="count"><b id="count">12</b><span>decisions</span><span class="hint" id="yesallhint">· "yes all" answers 412–417, 422, 424</span></div>
-  <span class="keys" style="display:flex;gap:10px;font-size:11px;color:var(--ink3)"><span><kbd>j</kbd><kbd>k</kbd> rail</span><span><kbd>↵</kbd> open</span><span><kbd>y</kbd><kbd>n</kbd><kbd>l</kbd> answer</span><span><kbd>/</kbd> capture</span><span><kbd>esc</kbd> close</span></span>
+  <span class="keys" style="display:flex;gap:10px;font-size:11px;color:var(--ink3)"><span><kbd>j</kbd><kbd>k</kbd> rail</span><span><kbd>↵</kbd> open</span><span><kbd>y</kbd><kbd>n</kbd><kbd>l</kbd> answer</span><span><kbd>m</kbd> map</span><span><kbd>/</kbd> capture</span><span><kbd>esc</kbd> close</span></span>
   <button class="btn quiet theme" id="theme" title="theme">system</button>
   <button class="btn" id="logbtn" aria-expanded="false"><b id="sent">0</b> sent</button>
   <button class="btn pri" id="yesall">yes all</button>
@@ -436,10 +518,14 @@ body.docked .dock{transform:none}
 <main class="wrap">
   <aside class="rail" id="rail" aria-label="Decisions"></aside>
   <section class="board" id="board" aria-label="Status by phase">
-    <section class="lane inception" id="lane-inception" aria-label="Inception"></section>
-    <section class="lane plan" id="lane-plan" aria-label="Bolt plan"></section>
-    <section class="lane construction" id="lane-construction" aria-label="Construction"></section>
-    <section class="lane operation" id="lane-operation" aria-label="Operation"></section>
+    <div class="board-h" id="board-h"></div>
+    <div class="lanes" id="lanes">
+      <section class="lane inception" id="lane-inception" aria-label="Inception"></section>
+      <section class="lane plan" id="lane-plan" aria-label="Bolt plan"></section>
+      <section class="lane construction" id="lane-construction" aria-label="Construction"></section>
+      <section class="lane operation" id="lane-operation" aria-label="Operation"></section>
+    </div>
+    <div class="map" id="map" hidden><div class="map-stage-wrap" id="map-wrap"><div class="map-stage" id="map-stage"></div></div><aside class="map-panel" id="map-panel"></aside></div>
     <div class="scrim" id="scrim"></div>
     <aside class="dock" id="dock" role="dialog" aria-modal="false" aria-labelledby="dk-title">
       <div class="dk-h" id="dk-h"></div>
@@ -473,36 +559,36 @@ const PH = {inception:'inception', plan:'bolt plan', construction:'construction'
 const S = {
   minutes: 7*60+40,
   decisions: [
-    {n:412, g:APPROVE, phase:'inception', kind:'intent', title:'atlas-provider-limits', obj:'i:atlas-provider-limits',
+    {n:412, g:APPROVE, phase:'inception', kind:'intent', title:'atlas-provider-limits', obj:'i:atlas-provider-limits', repo:'books',
      tail:'curation · <b>7 signals</b> · 3 sources · 12d · elaborations: research → gathered in 424 · prototype (standing)',
      answers:[['yes','yes'],['drop','drop'],['split','split']]},
-    {n:413, g:APPROVE, phase:'plan', kind:'unit', title:'atlas · status-writer', bolt:'plan-decisions', boltState:'open', obj:'d:413',
+    {n:413, g:APPROVE, phase:'plan', kind:'unit', title:'atlas · status-writer', bolt:'plan-decisions', boltState:'open', obj:'d:413', repo:'atlas',
      tail:'covers one-writer sc.1,2 · <b>completes it</b> · type default · yes starts spec → build ×2 → review → merge',
      answers:[['yes','yes'],['drop','drop'],['redo','redo'],['bolt','bolt'],['new bolt','new bolt']]},
-    {n:414, g:APPROVE, phase:'plan', kind:'unit', title:'atlas · retry-jitter', bolt:'atlas-retry-behaviour-and-jitter-limits', boltState:'new', obj:'d:414',
+    {n:414, g:APPROVE, phase:'plan', kind:'unit', title:'atlas · retry-jitter', bolt:'atlas-retry-behaviour-and-jitter-limits', boltState:'new', obj:'d:414', repo:'atlas',
      tail:'routed from ask <b>“retries hammer the provider”</b> · no intent · type fast',
      answers:[['yes','yes'],['drop','drop'],['rename','rename'],['bolt','bolt']]},
-    {n:415, g:APPROVE, phase:'construction', kind:'chores', title:'atlas · 3 chores', obj:'b:plan-decisions', tail:'offered by wi-#420 review · 06:31',
+    {n:415, g:APPROVE, phase:'construction', kind:'chores', title:'atlas · 3 chores', obj:'b:plan-decisions', repo:'atlas', tail:'offered by wi-#420 review · 06:31',
      chores:[['a','stale AGENTS.md','atlas/AGENTS.md'],['b','citation fix','books/atlas/plan.md'],['c','rename ref','atlas/src/plan/refs.py']],
      answers:[['yes','yes'],['pick','pick'],['no','no']]},
-    {n:416, g:APPROVE, phase:'construction', kind:'land', title:'switchboard / plan-rows', obj:'b:plan-rows', tail:'<b>4 units merged</b> · gates green · nothing in flight · yes lands through the pull request',
+    {n:416, g:APPROVE, phase:'construction', kind:'land', title:'switchboard / plan-rows', obj:'b:plan-rows', repo:'switchboard', tail:'<b>4 units merged</b> · gates green · nothing in flight · yes lands through the pull request',
      answers:[['yes','yes'],['hold','hold']]},
     {n:417, g:APPROVE, phase:'plan', kind:'baseline', title:'new-repo', obj:'d:417', repo:'new-repo', tail:'<b>11 claims unmet</b> · 8 chores · 3 units · planning\'s first proposal for the repository',
      picks:[['claims','11 claims'],['chores','8 chores'],['units','3 units']],
      answers:[['yes','yes'],['pick','pick'],['later','later']]},
-    {n:422, g:APPROVE, phase:'plan', kind:'proposal', title:'plan · atlas', obj:'d:422', tail:'planning 07:31 · <b>2 bolts</b> · 5 units · 4 dependencies · read whole; each unit answerable before the yes',
+    {n:422, g:APPROVE, phase:'plan', kind:'proposal', title:'plan · atlas', obj:'d:422', repo:'atlas', tail:'planning 07:31 · <b>2 bolts</b> · 5 units · 4 dependencies · read whole; each unit answerable before the yes',
      answers:[['yes','yes'],['redo','redo'],['later','later']]},
-    {n:424, g:APPROVE, phase:'inception', kind:'gathered', title:'research · provider envelopes', objs:['i:atlas-provider-limits','i:loop-cadence','i:provider-key-rotation'], obj:'i:atlas-provider-limits',
+    {n:424, g:APPROVE, phase:'inception', kind:'gathered', title:'research · provider envelopes', objs:['i:atlas-provider-limits','i:loop-cadence','i:provider-key-rotation'], obj:'i:atlas-provider-limits', repo:'books',
      intents:['atlas-provider-limits','loop-cadence','provider-key-rotation'], type:'research', subject:'what a provider limit is, where it is declared, and who enforces it',
      tail:'curation · <b>3 intents</b> · one self-closing research session · type research',
      answers:[['yes','yes'],['drop','drop'],['pick','pick'],['type','type']]},
-    {n:418, g:DECIDE, phase:'inception', kind:'close', title:'intent loop-granularity', obj:'i:loop-granularity', tail:'all <b>4 elaborations</b> done · close makes 3 claims standing',
+    {n:418, g:DECIDE, phase:'inception', kind:'close', title:'intent loop-granularity', obj:'i:loop-granularity', repo:'books', tail:'all <b>4 elaborations</b> done · close makes 3 claims standing',
      answers:[['close','close'],['keep open','keep open']]},
-    {n:419, g:DECIDE, phase:'inception', kind:'idle', title:'prototype plan-derivation', obj:'i:atlas-provider-limits', sess:'proto', tail:'standing · <b>idle 14h</b> · on intent atlas-provider-limits',
+    {n:419, g:DECIDE, phase:'inception', kind:'idle', title:'prototype plan-derivation', obj:'i:atlas-provider-limits', sess:'proto', repo:'books', tail:'standing · <b>idle 14h</b> · on intent atlas-provider-limits',
      answers:[['finish','finish'],['keep','keep']]},
-    {n:420, g:DECIDE, phase:'construction', kind:'moved', title:'claim sessions/one-writer <i>v3→v4</i>', obj:'b:plan-decisions', tail:'bolt plan-decisions cites v3 · <b>2 items in flight</b>',
+    {n:420, g:DECIDE, phase:'construction', kind:'moved', title:'claim sessions/one-writer <i>v3→v4</i>', obj:'b:plan-decisions', repo:'atlas', tail:'bolt plan-decisions cites v3 · <b>2 items in flight</b>',
      answers:[['amend bolt','amend bolt'],['land and follow','land and follow']]},
-    {n:421, g:ANSWER, phase:'construction', kind:'blocked', title:'wi-#418 build · plan-decisions', obj:'b:plan-decisions', sess:'wi418', q:'should Ready imply Backlog cleared?', tail:'session alive · other items of the bolt running',
+    {n:421, g:ANSWER, phase:'construction', kind:'blocked', title:'wi-#418 build · plan-decisions', obj:'b:plan-decisions', repo:'atlas', sess:'wi418', q:'should Ready imply Backlog cleared?', tail:'session alive · other items of the bolt running',
      answers:[['reply','reply']]},
   ],
   attention: [
@@ -532,14 +618,34 @@ const S = {
   gatherings:[{n:424, type:'research', state:'proposed', intents:['atlas-provider-limits','loop-cadence','provider-key-rotation']}],
   explorations:[], planning:null, deferred:[], picked:new Set(),
   repos:[
-    {id:'atlas', kinds:['service','worker','cli'], caps:['http','provider-calls','status-table','retry'], manifest:'atlas/flywheel.yaml · landing: direct merge',
-     claims:[['providers/one-writer @v3','not satisfied','kind:service','unit 413 proposed · completes it'],['providers/rate-envelope @v1','not satisfied','capability:provider-calls','3 intents argue with it · gathering 424'],['plan/sink-marks @v2','satisfied','all','tail-derive merged 09-03'],['plan/tail-cursor @v1','unjudged','all','standing since 05:40 · proposal 422 covers sc.1–3'],['repo/readme @v2','satisfied','all','—'],['repo/ci @v1','satisfied','all','gates on push'],['sessions/one-writer @v4','stale','kind:worker','judged at v3 · decision 420'],['ops/key-rotation @v1','not applicable','capability:queue','atlas declares no queue']]},
-    {id:'switchboard', kinds:['service'], caps:['http','rows','sinks'], manifest:'switchboard/flywheel.yaml · landing: pull-request',
+    {id:'atlas', kinds:['service','data-product'], caps:['http','worker','provider-calls','status-table'], manifest:'atlas/flywheel.yaml · landing: direct merge',
+     claims:[['providers/one-writer @v3','not satisfied','kind:service','unit 413 proposed · completes it'],['providers/rate-envelope @v1','not satisfied','capability:provider-calls','3 intents argue with it · gathering 424'],['plan/sink-marks @v2','satisfied','all','tail-derive merged 09-03'],['plan/tail-cursor @v1','unjudged','all','standing since 05:40 · proposal 422 covers sc.1–3'],['repo/readme @v2','satisfied','all','—'],['repo/ci @v1','satisfied','all','gates on push'],['sessions/one-writer @v4','stale','capability:worker','judged at v3 · decision 420'],['ops/key-rotation @v1','not applicable','capability:queue','atlas declares no queue']]},
+    {id:'switchboard', kinds:['service'], caps:['http','pipeline','rows','sinks'], manifest:'switchboard/flywheel.yaml · landing: pull-request',
      claims:[['plan/sink-marks @v2','satisfied','capability:sinks','rows-cursor merged'],['sessions/idle-bound @v2','satisfied','all','idle-timeout landed 06:52'],['plan/tail-cursor @v1','unjudged','capability:sinks','planning due'],['repo/readme @v2','satisfied','all','—'],['repo/ci @v1','satisfied','all','—'],['providers/rate-envelope @v1','not applicable','capability:provider-calls','no provider calls']]},
     {id:'new-repo', kinds:['service'], caps:['http'], manifest:'new-repo/flywheel.yaml · joined 09-03 23:00 · ledger empty',
      claims:[['repo/readme @v2','not satisfied','all','no README at root'],['repo/ci @v1','not satisfied','all','no gate runs on push'],['repo/as-built @v1','not satisfied','all','no as-built record'],['repo/agents-md @v1','not satisfied','all','no AGENTS.md'],['boundary/one-owner @v2','not satisfied','all','no CODEOWNERS'],['boundary/no-cross-import @v1','not satisfied','kind:service','—'],['boundary/ports-derived @v1','not satisfied','kind:service','—'],['owner/named @v1','not satisfied','all','—'],['invariant/health-endpoint @v1','not satisfied','capability:http','—'],['invariant/graceful-stop @v1','not satisfied','capability:http','—'],['behavior/status-row @v1','not satisfied','named','named for new-repo by 09-03 ask'],['providers/rate-envelope @v1','not applicable','capability:provider-calls','no provider calls'],['plan/sink-marks @v2','not applicable','capability:sinks','no sinks']]},
     {id:'books', kinds:['books'], caps:[], manifest:'books/flywheel.yaml · the books repository · claims live here', claims:[]},
   ],
+  view:'phases', scopeSel:null, scopeSet:new Set(), addRepo:null,
+  map:{
+    nodes:[
+      {id:'atlas', x:330, y:40}, {id:'switchboard', x:330, y:410}, {id:'new-repo', x:610, y:430}, {id:'books', x:60, y:200},
+      {id:'provider-a', ext:true, name:'provider A', what:'rate-limited HTTP API · one key per org', x:640, y:30},
+      {id:'provider-b', ext:true, name:'provider B', what:'HTTP API · rotates keys on the 1st', x:640, y:170},
+      {id:'datadog', ext:true, name:'Datadog', what:'metrics and logs · the 429 rate comes from here', x:820, y:90},
+      {id:'github', ext:true, name:'GitHub', what:'the shared lines · pull requests and gates', x:60, y:560},
+      {id:'portal', ext:true, name:'portal', what:'the operator-facing web app · reads rows', x:610, y:600},
+      {id:'warehouse', ext:true, name:'data warehouse', what:'nightly load of plan rows', x:820, y:480},
+    ],
+    edges:[
+      ['atlas','provider-a','calls · limits'], ['atlas','provider-b','calls · keys'], ['atlas','datadog','metrics'], ['switchboard','atlas','status rows'],
+      ['switchboard','portal','serves rows'], ['switchboard','warehouse','nightly load'], ['new-repo','switchboard','rows · planned'], ['switchboard','github','PR landing'],
+      ['atlas','github','direct merge','direct'], ['new-repo','github','PR landing'], ['books','github','shared line'], ['new-repo','portal','serves · planned'],
+    ],
+  },
+  review:{on:false, mark:'09-03 18:05',
+    nodes:{'atlas':['+ claim providers/rate-envelope @v1 · curation 09-04 07:12','claim sessions/one-writer v3 → v4 · writeback 09-03 17:20'], 'new-repo':['+ repository joined 09-03 23:00 · 11 claims in scope'], 'books':['+ chapter 7 loops rewritten · loop-granularity writeback 09-03 17:55','+ claim plan/tail-cursor @v1 · host-liveness writeback']},
+    edges:{'atlas→provider-b':'removed 09-03 · key handling moved behind the portal', 'new-repo→switchboard':'added 09-03 · planned rows contract'}},
   bolts: [
     {id:'plan-decisions', name:'plan-decisions', repo:'atlas', line:'plan-decisions @ 9e21c4', note:'4 merged · 1 open · cites one-writer v3',
      units:[{name:'plan-derivation',state:'merged'},{name:'decision-numbers',state:'merged'},{name:'response-apply',state:'merged'},{name:'decision-grouping',state:'merged',t:'07:21'},
@@ -596,6 +702,8 @@ const bolt = id => S.bolts.find(b => b.id===id);
 const intent = id => S.intents.find(i => i.id===id);
 const host = id => S.hosts.find(h => h.id===id);
 const repo = id => S.repos.find(r => r.id===id);
+const mapNode = id => S.map.nodes.find(n => n.id===id);
+const builtRepos = () => S.repos.filter(r => r.id!=='books');
 const gatheringOf = id => S.gatherings.find(g => g.state==='proposed' && g.intents.includes(id));
 const explorationOf = id => S.explorations.find(x => x.state!=='done' && x.intents.includes(id));
 const railKeys = () => [...S.decisions.map(d => 'd:'+d.n), ...S.attention.map(a => 'a:'+a.id)];
@@ -609,7 +717,7 @@ function allSessions(){
   out.push({...S.curation.session, id:'curation', owner:{key:'c:curation', name:'curation', phase:'inception'}});
   return out.filter(s => s.state!=='done' && s.state!=='queued');
 }
-const objOf = key => { const [t,id] = key.split(':'); return t==='d' ? dec(+id) : t==='b' ? bolt(id) : t==='i' ? intent(id) : t==='l' ? S.landed.find(l => l.id===id) : t==='h' ? host(id) : t==='a' ? S.attention.find(a => a.id===id) : t==='r' ? repo(id) : t==='x' ? S.explorations.find(x => x.id===id) : t==='p' ? S.planning : t==='f' ? S.deferred.find(x => x.key===id) : null; };
+const objOf = key => { const [t,id] = key.split(':'); return t==='d' ? dec(+id) : t==='b' ? bolt(id) : t==='i' ? intent(id) : t==='l' ? S.landed.find(l => l.id===id) : t==='h' ? host(id) : t==='a' ? S.attention.find(a => a.id===id) : t==='r' ? repo(id) : t==='e' ? mapNode(id) : t==='x' ? S.explorations.find(x => x.id===id) : t==='p' ? S.planning : t==='f' ? S.deferred.find(x => x.key===id) : null; };
 
 /* ---------- invented detail, marked sample ---------- */
 const X = {
@@ -774,6 +882,33 @@ function effects(d, a, arg){
       } break;
   }
 }
+/* scope as a gesture: the set the operator clicked becomes a rule, sent as one response */
+function sendScope(){
+  const name = S.scopeSel; if(!name) return; const rule = ruleOf(S.scopeSet); const set = [...S.scopeSet];
+  const moved = [];
+  builtRepos().forEach(r => { const has = r.claims.find(c => c[0]===name); const want = S.scopeSet.has(r.id);
+    if(want && !has){ r.claims.push([name,'unjudged',rule,'pulled into scope by your response · planning due']); r.due = hhmm(S.minutes); moved.push(r.id); }
+    else if(!want && has){ r.claims = r.claims.filter(c => c!==has); r.due = hhmm(S.minutes); moved.push(r.id); }
+    else if(has){ has[2] = rule; } });
+  const text = `scope ${name} ${rule}${rule==='named' ? ' ' + set.join(',') : ''}`;
+  logLine(text, {}); toast(`${text} · recorded${moved.length ? ' · planning due on '+moved.join(', ') : ''}`);
+  render();
+}
+function addRepository(){
+  const a = S.addRepo; if(!a || !a.name) return; const id = a.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  if(repo(id)){ toast(`repository ${id} already in the fleet`, true); return; }
+  const hits = claimsInScope(a);
+  S.repos.push({id, kinds:a.kinds.slice(), caps:a.caps.slice(), manifest:`${id}/flywheel.yaml · joined ${hhmm(S.minutes)} · ledger empty`, claims:hits.map(h => [h.name,'unjudged',h.rule,'in scope by rule · first planning judges it']), fresh:true, due:hhmm(S.minutes)});
+  const slot = [{x:860,y:520},{x:330,y:500},{x:60,y:20},{x:860,y:250}][S.repos.length % 4]; S.map.nodes.push({id, x:slot.x, y:slot.y});
+  S.map.edges.push([id,'github','PR landing']);
+  S.review.nodes[id] = [`+ repository joined ${hhmm(S.minutes)} · ${hits.length} claims in scope`];
+  say(`add repository ${id} · kinds ${a.kinds.join(',')||'none'} · capabilities ${a.caps.join(',')||'none'}`); S.addRepo = null; render();
+  setTimeout(() => { const r = repo(id); const m = Math.max(...S.decisions.map(d => d.n), ...S.deferred.map(v => v.n), S.proposal.n, 424) + 1;
+    r.claims.forEach(c => { c[1] = 'not satisfied'; c[3] = 'judged once at the first planning'; }); r.due = null;
+    X[m] = {text:`<span class="mono">${esc(id)}</span> joined the fleet with an empty ledger; its first planning judged every claim in scope once and offers the unsatisfied set as one proposal (104). <b>Yes</b> starts everything as one bolt. <b>Pick</b> takes part. <b>Later</b> defers it.`, kv2:[[`${r.claims.length} claims`,'judged once · all unsatisfied · units and chores derived from them']], kv2Title:'proposed', hist:[['09-04 '+hhmm(S.minutes),'planning','note',`${id} joined the fleet · baseline derived from the ledger`],['09-04 '+hhmm(S.minutes),'plan','decision',`${m} created · approve the baseline`]]};
+    S.decisions.push({n:m, g:APPROVE, phase:'plan', kind:'baseline', title:id, obj:'d:'+m, repo:id, tail:`<b>${r.claims.length} claims unmet</b> · planning's first proposal for the repository`, picks:[['claims',`${r.claims.length} claims`]], answers:[['yes','yes'],['pick','pick'],['later','later']]});
+    toast(`${m} · baseline ${id} · in the rail`); render(); }, 2500);
+}
 /* later defers: leaves the count, stays in the gate greyed, not in SINCE */
 function defer(d){ S.deferred.push({key:'f'+d.n, n:d.n, kind:d.kind, title:d.title, tail:d.tail.replace(/<[^>]+>/g,''), at:hhmm(S.minutes), obj:d.obj, src:d}); }
 function askAgain(key){
@@ -916,6 +1051,78 @@ function renderHosts(){
     + `<span class="sep"></span><span class="lab">repos</span>` + S.repos.map(r => `<button class="repo ${S.open==='r:'+r.id?'open-in-dock':''}" data-repo="${r.id}">${esc(r.id)}<span class="hm">${r.claims.length ? r.claims.filter(c=>c[1]==='not satisfied').length+' unmet' : 'books'}</span></button>`).join('')
     + `<span class="note">every session carries its host · a host pill lights its sessions · a repo opens its claims and scope</span>`;
 }
+function renderBoardHead(){
+  const map = S.view==='map';
+  $('#board-h').innerHTML = `<div class="seg" role="tablist"><button data-view="phases" aria-pressed="${!map}">phases</button><button data-view="map" aria-pressed="${map}">map</button></div>
+    <span>${map ? 'the system context map is the scope surface (198) · a repository node carries its claims · click a node for its dock' : 'the status view by phase (B.4) · objects only · every decision is a marker on its object'}</span>
+    ${map ? `<div class="r"><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}</label><button class="btn sm" id="addrepo-open">add repository</button></div>` : ''}<kbd style="margin-left:${map?'0':'auto'}">m</kbd>`;
+  $('#lanes').hidden = map; $('#map').hidden = !map;
+}
+/* --- scope rules over the set of built repositories --- */
+function ruleOf(set){
+  const all = builtRepos().map(r => r.id); const eq = (a,b) => a.length===b.length && a.every(x => b.includes(x));
+  const ids = [...set].filter(id => all.includes(id));
+  if(!ids.length) return 'named';
+  if(eq(ids, all)) return 'all';
+  const kinds = [...new Set(builtRepos().flatMap(r => r.kinds))]; for(const k of kinds){ if(eq(ids, all.filter(id => repo(id).kinds.includes(k)))) return 'kind:'+k; }
+  const caps = [...new Set(builtRepos().flatMap(r => r.caps))]; for(const c of caps){ if(eq(ids, all.filter(id => repo(id).caps.includes(c)))) return 'capability:'+c; }
+  return 'named';
+}
+function reposMatching(rule, names){ const all = builtRepos(); if(rule==='all') return all.map(r => r.id); if(rule.startsWith('kind:')) return all.filter(r => r.kinds.includes(rule.slice(5))).map(r => r.id); if(rule.startsWith('capability:')) return all.filter(r => r.caps.includes(rule.slice(11))).map(r => r.id); return names || []; }
+function allClaims(){ const m = new Map(); S.repos.forEach(r => r.claims.forEach(c => { if(!m.has(c[0])) m.set(c[0], {name:c[0], rule:c[2], repos:[]}); m.get(c[0]).repos.push(r.id); })); return [...m.values()]; }
+function selectClaim(name){ S.scopeSel = name; S.scopeSet = new Set(S.repos.filter(r => r.claims.some(c => c[0]===name)).map(r => r.id)); S.view = 'map'; }
+function unmetOf(r){ return r.claims.filter(c => c[1]==='not satisfied').length; }
+function marksRepo(id){
+  const ds = S.decisions.filter(d => d.repo===id);
+  return ds.length ? `<div class="marks">${ds.map(d => `<button class="mark ${d.g} ${S.focus==='d:'+d.n?'focused':''}" data-mark="d:${d.n}" title="${esc(d.kind)}">${d.g===APPROVE?'✓':d.g===DECIDE?'?':'✎'} ${d.n} <span style="font-weight:500">${esc(d.kind)}</span></button>`).join('')}</div>` : '';
+}
+function renderMap(){
+  if(S.view!=='map') return;
+  const W = 980, H = 690, wrap = $('#map-wrap'); const scale = Math.min(1, Math.max(.55, (wrap.clientWidth||W) / W)); $('#map-stage').style.transform = `scale(${scale})`; wrap.style.setProperty('--h', (H*scale)+'px');
+  const focusRepo = S.focus && S.focus[0]==='d' ? dec(+S.focus.split(':')[1])?.repo : null;
+  const sel = S.scopeSel; const rv = S.review.on && (Object.keys(S.review.nodes).length || Object.keys(S.review.edges).length);
+  const size = n => n.ext ? [150, 58] : [190, 118];
+  const rect = n => { const [w,h] = size(n); return {x:n.x, y:n.y, w, h, cx:n.x+w/2, cy:n.y+h/2}; };
+  const anchor = (a, b) => { const dx = b.cx-a.cx, dy = b.cy-a.cy; const sx = Math.abs(dx) > 1e-6 ? (a.w/2)/Math.abs(dx) : Infinity, sy = Math.abs(dy) > 1e-6 ? (a.h/2)/Math.abs(dy) : Infinity; const t = Math.min(sx, sy); return [a.cx+dx*t, a.cy+dy*t]; };
+  const edges = S.map.edges.map(([f,t,label,kind]) => { const A = rect(mapNode(f)), B = rect(mapNode(t)); const [x1,y1] = anchor(A,B), [x2,y2] = anchor(B,A); const key = f+'→'+t; const ch = rv && S.review.edges[key]; const removed = ch && /removed/.test(ch);
+    const cls = ['edge', kind||'', rv ? (ch ? (removed ? 'removed' : 'changed') : 'dim') : ''].join(' ');
+    return `<path class="${cls}" d="M${x1},${y1} L${x2},${y2}"/><text class="elabel ${rv&&ch?(removed?'removed':'changed'):''}" x="${(x1+x2)/2}" y="${(y1+y2)/2-4}" text-anchor="middle">${esc(rv && ch ? (removed ? 'removed · ' : 'added · ') + label : label)}</text>`; }).join('');
+  const svg = `<svg viewBox="0 0 ${W} ${H}"><defs><marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--ink3)"/></marker></defs>${edges}</svg>`;
+  const nodes = S.map.nodes.map(n => {
+    const [w,h] = size(n); const r = n.ext ? null : repo(n.id);
+    const lit = focusRepo===n.id || litObjs().includes('r:'+n.id); const open = S.open===(n.ext?'e:':'r:')+n.id;
+    const scope = sel ? (S.scopeSet.has(n.id) ? 'inscope' : (n.ext || n.id==='books' ? '' : 'outscope')) : '';
+    const changed = rv && S.review.nodes[n.id]; const cls = ['node', n.ext?'ext':'', lit?'lit':'', open?'open-in-dock':'', scope, rv ? (changed ? 'changed' : 'dim') : '', r && r.fresh ? 'new' : ''].join(' ');
+    if(n.ext) return `<div class="${cls}" style="left:${n.x}px;top:${n.y}px" data-node="${n.id}" data-ext="1"><div class="nh"><span class="nk">external</span><span class="nn">${esc(n.name)}</span></div><div class="ot" style="font-size:11px">${esc(n.what)}</div>${changed ? `<div class="rnote">${esc(changed[0])}</div>` : ''}</div>`;
+    const um = unmetOf(r); const standing = r.claims.filter(c => c[1]!=='not applicable').length;
+    return `<div class="${cls}" style="left:${n.x}px;top:${n.y}px;min-height:${h}px" data-node="${n.id}"><div class="nh"><span class="nk">${n.id==='books'?'books':'repository'}</span><span class="nn">${esc(n.id)}</span></div>
+      <div class="tags">${r.kinds.map(k => `<span class="tag kind">${esc(k)}</span>`).join('')}${r.caps.map(c => `<span class="tag">${esc(c)}</span>`).join('')}</div>
+      ${r.claims.length ? `<div class="cs"><span>${standing} standing</span><span class="um ${um>=6?'many':um?'some':''}">${um} unmet</span></div>` : '<div class="cs"><span>holds the claims</span></div>'}${r.due ? `<div class="due">planning due · ${esc(r.due)}</div>` : ''}${marksRepo(n.id)}${changed ? `<div class="rnote">${changed.map(c => esc(c.length>52 ? c.slice(0,50)+'…' : c)).join('<br>')}</div>` : ''}</div>`; }).join('');
+  $('#map-stage').innerHTML = svg + nodes;
+  /* side panel */
+  const claims = allClaims(); const rule = sel ? ruleOf(S.scopeSet) : null;
+  const cur = sel ? claims.find(c => c.name===sel) : null;
+  const changedNow = sel && cur && (rule!==cur.rule || [...S.scopeSet].sort().join()!==cur.repos.slice().sort().join());
+  const scopeBox = sel ? `<div class="scope-box"><div class="cn">${esc(sel)}</div><div class="ot">click nodes to toggle them in or out of scope</div>
+      <div class="rule ${rule==='named'?'named':''}">${esc(rule)}${rule==='named' ? ` · ${[...S.scopeSet].join(', ')||'nobody'}` : ''}</div><div class="ot" style="font-size:11px">${rule==='named' ? 'this set matches no kind or capability rule, so the scope is named' : 'the set matches this rule; the rule is what is recorded'}</div>
+      <div class="set">${builtRepos().map(r => `<span class="lk ${S.scopeSet.has(r.id)?'on':'off'}">${esc(r.id)}</span>`).join('')}</div>
+      <div class="acts"><button class="btn sm pri" id="scope-send" ${changedNow?'':'disabled'}>send scope</button><button class="btn sm quiet" id="scope-clear">clear</button></div>${changedNow ? `<div class="ot" style="margin-top:6px;font-size:11px">sends <span class="mono">scope ${esc(sel)} ${esc(rule)}${rule==='named'?' '+[...S.scopeSet].join(','):''}</span> · one response · planning becomes due where the scope moved</div>` : ''}</div>` : '';
+  const list = `<div class="cl-list">${claims.map(c => `<button class="${sel===c.name?'on':''}" data-selclaim="${esc(c.name)}"><span>${esc(c.name)}</span><span class="n">${esc(c.rule)} · ${c.repos.length}</span></button>`).join('')}</div>`;
+  const rev = S.review.on ? `<h3>since last review<span class="r">${esc(S.review.mark)} · derived from history</span></h3>${rv ? '' : '<div class="ot">nothing has changed in the map since the mark</div>'}<div class="rev-list">${Object.entries(S.review.nodes).flatMap(([id,notes]) => notes.map(n => `<div>${esc(id)} · ${esc(n)}</div>`)).join('')}${Object.entries(S.review.edges).map(([k,v]) => `<div class="${/removed/.test(v)?'rm':''}">${esc(k)} · ${esc(v)}</div>`).join('')}</div><div class="acts" style="margin-top:6px"><button class="btn sm" id="review-mark">mark reviewed · ${hhmm(S.minutes)}</button></div>` : '';
+  const add = S.addRepo ? addRepoHtml() : '';
+  $('#map-panel').innerHTML = `<h3>claims<span class="r">${claims.length} · select one to see its scope</span></h3>${list}${scopeBox}${add}${rev}`;
+}
+const KINDS = ['service','data-product','worker','cli'], CAPS = ['http','worker','pipeline','provider-calls','rows','sinks','status-table','queue'];
+function addRepoHtml(){
+  const a = S.addRepo; const hits = a.name ? claimsInScope(a) : [];
+  return `<div class="addrepo"><h3 style="margin-top:0">add repository<span class="r">joins the fleet with an empty ledger (104)</span></h3>
+    <input type="text" id="ar-name" placeholder="repository name" value="${esc(a.name)}" aria-label="repository name">
+    <div class="ot" style="margin-top:6px">kinds</div><div class="grid">${KINDS.map(k => `<label><input type="checkbox" data-arkind="${k}" ${a.kinds.includes(k)?'checked':''}>${k}</label>`).join('')}</div>
+    <div class="ot">capabilities</div><div class="grid">${CAPS.map(c => `<label><input type="checkbox" data-arcap="${c}" ${a.caps.includes(c)?'checked':''}>${c}</label>`).join('')}</div>
+    <div class="found">${a.name ? `<b>${hits.length}</b> claim${hits.length===1?'':'s'} fall into scope: ${hits.map(h => `<span class="mono">${esc(h.name)}</span>`).join(', ')||'none'}` : 'name it to see which claims fall into scope'}</div>
+    <div class="acts"><button class="btn sm pri" id="ar-add" ${a.name && (a.kinds.length||a.caps.length) ? '' : 'disabled'}>add · first planning judges them once</button><button class="btn sm quiet" id="ar-cancel">cancel</button></div></div>`;
+}
+function claimsInScope(a){ return allClaims().filter(c => c.rule==='all' || (c.rule.startsWith('kind:') && a.kinds.includes(c.rule.slice(5))) || (c.rule.startsWith('capability:') && a.caps.includes(c.rule.slice(11)))); }
 function renderTop(){
   const n = S.decisions.length; const ya = S.decisions.filter(d => d.g===APPROVE).map(d => d.n).sort((a,b)=>a-b);
   $('#count').textContent = n;
@@ -927,7 +1134,7 @@ function renderTop(){
 function renderLog(){ $('#loglist').innerHTML = S.log.map(e => `<li class="${e.say?'say':''} ${e.fail?'fail':''}"><time>${e.t}</time><span>${esc(e.text)}</span></li>`).join('') || '<li><span class="empty">nothing sent yet</span></li>'; }
 function render(){
   const keep = ['#rail','.lane'].flatMap(s => $$(s)).map(el => [el, el.scrollTop]);
-  renderTop(); renderHosts(); renderRail(); renderInception(); renderPlan(); renderConstruction(); renderOperation(); renderLog();
+  renderTop(); renderHosts(); renderBoardHead(); renderRail(); renderInception(); renderPlan(); renderConstruction(); renderOperation(); renderMap(); renderLog();
   keep.forEach(([el,t]) => el.scrollTop = t);
   if(S.open) renderDock();
 }
@@ -1049,7 +1256,7 @@ function dockRepo(r){
   const scopeOpts = ['all', ...r.kinds.map(k => 'kind:'+k), ...r.caps.map(c => 'capability:'+c), 'named'];
   return sec('the repository', `<div class="dtext">Repository <span class="mono">${esc(r.id)}</span> declares its kinds and capabilities in its manifest; a claim is in scope when its scope rule matches them, and each repository carries its own verdict per claim (105). ${esc(r.manifest)}.</div>`)
     + sec('kinds and capabilities · from the manifest', `<div class="kc">${r.kinds.map(k => `<span class="lk"><b>kind</b> ${esc(k)}</span>`).join('')}${r.caps.map(c => `<span class="lk"><b>capability</b> ${esc(c)}</span>`).join('')}${!r.kinds.length && !r.caps.length ? '<span class="empty">none</span>' : ''}</div>`)
-    + (r.claims.length ? sec(`claims in scope · ${r.claims.length}`, `<div class="kc" style="margin-bottom:8px">${counts.map(([v,n]) => `<span class="vd ${v.replace(' ','-')}">${n} ${v}</span>`).join('')}</div><div class="claims">${r.claims.map(c => `<div class="claim"><span class="cn">${esc(c[0])}</span><span class="vd ${c[1].replace(' ','-')}">${esc(c[1])}</span><select data-scope="${esc(c[0])}" data-repo="${r.id}" aria-label="scope of ${esc(c[0])}">${scopeOpts.map(o => `<option ${o===c[2]?'selected':''}>${o}</option>`).join('')}${scopeOpts.includes(c[2])?'':`<option selected>${esc(c[2])}</option>`}</select>${c[3]!=='—' ? `<span class="ce">${esc(c[3])}</span>` : ''}</div>`).join('')}</div>`, 'verdict from the ledger · scope is yours to correct, one response each')
+    + (r.claims.length ? sec(`claims in scope · ${r.claims.length}`, `<div class="kc" style="margin-bottom:8px">${counts.map(([v,n]) => `<span class="vd ${v.replace(' ','-')}">${n} ${v}</span>`).join('')}</div><div class="claims">${r.claims.map(c => `<div class="claim"><span class="cn">${esc(c[0])}</span><span class="vd ${c[1].replace(' ','-')}">${esc(c[1])}</span><select data-scope="${esc(c[0])}" data-repo="${r.id}" aria-label="scope of ${esc(c[0])}">${scopeOpts.map(o => `<option ${o===c[2]?'selected':''}>${o}</option>`).join('')}${scopeOpts.includes(c[2])?'':`<option selected>${esc(c[2])}</option>`}</select><button class="btn sm quiet" data-showmap="${esc(c[0])}" title="show its scope on the map">map</button>${c[3]!=='—' ? `<span class="ce">${esc(c[3])}</span>` : ''}</div>`).join('')}</div>`, 'verdict from the ledger · scope is yours to correct, one response each · "map" shows the scope')
       : sec('claims', `<div class="dtext">The books repository holds the claims; it carries no verdicts of its own.</div>`))
     + sec('decisions on this repository', S.decisions.filter(d => d.repo===r.id || (d.kind==='proposal' && r.id==='atlas')).map(d => `<div class="row"><button class="mark ${d.g}" data-mark="d:${d.n}">${d.n}</button><span class="grow">${d.title}</span><span class="t">${d.g}</span></div>`).join('') || '<div class="empty" style="padding:2px 0">none in the count</div>', 'in the rail, where you answer');
 }
@@ -1086,7 +1293,8 @@ function dockFooter(key){
   if(t==='x'){ const x = objOf(key); return x.state==='done' ? `<div class="fl">done<span class="r">stays ${esc(x.leaves)} · then history</span></div>` : `<div class="fl">no decision<span class="r">finish is a dictation</span></div><div class="acts"><button class="btn sm" data-xfinish="${x.id}">finish</button></div>`; }
   if(t==='f'){ const x = objOf(key); return `<div class="fl">deferred · outside the count</div><div class="acts"><button class="btn sm yes" data-askagain="${x.key}">ask again</button></div>`; }
   if(t==='p') return `<div class="fl">no decision yet<span class="r">the next proposal is the decision</span></div>`;
-  if(t==='r') return `<div class="fl">scope corrections above are responses<span class="r">one each, sent when given</span></div>`;
+  if(t==='r') return `<div class="fl">scope corrections above are responses<span class="r">one each, sent when given</span></div><div class="acts"><button class="btn sm" data-tomap="${id}">show on map</button></div>`;
+  if(t==='e') return `<div class="fl">nothing to answer</div>`;
   if(t==='l') return `<div class="fl">nothing to answer<span class="r">signals go to curation; a decision comes back on the plan</span></div>`;
   return `<div class="fl">no decision on this object</div>`;
 }
@@ -1100,6 +1308,7 @@ function renderDock(){
   else if(t==='i'){ head = `<div class="row"><span class="kind">intent</span><span class="ph">inception</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.state)}</div>`; body = dockIntent(o); }
   else if(t==='l'){ head = `<div class="row"><span class="kind">landed</span><span class="ph">operation</span>${nav}</div><h2 id="dk-title">${esc(o.repo)}/${esc(o.name)}</h2><div class="tail">landed ${esc(o.at)} · PR #${o.pr.n}</div>`; body = dockLanded(o); }
   else if(t==='h'){ head = `<div class="row"><span class="kind">host</span>${nav}</div><h2 id="dk-title">${esc(o.id)}</h2><div class="tail">${o.alive?'alive':'gone '+o.gone} · bound ${o.bound}</div>`; body = dockHost(o); }
+  else if(t==='e'){ head = `<div class="row"><span class="kind">external system</span><span class="ph">map</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.what)}</div>`; body = sec('on the map', `<div class="dtext">An external system the fleet meets. It carries no claims of its own; a claim about the contract with it is in scope for every repository that meets it (105).</div>`) + sec('met by', `<div class="rows">${S.map.edges.filter(e => e[1]===o.id || e[0]===o.id).map(e => `<div class="row"><span class="st">${esc(e[0]===o.id ? e[1] : e[0])}</span><span class="grow">${esc(e[2])}</span></div>`).join('')}</div>`); }
   else if(t==='r'){ head = `<div class="row"><span class="kind">repository</span>${nav}</div><h2 id="dk-title">${esc(o.id)}</h2><div class="tail">${o.kinds.length ? o.kinds.join(', ') : 'books'} · ${o.claims.length} claims in scope</div>`; body = dockRepo(o); }
   else if(t==='x'){ head = `<div class="row"><span class="kind">elaboration</span><span class="ph">inception · ${o.kind==='standing'?'standing':'with-operator'}</span>${nav}</div><h2 id="dk-title">explore · ${o.names.map(esc).join(' + ')}</h2><div class="tail">opened ${esc(o.since)} by you</div>`; body = dockExplore(o); }
   else if(t==='p'){ head = `<div class="row"><span class="kind">planning session</span><span class="ph">bolt plan</span>${nav}</div><h2 id="dk-title">${esc(o.repo)} · charged again</h2><div class="tail">since ${esc(o.since)} · your notes travel with it</div>`; body = dockPlanning(o); }
@@ -1135,6 +1344,16 @@ document.addEventListener('click', e => {
     if(S.open==='a:'+(a&&a.id)) S.open = null, document.body.classList.remove('docked');
     if(S.focus==='a:'+(a&&a.id)) S.focus = railKeys()[0] || null;
     render(); return; }
+  if(b && b.dataset.view){ S.view = b.dataset.view; render(); return; }
+  if(b && b.dataset.selclaim){ selectClaim(b.dataset.selclaim); render(); return; }
+  if(b && b.dataset.showmap){ selectClaim(b.dataset.showmap); closeDock(); return; }
+  if(b && b.dataset.tomap){ S.view = 'map'; closeDock(); return; }
+  if(b && b.id==='scope-send'){ sendScope(); return; }
+  if(b && b.id==='scope-clear'){ S.scopeSel = null; S.scopeSet = new Set(); render(); return; }
+  if(b && b.id==='review-mark'){ S.review.mark = '09-04 '+hhmm(S.minutes); S.review.nodes = {}; S.review.edges = {}; say(`reviewed · mark ${S.review.mark}`); render(); return; }
+  if(b && b.id==='addrepo-open'){ S.addRepo = {name:'', kinds:['service'], caps:['http']}; S.view='map'; render(); $('#ar-name')?.focus(); return; }
+  if(b && b.id==='ar-cancel'){ S.addRepo = null; render(); return; }
+  if(b && b.id==='ar-add'){ addRepository(); return; }
   if(b && b.dataset.gdrop !== undefined){ const n = +b.dataset.n; if(S.inflight[n]){ refuse(n); return; } send(n, 'idrop', b.dataset.gdrop); return; }
   if(b && b.dataset.pane !== undefined){ toast(`pane ${b.dataset.pane} · would open in herdr`); return; }
   if(b && b.dataset.repo){ openDock('r:'+b.dataset.repo); return; }
@@ -1171,9 +1390,13 @@ document.addEventListener('click', e => {
   if(t.closest('label.chore')){ setTimeout(() => $$('label.chore').forEach(l => l.classList.toggle('on', l.querySelector('input').checked)), 0); return; }
   const nav = t.closest('[data-nav]');
   if(nav && !t.closest('input,textarea,select,.argbox,.chores')){ const key = nav.dataset.nav; if(e.detail===2 || S.open) openDock(key); else setFocus(key); return; }
+  const node = t.closest('[data-node]');
+  if(node && !t.closest('button')){ const id = node.dataset.node; if(node.dataset.ext){ openDock('e:'+id); return; }
+    if(S.scopeSel && id!=='books'){ if(S.scopeSet.has(id)) S.scopeSet.delete(id); else S.scopeSet.add(id); render(); return; }
+    openDock('r:'+id); return; }
   const obj = t.closest('[data-obj]');
   if(obj && !t.closest('input,textarea,select,button,label')){ openDock(obj.dataset.obj); return; }
-  if(!t.closest('#dock') && S.open && !t.closest('#log,#logbtn,.hosts') && !t.closest('input,select,label')){ S.hostlit = null; closeDock(); }
+  if(!t.closest('#dock') && S.open && !t.closest('#log,#logbtn,.hosts,.map-panel,.board-h') && !t.closest('input,select,label')){ S.hostlit = null; closeDock(); }
   if(!t.closest('#log,#logbtn') && !$('#log').hidden){ $('#log').hidden = true; $('#logbtn').setAttribute('aria-expanded','false'); }
 });
 document.addEventListener('change', e => {
@@ -1183,6 +1406,10 @@ document.addEventListener('change', e => {
     unitMove(u.id, t.value, false); return; }
   if(t.dataset.utype){ const u = S.proposal.units.find(x => x.id===t.dataset.utype); if(t.value!==u.type){ u.type = t.value; unitResponse(`${S.proposal.n} ${u.id}: type ${t.value}`); render(); } return; }
   if(t.dataset.bname){ const b = S.proposal.bolts.find(x => x.id===t.dataset.bname); const v = t.value.trim(); if(v && v!==b.name){ const old = b.name; b.name = v; unitResponse(`${S.proposal.n} rename ${old} ${v}`); render(); } }
+  if(t.id==='review-toggle'){ S.review.on = t.checked; render(); return; }
+  if(t.id==='ar-name'){ S.addRepo.name = t.value.trim(); render(); $('#ar-name').focus(); return; }
+  if(t.dataset.arkind){ const k = t.dataset.arkind; S.addRepo.kinds = t.checked ? [...S.addRepo.kinds, k] : S.addRepo.kinds.filter(x => x!==k); render(); return; }
+  if(t.dataset.arcap){ const c = t.dataset.arcap; S.addRepo.caps = t.checked ? [...S.addRepo.caps, c] : S.addRepo.caps.filter(x => x!==c); render(); return; }
   if(t.id==='capture-intent'){ S.captureIntent = t.checked; $('#capture-as').innerHTML = `will send: <b>capture</b>${S.captureIntent?' · <b>intent</b>':''}`; return; }
   if(t.dataset.pick){ if(t.checked) S.picked.add(t.dataset.pick); else S.picked.delete(t.dataset.pick); render(); return; }
   if(t.dataset.scope){ const r = repo(t.dataset.repo); const c = r.claims.find(x => x[0]===t.dataset.scope); const old = c[2]; c[2] = t.value; logLine(`scope ${c[0]} ${t.value}`, {}); toast(`${c[0]} · scope ${old} → ${t.value} · recorded`); render(); return; }
@@ -1200,6 +1427,7 @@ document.addEventListener('keydown', e => {
     const a = d.answers.map(x => x[0]).find(x => KEYS[x]===k);
     if(!a){ toast(`${d.n} · no "${k}" answer on this card · ${d.answers.map(x=>x[0]).join(' · ')}`, true); return; }
     e.preventDefault(); send(d.n, a); return; }
+  if(k==='m'){ e.preventDefault(); S.view = S.view==='map' ? 'phases' : 'map'; document.body.dataset.tab = 'board'; render(); return; }
   if(k==='/'){ e.preventDefault(); document.body.dataset.tab = 'board'; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab==='board'))); $('#capture')?.focus(); }
 });
 function yesAll(){ const list = S.decisions.filter(d => d.g===APPROVE && !S.inflight[d.n]).map(d => d.n).sort((a,b) => a-b); list.forEach((n, i) => setTimeout(() => send(n, 'yes'), i*380)); }
@@ -1214,7 +1442,11 @@ function capture(){ const ta = $('#capture'); const v = ta.value.trim(); if(!v){
 document.body.dataset.tab = 'plan';
 const Q = new URLSearchParams(location.search);
 if(Q.get('theme')){ document.documentElement.dataset.theme = Q.get('theme'); $('#theme').textContent = Q.get('theme'); }
+if(Q.get('view')==='map') S.view = 'map';
+if(Q.get('claim')) selectClaim(Q.get('claim'));
+if(Q.get('review')) S.review.on = true;
 render();
 if(!Q.has('nodock')) openDock(Q.get('open') || 'd:422');
+window.addEventListener('resize', () => renderMap());
 })();
 </script>
