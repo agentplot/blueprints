@@ -29,7 +29,7 @@ split them.
 |---|---|---|---|---|---|---|---|
 | **presenter** to the chat sink | delivers the numbered decisions and the tail to the chat on the sink's cadence or when due; turns a short reply, a button press or a confirmed proposal into one op-response; reacts ✅ when it is recorded (148, 152–155, 18, 14) | the plan's register, the objects it names, the sink record and its mark (B.1 read, list) | the sink's mark and delivery id; one `op-response` per reply (B.1 write, receive) | no | yes for a chat that pushes replies over a socket; no for a chat that calls a URL on a reply | the bot token; the control-plane credential (the App's installation token, C.1; push credential, C.2) | yes — that is its purpose (132, 143, 156) |
 | **capture endpoint** | accepts one source event from a caller that cannot write git; writes one capture record with the event key; the same key returns the existing capture and writes nothing (106, 111, 112, S22); writes one signal only for a forwarded single message (S21) | nothing but the existing captures under the key | one capture record; for a forwarded message, one signal record; on the blueprints' shared line under `flywheel/signals/` (203) | no | no — one request, one commit | the inbound secret per caller; the blueprints push credential | yes |
-| **triage**, the capture reader | one session per capture with material to read, in a place off the blueprints' shared line; reads the raw material the capture points at; writes the signals once, immutable, with excerpt and position (113, 115) | the capture, its raw material, the claims index (108) | the capture's signal records, one commit | yes — this is judgment (115) | no — a bounded session: it starts, delivers, exits (65, 110) | none of its own; a session identity (197) and a scoped token issued into its place (207) | yes when its runner is reachable from where dispatch runs (§5) |
+| **triage** | one session per capture with material to read, in a place off the blueprints' shared line; reads the raw material the capture points at; writes the signals once, immutable, with excerpt and position (113, 115) | the capture, its raw material, the claims index (108) | the capture's signal records, one commit | yes — this is judgment (115) | no — a bounded session: it starts, delivers, exits (65, 110) | none of its own; a session identity (197) and a scoped token issued into its place (207) | yes when its runner is reachable from where dispatch runs (§5) |
 | **interpreter** for chat | turns one free-text message into exactly one proposed tool call, shown with a confirm control; calls the tool on the operator's confirmation; asks about a name that resolves to nothing or to two things (194) | the live objects (list and read), the tool catalogue (193), the message and, when it is a reply, the messages it replies to | nothing — the confirmed call is the response, recorded by the tool once (153) | yes — one bounded call per message | no — one request, one model call | the model credential for that call | yes |
 
 Three rules fall out of the table.
@@ -179,13 +179,13 @@ the manifest beside curation's:
 
 | rule | default | reads |
 |---|---|---|
-| a capture with material to read and no signals charges a reader | immediate, subject to the bound | `capture.signals_present` false, the pointer present |
+| a capture with material to read and no signals charges a triage session | immediate, subject to the bound | `capture.signals_present` false, the pointer present |
 | at most `triage.bound` readers at once | 1 | the dispatcher's session records in a live state (32) |
-| a forwarded single message charges no reader | always | the endpoint wrote its one signal (S21) |
+| a forwarded single message charges no triage session | always | the endpoint wrote its one signal (S21) |
 | `triage.cadence` batches readers when the operator prefers a quiet hour | none | `flywheel.yaml` triage.cadence |
 
 Curation's threshold counts unmoved signals; triage's bound counts
-running readers. A capture whose reader stalls is a stalled session
+running triage sessions. A capture whose triage session stalls is a stalled session
 and takes the machinery role's retry rule (65, 70).
 
 **What happens when dispatch is down.** Nothing is lost, and every
@@ -235,7 +235,7 @@ key makes its retry write nothing (111, 231).
 **The raw material must be reachable by whoever reads it.** A capture
 points at its raw material; the raw material stays outside version
 control (111). A transcript on the operator's laptop is reachable by a
-reader on that laptop and by nobody else. The rule: the manifest names
+triage session on that laptop and by nobody else. The rule: the manifest names
 a raw store per source (`captures.md` §3, the storage row); an
 adapter either puts the raw material there before it writes the
 capture, or the machine holding it declares that it triages that
@@ -243,13 +243,13 @@ source. So an edge adapter has two shapes:
 
 | shape | raw material | who triages | fits |
 |---|---|---|---|
-| **copy then capture** | copied to the org's raw store on the private network — a folder a host serves, a bucket the platform reaches — and the capture points there | the dispatcher's reader, wherever it runs | an org with a cloud dispatcher and laptops that come and go |
+| **copy then capture** | copied to the org's raw store on the private network — a folder a host serves, a bucket the platform reaches — and the capture points there | the dispatcher's triage session, wherever it runs | an org with a cloud dispatcher and laptops that come and go |
 | **capture where it lies** | stays on the machine; the capture points at it by that host's name | that machine, as a host declaring `triage: {sources: [meeting, folder]}` with the `pane` runner and the operator's login | a hobbyist with one machine; an operator who will not copy transcripts anywhere |
 
-Both write the same capture. A reader that finds its pointer
+Both write the same capture. A triage session that finds its pointer
 unreachable exits blocked with the question, and the capture waits
 under attention (70, 149). The pointer's reachability is checked before
-a reader is charged, so an unreachable pointer is a decision, not a
+a triage session is charged, so an unreachable pointer is a decision, not a
 stalled session.
 
 **The rule, in three lines.**
@@ -378,7 +378,7 @@ shown true or false of a model, like every requirement in Parts A–C.
     capture into its signals, charged by the tick of the host that
     declares the capture's source, immediately or on a cadence the
     manifest names, up to a bound of readers at once (32). A forwarded
-    single message charges no reader (S21).
+    single message charges no triage session (S21).
 
 217f. When dispatch is down nothing is lost. Decisions are state and
     any host serves the page (148). Replies wait in the chat and are
@@ -397,7 +397,7 @@ shown true or false of a model, like every requirement in Parts A–C.
 217h. A capture's pointer is reachable by whichever host reads it. The
     manifest names a raw store per source; an adapter puts the raw
     material there before writing the capture, or the host that holds
-    it declares that it triages that source. A reader is not charged
+    it declares that it triages that source. A triage session is not charged
     for a pointer that cannot be reached; the capture is a decision
     under attention instead (149).
 

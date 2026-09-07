@@ -41,8 +41,8 @@ dispatch needs to serve them are one document.
   caller that cannot reach any host's binary posts there (215), and
   every other adapter writes git through its own host (217g).
 - **The dispatch model** (`../models/dispatch/model.md` §1, §3, §4 and
-  `captures.md`) names who serves the endpoint, who charges the
-  reader, what each caller needs to be admitted, and where the raw
+  `captures.md`) names who serves the endpoint, who charges
+  triage, what each caller needs to be admitted, and where the raw
   material a capture cites must be (217h).
 
 ## Two channels, and no third
