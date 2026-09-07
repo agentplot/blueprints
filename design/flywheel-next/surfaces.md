@@ -24,9 +24,7 @@ Sources and precedence:
 | `plan-mockup.md` | the seed: organization willdan, 2026-09-04 07:40, decisions 412–421 |
 | `mockups/rail-and-board.html` | the direction for the plan page; illustrates §1.1–§1.2, §1.4–§1.12 |
 | `mockups/context-map-ddd.html` | the adopted map model drawn at both levels; illustrates §1.3 |
-| `mockups/workbench.html` | retired; source of the seed extension (422, 424) and the session chip |
-| `mockups/queue-workstream.html`, `triage-deck.html`, `river.html` | rejected metaphors; cited in §5 |
-| `mockups/context-map.html` | superseded map on the v1 schema; cited in §5 |
+| retired mockups (workbench, queue, deck, river, v1 context map) | removed from the tree on 2026-09-07; §5 cites them by name for the rulings they produced; their seed lives in rail-and-board and `plan-mockup.md` |
 
 Where two mockups disagree, rail-and-board and context-map-ddd win.
 Every statement is numbered S1, S2, … so a claim or a work order can
@@ -1340,7 +1338,7 @@ Dated 2026-09-05.
   Four bands per card, a control and a data lane, edges ghosted by a
   runtime switch, and a "repository" layer put structure where the
   model has tags and kinds; the seam rename showed the vocabulary was
-  wrong. The `context-map.html` mockup on that schema is superseded.
+  wrong. The mockup drawn on that schema was retired.
 - **S71.** Re-attach is the scope gesture: arm on the claim, one click
   on any map id, one `attach` call (193, 200). No scope rules, no
   repository set.
