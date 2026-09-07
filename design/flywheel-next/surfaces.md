@@ -3,7 +3,7 @@
 The surfaces the operator works: the plan page with its rail, board,
 dock and capture box; the board's three views, phases, map and book;
 the artifact views behind every object; the flywheel instrument; the
-setup surface; the chat rendering; the review surface bindings; the
+hosts surface and the account item; the chat rendering; the review surface bindings; the
 status view on a phone. This document records decisions, flows, forms
 and rulings. It records no pixels and no code. A construction session
 building the page works from it without opening a mockup. A later
@@ -13,7 +13,7 @@ Sources and precedence:
 
 | source | role |
 |---|---|
-| `requirements.md` | the contract; this document may not contradict it. A.2, B.4, B.6, 155, 193–194, 196, 209–212 bind the surfaces directly. 213, 214, 229 and 230 are drafted and cited here by their drafted numbers: 213 the artifact views, 214 the flywheel instrument, 229 and 230 the setup surface and enrolment. |
+| `requirements.md` | the contract; this document may not contradict it. A.2, B.4, B.6, 155, 193–194, 196, 209–212 bind the surfaces directly. 213, 214, 229 and 230 are drafted and cited here by their drafted numbers: 213 the artifact views, 214 the flywheel instrument, 229 and 230 the hosts surface and enrolment. |
 | `models/context-map/model.md` §5, §6 | the map's rendering at both levels; the current text of 198–202 |
 | `models/statechart/model.md` §5 | the plan's derivation, numbers, decision catalogue, sinks, responses and tool surface |
 | `models/statechart/profiles/surfaces.yaml` | the tool catalogue the page's controls call (193) |
@@ -43,8 +43,9 @@ were settled, not their place on the page.
 - **S2.** The header shows the organization, the as-of time of the
   read the page was built from (145), the count of decisions, the
   "yes all" control with the numbers it will answer, the count of
-  responses sent with a control that opens the sent log, and a theme
-  control (light, dark, system).
+  responses sent with a control that opens the sent log, a theme
+  control (light, dark, system), and the account item at its right
+  (S152).
 - **S3.** The rail is titled "Decisions". It is one plan delivery
   (model 5.5): the numbered decisions in the model's order, approve
   then decide then answer, each group sorted by number; then attention,
@@ -250,7 +251,7 @@ were settled, not their place on the page.
 | planning in progress | its row in the gate | what planning reads; the operator's notes it carries; its session | nothing yet; the next proposal is the decision |
 | deferred | its greyed sheet | when later was answered; that it left the count, wrote no SINCE line, and is superseded silently by planning's next run (172, 35) | ask again |
 | repository | the strip, a home chip, a baseline's link, a library row | kinds and capabilities, derived (map 4.3); contexts it homes; claims in scope with verdicts, each claim's attachments beside the re-attach control and "read in book" (195); homed elements; decisions on it | show on map; the baseline decision's answers when one is pending |
-| host | the host strip | alive or gone with last heartbeat; what it runs against its bound; its leases; "setup" opening its row on the setup surface (S115) | takeover · wait when gone; nothing to answer when alive |
+| host | the host strip | alive or gone with last heartbeat; what it runs against its bound; its leases; "hosts" opening its row on the hosts surface (S115) | takeover · wait when gone; nothing to answer when alive |
 | claim | an attachment chip, a repository's claim row, a claim name anywhere | the claim text and version; attached to (each attachment with its scope contribution); scope, derived; verdicts per repository in scope; "read in book"; "evidence" opening the claim's artifact view | re-attach… (arms the canvas, S70); show on map |
 | map context, element, relationship, link | a card header, a node, an edge or its panel, a neighbour dock | id, ref to the chapter with "read in book", status, tags; the overlay difference when one is on; home (effective and where it came from); ends and marks for a relationship with its crossing links; crossing for a link; attached claims with the derived scope line; verdicts per repository; decisions as markers with the rail card inline; an open element's question with its capture control | open on map · drill into · light on map |
 | changes | "changes · n" on the map or the book | the difference list with a link per entry, map entries to their object and book entries to their anchor; the review history when the review overlay is on | mark reviewed (review overlay only) |
@@ -300,7 +301,7 @@ were settled, not their place on the page.
   as interpreter: it proposes exactly one tool call as a reply with a
   confirm control, and the confirmation is the response (194). On the
   page the interpreter is a model in the browser, and a control is a
-  tool call with no interpreter at all. On the setup surface the same
+  tool call with no interpreter at all. On the hosts surface the same
   job is a host's part named "agent" (S116).
 
 ### 1.7 The review surface bindings
@@ -332,7 +333,8 @@ were settled, not their place on the page.
   behind a control. The dock is full screen with a back control. The
   header hides the key hints and the "yes all" numbers. The machinery
   strip stays one scrolling row; the flywheel panel is reached from the
-  board header (S110).
+  board header (S110). The account item stays in the header and its
+  menu opens full screen with a back control.
 - **S39.** The phone keeps every form of §3 and every control of §1.
   Nothing is answerable on the phone that is not answerable on the
   desktop, and nothing the desktop answers is missing on the phone (2,
@@ -434,8 +436,8 @@ were settled, not their place on the page.
   alive slots, and the number behind the bound; drain, hosts alive of
   hosts, utilization, units merged per day at the bound, a seven-day
   merges sparkline, bolts landed per week labelled "history, not a
-  target" (142), and "add a host to drain faster" opening the setup
-  surface.
+  target" (142), and "add a host to drain faster" opening the hosts
+  surface on "+ host".
 - **S105.** Above the wheel, the two stages of backpressure as a
   two-stage pipe: inception (signals → intents → elaborations →
   proposals) filled by what waits on the operator, a hatched gate,
@@ -468,16 +470,17 @@ were settled, not their place on the page.
   score for the operator, a decision or an answer control. It reads;
   the rail answers.
 - **S112.** Requirements served: 142, 145, 214. Tools called: none;
-  "add a host" opens the setup surface.
+  "add a host" opens the hosts surface.
 
-### 1.12 The setup surface
+### 1.12 The hosts surface
 
-- **S113.** Setup is an overlay over the board, opened from a "setup"
-  control in the hosts strip, from a host's dock page, or from the
-  flywheel's "add a host". It is separate from the operator's
-  decisions: nothing on it is in the count until a flow on it raises a
-  decision, which then appears in the rail like any other (229).
-- **S114.** Setup is the organization's hosts, browsed. On the left
+- **S113.** Hosts is an overlay over the board, opened from the
+  account item's hosts entry (S157), from the setup control in the
+  hosts strip, from a host's dock page, or from the flywheel's "add a
+  host". It is separate from the operator's decisions: nothing on it
+  is in the count until a flow on it raises a decision, which then
+  appears in the rail like any other (229).
+- **S114.** Hosts is the organization's hosts, browsed. On the left
   one row per host: kind and platform (a laptop or a home host on
   herdr, a container on flywheel-cloud, the dispatcher placement with
   bound 0), alive or gone, bound, when it joined, and the parts it runs
@@ -500,17 +503,15 @@ were settled, not their place on the page.
   dispatch model's interpreter job. The chip's hint says so: "reads and
   answers; every write is a proposed call you confirm". The model keeps
   "interpreter"; the surface says "agent".
-- **S117.** On the right, the index, in two halves. Organization
-  packages belong to the organization and to no host: unit and
-  elaboration types, deliverable producers, map vocabularies,
-  templates, scenario packs; adding one is one install decision on the
-  organization. Per-host packages are what a host runs: adapters, chat
-  sinks, the agent, triage, runners, routers, sign-in; the list is
-  filtered to the selected host's platform, with "any platform"
-  showing the rest greyed with what they need. Each entry shows name,
-  version, "shipped" or "index", what it needs (secrets, platform,
-  network), what it enables, and "add", or its state on the host when
-  it is already there. A search box and a kind filter sit above.
+- **S117.** On the right, the host's store: the per-host packages,
+  what a host runs: adapters, chat sinks, the agent, triage, runners,
+  routers, sign-in; the list is filtered to the selected host's
+  platform, with "any platform" showing the rest greyed with what they
+  need. Each entry shows name, version, "shipped" or "index", what it
+  needs (secrets, platform, network), what it enables, and "add", or
+  its state on the host when it is already there. A search box and a
+  kind filter sit above. Organization packages never appear here; they
+  are the organization store's (S156).
 - **S118.** "add" is one flow. It collects the part's configuration
   and the secrets it needs in one form, says which secrets the
   machinery places and which the operator must place, and ends by
@@ -535,7 +536,7 @@ were settled, not their place on the page.
   in the rail ("enrol host <name>", approve · yes · no, kind enrol) with
   a one-time token that expires; the host joins with the token by one
   command (205), reads the manifest and installs its declared parts
-  from the index; the row shows alive. Each step shows its state
+  from its store; the row shows alive. Each step shows its state
   (queued · running · waiting on you · done · skipped · stopped) and
   the flow ends with the new host row alive in the strip and the list
   (230).
@@ -551,15 +552,70 @@ were settled, not their place on the page.
   machinery check the path. The part links to the attention line and
   the line back to the host; the strip's setup control carries
   "secret" while one waits (149).
-- **S124.** The setup surface never: installs anything without a
+- **S124.** The hosts surface never: installs anything without a
   decision; shows a secret's value; stores a platform credential;
   enters the count by itself; runs a ladder or an order of
-  installation. Every placement of the dispatch model (dispatch 5) is
-  a host on this list with the parts it runs.
+  installation; lists an organization package. Every placement of the
+  dispatch model (dispatch 5) is a host on this list with the parts it
+  runs.
 - **S125.** Requirements served: 149, 191, 204, 205, 207, 229, 230.
   Tools called: `answer` (the install and enrol decisions, "placed",
   "enable"); the add, change and "+ host" flows raise decisions and
-  call nothing else (§6, S138).
+  call nothing else (§6, S148).
+
+### 1.13 The account item
+
+- **S152.** A standard account item sits at the right of the header:
+  who you are and the sign-in kind, as a chip. It expands to a menu in
+  a fixed order: the organization switcher, then settings, hosts, the
+  organization store, and sign-out. It is the one place the page
+  reaches the organization as a whole rather than an object in it.
+  Nothing in the menu is in the count; a flow in it that needs the
+  operator's yes raises a decision in the rail like any other.
+- **S153.** Who you are is the name the sign-in gave and the sign-in
+  kind: "local · no sign-in" when the page is served by a host on the
+  operator's own machine; GitHub or Okta SSO when a host serves the
+  page behind its sign-in part (S115). Sign-out ends the session with
+  the serving host and is shown only when a sign-in exists.
+- **S154.** The organization switcher lists every organization the
+  serving host is joined to (205), each with its decision count.
+  Choosing one swaps the whole page to that organization: the rail,
+  the board in every view, the machinery strip's hosts and
+  repositories, the flywheel reading, the books and the map. The as-of
+  time is that organization's read. Nothing carries across: no focus,
+  no open dock, no mode, no overlay. The page's address names the
+  organization, so a link opens it directly and the chat's link (S32)
+  lands on the right one.
+- **S155.** Settings is the manifest as a form: the organization's
+  declarations grouped as the manifest groups them, profile, defaults
+  per role (173), sinks and their presenters, routers, raw stores,
+  callers, curation and triage cadences, each field with what it is
+  and where the machinery reads it. Save is one response for the whole
+  form; the machinery applies it as one manifest commit and the page
+  re-reads. A secret is never a field: it is placed (S123). A host's
+  declaration is changed on hosts, a repository's is derived, and the
+  form says so beside each field it does not carry.
+- **S156.** The organization store lists the organization packages:
+  unit and elaboration types, deliverable producers, map vocabularies,
+  templates, scenario packs (190, 208), each with name, version,
+  "shipped" or "index", what it needs, what it enables, and its state
+  in the books: installed in the books · adding, decision n ·
+  installing · not installed. "add" is the one flow of S118 without a
+  host: configuration collected, then one install decision on the
+  organization; its yes installs the package into the books repository
+  and the default set (190) grows. A search box and a kind filter sit
+  above. Nothing here names a host.
+- **S157.** Hosts in the menu opens the hosts surface of §1.12. The
+  strip's setup control opens the same surface; it is a shortcut to
+  hosts and to nothing else.
+- **S158.** The account item never: answers a decision; shows a
+  secret's value; lists an organization the serving host is not joined
+  to; installs anything without a decision; mixes an organization
+  package into a host's store or a host's part into the organization
+  store.
+- **S159.** Requirements served: 149, 173, 190, 203, 205, 208. Tools
+  called: `answer` (the install decision); settings' save and the
+  store's add raise responses whose catalogue entries are open (S148).
 
 ## 2. Flows
 
@@ -762,14 +818,14 @@ page shows after.
   inception stage is full and its construction stage low. 3. Rail: y on
   422 → `answer(422, yes)`; the panel re-renders: runway 5.3 days, the
   reading "drain is the limit: add a host · 9 items on 4 alive slots".
-  4. "add a host to drain faster" opens the setup surface on "+ host"
-  (S130). 5. Esc closes the panel; the pill reads "5.3d · 1d 19h".
+  4. "add a host to drain faster" opens the hosts surface on "+ host"
+  (S131). 5. Esc closes the panel; the pill reads "5.3d · 1d 19h".
 
 ### 2.16 Adding a part to a host
 
-- **S130.** 1. Setup: the studio row; its detail shows the agent
+- **S130.** 1. Hosts: the studio row; its detail shows the agent
   installed, triage with sources meeting and folder, no chat sink. 2.
-  The per-host index filtered to macOS lists the Discord sink, needs a
+  The host's store filtered to macOS lists the Discord sink, needs a
   bot token; "add" opens the flow. 3. The form collects the guild and
   channel, says the bot token is a secret the operator places, and
   "done" raises decision n in the rail, kind install, approve; the
@@ -782,9 +838,9 @@ page shows after.
 
 ### 2.17 Enrolling a host
 
-- **S131.** 1. Setup: "+ host"; platform flywheel-cloud managed, name
+- **S131.** 1. Hosts: "+ host"; platform flywheel-cloud managed, name
   willdan-cloud-2. 2. Parts: the Discord sink and the agent ticked from
-  the per-host index. 3. Provisioning runs from the host in hand with
+  the host's store. 3. Provisioning runs from the host in hand with
   the operator's own platform credentials, read now and never stored;
   the step shows running then done. 4. Hand-over lists only the ticked
   parts' secrets, the bot token and model access; the operator hands
@@ -795,6 +851,46 @@ page shows after.
   manifest and installs its declared parts; each step shows queued,
   running, done. 7. The row shows alive in the strip and the list; the
   flywheel's drain column counts one more host.
+
+### 2.18 Switching organization
+
+- **S160.** 1. Header: the account item reads "chuck · local · no
+  sign-in"; a click opens the menu with the switcher at its head:
+  willdan · 9, mad-swan · 2. 2. mad-swan chosen. 3. The whole page
+  swaps: the rail shows mad-swan's two decisions, the board its lanes,
+  the strip its hosts and repositories, the flywheel its runway, the
+  address names mad-swan; the dock that was open is closed, no card is
+  focused, the view is phases. 4. The header's as-of time is mad-swan's
+  read; the account item reads the same name. 5. The switcher again
+  returns to willdan the same way, with nothing remembered from before.
+
+### 2.19 Adding an organization package
+
+- **S161.** 1. Account item: organization store; the list shows
+  unit types, producers, vocabularies, templates and scenario packs
+  with their states; the "data-product" vocabulary reads not installed
+  · index · needs nothing. 2. "add" opens the flow: the vocabulary's
+  configuration (the kinds it adds, the facets it declares), no
+  secret; "done" raises decision n in the rail, kind install, approve;
+  the row reads "adding · decision n". 3. Rail: y → `answer(n, yes)`;
+  the row reads installing. 4. The proof arrives: the row reads
+  installed in the books; the map's kind legend and the facet controls
+  carry the new kinds at the next read (map 3.3); SINCE gains
+  "installed · data-product vocabulary". No host row changed.
+
+### 2.20 Changing a setting
+
+- **S162.** 1. Account item: settings; the manifest as a form, the
+  defaults per role group open: the interpreter's model, triage's
+  model. 2. Triage's model changed in its select; the field marks
+  itself changed and the form's foot counts one change. 3. Save sends
+  one response for the form; the foot shows "sending" and refuses a
+  second save. 4. The response settles: the log gains "settings ·
+  triage model · recorded"; the machinery's manifest commit lands; the
+  page re-reads and the form shows the new value with nothing marked.
+  The next triage session the machinery charges takes the new default
+  (173). The bot token's row in sinks shows "placed" with no value and
+  no field.
 
 ## 3. Forms
 
@@ -816,7 +912,7 @@ where a thing sits, never by its form.
 | landed bolt | a borderless muted record | name, when, PR-and-checks stamp, environments, live signals, "stays · why" or "leaves in Nd" | the record | leaves Operation after the window |
 | signal | a quote with a left rule | text, kind, source, age, move or "unmoved" | none | its move |
 | session | a chip, the same everywhere | agent · model, @host, activity (working, starting, idle Nh, blocked, with you, next hh:mm), pane link | chips of the lit host | done chip with its countdown |
-| host | a pill in the host strip; a row on the setup surface | alive or gone, sessions against the bound, last heartbeat; on setup: kind, platform, bound, joined, parts as chips | its pill lights its sessions in every lane | gone in the strip; released after takeover |
+| host | a pill in the host strip; a row on the hosts surface | alive or gone, sessions against the bound, last heartbeat; on hosts: kind, platform, bound, joined, parts as chips | its pill lights its sessions in every lane | gone in the strip; released after takeover |
 | repository | a pill in the strip; a home chip on a map card | name, unmet count; on the map: elements homed, capabilities | its chip | retiring when homed only in current |
 | claim | an attachment chip, never a node; a block in the book | name, version; on a repository page its verdict per repository; in the book: standing or proposed, attachments, scope line, verdict dots | its scope lights on the map; its block lights in the book | not applicable when it leaves a scope; dashed while proposed |
 | map context | a card with a thumbnail | name, status, home chips with verdict dots, attachment count, markers, open-question badge, tags, the thumbnail | the card and its edges | ghosted when removed |
@@ -826,13 +922,15 @@ where a thing sits, never by its form.
 | machinery session | a row in the machinery strip or on its object | curation beside the unmoved counter, planning in the gate, a conflict fix on its bolt | its chip | leaves when its run ends |
 | artifact view | a dock page under a source bar | the artifact rendered to its kind (S99), the source bar | none | "no change yet" before a unit's yes |
 | flywheel | one pill in the strip; one panel | runway, streak, "at risk"; the panel: wheel, pipe, three columns, reading, streak, advanced | none | none; it reads |
-| part | a chip on a host's setup row | kind word, name, state (installed, adding, needs a secret, installing, disabled), "lease" on a presenting sink | the chip and its attention line when one waits | disabled |
-| package | a row in the index | name, version, shipped or index, needs, enables, "add" or its state on the host | the row | greyed under "any platform" with what it needs |
+| part | a chip on a host's row | kind word, name, state (installed, adding, needs a secret, installing, disabled), "lease" on a presenting sink | the chip and its attention line when one waits | disabled |
+| package | a row in a host's store or in the organization store | name, version, shipped or index, needs, enables, "add" or its state on the host or in the books | the row | greyed under "any platform" with what it needs |
+| account item | a chip at the header's right | who you are, the sign-in kind; open: the switcher, settings, hosts, organization store, sign-out | none | none |
 
 - **S52.** Markers: a decision's number with its group glyph on the
   object it concerns (S17), one glyph set everywhere: on a lane, on a
   map card, edge, node or neighbour dock, in a chapter margin, on a
-  setup row. A gathered elaboration's marker sits on every covered
+  host's row or a store row. A gathered elaboration's marker sits on
+  every covered
   intent. A host marker sits on the bolt whose item it holds. A marker
   click focuses the rail card and opens the dock with the card inline.
 - **S53.** Session chips are one style everywhere: agent · model, the
@@ -842,8 +940,8 @@ where a thing sits, never by its form.
   pill lights its chips in every lane and dims the rest.
 - **S54.** The machinery strip sits above the lanes: hosts as pills
   (alive or gone, sessions against the bound, last heartbeat), the
-  setup control with "secret" while one waits, then the repositories as
-  pills, then the flywheel pill (S109). Machinery sessions sit by phase,
+  setup control that opens hosts, with "secret" while one waits, then
+  the repositories as pills, then the flywheel pill (S109). Machinery sessions sit by phase,
   not in the strip: curation beside the unmoved counter, planning
   inside the gate while it runs, a conflict fix on the bolt it works.
 - **S55.** Countdowns: a finished object says "leaves in Nd", or
@@ -868,7 +966,7 @@ where a thing sits, never by its form.
 | b | board | switch phases and book |
 | w | anywhere | open and close the flywheel panel |
 | / | board | focus the capture box |
-| Esc | anywhere | in order: leave a field, close the log, cancel explore selection, cancel re-attach, hide an edge's panel, close the dock, close the library or setup, back from a drill |
+| Esc | anywhere | in order: leave a field, close the log, cancel explore selection, cancel re-attach, hide an edge's panel, close the dock, close the account menu, the library, hosts, settings or the store, back from a drill |
 | f | map | fit, the only camera command, at either level |
 | o | map | cycle the overlay: none, current → target, since last review |
 | j, k | map canvas | move the focus ring among contexts at rest, among elements when drilled |
@@ -892,7 +990,10 @@ where a thing sits, never by its form.
 | edge panel | hover or focus on a relationship edge | the crossing links and claims of S85 | leaving the edge, Esc |
 | book | b, the board header, "read in book" | the viewer with the rail driving it | b, the board header |
 | library | the book header's control | the organization's books with their counts | a choice, Esc |
-| setup | the strip's setup control, a host page, "add a host" | hosts and parts on the left, the index on the right; the add and "+ host" flows in place | Esc, × |
+| account menu | the account item | the switcher, settings, hosts, organization store, sign-out | a choice, Esc, a click outside |
+| hosts | the menu's hosts, the strip's setup control, a host page, "add a host" | hosts and parts on the left, the host's store on the right; the add and "+ host" flows in place | Esc, × |
+| settings | the menu's settings | the manifest as a form with one save | Esc, ×; an unsaved change asks first |
+| organization store | the menu's organization store | the organization packages with their states; the add flow in place | Esc, × |
 | flywheel | w, the strip's pill, the board header on a phone | the panel of §1.11 | w, Esc, × |
 | dock | Enter, a marker, a card, a pill, a chip | one page of S28 over the board | Esc, ×, a click outside |
 | phone tabs | width under 760px | Decisions or Board | the other tab |
@@ -1045,12 +1146,19 @@ Dated 2026-09-07.
   configuration and the secrets first and raises the install decision
   last, so the yes is the only decision and the count holds nothing
   before it. The install ladder and "offer" are rejected.
-- **S140.** The index is organization packages and per-host packages.
-  A unit type, a producer, a map vocabulary, a template or a scenario
-  pack belongs to the organization and installs on no host; an adapter,
-  a sink, the agent, triage, a runner, a router or sign-in is a host's
-  part. One list that mixed them asked the operator to pick a host for
-  something no host runs.
+- **S140.** The organization store and a host's store are separate
+  surfaces, both reached from the account item. A unit type, a
+  producer, a map vocabulary, a template or a scenario pack belongs to
+  the organization, installs into the books and runs on no host; an
+  adapter, a sink, the agent, triage, a runner, a router or sign-in is
+  a host's part and installs on one host. One list that mixed them
+  asked the operator to pick a host for something no host runs, so the
+  organization store hangs off the organization (the account item)
+  and a host's store hangs off its host row. The strip's setup control
+  points at hosts, because the strip is where hosts are; it points at
+  nothing else. The account item is the standard place because
+  switching organization, settings, stores and sign-out are about the
+  organization as a whole and none is an object on the board.
 - **S141.** Enrolment hands over only what the chosen parts need, and
   the operator's own credentials are never stored. Provisioning runs
   from the host in hand with the operator's platform credentials read
@@ -1110,17 +1218,19 @@ What no mockup settled.
 - **S146.** The install and enrol decision kinds, the fleet's chores
   line as where an install runs, the one-time token and its expiry, and
   whether an install chore may run before its secret exists and wait on
-  it. All are invented on the setup surface and none is in the
+  it. All are invented on the hosts surface and none is in the
   statechart's decision catalogue (model 5.3).
 - **S147.** The part vocabulary per host (adapters, chat sinks, agent,
-  triage, runner, router, sign-in) and the two halves of the index are
-  the surface's; the manifest's declaration of a host (149, 203,
-  dispatch 2) names some of them and not all. Which the manifest names
-  and which the index adds is not settled.
-- **S148.** Which tools the add, change and "+ host" flows call. Each
-  ends in a decision the rail answers, but the call that raises the
-  decision and the effect that applies a configuration change have no
-  catalogue entry (193).
+  triage, runner, router, sign-in) and the split into a host's store
+  and the organization store are the surface's; the manifest's
+  declaration of a host (149, 203, dispatch 2) names some of them and
+  not all. Which the manifest names and which a store adds is not
+  settled.
+- **S148.** Which tools the add, change, "+ host" and settings-save
+  flows call. Each ends in a decision the rail answers or in one
+  response, but the call that raises the decision, the effect that
+  applies a configuration change, and the manifest commit a save
+  becomes have no catalogue entry (193).
 - **S149.** How the book viewer is served: chapters rendered by the
   server from mdBook sources, or mdBook's own build embedded. The claim
   block's rendering from the ledger is settled either way (S92).
@@ -1131,3 +1241,8 @@ What no mockup settled.
 - **S151.** Whether thumbnails render on a phone at all, or only the
   caption's counts, and whether the stacked list when drilled draws a
   link as more than its target's name.
+- **S163.** The switcher's source and the form's extent. The switcher
+  lists the organizations the serving host is joined to; whether a
+  host that serves several organizations serves them at one address
+  or one per organization, and which manifest keys the settings form
+  carries against those it only shows, is not settled (203, 205).
