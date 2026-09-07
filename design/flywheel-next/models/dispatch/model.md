@@ -3,9 +3,10 @@
 What dispatch is, where it runs, and what stays the same wherever it
 runs. Written in the voice of `requirements.md`; every statement cites
 the requirement it satisfies or the one it proposes. Sources: A.15,
-A.17, A.24, B.1, B.5, B.6, C.1, C.2, section 9, `operation-captures.md`
-(the dispatch section and "What dispatch needs to exist"), and the
-statechart model's `sink`, `host`, `surfaces`, `sessions`, `tracker` and
+A.17, A.24, B.1, B.5, B.6, C.1, C.2, section 9, `captures.md` beside
+this file (what dispatch captures and what it needs to exist), the
+source studies in `../../operation-captures/`, and the statechart
+model's `sink`, `host`, `surfaces`, `sessions`, `tracker` and
 `git-only` bindings.
 
 The short form. Dispatch is not one thing and not one program shape
@@ -20,8 +21,7 @@ and model access differ.
 
 ## 1. Four jobs
 
-Dispatch is four jobs at once (operation-captures, "What dispatch
-needs to exist"). Each has its own reads, writes, needs and failure
+Dispatch is four jobs at once (216, `captures.md` §3). Each has its own reads, writes, needs and failure
 mode, and the table keeps them apart because the placements below
 split them.
 
@@ -137,7 +137,7 @@ tick run in every placement. What changes:
 
 Nothing in this table is a machine, an atom or a profile operation.
 It is the `hosts.dispatcher` entry of the manifest and the secrets the
-operator places (207, operation-captures "What the manifest names").
+operator places (207, `captures.md` §3).
 
 ## 3. Notifications and scheduling
 
@@ -165,7 +165,7 @@ creates a decision does nothing more than write it.
 operator placed. It posts the plan as one message, one line per
 decision and a link to the page (18). It reads replies as the same
 bot. It never uses the operator's account and never a channel outside
-the organization's (operation-captures, the bot row). Rich controls
+the organization's (`captures.md` §3, the bot row). Rich controls
 are the platform's, used as provided; the numbered grammar always
 works beside them (155, 194).
 
@@ -217,13 +217,13 @@ notes tool's meeting list, a day of one chat channel — writes its
 captures through its own binary and never through dispatch. The
 endpoint exists only for callers that cannot write git: a delivery
 system's connector, a monitor's webhook, the chat (112,
-operation-captures "The capture endpoint").
+`captures.md` §1).
 
 **The raw material must be reachable by whoever reads it.** A capture
 points at its raw material; the raw material stays outside version
 control (111). A transcript on the operator's laptop is reachable by a
 reader on that laptop and by nobody else. The rule: the manifest names
-a raw store per source (operation-captures, the storage row); an
+a raw store per source (`captures.md` §3, the storage row); an
 adapter either puts the raw material there before it writes the
 capture, or the machine holding it declares that it triages that
 source. So an edge adapter has two shapes:
@@ -266,7 +266,7 @@ on the same six things.
 | target | process shape | secrets | private-network reach to the page and the tool server | cost | MCP transport for a `managed` triage session | verdict |
 |---|---|---|---|---|---|---|
 | **a container on any platform** (Fly, Cloud Run, ECS, a VM, flywheel-cloud) | long-lived; the Discord gateway stays open; the tick runs on its own clock | the platform's secret store, injected as environment | a tailnet node in the container, or the platform router's ingress that flywheel-cloud already is (191) | one small always-on container | not needed: triage is `inproc` | **first cloud placement.** The binary unchanged, one image, and flywheel-cloud is already the managed-platform router. |
-| **Bedrock AgentCore** | a long-lived runtime session, up to hours, restarted on a schedule; the tick runs inside it | AgentCore's identity service and the runtime's IAM role; Bedrock models with no key (operation-captures, the model row) | a VPC route to the tailnet or to the ingress; without it, none | per-session runtime plus model | AgentCore's gateway speaks MCP; the session reaches the dispatcher's tool server over HTTP with the 197 identity | **as a triage runner for an org already on AWS**, not as the dispatcher process: the presenter's socket and the endpoint want a plain long-lived process. |
+| **Bedrock AgentCore** | a long-lived runtime session, up to hours, restarted on a schedule; the tick runs inside it | AgentCore's identity service and the runtime's IAM role; Bedrock models with no key (`captures.md` §3, the model row) | a VPC route to the tailnet or to the ingress; without it, none | per-session runtime plus model | AgentCore's gateway speaks MCP; the session reaches the dispatcher's tool server over HTTP with the 197 identity | **as a triage runner for an org already on AWS**, not as the dispatcher process: the presenter's socket and the endpoint want a plain long-lived process. |
 | **a Claude managed agent** | one session per run from a stored agent definition; scheduled deployments fire sessions on a cron | vault credentials substituted at egress, never in the sandbox | a self-hosted sandbox on the operator's network reaches the tool server; the cloud sandbox does not | per session plus model | the agent's `mcp_servers` by URL, the credential in a vault | **as a triage runner**, by schedule or per capture, with a self-hosted sandbox; never the presenter or the endpoint. |
 | **a Vercel function set** | per request; no socket, no clock of its own; a cron job triggers the tick; the endpoint is a function | the project's environment | a function has no tailnet node; the tool server and the page must be published to reach it, which 46 forbids without the operator's say | near zero at rest | none | **not a placement.** Plain chat replies need the gateway; interactions over a URL keep only buttons and slash commands; every private-network read is a published endpoint. |
 
@@ -446,21 +446,15 @@ shown true or false of a model, like every requirement in Parts A–C.
    exceed the oldest unmoved signal (118). Who enforces that, and what
    happens to a capture whose raw material was removed after its
    signals were read?
-7. **The dispatcher's clone under the tracker profile.** Captures and
-   signals are files in the blueprints repository in every profile (157).
-   The dispatcher now holds a blueprints clone (217). Does that close the
-   "who holds the checkout" question in operation-captures, or should
-   a per-request endpoint write through the git host's API with
-   expected-old instead?
-8. **Triage bound versus curation threshold.** Both are numbers in the
+7. **Triage bound versus curation threshold.** Both are numbers in the
    manifest. Should the status view show unread captures by source
    beside unmoved signals by source (118), so a stalled triage is as
    visible as a stalled curation?
-9. **The interpreter model's size in the browser.** A phone runs a
+8. **The interpreter model's size in the browser.** A phone runs a
    small model. Is the browser interpreter's job narrowed to name
    resolution over the live objects with the tool chosen by control,
    so that a small model suffices, or does it propose the tool too?
-10. **One dispatcher per organization.** 148 allows one presenter per
+9. **One dispatcher per organization.** 148 allows one presenter per
     sink. Two dispatchers — one local, one cloud — could split the
     jobs: the cloud one presents and captures, the local one triages
     with the operator's login. Is that two hosts with two

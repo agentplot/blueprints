@@ -582,7 +582,7 @@ the operator may reverse by a response on the file; an entry with
   `satisfies` is integer in `schema.json` and `Vec<u32>` in the
   engine, and `check.py` reads a suffixed item as a clause of its base
   and counts it cited when the base is. **Decision**. The dispatch
-  model's ten open questions (its section 8) stand.
+  model's nine open questions (its section 8) stand.
 
 - **218–222 organizations.** Isolation is by root, state repository,
   blueprints, sinks and register per organization; a host's manifest names
