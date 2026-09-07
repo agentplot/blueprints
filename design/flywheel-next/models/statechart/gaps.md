@@ -639,6 +639,30 @@ the operator may reverse by a response on the file; an entry with
   extension the host loads, and how a static binary loads one — a
   subprocess speaking a fixed protocol, or a rebuild — is **open**.
 
+- **232 several hosts on one computer.** A host's root defaults to
+  `~/flywheel/<host>` rather than `~/flywheel`, so a second host on
+  the same computer needs no manifest edit for its disk; the
+  multiplexer session names gain the host id only when the manifest
+  marks the computer shared, keeping 174's defaults for the one-host
+  case. **Decision**. The port range is a block per host id folded into
+  the place hash, so a place moved between two hosts on one computer
+  changes port; 191's "derived from the place" is read as derived from
+  the place on its host. **Decision**. `disconnect` in the scenario
+  binding cuts the route to the git host and nothing else; a host
+  that loses its network also loses its chat and its webhook, which
+  the step does not model. Stated.
+
+- **233 the account item.** The local-user case shows the process's
+  user name and records it as `given_by`; a page reachable by another
+  person on the same computer would record that name too, which is
+  the operator's own computer's problem and not the machinery's.
+  **Decision**. `configure-organization` edits the manifest as a
+  commit on the books' shared line, so a bad save is a bad manifest
+  until the next save; the form validates as `flywheel.yaml` is
+  validated and refuses what the check refuses. **Decision**. Which
+  sign-in kinds ship is the dispatch model's tiers (217j); their
+  verifiers are not in this model. **Open**.
+
 - **213, 214 and 229–230 on the mockup.** The rail-and-board mockup
   (`design/flywheel-next/mockups/rail-and-board.html`) illustrates the
   artifact views behind an object (213), the flywheel instrument

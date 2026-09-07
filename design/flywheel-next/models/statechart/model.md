@@ -2417,3 +2417,31 @@ record in `proposed`; the `host-enrol` decision's yes runs
 the `host-enrol-lapsed` attention decision after 24h; a host already
 running the binary is adopted by the token alone. An existing host —
 the first, registered by init — starts `enrolled`.
+
+**232 — several hosts on one computer.** A host is `flywheel host
+--name <id>`, and two on one computer are two processes with two roots
+(`hosts.<host>.root`, default `~/flywheel/<host>`), two multiplexer
+sessions (`flywheel-<org>-<host>-<role>` when the manifest marks the
+computer shared), two port ranges folded into the place-path hash, two
+heartbeats and two lease holders; they share nothing but the git host
+and are told apart by id alone (`profiles/host.yaml`
+`several_on_one_computer`, `router.port_range`; `sessions.yaml`
+`shared_computer`). The scenario binding's `host:` step starts, stops
+(`lose`), disconnects and returns one by name
+(`profiles/sessions-stand-in.yaml` `hosts`), so the scenarios walked in
+section 14 that need a second host run on one laptop: S13 (a host
+lost, takeover by rule), S17 (two hosts race for one unit), S18 (a
+disconnected host finishing what it owns and reconciling), S29 (a
+bound reached, on one host with a second beside it), and 218's several
+organizations, each host running its own set.
+
+**233 — the account item.** One item on the page
+(`profiles/surfaces.yaml` `account`): who and how signed in, the
+organization shown with a switch to any other the host has a root for,
+its settings as a form (`configure-organization`, one response per
+save), its hosts and parts, its store apart from any host's, sign-out.
+Served locally with no sign-in kind the page shows the local user and
+needs no account; behind a kind the manifest names (`host.yaml`
+`sign_in`: tailnet, oauth, oidc — a sign-in package) it shows the
+vouched identity, and every op-response the page writes carries it as
+`given_by` (153).

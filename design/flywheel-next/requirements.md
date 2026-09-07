@@ -1192,6 +1192,17 @@ requirements, iterated against the running plan rather than on paper.
     Unreadable state is never guessed at. Until the response, the host
     stops covering the affected objects (150), and the status view
     shows why.
+233. The page carries one account item: who the operator is and how
+    they signed in, the organization they are looking at with a switch
+    to any other the host has a root for (218), and from it the
+    organization's settings (its manifest as a form, one response per
+    save), its hosts and their parts (229), the organization's store
+    apart from any host's (228), and sign-out. A page served on the
+    operator's own computer with no sign-in shows the local user and
+    needs no account; a page served by a host behind a sign-in kind the
+    manifest names (207, 217j) shows the signed-in identity, and every
+    response it records carries that identity (153). The organization's
+    store and a host's store are separate surfaces.
 
 ### A.27 Machines, types and context
 
@@ -1300,6 +1311,15 @@ requirements, iterated against the running plan rather than on paper.
     own launcher starts, so joining installs that one entry; a run
     missed while the host was down is caught up on the next tick, and
     the idempotent key (111) makes the catch-up write nothing twice.
+232. Several hosts run on one computer, each a separate process with
+    its own host id, root on disk (205), multiplexer session, port range
+    from the router (191), heartbeat and leases, so that any scenario
+    the model states about hosts — a host lost, a takeover, a bound
+    reached, a disconnected host reconciling, several organizations —
+    can be run and watched on a laptop with no second machine. Two
+    hosts on one computer share nothing but the git host and are told
+    apart by id alone; the scenario tool (95) can start, stop and
+    disconnect them by name.
 
 ## 5. Requirements — Part B, the control plane contract
 

@@ -36,11 +36,11 @@ itself, so the picture cannot drift from the runtime (83). Regenerate with
 
 | machine | kind | tier | version | object | satisfies | diagram |
 |---|---|---|---|---|---|---|
-| `host` | engine | core | 5 | host | 4, 32, 55, 96, 147, 149, 150, 151, 186, 196, 205, 215, 217, 222, 230, 231 | [host.svg](host.svg) |
-| `lease` | engine | core | 2 | lease | 128, 134, 147, 149, 150 | [lease.svg](lease.svg) |
+| `host` | engine | core | 5 | host | 4, 32, 55, 96, 147, 149, 150, 151, 186, 196, 205, 215, 217, 222, 230, 231, 232 | [host.svg](host.svg) |
+| `lease` | engine | core | 2 | lease | 128, 134, 147, 149, 150, 232 | [lease.svg](lease.svg) |
 | `plan` | engine | core | 2 | plan | 7, 8, 9, 11, 15, 83, 86, 148, 213, 214 | [plan.svg](plan.svg) |
-| `response` | engine | core | 3 | response | 1, 3, 4, 6, 12, 137, 153, 154, 193, 194 | [response.svg](response.svg) |
-| `sink` | engine | core | 1 | sink | 2, 8, 14, 18, 68, 82, 148, 152, 155, 216, 217, 218 | [sink.svg](sink.svg) |
+| `response` | engine | core | 3 | response | 1, 3, 4, 6, 12, 137, 153, 154, 193, 194, 233 | [response.svg](response.svg) |
+| `sink` | engine | core | 1 | sink | 2, 8, 14, 18, 68, 82, 148, 152, 155, 216, 217, 218, 233 | [sink.svg](sink.svg) |
 
 ## Unit types (`machines/unit-types/<machine>@<version>.yaml`)
 
