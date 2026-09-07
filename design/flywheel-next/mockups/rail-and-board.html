@@ -183,7 +183,8 @@
     "lease" badge on the sink whose presenter lease it holds, 148), the agent (the
     interpreter job, hinted "reads and answers; every write is a proposed call you
     confirm"), triage (the sources it reads), runner (pane · in-process · managed), router
-    and sign-in (none · GitHub · Okta SSO). A dispatcher placement is only what a host
+    and sign-in (none · GitHub · Okta SSO; one kind per host, the host's not the
+    organization's). A dispatcher placement is only what a host
     runs: willdan-cloud takes no construction work (bound 0), so it changes no runway
     reading. Selecting a host opens its detail in place with each part's state: installed
     (with "configure") · added · awaiting install · decision n · needs a secret (under
@@ -207,10 +208,10 @@
     token, application id, guild and channel; Slack: app token, signing secret, channel; a
     runner: model per role and key or cloud role, the key field shown only when a key is
     the access; an adapter: source path or named caller with its inbound secret, and
-    cadence), each secret as "paste now" (a password field; the value goes into the host's
-    keychain or the platform's secret store over the fleet's channel at the moment of add,
-    is written nowhere else, and the page keeps no copy) or "I'll place it later · under
-    attention", and for a per-host package a host selector (gone hosts allowed; the chore
+    cadence), each secret as "place it now" (the sheet shows the place-it command for that
+    secret, an op read piped into flywheel secret place on the target host, with "copy" and a
+    "check" that asks the host whether the secret is present; the page never carries it,
+    204, 207) or "I'll place it later · under attention", and for a per-host package a host selector (gone hosts allowed; the chore
     waits for them). "Add to <host>" raises one install decision on the rail (approve ·
     yes/no, kind install, the configuration summarised in its dock) and closes the sheet to
     the host's parts list, where the part reads "added · awaiting install · decision n"
@@ -219,25 +220,26 @@
     proof turns the part to installed (204), or, when a secret was left for later, to
     "needs a secret" with an attention line per secret ("place it": the command, that the
     page never carries it, a one-word "placed" answer that has the machinery check the
-    path, and a "configure" that opens the sheet to paste it instead); no takes the part
+    path, and a "configure" that opens the sheet with the same command and check); no takes the part
     off the host again (a suggested part goes back to suggested). An organization package
     adds the same way with the books as its target ("install · ADR in the books"), lands
     at its path, and reads "installed in the books · flywheel/templates/adr.md".
     "Configure" on any installed part (host or organization) opens the same sheet
-    prefilled; a placed secret offers "keep" or "rotate"; a missing one "paste now" or
+    prefilled; a placed secret offers "keep" or "rotate"; a missing one "place it now" or
     "later". Save is one logged response ("configure Discord on studio · rotate
     discord.bot-token"), no chore, "the host reads the manifest on its next tick"; rotate
-    marks the secret not placed and puts it under attention; pasting a missing one clears
-    the line and the part reads installed. The strip's setup control carries "secret"
+    marks the secret not placed and puts it under attention; a missing one checked present
+    clears the line and the part reads installed. The strip's setup control carries "secret"
     while any secret waits.
     "+ host" is a guided flow in the same surface: platform (flywheel-cloud managed · a
     container on any platform · a laptop) → name → choose its parts from the per-host index
     (the index switches to the new host; each chosen part opens its add sheet inline and
-    its secrets are marked paste now or place later; the platform's suggested parts are
+    its secrets are marked place it now or place later; the platform's suggested parts are
     one click each; agent and triage come with the binary wherever a runner gives them a
     place) → provision (runs from the host you are on with your own platform credentials,
     read at run time and never stored) → hand over only the secrets those parts need,
-    listed from the chosen parts with their mode, "change" reopening the sheet → enrol (a
+    listed from the chosen parts, each with its place-it command, copy and check, or
+    left for later; "change" reopens the sheet; continue says how many are placed → enrol (a
     decision on the rail, "enrol host <name>", a one-time token that expires in 1h, approve
     · yes/no, kind enrol, "will run" listing the chosen parts) → join (the host installs
     the chosen parts; one whose secret was left for later reads "needs a secret" and goes
@@ -252,10 +254,9 @@
     land at (flywheel/types · producers · map · templates · scenarios), "suggested" and
     "chosen" as part states, the per-platform suggested parts, the enrol decision kind and
     its one-hour token, that agent and triage follow a runner, and that an install chore
-    may run before its secret exists and wait on it. Tension left open: 204 says a secret
-    never travels through the page; "paste now" sends it through the page once, to the
-    store, keeping nothing. The brief asked for it; if 204 wins, "paste now" becomes the
-    place-it command shown inline and the sheet keeps only "later".
+    may run before its secret exists and wait on it. Ruled: 204 and 207 win; a secret never
+    travels through the page, so the sheet shows the place-it command and a check, never a
+    field. In the mockup, check finds the secret once the command was copied (sample).
   - Account: a standard account item at the right of the top bar (initials, the
     organization's name, a caret) expands to a menu: the organization switcher (willdan ·
     agentplot · personal · integral-analytics, the one in hand marked; choosing another
@@ -264,27 +265,36 @@
     personal is an empty organization in a "from zero" state: one laptop, the books, no
     intent, the board head saying what to do first; a seed left and returned to keeps its
     changes), then settings, hosts, organization store and sign out, then who you are:
-    name, handle, sign-in kind, and the host that serves the page. When the page runs
-    locally with no sign-in ("local · no sign-in", the personal seed) the account item
-    shows the local user, the switcher lists the organizations the host has roots for,
-    and sign out is disabled with "nothing to sign out of"; behind a host that serves the
-    page under sign-in it reads "GitHub" (willdan, agentplot) or "Okta SSO"
-    (integral-analytics), sign out ends the browser session (a signed-out panel with sign
-    in again; the hosts keep running), and the switcher lists the organizations you are a
-    member of. Settings opens the organization's manifest as a form: repositories with
+    name, handle, sign-in kind, and the host that serves the page. Authentication belongs
+    to the host serving the page, authorization to the organization: one host has one
+    sign-in kind regardless of which organization is shown ("local · no sign-in" on studio,
+    the laptop; Okta SSO on willdan-cloud, reached with ?served=willdan-cloud), switching
+    organizations never changes who you are, and the account item shows the host's sign-in
+    once. The switcher lists the organizations the serving host has roots for; an
+    organization whose operators list does not carry the signed-in identity is greyed
+    "not a member" and cannot be switched to (integral-analytics for the local user, whose
+    operators carry only the Okta identity; willdan-cloud has roots for willdan and
+    integral-analytics only). When the page runs locally with no
+    sign-in the account item shows the local user and sign out is disabled with "nothing
+    to sign out of"; behind Okta, sign out ends the browser session (a signed-out panel
+    with sign in again; the hosts keep running). The sign-in package is a per-host part
+    and never in the organization store; the host row that serves the page says so.
+    Settings opens the organization's manifest as a form: operators (the allowed
+    identities, add and remove, you cannot remove yourself), repositories with
     landing policy (direct merge · pull request) and item merge (squash · merge · rebase),
     roles with kind (pane · in-process · managed) and model, router, take cadence; save
     is one logged response naming each change ("settings · atlas landing pull request ·
     router private-network router"), "every host reads the manifest on its next tick";
     nothing changed sends nothing. The strip's setup control stays and points at hosts.
-    Invented: the three other organizations and their seeds, the manifest's fields as a
-    form, the signed-out panel, and that a switch is not a response (nothing is logged).
+    Invented: the three other organizations and their seeds, the operators lists and the
+    two serving hosts' identities, the manifest's fields as a form, the signed-out panel,
+    and that a switch is not a response (nothing is logged).
   - Under 760px the rail and the board are two tabs; the dock is full screen with a back
     control. The clock starts at 07:40 and advances a minute per response. Detail beyond the
     seed is invented and marked sample. Review switches: ?theme=dark|light, ?nodock, ?open=<key>,
     ?view=map|book, ?book=<id>, ?ch=<chapter>, ?review=1, ?library=1, ?load=1, ?setup=1, ?host=<id>,
     ?addhost=1, ?store=1, ?add=<package id>, ?org=agentplot|personal|integral-analytics, ?settings=1,
-    ?acct=1, ?signedout=1.
+    ?acct=1, ?signedout=1, ?served=studio|willdan-cloud.
 -->
 <meta charset="utf-8">
 <title>Rail and Board</title>
@@ -1052,7 +1062,7 @@ body.docked .dock{transform:none}
 .su-tabs{display:flex;gap:2px;margin:8px 0 2px;border-bottom:1px solid var(--line)} .su-tabs button{display:flex;flex-direction:column;gap:1px;padding:5px 10px;border-bottom:2px solid transparent;font-weight:700;font-size:12.5px;color:var(--ink2);margin-bottom:-1px;text-align:left} .su-tabs button small{font:10px var(--mono);color:var(--ink3);font-weight:400} .su-tabs button[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
 .su-sheet{border:1px solid var(--accent);border-radius:8px;padding:6px 12px 12px;background:var(--surface)} .su-sheet .su-ih{border-bottom:0;margin-bottom:0} .su-sheet .su-ih .eyebrow{flex:none;white-space:nowrap} .su-sheet .su-ih .su-for{flex:1;min-width:0} .su-desc{font-size:13px;color:var(--ink);margin:2px 0 4px} .su-needs{font-size:11.5px;color:var(--ink2);margin-bottom:6px} .su-needs i{font:700 9.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-style:normal;margin-right:6px}
 .su-field{display:grid;grid-template-columns:160px minmax(0,1fr);gap:4px 10px;align-items:center;padding:6px 0;border-top:1px solid var(--line2);font-size:12.5px;margin:0} .su-fl{font:600 11.5px var(--sans);color:var(--ink2)} .su-fl .v{display:block;font-size:10px;color:var(--ink3);font-weight:400} .su-field>input,.su-field>select{width:100%;max-width:380px;padding:4px 8px;font:12px var(--mono)} .su-fv{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;font-size:12px;color:var(--ink2);min-width:0} .su-fv label{display:inline-flex;gap:5px;align-items:center} .su-fv input[type=password]{flex:1 1 220px;min-width:0;padding:4px 8px;font:12px var(--mono)} .su-fv .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block;flex:none} .su-fv .dot.warn{background:var(--warn)}
-.su-secnote{display:block;margin-top:6px} .su-sf{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;padding-top:8px;border-top:1px solid var(--line)}
+.su-secnote{display:block;margin-top:6px} .su-place{flex-basis:100%;display:flex;flex-direction:column;gap:4px;margin-top:2px} .su-place pre.cmd{margin:0;white-space:pre-wrap;word-break:normal;overflow-wrap:anywhere;font-size:11px} .su-pr{display:flex;align-items:center;gap:8px;flex-wrap:wrap} .su-pst{display:inline-flex;align-items:center;gap:5px;font:11px var(--mono);color:var(--ink2)} .su-pst .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block} .su-pst .dot.warn{background:var(--warn)} .su-pst .dot.off{background:var(--line);border:1px dashed var(--ink3);box-sizing:border-box} .su-wsec{display:flex;flex-direction:column;gap:4px;padding:6px 0;border-top:1px solid var(--line2)} .su-sf{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;padding-top:8px;border-top:1px solid var(--line)}
 .su-cfg{display:block;font:11px var(--mono);color:var(--ink3);margin-top:2px} .su-cfg b{color:var(--ink2);font-weight:600} .su-cfg b.ok{color:var(--ok)} .su-cfg b.warn{color:var(--warn)}
 .part.lit{background:var(--lit);box-shadow:inset 0 0 0 1px var(--lit-line);border-radius:6px;padding-left:6px;padding-right:6px}
 .su-org .su-hh .dot{background:var(--accent)} .su-org{margin-top:6px;border-top:1px solid var(--line)}
@@ -1070,7 +1080,7 @@ body.docked .dock{transform:none}
 .acct-menu .am-t{display:flex;flex-direction:column;gap:1px;min-width:0} .acct-menu .am-t b{font-size:13px} .acct-menu .am-t small{font-size:11px;color:var(--ink3);line-height:1.35}
 .acct-menu .am-sep{border-top:1px solid var(--line2);margin:6px 4px} .acct-menu .am-me{display:flex;flex-direction:column;gap:2px;padding:4px 8px;font-size:11.5px;color:var(--ink2)} .acct-menu .am-me b{font-size:13px;color:var(--ink)} .acct-menu .am-me .mono{font-size:11px;color:var(--ink3)}
 .so-panel{width:min(520px,100%);text-align:center;padding:28px 20px} .so-panel p{color:var(--ink2);font-size:13px;margin:8px 0 14px}
-.st-panel{width:min(760px,100%)} .st-sec{margin-top:6px} .st-row{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr);gap:6px 12px;align-items:center;padding:5px 0;border-bottom:1px solid var(--line2);font-size:12.5px} .st-row.st-head{font:700 9.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--line)} .st-row select{padding:4px 6px;font:12px var(--mono);max-width:100%} .st-two{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;margin-top:8px}
+.st-panel{width:min(760px,100%)} .st-sec{margin-top:6px} .st-row{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr);gap:6px 12px;align-items:center;padding:5px 0;border-bottom:1px solid var(--line2);font-size:12.5px} .st-row.st-head{font:700 9.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--line)} .st-row select{padding:4px 6px;font:12px var(--mono);max-width:100%} .st-two{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;margin-top:8px} .st-op input{padding:4px 8px;font:12px var(--mono);width:100%}
 @media (max-width:759px){.acct-menu{position:fixed;left:8px;right:8px;top:calc(var(--top) + 4px);width:auto} .acct-btn b{display:none} .st-row{grid-template-columns:1fr} .st-row.st-head{display:none} .st-two{grid-template-columns:1fr}}
 
 /* ---------- log, toasts, tabs ---------- */
@@ -1179,7 +1189,7 @@ const PH = {inception:'inception', plan:'bolt plan', construction:'construction'
    Sample state · plan-mockup.md at 2026-09-04 07:40 · 412–421, plus 422.
    ===================================================================== */
 const SEED_WILLDAN = () => ({
-  org:'willdan', me:{name:'Chuck Swanberg', handle:'chuckswanberg', signin:'github', served:'studio'}, acct:false, settings:false, signedOut:false,
+  org:'willdan', acct:false, settings:false, signedOut:false,
   manifest:{repos:[{id:'atlas', landing:'direct merge', merge:'squash'},{id:'switchboard', landing:'pull request', merge:'squash'},{id:'new-repo', landing:'pull request', merge:'merge'}], roles:[{role:'machinery', kind:'pane', model:'claude-haiku-4-5'},{role:'construction', kind:'pane', model:'claude-fable-5-1'},{role:'triage', kind:'in-process', model:'claude-sonnet-5'},{role:'interpreter', kind:'in-process', model:'claude-haiku-4-5'}], router:'local router', cadence:'every 30s'},
   minutes: 7*60+40,
   decisions: [
@@ -1241,7 +1251,7 @@ const SEED_WILLDAN = () => ({
       {k:'triage', name:'triage', what:'sources: meeting · folder · bound 2 · readers in panes under your login · off the shared line', state:'installed 08-12'},
       {k:'runner', pkg:'runner-pane', name:'pane', what:'herdr on studio · bound 4 (32) · construction sessions and triage readers', state:'installed 08-12', cfg:{values:{bound:'4', login:'Claude Code'}, secrets:{}}},
       {k:'router', pkg:'router-local', name:'local router', what:'portless · https://<place>.localhost (46)', state:'installed 08-12'},
-      {k:'sign-in', pkg:'auth-github', name:'GitHub', what:'GitHub App willdan-flywheel · installation covers 4 repositories · tokens minted into places (207)', state:'installed 08-12', cfg:{values:{client:'Iv1.8a2c…', org:'willdan'}, secrets:{secret:{placed:true}}}}]},
+      {k:'sign-in', pkg:'auth-none', name:'none · local', what:'no login · this machine is the identity · one sign-in kind per host; the GitHub App mints repository tokens, it is not a sign-in (207)', state:'installed 08-12', cfg:{values:{tailnet:'willdan.internal'}, secrets:{}}}]},
     {id:'mac-mini', kind:'home host', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:false, bound:2, last:'06:59', gone:'41m', joined:'08-20', joinedVia:'adopt existing', note:'lease expires 07:59 · then its sessions are released', parts:[
       {k:'agent', name:'agent', what:'presents no chat · nothing to interpret here', state:'disabled', why:'presents no chat'},
       {k:'runner', pkg:'runner-pane', name:'pane', what:'herdr on mac-mini · bound 2 · joined by one command (205)', state:'installed 08-20'},
@@ -2619,7 +2629,7 @@ function renderLoad(){ const L = $('#load'); L.hidden = !S.load; if(!S.load) ret
     <details class="adv" ${S.adv ? 'open' : ''}><summary>advanced · the three phase gauges<span class="sub">inception · construction · operation · counts and the 7-day trend</span></summary>${advancedHtml()}</details>
     <div class="load-foot">every count is derived from the same state the engine reads; the 7-day series and the streaks are history read the same way · a unit is ~${SLOT_DAYS} slot-days, from the last week · esc closes · ${SM}</div></div>`; }
 document.addEventListener('toggle', e => { if(e.target.classList && e.target.classList.contains('adv')) S.adv = e.target.open; }, true);
-/* --- setup (215): per host, à la carte · the hosts left, the index right in two tabs (for this host · for the organization) · "add" opens the package's sheet: its form from its schema, secrets pasted now or placed later, a host for a per-host package; add raises one install decision and the part sits as "added · awaiting install"; "configure" is the same sheet prefilled and one logged response; "+ host" chooses parts first and hands over only their secrets --- */
+/* --- setup (215): per host, à la carte · the hosts left, the index right in two tabs (for this host · for the organization) · "add" opens the package's sheet: its form from its schema, secrets placed now by command or later, a host for a per-host package; add raises one install decision and the part sits as "added · awaiting install"; "configure" is the same sheet prefilled and one logged response; "+ host" chooses parts first and hands over only their secrets --- */
 const MODELS = ['claude-fable-5-1','claude-opus-5','claude-sonnet-5','claude-haiku-4-5'];
 const INDEX = [
   {id:'meeting', kind:'adapter', name:'meeting transcripts', v:'1.4.0', tag:'shipped', plat:['machine'], needs:'the notes tool on this machine · the raw store, or "capture where it lies" with triage declared here', enables:'one capture per meeting · key: the meeting id · raw: the transcript'},
@@ -2713,6 +2723,7 @@ const missingSecrets = (p, cfg) => secretFields(p).filter(f => fieldOn(f, cfg.va
 function cfgItems(p, cfg){ if(!p || !cfg) return []; return schemaOf(p).filter(f => fieldOn(f, cfg.values)).map(f => f.kind==='secret' ? [short(f), (cfg.secrets[f.k]||{}).placed ? 'placed' : 'not placed', (cfg.secrets[f.k]||{}).placed ? 'ok' : 'warn'] : cfg.values[f.k] ? [short(f), String(cfg.values[f.k]), ''] : null).filter(Boolean); }
 const cfgText = (p, cfg) => cfgItems(p, cfg).map(([k,v]) => `${k} ${v}`).join(' · ');
 const cfgLine = (p, cfg) => { const items = cfgItems(p, cfg); return items.length ? `<span class="su-cfg">${items.map(([k,v,c]) => `${esc(k)} <b class="${c}">${esc(v)}</b>`).join(' · ')}</span>` : schemaOf(p).length ? '' : '<span class="su-cfg">nothing to configure</span>'; };
+const placeCmd = (f, hid) => `op read "${f.op || `op://willdan/flywheel/${f.file}`}" \\\n  | flywheel secret place ${f.file} --host ${hid}`;
 const secretAttId = (hid, pid) => { const a = S.attention.find(x => x.host===hid && x.pkg===pid); return a ? a.id : 'secret'; };
 function partStateHtml(p, h){
   const s = p.state; const pk = p.pkg && pkg(p.pkg); const conf = pk && schemaOf(pk).length ? `<button class="btn sm quiet" data-suconf="${h.id}|${p.pkg}" title="the same form, prefilled · saving is one logged response, no chore">configure</button>` : '';
@@ -2730,13 +2741,13 @@ function hostSummary(h){ const ps = h.parts, inst = ps.filter(p => /^installed/.
 const chipsHtml = (kinds, parts, nameOf) => kinds.map(k => { const ps = parts.filter(p => p.k===k); if(!ps.length) return ''; return `<span class="su-kg"><span class="su-kk">${esc(k)}</span>${ps.map(p => `<span class="su-chip st-${p.state.split(' ')[0]}" title="${esc(p.state)}">${esc(nameOf(p))}${p.lease ? '<i class="su-lz" title="presenter lease">lease</i>' : ''}</span>`).join('')}</span>`; }).join('');
 function hostRowHtml(h){ const on = S.setup.host===h.id && !S.setup.add; const sm = hostSummary(h);
   return `<div class="su-host ${on?'on':''} ${h.alive?'':'gone'}" data-suhost="${h.id}" role="button" tabindex="0" aria-expanded="${on}">
-    <div class="su-hh"><span class="dot ${h.alive?'':'gone'}"></span><b class="mono">${esc(h.id)}</b><span class="su-kind">${esc(h.kind)} · ${esc(h.platform)}</span><span class="su-st ${sm.cls}">${esc(sm.text)}</span></div>
+    <div class="su-hh"><span class="dot ${h.alive?'':'gone'}"></span><b class="mono">${esc(h.id)}</b><span class="su-kind">${esc(h.kind)} · ${esc(h.platform)}${h.id===PAGE.served ? ' · <span class="chip g">serves this page</span>' : ''}</span><span class="su-st ${sm.cls}">${esc(sm.text)}</span></div>
     <div class="su-hm">${h.alive ? `alive · seen ${h.last}` : `<b class="warn">gone ${h.gone}</b> · last ${h.last}`} · ${h.bound ? `bound ${h.bound}` : 'bound 0 · takes no construction work'} · joined ${esc(h.joined)}</div>
     <div class="su-chips">${chipsHtml(PART_KINDS, h.parts, p => p.name) || '<span class="empty" style="padding:0">nothing declared</span>'}</div>
     ${on ? hostDetailHtml(h) : ''}</div>`; }
 function hostDetailHtml(h){
   const rows = PART_KINDS.map(k => { const ps = h.parts.filter(p => p.k===k); if(!ps.length) return `<div class="part"><span class="pk">${esc(k)}</span><span class="pw" style="color:var(--ink3)">${k==='triage' ? 'declares no source · nothing is read here' : k==='adapter' ? 'no adapter · this host captures nothing' : k==='chat sink' ? 'presents no chat' : 'none'}</span><span class="ps"><span class="dot off"></span>none${HOST_KINDS.includes(k) ? `<button class="btn sm quiet" data-sutab="host" data-sukind="${esc(k)}">browse the index</button>` : ''}</span></div>`;
-    return ps.map(p => `<div class="part ${S.setup.lit===p.pkg?'lit':''}" data-partrow="${esc(p.pkg||p.name)}"><span class="pk">${esc(k)}</span><span class="pw"><b>${esc(p.name)}</b> <span class="v">${p.pkg && pkg(p.pkg) ? 'v'+pkg(p.pkg).v : ''}</span></span><span class="ps">${partStateHtml(p, h)}</span><span class="pd">${esc(p.what)}${k==='agent' ? '<br><small class="su-hint">reads and answers; every write is a proposed call you confirm</small>' : ''}${p.pkg ? cfgLine(pkg(p.pkg), cfgOf(p)) : ''}</span></div>`).join(''); }).join('');
+    return ps.map(p => `<div class="part ${S.setup.lit===p.pkg?'lit':''}" data-partrow="${esc(p.pkg||p.name)}"><span class="pk">${esc(k)}</span><span class="pw"><b>${esc(p.name)}</b> <span class="v">${p.pkg && pkg(p.pkg) ? 'v'+pkg(p.pkg).v : ''}</span></span><span class="ps">${partStateHtml(p, h)}</span><span class="pd">${esc(p.what)}${k==='agent' ? '<br><small class="su-hint">reads and answers; every write is a proposed call you confirm</small>' : k==='sign-in' ? '<br><small class="su-hint">one sign-in kind per host, whichever organization is shown · membership is each organization\'s (settings · operators)</small>' : ''}${p.pkg ? cfgLine(pkg(p.pkg), cfgOf(p)) : ''}</span></div>`).join(''); }).join('');
   const joined = h.joinedSteps ? `<details class="su-joined"><summary>how it joined · ${esc(h.joined)} · ${esc(h.joinedVia)}</summary>${stepsHtml(h.joinedSteps)}</details>` : '';
   return `<div class="su-detail"><div class="su-dh"><span class="eyebrow">what it runs</span><span class="su-dn">installed · added · needs a secret · installing · disabled · suggested</span><button class="btn sm quiet" data-gotoobj="h:${h.id}">open the host</button></div>${rows}${joined}</div>`; }
 /* the organization's packages live in the books, read by every host · one row under the hosts */
@@ -2780,13 +2791,15 @@ function indexHtml(){ const tab = S.setup.tab; const h = indexHost(); const q = 
   return `<div class="su-ih"><span class="eyebrow">the index</span><span class="su-for">${forLine}</span></div>
     <div class="su-if"><input id="su-q" type="search" placeholder="search the index" aria-label="search the index" value="${esc(S.setup.q)}"><select id="su-kind" aria-label="kind"><option value="all" ${S.setup.kind==='all'?'selected':''}>every kind</option>${kinds.map(k => `<option value="${k}" ${S.setup.kind===k?'selected':''}>${k}</option>`).join('')}</select>${tab==='org' ? '' : `<label class="su-any"><input type="checkbox" id="su-any" ${S.setup.anyPlat?'checked':''}> any platform</label>`}</div>
     <div class="su-list">${rows || '<div class="empty">nothing in the index matches</div>'}</div>`; }
-/* the add sheet: the package's description, what it needs, its form from its schema, secrets pasted now or placed later, the host for a per-host package · the same sheet prefilled is "configure" */
+/* the add sheet: the package's description, what it needs, its form from its schema, secrets placed now by command (with a check) or later, the host for a per-host package · the same sheet prefilled is "configure" */
 function openSheet(pid, target, mode){ const p = pkg(pid); if(!p) return; const isOrg = isOrgKind(p.kind); const existing = isOrg ? S.orgPkgs[pid] : target==='__new' ? S.setup.add.parts.find(x => x.pkg===pid) : partOn(host(target), pid); const cfg = mode==='configure' && existing ? (existing.cfg || (existing.cfg = isOrg ? emptyCfg(p) : cfgOf(existing))) : null;
-  S.setup.sheet = {pkg:pid, host: isOrg ? null : target, mode, values: cfg ? {...cfg.values} : emptyCfg(p).values, secrets: Object.fromEntries(secretFields(p).map(f => { const s = cfg && cfg.secrets[f.k]; return [f.k, {mode: s && s.placed ? 'keep' : s && s.mode ? s.mode : 'now', placed: !!(s && s.placed), val: (s && s.val) || ''}]; }))};
+  S.setup.sheet = {pkg:pid, host: isOrg ? null : target, mode, values: cfg ? {...cfg.values} : emptyCfg(p).values, secrets: Object.fromEntries(secretFields(p).map(f => { const s = cfg && cfg.secrets[f.k]; return [f.k, {mode: s && s.placed ? 'keep' : s && s.mode ? s.mode : 'place', placed: !!(s && s.placed), copied: !!(s && s.copied), checked: (s && s.checked) || null, at: s && s.at}]; }))};
   render(); const el = $('#su-sheet'); if(el){ el.scrollIntoView({block:'nearest'}); el.querySelector('input:not([type=radio]),select')?.focus(); } }
-function secretFieldHtml(f, sh, conf){ const s = sh.secrets[f.k]; const name = `<span class="su-fl">${esc(f.label)}<span class="v mono">${esc(f.file)}</span></span>`;
+function placeHtml(f, k, hid, st){ const cmd = placeCmd(f, hid);
+  return `<div class="su-place"><pre class="cmd">${esc(cmd)}</pre><div class="su-pr"><button class="btn sm" data-sucopy="${k}" title="copy the command · run it on any host of yours">copy</button><button class="btn sm ${st.copied ? 'yes' : ''}" data-sucheck="${k}" title="asks ${esc(hid)} whether the secret is present · the page never sees it">${st.checking ? 'checking…' : 'check'}</button><span class="su-pst">${st.checked==='found' ? `<span class="dot"></span>present on ${esc(hid)} · checked ${esc(st.at||'')}` : st.checked==='missing' ? `<span class="dot warn"></span>not found on ${esc(hid)} · run the command, then check again` : `<span class="dot off"></span>not checked · ${st.copied ? 'run it, then check' : 'copy, run it, then check'}`}</span></div></div>`; }
+function secretFieldHtml(f, sh, conf){ const s = sh.secrets[f.k]; const name = `<span class="su-fl">${esc(f.label)}<span class="v mono">${esc(f.file)}</span></span>`; const hid = sh.host==='__new' ? S.setup.add.name : sh.host;
   if(conf && s.placed) return `<div class="su-field su-sec">${name}<span class="su-fv"><span class="dot"></span>placed · never shown<label><input type="radio" name="sm-${f.k}" data-susm="${f.k}|keep" ${s.mode==='keep'?'checked':''}> keep</label><label><input type="radio" name="sm-${f.k}" data-susm="${f.k}|rotate" ${s.mode==='rotate'?'checked':''}> rotate · marks it not placed and puts it under attention</label></span></div>`;
-  return `<div class="su-field su-sec">${name}<span class="su-fv">${conf ? '<span class="dot warn"></span>not placed' : ''}<label><input type="radio" name="sm-${f.k}" data-susm="${f.k}|now" ${s.mode==='now'?'checked':''}> paste now</label>${s.mode==='now' ? `<input type="password" data-susv="${f.k}" aria-label="${esc(f.label)}" placeholder="paste · goes to the store, never kept by the page" autocomplete="off" value="${esc(s.val)}">` : ''}<label><input type="radio" name="sm-${f.k}" data-susm="${f.k}|later" ${s.mode==='later'?'checked':''}> I'll place it later · under attention</label></span></div>`; }
+  return `<div class="su-field su-sec">${name}<span class="su-fv">${conf ? '<span class="dot warn"></span>not placed' : ''}<label><input type="radio" name="sm-${f.k}" data-susm="${f.k}|place" ${s.mode==='place'?'checked':''}> place it now</label><label><input type="radio" name="sm-${f.k}" data-susm="${f.k}|later" ${s.mode==='later'?'checked':''}> I'll place it later · under attention</label>${s.mode==='place' ? placeHtml(f, f.k, hid, s) : ''}</span></div>`; }
 function addSheetHtml(){ const sh = S.setup.sheet, p = pkg(sh.pkg), isOrg = !sh.host, conf = sh.mode==='configure', wiz = sh.host==='__new';
   const fields = schemaOf(p).filter(f => fieldOn(f, sh.values)).map(f => f.kind==='secret' ? secretFieldHtml(f, sh, conf) : `<label class="su-field"><span class="su-fl">${esc(f.label)}</span>${f.kind==='select' ? `<select data-suf="${f.k}">${f.opts.map(o => `<option ${sh.values[f.k]===o?'selected':''}>${esc(o)}</option>`).join('')}</select>` : `<input data-suf="${f.k}" ${f.kind==='number'?'type="number" min="0"':''} value="${esc(sh.values[f.k]||'')}" placeholder="${esc(f.ph||'')}">`}</label>`).join('');
   const hosts = S.hosts.filter(h => pkgFits(p, h));
@@ -2794,7 +2807,7 @@ function addSheetHtml(){ const sh = S.setup.sheet, p = pkg(sh.pkg), isOrg = !sh.
     : wiz ? `<div class="su-field"><span class="su-fl">host</span><span class="su-fv"><b class="mono">${esc(S.setup.add.name)}</b> · the host being added · installed when it joins</span></div>`
     : conf ? `<div class="su-field"><span class="su-fl">host</span><span class="su-fv"><b class="mono">${esc(sh.host)}</b></span></div>`
     : `<label class="su-field"><span class="su-fl">host</span><select id="su-sheet-host">${hosts.map(h => `<option value="${h.id}" ${h.id===sh.host?'selected':''}>${esc(h.id)} · ${esc(h.platform)}${h.alive?'':' · gone, the chore waits for it'}${partOn(h,p.id)?' · already there':''}</option>`).join('')}</select></label>`;
-  const note = secretFields(p).some(f => fieldOn(f, sh.values)) ? `<small class="su-hint su-secnote">a secret pasted here goes straight into ${wiz ? 'the hand-over step' : isOrg ? 'the books\' store' : `${esc(sh.host)}'s ${host(sh.host) && host(sh.host).kind!=='cloud' ? 'keychain' : 'secret store'}`} over the fleet's channel and is written nowhere else (204, 207) · the page keeps no copy and shows only placed or not placed · rotate later under configure</small>` : '';
+  const note = secretFields(p).some(f => fieldOn(f, sh.values)) ? `<small class="su-hint su-secnote">a secret never travels through the page (204, 207): you place it with the command, on any host of yours, into ${wiz ? 'the new host\'s store once it joins' : isOrg ? 'the books\' store' : `${esc(sh.host)}'s ${host(sh.host) && host(sh.host).kind!=='cloud' ? 'keychain' : 'secret store'}`}; check asks the host whether it is present, and the page shows only placed or not placed · rotate later under configure</small>` : '';
   const foot = conf ? `<button class="btn pri sm" id="su-sheet-save">save · configure ${esc(p.name)} ${isOrg ? 'in the books' : 'on '+esc(sh.host)}</button><span class="su-hint">one logged response · no chore · ${isOrg ? 'every host reads the manifest on its next tick' : 'the host reads the manifest on its next tick'}</span>`
     : wiz ? `<button class="btn pri sm" id="su-sheet-add">add to ${esc(S.setup.add.name)}</button><span class="su-hint">chosen for the host · installed when it joins with the token</span>`
     : `<button class="btn pri sm" id="su-sheet-add">add ${isOrg ? 'to the books' : 'to '+esc(sh.host)}</button><span class="su-hint">raises one install decision on the rail · the part waits ${isOrg?'in the books':'on the host'} as added until you answer · nothing vanishes</span>`;
@@ -2802,8 +2815,8 @@ function addSheetHtml(){ const sh = S.setup.sheet, p = pkg(sh.pkg), isOrg = !sh.
     <div class="su-desc">${esc(p.enables)}</div><div class="su-needs"><i>needs</i>${esc(p.needs)}</div>
     ${target}${fields || '<div class="su-field"><span class="su-fl">configuration</span><span class="su-fv" style="color:var(--ink3)">nothing to configure</span></div>'}${note}
     <div class="su-sf">${foot}</div></div>`; }
-function sheetCfg(){ const sh = S.setup.sheet, p = pkg(sh.pkg); return {values:{...sh.values}, secrets:Object.fromEntries(secretFields(p).map(f => { const s = sh.secrets[f.k]; const wiz = sh.host==='__new'; return [f.k, s.mode==='keep' ? {placed:true} : s.mode==='rotate' ? {placed:false, rotated:true} : wiz ? {placed:false, mode:s.mode, val:s.val} : {placed: s.mode==='now' && !!s.val}]; }))}; }
-function sheetCheck(){ const sh = S.setup.sheet, p = pkg(sh.pkg); const bad = secretFields(p).filter(f => fieldOn(f, sh.values)).find(f => sh.secrets[f.k].mode==='now' && !sh.secrets[f.k].val); if(!bad) return true; toast(`${short(bad)} · paste it, or choose "I'll place it later"`, true); $(`[data-susv="${bad.k}"]`)?.focus(); return false; }
+function sheetCfg(){ const sh = S.setup.sheet, p = pkg(sh.pkg); return {values:{...sh.values}, secrets:Object.fromEntries(secretFields(p).map(f => { const s = sh.secrets[f.k]; const wiz = sh.host==='__new'; return [f.k, s.mode==='keep' ? {placed:true} : s.mode==='rotate' ? {placed:false, rotated:true} : wiz ? {placed:false, mode:s.mode, copied:s.copied, checked:s.checked, at:s.at} : {placed: s.mode==='place' && s.checked==='found'}]; }))}; }
+function sheetCheck(){ return true; }
 function sheetAdd(){ if(!sheetCheck()) return; const sh = S.setup.sheet, p = pkg(sh.pkg); const cfg = sheetCfg(); const hid = sh.host;
   if(hid==='__new'){ const A = S.setup.add; const part = {k:p.kind, pkg:p.id, name:p.name, what:p.enables, state:'chosen', cfg}; const i = A.parts.findIndex(x => x.pkg===p.id); if(i>=0) A.parts[i] = part; else A.parts.push(part); S.setup.sheet = null; toast(`${p.name} · chosen for ${A.name}`); render(); return; }
   const m = nextN(); const where = hid ? `on ${hid}` : 'in the books'; const summary = cfgText(p, cfg);
@@ -2822,6 +2835,8 @@ function sheetSave(){ if(!sheetCheck()) return; const sh = S.setup.sheet, p = pk
   const nowPlaced = hid && target.state==='secret' && !missingSecrets(p, cfg).length; if(nowPlaced){ target.state = `installed ${hhmm(S.minutes)} · secret placed`; delete target.secret; delete target.wi; S.attention = S.attention.filter(a => !(a.host===hid && a.pkg===p.id)); }
   logLine(`configure ${p.name} ${where}${rotated.length ? ' · rotate '+rotated.map(f => f.file).join(', ') : ''}`, {}); toast(`configure ${p.name} ${where} · recorded · ${hid ? 'the host' : 'every host'} reads the manifest on its next tick${rotated.length ? ' · '+rotated.map(f => f.file).join(', ')+' under attention' : ''}`);
   S.setup.sheet = null; S.setup.lit = p.id; render(); }
+function secretStateFor(key){ if(key.includes('|')){ const [pid,k] = key.split('|'); const part = S.setup.add && S.setup.add.parts.find(x => x.pkg===pid); return part && part.cfg && part.cfg.secrets[k]; } return S.setup.sheet && S.setup.sheet.secrets[key]; }
+function rerenderSecrets(){ if(S.setup.sheet){ $('#su-index').innerHTML = addSheetHtml(); return; } render(); }
 function raiseSecret(hid, pid, f, wi){ const id = `secret-${hid}-${pid}-${f.k}`; if(S.attention.some(a => a.id===id)) return; const p = pkg(pid);
   S.attention.push({id, cls:'', host:hid, pkg:pid, key:f.k, file:f.file, wi, text:`secret <b>${esc(f.file)}</b> for ${esc(p.name)} on ${esc(hid)} is not placed · ${wi ? `install chore ${wi} waits on it` : 'the part waits on it'}`, obj:null, acts:[['placed','placed']]}); }
 function secretPlaced(a){ const h = host(a.host||'willdan-cloud'); const part = h && partOn(h, a.pkg||'pr-conversation'); if(!part) return; const p = pkg(part.pkg); const cfg = cfgOf(part);
@@ -2859,10 +2874,10 @@ const storeName = A => A.platform==='laptop' ? "the machine's keychain" : "the p
 function partsStepBody(A){ const cur = A.step==='parts'; const chips = A.parts.length ? `<div class="su-joinparts">${A.parts.map(p => `<span class="su-chip st-chosen" title="${esc(cfgText(pkg(p.pkg), p.cfg)||'nothing to configure')}">${esc(p.name)}${cur ? `<button data-suconf="__new|${p.pkg}" title="configure">✎</button><button data-surm="${p.pkg}" title="remove">×</button>` : ''}</span>`).join('')}</div>` : (cur ? '<span class="su-hint">nothing chosen yet</span>' : '');
   if(!cur) return chips; const sug = A.platform ? SUGGESTED[A.platform].filter(id => !A.parts.some(p => p.pkg===id)) : [];
   return `${chips}<div class="su-addf" style="margin-top:6px"><span class="su-hint">pick from the index · each opens its add sheet; agent and triage come with the binary and run wherever a runner gives them a place${A.adopt ? ' · platform read at join; a part the host cannot run is refused there' : ''}</span></div>${sug.length ? `<div class="su-addf"><span class="su-hint">suggested for ${esc(ADD_PLATFORMS.find(x => x[0]===A.platform)[1])}:</span>${sug.map(id => `<button class="btn sm" data-suadd="__new|${id}">${esc(pkg(id).name)}</button>`).join('')}</div>` : ''}<div class="su-addf"><button class="btn pri sm" id="su-parts-next">${A.adopt ? 'next · ask for the token' : 'next · provision'}${A.parts.length ? '' : ' · with no parts'}</button></div>`; }
-function secretsStepBody(A){ const secs = wizardSecrets(A); if(A.sec!=='wait') return A.sec==='done' ? (A.secNote || '') : `into ${storeName(A)} · only what the chosen parts need`;
+function secretsStepBody(A){ const secs = wizardSecrets(A); if(A.sec!=='wait') return A.sec==='done' ? (A.secNote || '') : `into ${storeName(A)} · only what the chosen parts need · never through the page (204)`;
   if(!secs.length) return 'nothing to hand over · the chosen parts need no secret';
-  const now = secs.filter(x => x.s.mode!=='later');
-  return `<div class="su-secrets">${secs.map(x => `<span><span class="dot ${x.s.mode==='later'?'warn':'busy'}" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--${x.s.mode==='later'?'warn':'accent'});margin-right:6px"></span><span class="mono">${esc(x.f.file)}</span> · ${esc(x.p.name)} · ${x.s.mode==='later' ? 'place later · under attention after join' : 'hand over now'} <button class="btn sm quiet" data-suconf="__new|${x.part.pkg}">change</button></span>`).join('')}<div class="field"><button class="btn pri sm" id="su-handover">${now.length ? `hand over ${now.length} into ${storeName(A)}` : `continue · ${secs.length} left for later`}</button></div><small class="su-hint">each is read at this moment from what you pasted and written only there (207) · a part whose secret is left for later installs as far as it can and waits under attention</small></div>`; }
+  const found = secs.filter(x => x.s.mode!=='later' && x.s.checked==='found'), later = secs.filter(x => x.s.mode==='later'), open = secs.length - found.length - later.length;
+  return `<div class="su-secrets">${secs.map(x => `<div class="su-wsec"><span><span class="mono">${esc(x.f.file)}</span> · ${esc(x.p.name)} · ${x.s.mode==='later' ? 'place later · under attention after join' : 'place it now'} <button class="btn sm quiet" data-suconf="__new|${x.part.pkg}">change</button></span>${x.s.mode==='later' ? '' : placeHtml(x.f, `${x.part.pkg}|${x.f.k}`, A.name, x.s)}</div>`).join('')}<div class="field"><button class="btn pri sm" id="su-handover">continue · ${found.length} placed · ${later.length + open} left for later</button></div><small class="su-hint">each is placed by the command on any host of yours into ${storeName(A)} once it joins (207) · one not checked present by then installs as far as it can and waits under attention</small></div>`; }
 function addSteps(A){ const plat = A.platform && ADD_PLATFORMS.find(x => x[0]===A.platform); const cur = A.step, ci = stepIndex(cur);
   return [
     {id:'platform', name:'platform', state: A.adopt ? 'skipped' : A.platform ? 'done' : 'wait', body: A.adopt ? 'adopt existing · the host already runs the binary · its platform is read at join' : A.platform ? esc(plat[1]) : ''},
@@ -2885,10 +2900,10 @@ function addHostParts(){ const A = S.setup.add; S.setup.sheet = null;
   setTimeout(() => { A.prov = 'done'; A.provAt = hhmm(S.minutes); const secs = wizardSecrets(A);
     if(!secs.length){ A.sec = 'done'; A.secAt = hhmm(S.minutes); A.secNote = 'nothing to hand over · the chosen parts need no secret'; toast(`${A.name} provisioned · nothing to hand over`); raiseEnrol(); return; }
     A.step = 'secrets'; A.sec = 'wait'; toast(`${A.name} provisioned · hand over the secrets its parts need`); render(); }, 3000); }
-function addHostHandover(){ const A = S.setup.add; const secs = wizardSecrets(A); const now = secs.filter(x => x.s.mode!=='later'), later = secs.filter(x => x.s.mode==='later');
-  now.forEach(x => { x.s.placed = true; delete x.s.val; delete x.s.mode; }); later.forEach(x => { x.s.placed = false; delete x.s.val; delete x.s.mode; });
-  A.sec = 'done'; A.secAt = hhmm(S.minutes); A.secNote = `${now.length ? `${now.map(x => x.f.file).join(' · ')} into ${storeName(A)} · the page never carried them` : 'nothing handed over'}${later.length ? ` · left for later: ${later.map(x => x.f.file).join(' · ')} · under attention after join` : ''}`;
-  logLine(`hand over · ${now.map(x => x.f.file).join(' ')||'nothing'} → ${A.name}`, {say:true}); raiseEnrol(); }
+function addHostHandover(){ const A = S.setup.add; const secs = wizardSecrets(A); const found = secs.filter(x => x.s.mode!=='later' && x.s.checked==='found'), rest = secs.filter(x => !found.includes(x));
+  found.forEach(x => { x.s.placed = true; delete x.s.mode; }); rest.forEach(x => { x.s.placed = false; delete x.s.mode; });
+  A.sec = 'done'; A.secAt = hhmm(S.minutes); A.secNote = `${found.length ? `${found.map(x => x.f.file).join(' · ')} present in ${storeName(A)} · placed by you, never through the page` : 'nothing placed yet'}${rest.length ? ` · left for later: ${rest.map(x => x.f.file).join(' · ')} · under attention after join` : ''}`;
+  logLine(`placed · ${found.map(x => x.f.file).join(' ')||'nothing'} → ${A.name}`, {say:true}); raiseEnrol(); }
 function raiseEnrol(){ const A = S.setup.add; const m = nextN(); A.decision = m; A.step = 'enrol'; A.enrol = 'wait'; A.enrolAt = hhmm(S.minutes); A.expires = hhmm(S.minutes + 60); const platName = A.platform ? ADD_PLATFORMS.find(x => x[0]===A.platform)[1] : 'platform read at join';
   X[m] = {text:`Host <b>${esc(A.name)}</b> (${esc(platName)}${A.adopt ? ', adopted' : ''}) asks to join the fleet. <b>Yes</b> mints a one-time enrolment token that expires at ${esc(A.expires)}; the host joins with it, reads the manifest and installs the parts you chose from the index (205). <b>No</b> mints nothing and the host stays outside.`,
     kv2:[['token','one-time · expires 1h · never shown on this page'],['will run', A.parts.length ? A.parts.map(p => `${p.k} ${p.name}`).join(' · ') : 'nothing yet · parts can be added from setup once it is alive']], kv2Title:'enrolment', hist:[['09-04 '+hhmm(S.minutes),'operator','+ host',`setup · ${A.name} · ${A.platform||'adopted'}`],['09-04 '+hhmm(S.minutes),'plan','decision',`${m} created · enrol the host`]]};
@@ -2907,7 +2922,7 @@ function enrolEffect(d, a){ const A = S.setup.add; if(!A || A.decision!==d.n) re
 function dockSecret(a){ const h = host(a.host||'willdan-cloud'), part = h && partOn(h, a.pkg||'pr-conversation'), p = part && pkg(part.pkg); const f = (p && schemaOf(p).find(x => x.k===a.key)) || {label:'the secret', file:a.file||'the secret'}; if(!p) return '';
   return sec('what it means', `<div class="dtext">${a.wi ? `Install chore <span class="mono">${esc(a.wi)}</span> set up the <b>${esc(p.name)}</b> ${esc(p.kind)} on host <span class="mono">${esc(h.id)}</span> as far as the machinery can` : `<b>${esc(p.name)}</b> on host <span class="mono">${esc(h.id)}</span> is configured and waits`}${a.pkg==='pr-conversation' ? ': the GitHub App is installed on the repositories and the place for its key exists' : ': the place for the secret exists'}. ${esc(short(f))} itself is a secret you place, never an agent (204), and the page never carries it. Until it is there the part waits; nothing else on the host is held by it.</div>`)
   + sec('place it', `<pre class="cmd">op read "${esc(f.op || `op://willdan/flywheel/${f.file}`)}" \\
-  | flywheel secret place ${esc(f.file)} --host ${esc(h.id)}</pre><div class="dtext" style="font-size:12px;color:var(--ink2)">One command on any host of yours; the secret travels to the host over the fleet's channel and is written nowhere else (207). Then answer <b>placed</b> here: the machinery checks the path, records the proof and the part reads installed. A check that finds nothing brings this line back. Or paste it under <b>configure</b> in setup, which does the same in one response.</div>`, 'never kept by the page')
+  | flywheel secret place ${esc(f.file)} --host ${esc(h.id)}</pre><div class="dtext" style="font-size:12px;color:var(--ink2)">One command on any host of yours; the secret travels to the host over the fleet's channel and is written nowhere else (207). Then answer <b>placed</b> here: the machinery checks the path, records the proof and the part reads installed. A check that finds nothing brings this line back. <b>Configure</b> in setup shows the same command with a check.</div>`, 'never through the page')
   + sec('on the host', `<div class="rows"><div class="row"><span class="st">host</span><span class="grow"><span class="mono">${esc(h.id)}</span> · ${esc(p.kind)} · ${esc(p.name)} · ${h.parts.filter(x => x!==part && x.state==='secret').length ? 'another part waits too' : 'its other parts are installed'}</span><button class="btn sm" id="setup-open" data-suhost="${esc(h.id)}">open in setup</button><button class="btn sm quiet" data-suconf-open="${esc(h.id)}|${esc(p.id)}">configure</button></div></div>`); }
 
 /* --- organizations and the account item: the page belongs to one organization at a time; the account item in the top bar switches it (the whole seed swaps: rail, board, hosts strip) and opens settings, hosts, the organization store and sign-out · who you are is name and sign-in kind --- */
@@ -2915,14 +2930,18 @@ const baseSeed = () => ({minutes:7*60+40, decisions:[], attention:[], setup:{ope
   repos:[{id:'books', kinds:['books'], caps:[], manifest:'books/flywheel.yaml · the books repository · claims live here', claims:[]}], view:'phases', book:{id:null, ch:null, scrollTo:null, hl:null}, library:false, load:false, scopeSel:null, scopeSet:new Set(), addRepo:null,
   map:{nodes:[{id:'books', x:60, y:200}], edges:[]}, review:{on:false, mark:'never', nodes:{}, edges:{}}, bolts:[], landed:[], opsignals:[], curation:{unmoved:0, by:'nothing yet', oldest:'0d', next:'when a signal arrives', session:{label:'curation', state:'scheduled', act:'idle', host:'', agent:'claude', model:'haiku', pane:''}},
   proposal:{session:'', reads:'', bolts:[], units:[], edits:0, refusal:null, n:0}, log:[], inflight:{}, focus:null, open:null, hostlit:null, nextWi:1, acct:false, settings:false, signedOut:false});
+/* authentication is the host's, authorization the organization's: one sign-in kind per serving host, regardless of the organization shown; each organization's operators list says who is allowed there */
 const ORGS = {
-  willdan:{name:'willdan', what:'the platform · 3 hosts · 4 repositories', me:{name:'Chuck Swanberg', handle:'chuckswanberg', signin:'github', served:'studio'}},
-  agentplot:{name:'agentplot', what:'the flywheel and its blueprints · 2 hosts', me:{name:'Chuck Swanberg', handle:'chuckswanberg', signin:'github', served:'agentplot-cloud'}},
-  personal:{name:'personal', what:'from zero · this machine only', me:{name:'Chuck Swanberg', handle:'chuck', signin:'local', served:'chuck-air'}},
-  'integral-analytics':{name:'integral-analytics', what:'a client · one cloud host behind Okta', me:{name:'Chuck Swanberg', handle:'chuck.swanberg@integral-analytics.com', signin:'okta', served:'ia-cloud'}},
+  willdan:{name:'willdan', what:'the platform · 3 hosts · 4 repositories', operators:['chuck', 'chuck.swanberg@willdan.com', 'rhea@willdan.com']},
+  agentplot:{name:'agentplot', what:'the flywheel and its blueprints · 2 hosts', operators:['chuck', 'chuckswanberg']},
+  personal:{name:'personal', what:'from zero · this machine only', operators:['chuck']},
+  'integral-analytics':{name:'integral-analytics', what:'a client · one cloud host behind Okta', operators:['chuck.swanberg@willdan.com', 'ops@integral-analytics.com']},
 };
-const SIGNIN = {local:'local · no sign-in · the page is served on this machine; the tailnet is the identity', github:'GitHub · membership in the organization is the check (207)', okta:'Okta SSO · OIDC · every response recorded with who and when (153)'};
-function seedAgentplot(){ const s = baseSeed(); Object.assign(s, {org:'agentplot', me:ORGS.agentplot.me, manifest:{repos:[{id:'flywheel', landing:'pull request', merge:'squash'},{id:'blueprints', landing:'direct merge', merge:'merge'}], roles:[{role:'machinery', kind:'pane', model:'claude-haiku-4-5'},{role:'construction', kind:'pane', model:'claude-fable-5-1'},{role:'triage', kind:'in-process', model:'claude-sonnet-5'},{role:'interpreter', kind:'in-process', model:'claude-haiku-4-5'}], router:'private-network router', cadence:'every 30s'},
+const HOST_SIGNIN = {studio:{kind:'local', name:'Chuck Swanberg', handle:'chuck', how:'local · no sign-in · this machine is the identity', roots:['willdan','agentplot','personal','integral-analytics']}, 'willdan-cloud':{kind:'okta', name:'Chuck Swanberg', handle:'chuck.swanberg@willdan.com', how:'Okta SSO · OIDC · issuer willdan.okta.com · every response recorded with who and when (153)', roots:['willdan','integral-analytics']}};
+const PAGE = {served: (new URLSearchParams(location.search).get('served') in HOST_SIGNIN) ? new URLSearchParams(location.search).get('served') : 'studio'};
+const ME = () => HOST_SIGNIN[PAGE.served];
+const isMember = id => ORGS[id].operators.includes(ME().handle);
+function seedAgentplot(){ const s = baseSeed(); Object.assign(s, {org:'agentplot', manifest:{repos:[{id:'flywheel', landing:'pull request', merge:'squash'},{id:'blueprints', landing:'direct merge', merge:'merge'}], roles:[{role:'machinery', kind:'pane', model:'claude-haiku-4-5'},{role:'construction', kind:'pane', model:'claude-fable-5-1'},{role:'triage', kind:'in-process', model:'claude-sonnet-5'},{role:'interpreter', kind:'in-process', model:'claude-haiku-4-5'}], router:'private-network router', cadence:'every 30s'},
   hosts:[{id:'forge', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:2, last:'07:38', joined:'08-30', joinedVia:'a laptop', note:'lease holder for plan and the page', parts:[
       {k:'adapter', pkg:'capture-box', name:'the capture box', what:'this host serves the page · text sent unparsed to the capture tool (19)', state:'installed 08-30'},
       {k:'chat sink', pkg:'discord', name:'Discord', what:'#agentplot-plan · the gateway socket held while forge is awake', state:'installed 08-30', lease:'presenter · renews 30s', cfg:{values:{app:'1301 2200 0417', guild:'agentplot', channel:'#agentplot-plan'}, secrets:{token:{placed:true}}}},
@@ -2948,7 +2967,7 @@ function seedAgentplot(){ const s = baseSeed(); Object.assign(s, {org:'agentplot
   curation:{unmoved:1, by:'chat 1', oldest:'2h', next:'08:00', session:{label:'curation', state:'scheduled', act:'next 08:00', host:'forge', agent:'claude', model:'haiku', pane:'forge/1'}},
   since:[{v:'merged', w:'store · unit add-sheet', t:'2 items · review passed', at:'18:20'}], focus:'d:101', nextWi:13, book:{id:'agentplot-kit', ch:'overview', scrollTo:null, hl:null}});
   s.orgPkgs = {'ut-default':{state:'installed 08-30'}, 'ut-chore':{state:'installed 08-30'}, 'et-research':{state:'installed 08-30'}, 'et-writeback':{state:'installed 08-30'}, 'dp-mdbook':{state:'installed 08-30'}, 'mv-ddd':{state:'installed 09-05'}, 'tp-intent':{state:'installed 08-30'}}; s.setup.host = 'forge'; return s; }
-function seedIntegral(){ const s = baseSeed(); Object.assign(s, {org:'integral-analytics', me:ORGS['integral-analytics'].me, manifest:{repos:[{id:'ledger', landing:'pull request', merge:'squash'}], roles:[{role:'machinery', kind:'in-process', model:'claude-haiku-4-5'},{role:'construction', kind:'managed', model:'claude-opus-5'},{role:'triage', kind:'in-process', model:'claude-sonnet-5'},{role:'interpreter', kind:'in-process', model:'claude-haiku-4-5'}], router:'platform router', cadence:'every 5m'},
+function seedIntegral(){ const s = baseSeed(); Object.assign(s, {org:'integral-analytics', manifest:{repos:[{id:'ledger', landing:'pull request', merge:'squash'}], roles:[{role:'machinery', kind:'in-process', model:'claude-haiku-4-5'},{role:'construction', kind:'managed', model:'claude-opus-5'},{role:'triage', kind:'in-process', model:'claude-sonnet-5'},{role:'interpreter', kind:'in-process', model:'claude-haiku-4-5'}], router:'platform router', cadence:'every 5m'},
   hosts:[{id:'ia-cloud', kind:'cloud', platform:'flywheel-cloud · container', plat:['cloud','container','linux'], alive:true, bound:0, last:'07:40', joined:'09-01', joinedVia:'flywheel-cloud managed', dispatcher:true, note:'the only host · presents Slack for the team · construction runs as managed sessions', parts:[
       {k:'adapter', pkg:'pr-conversation', name:'PR conversation', what:'PR comments on ledger', state:'installed 09-01', cfg:{values:{app:'integral-flywheel · app id 7702', repos:'ledger'}, secrets:{key:{placed:true}}}},
       {k:'chat sink', pkg:'slack', name:'Slack', what:'#ledger-plan · for the team · replies over the URL behind the router', state:'installed 09-01', lease:'presenter · renews 30s', cfg:{values:{channel:'#ledger-plan'}, secrets:{token:{placed:true}, signing:{placed:true}}}},
@@ -2967,19 +2986,19 @@ function seedIntegral(){ const s = baseSeed(); Object.assign(s, {org:'integral-a
   curation:{unmoved:2, by:'chat 2', oldest:'1d', next:'08:00', session:{label:'curation', state:'scheduled', act:'next 08:00', host:'ia-cloud', agent:'claude', model:'haiku', pane:''}},
   since:[{v:'joined', w:'host ia-cloud', t:'flywheel-cloud managed · 7 parts installed', at:'09-01'}], focus:'d:201', nextWi:4, book:{id:'integral-kit', ch:'overview', scrollTo:null, hl:null}});
   s.orgPkgs = {'ut-default':{state:'installed 09-01'}, 'ut-fast':{state:'installed 09-01'}, 'ut-chore':{state:'installed 09-01'}, 'et-research':{state:'installed 09-01'}, 'et-writeback':{state:'installed 09-01'}, 'dp-mdbook':{state:'installed 09-01'}, 'tp-intent':{state:'installed 09-01'}, 'tp-adr':{state:'installed 09-02'}, 'sp-flywheel':{state:'installed 09-01'}}; s.setup.host = 'ia-cloud'; return s; }
-function seedPersonal(){ const s = baseSeed(); Object.assign(s, {org:'personal', fromZero:true, me:ORGS.personal.me, manifest:{repos:[], roles:[{role:'construction', kind:'pane', model:'claude-fable-5-1'},{role:'triage', kind:'pane', model:'claude-sonnet-5'}], router:'local router', cadence:'on demand'},
-  hosts:[{id:'chuck-air', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:1, last:'07:40', joined:'09-06', joinedVia:'a laptop', note:'this machine · serves the page · no sign-in', parts:[
+function seedPersonal(){ const s = baseSeed(); Object.assign(s, {org:'personal', fromZero:true, manifest:{repos:[], roles:[{role:'construction', kind:'pane', model:'claude-fable-5-1'},{role:'triage', kind:'pane', model:'claude-sonnet-5'}], router:'local router', cadence:'on demand'},
+  hosts:[{id:'studio', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:1, last:'07:40', joined:'09-06', joinedVia:'a laptop', note:'this machine · serves the page · no sign-in · it has roots for four organizations', parts:[
       {k:'adapter', pkg:'capture-box', name:'the capture box', what:'this host serves the page · text sent unparsed to the capture tool (19)', state:'installed 09-06'},
       {k:'runner', pkg:'runner-pane', name:'pane', what:'herdr on this machine · bound 1', state:'installed 09-06', cfg:{values:{bound:'1', login:'Claude Code'}, secrets:{}}},
       {k:'router', pkg:'router-local', name:'local router', what:'portless · https://<place>.localhost (46)', state:'installed 09-06'},
       {k:'sign-in', pkg:'auth-none', name:'none', what:'no login · this machine is the identity', state:'installed 09-06', cfg:{values:{tailnet:'none · loopback only'}, secrets:{}}}]}],
-  curation:{unmoved:0, by:'nothing yet', oldest:'0d', next:'when a signal arrives', session:{label:'curation', state:'scheduled', act:'idle', host:'chuck-air', agent:'claude', model:'haiku', pane:'chuck-air/1'}},
-  book:{id:'personal-book', ch:'start', scrollTo:null, hl:null}}); s.setup.host = 'chuck-air'; return s; }
+  curation:{unmoved:0, by:'nothing yet', oldest:'0d', next:'when a signal arrives', session:{label:'curation', state:'scheduled', act:'idle', host:'studio', agent:'claude', model:'haiku', pane:'studio/1'}},
+  book:{id:'personal-book', ch:'start', scrollTo:null, hl:null}}); s.setup.host = 'studio'; return s; }
 const SEEDS = {willdan:SEED_WILLDAN, agentplot:seedAgentplot, personal:seedPersonal, 'integral-analytics':seedIntegral};
 const ORG_CACHE = {};
 const orgBooks = () => Object.values(BOOKS).filter(b => b.org===S.org);
 const orgBook = () => (BOOKS[S.book.id] && BOOKS[S.book.id].org===S.org) ? BOOKS[S.book.id] : orgBooks()[0];
-function switchOrg(id){ if(!SEEDS[id] || id===S.org) { S.acct = false; renderAcct(); return; }
+function switchOrg(id){ if(!SEEDS[id] || id===S.org) { S.acct = false; renderAcct(); return; } if(!isMember(id)){ toast(`${id} · not a member · ${ME().handle} is not in its operators`, true); return; }
   ORG_CACHE[S.org] = {...S}; const next = ORG_CACHE[id] || SEEDS[id]();
   Object.keys(S).forEach(k => delete S[k]); Object.assign(S, next);
   S.acct = false; S.open = null; document.body.classList.remove('docked'); S.hostlit = null; S.library = false; S.load = false; S.settings = false; if(!S.focus) S.focus = railKeys()[0] || null;
@@ -2988,27 +3007,28 @@ X[101] = {text:'Approve the intent. <b>Yes</b> opens <span class="mono">herdr-ag
 X[201] = {text:'Approve the intent. <b>Yes</b> opens <span class="mono">ledger-reconciliation</span> as a line off the books and starts its research. <b>Drop</b> closes it with the signals kept.', hist:[['09-05 14:10','curation','intent','5 signals attached from #ledger-plan'],['09-05 14:10','plan','decision','201 created · approve the intent']]};
 X[202] = {text:'You added <b>Datadog webhook v1.0.2</b> (index) to host <b>ia-cloud</b>. It is a chore on the fleet: one session scoped to host ia-cloud, no change directory, no bolt (60). <b>Yes</b> runs it; the inbound secret was left for later and will sit under attention. <b>No</b> takes it off the host again.', kv2:[['installs','a monitor finding as one capture at the endpoint · key: the FINDING# id'],['configured','named caller datadog · ledger monitors · public route https://ia-cloud.flywheel.cloud/capture/datadog · inbound secret not placed'],['needs from you','the inbound secret, placed on both sides · datadog.inbound']], kv2Title:'the chore', hist:[['09-06 16:02','operator','add','store · Datadog webhook → ia-cloud'],['09-06 16:02','plan','decision','202 created · approve the install chore']]};
 /* the account item and its menu · settings is the organization's manifest as a form; saving is one logged response */
-function acctHtml(){ const me = S.me, o = ORGS[S.org]; const local = me.signin==='local';
-  const orgs = Object.values(ORGS).map(x => `<button role="menuitemradio" aria-checked="${x.name===S.org}" data-org="${x.name}"><span class="am-dot"></span><span class="am-t"><b>${esc(x.name)}</b><small>${esc(x.what)}</small></span></button>`).join('');
-  return `<button class="btn quiet acct-btn" id="acct" aria-haspopup="menu" aria-expanded="${S.acct}" title="account · the organization this page belongs to, settings, hosts, the store, sign-out, and who you are"><span class="am-av">${esc(me.name.split(' ').map(w => w[0]).join('').slice(0,2))}</span><b>${esc(S.org)}</b><span class="caret">▾</span></button>
+function acctHtml(){ const me = ME(), local = me.kind==='local';
+  const orgs = me.roots.map(id => ORGS[id]).map(x => { const ok = isMember(x.name); return `<button role="menuitemradio" aria-checked="${x.name===S.org}" data-org="${x.name}" ${ok ? '' : 'disabled'} title="${ok ? '' : 'not a member · '+esc(me.handle)+' is not in its operators'}"><span class="am-dot"></span><span class="am-t"><b>${esc(x.name)}</b><small>${ok ? esc(x.what) : 'not a member · ask its operators'}</small></span></button>`; }).join('');
+  return `<button class="btn quiet acct-btn" id="acct" aria-haspopup="menu" aria-expanded="${S.acct}" title="account · the organization this page shows, settings, hosts, the store, sign-out, and who you are"><span class="am-av">${esc(me.name.split(' ').map(w => w[0]).join('').slice(0,2))}</span><b>${esc(S.org)}</b><span class="caret">▾</span></button>
     <div class="acct-menu" id="acct-menu" role="menu" ${S.acct ? '' : 'hidden'}>
-      <div class="am-h">organization<small>${local ? 'the organizations this host has roots for' : 'the organizations you are a member of'}</small></div>${orgs}
+      <div class="am-h">organization<small>the organizations <span class="mono">${esc(PAGE.served)}</span> has roots for · greyed: not a member</small></div>${orgs}
       <div class="am-sep"></div>
-      <button role="menuitem" data-acct="settings"><span class="am-t"><b>settings</b><small>the organization's manifest as a form · one response to save</small></span></button>
+      <button role="menuitem" data-acct="settings"><span class="am-t"><b>settings</b><small>the organization's manifest as a form · operators, repositories, roles, router, cadence · one response to save</small></span></button>
       <button role="menuitem" data-acct="hosts"><span class="am-t"><b>hosts</b><small>what each host runs · the per-host index · + host</small></span></button>
       <button role="menuitem" data-acct="store"><span class="am-t"><b>organization store</b><small>types, producers, vocabularies, templates, scenario packs · installed in the books</small></span></button>
-      <button role="menuitem" data-acct="signout" ${local ? 'disabled' : ''}><span class="am-t"><b>sign out</b><small>${local ? 'local · no sign-in · nothing to sign out of' : `ends the ${me.signin==='okta' ? 'Okta' : 'GitHub'} session in this browser · the hosts keep running`}</small></span></button>
+      <button role="menuitem" data-acct="signout" ${local ? 'disabled' : ''}><span class="am-t"><b>sign out</b><small>${local ? 'local · no sign-in · nothing to sign out of' : `ends the Okta session in this browser · the hosts keep running`}</small></span></button>
       <div class="am-sep"></div>
-      <div class="am-me"><b>${esc(me.name)}</b><span class="mono">${esc(me.handle)}</span><span>${esc(SIGNIN[me.signin])}</span><span>served by <b class="mono">${esc(me.served)}</b>${local ? ' · on this machine' : ' · behind sign-in'}</span></div>
+      <div class="am-me"><b>${esc(me.name)}</b><span class="mono">${esc(me.handle)}</span><span>${esc(me.how)}</span><span>served by <b class="mono">${esc(PAGE.served)}</b> · the host's sign-in, whichever organization is shown · membership is each organization's (settings · operators)</span></div>
     </div>`; }
 function renderAcct(){ const el = $('#acct-wrap'); if(el) el.innerHTML = acctHtml(); $('#orgname').textContent = S.org;
-  const so = $('#signedout'); so.hidden = !S.signedOut; if(S.signedOut) so.innerHTML = `<div class="lib-panel so-panel" role="dialog" aria-label="signed out"><h2>signed out of ${esc(S.org)}</h2><p>The ${S.me.signin==='okta' ? 'Okta SSO' : 'GitHub'} session in this browser is ended. The hosts keep running; the plan keeps deriving; nothing on the rail is answered until you sign in again.</p><button class="btn pri" id="signin">sign in with ${S.me.signin==='okta' ? 'Okta' : 'GitHub'}</button></div>`; }
+  const so = $('#signedout'); so.hidden = !S.signedOut; if(S.signedOut) so.innerHTML = `<div class="lib-panel so-panel" role="dialog" aria-label="signed out"><h2>signed out of ${esc(PAGE.served)}</h2><p>The Okta SSO session in this browser is ended. The hosts keep running; the plan keeps deriving; nothing on the rail is answered until you sign in again.</p><button class="btn pri" id="signin">sign in with Okta</button></div>`; }
 const ROLE_KINDS = ['pane','in-process','managed'], LANDINGS = ['direct merge','pull request'], MERGES = ['squash','merge','rebase'], ROUTERS = ['local router','private-network router','platform router'], CADENCES = ['every 30s','every 5m','hourly','on demand'];
-function openSettings(){ const m = S.manifest; S.settingsDraft = {repos:m.repos.map(r => ({...r})), roles:m.roles.map(r => ({...r})), router:m.router, cadence:m.cadence}; S.settings = true; S.acct = false; render(); }
+function openSettings(){ const m = S.manifest; S.settingsDraft = {operators:[...ORGS[S.org].operators], newOp:'', repos:m.repos.map(r => ({...r})), roles:m.roles.map(r => ({...r})), router:m.router, cadence:m.cadence}; S.settings = true; S.acct = false; render(); }
 function renderSettings(){ const L = $('#settings'); L.hidden = !S.settings; if(!S.settings) return; const d = S.settingsDraft; const sel = (name, opts, v) => `<select data-set="${name}">${opts.map(o => `<option ${o===v?'selected':''}>${esc(o)}</option>`).join('')}</select>`;
   const repos = d.repos.length ? d.repos.map((r,i) => `<div class="st-row"><b class="mono">${esc(r.id)}</b>${sel(`repos.${i}.landing`, LANDINGS, r.landing)}${sel(`repos.${i}.merge`, MERGES, r.merge)}</div>`).join('') : '<div class="empty" style="padding:4px 0">no repository yet · "add repository" on the map places one and its baseline decision arrives (104)</div>';
   const roles = d.roles.map((r,i) => `<div class="st-row"><b>${esc(r.role)}</b>${sel(`roles.${i}.kind`, ROLE_KINDS, r.kind)}${sel(`roles.${i}.model`, MODELS, r.model)}</div>`).join('');
   L.innerHTML = `<div class="lib-panel st-panel" role="dialog" aria-label="settings"><div class="lib-h"><h2>Settings</h2><span class="sub"><b>${esc(S.org)}</b> · the organization's manifest as a form · what is data here is data in the manifest (139, 119) · saving is one logged response</span><button class="x" id="settings-close" aria-label="close">×</button></div>
+    <div class="st-sec"><div class="su-ih"><span class="eyebrow">operators</span><span class="su-for">who is allowed here · authentication is the host's, this is the organization's</span></div>${d.operators.map((o,i) => `<div class="st-row st-op"><span class="mono">${esc(o)}${o===ME().handle ? ' <span class="chip g">you</span>' : ''}</span><span></span><button class="btn sm quiet" data-oprm="${i}" ${o===ME().handle ? 'disabled title="you cannot remove yourself"' : ''}>remove</button></div>`).join('')}<div class="st-row st-op"><input id="st-newop" placeholder="an identity · a login on this host, or an SSO subject" value="${esc(d.newOp)}" aria-label="new operator"><span></span><button class="btn sm" id="st-opadd">add</button></div></div>
     <div class="st-sec"><div class="su-ih"><span class="eyebrow">repositories</span><span class="su-for">landing policy · item merge</span></div><div class="st-row st-head"><span>repository</span><span>landing</span><span>item merge</span></div>${repos}</div>
     <div class="st-sec"><div class="su-ih"><span class="eyebrow">roles</span><span class="su-for">kind · model</span></div><div class="st-row st-head"><span>role</span><span>kind</span><span>model</span></div>${roles}</div>
     <div class="st-sec st-two"><label class="su-field"><span class="su-fl">router</span>${sel('router', ROUTERS, d.router)}</label><label class="su-field"><span class="su-fl">take cadence</span>${sel('cadence', CADENCES, d.cadence)}</label></div>
@@ -3018,8 +3038,9 @@ function saveSettings(){ const d = S.settingsDraft, m = S.manifest; const ch = [
   d.repos.forEach((r,i) => { const o = m.repos[i]; if(o.landing!==r.landing) ch.push(`${r.id} landing ${r.landing}`); if(o.merge!==r.merge) ch.push(`${r.id} merge ${r.merge}`); });
   d.roles.forEach((r,i) => { const o = m.roles[i]; if(o.kind!==r.kind) ch.push(`${r.role} kind ${r.kind}`); if(o.model!==r.model) ch.push(`${r.role} model ${r.model}`); });
   if(m.router!==d.router) ch.push(`router ${d.router}`); if(m.cadence!==d.cadence) ch.push(`cadence ${d.cadence}`);
+  const ops = ORGS[S.org].operators; d.operators.filter(o => !ops.includes(o)).forEach(o => ch.push(`operators + ${o}`)); ops.filter(o => !d.operators.includes(o)).forEach(o => ch.push(`operators − ${o}`));
   if(!ch.length){ toast('settings · nothing changed · nothing sent', true); return; }
-  S.manifest = {repos:d.repos.map(r => ({...r})), roles:d.roles.map(r => ({...r})), router:d.router, cadence:d.cadence};
+  S.manifest = {repos:d.repos.map(r => ({...r})), roles:d.roles.map(r => ({...r})), router:d.router, cadence:d.cadence}; ORGS[S.org].operators = [...d.operators];
   logLine(`settings · ${ch.join(' · ')}`, {}); toast(`settings ${S.org} · ${ch.length} change${ch.length===1?'':'s'} · recorded · every host reads the manifest on its next tick`); S.settings = false; render(); }
 
 function dockFooter(key){
@@ -3080,9 +3101,11 @@ document.addEventListener('click', e => {
   if(b && b.id==='acct'){ S.acct = !S.acct; renderAcct(); return; }
   if(b && b.dataset.org){ switchOrg(b.dataset.org); return; }
   if(b && b.dataset.acct){ const k = b.dataset.acct; S.acct = false; if(k==='settings'){ openSettings(); return; } if(k==='hosts'||k==='store'){ S.setup.open = true; S.setup.mode = k; S.setup.sheet = null; S.setup.add = null; S.load = false; S.library = false; render(); return; } if(k==='signout'){ logLine('sign out', {}); S.signedOut = true; render(); return; } }
-  if(b && b.id==='signin'){ S.signedOut = false; logLine(`sign in · ${S.me.signin==='okta' ? 'Okta SSO' : 'GitHub'}`, {}); toast(`signed in · ${S.me.name}`); render(); return; }
+  if(b && b.id==='signin'){ S.signedOut = false; logLine('sign in · Okta SSO', {}); toast(`signed in · ${ME().name}`); render(); return; }
   if(b && b.id==='settings-close'){ S.settings = false; render(); return; }
   if(b && b.id==='settings-save'){ saveSettings(); return; }
+  if(b && b.dataset.oprm !== undefined){ S.settingsDraft.operators.splice(+b.dataset.oprm, 1); renderSettings(); return; }
+  if(b && b.id==='st-opadd'){ const v = ($('#st-newop').value||'').trim(); if(!v){ $('#st-newop').focus(); return; } if(!S.settingsDraft.operators.includes(v)) S.settingsDraft.operators.push(v); S.settingsDraft.newOp = ''; renderSettings(); $('#st-newop')?.focus(); return; }
   if(t.id==='settings'){ S.settings = false; render(); return; }
   if(S.acct && !t.closest('#acct-wrap')){ S.acct = false; renderAcct(); }
   if(b && b.dataset.a !== undefined){ const n = +b.dataset.n, a = b.dataset.a, d = dec(n); if(!d) return;
@@ -3135,6 +3158,9 @@ document.addEventListener('click', e => {
   if(b && b.dataset.suconfOpen){ const [hid,pid] = b.dataset.suconfOpen.split('|'); S.setup.open = true; S.setup.mode = 'hosts'; S.load = false; S.setup.host = hid; S.setup.add = null; openSheet(pid, hid, 'configure'); return; }
   if(b && b.dataset.surm){ const A = S.setup.add; A.parts = A.parts.filter(p => p.pkg!==b.dataset.surm); if(S.setup.sheet && S.setup.sheet.pkg===b.dataset.surm) S.setup.sheet = null; render(); return; }
   if(b && b.dataset.sutab){ S.setup.tab = b.dataset.sutab; S.setup.mode = b.dataset.sutab==='org' ? 'store' : 'hosts'; S.setup.host = b.dataset.sutab==='org' ? 'org' : (S.setup.host==='org' ? (S.hosts[0] ? S.hosts[0].id : '') : S.setup.host); S.setup.add = null; if(b.dataset.sukind) S.setup.kind = b.dataset.sukind; else if(!(S.setup.tab==='org' ? ORG_KINDS : HOST_KINDS).includes(S.setup.kind)) S.setup.kind = 'all'; S.setup.sheet = null; render(); $('#su-index')?.scrollIntoView({block:'nearest'}); return; }
+  if(b && b.dataset.sucopy !== undefined){ const st = secretStateFor(b.dataset.sucopy); if(!st) return; st.copied = true; const cmd = b.closest('.su-place').querySelector('pre').textContent; try{ if(navigator.clipboard) navigator.clipboard.writeText(cmd).catch(() => {}); }catch(_){} toast('copied · run it on any host of yours, then check'); rerenderSecrets(); return; }
+  if(b && b.dataset.sucheck !== undefined){ const key = b.dataset.sucheck; const st = secretStateFor(key); if(!st || st.checking) return; st.checking = true; rerenderSecrets(); toast('check · asking the host whether the secret is present · the page never sees it');
+    setTimeout(() => { const st2 = secretStateFor(key); if(!st2) return; delete st2.checking; st2.checked = st2.copied ? 'found' : 'missing'; st2.at = hhmm(S.minutes); toast(st2.checked==='found' ? 'present · the host found it at its path' : 'not found · run the command, then check again', st2.checked!=='found'); rerenderSecrets(); }, 700); return; }
   if(b && b.id==='su-sheet-add'){ sheetAdd(); return; }
   if(b && b.id==='su-sheet-save'){ sheetSave(); return; }
   if(b && b.id==='su-sheet-cancel'){ S.setup.sheet = null; render(); return; }
@@ -3204,8 +3230,9 @@ document.addEventListener('click', e => {
 document.addEventListener('input', e => { const t = e.target;
   if(t.id==='su-q'){ S.setup.q = t.value; const list = $('#su-index .su-list'); const tmp = document.createElement('div'); tmp.innerHTML = indexHtml(); list.replaceWith(tmp.querySelector('.su-list')); $('#su-index .su-for').innerHTML = tmp.querySelector('.su-for').innerHTML; return; }
   if(t.id==='su-name'){ S.setup.add.name = t.value; return; }
+  if(t.id==='st-newop'){ S.settingsDraft.newOp = t.value; return; }
   if(t.dataset.suf !== undefined && t.matches('input')){ S.setup.sheet.values[t.dataset.suf] = t.value; return; }
-  if(t.dataset.susv){ S.setup.sheet.secrets[t.dataset.susv].val = t.value; return; } });
+  });
 document.addEventListener('change', e => {
   const t = e.target;
   if(t.dataset.ubolt){ const u = S.proposal.units.find(x => x.id===t.dataset.ubolt);
@@ -3218,7 +3245,7 @@ document.addEventListener('change', e => {
   if(t.id==='su-any'){ S.setup.anyPlat = t.checked; $('#su-index').innerHTML = indexHtml(); return; }
   if(t.id==='su-adopt'){ const A = S.setup.add; A.adopt = t.checked; A.platform = null; A.step = A.adopt ? 'name' : 'platform'; if(A.adopt && !A.name) A.name = 'mac-mini-2'; render(); $('#su-name')?.focus(); return; }
   if(t.dataset.suf !== undefined && t.matches('select')){ const sh = S.setup.sheet; sh.values[t.dataset.suf] = t.value; if(schemaOf(pkg(sh.pkg)).some(f => f.when && f.when[0]===t.dataset.suf)) $('#su-index').innerHTML = addSheetHtml(); return; }
-  if(t.dataset.susm){ const [k,mode] = t.dataset.susm.split('|'); S.setup.sheet.secrets[k].mode = mode; $('#su-index').innerHTML = addSheetHtml(); if(mode==='now') $(`[data-susv="${k}"]`)?.focus(); return; }
+  if(t.dataset.susm){ const [k,mode] = t.dataset.susm.split('|'); S.setup.sheet.secrets[k].mode = mode; $('#su-index').innerHTML = addSheetHtml(); return; }
   if(t.id==='su-sheet-host'){ S.setup.sheet.host = t.value; return; }
   if(t.dataset.set){ const [a,i,k] = t.dataset.set.split('.'); const d = S.settingsDraft; if(k) d[a][+i][k] = t.value; else d[a] = t.value; return; }
   if(t.id==='ar-name'){ S.addRepo.name = t.value.trim(); render(); $('#ar-name').focus(); return; }
@@ -3281,7 +3308,7 @@ if(Q.has('signedout')) S.signedOut = true;
 if(Q.get('host') && host(Q.get('host'))) S.setup.host = Q.get('host');
 if(Q.has('addhost')) S.setup.add = newAdd();
 if(Q.get('index')==='org'){ S.setup.open = true; S.setup.mode = 'store'; }
-if(Q.get('add') && pkg(Q.get('add'))){ S.setup.open = true; const p = pkg(Q.get('add')); S.setup.sheet = {pkg:p.id, host: isOrgKind(p.kind) ? null : S.setup.host, mode:'add', values: emptyCfg(p).values, secrets: Object.fromEntries(secretFields(p).map(f => [f.k, {mode:'now', placed:false, val:''}]))}; }
+if(Q.get('add') && pkg(Q.get('add'))){ S.setup.open = true; const p = pkg(Q.get('add')); S.setup.sheet = {pkg:p.id, host: isOrgKind(p.kind) ? null : S.setup.host, mode:'add', values: emptyCfg(p).values, secrets: Object.fromEntries(secretFields(p).map(f => [f.k, {mode:'place', placed:false, copied:false, checked:null}]))}; }
 if(S.view==='book' && !Q.get('ch')) bookFollow();
 if(Q.has('explore')) S.exploreMode = true;
 if(Q.get('claim')) selectClaim(Q.get('claim'));
