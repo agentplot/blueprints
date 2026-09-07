@@ -1,6 +1,6 @@
 # Gaps — requirements not satisfied, or found contradictory
 
-By requirement number (1–182 in `requirements.md`). Each entry says what
+By requirement number (1–231 in `requirements.md`). Each entry says what
 the model does instead and why. An entry with **decision** is a judgment
 the operator may reverse by a response on the file; an entry with
 **open** is unsatisfied.
@@ -542,6 +542,110 @@ the operator may reverse by a response on the file; an entry with
   separate style file; a style change is a schema change and so a
   chore. **Decision**.
 
+- **172 size estimates and actuals.** A slot-day is one session slot
+  for one day; the actual is summed from the session records
+  (`started_at` to the exit) at landing and written per unit into the
+  acceptance file beside the claims, which is where "on the as-built"
+  is read to mean, since the machinery writes nothing else beside the
+  as-built (192, 203). **Decision**. Calibration is the planner's
+  judgment over the actuals its work order carries, by unit type and
+  repository; the machinery computes no rate and stores none. The
+  estimate is shown on the proposal and corrected by `redo: <notes>`,
+  not by a per-unit answer, so the reply grammar is unchanged.
+  **Decision**.
+
+- **194 the host's agent.** The job is renamed: the host's agent reads
+  and answers with the query tools on its own, and every write is a
+  proposed tool call the operator confirms; "interpreter" now names
+  only the function that turns text into a proposed call. A message
+  that asks for several things yields several cards, each its own
+  response with its own id. The page's agent is a model in the browser
+  (216a); which model, and whether a page without one falls back to
+  controls only, stays **open** in the surface binding. The chat's
+  agent is dispatch, so a chat without dispatch running answers
+  numbers only. **Decision**.
+
+- **215 adapters.** Seven ship, one kind: an enumerator run by
+  `run_adapters` on the host machine's tick. The page's capture box is
+  listed as an adapter because it writes one keyed capture per
+  submission, though it is the capture tool itself and runs on no
+  tick. **Decision**. A webhook adapter needs an inbox the host's
+  endpoint fills; on a host with no reachable URL the inbox is empty
+  and the source is dispatch's endpoint instead (217g). Stated. The
+  adapters' own command lines (`flywheel capture <source>`) are named
+  and not yet specified per source. **Open**.
+
+- **216–217k dispatch.** Bound by `models/dispatch/model.md`; nothing
+  in `machines/` names dispatch (C.1), so 216 and 217 are cited on the
+  sink and capture machines and on `deliver_plan`. The suffixed
+  clauses 216a and 217a–k are traced through their base numbers:
+  `satisfies` is integer in `schema.json` and `Vec<u32>` in the
+  engine, and `check.py` reads a suffixed item as a clause of its base
+  and counts it cited when the base is. **Decision**. The dispatch
+  model's ten open questions (its section 8) stand.
+
+- **218–222 organizations.** Isolation is by root, state repository,
+  books, sinks and register per organization; a host's manifest names
+  the organizations it runs and their roots. **Decision**. `remove
+  <organization>` is admitted as a dictation under 4 because it
+  retires and archives, asserting nothing done; it is reachable only
+  from `hosted`, since an organization mid-bootstrap has nothing to
+  archive. **Decision**. 222's "the host stops covering the affected
+  objects" is bound wider: the disk region leaving `ready` makes
+  `lease.coverable` false for every object the host declared, not only
+  those under the differing path, because the doctor reports the first
+  difference and not a list. **Decision**, conservative. Unreadable
+  state (an object file that does not parse) is reported through the
+  same decision and never rewritten; the git-only profile cannot stop a
+  hand commit from landing, only decline to honour it (gaps 4).
+
+- **223–227 machines, types and context.** 223–225 are cited on
+  `atoms.yaml` because the registry has no machine of its own.
+  **Decision**. 226 is `profiles/context.yaml`; the test that asserts a
+  rendered work order equals its row is named (`flywheel render-order`)
+  and not built. **Open**. The 24 rulings are in that file's
+  `rulings:`; the ones that could not be bound without a new type
+  version were bound in the binding instead of the immutable type
+  files: the chore type's verdict is dropped from expected when the
+  unit names no claim (ruling 8, `deliverables.yaml` resolution)
+  rather than by a chore@3; the fast type already names its change
+  directory, so no fast@4 (ruling 18). **Decision**. Ruling 22 gives
+  the engine windows a manifest key read at load; the machine files
+  keep their literals as defaults, so a scenario's timings hold.
+  **Decision**. Ruling 24 denies construction sessions the query
+  tools on the closed-inputs reading of 89; if a builder needs more
+  than the map section 211 gives it, the ruling is the one to
+  reverse. **Decision**. 227's stores are named as effects that already
+  exist; `record_offers` carries a signal into `flywheel/signals/`
+  and is not renamed. **Decision**.
+
+- **228–231 packages and setup.** A package's install decision is the
+  only setup item in the count; the `package-secret` and
+  `host-enrol-lapsed` decisions are `attention`, outside it, as the
+  plan's attention lines are (14). **Decision**. `add-host` carries
+  the operator's platform credentials in the call and the binding
+  says they are dropped after provisioning; nothing in the model can
+  prove a negative, and the platform's own audit is the check. Stated.
+  The enrolment token lives in the host record, unspent, for 24h; a
+  host adopted by the token alone gets no provisioning and no secrets
+  placed — its parts' secrets are the operator's to place, and
+  `package.secrets_placed` reads them. **Decision**. 231 is the host
+  machine: adapters are the one timed behaviour that was outside it,
+  and now `host.adapters_due` is a guard; the launcher entry per
+  platform (launchd, systemd, a container entrypoint) is named in the
+  host binding and verified against none. **Open**. The package kinds
+  chat sink, runner, router and sign-in are the code the dispatch
+  model's tiers name (217j); a package of those kinds is a binary
+  extension the host loads, and how a static binary loads one — a
+  subprocess speaking a fixed protocol, or a rebuild — is **open**.
+
+- **213, 214 and 229–230 on the mockup.** The rail-and-board mockup
+  (`design/flywheel-next/mockups/rail-and-board.html`) illustrates the
+  artifact views behind an object (213), the flywheel instrument
+  (214), the setup surface with parts and index (229) and adding a
+  host (230); its "offer" wording for a part added and awaiting
+  install is being replaced by "add", matching 229's states.
+
 ## Part B
 
 - **129 annotations as the response.** A plannotator annotation set
@@ -563,6 +667,25 @@ the operator may reverse by a response on the file; an entry with
   mechanism the profile adds, as 169 requires, and it is the decision
   in this model most in need of a test against the real service.
   **Decision**, flagged.
+
+- **213 artifact views.** Every view reads a repository at the shared
+  line; a unit whose change is still on its bolt line and not yet
+  landed is read from the bolt line, since the change lives there
+  until the landing (37, 213). The tracker profile's status view is
+  the page, and the views are the page's; the board shows none.
+  **Decision**. The claim view's "every version from history" is
+  `git log` over the block's chapter and its lock hashes. Stated.
+
+- **214 the instrument.** Drain's calibration is the ratio of actual
+  to estimate over landed units of the same repository and type, 1
+  until one lands; a type with no actuals yet reads as estimated.
+  **Decision**. The reading sentence's thresholds — one day of runway,
+  the bound — are the counts' own and not settings. **Decision**. The
+  streak is broken by any op-response, a dictation included, because
+  the requirement says "a response from the operator"; an
+  acknowledgement of an attention line therefore ends a streak.
+  **Decision**, flagged: if the operator wants attention `ok`s not to
+  count, the binding's `streak` read changes and no machine does.
 
 - **141 "which host runs it".** The host running a session is the
   lease holder of its owner; the model records `host` on the session

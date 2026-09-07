@@ -154,10 +154,15 @@ redefine these.
   invoke, with a schema naming its arguments by object id: the one way
   anything — a page control, a chat, the dispatch agent, the machinery
   — moves an object. A dictation is a tool the operator invoked.
-- **interpreter** — what turns the operator's free text into exactly
-  one proposed tool call for the operator to confirm: the dispatch
-  agent for chat, a model in the page's browser, or nothing at all when
-  the operator used a control. The machinery never parses free text.
+- **host's agent** — the agent that serves the operator's free text on
+  a surface: the organization's dispatch agent for chat, a model
+  running in the page's browser. It reads and answers with the query
+  tools on its own, and every write it makes is a proposed tool call
+  the operator confirms. The machinery never parses free text.
+- **interpreter** — the function of the host's agent that turns free
+  text into a proposed tool call for the operator to confirm; a
+  message that asks for several things yields several, one card each.
+  Nothing at all when the operator used a control.
 
 ## 4. Requirements — Part A, the data plane
 
@@ -688,6 +693,16 @@ requirements, iterated against the running plan rather than on paper.
 118. Weight counts by event date, never by import date. The status view
     shows the count and age of unmoved signals by source, and an unmoved
     signal is never discarded.
+215. The flywheel ships these adapters: a chat forward, a meeting
+    transcript, a log or monitor webhook, a pull-request conversation,
+    an issue tracker, a folder drop, and the page's capture box (19).
+    There is one kind of adapter: an enumerator that writes one keyed
+    capture per source event with a pointer to the raw material (111),
+    running on whichever host declares the source, by that host's tick
+    (231). The capture endpoint is for callers that cannot reach any
+    host's binary. Triage of a source is charged on the host that
+    declares it (217e). An organization adds an adapter as a package
+    (228).
 
 ### A.16 Default instructions and the review surface
 
@@ -783,13 +798,18 @@ requirements, iterated against the running plan rather than on paper.
     every state change (43).
 172. Planning delivers one proposal per run: a document showing the
     bolts it proposes, new or open, and the units in each with their
-    types and dependencies. The proposal is one decision — yes, redo
-    with notes, later — and each unit in it is separately answerable
-    before the yes: bolt <name>, new bolt <name>, rename, type, drop.
-    Nothing becomes a bolt or a unit until the proposal's yes. A
-    proposal replaced by planning's next run is superseded silently
-    (35). The operator sees the proposal on the review surface as one
-    document (17, 36).
+    types, their dependencies and a size estimate per unit in
+    slot-days, one session slot for one day. The proposal is one
+    decision — yes, redo with notes, later — and each unit in it is
+    separately answerable before the yes: bolt <name>, new bolt <name>,
+    rename, type, drop. Nothing becomes a bolt or a unit until the
+    proposal's yes. A proposal replaced by planning's next run is
+    superseded silently (35). The operator sees the proposal on the
+    review surface as one document (17, 36). At landing the machinery
+    records each unit's actual — the slot-days its sessions occupied —
+    on the as-built beside the claims the unit served (99, 192).
+    Planning calibrates its estimates by unit type and by repository
+    from the actuals recorded there; no constant stands in for them.
 173. A stage names the kind of agent that works it and the model it
     runs, and any agent the multiplexer can start is a kind: claude,
     codex, opencode. Defaults are declared per role in the manifest:
@@ -1035,6 +1055,252 @@ requirements, iterated against the running plan rather than on paper.
     flywheel. Initialization and creation stamp the version they used;
     upgrading a repository's template is a chore (123).
 
+### A.25 Dispatch
+
+216. Dispatch is four jobs and no more: the presenter of the chat sink
+    (148, 152–155), the capture endpoint for callers that cannot write
+    the books repository (106, 112), the capture-reading session (115),
+    and the host's agent for chat (194). Each job reads and writes only
+    through the control plane's operations and tools (125, 193). The
+    data plane names none of them (C.1).
+
+216a. A model running in the page's browser is the host's agent for
+    the page and nothing else (194). It presents no sink, writes no
+    capture except through the capture tool the page already calls
+    (19), and reads no capture. An organization may run with no other
+    part of dispatch; the plan is then served, answered and captured
+    on the page, and nothing arrives through chat or through a
+    webhook.
+
+217. Dispatch is a host (149) whose declaration takes no object kind,
+    no repository and no unit type, and presents the chat sink; it may
+    also declare the callers of its endpoint, the sources it triages,
+    and the runner of each model job. It runs the same binary, joins by
+    the same command (205), heartbeats, holds its leases and ticks like
+    every host, and holds a lease only on a sink (148, 150).
+
+217a. Dispatch is stateless between ticks. Every decision it makes is
+    derived from what read and list return: the sink's mark, the
+    capture keys, the signal records, the response records (136, 7). A
+    restart reads the same state and reaches the same conclusion.
+    Nothing dispatch holds in memory decides behavior, and no
+    conversation persists across ticks or requests.
+
+217b. The two jobs that need a model — reading a capture and
+    answering a message — are sessions of A.7: a bounded goal, a
+    closed set of inputs (89), a fixed set of exits, an identity the
+    tool server checks (197). Each is charged per capture or per
+    message and ends when it delivers. Neither carries context from
+    one charge to the next.
+
+217c. The sessions binding names a runner per model job: a multiplexer
+    pane (173, 174), a bounded loop inside the dispatcher's own
+    process, or a session on an agent platform. Every runner starts
+    the session with the same work order, instruction data and exits;
+    the engine cannot tell them apart. The host's agent's runner
+    answers within the operator's patience for a chat reply. A runner
+    on an agent platform reaches the tool server only over remote MCP
+    with the session's identity, and only across the operator's
+    private network (46, 191).
+
+217d. No host, session or loop addresses dispatch. Dispatch learns of
+    state through the profile's notify and its bounded fetch (130,
+    165, 166) and through nothing else. Dispatch reaches the operator
+    through the sink's own identity — the bot the manifest names and
+    the token the operator placed — and never through a person's
+    account.
+
+217e. Triage is distinct from curation. Curation gives signals their
+    moves on its own cadence and threshold (110). Triage turns one
+    capture into its signals, charged by the tick of the host that
+    declares the capture's source, immediately or on a cadence the
+    manifest names, up to a bound of readers at once (32). A forwarded
+    single message charges no reader (S21).
+
+217f. When dispatch is down nothing is lost. Decisions are state and
+    any host serves the page (148). Replies wait in the chat and are
+    applied once by their delivery id when the presenter returns
+    (137). A caller of the endpoint retries; a repeat under the same
+    key writes nothing (111). A capture waits with its pointer; an
+    unmoved signal is never discarded (118). The sink's lease expires
+    by the stated rule and never by racing (150).
+
+217g. Capture is decentralized. Any adapter that can read its source
+    and push to the books repository writes captures through its own
+    binary, from any machine, and never through dispatch (114). The
+    endpoint is for callers that cannot write git. Triage reads every
+    capture wherever it was written.
+
+217h. A capture's pointer is reachable by whichever host reads it. The
+    manifest names a raw store per source; an adapter puts the raw
+    material there before writing the capture, or the host that holds
+    it declares that it triages that source. A reader is not charged
+    for a pointer that cannot be reached; the capture is a decision
+    under attention instead (149).
+
+217i. The placements of dispatch are: the browser agent alone, the
+    dispatcher on the operator's machine or in its multiplexer, and
+    the dispatcher in a long-lived process on a platform. All run the
+    same declaration. What differs between them is placement, the
+    store the secrets are placed in, the network route, and the model
+    access (191, 207) — all named in the manifest and none in a
+    machine, an atom or a profile operation. A placement that cannot
+    hold a socket, a clock and a private-network route is not a
+    placement for the presenter or the endpoint.
+
+217j. The installation tiers are bindings. A chat platform's adapter, a
+    sign-in kind, a router kind and a runner are each code shipped
+    once; which an organization uses is data (139). Every response is
+    recorded with who gave it and when (153) at every tier; an
+    organization that needs the record elsewhere exports it from
+    history (167).
+
+217k. Dispatch is installed by the machinery from the manifest and
+    never by hand: `flywheel init` records that the organization's
+    dispatcher exists and where it is placed (204); the placement's
+    own step — a process, a pane, a container, a platform session —
+    is an effect with a proof, repeatable, and the secrets it needs
+    are placed by the operator and are a decision under attention
+    until they are (207). Upgrading dispatch is upgrading the binary
+    on that placement; a dispatcher running an older binary than the
+    manifest's stamped version is visible on the status view (208).
+
+### A.26 Organizations
+
+218. A host runs several organizations at once, each isolated on disk
+    and in state: nothing crosses between them — no lease, no id, no
+    session, no decision number. The page shows one organization at a
+    time and switches between them; each organization has its own
+    sinks, one presenter per sink (148), and no sink serves two.
+219. An organization is the operator's name for it. It may but need not
+    coincide with an organization at the git host; its repositories
+    are listed by URL, so they may live under any account the App
+    reaches (207).
+220. From zero: init adopts an existing books repository or creates one
+    from the template, and does the same for the state repository and
+    for each tracked repository (204, 206). An existing repository
+    that lacks the layout is upgraded by a chore (123, 208) and never
+    rewritten.
+221. An organization is removed by a response, never by deleting files:
+    its sessions are ended, its places removed, its state archived, its
+    git repositories left on disk; its numbers are never reused (15).
+222. Every tick reconciles the host's disk against the state (75). A
+    bare repository or a checkout that is missing, moved or changed by
+    hand is a decision under attention that shows the difference and
+    the proposed repair; nothing is repaired without the response,
+    except a place's worktree, which is re-made from its line (49).
+    Unreadable state is never guessed at. Until the response, the host
+    stops covering the affected objects (150), and the status view
+    shows why.
+
+### A.27 Machines, types and context
+
+223. The machines are of two tiers, and the tier is marked in the
+    definition. A **core** machine — every object machine, every engine
+    machine, and the structural templates for a line, a place, a
+    session and a stage — ships with the release and is never edited by
+    an organization; the atoms, the schema and the bindings are core
+    with it. An **extensible** machine — a unit type or an elaboration
+    type — is a file an organization adds or overrides under the
+    prefix in its books (203), and so are the deliverables, the
+    vocabularies, the instructions, the schemas and the skills (119,
+    190, 198). A core machine may name an extensible one only when the
+    release ships that file and lists the reference as an exception; an
+    extensible machine composes only templates and atoms that exist
+    (57, 87). Changing a core machine is a flywheel release with a new
+    set version (208) and the conformance suite green (92–95); changing
+    an extensible file is a chore (123). The machinery never moves an
+    object because its machine changed: an object in a state its
+    machine no longer has is reported under attention (81).
+224. Every machine file carries a version, and the release carries a
+    set version that names the version of every core machine and every
+    shipped extensible file (208). An extensible file names the set it
+    was written against, and a set the installed flywheel does not read
+    is refused (123). An object records the version of the extensible
+    machine it runs under (57) and the set version it was created
+    under. The registry is a manifest in two parts, validated as one:
+    the release's manifest of what it ships, and the organization's
+    additions, rendered under the prefix as a registration that lists
+    every type name, every version seen, the books commit each first
+    appeared at, and whether it is shipped, overridden or added. The
+    check runs on every books commit and on every host at every fetch,
+    over the union: every reference resolves, every parameter supplied
+    is declared, every final a parent waits for exists in the machine
+    it names, every deliverable name resolves (190), and every version a
+    live object records is present; a version is retired only when no
+    live object records it, and a change that would move an object in
+    flight is refused and reported (57, 79).
+225. Every machine is rendered as a statechart by the build, from its
+    definition and nothing else: regions, states, decision kinds,
+    finals, submachines, transitions with guard, effects and enter
+    commands. The rendering is a build output beside the definition,
+    listed with the machine's kind, version, object and the
+    requirements it satisfies, and it is what the operator reviews at
+    every change to a machine (83); a rendering drawn by hand is not a
+    rendering of the machine.
+226. The context every kind of session is handed is data, not prose:
+    for every session type — each machinery-charged session, each
+    elaboration type, each stage of each unit type — one enumeration of
+    what its work order carries: the schema instruction, the type
+    skill, the work order fields, the artifacts of the change, the
+    chapters and claims, the map elements with their homes and
+    attachments (211), the surface specification when its work is about
+    a surface (212), the deliverables with their producers, schemas and
+    surfaces in force (190), the identity (197), and what it must never
+    receive (89). The engine renders every work order from that data
+    and from nothing else, a test renders it for a given session type,
+    instruction version and scenario without starting a session (90,
+    124), and a test asserts that what a work order carries is exactly
+    the enumeration and that what it must never receive is absent. A
+    session type whose enumeration is incomplete is not a session type
+    the machinery may charge.
+227. Every deliverable entry, shipped or added by an organization, names
+    the store the machinery carries it into and the session types that
+    are fed it, beside its producer, schema and surface (190). The
+    machinery carries a deliverable into its named store by an effect
+    with a proof and feeds it to a session only through that session's
+    work order (89); a deliverable whose entry names no store is
+    refused when the type file is loaded, and the refusal is reported
+    (79).
+
+### A.28 Packages and setup
+
+228. A package is one thing of one kind: an adapter, a chat sink, a
+    runner, a router, a sign-in, a unit type or an elaboration type, a
+    deliverable producer, a map vocabulary, a template, or a scenario
+    pack. A per-host package installs on a named host; an organization
+    package installs into the books under the prefix (203) and is read
+    by every host at the shared line, so no two hosts can differ on a
+    type. A package is a git repository at a tag, listed in an index
+    that is a file; the shipped set is the default index. A package
+    declares the set version it needs (208), its configuration schema
+    and the secrets it needs, and is content-hashed and registered
+    (224).
+229. The setup surface stands apart from the operator's decisions. It
+    shows each host's parts with their state — installed · added,
+    awaiting install · needs a secret · installing · disabled — and the
+    index, organization packages and per-host packages apart. Adding a
+    package collects its configuration and names its secrets in the
+    same flow, then raises one install decision whose yes runs the
+    install as effects with proofs (204); a secret not yet placed is
+    under attention (207). A package's configuration is changed on the
+    same surface with one response. Removal is a response that ends
+    what the package runs and keeps its records. Nothing on the surface
+    enters the count except the install decision.
+230. A host is added from a host that exists. The operator picks a
+    platform and the parts; provisioning runs with the operator's own
+    platform credentials, which are never stored; only the chosen
+    parts' secrets are handed to the platform's secret store, on
+    confirmation. An enrolment decision carrying a one-time, expiring
+    token admits the host (205); a host already running the binary is
+    adopted by the token alone.
+231. The tick is the scheduler. Every timed behaviour of a host,
+    adapters included, is a guard on the host's tick, and nothing else
+    keeps time. A host is one long-lived process that the platform's
+    own launcher starts, so joining installs that one entry; a run
+    missed while the host was down is caught up on the next tick, and
+    the idempotent key (111) makes the catch-up write nothing twice.
+
 ## 5. Requirements — Part B, the control plane contract
 
 The data plane reaches durable, shared state and the operator only
@@ -1151,6 +1417,33 @@ through these operations, and depends only on these guarantees.
     its session with last activity (65–68), and, when covered by a
     gathering, the gathering it is in (188). The intent's surface lists
     its elaborations in order and opens each.
+213. Every object opens the OpenSpec artifacts behind it, in a view fit
+    to the artifact: an intent its change directory — the proposal, the
+    records, the deltas, the design, and whether it is archived; a unit
+    its change in the built repository, with the steps ff · apply ·
+    verify · archive set against its type's stages, its requirement
+    blocks, and its tasks with the item and the commit that did each; a
+    claim its block with its versions, its attachments and each
+    verdict's evidence; a bolt its acceptance file (192); a work item
+    its commits (185), its deliverables and its report. Every view is
+    derived from the repositories at the shared line and never stored;
+    an edit to any of it goes through the review surface (17), never
+    through the view.
+214. The flywheel instrument is a projection (142), sets no target, and
+    the unattended streak is the only thing the operator plays for. It
+    shows: runway, in days — the estimated size of the approved
+    construction work queued and running (172) divided by the drain,
+    where the drain is the alive hosts' bound at the calibrated rate;
+    feed — what would add runway and waits on the operator: proposals,
+    elaborations waiting, intents; pressure — the approved work waiting
+    against the bound; the unattended streak — how long approved work
+    has run without a response from the operator, what puts it at risk,
+    and what ended the last one; one reading sentence derived from the
+    counts — you are the limit · feed it · drain is the limit · primed;
+    and velocity, as history. The two backpressure stages are shown as
+    such: inception, what waits on the operator; construction, the
+    queue against the bound. A compact form of it sits on the status
+    view at rest.
 
 ### B.5 Hosts and ownership
 
@@ -1191,16 +1484,20 @@ through these operations, and depends only on these guarantees.
     profile uses them as the platform provides them. Nothing is
     invented, and the short reply grammar always works beside them.
 194. Free text from the operator, typed on the page or sent in chat, is
-    never parsed by the machinery. An interpreter — the organization's
+    never parsed by the machinery. The host's agent — the organization's
     dispatch agent for chat, a model running in the page's browser, or
-    none at all when the operator used a control — resolves names
-    against the live objects and proposes exactly one tool call, which
-    is shown to the operator as what will be sent; the operator's
-    confirmation is the response and is recorded once (153). A name
-    that resolves to nothing is asked about, never guessed. The
-    numbered reply grammar (`yes 412`, `421: <text>`) stays as the
-    deterministic path, because a decision number is unambiguous, and
-    is itself one of the tools: answer a decision.
+    none at all when the operator used a control — reads and answers
+    with the query tools on its own, and every write is a proposed tool
+    call the operator confirms. Its interpreter, the function that
+    turns text into a proposed call, resolves names against the live
+    objects and proposes the call, which is shown to the operator as
+    what will be sent; the operator's confirmation is the response and
+    is recorded once (153). A message that asks for several things
+    yields several proposed calls, one card each, each confirmed and
+    recorded on its own. A name that resolves to nothing is asked
+    about, never guessed. The numbered reply grammar (`yes 412`, `421:
+    <text>`) stays as the deterministic path, because a decision number
+    is unambiguous, and is itself one of the tools: answer a decision.
 
 ## 6. Requirements — Part C, profiles
 

@@ -9,7 +9,7 @@
 <rect width="1411" height="587" fill="#fff"/>
 <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">session — template v4, core</text>
 <text x="40" y="57" font-size="12" fill="#666">One agent process working one job in one place (A.7).</text>
-<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 24, 65, 66, 67, 70, 71, 72, 73, 80, 93, 171, 173, 174, 190, 196, 197 · session.yaml · params agent, kind, place, work_order, deliverables, keep_alive · record id, identity, host, started_at, exit, expected, delivered, blocks</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 24, 65, 66, 67, 70, 71, 72, 73, 80, 93, 171, 173, 174, 190, 196, 197, 226 · session.yaml · params agent, kind, place, work_order, deliverables, keep_alive · record id, identity, host, started_at, exit, expected, delivered, blocks</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
 <line x1="80" y1="103" x2="1370.825" y2="103" stroke="#2b8a8a" stroke-width="2" opacity="0.3"/>
 <circle cx="52.0" cy="166.0" r="4" fill="#1a1a1a"/>

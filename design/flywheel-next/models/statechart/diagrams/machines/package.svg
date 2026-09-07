@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1421" height="320" viewBox="0 0 1421 320" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1421" height="320" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">package — object v1, core · object package · parent organization</text>
+<text x="40" y="57" font-size="12" fill="#666">One package (228): one thing of one kind — an adapter, a chat sink, a runner, a router, a sign-in, a unit type or an elaboration type, a deliverable producer, a map vocabulary, a template…</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 5, 204, 207, 224, 228, 229 · package.yaml · record name, kind, scope, host, source, set_version, hash, config, secrets</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
+<line x1="80" y1="103" x2="1381.15" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="193.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="193.0" x2="69.0" y2="193.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M80.0,167.0 V159.0 H234.8 V167.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M170.8,167.0 V144.0 H444.4 V167.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M342.4,167.0 V129.0 H691.6 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M288.6,167.0 V159.0 H546.4 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M627.6,167.0 V144.0 H710.6 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M587.0,219.0 V229.0 H288.6 V195.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M767.6,167.0 V129.0 H831.6 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M729.6,167.0 V159.0 H748.6 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M850.6,167.0 V144.0 H869.6 V167.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M888.6,167.0 V159.0 H971.6 V167.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M907.6,167.0 V129.0 H1145.2 V167.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M1026.4,207.0 V229.0 H729.6 V195.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M1081.2,167.0 V144.0 H1164.2 V167.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M1221.2,167.0 V144.0 H1323.2 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1183.2,167.0 V159.0 H1202.2 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<rect x="70.0" y="167.0" width="110.8" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>added on the setup surface with its configuration and its secret names; the one decision the surface raises (229)</title></rect>
+<text x="125.4" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">added</text>
+<rect x="76.6" y="191.0" width="97.7" height="14" rx="7" fill="#c9962e"/>
+<text x="125.4" y="201.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">package-install</text>
+<text x="125.4" y="213.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: yes · drop</text>
+<rect x="224.8" y="167.0" width="127.6" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the yes given once is never re-asked (6); the install waits only for the secrets the package declares</title></rect>
+<text x="288.6" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">checking-secrets</text>
+<rect x="396.4" y="167.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"><title>never installed; nothing was placed (5)</title></rect>
+<rect x="399.4" y="170.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="444.4" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">dropped</text>
+<text x="444.4" y="201.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: dropped</text>
+<rect x="536.4" y="167.0" width="101.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>a secret the package declares is not yet placed; under attention, outside the count, until the operator places it (207, 229)</title></rect>
+<text x="587.0" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">needs-secret</text>
+<rect x="541.0" y="191.0" width="92.1" height="14" rx="7" fill="#c9962e"/>
+<text x="587.0" y="201.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">package-secret</text>
+<text x="587.0" y="213.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: placed</text>
+<rect x="681.6" y="167.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>fetched at its tag, checked against the set version, placed under the prefix or on the host, hashed and registered, started — effects with proofs, repeatable (204, 224, 228)</title></rect>
+<text x="729.6" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">installing</text>
+<rect x="821.6" y="167.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>in force; every host reads an organization package at the shared line, so no two hosts differ on a type (228); configuration is changed here with one response (229)</title></rect>
+<text x="869.6" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">installed</text>
+<rect x="961.6" y="167.0" width="129.5" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>what it runs is stopped; its files stay; enable is the install effect again, which finds the files and starts it (229)</title></rect>
+<text x="1026.4" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">disabled</text>
+<text x="1026.4" y="201.0" font-size="8.5" fill="#666" text-anchor="middle">entry ⚙ disable_package</text>
+<rect x="1135.2" y="167.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>ends what the package runs and removes its files, keeping its records (229)</title></rect>
+<text x="1183.2" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">removing</text>
+<rect x="1275.2" y="167.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"></rect>
+<rect x="1278.2" y="170.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="1323.2" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">removed</text>
+<text x="1323.2" y="201.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: closed</text>
+<rect x="132.4" y="147.5" width="50.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="157.4" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">reply yes</text>
+<rect x="280.2" y="132.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="307.6" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">reply drop</text>
+<rect x="461.6" y="117.5" width="110.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="517.0" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">package.secrets_placed</text>
+<rect x="399.5" y="147.5" width="36.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="417.5" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">always</text>
+<rect x="613.7" y="132.5" width="110.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="669.1" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">package.secrets_placed</text>
+<rect x="405.8" y="229.5" width="64.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="437.8" y="238.0" font-size="8.5" fill="#333" text-anchor="middle">reply placed</text>
+<rect x="755.9" y="117.5" width="87.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="799.6" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">package.installed</text>
+<rect x="679.0" y="147.5" width="120.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="739.1" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ install_package</text>
+<rect x="750.9" y="132.5" width="218.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="860.1" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">reply configure: &lt;fields&gt; ⚙ configure_package</text>
+<rect x="895.7" y="147.5" width="68.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="930.1" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">reply disable</text>
+<rect x="994.3" y="117.5" width="64.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="1026.4" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">reply remove</text>
+<rect x="846.0" y="229.5" width="64.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="878.0" y="238.0" font-size="8.5" fill="#333" text-anchor="middle">reply enable</text>
+<rect x="1090.6" y="132.5" width="64.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="1122.7" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">reply remove</text>
+<rect x="1235.4" y="132.5" width="73.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="1272.2" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">package.absent</text>
+<rect x="1134.9" y="147.5" width="115.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="1192.7" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ remove_package</text>
+<rect x="40" y="276" width="1341" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="286" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="71" y="295" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="286" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="295" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="286" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="295" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="286" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="295" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="286" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="617.85" y="295" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="286" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="295" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="286" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="295" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="286" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="295" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

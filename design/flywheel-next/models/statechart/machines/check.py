@@ -22,6 +22,8 @@ the requirements.
 - the requirement trace (section 12 of the requirements): every machine, decision kind, effect and
   conformance scenario carries `satisfies: [numbers]`; a number that names no requirement fails; a
   requirement cited nowhere fails. The requirement numbers are read from ../../../requirements.md.
+  A suffixed requirement (216a, 217b) is a clause of its base number: `satisfies` stays integer
+  (schema.json, and the engine reads Vec<u32>), and the clause counts as cited when its base is.
 Exit 1 on any finding.
 
 `render.py` beside this file draws the same machine files as statecharts, one SVG per
@@ -41,6 +43,7 @@ bad = []
 # ---- the requirements: numbered items under ### headings
 req_numbers = set()
 req_section = {}
+req_clauses = {}   # base number -> [216a, 217b, ...]
 if os.path.exists(REQUIREMENTS):
     section = None
     for line in open(REQUIREMENTS):
@@ -49,9 +52,11 @@ if os.path.exists(REQUIREMENTS):
             section = h.group(1); continue
         if line.startswith('## '):
             section = None; continue
-        n = re.match(r'^(\d{1,3})\. ', line)
+        n = re.match(r'^(\d{1,3})([a-z]?)\. ', line)
         if n and section:
             k = int(n.group(1)); req_numbers.add(k); req_section[k] = section
+            if n.group(2):
+                req_clauses.setdefault(k, []).append(n.group(1) + n.group(2))
 else:
     bad.append(f"requirements not found at {REQUIREMENTS}")
 cited = {}   # number -> [where]
@@ -319,7 +324,8 @@ uncited = sorted(req_numbers - set(cited))
 for n in uncited:
     bad.append(f"requirement {n} ({req_section[n]}) is cited nowhere")
 
-print(f"scenarios: {nscen} · requirements: {len(req_numbers)} · cited: {len(cited)} · uncited: {len(uncited)}")
+nclauses = sum(len(v) for v in req_clauses.values())
+print(f"scenarios: {nscen} · requirements: {len(req_numbers)} (+{nclauses} clauses) · cited: {len(cited)} · uncited: {len(uncited)}")
 print(f"machines: {len(machines)} · evidence: {len(evidence)} · effects: {len(effects)} · decision kinds: {len(decisions)}")
 for k, v in sorted(decisions.items()): print(f"  decision {k}: {', '.join(v)}")
 for b in bad: print("FAIL", b)

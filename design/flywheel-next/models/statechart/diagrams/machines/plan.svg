@@ -9,7 +9,7 @@
 <rect width="1378" height="379" fill="#fff"/>
 <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">plan — engine v2, core · object plan · one per organization</text>
 <text x="40" y="57" font-size="12" fill="#666">The plan as an object: one per organization (148).</text>
-<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 7, 8, 9, 11, 15, 83, 86, 148 · engine/plan.yaml · record next_number, register, status_as_of</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 7, 8, 9, 11, 15, 83, 86, 148, 213, 214 · engine/plan.yaml · record next_number, register, status_as_of</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">register</text>
 <line x1="107" y1="103" x2="354.2" y2="103" stroke="#8a8a86" stroke-width="2" opacity="0.3"/>
 <circle cx="52.0" cy="151.0" r="4" fill="#1a1a1a"/>

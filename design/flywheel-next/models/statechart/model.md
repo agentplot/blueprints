@@ -81,6 +81,7 @@ of some object, or a file the machinery reads as evidence.
 | `chore@2`, `fast@3`, `default@5`, `persona-test@3` | template | unit types; their states are the stages — the OpenSpec steps `spec` (ff), `build` (apply) and `verify` for `default`, one `ff-apply` stage for `fast`, the archive being the item's merge-time effect (10.7) | instantiated by `work-item.in-type` | `machines/unit-types/<machine>@<version>.yaml` |
 | `organization` | object, singleton | the bootstrap: absent, books ready, state ready, awaiting the App, connected, hosted (204) | — · repository | `machines/organization.yaml` |
 | `repository` | object | a built repository the flywheel tracks: proposed, creating, registering, covering, tracked (206) | organization · — | `machines/repository.yaml` |
+| `package` | object | one package of one kind — adapter, chat sink, runner, router, sign-in, type, producer, vocabulary, template, scenario pack — added, awaiting install, needing a secret, installing, installed, disabled, removed (228, 229) | organization · — | `machines/package.yaml` |
 | `host`, `lease`, `response`, `plan`, `sink` | engine | a host, an object's ownership, one operator response, the plan's decision register, one delivery sink | — | `machines/engine/` |
 
 ### 1.2 What is an attribute, not a machine
@@ -271,7 +272,10 @@ The domain is `atoms.yaml` plus every file under `machines/` except
 `engine/` (87). The five engine machines (`host`, `lease`, `response`,
 `plan`, `sink`) are shipped with the engine because they name no domain
 object; they are still data, so their windows (5m stale, 30m gone, 24h
-expiry, 30 days of register retention) are the operator's to change.
+expiry, 30 days of register retention, 24h enrolment token) are the
+operator's to change through `flywheel.yaml` `engine:`, read at load with
+the file's literals as the defaults (`profiles/record-derived.yaml`
+`engine_windows`).
 
 A new need goes to the domain side when it names something in the
 world: a file, a pane, a branch, a claim, a verdict, a type of session.
@@ -797,7 +801,7 @@ id>/<number>`). A response that arrives after its decision is gone is
 handed back as `unapplicable` and shown once under attention, never
 dropped (6, 129).
 
-### 5.7 Dictation, the tool surface and the interpreter
+### 5.7 Dictation, the tool surface and the host's agent
 
 The engine never parses command words out of free text. Every
 operation the operator may invoke is a **tool** of the control plane
@@ -824,14 +828,21 @@ takes the same transition the decision would have taken, with the same
 response; a tool that would assert work was done does not exist, and a
 response that arrives claiming one is `unapplicable` and reported (4).
 
-Free text — typed on the page, sent in chat — goes to an
-**interpreter**, never to a parser (194): the dispatch agent for chat,
-a model running in the page's browser, or none at all when the operator
-used a control. The interpreter resolves the names against the live
-objects and proposes exactly one tool call, shown to the operator as
-what will be sent; the operator's confirmation is the response, and
-only the confirmed call is recorded, once (153). A name that resolves
-to nothing, or to more than one object, is asked about, never guessed.
+Free text — typed on the page, sent in chat — goes to the **host's
+agent**, never to a parser (194): the dispatch agent for chat, a model
+running in the page's browser, or none at all when the operator used a
+control. The host's agent reads and answers with the query tools on its
+own, and every write it makes is a proposed tool call the operator
+confirms: its **interpreter**, the function that turns text into a
+proposed call, resolves the names against the live objects and proposes
+the call, shown to the operator as what will be sent; the operator's
+confirmation is the response, and only the confirmed call is recorded,
+once (153). A message that asks for several things yields several
+proposed calls, one card each, each confirmed and recorded on its own.
+A name that resolves to nothing, or to more than one object, is asked
+about, never guessed. The agent is a session of A.7 charged per message
+and carrying nothing from one to the next (217a, 217b;
+`profiles/surfaces.yaml` `host_agent`).
 The numbered reply grammar — `yes 412`, `421: <text>` — stays as the
 deterministic path because a decision number is unambiguous, and is
 itself the `answer` tool. Text in the page's capture box is a capture
@@ -1150,9 +1161,10 @@ homes and the claims attached there (89, 211).
 
 A verdict is written only by `record_verdict`, from a session's exit:
 the planning session (every cell in scope on a first planning, stale
-cells afterwards), a review or test stage whose deliverables include
-`verdicts-for-named-claims` (the default type's review, the chore
-type's fix), never by the machinery's own judgment (100). The record
+cells afterwards), a verify, review or fix stage whose deliverables
+include `verdict` (the default type's verify, the chore type's fix,
+when the unit names a claim), never by the machinery's own judgment
+(100). The record
 holds the claim version, the repository revision, the evidence paths,
 the date and the session (`judged_by`).
 
@@ -1895,7 +1907,7 @@ another.
 **S28 — a three-week bolt.** The operator runs the system in the bolt's
 place (`bolt[place]`, reset after each merge); the place's endpoints
 are recorded and shown beside the bolt on the page (46). The
-`propose-unit` tool on bolt plan-rows, proposed by the interpreter from
+`propose-unit` tool on bolt plan-rows, proposed by the host's agent from
 the operator's text and confirmed → a unit in `approved` with the
 response as its `approval` → items → sessions. Next day a finding from a session on
 another bolt is recorded as a signal (another thread), curation moves
@@ -2268,3 +2280,140 @@ repository's template is a chore (123, 208). The derivation table is
 shipped data in that set: changing it re-derives kinds and
 capabilities only and never moves or stales a verdict, since cells key
 on claim version and repository and scope comes from attachments.
+
+## 18. Ratified 213–231: views, the instrument, adapters, dispatch, organizations, context, packages and setup
+
+**172 — size estimates.** A unit record carries `estimate`, the
+proposal's size in slot-days (one session slot for one day), and
+`actual`, the slot-days its sessions occupied, summed from the session
+records; the `unit-proposed` decision shows the estimate. At landing
+`write_acceptance` writes both per unit into `openspec/acceptance.yaml`
+beside the claims, so the actual sits with the as-built (99, 192) and
+any system reads it from git. Planning's work order carries the actuals
+by unit type from every acceptance file of the repository, and the
+planner calibrates from them; no constant stands in (`profiles/context.yaml`
+planning, ruling 5). The estimate is not a per-unit answer on the
+proposal: the operator corrects one with `redo: <notes>`.
+
+**213 — artifact views.** `render_status` also derives, for every
+object, the OpenSpec artifacts behind it in a view fit to the artifact,
+read from the repositories at the shared line at the status view's
+as-of point and stored nowhere (`profiles/surfaces.yaml`
+`artifact_views`): an intent its change directory with proposal,
+records, deltas, design and archive state; a unit its change in the
+built repository with ff · apply · verify · archive set against its
+type's stages, its requirement blocks and its tasks with the item and
+commit that did each; a claim its block with versions, attachments and
+each verdict's evidence; a bolt its acceptance file; a work item its
+commits, deliverables and report. An edit goes through the review
+surface (17); the view has no control that writes.
+
+**214 — the instrument.** A projection of the same read
+(`profiles/surfaces.yaml` `instrument`): runway = the estimates over
+approved, waiting and in-flight units, less slot-days already spent,
+over the drain; drain = alive hosts' bounds at the calibrated rate,
+the actual-to-estimate ratio from the acceptance files, 1 until
+something lands; feed = what waits on the operator and would add
+runway; pressure = approved-and-waiting against the bound; the
+unattended streak from the newest response's `given_at` while work is
+in flight, with what would end it and what ended the last; the reading
+sentence in fixed order — drain is the limit, you are the limit, feed
+it, primed; velocity from the acceptance files. The two backpressure
+stages — inception, the feed; construction, the queue — are two numbers
+shown as stages. No target, nothing stored, compact at rest on the
+status view.
+
+**215, 231 — adapters and the tick.** There is one kind of adapter, an
+enumerator, and seven ship (`profiles/books.yaml` `adapters`): chat
+forward, meeting, webhook, pull request, issue tracker, folder, the
+page's capture box. Each runs by the tick of the host that declares
+its source: `host.adapters_due` is a guard on the host machine's
+`alive` state and `run_adapters` writes one keyed capture per source
+event, twice being once (111), so a run missed while the host was down
+is caught up by the next tick. The host is one long-lived process the
+platform's launcher starts (`profiles/host.yaml` `launcher`); there is
+no cron and no second process — every timed behaviour is a guard.
+Triage of a source is charged on the host that declares it (217e); the
+capture endpoint is dispatch's, for callers that cannot reach any
+host's binary (216). An organization adds an adapter as a package.
+
+**A.25 — dispatch.** The dispatch model (`models/dispatch/model.md`)
+is the binding of 216–217k; its host is `{name: dispatcher, bound: 0,
+kinds: [], presents: [chat]}` (section 11), a host of the `host`
+machine that takes nothing and presents the chat, holding a lease only
+on a sink. The rename of 194 runs through it: the host's agent reads
+and answers with the query tools and proposes every write as a card;
+its interpreter is the function inside it; the runner is `inproc`
+everywhere (`profiles/sessions.yaml` `runners`). Nothing in
+`machines/` names dispatch (C.1): the sink machine cites 216 and 217
+because the presenter is its lease holder, the capture machine because
+the endpoint writes its records.
+
+**A.26 — organizations.** The `organization` machine is one object per
+organization, and a host runs several: each has its own root
+(`<root>/<org>/`), state repository, books, sinks, presenters and
+register, and nothing crosses (218). The page shows one at a time and
+`switch-organization` picks it. The name is the operator's and the
+repositories are URLs (219). Init adopts what exists and creates what
+does not, for the books, the state and each tracked repository, and an
+existing repository without the layout is an upgrade chore (220;
+`create_books`, `create_state`, `create_repository`). Removal is the
+dictation `remove <organization>`: `hosted → removing → removed`, and
+`retire_organization` ends every session, removes every place,
+archives the state with its decision counter and leaves the git
+repositories on disk (221). The host machine's `disk` region
+reconciles every tick (222): `differs` is the `host-refused` attention
+decision showing `host.layout_difference` and `host.layout_repair`;
+`repair` runs `repair_layout` and only that; a place's worktree is the
+one thing re-made without asking, by `prepare_place` from its line;
+unreadable state is reported and never guessed; `lease.coverable`
+reads the region, so the host covers nothing until it is `ready`
+again.
+
+**A.27 — machines, types and context.** 223–225 are the registry as
+section 10.7 and `check.py` already keep it — tier in every file,
+`name@version` files under `registry.yaml`, statecharts rendered by
+`render.py` — and are cited on `atoms.yaml`, the one file every
+machine depends on. 226 is `profiles/context.yaml`: one row per
+session type the machinery may charge — curation, planning, capture
+reading, the conflict fix, each elaboration type, the operator's
+session, explore or gathered, each stage of each unit type, dispatch's
+triage and the host's agent — with the schema instruction, the type
+skill, the work order fields, the change's artifacts, the chapters and
+claims, the map, the surface specification, the deliverables, the
+identity and what it must never receive; `prepare_place` renders the
+work order from the row and nothing else, and the session template
+cites it. The 24 unstated points of `machines-and-context.md` section
+5 are resolved in that file's `rulings:` — among them: chapters and
+claim blocks reach a built repository's place by copy under
+`.flywheel/books/`; skills are keyed by agent name; planning and
+curation name their deliverables (planning@3, curation@4, capture@2
+pass them); a session commits and never pushes; the fast type produces
+no ledger verdict; a construction session gets no query tools; the
+engine windows come from `flywheel.yaml` `engine:`; the verdict
+deliverable is named `verdict`. 227 is `profiles/deliverables.yaml`
+version 2: every entry names its `store` and the session types it
+`feeds`, three entries are added for curation's moves and intent
+proposals and the capture reader's signals, and a manifest-added
+deliverable without store and feeds is refused at load.
+
+**A.28 — packages and setup.** The `package` machine
+(`machines/package.yaml`, owned by the organization): `added` raises
+the one `package-install` decision — the only thing on the setup
+surface that enters the count — its yes goes through
+`checking-secrets`, where a declared secret not yet placed is the
+`package-secret` attention decision (207), then `installing`
+(`install_package`: fetch at the tag, check the set version, place
+under the books' prefix or the host's root, register the hash, start
+what it runs), `installed` (configure with one response, disable,
+remove), `disabled`, `removing → removed`. The index and the install
+steps are in `profiles/host.yaml` `packages`; the surface's tools in
+`surfaces.yaml`. Adding a host (230) is the host machine's `enrolment`
+region: `add-host` provisions with the operator's own platform
+credentials carried in the call and stored nowhere, and writes the
+record in `proposed`; the `host-enrol` decision's yes runs
+`place_secrets` for the chosen parts only and `issue_enrolment_token`;
+`awaiting-join` ends with the host's first heartbeat, or lapses into
+the `host-enrol-lapsed` attention decision after 24h; a host already
+running the binary is adopted by the token alone. An existing host —
+the first, registered by init — starts `enrolled`.
