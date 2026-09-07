@@ -656,7 +656,17 @@ the operator may reverse by a response on the file; an entry with
   user name and records it as `given_by`; a page reachable by another
   person on the same computer would record that name too, which is
   the operator's own computer's problem and not the machinery's.
-  **Decision**. `configure-organization` edits the manifest as a
+  **Decision**. A refused identity never becomes a response object:
+  the tool server refuses before writing, so the response machine has
+  no refused state and the record is the run record's, shown under
+  attention once; the count is untouched. **Decision**. The local
+  user must be in `operators:` like any identity, and the blueprints
+  template lists the initializing user, so a fresh organization is not
+  locked out; a save that would remove the saving identity is refused.
+  **Decision**. Identity strings across sign-in kinds (a tailnet
+  login, an oauth subject, a local user name) are compared as the kind
+  renders them, so an organization served by two hosts with different
+  kinds lists an identity per kind. Stated. `configure-organization` edits the manifest as a
   commit on the blueprints' shared line, so a bad save is a bad manifest
   until the next save; the form validates as `flywheel.yaml` is
   validated and refuses what the check refuses. **Decision**. Which

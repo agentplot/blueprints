@@ -1207,10 +1207,18 @@ requirements, iterated against the running plan rather than on paper.
     save), its hosts and their parts (229), the organization's store
     apart from any host's (228), and sign-out. A page served on the
     operator's own computer with no sign-in shows the local user and
-    needs no account; a page served by a host behind a sign-in kind the
-    manifest names (207, 217j) shows the signed-in identity, and every
-    response it records carries that identity (153). The organization's
-    store and a host's store are separate surfaces.
+    needs no account; a page served by a host behind a sign-in kind
+    shows the signed-in identity, and every response it records carries
+    that identity (153). Authentication is the host's and authorization
+    the organization's: a host serving the page has one sign-in kind,
+    declared on the host and the same for every organization it serves,
+    a per-host package (228) and never an organization's (207, 217j);
+    switching organizations never changes the signed-in identity. Each
+    organization's manifest lists the identities allowed to respond in
+    it, and a response from an identity not listed is refused and
+    recorded as refused; the switcher shows an organization the identity
+    is not allowed in as not a member. The organization's store and a
+    host's store are separate surfaces.
 
 ### A.27 Machines, types and context
 

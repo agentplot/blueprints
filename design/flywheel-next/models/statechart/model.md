@@ -2441,7 +2441,14 @@ organization shown with a switch to any other the host has a root for,
 its settings as a form (`configure-organization`, one response per
 save), its hosts and parts, its store apart from any host's, sign-out.
 Served locally with no sign-in kind the page shows the local user and
-needs no account; behind a kind the manifest names (`host.yaml`
-`sign_in`: tailnet, oauth, oidc — a sign-in package) it shows the
+needs no account; behind a kind declared on the host (`host.yaml`
+`sign_in`: tailnet, oauth, oidc — a per-host package) it shows the
 vouched identity, and every op-response the page writes carries it as
-`given_by` (153).
+`given_by` (153). Authentication is the host's and authorization the
+organization's: one sign-in kind per host, the same for every
+organization it serves, so switching never changes the identity; each
+organization's manifest `operators:` lists who may respond, the tool
+server refuses a call from any other identity before a response exists
+and records the refusal in the run record (`surfaces.yaml`
+`tools.identity`), and the switcher shows such an organization as not a
+member.
