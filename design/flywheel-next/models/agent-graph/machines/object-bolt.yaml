@@ -1,9 +1,0 @@
-kind: object
-name: bolt
-artifacts: [bolt, unit, item, advance, effect, observation, word]
-states:
-  - {state: landed,         when: "any(f in effects, and(f.effect == git.land, f.subject == bolt, f.result == ok))",                       proof: effects, terminal: true}
-  - {state: failed-landing, when: "and(any(f in effects, f.effect == git.land and f.subject == bolt), latest(effects of git.land for bolt).result != ok)", proof: effects}
-  - {state: landing,        when: "live-activation(git.land, bolt)",                                                                       proof: activations}
-  - {state: close-offered,  when: "and(count(u in units-of(bolt), true) >= 1, all(u in units-of(bolt), state(u) == finished), not(chores-outstanding(bolt)))", proof: objects/unit}
-  - {state: open,           when: "bolt exists",                                                                                           proof: objects/bolt}

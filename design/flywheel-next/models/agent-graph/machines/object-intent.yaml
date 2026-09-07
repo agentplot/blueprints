@@ -1,9 +1,0 @@
-kind: object
-name: intent
-artifacts: [proposal, word, intent, elaboration, effect]
-states:
-  - {state: closed,        when: "any(f in effects, and(f.effect == git.archive, f.subject == intent, f.result == ok))",                                         proof: effects, terminal: true}
-  - {state: close-offered, when: "and(intent exists, count(e in elaborations-of(intent), true) >= 1, all(e in elaborations-of(intent), state(e) == done), not(awaiting-proposal(intent)))", proof: objects/elaboration}
-  - {state: open,          when: "intent exists",                                                                                                                   proof: objects/intent}
-  - {state: dropped,       when: "and(proposal.kind == intent, word-on(proposal, proposal.generation) == drop)",                                                    proof: words, terminal: true}
-  - {state: proposed,      when: "and(proposal.kind == intent, not(word-on(proposal, proposal.generation)))",                                                       proof: proposals}

@@ -1,9 +1,0 @@
-# A claim is a fenced block in a chapter. Its state is where the block
-# exists; nothing stores it.
-kind: object
-name: claim
-artifacts: [claim, unit, proposal]
-states:
-  - {state: moved,    when: "and(claim on blueprints shared line, any(u in units, and(state(bolt-of(u)) == open, unit-covers-moved-claim(u))))", proof: blueprints-shared-line}
-  - {state: standing, when: "claim on blueprints shared line",                                                                                   proof: blueprints-shared-line}
-  - {state: proposed, when: "claim on an intent line only",                                                                                 proof: blueprints-shared-line}

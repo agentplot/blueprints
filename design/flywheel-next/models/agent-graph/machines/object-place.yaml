@@ -1,9 +1,0 @@
-kind: object
-name: place
-artifacts: [effect, observation, conflict, line-head]
-states:
-  - {state: removed,    when: "any(f in effects, and(f.effect == git.place.remove, f.place == place, f.result == ok))", proof: effects, terminal: true}
-  - {state: conflicted, when: "conflict-open(place)",                                                                   proof: conflicts}
-  - {state: behind,     when: "not(place-current(place))",                                                              proof: observations}
-  - {state: current,    when: "any(f in effects, and(f.effect == git.place.prepare, f.place == place, f.result == ok))", proof: effects}
-  - {state: preparing,  when: "true",                                                                                    proof: activations}

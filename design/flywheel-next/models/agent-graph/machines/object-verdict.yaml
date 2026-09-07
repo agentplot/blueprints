@@ -1,7 +1,0 @@
-kind: object
-name: verdict
-artifacts: [verdict, claim, as-built]
-states:
-  - {state: gone,    when: "any(p in verdict.evidence, p absent at repository shared head)",  proof: repo-shared-line}
-  - {state: stale,   when: "verdict.claim-version != claim-version(verdict.claim)",           proof: blueprints-shared-line}
-  - {state: current, when: "true",                                                             proof: ledger}
