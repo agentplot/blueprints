@@ -158,7 +158,8 @@
     decisions older than a day · yes on 422 alone adds ~4 days" (old decisions and runway
     under two days), "feed it: n decisions approve ~d days of work", "drain is the limit:
     add a host · n items on m alive slots", "primed: agents have d days". Yes on 422 moves
-    the seed from the first reading to the third and the runway from 1.5 to 5.3 days.
+    the seed from the first reading ("you are the limit", running dry at 0.8 days with the
+    pool's two live hosts in the drain) to the third and the runway from 0.8 to 2.6 days.
     The unattended streak is the score, stated as a reading and never a target: "agents
     have run 1d 19h without you" with since-when, what puts it at risk now (a gone host
     holding items, a secret waiting, runway under a day), the longest streak and the last
@@ -284,19 +285,22 @@
     changes), then settings, hosts, organization store and sign out, then who you are:
     name, handle, sign-in kind, and the host that serves the page. Authentication belongs
     to the host serving the page, authorization to the organization: one host has one
-    sign-in kind regardless of which organization is shown ("local · no sign-in" on studio,
-    the laptop; Okta SSO on willdan-cloud, reached with ?served=willdan-cloud), switching
+    sign-in kind regardless of which organization is shown (GitHub by device flow on
+    studio, the laptop; Okta SSO on willdan-cloud, reached with ?served=willdan-cloud), switching
     organizations never changes who you are, and the account item shows the host's sign-in
     once. The switcher lists the organizations the serving host has roots for; an
     organization whose operators list does not carry the signed-in identity is greyed
-    is hidden from the switcher (integral-analytics for the local user, whose operators
-    carry only the Okta identity; willdan-cloud has roots for willdan and
-    integral-analytics only); whether to hide or grey it "not a member" is Chuck's call,
-    pending, hidden for now. When the page runs locally with no
-    sign-in the account item shows the local user and sign out is disabled with "nothing
-    to sign out of"; behind Okta, sign out ends the browser session (a signed-out panel
-    with sign in again; the hosts keep running). The sign-in package is a per-host part
-    and never in the organization store; the host row that serves the page says so.
+    is hidden from the switcher (agentplot and personal are not in willdan-cloud's roots;
+    remove chuck from an organization's operators to see it vanish); whether to hide or
+    grey it "not a member" is Chuck's call, pending, hidden for now.
+    Sign-in is GitHub everywhere (234): on the operator's own computer by device flow
+    (the signed-out panel shows the code to approve at github.com/login/device), behind
+    willdan-cloud by Okta SSO whose subject maps to the GitHub username for membership;
+    "local · no sign-in" exists nowhere. Every operators list is GitHub usernames; the Okta
+    kind renders the identity as its subject. Sign out ends the browser session (a
+    signed-out panel with sign in again; the hosts keep running). The sign-in package is
+    a per-host part and never in the organization store; the host row that serves the
+    page says so.
     Settings opens the organization's manifest as a form: operators (the allowed
     identities, add and remove, you cannot remove yourself), repositories with
     landing policy (direct merge · pull request) and item merge (squash · merge · rebase),
@@ -307,6 +311,29 @@
     Invented: the three other organizations and their seeds, the operators lists and the
     two serving hosts' identities, the manifest's fields as a form, the signed-out panel,
     and that a switch is not a response (nothing is logged).
+  - Users, ownership, environments, pools (234–242): a decision may carry an owner, a
+    member or a manifest role (237); it shows as a small chip on the rail card and in the
+    dock, where "assign" (a select of members and roles) sends one response ("assign 413
+    lee"); "mine | all" at the rail's head filters to the signed-in member's own and
+    unowned decisions (role-owned ones hide under mine), j/k walk the visible list, and
+    a decision answered by another member shows in SINCE as "answered by lee · yes" from
+    the register's answered_by (235). Host settings gain an Environment heading (238):
+    the repositories this host covers, each with its provider on this host (devenv ·
+    devcontainer · nix · image, a select whose change is one logged response and marks
+    the row unsatisfied until rebuilt) and satisfied or not; an unsatisfied one sits
+    under attention ("rebuild" runs one chore from the declaration, "ok" leaves it) and
+    a pool host's image row says "behind the declarations · rebuild", a chore raised as
+    a decision (239). The hosts surface carries a pool row for willdan (240): platform
+    flywheel-cloud, image, bound 8 hosts of 2 sessions each, live 2, idle-retire 30m,
+    cost ceiling; its live hosts fold under it (pool-a1 busy, pool-a2 idle 12m,
+    retiring at 30m), each one organization (241), with nothing to configure beyond
+    what the pool declares (in-process runner, platform router, GitHub sign-in, agent
+    and triage); the pool's own sheet edits bound, idle-retire and cost as one response.
+    Pool hosts count in the strip and in drain; the flywheel's drain column shows "pool:
+    2 live of 8" and says "adding a host · the pool mints an enrolment token while
+    approved work waits and drain is the limit" when that reading holds (242). Invented:
+    the members (chuck, rhea, lee), the pool's image tag and cost line, the devcontainer
+    that fell behind on studio, and that the mockup rebuilds in seconds.
   - Under 760px the rail and the board are two tabs; the dock is full screen with a back
     control. The clock starts at 07:40 and advances a minute per response. Detail beyond the
     seed is invented and marked sample. Review switches: ?theme=dark|light, ?nodock, ?open=<key>,
@@ -576,7 +603,10 @@ label.chore .f{margin-left:auto;font:11px var(--mono);color:var(--ink3)}
 .since li{display:flex;gap:8px;align-items:baseline;padding:4px 2px;border-bottom:1px solid var(--line2);font-size:12.5px}
 .since li.new{background:var(--lit)}
 .since .v{font:600 10.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;width:64px;flex:none;color:var(--ink2)}
-.since .v.landed,.since .v.merged{color:var(--ok)} .since .v.dropped{color:var(--crit)}
+.since .v.landed,.since .v.merged{color:var(--ok)} .since .v.dropped{color:var(--crit)} .since .v.answered,.since .v.rebuilt{color:var(--accent)}
+.own{display:inline-flex;align-items:center;font:10px var(--mono);border:1px solid var(--line);border-radius:999px;padding:0 6px;color:var(--ink2);white-space:nowrap} .own.role{border-style:dashed} .own.you{border-color:var(--accent);color:var(--accent)} .own.none{border-style:dashed;color:var(--ink3)} .card .ch .own{margin-left:auto} .card .ch .own + .ph{margin-left:0}
+.rail-h .seg.mine{margin-left:auto;display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden} .rail-h .seg.mine button{font:600 11px var(--sans);padding:2px 8px;color:var(--ink2)} .rail-h .seg.mine button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.su-pool .su-hh .dot{background:var(--accent)} .su-phs{display:flex;flex-direction:column;gap:4px;margin-top:4px} .su-ph{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;padding:4px 0;border-top:1px solid var(--line2)} .su-ph .hm{font:11px var(--mono);color:var(--ink3)} .su-ph .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block} .su-ph .dot.gone{background:var(--warn)} .host.pool{border-style:dashed}
 .since .w{flex:1;min-width:0}
 .since .t{font:11px var(--mono);color:var(--ink3);white-space:nowrap}
 
@@ -1219,16 +1249,16 @@ const SEED_WILLDAN = () => ({
     {n:412, g:APPROVE, phase:'inception', kind:'intent', title:'atlas-provider-limits', obj:'i:atlas-provider-limits', repo:'books',
      tail:'curation · <b>7 signals</b> · 3 sources · 12d · elaborations: research → gathered in 424 · prototype (standing)',
      answers:[['yes','yes'],['drop','drop'],['split','split']]},
-    {n:413, g:APPROVE, phase:'plan', kind:'unit', title:'atlas · status-writer', bolt:'plan-decisions', boltState:'open', obj:'d:413', repo:'atlas',
+    {n:413, owner:{kind:'member', id:'chuck'}, g:APPROVE, phase:'plan', kind:'unit', title:'atlas · status-writer', bolt:'plan-decisions', boltState:'open', obj:'d:413', repo:'atlas',
      tail:'covers one-writer sc.1,2 · <b>completes it</b> · type default · yes starts spec → build ×2 → review → merge',
      answers:[['yes','yes'],['drop','drop'],['redo','redo'],['bolt','bolt'],['new bolt','new bolt']]},
-    {n:414, g:APPROVE, phase:'plan', kind:'unit', title:'atlas · retry-jitter', bolt:'atlas-retry-behaviour-and-jitter-limits', boltState:'new', obj:'d:414', repo:'atlas',
+    {n:414, owner:{kind:'role', id:'construction'}, g:APPROVE, phase:'plan', kind:'unit', title:'atlas · retry-jitter', bolt:'atlas-retry-behaviour-and-jitter-limits', boltState:'new', obj:'d:414', repo:'atlas',
      tail:'routed from ask <b>“retries hammer the provider”</b> · no intent · type fast',
      answers:[['yes','yes'],['drop','drop'],['rename','rename'],['bolt','bolt']]},
     {n:415, g:APPROVE, phase:'construction', kind:'chores', title:'atlas · 3 chores', obj:'b:plan-decisions', repo:'atlas', tail:'offered by wi-#420 review · 06:31',
      chores:[['a','stale AGENTS.md','atlas/AGENTS.md'],['b','citation fix','books/atlas/plan.md'],['c','rename ref','atlas/src/plan/refs.py']],
      answers:[['yes','yes'],['pick','pick'],['no','no']]},
-    {n:416, g:APPROVE, phase:'construction', kind:'land', title:'switchboard / plan-rows', obj:'b:plan-rows', repo:'switchboard', tail:'<b>4 units merged</b> · gates green · nothing in flight · yes lands through the pull request',
+    {n:416, owner:{kind:'member', id:'lee'}, g:APPROVE, phase:'construction', kind:'land', title:'switchboard / plan-rows', obj:'b:plan-rows', repo:'switchboard', tail:'<b>4 units merged</b> · gates green · nothing in flight · yes lands through the pull request',
      answers:[['yes','yes'],['hold','hold']]},
     {n:417, g:APPROVE, phase:'plan', kind:'baseline', title:'new-repo', obj:'d:417', repo:'new-repo', tail:'<b>11 claims unmet</b> · 8 chores · 3 units · planning\'s first proposal for the repository',
      picks:[['claims','11 claims'],['chores','8 chores'],['units','3 units']],
@@ -1239,7 +1269,7 @@ const SEED_WILLDAN = () => ({
      intents:['atlas-provider-limits','loop-cadence','provider-key-rotation'], type:'research', subject:'what a provider limit is, where it is declared, and who enforces it',
      tail:'curation · <b>3 intents</b> · one self-closing research session · type research',
      answers:[['yes','yes'],['drop','drop'],['pick','pick'],['type','type']]},
-    {n:418, g:DECIDE, phase:'inception', kind:'close', title:'intent loop-granularity', obj:'i:loop-granularity', repo:'books', tail:'all <b>4 elaborations</b> done · close makes 3 claims standing',
+    {n:418, owner:{kind:'member', id:'rhea'}, g:DECIDE, phase:'inception', kind:'close', title:'intent loop-granularity', obj:'i:loop-granularity', repo:'books', tail:'all <b>4 elaborations</b> done · close makes 3 claims standing',
      answers:[['close','close'],['keep open','keep open']]},
     {n:419, g:DECIDE, phase:'inception', kind:'idle', title:'prototype plan-derivation', obj:'i:atlas-provider-limits', sess:'proto', repo:'books', tail:'standing · <b>idle 14h</b> · on intent atlas-provider-limits',
      answers:[['finish','finish'],['keep','keep']]},
@@ -1251,6 +1281,7 @@ const SEED_WILLDAN = () => ({
   attention: [
     {id:'host', cls:'', text:'host <b>mac-mini</b> last seen 41m · holds wi-#418', obj:'b:plan-decisions', host:'mac-mini', acts:[['takeover','takeover on studio'],['wait','wait']]},
     {id:'noapply', cls:'crit', text:'<b>"yes 413"</b> from 06:10 could not apply · unit already dropped by the 05:58 edit · re-proposed as 413', obj:'d:413', acts:[['ok','ok']]},
+    {id:'env-studio-new-repo', cls:'', host:'studio', repo:'new-repo', text:'host <b>studio</b> · environment for new-repo unsatisfied · devcontainer behind flywheel/environment.yaml, changed 09-03 17:20 (238)', obj:'h:studio', acts:[['rebuild','rebuild'],['ok','ok']]},
     {id:'secret', cls:'', host:'willdan-cloud', pkg:'pr-conversation', key:'key', file:'github-app.pem', wi:'wi-#429', text:'secret <b>github-app.pem</b> for the cloud dispatcher is not placed · install chore wi-#429 waits on it', obj:null, acts:[['placed','placed']]},
   ],
   /* setup (215): per host, à la carte · the hosts carry their parts; the index is what they could run · an offer never enters the count; accepting one raises an install chore as a decision */
@@ -1259,12 +1290,13 @@ const SEED_WILLDAN = () => ({
   orgPkgs:{'ut-default':{state:'installed 08-12'}, 'ut-fast':{state:'installed 08-12'}, 'ut-chore':{state:'installed 08-12'}, 'et-research':{state:'installed 08-12', cfg:{values:{model:'claude-fable-5-1'}, secrets:{}}}, 'et-prototype':{state:'installed 08-12'}, 'et-writeback':{state:'installed 08-12'}, 'dp-mdbook':{state:'installed 08-12'}, 'mv-ddd':{state:'installed 09-05'}, 'tp-intent':{state:'installed 08-12'}, 'sp-flywheel':{state:'installed 08-12'}},
   since: [
     {v:'merged', w:'plan-decisions · unit decision-grouping', t:'3 items · review passed first time', at:'07:21'},
+    {v:'answered', w:'411 · land atlas/claim-index', t:'answered by lee · yes · the register carries answered_by (235)', at:'07:14'},
     {v:'landed', w:'switchboard/idle-timeout', t:'gates green', at:'06:52'},
     {v:'closed', w:'intent host-liveness', t:'by your response', at:'18:10'},
     {v:'dropped', w:'chore atlas 2b', t:'by your response', at:'18:10'},
   ],
   hosts: [
-    {id:'studio', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:4, last:'07:39', joined:'08-12', joinedVia:'a laptop', note:'lease holder for plan, curation and the page', root:'~/willdan', launcher:'launchd · com.flywheel.willdan', binary:'0.9.4', roles:{elaboration:{runner:'runner-pane', model:'claude-fable-5-1'}, construction:{runner:'runner-pane', model:'claude-fable-5-1'}, machinery:{runner:'runner-pane', model:'claude-haiku-4-5'}}, parts:[
+    {id:'studio', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:4, last:'07:39', joined:'08-12', joinedVia:'a laptop', note:'lease holder for plan, curation and the page', root:'~/willdan', launcher:'launchd · com.flywheel.willdan', binary:'0.9.4', roles:{elaboration:{runner:'runner-pane', model:'claude-fable-5-1'}, construction:{runner:'runner-pane', model:'claude-fable-5-1'}, machinery:{runner:'runner-pane', model:'claude-haiku-4-5'}}, env:{atlas:{provider:'devenv', ok:true}, switchboard:{provider:'devenv', ok:true}, 'new-repo':{provider:'devcontainer', ok:false, why:'flywheel/environment.yaml changed 09-03 17:20 · the devcontainer was not rebuilt'}}, parts:[
       {k:'adapter', pkg:'meeting', name:'meeting transcripts', what:'capture where it lies · the transcript stays on this machine · triaged here', state:'installed 08-12', lastRun:'07:12 · 1 capture', cfg:{values:{source:'Granola', shape:'capture where it lies · this host triages', cadence:'as meetings end'}, secrets:{}}},
       {k:'adapter', pkg:'folder', name:'folder drop', what:'~/Drop · key: the file\'s hash', state:'installed 08-12', lastRun:'06:40 · 3 captures', cfg:{values:{path:'~/Drop', cadence:'on change'}, secrets:{}}},
       {k:'adapter', pkg:'capture-box', name:'the capture box', what:'this host serves the page · text sent unparsed to the capture tool (19)', state:'installed 08-12', lastRun:'07:33 · 1 capture'},
@@ -1274,8 +1306,8 @@ const SEED_WILLDAN = () => ({
       {k:'triage', name:'triage', what:'sources: meeting · folder · bound 2 · readers in panes under your login · off the shared line', state:'installed 08-12'},
       {k:'runner', pkg:'runner-pane', name:'pane', what:'herdr on studio · bound 4 (32) · construction sessions and triage readers', state:'installed 08-12', cfg:{values:{bound:'4', login:'Claude Code'}, secrets:{}}},
       {k:'router', pkg:'router-local', name:'local router', what:'portless · https://<place>.localhost (46)', state:'installed 08-12'},
-      {k:'sign-in', pkg:'auth-none', name:'none · local', what:'no login · this machine is the identity · one sign-in kind per host; the GitHub App mints repository tokens, it is not a sign-in (207)', state:'installed 08-12', cfg:{values:{tailnet:'willdan.internal'}, secrets:{}}}]},
-    {id:'mac-mini', kind:'home host', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:false, bound:2, last:'06:59', gone:'41m', joined:'08-20', joinedVia:'adopt existing', note:'lease expires 07:59 · then its sessions are released', root:'~/willdan', launcher:'launchd · com.flywheel.willdan', binary:'0.9.2', parts:[
+      {k:'sign-in', pkg:'auth-github', name:'GitHub', what:'device flow on this computer (234) · membership in the organization is the check (207) · one sign-in kind per host', state:'installed 08-12', cfg:{values:{client:'Iv1.8a2c…', org:'willdan'}, secrets:{secret:{placed:true}}}}]},
+    {id:'mac-mini', kind:'home host', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:false, bound:2, last:'06:59', gone:'41m', joined:'08-20', joinedVia:'adopt existing', note:'lease expires 07:59 · then its sessions are released', root:'~/willdan', launcher:'launchd · com.flywheel.willdan', binary:'0.9.2', env:{atlas:{provider:'nix', ok:true}, switchboard:{provider:'nix', ok:true}, 'new-repo':{provider:'nix', ok:true}}, parts:[
       {k:'agent', name:'agent', what:'presents no chat · nothing to interpret here', state:'disabled', why:'presents no chat'},
       {k:'runner', pkg:'runner-pane', name:'pane', what:'herdr on mac-mini · bound 2 · joined by one command (205)', state:'installed 08-20'},
       {k:'router', pkg:'router-private', name:'private-network router', what:'https://<place>.willdan.internal · a tailnet node on the host', state:'suggested'},
@@ -1290,7 +1322,14 @@ const SEED_WILLDAN = () => ({
       {k:'runner', pkg:'runner-inproc', name:'in-process', what:'the agent and triage inside the binary · the runtime\'s role', state:'installed 09-03', cfg:{values:{'model.triage':'claude-sonnet-5', 'model.interpreter':'claude-haiku-4-5', access:'the runtime\'s Bedrock role'}, secrets:{key:{placed:false}}}},
       {k:'router', pkg:'router-platform', name:'platform router', what:'flywheel-cloud\'s ingress · a public route opened for Datadog only (46, 191)', state:'installed 09-03'},
       {k:'sign-in', pkg:'auth-okta', name:'Okta SSO', what:'OIDC · issuer willdan.okta.com · the ingress in front · every response recorded with who and when (153)', state:'installed 09-03', cfg:{values:{issuer:'https://willdan.okta.com', audience:'flywheel'}, secrets:{secret:{placed:true}}}}],
+     env:{atlas:{provider:'image', ok:true}, switchboard:{provider:'image', ok:true}, 'new-repo':{provider:'image', ok:false, why:'the image is behind the declaration · rebuild the pool image (239)'}},
      joinedSteps:[{name:'platform', state:'done', at:'09-03 14:02', body:'flywheel-cloud managed'},{name:'provision', state:'done', at:'09-03 14:04', body:'ran from studio with your flywheel-cloud credentials · read from op at run time, never stored'},{name:'hand over secrets', state:'done', at:'09-03 14:06', body:'the Slack bot token and signing secret · model access as the runtime\'s role · into flywheel-cloud\'s secret store · the App key was left for later and waits under attention now'},{name:'enrol', state:'done', at:'09-03 14:07', body:'decision 405 · one-time token · expired 15:07 · used once'},{name:'join', state:'done', at:'09-03 14:09', body:'read the manifest · installed 8 of 9 declared parts from the index'},{name:'alive', state:'done', at:'09-03 14:10', body:'first heartbeat as host/willdan-cloud'}]},
+    {id:'pool-a1', kind:'pool host', pool:'willdan-pool', platform:'flywheel-cloud · image 0.9.4-0903', plat:['cloud','container','linux'], alive:true, bound:2, last:'07:40', joined:'06:10', joinedVia:'the pool · enrolment token (240)', note:'a pool host · one organization (241) · retires when idle 30m', idle:'busy · retires 30m after its last session', root:'/srv/flywheel/willdan', launcher:'the pool · systemd', binary:'0.9.4', parts:[
+      {k:'agent', name:'agent', what:'in-process · the runtime\'s role', state:'installed 06:10'},{k:'triage', name:'triage', what:'sources: none · a pool host reads nothing', state:'installed 06:10'},
+      {k:'runner', pkg:'runner-inproc', name:'in-process', what:'declared by the pool', state:'installed 06:10'},{k:'router', pkg:'router-platform', name:'platform router', what:'declared by the pool', state:'installed 06:10'},{k:'sign-in', pkg:'auth-github', name:'GitHub', what:'declared by the pool', state:'installed 06:10'}]},
+    {id:'pool-a2', kind:'pool host', pool:'willdan-pool', platform:'flywheel-cloud · image 0.9.4-0903', plat:['cloud','container','linux'], alive:true, bound:2, last:'07:40', joined:'07:02', joinedVia:'the pool · enrolment token (240)', note:'a pool host · one organization (241) · retires when idle 30m', idle:'idle 12m · retires at 30m', root:'/srv/flywheel/willdan', launcher:'the pool · systemd', binary:'0.9.4', parts:[
+      {k:'agent', name:'agent', what:'in-process · the runtime\'s role', state:'installed 07:02'},{k:'triage', name:'triage', what:'sources: none', state:'installed 07:02'},
+      {k:'runner', pkg:'runner-inproc', name:'in-process', what:'declared by the pool', state:'installed 07:02'},{k:'router', pkg:'router-platform', name:'platform router', what:'declared by the pool', state:'installed 07:02'},{k:'sign-in', pkg:'auth-github', name:'GitHub', what:'declared by the pool', state:'installed 07:02'}]},
   ],
   intents: [
     {id:'atlas-provider-limits', name:'atlas-provider-limits', state:'proposed', chapters:['providers'], note:'proposed · 7 signals · one standing session already on its line',
@@ -1382,7 +1421,8 @@ const SEED_WILLDAN = () => ({
     ],
     edits:0, refusal:null, n:422,
   },
-  log:[], inflight:{}, focus:'d:412', open:null, hostlit:null, nextWi:431,
+  log:[], inflight:{}, focus:'d:412', open:null, hostlit:null, nextWi:431, railMine:false,
+  pools:[{id:'willdan-pool', platform:'flywheel-cloud', image:'willdan/flywheel:0.9.4-0903', imageBehind:true, imageWhy:'new-repo/flywheel/environment.yaml changed 09-03 17:20', bound:8, hostBound:2, idleRetire:'30m', cost:'ceiling $40/day · today $9', parts:['runner-inproc','router-platform','auth-github']}],
 });
 const S = SEED_WILLDAN();
 const dec = n => S.decisions.find(d => d.n===n);
@@ -1394,7 +1434,7 @@ const mapNode = id => S.map.nodes.find(n => n.id===id);
 const builtRepos = () => S.repos.filter(r => r.id!=='books');
 const gatheringOf = id => S.gatherings.find(g => g.state==='proposed' && g.intents.includes(id));
 const explorationOf = id => S.explorations.find(x => x.state!=='done' && x.intents.includes(id));
-const railKeys = () => [...S.decisions.map(d => 'd:'+d.n), ...S.attention.map(a => 'a:'+a.id)];
+const railKeys = () => [...S.decisions.filter(d => typeof decVisible==='function' ? decVisible(d) : true).map(d => 'd:'+d.n), ...S.attention.map(a => 'a:'+a.id)];
 function allSessions(){
   const out = [];
   S.intents.forEach(i => i.sessions.forEach(s => out.push({...s, owner:{key:'i:'+i.id, name:'intent '+i.name, phase:'inception'}})));
@@ -1826,7 +1866,7 @@ function claimRef(name){ const nm = String(name).split(' @')[0].split(' · ')[0]
   return found; }
 function bookRefsOf(key){ if(!key) return []; const [t] = key.split(':'); const o = objOf(key); if(!o) return [];
   if(t==='d') return decRefs(o);
-  if(t==='a') return o.id==='host' ? [mkRef(['sessions','claim-sessions-one-writer'])] : /^secret/.test(o.id) ? [] : decRefs({n:413, kind:'unit'});
+  if(t==='a') return o.id==='host' ? [mkRef(['sessions','claim-sessions-one-writer'])] : /^secret|^env-/.test(o.id) ? [] : decRefs({n:413, kind:'unit'});
   if(t==='i') return (o.chapters||[]).map(ch => ({book:'platform-kit', ch, a:null}));
   if(t==='v'||t==='x'){ const is = t==='v' ? [o.intent] : o.intents.map(intent).filter(Boolean); return is.flatMap(i => (i.chapters||[]).map(ch => ({book:'platform-kit', ch, a:null}))); }
   if(t==='b'||t==='l') return (o.claims||[]).map(claimRef).filter(Boolean);
@@ -2082,7 +2122,7 @@ function cardHtml(d){
   const pre = d.kind==='unit' ? (d.boltState==='new' ? '→ new bolt ' : '→ bolt ') + d.bolt : '';
   const gl = d.kind==='gathered' ? `<div class="gl">${d.intents.map(i => `<span class="gi">${esc(i)}<button class="gx" data-gdrop="${esc(i)}" data-n="${d.n}" title="${d.n} ${esc(i)}: drop">×</button></span>`).join('')}</div>` : '';
   return `<article class="${cls}" data-nav="d:${d.n}" data-n="${d.n}" tabindex="0" aria-label="decision ${d.n}">
-    <div class="ch"><span class="n">${d.n}</span><span class="kind">${esc(d.kind)}</span><span class="ph ${d.phase}">${PH[d.phase]}</span></div>
+    <div class="ch"><span class="n">${d.n}</span><span class="kind">${esc(d.kind)}</span>${ownerChip(d, 'card')}<span class="ph ${d.phase}">${PH[d.phase]}</span></div>
     <div class="title">${d.title}</div>${pre ? `<div class="tail mono">${esc(pre)}</div>` : ''}<div class="tail">${d.tail}</div>${gl}${d.q ? `<div class="q">“${esc(d.q)}”</div>` : ''}
     ${actsHtml(d,'card')}<div class="flight"><span class="spin"></span>sending ${esc(S.inflight[d.n]?.text||'')}…</div></article>`;
 }
@@ -2091,10 +2131,12 @@ function attHtml(a){
 }
 function renderRail(){
   const groups = [[APPROVE,'yes is safe · "yes all" takes these'],[DECIDE,'a choice · no default'],[ANSWER,'needs text']];
-  let html = `<div class="rail-h"><h2>Decisions</h2><span class="sub">one plan delivery · the order the chat prints · ${S.decisions.length} in the count</span></div>`;
-  groups.forEach(([g,rule]) => { const ds = S.decisions.filter(d => d.g===g).sort((a,b) => a.n-b.n); if(!ds.length) return;
+  const vis = S.decisions.filter(decVisible); const hidden = S.decisions.length - vis.length;
+  let html = `<div class="rail-h"><h2>Decisions</h2><span class="sub">one plan delivery · the order the chat prints · ${S.decisions.length} in the count${S.railMine ? ` · ${vis.length} yours or unowned` : ''}</span><div class="seg mine" role="tablist" title="mine: your own and unowned decisions (237) · all: every decision"><button data-mine="0" aria-pressed="${!S.railMine}">all</button><button data-mine="1" aria-pressed="${S.railMine}">mine${hidden && !S.railMine ? '' : ''}</button></div></div>`;
+  groups.forEach(([g,rule]) => { const ds = vis.filter(d => d.g===g).sort((a,b) => a.n-b.n); if(!ds.length) return;
     html += `<div class="grp ${g}"><span class="g">${g}</span>${g===APPROVE?`<button class="btn sm" id="yesall2" title="yes ${ds.map(d=>d.n).join(', ')}">yes all · ${ds.length}</button>`:''}<span class="r" style="flex-basis:100%">${rule}</span></div>` + ds.map(cardHtml).join(''); });
-  if(!S.decisions.length) html += `<div class="empty">Nothing waits on you. The board runs on its own until the next decision is yours.</div>`;
+  if(!vis.length) html += `<div class="empty">${S.decisions.length ? `Nothing of yours waits · ${hidden} owned by others or by a role · <button class="btn sm quiet" data-mine="0">show all</button>` : 'Nothing waits on you. The board runs on its own until the next decision is yours.'}</div>`;
+  else if(S.railMine && hidden) html += `<div class="empty" style="padding:4px 2px">${hidden} more owned by others or by a role · <button class="btn sm quiet" data-mine="0">show all</button></div>`;
   html += `<div class="grp attention"><span class="g">attention</span><span class="r">outside the count · one-word answers</span></div>` + (S.attention.map(attHtml).join('') || '<div class="empty">nothing</div>');
   html += `<div class="grp since"><span class="g">since</span><span class="r">09-03 18:05 · outside the count</span></div><ul class="since">${S.since.map(s => `<li class="${s.fresh?'new':''}"><span class="v ${s.v}">${esc(s.v)}</span><span class="w">${esc(s.w)}<br><span style="color:var(--ink3);font-size:11.5px">${esc(s.t)}</span></span><span class="t">${esc(s.at)}</span></li>`).join('')}</ul>`;
   S.since.forEach(s => delete s.fresh);
@@ -2191,7 +2233,7 @@ function renderOperation(){
 function renderHosts(){
   const all = allSessions();
   $('#hosts').innerHTML = `<span class="lab">hosts</span>` + S.hosts.map(h => { const n = all.filter(s => s.host===h.id).length;
-    return `<button class="host ${h.alive?'':'gone'} ${S.hostlit===h.id?'lit':''} ${S.open==='h:'+h.id?'open-in-dock':''}" data-host="${h.id}"><span class="dot ${h.alive?'':'gone'}"></span><span class="hn">${esc(h.id)}</span><span class="hm tn">${h.bound ? `${n}/${h.bound} sessions` : 'dispatch · bound 0'}</span><span class="hm">${h.alive?'seen '+h.last:'<b>gone '+h.gone+'</b>'}</span></button>`; }).join('')
+    return `<button class="host ${h.alive?'':'gone'} ${h.pool?'pool':''} ${S.hostlit===h.id?'lit':''} ${S.open==='h:'+h.id?'open-in-dock':''}" data-host="${h.id}" title="${h.pool ? 'a pool host · '+esc(h.pool)+' (240)' : ''}"><span class="dot ${h.alive?'':'gone'}"></span><span class="hn">${esc(h.id)}</span><span class="hm tn">${h.bound ? `${n}/${h.bound} sessions` : 'dispatch · bound 0'}</span><span class="hm">${h.alive?'seen '+h.last:'<b>gone '+h.gone+'</b>'}</span></button>`; }).join('')
     + `<button class="btn sm ${S.setup.open?'pri':''}" id="setup-open" title="setup by host (215) · what each host runs, what the organization carries, and the index of what either could · add configures first, then raises one install decision">setup${S.attention.some(a => /^secret/.test(a.id)) ? ` · <span${S.setup.open ? '' : ' style="color:var(--warn)"'}>secret</span>` : ''}</button>`
     + `<span class="sep"></span><span class="lab">repos</span>` + S.repos.map(r => `<button class="repo ${S.open==='r:'+r.id?'open-in-dock':''}" data-repo="${r.id}">${esc(r.id)}<span class="hm">${r.claims.length ? r.claims.filter(c=>c[1]==='not satisfied').length+' unmet' : 'books'}</span></button>`).join('')
     + miniWheel()
@@ -2352,6 +2394,7 @@ function proposalHtml(){
 function dockDecision(d){
   const x = X[d.n] || {}; const parts = [];
   parts.push(sec('the decision', `<div class="dtext">${x.text||''}</div>`));
+  parts.push(sec('owner', ownerHtml(d), '237 · a member or a manifest role · assign is one response'));
   { const refs = decRefs(d); if(refs.length) parts.push(sec('in the book', refsHtml(refs), 'the chapter and claim this decision concerns')); }
   if(d.kind==='proposal') parts.push(sec('the proposal · every edit is one response, sent when given', proposalHtml(), esc(S.proposal.session)));
   if(x.doc) parts.push(sec('document', docHtml(x.doc), 'a note on a section sends redo'));
@@ -2637,11 +2680,12 @@ function renderLoad(){ const L = $('#load'); L.hidden = !S.load; if(!S.load) ret
     <div class="say">${w.over ? `${w.over} over the alive bound · the machinery holds them in order` : w.queued ? `${w.queued} wait · slots ${w.util>=1 ? 'full' : 'free'}` : 'nothing queued behind the bound'}</div></div>`;
   const drain = `<div class="col"><h3>drain<span class="ar">→</span><span class="sub">hosts × bound · what leaves</span></h3>
     ${ln(`${w.alive}/${w.hosts}`, 'hosts alive', S.hosts.map(h => `${h.id} ${h.bound}${h.alive ? '' : ' · gone'}`).join(' · '), w.alive<w.hosts ? 'warn' : '')}
+    ${(S.pools||[]).map(p => { const live = S.hosts.filter(h => h.pool===p.id && h.alive).length; return ln(`${live} live of ${p.bound}`, `pool: ${p.id}`, `${p.platform} · image ${p.image.split(':')[1]} · bound ${p.hostBound} each · idle-retire ${p.idleRetire} · ${p.cost} (240)`); }).join('')}
     ${ln(`${Math.round(w.util*100)}%`, 'utilization', `${w.onAlive} of ${w.aliveBound} alive slots`)}
     ${ln(fmtDays(w.drain), 'units merged per day at the bound', `a unit is ~${SLOT_DAYS} slot-days`)}
     <div class="ln"><b>${w.merges7}</b><span class="gl">merged in 7 days ${spark(series('merges', 0), 64, 16)}<small>bolts landed per week · ${landedWk.join(' · ')} ${spark(landedWk, 40, 12)}</small></span></div>
     <div class="hist">velocity · history, not a target (142)</div>
-    <div class="say">${w.alive<w.hosts ? `add a host to drain faster · ${w.hosts-w.alive} of yours is gone` : 'add a host to drain faster'}</div></div>`;
+    <div class="say">${(S.pools||[]).length && /^drain is the limit/.test(w.read.text) ? `adding a host · the pool mints an enrolment token while approved work waits and drain is the limit (242)` : (S.pools||[]).length ? `the pool adds a host when drain is the limit (242)${w.alive<w.hosts ? ` · ${w.hosts-w.alive} of yours is gone` : ''}` : w.alive<w.hosts ? `add a host to drain faster · ${w.hosts-w.alive} of yours is gone` : 'add a host to drain faster'}</div></div>`;
   const wheel = `<div class="wheel"><div class="wdial">${wheelSvg(w.runway/7, cls)}<div class="in"><div class="k">runway</div><div class="num">${fmtDays(w.runway)}<small>d</small></div><div class="band ${cls}">${esc(w.band.text)}</div><div class="k">${w.charge} units ÷ ${fmtDays(w.drain)}/day</div></div></div><div class="cap">days · a full rim is a week</div></div>`;
   const streak = `<div class="streak"><span class="big">${fmtD(w.streak.now)}</span><span class="l1">agents have run ${fmtD(w.streak.now)} without you</span><span class="l2">since ${esc(w.streak.from)} · a streak counts while approved work runs and nothing stops it${w.streak.risks.length ? ` · <span class="risk">at risk: ${esc(w.streak.risks.join(' · '))}</span>` : ''}</span>
     <div class="row2"><span>longest <b>${w.streak.longest.len}</b> · ${esc(w.streak.longest.from)} → ${esc(w.streak.longest.to)} · ended: ${esc(w.streak.longest.end)}</span><span>last <b>${w.streak.last.len}</b> · ended: ${esc(w.streak.last.end)}</span><span>a reading, never a target (142) · ${SM}</span></div></div>`;
@@ -2803,7 +2847,7 @@ function hostSection(h){ const f = hostFacts(h); const behind = f.binary !== FLY
   const up = h.upgrading ? `<span class="dot busy"></span>${esc(h.upgrading)}` : behind ? `<span class="dot warn"></span>${esc(f.binary)} · ${FLYWHEEL_LATEST} available<button class="btn sm yes" data-suupgrade="${h.id}">upgrade</button>` : `<span class="dot"></span>${esc(f.binary)} · current`;
   return `<section class="hs">${hsec('Host', 'what this host is · read from its heartbeat', `<button class="btn sm quiet" data-gotoobj="h:${h.id}">open the host</button>`)}<dl class="kv hs-kv"><dt>kind</dt><dd>${esc(h.kind)}${h.id===PAGE.served ? ' · serves this page' : ''}${h.dispatcher ? ' · the dispatcher placement' : ''}</dd><dt>platform</dt><dd>${esc(h.platform)}</dd><dt>bound</dt><dd>${h.bound ? h.bound+' sessions at once (32)' : '0 · takes no construction work'}</dd><dt>root</dt><dd class="mono">${esc(f.root)}</dd><dt>launcher</dt><dd class="mono">${esc(f.launcher)}</dd><dt>joined</dt><dd>${esc(h.joined)}${h.joinedVia ? ' · '+esc(h.joinedVia) : ''}</dd><dt>binary</dt><dd>${up}</dd></dl>${h.joinedSteps ? `<details class="su-joined"><summary>how it joined · ${esc(h.joined)} · ${esc(h.joinedVia)}</summary>${stepsHtml(h.joinedSteps)}</details>` : ''}</section>`; }
 const adapterExtra = p => `<span class="su-cfg">last run <b>${esc(p.lastRun||'never')}</b></span>`;
-function hostDetailHtml(h){ return `<div class="su-detail"><div class="su-dh"><span class="eyebrow">settings</span><span class="su-dn">by heading · a slot is one part, a list grows by add · installed · added · needs a secret · installing · disabled · suggested</span></div>${singleSlot(h,'sign-in','Sign-in')}${singleSlot(h,'router','Router')}${runnersSection(h)}${agentSection(h)}${listSection(h,'chat sink','Chat sinks','many · one presenter lease per sink (148)','add a sink')}${listSection(h,'adapter','Capture adapters','many · one capture per event, keyed so twice is once (111, 114)','add an adapter', adapterExtra)}${triageSection(h)}${hostSection(h)}</div>`; }
+function hostDetailHtml(h){ return `<div class="su-detail"><div class="su-dh"><span class="eyebrow">settings</span><span class="su-dn">by heading · a slot is one part, a list grows by add · installed · added · needs a secret · installing · disabled · suggested</span></div>${singleSlot(h,'sign-in','Sign-in')}${singleSlot(h,'router','Router')}${runnersSection(h)}${agentSection(h)}${listSection(h,'chat sink','Chat sinks','many · one presenter lease per sink (148)','add a sink')}${listSection(h,'adapter','Capture adapters','many · one capture per event, keyed so twice is once (111, 114)','add an adapter', adapterExtra)}${triageSection(h)}${envSection(h)}${hostSection(h)}</div>`; }
 function wizardPartsHtml(h){ return `<div class="su-wparts">${singleSlot(h,'sign-in','Sign-in')}${singleSlot(h,'router','Router')}${runnersSection(h)}${listSection(h,'chat sink','Chat sinks','many','add a sink')}${listSection(h,'adapter','Capture adapters','many','add an adapter')}${agentSection(h)}${triageSection(h)}</div>`; }
 /* the organization store is the same shape: headings, what the blueprints carry, configure and retire, add opens that kind's picker */
 const STORE_HEADINGS = [['Types', ['unit type','elaboration type'], 'unit types shape construction; elaboration types shape inception'], ['Deliverable producers', ['deliverable producer'], 'what a session can record as a deliverable (212)'], ['Map vocabularies', ['map vocabulary'], 'the words the context map is drawn in'], ['Templates', ['template'], 'the shape of a proposal, a record, a decision'], ['Scenario packs', ['scenario pack'], 'the scenarios behind acceptance files']];
@@ -2855,7 +2899,7 @@ function roleSheetHtml(){ const R = S.setup.role; const h = host(R.host); const 
     <label class="su-field"><span class="su-fl">runner</span><select data-surf="runner">${runners.map(r => `<option value="${r.pkg}" ${r.pkg===R.runner?'selected':''}>${esc(r.name)}</option>`).join('')}${runners.length ? '' : '<option value="">no runner installed · add one first</option>'}</select></label>
     <label class="su-field"><span class="su-fl">model</span><select data-surf="model">${MODELS.map(m => `<option ${m===R.model?'selected':''}>${m}</option>`).join('')}</select></label>
     <div class="su-sf"><button class="btn pri sm" id="su-role-save">save · configure ${esc(R.host)} role ${esc(R.role)}</button><span class="su-hint">one logged response · no chore · the host reads the manifest on its next tick</span></div></div>`; }
-function rightHtml(){ return S.setup.sheet ? addSheetHtml() : S.setup.role ? roleSheetHtml() : S.setup.pick ? pickerHtml() : idleHtml(); }
+function rightHtml(){ return S.setup.sheet ? addSheetHtml() : S.setup.role ? roleSheetHtml() : S.setup.poolSheet ? poolSheetHtml() : S.setup.pick ? pickerHtml() : idleHtml(); }
 /* the add sheet: the package's description, what it needs, its form from its schema, secrets placed now by command (with a check) or later, the host for a per-host package · the same sheet prefilled is "configure" */
 function openSheet(pid, target, mode){ const p = pkg(pid); if(!p) return; const isOrg = isOrgKind(p.kind); const existing = isOrg ? S.orgPkgs[pid] : target==='__new' ? S.setup.add.parts.find(x => x.pkg===pid) : partOn(host(target), pid); const cfg = mode==='configure' && existing ? (existing.cfg || (existing.cfg = isOrg ? emptyCfg(p) : cfgOf(existing))) : null;
   const single = !isOrg && ['sign-in','router'].includes(p.kind) && mode==='add' && target; const curSlot = single ? (target==='__new' ? S.setup.add.parts : host(target).parts).find(x => x.k===p.kind && x.pkg!==pid && /^installed|^chosen/.test(x.state)) : null;
@@ -2914,13 +2958,14 @@ function renderSetup(){ const L = $('#setup'); L.hidden = !S.setup.open; if(!S.s
   const head = store ? `<h2>Organization store</h2><span class="sub">what <b>${esc(S.org)}</b> carries in its blueprints · by heading · installed once, read by every host · add configures first, then raises one install decision; nothing vanishes on a click</span>`
     : `<h2>Hosts</h2><span class="sub">${esc(S.org)} · by host · a host row opens its settings by heading · a picker is the index for one kind · add configures first, then raises one install decision; nothing vanishes on a click</span>`;
   const left = store ? `<div class="su-ih"><span class="eyebrow">the blueprints · ${esc(S.org)}</span><button class="btn sm quiet" data-sutab="host" title="the hosts surface">hosts →</button></div>${orgRowHtml()}`
-    : `<div class="su-ih"><span class="eyebrow">hosts · ${S.hosts.filter(h => h.alive).length} of ${S.hosts.length} alive</span><button class="btn sm quiet" data-sutab="org" title="the organization store">store →</button><button class="btn sm ${S.setup.add?'pri':''}" id="su-add" title="a guided enrolment · choose its parts, hand over only their secrets · provisioning runs from this host with your credentials, never stored">+ host</button></div>${S.hosts.map(hostRowHtml).join('') || '<div class="empty">no host yet · + host enrols the first</div>'}${S.setup.add ? addHostHtml() : ''}`;
+    : `<div class="su-ih"><span class="eyebrow">hosts · ${S.hosts.filter(h => h.alive && !h.pool).length} of ${S.hosts.filter(h => !h.pool).length} alive${(S.pools||[]).length ? ` · pool ${S.hosts.filter(h => h.pool && h.alive).length} live` : ''}</span><button class="btn sm quiet" data-sutab="org" title="the organization store">store →</button><button class="btn sm ${S.setup.add?'pri':''}" id="su-add" title="a guided enrolment · choose its parts, hand over only their secrets · provisioning runs from this host with your credentials, never stored">+ host</button></div>${S.hosts.filter(h => !h.pool).map(hostRowHtml).join('') || '<div class="empty">no host yet · + host enrols the first</div>'}${(S.pools||[]).map(poolRowHtml).join('')}${S.setup.add ? addHostHtml() : ''}`;
   L.innerHTML = `<div class="lib-panel su-panel" role="dialog" aria-label="${store ? 'organization store' : 'hosts'}"><div class="lib-h">${head}<button class="x" id="setup-close" aria-label="close">×</button></div>
     <div class="su-grid"><div class="su-hosts">${left}</div>
     <div class="su-index" id="su-index">${rightHtml()}</div></div>
     <div class="load-foot">${store ? 'an organization package lands in the blueprints and every host reads it on its next tick · retire is one logged response · ' : 'a part installs by one command the machinery runs, never by hand (205) · a secret goes into the host\'s store and never stays with the page (204) · '}an added package is a chore: one session on the fleet, no bolt (60, S75) · configure is one logged response, no chore · a dispatcher placement is only what a host runs · esc closes · ${SM}</div></div>`; }
 /* yes on an install decision runs the chore; a secret left for later sits under attention when the chore has done what it can; no takes the part off again */
 function installEffect(d, a){ const [hid, pid] = d.part; const h = hid && host(hid);
+  if(pid==='__image'){ imageEffect(d, a); return; }
   if(pid==='__binary'){ if(!h) return; if(a==='no'){ delete h.upgrading; return; } const b = addBolt('chores-setup','setup','fleet','install chores · one session each · no bolt of their own (60)'); const wi = 'wi-#'+S.nextWi; startUnit(b, `upgrade ${h.id} to ${FLYWHEEL_LATEST}`, 'chore', 'chore'); h.upgrading = `upgrading · ${wi}`; since('accepted', `upgrade ${h.id} to ${FLYWHEEL_LATEST}`, 'one session on the fleet'); setTimeout(() => { const u = b.units.find(x => x.name===`upgrade ${h.id} to ${FLYWHEEL_LATEST}`); if(u){ u.state='merged'; u.t=hhmm(S.minutes); } h.binary = FLYWHEEL_LATEST; delete h.upgrading; toast(`${h.id} · ${FLYWHEEL_LATEST} · restarted by its launcher · proof recorded`); render(); }, 5000); return; }
   const p = pkg(pid); const part = h ? partOn(h, pid) : S.orgPkgs[pid]; if(!part) return;
   if(a==='no'){ if(h){ if(part.addedFrom==='index') h.parts = h.parts.filter(x => x!==part); else { part.state = 'suggested'; delete part.decision; } } else delete S.orgPkgs[pid]; return; }
@@ -2994,21 +3039,21 @@ function dockSecret(a){ const h = host(a.host||'willdan-cloud'), part = h && par
   + sec('on the host', `<div class="rows"><div class="row"><span class="st">host</span><span class="grow"><span class="mono">${esc(h.id)}</span> · ${esc(p.kind)} · ${esc(p.name)} · ${h.parts.filter(x => x!==part && x.state==='secret').length ? 'another part waits too' : 'its other parts are installed'}</span><button class="btn sm" id="setup-open" data-suhost="${esc(h.id)}">open in setup</button><button class="btn sm quiet" data-suconf-open="${esc(h.id)}|${esc(p.id)}">configure</button></div></div>`); }
 
 /* --- organizations and the account item: the page belongs to one organization at a time; the account item in the top bar switches it (the whole seed swaps: rail, board, hosts strip) and opens settings, hosts, the organization store and sign-out · who you are is name and sign-in kind --- */
-const baseSeed = () => ({minutes:7*60+40, decisions:[], attention:[], setup:{open:false, mode:'hosts', host:'', tab:'host', q:'', anyPlat:false, add:null, sheet:null, pick:null, role:null, lit:null}, orgPkgs:{}, since:[], hosts:[], intents:[], gatherings:[], explorations:[], planning:null, deferred:[], picked:new Set(), exploreMode:false, exploreKind:'with',
+const baseSeed = () => ({minutes:7*60+40, decisions:[], attention:[], railMine:false, pools:[], setup:{open:false, mode:'hosts', host:'', tab:'host', q:'', anyPlat:false, add:null, sheet:null, pick:null, role:null, lit:null}, orgPkgs:{}, since:[], hosts:[], intents:[], gatherings:[], explorations:[], planning:null, deferred:[], picked:new Set(), exploreMode:false, exploreKind:'with',
   repos:[{id:'books', kinds:['books'], caps:[], manifest:'books/flywheel.yaml · the books repository · claims live here', claims:[]}], view:'phases', book:{id:null, ch:null, scrollTo:null, hl:null}, library:false, load:false, scopeSel:null, scopeSet:new Set(), addRepo:null,
   map:{nodes:[{id:'books', x:60, y:200}], edges:[]}, review:{on:false, mark:'never', nodes:{}, edges:{}}, bolts:[], landed:[], opsignals:[], curation:{unmoved:0, by:'nothing yet', oldest:'0d', next:'when a signal arrives', session:{label:'curation', state:'scheduled', act:'idle', host:'', agent:'claude', model:'haiku', pane:''}},
   proposal:{session:'', reads:'', bolts:[], units:[], edits:0, refusal:null, n:0}, log:[], inflight:{}, focus:null, open:null, hostlit:null, nextWi:1, acct:false, settings:false, signedOut:false});
 /* authentication is the host's, authorization the organization's: one sign-in kind per serving host, regardless of the organization shown; each organization's operators list says who is allowed there */
 const ORGS = {
-  willdan:{name:'willdan', what:'the platform · 3 hosts · 4 repositories', operators:['chuck', 'chuck.swanberg@willdan.com', 'rhea@willdan.com']},
-  agentplot:{name:'agentplot', what:'the flywheel and its blueprints · 2 hosts', operators:['chuck', 'chuckswanberg']},
+  willdan:{name:'willdan', what:'the platform · 3 hosts · 4 repositories · a pool', operators:['chuck', 'rhea', 'lee']},
+  agentplot:{name:'agentplot', what:'the flywheel and its blueprints · 2 hosts', operators:['chuck']},
   personal:{name:'personal', what:'from zero · this machine only', operators:['chuck']},
-  'integral-analytics':{name:'integral-analytics', what:'a client · one cloud host behind Okta', operators:['chuck.swanberg@willdan.com', 'ops@integral-analytics.com']},
+  'integral-analytics':{name:'integral-analytics', what:'a client · one cloud host behind Okta', operators:['chuck', 'ops-integral']},
 };
-const HOST_SIGNIN = {studio:{kind:'local', name:'Chuck Swanberg', handle:'chuck', how:'local · no sign-in · this machine is the identity', roots:['willdan','agentplot','personal','integral-analytics']}, 'willdan-cloud':{kind:'okta', name:'Chuck Swanberg', handle:'chuck.swanberg@willdan.com', how:'Okta SSO · OIDC · issuer willdan.okta.com · every response recorded with who and when (153)', roots:['willdan','integral-analytics']}};
+const HOST_SIGNIN = {studio:{kind:'github', name:'Chuck Swanberg', handle:'chuck', member:'chuck', how:'GitHub · device flow on this computer (234) · membership in the organization is the check (207)', roots:['willdan','agentplot','personal','integral-analytics']}, 'willdan-cloud':{kind:'okta', name:'Chuck Swanberg', handle:'chuck.swanberg@willdan.com', member:'chuck', how:'Okta SSO · OIDC · issuer willdan.okta.com · the subject maps to the GitHub username chuck for membership (234) · every response recorded with who and when (153)', roots:['willdan','integral-analytics']}};
 const PAGE = {served: (new URLSearchParams(location.search).get('served') in HOST_SIGNIN) ? new URLSearchParams(location.search).get('served') : 'studio'};
 const ME = () => HOST_SIGNIN[PAGE.served];
-const isMember = id => ORGS[id].operators.includes(ME().handle);
+const isMember = id => ORGS[id].operators.includes(ME().member);
 function seedAgentplot(){ const s = baseSeed(); Object.assign(s, {org:'agentplot', manifest:{repos:[{id:'flywheel', landing:'pull request', merge:'squash'},{id:'blueprints', landing:'direct merge', merge:'merge'}], roles:[{role:'machinery', kind:'pane', model:'claude-haiku-4-5'},{role:'construction', kind:'pane', model:'claude-fable-5-1'},{role:'triage', kind:'in-process', model:'claude-sonnet-5'},{role:'interpreter', kind:'in-process', model:'claude-haiku-4-5'}], router:'private-network router', cadence:'every 30s'},
   hosts:[{id:'forge', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:2, last:'07:38', joined:'08-30', joinedVia:'a laptop', note:'lease holder for plan and the page', root:'~/agentplot', launcher:'launchd · com.flywheel.agentplot', binary:'0.9.3', parts:[
       {k:'adapter', pkg:'capture-box', name:'the capture box', what:'this host serves the page · text sent unparsed to the capture tool (19)', state:'installed 08-30'},
@@ -3055,11 +3100,11 @@ function seedIntegral(){ const s = baseSeed(); Object.assign(s, {org:'integral-a
   since:[{v:'joined', w:'host ia-cloud', t:'flywheel-cloud managed · 7 parts installed', at:'09-01'}], focus:'d:201', nextWi:4, book:{id:'integral-kit', ch:'overview', scrollTo:null, hl:null}});
   s.orgPkgs = {'ut-default':{state:'installed 09-01'}, 'ut-fast':{state:'installed 09-01'}, 'ut-chore':{state:'installed 09-01'}, 'et-research':{state:'installed 09-01'}, 'et-writeback':{state:'installed 09-01'}, 'dp-mdbook':{state:'installed 09-01'}, 'tp-intent':{state:'installed 09-01'}, 'tp-adr':{state:'installed 09-02'}, 'sp-flywheel':{state:'installed 09-01'}}; s.setup.host = 'ia-cloud'; return s; }
 function seedPersonal(){ const s = baseSeed(); Object.assign(s, {org:'personal', fromZero:true, manifest:{repos:[], roles:[{role:'construction', kind:'pane', model:'claude-fable-5-1'},{role:'triage', kind:'pane', model:'claude-sonnet-5'}], router:'local router', cadence:'on demand'},
-  hosts:[{id:'studio', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:1, last:'07:40', joined:'09-06', joinedVia:'a laptop', note:'this machine · serves the page · no sign-in · it has roots for four organizations', parts:[
+  hosts:[{id:'studio', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:1, last:'07:40', joined:'09-06', joinedVia:'a laptop', note:'this machine · serves the page · GitHub by device flow · it has roots for four organizations', parts:[
       {k:'adapter', pkg:'capture-box', name:'the capture box', what:'this host serves the page · text sent unparsed to the capture tool (19)', state:'installed 09-06'},
       {k:'runner', pkg:'runner-pane', name:'pane', what:'herdr on this machine · bound 1', state:'installed 09-06', cfg:{values:{bound:'1', login:'Claude Code'}, secrets:{}}},
       {k:'router', pkg:'router-local', name:'local router', what:'portless · https://<place>.localhost (46)', state:'installed 09-06'},
-      {k:'sign-in', pkg:'auth-none', name:'none', what:'no login · this machine is the identity', state:'installed 09-06', cfg:{values:{tailnet:'none · loopback only'}, secrets:{}}}]}],
+      {k:'sign-in', pkg:'auth-github', name:'GitHub', what:'device flow on this computer (234) · membership in personal is the check', state:'installed 09-06', cfg:{values:{client:'Iv1.8a2c…', org:'personal'}, secrets:{secret:{placed:true}}}}]}],
   curation:{unmoved:0, by:'nothing yet', oldest:'0d', next:'when a signal arrives', session:{label:'curation', state:'scheduled', act:'idle', host:'studio', agent:'claude', model:'haiku', pane:'studio/1'}},
   book:{id:'personal-book', ch:'start', scrollTo:null, hl:null}}); s.setup.host = 'studio'; return s; }
 const SEEDS = {willdan:SEED_WILLDAN, agentplot:seedAgentplot, personal:seedPersonal, 'integral-analytics':seedIntegral};
@@ -3075,28 +3120,28 @@ X[101] = {text:'Approve the intent. <b>Yes</b> opens <span class="mono">herdr-ag
 X[201] = {text:'Approve the intent. <b>Yes</b> opens <span class="mono">ledger-reconciliation</span> as a line off the books and starts its research. <b>Drop</b> closes it with the signals kept.', hist:[['09-05 14:10','curation','intent','5 signals attached from #ledger-plan'],['09-05 14:10','plan','decision','201 created · approve the intent']]};
 X[202] = {text:'You added <b>Datadog webhook v1.0.2</b> (index) to host <b>ia-cloud</b>. It is a chore on the fleet: one session scoped to host ia-cloud, no change directory, no bolt (60). <b>Yes</b> runs it; the inbound secret was left for later and will sit under attention. <b>No</b> takes it off the host again.', kv2:[['installs','a monitor finding as one capture at the endpoint · key: the FINDING# id'],['configured','named caller datadog · ledger monitors · public route https://ia-cloud.flywheel.cloud/capture/datadog · inbound secret not placed'],['needs from you','the inbound secret, placed on both sides · datadog.inbound']], kv2Title:'the chore', hist:[['09-06 16:02','operator','add','store · Datadog webhook → ia-cloud'],['09-06 16:02','plan','decision','202 created · approve the install chore']]};
 /* the account item and its menu · settings is the organization's manifest as a form; saving is one logged response */
-function acctHtml(){ const me = ME(), local = me.kind==='local';
+function acctHtml(){ const me = ME(); const kindName = me.kind==='okta' ? 'Okta' : 'GitHub';
   const orgs = me.roots.map(id => ORGS[id]).filter(x => isMember(x.name) || x.name===S.org).map(x => `<button role="menuitemradio" aria-checked="${x.name===S.org}" data-org="${x.name}"><span class="am-dot"></span><span class="am-t"><b>${esc(x.name)}</b><small>${esc(x.what)}</small></span></button>`).join('');
   return `<button class="btn quiet acct-btn" id="acct" aria-haspopup="menu" aria-expanded="${S.acct}" title="account · the organization this page shows, settings, hosts, the store, sign-out, and who you are"><span class="am-av">${esc(me.name.split(' ').map(w => w[0]).join('').slice(0,2))}</span><b>${esc(S.org)}</b><span class="caret">▾</span></button>
     <div class="acct-menu" id="acct-menu" role="menu" ${S.acct ? '' : 'hidden'}>
       <div class="am-h">organization<small>the organizations <span class="mono">${esc(PAGE.served)}</span> has roots for and you are a member of</small></div>${orgs}
       <div class="am-sep"></div>
       <button role="menuitem" data-acct="settings"><span class="am-t"><b>settings</b><small>the organization's manifest as a form · operators, repositories, roles, router, cadence · one response to save</small></span></button>
-      <button role="menuitem" data-acct="hosts"><span class="am-t"><b>hosts</b><small>what each host runs · the per-host index · + host</small></span></button>
-      <button role="menuitem" data-acct="store"><span class="am-t"><b>organization store</b><small>types, producers, vocabularies, templates, scenario packs · installed in the books</small></span></button>
-      <button role="menuitem" data-acct="signout" ${local ? 'disabled' : ''}><span class="am-t"><b>sign out</b><small>${local ? 'local · no sign-in · nothing to sign out of' : `ends the Okta session in this browser · the hosts keep running`}</small></span></button>
+      <button role="menuitem" data-acct="hosts"><span class="am-t"><b>hosts</b><small>what each host runs · the pool · + host</small></span></button>
+      <button role="menuitem" data-acct="store"><span class="am-t"><b>organization store</b><small>types, producers, vocabularies, templates, scenario packs · installed in the blueprints</small></span></button>
+      <button role="menuitem" data-acct="signout"><span class="am-t"><b>sign out</b><small>ends the ${kindName} session in this browser · the hosts keep running</small></span></button>
       <div class="am-sep"></div>
-      <div class="am-me"><b>${esc(me.name)}</b><span class="mono">${esc(me.handle)}</span><span>${esc(me.how)}</span><span>served by <b class="mono">${esc(PAGE.served)}</b> · the host's sign-in, whichever organization is shown · membership is each organization's (settings · operators)</span></div>
+      <div class="am-me"><b>${esc(me.name)}</b><span class="mono">${kindName} · ${esc(me.handle)}</span><span>${esc(me.how)}</span><span>served by <b class="mono">${esc(PAGE.served)}</b> · the host's sign-in, whichever organization is shown · membership is each organization's (settings · operators)</span></div>
     </div>`; }
 function renderAcct(){ const el = $('#acct-wrap'); if(el) el.innerHTML = acctHtml(); $('#orgname').textContent = S.org;
-  const so = $('#signedout'); so.hidden = !S.signedOut; if(S.signedOut) so.innerHTML = `<div class="lib-panel so-panel" role="dialog" aria-label="signed out"><h2>signed out of ${esc(PAGE.served)}</h2><p>The Okta SSO session in this browser is ended. The hosts keep running; the plan keeps deriving; nothing on the rail is answered until you sign in again.</p><button class="btn pri" id="signin">sign in with Okta</button></div>`; }
+  const so = $('#signedout'); so.hidden = !S.signedOut; if(S.signedOut){ const okta = ME().kind==='okta'; so.innerHTML = `<div class="lib-panel so-panel" role="dialog" aria-label="signed out"><h2>signed out of ${esc(PAGE.served)}</h2><p>The ${okta ? 'Okta SSO' : 'GitHub'} session in this browser is ended. The hosts keep running; the plan keeps deriving; nothing on the rail is answered until you sign in again.</p>${okta ? '' : '<p class="su-hint">device flow (234): the page shows a code, you approve it at github.com/login/device · <span class="mono">ABCD-1234</span> · '+SM+'</p>'}<button class="btn pri" id="signin">sign in with ${okta ? 'Okta' : 'GitHub'}</button></div>`; } }
 const ROLE_KINDS = ['pane','in-process','managed'], LANDINGS = ['direct merge','pull request'], MERGES = ['squash','merge','rebase'], ROUTERS = ['local router','private-network router','platform router'], CADENCES = ['every 30s','every 5m','hourly','on demand'];
 function openSettings(){ const m = S.manifest; S.settingsDraft = {operators:[...ORGS[S.org].operators], newOp:'', repos:m.repos.map(r => ({...r})), roles:m.roles.map(r => ({...r})), router:m.router, cadence:m.cadence}; S.settings = true; S.acct = false; render(); }
 function renderSettings(){ const L = $('#settings'); L.hidden = !S.settings; if(!S.settings) return; const d = S.settingsDraft; const sel = (name, opts, v) => `<select data-set="${name}">${opts.map(o => `<option ${o===v?'selected':''}>${esc(o)}</option>`).join('')}</select>`;
   const repos = d.repos.length ? d.repos.map((r,i) => `<div class="st-row"><b class="mono">${esc(r.id)}</b>${sel(`repos.${i}.landing`, LANDINGS, r.landing)}${sel(`repos.${i}.merge`, MERGES, r.merge)}</div>`).join('') : '<div class="empty" style="padding:4px 0">no repository yet · "add repository" on the map places one and its baseline decision arrives (104)</div>';
   const roles = d.roles.map((r,i) => `<div class="st-row"><b>${esc(r.role)}</b>${sel(`roles.${i}.kind`, ROLE_KINDS, r.kind)}${sel(`roles.${i}.model`, MODELS, r.model)}</div>`).join('');
   L.innerHTML = `<div class="lib-panel st-panel" role="dialog" aria-label="settings"><div class="lib-h"><h2>Settings</h2><span class="sub"><b>${esc(S.org)}</b> · the organization's manifest as a form · what is data here is data in the manifest (139, 119) · saving is one logged response</span><button class="x" id="settings-close" aria-label="close">×</button></div>
-    <div class="st-sec"><div class="su-ih"><span class="eyebrow">operators</span><span class="su-for">who is allowed here · authentication is the host's, this is the organization's</span></div>${d.operators.map((o,i) => `<div class="st-row st-op"><span class="mono">${esc(o)}${o===ME().handle ? ' <span class="chip g">you</span>' : ''}</span><span></span><button class="btn sm quiet" data-oprm="${i}" ${o===ME().handle ? 'disabled title="you cannot remove yourself"' : ''}>remove</button></div>`).join('')}<div class="st-row st-op"><input id="st-newop" placeholder="an identity · a login on this host, or an SSO subject" value="${esc(d.newOp)}" aria-label="new operator"><span></span><button class="btn sm" id="st-opadd">add</button></div></div>
+    <div class="st-sec"><div class="su-ih"><span class="eyebrow">operators</span><span class="su-for">GitHub usernames · who is allowed here (234) · authentication is the host's, this is the organization's</span></div>${d.operators.map((o,i) => `<div class="st-row st-op"><span class="mono">${esc(o)}${o===ME().member ? ' <span class="chip g">you</span>' : ''}</span><span></span><button class="btn sm quiet" data-oprm="${i}" ${o===ME().member ? 'disabled title="you cannot remove yourself"' : ''}>remove</button></div>`).join('')}<div class="st-row st-op"><input id="st-newop" placeholder="a GitHub username (234)" value="${esc(d.newOp)}" aria-label="new operator"><span></span><button class="btn sm" id="st-opadd">add</button></div></div>
     <div class="st-sec"><div class="su-ih"><span class="eyebrow">repositories</span><span class="su-for">landing policy · item merge</span></div><div class="st-row st-head"><span>repository</span><span>landing</span><span>item merge</span></div>${repos}</div>
     <div class="st-sec"><div class="su-ih"><span class="eyebrow">roles</span><span class="su-for">kind · model</span></div><div class="st-row st-head"><span>role</span><span>kind</span><span>model</span></div>${roles}</div>
     <div class="st-sec st-two"><label class="su-field"><span class="su-fl">router</span>${sel('router', ROUTERS, d.router)}</label><label class="su-field"><span class="su-fl">take cadence</span>${sel('cadence', CADENCES, d.cadence)}</label></div>
@@ -3110,6 +3155,58 @@ function saveSettings(){ const d = S.settingsDraft, m = S.manifest; const ch = [
   if(!ch.length){ toast('settings · nothing changed · nothing sent', true); return; }
   S.manifest = {repos:d.repos.map(r => ({...r})), roles:d.roles.map(r => ({...r})), router:d.router, cadence:d.cadence}; ORGS[S.org].operators = [...d.operators];
   logLine(`settings · ${ch.join(' · ')}`, {}); toast(`settings ${S.org} · ${ch.length} change${ch.length===1?'':'s'} · recorded · every host reads the manifest on its next tick`); S.settings = false; render(); }
+
+/* --- 234–242: GitHub sign-in everywhere (device flow on the operator's own computer), owners on decisions with a mine|all filter and answered_by in SINCE, environments per host with a provider each, and the pool --- */
+const PROVIDERS = ['devenv','devcontainer','nix','image'];
+function hostEnv(h){ if(!h.env){ h.env = {}; builtRepos().forEach(r => { h.env[r.id] = {provider: (h.kind==='cloud' || h.pool) ? 'image' : 'devenv', ok:true}; }); } builtRepos().forEach(r => { if(!h.env[r.id]) h.env[r.id] = {provider: (h.kind==='cloud' || h.pool) ? 'image' : 'devenv', ok:true}; }); return h.env; }
+const envAttId = (hid, rid) => `env-${hid}-${rid}`;
+function envSection(h){ if(h.virtual) return ''; const env = hostEnv(h); const rows = Object.entries(env).map(([rid, e]) => { const att = S.attention.find(a => a.id===envAttId(h.id, rid));
+    const state = e.rebuilding ? `<span class="dot busy"></span>rebuilding · ${esc(e.rebuilding)}` : e.ok ? `<span class="dot"></span>satisfied` : `<span class="dot warn"></span>unsatisfied${att ? `<button data-gotoobj="a:${att.id}">under attention</button>` : ''}<button class="btn sm yes" data-suenv="${h.id}|${rid}">rebuild</button>`;
+    const sel = `<label class="su-inl">provider <select data-suenvp="${h.id}|${rid}" aria-label="environment provider for ${esc(rid)}">${PROVIDERS.map(p => `<option ${p===e.provider?'selected':''}>${p}</option>`).join('')}</select></label>`;
+    return slot(esc(rid), '', state, `declared in <span class="mono">${esc(rid)}/flywheel/environment.yaml</span>${e.why ? ' · '+esc(e.why) : ''}${sel}`, '', 'env-'+rid); }).join('') || slot('none', '', '<span class="dot off"></span>none', 'no built repository yet');
+  return `<section class="hs">${hsec('Environment', 'the repositories this host covers · a provider per host, from the repository\'s declaration (238) · unsatisfied goes under attention')}${rows}</section>`; }
+function raiseEnv(hid, rid, why){ const id = envAttId(hid, rid); if(S.attention.some(a => a.id===id)) return; S.attention.push({id, cls:'', host:hid, repo:rid, text:`host <b>${esc(hid)}</b> · environment for ${esc(rid)} unsatisfied · ${esc(why||'behind its declaration')} (238)`, obj:'h:'+hid, acts:[['rebuild','rebuild'],['ok','ok']]}); }
+function rebuildEnv(hid, rid){ const h = host(hid); if(!h) return; const e = hostEnv(h)[rid]; if(!e || e.rebuilding) return; const wi = 'wi-#'+S.nextWi; e.rebuilding = wi; const b = addBolt('chores-setup','setup','fleet','install chores · one session each · no bolt of their own (60)'); startUnit(b, `rebuild ${rid} environment on ${hid}`, 'chore', 'chore'); logLine(`rebuild ${rid} environment on ${hid}`, {say:true}); toast(`${hid} · ${rid} · rebuilding from the declaration · ${wi}`); S.attention = S.attention.filter(a => a.id!==envAttId(hid, rid));
+  setTimeout(() => { const u = b.units.find(x => x.name===`rebuild ${rid} environment on ${hid}`); if(u){ u.state='merged'; u.t=hhmm(S.minutes); } delete e.rebuilding; e.ok = true; delete e.why; since('rebuilt', `${hid} · ${rid} environment`, `${e.provider} from the declaration · proof recorded (238)`); toast(`${hid} · ${rid} · environment satisfied`); render(); }, 3000); }
+function dockEnv(a){ const h = host(a.host); const e = h && hostEnv(h)[a.repo]; if(!e) return '';
+  return sec('what it means', `<div class="dtext">Host <span class="mono">${esc(h.id)}</span> covers <b>${esc(a.repo)}</b> with the <b>${esc(e.provider)}</b> provider, and the repository's declaration (<span class="mono">${esc(a.repo)}/flywheel/environment.yaml</span>) has moved past what the host built${e.why ? ': '+esc(e.why) : ''}. Sessions on this host for ${esc(a.repo)} are held until it is satisfied; other repositories are not (238).</div>`)
+    + sec('answer', `<div class="dtext" style="font-size:12px;color:var(--ink2)"><b>rebuild</b> runs one chore on the fleet that rebuilds the ${esc(e.provider)} from the declaration and records the proof; <b>ok</b> takes the line off and leaves the host as it is.</div>`)
+    + sec('on the host', `<div class="rows"><div class="row"><span class="st">host</span><span class="grow"><span class="mono">${esc(h.id)}</span> · Environment · ${esc(a.repo)} · ${esc(e.provider)}</span><button class="btn sm" id="setup-open" data-suhost="${esc(h.id)}">open in hosts</button></div></div>`); }
+/* the pool (240–242): platform, image, bound, cost ceiling; hosts provisioned on demand with an enrolment token, one organization each, retired when idle */
+const poolOf = id => (S.pools||[]).find(p => p.id===id);
+const poolHosts = p => S.hosts.filter(h => h.pool===p.id);
+function poolRowHtml(p){ const on = S.setup.host==='pool:'+p.id && !S.setup.add; const live = poolHosts(p).filter(h => h.alive); const all = allSessions();
+  const hosts = poolHosts(p).map(h => { const n = all.filter(s => s.host===h.id).length; return `<div class="su-ph"><span class="dot ${h.alive?'':'gone'}"></span><b class="mono">${esc(h.id)}</b><span class="hm">${h.alive ? `alive · ${n}/${h.bound} sessions · since ${esc(h.joined)}` : `retired ${esc(h.gone||'')}`}</span><span class="hm">${esc(h.idle||'')}</span><button class="btn sm quiet" data-gotoobj="h:${h.id}">open the host</button></div>`; }).join('');
+  return `<div class="su-host su-pool ${on?'on':''}" data-suhost="pool:${p.id}" role="button" tabindex="0" aria-expanded="${on}">
+    <div class="su-hh"><span class="dot ${live.length?'':'gone'}"></span><b class="mono">${esc(p.id)}</b><span class="su-kind">pool · ${esc(p.platform)}</span><span class="su-st ${p.imageBehind?'warn':'ok'}">${live.length} live of ${p.bound} · idle-retire ${esc(p.idleRetire)}${p.imageBehind ? ' · image behind' : ''}</span></div>
+    <div class="su-hm">image <span class="mono">${esc(p.image)}</span> · bound ${p.bound} hosts · ${esc(p.cost)} · hosts provisioned on demand with an enrolment token, one organization each, retired when idle (240, 241)</div>
+    <div class="su-chips"><span class="su-kg"><span class="su-kk">declares</span>${p.parts.map(id => `<span class="su-chip st-installed" title="declared by the pool · not configured per host">${esc(pkg(id).name)}</span>`).join('')}<span class="su-chip st-installed">agent</span><span class="su-chip st-installed">triage</span></span></div>
+    <details class="su-joined" ${on ? 'open' : ''}><summary>live hosts · ${live.length} of ${poolHosts(p).length} provisioned</summary><div class="su-phs">${hosts || '<div class="empty">none live · the machinery adds one while approved work waits and drain is the limit (242)</div>'}</div></details>
+    ${on ? poolDetailHtml(p) : ''}</div>`; }
+function poolDetailHtml(p){ const live = poolHosts(p).filter(h => h.alive).length;
+  const image = p.rebuilding ? `<span class="dot busy"></span>${esc(p.rebuilding)}` : p.imageBehind ? `<span class="dot warn"></span><span class="mono">${esc(p.image)}</span> · behind the declarations${p.imageWhy ? ' · '+esc(p.imageWhy) : ''}<button class="btn sm yes" data-surebuild="${p.id}" title="a chore on the fleet · rebuilds the image from every covered repository's declaration (239)">rebuild</button>` : `<span class="dot"></span><span class="mono">${esc(p.image)}</span> · built from the declarations (239)`;
+  return `<div class="su-detail"><div class="su-dh"><span class="eyebrow">settings</span><span class="su-dn">no parts to configure beyond what the pool declares · the pool's own settings are one sheet</span><button class="btn sm quiet" data-supoolconf="${p.id}">configure</button></div>
+    <section class="hs">${hsec('Pool', 'what the pool is (240)')}<dl class="kv hs-kv"><dt>platform</dt><dd>${esc(p.platform)}</dd><dt>image</dt><dd>${image}</dd><dt>bound</dt><dd>${p.bound} hosts · ${live} live · each bound ${p.hostBound} sessions</dd><dt>idle-retire</dt><dd>${esc(p.idleRetire)} · a host with nothing to run for that long is retired</dd><dt>cost</dt><dd>${esc(p.cost)}</dd><dt>enrolment</dt><dd>a one-time token minted per host when the machinery adds one; the host joins, reads the manifest and runs what the pool declares (240)</dd><dt>organization</dt><dd>one per pool host (241) · <b class="mono">${esc(S.org)}</b></dd><dt>adds a host</dt><dd>while approved work waits and drain is the limit (242) · never on a signal alone</dd></dl></section>
+    <section class="hs">${hsec('Declares', 'every pool host runs exactly these · configure them on the pool, not per host')}${p.parts.map(id => { const pk = pkg(id); return slot(esc(pk.name), 'v'+pk.v, '<span class="dot"></span>declared', esc(pk.enables), '', id); }).join('')}${slot('agent · triage', '', '<span class="dot"></span>come with the binary', 'the interpreter job and the capture readers, on the in-process runner')}</section></div>`; }
+function poolSheetHtml(){ const P = S.setup.poolSheet; return `<div class="su-sheet" id="su-sheet"><div class="su-ih"><span class="eyebrow">configure · pool ${esc(P.id)}</span><span class="su-for">${esc(S.org)}</span><button class="btn sm quiet" id="su-pool-cancel">cancel</button></div><div class="su-desc">the pool's shape · what the machinery may spend to drain faster (240, 242)</div>
+    <label class="su-field"><span class="su-fl">bound · hosts at once</span><input data-supf="bound" type="number" min="1" value="${esc(P.bound)}"></label>
+    <label class="su-field"><span class="su-fl">idle-retire</span><select data-supf="idleRetire">${['10m','30m','1h','4h'].map(v => `<option ${v===P.idleRetire?'selected':''}>${v}</option>`).join('')}</select></label>
+    <label class="su-field"><span class="su-fl">cost ceiling · per day</span><input data-supf="cost" value="${esc(P.cost)}"></label>
+    <div class="su-sf"><button class="btn pri sm" id="su-pool-save">save · configure pool ${esc(P.id)}</button><span class="su-hint">one logged response · no chore · the machinery reads the manifest on its next tick</span></div></div>`; }
+function rebuildImage(pid){ const p = poolOf(pid); if(!p || p.rebuilding) return; const m = nextN(); p.rebuilding = `decision ${m} · in the rail`;
+  X[m] = {text:`The pool's image <span class="mono">${esc(p.image)}</span> is behind the environment declarations of the repositories it covers${p.imageWhy ? ': '+esc(p.imageWhy) : ''}. It is a chore on the fleet: one session that builds the image from every declaration, pushes it to the platform and records the proof (239). <b>Yes</b> runs it; new pool hosts start from the new image, live ones retire when idle. <b>No</b> leaves the pool on the old image.`, kv2:[['from', esc(p.image)],['builds from', builtRepos().map(r => r.id+'/flywheel/environment.yaml').join(' · ')],['needs from you','nothing']], kv2Title:'the chore', hist:[['09-04 '+hhmm(S.minutes),'operator','rebuild',`hosts · pool ${p.id} image`],['09-04 '+hhmm(S.minutes),'plan','decision',`${m} created · approve the rebuild chore`]]};
+  S.decisions.push({n:m, g:APPROVE, phase:'construction', kind:'install', title:`rebuild · image for pool ${p.id}`, obj:null, repo:'fleet', part:['pool:'+p.id,'__image'], tail:`from hosts ${hhmm(S.minutes)} · <b>a chore on the fleet</b> · one session · yes runs it`, answers:[['yes','yes'],['no','no']]});
+  logLine(`rebuild · image for pool ${p.id}`, {say:true}); toast(`${m} · rebuild the pool image · in the rail`); render(); }
+function imageEffect(d, a){ const p = poolOf(d.part[0].slice(5)); if(!p) return; if(a==='no'){ delete p.rebuilding; return; }
+  const b = addBolt('chores-setup','setup','fleet','install chores · one session each · no bolt of their own (60)'); const wi = 'wi-#'+S.nextWi; startUnit(b, `rebuild image for pool ${p.id}`, 'chore', 'chore'); p.rebuilding = `rebuilding · ${wi}`; since('accepted', `rebuild image for pool ${p.id}`, 'one session on the fleet');
+  setTimeout(() => { const u = b.units.find(x => x.name===`rebuild image for pool ${p.id}`); if(u){ u.state='merged'; u.t=hhmm(S.minutes); } delete p.rebuilding; p.imageBehind = false; delete p.imageWhy; p.image = p.image.replace(/-\d{4}$/, '-'+('0904'+hhmm(S.minutes).replace(':','')).slice(-4)); poolHosts(p).forEach(h => { const env = hostEnv(h); Object.values(env).forEach(e => { e.ok = true; delete e.why; }); h.platform = `${p.platform} · image ${p.image.split(':')[1]}`; }); toast(`pool ${p.id} · image ${p.image} · built from the declarations · proof recorded`); render(); }, 5000); }
+/* owners (237): a member or a manifest role · assign is one response · mine|all filters to your own and unowned */
+const ownerLabel = o => !o ? 'unowned' : o.kind==='role' ? `role · ${o.id}` : o.id;
+const decVisible = d => !S.railMine || !d.owner || (d.owner.kind==='member' && d.owner.id===ME().member);
+function ownerChip(d, where){ if(!d.owner) return where==='dock' ? '<span class="own none">unowned</span>' : ''; const you = d.owner.kind==='member' && d.owner.id===ME().member; return `<span class="own ${d.owner.kind} ${you?'you':''}" title="owner (237) · ${d.owner.kind==='role' ? 'a manifest role' : 'a member'}">${esc(ownerLabel(d.owner))}${you ? ' · you' : ''}</span>`; }
+function ownerHtml(d){ const members = ORGS[S.org].operators, roles = S.manifest.roles.map(r => r.role); const cur = d.owner ? `${d.owner.kind==='member'?'m':'r'}:${d.owner.id}` : '';
+  return `<div class="rows"><div class="row"><span class="grow">${ownerChip(d, 'dock')} <span style="color:var(--ink3);font-size:12px">${d.owner ? (d.owner.kind==='role' ? 'whoever holds the role answers · it shows under "mine" for no one' : d.owner.id===ME().member ? 'yours · it shows under "mine"' : `${esc(d.owner.id)}'s · hidden under "mine"`) : 'anyone answers · it shows under "mine"'}</span></span><select data-assignsel="${d.n}" aria-label="assign to"><option value="" ${cur===''?'selected':''}>unowned</option><optgroup label="members">${members.map(m => `<option value="m:${esc(m)}" ${cur==='m:'+m?'selected':''}>${esc(m)}${m===ME().member?' · you':''}</option>`).join('')}</optgroup><optgroup label="roles">${roles.map(r => `<option value="r:${esc(r)}" ${cur==='r:'+r?'selected':''}>${esc(r)}</option>`).join('')}</optgroup></select><button class="btn sm" data-assign="${d.n}">assign</button></div></div>`; }
+function assignOwner(n){ const d = dec(n); if(!d) return; const v = ($(`[data-assignsel="${n}"]`)||{}).value || ''; const next = v ? {kind: v[0]==='m' ? 'member' : 'role', id: v.slice(2)} : null; if((d.owner && d.owner.kind)===(next && next.kind) && (d.owner && d.owner.id)===(next && next.id)){ toast('nothing changed · nothing sent', true); return; } d.owner = next; logLine(`assign ${n} ${next ? next.id : 'nobody'}`, {}); toast(`assign ${n} · ${ownerLabel(next)} · recorded (237)`); render(); }
 
 function dockFooter(key){
   const [t,id] = key.split(':');
@@ -3150,7 +3247,7 @@ function renderDock(){
     head = `<div class="row"><span class="kind">${esc(K[0])}</span><span class="ph">${esc(K[1])}</span>${nav}</div><h2 id="dk-title">${esc(K[2])}</h2><div class="tail">${esc(K[3])} · the artifact fit to its view (213) · ${SM}</div>`;
     body = o.art==='intent' ? dockArtIntent(o) : o.art==='unit' ? dockArtUnit(o) : o.art==='claim' ? dockArtClaim(o) : o.art==='bolt' ? dockArtBolt(o) : dockArtWi(o); }
   else if(t==='rv'){ form = 'dk-art'; head = `<div class="row"><span class="kind">review surface</span><span class="ph">plannotator</span>${nav}</div><h2 id="dk-title">review · ${esc(o.id)}</h2><div class="tail">the artifact as a document · an annotation is the response (S35) · stub</div>`; body = dockReview(o); }
-  else { head = `<div class="row"><span class="kind">attention</span>${nav}</div><h2 id="dk-title">${o.text}</h2>`; body = /^secret/.test(o.id) ? dockSecret(o) : sec('what it means', `<div class="dtext">${o.id==='host' ? 'The host that holds wi-#418 has not sent a heartbeat. Takeover releases its leases now and restores the place on studio; wait lets the lease expire at 07:59, when the machinery does the same.' : 'Your earlier response named a decision that was gone. It was recorded, handed back as unapplicable and shown once here; nothing was dropped. The unit was re-proposed and kept its number.'}</div>`); }
+  else { head = `<div class="row"><span class="kind">attention</span>${nav}</div><h2 id="dk-title">${o.text}</h2>`; body = /^secret/.test(o.id) ? dockSecret(o) : /^env-/.test(o.id) ? dockEnv(o) : sec('what it means', `<div class="dtext">${o.id==='host' ? 'The host that holds wi-#418 has not sent a heartbeat. Takeover releases its leases now and restores the place on studio; wait lets the lease expire at 07:59, when the machinery does the same.' : 'Your earlier response named a decision that was gone. It was recorded, handed back as unapplicable and shown once here; nothing was dropped. The unit was re-proposed and kept its number.'}</div>`); }
   const keep = $('#dk-b').scrollTop;
   $('#dk-h').className = 'dk-h ' + form; $('#dk-h').innerHTML = head; $('#dk-b').innerHTML = body; $('#dk-f').innerHTML = t==='a' ? `<div class="acts">${o.acts.map(([k,l]) => `<button class="btn sm ${k==='takeover'?'yes':''}" data-att="${o.id}" data-ak="${k}">${esc(l)}</button>`).join('')}</div>` : dockFooter(key);
   $('#dk-b').scrollTop = keep;
@@ -3169,7 +3266,9 @@ document.addEventListener('click', e => {
   if(b && b.id==='acct'){ S.acct = !S.acct; renderAcct(); return; }
   if(b && b.dataset.org){ switchOrg(b.dataset.org); return; }
   if(b && b.dataset.acct){ const k = b.dataset.acct; S.acct = false; if(k==='settings'){ openSettings(); return; } if(k==='hosts'||k==='store'){ S.setup.open = true; S.setup.mode = k; S.setup.sheet = null; S.setup.add = null; S.load = false; S.library = false; render(); return; } if(k==='signout'){ logLine('sign out', {}); S.signedOut = true; render(); return; } }
-  if(b && b.id==='signin'){ S.signedOut = false; logLine('sign in · Okta SSO', {}); toast(`signed in · ${ME().name}`); render(); return; }
+  if(b && b.dataset.mine !== undefined){ S.railMine = b.dataset.mine==='1'; if(S.focus && S.focus[0]==='d' && !railKeys().includes(S.focus)) S.focus = railKeys()[0] || null; render(); return; }
+  if(b && b.dataset.assign){ assignOwner(+b.dataset.assign); return; }
+  if(b && b.id==='signin'){ S.signedOut = false; logLine(`sign in · ${ME().kind==='okta' ? 'Okta SSO' : 'GitHub · device flow'}`, {}); toast(`signed in · ${ME().name} · ${ME().handle}`); render(); return; }
   if(b && b.id==='settings-close'){ S.settings = false; render(); return; }
   if(b && b.id==='settings-save'){ saveSettings(); return; }
   if(b && b.dataset.oprm !== undefined){ S.settingsDraft.operators.splice(+b.dataset.oprm, 1); renderSettings(); return; }
@@ -3189,6 +3288,7 @@ document.addEventListener('click', e => {
     if(b.dataset.ak==='ok'){ logLine(`ok · ${a ? a.id : ''}`, {}); toast('ok · recorded'); }
     else { logLine(b.dataset.ak, {}); toast(`${b.dataset.ak} · recorded`);
       if(b.dataset.ak==='placed') secretPlaced(a);
+      if(b.dataset.ak==='rebuild' && a && a.repo){ S.attention.push(a); rebuildEnv(a.host, a.repo); }
       if(b.dataset.ak==='takeover'){ const h = host('mac-mini'); h.alive = true; h.last = hhmm(S.minutes); h.note = 'released by takeover · its sessions restored on studio'; S.bolts.flatMap(x => x.units).flatMap(u => u.items||[]).filter(i => i.host==='mac-mini').forEach(i => { i.host='studio'; i.last=`${hhmm(S.minutes)} · taken over on studio · place restored`; }); h.alive = false; h.gone = 'released'; } }
     if(S.open==='a:'+(a&&a.id)) S.open = null, document.body.classList.remove('docked');
     if(S.focus==='a:'+(a&&a.id)) S.focus = railKeys()[0] || null;
@@ -3231,6 +3331,11 @@ document.addEventListener('click', e => {
     X[m] = {text:`Host <b>${esc(h.id)}</b> runs flywheel ${esc(f.binary)}; ${FLYWHEEL_LATEST} is available. It is a chore on the fleet: one session scoped to host ${esc(h.id)} that fetches the binary, verifies it and lets the launcher restart the host (205). <b>Yes</b> runs it; the host reads ${FLYWHEEL_LATEST} when its heartbeat returns. <b>No</b> leaves it as it is.`, kv2:[['from', esc(f.binary)],['to', FLYWHEEL_LATEST],['launcher', esc(f.launcher)],['needs from you','nothing']], kv2Title:'the chore', hist:[['09-04 '+hhmm(S.minutes),'operator','upgrade',`hosts · ${h.id} → ${FLYWHEEL_LATEST}`],['09-04 '+hhmm(S.minutes),'plan','decision',`${m} created · approve the upgrade chore`]]};
     S.decisions.push({n:m, g:APPROVE, phase:'construction', kind:'install', title:`upgrade · ${h.id} to ${FLYWHEEL_LATEST}`, obj:'h:'+h.id, repo:'fleet', part:[h.id,'__binary'], tail:`from hosts ${hhmm(S.minutes)} · <b>a chore on the fleet</b> · one session · yes runs it`, answers:[['yes','yes'],['no','no']]});
     logLine(`upgrade · ${h.id} → ${FLYWHEEL_LATEST}`, {say:true}); toast(`${m} · upgrade ${h.id} · in the rail`); render(); return; }
+  if(b && b.dataset.supoolconf){ const p = poolOf(b.dataset.supoolconf); if(!p) return; S.setup.poolSheet = {id:p.id, bound:p.bound, idleRetire:p.idleRetire, cost:p.cost}; S.setup.sheet = null; S.setup.pick = null; S.setup.role = null; render(); return; }
+  if(b && b.id==='su-pool-cancel'){ S.setup.poolSheet = null; render(); return; }
+  if(b && b.id==='su-pool-save'){ const P = S.setup.poolSheet; const p = poolOf(P.id); const ch = []; if(+P.bound!==p.bound) ch.push(`bound ${P.bound}`); if(P.idleRetire!==p.idleRetire) ch.push(`idle-retire ${P.idleRetire}`); if(P.cost!==p.cost) ch.push(`cost ${P.cost}`); if(!ch.length){ toast('nothing changed · nothing sent', true); return; } p.bound = +P.bound; p.idleRetire = P.idleRetire; p.cost = P.cost; logLine(`configure pool ${p.id} · ${ch.join(' · ')}`, {}); toast(`configure pool ${p.id} · recorded · the machinery reads the manifest on its next tick`); S.setup.poolSheet = null; render(); return; }
+  if(b && b.dataset.surebuild){ rebuildImage(b.dataset.surebuild); return; }
+  if(b && b.dataset.suenv){ const [hid,rid] = b.dataset.suenv.split('|'); rebuildEnv(hid, rid); render(); return; }
   if(b && b.dataset.suretire){ const [pid,act] = b.dataset.suretire.split('|'); const o = S.orgPkgs[pid]; const p = pkg(pid); if(!o || !p) return; if(act==='retire'){ o.state = `retired ${hhmm(S.minutes)}`; logLine(`retire ${p.name} from the blueprints`, {}); toast(`${p.name} · retired · every host stops reading it on its next tick`); } else { o.state = `installed ${hhmm(S.minutes)} · restored`; logLine(`restore ${p.name} in the blueprints`, {}); toast(`${p.name} · restored · every host reads it on its next tick`); } S.setup.lit = pid; render(); return; }
   if(b && b.dataset.suadd){ const [hid,pid] = b.dataset.suadd.split('|'); openSheet(pid, hid==='org' ? null : hid, 'add'); return; }
   if(b && b.dataset.suconf){ const [hid,pid] = b.dataset.suconf.split('|'); openSheet(pid, hid==='org' ? null : hid, 'configure'); return; }
@@ -3251,7 +3356,7 @@ document.addEventListener('click', e => {
   if(b && b.id==='su-go'){ addHostGo(); return; }
   if(b && b.id==='su-parts-next'){ addHostParts(); return; }
   if(b && b.id==='su-handover'){ addHostHandover(); return; }
-  const suh = t.closest('.su-host'); if(suh && !t.closest('button,a,input,select,label,summary,.su-detail')){ S.setup.host = suh.dataset.suhost; S.setup.tab = suh.dataset.suhost==='org' ? 'org' : 'host'; S.setup.mode = suh.dataset.suhost==='org' ? 'store' : 'hosts'; S.setup.add = null; S.setup.sheet = null; S.setup.pick = null; S.setup.role = null; S.setup.lit = null; render(); return; }
+  const suh = t.closest('.su-host'); if(suh && !t.closest('button,a,input,select,label,summary,.su-detail,details')){ S.setup.host = suh.dataset.suhost; S.setup.tab = suh.dataset.suhost==='org' ? 'org' : 'host'; S.setup.mode = suh.dataset.suhost==='org' ? 'store' : 'hosts'; S.setup.add = null; S.setup.sheet = null; S.setup.pick = null; S.setup.role = null; S.setup.lit = null; render(); return; }
   if(b && b.dataset.load !== undefined){ S.load = !S.load; render(); return; }
   if(b && b.id==='load-open'){ S.load = true; render(); return; }
   if(b && b.id==='load-close'){ S.load = false; render(); return; }
@@ -3322,6 +3427,8 @@ document.addEventListener('change', e => {
   if(t.id==='review-toggle'){ S.review.on = t.checked; render(); return; }
   if(t.id==='su-any'){ S.setup.anyPlat = t.checked; $('#su-index').innerHTML = rightHtml(); return; }
   if(t.dataset.surf){ S.setup.role[t.dataset.surf] = t.value; return; }
+  if(t.dataset.supf){ S.setup.poolSheet[t.dataset.supf] = t.value; return; }
+  if(t.dataset.suenvp){ const [hid,rid] = t.dataset.suenvp.split('|'); const e = hostEnv(host(hid))[rid]; if(e.provider===t.value) return; e.provider = t.value; e.ok = false; e.why = `provider changed to ${t.value} · not built yet`; raiseEnv(hid, rid, `provider changed to ${t.value} · not built yet`); logLine(`configure ${hid} environment ${rid} · provider ${t.value}`, {}); toast(`${hid} · ${rid} · provider ${t.value} · recorded · rebuild to satisfy it`); render(); return; }
   if(t.dataset.suagentrun){ const h = host(t.dataset.suagentrun); const a = h && h.parts.find(p => p.k==='agent'); if(!a) return; a.runner = t.value; logLine(`configure agent on ${h.id} · runner ${pkg(t.value).name}`, {}); toast(`agent on ${h.id} · runs on ${pkg(t.value).name} · recorded`); return; }
   if(t.id==='su-adopt'){ const A = S.setup.add; A.adopt = t.checked; A.platform = null; A.step = A.adopt ? 'name' : 'platform'; if(A.adopt && !A.name) A.name = 'mac-mini-2'; render(); $('#su-name')?.focus(); return; }
   if(t.dataset.suf !== undefined && t.matches('select')){ const sh = S.setup.sheet; sh.values[t.dataset.suf] = t.value; if(schemaOf(pkg(sh.pkg)).some(f => f.when && f.when[0]===t.dataset.suf)) $('#su-index').innerHTML = addSheetHtml(); return; }
@@ -3338,7 +3445,7 @@ document.addEventListener('change', e => {
 document.addEventListener('keydown', e => {
   const typing = e.target.matches('input,textarea,select');
   if((e.key==='Enter' || e.key===' ') && e.target.classList && e.target.classList.contains('su-host')){ e.preventDefault(); S.setup.host = e.target.dataset.suhost; S.setup.tab = S.setup.host==='org' ? 'org' : 'host'; S.setup.add = null; S.setup.sheet = null; S.setup.lit = null; render(); return; }
-  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(S.acct){ S.acct = false; renderAcct(); return; } if(S.signedOut) return; if(S.settings){ S.settings = false; render(); return; } if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.load){ S.load = false; render(); return; } if(S.setup.open){ if(S.setup.sheet) S.setup.sheet = null; else if(S.setup.role) S.setup.role = null; else if(S.setup.pick) S.setup.pick = null; else S.setup.open = false; render(); return; } if(S.library){ S.library = false; render(); return; } if(S.exploreMode){ S.exploreMode = false; S.picked.clear(); render(); return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
+  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(S.acct){ S.acct = false; renderAcct(); return; } if(S.signedOut) return; if(S.settings){ S.settings = false; render(); return; } if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.load){ S.load = false; render(); return; } if(S.setup.open){ if(S.setup.sheet) S.setup.sheet = null; else if(S.setup.role) S.setup.role = null; else if(S.setup.poolSheet) S.setup.poolSheet = null; else if(S.setup.pick) S.setup.pick = null; else S.setup.open = false; render(); return; } if(S.library){ S.library = false; render(); return; } if(S.exploreMode){ S.exploreMode = false; S.picked.clear(); render(); return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
   if(typing){ if(e.key==='Enter' && !e.shiftKey && e.target.id==='capture'){ e.preventDefault(); capture(); } if(e.key==='Enter' && e.target.matches('input') && e.target.closest('.argbox')){ e.preventDefault(); e.target.closest('.argbox').querySelector('[data-send],[data-usend]').click(); } if(e.key==='Enter' && (e.target.dataset.bname || e.target.dataset.brename)){ e.preventDefault(); if(e.target.dataset.brename) $(`[data-brenamesend="${e.target.dataset.brename}"]`).click(); else e.target.blur(); } return; }
   if(e.metaKey||e.ctrlKey||e.altKey) return;
   const k = e.key;
