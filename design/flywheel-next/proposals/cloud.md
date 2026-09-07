@@ -1,0 +1,162 @@
+# Multi-tenant flywheel at scale — a brainstorm
+
+## Thesis
+
+The model does not require a resident host per tenant; the phrasing of three clauses does. A tick is already a pure function of fetched state (136, 217a) whose missed runs are caught up idempotently (111, 231), and a host is already allowed to serve several organizations at once (218). A serverless tier is therefore not a new architecture but a host whose tick is *invoked* rather than looped, serving many organizations from one process over a warm cache of their state repositories. What genuinely does not scale is C.2's 30-second bounded poll (165, 166): it is O(tenants) against the git host whether or not anything happened, and it is the only thing in the design that costs money while a tenant sleeps. Replace the poll with notify plus a derived due index and steady-state cost becomes proportional to *activity*, not tenancy. Everything else — object storage instead of git, a shared bot identity, per-run work containers — is an economics optimisation bought later at a named tenant count, and mostly as a third profile (C.3) rather than a weakening of C.2.
+
+---
+
+## 1. Batch tick — one scheduler, many organizations
+
+**Maps onto** `host.yaml`'s `life` region and the tick-as-scheduler clause (231), plus 218. A batch ticker runs the dispatcher declaration (`bound: 0, kinds: [], presents: [chat]`, 217) once per organization, each with its own root under 205's layout.
+
+**Preserves** all of Part B. Each organization's tick is the same fetch → list → read → evaluate → effect (126–131) against its own `flywheel-state`, with its own leases and decision numbers. Nothing crosses (218). I14 holds: the warm cache mirrors only what git already holds.
+
+**Bends** 231's "a host is one long-lived process that the platform's own launcher starts". The host-id-to-process mapping stops being 1:1. 232 anticipates the inverse — several hosts, one computer, separate processes — and this is several hosts, one computer, one process. The heartbeat branch `host/<id>` must still be written per host id or the status view lies about liveness.
+
+**Cost.** 10 tenants: one 1-vCPU container and a 1 GB volume, a rounding error. 1,000: one 2–4 vCPU machine, ~5 GB of bare mirrors, ~3 git round trips/s, tens of dollars a month. 100,000: ~500 GB of mirrors and 300+ round trips/s *if polling* — the batch ticker alone does not reach that scale without idea 3.
+
+**Experiment.** Run `flywheel dispatch` for 50 organizations in one process on a laptop, each with its own root, and run the host scenarios (a host lost, a takeover, a bound reached) against organization 27 while the other 49 tick. Success is the scenario passing unchanged with no lease or decision number leaking between roots.
+
+---
+
+## 2. Store-and-forward gateway — capture as a queue
+
+**Maps onto** the capture endpoint job (216, 217g, 112) and 111's idempotent key.
+
+**Preserves** every invariant cleanly. The endpoint already writes one keyed capture and nothing else, and 217f already says a caller retries while a repeat under the same key writes nothing. A durable queue between the HTTP handler and the commit changes only *when* the commit happens.
+
+**Bends** nothing in Part B, but it opens a window where a capture is accepted and not yet in git, which I14 forbids to be called state. The honest framing: the queue is the caller's retry buffer held on the caller's behalf, and a lost queue is indistinguishable from a caller that never called. Say so explicitly or someone will treat it as durable.
+
+**Cost.** Effectively free at every scale. One HTTP function plus one queue with a tenant key — cheaper than a queue per tenant and equally correct, because the drain is per-organization regardless. 100,000 tenants at a handful of captures a day is dollars.
+
+**Experiment.** Point a Slack Events subscription and a GitHub webhook at a function that enqueues, let the batch ticker drain, send the same event five times, assert one capture record.
+
+---
+
+## 3. Event-driven tick — the due index
+
+**Maps onto** 130 (notify only shortens the wait), 165–166, and 231.
+
+**This is the load-bearing idea.** A tick is due when one of five things is true: the state head moved, a capture arrived, a chat reply arrived, a lease or timer crossed a threshold, or a cadence fired. Four are *events* arriving at an endpoint you already run. Only timers need a clock, and a timer's fire time is computable at write time. So keep a **due index**: one row per organization holding the earliest future time its tick could change anything, written when a tick ends. The scheduler wakes only rows that are due or whose event arrived.
+
+**Preserves** 130 exactly — the index only shortens the wait, and an organization with a wrong row still converges under a slow backstop sweep (hourly). 136 holds if and only if the index is a cache: derivable by ticking, never read as truth, its loss costing one sweep.
+
+**Bends** 166's flat 30s bound, which becomes conditional: seconds for an organization with a live webhook, the backstop interval for one without. That is user-visible and belongs in a clause, not in an implementation.
+
+**Cost.** This converts the curve. Steady state tracks active organizations, at an assumed 2% active per minute and 200 ms per tick.
+
+| tenants | active/minute | org-ticks/s | vCPU |
+|---|---|---|---|
+| 10 | ~0 | <1 | fractional |
+| 1,000 | 20 | 0.3 | fractional |
+| 100,000 | 2,000 | 33 | ~7 |
+
+Polling at 100,000 means 3,333 round trips/s to the git host forever, which no git host will sell you at any tier.
+
+**Experiment.** Make the tick emit, at exit, the earliest time any guard in the evaluated machines could next become true. Run a week of a real organization and measure how often the prediction is wrong. Above 95% correct the index works; below it, the machines carry hidden wall-clock guards worth finding.
+
+---
+
+## 4. State on object storage — a third profile, not a bent C.2
+
+**Maps onto** C.2 (160–167), I14 and I15 — all explicitly profile-scoped — and C.3's conformance contract (168–170).
+
+**The move.** Do not put git on S3. Bind B.1 to object storage directly: read is a GET of the object's record; write an effect is a conditional PUT keyed by the effect id; lease is a conditional PUT on a lease key with the holder's etag as precondition; list is a prefix listing; notify is the bucket's event notification. S3 conditional writes and DynamoDB conditional puts both give exactly 134 and I15's shape. 168 already says a third profile conforms when it binds every name, meets every guarantee, and passes the conformance suite unchanged — and that suite is written.
+
+**Preserves** all of Parts A and B by construction if the suite passes. Per-tenant KMS keys become a storage detail under I13.
+
+**Bends** nothing, *provided* the git mirror is honest. The temptation is a hybrid with the object store as truth and a git mirror for readability; that holds only while the mirror is a declared projection (142) never read as truth, which I4 demands. The moment a host fetches the mirror before a tick you have two sources of truth. Note also what is lost: 167's "history is the audit record" becomes something you build rather than inherit.
+
+**Cost.** Strictly worse at 10 and 1,000 — a profile written to save nothing. It earns its keep where hosting 100,000 private repositories under one account becomes an economic or terms-of-service problem, somewhere near 10,000. Storage at 5 MB × 100,000 is 500 GB, roughly $12/month plus requests.
+
+**Experiment.** Run the existing conformance suite against a stub object-store binding on ten organizations, including S13 (the stale lease) and S18 (the disconnected host reconciling). If S18 has no meaning without a local commit log, that is the finding.
+
+---
+
+## 5. Which roles must stay resident
+
+**Maps onto** 148 (one presenter per sink), 217d, 241.
+
+| platform | plain replies | buttons, slash commands | resident process |
+|---|---|---|---|
+| Slack | Events API, HTTP POST | interactivity URL | **no** |
+| Discord | gateway websocket only | interactions endpoint URL | **only for plain messages** |
+| Teams, Webex | webhook | webhook | no |
+
+The free tier is therefore Slack-first, or Discord in interactions mode: the numbered grammar survives as a slash command (`/fw yes 412`) and the buttons work, and you give up only typing `yes 412` as an ordinary message. 155 permits exactly this — the platform's controls as it provides them, with the numbered grammar beside them.
+
+**On 241.** A shared presenter is not blocked by 241, which constrains pool hosts (the ones that run work), not the dispatcher; 218 positively permits a host serving several organizations. What 218 does constrain is isolation, and a process holding sink leases for a thousand organizations must keep a thousand roots, credential sets and lease branches, and must not let a crash in one organization's tick drop another's. Worth a clause rather than an assumption.
+
+**On the bot identity.** 217d names "the bot the manifest names and the token the operator placed". A zero-setup tier wants the tenant to invite *the platform's* bot instead, which places no secret at all and is therefore better for 207 and 229, not worse. The costs are one sharded gateway connection across every tenant's guild, and an audit line where the bot is the platform's rather than the organization's.
+
+---
+
+## 6. Work sessions as per-run containers
+
+**Maps onto** 240–242, 239, 32 and 52.
+
+**Preserves** all of it — this is what the pool machine already describes. `retire_after: 0` makes a pool host per-run, and nothing in the pool machine requires a host to outlive one session.
+
+**Bends** no requirement, but exposes an unmodelled cost: 205 makes a joining host clone the state, the blueprints and *every tracked built repository*. Per-run, that clone dominates the run. 239's image already exists to satisfy environments, so the natural extension is that the image also carries a warm bare mirror of the tracked repositories, making a join a fetch. Then `pool.image_current` should go false when the repositories move far, not only when the declarations move.
+
+**Cost.** Per-run billing is the point: an organization with no approved work costs nothing. At 100,000 tenants with 1% running work that is 1,000 concurrent containers — real money that tracks revenue, the correct shape. A tier-1 tenant declares `bound: 0` and provisions none.
+
+**Experiment.** Set `retire_after: 0` today and measure wall-clock from `provision_pool_host` to the session's first tool call, split into provision, clone and environment activation. That number decides per-run versus a warm pool.
+
+---
+
+## 7. The tiering
+
+| tier | what it is | dispatcher | work | chat | cost to serve |
+|---|---|---|---|---|---|
+| 0 | your own computer | local, or browser interpreter only | your machine | whatever you set up | zero |
+| 1 | cloud agent, free or cheap | a slot in the shared batch ticker, `bound: 0` | none | the platform's shared bot, interactions mode | cents/tenant/month |
+| 2 | pools on demand | the same shared ticker | per-run pool hosts | tier 1's, or your own bot | tracks usage |
+| 3 | dedicated | your own container, bot and network | your own pool | your own app | a container plus your platform |
+
+Tier 1 answers "one step above using your own computer": sign in with GitHub, the machinery creates the state repository under the tenant's own account (219 already allows repositories under any account the App reaches), invite a bot, and get a page, a chat, a capture endpoint and triage — with no work sessions, so no compute scaling with anything but the tenant's own activity.
+
+---
+
+## Comparison
+
+| idea | invariants kept | bent | cost at 10 / 1k / 100k | ops burden | tenant sets up |
+|---|---|---|---|---|---|
+| 1 batch tick | I1–I16, all of B | 231's one process; per-id heartbeat | trivial / tens $ / needs idea 3 | one process, one volume | nothing new |
+| 2 gateway queue | all | none; queue must be named non-state | ~0 / ~0 / dollars | a queue and a drain | one URL per caller |
+| 3 due index | 130, 136 if cache-only | 166's 30s becomes conditional | ~0 / ~0 / ~7 vCPU | index store, backstop sweep | nothing |
+| 4 object store | all, via 168's suite | none if the mirror is a projection; loses inherited 167 | worse / worse / $12+ storage | a whole profile, a new audit story | nothing |
+| 5 shared presenter | 148, 218, 155 | 217d's per-org bot identity | ~0 / ~0 / sharded gateway | one bot app, shard management | invite a bot, place no secret |
+| 6 per-run work | 240–242, 52 | none; 239's image gains a mirror | n/a / usage / usage | image builds, cold-start budget | nothing |
+| 7 tiering | all | none; a manifest binding (217j) | — | a billing boundary | pick a tier |
+
+---
+
+## Recommended path
+
+1. Ship the batch-tick dispatcher first: one process, many organizations, git-only unchanged, each with its own root and heartbeat. Smallest change, and it removes the idling VM.
+2. Make notify primary and the poll a tiered backstop, with the due index declared as a cache. This flattens the curve; do it before tenant count makes it urgent.
+3. Serve tier 1's chat with the platform's own bot in interactions mode, Slack fully and Discord for controls, so no tenant places a secret and no socket is held per tenant.
+4. Leave work on pools unchanged with `retire_after: 0`, and measure the cold start before promising per-run billing.
+5. Write the object-store profile only when the git host's economics break, near 10,000 tenants, as a C.3 profile passing the conformance suite — never as a weakening of C.2.
+
+---
+
+## Requirement clauses to change or add
+
+**Amend.**
+
+- **231** — "a host is one long-lived process that the platform's own launcher starts" relaxes to: the tick is invoked, and a long-lived loop is one invoker among several (a cron, a webhook, a queue drain). The catch-up and idempotency sentences already carry the weight.
+- **166 and C.2's notify row** — state the bound per notification channel: seconds with a live push webhook, a named backstop interval without one. Drop the unconditional 30s poll as the floor; it is the one O(tenants) cost in the design.
+- **217d** — allow the sink's identity to be the platform's shared bot scoped to the organization's channel, beside the bot the manifest names and the token the operator placed, and say what the audit record shows then (153 still names who responded; the bot is the platform's).
+- **239 and 240** — let a pool's image carry a warm mirror of the repositories the pool covers, and make `pool.image_current` false when those repositories, not only the declarations, have moved far.
+
+**Add.**
+
+- **243. A host serving several organizations keeps a root, a credential set, a heartbeat and a lease set per organization; a failure in one organization's tick ends that tick and no other.** The isolation 218 asserts, stated as a runtime obligation rather than a disk fact.
+- **244. A host's tick may be invoked by a clock, a notification, an arriving capture or a chat event, and every invoker produces the same tick.** Makes 231's relaxation testable.
+- **245. A due index is a projection naming, per organization, the earliest time a tick could change anything. It only shortens the wait, it is rebuilt by ticking, and its loss costs a sweep and never a decision.** Keeps 136 and I4 intact while permitting the scheduler.
+- **246. A queue between a capture endpoint and its commit is the caller's retry buffer and not state. A capture is captured when its commit lands, and a lost queue is indistinguishable from a call that never arrived.** Closes the I14 hole idea 2 opens.
+- **247. An organization's chat tier is a binding: full, where plain messages are read, and controls-only, where the numbered grammar is a slash command and answers are controls. Every decision is answerable in both.** Makes tier 1's Discord mode a stated tier, not a degradation.
+- **248. A pool host's life may be one session, and what an image carries is what a joining host does not clone.** Names the cold-start budget as a design surface.
