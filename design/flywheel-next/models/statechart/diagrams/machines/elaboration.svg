@@ -9,7 +9,7 @@
 <rect width="1565" height="453" fill="#fff"/>
 <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">elaboration — object v2, core · object elaboration · parent intent</text>
 <text x="40" y="57" font-size="12" fill="#666">One unit of design work on an intent: one session, one conversation, one place (A.4).</text>
-<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 5, 24, 27, 54, 89, 187, 188, 189, 193, 210 · elaboration.yaml · record type, type_version, sources, document, covers</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 5, 24, 27, 54, 89, 187, 188, 189, 193, 210 · elaboration.yaml · record type, type_version, sources, document, covers, owner</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
 <line x1="80" y1="103" x2="1524.675" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
 <circle cx="52.0" cy="214.0" r="4" fill="#1a1a1a"/>

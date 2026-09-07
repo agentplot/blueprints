@@ -1206,10 +1206,10 @@ requirements, iterated against the running plan rather than on paper.
     organization's settings (its manifest as a form, one response per
     save), its hosts and their parts (229), the organization's store
     apart from any host's (228), and sign-out. A page served on the
-    operator's own computer with no sign-in shows the local user and
-    needs no account; a page served by a host behind a sign-in kind
-    shows the signed-in identity, and every response it records carries
-    that identity (153). Authentication is the host's and authorization
+    operator's own computer signs in like any other, through the host's
+    sign-in kind, GitHub by default (234), so the identity is the same
+    there as anywhere; every response the page records carries that
+    identity (153). Authentication is the host's and authorization
     the organization's: a host serving the page has one sign-in kind,
     declared on the host and the same for every organization it serves,
     a per-host package (228) and never an organization's (207, 217j);
@@ -1336,6 +1336,68 @@ requirements, iterated against the running plan rather than on paper.
     hosts on one computer share nothing but the git host and are told
     apart by id alone; the scenario tool (95) can start, stop and
     disconnect them by name.
+
+### A.29 Users and ownership
+
+234. An organization's operators are identities of one sign-in kind,
+    GitHub by default: a page served on the operator's own computer
+    signs in through GitHub as well, so the identity is the GitHub
+    username everywhere and every response carries it (153). An
+    organization may bind another sign-in kind on a host (233); its
+    identities appear in the operators list as that kind renders them.
+235. One board per organization. Every member sees the same plan with
+    the same numbers and the same count. A decision answered by one
+    member is applied once (7) and shown to every other member as
+    answered, by whom and when (153); a second response to it is
+    refused as already answered.
+236. Sinks are per member. Each member's page and chat are sinks of
+    their own with their own delivery mark (14, 148), so the tail since
+    the last look, attention acknowledgements and notifications are
+    that member's. A shared channel is a sink of its own with one mark.
+237. A decision may carry an owner: a member or a role the manifest
+    names. Planning's proposal, the unit or elaboration type, or a
+    member's response (assign) sets it; an unowned decision is
+    everyone's. The rail and the chat filter to a member's own.
+    Ownership never changes what a decision is, whether it counts, or
+    who may answer it.
+
+### A.30 Environments
+
+238. Every tracked repository declares the environment its sessions
+    need — tools and their versions — in one file the flywheel reads
+    under its prefix (203), or by naming the repository's own
+    devcontainer or devenv definition. The machinery binds the
+    declaration to a provider per host (devenv, devcontainer, nix, or a
+    container image; a binding, 139) and activates it in every place
+    before a session starts (43); the environment's version is recorded
+    with the place. A host that cannot satisfy a repository's
+    environment covers none of its work and says so under attention
+    (149).
+239. A platform host is created from an image that satisfies the
+    environments of the repositories it will cover. Building the image
+    from the declarations is an effect, repeatable (204); an image
+    behind the declarations is visible on the hosts surface, and
+    rebuilding it is a chore (123).
+
+### A.31 Host pools
+
+240. An organization may declare a pool: a platform that provisions
+    hosts on demand from the image (239), up to a bound, each joining by
+    an enrolment token the machinery issues (230), covering what the
+    pool declares, and retiring when idle for a stated time. A pool host
+    is ephemeral: it holds no place past its life, and a place it held
+    is re-made from its line on another host (52). The hosts surface
+    shows the pool, its bound and its live hosts; the operator never
+    needs to see a pool host.
+241. A pool host serves one organization. A host serving several
+    organizations (218) is the operator's own machine. A service run for
+    many organizations gives every organization its own pool, and
+    nothing is shared between organizations but the platform.
+242. The machinery adds pool hosts while approved work waits behind the
+    bound and drain is the limit (214), within the pool's bound and the
+    cost setting the manifest names, and retires them as the queue
+    drains. Every such change is an effect with a proof, and the
+    flywheel instrument shows it as drain changing.
 
 ## 5. Requirements — Part B, the control plane contract
 

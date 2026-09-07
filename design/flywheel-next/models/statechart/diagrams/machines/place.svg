@@ -9,7 +9,7 @@
 <rect width="1648" height="395" fill="#fff"/>
 <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">place — template v2, core</text>
 <text x="40" y="57" font-size="12" fill="#666">A worktree the machinery prepares for one session off one line (49).</text>
-<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 42, 45, 46, 51, 52, 55 · place.yaml · params line, inputs, keep · record head, conflict_retries, endpoints, held_at</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 42, 45, 46, 51, 52, 55, 238, 240 · place.yaml · params line, inputs, keep · record head, environment, conflict_retries, endpoints, held_at</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
 <line x1="80" y1="103" x2="1607.6" y2="103" stroke="#2b8a8a" stroke-width="2" opacity="0.3"/>
 <circle cx="52.0" cy="211.0" r="4" fill="#1a1a1a"/>
@@ -39,7 +39,7 @@
 <text x="118.0" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">absent</text>
 <rect x="210.0" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
 <text x="258.0" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">preparing</text>
-<rect x="350.0" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>current with its line and holding no working session; the endpoints its processes serve are recorded with it (46)</title></rect>
+<rect x="350.0" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>current with its line and holding no working session, its repository&#x27;s environment active (238); the endpoints its processes serve are recorded with it (46); a place on a pool host that retires is re-made from its line on another host by the same path (240)</title></rect>
 <text x="398.0" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">ready</text>
 <rect x="490.0" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>a sibling merged; this place is rebased when its session is idle and no one is typing in it</title></rect>
 <text x="538.0" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">behind</text>

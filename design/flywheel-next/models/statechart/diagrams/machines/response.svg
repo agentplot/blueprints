@@ -9,7 +9,7 @@
 <rect width="1378" height="286" fill="#fff"/>
 <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">response — engine v3, core · object response</text>
 <text x="40" y="57" font-size="12" fill="#666">One operator response, recorded as op-response (153).</text>
-<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 1, 3, 4, 6, 12, 137, 153, 154, 193, 194, 233 · engine/response.yaml · record kind, tool, proposed_by, decision, object, answer, args, given_by, given_at, delivery</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 1, 3, 4, 6, 12, 137, 153, 154, 193, 194, 233, 234, 235 · engine/response.yaml · record kind, tool, proposed_by, decision, object, answer, args, given_by, given_at, delivery</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
 <line x1="80" y1="103" x2="639.1800000000001" y2="103" stroke="#8a8a86" stroke-width="2" opacity="0.3"/>
 <circle cx="52.0" cy="166.0" r="4" fill="#1a1a1a"/>
@@ -22,7 +22,7 @@
 <rect x="210.0" y="152.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="2"></rect>
 <rect x="213.0" y="155.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#8a8a86" stroke-width="1.2"/>
 <text x="258.0" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">applied</text>
-<rect x="350.0" y="152.0" width="139.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>the decision was gone before the response arrived; reported once under attention, never dropped (6, 129)</title></rect>
+<rect x="350.0" y="152.0" width="139.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>the decision was gone before the response arrived — answered by another member, whose name and time the register keeps (235), or retracted — reported once under attention, never dropped (6, 129); the tool server refuses at once a response to a number the register already shows answered, so this state is reached only by a race</title></rect>
 <text x="419.6" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">unapplicable</text>
 <rect x="354.0" y="176.0" width="131.2" height="14" rx="7" fill="#c9962e"/>
 <text x="419.6" y="186.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">response-unapplicable</text>

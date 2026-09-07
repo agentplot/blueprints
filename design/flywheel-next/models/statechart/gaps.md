@@ -673,6 +673,49 @@ the operator may reverse by a response on the file; an entry with
   sign-in kinds ship is the dispatch model's tiers (217j); their
   verifiers are not in this model. **Open**.
 
+- **234–237 users and ownership.** GitHub's device flow on the
+  operator's own computer means a first run needs the network and a
+  GitHub account before the page answers anything; there is no
+  offline local-user path any more, by 234's choice. Stated. The
+  "already answered" refusal is the tool server's, from the register's
+  answered fields, so a race between two members' replies within one
+  tick still lands one as `unapplicable` and reports it once — the
+  machine is unchanged. **Decision**. Per-member sinks multiply the
+  delivery marks by the members; a chat DM per member needs the bot to
+  reach each member, so a member the bot cannot message has a page
+  sink only. **Decision**. The owner is a record field of the
+  decision's object, not of the decision, so an object with two
+  decisions standing at once (a bolt's close and its claim-moved) has
+  one owner for both; a per-decision owner would need decisions to be
+  records, which 5 rules out. **Decision**. Roles are a manifest map
+  to members; nothing checks a role's members are in `operators:`
+  beyond the form's validation. **Open**.
+
+- **238–239 environments.** The declaration format
+  (`flywheel-environment/1`) and the four providers are named in the
+  host binding and none is verified; whether a devcontainer's features
+  can be resolved into a worktree without a container is **open**, and
+  the `image` provider is the only one a platform host is expected to
+  use. Activation is inside `prepare_place` rather than an effect of
+  its own, so the place's proof (`place.ready`) covers it and the
+  stand-in needs no new default; an activation that fails is a place
+  that never proves ready, reported by the owner's place machine.
+  **Decision**. `host.environment_satisfied` is checked at every fetch
+  that moved a declaration, not every tick, since evaluation can be
+  slow. **Decision**.
+
+- **240–242 host pools.** `pool.demand` reads the instrument's own
+  reading sentence, so the pool machine depends on `render_status`
+  having run in the same tick; the binding computes it from the same
+  counts rather than reading the projection, keeping I4. **Decision**.
+  The cost ceiling is per day at the platform's price and the binding
+  names no price source; the manifest carries the price. **Open**. A
+  pool host that dies mid-session is a lost host like any other (S13)
+  and the takeover rule applies; the pool provisions another only on
+  demand, never to replace. **Decision**. The platform's create and
+  delete calls (fly, a cloud API) are named generically and bound to
+  none. **Open**.
+
 - **213, 214 and 229–230 on the mockup.** The rail-and-board mockup
   (`design/flywheel-next/mockups/rail-and-board.html`) illustrates the
   artifact views behind an object (213), the flywheel instrument

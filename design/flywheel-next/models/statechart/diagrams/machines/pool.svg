@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1378" height="461" viewBox="0 0 1378 461" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1378" height="461" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">pool — object v1, core · object pool · parent organization</text>
+<text x="40" y="57" font-size="12" fill="#666">A host pool (240): a platform that provisions hosts on demand from the organization&#x27;s image (239), up to a bound, each joining by an enrolment token the machinery issues (230), covering w…</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 204, 230, 239, 240, 241, 242 · pool.yaml · record name, platform, image, bound, cost, retire_after, covers</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">image<title>the image the pool provisions from, built from the environment declarations of every repository the pool covers (239); behind when a declaration moved since the build, visible on the hosts surface; rebuilt by a chore</title></text>
+<line x1="86" y1="103" x2="477.75" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="166.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="166.0" x2="69.0" y2="166.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M118.0,152.0 V144.0 H220.0 V152.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M258.0,180.0 V190.0 H80.0 V180.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M296.0,152.0 V129.0 H360.0 V152.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>the chore that rebuilds the image is accepted like any chore (123); its session runs the build effect through the command</title></path>
+<path d="M398.0,180.0 V205.0 H156.0 V180.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M398.0,152.0 V144.0 H436.0 V152.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<rect x="70.0" y="152.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
+<text x="118.0" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">current</text>
+<rect x="210.0" y="152.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the declarations moved; the pool provisions no new host until the image is rebuilt, and the surface says so (239)</title></rect>
+<text x="258.0" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">behind</text>
+<rect x="350.0" y="152.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
+<text x="398.0" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">building</text>
+<rect x="120.6" y="132.5" width="96.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="169.0" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">¬pool.image_current</text>
+<rect x="122.9" y="190.5" width="92.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="169.0" y="199.0" font-size="8.5" fill="#333" text-anchor="middle">pool.image_current</text>
+<rect x="293.6" y="117.5" width="68.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="328.0" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">reply rebuild<title>the chore that rebuilds the image is accepted like any chore (123); its session runs the build effect through the command</title></text>
+<rect x="230.9" y="205.5" width="92.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="277.0" y="214.0" font-size="8.5" fill="#333" text-anchor="middle">pool.image_current</text>
+<rect x="366.2" y="132.5" width="101.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="417.0" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ build_image</text>
+<text x="40" y="257" font-size="11.5" font-weight="700" fill="#8a8a86">hosts<title>hosts added while demand holds, within bound and cost, and retired when idle (242); each host is a host object of its own with pool = this pool, joined by an enrolment token (230)</title></text>
+<line x1="86" y1="253" x2="489.4375" y2="253" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="331.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="331.0" x2="69.0" y2="331.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M80.0,317.0 V294.0 H220.0 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M156.0,317.0 V279.0 H360.0 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M258.0,345.0 V355.0 H80.0 V345.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M258.0,317.0 V309.0 H296.0 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M398.0,345.0 V370.0 H156.0 V345.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M398.0,317.0 V309.0 H436.0 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<rect x="70.0" y="317.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
+<text x="118.0" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">steady</text>
+<rect x="210.0" y="317.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>one host asked of the platform from the image, with a token; it joins by the token and covers what the pool declares (230, 240)</title></rect>
+<text x="258.0" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">adding</text>
+<rect x="350.0" y="317.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the idle host&#x27;s leases released and places removed, then the platform ends it; a place it held is re-made from its line elsewhere (52, 240)</title></rect>
+<text x="398.0" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">retiring</text>
+<rect x="42.0" y="282.5" width="358.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="221.3" y="291.0" font-size="8.5" fill="#333" text-anchor="middle">pool.demand ∧ pool.live &lt; pool.bound ∧ pool.cost_allows ∧ image ∈ {current}</text>
+<rect x="221.3" y="267.5" width="73.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="258.0" y="276.0" font-size="8.5" fill="#333" text-anchor="middle">pool.idle_host</text>
+<rect x="129.9" y="355.5" width="78.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="169.0" y="364.0" font-size="8.5" fill="#333" text-anchor="middle">pool.host_added</text>
+<rect x="207.6" y="297.5" width="138.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="277.0" y="306.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ provision_pool_host</text>
+<rect x="233.3" y="370.5" width="87.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="277.0" y="379.0" font-size="8.5" fill="#333" text-anchor="middle">pool.host_retired</text>
+<rect x="354.6" y="297.5" width="124.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="417.0" y="306.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ retire_pool_host</text>
+<rect x="40" y="417" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="427" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="71" y="436" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="427" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="436" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="427" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="436" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="427" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="436" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="427" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="617.85" y="436" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="427" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="436" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="427" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="436" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="427" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="436" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

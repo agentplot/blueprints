@@ -4,7 +4,7 @@ One statechart per machine file, drawn by `machines/render.py` from the definiti
 itself, so the picture cannot drift from the runtime (83). Regenerate with
 `uv run --with pyyaml python3 machines/render.py` from `models/statechart`.
 
-33 machines: 17 object, 11 template, 5 engine.
+34 machines: 18 object, 11 template, 5 engine.
 
 ## Core objects and structural templates (`machines/`)
 
@@ -19,10 +19,11 @@ itself, so the picture cannot drift from the runtime (83). Regenerate with
 | `ledger-cell` | object | core | 4 | ledger-cell | 100, 101, 102, 104, 116, 195, 198, 200, 202 | [ledger-cell.svg](ledger-cell.svg) |
 | `line` | template | core | 4 | template | 42, 49, 50, 52, 53, 54, 183, 185, 175, 176, 177, 179, 180, 192 | [line.svg](line.svg) |
 | `operator-session` | object | core | 2 | operator-session | 68, 69, 196 | [operator-session.svg](operator-session.svg) |
-| `organization` | object | core | 2 | organization | 15, 204, 207, 208, 218, 219, 220, 221 | [organization.svg](organization.svg) |
+| `organization` | object | core | 2 | organization | 15, 204, 207, 208, 218, 219, 220, 221, 241 | [organization.svg](organization.svg) |
 | `package` | object | core | 1 | package | 5, 204, 207, 224, 228, 229 | [package.svg](package.svg) |
-| `place` | template | core | 2 | template | 4, 42, 45, 46, 51, 52, 55 | [place.svg](place.svg) |
+| `place` | template | core | 2 | template | 4, 42, 45, 46, 51, 52, 55, 238, 240 | [place.svg](place.svg) |
 | `planning` | object | core | 3 | planning | 4, 28, 29, 60, 64, 98, 101, 102, 104, 171, 172, 182, 198, 199, 200, 202 | [planning.svg](planning.svg) |
+| `pool` | object | core | 1 | pool | 204, 230, 239, 240, 241, 242 | [pool.svg](pool.svg) |
 | `proposal` | object | core | 2 | proposal | 184, 17, 35, 36, 171, 172, 187 | [proposal.svg](proposal.svg) |
 | `repository` | object | core | 1 | repository | 5, 104, 149, 199, 202, 203, 206, 207, 208 | [repository.svg](repository.svg) |
 | `service` | object | core | 2 | service | 4, 12, 45, 46, 47, 48, 55, 191, 203 | [service.svg](service.svg) |
@@ -36,11 +37,11 @@ itself, so the picture cannot drift from the runtime (83). Regenerate with
 
 | machine | kind | tier | version | object | satisfies | diagram |
 |---|---|---|---|---|---|---|
-| `host` | engine | core | 5 | host | 4, 32, 55, 96, 147, 149, 150, 151, 186, 196, 205, 215, 217, 222, 230, 231, 232 | [host.svg](host.svg) |
-| `lease` | engine | core | 2 | lease | 128, 134, 147, 149, 150, 232 | [lease.svg](lease.svg) |
-| `plan` | engine | core | 2 | plan | 7, 8, 9, 11, 15, 83, 86, 148, 213, 214 | [plan.svg](plan.svg) |
-| `response` | engine | core | 3 | response | 1, 3, 4, 6, 12, 137, 153, 154, 193, 194, 233 | [response.svg](response.svg) |
-| `sink` | engine | core | 1 | sink | 2, 8, 14, 18, 68, 82, 148, 152, 155, 216, 217, 218, 233 | [sink.svg](sink.svg) |
+| `host` | engine | core | 5 | host | 4, 32, 55, 96, 147, 149, 150, 151, 186, 196, 205, 215, 217, 222, 230, 231, 232, 238, 240 | [host.svg](host.svg) |
+| `lease` | engine | core | 2 | lease | 128, 134, 147, 149, 150, 232, 238 | [lease.svg](lease.svg) |
+| `plan` | engine | core | 3 | plan | 7, 8, 9, 11, 15, 83, 86, 148, 213, 214, 235, 237 | [plan.svg](plan.svg) |
+| `response` | engine | core | 3 | response | 1, 3, 4, 6, 12, 137, 153, 154, 193, 194, 233, 234, 235 | [response.svg](response.svg) |
+| `sink` | engine | core | 1 | sink | 2, 8, 14, 18, 68, 82, 148, 152, 155, 216, 217, 218, 233, 236 | [sink.svg](sink.svg) |
 
 ## Unit types (`machines/unit-types/<machine>@<version>.yaml`)
 

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1378" height="379" viewBox="0 0 1378 379" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1378" height="394" viewBox="0 0 1378 394" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
 <defs>
 <marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
 <marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
@@ -6,49 +6,52 @@
 <marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
 <marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
 </defs>
-<rect width="1378" height="379" fill="#fff"/>
-<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">plan — engine v2, core · object plan · one per organization</text>
+<rect width="1378" height="394" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">plan — engine v3, core · object plan · one per organization</text>
 <text x="40" y="57" font-size="12" fill="#666">The plan as an object: one per organization (148).</text>
-<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 7, 8, 9, 11, 15, 83, 86, 148, 213, 214 · engine/plan.yaml · record next_number, register, status_as_of</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 7, 8, 9, 11, 15, 83, 86, 148, 213, 214, 235, 237 · engine/plan.yaml · record next_number, register, status_as_of</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">register</text>
 <line x1="107" y1="103" x2="354.2" y2="103" stroke="#8a8a86" stroke-width="2" opacity="0.3"/>
-<circle cx="52.0" cy="151.0" r="4" fill="#1a1a1a"/>
-<line x1="56.0" y1="151.0" x2="69.0" y2="151.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
-<path d="M118.0,137.0 V129.0 H277.1 V137.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
-<path d="M277.1,177.0 V187.0 H118.0 V165.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
-<rect x="70.0" y="137.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>every standing decision carries a number; the page and the chat read the same register</title></rect>
-<text x="118.0" y="159.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">current</text>
-<rect x="210.0" y="137.0" width="134.2" height="40.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"></rect>
-<text x="277.1" y="159.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">numbering</text>
-<text x="277.1" y="171.0" font-size="8.5" fill="#666" text-anchor="middle">entry ⚙ number_decisions</text>
-<rect x="158.5" y="117.5" width="78.1" height="11" fill="#fff" opacity="0.92"/>
-<text x="197.6" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">plan.unnumbered</text>
-<rect x="179.5" y="187.5" width="36.0" height="11" fill="#fff" opacity="0.92"/>
-<text x="197.6" y="196.0" font-size="8.5" fill="#333" text-anchor="middle">always</text>
-<text x="40" y="239" font-size="11.5" font-weight="700" fill="#8a8a86">status</text>
-<line x1="93" y1="235" x2="228.3" y2="235" stroke="#8a8a86" stroke-width="2" opacity="0.3"/>
-<circle cx="52.0" cy="283.0" r="4" fill="#1a1a1a"/>
-<line x1="56.0" y1="283.0" x2="69.0" y2="283.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
-<path d="M80.0,269.0 V261.0 H156.0 V269.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
-<rect x="70.0" y="269.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>the status projection is rewritten whenever the state it projects moved; reading twice with nothing changed writes nothing (78)</title></rect>
-<text x="118.0" y="291.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">current</text>
-<rect x="42.0" y="249.5" width="176.3" height="11" fill="#fff" opacity="0.92"/>
-<text x="130.2" y="258.0" font-size="8.5" fill="#333" text-anchor="middle">¬plan.status_current ⚙ render_status</text>
-<rect x="40" y="335" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
-<rect x="56" y="345" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
-<text x="71" y="354" font-size="9" fill="#666">state</text>
-<rect x="114.75" y="345" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
-<text x="129.75" y="354" font-size="9" fill="#666">decision state · amber pill is the kind</text>
-<rect x="341.8" y="345" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
-<text x="356.8" y="354" font-size="9" fill="#666">⧉ runs a submachine</text>
-<rect x="469.85" y="345" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
-<text x="484.85" y="354" font-size="9" fill="#666">double border: final</text>
-<rect x="602.85" y="345" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
-<text x="617.85" y="354" font-size="9" fill="#666">arrow above: forward</text>
-<rect x="735.85" y="345" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
-<text x="750.85" y="354" font-size="9" fill="#666">arrow below: back</text>
-<rect x="854.0" y="345" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
-<text x="869.0" y="354" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
-<rect x="1066.2" y="345" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
-<text x="1081.2" y="354" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+<circle cx="52.0" cy="166.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="166.0" x2="69.0" y2="166.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M156.0,152.0 V129.0 H277.1 V152.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M80.0,152.0 V144.0 H118.0 V152.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M277.1,192.0 V202.0 H118.0 V180.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<rect x="70.0" y="152.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>every standing decision carries a number; the page and the chat read the same register</title></rect>
+<text x="118.0" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">current</text>
+<rect x="210.0" y="152.0" width="134.2" height="40.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"></rect>
+<text x="277.1" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">numbering</text>
+<text x="277.1" y="186.0" font-size="8.5" fill="#666" text-anchor="middle">entry ⚙ number_decisions</text>
+<rect x="177.5" y="117.5" width="78.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="216.6" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">plan.unnumbered</text>
+<rect x="42.0" y="132.5" width="171.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="127.8" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">reply assign &lt;owner&gt; ⚙ assign_owner</text>
+<rect x="179.5" y="202.5" width="36.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="197.6" y="211.0" font-size="8.5" fill="#333" text-anchor="middle">always</text>
+<text x="40" y="254" font-size="11.5" font-weight="700" fill="#8a8a86">status</text>
+<line x1="93" y1="250" x2="228.3" y2="250" stroke="#8a8a86" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="298.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="298.0" x2="69.0" y2="298.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M80.0,284.0 V276.0 H156.0 V284.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<rect x="70.0" y="284.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>the status projection is rewritten whenever the state it projects moved; reading twice with nothing changed writes nothing (78)</title></rect>
+<text x="118.0" y="306.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">current</text>
+<rect x="42.0" y="264.5" width="176.3" height="11" fill="#fff" opacity="0.92"/>
+<text x="130.2" y="273.0" font-size="8.5" fill="#333" text-anchor="middle">¬plan.status_current ⚙ render_status</text>
+<rect x="40" y="350" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="360" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="71" y="369" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="360" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="369" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="360" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="369" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="360" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="369" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="360" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="617.85" y="369" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="360" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="369" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="360" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="369" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="360" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="369" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
 </svg>

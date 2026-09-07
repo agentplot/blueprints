@@ -81,6 +81,7 @@ of some object, or a file the machinery reads as evidence.
 | `chore@2`, `fast@3`, `default@5`, `persona-test@3` | template | unit types; their states are the stages — the OpenSpec steps `spec` (ff), `build` (apply) and `verify` for `default`, one `ff-apply` stage for `fast`, the archive being the item's merge-time effect (10.7) | instantiated by `work-item.in-type` | `machines/unit-types/<machine>@<version>.yaml` |
 | `organization` | object, singleton | the bootstrap: absent, blueprints ready, state ready, awaiting the App, connected, hosted (204) | — · repository | `machines/organization.yaml` |
 | `repository` | object | a built repository the flywheel tracks: proposed, creating, registering, covering, tracked (206) | organization · — | `machines/repository.yaml` |
+| `pool` | object | a platform that provisions hosts on demand from the image, up to a bound, and retires them idle: image current or behind; hosts adding, steady, retiring (240–242) | organization · — | `machines/pool.yaml` |
 | `package` | object | one package of one kind — adapter, chat sink, runner, router, sign-in, type, producer, vocabulary, template, scenario pack — added, awaiting install, needing a secret, installing, installed, disabled, removed (228, 229) | organization · — | `machines/package.yaml` |
 | `host`, `lease`, `response`, `plan`, `sink` | engine | a host, an object's ownership, one operator response, the plan's decision register, one delivery sink | — | `machines/engine/` |
 
@@ -2452,3 +2453,50 @@ server refuses a call from any other identity before a response exists
 and records the refusal in the run record (`surfaces.yaml`
 `tools.identity`), and the switcher shows such an organization as not a
 member.
+
+**234–237 — users and ownership.** The sign-in kind defaults to
+GitHub on every host (`host.yaml` `sign_in`: the web flow behind a
+host, the device flow on the operator's own computer), so the identity
+is the GitHub username everywhere, the local-user case is gone, and
+`operators:` lists usernames unless a host binds another kind (234).
+One board: every member reads the one register, so numbers and count
+are the same; a retracted entry keeps `answered_by` and `answered_at`
+from the response, every member's delivery shows them, and the tool
+server refuses a second response to that number before any record
+exists (235; `plan.yaml` v3, `surfaces.yaml` `members`). Sinks are per
+member: the `sink` record carries `member`, one page and one chat sink
+per identity in `operators:` with its own mark, a shared channel a
+sink with none (236). A decision's owner is its object's record
+`owner`, a member or a role from `roles:`, set by planning's proposal,
+by a type, or by the `assign <owner>` response the plan machine
+applies through `assign_owner` (237); `filter own` on a member's sink
+narrows their rail and chat and nothing else.
+
+**238–239 — environments.** A repository declares its environment in
+`flywheel/environment.yaml` or by naming its devcontainer or devenv
+file; the host binds a provider (`hosts.<host>.provider`: devenv,
+devcontainer, nix, image), `prepare_place` activates it in the place
+and records the declaration's hash and the provider as
+`place.environment`, and every kind of agent is started through the
+provider's shell (`sessions.yaml` `environment`). The host machine's
+new `environment` region reads `host.environment_satisfied`: false is
+the `host-environment` attention decision and `lease.coverable`
+excludes that repository's objects on the host (238). A platform host
+comes from an image `build_image` renders from the declarations,
+tagged by their hash, repeatable; an image behind the declarations
+shows on the hosts surface and is rebuilt by a chore (239).
+
+**240–242 — host pools.** The `pool` machine (`machines/pool.yaml`,
+owned by the organization, 241): its `image` region builds when
+behind; its `hosts` region runs `provision_pool_host` while
+`pool.demand` holds — approved work the pool covers waits behind every
+covering host's bound and the instrument reads drain is the limit —
+within `pool.bound` and `pool.cost_allows`, and `retire_pool_host` for
+a host idle past `retire_after` holding nothing (242). A pool host
+joins by an enrolment token like any added host (230), carries
+`pool` on its record, is ephemeral — its places are re-made from their
+lines elsewhere by the owner's place machine — and never needs the
+operator's eye; the hosts surface shows the pool, its bound, its live
+hosts and its image (240). The instrument's drain sums alive hosts'
+bounds, pool hosts included, so a host added or retired shows as drain
+changing (242).
