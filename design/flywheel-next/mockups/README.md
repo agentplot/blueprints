@@ -87,6 +87,17 @@ Feedback so far, in order:
   record with a PR-and-checks stamp; a signal is a quote with a left
   rule), and phase is the lane's while kind is the shape's. The dock
   header takes the object's form.
+- Book mode (2026-09-07): the board gains a third view, an embedded
+  mdBook viewer the page draws itself (key b), because the books are
+  mdBook and the server is Rust so the integration can be tight. The
+  rail jumps the viewer to the chapter and claim block a decision
+  concerns and lights it; decision markers sit in the chapter margin;
+  every dock page and the map's scope box carry "read in book"; a
+  library overlay lists the organization's books with chapters, claims
+  standing and proposed, last written, unmet verdicts and "changed since
+  review", and links a book's repositories to the map; "since last
+  review" and "mark reviewed" are one flow shared with the map, the mark
+  moved by one recorded response (S73).
 
 The models behind the surface are in `../models/statechart/` (`model.md`
 first). The Rust prototype that serves a working version of this page

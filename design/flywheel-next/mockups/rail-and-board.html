@@ -69,8 +69,8 @@
     intents in Inception and press explore (with-operator or standing). Drop, later, rename,
     service start/stop, finish and ask-again are buttons in the dock.
   - A closed intent and a finished elaboration stay in Inception greyed with "leaves in Nd".
-  - The board has two views, switched in its header or with m: "phases" (the lanes) and
-    "map", the system context map as the scope surface (198, accepted; not yet in
+  - The board has three views, switched in its header or with m (phases and map) and b
+    (phases and book): "phases" (the lanes), "map", the system context map as the scope surface (198, accepted; not yet in
     requirements.md). The map draws willdan's repositories and the external systems they meet;
     a repository node carries its kinds and capabilities, a claim summary (standing · unmet,
     coloured by unmet), and the same decision markers as the lanes; a focused rail card lights
@@ -82,9 +82,40 @@
     "Since last review" (122) dims unchanged nodes and edges and outlines the changed ones with
     a note. "Add repository" places a node, asks kinds and capabilities, shows the claims that
     fall into scope, and a baseline decision with a new number appears in the rail (104).
+  - Book mode is an mdBook viewer the page draws itself. The organization's books are mdBook
+    sources in the books repository; the Rust server serves each at /book/<book>/<chapter>.html
+    and the page draws the chapter tree, one chapter at a time with prev and next, headings
+    with anchors, and the claim blocks as the flywheel renders them: name, version, standing or
+    proposed (98), what it attaches to and the scope line derived from it (200), one verdict
+    dot per repository in scope from the ledger (100, 101). A proposed claim is dashed and
+    carries no verdicts. Chapters and prose are invented from the seed's claims, marked sample.
+  - The rail drives the viewer. A focused card jumps the book to the chapter and anchor the
+    decision concerns: a unit's cited claim, an intent's chapters, a bolt's or a landing's
+    claims, a proposal's claims per unit, a gathered elaboration's shared claim, a moved claim
+    itself; the block lights. A ref in the book in hand wins; otherwise the first ref, which
+    loads its book. Decision markers sit in
+    the chapter margin beside the block they concern, the same glyphs as the lanes; a click
+    focuses the card and opens its dock. j/k walk the rail only; the dock stays available; b
+    enters and leaves book mode.
+  - "read in book" appears on every dock page per cited chapter or claim (decision, proposal
+    per unit, bolt, landed bolt, intent, elaboration, the repository dock's claim rows) and in
+    the map's scope box; it switches to book mode at that anchor and closes the dock, which
+    would otherwise cover the page; Enter reopens it on the focused card.
+  - Library: a control in the book header opens an overlay over the board listing the
+    organization's books (platform-kit, switchboard-kit, atlas-kit, gvc-kit, and the flywheel's
+    surface specification as a shipped book) with chapters, claims standing and proposed, last
+    written, unmet verdicts, "changed since review" and its repositories; choosing one loads
+    it; a repository chip goes to the map view and opens the repository dock; Esc closes.
+  - The review flow is one flow for the map and the book (122): "since last review" is the
+    same switch and mark in both views; in the book, changed paragraphs and claim blocks are
+    outlined and washed with a note, unchanged chapters dim in the tree, and a Changes list at
+    the head of the tree links each change to its anchor. "mark reviewed" is one recorded
+    response (S73) that moves the mark and empties both views; "ok" on an attention line is
+    recorded too (S74).
   - Under 760px the rail and the board are two tabs; the dock is full screen with a back
     control. The clock starts at 07:40 and advances a minute per response. Detail beyond the
-    seed is invented and marked sample. Review switches: ?theme=dark|light, ?nodock, ?open=<key>.
+    seed is invented and marked sample. Review switches: ?theme=dark|light, ?nodock, ?open=<key>,
+    ?view=map|book, ?book=<id>, ?ch=<chapter>, ?review=1, ?library=1.
 -->
 <meta charset="utf-8">
 <title>Rail and Board</title>
@@ -200,7 +231,7 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
 .vd{font:600 10.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:4px;border:1px solid var(--line);color:var(--ink3);white-space:nowrap}
 .vd.satisfied{color:var(--ok);border-color:var(--ok)} .vd.not-satisfied{color:var(--crit);border-color:var(--crit)} .vd.stale{color:var(--warn);border-color:var(--warn)} .vd.unjudged{color:var(--ink2)} .vd.not-applicable{color:var(--ink3);border-style:dashed}
 .claims{display:flex;flex-direction:column}
-.claim{display:grid;grid-template-columns:1fr auto auto auto;gap:4px 8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line2);font-size:12.5px}
+.claim{display:grid;grid-template-columns:1fr auto auto auto auto;gap:4px 8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line2);font-size:12.5px}
 .claim .cn{font:600 12px var(--mono)} .claim .ce{grid-column:1/-1;color:var(--ink3);font-size:11.5px}
 .claim select{padding:2px 6px;font:11.5px var(--mono)}
 .kc{display:flex;flex-wrap:wrap;gap:4px}
@@ -516,6 +547,87 @@ label.chore .f{margin-left:auto;font:11px var(--mono);color:var(--ink3)}
 ul.sigs{list-style:none;margin:0;padding:0}
 ul.sigs li{margin:0}
 
+/* ---------- book: an mdBook viewer the page draws; tree, one chapter at a time, claim blocks as the flywheel renders them ---------- */
+.book{flex:1;min-height:0;display:grid;grid-template-columns:240px minmax(0,1fr)}
+.book[hidden]{display:none}
+.bk-tree{border-right:1px solid var(--line);background:var(--surface2);overflow:auto;padding:10px 0 30px;font-size:12.5px}
+.bk-tree .bt-h{padding:0 12px 10px;border-bottom:1px solid var(--line2);margin-bottom:6px}
+.bk-tree .bt-title{font:800 14px var(--mono);margin-top:2px}
+.bk-tree .bt-sub{font-size:11.5px;color:var(--ink3);line-height:1.35;margin-top:2px}
+.bk-tree ol{list-style:none;margin:0;padding:0}
+.bk-tree li>button{display:flex;align-items:baseline;gap:8px;width:100%;text-align:left;padding:5px 12px;font-weight:600;color:var(--ink2);border-left:3px solid transparent}
+.bk-tree li>button:hover{background:var(--surface)}
+.bk-tree li>button.on{background:var(--surface);color:var(--ink);border-left-color:var(--accent)}
+.bk-tree li>button.dim{opacity:.45}
+.bk-tree .bt-n{font:600 11px var(--mono);color:var(--ink3);width:14px;flex:none}
+.bk-tree .bt-c{margin-left:auto;font:600 10px var(--mono);color:var(--warn);white-space:nowrap}
+.bk-tree .bt-sub li>button{padding:3px 12px 3px 34px;font-weight:500;font-size:12px;border-left:0;position:relative;color:var(--ink2)}
+.bk-tree .bt-sub li>button::before{content:"";position:absolute;left:22px;top:0;bottom:0;border-left:1px solid var(--line)}
+.bk-tree .bt-sub li>button.cl{font-size:11.5px}
+.bk-tree .bt-sub li>button .v{color:var(--ink3);font:10.5px var(--mono)}
+.bk-tree .bt-sub li>button.lit{background:var(--lit);color:var(--ink)}
+.bk-changes{margin:6px 8px 10px;border:1px solid var(--warn);border-radius:6px;padding:6px 8px;background:color-mix(in srgb,var(--warn) 8%,transparent)}
+.bk-changes .bc-h{display:flex;gap:8px;align-items:baseline;font:700 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--warn);margin-bottom:4px}
+.bk-changes .bc-h span{margin-left:auto}
+.bk-changes button{display:block;width:100%;text-align:left;font:11.5px var(--mono);color:var(--ink2);padding:3px 4px;border-left:2px solid var(--warn);margin:2px 0;line-height:1.35}
+.bk-changes button:hover{background:var(--surface)}
+.bk-tree .bt-foot{padding:10px 12px 0;border-top:1px solid var(--line2);margin-top:10px;font-size:11.5px;color:var(--ink2);display:flex;flex-wrap:wrap;gap:4px 10px}
+.bk-tree .bt-foot .eyebrow,.bk-tree .bt-foot .ot{flex-basis:100%}
+.bk-tree .bt-foot .ot{font-size:11px;color:var(--ink3);line-height:1.4;margin-top:4px}
+.vh{display:inline-flex;align-items:center;gap:5px;font:11px var(--mono);color:var(--ink2)}
+.vdot{display:inline-block;width:9px;height:9px;border-radius:50%;box-sizing:border-box;background:var(--ink3);flex:none}
+.vdot.satisfied{background:var(--ok)} .vdot.not-satisfied{background:var(--crit)} .vdot.stale{background:var(--warn)} .vdot.unjudged{background:transparent;border:2px solid var(--ink3)} .vdot.not-applicable{background:transparent;border:1.5px dashed var(--ink3)}
+.bk-content{overflow:auto;background:var(--surface);padding:18px 28px 80px}
+.bk-page{max-width:calc(72ch + 96px);margin:0 auto;padding-left:96px;position:relative}
+.bk-crumb{display:flex;gap:8px;align-items:baseline;font:11px var(--mono);color:var(--ink3);margin-bottom:6px;flex-wrap:wrap}
+.bk-block{position:relative;margin:0 0 12px;border-radius:4px;transition:background .15s}
+.bk-block.h1{margin-bottom:16px}
+.bk-block h1{font-size:24px;font-weight:800;letter-spacing:-.01em;margin:0;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.bk-block h2{font-size:17px;font-weight:800;margin:22px 0 6px;display:flex;gap:8px;align-items:baseline}
+.bk-block .anchor{color:var(--ink3);text-decoration:none;font:400 13px var(--mono);opacity:.45}
+.bk-block .anchor:hover{opacity:1;color:var(--accent)}
+.bk-block p{margin:0;font-size:14px;line-height:1.6;max-width:72ch}
+.bk-block.lit{background:var(--lit);box-shadow:0 0 0 6px var(--lit)}
+.bk-block.changed{background:color-mix(in srgb,var(--warn) 9%,transparent);box-shadow:0 0 0 6px color-mix(in srgb,var(--warn) 9%,transparent);outline:1px solid var(--warn);outline-offset:6px}
+.bk-block.lit.changed{background:var(--lit);box-shadow:0 0 0 6px var(--lit)}
+.bk-block .gut{position:absolute;left:-96px;top:2px;width:84px;display:flex;flex-direction:column;gap:3px;align-items:flex-end}
+.bk-block.h1 .gut{top:6px}
+.chg-note{display:block;font:10.5px var(--mono);color:var(--warn);margin-top:4px}
+.claim-block{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:6px;padding:8px 12px 9px;background:var(--surface2);margin-top:8px}
+.claim-block.proposed{border-style:dashed;border-left-style:dashed;border-left-color:var(--ink3);background:transparent}
+.claim-block .cb-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.claim-block .cb-k{font:600 9.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.claim-block .cb-n{font:700 13px var(--mono)}
+.claim-block .cb-v{font:600 11.5px var(--mono);color:var(--ink2)}
+.claim-block .cb-state{margin-left:auto;font:600 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);border-radius:3px;padding:0 5px;color:var(--ink3)}
+.claim-block .cb-state.standing{color:var(--accent);border-color:var(--accent)}
+.claim-block .cb-state.proposed{border-style:dashed}
+.claim-block .cb-t{font-size:13.5px;line-height:1.55;margin:6px 0;max-width:68ch}
+.claim-block .cb-att{display:flex;flex-wrap:wrap;gap:4px;align-items:center;font:11px var(--mono);color:var(--ink3);margin-top:4px}
+.claim-block .cb-scope{font:11px var(--mono);color:var(--ink3);margin-top:4px}
+.claim-block .cb-homes{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:6px}
+.claim-block .cb-note{font:11px var(--mono);color:var(--ink3);margin-top:6px}
+.claim-block .cb-changed{font:10.5px var(--mono);color:var(--warn);margin-top:6px;border-top:1px dashed var(--warn);padding-top:4px}
+.bk-foot{display:flex;justify-content:space-between;gap:8px;margin-top:30px;padding-top:12px;border-top:1px solid var(--line2)}
+/* library: the organization's books, over the board */
+.library{position:absolute;inset:0;z-index:10;background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(2px);display:flex;align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto}
+.library[hidden]{display:none}
+.lib-panel{width:min(860px,100%);background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);padding:14px 16px 12px}
+.lib-h{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+.lib-h h2{font-size:16px;font-weight:800}
+.lib-h .sub{font-size:12px;color:var(--ink3);flex:1}
+.lib-h .x{font-size:20px;line-height:1;color:var(--ink3)}
+.lib-row{display:grid;grid-template-columns:1fr auto;gap:4px 14px;padding:10px 8px;border-bottom:1px solid var(--line2);cursor:pointer;border-radius:6px}
+.lib-row:hover{background:var(--surface2)} .lib-row.on{background:var(--accent-soft)}
+.lib-row .ln{font-weight:800;font-size:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.lib-row .ls{color:var(--ink2);font-size:12px;margin:1px 0 4px}
+.lib-row .lm{display:flex;flex-wrap:wrap;gap:4px 14px;font:11px var(--mono);color:var(--ink3);align-items:center}
+.lib-row .lm b{color:var(--ink);font-weight:600} .lib-row .lm b.warn{color:var(--warn)}
+.lib-row .la{align-self:center}
+.rowbtn{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:4px 0;border-bottom:1px solid var(--line2)}
+.rowbtn:last-child{border-bottom:0}
+.rowbtn .grow{flex:1;min-width:0;color:var(--ink2)}
+
 /* ---------- dock ---------- */
 .scrim{position:absolute;inset:0;background:transparent;display:none;z-index:8}
 body.docked .scrim{display:block}
@@ -628,6 +740,12 @@ body.docked .dock{transform:none}
   .board{display:none;overflow:auto}
   .lanes{grid-template-columns:1fr;grid-auto-rows:auto;overflow:visible}
   .map{grid-template-columns:1fr;grid-auto-rows:auto}
+  .book{grid-template-columns:1fr;grid-template-rows:auto auto}
+  .bk-tree{max-height:38vh;border-right:0;border-bottom:1px solid var(--line)}
+  .bk-content{overflow:visible;padding:14px 12px 60px}
+  .bk-page{padding-left:0}
+  .bk-block .gut{position:static;width:auto;flex-direction:row;flex-wrap:wrap;justify-content:flex-start;margin-bottom:4px}
+  .library{padding:10px}
   .lane{overflow:visible;border-right:0;border-bottom:1px solid var(--line);padding-bottom:16px}
   body[data-tab="plan"] .rail{display:block}
   body[data-tab="board"] .board{display:block}
@@ -646,7 +764,7 @@ body.docked .dock{transform:none}
   <h1>Rail and Board</h1>
   <span class="meta">willdan · 2026-09-04 <span class="mono" id="clock">07:40</span></span>
   <div class="count"><b id="count">12</b><span>decisions</span><span class="hint" id="yesallhint">· "yes all" answers 412–417, 422, 424</span></div>
-  <span class="keys" style="display:flex;gap:10px;font-size:11px;color:var(--ink3)"><span><kbd>j</kbd><kbd>k</kbd> rail</span><span><kbd>↵</kbd> open</span><span><kbd>y</kbd><kbd>n</kbd><kbd>l</kbd> answer</span><span><kbd>]</kbd><kbd>[</kbd> beads</span><span><kbd>m</kbd> map</span><span><kbd>/</kbd> capture</span><span><kbd>esc</kbd> close</span></span>
+  <span class="keys" style="display:flex;gap:10px;font-size:11px;color:var(--ink3)"><span><kbd>j</kbd><kbd>k</kbd> rail</span><span><kbd>↵</kbd> open</span><span><kbd>y</kbd><kbd>n</kbd><kbd>l</kbd> answer</span><span><kbd>]</kbd><kbd>[</kbd> beads</span><span><kbd>m</kbd> map</span><span><kbd>b</kbd> book</span><span><kbd>/</kbd> capture</span><span><kbd>esc</kbd> close</span></span>
   <button class="btn quiet theme" id="theme" title="theme">system</button>
   <button class="btn" id="logbtn" aria-expanded="false"><b id="sent">0</b> sent</button>
   <button class="btn pri" id="yesall">yes all</button>
@@ -663,6 +781,8 @@ body.docked .dock{transform:none}
       <section class="lane operation" id="lane-operation" aria-label="Operation"></section>
     </div>
     <div class="map" id="map" hidden><div class="map-stage-wrap" id="map-wrap"><div class="map-stage" id="map-stage"></div></div><aside class="map-panel" id="map-panel"></aside></div>
+    <div class="book" id="book" hidden><aside class="bk-tree" id="bk-tree" aria-label="chapters"></aside><div class="bk-content" id="bk-content"></div></div>
+    <div class="library" id="library" hidden></div>
     <div class="scrim" id="scrim"></div>
     <aside class="dock" id="dock" role="dialog" aria-modal="false" aria-labelledby="dk-title">
       <div class="dk-h" id="dk-h"></div>
@@ -743,14 +863,14 @@ const S = {
     {id:'mac-mini', alive:false, bound:2, last:'06:59', gone:'41m', note:'lease expires 07:59 · then its sessions are released'},
   ],
   intents: [
-    {id:'atlas-provider-limits', name:'atlas-provider-limits', state:'proposed', note:'proposed · 7 signals · one standing session already on its line',
+    {id:'atlas-provider-limits', name:'atlas-provider-limits', state:'proposed', chapters:['providers'], note:'proposed · 7 signals · one standing session already on its line',
      sessions:[{id:'proto', label:'prototype plan-derivation (standing)', state:'idle', tag:'14h', host:'studio', agent:'claude', model:'fable', pane:'studio/2', last:'09-03 17:30 · derivation is pure over state; nothing left to prove'}]},
-    {id:'loop-granularity', name:'loop-granularity', state:'done', note:'4 elaborations done · nothing running',
+    {id:'loop-granularity', name:'loop-granularity', state:'done', chapters:['loops'], note:'4 elaborations done · nothing running',
      sessions:[{id:'lg1',label:'research scope',state:'done',leaves:'today'},{id:'lg2',label:'planning rounds',state:'done',leaves:'2d'},{id:'lg3',label:'prototype tick',state:'done',leaves:'5d'},{id:'lg4',label:'writeback',state:'done',leaves:'6d'}]},
-    {id:'sink-marks', name:'sink-delivery-marks', state:'open', note:'research running · writeback queued',
+    {id:'sink-marks', name:'sink-delivery-marks', state:'open', chapters:['sinks'], note:'research running · writeback queued',
      sessions:[{id:'sm-res', label:'research (self-closing)', state:'working', host:'studio', agent:'claude', model:'fable', pane:'studio/4', last:'07:33 · reading the three sinks\' delivery paths'},{id:'sm-wb', label:'writeback', state:'queued'}]},
-    {id:'loop-cadence', name:'loop-cadence', state:'open', note:'sibling of loop-granularity · how often a loop asks a provider', sessions:[]},
-    {id:'provider-key-rotation', name:'provider-key-rotation', state:'open', note:'from the ops constraint · provider B rotates keys on the 1st', sessions:[]},
+    {id:'loop-cadence', name:'loop-cadence', state:'open', chapters:['loops','providers'], note:'sibling of loop-granularity · how often a loop asks a provider', sessions:[]},
+    {id:'provider-key-rotation', name:'provider-key-rotation', state:'open', chapters:['providers'], note:'from the ops constraint · provider B rotates keys on the 1st', sessions:[]},
   ],
   gatherings:[{n:424, type:'research', state:'proposed', intents:['atlas-provider-limits','loop-cadence','provider-key-rotation']}],
   explorations:[], planning:null, deferred:[], picked:new Set(), exploreMode:false, exploreKind:'with',
@@ -763,7 +883,7 @@ const S = {
      claims:[['repo/readme @v2','not satisfied','all','no README at root'],['repo/ci @v1','not satisfied','all','no gate runs on push'],['repo/as-built @v1','not satisfied','all','no as-built record'],['repo/agents-md @v1','not satisfied','all','no AGENTS.md'],['boundary/one-owner @v2','not satisfied','all','no CODEOWNERS'],['boundary/no-cross-import @v1','not satisfied','kind:service','—'],['boundary/ports-derived @v1','not satisfied','kind:service','—'],['owner/named @v1','not satisfied','all','—'],['invariant/health-endpoint @v1','not satisfied','capability:http','—'],['invariant/graceful-stop @v1','not satisfied','capability:http','—'],['behavior/status-row @v1','not satisfied','named','named for new-repo by 09-03 ask'],['providers/rate-envelope @v1','not applicable','capability:provider-calls','no provider calls'],['plan/sink-marks @v2','not applicable','capability:sinks','no sinks']]},
     {id:'books', kinds:['books'], caps:[], manifest:'books/flywheel.yaml · the books repository · claims live here', claims:[]},
   ],
-  view:'phases', scopeSel:null, scopeSet:new Set(), addRepo:null,
+  view:'phases', book:{id:'platform-kit', ch:'overview', scrollTo:null, hl:null}, library:false, scopeSel:null, scopeSet:new Set(), addRepo:null,
   map:{
     nodes:[
       {id:'atlas', x:330, y:40}, {id:'switchboard', x:330, y:410}, {id:'new-repo', x:610, y:430}, {id:'books', x:60, y:200},
@@ -784,7 +904,7 @@ const S = {
     nodes:{'atlas':['+ claim providers/rate-envelope @v1 · curation 09-04 07:12','claim sessions/one-writer v3 → v4 · writeback 09-03 17:20'], 'new-repo':['+ repository joined 09-03 23:00 · 11 claims in scope'], 'books':['+ chapter 7 loops rewritten · loop-granularity writeback 09-03 17:55','+ claim plan/tail-cursor @v1 · host-liveness writeback']},
     edges:{'atlas→provider-b':'removed 09-03 · key handling moved behind the portal', 'new-repo→switchboard':'added 09-03 · planned rows contract'}},
   bolts: [
-    {id:'plan-decisions', name:'plan-decisions', repo:'atlas', line:'plan-decisions @ 9e21c4', note:'4 merged · 1 open · cites one-writer v3',
+    {id:'plan-decisions', name:'plan-decisions', repo:'atlas', line:'plan-decisions @ 9e21c4', note:'4 merged · 1 open · cites one-writer v3', claims:['sessions/one-writer @v3','sinks/one-mark @v2','plan/sink-marks @v2'],
      units:[{name:'plan-derivation',state:'merged'},{name:'decision-numbers',state:'merged'},{name:'response-apply',state:'merged'},{name:'decision-grouping',state:'merged',t:'07:21'},
             {name:'sink-delivery',state:'building',type:'default',items:[
               {id:'wi418',label:'wi-#418 build',state:'blocked',host:'mac-mini',agent:'claude',model:'fable',pane:'mac-mini/1',last:'06:59 · asked: should Ready imply Backlog cleared?'},
@@ -792,7 +912,7 @@ const S = {
               {id:'wi420',label:'wi-#420 review',state:'working',host:'studio',agent:'claude',model:'opus',pane:'studio/6',last:'07:37 · two notes so far · none blocking'}]}],
      endpoints:['http://plan.plan-decisions.localhost:41231','http://rows.plan-decisions.localhost:41232'],
      services:[{n:'plan-api',s:'running',ep:'http://plan.plan-decisions.localhost:41231'},{n:'rows web',s:'running',ep:'http://rows.plan-decisions.localhost:41232'},{n:'postgres',s:'running',ep:'postgres://localhost:41233'},{n:'signal-worker',s:'stopped',ep:'—'}]},
-    {id:'plan-tail', name:'plan-tail', repo:'atlas', line:'plan-tail @ 3c8d0e', note:'1 merged · 1 building · 422 proposes 2 more',
+    {id:'plan-tail', name:'plan-tail', repo:'atlas', line:'plan-tail @ 3c8d0e', note:'1 merged · 1 building · 422 proposes 2 more', claims:['plan/sink-marks @v2','plan/tail-cursor @v1'],
      units:[{name:'tail-derive',state:'merged',t:'09-03'},
             {name:'tail-marks',state:'building',type:'default',items:[
               {id:'wi425',label:'wi-#425 build',state:'working',host:'studio',agent:'claude',model:'fable',pane:'studio/7',last:'07:36 · mark table migration applied · 9 tests green'},
@@ -800,18 +920,18 @@ const S = {
      machinery:[{id:'cf1',label:'conflict fix · take of atlas main',state:'working',host:'studio',agent:'claude',model:'haiku',pane:'studio/8',last:'07:38 · 2 files conflict in src/plan/tail.py · resolving'}],
      endpoints:['http://atlas.plan-tail.localhost:41241'],
      services:[{n:'atlas-api',s:'running',ep:'http://atlas.plan-tail.localhost:41241'},{n:'atlas-worker',s:'stopped',ep:'—'}]},
-    {id:'plan-rows', name:'plan-rows', repo:'switchboard', line:'plan-rows @ 7b2e91', note:'4 merged · nothing in flight · gates green',
+    {id:'plan-rows', name:'plan-rows', repo:'switchboard', line:'plan-rows @ 7b2e91', note:'4 merged · nothing in flight · gates green', claims:['rows/order @v1','rows/window @v1','rows/cursor @v1','plan/sink-marks @v2'],
      units:[{name:'rows-order',state:'merged',t:'08-30'},{name:'rows-sink',state:'merged',t:'09-01'},{name:'rows-window',state:'merged',t:'09-02'},{name:'rows-cursor',state:'merged',t:'09-03 22:40'}],
      endpoints:['http://rows.plan-rows.localhost:41235'],
      services:[{n:'rows web',s:'running',ep:'http://rows.plan-rows.localhost:41235'},{n:'postgres',s:'running',ep:'postgres://localhost:41236'}]},
   ],
   landed: [
-    {id:'idle-timeout', name:'idle-timeout', repo:'switchboard', at:'06:52 today', pr:{n:212,state:'merged'}, checks:[['lint','ok'],['tests','ok','1,212 passed'],['map-check','ok'],['as-built','ok','2 statements']],
+    {id:'idle-timeout', name:'idle-timeout', repo:'switchboard', at:'06:52 today', claims:['sessions/idle-bound @v2'], pr:{n:212,state:'merged'}, checks:[['lint','ok'],['tests','ok','1,212 passed'],['map-check','ok'],['as-built','ok','2 statements']],
      envs:[['prod','https://switchboard.willdan.internal'],['staging','https://switchboard-staging.willdan.internal']], units:['idle-tail','session-idle-bound'], signals:[], live:null, leaves:'7d'},
-    {id:'provider-status', name:'provider-status', repo:'atlas', at:'09-02 16:10', pr:{n:198,state:'merged'}, checks:[['lint','ok'],['tests','ok','388 passed'],['map-check','ok'],['as-built','ok','3 statements']],
+    {id:'provider-status', name:'provider-status', repo:'atlas', at:'09-02 16:10', claims:['atlas/status-table @v1','providers/one-writer @v3'], pr:{n:198,state:'merged'}, checks:[['lint','ok'],['tests','ok','388 passed'],['map-check','ok'],['as-built','ok','3 statements']],
      envs:[['staging','https://atlas-staging.willdan.internal']], units:['status-table','status-poller'],
      signals:[{kind:'reaction',src:'log · atlas-staging',age:'2h',text:'429s from provider A at 0.4% of calls since the landing, up from 0.1%',move:'attached → intent atlas-provider-limits (412)'}], live:'signal live · 2h', leaves:'7d'},
-    {id:'claim-index', name:'claim-index', repo:'atlas', at:'08-28 15:05', pr:{n:190,state:'merged'}, checks:[['lint','ok'],['tests','ok','371 passed'],['map-check','ok'],['as-built','ok','3 statements']],
+    {id:'claim-index', name:'claim-index', repo:'atlas', at:'08-28 15:05', claims:['atlas/claim-index @v1'], pr:{n:190,state:'merged'}, checks:[['lint','ok'],['tests','ok','371 passed'],['map-check','ok'],['as-built','ok','3 statements']],
      envs:[['staging','https://atlas-staging.willdan.internal']], units:['claim-table','claim-lookup'], signals:[], live:null, leaves:'2d'},
   ],
   opsignals: [
@@ -936,6 +1056,285 @@ const BX = {
   'plan-rows':[['08-28 10:00','operator','response','yes 388 · bolt plan-rows opened off switchboard main @ 5b3e10'],['09-03 22:40','review','exit','unit rows-cursor · passed first time · merged'],['09-04 07:40','plan','decision','416 · land or hold']],
   'plan-tail':[['09-01 14:02','operator','response','yes 401 · bolt plan-tail opened'],['09-03 18:40','review','exit','unit tail-derive · passed · merged'],['09-04 07:31','planning','note','proposal 422 adds 2 units here']],
 };
+
+
+/* =====================================================================
+   The books · mdBook sources in the books repository, served by the Rust server at
+   /book/<book>/<chapter>.html#<anchor>. Chapters and prose are invented from the seed's
+   claims and marked sample. A claim block carries name, version, standing or proposed (98),
+   what it attaches to and the scope derived from it (200), and a verdict per home (100, 101).
+   ===================================================================== */
+const H = (id, text) => ({t:'h', id, text});
+const P = (text, changed) => ({t:'p', text, changed});
+const C = (name, v, state, text, attach, extra={}) => ({t:'claim', name, v, state, text, attach, ...extra});
+const each = (to, homes) => ({to, homes});
+const BUILT = [each('context atlas',['atlas']), each('context switchboard',['switchboard']), each('context rows · new-repo',['new-repo'])];
+const OKAS = {verdicts:{atlas:'satisfied', switchboard:'satisfied'}};
+const BOOKS = {
+  'platform-kit':{title:'platform-kit', sub:'the willdan platform · sessions, providers, the plan, sinks, status, loops, repositories', src:'books/platform-kit', written:'09-04 05:40 · writeback · intent host-liveness', repos:['atlas','switchboard','new-repo'],
+    changes:[
+      {ch:'sessions', a:'claim-sessions-one-writer', what:'claim sessions/one-writer v3 → v4 · writeback · intent host-liveness · 09-03 17:20'},
+      {ch:'plan', a:'claim-plan-tail-cursor', what:'+ claim plan/tail-cursor @v1 · writeback · intent host-liveness · 09-04 05:40'},
+      {ch:'plan', a:'tail', what:'§ the tail and its cursor · 2 paragraphs rewritten · 09-04 05:40'},
+      {ch:'loops', a:null, what:'chapter 7 rewritten in destination voice · writeback · intent loop-granularity · 09-03 17:55'},
+      {ch:'loops', a:'claim-loops-one-per-bolt-v1', what:'+ claim loops/one-per-bolt @v1 · proposed · standing when 418 closes'},
+      {ch:'loops', a:'claim-loops-tick-v1', what:'+ claim loops/tick @v1 · proposed'},
+      {ch:'providers', a:'claim-providers-rate-envelope', what:'claim providers/rate-envelope @v1 · challenged by 3 intents · gathering 424 proposed 09-04 07:12'},
+    ],
+    chapters:[
+      {id:'overview', n:1, title:'How to read this book', file:'src/01-overview.md', blocks:[
+        P('This book is the source for what the willdan platform is. A chapter explains a design conclusion and states the claim it adds or amends in the same commit, so the prose, the diagram and the claim cannot drift apart (97, 120). A construction session reads the chapter to know what a claim means.'),
+        H('standing','Standing and proposed'),
+        P('A claim is <b>standing</b> once the intent that wrote it closes and its line lands on the books. Only standing claims are planned against; a <b>proposed</b> claim is visible here, drawn dashed, and never built (98).'),
+        H('scope','Scope and verdicts'),
+        P('Each claim block names what it attaches to on the context map. Its scope is the set of repositories homing those attachments, derived and never chosen (200). A dot per repository in scope is the ledger\'s verdict: a judgment an agent made, stored with its inputs, reused until the claim moves (100, 101).'),
+      ]},
+      {id:'sessions', n:2, title:'Sessions', file:'src/02-sessions.md', blocks:[
+        P('A session is one agent in one place, charged by the machinery with a work order and left alone until it exits, blocks on a question, or goes idle past its bound. Every session carries its host, and the host carries its bound.'),
+        H('one-writer','One writer'),
+        P('Two hosts writing the same status rows drift. The platform keeps one writer per bolt, and since v4 that writer is the bolt loop itself, not a session: sessions hand the loop events, the loop applies them in order and writes once per tick.'),
+        C('sessions/one-writer','v4','standing','One status writer per bolt, and the writer is the loop, not a session. Sessions hand the loop events; the loop writes once per tick and replays the last event per row on restart.', [each('element sessions/status-writer',['atlas'])], {changed:'v3 → v4 · writeback · intent host-liveness · 09-03 17:20', was:'v3 · one status writer per bolt'}),
+        H('idle','The idle bound'),
+        P('A standing session that has done nothing for its bound is offered to the operator as a decision: finish it, or keep it. Nothing is ended by the machinery on its own.'),
+        C('sessions/idle-bound','v2','standing','A standing session idle past its bound raises one decision, finish or keep; the decision does not return until the session is idle again after activity.', [each('element sessions/idle-watch',['switchboard'])]),
+      ]},
+      {id:'providers', n:3, title:'Providers', file:'src/03-providers.md', blocks:[
+        P('Atlas meets two model providers over HTTP. Each has a published limit, a key policy and a way of saying no. This chapter says what the platform promises about how it treats them.'),
+        H('envelope','The rate envelope'),
+        P('Every provider call is made inside an envelope the provider declares: concurrent calls, calls per minute, tokens per minute. The envelope is data, read on start, and no worker exceeds it on its own.'),
+        C('providers/rate-envelope','v1','standing','Every call to a provider is made inside the envelope that provider declares; the envelope is declared once, per provider, and enforced before the call is made.', [each('relationship atlas → provider A',['atlas']), each('relationship atlas → provider B',['atlas'])], {changed:'challenged · 3 intents argue with it · gathering 424 proposed 09-04 07:12'}),
+        H('status-writer','One writer per provider'),
+        P('Atlas keeps one status row per provider. The poller writes it on each tick and the retry handler after a failure; with two hosts the rows drift. One writer module owns the table.'),
+        C('providers/one-writer','v3','standing','One module owns the provider status table; the poller and the retry handler hand it events and it writes once per provider per tick.', [each('element providers/status-row-writer',['atlas'])]),
+        H('retries','Retries'),
+        P('A failed call is retried on a backoff schedule. Every host retrying on the same fixed schedule retries in lockstep after an outage, which the ask “retries hammer the provider” describes. The schedule gains a jitter term drawn per attempt.'),
+        H('keys','Keys'),
+        P('Provider B rotates its keys on the first of the month. Atlas reloads the key without a restart.'),
+        C('ops/key-rotation','v1','standing','A provider key rotated by the provider is reloaded without a restart; a queued call made with the old key is retried once with the new one.', [each('relationship atlas → provider B',['atlas'])]),
+      ]},
+      {id:'plan', n:4, title:'The plan', file:'src/04-plan.md', blocks:[
+        P('The plan is a function of the state of the system, never of what a process remembers (7). It is always current; a decision appears exactly when a choice becomes the operator\'s and leaves when it is made (9).'),
+        H('numbers','Numbers'),
+        P('Every decision carries a short number, unique in the organization, given once and never reused. The page and the chat show the same number and a response names it (15).'),
+        H('tail','The tail and its cursor'),
+        P('Below its count the plan shows what reached done, landed, closed or dropped since the last delivery to the sink the operator is reading (14). One delivery mark per sink is recorded state.', true),
+        P('The mark is a cursor, written on delivery in the plan store, one per sink. The tail is derived from the cursor, never from the delivery log, so a restart yields the same tail.', true),
+        C('plan/tail-cursor','v1','standing','One cursor per sink, written on delivery in the plan store; the plan derives its tail from the cursor and the chat rendering carries a link to the page at the cursor.', [each('element plan/tail-cursor',['atlas','switchboard'])], {changed:'new · standing since 09-04 05:40 · writeback · intent host-liveness'}),
+      ]},
+      {id:'sinks', n:5, title:'Sinks', file:'src/05-sinks.md', blocks:[
+        P('Three sinks deliver the plan: the chat, the page and the bell. Each is a rendering of the same list under the same numbers (18), and each keeps its own delivery mark.'),
+        H('marks','Delivery marks'),
+        P('A mark is written on delivery and read on derive. The three delivery paths write one record; the SINCE tail after a restart is the same tail because the marks are re-read.'),
+        C('plan/sink-marks','v2','standing','Each sink keeps one delivery mark, written on delivery and read on derive; the tail is bounded by the last mark per sink, never by a count, and survives a restart.', [each('element sinks/delivery-mark',['atlas','switchboard'])]),
+        C('plan/sink-marks','v3','proposed','As v2, and a mark records the rendering it delivered so the chat can be re-sent unchanged after a restart.', [each('element sinks/delivery-mark',['atlas','switchboard'])], {note:'on intent sink-delivery-marks · writeback queued behind the research'}),
+        H('one-mark','One mark per sink'),
+        P('A sink has one mark, however many renderings it produced. A second delivery to the same sink moves the mark; it never adds one.'),
+        C('sinks/one-mark','v2','standing','One mark per sink; a delivery moves it and never adds a second.', [each('element sinks/delivery-mark',['atlas','switchboard'])], OKAS),
+      ]},
+      {id:'status', n:6, title:'Status', file:'src/06-status.md', blocks:[
+        P('The status view is a projection of the same state the engine reads, never a source of truth and never written by hand (142). It is one place for the whole organization, reachable from a phone (143).'),
+        H('row','The status row'),
+        P('Every object on the status view has one row, and the row says which host holds it, which host runs it, and whether that host is alive (141). A row in the portal is the same row.'),
+        C('behavior/status-row','v1','standing','Every object of the status view has one row that names its state, the host that holds it, the host that runs it, and whether that host is alive; the portal shows the same row.', [each('element status/row',['new-repo']), each('relationship rows → portal',['new-repo'])]),
+      ]},
+      {id:'loops', n:7, title:'Loops', file:'src/07-loops.md', blocks:[
+        P('A loop is the machinery\'s unit of attention: one loop per bolt owns every item of the bolt, and the merge order falls out of it. This chapter was rewritten in destination voice by the writeback of intent loop-granularity.', true),
+        H('one-per-bolt','One loop per bolt'),
+        P('A bolt loop that owns every item of the bolt is simpler than one loop per item: it sees the chain, starts dependency-free units side by side, and merges in order.', true),
+        C('loops/one-per-bolt','v1','proposed','One loop per bolt owns every work item of the bolt, starts what has no unmet dependency, and merges units in chain order.', [each('element loops/bolt-loop',['switchboard'])], {note:'on intent loop-granularity · standing when decision 418 closes it'}),
+        H('tick','The tick'),
+        P('A loop advances on a tick. 200 ticks over the seeded scenarios retracted every decision exactly when its state was left, which is the finding the prototype wrote.', true),
+        C('loops/tick','v1','proposed','A loop advances only on its tick; between ticks nothing moves, and a decision retracted by a tick is retracted exactly when its state is left.', [each('element loops/bolt-loop',['switchboard'])], {note:'on intent loop-granularity'}),
+      ]},
+      {id:'repositories', n:8, title:'Repositories and boundaries', file:'src/08-repositories.md', blocks:[
+        P('A repository joins the fleet when the target map first homes something in it (202). It arrives with an empty ledger; its first planning judges every claim in scope once and offers the unsatisfied set as one proposal (104).'),
+        H('every-repo','What every repository carries'),
+        C('repo/readme','v2','standing','A README at the root says what the repository is, who owns it, and how to run it.', BUILT),
+        C('repo/ci','v1','standing','A gate runs on every push and blocks a landing on failure.', BUILT),
+        C('repo/as-built','v1','standing','An as-built record names, per landed unit, the claim and version it serves (99).', BUILT, OKAS),
+        C('repo/agents-md','v1','standing','An AGENTS.md at the root says how a session works here and is kept current by writeback.', BUILT, OKAS),
+        C('owner/named','v1','standing','One named owner per repository, in CODEOWNERS.', BUILT, OKAS),
+        H('boundaries','Boundaries'),
+        C('boundary/one-owner','v2','standing','Every path has one owning context; no path is owned by two.', BUILT, OKAS),
+        C('boundary/no-cross-import','v1','standing','A service imports nothing from another context\'s internals; it meets it over the contract the map draws.', BUILT, OKAS),
+        C('boundary/ports-derived','v1','standing','The ports a service listens on are derived from the manifest, never hard-coded.', BUILT, OKAS),
+        H('invariants','Invariants of an HTTP service'),
+        C('invariant/health-endpoint','v1','standing','A service answers /health with its version and the state of its dependencies.', [each('element http/health',['atlas','switchboard','new-repo'])], OKAS),
+        C('invariant/graceful-stop','v1','standing','A service finishes in-flight requests on stop and exits within its bound.', [each('element http/server',['atlas','switchboard','new-repo'])], OKAS),
+      ]},
+      {id:'surfaces', n:9, title:'Surfaces', file:'src/09-surfaces.md', blocks:[
+        P('The surfaces willdan\'s operator works are the flywheel\'s, specified in its surface specification; this chapter cites the statements this organization relies on and states no claim of its own.'),
+        H('plan-page','The plan page'),
+        P('One page on the private network with a header, a machinery strip, a rail titled Decisions and a board (S1, S3). The board is the status view by phase and holds objects only; every decision is a marker on its object (S10, S17). The dock opens over the board and the board does not move (S27).'),
+        H('review','The review surface'),
+        P('The book and the context map are the review surface (S37, 122). The review view is what changed in both since the reviewed mark; marking reviewed is one recorded response on the plan object that moves both views (S73).'),
+        H('forms','Forms and keys'),
+        P('One form per kind and no two kinds share one (S51, 209). j and k walk the rail and nothing else; there is no second axis (S57). An attention acknowledgement is recorded like any answer (S74).'),
+      ]},
+    ]},
+  'switchboard-kit':{title:'switchboard-kit', sub:'switchboard · the rows pipeline from atlas to the portal and the warehouse', src:'books/switchboard-kit', written:'09-03 17:55 · writeback · intent loop-granularity', repos:['switchboard'],
+    changes:[{ch:'landing', a:'gates', what:'§ gates · 1 paragraph rewritten · 09-03 17:55'}],
+    chapters:[
+      {id:'pipeline', n:1, title:'The pipeline', file:'src/01-pipeline.md', blocks:[
+        P('Switchboard takes status rows from atlas, orders and windows them, and serves them to the portal; nightly it loads the warehouse. It has no provider calls of its own.'),
+        H('shape','Shape'),
+        P('One pipeline, one sink per consumer, one cursor per sink. The pipeline is the bounded context; the portal and the warehouse are external.'),
+      ]},
+      {id:'rows', n:2, title:'Rows', file:'src/02-rows.md', blocks:[
+        P('A row is one object\'s status at one time. Rows arrive from atlas in ticks and leave in order.'),
+        H('order','Order'),
+        C('rows/order','v1','standing','Rows leave the pipeline in the order they entered it, per object; a later row never overtakes an earlier one.', [each('element rows/pipeline',['switchboard'])], {verdicts:{switchboard:'satisfied'}}),
+        H('window','Windows'),
+        C('rows/window','v1','standing','A consumer reads rows in a window bounded by its cursor, never by a count.', [each('element rows/pipeline',['switchboard'])], {verdicts:{switchboard:'satisfied'}}),
+        H('cursor','The cursor'),
+        C('rows/cursor','v1','standing','One cursor per sink, moved on delivery, re-read on restart.', [each('element rows/cursor',['switchboard'])], {verdicts:{switchboard:'satisfied'}}),
+      ]},
+      {id:'landing', n:3, title:'Landing', file:'src/03-landing.md', blocks:[
+        P('Switchboard lands through a pull request. The bolt loop opens it when the operator says land, and the gates decide.'),
+        H('gates','Gates'),
+        P('lint, tests, map-check and the as-built check run on the line; a landing waits for all four and never merges on a red one.', true),
+      ]},
+    ]},
+  'atlas-kit':{title:'atlas-kit', sub:'atlas · the provider poller, the status table and the claim index', src:'books/atlas-kit', written:'09-02 15:40 · writeback · intent provider-status', repos:['atlas'], changes:[],
+    chapters:[
+      {id:'atlas', n:1, title:'Atlas', file:'src/01-atlas.md', blocks:[P('Atlas polls the providers, keeps their status, and indexes the claims the books state so construction can cite one by name. It lands by direct merge.')]},
+      {id:'status-table', n:2, title:'The status table', file:'src/02-status-table.md', blocks:[
+        P('One row per provider, written by one writer. The platform book states the writer; this chapter states the table.'),
+        C('atlas/status-table','v1','standing','The provider status table has one row per provider, keyed by provider id, with the last poll, the last failure and the envelope in force.', [each('element providers/status-table',['atlas'])], {verdicts:{atlas:'satisfied'}}),
+      ]},
+      {id:'poller', n:3, title:'Polling providers', file:'src/03-poller.md', blocks:[
+        P('The poller ticks per provider inside the envelope the platform book declares (providers/rate-envelope). A 429 is a signal to curation, not a retry.'),
+        C('atlas/poller','v1','standing','The poller makes at most one status call per provider per tick and records a 429 as a signal.', [each('element providers/poller',['atlas'])], {verdicts:{atlas:'satisfied'}}),
+      ]},
+      {id:'claim-index', n:4, title:'The claim index', file:'src/04-claim-index.md', blocks:[
+        P('Construction asks the index for a claim by name and version and gets the chapter that states it. wi-#419 asked it for sinks/one-mark @v2 this morning.'),
+        C('atlas/claim-index','v1','standing','Every standing claim is findable by name and version, and the answer names the chapter that states it (97).', [each('element books/claim-index',['atlas'])], {verdicts:{atlas:'satisfied'}}),
+      ]},
+    ]},
+  'gvc-kit':{title:'gvc-kit', sub:'GVC · the operator-facing portal that reads rows and exports them', src:'books/gvc-kit', written:'08-19 11:20 · writeback · intent portal-rows', repos:[], changes:[],
+    chapters:[
+      {id:'gvc', n:1, title:'GVC', file:'src/01-gvc.md', blocks:[P('GVC is the portal. It reads rows from switchboard and shows the operator the status page. Its repository has not joined the fleet: the target map homes nothing in it yet, so nothing here is planned against (202).')]},
+      {id:'reading', n:2, title:'Reading rows', file:'src/02-reading.md', blocks:[
+        P('The portal reads its window from switchboard by cursor, never by count.'),
+        C('gvc/rows-read','v1','proposed','The portal reads rows through switchboard\'s window contract and keeps its own cursor.', [each('relationship switchboard → portal',[])], {note:'attaches to an external end · homes nothing · not planned against (98)'}),
+      ]},
+      {id:'exports', n:3, title:'Exports', file:'src/03-exports.md', blocks:[P('A nightly export to the warehouse; the shape follows the rows contract. An ask from #ops this morning wants the landing bolt on each row.')]},
+    ]},
+  'flywheel-surfaces':{title:'flywheel-next · surfaces', sub:'the surface specification the flywheel ships · S1–S84 · read here as a book', src:'flywheel-next/design/surfaces.md', written:'09-05 · rulings dated', repos:[], changes:[], shipped:true,
+    chapters:[
+      {id:'s-surfaces', n:1, title:'Surfaces', file:'§1', blocks:[
+        P('The plan page is one page with four regions and a dock over the board (S1). The rail is titled Decisions and is one plan delivery in the model\'s order (S3); it never shows work with no decision pending (S4). The board is the status view by phase, switched between phases and map (S10).'),
+        H('s-board','The board'),
+        P('Four lanes with Bolt plan as a hatched gate (S12); every decision a marker on its object (S17); the map view draws bounded contexts only, never repositories or claims (S20, S25).'),
+        H('s-dock','The dock'),
+        P('One panel over the right of the board; its header takes the object\'s form and its footer carries the answers (S27); one page per kind (S28).'),
+        H('s-review','The review surface'),
+        P('The book and the context map are the review surface; the review view is what changed since the reviewed mark, served at /review for the book (S37).'),
+      ]},
+      {id:'s-flows', n:2, title:'Flows', file:'§2', blocks:[P('Answering from the rail (S40); reviewing a proposal with per-unit edits, each one response (S41); redo with notes (S42); explore over intents (S43); capture with the intent toggle (S44); landing a bolt (S45); onboarding a repository (S46); re-attaching a claim (S47); reviewing since the mark and marking reviewed (S48); a blocked session\'s question (S49); a host lost (S50).')]},
+      {id:'s-forms', n:3, title:'Forms', file:'§3', blocks:[P('One form per kind and no two kinds share one; phase is shown by where a thing sits (S51). Markers (S52), session chips (S53), the machinery strip (S54), countdowns (S55).')]},
+      {id:'s-keys', n:4, title:'Keys and modes', file:'§4', blocks:[P('j, k walk the rail; Enter opens; y, n, l answer; ], [ step beads; m switches phases and map; Esc closes in order (S56). One axis: h and l move nothing (S57). Modes and how each is left (S58).')]},
+      {id:'s-rulings', n:5, title:'Rulings', file:'§5', blocks:[P('Rail beside board (S59); desktop first, mobile consistent (S60); the dock keeps the board in place (S61); one silhouette per kind (S62); no typed grammar (S63); every proposal edit is a response (S64); later defers with no SINCE entry (S65); finished objects leave after a window (S66); whole map at rest, fit only (S67); facets are tags (S68); repositories, claims and lanes are never nodes (S69); re-attach is the scope gesture (S71); adding a repository is a proposal (S72); marking reviewed is a recorded response (S73); an attention acknowledgement is recorded (S74); accepted chores are items on the shared line (S75); light and dark (S76).')]},
+      {id:'s-open', n:6, title:'Open', file:'§6', blocks:[P('The phone layout beyond the stacked list (S78); the chat\'s rich controls per platform (S79); annotation-as-response on the review surface (S80); where the elaboration page\'s records render from (S81); which tool ask-again calls (S82); per-unit edits as one answer or the unit\'s own (S83); which region has focus when the map opens (S84).')]},
+    ]},
+};
+Object.entries(BOOKS).forEach(([id,b]) => { b.id = id; });
+/* where each decision lives in the book: [chapter, anchor] in platform-kit, or [book, chapter, anchor] */
+const BOOKREF = {
+  412:[['providers','claim-providers-rate-envelope'],['providers','claim-providers-one-writer']],
+  413:[['providers','claim-providers-one-writer']],
+  414:[['providers','retries']],
+  415:[['repositories','claim-repo-agents-md']],
+  416:[['sinks','claim-plan-sink-marks'],['switchboard-kit','rows','claim-rows-cursor']],
+  417:[['repositories','claim-repo-readme'],['status','claim-behavior-status-row']],
+  422:[['plan','claim-plan-tail-cursor'],['sinks','claim-plan-sink-marks']],
+  424:[['providers','claim-providers-rate-envelope']],
+  418:[['loops','claim-loops-one-per-bolt-v1'],['loops','claim-loops-tick-v1']],
+  419:[['sessions','claim-sessions-idle-bound']],
+  420:[['sessions','claim-sessions-one-writer']],
+  421:[['sinks','claim-sinks-one-mark']],
+};
+const mkRef = r => r.length===3 ? {book:r[0], ch:r[1], a:r[2]} : {book:'platform-kit', ch:r[0], a:r[1]};
+const anchorOf = x => x.t==='claim' ? 'claim-'+x.name.replace(/\//g,'-')+(x.state==='proposed' ? '-'+x.v : '') : (x.id || null);
+function decRefs(d){ const raw = BOOKREF[d.n] || (d.kind==='proposal' ? BOOKREF[422] : d.kind==='baseline' ? [['repositories','claim-repo-readme']] : []); return raw.map(mkRef); }
+function claimRef(name){ const nm = String(name).split(' @')[0].split(' · ')[0]; let found = null;
+  Object.values(BOOKS).forEach(b => b.chapters.forEach(c => c.blocks.forEach(x => { if(x.t==='claim' && x.name===nm && (!found || (found.state==='proposed' && x.state==='standing'))) found = {book:b.id, ch:c.id, a:anchorOf(x), state:x.state}; })));
+  return found; }
+function bookRefsOf(key){ if(!key) return []; const [t] = key.split(':'); const o = objOf(key); if(!o) return [];
+  if(t==='d') return decRefs(o);
+  if(t==='a') return o.id==='host' ? [mkRef(['sessions','claim-sessions-one-writer'])] : decRefs({n:413, kind:'unit'});
+  if(t==='i') return (o.chapters||[]).map(ch => ({book:'platform-kit', ch, a:null}));
+  if(t==='v'||t==='x'){ const is = t==='v' ? [o.intent] : o.intents.map(intent).filter(Boolean); return is.flatMap(i => (i.chapters||[]).map(ch => ({book:'platform-kit', ch, a:null}))); }
+  if(t==='b'||t==='l') return (o.claims||[]).map(claimRef).filter(Boolean);
+  return []; }
+function refLabel(r){ const b = BOOKS[r.book]; if(!b) return r.ch; const c = b.chapters.find(x => x.id===r.ch); if(!c) return `${b.title} › ${r.ch}`;
+  const x = r.a ? c.blocks.find(y => anchorOf(y)===r.a) : null; return `${b.title} › ${c.n}. ${c.title}${x ? ' › ' + (x.t==='claim' ? `${x.name} @${x.v}` : x.text) : ''}`; }
+const bookAttr = r => `${r.book}|${r.ch}|${r.a||''}`;
+const bookBtn = (r, label='read in book') => `<button class="btn sm quiet" data-book="${bookAttr(r)}" title="${esc(refLabel(r))}">${label}</button>`;
+function refsHtml(refs){ return `<div class="rows">${refs.map(r => `<div class="rowbtn"><div class="grow">${esc(refLabel(r))}</div>${bookBtn(r)}</div>`).join('')}</div>`; }
+function claimsRows(list, repoId){ return `<div class="rows">${list.map(n => { const r = claimRef(n); const rp = repoId && repo(repoId); const row = rp && rp.claims.find(c => c[0].split(' @')[0]===n.split(' @')[0]);
+  return `<div class="rowbtn"><span class="mono" style="font:600 12px var(--mono)">${esc(n)}</span><div class="grow">${row ? `<span class="vd ${row[1].replace(' ','-')}">${esc(row[1])}</span>` : ''}</div>${r ? bookBtn(r) : '<span class="t" style="font:11px var(--mono);color:var(--ink3)">not in any book</span>'}</div>`; }).join('')}</div>`; }
+function gotoBook(r, close){ S.view = 'book'; S.library = false; if(BOOKS[r.book]) S.book.id = r.book; S.book.ch = r.ch; S.book.scrollTo = r.a || '_top'; S.book.hl = r.a || '_top';
+  if(close && S.open){ S.open = null; document.body.classList.remove('docked'); }
+  document.body.dataset.tab = 'board'; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab==='board'))); render(); }
+/* the rail drives the viewer: the focused card's first ref is where the book goes */
+function bookFollow(){ const refs = bookRefsOf(S.focus); if(!refs.length) return; const r = refs.find(x => x.book===S.book.id) || refs[0]; if(BOOKS[r.book]) S.book.id = r.book; S.book.ch = r.ch; S.book.scrollTo = r.a || '_top'; S.book.hl = r.a || '_top'; }
+const scopeOf = c => [...new Set(c.attach.flatMap(a => a.homes))];
+function verdictOf(c, home){ const r = repo(home); const row = r && r.claims.find(x => x[0].split(' @')[0]===c.name); return row ? row[1] : (c.verdicts && c.verdicts[home]) || 'unjudged'; }
+function bookStats(b){ const claims = b.chapters.flatMap(c => c.blocks.filter(x => x.t==='claim')); const standing = claims.filter(c => c.state==='standing'); let unmet = 0;
+  standing.forEach(c => scopeOf(c).forEach(h => { const v = verdictOf(c, h); if(v==='not satisfied'||v==='stale') unmet++; }));
+  return {chapters:b.chapters.length, standing:standing.length, proposed:claims.length-standing.length, unmet, changed:b.changes.length}; }
+function bookMarks(bookId, chId, anchor){ const hit = r => r.book===bookId && r.ch===chId && (r.a||null)===(anchor||null);
+  const ds = S.decisions.filter(d => decRefs(d).some(hit)); const as = S.attention.filter(a => bookRefsOf('a:'+a.id).some(hit));
+  const m = ds.map(d => `<button class="mark ${d.g} ${S.focus==='d:'+d.n?'focused':''}" data-mark="d:${d.n}" title="${esc(d.kind)} · ${esc(d.title.replace(/<[^>]+>/g,''))}">${d.g===APPROVE?'✓':d.g===DECIDE?'?':'✎'} ${d.n}</button>`)
+    .concat(as.map(a => `<button class="mark attention ${S.focus==='a:'+a.id?'focused':''}" data-mark="a:${a.id}">! ${a.id==='host' ? 'host' : 'apply'}</button>`));
+  return m.length ? `<div class="gut">${m.join('')}</div>` : ''; }
+function renderBook(){
+  if(S.view!=='book') return;
+  const b = BOOKS[S.book.id] || BOOKS['platform-kit']; S.book.id = b.id;
+  if(!b.chapters.find(c => c.id===S.book.ch)) S.book.ch = b.chapters[0].id;
+  const ch = b.chapters.find(c => c.id===S.book.ch); const ci = b.chapters.indexOf(ch); const rv = S.review.on;
+  const focusRefs = bookRefsOf(S.focus).filter(r => r.book===b.id && r.ch===ch.id);
+  const lit = new Set([S.book.hl, ...focusRefs.map(r => r.a || '_top')].filter(Boolean));
+  const changedIn = c => b.changes.filter(x => x.ch===c.id).length;
+  const isChanged = (c, x) => !!(x.changed || b.changes.some(y => y.ch===c.id && y.a && y.a===anchorOf(x)));
+  const changes = rv ? `<div class="bk-changes"><div class="bc-h">changes since ${esc(S.review.mark)}<span>${b.changes.length}</span></div>${b.changes.length ? b.changes.map(x => `<button data-anchor="${b.id}|${x.ch}|${x.a||''}">${esc(x.what)}</button>`).join('') : '<div class="empty" style="padding:2px 0">nothing changed in this book since the mark</div>'}</div>` : '';
+  const tree = `<div class="bt-h"><span class="eyebrow">book</span><div class="bt-title">${esc(b.title)}</div><div class="bt-sub">${esc(b.sub)}</div></div>${changes}<ol>${b.chapters.map(c => { const n = changedIn(c); const on = c.id===ch.id;
+      const subs = on ? `<ol class="bt-sub">${c.blocks.filter(x => x.t==='h' || x.t==='claim').map(x => { const a = anchorOf(x); return `<li><button data-anchor="${b.id}|${c.id}|${a}" class="${lit.has(a)?'lit':''} ${x.t==='claim'?'cl':''}">${x.t==='claim' ? `<span class="mono">${esc(x.name)}</span> <span class="v">@${esc(x.v)}${x.state==='proposed'?' · proposed':''}</span>` : esc(x.text)}${rv && isChanged(c, x) ? '<span class="bt-c">Δ</span>' : ''}</button></li>`; }).join('')}</ol>` : '';
+      return `<li><button data-ch="${c.id}" class="${on?'on':''} ${rv && !n ? 'dim' : ''}" aria-current="${on?'page':'false'}"><span class="bt-n">${c.n}</span><span>${esc(c.title)}</span>${rv && n ? `<span class="bt-c">${n} changed</span>` : ''}</button>${subs}</li>`; }).join('')}</ol>
+    <div class="bt-foot"><span class="eyebrow">verdict dots · one per repository in scope</span>${['satisfied','not satisfied','stale','unjudged','not applicable'].map(v => `<span class="vh"><span class="vdot ${v.replace(' ','-')}"></span>${v}</span>`).join('')}<div class="ot">source ${esc(b.src)} · ${b.shipped ? 'shipped by the flywheel' : 'mdBook · served at /book/'+esc(b.id)+'/'} · ${SM}</div></div>`;
+  $('#bk-tree').innerHTML = tree;
+  const chChanged = rv && b.changes.some(x => x.ch===ch.id && !x.a);
+  const blocks = ch.blocks.map(x => { const a = anchorOf(x); const changed = rv && isChanged(ch, x);
+    const cls = ['bk-block','bk-'+x.t, a && lit.has(a) ? 'lit' : '', changed ? 'changed' : ''].join(' ');
+    const gut = a ? bookMarks(b.id, ch.id, a) : '';
+    if(x.t==='h') return `<div class="${cls}" data-anchor-id="${a}">${gut}<h2 id="${a}">${esc(x.text)}<a class="anchor" href="#${a}" onclick="return false" title="/book/${esc(b.id)}/${esc(ch.id)}.html#${a}">#</a></h2></div>`;
+    if(x.t==='p') return `<div class="${cls}"><p>${x.text}</p>${changed ? '<span class="chg-note">changed since your last review</span>' : ''}</div>`;
+    const scope = scopeOf(x); const proposed = x.state==='proposed';
+    const dots = proposed ? '' : scope.map(h => { const v = verdictOf(x, h); return `<span class="vh" title="${esc(h)} · ${esc(v)}"><span class="vdot ${v.replace(' ','-')}"></span>${esc(h)} <span style="color:var(--ink3)">${esc(v)}</span></span>`; }).join('');
+    return `<div class="${cls}" data-anchor-id="${a}">${gut}<div class="claim-block ${proposed?'proposed':''}" id="${a}"><div class="cb-h"><span class="cb-k">claim</span><span class="cb-n">${esc(x.name)}</span><span class="cb-v">@${esc(x.v)}</span><span class="cb-state ${x.state}">${x.state}</span><a class="anchor" href="#${a}" onclick="return false" title="/book/${esc(b.id)}/${esc(ch.id)}.html#${a}">#</a></div>
+      <div class="cb-t">${x.text}</div>
+      <div class="cb-att">attached to ${x.attach.map(at => `<span class="lk">${esc(at.to)}</span>`).join('')}</div>
+      <div class="cb-scope">scope · ${scope.length ? scope.join(', ') : 'no repository · homes nothing'} · derived from what it attaches to (200)</div>
+      ${proposed ? `<div class="cb-note">proposed · visible, never planned against (98)${x.note ? ' · '+esc(x.note) : ''}</div>` : `<div class="cb-homes">${dots || '<span class="cb-note">in scope for no repository</span>'}</div>`}
+      ${x.changed && rv ? `<div class="cb-changed">Δ ${esc(x.changed)}${x.was ? ` · was ${esc(x.was)}` : ''}</div>` : ''}</div></div>`; }).join('');
+  const prev = b.chapters[ci-1], next = b.chapters[ci+1];
+  $('#bk-content').innerHTML = `<div class="bk-page"><div class="bk-crumb"><span>${esc(b.title)}</span><span>›</span><span>${esc(b.src)}/${esc(ch.file)}</span><span style="margin-left:auto">${SM}</span></div>
+    <div class="bk-block h1 ${lit.has('_top')?'lit':''} ${chChanged?'changed':''}" data-anchor-id="_top">${bookMarks(b.id, ch.id, null)}<h1>${ch.n}. ${esc(ch.title)}</h1>${chChanged ? '<div class="chg-note">this chapter was rewritten since your last review</div>' : ''}</div>
+    ${blocks}
+    <div class="bk-foot">${prev ? `<button class="btn sm quiet" data-ch="${prev.id}">‹ ${prev.n}. ${esc(prev.title)}</button>` : '<span></span>'}${next ? `<button class="btn sm quiet" data-ch="${next.id}">${next.n}. ${esc(next.title)} ›</button>` : '<span></span>'}</div></div>`;
+}
+function renderLibrary(){ const L = $('#library'); L.hidden = !S.library; if(!S.library) return;
+  const rows = Object.values(BOOKS).map(b => { const s = bookStats(b); const on = b.id===S.book.id;
+    return `<div class="lib-row ${on?'on':''}" data-libopen="${b.id}" tabindex="0"><div><div class="ln">${esc(b.title)}${on ? ' <span class="chip g">open</span>' : ''}${s.changed ? ` <span class="chip x">${s.changed} changed since review</span>` : ''}</div><div class="ls">${esc(b.sub)}</div>
+      <div class="lm"><span><b>${s.chapters}</b> chapters</span><span><b>${s.standing}</b> standing · <b>${s.proposed}</b> proposed</span><span>written <b>${esc(b.written)}</b></span><span>unmet verdicts <b class="${s.unmet?'warn':''}">${s.unmet}</b></span></div>
+      <div class="lm" style="margin-top:4px"><span>repositories</span>${b.repos.length ? b.repos.map(r => `<button class="repo" data-librepo="${r}" title="open ${esc(r)} on the map">${esc(r)}<span class="hm">${unmetOf(repo(r))} unmet</span></button>`).join('') : `<span>${b.shipped ? 'shipped by the flywheel · no willdan repository' : 'none in the fleet yet · nothing here is planned against (202)'}</span>`}</div></div>
+      <div class="la"><button class="btn sm ${on?'':'pri'}" data-libopen="${b.id}">${on ? 'reading' : 'open'}</button></div></div>`; }).join('');
+  L.innerHTML = `<div class="lib-panel" role="dialog" aria-label="library"><div class="lib-h"><h2>Library</h2><span class="sub">the organization's books · mdBook sources in the books repository · served by the flywheel server</span><button class="x" id="library-close" aria-label="close">×</button></div>${rows}<div class="ot" style="margin-top:8px;font-size:11px;color:var(--ink3)">a book's repositories link to the map view · "changed since review" shares the mark ${esc(S.review.mark)} with the map · ${SM}</div></div>`; }
+/* marking reviewed is one recorded response on the plan object (S73); it moves the map's and the book's mark together (122) */
+function markReviewed(){ S.review.mark = '09-04 '+hhmm(S.minutes); S.review.nodes = {}; S.review.edges = {};
+  Object.values(BOOKS).forEach(b => { b.changes = []; b.chapters.forEach(c => c.blocks.forEach(x => { delete x.changed; })); });
+  logLine(`reviewed · mark ${S.review.mark}`, {}); toast(`reviewed · mark ${S.review.mark} · recorded · the map's and the book's review views emptied`); render(); }
 
 /* =====================================================================
    The send · one response, on its own; in flight until it settles
@@ -1230,11 +1629,12 @@ function renderHosts(){
     + `<span class="note">every session carries its host · a host pill lights its sessions · a repo opens its claims and scope</span>`;
 }
 function renderBoardHead(){
-  const map = S.view==='map';
-  $('#board-h').innerHTML = `<div class="seg" role="tablist"><button data-view="phases" aria-pressed="${!map}">phases</button><button data-view="map" aria-pressed="${map}">map</button></div>
-    <span>${map ? 'the system context map is the scope surface (198) · a repository node carries its claims · click a node for its dock' : 'the status view by phase (B.4) · objects only · every decision is a marker on its object'}</span>
-    ${map ? `<div class="r"><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}</label><button class="btn sm" id="addrepo-open">add repository</button></div>` : ''}<kbd style="margin-left:${map?'0':'auto'}">m</kbd>`;
-  $('#lanes').hidden = map; $('#map').hidden = !map;
+  const v = S.view, map = v==='map', book = v==='book';
+  const bk = BOOKS[S.book.id] || BOOKS['platform-kit']; const st = book ? bookStats(bk) : null;
+  $('#board-h').innerHTML = `<div class="seg" role="tablist"><button data-view="phases" aria-pressed="${v==='phases'}">phases</button><button data-view="map" aria-pressed="${map}">map</button><button data-view="book" aria-pressed="${book}">book</button></div>
+    <span>${map ? 'the system context map is the scope surface (198) · a repository node carries its claims · click a node for its dock' : book ? `<b class="mono">${esc(bk.title)}</b> · ${st.chapters} chapters · ${st.standing} standing · ${st.proposed} proposed · the rail jumps the book to what a decision concerns` : 'the status view by phase (B.4) · objects only · every decision is a marker on its object'}</span>
+    ${map ? `<div class="r"><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}</label><button class="btn sm" id="addrepo-open">add repository</button></div>` : ''}${book ? `<div class="r"><button class="btn sm" id="library-open">library</button><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}${st.changed ? ` · <b>${st.changed}</b> changed` : ''}</label>${S.review.on ? `<button class="btn sm" id="review-mark">mark reviewed · ${hhmm(S.minutes)}</button>` : ''}</div>` : ''}<kbd style="margin-left:${map||book?'0':'auto'}">${book ? 'b' : 'm'}</kbd>`;
+  $('#lanes').hidden = v!=='phases'; $('#map').hidden = !map; $('#book').hidden = !book;
 }
 /* --- scope rules over the set of built repositories --- */
 function ruleOf(set){
@@ -1281,7 +1681,7 @@ function renderMap(){
   const claims = allClaims(); const rule = sel ? ruleOf(S.scopeSet) : null;
   const cur = sel ? claims.find(c => c.name===sel) : null;
   const changedNow = sel && cur && (rule!==cur.rule || [...S.scopeSet].sort().join()!==cur.repos.slice().sort().join());
-  const scopeBox = sel ? `<div class="scope-box"><div class="cn">${esc(sel)}</div><div class="ot">click nodes to toggle them in or out of scope</div>
+  const scopeBox = sel ? `<div class="scope-box"><div class="cn">${esc(sel)}</div>${claimRef(sel) ? `<div style="margin:4px 0">${bookBtn(claimRef(sel))}</div>` : ''}<div class="ot">click nodes to toggle them in or out of scope</div>
       <div class="rule ${rule==='named'?'named':''}">${esc(rule)}${rule==='named' ? ` · ${[...S.scopeSet].join(', ')||'nobody'}` : ''}</div><div class="ot" style="font-size:11px">${rule==='named' ? 'this set matches no kind or capability rule, so the scope is named' : 'the set matches this rule; the rule is what is recorded'}</div>
       <div class="set">${builtRepos().map(r => `<span class="lk ${S.scopeSet.has(r.id)?'on':'off'}">${esc(r.id)}</span>`).join('')}</div>
       <div class="acts"><button class="btn sm pri" id="scope-send" ${changedNow?'':'disabled'}>send scope</button><button class="btn sm quiet" id="scope-clear">clear</button></div>${changedNow ? `<div class="ot" style="margin-top:6px;font-size:11px">sends <span class="mono">scope ${esc(sel)} ${esc(rule)}${rule==='named'?' '+[...S.scopeSet].join(','):''}</span> · one response · planning becomes due where the scope moved</div>` : ''}</div>` : '';
@@ -1311,9 +1711,10 @@ function renderTop(){
 }
 function renderLog(){ $('#loglist').innerHTML = S.log.map(e => `<li class="${e.say?'say':''} ${e.fail?'fail':''}"><time>${e.t}</time><span>${esc(e.text)}</span></li>`).join('') || '<li><span class="empty">nothing sent yet</span></li>'; }
 function render(){
-  const keep = ['#rail','.lane'].flatMap(s => $$(s)).map(el => [el, el.scrollTop]);
-  renderTop(); renderHosts(); renderBoardHead(); renderRail(); renderInception(); renderPlan(); renderConstruction(); renderOperation(); renderMap(); renderLog();
+  const keep = ['#rail','.lane','#bk-tree','#bk-content'].flatMap(s => $$(s)).map(el => [el, el.scrollTop]);
+  renderTop(); renderHosts(); renderBoardHead(); renderRail(); renderInception(); renderPlan(); renderConstruction(); renderOperation(); renderMap(); renderBook(); renderLibrary(); renderLog();
   keep.forEach(([el,t]) => el.scrollTop = t);
+  if(S.view==='book' && S.book.scrollTo){ const el = $(`#bk-content [data-anchor-id="${S.book.scrollTo}"]`); if(el) el.scrollIntoView({block:S.book.scrollTo==='_top' ? 'start' : 'center'}); S.book.scrollTo = null; }
   if(S.open) renderDock();
 }
 
@@ -1366,7 +1767,7 @@ function proposalHtml(){
   const unitRow = u => `<div class="pu ${u.dropped?'dropped':''}" data-uid="${u.id}">
       <span class="pid">${u.id}</span><span class="pun">${esc(u.name)}</span><span class="pid" style="margin-left:8px">type ${esc(u.type)}</span>
       <div class="pud">${esc(u.why)}</div>
-      <div class="pum"><span>after <b>${u.after.length ? u.after.join(', ') : 'none'}</b></span><span>covers <b>${esc(u.covers)}</b></span></div>
+      <div class="pum"><span>after <b>${u.after.length ? u.after.join(', ') : 'none'}</b></span><span>covers <b>${esc(u.covers)}</b></span>${claimRef(u.covers) ? bookBtn(claimRef(u.covers)) : ''}</div>
       <div class="lineage">lineage · claim <b>${esc(u.covers.split(' · ')[0])}</b> ← <b>${esc(u.from)}</b> ← intent host-liveness</div>
       ${u.dropped ? `<div class="pum"><span>dropped by your response · planning's next run may propose it again</span></div>` : `<div class="pue"><span class="lab">bolt</span><select data-ubolt="${u.id}" aria-label="bolt for ${u.id}">${boltOpts(u)}</select><span class="lab">type</span><select data-utype="${u.id}" aria-label="type for ${u.id}">${['default','fast','chore'].map(t => `<option ${t===u.type?'selected':''}>${t}</option>`).join('')}</select><button class="btn sm quiet" data-urename="${u.id}">rename</button><button class="btn sm quiet drop" data-udrop="${u.id}">drop</button></div>`}
       ${P.refusal && P.refusal.uid===u.id ? `<div class="refuse">${esc(P.refusal.text)}<div class="acts"><button class="btn sm pri" data-fix="${u.id}">${esc(P.refusal.fix.label)}</button><button class="btn sm quiet" data-fixno="1">leave it</button></div></div>` : ''}
@@ -1382,6 +1783,7 @@ function proposalHtml(){
 function dockDecision(d){
   const x = X[d.n] || {}; const parts = [];
   parts.push(sec('the decision', `<div class="dtext">${x.text||''}</div>`));
+  { const refs = decRefs(d); if(refs.length) parts.push(sec('in the book', refsHtml(refs), 'the chapter and claim this decision concerns')); }
   if(d.kind==='proposal') parts.push(sec('the proposal · every edit is one response, sent when given', proposalHtml(), esc(S.proposal.session)));
   if(x.doc) parts.push(sec('document', docHtml(x.doc), 'a note on a section sends redo'));
   if(x.signals) parts.push(sec('signals · 3 of 7', x.signals.map(([m,t]) => `<div class="dsig">“${esc(t)}”<small>${esc(m)}</small></div>`).join(''), SM));
@@ -1411,6 +1813,7 @@ function dockBolt(b){
   return sec('the ledger', ledgerHtml(b, true).replace(/ tabindex="0"/,'').replace(/data-obj="[^"]*"/,''), 'units as a chain · merged → building → queued')
     + sec('the bolt', `<div class="dtext">Open bolt on <span class="mono">${esc(b.repo)}</span>, line <span class="mono">${esc(b.line)}</span>. Its place is kept on the host at the head of its line, refreshed after each merge, where you run and test the bolt with no session involved. ${esc(b.note)}.</div>`)
     + sec('decisions on this bolt', S.decisions.filter(d => d.obj==='b:'+b.id).map(d => `<div class="row"><button class="mark ${d.g}" data-mark="d:${d.n}">${d.n}</button><span class="grow">${d.title}</span><span class="t">${d.g}</span></div>`).join('') || '', 'in the rail, where you answer')
+    + sec('claims cited · by its units', claimsRows(b.claims||[], b.repo), 'verdict from the ledger · read in book opens the chapter')
     + sec('units', `<div class="rows">${b.units.map(u => `<div class="row" style="flex-wrap:wrap"><span class="st">${u.state}</span><div class="grow"><div class="nm">${esc(u.name)}${u.type?` <span class="m">type ${u.type}</span>`:''}</div></div>${u.state==='merged' ? '' : `<button class="btn sm quiet drop" data-bdrop="${b.id}" data-unit="${esc(u.name)}">drop</button>`}${(u.items||[]).map(wiHtml).join('')}</div>`).join('')}</div>`, 'drop is a dictation')
     + sec('name', `<div class="field"><input value="${esc(b.name)}" data-brename="${b.id}" aria-label="bolt name"><button class="btn sm" data-brenamesend="${b.id}">send rename</button></div>`, 'a bolt\'s name is yours to change · one dictation')
     + sec('sessions running', sessionsHtml(sessions.concat(b.machinery||[])), 'with host and last activity')
@@ -1424,6 +1827,7 @@ function dockElab(e){
   return sec('the elaboration', `<div class="dtext"><b>${esc(e.kind)}</b> · ${esc(e.etype)} · ${esc(st)}. An elaboration works in a place off the intent's line; it writes its records into the intent's change directory as it goes and what it concludes into the book (187). ${e.kind==='research' ? 'A self-closing one ends with its finding.' : e.kind==='prototype' && /standing/.test(e.etype) ? 'A standing one ends when you finish it.' : e.kind==='writeback' ? 'Writeback writes the chapter and the claim in the same commit (120).' : ''}</div>`)
     + (d ? sec(`decision ${d.n} · in the rail`, cardHtml(d) + '<div class="empty" style="font-size:11px">answered here or in the rail · one response</div>', d.g) : '')
     + sec('document · excerpt', `<div class="doc"><div class="dm">${esc(e.kind)} · ${esc(i.name)} · ${SM}</div><p>${esc(ex.excerpt)}</p></div>`)
+    + ((i.chapters||[]).length ? sec('in the book', refsHtml(i.chapters.map(ch => ({book:'platform-kit', ch, a:null}))), 'the chapter its writeback writes') : '')
     + sec(`records · books/intents/${esc(i.name)}/`, ex.records.length ? `<div class="records">${ex.records.map(r => `<div>${esc(r)}</div>`).join('')}</div>` : '<div class="empty" style="padding:2px 0">nothing written yet</div>', 'the intent\'s change directory')
     + (e.session && e.session.state!=='done' ? sec('session', `<div class="rows"><div class="row"><div class="grow"><div class="nm">${esc(e.kind)} · ${esc(e.name)}</div><div class="last">${esc(e.session.last||'')}</div></div>${sessChip(e.session)}</div></div>`, 'with host and last activity') : '')
     + (covered && (e.sid==='g'+covered.n || e.kind===covered.type) ? sec('covered', `<div class="dtext">This research is one session over ${covered.intents.length} intents (188): <button class="mark approve" data-mark="d:${covered.n}">✓ ${covered.n} gathered</button> in the rail. The intent proposes no other elaboration meanwhile.</div>`) : '')
@@ -1432,6 +1836,7 @@ function dockElab(e){
 function dockIntent(i){
   return sec('the thread', threadHtml(i, true).replace(/ tabindex="0"/,'').replace(/data-obj="[^"]*"/,''), 'a line off the books · elaborations as beads')
     + sec('the intent', `<div class="dtext">Intent <span class="mono">${esc(i.name)}</span> is ${esc(i.state)}. ${esc(i.note)}. An intent is a line off the books' shared line; each elaboration works in a place off that line, and archiving the intent lands it.</div>`)
+    + ((i.chapters||[]).length ? sec('chapters', refsHtml(i.chapters.map(ch => ({book:'platform-kit', ch, a:null}))), 'where its writeback writes · read in book') : '')
     + sec('decisions on this intent', S.decisions.filter(d => d.obj==='i:'+i.id).map(d => `<div class="row"><button class="mark ${d.g}" data-mark="d:${d.n}">${d.n}</button><span class="grow">${d.title}</span><span class="t">${d.g}</span></div>`).join('') || '', 'in the rail, where you answer')
     + sec('sessions running', sessionsHtml(i.sessions), 'with host and last activity');
 }
@@ -1441,6 +1846,7 @@ function dockLanded(l){
     + sec('pull request and checks', `<div class="rows"><div class="row"><span class="lk ${l.pr.state==='merged'?'ok':'pend'}">PR #${l.pr.n}</span><div class="grow">${esc(l.pr.state)}</div></div>${l.checks.map(c => `<div class="row"><span class="dot ${c[1]==='ok'?'':c[1]==='bad'?'failed':'starting'}"></span><div class="grow"><div class="nm">${esc(c[0])}</div></div><span class="st ${c[1]==='bad'?'failed':''}">${c[1]==='ok'?'passed':c[1]==='bad'?'failing':'running'}${c[2]?' · '+esc(c[2]):''}</span></div>`).join('')}</div>`, SM)
     + sec('environments', `<div class="rows">${l.envs.map(e => `<div class="row"><span class="st">${esc(e[0])}</span><span class="ep">${esc(e[1])}</span><span class="t">↗</span></div>`).join('')}</div>`)
     + sec('units landed', kvHtml(l.units.map(u => [esc(u), 'merged'])))
+    + ((l.claims||[]).length ? sec('claims served · named by the as-built (99)', claimsRows(l.claims, l.repo)) : '')
     + sec('signals from operation', l.signals.length ? l.signals.map(s => `<div class="dsig">“${esc(s.text)}”<small>${esc(s.kind)} · ${esc(s.src)} · ${esc(s.age)} · ${s.move ? esc(s.move) : 'unmoved · curation sees it next run'}</small></div>`).join('') : '<div class="empty" style="padding:2px 0">nothing yet</div>');
 }
 function dockRepo(r){
@@ -1449,7 +1855,7 @@ function dockRepo(r){
   const scopeOpts = ['all', ...r.kinds.map(k => 'kind:'+k), ...r.caps.map(c => 'capability:'+c), 'named'];
   return sec('the repository', `<div class="dtext">Repository <span class="mono">${esc(r.id)}</span> declares its kinds and capabilities in its manifest; a claim is in scope when its scope rule matches them, and each repository carries its own verdict per claim (105). ${esc(r.manifest)}.</div>`)
     + sec('kinds and capabilities · from the manifest', `<div class="kc">${r.kinds.map(k => `<span class="lk"><b>kind</b> ${esc(k)}</span>`).join('')}${r.caps.map(c => `<span class="lk"><b>capability</b> ${esc(c)}</span>`).join('')}${!r.kinds.length && !r.caps.length ? '<span class="empty">none</span>' : ''}</div>`)
-    + (r.claims.length ? sec(`claims in scope · ${r.claims.length}`, `<div class="kc" style="margin-bottom:8px">${counts.map(([v,n]) => `<span class="vd ${v.replace(' ','-')}">${n} ${v}</span>`).join('')}</div><div class="claims">${r.claims.map(c => `<div class="claim"><span class="cn">${esc(c[0])}</span><span class="vd ${c[1].replace(' ','-')}">${esc(c[1])}</span><select data-scope="${esc(c[0])}" data-repo="${r.id}" aria-label="scope of ${esc(c[0])}">${scopeOpts.map(o => `<option ${o===c[2]?'selected':''}>${o}</option>`).join('')}${scopeOpts.includes(c[2])?'':`<option selected>${esc(c[2])}</option>`}</select><button class="btn sm quiet" data-showmap="${esc(c[0])}" title="show its scope on the map">map</button>${c[3]!=='—' ? `<span class="ce">${esc(c[3])}</span>` : ''}</div>`).join('')}</div>`, 'verdict from the ledger · scope is yours to correct, one response each · "map" shows the scope')
+    + (r.claims.length ? sec(`claims in scope · ${r.claims.length}`, `<div class="kc" style="margin-bottom:8px">${counts.map(([v,n]) => `<span class="vd ${v.replace(' ','-')}">${n} ${v}</span>`).join('')}</div><div class="claims">${r.claims.map(c => `<div class="claim"><span class="cn">${esc(c[0])}</span><span class="vd ${c[1].replace(' ','-')}">${esc(c[1])}</span><select data-scope="${esc(c[0])}" data-repo="${r.id}" aria-label="scope of ${esc(c[0])}">${scopeOpts.map(o => `<option ${o===c[2]?'selected':''}>${o}</option>`).join('')}${scopeOpts.includes(c[2])?'':`<option selected>${esc(c[2])}</option>`}</select><button class="btn sm quiet" data-showmap="${esc(c[0])}" title="show its scope on the map">map</button>${claimRef(c[0]) ? `<button class="btn sm quiet" data-book="${bookAttr(claimRef(c[0]))}" title="${esc(refLabel(claimRef(c[0])))}">book</button>` : '<span></span>'}${c[3]!=='—' ? `<span class="ce">${esc(c[3])}</span>` : ''}</div>`).join('')}</div>`, 'verdict from the ledger · scope is yours to correct, one response each · "map" shows the scope')
       : sec('claims', `<div class="dtext">The books repository holds the claims; it carries no verdicts of its own.</div>`))
     + sec('decisions on this repository', S.decisions.filter(d => d.repo===r.id || (d.kind==='proposal' && r.id==='atlas')).map(d => `<div class="row"><button class="mark ${d.g}" data-mark="d:${d.n}">${d.n}</button><span class="grow">${d.title}</span><span class="t">${d.g}</span></div>`).join('') || '<div class="empty" style="padding:2px 0">none in the count</div>', 'in the rail, where you answer');
 }
@@ -1513,9 +1919,9 @@ function renderDock(){
   $('#dk-h').className = 'dk-h ' + form; $('#dk-h').innerHTML = head; $('#dk-b').innerHTML = body; $('#dk-f').innerHTML = t==='a' ? `<div class="acts">${o.acts.map(([k,l]) => `<button class="btn sm ${k==='takeover'?'yes':''}" data-att="${o.id}" data-ak="${k}">${esc(l)}</button>`).join('')}</div>` : dockFooter(key);
   $('#dk-b').scrollTop = keep;
 }
-function openDock(key){ const was = S.open===key; S.open = key; if(key[0]==='d' || key[0]==='a') S.focus = key; document.body.classList.add('docked'); render(); if(!was) $('#dk-b').scrollTop = 0; }
+function openDock(key){ const was = S.open===key; S.open = key; if(key[0]==='d' || key[0]==='a'){ S.focus = key; if(S.view==='book') bookFollow(); } document.body.classList.add('docked'); render(); if(!was) $('#dk-b').scrollTop = 0; }
 function closeDock(){ S.open = null; document.body.classList.remove('docked'); render(); }
-function setFocus(key){ S.focus = key; if(S.open && (S.open[0]==='d'||S.open[0]==='a')) S.open = key; render(); const el = document.querySelector(`.rail [data-nav="${key}"]`); if(el){ el.scrollIntoView({block:'nearest'}); el.focus({preventScroll:true}); } const lit = $('[data-obj].lit'); if(lit) lit.scrollIntoView({block:'nearest'}); }
+function setFocus(key){ S.focus = key; if(S.view==='book') bookFollow(); if(S.open && (S.open[0]==='d'||S.open[0]==='a')) S.open = key; render(); const el = document.querySelector(`.rail [data-nav="${key}"]`); if(el){ el.scrollIntoView({block:'nearest'}); el.focus({preventScroll:true}); } const lit = $('[data-obj].lit'); if(lit) lit.scrollIntoView({block:'nearest'}); }
 function step(dir){ const list = railKeys(); if(!list.length) return; const i = list.indexOf(S.focus); const j = i<0 ? 0 : Math.min(list.length-1, Math.max(0, i+dir)); setFocus(list[j]); }
 
 /* =====================================================================
@@ -1533,19 +1939,28 @@ document.addEventListener('click', e => {
     box.innerHTML=''; delete box.dataset.arg; send(n, a, arg); return; }
   if(b && b.dataset.cancel){ const box = b.closest('.argbox'); box.innerHTML=''; delete box.dataset.arg; return; }
   if(b && b.dataset.att){ const a = S.attention.find(x => x.id===b.dataset.att); S.attention = S.attention.filter(x => x!==a);
-    if(b.dataset.ak==='ok'){ toast('seen · not logged'); }
+    if(b.dataset.ak==='ok'){ logLine(`ok · ${a ? a.id : ''}`, {}); toast('ok · recorded'); }
     else { logLine(b.dataset.ak, {}); toast(`${b.dataset.ak} · recorded`);
       if(b.dataset.ak==='takeover'){ const h = host('mac-mini'); h.alive = true; h.last = hhmm(S.minutes); h.note = 'released by takeover · its sessions restored on studio'; S.bolts.flatMap(x => x.units).flatMap(u => u.items||[]).filter(i => i.host==='mac-mini').forEach(i => { i.host='studio'; i.last=`${hhmm(S.minutes)} · taken over on studio · place restored`; }); h.alive = false; h.gone = 'released'; } }
     if(S.open==='a:'+(a&&a.id)) S.open = null, document.body.classList.remove('docked');
     if(S.focus==='a:'+(a&&a.id)) S.focus = railKeys()[0] || null;
     render(); return; }
-  if(b && b.dataset.view){ S.view = b.dataset.view; render(); return; }
+  if(b && b.dataset.view){ S.view = b.dataset.view; if(S.view==='book') bookFollow(); render(); return; }
+  /* book and library */
+  if(b && b.dataset.book){ const [bk,ch,a] = b.dataset.book.split('|'); gotoBook({book:bk, ch, a:a||null}, true); return; }
+  if(b && b.dataset.anchor){ const [bk,ch,a] = b.dataset.anchor.split('|'); gotoBook({book:bk, ch, a:a||null}, false); return; }
+  if(b && b.dataset.ch){ S.book.ch = b.dataset.ch; S.book.scrollTo = '_top'; S.book.hl = null; render(); return; }
+  if(b && b.id==='library-open'){ S.library = true; render(); return; }
+  if(b && b.id==='library-close'){ S.library = false; render(); return; }
+  if(b && b.dataset.librepo){ S.library = false; S.view = 'map'; openDock('r:'+b.dataset.librepo); return; }
+  { const lr = t.closest('[data-libopen]'); if(lr){ const id = lr.dataset.libopen; if(BOOKS[id]){ S.book.id = id; S.book.ch = BOOKS[id].chapters[0].id; S.book.scrollTo = '_top'; S.book.hl = null; } S.library = false; render(); return; } }
+  if(t.id==='library'){ S.library = false; render(); return; }
   if(b && b.dataset.selclaim){ selectClaim(b.dataset.selclaim); render(); return; }
   if(b && b.dataset.showmap){ selectClaim(b.dataset.showmap); closeDock(); return; }
   if(b && b.dataset.tomap){ S.view = 'map'; closeDock(); return; }
   if(b && b.id==='scope-send'){ sendScope(); return; }
   if(b && b.id==='scope-clear'){ S.scopeSel = null; S.scopeSet = new Set(); render(); return; }
-  if(b && b.id==='review-mark'){ S.review.mark = '09-04 '+hhmm(S.minutes); S.review.nodes = {}; S.review.edges = {}; say(`reviewed · mark ${S.review.mark}`); render(); return; }
+  if(b && b.id==='review-mark'){ markReviewed(); return; }
   if(b && b.id==='addrepo-open'){ S.addRepo = {name:'', kinds:['service'], caps:['http']}; S.view='map'; render(); $('#ar-name')?.focus(); return; }
   if(b && b.id==='ar-cancel'){ S.addRepo = null; render(); return; }
   if(b && b.id==='ar-add'){ addRepository(); return; }
@@ -1596,7 +2011,7 @@ document.addEventListener('click', e => {
   const bd = t.closest('[data-bead]'); if(bd && !t.closest('button,input,label')){ openDock('v:'+bd.dataset.bead); return; }
   const obj = t.closest('[data-obj]');
   if(obj && !t.closest('input,textarea,select,button,label')){ openDock(obj.dataset.obj); return; }
-  if(!t.closest('#dock') && S.open && !t.closest('#log,#logbtn,.hosts,.map-panel,.board-h') && !t.closest('input,select,label')){ S.hostlit = null; closeDock(); }
+  if(!t.closest('#dock') && S.open && !t.closest('#log,#logbtn,.hosts,.map-panel,.board-h,#library') && !t.closest('input,select,label')){ S.hostlit = null; closeDock(); }
   if(!t.closest('#log,#logbtn') && !$('#log').hidden){ $('#log').hidden = true; $('#logbtn').setAttribute('aria-expanded','false'); }
 });
 document.addEventListener('change', e => {
@@ -1616,7 +2031,7 @@ document.addEventListener('change', e => {
 });
 document.addEventListener('keydown', e => {
   const typing = e.target.matches('input,textarea,select');
-  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.exploreMode){ S.exploreMode = false; S.picked.clear(); render(); return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
+  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.library){ S.library = false; render(); return; } if(S.exploreMode){ S.exploreMode = false; S.picked.clear(); render(); return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
   if(typing){ if(e.key==='Enter' && !e.shiftKey && e.target.id==='capture'){ e.preventDefault(); capture(); } if(e.key==='Enter' && e.target.matches('input') && e.target.closest('.argbox')){ e.preventDefault(); e.target.closest('.argbox').querySelector('[data-send],[data-usend]').click(); } if(e.key==='Enter' && (e.target.dataset.bname || e.target.dataset.brename)){ e.preventDefault(); if(e.target.dataset.brename) $(`[data-brenamesend="${e.target.dataset.brename}"]`).click(); else e.target.blur(); } return; }
   if(e.metaKey||e.ctrlKey||e.altKey) return;
   const k = e.key;
@@ -1636,6 +2051,7 @@ document.addEventListener('keydown', e => {
     const at = sid ? beads.indexOf(sid) - (fromFocus ? 1 : 0) : -1; const next = k===']' ? Math.min(beads.length-1, at+1) : at-1;
     if(next<0){ openDock('i:'+iid); return; } openDock('v:'+iid+'/'+beads[next]); return; }
   if(k==='m'){ e.preventDefault(); S.view = S.view==='map' ? 'phases' : 'map'; document.body.dataset.tab = 'board'; render(); return; }
+  if(k==='b'){ e.preventDefault(); if(S.view==='book') S.view = 'phases'; else { S.view = 'book'; bookFollow(); } document.body.dataset.tab = 'board'; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab==='board'))); render(); return; }
   if(k==='/'){ e.preventDefault(); document.body.dataset.tab = 'board'; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab==='board'))); $('#capture')?.focus(); }
 });
 function yesAll(){ const list = S.decisions.filter(d => d.g===APPROVE && !S.inflight[d.n]).map(d => d.n).sort((a,b) => a-b); list.forEach((n, i) => setTimeout(() => send(n, 'yes'), i*380)); }
@@ -1651,7 +2067,11 @@ document.body.dataset.tab = new URLSearchParams(location.search).get('tab')==='b
 $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab===document.body.dataset.tab)));
 const Q = new URLSearchParams(location.search);
 if(Q.get('theme')){ document.documentElement.dataset.theme = Q.get('theme'); $('#theme').textContent = Q.get('theme'); }
-if(Q.get('view')==='map') S.view = 'map';
+if(['map','book'].includes(Q.get('view'))) S.view = Q.get('view');
+if(Q.get('book') && BOOKS[Q.get('book')]) S.book.id = Q.get('book');
+if(Q.get('ch')) S.book.ch = Q.get('ch');
+if(Q.has('library')) S.library = true;
+if(S.view==='book' && !Q.get('ch')) bookFollow();
 if(Q.has('explore')) S.exploreMode = true;
 if(Q.get('claim')) selectClaim(Q.get('claim'));
 if(Q.get('review')) S.review.on = true;
