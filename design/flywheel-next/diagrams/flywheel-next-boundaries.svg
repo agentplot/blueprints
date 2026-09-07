@@ -85,9 +85,12 @@
   <text x="100" y="568" font-size="8.5" fill="#666">never opens an intent · never moves state (66, 110)</text>
   <text x="100" y="582" font-size="8.5" fill="#666">the data plane never names it; it reads signals</text>
   <text x="100" y="596" font-size="8.5" fill="#666">through curation like any other (C.1)</text>
-  <text x="100" y="620" font-size="9" font-weight="700" fill="#1f6e6e">callers of the endpoint</text>
-  <text x="100" y="636" font-size="8.5" fill="#666">a forwarded message · one word on the phone · a dropped file</text>
-  <text x="100" y="650" font-size="8.5" fill="#666">a delivery system's connector · a PR conversation (112, 178)</text>
+  <text x="100" y="620" font-size="9" font-weight="700" fill="#1f6e6e">callers of the endpoint · cannot reach a host's binary</text>
+  <text x="100" y="636" font-size="8.5" fill="#666">a forwarded message · one word on the phone</text>
+  <text x="100" y="650" font-size="8.5" fill="#666">a delivery system's connector · a monitor's webhook · a job plane (112)</text>
+  <text x="100" y="676" font-size="9" font-weight="700" fill="#1f6e6e">adapters on hosts · no endpoint, no inbound secret</text>
+  <text x="100" y="692" font-size="8.5" fill="#666">a dropped file · a meeting · a PR conversation (114, 178)</text>
+  <text x="100" y="706" font-size="8.5" fill="#666">write captures through their own binary, same key → no-op</text>
   <text x="100" y="740" font-size="8.5" fill="#999">106 · 111 · 112 · 114 · 115 · 148 · C.1</text>
 
   <!-- sources -> dispatch -->
@@ -126,6 +129,10 @@
   <!-- dispatch -> records -->
   <path d="M 414 369 L 554 364" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
   <text x="484" y="356" font-size="9" fill="#1f6e6e" text-anchor="middle">capture</text>
+  <!-- adapters on hosts -> captures, beside the endpoint's -->
+  <path d="M 414 690 L 432 690 Q 440 690 440 682 L 440 355 Q 440 347 448 347 L 554 347" fill="none" stroke="#2b8a8a" stroke-width="1.6" marker-end="url(#mT)"/>
+  <text x="500" y="330" font-size="8.5" fill="#1f6e6e" text-anchor="middle">adapters on hosts</text>
+  <text x="500" y="341" font-size="8.5" fill="#1f6e6e" text-anchor="middle">→ captures (114)</text>
   <path d="M 560 385 C 480 432, 300 442, 150 455" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mN)"/>
   <text x="300" y="430" font-size="9" fill="#5f6b7a" text-anchor="middle">reads the capture and its raw</text>
   <path d="M 150 480 C 300 480, 450 476, 554 472" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>

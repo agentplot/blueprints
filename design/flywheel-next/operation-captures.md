@@ -2,7 +2,8 @@
 
 The inventory of operation events that reach the flywheel. One row per
 source event, across the producers the org runs: switchboard, the
-flywheel's dispatch agent, flywheel-cloud, and the gvc data pipelines.
+dispatcher and the edge adapters on the org's hosts, flywheel-cloud,
+and the gvc data pipelines.
 Each row says how the event arrives, what the capture and the signal
 carry, and where the signal can go.
 
@@ -12,11 +13,17 @@ Two channels exist and no third.
   under pull-request policy, the request's reviews and check results
   are evidence on the bolt. A check that fails is a finding on the
   bolt; an accepted finding is a chore on the bolt line (176).
-- **Captures through the org's dispatch agent.** Everything else
-  arrives as a capture: one record per source event, written by an
-  adapter without judgment, and read into signals by a session with
-  judgment (106, 111, 112, 115). Curation gives every signal its one
-  move (107).
+- **Captures.** Everything else arrives as a capture: one record per
+  source event, written by an adapter without judgment, and read into
+  signals by a session with judgment (106, 111, 112, 115). An adapter
+  runs on whichever host declares the source and writes its captures
+  through that host's own binary, `flywheel capture <source>`, pushed
+  to the books' shared line under the event key (114, 162). The
+  capture endpoint on the dispatch host exists for callers that cannot
+  reach a host's binary: a delivery system's connector, a monitor's
+  webhook, a job plane, a chat. Both write the same record, and a
+  second write under the same key is a no-op. Curation gives every
+  signal its one move (107).
 
 What stays outside.
 
@@ -60,36 +67,53 @@ flywheel. The rest are platform-internal or are links.
 | A portal ask: a person on a product page reports a problem or suggests a change through Ask dispatch | capture | source `portal/<tenant>/<app>/ask`, key dispatch's own id for the drawer conversation · when the person sent it · dispatch, as the org's GitHub App · the drawer transcript, outside version control | kind ask or question, as the person's words say · asserted by the person, by their sign-in identity · tags the product, the service, the environment they were on · the person's sentence, with dispatch's one or two clarifying answers folded in · a claim when the person disputes stated behavior | join → a proposed intent citing it; attach when an open intent fits; answered when a standing claim or an archived intent already settles it |
 | `deploy.done`, `release.approved`, `record.written`, `channel.moved`, `service.changed`, `dataplane.registered`, the three `schema.*`, `access.changed`, `ephemeral.expired`, `pr.opened`, `pr.closed` | link, or nothing | none | none | never a signal. On an open request the check and Deployment status are links on the bolt (177). After landing they are the delivery system's (181). |
 
-## The flywheel dispatch agent
+## Dispatch and the edge adapters
 
-Dispatch is the org's standing agent, hosted in the org's own account,
-woken by tracker events and the operator's word. It is the one door for
-captures.
+Dispatch is a host of kind dispatcher: the placement that presents the
+chat, serves the capture endpoint, charges triage and interprets free
+text for an organization whose other hosts sleep (dispatch model §1,
+§2). It is one door for captures, not the only one. Capture is
+decentralized (dispatch model §4): any host that declares a source runs
+its adapter through its own binary and writes the capture to the books'
+shared line itself. The endpoint is for callers that cannot reach a
+host's binary.
 
 **The capture endpoint.** Callers: switchboard's `integration-sync`
-connector, the Discord bot on a forwarded message or a word, a file
-dropped in the org's capture folder, the gvc job plane on a result,
-flywheel-cloud on a host event. The endpoint does arithmetic only (115).
-It writes one capture record: source, event key, event time, who
-captured, pointer to raw. A second call with the same event key returns
-the existing capture and writes nothing (111, S22). It never writes a
+connector, Datadog's monitor webhook, the gvc job plane on a result,
+flywheel-cloud on a host event, and the Discord bot on a forwarded
+message or a word. The endpoint does arithmetic only (115). It writes
+one capture record: source, event key, event time, who captured,
+pointer to raw. A second call with the same event key returns the
+existing capture and writes nothing (111, S22). It never writes a
 signal, with one exception: a forwarded single message is its own
 excerpt, and the endpoint writes its one signal with the kind the
 operator's word gave, else ask (S21).
+
+**Edge adapters on hosts.** A file dropped in the org's capture folder,
+a meeting the notes tool serves, a day of one chat channel imported,
+and a conversation on a pull request are captured by the adapter the
+declaring host runs: `flywheel capture <source>` enumerates the source's
+events, writes one capture per event under its key, and pushes with
+expected-old (162). The adapter needs no inbound secret and no
+endpoint; it holds the host's own push credential and nothing else. It
+either copies the raw material to the org's raw store before it writes
+the capture, or the host declares that it triages that source (dispatch
+model §4).
 
 **Triage is the capture-reading session.** Enumerating source events
 and writing captures runs unattended. Turning a capture into signals is
 judgment and never runs unattended (115). A capture with material to
 read charges one session, the capture reader, in a place off the books'
-shared line. The session delivers the signals once; they are written
-immutable, each with its excerpt and position (113).
+shared line, on the dispatcher or on the host that declares the source.
+The session delivers the signals once; they are written immutable, each
+with its excerpt and position (113).
 
 | Source event | Channel | Capture | Signal | Path |
 |---|---|---|---|---|
-| A chat message forwarded to the bot, with or without one word | capture | source `discord/<channel>/<message>`, key the message id · the message's own timestamp · the operator who forwarded · the message link | one signal · kind the operator's word, else ask · asserted by the message's author · tags from the word or none · the message as the assertion · none | any move at the next curation run (S21) |
-| A meeting transcript: a file dropped in the folder, or a meeting the notes tool serves | capture | source `meeting/<meeting id>` or `folder/<file hash>`, key the meeting id and date · the meeting's date, never the drop date · whoever dropped it, or the folder watcher · the transcript path outside version control | several signals, read by the capture reader · kinds commitment, constraint, question, ask · asserted by the speaker · tags from the topics · one sentence each, with the verbatim excerpt and its position · the claims each argues with | attach, challenge, join, answered or drop, per signal (116) |
-| A day of one chat channel, imported | capture | source `discord/<channel>/<day>`, key the channel and day · the day · the importer · the export outside version control | as a transcript | as a transcript |
-| A conversation on a pull request the machinery did not open (178) | capture | source `github/<repo>/pull/<n>`, key the request number and the last comment id read · the comment times · the tracker webhook forwarded by the reconcile function · the request URL | as a transcript; asserted by each commenter | signal only. Nothing here changes an intent except through curation (20). |
+| A chat message forwarded to the bot, with or without one word | capture, through the endpoint | source `discord/<channel>/<message>`, key the message id · the message's own timestamp · the operator who forwarded · the message link | one signal · kind the operator's word, else ask · asserted by the message's author · tags from the word or none · the message as the assertion · none | any move at the next curation run (S21) |
+| A meeting transcript: a file dropped in the folder, or a meeting the notes tool serves | capture, by the declaring host's adapter | source `meeting/<meeting id>` or `folder/<file hash>`, key the meeting id and date · the meeting's date, never the drop date · whoever dropped it, or the folder watcher · the transcript path outside version control, or in the raw store | several signals, read by the capture reader · kinds commitment, constraint, question, ask · asserted by the speaker · tags from the topics · one sentence each, with the verbatim excerpt and its position · the claims each argues with | attach, challenge, join, answered or drop, per signal (116) |
+| A day of one chat channel, imported | capture, by the declaring host's adapter | source `discord/<channel>/<day>`, key the channel and day · the day · the importer · the export outside version control | as a transcript | as a transcript |
+| A conversation on a pull request the machinery did not open (178) | capture, by the adapter on the host holding the App's key | source `github/<repo>/pull/<n>`, key the request number and the last comment id read · the comment times · the adapter, reading the request through the App · the request URL | as a transcript; asserted by each commenter | signal only. Nothing here changes an intent except through curation (20). |
 
 ## flywheel-cloud
 
@@ -134,13 +158,17 @@ and Switchboard never sees a GVC commit.
 
 ## What dispatch needs to exist
 
-Dispatch is the organization's cloud-hosted agent, running outside
-every host. It is four things at once: the chat presenter with a stable
-identity (148, 155), the capture endpoint a delivery system or a chat
-calls (106, 112, C.1), the capture-reading triage session (115), and
-the chat interpreter that turns free text into one proposed tool call
-(194). Each of those needs something to exist. The table names the
-need, why, where it is configured, and what it must never hold.
+Dispatch is a host of kind dispatcher, placed where the organization's
+other hosts are not always awake (dispatch model §5). It is four jobs
+at once: the chat presenter with a stable identity (148, 155), the
+capture endpoint a delivery system or a chat calls (106, 112, C.1), the
+capture-reading triage session (115), and the chat interpreter that
+turns free text into one proposed tool call (194). Each of those needs
+something to exist. The table names the need, why, where it is
+configured, and what it must never hold. An edge adapter on another
+host needs none of the endpoint's rows: it holds that host's push
+credential and, for a source read through the App, the App's key placed
+on that host (207).
 
 | Need | Why | Where it is configured | What it must never hold |
 |---|---|---|---|
@@ -149,8 +177,8 @@ need, why, where it is configured, and what it must never hold.
 | Model access: API keys, or Bedrock or Vertex credentials when the org runs its models there. One model per role, declared per the manifest's defaults (173): the interpreter's model, triage's model. | The interpreter resolves names against live objects and proposes one tool call (194). Triage is judgment, never unattended (115). Both are sessions the machinery charges and take the role's default (173). | The manifest names the kind and model per role. Keys and cloud credentials are secrets the operator places; when the org runs on Bedrock, the runtime's own role carries them and no key exists. | A key that reaches any host. A model choice that overrides a unit type's or stage's own (173). |
 | Membership in the operator's private network: a tailnet node, or the managed platform's ingress (191) | The page is served on the private network and every chat rendering links to it (155). Dispatch must reach the page to link it and, when it presents, serve it (148). Nothing beyond the private network is published unless the operator says so (46). | The manifest names the router per host; dispatch is one host of that declaration. The node key or the ingress binding is placed by the operator or issued by the platform. | A public hostname. A route to a place's services: dispatch reads the plan, never a running prototype. |
 | Credentials on the state repository: push as compare-and-swap (162) | Under the git-only profile the response and every effect are commits; the push is the single-writer guarantee (134, 162). Dispatch is the one named writer that turns a phone reply into a commit (164). | The App's contents permission on the state repository; no separate credential. | A deploy key or a personal token. Force-push. |
-| The capture endpoint's inbound secret for webhook callers: switchboard's `integration-sync`, Datadog's monitor webhook, the gvc job plane, flywheel-cloud | Captures are appended by adapters at any rate (106); the endpoint must know a caller is one of the org's producers and not the open internet. | The manifest names the callers. Each caller's secret is placed by the operator on both sides: in the org's sealed store for dispatch, and in the producer's own configuration. | One shared secret for every caller. Any secret in the capture record or the signal. |
-| Storage for the raw material captures cite: transcripts, logs, exports, the drawer conversation (111) | A capture holds a pointer to the raw material; the raw material stays outside version control (111). The reader session opens it; nothing else does. | The manifest names the bucket or folder per source. Access rides on dispatch's runtime identity. | The raw material itself in any record (62, 111). Retention shorter than the oldest unmoved signal (118). |
+| The capture endpoint's inbound secret for webhook callers: switchboard's `integration-sync`, Datadog's monitor webhook, the gvc job plane, flywheel-cloud | Captures are appended by adapters at any rate (106); the endpoint must know a caller is one of the org's producers and not the open internet. An adapter on a host is not a caller: it writes git with the host's own credential and holds no inbound secret. | The manifest names the callers. Each caller's secret is placed by the operator on both sides: in the org's sealed store for dispatch, and in the producer's own configuration. | One shared secret for every caller. Any secret in the capture record or the signal. A secret for an adapter that writes through its host's binary. |
+| Storage for the raw material captures cite: transcripts, logs, exports, the drawer conversation (111) | A capture holds a pointer to the raw material; the raw material stays outside version control (111). The reader session opens it; nothing else does. An edge adapter copies its raw material here before it writes the capture, unless its host declares that it triages the source (dispatch model §4). | The manifest names the bucket or folder per source. Access rides on dispatch's runtime identity, and on the declaring host's for a source it triages itself. | The raw material itself in any record (62, 111). Retention shorter than the oldest unmoved signal (118). |
 | Its own lease as presenter (148) | Exactly one presenter delivers the plan to each sink at a time. Dispatch holds that lease or the manifest pins it. A host that takes the presenter role while dispatch holds the lease is a race, and races are forbidden (150). | The manifest either pins dispatch as presenter for the chat sink or lets it take the lease within its declaration (149). The lease is a record in the state, taken and renewed like any other (128). | A lease on any object a host works: intents, bolts, units, sessions. Dispatch presents and captures; it never runs a loop. |
 
 **What the manifest names.** The App id and installation, the chat
@@ -191,9 +219,12 @@ never a value an agent supplies.
   list, and does it live in the model or in the manifest's adapter
   configuration (114)?
 - **Who holds the checkout.** Signals and captures are files in the
-  books repository in every profile (157). Dispatch is tracker-only and
-  has no checkout. The endpoint writes the capture where, and through
-  which profile operation?
+  books repository in every profile (157). The dispatcher clones the
+  books repository like any host (dispatch model §2), so the endpoint
+  writes there with expected-old; an edge adapter writes through its
+  own host's checkout. Which profile operation each write is, and
+  whether two adapters pushing the same key at once resolve to one
+  capture by the push alone, is not settled.
 - **The portal ask's tracker item.** Dispatch files one tracker item
   per ask today and lists the person's items back in the drawer. A
   signal is never an item (157). The item is a projection of the

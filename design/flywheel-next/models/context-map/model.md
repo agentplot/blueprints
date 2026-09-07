@@ -375,47 +375,67 @@ both maps. A map is never read by a flywheel that does not know its N.
 
 ## 5. Visualization
 
-The map has two zoom levels and one camera command, fit.
+The map has two zoom levels and one camera command, fit. The first
+level is the whole map: every context as a card carrying a thumbnail
+of its inside. The second is a drill: one context's inside at full
+size, in the same grammar, with its neighbours as docks at the edges.
 
 ### 5.1 At rest
 
-The whole map is readable without opening anything.
+The whole map is readable without opening anything. Contexts are the
+only units of the layout: a layered layout ranks them upstream to
+downstream, orders each column, and fixes every position after that.
 
 | drawn | as |
 |---|---|
-| context | A card with its name. Hatched when big ball of mud. Dashed when external. |
-| relationship | One edge per pair. The pattern's name on the edge. U and D at the ends of a directional pattern. OHS, PL badges at the upstream end; ACL at the downstream end. Shared kernel drawn as a lens between the two cards. Separate ways drawn as a dotted edge with a bar, so its absence is visible. |
-| elements | On the card, a count per kind: "3 services, 2 contracts, 4 events". A context with five or fewer elements lists their names instead. |
-| home | A chip per distinct home on the card. A context whose elements are all in one repository shows one chip. |
+| context | A card with its header: name, status, a home chip per distinct home with a verdict dot, an attachment count chip, decision markers, an open-question badge, tags. Hatched when big ball of mud. Dashed when external. Under the header, a thumbnail of the map inside it. |
+| thumbnail | The context's elements as dots, coloured by kind and ringed by home, laid out inside the card by a deterministic layout; the links between them as hairlines; a short dashed stub toward the other context where an element links out. A caption counts elements, links and links out. The thumbnail is read-only: a click on the header opens the context's page, a click on the thumbnail drills in. |
+| relationship | One edge per pair. The pattern's name on the edge. U and D at the ends of a directional pattern, with an arrowhead. OHS, PL badges at the upstream end; ACL at the downstream end. Shared kernel drawn as a lens between the two cards. Separate ways drawn as a dotted edge with a bar, so its absence is visible. An edge that would cross a card bows over it. |
+| crossing | On every edge, a pill counting the element-to-element links that cross it (2.4). Separate ways reads "none · by rule", or "n cross · fails" when a link crosses it. Hover or focus on the edge slides out a panel at its midpoint: each crossing link as from element with its context and home, the link kind, to element with its context and home; the claims attached to the relationship; controls to open the relationship's page or drill either end. |
+| home | A chip per distinct home on the card, in the home's ring colour. A context whose elements are all in one repository shows one chip. |
 | attachment | A count chip on each card, edge and lens: the claims attached there. |
 | verdict | A dot on each home chip, coloured by the worst verdict among the claims in scope for that repository through this context. |
-| decision | A marker on the card or edge a decision concerns, with its number. |
+| decision | A marker on the card or edge a decision concerns, with its number, in the one glyph set every surface uses. |
 | status | Settled plain, candidate with a soft border, open with a question mark and the question on hover. |
 
-### 5.2 Opened in place
+Links are never drawn between cards at rest; the edge's pill and panel
+are where a link is read at that level.
 
-A context opens where it is; the rest of the map stays and dims. Its
-card grows to show:
+### 5.2 Drilled in
 
-- its elements grouped by kind, each with name, home chip and verdict dot;
-- links between its elements, and links to elements of an adjacent context that is also open;
-- the attachments on the context and on each element, as chips that name the claim;
-- its language, if it states one;
-- an open element's question, with the capture gesture beside it.
+A click on a thumbnail, or Enter on the focused card, drills into the
+context. The canvas becomes the context's inside at full size, in the
+same grammar as the whole map:
 
-Opening a second context does not close the first. Fit re-centres on
-whatever is open.
+- its elements as nodes: kind, name, home chip with verdict dot, attachment chip, decision markers, status, an open element's question with the capture gesture beside it, tags;
+- its links as typed edges with the kind on the edge;
+- the neighbouring contexts as collapsed docks at the canvas edges, upstream on the left, downstream on the right, symmetric patterns above, separate ways below; each dock carries the pattern, the U or D mark for its side with OHS, PL or ACL, the kernel when shared, the crossing count, its attachment chip and its markers, and a control to drill into it;
+- a cross-context link landing on the neighbour's dock with the target element named on the edge;
+- a breadcrumb over the canvas, organization › context.
+
+The inside is laid out once per drill, an element that links out
+pulled toward its dock, and positions are then final. Fit at this
+level fits the inside. Esc or the organization crumb returns to the
+whole map with its camera as it was.
 
 ### 5.3 What tags and facets do
 
 | operation | effect | never |
 |---|---|---|
-| filter | Elements and contexts not carrying the tag dim; edges whose ends both dim, dim. | removes an id from the drawing |
-| colour | One facet at a time colours cards and elements by value; the legend lists the values. | changes an edge's marks |
-| group | One facet at a time draws a background band per value behind the contexts or elements that carry it. | draws a box that contains, nests, or reorders anything |
+| filter | Elements and contexts not carrying the tag dim, at both levels: cards and dots at rest, nodes when drilled; edges whose ends both dim, dim. | removes an id from the drawing |
+| colour | One facet at a time colours cards, dots and nodes by value; the legend lists the values. While it is on it overrides the kind colour; off restores it. | changes an edge's marks or a home's ring |
+| group | One facet at a time draws a background band per value behind the contexts or nodes that carry it. | draws a box that contains, nests, or reorders anything |
 
 A band is a wash, not a boundary. A context in no band is drawn
-unbanded. Turning grouping off changes no position.
+unbanded. Turning grouping off changes no position. After every switch
+the control strip reports that nothing moved and no edge changed, at
+the level shown.
+
+Colour is fixed by role. Kinds colour permanently: a dot and a node
+take their kind's colour from the vocabulary (3.1). Homes colour
+rings: a dot's ring, a node's home chip and the repository strip take
+the home's colour. Only a colour facet overrides the kind colour, and
+only while it is on.
 
 ### 5.4 Overlays
 
@@ -424,9 +444,38 @@ Two, both from the difference engine of 4.4:
 - current to target: added drawn with a plus mark, removed drawn ghosted, changed with a delta mark and the changed fields on hover, moved with the old home struck through beside the new;
 - since last review: the same marks in a second colour, over the target map only.
 
-Either overlay can be on. The map underneath is always the target.
+The marks sit on cards and edges at rest, on dots in the thumbnails,
+and on nodes, link edges and neighbour docks when drilled. A removed
+element, relationship or link is placed by ghost placement: drawn
+ghosted in a place computed around the target's objects without moving
+any of them, at either level. Either overlay can be on. The map
+underneath is always the target.
 
-### 5.5 Never on the canvas
+### 5.5 Focus and camera
+
+Two focus rings, never merged. The lit ring comes from outside the
+canvas: a decision focused on the rail, a claim whose scope is shown,
+a "light on map" from a page; it sits on the object concerned and
+leaves when that focus does. The focus ring is the canvas's own: it
+moves among contexts at rest and among elements when drilled, and
+Enter acts on it. The two may sit on different objects at once.
+
+One camera memory. A drill keeps the whole map's camera for the way
+back, and returning restores it. Nothing else is remembered: no saved
+positions, no pan history. Fit is the only camera command, at either
+level.
+
+### 5.6 Narrow rendering
+
+Under a narrow width the canvas is a stacked list at both levels. At
+rest, every context as its card without the thumbnail, its
+relationships listed under it with pattern, marks and crossing count.
+Drilled, every element as a row with kind, home chip, verdict dot,
+markers and its links named, then the neighbour docks as rows with the
+pattern and end marks. Drill and back, the pages, the overlays and the
+facets work the same as on the canvas.
+
+### 5.7 Never on the canvas
 
 - repositories as nodes: a repository is a chip, because it is not a bounded context;
 - claims as nodes: a claim is an attachment chip, because it is a statement, not a thing;
@@ -434,7 +483,9 @@ Either overlay can be on. The map underneath is always the target.
 - chapter prose: the ref links to the book;
 - lanes, tiers or layers as boxes: they are tags;
 - the current map as a second drawing: it is an overlay;
-- camera state: no saved positions, no pan history; layout is computed, fit is the only command.
+- links between cards at rest: they are the edge's crossing count and panel;
+- a context opened in place: the inside is a drill, never a card that grows;
+- camera state beyond the one memory of 5.5: no saved positions, no pan history; layout is computed, fit is the only command.
 
 ## 6. The rewrite of 198–202
 
