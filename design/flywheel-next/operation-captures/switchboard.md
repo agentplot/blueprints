@@ -16,3 +16,13 @@ flywheel. The rest are platform-internal or are links.
 | `deploy.failed` for a PR ephemeral, while the bolt is open in landing | check run | none; switchboard posts the GitHub check and Deployment status through its App | none | finding on the bolt (176) |
 | A portal ask: a person on a product page reports a problem or suggests a change through Ask dispatch | capture | source `portal/<tenant>/<app>/ask`, key dispatch's own id for the drawer conversation · when the person sent it · dispatch, as the org's GitHub App · the drawer transcript, outside version control | kind ask or question, as the person's words say · asserted by the person, by their sign-in identity · tags the product, the service, the environment they were on · the person's sentence, with dispatch's one or two clarifying answers folded in · a claim when the person disputes stated behavior | join → a proposed intent citing it; attach when an open intent fits; answered when a standing claim or an archived intent already settles it |
 | `deploy.done`, `release.approved`, `record.written`, `channel.moved`, `service.changed`, `dataplane.registered`, the three `schema.*`, `access.changed`, `ephemeral.expired`, `pr.opened`, `pr.closed` | link, or nothing | none | none | never a signal. On an open request the check and Deployment status are links on the bolt (177). After landing they are the delivery system's (181). |
+
+## The portal ask's tracker item
+
+The capture is the source: one per ask, keyed by dispatch's id for the
+drawer conversation (111). A signal is never a tracker item (157), so
+the item dispatch files per ask is at most a projection written from
+the capture and its signal's move, never read as truth (76). The item
+that has a lifecycle is the proposed intent the join move produces
+(116), and the drawer lists the person's asks from the captures and
+their moves.

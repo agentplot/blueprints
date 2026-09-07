@@ -212,12 +212,25 @@ write the blueprints repository. The binary is the adapter: `flywheel
 capture <source>` (model.md §13) enumerates source events, writes one
 capture per event under its key, and pushes to the blueprints' shared line
 with expected-old (162). It runs unattended because it is arithmetic
-(115). An adapter on the operator's machine — a folder watcher, the
-notes tool's meeting list, a day of one chat channel — writes its
-captures through its own binary and never through dispatch. The
-endpoint exists only for callers that cannot write git: a delivery
+(115), and it runs on the tick: every timed behaviour of a host,
+adapters included, is a guard on that host's tick, nothing else keeps
+time, and a run missed while the host was down is caught up on the
+next one (231). An adapter on the operator's machine — a folder
+watcher, the notes tool's meeting list, a day of one chat channel —
+writes its captures through its own binary and never through dispatch.
+The endpoint exists only for callers that cannot write git: a delivery
 system's connector, a monitor's webhook, the chat (112,
 `captures.md` §1).
+
+**Two adapters, one key.** Captures, signals and moves are files in
+the blueprints repository in every profile (157), under the prefix
+`flywheel/signals/` (203). The dispatcher clones the blueprints like
+any host (217), so the endpoint writes there and pushes with
+expected-old; an edge adapter writes through its own host's checkout
+and never through dispatch (217g). Two adapters pushing the same key
+at once resolve by the push alone: the push is the compare-and-swap
+(162), the loser fetches and finds the key present, and the idempotent
+key makes its retry write nothing (111, 231).
 
 **The raw material must be reachable by whoever reads it.** A capture
 points at its raw material; the raw material stays outside version

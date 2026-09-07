@@ -25,7 +25,7 @@
   <!-- ═══════════ SOURCES ═══════════ -->
   <rect x="60" y="70" width="280" height="570" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
   <text x="76" y="92" font-size="12" font-weight="700" fill="#5f6b7a">SOURCES · outside · events only</text>
-  <text x="76" y="106" font-size="8.5" fill="#999">no judgment · they supply raw material (§2, 115)</text>
+  <text x="76" y="106" font-size="8.5" fill="#999">no judgment · they supply raw material (115, model §4)</text>
 
   <use href="#rows" x="100" y="170" color="#8a8a86"/>
   <text x="126" y="166" font-size="10.5" font-weight="700" fill="#333">the operator's laptop</text>
@@ -233,7 +233,7 @@
   <text x="506" y="799" font-size="8.5" fill="#666">the machinery writes state and the thread; dispatch reads · a session speaks only through the tools</text>
   <text x="506" y="812" font-size="8.5" fill="#666">a missing secret is a decision under attention, never a value an agent supplies</text>
   <text x="886" y="824" font-size="8.5" fill="#999" text-anchor="end">149 · 197 · 204</text>
-  <text x="76" y="844" font-size="8.5" fill="#999">the App's private key · the bot token · model keys · the network node key · each caller's inbound secret — in the org's sealed store, no record cites them (dispatch captures §3, what dispatch needs)</text>
+  <text x="76" y="844" font-size="8.5" fill="#999">the App's private key · the bot token · model keys · the network node key · each caller's inbound secret — in the host's secret store, no record cites them (dispatch captures §3, what the operator places)</text>
 
   <!-- ═══════════ EXTENSION ═══════════ -->
   <rect x="930" y="656" width="810" height="196" rx="10" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4"/>
