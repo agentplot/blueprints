@@ -174,56 +174,90 @@
     and the columns stack under the wheel.
   - Setup (215): a "setup" control in the hosts strip opens an overlay over the board,
     separate from the operator's decisions. It is not a ladder: it is the organization's
-    hosts, browsed à la carte. Left, one row per host (studio, a laptop, and mac-mini, a
-    home host, both on herdr; willdan-cloud, a container on flywheel-cloud): kind and
-    platform, alive or gone, bound, when it joined, and the parts it runs as chips grouped
-    by kind: capture adapters, the chat sinks it presents (a "lease" badge on the sink
-    whose presenter lease it holds, 148), the agent (the interpreter job, hinted "reads and
-    answers; every write is a proposed call you confirm"), triage (the sources it reads),
-    runner (pane · in-process · managed), router and sign-in (none · GitHub · Okta SSO).
-    A dispatcher placement is only what a host runs: willdan-cloud takes no construction
-    work (bound 0), so it changes no runway reading. Selecting a host opens its detail in
-    place with each part's state: installed · offered · needs a secret (under attention,
-    "place it") · installing (chore wi-#) · disabled (with "enable", one logged
-    response); a kind the host does not declare says so. Right, the index: a browsable
-    catalogue of packages filtered to the selected host's platform (adapters, chat sinks,
-    runners, routers, sign-in, unit and elaboration types, deliverable producers, map
-    vocabularies, templates, scenario packs), each with name, version, "shipped" or
-    "index", what it needs (secrets, platform, network), what it enables, and an "offer"
-    control, or its state on the host when it is already there; a search box, a kind
-    filter, and "any platform" that shows the rest greyed with what they need. An offer
-    is a marker and never enters the rail's count; "offer" for the selected host puts
-    the part on the row as "decision n" and raises an install chore as a numbered
-    decision on the rail (approve · yes/no, kind install) whose yes runs one session on
-    the fleet's chores line (60, S75) and whose proof turns the part to installed (204);
-    no takes the part off the host again. A secret the machinery cannot place (the cloud
-    host's GitHub App key for its PR conversation adapter, 204, 207) sits under
-    attention with "place it": the command, that the page never carries it, and a
-    one-word "placed" answer that has the machinery check the path; the part links to the
-    attention line and the line back to the host; the strip's setup control carries
-    "secret" while one waits. "+ host" is a guided flow in the same surface: pick a
-    platform (flywheel-cloud managed · a container on any platform · a laptop) and a
-    name; the provisioning effect runs from the host you are on with your own platform
-    credentials, read at run time and never stored; you tick the secrets to hand into
-    the platform's secret store (the App key, the bot tokens, model access) and hand
-    them over; an enrolment decision appears on the rail ("enrol host <name>", a
-    one-time token that expires in 1h, approve · yes/no, kind enrol); the host joins
-    with the token, reads the manifest and installs its declared parts from the index;
-    each step shows its state (queued · running · waiting on you · done · skipped ·
-    stopped) and the flow ends with the new host row alive in the strip and the list.
-    "adopt existing" skips provisioning and the hand-over for a host already running the
-    binary and goes straight to the token. The cloud host's detail carries the same
-    steps folded as the record of how it joined. Invented beyond the requirements: the
-    index and its eleven kinds, the version and shipped-or-index tags (the capture
-    diagram's proposal), the part vocabulary per host and "disabled" as a state, the
-    enrol decision kind and its one-hour token, the secret hand-over as a step of
-    enrolment, and that an install chore may run before its secret exists and wait on
-    it.
+    hosts, browsed à la carte, and a store beside them. Left, one row per host (studio, a
+    laptop, and mac-mini, a home host, both on herdr; willdan-cloud, a container on
+    flywheel-cloud): kind and platform, alive or gone, bound, when it joined, and the parts
+    it runs as chips grouped by kind: capture adapters, the chat sinks it presents (a
+    "lease" badge on the sink whose presenter lease it holds, 148), the agent (the
+    interpreter job, hinted "reads and answers; every write is a proposed call you
+    confirm"), triage (the sources it reads), runner (pane · in-process · managed), router
+    and sign-in (none · GitHub · Okta SSO). A dispatcher placement is only what a host
+    runs: willdan-cloud takes no construction work (bound 0), so it changes no runway
+    reading. Selecting a host opens its detail in place with each part's state: installed
+    (with "configure") · added · awaiting install · decision n · needs a secret (under
+    attention, "place it") · installing (chore wi-#) · disabled (with "enable", one logged
+    response) · suggested (with "add"); a kind the host does not declare says so and
+    offers the index. Under each part its configuration is summarised from its schema;
+    a secret shows as placed or not placed, never its value. Under the hosts, one more row,
+    "the organization": the packages installed in the books under flywheel/ (types,
+    producers, vocabularies, templates, scenario packs), with their paths; no host runs
+    them, every host reads them; their state is per organization, not per host.
+    Right, the index in two tabs. "For this host": adapters, chat sinks, runners, routers
+    and sign-in, filtered to the selected host's platform, with a search box, a kind filter
+    and "any platform" that shows the rest greyed with what they need. "For the
+    organization": unit and elaboration types, deliverable producers, map vocabularies,
+    templates and scenario packs, with no platform filter and no host. Each package shows
+    name, version, "shipped" or "index", what it needs and what it enables, and an "add"
+    control, or its state where it already is ("on studio · configure", "in the books").
+    "Add" never jumps anywhere: it opens the package's add sheet in the index column: its
+    description, what it needs, its configuration form drawn from its schema (Discord: bot
+    token, application id, guild and channel; Slack: app token, signing secret, channel; a
+    runner: model per role and key or cloud role, the key field shown only when a key is
+    the access; an adapter: source path or named caller with its inbound secret, and
+    cadence), each secret as "paste now" (a password field; the value goes into the host's
+    keychain or the platform's secret store over the fleet's channel at the moment of add,
+    is written nowhere else, and the page keeps no copy) or "I'll place it later · under
+    attention", and for a per-host package a host selector (gone hosts allowed; the chore
+    waits for them). "Add to <host>" raises one install decision on the rail (approve ·
+    yes/no, kind install, the configuration summarised in its dock) and closes the sheet to
+    the host's parts list, where the part reads "added · awaiting install · decision n"
+    with its configuration under it, highlighted; the overlay stays open and nothing
+    vanishes on a click. Yes runs one session on the fleet's chores line (60, S75); its
+    proof turns the part to installed (204), or, when a secret was left for later, to
+    "needs a secret" with an attention line per secret ("place it": the command, that the
+    page never carries it, a one-word "placed" answer that has the machinery check the
+    path, and a "configure" that opens the sheet to paste it instead); no takes the part
+    off the host again (a suggested part goes back to suggested). An organization package
+    adds the same way with the books as its target ("install · ADR in the books"), lands
+    at its path, and reads "installed in the books · flywheel/templates/adr.md".
+    "Configure" on any installed part (host or organization) opens the same sheet
+    prefilled; a placed secret offers "keep" or "rotate"; a missing one "paste now" or
+    "later". Save is one logged response ("configure Discord on studio · rotate
+    discord.bot-token"), no chore, "the host reads the manifest on its next tick"; rotate
+    marks the secret not placed and puts it under attention; pasting a missing one clears
+    the line and the part reads installed. The strip's setup control carries "secret"
+    while any secret waits.
+    "+ host" is a guided flow in the same surface: platform (flywheel-cloud managed · a
+    container on any platform · a laptop) → name → choose its parts from the per-host index
+    (the index switches to the new host; each chosen part opens its add sheet inline and
+    its secrets are marked paste now or place later; the platform's suggested parts are
+    one click each; agent and triage come with the binary wherever a runner gives them a
+    place) → provision (runs from the host you are on with your own platform credentials,
+    read at run time and never stored) → hand over only the secrets those parts need,
+    listed from the chosen parts with their mode, "change" reopening the sheet → enrol (a
+    decision on the rail, "enrol host <name>", a one-time token that expires in 1h, approve
+    · yes/no, kind enrol, "will run" listing the chosen parts) → join (the host installs
+    the chosen parts; one whose secret was left for later reads "needs a secret" and goes
+    under attention) → alive (the row in the strip and the list, bound from the pane
+    runner's configuration). Nothing about Slack or Discord appears unless chosen. "Adopt
+    existing" skips platform (read at join), provision and hand-over (secrets already on
+    the host are checked at join) and goes name → parts → token. The cloud host's detail
+    carries the same steps folded as the record of how it joined. Invented beyond the
+    requirements and the brief: the index and its eleven kinds, the version and
+    shipped-or-index tags (the capture diagram's proposal), the schema per package and its
+    "when" rule, the secret file names and their op paths, the paths organization packages
+    land at (flywheel/types · producers · map · templates · scenarios), "suggested" and
+    "chosen" as part states, the per-platform suggested parts, the enrol decision kind and
+    its one-hour token, that agent and triage follow a runner, and that an install chore
+    may run before its secret exists and wait on it. Tension left open: 204 says a secret
+    never travels through the page; "paste now" sends it through the page once, to the
+    store, keeping nothing. The brief asked for it; if 204 wins, "paste now" becomes the
+    place-it command shown inline and the sheet keeps only "later".
   - Under 760px the rail and the board are two tabs; the dock is full screen with a back
     control. The clock starts at 07:40 and advances a minute per response. Detail beyond the
     seed is invented and marked sample. Review switches: ?theme=dark|light, ?nodock, ?open=<key>,
     ?view=map|book, ?book=<id>, ?ch=<chapter>, ?review=1, ?library=1, ?load=1, ?setup=1, ?host=<id>,
-    ?addhost=1.
+    ?addhost=1, ?index=org, ?add=<package id>.
 -->
 <meta charset="utf-8">
 <title>Rail and Board</title>
@@ -950,7 +984,7 @@ body.docked .dock{transform:none}
 .adv{margin-top:12px;border-top:1px solid var(--line);padding-top:8px}
 .adv summary{cursor:pointer;font:600 12px var(--sans);color:var(--ink2);list-style:none;display:flex;align-items:center;gap:8px} .adv summary::before{content:'▸';font-size:11px;color:var(--ink3)} .adv[open] summary::before{content:'▾'}
 .adv summary .sub{font:11px var(--mono);color:var(--ink3);font-weight:400}
-/* ---------- setup (215): per host, à la carte · hosts left, the index right; offers never enter the count ---------- */
+/* ---------- setup (215): per host, à la carte · hosts left, the index right in two tabs · add opens a sheet; configure is the same sheet prefilled ---------- */
 .su-panel{width:min(1180px,100%)}
 .su-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:0 18px;align-items:start}
 .su-hosts{min-width:0} .su-index{min-width:0;border-left:1px solid var(--line2);padding-left:18px}
@@ -961,14 +995,14 @@ body.docked .dock{transform:none}
 .su-hm{font:11px var(--mono);color:var(--ink3);margin:2px 0 6px} .su-hm b.warn{color:var(--warn)}
 .su-chips{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center} .su-kg{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap} .su-kk{font:700 9.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-right:2px}
 .su-chip{display:inline-flex;align-items:center;gap:5px;font:10.5px var(--mono);padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--ink2);background:var(--surface)}
-.su-chip::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--ok);flex:none} .su-chip.st-offered::before,.su-chip.st-disabled::before{background:transparent;border:1px dashed var(--ink3);box-sizing:border-box} .su-chip.st-offered{border-style:dashed} .su-chip.st-disabled{color:var(--ink3);border-style:dashed}
-.su-chip.st-secret::before{background:var(--warn)} .su-chip.st-secret{border-color:var(--warn);color:var(--warn)} .su-chip.st-decision::before,.su-chip.st-installing::before{background:var(--accent)} .su-chip.st-decision,.su-chip.st-installing{border-color:var(--accent);color:var(--accent)}
+.su-chip::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--ok);flex:none} .su-chip.st-suggested::before,.su-chip.st-disabled::before{background:transparent;border:1px dashed var(--ink3);box-sizing:border-box} .su-chip.st-suggested{border-style:dashed} .su-chip.st-disabled{color:var(--ink3);border-style:dashed}
+.su-chip.st-secret::before{background:var(--warn)} .su-chip.st-secret{border-color:var(--warn);color:var(--warn)} .su-chip.st-added::before,.su-chip.st-installing::before,.su-chip.st-chosen::before{background:var(--accent)} .su-chip.st-added,.su-chip.st-installing,.su-chip.st-chosen{border-color:var(--accent);color:var(--accent)} .su-chip button{font:11px var(--mono);color:var(--accent);padding:0 2px;line-height:1}
 .su-chip .su-lz{font-style:normal;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:0 3px}
 .su-detail{margin-top:10px;padding-top:6px;border-top:1px solid var(--line)} .su-dh{display:flex;align-items:center;gap:10px;margin-bottom:4px} .su-dh .eyebrow{flex:none} .su-dn{font:11px var(--mono);color:var(--ink3);flex:1;min-width:0}
 .part{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:2px 10px;align-items:baseline;font-size:12.5px;padding:6px 0;border-bottom:1px solid var(--line2)} .part .pd{grid-column:2/-1;color:var(--ink2);font-size:12px;line-height:1.45;min-width:0} .part:last-of-type{border-bottom:0}
 .part .pk{font:600 10.5px var(--mono);color:var(--ink2);align-self:start;padding-top:2px} .part .pw{color:var(--ink2);min-width:0} .part .pw b{color:var(--ink)} .part .pw .v{font:10.5px var(--mono);color:var(--ink3)} .part .ps{font:11px var(--mono);display:inline-flex;align-items:center;gap:4px 6px;justify-self:end;max-width:280px;flex-wrap:wrap;justify-content:flex-end;text-align:right;line-height:1.4} .part .ps button{text-align:left;white-space:normal}
 .part .ps .dot,.su-on .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block;flex:none} .part .ps .dot.off,.su-on .dot.off{background:var(--line);border:1px dashed var(--ink3);box-sizing:border-box} .part .ps .dot.warn,.su-on .dot.warn{background:var(--warn)} .part .ps .dot.busy,.su-on .dot.busy{background:var(--accent)}
-.part .offer{font:700 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);border:1px dashed var(--ink3);border-radius:3px;padding:0 5px}
+.part .sug{font:700 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);border:1px dashed var(--ink3);border-radius:3px;padding:0 5px}
 .su-lease{display:inline-block;color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:0 4px;font-size:10px;letter-spacing:.04em;white-space:nowrap}
 .su-hint{font:11px var(--sans);color:var(--ink3)}
 .su-joined{margin-top:8px} .su-joined summary{cursor:pointer;font:600 12px var(--sans);color:var(--ink2);list-style:none} .su-joined summary::before{content:'▸ ';font-size:11px;color:var(--ink3)} .su-joined[open] summary::before{content:'▾ '}
@@ -988,9 +1022,17 @@ body.docked .dock{transform:none}
 .su-sb{grid-column:2/-1;font-size:12px;color:var(--ink2);line-height:1.45} .su-sb .mono{font-size:11px}
 .su-secrets{display:flex;flex-direction:column;gap:4px;margin-top:4px} .su-secrets label{display:inline-flex;align-items:center;gap:6px;font-size:12px}
 .su-joinparts{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.su-tabs{display:flex;gap:2px;margin:8px 0 2px;border-bottom:1px solid var(--line)} .su-tabs button{display:flex;flex-direction:column;gap:1px;padding:5px 10px;border-bottom:2px solid transparent;font-weight:700;font-size:12.5px;color:var(--ink2);margin-bottom:-1px;text-align:left} .su-tabs button small{font:10px var(--mono);color:var(--ink3);font-weight:400} .su-tabs button[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+.su-sheet{border:1px solid var(--accent);border-radius:8px;padding:6px 12px 12px;background:var(--surface)} .su-sheet .su-ih{border-bottom:0;margin-bottom:0} .su-sheet .su-ih .eyebrow{flex:none;white-space:nowrap} .su-sheet .su-ih .su-for{flex:1;min-width:0} .su-desc{font-size:13px;color:var(--ink);margin:2px 0 4px} .su-needs{font-size:11.5px;color:var(--ink2);margin-bottom:6px} .su-needs i{font:700 9.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-style:normal;margin-right:6px}
+.su-field{display:grid;grid-template-columns:160px minmax(0,1fr);gap:4px 10px;align-items:center;padding:6px 0;border-top:1px solid var(--line2);font-size:12.5px;margin:0} .su-fl{font:600 11.5px var(--sans);color:var(--ink2)} .su-fl .v{display:block;font-size:10px;color:var(--ink3);font-weight:400} .su-field>input,.su-field>select{width:100%;max-width:380px;padding:4px 8px;font:12px var(--mono)} .su-fv{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;font-size:12px;color:var(--ink2);min-width:0} .su-fv label{display:inline-flex;gap:5px;align-items:center} .su-fv input[type=password]{flex:1 1 220px;min-width:0;padding:4px 8px;font:12px var(--mono)} .su-fv .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block;flex:none} .su-fv .dot.warn{background:var(--warn)}
+.su-secnote{display:block;margin-top:6px} .su-sf{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;padding-top:8px;border-top:1px solid var(--line)}
+.su-cfg{display:block;font:11px var(--mono);color:var(--ink3);margin-top:2px} .su-cfg b{color:var(--ink2);font-weight:600} .su-cfg b.ok{color:var(--ok)} .su-cfg b.warn{color:var(--warn)}
+.part.lit{background:var(--lit);box-shadow:inset 0 0 0 1px var(--lit-line);border-radius:6px;padding-left:6px;padding-right:6px}
+.su-org .su-hh .dot{background:var(--accent)} .su-org{margin-top:6px;border-top:1px solid var(--line)}
+.su-secrets>span{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px}
 @keyframes pulse{50%{opacity:.4}}
 @media (max-width:900px){.su-grid{grid-template-columns:1fr} .su-index{border-left:0;padding-left:0;margin-top:14px;border-top:1px solid var(--line);padding-top:8px} .su-list{max-height:none}}
-@media (max-width:760px){.su-dn{display:none} .part{grid-template-columns:72px minmax(0,1fr)} .part .ps{grid-column:2;justify-self:start;justify-content:flex-start;max-width:none;text-align:left} .su-plats{grid-template-columns:1fr} .su-pkg{grid-template-columns:1fr} .su-pc{grid-column:1;grid-row:auto;white-space:normal} .su-st{margin-left:0;width:100%}}
+@media (max-width:760px){.su-dn{display:none} .su-field{grid-template-columns:1fr} .part{grid-template-columns:72px minmax(0,1fr)} .part .ps{grid-column:2;justify-self:start;justify-content:flex-start;max-width:none;text-align:left} .su-plats{grid-template-columns:1fr} .su-pkg{grid-template-columns:1fr} .su-pc{grid-column:1;grid-row:auto;white-space:normal} .su-st{margin-left:0;width:100%}}
 
 /* ---------- log, toasts, tabs ---------- */
 .log{position:fixed;right:14px;top:calc(var(--top) + 6px);width:min(420px,calc(100vw - 28px));max-height:60vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:10px 12px;z-index:20}
@@ -1132,10 +1174,12 @@ const S = {
   attention: [
     {id:'host', cls:'', text:'host <b>mac-mini</b> last seen 41m · holds wi-#418', obj:'b:plan-decisions', host:'mac-mini', acts:[['takeover','takeover on studio'],['wait','wait']]},
     {id:'noapply', cls:'crit', text:'<b>"yes 413"</b> from 06:10 could not apply · unit already dropped by the 05:58 edit · re-proposed as 413', obj:'d:413', acts:[['ok','ok']]},
-    {id:'secret', cls:'', text:'secret <b>github-app.pem</b> for the cloud dispatcher is not placed · install chore wi-#429 waits on it', obj:null, acts:[['placed','placed']]},
+    {id:'secret', cls:'', host:'willdan-cloud', pkg:'pr-conversation', key:'key', file:'github-app.pem', wi:'wi-#429', text:'secret <b>github-app.pem</b> for the cloud dispatcher is not placed · install chore wi-#429 waits on it', obj:null, acts:[['placed','placed']]},
   ],
   /* setup (215): per host, à la carte · the hosts carry their parts; the index is what they could run · an offer never enters the count; accepting one raises an install chore as a decision */
-  setup:{open:false, host:'studio', q:'', kind:'all', anyPlat:false, add:null},
+  setup:{open:false, host:'studio', tab:'host', q:'', kind:'all', anyPlat:false, add:null, sheet:null, lit:null},
+  /* the organization's packages · installed in the books, read by every host · state per organization, not per host */
+  org:{'ut-default':{state:'installed 08-12'}, 'ut-fast':{state:'installed 08-12'}, 'ut-chore':{state:'installed 08-12'}, 'et-research':{state:'installed 08-12', cfg:{values:{model:'claude-fable-5-1'}, secrets:{}}}, 'et-prototype':{state:'installed 08-12'}, 'et-writeback':{state:'installed 08-12'}, 'dp-mdbook':{state:'installed 08-12'}, 'mv-ddd':{state:'installed 09-05'}, 'tp-intent':{state:'installed 08-12'}, 'sp-flywheel':{state:'installed 08-12'}},
   since: [
     {v:'merged', w:'plan-decisions · unit decision-grouping', t:'3 items · review passed first time', at:'07:21'},
     {v:'landed', w:'switchboard/idle-timeout', t:'gates green', at:'06:52'},
@@ -1144,31 +1188,31 @@ const S = {
   ],
   hosts: [
     {id:'studio', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:4, last:'07:39', joined:'08-12', joinedVia:'a laptop', note:'lease holder for plan, curation and the page', parts:[
-      {k:'adapter', pkg:'meeting', name:'meeting transcripts', what:'capture where it lies · the transcript stays on this machine · triaged here', state:'installed 08-12'},
-      {k:'adapter', pkg:'folder', name:'folder drop', what:'~/Drop · key: the file\'s hash', state:'installed 08-12'},
+      {k:'adapter', pkg:'meeting', name:'meeting transcripts', what:'capture where it lies · the transcript stays on this machine · triaged here', state:'installed 08-12', cfg:{values:{source:'Granola', shape:'capture where it lies · this host triages', cadence:'as meetings end'}, secrets:{}}},
+      {k:'adapter', pkg:'folder', name:'folder drop', what:'~/Drop · key: the file\'s hash', state:'installed 08-12', cfg:{values:{path:'~/Drop', cadence:'on change'}, secrets:{}}},
       {k:'adapter', pkg:'capture-box', name:'the capture box', what:'this host serves the page · text sent unparsed to the capture tool (19)', state:'installed 08-12'},
-      {k:'chat sink', pkg:'discord', name:'Discord', what:'#willdan-plan · for Chuck · the plan printed there, answers read back · the gateway socket held while studio is awake', state:'installed 08-12', lease:'presenter · renews 30s'},
+      {k:'chat sink', pkg:'discord', name:'Discord', what:'#willdan-plan · for Chuck · the plan printed there, answers read back · the gateway socket held while studio is awake', state:'installed 08-12', lease:'presenter · renews 30s', cfg:{values:{app:'1284 5570 0091', guild:'willdan', channel:'#willdan-plan'}, secrets:{token:{placed:true}}}},
       {k:'chat sink', name:'the page', what:'the plan page as a sink · this host serves it and presents it', state:'installed 08-12', lease:'presenter'},
       {k:'agent', name:'agent', what:'in-process · your key from the keychain · one bounded call per message (194)', state:'installed 08-12'},
       {k:'triage', name:'triage', what:'sources: meeting · folder · bound 2 · readers in panes under your login · off the shared line', state:'installed 08-12'},
-      {k:'runner', pkg:'runner-pane', name:'pane', what:'herdr on studio · bound 4 (32) · construction sessions and triage readers', state:'installed 08-12'},
+      {k:'runner', pkg:'runner-pane', name:'pane', what:'herdr on studio · bound 4 (32) · construction sessions and triage readers', state:'installed 08-12', cfg:{values:{bound:'4', login:'Claude Code'}, secrets:{}}},
       {k:'router', pkg:'router-local', name:'local router', what:'portless · https://<place>.localhost (46)', state:'installed 08-12'},
-      {k:'sign-in', pkg:'auth-github', name:'GitHub', what:'GitHub App willdan-flywheel · installation covers 4 repositories · tokens minted into places (207)', state:'installed 08-12'}]},
+      {k:'sign-in', pkg:'auth-github', name:'GitHub', what:'GitHub App willdan-flywheel · installation covers 4 repositories · tokens minted into places (207)', state:'installed 08-12', cfg:{values:{client:'Iv1.8a2c…', org:'willdan'}, secrets:{secret:{placed:true}}}}]},
     {id:'mac-mini', kind:'home host', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:false, bound:2, last:'06:59', gone:'41m', joined:'08-20', joinedVia:'adopt existing', note:'lease expires 07:59 · then its sessions are released', parts:[
       {k:'agent', name:'agent', what:'presents no chat · nothing to interpret here', state:'disabled', why:'presents no chat'},
       {k:'runner', pkg:'runner-pane', name:'pane', what:'herdr on mac-mini · bound 2 · joined by one command (205)', state:'installed 08-20'},
-      {k:'router', pkg:'router-private', name:'private-network router', what:'https://<place>.willdan.internal · a tailnet node on the host', state:'offered'},
+      {k:'router', pkg:'router-private', name:'private-network router', what:'https://<place>.willdan.internal · a tailnet node on the host', state:'suggested'},
       {k:'sign-in', pkg:'auth-none', name:'none', what:'the tailnet is the identity · no login', state:'installed 08-20'}]},
     {id:'willdan-cloud', kind:'cloud', platform:'flywheel-cloud · container', plat:['cloud','container','linux'], alive:true, bound:0, last:'07:40', joined:'09-03', joinedVia:'flywheel-cloud managed', dispatcher:true, note:'the dispatcher placement · presents Slack for the team while your hosts sleep · takes no construction work', parts:[
-      {k:'adapter', pkg:'pr-conversation', name:'PR conversation', what:'PR and issue comments on the 4 repositories · read with a scoped installation token (207)', state:'secret', secret:'github-app.pem', wi:'wi-#429'},
-      {k:'adapter', pkg:'datadog', name:'Datadog webhook', what:'at the endpoint · inbound secret placed on both sides · key: the FINDING# id', state:'installed 09-03'},
-      {k:'adapter', pkg:'chat-forward', name:'chat forward', what:'a message forwarded in Slack becomes one capture with its one signal (S21)', state:'installed 09-03'},
-      {k:'chat sink', pkg:'slack', name:'Slack', what:'#willdan-plan · for the team · buttons on each decision · replies over the URL behind the router', state:'installed 09-03', lease:'presenter · renews 30s'},
+      {k:'adapter', pkg:'pr-conversation', name:'PR conversation', what:'PR and issue comments on the 4 repositories · read with a scoped installation token (207)', state:'secret', secret:'github-app.pem', wi:'wi-#429', cfg:{values:{app:'willdan-flywheel · app id 8812', repos:'atlas switchboard new-repo books'}, secrets:{key:{placed:false}}}},
+      {k:'adapter', pkg:'datadog', name:'Datadog webhook', what:'at the endpoint · inbound secret placed on both sides · key: the FINDING# id', state:'installed 09-03', cfg:{values:{caller:'datadog · monitors on prod', route:'https://willdan-cloud.flywheel.cloud/capture/datadog'}, secrets:{inbound:{placed:true}}}},
+      {k:'adapter', pkg:'chat-forward', name:'chat forward', what:'a message forwarded in Slack becomes one capture with its one signal (S21)', state:'installed 09-03', cfg:{values:{sink:'Slack'}, secrets:{}}},
+      {k:'chat sink', pkg:'slack', name:'Slack', what:'#willdan-plan · for the team · buttons on each decision · replies over the URL behind the router', state:'installed 09-03', lease:'presenter · renews 30s', cfg:{values:{channel:'#willdan-plan'}, secrets:{token:{placed:true}, signing:{placed:true}}}},
       {k:'agent', name:'agent', what:'in-process · the runtime\'s role, no key on the host · one bounded call per message (194)', state:'installed 09-03'},
       {k:'triage', name:'triage', what:'sources: pr-conversation · datadog · chat-forward · bound 2 · copy then capture: the raw store is a bucket the platform reaches', state:'installed 09-03'},
-      {k:'runner', pkg:'runner-inproc', name:'in-process', what:'the agent and triage inside the binary · the runtime\'s role', state:'installed 09-03'},
+      {k:'runner', pkg:'runner-inproc', name:'in-process', what:'the agent and triage inside the binary · the runtime\'s role', state:'installed 09-03', cfg:{values:{'model.triage':'claude-sonnet-5', 'model.interpreter':'claude-haiku-4-5', access:'the runtime\'s Bedrock role'}, secrets:{key:{placed:false}}}},
       {k:'router', pkg:'router-platform', name:'platform router', what:'flywheel-cloud\'s ingress · a public route opened for Datadog only (46, 191)', state:'installed 09-03'},
-      {k:'sign-in', pkg:'auth-okta', name:'Okta SSO', what:'OIDC · issuer willdan.okta.com · the ingress in front · every response recorded with who and when (153)', state:'installed 09-03'}],
+      {k:'sign-in', pkg:'auth-okta', name:'Okta SSO', what:'OIDC · issuer willdan.okta.com · the ingress in front · every response recorded with who and when (153)', state:'installed 09-03', cfg:{values:{issuer:'https://willdan.okta.com', audience:'flywheel'}, secrets:{secret:{placed:true}}}}],
      joinedSteps:[{name:'platform', state:'done', at:'09-03 14:02', body:'flywheel-cloud managed'},{name:'provision', state:'done', at:'09-03 14:04', body:'ran from studio with your flywheel-cloud credentials · read from op at run time, never stored'},{name:'hand over secrets', state:'done', at:'09-03 14:06', body:'the Slack bot token and signing secret · model access as the runtime\'s role · into flywheel-cloud\'s secret store · the App key was left for later and waits under attention now'},{name:'enrol', state:'done', at:'09-03 14:07', body:'decision 405 · one-time token · expired 15:07 · used once'},{name:'join', state:'done', at:'09-03 14:09', body:'read the manifest · installed 8 of 9 declared parts from the index'},{name:'alive', state:'done', at:'09-03 14:10', body:'first heartbeat as host/willdan-cloud'}]},
   ],
   intents: [
@@ -1699,7 +1743,7 @@ function claimRef(name){ const nm = String(name).split(' @')[0].split(' · ')[0]
   return found; }
 function bookRefsOf(key){ if(!key) return []; const [t] = key.split(':'); const o = objOf(key); if(!o) return [];
   if(t==='d') return decRefs(o);
-  if(t==='a') return o.id==='host' ? [mkRef(['sessions','claim-sessions-one-writer'])] : o.id==='secret' ? [] : decRefs({n:413, kind:'unit'});
+  if(t==='a') return o.id==='host' ? [mkRef(['sessions','claim-sessions-one-writer'])] : /^secret/.test(o.id) ? [] : decRefs({n:413, kind:'unit'});
   if(t==='i') return (o.chapters||[]).map(ch => ({book:'platform-kit', ch, a:null}));
   if(t==='v'||t==='x'){ const is = t==='v' ? [o.intent] : o.intents.map(intent).filter(Boolean); return is.flatMap(i => (i.chapters||[]).map(ch => ({book:'platform-kit', ch, a:null}))); }
   if(t==='b'||t==='l') return (o.claims||[]).map(claimRef).filter(Boolean);
@@ -2065,7 +2109,7 @@ function renderHosts(){
   const all = allSessions();
   $('#hosts').innerHTML = `<span class="lab">hosts</span>` + S.hosts.map(h => { const n = all.filter(s => s.host===h.id).length;
     return `<button class="host ${h.alive?'':'gone'} ${S.hostlit===h.id?'lit':''} ${S.open==='h:'+h.id?'open-in-dock':''}" data-host="${h.id}"><span class="dot ${h.alive?'':'gone'}"></span><span class="hn">${esc(h.id)}</span><span class="hm tn">${h.bound ? `${n}/${h.bound} sessions` : 'dispatch · bound 0'}</span><span class="hm">${h.alive?'seen '+h.last:'<b>gone '+h.gone+'</b>'}</span></button>`; }).join('')
-    + `<button class="btn sm ${S.setup.open?'pri':''}" id="setup-open" title="setup by host (215) · what each host runs and the index of what it could · offers never enter the count">setup${S.attention.some(a => a.id==='secret') ? ` · <span${S.setup.open ? '' : ' style="color:var(--warn)"'}>secret</span>` : ''}</button>`
+    + `<button class="btn sm ${S.setup.open?'pri':''}" id="setup-open" title="setup by host (215) · what each host runs, what the organization carries, and the index of what either could · add configures first, then raises one install decision">setup${S.attention.some(a => /^secret/.test(a.id)) ? ` · <span${S.setup.open ? '' : ' style="color:var(--warn)"'}>secret</span>` : ''}</button>`
     + `<span class="sep"></span><span class="lab">repos</span>` + S.repos.map(r => `<button class="repo ${S.open==='r:'+r.id?'open-in-dock':''}" data-repo="${r.id}">${esc(r.id)}<span class="hm">${r.claims.length ? r.claims.filter(c=>c[1]==='not satisfied').length+' unmet' : 'books'}</span></button>`).join('')
     + miniWheel()
     + `<span class="note">a host pill lights its sessions · a repo opens its claims · the wheel opens the flywheel (<kbd>w</kbd>) · setup is by host, à la carte</span>`;
@@ -2258,7 +2302,7 @@ function dockDecision(d){
     parts.push(sec('the artifacts behind it', links.length ? `<div class="rows">${links.map(([k,l]) => `<div class="rowbtn"><div class="grow">${esc(l)}</div><button class="btn sm quiet" data-oart="${esc(k)}">open</button></div>`).join('')}</div>` : `<div class="empty" style="padding:2px 0">no change directory yet · a unit's change is written at its first stage, after the yes (187)</div>`, '213 · derived at the shared line')); }
   if(d.sess && d.obj && d.obj[0]==='i'){ const e = elabOf(d.obj.slice(2)+'/'+d.sess); if(e) parts.push(sec('the elaboration', `<div class="dtext">This decision is about the <b>${esc(e.kind)}</b> bead on intent ${esc(e.intent.name)}. <button class="btn sm" data-gotoobj="${e.key}">open the elaboration</button></div>`, 'a bead on the thread')); }
   const o = d.obj && d.obj!=='d:'+d.n ? objOf(d.obj) : null;
-  if(o && d.obj[0]==='h'){ parts.push(sec(`on host ${esc(o.id)} · what it runs`, `<div class="su-chips">${PART_KINDS.map(k => { const ps = o.parts.filter(p => p.k===k); return ps.length ? `<span class="su-kg"><span class="su-kk">${esc(k)}</span>${ps.map(p => `<span class="su-chip st-${p.state.split(' ')[0]}" title="${esc(p.state)}">${esc(p.name)}</span>`).join('')}</span>` : ''; }).join('')}</div><div class="rows" style="margin-top:8px"><div class="row"><span class="grow" style="color:var(--ink3);font-size:12px">${o.alive ? 'alive · seen '+o.last : 'gone '+o.gone+' · the chore waits for it'} · ${esc(o.kind)} · ${esc(o.platform)}</span><button class="btn sm" id="setup-open" data-suhost="${o.id}">open in setup</button></div></div>`, 'the part this decision adds is marked decision n')); }
+  if(o && d.obj[0]==='h'){ parts.push(sec(`on host ${esc(o.id)} · what it runs`, `<div class="su-chips">${PART_KINDS.map(k => { const ps = o.parts.filter(p => p.k===k); return ps.length ? `<span class="su-kg"><span class="su-kk">${esc(k)}</span>${ps.map(p => `<span class="su-chip st-${p.state.split(' ')[0]}" title="${esc(p.state)}">${esc(p.name)}</span>`).join('')}</span>` : ''; }).join('')}</div><div class="rows" style="margin-top:8px"><div class="row"><span class="grow" style="color:var(--ink3);font-size:12px">${o.alive ? 'alive · seen '+o.last : 'gone '+o.gone+' · the chore waits for it'} · ${esc(o.kind)} · ${esc(o.platform)}</span><button class="btn sm" id="setup-open" data-suhost="${o.id}">open in setup</button></div></div>`, 'the part this decision adds reads added · awaiting install')); }
   else if(o){ const list = d.obj[0]==='b' ? o.units.flatMap(u => u.items||[]) : o.sessions; parts.push(sec(`on ${esc(d.obj[0]==='b'?'bolt '+o.name:'intent '+o.name)} · sessions running`, sessionsHtml(d.sess ? list.filter(s => s.id===d.sess) : list, 'nothing running'), 'with host and last activity')); }
   else if(d.kind==='unit'||d.kind==='proposal') parts.push(sec('sessions running', sessionsHtml([], 'nothing starts before yes')));
   parts.push(sec('history · what led here and your responses', tlHtml(histWithLog(d.n, x.hist||[])), SM));
@@ -2338,7 +2382,7 @@ function dockHost(h){
   const mine = allSessions().filter(s => s.host===h.id);
   return sec('the host', `<div class="dtext">Host <span class="mono">${esc(h.id)}</span> ${h.alive ? `is alive, last heartbeat ${h.last}` : `has sent no heartbeat for <b>${h.gone}</b>, last seen ${h.last}`}. Its bound is ${h.bound} sessions at once; at the bound ready work waits in a stated order. ${esc(h.note)}.</div>`)
     + sec(`sessions · ${mine.length}${h.bound ? '/'+h.bound : ''}`, sessionsHtml(mine, h.bound ? 'nothing on this host' : 'no construction sessions · a dispatcher placement charges triage readers per capture, not sessions of the bound'), 'each with the object it works')
-    + sec('parts it runs', `<div class="su-chips">${PART_KINDS.map(k => { const ps = h.parts.filter(p => p.k===k); return ps.length ? `<span class="su-kg"><span class="su-kk">${esc(k)}</span>${ps.map(p => `<span class="su-chip st-${p.state.split(' ')[0]}" title="${esc(p.state)}">${esc(p.name)}</span>`).join('')}</span>` : ''; }).join('')}</div><div class="rows" style="margin-top:8px"><div class="row"><span class="grow" style="color:var(--ink3);font-size:12px">${esc(h.kind)} · ${esc(h.platform)} · joined ${esc(h.joined)}</span><button class="btn sm" id="setup-open" data-suhost="${h.id}">open in setup</button></div></div>`, 'installed · offered · needs a secret · installing · disabled')
+    + sec('parts it runs', `<div class="su-chips">${PART_KINDS.map(k => { const ps = h.parts.filter(p => p.k===k); return ps.length ? `<span class="su-kg"><span class="su-kk">${esc(k)}</span>${ps.map(p => `<span class="su-chip st-${p.state.split(' ')[0]}" title="${esc(p.state)}">${esc(p.name)}</span>`).join('')}</span>` : ''; }).join('')}</div><div class="rows" style="margin-top:8px"><div class="row"><span class="grow" style="color:var(--ink3);font-size:12px">${esc(h.kind)} · ${esc(h.platform)} · joined ${esc(h.joined)}</span><button class="btn sm" id="setup-open" data-suhost="${h.id}">open in setup</button></div></div>`, 'installed · added · needs a secret · installing · disabled · suggested')
     + sec('leases', kvHtml(h.id==='studio' ? [['plan','holder · renews every 30s'],['curation','holder'],['page','presenter for the page sink'],['discord','presenter for the Discord sink'],['plan-decisions','place at the head of the line']] : h.id==='willdan-cloud' ? [['slack','presenter for the Slack sink · holder · renews every 30s'],['triage','2 readers of bound 2 · off the shared line']] : h.id==='mac-mini' ? [['plan-decisions/wi-418','place · session blocked · lease expires 07:59'],['plan-tail/wi-426','place · session starting']] : [['—','no leases yet']]), SM);
 }
 /* --- artifacts (213): one view per artifact, derived at the shared line, never stored; edits only through review --- */
@@ -2469,7 +2513,7 @@ function flywheelModel(){
     : over || (queued && util>=1) ? {cls:'warn', text:`drain is the limit: add a host · ${onAlive} items on ${aliveBound} alive slots${queued ? ` · ${queued} approved and waiting` : ''}`}
     : {cls:'ok', text:`primed: agents have ${fmtDays(runway)} days · nothing waits on you that stops them`};
   const risks = []; S.hosts.filter(h => !h.alive).forEach(h => { const held = items.filter(s => s.host===h.id).length; if(held) risks.push(`host ${h.id} gone ${h.gone} holds ${held} item${held===1?'':'s'}`); });
-  if(runway < 1) risks.push(`runway runs out in ${Math.round(runway*24)}h`); if(S.attention.some(a => a.id==='secret')) risks.push('a secret waits on you');
+  if(runway < 1) risks.push(`runway runs out in ${Math.round(runway*24)}h`); if(S.attention.some(a => /^secret/.test(a.id))) risks.push('a secret waits on you');
   const now = STREAK_NOW_BASE + (S.minutes - 460);
   return {m, aliveBound, bound, alive:alive.length, hosts:S.hosts.length, drain, queued, building, charge, runway, band, feedDs, feedUnits, feedDays, best, unitsOf, elabWait, intentWait, running, onAlive, over, util, pressure, old, merges7, read,
     streak:{now, from:STREAK_NOW_FROM, risks, longest:STREAKS.slice().sort((a,b) => b.min-a.min)[0], last:STREAKS[STREAKS.length-1]}};
@@ -2525,7 +2569,8 @@ function renderLoad(){ const L = $('#load'); L.hidden = !S.load; if(!S.load) ret
     <details class="adv" ${S.adv ? 'open' : ''}><summary>advanced · the three phase gauges<span class="sub">inception · construction · operation · counts and the 7-day trend</span></summary>${advancedHtml()}</details>
     <div class="load-foot">every count is derived from the same state the engine reads; the 7-day series and the streaks are history read the same way · a unit is ~${SLOT_DAYS} slot-days, from the last week · esc closes · ${SM}</div></div>`; }
 document.addEventListener('toggle', e => { if(e.target.classList && e.target.classList.contains('adv')) S.adv = e.target.open; }, true);
-/* --- setup (215): per host, à la carte · the hosts left, the index right · an offer never enters the count; "offer" raises an install chore as a decision; a secret the machinery cannot place sits under attention; "+ host" is the guided enrolment --- */
+/* --- setup (215): per host, à la carte · the hosts left, the index right in two tabs (for this host · for the organization) · "add" opens the package's sheet: its form from its schema, secrets pasted now or placed later, a host for a per-host package; add raises one install decision and the part sits as "added · awaiting install"; "configure" is the same sheet prefilled and one logged response; "+ host" chooses parts first and hands over only their secrets --- */
+const MODELS = ['claude-fable-5-1','claude-opus-5','claude-sonnet-5','claude-haiku-4-5'];
 const INDEX = [
   {id:'meeting', kind:'adapter', name:'meeting transcripts', v:'1.4.0', tag:'shipped', plat:['machine'], needs:'the notes tool on this machine · the raw store, or "capture where it lies" with triage declared here', enables:'one capture per meeting · key: the meeting id · raw: the transcript'},
   {id:'folder', kind:'adapter', name:'folder drop', v:'1.2.1', tag:'shipped', plat:['machine'], needs:'a folder to watch · nothing else', enables:'one capture per file · key: the file\'s hash · raw: the file'},
@@ -2566,106 +2611,250 @@ const INDEX = [
   {id:'sp-flywheel', kind:'scenario pack', name:'flywheel acceptance', v:'1.0.0', tag:'shipped', plat:['any'], needs:'nothing', enables:'the scenarios behind a bolt\'s acceptance file'},
   {id:'sp-sinks', kind:'scenario pack', name:'sink delivery', v:'0.5.0', tag:'index', plat:['any'], needs:'nothing', enables:'delivery-mark scenarios for every chat sink (intent sink-delivery-marks)'},
 ];
+/* each package's configuration schema (sample): a field is text, number, select or secret; a secret names the file it is placed as; "when" hides a field unless another field holds a value */
+const SCHEMA = {
+  meeting:[{k:'source',label:'notes tool',kind:'select',opts:['Granola','Notion','a folder of transcripts']},{k:'shape',label:'raw material',kind:'select',opts:['capture where it lies · this host triages','copy then capture · into the raw store']},{k:'cadence',label:'cadence',kind:'select',opts:['as meetings end','hourly','daily 18:00']}],
+  folder:[{k:'path',label:'folder to watch',ph:'~/Drop'},{k:'cadence',label:'cadence',kind:'select',opts:['on change','every 5m','hourly']}],
+  'chat-forward':[{k:'sink',label:'the chat sink it listens on',kind:'select',opts:['Discord','Slack','Microsoft Teams','Webex']}],
+  'capture-box':[],
+  'pr-conversation':[{k:'app',label:'GitHub App',ph:'willdan-flywheel · app id 8812'},{k:'repos',label:'repositories',ph:'atlas switchboard new-repo books'},{k:'key',label:'the App\'s private key',kind:'secret',file:'github-app.pem',op:'op://willdan/flywheel github app/private key'}],
+  'issue-tracker':[{k:'app',label:'GitHub App',ph:'willdan-flywheel'},{k:'repos',label:'repositories',ph:'atlas switchboard'},{k:'key',label:'the App\'s private key',kind:'secret',file:'github-app.pem',op:'op://willdan/flywheel github app/private key'}],
+  datadog:[{k:'caller',label:'named caller',ph:'datadog · monitors on prod'},{k:'route',label:'public route · opened for the caller',ph:'https://<host>.flywheel.cloud/capture/datadog'},{k:'inbound',label:'inbound secret · placed on both sides',kind:'secret',file:'datadog.inbound'}],
+  switchboard:[{k:'caller',label:'named caller',ph:'switchboard'},{k:'route',label:'public route',ph:'https://<host>.flywheel.cloud/capture/switchboard'},{k:'inbound',label:'inbound secret · placed on both sides',kind:'secret',file:'switchboard.inbound'}],
+  discord:[{k:'app',label:'application id',ph:'1284 5570 0091'},{k:'guild',label:'guild',ph:'willdan'},{k:'channel',label:'channel',ph:'#willdan-plan'},{k:'token',label:'bot token · the bot\'s own, never yours',kind:'secret',file:'discord.bot-token'}],
+  slack:[{k:'channel',label:'channel',ph:'#willdan-plan'},{k:'token',label:'app token',kind:'secret',file:'slack.app-token'},{k:'signing',label:'signing secret',kind:'secret',file:'slack.signing-secret'}],
+  teams:[{k:'app',label:'app registration',ph:'willdan-flywheel'},{k:'channel',label:'team channel',ph:'Engineering / plan'},{k:'secret',label:'client secret',kind:'secret',file:'teams.client-secret'}],
+  webex:[{k:'space',label:'space',ph:'willdan plan'},{k:'token',label:'bot token',kind:'secret',file:'webex.bot-token'}],
+  'runner-pane':[{k:'bound',label:'bound · sessions at once',kind:'number',ph:'2'},{k:'login',label:'agent program · under your login',kind:'select',opts:['Claude Code','Codex']}],
+  'runner-inproc':[{k:'model.triage',label:'model · triage',kind:'select',opts:MODELS},{k:'model.interpreter',label:'model · interpreter',kind:'select',opts:MODELS},{k:'access',label:'model access',kind:'select',opts:['an API key','the runtime\'s Bedrock role','the runtime\'s Vertex role']},{k:'key',label:'API key',kind:'secret',file:'model.api-key',when:['access','an API key']}],
+  'runner-agentcore':[{k:'region',label:'region',ph:'us-west-2'},{k:'role',label:'runtime role',ph:'arn:aws:iam::…:role/flywheel-triage'},{k:'model.triage',label:'model · triage',kind:'select',opts:MODELS}],
+  'runner-managed-claude':[{k:'sandbox',label:'self-hosted sandbox',ph:'https://sandbox.willdan.internal'},{k:'model.triage',label:'model · triage',kind:'select',opts:MODELS},{k:'vault',label:'vault credential',kind:'secret',file:'vault.credential'}],
+  'router-local':[],
+  'router-private':[{k:'node',label:'tailnet node',ph:'<host>.willdan.internal'}],
+  'router-platform':[{k:'routes',label:'public routes · one per named caller',ph:'none yet · opened per caller (46)'}],
+  'auth-none':[{k:'tailnet',label:'tailnet',ph:'willdan.internal'}],
+  'auth-github':[{k:'client',label:'OAuth app · client id',ph:'Iv1.8a2c…'},{k:'org',label:'organization · the membership check',ph:'willdan'},{k:'secret',label:'client secret',kind:'secret',file:'github-oauth.client-secret'}],
+  'auth-okta':[{k:'issuer',label:'issuer',ph:'https://willdan.okta.com'},{k:'audience',label:'audience',ph:'flywheel'},{k:'secret',label:'client secret',kind:'secret',file:'okta.client-secret'}],
+  'ut-migration':[{k:'rehearse',label:'rehearsal database',kind:'select',opts:['a copy the built repository names','a container per run']}],
+  'et-research':[{k:'model',label:'model',kind:'select',opts:MODELS}],
+  'et-interview':[{k:'bound',label:'questions per interview',kind:'number',ph:'6'}],
+  'dp-diagram':[{k:'model',label:'model',kind:'select',opts:MODELS},{k:'renderer',label:'SVG renderer',kind:'select',opts:['resvg','rsvg-convert']}],
+};
+const HOST_KINDS = ['adapter','chat sink','runner','router','sign-in'];
+const ORG_KINDS = ['unit type','elaboration type','deliverable producer','map vocabulary','template','scenario pack'];
 const PART_KINDS = ['adapter','chat sink','agent','triage','runner','router','sign-in'];
-const PKG_KINDS = ['adapter','chat sink','runner','router','sign-in','unit type','elaboration type','deliverable producer','map vocabulary','template','scenario pack'];
+const PKG_KINDS = [...HOST_KINDS, ...ORG_KINDS];
+const ORG_DIRS = {'unit type':'types','elaboration type':'types','deliverable producer':'producers','map vocabulary':'map','template':'templates','scenario pack':'scenarios'};
+const isOrgKind = k => ORG_KINDS.includes(k);
 const pkg = id => INDEX.find(p => p.id===id);
-const pkgFits = (p, h) => p.plat.includes('any') || p.plat.some(t => h.plat.includes(t));
+const orgPath = p => `flywheel/${ORG_DIRS[p.kind]}/${p.id.replace(/^[a-z]+-/,'')}.md`;
+const schemaOf = p => (p && SCHEMA[p.id]) || [];
+const secretFields = p => schemaOf(p).filter(f => f.kind==='secret');
+const fieldOn = (f, values) => !f.when || values[f.when[0]]===f.when[1];
+const short = f => f.label.split(' · ')[0];
+const pkgFits = (p, h) => p.plat.includes('any') || h.plat.includes('any') || p.plat.some(t => h.plat.includes(t));
 const partOn = (h, pkgId) => h.parts.find(p => p.pkg===pkgId);
 const setupHost = () => host(S.setup.host) || S.hosts[0];
+const orgSel = () => S.setup.host==='org';
+/* configuration: values by field, secrets as placed or not · never a value */
+const emptyCfg = p => ({values:Object.fromEntries(schemaOf(p).filter(f => f.kind==='select').map(f => [f.k, f.opts[0]])), secrets:Object.fromEntries(secretFields(p).map(f => [f.k, {placed:false}]))});
+function cfgOf(part){ if(part.cfg) return part.cfg; const p = part.pkg && pkg(part.pkg); if(!p) return null; const c = emptyCfg(p); Object.values(c.secrets).forEach(s => s.placed = /^installed/.test(part.state)); part.cfg = c; return c; }
+const missingSecrets = (p, cfg) => secretFields(p).filter(f => fieldOn(f, cfg.values) && !(cfg.secrets[f.k]||{}).placed);
+function cfgItems(p, cfg){ if(!p || !cfg) return []; return schemaOf(p).filter(f => fieldOn(f, cfg.values)).map(f => f.kind==='secret' ? [short(f), (cfg.secrets[f.k]||{}).placed ? 'placed' : 'not placed', (cfg.secrets[f.k]||{}).placed ? 'ok' : 'warn'] : cfg.values[f.k] ? [short(f), String(cfg.values[f.k]), ''] : null).filter(Boolean); }
+const cfgText = (p, cfg) => cfgItems(p, cfg).map(([k,v]) => `${k} ${v}`).join(' · ');
+const cfgLine = (p, cfg) => { const items = cfgItems(p, cfg); return items.length ? `<span class="su-cfg">${items.map(([k,v,c]) => `${esc(k)} <b class="${c}">${esc(v)}</b>`).join(' · ')}</span>` : schemaOf(p).length ? '' : '<span class="su-cfg">nothing to configure</span>'; };
+const secretAttId = (hid, pid) => { const a = S.attention.find(x => x.host===hid && x.pkg===pid); return a ? a.id : 'secret'; };
 function partStateHtml(p, h){
-  const s = p.state;
-  if(/^installed/.test(s)) return `<span class="dot"></span>${esc(s)}${p.lease ? ` · <span class="su-lease" title="one lease per sink (148)">${esc(p.lease)}</span>` : ''}`;
-  if(s==='secret') return `<span class="dot warn"></span><button data-gotoobj="a:secret" title="a secret you place, never an agent (204)">needs a secret · ${esc(p.secret)} · ${esc(p.wi)} waits · place it</button>`;
-  if(/^decision/.test(s)) return `<span class="dot busy"></span><button data-gotoobj="d:${s.split(' ')[1]}">${esc(s)} · in the rail</button>`;
+  const s = p.state; const pk = p.pkg && pkg(p.pkg); const conf = pk && schemaOf(pk).length ? `<button class="btn sm quiet" data-suconf="${h.id}|${p.pkg}" title="the same form, prefilled · saving is one logged response, no chore">configure</button>` : '';
+  if(/^installed/.test(s)) return `<span class="dot"></span>${esc(s)}${p.lease ? ` · <span class="su-lease" title="one lease per sink (148)">${esc(p.lease)}</span>` : ''}${conf}`;
+  if(s==='secret') return `<span class="dot warn"></span><button data-gotoobj="a:${secretAttId(h.id, p.pkg)}" title="a secret you place, never an agent (204)">needs a secret · ${esc(p.secret)}${p.wi ? ` · ${esc(p.wi)} waits` : ''} · place it</button>${conf}`;
+  if(s==='added') return `<span class="dot busy"></span><button data-gotoobj="d:${p.decision}">added · awaiting install · decision ${p.decision}</button>`;
   if(/^installing/.test(s)) return `<span class="dot busy"></span>${esc(s)}`;
   if(s==='disabled') return `<span class="dot off"></span>disabled${p.why ? ' · '+esc(p.why) : ''}<button class="btn sm quiet" data-supart="${h.id}|${esc(p.pkg||p.name)}|enable">enable</button>`;
-  return `<span class="dot off"></span><span class="offer">offered</span><button class="btn sm yes" data-offer="${h.id}|${esc(p.pkg)}">offer</button>`; }
+  return `<span class="dot off"></span><span class="sug">suggested</span><button class="btn sm yes" data-suadd="${h.id}|${esc(p.pkg)}">add</button>`; }
 function hostSummary(h){ const ps = h.parts, inst = ps.filter(p => /^installed/.test(p.state)).length;
   if(ps.some(p => p.state==='secret')) return {cls:'warn', text:'a secret waits on you'};
-  if(ps.some(p => /^decision|^installing/.test(p.state))) return {cls:'', text:'installing'};
-  const off = ps.filter(p => p.state==='offered').length; return off ? {cls:'', text:`${off} offered · not in the count`} : {cls:'ok', text:`${inst} parts installed`}; }
+  const added = ps.filter(p => p.state==='added').length; if(added) return {cls:'', text:`${added} added · awaiting install`};
+  if(ps.some(p => /^installing/.test(p.state))) return {cls:'', text:'installing'};
+  const sug = ps.filter(p => p.state==='suggested').length; return sug ? {cls:'', text:`${sug} suggested · not in the count`} : {cls:'ok', text:`${inst} parts installed`}; }
+const chipsHtml = (kinds, parts, nameOf) => kinds.map(k => { const ps = parts.filter(p => p.k===k); if(!ps.length) return ''; return `<span class="su-kg"><span class="su-kk">${esc(k)}</span>${ps.map(p => `<span class="su-chip st-${p.state.split(' ')[0]}" title="${esc(p.state)}">${esc(nameOf(p))}${p.lease ? '<i class="su-lz" title="presenter lease">lease</i>' : ''}</span>`).join('')}</span>`; }).join('');
 function hostRowHtml(h){ const on = S.setup.host===h.id && !S.setup.add; const sm = hostSummary(h);
-  const chips = PART_KINDS.map(k => { const ps = h.parts.filter(p => p.k===k); if(!ps.length) return ''; return `<span class="su-kg"><span class="su-kk">${esc(k)}</span>${ps.map(p => `<span class="su-chip st-${p.state.split(' ')[0]}" title="${esc(p.state)}">${esc(p.name)}${p.lease ? '<i class="su-lz" title="presenter lease">lease</i>' : ''}</span>`).join('')}</span>`; }).join('');
   return `<div class="su-host ${on?'on':''} ${h.alive?'':'gone'}" data-suhost="${h.id}" role="button" tabindex="0" aria-expanded="${on}">
     <div class="su-hh"><span class="dot ${h.alive?'':'gone'}"></span><b class="mono">${esc(h.id)}</b><span class="su-kind">${esc(h.kind)} · ${esc(h.platform)}</span><span class="su-st ${sm.cls}">${esc(sm.text)}</span></div>
     <div class="su-hm">${h.alive ? `alive · seen ${h.last}` : `<b class="warn">gone ${h.gone}</b> · last ${h.last}`} · ${h.bound ? `bound ${h.bound}` : 'bound 0 · takes no construction work'} · joined ${esc(h.joined)}</div>
-    <div class="su-chips">${chips || '<span class="empty" style="padding:0">nothing declared</span>'}</div>
+    <div class="su-chips">${chipsHtml(PART_KINDS, h.parts, p => p.name) || '<span class="empty" style="padding:0">nothing declared</span>'}</div>
     ${on ? hostDetailHtml(h) : ''}</div>`; }
 function hostDetailHtml(h){
-  const rows = PART_KINDS.map(k => { const ps = h.parts.filter(p => p.k===k); if(!ps.length) return `<div class="part"><span class="pk">${esc(k)}</span><span class="pw" style="color:var(--ink3)">${k==='triage' ? 'declares no source · nothing is read here' : k==='adapter' ? 'no adapter · this host captures nothing' : k==='chat sink' ? 'presents no chat' : 'none'}</span><span class="ps"><span class="dot off"></span>none</span></div>`;
-    return ps.map(p => `<div class="part"><span class="pk">${esc(k)}</span><span class="pw"><b>${esc(p.name)}</b> <span class="v">${p.pkg && pkg(p.pkg) ? 'v'+pkg(p.pkg).v : ''}</span></span><span class="ps">${partStateHtml(p, h)}</span><span class="pd">${esc(p.what)}${k==='agent' ? '<br><small class="su-hint">reads and answers; every write is a proposed call you confirm</small>' : ''}</span></div>`).join(''); }).join('');
+  const rows = PART_KINDS.map(k => { const ps = h.parts.filter(p => p.k===k); if(!ps.length) return `<div class="part"><span class="pk">${esc(k)}</span><span class="pw" style="color:var(--ink3)">${k==='triage' ? 'declares no source · nothing is read here' : k==='adapter' ? 'no adapter · this host captures nothing' : k==='chat sink' ? 'presents no chat' : 'none'}</span><span class="ps"><span class="dot off"></span>none${HOST_KINDS.includes(k) ? `<button class="btn sm quiet" data-sutab="host" data-sukind="${esc(k)}">browse the index</button>` : ''}</span></div>`;
+    return ps.map(p => `<div class="part ${S.setup.lit===p.pkg?'lit':''}" data-partrow="${esc(p.pkg||p.name)}"><span class="pk">${esc(k)}</span><span class="pw"><b>${esc(p.name)}</b> <span class="v">${p.pkg && pkg(p.pkg) ? 'v'+pkg(p.pkg).v : ''}</span></span><span class="ps">${partStateHtml(p, h)}</span><span class="pd">${esc(p.what)}${k==='agent' ? '<br><small class="su-hint">reads and answers; every write is a proposed call you confirm</small>' : ''}${p.pkg ? cfgLine(pkg(p.pkg), cfgOf(p)) : ''}</span></div>`).join(''); }).join('');
   const joined = h.joinedSteps ? `<details class="su-joined"><summary>how it joined · ${esc(h.joined)} · ${esc(h.joinedVia)}</summary>${stepsHtml(h.joinedSteps)}</details>` : '';
-  return `<div class="su-detail"><div class="su-dh"><span class="eyebrow">what it runs</span><span class="su-dn">installed · offered · needs a secret · installing · disabled</span><button class="btn sm quiet" data-gotoobj="h:${h.id}">open the host</button></div>${rows}${joined}</div>`; }
+  return `<div class="su-detail"><div class="su-dh"><span class="eyebrow">what it runs</span><span class="su-dn">installed · added · needs a secret · installing · disabled · suggested</span><button class="btn sm quiet" data-gotoobj="h:${h.id}">open the host</button></div>${rows}${joined}</div>`; }
+/* the organization's packages live in the books, read by every host · one row under the hosts */
+const orgEntries = () => Object.entries(S.org).map(([id, o]) => ({...o, pkg:id, k:pkg(id).kind, p:pkg(id)}));
+function orgRowHtml(){ const on = orgSel() && !S.setup.add; const es = orgEntries(); const n = es.filter(x => /^installed/.test(x.state)).length, added = es.filter(x => x.state==='added').length, inst = es.filter(x => /^installing/.test(x.state)).length;
+  return `<div class="su-host su-org ${on?'on':''}" data-suhost="org" role="button" tabindex="0" aria-expanded="${on}">
+    <div class="su-hh"><span class="dot"></span><b class="mono">the organization</b><span class="su-kind">the books · read by every host</span><span class="su-st ${added||inst?'':'ok'}">${added ? `${added} added · awaiting install` : inst ? 'installing' : `${n} packages in the books`}</span></div>
+    <div class="su-hm">installed in the books under <span class="mono">flywheel/</span> · types, producers, vocabularies, templates and scenario packs · no host runs them; every host reads them</div>
+    <div class="su-chips">${chipsHtml(ORG_KINDS, es, x => x.p.name)}</div>
+    ${on ? orgDetailHtml(es) : ''}</div>`; }
+function orgStateHtml(x){ const s = x.state; const conf = schemaOf(x.p).length ? `<button class="btn sm quiet" data-suconf="org|${x.pkg}">configure</button>` : '';
+  if(/^installed/.test(s)) return `<span class="dot"></span>${esc(s)} · <span class="mono">${esc(orgPath(x.p))}</span>${conf}`;
+  if(s==='added') return `<span class="dot busy"></span><button data-gotoobj="d:${x.decision}">added · awaiting install · decision ${x.decision}</button>`;
+  return `<span class="dot busy"></span>${esc(s)}`; }
+function orgDetailHtml(es){ const rows = ORG_KINDS.map(k => { const ps = es.filter(x => x.k===k); if(!ps.length) return `<div class="part"><span class="pk">${esc(k)}</span><span class="pw" style="color:var(--ink3)">none in the books</span><span class="ps"><span class="dot off"></span>none<button class="btn sm quiet" data-sutab="org" data-sukind="${esc(k)}">browse the index</button></span></div>`;
+    return ps.map(x => `<div class="part ${S.setup.lit===x.pkg?'lit':''}" data-partrow="${x.pkg}"><span class="pk">${esc(k)}</span><span class="pw"><b>${esc(x.p.name)}</b> <span class="v">v${esc(x.p.v)}</span></span><span class="ps">${orgStateHtml(x)}</span><span class="pd">${esc(x.p.enables)}${cfgLine(x.p, x.cfg || (x.cfg = emptyCfg(x.p)))}</span></div>`).join(''); }).join('');
+  return `<div class="su-detail"><div class="su-dh"><span class="eyebrow">what the books carry</span><span class="su-dn">installed in the books · added · installing</span><button class="btn sm quiet" data-gotoobj="r:books">open the books</button></div>${rows}</div>`; }
 function stepsHtml(steps){ return `<ol class="su-steps">${steps.map(s => `<li class="${s.state}"><span class="su-sd"></span><span class="su-sn">${esc(s.name)}</span><span class="su-ss">${s.state==='done' ? 'done' : s.state==='running' ? 'running' : s.state==='wait' ? 'waiting on you' : s.state==='skipped' ? 'skipped' : s.state==='stopped' ? 'stopped' : 'queued'}${s.at ? ' · '+esc(s.at) : ''}</span>${s.body ? `<div class="su-sb">${s.body}</div>` : ''}</li>`).join('')}</ol>`; }
-function indexHtml(){ const h = setupHost(); const q = S.setup.q.trim().toLowerCase();
-  const list = INDEX.filter(p => S.setup.kind==='all' || p.kind===S.setup.kind).filter(p => !q || `${p.name} ${p.kind} ${p.needs} ${p.enables} ${p.tag}`.toLowerCase().includes(q)).filter(p => S.setup.anyPlat || pkgFits(p, h));
-  const rows = list.map(p => { const fits = pkgFits(p, h); const on = partOn(h, p.id);
-    const ctl = !fits ? `<span class="su-need">needs ${esc(p.plat.join(' or '))}</span>` : !on ? `<button class="btn sm yes" data-offer="${h.id}|${p.id}" title="raises an install chore on the rail · not a decision until you accept">offer</button>`
-      : /^installed/.test(on.state) ? `<span class="su-on"><span class="dot"></span>on ${esc(h.id)}</span>` : on.state==='secret' ? `<button data-gotoobj="a:secret"><span class="dot warn"></span>needs a secret</button>` : /^decision/.test(on.state) ? `<button data-gotoobj="d:${on.state.split(' ')[1]}"><span class="dot busy"></span>${esc(on.state)}</button>` : /^installing/.test(on.state) ? `<span class="su-on"><span class="dot busy"></span>${esc(on.state)}</span>` : on.state==='disabled' ? `<span class="su-on"><span class="dot off"></span>disabled on ${esc(h.id)}</span>` : `<button class="btn sm yes" data-offer="${h.id}|${p.id}">offer</button>`;
-    return `<div class="su-pkg ${fits?'':'dim'}"><div class="su-pn"><b>${esc(p.name)}</b><span class="v">v${esc(p.v)}</span><span class="tag ${p.tag}">${esc(p.tag)}</span><span class="su-pk">${esc(p.kind)}</span></div><div class="su-pm"><span><i>needs</i>${esc(p.needs)}</span><span><i>enables</i>${esc(p.enables)}</span></div><div class="su-pc">${ctl}</div></div>`; }).join('');
-  return `<div class="su-ih"><span class="eyebrow">the index</span><span class="su-for">for <b class="mono">${esc(h.id)}</b> · ${esc(h.platform)} · ${list.length} of ${INDEX.length}</span></div>
-    <div class="su-if"><input id="su-q" type="search" placeholder="search the index" aria-label="search the index" value="${esc(S.setup.q)}"><select id="su-kind" aria-label="kind"><option value="all" ${S.setup.kind==='all'?'selected':''}>every kind</option>${PKG_KINDS.map(k => `<option value="${k}" ${S.setup.kind===k?'selected':''}>${k}</option>`).join('')}</select><label class="su-any"><input type="checkbox" id="su-any" ${S.setup.anyPlat?'checked':''}> any platform</label></div>
+/* the index · two tabs: what this host could run, and what the organization could carry */
+function indexHost(){ const A = S.setup.add; if(A && A.step==='parts'){ const plat = A.platform && ADD_PLATFORMS.find(x => x[0]===A.platform); return {id:A.name, plat: plat ? plat[4] : ['any'], platform: plat ? plat[1] : 'platform read at join', parts:A.parts, virtual:true}; } return setupHost(); }
+function hostCtl(p, h){ const fits = pkgFits(p, h); const on = partOn(h, p.id); const hid = h.virtual ? '__new' : h.id; const conf = schemaOf(p).length ? `<button class="btn sm quiet" data-suconf="${hid}|${p.id}">configure</button>` : '';
+  if(!fits) return `<span class="su-need">needs ${esc(p.plat.join(' or '))}</span>`;
+  if(!on) return `<button class="btn sm yes" data-suadd="${hid}|${p.id}" title="opens the add sheet · configure it, then add">add</button>`;
+  if(/^installed/.test(on.state)) return `<span class="su-on"><span class="dot"></span>on ${esc(h.id)}</span>${conf}`;
+  if(on.state==='secret') return `<button data-gotoobj="a:${secretAttId(h.id, p.id)}"><span class="dot warn"></span>needs a secret</button>`;
+  if(on.state==='added') return `<button data-gotoobj="d:${on.decision}"><span class="dot busy"></span>added · decision ${on.decision}</button>`;
+  if(/^installing/.test(on.state)) return `<span class="su-on"><span class="dot busy"></span>${esc(on.state)}</span>`;
+  if(on.state==='disabled') return `<span class="su-on"><span class="dot off"></span>disabled on ${esc(h.id)}</span>`;
+  if(on.state==='chosen') return `<span class="su-on"><span class="dot busy"></span>chosen</span>${conf}<button class="btn sm quiet" data-surm="${p.id}">remove</button>`;
+  return `<button class="btn sm yes" data-suadd="${hid}|${p.id}">add</button>`; }
+function orgCtl(p){ const on = S.org[p.id]; const conf = schemaOf(p).length ? `<button class="btn sm quiet" data-suconf="org|${p.id}">configure</button>` : '';
+  if(!on) return `<button class="btn sm yes" data-suadd="org|${p.id}" title="opens the add sheet · into the books, read by every host">add</button>`;
+  if(/^installed/.test(on.state)) return `<span class="su-on"><span class="dot"></span>in the books</span>${conf}`;
+  if(on.state==='added') return `<button data-gotoobj="d:${on.decision}"><span class="dot busy"></span>added · decision ${on.decision}</button>`;
+  return `<span class="su-on"><span class="dot busy"></span>${esc(on.state)}</span>`; }
+function indexHtml(){ const tab = S.setup.tab; const h = indexHost(); const q = S.setup.q.trim().toLowerCase(); const kinds = tab==='org' ? ORG_KINDS : HOST_KINDS; const all = INDEX.filter(p => kinds.includes(p.kind));
+  const list = all.filter(p => S.setup.kind==='all' || p.kind===S.setup.kind).filter(p => !q || `${p.name} ${p.kind} ${p.needs} ${p.enables} ${p.tag}`.toLowerCase().includes(q)).filter(p => tab==='org' || S.setup.anyPlat || pkgFits(p, h));
+  const rows = list.map(p => { const fits = tab==='org' || pkgFits(p, h);
+    return `<div class="su-pkg ${fits?'':'dim'}"><div class="su-pn"><b>${esc(p.name)}</b><span class="v">v${esc(p.v)}</span><span class="tag ${p.tag}">${esc(p.tag)}</span><span class="su-pk">${esc(p.kind)}</span></div><div class="su-pm"><span><i>needs</i>${esc(p.needs)}</span><span><i>enables</i>${esc(p.enables)}</span></div><div class="su-pc">${tab==='org' ? orgCtl(p) : hostCtl(p, h)}</div></div>`; }).join('');
+  const forLine = tab==='org' ? `for the organization · the books · ${list.length} of ${all.length}` : `for <b class="mono">${esc(h.id)}</b> · ${esc(h.platform)} · ${list.length} of ${all.length}`;
+  return `<div class="su-ih"><span class="eyebrow">the index</span><span class="su-for">${forLine}</span></div>
+    <div class="su-tabs" role="tablist"><button role="tab" data-sutab="host" aria-selected="${tab==='host'}">for this host<small>adapters · chat sinks · runners · routers · sign-in</small></button><button role="tab" data-sutab="org" aria-selected="${tab==='org'}">for the organization<small>types · producers · vocabularies · templates · scenarios</small></button></div>
+    <div class="su-if"><input id="su-q" type="search" placeholder="search the index" aria-label="search the index" value="${esc(S.setup.q)}"><select id="su-kind" aria-label="kind"><option value="all" ${S.setup.kind==='all'?'selected':''}>every kind</option>${kinds.map(k => `<option value="${k}" ${S.setup.kind===k?'selected':''}>${k}</option>`).join('')}</select>${tab==='org' ? '' : `<label class="su-any"><input type="checkbox" id="su-any" ${S.setup.anyPlat?'checked':''}> any platform</label>`}</div>
     <div class="su-list">${rows || '<div class="empty">nothing in the index matches</div>'}</div>`; }
+/* the add sheet: the package's description, what it needs, its form from its schema, secrets pasted now or placed later, the host for a per-host package · the same sheet prefilled is "configure" */
+function openSheet(pid, target, mode){ const p = pkg(pid); if(!p) return; const isOrg = isOrgKind(p.kind); const existing = isOrg ? S.org[pid] : target==='__new' ? S.setup.add.parts.find(x => x.pkg===pid) : partOn(host(target), pid); const cfg = mode==='configure' && existing ? (existing.cfg || (existing.cfg = isOrg ? emptyCfg(p) : cfgOf(existing))) : null;
+  S.setup.sheet = {pkg:pid, host: isOrg ? null : target, mode, values: cfg ? {...cfg.values} : emptyCfg(p).values, secrets: Object.fromEntries(secretFields(p).map(f => { const s = cfg && cfg.secrets[f.k]; return [f.k, {mode: s && s.placed ? 'keep' : s && s.mode ? s.mode : 'now', placed: !!(s && s.placed), val: (s && s.val) || ''}]; }))};
+  render(); const el = $('#su-sheet'); if(el){ el.scrollIntoView({block:'nearest'}); el.querySelector('input:not([type=radio]),select')?.focus(); } }
+function secretFieldHtml(f, sh, conf){ const s = sh.secrets[f.k]; const name = `<span class="su-fl">${esc(f.label)}<span class="v mono">${esc(f.file)}</span></span>`;
+  if(conf && s.placed) return `<div class="su-field su-sec">${name}<span class="su-fv"><span class="dot"></span>placed · never shown<label><input type="radio" name="sm-${f.k}" data-susm="${f.k}|keep" ${s.mode==='keep'?'checked':''}> keep</label><label><input type="radio" name="sm-${f.k}" data-susm="${f.k}|rotate" ${s.mode==='rotate'?'checked':''}> rotate · marks it not placed and puts it under attention</label></span></div>`;
+  return `<div class="su-field su-sec">${name}<span class="su-fv">${conf ? '<span class="dot warn"></span>not placed' : ''}<label><input type="radio" name="sm-${f.k}" data-susm="${f.k}|now" ${s.mode==='now'?'checked':''}> paste now</label>${s.mode==='now' ? `<input type="password" data-susv="${f.k}" aria-label="${esc(f.label)}" placeholder="paste · goes to the store, never kept by the page" autocomplete="off" value="${esc(s.val)}">` : ''}<label><input type="radio" name="sm-${f.k}" data-susm="${f.k}|later" ${s.mode==='later'?'checked':''}> I'll place it later · under attention</label></span></div>`; }
+function addSheetHtml(){ const sh = S.setup.sheet, p = pkg(sh.pkg), isOrg = !sh.host, conf = sh.mode==='configure', wiz = sh.host==='__new';
+  const fields = schemaOf(p).filter(f => fieldOn(f, sh.values)).map(f => f.kind==='secret' ? secretFieldHtml(f, sh, conf) : `<label class="su-field"><span class="su-fl">${esc(f.label)}</span>${f.kind==='select' ? `<select data-suf="${f.k}">${f.opts.map(o => `<option ${sh.values[f.k]===o?'selected':''}>${esc(o)}</option>`).join('')}</select>` : `<input data-suf="${f.k}" ${f.kind==='number'?'type="number" min="0"':''} value="${esc(sh.values[f.k]||'')}" placeholder="${esc(f.ph||'')}">`}</label>`).join('');
+  const hosts = S.hosts.filter(h => pkgFits(p, h));
+  const target = isOrg ? `<div class="su-field"><span class="su-fl">where</span><span class="su-fv">the books · <span class="mono">${esc(orgPath(p))}</span> · read by every host</span></div>`
+    : wiz ? `<div class="su-field"><span class="su-fl">host</span><span class="su-fv"><b class="mono">${esc(S.setup.add.name)}</b> · the host being added · installed when it joins</span></div>`
+    : conf ? `<div class="su-field"><span class="su-fl">host</span><span class="su-fv"><b class="mono">${esc(sh.host)}</b></span></div>`
+    : `<label class="su-field"><span class="su-fl">host</span><select id="su-sheet-host">${hosts.map(h => `<option value="${h.id}" ${h.id===sh.host?'selected':''}>${esc(h.id)} · ${esc(h.platform)}${h.alive?'':' · gone, the chore waits for it'}${partOn(h,p.id)?' · already there':''}</option>`).join('')}</select></label>`;
+  const note = secretFields(p).some(f => fieldOn(f, sh.values)) ? `<small class="su-hint su-secnote">a secret pasted here goes straight into ${wiz ? 'the hand-over step' : isOrg ? 'the books\' store' : `${esc(sh.host)}'s ${host(sh.host) && host(sh.host).kind!=='cloud' ? 'keychain' : 'secret store'}`} over the fleet's channel and is written nowhere else (204, 207) · the page keeps no copy and shows only placed or not placed · rotate later under configure</small>` : '';
+  const foot = conf ? `<button class="btn pri sm" id="su-sheet-save">save · configure ${esc(p.name)} ${isOrg ? 'in the books' : 'on '+esc(sh.host)}</button><span class="su-hint">one logged response · no chore · ${isOrg ? 'every host reads the manifest on its next tick' : 'the host reads the manifest on its next tick'}</span>`
+    : wiz ? `<button class="btn pri sm" id="su-sheet-add">add to ${esc(S.setup.add.name)}</button><span class="su-hint">chosen for the host · installed when it joins with the token</span>`
+    : `<button class="btn pri sm" id="su-sheet-add">add ${isOrg ? 'to the books' : 'to '+esc(sh.host)}</button><span class="su-hint">raises one install decision on the rail · the part waits ${isOrg?'in the books':'on the host'} as added until you answer · nothing vanishes</span>`;
+  return `<div class="su-sheet" id="su-sheet" role="group" aria-label="${conf?'configure':'add'} ${esc(p.name)}"><div class="su-ih"><span class="eyebrow">${conf?'configure':'add'} · ${esc(p.name)}</span><span class="su-for">v${esc(p.v)} · ${esc(p.tag)} · ${esc(p.kind)}</span><button class="btn sm quiet" id="su-sheet-cancel">${conf?'cancel':'back to the index'}</button></div>
+    <div class="su-desc">${esc(p.enables)}</div><div class="su-needs"><i>needs</i>${esc(p.needs)}</div>
+    ${target}${fields || '<div class="su-field"><span class="su-fl">configuration</span><span class="su-fv" style="color:var(--ink3)">nothing to configure</span></div>'}${note}
+    <div class="su-sf">${foot}</div></div>`; }
+function sheetCfg(){ const sh = S.setup.sheet, p = pkg(sh.pkg); return {values:{...sh.values}, secrets:Object.fromEntries(secretFields(p).map(f => { const s = sh.secrets[f.k]; const wiz = sh.host==='__new'; return [f.k, s.mode==='keep' ? {placed:true} : s.mode==='rotate' ? {placed:false, rotated:true} : wiz ? {placed:false, mode:s.mode, val:s.val} : {placed: s.mode==='now' && !!s.val}]; }))}; }
+function sheetCheck(){ const sh = S.setup.sheet, p = pkg(sh.pkg); const bad = secretFields(p).filter(f => fieldOn(f, sh.values)).find(f => sh.secrets[f.k].mode==='now' && !sh.secrets[f.k].val); if(!bad) return true; toast(`${short(bad)} · paste it, or choose "I'll place it later"`, true); $(`[data-susv="${bad.k}"]`)?.focus(); return false; }
+function sheetAdd(){ if(!sheetCheck()) return; const sh = S.setup.sheet, p = pkg(sh.pkg); const cfg = sheetCfg(); const hid = sh.host;
+  if(hid==='__new'){ const A = S.setup.add; const part = {k:p.kind, pkg:p.id, name:p.name, what:p.enables, state:'chosen', cfg}; const i = A.parts.findIndex(x => x.pkg===p.id); if(i>=0) A.parts[i] = part; else A.parts.push(part); S.setup.sheet = null; toast(`${p.name} · chosen for ${A.name}`); render(); return; }
+  const m = nextN(); const where = hid ? `on ${hid}` : 'in the books'; const summary = cfgText(p, cfg);
+  if(hid){ const h = host(hid); let part = partOn(h, p.id); if(part && part.state!=='suggested'){ toast(`${p.name} is already ${part.state} on ${hid}`, true); return; } if(!part){ part = {k:p.kind, pkg:p.id, name:p.name, what:p.enables, addedFrom:'index'}; h.parts.push(part); } part.state = 'added'; part.decision = m; part.cfg = cfg; }
+  else S.org[p.id] = {state:'added', decision:m, cfg};
+  X[m] = {text:`You added <b>${esc(p.name)} v${esc(p.v)}</b> (${esc(p.tag)}) ${hid ? `to host <b>${esc(hid)}</b>` : `to <b>the books</b> at <span class="mono">${esc(orgPath(p))}</span>, read by every host`}. It is a chore on the fleet: one session${hid ? ` scoped to host ${esc(hid)}` : ' on the books repository'}, no change directory, no bolt (60). <b>Yes</b> runs it; the part reads installed when its proof is recorded, and the command run again changes nothing (204). <b>No</b> takes it off ${hid ? 'the host' : 'the books'} again${hid && !partOn(host(hid), p.id).addedFrom ? ' and leaves it suggested' : ''}.`,
+    kv2:[['installs', esc(p.enables)],['needs', esc(p.needs)],['configured', summary ? esc(summary) : 'nothing to configure'],['needs from you', missingSecrets(p, cfg).length ? `a secret you left for later · ${missingSecrets(p, cfg).map(f => f.file).join(', ')} · it will sit under attention after the chore runs` : 'nothing']], kv2Title:'the chore', hist:[['09-04 '+hhmm(S.minutes),'operator','add',`setup · ${p.name} → ${hid||'the books'}`],['09-04 '+hhmm(S.minutes),'plan','decision',`${m} created · approve the install chore`]]};
+  S.decisions.push({n:m, g:APPROVE, phase:'construction', kind:'install', title:`install · ${p.name} ${where}`, obj: hid ? 'h:'+hid : null, repo: hid ? 'fleet' : 'books', part:[hid, p.id], tail:`added from setup ${hhmm(S.minutes)} · <b>a chore on the fleet</b> · one session · yes runs it`, answers:[['yes','yes'],['no','no']]});
+  logLine(`add · ${p.name} → ${hid||'the books'}${summary ? ' · '+summary : ''}`, {say:true}); toast(`${m} · install ${p.name} ${where} · in the rail · the part waits as added`);
+  S.setup.sheet = null; S.setup.host = hid || 'org'; S.setup.tab = hid ? 'host' : 'org'; S.setup.lit = p.id; render(); $(`[data-partrow="${p.id}"]`)?.scrollIntoView({block:'nearest'}); }
+function sheetSave(){ if(!sheetCheck()) return; const sh = S.setup.sheet, p = pkg(sh.pkg); const cfg = sheetCfg(); const hid = sh.host; const where = hid==='__new' ? `for ${S.setup.add.name}` : hid ? `on ${hid}` : 'in the books';
+  const target = hid==='__new' ? S.setup.add.parts.find(x => x.pkg===p.id) : hid ? partOn(host(hid), p.id) : S.org[p.id]; if(!target) return; target.cfg = cfg;
+  if(hid==='__new'){ S.setup.sheet = null; render(); return; }
+  const rotated = secretFields(p).filter(f => cfg.secrets[f.k] && cfg.secrets[f.k].rotated);
+  rotated.forEach(f => { delete cfg.secrets[f.k].rotated; if(hid){ target.state = 'secret'; target.secret = f.file; delete target.wi; raiseSecret(hid, p.id, f, null); } });
+  const nowPlaced = hid && target.state==='secret' && !missingSecrets(p, cfg).length; if(nowPlaced){ target.state = `installed ${hhmm(S.minutes)} · secret placed`; delete target.secret; delete target.wi; S.attention = S.attention.filter(a => !(a.host===hid && a.pkg===p.id)); }
+  logLine(`configure ${p.name} ${where}${rotated.length ? ' · rotate '+rotated.map(f => f.file).join(', ') : ''}`, {}); toast(`configure ${p.name} ${where} · recorded · ${hid ? 'the host' : 'every host'} reads the manifest on its next tick${rotated.length ? ' · '+rotated.map(f => f.file).join(', ')+' under attention' : ''}`);
+  S.setup.sheet = null; S.setup.lit = p.id; render(); }
+function raiseSecret(hid, pid, f, wi){ const id = `secret-${hid}-${pid}-${f.k}`; if(S.attention.some(a => a.id===id)) return; const p = pkg(pid);
+  S.attention.push({id, cls:'', host:hid, pkg:pid, key:f.k, file:f.file, wi, text:`secret <b>${esc(f.file)}</b> for ${esc(p.name)} on ${esc(hid)} is not placed · ${wi ? `install chore ${wi} waits on it` : 'the part waits on it'}`, obj:null, acts:[['placed','placed']]}); }
+function secretPlaced(a){ const h = host(a.host||'willdan-cloud'); const part = h && partOn(h, a.pkg||'pr-conversation'); if(!part) return; const p = pkg(part.pkg); const cfg = cfgOf(part);
+  if(a.key && cfg.secrets[a.key]) cfg.secrets[a.key].placed = true; else Object.values(cfg.secrets).forEach(s => s.placed = true);
+  const miss = missingSecrets(p, cfg); if(miss.length){ part.secret = miss[0].file; return; }
+  part.state = `installed ${hhmm(S.minutes)} · ${a.file||'key'} found`; delete part.wi; delete part.secret; since('installed', `${h.id} · ${part.name}`, 'the secret you placed was found · proof recorded'); }
 function renderSetup(){ const L = $('#setup'); L.hidden = !S.setup.open; if(!S.setup.open) return;
-  L.innerHTML = `<div class="lib-panel su-panel" role="dialog" aria-label="setup"><div class="lib-h"><h2>Setup</h2><span class="sub">by host, à la carte · a host row is what it runs · the index is what it could run · an offer is not a decision and never enters the count; accepting one raises an install chore that is</span><button class="x" id="setup-close" aria-label="close">×</button></div>
-    <div class="su-grid"><div class="su-hosts"><div class="su-ih"><span class="eyebrow">hosts · ${S.hosts.filter(h => h.alive).length} of ${S.hosts.length} alive</span><button class="btn sm ${S.setup.add?'pri':''}" id="su-add" title="a guided enrolment · provisioning runs from this host with your credentials, never stored">+ host</button></div>${S.hosts.map(hostRowHtml).join('')}${S.setup.add ? addHostHtml() : ''}</div>
-    <div class="su-index" id="su-index">${indexHtml()}</div></div>
-    <div class="load-foot">a part installs by one command the machinery runs, never by hand (205) · a secret is placed by you and never carried by the page (204) · an accepted offer is a chore: one session on the fleet, no bolt (60, S75) · a dispatcher placement is only what a host runs · esc closes · ${SM}</div></div>`; }
-/* an offer for the selected host: the part appears on the host as "decision n", the decision on the rail; yes runs the install chore, no takes the part off again */
-function offerPkg(hid, pid){ const h = host(hid), p = pkg(pid); if(!h || !p) return; let part = partOn(h, pid);
-  if(part && part.state!=='offered'){ toast(`${p.name} is already ${part.state} on ${hid}`, true); return; }
-  const m = nextN();
-  if(!part){ part = {k:p.kind, pkg:p.id, name:p.name, what:p.enables, state:'offered', offeredFrom:'index'}; h.parts.push(part); }
-  part.state = `decision ${m}`;
-  X[m] = {text:`You offered <b>${esc(p.name)} v${esc(p.v)}</b> (${esc(p.tag)}) to host <b>${esc(hid)}</b>. It is a chore on the fleet: one session scoped to host ${esc(hid)}, no change directory, no bolt (60). <b>Yes</b> runs it; the part reads installed when its proof is recorded, and the command run again changes nothing (204). <b>No</b> takes the part off the host${part.offeredFrom==='index' ? '' : ' and leaves it offered'}.`,
-    kv2:[['installs', esc(p.enables)],['needs', esc(p.needs)],['needs from you', /secret|key|token/.test(p.needs) ? 'a secret you place · it will sit under attention until it is' : 'nothing']], kv2Title:'the chore', hist:[['09-04 '+hhmm(S.minutes),'operator','offer',`setup · ${p.name} → ${hid}`],['09-04 '+hhmm(S.minutes),'plan','decision',`${m} created · approve the install chore`]]};
-  S.decisions.push({n:m, g:APPROVE, phase:'construction', kind:'install', title:`install · ${p.name} on ${hid}`, obj:'h:'+hid, repo:'fleet', part:[hid,pid], tail:`offered from setup ${hhmm(S.minutes)} · <b>a chore on the fleet</b> · one session · yes runs it`, answers:[['yes','yes'],['no','no']]});
-  logLine(`offer · ${p.name} → ${hid}`, {say:true}); toast(`${m} · install ${p.name} on ${hid} · in the rail`); S.setup.open = false; openDock('d:'+m); }
-function installEffect(d, a){ const h = host(d.part[0]); const part = h && partOn(h, d.part[1]); if(!part) return; const p = pkg(d.part[1]);
-  if(a==='no'){ if(part.offeredFrom==='index') h.parts = h.parts.filter(x => x!==part); else part.state = 'offered'; return; }
-  const b = addBolt('chores-setup','setup','fleet','install chores · one session each · no bolt of their own (60)'); const wi = 'wi-#'+S.nextWi; startUnit(b, `install ${p.name} on ${h.id}`, 'chore', 'chore'); part.state = `installing · ${wi}`; since('accepted', `install ${p.name} on ${h.id}`, 'one session on the fleet');
-  setTimeout(() => { const u = b.units.find(x => x.name===`install ${p.name} on ${h.id}`); if(u){ u.state='merged'; u.t=hhmm(S.minutes); } part.state = `installed ${hhmm(S.minutes)}`; delete part.offeredFrom; toast(`${p.name} on ${h.id} · installed · proof recorded`); render(); }, 6000); }
+  L.innerHTML = `<div class="lib-panel su-panel" role="dialog" aria-label="setup"><div class="lib-h"><h2>Setup</h2><span class="sub">by host, à la carte · a host row is what it runs · the books row is what the organization carries · the index is what either could · add configures first, then raises one install decision; nothing vanishes on a click</span><button class="x" id="setup-close" aria-label="close">×</button></div>
+    <div class="su-grid"><div class="su-hosts"><div class="su-ih"><span class="eyebrow">hosts · ${S.hosts.filter(h => h.alive).length} of ${S.hosts.length} alive</span><button class="btn sm ${S.setup.add?'pri':''}" id="su-add" title="a guided enrolment · choose its parts, hand over only their secrets · provisioning runs from this host with your credentials, never stored">+ host</button></div>${S.hosts.map(hostRowHtml).join('')}${orgRowHtml()}${S.setup.add ? addHostHtml() : ''}</div>
+    <div class="su-index" id="su-index">${S.setup.sheet ? addSheetHtml() : indexHtml()}</div></div>
+    <div class="load-foot">a part installs by one command the machinery runs, never by hand (205) · a secret goes into the host's store and never stays with the page (204) · an added part is a chore: one session on the fleet, no bolt (60, S75) · configure is one logged response, no chore · a dispatcher placement is only what a host runs · esc closes · ${SM}</div></div>`; }
+/* yes on an install decision runs the chore; a secret left for later sits under attention when the chore has done what it can; no takes the part off again */
+function installEffect(d, a){ const [hid, pid] = d.part; const p = pkg(pid); const h = hid && host(hid); const part = h ? partOn(h, pid) : S.org[pid]; if(!part) return;
+  if(a==='no'){ if(h){ if(part.addedFrom==='index') h.parts = h.parts.filter(x => x!==part); else { part.state = 'suggested'; delete part.decision; } } else delete S.org[pid]; return; }
+  const where = h ? `on ${h.id}` : 'in the books'; const b = addBolt('chores-setup','setup','fleet','install chores · one session each · no bolt of their own (60)'); const wi = 'wi-#'+S.nextWi; startUnit(b, `install ${p.name} ${where}`, 'chore', 'chore'); part.state = `installing · ${wi}`; delete part.decision; since('accepted', `install ${p.name} ${where}`, 'one session on the fleet');
+  setTimeout(() => { const u = b.units.find(x => x.name===`install ${p.name} ${where}`); if(u){ u.state='merged'; u.t=hhmm(S.minutes); } delete part.addedFrom; const miss = h ? missingSecrets(p, part.cfg || (part.cfg = emptyCfg(p))) : [];
+    if(miss.length){ part.state = 'secret'; part.secret = miss[0].file; part.wi = wi; miss.forEach(f => raiseSecret(h.id, pid, f, wi)); toast(`${p.name} on ${h.id} · installed as far as it can · ${miss.map(f => f.file).join(', ')} waits on you`); }
+    else { part.state = `installed ${hhmm(S.minutes)}`; toast(`${p.name} ${where} · installed · proof recorded`); } render(); }, 6000); }
 function partToggle(hid, key, act){ const h = host(hid); const part = h && h.parts.find(p => (p.pkg||p.name)===key); if(!part) return;
   if(act==='enable'){ part.state = `installed ${hhmm(S.minutes)} · enabled`; logLine(`enable ${part.name} on ${hid}`, {}); toast(`${part.name} on ${hid} · enabled · the host reads the manifest on its next tick`); }
   render(); }
-/* + host: the guided enrolment in the same surface · the provisioning effect runs from the host you are on with your own platform credentials, read at run time and never stored */
+/* + host: platform → name → choose its parts from the per-host index (each opens its add sheet) → provision → hand over only the secrets those parts need → enrol → join → alive · adopt existing skips platform, provision and hand-over */
 const ADD_PLATFORMS = [['managed','flywheel-cloud managed','a container flywheel-cloud runs and fronts with its router · the first cloud placement (§5.1)','willdan-cloud-2',['cloud','container','linux'],0],['container','a container on any platform','Fly, Cloud Run, ECS, a VM · one image, the binary unchanged · you bring the secret store and a tailnet node','willdan-fly',['container','linux'],0],['laptop','a laptop','a machine of yours with herdr · the pane runner under your login · drains construction work','chuck-air',['machine','macos','herdr'],2]];
-function addSteps(A){ const plat = ADD_PLATFORMS.find(x => x[0]===A.platform);
+const SUGGESTED = {managed:['runner-inproc','router-platform','auth-github','chat-forward'], container:['runner-inproc','router-private','auth-github','chat-forward'], laptop:['runner-pane','router-local','auth-github','capture-box']};
+const newAdd = () => ({adopt:false, platform:null, name:'', step:'platform', parts:[]});
+const STEP_ORDER = ['platform','name','parts','provision','secrets','enrol','join','alive'];
+const stepIndex = s => STEP_ORDER.indexOf(s);
+function wizardSecrets(A){ return A.parts.flatMap(part => { const p = pkg(part.pkg); const cfg = part.cfg || emptyCfg(p); return secretFields(p).filter(f => fieldOn(f, cfg.values)).map(f => ({part, p, f, s:cfg.secrets[f.k]||{}})); }); }
+const storeName = A => A.platform==='laptop' ? "the machine's keychain" : "the platform's secret store";
+function partsStepBody(A){ const cur = A.step==='parts'; const chips = A.parts.length ? `<div class="su-joinparts">${A.parts.map(p => `<span class="su-chip st-chosen" title="${esc(cfgText(pkg(p.pkg), p.cfg)||'nothing to configure')}">${esc(p.name)}${cur ? `<button data-suconf="__new|${p.pkg}" title="configure">✎</button><button data-surm="${p.pkg}" title="remove">×</button>` : ''}</span>`).join('')}</div>` : (cur ? '<span class="su-hint">nothing chosen yet</span>' : '');
+  if(!cur) return chips; const sug = A.platform ? SUGGESTED[A.platform].filter(id => !A.parts.some(p => p.pkg===id)) : [];
+  return `${chips}<div class="su-addf" style="margin-top:6px"><span class="su-hint">pick from the index · each opens its add sheet; agent and triage come with the binary and run wherever a runner gives them a place${A.adopt ? ' · platform read at join; a part the host cannot run is refused there' : ''}</span></div>${sug.length ? `<div class="su-addf"><span class="su-hint">suggested for ${esc(ADD_PLATFORMS.find(x => x[0]===A.platform)[1])}:</span>${sug.map(id => `<button class="btn sm" data-suadd="__new|${id}">${esc(pkg(id).name)}</button>`).join('')}</div>` : ''}<div class="su-addf"><button class="btn pri sm" id="su-parts-next">${A.adopt ? 'next · ask for the token' : 'next · provision'}${A.parts.length ? '' : ' · with no parts'}</button></div>`; }
+function secretsStepBody(A){ const secs = wizardSecrets(A); if(A.sec!=='wait') return A.sec==='done' ? (A.secNote || '') : `into ${storeName(A)} · only what the chosen parts need`;
+  if(!secs.length) return 'nothing to hand over · the chosen parts need no secret';
+  const now = secs.filter(x => x.s.mode!=='later');
+  return `<div class="su-secrets">${secs.map(x => `<span><span class="dot ${x.s.mode==='later'?'warn':'busy'}" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--${x.s.mode==='later'?'warn':'accent'});margin-right:6px"></span><span class="mono">${esc(x.f.file)}</span> · ${esc(x.p.name)} · ${x.s.mode==='later' ? 'place later · under attention after join' : 'hand over now'} <button class="btn sm quiet" data-suconf="__new|${x.part.pkg}">change</button></span>`).join('')}<div class="field"><button class="btn pri sm" id="su-handover">${now.length ? `hand over ${now.length} into ${storeName(A)}` : `continue · ${secs.length} left for later`}</button></div><small class="su-hint">each is read at this moment from what you pasted and written only there (207) · a part whose secret is left for later installs as far as it can and waits under attention</small></div>`; }
+function addSteps(A){ const plat = A.platform && ADD_PLATFORMS.find(x => x[0]===A.platform); const cur = A.step, ci = stepIndex(cur);
   return [
-    {id:'platform', name:'platform', state: A.platform ? 'done' : 'wait', body: A.platform ? `${esc(plat[1])}${A.adopt ? ' · adopt existing · already running the binary' : ''}` : ''},
-    {id:'provision', name:'provision', state: A.adopt ? 'skipped' : A.prov || 'queued', at:A.provAt, body: A.adopt ? 'the host already runs the binary · nothing to provision' : `runs from <b>studio</b>: <span class="mono">flywheel host provision ${esc(A.name)} --platform ${esc(A.platform||'…')}</span> · your platform credentials read from <span class="mono">op</span> at run time, never stored, never in a record`},
-    {id:'secrets', name:'hand over secrets', state: A.adopt ? 'skipped' : A.sec || 'queued', at:A.secAt, body: A.adopt ? 'already placed on the host' : (A.sec==='done' ? `into ${A.platform==='laptop' ? "the machine's keychain" : "the platform's secret store"} · ${Object.entries(A.secrets).filter(([,v]) => v).map(([k]) => SECRET_NAMES[k]).join(' · ') || 'none'} · the page never carried them` : A.sec==='wait' ? `<div class="su-secrets">${Object.keys(SECRET_NAMES).map(k => `<label><input type="checkbox" data-susec="${k}" ${A.secrets[k]?'checked':''}> ${SECRET_NAMES[k]}</label>`).join('')}<div class="field"><button class="btn pri sm" id="su-handover">hand over into ${A.platform==='laptop' ? 'the keychain' : "the platform's secret store"}</button></div><small class="su-hint">each is read from your <span class="mono">op</span> vault at this moment and written only there (207)</small></div>` : `into ${A.platform==='laptop' ? "the machine's keychain" : "the platform's secret store"}`)},
-    {id:'enrol', name:'enrol', state: A.enrol || 'queued', at:A.enrolAt, body: A.enrol==='wait' ? `decision <button data-gotoobj="d:${A.decision}">${A.decision}</button> on the rail · enrol host ${esc(A.name)} · a one-time token that expires in 1h · yes mints it` : A.enrol==='done' ? `token minted · expires ${esc(A.expires)} · used once` : A.enrol==='stopped' ? 'not enrolled · the token was never minted' : `a decision on the rail: enrol host ${esc(A.name)} · one-time token · expires 1h`},
-    {id:'join', name:'join', state: A.join || 'queued', at:A.joinAt, body: A.join ? `<span class="mono">flywheel host join</span> with the token · heartbeat as host/${esc(A.name)} · reads the manifest · installs its declared parts from the index:<div class="su-joinparts">${(A.parts||[]).map(p => `<span class="su-chip st-${p.state.split(' ')[0]}">${esc(p.name)} · ${esc(p.state)}</span>`).join('')}</div>` : 'joins with the token, reads the manifest, installs its declared parts from the index'},
-    {id:'alive', name:'alive', state: A.alive || 'queued', at:A.aliveAt, body: A.alive==='done' ? `host <b class="mono">${esc(A.name)}</b> is in the strip · ${plat && plat[5] ? `bound ${plat[5]} · it widens the construction pipe` : 'bound 0 · a dispatcher placement · runs the parts above'}` : 'the row appears in the strip and here'},
+    {id:'platform', name:'platform', state: A.adopt ? 'skipped' : A.platform ? 'done' : 'wait', body: A.adopt ? 'adopt existing · the host already runs the binary · its platform is read at join' : A.platform ? esc(plat[1]) : ''},
+    {id:'name', name:'name', state: cur==='name' ? 'wait' : ci>1 ? 'done' : 'queued', body: cur==='name' ? `<div class="su-addf"><label>name <input id="su-name" value="${esc(A.name)}" aria-label="host name"></label><button class="btn pri sm" id="su-go">next · choose its parts</button>${A.adopt ? '' : '<button class="btn sm quiet" id="su-back">back</button>'}</div>` : ci>1 ? `<span class="mono">${esc(A.name)}</span>` : ''},
+    {id:'parts', name:'choose its parts', state: cur==='parts' ? 'wait' : ci>2 ? 'done' : 'queued', body: partsStepBody(A)},
+    {id:'provision', name:'provision', state: A.adopt ? 'skipped' : A.prov || 'queued', at:A.provAt, body: A.adopt ? 'the host already runs the binary · nothing to provision' : `runs from <b>studio</b>: <span class="mono">flywheel host provision ${esc(A.name||'…')} --platform ${esc(A.platform||'…')}</span> · your platform credentials read from <span class="mono">op</span> at run time, never stored, never in a record`},
+    {id:'secrets', name:'hand over secrets', state: A.adopt ? 'skipped' : A.sec || 'queued', at:A.secAt, body: A.adopt ? 'already on the host · each is checked at join; one not found goes under attention' : secretsStepBody(A)},
+    {id:'enrol', name:'enrol', state: A.enrol || 'queued', at:A.enrolAt, body: A.enrol==='wait' ? `decision <button data-gotoobj="d:${A.decision}">${A.decision}</button> on the rail · enrol host ${esc(A.name)} · a one-time token that expires in 1h · yes mints it` : A.enrol==='done' ? `token minted · expires ${esc(A.expires)} · used once` : A.enrol==='stopped' ? 'not enrolled · the token was never minted' : `a decision on the rail: enrol host ${esc(A.name||'…')} · one-time token · expires 1h`},
+    {id:'join', name:'join', state: A.join || 'queued', at:A.joinAt, body: A.join ? `<span class="mono">flywheel host join</span> with the token · heartbeat as host/${esc(A.name)} · reads the manifest · installs the parts you chose from the index:<div class="su-joinparts">${(A.joined||[]).map(p => `<span class="su-chip st-${p.state.split(' ')[0]}">${esc(p.name)} · ${esc(p.state)}</span>`).join('')}</div>` : 'joins with the token, reads the manifest, installs the parts you chose'},
+    {id:'alive', name:'alive', state: A.alive || 'queued', at:A.aliveAt, body: A.alive==='done' ? `host <b class="mono">${esc(A.name)}</b> is in the strip · ${A.bound ? `bound ${A.bound} · it widens the construction pipe` : 'bound 0 · a dispatcher placement · runs the parts above'}` : 'the row appears in the strip and here'},
   ]; }
-const SECRET_NAMES = {app:'the GitHub App key', bot:'the bot tokens (Slack, Discord)', model:'model access (an API key, or the runtime\'s role)'};
 function addHostHtml(){ const A = S.setup.add;
-  const pick = !A.platform ? `<div class="su-plats">${ADD_PLATFORMS.map(([id,name,what]) => `<button class="su-plat" data-suplat="${id}"><b>${esc(name)}</b><span>${esc(what)}</span></button>`).join('')}</div>
-    <div class="su-addf"><label class="su-any"><input type="checkbox" id="su-adopt" ${A.adopt?'checked':''}> adopt existing · a host already running the binary · straight to the token</label></div>` : '';
-  const name = A.platform && !A.prov && !A.enrol ? `<div class="su-addf"><label>name <input id="su-name" value="${esc(A.name)}" aria-label="host name"></label><button class="btn pri sm" id="su-go">${A.adopt ? 'ask for the token' : 'provision'}</button><button class="btn sm quiet" id="su-back">back</button></div>` : '';
-  return `<div class="su-add"><div class="su-dh"><span class="eyebrow">+ host</span><span class="su-dn">a guided enrolment · every step is a record; nothing here is typed to the machinery</span><button class="btn sm quiet" id="su-add-cancel">${A.alive==='done' ? 'done' : 'cancel'}</button></div>${pick}${name}${stepsHtml(addSteps(A))}</div>`; }
-function addHostGo(){ const A = S.setup.add; if(!A.platform) return; A.name = ($('#su-name')?.value || A.name).trim() || A.name;
+  const pick = A.step==='platform' ? `<div class="su-plats">${ADD_PLATFORMS.map(([id,name,what]) => `<button class="su-plat" data-suplat="${id}"><b>${esc(name)}</b><span>${esc(what)}</span></button>`).join('')}</div>
+    <div class="su-addf"><label class="su-any"><input type="checkbox" id="su-adopt" ${A.adopt?'checked':''}> adopt existing · a host already running the binary · name it, choose its parts, straight to the token</label></div>` : '';
+  return `<div class="su-add"><div class="su-dh"><span class="eyebrow">+ host</span><span class="su-dn">a guided enrolment · every step is a record; nothing here is typed to the machinery</span><button class="btn sm quiet" id="su-add-cancel">${A.alive==='done' ? 'done' : 'cancel'}</button></div>${pick}${stepsHtml(addSteps(A))}</div>`; }
+function addHostGo(){ const A = S.setup.add; A.name = ($('#su-name')?.value || A.name).trim() || A.name || 'new-host'; A.step = 'parts'; S.setup.tab = 'host'; S.setup.sheet = null; render(); }
+function addHostParts(){ const A = S.setup.add; S.setup.sheet = null;
   if(A.adopt){ raiseEnrol(); return; }
-  A.prov = 'running'; A.provAt = hhmm(S.minutes); logLine(`provision ${A.name} · ${A.platform} · from studio`, {say:true}); render();
-  setTimeout(() => { A.prov = 'done'; A.provAt = hhmm(S.minutes); A.sec = 'wait'; toast(`${A.name} provisioned · confirm the secrets to hand over`); render(); }, 3000); }
-function addHostHandover(){ const A = S.setup.add; A.sec = 'done'; A.secAt = hhmm(S.minutes); logLine(`hand over · ${Object.entries(A.secrets).filter(([,v]) => v).map(([k]) => k).join(' ')} → ${A.name}`, {say:true}); raiseEnrol(); }
-function raiseEnrol(){ const A = S.setup.add; const m = nextN(); A.decision = m; A.enrol = 'wait'; A.enrolAt = hhmm(S.minutes); A.expires = hhmm(S.minutes + 60);
-  X[m] = {text:`Host <b>${esc(A.name)}</b> (${esc(ADD_PLATFORMS.find(x => x[0]===A.platform)[1])}${A.adopt ? ', adopted' : ''}) asks to join the fleet. <b>Yes</b> mints a one-time enrolment token that expires at ${esc(A.expires)}; the host joins with it, reads the manifest and installs its declared parts from the index (205). <b>No</b> mints nothing and the host stays outside.`,
-    kv2:[['token','one-time · expires 1h · never shown on this page'],['will run', A.platform==='laptop' ? 'runner pane · router local · sign-in GitHub · bound 2' : 'agent · triage · runner in-process · router · sign-in · bound 0']], kv2Title:'enrolment', hist:[['09-04 '+hhmm(S.minutes),'operator','+ host',`setup · ${A.name} · ${A.platform}`],['09-04 '+hhmm(S.minutes),'plan','decision',`${m} created · enrol the host`]]};
+  A.step = 'provision'; A.prov = 'running'; A.provAt = hhmm(S.minutes); logLine(`provision ${A.name} · ${A.platform} · from studio`, {say:true}); render();
+  setTimeout(() => { A.prov = 'done'; A.provAt = hhmm(S.minutes); const secs = wizardSecrets(A);
+    if(!secs.length){ A.sec = 'done'; A.secAt = hhmm(S.minutes); A.secNote = 'nothing to hand over · the chosen parts need no secret'; toast(`${A.name} provisioned · nothing to hand over`); raiseEnrol(); return; }
+    A.step = 'secrets'; A.sec = 'wait'; toast(`${A.name} provisioned · hand over the secrets its parts need`); render(); }, 3000); }
+function addHostHandover(){ const A = S.setup.add; const secs = wizardSecrets(A); const now = secs.filter(x => x.s.mode!=='later'), later = secs.filter(x => x.s.mode==='later');
+  now.forEach(x => { x.s.placed = true; delete x.s.val; delete x.s.mode; }); later.forEach(x => { x.s.placed = false; delete x.s.val; delete x.s.mode; });
+  A.sec = 'done'; A.secAt = hhmm(S.minutes); A.secNote = `${now.length ? `${now.map(x => x.f.file).join(' · ')} into ${storeName(A)} · the page never carried them` : 'nothing handed over'}${later.length ? ` · left for later: ${later.map(x => x.f.file).join(' · ')} · under attention after join` : ''}`;
+  logLine(`hand over · ${now.map(x => x.f.file).join(' ')||'nothing'} → ${A.name}`, {say:true}); raiseEnrol(); }
+function raiseEnrol(){ const A = S.setup.add; const m = nextN(); A.decision = m; A.step = 'enrol'; A.enrol = 'wait'; A.enrolAt = hhmm(S.minutes); A.expires = hhmm(S.minutes + 60); const platName = A.platform ? ADD_PLATFORMS.find(x => x[0]===A.platform)[1] : 'platform read at join';
+  X[m] = {text:`Host <b>${esc(A.name)}</b> (${esc(platName)}${A.adopt ? ', adopted' : ''}) asks to join the fleet. <b>Yes</b> mints a one-time enrolment token that expires at ${esc(A.expires)}; the host joins with it, reads the manifest and installs the parts you chose from the index (205). <b>No</b> mints nothing and the host stays outside.`,
+    kv2:[['token','one-time · expires 1h · never shown on this page'],['will run', A.parts.length ? A.parts.map(p => `${p.k} ${p.name}`).join(' · ') : 'nothing yet · parts can be added from setup once it is alive']], kv2Title:'enrolment', hist:[['09-04 '+hhmm(S.minutes),'operator','+ host',`setup · ${A.name} · ${A.platform||'adopted'}`],['09-04 '+hhmm(S.minutes),'plan','decision',`${m} created · enrol the host`]]};
   S.decisions.push({n:m, g:APPROVE, phase:'construction', kind:'enrol', title:`enrol host · ${A.name}`, obj:null, repo:'fleet', tail:`+ host ${hhmm(S.minutes)} · <b>one-time token · expires ${A.expires}</b> · yes mints it`, answers:[['yes','yes'],['no','no']]});
   toast(`${m} · enrol host ${A.name} · in the rail`); render(); }
 function enrolEffect(d, a){ const A = S.setup.add; if(!A || A.decision!==d.n) return;
   if(a==='no'){ A.enrol = 'stopped'; A.enrolAt = hhmm(S.minutes); return; }
-  A.enrol = 'done'; A.enrolAt = hhmm(S.minutes); A.join = 'running'; A.joinAt = hhmm(S.minutes); const plat = ADD_PLATFORMS.find(x => x[0]===A.platform);
-  A.parts = (A.platform==='laptop' ? [['runner','runner-pane'],['router','router-local'],['sign-in','auth-github'],['adapter','capture-box']] : [['agent',null],['triage',null],['runner','runner-inproc'],['router', A.platform==='managed' ? 'router-platform' : 'router-private'],['sign-in','auth-github'],['adapter','chat-forward']]).map(([k,pid]) => ({k, pkg:pid, name: pid ? pkg(pid).name : k==='agent' ? 'agent' : 'triage', what: pid ? pkg(pid).enables : k==='agent' ? 'in-process · the interpreter job' : 'declares no source yet · offer an adapter', state:'installing'}));
-  setTimeout(() => { A.parts.forEach(p => p.state = `installed ${hhmm(S.minutes)}`); A.join = 'done'; A.joinAt = hhmm(S.minutes); A.alive = 'done'; A.aliveAt = hhmm(S.minutes);
-    S.hosts.push({id:A.name, kind: A.platform==='laptop' ? 'laptop' : 'cloud', platform: plat[1], plat:plat[4], alive:true, bound:plat[5], last:hhmm(S.minutes), joined:'09-04 '+hhmm(S.minutes), joinedVia:plat[1], note: plat[5] ? 'joined by one command (205) · its pane runner drains construction work' : 'joined by one command (205) · a dispatcher placement · takes no construction work', parts:A.parts, joinedSteps:addSteps(A).map(s => ({...s, body:''}))});
-    since('joined', `host ${A.name}`, `${plat[1]} · ${A.parts.length} parts installed from the index`); toast(`host ${A.name} · alive · in the strip`); render(); }, 4000); }
-function dockSecret(){ return sec('what it means', `<div class="dtext">Install chore <span class="mono">wi-#429</span> set up the <b>PR conversation</b> adapter on host <span class="mono">willdan-cloud</span> as far as the machinery can: the GitHub App is installed on the repositories and the place for its key exists. The key itself is a secret you place, never an agent (204), and the page never carries it. Until it is there the adapter waits; nothing else on the host is held by it.</div>`)
-  + sec('place it', `<pre class="cmd">op read "op://willdan/flywheel github app/private key" \\
-  | flywheel secret place github-app.pem --host willdan-cloud</pre><div class="dtext" style="font-size:12px;color:var(--ink2)">One command on any host of yours; the secret travels to the cloud host over the fleet's channel and is written nowhere else (207). Then answer <b>placed</b> here: the machinery checks the path, records the proof and the part reads installed. A check that finds nothing brings this line back.</div>`, 'never through the page')
-  + sec('on the host', `<div class="rows"><div class="row"><span class="st">host</span><span class="grow"><span class="mono">willdan-cloud</span> · adapter · PR conversation · its other parts are installed</span><button class="btn sm" id="setup-open" data-suhost="willdan-cloud">open in setup</button></div></div>`); }
+  A.enrol = 'done'; A.enrolAt = hhmm(S.minutes); A.step = 'join'; A.join = 'running'; A.joinAt = hhmm(S.minutes); const plat = A.platform && ADD_PLATFORMS.find(x => x[0]===A.platform);
+  const runner = A.parts.find(p => p.k==='runner'); const adapters = A.parts.filter(p => p.k==='adapter');
+  A.bound = runner && runner.pkg==='runner-pane' ? +(runner.cfg && runner.cfg.values.bound) || (plat ? plat[5] : 2) : 0;
+  A.joined = [...A.parts.map(p => ({...p, state:'installing'})), ...(runner ? [{k:'agent', name:'agent', what:`${runner.pkg==='runner-pane' ? 'in a pane under your login' : 'in-process'} · the interpreter job · one bounded call per message (194)`, state:'installing'},{k:'triage', name:'triage', what:adapters.length ? `sources: ${adapters.map(p => p.pkg).join(' · ')} · bound ${Math.max(1, A.bound)}` : 'declares no source yet · add an adapter', state:'installing'}] : [])];
+  setTimeout(() => { A.joined.forEach(p => { const pk = p.pkg && pkg(p.pkg); const miss = pk ? missingSecrets(pk, p.cfg || (p.cfg = emptyCfg(pk))) : []; if(miss.length){ p.state = 'secret'; p.secret = miss[0].file; miss.forEach(f => raiseSecret(A.name, p.pkg, f, null)); } else p.state = `installed ${hhmm(S.minutes)}`; });
+    A.join = 'done'; A.joinAt = hhmm(S.minutes); A.alive = 'done'; A.aliveAt = hhmm(S.minutes); A.step = 'alive';
+    S.hosts.push({id:A.name, kind: A.adopt ? 'adopted' : A.platform==='laptop' ? 'laptop' : 'cloud', platform: plat ? plat[1] : 'reported at join', plat: plat ? plat[4] : ['any'], alive:true, bound:A.bound, last:hhmm(S.minutes), joined:'09-04 '+hhmm(S.minutes), joinedVia: A.adopt ? 'adopt existing' : plat[1], note: A.bound ? 'joined by one command (205) · its pane runner drains construction work' : 'joined by one command (205) · a dispatcher placement · takes no construction work', parts:A.joined, joinedSteps:addSteps(A).map(s => ({...s, body:''}))});
+    const waiting = A.joined.filter(p => p.state==='secret'); since('joined', `host ${A.name}`, `${plat ? plat[1] : 'adopted'} · ${A.joined.length} parts installed from the index${waiting.length ? ` · ${waiting.length} waiting on a secret` : ''}`); toast(`host ${A.name} · alive · in the strip${waiting.length ? ` · ${waiting.map(p => p.secret).join(', ')} under attention` : ''}`); render(); }, 4000); }
+function dockSecret(a){ const h = host(a.host||'willdan-cloud'), part = h && partOn(h, a.pkg||'pr-conversation'), p = part && pkg(part.pkg); const f = (p && schemaOf(p).find(x => x.k===a.key)) || {label:'the secret', file:a.file||'the secret'}; if(!p) return '';
+  return sec('what it means', `<div class="dtext">${a.wi ? `Install chore <span class="mono">${esc(a.wi)}</span> set up the <b>${esc(p.name)}</b> ${esc(p.kind)} on host <span class="mono">${esc(h.id)}</span> as far as the machinery can` : `<b>${esc(p.name)}</b> on host <span class="mono">${esc(h.id)}</span> is configured and waits`}${a.pkg==='pr-conversation' ? ': the GitHub App is installed on the repositories and the place for its key exists' : ': the place for the secret exists'}. ${esc(short(f))} itself is a secret you place, never an agent (204), and the page never carries it. Until it is there the part waits; nothing else on the host is held by it.</div>`)
+  + sec('place it', `<pre class="cmd">op read "${esc(f.op || `op://willdan/flywheel/${f.file}`)}" \\
+  | flywheel secret place ${esc(f.file)} --host ${esc(h.id)}</pre><div class="dtext" style="font-size:12px;color:var(--ink2)">One command on any host of yours; the secret travels to the host over the fleet's channel and is written nowhere else (207). Then answer <b>placed</b> here: the machinery checks the path, records the proof and the part reads installed. A check that finds nothing brings this line back. Or paste it under <b>configure</b> in setup, which does the same in one response.</div>`, 'never kept by the page')
+  + sec('on the host', `<div class="rows"><div class="row"><span class="st">host</span><span class="grow"><span class="mono">${esc(h.id)}</span> · ${esc(p.kind)} · ${esc(p.name)} · ${h.parts.filter(x => x!==part && x.state==='secret').length ? 'another part waits too' : 'its other parts are installed'}</span><button class="btn sm" id="setup-open" data-suhost="${esc(h.id)}">open in setup</button><button class="btn sm quiet" data-suconf-open="${esc(h.id)}|${esc(p.id)}">configure</button></div></div>`); }
 
 function dockFooter(key){
   const [t,id] = key.split(':');
@@ -2706,7 +2895,7 @@ function renderDock(){
     head = `<div class="row"><span class="kind">${esc(K[0])}</span><span class="ph">${esc(K[1])}</span>${nav}</div><h2 id="dk-title">${esc(K[2])}</h2><div class="tail">${esc(K[3])} · the artifact fit to its view (213) · ${SM}</div>`;
     body = o.art==='intent' ? dockArtIntent(o) : o.art==='unit' ? dockArtUnit(o) : o.art==='claim' ? dockArtClaim(o) : o.art==='bolt' ? dockArtBolt(o) : dockArtWi(o); }
   else if(t==='rv'){ form = 'dk-art'; head = `<div class="row"><span class="kind">review surface</span><span class="ph">plannotator</span>${nav}</div><h2 id="dk-title">review · ${esc(o.id)}</h2><div class="tail">the artifact as a document · an annotation is the response (S35) · stub</div>`; body = dockReview(o); }
-  else { head = `<div class="row"><span class="kind">attention</span>${nav}</div><h2 id="dk-title">${o.text}</h2>`; body = o.id==='secret' ? dockSecret(o) : sec('what it means', `<div class="dtext">${o.id==='host' ? 'The host that holds wi-#418 has not sent a heartbeat. Takeover releases its leases now and restores the place on studio; wait lets the lease expire at 07:59, when the machinery does the same.' : 'Your earlier response named a decision that was gone. It was recorded, handed back as unapplicable and shown once here; nothing was dropped. The unit was re-proposed and kept its number.'}</div>`); }
+  else { head = `<div class="row"><span class="kind">attention</span>${nav}</div><h2 id="dk-title">${o.text}</h2>`; body = /^secret/.test(o.id) ? dockSecret(o) : sec('what it means', `<div class="dtext">${o.id==='host' ? 'The host that holds wi-#418 has not sent a heartbeat. Takeover releases its leases now and restores the place on studio; wait lets the lease expire at 07:59, when the machinery does the same.' : 'Your earlier response named a decision that was gone. It was recorded, handed back as unapplicable and shown once here; nothing was dropped. The unit was re-proposed and kept its number.'}</div>`); }
   const keep = $('#dk-b').scrollTop;
   $('#dk-h').className = 'dk-h ' + form; $('#dk-h').innerHTML = head; $('#dk-b').innerHTML = body; $('#dk-f').innerHTML = t==='a' ? `<div class="acts">${o.acts.map(([k,l]) => `<button class="btn sm ${k==='takeover'?'yes':''}" data-att="${o.id}" data-ak="${k}">${esc(l)}</button>`).join('')}</div>` : dockFooter(key);
   $('#dk-b').scrollTop = keep;
@@ -2733,7 +2922,7 @@ document.addEventListener('click', e => {
   if(b && b.dataset.att){ const a = S.attention.find(x => x.id===b.dataset.att); S.attention = S.attention.filter(x => x!==a);
     if(b.dataset.ak==='ok'){ logLine(`ok · ${a ? a.id : ''}`, {}); toast('ok · recorded'); }
     else { logLine(b.dataset.ak, {}); toast(`${b.dataset.ak} · recorded`);
-      if(b.dataset.ak==='placed'){ const p = partOn(host('willdan-cloud'), 'pr-conversation'); if(p){ p.state = `installed ${hhmm(S.minutes)} · key found`; delete p.wi; } since('installed','willdan-cloud · PR conversation','the key you placed was found · proof recorded'); }
+      if(b.dataset.ak==='placed') secretPlaced(a);
       if(b.dataset.ak==='takeover'){ const h = host('mac-mini'); h.alive = true; h.last = hhmm(S.minutes); h.note = 'released by takeover · its sessions restored on studio'; S.bolts.flatMap(x => x.units).flatMap(u => u.items||[]).filter(i => i.host==='mac-mini').forEach(i => { i.host='studio'; i.last=`${hhmm(S.minutes)} · taken over on studio · place restored`; }); h.alive = false; h.gone = 'released'; } }
     if(S.open==='a:'+(a&&a.id)) S.open = null, document.body.classList.remove('docked');
     if(S.focus==='a:'+(a&&a.id)) S.focus = railKeys()[0] || null;
@@ -2766,15 +2955,23 @@ document.addEventListener('click', e => {
   if(b && b.id==='setup-open'){ S.setup.open = true; S.load = false; if(b.dataset.suhost){ S.setup.host = b.dataset.suhost; S.setup.add = null; } render(); return; }
   if(b && b.id==='setup-close'){ S.setup.open = false; render(); return; }
   if(t.id==='setup'){ S.setup.open = false; render(); return; }
-  if(b && b.dataset.offer){ const [hid,pid] = b.dataset.offer.split('|'); offerPkg(hid, pid); return; }
+  if(b && b.dataset.suadd){ const [hid,pid] = b.dataset.suadd.split('|'); openSheet(pid, hid==='org' ? null : hid, 'add'); return; }
+  if(b && b.dataset.suconf){ const [hid,pid] = b.dataset.suconf.split('|'); openSheet(pid, hid==='org' ? null : hid, 'configure'); return; }
+  if(b && b.dataset.suconfOpen){ const [hid,pid] = b.dataset.suconfOpen.split('|'); S.setup.open = true; S.load = false; S.setup.host = hid; S.setup.add = null; openSheet(pid, hid, 'configure'); return; }
+  if(b && b.dataset.surm){ const A = S.setup.add; A.parts = A.parts.filter(p => p.pkg!==b.dataset.surm); if(S.setup.sheet && S.setup.sheet.pkg===b.dataset.surm) S.setup.sheet = null; render(); return; }
+  if(b && b.dataset.sutab){ S.setup.tab = b.dataset.sutab; if(b.dataset.sukind) S.setup.kind = b.dataset.sukind; else if(!(S.setup.tab==='org' ? ORG_KINDS : HOST_KINDS).includes(S.setup.kind)) S.setup.kind = 'all'; S.setup.sheet = null; render(); $('#su-index')?.scrollIntoView({block:'nearest'}); return; }
+  if(b && b.id==='su-sheet-add'){ sheetAdd(); return; }
+  if(b && b.id==='su-sheet-save'){ sheetSave(); return; }
+  if(b && b.id==='su-sheet-cancel'){ S.setup.sheet = null; render(); return; }
   if(b && b.dataset.supart){ const [hid,key,act] = b.dataset.supart.split('|'); partToggle(hid, key, act); return; }
-  if(b && b.id==='su-add'){ S.setup.add = S.setup.add ? null : {platform:null, adopt:false, name:'', secrets:{app:true, bot:true, model:true}}; render(); return; }
-  if(b && b.id==='su-add-cancel'){ S.setup.add = null; render(); return; }
-  if(b && b.dataset.suplat){ const A = S.setup.add; A.platform = b.dataset.suplat; A.name = ADD_PLATFORMS.find(x => x[0]===A.platform)[3]; render(); $('#su-name')?.focus(); return; }
-  if(b && b.id==='su-back'){ S.setup.add.platform = null; render(); return; }
+  if(b && b.id==='su-add'){ S.setup.add = S.setup.add ? null : newAdd(); S.setup.sheet = null; render(); return; }
+  if(b && b.id==='su-add-cancel'){ S.setup.add = null; S.setup.sheet = null; render(); return; }
+  if(b && b.dataset.suplat){ const A = S.setup.add; A.platform = b.dataset.suplat; A.name = ADD_PLATFORMS.find(x => x[0]===A.platform)[3]; A.step = 'name'; render(); $('#su-name')?.focus(); return; }
+  if(b && b.id==='su-back'){ const A = S.setup.add; A.platform = null; A.step = 'platform'; render(); return; }
   if(b && b.id==='su-go'){ addHostGo(); return; }
+  if(b && b.id==='su-parts-next'){ addHostParts(); return; }
   if(b && b.id==='su-handover'){ addHostHandover(); return; }
-  const suh = t.closest('.su-host'); if(suh && !t.closest('button,a,input,select,label,summary,.su-detail')){ S.setup.host = suh.dataset.suhost; S.setup.add = null; render(); return; }
+  const suh = t.closest('.su-host'); if(suh && !t.closest('button,a,input,select,label,summary,.su-detail')){ S.setup.host = suh.dataset.suhost; S.setup.tab = suh.dataset.suhost==='org' ? 'org' : 'host'; if(!(S.setup.tab==='org' ? ORG_KINDS : HOST_KINDS).includes(S.setup.kind)) S.setup.kind = 'all'; S.setup.add = null; S.setup.sheet = null; S.setup.lit = null; render(); return; }
   if(b && b.dataset.load !== undefined){ S.load = !S.load; render(); return; }
   if(b && b.id==='load-open'){ S.load = true; render(); return; }
   if(b && b.id==='load-close'){ S.load = false; render(); return; }
@@ -2831,7 +3028,9 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('input', e => { const t = e.target;
   if(t.id==='su-q'){ S.setup.q = t.value; const list = $('#su-index .su-list'); const tmp = document.createElement('div'); tmp.innerHTML = indexHtml(); list.replaceWith(tmp.querySelector('.su-list')); $('#su-index .su-for').innerHTML = tmp.querySelector('.su-for').innerHTML; return; }
-  if(t.id==='su-name'){ S.setup.add.name = t.value; return; } });
+  if(t.id==='su-name'){ S.setup.add.name = t.value; return; }
+  if(t.dataset.suf !== undefined && t.matches('input')){ S.setup.sheet.values[t.dataset.suf] = t.value; return; }
+  if(t.dataset.susv){ S.setup.sheet.secrets[t.dataset.susv].val = t.value; return; } });
 document.addEventListener('change', e => {
   const t = e.target;
   if(t.dataset.ubolt){ const u = S.proposal.units.find(x => x.id===t.dataset.ubolt);
@@ -2842,8 +3041,10 @@ document.addEventListener('change', e => {
   if(t.id==='review-toggle'){ S.review.on = t.checked; render(); return; }
   if(t.id==='su-kind'){ S.setup.kind = t.value; $('#su-index').innerHTML = indexHtml(); return; }
   if(t.id==='su-any'){ S.setup.anyPlat = t.checked; $('#su-index').innerHTML = indexHtml(); return; }
-  if(t.id==='su-adopt'){ S.setup.add.adopt = t.checked; render(); return; }
-  if(t.dataset.susec){ S.setup.add.secrets[t.dataset.susec] = t.checked; return; }
+  if(t.id==='su-adopt'){ const A = S.setup.add; A.adopt = t.checked; A.platform = null; A.step = A.adopt ? 'name' : 'platform'; if(A.adopt && !A.name) A.name = 'mac-mini-2'; render(); $('#su-name')?.focus(); return; }
+  if(t.dataset.suf !== undefined && t.matches('select')){ const sh = S.setup.sheet; sh.values[t.dataset.suf] = t.value; if(schemaOf(pkg(sh.pkg)).some(f => f.when && f.when[0]===t.dataset.suf)) $('#su-index').innerHTML = addSheetHtml(); return; }
+  if(t.dataset.susm){ const [k,mode] = t.dataset.susm.split('|'); S.setup.sheet.secrets[k].mode = mode; $('#su-index').innerHTML = addSheetHtml(); if(mode==='now') $(`[data-susv="${k}"]`)?.focus(); return; }
+  if(t.id==='su-sheet-host'){ S.setup.sheet.host = t.value; return; }
   if(t.id==='ar-name'){ S.addRepo.name = t.value.trim(); render(); $('#ar-name').focus(); return; }
   if(t.dataset.arkind){ const k = t.dataset.arkind; S.addRepo.kinds = t.checked ? [...S.addRepo.kinds, k] : S.addRepo.kinds.filter(x => x!==k); render(); return; }
   if(t.dataset.arcap){ const c = t.dataset.arcap; S.addRepo.caps = t.checked ? [...S.addRepo.caps, c] : S.addRepo.caps.filter(x => x!==c); render(); return; }
@@ -2853,8 +3054,8 @@ document.addEventListener('change', e => {
 });
 document.addEventListener('keydown', e => {
   const typing = e.target.matches('input,textarea,select');
-  if((e.key==='Enter' || e.key===' ') && e.target.classList && e.target.classList.contains('su-host')){ e.preventDefault(); S.setup.host = e.target.dataset.suhost; S.setup.add = null; render(); return; }
-  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.load){ S.load = false; render(); return; } if(S.setup.open){ S.setup.open = false; render(); return; } if(S.library){ S.library = false; render(); return; } if(S.exploreMode){ S.exploreMode = false; S.picked.clear(); render(); return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
+  if((e.key==='Enter' || e.key===' ') && e.target.classList && e.target.classList.contains('su-host')){ e.preventDefault(); S.setup.host = e.target.dataset.suhost; S.setup.tab = S.setup.host==='org' ? 'org' : 'host'; S.setup.add = null; S.setup.sheet = null; S.setup.lit = null; render(); return; }
+  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.load){ S.load = false; render(); return; } if(S.setup.open){ if(S.setup.sheet) S.setup.sheet = null; else S.setup.open = false; render(); return; } if(S.library){ S.library = false; render(); return; } if(S.exploreMode){ S.exploreMode = false; S.picked.clear(); render(); return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
   if(typing){ if(e.key==='Enter' && !e.shiftKey && e.target.id==='capture'){ e.preventDefault(); capture(); } if(e.key==='Enter' && e.target.matches('input') && e.target.closest('.argbox')){ e.preventDefault(); e.target.closest('.argbox').querySelector('[data-send],[data-usend]').click(); } if(e.key==='Enter' && (e.target.dataset.bname || e.target.dataset.brename)){ e.preventDefault(); if(e.target.dataset.brename) $(`[data-brenamesend="${e.target.dataset.brename}"]`).click(); else e.target.blur(); } return; }
   if(e.metaKey||e.ctrlKey||e.altKey) return;
   const k = e.key;
@@ -2898,7 +3099,9 @@ if(Q.has('library')) S.library = true;
 if(Q.has('load')) S.load = true;
 if(Q.has('setup')) S.setup.open = true;
 if(Q.get('host') && host(Q.get('host'))) S.setup.host = Q.get('host');
-if(Q.has('addhost')) S.setup.add = {platform:null, adopt:false, name:'', secrets:{app:true, bot:true, model:true}};
+if(Q.has('addhost')) S.setup.add = newAdd();
+if(Q.get('index')==='org'){ S.setup.tab = 'org'; S.setup.host = 'org'; }
+if(Q.get('add') && pkg(Q.get('add'))){ S.setup.open = true; const p = pkg(Q.get('add')); S.setup.sheet = {pkg:p.id, host: isOrgKind(p.kind) ? null : S.setup.host, mode:'add', values: emptyCfg(p).values, secrets: Object.fromEntries(secretFields(p).map(f => [f.k, {mode:'now', placed:false, val:''}]))}; }
 if(S.view==='book' && !Q.get('ch')) bookFollow();
 if(Q.has('explore')) S.exploreMode = true;
 if(Q.get('claim')) selectClaim(Q.get('claim'));
