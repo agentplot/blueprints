@@ -120,6 +120,7 @@ Feedback so far, in order:
   plannotator stub; and 214, the flywheel's load as three phase gauges
   with inline sparklines and a reading sentence marked as a projection,
   compact in the machinery strip and full on w (l stays "later").
+- The flywheel and setup on rail-and-board (2026-09-07): the three load gauges become one instrument, the flywheel, whose reading is runway in days (approved work ÷ drain across alive hosts) on a wheel with feed and pressure going in and drain coming out, a two-stage backpressure pipe above it, one derived reading sentence ("feed it", "you are the limit", "drain is the limit: add a host", "primed"), the unattended streak as the score stated as a reading, the old gauges under an advanced disclosure and a runway-and-streak pill in the strip; and a setup overlay from the hosts strip listing the install ladder (browser interpreter → local dispatcher → cloud dispatcher) whose offers never enter the count, an accepted offer raising an install chore as a decision and a missing secret sitting under attention with "place it" (drafted 214 revised, 215).
 
 The models behind the surface are in `../models/statechart/` (`model.md`
 first). The Rust prototype that serves a working version of this page

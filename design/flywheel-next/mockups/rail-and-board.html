@@ -137,30 +137,61 @@
     answers in the footer. Artifact keys: o:intent/<id>, o:unit/<bolt>/<unit>, o:claim/<name>,
     o:bolt/<id>, o:wi/<id>; rv:<same> for the review binding. Objects with no invented entry
     derive a skeleton from the state so every object opens.
-  - Load (214): three phase gauges. Compact in the machinery strip at rest, after the
-    repositories: inception (intents open · waiting on you), construction (items running
-    against the summed host bound · on a gone host · landing), operation (unmoved · oldest),
-    each with a 44px sparkline. The full panel opens from "load" in the board header, from a
-    compact gauge, or with w, as an overlay over the board like the library; Esc closes.
-    Each gauge lists its counts with a 7-day sparkline drawn inline (six invented days plus
-    now) and ends with one reading sentence derived from the counts, marked "projection ·
-    derived from the counts (142) · sets no target". The readings: "you are the bottleneck:
-    n decisions older than a day" from invented decision ages; "construction runs at the
-    bound: n of m · k on a host that is gone" or "construction is n days behind approval"
-    from queued units and the unit proposals' ages; "curation is behind: n unmoved, the
-    oldest 3d". The key is w, not l: l is the focused card's later (S56) and a key a card does
-    not offer is refused, never remapped (S57). The construction gauge counts construction
-    items and machinery sessions against the sum of the host bounds (studio 4 + mac-mini 2 in
-    the seed), not the strip's per-host session count, which includes inception sessions.
-    The machinery strip wraps to a second row when the gauges do not fit beside the hosts and
-    repositories (1280 and 1600 both wrap), and the frame is a flex column so the rail and
-    board take what is left; under 760px the strip stays one scrolling row and the panel is
-    reached from the board header. Under 760px the dock now shows from the Decisions tab too
-    (it lives inside the board, which the tab hid).
+  - The flywheel (214): one instrument, because the game is priming the wheel and walking
+    away: in the ideal week the operator primes it and construction runs unattended on one
+    host, and hosts are added to drain faster. RUNWAY in days = approved construction work
+    not yet merged (queued and building units) ÷ drain, where drain = the alive hosts'
+    summed bound ÷ ~3 slot-days per unit (invented from the last week's merges, marked
+    sample; a gone host drains nothing). The wheel is a dial on a 0–7 day scale, a week at
+    the rim, with a band ("primed for 5 days", "running dry", "primed for a week or more").
+    Three columns under it: FEED → (proposals to approve with the units they carry,
+    elaborations waiting on you, intents to approve; "feed: 4 decisions add ~7.5 days"),
+    PRESSURE → (approved and waiting, items running on alive hosts against the alive slots,
+    the number behind the bound; grows on one host, drains as hosts are added) and DRAIN →
+    (hosts alive of hosts, utilization, units merged per day at the bound, a 7-day merges
+    sparkline and bolts landed per week labelled "history, not a target" (142); "add a host
+    to drain faster"). Above the wheel the two stages of backpressure as a two-stage pipe:
+    inception (signals → intents → elaborations → proposals) filled by what waits on the
+    operator, a hatched gate, then construction (approved → running → merged → landed)
+    filled by queue ÷ alive bound and drawn as tall as the alive hosts' bound, so a host
+    added visibly widens it. One reading sentence, chosen in order: "you are the limit: n
+    decisions older than a day · yes on 422 alone adds ~4 days" (old decisions and runway
+    under two days), "feed it: n decisions approve ~d days of work", "drain is the limit:
+    add a host · n items on m alive slots", "primed: agents have d days". Yes on 422 moves
+    the seed from the first reading to the third and the runway from 1.5 to 5.3 days.
+    The unattended streak is the score, stated as a reading and never a target: "agents
+    have run 1d 19h without you" with since-when, what puts it at risk now (a gone host
+    holding items, a secret waiting, runway under a day), the longest streak and the last
+    one with what ended it (runway ran out; a session blocked with nothing else to run; the
+    bound reached with a day of queue behind it). A streak counts while approved work runs
+    and nothing stops it; decisions arriving do not end it, they are the feed. The three
+    phase gauges with their sparklines and readings survive under an "advanced" disclosure
+    whose open state persists across renders. The compact form in the machinery strip is
+    one pill: a 16px wheel, the runway number and the streak, "at risk" when something
+    threatens it; it opens the panel like w. The key is w, not l: l is the focused card's
+    later (S56) and a key a card does not offer is refused, never remapped (S57). Under
+    760px the strip stays one scrolling row, the panel is reached from the board header,
+    and the columns stack under the wheel.
+  - Setup (215): a "setup" control in the hosts strip opens an overlay over the board,
+    separate from the operator's decisions, listing the install ladder as rungs: browser
+    interpreter (this page, nothing to install), local dispatcher on studio (chat adapter,
+    sign-in, router, runner per host), cloud dispatcher outside every host (dispatcher,
+    chat adapter, sign-in, router, runner). Each part reads installed, offer, decision n,
+    installing · wi, or secret. An offer is a marker on the ladder and never enters the
+    rail's count; "accept" raises an install chore as a numbered decision on the rail
+    (approve · yes/no) whose yes runs one session on a chores line for the fleet (60, S75),
+    and whose proof turns the part to installed (204); no puts the offer back. A secret the
+    machinery cannot place (the cloud host's GitHub App key, 204, 207) sits under attention
+    with "place it": the command, that the page never carries it, and a one-word "placed"
+    answer that has the machinery check the path; the ladder links to the attention line
+    and the line back to the ladder; the strip's setup control carries "secret" while one
+    waits. Invented beyond the requirements: the three tiers and their parts, the names
+    "runner" and "router" per tier, and that an install chore may run before its secret
+    exists and wait on it.
   - Under 760px the rail and the board are two tabs; the dock is full screen with a back
     control. The clock starts at 07:40 and advances a minute per response. Detail beyond the
     seed is invented and marked sample. Review switches: ?theme=dark|light, ?nodock, ?open=<key>,
-    ?view=map|book, ?book=<id>, ?ch=<chapter>, ?review=1, ?library=1, ?load=1.
+    ?view=map|book, ?book=<id>, ?ch=<chapter>, ?review=1, ?library=1, ?load=1, ?setup=1.
 -->
 <meta charset="utf-8">
 <title>Rail and Board</title>
@@ -845,6 +876,60 @@ body.docked .dock{transform:none}
 .gauge .read.warn{border-left-color:var(--warn)} .gauge .read.ok{border-left-color:var(--ok)}
 .gauge .read small{display:block;font:10px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);margin-top:3px}
 .load-foot{margin-top:10px;font:11px var(--mono);color:var(--ink3);line-height:1.5}
+/* ---------- the flywheel (214, revised): one instrument · runway on a wheel, feed and pressure in, drain out, the streak, the two-stage pipe ---------- */
+.mini.fwpill{gap:6px} .mini.fwpill svg{display:inline-block;vertical-align:middle}
+.mini.fwpill .rim{fill:none;stroke:var(--line);stroke-width:2} .mini.fwpill .arc{fill:none;stroke:var(--accent);stroke-width:2.6;stroke-linecap:round} .mini.fwpill .arc.warn{stroke:var(--warn)} .mini.fwpill .arc.crit{stroke:var(--crit)} .mini.fwpill .hub{fill:var(--ink3)}
+.fw{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:stretch;margin-top:10px}
+.fw-top{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:6px} .fw-top .rest{flex:1;min-width:260px}
+.cmd{font:12px var(--mono);background:var(--surface2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;white-space:pre-wrap;margin:0 0 6px;color:var(--ink)}
+@media (max-width:900px){.fw{grid-template-columns:1fr} .fw-top{justify-content:center}}
+.fw .col{border:1px solid var(--line);border-radius:8px;background:var(--surface2);padding:9px 11px;min-width:0;display:flex;flex-direction:column;gap:5px}
+.fw .col h3{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);display:flex;align-items:center;gap:6px}
+.fw .col h3 .ar{font:400 15px var(--mono);color:var(--accent)} .fw .col h3 .sub{margin-left:auto;font:400 10.5px var(--mono);letter-spacing:0;text-transform:none;color:var(--ink3)}
+.fw .col .ln{display:flex;align-items:baseline;gap:8px;font-size:12.5px;color:var(--ink2);padding:2px 0;border-bottom:1px solid var(--line2)} .fw .col .ln:last-of-type{border-bottom:0}
+.fw .col .ln b{font:700 15px var(--mono);color:var(--ink);min-width:30px;text-align:right} .fw .col .ln b.warn{color:var(--warn)} .fw .col .ln b.crit{color:var(--crit)} .fw .col .ln b.ok{color:var(--ok)}
+.fw .col .ln .gl{min-width:0;flex:1} .fw .col .ln .gl small{display:block;font:10.5px var(--mono);color:var(--ink3)}
+.fw .col .say{font-size:12px;color:var(--ink);font-weight:600;margin-top:2px}
+.fw .col .hist{font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-top:2px}
+.wheel{width:196px;flex:none;display:flex;flex-direction:column;align-items:center;gap:2px}
+.wheel .wdial{position:relative;width:196px;height:196px}
+.wheel .wdial svg{width:100%;height:100%;display:block}
+.wheel .cap{font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+.wheel .rim{fill:none;stroke:var(--line);stroke-width:7} .wheel .track{fill:none;stroke:var(--line2);stroke-width:14}
+.wheel .arc{fill:none;stroke:var(--accent);stroke-width:14;stroke-linecap:butt;transition:stroke-dasharray .6s ease} .wheel .arc.warn{stroke:var(--warn)} .wheel .arc.crit{stroke:var(--crit)}
+.wheel .spoke{stroke:var(--line);stroke-width:1.5} .wheel .hub{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+.wheel .tick{font:9px var(--mono);fill:var(--ink3)}
+.wheel .wdial .in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none}
+.wheel .in .num{font:800 34px/1 var(--mono);color:var(--ink);letter-spacing:-.02em} .wheel .in .num small{font-size:16px;font-weight:600;color:var(--ink3)}
+.wheel .in .band{font-size:11.5px;font-weight:700;color:var(--ink2);margin-top:4px;max-width:120px;line-height:1.2} .wheel .in .band.warn{color:var(--warn)} .wheel .in .band.crit{color:var(--crit)} .wheel .in .band.ok{color:var(--ok)}
+.wheel .in .k{font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-top:2px}
+.fw-read{margin-top:8px;padding:9px 12px;border-left:4px solid var(--accent);background:var(--surface2);font-size:14px;line-height:1.4;font-weight:600}
+.fw-read.warn{border-left-color:var(--warn)} .fw-read.ok{border-left-color:var(--ok)} .fw-read.crit{border-left-color:var(--crit)}
+.fw-read small{display:block;font:10px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);margin-top:3px;font-weight:400}
+.streak{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:baseline;margin-top:10px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.streak .big{font:800 24px/1 var(--mono);color:var(--ink);grid-row:span 2;align-self:center} .streak .big.crit{color:var(--crit)}
+.streak .l1{font-size:13px;font-weight:700} .streak .l2{font-size:12px;color:var(--ink2)}
+.streak .row2{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:4px 16px;font:11px var(--mono);color:var(--ink3);border-top:1px solid var(--line2);padding-top:6px;margin-top:2px}
+.streak .row2 b{color:var(--ink);font-weight:600} .streak .row2 .risk{color:var(--warn)}
+.pipe{margin:4px 0 2px} .pipe svg{width:100%;max-width:720px;height:auto;display:block;margin:0 auto}
+.pipe .wall{fill:var(--surface);stroke:var(--ink3);stroke-width:1.3} .pipe .fill{fill:var(--accent);opacity:.32} .pipe .fill.warn{fill:var(--warn)} .pipe .fill.crit{fill:var(--crit)}
+.pipe .st{font:10px var(--mono);fill:var(--ink3)} .pipe .st.k{fill:var(--ink);font-weight:600} .pipe .stg{font:9px var(--mono);fill:var(--ink3)} .pipe .cnt{font:600 10px var(--mono);fill:var(--ink)}
+.pipe .arrow{fill:var(--ink3)} .pipe .gate{fill:var(--accent-hatch);stroke:var(--accent);stroke-width:1;stroke-dasharray:3 2} .pipe .lvl{stroke:var(--ink3);stroke-width:1;stroke-dasharray:2 2}
+.adv{margin-top:12px;border-top:1px solid var(--line);padding-top:8px}
+.adv summary{cursor:pointer;font:600 12px var(--sans);color:var(--ink2);list-style:none;display:flex;align-items:center;gap:8px} .adv summary::before{content:'▸';font-size:11px;color:var(--ink3)} .adv[open] summary::before{content:'▾'}
+.adv summary .sub{font:11px var(--mono);color:var(--ink3);font-weight:400}
+/* ---------- setup (215): the install ladder as an overlay over the board; offers never enter the count ---------- */
+.rung{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;padding:10px 8px;border-bottom:1px solid var(--line2)}
+.rung:last-of-type{border-bottom:0}
+.rung .rn{display:flex;flex-direction:column;gap:2px;min-width:150px}
+.rung .rn .no{font:700 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)} .rung .rn b{font-size:14px;font-weight:800} .rung .rn small{font:11px var(--sans);color:var(--ink3)}
+.rung .rn .st{font:10.5px var(--mono);color:var(--ink2);margin-top:4px} .rung .rn .st.ok{color:var(--ok)} .rung .rn .st.warn{color:var(--warn)}
+.rung .parts{display:flex;flex-direction:column;gap:3px;min-width:0}
+.part{display:grid;grid-template-columns:96px minmax(0,1fr) minmax(120px,max-content);gap:4px 10px;align-items:center;font-size:12.5px;padding:4px 0;border-bottom:1px solid var(--line2)} .part:last-child{border-bottom:0}
+.part .pk{font:600 11px var(--mono);color:var(--ink2)} .part .pw{color:var(--ink2);min-width:0} .part .ps{font:11px var(--mono);white-space:nowrap;display:inline-flex;align-items:center;gap:6px;justify-self:end;max-width:260px} .part .ps button{text-align:left;white-space:normal}
+.part .ps .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block} .part .ps .dot.off{background:var(--line);border:1px dashed var(--ink3);box-sizing:border-box} .part .ps .dot.warn{background:var(--warn)} .part .ps .dot.busy{background:var(--accent)}
+.part .offer{font:700 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);border:1px dashed var(--ink3);border-radius:3px;padding:0 5px}
+@media (max-width:760px){.rung{grid-template-columns:1fr} .part{grid-template-columns:1fr;gap:2px} .part .ps{justify-self:start}}
 
 /* ---------- log, toasts, tabs ---------- */
 .log{position:fixed;right:14px;top:calc(var(--top) + 6px);width:min(420px,calc(100vw - 28px));max-height:60vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:10px 12px;z-index:20}
@@ -917,6 +1002,7 @@ body.docked .dock{transform:none}
     <div class="book" id="book" hidden><aside class="bk-tree" id="bk-tree" aria-label="chapters"></aside><div class="bk-content" id="bk-content"></div></div>
     <div class="library" id="library" hidden></div>
     <div class="loadp" id="load" hidden></div>
+    <div class="library" id="setup" hidden></div>
     <div class="scrim" id="scrim"></div>
     <aside class="dock" id="dock" role="dialog" aria-modal="false" aria-labelledby="dk-title">
       <div class="dk-h" id="dk-h"></div>
@@ -985,7 +1071,26 @@ const S = {
   attention: [
     {id:'host', cls:'', text:'host <b>mac-mini</b> last seen 41m · holds wi-#418', obj:'b:plan-decisions', host:'mac-mini', acts:[['takeover','takeover on studio'],['wait','wait']]},
     {id:'noapply', cls:'crit', text:'<b>"yes 413"</b> from 06:10 could not apply · unit already dropped by the 05:58 edit · re-proposed as 413', obj:'d:413', acts:[['ok','ok']]},
+    {id:'secret', cls:'', text:'secret <b>github-app.pem</b> for the cloud dispatcher is not placed · install chore wi-#429 waits on it', obj:null, acts:[['placed','placed']]},
   ],
+  /* setup (215): the install ladder · rungs per tier · an offer never enters the count; accepting one raises an install chore as a decision */
+  setup:{open:false, rungs:[
+    {id:'browser', name:'browser interpreter', tier:'this page · no install', parts:[
+      {k:'interpreter', what:'a model in the page turns your free text into one response · nothing parsed by the machinery (S63)', state:'installed'}]},
+    {id:'local', name:'local dispatcher', tier:'on studio · the fleet you have', parts:[
+      {k:'chat adapter', what:'Discord · #willdan-plan · the plan printed there, answers read back', state:'installed'},
+      {k:'sign-in', what:'GitHub App willdan-flywheel · installation covers 4 repositories · tokens minted into places (207)', state:'installed'},
+      {k:'router', what:'local router · portless · https://<place>.localhost (46)', state:'installed'},
+      {k:'runner', what:'herdr on studio · bound 4 (32)', state:'installed'},
+      {k:'runner', what:'herdr on mac-mini · bound 2 · joined by one command (205)', state:'installed'},
+      {k:'router', what:'private-network router on mac-mini · https://<place>.willdan.internal', state:'offer', chore:'private-network router on mac-mini', host:'mac-mini'}]},
+    {id:'cloud', name:'cloud dispatcher', tier:'outside every host · presents the page when no host is up (B.5)', parts:[
+      {k:'dispatcher', what:'the standing dispatch agent on a cloud host · runs the rounds while your hosts sleep', state:'offer', chore:'cloud dispatcher'},
+      {k:'chat adapter', what:'Discord from the cloud · the same channel · one adapter at a time', state:'offer', chore:'cloud chat adapter'},
+      {k:'sign-in', what:'the GitHub App key on the cloud host · a secret you place, never an agent (204)', state:'secret', wi:'wi-#429'},
+      {k:'router', what:'private-network router · https://<place>.willdan.internal · nothing beyond the private network', state:'offer', chore:'cloud router'},
+      {k:'runner', what:'cloud runner · bound 8 · widens the construction pipe', state:'offer', chore:'cloud runner · bound 8'}]},
+  ]},
   since: [
     {v:'merged', w:'plan-decisions · unit decision-grouping', t:'3 items · review passed first time', at:'07:21'},
     {v:'landed', w:'switchboard/idle-timeout', t:'gates green', at:'06:52'},
@@ -1524,7 +1629,7 @@ function claimRef(name){ const nm = String(name).split(' @')[0].split(' · ')[0]
   return found; }
 function bookRefsOf(key){ if(!key) return []; const [t] = key.split(':'); const o = objOf(key); if(!o) return [];
   if(t==='d') return decRefs(o);
-  if(t==='a') return o.id==='host' ? [mkRef(['sessions','claim-sessions-one-writer'])] : decRefs({n:413, kind:'unit'});
+  if(t==='a') return o.id==='host' ? [mkRef(['sessions','claim-sessions-one-writer'])] : o.id==='secret' ? [] : decRefs({n:413, kind:'unit'});
   if(t==='i') return (o.chapters||[]).map(ch => ({book:'platform-kit', ch, a:null}));
   if(t==='v'||t==='x'){ const is = t==='v' ? [o.intent] : o.intents.map(intent).filter(Boolean); return is.flatMap(i => (i.chapters||[]).map(ch => ({book:'platform-kit', ch, a:null}))); }
   if(t==='b'||t==='l') return (o.claims||[]).map(claimRef).filter(Boolean);
@@ -1698,6 +1803,7 @@ function effects(d, a, arg){
           if(S.open==='p:planning'){ openDock('d:'+m); } else { render(); if(!S.focus) setFocus('d:'+m); }
         }, 7000);
       } break;
+    default: if(d.kind==='install') installEffect(d, a);
   }
 }
 /* scope as a gesture: the set the operator clicked becomes a rule, sent as one response */
@@ -1887,16 +1993,17 @@ function renderHosts(){
   const all = allSessions();
   $('#hosts').innerHTML = `<span class="lab">hosts</span>` + S.hosts.map(h => { const n = all.filter(s => s.host===h.id).length;
     return `<button class="host ${h.alive?'':'gone'} ${S.hostlit===h.id?'lit':''} ${S.open==='h:'+h.id?'open-in-dock':''}" data-host="${h.id}"><span class="dot ${h.alive?'':'gone'}"></span><span class="hn">${esc(h.id)}</span><span class="hm tn">${n}/${h.bound} sessions</span><span class="hm">${h.alive?'seen '+h.last:'<b>gone '+h.gone+'</b>'}</span></button>`; }).join('')
+    + `<button class="btn sm ${S.setup.open?'pri':''}" id="setup-open" title="the install ladder (215) · offers never enter the count">setup${S.attention.some(a => a.id==='secret') ? ` · <span${S.setup.open ? '' : ' style="color:var(--warn)"'}>secret</span>` : ''}</button>`
     + `<span class="sep"></span><span class="lab">repos</span>` + S.repos.map(r => `<button class="repo ${S.open==='r:'+r.id?'open-in-dock':''}" data-repo="${r.id}">${esc(r.id)}<span class="hm">${r.claims.length ? r.claims.filter(c=>c[1]==='not satisfied').length+' unmet' : 'books'}</span></button>`).join('')
-    + miniGauges()
-    + `<span class="note">a host pill lights its sessions · a repo opens its claims · load opens the gauges (<kbd>w</kbd>)</span>`;
+    + miniWheel()
+    + `<span class="note">a host pill lights its sessions · a repo opens its claims · the wheel opens the flywheel (<kbd>w</kbd>) · setup is the install ladder</span>`;
 }
 function renderBoardHead(){
   const v = S.view, map = v==='map', book = v==='book';
   const bk = BOOKS[S.book.id] || BOOKS['platform-kit']; const st = book ? bookStats(bk) : null;
   $('#board-h').innerHTML = `<div class="seg" role="tablist"><button data-view="phases" aria-pressed="${v==='phases'}">phases</button><button data-view="map" aria-pressed="${map}">map</button><button data-view="book" aria-pressed="${book}">book</button></div>
     <span>${map ? 'the system context map is the scope surface (198) · a repository node carries its claims · click a node for its dock' : book ? `<b class="mono">${esc(bk.title)}</b> · ${st.chapters} chapters · ${st.standing} standing · ${st.proposed} proposed · the rail jumps the book to what a decision concerns` : 'the status view by phase (B.4) · objects only · every decision is a marker on its object'}</span>
-    ${map ? `<div class="r"><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}</label><button class="btn sm" id="addrepo-open">add repository</button></div>` : ''}${book ? `<div class="r"><button class="btn sm" id="library-open">library</button><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}${st.changed ? ` · <b>${st.changed}</b> changed` : ''}</label>${S.review.on ? `<button class="btn sm" id="review-mark">mark reviewed · ${hhmm(S.minutes)}</button>` : ''}</div>` : ''}<div class="r" style="margin-left:${map||book?'0':'auto'}"><button class="btn sm ${S.load?'pri':''}" id="load-open" title="the flywheel's load by phase (214)">load <kbd style="margin-left:4px">w</kbd></button><kbd>${book ? 'b' : 'm'}</kbd></div>`;
+    ${map ? `<div class="r"><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}</label><button class="btn sm" id="addrepo-open">add repository</button></div>` : ''}${book ? `<div class="r"><button class="btn sm" id="library-open">library</button><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}${st.changed ? ` · <b>${st.changed}</b> changed` : ''}</label>${S.review.on ? `<button class="btn sm" id="review-mark">mark reviewed · ${hhmm(S.minutes)}</button>` : ''}</div>` : ''}<div class="r" style="margin-left:${map||book?'0':'auto'}"><button class="btn sm ${S.load?'pri':''}" id="load-open" title="the flywheel: runway, feed, pressure, drain, the streak (214)">flywheel <kbd style="margin-left:4px">w</kbd></button><kbd>${book ? 'b' : 'm'}</kbd></div>`;
   $('#lanes').hidden = v!=='phases'; $('#map').hidden = !map; $('#book').hidden = !book;
 }
 /* --- scope rules over the set of built repositories --- */
@@ -1975,7 +2082,7 @@ function renderTop(){
 function renderLog(){ $('#loglist').innerHTML = S.log.map(e => `<li class="${e.say?'say':''} ${e.fail?'fail':''}"><time>${e.t}</time><span>${esc(e.text)}</span></li>`).join('') || '<li><span class="empty">nothing sent yet</span></li>'; }
 function render(){
   const keep = ['#rail','.lane','#bk-tree','#bk-content'].flatMap(s => $$(s)).map(el => [el, el.scrollTop]);
-  renderTop(); renderHosts(); renderBoardHead(); renderRail(); renderInception(); renderPlan(); renderConstruction(); renderOperation(); renderMap(); renderBook(); renderLibrary(); renderLoad(); renderLog();
+  renderTop(); renderHosts(); renderBoardHead(); renderRail(); renderInception(); renderPlan(); renderConstruction(); renderOperation(); renderMap(); renderBook(); renderLibrary(); renderLoad(); renderSetup(); renderLog();
   keep.forEach(([el,t]) => el.scrollTop = t);
   if(S.view==='book' && S.book.scrollTo){ const el = $(`#bk-content [data-anchor-id="${S.book.scrollTo}"]`); if(el) el.scrollIntoView({block:S.book.scrollTo==='_top' ? 'start' : 'center'}); S.book.scrollTo = null; }
   if(S.open) renderDock();
@@ -2244,21 +2351,135 @@ function loadModel(){
   const operationRead = oldestD >= 3 ? {cls:'warn', text:`curation is behind: ${S.curation.unmoved} unmoved, the oldest ${S.curation.oldest} · next run ${S.curation.next}`} : {cls:'ok', text:`curation keeps up: ${S.curation.unmoved} unmoved, none older than ${S.curation.oldest}`};
   return {inception:{open:open.length, proposed, elabs, waiting, read:inceptionRead}, construction:{queued, items:items.length, bound, gone:gone.map(h=>h.id), onGone, perHost, merges, landing, read:constructionRead}, operation:{unmoved:S.curation.unmoved, by:S.curation.by, oldest:S.curation.oldest, captures, read:operationRead}};
 }
-function miniGauges(){ const m = loadModel(); const on = S.load ? 'open' : '';
-  return `<span class="sep"></span><span class="lab">load</span><span class="gauges">
-    <button class="mini ${on}" data-load="inception" title="${esc(m.inception.read.text)}"><span class="mk">inception</span><b>${m.inception.open}</b> open · <b class="${m.inception.read.cls}">${m.inception.waiting}</b> on you ${spark(series('waiting', m.inception.waiting), 44, 14, m.inception.read.cls==='warn')}</button>
-    <button class="mini ${on}" data-load="construction" title="${esc(m.construction.read.text)}"><span class="mk">construction</span><b class="${m.construction.items>=m.construction.bound?'warn':''}">${m.construction.items}/${m.construction.bound}</b> running${m.construction.onGone ? ` · <span class="crit">${m.construction.onGone} gone</span>` : ''}${m.construction.landing ? ` · <b>${m.construction.landing}</b> landing` : ''} ${spark(series('items', m.construction.items), 44, 14, m.construction.items>=m.construction.bound)}</button>
-    <button class="mini ${on}" data-load="operation" title="${esc(m.operation.read.text)}"><span class="mk">operation</span><b class="${m.operation.read.cls}">${m.operation.unmoved}</b> unmoved · ${esc(m.operation.oldest)} ${spark(series('signals', m.operation.unmoved), 44, 14, m.operation.read.cls==='warn')}</button></span>`; }
-function renderLoad(){ const L = $('#load'); L.hidden = !S.load; if(!S.load) return; const m = loadModel();
+function advancedHtml(){ const m = loadModel();
   const row = (n, label, sub, key, warn, show) => `<div class="gr"><b class="${warn||''}">${show||n}</b><span class="gl">${label}${sub ? `<small>${sub}</small>` : ''}</span>${spark(series(key, n), 72, 20, !!warn)}</div>`;
   const read = r => `<div class="read ${r.cls}">${esc(r.text)}<small>projection · derived from the counts (142) · sets no target</small></div>`;
-  L.innerHTML = `<div class="load-panel" role="dialog" aria-label="load"><div class="lib-h"><h2>Load</h2><span class="sub">the flywheel's load by phase · counts now and the 7-day trend · a reading derived from the counts</span><button class="x" id="load-close" aria-label="close">×</button></div>
-    <div class="load-grid">
+  return `<div class="load-grid">
       <div class="gauge"><div class="gh"><h3>Inception</h3><span class="gp">intents · elaborations</span></div>${row(m.inception.open,'intents open','proposed and open, closed ones excluded','intents')}${row(m.inception.proposed,'elaborations proposed','awaiting your yes','elabs')}${row(m.inception.elabs,'elaborations running','working, starting or with you','elabs')}${row(m.inception.waiting,'waiting on you','decisions in inception and intents ready to close','waiting', m.inception.read.cls)}${read(m.inception.read)}</div>
       <div class="gauge"><div class="gh"><h3>Construction</h3><span class="gp">units · items · merges · bolts</span></div>${row(m.construction.queued,'units approved and waiting','queued on a bolt behind a dependency or the bound','units', m.construction.queued?'warn':'')}${row(m.construction.items,'items running against the host bound (32)',`${esc(m.construction.perHost)}${m.construction.onGone ? ` · ${m.construction.onGone} on a host that is gone` : ''}`,'items', m.construction.items>=m.construction.bound?'warn':'', `${m.construction.items}<span style="font:600 12px var(--mono);color:var(--ink3)"> of ${m.construction.bound}</span>`)}${row(m.construction.merges,'merges pending','units at review · merges happen one at a time (38)','merges')}${row(m.construction.landing,'bolts landing','request open or the close in your count','landing')}${read(m.construction.read)}</div>
       <div class="gauge"><div class="gh"><h3>Operation</h3><span class="gp">signals · captures</span></div>${row(m.operation.unmoved,'signals unmoved',`${esc(m.operation.by)} · oldest ${esc(m.operation.oldest)} · by event date (118)`,'signals', m.operation.read.cls)}${row(m.operation.captures,'captures arriving today','from the page, chat and adapters · one per source event (111)','captures')}${read(m.operation.read)}</div>
     </div>
-    <div class="load-foot">every count is derived from the same state the engine reads; the 7-day series is history read the same way · the reading is a sentence over the counts, never a target · esc closes · ${SM}</div></div>`; }
+    `; }
+/* --- the flywheel (214, revised): one instrument · runway = approved work ÷ drain · feed and pressure in, drain out · the streak is the score, stated as a reading, never a target (142) --- */
+const SLOT_DAYS = 3; /* a unit takes ~3 slot-days end to end (spec → build → review → merge) · invented from the last week's merges · sample */
+const STREAKS = [
+  {len:'5d 2h', min:5*1440+120, from:'08-19 06:00', to:'08-24 08:10', end:'runway ran out · 2 proposals had waited on you for 2 days'},
+  {len:'3d 4h', min:3*1440+240, from:'08-26 09:30', to:'08-29 13:40', end:'wi-#402 blocked on a question · nothing else could run'},
+  {len:'2d 7h', min:2*1440+420, from:'08-30 07:00', to:'09-01 14:05', end:'bound reached on studio with a day of queue behind it'},
+];
+const STREAK_NOW_FROM = '09-02 12:10', STREAK_NOW_BASE = 43*60+30; /* minutes from then to 07:40 on 09-04 */
+const fmtD = mins => { const d = Math.floor(mins/1440), h = Math.floor(mins%1440/60), m = mins%60; return d ? `${d}d ${h}h` : h ? `${h}h ${m}m` : `${m}m`; };
+const fmtDays = d => !isFinite(d) ? '∞' : d >= 10 ? String(Math.round(d)) : String(Math.round(d*10)/10);
+function flywheelModel(){
+  const m = loadModel();
+  const alive = S.hosts.filter(h => h.alive), aliveBound = alive.reduce((n,h) => n+h.bound, 0), bound = S.hosts.reduce((n,h) => n+h.bound, 0);
+  const drain = aliveBound / SLOT_DAYS;
+  const units = S.bolts.flatMap(b => b.units);
+  const queued = units.filter(u => u.state==='queued').length, building = units.filter(u => u.state==='building').length;
+  const charge = queued + building, runway = drain ? charge/drain : Infinity;
+  const feedDs = S.decisions.filter(d => ['proposal','unit','baseline'].includes(d.kind));
+  const unitsOf = d => d.kind==='proposal' ? S.proposal.units.filter(u => !u.dropped).length : d.kind==='baseline' ? 3 : 1;
+  const feedUnits = feedDs.reduce((n,d) => n+unitsOf(d), 0), feedDays = drain ? feedUnits/drain : 0;
+  const best = feedDs.slice().sort((a,b) => unitsOf(b)-unitsOf(a))[0];
+  const elabWait = S.decisions.filter(d => d.phase==='inception' && d.kind!=='intent').length, intentWait = S.decisions.filter(d => d.kind==='intent').length;
+  const items = allSessions().filter(s => s.owner.phase==='construction'); const running = items.length; const onAlive = items.filter(s => alive.some(h => h.id===s.host)).length;
+  const over = Math.max(0, onAlive - aliveBound); const util = aliveBound ? Math.min(1, onAlive/aliveBound) : 0;
+  const pressure = queued + over;
+  const old = S.decisions.filter(d => (AGE[d.n]||0) > 1);
+  const merges7 = SPARK.merges.reduce((a,b) => a+b, 0);
+  const band = !isFinite(runway) ? {cls:'crit', text:'no alive host · nothing drains'} : runway < 1 ? {cls:'crit', text:'running dry'} : runway < 2 ? {cls:'warn', text:`primed for ${fmtDays(runway)} day${runway<1.5?'':'s'}`} : runway < 7 ? {cls:'', text:`primed for ${fmtDays(runway)} days`} : {cls:'ok', text:'primed for a week or more'};
+  const bestAdd = best ? `yes on ${best.n} alone adds ~${fmtDays(unitsOf(best)/drain)} days` : '';
+  const read = old.length && runway < 2 ? {cls:'warn', text:`you are the limit: ${old.length} decision${old.length===1?'':'s'} older than a day${bestAdd ? ' · '+bestAdd : ''}`}
+    : runway < 2 && feedDs.length ? {cls:'warn', text:`feed it: ${feedDs.length} decision${feedDs.length===1?'':'s'} approve ~${fmtDays(feedDays)} days of work · ${bestAdd}`}
+    : runway < 2 ? {cls:'crit', text:`feed it: nothing to approve · ${intentWait+elabWait ? `${intentWait+elabWait} in inception wait on you first` : 'iterate an intent'}`}
+    : over || (queued && util>=1) ? {cls:'warn', text:`drain is the limit: add a host · ${onAlive} items on ${aliveBound} alive slots${queued ? ` · ${queued} approved and waiting` : ''}`}
+    : {cls:'ok', text:`primed: agents have ${fmtDays(runway)} days · nothing waits on you that stops them`};
+  const risks = []; S.hosts.filter(h => !h.alive).forEach(h => { const held = items.filter(s => s.host===h.id).length; if(held) risks.push(`host ${h.id} gone ${h.gone} holds ${held} item${held===1?'':'s'}`); });
+  if(runway < 1) risks.push(`runway runs out in ${Math.round(runway*24)}h`); if(S.attention.some(a => a.id==='secret')) risks.push('a secret waits on you');
+  const now = STREAK_NOW_BASE + (S.minutes - 460);
+  return {m, aliveBound, bound, alive:alive.length, hosts:S.hosts.length, drain, queued, building, charge, runway, band, feedDs, feedUnits, feedDays, best, unitsOf, elabWait, intentWait, running, onAlive, over, util, pressure, old, merges7, read,
+    streak:{now, from:STREAK_NOW_FROM, risks, longest:STREAKS.slice().sort((a,b) => b.min-a.min)[0], last:STREAKS[STREAKS.length-1]}};
+}
+function wheelSvg(f, cls, size){ const r = 78, c = 2*Math.PI*r, s = size||196;
+  const spokes = [...Array(8)].map((_,i) => { const a = i*Math.PI/4; return `<line class="spoke" x1="${(100+Math.cos(a)*22).toFixed(1)}" y1="${(100+Math.sin(a)*22).toFixed(1)}" x2="${(100+Math.cos(a)*64).toFixed(1)}" y2="${(100+Math.sin(a)*64).toFixed(1)}"/>`; }).join('');
+  const ticks = [0,1,2,3,4,5,6].map(d => { const a = -Math.PI/2 + d/7*2*Math.PI; return `<text class="tick" x="${(100+Math.cos(a)*95).toFixed(1)}" y="${(100+Math.sin(a)*95+3).toFixed(1)}" text-anchor="middle">${d}</text>`; }).join('');
+  return `<svg viewBox="0 0 200 200" width="${s}" height="${s}" aria-hidden="true"><circle class="track" cx="100" cy="100" r="${r}"/><circle class="arc ${cls}" cx="100" cy="100" r="${r}" stroke-dasharray="${(c*Math.min(1,f)).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 100 100)"/><circle class="rim" cx="100" cy="100" r="66"/>${spokes}<circle class="hub" cx="100" cy="100" r="22"/>${ticks}</svg>`; }
+function miniWheelSvg(f, cls){ const r = 6, c = 2*Math.PI*r; return `<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle class="rim" cx="8" cy="8" r="${r}"/><circle class="arc ${cls}" cx="8" cy="8" r="${r}" stroke-dasharray="${(c*Math.min(1,f)).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 8 8)"/><circle class="hub" cx="8" cy="8" r="1.6"/></svg>`; }
+function miniWheel(){ const w = flywheelModel(); const on = S.load ? 'open' : ''; const cls = w.band.cls==='ok' ? '' : w.band.cls;
+  return `<span class="sep"></span><span class="lab">flywheel</span><span class="gauges"><button class="mini fwpill ${on}" data-load title="${esc(w.read.text)}">${miniWheelSvg(w.runway/7, cls)}<b class="${cls}">${fmtDays(w.runway)}d</b> runway · <b>${fmtD(w.streak.now)}</b> streak${w.streak.risks.length ? ` · <span class="warn">at risk</span>` : ''}</button></span>`; }
+function pipeSvg(w){
+  const W = 720, H = 100; const wait = w.intentWait + w.elabWait, runI = w.m.inception.elabs; const f1 = Math.min(1, wait/6);
+  const f2 = w.aliveBound ? Math.min(1, (w.queued + w.onAlive)/w.aliveBound) : 1; const h2 = 14 + 3*w.aliveBound, y2 = 40 - h2/2; const cls2 = w.over || f2>=1 ? 'warn' : ''; const cls1 = w.old.length ? 'warn' : '';
+  const st = (xs, names, y) => names.map((n,i) => `<text class="stg" x="${xs+i*80+40}" y="${y}" text-anchor="middle">${n}</text>`).join('') + names.slice(1).map((_,i) => `<path class="arrow" d="M${xs+(i+1)*80-3},34 l6,6 l-6,6 z"/>`).join('');
+  return `<div class="pipe"><svg viewBox="0 0 ${W} ${H}" aria-label="two stages of backpressure">
+    <text class="st k" x="10" y="12">inception</text><text class="st" x="76" y="12">fill = what waits on you</text>
+    <rect class="wall" x="10" y="26" width="320" height="28" rx="4"/><rect class="fill ${cls1}" x="11" y="27" width="${(318*f1).toFixed(0)}" height="26" rx="3"/>${st(10, ['signals','intents','elaborations','proposals'], 68)}
+    <text class="cnt" x="330" y="22" text-anchor="end">${S.curation.unmoved} unmoved · ${w.m.inception.open} open · ${runI} running · ${wait} on you</text>
+    <path class="gate" d="M330,26 L350,${y2.toFixed(1)} L350,${(y2+h2).toFixed(1)} L330,54 z"/>
+    <text class="st k" x="352" y="12">construction</text><text class="st" x="440" y="12">queue ÷ bound · height = alive bound ${w.aliveBound}${w.bound>w.aliveBound ? `/${w.bound}` : ''}</text>
+    <rect class="wall" x="350" y="${y2.toFixed(1)}" width="360" height="${h2}" rx="4"/><rect class="fill ${cls2}" x="351" y="${(y2+1).toFixed(1)}" width="${(358*f2).toFixed(0)}" height="${h2-2}" rx="3"/>${st(350, ['approved','running','merged','landed'], 68)}
+    <text class="cnt" x="710" y="${(y2-4).toFixed(1)}" text-anchor="end">${w.queued} waiting · ${w.onAlive} running${w.over ? ` (${w.over} over)` : ''} · ${w.merges7} merged / 7d</text>
+    <text class="st" x="10" y="92">one host: pressure builds in the second pipe · a host added widens it and it drains · gate: one proposal per repo (28)</text>
+  </svg></div>`; }
+function renderLoad(){ const L = $('#load'); L.hidden = !S.load; if(!S.load) return; const w = flywheelModel(); const cls = w.band.cls;
+  const ln = (n, label, sub, c) => `<div class="ln"><b class="${c||''}">${n}</b><span class="gl">${label}${sub ? `<small>${sub}</small>` : ''}</span></div>`;
+  const landedWk = [1,2,1,S.landed.filter(l => /today|09-0/.test(l.at)).length];
+  const feed = `<div class="col"><h3><span class="ar">→</span>feed<span class="sub">adds runway · waits on you</span></h3>
+    ${ln(w.feedDs.length, 'proposals to approve', `${w.feedUnits} units · ${w.feedDs.map(d => d.n).join(', ') || 'none'}`, w.feedDs.length ? 'warn' : '')}
+    ${ln(w.elabWait, 'elaborations waiting on you', 'close, finish or keep, a gathering to start')}
+    ${ln(w.intentWait, 'intents to approve', 'each iterates toward a proposal')}
+    <div class="say">feed: ${w.feedDs.length} decision${w.feedDs.length===1?'':'s'} add ~${fmtDays(w.feedDays)} days</div></div>`;
+  const pressure = `<div class="col"><h3><span class="ar">→</span>pressure<span class="sub">the queue behind the bound</span></h3>
+    ${ln(w.queued, 'approved and waiting', w.queued ? 'on a dependency (31) or the bound (32)' : 'nothing approved waits', w.queued ? 'warn' : '')}
+    ${ln(w.onAlive, 'items running on alive hosts', `${w.aliveBound} alive slots${w.running-w.onAlive ? ` · ${w.running-w.onAlive} more on a host that is gone` : ''}`, w.over ? 'warn' : '')}
+    ${ln(w.pressure, 'behind the bound', 'grows on one host · drains as hosts are added', w.pressure ? 'warn' : 'ok')}
+    <div class="say">${w.over ? `${w.over} over the alive bound · the machinery holds them in order` : w.queued ? `${w.queued} wait · slots ${w.util>=1 ? 'full' : 'free'}` : 'nothing queued behind the bound'}</div></div>`;
+  const drain = `<div class="col"><h3>drain<span class="ar">→</span><span class="sub">hosts × bound · what leaves</span></h3>
+    ${ln(`${w.alive}/${w.hosts}`, 'hosts alive', S.hosts.map(h => `${h.id} ${h.bound}${h.alive ? '' : ' · gone'}`).join(' · '), w.alive<w.hosts ? 'warn' : '')}
+    ${ln(`${Math.round(w.util*100)}%`, 'utilization', `${w.onAlive} of ${w.aliveBound} alive slots`)}
+    ${ln(fmtDays(w.drain), 'units merged per day at the bound', `a unit is ~${SLOT_DAYS} slot-days`)}
+    <div class="ln"><b>${w.merges7}</b><span class="gl">merged in 7 days ${spark(series('merges', 0), 64, 16)}<small>bolts landed per week · ${landedWk.join(' · ')} ${spark(landedWk, 40, 12)}</small></span></div>
+    <div class="hist">velocity · history, not a target (142)</div>
+    <div class="say">${w.alive<w.hosts ? `add a host to drain faster · ${w.hosts-w.alive} of yours is gone` : 'add a host to drain faster'}</div></div>`;
+  const wheel = `<div class="wheel"><div class="wdial">${wheelSvg(w.runway/7, cls)}<div class="in"><div class="k">runway</div><div class="num">${fmtDays(w.runway)}<small>d</small></div><div class="band ${cls}">${esc(w.band.text)}</div><div class="k">${w.charge} units ÷ ${fmtDays(w.drain)}/day</div></div></div><div class="cap">days · a full rim is a week</div></div>`;
+  const streak = `<div class="streak"><span class="big">${fmtD(w.streak.now)}</span><span class="l1">agents have run ${fmtD(w.streak.now)} without you</span><span class="l2">since ${esc(w.streak.from)} · a streak counts while approved work runs and nothing stops it${w.streak.risks.length ? ` · <span class="risk">at risk: ${esc(w.streak.risks.join(' · '))}</span>` : ''}</span>
+    <div class="row2"><span>longest <b>${w.streak.longest.len}</b> · ${esc(w.streak.longest.from)} → ${esc(w.streak.longest.to)} · ended: ${esc(w.streak.longest.end)}</span><span>last <b>${w.streak.last.len}</b> · ended: ${esc(w.streak.last.end)}</span><span>a reading, never a target (142) · ${SM}</span></div></div>`;
+  L.innerHTML = `<div class="load-panel" role="dialog" aria-label="the flywheel"><div class="lib-h"><h2>Flywheel</h2><span class="sub">prime it and walk away · runway is approved work ÷ drain · feed and pressure go in, drain comes out · the streak is the score</span><button class="x" id="load-close" aria-label="close">×</button></div>
+    ${pipeSvg(w)}
+    <div class="fw-top">${wheel}<div class="rest"><div class="fw-read ${w.read.cls}">${esc(w.read.text)}<small>reading · derived from the counts (142) · sets no target · changes the moment a response applies (13)</small></div>${streak}</div></div>
+    <div class="fw">${feed}${pressure}${drain}</div>
+    <details class="adv" ${S.adv ? 'open' : ''}><summary>advanced · the three phase gauges<span class="sub">inception · construction · operation · counts and the 7-day trend</span></summary>${advancedHtml()}</details>
+    <div class="load-foot">every count is derived from the same state the engine reads; the 7-day series and the streaks are history read the same way · a unit is ~${SLOT_DAYS} slot-days, from the last week · esc closes · ${SM}</div></div>`; }
+document.addEventListener('toggle', e => { if(e.target.classList && e.target.classList.contains('adv')) S.adv = e.target.open; }, true);
+/* --- setup (215): the install ladder · an offer never enters the count; accepting one raises an install chore as a decision; a secret the machinery cannot place sits under attention --- */
+const setupPart = (rid, k, state) => { const r = S.setup.rungs.find(x => x.id===rid); return r && r.parts.find(p => p.k===k && (!state || p.state===state)); };
+function rungState(r){ const ps = r.parts, inst = ps.filter(p => /^installed/.test(p.state)).length;
+  if(inst===ps.length) return {cls:'ok', text:'installed'}; if(ps.some(p => p.state==='secret')) return {cls:'warn', text:`${inst} of ${ps.length} · a secret waits on you`};
+  if(ps.some(p => /^decision|^installing/.test(p.state))) return {cls:'', text:`${inst} of ${ps.length} · installing`}; return {cls:'', text:inst ? `${inst} of ${ps.length} · ${ps.length-inst} offered` : `${ps.length} offered · not in the count`}; }
+function partState(p, r){
+  if(/^installed/.test(p.state)) return `<span class="dot"></span>${esc(p.state)}`;
+  if(p.state==='secret') return `<span class="dot warn"></span><button data-gotoobj="a:secret">${esc(p.wi)} waits · place it</button>`;
+  if(/^decision/.test(p.state)) return `<span class="dot busy"></span><button data-gotoobj="d:${p.state.split(' ')[1]}">${esc(p.state)} · in the rail</button>`;
+  if(/^installing/.test(p.state)) return `<span class="dot busy"></span>${esc(p.state)}`;
+  return `<span class="dot off"></span><span class="offer">offer</span><button class="btn sm yes" data-offer="${r.id}|${esc(p.k)}">accept</button>`; }
+function renderSetup(){ const L = $('#setup'); L.hidden = !S.setup.open; if(!S.setup.open) return;
+  L.innerHTML = `<div class="lib-panel" role="dialog" aria-label="setup"><div class="lib-h"><h2>Setup</h2><span class="sub">the install ladder · one rung per tier · an offer is not a decision and never enters the count; accepting one raises an install chore that is</span><button class="x" id="setup-close" aria-label="close">×</button></div>
+    ${S.setup.rungs.map((r,i) => { const st = rungState(r); return `<div class="rung"><div class="rn"><span class="no">rung ${i+1}</span><b>${esc(r.name)}</b><small>${esc(r.tier)}</small><span class="st ${st.cls}">${esc(st.text)}</span></div><div class="parts">${r.parts.map(p => `<div class="part"><span class="pk">${esc(p.k)}</span><span class="pw">${esc(p.what)}</span><span class="ps">${partState(p, r)}</span></div>`).join('')}</div></div>`; }).join('')}
+    <div class="load-foot">a rung installs by one command the machinery runs, never by hand (205) · a secret is placed by you and never carried by the page (204) · an accepted offer is a chore: one session, no bolt (60) · esc closes · ${SM}</div></div>`; }
+function acceptOffer(rid, k){ const p = setupPart(rid, k, 'offer'); if(!p) return; const m = Math.max(...S.decisions.map(d => d.n), ...S.deferred.map(v => v.n), S.proposal.n, 424) + 1;
+  p.state = `decision ${m}`;
+  X[m] = {text:`You accepted the setup offer <b>${esc(p.chore)}</b> on the ${esc(rid)} rung. It is a chore on the fleet: one session scoped to ${p.host ? 'host '+esc(p.host) : 'the cloud host'}, no change directory, no bolt (60). <b>Yes</b> runs it; the rung reads installed when its proof is recorded, and the command run again changes nothing (204). <b>No</b> puts the offer back on the ladder.`,
+    kv2:[['installs', esc(p.what)],['needs from you', k==='sign-in' ? 'a secret you place · it will sit under attention' : 'nothing']], kv2Title:'the chore', hist:[['09-04 '+hhmm(S.minutes),'operator','offer accepted',`setup · ${p.chore}`],['09-04 '+hhmm(S.minutes),'plan','decision',`${m} created · approve the install chore`]]};
+  S.decisions.push({n:m, g:APPROVE, phase:'construction', kind:'install', title:`install · ${p.chore}`, obj:p.host ? 'h:'+p.host : null, repo:'fleet', part:[rid,k], tail:`setup offer accepted ${hhmm(S.minutes)} · <b>a chore on the fleet</b> · one session · yes runs it`, answers:[['yes','yes'],['no','no']]});
+  logLine(`accept offer · ${p.chore}`, {say:true}); toast(`${m} · install ${p.chore} · in the rail`); S.setup.open = false; openDock('d:'+m); }
+function installEffect(d, a){ const p = setupPart(d.part[0], d.part[1], `decision ${d.n}`); if(!p) return;
+  if(a==='no'){ p.state = 'offer'; return; }
+  const b = addBolt('chores-setup','setup','fleet','install chores · one session each · no bolt of their own (60)'); const wi = 'wi-#'+S.nextWi; startUnit(b, 'install '+p.chore, 'chore', 'chore'); p.state = `installing · ${wi}`; since('accepted', `install ${p.chore}`, 'one session on the fleet');
+  setTimeout(() => { const u = b.units.find(x => x.name==='install '+p.chore); if(u){ u.state='merged'; u.t=hhmm(S.minutes); } p.state = `installed ${hhmm(S.minutes)}`; toast(`${p.chore} · installed · proof recorded`); render(); }, 6000); }
+function dockSecret(){ return sec('what it means', `<div class="dtext">Install chore <span class="mono">wi-#429</span> set up the cloud dispatcher's sign-in as far as the machinery can: the GitHub App is registered for the cloud host and the place for its key exists. The key itself is a secret you place, never an agent (204), and the page never carries it. Until it is there this rung waits; nothing else on the ladder is held by it.</div>`)
+  + sec('place it', `<pre class="cmd">op read "op://willdan/flywheel github app/private key" \\
+  | flywheel secret place github-app.pem --host cloud-1</pre><div class="dtext" style="font-size:12px;color:var(--ink2)">One command on any host of yours; the secret travels to the cloud host over the fleet's channel and is written nowhere else (207). Then answer <b>placed</b> here: the machinery checks the path, records the proof and the rung reads installed. A check that finds nothing brings this line back.</div>`, 'never through the page')
+  + sec('on the ladder', `<div class="rows"><div class="row"><span class="st">rung 3</span><span class="grow">cloud dispatcher · sign-in · the other parts are still offers</span><button class="btn sm" id="setup-open">open setup</button></div></div>`); }
 
 function dockFooter(key){
   const [t,id] = key.split(':');
@@ -2299,7 +2520,7 @@ function renderDock(){
     head = `<div class="row"><span class="kind">${esc(K[0])}</span><span class="ph">${esc(K[1])}</span>${nav}</div><h2 id="dk-title">${esc(K[2])}</h2><div class="tail">${esc(K[3])} · the artifact fit to its view (213) · ${SM}</div>`;
     body = o.art==='intent' ? dockArtIntent(o) : o.art==='unit' ? dockArtUnit(o) : o.art==='claim' ? dockArtClaim(o) : o.art==='bolt' ? dockArtBolt(o) : dockArtWi(o); }
   else if(t==='rv'){ form = 'dk-art'; head = `<div class="row"><span class="kind">review surface</span><span class="ph">plannotator</span>${nav}</div><h2 id="dk-title">review · ${esc(o.id)}</h2><div class="tail">the artifact as a document · an annotation is the response (S35) · stub</div>`; body = dockReview(o); }
-  else { head = `<div class="row"><span class="kind">attention</span>${nav}</div><h2 id="dk-title">${o.text}</h2>`; body = sec('what it means', `<div class="dtext">${o.id==='host' ? 'The host that holds wi-#418 has not sent a heartbeat. Takeover releases its leases now and restores the place on studio; wait lets the lease expire at 07:59, when the machinery does the same.' : 'Your earlier response named a decision that was gone. It was recorded, handed back as unapplicable and shown once here; nothing was dropped. The unit was re-proposed and kept its number.'}</div>`); }
+  else { head = `<div class="row"><span class="kind">attention</span>${nav}</div><h2 id="dk-title">${o.text}</h2>`; body = o.id==='secret' ? dockSecret(o) : sec('what it means', `<div class="dtext">${o.id==='host' ? 'The host that holds wi-#418 has not sent a heartbeat. Takeover releases its leases now and restores the place on studio; wait lets the lease expire at 07:59, when the machinery does the same.' : 'Your earlier response named a decision that was gone. It was recorded, handed back as unapplicable and shown once here; nothing was dropped. The unit was re-proposed and kept its number.'}</div>`); }
   const keep = $('#dk-b').scrollTop;
   $('#dk-h').className = 'dk-h ' + form; $('#dk-h').innerHTML = head; $('#dk-b').innerHTML = body; $('#dk-f').innerHTML = t==='a' ? `<div class="acts">${o.acts.map(([k,l]) => `<button class="btn sm ${k==='takeover'?'yes':''}" data-att="${o.id}" data-ak="${k}">${esc(l)}</button>`).join('')}</div>` : dockFooter(key);
   $('#dk-b').scrollTop = keep;
@@ -2326,6 +2547,7 @@ document.addEventListener('click', e => {
   if(b && b.dataset.att){ const a = S.attention.find(x => x.id===b.dataset.att); S.attention = S.attention.filter(x => x!==a);
     if(b.dataset.ak==='ok'){ logLine(`ok · ${a ? a.id : ''}`, {}); toast('ok · recorded'); }
     else { logLine(b.dataset.ak, {}); toast(`${b.dataset.ak} · recorded`);
+      if(b.dataset.ak==='placed'){ const p = setupPart('cloud','sign-in'); if(p) p.state = `installed ${hhmm(S.minutes)} · key found`; since('installed','cloud dispatcher · sign-in','the key you placed was found · proof recorded'); }
       if(b.dataset.ak==='takeover'){ const h = host('mac-mini'); h.alive = true; h.last = hhmm(S.minutes); h.note = 'released by takeover · its sessions restored on studio'; S.bolts.flatMap(x => x.units).flatMap(u => u.items||[]).filter(i => i.host==='mac-mini').forEach(i => { i.host='studio'; i.last=`${hhmm(S.minutes)} · taken over on studio · place restored`; }); h.alive = false; h.gone = 'released'; } }
     if(S.open==='a:'+(a&&a.id)) S.open = null, document.body.classList.remove('docked');
     if(S.focus==='a:'+(a&&a.id)) S.focus = railKeys()[0] || null;
@@ -2355,6 +2577,10 @@ document.addEventListener('click', e => {
   if(b && b.dataset.oreview){ openDock('rv:'+b.dataset.oreview); return; }
   if(b && b.dataset.osrc !== undefined){ toast(`open source · ${b.dataset.osrc} · would open the path at the shared line`); return; }
   if(b && b.dataset.oan !== undefined){ toast(`note on “${b.dataset.oan}” · an annotation on the review surface · not a write here`); return; }
+  if(b && b.id==='setup-open'){ S.setup.open = true; S.load = false; render(); return; }
+  if(b && b.id==='setup-close'){ S.setup.open = false; render(); return; }
+  if(t.id==='setup'){ S.setup.open = false; render(); return; }
+  if(b && b.dataset.offer){ const [rid,k] = b.dataset.offer.split('|'); acceptOffer(rid, k); return; }
   if(b && b.dataset.load !== undefined){ S.load = !S.load; render(); return; }
   if(b && b.id==='load-open'){ S.load = true; render(); return; }
   if(b && b.id==='load-close'){ S.load = false; render(); return; }
@@ -2368,7 +2594,7 @@ document.addEventListener('click', e => {
   if(b && b.id==='explore-open'){ S.exploreMode = true; S.picked.clear(); render(); return; }
   if(b && b.id==='explore-cancel'){ S.exploreMode = false; S.picked.clear(); render(); return; }
   if(b && b.dataset.xkind){ S.exploreKind = b.dataset.xkind; render(); return; }
-  if(b && b.dataset.gotoobj){ openDock(b.dataset.gotoobj); return; }
+  if(b && b.dataset.gotoobj){ if(b.closest('#setup')) S.setup.open = false; openDock(b.dataset.gotoobj); return; }
   if(b && b.id==='explore-go'){ const ids = [...S.picked].filter(intent); if(!ids.length) return; const kind = S.exploreKind; const id = 'x'+(S.explorations.length+1);
     const names = ids.map(i => intent(i).name);
     S.explorations.unshift({id, kind, intents:ids, names, label:`explore · ${names.join(' + ')}`, since:hhmm(S.minutes), state:kind==='standing'?'standing':'with', session:{state:kind==='standing'?'working':'with', host:'studio', agent:'claude', model:'fable', pane:newPane('studio')}, last:`${hhmm(S.minutes)} · place prepared off the books shared line · ${kind==='standing'?'standing':'waiting for you'}`});
@@ -2406,7 +2632,7 @@ document.addEventListener('click', e => {
   const bd = t.closest('[data-bead]'); if(bd && !t.closest('button,input,label')){ openDock('v:'+bd.dataset.bead); return; }
   const obj = t.closest('[data-obj]');
   if(obj && !t.closest('input,textarea,select,button,label')){ openDock(obj.dataset.obj); return; }
-  if(!t.closest('#dock') && S.open && !t.closest('#log,#logbtn,.hosts,.map-panel,.board-h,#library,#load') && !t.closest('input,select,label')){ S.hostlit = null; closeDock(); }
+  if(!t.closest('#dock') && S.open && !t.closest('#log,#logbtn,.hosts,.map-panel,.board-h,#library,#load,#setup') && !t.closest('input,select,label')){ S.hostlit = null; closeDock(); }
   if(!t.closest('#log,#logbtn') && !$('#log').hidden){ $('#log').hidden = true; $('#logbtn').setAttribute('aria-expanded','false'); }
 });
 document.addEventListener('change', e => {
@@ -2426,7 +2652,7 @@ document.addEventListener('change', e => {
 });
 document.addEventListener('keydown', e => {
   const typing = e.target.matches('input,textarea,select');
-  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.load){ S.load = false; render(); return; } if(S.library){ S.library = false; render(); return; } if(S.exploreMode){ S.exploreMode = false; S.picked.clear(); render(); return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
+  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.load){ S.load = false; render(); return; } if(S.setup.open){ S.setup.open = false; render(); return; } if(S.library){ S.library = false; render(); return; } if(S.exploreMode){ S.exploreMode = false; S.picked.clear(); render(); return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
   if(typing){ if(e.key==='Enter' && !e.shiftKey && e.target.id==='capture'){ e.preventDefault(); capture(); } if(e.key==='Enter' && e.target.matches('input') && e.target.closest('.argbox')){ e.preventDefault(); e.target.closest('.argbox').querySelector('[data-send],[data-usend]').click(); } if(e.key==='Enter' && (e.target.dataset.bname || e.target.dataset.brename)){ e.preventDefault(); if(e.target.dataset.brename) $(`[data-brenamesend="${e.target.dataset.brename}"]`).click(); else e.target.blur(); } return; }
   if(e.metaKey||e.ctrlKey||e.altKey) return;
   const k = e.key;
@@ -2468,6 +2694,7 @@ if(Q.get('book') && BOOKS[Q.get('book')]) S.book.id = Q.get('book');
 if(Q.get('ch')) S.book.ch = Q.get('ch');
 if(Q.has('library')) S.library = true;
 if(Q.has('load')) S.load = true;
+if(Q.has('setup')) S.setup.open = true;
 if(S.view==='book' && !Q.get('ch')) bookFollow();
 if(Q.has('explore')) S.exploreMode = true;
 if(Q.get('claim')) selectClaim(Q.get('claim'));
