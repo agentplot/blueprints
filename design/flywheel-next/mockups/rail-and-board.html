@@ -172,9 +172,11 @@
     later (S56) and a key a card does not offer is refused, never remapped (S57). Under
     760px the strip stays one scrolling row, the panel is reached from the board header,
     and the columns stack under the wheel.
-  - Setup (215): a "setup" control in the hosts strip opens an overlay over the board,
-    separate from the operator's decisions. It is not a ladder: it is the organization's
-    hosts, browsed à la carte, and a store beside them. Left, one row per host (studio, a
+  - Setup (215): two surfaces, both overlays over the board and separate from the
+    operator's decisions: "hosts", opened by the strip's setup control or the account
+    menu, and "organization store", opened by the account menu; each links to the other.
+    Neither is a ladder: hosts are browsed à la carte with the index of what they could
+    run beside them; the store is what the organization carries. On hosts, left, one row per host (studio, a
     laptop, and mac-mini, a home host, both on herdr; willdan-cloud, a container on
     flywheel-cloud): kind and platform, alive or gone, bound, when it joined, and the parts
     it runs as chips grouped by kind: capture adapters, the chat sinks it presents (a
@@ -188,15 +190,16 @@
     attention, "place it") · installing (chore wi-#) · disabled (with "enable", one logged
     response) · suggested (with "add"); a kind the host does not declare says so and
     offers the index. Under each part its configuration is summarised from its schema;
-    a secret shows as placed or not placed, never its value. Under the hosts, one more row,
-    "the organization": the packages installed in the books under flywheel/ (types,
+    a secret shows as placed or not placed, never its value. On the store the left column
+    is one row, "the organization": the packages installed in the books under flywheel/ (types,
     producers, vocabularies, templates, scenario packs), with their paths; no host runs
     them, every host reads them; their state is per organization, not per host.
-    Right, the index in two tabs. "For this host": adapters, chat sinks, runners, routers
-    and sign-in, filtered to the selected host's platform, with a search box, a kind filter
-    and "any platform" that shows the rest greyed with what they need. "For the
-    organization": unit and elaboration types, deliverable producers, map vocabularies,
-    templates and scenario packs, with no platform filter and no host. Each package shows
+    Right, the index of the surface in hand. On hosts: adapters, chat sinks, runners,
+    routers and sign-in, filtered to the selected host's platform, with a search box, a
+    kind filter and "any platform" that shows the rest greyed with what they need. On the
+    store: unit and elaboration types, deliverable producers, map vocabularies, templates
+    and scenario packs, with no platform filter and no host; a kind a host does not
+    declare offers the index, a kind the books do not carry offers the store. Each package shows
     name, version, "shipped" or "index", what it needs and what it enables, and an "add"
     control, or its state where it already is ("on studio · configure", "in the books").
     "Add" never jumps anywhere: it opens the package's add sheet in the index column: its
@@ -253,11 +256,35 @@
     never travels through the page; "paste now" sends it through the page once, to the
     store, keeping nothing. The brief asked for it; if 204 wins, "paste now" becomes the
     place-it command shown inline and the sheet keeps only "later".
+  - Account: a standard account item at the right of the top bar (initials, the
+    organization's name, a caret) expands to a menu: the organization switcher (willdan ·
+    agentplot · personal · integral-analytics, the one in hand marked; choosing another
+    swaps the whole page's seed: rail, board, hosts strip, books, manifest; the willdan
+    seed is the full one, agentplot and integral-analytics are light seeds marked sample,
+    personal is an empty organization in a "from zero" state: one laptop, the books, no
+    intent, the board head saying what to do first; a seed left and returned to keeps its
+    changes), then settings, hosts, organization store and sign out, then who you are:
+    name, handle, sign-in kind, and the host that serves the page. When the page runs
+    locally with no sign-in ("local · no sign-in", the personal seed) the account item
+    shows the local user, the switcher lists the organizations the host has roots for,
+    and sign out is disabled with "nothing to sign out of"; behind a host that serves the
+    page under sign-in it reads "GitHub" (willdan, agentplot) or "Okta SSO"
+    (integral-analytics), sign out ends the browser session (a signed-out panel with sign
+    in again; the hosts keep running), and the switcher lists the organizations you are a
+    member of. Settings opens the organization's manifest as a form: repositories with
+    landing policy (direct merge · pull request) and item merge (squash · merge · rebase),
+    roles with kind (pane · in-process · managed) and model, router, take cadence; save
+    is one logged response naming each change ("settings · atlas landing pull request ·
+    router private-network router"), "every host reads the manifest on its next tick";
+    nothing changed sends nothing. The strip's setup control stays and points at hosts.
+    Invented: the three other organizations and their seeds, the manifest's fields as a
+    form, the signed-out panel, and that a switch is not a response (nothing is logged).
   - Under 760px the rail and the board are two tabs; the dock is full screen with a back
     control. The clock starts at 07:40 and advances a minute per response. Detail beyond the
     seed is invented and marked sample. Review switches: ?theme=dark|light, ?nodock, ?open=<key>,
     ?view=map|book, ?book=<id>, ?ch=<chapter>, ?review=1, ?library=1, ?load=1, ?setup=1, ?host=<id>,
-    ?addhost=1, ?index=org, ?add=<package id>.
+    ?addhost=1, ?store=1, ?add=<package id>, ?org=agentplot|personal|integral-analytics, ?settings=1,
+    ?acct=1, ?signedout=1.
 -->
 <meta charset="utf-8">
 <title>Rail and Board</title>
@@ -1034,6 +1061,18 @@ body.docked .dock{transform:none}
 @media (max-width:900px){.su-grid{grid-template-columns:1fr} .su-index{border-left:0;padding-left:0;margin-top:14px;border-top:1px solid var(--line);padding-top:8px} .su-list{max-height:none}}
 @media (max-width:760px){.su-dn{display:none} .su-field{grid-template-columns:1fr} .part{grid-template-columns:72px minmax(0,1fr)} .part .ps{grid-column:2;justify-self:start;justify-content:flex-start;max-width:none;text-align:left} .su-plats{grid-template-columns:1fr} .su-pkg{grid-template-columns:1fr} .su-pc{grid-column:1;grid-row:auto;white-space:normal} .su-st{margin-left:0;width:100%}}
 
+/* ---------- the account item, its menu, settings, signed out ---------- */
+.acct-wrap{position:relative;display:inline-flex} .acct-btn{display:inline-flex;align-items:center;gap:7px;padding:3px 8px 3px 4px} .acct-btn .am-av{width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font:700 10px var(--mono);display:inline-flex;align-items:center;justify-content:center} .acct-btn b{font-size:12.5px} .acct-btn .caret{font-size:10px;color:var(--ink3)}
+.acct-menu{position:absolute;right:0;top:calc(100% + 6px);width:340px;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);padding:8px;z-index:40;text-align:left}
+.acct-menu .am-h{font:700 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);padding:4px 8px;display:flex;flex-direction:column;gap:1px} .acct-menu .am-h small{font:10.5px var(--sans);letter-spacing:0;text-transform:none;font-weight:400}
+.acct-menu button{display:flex;align-items:center;gap:8px;width:100%;padding:6px 8px;border-radius:6px;text-align:left} .acct-menu button:hover:not([disabled]){background:var(--surface2)} .acct-menu button[disabled]{opacity:.55;cursor:default}
+.acct-menu .am-dot{width:8px;height:8px;border-radius:50%;border:1px solid var(--ink3);flex:none;box-sizing:border-box} .acct-menu button[aria-checked="true"] .am-dot{background:var(--accent);border-color:var(--accent)} .acct-menu button[aria-checked="true"] b{color:var(--accent)}
+.acct-menu .am-t{display:flex;flex-direction:column;gap:1px;min-width:0} .acct-menu .am-t b{font-size:13px} .acct-menu .am-t small{font-size:11px;color:var(--ink3);line-height:1.35}
+.acct-menu .am-sep{border-top:1px solid var(--line2);margin:6px 4px} .acct-menu .am-me{display:flex;flex-direction:column;gap:2px;padding:4px 8px;font-size:11.5px;color:var(--ink2)} .acct-menu .am-me b{font-size:13px;color:var(--ink)} .acct-menu .am-me .mono{font-size:11px;color:var(--ink3)}
+.so-panel{width:min(520px,100%);text-align:center;padding:28px 20px} .so-panel p{color:var(--ink2);font-size:13px;margin:8px 0 14px}
+.st-panel{width:min(760px,100%)} .st-sec{margin-top:6px} .st-row{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr);gap:6px 12px;align-items:center;padding:5px 0;border-bottom:1px solid var(--line2);font-size:12.5px} .st-row.st-head{font:700 9.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--line)} .st-row select{padding:4px 6px;font:12px var(--mono);max-width:100%} .st-two{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;margin-top:8px}
+@media (max-width:759px){.acct-menu{position:fixed;left:8px;right:8px;top:calc(var(--top) + 4px);width:auto} .acct-btn b{display:none} .st-row{grid-template-columns:1fr} .st-row.st-head{display:none} .st-two{grid-template-columns:1fr}}
+
 /* ---------- log, toasts, tabs ---------- */
 .log{position:fixed;right:14px;top:calc(var(--top) + 6px);width:min(420px,calc(100vw - 28px));max-height:60vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:10px 12px;z-index:20}
 .log h3{font-size:12px;display:flex;gap:8px;align-items:baseline}
@@ -1083,10 +1122,11 @@ body.docked .dock{transform:none}
 
 <header class="top">
   <h1>Rail and Board</h1>
-  <span class="meta">willdan · 2026-09-04 <span class="mono" id="clock">07:40</span></span>
+  <span class="meta"><b id="orgname">willdan</b> · 2026-09-04 <span class="mono" id="clock">07:40</span></span>
   <div class="count"><b id="count">12</b><span>decisions</span><span class="hint" id="yesallhint">· "yes all" answers 412–417, 422, 424</span></div>
   <span class="keys" style="display:flex;gap:10px;font-size:11px;color:var(--ink3)"><span><kbd>j</kbd><kbd>k</kbd> rail</span><span><kbd>↵</kbd> open</span><span><kbd>y</kbd><kbd>n</kbd><kbd>l</kbd> answer</span><span><kbd>]</kbd><kbd>[</kbd> beads</span><span><kbd>m</kbd> map</span><span><kbd>b</kbd> book</span><span><kbd>w</kbd> load</span><span><kbd>/</kbd> capture</span><span><kbd>esc</kbd> close</span></span>
   <button class="btn quiet theme" id="theme" title="theme">system</button>
+  <span class="acct-wrap" id="acct-wrap"></span>
   <button class="btn" id="logbtn" aria-expanded="false"><b id="sent">0</b> sent</button>
   <button class="btn pri" id="yesall">yes all</button>
 </header>
@@ -1106,6 +1146,8 @@ body.docked .dock{transform:none}
     <div class="library" id="library" hidden></div>
     <div class="loadp" id="load" hidden></div>
     <div class="library" id="setup" hidden></div>
+    <div class="library" id="settings" hidden></div>
+    <div class="library" id="signedout" hidden></div>
     <div class="scrim" id="scrim"></div>
     <aside class="dock" id="dock" role="dialog" aria-modal="false" aria-labelledby="dk-title">
       <div class="dk-h" id="dk-h"></div>
@@ -1136,7 +1178,9 @@ const PH = {inception:'inception', plan:'bolt plan', construction:'construction'
 /* =====================================================================
    Sample state · plan-mockup.md at 2026-09-04 07:40 · 412–421, plus 422.
    ===================================================================== */
-const S = {
+const SEED_WILLDAN = () => ({
+  org:'willdan', me:{name:'Chuck Swanberg', handle:'chuckswanberg', signin:'github', served:'studio'}, acct:false, settings:false, signedOut:false,
+  manifest:{repos:[{id:'atlas', landing:'direct merge', merge:'squash'},{id:'switchboard', landing:'pull request', merge:'squash'},{id:'new-repo', landing:'pull request', merge:'merge'}], roles:[{role:'machinery', kind:'pane', model:'claude-haiku-4-5'},{role:'construction', kind:'pane', model:'claude-fable-5-1'},{role:'triage', kind:'in-process', model:'claude-sonnet-5'},{role:'interpreter', kind:'in-process', model:'claude-haiku-4-5'}], router:'local router', cadence:'every 30s'},
   minutes: 7*60+40,
   decisions: [
     {n:412, g:APPROVE, phase:'inception', kind:'intent', title:'atlas-provider-limits', obj:'i:atlas-provider-limits', repo:'books',
@@ -1177,9 +1221,9 @@ const S = {
     {id:'secret', cls:'', host:'willdan-cloud', pkg:'pr-conversation', key:'key', file:'github-app.pem', wi:'wi-#429', text:'secret <b>github-app.pem</b> for the cloud dispatcher is not placed · install chore wi-#429 waits on it', obj:null, acts:[['placed','placed']]},
   ],
   /* setup (215): per host, à la carte · the hosts carry their parts; the index is what they could run · an offer never enters the count; accepting one raises an install chore as a decision */
-  setup:{open:false, host:'studio', tab:'host', q:'', kind:'all', anyPlat:false, add:null, sheet:null, lit:null},
+  setup:{open:false, mode:'hosts', host:'studio', tab:'host', q:'', kind:'all', anyPlat:false, add:null, sheet:null, lit:null},
   /* the organization's packages · installed in the books, read by every host · state per organization, not per host */
-  org:{'ut-default':{state:'installed 08-12'}, 'ut-fast':{state:'installed 08-12'}, 'ut-chore':{state:'installed 08-12'}, 'et-research':{state:'installed 08-12', cfg:{values:{model:'claude-fable-5-1'}, secrets:{}}}, 'et-prototype':{state:'installed 08-12'}, 'et-writeback':{state:'installed 08-12'}, 'dp-mdbook':{state:'installed 08-12'}, 'mv-ddd':{state:'installed 09-05'}, 'tp-intent':{state:'installed 08-12'}, 'sp-flywheel':{state:'installed 08-12'}},
+  orgPkgs:{'ut-default':{state:'installed 08-12'}, 'ut-fast':{state:'installed 08-12'}, 'ut-chore':{state:'installed 08-12'}, 'et-research':{state:'installed 08-12', cfg:{values:{model:'claude-fable-5-1'}, secrets:{}}}, 'et-prototype':{state:'installed 08-12'}, 'et-writeback':{state:'installed 08-12'}, 'dp-mdbook':{state:'installed 08-12'}, 'mv-ddd':{state:'installed 09-05'}, 'tp-intent':{state:'installed 08-12'}, 'sp-flywheel':{state:'installed 08-12'}},
   since: [
     {v:'merged', w:'plan-decisions · unit decision-grouping', t:'3 items · review passed first time', at:'07:21'},
     {v:'landed', w:'switchboard/idle-timeout', t:'gates green', at:'06:52'},
@@ -1306,7 +1350,8 @@ const S = {
     edits:0, refusal:null, n:422,
   },
   log:[], inflight:{}, focus:'d:412', open:null, hostlit:null, nextWi:431,
-};
+});
+const S = SEED_WILLDAN();
 const dec = n => S.decisions.find(d => d.n===n);
 const bolt = id => S.bolts.find(b => b.id===id);
 const intent = id => S.intents.find(i => i.id===id);
@@ -1719,6 +1764,11 @@ const BOOKS = {
       {id:'s-open', n:6, title:'Open', file:'§6', blocks:[P('The phone layout beyond the stacked list (S78); the chat\'s rich controls per platform (S79); annotation-as-response on the review surface (S80); where the elaboration page\'s records render from (S81); which tool ask-again calls (S82); per-unit edits as one answer or the unit\'s own (S83); which region has focus when the map opens (S84).')]},
     ]},
 };
+Object.entries(BOOKS).forEach(([k,b]) => { b.id = b.id || k; b.org = 'willdan'; });
+/* light books for the other organizations (sample) · the library and the book view list only the organization in hand */
+BOOKS['agentplot-kit'] = {id:'agentplot-kit', org:'agentplot', title:'agentplot-kit', sub:'the flywheel and its blueprints · the surfaces, the store, the fleet', src:'blueprints/design', written:'09-06 18:20 · writeback · intent setup-store', repos:['flywheel'], changes:[], chapters:[{id:'overview', n:1, title:'How to read this book', file:'src/01-overview.md', blocks:[P('This book is the source for what the flywheel is: its surfaces, its store and its fleet. A chapter explains a design conclusion and states the claim it adds in the same commit. Sample: a light seed behind the organization switcher.'), H('store','The store'), P('A per-host package installs on a host it fits; an organization package installs in the books and every host reads it.')]}]};
+BOOKS['integral-kit'] = {id:'integral-kit', org:'integral-analytics', title:'integral-kit', sub:'the ledger and its reconciliation', src:'books/integral-kit', written:'09-02 · writeback', repos:['ledger'], changes:[], chapters:[{id:'overview', n:1, title:'How to read this book', file:'src/01-overview.md', blocks:[P('This book is the source for what the ledger is and how it reconciles. Sample: a light seed behind the organization switcher.')]}]};
+BOOKS['personal-book'] = {id:'personal-book', org:'personal', title:'(no book yet)', sub:'from zero · the first writeback creates the book', src:'books', written:'never', repos:[], changes:[], chapters:[{id:'start', n:1, title:'From zero', file:'src/01-start.md', blocks:[P('Nothing is written yet. Capture something below and mark it an intent; its first writeback creates this book.')]}]};
 Object.entries(BOOKS).forEach(([id,b]) => { b.id = id; });
 /* where each decision lives in the book: [chapter, anchor] in platform-kit, or [book, chapter, anchor] */
 const BOOKREF = {
@@ -1772,7 +1822,7 @@ function bookMarks(bookId, chId, anchor){ const hit = r => r.book===bookId && r.
   return m.length ? `<div class="gut">${m.join('')}</div>` : ''; }
 function renderBook(){
   if(S.view!=='book') return;
-  const b = BOOKS[S.book.id] || BOOKS['platform-kit']; S.book.id = b.id;
+  const b = orgBook(); S.book.id = b.id;
   if(!b.chapters.find(c => c.id===S.book.ch)) S.book.ch = b.chapters[0].id;
   const ch = b.chapters.find(c => c.id===S.book.ch); const ci = b.chapters.indexOf(ch); const rv = S.review.on;
   const focusRefs = bookRefsOf(S.focus).filter(r => r.book===b.id && r.ch===ch.id);
@@ -1806,7 +1856,7 @@ function renderBook(){
     <div class="bk-foot">${prev ? `<button class="btn sm quiet" data-ch="${prev.id}">‹ ${prev.n}. ${esc(prev.title)}</button>` : '<span></span>'}${next ? `<button class="btn sm quiet" data-ch="${next.id}">${next.n}. ${esc(next.title)} ›</button>` : '<span></span>'}</div></div>`;
 }
 function renderLibrary(){ const L = $('#library'); L.hidden = !S.library; if(!S.library) return;
-  const rows = Object.values(BOOKS).map(b => { const s = bookStats(b); const on = b.id===S.book.id;
+  const rows = orgBooks().map(b => { const s = bookStats(b); const on = b.id===S.book.id;
     return `<div class="lib-row ${on?'on':''}" data-libopen="${b.id}" tabindex="0"><div><div class="ln">${esc(b.title)}${on ? ' <span class="chip g">open</span>' : ''}${s.changed ? ` <span class="chip x">${s.changed} changed since review</span>` : ''}</div><div class="ls">${esc(b.sub)}</div>
       <div class="lm"><span><b>${s.chapters}</b> chapters</span><span><b>${s.standing}</b> standing · <b>${s.proposed}</b> proposed</span><span>written <b>${esc(b.written)}</b></span><span>unmet verdicts <b class="${s.unmet?'warn':''}">${s.unmet}</b></span></div>
       <div class="lm" style="margin-top:4px"><span>repositories</span>${b.repos.length ? b.repos.map(r => `<button class="repo" data-librepo="${r}" title="open ${esc(r)} on the map">${esc(r)}<span class="hm">${unmetOf(repo(r))} unmet</span></button>`).join('') : `<span>${b.shipped ? 'shipped by the flywheel · no willdan repository' : 'none in the fleet yet · nothing here is planned against (202)'}</span>`}</div></div>
@@ -2116,9 +2166,9 @@ function renderHosts(){
 }
 function renderBoardHead(){
   const v = S.view, map = v==='map', book = v==='book';
-  const bk = BOOKS[S.book.id] || BOOKS['platform-kit']; const st = book ? bookStats(bk) : null;
+  const bk = orgBook(); const st = book ? bookStats(bk) : null;
   $('#board-h').innerHTML = `<div class="seg" role="tablist"><button data-view="phases" aria-pressed="${v==='phases'}">phases</button><button data-view="map" aria-pressed="${map}">map</button><button data-view="book" aria-pressed="${book}">book</button></div>
-    <span>${map ? 'the system context map is the scope surface (198) · a repository node carries its claims · click a node for its dock' : book ? `<b class="mono">${esc(bk.title)}</b> · ${st.chapters} chapters · ${st.standing} standing · ${st.proposed} proposed · the rail jumps the book to what a decision concerns` : 'the status view by phase (B.4) · objects only · every decision is a marker on its object'}</span>
+    <span>${S.fromZero && !map && !book ? 'from zero · nothing yet: type a capture below and mark it an intent, or add a repository on the map · ' : ''}${map ? 'the system context map is the scope surface (198) · a repository node carries its claims · click a node for its dock' : book ? `<b class="mono">${esc(bk.title)}</b> · ${st.chapters} chapters · ${st.standing} standing · ${st.proposed} proposed · the rail jumps the book to what a decision concerns` : 'the status view by phase (B.4) · objects only · every decision is a marker on its object'}</span>
     ${map ? `<div class="r"><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}</label><button class="btn sm" id="addrepo-open">add repository</button></div>` : ''}${book ? `<div class="r"><button class="btn sm" id="library-open">library</button><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}${st.changed ? ` · <b>${st.changed}</b> changed` : ''}</label>${S.review.on ? `<button class="btn sm" id="review-mark">mark reviewed · ${hhmm(S.minutes)}</button>` : ''}</div>` : ''}<div class="r" style="margin-left:${map||book?'0':'auto'}"><button class="btn sm ${S.load?'pri':''}" id="load-open" title="the flywheel: runway, feed, pressure, drain, the streak (214)">flywheel <kbd style="margin-left:4px">w</kbd></button><kbd>${book ? 'b' : 'm'}</kbd></div>`;
   $('#lanes').hidden = v!=='phases'; $('#map').hidden = !map; $('#book').hidden = !book;
 }
@@ -2198,7 +2248,7 @@ function renderTop(){
 function renderLog(){ $('#loglist').innerHTML = S.log.map(e => `<li class="${e.say?'say':''} ${e.fail?'fail':''}"><time>${e.t}</time><span>${esc(e.text)}</span></li>`).join('') || '<li><span class="empty">nothing sent yet</span></li>'; }
 function render(){
   const keep = ['#rail','.lane','#bk-tree','#bk-content'].flatMap(s => $$(s)).map(el => [el, el.scrollTop]);
-  renderTop(); renderHosts(); renderBoardHead(); renderRail(); renderInception(); renderPlan(); renderConstruction(); renderOperation(); renderMap(); renderBook(); renderLibrary(); renderLoad(); renderSetup(); renderLog();
+  renderTop(); renderAcct(); renderSettings(); renderHosts(); renderBoardHead(); renderRail(); renderInception(); renderPlan(); renderConstruction(); renderOperation(); renderMap(); renderBook(); renderLibrary(); renderLoad(); renderSetup(); renderLog();
   keep.forEach(([el,t]) => el.scrollTop = t);
   if(S.view==='book' && S.book.scrollTo){ const el = $(`#bk-content [data-anchor-id="${S.book.scrollTo}"]`); if(el) el.scrollIntoView({block:S.book.scrollTo==='_top' ? 'start' : 'center'}); S.book.scrollTo = null; }
   if(S.open) renderDock();
@@ -2690,7 +2740,7 @@ function hostDetailHtml(h){
   const joined = h.joinedSteps ? `<details class="su-joined"><summary>how it joined · ${esc(h.joined)} · ${esc(h.joinedVia)}</summary>${stepsHtml(h.joinedSteps)}</details>` : '';
   return `<div class="su-detail"><div class="su-dh"><span class="eyebrow">what it runs</span><span class="su-dn">installed · added · needs a secret · installing · disabled · suggested</span><button class="btn sm quiet" data-gotoobj="h:${h.id}">open the host</button></div>${rows}${joined}</div>`; }
 /* the organization's packages live in the books, read by every host · one row under the hosts */
-const orgEntries = () => Object.entries(S.org).map(([id, o]) => ({...o, pkg:id, k:pkg(id).kind, p:pkg(id)}));
+const orgEntries = () => Object.entries(S.orgPkgs).map(([id, o]) => ({...o, pkg:id, k:pkg(id).kind, p:pkg(id)}));
 function orgRowHtml(){ const on = orgSel() && !S.setup.add; const es = orgEntries(); const n = es.filter(x => /^installed/.test(x.state)).length, added = es.filter(x => x.state==='added').length, inst = es.filter(x => /^installing/.test(x.state)).length;
   return `<div class="su-host su-org ${on?'on':''}" data-suhost="org" role="button" tabindex="0" aria-expanded="${on}">
     <div class="su-hh"><span class="dot"></span><b class="mono">the organization</b><span class="su-kind">the books · read by every host</span><span class="su-st ${added||inst?'':'ok'}">${added ? `${added} added · awaiting install` : inst ? 'installing' : `${n} packages in the books`}</span></div>
@@ -2717,7 +2767,7 @@ function hostCtl(p, h){ const fits = pkgFits(p, h); const on = partOn(h, p.id); 
   if(on.state==='disabled') return `<span class="su-on"><span class="dot off"></span>disabled on ${esc(h.id)}</span>`;
   if(on.state==='chosen') return `<span class="su-on"><span class="dot busy"></span>chosen</span>${conf}<button class="btn sm quiet" data-surm="${p.id}">remove</button>`;
   return `<button class="btn sm yes" data-suadd="${hid}|${p.id}">add</button>`; }
-function orgCtl(p){ const on = S.org[p.id]; const conf = schemaOf(p).length ? `<button class="btn sm quiet" data-suconf="org|${p.id}">configure</button>` : '';
+function orgCtl(p){ const on = S.orgPkgs[p.id]; const conf = schemaOf(p).length ? `<button class="btn sm quiet" data-suconf="org|${p.id}">configure</button>` : '';
   if(!on) return `<button class="btn sm yes" data-suadd="org|${p.id}" title="opens the add sheet · into the books, read by every host">add</button>`;
   if(/^installed/.test(on.state)) return `<span class="su-on"><span class="dot"></span>in the books</span>${conf}`;
   if(on.state==='added') return `<button data-gotoobj="d:${on.decision}"><span class="dot busy"></span>added · decision ${on.decision}</button>`;
@@ -2726,13 +2776,12 @@ function indexHtml(){ const tab = S.setup.tab; const h = indexHost(); const q = 
   const list = all.filter(p => S.setup.kind==='all' || p.kind===S.setup.kind).filter(p => !q || `${p.name} ${p.kind} ${p.needs} ${p.enables} ${p.tag}`.toLowerCase().includes(q)).filter(p => tab==='org' || S.setup.anyPlat || pkgFits(p, h));
   const rows = list.map(p => { const fits = tab==='org' || pkgFits(p, h);
     return `<div class="su-pkg ${fits?'':'dim'}"><div class="su-pn"><b>${esc(p.name)}</b><span class="v">v${esc(p.v)}</span><span class="tag ${p.tag}">${esc(p.tag)}</span><span class="su-pk">${esc(p.kind)}</span></div><div class="su-pm"><span><i>needs</i>${esc(p.needs)}</span><span><i>enables</i>${esc(p.enables)}</span></div><div class="su-pc">${tab==='org' ? orgCtl(p) : hostCtl(p, h)}</div></div>`; }).join('');
-  const forLine = tab==='org' ? `for the organization · the books · ${list.length} of ${all.length}` : `for <b class="mono">${esc(h.id)}</b> · ${esc(h.platform)} · ${list.length} of ${all.length}`;
+  const forLine = tab==='org' ? `for the organization · into the books · ${list.length} of ${all.length}` : `for <b class="mono">${esc(h.id)}</b> · ${esc(h.platform)} · ${list.length} of ${all.length}`;
   return `<div class="su-ih"><span class="eyebrow">the index</span><span class="su-for">${forLine}</span></div>
-    <div class="su-tabs" role="tablist"><button role="tab" data-sutab="host" aria-selected="${tab==='host'}">for this host<small>adapters · chat sinks · runners · routers · sign-in</small></button><button role="tab" data-sutab="org" aria-selected="${tab==='org'}">for the organization<small>types · producers · vocabularies · templates · scenarios</small></button></div>
     <div class="su-if"><input id="su-q" type="search" placeholder="search the index" aria-label="search the index" value="${esc(S.setup.q)}"><select id="su-kind" aria-label="kind"><option value="all" ${S.setup.kind==='all'?'selected':''}>every kind</option>${kinds.map(k => `<option value="${k}" ${S.setup.kind===k?'selected':''}>${k}</option>`).join('')}</select>${tab==='org' ? '' : `<label class="su-any"><input type="checkbox" id="su-any" ${S.setup.anyPlat?'checked':''}> any platform</label>`}</div>
     <div class="su-list">${rows || '<div class="empty">nothing in the index matches</div>'}</div>`; }
 /* the add sheet: the package's description, what it needs, its form from its schema, secrets pasted now or placed later, the host for a per-host package · the same sheet prefilled is "configure" */
-function openSheet(pid, target, mode){ const p = pkg(pid); if(!p) return; const isOrg = isOrgKind(p.kind); const existing = isOrg ? S.org[pid] : target==='__new' ? S.setup.add.parts.find(x => x.pkg===pid) : partOn(host(target), pid); const cfg = mode==='configure' && existing ? (existing.cfg || (existing.cfg = isOrg ? emptyCfg(p) : cfgOf(existing))) : null;
+function openSheet(pid, target, mode){ const p = pkg(pid); if(!p) return; const isOrg = isOrgKind(p.kind); const existing = isOrg ? S.orgPkgs[pid] : target==='__new' ? S.setup.add.parts.find(x => x.pkg===pid) : partOn(host(target), pid); const cfg = mode==='configure' && existing ? (existing.cfg || (existing.cfg = isOrg ? emptyCfg(p) : cfgOf(existing))) : null;
   S.setup.sheet = {pkg:pid, host: isOrg ? null : target, mode, values: cfg ? {...cfg.values} : emptyCfg(p).values, secrets: Object.fromEntries(secretFields(p).map(f => { const s = cfg && cfg.secrets[f.k]; return [f.k, {mode: s && s.placed ? 'keep' : s && s.mode ? s.mode : 'now', placed: !!(s && s.placed), val: (s && s.val) || ''}]; }))};
   render(); const el = $('#su-sheet'); if(el){ el.scrollIntoView({block:'nearest'}); el.querySelector('input:not([type=radio]),select')?.focus(); } }
 function secretFieldHtml(f, sh, conf){ const s = sh.secrets[f.k]; const name = `<span class="su-fl">${esc(f.label)}<span class="v mono">${esc(f.file)}</span></span>`;
@@ -2759,14 +2808,14 @@ function sheetAdd(){ if(!sheetCheck()) return; const sh = S.setup.sheet, p = pkg
   if(hid==='__new'){ const A = S.setup.add; const part = {k:p.kind, pkg:p.id, name:p.name, what:p.enables, state:'chosen', cfg}; const i = A.parts.findIndex(x => x.pkg===p.id); if(i>=0) A.parts[i] = part; else A.parts.push(part); S.setup.sheet = null; toast(`${p.name} · chosen for ${A.name}`); render(); return; }
   const m = nextN(); const where = hid ? `on ${hid}` : 'in the books'; const summary = cfgText(p, cfg);
   if(hid){ const h = host(hid); let part = partOn(h, p.id); if(part && part.state!=='suggested'){ toast(`${p.name} is already ${part.state} on ${hid}`, true); return; } if(!part){ part = {k:p.kind, pkg:p.id, name:p.name, what:p.enables, addedFrom:'index'}; h.parts.push(part); } part.state = 'added'; part.decision = m; part.cfg = cfg; }
-  else S.org[p.id] = {state:'added', decision:m, cfg};
+  else S.orgPkgs[p.id] = {state:'added', decision:m, cfg};
   X[m] = {text:`You added <b>${esc(p.name)} v${esc(p.v)}</b> (${esc(p.tag)}) ${hid ? `to host <b>${esc(hid)}</b>` : `to <b>the books</b> at <span class="mono">${esc(orgPath(p))}</span>, read by every host`}. It is a chore on the fleet: one session${hid ? ` scoped to host ${esc(hid)}` : ' on the books repository'}, no change directory, no bolt (60). <b>Yes</b> runs it; the part reads installed when its proof is recorded, and the command run again changes nothing (204). <b>No</b> takes it off ${hid ? 'the host' : 'the books'} again${hid && !partOn(host(hid), p.id).addedFrom ? ' and leaves it suggested' : ''}.`,
     kv2:[['installs', esc(p.enables)],['needs', esc(p.needs)],['configured', summary ? esc(summary) : 'nothing to configure'],['needs from you', missingSecrets(p, cfg).length ? `a secret you left for later · ${missingSecrets(p, cfg).map(f => f.file).join(', ')} · it will sit under attention after the chore runs` : 'nothing']], kv2Title:'the chore', hist:[['09-04 '+hhmm(S.minutes),'operator','add',`setup · ${p.name} → ${hid||'the books'}`],['09-04 '+hhmm(S.minutes),'plan','decision',`${m} created · approve the install chore`]]};
   S.decisions.push({n:m, g:APPROVE, phase:'construction', kind:'install', title:`install · ${p.name} ${where}`, obj: hid ? 'h:'+hid : null, repo: hid ? 'fleet' : 'books', part:[hid, p.id], tail:`added from setup ${hhmm(S.minutes)} · <b>a chore on the fleet</b> · one session · yes runs it`, answers:[['yes','yes'],['no','no']]});
   logLine(`add · ${p.name} → ${hid||'the books'}${summary ? ' · '+summary : ''}`, {say:true}); toast(`${m} · install ${p.name} ${where} · in the rail · the part waits as added`);
   S.setup.sheet = null; S.setup.host = hid || 'org'; S.setup.tab = hid ? 'host' : 'org'; S.setup.lit = p.id; render(); $(`[data-partrow="${p.id}"]`)?.scrollIntoView({block:'nearest'}); }
 function sheetSave(){ if(!sheetCheck()) return; const sh = S.setup.sheet, p = pkg(sh.pkg); const cfg = sheetCfg(); const hid = sh.host; const where = hid==='__new' ? `for ${S.setup.add.name}` : hid ? `on ${hid}` : 'in the books';
-  const target = hid==='__new' ? S.setup.add.parts.find(x => x.pkg===p.id) : hid ? partOn(host(hid), p.id) : S.org[p.id]; if(!target) return; target.cfg = cfg;
+  const target = hid==='__new' ? S.setup.add.parts.find(x => x.pkg===p.id) : hid ? partOn(host(hid), p.id) : S.orgPkgs[p.id]; if(!target) return; target.cfg = cfg;
   if(hid==='__new'){ S.setup.sheet = null; render(); return; }
   const rotated = secretFields(p).filter(f => cfg.secrets[f.k] && cfg.secrets[f.k].rotated);
   rotated.forEach(f => { delete cfg.secrets[f.k].rotated; if(hid){ target.state = 'secret'; target.secret = f.file; delete target.wi; raiseSecret(hid, p.id, f, null); } });
@@ -2779,14 +2828,19 @@ function secretPlaced(a){ const h = host(a.host||'willdan-cloud'); const part = 
   if(a.key && cfg.secrets[a.key]) cfg.secrets[a.key].placed = true; else Object.values(cfg.secrets).forEach(s => s.placed = true);
   const miss = missingSecrets(p, cfg); if(miss.length){ part.secret = miss[0].file; return; }
   part.state = `installed ${hhmm(S.minutes)} · ${a.file||'key'} found`; delete part.wi; delete part.secret; since('installed', `${h.id} · ${part.name}`, 'the secret you placed was found · proof recorded'); }
-function renderSetup(){ const L = $('#setup'); L.hidden = !S.setup.open; if(!S.setup.open) return;
-  L.innerHTML = `<div class="lib-panel su-panel" role="dialog" aria-label="setup"><div class="lib-h"><h2>Setup</h2><span class="sub">by host, à la carte · a host row is what it runs · the books row is what the organization carries · the index is what either could · add configures first, then raises one install decision; nothing vanishes on a click</span><button class="x" id="setup-close" aria-label="close">×</button></div>
-    <div class="su-grid"><div class="su-hosts"><div class="su-ih"><span class="eyebrow">hosts · ${S.hosts.filter(h => h.alive).length} of ${S.hosts.length} alive</span><button class="btn sm ${S.setup.add?'pri':''}" id="su-add" title="a guided enrolment · choose its parts, hand over only their secrets · provisioning runs from this host with your credentials, never stored">+ host</button></div>${S.hosts.map(hostRowHtml).join('')}${orgRowHtml()}${S.setup.add ? addHostHtml() : ''}</div>
+function renderSetup(){ const L = $('#setup'); L.hidden = !S.setup.open; if(!S.setup.open) return; const store = S.setup.mode==='store'; S.setup.tab = store ? 'org' : 'host';
+  if(store && S.setup.host!=='org') S.setup.host = 'org'; if(!store && S.setup.host==='org') S.setup.host = S.hosts[0] ? S.hosts[0].id : ''; if(!(store ? ORG_KINDS : HOST_KINDS).includes(S.setup.kind)) S.setup.kind = 'all';
+  const head = store ? `<h2>Organization store</h2><span class="sub">what <b>${esc(S.org)}</b> carries in its books · installed once, read by every host · add configures first, then raises one install decision; nothing vanishes on a click</span>`
+    : `<h2>Hosts</h2><span class="sub">${esc(S.org)} · by host, à la carte · a host row is what it runs · the index is what it could run · add configures first, then raises one install decision; nothing vanishes on a click</span>`;
+  const left = store ? `<div class="su-ih"><span class="eyebrow">the books · ${esc(S.org)}</span><button class="btn sm quiet" data-sutab="host" title="the hosts surface">hosts →</button></div>${orgRowHtml()}`
+    : `<div class="su-ih"><span class="eyebrow">hosts · ${S.hosts.filter(h => h.alive).length} of ${S.hosts.length} alive</span><button class="btn sm quiet" data-sutab="org" title="the organization store">store →</button><button class="btn sm ${S.setup.add?'pri':''}" id="su-add" title="a guided enrolment · choose its parts, hand over only their secrets · provisioning runs from this host with your credentials, never stored">+ host</button></div>${S.hosts.map(hostRowHtml).join('') || '<div class="empty">no host yet · + host enrols the first</div>'}${S.setup.add ? addHostHtml() : ''}`;
+  L.innerHTML = `<div class="lib-panel su-panel" role="dialog" aria-label="${store ? 'organization store' : 'hosts'}"><div class="lib-h">${head}<button class="x" id="setup-close" aria-label="close">×</button></div>
+    <div class="su-grid"><div class="su-hosts">${left}</div>
     <div class="su-index" id="su-index">${S.setup.sheet ? addSheetHtml() : indexHtml()}</div></div>
-    <div class="load-foot">a part installs by one command the machinery runs, never by hand (205) · a secret goes into the host's store and never stays with the page (204) · an added part is a chore: one session on the fleet, no bolt (60, S75) · configure is one logged response, no chore · a dispatcher placement is only what a host runs · esc closes · ${SM}</div></div>`; }
+    <div class="load-foot">${store ? 'an organization package lands in the books and every host reads it on its next tick · ' : 'a part installs by one command the machinery runs, never by hand (205) · a secret goes into the host\'s store and never stays with the page (204) · '}an added package is a chore: one session on the fleet, no bolt (60, S75) · configure is one logged response, no chore · a dispatcher placement is only what a host runs · esc closes · ${SM}</div></div>`; }
 /* yes on an install decision runs the chore; a secret left for later sits under attention when the chore has done what it can; no takes the part off again */
-function installEffect(d, a){ const [hid, pid] = d.part; const p = pkg(pid); const h = hid && host(hid); const part = h ? partOn(h, pid) : S.org[pid]; if(!part) return;
-  if(a==='no'){ if(h){ if(part.addedFrom==='index') h.parts = h.parts.filter(x => x!==part); else { part.state = 'suggested'; delete part.decision; } } else delete S.org[pid]; return; }
+function installEffect(d, a){ const [hid, pid] = d.part; const p = pkg(pid); const h = hid && host(hid); const part = h ? partOn(h, pid) : S.orgPkgs[pid]; if(!part) return;
+  if(a==='no'){ if(h){ if(part.addedFrom==='index') h.parts = h.parts.filter(x => x!==part); else { part.state = 'suggested'; delete part.decision; } } else delete S.orgPkgs[pid]; return; }
   const where = h ? `on ${h.id}` : 'in the books'; const b = addBolt('chores-setup','setup','fleet','install chores · one session each · no bolt of their own (60)'); const wi = 'wi-#'+S.nextWi; startUnit(b, `install ${p.name} ${where}`, 'chore', 'chore'); part.state = `installing · ${wi}`; delete part.decision; since('accepted', `install ${p.name} ${where}`, 'one session on the fleet');
   setTimeout(() => { const u = b.units.find(x => x.name===`install ${p.name} ${where}`); if(u){ u.state='merged'; u.t=hhmm(S.minutes); } delete part.addedFrom; const miss = h ? missingSecrets(p, part.cfg || (part.cfg = emptyCfg(p))) : [];
     if(miss.length){ part.state = 'secret'; part.secret = miss[0].file; part.wi = wi; miss.forEach(f => raiseSecret(h.id, pid, f, wi)); toast(`${p.name} on ${h.id} · installed as far as it can · ${miss.map(f => f.file).join(', ')} waits on you`); }
@@ -2856,6 +2910,118 @@ function dockSecret(a){ const h = host(a.host||'willdan-cloud'), part = h && par
   | flywheel secret place ${esc(f.file)} --host ${esc(h.id)}</pre><div class="dtext" style="font-size:12px;color:var(--ink2)">One command on any host of yours; the secret travels to the host over the fleet's channel and is written nowhere else (207). Then answer <b>placed</b> here: the machinery checks the path, records the proof and the part reads installed. A check that finds nothing brings this line back. Or paste it under <b>configure</b> in setup, which does the same in one response.</div>`, 'never kept by the page')
   + sec('on the host', `<div class="rows"><div class="row"><span class="st">host</span><span class="grow"><span class="mono">${esc(h.id)}</span> · ${esc(p.kind)} · ${esc(p.name)} · ${h.parts.filter(x => x!==part && x.state==='secret').length ? 'another part waits too' : 'its other parts are installed'}</span><button class="btn sm" id="setup-open" data-suhost="${esc(h.id)}">open in setup</button><button class="btn sm quiet" data-suconf-open="${esc(h.id)}|${esc(p.id)}">configure</button></div></div>`); }
 
+/* --- organizations and the account item: the page belongs to one organization at a time; the account item in the top bar switches it (the whole seed swaps: rail, board, hosts strip) and opens settings, hosts, the organization store and sign-out · who you are is name and sign-in kind --- */
+const baseSeed = () => ({minutes:7*60+40, decisions:[], attention:[], setup:{open:false, mode:'hosts', host:'', tab:'host', q:'', kind:'all', anyPlat:false, add:null, sheet:null, lit:null}, orgPkgs:{}, since:[], hosts:[], intents:[], gatherings:[], explorations:[], planning:null, deferred:[], picked:new Set(), exploreMode:false, exploreKind:'with',
+  repos:[{id:'books', kinds:['books'], caps:[], manifest:'books/flywheel.yaml · the books repository · claims live here', claims:[]}], view:'phases', book:{id:null, ch:null, scrollTo:null, hl:null}, library:false, load:false, scopeSel:null, scopeSet:new Set(), addRepo:null,
+  map:{nodes:[{id:'books', x:60, y:200}], edges:[]}, review:{on:false, mark:'never', nodes:{}, edges:{}}, bolts:[], landed:[], opsignals:[], curation:{unmoved:0, by:'nothing yet', oldest:'0d', next:'when a signal arrives', session:{label:'curation', state:'scheduled', act:'idle', host:'', agent:'claude', model:'haiku', pane:''}},
+  proposal:{session:'', reads:'', bolts:[], units:[], edits:0, refusal:null, n:0}, log:[], inflight:{}, focus:null, open:null, hostlit:null, nextWi:1, acct:false, settings:false, signedOut:false});
+const ORGS = {
+  willdan:{name:'willdan', what:'the platform · 3 hosts · 4 repositories', me:{name:'Chuck Swanberg', handle:'chuckswanberg', signin:'github', served:'studio'}},
+  agentplot:{name:'agentplot', what:'the flywheel and its blueprints · 2 hosts', me:{name:'Chuck Swanberg', handle:'chuckswanberg', signin:'github', served:'agentplot-cloud'}},
+  personal:{name:'personal', what:'from zero · this machine only', me:{name:'Chuck Swanberg', handle:'chuck', signin:'local', served:'chuck-air'}},
+  'integral-analytics':{name:'integral-analytics', what:'a client · one cloud host behind Okta', me:{name:'Chuck Swanberg', handle:'chuck.swanberg@integral-analytics.com', signin:'okta', served:'ia-cloud'}},
+};
+const SIGNIN = {local:'local · no sign-in · the page is served on this machine; the tailnet is the identity', github:'GitHub · membership in the organization is the check (207)', okta:'Okta SSO · OIDC · every response recorded with who and when (153)'};
+function seedAgentplot(){ const s = baseSeed(); Object.assign(s, {org:'agentplot', me:ORGS.agentplot.me, manifest:{repos:[{id:'flywheel', landing:'pull request', merge:'squash'},{id:'blueprints', landing:'direct merge', merge:'merge'}], roles:[{role:'machinery', kind:'pane', model:'claude-haiku-4-5'},{role:'construction', kind:'pane', model:'claude-fable-5-1'},{role:'triage', kind:'in-process', model:'claude-sonnet-5'},{role:'interpreter', kind:'in-process', model:'claude-haiku-4-5'}], router:'private-network router', cadence:'every 30s'},
+  hosts:[{id:'forge', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:2, last:'07:38', joined:'08-30', joinedVia:'a laptop', note:'lease holder for plan and the page', parts:[
+      {k:'adapter', pkg:'capture-box', name:'the capture box', what:'this host serves the page · text sent unparsed to the capture tool (19)', state:'installed 08-30'},
+      {k:'chat sink', pkg:'discord', name:'Discord', what:'#agentplot-plan · the gateway socket held while forge is awake', state:'installed 08-30', lease:'presenter · renews 30s', cfg:{values:{app:'1301 2200 0417', guild:'agentplot', channel:'#agentplot-plan'}, secrets:{token:{placed:true}}}},
+      {k:'agent', name:'agent', what:'in-process · your key from the keychain · one bounded call per message (194)', state:'installed 08-30'},
+      {k:'triage', name:'triage', what:'sources: capture-box · bound 1', state:'installed 08-30'},
+      {k:'runner', pkg:'runner-pane', name:'pane', what:'herdr on forge · bound 2', state:'installed 08-30', cfg:{values:{bound:'2', login:'Claude Code'}, secrets:{}}},
+      {k:'router', pkg:'router-private', name:'private-network router', what:'https://<place>.agentplot.internal', state:'installed 08-30', cfg:{values:{node:'forge.agentplot.internal'}, secrets:{}}},
+      {k:'sign-in', pkg:'auth-github', name:'GitHub', what:'GitHub App agentplot-flywheel · membership in agentplot is the check', state:'installed 08-30', cfg:{values:{client:'Iv1.77c0…', org:'agentplot'}, secrets:{secret:{placed:true}}}}]},
+    {id:'agentplot-cloud', kind:'cloud', platform:'a container · Fly', plat:['container','linux'], alive:true, bound:0, last:'07:40', joined:'09-05', joinedVia:'a container on any platform', dispatcher:true, note:'the dispatcher placement · presents Discord while forge sleeps · takes no construction work', parts:[
+      {k:'adapter', pkg:'pr-conversation', name:'PR conversation', what:'PR comments on flywheel and blueprints · read with a scoped installation token (207)', state:'installed 09-05', cfg:{values:{app:'agentplot-flywheel · app id 9130', repos:'flywheel blueprints'}, secrets:{key:{placed:true}}}},
+      {k:'chat sink', pkg:'discord', name:'Discord', what:'#agentplot-plan · takes the presenter lease when forge sleeps', state:'installed 09-05', cfg:{values:{app:'1301 2200 0417', guild:'agentplot', channel:'#agentplot-plan'}, secrets:{token:{placed:true}}}},
+      {k:'agent', name:'agent', what:'in-process · an API key in the platform\'s secret store', state:'installed 09-05'},
+      {k:'triage', name:'triage', what:'sources: pr-conversation · bound 1', state:'installed 09-05'},
+      {k:'runner', pkg:'runner-inproc', name:'in-process', what:'the agent and triage inside the binary', state:'installed 09-05', cfg:{values:{'model.triage':'claude-sonnet-5', 'model.interpreter':'claude-haiku-4-5', access:'an API key'}, secrets:{key:{placed:true}}}},
+      {k:'router', pkg:'router-private', name:'private-network router', what:'a tailnet node in the container', state:'installed 09-05', cfg:{values:{node:'agentplot-cloud.agentplot.internal'}, secrets:{}}},
+      {k:'sign-in', pkg:'auth-github', name:'GitHub', what:'the same App · membership in agentplot is the check', state:'installed 09-05', cfg:{values:{client:'Iv1.77c0…', org:'agentplot'}, secrets:{secret:{placed:true}}}}]}],
+  repos:[{id:'flywheel', kinds:['service','cli'], caps:['http','worker'], manifest:'flywheel/flywheel.yaml · landing: pull-request', claims:[['repo/readme @v1','satisfied','all','—'],['repo/ci @v1','satisfied','all','gates on push'],['sessions/one-writer @v1','not satisfied','all','intent herdr-agent-surface argues with it']]},
+    {id:'blueprints', kinds:['books'], caps:[], manifest:'blueprints/flywheel.yaml · the books repository · claims live here', claims:[]}],
+  map:{nodes:[{id:'flywheel', x:330, y:200},{id:'blueprints', x:60, y:200},{id:'github', ext:true, name:'GitHub', what:'the shared lines · pull requests and gates', x:330, y:520},{id:'herdr', ext:true, name:'herdr', what:'the machinery multiplexer · panes under your login', x:640, y:200}], edges:[['flywheel','herdr','panes'],['flywheel','github','PR landing'],['blueprints','github','shared line']]},
+  intents:[{id:'herdr-agent-surface', name:'herdr-agent-surface', state:'proposed', chapters:['overview'], note:'proposed · 3 signals · 2 sources', sessions:[]}, {id:'setup-store', name:'setup-store', state:'open', chapters:['overview'], note:'writeback queued · the store split into hosts and organization', sessions:[{id:'ss-wb', label:'writeback', state:'queued'}]}],
+  decisions:[{n:101, g:APPROVE, phase:'inception', kind:'intent', title:'herdr-agent-surface', obj:'i:herdr-agent-surface', repo:'blueprints', tail:'curation · <b>3 signals</b> · 2 sources · 4d', answers:[['yes','yes'],['drop','drop']]}],
+  bolts:[{id:'store', name:'store', repo:'flywheel', line:'store @ 3 ahead', note:'the setup store · 2 units', units:[{name:'add-sheet', state:'merged', type:'default', t:'09-06'},{name:'org-index', state:'building', type:'default', items:[{id:'wi12', label:'wi-#12 build', state:'working', host:'forge', agent:'claude', model:'fable', pane:'forge/2', last:'07:35 · the organization index split from the host index'}]}], endpoints:['http://flywheel.store.localhost:41250'], services:[{n:'flywheel-api', s:'stopped', ep:'—'}]}],
+  curation:{unmoved:1, by:'chat 1', oldest:'2h', next:'08:00', session:{label:'curation', state:'scheduled', act:'next 08:00', host:'forge', agent:'claude', model:'haiku', pane:'forge/1'}},
+  since:[{v:'merged', w:'store · unit add-sheet', t:'2 items · review passed', at:'18:20'}], focus:'d:101', nextWi:13, book:{id:'agentplot-kit', ch:'overview', scrollTo:null, hl:null}});
+  s.orgPkgs = {'ut-default':{state:'installed 08-30'}, 'ut-chore':{state:'installed 08-30'}, 'et-research':{state:'installed 08-30'}, 'et-writeback':{state:'installed 08-30'}, 'dp-mdbook':{state:'installed 08-30'}, 'mv-ddd':{state:'installed 09-05'}, 'tp-intent':{state:'installed 08-30'}}; s.setup.host = 'forge'; return s; }
+function seedIntegral(){ const s = baseSeed(); Object.assign(s, {org:'integral-analytics', me:ORGS['integral-analytics'].me, manifest:{repos:[{id:'ledger', landing:'pull request', merge:'squash'}], roles:[{role:'machinery', kind:'in-process', model:'claude-haiku-4-5'},{role:'construction', kind:'managed', model:'claude-opus-5'},{role:'triage', kind:'in-process', model:'claude-sonnet-5'},{role:'interpreter', kind:'in-process', model:'claude-haiku-4-5'}], router:'platform router', cadence:'every 5m'},
+  hosts:[{id:'ia-cloud', kind:'cloud', platform:'flywheel-cloud · container', plat:['cloud','container','linux'], alive:true, bound:0, last:'07:40', joined:'09-01', joinedVia:'flywheel-cloud managed', dispatcher:true, note:'the only host · presents Slack for the team · construction runs as managed sessions', parts:[
+      {k:'adapter', pkg:'pr-conversation', name:'PR conversation', what:'PR comments on ledger', state:'installed 09-01', cfg:{values:{app:'integral-flywheel · app id 7702', repos:'ledger'}, secrets:{key:{placed:true}}}},
+      {k:'chat sink', pkg:'slack', name:'Slack', what:'#ledger-plan · for the team · replies over the URL behind the router', state:'installed 09-01', lease:'presenter · renews 30s', cfg:{values:{channel:'#ledger-plan'}, secrets:{token:{placed:true}, signing:{placed:true}}}},
+      {k:'agent', name:'agent', what:'in-process · the runtime\'s role, no key on the host', state:'installed 09-01'},
+      {k:'triage', name:'triage', what:'sources: pr-conversation · bound 2', state:'installed 09-01'},
+      {k:'runner', pkg:'runner-inproc', name:'in-process', what:'the agent and triage inside the binary · the runtime\'s role', state:'installed 09-01', cfg:{values:{'model.triage':'claude-sonnet-5', 'model.interpreter':'claude-haiku-4-5', access:'the runtime\'s Bedrock role'}, secrets:{key:{placed:false}}}},
+      {k:'router', pkg:'router-platform', name:'platform router', what:'flywheel-cloud\'s ingress · no public route opened yet', state:'installed 09-01', cfg:{values:{routes:'none yet'}, secrets:{}}},
+      {k:'sign-in', pkg:'auth-okta', name:'Okta SSO', what:'OIDC · issuer integral-analytics.okta.com · the ingress in front', state:'installed 09-01', cfg:{values:{issuer:'https://integral-analytics.okta.com', audience:'flywheel'}, secrets:{secret:{placed:true}}}},
+      {k:'adapter', pkg:'datadog', name:'Datadog webhook', what:'a monitor finding as one capture at the endpoint', state:'added', decision:202, cfg:{values:{caller:'datadog · ledger monitors', route:'https://ia-cloud.flywheel.cloud/capture/datadog'}, secrets:{inbound:{placed:false}}}, addedFrom:'index'}]}],
+  repos:[{id:'ledger', kinds:['service'], caps:['http','rows'], manifest:'ledger/flywheel.yaml · landing: pull-request', claims:[['repo/readme @v1','satisfied','all','—'],['repo/ci @v1','not satisfied','all','no gate on push yet'],['invariant/health-endpoint @v1','satisfied','capability:http','—']]},
+    {id:'books', kinds:['books'], caps:[], manifest:'books/flywheel.yaml · the books repository · claims live here', claims:[]}],
+  map:{nodes:[{id:'ledger', x:330, y:200},{id:'books', x:60, y:200},{id:'github', ext:true, name:'GitHub', what:'the shared lines', x:330, y:520},{id:'datadog', ext:true, name:'Datadog', what:'monitors on the ledger', x:640, y:100},{id:'okta', ext:true, name:'Okta', what:'the identity provider', x:640, y:300}], edges:[['ledger','datadog','metrics'],['ledger','github','PR landing'],['books','github','shared line'],['ledger','okta','SSO']]},
+  intents:[{id:'ledger-reconciliation', name:'ledger-reconciliation', state:'proposed', chapters:['overview'], note:'proposed · 5 signals from #ledger-plan', sessions:[]}],
+  decisions:[{n:201, g:APPROVE, phase:'inception', kind:'intent', title:'ledger-reconciliation', obj:'i:ledger-reconciliation', repo:'books', tail:'curation · <b>5 signals</b> · 1 source · 2d', answers:[['yes','yes'],['drop','drop']]},
+    {n:202, g:APPROVE, phase:'construction', kind:'install', title:'install · Datadog webhook on ia-cloud', obj:'h:ia-cloud', repo:'fleet', part:['ia-cloud','datadog'], tail:'added from the store 09-06 · <b>a chore on the fleet</b> · one session · yes runs it', answers:[['yes','yes'],['no','no']]}],
+  curation:{unmoved:2, by:'chat 2', oldest:'1d', next:'08:00', session:{label:'curation', state:'scheduled', act:'next 08:00', host:'ia-cloud', agent:'claude', model:'haiku', pane:''}},
+  since:[{v:'joined', w:'host ia-cloud', t:'flywheel-cloud managed · 7 parts installed', at:'09-01'}], focus:'d:201', nextWi:4, book:{id:'integral-kit', ch:'overview', scrollTo:null, hl:null}});
+  s.orgPkgs = {'ut-default':{state:'installed 09-01'}, 'ut-fast':{state:'installed 09-01'}, 'ut-chore':{state:'installed 09-01'}, 'et-research':{state:'installed 09-01'}, 'et-writeback':{state:'installed 09-01'}, 'dp-mdbook':{state:'installed 09-01'}, 'tp-intent':{state:'installed 09-01'}, 'tp-adr':{state:'installed 09-02'}, 'sp-flywheel':{state:'installed 09-01'}}; s.setup.host = 'ia-cloud'; return s; }
+function seedPersonal(){ const s = baseSeed(); Object.assign(s, {org:'personal', fromZero:true, me:ORGS.personal.me, manifest:{repos:[], roles:[{role:'construction', kind:'pane', model:'claude-fable-5-1'},{role:'triage', kind:'pane', model:'claude-sonnet-5'}], router:'local router', cadence:'on demand'},
+  hosts:[{id:'chuck-air', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:1, last:'07:40', joined:'09-06', joinedVia:'a laptop', note:'this machine · serves the page · no sign-in', parts:[
+      {k:'adapter', pkg:'capture-box', name:'the capture box', what:'this host serves the page · text sent unparsed to the capture tool (19)', state:'installed 09-06'},
+      {k:'runner', pkg:'runner-pane', name:'pane', what:'herdr on this machine · bound 1', state:'installed 09-06', cfg:{values:{bound:'1', login:'Claude Code'}, secrets:{}}},
+      {k:'router', pkg:'router-local', name:'local router', what:'portless · https://<place>.localhost (46)', state:'installed 09-06'},
+      {k:'sign-in', pkg:'auth-none', name:'none', what:'no login · this machine is the identity', state:'installed 09-06', cfg:{values:{tailnet:'none · loopback only'}, secrets:{}}}]}],
+  curation:{unmoved:0, by:'nothing yet', oldest:'0d', next:'when a signal arrives', session:{label:'curation', state:'scheduled', act:'idle', host:'chuck-air', agent:'claude', model:'haiku', pane:'chuck-air/1'}},
+  book:{id:'personal-book', ch:'start', scrollTo:null, hl:null}}); s.setup.host = 'chuck-air'; return s; }
+const SEEDS = {willdan:SEED_WILLDAN, agentplot:seedAgentplot, personal:seedPersonal, 'integral-analytics':seedIntegral};
+const ORG_CACHE = {};
+const orgBooks = () => Object.values(BOOKS).filter(b => b.org===S.org);
+const orgBook = () => (BOOKS[S.book.id] && BOOKS[S.book.id].org===S.org) ? BOOKS[S.book.id] : orgBooks()[0];
+function switchOrg(id){ if(!SEEDS[id] || id===S.org) { S.acct = false; renderAcct(); return; }
+  ORG_CACHE[S.org] = {...S}; const next = ORG_CACHE[id] || SEEDS[id]();
+  Object.keys(S).forEach(k => delete S[k]); Object.assign(S, next);
+  S.acct = false; S.open = null; document.body.classList.remove('docked'); S.hostlit = null; S.library = false; S.load = false; S.settings = false; if(!S.focus) S.focus = railKeys()[0] || null;
+  document.documentElement.dataset.org = id; render(); toast(`${id} · ${S.hosts.length} host${S.hosts.length===1?'':'s'} · ${S.decisions.length} decision${S.decisions.length===1?'':'s'}${S.fromZero ? ' · from zero' : ''}`); }
+X[101] = {text:'Approve the intent. <b>Yes</b> opens <span class="mono">herdr-agent-surface</span> as a line off the blueprints and starts its research. <b>Drop</b> closes it with the signals kept.', hist:[['09-06 09:00','curation','intent','3 signals attached · 2 sources'],['09-06 09:00','plan','decision','101 created · approve the intent']]};
+X[201] = {text:'Approve the intent. <b>Yes</b> opens <span class="mono">ledger-reconciliation</span> as a line off the books and starts its research. <b>Drop</b> closes it with the signals kept.', hist:[['09-05 14:10','curation','intent','5 signals attached from #ledger-plan'],['09-05 14:10','plan','decision','201 created · approve the intent']]};
+X[202] = {text:'You added <b>Datadog webhook v1.0.2</b> (index) to host <b>ia-cloud</b>. It is a chore on the fleet: one session scoped to host ia-cloud, no change directory, no bolt (60). <b>Yes</b> runs it; the inbound secret was left for later and will sit under attention. <b>No</b> takes it off the host again.', kv2:[['installs','a monitor finding as one capture at the endpoint · key: the FINDING# id'],['configured','named caller datadog · ledger monitors · public route https://ia-cloud.flywheel.cloud/capture/datadog · inbound secret not placed'],['needs from you','the inbound secret, placed on both sides · datadog.inbound']], kv2Title:'the chore', hist:[['09-06 16:02','operator','add','store · Datadog webhook → ia-cloud'],['09-06 16:02','plan','decision','202 created · approve the install chore']]};
+/* the account item and its menu · settings is the organization's manifest as a form; saving is one logged response */
+function acctHtml(){ const me = S.me, o = ORGS[S.org]; const local = me.signin==='local';
+  const orgs = Object.values(ORGS).map(x => `<button role="menuitemradio" aria-checked="${x.name===S.org}" data-org="${x.name}"><span class="am-dot"></span><span class="am-t"><b>${esc(x.name)}</b><small>${esc(x.what)}</small></span></button>`).join('');
+  return `<button class="btn quiet acct-btn" id="acct" aria-haspopup="menu" aria-expanded="${S.acct}" title="account · the organization this page belongs to, settings, hosts, the store, sign-out, and who you are"><span class="am-av">${esc(me.name.split(' ').map(w => w[0]).join('').slice(0,2))}</span><b>${esc(S.org)}</b><span class="caret">▾</span></button>
+    <div class="acct-menu" id="acct-menu" role="menu" ${S.acct ? '' : 'hidden'}>
+      <div class="am-h">organization<small>${local ? 'the organizations this host has roots for' : 'the organizations you are a member of'}</small></div>${orgs}
+      <div class="am-sep"></div>
+      <button role="menuitem" data-acct="settings"><span class="am-t"><b>settings</b><small>the organization's manifest as a form · one response to save</small></span></button>
+      <button role="menuitem" data-acct="hosts"><span class="am-t"><b>hosts</b><small>what each host runs · the per-host index · + host</small></span></button>
+      <button role="menuitem" data-acct="store"><span class="am-t"><b>organization store</b><small>types, producers, vocabularies, templates, scenario packs · installed in the books</small></span></button>
+      <button role="menuitem" data-acct="signout" ${local ? 'disabled' : ''}><span class="am-t"><b>sign out</b><small>${local ? 'local · no sign-in · nothing to sign out of' : `ends the ${me.signin==='okta' ? 'Okta' : 'GitHub'} session in this browser · the hosts keep running`}</small></span></button>
+      <div class="am-sep"></div>
+      <div class="am-me"><b>${esc(me.name)}</b><span class="mono">${esc(me.handle)}</span><span>${esc(SIGNIN[me.signin])}</span><span>served by <b class="mono">${esc(me.served)}</b>${local ? ' · on this machine' : ' · behind sign-in'}</span></div>
+    </div>`; }
+function renderAcct(){ const el = $('#acct-wrap'); if(el) el.innerHTML = acctHtml(); $('#orgname').textContent = S.org;
+  const so = $('#signedout'); so.hidden = !S.signedOut; if(S.signedOut) so.innerHTML = `<div class="lib-panel so-panel" role="dialog" aria-label="signed out"><h2>signed out of ${esc(S.org)}</h2><p>The ${S.me.signin==='okta' ? 'Okta SSO' : 'GitHub'} session in this browser is ended. The hosts keep running; the plan keeps deriving; nothing on the rail is answered until you sign in again.</p><button class="btn pri" id="signin">sign in with ${S.me.signin==='okta' ? 'Okta' : 'GitHub'}</button></div>`; }
+const ROLE_KINDS = ['pane','in-process','managed'], LANDINGS = ['direct merge','pull request'], MERGES = ['squash','merge','rebase'], ROUTERS = ['local router','private-network router','platform router'], CADENCES = ['every 30s','every 5m','hourly','on demand'];
+function openSettings(){ const m = S.manifest; S.settingsDraft = {repos:m.repos.map(r => ({...r})), roles:m.roles.map(r => ({...r})), router:m.router, cadence:m.cadence}; S.settings = true; S.acct = false; render(); }
+function renderSettings(){ const L = $('#settings'); L.hidden = !S.settings; if(!S.settings) return; const d = S.settingsDraft; const sel = (name, opts, v) => `<select data-set="${name}">${opts.map(o => `<option ${o===v?'selected':''}>${esc(o)}</option>`).join('')}</select>`;
+  const repos = d.repos.length ? d.repos.map((r,i) => `<div class="st-row"><b class="mono">${esc(r.id)}</b>${sel(`repos.${i}.landing`, LANDINGS, r.landing)}${sel(`repos.${i}.merge`, MERGES, r.merge)}</div>`).join('') : '<div class="empty" style="padding:4px 0">no repository yet · "add repository" on the map places one and its baseline decision arrives (104)</div>';
+  const roles = d.roles.map((r,i) => `<div class="st-row"><b>${esc(r.role)}</b>${sel(`roles.${i}.kind`, ROLE_KINDS, r.kind)}${sel(`roles.${i}.model`, MODELS, r.model)}</div>`).join('');
+  L.innerHTML = `<div class="lib-panel st-panel" role="dialog" aria-label="settings"><div class="lib-h"><h2>Settings</h2><span class="sub"><b>${esc(S.org)}</b> · the organization's manifest as a form · what is data here is data in the manifest (139, 119) · saving is one logged response</span><button class="x" id="settings-close" aria-label="close">×</button></div>
+    <div class="st-sec"><div class="su-ih"><span class="eyebrow">repositories</span><span class="su-for">landing policy · item merge</span></div><div class="st-row st-head"><span>repository</span><span>landing</span><span>item merge</span></div>${repos}</div>
+    <div class="st-sec"><div class="su-ih"><span class="eyebrow">roles</span><span class="su-for">kind · model</span></div><div class="st-row st-head"><span>role</span><span>kind</span><span>model</span></div>${roles}</div>
+    <div class="st-sec st-two"><label class="su-field"><span class="su-fl">router</span>${sel('router', ROUTERS, d.router)}</label><label class="su-field"><span class="su-fl">take cadence</span>${sel('cadence', CADENCES, d.cadence)}</label></div>
+    <div class="su-sf"><button class="btn pri sm" id="settings-save">save · settings ${esc(S.org)}</button><button class="btn sm quiet" id="settings-close">cancel</button><span class="su-hint">one logged response · no chore · every host reads the manifest on its next tick</span></div>
+    <div class="load-foot">the manifest is the organization's, kept in the books repository (139) · a role's kind names a runner, its model a name the runner resolves · the router is what fronts every place · the take cadence is how often the plan is re-derived from the books · ${SM}</div></div>`; }
+function saveSettings(){ const d = S.settingsDraft, m = S.manifest; const ch = [];
+  d.repos.forEach((r,i) => { const o = m.repos[i]; if(o.landing!==r.landing) ch.push(`${r.id} landing ${r.landing}`); if(o.merge!==r.merge) ch.push(`${r.id} merge ${r.merge}`); });
+  d.roles.forEach((r,i) => { const o = m.roles[i]; if(o.kind!==r.kind) ch.push(`${r.role} kind ${r.kind}`); if(o.model!==r.model) ch.push(`${r.role} model ${r.model}`); });
+  if(m.router!==d.router) ch.push(`router ${d.router}`); if(m.cadence!==d.cadence) ch.push(`cadence ${d.cadence}`);
+  if(!ch.length){ toast('settings · nothing changed · nothing sent', true); return; }
+  S.manifest = {repos:d.repos.map(r => ({...r})), roles:d.roles.map(r => ({...r})), router:d.router, cadence:d.cadence};
+  logLine(`settings · ${ch.join(' · ')}`, {}); toast(`settings ${S.org} · ${ch.length} change${ch.length===1?'':'s'} · recorded · every host reads the manifest on its next tick`); S.settings = false; render(); }
+
 function dockFooter(key){
   const [t,id] = key.split(':');
   if(t==='o'){ const [kind] = id.split('/'); const r = artReview(id); const o = artOf(id); const p = o ? (o.dir||o.file||o.place) : id; return `<div class="fl">nothing to answer here<span class="r">${kind==='claim' ? 'a verdict is an agent\'s judgment (100) · scope moves by re-attach' : 'edits only through the review surface'}</span></div><div class="acts"><button class="btn sm" data-oreview="${esc(id)}">review${r.pending ? ` · decision ${r.pending.n}` : ''}</button><button class="btn sm quiet" data-osrc="${esc(p)}">open source ↗</button></div>`; }
@@ -2910,6 +3076,15 @@ function step(dir){ const list = railKeys(); if(!list.length) return; const i = 
    ===================================================================== */
 document.addEventListener('click', e => {
   const t = e.target, b = t.closest('button');
+  /* the account item · organizations · settings · sign-out */
+  if(b && b.id==='acct'){ S.acct = !S.acct; renderAcct(); return; }
+  if(b && b.dataset.org){ switchOrg(b.dataset.org); return; }
+  if(b && b.dataset.acct){ const k = b.dataset.acct; S.acct = false; if(k==='settings'){ openSettings(); return; } if(k==='hosts'||k==='store'){ S.setup.open = true; S.setup.mode = k; S.setup.sheet = null; S.setup.add = null; S.load = false; S.library = false; render(); return; } if(k==='signout'){ logLine('sign out', {}); S.signedOut = true; render(); return; } }
+  if(b && b.id==='signin'){ S.signedOut = false; logLine(`sign in · ${S.me.signin==='okta' ? 'Okta SSO' : 'GitHub'}`, {}); toast(`signed in · ${S.me.name}`); render(); return; }
+  if(b && b.id==='settings-close'){ S.settings = false; render(); return; }
+  if(b && b.id==='settings-save'){ saveSettings(); return; }
+  if(t.id==='settings'){ S.settings = false; render(); return; }
+  if(S.acct && !t.closest('#acct-wrap')){ S.acct = false; renderAcct(); }
   if(b && b.dataset.a !== undefined){ const n = +b.dataset.n, a = b.dataset.a, d = dec(n); if(!d) return;
     if(S.inflight[n]){ refuse(n); return; }
     if(needsArg(a)){ const box = b.closest('.acts').nextElementSibling; const open = box.dataset.arg===a; $$('.argbox[data-n]').forEach(x => { x.innerHTML=''; delete x.dataset.arg; }); if(!open){ box.dataset.arg = a; box.innerHTML = argHtml(d, a); box.querySelector('input,textarea,select')?.focus(); } return; }
@@ -2952,14 +3127,14 @@ document.addEventListener('click', e => {
   if(b && b.dataset.oreview){ openDock('rv:'+b.dataset.oreview); return; }
   if(b && b.dataset.osrc !== undefined){ toast(`open source · ${b.dataset.osrc} · would open the path at the shared line`); return; }
   if(b && b.dataset.oan !== undefined){ toast(`note on “${b.dataset.oan}” · an annotation on the review surface · not a write here`); return; }
-  if(b && b.id==='setup-open'){ S.setup.open = true; S.load = false; if(b.dataset.suhost){ S.setup.host = b.dataset.suhost; S.setup.add = null; } render(); return; }
+  if(b && b.id==='setup-open'){ S.setup.open = true; S.setup.mode = 'hosts'; S.load = false; if(b.dataset.suhost){ S.setup.host = b.dataset.suhost; S.setup.add = null; } render(); return; }
   if(b && b.id==='setup-close'){ S.setup.open = false; render(); return; }
   if(t.id==='setup'){ S.setup.open = false; render(); return; }
   if(b && b.dataset.suadd){ const [hid,pid] = b.dataset.suadd.split('|'); openSheet(pid, hid==='org' ? null : hid, 'add'); return; }
   if(b && b.dataset.suconf){ const [hid,pid] = b.dataset.suconf.split('|'); openSheet(pid, hid==='org' ? null : hid, 'configure'); return; }
-  if(b && b.dataset.suconfOpen){ const [hid,pid] = b.dataset.suconfOpen.split('|'); S.setup.open = true; S.load = false; S.setup.host = hid; S.setup.add = null; openSheet(pid, hid, 'configure'); return; }
+  if(b && b.dataset.suconfOpen){ const [hid,pid] = b.dataset.suconfOpen.split('|'); S.setup.open = true; S.setup.mode = 'hosts'; S.load = false; S.setup.host = hid; S.setup.add = null; openSheet(pid, hid, 'configure'); return; }
   if(b && b.dataset.surm){ const A = S.setup.add; A.parts = A.parts.filter(p => p.pkg!==b.dataset.surm); if(S.setup.sheet && S.setup.sheet.pkg===b.dataset.surm) S.setup.sheet = null; render(); return; }
-  if(b && b.dataset.sutab){ S.setup.tab = b.dataset.sutab; if(b.dataset.sukind) S.setup.kind = b.dataset.sukind; else if(!(S.setup.tab==='org' ? ORG_KINDS : HOST_KINDS).includes(S.setup.kind)) S.setup.kind = 'all'; S.setup.sheet = null; render(); $('#su-index')?.scrollIntoView({block:'nearest'}); return; }
+  if(b && b.dataset.sutab){ S.setup.tab = b.dataset.sutab; S.setup.mode = b.dataset.sutab==='org' ? 'store' : 'hosts'; S.setup.host = b.dataset.sutab==='org' ? 'org' : (S.setup.host==='org' ? (S.hosts[0] ? S.hosts[0].id : '') : S.setup.host); S.setup.add = null; if(b.dataset.sukind) S.setup.kind = b.dataset.sukind; else if(!(S.setup.tab==='org' ? ORG_KINDS : HOST_KINDS).includes(S.setup.kind)) S.setup.kind = 'all'; S.setup.sheet = null; render(); $('#su-index')?.scrollIntoView({block:'nearest'}); return; }
   if(b && b.id==='su-sheet-add'){ sheetAdd(); return; }
   if(b && b.id==='su-sheet-save'){ sheetSave(); return; }
   if(b && b.id==='su-sheet-cancel'){ S.setup.sheet = null; render(); return; }
@@ -2971,7 +3146,7 @@ document.addEventListener('click', e => {
   if(b && b.id==='su-go'){ addHostGo(); return; }
   if(b && b.id==='su-parts-next'){ addHostParts(); return; }
   if(b && b.id==='su-handover'){ addHostHandover(); return; }
-  const suh = t.closest('.su-host'); if(suh && !t.closest('button,a,input,select,label,summary,.su-detail')){ S.setup.host = suh.dataset.suhost; S.setup.tab = suh.dataset.suhost==='org' ? 'org' : 'host'; if(!(S.setup.tab==='org' ? ORG_KINDS : HOST_KINDS).includes(S.setup.kind)) S.setup.kind = 'all'; S.setup.add = null; S.setup.sheet = null; S.setup.lit = null; render(); return; }
+  const suh = t.closest('.su-host'); if(suh && !t.closest('button,a,input,select,label,summary,.su-detail')){ S.setup.host = suh.dataset.suhost; S.setup.tab = suh.dataset.suhost==='org' ? 'org' : 'host'; S.setup.mode = suh.dataset.suhost==='org' ? 'store' : 'hosts'; if(!(S.setup.tab==='org' ? ORG_KINDS : HOST_KINDS).includes(S.setup.kind)) S.setup.kind = 'all'; S.setup.add = null; S.setup.sheet = null; S.setup.lit = null; render(); return; }
   if(b && b.dataset.load !== undefined){ S.load = !S.load; render(); return; }
   if(b && b.id==='load-open'){ S.load = true; render(); return; }
   if(b && b.id==='load-close'){ S.load = false; render(); return; }
@@ -3045,6 +3220,7 @@ document.addEventListener('change', e => {
   if(t.dataset.suf !== undefined && t.matches('select')){ const sh = S.setup.sheet; sh.values[t.dataset.suf] = t.value; if(schemaOf(pkg(sh.pkg)).some(f => f.when && f.when[0]===t.dataset.suf)) $('#su-index').innerHTML = addSheetHtml(); return; }
   if(t.dataset.susm){ const [k,mode] = t.dataset.susm.split('|'); S.setup.sheet.secrets[k].mode = mode; $('#su-index').innerHTML = addSheetHtml(); if(mode==='now') $(`[data-susv="${k}"]`)?.focus(); return; }
   if(t.id==='su-sheet-host'){ S.setup.sheet.host = t.value; return; }
+  if(t.dataset.set){ const [a,i,k] = t.dataset.set.split('.'); const d = S.settingsDraft; if(k) d[a][+i][k] = t.value; else d[a] = t.value; return; }
   if(t.id==='ar-name'){ S.addRepo.name = t.value.trim(); render(); $('#ar-name').focus(); return; }
   if(t.dataset.arkind){ const k = t.dataset.arkind; S.addRepo.kinds = t.checked ? [...S.addRepo.kinds, k] : S.addRepo.kinds.filter(x => x!==k); render(); return; }
   if(t.dataset.arcap){ const c = t.dataset.arcap; S.addRepo.caps = t.checked ? [...S.addRepo.caps, c] : S.addRepo.caps.filter(x => x!==c); render(); return; }
@@ -3055,7 +3231,7 @@ document.addEventListener('change', e => {
 document.addEventListener('keydown', e => {
   const typing = e.target.matches('input,textarea,select');
   if((e.key==='Enter' || e.key===' ') && e.target.classList && e.target.classList.contains('su-host')){ e.preventDefault(); S.setup.host = e.target.dataset.suhost; S.setup.tab = S.setup.host==='org' ? 'org' : 'host'; S.setup.add = null; S.setup.sheet = null; S.setup.lit = null; render(); return; }
-  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.load){ S.load = false; render(); return; } if(S.setup.open){ if(S.setup.sheet) S.setup.sheet = null; else S.setup.open = false; render(); return; } if(S.library){ S.library = false; render(); return; } if(S.exploreMode){ S.exploreMode = false; S.picked.clear(); render(); return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
+  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(S.acct){ S.acct = false; renderAcct(); return; } if(S.signedOut) return; if(S.settings){ S.settings = false; render(); return; } if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.load){ S.load = false; render(); return; } if(S.setup.open){ if(S.setup.sheet) S.setup.sheet = null; else S.setup.open = false; render(); return; } if(S.library){ S.library = false; render(); return; } if(S.exploreMode){ S.exploreMode = false; S.picked.clear(); render(); return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
   if(typing){ if(e.key==='Enter' && !e.shiftKey && e.target.id==='capture'){ e.preventDefault(); capture(); } if(e.key==='Enter' && e.target.matches('input') && e.target.closest('.argbox')){ e.preventDefault(); e.target.closest('.argbox').querySelector('[data-send],[data-usend]').click(); } if(e.key==='Enter' && (e.target.dataset.bname || e.target.dataset.brename)){ e.preventDefault(); if(e.target.dataset.brename) $(`[data-brenamesend="${e.target.dataset.brename}"]`).click(); else e.target.blur(); } return; }
   if(e.metaKey||e.ctrlKey||e.altKey) return;
   const k = e.key;
@@ -3097,17 +3273,22 @@ if(Q.get('book') && BOOKS[Q.get('book')]) S.book.id = Q.get('book');
 if(Q.get('ch')) S.book.ch = Q.get('ch');
 if(Q.has('library')) S.library = true;
 if(Q.has('load')) S.load = true;
-if(Q.has('setup')) S.setup.open = true;
+if(Q.get('org') && SEEDS[Q.get('org')] && Q.get('org')!==S.org){ ORG_CACHE[S.org] = {...S}; const next = SEEDS[Q.get('org')](); Object.keys(S).forEach(k => delete S[k]); Object.assign(S, next); }
+if(Q.has('setup')){ S.setup.open = true; S.setup.mode = 'hosts'; }
+if(Q.has('store')){ S.setup.open = true; S.setup.mode = 'store'; }
+if(Q.has('acct')) S.acct = true;
+if(Q.has('signedout')) S.signedOut = true;
 if(Q.get('host') && host(Q.get('host'))) S.setup.host = Q.get('host');
 if(Q.has('addhost')) S.setup.add = newAdd();
-if(Q.get('index')==='org'){ S.setup.tab = 'org'; S.setup.host = 'org'; }
+if(Q.get('index')==='org'){ S.setup.open = true; S.setup.mode = 'store'; }
 if(Q.get('add') && pkg(Q.get('add'))){ S.setup.open = true; const p = pkg(Q.get('add')); S.setup.sheet = {pkg:p.id, host: isOrgKind(p.kind) ? null : S.setup.host, mode:'add', values: emptyCfg(p).values, secrets: Object.fromEntries(secretFields(p).map(f => [f.k, {mode:'now', placed:false, val:''}]))}; }
 if(S.view==='book' && !Q.get('ch')) bookFollow();
 if(Q.has('explore')) S.exploreMode = true;
 if(Q.get('claim')) selectClaim(Q.get('claim'));
 if(Q.get('review')) S.review.on = true;
 render();
-if(!Q.has('nodock')) openDock(Q.get('open') || 'd:422');
+if(Q.has('settings')) openSettings();
+{ const k = Q.get('open') || (S.org==='willdan' ? 'd:422' : S.focus); if(!Q.has('nodock') && k && objOf(k)) openDock(k); }
 window.addEventListener('resize', () => renderMap());
 })();
 </script>
