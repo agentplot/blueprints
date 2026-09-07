@@ -110,6 +110,16 @@ Feedback so far, in order:
   inside them; that can be a detail that slides out on hover. The
   mockup now does this: thumbnails at rest, a drilled level with
   neighbour docks, a crossing count and panel on every edge.
+- Two drafted requirements mocked up on rail-and-board (2026-09-07)
+  for the operator to judge: 213, drill into the OpenSpec artifacts
+  behind every object in views fit to the artifact (an intent's change
+  directory, a unit's change with its tasks and an ff · apply · verify
+  · archive stepper, a claim with verdict evidence, a bolt's acceptance
+  file, a work item's commits and report), derived at the shared line
+  and never stored, each with "open source" and a "review" link to the
+  plannotator stub; and 214, the flywheel's load as three phase gauges
+  with inline sparklines and a reading sentence marked as a projection,
+  compact in the machinery strip and full on w (l stays "later").
 
 The models behind the surface are in `../models/statechart/` (`model.md`
 first). The Rust prototype that serves a working version of this page

@@ -5,7 +5,7 @@ satisfies: [151, 165]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
-    - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 3}}
+    - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 5}}
     - {id: work-item/atlas/wi-418, machine: work-item, parent: unit/atlas/status-writer, state: {life: in-type, in-type.stages: build, build.run: sessions, session.life: alive, alive.activity: working}}
     - {id: unit/atlas/retry-jitter, machine: unit, parent: bolt/atlas/plan-rows, state: {life: approved}}
   leases: [{object: work-item/atlas/wi-418, holder: mac-mini, renewed_at: now}]
@@ -25,7 +25,7 @@ when:
   - tick: {}
 then:
   transitions:
-    - {object: work-item/atlas/wi-418, from: build, to: review, host: mac-mini}
+    - {object: work-item/atlas/wi-418, from: build, to: verify, host: mac-mini}
     - {object: unit/atlas/retry-jitter, from: approved, to: in-flight, host: studio}
   control_plane:
     mac_mini_local_commits_while_offline: ">= 1"

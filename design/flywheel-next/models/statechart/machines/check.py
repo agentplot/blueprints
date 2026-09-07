@@ -7,7 +7,12 @@ the requirements.
 - every machine file validates against schema.json
 - every `ev` and `do` name exists in atoms.yaml; every effect's proof is an evidence name
 - every transition target is a state of the same region; every `enter` names a state of some template
-- every `machine:` reference names a machine file (or a `$param`)
+- every `machine:` reference names a machine file (or a `$param`); a bare name resolves to the
+  highest version present, `name@N` to that version; a core machine names an extensible one only
+  pinned or as a listed exception
+- every file carries `tier: core | extensible` matching its directory; a type file is named
+  `<machine>@<version>.yaml`, two files never declare the same name and version, and a registered
+  file's content hash (machines/registry.yaml, written by `check.py --register`) never moves
 - every decision has a kind, group, answers and satisfies; decision kinds are collected for the plan catalogue
 - every diagram in ../diagrams/*.svg names states (data-state="machine.state"), decision kinds
   (data-decision) and effects (data-effect) that exist, so a picture cannot drift from the runtime (83)
@@ -66,18 +71,97 @@ evidence = set(atoms['evidence'])
 effects = atoms['effects']
 cite(atoms.get('satisfies'), 'atoms.yaml')
 
-machines = {}
+# ---- the machine files and the type registry (model.md 10.7)
+# Core machines live in machines/ and machines/engine/ as <machine>.yaml. Extensible
+# machines — unit types and elaboration types — live in machines/unit-types/ and
+# machines/elaboration-types/ as <machine>@<version>.yaml: a type is addressed as
+# name@version, a new version is a new file, and a registered file is never edited.
+# machines/registry.yaml records the content hash of every extensible file at
+# registration (`check.py --register` adds the unregistered ones); a hash that no
+# longer matches fails. A `machine:` reference resolves a bare name to the highest
+# version present and `name@N` to that version; `$param` references are the object's
+# record and are resolved by the engine.
+EXTENSIBLE_DIRS = {'unit-types', 'elaboration-types'}
+BARE_REFERENCE_EXCEPTIONS = {'with-operator'}   # the operator's own session's type, named by a core machine (69)
+REGISTRY = os.path.join(HERE, 'registry.yaml')
+registry = (yaml.safe_load(open(REGISTRY)) if os.path.exists(REGISTRY) else None) or {}
+registered = registry.get('types') or {}
+register = '--register' in sys.argv
+unregistered = {}
+
+def sha256(path):
+    import hashlib
+    return hashlib.sha256(open(path, 'rb').read()).hexdigest()
+
+machines = {}          # name -> (path, m): the highest version of each name
+versions = {}          # name -> {version: (path, m)}
+tiers = {}             # name -> tier
 for path in sorted(glob.glob(os.path.join(HERE, '**', '*.yaml'), recursive=True)):
-    if os.path.basename(path) == 'atoms.yaml':
+    if os.path.basename(path) in ('atoms.yaml', 'registry.yaml'):
         continue
+    rel = os.path.relpath(path, HERE)
+    subdir = os.path.dirname(rel)
     m = yaml.safe_load(open(path))
     try:
         jsonschema.validate(m, schema)
     except jsonschema.ValidationError as e:
-        bad.append(f"{path}: schema: {e.message} at {'/'.join(map(str, e.path))}")
+        bad.append(f"{rel}: schema: {e.message} at {'/'.join(map(str, e.path))}")
         continue
-    machines[m['machine']] = (path, m)
-    cite(m.get('satisfies'), f"machine {m['machine']}")
+    name, version, tier = m['machine'], m['version'], m['tier']
+    stem = os.path.basename(rel)[:-len('.yaml')]
+    if subdir in EXTENSIBLE_DIRS:
+        if tier != 'extensible':
+            bad.append(f"{rel}: a file under {subdir}/ must be tier extensible, not {tier}")
+        if m['kind'] != 'template':
+            bad.append(f"{rel}: an extensible machine must be kind template, not {m['kind']}")
+        if stem != f"{name}@{version}":
+            bad.append(f"{rel}: a type file is named <machine>@<version>.yaml; this one declares {name}@{version}")
+        key = f"{name}@{version}"
+        if version in versions.get(name, {}):
+            bad.append(f"{rel}: {key} is already declared by {os.path.relpath(versions[name][version][0], HERE)}; a new version is a new file")
+            continue
+        h = sha256(path)
+        if key in registered:
+            if registered[key].get('sha256') != h:
+                bad.append(f"{rel}: {key} was edited after registration (sha256 {h[:12]}… ≠ registered {str(registered[key].get('sha256'))[:12]}…); a change is a new file at a new version")
+        else:
+            unregistered[key] = {'file': rel, 'sha256': h}
+            if not register:
+                bad.append(f"{rel}: {key} is not registered; run `check.py --register` to record its content hash in registry.yaml")
+    else:
+        if tier != 'core':
+            bad.append(f"{rel}: a file under machines/{subdir or ''} must be tier core, not {tier}")
+        if stem != name:
+            bad.append(f"{rel}: a core machine file is named <machine>.yaml; this one declares {name}")
+        if 'retired' in m:
+            bad.append(f"{rel}: retired is for extensible machines only")
+    versions.setdefault(name, {})[version] = (path, m)
+    tiers[name] = tier
+    cite(m.get('satisfies'), f"machine {name}@{version}" if tier == 'extensible' else f"machine {name}")
+for name, vs in versions.items():
+    machines[name] = vs[max(vs)]
+for key, entry in registered.items():
+    n, _, v = key.rpartition('@')
+    if not v.isdigit() or int(v) not in versions.get(n, {}):
+        bad.append(f"registry.yaml: {key} is registered but no file declares it; a registered version is retired with `retired: true`, never deleted")
+if register and unregistered:
+    registered.update(unregistered)
+    registry['types'] = dict(sorted(registered.items()))
+    registry.setdefault('doc', 'the content hash of every extensible machine file at registration; check.py fails a file whose hash moved (model.md 10.7). Add a version with `check.py --register`; never edit an entry')
+    with open(REGISTRY, 'w') as f:
+        f.write('# The type registry: name@version -> the file and its sha256 at registration.\n')
+        f.write('# Written by `check.py --register`; a registered file is immutable (model.md 10.7).\n')
+        yaml.safe_dump(registry, f, sort_keys=False, width=200)
+    print(f"registered {len(unregistered)}: {', '.join(sorted(unregistered))}")
+
+def resolve_machine_ref(ref):
+    """a `machine:` reference -> the (name, version) it names, or None when it names nothing"""
+    if ref.startswith('$'):
+        return None
+    n, at, v = ref.rpartition('@')
+    if at and v.isdigit():
+        return (n, int(v)) if int(v) in versions.get(n, {}) else None
+    return (ref, max(versions[ref])) if ref in versions else None
 
 for name, spec in effects.items():
     if spec.get('proof') and spec['proof'] not in evidence:
@@ -114,8 +198,14 @@ def walk_region(mname, rname, region, where):
             cite(d.get('satisfies'), f"decision {d['kind']} at {mname}.{sname}")
         walk_effects(st.get('entry'), sw); walk_effects(st.get('exit'), sw)
         mref = st.get('machine')
-        if mref and not mref.startswith('$') and mref not in machines:
-            bad.append(f"{sw}: submachine {mref} has no definition")
+        if mref and not mref.startswith('$'):
+            target = resolve_machine_ref(mref)
+            if target is None:
+                bad.append(f"{sw}: submachine {mref} has no definition")
+            elif '@' not in mref and tiers.get(mname) == 'core' and tiers.get(target[0]) == 'extensible' and target[0] not in BARE_REFERENCE_EXCEPTIONS:
+                bad.append(f"{sw}: core machine {mname} names extensible {mref} by bare name; pin a version or list the exception")
+            elif target and versions[target[0]][target[1]][1].get('retired') and '@' not in mref:
+                bad.append(f"{sw}: {mref} resolves to a retired version {target[0]}@{target[1]}")
         for rn, rg in (st.get('regions') or {}).items():
             walk_region(mname, rn, rg, f"{sw}[{rn}]")
         for i, t in enumerate(st.get('transitions') or []):

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Render every machine under machines/ as a statechart, one SVG per machine,
-into ../diagrams/machines/<machine>.svg, with an index.md beside them.
+into ../diagrams/machines/<machine>.svg (a type file as <machine>@<version>.svg), with an index.md beside them.
 
     uv run --with pyyaml python3 machines/render.py [--only a,b] [--png DIR]
 
@@ -69,13 +69,15 @@ def header_blurb(text):
 def load_machines():
     machines = {}
     for path in sorted(glob.glob(os.path.join(HERE, '**', '*.yaml'), recursive=True)):
-        if os.path.basename(path) == 'atoms.yaml':
+        if os.path.basename(path) in ('atoms.yaml', 'registry.yaml'):
             continue
         text = open(path).read()
         m = yaml.safe_load(text)
         m['_path'] = os.path.relpath(path, HERE)
         m['_blurb'] = header_blurb(text)
-        machines[m['machine']] = m
+        # a type file is <machine>@<version>.yaml and draws as such, so two versions of one type
+        # stand side by side; a core file draws by its machine name
+        machines[os.path.basename(path)[:-len('.yaml')]] = m
     return machines
 
 
@@ -462,7 +464,7 @@ def render_machine(m):
         head.append(f'<marker id="{mid}" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="{col}"/></marker>')
     head.append('</defs>')
     head.append(f'<rect width="{W:.0f}" height="{H:.0f}" fill="#fff"/>')
-    title = f"{m['machine']} — {m['kind']} v{m['version']}"
+    title = f"{m['machine']}@{m['version']} — {m['kind']}, {m['tier']}" if m['tier'] == 'extensible' else f"{m['machine']} — {m['kind']} v{m['version']}, {m['tier']}"
     if m.get('object'):
         title += f" · object {m['object']}"
     if m.get('singleton'):
@@ -526,14 +528,17 @@ def main(argv):
              f'{len(machines)} machines: '
              + ', '.join(f"{sum(1 for m in machines.values() if m['kind'] == k)} {k}" for k in ('object', 'template', 'engine')) + '.', '']
     titles = {'.': 'Core objects and structural templates (`machines/`)', 'engine': 'Engine machines (`machines/engine/`)',
-              'unit-types': 'Unit types (`machines/unit-types/`)', 'elaboration-types': 'Elaboration types (`machines/elaboration-types/`)'}
+              'unit-types': 'Unit types (`machines/unit-types/<machine>@<version>.yaml`)', 'elaboration-types': 'Elaboration types (`machines/elaboration-types/<machine>@<version>.yaml`)'}
     for g in ('.', 'engine', 'unit-types', 'elaboration-types'):
         if g not in groups:
             continue
-        lines += [f'## {titles[g]}', '', '| machine | kind | version | object | satisfies | diagram |', '|---|---|---|---|---|---|']
-        for m in sorted(groups[g], key=lambda m: m['machine']):
+        lines += [f'## {titles[g]}', '', '| machine | kind | tier | version | object | satisfies | diagram |', '|---|---|---|---|---|---|---|']
+        for m in sorted(groups[g], key=lambda m: (m['machine'], m['version'])):
             obj = m.get('object') or ('template' if m['kind'] == 'template' else '—')
-            lines.append(f"| `{m['machine']}` | {m['kind']} | {m['version']} | {obj} | {', '.join(map(str, m['satisfies']))} | [{m['machine']}.svg]({m['machine']}.svg) |")
+            stem = os.path.basename(m['_path'])[:-len('.yaml')]
+            shown = f"{m['machine']}@{m['version']}" if m['tier'] == 'extensible' else m['machine']
+            retired = ' (retired)' if m.get('retired') else ''
+            lines.append(f"| `{shown}`{retired} | {m['kind']} | {m['tier']} | {m['version']} | {obj} | {', '.join(map(str, m['satisfies']))} | [{stem}.svg]({stem}.svg) |")
         lines.append('')
     with open(os.path.join(OUT, 'index.md'), 'w') as f:
         f.write('\n'.join(lines))

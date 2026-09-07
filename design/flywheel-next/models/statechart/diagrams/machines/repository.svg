@@ -7,7 +7,7 @@
 <marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
 </defs>
 <rect width="1378" height="347" fill="#fff"/>
-<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">repository — object v1 · object repository · parent organization</text>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">repository — object v1, core · object repository · parent organization</text>
 <text x="40" y="57" font-size="12" fill="#666">A built repository the flywheel tracks (206).</text>
 <text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 5, 104, 149, 199, 202, 203, 206, 207, 208 · repository.yaml · record name, repo, nodes, document, sources, adopted, template_version</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>

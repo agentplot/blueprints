@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1378" height="490" viewBox="0 0 1378 490" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1492" height="535" viewBox="0 0 1492 535" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
 <defs>
 <marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
 <marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
@@ -6,106 +6,118 @@
 <marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
 <marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
 </defs>
-<rect width="1378" height="490" fill="#fff"/>
-<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">work-item — object v1 · object work-item · parent unit</text>
+<rect width="1492" height="535" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">work-item — object v2, core · object work-item · parent unit</text>
 <text x="40" y="57" font-size="12" fill="#666">One task of a unit, worked through the type&#x27;s stages by sessions and merged into the bolt when complete (41, 38).</text>
-<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 32, 38, 41, 43, 57, 74 · work-item.yaml · record ordinal, depends_on, stage, send_backs, sessions, answers</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 32, 38, 41, 42, 43, 57, 74 · work-item.yaml · record ordinal, depends_on, stage, send_backs, sessions, answers</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
-<line x1="80" y1="103" x2="1282.875" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
-<circle cx="52.0" cy="226.0" r="4" fill="#1a1a1a"/>
-<line x1="56.0" y1="226.0" x2="69.0" y2="226.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
-<path d="M156.0,212.0 V129.0 H1186.9 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M80.0,212.0 V204.0 H220.0 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M296.0,212.0 V204.0 H360.0 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M436.0,212.0 V204.0 H500.0 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M678.7,212.0 V144.0 H1212.2 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"><title>the unit was dropped or the bolt retired; the session is retired with the work and its place released (74)</title></path>
-<path d="M500.0,264.0 V274.0 H258.0 V240.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>dictation retires the session (4); the item starts a fresh attempt in a fresh place; a pane killed by hand is read as a session gone, never as a response</title></path>
-<path d="M619.1,212.0 V189.0 H906.9 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M559.6,212.0 V204.0 H742.7 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M792.8,264.0 V274.0 H678.7 V264.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
-<path d="M792.8,212.0 V159.0 H1237.5 V212.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
-<path d="M842.9,212.0 V174.0 H1262.9 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M982.9,212.0 V189.0 H1084.9 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M932.2,212.0 V204.0 H957.5 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"><title>the place machine seeds the job and waits for the session; the merge retries when it exits done</title></path>
-<rect x="70.0" y="212.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
-<text x="118.0" y="234.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">waiting</text>
-<rect x="210.0" y="212.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>waits for a slot in the stated order; nothing is started twice after a restart because the place and the session are named by the item</title></rect>
-<text x="258.0" y="234.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">ready</text>
-<rect x="350.0" y="212.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the place region beside this one prepares the item&#x27;s place; the item proceeds when it is proven current</title></rect>
-<text x="398.0" y="234.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">placing</text>
-<rect x="490.0" y="212.0" width="198.7" height="52.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>the unit type&#x27;s machine at the recorded version; its states are the stages</title></rect>
-<text x="589.4" y="234.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">in-type</text>
-<text x="589.4" y="246.0" font-size="9.5" fill="#2b8a8a" text-anchor="middle" font-weight="700">⧉ $unit.type@$unit.type_version</text>
-<text x="589.4" y="258.0" font-size="8" fill="#999" text-anchor="middle">place=own-place</text>
-<rect x="732.7" y="212.0" width="120.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>the retry bound was reached; the item waits on the operator (41)</title></rect>
-<text x="792.8" y="234.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">stopped</text>
-<rect x="766.3" y="236.0" width="53.1" height="14" rx="7" fill="#c9962e"/>
-<text x="792.8" y="246.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">stalled</text>
-<text x="792.8" y="258.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: retry · drop</text>
-<rect x="896.9" y="212.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>one merge at a time in the fixed order; a rebase that conflicts is the session&#x27;s job in its place (S32)</title></rect>
-<text x="944.9" y="234.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">merging</text>
-<rect x="1036.9" y="212.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"></rect>
-<rect x="1039.9" y="215.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
-<text x="1084.9" y="234.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">merged</text>
-<text x="1084.9" y="246.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: merged</text>
-<rect x="1176.9" y="212.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"></rect>
-<rect x="1179.9" y="215.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
-<text x="1224.9" y="234.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">dropped</text>
-<text x="1224.9" y="246.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: dropped</text>
-<rect x="604.3" y="117.5" width="134.2" height="11" fill="#fff" opacity="0.92"/>
-<text x="671.4" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">parent ∈ {retired, dropped}</text>
-<rect x="108.6" y="192.5" width="82.8" height="11" fill="#fff" opacity="0.92"/>
-<text x="150.0" y="201.0" font-size="8.5" fill="#333" text-anchor="middle">item.deps_merged</text>
-<rect x="291.3" y="192.5" width="73.5" height="11" fill="#fff" opacity="0.92"/>
-<text x="328.0" y="201.0" font-size="8.5" fill="#333" text-anchor="middle">item.slot_free</text>
-<rect x="403.2" y="192.5" width="129.6" height="11" fill="#fff" opacity="0.92"/>
-<text x="468.0" y="201.0" font-size="8.5" fill="#333" text-anchor="middle">place.place.life ∈ {ready}</text>
-<rect x="803.5" y="132.5" width="283.8" height="11" fill="#fff" opacity="0.92"/>
-<text x="945.5" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">parent ∈ {retired, dropped} ↳ session→ended, place→removing<title>the unit was dropped or the bolt retired; the session is retired with the work and its place released (74)</title></text>
-<rect x="272.1" y="274.5" width="213.7" height="11" fill="#fff" opacity="0.92"/>
-<text x="379.0" y="283.0" font-size="8.5" fill="#333" text-anchor="middle">reply retire ↳ session→ended, place→removing<title>dictation retires the session (4); the item starts a fresh attempt in a fresh place; a pane killed by hand is read as a session gone, never as a response</title></text>
-<rect x="693.6" y="177.5" width="138.9" height="11" fill="#fff" opacity="0.92"/>
-<text x="763.0" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">final passed ↳ place→merging</text>
-<rect x="616.7" y="192.5" width="68.8" height="11" fill="#fff" opacity="0.92"/>
-<text x="651.1" y="201.0" font-size="8.5" fill="#333" text-anchor="middle">final stopped</text>
-<rect x="706.0" y="274.5" width="59.4" height="11" fill="#fff" opacity="0.92"/>
-<text x="735.7" y="283.0" font-size="8.5" fill="#333" text-anchor="middle">reply retry</text>
-<rect x="913.0" y="147.5" width="204.4" height="11" fill="#fff" opacity="0.92"/>
-<text x="1015.2" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">reply drop ↳ session→ended, place→removing</text>
-<rect x="911.0" y="162.5" width="283.8" height="11" fill="#fff" opacity="0.92"/>
-<text x="1052.9" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">parent ∈ {retired, dropped} ↳ session→ended, place→removing</text>
-<rect x="964.4" y="177.5" width="138.9" height="11" fill="#fff" opacity="0.92"/>
-<text x="1033.9" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">place.place.life ∈ {removed}</text>
-<rect x="873.1" y="192.5" width="143.6" height="11" fill="#fff" opacity="0.92"/>
-<text x="944.9" y="201.0" font-size="8.5" fill="#333" text-anchor="middle">place.place.life ∈ {conflict}<title>the place machine seeds the job and waits for the session; the merge retries when it exits done</title></text>
-<text x="40" y="326" font-size="11.5" font-weight="700" fill="#8a8a86">place<title>the object&#x27;s own place, a region beside its life so the owner can command it (merging, removing) after leaving placing; a region inside placing would be gone by then</title></text>
-<line x1="86" y1="322" x2="448.8" y2="322" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
-<circle cx="52.0" cy="370.0" r="4" fill="#1a1a1a"/>
-<line x1="56.0" y1="370.0" x2="69.0" y2="370.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
-<path d="M118.0,356.0 V348.0 H324.4 V356.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<rect x="70.0" y="356.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
-<text x="118.0" y="378.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">none</text>
-<rect x="210.0" y="356.0" width="228.8" height="52.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
-<text x="324.4" y="378.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">place</text>
-<text x="324.4" y="390.0" font-size="9.5" fill="#2b8a8a" text-anchor="middle" font-weight="700">⧉ place</text>
-<text x="324.4" y="402.0" font-size="8" fill="#999" text-anchor="middle">line=bolt-line · inputs=work-order · keep=False</text>
-<rect x="179.8" y="336.5" width="82.8" height="11" fill="#fff" opacity="0.92"/>
-<text x="221.2" y="345.0" font-size="8.5" fill="#333" text-anchor="middle">life ∈ {placing}</text>
-<rect x="40" y="446" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
-<rect x="56" y="456" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
-<text x="71" y="465" font-size="9" fill="#666">state</text>
-<rect x="114.75" y="456" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
-<text x="129.75" y="465" font-size="9" fill="#666">decision state · amber pill is the kind</text>
-<rect x="341.8" y="456" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
-<text x="356.8" y="465" font-size="9" fill="#666">⧉ runs a submachine</text>
-<rect x="469.85" y="456" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
-<text x="484.85" y="465" font-size="9" fill="#666">double border: final</text>
-<rect x="602.85" y="456" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
-<text x="617.85" y="465" font-size="9" fill="#666">arrow above: forward</text>
-<rect x="735.85" y="456" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
-<text x="750.85" y="465" font-size="9" fill="#666">arrow below: back</text>
-<rect x="854.0" y="456" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
-<text x="869.0" y="465" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
-<rect x="1066.2" y="456" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
-<text x="1081.2" y="465" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+<line x1="80" y1="103" x2="1451.7250000000001" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="271.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="271.0" x2="69.0" y2="271.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M156.0,257.0 V129.0 H1215.7 V257.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M80.0,257.0 V249.0 H220.0 V257.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M296.0,257.0 V249.0 H360.0 V257.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M436.0,257.0 V249.0 H500.0 V257.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M678.7,257.0 V144.0 H1230.9 V257.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"><title>the unit was dropped or the bolt retired; the session is retired with the work and its place released (74)</title></path>
+<path d="M500.0,309.0 V319.0 H258.0 V285.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>dictation retires the session (4); the item starts a fresh attempt in a fresh place; a pane killed by hand is read as a session gone, never as a response</title></path>
+<path d="M559.6,257.0 V249.0 H742.7 V257.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M619.1,257.0 V234.0 H911.6 V257.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M812.6,257.0 V159.0 H1246.1 V257.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M847.6,257.0 V174.0 H1261.3 V257.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M777.7,257.0 V204.0 H1075.7 V257.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M961.6,309.0 V319.0 H678.7 V309.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M961.6,257.0 V189.0 H1276.5 V257.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M1011.7,257.0 V219.0 H1291.7 V257.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1151.7,257.0 V234.0 H1393.7 V257.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1101.1,257.0 V249.0 H1126.4 V257.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"><title>the place machine seeds the job and waits for the session; the merge retries when it exits done</title></path>
+<rect x="70.0" y="257.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
+<text x="118.0" y="279.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">waiting</text>
+<rect x="210.0" y="257.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>waits for a slot in the stated order; nothing is started twice after a restart because the place and the session are named by the item</title></rect>
+<text x="258.0" y="279.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">ready</text>
+<rect x="350.0" y="257.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the place region beside this one prepares the item&#x27;s place; the item proceeds when it is proven current</title></rect>
+<text x="398.0" y="279.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">placing</text>
+<rect x="490.0" y="257.0" width="198.7" height="52.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>the unit type&#x27;s machine at the recorded version; its states are the stages</title></rect>
+<text x="589.4" y="279.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">in-type</text>
+<text x="589.4" y="291.0" font-size="9.5" fill="#2b8a8a" text-anchor="middle" font-weight="700">⧉ $unit.type@$unit.type_version</text>
+<text x="589.4" y="303.0" font-size="8" fill="#999" text-anchor="middle">place=own-place</text>
+<rect x="732.7" y="257.0" width="124.9" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the OpenSpec archive step, run by the machinery in the item&#x27;s place: `openspec archive` moves the change&#x27;s specifications into the standing set, so they merge with the item and land with the bolt (section 9 givens); the effect repeats each tick until its proof holds, and holds at once for a type with no change directory (chore)</title></rect>
+<text x="795.1" y="279.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">archiving</text>
+<text x="795.1" y="291.0" font-size="8.5" fill="#666" text-anchor="middle">entry ⚙ archive_change</text>
+<rect x="901.6" y="257.0" width="120.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>the retry bound was reached; the item waits on the operator (41)</title></rect>
+<text x="961.6" y="279.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">stopped</text>
+<rect x="935.1" y="281.0" width="53.1" height="14" rx="7" fill="#c9962e"/>
+<text x="961.6" y="291.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">stalled</text>
+<text x="961.6" y="303.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: retry · drop</text>
+<rect x="1065.7" y="257.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>one merge at a time in the fixed order; a rebase that conflicts is the session&#x27;s job in its place (S32)</title></rect>
+<text x="1113.7" y="279.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">merging</text>
+<rect x="1205.7" y="257.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"></rect>
+<rect x="1208.7" y="260.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="1253.7" y="279.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">dropped</text>
+<text x="1253.7" y="291.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: dropped</text>
+<rect x="1345.7" y="257.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"></rect>
+<rect x="1348.7" y="260.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="1393.7" y="279.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">merged</text>
+<text x="1393.7" y="291.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: merged</text>
+<rect x="618.8" y="117.5" width="134.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="685.9" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">parent ∈ {retired, dropped}</text>
+<rect x="108.6" y="237.5" width="82.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="150.0" y="246.0" font-size="8.5" fill="#333" text-anchor="middle">item.deps_merged</text>
+<rect x="291.3" y="237.5" width="73.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="328.0" y="246.0" font-size="8.5" fill="#333" text-anchor="middle">item.slot_free</text>
+<rect x="403.2" y="237.5" width="129.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="468.0" y="246.0" font-size="8.5" fill="#333" text-anchor="middle">place.place.life ∈ {ready}</text>
+<rect x="812.9" y="132.5" width="283.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="954.8" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">parent ∈ {retired, dropped} ↳ session→ended, place→removing<title>the unit was dropped or the bolt retired; the session is retired with the work and its place released (74)</title></text>
+<rect x="272.1" y="319.5" width="213.7" height="11" fill="#fff" opacity="0.92"/>
+<text x="379.0" y="328.0" font-size="8.5" fill="#333" text-anchor="middle">reply retire ↳ session→ended, place→removing<title>dictation retires the session (4); the item starts a fresh attempt in a fresh place; a pane killed by hand is read as a session gone, never as a response</title></text>
+<rect x="619.1" y="237.5" width="64.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="651.1" y="246.0" font-size="8.5" fill="#333" text-anchor="middle">final passed</text>
+<rect x="731.0" y="222.5" width="68.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="765.3" y="231.0" font-size="8.5" fill="#333" text-anchor="middle">final stopped</text>
+<rect x="887.5" y="147.5" width="283.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1029.4" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">parent ∈ {retired, dropped} ↳ session→ended, place→removing</text>
+<rect x="952.3" y="162.5" width="204.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="1054.4" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">reply drop ↳ session→ended, place→removing</text>
+<rect x="838.5" y="192.5" width="176.3" height="11" fill="#fff" opacity="0.92"/>
+<text x="926.7" y="201.0" font-size="8.5" fill="#333" text-anchor="middle">item.change_archived ↳ place→merging</text>
+<rect x="790.5" y="319.5" width="59.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="820.2" y="328.0" font-size="8.5" fill="#333" text-anchor="middle">reply retry</text>
+<rect x="1016.9" y="177.5" width="204.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="1119.1" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">reply drop ↳ session→ended, place→removing</text>
+<rect x="1009.8" y="207.5" width="283.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1151.7" y="216.0" font-size="8.5" fill="#333" text-anchor="middle">parent ∈ {retired, dropped} ↳ session→ended, place→removing</text>
+<rect x="1203.3" y="222.5" width="138.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="1272.7" y="231.0" font-size="8.5" fill="#333" text-anchor="middle">place.place.life ∈ {removed}</text>
+<rect x="1041.9" y="237.5" width="143.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="1113.7" y="246.0" font-size="8.5" fill="#333" text-anchor="middle">place.place.life ∈ {conflict}<title>the place machine seeds the job and waits for the session; the merge retries when it exits done</title></text>
+<text x="40" y="371" font-size="11.5" font-weight="700" fill="#8a8a86">place<title>the object&#x27;s own place, a region beside its life so the owner can command it (merging, removing) after leaving placing; a region inside placing would be gone by then</title></text>
+<line x1="86" y1="367" x2="448.8" y2="367" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="415.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="415.0" x2="69.0" y2="415.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M118.0,401.0 V393.0 H324.4 V401.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<rect x="70.0" y="401.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
+<text x="118.0" y="423.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">none</text>
+<rect x="210.0" y="401.0" width="228.8" height="52.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
+<text x="324.4" y="423.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">place</text>
+<text x="324.4" y="435.0" font-size="9.5" fill="#2b8a8a" text-anchor="middle" font-weight="700">⧉ place</text>
+<text x="324.4" y="447.0" font-size="8" fill="#999" text-anchor="middle">line=bolt-line · inputs=work-order · keep=False</text>
+<rect x="179.8" y="381.5" width="82.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="221.2" y="390.0" font-size="8.5" fill="#333" text-anchor="middle">life ∈ {placing}</text>
+<rect x="40" y="491" width="1412" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="501" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="71" y="510" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="501" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="510" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="501" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="510" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="501" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="510" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="501" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="617.85" y="510" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="501" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="510" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="501" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="510" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="501" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="510" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
 </svg>

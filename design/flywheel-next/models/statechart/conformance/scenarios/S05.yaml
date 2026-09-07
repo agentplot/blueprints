@@ -7,7 +7,7 @@ given:
   objects:
     - {id: intent/a, machine: intent, state: {life: proposed}}
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
-    - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 3}}
+    - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 5}}
     - {id: work-item/atlas/wi-418, machine: work-item, parent: unit/atlas/status-writer, state: {life: in-type, in-type.stages: build, build.run: sessions, session.life: alive, alive.activity: working}}
     - {id: elaboration/b/prototype, machine: elaboration, parent: intent/b, state: {life: working, working.work: idle-offered}, record: {type: standing}}
     - {id: intent/b, machine: intent, state: {life: open, line: current, open.material: settled, open.close: not-offered}}

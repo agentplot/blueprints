@@ -7,7 +7,7 @@
 <marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
 </defs>
 <rect width="1441" height="969" fill="#fff"/>
-<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">bolt — object v2 · object bolt · owns unit, service</text>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">bolt — object v2, core · object bolt · owns unit, service</text>
 <text x="40" y="57" font-size="12" fill="#666">One delivery of construction work to a built repository (30).</text>
 <text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 186, 4, 30, 33, 39, 40, 44, 46, 47, 48, 55, 63, 74, 103, 175, 177 · bolt.yaml · record repository, name, held_at, landing_failure, citation_choices</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>

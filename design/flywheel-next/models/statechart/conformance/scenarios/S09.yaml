@@ -5,7 +5,7 @@ satisfies: [58, 103]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
-    - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 3, claims: ["providers/one-writer@3"]}}
+    - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 5, claims: ["providers/one-writer@3"]}}
     - {id: claim/providers-one-writer, machine: claim, state: {standing: standing}, record: {name: providers/one-writer, version: 3}}
     - {id: planning/atlas, machine: planning, state: {run: current}, record: {planned_fingerprint: f0}}
   evidence: {claim.version: {claim/providers-one-writer: 3}, bolt.citations_moved: {"*": false}, planning.fingerprint: {planning/atlas: f0}, planning.planned_fingerprint: {planning/atlas: f0}}

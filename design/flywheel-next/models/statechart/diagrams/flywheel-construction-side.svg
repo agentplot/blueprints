@@ -18,7 +18,7 @@
 </defs>
 <rect width="1680" height="1000" fill="#fff"/>
 <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Construction side — a unit's yes is the last response until the bolt's close; every stage is a state of a type the operator wrote</text>
-<text x="40" y="57" font-size="12" fill="#666">proposed → approved → items → stages → merged → landed · decisions are states of the bolt, the unit, the item and the session · the ledger is written by a review's verdict and read by the bolt's citations</text>
+<text x="40" y="57" font-size="12" fill="#666">proposed → approved → items → stages → merged → landed · decisions are states of the bolt, the unit, the item and the session · the ledger is written by a verify stage's verdict and read by the bolt's citations · the item archives its change before it merges</text>
 
 <!-- lane: bolt -->
 <text x="38" y="174" font-size="11.5" font-weight="700" fill="#4a7fb5">bolt</text>
@@ -97,24 +97,25 @@
 <!-- lane: type and stage -->
 <text x="38" y="594" font-size="11.5" font-weight="700" fill="#2e9e5b">type · stage</text>
 <line x1="150" y1="590" x2="1380" y2="590" stroke="#2e9e5b" stroke-width="2" opacity="0.35"/>
-<rect x="160" y="581" width="64" height="18" rx="9" fill="#4a7fb5"/><text x="192" y="594" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">default@3</text>
+<rect x="160" y="581" width="64" height="18" rx="9" fill="#4a7fb5"/><text x="192" y="594" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">default@5</text>
 <use href="#gear" x="300" y="590" color="#2e9e5b" data-state="default.spec"/>
 <text x="300" y="616" font-size="9.5" fill="#666" text-anchor="middle">spec</text>
+<text x="300" y="629" font-size="8.5" fill="#999" text-anchor="middle">opsx ff · change dir + spec</text>
 <use href="#gear" x="440" y="590" color="#2e9e5b" data-state="default.build"/>
 <text x="440" y="616" font-size="9.5" fill="#666" text-anchor="middle">build</text>
 <text x="440" y="629" font-size="8.5" fill="#999" text-anchor="middle">as-built names claim@v</text>
-<use href="#gear" x="600" y="590" color="#2e9e5b" data-state="default.review"/>
-<text x="600" y="616" font-size="9.5" fill="#666" text-anchor="middle">review</text>
-<text x="600" y="629" font-size="8.5" fill="#999" text-anchor="middle">on_fail build · max 3 · verdicts</text>
+<use href="#gear" x="600" y="590" color="#2e9e5b" data-state="default.verify"/>
+<text x="600" y="616" font-size="9.5" fill="#666" text-anchor="middle">verify</text>
+<text x="600" y="629" font-size="8.5" fill="#999" text-anchor="middle">opsx verify · on_fail build · max 3 · verdict</text>
 <path d="M 592 578 C 560 540, 480 540, 448 578" fill="none" stroke="#2e9e5b" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mG)"/>
 <text x="520" y="546" font-size="9" fill="#27824c" text-anchor="middle">sent-back</text>
 <use href="#check" x="720" y="590" data-state="default.passed"/>
 <text x="720" y="616" font-size="9.5" fill="#666" text-anchor="middle">passed</text>
-<rect x="800" y="581" width="100" height="18" rx="9" fill="#4a7fb5"/><text x="850" y="594" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">persona-test@1</text>
+<rect x="800" y="581" width="100" height="18" rx="9" fill="#4a7fb5"/><text x="850" y="594" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">persona-test@3</text>
 <use href="#people" x="960" y="590" color="#2e9e5b" data-state="persona-test.test"/>
 <text x="960" y="616" font-size="9.5" fill="#666" text-anchor="middle">test</text>
 <text x="960" y="629" font-size="8.5" fill="#999" text-anchor="middle">one session per personas/*.md · join all</text>
-<rect x="1080" y="581" width="60" height="18" rx="9" fill="#4a7fb5"/><text x="1110" y="594" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">chore@1</text>
+<rect x="1080" y="581" width="60" height="18" rx="9" fill="#4a7fb5"/><text x="1110" y="594" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">chore@2</text>
 <use href="#gear" x="1180" y="590" color="#2e9e5b" data-state="chore.fix"/>
 <text x="1180" y="616" font-size="9.5" fill="#666" text-anchor="middle">fix</text>
 <text x="1180" y="629" font-size="8.5" fill="#999" text-anchor="middle">one stage · never a bolt</text>

@@ -6,7 +6,7 @@ invariants: [I11]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
-    - {id: unit/atlas/u, machine: unit, parent: bolt/atlas/plan-rows, state: {life: approved}, record: {type: persona-test, type_version: 1}}
+    - {id: unit/atlas/u, machine: unit, parent: bolt/atlas/plan-rows, state: {life: approved}, record: {type: persona-test, type_version: 3}}
   hosts: [{name: mac-mini, bound: 3, declares: {kinds: [all], repositories: [atlas], unit_types: [default, fast, chore]}}]
   evidence: {unit.deps_merged: {"*": true}, lease.coverable: {unit/atlas/u: false}}
 when:

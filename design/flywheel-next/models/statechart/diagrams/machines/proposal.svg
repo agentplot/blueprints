@@ -7,7 +7,7 @@
 <marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
 </defs>
 <rect width="1380" height="362" fill="#fff"/>
-<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">proposal — object v2 · object proposal · parent planning</text>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">proposal — object v2, core · object proposal · parent planning</text>
 <text x="40" y="57" font-size="12" fill="#666">Planning&#x27;s document for one run (172): the bolts it proposes, new or open, and the units in each with their types and dependencies.</text>
 <text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 184, 17, 35, 36, 171, 172, 187 · proposal.yaml · record repository, document, bolts, units, redo_notes</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>

@@ -77,8 +77,8 @@ of some object, or a file the machinery reads as evidence.
 | `stage` | template | one stage of a unit type: its session set and join rule | instantiated by a unit type | `machines/stage.yaml` |
 | `line` | template | a branch the machinery owns | instantiated by bolt and intent | `machines/line.yaml` |
 | `place` | template | a worktree off a line; removed, held or kept under its owner's command | instantiated by work-item, elaboration, bolt, operator-session, curation, planning, capture | `machines/place.yaml` |
-| `self-closing`, `standing`, `with-operator` | template | elaboration types | instantiated by `elaboration.working` and `operator-session.open` | `machines/elaboration-types/` |
-| `chore`, `fast`, `default`, `persona-test` | template | unit types; their states are the stages | instantiated by `work-item.in-type` | `machines/unit-types/` |
+| `self-closing@2`, `standing@2`, `with-operator@3` | template | elaboration types | instantiated by `elaboration.working` and `operator-session.open` | `machines/elaboration-types/<machine>@<version>.yaml` |
+| `chore@2`, `fast@3`, `default@5`, `persona-test@3` | template | unit types; their states are the stages — the OpenSpec steps `spec` (ff), `build` (apply) and `verify` for `default`, one `ff-apply` stage for `fast`, the archive being the item's merge-time effect (10.7) | instantiated by `work-item.in-type` | `machines/unit-types/<machine>@<version>.yaml` |
 | `organization` | object, singleton | the bootstrap: absent, books ready, state ready, awaiting the App, connected, hosted (204) | — · repository | `machines/organization.yaml` |
 | `repository` | object | a built repository the flywheel tracks: proposed, creating, registering, covering, tracked (206) | organization · — | `machines/repository.yaml` |
 | `host`, `lease`, `response`, `plan`, `sink` | engine | a host, an object's ownership, one operator response, the plan's decision register, one delivery sink | — | `machines/engine/` |
@@ -156,7 +156,9 @@ Three relations, and only three:
 
 Types are templates with parameters, so an operator-added type is a
 file that names existing atoms and existing templates (`stage`,
-`session`). `persona-test.yaml` is the S26 type: it changes no code.
+`session`). `persona-test@3.yaml` is the S26 type: it changes no code.
+A type file is addressed as `name@version` and never edited; section
+10.7 states the registry.
 
 ## 2. The engine
 
@@ -346,7 +348,7 @@ entered_at: 2026-09-04T07:12:04Z
 seq: 3
 applied_responses:
 type: default
-type_version: 3
+type_version: 5
 document: openspec/changes/status-writer/proposal.md
 target: bolt/atlas/plan-rows
 depends_on:
@@ -950,8 +952,14 @@ place is a region for the same reason.
 
 ### 7.4 Merging and landing
 
-`merge_place` runs one place at a time in the fixed order (unit
-approval time, then item ordinal), via `place.merge_slot`. A place
+An item whose type's last stage passed enters `archiving` first:
+`archive_change` runs `openspec archive` in the item's place and
+commits it there, so the change's specifications enter the standing set
+with the item's merge and land with the bolt (section 9 givens); the
+archive is the machinery's merge-time effect on the item, never a stage
+of a type, and it is nothing for a type without a change directory
+(chore). `merge_place` then runs one place at a time in the fixed order
+(unit approval time, then item ordinal), via `place.merge_slot`. A place
 whose line moved under it while it waited goes back to `behind` first.
 An item's merge is a squash to one commit that names the item, unless
 the manifest's `item_merge` for the repository says `merge`; a take is
@@ -1323,11 +1331,12 @@ place going with it unless held (69).
 Everything a session is given lives in the books repository and is
 versioned by it: `flywheel/schemas/<artifact>.md`,
 `flywheel/instructions/<artifact>.md`, `flywheel/skills/<session
-type>/SKILL.md`, `flywheel/types/units/<type>.yaml` and
-`flywheel/types/elaborations/<type>.yaml` (the machine files of
-`machines/unit-types/` and `machines/elaboration-types/` are what the
+type>/SKILL.md`, `flywheel/types/units/<type>@<version>.yaml` and
+`flywheel/types/elaborations/<type>@<version>.yaml` (the machine files
+of `machines/unit-types/` and `machines/elaboration-types/` are what the
 operator's files look like; the engine loads them from the books at
-the version the object recorded), and the manifest. `prepare_place`
+the version the object recorded, through the registry of 10.7), and
+the manifest. `prepare_place`
 renders `.flywheel/work-order.md` from the closed inputs: the schema
 instruction, the type skill, the work order proper (job, deliverables,
 exit contract), the producer skill, schema and review surface in force
@@ -1355,6 +1364,55 @@ into the book, all versioned with the book; the review view is
 `/review`: the chapters and map nodes changed since the operator's
 last `reviewed` mark (a response on the plan object), with the previous
 version beside each (S25, 122).
+
+### 10.7 The type registry
+
+A unit type or an elaboration type is addressed as `name@version`, and
+a version is a file: `flywheel/types/units/<name>@<version>.yaml` or
+`flywheel/types/elaborations/<name>@<version>.yaml` in the books, the
+same shape as `machines/unit-types/` and `machines/elaboration-types/`
+here. A type file is immutable once registered. The registry records
+the content hash of every file at registration (`machines/registry.yaml`
+in this model, written by `check.py --register`; `flywheel/registry.json`
+under the machinery's prefix at an organization, as `flywheel/claims.json`
+is), and the check — `check.py` here, `flywheel types check` in the
+books' pre-commit hook and on every host at every fetch — fails a file
+whose hash moved and two files declaring the same name and version. A
+change to a type is a new file at a new version, never an edit (57,
+123).
+
+The registry is the union of two sets, validated as one:
+
+- **the shipped types**, listed by `name@version` in the release set
+  (208) and placed by the books template: `chore@2`, `default@5`,
+  `fast@3` and `self-closing@2`, `standing@2`, `with-operator@3`;
+- **the organization's types**, the files under `flywheel/types/` in
+  the books the manifest lists; `persona-test@3` is one (S26). The
+  manifest names the directories the registry reads and nothing more.
+
+Every file carries `tier: extensible` and `kind: template`; every core
+machine — the objects, the engine machines, `line`, `place`, `session`
+and `stage` — carries `tier: core` and ships in the binary, and the
+check fails a file whose tier does not match its directory. A core
+machine names an extensible one only pinned (`name@N`) or as the one
+listed exception, `with-operator`, the operator's own session's type
+(69).
+
+Resolution: `$unit.type@$unit.type_version` and `$type@$type_version`
+read the object's record and load exactly that version; a bare name — a
+`type <name>` response, a host's `unit_types` declaration, a manifest
+default, the `with-operator` exception — resolves to the highest
+registered version that is not retired. Approval records the version
+resolved (57), and work in flight keeps it whatever is registered later:
+a unit under `default@5` finishes under `default@5` after `default@6`
+appears. A version is retired with `retired: true` in its file; no new
+object starts under it, and the file is never deleted while any object
+cites it — the check fails a registered version whose file is gone, and
+a host refuses to load a state whose objects cite a version it cannot
+read (79). Testing a new type is a new file at a new version referenced
+by a scenario: the scenario's objects record it, the stand-in runs it
+(93, 95), and `flywheel render-order` shows what its stages would ask a
+session to write (124) — never an edit of the version in force.
 
 ## 11. Hosts and leases
 
@@ -1736,11 +1794,12 @@ it by compare-and-swap and starts attempt 2; A on return reads it lost,
 `end_session` on its own pane, reports. Never twice: B's attempt 2 is a
 different session name, and A's attempt 1 is ended before A acts again.
 
-**S14 — two send-backs then pass.** `work-item.in-type` runs `default`:
-`review` stage `sessions → sent-back` (verdict not-done, `send_backs`
-0 < 3) → `build` (bump 1) → `review → sent-back` (1 < 3) → `build`
-(bump 2) → `review → passed` → `default.passed` → `work-item.merging`
-(`merge_place`) → `merged`; `bolt.close: not-offered → offered` → yes →
+**S14 — two send-backs then pass.** `work-item.in-type` runs
+`default@5`: `verify` stage `sessions → sent-back` (verdict not-done,
+`send_backs` 0 < 3) → `build` (bump 1) → `verify → sent-back` (1 < 3) →
+`build` (bump 2) → `verify → passed` → `default.passed` →
+`work-item.archiving` (`archive_change`, `openspec archive` committed
+in the place) → `merging` (`merge_place`) → `merged`; `bolt.close: not-offered → offered` → yes →
 `landing → landed` (`enter: place: removing`; the operator's place is
 removed). The item's record has `send_backs: 2`, the thread has both
 exits, and `item.retry_max` was 3.
@@ -1813,13 +1872,14 @@ the claim's attachment, so its scope derives (200) — in one commit; the pre-co
 chapter and node with the previous version beside it.
 
 **S26 — an operator-added type.** The operator commits
-`flywheel/types/units/persona-test.yaml` (the file in
-`machines/unit-types/persona-test.yaml`). A new unit of that type
-records `type_version: 1`; its item's `test` stage `resolving` reads
+`flywheel/types/units/persona-test@3.yaml` (the file in
+`machines/unit-types/persona-test@3.yaml`, registered by the pre-commit
+check, 10.7); it layers `test` and `review` on `default@5`'s `spec`,
+`build` and `verify`. A new unit of that type records `type_version: 3`; its item's `test` stage `resolving` reads
 `stage.agents` by globbing `personas/*.md` in the place: three matches,
 three `session` submachines by name `<item>/test/1/<persona>`; join
 `all`; each exit's offers recorded; the set recorded on the item. In a
-five-persona repository, five. A unit in flight under `default@3` reads
+five-persona repository, five. A unit in flight under `default@5` reads
 its own `type_version` and is untouched (57).
 
 **S27 — one intent, two repositories.** The archive makes two claims
@@ -1863,7 +1923,8 @@ summed by the status view. The operator never opened the pane (68).
 
 **S31 — yes at 07:40, look at 16:00.** `yes 57` in chat: the response
 names #57, the register resolves it, the unit's transition applies it;
-items run through `fast`'s stages; merges land; `bolt.close` is
+the item runs `fast@3`'s one stage, `ff-apply`, archives its change and
+merges; `bolt.close` is
 offered and numbered afresh. At 16:00 the chat sink is due; its mark
 is 07:40; `deliver_plan` lists the items' and the unit's `merged`
 entries since then, and the only counted decision is `bolt-close`. #57
@@ -1942,8 +2003,9 @@ thread; both are in `machines/`.
 ![Construction side](diagrams/flywheel-construction-side.svg)
 
 Bolt, unit, work item, the type and stage templates, and the session
-as construction sees it. The review stage writes the ledger from its
-verdict deliverable; the bolt's citation region reads the ledger and
+as construction sees it. The verify stage — the review stage, in a type
+that adds one — writes the ledger from its verdict deliverable, and the
+item archives its change before it merges; the bolt's citation region reads the ledger and
 the claim version and raises `claim-moved`. Six decisions are here:
 `claim-moved`, `bolt-close`, `land-failed`, `unit-proposed`, `stalled`,
 `question`. Not shown: the `deferred`, `superseded` and `claim-moved`

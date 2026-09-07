@@ -112,10 +112,50 @@
     the head of the tree links each change to its anchor. "mark reviewed" is one recorded
     response (S73) that moves the mark and empties both views; "ok" on an attention line is
     recorded too (S74).
+  - Artifacts (213): every object opens the OpenSpec files behind it in the dock, one view
+    per artifact, each headed by a source bar ("derived from <repository @ sha> · <path> ·
+    read hh:mm · never stored · edits only through review") with "open source" (the path at
+    the shared line) and "review" (switches to the review binding). The views: an intent's
+    change directory (proposal.md rendered, the records with kind, date and session, the
+    delta specs grouped ADDED · MODIFIED · REMOVED as requirement blocks with scenarios folded
+    under a disclosure, design.md, the archive state); a unit's change on its bolt's line
+    (the OpenSpec steps ff · apply · verify · archive as a stepper with the unit type's stage
+    under each, proposal, requirement blocks with scenarios, tasks.md as a checklist saying
+    which item and commit did each task); a claim (the chapter block, its version history,
+    attachments, a verdict per repository in scope with the as-built statement, its commit and
+    its session as evidence, "read in book"); a bolt's acceptance file (the claims its units
+    named with their scenarios, the landing state; previewed from the specs before landing,
+    read from the file after); a work item (its commits in Conventional Commits form, the
+    deliverables it recorded, its session's report). They open from: the intent and
+    elaboration docks (change directory), the bolt dock (a "change" button per unit and the
+    acceptance file), the landed dock (acceptance), every work-item chip on a ledger or in a
+    dock, every claim name in a claims list or repository row, an "evidence" button on a book
+    claim block, and a section "the artifacts behind it" on each decision's dock. A unit
+    proposal before its yes has no change to open and says so (187). The review page is a
+    plannotator stub: the command with --decision n when a decision is pending on the
+    artifact, the document with a note control per section, and the pending decision's
+    answers in the footer. Artifact keys: o:intent/<id>, o:unit/<bolt>/<unit>, o:claim/<name>,
+    o:bolt/<id>, o:wi/<id>; rv:<same> for the review binding. Objects with no invented entry
+    derive a skeleton from the state so every object opens.
+  - Load (214): three phase gauges. Compact in the machinery strip at rest, after the
+    repositories: inception (intents open · waiting on you), construction (items running
+    against the summed host bound · on a gone host · landing), operation (unmoved · oldest),
+    each with a 44px sparkline. The full panel opens from "load" in the board header, from a
+    compact gauge, or with w, as an overlay over the board like the library; Esc closes.
+    Each gauge lists its counts with a 7-day sparkline drawn inline (six invented days plus
+    now) and ends with one reading sentence derived from the counts, marked "projection ·
+    derived from the counts (142) · sets no target". The readings: "you are the bottleneck:
+    n decisions older than a day" from invented decision ages; "construction runs at the
+    bound: n of m · k on a host that is gone" or "construction is n days behind approval"
+    from queued units and the unit proposals' ages; "curation is behind: n unmoved, the
+    oldest 3d". The key is w, not l: l is the focused card's later (S56) and a key a card does
+    not offer is refused, never remapped (S57). The construction gauge counts construction
+    items and machinery sessions against the sum of the host bounds (studio 4 + mac-mini 2 in
+    the seed), not the strip's per-host session count, which includes inception sessions.
   - Under 760px the rail and the board are two tabs; the dock is full screen with a back
     control. The clock starts at 07:40 and advances a minute per response. Detail beyond the
     seed is invented and marked sample. Review switches: ?theme=dark|light, ?nodock, ?open=<key>,
-    ?view=map|book, ?book=<id>, ?ch=<chapter>, ?review=1, ?library=1.
+    ?view=map|book, ?book=<id>, ?ch=<chapter>, ?review=1, ?library=1, ?load=1.
 -->
 <meta charset="utf-8">
 <title>Rail and Board</title>
@@ -715,6 +755,91 @@ body.docked .dock{transform:none}
 .lineage{font:11.5px var(--mono);color:var(--ink3);margin-top:3px}
 .lineage b{color:var(--ink2);font-weight:500}
 
+/* ---------- artifacts (213): the OpenSpec files behind an object, drawn to fit the artifact ---------- */
+.dk-h.dk-art{background:var(--surface2);border-top:3px double var(--ink3)} .dk-h.dk-art h2{font-family:var(--mono);font-size:15px;letter-spacing:0;word-break:break-all} .dk-h.dk-art .tail{font:11.5px var(--mono)}
+.srcbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:8px 0 2px;padding:7px 10px;border:1px dashed var(--line);border-radius:6px;background:var(--surface2);font:11px var(--mono);color:var(--ink3)}
+.srcbar b{color:var(--ink);font-weight:600} .srcbar .grow{flex:1;min-width:0} .srcbar .never{color:var(--ink2)}
+.srcbar .acts{display:flex;gap:6px;margin-left:auto}
+.art{font-size:13.5px;line-height:1.55;max-width:66ch}
+.art .ah{font:700 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin:12px 0 4px;display:flex;gap:8px;align-items:baseline}
+.art .ah .p{letter-spacing:0;text-transform:none;font-weight:500;color:var(--ink3)}
+.art h4{font-size:14px;font-weight:800;margin:10px 0 3px} .art p{margin:0 0 6px}
+.art ul{margin:0 0 6px 18px;padding:0} .art li{margin:1px 0}
+.art .md{font:12.5px var(--mono);color:var(--ink2);white-space:pre-wrap;background:var(--surface2);border:1px solid var(--line2);border-radius:6px;padding:8px 10px;margin:4px 0 8px}
+.rec{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:6px 0;border-bottom:1px solid var(--line2);font-size:12.5px;align-items:baseline}
+.rec .rf{font:600 12px var(--mono);word-break:break-all} .rec .rk{font:600 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-right:6px}
+.rec .rm{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;font:11px var(--mono);color:var(--ink3)}
+.rec .rf.page{color:var(--accent)}
+.delta{margin:6px 0 10px}
+.delta .dg{font:700 11px var(--mono);letter-spacing:.06em;padding:2px 8px;border-radius:4px;display:inline-block;margin:8px 0 4px}
+.delta .dg.added{color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent)} .delta .dg.modified{color:var(--warn);background:color-mix(in srgb,var(--warn) 14%,transparent)} .delta .dg.removed{color:var(--crit);background:color-mix(in srgb,var(--crit) 12%,transparent)}
+.delta .cap{font:11px var(--mono);color:var(--ink3);margin:2px 0 4px}
+.req{border:1px solid var(--line);border-left:3px solid var(--ink3);border-radius:5px;padding:7px 10px;margin:4px 0;background:var(--surface)}
+.req.added{border-left-color:var(--ok)} .req.modified{border-left-color:var(--warn)} .req.removed{border-left-color:var(--crit);opacity:.7} .req.removed .rq-n{text-decoration:line-through}
+.req .rq-k{font:600 9.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-right:6px}
+.req .rq-n{font-weight:700;font-size:13px}
+.req .rq-t{font-size:13px;color:var(--ink2);margin:3px 0 4px;line-height:1.5}
+.req .rq-t b{color:var(--ink);font-weight:700}
+.req details{margin:2px 0 0} .req summary{cursor:pointer;font:600 11.5px var(--mono);color:var(--ink2);list-style:none;display:flex;gap:6px;align-items:baseline;padding:2px 0}
+.req summary::before{content:"▸";color:var(--ink3);font-size:10px} .req details[open] summary::before{content:"▾"}
+.req .scn{font:12px var(--mono);color:var(--ink2);padding:3px 0 3px 14px;border-left:1px solid var(--line2);margin:2px 0 4px;line-height:1.5}
+.req .scn b{color:var(--accent);font-weight:600;margin-right:4px}
+.req .scn .sn{color:var(--ink);font-family:var(--sans);font-weight:600;display:block}
+.tasks{display:flex;flex-direction:column;gap:2px;margin:4px 0}
+.task{display:grid;grid-template-columns:18px 1fr auto;gap:4px 8px;align-items:baseline;padding:4px 0;border-bottom:1px solid var(--line2);font-size:12.5px}
+.task .tb{width:14px;height:14px;border:1.5px solid var(--ink3);border-radius:3px;display:inline-grid;place-items:center;font-size:10px;line-height:1;color:var(--ok);box-sizing:border-box;transform:translateY(2px)}
+.task.done .tb{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent)} .task.doing .tb{border-color:var(--accent);border-style:dashed} .task.blocked .tb{border-color:var(--warn)}
+.task.done .tt{color:var(--ink2)} .task .tt .tn{font:600 11px var(--mono);color:var(--ink3);margin-right:6px}
+.task .tw{font:11px var(--mono);color:var(--ink3);white-space:nowrap} .task .tw b{color:var(--ink2);font-weight:500}
+.task .tw.blocked{color:var(--warn)}
+.stepper{display:flex;align-items:flex-start;gap:0;margin:8px 0 4px;overflow-x:auto}
+.step{flex:1;min-width:64px;position:relative;text-align:center;padding-top:14px}
+.step::before{content:"";position:absolute;left:0;right:0;top:5px;height:2px;background:var(--line)}
+.step:first-child::before{left:50%} .step:last-child::before{right:50%}
+.step::after{content:"";position:absolute;left:50%;top:0;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--ink3);box-sizing:border-box;transform:translateX(-50%)}
+.step.done::after{background:var(--ok);border-color:var(--ok)} .step.now::after{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)} .step.blocked::after{background:var(--warn);border-color:var(--warn)}
+.step.done::before{background:var(--ok)}
+.step .so{font:700 11px var(--mono);color:var(--ink)} .step.done .so{color:var(--ok)} .step.now .so{color:var(--accent)}
+.step .ss{font:10px var(--mono);color:var(--ink3);display:block;margin-top:1px} .step .sw{font:10px var(--mono);color:var(--ink2);display:block}
+.commit{display:grid;grid-template-columns:64px 1fr;gap:2px 10px;padding:6px 0;border-bottom:1px solid var(--line2);font-size:12.5px}
+.commit .sha{font:600 11.5px var(--mono);color:var(--accent)} .commit .sub{font:600 12.5px var(--mono)} .commit .sub .ty{color:var(--ok)} .commit .sub .sc2{color:var(--ink2)}
+.commit .body{grid-column:2;font:11px var(--mono);color:var(--ink3);white-space:pre-wrap;line-height:1.45} .commit .at{grid-column:2;font:11px var(--mono);color:var(--ink3)}
+.ver{display:grid;grid-template-columns:44px 1fr;gap:2px 10px;padding:5px 0;border-bottom:1px solid var(--line2);font-size:12.5px}
+.ver .vv{font:700 12px var(--mono)} .ver.cur .vv{color:var(--accent)} .ver .vt{color:var(--ink2)} .ver .vm{grid-column:2;font:11px var(--mono);color:var(--ink3)}
+.evid{border:1px solid var(--line);border-radius:6px;padding:7px 10px;margin:4px 0;font-size:12.5px;background:var(--surface2)}
+.evid .eh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:3px} .evid .eh .rp{font:700 12px var(--mono)}
+.evid .stmt{font-style:italic;color:var(--ink);margin:2px 0} .evid .em{display:flex;flex-wrap:wrap;gap:4px 12px;font:11px var(--mono);color:var(--ink3)} .evid .em b{color:var(--ink2);font-weight:500}
+.plann{border:1px solid var(--accent);border-radius:8px;padding:10px 12px;background:color-mix(in srgb,var(--accent-soft) 50%,transparent);margin:6px 0 10px;font-size:12.5px}
+.plann .cmd{font:12px var(--mono);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:6px 8px;margin:6px 0;word-break:break-all}
+.plann .ann{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:4px;font:11px var(--mono);color:var(--ink2)}
+.art .sect{position:relative;padding:6px 8px;border-radius:6px;border:1px solid transparent;margin:0 -8px}
+.art .sect:hover{border-color:var(--line);background:var(--surface2)}
+.art .sect .an{position:absolute;right:8px;top:6px;font:500 11px var(--mono);color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:0 5px;opacity:.7} .art .sect .an:hover{opacity:1}
+
+/* ---------- load (214): three phase gauges, compact in the machinery strip, full as a panel over the board ---------- */
+.hosts .gauges{display:inline-flex;align-items:center;gap:6px;margin-left:4px}
+.mini{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:2px 8px 2px 7px;font:11px var(--mono);color:var(--ink2);white-space:nowrap;cursor:pointer}
+.mini:hover{border-color:var(--ink3)} .mini.open{background:var(--accent-soft);border-color:var(--accent)}
+.mini .mk{font:700 9.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+.mini b{color:var(--ink);font-weight:700} .mini .warn{color:var(--warn);font-weight:700} .mini .crit{color:var(--crit);font-weight:700}
+.spark{display:inline-block;vertical-align:middle;overflow:visible} .spark polyline{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round} .spark .area{fill:var(--accent);opacity:.12;stroke:none} .spark .last{fill:var(--accent)} .spark .base{stroke:var(--line);stroke-width:1}
+.spark.warn polyline,.spark.warn .last{stroke:var(--warn);fill:var(--warn)} .spark.warn .area{fill:var(--warn)} .spark.warn polyline{fill:none}
+.loadp{position:absolute;inset:0;z-index:10;background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(2px);display:flex;align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto}
+.loadp[hidden]{display:none}
+.load-panel{width:min(920px,100%);background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);padding:14px 16px 12px}
+.load-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:8px}
+@media (max-width:900px){.load-grid{grid-template-columns:1fr}}
+.gauge{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--surface2);display:flex;flex-direction:column;gap:6px;min-width:0}
+.gauge .gh{display:flex;align-items:baseline;gap:8px} .gauge .gh h3{font-size:13px;font-weight:800} .gauge .gh .gp{margin-left:auto;font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);border:1px solid var(--line);border-radius:3px;padding:0 5px}
+.gauge .gr{display:grid;grid-template-columns:auto 1fr auto;gap:4px 8px;align-items:center;font-size:12.5px;padding:3px 0;border-bottom:1px solid var(--line2)}
+.gauge .gr:last-of-type{border-bottom:0}
+.gauge .gr b{font:700 16px var(--mono);color:var(--ink);min-width:34px;text-align:right} .gauge .gr b.warn{color:var(--warn)} .gauge .gr b.crit{color:var(--crit)}
+.gauge .gr .gl{min-width:0;color:var(--ink2)} .gauge .gr .gl small{display:block;font:10.5px var(--mono);color:var(--ink3)}
+.gauge .read{margin-top:4px;padding:7px 9px;border-left:3px solid var(--accent);background:var(--surface);font-size:12.5px;line-height:1.45}
+.gauge .read.warn{border-left-color:var(--warn)} .gauge .read.ok{border-left-color:var(--ok)}
+.gauge .read small{display:block;font:10px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);margin-top:3px}
+.load-foot{margin-top:10px;font:11px var(--mono);color:var(--ink3);line-height:1.5}
+
 /* ---------- log, toasts, tabs ---------- */
 .log{position:fixed;right:14px;top:calc(var(--top) + 6px);width:min(420px,calc(100vw - 28px));max-height:60vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:10px 12px;z-index:20}
 .log h3{font-size:12px;display:flex;gap:8px;align-items:baseline}
@@ -764,7 +889,7 @@ body.docked .dock{transform:none}
   <h1>Rail and Board</h1>
   <span class="meta">willdan · 2026-09-04 <span class="mono" id="clock">07:40</span></span>
   <div class="count"><b id="count">12</b><span>decisions</span><span class="hint" id="yesallhint">· "yes all" answers 412–417, 422, 424</span></div>
-  <span class="keys" style="display:flex;gap:10px;font-size:11px;color:var(--ink3)"><span><kbd>j</kbd><kbd>k</kbd> rail</span><span><kbd>↵</kbd> open</span><span><kbd>y</kbd><kbd>n</kbd><kbd>l</kbd> answer</span><span><kbd>]</kbd><kbd>[</kbd> beads</span><span><kbd>m</kbd> map</span><span><kbd>b</kbd> book</span><span><kbd>/</kbd> capture</span><span><kbd>esc</kbd> close</span></span>
+  <span class="keys" style="display:flex;gap:10px;font-size:11px;color:var(--ink3)"><span><kbd>j</kbd><kbd>k</kbd> rail</span><span><kbd>↵</kbd> open</span><span><kbd>y</kbd><kbd>n</kbd><kbd>l</kbd> answer</span><span><kbd>]</kbd><kbd>[</kbd> beads</span><span><kbd>m</kbd> map</span><span><kbd>b</kbd> book</span><span><kbd>w</kbd> load</span><span><kbd>/</kbd> capture</span><span><kbd>esc</kbd> close</span></span>
   <button class="btn quiet theme" id="theme" title="theme">system</button>
   <button class="btn" id="logbtn" aria-expanded="false"><b id="sent">0</b> sent</button>
   <button class="btn pri" id="yesall">yes all</button>
@@ -783,6 +908,7 @@ body.docked .dock{transform:none}
     <div class="map" id="map" hidden><div class="map-stage-wrap" id="map-wrap"><div class="map-stage" id="map-stage"></div></div><aside class="map-panel" id="map-panel"></aside></div>
     <div class="book" id="book" hidden><aside class="bk-tree" id="bk-tree" aria-label="chapters"></aside><div class="bk-content" id="bk-content"></div></div>
     <div class="library" id="library" hidden></div>
+    <div class="loadp" id="load" hidden></div>
     <div class="scrim" id="scrim"></div>
     <aside class="dock" id="dock" role="dialog" aria-modal="false" aria-labelledby="dk-title">
       <div class="dk-h" id="dk-h"></div>
@@ -883,7 +1009,7 @@ const S = {
      claims:[['repo/readme @v2','not satisfied','all','no README at root'],['repo/ci @v1','not satisfied','all','no gate runs on push'],['repo/as-built @v1','not satisfied','all','no as-built record'],['repo/agents-md @v1','not satisfied','all','no AGENTS.md'],['boundary/one-owner @v2','not satisfied','all','no CODEOWNERS'],['boundary/no-cross-import @v1','not satisfied','kind:service','—'],['boundary/ports-derived @v1','not satisfied','kind:service','—'],['owner/named @v1','not satisfied','all','—'],['invariant/health-endpoint @v1','not satisfied','capability:http','—'],['invariant/graceful-stop @v1','not satisfied','capability:http','—'],['behavior/status-row @v1','not satisfied','named','named for new-repo by 09-03 ask'],['providers/rate-envelope @v1','not applicable','capability:provider-calls','no provider calls'],['plan/sink-marks @v2','not applicable','capability:sinks','no sinks']]},
     {id:'books', kinds:['books'], caps:[], manifest:'books/flywheel.yaml · the books repository · claims live here', claims:[]},
   ],
-  view:'phases', book:{id:'platform-kit', ch:'overview', scrollTo:null, hl:null}, library:false, scopeSel:null, scopeSet:new Set(), addRepo:null,
+  view:'phases', book:{id:'platform-kit', ch:'overview', scrollTo:null, hl:null}, library:false, load:false, scopeSel:null, scopeSet:new Set(), addRepo:null,
   map:{
     nodes:[
       {id:'atlas', x:330, y:40}, {id:'switchboard', x:330, y:410}, {id:'new-repo', x:610, y:430}, {id:'books', x:60, y:200},
@@ -974,7 +1100,11 @@ function allSessions(){
   out.push({...S.curation.session, id:'curation', owner:{key:'c:curation', name:'curation', phase:'inception'}});
   return out.filter(s => s.state!=='done' && s.state!=='queued');
 }
-const objOf = key => { const [t,id] = key.split(':'); return t==='d' ? dec(+id) : t==='b' ? bolt(id) : t==='i' ? intent(id) : t==='l' ? S.landed.find(l => l.id===id) : t==='h' ? host(id) : t==='a' ? S.attention.find(a => a.id===id) : t==='r' ? repo(id) : t==='e' ? mapNode(id) : t==='x' ? S.explorations.find(x => x.id===id) : t==='p' ? S.planning : t==='f' ? S.deferred.find(x => x.key===id) : t==='v' ? elabOf(id) : null; };
+const objOf = key => { const [t,id] = key.split(':'); return t==='d' ? dec(+id) : t==='b' ? bolt(id) : t==='i' ? intent(id) : t==='l' ? S.landed.find(l => l.id===id) : t==='h' ? host(id) : t==='a' ? S.attention.find(a => a.id===id) : t==='r' ? repo(id) : t==='e' ? mapNode(id) : t==='x' ? S.explorations.find(x => x.id===id) : t==='p' ? S.planning : t==='f' ? S.deferred.find(x => x.key===id) : t==='v' ? elabOf(id) : t==='o' ? artOf(id) : t==='rv' ? artReview(id) : null; };
+/* an artifact view (213): 'o:intent/<id>' · 'o:unit/<bolt>/<unit>' · 'o:claim/<name>' · 'o:bolt/<id>' · 'o:wi/<id>'; 'rv:<same>' is the review binding */
+function artOf(id){ const [kind, ...rest] = id.split('/'); const r = rest.join('/');
+  if(kind==='intent') return {art:'intent', ...artIntent(r)}; if(kind==='unit'){ const [b, ...u] = rest; return {art:'unit', ...artUnit(b, u.join('/'))}; }
+  if(kind==='claim') return {art:'claim', ...artClaim(r)}; if(kind==='bolt') return {art:'bolt', ...artBolt(r)}; if(kind==='wi') return {art:'wi', ...artWi(r)}; return null; }
 /* an elaboration on a thread: 'v:<intent>/<sess>' · sess is a session id, g<n> for a gathering bead, x<n> for an explore bead */
 const elabKind = s => s.kind || (/^research/.test(s.label) ? 'research' : /^prototype/.test(s.label) ? 'prototype' : /^writeback/.test(s.label) ? 'writeback' : /^planning/.test(s.label) ? 'planning' : /^explore/.test(s.label) ? 'explore' : 'research');
 const elabName = s => { const k = elabKind(s); let n = s.label.replace(new RegExp('^'+k+'\\s*'),'').trim().replace(/^\((.*)\)$/,'$1'); return n || ({research:'finding', prototype:'place', writeback:'chapter and claim', planning:'rounds'}[k] || 'session'); };
@@ -1057,6 +1187,130 @@ const BX = {
   'plan-tail':[['09-01 14:02','operator','response','yes 401 · bolt plan-tail opened'],['09-03 18:40','review','exit','unit tail-derive · passed · merged'],['09-04 07:31','planning','note','proposal 422 adds 2 units here']],
 };
 
+/* =====================================================================
+   The artifacts (213) · what the OpenSpec files behind an object hold, read from the
+   repositories at the shared line when the dock asks, never stored. Everything here is
+   invented from the seed and marked sample. Shapes:
+     intent change  · books · openspec/changes/<intent>/ · proposal.md, records/, specs/<cap>/spec.md (delta), design.md
+     unit change    · built repository, on the bolt's line · openspec/changes/<unit>/ · proposal.md, specs/, tasks.md
+     claim          · the chapter block, its versions, attachments, verdicts with evidence from the as-built
+     acceptance     · built repository · flywheel/acceptance/<bolt>.yaml (192), written at landing
+     work item      · commits (185), deliverables, the session's report
+   ===================================================================== */
+const LINE = {books:'books main @ 4f2a91c', atlas:'atlas main @ b83d1e0', switchboard:'switchboard main @ 5b3e10f', 'new-repo':'new-repo main @ 0a01c9d'};
+const R = (name, text, scenarios) => ({name, text, scenarios});
+const SC = (name, g, w, t) => ({name, g, w, t});
+const REC = (file, kind, date, sess, extra={}) => ({file, kind, date, sess, ...extra});
+const ART = {
+  intents:{
+    'atlas-provider-limits':{state:'proposed · directory opened 09-01 by the standing prototype (S77)', opened:'09-01 09:10', archive:null,
+      proposal:{why:'Atlas treats every provider as unlimited. Seven signals since 08-23 say otherwise: two meeting excerpts, four log observations, one chat ask. This intent settles what a provider limit is, where it is declared, and who enforces it.', changes:['a rate envelope per provider, declared once, read on start','one limiter in front of the worker, enforced before the call','a 429 is a signal to curation, never a retry'], impact:'claims providers/rate-envelope @v1 and providers/one-writer @v3 · atlas · the poller and the retry handler'},
+      records:[REC('records/prototype-plan-derivation.md','prototype note','09-03 17:31','prototype plan-derivation · standing'),REC('records/session-2026-09-01.md','session record','09-01 09:10','prototype plan-derivation'),REC('records/derivation-runs.jsonl','prototype note','09-03 17:31','prototype plan-derivation',{note:'40 runs'}),REC('records/curation-brief.md','research note','09-02 09:14','curation',{note:'7 signals · 3 sources'})],
+      specs:{added:[{cap:'provider-limits', reqs:[R('Envelope declared per provider','The system SHALL read one rate envelope per provider on start and SHALL make no provider call outside it.',[SC('Envelope in force','a provider declares 60 calls per minute','the worker has made 60 calls in the current minute','the 61st call waits for the next minute and is not dropped'),SC('Envelope missing','a provider declares no envelope','the worker starts','the worker refuses to start and reports the missing envelope')])}]}, modified:[{cap:'provider-status', reqs:[R('Status row on a refusal','The status row SHALL record a refusal as a limit event, not a failure. (was: a 429 counts as a failure)',[SC('A 429 arrives','the envelope was respected','the provider answers 429','the row records a limit event and curation receives a signal')])}]}, removed:[]},
+      design:['The limiter sits in front of the worker, not inside the client, so both the poller and the retry handler pass through it.','The envelope is data in the manifest; the prototype read it from a YAML file beside the worker.','Open: whether the envelope is per host or per organization. The prototype assumed per host.']},
+    'loop-granularity':{state:'all elaborations done · ready to archive · close 418 archives it', opened:'08-24 10:00', archive:{state:'pending', note:'yes on 418 moves the directory to openspec/changes/archive/2026-09-04-loop-granularity/ and makes 3 claims standing'},
+      proposal:{why:'One loop per item or one loop per bolt. The bolt loop owns the chain; the merge order falls out of it.', changes:['one loop per bolt, owning every item of the bolt','a tick per loop; nothing moves between ticks','the idle bound raised from v1 to v2'], impact:'claims loops/one-per-bolt @v1, loops/tick @v1 (new), sessions/idle-bound @v2 · switchboard'},
+      records:[REC('records/research-scope.md','research note','08-28 16:20','research scope'),REC('findings/one-loop-per-bolt.md','finding','08-28 16:20','research scope'),REC('records/planning-rounds.md','session record','08-30 11:00','planning rounds',{note:'2 rounds on plannotator'}),REC('records/prototype-tick.md','prototype note','09-02 14:10','prototype tick'),REC('records/tick-runs.jsonl','prototype note','09-02 14:10','prototype tick',{note:'200 ticks'}),REC('records/tick-explorer.html','interactive page','09-02 14:12','prototype tick',{page:true}),REC('records/writeback.md','session record','09-03 17:50','writeback')],
+      specs:{added:[{cap:'loops', reqs:[R('One loop per bolt','A bolt SHALL be driven by exactly one loop that owns every work item of the bolt.',[SC('Two dependency-free units','a bolt with units a and b and no dependency between them','the loop ticks','both units start side by side under the one loop')]),R('Tick','A loop SHALL advance only on its tick.',[SC('Between ticks','a decision was answered','no tick has run','nothing on the bolt has moved'),SC('Retraction','a decision was raised on a state','the tick leaves the state','the decision is retracted on that tick')])}]}, modified:[{cap:'sessions', reqs:[R('Idle bound','A standing session idle past its bound SHALL raise one decision, finish or keep. (was: the session is ended by the machinery)',[SC('Idle again','keep was answered','the session is idle again after activity','the decision returns')])}]}, removed:[{cap:'loops', reqs:[R('One loop per item','(removed) A work item SHALL be driven by its own loop.',[])]}]},
+      design:['A loop per item made the merge order a second machine; a loop per bolt reads the chain and merges in order.','The prototype ran 200 ticks over the seeded scenarios; every decision was retracted exactly when its state was left.']},
+    'sink-marks':{state:'open · research running · writeback queued', opened:'09-03 09:00', archive:null,
+      proposal:{why:'Three sinks deliver the plan and each keeps its own mark; after a restart the tails differ. One record per sink, written on delivery, re-read on derive.', changes:['a mark records the rendering it delivered','the SINCE tail after a restart is the same tail'], impact:'claim plan/sink-marks @v3 (proposed) · atlas, switchboard'},
+      records:[REC('records/research-sink-marks.md','research note','09-04 07:33','research (self-closing)',{note:'in progress'}),REC('records/session-2026-09-04.md','session record','09-04 07:33','research (self-closing)')],
+      specs:{added:[], modified:[{cap:'plan', reqs:[R('Delivery mark records the rendering','A sink\'s delivery mark SHALL record the rendering it delivered, so the chat can be re-sent unchanged after a restart. (was: the mark records the time only)',[SC('Restart after delivery','the chat sink delivered the plan at 07:40','the host restarts','the next derive re-sends nothing and the tail is the same tail')])}]}, removed:[]},
+      design:['Draft · the research names the one record all three sinks write before design is settled.']},
+    'loop-cadence':{state:'open · no elaboration yet', opened:'09-04 07:12', archive:null, proposal:{why:'How often a loop asks a provider. Sibling of loop-granularity; three signals argue with providers/rate-envelope @v1.', changes:['to be proposed by the gathered research (424)'], impact:'claim providers/rate-envelope @v1'}, records:[], specs:{added:[],modified:[],removed:[]}, design:[]},
+    'provider-key-rotation':{state:'open · no elaboration yet', opened:'09-04 07:12', archive:null, proposal:{why:'Provider B rotates keys on the 1st; atlas must reload without a restart. Two signals from the ops constraint.', changes:['to be proposed by the gathered research (424)'], impact:'claim ops/key-rotation @v1 · atlas'}, records:[], specs:{added:[],modified:[],removed:[]}, design:[]},
+    'host-liveness':{state:'archived 09-04 05:40 · landed on the books shared line', opened:'08-24 10:00', archive:{state:'archived', at:'09-04 05:40', dir:'openspec/changes/archive/2026-09-04-host-liveness/'},
+      proposal:{why:'A host that stops heartbeating holds leases and places. The plan must survive it: one cursor per sink, the tail derived from the cursor.', changes:['one cursor per sink in the plan store','the writer is the loop, not a session'], impact:'claims plan/tail-cursor @v1 (new), sessions/one-writer v3 → v4 · atlas, switchboard'},
+      records:[REC('records/research-liveness.md','research note','08-27 15:00','research'),REC('records/writeback.md','session record','09-03 17:20','writeback')],
+      specs:{added:[{cap:'plan', reqs:[R('Tail cursor','The plan SHALL keep one cursor per sink, written on delivery, and derive its tail from it.',[SC('Restart','a cursor was written at 07:40','the host restarts','the tail after restart equals the tail before')])}]}, modified:[{cap:'sessions', reqs:[R('One writer','The status writer SHALL be the bolt loop, not a session. (was v3: one writer per bolt)',[SC('Two sessions report','two items of one bolt exit in the same tick','the loop applies both','one write per tick, in order')])}]}, removed:[]},
+      design:['The cursor lives in the plan store beside the delivery log; the log is evidence, the cursor is state.']},
+  },
+  /* unit changes, keyed <bolt>/<unit> · written at the unit's first stage (187) on the bolt's line */
+  units:{
+    'plan-decisions/sink-delivery':{type:'default', line:'plan-decisions @ 9e21c4', opened:'09-04 05:40 · wi-#419 spec',
+      proposal:{why:'The plan is derived but not delivered: each sink re-derives and none knows what it already sent. This unit delivers the tail to each sink and records the mark.', changes:['a deliver step per sink after derive','one mark per sink on delivery (sinks/one-mark @v2)','the chat rendering carries the page link at the cursor'], impact:'claims plan/sink-marks @v2 sc.1–2, sinks/one-mark @v2 · src/plan/deliver.py, src/sinks/'},
+      reqs:[R('Deliver after derive','After every derive the plan SHALL be delivered to each sink whose mark is behind the derived tail.',[SC('Nothing new','the chat mark equals the tail','derive runs','no delivery is made and the mark stays'),SC('One sink behind','the page mark is behind and the chat mark is current','derive runs','only the page is delivered')]),R('One mark per sink','A delivery SHALL move the sink\'s mark and never add a second.',[SC('Second delivery','a sink has one mark','a second delivery reaches it','the mark moves; the store holds one mark for the sink')])],
+      tasks:[{n:'1.1', text:'deliver step in the plan loop after derive', state:'done', by:'wi-#418', commit:'a41f0c2'},{n:'1.2', text:'mark table migration · one row per sink', state:'done', by:'wi-#418', commit:'c9e77b1'},{n:'1.3', text:'chat sink: page link at the cursor', state:'blocked', by:'wi-#418', note:'asks: should Ready imply Backlog cleared?'},{n:'2.1', text:'spec: Ready column semantics for the page sink', state:'doing', by:'wi-#419'},{n:'3.1', text:'review both builds against sc.1 and sc.2', state:'doing', by:'wi-#420'},{n:'3.2', text:'as-built statements naming plan/sink-marks @v2 and sinks/one-mark @v2', state:'todo'}],
+      steps:{ff:{state:'done', at:'09-04 05:41', by:'wi-#419'}, apply:{state:'blocked', at:'06:59', by:'wi-#418'}, verify:{state:'now', at:'07:37', by:'wi-#420'}, archive:{state:'todo'}}},
+    'plan-tail/tail-marks':{type:'default', line:'plan-tail @ 3c8d0e', opened:'09-03 19:02 · wi-#424 spec',
+      proposal:{why:'The tail is bounded by a count today; it must be bounded by the last mark per sink.', changes:['mark table read on derive','the tail bounded by marks, never by a count'], impact:'claim plan/sink-marks @v2 sc.3–4 · src/plan/tail.py'},
+      reqs:[R('Tail bounded by marks','The tail SHALL contain what entered a tail state after the sink\'s mark and nothing older.',[SC('Long quiet','a sink\'s mark is 9 days old','derive runs','the tail holds 9 days of entries, not the last N')])],
+      tasks:[{n:'1.1', text:'read the mark table on derive', state:'done', by:'wi-#424', commit:'7d10e9a'},{n:'1.2', text:'mark table migration applied · 9 tests green', state:'done', by:'wi-#425', commit:'e2b6c04'},{n:'1.3', text:'bound the tail by marks', state:'doing', by:'wi-#425'},{n:'2.1', text:'second build: the chat rendering reads the bound', state:'todo', by:'wi-#426', note:'starting on mac-mini'}],
+      steps:{ff:{state:'done', at:'09-03 19:10', by:'wi-#424'}, apply:{state:'now', at:'07:36', by:'wi-#425 · wi-#426'}, verify:{state:'todo'}, archive:{state:'todo'}}},
+    'plan-decisions/decision-grouping':{type:'default', line:'plan-decisions @ 9e21c4', opened:'09-03 20:00 · wi-#414 spec', merged:'07:21 · 3 items · review passed first time',
+      proposal:{why:'Decisions arrive in one list; the operator wants "yes all" to be safe. Group by the model\'s order: approve, decide, answer.', changes:['a group per decision kind','"yes all" takes the approve group in number order'], impact:'claim plan/sink-marks @v2 (the tail is outside the count) · src/plan/group.py'},
+      reqs:[R('Groups in the model\'s order','The plan SHALL list decisions grouped approve, decide, answer, each group by number.',[SC('Yes all','three approve decisions and one decide','yes all is answered','three responses are sent in number order and the decide decision stays')])],
+      tasks:[{n:'1.1', text:'group derivation', state:'done', by:'wi-#415', commit:'3f9a2d7'},{n:'1.2', text:'yes all in number order', state:'done', by:'wi-#416', commit:'b02c41e'},{n:'2.1', text:'review against the scenario', state:'done', by:'wi-#417', commit:'—'}],
+      steps:{ff:{state:'done', at:'09-03 20:05', by:'wi-#414'}, apply:{state:'done', at:'09-04 06:58', by:'wi-#415 · wi-#416'}, verify:{state:'done', at:'07:20', by:'wi-#417'}, archive:{state:'done', at:'07:21', by:'merge into the bolt'}}},
+    'plan-rows/rows-cursor':{type:'default', line:'plan-rows @ 7b2e91', opened:'09-03 09:30 · wi-#409 spec', merged:'09-03 22:40 · 2 items · review passed first time',
+      proposal:{why:'The portal reads rows by count; a restart re-sends. One cursor per sink, moved on delivery.', changes:['cursor table','window bounded by the cursor'], impact:'claim rows/cursor @v1 · src/rows/cursor.py'},
+      reqs:[R('Cursor per sink','The pipeline SHALL keep one cursor per sink, moved on delivery and re-read on restart.',[SC('Restart','the portal cursor is at row 1,204','the pipeline restarts','the next window starts at row 1,205')])],
+      tasks:[{n:'1.1', text:'cursor table and migration', state:'done', by:'wi-#410', commit:'91c0aa3'},{n:'1.2', text:'window reads from the cursor', state:'done', by:'wi-#410', commit:'d7e4f52'},{n:'2.1', text:'review', state:'done', by:'wi-#411', commit:'—'}],
+      steps:{ff:{state:'done', at:'09-03 09:40', by:'wi-#409'}, apply:{state:'done', at:'09-03 21:50', by:'wi-#410'}, verify:{state:'done', at:'09-03 22:38', by:'wi-#411'}, archive:{state:'done', at:'09-03 22:40', by:'merge into the bolt'}}},
+  },
+  claims:{
+    'sessions/one-writer':{versions:[['v4','09-03 17:20','writeback · intent host-liveness','the writer is the loop, not a session'],['v3','08-26 11:00','writeback · intent status-writer','one status writer per bolt'],['v2','08-12 15:30','writeback · intent status-rows','one writer per host'],['v1','07-30 10:00','writeback · intent status-rows','a writer']],
+      evidence:{atlas:{statement:'atlas satisfies sessions/one-writer @v3: the bolt loop\'s status writer is the only writer of the status table (src/plan/status.py).', commit:'atlas 2c7d9f1 · 09-02 16:10 · landing of provider-status', session:'wi-#402 build · claude · fable', judged:'verdict by wi-#403 review · 09-02 15:58 · reused since', stale:'the claim moved to v4 · decision 420'}}},
+    'providers/one-writer':{versions:[['v3','08-30 09:00','writeback · intent provider-status','the poller and the retry handler hand it events'],['v2','08-20 14:00','writeback · intent provider-status','one module owns the table'],['v1','08-01 09:00','writeback · intent providers','one row per provider']],
+      evidence:{atlas:{statement:'no as-built statement names providers/one-writer @v3 · unit 413 would complete it (sc.1, sc.2)', commit:'—', session:'—', judged:'verdict by planning 09-03 21:12 · not satisfied · inputs: as-built, scenarios 1–3'}}},
+    'plan/sink-marks':{versions:[['v3','—','proposed · intent sink-delivery-marks · writeback queued','a mark records the rendering it delivered'],['v2','09-01 12:00','writeback · intent sinks','bounded by the last mark per sink'],['v1','08-15 10:00','writeback · intent sinks','one mark per sink']],
+      evidence:{atlas:{statement:'atlas satisfies plan/sink-marks @v2 sc.3–4 via unit tail-derive; sc.1–2 via sink-delivery (in flight).', commit:'atlas 7d10e9a · 09-03 18:40 · merge of tail-derive into plan-tail', session:'wi-#424 spec · claude · fable', judged:'verdict by wi-#423 review · 09-03 18:38'}, switchboard:{statement:'switchboard satisfies plan/sink-marks @v2 through rows-cursor: one cursor per sink, moved on delivery.', commit:'switchboard 91c0aa3 · 09-03 22:40 · merge of rows-cursor into plan-rows', session:'wi-#410 build · claude · fable', judged:'verdict by wi-#411 review · 09-03 22:38'}}},
+    'plan/tail-cursor':{versions:[['v1','09-04 05:40','writeback · intent host-liveness · standing at the archive','one cursor per sink; the tail derived from it']],
+      evidence:{atlas:{statement:'no as-built statement yet · proposal 422 covers sc.1–3', commit:'—', session:'—', judged:'unjudged · planning due'}, switchboard:{statement:'no as-built statement yet', commit:'—', session:'—', judged:'unjudged · planning due'}}},
+    'sessions/idle-bound':{versions:[['v2','09-03 17:50','writeback · intent loop-granularity','finish or keep is a decision; the decision does not return until idle again'],['v1','08-10 10:00','writeback · intent sessions','a standing session idle past its bound is ended']],
+      evidence:{switchboard:{statement:'switchboard satisfies sessions/idle-bound @v2: idle-watch raises one decision and re-arms on activity (src/sessions/idle.py).', commit:'switchboard 5b3e10f · 09-04 06:52 · PR #212 idle-timeout', session:'wi-#405 build · claude · fable', judged:'verdict by wi-#406 review · 09-04 06:40'}}},
+    'rows/cursor':{versions:[['v1','08-29 10:00','writeback · intent rows','one cursor per sink, moved on delivery, re-read on restart']],
+      evidence:{switchboard:{statement:'switchboard satisfies rows/cursor @v1: cursor table, window reads from the cursor, restart test green.', commit:'switchboard d7e4f52 · 09-03 22:40', session:'wi-#410 build · claude · fable', judged:'verdict by wi-#411 review · 09-03 22:38'}}},
+  },
+  /* acceptance (192): the claims a bolt's units named with their scenarios, one file beside the as-built */
+  acceptance:{
+    'plan-decisions':{file:'flywheel/acceptance/plan-decisions.yaml', state:'not written · written at landing (192) · preview derived now from the units\' specs', claims:[{name:'sessions/one-writer', v:'v3', unit:'plan-derivation', scenarios:['Two sessions report → one write per tick, in order']},{name:'sinks/one-mark', v:'v2', unit:'sink-delivery', scenarios:['Second delivery → the mark moves; one mark per sink']},{name:'plan/sink-marks', v:'v2', unit:'sink-delivery', scenarios:['Nothing new → no delivery, the mark stays','One sink behind → only that sink is delivered']}]},
+    'plan-tail':{file:'flywheel/acceptance/plan-tail.yaml', state:'not written · written at landing (192) · preview derived now', claims:[{name:'plan/sink-marks', v:'v2', unit:'tail-derive · tail-marks', scenarios:['Long quiet → the tail holds 9 days of entries, not the last N']},{name:'plan/tail-cursor', v:'v1', unit:'(422 proposes cursor-store, cursor-read)', scenarios:['Restart → the tail after equals the tail before']}]},
+    'plan-rows':{file:'flywheel/acceptance/plan-rows.yaml', state:'not written · 416 lands it · then written beside the as-built', claims:[{name:'rows/order', v:'v1', unit:'rows-order', scenarios:['A later row never overtakes an earlier one']},{name:'rows/window', v:'v1', unit:'rows-window', scenarios:['A window bounded by the cursor, never by a count']},{name:'rows/cursor', v:'v1', unit:'rows-cursor', scenarios:['Restart → the next window starts at the cursor']},{name:'plan/sink-marks', v:'v2', unit:'rows-sink', scenarios:['One cursor per sink, moved on delivery']}]},
+    'idle-timeout':{file:'flywheel/acceptance/idle-timeout.yaml', state:'written 06:52 at landing · switchboard main @ 5b3e10f · PR #212', claims:[{name:'sessions/idle-bound', v:'v2', unit:'session-idle-bound', scenarios:['Idle past the bound → one decision, finish or keep','Idle again after activity → the decision returns']},{name:'sessions/idle-bound', v:'v2', unit:'idle-tail', scenarios:['The idle time on the card is the session\'s, not the item\'s']}]},
+    'provider-status':{file:'flywheel/acceptance/provider-status.yaml', state:'written 09-02 16:10 at landing · atlas main @ 2c7d9f1 · PR #198', claims:[{name:'atlas/status-table', v:'v1', unit:'status-table', scenarios:['One row per provider keyed by id']},{name:'providers/one-writer', v:'v3', unit:'status-poller', scenarios:['The poller hands the writer events; the writer writes once per tick']}]},
+    'claim-index':{file:'flywheel/acceptance/claim-index.yaml', state:'written 08-28 15:05 at landing · atlas main @ 6e1b4a9 · PR #190', claims:[{name:'atlas/claim-index', v:'v1', unit:'claim-lookup', scenarios:['A claim by name and version → the chapter that states it']}]},
+  },
+  wis:{
+    wi418:{unit:'plan-decisions/sink-delivery', stage:'build', commits:[['a41f0c2','feat','plan-decisions','deliver step after derive','unit: sink-delivery · item: wi-#418 · claims: plan/sink-marks @v2','06:12'],['c9e77b1','feat','plan-decisions','mark table · one row per sink','unit: sink-delivery · item: wi-#418 · claims: sinks/one-mark @v2','06:41']], deliverables:[['code','src/plan/deliver.py · src/sinks/marks.py'],['tests','tests/plan/test_deliver.py · 6 green'],['tasks','tasks.md 1.1, 1.2 ticked · 1.3 blocked']], report:{state:'blocked · question 421 open since 06:59', lines:['read spec wi-#418 · Ready column semantics','board API: Ready and Backlog are independent flags','spec says "Ready implies cleared"; code says no · asking'], exit:'not exited · host mac-mini gone 41m · the place holds 2 commits not yet pushed to the line'}},
+    wi419:{unit:'plan-decisions/sink-delivery', stage:'spec', commits:[['0b3e9d4','docs','plan-decisions','spec: page sink Ready semantics','unit: sink-delivery · item: wi-#419 · claims: plan/sink-marks @v2','07:30']], deliverables:[['spec','openspec/changes/sink-delivery/specs/plan/spec.md · requirement 2 drafted'],['citation','sinks/one-mark @v2 · found in the claim index · cited']], report:{state:'working', lines:['asked the books for claim sinks/one-mark @v2 · found · cited','drafting requirement: Ready column semantics'], exit:'—'}},
+    wi420:{unit:'plan-decisions/sink-delivery', stage:'review', commits:[], deliverables:[['review notes','.flywheel/review-wi420.md · 2 notes · none blocking'],['finding','3 chores offered outside the job → decision 415']], report:{state:'working', lines:['sc.1 nothing new: passes','sc.2 one sink behind: passes · note on the log line format','offered 3 chores: stale AGENTS.md, citation fix, rename ref'], exit:'—'}},
+    wi425:{unit:'plan-tail/tail-marks', stage:'build', commits:[['e2b6c04','feat','plan-tail','mark table migration','unit: tail-marks · item: wi-#425 · claims: plan/sink-marks @v2','07:22']], deliverables:[['code','src/plan/tail.py · src/plan/migrations/0007_marks.py'],['tests','tests/plan/test_tail.py · 9 green']], report:{state:'working', lines:['mark table migration applied · 9 tests green','bounding the tail by marks'], exit:'—'}},
+    wi426:{unit:'plan-tail/tail-marks', stage:'build', commits:[], deliverables:[], report:{state:'starting · place prepared off plan-tail · host quiet', lines:[], exit:'—'}},
+    cf1:{unit:'plan-tail (machinery · conflict fix)', stage:'chore', commits:[], deliverables:[['in progress','src/plan/tail.py · 2 files conflict on the take of atlas main']], report:{state:'working', lines:['take of atlas main @ b83d1e0 into plan-tail conflicts in 2 files','resolving src/plan/tail.py'], exit:'—'}},
+  },
+};
+/* derivation with fallbacks: an object with no invented entry still opens its artifacts, drawn from the state */
+const readAt = () => `read ${hhmm(S.minutes)}`;
+function artIntent(id){ const i = intent(id); const a = ART.intents[id]; const name = i ? i.name : id;
+  return a ? {...a, id, name, dir:a.archive && a.archive.dir ? a.archive.dir : `openspec/changes/${id}/`, line:LINE.books}
+           : {id, name, dir:`openspec/changes/${id}/`, line:LINE.books, state:i ? i.state+' · directory created when the intent opened (203)' : 'unknown', opened:'—', archive:null, proposal:{why:i ? i.note : '', changes:['to be proposed'], impact:'—'}, records:[], specs:{added:[],modified:[],removed:[]}, design:[]}; }
+function artUnit(boltId, unitName){ const b = bolt(boltId); const u = b && b.units.find(x => x.name===unitName); const a = ART.units[boltId+'/'+unitName]; const key = boltId+'/'+unitName;
+  if(a) return {...a, key, bolt:b, unit:u, dir:`openspec/changes/${unitName}/`, repo:b ? b.repo : 'atlas'};
+  const items = u ? (u.items||[]) : []; const merged = u && u.state==='merged';
+  return {key, bolt:b, unit:u, type:u ? u.type||'default' : 'default', line:b ? b.line : '—', repo:b ? b.repo : 'atlas', dir:`openspec/changes/${unitName}/`, opened:merged ? 'at its first stage' : items.length ? `${items[0].last ? items[0].last.split(' · ')[0] : hhmm(S.minutes)} · ${items[0].label}` : 'not yet · written at the unit\'s first stage (187)',
+    merged:merged ? (u.t||'merged') : null, proposal:{why:`Unit ${unitName} on bolt ${b ? b.name : boltId}. ${merged ? 'Merged into the bolt.' : items.length ? 'In flight.' : 'Queued; its change is written when its first stage starts.'}`, changes:[], impact:(b && b.claims||[]).join(', ')||'—'},
+    reqs:[], tasks:items.map((it,i) => ({n:`${i+1}.1`, text:it.label, state:it.state==='blocked' ? 'blocked' : it.state==='working'||it.state==='starting' ? 'doing' : 'done', by:it.label.split(' ')[0]})),
+    steps:merged ? {ff:{state:'done'},apply:{state:'done'},verify:{state:'done'},archive:{state:'done',by:'merge into the bolt'}} : items.length ? {ff:{state:'done'},apply:{state:'now'},verify:{state:'todo'},archive:{state:'todo'}} : {ff:{state:'todo'},apply:{state:'todo'},verify:{state:'todo'},archive:{state:'todo'}}}; }
+function artClaim(name){ const nm = String(name).split(' @')[0].split(' · ')[0]; const a = ART.claims[nm] || {versions:[], evidence:{}}; const ref = claimRef(nm);
+  let block = null, bookId = null, chId = null; if(ref){ const b = BOOKS[ref.book]; const c = b.chapters.find(x => x.id===ref.ch); block = c.blocks.find(x => anchorOf(x)===ref.a); bookId = b.id; chId = c.id; }
+  const versions = a.versions.length ? a.versions : (block ? [[block.v, '—', 'writeback', block.text.slice(0,60)+'…']] : []);
+  const scope = block ? scopeOf(block) : builtRepos().filter(r => r.claims.some(c => c[0].split(' @')[0]===nm)).map(r => r.id);
+  const verdicts = scope.map(h => { const v = block ? verdictOf(block, h) : (repo(h).claims.find(c => c[0].split(' @')[0]===nm)||[])[1]||'unjudged'; const e = a.evidence[h] || {statement:v==='satisfied' ? 'as-built statement present · not read here' : v==='not applicable' ? 'scope judgment: not applicable · made once (101)' : 'no as-built statement names this claim', commit:'—', session:'—', judged:`verdict from the ledger · ${v}`}; return {home:h, v, ...e}; });
+  return {name:nm, block, bookId, chId, ref, versions, verdicts, scope, line:LINE.books, dir:bookId ? `${BOOKS[bookId].src}/${chId ? BOOKS[bookId].chapters.find(c=>c.id===chId).file : ''}` : 'not in any book'}; }
+function artBolt(id){ const b = bolt(id) || S.landed.find(l => l.id===id); const a = ART.acceptance[id]; const landed = !bolt(id) && b;
+  const state = a ? a.state : landed ? `written ${b.at} at landing` : 'not written · written at landing (192)';
+  return {id, obj:b, landed:!!landed, file:a ? a.file : `flywheel/acceptance/${id}.yaml`, state, repo:b ? b.repo : 'atlas', line:landed ? LINE[b.repo] : (b ? b.line : '—'),
+    claims:a ? a.claims : (b ? (b.claims||[]).map(n => ({name:n.split(' @')[0], v:(n.split(' @')[1]||'v1'), unit:'—', scenarios:['scenarios read from the unit\'s spec at landing']})) : []),
+    landing:landed ? {state:`landed · PR #${b.pr.n} ${b.pr.state}`, checks:b.checks, envs:b.envs} : b && b.landing ? {state:`landing · PR #${b.landing} open · checks running`} : {state:b && b.units.every(u => u.state==='merged') ? 'every unit merged · the close is yours' : `open · ${b ? b.units.filter(u=>u.state==='merged').length : 0} of ${b ? b.units.length : 0} units merged`}}; }
+function artWi(id){ const s = allSessions().find(x => x.id===id) || S.bolts.flatMap(b => b.units.flatMap(u => (u.items||[]).map(i => ({...i, unit:u.name, owner:{key:'b:'+b.id, name:'bolt '+b.name}})))).find(x => x.id===id); const a = ART.wis[id];
+  const bkey = s && s.owner ? s.owner.key.slice(2) : null; const unitKey = a ? a.unit : (bkey && s.unit ? bkey+'/'+s.unit : '—');
+  return {id, sess:s, label:s ? s.label : id, unitKey, stage:a ? a.stage : (s ? s.label.split(' ').pop() : '—'), commits:a ? a.commits : [], deliverables:a ? a.deliverables : [], report:a ? a.report : {state:s ? s.state : 'unknown', lines:s && s.last ? [s.last] : [], exit:'—'}, place:s ? `~/places/${bkey||'?'}/${id}` : '—', line:bkey && bolt(bkey) ? bolt(bkey).line : '—'}; }
+/* the review binding (S35): the artifact as a document under plannotator; a stub here */
+function artReview(path){ const [kind, ...rest] = path.split('/'); const id = rest.join('/');
+  const pending = kind==='intent' ? S.decisions.find(d => d.obj==='i:'+id) : kind==='unit' ? S.decisions.find(d => d.obj==='b:'+id.split('/')[0]) : kind==='bolt' ? S.decisions.find(d => d.obj==='b:'+id) : kind==='claim' ? S.decisions.find(d => /claim/.test(d.kind==='moved' ? 'claim' : '') && d.title.includes(id.split('/').pop())) : null;
+  return {kind, id, pending}; }
 
 /* =====================================================================
    The books · mdBook sources in the books repository, served by the Rust server at
@@ -1273,7 +1527,7 @@ const bookAttr = r => `${r.book}|${r.ch}|${r.a||''}`;
 const bookBtn = (r, label='read in book') => `<button class="btn sm quiet" data-book="${bookAttr(r)}" title="${esc(refLabel(r))}">${label}</button>`;
 function refsHtml(refs){ return `<div class="rows">${refs.map(r => `<div class="rowbtn"><div class="grow">${esc(refLabel(r))}</div>${bookBtn(r)}</div>`).join('')}</div>`; }
 function claimsRows(list, repoId){ return `<div class="rows">${list.map(n => { const r = claimRef(n); const rp = repoId && repo(repoId); const row = rp && rp.claims.find(c => c[0].split(' @')[0]===n.split(' @')[0]);
-  return `<div class="rowbtn"><span class="mono" style="font:600 12px var(--mono)">${esc(n)}</span><div class="grow">${row ? `<span class="vd ${row[1].replace(' ','-')}">${esc(row[1])}</span>` : ''}</div>${r ? bookBtn(r) : '<span class="t" style="font:11px var(--mono);color:var(--ink3)">not in any book</span>'}</div>`; }).join('')}</div>`; }
+  return `<div class="rowbtn"><button class="mono" style="font:600 12px var(--mono);color:var(--accent)" data-oart="claim/${esc(n.split(' @')[0])}" title="the claim: versions, attachments, verdicts with evidence">${esc(n)}</button><div class="grow">${row ? `<span class="vd ${row[1].replace(' ','-')}">${esc(row[1])}</span>` : ''}</div>${r ? bookBtn(r) : '<span class="t" style="font:11px var(--mono);color:var(--ink3)">not in any book</span>'}</div>`; }).join('')}</div>`; }
 function gotoBook(r, close){ S.view = 'book'; S.library = false; if(BOOKS[r.book]) S.book.id = r.book; S.book.ch = r.ch; S.book.scrollTo = r.a || '_top'; S.book.hl = r.a || '_top';
   if(close && S.open){ S.open = null; document.body.classList.remove('docked'); }
   document.body.dataset.tab = 'board'; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab==='board'))); render(); }
@@ -1316,7 +1570,7 @@ function renderBook(){
       <div class="cb-t">${x.text}</div>
       <div class="cb-att">attached to ${x.attach.map(at => `<span class="lk">${esc(at.to)}</span>`).join('')}</div>
       <div class="cb-scope">scope · ${scope.length ? scope.join(', ') : 'no repository · homes nothing'} · derived from what it attaches to (200)</div>
-      ${proposed ? `<div class="cb-note">proposed · visible, never planned against (98)${x.note ? ' · '+esc(x.note) : ''}</div>` : `<div class="cb-homes">${dots || '<span class="cb-note">in scope for no repository</span>'}</div>`}
+      ${proposed ? `<div class="cb-note">proposed · visible, never planned against (98)${x.note ? ' · '+esc(x.note) : ''}</div>` : `<div class="cb-homes">${dots || '<span class="cb-note">in scope for no repository</span>'}<button class="btn sm quiet" data-oart="claim/${esc(x.name)}" title="versions, attachments, verdicts with their evidence" style="margin-left:auto">evidence</button></div>`}
       ${x.changed && rv ? `<div class="cb-changed">Δ ${esc(x.changed)}${x.was ? ` · was ${esc(x.was)}` : ''}</div>` : ''}</div></div>`; }).join('');
   const prev = b.chapters[ci-1], next = b.chapters[ci+1];
   $('#bk-content').innerHTML = `<div class="bk-page"><div class="bk-crumb"><span>${esc(b.title)}</span><span>›</span><span>${esc(b.src)}/${esc(ch.file)}</span><span style="margin-left:auto">${SM}</span></div>
@@ -1582,7 +1836,7 @@ function sessChip(s){
   const hl = S.hostlit ? (s.host===S.hostlit ? 'hostlit' : 'hostdim') : '';
   return `<span class="sc ${st} ${hl}" title="${esc(s.last||'')}"><span class="dot ${dot}"></span><span class="ag">${esc(s.agent||'claude')} · ${esc(s.model||'fable')}</span><span class="hs">@${esc(s.host||'studio')}</span><span class="ac">${esc(act)}</span><button class="pane" data-pane="${esc(s.pane||'')}" title="open the pane">pane ↗</button></span>`;
 }
-function wiHtml(s){ return `<span class="it"><span class="wi ${s.state}">${esc(s.label)}</span>${sessChip(s)}</span>`; }
+function wiHtml(s){ return `<span class="it"><span class="wi ${s.state}" data-wi="${esc(s.id)}" title="open the work item: commits, deliverables, report" style="cursor:pointer">${esc(s.label)}</span>${sessChip(s)}</span>`; }
 function elabRow(s){
   const right = s.state==='done' ? `<span class="leave ${/^(today|1d|2d)$/.test(s.leaves||'')?'soon':''}">done · leaves ${s.leaves==='today'?'today':'in '+esc(s.leaves||'7d')}</span>`
     : s.state==='queued' ? `<span class="leave">queued · starts when research exits</span>` : sessChip(s);
@@ -1626,14 +1880,15 @@ function renderHosts(){
   $('#hosts').innerHTML = `<span class="lab">hosts</span>` + S.hosts.map(h => { const n = all.filter(s => s.host===h.id).length;
     return `<button class="host ${h.alive?'':'gone'} ${S.hostlit===h.id?'lit':''} ${S.open==='h:'+h.id?'open-in-dock':''}" data-host="${h.id}"><span class="dot ${h.alive?'':'gone'}"></span><span class="hn">${esc(h.id)}</span><span class="hm tn">${n}/${h.bound} sessions</span><span class="hm">${h.alive?'seen '+h.last:'<b>gone '+h.gone+'</b>'}</span></button>`; }).join('')
     + `<span class="sep"></span><span class="lab">repos</span>` + S.repos.map(r => `<button class="repo ${S.open==='r:'+r.id?'open-in-dock':''}" data-repo="${r.id}">${esc(r.id)}<span class="hm">${r.claims.length ? r.claims.filter(c=>c[1]==='not satisfied').length+' unmet' : 'books'}</span></button>`).join('')
-    + `<span class="note">every session carries its host · a host pill lights its sessions · a repo opens its claims and scope</span>`;
+    + miniGauges()
+    + `<span class="note">a host pill lights its sessions · a repo opens its claims · load opens the gauges (<kbd>w</kbd>)</span>`;
 }
 function renderBoardHead(){
   const v = S.view, map = v==='map', book = v==='book';
   const bk = BOOKS[S.book.id] || BOOKS['platform-kit']; const st = book ? bookStats(bk) : null;
   $('#board-h').innerHTML = `<div class="seg" role="tablist"><button data-view="phases" aria-pressed="${v==='phases'}">phases</button><button data-view="map" aria-pressed="${map}">map</button><button data-view="book" aria-pressed="${book}">book</button></div>
     <span>${map ? 'the system context map is the scope surface (198) · a repository node carries its claims · click a node for its dock' : book ? `<b class="mono">${esc(bk.title)}</b> · ${st.chapters} chapters · ${st.standing} standing · ${st.proposed} proposed · the rail jumps the book to what a decision concerns` : 'the status view by phase (B.4) · objects only · every decision is a marker on its object'}</span>
-    ${map ? `<div class="r"><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}</label><button class="btn sm" id="addrepo-open">add repository</button></div>` : ''}${book ? `<div class="r"><button class="btn sm" id="library-open">library</button><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}${st.changed ? ` · <b>${st.changed}</b> changed` : ''}</label>${S.review.on ? `<button class="btn sm" id="review-mark">mark reviewed · ${hhmm(S.minutes)}</button>` : ''}</div>` : ''}<kbd style="margin-left:${map||book?'0':'auto'}">${book ? 'b' : 'm'}</kbd>`;
+    ${map ? `<div class="r"><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}</label><button class="btn sm" id="addrepo-open">add repository</button></div>` : ''}${book ? `<div class="r"><button class="btn sm" id="library-open">library</button><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}${st.changed ? ` · <b>${st.changed}</b> changed` : ''}</label>${S.review.on ? `<button class="btn sm" id="review-mark">mark reviewed · ${hhmm(S.minutes)}</button>` : ''}</div>` : ''}<div class="r" style="margin-left:${map||book?'0':'auto'}"><button class="btn sm ${S.load?'pri':''}" id="load-open" title="the flywheel's load by phase (214)">load <kbd style="margin-left:4px">w</kbd></button><kbd>${book ? 'b' : 'm'}</kbd></div>`;
   $('#lanes').hidden = v!=='phases'; $('#map').hidden = !map; $('#book').hidden = !book;
 }
 /* --- scope rules over the set of built repositories --- */
@@ -1712,7 +1967,7 @@ function renderTop(){
 function renderLog(){ $('#loglist').innerHTML = S.log.map(e => `<li class="${e.say?'say':''} ${e.fail?'fail':''}"><time>${e.t}</time><span>${esc(e.text)}</span></li>`).join('') || '<li><span class="empty">nothing sent yet</span></li>'; }
 function render(){
   const keep = ['#rail','.lane','#bk-tree','#bk-content'].flatMap(s => $$(s)).map(el => [el, el.scrollTop]);
-  renderTop(); renderHosts(); renderBoardHead(); renderRail(); renderInception(); renderPlan(); renderConstruction(); renderOperation(); renderMap(); renderBook(); renderLibrary(); renderLog();
+  renderTop(); renderHosts(); renderBoardHead(); renderRail(); renderInception(); renderPlan(); renderConstruction(); renderOperation(); renderMap(); renderBook(); renderLibrary(); renderLoad(); renderLog();
   keep.forEach(([el,t]) => el.scrollTop = t);
   if(S.view==='book' && S.book.scrollTo){ const el = $(`#bk-content [data-anchor-id="${S.book.scrollTo}"]`); if(el) el.scrollIntoView({block:S.book.scrollTo==='_top' ? 'start' : 'center'}); S.book.scrollTo = null; }
   if(S.open) renderDock();
@@ -1801,6 +2056,19 @@ function dockDecision(d){
     parts.push(sec(`claims unmet · ${unmet.length} · grouped by scope rule`, rules.map(rule => `<div class="row" style="align-items:flex-start"><span class="vd" style="margin-top:2px">${esc(rule)}</span><div class="grow kc">${unmet.filter(c => c[2]===rule).map(c => `<span class="lk"><b>${esc(c[0])}</b>${c[3]!=='—' ? ' · '+esc(c[3]) : ''}</span>`).join('')}</div></div>`).join('') + `<div class="acts" style="margin-top:8px"><button class="btn sm" data-openrepo="${d.repo}">open ${esc(d.repo)} · claims and scope</button></div>`, 'scope is part of the claim (105)')); }
   if(x.lineage) parts.push(sec('lineage · where this proposal comes from', `<div class="lin">${x.lineage.map((l,i) => `<div class="ln ${i===x.lineage.length-1?'here':''}"><span class="lk-k">${esc(l[0])}</span><span><span class="lk-w">${esc(l[1])}</span><span class="lk-t">${esc(l[2])}</span></span></div>`).join('')}</div>`, 'claim ← writeback ← elaboration ← intent'));
   if(x.log) parts.push(sec('session log · last lines', `<ul class="tl">${x.log.map(([t,l]) => `<li><time>${esc(t)}</time><span class="who"></span><span class="what">${esc(l)}</span></li>`).join('')}</ul>`, SM));
+  { /* the artifacts behind the decision's object (213) */
+    const links = d.kind==='blocked' ? [['wi/'+d.sess, 'the work item · commits, deliverables, report'],['unit/plan-decisions/sink-delivery', 'the unit\'s change · tasks.md with 1.3 blocked']]
+      : d.kind==='moved' ? [['claim/sessions/one-writer', 'the claim · v3 → v4 with the verdict\'s evidence'],['unit/plan-decisions/sink-delivery', 'the unit\'s change citing v3']]
+      : d.kind==='land' ? [['bolt/'+d.obj.slice(2), 'the acceptance file · preview before landing (192)']]
+      : d.kind==='close' ? [['intent/'+d.obj.slice(2), 'the change directory · ready to archive']]
+      : d.kind==='intent' ? [['intent/'+d.obj.slice(2), 'the change directory · records the standing prototype wrote']]
+      : d.kind==='idle' ? [['intent/'+d.obj.slice(2), 'the change directory · the prototype\'s records']]
+      : d.kind==='gathered' ? d.intents.map(i => ['intent/'+i, 'change directory · '+i])
+      : d.kind==='chores' ? [['wi/wi420', 'the review item that offered them']]
+      : d.kind==='baseline' ? (d.repo && repo(d.repo) && repo(d.repo).claims.length ? [['claim/'+repo(d.repo).claims[0][0].split(' @')[0], 'the first unmet claim · verdict judged once']] : [])
+      : d.kind==='proposal' ? [['intent/host-liveness', 'the archived change this proposal descends from'],['claim/plan/tail-cursor', 'the claim it covers · unjudged on both repositories']]
+      : d.kind==='unit' ? [] : [];
+    parts.push(sec('the artifacts behind it', links.length ? `<div class="rows">${links.map(([k,l]) => `<div class="rowbtn"><div class="grow">${esc(l)}</div><button class="btn sm quiet" data-oart="${esc(k)}">open</button></div>`).join('')}</div>` : `<div class="empty" style="padding:2px 0">no change directory yet · a unit's change is written at its first stage, after the yes (187)</div>`, '213 · derived at the shared line')); }
   if(d.sess && d.obj && d.obj[0]==='i'){ const e = elabOf(d.obj.slice(2)+'/'+d.sess); if(e) parts.push(sec('the elaboration', `<div class="dtext">This decision is about the <b>${esc(e.kind)}</b> bead on intent ${esc(e.intent.name)}. <button class="btn sm" data-gotoobj="${e.key}">open the elaboration</button></div>`, 'a bead on the thread')); }
   const o = d.obj && d.obj!=='d:'+d.n ? objOf(d.obj) : null;
   if(o){ const list = d.obj[0]==='b' ? o.units.flatMap(u => u.items||[]) : o.sessions; parts.push(sec(`on ${esc(d.obj[0]==='b'?'bolt '+o.name:'intent '+o.name)} · sessions running`, sessionsHtml(d.sess ? list.filter(s => s.id===d.sess) : list, 'nothing running'), 'with host and last activity')); }
@@ -1814,7 +2082,8 @@ function dockBolt(b){
     + sec('the bolt', `<div class="dtext">Open bolt on <span class="mono">${esc(b.repo)}</span>, line <span class="mono">${esc(b.line)}</span>. Its place is kept on the host at the head of its line, refreshed after each merge, where you run and test the bolt with no session involved. ${esc(b.note)}.</div>`)
     + sec('decisions on this bolt', S.decisions.filter(d => d.obj==='b:'+b.id).map(d => `<div class="row"><button class="mark ${d.g}" data-mark="d:${d.n}">${d.n}</button><span class="grow">${d.title}</span><span class="t">${d.g}</span></div>`).join('') || '', 'in the rail, where you answer')
     + sec('claims cited · by its units', claimsRows(b.claims||[], b.repo), 'verdict from the ledger · read in book opens the chapter')
-    + sec('units', `<div class="rows">${b.units.map(u => `<div class="row" style="flex-wrap:wrap"><span class="st">${u.state}</span><div class="grow"><div class="nm">${esc(u.name)}${u.type?` <span class="m">type ${u.type}</span>`:''}</div></div>${u.state==='merged' ? '' : `<button class="btn sm quiet drop" data-bdrop="${b.id}" data-unit="${esc(u.name)}">drop</button>`}${(u.items||[]).map(wiHtml).join('')}</div>`).join('')}</div>`, 'drop is a dictation')
+    + sec('units', `<div class="rows">${b.units.map(u => `<div class="row" style="flex-wrap:wrap"><span class="st">${u.state}</span><div class="grow"><div class="nm">${esc(u.name)}${u.type?` <span class="m">type ${u.type}</span>`:''}</div></div><button class="btn sm quiet" data-oart="unit/${b.id}/${esc(u.name)}" title="the unit's change in ${esc(b.repo)}: proposal, spec, tasks, status">${u.state==='queued' ? 'change · not yet' : 'change'}</button>${u.state==='merged' ? '' : `<button class="btn sm quiet drop" data-bdrop="${b.id}" data-unit="${esc(u.name)}">drop</button>`}${(u.items||[]).map(wiHtml).join('')}</div>`).join('')}</div>`, 'drop is a dictation · change opens the unit\'s OpenSpec change (213) · a work item opens its commits and report')
+    + sec('acceptance file', `<div class="dtext"><button class="btn sm" data-oart="bolt/${b.id}">flywheel/acceptance/${esc(b.id)}.yaml</button> <span style="font-size:12px;color:var(--ink3)">written at landing (192) · previewed now from the units' specs</span></div>`)
     + sec('name', `<div class="field"><input value="${esc(b.name)}" data-brename="${b.id}" aria-label="bolt name"><button class="btn sm" data-brenamesend="${b.id}">send rename</button></div>`, 'a bolt\'s name is yours to change · one dictation')
     + sec('sessions running', sessionsHtml(sessions.concat(b.machinery||[])), 'with host and last activity')
     + sec(`services of the place · ${esc(b.repo)}/${esc(b.name)}`, servicesHtml(b.services, 'b:'+b.id), 'start and stop are dictations')
@@ -1828,7 +2097,7 @@ function dockElab(e){
     + (d ? sec(`decision ${d.n} · in the rail`, cardHtml(d) + '<div class="empty" style="font-size:11px">answered here or in the rail · one response</div>', d.g) : '')
     + sec('document · excerpt', `<div class="doc"><div class="dm">${esc(e.kind)} · ${esc(i.name)} · ${SM}</div><p>${esc(ex.excerpt)}</p></div>`)
     + ((i.chapters||[]).length ? sec('in the book', refsHtml(i.chapters.map(ch => ({book:'platform-kit', ch, a:null}))), 'the chapter its writeback writes') : '')
-    + sec(`records · books/intents/${esc(i.name)}/`, ex.records.length ? `<div class="records">${ex.records.map(r => `<div>${esc(r)}</div>`).join('')}</div>` : '<div class="empty" style="padding:2px 0">nothing written yet</div>', 'the intent\'s change directory')
+    + sec(`records · books/openspec/changes/${esc(i.id)}/`, (ex.records.length ? `<div class="records">${ex.records.map(r => `<div>${esc(r)}</div>`).join('')}</div>` : '<div class="empty" style="padding:2px 0">nothing written yet</div>') + `<div class="acts" style="margin-top:8px"><button class="btn sm quiet" data-oart="intent/${i.id}">open the change directory</button></div>`, 'the intent\'s change directory')
     + (e.session && e.session.state!=='done' ? sec('session', `<div class="rows"><div class="row"><div class="grow"><div class="nm">${esc(e.kind)} · ${esc(e.name)}</div><div class="last">${esc(e.session.last||'')}</div></div>${sessChip(e.session)}</div></div>`, 'with host and last activity') : '')
     + (covered && (e.sid==='g'+covered.n || e.kind===covered.type) ? sec('covered', `<div class="dtext">This research is one session over ${covered.intents.length} intents (188): <button class="mark approve" data-mark="d:${covered.n}">✓ ${covered.n} gathered</button> in the rail. The intent proposes no other elaboration meanwhile.</div>`) : '')
     + (e.state==='done' || (e.session && e.session.state==='done') ? sec('finished', `<div class="dtext">Record written. Stays on the thread <b>${esc((e.session||e).leaves==='today'?'today':'for '+((e.session||e).leaves||'7d'))}</b>, then leaves every view and stays in history (186).</div>`) : '');
@@ -1838,7 +2107,8 @@ function dockIntent(i){
     + sec('the intent', `<div class="dtext">Intent <span class="mono">${esc(i.name)}</span> is ${esc(i.state)}. ${esc(i.note)}. An intent is a line off the books' shared line; each elaboration works in a place off that line, and archiving the intent lands it.</div>`)
     + ((i.chapters||[]).length ? sec('chapters', refsHtml(i.chapters.map(ch => ({book:'platform-kit', ch, a:null}))), 'where its writeback writes · read in book') : '')
     + sec('decisions on this intent', S.decisions.filter(d => d.obj==='i:'+i.id).map(d => `<div class="row"><button class="mark ${d.g}" data-mark="d:${d.n}">${d.n}</button><span class="grow">${d.title}</span><span class="t">${d.g}</span></div>`).join('') || '', 'in the rail, where you answer')
-    + sec('sessions running', sessionsHtml(i.sessions), 'with host and last activity');
+    + sec('sessions running', sessionsHtml(i.sessions), 'with host and last activity')
+    + sec('the artifacts behind it', `<div class="dtext"><button class="btn sm" data-oart="intent/${i.id}">change directory · books/openspec/changes/${esc(i.id)}/</button></div><div class="dtext" style="font-size:12px;color:var(--ink3);margin-top:4px">proposal, records, delta specs, design, archive state · derived at the shared line (213)</div>`, '187');
 }
 function dockLanded(l){
   return sec('the record', recordHtml(l).replace(/ tabindex="0"/,'').replace(/data-obj="[^"]*"/,''), 'history')
@@ -1846,6 +2116,7 @@ function dockLanded(l){
     + sec('pull request and checks', `<div class="rows"><div class="row"><span class="lk ${l.pr.state==='merged'?'ok':'pend'}">PR #${l.pr.n}</span><div class="grow">${esc(l.pr.state)}</div></div>${l.checks.map(c => `<div class="row"><span class="dot ${c[1]==='ok'?'':c[1]==='bad'?'failed':'starting'}"></span><div class="grow"><div class="nm">${esc(c[0])}</div></div><span class="st ${c[1]==='bad'?'failed':''}">${c[1]==='ok'?'passed':c[1]==='bad'?'failing':'running'}${c[2]?' · '+esc(c[2]):''}</span></div>`).join('')}</div>`, SM)
     + sec('environments', `<div class="rows">${l.envs.map(e => `<div class="row"><span class="st">${esc(e[0])}</span><span class="ep">${esc(e[1])}</span><span class="t">↗</span></div>`).join('')}</div>`)
     + sec('units landed', kvHtml(l.units.map(u => [esc(u), 'merged'])))
+    + sec('acceptance file', `<div class="dtext"><button class="btn sm" data-oart="bolt/${l.id}">flywheel/acceptance/${esc(l.id)}.yaml</button> <span style="font-size:12px;color:var(--ink3)">written at landing beside the as-built (192)</span></div>`)
     + ((l.claims||[]).length ? sec('claims served · named by the as-built (99)', claimsRows(l.claims, l.repo)) : '')
     + sec('signals from operation', l.signals.length ? l.signals.map(s => `<div class="dsig">“${esc(s.text)}”<small>${esc(s.kind)} · ${esc(s.src)} · ${esc(s.age)} · ${s.move ? esc(s.move) : 'unmoved · curation sees it next run'}</small></div>`).join('') : '<div class="empty" style="padding:2px 0">nothing yet</div>');
 }
@@ -1855,7 +2126,7 @@ function dockRepo(r){
   const scopeOpts = ['all', ...r.kinds.map(k => 'kind:'+k), ...r.caps.map(c => 'capability:'+c), 'named'];
   return sec('the repository', `<div class="dtext">Repository <span class="mono">${esc(r.id)}</span> declares its kinds and capabilities in its manifest; a claim is in scope when its scope rule matches them, and each repository carries its own verdict per claim (105). ${esc(r.manifest)}.</div>`)
     + sec('kinds and capabilities · from the manifest', `<div class="kc">${r.kinds.map(k => `<span class="lk"><b>kind</b> ${esc(k)}</span>`).join('')}${r.caps.map(c => `<span class="lk"><b>capability</b> ${esc(c)}</span>`).join('')}${!r.kinds.length && !r.caps.length ? '<span class="empty">none</span>' : ''}</div>`)
-    + (r.claims.length ? sec(`claims in scope · ${r.claims.length}`, `<div class="kc" style="margin-bottom:8px">${counts.map(([v,n]) => `<span class="vd ${v.replace(' ','-')}">${n} ${v}</span>`).join('')}</div><div class="claims">${r.claims.map(c => `<div class="claim"><span class="cn">${esc(c[0])}</span><span class="vd ${c[1].replace(' ','-')}">${esc(c[1])}</span><select data-scope="${esc(c[0])}" data-repo="${r.id}" aria-label="scope of ${esc(c[0])}">${scopeOpts.map(o => `<option ${o===c[2]?'selected':''}>${o}</option>`).join('')}${scopeOpts.includes(c[2])?'':`<option selected>${esc(c[2])}</option>`}</select><button class="btn sm quiet" data-showmap="${esc(c[0])}" title="show its scope on the map">map</button>${claimRef(c[0]) ? `<button class="btn sm quiet" data-book="${bookAttr(claimRef(c[0]))}" title="${esc(refLabel(claimRef(c[0])))}">book</button>` : '<span></span>'}${c[3]!=='—' ? `<span class="ce">${esc(c[3])}</span>` : ''}</div>`).join('')}</div>`, 'verdict from the ledger · scope is yours to correct, one response each · "map" shows the scope')
+    + (r.claims.length ? sec(`claims in scope · ${r.claims.length}`, `<div class="kc" style="margin-bottom:8px">${counts.map(([v,n]) => `<span class="vd ${v.replace(' ','-')}">${n} ${v}</span>`).join('')}</div><div class="claims">${r.claims.map(c => `<div class="claim"><span class="cn">${esc(c[0])}</span><span class="vd ${c[1].replace(' ','-')}">${esc(c[1])}</span><select data-scope="${esc(c[0])}" data-repo="${r.id}" aria-label="scope of ${esc(c[0])}">${scopeOpts.map(o => `<option ${o===c[2]?'selected':''}>${o}</option>`).join('')}${scopeOpts.includes(c[2])?'':`<option selected>${esc(c[2])}</option>`}</select><button class="btn sm quiet" data-oart="claim/${esc(c[0].split(' @')[0])}" title="the claim: versions, attachments, verdicts with evidence">claim</button><button class="btn sm quiet" data-showmap="${esc(c[0])}" title="show its scope on the map">map</button>${claimRef(c[0]) ? `<button class="btn sm quiet" data-book="${bookAttr(claimRef(c[0]))}" title="${esc(refLabel(claimRef(c[0])))}">book</button>` : '<span></span>'}${c[3]!=='—' ? `<span class="ce">${esc(c[3])}</span>` : ''}</div>`).join('')}</div>`, 'verdict from the ledger · scope is yours to correct, one response each · "map" shows the scope')
       : sec('claims', `<div class="dtext">The books repository holds the claims; it carries no verdicts of its own.</div>`))
     + sec('decisions on this repository', S.decisions.filter(d => d.repo===r.id || (d.kind==='proposal' && r.id==='atlas')).map(d => `<div class="row"><button class="mark ${d.g}" data-mark="d:${d.n}">${d.n}</button><span class="grow">${d.title}</span><span class="t">${d.g}</span></div>`).join('') || '<div class="empty" style="padding:2px 0">none in the count</div>', 'in the rail, where you answer');
 }
@@ -1881,8 +2152,110 @@ function dockHost(h){
     + sec(`what it runs · ${mine.length}/${h.bound}`, sessionsHtml(mine, 'nothing on this host'), 'each with the object it works')
     + sec('leases', kvHtml(h.id==='studio' ? [['plan','holder · renews every 30s'],['curation','holder'],['page','presenter for the page sink'],['plan-decisions','place at the head of the line']] : [['plan-decisions/wi-418','place · session blocked · lease expires 07:59'],['plan-tail/wi-426','place · session starting']]), SM);
 }
+/* --- artifacts (213): one view per artifact, derived at the shared line, never stored; edits only through review --- */
+const srcBar = (line, path, key) => `<div class="srcbar"><span class="grow">derived from <b>${esc(line)}</b> · <b>${esc(path)}</b> · ${readAt()} · <span class="never">never stored · edits only through review</span></span><div class="acts"><button class="btn sm quiet" data-osrc="${esc(line)} · ${esc(path)}" title="the path at the shared line">open source ↗</button><button class="btn sm" data-oreview="${esc(key)}" title="the artifact as a document on the review surface (S35)">review</button></div></div>`;
+const reqHtml = (r, grp) => `<div class="req ${grp||''}"><span class="rq-k">requirement</span><span class="rq-n">${esc(r.name)}</span><div class="rq-t">${esc(r.text).replace(/\b(SHALL|MUST)\b/g,'<b>$1</b>')}</div>${r.scenarios.length ? `<details><summary>${r.scenarios.length} scenario${r.scenarios.length===1?'':'s'}</summary>${r.scenarios.map(s => `<div class="scn"><span class="sn">${esc(s.name)}</span><b>GIVEN</b> ${esc(s.g)}<br><b>WHEN</b> ${esc(s.w)}<br><b>THEN</b> ${esc(s.t)}</div>`).join('')}</details>` : '<div class="scn" style="border:0;padding-left:0">no scenarios</div>'}</div>`;
+const mdProposal = p => `<div class="art"><div class="sect"><h4>Why</h4><p>${esc(p.why)}</p><button class="an" data-oan="Why">note</button></div><div class="sect"><h4>What changes</h4><ul>${p.changes.map(c => `<li>${esc(c)}</li>`).join('')||'<li>—</li>'}</ul><button class="an" data-oan="What changes">note</button></div><div class="sect"><h4>Impact</h4><p>${esc(p.impact)}</p><button class="an" data-oan="Impact">note</button></div></div>`;
+function deltaHtml(specs){ const grp = (g, label) => specs[g].length ? `<div class="dg ${g}">${label}</div>` + specs[g].map(s => `<div class="cap">specs/${esc(s.cap)}/spec.md</div>${s.reqs.map(r => reqHtml(r, g)).join('')}`).join('') : '';
+  const all = grp('added','ADDED Requirements') + grp('modified','MODIFIED Requirements') + grp('removed','REMOVED Requirements');
+  return all ? `<div class="delta">${all}</div>` : '<div class="empty" style="padding:2px 0">no delta specs yet · the elaborations write them</div>'; }
+function dockArtIntent(a){ const i = intent(a.id); const key = 'intent/'+a.id; const recs = a.records.length ? a.records.map(r => `<div class="rec"><span><span class="rk">${esc(r.kind)}</span><span class="rf ${r.page?'page':''}">${esc(a.dir)}${esc(r.file)}${r.page ? ' ↗' : ''}</span></span><span class="t" style="font:11px var(--mono);color:var(--ink3)">${esc(r.date)}</span><div class="rm"><span>by <b>${esc(r.sess)}</b></span>${r.note ? `<span>${esc(r.note)}</span>` : ''}</div></div>`).join('') : '<div class="empty" style="padding:2px 0">no records yet · each elaboration writes its own as it goes (187)</div>';
+  return srcBar(a.line, a.dir, key)
+    + sec('proposal.md', mdProposal(a.proposal), SM)
+    + sec(`records · ${a.records.length}`, recs, 'what the elaborations wrote · with date and session')
+    + sec('delta specs', deltaHtml(a.specs), 'ADDED · MODIFIED · REMOVED · scenarios folded')
+    + sec('design.md', a.design.length ? `<div class="art"><ul>${a.design.map(d => `<li>${esc(d)}</li>`).join('')}</ul></div>` : '<div class="empty" style="padding:2px 0">no design notes</div>', SM)
+    + sec('archive', `<div class="dtext">${a.archive ? (a.archive.state==='archived' ? `Archived <b>${esc(a.archive.at)}</b> · the directory moved to <span class="mono">${esc(a.archive.dir)}</span> when the intent's line landed on the books; its claims became standing.` : `<b>Ready to archive.</b> ${esc(a.archive.note)}`) : `Open. ${esc(a.state)}. Archiving is the intent's close: its line lands on the books' shared line and the directory moves under <span class="mono">openspec/changes/archive/</span>.`}</div>`, 'state')
+    + (i ? sec('the intent', `<div class="dtext"><button class="btn sm" data-gotoobj="i:${i.id}">‹ back to the thread</button></div>`) : '');
+}
+function stepperHtml(steps, type){ const stages = {default:['spec','build ×2','review','merge'], fast:['spec','build','merge'], chore:['chore','merge']}[type] || ['spec','build','review','merge']; const map = [['ff','/opsx:ff',stages[0]],['apply','/opsx:apply',stages[1]||'build'],['verify','/opsx:verify',stages[stages.length-2]||'review'],['archive','/opsx:archive',stages[stages.length-1]]];
+  return `<div class="stepper">${map.map(([k,cmd,stage]) => { const s = steps[k]||{state:'todo'}; return `<div class="step ${s.state}"><span class="so">${k}</span><span class="ss">${cmd}</span><span class="ss">stage · ${esc(stage)}</span>${s.by ? `<span class="sw">${esc(s.by)}${s.at ? ' · '+esc(s.at) : ''}</span>` : s.at ? `<span class="sw">${esc(s.at)}</span>` : ''}</div>`; }).join('')}</div>`; }
+function dockArtUnit(a){ const key = 'unit/'+a.key; const done = a.tasks.filter(t => t.state==='done').length;
+  const tasks = a.tasks.length ? `<div class="tasks">${a.tasks.map(t => `<div class="task ${t.state}"><span class="tb">${t.state==='done' ? '✓' : t.state==='doing' ? '·' : t.state==='blocked' ? '!' : ''}</span><span class="tt"><span class="tn">${esc(t.n)}</span>${esc(t.text)}${t.note ? `<small style="display:block;font:11px var(--mono);color:var(--warn)">${esc(t.note)}</small>` : ''}</span><span class="tw ${t.state}">${t.state==='done' ? `done by <b>${esc(t.by)}</b>${t.commit && t.commit!=='—' ? ` · <b>${esc(t.commit)}</b>` : ''}` : t.state==='doing' ? `<b>${esc(t.by||'')}</b> · in progress` : t.state==='blocked' ? `<b>${esc(t.by||'')}</b> · blocked` : 'todo'}</span></div>`).join('')}</div>` : '<div class="empty" style="padding:2px 0">tasks.md not written yet · ff writes it</div>';
+  return srcBar(`${a.repo} · ${a.line}`, a.dir, key)
+    + sec('status · the OpenSpec steps', stepperHtml(a.steps, a.type) + `<div class="dtext" style="font-size:12px;color:var(--ink2)">${a.merged ? `Merged into the bolt ${esc(a.merged)}. Archive is the merge: the change is complete on the bolt's line and lands with it.` : `Type <b>${esc(a.type)}</b> · each OpenSpec step matches a stage of the unit's type (37); a stage may send the item back (41).`}</div>`, 'ff · apply · verify · archive')
+    + sec('proposal.md', mdProposal(a.proposal), SM)
+    + sec('specs · requirement blocks with their scenarios', a.reqs.length ? a.reqs.map(r => reqHtml(r)).join('') : '<div class="empty" style="padding:2px 0">no requirement blocks yet</div>', 'specs/<capability>/spec.md')
+    + sec(`tasks.md · ${done} of ${a.tasks.length} done`, tasks, 'each task: done by which item and commit')
+    + (a.bolt ? sec('the bolt', `<div class="dtext"><button class="btn sm" data-gotoobj="b:${a.bolt.id}">‹ bolt ${esc(a.bolt.name)}</button> <button class="btn sm quiet" data-oart="bolt/${a.bolt.id}">acceptance file</button></div>`) : '');
+}
+function dockArtClaim(a){ const key = 'claim/'+a.name; const x = a.block;
+  const block = x ? `<div class="claim-block ${x.state==='proposed'?'proposed':''}"><div class="cb-h"><span class="cb-k">claim</span><span class="cb-n">${esc(x.name)}</span><span class="cb-v">@${esc(x.v)}</span><span class="cb-state ${x.state}">${x.state}</span></div><div class="cb-t">${x.text}</div><div class="cb-att">attached to ${x.attach.map(at => `<span class="lk">${esc(at.to)}</span>`).join('')}</div><div class="cb-scope">scope · ${a.scope.join(', ')||'no repository'} · derived (200)</div></div>` : '<div class="empty" style="padding:2px 0">not in any book</div>';
+  const vers = a.versions.length ? a.versions.map((v,i) => `<div class="ver ${i===0?'cur':''}"><span class="vv">${esc(v[0])}</span><span class="vt">${esc(v[3])}</span><span class="vm">${esc(v[1])} · ${esc(v[2])}</span></div>`).join('') : '<div class="empty" style="padding:2px 0">no history</div>';
+  const verdicts = a.verdicts.length ? a.verdicts.map(v => `<div class="evid"><div class="eh"><span class="rp">${esc(v.home)}</span><span class="vd ${v.v.replace(' ','-')}">${esc(v.v)}</span><span class="t" style="font:11px var(--mono);color:var(--ink3)">${esc(v.judged)}</span></div><div class="stmt">“${esc(v.statement)}”</div><div class="em"><span>commit <b>${esc(v.commit)}</b></span><span>session <b>${esc(v.session)}</b></span>${v.stale ? `<span style="color:var(--warn)">${esc(v.stale)}</span>` : ''}</div></div>`).join('') : '<div class="empty" style="padding:2px 0">in scope for no repository</div>';
+  return srcBar(a.line, a.dir, key)
+    + sec('the chapter block', block + (a.ref ? `<div class="acts" style="margin-top:6px">${bookBtn(a.ref)}</div>` : ''), 'as the flywheel renders it (97)')
+    + sec(`versions · ${a.versions.length}`, vers, 'each moved by a writeback')
+    + sec('verdicts per repository in scope · with evidence', verdicts, 'the as-built statement, its commit, the session (99–101)');
+}
+function dockArtBolt(a){ const key = 'bolt/'+a.id; const b = a.obj;
+  const rows = a.claims.length ? a.claims.map(c => `<div class="req"><span class="rq-k">claim</span><span class="rq-n mono">${esc(c.name)} @${esc(c.v)}</span><span class="t" style="font:11px var(--mono);color:var(--ink3);margin-left:8px">named by unit ${esc(c.unit)}</span><details open><summary>${c.scenarios.length} scenario${c.scenarios.length===1?'':'s'}</summary>${c.scenarios.map(s => `<div class="scn">${esc(s)}</div>`).join('')}</details><div class="acts" style="margin-top:4px"><button class="btn sm quiet" data-oart="claim/${esc(c.name)}">claim</button></div></div>`).join('') : '<div class="empty" style="padding:2px 0">no claims named yet</div>';
+  const landing = a.landing.checks ? `<div class="rows"><div class="row"><div class="grow">${esc(a.landing.state)}</div></div>${a.landing.checks.map(c => `<div class="row"><span class="dot ${c[1]==='ok'?'':c[1]==='bad'?'failed':'starting'}"></span><div class="grow">${esc(c[0])}</div><span class="st">${c[1]==='ok'?'passed':c[1]==='bad'?'failing':'running'}</span></div>`).join('')}</div>` : `<div class="dtext">${esc(a.landing.state)}. ${a.landed ? '' : 'The file is written at landing beside the as-built (192); what is shown is derived now from the units\' specs. Generating and running a suite from it is the delivery system\'s.'}</div>`;
+  return srcBar(`${a.repo} · ${a.line}`, a.file, key)
+    + sec('acceptance file · state', `<div class="dtext">${esc(a.state)}</div>`, '192')
+    + sec(`claims the units named · ${a.claims.length}`, rows, 'with each claim\'s scenarios')
+    + sec('landing state', landing)
+    + (b ? sec(a.landed ? 'the record' : 'the bolt', `<div class="dtext"><button class="btn sm" data-gotoobj="${a.landed ? 'l' : 'b'}:${b.id}">‹ ${a.landed ? 'landed' : 'bolt'} ${esc(b.name)}</button></div>`) : '');
+}
+function dockArtWi(a){ const key = 'wi/'+a.id;
+  const commits = a.commits.length ? a.commits.map(c => `<div class="commit"><span class="sha">${esc(c[0])}</span><span class="sub"><span class="ty">${esc(c[1])}</span><span class="sc2">(${esc(c[2])})</span>: ${esc(c[3])}</span><span class="body">${esc(c[4])}</span><span class="at">${esc(c[5])} · on the item's place · reaches the bolt's line at merge</span></div>`).join('') : '<div class="empty" style="padding:2px 0">no commits yet</div>';
+  return srcBar(a.line, a.place, key)
+    + sec(`commits · ${a.commits.length}`, commits, 'Conventional Commits: type from the unit\'s type, scope the bolt, subject the item, body naming unit, item and claims (185)')
+    + sec('deliverables it recorded', a.deliverables.length ? kvHtml(a.deliverables.map(d => [esc(d[0]), esc(d[1])])) : '<div class="empty" style="padding:2px 0">nothing recorded yet</div>', '190')
+    + sec('the session\'s report', `<div class="dtext"><b>${esc(a.report.state)}</b></div>${a.report.lines.length ? `<ul class="tl" style="margin-top:6px">${a.report.lines.map(l => `<li><time></time><span class="who"></span><span class="what">${esc(l)}</span></li>`).join('')}</ul>` : ''}<div class="dtext" style="font-size:12px;color:var(--ink3);margin-top:6px">exit · ${esc(a.report.exit)}</div>`, 'what was expected and what was delivered (80)')
+    + (a.sess ? sec('session', `<div class="rows"><div class="row"><div class="grow"><div class="nm">${esc(a.label)}</div><div class="last">${esc(a.sess.last||'')}</div></div>${sessChip(a.sess)}</div></div>` + (a.unitKey!=='—' && a.unitKey.includes('/') ? `<div class="acts" style="margin-top:8px"><button class="btn sm quiet" data-oart="unit/${esc(a.unitKey)}">the unit's change</button>${a.sess.owner ? `<button class="btn sm quiet" data-gotoobj="${a.sess.owner.key}">${esc(a.sess.owner.name)}</button>` : ''}</div>` : '')) : '');
+}
+function dockReview(r){ const d = r.pending; const path = r.kind==='intent' ? `books/openspec/changes/${r.id}/proposal.md` : r.kind==='unit' ? `${(bolt(r.id.split('/')[0])||{repo:'atlas'}).repo}/openspec/changes/${r.id.split('/')[1]}/proposal.md` : r.kind==='claim' ? `books/${(artClaim(r.id).dir)}` : r.kind==='bolt' ? `${artBolt(r.id).repo}/${artBolt(r.id).file}` : `.flywheel/report-${r.id}.md`;
+  const body = r.kind==='intent' ? mdProposal(artIntent(r.id).proposal) : r.kind==='unit' ? mdProposal(artUnit(...r.id.split('/')).proposal) : r.kind==='claim' ? (artClaim(r.id).block ? `<div class="art"><div class="sect"><p>${artClaim(r.id).block.text}</p><button class="an" data-oan="claim">note</button></div></div>` : '') : `<div class="art"><div class="sect"><p>The artifact as a document: ${esc(path)}.</p><button class="an" data-oan="document">note</button></div></div>`;
+  return `<div class="plann"><b>plannotator</b> · the review surface binding (S35) · a stub here<div class="cmd">plannotator review ${esc(path)}${d ? ` --decision ${d.n}` : ''}</div><div class="ann">${d ? `an annotation left here comes back as the response on decision <button class="mark ${d.g}" data-mark="d:${d.n}">${d.n}</button>` : 'no decision pending on this artifact · what an annotation becomes here is open (S80)'}</div></div>` + sec('the document', body, 'a note on a section is an annotation') + sec('the artifact', `<div class="dtext"><button class="btn sm" data-oart="${esc(r.kind)}/${esc(r.id)}">‹ back to the artifact view</button></div>`);
+}
+
+/* --- load (214): three phase gauges derived from the counts; a projection, never a target (142) --- */
+const SPARK = {intents:[3,3,4,4,5,5], elabs:[1,2,2,3,2,3], waiting:[1,1,2,2,3,3], units:[2,1,0,1,0,0], items:[3,4,4,5,6,6], merges:[1,0,2,1,0,1], landing:[0,0,1,0,1,1], signals:[2,3,3,4,5,4], captures:[1,0,2,1,3,2]};
+function spark(series, w=64, h=18, warn){ const max = Math.max(1, ...series), n = series.length; const pts = series.map((v,i) => [i*(w-4)/(n-1)+2, h-2-(v/max)*(h-6)]);
+  const line = pts.map(p => p.join(',')).join(' '); const last = pts[pts.length-1];
+  return `<svg class="spark ${warn?'warn':''}" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><line class="base" x1="2" y1="${h-2}" x2="${w-2}" y2="${h-2}"/><polygon class="area" points="2,${h-2} ${line} ${last[0]},${h-2}"/><polyline points="${line}"/><circle class="last" cx="${last[0]}" cy="${last[1]}" r="2"/></svg>`; }
+const series = (k, now) => [...SPARK[k], now];
+const AGE = {412:2.9, 413:.44, 414:.43, 415:.05, 416:.37, 417:.36, 418:.58, 419:.58, 420:.08, 421:.03, 422:.01, 424:.02};
+function loadModel(){
+  const open = S.intents.filter(i => i.state!=='closed'); const done = S.intents.filter(i => i.state==='done');
+  const proposed = S.decisions.filter(d => d.kind==='intent').length*2 + S.decisions.filter(d => d.kind==='gathered').length;
+  const elabs = allSessions().filter(s => s.owner.phase==='inception' && s.id!=='curation' && ['working','starting','with'].includes(s.state)).length;
+  const waiting = S.decisions.filter(d => d.phase==='inception').length + done.length;
+  const old = S.decisions.filter(d => (AGE[d.n]||0) > 1); const oldest = S.decisions.slice().sort((a,b) => (AGE[b.n]||0)-(AGE[a.n]||0))[0];
+  const queued = S.bolts.flatMap(b => b.units.filter(u => u.state==='queued')).length + S.decisions.filter(d => d.kind==='unit').length;
+  const items = allSessions().filter(s => s.owner.phase==='construction'); const bound = S.hosts.reduce((n,h) => n+h.bound, 0); const gone = S.hosts.filter(h => !h.alive);
+  const onGone = items.filter(s => gone.some(h => h.id===s.host)).length; const perHost = S.hosts.map(h => `${h.id} ${items.filter(s => s.host===h.id).length}/${h.bound}${h.alive?'':' gone'}`).join(' · ');
+  const merges = S.bolts.flatMap(b => b.units.filter(u => u.state==='building' && (u.items||[]).some(i => /review/.test(i.label)))).length;
+  const landing = S.bolts.filter(b => b.landing).length + S.decisions.filter(d => d.kind==='land').length;
+  const captures = S.log.filter(e => /^capture/.test(e.text)).length;
+  const inceptionRead = old.length ? {cls:'warn', text:`you are the bottleneck: ${old.length} decision${old.length===1?'':'s'} older than a day · the oldest is ${oldest.n} at ${AGE[oldest.n].toFixed(0)}d`} : waiting ? {cls:'', text:`inception waits on you for ${waiting} · nothing older than a day`} : {cls:'ok', text:'inception is not waiting on you'};
+  const behind = queued ? Math.max(1, Math.round(Math.max(...S.decisions.filter(d => d.kind==='unit').map(d => AGE[d.n]||0), 0)*10)/10) : 0;
+  const constructionRead = items.length >= bound ? {cls:'warn', text:`construction runs at the bound: ${items.length} of ${bound}${onGone ? ` · ${onGone} on a host that is gone` : ''}${queued ? ` · ${queued} approved and waiting` : ''}`} : queued ? {cls:'warn', text:`construction is ${behind} day${behind===1?'':'s'} behind approval · ${queued} unit${queued===1?'':'s'} waiting with ${bound-items.length} slot${bound-items.length===1?'':'s'} free`} : {cls:'ok', text:`construction keeps up: ${items.length} of ${bound} slots in use · nothing waiting`};
+  const oldestD = parseFloat(S.curation.oldest)||0;
+  const operationRead = oldestD >= 3 ? {cls:'warn', text:`curation is behind: ${S.curation.unmoved} unmoved, the oldest ${S.curation.oldest} · next run ${S.curation.next}`} : {cls:'ok', text:`curation keeps up: ${S.curation.unmoved} unmoved, none older than ${S.curation.oldest}`};
+  return {inception:{open:open.length, proposed, elabs, waiting, read:inceptionRead}, construction:{queued, items:items.length, bound, gone:gone.map(h=>h.id), onGone, perHost, merges, landing, read:constructionRead}, operation:{unmoved:S.curation.unmoved, by:S.curation.by, oldest:S.curation.oldest, captures, read:operationRead}};
+}
+function miniGauges(){ const m = loadModel(); const on = S.load ? 'open' : '';
+  return `<span class="sep"></span><span class="lab">load</span><span class="gauges">
+    <button class="mini ${on}" data-load="inception" title="${esc(m.inception.read.text)}"><span class="mk">inception</span><b>${m.inception.open}</b> open · <b class="${m.inception.read.cls}">${m.inception.waiting}</b> on you ${spark(series('waiting', m.inception.waiting), 44, 14, m.inception.read.cls==='warn')}</button>
+    <button class="mini ${on}" data-load="construction" title="${esc(m.construction.read.text)}"><span class="mk">construction</span><b class="${m.construction.items>=m.construction.bound?'warn':''}">${m.construction.items}/${m.construction.bound}</b> running${m.construction.onGone ? ` · <span class="crit">${m.construction.onGone} gone</span>` : ''}${m.construction.landing ? ` · <b>${m.construction.landing}</b> landing` : ''} ${spark(series('items', m.construction.items), 44, 14, m.construction.items>=m.construction.bound)}</button>
+    <button class="mini ${on}" data-load="operation" title="${esc(m.operation.read.text)}"><span class="mk">operation</span><b class="${m.operation.read.cls}">${m.operation.unmoved}</b> unmoved · ${esc(m.operation.oldest)} ${spark(series('signals', m.operation.unmoved), 44, 14, m.operation.read.cls==='warn')}</button></span>`; }
+function renderLoad(){ const L = $('#load'); L.hidden = !S.load; if(!S.load) return; const m = loadModel();
+  const row = (n, label, sub, key, warn, show) => `<div class="gr"><b class="${warn||''}">${show||n}</b><span class="gl">${label}${sub ? `<small>${sub}</small>` : ''}</span>${spark(series(key, n), 72, 20, !!warn)}</div>`;
+  const read = r => `<div class="read ${r.cls}">${esc(r.text)}<small>projection · derived from the counts (142) · sets no target</small></div>`;
+  L.innerHTML = `<div class="load-panel" role="dialog" aria-label="load"><div class="lib-h"><h2>Load</h2><span class="sub">the flywheel's load by phase · counts now and the 7-day trend · a reading derived from the counts</span><button class="x" id="load-close" aria-label="close">×</button></div>
+    <div class="load-grid">
+      <div class="gauge"><div class="gh"><h3>Inception</h3><span class="gp">intents · elaborations</span></div>${row(m.inception.open,'intents open','proposed and open, closed ones excluded','intents')}${row(m.inception.proposed,'elaborations proposed','awaiting your yes','elabs')}${row(m.inception.elabs,'elaborations running','working, starting or with you','elabs')}${row(m.inception.waiting,'waiting on you','decisions in inception and intents ready to close','waiting', m.inception.read.cls)}${read(m.inception.read)}</div>
+      <div class="gauge"><div class="gh"><h3>Construction</h3><span class="gp">units · items · merges · bolts</span></div>${row(m.construction.queued,'units approved and waiting','queued on a bolt or a unit proposal in the count','units', m.construction.queued?'warn':'')}${row(m.construction.items,'items running against the host bound (32)',`${esc(m.construction.perHost)}${m.construction.onGone ? ` · ${m.construction.onGone} on a host that is gone` : ''}`,'items', m.construction.items>=m.construction.bound?'warn':'', `${m.construction.items}<span style="font:600 12px var(--mono);color:var(--ink3)"> of ${m.construction.bound}</span>`)}${row(m.construction.merges,'merges pending','units at review · merges happen one at a time (38)','merges')}${row(m.construction.landing,'bolts landing','request open or the close in your count','landing')}${read(m.construction.read)}</div>
+      <div class="gauge"><div class="gh"><h3>Operation</h3><span class="gp">signals · captures</span></div>${row(m.operation.unmoved,'signals unmoved',`${esc(m.operation.by)} · oldest ${esc(m.operation.oldest)} · by event date (118)`,'signals', m.operation.read.cls)}${row(m.operation.captures,'captures arriving today','from the page, chat and adapters · one per source event (111)','captures')}${read(m.operation.read)}</div>
+    </div>
+    <div class="load-foot">every count is derived from the same state the engine reads; the 7-day series is history read the same way · the reading is a sentence over the counts, never a target · esc closes · ${SM}</div></div>`; }
+
 function dockFooter(key){
   const [t,id] = key.split(':');
+  if(t==='o'){ const [kind] = id.split('/'); const r = artReview(id); const o = artOf(id); const p = o ? (o.dir||o.file||o.place) : id; return `<div class="fl">nothing to answer here<span class="r">${kind==='claim' ? 'a verdict is an agent\'s judgment (100) · scope moves by re-attach' : 'edits only through the review surface'}</span></div><div class="acts"><button class="btn sm" data-oreview="${esc(id)}">review${r.pending ? ` · decision ${r.pending.n}` : ''}</button><button class="btn sm quiet" data-osrc="${esc(p)}">open source ↗</button></div>`; }
+  if(t==='rv'){ const r = artReview(id); return r.pending ? dockFooter('d:'+r.pending.n) : `<div class="fl">no decision pending<span class="r">an annotation here has no decision to answer (S80)</span></div>`; }
   if(t==='d'){ const d = dec(+id); const f = S.inflight[d.n];
     if(f) return `<div class="fl">answer</div><div class="dtext" style="font-size:12.5px;color:var(--ink2)"><span class="spin"></span> sending ${esc(f.text)} · one response · the card refuses a second click until it settles</div>`;
     const acts = d.kind==='blocked' ? actsHtml(d,'dock').replace(`<div class="argbox" data-n="${d.n}"></div>`, `<div class="argbox" data-n="${d.n}" data-arg="reply">${argHtml(d,'reply')}</div>`) : actsHtml(d,'dock');
@@ -1914,6 +2287,10 @@ function renderDock(){
   else if(t==='x'){ head = `<div class="row"><span class="kind">elaboration</span><span class="ph">inception · ${o.kind==='standing'?'standing':'with-operator'}</span>${nav}</div><h2 id="dk-title">explore · ${o.names.map(esc).join(' + ')}</h2><div class="tail">opened ${esc(o.since)} by you</div>`; body = dockExplore(o); }
   else if(t==='p'){ head = `<div class="row"><span class="kind">planning session</span><span class="ph">bolt plan</span>${nav}</div><h2 id="dk-title">${esc(o.repo)} · charged again</h2><div class="tail">since ${esc(o.since)} · your notes travel with it</div>`; body = dockPlanning(o); }
   else if(t==='f'){ form = 'dk-sheet'; head = `<div class="row"><span class="kind">${esc(o.kind)}</span><span class="ph">bolt plan · deferred</span>${nav}</div><h2 id="dk-title">${o.title}</h2><div class="tail">deferred · ask again</div>`; body = dockDeferred(o); }
+  else if(t==='o'){ form = 'dk-art'; const K = {intent:['change directory · intent','inception', o.name, o.dir], unit:['change · unit','construction', (o.bolt ? o.bolt.repo+'/' : '')+o.key.split('/')[1], o.dir], claim:['claim','books', o.name, o.dir], bolt:['acceptance file · bolt','construction', (o.obj ? o.obj.repo+'/' : '')+o.id, o.file], wi:['work item','construction', o.label, o.place]}[o.art];
+    head = `<div class="row"><span class="kind">${esc(K[0])}</span><span class="ph">${esc(K[1])}</span>${nav}</div><h2 id="dk-title">${esc(K[2])}</h2><div class="tail">${esc(K[3])} · the artifact fit to its view (213) · ${SM}</div>`;
+    body = o.art==='intent' ? dockArtIntent(o) : o.art==='unit' ? dockArtUnit(o) : o.art==='claim' ? dockArtClaim(o) : o.art==='bolt' ? dockArtBolt(o) : dockArtWi(o); }
+  else if(t==='rv'){ form = 'dk-art'; head = `<div class="row"><span class="kind">review surface</span><span class="ph">plannotator</span>${nav}</div><h2 id="dk-title">review · ${esc(o.id)}</h2><div class="tail">the artifact as a document · an annotation is the response (S35) · stub</div>`; body = dockReview(o); }
   else { head = `<div class="row"><span class="kind">attention</span>${nav}</div><h2 id="dk-title">${o.text}</h2>`; body = sec('what it means', `<div class="dtext">${o.id==='host' ? 'The host that holds wi-#418 has not sent a heartbeat. Takeover releases its leases now and restores the place on studio; wait lets the lease expire at 07:59, when the machinery does the same.' : 'Your earlier response named a decision that was gone. It was recorded, handed back as unapplicable and shown once here; nothing was dropped. The unit was re-proposed and kept its number.'}</div>`); }
   const keep = $('#dk-b').scrollTop;
   $('#dk-h').className = 'dk-h ' + form; $('#dk-h').innerHTML = head; $('#dk-b').innerHTML = body; $('#dk-f').innerHTML = t==='a' ? `<div class="acts">${o.acts.map(([k,l]) => `<button class="btn sm ${k==='takeover'?'yes':''}" data-att="${o.id}" data-ak="${k}">${esc(l)}</button>`).join('')}</div>` : dockFooter(key);
@@ -1965,6 +2342,16 @@ document.addEventListener('click', e => {
   if(b && b.id==='ar-cancel'){ S.addRepo = null; render(); return; }
   if(b && b.id==='ar-add'){ addRepository(); return; }
   if(b && b.dataset.gdrop !== undefined){ const n = +b.dataset.n; if(S.inflight[n]){ refuse(n); return; } send(n, 'idrop', b.dataset.gdrop); return; }
+  /* artifacts (213) and the load panel (214) */
+  if(b && b.dataset.oart){ openDock('o:'+b.dataset.oart); return; }
+  if(b && b.dataset.oreview){ openDock('rv:'+b.dataset.oreview); return; }
+  if(b && b.dataset.osrc !== undefined){ toast(`open source · ${b.dataset.osrc} · would open the path at the shared line`); return; }
+  if(b && b.dataset.oan !== undefined){ toast(`note on “${b.dataset.oan}” · an annotation on the review surface · not a write here`); return; }
+  if(b && b.dataset.load !== undefined){ S.load = !S.load; render(); return; }
+  if(b && b.id==='load-open'){ S.load = true; render(); return; }
+  if(b && b.id==='load-close'){ S.load = false; render(); return; }
+  if(t.id==='load'){ S.load = false; render(); return; }
+  { const w = t.closest('[data-wi]'); if(w && !t.closest('.sc,button')){ openDock('o:wi/'+w.dataset.wi); return; } }
   if(b && b.dataset.pane !== undefined){ toast(`pane ${b.dataset.pane} · would open in herdr`); return; }
   if(b && b.dataset.repo){ openDock('r:'+b.dataset.repo); return; }
   if(b && b.dataset.openrepo){ openDock('r:'+b.dataset.openrepo); return; }
@@ -2011,7 +2398,7 @@ document.addEventListener('click', e => {
   const bd = t.closest('[data-bead]'); if(bd && !t.closest('button,input,label')){ openDock('v:'+bd.dataset.bead); return; }
   const obj = t.closest('[data-obj]');
   if(obj && !t.closest('input,textarea,select,button,label')){ openDock(obj.dataset.obj); return; }
-  if(!t.closest('#dock') && S.open && !t.closest('#log,#logbtn,.hosts,.map-panel,.board-h,#library') && !t.closest('input,select,label')){ S.hostlit = null; closeDock(); }
+  if(!t.closest('#dock') && S.open && !t.closest('#log,#logbtn,.hosts,.map-panel,.board-h,#library,#load') && !t.closest('input,select,label')){ S.hostlit = null; closeDock(); }
   if(!t.closest('#log,#logbtn') && !$('#log').hidden){ $('#log').hidden = true; $('#logbtn').setAttribute('aria-expanded','false'); }
 });
 document.addEventListener('change', e => {
@@ -2031,7 +2418,7 @@ document.addEventListener('change', e => {
 });
 document.addEventListener('keydown', e => {
   const typing = e.target.matches('input,textarea,select');
-  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.library){ S.library = false; render(); return; } if(S.exploreMode){ S.exploreMode = false; S.picked.clear(); render(); return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
+  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.load){ S.load = false; render(); return; } if(S.library){ S.library = false; render(); return; } if(S.exploreMode){ S.exploreMode = false; S.picked.clear(); render(); return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
   if(typing){ if(e.key==='Enter' && !e.shiftKey && e.target.id==='capture'){ e.preventDefault(); capture(); } if(e.key==='Enter' && e.target.matches('input') && e.target.closest('.argbox')){ e.preventDefault(); e.target.closest('.argbox').querySelector('[data-send],[data-usend]').click(); } if(e.key==='Enter' && (e.target.dataset.bname || e.target.dataset.brename)){ e.preventDefault(); if(e.target.dataset.brename) $(`[data-brenamesend="${e.target.dataset.brename}"]`).click(); else e.target.blur(); } return; }
   if(e.metaKey||e.ctrlKey||e.altKey) return;
   const k = e.key;
@@ -2051,6 +2438,7 @@ document.addEventListener('keydown', e => {
     const at = sid ? beads.indexOf(sid) - (fromFocus ? 1 : 0) : -1; const next = k===']' ? Math.min(beads.length-1, at+1) : at-1;
     if(next<0){ openDock('i:'+iid); return; } openDock('v:'+iid+'/'+beads[next]); return; }
   if(k==='m'){ e.preventDefault(); S.view = S.view==='map' ? 'phases' : 'map'; document.body.dataset.tab = 'board'; render(); return; }
+  if(k==='w'){ e.preventDefault(); S.load = !S.load; document.body.dataset.tab = 'board'; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab==='board'))); render(); return; }
   if(k==='b'){ e.preventDefault(); if(S.view==='book') S.view = 'phases'; else { S.view = 'book'; bookFollow(); } document.body.dataset.tab = 'board'; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab==='board'))); render(); return; }
   if(k==='/'){ e.preventDefault(); document.body.dataset.tab = 'board'; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab==='board'))); $('#capture')?.focus(); }
 });
@@ -2071,6 +2459,7 @@ if(['map','book'].includes(Q.get('view'))) S.view = Q.get('view');
 if(Q.get('book') && BOOKS[Q.get('book')]) S.book.id = Q.get('book');
 if(Q.get('ch')) S.book.ch = Q.get('ch');
 if(Q.has('library')) S.library = true;
+if(Q.has('load')) S.load = true;
 if(S.view==='book' && !Q.get('ch')) bookFollow();
 if(Q.has('explore')) S.exploreMode = true;
 if(Q.get('claim')) selectClaim(Q.get('claim'));

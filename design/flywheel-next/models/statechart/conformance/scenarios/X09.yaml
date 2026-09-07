@@ -6,7 +6,7 @@ invariants: [I1, I13]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: preparing, services: none, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
-    - {id: unit/atlas/u, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 3}}
+    - {id: unit/atlas/u, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 5}}
     - {id: work-item/atlas/u/1, machine: work-item, parent: unit/atlas/u, state: {life: in-type, in-type.stages: test, test.run: sessions, session.life: alive, alive.activity: working, place.place.life: ready}, record: {ordinal: 1}}
   files:
     "atlas@bolt-place-head:.flywheel/services.yaml": |

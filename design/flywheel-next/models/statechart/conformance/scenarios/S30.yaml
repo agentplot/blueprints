@@ -5,14 +5,14 @@ satisfies: [67, 68, 70, 71, 144]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
-    - {id: unit/atlas/u, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 3}}
+    - {id: unit/atlas/u, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 5}}
     - {id: work-item/atlas/wi-418, machine: work-item, parent: unit/atlas/u, state: {life: in-type, in-type.stages: build, build.run: sessions, session.life: alive, alive.activity: working}, record: {ordinal: 1}}
-    - {id: work-item/atlas/wi-419, machine: work-item, parent: unit/atlas/u, state: {life: in-type, in-type.stages: review, review.run: sessions, session.life: alive, alive.activity: working}, record: {ordinal: 2}}
+    - {id: work-item/atlas/wi-419, machine: work-item, parent: unit/atlas/u, state: {life: in-type, in-type.stages: verify, verify.run: sessions, session.life: alive, alive.activity: working}, record: {ordinal: 2}}
   evidence: {session.pane: {"*": present}, session.activity: {"*": working}}
 when:
   - script: {"work-item/atlas/wi-418/build/1": [{after: "0", exit: blocked, question: "should Ready imply Backlog cleared?"}]}    # played through the exit command, which writes to the control plane (67)
   - tick: {}
-  - evidence: {stage.join_met: {"work-item/atlas/wi-419/review/1": true}, stage.verdict: {"work-item/atlas/wi-419/review/1": pass}, place.merge_slot: {"*": true}, place.merged: {"*": true}}
+  - evidence: {stage.join_met: {"work-item/atlas/wi-419/verify/1": true}, stage.verdict: {"work-item/atlas/wi-419/verify/1": pass}, item.change_archived: {"*": true}, place.merge_slot: {"*": true}, place.merged: {"*": true}}
   - tick: {}
   - tick: {}
   - tick: {}
@@ -23,7 +23,8 @@ when:
 then:
   transitions:
     - {object: work-item/atlas/wi-418, from: working, to: blocked}
-    - {object: work-item/atlas/wi-419, from: in-type, to: merging}
+    - {object: work-item/atlas/wi-419, from: in-type, to: archiving}
+    - {object: work-item/atlas/wi-419, from: archiving, to: merging}
     - {object: work-item/atlas/wi-419, from: merging, to: merged}
     - {object: work-item/atlas/wi-418, from: blocked, to: working, response: page/8f1c}
   decisions: [{after_step: 3, present: [question], count: 1}, {after_step: 9, absent: [question]}]

@@ -1,0 +1,455 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1630"
+     font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="mN" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+    <marker id="mR" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c05b5b"/></marker>
+    <marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+    <marker id="mP" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7b5cb8"/></marker>
+    <marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+    <g id="gear"> <circle r="9" fill="#fff" stroke="currentColor" stroke-width="2.4" /> <circle r="3" fill="currentColor" /> <g stroke="currentColor" stroke-width="2.4"> <line y1="-9" y2="-13.5" /><line y1="9" y2="13.5" /> <line x1="-9" x2="-13.5" /><line x1="9" x2="13.5" /> <line x1="-6.4" y1="-6.4" x2="-9.5" y2="-9.5" /><line x1="6.4" y1="6.4" x2="9.5" y2="9.5" /> <line x1="-6.4" y1="6.4" x2="-9.5" y2="9.5" /><line x1="6.4" y1="-6.4" x2="9.5" y2="-9.5" /> </g> </g>
+    <g id="repo"> <rect x="-26" y="-18" width="52" height="36" rx="7" fill="#fff" stroke="currentColor" stroke-width="2" /> <circle cx="-9" cy="8" r="3.2" fill="currentColor" /> <circle cx="9" cy="-8" r="3.2" fill="currentColor" /> <path d="M -9 8 v-8 a 8 8 0 0 1 8 -8 h 1" fill="none" stroke="currentColor" stroke-width="2" /> </g>
+    <g id="person"> <circle cy="-6" r="4" fill="#fff" stroke="currentColor" stroke-width="1.8" /> <path d="M -7 8 a 7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8" /> </g>
+    <g id="browser"> <rect x="-22" y="-14" width="44" height="28" rx="4" fill="#fff" stroke="currentColor" stroke-width="2" /> <line x1="-22" y1="-6" x2="22" y2="-6" stroke="currentColor" stroke-width="2" /> <circle cx="-16" cy="-10" r="1.6" fill="currentColor" /><circle cx="-11" cy="-10" r="1.6" fill="currentColor" /> </g>
+    <g id="cyl"> <path d="M -24 -11 L -24 13 A 24 8 0 0 0 24 13 L 24 -11" fill="#f1f1ee" stroke="#8a8a86" stroke-width="1.6" /> <ellipse cx="0" cy="-11" rx="24" ry="8" fill="#e3e3df" stroke="#8a8a86" stroke-width="1.6" /> </g>
+    <g id="marker"> <circle r="7" fill="#fff" stroke="currentColor" stroke-width="2.2" /> <circle r="2.6" fill="currentColor" /> </g>
+    <g id="cube" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"> <path d="M -16 -8 L 0 -17 L 16 -8 L 16 10 L 0 19 L -16 10 Z" fill="#fff" /> <path d="M -16 -8 L 0 1 L 16 -8 M 0 1 L 0 19" fill="none" /> </g>
+    <g id="cloud" fill="#fff" stroke="currentColor" stroke-width="1.8"> <path d="M -14 8 a 7 7 0 0 1 1 -14 a 9 9 0 0 1 17 -3 a 7 7 0 0 1 10 6 a 6 6 0 0 1 -2 11 z" /> </g>
+    <g id="bot"> <rect x="-11" y="-9" width="22" height="18" rx="4" fill="#fff" stroke="currentColor" stroke-width="1.8" /> <circle cx="-4" cy="-2" r="1.8" fill="currentColor" /><circle cx="4" cy="-2" r="1.8" fill="currentColor" /> <line x1="-4" y1="4" x2="4" y2="4" stroke="currentColor" stroke-width="1.6" /> <line x1="0" y1="-9" x2="0" y2="-14" stroke="currentColor" stroke-width="1.8" /> <circle cy="-15" r="1.8" fill="currentColor" /> </g>
+  </defs>
+  <rect width="1800" height="1630" fill="#fff"/>
+  <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Flywheel next — dispatch: four jobs, one host kind on three runners, the channels in and out, and the placements as a ladder the machinery offers</text>
+  <text x="40" y="57" font-size="12" fill="#666">presenter · capture endpoint · triage · interpreter — the browser model is the interpreter alone · one binary on a laptop, in a pane, in a container · nothing addresses dispatch, it reads · capture never passes through it · the next rung is a decision on the status view</text>
+
+  <!-- ============ BAND 1 · THE FOUR JOBS ============ -->
+  <rect x="40" y="72" width="1720" height="270" rx="10" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4"/>
+  <text x="56" y="94" font-size="12" font-weight="700" fill="#1f6e6e">1 · THE FOUR JOBS · every job reads and writes only through the tools (193) · the data plane names none of them (216) · three are machinery given a host, the fourth is a session like any other</text>
+
+  <!-- presenter -->
+  <rect x="60" y="106" width="405" height="196" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+  <text x="72" y="126" font-size="11" font-weight="700" fill="#333">presenter · the chat sink</text>
+  <use href="#bot" x="440" y="126" color="#2b8a8a"/>
+  <text x="72" y="140" font-size="9" fill="#666">delivers the numbered decisions and the tail to the chat when due; turns a short</text>
+  <text x="72" y="152" font-size="9" fill="#666">reply, a button press or a confirmed proposal into one op-response; reacts when it</text>
+  <text x="72" y="164" font-size="9" fill="#666">is recorded (148, 152–155, 18, 14)</text>
+  <text x="72" y="182" font-size="8.5" font-weight="700" fill="#1f6e6e">reads</text><text x="130" y="182" font-size="8.5" fill="#666">the plan's register · the objects it names · the sink's record and its mark</text>
+  <text x="72" y="196" font-size="8.5" font-weight="700" fill="#1f6e6e">writes</text><text x="130" y="196" font-size="8.5" fill="#666">the sink's mark and delivery id · one op-response per reply</text>
+  <text x="72" y="210" font-size="8.5" font-weight="700" fill="#1f6e6e">model</text><text x="130" y="210" font-size="8.5" font-family="monospace" fill="#666">no</text>
+  <text x="72" y="224" font-size="8.5" font-weight="700" fill="#1f6e6e">process</text><text x="130" y="224" font-size="8.5" fill="#666">long-lived only for a chat that pushes replies over a socket (Discord's</text>
+  <text x="130" y="236" font-size="8.5" fill="#666">gateway); not for a chat that calls a URL on a button or a slash command</text>
+  <text x="72" y="250" font-size="8.5" font-weight="700" fill="#1f6e6e">secrets</text><text x="130" y="250" font-size="8.5" fill="#666">the bot token · the control-plane credential (the App's installation</text>
+  <text x="130" y="262" font-size="8.5" fill="#666">token, C.1; the push credential, C.2)</text>
+  <text x="72" y="280" font-size="8.5" font-weight="700" fill="#1f6e6e">hosts asleep</text><text x="130" y="280" font-size="8.5" fill="#666">runs — that is its purpose (132, 143, 156)</text>
+  <text x="72" y="294" font-size="8.5" fill="#999">one presenter per sink, by lease or pinned (148) · the page's presenter is the host that serves it</text>
+
+  <!-- capture endpoint -->
+  <rect x="485" y="106" width="405" height="196" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+  <text x="497" y="126" font-size="11" font-weight="700" fill="#333">capture endpoint · for callers that cannot write git</text>
+  <use href="#cloud" x="864" y="128" color="#2b8a8a"/>
+  <text x="497" y="140" font-size="9" fill="#666">accepts one source event from a webhook or the chat; writes one capture under</text>
+  <text x="497" y="152" font-size="9" fill="#666">the event's key; the same key returns the existing capture and writes nothing</text>
+  <text x="497" y="164" font-size="9" fill="#666">(106, 111, 112, S22) · arithmetic, no judgment</text>
+  <text x="497" y="182" font-size="8.5" font-weight="700" fill="#1f6e6e">reads</text><text x="555" y="182" font-size="8.5" fill="#666">nothing but the existing captures under the key</text>
+  <text x="497" y="196" font-size="8.5" font-weight="700" fill="#1f6e6e">writes</text><text x="555" y="196" font-size="8.5" fill="#666">one capture record; one signal only for a forwarded single message (S21);</text>
+  <text x="555" y="208" font-size="8.5" fill="#666">on the books' shared line under flywheel/signals/ (203)</text>
+  <text x="497" y="222" font-size="8.5" font-weight="700" fill="#1f6e6e">model</text><text x="555" y="222" font-size="8.5" font-family="monospace" fill="#666">no</text>
+  <text x="497" y="236" font-size="8.5" font-weight="700" fill="#1f6e6e">process</text><text x="555" y="236" font-size="8.5" fill="#666">no — one request, one commit</text>
+  <text x="497" y="250" font-size="8.5" font-weight="700" fill="#1f6e6e">secrets</text><text x="555" y="250" font-size="8.5" fill="#666">the inbound secret per caller · the books push credential</text>
+  <text x="497" y="264" font-size="8.5" font-weight="700" fill="#1f6e6e">callers</text><text x="555" y="264" font-size="8.5" fill="#666">a delivery system's connector · a monitor's webhook · the chat (112)</text>
+  <text x="497" y="280" font-size="8.5" font-weight="700" fill="#1f6e6e">hosts asleep</text><text x="555" y="280" font-size="8.5" fill="#666">runs</text>
+  <text x="497" y="294" font-size="8.5" fill="#999">an adapter that can write git never calls it (§4) · a caller that gets no answer retries with backoff</text>
+
+  <!-- triage -->
+  <rect x="910" y="106" width="405" height="196" rx="8" fill="#fff" stroke="#2e9e5b" stroke-width="1.6"/>
+  <text x="922" y="126" font-size="11" font-weight="700" fill="#333">triage · the capture reader · a session of A.7</text>
+  <use href="#gear" x="1290" y="124" color="#2e9e5b"/>
+  <text x="922" y="140" font-size="9" fill="#666">one bounded session per capture with material to read, in a place off the books'</text>
+  <text x="922" y="152" font-size="9" fill="#666">shared line; reads the raw material the capture points at; writes the signals</text>
+  <text x="922" y="164" font-size="9" fill="#666">once, immutable, with excerpt and position (113, 115)</text>
+  <text x="922" y="182" font-size="8.5" font-weight="700" fill="#1f6e6e">reads</text><text x="980" y="182" font-size="8.5" fill="#666">the capture · its raw material · the claims index (108)</text>
+  <text x="922" y="196" font-size="8.5" font-weight="700" fill="#1f6e6e">writes</text><text x="980" y="196" font-size="8.5" fill="#666">the capture's signal records, one commit</text>
+  <text x="922" y="210" font-size="8.5" font-weight="700" fill="#1f6e6e">model</text><text x="980" y="210" font-size="8.5" font-family="monospace" fill="#666">yes — this is judgment (115)</text>
+  <text x="922" y="224" font-size="8.5" font-weight="700" fill="#1f6e6e">process</text><text x="980" y="224" font-size="8.5" fill="#666">no — a bounded session: it starts, delivers, exits (65, 110)</text>
+  <text x="922" y="238" font-size="8.5" font-weight="700" fill="#1f6e6e">secrets</text><text x="980" y="238" font-size="8.5" fill="#666">none of its own; a session identity (197) and a scoped token</text>
+  <text x="980" y="250" font-size="8.5" fill="#666">issued into its place (207)</text>
+  <text x="922" y="264" font-size="8.5" font-weight="700" fill="#1f6e6e">runner</text><text x="980" y="264" font-size="8.5" fill="#666">pane · inproc · managed — wherever the raw material can be read (§2, §4)</text>
+  <text x="922" y="280" font-size="8.5" font-weight="700" fill="#1f6e6e">hosts asleep</text><text x="980" y="280" font-size="8.5" fill="#666">runs when its runner is reachable from where dispatch runs (§5)</text>
+  <text x="922" y="294" font-size="8.5" fill="#999">charged per capture · a fresh, closed set of inputs each time (89) · nothing to compact (7, 136)</text>
+
+  <!-- interpreter -->
+  <rect x="1335" y="106" width="405" height="196" rx="8" fill="#fff" stroke="#2e9e5b" stroke-width="1.6"/>
+  <text x="1347" y="126" font-size="11" font-weight="700" fill="#333">interpreter · free text → one proposed tool call</text>
+  <use href="#gear" x="1715" y="124" color="#2e9e5b"/>
+  <text x="1347" y="140" font-size="9" fill="#666">turns one message into exactly one proposed tool call, shown with a confirm</text>
+  <text x="1347" y="152" font-size="9" fill="#666">control; calls the tool on the operator's confirmation; asks about a name that</text>
+  <text x="1347" y="164" font-size="9" fill="#666">resolves to nothing or to two things, never guesses (194)</text>
+  <text x="1347" y="182" font-size="8.5" font-weight="700" fill="#1f6e6e">reads</text><text x="1405" y="182" font-size="8.5" fill="#666">the live objects (list, read) · the tool catalogue (193) · the message</text>
+  <text x="1405" y="194" font-size="8.5" fill="#666">and, when it is a reply, the messages it replies to</text>
+  <text x="1347" y="208" font-size="8.5" font-weight="700" fill="#1f6e6e">writes</text><text x="1405" y="208" font-size="8.5" fill="#666">nothing — the confirmed call is the response, recorded once by the tool (153)</text>
+  <text x="1347" y="222" font-size="8.5" font-weight="700" fill="#1f6e6e">model</text><text x="1405" y="222" font-size="8.5" font-family="monospace" fill="#666">yes — one bounded call per message</text>
+  <text x="1347" y="236" font-size="8.5" font-weight="700" fill="#1f6e6e">process</text><text x="1405" y="236" font-size="8.5" fill="#666">no — one request, one model call · runner: inproc everywhere (§2)</text>
+  <text x="1347" y="250" font-size="8.5" font-weight="700" fill="#1f6e6e">secrets</text><text x="1405" y="250" font-size="8.5" fill="#666">the model credential for that call · none at all in the browser</text>
+  <rect x="1347" y="260" width="381" height="34" rx="6" fill="#fbeeee" stroke="#c05b5b" stroke-width="1.2" stroke-dasharray="5 3"/>
+  <use href="#browser" x="1372" y="277" color="#c05b5b"/>
+  <text x="1402" y="273" font-size="9" font-weight="700" fill="#a34848">THE BROWSER MODEL = this job and nothing else (216a)</text>
+  <text x="1402" y="287" font-size="8.5" fill="#a34848">presents no sink · captures only through the capture tool (19) · reads no capture</text>
+
+  <text x="56" y="320" font-size="9" font-weight="700" fill="#1f6e6e">three rules: only two jobs need a model, and both are bounded · only one job needs a long-lived process, and only under a socket chat · the browser model is the interpreter and nothing else — no context is carried between requests, nothing is compacted (7, 136)</text>
+  <text x="56" y="334" font-size="8.5" fill="#999">106 · 111 · 112 · 113 · 115 · 148 · 152–155 · 193 · 194 · 197 · 203 · 207 · 216 · 216a</text>
+
+  <!-- ============ BAND 2 · ONE HOST KIND, THREE RUNNERS ============ -->
+  <rect x="40" y="354" width="1720" height="360" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="56" y="376" font-size="12" font-weight="700" fill="#5f6b7a">2 · ONE HOST KIND, THREE RUNNERS · dispatch is a host (149, 217) · its two model jobs are sessions of A.7, started on a runner the sessions binding names (217b, 217c)</text>
+
+  <!-- the dispatcher host -->
+  <rect x="60" y="388" width="470" height="298" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+  <text x="72" y="408" font-size="11" font-weight="700" fill="#333">HOST · kind dispatcher · the same binary (217)</text>
+  <use href="#cube" x="500" y="410" color="#2b8a8a"/>
+  <text x="72" y="424" font-size="9" font-family="monospace" fill="#666">hosts.dispatcher: {name: dispatcher, bound: 0, kinds: [], presents: [chat]}</text>
+  <text x="72" y="440" font-size="9" fill="#666">+ declares: the callers of its endpoint · the sources it triages · a runner per model job</text>
+  <text x="72" y="456" font-size="9" fill="#666">flywheel dispatch is flywheel host with that declaration · joins by one command (205)</text>
+  <text x="72" y="470" font-size="9" fill="#666">clones the state and the books under its root; no built repository — it names none</text>
+  <text x="72" y="484" font-size="9" fill="#666">heartbeats as host/dispatcher · the tick every host runs: fetch · list · read · evaluate · effect (165)</text>
+  <text x="72" y="502" font-size="9" font-weight="700" fill="#1f6e6e">lease only on a sink (148, 150) · never on an object · its declaration takes no work</text>
+  <text x="72" y="520" font-size="9" font-weight="700" fill="#1f6e6e">stateless between ticks (217a)</text>
+  <text x="72" y="534" font-size="8.5" fill="#666">the sink's mark, the capture keys, the signal files and the response files decide everything;</text>
+  <text x="72" y="546" font-size="8.5" fill="#666">a restart reads the same state and reaches the same conclusion (7, 136)</text>
+  <text x="72" y="558" font-size="8.5" fill="#999">a long-lived agent accumulates context and must compact; a host accumulates nothing</text>
+  <rect x="72" y="574" width="446" height="100" rx="6" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.2"/>
+  <text x="84" y="592" font-size="10" font-weight="700" fill="#1f6e6e">tool server · the binary's MCP server and its HTTP twin · every host serves it</text>
+  <text x="84" y="608" font-size="8.5" fill="#666">an agent sharing the process calls it in-process or over stdio; a managed session calls</text>
+  <text x="84" y="620" font-size="8.5" fill="#666">it over HTTP with the identity start_session issued, which the server checks (197)</text>
+  <text x="84" y="636" font-size="8.5" fill="#666">listens on the private network only (155, 191); a platform whose sandbox cannot join</text>
+  <text x="84" y="648" font-size="8.5" fill="#666">that network cannot run a managed session; the manifest is refused when it names one</text>
+  <text x="84" y="664" font-size="8.5" fill="#999">publishing it beyond the private network is the operator's recorded choice (46)</text>
+
+  <!-- runner rows -->
+  <rect x="610" y="388" width="640" height="94" rx="8" fill="#fff" stroke="#2e9e5b" stroke-width="1.6"/>
+  <use href="#gear" x="630" y="406" color="#2e9e5b"/>
+  <text x="648" y="410" font-size="11" font-weight="700" fill="#333">runner pane · a herdr pane</text>
+  <text x="622" y="426" font-size="8.5" font-weight="700" fill="#5f6b7a">starts</text><text x="672" y="426" font-size="8.5" fill="#666">herdr agent start in the machinery multiplexer session flywheel-&lt;org&gt;-machinery, as today (174, 196)</text>
+  <text x="622" y="440" font-size="8.5" font-weight="700" fill="#5f6b7a">tools</text><text x="672" y="440" font-size="8.5" fill="#666">the pane's flywheel commands · the host's MCP server over stdio</text>
+  <text x="622" y="454" font-size="8.5" font-weight="700" fill="#5f6b7a">needs</text><text x="672" y="454" font-size="8.5" fill="#666">a host with herdr and an agent program signed in — the operator's Claude Code login; no API key</text>
+  <text x="622" y="468" font-size="8.5" font-weight="700" fill="#5f6b7a">fits</text><text x="672" y="468" font-size="8.5" fill="#666">triage on a laptop or a home host · not the interpreter: a pane takes seconds and the operator is waiting</text>
+
+  <rect x="610" y="490" width="640" height="94" rx="8" fill="#fff" stroke="#2e9e5b" stroke-width="1.6"/>
+  <use href="#gear" x="630" y="508" color="#2e9e5b"/>
+  <text x="648" y="512" font-size="11" font-weight="700" fill="#333">runner inproc · a bounded loop inside the dispatcher's own process</text>
+  <text x="622" y="528" font-size="8.5" font-weight="700" fill="#5f6b7a">starts</text><text x="672" y="528" font-size="8.5" fill="#666">the binary's own agent loop: the model through the SDK, the tools the binary's own catalogue</text>
+  <text x="622" y="542" font-size="8.5" font-weight="700" fill="#5f6b7a">tools</text><text x="672" y="542" font-size="8.5" fill="#666">in-process · no process boundary</text>
+  <text x="622" y="556" font-size="8.5" font-weight="700" fill="#5f6b7a">needs</text><text x="672" y="556" font-size="8.5" fill="#666">an API key, or the runtime's Bedrock or Vertex role (173, 207)</text>
+  <text x="622" y="570" font-size="8.5" font-weight="700" fill="#5f6b7a">fits</text><text x="672" y="570" font-size="8.5" fill="#666">the interpreter everywhere — the only runner within a chat reply's patience · triage in a container or on a platform</text>
+
+  <rect x="610" y="592" width="640" height="94" rx="8" fill="#fff" stroke="#2e9e5b" stroke-width="1.6"/>
+  <use href="#gear" x="630" y="610" color="#2e9e5b"/>
+  <text x="648" y="614" font-size="11" font-weight="700" fill="#333">runner managed · a session on an agent platform</text>
+  <text x="622" y="630" font-size="8.5" font-weight="700" fill="#5f6b7a">starts</text><text x="672" y="630" font-size="8.5" fill="#666">a Claude managed agent or a Bedrock AgentCore session, created per capture from a stored agent definition</text>
+  <text x="622" y="644" font-size="8.5" font-weight="700" fill="#5f6b7a">tools</text><text x="672" y="644" font-size="8.5" fill="#666">remote MCP over HTTP to the dispatcher's tool server, every call carrying the session's identity (197)</text>
+  <text x="622" y="658" font-size="8.5" font-weight="700" fill="#5f6b7a">needs</text><text x="672" y="658" font-size="8.5" fill="#666">the platform's credential · a sandbox that reaches the private network (a tailnet node or a VPC route), else refused</text>
+  <text x="622" y="672" font-size="8.5" font-weight="700" fill="#5f6b7a">fits</text><text x="672" y="672" font-size="8.5" fill="#666">triage where the operator already runs agents on that platform · never the interpreter, never the presenter</text>
+
+  <!-- host -> runners: charges ; runners -> host: tools -->
+  <path d="M 530 420 L 608 420" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+  <text x="569" y="412" font-size="8.5" fill="#1f6e6e" text-anchor="middle">charges</text>
+  <path d="M 610 470 L 532 470" fill="none" stroke="#2b8a8a" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#mT)"/>
+  <text x="569" y="480" font-size="8.5" fill="#1f6e6e" text-anchor="middle">stdio</text>
+  <path d="M 530 522 L 608 522" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+  <text x="569" y="514" font-size="8.5" fill="#1f6e6e" text-anchor="middle">charges</text>
+  <path d="M 610 572 L 532 572" fill="none" stroke="#2b8a8a" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#mT)"/>
+  <text x="569" y="582" font-size="8.5" fill="#1f6e6e" text-anchor="middle">in-process</text>
+  <path d="M 530 624 L 608 624" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+  <text x="569" y="616" font-size="8.5" fill="#1f6e6e" text-anchor="middle">charges</text>
+  <path d="M 610 674 L 532 674" fill="none" stroke="#2b8a8a" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#mT)"/>
+  <text x="569" y="684" font-size="8.5" fill="#1f6e6e" text-anchor="middle">remote MCP</text>
+
+  <!-- runners -> engine -->
+  <path d="M 1250 435 L 1288 435" fill="none" stroke="#8a8a86" stroke-width="2" marker-end="url(#mN)"/>
+  <path d="M 1250 537 L 1288 537" fill="none" stroke="#8a8a86" stroke-width="2" marker-end="url(#mN)"/>
+  <path d="M 1250 639 L 1288 639" fill="none" stroke="#8a8a86" stroke-width="2" marker-end="url(#mN)"/>
+
+  <!-- the engine -->
+  <rect x="1290" y="388" width="450" height="298" rx="8" fill="#fff" stroke="#8a8a86" stroke-width="1.8"/>
+  <text x="1306" y="408" font-size="12" font-weight="700" fill="#5f6b7a">THE ENGINE · the control plane</text>
+  <text x="1306" y="424" font-size="8.5" fill="#999">runs no agent · charges every session, applies every response (86, 128, 171)</text>
+  <use href="#gear" x="1330" y="462" color="#2e9e5b"/>
+  <text x="1356" y="458" font-size="10.5" font-weight="700" fill="#333">a session record and a thread</text>
+  <text x="1356" y="473" font-size="9" fill="#666">that is all the engine sees of any runner (217c)</text>
+  <text x="1356" y="487" font-size="9" fill="#666">same work order · same instruction data · same exits (173, 89)</text>
+  <text x="1356" y="501" font-size="9" font-weight="700" fill="#5f6b7a">which runner produced it is a binding — it cannot tell them apart</text>
+  <line x1="1306" y1="516" x2="1724" y2="516" stroke="#8a8a86" stroke-width="1" opacity="0.5"/>
+  <text x="1306" y="534" font-size="10" font-weight="700" fill="#5f6b7a">which job takes which runner</text>
+  <text x="1306" y="550" font-size="9" font-family="monospace" fill="#666">interpreter → inproc only</text>
+  <text x="1306" y="563" font-size="8.5" fill="#999">a pane takes seconds to start, a platform a container per message;</text>
+  <text x="1306" y="575" font-size="8.5" fill="#999">the operator is waiting on a reply (217c)</text>
+  <text x="1306" y="591" font-size="9" font-family="monospace" fill="#666">triage → pane · inproc · managed</text>
+  <text x="1306" y="604" font-size="8.5" fill="#999">wherever the raw material can be read (§4)</text>
+  <line x1="1306" y1="616" x2="1724" y2="616" stroke="#8a8a86" stroke-width="1" opacity="0.5"/>
+  <text x="1306" y="634" font-size="10" font-weight="700" fill="#5f6b7a">the transport rule · no third transport</text>
+  <text x="1306" y="650" font-size="8.5" fill="#666">shares the tool server's process → stdio or in-process calls</text>
+  <text x="1306" y="662" font-size="8.5" fill="#666">does not → remote MCP over HTTP, the session identity on every call (197)</text>
+  <text x="1306" y="676" font-size="8.5" fill="#666">across the operator's private network only (46, 191)</text>
+
+  <text x="56" y="704" font-size="8.5" fill="#999">7 · 46 · 89 · 136 · 148 · 149 · 150 · 155 · 165 · 173 · 174 · 191 · 196 · 197 · 205 · 207 · 217 · 217a · 217b · 217c</text>
+
+  <!-- ============ BAND 3 · CHANNELS ============ -->
+  <rect x="40" y="728" width="1720" height="300" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="56" y="750" font-size="12" font-weight="700" fill="#5f6b7a">3 · CHANNELS · the machinery writes state and dispatch reads it · dispatch reaches the operator only as the bot · triage runs on the dispatcher's own tick · capture is decentralized (217d–h)</text>
+
+  <!-- (a) machinery -> dispatch -->
+  <rect x="60" y="762" width="395" height="236" rx="8" fill="#fff" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="72" y="782" font-size="11" font-weight="700" fill="#333">MACHINERY → DISPATCH · nothing addresses it (197)</text>
+  <use href="#repo" x="110" y="820" color="#8a8a86"/>
+  <text x="110" y="850" font-size="9.5" fill="#666" text-anchor="middle">state repository</text>
+  <text x="110" y="862" font-size="8.5" fill="#999" text-anchor="middle">the shared line</text>
+  <rect x="250" y="800" width="190" height="40" rx="6" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4"/>
+  <text x="345" y="817" font-size="9.5" font-family="monospace" fill="#1f6e6e" text-anchor="middle">dispatcher · /hook</text>
+  <text x="345" y="831" font-size="8.5" fill="#999" text-anchor="middle">one route in both profiles</text>
+  <path d="M 136 812 L 248 812" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+  <text x="192" y="804" font-size="8.5" fill="#1f6e6e" text-anchor="middle">notify · a webhook</text>
+  <path d="M 250 830 L 138 830" fill="none" stroke="#8a8a86" stroke-width="1.6" stroke-dasharray="2 5" marker-end="url(#mN)"/>
+  <text x="192" y="844" font-size="8.5" fill="#5f6b7a" text-anchor="middle">bounded fetch · 30s</text>
+  <text x="72" y="880" font-size="8.5" fill="#666">notify · git-only: the git host's push webhook when the shared line moves (166)</text>
+  <text x="72" y="892" font-size="8.5" fill="#666">notify · tracker: the App's issues, issue_comment, projects_v2_item webhooks (C.1)</text>
+  <text x="72" y="906" font-size="8.5" fill="#666">fetch · git ls-remote every 30s and a fetch before every tick (165) · issues?since=&lt;mark&gt;</text>
+  <text x="72" y="924" font-size="9" font-weight="700" fill="#1f6e6e">a notification only shortens the wait (130); never notified, it still converges by reading</text>
+  <text x="72" y="940" font-size="8.5" fill="#999">no host, session or loop addresses dispatch (197, 217d) · the machinery writes state</text>
+  <text x="72" y="952" font-size="8.5" fill="#999">sink.due: a register entry newer than the sink's mark · the cadence fired · the operator asked</text>
+  <text x="72" y="964" font-size="8.5" fill="#999">"new decisions" is a notification kind routed to sinks like any other (82)</text>
+  <text x="72" y="984" font-size="8.5" fill="#999">down: any host serves the page; back, it posts what is past the mark once (217f)</text>
+
+  <!-- (b) dispatch -> operator -->
+  <rect x="475" y="762" width="395" height="236" rx="8" fill="#fff" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="487" y="782" font-size="11" font-weight="700" fill="#333">DISPATCH → OPERATOR · the bot (148, 155)</text>
+  <rect x="490" y="800" width="100" height="40" rx="6" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4"/>
+  <text x="540" y="817" font-size="9.5" font-family="monospace" fill="#1f6e6e" text-anchor="middle">dispatcher</text>
+  <text x="540" y="831" font-size="8.5" fill="#999" text-anchor="middle">the presenter tick</text>
+  <use href="#bot" x="668" y="822" color="#2b8a8a"/>
+  <text x="668" y="850" font-size="9.5" fill="#666" text-anchor="middle">the bot</text>
+  <text x="668" y="862" font-size="8.5" fill="#999" text-anchor="middle">its own identity</text>
+  <use href="#browser" x="750" y="820" color="#8a8a86"/>
+  <text x="750" y="850" font-size="9.5" fill="#666" text-anchor="middle">the org's channel</text>
+  <use href="#person" x="838" y="820" color="#c05b5b"/>
+  <text x="838" y="850" font-size="9.5" fill="#666" text-anchor="middle">operator</text>
+  <text x="838" y="862" font-size="8.5" fill="#999" text-anchor="middle">phone</text>
+  <path d="M 590 812 L 652 812" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+  <text x="621" y="804" font-size="8.5" fill="#a97e26" text-anchor="middle">the plan</text>
+  <path d="M 684 812 L 726 812" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+  <path d="M 774 812 L 826 812" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+  <path d="M 828 830 C 780 846, 720 846, 690 836" fill="none" stroke="#c05b5b" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mR)"/>
+  <text x="762" y="871" font-size="8.5" fill="#a34848" text-anchor="middle">reply · yes 412 · a button · a confirmed proposal</text>
+  <text x="487" y="892" font-size="8.5" fill="#666">the Discord application the manifest names, the token the operator placed</text>
+  <text x="487" y="904" font-size="8.5" fill="#666">posts the plan as one message, one line per decision, a link to the page (18)</text>
+  <text x="487" y="916" font-size="8.5" fill="#666">reads replies as the same bot; a reply is applied once by its message id (137)</text>
+  <text x="487" y="932" font-size="9" font-weight="700" fill="#1f6e6e">never the operator's account · never a channel outside the organization's (217d)</text>
+  <text x="487" y="948" font-size="8.5" fill="#999">rich controls as the platform provides them; the numbered grammar beside them (155, 194)</text>
+  <text x="487" y="960" font-size="8.5" fill="#999">a socket chat (Discord's gateway) makes the presenter long-lived; a URL-called chat does not</text>
+  <text x="487" y="972" font-size="8.5" fill="#999">the lease expires by the stated rule, never by racing (150); back, it reads that it lost it</text>
+  <text x="487" y="984" font-size="8.5" fill="#999">down: replies wait in the chat and are applied once by delivery id when the presenter returns (217f)</text>
+
+  <!-- (c) triage cadence -->
+  <rect x="890" y="762" width="420" height="236" rx="8" fill="#fff" stroke="#2e9e5b" stroke-width="1.4"/>
+  <text x="902" y="782" font-size="11" font-weight="700" fill="#333">TRIAGE CADENCE · the dispatcher's own tick rules (217e)</text>
+  <use href="#gear" x="1290" y="780" color="#2e9e5b"/>
+  <text x="902" y="800" font-size="9" fill="#333">a capture with material to read and no signals charges a reader</text>
+  <text x="902" y="812" font-size="8.5" fill="#999">immediate, subject to the bound · reads capture.signals_present false, the pointer present</text>
+  <text x="902" y="830" font-size="9" fill="#333">at most triage.bound readers at once · default 1</text>
+  <text x="902" y="842" font-size="8.5" fill="#999">reads the dispatcher's session records in a live state (32)</text>
+  <text x="902" y="860" font-size="9" fill="#333">a forwarded single message charges no reader · always</text>
+  <text x="902" y="872" font-size="8.5" fill="#999">the endpoint wrote its one signal (S21)</text>
+  <text x="902" y="890" font-size="9" fill="#333">triage.cadence batches readers when the operator prefers a quiet hour · default none</text>
+  <text x="902" y="902" font-size="8.5" fill="#999">reads flywheel.yaml triage.cadence, declared in the manifest beside curation's</text>
+  <line x1="902" y1="914" x2="1298" y2="914" stroke="#2e9e5b" stroke-width="1" opacity="0.5"/>
+  <text x="902" y="932" font-size="9" font-weight="700" fill="#1f6e6e">triage is not curation (217e)</text>
+  <text x="902" y="946" font-size="8.5" fill="#666">curation clusters unmoved signals against claims on its cadence or threshold (110)</text>
+  <text x="902" y="958" font-size="8.5" fill="#666">and runs on a host with the machinery role; dispatch does not run it</text>
+  <text x="902" y="972" font-size="8.5" fill="#666">curation's threshold counts unmoved signals; triage's bound counts running readers</text>
+  <text x="902" y="986" font-size="8.5" fill="#999">a reader that stalls is a stalled session and takes the machinery's retry rule (65, 70)</text>
+
+  <!-- (d) edge capture -->
+  <rect x="1330" y="762" width="410" height="236" rx="8" fill="#fff" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="1342" y="782" font-size="11" font-weight="700" fill="#333">EDGE CAPTURE · never through dispatch (217g, 217h)</text>
+  <use href="#person" x="1368" y="816" color="#8a8a86"/>
+  <text x="1368" y="840" font-size="8.5" fill="#666" text-anchor="middle">an adapter on the</text>
+  <text x="1368" y="851" font-size="8.5" fill="#666" text-anchor="middle">operator's machine</text>
+  <rect x="1420" y="800" width="176" height="40" rx="6" fill="#fff" stroke="#2b8a8a" stroke-width="1.4"/>
+  <text x="1508" y="817" font-size="9.5" font-family="monospace" fill="#1f6e6e" text-anchor="middle">flywheel capture &lt;source&gt;</text>
+  <text x="1508" y="831" font-size="8.5" fill="#999" text-anchor="middle">its own binary is the adapter</text>
+  <use href="#repo" x="1690" y="820" color="#7b5cb8"/>
+  <text x="1690" y="850" font-size="9.5" fill="#666" text-anchor="middle">books · shared line</text>
+  <text x="1690" y="862" font-size="8.5" fill="#999" text-anchor="middle">flywheel/signals/ (203)</text>
+  <path d="M 1386 816 L 1418 816" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+  <path d="M 1596 816 L 1662 816" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+  <text x="1629" y="808" font-size="8.5" fill="#1f6e6e" text-anchor="middle">push</text>
+  <text x="1420" y="856" font-size="8.5" fill="#666">one capture per event under its key · expected-old (162)</text>
+  <text x="1420" y="868" font-size="8.5" fill="#666">twice is once (111) · arithmetic, unattended (115)</text>
+  <text x="1342" y="886" font-size="8.5" fill="#666">a folder watcher · the notes tool's meeting list · a day of one chat channel (114)</text>
+  <text x="1342" y="900" font-size="9" font-weight="700" fill="#a34848">✗ dispatch is not on this path · the endpoint is only for callers that cannot write git (112)</text>
+  <use href="#cyl" x="1372" y="940"/>
+  <text x="1372" y="968" font-size="9.5" fill="#666" text-anchor="middle">raw store</text>
+  <text x="1372" y="980" font-size="8.5" fill="#999" text-anchor="middle">per source</text>
+  <text x="1412" y="922" font-size="9" font-weight="700" fill="#1f6e6e">the raw material the pointer must reach (217h)</text>
+  <text x="1412" y="936" font-size="8.5" fill="#666">copy then capture: raw to the org's store on the private network; any reader</text>
+  <text x="1412" y="948" font-size="8.5" fill="#666">capture where it lies: that machine declares triage: {sources: [...]}, pane runner</text>
+  <text x="1412" y="962" font-size="8.5" fill="#666">both write the same capture · reachability is checked before a reader is charged</text>
+  <text x="1412" y="976" font-size="8.5" fill="#999">an unreachable pointer is a decision under attention, not a stalled session (149)</text>
+  <text x="1412" y="988" font-size="8.5" fill="#999">the store's retention must exceed the oldest unmoved signal (118, open question 6)</text>
+
+  <text x="56" y="1016" font-size="8.5" fill="#999">18 · 32 · 82 · 110 · 111 · 112 · 114 · 115 · 118 · 130 · 137 · 148 · 149 · 150 · 155 · 162 · 165 · 166 · 197 · 203 · 217d · 217e · 217f · 217g · 217h</text>
+
+  <!-- ============ BAND 4 · PLACEMENTS AND THE LADDER ============ -->
+  <rect x="40" y="1042" width="1720" height="456" rx="10" fill="#fffdf6" stroke="#c9962e" stroke-width="1.4"/>
+  <text x="56" y="1064" font-size="12" font-weight="700" fill="#8a6a1d">4 · PLACEMENTS AND THE LADDER · one declaration, three placements (217i) · the tiers are bindings (217j) · the next rung is an offer on the status view, and the install is an effect with a proof (217k)</text>
+
+  <!-- rungs -->
+  <rect x="170" y="1084" width="200" height="20" rx="10" fill="#fff" stroke="#2b8a8a" stroke-width="1.4"/>
+  <text x="270" y="1098" font-size="9.5" font-family="monospace" fill="#1f6e6e" text-anchor="middle">browser interpreter only</text>
+  <rect x="610" y="1084" width="200" height="20" rx="10" fill="#fff" stroke="#2b8a8a" stroke-width="1.4"/>
+  <text x="710" y="1098" font-size="9.5" font-family="monospace" fill="#1f6e6e" text-anchor="middle">local dispatcher</text>
+  <rect x="1050" y="1084" width="200" height="20" rx="10" fill="#fff" stroke="#2b8a8a" stroke-width="1.4"/>
+  <text x="1150" y="1098" font-size="9.5" font-family="monospace" fill="#1f6e6e" text-anchor="middle">cloud dispatcher</text>
+  <path d="M 372 1094 L 606 1094" fill="none" stroke="#c9962e" stroke-width="2.4" marker-end="url(#mA)"/>
+  <use href="#marker" x="490" y="1094" color="#c05b5b"/>
+  <text x="490" y="1080" font-size="9" fill="#a97e26" text-anchor="middle">upgrade offer · a decision · yes runs the install</text>
+  <path d="M 812 1094 L 1046 1094" fill="none" stroke="#c9962e" stroke-width="2.4" marker-end="url(#mA)"/>
+  <use href="#marker" x="930" y="1094" color="#c05b5b"/>
+  <text x="930" y="1080" font-size="9" fill="#a97e26" text-anchor="middle">upgrade offer · a decision · yes runs the install</text>
+
+  <!-- placement columns -->
+  <rect x="60" y="1116" width="420" height="190" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+  <use href="#browser" x="450" y="1136" color="#2b8a8a"/>
+  <text x="72" y="1136" font-size="11" font-weight="700" fill="#333">browser interpreter only · get started (216a)</text>
+  <text x="72" y="1150" font-size="8.5" fill="#999">the fourth job done in the page, and nothing else of dispatch</text>
+  <text x="72" y="1168" font-size="8.5" font-weight="700" fill="#1f6e6e">process</text><text x="126" y="1168" font-size="8.5" fill="#666">none of dispatch's; the page-serving host's own</text>
+  <text x="72" y="1182" font-size="8.5" font-weight="700" fill="#1f6e6e">model</text><text x="126" y="1182" font-size="8.5" fill="#666">shipped as a script with the page; inference in the operator's browser;</text>
+  <text x="126" y="1194" font-size="8.5" fill="#666">no text leaves the private network (interpreter.page)</text>
+  <text x="72" y="1208" font-size="8.5" font-weight="700" fill="#1f6e6e">secrets</text><text x="126" y="1208" font-size="8.5" fill="#666">none — no API key exists</text>
+  <text x="72" y="1222" font-size="8.5" font-weight="700" fill="#1f6e6e">network</text><text x="126" y="1222" font-size="8.5" fill="#666">the host serves the page and the tools over the tailnet (155, 191);</text>
+  <text x="126" y="1234" font-size="8.5" fill="#666">the phone runs the model</text>
+  <text x="72" y="1248" font-size="8.5" font-weight="700" fill="#1f6e6e">chat</text><text x="126" y="1248" font-size="8.5" fill="#666">none · endpoint: none — the capture box is the capture tool (19)</text>
+  <text x="72" y="1262" font-size="8.5" font-weight="700" fill="#1f6e6e">triage</text><text x="126" y="1262" font-size="8.5" fill="#666">none; captures wait for a host declaring triage</text>
+  <text x="72" y="1280" font-size="9" font-weight="700" fill="#a34848">gives up: chat, webhooks, transcripts read into signals</text>
+  <text x="72" y="1294" font-size="8.5" fill="#666">every decision is still answerable by control and number</text>
+
+  <rect x="500" y="1116" width="420" height="190" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+  <use href="#cube" x="892" y="1138" color="#2b8a8a"/>
+  <text x="512" y="1136" font-size="11" font-weight="700" fill="#333">local dispatcher · laptop or herdr machinery pane</text>
+  <text x="512" y="1150" font-size="8.5" fill="#999">flywheel dispatch as a user process, or a pane in flywheel-&lt;org&gt;-machinery (174)</text>
+  <text x="512" y="1168" font-size="8.5" font-weight="700" fill="#1f6e6e">process</text><text x="566" y="1168" font-size="8.5" fill="#666">the same binary, the same declaration, the same tick</text>
+  <text x="512" y="1182" font-size="8.5" font-weight="700" fill="#1f6e6e">model</text><text x="566" y="1182" font-size="8.5" fill="#666">pane for triage under the operator's Claude Code login;</text>
+  <text x="566" y="1194" font-size="8.5" fill="#666">inproc for the interpreter with a key, or Bedrock credentials</text>
+  <text x="512" y="1208" font-size="8.5" font-weight="700" fill="#1f6e6e">secrets</text><text x="566" y="1208" font-size="8.5" fill="#666">bot token · App key or push credential · model key · inbound</text>
+  <text x="566" y="1220" font-size="8.5" fill="#666">secrets — the keychain or a sealed file under the root</text>
+  <text x="512" y="1234" font-size="8.5" font-weight="700" fill="#1f6e6e">network</text><text x="566" y="1234" font-size="8.5" fill="#666">the machine's tailnet node; the endpoint on the private network only;</text>
+  <text x="566" y="1246" font-size="8.5" fill="#666">a public webhook needs a funnel the operator opens for named callers (46)</text>
+  <text x="512" y="1262" font-size="8.5" font-weight="700" fill="#1f6e6e">chat</text><text x="566" y="1262" font-size="8.5" fill="#666">the bot, while the machine is awake · endpoint: yes, private · triage: yes</text>
+  <text x="512" y="1280" font-size="9" font-weight="700" fill="#a34848">gives up: the plan in chat while the machine sleeps</text>
+  <text x="512" y="1294" font-size="8.5" fill="#666">the sink lease then sits with the pin until the machine wakes</text>
+
+  <rect x="940" y="1116" width="420" height="190" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+  <use href="#cloud" x="1332" y="1138" color="#2b8a8a"/>
+  <text x="952" y="1136" font-size="11" font-weight="700" fill="#333">cloud dispatcher · a long-lived container on any platform</text>
+  <text x="952" y="1150" font-size="8.5" fill="#999">Fly, Cloud Run, ECS, a VM, flywheel-cloud — one image, the binary unchanged (§5.1)</text>
+  <text x="952" y="1168" font-size="8.5" font-weight="700" fill="#1f6e6e">process</text><text x="1006" y="1168" font-size="8.5" fill="#666">the container's one process; the gateway stays open; the tick on its own clock</text>
+  <text x="952" y="1182" font-size="8.5" font-weight="700" fill="#1f6e6e">model</text><text x="1006" y="1182" font-size="8.5" fill="#666">inproc with a key or the runtime's role; managed when the platform's</text>
+  <text x="1006" y="1194" font-size="8.5" fill="#666">sandbox reaches the tailnet</text>
+  <text x="952" y="1208" font-size="8.5" font-weight="700" fill="#1f6e6e">secrets</text><text x="1006" y="1208" font-size="8.5" fill="#666">the platform's secret store or vault, injected at start; never a key</text>
+  <text x="1006" y="1220" font-size="8.5" fill="#666">that reaches a host (207)</text>
+  <text x="952" y="1234" font-size="8.5" font-weight="700" fill="#1f6e6e">network</text><text x="1006" y="1234" font-size="8.5" fill="#666">a tailnet node in the container, or the platform router's ingress (191);</text>
+  <text x="1006" y="1246" font-size="8.5" fill="#666">the endpoint public for named callers with their secrets</text>
+  <text x="952" y="1262" font-size="8.5" font-weight="700" fill="#1f6e6e">chat</text><text x="1006" y="1262" font-size="8.5" fill="#666">the bot, always · endpoint: yes · triage: yes · gives up nothing of the four</text>
+  <text x="952" y="1280" font-size="9" font-weight="700" fill="#1f6e6e">AgentCore · Claude managed agents: triage runners only, never the dispatcher</text>
+  <text x="952" y="1294" font-size="9" font-weight="700" fill="#a34848">Vercel functions: not a placement — no socket, no clock, no private route (217i)</text>
+
+  <!-- tiers as rows of bindings -->
+  <rect x="60" y="1320" width="1300" height="126" rx="8" fill="#fff" stroke="#c9962e" stroke-width="1.4"/>
+  <text x="84" y="1334" font-size="9" font-weight="700" fill="#8a6a1d">tier</text>
+  <text x="180" y="1334" font-size="9" font-weight="700" fill="#8a6a1d">chat adapter</text>
+  <text x="360" y="1334" font-size="9" font-weight="700" fill="#8a6a1d">sign-in</text>
+  <text x="700" y="1334" font-size="9" font-weight="700" fill="#8a6a1d">router</text>
+  <text x="930" y="1334" font-size="9" font-weight="700" fill="#8a6a1d">runner</text>
+  <text x="1190" y="1334" font-size="9" font-weight="700" fill="#8a6a1d">dispatcher placement</text>
+  <line x1="72" y1="1340" x2="1348" y2="1340" stroke="#c9962e" stroke-width="1" opacity="0.5"/>
+  <path d="M 70 1348 L 70 1436" fill="none" stroke="#c9962e" stroke-width="2" marker-end="url(#mA)"/>
+  <!-- hobbyist -->
+  <text x="84" y="1358" font-size="10" font-weight="700" fill="#333">hobbyist</text>
+  <text x="180" y="1358" font-size="8.5" fill="#666">Discord</text>
+  <text x="360" y="1358" font-size="8.5" fill="#666">the tailnet is the identity, no login; or a social sign-in</text>
+  <text x="360" y="1370" font-size="8.5" fill="#999">(GitHub, Google) on the page · auth: {kind: tailnet} | {kind: oauth}</text>
+  <text x="700" y="1358" font-size="8.5" fill="#666">the tailnet router</text>
+  <text x="930" y="1358" font-size="8.5" fill="#666">pane under the operator's login; no key</text>
+  <text x="1190" y="1358" font-size="8.5" fill="#666">browser interpreter only,</text>
+  <text x="1190" y="1370" font-size="8.5" fill="#666">or the local dispatcher</text>
+  <line x1="84" y1="1378" x2="1348" y2="1378" stroke="#c9962e" stroke-width="0.8" opacity="0.35"/>
+  <!-- SMB -->
+  <text x="84" y="1394" font-size="10" font-weight="700" fill="#333">SMB</text>
+  <text x="180" y="1394" font-size="8.5" fill="#666">Discord or Slack</text>
+  <text x="360" y="1394" font-size="8.5" fill="#666">GitHub SSO on the page and the tools; membership in the</text>
+  <text x="360" y="1406" font-size="8.5" fill="#999">organization as the check; the App is the org's (207)</text>
+  <text x="700" y="1394" font-size="8.5" fill="#666">the platform router (flywheel-cloud)</text>
+  <text x="700" y="1406" font-size="8.5" fill="#999">hosts.dispatcher.router: platform</text>
+  <text x="930" y="1394" font-size="8.5" fill="#666">inproc with a key or a cloud role</text>
+  <text x="1190" y="1394" font-size="8.5" fill="#666">the cloud dispatcher in a container</text>
+  <line x1="84" y1="1414" x2="1348" y2="1414" stroke="#c9962e" stroke-width="0.8" opacity="0.35"/>
+  <!-- enterprise -->
+  <text x="84" y="1430" font-size="10" font-weight="700" fill="#333">enterprise</text>
+  <text x="180" y="1430" font-size="8.5" fill="#666">Slack · Teams · Webex</text>
+  <text x="360" y="1430" font-size="8.5" fill="#666">SSO through the identity provider (OIDC or SAML) on the page</text>
+  <text x="360" y="1442" font-size="8.5" fill="#999">and the tools · auth: {kind: oidc, issuer, audience}</text>
+  <text x="700" y="1430" font-size="8.5" fill="#666">the platform router's ingress fronts it (191)</text>
+  <text x="930" y="1430" font-size="8.5" fill="#666">inproc under the role, or managed on</text>
+  <text x="930" y="1442" font-size="8.5" fill="#999">AgentCore with a VPC route · Bedrock or Vertex</text>
+  <text x="1190" y="1430" font-size="8.5" fill="#666">the cloud dispatcher on the</text>
+  <text x="1190" y="1442" font-size="8.5" fill="#666">organization's platform</text>
+
+  <text x="60" y="1464" font-size="9" fill="#666">each column is one piece of code shipped once — an adapter, a sign-in kind, a router kind, a runner — and which of them an organization uses is data in the manifest (139, 119) · no tier changes a machine, an atom or a profile operation (217j)</text>
+  <text x="60" y="1477" font-size="9" fill="#666">audit: history (167); plus the App's log; exported to the organization's log — every response is recorded with who gave it and when (153) at every tier · a tier's next rung is the same offer as a placement's</text>
+  <text x="60" y="1491" font-size="8.5" fill="#999">19 · 46 · 119 · 139 · 141 · 149 · 153 · 155 · 167 · 174 · 191 · 204 · 207 · 208 · 216a · 217i · 217j · 217k</text>
+
+  <!-- the ladder panel -->
+  <rect x="1380" y="1116" width="360" height="330" rx="8" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+  <text x="1392" y="1136" font-size="12" font-weight="700" fill="#8a6a1d">THE LADDER · the next rung is an offer</text>
+  <text x="1392" y="1150" font-size="8.5" fill="#999">moving up a placement or a tier is a chore the machinery offers (123, 217k)</text>
+  <use href="#marker" x="1404" y="1174" color="#c05b5b"/>
+  <text x="1420" y="1170" font-size="10" font-weight="700" fill="#333">upgrade offer · a decision on the status view (141)</text>
+  <text x="1420" y="1184" font-size="8.5" fill="#666">names the next placement or tier and what it needs;</text>
+  <text x="1420" y="1196" font-size="8.5" fill="#666">answerable by control and number like every decision (152)</text>
+  <path d="M 1404 1184 L 1404 1210" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+  <text x="1420" y="1224" font-size="10" font-weight="700" fill="#333">yes → the install effects (217k, 204)</text>
+  <text x="1420" y="1238" font-size="8.5" fill="#666">the placement's own step — a process, a pane, a container, a</text>
+  <text x="1420" y="1250" font-size="8.5" fill="#666">platform session — an effect with a proof, repeatable, never by hand</text>
+  <text x="1420" y="1262" font-size="8.5" fill="#999">flywheel init records that the dispatcher exists and where it is placed</text>
+  <path d="M 1404 1236 L 1404 1264" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+  <use href="#marker" x="1404" y="1282" color="#c05b5b"/>
+  <text x="1420" y="1278" font-size="10" font-weight="700" fill="#333">missing secrets · decisions under attention (207, 149)</text>
+  <text x="1420" y="1292" font-size="8.5" fill="#666">bot token · App key or push credential · model key · inbound secrets</text>
+  <text x="1420" y="1304" font-size="8.5" fill="#666">placed by the operator, never an agent; never a key that reaches a host</text>
+  <text x="1420" y="1316" font-size="8.5" fill="#999">the rung is not climbed until each is placed</text>
+  <line x1="1392" y1="1328" x2="1728" y2="1328" stroke="#c9962e" stroke-width="1" opacity="0.5"/>
+  <text x="1392" y="1346" font-size="10" font-weight="700" fill="#333">upgrading dispatch = the binary on its placement (208)</text>
+  <text x="1392" y="1360" font-size="8.5" fill="#666">an older binary than the manifest's stamped version shows on the status view;</text>
+  <text x="1392" y="1372" font-size="8.5" fill="#666">a down dispatcher is a stale host there, visible from the phone (141)</text>
+  <line x1="1392" y1="1384" x2="1728" y2="1384" stroke="#c9962e" stroke-width="1" opacity="0.5"/>
+  <text x="1392" y="1402" font-size="10" font-weight="700" fill="#333">what ships first</text>
+  <text x="1392" y="1416" font-size="8.5" fill="#666">the browser interpreter and the local dispatcher — the binary already specified;</text>
+  <text x="1392" y="1428" font-size="8.5" fill="#666">then the container on flywheel-cloud, already the router the host binding names;</text>
+  <text x="1392" y="1440" font-size="8.5" fill="#666">AgentCore and managed agents as triage runners when an org already runs there</text>
+
+  <!-- legend -->
+  <rect x="40" y="1512" width="1720" height="106" rx="10" fill="#fafafa"/>
+  <line x1="60" y1="1536" x2="100" y2="1536" stroke="#2b8a8a" stroke-width="2.4"/>
+  <text x="108" y="1540" font-size="10" fill="#333">dispatch · one host kind, four jobs · charges</text>
+  <line x1="330" y1="1536" x2="370" y2="1536" stroke="#2b8a8a" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <text x="378" y="1540" font-size="10" fill="#333">a session calling the tool server · stdio, in-process, or remote MCP with the identity (197)</text>
+  <use href="#gear" transform="translate(830,1536) scale(0.8)" color="#2e9e5b"/>
+  <text x="848" y="1540" font-size="10" fill="#333">a bounded session · per capture or per message</text>
+  <line x1="1100" y1="1536" x2="1140" y2="1536" stroke="#8a8a86" stroke-width="1.6" stroke-dasharray="2 5"/>
+  <text x="1148" y="1540" font-size="10" fill="#333">read · a bounded fetch</text>
+  <line x1="1290" y1="1536" x2="1330" y2="1536" stroke="#c9962e" stroke-width="2.4"/>
+  <text x="1338" y="1540" font-size="10" fill="#333">the plan · an offer</text>
+  <use href="#marker" x="1470" y="1536" color="#c05b5b"/>
+  <text x="1484" y="1540" font-size="10" fill="#333">a decision is created here</text>
+  <line x1="1630" y1="1536" x2="1670" y2="1536" stroke="#c05b5b" stroke-width="2" stroke-dasharray="4 3"/>
+  <text x="1678" y="1540" font-size="10" fill="#333">the reply</text>
+  <text x="60" y="1568" font-size="10.5" fill="#333">dispatch is four jobs and no more, and the browser model is the interpreter alone (216, 216a) · it is a host whose declaration takes no work and presents the chat, stateless between ticks, its model jobs bounded sessions on a runner the engine cannot tell apart (217, 217a–c)</text>
+  <text x="60" y="1588" font-size="10.5" fill="#333">nothing addresses dispatch: it reads state through notify and a bounded fetch and reaches the operator only as the bot (217d) · triage is not curation (217e) · nothing is lost while it is down (217f) · capture is decentralized and the pointer must be reachable (217g, 217h)</text>
+  <text x="60" y="1608" font-size="10.5" fill="#333">three placements, one declaration; what differs is placement, secret store, route and model access (217i) · tiers are bindings (217j) · installed from the manifest, never by hand; the next rung is an offer, its secrets decisions under attention until placed (217k, 207)</text>
+</svg>

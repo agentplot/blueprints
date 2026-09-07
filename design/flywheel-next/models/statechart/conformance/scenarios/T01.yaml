@@ -5,7 +5,7 @@ satisfies: [3, 156, 157, 158, 159]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
-    - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: proposed}, record: {type: default, type_version: 3, target: bolt/atlas/plan-rows, document: "openspec/changes/status-writer/proposal.md"}}
+    - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: proposed}, record: {type: default, type_version: 5, target: bolt/atlas/plan-rows, document: "openspec/changes/status-writer/proposal.md"}}
     - {id: ledger-cell/atlas/c1, machine: ledger-cell, state: {freshness: judged, judged.value: satisfied}}
   register: {unit/atlas/status-writer/unit-proposed: 12, next: 13}
   hosts: [{name: mac-mini, bound: 3}]
