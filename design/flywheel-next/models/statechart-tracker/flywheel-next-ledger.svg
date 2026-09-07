@@ -27,8 +27,8 @@
   <text x="58" y="122" font-size="11.5" font-weight="700" fill="#5a3f95">A CLAIM</text>
   <text x="128" y="122" font-size="9.5" fill="#999">one source, with the chapter that explains it</text>
   <use href="#repo" x="106" y="176" color="#7b5cb8"/>
-  <text x="146" y="172" font-size="10.5" font-weight="700" fill="#333">books repo · main</text>
-  <text x="146" y="186" font-size="8.5" fill="#999">books/flywheel-next/src</text>
+  <text x="146" y="172" font-size="10.5" font-weight="700" fill="#333">blueprints repo · main</text>
+  <text x="146" y="186" font-size="8.5" fill="#999">blueprints/flywheel-next/src</text>
   <rect x="60" y="216" width="430" height="112" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
   <text x="76" y="240" font-size="11" font-weight="700" fill="#333">chapter — how the plan is derived</text>
   <text x="76" y="260" font-size="9.5" font-family="monospace" fill="#666">a fenced claim block, inside the prose</text>
@@ -62,7 +62,7 @@
   <use href="#check" x="800" y="251"/><use href="#cross" x="940" y="251"/><use href="#dash" x="1080" y="251"/>
   <use href="#pause" x="800" y="301"/><use href="#check" x="940" y="301"/><use href="#dash" x="1080" y="301"/>
   <use href="#cross" x="800" y="351"/><use href="#dash" x="940" y="351"/><use href="#cross" x="1080" y="351"/>
-  <text x="568" y="404" font-size="8.5" fill="#999">recutils · ledger/switchboard.rec on main of the books repo · one record per cell</text>
+  <text x="568" y="404" font-size="8.5" fill="#999">recutils · ledger/switchboard.rec on main of the blueprints repo · one record per cell</text>
   <text x="568" y="430" font-size="9.5" font-weight="600" fill="#1f6e6e">a repository joining the fleet starts with every cell empty and is judged once</text>
 
   <!-- ===================== THE BACKLOG ===================== -->
@@ -139,7 +139,7 @@
     <use href="#row" x="810" y="892" color="#8a8a86"/><text x="828" y="896">unjudged</text>
     <use href="#gear" x="960" y="892" color="#8a8a86"/><text x="980" y="896">a judging session</text>
     <use href="#cube" x="1160" y="892" color="#8a8a86"/><text x="1184" y="896">a derived query</text>
-    <use href="#repo" x="1360" y="892" color="#8a8a86"/><text x="1392" y="896">books repo</text>
+    <use href="#repo" x="1360" y="892" color="#8a8a86"/><text x="1392" y="896">blueprints repo</text>
   </g>
   <g font-size="10.5" fill="#555">
     <line x1="80" y1="944" x2="116" y2="944" stroke="#7b5cb8" stroke-width="3"/><text x="124" y="948">claims</text>

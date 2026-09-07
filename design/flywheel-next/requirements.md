@@ -69,7 +69,7 @@ redefine these.
   started and stopped only by the machinery.
 - **line** — a branch the machinery owns: each repository's shared
   line, a bolt's line off a built repository's shared line, an intent's
-  line off the books' shared line.
+  line off the blueprints' shared line.
 - **landing** — the machinery's effect that moves a line's work onto
   its parent: a bolt's line onto the shared line by the repository's
   policy, direct or pull-request; an intent's line by the archive. A
@@ -163,6 +163,14 @@ redefine these.
   text into a proposed tool call for the operator to confirm; a
   message that asks for several things yields several, one card each.
   Nothing at all when the operator used a control.
+- **blueprints repository** — the organization's content repository,
+  one of its two central repositories beside the state repository: the
+  book, the claims, the context map, the manifest, the OpenSpec changes
+  for intents with their records, and what the machinery writes under
+  its prefix (203). Short: the blueprints.
+- **book** — one content type inside the blueprints: the design book
+  of chapters, with the claims fenced in the chapters that explain
+  them (23, 97). A chapter is a page of it.
 
 ## 4. Requirements — Part A, the data plane
 
@@ -378,7 +386,7 @@ requirements, iterated against the running plan rather than on paper.
     is a chore on the repository, never a session's side effect.
 49. The lines are the same shape on both sides. A built repository has
     a shared line; a bolt is a line off it; a work item's place is off
-    the bolt's line. The books repository has a shared line; an intent
+    the bolt's line. The blueprints repository has a shared line; an intent
     is a line off it; an elaboration's place is off the intent's line.
     Proposed claims exist on the intent's line; standing claims exist
     on the shared line, and archiving the intent is the landing of its
@@ -729,7 +737,7 @@ requirements, iterated against the running plan rather than on paper.
 124. A test can show, for a given instruction version and a scenario,
     what a session would be asked to write, without starting one.
 198. The system context map is the scope surface. It is the map of the
-    bounded contexts the books describe, in the terms of domain-driven
+    bounded contexts the blueprints describe, in the terms of domain-driven
     design: a context, the elements it names, the relationships between
     contexts typed by the DDD patterns with an upstream and a downstream
     where the pattern has one, and links between elements. Element
@@ -928,11 +936,11 @@ requirements, iterated against the running plan rather than on paper.
 
 ### A.20 Intents as changes; gathered elaborations
 
-187. An intent is a change in the books repository: its change directory
+187. An intent is a change in the blueprints repository: its change directory
     is where its elaborations record what they did — research notes,
     session records, prototype notes, an interactive page — as records,
     while what they conclude is written to the book and its claims (23).
-    A bolt has no change directory in the books; a unit's change lives
+    A bolt has no change directory in the blueprints; a unit's change lives
     in its built repository and is written at the unit's first stage
     (37). A proposal (172) is a record in the state with its document
     beside it.
@@ -999,7 +1007,7 @@ requirements, iterated against the running plan rather than on paper.
 
 203. Three repositories, three owners. The state repository is the
     machinery's alone: nothing a person or a session writes lives
-    there, and its layout is the profile's (C.2). The books repository
+    there, and its layout is the profile's (C.2). The blueprints repository
     is the organization's: the book, the claims, the context map, the
     manifest, the OpenSpec changes for intents and the elaboration
     records inside them are written by people and sessions under the
@@ -1020,9 +1028,9 @@ requirements, iterated against the running plan rather than on paper.
 ### A.24 Bootstrapping and repositories
 
 204. Initialization is the machinery's, deterministic and repeatable. An
-    organization is an object with a machine of its own — absent, books
+    organization is an object with a machine of its own — absent, blueprints
     ready, state ready, connected, hosted — and `flywheel init` drives
-    it: create or adopt the books repository from the books template,
+    it: create or adopt the blueprints repository from the blueprints template,
     create the state repository with the profile's layout (C.2), record
     that the organization's GitHub App must be installed (a secret the
     operator places, never an agent), and register the first host.
@@ -1030,7 +1038,7 @@ requirements, iterated against the running plan rather than on paper.
     nothing, and the reconciler that advances work advances a
     half-finished bootstrap.
 205. A host joins by one command and never by hand. It clones the state,
-    the books and every tracked built repository as bare repositories
+    the blueprints and every tracked built repository as bare repositories
     under one root the manifest names, keeps one checkout of each
     shared line for the machinery's own merges, and makes worktrees
     only for places (43) and the operator's bolt places (44). The
@@ -1049,7 +1057,7 @@ requirements, iterated against the running plan rather than on paper.
     host or session uses a personal token. A session in a place is
     given a short-lived installation token scoped to that repository,
     issued by the machinery into the place and written nowhere else.
-208. The books template, the built-repository template, the map schema
+208. The blueprints template, the built-repository template, the map schema
     and derivation table (198, 199), and the shipped skills and
     deliverables (190) are one versioned set released with the
     flywheel. Initialization and creation stamp the version they used;
@@ -1059,7 +1067,7 @@ requirements, iterated against the running plan rather than on paper.
 
 216. Dispatch is four jobs and no more: the presenter of the chat sink
     (148, 152–155), the capture endpoint for callers that cannot write
-    the books repository (106, 112), the capture-reading session (115),
+    the blueprints repository (106, 112), the capture-reading session (115),
     and the host's agent for chat (194). Each job reads and writes only
     through the control plane's operations and tools (125, 193). The
     data plane names none of them (C.1).
@@ -1126,7 +1134,7 @@ requirements, iterated against the running plan rather than on paper.
     by the stated rule and never by racing (150).
 
 217g. Capture is decentralized. Any adapter that can read its source
-    and push to the books repository writes captures through its own
+    and push to the blueprints repository writes captures through its own
     binary, from any machine, and never through dispatch (114). The
     endpoint is for callers that cannot write git. Triage reads every
     capture wherever it was written.
@@ -1176,7 +1184,7 @@ requirements, iterated against the running plan rather than on paper.
     coincide with an organization at the git host; its repositories
     are listed by URL, so they may live under any account the App
     reaches (207).
-220. From zero: init adopts an existing books repository or creates one
+220. From zero: init adopts an existing blueprints repository or creates one
     from the template, and does the same for the state repository and
     for each tracked repository (204, 206). An existing repository
     that lacks the layout is upgraded by a chore (123, 208) and never
@@ -1213,7 +1221,7 @@ requirements, iterated against the running plan rather than on paper.
     an organization; the atoms, the schema and the bindings are core
     with it. An **extensible** machine — a unit type or an elaboration
     type — is a file an organization adds or overrides under the
-    prefix in its books (203), and so are the deliverables, the
+    prefix in its blueprints (203), and so are the deliverables, the
     vocabularies, the instructions, the schemas and the skills (119,
     190, 198). A core machine may name an extensible one only when the
     release ships that file and lists the reference as an exception; an
@@ -1232,9 +1240,9 @@ requirements, iterated against the running plan rather than on paper.
     under. The registry is a manifest in two parts, validated as one:
     the release's manifest of what it ships, and the organization's
     additions, rendered under the prefix as a registration that lists
-    every type name, every version seen, the books commit each first
+    every type name, every version seen, the blueprints commit each first
     appeared at, and whether it is shipped, overridden or added. The
-    check runs on every books commit and on every host at every fetch,
+    check runs on every blueprints commit and on every host at every fetch,
     over the union: every reference resolves, every parameter supplied
     is declared, every final a parent waits for exists in the machine
     it names, every deliverable name resolves (190), and every version a
@@ -1280,7 +1288,7 @@ requirements, iterated against the running plan rather than on paper.
     runner, a router, a sign-in, a unit type or an elaboration type, a
     deliverable producer, a map vocabulary, a template, or a scenario
     pack. A per-host package installs on a named host; an organization
-    package installs into the books under the prefix (203) and is read
+    package installs into the blueprints under the prefix (203) and is read
     by every host at the shared line, so no two hosts can differ on a
     type. A package is a git repository at a tag, listed in an index
     that is a file; the shipped set is the default index. A package
@@ -1552,7 +1560,7 @@ like any other.
      readable with no host of the operator's running.
 157. Objects with a plan-facing lifecycle — intent, elaboration, bolt,
     unit, work item, decision — are tracker items. Signals, moves, claims,
-    verdicts and definitions are files in the books repository in every
+    verdicts and definitions are files in the blueprints repository in every
     profile, never items.
 158. An object's state is proven by the tracker's record of it. Anything
      else that shows that state is a projection, written from the
@@ -1672,11 +1680,11 @@ Constraints of the world, not design choices.
 
 - Design books are markdown books in a git repository. Built software
   lives in git repositories with their own merge gates.
-- The books' repository and every built repository already carry
+- The blueprints repository and every built repository already carry
   proposed changes and archived specifications in the OpenSpec change
   format, with an archive step that moves a change's specifications
   into the standing set. Which repositories the flywheel tracks is
-  listed in a manifest in the books' repository.
+  listed in a manifest in the blueprints repository.
 - Agent sessions are terminal processes on one or more hosts the
   operator runs, started and observed through a multiplexer with an
   agent-aware API. Starting a process can be slow; the API can time
@@ -1704,7 +1712,7 @@ Constraints of the world, not design choices.
   through its `herdr agent` commands; the tracker profile's tracker is
   GitHub issues, milestones and a Projects board; the git-only
   profile's git host is GitHub, used only for repositories, pushes and
-  webhooks; the chat is a Discord bot; the books are mdBook; changes
+  webhooks; the chat is a Discord bot; the book is mdBook; changes
   and specifications are OpenSpec with custom schemas; small durable
   tables may be recutils files in git.
 - Machine definitions are YAML validated by a JSON Schema; records are
@@ -1910,7 +1918,7 @@ by walking each one. Each is tagged with the profiles it applies to.
   elaboration that exits done and a standing prototype. The research
   place merges into the intent's line and is removed; the prototype's
   place is rebased onto the line while idle and kept. The archive lands
-  the intent's line on the books' shared line, and the two claims it
+  the intent's line on the blueprints' shared line, and the two claims it
   carried are now standing.
 
 ## 12. What to deliver

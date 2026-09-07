@@ -45,9 +45,9 @@ decisions:
 receive:
   - in: approved
     on: tick
-    when: ["line.exists(books, parent.line)"]
+    when: ["line.exists(blueprints, parent.line)"]
     to: placing
-    effects: ["line.take-parent(books, parent.line, shared) if line.behind-parent", "place.ensure(books, parent.line, self.place)"]
+    effects: ["line.take-parent(blueprints, parent.line, shared) if line.behind-parent", "place.ensure(blueprints, parent.line, self.place)"]
     note: a line takes its parent at least when a place is first made off it (requirement 43)
   - in: placing
     on: tick

@@ -25,7 +25,7 @@ receive:
     when: ["signals.unmoved() non-empty", "cadence.due(self.cadence, self.last-run) or count(signals.unmoved()) >= self.threshold"]
     to: running
     effects:
-      - "place.ensure(books, shared, curation/<n>)"
+      - "place.ensure(blueprints, shared, curation/<n>)"
       - "actor.spawn(session, session/<self.id>/<n>, {place, line: shared, order: {job: curation, signals: ids of signals.unmoved(), index: claims.standing() + open intents}, instruction-version: instructions.version()}) in requested"
     note: claims are the index it clusters against (requirement 95); the job names the exact signal ids so the session's inputs are closed
   - in: running

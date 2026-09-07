@@ -21,12 +21,12 @@
   <rect width="1680" height="1000" fill="#fff"/>
 
   <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Design — curation turns signals into one row per intent; an elaboration is one session whose type says how it ends; the archive makes its claims standing</text>
-  <text x="40" y="57" font-size="12" fill="#666">a signal is never a row · a standing session ends only on the word finish · a claim on the books shared line moves the ledger's backlog, which is what fires planning</text>
+  <text x="40" y="57" font-size="12" fill="#666">a signal is never a row · a standing session ends only on the word finish · a claim on the blueprints shared line moves the ledger's backlog, which is what fires planning</text>
 
   <!-- ============ SIGNALS ============ -->
   <rect x="40" y="84" width="330" height="300" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
   <text x="56" y="108" font-size="12" font-weight="700" fill="#5f6b7a">SIGNALS</text>
-  <text x="132" y="108" font-size="10" fill="#999">books repository · signals/ · adapters append</text>
+  <text x="132" y="108" font-size="10" fill="#999">blueprints repository · signals/ · adapters append</text>
   <use href="#people" x="100" y="170" color="#8a8a86"/>
   <text x="100" y="200" font-size="10" fill="#666" text-anchor="middle">sources</text>
   <text x="100" y="213" font-size="8.5" fill="#999" text-anchor="middle">meetings · chat · logs · findings</text>
@@ -86,7 +86,7 @@
   <g id="store-intent">
     <use href="#repo" x="580" y="470" color="#7b5cb8"/>
     <text x="580" y="506" font-size="10" fill="#666" text-anchor="middle">intent line</text>
-    <text x="580" y="519" font-size="8.5" fill="#999" text-anchor="middle">git.line.create off the books main</text>
+    <text x="580" y="519" font-size="8.5" fill="#999" text-anchor="middle">git.line.create off the blueprints main</text>
     <rect x="480" y="528" width="200" height="18" rx="9" fill="#7b5cb8"/>
     <text x="580" y="541" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">intent/atlas-provider-limits</text>
   </g>
@@ -143,7 +143,7 @@
   <path d="M 970 320 L 1160 320" fill="none" stroke="#c9962e" stroke-width="2.4" marker-end="url(#mA)"/>
   <text x="1065" y="312" font-size="9.5" fill="#a97e26" font-weight="600" text-anchor="middle">close</text>
   <use href="#repo" x="1380" y="320" color="#2b8a8a"/>
-  <text x="1380" y="356" font-size="10" fill="#666" text-anchor="middle">books · main</text>
+  <text x="1380" y="356" font-size="10" fill="#666" text-anchor="middle">blueprints · main</text>
   <text x="1380" y="369" font-size="8.5" fill="#999" text-anchor="middle">the claim exists here → standing</text>
   <rect x="1290" y="378" width="180" height="18" rx="9" fill="#2b8a8a"/>
   <text x="1380" y="391" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">one-writer@7f3a2c1</text>

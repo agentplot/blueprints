@@ -9,9 +9,9 @@ scope:
   shared-line: main
 
 stores:
-  captures:            {system: books repo,  path: "signals/captures/<id>.rec",  record: recutils, identity: SourceKey}
-  signals:             {system: books repo,  path: "signals/<capture>.rec",       record: recutils, identity: Id}
-  moves:               {system: books repo,  path: "signals/moves.rec",           record: recutils, identity: "Signal + Date"}
+  captures:            {system: blueprints repo,  path: "signals/captures/<id>.rec",  record: recutils, identity: SourceKey}
+  signals:             {system: blueprints repo,  path: "signals/<capture>.rec",       record: recutils, identity: Id}
+  moves:               {system: blueprints repo,  path: "signals/moves.rec",           record: recutils, identity: "Signal + Date"}
   proposals:           {system: state repo,  path: "proposals/<kind>/<id>.rec (+ <id>.md for a unit document)", record: recutils, identity: Id}
   objects/intent:      {system: state repo,  path: "objects/intent/<id>.rec — the object record, then every activation, exit, word, effect record naming it, appended", record: recutils, identity: Id}
   objects/elaboration: {system: state repo,  path: "objects/elaboration/<id>.rec", record: recutils, identity: Id}
@@ -26,22 +26,22 @@ stores:
   words:               {system: state repo,  path: "words/<rendering>-<row>.rec; a direct act is a commit by a non-machinery author to an object's file", record: recutils, identity: "Row + Generation"}
   effects:             {system: state repo,  path: "a record in the object's file", record: recutils, identity: Id}
   conflicts:           {system: state repo,  path: "a record in the item's or elaboration's file", record: recutils, identity: "Place + heads"}
-  ledger:              {system: books repo,  path: "ledger/<repository>.rec",       record: recutils, identity: "Repository + Claim + ClaimVersion + Revision"}
+  ledger:              {system: blueprints repo,  path: "ledger/<repository>.rec",       record: recutils, identity: "Repository + Claim + ClaimVersion + Revision"}
   renderings:          {system: state repo,  path: "renderings/<id>.rec",           record: recutils, identity: rows fingerprint}
   hosts:               {system: state repo,  path: "hosts/<host>.rec; liveness = branch heartbeat/<host>, a single orphan commit force-pushed every heartbeat-interval, message = the time", record: recutils, identity: host}
   asks:                {system: state repo,  path: "asks/<id>.rec",                 record: recutils, identity: Id}
-  review-marks:        {system: books repo,  path: "review-marks/<who>.rec",        record: recutils, identity: who}
-  books-shared-line:   {system: books repo,  path: "main", record: "mdBook chapters with ```claim blocks; flywheel/**", identity: sha}
+  review-marks:        {system: blueprints repo,  path: "review-marks/<who>.rec",        record: recutils, identity: who}
+  blueprints-shared-line:   {system: blueprints repo,  path: "main", record: "mdBook chapters with ```claim blocks; flywheel/**", identity: sha}
   repo-shared-line:    {system: built repo,  path: "main: openspec/specs/**/spec.md", record: OpenSpec, identity: sha}
   git-host:            {system: GitHub,      record: "git ls-remote; push results; webhooks"}
   multiplexer:         {system: herdr,       record: "herdr agent list/status/last-message"}
   host-disk:           {system: worktrunk,   record: "wt list; git rev-parse"}
 
 evidence:
-  read:            "git fetch origin main (state, books, each built repo) before every tick; read files at origin/main; as-of = that sha"
+  read:            "git fetch origin main (state, blueprints, each built repo) before every tick; read files at origin/main; as-of = that sha"
   list:            "the directory layout at origin/main: objects/<kind>/*.rec, proposals/**, words/*, asks/*, hosts/*"
-  unmoved-signals: "signals/*.rec minus signals/moves.rec on books main"
-  standing-claims: "```claim blocks in src/**/*.md on books main, scoped by flywheel/manifest.yaml"
+  unmoved-signals: "signals/*.rec minus signals/moves.rec on blueprints main"
+  standing-claims: "```claim blocks in src/**/*.md on blueprints main, scoped by flywheel/manifest.yaml"
   host-alive:      "git ls-remote origin refs/heads/heartbeat/<host>; the commit's time within lease-ttl"
   observed:        "herdr agent status"
   gate-result:     "gh pr checks (reading the PR of the repository's own landing gate; not a state store)"
@@ -68,7 +68,7 @@ receive:
   by-hand:   "a word file or a state-file edit committed to main from a laptop is the same fact (S19)"
 
 notify:
-  mechanism: "GitHub webhook on push to state main, books main, and each built repository's main, to every host's URL; a 60 s poll besides; every host fetches before every tick"
+  mechanism: "GitHub webhook on push to state main, blueprints main, and each built repository's main, to every host's URL; a 60 s poll besides; every host fetches before every tick"
   bound: "seconds by webhook; 60 s by poll; no decision on a read older than the last fetch"
 
 status-view:

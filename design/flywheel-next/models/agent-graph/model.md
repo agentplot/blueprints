@@ -90,7 +90,7 @@ with the node firings that move between them.
 | **session** | activation, observations, exits | starting · working · idle · blocked · gone | runner, reconciler |
 | **signal** | signal, move | unmoved · moved(attach/challenge/join/answered/drop) | curation, operator |
 | **host** | host record, heartbeat | alive · stale | reconciler |
-| **claim** | the claim block on the books shared line, the intent line | proposed · standing · moved | git.archive (nothing else) |
+| **claim** | the claim block on the blueprints shared line, the intent line | proposed · standing · moved | git.archive (nothing else) |
 | **verdict** | the ledger row, the claim's current version, the evidence path | current · stale · gone | planning, a stage with a verdict out-edge |
 | **place** | place record, place observation | preparing · current · behind · conflicted · removed | git effects, reconciler |
 
@@ -99,7 +99,7 @@ Attributes, not objects: a capture (provenance on a signal), a move
 once accepted; an offer artifact before), a finding (an exit payload
 that becomes a proposal or a signal), a question and its answer (an
 exit and a word on the item), a line (a name and a head the git node
-reads; never its own state), a type (a template, versioned by the books
+reads; never its own state), a type (a template, versioned by the blueprints
 repo), a rendering (an artifact of the presenter), an ask (an artifact
 of the operator's dictation).
 
@@ -122,7 +122,7 @@ artifacts; they never run a session.
 
 | node | key | fires when | session in | out-edges |
 |---|---|---|---|---|
-| `curation` | the id-set of unmoved signals at fire time | unmoved signals ≥ `threshold` ∨ (cadence due ∧ unmoved > 0) | a place off the books shared line | exit(done: moves, intent-proposals, elaboration-proposals) · finding · chore · blocked · stalled |
+| `curation` | the id-set of unmoved signals at fire time | unmoved signals ≥ `threshold` ∨ (cadence due ∧ unmoved > 0) | a place off the blueprints shared line | exit(done: moves, intent-proposals, elaboration-proposals) · finding · chore · blocked · stalled |
 | `elaboration` (parameterised by elaboration type) | elaboration id | elaboration approved ∧ place current ∧ host has a slot ∧ no live activation | its place off the intent line | the five exits |
 | `planning` | (repository, backlog fingerprint) | fingerprint differs from the last completed planning of the repository | a place off the built repository's shared line | exit(done: unit-proposals, verdicts) · finding · chore · blocked · stalled |
 | `stage/<name>` (from a unit type) | (item, stage, attempt, member) | item at this stage ∧ queued ∧ place current ∧ dependencies satisfied ∧ slot | the item's place off the bolt line | the five exits, plus verdict when the stage declares it |
@@ -165,7 +165,7 @@ store in both profiles; in the tracker profile the same fields sit in a
 fenced block inside an issue body or comment.
 
 **capture** — provenance for a source event. Producer: an adapter.
-Store: `captures` (books repo `signals/captures/`).
+Store: `captures` (blueprints repo `signals/captures/`).
 
 ```
 Id: cp-2026-09-02-standup
@@ -177,7 +177,7 @@ Raw: file:///Users/chuck/captures/2026-09-02-standup.md
 ```
 
 **signal** — one raw input. Producer: an adapter's session, or
-`signal-writer`. Immutable. Store: `signals` (books repo `signals/`).
+`signal-writer`. Immutable. Store: `signals` (blueprints repo `signals/`).
 
 ```
 Id: sg-cp-2026-09-02-standup-07
@@ -266,7 +266,7 @@ Host: mac-mini
 Generation: 3
 TakenAt: 2026-09-04T07:41:02Z
 Until: 2026-09-04T07:56:02Z
-Inputs: place=pl-wi-418 base=9b1e44c line=bolt/plan-rows@9b1e44c instructions=books@c33d1f0
+Inputs: place=pl-wi-418 base=9b1e44c line=bolt/plan-rows@9b1e44c instructions=blueprints@c33d1f0
 Released:
 ```
 
@@ -317,7 +317,7 @@ At: 2026-09-04T11:20:00Z
 ```
 
 **verdict** — one judgment of the ledger. Producer: `planning` or a
-stage declaring the verdict edge. Store: `ledger/<repository>` (books
+stage declaring the verdict edge. Store: `ledger/<repository>` (blueprints
 repo, recutils, one file per tracked repository).
 
 ```
@@ -390,10 +390,10 @@ At: 2026-09-03T21:12:00Z
 ```
 
 Read-only evidence, not stores of the flywheel: **claims** (fenced
-blocks in mdBook chapters on the books shared line), **as-built**
+blocks in mdBook chapters on the blueprints shared line), **as-built**
 (OpenSpec `specs/` on a built repository's shared line, each with a
 `serves:` line naming `claim@version`), **types, instructions, skills,
-manifest, context map** (files in the books repo under `flywheel/`),
+manifest, context map** (files in the blueprints repo under `flywheel/`),
 **git heads** (the git host), **session liveness** (herdr), **place
 heads** (wt and local git).
 
@@ -406,7 +406,7 @@ state in §2 is proven by exactly one of them (I4).
 
 | store | proves | tracker profile | git-only profile |
 |---|---|---|---|
-| `captures`, `signals`, `moves` | a signal exists; its one move | books repo, `signals/` (recutils) | same |
+| `captures`, `signals`, `moves` | a signal exists; its one move | blueprints repo, `signals/` (recutils) | same |
 | `proposals` | a decision is the operator's | an issue labelled by the binding, body = document | state repo `proposals/<kind>/<id>.rec` + `.md` |
 | `objects/<kind>` | an intent, elaboration, bolt, unit, item exists and what approved it | the proposal's issue, relabelled; bolt also owns a milestone | state repo `objects/<kind>/<id>.rec` |
 | `activations` | who fired what, and owns it now | a lease comment on the object's issue | a section in the object's file |
@@ -415,7 +415,7 @@ state in §2 is proven by exactly one of them (I4).
 | `advances` | which stage an item is at and its history | a comment per advance | a section in the item's file |
 | `words` | the operator's word, applied once | a comment per word; a direct act read from the issue itself | `words/<rendering>-<row>.rec`, committed by the word writer |
 | `effects` | an act was done | a comment per effect on the object it concerns | a section in the object's file |
-| `ledger/<repo>` | a verdict | books repo `ledger/<repo>.rec` | same |
+| `ledger/<repo>` | a verdict | blueprints repo `ledger/<repo>.rec` | same |
 | `renderings` | which plan the operator last received | a comment on the plan issue | `renderings/<id>.rec` |
 | `hosts` | a host's bound, and whether it is alive | an issue per host; a heartbeat comment edited | `hosts/<host>.rec`; branch `heartbeat/<host>` |
 | `asks` | a dictation | an issue | `asks/<id>.rec` |
@@ -607,7 +607,7 @@ wires `done → next`, `not-done → return-to` with the bound, and
 `members` as the fan-out rule. A type with `members: {rule: {files:
 "personas/*.md"}}` fans out one session per matching file in the
 repository being worked and joins by `all`, `any`, or `count: n` (S26).
-The unit records `Type: default@a91c0e2` (name at the books commit that
+The unit records `Type: default@a91c0e2` (name at the blueprints commit that
 defined it); a change to the type is a new commit, and a unit in flight
 keeps the template it started under because its items' activations
 carry the version.
@@ -722,9 +722,9 @@ is unit proposals, each naming `TargetBolt` or `NewBoltName`, with
 
 ### 9.2 The ledger
 
-The ledger is one recutils file per tracked repository in the books
-repository, `ledger/<repository>.rec`, committed on the books shared
-line by the machinery (direct commit; the books repo's landing policy
+The ledger is one recutils file per tracked repository in the blueprints
+repository, `ledger/<repository>.rec`, committed on the blueprints shared
+line by the machinery (direct commit; the blueprints repo's landing policy
 for machinery records is `direct`, stated in the manifest). It lives
 in git in both profiles because a verdict is a record, not an object
 with a lease, and because construction sessions read it beside the
@@ -763,7 +763,7 @@ prepares. The shape is the same on both sides (A.5.42).
 |---|---|---|---|
 | `main` of a built repository | — | the repository | — |
 | `bolt/<id>` | the repository's `main` | `git.line.create` on `instantiate` of a new bolt | `git.land` by the manifest's policy: `pr` (open a pull request with `gh`, wait for the gates, merge) or `direct` (fast-forward push) |
-| `intent/<id>` | the books `main` | `git.line.create` on intent yes | `git.archive`: OpenSpec archive of the intent's change, merge to `main` by the books policy, delete the line |
+| `intent/<id>` | the blueprints `main` | `git.line.create` on intent yes | `git.archive`: OpenSpec archive of the intent's change, merge to `main` by the blueprints policy, delete the line |
 | a place `pl-<object>` | its line | `git.place.prepare` = `wt add`, ports hashed from the worktree, `wt tether` for anything the session starts | `git.merge` into the line, then `git.place.remove` = `wt remove` |
 | the bolt's own place | `bolt/<id>` | `git.place.prepare` on bolt creation; refreshed by `git.place.rebase` after every merge | removed on landing |
 
@@ -802,7 +802,7 @@ After each merge the bolt's own place is rebased.
 machinery's hook directory (`pre-push` refuses; `reference-transaction`
 refuses ref creation other than the place's own branch) and the agent's
 Claude Code settings deny `git branch|checkout -b|merge|rebase|push|
-worktree` and `wt` in a PreToolUse hook. Both are data in the books repo
+worktree` and `wt` in a PreToolUse hook. Both are data in the blueprints repo
 under `flywheel/hooks/`. A refusal is written to the pane's log; the
 reconciler reads it and writes an observation `refusal` on the session,
 which the run report shows (S15).
@@ -823,8 +823,8 @@ in one place, started by the runner from an activation.
 **Inputs are closed** (A.11.77). The runner writes
 `<place>/.flywheel/work-order.md` (untracked) and starts the agent with
 it. The work order is rendered from: the schema instruction and the
-type skill at the books commit recorded in the activation
-(`instructions=books@sha`), the object's artifacts (the item or
+type skill at the blueprints commit recorded in the activation
+(`instructions=blueprints@sha`), the object's artifacts (the item or
 elaboration record, its unit's document, the answer to a prior
 question), and the artifacts of the change it works (its OpenSpec change
 directory, findings and chores already there). A test renders the
@@ -935,7 +935,7 @@ scenarios:
 ````
 
 where `version` is the hash of the block's text without the version
-line; a pre-commit hook in the books repo recomputes it, so the version
+line; a pre-commit hook in the blueprints repo recomputes it, so the version
 moves exactly when the text moves. The prose, diagram and sample around
 the block are the chapter; there is nothing to drift (A.14.84). The
 choice against OpenSpec requirement blocks by anchor: those live under
@@ -944,23 +944,23 @@ two files. OpenSpec changes are still how an elaboration proposes a
 chapter edit; the archive step lands the chapter, and with it the claim.
 
 A claim is **proposed** while it exists only on `intent/<id>` and
-**standing** once `git.archive` lands the intent line on the books
+**standing** once `git.archive` lands the intent line on the blueprints
 `main` (A.3.42, A.14.85). The set of standing claims is read by parsing
-the chapters at the books head; nothing stores it.
+the chapters at the blueprints head; nothing stores it.
 
-**The context map** is `flywheel/context-map.yaml` in the books repo,
+**The context map** is `flywheel/context-map.yaml` in the blueprints repo,
 versioned with the book (A.16.108). The **review view** is derived: the
 operator's `reviewed` word writes a mark (`review-marks/<who>.rec`) with
-the books sha; the page diffs chapters and map from the mark to the
+the blueprints sha; the page diffs chapters and map from the mark to the
 head, lists claims whose version moved and map nodes that changed, and
 links each with the previous version beside it (S25). Nothing is
 written by hand.
 
 **Instructions, skills, types, hooks** live under `flywheel/` in the
-books repo. Every host fetches books `main` before every tick; an
+blueprints repo. Every host fetches blueprints `main` before every tick; an
 activation records the sha it used, so a session started before a
 change and one after are told apart (A.16.110). Changing one is a chore
-on the books shared line. The defaults of A.16.107 are the files
+on the blueprints shared line. The defaults of A.16.107 are the files
 shipped at `flywheel/instructions/default/`: `design-session.md` (write
 the chapter and the claim in one commit; update the context map when a
 claim changes), `construction-session.md` (name the claim the work
@@ -992,7 +992,7 @@ children. A proposal's issue becomes the object's issue on yes
 object's history are one thread; the annotation on the document is a
 comment, read as a word.
 
-Signals, moves, the ledger, types and instructions live in the books
+Signals, moves, the ledger, types and instructions live in the blueprints
 repo as in §5; the tracker holds objects.
 
 **What GitHub does not give and what the profile adds** (C.3.153):
@@ -1013,8 +1013,8 @@ repositories, pushes and webhooks. The binding is
 `machines/bindings/git-only.yaml`.
 
 **Repositories that hold state.** One state repository per
-organization, `<org>-flywheel-state`, separate from the books so that
-state churn does not enter the design's history; plus the books repo
+organization, `<org>-flywheel-state`, separate from the blueprints so that
+state churn does not enter the design's history; plus the blueprints repo
 for signals, ledger, types, instructions, claims; plus the built
 repositories for lines, places, and the as-built.
 
@@ -1080,7 +1080,7 @@ the operator can always commit a word file from a laptop instead, which
 is the same fact (S19).
 
 **Notify.** A webhook from the git host on every push to the state
-repo's `main`, the books `main`, and each built repository's `main`,
+repo's `main`, the blueprints `main`, and each built repository's `main`,
 to every host's URL; a 60 s poll besides; and before every tick, every
 host fetches and integrates `main` (C.2.149). Latency bound: seconds by
 webhook, 60 s by poll. A host never decides on a read older than its
@@ -1151,7 +1151,7 @@ rendering record so a late reply still names the right row.
 ### What is the minimal set of stores?
 
 Fourteen edge stores (§5), each the one source of truth for the states it
-proves; plus read-only evidence in the books and built repositories and
+proves; plus read-only evidence in the blueprints and built repositories and
 the world (herdr, wt, git host).
 
 ### How does curation connect without the flywheel batching signals?
@@ -1162,7 +1162,7 @@ nothing in the flywheel counts or buffers.
 
 ### Where does the ledger live, who writes a verdict, and how does a stale verdict become a row?
 
-`ledger/<repository>.rec` in the books repo; planning and any stage
+`ledger/<repository>.rec` in the blueprints repo; planning and any stage
 declaring a verdict edge write it through the engine with a
 deterministic effect id; staleness is a derivation that moves the
 backlog fingerprint, which fires planning, whose proposal is the row
@@ -1262,7 +1262,7 @@ fix) is written by the reconciler as an exit; the session continues to
 a`) is a word; `instantiate` writes a unit of type `chore` with
 `Line: shared`, one item, no change directory; `git.place.prepare` off
 the shared line, one stage session, `done`, `git.merge` by the
-repository's policy (direct for the books; a PR for a built repository
+repository's policy (direct for the blueprints; a PR for a built repository
 with gates). No bolt record is written: the chore type's template has
 `lands-on: named-line` and `instantiate` creates a bolt only for a
 `unit` proposal with `NewBoltName`. I8 holds by the template.
@@ -1288,7 +1288,7 @@ and the effect id is the activation).
 
 **S7 — close an intent.** All elaborations derive `done`; row `close`
 in DECIDE. Word `close`. `git.archive` fires: OpenSpec archive of the
-intent's change on `intent/<id>`, the books policy lands it on `main`,
+intent's change on `intent/<id>`, the blueprints policy lands it on `main`,
 the line is deleted, the intent's records are moved under
 `objects/intent/archive/` (git-only) or the milestone closed (tracker).
 The intent derives `closed`. Two claims moved from proposed to standing
@@ -1432,7 +1432,7 @@ latest). The next curation run's key includes it.
 **S25 — an elaboration amends a claim.** The session's commit changes
 the chapter, the claim block (the hook moves `version`), and the context
 map, as the default instruction requires. After the archive lands the
-intent line, the review view diffs the books from the operator's mark
+intent line, the review view diffs the blueprints from the operator's mark
 to the head and lists the chapter and the map node. The operator's
 `reviewed` word moves the mark.
 
@@ -1516,7 +1516,7 @@ exits `done`: `git.merge` place → `intent/<id>`; `git.place.remove`.
 The prototype's place is `behind`; its session idle; `git.place.rebase`
 onto the intent line; kept. The operator says `finish` on the idle row;
 the prototype derives `done`; `retire`. All elaborations done → `close`
-row → `close` → `git.archive` lands `intent/<id>` on the books `main`;
+row → `close` → `git.archive` lands `intent/<id>` on the blueprints `main`;
 the two claim blocks now exist there, so they derive `standing`.
 
 ---
@@ -1547,10 +1547,10 @@ the two claim blocks now exist there, so they derive `standing`.
 ## 19. Decisions taken without asking
 
 - Signals, moves, the ledger, types, instructions, hooks and the context
-  map live in the books repository in both profiles; the tracker holds
+  map live in the blueprints repository in both profiles; the tracker holds
   objects only.
 - The state repository in the git-only profile is separate from the
-  books; one shared branch; one file per object.
+  blueprints; one shared branch; one file per object.
 - Heartbeats and the status page are force-pushed single-commit
   branches, not history.
 - Takeover of a session-backed activation needs the operator's word;
@@ -1576,7 +1576,7 @@ the two claim blocks now exist there, so they derive `standing`.
 - A type corrected after approval is a dictation: an elaboration's type
   changes at its next activation; a unit's type is refused once an item
   has an activation, and the word is reported unapplied (A.5.49).
-- A claim's scope corrected by word is a chore on the books shared
+- A claim's scope corrected by word is a chore on the blueprints shared
   line, because scope lives in the claim block.
 - The conformance suite lives under `conformance/`, one file per
   contract operation and guarantee plus the section 11 scenarios that

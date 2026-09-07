@@ -11,10 +11,10 @@ session:
   agent: "<stage.agent> --persona <member.persona>"
   place: "the item's place off its bolt's line (git.place.prepare fires first when absent; shared for every member of one stage attempt)"
   work-order:
-    - schema instruction for the stage's artifact (spec, code, review, test), at the activation's books sha
+    - schema instruction for the stage's artifact (spec, code, review, test), at the activation's blueprints sha
     - the stage's type skill
     - the item record, its unit's document, and its position in the unit
-    - the claim(s) the unit covers, as chapters on the books shared line, with versions
+    - the claim(s) the unit covers, as chapters on the blueprints shared line, with versions
     - the change directory of the unit (OpenSpec) with prior findings, chores and review notes
     - the advances so far (attempt number, what sent it back and why)
     - the answer to a prior blocked question, when one exists

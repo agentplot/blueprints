@@ -135,7 +135,7 @@
 <!-- ledger store and its edges -->
 <use href="#cyl" x="1530" y="660"/>
 <text x="1530" y="690" font-size="9.5" fill="#666" text-anchor="middle">ledger</text>
-<text x="1530" y="703" font-size="8.5" fill="#999" text-anchor="middle">ledger/atlas.rec · in the books</text>
+<text x="1530" y="703" font-size="8.5" fill="#999" text-anchor="middle">ledger/atlas.rec · in the blueprints</text>
 <path d="M 910 800 C 1000 870, 1400 870, 1520 690" fill="none" stroke="#c05b5b" stroke-width="2.2" marker-end="url(#mR)"/>
 <text x="1240" y="866" font-size="9" fill="#a34848" text-anchor="middle">record_verdict · from the session's exit</text>
 <path d="M 1506 668 C 1450 720, 1300 720, 1200 720 L 520 720 C 480 720, 440 730, 426 746" fill="none" stroke="#c05b5b" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mR)"/>
@@ -143,11 +143,11 @@
 
 <!-- destinations -->
 <rect x="1420" y="110" width="220" height="84" rx="9" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
-<text x="1434" y="134" font-size="11" font-weight="700" fill="#333">books · signals/</text>
+<text x="1434" y="134" font-size="11" font-weight="700" fill="#333">blueprints · signals/</text>
 <text x="1434" y="154" font-size="9.5" font-family="monospace" fill="#666">captures · &lt;id&gt;/&lt;n&gt;.rec · moves</text>
 <text x="1434" y="174" font-size="9" fill="#5a3f95" font-weight="700">adapters append · versioned format</text>
 <rect x="1420" y="230" width="220" height="84" rx="9" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
-<text x="1434" y="254" font-size="11" font-weight="700" fill="#333">books · claims.json</text>
+<text x="1434" y="254" font-size="11" font-weight="700" fill="#333">blueprints · claims.json</text>
 <text x="1434" y="274" font-size="9.5" font-family="monospace" fill="#666">name · version · scope · lock</text>
 <text x="1434" y="294" font-size="9" fill="#5a3f95" font-weight="700">the index curation clusters against</text>
 <rect x="1420" y="380" width="220" height="84" rx="9" fill="#fff" stroke="#c05b5b" stroke-width="1.6" stroke-dasharray="4 3"/>

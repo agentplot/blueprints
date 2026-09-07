@@ -24,7 +24,7 @@ puts their answers next to each other; it does not pick one.
   per-repository cadence from the manifest; a place is current when
   the line's head is an ancestor of the place's head, checked before
   any session starts.
-- **Signals, moves, claims and the ledger live as files in the books
+- **Signals, moves, claims and the ledger live as files in the blueprints
   repository in both profiles**, never as tracker items. Each reads
   C.1's "an item per object" as objects with a plan-facing lifecycle.
 - **Tracker single-writer needs an added mechanism**: a lease as an
@@ -87,7 +87,7 @@ observations.
 
 ## What each is least sure of
 
-- **Statechart**: tracker leases by ordered comment append; books-held
+- **Statechart**: tracker leases by ordered comment append; blueprints-held
   objects not being tracker items in the tracker profile; the git-only
   status page as a committed file.
 - **Actor model**: publishing places to `refs/places/<place>` on every

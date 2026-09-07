@@ -8,7 +8,7 @@ out: [word, ask, review-mark]
 produces:
   - "word(row, generation, answer, args, by, via, at) by write.word — compare-and-swap; a repeat is acknowledged, not applied"
   - "ask(text, repository, bolt, type) when the word names no row — dictation skips the plan (A.2.11)"
-  - "review-mark(books-sha) on the word reviewed"
+  - "review-mark(blueprints-sha) on the word reviewed"
 notes: >
   The only node whose outputs are words. A direct act on the store (an
   issue closed by hand, a card moved, a state file edited and committed)

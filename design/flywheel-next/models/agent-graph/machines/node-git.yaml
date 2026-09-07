@@ -16,7 +16,7 @@ effects:
   - "merge         — when: ready-to-merge(line) non-empty; one activation per line at a time; the first place in order; requires place-current. then place.rebase for the bolt's own place and every sibling when idle"
   - "place.remove  — when: the place's work is merged (self-closing elaboration, item) or dropped, or the bolt landed; never while its session lives and is standing"
   - "land          — when: word yes on the land row; line.take first; by manifest policy pr | direct; the reconciler observes the gates; result recorded on the bolt (S33)"
-  - "archive       — when: word close on the close row (or direct close); openspec archive on the intent line; land by the books policy; delete the line; proposed claims on it become standing by existing on main"
+  - "archive       — when: word close on the close row (or direct close); openspec archive on the intent line; land by the blueprints policy; delete the line; proposed claims on it become standing by existing on main"
 produces:
   - "effect(id, reason, evidence, result) per act"
   - "conflict(place | line, kind, files, heads) when a take or rebase cannot complete"

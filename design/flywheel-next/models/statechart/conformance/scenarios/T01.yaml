@@ -21,6 +21,6 @@ then:
   control_plane:
     response_comment_written_before_transition: true
     items_in_tracker: [intent, elaboration, bolt, unit, work-item, decision]
-    files_in_books_never_items: [signal, move, claim, verdict, definition]
+    files_in_blueprints_never_items: [signal, move, claim, verdict, definition]
     state_proven_by: "the issue body's record block"
     board_column_is_projection: true

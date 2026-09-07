@@ -22,7 +22,7 @@ forbidden_effects = ["open_issue:intent", "open_issue:elaboration", "open_issue:
 # invariant I1 asks to be pointed to: the machinery charges a run because
 # the operator wrote a cadence, not because it invented work.
 [policy]
-file = "books repo, main: policy.rec"
+file = "blueprints repo, main: policy.rec"
 curation_cadence = "24h"
 curation_threshold = 25
 note = "changing either is an edit to policy.rec, which is the operator's own commit"
@@ -130,7 +130,7 @@ reason = "operator paused curation; the policy record is the only thing that tur
 # read a signal (requirement 61 and requirement 64 together).
 # ------------------------------------------------------------------------
 [cluster]
-file = "books repo, branch flywheel-state: clusters/<yyyy-mm>.rec, %key: id"
+file = "blueprints repo, branch flywheel-state: clusters/<yyyy-mm>.rec, %key: id"
 fields = ["id", "title", "challenges", "signals", "sources", "span", "signal_id (repeated)", "reason", "by"]
 consumed_by = "intent.i.propose_from_cluster"
 

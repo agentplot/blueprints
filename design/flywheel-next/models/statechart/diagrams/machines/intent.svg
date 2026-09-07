@@ -67,7 +67,7 @@
 <rect x="1349.7" y="185.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
 <text x="1394.7" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">dropped</text>
 <text x="1394.7" y="216.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: dropped</text>
-<rect x="1486.7" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the archive lands the intent&#x27;s line on the books&#x27; shared line; proposed claims become standing (49, S34)</title></rect>
+<rect x="1486.7" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the archive lands the intent&#x27;s line on the blueprints&#x27; shared line; proposed claims become standing (49, S34)</title></rect>
 <text x="1534.7" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">archiving</text>
 <rect x="1626.7" y="182.0" width="120.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"></rect>
 <text x="1686.8" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">archive-failed</text>
@@ -95,13 +95,13 @@
 <rect x="1545.9" y="485.5" width="129.6" height="11" fill="#fff" opacity="0.92"/>
 <text x="1610.7" y="494.0" font-size="8.5" fill="#333" text-anchor="middle">reply retry ↳ line→landing</text>
 <text x="40" y="537" font-size="11.5" font-weight="700" fill="#8a8a86">line</text>
-<line x1="80" y1="533" x2="313.20000000000005" y2="533" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<line x1="80" y1="533" x2="335.20000000000005" y2="533" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
 <circle cx="52.0" cy="570.0" r="4" fill="#1a1a1a"/>
 <line x1="56.0" y1="570.0" x2="69.0" y2="570.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
-<rect x="70.0" y="544.0" width="233.2" height="52.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
-<text x="186.6" y="566.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">line</text>
-<text x="186.6" y="578.0" font-size="9.5" fill="#2b8a8a" text-anchor="middle" font-weight="700">⧉ line</text>
-<text x="186.6" y="590.0" font-size="8" fill="#999" text-anchor="middle">parent=books-shared-line · landing_policy=direct</text>
+<rect x="70.0" y="544.0" width="255.2" height="52.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
+<text x="197.6" y="566.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">line</text>
+<text x="197.6" y="578.0" font-size="9.5" fill="#2b8a8a" text-anchor="middle" font-weight="700">⧉ line</text>
+<text x="197.6" y="590.0" font-size="8" fill="#999" text-anchor="middle">parent=blueprints-shared-line · landing_policy=direct</text>
 <rect x="40" y="634" width="1857" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
 <rect x="56" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
 <text x="71" y="653" font-size="9" fill="#666">state</text>

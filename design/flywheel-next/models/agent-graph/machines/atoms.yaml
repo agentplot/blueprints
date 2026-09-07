@@ -51,7 +51,7 @@ predicates:
   - {name: conflict-open,             args: [place],               reads: [conflict, exit],          question: "is there a conflict on the place with no done exit after it"}
 
   # claims and the ledger
-  - {name: standing-claims,           args: [repository],          reads: [claim, manifest],         question: "the claims on the books shared line whose scope includes the repository, with versions"}
+  - {name: standing-claims,           args: [repository],          reads: [claim, manifest],         question: "the claims on the blueprints shared line whose scope includes the repository, with versions"}
   - {name: claim-version,             args: [claim],               reads: [claim],                   question: "the claim's current standing version"}
   - {name: verdict-current,           args: [repository, claim],   reads: [verdict, claim, as-built], question: "a verdict at the current version whose evidence is present"}
   - {name: backlog-fingerprint,       args: [repository],          reads: [claim, verdict, as-built, ask, signal, manifest], question: "a hash of the claims with no satisfied or not-applicable current verdict, and the asks and routed signals naming the repository"}
@@ -72,7 +72,7 @@ effects:
   - {name: git.place.remove,  args: [place],                          identity: "place",                           act: "wt remove; tethered processes end"}
   - {name: git.merge,         args: [place, line],                    identity: "place-head line-head",            act: "merge the place into the line, one per activation, in order", requires: "place-current(place)"}
   - {name: git.land,          args: [bolt],                           identity: "bolt line-head",                  act: "by manifest policy: gh pr create and wait for gates, or fast-forward push; record the result", requires: "not(line-behind-parent(bolt.line))"}
-  - {name: git.archive,       args: [intent],                         identity: "intent line-head",                act: "openspec archive on the intent line; land by the books policy; delete the line"}
+  - {name: git.archive,       args: [intent],                         identity: "intent line-head",                act: "openspec archive on the intent line; land by the blueprints policy; delete the line"}
 
   # sessions
   - {name: session.start,     args: [activation],                     identity: "activation",                      act: "write the work order in the place; herdr agent start --name <activation>; judge by herdr agent list", requires: "place-current(activation.place)"}

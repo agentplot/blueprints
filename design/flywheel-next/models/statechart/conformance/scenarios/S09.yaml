@@ -11,7 +11,7 @@ given:
   evidence: {claim.version: {claim/providers-one-writer: 3}, bolt.citations_moved: {"*": false}, planning.fingerprint: {planning/atlas: f0}, planning.planned_fingerprint: {planning/atlas: f0}}
 when:
   - tick: {}
-  - files: {"books src/providers/one-writer.md": "claim block version 4 on the shared line (the finding's elaboration landed)"}
+  - files: {"blueprints src/providers/one-writer.md": "claim block version 4 on the shared line (the finding's elaboration landed)"}
   - evidence: {claim.version: {claim/providers-one-writer: 4}, bolt.citations_moved: {bolt/atlas/plan-rows: true}, bolt.moved_claim: {bolt/atlas/plan-rows: "providers/one-writer 3 -> 4"}}
   - tick: {}
   - response: {decision: bolt/atlas/plan-rows/claim-moved, answer: "amend bolt", id: discord/5001}

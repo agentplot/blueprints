@@ -18,7 +18,7 @@ carrier = "github.issue"
 truth = "github.issue.labels on the intent issue in agentplot/*"
 projections = [
   "projects.field.Status on board 'Flywheel Next'",
-  "books repo: openspec/changes/<intent-id>/ presence",
+  "blueprints repo: openspec/changes/<intent-id>/ presence",
 ]
 scope = "label fwn AND label fwn:intent"
 
@@ -34,7 +34,7 @@ name = "open"
 kind = "work"
 truth = "label fw:open"
 board = "Running"
-note = "an OpenSpec change directory exists in the books repo; claims written here are PROPOSED (requirement 47)"
+note = "an OpenSpec change directory exists in the blueprints repo; claims written here are PROPOSED (requirement 47)"
 
 [[states]]
 name = "close_ready"

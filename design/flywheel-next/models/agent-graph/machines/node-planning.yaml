@@ -9,7 +9,7 @@ session:
   agent: flywheel-bolt-planner
   place: "off the built repository's shared line"
   work-order:
-    - schema instruction for a unit proposal document and a verdict, at the activation's books sha
+    - schema instruction for a unit proposal document and a verdict, at the activation's blueprints sha
     - the planning skill
     - "the backlog: every standing claim in scope with no satisfied or not-applicable current verdict, with chapter text and scenarios"
     - the ledger of the repository (empty on first planning, which the work order says)

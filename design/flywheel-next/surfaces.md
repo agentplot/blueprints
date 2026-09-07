@@ -241,7 +241,7 @@ were settled, not their place on the page.
 | page | opened from | body | footer |
 |---|---|---|---|
 | decision | a rail card, a marker on a lane, the map or a chapter margin | the decision's text; the evidence its kind shows (S5); its document when it has one, with a plannotator link (S33); its history with the operator's responses; "read in book" per cited claim; "the artifacts behind it" | the answers, one response each; in-flight state while one is sending |
-| proposal | its decision | the proposal read whole: every bolt (open or new, name editable) with its units; per unit: name, type, why, dependencies, covered claims with "read in book", lineage, controls bolt · new bolt · rename · type · drop; a refusal inline when an edit would break a dependency, with the offer to take dependents along; "what a yes starts"; the "that's all wrong" field; lineage intent → writeback → landing on the books → planning run → proposal (184) | yes · redo · later |
+| proposal | its decision | the proposal read whole: every bolt (open or new, name editable) with its units; per unit: name, type, why, dependencies, covered claims with "read in book", lineage, controls bolt · new bolt · rename · type · drop; a refusal inline when an edit would break a dependency, with the offer to take dependents along; "what a yes starts"; the "that's all wrong" field; lineage intent → writeback → landing on the blueprints → planning run → proposal (184) | yes · redo · later |
 | unit | its decision or slip | the unit document with a note control per section; items and stages; cited claims with "read in book"; sessions running (none before yes); "change" opening its artifact view once approved, "no change yet" before (187) | yes · drop · redo · bolt · new bolt · rename · type · later |
 | bolt | a ledger | the ledger; the bolt's repository, line and place; decisions on it (in the rail, where you answer); its units with drop per unstarted unit and "change" per unit; rename; sessions running with host and last activity; services with start and stop; served endpoints; the acceptance file (S99); history | no decision here that is not in the rail; drop, rename, start and stop are dictations |
 | landed bolt | a record | the record; the landing (when, through which gates, place removed); pull request and checks; environments; units landed; the acceptance file; signals from operation with their move | nothing to answer |
@@ -343,7 +343,7 @@ were settled, not their place on the page.
 ### 1.9 The board, book view
 
 - **S91.** The book view is an mdBook-style viewer the page draws
-  itself. The organization's books are mdBook sources in the books
+  itself. The organization's blueprints are mdBook sources in the blueprints
   repository; the server serves each chapter, and the page draws the
   chapter tree, one chapter at a time with previous and next, headings
   with anchors, and the claim blocks as the flywheel renders them. The
@@ -369,7 +369,7 @@ were settled, not their place on the page.
   view at that anchor and closes the dock, which would otherwise cover
   the page; Enter reopens the dock on the focused card.
 - **S95.** The library is an overlay over the board, opened from a
-  control in the book header. It lists the organization's books with
+  control in the book header. It lists the organization's blueprints with
   chapters, claims standing and proposed, last written, unmet verdicts,
   "changed since review", and the repositories each book covers.
   Choosing a book loads it; a repository chip goes to the map view and
@@ -581,7 +581,7 @@ were settled, not their place on the page.
   serving host is joined to (205), each with its decision count.
   Choosing one swaps the whole page to that organization: the rail,
   the board in every view, the machinery strip's hosts and
-  repositories, the flywheel reading, the books and the map. The as-of
+  repositories, the flywheel reading, the blueprints and the map. The as-of
   time is that organization's read. Nothing carries across: no focus,
   no open dock, no mode, no overlay. The page's address names the
   organization, so a link opens it directly and the chat's link (S32)
@@ -599,10 +599,10 @@ were settled, not their place on the page.
   unit and elaboration types, deliverable producers, map vocabularies,
   templates, scenario packs (190, 208), each with name, version,
   "shipped" or "index", what it needs, what it enables, and its state
-  in the books: installed in the books · adding, decision n ·
+  in the blueprints: installed in the blueprints · adding, decision n ·
   installing · not installed. "add" is the one flow of S118 without a
   host: configuration collected, then one install decision on the
-  organization; its yes installs the package into the books repository
+  organization; its yes installs the package into the blueprints repository
   and the default set (190) grows. A search box and a kind filter sit
   above. Nothing here names a host.
 - **S157.** Hosts in the menu opens the hosts surface of §1.12. The
@@ -874,7 +874,7 @@ page shows after.
   secret; "done" raises decision n in the rail, kind install, approve;
   the row reads "adding · decision n". 3. Rail: y → `answer(n, yes)`;
   the row reads installing. 4. The proof arrives: the row reads
-  installed in the books; the map's kind legend and the facet controls
+  installed in the blueprints; the map's kind legend and the facet controls
   carry the new kinds at the next read (map 3.3); SINCE gains
   "installed · data-product vocabulary". No host row changed.
 
@@ -923,7 +923,7 @@ where a thing sits, never by its form.
 | artifact view | a dock page under a source bar | the artifact rendered to its kind (S99), the source bar | none | "no change yet" before a unit's yes |
 | flywheel | one pill in the strip; one panel | runway, streak, "at risk"; the panel: wheel, pipe, three columns, reading, streak, advanced | none | none; it reads |
 | part | a chip on a host's row | kind word, name, state (installed, adding, needs a secret, installing, disabled), "lease" on a presenting sink | the chip and its attention line when one waits | disabled |
-| package | a row in a host's store or in the organization store | name, version, shipped or index, needs, enables, "add" or its state on the host or in the books | the row | greyed under "any platform" with what it needs |
+| package | a row in a host's store or in the organization store | name, version, shipped or index, needs, enables, "add" or its state on the host or in the blueprints | the row | greyed under "any platform" with what it needs |
 | account item | a chip at the header's right | who you are, the sign-in kind; open: the switcher, settings, hosts, organization store, sign-out | none | none |
 
 - **S52.** Markers: a decision's number with its group glyph on the
@@ -989,7 +989,7 @@ where a thing sits, never by its form.
 | drilled | Enter or a thumbnail click at rest, "drill into" on a dock or a neighbour dock | the context's inside at full size, neighbour docks, the breadcrumb | Esc, the org crumb |
 | edge panel | hover or focus on a relationship edge | the crossing links and claims of S85 | leaving the edge, Esc |
 | book | b, the board header, "read in book" | the viewer with the rail driving it | b, the board header |
-| library | the book header's control | the organization's books with their counts | a choice, Esc |
+| library | the book header's control | the organization's blueprints with their counts | a choice, Esc |
 | account menu | the account item | the switcher, settings, hosts, organization store, sign-out | a choice, Esc, a click outside |
 | hosts | the menu's hosts, the strip's setup control, a host page, "add a host" | hosts and parts on the left, the host's store on the right; the add and "+ host" flows in place | Esc, × |
 | settings | the menu's settings | the manifest as a form with one save | Esc, ×; an unsaved change asks first |
@@ -1095,7 +1095,7 @@ Dated 2026-09-07.
   rail's decisions concern claims, and a claim lives in a chapter; the
   operator reads it where it is written, with the block rendered from
   the ledger and the decision beside it, and answers on the rail (98,
-  122). The books are mdBook and the server draws the chapter itself,
+  122). The blueprints are mdBook and the server draws the chapter itself,
   so the viewer is the page's own and the rail can drive it. A separate
   book site the page links to is rejected because the rail could not
   light a block in it.
@@ -1149,7 +1149,7 @@ Dated 2026-09-07.
 - **S140.** The organization store and a host's store are separate
   surfaces, both reached from the account item. A unit type, a
   producer, a map vocabulary, a template or a scenario pack belongs to
-  the organization, installs into the books and runs on no host; an
+  the organization, installs into the blueprints and runs on no host; an
   adapter, a sink, the agent, triage, a runner, a router or sign-in is
   a host's part and installs on one host. One list that mixed them
   asked the operator to pick a host for something no host runs, so the
@@ -1196,7 +1196,7 @@ What no mockup settled.
   and how a per-unit edit is expressed as an annotation.
 - **S81.** Where the elaboration page's records are rendered from:
   the intent's change directory on the intent's line, read through the
-  books profile, or a listing the session reports at exit (187, 210).
+  blueprints profile, or a listing the session reports at exit (187, 210).
 - **S82.** Which tool "ask again" calls on a deferred proposal. The
   catalogue is marked incomplete; `release` on the deferred object is
   the candidate, and `reviewed` has no catalogue entry yet.

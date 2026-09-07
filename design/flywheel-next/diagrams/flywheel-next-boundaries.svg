@@ -198,7 +198,7 @@
   <text x="1170" y="385" font-size="8.5" fill="#999" text-anchor="middle">one awaiting approval (21)</text>
   <path d="M 1060 340 C 1090 340, 1120 340, 1150 340" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
   <use href="#repo" x="1105" y="450" color="#7b5cb8"/>
-  <text x="1105" y="483" font-size="9.5" fill="#666" text-anchor="middle">books repository</text>
+  <text x="1105" y="483" font-size="9.5" fill="#666" text-anchor="middle">blueprints repository</text>
   <path d="M 1160 356 C 1150 400, 1140 415, 1128 432" fill="none" stroke="#7b5cb8" stroke-width="2" marker-end="url(#mP)"/>
   <text x="1160" y="412" font-size="9" fill="#5a3f95">writes</text>
   <rect x="990" y="500" width="232" height="106" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
@@ -251,7 +251,7 @@
   <text x="1418" y="712" font-size="8.5" fill="#999" text-anchor="middle">baseline first (104)</text>
   <text x="1290" y="720" font-size="8.5" fill="#999" text-anchor="middle">28 · 101 · 102 · 104 · 172</text>
 
-  <!-- books -> ledger (judged) ; curation challenge -> ledger -->
+  <!-- blueprints -> ledger (judged) ; curation challenge -> ledger -->
   <path d="M 1224 570 C 1240 590, 1252 610, 1264 632" fill="none" stroke="#7b5cb8" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mP)"/>
   <text x="1236" y="640" font-size="9" fill="#5a3f95" text-anchor="end">claims, judged</text>
   <path d="M 1222 596 C 1244 610, 1256 634, 1266 656" fill="none" stroke="#7b5cb8" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#mP)"/>

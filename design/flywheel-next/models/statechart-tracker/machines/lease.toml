@@ -2,7 +2,7 @@
 # most one owner, visible in the status view (requirement 59, invariant
 # I11).
 #
-# The truth store is a file on an orphan branch of the books repo, and
+# The truth store is a file on an orphan branch of the blueprints repo, and
 # the acquire is a `git push` of that branch. A non-fast-forward push is
 # rejected by the server, which makes the push an atomic
 # compare-and-swap. Two hosts pushing at the same instant produce one
@@ -13,7 +13,7 @@ schema = 1
 machine = "lease"
 clock = "reconciled"
 carrier = "rec.record"
-truth = "books repo, branch flywheel-state: leases.rec (one record per object) and hosts.rec (one per host)"
+truth = "blueprints repo, branch flywheel-state: leases.rec (one record per object) and hosts.rec (one per host)"
 projections = ["projects.field.Host and .Host Seen on every object issue"]
 scope = "object ids all carry the fwn- prefix"
 

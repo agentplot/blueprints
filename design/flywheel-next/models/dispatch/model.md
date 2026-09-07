@@ -28,8 +28,8 @@ split them.
 | job | what it does | reads | writes | needs a model | needs a long-lived process | secrets it holds | runs with no host of the operator's awake |
 |---|---|---|---|---|---|---|---|
 | **presenter** to the chat sink | delivers the numbered decisions and the tail to the chat on the sink's cadence or when due; turns a short reply, a button press or a confirmed proposal into one op-response; reacts ✅ when it is recorded (148, 152–155, 18, 14) | the plan's register, the objects it names, the sink record and its mark (B.1 read, list) | the sink's mark and delivery id; one `op-response` per reply (B.1 write, receive) | no | yes for a chat that pushes replies over a socket; no for a chat that calls a URL on a reply | the bot token; the control-plane credential (the App's installation token, C.1; push credential, C.2) | yes — that is its purpose (132, 143, 156) |
-| **capture endpoint** | accepts one source event from a caller that cannot write git; writes one capture record with the event key; the same key returns the existing capture and writes nothing (106, 111, 112, S22); writes one signal only for a forwarded single message (S21) | nothing but the existing captures under the key | one capture record; for a forwarded message, one signal record; on the books' shared line under `flywheel/signals/` (203) | no | no — one request, one commit | the inbound secret per caller; the books push credential | yes |
-| **triage**, the capture reader | one session per capture with material to read, in a place off the books' shared line; reads the raw material the capture points at; writes the signals once, immutable, with excerpt and position (113, 115) | the capture, its raw material, the claims index (108) | the capture's signal records, one commit | yes — this is judgment (115) | no — a bounded session: it starts, delivers, exits (65, 110) | none of its own; a session identity (197) and a scoped token issued into its place (207) | yes when its runner is reachable from where dispatch runs (§5) |
+| **capture endpoint** | accepts one source event from a caller that cannot write git; writes one capture record with the event key; the same key returns the existing capture and writes nothing (106, 111, 112, S22); writes one signal only for a forwarded single message (S21) | nothing but the existing captures under the key | one capture record; for a forwarded message, one signal record; on the blueprints' shared line under `flywheel/signals/` (203) | no | no — one request, one commit | the inbound secret per caller; the blueprints push credential | yes |
+| **triage**, the capture reader | one session per capture with material to read, in a place off the blueprints' shared line; reads the raw material the capture points at; writes the signals once, immutable, with excerpt and position (113, 115) | the capture, its raw material, the claims index (108) | the capture's signal records, one commit | yes — this is judgment (115) | no — a bounded session: it starts, delivers, exits (65, 110) | none of its own; a session identity (197) and a scoped token issued into its place (207) | yes when its runner is reachable from where dispatch runs (§5) |
 | **interpreter** for chat | turns one free-text message into exactly one proposed tool call, shown with a confirm control; calls the tool on the operator's confirmation; asks about a name that resolves to nothing or to two things (194) | the live objects (list and read), the tool catalogue (193), the message and, when it is a reply, the messages it replies to | nothing — the confirmed call is the response, recorded by the tool once (153) | yes — one bounded call per message | no — one request, one model call | the model credential for that call | yes |
 
 Three rules fall out of the table.
@@ -72,7 +72,7 @@ the runner its model jobs use — and states what follows.
 **One binary.** `flywheel dispatch` is `flywheel host` with that
 declaration (model.md §13). It links both control planes, chosen by
 the manifest's profile. It joins by `flywheel host join` (205) and
-clones the state and the books repositories under its root; it clones
+clones the state and the blueprints repositories under its root; it clones
 no built repository, because its declaration names none. It
 heartbeats as `host/dispatcher` (git-only.yaml `hosts:`), takes the
 sink lease or holds the pin, and runs the tick loop every host runs:
@@ -81,7 +81,7 @@ fetch, list, read, evaluate, effect (165, 126–131).
 **Stateless between ticks.** A tick reads everything it decides on
 from the control plane (136). The sink's mark says what was delivered
 (14). The capture keys say what was captured (111). The signal files
-say what was triaged (books.yaml `capture.signals_present`). The
+say what was triaged (blueprints.yaml `capture.signals_present`). The
 response files say what was answered (137). A restart reads the same
 state and reaches the same conclusion (7, S5). Nothing dispatch
 remembers in memory decides anything. This is why the "machinery
@@ -171,7 +171,7 @@ works beside them (155, 194).
 
 **The triage cadence.** Triage is not curation. Curation clusters
 unmoved signals against claims on a cadence or threshold (110,
-books.yaml `curation.cadence`, `curation.threshold`) and runs on a host
+blueprints.yaml `curation.cadence`, `curation.threshold`) and runs on a host
 that declares the machinery role; dispatch does not run it. Triage
 turns a capture into signals and runs where the raw material can be
 read (§4). Its due rule is the dispatcher's own tick rule, declared in
@@ -208,9 +208,9 @@ operator's involved.
 
 **Capture is decentralized.** Any tool that writes a capture record is
 an adapter (114). An adapter runs anywhere it can read its source and
-write the books repository. The binary is the adapter: `flywheel
+write the blueprints repository. The binary is the adapter: `flywheel
 capture <source>` (model.md §13) enumerates source events, writes one
-capture per event under its key, and pushes to the books' shared line
+capture per event under its key, and pushes to the blueprints' shared line
 with expected-old (162). It runs unattended because it is arithmetic
 (115). An adapter on the operator's machine — a folder watcher, the
 notes tool's meeting list, a day of one chat channel — writes its
@@ -309,7 +309,7 @@ shown true or false of a model, like every requirement in Parts A–C.
 
 216. Dispatch is four jobs and no more: the presenter of the chat sink
     (148, 152–155), the capture endpoint for callers that cannot write
-    the books repository (106, 112), the capture-reading session (115),
+    the blueprints repository (106, 112), the capture-reading session (115),
     and the interpreter for chat (194). Each job reads and writes only
     through the control plane's operations and tools (125, 193). The
     data plane names none of them (C.1).
@@ -376,7 +376,7 @@ shown true or false of a model, like every requirement in Parts A–C.
     by the stated rule and never by racing (150).
 
 217g. Capture is decentralized. Any adapter that can read its source
-    and push to the books repository writes captures through its own
+    and push to the blueprints repository writes captures through its own
     binary, from any machine, and never through dispatch (114). The
     endpoint is for callers that cannot write git. Triage reads every
     capture wherever it was written.
@@ -447,8 +447,8 @@ shown true or false of a model, like every requirement in Parts A–C.
    happens to a capture whose raw material was removed after its
    signals were read?
 7. **The dispatcher's clone under the tracker profile.** Captures and
-   signals are files in the books repository in every profile (157).
-   The dispatcher now holds a books clone (217). Does that close the
+   signals are files in the blueprints repository in every profile (157).
+   The dispatcher now holds a blueprints clone (217). Does that close the
    "who holds the checkout" question in operation-captures, or should
    a per-request endpoint write through the git host's API with
    expected-old instead?

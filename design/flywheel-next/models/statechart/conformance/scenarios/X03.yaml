@@ -6,7 +6,7 @@ invariants: [I1, I12]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
-  files: {"books flywheel.yaml": "atlas: take_cadence 0 6 * * *"}
+  files: {"blueprints flywheel.yaml": "atlas: take_cadence 0 6 * * *"}
   evidence: {line.contains_parent: {"*": true}, line.take_due: {"*": false}, line.retries: {"*": 0}}
 when:
   - clock: {advance: 1d, at: "06:00"}

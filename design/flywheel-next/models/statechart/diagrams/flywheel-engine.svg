@@ -82,7 +82,7 @@
 <text x="1264" y="204" font-size="9" fill="#1f6e6e" font-weight="700">push is the compare-and-swap · 30s</text>
 <text x="1264" y="224" font-size="8.5" fill="#999">one commit per effect · id and reason</text>
 <use href="#repo" x="900" y="330" color="#7b5cb8"/>
-<text x="900" y="364" font-size="9.5" fill="#666" text-anchor="middle">books</text>
+<text x="900" y="364" font-size="9.5" fill="#666" text-anchor="middle">blueprints</text>
 <text x="900" y="377" font-size="8.5" fill="#999" text-anchor="middle">claims · signals · types</text>
 <use href="#cylr" x="1040" y="334"/>
 <text x="1040" y="364" font-size="9.5" fill="#666" text-anchor="middle">ledger</text>

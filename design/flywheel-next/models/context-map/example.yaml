@@ -5,7 +5,7 @@
 # and are shown at the bottom as the page joins them.
 
 schema: flywheel-map/1
-vocabulary: books/vocabulary.yaml   # the organization file in schema.yaml
+vocabulary: blueprints/vocabulary.yaml   # the organization file in schema.yaml
 
 contexts:
   - id: ordering

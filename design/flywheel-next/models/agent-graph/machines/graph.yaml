@@ -45,10 +45,10 @@ edges:
   - {name: host,             artifact: host,        from: [runtime],                        to: [runtime, presenter],                        store: hosts}
   - {name: review-mark,      artifact: review-mark, from: [operator],                       to: [presenter],                                 store: review-marks}
   # read-only evidence, not stores of the flywheel
-  - {name: claim,            artifact: claim,       from: [world],                          to: [curation, planning, stage, presenter],      store: books-shared-line}
+  - {name: claim,            artifact: claim,       from: [world],                          to: [curation, planning, stage, presenter],      store: blueprints-shared-line}
   - {name: as-built,         artifact: as-built,    from: [world],                          to: [planning, stage],                           store: repo-shared-line}
-  - {name: definition,       artifact: definition,  from: [world],                          to: [runtime, runner],                           store: books-shared-line}
-  - {name: manifest,         artifact: manifest,    from: [world],                          to: [runtime, git, planning],                    store: books-shared-line}
+  - {name: definition,       artifact: definition,  from: [world],                          to: [runtime, runner],                           store: blueprints-shared-line}
+  - {name: manifest,         artifact: manifest,    from: [world],                          to: [runtime, git, planning],                    store: blueprints-shared-line}
   - {name: line-head,        artifact: line-head,   from: [world],                          to: [git, reconciler],                           store: git-host}
   - {name: pane,             artifact: pane,        from: [world],                          to: [reconciler],                                store: multiplexer}
   - {name: worktree,         artifact: worktree,    from: [world],                          to: [reconciler],                                store: host-disk}

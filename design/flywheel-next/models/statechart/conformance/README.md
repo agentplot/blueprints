@@ -74,7 +74,7 @@ evidence), `script` (seed or extend what the stand-in sessions play),
 thing and start again), `disconnect` / `reconnect` (git-only and
 tracker: the control plane refuses or resumes), `host` (a second host
 ticks), `direct` (the operator acts on the store, the chat, the tracker
-or a pane by hand), `files` (books or built repository files the world
+or a pane by hand), `files` (blueprints or built repository files the world
 reports). `then` clauses are all asserted; an unlisted effect with count
 0 is asserted absent when `effects_closed: true`.
 

@@ -173,7 +173,7 @@ the operator may reverse by a response on the file; an entry with
   milestones. Places are under a distinct worktree root
   (`~/flywheel-next/places/`), which is also what bounds stray
   reconciliation. Sessions are named with a `fn/` prefix. Satisfied by
-  scoping; the two share the books repository and the built
+  scoping; the two share the blueprints repository and the built
   repositories' shared lines, which they must.
 
 - **97 one source.** Satisfied by the fenced claim block inside the
@@ -187,7 +187,7 @@ the operator may reverse by a response on the file; an entry with
 
 - **122 "since the operator last reviewed".** The mark is a response
   `reviewed` given on the review page; it is recorded on the
-  organization's `plan` object, since there is no books object
+  organization's `plan` object, since there is no blueprints object
   machine. Slight stretch of "the response is recorded with the object
   it concerns" (153).
 
@@ -239,7 +239,7 @@ the operator may reverse by a response on the file; an entry with
   adapters (an incident tracker, a log alert, a review thread, each an
   adapter writing captures in the versioned format) and through
   `line.request_links` read from the git host; what it consumes is the
-  books repository from git. A data product's repository declares no
+  blueprints repository from git. A data product's repository declares no
   more than a software repository does. The adapters themselves are
   not in this model, only the formats they write. **Decision**.
 
@@ -293,7 +293,7 @@ the operator may reverse by a response on the file; an entry with
   record (`objects/proposal/<id>/document.md` in git-only, an
   attachment on the decision issue in the tracker), not in any change
   directory; the finding and chore documents of 62 stay in the change
-  they arose in — the intent's in the books, the unit's in the built
+  they arose in — the intent's in the blueprints, the unit's in the built
   repository. A bolt has no change directory anywhere. **Decision**.
 
 - **188 who gathers.** Planning proposes units against a built
@@ -355,7 +355,7 @@ the operator may reverse by a response on the file; an entry with
 - **195 kinds and capabilities.** A repository lists `kinds:` (plural;
   the earlier singular `kind:` is gone) and `capabilities:` in the
   manifest, and `cell.in_scope` is read from the resolved scope at the
-  books' shared head. A cell that leaves scope keeps its record and
+  blueprints' shared head. A cell that leaves scope keeps its record and
   reads as not-applicable through the `out-of-scope` state rather than
   by rewriting the verdict, so a scope that returns recovers the
   verdict and the freshness rules judge it again. The `scope` tool
@@ -419,7 +419,7 @@ the operator may reverse by a response on the file; an entry with
      builds. **Decision**: the landing construction session's writeback
      moves the current map (bound in `map_edit`).
   3. Which line the ref check reads for a candidate. A candidate's
-     chapter is on its intent's line and not yet on the books' shared
+     chapter is on its intent's line and not yet on the blueprints' shared
      line. The check on the shared line would fail the ref. Recommend
      the check accept a ref that resolves on any open intent's line,
      and that landing the intent be what turns candidate to settled.
@@ -435,7 +435,7 @@ the operator may reverse by a response on the file; an entry with
      on the kernel be the union of the kernel's homes and both
      contexts'. **Open**, recommendation bound in the scope table.
   6. Whether external contexts may have a ref. An external system is
-     not stated by a chapter of the books. Recommend ref optional when
+     not stated by a chapter of the blueprints. Recommend ref optional when
      external is true, status still required. **Open**.
   7. Whether the "moved" difference class should also cover a change
      of context. Moving an element between contexts is a design change
@@ -463,7 +463,7 @@ the operator may reverse by a response on the file; an entry with
   binary; not modelled. **Open**.
 
 - **203 where files live.** The ledger is not named in 203's list of
-  what the machinery writes in the books, but the machinery writes it
+  what the machinery writes in the blueprints, but the machinery writes it
   (`record_verdict`), so it lives under the prefix as
   `flywheel/ledger/`; the rendered claims index `flywheel/claims.json`
   the same. **Decision**. Commit types move from the manifest to the
@@ -471,7 +471,7 @@ the operator may reverse by a response on the file; an entry with
   as fallback, since 203 makes them the repository's declaration; the
   manifest's `unit_types.<type>.commit_type` stays readable for a
   repository that declares none. **Decision**. The shipped
-  instructions, schemas, skills and type files sit under the books'
+  instructions, schemas, skills and type files sit under the blueprints'
   `flywheel/` too, written by people through chores and read by the
   machinery — the prefix names what is flywheel-facing, not who
   writes it. **Decision**.
@@ -485,7 +485,7 @@ the operator may reverse by a response on the file; an entry with
   `app-coverage` decision — modelled as the decision, not as a second
   path. **Decision**, permissions **open** against GitHub's current
   App scopes. The template contents (`profiles/host.yaml` `templates:`)
-  are listed by path and written nowhere else; the books template's
+  are listed by path and written nowhere else; the blueprints template's
   `flywheel/` tree and the built template's `openspec/` layout are
   **open** until the set is cut. Joining is a `disk` region beside the
   host's `life` rather than a state before `alive`, so a host record
@@ -497,7 +497,7 @@ the operator may reverse by a response on the file; an entry with
   cells key on claim version and repository and scope comes from
   attachments; it can change what the page says a repository is and
   what planning's work order carries. **Decision**. Adoption of a
-  books repository that already has a `flywheel/` tree from an older
+  blueprints repository that already has a `flywheel/` tree from an older
   set is an upgrade chore, not an init step; init adds only what is
   missing. **Decision**.
 
@@ -529,8 +529,8 @@ the operator may reverse by a response on the file; an entry with
   partial (`profiles/deliverables.yaml`) rather than a machine: it
   binds no evidence and no effect, so `check.py` does not check it
   beyond parsing, and nothing yet verifies that the paths it names
-  exist in the books template or that a manifest override names a
-  real skill. **Open** in the books template. Construction deliverables
+  exist in the blueprints template or that a manifest override names a
+  real skill. **Open** in the blueprints template. Construction deliverables
   (commits, spec, review verdict, as-built statements) are `by-type`:
   produced by the stage's type skill under the type's schema
   instruction, with no review surface, because the requirement's
@@ -585,7 +585,7 @@ the operator may reverse by a response on the file; an entry with
   model's ten open questions (its section 8) stand.
 
 - **218–222 organizations.** Isolation is by root, state repository,
-  books, sinks and register per organization; a host's manifest names
+  blueprints, sinks and register per organization; a host's manifest names
   the organizations it runs and their roots. **Decision**. `remove
   <organization>` is admitted as a dictation under 4 because it
   retires and archives, asserting nothing done; it is reachable only
@@ -657,7 +657,7 @@ the operator may reverse by a response on the file; an entry with
   person on the same computer would record that name too, which is
   the operator's own computer's problem and not the machinery's.
   **Decision**. `configure-organization` edits the manifest as a
-  commit on the books' shared line, so a bad save is a bad manifest
+  commit on the blueprints' shared line, so a bad save is a bad manifest
   until the next save; the form validates as `flywheel.yaml` is
   validated and refuses what the check refuses. **Decision**. Which
   sign-in kinds ship is the dispatch model's tiers (217j); their
@@ -773,7 +773,7 @@ the operator may reverse by a response on the file; an entry with
 - **I14 world evidence.** Panes, heads, gates and worktree listings are
   re-observed each tick; the place's disk is work, not state. The one
   thing on a host's disk that is neither is the work order handed into
-  a place, which is a rendering of books files at a named commit and
+  a place, which is a rendering of blueprints files at a named commit and
   is re-rendered from them after a restart. Satisfied as stated.
 
 ## Section 9

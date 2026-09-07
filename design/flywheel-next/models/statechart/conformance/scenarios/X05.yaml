@@ -12,7 +12,7 @@ given:
 when:
   - tick: {}
   - tick: {}
-  - files: {"books flywheel.yaml": "hosts: mac-mini takes unit types default, fast, chore, persona-test"}
+  - files: {"blueprints flywheel.yaml": "hosts: mac-mini takes unit types default, fast, chore, persona-test"}
   - evidence: {lease.coverable: {unit/atlas/u: true}}
   - tick: {}
   - tick: {}

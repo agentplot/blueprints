@@ -24,7 +24,7 @@
         "responses": {"type": "array", "items": {"type": "object"}},
         "register": {"type": "object", "description": "the plan's decision register: decision id -> number, and the counter"},
         "marks": {"type": "object", "description": "sink -> delivery mark"},
-        "files": {"type": "object", "description": "books or built repository files the world reports"},
+        "files": {"type": "object", "description": "blueprints or built repository files the world reports"},
         "script": {"$ref": "#/$defs/script"}
       }
     },

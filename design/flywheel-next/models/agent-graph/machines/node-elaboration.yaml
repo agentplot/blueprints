@@ -9,7 +9,7 @@ session:
   agent: "flywheel-design-session --type <elaboration.type>"
   place: "the elaboration's place off its intent's line (git.place.prepare fires first when absent)"
   work-order:
-    - schema instruction for the book, the claim block and the context map, at the activation's books sha
+    - schema instruction for the book, the claim block and the context map, at the activation's blueprints sha
     - the type skill (research, writing, prototype, interactive, exploration)
     - the elaboration record and its proposal text
     - the intent's chapter(s) and claims as they stand on the intent line

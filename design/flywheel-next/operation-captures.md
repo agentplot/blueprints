@@ -18,7 +18,7 @@ Two channels exist and no third.
   signals by a session with judgment (106, 111, 112, 115). An adapter
   runs on whichever host declares the source and writes its captures
   through that host's own binary, `flywheel capture <source>`, pushed
-  to the books' shared line under the event key (114, 162). The
+  to the blueprints' shared line under the event key (114, 162). The
   capture endpoint on the dispatch host exists for callers that cannot
   reach a host's binary: a delivery system's connector, a monitor's
   webhook, a job plane, a chat. Both write the same record, and a
@@ -74,7 +74,7 @@ chat, serves the capture endpoint, charges triage and interprets free
 text for an organization whose other hosts sleep (dispatch model §1,
 §2). It is one door for captures, not the only one. Capture is
 decentralized (dispatch model §4): any host that declares a source runs
-its adapter through its own binary and writes the capture to the books'
+its adapter through its own binary and writes the capture to the blueprints'
 shared line itself. The endpoint is for callers that cannot reach a
 host's binary.
 
@@ -103,7 +103,7 @@ model §4).
 **Triage is the capture-reading session.** Enumerating source events
 and writing captures runs unattended. Turning a capture into signals is
 judgment and never runs unattended (115). A capture with material to
-read charges one session, the capture reader, in a place off the books'
+read charges one session, the capture reader, in a place off the blueprints'
 shared line, on the dispatcher or on the host that declares the source.
 The session delivers the signals once; they are written immutable, each
 with its excerpt and position (113).
@@ -172,7 +172,7 @@ on that host (207).
 
 | Need | Why | Where it is configured | What it must never hold |
 |---|---|---|---|
-| A GitHub App for the organization, installed on the books repository, every built repository the manifest lists, and the state repository. Permissions: contents read and write, pull requests read, checks read, deployments read. Webhooks: `push`, `pull_request`, `check_run`, `deployment_status`. | Contents write is how signal and capture records reach the books repository (157) and how a response becomes a commit under the git-only profile (164). Pull requests, checks and deployments read are the check-run channel and the links on an open request (176, 177). The webhooks are notify (130, 166): the capture endpoint is woken, never polled. | The manifest names the App id and the installation. The private key is a secret the operator places in the org's sealed store; dispatch reads it at start. | A token for any person. Repository admin. Write on anything but contents. A checkout of a built repository: dispatch writes records, never code. |
+| A GitHub App for the organization, installed on the blueprints repository, every built repository the manifest lists, and the state repository. Permissions: contents read and write, pull requests read, checks read, deployments read. Webhooks: `push`, `pull_request`, `check_run`, `deployment_status`. | Contents write is how signal and capture records reach the blueprints repository (157) and how a response becomes a commit under the git-only profile (164). Pull requests, checks and deployments read are the check-run channel and the links on an open request (176, 177). The webhooks are notify (130, 166): the capture endpoint is woken, never polled. | The manifest names the App id and the installation. The private key is a secret the operator places in the org's sealed store; dispatch reads it at start. | A token for any person. Repository admin. Write on anything but contents. A checkout of a built repository: dispatch writes records, never code. |
 | The Discord bot token and application id, and the equivalent for any other chat the profile binds (152, 155) | The presenter delivers the plan to the chat sink and receives the short reply; the bot is its stable identity (148). Rich controls are the platform's, used as provided (155). | The manifest names the application id, the guild and the channel per org. The bot token is a secret the operator places. | The operator's own account credentials. Any channel outside the org's guild. |
 | Model access: API keys, or Bedrock or Vertex credentials when the org runs its models there. One model per role, declared per the manifest's defaults (173): the interpreter's model, triage's model. | The interpreter resolves names against live objects and proposes one tool call (194). Triage is judgment, never unattended (115). Both are sessions the machinery charges and take the role's default (173). | The manifest names the kind and model per role. Keys and cloud credentials are secrets the operator places; when the org runs on Bedrock, the runtime's own role carries them and no key exists. | A key that reaches any host. A model choice that overrides a unit type's or stage's own (173). |
 | Membership in the operator's private network: a tailnet node, or the managed platform's ingress (191) | The page is served on the private network and every chat rendering links to it (155). Dispatch must reach the page to link it and, when it presents, serve it (148). Nothing beyond the private network is published unless the operator says so (46). | The manifest names the router per host; dispatch is one host of that declaration. The node key or the ingress binding is placed by the operator or issued by the platform. | A public hostname. A route to a place's services: dispatch reads the plan, never a running prototype. |
@@ -219,8 +219,8 @@ never a value an agent supplies.
   list, and does it live in the model or in the manifest's adapter
   configuration (114)?
 - **Who holds the checkout.** Signals and captures are files in the
-  books repository in every profile (157). The dispatcher clones the
-  books repository like any host (dispatch model §2), so the endpoint
+  blueprints repository in every profile (157). The dispatcher clones the
+  blueprints repository like any host (dispatch model §2), so the endpoint
   writes there with expected-old; an edge adapter writes through its
   own host's checkout. Which profile operation each write is, and
   whether two adapters pushing the same key at once resolve to one

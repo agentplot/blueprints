@@ -84,7 +84,7 @@
   <text x="128" y="332" font-size="10.5" font-weight="700" fill="#333">GitHub</text>
   <text x="128" y="346" font-size="8.5" fill="#999">issues · milestones · board</text>
   <use href="#repo" x="90" y="382" color="#7b5cb8"/>
-  <text x="128" y="378" font-size="10.5" font-weight="700" fill="#333">books repo · main</text>
+  <text x="128" y="378" font-size="10.5" font-weight="700" fill="#333">blueprints repo · main</text>
   <text x="128" y="392" font-size="8.5" fill="#999">claims · ledger · machines</text>
   <use href="#repo" x="90" y="428" color="#8a8a86"/>
   <text x="128" y="424" font-size="10.5" font-weight="700" fill="#333">flywheel-state</text>

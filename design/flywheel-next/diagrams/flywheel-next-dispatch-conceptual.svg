@@ -15,7 +15,7 @@
     <g id="bot"> <rect x="-11" y="-9" width="22" height="18" rx="4" fill="#fff" stroke="currentColor" stroke-width="1.8" /> <circle cx="-4" cy="-2" r="1.8" fill="currentColor" /><circle cx="4" cy="-2" r="1.8" fill="currentColor" /> <line x1="-4" y1="4" x2="4" y2="4" stroke="currentColor" stroke-width="1.6" /> <line x1="0" y1="-9" x2="0" y2="-14" stroke="currentColor" stroke-width="1.8" /> <circle cy="-15" r="1.8" fill="currentColor" /> </g>
   </defs>
   <rect width="1800" height="960" fill="#fff"/>
-  <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Flywheel next — dispatch, conceptual: four jobs between the operator's chat and the webhooks on one side and the state and books repositories on the other</text>
+  <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Flywheel next — dispatch, conceptual: four jobs between the operator's chat and the webhooks on one side and the state and blueprints repositories on the other</text>
   <text x="40" y="57" font-size="12" fill="#666">presenter · interpreter · capture endpoint · triage — the browser model is the interpreter alone · an adapter on the operator's laptop writes captures without dispatch</text>
 
   <!-- LEFT · the operator's chat -->
@@ -42,7 +42,7 @@
   <use href="#person" x="92" y="820" color="#8a8a86"/>
   <text x="110" y="824" font-size="9.5" font-family="monospace" fill="#666">flywheel capture &lt;source&gt;</text>
   <path d="M 340 805 L 1610 805 L 1610 726" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
-  <text x="975" y="797" font-size="9.5" fill="#1f6e6e" text-anchor="middle">captures pushed straight to the books · <tspan font-weight="700" fill="#a34848">✗ never through dispatch</tspan> · 217g</text>
+  <text x="975" y="797" font-size="9.5" fill="#1f6e6e" text-anchor="middle">captures pushed straight to the blueprints · <tspan font-weight="700" fill="#a34848">✗ never through dispatch</tspan> · 217g</text>
 
   <!-- DISPATCH frame -->
   <rect x="400" y="70" width="540" height="670" rx="10" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4"/>
@@ -104,7 +104,7 @@
   <path d="M 1462 328 L 1478 328" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
   <text x="1210" y="292" font-size="9" fill="#5f6b7a" text-anchor="middle">shown · confirmed by the operator · recorded once by the tool (153)</text>
 
-  <!-- row 3 · webhook → endpoint → capture record → books -->
+  <!-- row 3 · webhook → endpoint → capture record → blueprints -->
   <path d="M 342 490 L 416 490" fill="none" stroke="#8a8a86" stroke-width="2" marker-end="url(#mN)"/>
   <text x="380" y="482" font-size="9" fill="#5f6b7a" text-anchor="middle">a source event</text>
   <path d="M 922 490 L 998 490" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
@@ -114,7 +114,7 @@
   <path d="M 1182 490 L 1478 490" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
   <text x="1330" y="482" font-size="9" fill="#1f6e6e" text-anchor="middle">one commit · the same key writes nothing (111)</text>
 
-  <!-- row 4 · capture record → triage → signals → books -->
+  <!-- row 4 · capture record → triage → signals → blueprints -->
   <path d="M 1090 512 C 1090 556, 880 540, 880 580" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mN)"/>
   <text x="1000" y="574" font-size="9" fill="#5f6b7a" text-anchor="start">reads the capture and its raw material</text>
   <path d="M 922 652 L 998 652" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
@@ -131,9 +131,9 @@
   <text x="1610" y="250" font-size="9.5" fill="#666" text-anchor="middle">decisions · the sink's mark · responses</text>
   <text x="1610" y="380" font-size="8.5" fill="#999" text-anchor="middle">136 · 137</text>
 
-  <!-- RIGHT · books -->
+  <!-- RIGHT · blueprints -->
   <rect x="1480" y="420" width="260" height="302" rx="10" fill="#f8f5fc" stroke="#7b5cb8" stroke-width="1.4"/>
-  <text x="1496" y="442" font-size="12" font-weight="700" fill="#5a3f95">BOOKS · the shared line</text>
+  <text x="1496" y="442" font-size="12" font-weight="700" fill="#5a3f95">BLUEPRINTS · the shared line</text>
   <use href="#repo" x="1610" y="540" color="#7b5cb8"/>
   <text x="1610" y="580" font-size="9.5" fill="#666" text-anchor="middle">captures · signals</text>
   <text x="1610" y="594" font-size="8.5" font-family="monospace" fill="#999" text-anchor="middle">flywheel/signals/</text>

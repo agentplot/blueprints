@@ -12,7 +12,7 @@ given:
     - {id: bolt/five/b, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: five}}
     - {id: unit/five/new, machine: unit, parent: bolt/five/b, state: {life: in-flight}, record: {type: persona-test, type_version: 3}}
     - {id: work-item/five/new-1, machine: work-item, parent: unit/five/new, state: {life: in-type, in-type.stages: test, test.run: resolving}}
-  files: {"books flywheel/types/units/persona-test@3.yaml": "as machines/unit-types/persona-test@3.yaml, committed by the operator and registered; no engine change", "repo atlas personas/": "3 files", "repo five personas/": "5 files"}
+  files: {"blueprints flywheel/types/units/persona-test@3.yaml": "as machines/unit-types/persona-test@3.yaml, committed by the operator and registered; no engine change", "repo atlas personas/": "3 files", "repo five personas/": "5 files"}
   evidence: {stage.agents: {"work-item/atlas/new-1": [p1, p2, p3], "work-item/five/new-1": [p1, p2, p3, p4, p5]}, session.pane: {"*": absent}}
 when:
   - tick: {}

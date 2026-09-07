@@ -60,12 +60,12 @@ template's states, not against the referenced machine's.
 `machines/unit-types/` and `machines/elaboration-types/` are what an
 organization's own type files look like (`model.md` 1.3, 10.6): the
 engine loads `flywheel/types/units/<type>.yaml` and
-`flywheel/types/elaborations/<type>.yaml` from the books repository, at
+`flywheel/types/elaborations/<type>.yaml` from the blueprints repository, at
 the version the object recorded (57), and `persona-test.yaml` is the S26
 example, added with no code change. The rest — every object machine,
 the engine machines, `line`, `place`, `session`, `stage`, `atoms.yaml`,
 `schema.json` — is embedded in the binary (`model.md` 13,
-`flywheel-domain`) and is not read from any books repository.
+`flywheel-domain`) and is not read from any blueprints repository.
 
 **How profiles bind them.** A profile binds atoms, never machines: every
 `ev` and `do` name in `atoms.yaml` has one `read:` or `do:` line in
@@ -103,7 +103,7 @@ scenario; the requirement trace both ways.
 - two files with the same `machine:` silently replace one another;
 - nothing ties a file's directory to its kind, and nothing marks which
   files an organization may edit;
-- `check.py` runs over `machines/`, never over a books repository, so an
+- `check.py` runs over `machines/`, never over a blueprints repository, so an
   organization's type files are validated by nothing until the engine
   loads them;
 - the elaboration site writes `$type` without a version while the
@@ -120,7 +120,7 @@ scenario; the requirement trace both ways.
 and they name the effects only the machinery may perform (42, 43, I12).
 Core machines ship with the release, compiled into the binary, and no
 organization edits one. A machine is **extensible** when it is a file an
-organization adds or overrides under `flywheel/` in its books (203,
+organization adds or overrides under `flywheel/` in its blueprints (203,
 208): a unit type or an elaboration type. Beside the machines, the same
 line divides the other data the engine reads: atoms and the schema are
 core (a new atom needs a binding, and a binding is a release, 57, 140);
@@ -129,15 +129,15 @@ extensible (119, 190, 198).
 
 | file | machine | kind | class | at an organization |
 |---|---|---|---|---|
-| `bolt.yaml`, `capture.yaml`, `claim.yaml`, `curation.yaml`, `elaboration.yaml`, `intent.yaml`, `ledger-cell.yaml`, `operator-session.yaml`, `organization.yaml`, `planning.yaml`, `proposal.yaml`, `repository.yaml`, `service.yaml`, `signal.yaml`, `unit.yaml`, `work-item.yaml` | the sixteen object machines | object | core | in the binary; never in the books |
+| `bolt.yaml`, `capture.yaml`, `claim.yaml`, `curation.yaml`, `elaboration.yaml`, `intent.yaml`, `ledger-cell.yaml`, `operator-session.yaml`, `organization.yaml`, `planning.yaml`, `proposal.yaml`, `repository.yaml`, `service.yaml`, `signal.yaml`, `unit.yaml`, `work-item.yaml` | the sixteen object machines | object | core | in the binary; never in the blueprints |
 | `engine/host.yaml`, `engine/lease.yaml`, `engine/plan.yaml`, `engine/response.yaml`, `engine/sink.yaml` | the five engine machines | engine | core | in the binary; their windows (5m, 30m, 24h, 7d) are "the operator's to change" (`model.md` 2.5) — **unstated** through what: no manifest key names them |
 | `line.yaml`, `place.yaml`, `session.yaml`, `stage.yaml` | the structural templates | template | core | in the binary |
 | `atoms.yaml`, `schema.json` | the atoms and the machine schema | — | core | in the binary; `flywheel-atoms` generates the name registries from them |
-| `unit-types/chore.yaml`, `unit-types/default.yaml`, `unit-types/fast.yaml` | the shipped unit types | template | extensible, shipped | `flywheel/types/units/<type>.yaml`, placed by the books template (208), overridden by editing the file (a chore, 123) |
+| `unit-types/chore.yaml`, `unit-types/default.yaml`, `unit-types/fast.yaml` | the shipped unit types | template | extensible, shipped | `flywheel/types/units/<type>.yaml`, placed by the blueprints template (208), overridden by editing the file (a chore, 123) |
 | `unit-types/persona-test.yaml` | an organization's own unit type (S26) | template | extensible, an organization's | `flywheel/types/units/persona-test.yaml`, added by a commit; not in the shipped set |
 | `elaboration-types/self-closing.yaml`, `elaboration-types/standing.yaml`, `elaboration-types/with-operator.yaml` | the shipped elaboration types | template | extensible, shipped | `flywheel/types/elaborations/<type>.yaml`; `with-operator` is also the operator's own session's type (69), so a core machine names it by bare name: it may be overridden, never removed, and its `done` final is part of the contract |
 | `profiles/deliverables.yaml` `shipped:` | the deliverables binding | — | extensible, shipped | producers, schemas and surfaces under `flywheel/`, overridden per name in `flywheel.yaml` `deliverables.<name>` (190) |
-| `profiles/host.yaml`, `sessions.yaml`, `books.yaml`, `record-derived.yaml`, `surfaces.yaml`, `tracker.yaml`, `git-only.yaml` | the bindings | — | core | in the binary; a third profile is a release (168) |
+| `profiles/host.yaml`, `sessions.yaml`, `blueprints.yaml`, `record-derived.yaml`, `surfaces.yaml`, `tracker.yaml`, `git-only.yaml` | the bindings | — | core | in the binary; a third profile is a release (168) |
 | `flywheel/map-vocabulary.yaml`, `flywheel/instructions/*.md`, `flywheel/schemas/*.md`, `flywheel/skills/**/SKILL.md` | not machines | — | extensible | the organization's, under the prefix (198, 119, 88) |
 
 **Marking it.** `schema.json` gains a required field `tier: core |
@@ -153,7 +153,7 @@ template`.
 **set version** (208, `flywheel templates version`), which names the
 version of every core machine, the atoms, the schema, the shipped
 deliverables binding (`profiles/deliverables.yaml` `version:`) and the
-shipped extensible files. An extensible file in a books repository
+shipped extensible files. An extensible file in a blueprints repository
 carries, beside `version:`, the set it was written against — `set:
 flywheel-types/N`, as the map vocabulary carries `extends:
 flywheel-map/N` — and a file whose N the installed binary does not read
@@ -171,12 +171,12 @@ was created under, so a release can tell the objects that predate it.
 - the organization's additions are its files under `flywheel/types/`,
   and the machinery renders `flywheel/registry.json` under its prefix
   (203), as it renders `flywheel/claims.json`: for every type name, the
-  versions seen, the books commit each version first appeared at, its
+  versions seen, the blueprints commit each version first appeared at, its
   hash, and whether it is shipped, overridden or added.
 
 `flywheel types check` — the binary's counterpart of `check.py` — runs
-in the books' pre-commit hook and on every host at every fetch, over the
-union of the release manifest and the books' files: every file
+in the blueprints' pre-commit hook and on every host at every fetch, over the
+union of the release manifest and the blueprints' files: every file
 validates against the schema at the set's N; every atom it names exists
 in the binary; every `machine:` it names is a structural template or a
 registered type; every `{final: X}` a parent waits for is a final of the
@@ -191,8 +191,8 @@ refused at load and reported (79), never applied to the item (57).
 
 | change | is | reaches hosts by | objects in flight |
 |---|---|---|---|
-| a core machine, an atom, the schema, a binding | a flywheel release: a new set version, the conformance suite green (92–95), the rendered graphs regenerated and reviewed (section 4, 225), release notes naming every state added, renamed or removed | the operator installing the binary (208: never a side effect for the books) | keep their state names; an object in a state its new machine lacks is reported under attention and never moved by the machinery (4, 81) |
-| an extensible file (a type, a producer, an instruction, a schema, a vocabulary) | a chore on the books (91, 123): the version bumped, the check green | the shared line at the next fetch (91) | keep the version they recorded (57); a session started before the commit carries the older commit in its header (123) |
+| a core machine, an atom, the schema, a binding | a flywheel release: a new set version, the conformance suite green (92–95), the rendered graphs regenerated and reviewed (section 4, 225), release notes naming every state added, renamed or removed | the operator installing the binary (208: never a side effect for the blueprints) | keep their state names; an object in a state its new machine lacks is reported under attention and never moved by the machinery (4, 81) |
+| an extensible file (a type, a producer, an instruction, a schema, a vocabulary) | a chore on the blueprints (91, 123): the version bumped, the check green | the shared line at the next fetch (91) | keep the version they recorded (57); a session started before the commit carries the older commit in its header (123) |
 | the shipped extensible set in a new release | a chore the operator accepts to upgrade `flywheel/types/` (208) | as any chore | as above |
 
 ## 2. Context passing
@@ -205,7 +205,7 @@ hooks that refuse a line operation and the agent program's own deny
 list (43, 173); an untracked `.flywheel/` holding `work-order.md`, the
 handoff and a short-lived installation token scoped to the place's
 repository (207); and the work order rendered from the closed inputs,
-whose header names the books commit every input was read at, the
+whose header names the blueprints commit every input was read at, the
 deliverables binding's version (123, 190) and the session's identity
 token (197). The work order proper is the job, the deliverables table
 (name, producer, schema, surface, each with its version; recorded as
@@ -216,18 +216,18 @@ its thread (`deliver_answer`, `tell_moved`, 197). `flywheel render-order
 <scenario>` renders the exact text with no session (90, 124).
 
 Two facts shape every table below. A **design** session's place is a
-worktree of the books repository at the intent's line, so the whole
+worktree of the blueprints repository at the intent's line, so the whole
 book, every claim block, both maps, the vocabulary, the instructions and
 the intent's change directory are on its disk; the work order points
 into that tree. A **construction** or **planning** session's place is a
-worktree of a built repository, so nothing of the books is on its disk,
-and whatever it needs from the books — chapters, claim blocks, the map
+worktree of a built repository, so nothing of the blueprints is on its disk,
+and whatever it needs from the blueprints — chapters, claim blocks, the map
 section, the surface specification — must be copied into the place by
 `prepare_place`. `host.yaml` states the map section and the surface
 specification are; the chapters and claims it lists as inputs without
 saying how they cross — **unstated**, and the first ruling the tables
 need, since the place's settings deny reads outside it (89) and the
-host's own books checkout is outside it.
+host's own blueprints checkout is outside it.
 
 Every table has the same rows; a row reads "carried: what" or
 "unstated: what would need ruling". A column per stage where the type
@@ -240,8 +240,8 @@ has stages.
 | schema instruction | the exit schema in force (65); a schema for the delivered moves and proposed intents and gatherings: **unstated** (no `flywheel/schemas/move.md` or `intent-proposal.md` is named) |
 | type skill | the curator's skill: `flywheel/skills/<session type>/SKILL.md` per `model.md` 10.6, keyed by **unstated** (the agent name `curator`, or a type name) |
 | work order fields | the unmoved signals (records with excerpt, kind, subject tags, `argues_with`), `flywheel/claims.json`, the open intents (`model.md` 9); the threshold and cadence are not its business. For a gathering (188): the elaboration types it may propose — **unstated** whether the type catalogue is handed in. For a route offer (116): the repository a chore lands on — **unstated** whether the manifest's repository list is handed in |
-| artifacts of the change | none: the place is off the books' shared line (`inputs: work-order, keep: false`) and commits nothing to a line (`model.md` 7.1); it delivers everything through its exit |
-| book chapters and claims | the claims index is in the work order; the chapters are on disk (a books worktree) but the work order names none — **unstated** whether the curator is told to read chapters behind the claims a signal argues with |
+| artifacts of the change | none: the place is off the blueprints' shared line (`inputs: work-order, keep: false`) and commits nothing to a line (`model.md` 7.1); it delivers everything through its exit |
+| book chapters and claims | the claims index is in the work order; the chapters are on disk (a blueprints worktree) but the work order names none — **unstated** whether the curator is told to read chapters behind the claims a signal argues with |
 | map elements, homes, attachments | on disk; not in the work order — **unstated** whether subject tags are matched against map elements |
 | surface specification | no |
 | deliverables and producers in force | the machine names no `deliverables:`, so `session.expected` is empty and its exit's moves, intents and gatherings are compared with nothing (80) — **unstated**; the binding has no entry for a move or a proposed intent |
@@ -254,9 +254,9 @@ has stages.
 |---|---|
 | schema instruction | `flywheel/schemas/proposal.md` and `flywheel/schemas/verdict.md` (through the deliverables binding); the exit schema |
 | type skill | the planner's own skill (path **unstated**) and, through the binding, `producers/proposal-document` and `producers/verdict` |
-| work order fields | the backlog: every cell in scope not `satisfied` or `not-applicable`, with claim version and freshness (102); the as-built statements; every open bolt of the repository with its units, their states, their cited claim versions and citation choices (`needs_amend`, 29, 103, 172); unconsumed asks naming the repository; redo notes (`model.md` 6). The challenge signals a stale cell rests on, which the proposal must cite (101): in the fingerprint, **unstated** in the work order. The unit types a proposed unit may name: **unstated**. The repository's derived kinds and capabilities (199; "read by skills when they choose a template or deliverable", `books.yaml`): **unstated** whether written into the work order |
+| work order fields | the backlog: every cell in scope not `satisfied` or `not-applicable`, with claim version and freshness (102); the as-built statements; every open bolt of the repository with its units, their states, their cited claim versions and citation choices (`needs_amend`, 29, 103, 172); unconsumed asks naming the repository; redo notes (`model.md` 6). The challenge signals a stale cell rests on, which the proposal must cite (101): in the fingerprint, **unstated** in the work order. The unit types a proposed unit may name: **unstated**. The repository's derived kinds and capabilities (199; "read by skills when they choose a template or deliverable", `blueprints.yaml`): **unstated** whether written into the work order |
 | artifacts of the change | the built repository at its shared line (`built-shared-line`): the code, `openspec/specs` (the as-built), `flywheel/services.yaml`; no line of its own |
-| book chapters and claims | the standing claims in scope with versions and scenarios are what a verdict judges (100) and what a unit cites — they live in the books, and the place is a built repository: **unstated** how the claim blocks and their chapters reach the place |
+| book chapters and claims | the standing claims in scope with versions and scenarios are what a verdict judges (100) and what a unit cites — they live in the blueprints, and the place is a built repository: **unstated** how the claim blocks and their chapters reach the place |
 | map elements, homes, attachments | the fingerprint hashes the homed elements and the attachments (199, 200); `host.yaml` writes a map section "for a construction session" only — **unstated** for planning |
 | surface specification | no |
 | deliverables and producers in force | `planning.yaml` passes no `deliverables:` to its session, so `session.expected` is empty although the binding has `proposal-document` and `verdict` — **unstated**, a gap in the machine; the proposal (172) and the verdicts (100) are read from the exit by `record_proposal`, `propose_units`, `record_verdict` |
@@ -267,7 +267,7 @@ has stages.
 
 Triage of raw ideas by the organization's dispatch agent (C.1, the
 capture endpoint) is outside `machines/`: dispatch writes captures and
-signals through the books binding and the data plane reads them through
+signals through the blueprints binding and the data plane reads them through
 curation. Its own context is ruled by the dispatch model, not here.
 
 | input | carried |
@@ -275,7 +275,7 @@ curation. Its own context is ruled by the dispatch model, not here.
 | schema instruction | the signal record format, versioned and stable (113, 114) — its path under `flywheel/schemas/`: **unstated**; the exit schema |
 | type skill | the reader's skill (path **unstated**) |
 | work order fields | the capture record: source, event key, event time, who captured it, the pointer to the raw material (111) |
-| artifacts of the change | none; the place is off the books' shared line and is removed on exit |
+| artifacts of the change | none; the place is off the blueprints' shared line and is removed on exit |
 | book chapters and claims | a signal names the claims it argues with (113), so the reader needs the claims index — **unstated** whether `flywheel/claims.json` is in the work order; on disk in any case |
 | map elements, homes, attachments | no; the map view's one-gesture capture arrives as a forwarded-message capture and needs no reader (201, `ensure_signal`) |
 | surface specification | no |
@@ -319,12 +319,12 @@ bolts and the source intents, and the machine and its atoms are absent.
 | type skill | `agent: by-type` — the agent definition a self-closing elaboration starts is **unstated** (the machine names the type, not an agent; `model.md` 10.6 keys skills by session type) |
 | work order fields | the job from the elaboration's `document` (the finding, or curation's proposal text) and `sources`; the intent's subject, its attached signals (116) and challenges; `covers` (188); the deliverables table with the five defaults, narrowed by the proposal if it did (190) |
 | artifacts of the change | the intent's change directory `openspec/changes/<intent>/` on the intent's line — the records of every earlier elaboration are on disk (187) |
-| book chapters and claims | the whole book is on disk (a books worktree); the work order names "the cited chapters" (`model.md` 10.6) — **unstated** how they are chosen (the proposal's citations, the signals' `argues_with`, or the intent's subject) |
+| book chapters and claims | the whole book is on disk (a blueprints worktree); the work order names "the cited chapters" (`model.md` 10.6) — **unstated** how they are chosen (the proposal's citations, the signals' `argues_with`, or the intent's subject) |
 | map elements, homes, attachments | both maps and the vocabulary on disk; the session may add or amend an entry only inside a writeback that also writes the chapter, through `flywheel map edit --ref` (211); it never re-attaches a claim or moves a home for its own work (211) — **unstated** how a direct commit of `context-map/target.yaml` from the place is told from a tool call, since the pre-commit hook checks shape, not caller |
 | surface specification | not among its defaults; a proposal may only narrow the list (190) — **unstated** whether a writing elaboration may add it |
-| deliverables and producers in force | `book-chapter`, `claim`, `context-map`, `conceptual-diagram`, `logical-diagram`, each with producer, schema and review surface (`review-view`) resolved at the header's books commit; their names recorded as expected (190) |
+| deliverables and producers in force | `book-chapter`, `claim`, `context-map`, `conceptual-diagram`, `logical-diagram`, each with producer, schema and review surface (`review-view`) resolved at the header's blueprints commit; their names recorded as expected (190) |
 | identity | the token; `flywheel exit done --deliverables`, `flywheel offer finding | chore | signal`, `flywheel note`; the map tools inside the writeback; the query tools |
-| never receives | a line operation (43); the state store; another session's thread (197); a built repository (its place is the books); a decision about itself (it exits; the machinery finishes it, 25) |
+| never receives | a line operation (43); the state store; another session's thread (197); a built repository (its place is the blueprints); a decision about itself (it exits; the machinery finishes it, 25) |
 
 ### 2.7 Standing elaboration (`elaboration.working` → `standing`)
 
@@ -344,8 +344,8 @@ As 2.6, with these differences.
 | schema instruction | as 2.6 for its three deliverables | none named |
 | type skill | `agent: by-type` — **unstated** | `operator-console` (path **unstated**) |
 | work order fields | as 2.6; presence is a keystroke within the binding's window (30 min) and gates only a rebase (25) | `inputs: operator-order`: "the machinery's read tools and the tool surface" (`model.md` 10.5) — the full tool catalogue of `surfaces.yaml`, so this session is the one that may dictate; what else it is told: **unstated** |
-| artifacts of the change | the intent's change directory | none; a place off the books' or a named repository's shared line (69), kept until `end` unless held |
-| book chapters and claims | on disk; cited as 2.6 | on disk when off the books |
+| artifacts of the change | the intent's change directory | none; a place off the blueprints' or a named repository's shared line (69), kept until `end` unless held |
+| book chapters and claims | on disk; cited as 2.6 | on disk when off the blueprints |
 | map · surface specification | as 2.6 · no | on disk · no |
 | deliverables and producers in force | `book-chapter`, `claim`, `context-map` | none: no exit is expected; nothing is compared (80) |
 | identity | the token; the same commands as 2.6 | the token; every tool the operator has (193), under the operator's identity — **unstated** whether calls from this pane carry the session's token or the operator's |
@@ -376,12 +376,12 @@ later stage sees the earlier stage's commits on disk.
 | type skill | `by-type`: keyed by the stage or by the agent name `spec-writer` — **unstated** which | `builder` | `reviewer`, and `producers/verdict` |
 | work order fields | the unit document (the proposal, from the state store, copied into `.flywheel/`), the unit's `claims` (name@version), `depends_on`, the target bolt, the item's ordinal and task; the type version in force (57) — **unstated** whether written in the header | the same; a `moved` entry after any rebase (51); an answer to a block at the top of a fresh session's order (70) | the same, plus what the verdict must judge: the named claims at their versions (99, 100); the send-back rule the stage applies to a not-done verdict (41) — **unstated** whether the session is told the bound |
 | artifacts of the change | the built repository at the item's place; the change directory it writes (`needs_change_directory: true`, `openspec/changes/<unit>/`) | the change directory and the spec from the spec stage, on disk | the change directory, the spec, the commits, the as-built statements, on disk |
-| book chapters and claims | the cited chapters and their claim blocks (97: "what a construction session reads to know what the claim means") — **unstated** how they cross from the books into a built repository's place | the same | the same, with the claims' scenarios for the verdict |
+| book chapters and claims | the cited chapters and their claim blocks (97: "what a construction session reads to know what the claim means") — **unstated** how they cross from the blueprints into a built repository's place | the same | the same, with the claims' scenarios for the verdict |
 | map elements, homes, attachments | the map section `prepare_place` writes from `flywheel/map/target.json`: the elements the unit builds — the ids its claims attach to, and those homed in the repository that the chapters name — each with context, kind and effective home, and the claims attached to each with versions (211) | the same | the same |
-| surface specification | the chapter in force at the header's books commit "when a claim the unit cites is about a surface" (212) — **unstated** how "about a surface" is decided (an attachment to an element of a surface kind, a chapter under the specification's section, or a claim field) | the same | the same |
+| surface specification | the chapter in force at the header's blueprints commit "when a claim the unit cites is about a surface" (212) — **unstated** how "about a surface" is decided (an attachment to an element of a surface kind, a chapter under the specification's section, or a claim field) | the same | the same |
 | deliverables and producers in force | `change-directory`, `spec` (by-type, no surface) | `commits`, `as-built-statements-naming-claims` (by-type) | `review-verdict` (by-type), `verdict` (default: producer, schema, surface `ledger`) — `model.md` 8.2 calls this `verdicts-for-named-claims`; one name should hold |
 | identity | the token in the header; the place-scoped installation token in `.flywheel/token` (207); `flywheel exit | offer | note`, `flywheel service start | stop` (48); the multiplexer session `flywheel-<org>-bolts` (174), model per the construction role (173) | the same | the same |
-| never receives | `git branch | merge | push | worktree`, `wt`, `herdr` (7.8, 43); the books repository as a tree; the state store; the bolt's operator place (44); sibling items' places; another session's thread (197). A push of its own place's branch: `host.yaml` gives the place token for it (207) and the `pre-push` hook refuses line operations (43) — **unstated** whether a session pushes its place branch or only commits | the same | the same |
+| never receives | `git branch | merge | push | worktree`, `wt`, `herdr` (7.8, 43); the blueprints repository as a tree; the state store; the bolt's operator place (44); sibling items' places; another session's thread (197). A push of its own place's branch: `host.yaml` gives the place token for it (207) and the `pre-push` hook refuses line operations (43) — **unstated** whether a session pushes its place branch or only commits | the same | the same |
 
 ### 2.11 Unit type `fast` (build, review)
 
@@ -399,7 +399,7 @@ verdict (100), which is consistent with S28's routed finding but
 |---|---|
 | schema instruction · type skill | `by-type`; `chore-fixer` (path **unstated**) |
 | work order fields | the chore document (the offer's document, 62), `about`, `scope` (`bolt-line`, `intent-line` or `shared-line`), the approval; "no change directory: the type records it and the work order says so" (`model.md` S3); the one session gathers every accepted chore of the same bolt (`gather: sibling-chores`, 63) — the other chores' documents: carried, since the batch is the bolt |
-| artifacts of the change | the place off the line the fix belongs on: a bolt's line, an intent's line (a books worktree) or a repository's shared line; the chore's document lives in the change directory of the change it arose in, which may be another repository's — **unstated** whether the document is copied into a place of a different repository |
+| artifacts of the change | the place off the line the fix belongs on: a bolt's line, an intent's line (a blueprints worktree) or a repository's shared line; the chore's document lives in the change directory of the change it arose in, which may be another repository's — **unstated** whether the document is copied into a place of a different repository |
 | book chapters and claims | none named; a chore "may satisfy a claim and produce a verdict" (64) — then the claim's block and scenarios are needed: **unstated** |
 | map · surface specification | no · no |
 | deliverables and producers in force | `commits` (by-type), `verdict` (default) |
@@ -424,7 +424,7 @@ verdict (100), which is consistent with S28's routed finding but
 a producer skill, a schema and a review surface — `default` through the
 manifest's `deliverables.<name>` else the shipped entry, `by-type`
 through the stage's own skill and schema, an explicit path as written
-— at the books commit in the header, and the resolved table is written
+— at the blueprints commit in the header, and the resolved table is written
 into the work order; the names are recorded as `session.expected`
 (89, 190). The session writes the file in its place under the producer
 and the schema and names it in `flywheel exit done --deliverables`;
@@ -445,7 +445,7 @@ the producer's path, the schema's path and the surface, never the text
 | surface specification | `producers/surface-specification` | a standing elaboration (an exploration, an interactive page) | the book, as a chapter citing the mockups as records (212) | as a chapter |
 | records: research note, prototype note, session record, interactive page | by-type | every elaboration type | the intent's change directory `openspec/changes/<intent>/`, one per covered intent; archived with the change | `record_per_intent` for the covered intents beyond the parent (188); `merge_place` for the parent's (54) |
 | proposal document | `producers/proposal-document` | planning | the state store, beside the proposal record (187) | `record_proposal` (172) |
-| verdict | `producers/verdict` | planning; a review or fix stage that names `verdict` | `flywheel/ledger/<repository>.rec` in the books | `record_verdict` from the exit (100); the ledger is the backlog's source (102) |
+| verdict | `producers/verdict` | planning; a review or fix stage that names `verdict` | `flywheel/ledger/<repository>.rec` in the blueprints | `record_verdict` from the exit (100); the ledger is the backlog's source (102) |
 | change directory, spec, commits, as-built statements, review verdict, test report, findings | by-type | construction stages | the bolt's line, one squash commit per item naming it (38, 179); the as-built under `openspec/specs` names `claim@version` (99); at landing `openspec/acceptance.yaml` beside it (192) | `merge_place`; `write_acceptance` |
 | an offer: finding, chore, signal | by-type (`flywheel offer <document>`) | any session | the document stays in the change it arose in; one record in the state store points at it (62) | `record_offers`: an elaboration, a unit or a signal in `proposed` |
 | a user-defined `<name>` | the manifest's `deliverables.<name>.producer` | whichever type names it | wherever its producer tells the session to write it; the machinery carries it only as part of the place's merge | `merge_place` — **unstated**: no entry says which store a user-defined deliverable reaches, and nothing feeds it onward |
@@ -488,7 +488,7 @@ of `requirements.md`, to be placed under A.10 (223–225) and A.11
     an organization; the atoms, the schema and the bindings are core
     with it. An **extensible** machine — a unit type or an elaboration
     type — is a file an organization adds or overrides under the
-    prefix in its books (203), and so are the deliverables, the
+    prefix in its blueprints (203), and so are the deliverables, the
     vocabularies, the instructions, the schemas and the skills (119,
     190, 198). A core machine may name an extensible one only when the
     release ships that file and lists the reference as an exception; an
@@ -508,9 +508,9 @@ of `requirements.md`, to be placed under A.10 (223–225) and A.11
     under. The registry is a manifest in two parts, validated as one:
     the release's manifest of what it ships, and the organization's
     additions, rendered under the prefix as a registration that lists
-    every type name, every version seen, the books commit each first
+    every type name, every version seen, the blueprints commit each first
     appeared at, and whether it is shipped, overridden or added. The
-    check runs on every books commit and on every host at every fetch,
+    check runs on every blueprints commit and on every host at every fetch,
     over the union: every reference resolves, every parameter supplied
     is declared, every final a parent waits for exists in the machine
     it names, every deliverable name resolves (190), and every version a
@@ -558,7 +558,7 @@ of `requirements.md`, to be placed under A.10 (223–225) and A.11
 Every **unstated** above, gathered, so a response on this file can
 settle each.
 
-1. How chapters and claim blocks from the books reach a place that is a
+1. How chapters and claim blocks from the blueprints reach a place that is a
    worktree of a built repository, for planning, construction and chore
    sessions (2.2, 2.10, 2.12; 89 denies reads outside the place).
 2. How "a claim about a surface" is decided for 212: by an attachment

@@ -37,14 +37,14 @@ machinery validates rather than trusts.
 
 Stated because the requirements do not settle them.
 
-1. **The organization is `agentplot` and the books repository is
+1. **The organization is `agentplot` and the blueprints repository is
    `agentplot/blueprints`** — this repository. The manifest, the design
    book, the machine definitions, the ledger and the host leases all live
    here.
 2. **The machinery is a new Python package `flywheel_next`, CLI `fwn`, in
    a new repository `agentplot/flywheel-next`**, installed on each host
    with `uv tool install`. Code lives there; *definitions* live in the
-   books repo, so adding an elaboration type or a construction stage
+   blueprints repo, so adding an elaboration type or a construction stage
    needs no release of the machinery (requirement 44).
 3. **GitHub is reached through the `gh` CLI** (`gh issue`, `gh api`,
    `gh api graphql`), not a Python SDK. It is already installed and
@@ -83,7 +83,7 @@ Stated because the requirements do not settle them.
     concurrent appenders need. What lands on `main` and on the tracker is
     the *outcome*: the proposed intent, with its citations.
 11. **The curation cadence and threshold live in `policy.rec` on `main`
-    of the books repo.** Requirement 65 has the machinery charge a
+    of the blueprints repo.** Requirement 65 has the machinery charge a
     curation run without a word, which invariant I1 would otherwise
     forbid. That record is the approval I1 asks to be pointed to: the
     operator wrote it, and turning curation off is an edit to it.
@@ -240,7 +240,7 @@ strength:
    `stalled`. The agent cannot invent a sixth exit because the machinery
    has no branch for one.
 3. **The agent definition is fixed.** `.claude/agents/fwn-design-session.md`
-   and its siblings, in the books repo, state the protocol and the
+   and its siblings, in the blueprints repo, state the protocol and the
    prohibition: report, never act outside the job; never start other
    work; never touch another object's state.
 
@@ -396,12 +396,12 @@ stages: [proposal-review, spec, build, test, code-review]
 ---
 ```
 
-### 7.2 The books repository, `main` — `agentplot/blueprints`
+### 7.2 The blueprints repository, `main` — `agentplot/blueprints`
 
 Source of truth for: claims, the manifest, the ledger, the machine
 definitions, the design book.
 
-- `books/flywheel-next/src/**.md` — the mdBook. A claim is a fenced block
+- `blueprints/flywheel-next/src/**.md` — the mdBook. A claim is a fenced block
   **inside the chapter that explains it**, so the two cannot drift
   (requirement 46):
 
@@ -476,9 +476,9 @@ definitions, the design book.
   ```
 
 - `machines/*.toml` — the definitions in this directory, installed at the
-  books repo root so a definition change is a books-repo commit.
+  blueprints repo root so a definition change is a blueprints-repo commit.
 
-### 7.3 The books repository, orphan branch `flywheel-state`
+### 7.3 The blueprints repository, orphan branch `flywheel-state`
 
 Source of truth for: host liveness, object ownership, signals, moves and
 clusters.
@@ -665,7 +665,7 @@ thread.
 
 Invariant I1 asks that every piece of work point at an approval, and a
 run starts without a word. The approval it points at is `policy.rec` on
-`main` of the books repo, holding `curation_cadence` and
+`main` of the blueprints repo, holding `curation_cadence` and
 `curation_threshold`. The operator wrote that record, `pause` sets the
 cadence to `off`, and the machinery reads it rather than deciding for
 itself when to run.
@@ -690,7 +690,7 @@ instead of at the session.
 
 Section 8's seventh question.
 
-**Where it lives:** `ledger/<owner>-<repo>.rec` on `main` of the books
+**Where it lives:** `ledger/<owner>-<repo>.rec` on `main` of the blueprints
 repo, one file per tracked repository, in recutils.
 
 **Who writes a verdict:** an agent, in a `fwn-verdict-session`, because
@@ -772,7 +772,7 @@ once:
 | signal intake | `fwn signal add`, plus the four shipped adapters of §8.1 |
 | worktrees | `git worktree add ~/Code/fwn/<repo>/<branch>` |
 | specs and changes | the `openspec` CLI, custom schemas, the archive step |
-| the book | mdBook, `books/flywheel-next/` |
+| the book | mdBook, `blueprints/flywheel-next/` |
 | small tables | recutils — `recsel`, `recins`, `recdel`, `recfix` |
 | the definitions | `machines/*.toml`, read with `tomllib` |
 | the checker | `fwn check`, `fwn check --diagrams` |
@@ -839,7 +839,7 @@ herdr, no network. `unittest`, standard library only.
 | 12 | signals land in a file at any rate; curation, not the elaboration machinery, writes the moves and clusters that become intents; a person doing it by hand is indistinguishable (§8) |
 | 13 | `el.approve` is guarded on the intent being open, and the reconciler refuses to open a second elaboration issue while one is `proposed`; new material edits that issue's body |
 | 14 | `i.ready` derives `close_ready` from `children_all:elaboration:done`; only `i.close`, an `on = "word"` transition, closes it |
-| 15 | every self-closing type's `deliverable` is a path under `books/flywheel-next/src/` or the intent's OpenSpec change; `el.finish_self_closing` is guarded on it being present |
+| 15 | every self-closing type's `deliverable` is a path under `blueprints/flywheel-next/src/` or the intent's OpenSpec change; `el.finish_self_closing` is guarded on it being present |
 | 16 | one elaboration owns at most one session; there is no transition that splits one |
 | 17 | `[[types]]` declare `end`; `el.finish_self_closing`, `el.stand` and `el.hold_with_operator` are the three exits from `session_idle`, selected by `params.end` |
 | 18 | no transition out of `keep_or_finish` or `session.kept` has `on` other than `word`; `fwn check` asserts this for every standing type |

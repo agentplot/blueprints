@@ -10,7 +10,7 @@ supervisor: org
 lease: inherited
 fields:
   last-rendering: {point, rows: {number: decision-id}, delivered-by: chat | page}
-  last-reviewed: sha of the books' shared line at the last review view
+  last-reviewed: sha of the blueprints' shared line at the last review view
   attention: unappliable words not yet rendered
 states:
   present: {class: none}

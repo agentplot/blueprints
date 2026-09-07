@@ -77,9 +77,9 @@ refused once any item has an activation (A.5.49: a type change never
 moves a unit in flight) and reported as an unapplied word.
 
 **A.14.92 — a claim's scope corrected by the operator's word.** Scope
-lives in the claim block in the chapter, on the books shared line. A
+lives in the claim block in the chapter, on the blueprints shared line. A
 word cannot edit a chapter; the model turns the dictation into a chore
-on the books shared line (`chore books: scope of <claim> = …`), which
+on the blueprints shared line (`chore blueprints: scope of <claim> = …`), which
 one session applies and the machinery merges. So the correction takes a
 session, not a word alone, and the claim's version moves because its
 text moved, which fires planning for every repository in either scope.
@@ -135,10 +135,10 @@ used where they fit a row's answers (yes · drop; finish · keep). A
 page answer. Threaded replies are not used for attribution; the
 rendering id in the message is.
 
-**A.13.83 — coexistence.** In both profiles the books repository gains
+**A.13.83 — coexistence.** In both profiles the blueprints repository gains
 `signals/`, `ledger/`, `review-marks/` and `flywheel/` directories
 beside whatever the current flywheel keeps there. Objects are disjoint
-(the `fw:next` label; the separate state repository), but the books
+(the `fw:next` label; the separate state repository), but the blueprints
 repository is shared, and a chore from either flywheel could touch the
 other's directories. Not enforced; a CODEOWNERS rule is the obvious
 guard and is not part of the model.

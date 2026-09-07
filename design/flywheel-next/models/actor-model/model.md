@@ -245,8 +245,8 @@ org                                     root · one per organization · takeover
 ├─ host/<name>                          self  · scheduler, heartbeat, session slots
 ├─ operator/org                         inh   · last rendering, dictation inbox, attention
 ├─ curation/org                         root  · one session per run over unmoved signals
-├─ repo/<books>                         inh   · manifest facts for the books repository
-│  └─ intent/<subject>                  root  · a line off the books' shared line
+├─ repo/<blueprints>                         inh   · manifest facts for the blueprints repository
+│  └─ intent/<subject>                  root  · a line off the blueprints' shared line
 │     ├─ elaboration/<n>                inh   · one session, one place, ends by type
 │     │  └─ session/…                   inh   · the process, read as evidence
 │     ├─ offer/…                        inh   · a finding offered on this thread
@@ -272,7 +272,7 @@ for and what it may never do, so the files read in context.
 | `host` | a machine running the binary: heartbeat, root leases in a fixed order, session slots up to its bound (29), the probe of herdr for session evidence | decides anything from memory (64) |
 | `operator` | the operator's standing record: last rendering and its row numbers (13), dictation inbox (11), unappliable words (5), last review sha (109) | holds a row of its own |
 | `repo` | a tracked repository's manifest facts; supervises its lines | has a runtime attachment |
-| `intent` | a thread of design work: a line off the books' shared line, elaborations, at most one proposal open (18) | closes itself (19) |
+| `intent` | a thread of design work: a line off the blueprints' shared line, elaborations, at most one proposal open (18) | closes itself (19) |
 | `elaboration` | one session in one place off the intent's line; its type's `ending` decides how it ends (22) | is split into several sessions (21) |
 | `curation` | one bounded session over the unmoved signals, then the applying of its moves and proposed intents | batches signals itself; opens an intent (97) |
 | `planning` | one bounded session over one repository's backlog, as-built and open bolts, then the applying of its verdicts and proposed units | creates a unit in any state but `proposed` (4) |
@@ -319,7 +319,7 @@ Discord. When a projection drifts from its source the next tick
 rewrites it; the tracker body is trusted only when its `seq` equals the
 last transition comment's, and a mismatch is reported (66).
 
-The books repository holds what the machinery reads but never owns:
+The blueprints repository holds what the machinery reads but never owns:
 the design book (mdBook), the claims as fenced blocks in chapters
 (§10.12), the OpenSpec changes and archived specs, the manifest
 (`flywheel/manifest.yaml`), the instruction set
@@ -402,13 +402,13 @@ to add to the registry before the loader accepts the file, and
 
 The instruction set — schemas for every artifact, the skill for every
 session template, the work-order templates, the default writing rules
-of A.16 — lives in the books repository at `flywheel/instructions/` on
+of A.16 — lives in the blueprints repository at `flywheel/instructions/` on
 the shared line. `instructions.version()` is the sha of that tree at
 the shared line's head. A session records the version it started under
 (`session.instruction-version`); `work-order.render` materializes that
 version into the place's `.claude/` and writes
 `.flywheel/work-order.md`. Changing an instruction is a chore on the
-books repository (79, 110); it reaches every host when the chore lands
+blueprints repository (79, 110); it reaches every host when the chore lands
 on the shared line, because every host fetches before every tick, and a
 session started before it and one after are told apart by the field.
 A test renders the prompt for a scenario by calling `work-order.render`
@@ -652,7 +652,7 @@ too; they shorten the wait and are never the only way (25, 117).
 Both sides are the same shape (42):
 
 ```
-books repo:  shared line ── intents/<id> ── elab/<id>/<n>      (elaboration place)
+blueprints repo:  shared line ── intents/<id> ── elab/<id>/<n>      (elaboration place)
 built repo:  shared line ── bolts/<id> ──── wi/<id>/<n>         (work item place)
                                        └─── operator place at the bolt line's head
 ```
@@ -947,7 +947,7 @@ abbreviated after first use. "Row" means a `decision` actor in `open`.
 - Intent `open`, on `decided`: spawns `elaboration/…/1` in `approved`
   with `source` = the finding, clears `proposed-elaborations`.
 - Elaboration `approved → placing`: `line.take-parent` if behind,
-  `place.ensure(books, intents/…, elab/…/1)`. Next tick
+  `place.ensure(blueprints, intents/…, elab/…/1)`. Next tick
   `placing → running`: spawns `session/…/1` in `requested`.
 - Host tick: slot free → `start`; session `requested → starting`,
   effects `work-order.render`, `session.start`. Work starts.
@@ -975,25 +975,25 @@ abbreviated after first use. "Row" means a `decision` actor in `open`.
 
 ### S3 — a chore offered and accepted
 
-- Build session in `working` writes `exit/3 kind: chore about: books
-  repo: books line: shared text: AGENTS.md stale` with `flywheel
+- Build session in `working` writes `exit/3 kind: chore about: blueprints
+  repo: blueprints line: shared text: AGENTS.md stale` with `flywheel
   exit`, then finishes its job and writes `exit/4 kind: done`.
 - Session tick: the chore exit spawns `offer/<session>/exit-3` in
-  `offered` with `repo: books, line: shared`; the session continues
+  `offered` with `repo: blueprints, line: shared`; the session continues
   untouched (50). The done exit sends `session.exited{done}`.
-- Offer tick: `decision.open(chore)`; row 4 "chores books · 1 · a stale
+- Offer tick: `decision.open(chore)`; row 4 "chores blueprints · 1 · a stale
   AGENTS.md → yes · pick a · no".
 - Word `yes 4` → decision answered → offer `decided{chore, yes}` →
   `offered → accepted`, sends `chore.accepted{line: shared}` to
-  `repo/books`.
-- Repo on `chore.accepted`: spawns `unit/books/shared/<offer>` of type
+  `repo/blueprints`.
+- Repo on `chore.accepted`: spawns `unit/blueprints/shared/<offer>` of type
   `chore` in `approved` with `bolt: none`, `approved-by: <word id>`.
   Unit `approved → building` (no deps): sends `go` to its one item.
-  Item `queued → placing`: `place.ensure(books, shared, wi/…)`;
+  Item `queued → placing`: `place.ensure(blueprints, shared, wi/…)`;
   `placing → staged`: one `fixer` session. Session exits done; item
   `judging → merge-ready`; with `bolt: none` the item's `merge-now`
   comes from the repo's clause for shared-line chores: `chore.merge` =
-  `landing.start(books, wi/…, policy, id)`, and `merged` when
+  `landing.start(blueprints, wi/…, policy, id)`, and `merged` when
   `landing.result == passed`.
 - No bolt actor was spawned (I8); the chore type has `change-directory:
   false`, so no OpenSpec change was created.
@@ -1041,9 +1041,9 @@ abbreviated after first use. "Row" means a `decision` actor in `open`.
   Row 7 "close intent loop-granularity · all 4 done → close · keep
   open".
 - Word `7 close` → intent `open → closing`. Closing tick:
-  `line.take-parent(books, intents/…, shared)`, `archive.change`
+  `line.take-parent(blueprints, intents/…, shared)`, `archive.change`
   (OpenSpec archive on the line: the change's specs become the standing
-  set), `landing.start(books, intents/…, policy, <id>/1)`. Landing
+  set), `landing.start(blueprints, intents/…, policy, <id>/1)`. Landing
   passes → `closing → closed`: `line.remove`, standing places removed,
   lease released. Records archived with the line; nothing else moved:
   the only other actor that reads this is every planning actor's
@@ -1053,7 +1053,7 @@ abbreviated after first use. "Row" means a `decision` actor in `open`.
 
 - An adapter writes `captures/meeting-2026-09-02-atlas-sync.rec` and
   twenty `signals/…/01..20.rec`. `signals.unmoved()` = 20 ≥ threshold →
-  curation `idle → running`: `place.ensure(books, shared,
+  curation `idle → running`: `place.ensure(blueprints, shared,
   curation/41)`, session spawned with the twenty ids and the claims
   index in its work order.
 - Session exits done with deliverables: 20 moves, 2 proposed intents.

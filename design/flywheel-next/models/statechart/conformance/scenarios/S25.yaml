@@ -6,7 +6,7 @@ given:
   objects:
     - {id: intent/atlas-provider-limits, machine: intent, state: {life: open, line: current, open.material: settled, open.close: not-offered}}
     - {id: elaboration/atlas-provider-limits/amend-1, machine: elaboration, parent: intent/atlas-provider-limits, state: {life: working, working.work: session, session.life: alive, alive.activity: working}, record: {type: self-closing, type_version: 1}}
-  files: {"books flywheel/instructions/design-conclusion.md": "version books@a1b2: chapter + claim + context map in one commit"}
+  files: {"blueprints flywheel/instructions/design-conclusion.md": "version blueprints@a1b2: chapter + claim + context map in one commit"}
 when:
   - files: {"intent line commit c9": "src/providers/one-writer.md (claim block v3 -> v4, lock recomputed), src/context-map.md, context-map.json"}
   - evidence: {session.exit: {"*": done}}

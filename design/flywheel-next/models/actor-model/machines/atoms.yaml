@@ -50,15 +50,15 @@ evidence:
   stage.verdict:          {args: [item-id, stage], returns: done|not-done, "the stage's exit set read by the type's verdict rule"}
   place.published-ref:    {args: [place], returns: sha or none, "the last published head of the place (refs/places/<place>)"}
 
-  # books, claims, ledger, as-built
-  claims.standing:        {args: [], returns: "{claim-name: {version, scope, lock}} as of the books' shared line"}
+  # blueprints, claims, ledger, as-built
+  claims.standing:        {args: [], returns: "{claim-name: {version, scope, lock}} as of the blueprints' shared line"}
   claims.proposed:        {args: [intent-id], returns: same shape, as of the intent's line}
   claim.scope-includes:   {args: [claim-name, repo], returns: bool}
   ledger.verdicts:        {args: [repo], returns: "latest verdict per claim, each with claim-version, revision, verdict, evidence-ref, date"}
   ledger.backlog:         {args: [repo], returns: "claims in scope with no satisfied or not-applicable verdict at the standing version, plus verdicts whose evidence-ref is gone"}
   ledger.digest:          {args: [repo], returns: "hash over backlog + open redo requests + unrouted asks naming the repo + claim moves against open bolts"}
   asbuilt.statements:     {args: [repo, revision], returns: "statements each naming claim@version"}
-  instructions.version:   {args: [], returns: sha of the instruction set on the books' shared line}
+  instructions.version:   {args: [], returns: sha of the instruction set on the blueprints' shared line}
   personas.matching:      {args: [repo, pattern], returns: list of persona definitions found in the repository being worked}
   manifest.repo:          {args: [repo], returns: "{kind, shared-line, landing-policy, take-cadence, capabilities}"}
   manifest.repos:         {args: [], returns: list of tracked repos}

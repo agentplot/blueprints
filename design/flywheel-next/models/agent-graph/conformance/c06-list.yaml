@@ -20,7 +20,7 @@ given:
   hosts:
     - {id: studio, bound: 2, alive: true}
   world:
-    out-of-scope: "the current flywheel's objects exist in the same organization and books repository"
+    out-of-scope: "the current flywheel's objects exist in the same organization and blueprints repository"
 when:
   - {start: studio}                                     # empty memory
   - {op: {host: studio, call: list, scope: all, as: l}}

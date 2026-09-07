@@ -12,7 +12,7 @@ given:
   hosts:
     - {id: mac-mini, bound: 2, alive: true}
   world:
-    line-head: {"intent/in-atlas-provider-limits": 9b1e44c, "books/main": 9b1e44c}
+    line-head: {"intent/in-atlas-provider-limits": 9b1e44c, "blueprints/main": 9b1e44c}
 when:
   - {receive: {rendering: rn-0912, row: 1, answer: "yes", by: chuck, via: "chat"}}
   - {tick: {host: mac-mini}}

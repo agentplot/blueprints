@@ -1,5 +1,5 @@
 # The tracker profile: objects on GitHub issues, milestones and one
-# Projects board; records in the books repository. This is the only
+# Projects board; records in the blueprints repository. This is the only
 # place a label, a column, a field or a path is named for this profile.
 kind: binding
 profile: tracker
@@ -10,9 +10,9 @@ scope:
   project: "Flywheel next"
 
 stores:
-  captures:            {system: books repo (git),  path: "signals/captures/<id>.rec",  record: recutils, identity: SourceKey}
-  signals:             {system: books repo (git),  path: "signals/<capture>.rec",       record: recutils, identity: Id}
-  moves:               {system: books repo (git),  path: "signals/moves.rec",           record: recutils, identity: "Signal + Date"}
+  captures:            {system: blueprints repo (git),  path: "signals/captures/<id>.rec",  record: recutils, identity: SourceKey}
+  signals:             {system: blueprints repo (git),  path: "signals/<capture>.rec",       record: recutils, identity: Id}
+  moves:               {system: blueprints repo (git),  path: "signals/moves.rec",           record: recutils, identity: "Signal + Date"}
   proposals:           {system: GitHub issue,      path: "label fw:proposal, fw:<kind>; body = the document; generation = a hidden html comment <!-- gen: n -->", record: "issue body with a fenced flywheel yaml block", identity: issue number}
   objects/intent:      {system: GitHub issue + milestone, path: "label fw:intent; the proposal's issue relabelled; milestone <intent id> groups its elaborations", record: "fenced flywheel block in the body", identity: issue number}
   objects/elaboration: {system: GitHub issue,      path: "label fw:elaboration; milestone = intent",   record: "fenced flywheel block", identity: issue number}
@@ -27,12 +27,12 @@ stores:
   words:               {system: GitHub issue comment, path: "on the row's issue; `word:`; a direct act is the issue's own state or card column", record: "fenced block with Row, Generation, Answer, By, Via", identity: "Row + Generation (first comment wins; later ones acknowledged)"}
   effects:             {system: GitHub issue comment, path: "on the object the effect concerns; `effect:`", record: "fenced block with Id, Reason, Evidence, Result", identity: Id}
   conflicts:           {system: GitHub issue comment, path: "on the item's or elaboration's issue; `conflict:`", record: "fenced block", identity: "place + heads"}
-  ledger:              {system: books repo (git),  path: "ledger/<repository>.rec",   record: recutils, identity: "Repository + Claim + ClaimVersion + Revision"}
+  ledger:              {system: blueprints repo (git),  path: "ledger/<repository>.rec",   record: recutils, identity: "Repository + Claim + ClaimVersion + Revision"}
   renderings:          {system: GitHub issue comment, path: "on the pinned issue `fw:plan`", record: "fenced block", identity: rows fingerprint}
   hosts:               {system: GitHub issue,      path: "label fw:host; heartbeat = an edited comment `heartbeat:`", record: "fenced block with Bound, Profile; heartbeat comment's updated_at is the liveness", identity: host name}
   asks:                {system: GitHub issue,      path: "label fw:ask",                record: "fenced block", identity: issue number}
-  review-marks:        {system: books repo (git),  path: "review-marks/<who>.rec",      record: recutils, identity: who}
-  books-shared-line:   {system: books repo (git),  path: "main: src/**/*.md claim blocks; flywheel/{types,instructions,skills,hooks,manifest.yaml,context-map.yaml}", record: "mdBook chapter; YAML", identity: sha}
+  review-marks:        {system: blueprints repo (git),  path: "review-marks/<who>.rec",      record: recutils, identity: who}
+  blueprints-shared-line:   {system: blueprints repo (git),  path: "main: src/**/*.md claim blocks; flywheel/{types,instructions,skills,hooks,manifest.yaml,context-map.yaml}", record: "mdBook chapter; YAML", identity: sha}
   repo-shared-line:    {system: built repo (git),  path: "main: openspec/specs/**/spec.md serves: lines", record: OpenSpec, identity: sha}
   git-host:            {system: GitHub,            record: "branch heads via gh api / git ls-remote"}
   multiplexer:         {system: herdr,             record: "herdr agent list/status/last-message"}
@@ -40,8 +40,8 @@ stores:
 
 evidence:
   read:            "gh issue view <n> --json …,comments; as-of = max updated_at of what was read"
-  unmoved-signals: "parse signals/*.rec minus moves.rec on books main"
-  standing-claims: "parse ```claim blocks from src/**/*.md on books main, filtered by scope against flywheel/manifest.yaml"
+  unmoved-signals: "parse signals/*.rec minus moves.rec on blueprints main"
+  standing-claims: "parse ```claim blocks from src/**/*.md on blueprints main, filtered by scope against flywheel/manifest.yaml"
   as-built:        "grep serves: in openspec/specs/**/spec.md at the repository's main"
   line-head:       "git ls-remote <repository> refs/heads/<line>"
   observed:        "herdr agent status <activation>; last output time against idle-window"
@@ -53,8 +53,8 @@ effects:
   write-effect:      "gh issue comment <n> --body 'effect: …' after listing comments for the id; an existing id is a no-op"
   write.object:      "gh issue edit <n> --add-label fw:<kind> --remove-label fw:proposal --milestone <parent>; body fenced block updated"
   write.proposal:    "gh issue create --label fw:proposal,fw:<kind>,fw:next --body <document>; amend = edit body, bump gen"
-  write.move:        "append to signals/moves.rec; commit to books main (policy direct for machinery records)"
-  write.verdict:     "append to ledger/<repository>.rec; commit to books main"
+  write.move:        "append to signals/moves.rec; commit to blueprints main (policy direct for machinery records)"
+  write.verdict:     "append to ledger/<repository>.rec; commit to blueprints main"
   write.advance:     "gh issue comment on the item"
   write.word:        "gh issue comment on the row's issue; then re-list: the lowest comment id for (Row, Generation) is the word"
   write.rendering:   "gh issue comment on the fw:plan issue"

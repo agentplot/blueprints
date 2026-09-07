@@ -4,9 +4,9 @@ doc: >
   One thread of design work about one subject. Proposed by curation, opened
   by the operator's word, holding at most one elaboration proposal at a time
   (requirement 18), closed only by the word (requirement 19). Its line is a
-  branch off the books' shared line; its close lands that line, which is when
+  branch off the blueprints' shared line; its close lands that line, which is when
   its proposed claims become standing (requirement 42, 47).
-supervisor: repo          # the books repo
+supervisor: repo          # the blueprints repo
 lease: root
 fields:
   subject: the subject
@@ -45,7 +45,7 @@ decisions:
     class: decide
     key: landing-id
     answers: [retry, hold]
-    opened-by: the archive's landing failed at the books' gates
+    opened-by: the archive's landing failed at the blueprints' gates
     retracted-by: a later landing passes
 receive:
   - in: proposed
@@ -58,7 +58,7 @@ receive:
     when: ["msg.kind == approve", "msg.answer == yes"]
     to: open
     effects:
-      - "line.ensure(books, self.line, shared)"
+      - "line.ensure(blueprints, self.line, shared)"
       - "for each proposed elaboration e: actor.spawn(elaboration, elab/<self.id>/<n>, {type: e.type, brief: e.brief}) in approved"
       - "for each signal s in self.signals: move.record(s, attach, self.id, 'intent approved')"
   - in: proposed
@@ -120,25 +120,25 @@ receive:
     on: tick
     when: ["cadence.due(repo.take-cadence, self.last-take)", "no elaboration in placing"]
     to: same
-    effects: ["line.take-parent(books, self.line, shared)", "actor.set(last-take, clock.now())"]
+    effects: ["line.take-parent(blueprints, self.line, shared)", "actor.set(last-take, clock.now())"]
   - in: closing
     on: tick
     when: ["not landing pending for self"]
     to: same
     effects:
-      - "line.take-parent(books, self.line, shared)"
-      - "archive.change(books, self.line, self.change)"
-      - "landing.start(books, self.line, repo.landing-policy, self.id + '/' + n)"
+      - "line.take-parent(blueprints, self.line, shared)"
+      - "archive.change(blueprints, self.line, self.change)"
+      - "landing.start(blueprints, self.line, repo.landing-policy, self.id + '/' + n)"
     note: the archive moves the intent's OpenSpec change into the standing set on the line; the landing moves the line to shared (requirement 42, 46)
   - in: closing
     on: tick
-    when: ["landing.result(books, self.landing) == passed"]
+    when: ["landing.result(blueprints, self.landing) == passed"]
     to: closed
-    effects: ["line.remove(books, self.line)", "for each standing elaboration place: place.remove"]
+    effects: ["line.remove(blueprints, self.line)", "for each standing elaboration place: place.remove"]
     note: nothing of an intent lives on a branch after it closes (requirement 47); the standing claims now differ, so every built repo's ledger digest moves and planning runs (S27)
   - in: closing
     on: tick
-    when: ["landing.result(books, self.landing) == failed"]
+    when: ["landing.result(blueprints, self.landing) == failed"]
     to: same
     effects: ["decision.open(land-failed, self.landing, {reason})"]
   - in: closing

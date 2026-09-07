@@ -60,7 +60,7 @@ Feedback so far, in order:
   back through writeback and elaboration to the intent (it should:
   units cite claims and claims cite the elaboration that wrote them);
   whether the bolt plan still needs to be an OpenSpec change in the
-  books repository; and how Operation stays clean (landed bolts stay in
+  blueprints repository; and how Operation stays clean (landed bolts stay in
   view while their request, environments or signals are live and for a
   bounded window after, then leave every view and stay in history).
 - Rail-and-board is the direction; the workbench is retired but kept
@@ -88,12 +88,12 @@ Feedback so far, in order:
   rule), and phase is the lane's while kind is the shape's. The dock
   header takes the object's form.
 - Book mode (2026-09-07): the board gains a third view, an embedded
-  mdBook viewer the page draws itself (key b), because the books are
+  mdBook viewer the page draws itself (key b), because the blueprints are
   mdBook and the server is Rust so the integration can be tight. The
   rail jumps the viewer to the chapter and claim block a decision
   concerns and lights it; decision markers sit in the chapter margin;
   every dock page and the map's scope box carry "read in book"; a
-  library overlay lists the organization's books with chapters, claims
+  library overlay lists the organization's blueprints with chapters, claims
   standing and proposed, last written, unmet verdicts and "changed since
   review", and links a book's repositories to the map; "since last
   review" and "mark reviewed" are one flow shared with the map, the mark

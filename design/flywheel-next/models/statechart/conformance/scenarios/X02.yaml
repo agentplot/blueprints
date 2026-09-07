@@ -12,7 +12,7 @@ given:
   evidence: {planning.fingerprint: {planning/atlas: f0}, unit.claim_moved: {"*": false}, bolt.citations_moved: {"*": false}}
 when:
   - tick: {}
-  - files: {"books src/providers/one-writer.md": "claim block version 4 on the shared line"}
+  - files: {"blueprints src/providers/one-writer.md": "claim block version 4 on the shared line"}
   - evidence: {unit.claim_moved: {unit/atlas/p: true, unit/atlas/a: true}, bolt.citations_moved: {bolt/atlas/plan-rows: true}, planning.fingerprint: {planning/atlas: f1}}
   - tick: {}
   - tick: {}

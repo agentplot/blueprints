@@ -72,7 +72,7 @@
 <path d="M711.5,386.0 V378.0 H749.5 V386.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
 <rect x="70.0" y="386.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>the root is read on the first tick; a host already laid out goes straight to ready</title></rect>
 <text x="118.0" y="408.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">unchecked</text>
-<rect x="210.0" y="386.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>the state, the books and every tracked built repository cloned bare under the root, one shared-line checkout each; a repeat adds only what is missing</title></rect>
+<rect x="210.0" y="386.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>the state, the blueprints and every tracked built repository cloned bare under the root, one shared-line checkout each; a repeat adds only what is missing</title></rect>
 <text x="258.0" y="408.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">cloning</text>
 <rect x="350.0" y="386.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>the profile&#x27;s layout holds; the host takes leases and makes places (43, 44)</title></rect>
 <text x="398.0" y="408.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">ready</text>

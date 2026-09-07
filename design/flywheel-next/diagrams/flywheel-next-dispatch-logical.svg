@@ -25,7 +25,7 @@
   <text x="92" y="178" font-size="8.5" fill="#666">flywheel dispatch is flywheel host</text>
   <rect x="80" y="202" width="280" height="46" rx="8" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.2"/>
   <text x="92" y="221" font-size="10.5" font-weight="700" fill="#1f6e6e">joins</text>
-  <text x="92" y="236" font-size="8.5" fill="#666">one command · clones state and books (205)</text>
+  <text x="92" y="236" font-size="8.5" fill="#666">one command · clones state and blueprints (205)</text>
   <rect x="80" y="260" width="280" height="46" rx="8" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.2"/>
   <text x="92" y="279" font-size="10.5" font-weight="700" fill="#1f6e6e">heartbeats</text>
   <text x="92" y="294" font-size="8.5" fill="#666">as host/dispatcher</text>

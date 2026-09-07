@@ -7,7 +7,7 @@ given:
   objects: []
   evidence: {session.pane: {"*": absent}}
 when:
-  - direct: {chat: "session: look at the books", by: chuck}
+  - direct: {chat: "session: look at the blueprints", by: chuck}
   - tick: {}
   - evidence: {place.exists: {"*": true}, place.contains_line: {"*": true}, place.ready: {"*": true}}
   - tick: {}

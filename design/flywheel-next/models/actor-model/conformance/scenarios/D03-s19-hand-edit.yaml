@@ -7,7 +7,7 @@ definitions: ../../machines
 given:
   clock: "2026-09-04T09:00:00Z"
   actors:
-    - {id: repo/books, state: tracked, seq: 1, fields: {kind: books, shared-line: main, landing-policy: direct}}
+    - {id: repo/blueprints, state: tracked, seq: 1, fields: {kind: blueprints, shared-line: main, landing-policy: direct}}
     - {id: intent/loop-granularity, state: open, seq: 9, epoch: 2, fields: {line: intents/loop-granularity, change: loop-granularity}}
     - {id: elaboration/intent/loop-granularity/1, state: finished, seq: 7, epoch: 2}
     - {id: decision/intent/loop-granularity/close/c4d1, state: open, seq: 0, class: decide, answers: [close, keep]}
@@ -15,7 +15,7 @@ given:
     - {id: host/mac-mini, state: alive, seq: 1}
   leases: [{actor: intent/loop-granularity, holder: host/studio, epoch: 2}]
   world:
-    lines: {books: {main: b1, intents/loop-granularity: b2}}
+    lines: {blueprints: {main: b1, intents/loop-granularity: b2}}
 when:
   - {commit: {by: "chuck <chuck@…>", on: main, files: {"actors/intent/loop-granularity/state.rec": {state: closing}}, message: "close it"}}
   - tick: host/mac-mini          # fetches; not the holder; writes nothing
@@ -26,5 +26,5 @@ then:
     - {actor: intent/loop-granularity, from: open, to: closing, consumed: ["word/<commit sha>"]}
     - {actor: decision/intent/loop-granularity/close/c4d1, from: open, to: withdrawn}
   writes-by: {host/mac-mini: 0}
-  effects: [{name: line.take-parent}, {name: archive.change}, {name: landing.start, args: [books, intents/loop-granularity, direct]}]
+  effects: [{name: line.take-parent}, {name: archive.change}, {name: landing.start, args: [blueprints, intents/loop-granularity, direct]}]
   commits-on-main-by-host: 1     # one transition commit, rebased on the operator's

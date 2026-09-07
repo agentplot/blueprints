@@ -1,6 +1,6 @@
 # _schema.toml — the meta-definition every machine file in this directory
 # must satisfy. Read with tomllib (Python 3.12 stdlib). Enforced by
-# `fwn check`, which fails CI in the books repo when a machine file, a
+# `fwn check`, which fails CI in the blueprints repo when a machine file, a
 # guard name, an effect name, or a diagram drifts from this shape.
 #
 # Files here are DATA. The machinery contains no enum of state names, no

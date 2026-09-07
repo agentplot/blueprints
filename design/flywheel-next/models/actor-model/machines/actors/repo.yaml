@@ -1,15 +1,15 @@
 actor: repo
 version: 1
 doc: >
-  One per tracked repository, books or built. It carries the manifest's facts
+  One per tracked repository, blueprints or built. It carries the manifest's facts
   (shared line, landing policy, take cadence, capabilities) and supervises the
-  lines off its shared line: intents (books) or bolts and one planning actor
+  lines off its shared line: intents (blueprints) or bolts and one planning actor
   (built). Chores raised against the shared line are offers here. The ledger
   is a record set keyed by this repo, not a child actor.
 supervisor: org
 lease: inherited
 fields:
-  kind: books | built
+  kind: blueprints | built
   shared-line: the branch name the manifest gives
   landing-policy: pull-request | direct
   take-cadence: cron expression for lines taking the shared line (requirement 43)

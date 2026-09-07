@@ -52,7 +52,7 @@ The harness (`fw-engine`'s scenario runner, §6.4 of the model):
    evidence or effect name unsatisfied (B.3.127);
 2. seeds every store in `given` through the binding's write
    operations, in an isolated scope (a throwaway state repository and
-   books repository for git-only; a throwaway organization or a
+   blueprints repository for git-only; a throwaway organization or a
    `fw:test-<run>` scope label for the tracker);
 3. runs each `when` step in order against the profile's real control
    plane, with the world (herdr, wt, the built repository) replaced by

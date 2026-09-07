@@ -16,7 +16,7 @@ schema = 1
 machine = "signal"
 clock = "reconciled"
 carrier = "rec.record"
-truth = "books repo, branch flywheel-state: signals/<yyyy-mm>.rec, %key: id"
+truth = "blueprints repo, branch flywheel-state: signals/<yyyy-mm>.rec, %key: id"
 projections = ["the served page's curation table"]
 scope = "the file lives on the fwn coordination branch; no other flywheel writes it"
 
@@ -80,7 +80,7 @@ reason = "curation judged it; the move record is the state and was written by th
 # running recins by hand, which requirement 65 says is also curation).
 # ------------------------------------------------------------------------
 [move]
-file = "books repo, branch flywheel-state: moves/<yyyy-mm>.rec, %key: signal"
+file = "blueprints repo, branch flywheel-state: moves/<yyyy-mm>.rec, %key: signal"
 targets = ["attach", "challenge", "cluster", "drop"]
 
 [move.targets_meaning]

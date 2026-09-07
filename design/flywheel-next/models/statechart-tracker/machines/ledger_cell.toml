@@ -3,7 +3,7 @@
 # of in-scope cells without one (requirement 51).
 #
 # The cell has no carrier of its own. Its state is a FUNCTION of two
-# stores: the claim in the books repo chapter, and the verdict record in
+# stores: the claim in the blueprints repo chapter, and the verdict record in
 # ledger/<repo>.rec. It is a machine because it has guarded transitions
 # and a plan row; it is not an object anyone creates.
 
@@ -11,12 +11,12 @@ schema = 1
 machine = "ledger_cell"
 clock = "reconciled"
 carrier = "rec.record"
-truth = "books repo, main branch: ledger/<repo>.rec, one record per (claim, repo)"
+truth = "blueprints repo, main branch: ledger/<repo>.rec, one record per (claim, repo)"
 projections = ["the served page's backlog table", "the unit proposal body"]
 scope = "repo listed in manifest.rec AND claim scope matches the repo"
 
 [claim_source]
-where = "a fenced ```claim block inside the chapter that explains it, books/flywheel-next/src/**.md"
+where = "a fenced ```claim block inside the chapter that explains it, blueprints/flywheel-next/src/**.md"
 why = "the chapter and the claim are one source, so the prose a construction session reads cannot drift from the claim (requirement 46)"
 version_rule = "claims.lock records sha256 of each claim block; `fwn check` fails if a block changed without its version bumping"
 standing_rule = "a claim in a chapter under an open openspec/changes/ directory is PROPOSED; once that change is archived the claim is STANDING (requirement 47)"
@@ -84,7 +84,7 @@ from = "judging"
 to = ["satisfied", "partial", "unsatisfied", "not_applicable"]
 on = "reconcile"
 guard.all = ["state:session:exited", "exit_verb:done"]
-effect = ["ledger_write:<state>", "books_commit:ledger/<repo>.rec"]
+effect = ["ledger_write:<state>", "blueprints_commit:ledger/<repo>.rec"]
 reason = "the agent judged; the machinery only stores what it judged (requirement 49)"
 note = "the session writes the records and commits; this transition records that the commit landed"
 
@@ -119,7 +119,7 @@ from = "stale"
 to = "unsatisfied"
 on = "word"
 word = "backlog"
-effect = ["ledger_write:unsatisfied", "books_commit:ledger/<repo>.rec"]
+effect = ["ledger_write:unsatisfied", "blueprints_commit:ledger/<repo>.rec"]
 reason = "operator chose to put it straight into the backlog rather than spend a session judging it"
 
 # ------------------------------------------------------------------------

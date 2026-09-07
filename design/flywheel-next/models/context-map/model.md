@@ -78,7 +78,7 @@ common fields.
 | tags | A list of strings. A tag of the form `facet:value` names a declared facet; a plain tag is free text. |
 
 A candidate is stated by a chapter on an open intent's line; settled by
-a chapter on the books' shared line. Status follows the claim it comes
+a chapter on the blueprints' shared line. Status follows the claim it comes
 from (proposed, standing) and adds open for the thing the book has not
 yet decided.
 
@@ -164,13 +164,13 @@ this an invariant.
 ### 3.1 Two vocabulary files
 
 The flywheel ships a default vocabulary with each release (208). An
-organization keeps one vocabulary file in its books repository that
+organization keeps one vocabulary file in its blueprints repository that
 extends it (119, 190). The schema validates a map against the union.
 
 | file | owner | versioned with |
 |---|---|---|
 | shipped vocabulary | the flywheel | the flywheel release, stamped in the schema version |
-| organization vocabulary | the organization | the books, like the map |
+| organization vocabulary | the organization | the blueprints, like the map |
 
 The organization file declares which schema version it extends. A
 map declares its schema version. The check fails a map or a vocabulary
@@ -296,7 +296,7 @@ instructions and skills when they choose a template or a deliverable
 ### 4.4 Current and target (121, 201)
 
 Two complete maps, one schema, the same vocabulary. Current is the map
-of what is built; target is the map of what the books say. The same id
+of what is built; target is the map of what the blueprints say. The same id
 names the same thing in both. Neither is a delta of the other.
 
 The difference is computed, keyed on id, for each of the four types:
@@ -490,7 +490,7 @@ facets work the same as on the canvas.
 ## 6. The rewrite of 198–202
 
 198. The system context map is the scope surface. It is the map of the
-    bounded contexts the books describe, in the terms of domain-driven
+    bounded contexts the blueprints describe, in the terms of domain-driven
     design: a context, the elements it names, the relationships between
     contexts typed by the DDD patterns with an upstream and a downstream
     where the pattern has one, and links between elements. Element
@@ -555,7 +555,7 @@ facets work the same as on the canvas.
    session that moves a claim moves both maps. Recommend the first, so
    current is as-built by the same hand that builds.
 3. Which line the ref check reads for a candidate. A candidate's chapter
-   is on its intent's line and not yet on the books' shared line. The
+   is on its intent's line and not yet on the blueprints' shared line. The
    check on the shared line would fail the ref. Recommend the check
    accept a ref that resolves on any open intent's line, and that
    landing the intent be what turns candidate to settled.
@@ -569,7 +569,7 @@ facets work the same as on the canvas.
    repository. Recommend allowing any home, and scope of a claim on the
    kernel be the union of the kernel's homes and both contexts'.
 6. Whether external contexts may have a ref. An external system is not
-   stated by a chapter of the books. Recommend ref optional when
+   stated by a chapter of the blueprints. Recommend ref optional when
    external is true, status still required.
 7. Whether the "moved" difference class should also cover a change of
    context. Moving an element between contexts is a design change of a

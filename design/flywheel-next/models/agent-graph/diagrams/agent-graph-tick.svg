@@ -118,7 +118,7 @@
   <g id="store-ledger">
     <use href="#cyl" x="1100" y="530" color="#2b8a8a"/>
     <text x="1100" y="562" font-size="10" fill="#666" text-anchor="middle">ledger · claims</text>
-    <text x="1100" y="575" font-size="8.5" fill="#999" text-anchor="middle">books main · read only here</text>
+    <text x="1100" y="575" font-size="8.5" fill="#999" text-anchor="middle">blueprints main · read only here</text>
   </g>
   <text x="130" y="660" font-size="8.5" fill="#999">git-only: a commit that lands on main is the fact; the push is the compare-and-swap</text>
   <text x="130" y="674" font-size="8.5" fill="#999">tracker: an issue per object; the lowest comment id per (node, key, gen) holds</text>

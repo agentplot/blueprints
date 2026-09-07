@@ -26,13 +26,13 @@ scope = "label fwn AND label fwn:elaboration"
 name = "research"
 end = "self_closing"
 agent = "fwn-design-session"
-deliverable = "books/flywheel-next/src/**.md or openspec/changes/<id>/research/*.md"
+deliverable = "blueprints/flywheel-next/src/**.md or openspec/changes/<id>/research/*.md"
 
 [[types]]
 name = "writeback"
 end = "self_closing"
 agent = "fwn-design-session"
-deliverable = "books/flywheel-next/src/**.md — chapters rewritten whole, claims inside them"
+deliverable = "blueprints/flywheel-next/src/**.md — chapters rewritten whole, claims inside them"
 
 [[types]]
 name = "prototype-note"

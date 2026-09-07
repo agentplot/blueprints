@@ -7,7 +7,7 @@ given:
     - {id: curation/willdan, machine: curation, state: {run: idle}, record: {threshold: 12}}
     - {id: capture/meeting-2026-09-02-willdan-weekly, machine: capture, state: {reading: read}}
     - {id: intent/atlas-provider-limits, machine: intent, state: {life: open, line: current, open.material: settled, open.close: not-offered}}
-  files: {"books signals/meeting-2026-09-02-willdan-weekly/": "20 signal records, no move records"}
+  files: {"blueprints signals/meeting-2026-09-02-willdan-weekly/": "20 signal records, no move records"}
   evidence: {curation.unmoved_count: {curation/willdan: 20}, signal.move: {"*": none}}
 when:
   - tick: {}

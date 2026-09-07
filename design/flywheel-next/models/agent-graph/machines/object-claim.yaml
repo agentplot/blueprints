@@ -4,6 +4,6 @@ kind: object
 name: claim
 artifacts: [claim, unit, proposal]
 states:
-  - {state: moved,    when: "and(claim on books shared line, any(u in units, and(state(bolt-of(u)) == open, unit-covers-moved-claim(u))))", proof: books-shared-line}
-  - {state: standing, when: "claim on books shared line",                                                                                   proof: books-shared-line}
-  - {state: proposed, when: "claim on an intent line only",                                                                                 proof: books-shared-line}
+  - {state: moved,    when: "and(claim on blueprints shared line, any(u in units, and(state(bolt-of(u)) == open, unit-covers-moved-claim(u))))", proof: blueprints-shared-line}
+  - {state: standing, when: "claim on blueprints shared line",                                                                                   proof: blueprints-shared-line}
+  - {state: proposed, when: "claim on an intent line only",                                                                                 proof: blueprints-shared-line}

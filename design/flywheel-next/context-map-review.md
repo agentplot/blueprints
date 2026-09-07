@@ -1,13 +1,13 @@
 # Context map — a critical review of adopting v1
 
-The current binding (`profiles/books.yaml`, gaps 198–202) takes the willdan
+The current binding (`profiles/blueprints.yaml`, gaps 198–202) takes the willdan
 v1 context map as the flywheel's scope surface with three additions and
 keeps the rest. This review argues that the data model is right and the
 file is not: about half of v1 is willdan's 2026 redesign written into a
 schema, and the flywheel should ship the half that serves a requirement
 and let an organization add the rest as vocabulary.
 
-Sources read: requirements 3, A.14, A.16, A.23, 9; `profiles/books.yaml`
+Sources read: requirements 3, A.14, A.16, A.23, 9; `profiles/blueprints.yaml`
 `manifest:` and `context_map:`; gaps 198–203; v1 `README.md`,
 `schema.json`, `bin/map-check.mjs`, `maps/*.js`, the v1 viewer; the two
 mockups.
@@ -16,12 +16,12 @@ mockups.
 
 | v1 element | keep because | serves |
 | --- | --- | --- |
-| `ref` on every element, chapter plus heading anchor; "no ref, no map" | The map is an index of the books, not a drawing. A construction session reads the chapter, not the node. | 97, 120, 198 |
+| `ref` on every element, chapter plus heading anchor; "no ref, no map" | The map is an index of the blueprints, not a drawing. A construction session reads the chapter, not the node. | 97, 120, 198 |
 | The gate: shape, integrity, provenance, drift, exit 1 | The map is data validated on every commit. Provenance resolves the anchor against the chapter's real headings, so a moved heading fails the commit. | 198, 121 |
 | Two maps, current and target, independent and complete; the difference computed, never stored | A target one can edit freely is worth more than a delta. The diff is the design change the operator reads. | 121, 122, 201 |
 | `status` settled / candidate / open, an open element paired with a `questions[]` entry; the gate warns on an open element nothing asks about | Open is never a confident box. The question is what the operator captures. | 198, 201, 112 |
 | `id` as the diff key; keep the id when the thing changed, change it when it is a different thing | Both overlays are keyed by id. Renaming an id is the way to say "replaced". | 121, 122 |
-| Names verbatim from the books | The map cannot drift from the chapter it cites if it does not paraphrase it. | 97, 120 |
+| Names verbatim from the blueprints | The map cannot drift from the chapter it cites if it does not paraphrase it. | 97, 120 |
 | Typed relations; several relations between two nodes rather than one overloaded label | A claim attaches to a relation. A relation must mean one thing. | 200, 105 |
 | A context may be `from`, never `to` | A context-level obligation exists; a context-level target does not. Keeps relation ends unambiguous for scope derivation. | 200 |
 | The integrity pass is code the schema cannot express | JSON Schema cannot check cross-references or the kind-by-layer rule. A check binary is the right home; the schema is the published contract. | 198, 199 |
@@ -106,7 +106,7 @@ is applied by the migration, not by the page at load as the mockup does.
 `format: flywheel-context-map/2`. The schema, the shipped vocabulary
 (layers, kinds, relation kinds with their pairs) and the derivation table
 are one versioned set in the binary. An organization's extensions live in
-the books under `flywheel/map-vocabulary.yaml`, validated against the
+the blueprints under `flywheel/map-vocabulary.yaml`, validated against the
 shipped set, and the check refuses an extension that redefines a shipped
 entry. A map written under format 2 is checked by a binary that ships
 format 2; a later binary migrates it with `flywheel map migrate`.
@@ -203,7 +203,7 @@ map: target
 contexts:
   - id: atlas
     name: atlas-kit                         # verbatim from the book
-    ref: books/atlas-kit/src/index.md
+    ref: blueprints/atlas-kit/src/index.md
     status: settled
     home: atlas3                            # default for nodes below
     group: frameworks                       # layout row only
@@ -214,7 +214,7 @@ nodes:
     name: Catalog URN
     layer: contract
     kind: schema
-    ref: books/atlas-kit/src/urns.md#item-urn--item-path
+    ref: blueprints/atlas-kit/src/urns.md#item-urn--item-path
     status: settled
   - id: af.catalog-api
     context: atlas
@@ -222,7 +222,7 @@ nodes:
     layer: service
     kind: api
     facet: control                          # optional; drawn as a lane when present
-    ref: books/atlas-kit/src/catalog-api.md
+    ref: blueprints/atlas-kit/src/catalog-api.md
     status: settled
   - id: af.warehouses
     context: atlas
@@ -230,7 +230,7 @@ nodes:
     layer: store
     kind: object
     home: atlas-lakehouse                   # overrides the context default
-    ref: books/atlas-kit/src/warehouses.md#data_base_path-composition
+    ref: blueprints/atlas-kit/src/warehouses.md#data_base_path-composition
     status: candidate
 
 relations:
@@ -238,7 +238,7 @@ relations:
     from: af.catalog-api
     to: af.urn
     kind: publishes
-    ref: books/atlas-kit/src/catalog-api.md#contract-and-realization
+    ref: blueprints/atlas-kit/src/catalog-api.md#contract-and-realization
     status: settled
 
 attachments:

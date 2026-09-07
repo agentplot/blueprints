@@ -7,9 +7,9 @@ in: [signal, claim, intent, proposal]
 out: [exit]
 session:
   agent: flywheel-curation
-  place: "off the books shared line"
+  place: "off the blueprints shared line"
   work-order:
-    - schema instruction for moves and proposals, at the activation's books sha
+    - schema instruction for moves and proposals, at the activation's blueprints sha
     - the curation skill, same sha
     - the unmoved signals with their captures
     - the standing claims with versions and scopes (the index it clusters against)
