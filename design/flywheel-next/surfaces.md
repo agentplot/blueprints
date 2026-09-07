@@ -784,10 +784,11 @@ were settled, not their place on the page.
   controls gone; a click that races the record is refused before any
   record exists, with "already answered by <member>" inline on the
   card, and nothing is recorded for it.
-- **S168.** Sinks are per member (236). Each member has a page sink
-  keyed by the identity and one chat sink per address their operators
-  entry carries, one per chat kind (discord: a user id, slack: a
-  member id; 236a), each with its own delivery mark; the sinks are
+- **S168.** Sinks are per member (236) and chat sinks per address
+  (236a). Each member has a page sink keyed by the identity and one
+  chat sink per address their operators entry carries, one per chat
+  kind (discord: a user id, slack: a member id), each with its own
+  delivery mark; the sinks are
   added and removed in the same write as the entry, so a member with
   no address has a page sink only. A chat sink is presented by
   whichever host runs that kind's package and holds the lease (148).
