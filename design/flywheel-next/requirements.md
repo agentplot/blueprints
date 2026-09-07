@@ -1354,6 +1354,13 @@ requirements, iterated against the running plan rather than on paper.
     their own with their own delivery mark (14, 148), so the tail since
     the last look, attention acknowledgements and notifications are
     that member's. A shared channel is a sink of its own with one mark.
+236a. An entry in the operators list may carry the member's address per
+    chat kind — a Discord user id, a Slack member id. The organization's
+    sinks gain one chat sink per member per address, presented by
+    whichever host runs that kind's package (228) and holds the lease
+    (148); a member with no chat address has a page sink only. Adding
+    or removing an address adds or removes the sink in the same write
+    as the operators list.
 237. A decision may carry an owner: a member or a role the manifest
     names. Planning's proposal, the unit or elaboration type, or a
     member's response (assign) sets it; an unowned decision is
