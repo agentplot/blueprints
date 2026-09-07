@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1378" height="347" viewBox="0 0 1378 347" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1378" height="347" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">repository — object v1 · object repository · parent organization</text>
+<text x="40" y="57" font-size="12" fill="#666">A built repository the flywheel tracks (206).</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 5, 104, 149, 199, 202, 203, 206, 207, 208 · repository.yaml · record name, repo, nodes, document, sources, adopted, template_version</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
+<line x1="80" y1="103" x2="1137.775" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="214.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="214.0" x2="69.0" y2="214.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M80.0,182.0 V159.0 H317.6 V182.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M253.6,182.0 V129.0 H1041.8 V182.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M393.6,182.0 V144.0 H457.6 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M342.9,182.0 V174.0 H368.3 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M533.6,182.0 V144.0 H597.6 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M482.9,182.0 V159.0 H508.3 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M673.6,182.0 V144.0 H901.8 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M654.6,182.0 V159.0 H737.6 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M616.6,182.0 V174.0 H635.6 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M787.7,182.0 V174.0 H977.8 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M787.7,234.0 V256.0 H635.6 V210.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M837.8,182.0 V159.0 H1117.8 V182.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<rect x="70.0" y="182.0" width="193.6" height="64.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>a decision; nothing exists on the git host, in the manifest or on the map until the yes (5, 206)</title></rect>
+<text x="166.8" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">proposed</text>
+<rect x="106.8" y="206.0" width="120.0" height="14" rx="7" fill="#c9962e"/>
+<text x="166.8" y="216.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">repository-proposed</text>
+<text x="166.8" y="228.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: yes · drop</text>
+<text x="166.8" y="240.0" font-size="8" fill="#8a6a1d" text-anchor="middle">document document on the review surface</text>
+<rect x="307.6" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>created on the git host under the organization from the built-repository template; an adopted repository is already there (206, 208)</title></rect>
+<text x="355.6" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">creating</text>
+<rect x="447.6" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the manifest entry, the `flywheel/` declarations and the map nodes with their homes are written in one books commit, and planning for the repository is put (199, 202, 203, 206)</title></rect>
+<text x="495.6" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">registering</text>
+<rect x="587.6" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the App&#x27;s installation must cover the repository (207); extended by the machinery where the App may, else a decision</title></rect>
+<text x="635.6" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">covering</text>
+<rect x="727.6" y="182.0" width="120.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>the installation does not cover it and the machinery could not extend it; the operator extends the installation, then answers (149, 207)</title></rect>
+<text x="787.7" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">uncovered</text>
+<rect x="747.2" y="206.0" width="81.0" height="14" rx="7" fill="#c9962e"/>
+<text x="787.7" y="216.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">app-coverage</text>
+<text x="787.7" y="228.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: retry · drop</text>
+<rect x="891.8" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>in the fleet; its ledger is empty and its first planning judges the claims attached to what it homes as the baseline (104, 202); nodes may be added and homes moved on the map afterwards (199)</title></rect>
+<text x="939.8" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">tracked</text>
+<rect x="1031.8" y="182.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"></rect>
+<rect x="1034.8" y="185.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="1079.8" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">dropped</text>
+<text x="1079.8" y="216.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: dropped</text>
+<rect x="173.8" y="147.5" width="50.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="198.8" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">reply yes</text>
+<rect x="620.3" y="117.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="647.7" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">reply drop</text>
+<rect x="381.9" y="132.5" width="87.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="425.6" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">repository.exists</text>
+<rect x="290.8" y="162.5" width="129.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="355.6" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ create_repository</text>
+<rect x="512.5" y="132.5" width="106.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="565.6" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">repository.registered</text>
+<rect x="426.2" y="147.5" width="138.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="495.6" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ register_repository</text>
+<rect x="725.2" y="132.5" width="124.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="787.7" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">repository.covered_by_app</text>
+<rect x="633.7" y="147.5" width="124.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="696.1" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">entered_at older than 10m</text>
+<rect x="556.6" y="162.5" width="138.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="626.1" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ extend_installation</text>
+<rect x="820.3" y="162.5" width="124.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="882.7" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">repository.covered_by_app</text>
+<rect x="681.9" y="256.5" width="59.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="711.6" y="265.0" font-size="8.5" fill="#333" text-anchor="middle">reply retry</text>
+<rect x="950.4" y="147.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="977.8" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">reply drop</text>
+<rect x="40" y="303" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="313" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="71" y="322" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="313" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="322" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="313" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="322" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="313" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="322" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="313" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="617.85" y="322" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="313" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="322" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="313" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="322" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="313" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="322" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1411" height="587" viewBox="0 0 1411 587" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1411" height="587" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">session — template v4</text>
+<text x="40" y="57" font-size="12" fill="#666">One agent process working one job in one place (A.7).</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 24, 65, 66, 67, 70, 71, 72, 73, 80, 93, 171, 173, 174, 190, 196, 197 · session.yaml · params agent, kind, place, work_order, deliverables, keep_alive · record id, identity, host, started_at, exit, expected, delivered, blocks</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
+<line x1="80" y1="103" x2="1370.825" y2="103" stroke="#2b8a8a" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="166.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="166.0" x2="69.0" y2="166.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M118.0,152.0 V129.0 H220.0 V152.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M296.0,152.0 V129.0 H360.0 V152.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M245.3,152.0 V144.0 H270.7 V152.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M638.0,152.0 V129.0 H1018.0 V152.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M916.0,152.0 V144.0 H1158.0 V152.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<rect x="70.0" y="152.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>the parent decided a session should exist here</title></rect>
+<text x="118.0" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">requested</text>
+<rect x="210.0" y="152.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>slow is slow, not failed (72); the proof is the pane, never the start command&#x27;s return</title></rect>
+<text x="258.0" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">starting</text>
+<rect x="350.0" y="152.0" width="576.0" height="353.0" rx="7" fill="#fafafa" stroke="#2b8a8a" stroke-width="1.6"><title>the process exists; its inner state is what the multiplexer and the command&#x27;s records report</title></rect>
+<text x="638.0" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">alive</text>
+<line x1="360.0" y1="184.0" x2="916.0" y2="184.0" stroke="#e5e5e5"/>
+<text x="360" y="199" font-size="9.5" font-weight="700" fill="#999">activity</text>
+<circle cx="372.0" cy="318.0" r="4" fill="#1a1a1a"/>
+<line x1="376.0" y1="318.0" x2="389.0" y2="318.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M400.0,304.0 V281.0 H425.3 V304.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M412.7,304.0 V266.0 H438.0 V304.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M463.3,304.0 V236.0 H680.0 V304.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M476.0,304.0 V221.0 H820.0 V304.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M450.7,304.0 V251.0 H540.0 V304.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M578.0,332.0 V366.0 H400.0 V332.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M559.0,304.0 V296.0 H578.0 V304.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M597.0,304.0 V281.0 H756.0 V304.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M616.0,304.0 V266.0 H896.0 V304.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M718.0,356.0 V381.0 H476.0 V332.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<rect x="390.0" y="304.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
+<text x="438.0" y="326.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">working</text>
+<rect x="530.0" y="304.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>no exit reported and no activity; the type decides what idle means</title></rect>
+<text x="578.0" y="326.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">idle</text>
+<rect x="670.0" y="304.0" width="96.0" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>the session stopped only itself; its question is a decision answerable on the page or in chat, never in the pane (68, 70)</title></rect>
+<text x="718.0" y="326.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">blocked</text>
+<rect x="688.7" y="328.0" width="58.6" height="14" rx="7" fill="#c9962e"/>
+<text x="718.0" y="338.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">question</text>
+<text x="718.0" y="350.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: &lt;text&gt;</text>
+<rect x="810.0" y="304.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="2"><title>an exit was reported and recorded; the owner reads session.exit</title></rect>
+<rect x="813.0" y="307.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#2b8a8a" stroke-width="1.2"/>
+<text x="858.0" y="326.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">exited</text>
+<rect x="362.0" y="269.5" width="185.7" height="11" fill="#fff" opacity="0.92"/>
+<text x="454.8" y="278.0" font-size="8.5" fill="#333" text-anchor="middle">session.offers_pending ⚙ record_offers</text>
+<rect x="362.0" y="254.5" width="241.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="482.9" y="263.0" font-size="8.5" fill="#333" text-anchor="middle">session.refusals_pending ⚙ record_refusals, report</text>
+<rect x="464.8" y="224.5" width="213.7" height="11" fill="#fff" opacity="0.92"/>
+<text x="571.7" y="233.0" font-size="8.5" fill="#333" text-anchor="middle">session.exit = blocked ⚙ record_exit +blocks</text>
+<rect x="520.1" y="209.5" width="255.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="648.0" y="218.0" font-size="8.5" fill="#333" text-anchor="middle">session.exit ∈ {done, stalled, invalid} ⚙ record_exit</text>
+<rect x="437.6" y="239.5" width="115.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="495.3" y="248.0" font-size="8.5" fill="#333" text-anchor="middle">session.activity = idle</text>
+<rect x="424.2" y="366.5" width="129.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="489.0" y="375.0" font-size="8.5" fill="#333" text-anchor="middle">session.activity = working</text>
+<rect x="475.7" y="284.5" width="185.7" height="11" fill="#fff" opacity="0.92"/>
+<text x="568.5" y="293.0" font-size="8.5" fill="#333" text-anchor="middle">session.offers_pending ⚙ record_offers</text>
+<rect x="569.6" y="269.5" width="213.7" height="11" fill="#fff" opacity="0.92"/>
+<text x="676.5" y="278.0" font-size="8.5" fill="#333" text-anchor="middle">session.exit = blocked ⚙ record_exit +blocks</text>
+<rect x="628.1" y="254.5" width="255.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="756.0" y="263.0" font-size="8.5" fill="#333" text-anchor="middle">session.exit ∈ {done, stalled, invalid} ⚙ record_exit</text>
+<rect x="525.2" y="381.5" width="143.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="597.0" y="390.0" font-size="8.5" fill="#333" text-anchor="middle">reply &lt;text&gt; ⚙ deliver_answer</text>
+<line x1="360.0" y1="408.0" x2="916.0" y2="408.0" stroke="#e5e5e5"/>
+<text x="360" y="423" font-size="9.5" font-weight="700" fill="#999">presence</text>
+<circle cx="372.0" cy="467.0" r="4" fill="#1a1a1a"/>
+<line x1="376.0" y1="467.0" x2="389.0" y2="467.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M438.0,453.0 V445.0 H578.0 V453.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<rect x="390.0" y="453.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
+<text x="438.0" y="475.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">unknown</text>
+<rect x="530.0" y="453.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="2"><title>the pane vanished without an exit report; the owner decides whether to start again</title></rect>
+<rect x="533.0" y="456.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#2b8a8a" stroke-width="1.2"/>
+<text x="578.0" y="475.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">gone</text>
+<rect x="454.9" y="433.5" width="106.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="508.0" y="442.0" font-size="8.5" fill="#333" text-anchor="middle">session.pane = absent</text>
+<rect x="970.0" y="152.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="2"><title>exit recorded; the owner reads session.exit and decides what it means (66)</title></rect>
+<rect x="973.0" y="155.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#2b8a8a" stroke-width="1.2"/>
+<text x="1018.0" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">exited</text>
+<rect x="1110.0" y="152.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="2"><title>process gone without an exit — including a pane the operator killed by hand, which is never read as a response (4); standing owners restart it, stages start a fresh attempt</title></rect>
+<rect x="1113.0" y="155.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#2b8a8a" stroke-width="1.2"/>
+<text x="1158.0" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">lost</text>
+<rect x="1250.0" y="152.0" width="110.8" height="40.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="2"><title>reached only by the owner&#x27;s explicit end (a type&#x27;s rule, the operator&#x27;s response, or retirement of the work, I6, 74)</title></rect>
+<rect x="1253.0" y="155.0" width="104.8" height="34.0" rx="5" fill="none" stroke="#2b8a8a" stroke-width="1.2"/>
+<text x="1305.4" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">ended</text>
+<text x="1305.4" y="186.0" font-size="8.5" fill="#666" text-anchor="middle">entry ⚙ end_session</text>
+<rect x="113.6" y="117.5" width="110.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="169.0" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ start_session</text>
+<rect x="272.6" y="117.5" width="110.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="328.0" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">session.pane = present</text>
+<rect x="202.6" y="132.5" width="110.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="258.0" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ start_session</text>
+<rect x="779.6" y="117.5" width="96.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="828.0" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">activity ∈ {exited}</text>
+<rect x="874.0" y="132.5" width="325.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="1037.0" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">presence ∈ {gone} ∧ session.exit ∉ {done, blocked, stalled, invalid}</text>
+<rect x="40" y="543" width="1331" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="553" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="71" y="562" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="553" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="562" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="553" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="562" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="553" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="562" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="553" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="617.85" y="562" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="553" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="562" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="553" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="562" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="553" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="562" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

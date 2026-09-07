@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1378" height="301" viewBox="0 0 1378 301" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1378" height="301" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">organization — object v1 · object organization · one per organization · owns repository</text>
+<text x="40" y="57" font-size="12" fill="#666">The organization (204): one object per organization with a machine of its own, driven by `flywheel init` and advanced by the same reconciler that advances work.</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 204, 207, 208 · organization.yaml · record name, books, state, profile, app_id, template_version, root</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
+<line x1="80" y1="103" x2="886.15" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="181.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="181.0" x2="69.0" y2="181.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M156.0,167.0 V144.0 H220.0 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M80.0,167.0 V159.0 H118.0 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M296.0,167.0 V144.0 H360.0 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M245.3,167.0 V159.0 H270.7 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M436.0,167.0 V129.0 H650.1 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M417.0,167.0 V144.0 H500.0 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M379.0,167.0 V159.0 H398.0 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M586.1,167.0 V144.0 H669.1 V167.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M726.1,167.0 V144.0 H828.1 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M688.1,167.0 V159.0 H707.1 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<rect x="70.0" y="167.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>`flywheel init` wrote the record; the books repository is created from the books template, or adopted when it exists (204)</title></rect>
+<text x="118.0" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">absent</text>
+<rect x="210.0" y="167.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the state repository is created with the profile&#x27;s layout (C.2)</title></rect>
+<text x="258.0" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">books-ready</text>
+<rect x="350.0" y="167.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the App&#x27;s installation is recorded as required; the secret is the operator&#x27;s to place (207)</title></rect>
+<text x="398.0" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">state-ready</text>
+<rect x="490.0" y="167.0" width="106.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>a decision under attention until the installation is seen; never done by an agent</title></rect>
+<text x="543.1" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">awaiting-app</text>
+<rect x="505.4" y="191.0" width="75.4" height="14" rx="7" fill="#c9962e"/>
+<text x="543.1" y="201.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">app-install</text>
+<text x="543.1" y="213.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: installed</text>
+<rect x="640.1" y="167.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the first host is registered; hosts join by their own command from here (205)</title></rect>
+<text x="688.1" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">connected</text>
+<rect x="780.1" y="167.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>bootstrapped; repositories are proposed and created under it (206), and a template upgrade is a chore (208)</title></rect>
+<text x="828.1" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">hosted</text>
+<rect x="148.9" y="132.5" width="78.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="188.0" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">org.books_ready</text>
+<rect x="45.9" y="147.5" width="106.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="99.0" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ create_books</text>
+<rect x="288.9" y="132.5" width="78.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="328.0" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">org.state_ready</text>
+<rect x="204.9" y="147.5" width="106.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="258.0" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ create_state</text>
+<rect x="499.3" y="117.5" width="87.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="543.1" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">org.app_installed</text>
+<rect x="417.1" y="132.5" width="82.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="458.5" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">org.app_recorded</text>
+<rect x="335.4" y="147.5" width="106.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="388.5" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ register_app</text>
+<rect x="541.8" y="132.5" width="171.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="627.6" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">org.app_installed ∨ reply installed</text>
+<rect x="728.7" y="132.5" width="96.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="777.1" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">org.host_registered</text>
+<rect x="642.2" y="147.5" width="110.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="697.6" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ register_host</text>
+<rect x="40" y="257" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="267" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="71" y="276" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="267" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="276" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="267" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="276" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="267" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="276" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="267" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="617.85" y="276" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="267" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="276" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="267" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="276" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="267" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="276" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

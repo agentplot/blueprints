@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1378" height="416" viewBox="0 0 1378 416" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1378" height="416" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">signal — object v2 · object signal · parent capture</text>
+<text x="40" y="57" font-size="12" fill="#666">One raw piece of input (113).</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 58, 60, 106, 107, 113, 114, 116, 118 · signal.yaml · record kind, asserted_by, subject_tags, assertion, excerpt, position, argues_with, move</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">move</text>
+<line x1="80" y1="103" x2="1016" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="226.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="226.0" x2="69.0" y2="226.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M80.0,212.0 V204.0 H258.0 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M95.2,212.0 V189.0 H398.0 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M110.4,212.0 V174.0 H500.0 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M125.6,212.0 V159.0 H678.0 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M140.8,212.0 V144.0 H818.0 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M156.0,212.0 V129.0 H920.0 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M258.0,240.0 V250.0 H80.0 V240.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M398.0,240.0 V265.0 H95.2 V240.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M576.0,212.0 V204.0 H996.0 V212.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M538.0,240.0 V280.0 H110.4 V240.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M678.0,240.0 V295.0 H125.6 V240.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M818.0,240.0 V310.0 H140.8 V240.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M958.0,240.0 V325.0 H156.0 V240.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<rect x="70.0" y="212.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>counted and aged by source on the status view; never discarded (118)</title></rect>
+<text x="118.0" y="234.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">unmoved</text>
+<rect x="210.0" y="212.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>evidence on an open intent; the intent&#x27;s material region proposes or grows an elaboration</title></rect>
+<text x="258.0" y="234.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">attached</text>
+<rect x="350.0" y="212.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>accumulates against a standing claim; a proposed intent cites it; every ledger cell of that claim falls stale, planning becomes due where one is, and its proposal cites this signal (101, 116)</title></rect>
+<text x="398.0" y="234.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">challenging</text>
+<rect x="490.0" y="212.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>part of a proposed intent; dropping the intent moves it to dropped naming the drop</title></rect>
+<text x="538.0" y="234.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">joined</text>
+<rect x="630.0" y="212.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>names the claim or record that settled it</title></rect>
+<text x="678.0" y="234.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">answered</text>
+<rect x="770.0" y="212.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the curation session offered a chore or an ask for it through the command, like any session (58–60), and the move names that offer&#x27;s record; the chore is a proposed chore unit on the shared line, the ask a record for planning (116)</title></rect>
+<text x="818.0" y="234.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">routed</text>
+<rect x="910.0" y="212.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>with a reason; revived only by the operator&#x27;s dictation, which clears the move (S24)</title></rect>
+<text x="958.0" y="234.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">dropped</text>
+<rect x="118.2" y="192.5" width="101.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="169.0" y="201.0" font-size="8.5" fill="#333" text-anchor="middle">signal.move = attach</text>
+<rect x="188.8" y="177.5" width="115.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="246.6" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">signal.move = challenge</text>
+<rect x="259.1" y="162.5" width="92.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="305.2" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">signal.move = join</text>
+<rect x="346.4" y="147.5" width="110.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="401.8" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">signal.move = answered</text>
+<rect x="431.0" y="132.5" width="96.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="479.4" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">signal.move = route</text>
+<rect x="491.9" y="117.5" width="92.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="538.0" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">signal.move = drop</text>
+<rect x="122.9" y="250.5" width="92.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="169.0" y="259.0" font-size="8.5" fill="#333" text-anchor="middle">signal.move = none</text>
+<rect x="200.5" y="265.5" width="92.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="246.6" y="274.0" font-size="8.5" fill="#333" text-anchor="middle">signal.move = none</text>
+<rect x="739.9" y="192.5" width="92.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="786.0" y="201.0" font-size="8.5" fill="#333" text-anchor="middle">signal.move = drop</text>
+<rect x="278.1" y="280.5" width="92.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="324.2" y="289.0" font-size="8.5" fill="#333" text-anchor="middle">signal.move = none</text>
+<rect x="355.7" y="295.5" width="92.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="401.8" y="304.0" font-size="8.5" fill="#333" text-anchor="middle">signal.move = none</text>
+<rect x="433.3" y="310.5" width="92.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="479.4" y="319.0" font-size="8.5" fill="#333" text-anchor="middle">signal.move = none</text>
+<rect x="510.9" y="325.5" width="92.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="557.0" y="334.0" font-size="8.5" fill="#333" text-anchor="middle">signal.move = none</text>
+<rect x="40" y="372" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="382" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="71" y="391" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="382" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="391" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="382" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="391" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="382" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="391" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="382" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="617.85" y="391" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="382" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="391" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="382" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="391" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="382" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="391" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

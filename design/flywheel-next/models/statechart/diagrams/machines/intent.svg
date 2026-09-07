@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1937" height="678" viewBox="0 0 1937 678" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1937" height="678" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">intent — object v3 · object intent · owns elaboration, unit</text>
+<text x="40" y="57" font-size="12" fill="#666">One thread of design work about one subject (A.3).</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 20, 21, 22, 23, 49, 54, 109, 117, 187, 189 · intent.yaml · record subject, signals, challenges, close_declined_at</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
+<line x1="80" y1="103" x2="1896.8500000000001" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="208.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="208.0" x2="69.0" y2="208.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M80.0,182.0 V174.0 H272.2 V182.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M144.1,182.0 V144.0 H1356.7 V182.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M208.2,182.0 V129.0 H1432.7 V182.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M1292.7,182.0 V159.0 H1496.7 V182.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M1572.7,182.0 V144.0 H1838.9 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1553.7,182.0 V159.0 H1686.8 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1515.7,182.0 V174.0 H1534.7 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1686.8,234.0 V485.0 H1534.7 V210.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<rect x="70.0" y="182.0" width="148.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>a decision with its proposed elaborations folded in (10); dictation skips this state</title></rect>
+<text x="144.1" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">proposed</text>
+<rect x="95.3" y="206.0" width="97.7" height="14" rx="7" fill="#c9962e"/>
+<text x="144.1" y="216.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">intent-proposed</text>
+<text x="144.1" y="228.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: yes · drop · split</text>
+<rect x="262.2" y="182.0" width="1040.5" height="293.0" rx="7" fill="#fafafa" stroke="#4a7fb5" stroke-width="1.6"><title>elaborations run here; the line region keeps the intent&#x27;s line current</title></rect>
+<text x="782.5" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">open</text>
+<line x1="272.2" y1="214.0" x2="1292.7" y2="214.0" stroke="#e5e5e5"/>
+<text x="272.225" y="229" font-size="9.5" font-weight="700" fill="#999">material</text>
+<circle cx="284.2" cy="273.0" r="4" fill="#1a1a1a"/>
+<line x1="288.2" y1="273.0" x2="301.2" y2="273.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M312.2,259.0 V251.0 H388.2 V259.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<rect x="302.2" y="259.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
+<text x="350.2" y="281.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">settled</text>
+<rect x="274.2" y="239.5" width="410.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="479.2" y="248.0" font-size="8.5" fill="#333" text-anchor="middle">intent.material_pending ∧ intent.covered_by ∉ {proposed, active} ⚙ propose_elaboration</text>
+<line x1="272.2" y1="305.0" x2="1292.7" y2="305.0" stroke="#e5e5e5"/>
+<text x="272.225" y="320" font-size="9.5" font-weight="700" fill="#999">close</text>
+<circle cx="284.2" cy="379.0" r="4" fill="#1a1a1a"/>
+<line x1="288.2" y1="379.0" x2="301.2" y2="379.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M350.2,365.0 V342.0 H452.2 V365.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"><title>an elaboration covering this intent from another is this intent&#x27;s work too; its finish is a done here (188)</title></path>
+<path d="M575.8,365.0 V357.0 H677.8 V365.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M514.0,417.0 V427.0 H312.2 V393.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"><title>new work arrived, here or as a gathering covering this intent; the decision can no longer be made as posed</title></path>
+<path d="M677.8,393.0 V442.0 H388.2 V393.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<rect x="302.2" y="365.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
+<text x="350.2" y="387.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">not-offered</text>
+<rect x="442.2" y="365.0" width="143.6" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"></rect>
+<text x="514.0" y="387.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">offered</text>
+<rect x="473.5" y="389.0" width="81.0" height="14" rx="7" fill="#c9962e"/>
+<text x="514.0" y="399.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">intent-close</text>
+<text x="514.0" y="411.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: close · keep open</text>
+<rect x="629.8" y="365.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>re-offered only when another elaboration reaches done</title></rect>
+<text x="677.8" y="387.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">declined</text>
+<rect x="274.2" y="330.5" width="1008.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="778.5" y="339.0" font-size="8.5" fill="#333" text-anchor="middle">∄elaboration ∈ {proposed, approved, placing, working, writing-back, finishing} ∧ intent.covered_by ∉ {proposed, active} ∧ (∃elaboration ∈ {done} ∨ intent.covered_by = done) ∧ ¬intent.close_declined_since_last_final<title>an elaboration covering this intent from another is this intent&#x27;s work too; its finish is a done here (188)</title></text>
+<rect x="587.7" y="345.5" width="78.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="626.8" y="354.0" font-size="8.5" fill="#333" text-anchor="middle">reply keep open</text>
+<rect x="274.2" y="427.5" width="564.3" height="11" fill="#fff" opacity="0.92"/>
+<text x="556.4" y="436.0" font-size="8.5" fill="#333" text-anchor="middle">∃elaboration ∈ {proposed, approved, placing, working, writing-back, finishing} ∨ intent.covered_by ∈ {proposed, active}<title>new work arrived, here or as a gathering covering this intent; the decision can no longer be made as posed</title></text>
+<rect x="437.8" y="442.5" width="190.3" height="11" fill="#fff" opacity="0.92"/>
+<text x="533.0" y="451.0" font-size="8.5" fill="#333" text-anchor="middle">¬intent.close_declined_since_last_final</text>
+<rect x="1346.7" y="182.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"></rect>
+<rect x="1349.7" y="185.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="1394.7" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">dropped</text>
+<text x="1394.7" y="216.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: dropped</text>
+<rect x="1486.7" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the archive lands the intent&#x27;s line on the books&#x27; shared line; proposed claims become standing (49, S34)</title></rect>
+<text x="1534.7" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">archiving</text>
+<rect x="1626.7" y="182.0" width="120.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"></rect>
+<text x="1686.8" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">archive-failed</text>
+<rect x="1649.1" y="206.0" width="75.4" height="14" rx="7" fill="#c9962e"/>
+<text x="1686.8" y="216.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">land-failed</text>
+<text x="1686.8" y="228.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: retry · hold</text>
+<rect x="1790.9" y="182.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"></rect>
+<rect x="1793.9" y="185.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="1838.9" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">closed</text>
+<text x="1838.9" y="216.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: closed</text>
+<rect x="118.4" y="162.5" width="115.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="176.1" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">reply yes ⚙ open_intent</text>
+<rect x="688.0" y="132.5" width="124.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="750.4" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">reply drop ⚙ drop_signals</text>
+<rect x="755.7" y="117.5" width="129.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="820.5" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">reply split ⚙ split_intent</text>
+<rect x="1283.2" y="147.5" width="223.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="1394.7" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">close ∈ {offered} ∧ reply close ↳ line→landing</text>
+<rect x="1617.6" y="132.5" width="176.3" height="11" fill="#fff" opacity="0.92"/>
+<text x="1705.8" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">intent.archived ∧ final line.removed</text>
+<rect x="1564.8" y="147.5" width="110.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="1620.2" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">final line.land-failed</text>
+<rect x="1444.0" y="162.5" width="162.3" height="11" fill="#fff" opacity="0.92"/>
+<text x="1525.2" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">¬intent.archived ⚙ archive_intent</text>
+<rect x="1545.9" y="485.5" width="129.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="1610.7" y="494.0" font-size="8.5" fill="#333" text-anchor="middle">reply retry ↳ line→landing</text>
+<text x="40" y="537" font-size="11.5" font-weight="700" fill="#8a8a86">line</text>
+<line x1="80" y1="533" x2="313.20000000000005" y2="533" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="570.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="570.0" x2="69.0" y2="570.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<rect x="70.0" y="544.0" width="233.2" height="52.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
+<text x="186.6" y="566.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">line</text>
+<text x="186.6" y="578.0" font-size="9.5" fill="#2b8a8a" text-anchor="middle" font-weight="700">⧉ line</text>
+<text x="186.6" y="590.0" font-size="8" fill="#999" text-anchor="middle">parent=books-shared-line · landing_policy=direct</text>
+<rect x="40" y="634" width="1857" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="71" y="653" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="653" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="653" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="653" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="617.85" y="653" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="653" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="653" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="653" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

@@ -18,6 +18,12 @@ the requirements.
   conformance scenario carries `satisfies: [numbers]`; a number that names no requirement fails; a
   requirement cited nowhere fails. The requirement numbers are read from ../../../requirements.md.
 Exit 1 on any finding.
+
+`render.py` beside this file draws the same machine files as statecharts, one SVG per
+machine under ../diagrams/machines/ with an index.md, so the operator reviews every
+machine as a picture derived from its definition (83); run it after any change here:
+
+    uv run --with pyyaml python3 machines/render.py
 """
 import glob, os, re, sys, json
 import yaml, jsonschema

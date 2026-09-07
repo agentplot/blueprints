@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1441" height="969" viewBox="0 0 1441 969" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1441" height="969" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">bolt — object v2 · object bolt · owns unit, service</text>
+<text x="40" y="57" font-size="12" fill="#666">One delivery of construction work to a built repository (30).</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 186, 4, 30, 33, 39, 40, 44, 46, 47, 48, 55, 63, 74, 103, 175, 177 · bolt.yaml · record repository, name, held_at, landing_failure, citation_choices</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
+<line x1="80" y1="103" x2="1400.75" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="342.5" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="342.5" x2="69.0" y2="342.5" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M80.0,167.0 V144.0 H860.6 V167.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M796.6,167.0 V159.0 H1038.6 V167.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>dictation; units still open are retired and their sessions ended (74); the operator&#x27;s place goes unless held (55)</title></path>
+<path d="M936.6,167.0 V129.0 H1342.8 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M898.6,167.0 V144.0 H1190.7 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1240.8,219.0 V528.0 H898.6 V195.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M1140.6,219.0 V543.0 H438.3 V518.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<rect x="70.0" y="167.0" width="736.6" height="351.0" rx="7" fill="#fafafa" stroke="#4a7fb5" stroke-width="1.6"></rect>
+<text x="438.3" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">open</text>
+<line x1="80.0" y1="199.0" x2="796.6" y2="199.0" stroke="#e5e5e5"/>
+<text x="80" y="214" font-size="9.5" font-weight="700" fill="#999">citations</text>
+<circle cx="92.0" cy="258.0" r="4" fill="#1a1a1a"/>
+<line x1="96.0" y1="258.0" x2="109.0" y2="258.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M158.0,244.0 V236.0 H347.5 V244.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M260.0,296.0 V306.0 H120.0 V272.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M435.0,296.0 V321.0 H196.0 V272.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<rect x="110.0" y="244.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
+<text x="158.0" y="266.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">current</text>
+<rect x="250.0" y="244.0" width="195.0" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>a started unit cites a claim whose standing version moved; amend the open work, or land it and follow (103)</title></rect>
+<text x="347.5" y="266.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">moved</text>
+<rect x="309.8" y="268.0" width="75.4" height="14" rx="7" fill="#c9962e"/>
+<text x="347.5" y="278.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">claim-moved</text>
+<text x="347.5" y="290.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: amend bolt · land and follow</text>
+<rect x="202.0" y="224.5" width="101.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="252.7" y="233.0" font-size="8.5" fill="#333" text-anchor="middle">bolt.citations_moved</text>
+<rect x="90.2" y="306.5" width="199.7" height="11" fill="#fff" opacity="0.92"/>
+<text x="190.0" y="315.0" font-size="8.5" fill="#333" text-anchor="middle">reply amend bolt ⚙ record_citation_choice</text>
+<rect x="204.0" y="321.5" width="223.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="315.5" y="330.0" font-size="8.5" fill="#333" text-anchor="middle">reply land and follow ⚙ record_citation_choice</text>
+<line x1="80.0" y1="348.0" x2="796.6" y2="348.0" stroke="#e5e5e5"/>
+<text x="80" y="363" font-size="9.5" font-weight="700" fill="#999">close</text>
+<circle cx="92.0" cy="422.0" r="4" fill="#1a1a1a"/>
+<line x1="96.0" y1="422.0" x2="109.0" y2="422.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M158.0,408.0 V385.0 H260.0 V408.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M350.8,408.0 V400.0 H452.8 V408.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M305.4,460.0 V470.0 H120.0 V436.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"><title>new work arrived on the bolt; the close can no longer be decided as posed</title></path>
+<path d="M452.8,436.0 V485.0 H196.0 V436.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<rect x="110.0" y="408.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
+<text x="158.0" y="430.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">not-offered</text>
+<rect x="250.0" y="408.0" width="110.8" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"></rect>
+<text x="305.4" y="430.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">offered</text>
+<rect x="270.5" y="432.0" width="69.8" height="14" rx="7" fill="#c9962e"/>
+<text x="305.4" y="442.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">bolt-close</text>
+<text x="305.4" y="454.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: yes · hold</text>
+<rect x="404.8" y="408.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>offered again only after another unit merges</title></rect>
+<text x="452.8" y="430.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">held</text>
+<rect x="82.0" y="373.5" width="704.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="434.3" y="382.0" font-size="8.5" fill="#333" text-anchor="middle">#unit ≥ 1 ∧ ∄unit ∈ {proposed, approved, waiting, claim-moved, in-flight} ∧ ∃unit ∈ {merged} ∧ ¬bolt.chores_outstanding ∧ ¬bolt.hold_since_last_merge</text>
+<rect x="374.4" y="388.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="401.8" y="397.0" font-size="8.5" fill="#333" text-anchor="middle">reply hold</text>
+<rect x="82.0" y="470.5" width="293.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="228.6" y="479.0" font-size="8.5" fill="#333" text-anchor="middle">∃unit ∈ {proposed, approved, waiting, claim-moved, in-flight}<title>new work arrived on the bolt; the close can no longer be decided as posed</title></text>
+<rect x="257.3" y="485.5" width="134.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="324.4" y="494.0" font-size="8.5" fill="#333" text-anchor="middle">¬bolt.hold_since_last_merge</text>
+<rect x="850.6" y="167.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the final take, then the repository&#x27;s policy; only a landing that passes the gates moves the shared line (53); under pull-request the bolt stays here while the request is open, and a chore from a review merges into its line like any other (175, 176)</title></rect>
+<text x="898.6" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">landing</text>
+<rect x="990.6" y="167.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"></rect>
+<rect x="993.6" y="170.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="1038.6" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">dropped</text>
+<text x="1038.6" y="201.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: dropped</text>
+<rect x="1130.6" y="167.0" width="120.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>reported, the bolt stays open with the failure on it; no session is asked anything until the response (40, S33)</title></rect>
+<text x="1190.7" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">land-failed</text>
+<rect x="1153.0" y="191.0" width="75.4" height="14" rx="7" fill="#c9962e"/>
+<text x="1190.7" y="201.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">land-failed</text>
+<text x="1190.7" y="213.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: retry · hold</text>
+<rect x="1294.8" y="167.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"></rect>
+<rect x="1297.8" y="170.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="1342.8" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">landed</text>
+<text x="1342.8" y="201.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: landed</text>
+<rect x="363.4" y="132.5" width="213.7" height="11" fill="#fff" opacity="0.92"/>
+<text x="470.3" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">close ∈ {offered} ∧ reply yes ↳ line→landing</text>
+<rect x="815.4" y="147.5" width="204.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="917.6" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">reply drop ↳ line→removing, place→removing<title>dictation; units still open are retired and their sessions ended (74); the operator&#x27;s place goes unless held (55)</title></text>
+<rect x="1053.8" y="117.5" width="171.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="1139.7" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">final line.removed ↳ place→removing</text>
+<rect x="989.2" y="132.5" width="110.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="1044.6" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">final line.land-failed</text>
+<rect x="1004.9" y="528.5" width="129.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="1069.7" y="537.0" font-size="8.5" fill="#333" text-anchor="middle">reply retry ↳ line→landing</text>
+<rect x="762.1" y="543.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="789.4" y="552.0" font-size="8.5" fill="#333" text-anchor="middle">reply hold</text>
+<text x="40" y="595" font-size="11.5" font-weight="700" fill="#8a8a86">line</text>
+<line x1="80" y1="591" x2="344.0" y2="591" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="628.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="628.0" x2="69.0" y2="628.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<rect x="70.0" y="602.0" width="264.0" height="52.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
+<text x="202.0" y="624.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">line</text>
+<text x="202.0" y="636.0" font-size="9.5" fill="#2b8a8a" text-anchor="middle" font-weight="700">⧉ line</text>
+<text x="202.0" y="648.0" font-size="8" fill="#999" text-anchor="middle">parent=built-shared-line · landing_policy=from-manifest</text>
+<text x="40" y="697" font-size="11.5" font-weight="700" fill="#8a8a86">place<title>the operator&#x27;s own place at the head of the line, refreshed after each merge (44); no session works here; its served endpoints are shown beside the bolt (46); removed when the bolt lands or is dropped, unless held (55)</title></text>
+<line x1="86" y1="693" x2="273.6" y2="693" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="730.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="730.0" x2="69.0" y2="730.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<rect x="70.0" y="704.0" width="193.6" height="52.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
+<text x="166.8" y="726.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">place</text>
+<text x="166.8" y="738.0" font-size="9.5" fill="#2b8a8a" text-anchor="middle" font-weight="700">⧉ place</text>
+<text x="166.8" y="750.0" font-size="8" fill="#999" text-anchor="middle">line=own-line · inputs=none · keep=True</text>
+<text x="40" y="799" font-size="11.5" font-weight="700" fill="#8a8a86">services<title>one service object per declaration in the repository&#x27;s service data, made when the operator&#x27;s place is first ready and re-read at every head the place reaches (47); the objects go with the place (55)</title></text>
+<line x1="107" y1="795" x2="456" y2="795" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="873.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="873.0" x2="69.0" y2="873.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M118.0,859.0 V821.0 H220.0 V859.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M296.0,859.0 V836.0 H398.0 V859.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M245.3,859.0 V851.0 H270.7 V859.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<rect x="70.0" y="859.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
+<text x="118.0" y="881.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">none</text>
+<rect x="210.0" y="859.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
+<text x="258.0" y="881.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">declared</text>
+<rect x="350.0" y="859.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"><title>the place is gone and every service with it; each service record reaches gone on its own</title></rect>
+<rect x="353.0" y="862.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="398.0" y="881.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">gone</text>
+<rect x="59.8" y="809.5" width="218.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="169.0" y="818.0" font-size="8.5" fill="#333" text-anchor="middle">place.place.life ∈ {ready} ⚙ declare_services</text>
+<rect x="277.6" y="824.5" width="138.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="347.0" y="833.0" font-size="8.5" fill="#333" text-anchor="middle">place.place.life ∈ {removed}</text>
+<rect x="88.0" y="839.5" width="339.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="258.0" y="848.0" font-size="8.5" fill="#333" text-anchor="middle">place.place.life ∈ {ready} ∧ ¬bolt.services_declared ⚙ declare_services</text>
+<rect x="40" y="925" width="1361" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="935" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="71" y="944" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="935" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="944" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="935" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="944" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="935" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="944" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="935" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="617.85" y="944" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="935" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="944" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="935" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="944" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="935" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="944" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1378" height="365" viewBox="0 0 1378 365" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1378" height="365" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">lease — engine v2 · object lease</text>
+<text x="40" y="57" font-size="12" fill="#666">A host&#x27;s bounded ownership of one object.</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 128, 134, 147, 149, 150 · engine/lease.yaml · record holder, taken_at, renewed_at</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">hold</text>
+<line x1="80" y1="103" x2="933.4625000000001" y2="103" stroke="#8a8a86" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="166.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="166.0" x2="69.0" y2="166.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M156.0,152.0 V129.0 H360.0 V152.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M80.0,152.0 V144.0 H220.0 V152.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M258.0,204.0 V214.0 H80.0 V180.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M296.0,152.0 V144.0 H540.6 V152.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M360.0,180.0 V229.0 H99.0 V180.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M436.0,152.0 V129.0 H645.2 V152.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M540.6,180.0 V244.0 H118.0 V180.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M645.2,180.0 V259.0 H137.0 V180.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M721.2,180.0 V214.0 H398.0 V180.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"><title>the holder returned</title></path>
+<path d="M721.2,152.0 V144.0 H823.2 V152.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"><title>the stated rule; also reached at once when the holder host&#x27;s gone decision is answered takeover, which is the operator&#x27;s response the rule names for session-backed work (150)</title></path>
+<path d="M785.2,180.0 V274.0 H156.0 V180.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M861.2,180.0 V229.0 H436.0 V180.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"><title>a new holder took it</title></path>
+<rect x="70.0" y="152.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>no holder; any host whose declaration covers the object and has a transition to run on it may take it</title></rect>
+<text x="118.0" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">free</text>
+<rect x="210.0" y="152.0" width="96.0" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>no host&#x27;s declaration covers this object; a decision under attention, not a silent wait (149)</title></rect>
+<text x="258.0" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">uncovered</text>
+<rect x="225.9" y="176.0" width="64.2" height="14" rx="7" fill="#c9962e"/>
+<text x="258.0" y="186.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">uncovered</text>
+<text x="258.0" y="198.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: ok</text>
+<rect x="350.0" y="152.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>renewed on every tick the holder acts on the object; released when the object is quiescent on that host</title></rect>
+<text x="398.0" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">held</text>
+<rect x="490.0" y="152.0" width="101.2" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>the operator has seen it; the object waits until a declaration covers it</title></rect>
+<text x="540.6" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">acknowledged</text>
+<rect x="635.2" y="152.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>shown stale; the holder may still renew and continue (S13); no other host touches the object</title></rect>
+<text x="683.2" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">stale</text>
+<rect x="775.2" y="152.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>another host may replace the holder by compare-and-swap; the old holder, on return, reads that it lost and stops</title></rect>
+<text x="823.2" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">expired</text>
+<rect x="209.6" y="117.5" width="96.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="258.0" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">lease.holder exists</text>
+<rect x="108.6" y="132.5" width="82.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="150.0" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">¬lease.coverable</text>
+<rect x="129.9" y="214.5" width="78.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="169.0" y="223.0" font-size="8.5" fill="#333" text-anchor="middle">lease.coverable</text>
+<rect x="395.6" y="132.5" width="45.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="418.3" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">reply ok</text>
+<rect x="190.4" y="229.5" width="78.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="229.5" y="238.0" font-size="8.5" fill="#333" text-anchor="middle">no lease.holder</text>
+<rect x="466.5" y="117.5" width="148.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="540.6" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">lease.renewed_at older than 5m</text>
+<rect x="290.2" y="244.5" width="78.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="329.3" y="253.0" font-size="8.5" fill="#333" text-anchor="middle">lease.coverable</text>
+<rect x="352.0" y="259.5" width="78.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="391.1" y="268.0" font-size="8.5" fill="#333" text-anchor="middle">no lease.holder</text>
+<rect x="478.5" y="214.5" width="162.3" height="11" fill="#fff" opacity="0.92"/>
+<text x="559.6" y="223.0" font-size="8.5" fill="#333" text-anchor="middle">¬(lease.renewed_at older than 5m)<title>the holder returned</title></text>
+<rect x="620.9" y="132.5" width="302.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="772.2" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">lease.renewed_at older than 24h ∨ host.last_seen older than 24h<title>the stated rule; also reached at once when the holder host&#x27;s gone decision is answered takeover, which is the operator&#x27;s response the rule names for session-backed work (150)</title></text>
+<rect x="431.5" y="274.5" width="78.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="470.6" y="283.0" font-size="8.5" fill="#333" text-anchor="middle">no lease.holder</text>
+<rect x="567.5" y="229.5" width="162.3" height="11" fill="#fff" opacity="0.92"/>
+<text x="648.6" y="238.0" font-size="8.5" fill="#333" text-anchor="middle">¬(lease.renewed_at older than 5m)<title>a new holder took it</title></text>
+<rect x="40" y="321" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="331" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="71" y="340" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="331" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="340" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="331" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="340" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="331" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="340" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="331" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="617.85" y="340" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="331" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="340" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="331" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="340" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="331" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="340" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1378" height="278" viewBox="0 0 1378 278" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1378" height="278" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">sink — engine v1 · object sink</text>
+<text x="40" y="57" font-size="12" fill="#666">One sink the operator reads: the chat, the page, or the multiplexer&#x27;s bell on a named surface.</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 2, 8, 14, 18, 68, 82, 148, 152, 155 · engine/sink.yaml · record kind, surface, routes, cadence, delivered_at, pinned_to</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">delivery</text>
+<line x1="107" y1="103" x2="335.5" y2="103" stroke="#8a8a86" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="151.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="151.0" x2="69.0" y2="151.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M118.0,137.0 V129.0 H267.8 V137.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M267.8,177.0 V187.0 H118.0 V165.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<rect x="70.0" y="137.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"></rect>
+<text x="118.0" y="159.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">idle</text>
+<rect x="210.0" y="137.0" width="115.5" height="40.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"></rect>
+<text x="267.8" y="159.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">delivering</text>
+<text x="267.8" y="171.0" font-size="8.5" fill="#666" text-anchor="middle">entry ⚙ deliver_plan</text>
+<rect x="170.2" y="117.5" width="45.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="192.9" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">sink.due</text>
+<rect x="174.8" y="187.5" width="36.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="192.9" y="196.0" font-size="8.5" fill="#333" text-anchor="middle">always</text>
+<rect x="40" y="234" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="244" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="71" y="253" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="244" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="253" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="244" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="253" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="244" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="253" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="244" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="617.85" y="253" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="244" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="253" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="244" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="253" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="244" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="253" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

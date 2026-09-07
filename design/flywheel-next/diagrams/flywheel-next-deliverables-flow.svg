@@ -1,0 +1,238 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 950" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mP" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7b5cb8"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mR" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c05b5b"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+</defs>
+<rect width="1800" height="950" fill="#fff"/>
+<text x="40" y="36" font-size="19" fill="#1a1a1a" font-weight="700">Flywheel next — the deliverable flow: a session writes a deliverable under the producer and schema in force, the machinery carries it into a store, and the store feeds the next work order</text>
+<text x="40" y="57" font-size="12" fill="#666">sessions by type on the left · deliverables with their producer, schema and review surface in the middle (190) · the stores the machinery carries them into on the right (203) · solid arrows write · dotted arrows feed (89, 187, 211, 212)</text>
+<text x="70" y="92" font-size="10" fill="#8a8a86" font-weight="700">SESSIONS · by type</text>
+<text x="520" y="92" font-size="10" fill="#8a8a86" font-weight="700">DELIVERABLES · name · producer skill · schema · review surface (190)</text>
+<text x="1250" y="92" font-size="10" fill="#8a8a86" font-weight="700">STORES · where the machinery carries a deliverable (203)</text>
+<rect x="70" y="106" width="300" height="62" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+<text x="82" y="123" font-size="11" fill="#333" font-weight="700">self-closing elaboration</text>
+<text x="82" y="136" font-size="8.5" fill="#666">research, writing, a throwaway prototype (25)</text>
+<text x="82" y="148" font-size="8.5" fill="#666">exits done; the machinery finishes it</text>
+<rect x="70" y="182" width="300" height="62" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+<text x="82" y="199" font-size="11" fill="#333" font-weight="700">standing elaboration</text>
+<text x="82" y="212" font-size="8.5" fill="#666">exploration, interactive page, running prototype (25)</text>
+<text x="82" y="224" font-size="8.5" fill="#666">lists the surface specification among its deliverables (212)</text>
+<rect x="70" y="258" width="300" height="62" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+<text x="82" y="275" font-size="11" fill="#333" font-weight="700">with-operator · explore over intents</text>
+<text x="82" y="288" font-size="8.5" fill="#666">the operator in the loop; explore covers several intents (189)</text>
+<text x="82" y="300" font-size="8.5" fill="#666">fed the covered intents&#x27; chapters, claims and records</text>
+<rect x="70" y="334" width="300" height="62" rx="8" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="82" y="351" font-size="11" fill="#333" font-weight="700">planning</text>
+<text x="82" y="364" font-size="8.5" fill="#666">charged by the machinery per built repository (28, 171)</text>
+<text x="82" y="376" font-size="8.5" fill="#666">reads the backlog, the as-built and the open bolts</text>
+<rect x="70" y="410" width="300" height="62" rx="8" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="82" y="427" font-size="11" fill="#333" font-weight="700">curation · capture reading</text>
+<text x="82" y="440" font-size="8.5" fill="#666">charged by the machinery (110, 115, 171)</text>
+<text x="82" y="452" font-size="8.5" fill="#666">delivers moves, proposed intents and signals through its exit</text>
+<rect x="70" y="486" width="300" height="62" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="82" y="503" font-size="11" fill="#333" font-weight="700">construction stages</text>
+<text x="82" y="516" font-size="8.5" fill="#666">spec-writer · builder · reviewer · per-persona test (37, 56)</text>
+<text x="82" y="528" font-size="8.5" fill="#666">named stage by stage in the unit type at the recorded version</text>
+<rect x="70" y="562" width="300" height="62" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="82" y="579" font-size="11" fill="#333" font-weight="700">chore fix</text>
+<text x="82" y="592" font-size="8.5" fill="#666">a conflict on a line (52), housekeeping (61), a review&#x27;s change (176)</text>
+<text x="82" y="604" font-size="8.5" fill="#666">one stage, one session, on the line the fix belongs to (60)</text>
+<rect x="520" y="106" width="470" height="52" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+<text x="532" y="123" font-size="11" fill="#333" font-weight="700">book-chapter</text>
+<text x="532" y="136" font-size="8.5" fill="#666">producers/book-chapter · schemas/book-chapter.md · review-view</text>
+<text x="532" y="148" font-size="8.5" fill="#666">destination voice; written with the claim in one commit (120)</text>
+<rect x="520" y="166" width="470" height="52" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+<text x="532" y="183" font-size="11" fill="#333" font-weight="700">claim</text>
+<text x="532" y="196" font-size="8.5" fill="#666">producers/claim · schemas/claim.md · review-view</text>
+<text x="532" y="208" font-size="8.5" fill="#666">a fenced block in its chapter, hash-locked, attaches: to map ids (97, 200)</text>
+<rect x="520" y="226" width="470" height="52" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+<text x="532" y="243" font-size="11" fill="#333" font-weight="700">context-map</text>
+<text x="532" y="256" font-size="8.5" fill="#666">producers/context-map · schemas/context-map.md · review-view</text>
+<text x="532" y="268" font-size="8.5" fill="#666">moved only inside a writeback that also writes the chapter (211)</text>
+<rect x="520" y="286" width="470" height="52" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+<text x="532" y="303" font-size="11" fill="#333" font-weight="700">conceptual-diagram · logical-diagram</text>
+<text x="532" y="316" font-size="8.5" fill="#666">producers/…-diagram · schemas/diagram-….md · review-view</text>
+<text x="532" y="328" font-size="8.5" fill="#666">house style the schema fixes; live in the chapter (23)</text>
+<rect x="520" y="346" width="470" height="52" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+<text x="532" y="363" font-size="11" fill="#333" font-weight="700">surface-specification</text>
+<text x="532" y="376" font-size="8.5" fill="#666">producers/surface-specification · schemas/surface-specification.md · plannotator</text>
+<text x="532" y="388" font-size="8.5" fill="#666">surfaces, flows, forms, keys, rulings; cites the mockups as records (212)</text>
+<rect x="520" y="406" width="470" height="52" rx="8" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="532" y="423" font-size="11" fill="#333" font-weight="700">proposal-document</text>
+<text x="532" y="436" font-size="8.5" fill="#666">producers/proposal-document · schemas/proposal.md · plannotator</text>
+<text x="532" y="448" font-size="8.5" fill="#666">the bolts it proposes and the units in each; one decision (172)</text>
+<rect x="520" y="466" width="470" height="52" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+<text x="532" y="483" font-size="11" fill="#333" font-weight="700">verdict</text>
+<text x="532" y="496" font-size="8.5" fill="#666">producers/verdict · schemas/verdict.md · ledger</text>
+<text x="532" y="508" font-size="8.5" fill="#666">one judgment per claim and repository, with its inputs (100)</text>
+<rect x="520" y="526" width="470" height="52" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+<text x="532" y="543" font-size="11" fill="#333" font-weight="700">records</text>
+<text x="532" y="556" font-size="8.5" fill="#666">by-type · no surface · research note · prototype note · session record · interactive page</text>
+<text x="532" y="568" font-size="8.5" fill="#666">what an elaboration did, not what it concluded (187)</text>
+<rect x="520" y="586" width="470" height="52" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="532" y="603" font-size="11" fill="#333" font-weight="700">construction set</text>
+<text x="532" y="616" font-size="8.5" fill="#666">by-type · no surface · change-directory · spec · commits · as-built statements</text>
+<text x="532" y="628" font-size="8.5" fill="#666">review-verdict · test-report · findings — the type skill and schema instruction (190)</text>
+<rect x="520" y="646" width="470" height="52" rx="8" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="532" y="663" font-size="11" fill="#333" font-weight="700">offers: finding · chore · signal</text>
+<text x="532" y="676" font-size="8.5" fill="#666">any session, through `flywheel offer &lt;document&gt;` (58, 62)</text>
+<text x="532" y="688" font-size="8.5" fill="#666">a document of the change it arose in; the record never holds the text</text>
+<rect x="520" y="706" width="470" height="52" rx="8" fill="#fff" stroke="#8a8a86" stroke-width="1.6" stroke-dasharray="5 4"/>
+<text x="532" y="723" font-size="11" fill="#333" font-weight="700">&lt;name&gt; — user-defined</text>
+<text x="532" y="736" font-size="8.5" fill="#666">flywheel.yaml deliverables.&lt;name&gt;: {producer, schema, surface}; any subset (190)</text>
+<text x="532" y="748" font-size="8.5" fill="#666">the engine reads the name and the paths, never the text (119)</text>
+<rect x="1250" y="106" width="470" height="66" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+<g transform="translate(1274,139.0)"><path d="M -12 -8 L -12 8 A 12 4 0 0 0 12 8 L 12 -8" fill="#fbeeee" stroke="#c05b5b" stroke-width="1.4"/><ellipse cx="0" cy="-8" rx="12" ry="4" fill="#f3dede" stroke="#c05b5b" stroke-width="1.4"/></g>
+<text x="1298" y="123" font-size="11" fill="#333" font-weight="700">the book</text>
+<text x="1298" y="136" font-size="8.5" fill="#5f6b7a" font-family="monospace">src/**/*.md · claim blocks in chapters · flywheel/claims.json</text>
+<text x="1298" y="148" font-size="8.5" fill="#666">standing once the intent&#x27;s line lands; the review view reads its history (49, 122)</text>
+<rect x="1250" y="184" width="470" height="66" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+<g transform="translate(1274,217.0)"><path d="M -12 -8 L -12 8 A 12 4 0 0 0 12 8 L 12 -8" fill="#fbeeee" stroke="#c05b5b" stroke-width="1.4"/><ellipse cx="0" cy="-8" rx="12" ry="4" fill="#f3dede" stroke="#c05b5b" stroke-width="1.4"/></g>
+<text x="1298" y="201" font-size="11" fill="#333" font-weight="700">the context map</text>
+<text x="1298" y="214" font-size="8.5" fill="#5f6b7a" font-family="monospace">context-map/target.yaml · current.yaml · flywheel/map/*.json</text>
+<text x="1298" y="226" font-size="8.5" fill="#666">the scope surface; validated on every commit, versioned with the book (198, 121)</text>
+<rect x="1250" y="262" width="470" height="66" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+<g transform="translate(1274,295.0)"><path d="M -12 -8 L -12 8 A 12 4 0 0 0 12 8 L 12 -8" fill="#fbeeee" stroke="#c05b5b" stroke-width="1.4"/><ellipse cx="0" cy="-8" rx="12" ry="4" fill="#f3dede" stroke="#c05b5b" stroke-width="1.4"/></g>
+<text x="1298" y="279" font-size="11" fill="#333" font-weight="700">the intent&#x27;s change directory</text>
+<text x="1298" y="292" font-size="8.5" fill="#5f6b7a" font-family="monospace">openspec/changes/&lt;intent&gt;/ · records · archived at close</text>
+<text x="1298" y="304" font-size="8.5" fill="#666">one per covered intent; the parent&#x27;s carried by the place&#x27;s merge (187, 188)</text>
+<rect x="1250" y="340" width="470" height="66" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+<g transform="translate(1274,373.0)"><path d="M -12 -8 L -12 8 A 12 4 0 0 0 12 8 L 12 -8" fill="#fbeeee" stroke="#c05b5b" stroke-width="1.4"/><ellipse cx="0" cy="-8" rx="12" ry="4" fill="#f3dede" stroke="#c05b5b" stroke-width="1.4"/></g>
+<text x="1298" y="357" font-size="11" fill="#333" font-weight="700">the state store</text>
+<text x="1298" y="370" font-size="8.5" fill="#5f6b7a" font-family="monospace">objects/… · proposal + unit documents · offer records</text>
+<text x="1298" y="382" font-size="8.5" fill="#666">the tracker or the flywheel-state repository; the machinery&#x27;s alone (203)</text>
+<rect x="1250" y="418" width="470" height="66" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+<g transform="translate(1274,451.0)"><path d="M -12 -8 L -12 8 A 12 4 0 0 0 12 8 L 12 -8" fill="#fbeeee" stroke="#c05b5b" stroke-width="1.4"/><ellipse cx="0" cy="-8" rx="12" ry="4" fill="#f3dede" stroke="#c05b5b" stroke-width="1.4"/></g>
+<text x="1298" y="435" font-size="11" fill="#333" font-weight="700">the as-built ledger</text>
+<text x="1298" y="448" font-size="8.5" fill="#5f6b7a" font-family="monospace">flywheel/ledger/&lt;repo&gt;.rec · openspec/specs · acceptance.yaml</text>
+<text x="1298" y="460" font-size="8.5" fill="#666">written only by record_verdict from an exit; the backlog is derived from it (100, 102, 192)</text>
+<rect x="1250" y="496" width="470" height="66" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>
+<g transform="translate(1274,529.0)"><path d="M -12 -8 L -12 8 A 12 4 0 0 0 12 8 L 12 -8" fill="#fbeeee" stroke="#c05b5b" stroke-width="1.4"/><ellipse cx="0" cy="-8" rx="12" ry="4" fill="#f3dede" stroke="#c05b5b" stroke-width="1.4"/></g>
+<text x="1298" y="513" font-size="11" fill="#333" font-weight="700">the bolt line</text>
+<text x="1298" y="526" font-size="8.5" fill="#5f6b7a" font-family="monospace">&lt;repo&gt; bolt branch · one squash per item · the unit&#x27;s change</text>
+<text x="1298" y="538" font-size="8.5" fill="#666">lands on the shared line by the repository&#x27;s policy (38, 175, 179)</text>
+<path d="M370,137.0 C430,137.0 460,132.0 520,132.0" fill="none" stroke="#7b5cb8" stroke-width="1.1" marker-end="url(#mP)"/>
+<path d="M370,137.0 C430,137.0 460,192.0 520,192.0" fill="none" stroke="#7b5cb8" stroke-width="1.1" marker-end="url(#mP)"/>
+<path d="M370,137.0 C430,137.0 460,252.0 520,252.0" fill="none" stroke="#7b5cb8" stroke-width="1.1" marker-end="url(#mP)"/>
+<path d="M370,137.0 C430,137.0 460,312.0 520,312.0" fill="none" stroke="#7b5cb8" stroke-width="1.1" marker-end="url(#mP)"/>
+<path d="M370,137.0 C430,137.0 460,552.0 520,552.0" fill="none" stroke="#7b5cb8" stroke-width="1.1" marker-end="url(#mP)"/>
+<path d="M370,213.0 C430,213.0 460,132.0 520,132.0" fill="none" stroke="#7b5cb8" stroke-width="1.1" marker-end="url(#mP)"/>
+<path d="M370,213.0 C430,213.0 460,192.0 520,192.0" fill="none" stroke="#7b5cb8" stroke-width="1.1" marker-end="url(#mP)"/>
+<path d="M370,213.0 C430,213.0 460,252.0 520,252.0" fill="none" stroke="#7b5cb8" stroke-width="1.1" marker-end="url(#mP)"/>
+<path d="M370,213.0 C430,213.0 460,312.0 520,312.0" fill="none" stroke="#7b5cb8" stroke-width="1.1" marker-end="url(#mP)"/>
+<path d="M370,213.0 C430,213.0 460,372.0 520,372.0" fill="none" stroke="#7b5cb8" stroke-width="1.1" marker-end="url(#mP)"/>
+<path d="M370,213.0 C430,213.0 460,552.0 520,552.0" fill="none" stroke="#7b5cb8" stroke-width="1.1" marker-end="url(#mP)"/>
+<path d="M370,289.0 C430,289.0 460,132.0 520,132.0" fill="none" stroke="#7b5cb8" stroke-width="1.1" marker-end="url(#mP)"/>
+<path d="M370,289.0 C430,289.0 460,192.0 520,192.0" fill="none" stroke="#7b5cb8" stroke-width="1.1" marker-end="url(#mP)"/>
+<path d="M370,289.0 C430,289.0 460,252.0 520,252.0" fill="none" stroke="#7b5cb8" stroke-width="1.1" marker-end="url(#mP)"/>
+<path d="M370,289.0 C430,289.0 460,552.0 520,552.0" fill="none" stroke="#7b5cb8" stroke-width="1.1" marker-end="url(#mP)"/>
+<path d="M370,365.0 C430,365.0 460,432.0 520,432.0" fill="none" stroke="#8a8a86" stroke-width="1.1" marker-end="url(#mG)"/>
+<path d="M370,365.0 C430,365.0 460,492.0 520,492.0" fill="none" stroke="#8a8a86" stroke-width="1.1" marker-end="url(#mG)"/>
+<path d="M370,441.0 C430,441.0 460,672.0 520,672.0" fill="none" stroke="#8a8a86" stroke-width="1.1" marker-end="url(#mG)"/>
+<path d="M370,517.0 C430,517.0 460,492.0 520,492.0" fill="none" stroke="#4a7fb5" stroke-width="1.1" marker-end="url(#mB)"/>
+<path d="M370,517.0 C430,517.0 460,612.0 520,612.0" fill="none" stroke="#4a7fb5" stroke-width="1.1" marker-end="url(#mB)"/>
+<path d="M370,517.0 C430,517.0 460,672.0 520,672.0" fill="none" stroke="#4a7fb5" stroke-width="1.1" marker-end="url(#mB)"/>
+<path d="M370,593.0 C430,593.0 460,492.0 520,492.0" fill="none" stroke="#4a7fb5" stroke-width="1.1" marker-end="url(#mB)"/>
+<path d="M370,593.0 C430,593.0 460,612.0 520,612.0" fill="none" stroke="#4a7fb5" stroke-width="1.1" marker-end="url(#mB)"/>
+<path d="M370,517.0 C430,517.0 460,732.0 520,732.0" fill="none" stroke="#8a8a86" stroke-width="1.1" marker-end="url(#mG)"/>
+<path d="M990,132.0 C1060,132.0 1180,139.0 1250,139.0" fill="none" stroke="#c05b5b" stroke-width="1.3" marker-end="url(#mR)"/>
+<rect x="974" y="118.0" width="292" height="11" fill="#fff" opacity="0.92"/>
+<text x="1120.0" y="126.0" font-size="8" fill="#c05b5b" text-anchor="middle">merge_place into the intent&#x27;s line; the archive lands it (54, 49)</text>
+<path d="M990,192.0 C1060,192.0 1180,139.0 1250,139.0" fill="none" stroke="#c05b5b" stroke-width="1.3" marker-end="url(#mR)"/>
+<rect x="972" y="182.0" width="296" height="11" fill="#fff" opacity="0.92"/>
+<text x="1120.0" y="190.0" font-size="8" fill="#c05b5b" text-anchor="middle">the same commit as its chapter (120); standing when the line lands</text>
+<path d="M990,252.0 C1060,252.0 1180,217.0 1250,217.0" fill="none" stroke="#c05b5b" stroke-width="1.3" marker-end="url(#mR)"/>
+<rect x="994" y="224.5" width="252" height="11" fill="#fff" opacity="0.92"/>
+<text x="1120.0" y="232.5" font-size="8" fill="#c05b5b" text-anchor="middle">map_edit · attach · set_home, inside the writeback (211)</text>
+<path d="M990,312.0 C1060,312.0 1180,139.0 1250,139.0" fill="none" stroke="#c05b5b" stroke-width="1.3" marker-end="url(#mR)"/>
+<rect x="1066" y="298.0" width="107" height="11" fill="#fff" opacity="0.92"/>
+<text x="1120.0" y="306.0" font-size="8" fill="#c05b5b" text-anchor="middle">inside the chapter (23)</text>
+<path d="M990,372.0 C1060,372.0 1180,139.0 1250,139.0" fill="none" stroke="#c05b5b" stroke-width="1.3" marker-end="url(#mR)"/>
+<rect x="1016" y="352.0" width="208" height="11" fill="#fff" opacity="0.92"/>
+<text x="1120.0" y="360.0" font-size="8" fill="#c05b5b" text-anchor="middle">a chapter of the book, versioned with it (212)</text>
+<path d="M990,432.0 C1060,432.0 1180,373.0 1250,373.0" fill="none" stroke="#c05b5b" stroke-width="1.3" marker-end="url(#mR)"/>
+<rect x="989" y="408.0" width="261" height="11" fill="#fff" opacity="0.92"/>
+<text x="1120.0" y="416.0" font-size="8" fill="#c05b5b" text-anchor="middle">record_proposal: the document beside the record (172, 187)</text>
+<path d="M990,492.0 C1060,492.0 1180,451.0 1250,451.0" fill="none" stroke="#c05b5b" stroke-width="1.3" marker-end="url(#mR)"/>
+<rect x="1020" y="461.5" width="200" height="11" fill="#fff" opacity="0.92"/>
+<text x="1120.0" y="469.5" font-size="8" fill="#c05b5b" text-anchor="middle">record_verdict from the session&#x27;s exit (100)</text>
+<path d="M990,552.0 C1060,552.0 1180,295.0 1250,295.0" fill="none" stroke="#c05b5b" stroke-width="1.3" marker-end="url(#mR)"/>
+<rect x="952" y="431.5" width="336" height="11" fill="#fff" opacity="0.92"/>
+<text x="1120.0" y="439.5" font-size="8" fill="#c05b5b" text-anchor="middle">record_per_intent per covered intent (188); merge_place for the parent (54)</text>
+<path d="M990,612.0 C1060,612.0 1180,529.0 1250,529.0" fill="none" stroke="#c05b5b" stroke-width="1.3" marker-end="url(#mR)"/>
+<rect x="987" y="564.5" width="266" height="11" fill="#fff" opacity="0.92"/>
+<text x="1120.0" y="572.5" font-size="8" fill="#c05b5b" text-anchor="middle">merge_place: squash to one commit naming the item (38, 179)</text>
+<path d="M990,612.0 C1060,612.0 1180,451.0 1250,451.0" fill="none" stroke="#c05b5b" stroke-width="1.3" marker-end="url(#mR)"/>
+<rect x="945" y="578.0" width="349" height="11" fill="#fff" opacity="0.92"/>
+<text x="1120.0" y="586.0" font-size="8" fill="#c05b5b" text-anchor="middle">as-built statements name claim@version (99); write_acceptance at landing (192)</text>
+<path d="M990,672.0 C1060,672.0 1180,373.0 1250,373.0" fill="none" stroke="#c05b5b" stroke-width="1.3" marker-end="url(#mR)"/>
+<rect x="996" y="634.0" width="248" height="11" fill="#fff" opacity="0.92"/>
+<text x="1120.0" y="642.0" font-size="8" fill="#c05b5b" text-anchor="middle">record_offers: one record pointing at the document (62)</text>
+<path d="M990,732.0 C1060,732.0 1180,549.0 1250,549.0" fill="none" stroke="#8a8a86" stroke-width="1.3" stroke-dasharray="3 3" marker-end="url(#mG)"/>
+<rect x="965" y="716.0" width="310" height="11" fill="#fff" opacity="0.92"/>
+<text x="1120.0" y="724.0" font-size="8" fill="#666" text-anchor="middle">wherever its producer says; unstated which store, unstated who is fed</text>
+<rect x="70" y="740" width="1660" height="128" rx="10" fill="#fafafa" stroke="#8a8a86" stroke-width="1.4"/>
+<text x="90" y="762" font-size="11" fill="#333" font-weight="700">THE NEXT WORK ORDER · prepare_place renders the closed inputs into the place at the books commit named in the header; handed in, never read back (67, 89, 190)</text>
+<text x="90" y="788" font-size="9.5" fill="#333" font-weight="700">every session</text>
+<text x="90" y="804" font-size="8.5" fill="#666">schema instruction · type skill (88)</text>
+<text x="90" y="816" font-size="8.5" fill="#666">work order: job, deliverables, exit contract</text>
+<text x="90" y="828" font-size="8.5" fill="#666">producers, schemas, surfaces in force, with versions (190)</text>
+<text x="90" y="840" font-size="8.5" fill="#666">identity token in the header (197)</text>
+<text x="90" y="852" font-size="8.5" fill="#666">books commit + deliverables version (123)</text>
+<text x="365" y="788" font-size="9.5" fill="#333" font-weight="700">from the book (97, 189)</text>
+<text x="365" y="804" font-size="8.5" fill="#666">the cited chapters and their claim blocks → construction</text>
+<text x="365" y="816" font-size="8.5" fill="#666">the covered intents&#x27; chapters and claims → explore / gathered</text>
+<text x="365" y="828" font-size="8.5" fill="#666">claims.json → curation, planning</text>
+<text x="640" y="788" font-size="9.5" fill="#333" font-weight="700">from the map (211, 212)</text>
+<text x="640" y="804" font-size="8.5" fill="#666">the elements the item builds, their homes,</text>
+<text x="640" y="816" font-size="8.5" fill="#666">the claims attached there → construction</text>
+<text x="640" y="828" font-size="8.5" fill="#666">the surface specification in force when a cited</text>
+<text x="640" y="840" font-size="8.5" fill="#666">claim is about a surface → construction</text>
+<text x="915" y="788" font-size="9.5" fill="#333" font-weight="700">from the change directory (187, 189)</text>
+<text x="915" y="804" font-size="8.5" fill="#666">the records of earlier elaborations → the next</text>
+<text x="915" y="816" font-size="8.5" fill="#666">elaboration on the intent</text>
+<text x="915" y="828" font-size="8.5" fill="#666">the finding or chore document → the chore session (62)</text>
+<text x="1190" y="788" font-size="9.5" fill="#333" font-weight="700">from the state store (28, 89)</text>
+<text x="1190" y="804" font-size="8.5" fill="#666">the unit document → its stages</text>
+<text x="1190" y="816" font-size="8.5" fill="#666">the open bolts with their units and states → planning</text>
+<text x="1190" y="828" font-size="8.5" fill="#666">unconsumed asks, redo notes → planning</text>
+<text x="1190" y="840" font-size="8.5" fill="#666">unmoved signals, open intents → curation</text>
+<text x="1465" y="788" font-size="9.5" fill="#333" font-weight="700">from the ledger and the line (28, 102)</text>
+<text x="1465" y="804" font-size="8.5" fill="#666">the backlog derived from the cells → planning</text>
+<text x="1465" y="816" font-size="8.5" fill="#666">the as-built statements → planning, review</text>
+<text x="1465" y="828" font-size="8.5" fill="#666">the place at the line&#x27;s head → every session</text>
+<text x="1465" y="840" font-size="8.5" fill="#666">the unit&#x27;s change → later stages</text>
+<line x1="1720" y1="139.0" x2="1742" y2="139.0" stroke="#8a8a86" stroke-width="1.1" stroke-dasharray="3 3"/>
+<circle cx="1742" cy="139.0" r="2.5" fill="#8a8a86"/>
+<line x1="1720" y1="217.0" x2="1742" y2="217.0" stroke="#8a8a86" stroke-width="1.1" stroke-dasharray="3 3"/>
+<circle cx="1742" cy="217.0" r="2.5" fill="#8a8a86"/>
+<line x1="1720" y1="295.0" x2="1742" y2="295.0" stroke="#8a8a86" stroke-width="1.1" stroke-dasharray="3 3"/>
+<circle cx="1742" cy="295.0" r="2.5" fill="#8a8a86"/>
+<line x1="1720" y1="373.0" x2="1742" y2="373.0" stroke="#8a8a86" stroke-width="1.1" stroke-dasharray="3 3"/>
+<circle cx="1742" cy="373.0" r="2.5" fill="#8a8a86"/>
+<line x1="1720" y1="451.0" x2="1742" y2="451.0" stroke="#8a8a86" stroke-width="1.1" stroke-dasharray="3 3"/>
+<circle cx="1742" cy="451.0" r="2.5" fill="#8a8a86"/>
+<line x1="1720" y1="529.0" x2="1742" y2="529.0" stroke="#8a8a86" stroke-width="1.1" stroke-dasharray="3 3"/>
+<circle cx="1742" cy="529.0" r="2.5" fill="#8a8a86"/>
+<path d="M1742,139.0 V800 H1732" fill="none" stroke="#8a8a86" stroke-width="1.3" stroke-dasharray="3 3" marker-end="url(#mG)"/>
+<text x="1746" y="634.5" font-size="8" fill="#666" transform="rotate(90 1746 634.5)" text-anchor="middle">feeds the next work order (dotted)</text>
+<path d="M70,804 C10,804 10,593.0 70,593.0" fill="none" stroke="#8a8a86" stroke-width="1.3" stroke-dasharray="3 3" marker-end="url(#mG)"/>
+<path d="M70,804 C10,804 10,137.0 70,137.0" fill="none" stroke="#8a8a86" stroke-width="1.3" stroke-dasharray="3 3" marker-end="url(#mG)"/>
+<text x="30" y="552.5" font-size="8" fill="#666" text-anchor="middle">is fed</text>
+<rect x="70" y="900" width="1660" height="34" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<line x1="90" y1="917" x2="120" y2="917" stroke="#7b5cb8" stroke-width="1.6"/>
+<text x="126" y="921" font-size="9" fill="#666">design session writes</text>
+<line x1="259.95" y1="917" x2="289.95" y2="917" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="295.95" y="921" font-size="9" fill="#666">construction session writes</text>
+<line x1="459.6" y1="917" x2="489.6" y2="917" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="495.6" y="921" font-size="9" fill="#666">machinery-charged session writes</text>
+<line x1="684.0" y1="917" x2="714.0" y2="917" stroke="#c05b5b" stroke-width="1.6"/>
+<text x="720.0" y="921" font-size="9" fill="#666">the machinery carries it into a store (an effect with a proof)</text>
+<line x1="1056.9" y1="917" x2="1086.9" y2="917" stroke="#8a8a86" stroke-width="1.6" stroke-dasharray="3 3"/>
+<text x="1092.9" y="921" font-size="9" fill="#666">a store feeds the next work order</text>
+<text x="1296.25" y="921" font-size="9" fill="#999">the engine knows a deliverable by its name, producer path, schema path and surface, never by its text (119)</text>
+</svg>

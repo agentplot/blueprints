@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1378" height="442" viewBox="0 0 1378 442" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1378" height="442" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">ledger-cell — object v4 · object ledger-cell</text>
+<text x="40" y="57" font-size="12" fill="#666">One verdict slot: a standing claim × a repository in its scope (A.14).</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 100, 101, 102, 104, 116, 195, 198, 200, 202 · ledger-cell.yaml · record claim, repository, verdict, claim_version, revision, evidence, judged_at</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">freshness</text>
+<line x1="114" y1="103" x2="1251.3999999999999" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="166.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="166.0" x2="69.0" y2="166.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M118.0,152.0 V144.0 H220.0 V152.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M946.2,152.0 V129.0 H1150.2 V152.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M583.1,152.0 V144.0 H1010.2 V152.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1086.2,152.0 V144.0 H1231.4 V152.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1048.2,180.0 V351.0 H220.0 V326.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"><title>a new verdict was recorded against the current version, and after any challenge that stands</title></path>
+<path d="M1190.8,180.0 V336.0 H946.2 V326.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<rect x="70.0" y="152.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>a repository joining the fleet — a node naming it as home (202) — has every cell here, one per claim attached to what it homes (104)</title></rect>
+<text x="118.0" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">unjudged</text>
+<rect x="210.0" y="152.0" width="746.2" height="174.0" rx="7" fill="#fafafa" stroke="#4a7fb5" stroke-width="1.6"><title>reused until the claim&#x27;s version moves, the evidence is gone, or a challenge is recorded against the claim; a repository changing does not stale it (101, 116, I10)</title></rect>
+<text x="583.1" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">judged</text>
+<line x1="220.0" y1="184.0" x2="946.2" y2="184.0" stroke="#e5e5e5"/>
+<text x="220" y="199" font-size="9.5" font-weight="700" fill="#999">value</text>
+<circle cx="232.0" cy="288.0" r="4" fill="#1a1a1a"/>
+<line x1="236.0" y1="288.0" x2="249.0" y2="288.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M260.0,274.0 V266.0 H438.0 V274.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M285.3,274.0 V251.0 H578.0 V274.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M310.7,274.0 V236.0 H723.9 V274.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M336.0,274.0 V221.0 H879.0 V274.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<rect x="250.0" y="274.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
+<text x="298.0" y="296.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">unknown</text>
+<rect x="390.0" y="274.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>out of the backlog</title></rect>
+<text x="438.0" y="296.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">satisfied</text>
+<rect x="530.0" y="274.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>in the backlog</title></rect>
+<text x="578.0" y="296.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">partial</text>
+<rect x="670.0" y="274.0" width="107.8" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>in the backlog</title></rect>
+<text x="723.9" y="296.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">not-satisfied</text>
+<rect x="821.8" y="274.0" width="114.4" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>out of the backlog; the scope judgment was made once</title></rect>
+<text x="879.0" y="296.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">not-applicable</text>
+<rect x="288.9" y="254.5" width="120.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="349.0" y="263.0" font-size="8.5" fill="#333" text-anchor="middle">cell.verdict = satisfied</text>
+<rect x="376.2" y="239.5" width="110.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="431.7" y="248.0" font-size="8.5" fill="#333" text-anchor="middle">cell.verdict = partial</text>
+<rect x="447.8" y="224.5" width="138.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="517.3" y="233.0" font-size="8.5" fill="#333" text-anchor="middle">cell.verdict = not-satisfied</text>
+<rect x="535.7" y="209.5" width="143.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="607.5" y="218.0" font-size="8.5" fill="#333" text-anchor="middle">cell.verdict = not-applicable</text>
+<rect x="1000.2" y="152.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>back in the backlog; planning&#x27;s fingerprint moves, so a planning run is due and a decision cannot be missed; for a challenge the proposal cites the signal (101)</title></rect>
+<text x="1048.2" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">stale</text>
+<rect x="1140.2" y="152.0" width="101.2" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the node moved home or was removed, or the claim was re-attached away from what the repository homes; the recorded verdict reads as not-applicable and the cell is out of the backlog (101, 195, 200); the record is kept, and if scope returns the verdict is judged again by the freshness rules</title></rect>
+<text x="1190.8" y="174.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">out-of-scope</text>
+<rect x="42.0" y="132.5" width="316.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="200.3" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">cell.verdict ∈ {satisfied, partial, not-satisfied, not-applicable}</text>
+<rect x="1011.5" y="117.5" width="73.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="1048.2" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">¬cell.in_scope</text>
+<rect x="582.3" y="132.5" width="428.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="796.6" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">cell.verdict_claim_version ≠ cell.claim_version ∨ ¬cell.evidence_present ∨ cell.challenged</text>
+<rect x="1122.1" y="132.5" width="73.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="1158.8" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">¬cell.in_scope</text>
+<rect x="475.8" y="351.5" width="316.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="634.1" y="360.0" font-size="8.5" fill="#333" text-anchor="middle">cell.verdict_claim_version = cell.claim_version ∧ ¬cell.challenged<title>a new verdict was recorded against the current version, and after any challenge that stands</title></text>
+<rect x="1034.1" y="336.5" width="68.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1068.5" y="345.0" font-size="8.5" fill="#333" text-anchor="middle">cell.in_scope</text>
+<rect x="40" y="398" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="408" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="71" y="417" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="408" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="417" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="408" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="417" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="408" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="417" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="408" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="617.85" y="417" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="408" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="417" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="408" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="417" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="408" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="417" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

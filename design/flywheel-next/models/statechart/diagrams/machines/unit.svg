@@ -1,0 +1,177 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2412" height="482" viewBox="0 0 2412 482" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="2412" height="482" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">unit — object v3 · object unit · parent bolt, intent · owns work-item</text>
+<text x="40" y="57" font-size="12" fill="#666">One approved piece of construction work (36, 37).</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 5, 13, 16, 17, 31, 35, 36, 37, 57, 60, 74, 172 · unit.yaml · record type, type_version, document, target, depends_on, claims, batch, proposal, approval, redo_notes, needs_amend, citation_choices</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
+<line x1="80" y1="103" x2="2371.85" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="192.0" cy="349.0" r="4" fill="#1a1a1a"/>
+<line x1="196.0" y1="349.0" x2="209.0" y2="349.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M135.3,317.0 V249.0 H996.4 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M149.1,317.0 V144.0 H1855.8 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M142.2,317.0 V234.0 H1136.3 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M80.0,317.0 V294.0 H107.6 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M86.9,317.0 V279.0 H114.5 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M93.8,317.0 V309.0 H121.5 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M100.7,317.0 V264.0 H128.4 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M156.0,317.0 V129.0 H2135.8 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M740.3,317.0 V264.0 H1174.3 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"><title>a proposal is not work; planning&#x27;s fingerprint moved with the claim, so its next proposal replaces this one silently (35)</title></path>
+<path d="M220.0,317.0 V294.0 H428.1 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M272.0,317.0 V279.0 H480.2 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M324.1,317.0 V264.0 H532.2 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M376.1,317.0 V309.0 H584.2 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M688.3,317.0 V279.0 H1009.0 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M792.4,317.0 V174.0 H1893.8 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M636.3,317.0 V309.0 H856.4 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M894.4,317.0 V294.0 H1212.3 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M894.4,345.0 V391.0 H506.2 V381.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M932.4,317.0 V159.0 H2154.8 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M1072.3,317.0 V189.0 H2173.8 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>dictation undoes work (4); the items retire with it</title></path>
+<path d="M1034.3,317.0 V279.0 H1416.3 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1059.7,317.0 V204.0 H1995.8 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1047.0,317.0 V249.0 H1575.8 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1021.7,317.0 V309.0 H1276.3 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1352.3,317.0 V219.0 H2192.8 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M1295.3,317.0 V309.0 H1464.1 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1333.3,317.0 V234.0 H2033.8 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1314.3,317.0 V294.0 H1594.8 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1511.8,317.0 V279.0 H1931.8 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M1464.1,369.0 V391.0 H1034.3 V345.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M1651.8,317.0 V264.0 H2211.8 V317.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>dictation (4); the items end their sessions and release their places</title></path>
+<path d="M1632.8,317.0 V294.0 H2071.8 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1613.8,317.0 V309.0 H1715.8 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1791.8,317.0 V309.0 H2313.8 V317.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<rect x="70.0" y="317.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>named by a proposal in proposed; no decision here — the proposal&#x27;s is the one the operator answers, and a per-unit answer arrives as a response forwarded from it (172); nothing is a bolt or a unit&#x27;s items until the proposal&#x27;s yes</title></rect>
+<text x="118.0" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">in-proposal</text>
+<rect x="210.0" y="317.0" width="592.4" height="64.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>a finding routed to a bolt or a chore offer, proposed on its own (58, 60); the decision names the target bolt and what a yes starts, derived from the type&#x27;s stages and the item count (13, 16); the document is reviewed on its own surface and an annotation on it is the response (17)</title></rect>
+<text x="506.2" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">proposed</text>
+<rect x="462.9" y="341.0" width="86.5" height="14" rx="7" fill="#c9962e"/>
+<text x="506.2" y="351.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">unit-proposed</text>
+<text x="506.2" y="363.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: yes · drop · redo: &lt;notes&gt; · bolt &lt;name&gt; · new bolt &lt;name&gt; · rename &lt;name&gt; · type &lt;name&gt; · pick &lt;letters&gt; · later</text>
+<text x="506.2" y="375.0" font-size="8" fill="#8a6a1d" text-anchor="middle">document document on the review surface</text>
+<rect x="846.4" y="317.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>out of the count for a week, then offered again as a new decision with a new number; nothing was approved</title></rect>
+<text x="894.4" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">deferred</text>
+<rect x="986.4" y="317.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>approval given once is never re-asked (6); the record names the response or dictation that approved it (I1)</title></rect>
+<text x="1034.3" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">approved</text>
+<rect x="1126.3" y="317.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"><title>replaced by planning&#x27;s next proposal, on its own or with the proposal that named it; no tail entry, since nothing the operator approved changed (35, 172)</title></rect>
+<rect x="1129.3" y="320.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="1174.3" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">superseded</text>
+<rect x="1266.3" y="317.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>a dependency of the same bolt is not merged yet (31)</title></rect>
+<text x="1314.3" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">waiting</text>
+<rect x="1406.3" y="317.0" width="115.5" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>approved, not started, and a cited claim&#x27;s version moved; redo sends it back to planning, keep pins the cited version (35)</title></rect>
+<text x="1464.1" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">claim-moved</text>
+<rect x="1412.5" y="341.0" width="103.3" height="14" rx="7" fill="#c9962e"/>
+<text x="1464.1" y="351.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">unit-claim-moved</text>
+<text x="1464.1" y="363.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: redo · keep</text>
+<rect x="1565.8" y="317.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>items run the type&#x27;s stage machine, side by side where their own dependencies allow; a moved claim here is the bolt&#x27;s decision (103)</title></rect>
+<text x="1613.8" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">in-flight</text>
+<rect x="1705.8" y="317.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
+<text x="1753.8" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">merged</text>
+<text x="1753.8" y="351.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: merged</text>
+<rect x="1845.8" y="317.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"><title>back to planning with the notes; the next proposal is a new unit</title></rect>
+<rect x="1848.8" y="320.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="1893.8" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">withdrawn</text>
+<rect x="1985.8" y="317.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"><title>the bolt was dropped; the unit&#x27;s items end their sessions and release their places (74)</title></rect>
+<rect x="1988.8" y="320.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="2033.8" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">retired</text>
+<text x="2033.8" y="351.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: dropped</text>
+<rect x="2125.8" y="317.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"><title>by the operator&#x27;s response on the proposal, or by dictation on approved work (4); never by the machinery</title></rect>
+<rect x="2128.8" y="320.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="2173.8" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">dropped</text>
+<text x="2173.8" y="351.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: dropped</text>
+<rect x="2265.8" y="317.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"></rect>
+<rect x="2268.8" y="320.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="2313.8" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">landed</text>
+<rect x="440.3" y="237.5" width="251.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="565.8" y="246.0" font-size="8.5" fill="#333" text-anchor="middle">unit.proposal = approved ⚙ create_bolt, create_items</text>
+<rect x="940.0" y="132.5" width="124.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="1002.5" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">unit.proposal = withdrawn</text>
+<rect x="574.5" y="222.5" width="129.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="639.3" y="231.0" font-size="8.5" fill="#333" text-anchor="middle">unit.proposal = superseded</text>
+<rect x="42.0" y="282.5" width="148.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="116.1" y="291.0" font-size="8.5" fill="#333" text-anchor="middle">reply bolt &lt;name&gt; ⚙ route_unit</text>
+<rect x="42.0" y="267.5" width="167.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="125.5" y="276.0" font-size="8.5" fill="#333" text-anchor="middle">reply new bolt &lt;name&gt; ⚙ route_unit</text>
+<rect x="42.0" y="297.5" width="162.3" height="11" fill="#fff" opacity="0.92"/>
+<text x="123.1" y="306.0" font-size="8.5" fill="#333" text-anchor="middle">reply rename &lt;name&gt; ⚙ rename_bolt</text>
+<rect x="45.1" y="252.5" width="138.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="114.5" y="261.0" font-size="8.5" fill="#333" text-anchor="middle">reply type &lt;name&gt; ⚙ set_type</text>
+<rect x="1118.5" y="117.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1145.9" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">reply drop</text>
+<rect x="915.9" y="252.5" width="82.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="957.3" y="261.0" font-size="8.5" fill="#333" text-anchor="middle">unit.claim_moved<title>a proposal is not work; planning&#x27;s fingerprint moved with the claim, so its next proposal replaces this one silently (35)</title></text>
+<rect x="249.9" y="282.5" width="148.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="324.1" y="291.0" font-size="8.5" fill="#333" text-anchor="middle">reply bolt &lt;name&gt; ⚙ route_unit</text>
+<rect x="292.6" y="267.5" width="167.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="376.1" y="276.0" font-size="8.5" fill="#333" text-anchor="middle">reply new bolt &lt;name&gt; ⚙ route_unit</text>
+<rect x="347.0" y="252.5" width="162.3" height="11" fill="#fff" opacity="0.92"/>
+<text x="428.1" y="261.0" font-size="8.5" fill="#333" text-anchor="middle">reply rename &lt;name&gt; ⚙ rename_bolt</text>
+<rect x="410.7" y="297.5" width="138.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="480.2" y="306.0" font-size="8.5" fill="#333" text-anchor="middle">reply type &lt;name&gt; ⚙ set_type</text>
+<rect x="758.2" y="267.5" width="181.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="848.7" y="276.0" font-size="8.5" fill="#333" text-anchor="middle">reply yes ⚙ create_bolt, create_items</text>
+<rect x="1254.9" y="162.5" width="176.3" height="11" fill="#fff" opacity="0.92"/>
+<text x="1343.1" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">reply redo: &lt;notes&gt; ⚙ request_replan</text>
+<rect x="716.6" y="297.5" width="59.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="746.3" y="306.0" font-size="8.5" fill="#333" text-anchor="middle">reply later</text>
+<rect x="1011.9" y="282.5" width="82.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1053.3" y="291.0" font-size="8.5" fill="#333" text-anchor="middle">unit.claim_moved</text>
+<rect x="640.2" y="391.5" width="120.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="700.3" y="400.0" font-size="8.5" fill="#333" text-anchor="middle">entered_at older than 7d</text>
+<rect x="1516.2" y="147.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1543.6" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">reply drop</text>
+<rect x="1595.7" y="177.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1623.1" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">reply drop<title>dictation undoes work (4); the items retire with it</title></text>
+<rect x="1183.9" y="267.5" width="82.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1225.3" y="276.0" font-size="8.5" fill="#333" text-anchor="middle">unit.claim_moved</text>
+<rect x="1481.7" y="192.5" width="92.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="1527.8" y="201.0" font-size="8.5" fill="#333" text-anchor="middle">parent ∈ {dropped}</text>
+<rect x="1270.0" y="237.5" width="82.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1311.4" y="246.0" font-size="8.5" fill="#333" text-anchor="middle">unit.deps_merged</text>
+<rect x="1131.0" y="297.5" width="36.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="1149.0" y="306.0" font-size="8.5" fill="#333" text-anchor="middle">always</text>
+<rect x="1745.2" y="207.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1772.6" y="216.0" font-size="8.5" fill="#333" text-anchor="middle">reply drop</text>
+<rect x="1338.3" y="297.5" width="82.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1379.7" y="306.0" font-size="8.5" fill="#333" text-anchor="middle">unit.claim_moved</text>
+<rect x="1637.5" y="222.5" width="92.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="1683.6" y="231.0" font-size="8.5" fill="#333" text-anchor="middle">parent ∈ {dropped}</text>
+<rect x="1413.2" y="282.5" width="82.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1454.6" y="291.0" font-size="8.5" fill="#333" text-anchor="middle">unit.deps_merged</text>
+<rect x="1654.7" y="267.5" width="134.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="1721.8" y="276.0" font-size="8.5" fill="#333" text-anchor="middle">reply redo ⚙ request_replan</text>
+<rect x="1163.4" y="391.5" width="171.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="1249.2" y="400.0" font-size="8.5" fill="#333" text-anchor="middle">reply keep ⚙ record_citation_choice</text>
+<rect x="1904.5" y="252.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1931.8" y="261.0" font-size="8.5" fill="#333" text-anchor="middle">reply drop<title>dictation (4); the items end their sessions and release their places</title></text>
+<rect x="1806.3" y="282.5" width="92.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="1852.3" y="291.0" font-size="8.5" fill="#333" text-anchor="middle">parent ∈ {dropped}</text>
+<rect x="1611.8" y="297.5" width="106.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="1664.8" y="306.0" font-size="8.5" fill="#333" text-anchor="middle">∀work-item ∈ {merged}</text>
+<rect x="2009.1" y="297.5" width="87.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="2052.8" y="306.0" font-size="8.5" fill="#333" text-anchor="middle">parent ∈ {landed}</text>
+<rect x="40" y="438" width="2332" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="448" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="71" y="457" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="448" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="457" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="448" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="457" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="448" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="457" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="448" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="617.85" y="457" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="448" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="457" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="448" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="457" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="448" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="457" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

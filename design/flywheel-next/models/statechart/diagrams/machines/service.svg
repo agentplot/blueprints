@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1378" height="425" viewBox="0 0 1378 425" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1378" height="425" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">service — object v2 · object service · parent bolt</text>
+<text x="40" y="57" font-size="12" fill="#666">One declared service in a bolt&#x27;s place: a dev server, a worker, anything the repository says listens (47).</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 12, 45, 46, 47, 48, 55, 191, 203 · service.yaml · record name, command, serves, endpoint, failure, moved_by</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
+<line x1="80" y1="103" x2="782.3499999999999" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="256.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="256.0" x2="69.0" y2="256.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M156.0,242.0 V129.0 H664.2 V242.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M140.8,242.0 V189.0 H220.0 V242.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M80.0,242.0 V234.0 H110.4 V242.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>already stopped; the response is consumed and nothing is written</title></path>
+<path d="M95.2,242.0 V204.0 H125.6 V242.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M296.0,242.0 V144.0 H689.5 V242.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M220.0,270.0 V304.0 H80.0 V270.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M229.5,242.0 V234.0 H248.5 V242.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>already starting; consumed</title></path>
+<path d="M267.5,242.0 V174.0 H360.0 V242.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M277.0,242.0 V189.0 H500.0 V242.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M286.5,242.0 V159.0 H533.4 V242.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"><title>present but never serving within the window; the page shows why</title></path>
+<path d="M239.0,242.0 V219.0 H258.0 V242.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M436.0,242.0 V174.0 H714.8 V242.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M398.0,270.0 V319.0 H118.0 V270.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M372.7,242.0 V234.0 H398.0 V242.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>already running; consumed</title></path>
+<path d="M423.3,242.0 V219.0 H566.8 V242.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"><title>the process ended on its own</title></path>
+<path d="M385.3,242.0 V204.0 H410.7 V242.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M600.2,242.0 V234.0 H740.2 V242.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M600.2,294.0 V304.0 H296.0 V270.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M500.0,294.0 V334.0 H156.0 V270.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<rect x="70.0" y="242.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>nothing declared under this name runs in the place; a process found by the tether name is stopped, never adopted</title></rect>
+<text x="118.0" y="264.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">stopped</text>
+<rect x="210.0" y="242.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the process is started in the place, bound to the worktree; running once it is present and serves; failed when it exits or never comes up</title></rect>
+<text x="258.0" y="264.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">starting</text>
+<rect x="350.0" y="242.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the process is present and serves; its endpoint, as the host&#x27;s router names it (191), is recorded with the service and shown beside the bolt as a link (46)</title></rect>
+<text x="398.0" y="264.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">running</text>
+<rect x="490.0" y="242.0" width="120.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>the process exited or never served; the operator or a session starts it again, or stops it to clear the failure</title></rect>
+<text x="550.1" y="264.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">failed</text>
+<rect x="504.0" y="266.0" width="92.1" height="14" rx="7" fill="#c9962e"/>
+<text x="550.1" y="276.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">service-failed</text>
+<text x="550.1" y="288.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: start · stop</text>
+<rect x="654.2" y="242.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"><title>the place was removed, and the tethered process with it (55), or the declaration left the file; the record stays as history</title></rect>
+<rect x="657.2" y="245.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="702.2" y="264.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">gone</text>
+<rect x="307.9" y="117.5" width="204.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="410.1" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">¬service.place_present ∨ ¬service.declared</text>
+<rect x="113.3" y="177.5" width="134.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="180.4" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">reply start ⚙ start_service</text>
+<rect x="67.8" y="222.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="95.2" y="231.0" font-size="8.5" fill="#333" text-anchor="middle">reply stop<title>already stopped; the response is consumed and nothing is written</title></text>
+<rect x="42.0" y="192.5" width="195.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="139.5" y="201.0" font-size="8.5" fill="#333" text-anchor="middle">service.process = present ⚙ stop_service</text>
+<rect x="390.6" y="132.5" width="204.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="492.8" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">¬service.place_present ∨ ¬service.declared</text>
+<rect x="87.6" y="304.5" width="124.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="150.0" y="313.0" font-size="8.5" fill="#333" text-anchor="middle">reply stop ⚙ stop_service</text>
+<rect x="209.3" y="222.5" width="59.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="239.0" y="231.0" font-size="8.5" fill="#333" text-anchor="middle">reply start<title>already starting; consumed</title></text>
+<rect x="209.2" y="162.5" width="209.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="313.8" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">service.process = present ∧ service.serving</text>
+<rect x="328.4" y="177.5" width="120.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="388.5" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">service.process = exited</text>
+<rect x="349.8" y="147.5" width="120.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="409.9" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">entered_at older than 5m<title>present but never serving within the window; the page shows why</title></text>
+<rect x="193.1" y="207.5" width="110.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="248.5" y="216.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ start_service</text>
+<rect x="473.2" y="162.5" width="204.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="575.4" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">¬service.place_present ∨ ¬service.declared</text>
+<rect x="195.6" y="319.5" width="124.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="258.0" y="328.0" font-size="8.5" fill="#333" text-anchor="middle">reply stop ⚙ stop_service</text>
+<rect x="355.6" y="222.5" width="59.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="385.3" y="231.0" font-size="8.5" fill="#333" text-anchor="middle">reply start<title>already running; consumed</title></text>
+<rect x="411.6" y="207.5" width="167.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="495.1" y="216.0" font-size="8.5" fill="#333" text-anchor="middle">service.process ∈ {absent, exited}<title>the process ended on its own</title></text>
+<rect x="272.4" y="192.5" width="251.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="398.0" y="201.0" font-size="8.5" fill="#333" text-anchor="middle">¬service.endpoint_recorded ⚙ record_service_endpoint</text>
+<rect x="568.0" y="222.5" width="204.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="670.2" y="231.0" font-size="8.5" fill="#333" text-anchor="middle">¬service.place_present ∨ ¬service.declared</text>
+<rect x="381.0" y="304.5" width="134.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="448.1" y="313.0" font-size="8.5" fill="#333" text-anchor="middle">reply start ⚙ start_service</text>
+<rect x="265.6" y="334.5" width="124.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="328.0" y="343.0" font-size="8.5" fill="#333" text-anchor="middle">reply stop ⚙ stop_service</text>
+<rect x="40" y="381" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="391" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="71" y="400" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="391" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="400" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="391" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="400" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="391" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="400" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="391" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="617.85" y="400" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="391" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="400" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="391" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="400" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="391" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="400" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

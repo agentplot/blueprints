@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1378" height="581" viewBox="0 0 1378 581" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1378" height="581" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">host — engine v4 · object host</text>
+<text x="40" y="57" font-size="12" fill="#666">A host that runs the machinery.</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 32, 55, 96, 147, 149, 150, 151, 186, 196, 205 · engine/host.yaml · record bound, last_seen, declares</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">disk<title>the host&#x27;s root on disk, beside its life; `flywheel host join` writes the record and this region clones and checks before the host takes any lease (205); lease.coverable reads it</title></text>
+<line x1="80" y1="103" x2="596" y2="103" stroke="#8a8a86" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="211.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="211.0" x2="69.0" y2="211.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M156.0,197.0 V129.0 H500.0 V197.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M118.0,197.0 V144.0 H360.0 V197.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M80.0,197.0 V159.0 H220.0 V197.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M296.0,197.0 V159.0 H538.0 V197.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M277.0,197.0 V174.0 H398.0 V197.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M239.0,197.0 V189.0 H258.0 V197.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M436.0,197.0 V189.0 H576.0 V197.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M538.0,261.0 V271.0 H118.0 V225.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<rect x="70.0" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>the root is read on the first tick; a host already laid out goes straight to ready</title></rect>
+<text x="118.0" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">unchecked</text>
+<rect x="210.0" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>the state, the books and every tracked built repository cloned bare under the root, one shared-line checkout each; a repeat adds only what is missing</title></rect>
+<text x="258.0" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">cloning</text>
+<rect x="350.0" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>the profile&#x27;s layout holds; the host takes leases and makes places (43, 44)</title></rect>
+<text x="398.0" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">ready</text>
+<rect x="490.0" y="197.0" width="96.0" height="64.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>a hand-made or drifted layout under the root; the host takes nothing, and the report says what differs (205)</title></rect>
+<text x="538.0" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">refused</text>
+<rect x="497.5" y="221.0" width="81.0" height="14" rx="7" fill="#c9962e"/>
+<text x="538.0" y="231.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">host-refused</text>
+<text x="538.0" y="243.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: retry</text>
+<text x="538.0" y="255.0" font-size="8.5" fill="#666" text-anchor="middle">entry ⚙ report</text>
+<rect x="263.2" y="117.5" width="129.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="328.0" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">host.disk_layout = differs</text>
+<rect x="111.1" y="132.5" width="255.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="239.0" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">host.repositories_cloned ∧ host.disk_layout = current</text>
+<rect x="42.0" y="147.5" width="223.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="153.5" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">host.disk_layout = absent ⚙ clone_repositories</text>
+<rect x="352.2" y="147.5" width="129.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="417.0" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">host.disk_layout = differs</text>
+<rect x="209.6" y="162.5" width="255.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="337.5" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">host.repositories_cloned ∧ host.disk_layout = current</text>
+<rect x="137.0" y="177.5" width="223.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="248.5" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">¬host.repositories_cloned ⚙ clone_repositories</text>
+<rect x="441.2" y="177.5" width="129.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="506.0" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">host.disk_layout = differs</text>
+<rect x="298.3" y="271.5" width="59.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="328.0" y="280.0" font-size="8.5" fill="#333" text-anchor="middle">reply retry</text>
+<text x="40" y="323" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
+<line x1="80" y1="319" x2="703.125" y2="319" stroke="#8a8a86" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="412.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="412.0" x2="69.0" y2="412.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M80.0,398.0 V390.0 H118.0 V398.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M99.0,398.0 V375.0 H137.0 V398.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M156.0,398.0 V360.0 H220.0 V398.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M258.0,426.0 V460.0 H80.0 V426.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M258.0,398.0 V345.0 H360.0 V398.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M296.0,398.0 V375.0 H538.2 V398.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M417.1,450.0 V475.0 H118.0 V426.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"><title>the host came back; its leases were never expired, its work resumes on it</title></path>
+<path d="M474.2,398.0 V390.0 H614.2 V398.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M576.2,426.0 V490.0 H156.0 V426.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<rect x="70.0" y="398.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>heartbeat within the stale window; every tick also reconciles the host&#x27;s own disk against the live objects</title></rect>
+<text x="118.0" y="420.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">alive</text>
+<rect x="210.0" y="398.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"><title>visible as stale on the status view; its objects are untouched (150)</title></rect>
+<text x="258.0" y="420.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">stale</text>
+<rect x="350.0" y="398.0" width="134.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>an attention line offers takeover; the leases expire only by the operator&#x27;s response or the long bound</title></rect>
+<text x="417.1" y="420.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">gone</text>
+<rect x="385.0" y="422.0" width="64.2" height="14" rx="7" fill="#c9962e"/>
+<text x="417.1" y="432.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">host-gone</text>
+<text x="417.1" y="444.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: takeover · wait</text>
+<rect x="528.2" y="398.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#8a8a86" stroke-width="1.6"></rect>
+<text x="576.2" y="420.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">released</text>
+<rect x="42.0" y="378.5" width="190.3" height="11" fill="#fff" opacity="0.92"/>
+<text x="137.2" y="387.0" font-size="8.5" fill="#333" text-anchor="middle">host.stray_places ⚙ remove_stray_places</text>
+<rect x="42.0" y="363.5" width="204.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="144.2" y="372.0" font-size="8.5" fill="#333" text-anchor="middle">¬host.layout_current ⚙ remove_stale_layout</text>
+<rect x="118.5" y="348.5" width="138.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="188.0" y="357.0" font-size="8.5" fill="#333" text-anchor="middle">host.last_seen older than 5m</text>
+<rect x="92.5" y="460.5" width="152.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="169.0" y="469.0" font-size="8.5" fill="#333" text-anchor="middle">¬(host.last_seen older than 5m)</text>
+<rect x="237.2" y="333.5" width="143.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="309.0" y="342.0" font-size="8.5" fill="#333" text-anchor="middle">host.last_seen older than 30m</text>
+<rect x="343.0" y="363.5" width="148.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="417.1" y="372.0" font-size="8.5" fill="#333" text-anchor="middle">reply takeover ⚙ expire_leases</text>
+<rect x="191.1" y="475.5" width="152.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="267.6" y="484.0" font-size="8.5" fill="#333" text-anchor="middle">¬(host.last_seen older than 5m)<title>the host came back; its leases were never expired, its work resumes on it</title></text>
+<rect x="395.3" y="378.5" width="297.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="544.2" y="387.0" font-size="8.5" fill="#333" text-anchor="middle">reply takeover ∨ host.last_seen older than 24h ⚙ expire_leases</text>
+<rect x="289.6" y="490.5" width="152.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="366.1" y="499.0" font-size="8.5" fill="#333" text-anchor="middle">¬(host.last_seen older than 5m)</text>
+<rect x="40" y="537" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="547" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="71" y="556" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="547" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="556" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="547" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="556" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="547" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="556" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="547" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="617.85" y="556" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="547" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="556" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="547" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="556" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="547" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="556" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

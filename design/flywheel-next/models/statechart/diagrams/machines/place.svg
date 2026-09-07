@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1648" height="395" viewBox="0 0 1648 395" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1648" height="395" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">place — template v2</text>
+<text x="40" y="57" font-size="12" fill="#666">A worktree the machinery prepares for one session off one line (49).</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 42, 45, 46, 51, 52, 55 · place.yaml · params line, inputs, keep · record head, conflict_retries, endpoints, held_at</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
+<line x1="80" y1="103" x2="1607.6" y2="103" stroke="#2b8a8a" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="211.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="211.0" x2="69.0" y2="211.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M118.0,197.0 V174.0 H220.0 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M296.0,197.0 V129.0 H360.0 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"><title>a place is proven current before any session starts in it</title></path>
+<path d="M245.3,197.0 V189.0 H270.7 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M436.0,197.0 V144.0 H500.0 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M385.3,197.0 V174.0 H410.7 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M515.2,197.0 V159.0 H545.6 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M500.0,225.0 V259.0 H360.0 V225.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M576.0,197.0 V174.0 H640.0 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M530.4,197.0 V189.0 H560.8 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M640.0,225.0 V289.0 H436.0 V225.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M716.0,225.0 V274.0 H525.3 V225.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M716.0,197.0 V189.0 H833.8 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M833.8,249.0 V259.0 H550.7 V225.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M1027.6,197.0 V174.0 H1091.6 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M989.6,225.0 V304.0 H576.0 V225.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"><title>a sibling landed first; take the line, then merge</title></path>
+<path d="M951.6,197.0 V189.0 H989.6 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M1167.6,197.0 V174.0 H1231.6 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M1288.6,197.0 V174.0 H1409.6 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M1307.6,197.0 V159.0 H1549.6 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M1250.6,197.0 V189.0 H1269.6 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M1409.6,225.0 V259.0 H1269.6 V225.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<rect x="70.0" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
+<text x="118.0" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">absent</text>
+<rect x="210.0" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
+<text x="258.0" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">preparing</text>
+<rect x="350.0" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>current with its line and holding no working session; the endpoints its processes serve are recorded with it (46)</title></rect>
+<text x="398.0" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">ready</text>
+<rect x="490.0" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>a sibling merged; this place is rebased when its session is idle and no one is typing in it</title></rect>
+<text x="538.0" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">behind</text>
+<rect x="630.0" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>the place&#x27;s own session resolves the conflict as part of its job; the rebase retries when it exits done</title></rect>
+<text x="678.0" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">conflict</text>
+<rect x="770.0" y="197.0" width="127.6" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"></rect>
+<text x="833.8" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">conflict-stalled</text>
+<rect x="807.3" y="221.0" width="53.1" height="14" rx="7" fill="#c9962e"/>
+<text x="833.8" y="231.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">stalled</text>
+<text x="833.8" y="243.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: retry · hold</text>
+<rect x="941.6" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>entered by the owner when its work is done; one place merges at a time in the fixed order (38)</title></rect>
+<text x="989.6" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">merging</text>
+<rect x="1081.6" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
+<text x="1129.6" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">merged</text>
+<rect x="1221.6" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>entered from merged, or by the owner when the work the place served was dropped or retired, or when the bolt landed; the removal is an effect recorded like any other (55)</title></rect>
+<text x="1269.6" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">removing</text>
+<rect x="1361.6" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>the operator holds the place by dictation; nothing removes it while held; released by dictation (55)</title></rect>
+<text x="1409.6" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">held</text>
+<rect x="1501.6" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="2"></rect>
+<rect x="1504.6" y="200.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#2b8a8a" stroke-width="1.2"/>
+<text x="1549.6" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">removed</text>
+<rect x="113.6" y="162.5" width="110.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="169.0" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ prepare_place</text>
+<rect x="244.5" y="117.5" width="167.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="328.0" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">place.exists ∧ place.contains_line<title>a place is proven current before any session starts in it</title></text>
+<rect x="202.6" y="177.5" width="110.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="258.0" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ prepare_place</text>
+<rect x="417.2" y="132.5" width="101.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="468.0" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">¬place.contains_line</text>
+<rect x="291.1" y="162.5" width="213.7" height="11" fill="#fff" opacity="0.92"/>
+<text x="398.0" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">¬place.endpoints_recorded ⚙ record_endpoints</text>
+<rect x="402.5" y="147.5" width="255.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="530.4" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">session.activity = working ∨ session.operator_present</text>
+<rect x="351.2" y="259.5" width="157.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="430.0" y="268.0" font-size="8.5" fill="#333" text-anchor="middle">place.contains_line ⚙ tell_moved</text>
+<rect x="519.9" y="162.5" width="176.3" height="11" fill="#fff" opacity="0.92"/>
+<text x="608.0" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">place.conflicted ⚙ seed_conflict_job</text>
+<rect x="492.5" y="177.5" width="106.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="545.6" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ rebase_place</text>
+<rect x="459.2" y="289.5" width="157.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="538.0" y="298.0" font-size="8.5" fill="#333" text-anchor="middle">place.contains_line ⚙ tell_moved</text>
+<rect x="462.4" y="274.5" width="316.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="620.7" y="283.0" font-size="8.5" fill="#333" text-anchor="middle">session.exit = done ∧ place.conflict_retries &lt; 3 +conflict_retries</text>
+<rect x="710.1" y="177.5" width="129.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="774.9" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">place.conflict_retries ≥ 3</text>
+<rect x="662.5" y="259.5" width="59.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="692.2" y="268.0" font-size="8.5" fill="#333" text-anchor="middle">reply retry</text>
+<rect x="1027.5" y="162.5" width="64.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="1059.6" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">place.merged</text>
+<rect x="732.0" y="304.5" width="101.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="782.8" y="313.0" font-size="8.5" fill="#333" text-anchor="middle">¬place.contains_line<title>a sibling landed first; take the line, then merge</title></text>
+<rect x="896.5" y="177.5" width="148.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="970.6" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">place.merge_slot ⚙ merge_place</text>
+<rect x="1181.6" y="162.5" width="36.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="1199.6" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">always</text>
+<rect x="1321.7" y="162.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1349.1" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">place.held</text>
+<rect x="1396.5" y="147.5" width="64.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="1428.6" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">place.absent</text>
+<rect x="1207.0" y="177.5" width="106.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="1260.1" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ remove_place</text>
+<rect x="1309.9" y="259.5" width="59.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="1339.6" y="268.0" font-size="8.5" fill="#333" text-anchor="middle">¬place.held</text>
+<rect x="40" y="351" width="1568" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="361" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="71" y="370" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="361" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="370" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="361" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="370" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="361" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="370" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="361" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="617.85" y="370" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="361" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="370" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="361" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="370" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="361" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="370" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

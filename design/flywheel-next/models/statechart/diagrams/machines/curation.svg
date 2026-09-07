@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1378" height="532" viewBox="0 0 1378 532" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1378" height="532" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">curation — object v3 · object curation · one per organization</text>
+<text x="40" y="57" font-size="12" fill="#666">Curation: one machine per organization (A.15).</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 20, 58, 60, 108, 110, 116, 118, 171, 182, 188 · curation.yaml · record threshold, cadence</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">run</text>
+<line x1="73" y1="103" x2="1021.1500000000001" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="196.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="196.0" x2="69.0" y2="196.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M118.0,182.0 V174.0 H220.0 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M296.0,182.0 V159.0 H724.6 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M372.0,182.0 V129.0 H925.2 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M448.0,182.0 V144.0 H963.2 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M524.0,182.0 V174.0 H1001.2 V182.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>dictation retires the session (4); the run is due again on the next tick</title></path>
+<path d="M724.6,222.0 V426.0 H80.0 V210.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M963.2,222.0 V441.0 H156.0 V210.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<rect x="70.0" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
+<text x="118.0" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">idle</text>
+<rect x="210.0" y="182.0" width="324.0" height="234.0" rx="7" fill="#fafafa" stroke="#4a7fb5" stroke-width="1.6"><title>one session, bounded job, fixed exits; it reads the unmoved signals against the claims index and the open intents</title></rect>
+<text x="372.0" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">running</text>
+<line x1="220.0" y1="214.0" x2="524.0" y2="214.0" stroke="#e5e5e5"/>
+<text x="220" y="229" font-size="9.5" font-weight="700" fill="#999">place</text>
+<circle cx="232.0" cy="262.0" r="4" fill="#1a1a1a"/>
+<line x1="236.0" y1="262.0" x2="249.0" y2="262.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<rect x="250.0" y="236.0" width="264.0" height="52.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
+<text x="382.0" y="258.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">place</text>
+<text x="382.0" y="270.0" font-size="9.5" fill="#2b8a8a" text-anchor="middle" font-weight="700">⧉ place</text>
+<text x="382.0" y="282.0" font-size="8" fill="#999" text-anchor="middle">line=books-shared-line · inputs=work-order · keep=False</text>
+<line x1="220.0" y1="306.0" x2="524.0" y2="306.0" stroke="#e5e5e5"/>
+<text x="220" y="321" font-size="9.5" font-weight="700" fill="#999">session</text>
+<circle cx="232.0" cy="360.0" r="4" fill="#1a1a1a"/>
+<line x1="236.0" y1="360.0" x2="249.0" y2="360.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<rect x="250.0" y="328.0" width="264.0" height="64.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
+<text x="382.0" y="350.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">session</text>
+<text x="382.0" y="362.0" font-size="9.5" fill="#2b8a8a" text-anchor="middle" font-weight="700">⧉ session</text>
+<text x="382.0" y="374.0" font-size="8" fill="#999" text-anchor="middle">agent=curator · place=own-place · work_order=rendered ·</text>
+<text x="382.0" y="386.0" font-size="8" fill="#999" text-anchor="middle">keep_alive=False</text>
+<rect x="578.0" y="182.0" width="293.2" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>every judged signal gets its one standing move; each join becomes or grows a proposed intent with its elaborations; a challenge stales the claim&#x27;s verdicts wherever they stand (101, 116); a route names the chore or ask the session offered, which record_offers on the session already turned into a proposed chore unit on the shared line or an ask record (58–60)</title></rect>
+<text x="724.6" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">applying</text>
+<text x="724.6" y="216.0" font-size="8.5" fill="#666" text-anchor="middle">entry ⚙ record_moves, propose_intents, gather_elaborations</text>
+<rect x="915.2" y="182.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
+<text x="963.2" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">failed</text>
+<text x="963.2" y="216.0" font-size="8.5" fill="#666" text-anchor="middle">entry ⚙ report</text>
+<rect x="42.0" y="162.5" width="461.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="272.7" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">curation.unmoved_count ≥ curation.threshold ∨ (curation.unmoved_count ≥ 1 ∧ curation.cadence_due)</text>
+<rect x="426.8" y="147.5" width="167.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="510.3" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">final exited ∧ session.exit = done</text>
+<rect x="532.4" y="117.5" width="232.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="648.6" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">final exited ∧ session.exit ∈ {stalled, invalid}</text>
+<rect x="678.2" y="132.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="705.6" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">final lost</text>
+<rect x="655.7" y="162.5" width="213.7" height="11" fill="#fff" opacity="0.92"/>
+<text x="762.6" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">reply retire ↳ session→ended, place→removing<title>dictation retires the session (4); the run is due again on the next tick</title></text>
+<rect x="384.3" y="426.5" width="36.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="402.3" y="435.0" font-size="8.5" fill="#333" text-anchor="middle">always</text>
+<rect x="541.6" y="441.5" width="36.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="559.6" y="450.0" font-size="8.5" fill="#333" text-anchor="middle">always</text>
+<rect x="40" y="488" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="498" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="71" y="507" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="498" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="507" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="498" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="507" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="498" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="507" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="498" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="617.85" y="507" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="498" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="507" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="498" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="507" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="498" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="507" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

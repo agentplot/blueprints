@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1653" height="425" viewBox="0 0 1653 425" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1653" height="425" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">line — template v4</text>
+<text x="40" y="57" font-size="12" fill="#666">A branch the machinery owns (49).</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 42, 49, 50, 52, 53, 54, 183, 185, 175, 176, 177, 179, 180, 192 · line.yaml · params parent, landing_policy · record head, merge_base, retries, last_take</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
+<line x1="80" y1="103" x2="1612.8" y2="103" stroke="#2b8a8a" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="256.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="256.0" x2="69.0" y2="256.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M118.0,242.0 V234.0 H220.0 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M296.0,242.0 V219.0 H360.0 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M360.0,270.0 V304.0 H220.0 V270.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M436.0,242.0 V204.0 H500.0 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M385.3,242.0 V234.0 H410.7 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M500.0,270.0 V334.0 H296.0 V270.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M576.0,270.0 V319.0 H398.0 V270.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M576.0,242.0 V234.0 H640.0 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M693.8,294.0 V304.0 H436.0 V270.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M693.8,242.0 V234.0 H747.6 V242.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M887.6,242.0 V129.0 H1236.8 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M878.1,242.0 V144.0 H1096.8 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M811.6,242.0 V189.0 H840.1 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M821.1,242.0 V174.0 H849.6 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M868.6,242.0 V159.0 H951.6 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M830.6,242.0 V204.0 H859.1 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M1032.8,242.0 V189.0 H1274.8 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M1019.3,242.0 V204.0 H1172.8 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M965.1,242.0 V219.0 H992.2 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M978.7,242.0 V234.0 H1005.7 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M1312.8,242.0 V219.0 H1376.8 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M1452.8,242.0 V219.0 H1554.8 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M1402.1,242.0 V234.0 H1427.5 V242.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<rect x="70.0" y="242.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
+<text x="118.0" y="264.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">absent</text>
+<rect x="210.0" y="242.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>contains its parent as of the last take</title></rect>
+<text x="258.0" y="264.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">current</text>
+<rect x="350.0" y="242.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>the take is a merge by the machinery; a conflicting take is aborted whole (52)</title></rect>
+<text x="398.0" y="264.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">taking</text>
+<rect x="490.0" y="242.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>the chore&#x27;s session resolves it in its place; the take is retried when the chore merges</title></rect>
+<text x="538.0" y="264.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">conflict</text>
+<rect x="630.0" y="242.0" width="127.6" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"></rect>
+<text x="693.8" y="264.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">conflict-stalled</text>
+<rect x="667.3" y="266.0" width="53.1" height="14" rx="7" fill="#c9962e"/>
+<text x="693.8" y="276.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">stalled</text>
+<text x="693.8" y="288.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: retry · hold</text>
+<rect x="801.6" y="242.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>entered by the owner&#x27;s response (bolt close, intent archive); one final take, then the policy&#x27;s landing (175)</title></rect>
+<text x="849.6" y="264.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">landing</text>
+<rect x="941.6" y="242.0" width="101.2" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>the bolt stays open, landing, while the request is open (175); a review that asks for a change is seeded as a finding on the bolt, and the chore it becomes merges into this line and so updates the request (176); the request&#x27;s links are evidence shown on the bolt (177)</title></rect>
+<text x="992.2" y="264.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">request-open</text>
+<rect x="1086.8" y="242.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="2"><title>the gates failed or the request was closed; the line stays; nothing is asked of any session until the operator&#x27;s response (40, 175, S33)</title></rect>
+<rect x="1089.8" y="245.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#2b8a8a" stroke-width="1.2"/>
+<text x="1134.8" y="264.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">land-failed</text>
+<rect x="1226.8" y="242.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
+<text x="1274.8" y="264.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">landed</text>
+<rect x="1366.8" y="242.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>entered from landed, or by the owner when the bolt is dropped; nothing of the work lives on a branch afterwards (54)</title></rect>
+<text x="1414.8" y="264.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">removing</text>
+<rect x="1506.8" y="242.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="2"></rect>
+<rect x="1509.8" y="245.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#2b8a8a" stroke-width="1.2"/>
+<text x="1554.8" y="264.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">removed</text>
+<rect x="118.2" y="222.5" width="101.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="169.0" y="231.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ create_line</text>
+<rect x="237.5" y="207.5" width="181.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="328.0" y="216.0" font-size="8.5" fill="#333" text-anchor="middle">line.take_due ∧ ¬line.contains_parent</text>
+<rect x="239.2" y="304.5" width="101.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="290.0" y="313.0" font-size="8.5" fill="#333" text-anchor="middle">line.contains_parent</text>
+<rect x="370.5" y="192.5" width="195.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="468.0" y="201.0" font-size="8.5" fill="#333" text-anchor="middle">line.take_conflicts ⚙ seed_take_conflict</text>
+<rect x="347.2" y="222.5" width="101.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="398.0" y="231.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ take_parent</text>
+<rect x="347.2" y="334.5" width="101.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="398.0" y="343.0" font-size="8.5" fill="#333" text-anchor="middle">line.contains_parent</text>
+<rect x="366.1" y="319.5" width="241.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="487.0" y="328.0" font-size="8.5" fill="#333" text-anchor="middle">line.conflict_job_done ∧ line.retries &lt; 3 +retries</text>
+<rect x="566.6" y="222.5" width="82.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="608.0" y="231.0" font-size="8.5" fill="#333" text-anchor="middle">line.retries ≥ 3</text>
+<rect x="535.2" y="304.5" width="59.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="564.9" y="313.0" font-size="8.5" fill="#333" text-anchor="middle">reply retry</text>
+<rect x="693.3" y="222.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="720.7" y="231.0" font-size="8.5" fill="#333" text-anchor="middle">reply hold</text>
+<rect x="1032.5" y="117.5" width="59.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="1062.2" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">line.landed</text>
+<rect x="934.4" y="132.5" width="106.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="987.5" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">line.landing = failed</text>
+<rect x="740.0" y="177.5" width="171.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="825.9" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">¬line.contains_parent ⚙ take_parent</text>
+<rect x="730.8" y="162.5" width="209.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="835.4" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">¬line.acceptance_written ⚙ write_acceptance</text>
+<rect x="810.3" y="147.5" width="199.7" height="11" fill="#fff" opacity="0.92"/>
+<text x="910.1" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">line.policy = pull-request ⚙ open_request</text>
+<rect x="763.7" y="192.5" width="162.3" height="11" fill="#fff" opacity="0.92"/>
+<text x="844.9" y="201.0" font-size="8.5" fill="#333" text-anchor="middle">line.landing ∈ {none} ⚙ land_line</text>
+<rect x="1100.7" y="177.5" width="106.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="1153.8" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">line.request = merged</text>
+<rect x="1042.9" y="192.5" width="106.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="1096.0" y="201.0" font-size="8.5" fill="#333" text-anchor="middle">line.request = closed</text>
+<rect x="857.8" y="207.5" width="241.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="978.7" y="216.0" font-size="8.5" fill="#333" text-anchor="middle">line.request_review_pending ⚙ seed_request_finding</text>
+<rect x="908.7" y="222.5" width="167.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="992.2" y="231.0" font-size="8.5" fill="#333" text-anchor="middle">line.request = none ⚙ open_request</text>
+<rect x="1326.8" y="207.5" width="36.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="1344.8" y="216.0" font-size="8.5" fill="#333" text-anchor="middle">always</text>
+<rect x="1474.1" y="207.5" width="59.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="1503.8" y="216.0" font-size="8.5" fill="#333" text-anchor="middle">line.absent</text>
+<rect x="1364.0" y="222.5" width="101.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="1414.8" y="231.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ remove_line</text>
+<rect x="40" y="381" width="1573" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="391" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="71" y="400" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="391" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="400" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="391" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="400" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="391" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="400" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="391" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="617.85" y="400" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="391" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="400" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="391" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="400" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="391" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="400" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

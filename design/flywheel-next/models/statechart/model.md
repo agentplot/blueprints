@@ -35,6 +35,19 @@ requirement is cited nowhere (section 12 of the requirements):
 uv run --with pyyaml --with jsonschema python3 machines/check.py
 ```
 
+`machines/render.py` draws the same files as statecharts — one SVG per
+machine under `diagrams/machines/`, listed in `diagrams/machines/index.md`
+with each machine's kind, version, object and `satisfies` — regions as
+bands, states as boxes with their decision kinds, finals and submachines,
+transitions labelled with the guard, the effects and the `enter:`
+commands. The pictures are derived, never drawn by hand, so they are the
+operator's review of every machine at every change (83; the registry and
+the context each session is handed are in `machines-and-context.md`):
+
+```bash
+uv run --with pyyaml python3 machines/render.py
+```
+
 ## 1. Objects and their machines
 
 ### 1.1 What carries a machine

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1378" height="277" viewBox="0 0 1378 277" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1378" height="277" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">claim — object v4 · object claim</text>
+<text x="40" y="57" font-size="12" fill="#666">One statement in the design book of what is true at the destination (A.14).</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 23, 97, 98, 105, 121, 195, 198, 200, 211 · claim.yaml · record name, version, attachments, scenarios</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">standing</text>
+<line x1="107" y1="103" x2="456" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="181.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="181.0" x2="69.0" y2="181.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M118.0,167.0 V129.0 H220.0 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M296.0,167.0 V129.0 H398.0 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M235.2,167.0 V159.0 H265.6 V167.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M250.4,167.0 V144.0 H280.8 V167.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<rect x="70.0" y="167.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>visible, never built (98)</title></rect>
+<text x="118.0" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">proposed</text>
+<rect x="210.0" y="167.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>planned against where it attaches; every ledger cell in scope compares its verdict&#x27;s version with this one; the page shows the attachments with a control to re-attach it (195, 200)</title></rect>
+<text x="258.0" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">standing</text>
+<rect x="350.0" y="167.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"></rect>
+<rect x="353.0" y="170.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="398.0" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">retired</text>
+<rect x="118.2" y="117.5" width="101.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="169.0" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">claim.on_shared_line</text>
+<rect x="293.9" y="117.5" width="106.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="347.0" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">¬claim.on_shared_line</text>
+<rect x="159.9" y="147.5" width="181.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="250.4" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">reply attach &lt;element&gt; ⚙ attach_claim</text>
+<rect x="175.1" y="132.5" width="181.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="265.6" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">reply detach &lt;element&gt; ⚙ detach_claim</text>
+<rect x="40" y="233" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="243" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="71" y="252" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="243" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="252" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="243" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="252" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="243" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="252" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="243" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="617.85" y="252" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="243" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="252" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="243" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="252" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="243" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="252" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>
