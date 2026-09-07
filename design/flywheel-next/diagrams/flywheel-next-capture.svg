@@ -1,0 +1,310 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 960"
+     font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="mN" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+    <marker id="mR" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c05b5b"/></marker>
+    <marker id="mP" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7b5cb8"/></marker>
+    <marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+    <g id="gear"> <circle r="9" fill="#fff" stroke="currentColor" stroke-width="2.4" /> <circle r="3" fill="currentColor" /> <g stroke="currentColor" stroke-width="2.4"> <line y1="-9" y2="-13.5" /><line y1="9" y2="13.5" /> <line x1="-9" x2="-13.5" /><line x1="9" x2="13.5" /> <line x1="-6.4" y1="-6.4" x2="-9.5" y2="-9.5" /><line x1="6.4" y1="6.4" x2="9.5" y2="9.5" /> <line x1="-6.4" y1="6.4" x2="-9.5" y2="9.5" /><line x1="6.4" y1="-6.4" x2="9.5" y2="-9.5" /> </g> </g>
+    <g id="repo"> <rect x="-26" y="-18" width="52" height="36" rx="7" fill="#fff" stroke="currentColor" stroke-width="2" /> <circle cx="-9" cy="8" r="3.2" fill="currentColor" /> <circle cx="9" cy="-8" r="3.2" fill="currentColor" /> <path d="M -9 8 v-8 a 8 8 0 0 1 8 -8 h 1" fill="none" stroke="currentColor" stroke-width="2" /> </g>
+    <g id="person"> <circle cy="-6" r="4" fill="#fff" stroke="currentColor" stroke-width="1.8" /> <path d="M -7 8 a 7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8" /> </g>
+    <g id="people"> <circle cy="-5" r="4" fill="none" stroke="currentColor" stroke-width="1.8" /> <path d="M -8 9 a 8 7 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="1.8" /> </g>
+    <g id="browser"> <rect x="-22" y="-14" width="44" height="28" rx="4" fill="#fff" stroke="currentColor" stroke-width="2" /> <line x1="-22" y1="-6" x2="22" y2="-6" stroke="currentColor" stroke-width="2" /> <circle cx="-16" cy="-10" r="1.6" fill="currentColor" /><circle cx="-11" cy="-10" r="1.6" fill="currentColor" /> </g>
+    <g id="cyl"> <path d="M -24 -11 L -24 13 A 24 8 0 0 0 24 13 L 24 -11" fill="#f1f1ee" stroke="#8a8a86" stroke-width="1.6" /> <ellipse cx="0" cy="-11" rx="24" ry="8" fill="#e3e3df" stroke="#8a8a86" stroke-width="1.6" /> </g>
+    <g id="marker"> <circle r="7" fill="#fff" stroke="currentColor" stroke-width="2.2" /> <circle r="2.6" fill="currentColor" /> </g>
+    <g id="rows" fill="#8a8a86"> <rect x="-16" y="-9" width="32" height="4" rx="1" /><rect x="-16" y="-2" width="32" height="4" rx="1" /><rect x="-16" y="5" width="20" height="4" rx="1" /> </g>
+    <g id="cube" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"> <path d="M -16 -8 L 0 -17 L 16 -8 L 16 10 L 0 19 L -16 10 Z" fill="#fff" /> <path d="M -16 -8 L 0 1 L 16 -8 M 0 1 L 0 19" fill="none" /> </g>
+    <g id="cloud" fill="#fff" stroke="currentColor" stroke-width="1.8"> <path d="M -14 8 a 7 7 0 0 1 1 -14 a 9 9 0 0 1 17 -3 a 7 7 0 0 1 10 6 a 6 6 0 0 1 -2 11 z" /> </g>
+    <g id="pkg"> <rect x="-30" y="-8" width="60" height="16" rx="8" fill="#f1f1ee" stroke="#8a8a86" stroke-width="1" /> <text y="3.5" font-size="7.5" fill="#5f6b7a" text-anchor="middle" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">package</text> </g>
+    <g id="bot"> <rect x="-11" y="-9" width="22" height="18" rx="4" fill="#fff" stroke="currentColor" stroke-width="1.8" /> <circle cx="-4" cy="-2" r="1.8" fill="currentColor" /><circle cx="4" cy="-2" r="1.8" fill="currentColor" /> <line x1="-4" y1="4" x2="4" y2="4" stroke="currentColor" stroke-width="1.6" /> <line x1="0" y1="-9" x2="0" y2="-14" stroke="currentColor" stroke-width="1.8" /> <circle cy="-15" r="1.8" fill="currentColor" /> </g>
+  </defs>
+  <rect width="1800" height="960" fill="#fff"/>
+  <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Flywheel next — capture: adapters run wherever the source is, every one writes the same keyed record, one session reads it, and the endpoint is one host among several</text>
+  <text x="40" y="57" font-size="12" font-weight="700" fill="#666">sources · adapters as packages on their hosts · captures, the raw store, triage, signals, moves · identities, secrets and how a source is added</text>
+
+  <!-- ═══════════ SOURCES ═══════════ -->
+  <rect x="60" y="70" width="280" height="570" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="76" y="92" font-size="12" font-weight="700" fill="#5f6b7a">SOURCES · outside · events only</text>
+  <text x="76" y="106" font-size="8.5" fill="#999">no judgment · they supply raw material (§2, 115)</text>
+
+  <use href="#rows" x="100" y="170" color="#8a8a86"/>
+  <text x="126" y="166" font-size="10.5" font-weight="700" fill="#333">the operator's laptop</text>
+  <text x="126" y="181" font-size="9.5" fill="#666">meeting transcripts · a folder drop</text>
+  <text x="126" y="194" font-size="8.5" fill="#999">112</text>
+
+  <use href="#repo" x="100" y="310" color="#8a8a86"/>
+  <text x="140" y="306" font-size="10.5" font-weight="700" fill="#333">beside a repository</text>
+  <text x="140" y="321" font-size="9.5" fill="#666">PR conversation · an issue tracker</text>
+  <text x="140" y="334" font-size="8.5" fill="#999">178</text>
+
+  <use href="#person" x="100" y="428" color="#c05b5b"/>
+  <text x="126" y="424" font-size="10.5" font-weight="700" fill="#333">people</text>
+  <text x="126" y="439" font-size="9.5" fill="#666">a chat forward · one word on the phone</text>
+  <text x="126" y="452" font-size="8.5" fill="#999">112</text>
+
+  <use href="#cloud" x="100" y="500" color="#8a8a86"/>
+  <text x="126" y="494" font-size="10.5" font-weight="700" fill="#333">operation</text>
+  <text x="126" y="509" font-size="9.5" fill="#666">logs and monitors · Datadog</text>
+  <text x="126" y="522" font-size="9.5" fill="#666">the delivery system · switchboard</text>
+  <text x="126" y="535" font-size="8.5" fill="#999">181 · 182</text>
+
+  <use href="#browser" x="100" y="590" color="#8a8a86"/>
+  <text x="136" y="586" font-size="10.5" font-weight="700" fill="#333">the page</text>
+  <text x="136" y="601" font-size="9.5" fill="#666">the capture box</text>
+  <text x="136" y="614" font-size="8.5" fill="#999">19</text>
+
+  <text x="200" y="632" font-size="8.5" fill="#999" text-anchor="middle">switchboard · gvc · flywheel-cloud · a request opened by hand (178)</text>
+
+  <!-- sources -> hosts -->
+  <path d="M 342 176 L 414 176" fill="none" stroke="#8a8a86" stroke-width="2" marker-end="url(#mN)"/>
+  <path d="M 342 316 L 414 316" fill="none" stroke="#8a8a86" stroke-width="2" marker-end="url(#mN)"/>
+  <path d="M 342 434 L 414 448" fill="none" stroke="#8a8a86" stroke-width="2" marker-end="url(#mN)"/>
+  <path d="M 342 506 C 380 506, 380 456, 414 456" fill="none" stroke="#8a8a86" stroke-width="2" marker-end="url(#mN)"/>
+  <path d="M 342 596 L 414 596" fill="none" stroke="#8a8a86" stroke-width="2" marker-end="url(#mN)"/>
+  <text x="378" y="168" font-size="8.5" fill="#5f6b7a" text-anchor="middle">events</text>
+  <text x="378" y="308" font-size="8.5" fill="#5f6b7a" text-anchor="middle">events</text>
+  <text x="378" y="588" font-size="8.5" fill="#5f6b7a" text-anchor="middle">text</text>
+
+  <!-- ═══════════ ADAPTERS ═══════════ -->
+  <rect x="400" y="70" width="540" height="570" rx="10" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4"/>
+  <text x="416" y="88" font-size="11" font-weight="700" fill="#1f6e6e">ADAPTERS · every one enumerates events and writes captures: arithmetic, unattended (115)</text>
+
+  <!-- host 1 · the operator's laptop -->
+  <rect x="416" y="100" width="508" height="140" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+  <text x="430" y="120" font-size="11" font-weight="700" fill="#333">the operator's laptop · edge capture</text>
+  <text x="910" y="120" font-size="8.5" fill="#999" text-anchor="end">runs while the laptop is awake</text>
+  <rect x="430" y="130" width="236" height="50" rx="6" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.2"/>
+  <text x="440" y="149" font-size="10.5" font-weight="700" fill="#333">meeting transcripts</text>
+  <text x="440" y="164" font-size="8.5" fill="#666">key: the meeting id · raw: the transcript</text>
+  <use href="#pkg" x="628" y="142"/>
+  <rect x="678" y="130" width="236" height="50" rx="6" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.2"/>
+  <text x="688" y="149" font-size="10.5" font-weight="700" fill="#333">folder drop</text>
+  <text x="688" y="164" font-size="8.5" fill="#666">key: the file's hash · raw: the file</text>
+  <use href="#pkg" x="876" y="142"/>
+  <text x="430" y="202" font-size="9.5" font-family="monospace" fill="#1f6e6e">flywheel capture &lt;source&gt;</text>
+  <text x="430" y="216" font-size="8.5" fill="#666">writes straight to the books' shared line through its own host binary · <tspan font-weight="700" fill="#a34848">never through dispatch</tspan></text>
+  <text x="430" y="230" font-size="8.5" fill="#999">111 · 114 · 115 · 162 · model §4</text>
+
+  <!-- host 2 · beside a repository -->
+  <rect x="416" y="252" width="508" height="120" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+  <text x="430" y="272" font-size="11" font-weight="700" fill="#333">a host beside a repository</text>
+  <text x="910" y="272" font-size="8.5" fill="#999" text-anchor="end">any host with the App's installation on that repository</text>
+  <rect x="430" y="282" width="236" height="50" rx="6" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.2"/>
+  <text x="440" y="301" font-size="10.5" font-weight="700" fill="#333">PR conversation</text>
+  <text x="440" y="316" font-size="8.5" fill="#666">key: the comment id · raw: the thread</text>
+  <use href="#pkg" x="628" y="294"/>
+  <rect x="678" y="282" width="236" height="50" rx="6" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.2"/>
+  <text x="688" y="301" font-size="10.5" font-weight="700" fill="#333">issue tracker</text>
+  <text x="688" y="316" font-size="8.5" fill="#666">key: the issue event id · raw: the issue</text>
+  <use href="#pkg" x="876" y="294"/>
+  <text x="430" y="350" font-size="8.5" fill="#666">reads the conversation with a scoped installation token · nothing in a request changes an intent except through curation</text>
+  <text x="430" y="364" font-size="8.5" fill="#999">178 · 203 · 207</text>
+
+  <!-- host 3 · the capture endpoint -->
+  <rect x="416" y="384" width="508" height="140" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="2.2"/>
+  <use href="#cloud" x="900" y="404" color="#2b8a8a"/>
+  <text x="430" y="404" font-size="11" font-weight="700" fill="#333">the capture endpoint · <tspan fill="#1f6e6e">one adapter host among several</tspan></text>
+  <text x="430" y="417" font-size="8.5" fill="#666">for callers that cannot write git · a job of dispatch, wherever dispatch is placed</text>
+  <rect x="430" y="426" width="140" height="50" rx="6" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.2"/>
+  <text x="440" y="445" font-size="10.5" font-weight="700" fill="#333">Datadog</text>
+  <text x="440" y="460" font-size="8.5" fill="#666">key: the FINDING# id</text>
+  <use href="#pkg" x="534" y="438"/>
+  <rect x="582" y="426" width="140" height="50" rx="6" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.2"/>
+  <text x="592" y="445" font-size="10.5" font-weight="700" fill="#333">switchboard</text>
+  <text x="592" y="460" font-size="8.5" fill="#666">key: FINDING# · DEP# id</text>
+  <use href="#pkg" x="690" y="438"/>
+  <rect x="734" y="426" width="180" height="50" rx="6" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.2"/>
+  <use href="#bot" x="750" y="452" color="#2b8a8a"/>
+  <text x="768" y="445" font-size="10.5" font-weight="700" fill="#333">the chat bot</text>
+  <text x="768" y="460" font-size="8.5" fill="#666">key: the message id</text>
+  <use href="#pkg" x="878" y="438"/>
+  <text x="430" y="496" font-size="8.5" fill="#666">no model · one request, one commit · the same key writes nothing · a forwarded message gets its one signal here, no reader</text>
+  <text x="430" y="510" font-size="8.5" fill="#999">106 · 111 · 112 · S21 · S22 · model §1</text>
+
+  <!-- host 4 · the page's host -->
+  <rect x="416" y="536" width="508" height="92" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+  <text x="430" y="556" font-size="11" font-weight="700" fill="#333">the host that serves the page</text>
+  <text x="910" y="556" font-size="8.5" fill="#999" text-anchor="end">any host may serve it (148)</text>
+  <rect x="430" y="566" width="236" height="50" rx="6" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.2"/>
+  <text x="440" y="585" font-size="10.5" font-weight="700" fill="#333">the capture box</text>
+  <text x="440" y="600" font-size="8.5" fill="#666">text sent unparsed to the capture tool</text>
+  <use href="#pkg" x="628" y="578"/>
+  <text x="680" y="585" font-size="9.5" fill="#666">one signal of kind ask, so curation sees it</text>
+  <text x="680" y="600" font-size="8.5" fill="#999">19 · 193 · 194</text>
+
+  <!-- adapters -> the bus -> captures -->
+  <path d="M 926 176 L 970 176" fill="none" stroke="#2b8a8a" stroke-width="2.2"/>
+  <path d="M 926 316 L 970 316" fill="none" stroke="#2b8a8a" stroke-width="2.2"/>
+  <path d="M 926 456 L 970 456" fill="none" stroke="#2b8a8a" stroke-width="2.2"/>
+  <path d="M 926 592 L 970 592" fill="none" stroke="#2b8a8a" stroke-width="2.2"/>
+  <path d="M 970 592 L 970 176" fill="none" stroke="#2b8a8a" stroke-width="2.2"/>
+  <path d="M 970 186 L 1088 186" fill="none" stroke="#2b8a8a" stroke-width="2.4" marker-end="url(#mT)"/>
+  <text x="970" y="160" font-size="9" font-weight="700" fill="#1f6e6e" text-anchor="middle">one write</text>
+  <text x="970" y="612" font-size="8.5" fill="#1f6e6e" text-anchor="middle">keyed</text>
+  <text x="970" y="624" font-size="8.5" fill="#1f6e6e" text-anchor="middle">twice is once</text>
+  <text x="970" y="636" font-size="8.5" fill="#999" text-anchor="middle">111</text>
+
+  <!-- ═══════════ RECORDS ═══════════ -->
+  <rect x="1000" y="70" width="740" height="570" rx="10" fill="#fff" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="1016" y="88" font-size="11" font-weight="700" fill="#5f6b7a">RECORDS · what every adapter writes, what one session reads, what curation moves</text>
+
+  <!-- books column -->
+  <rect x="1016" y="100" width="200" height="528" rx="8" fill="#f8f5fc" stroke="#7b5cb8" stroke-width="1.4"/>
+  <text x="1030" y="120" font-size="11" font-weight="700" fill="#5a3f95">BOOKS · the shared line</text>
+  <text x="1030" y="133" font-size="8.5" font-family="monospace" fill="#999">flywheel/signals/ (203)</text>
+  <use href="#cyl" x="1116" y="186"/>
+  <text x="1116" y="216" font-size="9.5" fill="#666" text-anchor="middle">captures</text>
+  <text x="1116" y="229" font-size="8.5" fill="#999" text-anchor="middle">immutable · one per event · keyed</text>
+  <text x="1116" y="241" font-size="8.5" fill="#999" text-anchor="middle">source · time · who · a pointer to raw</text>
+  <use href="#cyl" x="1116" y="400"/>
+  <text x="1116" y="430" font-size="9.5" fill="#666" text-anchor="middle">signals</text>
+  <text x="1116" y="443" font-size="8.5" fill="#999" text-anchor="middle">immutable · kind · who · excerpt</text>
+  <rect x="1028" y="478" width="176" height="76" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+  <text x="1040" y="498" font-size="11" font-weight="700" fill="#333">moves · one per signal</text>
+  <text x="1040" y="514" font-size="9.5" font-family="monospace" fill="#666">attach · challenge · join</text>
+  <text x="1040" y="527" font-size="9.5" font-family="monospace" fill="#666">answered · route · drop</text>
+  <text x="1040" y="543" font-size="8.5" font-weight="700" fill="#5a3f95">by curation, never by an adapter</text>
+  <text x="1116" y="584" font-size="8.5" fill="#999" text-anchor="middle">nothing here is ever deleted;</text>
+  <text x="1116" y="596" font-size="8.5" fill="#999" text-anchor="middle">an unmoved signal is never discarded (118)</text>
+  <text x="1116" y="616" font-size="8.5" fill="#999" text-anchor="middle">107 · 111 · 113 · 116 · 118 · 203</text>
+
+  <!-- mark as intent -->
+  <path d="M 1142 184 C 1190 184, 1210 226, 1248 226" fill="none" stroke="#c05b5b" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mR)"/>
+  <rect x="1250" y="208" width="150" height="36" rx="18" fill="#fbeeee" stroke="#c05b5b" stroke-width="1.4"/>
+  <use href="#marker" x="1272" y="226" color="#c05b5b"/>
+  <text x="1290" y="230" font-size="10" font-weight="700" fill="#a34848">mark as intent</text>
+  <path d="M 1402 226 L 1440 226" fill="none" stroke="#c05b5b" stroke-width="2" marker-end="url(#mR)"/>
+  <use href="#cube" x="1466" y="226" color="#7b5cb8"/>
+  <text x="1494" y="222" font-size="9.5" fill="#666">an intent, opened by the operator</text>
+  <text x="1494" y="236" font-size="8.5" fill="#999">the one operator gesture · a control on the page,</text>
+  <text x="1494" y="248" font-size="8.5" fill="#999">never a word parsed out of the text · 19 · 22 · 193</text>
+
+  <!-- triage -->
+  <path d="M 1146 196 C 1230 230, 1240 300, 1274 322" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mN)"/>
+  <text x="1252" y="290" font-size="9" fill="#5f6b7a">reads the capture</text>
+  <use href="#gear" x="1290" y="330" color="#2e9e5b"/>
+  <text x="1312" y="326" font-size="11" font-weight="700" fill="#333">triage · one bounded session per capture</text>
+  <text x="1312" y="341" font-size="9.5" fill="#666">reads the capture and its raw material, writes the signals once</text>
+  <text x="1312" y="355" font-size="8.5" fill="#999">judgment, never unattended · charged by the dispatcher's tick or the source's declared host</text>
+  <text x="1312" y="368" font-size="8.5" fill="#999">runs off the shared line · at most triage.bound at once · 113 · 115 · model §3–4</text>
+  <path d="M 1276 342 C 1230 360, 1180 380, 1144 396" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+  <text x="1172" y="354" font-size="9" fill="#1f6e6e" text-anchor="middle">writes once</text>
+
+  <!-- the raw store -->
+  <rect x="1280" y="420" width="444" height="104" rx="8" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <use href="#cyl" x="1322" y="466"/>
+  <text x="1362" y="440" font-size="11" font-weight="700" fill="#333">THE RAW STORE · outside every repository</text>
+  <text x="1362" y="456" font-size="9.5" fill="#666">transcripts · logs · exports · the drawer conversation</text>
+  <text x="1362" y="470" font-size="8.5" fill="#666">every capture points here and none contains it · named per source in the manifest</text>
+  <text x="1362" y="484" font-size="8.5" fill="#666">copy then capture: the reader runs wherever the store reaches</text>
+  <text x="1362" y="498" font-size="8.5" fill="#666">capture where it lies: the holding machine declares it triages that source</text>
+  <text x="1362" y="513" font-size="8.5" fill="#999">an unreachable pointer is a decision, not a stalled session · 111 · 118 · 149</text>
+  <path d="M 1318 440 L 1298 352" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mN)"/>
+  <text x="1322" y="400" font-size="9" fill="#5f6b7a">reads the raw material</text>
+
+  <!-- curation -->
+  <path d="M 1140 408 C 1250 416, 1250 480, 1252 540 C 1254 575, 1262 585, 1276 585" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mN)"/>
+  <use href="#gear" x="1290" y="585" color="#2e9e5b"/>
+  <text x="1312" y="581" font-size="11" font-weight="700" fill="#333">curation · a charged session, not dispatch</text>
+  <text x="1312" y="596" font-size="9.5" fill="#666">clusters unmoved signals against claims and gives each signal its one move</text>
+  <text x="1312" y="610" font-size="8.5" fill="#999">never opens an intent · a person writing the same records is curation · 107 · 108 · 110 · 116</text>
+  <path d="M 1280 574 C 1256 562, 1232 546, 1208 532" fill="none" stroke="#7b5cb8" stroke-width="2.2" marker-end="url(#mP)"/>
+
+  <!-- ═══════════ SECURITY ═══════════ -->
+  <rect x="60" y="656" width="850" height="196" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="76" y="678" font-size="12" font-weight="700" fill="#5f6b7a">SECURITY · every identity and secret named in the manifest, placed by the operator, never by an agent</text>
+  <rect x="76" y="690" width="404" height="64" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.4"/>
+  <text x="90" y="708" font-size="10.5" font-weight="700" fill="#333">the endpoint · an inbound secret per caller</text>
+  <text x="90" y="723" font-size="8.5" fill="#666">switchboard · Datadog · the bot · placed on both sides by the operator</text>
+  <text x="90" y="736" font-size="8.5" fill="#666">never one shared secret · never in a capture or a signal</text>
+  <text x="470" y="748" font-size="8.5" fill="#999" text-anchor="end">106 · needs table</text>
+  <rect x="492" y="690" width="404" height="64" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.4"/>
+  <text x="506" y="708" font-size="10.5" font-weight="700" fill="#333">two identities · the App and the bot</text>
+  <text x="506" y="723" font-size="8.5" fill="#666">the App's short-lived installation token, scoped to one repository, issued into a place</text>
+  <text x="506" y="736" font-size="8.5" fill="#666">the bot's own account in the org's channel · never the operator's · never a personal token</text>
+  <text x="886" y="748" font-size="8.5" fill="#999" text-anchor="end">148 · 155 · 207</text>
+  <rect x="76" y="766" width="404" height="64" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.4"/>
+  <text x="90" y="784" font-size="10.5" font-weight="700" fill="#333">the tool server's identity check · MCP callers</text>
+  <text x="90" y="799" font-size="8.5" fill="#666">every tool call carries the session's identity, issued when the machinery started it</text>
+  <text x="90" y="812" font-size="8.5" fill="#666">a call whose identity is not the pane it came from is refused</text>
+  <text x="470" y="824" font-size="8.5" fill="#999" text-anchor="end">193 · 197</text>
+  <rect x="492" y="766" width="404" height="64" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.4" stroke-dasharray="5 3"/>
+  <text x="506" y="784" font-size="10.5" font-weight="700" fill="#a34848">✗ no agent-to-agent messaging</text>
+  <text x="506" y="799" font-size="8.5" fill="#666">the machinery writes state and the thread; dispatch reads · a session speaks only through the tools</text>
+  <text x="506" y="812" font-size="8.5" fill="#666">a missing secret is a decision under attention, never a value an agent supplies</text>
+  <text x="886" y="824" font-size="8.5" fill="#999" text-anchor="end">149 · 197 · 204</text>
+  <text x="76" y="844" font-size="8.5" fill="#999">the App's private key · the bot token · model keys · the network node key · each caller's inbound secret — in the org's sealed store, no record cites them (operation-captures, what dispatch needs)</text>
+
+  <!-- ═══════════ EXTENSION ═══════════ -->
+  <rect x="930" y="656" width="810" height="196" rx="10" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4"/>
+  <text x="946" y="678" font-size="12" font-weight="700" fill="#1f6e6e">EXTENSION · adding a source = installing an adapter package</text>
+  <text x="946" y="693" font-size="9.5" fill="#666">offered on the setup surface · the operator names the host it runs on · its secret or token is placed under attention (149)</text>
+
+  <rect x="946" y="704" width="90" height="46" rx="6" fill="#fff" stroke="#8a8a86" stroke-width="1.2"/>
+  <text x="991" y="721" font-size="9.5" font-weight="700" fill="#333" text-anchor="middle">meeting</text>
+  <rect x="962" y="728" width="58" height="14" rx="7" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1"/>
+  <text x="991" y="738.5" font-size="7.5" fill="#1f6e6e" text-anchor="middle">shipped</text>
+
+  <rect x="1044" y="704" width="90" height="46" rx="6" fill="#fff" stroke="#8a8a86" stroke-width="1.2"/>
+  <text x="1089" y="721" font-size="9.5" font-weight="700" fill="#333" text-anchor="middle">folder</text>
+  <rect x="1060" y="728" width="58" height="14" rx="7" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1"/>
+  <text x="1089" y="738.5" font-size="7.5" fill="#1f6e6e" text-anchor="middle">shipped</text>
+
+  <rect x="1142" y="704" width="90" height="46" rx="6" fill="#fff" stroke="#8a8a86" stroke-width="1.2"/>
+  <text x="1187" y="721" font-size="9.5" font-weight="700" fill="#333" text-anchor="middle">chat forward</text>
+  <rect x="1158" y="728" width="58" height="14" rx="7" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1"/>
+  <text x="1187" y="738.5" font-size="7.5" fill="#1f6e6e" text-anchor="middle">shipped</text>
+
+  <rect x="1240" y="704" width="90" height="46" rx="6" fill="#fff" stroke="#8a8a86" stroke-width="1.2"/>
+  <text x="1285" y="721" font-size="9.5" font-weight="700" fill="#333" text-anchor="middle">capture box</text>
+  <rect x="1256" y="728" width="58" height="14" rx="7" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1"/>
+  <text x="1285" y="738.5" font-size="7.5" fill="#1f6e6e" text-anchor="middle">shipped</text>
+
+  <rect x="1338" y="704" width="90" height="46" rx="6" fill="#fff" stroke="#8a8a86" stroke-width="1.2"/>
+  <text x="1383" y="721" font-size="9.5" font-weight="700" fill="#333" text-anchor="middle">PR conversation</text>
+  <rect x="1354" y="728" width="58" height="14" rx="7" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1"/>
+  <text x="1383" y="738.5" font-size="7.5" fill="#1f6e6e" text-anchor="middle">shipped</text>
+
+  <rect x="1436" y="704" width="90" height="46" rx="6" fill="#fff" stroke="#8a8a86" stroke-width="1.2"/>
+  <text x="1481" y="721" font-size="9.5" font-weight="700" fill="#333" text-anchor="middle">issue tracker</text>
+  <rect x="1446" y="728" width="70" height="14" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1"/>
+  <text x="1481" y="738.5" font-size="7.5" fill="#8a6a1d" text-anchor="middle">marketplace</text>
+
+  <rect x="1534" y="704" width="90" height="46" rx="6" fill="#fff" stroke="#8a8a86" stroke-width="1.2"/>
+  <text x="1579" y="721" font-size="9.5" font-weight="700" fill="#333" text-anchor="middle">Datadog</text>
+  <rect x="1544" y="728" width="70" height="14" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1"/>
+  <text x="1579" y="738.5" font-size="7.5" fill="#8a6a1d" text-anchor="middle">marketplace</text>
+
+  <rect x="1632" y="704" width="90" height="46" rx="6" fill="#fff" stroke="#8a8a86" stroke-width="1.2"/>
+  <text x="1677" y="721" font-size="9.5" font-weight="700" fill="#333" text-anchor="middle">switchboard</text>
+  <rect x="1642" y="728" width="70" height="14" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1"/>
+  <text x="1677" y="738.5" font-size="7.5" fill="#8a6a1d" text-anchor="middle">marketplace</text>
+
+  <text x="946" y="774" font-size="9.5" fill="#666">every package is one enumerator: a source, an event key, a raw pointer, a host to run on — the same capture record whoever wrote it</text>
+  <text x="946" y="789" font-size="8.5" fill="#666">any tool that writes the record is an adapter · captures made before the flywheel existed are read without conversion · the formats are versioned and stable</text>
+  <text x="946" y="803" font-size="8.5" fill="#666">a webhook caller's package installs at the endpoint; an edge package on the laptop; a repository package on a host with the App's installation there</text>
+  <text x="946" y="830" font-size="8.5" fill="#999">111 · 112 · 114 · 115 · 149 · 207</text>
+  <text x="946" y="844" font-size="8.5" fill="#999">the package tag, the setup surface and the shipped-or-marketplace split are this diagram's proposal; no requirement names them yet</text>
+
+  <!-- legend -->
+  <rect x="40" y="866" width="1720" height="78" rx="10" fill="#fafafa"/>
+  <line x1="60" y1="888" x2="100" y2="888" stroke="#2b8a8a" stroke-width="2.4"/>
+  <text x="108" y="892" font-size="10" fill="#333">an adapter's write · one capture per event</text>
+  <use href="#gear" transform="translate(340,888) scale(0.8)" color="#2e9e5b"/>
+  <text x="358" y="892" font-size="10" fill="#333">a bounded session · per capture</text>
+  <line x1="530" y1="888" x2="570" y2="888" stroke="#8a8a86" stroke-width="1.6" stroke-dasharray="2 5"/>
+  <text x="578" y="892" font-size="10" fill="#333">read</text>
+  <line x1="630" y1="888" x2="670" y2="888" stroke="#7b5cb8" stroke-width="2.4"/>
+  <text x="678" y="892" font-size="10" fill="#333">curation · a move</text>
+  <line x1="790" y1="888" x2="830" y2="888" stroke="#c05b5b" stroke-width="2" stroke-dasharray="4 3"/>
+  <text x="838" y="892" font-size="10" fill="#333">the operator's gesture</text>
+  <use href="#marker" x="990" y="888" color="#c05b5b"/>
+  <text x="1004" y="892" font-size="10" fill="#333">a control, confirmed</text>
+  <use href="#pkg" x="1140" y="888"/>
+  <text x="1178" y="892" font-size="10" fill="#333">an adapter package</text>
+  <rect x="1300" y="880" width="40" height="16" rx="4" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.2" stroke-dasharray="6 4"/>
+  <text x="1348" y="892" font-size="10" fill="#333">outside every repository</text>
+  <use href="#cloud" x="1500" y="888" color="#2b8a8a"/>
+  <text x="1520" y="892" font-size="10" fill="#333">a dispatch job</text>
+  <text x="60" y="926" font-size="10.5" fill="#333">capture is decentralized: any adapter, any machine, one record per event, keyed so twice is once (111, 114) · triage is one session per capture, charged where the raw material can be read (115) · the endpoint is one host among several, never where capture lives</text>
+</svg>
