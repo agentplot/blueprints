@@ -2545,7 +2545,7 @@ idle clocks paused (`sessions.yaml` `session.idle_since`), and `gone`
 covers) or at the 24h bound; its next heartbeat returns it to `alive`
 with nothing to answer.
 
-## 19. Ratified 256–292: tenancy, the hosted tiers and plans
+## 19. Ratified 256–293: tenancy, the hosted tiers and plans
 
 **A.33 — tenancy and encryption (256–267).** Everything a shared host
 keeps between ticks is sealed under a key naming one organization
@@ -2591,7 +2591,7 @@ service's account, a key in the organization's own account behind a
 role that trusts the service's issuer — and moving between them
 re-wraps data keys and changes no history (267).
 
-**A.34 — the hosted tiers (268–278, 290–292).** A host carries a tier, 0 to 3,
+**A.34 — the hosted tiers (268–278, 290–293).** A host carries a tier, 0 to 3,
 named by what exists on the service side: your computer, the cloud
 agent, pools, your account (268, `host.yaml` `tier`). A tier is a
 binding and never a second machinery. On tiers 1 to 3 the host is one
@@ -2682,7 +2682,7 @@ ordinary message (`host.yaml` `tier.chat`). An intermittent host keeps its place
 leases stand and its clocks pause, and the cloud agent keeps ticking
 everything else (278, 150a).
 
-**A.34 — the invoked placement's three additions (290–292).** The
+**A.34 — the invoked placement's four additions (290–293).** The
 receiver and the chat application are the two shared components of the
 hosted tiers and the only two: each sees an inbound payload once, in
 transit, keeps nothing, and is a stated fact of the tier, and no other
@@ -2697,7 +2697,23 @@ client of the tools and never their server. A request reads the cache
 and the shared line, writes only through a tool call that is captured
 and ticked like any other, and is never a tick; on a hosted host that
 token is the boundary the private network is on a self-managed one (193,
-243, 249, 291, `host.yaml` `tier.served`, 46, 191, 217c). An invoked
+243, 249, 291, `host.yaml` `tier.served`, 46, 191, 217c). The bundle is
+held in an object store behind a content distribution at the served
+name, which fronts the store for the bundle and the function for the
+tool paths, uploaded at release so its version is the binary's; a
+self-managed host embeds the same bundle and serves it itself (208,
+291). That tool server is a remote server of the model context protocol
+at the host's address, and its clients are the page, the chat
+application, the interpreter, the sessions the machinery starts over
+stdio or in-process, and a member's own client such as a coding agent on
+their machine. Every client is checked by the same two rules, membership
+admitting the identity and the tool's declared permission authorizing
+the call; the authority a client signs in against is the host's identity
+kind, so a member adds a self-managed host at its localhost address as
+readily as a hosted one at its served name; the catalogue a client sees
+is the tool catalogue filtered by that caller's permissions; and a call
+from any client is a response recorded with who gave it and when (153,
+243, 245, 248, 249, 293, `surfaces.yaml` `tools.identity`). An invoked
 host is alive while its scheduler entry stands or its queue holds items:
 it heartbeats once per tick, `host.last_seen` reads the later of that
 heartbeat and the standing entry's due time and reads now while an item

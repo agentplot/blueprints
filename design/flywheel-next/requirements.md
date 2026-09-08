@@ -1782,12 +1782,33 @@ requirements, iterated against the running plan rather than on paper.
     client of the tools and never serves them. A request is a read under
     the caller's identity and never a tick (270): it reads the cache and
     the shared line, and it writes only through a tool call, which is
-    captured and ticked like any other.
+    captured and ticked like any other. On a hosted tier the bundle is
+    held in an object store behind a content distribution at the served
+    name, which fronts the store for the bundle and the function for the
+    tool paths, and it is uploaded at release so its version is the
+    binary's (208). A self-managed host embeds the same bundle in the
+    binary and serves it itself.
 292. An invoked host is alive while its scheduler entry stands or its
     queue holds items. It heartbeats once per tick, its stale window is
     the due time it wrote plus the profile's grace, and 150's takeover
     is raised for it only past that. A host with no entry, no queued
     item and no heartbeat is gone.
+293. The tool server at a host's address is a remote server of the model
+    context protocol, and its clients are the page, the chat
+    application, the interpreter, the sessions the machinery starts
+    (over standard input and output or in-process) and a member's own
+    client, such as a coding agent on their machine (193, 291). Every
+    client is checked by the same rules: membership admits the identity
+    to the organization and the permission the tool declares authorizes
+    the call (248, 249). The authority a client signs in against is the
+    host's identity kind (243), so a hosted host's clients hold a
+    Frontegg token and a self-managed host's hold what its device flow
+    issued, and a member adds a self-managed host to their own client at
+    its localhost address (245) as readily as a hosted one at its served
+    name. The catalogue a client is shown is the tool catalogue filtered
+    by that caller's permissions, so a tool the caller may not invoke is
+    not offered. A tool call from any client is a response recorded like
+    any other, with who gave it and when (153).
 
 ### A.35 Plans and presets
 
