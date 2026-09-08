@@ -744,6 +744,17 @@ the operator may reverse by a response on the file; an entry with
   are gone and the frontegg kind is absent there — the surface owner's
   to bring up to A.32.
 
+- **150a intermittent hosts.** `host.work_waiting` is read by the
+  hosts that are alive, since the away host reads nothing; a decision
+  on an object the away host holds stands numbered on the plan
+  meanwhile and only its takeover is deferred. **Decision**. The stall
+  clock pauses by advancing the recorded `idle_since` on return rather
+  than by a paused clock in the engine, so no engine change and no
+  stand-in default; a scenario that loses a host with `intermittent`
+  unset keeps S13's stale-to-gone path. **Decision**. Whether a
+  session's process survives a laptop's sleep is the multiplexer's;
+  a pane gone on return is `lost` as before. Stated.
+
 - **213, 214 and 229–230 on the mockup.** The rail-and-board mockup
   (`design/flywheel-next/mockups/rail-and-board.html`) illustrates the
   artifact views behind an object (213), the flywheel instrument

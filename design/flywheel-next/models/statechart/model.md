@@ -2533,3 +2533,14 @@ leaves it, minting installation tokens for pool hosts (`host.yaml`
 the settings form editing the organization's keys and showing the
 host's read-only (`host.yaml` `identity.address`, `surfaces.yaml`
 `account.settings_form`).
+
+**150a — intermittent hosts.** The host record carries `intermittent`
+(a laptop by default, a platform or pool host not). Past the stale
+window an intermittent host goes `away`, not `gone`: shown with
+since-when and no attention line (`surfaces.yaml` `away`), its leases
+standing in `stale`, its sessions reading as last reported with their
+idle clocks paused (`sessions.yaml` `session.idle_since`), and `gone`
+— the takeover decision — reached only when `host.work_waiting` holds
+(a numbered decision on an object it holds, or approved work only it
+covers) or at the 24h bound; its next heartbeat returns it to `alive`
+with nothing to answer.

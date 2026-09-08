@@ -27,7 +27,7 @@ itself, so the picture cannot drift from the runtime (83). Regenerate with
 | `proposal` | object | core | 2 | proposal | 184, 17, 35, 36, 171, 172, 187 | [proposal.svg](proposal.svg) |
 | `repository` | object | core | 1 | repository | 5, 104, 149, 199, 202, 203, 206, 207, 208 | [repository.svg](repository.svg) |
 | `service` | object | core | 2 | service | 4, 12, 45, 46, 47, 48, 55, 191, 203 | [service.svg](service.svg) |
-| `session` | template | core | 4 | template | 4, 24, 65, 66, 67, 70, 71, 72, 73, 80, 93, 171, 173, 174, 190, 196, 197, 226, 251 | [session.svg](session.svg) |
+| `session` | template | core | 4 | template | 4, 24, 65, 66, 67, 70, 71, 72, 73, 80, 93, 150, 171, 173, 174, 190, 196, 197, 226, 251 | [session.svg](session.svg) |
 | `signal` | object | core | 2 | signal | 58, 60, 106, 107, 113, 114, 116, 118 | [signal.svg](signal.svg) |
 | `stage` | template | core | 4 | template | 4, 41, 56, 70, 173, 190 | [stage.svg](stage.svg) |
 | `unit` | object | core | 4 | unit | 4, 5, 13, 16, 17, 31, 35, 36, 37, 57, 60, 74, 172 | [unit.svg](unit.svg) |

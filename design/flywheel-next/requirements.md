@@ -1702,6 +1702,15 @@ through these operations, and depends only on these guarantees.
     another host takes them over only when the lease has expired by the
     stated rule, never by racing. The rule may name the operator's response
     for work that has a session behind it.
+150a. A host may be declared intermittent — a laptop is by default, a
+    cloud or pool host is not. An intermittent host past its stale
+    window is shown as away, with since when, on the status view, and
+    raises no attention line. The takeover decision of 150 is raised
+    for an away host only when a numbered decision or approved work is
+    waiting on that host, or when the long bound passes. The leases it
+    holds stand; its sessions are neither stalled nor lost while it is
+    away, and their stall clocks pause. On its next heartbeat it is
+    alive again with nothing to answer.
 151. A host that cannot reach the central service keeps working what it
     already owns, records what it does locally, and reconciles when it
     reconnects. The model says what a disconnected host may and may not
