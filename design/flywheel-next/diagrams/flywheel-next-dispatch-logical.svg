@@ -45,13 +45,15 @@
   <text x="396" y="168" font-size="12" font-weight="700" fill="#1f6e6e">TOOL SERVER</text>
   <text x="396" y="186" font-size="9.5" fill="#666">the binary's MCP server</text>
   <text x="396" y="200" font-size="9.5" fill="#666">and its HTTP twin</text>
-  <text x="396" y="244" font-size="10.5" fill="#333">private network only</text>
-  <text x="396" y="260" font-size="8.5" fill="#999">155 · 191</text>
-  <text x="396" y="296" font-size="10.5" fill="#333">checks the session</text>
-  <text x="396" y="312" font-size="10.5" fill="#333">identity on every call</text>
-  <text x="396" y="328" font-size="8.5" fill="#999">197</text>
-  <text x="396" y="364" font-size="10.5" fill="#333">no third transport</text>
-  <text x="396" y="380" font-size="8.5" fill="#999">217c</text>
+  <text x="396" y="244" font-size="10.5" fill="#333">private network only, or the</text>
+  <text x="396" y="258" font-size="10.5" fill="#333">served name with the identity</text>
+  <text x="396" y="272" font-size="10.5" fill="#333">token on a hosted host</text>
+  <text x="396" y="286" font-size="8.5" fill="#999">155 · 191 · 291</text>
+  <text x="396" y="316" font-size="10.5" fill="#333">checks the session</text>
+  <text x="396" y="332" font-size="10.5" fill="#333">identity on every call</text>
+  <text x="396" y="348" font-size="8.5" fill="#999">197</text>
+  <text x="396" y="384" font-size="10.5" fill="#333">no third transport</text>
+  <text x="396" y="400" font-size="8.5" fill="#999">217c</text>
   <text x="396" y="596" font-size="8.5" fill="#999">46 · 155 · 191 · 197</text>
 
   <!-- RUNNERS -->
@@ -69,7 +71,7 @@
   <text x="696" y="314" font-size="10" fill="#666">a bounded agent loop inside the dispatcher's own process · a key or a cloud role</text>
   <rect x="696" y="328" width="230" height="22" rx="11" fill="#fff" stroke="#2b8a8a" stroke-width="1.2"/>
   <text x="811" y="343" font-size="9.5" font-family="monospace" fill="#1f6e6e" text-anchor="middle">in-process · no process boundary</text>
-  <text x="696" y="376" font-size="8.5" fill="#999">fits the interpreter everywhere · triage in a container · 173 · 207</text>
+  <text x="696" y="376" font-size="8.5" fill="#999">fits the interpreter everywhere · triage in a container · 15 minutes a tick on the hosted tiers (269) · 173 · 207</text>
 
   <rect x="680" y="420" width="580" height="130" rx="8" fill="#fff" stroke="#2e9e5b" stroke-width="1.6"/>
   <use href="#gear" x="702" y="444" color="#2e9e5b"/>
@@ -132,8 +134,8 @@
   <path d="M 568 752 L 618 752" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="2 5" marker-end="url(#mN)"/>
   <rect x="620" y="734" width="140" height="36" rx="18" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4"/>
   <text x="690" y="757" font-size="9.5" font-family="monospace" fill="#1f6e6e" text-anchor="middle">dispatcher</text>
-  <text x="650" y="722" font-size="10.5" font-weight="700" fill="#5f6b7a" text-anchor="middle">bounded fetch in</text>
-  <text x="690" y="792" font-size="8.5" fill="#999" text-anchor="middle">every 30s and before every tick (165)</text>
+  <text x="650" y="722" font-size="10.5" font-weight="700" fill="#5f6b7a" text-anchor="middle">notify first, poll as backstop</text>
+  <text x="690" y="792" font-size="8.5" fill="#999" text-anchor="middle">notify first; the poll is a per-channel backstop (274)</text>
 
   <rect x="940" y="734" width="140" height="36" rx="18" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4"/>
   <text x="1010" y="757" font-size="9.5" font-family="monospace" fill="#1f6e6e" text-anchor="middle">dispatcher</text>
@@ -164,7 +166,7 @@
   <line x1="700" y1="874" x2="740" y2="874" stroke="#8a8a86" stroke-width="2"/>
   <text x="748" y="878" font-size="10" fill="#333">what the engine sees</text>
   <line x1="920" y1="874" x2="960" y2="874" stroke="#8a8a86" stroke-width="1.6" stroke-dasharray="2 5"/>
-  <text x="968" y="878" font-size="10" fill="#333">read · a bounded fetch</text>
+  <text x="968" y="878" font-size="10" fill="#333">read · notify, then poll</text>
   <line x1="1140" y1="874" x2="1180" y2="874" stroke="#c9962e" stroke-width="2.4"/>
   <text x="1188" y="878" font-size="10" fill="#333">the plan, out through the bot</text>
   <text x="60" y="912" font-size="10.5" fill="#333">one binary, one declaration, one tick on every placement (217) · every runner starts the session with the same work order, and the engine cannot tell them apart (217c) · a notification only shortens the wait; never notified, dispatch still converges by reading (130)</text>
