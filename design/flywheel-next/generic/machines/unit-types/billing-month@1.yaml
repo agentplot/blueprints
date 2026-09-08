@@ -5,7 +5,7 @@
 # to `archived` when the package is proven.
 #
 # Growth this type leans on (../../README.md):
-#   growth-1  a flywheel with no built repository
+#   growth-1  an instance with no built repository
 #   growth-2  record types and a key
 #   growth-4  a scheduled producer opens the month on day 1
 #   growth-5  an aggregate unit whose transition is gated on its children

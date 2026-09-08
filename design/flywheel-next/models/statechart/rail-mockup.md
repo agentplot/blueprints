@@ -3,7 +3,7 @@
 The rail at one moment, every decision kind shown once. The tree is
 the page; the chat shows the same decisions compressed to one line
 each with the same numbers, and a link to the page. Numbers are given
-once per flywheel and never reused, so a reply names a decision
+once per instance and never reused, so a reply names a decision
 without a snapshot of the rail. The page is served on the operator's
 private network and works on a phone.
 

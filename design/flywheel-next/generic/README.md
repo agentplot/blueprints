@@ -1,13 +1,13 @@
-# The generic track — business processes on the flywheel
+# The generic track — business processes on the instance
 
-The flywheel is a loop over a state repository: captures arrive, machines
+The instance is a loop over a state repository: captures arrive, machines
 evaluate, decisions are raised and answered, sessions do the judgment work,
 effects run with proofs. Nothing in that loop says "code". This track tests the
 claim by mapping one real business process onto the model unchanged, and lists
 exactly where the model has to grow.
 
 The first process is Mad Swan's billing operations (billing-brief.md, filed
-2026-09-07). Its two principles are the flywheel's own: deterministic where
+2026-09-07). Its two principles are the instance's own: deterministic where
 possible and intelligent where necessary is machines versus sessions; the
 ledger has no gaps is the state repository with numbers never reused (15).
 
@@ -15,7 +15,7 @@ ledger has no gaps is the state repository with numbers never reused (15).
 
 | brief | flywheel-next |
 |---|---|
-| the business | a flywheel (218) with a state repository and a blueprints repository and no built repository at all |
+| the business | an instance (218) with a state repository and a blueprints repository and no built repository at all |
 | `invoices.rec`, plain text, schema-enforced, versioned | the state repository: records as recutils files, one commit per change (35, 41), the record set's own descriptor as the write gate, enforced by the binary that already parses them (section 13) |
 | Vendor | a record of a `vendor` record type in the state repository; rarely changed; the source the mail-rule producer derives from |
 | Paperless mail rules generated from vendors | a deliverable producer (190) with a store on the Paperless host: rebuild is idempotent, proof is the rule set read back |
@@ -41,9 +41,9 @@ ledger has no gaps is the state repository with numbers never reused (15).
 
 ## What the model must grow
 
-1. **A flywheel with no built repository.** 219 lists repositories by
+1. **An instance with no built repository.** 219 lists repositories by
    URL; nothing forbids zero, but the bootstrap, the map and the runway
-   readings assume construction. A process flywheel has elaboration
+   readings assume construction. A process instance has elaboration
    sessions and effects and never a build. Runway must read as units drained
    by sessions of any kind.
 2. **Domain record sets declared by a package.** The flywheel already stores
@@ -95,8 +95,8 @@ ledger has no gaps is the state repository with numbers never reused (15).
 
 ## Phasing
 
-This process runs after phase 1 of the flywheel (the loop) is real on willdan
-work, as the first flywheel of the generic track: a flywheel with
+This process runs after phase 1 of the instance (the loop) is real on willdan
+work, as the first instance of the generic track: an instance with
 records, timers, scheduled producers and adapters and no code. The machines
 and scenario packs drawn from the brief are in models/ beside the core; the
 brief's scenarios are the acceptance file (192).

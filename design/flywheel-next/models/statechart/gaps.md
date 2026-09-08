@@ -192,7 +192,7 @@ the operator may reverse by a response on the file; an entry with
 - **96 coexistence.** The new flywheel's objects live in
   `flywheel-state` (tracker: its own repository's issues; git-only: the
   same repository as files). It never lists issues of other
-  repositories, and it never reads the current flywheel's labels or
+  repositories, and it never reads the current instance's labels or
   milestones. Places are under a distinct worktree root
   (`~/flywheel-next/places/`), which is also what bounds stray
   reconciliation. Sessions are named with a `fn/` prefix. Satisfied by
@@ -213,7 +213,7 @@ the operator may reverse by a response on the file; an entry with
 
 - **122 "since the operator last reviewed".** The mark is a response
   `reviewed` given on the review page; it is recorded on the
-  flywheel's `rail` object, since there is no blueprints object
+  instance's `rail` object, since there is no blueprints object
   machine. Slight stretch of "the response is recorded with the object
   it concerns" (153).
 
@@ -294,7 +294,7 @@ the operator may reverse by a response on the file; an entry with
   bolt's request is open and never under the direct policy: a direct
   landing has no request for a git host or an integration to publish
   links on, and after the request merges the landed bolt's releases
-  and environments are operation's (181), reaching the flywheel only
+  and environments are operation's (181), reaching the instance only
   as signals. Regression results a delivery system posts as check
   runs on the request are read like any check (176) and need nothing
   from the flywheel. **Decision**.
@@ -474,13 +474,13 @@ the operator may reverse by a response on the file; an entry with
 
   Migrating a v1 map (`context-map/maps/*.js`): lanes (`plane`) and
   runtimes become tags (`lane:control`, `runtime:deployed`) under
-  facets the flywheel declares; seam-layer nodes become elements
-  of a flywheel kind (`seam extends service`, or dropped where
+  facets the instance declares; seam-layer nodes become elements
+  of an instance kind (`seam extends service`, or dropped where
   they only carried the runtime switch); the layer field is dropped
   and kinds map to the vocabulary (api, worker, ui → service or its
   extensions; contracts → contract; stores → store extends service;
   events → domain-event); relations become links, with `backed-by` and
-  `fronts` folded into `uses` or the flywheel's kinds; contexts
+  `fronts` folded into `uses` or the instance's kinds; contexts
   gain a home and elements homes where they differ; each claim's old
   scope line is lifted into its capability directory and its
   `Attaches:` line — a named-repositories scope becomes attachments to
@@ -507,9 +507,9 @@ the operator may reverse by a response on the file; an entry with
   writes it. **Decision**.
 
 - **204–208 bootstrapping and repositories.** The git host must offer
-  repository creation under the flywheel to the App's installation
+  repository creation under the instance to the App's installation
   token (GitHub: the App needs `administration: write` on the
-  flywheel for `create_repository` and the installation-repository
+  instance for `create_repository` and the installation-repository
   endpoint for `extend_installation`); an App without those permissions
   leaves creation to the operator by hand and `covering` to the
   `app-coverage` decision — modelled as the decision, not as a second
@@ -565,7 +565,7 @@ the operator may reverse by a response on the file; an entry with
   produced by the stage's type skill under the type's schema
   instruction, with no review surface, because the requirement's
   shipped set is the book-side set plus the proposal document and the
-  verdict. Whether a flywheel may give a construction deliverable
+  verdict. Whether an instance may give a construction deliverable
   a producer of its own — the manifest override accepts any name — is
   allowed by the resolution rule and untested. **Decision**. The
   house style of the diagrams is fixed by their schemas, not by a
@@ -615,11 +615,11 @@ the operator may reverse by a response on the file; an entry with
   model's nine open questions (its section 8) stand.
 
 - **218–222 flywheels.** Isolation is by root, state repository,
-  blueprints, sinks and register per flywheel; a host's manifest names
-  the flywheels it runs and their roots. **Decision**. `remove
-  <flywheel>` is admitted as a dictation under 4 because it
+  blueprints, sinks and register per instance; a host's manifest names
+  the instances it runs and their roots. **Decision**. `remove
+  <instance>` is admitted as a dictation under 4 because it
   retires and archives, asserting nothing done; it is reachable only
-  from `hosted`, since a flywheel mid-bootstrap has nothing to
+  from `hosted`, since an instance mid-bootstrap has nothing to
   archive. **Decision**. 222's "the host stops covering the affected
   objects" is bound wider: the disk region leaving `ready` makes
   `lease.coverable` false for every object the host declared, not only
@@ -691,11 +691,11 @@ the operator may reverse by a response on the file; an entry with
   no refused state and the record is the run record's, shown under
   attention once; the count is untouched. **Decision**. The local
   user must be in `operators:` like any identity, and the blueprints
-  template lists the initializing user, so a fresh flywheel is not
+  template lists the initializing user, so a fresh instance is not
   locked out; a save that would remove the saving identity is refused.
   **Decision**. Identity strings across sign-in kinds (a tailnet
   login, an oauth subject, a local user name) are compared as the kind
-  renders them, so a flywheel served by two hosts with different
+  renders them, so an instance served by two hosts with different
   kinds lists an identity per kind. Stated. `configure-flywheel` edits the manifest as a
   commit on the blueprints' shared line, so a bad save is a bad manifest
   until the next save; the form validates as `flywheel.yaml` is
@@ -704,12 +704,12 @@ the operator may reverse by a response on the file; an entry with
   verifiers are not in this model. **Open**.
 
 - **237 an owner is one member.** Ruled: an owner is one member of the
-  flywheel or nobody, and a role is never an owner. `assign_owner`
+  instance or nobody, and a role is never an owner. `assign_owner`
   refuses an argument that is not an identity in `operators:`, a role
   name among them, with the reason (`host.yaml` effects). **Decision**:
   a role owner would make "mine" ambiguous for a member holding several
   roles and would put a decision's filter on a token claim rather than
-  on the flywheel's own list; roles authorize and nothing else
+  on the instance's own list; roles authorize and nothing else
   (248). What a decision owned by a member who later leaves the account
   reads as — unowned, or owned by an identity no longer listed — is
   unbound. **Open**.
@@ -760,7 +760,7 @@ the operator may reverse by a response on the file; an entry with
 - **243–255 identity.** Two kinds by ruling: `github` on self-managed
   hosts, `frontegg` on the hosted tiers only. The proposal's open
   questions are closed for the frontegg kind: one Application; an
-  flywheel is a top-level account except the hosted service's
+  instance is a top-level account except the hosted service's
   tenants, sub-accounts of the service's account; flags per account
   only; degraded mode unbounded for the page and irrelevant to work;
   only the service's release syncs, and a hosted binary naming a
@@ -773,7 +773,7 @@ the operator may reverse by a response on the file; an entry with
   205, 207 and 247 and trace through them. The identity tools (255)
   are hosted-only control-plane calls with no machine transition —
   assignment lives on the provider's account — so they are cited on
-  the flywheel machine and bound in `surfaces.yaml`; on a github
+  the instance machine and bound in `surfaces.yaml`; on a github
   host the settings form's list is the whole administration.
   **Decision**. On a github host a member's device-flow session is the
   host's; a second host on the same computer is a second sign-in, since
@@ -833,7 +833,7 @@ the operator may reverse by a response on the file; an entry with
   below a live host's tier raises one attention line and refuses the
   next add, never stopping the loop (280). **Decision**. The dispatcher
   as one function per tier means the sandbox is reused across
-  flywheels' ticks in turn; 269 now says so outright and makes
+  instances' ticks in turn; 269 now says so outright and makes
   retaining nothing the tick's own act, scratch wiped and the data key
   dropped before exit, which is a construction claim and not a
   guarantee against a compromise mid-tick; the residual is named in
@@ -867,24 +867,24 @@ the operator may reverse by a response on the file; an entry with
   payload must be demultiplexed, signed-request-checked and answered
   inside three seconds, so 271 now carries a stateless receiver with an
   encrypt-side grant only and 290 names it the second shared component;
-  270 now routes every invoker through the flywheel's queue as the
-  serialized group, so two ticks of one flywheel no longer overlap;
+  270 now routes every invoker through the instance's queue as the
+  serialized group, so two ticks of one instance no longer overlap;
   291 says who serves the page and the tool server between ticks and
   makes a request a read and never a tick; 292 gives an invoked host a
   liveness reading, so a dispatcher whose next due time is hours away is
   not stale.
 
   Opened. The receiver is a process of the machinery's that sees every
-  flywheel's inbound payload in the clear before it is queued, which
+  instance's inbound payload in the clear before it is queued, which
   is a wider blast radius than the bot alone and is not yet drawn in a
   threat model of its own. **Open**. The pool host's disk is under the
-  platform's key, not the flywheel's (275): whether a customer-
+  platform's key, not the instance's (275): whether a customer-
   managed key can reach a microVM's disk or snapshot is not documented
-  and is treated as absent rather than refuted, so a flywheel whose
+  and is treated as absent rather than refuted, so an instance whose
   tier statement must promise its own key on the disk falls to the
   fallback placement and pays its cold start. **Open**. Whether a
   platform caps the number of event-source mappings per account, which a
-  queue per flywheel consumes, is unfound. **Open**. Whether a
+  queue per instance consumes, is unfound. **Open**. Whether a
   gateway's direct queue integration needs a data-key grant on the
   queue's key through its integration role is asserted from prior
   knowledge and unverified. **Open**. Design C — the binary provisioned
@@ -920,7 +920,7 @@ the operator may reverse by a response on the file; an entry with
   closes half of 268–278's model-access gap: the customer's own key is
   welcome everywhere and required nowhere, each plan includes a budget
   on the small class, overage is metered through the payment provider,
-  and a flywheel that places a key is metered on none of the
+  and an instance that places a key is metered on none of the
   service's usage. Which provider the service's access resolves to is
   still the tier statement's to name and no profile's. **Open**.
   Hobby's chat is structured so that no model call
@@ -968,7 +968,7 @@ the operator may reverse by a response on the file; an entry with
   else; what a model class names — a provider's model id, a tier the
   binding resolves — is unstated, and 173's per-role manifest default
   is now two levels down. **Open**. 288's instrumentation names the
-  agentplot flywheel's flywheel as its destination and binds no
+  agentplot instance's instance as its destination and binds no
   source, adapter or endpoint for it, and says nothing about what a
   self-managed operator sees when they opt in. **Open**. 287 enumerates
   the package kinds a package may be and the surfaces it may not touch;
@@ -977,22 +977,22 @@ the operator may reverse by a response on the file; an entry with
 
 - **291 the page request reads a projection.** Ruled: a request neither
   downloads nor decrypts the warm cache. The page sink's delivery is the
-  tick writing one small page projection per flywheel — the status
+  tick writing one small page projection per instance — the status
   view and the rail as data, with each member's page sink and its mark —
-  under the flywheel's key, and a request checks the token's
-  membership of the flywheel named in the path (205a), assumes the
+  under the instance's key, and a request checks the token's
+  membership of the instance named in the path (205a), assumes the
   tier role tagged with it, decrypts that one object and returns it;
   a write is a tool call enqueued on the queue and decrypts nothing.
   **Decision**: it makes a request one small decrypt instead of a bundle
   download, and it makes cross-flywheel reads impossible by
   construction, since the tag is the path's flywheel. The switcher
-  shows only the flywheels the token is assigned to (`surfaces.md`
+  shows only the instances the token is assigned to (`surfaces.md`
   S191). What is unbound: how stale a projection may be before the page
   says so, since it is written only by a tick that delivers and a
   request never triggers one (270); whether a member's `filter own` view
   is a slice of the one per-flywheel object or a per-member object
   of its own, which is the difference between one decrypt and one per
-  member; and what the page shows for a flywheel whose tick has
+  member; and what the page shows for an instance whose tick has
   never delivered, so no projection exists. **Open**.
 
 - **296–305 the control plane as a product.** Ruled: two products, the
@@ -1015,7 +1015,7 @@ the operator may reverse by a response on the file; an entry with
   the open binary relate to a control plane that has none** is unbound:
   a self-managed host reads no plan at all (250, 279) and an installed
   control plane may bind no payment provider (302), so whether the
-  ladder is a shipped definition an installer overrides, a flywheel
+  ladder is a shipped definition an installer overrides, an instance
   package (228), or a default the sync writes only where a payment
   provider is bound decides what `fw-identity-sync` writes on such an
   install and what the rail surface shows there. **Open**. **The update
@@ -1029,8 +1029,8 @@ the operator may reverse by a response on the file; an entry with
   Two more are unbound rather than ruled. 288's instrumentation is on by
   default on the hosted tiers and opt-in on a self-managed host; an
   installed control plane's hosts read as hosted, so whether their
-  readings reach the agentplot flywheel, the installer's own
-  flywheel, or nowhere is unstated. **Open**. The Switchboard composition
+  readings reach the agentplot instance, the installer's own
+  instance, or nowhere is unstated. **Open**. The Switchboard composition
   of `proposals/control-plane.md` §3 names twelve stacks and their
   parameters from the deployment vocabulary and not from a built
   instance; nothing in this model has been deployed, so every stack

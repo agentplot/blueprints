@@ -10,7 +10,7 @@ model's `sink`, `host`, `surfaces`, `sessions`, `tracker` and
 `git-only` bindings.
 
 The short form. Dispatch is not one thing and not one program shape
-with two homes. It is four jobs. Three of them are the flywheel's
+with two homes. It is four jobs. Three of them are the instance's
 ordinary machinery given a host to run on; the fourth — reading a
 capture — is a session like any other. The "browser model" is one of
 the four jobs, done a different way, and covers nothing else. A host
@@ -55,7 +55,7 @@ Three rules fall out of the table.
   it. It captures nothing, because the capture box sends its text to
   the capture tool unparsed (19). It triages nothing, because a capture
   with material to read charges a session, and a page has none. An
-  flywheel running the browser model alone has a plan on the page,
+  instance running the browser model alone has a plan on the page,
   a capture box, and no chat, no endpoint for webhooks, and no signals
   read out of transcripts. That is a get-started mode, and it is
   named as one in §5.
@@ -124,14 +124,14 @@ does not — a managed session on a platform — calls it over HTTP with
 the identity token start_session issued (197). The HTTP tool server
 listens on the private network only (155, 191); a platform whose
 sandbox cannot join that network cannot run a `managed` triage session
-for this flywheel, and the manifest is refused when it names one.
+for this instance, and the manifest is refused when it names one.
 
 **Local to cloud is one shape.** The same binary, declaration and
 tick run in every placement. What changes:
 
 | dimension | laptop | multiplexer pane (herdr) | container on a platform | agent platform |
 |---|---|---|---|---|
-| placement | `flywheel dispatch` as a user process | the same, in a pane of `flywheel-<flywheel>-machinery` (174) | the same, as the container's one process | the same binary as a long-lived session on the platform, or its jobs split (§5) |
+| placement | `flywheel dispatch` as a user process | the same, in a pane of `flywheel-<instance>-machinery` (174) | the same, as the container's one process | the same binary as a long-lived session on the platform, or its jobs split (§5) |
 | secrets | the operator's keychain or a sealed file under the root | the same | the platform's secret store, injected at start | the platform's vault (managed agents: vault credentials; AgentCore: its identity service) |
 | network | the machine's tailnet node | the same | a tailnet node in the container, or the platform router's ingress (191) | the platform's private connectivity (a VPC route, a self-hosted sandbox on the tailnet), else none |
 | model access | the operator's login (`pane`), or a key (`inproc`) | the same | a key or the runtime's cloud role (`inproc`) | the platform's own model access |
@@ -167,7 +167,7 @@ creates a decision does nothing more than write it.
 operator placed. It posts the rail as one message, one line per
 decision and a link to the page (18). It reads replies as the same
 bot. It never uses the operator's account and never a channel outside
-the flywheel's (`captures.md` §3, the bot row). Rich controls
+the instance's (`captures.md` §3, the bot row). Rich controls
 are the platform's, used as provided; the numbered grammar always
 works beside them (155, 194).
 
@@ -263,15 +263,15 @@ stalled session.
 - Presentation is one lease per sink (148).
 
 Dispatch owns none of the three exclusively. It is the placement that
-carries them for a flywheel whose hosts sleep.
+carries them for an instance whose hosts sleep.
 
 ## 5. Placements
 
 | placement | process | model access | secrets | network | chat | capture endpoint | triage | what it gives up |
 |---|---|---|---|---|---|---|---|---|
 | **the browser agent alone** (get-started) | none of dispatch's; the page-serving host's own | a model shipped as a script with the page; inference in the operator's browser; no text leaves the private network (surfaces.yaml `interpreter.page`) | none — no API key exists | works wherever the page does: the host serves the page and the tools over the tailnet (155, 191), the phone runs the model | none | none; the page's capture box is the capture tool (19) | none; captures wait for a host declaring triage | chat, webhooks, transcripts. Every decision is still answerable by control and number. |
-| **local dispatcher** | `flywheel dispatch` on the operator's machine, as a process or a pane in `flywheel-<flywheel>-machinery` | `pane` for triage under the operator's Claude Code login; `inproc` for the interpreter with a key, or Bedrock credentials, placed by the operator | bot token, App key or push credential, model key, inbound secrets, in the machine's keychain or a sealed file under the root | the machine's tailnet node; the endpoint reachable on the private network only; a public webhook needs a funnel the operator opens for named callers (46) | the bot, while the machine is awake | yes, private | yes | the rail in chat while the machine sleeps; the sink lease then sits with the pin until the machine wakes |
-| **invoked dispatcher** (the hosted tiers) | no process stands: one function per tier, each invocation one flywheel's tick, woken only through that flywheel's queue (270) | `inproc` under the tier role, the service's model access metered into the rail, or a key the operator places | the tier's own store; no secret of the flywheel's is held between ticks | no private network at all: the page and the tool server are served at the tier's name and the identity token is the boundary (191, 291) | the service's Slack or Discord application; Discord free text is a slash-command option, Slack free text arrives over the Events API (277) | yes, one queue per flywheel behind a shared receiver (271) | yes, for a capture whose whole content is in the queue; raw-material triage goes elsewhere (263) | plain Discord channel replies, which need a gateway socket; and anything that will not fit a fifteen-minute tick |
+| **local dispatcher** | `flywheel dispatch` on the operator's machine, as a process or a pane in `flywheel-<instance>-machinery` | `pane` for triage under the operator's Claude Code login; `inproc` for the interpreter with a key, or Bedrock credentials, placed by the operator | bot token, App key or push credential, model key, inbound secrets, in the machine's keychain or a sealed file under the root | the machine's tailnet node; the endpoint reachable on the private network only; a public webhook needs a funnel the operator opens for named callers (46) | the bot, while the machine is awake | yes, private | yes | the rail in chat while the machine sleeps; the sink lease then sits with the pin until the machine wakes |
+| **invoked dispatcher** (the hosted tiers) | no process stands: one function per tier, each invocation one instance's tick, woken only through that instance's queue (270) | `inproc` under the tier role, the service's model access metered into the rail, or a key the operator places | the tier's own store; no secret of the instance's is held between ticks | no private network at all: the page and the tool server are served at the tier's name and the identity token is the boundary (191, 291) | the service's Slack or Discord application; Discord free text is a slash-command option, Slack free text arrives over the Events API (277) | yes, one queue per instance behind a shared receiver (271) | yes, for a capture whose whole content is in the queue; raw-material triage goes elsewhere (263) | plain Discord channel replies, which need a gateway socket; and anything that will not fit a fifteen-minute tick |
 | **cloud dispatcher** | the same binary, placed as §5.1 lists | `inproc` with a key or the runtime's role; `managed` when the platform's sandbox reaches the tailnet | the platform's secret store or vault; never a key that reaches a host (207) | a tailnet node or the platform router's ingress (191); the endpoint public for named callers with their secrets | the bot, always | yes | yes | nothing of the four; costs a running process |
 
 ### 5.1 Cloud targets
@@ -281,7 +281,7 @@ on the same six things.
 
 | target | process shape | secrets | private-network reach to the page and the tool server | cost | MCP transport for a `managed` triage session | verdict |
 |---|---|---|---|---|---|---|
-| **a container on any platform** (Fly, Cloud Run, ECS, a VM, flywheel-cloud) | long-lived; the Discord gateway stays open; the tick runs on its own clock | the platform's secret store, injected as environment | a tailnet node in the container, or the platform router's ingress that flywheel-cloud already is (191) | one small always-on container | not needed: triage is `inproc` | **the placement for a flywheel that wants the gateway.** The binary unchanged, one image, plain Discord replies read, and an always-on floor to pay for. |
+| **a container on any platform** (Fly, Cloud Run, ECS, a VM, flywheel-cloud) | long-lived; the Discord gateway stays open; the tick runs on its own clock | the platform's secret store, injected as environment | a tailnet node in the container, or the platform router's ingress that flywheel-cloud already is (191) | one small always-on container | not needed: triage is `inproc` | **the placement for an instance that wants the gateway.** The binary unchanged, one image, plain Discord replies read, and an always-on floor to pay for. |
 | **Bedrock AgentCore** | a long-lived runtime session, up to hours, restarted on a schedule; the tick runs inside it | AgentCore's identity service and the runtime's IAM role; Bedrock models with no key (`captures.md` §3, the model row) | a VPC route to the tailnet or to the ingress; without it, none | per-session runtime plus model | AgentCore's gateway speaks MCP; the session reaches the dispatcher's tool server over HTTP with the 197 identity | **as a triage runner for an org already on AWS**, not as the dispatcher process: the presenter's socket and the endpoint want a plain long-lived process. |
 | **a Claude managed agent** | one session per run from a stored agent definition; scheduled deployments fire sessions on a cron | vault credentials substituted at egress, never in the sandbox | a self-hosted sandbox on the operator's network reaches the tool server; the cloud sandbox does not | per session plus model | the agent's `mcp_servers` by URL, the credential in a vault | **as a triage runner**, by schedule or per capture, with a self-hosted sandbox; never the presenter or the endpoint. |
 | **a function set on any platform** | per request; no socket and no clock of its own; a scheduler fires the tick; the endpoint is a function | the platform's environment or the tier's store | no tailnet node; the page and the tool server are served at the tier's name and the identity token is the boundary instead (191, 291) | near zero at rest | none: the interpreter is `inproc` | **a placement, with a scheduler, a receiver and a served name.** Without those three it is not one. It gives up plain chat replies, which need the gateway; free text arrives as a slash-command option or over Slack's Events API. |
@@ -302,20 +302,20 @@ server verifies on every call is the boundary (191, 291).
 dispatcher, because both are the binary already specified and neither
 needs a platform, a container image or a public route. Then the
 invoked dispatcher, because that is what the hosted tiers run: one
-function per tier, a queue and a receiver per flywheel, a
+function per tier, a queue and a receiver per instance, a
 scheduler entry, and the page and tool server at the tier's served
-name. The long-lived container stays available for a flywheel
+name. The long-lived container stays available for an instance
 that wants the gateway socket and plain chat replies. AgentCore and
 managed agents come as triage runners in the sessions binding when an
-flywheel already runs its agents there, and as a placement for the
+instance already runs its agents there, and as a placement for the
 whole dispatcher not at all.
 
 ### 5.2 The invoked placement
 
 A function that stands for no time at all is a placement when three
 things stand in for what it lacks (217i, 270). The scheduler gives it
-the clock: one one-shot entry per flywheel carrying the due time
-that flywheel's last tick computed, targeting the flywheel's
+the clock: one one-shot entry per instance carrying the due time
+that instance's last tick computed, targeting the instance's
 queue so a due time is one invoker among the rest. The interactions
 endpoint gives it the replies a socket would carry: the receiver
 answers inside the platform's deadline, deferring where the platform
@@ -328,8 +328,8 @@ call is the boundary the private network is on a self-managed host
 (191, 291). What it gives up is what only a socket delivers, plain
 channel replies in Discord, so free text there is the string option of
 a slash command while Slack free text arrives over the Events API
-(277). Every invoker enqueues on the flywheel's queue, which
-admits one tick of a flywheel at a time, and a request for the
+(277). Every invoker enqueues on the instance's queue, which
+admits one tick of an instance at a time, and a request for the
 page is a read and never a tick.
 
 ## 6. Installation tiers
@@ -339,15 +339,15 @@ the plan ladder is five rungs over them (281).
 
 | tier | sign-in and identity | chat | dispatcher placement | triage runner | audit | what is a manifest binding | what is code |
 |---|---|---|---|---|---|---|---|
-| **0 · your computer** (Free) | `github`: the page signs in with GitHub's device flow, the GitHub username is the identity, the manifest's `operators:` list is membership (243, 253) | the flywheel's own Discord or Slack application and bot | the browser agent alone, or the local dispatcher | `pane` under the operator's login; no key | history is the audit (167) | `hosts.<host>.identity: {kind: github}`, `hosts.dispatcher`, `sinks.chat.discord` | the Discord adapter, the local and tailnet routers, the device-flow sign-in |
-| **1 · cloud agent** (Hobby) | `frontegg`: the hosted login, the served name registered once on the environment's redirect list (243, 244) | the service's Slack or Discord application, scoped to the flywheel's channel (277) | the invoked dispatcher: one function per tier, woken through the flywheel's queue | `inproc` at bound zero, the service's model access under the tier role | history plus the App's own log; every response recorded with who and when (153) | `hosts.<host>.identity: {kind: frontegg, environment, client_id}`, `hosts.<host>.tier: 1`, `sinks.chat.slack` or `.discord` | the receiver, the queue and scheduler bindings, the Frontegg sign-in, the platform router |
-| **2 · pools** (Pro, Team) | as tier 1, with roles and ownership held per account and carried in the token (248) | as tier 1 | as tier 1 | as tier 1 | as tier 1, with identity administration a surface of the flywheel (255) | `hosts.<host>.tier: 2`, `pools.<name>` with image, bound, cost and retire time | the pool platform binding, the image builder, the management console |
-| **3 · your account** (Enterprise) | as tier 1, with the flywheel's own directory connected to its account (243) | as tier 1 under the first two shapes; the installer's own applications under the third (303) | three shapes (276, 276a, 304, 305). **Stores only:** the same dispatcher, or one of its own in the service account, assuming a role the flywheel grants. **Stores and compute:** the binary provisioned into that account by the deployer, with only the registry, the deployer and the identity environment left on the service side. **The whole control plane installed** in the installer's own accounts, sold and installed by us, shown in no marketing and no console | as tier 1, under the granted role | as tier 1, exported from history to the flywheel's log (167) | `hosts.<host>.tier: 3` and the role, key and store names in the customer's own cloud account | the federation binding: the issuer, the tagged web-identity session, the content-free wake. Under the third shape nothing more: the binary reads its service side through the invocation contract alone and cannot tell whose control plane it is (297, 305) |
+| **0 · your computer** (Free) | `github`: the page signs in with GitHub's device flow, the GitHub username is the identity, the manifest's `operators:` list is membership (243, 253) | the instance's own Discord or Slack application and bot | the browser agent alone, or the local dispatcher | `pane` under the operator's login; no key | history is the audit (167) | `hosts.<host>.identity: {kind: github}`, `hosts.dispatcher`, `sinks.chat.discord` | the Discord adapter, the local and tailnet routers, the device-flow sign-in |
+| **1 · cloud agent** (Hobby) | `frontegg`: the hosted login, the served name registered once on the environment's redirect list (243, 244) | the service's Slack or Discord application, scoped to the instance's channel (277) | the invoked dispatcher: one function per tier, woken through the instance's queue | `inproc` at bound zero, the service's model access under the tier role | history plus the App's own log; every response recorded with who and when (153) | `hosts.<host>.identity: {kind: frontegg, environment, client_id}`, `hosts.<host>.tier: 1`, `sinks.chat.slack` or `.discord` | the receiver, the queue and scheduler bindings, the Frontegg sign-in, the platform router |
+| **2 · pools** (Pro, Team) | as tier 1, with roles and ownership held per account and carried in the token (248) | as tier 1 | as tier 1 | as tier 1 | as tier 1, with identity administration a surface of the instance (255) | `hosts.<host>.tier: 2`, `pools.<name>` with image, bound, cost and retire time | the pool platform binding, the image builder, the management console |
+| **3 · your account** (Enterprise) | as tier 1, with the instance's own directory connected to its account (243) | as tier 1 under the first two shapes; the installer's own applications under the third (303) | three shapes (276, 276a, 304, 305). **Stores only:** the same dispatcher, or one of its own in the service account, assuming a role the instance grants. **Stores and compute:** the binary provisioned into that account by the deployer, with only the registry, the deployer and the identity environment left on the service side. **The whole control plane installed** in the installer's own accounts, sold and installed by us, shown in no marketing and no console | as tier 1, under the granted role | as tier 1, exported from history to the instance's log (167) | `hosts.<host>.tier: 3` and the role, key and store names in the customer's own cloud account | the federation binding: the issuer, the tagged web-identity session, the content-free wake. Under the third shape nothing more: the binary reads its service side through the invocation contract alone and cannot tell whose control plane it is (297, 305) |
 
 The line between the columns: an adapter for a chat platform, a
 sign-in kind, a router kind and a runner are each one piece of code
 in the surface, host or sessions crate, shipped once and named by the
-manifest. Which of them a flywheel uses, on which channel, with
+manifest. Which of them an instance uses, on which channel, with
 which provider, is data (139, 119). No tier changes a machine
 definition, an atom or a profile operation.
 
@@ -367,7 +367,7 @@ reproduced here because this document is their binding;
 216a. A model running in the page's browser is the host's agent for
     the page and nothing else (194). It presents no sink, writes no
     capture except through the capture tool the page already calls
-    (19), and reads no capture. A flywheel may run with no other
+    (19), and reads no capture. An instance may run with no other
     part of dispatch; the rail is then served, answered and captured
     on the page, and nothing arrives through chat or through a
     webhook.
@@ -452,13 +452,13 @@ reproduced here because this document is their binding;
 
 217j. The installation tiers are bindings. A chat platform's adapter, a
     sign-in kind, a router kind and a runner are each code shipped
-    once; which a flywheel uses is data (139). Every response is
+    once; which an instance uses is data (139). Every response is
     recorded with who gave it and when (153) at every tier; an
-    flywheel that needs the record elsewhere exports it from
+    instance that needs the record elsewhere exports it from
     history (167).
 
 217k. Dispatch is installed by the machinery from the manifest and
-    never by hand: `flywheel init` records that the flywheel's
+    never by hand: `flywheel init` records that the instance's
     dispatcher exists and where it is placed (204); the placement's
     own step — a process, a pane, a container, a platform session —
     is an effect with a proof, repeatable, and the secrets it needs

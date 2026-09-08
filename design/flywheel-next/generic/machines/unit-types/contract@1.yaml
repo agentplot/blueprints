@@ -6,7 +6,7 @@
 # `active` with new terms and the prior terms intact behind it.
 #
 # Growth this type leans on (../../README.md):
-#   growth-1  a flywheel with no built repository
+#   growth-1  an instance with no built repository
 #   growth-2  the contract record type, its key and its self-reference
 #   growth-3  timers declared by the type, here counting down to a date on the
 #             record rather than up from the state's entry

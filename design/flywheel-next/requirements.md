@@ -1,6 +1,6 @@
 # Flywheel next — requirements
 
-A statement of what the flywheel must do and what must always hold,
+A statement of what the instance must do and what must always hold,
 written to admit any model that satisfies it.
 
 The statement is in three parts. Part A is the data plane: the objects,
@@ -125,25 +125,30 @@ redefine these.
 - **verdict** — one stored judgment that a repository satisfies a claim:
   satisfied, partial, not satisfied, or not applicable, with the claim
   version and repository revision judged, the evidence, and the date.
-- **ledger** — the verdicts, kept for every repository the flywheel
+- **ledger** — the verdicts, kept for every repository the instance
   tracks.
 - **scope** — the repositories a claim applies to: all of them, a kind
   of repository, every repository declaring a capability, or named
   repositories.
-- **flywheel** *(an instance)* — one thing the state holds: one
-  blueprints repository, one state repository, the repositories it
-  tracks, its sinks and its own numbers, isolated from every other
-  (218, 219). It belongs to exactly one account. "The flywheel" without
-  an article is the product and the machinery; "a flywheel" is one of
-  these.
+- **instance** — one thing the state holds: one blueprints repository,
+  one state repository, the repositories it tracks, its sinks and its
+  numbers, isolated from every other (218, 219). It belongs to exactly
+  one account. This is the word every requirement, machine, atom,
+  profile and permission uses; the customer's word for it on every
+  surface is *flywheel* (S206).
 - **account** — who may respond, and what they may respond to: the
   Frontegg account on a hosted tier, the manifest's authored operators
-  list on a self-managed host. It holds one or more flywheels, and
+  list on a self-managed host. It holds one or more instances, and
   membership, roles and each member's chat addresses live on it, not on
-  a flywheel (247). A user signs in to an account, sees its flywheels,
+  an instance (247). A user signs in to an account, sees its instances,
   and switches accounts to see others.
+- **flywheel** — the product and the machinery: this design, the
+  binary, and what it does. On a customer-facing surface it is also the
+  customer's name for an instance, so a control that switches instances
+  is rendered "Switch flywheel" and a page that lists them lists
+  flywheels (S206).
 - **organization** — a company, or an organization at the git host. It
-  is never the thing the state holds; that is a flywheel, and who may
+  is never the thing the state holds; that is an instance, and who may
   respond in it is an account.
 - **state** — everything the machinery must remember between runs and
   share between hosts: objects, their states, ownership, verdicts,
@@ -176,7 +181,7 @@ redefine these.
   anything — a page control, a chat, the dispatch agent, the machinery
   — moves an object. A dictation is a tool the operator invoked.
 - **host's agent** — the agent that serves the operator's free text on
-  a surface: the flywheel's dispatch agent for chat, a model
+  a surface: the instance's dispatch agent for chat, a model
   running in the page's browser. It reads and answers with the query
   tools on its own, and every write it makes is a proposed tool call
   the operator confirms. The machinery never parses free text.
@@ -184,7 +189,7 @@ redefine these.
   text into a proposed tool call for the operator to confirm; a
   message that asks for several things yields several, one card each.
   Nothing at all when the operator used a control.
-- **blueprints repository** — a flywheel's content repository,
+- **blueprints repository** — an instance's content repository,
   one of its two central repositories beside the state repository: the
   book, the claims, the context map, the manifest, the OpenSpec changes
   for intents with their records, and what the machinery writes under
@@ -255,7 +260,7 @@ model.
     landed, closed or dropped since the last delivery to the sink the
     operator is reading. One delivery mark per sink is recorded state,
     so the tail is derivable like the decisions.
-15. Every decision carries a short number, unique in the flywheel, given
+15. Every decision carries a short number, unique in the instance, given
     once and never reused. The page and the chat show the same number,
     a response names it, and no rendering of the rail is stored.
 16. A decision for construction says where the work goes. A proposed unit
@@ -283,7 +288,7 @@ requirements, iterated against the running rail rather than on paper.
 20. Signals arrive from many sources at many rates. Curation, not the
     elaboration machinery, decides which become intents. Curation may
     be a person, an agent, or both, and it may run outside the
-    flywheel; the flywheel must accept its output.
+    instance; the flywheel must accept its output.
 21. An intent carries at most one elaboration awaiting approval at a
     time. New material for the intent joins that proposal.
 22. An intent's close is proposed when all its elaborations are done,
@@ -643,7 +648,7 @@ requirements, iterated against the running rail rather than on paper.
 ### A.13 Coexistence
 
 96. The new flywheel runs beside the current one, against the same
-    flywheel, without either interfering with the other. Its
+    instance, without either interfering with the other. Its
     scope of objects is disjoint and explicit.
 
 ### A.14 Claims, as-built, and the ledger
@@ -733,7 +738,7 @@ requirements, iterated against the running rail rather than on paper.
     is immutable once written.
 114. The signal and move record formats are versioned and stable. Any
     tool that writes them is an adapter; captures made before the
-    flywheel existed are read without conversion.
+    instance existed are read without conversion.
 115. An adapter splits arithmetic from judgment. Enumerating source
     events and writing captures runs unattended. Turning a capture into
     signals is a session's judgment and never runs unattended.
@@ -759,7 +764,7 @@ requirements, iterated against the running rail rather than on paper.
     running on whichever host declares the source, by that host's tick
     (231). The capture endpoint is for callers that cannot reach any
     host's binary. Triage of a source is charged on the host that
-    declares it (217e). A flywheel adds an adapter as a package
+    declares it (217e). An instance adds an adapter as a package
     (228).
 
 ### A.16 Default instructions and the review surface
@@ -791,7 +796,7 @@ requirements, iterated against the running rail rather than on paper.
     design: a context, the elements it names, the relationships between
     contexts typed by the DDD patterns with an upstream and a downstream
     where the pattern has one, and links between elements. Element
-    kinds, link kinds and facets come from a vocabulary the flywheel
+    kinds, link kinds and facets come from a vocabulary the instance
     ships and the flywheel extends; the relationship patterns do
     not. Every context, element, relationship and link has a stable id,
     a name as the book writes it, the chapter that states it (120), and
@@ -889,9 +894,9 @@ requirements, iterated against the running rail rather than on paper.
     (A.7).
 174. Sessions have affinity to a multiplexer session, declared per host
     in the manifest. With no declaration the defaults hold:
-    `flywheel-<flywheel>-intents` for elaboration sessions,
-    `flywheel-<flywheel>-bolts` for construction sessions, and
-    `flywheel-<flywheel>-machinery` for sessions the machinery charges. A
+    `flywheel-<instance>-intents` for elaboration sessions,
+    `flywheel-<instance>-bolts` for construction sessions, and
+    `flywheel-<instance>-machinery` for sessions the machinery charges. A
     declaration may route any kind or repository elsewhere. The
     machinery creates the multiplexer session when it is absent.
 196. Every pane and every agent the machinery starts is named by the
@@ -899,7 +904,7 @@ requirements, iterated against the running rail rather than on paper.
     session id, so the multiplexer's listing is a status view of its
     own (B.4). The multiplexer layout is a binding of the sessions
     profile with a shipped default: one multiplexer session per
-    flywheel and role (174); inside it, one workspace per bolt and
+    instance and role (174); inside it, one workspace per bolt and
     per intent; one tab per unit and per elaboration; one pane per
     session, so sessions of one unit running side by side are split
     panes of one tab. The machinery creates a workspace, tab or pane
@@ -1027,7 +1032,7 @@ requirements, iterated against the running rail rather than on paper.
     (88), and the surface that reviews it (17). The flywheel ships a
     default set, versioned as one thing: book chapter, claim, context
     map, conceptual and logical diagrams in a house style, proposal
-    document, verdict. A flywheel replaces or adds a producer per
+    document, verdict. An instance replaces or adds a producer per
     deliverable in the manifest without touching the engine (119), and
     a session is handed the producers in force when it starts (89).
     Changing a producer is a chore (123).
@@ -1072,14 +1077,14 @@ requirements, iterated against the running rail rather than on paper.
 203. Three repositories, three owners. The state repository is the
     machinery's alone: nothing a person or a session writes lives
     there, and its layout is the profile's (C.2). The blueprints repository
-    is the flywheel's: the book, the claims, the context map, the
+    is the instance's: the book, the claims, the context map, the
     manifest, the OpenSpec changes for intents and the elaboration
     records inside them are written by people and sessions under the
     book's own layout; the machinery writes there only under the
     prefix `flywheel/` — captures, signals and moves, the rendered map
     — and the OpenSpec change directory it creates when an intent
     opens. A built repository is its owners': code and the
-    repository's declarations to the flywheel under `flywheel/`
+    repository's declarations to the instance under `flywheel/`
     (services, commit types) are theirs; the machinery writes only the
     OpenSpec changes for units, the acceptance file beside the
     as-built (192), and an untracked `.flywheel/` in each place for
@@ -1092,7 +1097,7 @@ requirements, iterated against the running rail rather than on paper.
 ### A.24 Bootstrapping and repositories
 
 204. Initialization is the machinery's, deterministic and repeatable. An
-    flywheel is an object with a machine of its own — absent, blueprints
+    instance is an object with a machine of its own — absent, blueprints
     ready, state ready, connected, hosted — and `flywheel init` drives
     it: create or adopt the blueprints repository from the blueprints template,
     create the state repository with the profile's layout (C.2), record
@@ -1108,16 +1113,16 @@ requirements, iterated against the running rail rather than on paper.
     only for places (43) and the operator's bolt places (44). The
     layout on disk is the profile's; a host that finds a hand-made
     layout refuses to start and says what differs.
-205a. A host has one address, and the flywheel is in the path: a
-    host serving several flywheels (218) serves them all at that
-    one address, `/<flywheel>/...`, and a link names the flywheel it
+205a. A host has one address, and the instance is in the path: a
+    host serving several instances (218) serves them all at that
+    one address, `/<instance>/...`, and a link names the instance it
     opens. The settings form edits the keys 233 assigns to the
-    flywheel and shows the host's keys read-only, with a link to
+    instance and shows the host's keys read-only, with a link to
     the host's own screen.
 206. A repository is created by the machinery from a response, never by
     a session. An elaboration or a dictation proposes it with its map
     nodes and homes (199, 202); the yes creates it on the git host
-    under the flywheel from the built-repository template, writes
+    under the instance from the built-repository template, writes
     its manifest entry, its `flywheel/` declarations (203) and its map
     nodes, and the first planning runs its baseline (104). Adopting an
     existing repository is the same steps without the creation.
@@ -1127,7 +1132,7 @@ requirements, iterated against the running rail rather than on paper.
     host or session uses a personal token. A session in a place is
     given a short-lived installation token scoped to that repository,
     issued by the machinery into the place and written nowhere else.
-207a. A self-managed flywheel uses its own GitHub App, its key
+207a. A self-managed instance uses its own GitHub App, its key
     placed by the operator as 207 says. The hosted tiers use the
     service's App: its key never leaves the service, and the
     installation tokens a pool host (240) needs are minted for it by
@@ -1150,7 +1155,7 @@ requirements, iterated against the running rail rather than on paper.
 216a. A model running in the page's browser is the host's agent for
     the page and nothing else (194). It presents no sink, writes no
     capture except through the capture tool the page already calls
-    (19), and reads no capture. A flywheel may run with no other
+    (19), and reads no capture. An instance may run with no other
     part of dispatch; the rail is then served, answered and captured
     on the page, and nothing arrives through chat or through a
     webhook.
@@ -1240,13 +1245,13 @@ requirements, iterated against the running rail rather than on paper.
 
 217j. The installation tiers are bindings. A chat platform's adapter, a
     sign-in kind, a router kind and a runner are each code shipped
-    once; which a flywheel uses is data (139). Every response is
+    once; which an instance uses is data (139). Every response is
     recorded with who gave it and when (153) at every tier; an
-    flywheel that needs the record elsewhere exports it from
+    instance that needs the record elsewhere exports it from
     history (167).
 
 217k. Dispatch is installed by the machinery from the manifest and
-    never by hand: `flywheel init` records that the flywheel's
+    never by hand: `flywheel init` records that the instance's
     dispatcher exists and where it is placed (204); the placement's
     own step — a process, a pane, a container, a platform session —
     is an effect with a proof, repeatable, and the secrets it needs
@@ -1255,19 +1260,19 @@ requirements, iterated against the running rail rather than on paper.
     on that placement; a dispatcher running an older binary than the
     manifest's stamped version is visible on the status view (208).
 
-### A.26 Flywheels
+### A.26 Instances
 
-218. A host runs several flywheels at once, each isolated on disk and in
+218. A host runs several instances at once, each isolated on disk and in
     state: nothing crosses between them — no lease, no id, no session,
-    no decision number. The page shows one flywheel at a time and
-    switches between them, and the flywheels of one account are listed
+    no decision number. The page shows one instance at a time and
+    switches between them, and the instances of one account are listed
     together, since an account is what a user signs in to (247). Each
-    flywheel has its own sinks, one presenter per sink (148), and no
+    instance has its own sinks, one presenter per sink (148), and no
     sink serves two.
-219. A flywheel is the operator's name for it: one blueprints
+219. An instance is the operator's name for it: one blueprints
     repository, one state repository, the repositories it tracks, its
-    sinks and its numbers. An account holds one or more flywheels and a
-    flywheel belongs to exactly one account. A flywheel's name may but
+    sinks and its numbers. An account holds one or more instances and a
+    instance belongs to exactly one account. An instance's name may but
     need not coincide with anything at the git host, and its
     repositories are listed by URL, so they may live under any
     organization or account the App reaches (207).
@@ -1276,7 +1281,7 @@ requirements, iterated against the running rail rather than on paper.
     for each tracked repository (204, 206). An existing repository
     that lacks the layout is upgraded by a chore (123, 208) and never
     rewritten.
-221. A flywheel is removed by a response, never by deleting files: its
+221. An instance is removed by a response, never by deleting files: its
     sessions are ended, its places removed, its state archived, its git
     repositories left on disk; its numbers are never reused (15). The
     account it belonged to stands, with its other flywheels.
@@ -1289,25 +1294,25 @@ requirements, iterated against the running rail rather than on paper.
     stops covering the affected objects (150), and the status view
     shows why.
 233. The page carries one account item: who the operator is and how
-    they signed in, the flywheel they are looking at with a switch
+    they signed in, the instance they are looking at with a switch
     to any other the host has a root for (218), and from it the
-    flywheel's settings (its manifest as a form, one response per
-    save), its hosts and their parts (229), the flywheel's package
+    instance's settings (its manifest as a form, one response per
+    save), its hosts and their parts (229), the instance's package
     store apart from any host's (228), and sign-out. A page served on the
     operator's own computer signs in like any other, through the host's
     identity kind (243), so the identity is the same there as anywhere;
     every response the page records carries that identity (153).
     Authentication is the host's kind and authorization the
-    flywheel's: a host declares one kind, the same for every
-    flywheel it serves, and switching flywheels never changes
-    the signed-in identity. Membership in a flywheel is the
+    instance's: a host declares one kind, the same for every
+    instance it serves, and switching instances never changes
+    the signed-in identity. Membership in an instance is the
     authored operators list on a self-managed host and the Application's
     assignment on the account on a hosted tier (247);
     what a member may do is the list on a self-managed host and the
     permission the token carries on a hosted one (249), and a call
     without it is refused and recorded as refused; the switcher shows
-    a flywheel the identity is not a member of as not a member.
-    The flywheel's package store and a host's package store are
+    an instance the identity is not a member of as not a member.
+    The instance's package store and a host's package store are
     separate surfaces.
 
 ### A.27 Machines, types and context
@@ -1316,9 +1321,9 @@ requirements, iterated against the running rail rather than on paper.
     definition. A **core** machine — every object machine, every engine
     machine, and the structural templates for a line, a place, a
     session and a stage — ships with the release and is never edited by
-    a flywheel; the atoms, the schema and the bindings are core
+    an instance; the atoms, the schema and the bindings are core
     with it. An **extensible** machine — a unit type or an elaboration
-    type — is a file a flywheel adds or overrides under the
+    type — is a file an instance adds or overrides under the
     prefix in its blueprints (203), and so are the deliverables, the
     vocabularies, the instructions, the schemas and the skills (119,
     190, 198). A core machine may name an extensible one only when the
@@ -1336,7 +1341,7 @@ requirements, iterated against the running rail rather than on paper.
     is refused (123). An object records the version of the extensible
     machine it runs under (57) and the set version it was created
     under. The registry is a manifest in two parts, validated as one:
-    the release's manifest of what it ships, and the flywheel's
+    the release's manifest of what it ships, and the instance's
     additions, rendered under the prefix as a registration that lists
     every type name, every version seen, the blueprints commit each first
     appeared at, and whether it is shipped, overridden or added. The
@@ -1371,7 +1376,7 @@ requirements, iterated against the running rail rather than on paper.
     the enumeration and that what it must never receive is absent. A
     session type whose enumeration is incomplete is not a session type
     the machinery may charge.
-227. Every deliverable entry, shipped or added by a flywheel, names
+227. Every deliverable entry, shipped or added by an instance, names
     the store the machinery carries it into and the session types that
     are fed it, beside its producer, schema and surface (190). The
     machinery carries a deliverable into its named store by an effect
@@ -1385,7 +1390,7 @@ requirements, iterated against the running rail rather than on paper.
 228. A package is one thing of one kind: an adapter, a chat sink, a
     runner, a router, a sign-in, a unit type or an elaboration type, a
     deliverable producer, a map vocabulary, a template, or a scenario
-    pack. A per-host package installs on a named host; a flywheel
+    pack. A per-host package installs on a named host; an instance
     package installs into the blueprints under the prefix (203) and is read
     by every host at the shared line, so no two hosts can differ on a
     type. A package is a git repository at a tag, listed in an index
@@ -1396,7 +1401,7 @@ requirements, iterated against the running rail rather than on paper.
 229. The setup surface stands apart from the operator's decisions. It
     shows each host's parts with their state — installed · added,
     awaiting install · needs a secret · installing · disabled — and the
-    index, flywheel packages and per-host packages apart. Adding a
+    index, instance packages and per-host packages apart. Adding a
     package collects its configuration and names its secrets in the
     same flow, then raises one install decision whose yes runs the
     install as effects with proofs (204); a secret not yet placed is
@@ -1421,7 +1426,7 @@ requirements, iterated against the running rail rather than on paper.
     its own host id, root on disk (205), multiplexer session, port range
     from the router (191), heartbeat and leases, so that any scenario
     the model states about hosts — a host lost, a takeover, a bound
-    reached, a disconnected host reconciling, several flywheels —
+    reached, a disconnected host reconciling, several instances —
     can be run and watched on a laptop with no second machine. Two
     hosts on one computer share nothing but the git host and are told
     apart by id alone; the scenario tool (95) can start, stop and
@@ -1433,7 +1438,7 @@ requirements, iterated against the running rail rather than on paper.
     on a self-managed host the GitHub usernames of the authored
     operators list, on a hosted tier the users assigned to the account,
     derived and never authored (247). They are the operators of every
-    flywheel the account holds (219). Authorship
+    instance the account holds (219). Authorship
     is the GitHub username in either kind (246), and every response
     carries the identity (153). A page served on the operator's own
     computer signs in through the same kind, so the identity is the
@@ -1449,7 +1454,7 @@ requirements, iterated against the running rail rather than on paper.
     that member's. A shared channel is a sink of its own with one mark.
 236a. An entry in the account's operators list carries the member's
     address per chat kind — a Discord user id, a Slack member id —
-    keyed by the member's identity (247). Each flywheel's sinks gain
+    keyed by the member's identity (247). Each instance's sinks gain
     one chat sink per member per address, presented by whichever host runs that kind's
     package (228) and holds the lease (148); a member with no chat
     address has a page sink only. Adding or removing an address adds or
@@ -1469,7 +1474,7 @@ requirements, iterated against the running rail rather than on paper.
 ### A.30 Environments
 
 238. Every tracked repository declares the environment its sessions
-    need — tools and their versions — in one file the flywheel reads
+    need — tools and their versions — in one file the instance reads
     under its prefix (203), or by naming the repository's own
     devcontainer or devenv definition. The machinery binds the
     declaration to a provider per host (devenv, devcontainer, nix, or a
@@ -1486,7 +1491,7 @@ requirements, iterated against the running rail rather than on paper.
 
 ### A.31 Host pools
 
-240. A flywheel may declare a pool: a platform that provisions
+240. An instance may declare a pool: a platform that provisions
     hosts on demand from the image (239), up to a bound, each joining by
     an enrolment token the machinery issues (230), covering what the
     pool declares, and retiring when idle for a stated time. A pool host
@@ -1495,9 +1500,9 @@ requirements, iterated against the running rail rather than on paper.
     shows the pool, its bound and its live hosts; the operator never
     needs to see a pool host.
 241. A pool host serves one flywheel. A host serving several
-    flywheels (218) is the operator's own machine. A service run for
-    many flywheels gives every flywheel its own pool, and
-    nothing is shared between flywheels but the platform.
+    instances (218) is the operator's own machine. A service run for
+    many instances gives every instance its own pool, and
+    nothing is shared between instances but the platform.
 242. The machinery adds pool hosts while approved work waits behind the
     bound and drain is the limit (214), within the pool's bound and the
     cost setting the manifest names, and retires them as the queue
@@ -1510,16 +1515,16 @@ requirements, iterated against the running rail rather than on paper.
     for self-managed hosts: the page signs in with GitHub's device
     flow, the GitHub username is the identity, the manifest's authored
     operators list with its addresses is membership (236a), every
-    operator listed holds every permission on their own flywheel,
+    operator listed holds every permission on their own instance,
     and flags stand at their definition defaults. `frontegg`, for the
     hosted tiers: identity is Frontegg's through its SDK — the page
     runs the React SDK and the tool server verifies the token it
-    carries — with one Application for the whole flywheel, and
+    carries — with one Application for the whole instance, and
     everything below that names Frontegg applies there and only there.
     In neither kind does the flywheel talk to an enterprise directory
     for sign-in; GitHub stays the git host and the App that reaches the
     repositories (207). A host declares its kind, the same for every
-    flywheel it serves (233).
+    instance it serves (233).
 244. On a hosted host sign-in is Frontegg's hosted login. The SDK builds
     `redirect_uri` from the origin the page is served on, so the host's
     served name is the only per-host fact and it is registered once, as
@@ -1540,13 +1545,13 @@ requirements, iterated against the running rail rather than on paper.
     may respond and may not be an author, and the flywheel asks for the
     connection at first sign-in. Authorship is the GitHub username in
     both kinds.
-247. Membership is held by the account, not by the flywheel, and the
-    account holds the flywheels (219). On a hosted tier membership is
+247. Membership is held by the account, not by the instance, and the
+    account holds the instances (219). On a hosted tier membership is
     the assignment of the flywheel Application to the account's
     Frontegg account — a top-level account, except that the hosted
     service creates its tenants as sub-accounts of the service's own —
     and assignment is the whole of "may respond in it" (233), for every
-    flywheel the account holds; the operators list is derived from the
+    instance the account holds; the operators list is derived from the
     account's assigned users at every fetch and rendered read-only,
     only the members' chat addresses (236a) staying authored, and
     adding or removing a member is an act on the account, never a
@@ -1554,12 +1559,12 @@ requirements, iterated against the running rail rather than on paper.
     operators list in the manifest, edited on the settings form, one
     response per save. Either way the list is per account, and a
     member's chat address per member per account, so a member reads
-    every flywheel of the account under one identity.
-247a. Moving a flywheel to a hosted tier is the upgrade: the service
+    every instance of the account under one identity.
+247a. Moving an instance to a hosted tier is the upgrade: the service
     creates an account for it, or the operator picks an account they
     already hold, invites the same GitHub usernames the operators list
     carries, and carries every address over; the list is derived from
-    then on. Nothing else about the flywheel moves (218).
+    then on. Nothing else about the instance moves (218).
 248. On a hosted tier roles are held per account and carried in the
     token; a role assigned on a parent account applies down the branch,
     so a tenant inherits the service's roles, and the manifest's roles
@@ -1572,7 +1577,7 @@ requirements, iterated against the running rail rather than on paper.
     account; a call without it is refused, no response
     is recorded, and the refusal is written to the run record with the
     identity, the tool and the object (79, 153). Membership admits the
-    identity to the flywheel; the permission authorizes the tool.
+    identity to the instance; the permission authorizes the tool.
     On a self-managed host the check is membership in the operators
     list, with the same refusal and the same record.
 250. On a hosted tier feature flags are entitlement features, one flag
@@ -1598,12 +1603,12 @@ requirements, iterated against the running rail rather than on paper.
     tool with the reason.
 253. A self-managed host signs in every operator through GitHub's
     device flow; there is no local-user case and no unauthenticated
-    page. A flywheel created on a self-managed host lists its
-    creating user first in the operators list, so a fresh flywheel
+    page. An instance created on a self-managed host lists its
+    creating user first in the operators list, so a fresh instance
     is never locked out and a single operator is never asked to
-    administer roles. A flywheel created on a hosted tier is a
+    administer roles. An instance created on a hosted tier is a
     Frontegg account whose creating user holds `owner`.
-253a. Until a flywheel lists more than one operator, a
+253a. Until an instance lists more than one operator, a
     self-managed host may serve the page on the operator's private
     network with no sign-in. The single entry of the operators list is
     the identity every response records as given by (153, 236a), the
@@ -1624,8 +1629,8 @@ requirements, iterated against the running rail rather than on paper.
     host has no provider to lose: GitHub unreachable blocks a new
     sign-in and nothing else.
 255. On a hosted tier identity administration is a surface of the
-    flywheel, not a second console: the account item lists the
-    flywheel's members with their roles and their chat addresses,
+    instance, not a second console: the account item lists the
+    instance's members with their roles and their chat addresses,
     invites a user to the account, grants and revokes the Application,
     and targets a flag on the account. Every one of those is a tool
     call under the identity administration permission, recorded like
@@ -1635,33 +1640,33 @@ requirements, iterated against the running rail rather than on paper.
 ### A.33 Tenancy and encryption
 
 256. Everything a shared host keeps between ticks is encrypted at rest
-    under a key naming one flywheel: the clone cache, the body of
+    under a key naming one instance: the clone cache, the body of
     every queued capture, every store holding its content. A store keyed
-    per filesystem, volume, queue or table holds no flywheel's
+    per filesystem, volume, queue or table holds no instance's
     content in the clear; it is sealed under that key inside the store.
-257. The flywheel's key is unwrapped only for the duration of a tick
+257. The instance's key is unwrapped only for the duration of a tick
     and only by the role that runs it. The plaintext data key exists in
-    a process evaluating that flywheel's rail and at no other time.
+    a process evaluating that instance's rail and at no other time.
 258. The cache is a projection and its loss costs a clone. An
-    flywheel idle past a stated time keeps nothing warm, and its
+    instance idle past a stated time keeps nothing warm, and its
     next tick re-clones.
-259. A shared host assumes a role scoped to one flywheel for the
-    duration of that flywheel's tick, so one compromised credential
+259. A shared host assumes a role scoped to one instance for the
+    duration of that instance's tick, so one compromised credential
     reaches one flywheel. The scope may be carried by a session tag
-    naming the flywheel, matched against the tag on every key and
-    object it opens, so the number of flywheels is bounded by no
+    naming the instance, matched against the tag on every key and
+    object it opens, so the number of instances is bounded by no
     count of roles. The match is written as the role's own policy over
-    every key and object of the account, the resource's flywheel tag
+    every key and object of the account, the resource's instance tag
     equal to the session's, so no key names a role and no role is added
     for a flywheel.
 260. A key that is unreachable, deleted or behind a role that no longer
     trusts the service, fails closed. No tick proceeds on state it
-    cannot open, every host of that flywheel shows one attention
+    cannot open, every host of that instance shows one attention
     line naming the key and since when (149), running work is not
     interrupted, and nothing is kept unencrypted as a fallback.
 261. What the service holds and under which key is a stated fact of the
     tier, rendered on the settings form (233): which stores hold the
-    flywheel's content, which key opens them, which role may use it,
+    instance's content, which key opens them, which role may use it,
     and when the cache was last evicted.
 262. A shared host reads the manifest, the register, the leases, the
     sink's mark and the machinery's prefix (203) and nothing else. The
@@ -1675,9 +1680,9 @@ requirements, iterated against the running rail rather than on paper.
     pointer and needs no raw store, so a shared host may triage it in
     the tick that took it.
 264. Code is never on a shared host. A built repository is cloned only
-    into a pool host serving one flywheel (241), and retire destroys
+    into a pool host serving one instance (241), and retire destroys
     that host and its disk (240).
-265. A flywheel may declare that the machinery writes its state
+265. An instance may declare that the machinery writes its state
     records as envelopes under its key. Paths, file names and commit
     metadata stay plaintext, because list, the count and the
     compare-and-swap read only those (162). It is a declaration, never
@@ -1686,9 +1691,9 @@ requirements, iterated against the running rail rather than on paper.
     except the machinery's own prefix (203), where captures and signals
     are envelopes under the same key. The manifest, the book, the claims
     and the map are read by people and are never encrypted.
-267. A flywheel's key has one of three homes: the operator's own
-    hosts when the flywheel is self-managed, a key tagged with that
-    flywheel in the service's account, or a key in the
+267. An instance's key has one of three homes: the operator's own
+    hosts when the instance is self-managed, a key tagged with that
+    instance in the service's account, or a key in the
     customer's own cloud account reached through a role that trusts the
     service's issuer for that flywheel. The home is a stated fact of
     the tier (261), moving between homes re-wraps data keys and changes
@@ -1700,27 +1705,27 @@ requirements, iterated against the running rail rather than on paper.
 
 268. The tiers are four, named by what exists on the service side. Tier
     0 is your computer: the binary on the operator's own machine, its
-    own sign-in kind (243), and nothing of the flywheel's on the
+    own sign-in kind (243), and nothing of the instance's on the
     service side at all. Tier 1 is the cloud agent: a capture queue, a
     key, a role, a warm cache object and a scheduler entry for the
-    flywheel, with no pool, so the operator's own machines still
+    instance, with no pool, so the operator's own machines still
     build. Tier 2 is pools: tier 1 with hosts provisioned on demand from
-    the flywheel's image (240). Tier 3 is your account, in two
-    shapes the flywheel chooses in the management console: **stores
+    the instance's image (240). Tier 3 is your account, in two
+    shapes the instance chooses in the management console: **stores
     only**, where the key, the capture queue, the warm cache and the
     pool image live in the customer's own cloud account and the service's own
-    compute reaches them through a role the flywheel grants (267,
+    compute reaches them through a role the instance grants (267,
     276); and **stores and compute**, where the binary itself is
     provisioned into that account through the same granted role and
     nothing of the service's runs there but the control plane (276a).
     A tier is a binding named in the manifest (217j) and never a second
     machinery.
 269. On the hosted tiers the dispatcher is one function per tier, and
-    each invocation is one flywheel's tick. It assumes the tier's
-    role under a session tag naming that flywheel (259), fetches,
+    each invocation is one instance's tick. It assumes the tier's
+    role under a session tag naming that instance (259), fetches,
     evaluates, pushes by compare-and-swap (162), delivers the rail,
     wipes its scratch and exits, retaining nothing between invocations
-    (217a); the sandbox is reused across flywheels, so retaining
+    (217a); the sandbox is reused across instances, so retaining
     nothing is the tick's own act, its scratch wiped and its data key
     dropped before exit. It runs a model. A tick has a fixed budget the
     placement states, fifteen minutes on the function placement; when
@@ -1741,10 +1746,10 @@ requirements, iterated against the running rail rather than on paper.
     a machine of the operator's own or on a pool host. It never holds
     code (264): the declaration it runs takes no object kind, no
     repository and no unit type (217), so there is nothing for it to
-    clone. A failure in one flywheel's tick ends that tick and no
+    clone. A failure in one instance's tick ends that tick and no
     other (218). Model access on a hosted tier is the service's, carried
     by the tier role and metered into the rail (279, 294), unless the
-    flywheel places a model key of its own instead (207); which
+    instance places a model key of its own instead (207); which
     model provider sees rail text and messages is named in the tier
     statement (261).
 270. The tick is invoked, not looped. A long-lived process its
@@ -1754,38 +1759,38 @@ requirements, iterated against the running rail rather than on paper.
     nothing invoked it is caught up by the next one under the idempotent
     key (111). This amends 231: what 231 requires is that nothing but
     the tick keeps time, not that a process stands. Every invoker
-    enqueues on the flywheel's queue and the queue admits one tick
-    of a flywheel at a time, the flywheel naming the group the
+    enqueues on the instance's queue and the queue admits one tick
+    of an instance at a time, the instance naming the group the
     queue serializes, so the scheduler's target is the queue and never
     the function. A request for the page is a read under the caller's
     identity and is not an invoker (291).
 271. On the hosted tiers the capture endpoint (216) is a managed queue
-    per flywheel with one stateless receiver of the machinery's in
+    per instance with one stateless receiver of the machinery's in
     the acknowledgement path, which verifies the caller's signature,
     answers the platform's liveness check, acknowledges within the
-    platform's deadline, and routes by workspace to the flywheel's
+    platform's deadline, and routes by workspace to the instance's
     queue; it holds no key that decrypts and reads no queue. The
     receiver may encrypt what it enqueues and never decrypt, so its
-    grant on a flywheel's key is the encrypting one and the
+    grant on an instance's key is the encrypting one and the
     tagged session of 259 holds the decrypting one. The item waits for
     a tick. The queue is the caller's retry buffer and not
     state. A capture is captured when its commit lands, a lost queue is
     indistinguishable from a call that never arrived, and a repeat under
     the same key writes nothing (111). Every body it holds is encrypted
-    under the flywheel's key (256).
-272. The warm cache is one encrypted object per flywheel (256)
+    under the instance's key (256).
+272. The warm cache is one encrypted object per instance (256)
     holding a bundle of two sparse shallow clones: the state repository,
     and the blueprints restricted to the manifest, the claims and the
     machinery's prefix (203, 262). A tick downloads it, works in its own
     scratch, and uploads it back; it is mounted nowhere and shared with
-    nothing. It is evicted when the flywheel has been idle past the
+    nothing. It is evicted when the instance has been idle past the
     stated time, and the next tick re-clones (258).
 273. Scheduling on the hosted tiers is one named entry per flywheel.
     At the end of every tick the machinery upserts a single one-shot
     entry carrying the due time the machines computed, deleted when it
-    completes. The name is the flywheel's, so an interim tick
+    completes. The name is the instance's, so an interim tick
     replaces the entry with its own due time, earlier or later, and at
-    most one entry per flywheel ever exists. An entry that fires and
+    most one entry per instance ever exists. An entry that fires and
     finds nothing due is one idempotent tick that reschedules or deletes
     (111). A daily sweep is the backstop for an entry never written. The
     set of entries is a projection: it only shortens the wait, ticking
@@ -1794,50 +1799,50 @@ requirements, iterated against the running rail rather than on paper.
     poll is the backstop (166). The bound is stated per notification
     channel: seconds where a live push reaches the host, a named
     interval where none does. No unconditional poll is the floor, since
-    a poll costs the service for every flywheel whether or not
+    a poll costs the service for every instance whether or not
     anything happened.
 275. A pool host on a hosted tier is a microVM created from the
-    flywheel's image (239) when the rail approves work the pool
+    instance's image (239) when the rail approves work the pool
     covers. No shared network of the service's is required, a container
     runtime runs inside it so a repository's own environment declaration
     works unchanged (238), and it is terminated at retire and never
     suspended, so its disk goes with it (240). The placement states a
     fixed maximum lifetime, and the manifest names a fallback placement
-    for a session that must run longer. It serves one flywheel (241)
-    and holds that flywheel's code and raw material for the length
+    for a session that must run longer. It serves one instance (241)
+    and holds that instance's code and raw material for the length
     of the work, on a disk the platform isolates per host and destroys
-    at terminate under the platform's own encryption; a flywheel
+    at terminate under the platform's own encryption; an instance
     whose tier statement must name its own key on that disk (261) binds
     its pool to a placement that takes one, a container task with a
     volume under the key. The image is built on a pool host or the
     operator's own machine and never on a shared host, because building
     it reads the repositories' environment declarations (238, 239), and
-    its artifact is stored under the flywheel's key (256).
-276. Tier 3's first shape, stores only, is federation. The flywheel
+    its artifact is stored under the instance's key (256).
+276. Tier 3's first shape, stores only, is federation. The instance
     creates one role in its own
     account whose trust admits the service's issuer with the
-    flywheel as the subject, and the key, the warm cache, the
+    instance as the subject, and the key, the warm cache, the
     capture queue and the pool image live there (267). Each tick assumes
     that role with a token minted for that tick, so the service stores
-    no credential of the flywheel's and has nothing to rotate or
-    leak, and every use of the key is logged in the flywheel's own
+    no credential of the instance's and has nothing to rotate or
+    leak, and every use of the key is logged in the instance's own
     account. Revocation is deleting the role: the next tick refuses with
     the attention line 260 requires, and running work is not killed. The
-    flywheel registers the service's issuer as an identity provider
+    instance registers the service's issuer as an identity provider
     in its account and allows the role's session to be tagged, and the
-    token the service mints carries the flywheel as a principal tag,
+    token the service mints carries the instance as a principal tag,
     because a web-identity session takes its tags only from the token it
     presents. The only standing grants in that cloud account are
     the role's trust and the key's grant to that role. The wake from the
-    flywheel's queue carries the flywheel's name and nothing
+    instance's queue carries the instance's name and nothing
     else, and the tick reads the queue itself under the assumed role, so
     nothing of the service's stands with a decrypting grant on the
-    flywheel's key and deleting the role ends every path.
+    instance's key and deleting the role ends every path.
 276a. Tier 3's second shape is stores and compute. The binary is
     provisioned into the customer's own cloud account through the same
     role it grants (276), and nothing of the service's runs there.
     What stays on the service side is the control plane and no more: a
-    **registry** of flywheel names, tier, health and counters; a
+    **registry** of instance names, tier, health and counters; a
     **deployer**, which applies the stack through the granted role and
     stamps the binary's version (208); and **identity**, the provider's
     environment holding the redirect entry for the host's served name
@@ -1847,7 +1852,7 @@ requirements, iterated against the running rail rather than on paper.
     customer's own cloud account by the deployer through the same role, and
     each option is stated with what it changes: the dispatcher as an
     invoked function (269) or as a long-lived container, on a container
-    service or on an instance of the flywheel's own; and pools on
+    service or on an instance of the instance's own; and pools on
     microVMs, on container tasks or on such instances (275). A
     long-lived dispatcher holds the chat platform's gateway socket, so
     free text in a channel is answered where an invoked function must
@@ -1855,8 +1860,8 @@ requirements, iterated against the running rail rather than on paper.
     lifetime ceiling, so the fallback placement 275 names is not
     needed. Enterprise includes both shapes (281).
 277. On the hosted tiers the chat sink's identity may be the service's
-    own Slack or Discord application, installed into the flywheel's
-    workspace and scoped to the flywheel's channel, beside the bot
+    own Slack or Discord application, installed into the instance's
+    workspace and scoped to the instance's channel, beside the bot
     the manifest names and the token the operator placed (217d). It
     carries rail text and the interactions it receives and nothing else:
     no repository reach and no key. The record still names who responded
@@ -1880,7 +1885,7 @@ requirements, iterated against the running rail rather than on paper.
     shared components of the hosted tiers, and they are the only two.
     Each sees an inbound payload once, in transit, and keeps nothing;
     each is a stated fact of the tier (261). No other process of the
-    service's is reached by more than one flywheel's traffic.
+    service's is reached by more than one instance's traffic.
 291. The page and the tool server on a hosted tier are served at the
     tier's name by the same function on request, under the caller's
     token (243, 249). The page is a static bundle served at that name.
@@ -1892,19 +1897,19 @@ requirements, iterated against the running rail rather than on paper.
     the caller's identity and never a tick (270), and it neither
     downloads nor decrypts the warm cache (272). The page sink's
     delivery is the tick writing one small page projection per
-    flywheel — the status view and the rail as data, carrying each
+    instance — the status view and the rail as data, carrying each
     member's page sink and its mark (14, 148, 236) — to an object
-    encrypted under the flywheel's key (256). A request names the
-    flywheel in its path (205a): the server checks the caller's
-    token for that user's membership of that flywheel (247, 249),
+    encrypted under the instance's key (256). A request names the
+    instance in its path (205a): the server checks the caller's
+    token for that user's membership of that instance (247, 249),
     assumes the tier role tagged with it (259), decrypts that one
     projection and returns it. So a request costs one small decrypt and
     reaches neither the git host nor the bundle, and nothing of another
-    flywheel is ever decrypted on a request, because the tag is the
+    instance is ever decrypted on a request, because the tag is the
     path's flywheel. A write is a tool call enqueued on the
-    flywheel's queue, which decrypts nothing (271), and it is
-    captured and ticked like any other. The flywheel switcher lists
-    only the flywheels the caller's token is assigned to; one they
+    instance's queue, which decrypts nothing (271), and it is
+    captured and ticked like any other. The instance switcher lists
+    only the instances the caller's token is assigned to; one they
     are not assigned to is not shown. On a hosted tier the bundle is
     held in an object store behind a content distribution at the served
     name, which fronts the store for the bundle and the function for the
@@ -1922,7 +1927,7 @@ requirements, iterated against the running rail rather than on paper.
     (over standard input and output or in-process) and a member's own
     client, such as a coding agent on their machine (193, 291). Every
     client is checked by the same rules: membership admits the identity
-    to the flywheel and the permission the tool declares authorizes
+    to the instance and the permission the tool declares authorizes
     the call (248, 249). The authority a client signs in against is the
     host's identity kind (243), so a hosted host's clients hold a
     Frontegg token and a self-managed host's hold what its device flow
@@ -1935,7 +1940,7 @@ requirements, iterated against the running rail rather than on paper.
 
 ### A.35 Plans and presets
 
-279. On a hosted tier a flywheel has a plan: a named set of the
+279. On a hosted tier an instance has a plan: a named set of the
     entitlement features 250 defines, keyed `fw.ff.*`, together with a
     few stated limits, held by the identity provider and billed through
     the payment provider. The flywheel reads it only from the identity
@@ -1951,7 +1956,7 @@ requirements, iterated against the running rail rather than on paper.
     never halts a tick over a rail.
 281. The ladder is five rungs over the four tiers (268), and what each
     unlocks is a requirement while its price is not. **Free** is tier 0:
-    the binary, its sign-in, the flywheel's own App and bot, every
+    the binary, its sign-in, the instance's own App and bot, every
     package and every surface, with nothing running on the service side.
     **Hobby** is tier 1, and it is cheap to run and needs no model key
     of the operator's. Its chat is structured: a decision carries its
@@ -1968,7 +1973,7 @@ requirements, iterated against the running rail rather than on paper.
     Immediate triage, and free-text interpretation in chat, are
     unlocked on Hobby by placing a model key of the operator's own
     (207) and are included from Pro up. So chat is usable with the
-    laptop closed, and the rail reaches the flywheel's chat and the
+    laptop closed, and the rail reaches the instance's chat and the
     page at a served name (291). What waits for the operator's own
     machine or a pool host is raw-material triage, elaboration and
     construction. **Pro** adds pools with an included allowance and
@@ -1982,11 +1987,11 @@ requirements, iterated against the running rail rather than on paper.
     shapes (268, 276, 276a): the customer's own cloud account holding the
     stores alone, or the stores and the compute with the dedicated
     compute options the console offers; enterprise sign-in and
-    provisioning through the flywheel's own directory; a dispatcher
+    provisioning through the instance's own directory; a dispatcher
     of its own, in the service account under the first shape and in the
-    flywheel's own under the second; audit export and a private
+    instance's own under the second; audit export and a private
     pool image.
-282. Limits are plan metadata and not flags: how many flywheels, how
+282. Limits are plan metadata and not flags: how many instances, how
     many members, how many pool hours are included, and how much memory
     a pool host may take. The tool server reads them beside the flags
     and refuses the add that would exceed one, with the reason (280).
@@ -2002,15 +2007,15 @@ requirements, iterated against the running rail rather than on paper.
     under one install decision for the whole set (228, 229). A bundle
     runs nothing itself, and removing it removes what it installed and
     no more. The shipped set covers the common cloud-agent shapes, and
-    a flywheel publishes its own bundles in the package store like any
+    an instance publishes its own bundles in the package store like any
     package.
-294. On every hosted plan the flywheel's own model key is welcome
+294. On every hosted plan the instance's own model key is welcome
     and never required (207). Each plan includes a budget on the small
     model class for the jobs the dispatcher runs inside a tick, reading
     a capture and answering a message (217b, 269), stated as a count of
     captures and messages a month; usage past the budget is metered
     through the payment provider like any other overage (279, 282), and
-    a flywheel that places a key of its own is metered on none of
+    an instance that places a key of its own is metered on none of
     it. The model class per job is a plan fact, not a flag: small on
     Hobby and on Pro, and raisable per unit type, per elaboration type
     and per stage on Team and Enterprise (285). Where a plan buys no
@@ -2028,7 +2033,7 @@ requirements, iterated against the running rail rather than on paper.
     a container on a platform of their own reached with their own
     credentials and their own secret store, and adopting a host already
     running the binary (230). It offers no cloud agent and no pool, and
-    in their place shows one line offering to move the flywheel to
+    in their place shows one line offering to move the instance to
     the hosted service (247a). A hosted host offers those same options
     and the managed ones beside them, each gated by the plan (279–282):
     the cloud agent from Hobby, pools from Pro, and under tier 3's
@@ -2046,9 +2051,9 @@ requirements, iterated against the running rail rather than on paper.
     different class from the stage that writes it. The runner's own
     model is the default where a type names none. This amends 173: the
     manifest's per-role model is the fallback, not the rule.
-286. A scenario pack (228) is a development-time flywheel package.
+286. A scenario pack (228) is a development-time instance package.
     It is hidden behind a flag (250) and is never listed in the
-    production index, so a flywheel's operator never meets one by
+    production index, so an instance's operator never meets one by
     browsing the package store.
 287. Packages contribute renderers, adapters, sinks, runners, routers,
     unit and elaboration types, deliverable producers, map vocabularies,
@@ -2059,16 +2064,16 @@ requirements, iterated against the running rail rather than on paper.
     they answer it.
 288. The binary carries its own instrumentation: captures about its own
     operation, its stalls, its refusals and its runway readings (214),
-    written to the agentplot flywheel's flywheel through the capture
-    endpoint (216). They carry no flywheel content, only the
+    written to the agentplot instance's instance through the capture
+    endpoint (216). They carry no instance content, only the
     machinery's own readings. It is on by default on the hosted tiers,
     where it is a stated fact of the tier (261), and off by default and
     opt-in on a self-managed host.
 289. Code isolation is the guarantee the settings form's tier statement
     names (261): a built repository is cloned only onto a host serving
-    one flywheel, and that host is terminated with its disk when the
+    one instance, and that host is terminated with its disk when the
     work retires (264, 240, 275). No shared host of the service's ever
-    holds a flywheel's code.
+    holds an instance's code.
 
 ### A.37 The control plane
 
@@ -2095,9 +2100,9 @@ requirements, iterated against the running rail rather than on paper.
 297. The line between the two products is the **invocation contract**, and
     it is public, documented in the open-source repository and versioned
     with the set (208). The control plane invokes the binary in two modes.
-    In **tick** it provides the flywheel and its tier, a role session
-    tagged with that flywheel (259), the warm cache and page projection
-    objects, the flywheel's queue and the messages waiting on it, the
+    In **tick** it provides the instance and its tier, a role session
+    tagged with that instance (259), the warm cache and page projection
+    objects, the instance's queue and the messages waiting on it, the
     scheduler entry now standing, the identity environment's issuer with
     the definitions version it holds, a model credential or none (294), and
     a scratch directory with a stated budget; the binary returns the cache
@@ -2105,18 +2110,18 @@ requirements, iterated against the running rail rather than on paper.
     pushed by compare-and-swap, each message acknowledged or left under its
     idempotent key (111), one next due time or a deletion, the run record,
     and an exit with the scratch wiped and the data key dropped (269). In
-    **request** it provides the caller's identity token, the flywheel
+    **request** it provides the caller's identity token, the instance
     named in the path (205a), a role session tagged with that same
-    flywheel, the page projection object and the definitions version;
+    instance, the page projection object and the definitions version;
     the binary returns the bundle or the projection, a tool call enqueued
     on the queue for a write, or a refusal with the reason and its run
     record (249, 291). A request is never a tick and never reads the warm
     cache (270, 272).
 298. Five shapes in that environment are stated and are what a second
     control plane must match: the queue message, one envelope per invoker
-    carrying the flywheel, the idempotent key, the source and a body
-    sealed under the flywheel's key (111, 256, 271); the scheduler
-    entry, one named entry per flywheel whose target is the queue
+    carrying the instance, the idempotent key, the source and a body
+    sealed under the instance's key (111, 256, 271); the scheduler
+    entry, one named entry per instance whose target is the queue
     (273); the cache object, a bundle of two sparse shallow clones (272);
     the projection object, the status view and the rail as data with each
     member's page sink and its mark (291); and the identity token's claims,
@@ -2135,10 +2140,10 @@ requirements, iterated against the running rail rather than on paper.
     scheduler, stores and keys, page, registry, deployer, identity sync,
     billing, chat and pools — each stack holding one part of 296's list and
     taking the tenancy choices as parameters: the tier roles and the tag
-    key with the policy that matches a resource's flywheel tag to the
+    key with the policy that matches a resource's instance tag to the
     session's (259), the key homes (267), and whether the queue, the cache,
     the projection and the pool image live in the control plane's account
-    or the flywheel's (276). Installing it is bringing the composition
+    or the instance's (276). Installing it is bringing the composition
     into an environment; customizing it is those parameters and no fork.
 301. An installed control plane's identity environment is the installer's
     own: their environment with the flywheel Application in it, or any
@@ -2169,8 +2174,8 @@ requirements, iterated against the running rail rather than on paper.
     marketing and not offered in the management console; it is sold and
     installed by us. Under it nothing of the service's runs at all: no
     process of ours in the installer's accounts, no traffic of their
-    flywheels reaching a machine of ours, no credential of ours
-    reaching a key of theirs, and none of their flywheels in our
+    instances reaching a machine of ours, no credential of ours
+    reaching a key of theirs, and none of their instances in our
     registry. What stays ours is the releases with their set (208, 252),
     the invocation contract as a document, the control plane's source under
     the customer's agreement, and the record of who holds a grant. The
@@ -2201,7 +2206,7 @@ requirements, iterated against the running rail rather than on paper.
     is built, one is served, and its version is the binary's (291).
 308. Every chat rendering, every notification and every rail line carries
     a link to the object on the page, at the host's address with the
-    flywheel in the path (205a). The link opens that object in the
+    instance in the path (205a). The link opens that object in the
     dock with its answer controls in reach. It works whether the page is
     served on a localhost port of the operator's own computer, over the
     operator's private network, or at a hosted served name (245, 291), and
@@ -2322,7 +2327,7 @@ through these operations, and depends only on these guarantees.
 142. The status view is a projection of the same state the engine reads.
     It is never a source of truth, and it is never written by hand to
     make it look right.
-143. The status view is central: one place for the whole flywheel,
+143. The status view is central: one place for the whole instance,
     reachable from the phone, however many hosts run machinery.
 144. Discussion about an object — a question asked, an answer given, a
     note a session left — is part of that object's state, and the status
@@ -2380,10 +2385,10 @@ through these operations, and depends only on these guarantees.
 
 ### B.5 Hosts and ownership
 
-147. More than one host may run the machinery for one flywheel at
+147. More than one host may run the machinery for one instance at
     once. Every host works from the same shared line of every
     repository and the same central state.
-148. There is one rail per flywheel, derived from the shared state;
+148. There is one rail per instance, derived from the shared state;
     any host can serve it. Exactly one presenter delivers it to each
     sink at a time, held by lease or pinned by the manifest, and a
     dispatcher running outside every host may be that presenter.
@@ -2426,7 +2431,7 @@ through these operations, and depends only on these guarantees.
     profile uses them as the platform provides them. Nothing is
     invented, and the short reply grammar always works beside them.
 194. Free text from the operator, typed on the page or sent in chat, is
-    never parsed by the machinery. The host's agent — the flywheel's
+    never parsed by the machinery. The host's agent — the instance's
     dispatch agent for chat, a model running in the page's browser, or
     none at all when the operator used a control — reads and answers
     with the query tools on its own, and every write is a proposed tool
@@ -2449,7 +2454,7 @@ guarantee of B.2. Parts A and B do not change to admit a profile.
 
 ### C.1 The tracker profile
 
-State lives in a flywheel's tracker: an item per object, grouped
+State lives in an instance's tracker: an item per object, grouped
 into milestones, arranged on a board. The tracker is the central
 service.
 
@@ -2460,10 +2465,10 @@ service.
 | lease | a recorded holder on the item, with the time it was taken and renewed |
 | present and receive | decisions presented on the item and on the page; the response arrives as a short written reply |
 | notify | the tracker's own notification of a change to an item |
-| list objects in scope | a query over the flywheel's items |
+| list objects in scope | a query over the instance's items |
 | serve the status view | the board, plus a page served from the same items |
 
-The flywheel's dispatch agent, running outside every host, is this
+The instance's dispatch agent, running outside every host, is this
 profile's binding for signals appended by adapters (106) and for
 capture in one gesture (112): it is the capture endpoint a delivery
 system or a chat calls, and it appends the signal records. The data
@@ -2586,7 +2591,7 @@ These hold at every moment, not just at the end of an operation.
   reply.
 
 Which state store the flywheel runs on is a profile choice, made per
-flywheel, not a non-goal.
+instance, not a non-goal.
 
 ## 9. Environment givens
 
@@ -2655,7 +2660,7 @@ Not requirements; the places where the modeler's judgment is wanted.
 - How is the rail derived, and what makes it impossible to miss a decision?
 - What is the minimal set of stores, and what is the source of truth
   for each state?
-- How does curation connect to the flywheel without the flywheel
+- How does curation connect to the instance without the instance
   taking on the batching of signals?
 - Where does the ledger live, who writes a verdict, and how does a
   stale verdict become a rail decision that cannot be missed?

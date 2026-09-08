@@ -7,7 +7,7 @@ carry, and where the signal can go.
 
 | file | source | what it inventories |
 |---|---|---|
-| `switchboard.md` | switchboard, the delivery system | twenty bus event types, of which six reach the flywheel |
+| `switchboard.md` | switchboard, the delivery system | twenty bus event types, of which six reach the instance |
 | `gvc.md` | the gvc data pipelines | checks, jobs, graph builds and checkouts on a data product |
 
 The events dispatch itself captures — a chat message forwarded to the

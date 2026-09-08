@@ -39,7 +39,7 @@ still carry the pre-amendment rulings, and in three of §12's answers.
 | A.23 where files live | 203 | §17, §12.13 | current | |
 | A.24 bootstrapping | 204–208, 205a, 207a | §17, §18 | current | 205a/207a stated in the A.32 block |
 | A.25 dispatch | 216–217k, 216a | §18 (2350), §19 | missing (217d, f, g, h) | delegated to `models/dispatch/model.md`; four sub-clauses named nowhere |
-| A.26 flywheels | 218–222, 233 | §18 (2362, 2448) | **stale** | 218–222 current; the 233 block still describes a no-sign-in local page and `sign_in: tailnet, oauth, oidc` |
+| A.26 instances | 218–222, 233 | §18 (2362, 2448) | **stale** | 218–222 current; the 233 block still describes a no-sign-in local page and `sign_in: tailnet, oauth, oidc` |
 | A.27 machines, types, context | 223–227 | §18 (2383), §10.7 | current | |
 | A.28 packages and setup | 228–232 | §18 (2410, 2431) | current | |
 | A.29 users and ownership | 234–237, 236a | §18 (2467) | **stale** | Frontegg asserted on every host; 236a (chat address per member) stated nowhere |
@@ -129,13 +129,13 @@ still carry the pre-amendment rulings, and in three of §12's answers.
 
 9. **model.md:1537–1541** (§12.5) — "Four (3.1) … Nothing else." On the
    hosted tiers a tick also reads and writes the warm cache object
-   (**272**), the page projection object (**291**) and the flywheel's
+   (**272**), the page projection object (**291**) and the instance's
    queue (**271**). §19 states all three; the answer to section 10 does
    not qualify itself.
 
 10. **model.md:1639–1647** (§12.14) — the phone reply becomes a commit by
     the sink's presenter, and the status page is `status.html`. On a
-    hosted tier a write is a tool call enqueued on the flywheel's
+    hosted tier a write is a tool call enqueued on the instance's
     queue and applied by a later tick, and the status view renders from
     the page projection under one decrypt (**291**, **310**).
 
@@ -213,7 +213,7 @@ current, and the state-store rename is applied.
   216 and 217" — 216–217k are ratified; the section duplicates them in
   the superseded wording.
 - **§6, tier 3 row** offers one shape ("the same dispatcher assuming a
-  role the flywheel grants, or a function of its own in the service
+  role the instance grants, or a function of its own in the service
   account"). **276a** adds *stores and compute* with the deployer,
   registry and identity environment, and **304/305** make the shapes
   three.

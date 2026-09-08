@@ -1,22 +1,22 @@
-# Multi-tenant flywheel at scale — a brainstorm
+# Multi-tenant instance at scale — a brainstorm
 
 ## Thesis
 
-The model does not require a resident host per tenant; the phrasing of three clauses does. A tick is already a pure function of fetched state (136, 217a) whose missed runs are caught up idempotently (111, 231), and a host is already allowed to serve several flywheels at once (218). A serverless tier is therefore not a new architecture but a host whose tick is *invoked* rather than looped, serving many flywheels from one process over a warm cache of their state repositories. What genuinely does not scale is C.2's 30-second bounded poll (165, 166): it is O(tenants) against the git host whether or not anything happened, and it is the only thing in the design that costs money while a tenant sleeps. Replace the poll with notify plus a derived due index and steady-state cost becomes proportional to *activity*, not tenancy. Everything else — object storage instead of git, a shared bot identity, per-run work containers — is an economics optimisation bought later at a named tenant count, and mostly as a third profile (C.3) rather than a weakening of C.2.
+The model does not require a resident host per tenant; the phrasing of three clauses does. A tick is already a pure function of fetched state (136, 217a) whose missed runs are caught up idempotently (111, 231), and a host is already allowed to serve several instances at once (218). A serverless tier is therefore not a new architecture but a host whose tick is *invoked* rather than looped, serving many instances from one process over a warm cache of their state repositories. What genuinely does not scale is C.2's 30-second bounded poll (165, 166): it is O(tenants) against the git host whether or not anything happened, and it is the only thing in the design that costs money while a tenant sleeps. Replace the poll with notify plus a derived due index and steady-state cost becomes proportional to *activity*, not tenancy. Everything else — object storage instead of git, a shared bot identity, per-run work containers — is an economics optimisation bought later at a named tenant count, and mostly as a third profile (C.3) rather than a weakening of C.2.
 
 ---
 
-## 1. Batch tick — one scheduler, many flywheels
+## 1. Batch tick — one scheduler, many instances
 
-**Maps onto** `host.yaml`'s `life` region and the tick-as-scheduler clause (231), plus 218. A batch ticker runs the dispatcher declaration (`bound: 0, kinds: [], presents: [chat]`, 217) once per flywheel, each with its own root under 205's layout.
+**Maps onto** `host.yaml`'s `life` region and the tick-as-scheduler clause (231), plus 218. A batch ticker runs the dispatcher declaration (`bound: 0, kinds: [], presents: [chat]`, 217) once per instance, each with its own root under 205's layout.
 
-**Preserves** all of Part B. Each flywheel's tick is the same fetch → list → read → evaluate → effect (126–131) against its own `flywheel-state`, with its own leases and decision numbers. Nothing crosses (218). I14 holds: the warm cache mirrors only what git already holds.
+**Preserves** all of Part B. Each instance's tick is the same fetch → list → read → evaluate → effect (126–131) against its own `flywheel-state`, with its own leases and decision numbers. Nothing crosses (218). I14 holds: the warm cache mirrors only what git already holds.
 
 **Bends** 231's "a host is one long-lived process that the platform's own launcher starts". The host-id-to-process mapping stops being 1:1. 232 anticipates the inverse — several hosts, one computer, separate processes — and this is several hosts, one computer, one process. The heartbeat branch `host/<id>` must still be written per host id or the status view lies about liveness.
 
 **Cost.** 10 tenants: one 1-vCPU container and a 1 GB volume, a rounding error. 1,000: one 2–4 vCPU machine, ~5 GB of bare mirrors, ~3 git round trips/s, tens of dollars a month. 100,000: ~500 GB of mirrors and 300+ round trips/s *if polling* — the batch ticker alone does not reach that scale without idea 3.
 
-**Experiment.** Run `flywheel dispatch` for 50 flywheels in one process on a laptop, each with its own root, and run the host scenarios (a host lost, a takeover, a bound reached) against flywheel 27 while the other 49 tick. Success is the scenario passing unchanged with no lease or decision number leaking between roots.
+**Experiment.** Run `flywheel dispatch` for 50 instances in one process on a laptop, each with its own root, and run the host scenarios (a host lost, a takeover, a bound reached) against instance 27 while the other 49 tick. Success is the scenario passing unchanged with no lease or decision number leaking between roots.
 
 ---
 
@@ -28,7 +28,7 @@ The model does not require a resident host per tenant; the phrasing of three cla
 
 **Bends** nothing in Part B, but it opens a window where a capture is accepted and not yet in git, which I14 forbids to be called state. The honest framing: the queue is the caller's retry buffer held on the caller's behalf, and a lost queue is indistinguishable from a caller that never called. Say so explicitly or someone will treat it as durable.
 
-**Cost.** Effectively free at every scale. One stateless receiver function plus one FIFO queue per flywheel, with the flywheel as the message group id: the queue per flywheel is what carries the per-flywheel key and what admits one tick of a flywheel at a time, so a single shared queue is not equivalent. 100,000 tenants at a handful of captures a day is dollars.
+**Cost.** Effectively free at every scale. One stateless receiver function plus one FIFO queue per instance, with the instance as the message group id: the queue per instance is what carries the per-flywheel key and what admits one tick of an instance at a time, so a single shared queue is not equivalent. 100,000 tenants at a handful of captures a day is dollars.
 
 **Experiment.** Point a Slack Events subscription and a GitHub webhook at a function that enqueues, let the batch ticker drain, send the same event five times, assert one capture record.
 
@@ -38,13 +38,13 @@ The model does not require a resident host per tenant; the phrasing of three cla
 
 **Maps onto** 130 (notify only shortens the wait), 165–166, and 231.
 
-**This is the load-bearing idea.** A tick is due when one of five things is true: the state head moved, a capture arrived, a chat reply arrived, a lease or timer crossed a threshold, or a cadence fired. Four are *events* arriving at an endpoint you already run. Only timers need a clock, and a timer's fire time is computable at write time. So keep a **due index**: one row per flywheel holding the earliest future time its tick could change anything, written when a tick ends. The scheduler wakes only rows that are due or whose event arrived.
+**This is the load-bearing idea.** A tick is due when one of five things is true: the state head moved, a capture arrived, a chat reply arrived, a lease or timer crossed a threshold, or a cadence fired. Four are *events* arriving at an endpoint you already run. Only timers need a clock, and a timer's fire time is computable at write time. So keep a **due index**: one row per instance holding the earliest future time its tick could change anything, written when a tick ends. The scheduler wakes only rows that are due or whose event arrived.
 
-**Preserves** 130 exactly — the index only shortens the wait, and a flywheel with a wrong row still converges under a slow backstop sweep (hourly). 136 holds if and only if the index is a cache: derivable by ticking, never read as truth, its loss costing one sweep.
+**Preserves** 130 exactly — the index only shortens the wait, and an instance with a wrong row still converges under a slow backstop sweep (hourly). 136 holds if and only if the index is a cache: derivable by ticking, never read as truth, its loss costing one sweep.
 
-**Bends** 166's flat 30s bound, which becomes conditional: seconds for a flywheel with a live webhook, the backstop interval for one without. That is user-visible and belongs in a clause, not in an implementation.
+**Bends** 166's flat 30s bound, which becomes conditional: seconds for an instance with a live webhook, the backstop interval for one without. That is user-visible and belongs in a clause, not in an implementation.
 
-**Cost.** This converts the curve. Steady state tracks active flywheels, at an assumed 2% active per minute and 200 ms per tick.
+**Cost.** This converts the curve. Steady state tracks active instances, at an assumed 2% active per minute and 200 ms per tick.
 
 | tenants | active/minute | org-ticks/s | vCPU |
 |---|---|---|---|
@@ -54,7 +54,7 @@ The model does not require a resident host per tenant; the phrasing of three cla
 
 Polling at 100,000 means 3,333 round trips/s to the git host forever, which no git host will sell you at any tier.
 
-**Experiment.** Make the tick emit, at exit, the earliest time any guard in the evaluated machines could next become true. Run a week of a real flywheel and measure how often the prediction is wrong. Above 95% correct the index works; below it, the machines carry hidden wall-clock guards worth finding.
+**Experiment.** Make the tick emit, at exit, the earliest time any guard in the evaluated machines could next become true. Run a week of a real instance and measure how often the prediction is wrong. Above 95% correct the index works; below it, the machines carry hidden wall-clock guards worth finding.
 
 ---
 
@@ -70,7 +70,7 @@ Polling at 100,000 means 3,333 round trips/s to the git host forever, which no g
 
 **Cost.** Strictly worse at 10 and 1,000 — a profile written to save nothing. It earns its keep where hosting 100,000 private repositories under one account becomes an economic or terms-of-service problem, somewhere near 10,000. Storage at 5 MB × 100,000 is 500 GB, roughly $12/month plus requests.
 
-**Experiment.** Run the existing conformance suite against a stub object-store binding on ten flywheels, including S13 (the stale lease) and S18 (the disconnected host reconciling). If S18 has no meaning without a local commit log, that is the finding.
+**Experiment.** Run the existing conformance suite against a stub object-store binding on ten instances, including S13 (the stale lease) and S18 (the disconnected host reconciling). If S18 has no meaning without a local commit log, that is the finding.
 
 ---
 
@@ -86,9 +86,9 @@ Polling at 100,000 means 3,333 round trips/s to the git host forever, which no g
 
 The free tier is therefore Slack-first, or Discord in interactions mode: the numbered grammar survives as a slash command (`/fw yes 412`) and the buttons work, and you give up only typing `yes 412` as an ordinary message. 155 permits exactly this — the platform's controls as it provides them, with the numbered grammar beside them.
 
-**On 241.** A shared presenter is not blocked by 241, which constrains pool hosts (the ones that run work), not the dispatcher; 218 positively permits a host serving several flywheels. What 218 does constrain is isolation, and a process holding sink leases for a thousand flywheels must keep a thousand roots, credential sets and lease branches, and must not let a crash in one flywheel's tick drop another's. Worth a clause rather than an assumption.
+**On 241.** A shared presenter is not blocked by 241, which constrains pool hosts (the ones that run work), not the dispatcher; 218 positively permits a host serving several flywheels. What 218 does constrain is isolation, and a process holding sink leases for a thousand instances must keep a thousand roots, credential sets and lease branches, and must not let a crash in one instance's tick drop another's. Worth a clause rather than an assumption.
 
-**On the bot identity.** 217d names "the bot the manifest names and the token the operator placed". A zero-setup tier wants the tenant to invite *the platform's* bot instead, which places no secret at all and is therefore better for 207 and 229, not worse. The costs are one sharded gateway connection across every tenant's guild, and an audit line where the bot is the platform's rather than the flywheel's.
+**On the bot identity.** 217d names "the bot the manifest names and the token the operator placed". A zero-setup tier wants the tenant to invite *the platform's* bot instead, which places no secret at all and is therefore better for 207 and 229, not worse. The costs are one sharded gateway connection across every tenant's guild, and an audit line where the bot is the platform's rather than the instance's.
 
 ---
 
@@ -100,7 +100,7 @@ The free tier is therefore Slack-first, or Discord in interactions mode: the num
 
 **Bends** no requirement, but exposes an unmodelled cost: 205 makes a joining host clone the state, the blueprints and *every tracked built repository*. Per-run, that clone dominates the run. 239's image already exists to satisfy environments, so the natural extension is that the image also carries a warm bare mirror of the tracked repositories, making a join a fetch. Then `pool.image_current` should go false when the repositories move far, not only when the declarations move.
 
-**Cost.** Per-run billing is the point: a flywheel with no approved work costs nothing. At 100,000 tenants with 1% running work that is 1,000 concurrent containers — real money that tracks revenue, the correct shape. A tier-1 tenant declares `bound: 0` and provisions none.
+**Cost.** Per-run billing is the point: an instance with no approved work costs nothing. At 100,000 tenants with 1% running work that is 1,000 concurrent containers — real money that tracks revenue, the correct shape. A tier-1 tenant declares `bound: 0` and provisions none.
 
 **Experiment.** Set `retire_after: 0` today and measure wall-clock from `provision_pool_host` to the session's first tool call, split into provision, clone and environment activation. That number decides per-run versus a warm pool.
 
@@ -136,12 +136,12 @@ Tier 1 answers "one step above using your own computer": sign in with GitHub, th
 ## Recommended path
 
 The physical design this path builds toward is `hosted-design.md`: the machines
-that exist per flywheel, what each holds, and one tick step by step.
+that exist per instance, what each holds, and one tick step by step.
 
-1. Ship the dispatcher first: one Lambda function per tier, each invocation one flywheel's tick, assuming the tier role with a session tag naming that flywheel so tagged keys and objects admit only the matching principal. Git-only unchanged, each flywheel with its own root and heartbeat. It removes the idling VM, and it keeps no state between invocations: the warm cache is one S3 object per flywheel, a git bundle of two sparse clones downloaded to scratch disk and uploaded back, with no VPC and no mount.
+1. Ship the dispatcher first: one Lambda function per tier, each invocation one instance's tick, assuming the tier role with a session tag naming that instance so tagged keys and objects admit only the matching principal. Git-only unchanged, each instance with its own root and heartbeat. It removes the idling VM, and it keeps no state between invocations: the warm cache is one S3 object per instance, a git bundle of two sparse clones downloaded to scratch disk and uploaded back, with no VPC and no mount.
 2. Make notify primary and the poll a tiered backstop, with the due index declared as a cache. This flattens the curve; do it before tenant count makes it urgent.
 3. Serve tier 1's chat with the platform's own bot in interactions mode, Slack fully and Discord for controls, so no tenant places a secret and no socket is held per tenant.
-4. Run pools as Lambda MicroVMs from the flywheel's image, up to 32 GB of memory and disk with Docker inside and no VPC, one flywheel per host, terminated at retire with `retire_after: 0`. Fargate in a minimal VPC is the fallback for sessions past eight hours. Measure the cold start before promising per-run billing.
+4. Run pools as Lambda MicroVMs from the instance's image, up to 32 GB of memory and disk with Docker inside and no VPC, one instance per host, terminated at retire with `retire_after: 0`. Fargate in a minimal VPC is the fallback for sessions past eight hours. Measure the cold start before promising per-run billing.
 5. Write the object-store profile only when the git host's economics break, near 10,000 tenants, as a C.3 profile passing the conformance suite — never as a weakening of C.2.
 
 ---
@@ -172,7 +172,7 @@ Both are Firecracker. The difference is not isolation but the shape of the contr
 - **Nothing wakes it for a due tick.** Fly has no cron. A small always-on machine must sweep the due index (245) and start the due tenants' machines through the Machines API. That is one machine you pay for at all times.
 - **The 3-second acknowledgement.** Slack and Discord both require an interaction acknowledged within three seconds. A cold wake is microVM start plus process boot plus the fetch of two repositories, roughly one to six seconds, and suspend-resume shortens only the first term. So the store-and-forward receiver of idea 2 is mandatory rather than optional for a scale-to-zero dispatcher, and clause 246 becomes load-bearing. That is a second always-on component.
 
-**The better first step is still the batch ticker**, for a reason worth stating plainly: per-tenant machines buy no requirement purity that the batch ticker lacks. 241 constrains pool hosts, not the dispatcher, and 218 positively permits one host serving several flywheels, so neither 241 nor 217d is bent either way. The only clause the batch ticker bends is 231. Against that, per-tenant machines add three moving parts (per-tenant app or replay router, per-tenant volume, scheduler machine) to reach the same two always-on components, and their storage has the wrong granularity: the smallest Fly volume is 1 GB, so a tenant holding 30 MB of warm clones still pays for 1 GB, a floor of $0.15 per tenant per month, or $15,000 a month at 100,000 tenants for space barely used. A shared cache pays for bytes actually held and evicts the cold ones. Per-tenant machines earn their place at tiers 2 and 3, where the tenant pays and isolation is the product.
+**The better first step is still the batch ticker**, for a reason worth stating plainly: per-tenant machines buy no requirement purity that the batch ticker lacks. 241 constrains pool hosts, not the dispatcher, and 218 positively permits one host serving several instances, so neither 241 nor 217d is bent either way. The only clause the batch ticker bends is 231. Against that, per-tenant machines add three moving parts (per-tenant app or replay router, per-tenant volume, scheduler machine) to reach the same two always-on components, and their storage has the wrong granularity: the smallest Fly volume is 1 GB, so a tenant holding 30 MB of warm clones still pays for 1 GB, a floor of $0.15 per tenant per month, or $15,000 a month at 100,000 tenants for space barely used. A shared cache pays for bytes actually held and evicts the cold ones. Per-tenant machines earn their place at tiers 2 and 3, where the tenant pays and isolation is the product.
 
 **3. What a dispatcher-tier tick touches.** The dispatcher's declaration names no repository and no unit type (217), so it clones no built repository.
 
@@ -198,17 +198,17 @@ The product in question is **AWS Lambda MicroVMs**, generally available 22 June 
 | ECS Fargate task (+ EBS attach, 2024) | unbounded | 20–200 GiB ephemeral, or an EBS volume attached to the task | 20–40 s | zero at zero tasks | task-level; EBS with a per-tenant CMK | per vCPU-second and GB-second | (a) **the no-cap fallback**; (b) too slow to wake for a 3 s ack; (c) no |
 | App Runner | unbounded | ephemeral | — | never zero; in maintenance mode as of 2026 | service-level | per instance-hour | none |
 | EC2 + warm pool | unbounded | EBS, survives stop | seconds to tens of seconds | stopped: EBS only | full VM; per-tenant CMK on the volume | EC2 + EBS | (a) tier 3; (b) no; (c) no |
-| Receiver function → SQS | stateless, per request | none | milliseconds | zero | queue per flywheel, KMS on the queue | per request | (c) **yes** — acknowledges well inside 3 s; a direct gateway integration cannot, because signatures, `PING` and workspace routing are compute |
+| Receiver function → SQS | stateless, per request | none | milliseconds | zero | queue per instance, KMS on the queue | per request | (c) **yes** — acknowledges well inside 3 s; a direct gateway integration cannot, because signatures, `PING` and workspace routing are compute |
 | EventBridge Scheduler | n/a | n/a | — | zero | — | per invocation | the sweeper Fly lacks — wakes due tenants with no always-on machine |
 
-**On per-tenant encryption.** The microVM security surface names build and execution roles and port-scoped tokens, and no customer-managed key for images or snapshots — SnapStart takes `--kms-key-arn`, MicroVMs do not. So per-tenant encryption under I13 lives in the *data*: S3, SQS and EBS each take a per-tenant CMK, and the pool host's own disk stays under the platform's key, isolated per host and destroyed at terminate. A flywheel whose tier statement must promise its own key on that disk takes the Fargate-with-EBS fallback. The compute is isolated but the key story is the store's.
+**On per-tenant encryption.** The microVM security surface names build and execution roles and port-scoped tokens, and no customer-managed key for images or snapshots — SnapStart takes `--kms-key-arn`, MicroVMs do not. So per-tenant encryption under I13 lives in the *data*: S3, SQS and EBS each take a per-tenant CMK, and the pool host's own disk stays under the platform's key, isolated per host and destroyed at terminate. An instance whose tier statement must promise its own key on that disk takes the Fargate-with-EBS fallback. The compute is isolated but the key story is the store's.
 
 ### Recommended AWS mapping
 
-1. **Tier 1 dispatcher** — one Lambda function per tier, each invocation one flywheel's tick, woken only through that flywheel's queue. EventBridge Scheduler writes one one-shot entry per flywheel and targets the queue, not the function, so a due time serializes with every other invoker. The warm copy is one S3 object per flywheel, a git bundle of two sparse shallow clones downloaded to scratch and uploaded back: no EFS, no mount, no VPC, evictable when idle.
-2. **Capture (c)** — one small stateless receiver function in front of one SQS FIFO queue per flywheel. The service's Slack app, Discord app and GitHub App each have exactly one inbound URL for every workspace, guild and installation, so the payload must be demultiplexed by workspace id, Discord's signature verified and its `PING` answered, Slack's signed request checked and its `url_verification` echoed, and GitHub's HMAC checked, all inside three seconds. A pure gateway-to-queue integration does none of that. The receiver encrypts what it enqueues and holds no grant that decrypts, and the queue is drained per flywheel by the same tick.
-3. **Tier 2 pool (a)** — Lambda MicroVMs launched from the flywheel's image (239), one per work session, terminated at retire. ECS Fargate with an attached EBS volume is the fallback for any session that will not fit 8 hours.
-4. **Tier 3** — the tenant's own account by OIDC federation: one IAM role there trusting our issuer with a subject naming the flywheel, and the key, the cache object, the queue and the pool image all living in that account. We store no credential; deleting the role ends our access.
+1. **Tier 1 dispatcher** — one Lambda function per tier, each invocation one instance's tick, woken only through that instance's queue. EventBridge Scheduler writes one one-shot entry per instance and targets the queue, not the function, so a due time serializes with every other invoker. The warm copy is one S3 object per instance, a git bundle of two sparse shallow clones downloaded to scratch and uploaded back: no EFS, no mount, no VPC, evictable when idle.
+2. **Capture (c)** — one small stateless receiver function in front of one SQS FIFO queue per flywheel. The service's Slack app, Discord app and GitHub App each have exactly one inbound URL for every workspace, guild and installation, so the payload must be demultiplexed by workspace id, Discord's signature verified and its `PING` answered, Slack's signed request checked and its `url_verification` echoed, and GitHub's HMAC checked, all inside three seconds. A pure gateway-to-queue integration does none of that. The receiver encrypts what it enqueues and holds no grant that decrypts, and the queue is drained per instance by the same tick.
+3. **Tier 2 pool (a)** — Lambda MicroVMs launched from the instance's image (239), one per work session, terminated at retire. ECS Fargate with an attached EBS volume is the fallback for any session that will not fit 8 hours.
+4. **Tier 3** — the tenant's own account by OIDC federation: one IAM role there trusting our issuer with a subject naming the instance, and the key, the cache object, the queue and the pool image all living in that account. We store no credential; deleting the role ends our access.
 
 **The AWS advantage over Fly is the scheduler.** Fly has no cron, so a scale-to-zero dispatcher there still pays for one always-on machine to sweep the due index and one to hold the 3-second acknowledgement. On AWS both of those are managed and bill per event: EventBridge Scheduler for the sweep, API Gateway to SQS for the ack. A tenant that does nothing costs storage only, with no always-on component at all.
 

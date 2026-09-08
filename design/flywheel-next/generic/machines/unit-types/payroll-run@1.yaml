@@ -1,10 +1,10 @@
 # One payroll run (billing-brief, "Payroll"). Created by a scheduled producer
 # on each pay date, so a run is never silent and never depends on anyone
-# remembering it. The run itself happens in OnPay, outside the flywheel; what
-# the flywheel holds is the prompt, the record and the artifacts written back.
+# remembering it. The run itself happens in OnPay, outside the instance; what
+# the instance holds is the prompt, the record and the artifacts written back.
 #
 # Growth this type leans on (../../README.md):
-#   growth-1  a flywheel with no built repository
+#   growth-1  an instance with no built repository
 #   growth-2  the payroll-record type and its key
 #   growth-4  a scheduled producer firing on pay dates
 #   growth-7  the OnPay adapter as a package

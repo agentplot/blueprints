@@ -1,6 +1,6 @@
 # Claims are OpenSpec specifications
 
-The design side and the construction side of the flywheel speak one
+The design side and the construction side of the instance speak one
 language: OpenSpec. A claim is a requirement block in the blueprints'
 standing specifications; an as-built statement is a requirement block in
 a built repository's standing specifications that names the claim it

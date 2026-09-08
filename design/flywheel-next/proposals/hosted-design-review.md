@@ -8,24 +8,24 @@ AWS, Slack and Discord documentation; see the two lists at the end.
 ## Findings, most serious first
 
 **1. The capture receiver is not "no compute", and it is shared.**
-Claim: "API Gateway integrated straight into one SQS queue per flywheel
+Claim: "API Gateway integrated straight into one SQS queue per instance
 · no compute" (271; `hosted-design.md` machines table; all four physical
 diagrams). Why wrong: the hosted tiers use the service's own Slack app,
 Discord app and GitHub App (207a, 277). Each of those has exactly one
 inbound URL for every workspace, guild and installation, so the payload
-must be demultiplexed to the flywheel's queue by `team_id`, `guild_id`
+must be demultiplexed to the instance's queue by `team_id`, `guild_id`
 or `installation.id`, which API Gateway cannot look up without compute.
 Discord's interactions endpoint must verify an Ed25519 signature and answer
 `PING` with `PONG` at registration and on every health check; Slack needs
 a `url_verification` echo once and a signed-request check; GitHub sends an
 HMAC. All three want a 2xx inside three seconds. A pure gateway-to-queue
 integration cannot do any of that. There is therefore a small receiver
-function, and it is one shared process that sees every flywheel's
+function, and it is one shared process that sees every instance's
 inbound payload in the clear before it is queued. It also needs
-`kms:GenerateDataKey` on every flywheel's key to write the queue, which
+`kms:GenerateDataKey` on every instance's key to write the queue, which
 the tagged-principal rule as written would refuse. Fix: draw a "receiver
 function" box (stateless, verifies signatures, answers `PING`, defers the
-interaction, routes by workspace id to the flywheel's queue) and say
+interaction, routes by workspace id to the instance's queue) and say
 plainly that it is the second shared component beside the bot; amend 271
 to "no compute of the machinery's beyond verification and routing"; split
 the key policy into an encrypt-side grant for the receiver role and a
@@ -68,29 +68,29 @@ request is a read, never a tick"; add a Frontegg box on the third-party
 side; amend 217c and 191 so that on a hosted host the identity token
 replaces the private network as the boundary.
 
-**4. The pool host's disk cannot be "encrypted under the flywheel
+**4. The pool host's disk cannot be "encrypted under the instance
 key".** Claim: 275, `hosted-design.md` pool row and KMS row, and all four
 diagrams ("it encrypts the queue, the cache, the pool disk, the logs").
 Why wrong: `cloud.md`'s own AWS section says "no customer-managed key
 documented for images or snapshots — SnapStart takes `--kms-key-arn`,
 MicroVMs do not", and the MicroVM security and image pages read today name
 only a build role, an execution role and port-scoped tokens. The disk is
-under AWS's key, not the flywheel's. Fix: on the diagrams change the
+under AWS's key, not the instance's. Fix: on the diagrams change the
 KMS list to "the queue, the cache, the logs, and what a pool host writes to
-S3"; rewrite 275 to say the microVM's disk is isolated per flywheel and
+S3"; rewrite 275 to say the microVM's disk is isolated per instance and
 destroyed at terminate under the platform's own encryption, and that an
-flywheel whose tier statement (261) must promise a key of its own on the
+instance whose tier statement (261) must promise a key of its own on the
 disk binds its pool to Fargate with an EBS volume under its key.
 
-**5. Nothing guarantees one tick per flywheel at a time.** Claim:
-"each invocation is one flywheel's tick" (269). Why unclear: the
+**5. Nothing guarantees one tick per instance at a time.** Claim:
+"each invocation is one instance's tick" (269). Why unclear: the
 scheduler, the queue and a page request are three independent invokers;
-Lambda scales them concurrently, so two ticks of the same flywheel can
+Lambda scales them concurrently, so two ticks of the same instance can
 overlap. Git's compare-and-swap keeps state safe, but both ticks upload the
 bundle (last writer wins, harmless because it is a projection), both may
 post the rail to chat before the sink's mark lands, and both hold the same
 host id, so the sink lease (148, 150) does not separate them. Fix: route
-every invoker through the flywheel's FIFO queue with the flywheel
+every invoker through the instance's FIFO queue with the instance
 as the message group id (the scheduler's target is the queue, not the
 function); Lambda then runs at most one invocation per group, and page
 requests take the read path of finding 3 and never tick. Say so in 270 and
@@ -99,7 +99,7 @@ on the diagrams ("due" goes to the queue, not the function).
 **6. A dispatcher that exists only during a tick looks dead between
 ticks.** Claim: dispatch "heartbeats, holds its leases and ticks like every
 host" (217); the host life region marks a host stale at five minutes and
-gone at thirty (`cloud.md` retire section). Why unclear: a flywheel
+gone at thirty (`cloud.md` retire section). Why unclear: an instance
 whose next due time is hours away has a dispatcher whose last heartbeat is
 hours old, so the status view shows it stale and raises takeover
 decisions for a host that is merely not due. Fix: a ruling that an invoked
@@ -118,11 +118,11 @@ account and C's function in yours. `security.md` (e) says "Their App,
 their bot ... breaks the shared bot identity", while `physical-c` keeps
 the bot ours. And "control plane" names no machine: provisioning into a
 customer account needs a deployer (a cross-account stack deployment
-through the role), a registry of flywheels with health and counters,
+through the role), a registry of instances with health and counters,
 the identity environment (Frontegg), and a path for the readings 288 sends
 back. Fix: either ratify C as tier 4 in 268 with its own clause, or stamp
 the diagram "a design, not a tier of A.34"; in both cases replace the
-"control plane" box with three: "registry · flywheel names, tier,
+"control plane" box with three: "registry · instance names, tier,
 health, counters", "deployer · a stack applied through your role, our
 binary version stamped", "identity · Frontegg, the served-name redirect
 entry for your host (244)"; and decide the bot once in C and in (e).
@@ -137,18 +137,18 @@ is a standing cross-account grant on the customer's key policy, a second
 revocation point the customer must know about, and it is a credential path
 that the role's deletion does not close. Fix: in B and C the wake is a
 content-free notification (the customer's queue fans out an EventBridge
-event carrying only the flywheel id, or the scheduler ticks), and the
+event carrying only the instance id, or the scheduler ticks), and the
 tick reads the queue itself under the assumed role. State in 276 that the
 only grants in the customer's account are the role's trust policy and the
 key's grant to that role.
 
 **9. Session tags by OIDC need the issuer to mint them, and the customer
 registers an identity provider, not just a trust line.** Claim: "you paste
-our issuer and your flywheel's subject and you are done"
+our issuer and your instance's subject and you are done"
 (`hosted-design.md`), "matched against the tag on every key and object"
 (259). Why unclear: for `AssumeRoleWithWebIdentity` the tags come only from
 the token's `https://aws.amazon.com/tags` claim, so the service's issuer
-must put the flywheel into `principal_tags` and the trust policy must
+must put the instance into `principal_tags` and the trust policy must
 allow `sts:TagSession`; the customer must also create an IAM OIDC provider
 resource for our issuer before a role can trust it. Fix: say both in 276
 and in the "What changes for you" paragraph.
@@ -156,7 +156,7 @@ and in the "What changes for you" paragraph.
 **10. Key policy wording.** Claim: "policy: a principal may use it only
 when its session tag equals the key's tag" (all diagrams, `hosted-design`).
 Why unclear: `aws:ResourceTag` is not usable in a KMS key policy. Either
-each key's policy names its flywheel literally under
+each key's policy names its instance literally under
 `aws:PrincipalTag/org`, or the tier role's IAM policy allows `kms:Decrypt`
 on `key/*` with `aws:ResourceTag/org = ${aws:PrincipalTag/org}`. Both
 work; the second is what "no count of roles limits it" needs. Fix: one
@@ -170,14 +170,14 @@ sustained". Fix: "baseline up to 8 GB / 4 vCPU, bursting to 32 GB / 16
 vCPU, 32 GB of disk".
 
 **12. The image build is a code-reading step with no stated host.** Claim:
-"created from the flywheel's image" (275); "It never holds code"
+"created from the instance's image" (275); "It never holds code"
 (269). Why unclear: building the image reads the built repository's
 environment declarations (238, 239) and runs the Dockerfile; the MicroVM
 build service does that in the service account from a zip in S3 that
 someone uploaded. Who uploads it, and where were the declarations read?
 Fix: state that the image build is an effect run on a pool host or the
 operator's own machine, never in the dispatcher, and that the artifact is
-written to a per-flywheel prefix under the flywheel's key.
+written to a per-flywheel prefix under the instance's key.
 
 **13. The 15-minute ceiling is a binding fact and is unstated.** Claim:
 "both are bounded per tick, and what does not fit is carried" (269). Why
@@ -190,9 +190,9 @@ it in 269 and say what the tick drops first when the budget is short
 Claim: "nothing between runs" (diagrams, `hosted-design`). Why unclear:
 Lambda reuses an execution environment across invocations, `/tmp` and
 process memory persist between them, and the next invocation may be
-another flywheel's tick. The residual paragraph knows this; the boxes
+another instance's tick. The residual paragraph knows this; the boxes
 do not. Fix: "nothing between runs by construction: scratch wiped and the
-data key dropped before exit; the sandbox is reused across flywheels".
+data key dropped before exit; the sandbox is reused across instances".
 
 **15. Two proposals still carry the earlier physical shape.** `security.md`
 §2 says "the clones live on EFS, the due index on DynamoDB, queued captures
@@ -239,15 +239,15 @@ each unless noted):
   time, or by a page request" with "woken only through your queue: the
   receiver, the scheduler and a page write all enqueue, so one tick of
   yours runs at a time"; add "a tick has 15 minutes; triage yields to the
-  interpreter"; add "the sandbox is reused across flywheels; scratch
+  interpreter"; add "the sandbox is reused across instances; scratch
   wiped and the data key dropped before exit".
 - Scheduler box: the "due" arrow goes to the queue, not the function; add
-  "60-second precision · at most one entry per flywheel ·
+  "60-second precision · at most one entry per instance ·
   create-or-update, deleted after it fires".
 - Pool host box: "baseline up to 8 GB / 4 vCPU, bursting to 32 GB / 16
   vCPU, 32 GB of disk"; add "its image is built on a pool host or your
   machine, never in the dispatcher"; drop "the disk is encrypted under the
-  flywheel key".
+  instance key".
 - KMS box: "it encrypts the queue, the cache, the logs, and what a pool
   host writes to S3"; replace the policy line with "your session tag must
   equal the key's tag: the tier role's policy, `aws:ResourceTag/org =
@@ -302,17 +302,17 @@ pointed-at raw material is read on a laptop or a pool host (263)".
   placement states, fifteen minutes on the function placement; when the
   budget is short the tick carries triage before it carries a reply." After
   "retaining nothing between invocations (217a)" add "the sandbox is reused
-  across flywheels, so retaining nothing is the tick's own act: scratch
+  across instances, so retaining nothing is the tick's own act: scratch
   wiped and the data key dropped before exit."
-- **270**: append "Every invoker enqueues on the flywheel's queue and
-  the queue admits one tick of a flywheel at a time; a request for
+- **270**: append "Every invoker enqueues on the instance's queue and
+  the queue admits one tick of an instance at a time; a request for
   the page is a read under the caller's identity and is not an invoker."
 - **271**: replace "with no compute of the machinery's in the
   acknowledgement path: the platform answers the caller" with "with one
   stateless receiver of the machinery's in the acknowledgement path, which
   verifies the caller's signature, answers the platform's liveness check,
   acknowledges within the platform's deadline, and routes by workspace to
-  the flywheel's queue; it holds no key that decrypts and reads no
+  the instance's queue; it holds no key that decrypts and reads no
   queue."
 - **New 271a**: "The receiver and the chat application are the two shared
   components of the hosted tiers, and each sees an inbound payload once,
@@ -326,19 +326,19 @@ pointed-at raw material is read on a laptop or a pool host (263)".
   or its queue holds items; it heartbeats once per tick, its stale window
   is the due time it wrote plus the profile's grace, and 150's takeover is
   raised for it only past that."
-- **275**: replace "on a disk encrypted under the flywheel's key
+- **275**: replace "on a disk encrypted under the instance's key
   (256)" with "on a disk the platform isolates per microVM and destroys at
-  terminate under the platform's own encryption; a flywheel whose tier
+  terminate under the platform's own encryption; an instance whose tier
   statement must name its own key on that disk binds its pool to a
   placement that takes one (Fargate with a volume under the key). The
   image is built on a pool host or the operator's own machine, never on a
-  shared host, and its artifact is stored under the flywheel's key."
+  shared host, and its artifact is stored under the instance's key."
 - **276**: append "The flywheel registers the service's issuer as an
   identity provider in its account and allows `sts:TagSession` on the
-  role; the token the service mints carries the flywheel as a principal
+  role; the token the service mints carries the instance as a principal
   tag. The only standing grants in that cloud account are the
   role's trust and the key's grant to that role; the wake from the
-  flywheel's queue carries the flywheel's name and nothing else,
+  instance's queue carries the instance's name and nothing else,
   and the tick reads the queue under the role."
 - **277**: append "On a function placement Discord free text is the string
   option of the application's slash command; plain replies in a channel
@@ -405,7 +405,7 @@ pointed-at raw material is read on a laptop or a pool host (263)".
 - Fargate "without Docker inside" and 120 GB tasks with EBS attach: not
   re-checked.
 - Any quota on the number of Lambda event source mappings per function or
-  account, which a queue per flywheel would consume: not found.
+  account, which a queue per instance would consume: not found.
 - API Gateway's direct SQS integration needing `kms:GenerateDataKey` on the
   queue's key through its integration role: stated from prior knowledge of
   SQS SSE-KMS, not re-read today.

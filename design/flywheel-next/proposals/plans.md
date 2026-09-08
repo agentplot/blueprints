@@ -3,7 +3,7 @@
 The hosted physical design (hosted-design.md) settles four tiers by what
 exists on the service side. Plans are how those tiers are sold: a plan is a
 Frontegg plan whose features are the `fw.ff.*` entitlements plus a few stated
-limits, billed by Stripe, read by the flywheel only through the identity token
+limits, billed by Stripe, read by the instance only through the identity token
 and the SDK. Self-managed has no plan object at all: it is the binary on your
 computer, and every flag stands at its definition default there (250).
 
@@ -16,9 +16,9 @@ refused add, never a stopped loop.
 | plan | tier | who | what it unlocks | limits |
 |---|---|---|---|---|
 | **Free** | 0 · your computer | one person, own hardware | the binary, GitHub device flow, your own GitHub App and chat bot, every package, every surface | none we enforce; nothing runs on our side |
-| **Hobby** | 1 · cloud agent | one person who closes the laptop | the service's bot and App, captures and chat while your machines sleep, the rail in Slack or Discord, the page at a served name. No API key needed: chat is buttons and slash commands, free text is interpreted in the page, captures are triaged in a daily batch | 1 flywheel · 1 member · no pools · captures included per month on the small model class |
-| **Pro** | 1 + 2 | one person with more to build | Hobby plus pools with an included hour allowance and metered overage, the package store, the book view, presets, and immediate triage and free text in chat | 3 flywheels · 1 member · pool hosts up to 8 GB · included pool hours · included model budget |
-| **Team** | 2 · pools | a team | Pro plus members with roles, ownership and assignment, the management console, identity administration, pools up to 32 GB, priority ticks, and a model class raisable per type and stage | per-seat · unlimited flywheels · pooled pool hours |
+| **Hobby** | 1 · cloud agent | one person who closes the laptop | the service's bot and App, captures and chat while your machines sleep, the rail in Slack or Discord, the page at a served name. No API key needed: chat is buttons and slash commands, free text is interpreted in the page, captures are triaged in a daily batch | 1 instance · 1 member · no pools · captures included per month on the small model class |
+| **Pro** | 1 + 2 | one person with more to build | Hobby plus pools with an included hour allowance and metered overage, the package store, the book view, presets, and immediate triage and free text in chat | 3 instances · 1 member · pool hosts up to 8 GB · included pool hours · included model budget |
+| **Team** | 2 · pools | a team | Pro plus members with roles, ownership and assignment, the management console, identity administration, pools up to 32 GB, priority ticks, and a model class raisable per type and stage | per-seat · unlimited instances · pooled pool hours |
 | **Enterprise** | 3 · your account | a company with a security policy | Team plus your own AWS account in either shape — stores only, or stores and compute with dedicated dispatcher and pools created from the console — SSO and SCIM through your identity provider, audit export, private pool images, an SLA | custom |
 
 Prices are marketing's; the requirement is the ladder and what each rung
@@ -35,7 +35,7 @@ The features list in identity.yaml grows to carry the ladder. Each is a flag,
 - `fw.ff.book-view`, `fw.ff.explore` — default on, every plan
 - `fw.ff.management-console` — the console beyond one host (Team and up)
 - `fw.ff.members` — roles, invite, assignment, ownership (Team and up)
-- `fw.ff.federation` — tier 3, both shapes: the flywheel's key and stores in
+- `fw.ff.federation` — tier 3, both shapes: the instance's key and stores in
   its own account, and the binary provisioned into that account behind the
   control plane (Enterprise)
 - `fw.ff.sso` — enterprise SSO and SCIM on the account (Enterprise)
@@ -90,7 +90,7 @@ grant. This is design B in security.md §4, and it is today's federation journey
 
 **Stores and compute.** The binary itself is provisioned into your account by our
 deployer through that same role, and nothing of ours runs there. What stays on
-our side is the control plane alone: a **registry** of flywheel names, tier,
+our side is the control plane alone: a **registry** of instance names, tier,
 health and counters; the **deployer**, which applies the stack through your role
 and stamps our binary's version; and **identity**, the Frontegg environment
 holding the redirect entry for your host's served name. The chat application is
@@ -123,7 +123,7 @@ A preset is a **bundle** package: a named set of parts with their
 configuration defaults, offered as one choice on that screen. The shipped
 presets are *Slack + Granola*, *Discord + GitHub only*, and *Everything*; a
 bundle installed on a host is the same install decision as its parts, one
-decision for the set. A flywheel may publish its own bundles in the
+decision for the set. An instance may publish its own bundles in the
 store. Routers and runners are chosen only on a machine of yours or an adopted
 host, under the advanced disclosure.
 

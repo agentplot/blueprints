@@ -33,7 +33,7 @@ stores:
     holds them.
   state-repository:
     doc: "the engine-managed record store; one commit per record change (203)"
-    retention: "for the life of the flywheel; archived with it at retirement (221)"
+    retention: "for the life of the instance; archived with it at retirement (221)"
   workdrive-archive:
     doc: "Zoho WorkDrive, reached through the WorkDrive adapter package (growth-7)"
     retention: "seven years minimum for tax-relevant documents — a stated fact of the store, asserted by the store's declaration and not by any producer"
@@ -87,7 +87,7 @@ scheduled:
     doc: >-
       raises one payroll-run@1 unit per pay date, in `due`, whose decision is
       the prompt. Nobody creates a payroll task by hand and none goes silent.
-    cadence: "each pay date in the flywheel's payroll calendar"
+    cadence: "each pay date in the instance's payroll calendar"
     key: "payroll/<pay date>"
     produces:
       - {object: "unit of payroll-run@1", state: due, one_per: pay_date}

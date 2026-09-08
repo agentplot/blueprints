@@ -9,7 +9,7 @@
 #
 # Growth this type leans on (../../README.md):
 #   growth-6  an elaboration whose proposal's yes sends mail to people outside
-#             the flywheel
+#             the instance
 #   growth-7  the mail adapter as a per-host package with its secret (207)
 #   growth-3  the timer on invoice-cycle@1 that raises this type
 #

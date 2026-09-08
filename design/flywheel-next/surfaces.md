@@ -22,9 +22,9 @@ Sources and precedence:
 | `models/statechart/profiles/host.yaml` | the identity kind a host declares, its one address and the localhost port on the operator's own computer, the environment providers, the image, the pool declaration, packages and add-host |
 | `models/statechart/machines/pool.yaml`, `machines/engine/sink.yaml` | the pool's image and hosts regions; one sink per member with its own mark |
 | `models/dispatch/model.md` §1–§5 | the vocabulary of a host's parts: presenter, capture endpoint, triage, interpreter, adapters, runners, placements |
-| `rail-mockup.md` | the seed: flywheel willdan, 2026-09-04 07:40, decisions 412–421 |
+| `rail-mockup.md` | the seed: instance willdan, 2026-09-04 07:40, decisions 412–421 |
 | `mockups/rail-and-board.html` | the direction for the page; illustrates §1.1–§1.2, §1.4–§1.11, and §1.13's switcher, identity block and sign-out. It carries no management surface: hosts, the package store, the settings form and the wizards are the console's |
-| `mockups/management-console.html` | the management surfaces, drawn in Cloudscape; illustrates §1.12, §1.13's settings, hosts and flywheel-store entries, and §1.14, with "+ flywheel" and "retire flywheel" beside "+ host" |
+| `mockups/management-console.html` | the management surfaces, drawn in Cloudscape; illustrates §1.12, §1.13's settings, hosts and flywheel-store entries, and §1.14, with "+ instance" and "retire instance" beside "+ host" |
 | `mockups/context-map-ddd.html` | the adopted map model drawn at both levels; illustrates §1.3 |
 | retired mockups (workbench, queue, deck, river, v1 context map) | removed from the tree on 2026-09-07; §5 cites them by name for the rulings they produced; their seed lives in rail-and-board and `rail-mockup.md` |
 
@@ -43,7 +43,7 @@ were settled, not their place on the page.
 - **S1.** The page is one page, served on the operator's private
   network, that works on a phone (155). It has four regions: a header,
   a machinery strip, a rail, and a board. A dock opens over the board.
-- **S2.** The header shows the flywheel, the as-of time of the
+- **S2.** The header shows the instance, the as-of time of the
   read the page was built from (145), the count of decisions, the
   "yes all" control with the numbers it will answer, the count of
   responses sent with a control that opens the sent log, a theme
@@ -317,7 +317,7 @@ were settled, not their place on the page.
 - **S33.** A decision with a document carries the link that opens it
   on the review surface (model 5.4). The chat's binding is the Discord
   bot; the presenter is the sink's lease holder or the manifest's pin.
-- **S34.** Free text in chat goes to the flywheel's dispatch agent
+- **S34.** Free text in chat goes to the instance's dispatch agent
   as interpreter: it proposes exactly one tool call as a reply with a
   confirm control, and the confirmation is the response (194). On the
   page the interpreter is a model in the browser, and a control is a
@@ -379,12 +379,12 @@ were settled, not their place on the page.
 ### 1.9 The board, book view
 
 - **S91.** The book view is an mdBook-style viewer the page draws
-  itself. The flywheel's blueprints are mdBook sources in the blueprints
+  itself. The instance's blueprints are mdBook sources in the blueprints
   repository; the server serves each chapter, and the page draws the
   chapter tree, one chapter at a time with previous and next, headings
   with anchors, and, where a chapter includes a claim by anchor
   (`{{#claim <capability>/<name>}}`), the requirement rendered in place
-  as the flywheel renders it (97). The
+  as the instance renders it (97). The
   view is entered with b or from the board's header, and b leaves it.
   The rail stays beside it and j and k walk the rail only. The view is
   behind `fw.ff.book-view`, on by default (250, S197): with the flag
@@ -413,11 +413,11 @@ were settled, not their place on the page.
   view at that anchor and closes the dock, which would otherwise cover
   the page; Enter reopens the dock on the focused card.
 - **S95.** The library is an overlay over the board, opened from a
-  control in the book header. It lists the flywheel's blueprints with
+  control in the book header. It lists the instance's blueprints with
   chapters, claims standing and proposed, last written, unmet verdicts,
   "changed since review", and the repositories each book covers.
   Choosing a book loads it; a repository chip goes to the map view and
-  opens the repository dock; Esc closes. The flywheel's own surface
+  opens the repository dock; Esc closes. The instance's own surface
   specification is listed as a shipped book (212).
 - **S96.** The review flow is one flow for the map and the book (122).
   "since last review" is the same switch and mark in both views. In the
@@ -465,7 +465,7 @@ were settled, not their place on the page.
 
 ### 1.11 The flywheel instrument
 
-- **S103.** The flywheel is one instrument with one reading, runway
+- **S103.** The instance is one instrument with one reading, runway
   in days: approved construction work not yet merged (queued and
   building units, as their estimates less the slot-days already
   occupied, 172) divided by drain, where drain is the alive hosts'
@@ -487,7 +487,7 @@ were settled, not their place on the page.
   hosts, the pool's live of bound when one exists, utilization, units
   merged per day at the bound, a seven-day merges sparkline, bolts
   landed per week labelled "history, not a target" (142), and, when
-  the flywheel has no pool, "add a host to drain faster" opening
+  the instance has no pool, "add a host to drain faster" opening
   the hosts surface on "+ host".
 - **S105.** Above the wheel, the two stages of backpressure as a
   two-stage pipe: inception (signals → intents → elaborations →
@@ -499,7 +499,7 @@ were settled, not their place on the page.
   n decisions older than a day · yes on <number> alone adds ~d days"
   when decisions are old and runway is under two days; "feed it: n
   decisions approve ~d days of work"; "drain is the limit: add a host ·
-  n items on m alive slots" when the flywheel has no pool, and
+  n items on m alive slots" when the instance has no pool, and
   "drain is the limit · pool l of b · n items on m alive slots" when it
   has one (S177); "primed: agents have d days". Every reading is marked
   a projection, never a target.
@@ -538,7 +538,7 @@ were settled, not their place on the page.
 
 - **S113.** Hosts is an overlay over the board, opened from the
   account item's hosts entry (S157), from the setup control in the
-  hosts strip, from a host's dock page, from the flywheel's "add a
+  hosts strip, from a host's dock page, from the instance's "add a
   host" or its pool control, or from an attention line about a host.
   Everything on it past the one host serving the page is behind
   `fw.ff.management-console`, off by default (250, S197): with the
@@ -582,7 +582,7 @@ were settled, not their place on the page.
   platform cannot take says so.
 - **S198.** The host's screen says which GitHub App reaches the
   repositories and where its key lives (207, 207a). A self-managed
-  flywheel uses its own App: the heading reads the App's id from
+  instance uses its own App: the heading reads the App's id from
   the manifest and shows the key's path on this host with "placed" or
   the attention line that asks for it, never a value (S123, S187). The
   hosted tiers use the service's App: the heading says so, shows no
@@ -606,7 +606,7 @@ were settled, not their place on the page.
   what it needs (secrets, platform, network), what it enables, and
   "add". There is no single index across kinds and no search box over
   the whole store; a search box sits inside the filtered catalogue.
-  Flywheel packages never appear here; they are the flywheel
+  Instance packages never appear here; they are the instance
   store's (S156).
 - **S118.** "add" is one flow. It collects the package's configuration
   against its schema and names the secrets it needs in one form, says
@@ -637,7 +637,7 @@ were settled, not their place on the page.
   approve · yes · no, kind host-enrol) with a one-time token that
   expires in 24h; the host joins with the token by one command (205),
   reads the manifest and installs its declared parts; the row shows
-  alive. A platform host is created from the flywheel's image, or
+  alive. A platform host is created from the instance's image, or
   its pool's (S175). Each step shows its state (queued · running ·
   waiting on you · done · skipped · stopped) and the flow ends with the
   new host row alive in the strip and the list (230). A token that
@@ -675,7 +675,7 @@ were settled, not their place on the page.
 - **S175.** The image. A platform host is created from an image built
   from the declarations of every repository it will cover (239). The
   image is shown where it is used: on a pool row, and at the head of
-  the hosts list for the flywheel's image that "+ host" on a
+  the hosts list for the instance's image that "+ host" on a
   platform takes. It shows its tag, the declarations' hash, and its
   state: current · behind, with the repository whose declaration moved
   · building. "rebuild" on an image behind raises the rebuild as a
@@ -686,7 +686,7 @@ were settled, not their place on the page.
   it is current, and its row says so.
 - **S176.** Pools, behind `fw.ff.pools`, off by default (250, S197):
   with the flag off no pool row is drawn on the hosts surface, the
-  strip shows no pool pill and the flywheel offers no pool control,
+  strip shows no pool pill and the instance offers no pool control,
   and the settings form's pools fields are absent, which is where a
   `github` host stands. A pool row shows the pool's name, platform, image
   state (S175), live hosts of bound, the cost ceiling the manifest
@@ -706,7 +706,7 @@ were settled, not their place on the page.
   decision; charges a session for an install; shows a secret's value;
   stores a platform credential; enters the count by itself; runs a
   ladder or an order of installation; draws one index across every
-  kind; lists a flywheel package; adds or retires a pool host by
+  kind; lists an instance package; adds or retires a pool host by
   hand. Every placement of the dispatch model (dispatch 5) is a host on
   this list with the parts it runs.
 - **S148.** The tools the surface calls (surfaces.yaml `tools`):
@@ -729,9 +729,9 @@ were settled, not their place on the page.
 
 - **S152.** A standard account item sits at the right of the header:
   who you are, as a chip. It expands to a menu in a fixed order: the
-  identity block (S166), the flywheel switcher, then settings,
-  hosts, the flywheel's package store, and sign-out. It is the one place the
-  page reaches the flywheel as a whole rather than an object in
+  identity block (S166), the instance switcher, then settings,
+  hosts, the instance's package store, and sign-out. It is the one place the
+  page reaches the instance as a whole rather than an object in
   it. Nothing in the menu is in the count; a flow in it that needs the
   operator's yes raises a decision in the rail like any other.
 - **S153.** Who you are is the identity the serving host's kind
@@ -739,29 +739,31 @@ were settled, not their place on the page.
   Frontegg user on a `frontegg` host, with the GitHub username its
   connection carries beside it in the identity block because
   authorship is the GitHub username either way. It is the same for
-  every flywheel the host serves (S164). There is no signed-out
+  every instance the host serves (S164). There is no signed-out
   page and no local-user case. Sign-out ends the page's session with
   the host's kind and records nothing (233).
-- **S154.** The flywheel switcher lists every flywheel the
+- **S154.** The instance switcher, rendered "Switch flywheel" and
+  listing flywheels, since flywheel is the operator's word for an
+  instance on every visible surface (S206), lists every instance the
   serving host has a root for (218), grouped by the account that holds
   them (219, 247), each with its decision count, and marks one the
   signed-in identity is not a member of as "not a member" — not in the
   account's operators list, or on a `frontegg` host not assigned the
   flywheel Application on that account (247, S166). On the page the
-  switcher is one list, because the page serves one flywheel at a
+  switcher is one list, because the page serves one instance at a
   time; in the management console the top nav switches accounts and
-  the flywheels of the account in hand are listed inside it.
-  Choosing a member flywheel swaps the whole page to it: the rail,
+  the instances of the account in hand are listed inside it.
+  Choosing a member instance swaps the whole page to it: the rail,
   the board in every view, the machinery strip's hosts and
-  repositories, the flywheel reading, the blueprints and the map. The
-  as-of time is that flywheel's read. Nothing carries across: no
+  repositories, the flywheel instrument reading, the blueprints and the map. The
+  as-of time is that instance's read. Nothing carries across: no
   focus, no open dock, no mode, no overlay, and never the identity,
-  which is the host's kind and the same for every flywheel on it
+  which is the host's kind and the same for every instance on it
   (233). The page's address is the host's one address with the
-  flywheel in the path, `/<flywheel>/…` (205a) — on the operator's own
+  instance in the path, `/<instance>/…` (205a) — on the operator's own
   computer a localhost port, any port — so a link opens it directly
   and the chat's link (S32) lands on the right one.
-- **S155.** Settings is the manifest as a form: the flywheel's
+- **S155.** Settings is the manifest as a form: the instance's
   declarations grouped as the manifest groups them, profile, defaults
   per role (173), the shared sinks and their presenters, pools with
   bound, cost and retire time (240), routers, raw stores, callers,
@@ -777,7 +779,7 @@ were settled, not their place on the page.
   thing beside them (248, S195). Save is one `configure-flywheel`
   response for the whole form; the machinery applies it as one manifest
   commit and the page re-reads. The form is under `fw.org.configure`
-  and reads read-only without it; retiring the flywheel is
+  and reads read-only without it; retiring the instance is
   `fw.org.remove` and belongs to an owner alone (249). A secret is
   never a field: it is placed (S123). A host's
   keys — root, bound, declaration, provider, identity environment,
@@ -789,18 +791,18 @@ were settled, not their place on the page.
   the read-only list sit "invite…", and per member "assign", "revoke"
   and a role choice; a flags list on the same section carries a
   per-account toggle. Each is one recorded tool call under
-  `fw.identity.admin` (153): `invite-member(flywheel, email)`,
-  `assign-application(flywheel, user)`,
-  `revoke-application(flywheel, user)`,
-  `set-role(flywheel, user, role)`,
-  `target-flag(flywheel, flag, on)`. Revoking a member's
+  `fw.identity.admin` (153): `invite-member(instance, email)`,
+  `assign-application(instance, user)`,
+  `revoke-application(instance, user)`,
+  `set-role(instance, user, role)`,
+  `target-flag(instance, flag, on)`. Revoking a member's
   assignment takes their page sink and their chat sinks with it
   (236a); their addresses stay on the entry until the form removes
   them. A member without `fw.identity.admin` reads the section and
   sees no control on it. A `github` host has no members section at
   all: the operators list on the settings form is the whole of
   administration there, edited and saved like any other field (S155).
-- **S156.** The flywheel's package store is behind `fw.ff.store`, off by
+- **S156.** The instance's package store is behind `fw.ff.store`, off by
   default (250, S197): the menu carries no store entry unless the flag
   is on for the account, so a `github` host shows none. It is
   a settings screen of the same
@@ -811,7 +813,7 @@ were settled, not their place on the page.
   installed · adding, decision n · installing · disabled. "add" on a
   heading opens the catalogue filtered to that heading's kind (S117)
   and runs the one flow of S118 without a host: configuration
-  collected, then one install decision on the flywheel; its yes
+  collected, then one install decision on the instance; its yes
   installs the package into the blueprints repository as the
   machinery's effects and the default set (190) grows. Every control
   on it is guarded by `fw.packages.manage` (249). Nothing here names a
@@ -823,11 +825,11 @@ were settled, not their place on the page.
   else. On a `github` host, where the flag stands at its default, the
   menu's hosts entry opens the serving host's own screen.
 - **S158.** The account item never: answers a decision; shows a
-  secret's value; lists a flywheel the serving host has no root
-  for; opens a control in a flywheel the identity is not a member
+  secret's value; lists an instance the serving host has no root
+  for; opens a control in an instance the identity is not a member
   of; changes the identity on a switch; installs anything without a
-  decision; mixes a flywheel package into a host's store or a
-  host's part into the flywheel's package store; lets a flag stand in for a
+  decision; mixes an instance package into a host's store or a
+  host's part into the instance's package store; lets a flag stand in for a
   permission (250, S197).
 - **S159.** Requirements served: 149, 173, 190, 203, 205, 205a, 208,
   218, 233–234, 236a, 243, 246–250, 253, 255. Tools called: `answer`
@@ -840,24 +842,24 @@ were settled, not their place on the page.
 ### 1.14 Identity, members and owners
 
 - **S164.** Identity is a host binding with two kinds, one kind per
-  host and the same for every flywheel it serves (243). On a
+  host and the same for every instance it serves (243). On a
   `github` host — every self-managed host — the page signs in with
   GitHub's device flow: it shows the code and the address to enter it
   at and waits until GitHub confirms, and the identity is the GitHub
   username (246, 253). The page serves on a localhost port, any port,
   with no proxy and no name asked of the operator; several hosts on
   one computer are several ports (232, 245). Portless or a local proxy
-  may be advised for a stable name and is never required; the flywheel
+  may be advised for a stable name and is never required; the instance
   serves no name of its own and registers no redirect. On a `frontegg`
   host — the hosted tiers — sign-in is the provider's hosted login on
   the page: the SDK builds the redirect from the origin the page is
   served on, so the host's served name is the only per-host fact and
   it is registered once on the environment's redirect list, never per
-  flywheel (244), and the identity is the Frontegg user with the
+  instance (244), and the identity is the Frontegg user with the
   GitHub username its connection carries used for authorship (246).
   Authorship is the GitHub username in both kinds. Switching
-  flywheel never changes the identity in either (233). An
-  flywheel that needs its own directory connects it to its
+  instance never changes the identity in either (233). An
+  instance that needs its own directory connects it to its
   Frontegg account on a hosted tier, never to a host, and no host runs
   a sign-in part.
 - **S165.** Every response the page records carries the identity
@@ -865,8 +867,8 @@ were settled, not their place on the page.
   host membership is the manifest's authored operators list: the tool
   server checks the caller against it before any op-response is
   written, and every listed operator holds every permission on their
-  own flywheel (247–249). On a `frontegg` host the two gates are
-  separate. Membership admits the identity to the flywheel, as the
+  own instance (247–249). On a `frontegg` host the two gates are
+  separate. Membership admits the identity to the instance, as the
   assignment of the flywheel Application to its account (247), and a
   caller the account does not assign is refused. Permission authorizes
   the tool: the tool server reads the caller's token for the
@@ -877,10 +879,10 @@ were settled, not their place on the page.
   identity, the tool and the object (79), and shows inline on the
   control that sent it and under attention on the next delivery with
   ok as the acknowledgement (S8). The read-only query tools answer any
-  identity the flywheel admits.
+  identity the instance admits.
 - **S166.** The account item's identity block shows the identity the
   host's kind vouched for, the host serving the page and its kind, and
-  the flywheels on this host the identity is a member of, each
+  the instances on this host the identity is a member of, each
   with its sinks line: the page sink and one chat sink per address the
   member's operators entry carries (236a), each with its kind, its
   mark and the host presenting it. On a `github` host the identity is
@@ -888,12 +890,12 @@ were settled, not their place on the page.
   operator holding every permission. On a `frontegg` host the block
   names the Frontegg user, adds the GitHub username its connection
   carries and what authorship uses, carries "connect GitHub" for a
-  user with none, and each flywheel shows its roles from the token
+  user with none, and each instance shows its roles from the token
   (248). An address whose kind no host runs shows its sink as
   undelivered with "add a <kind> sink on a host", opening the hosts
   surface on the sinks heading (S115). The switcher (S154) lists the
-  member flywheels with their counts and nothing else; a
-  non-member flywheel does not appear (S191).
+  member instances with their counts and nothing else; a
+  non-member instance does not appear (S191).
 - **S196.** A `frontegg` host degrades and does not fail when the
   provider is unreachable (254). A token already issued is honoured
   until it expires; past that the page is read-only — the status view,
@@ -913,7 +915,7 @@ were settled, not their place on the page.
   flags are keyed `fw.ff.*`: `fw.ff.pools` hides the pool rows and the
   pool control (S176), `fw.ff.book-view` the board's book view (S91),
   `fw.ff.explore` the explore mode (S43), `fw.ff.store` the
-  flywheel's package store and a host's catalogue (S117, S156), and
+  instance's package store and a host's catalogue (S117, S156), and
   `fw.ff.management-console` the hosts surface past the one host
   serving the page (S113). A hidden surface's entry, control and key
   are all absent rather than greyed, and the tool behind it is still
@@ -924,7 +926,7 @@ were settled, not their place on the page.
   default, so the page there draws the book view and explore and draws
   no pools, no store and no hosts surface past its own host; nothing
   on that host can turn one on.
-- **S167.** One board per flywheel (235). Every member reads the
+- **S167.** One board per instance (235). Every member reads the
   same rail with the same numbers and the same count, and there is
   nothing per member on the board but the delivery mark (S168) and the
   filter (S171). A decision one member answers is applied once; every
@@ -961,7 +963,7 @@ were settled, not their place on the page.
   is, whether it counts, or who may answer it: the answers on an owned
   card are the same for every member.
 - **S170.** "assign…" is a dock control on the decision page: a list
-  of the flywheel's members, and on a `frontegg` host the shipped
+  of the instance's members, and on a `frontegg` host the shipped
   roles beside them (248), one choice sending one
   `assign(decision, owner)` response, logged like any other;
   "unassign" sends the same with no owner. It is guarded by
@@ -973,7 +975,7 @@ were settled, not their place on the page.
   their token carries (248), and the chat's
   delivery follows the same setting; the choice is one
   `filter(sink, own | all)` response recorded on this member's sink and
-  kept until changed. The header's count stays the flywheel's and
+  kept until changed. The header's count stays the instance's and
   gains "n mine" while the filter is on; "yes all" answers the approve
   decisions the rail shows. Attention and SINCE are never filtered.
 - **S172.** Requirements served: 79, 153, 207, 218, 232, 233–237,
@@ -1175,7 +1177,7 @@ page shows after.
   footer says so; a note on a section is refused because there is no
   decision to carry it (S36).
 
-### 2.15 Reading the flywheel and adding a host
+### 2.15 Reading the instance and adding a host
 
 - **S129.** 1. Machinery strip: the pill reads "1.5d · 1d 19h · at
   risk"; w opens the panel. 2. The wheel shows 1.5 days in the
@@ -1219,9 +1221,9 @@ page shows after.
   The host joins by one command with the token (205), reads the
   manifest and installs its declared parts; each step shows queued,
   running, done. 7. The row shows alive in the strip and the list; the
-  flywheel's drain column counts one more host.
+  instance's drain column counts one more host.
 
-### 2.18 Switching flywheel
+### 2.18 Switching instance
 
 - **S160.** 1. Header: the account item reads chuck; a click opens the
   menu with the identity block, then the switcher: willdan · 9,
@@ -1229,19 +1231,19 @@ page shows after.
   carrying chuck (247). 2. mad-swan chosen →
   `switch-flywheel(mad-swan)`. 3. The whole page swaps: the rail
   shows mad-swan's two decisions, the board its lanes, the strip its
-  hosts and repositories, the flywheel its runway, the address is the
+  hosts and repositories, the instance its runway, the address is the
   same host with `/mad-swan/` in the path (205a); the dock that was
   open is closed, no card is focused, the view is phases. 4. The
   header's as-of time is mad-swan's read and the account item reads
-  the same identity, the host's kind being one for every flywheel
+  the same identity, the host's kind being one for every instance
   it serves. On a hosted host chuck's roles are read per account, so a
   control chuck holds in willdan may be absent in mad-swan. 5. The
   switcher again returns to willdan the same way, with nothing
   remembered from before.
 
-### 2.19 Adding a flywheel package
+### 2.19 Adding an instance package
 
-- **S161.** 1. Account item: flywheel's package store; the list shows
+- **S161.** 1. Account item: instance's package store; the list shows
   unit types, producers, vocabularies, templates and scenario packs
   with their states; the "data-product" vocabulary reads not installed
   · index · needs nothing. 2. "add" opens the flow: the vocabulary's
@@ -1277,7 +1279,7 @@ page shows after.
   enters the code there and approves, and the page waits until GitHub
   confirms (253). 3. The page turns to the rail: the account item
   reads chuck, the GitHub username, and the header count is
-  willdan's, the flywheel whose operators list carries chuck. As a
+  willdan's, the instance whose operators list carries chuck. As a
   listed operator chuck holds every permission, and the flags stand at
   their defaults, so the book view and explore are there and pools,
   the package store and the hosts list are not (248, 250, S197). 4. On a
@@ -1328,8 +1330,8 @@ page shows after.
 
 ### 2.25 The pool drains faster
 
-- **S182.** 1. Rail, in a flywheel that declares a pool named
-  cloud: y on its proposal approves nine units; the flywheel's reading
+- **S182.** 1. Rail, in an instance that declares a pool named
+  cloud: y on its proposal approves nine units; the instrument's reading
   turns to "drain is the limit · pool 2 of 8 · 9 items on 4 alive
   slots". 2. The machinery asks the platform for a host from the
   pool's image; the strip's pool pill reads "pool cloud · 3 of 8" with
@@ -1343,11 +1345,11 @@ page shows after.
   `propose-chore(blueprints, rebuild image)`; the chore appears under
   the chores head, the image reads building, then current.
 
-### 2.26 Upgrading a flywheel to a hosted tier
+### 2.26 Upgrading an instance to a hosted tier
 
 - **S204.** 1. willdan runs on a `github` host; its settings form's
   operators list carries chuck, dana and priya as GitHub usernames,
-  each with their chat addresses (247). 2. The flywheel moves to a
+  each with their chat addresses (247). 2. The instance moves to a
   hosted tier (247a): the service creates willdan's Frontegg account,
   invites those same three usernames to it, and carries every address
   over unchanged. 3. On the hosted host's page each of the three signs
@@ -1358,7 +1360,7 @@ page shows after.
   roles read-only, derived from the account, with the addresses still
   authored beside them, and the members section appears with the
   identity tools on it (S155, S195). 5. Nothing else about the
-  flywheel moves: the same repositories, the same blueprints, the
+  instance moves: the same repositories, the same blueprints, the
   same state, the same register and the same numbers (218). 6. Flags
   that stood at their defaults are now targetable per account, so the
   store, the hosts list and pools can be turned on where the tier
@@ -1394,13 +1396,13 @@ where a thing sits, never by its form.
 | link | a hairline in a thumbnail; a typed edge when drilled; a row in an edge's panel | kind, target element named | the line | ghosted when removed |
 | machinery session | a row in the machinery strip or on its object | curation beside the unmoved counter, planning in the gate, a conflict fix on its bolt | its chip | leaves when its run ends |
 | artifact view | a dock page under a source bar | the artifact rendered to its kind (S99), the source bar | none | "no change yet" before a unit's yes |
-| flywheel | one pill in the strip; one panel | runway, streak, "at risk"; the panel: wheel, pipe, three columns, reading, streak, advanced | none | none; it reads |
+| instance | one pill in the strip; one panel | runway, streak, "at risk"; the panel: wheel, pipe, three columns, reading, streak, advanced | none | none; it reads |
 | part | a chip on a host's row; a slot under a heading in its detail | kind word, name, state (installed, adding, needs a secret, installing, disabled), "lease" on a presenting sink | the chip and its attention line when one waits | disabled; an empty slot with "add" |
 | package | a row in the catalogue a slot opens | name, version, shipped or index, needs, enables, "add" or its state on the host or in the blueprints | the row | greyed under "any platform" with what it needs |
 | image | a line on a pool row and at the head of the hosts list | tag, hash, current · behind · building, "rebuild" when behind | none | none |
 | owner | a chip on a decision's object and in its card's tail | the member | none | none; unowned shows no chip |
 | member | a row in the settings form's operators list; on a `frontegg` host also in its members section | the identity, the GitHub username authorship uses, addresses per chat kind, sinks with their marks; on a hosted tier roles read-only from the account and the identity controls beside them | none | leaves the list when the entry is removed or the assignment revoked, and its sinks with it |
-| account item | a chip at the header's right | the signed-in identity; open: the identity block, the switcher, settings (with its members section on a hosted tier), hosts, flywheel's package store, sign-out — hosts and store only where their flags are on (S197) | none | none |
+| account item | a chip at the header's right | the signed-in identity; open: the identity block, the switcher, settings (with its members section on a hosted tier), hosts, instance's package store, sign-out — hosts and store only where their flags are on (S197) | none | none |
 
 - **S52.** Markers: a decision's number with its group glyph on the
   object it concerns (S17), one glyph set everywhere: on a lane, on a
@@ -1418,7 +1420,7 @@ where a thing sits, never by its form.
   (alive or gone, sessions against the bound, last heartbeat, an
   uncovered count), each pool as one pill (S176), the setup control
   that opens hosts, with "secret" while one waits, then the
-  repositories as pills, then the flywheel pill (S109). Machinery sessions sit by phase,
+  repositories as pills, then the instance pill (S109). Machinery sessions sit by phase,
   not in the strip: curation beside the unmoved counter, planning
   inside the gate while it runs, a conflict fix on the bolt it works.
 - **S55.** Countdowns: a finished object says "leaves in Nd", or
@@ -1466,12 +1468,12 @@ where a thing sits, never by its form.
 | drilled | Enter or a thumbnail click at rest, "drill into" on a dock or a neighbour dock | the context's inside at full size, neighbour docks, the breadcrumb | Esc, the org crumb |
 | edge panel | hover or focus on a relationship edge | the crossing links and claims of S85 | leaving the edge, Esc |
 | book | b, the board header, "read in book" | the viewer with the rail driving it | b, the board header |
-| library | the book header's control | the flywheel's blueprints with their counts | a choice, Esc |
-| account menu | the account item | the switcher, settings, hosts, flywheel's package store, sign-out | a choice, Esc, a click outside |
+| library | the book header's control | the instance's blueprints with their counts | a choice, Esc |
+| account menu | the account item | the switcher, settings, hosts, instance's package store, sign-out | a choice, Esc, a click outside |
 | hosts | the menu's hosts, the strip's setup control, a host page, "add a host", the pool control, an attention line about a host | host and pool rows on the left, the row's detail by headings and slots on the right; a slot's catalogue, the add and "+ host" flows in place | Esc, × |
 | settings | the menu's settings | the manifest as a form with one save | Esc, ×; an unsaved change asks first |
-| flywheel's package store | the menu's package store entry | the flywheel's headings with their slots and states; a slot's catalogue and the add flow in place | Esc, × |
-| flywheel | w, the strip's pill, the board header on a phone | the panel of §1.11 | w, Esc, × |
+| instance's package store | the menu's package store entry | the instance's headings with their slots and states; a slot's catalogue and the add flow in place | Esc, × |
+| instance | w, the strip's pill, the board header on a phone | the panel of §1.11 | w, Esc, × |
 | dock | Enter, a marker, a card, a pill, a chip | one page of S28 over the board | Esc, ×, a click outside |
 | phone tabs | width under 760px | Decisions or Board | the other tab |
 
@@ -1624,19 +1626,19 @@ Dated 2026-09-07.
   configuration and the secrets first and raises the install decision
   last, so the yes is the only decision and the count holds nothing
   before it. The install ladder and "offer" are rejected.
-- **S140.** The flywheel's package store and a host's store are separate
+- **S140.** The instance's package store and a host's store are separate
   surfaces, both reached from the account item. A unit type, a
   producer, a map vocabulary, a template or a scenario pack belongs to
-  the flywheel, installs into the blueprints and runs on no host; an
+  the instance, installs into the blueprints and runs on no host; an
   adapter, a sink, the agent, triage, a runner or a router is
   a host's part and installs on one host. One list that mixed them
   asked the operator to pick a host for something no host runs, so the
-  flywheel's package store hangs off the flywheel (the account item)
+  instance's package store hangs off the instance (the account item)
   and a host's store hangs off its host row. The strip's setup control
   points at hosts, because the strip is where hosts are; it points at
   nothing else. The account item is the standard place because
-  switching flywheel, settings, stores and sign-out are about the
-  flywheel as a whole and none is an object on the board.
+  switching instance, settings, stores and sign-out are about the
+  instance as a whole and none is an object on the board.
 - **S141.** Enrolment hands over only what the chosen parts need, and
   the operator's own credentials are never stored. Provisioning runs
   from the host in hand with the operator's platform credentials read
@@ -1654,10 +1656,10 @@ Dated 2026-09-07.
 - **S143.** The review flow is one flow across map and book. One
   switch, one mark, one `reviewed` (S73). Two marks would let the book
   and the map disagree about what the operator has seen.
-- **S183.** Membership is the flywheel's and refusal is
+- **S183.** Membership is the instance's and refusal is
   authorization (233, 234). Authentication is the host's, one kind for
-  every flywheel it serves, so an operator signs in once and the
-  identity holds across a switch; a flywheel that does not admit
+  every instance it serves, so an operator signs in once and the
+  identity holds across a switch; an instance that does not admit
   that identity refuses the call rather than asking for a second
   sign-in, and the refusal is recorded and read under attention. The
   local-user case is rejected because it gave one operator two names
@@ -1669,7 +1671,7 @@ Dated 2026-09-07.
   as unapplicable, because an unapplicable response comes back under
   attention (S51) and this one has nothing for the operator to do but
   read who answered. A rail per member with its own numbers is
-  rejected: the count would no longer be the flywheel's.
+  rejected: the count would no longer be the instance's.
 - **S185.** Sinks are per member, the board is not (236). What a
   member has seen is theirs, so the delivery mark, SINCE and an ok are
   per sink; what a member did is everyone's, so every answer that acts
@@ -1695,7 +1697,7 @@ Dated 2026-09-07.
   (228, 229). A host is a fixed set of things it runs, one slot or
   list per kind, so the operator reads what is there and what is
   empty; "add" on a slot opens the catalogue already filtered to what
-  that slot takes, and the flywheel's package store takes the same shape
+  that slot takes, and the instance's package store takes the same shape
   over its own kinds. One big searchable index across every kind
   asked the operator to know the vocabulary before they could use it,
   and mixed things a host runs with things no host runs; it is
@@ -1720,19 +1722,19 @@ Dated 2026-09-07.
 
 Dated 2026-09-08.
 
-- **S163.** One address per host, the flywheel in the path
-  (205a). A host serving several flywheels serves them all at that
-  one address, `/<flywheel>/...`, so a link names the flywheel it opens
+- **S163.** One address per host, the instance in the path
+  (205a). A host serving several instances serves them all at that
+  one address, `/<instance>/...`, so a link names the instance it opens
   and the switcher only changes the path; the identity is the host's
   session and never changes with it (233). The settings form edits the
-  keys 233 assigns to the flywheel — name, profile, repositories,
+  keys 233 assigns to the instance — name, profile, repositories,
   pools, sinks, curation, addresses — and shows the host's keys — root,
   bound, declaration, provider, identity environment, router —
   read-only with a link to the host's own screen. Closed.
 - **S199.** Identity is a host binding: GitHub locally, Frontegg
   hosted, and the upgrade carries the same usernames (243–247a, 253).
   A self-managed operator already has a GitHub account and already
-  gives the flywheel a GitHub App, so the device flow costs them
+  gives the instance a GitHub App, so the device flow costs them
   nothing to stand up: no provider account, no environment, no
   registered redirect, and the page on any localhost port it likes
   with no proxy and no name (245). Membership there is the manifest's
@@ -1766,19 +1768,19 @@ Dated 2026-09-08.
 - **S201.** Membership is a commit locally and not one hosted (247,
   255, 236a). On a self-managed host the operators list is the
   manifest's, edited on the settings form and saved as one response,
-  because the manifest is already the flywheel's authored truth
+  because the manifest is already the instance's authored truth
   and there is no second system to disagree with it. On a hosted tier
   the same list is derived from the account's assignments at every
   fetch and shown read-only, and invite, assign, revoke and set-role
   are recorded tool calls under `fw.identity.admin`, because a
   service's billing and its members cannot live in a pull request. The
   one thing authored in both is the member's chat addresses, which are
-  the flywheel's routing and belong to neither provider. A second
+  the instance's routing and belong to neither provider. A second
   admin console is rejected in both: administration is a surface of
-  the flywheel, recorded like any other response (153). Closed.
+  the instance, recorded like any other response (153). Closed.
 - **S206.** Every surface speaks to the customer, never to the
   designer. No name of a provider we buy appears anywhere on a surface:
-  the hosted sign-in reads **Flywheel Cloud** and the self-managed one
+  the hosted sign-in reads **Instance Cloud** and the self-managed one
   reads **GitHub**, which is the operator's own git host and not a
   vendor of ours. No tier number, no clause number and no surface number
   appears in copy: a plan is named by its name ("included in Team"), and
@@ -1833,7 +1835,7 @@ What no mockup settled.
   permission the host's environment lacks has no surface of its own,
   being drawn as the same inline refusal and attention line as any
   other (S165, S202); and 247a's upgrade has no surface at all,
-  running as the service's act on the flywheel rather than
+  running as the service's act on the instance rather than
   anything the page offers (S204, S205).
 - **S146.** The decision kinds the hosts surface raises are the
   model's: package-install, package-secret, host-enrol and
@@ -1841,7 +1843,7 @@ What no mockup settled.
   host-enrol-lapsed attention line offers, a fresh token by one
   answer or the "+ host" flow again, is not settled.
 - **S147.** The package kinds are 228's, and a host's store and the
-  flywheel's package store are separate by 233 and 228. The agent and
+  instance's package store are separate by 233 and 228. The agent and
   triage are headings with no package behind them: the agent is the
   binary's interpreter job and triage the manifest's job, configured
   per host. Whether their per-host settings (the agent's model,
@@ -1860,12 +1862,12 @@ What no mockup settled.
   caption's counts, and whether the stacked list when drilled draws a
   link as more than its target's name. A thumbnail is a rendering and
   not a control, so 306 does not decide it.
-- **S191.** Ruled 2026-09-08: non-member flywheels do not appear
-  in the switcher. The switcher lists only the flywheels the
+- **S191.** Ruled 2026-09-08: non-member instances do not appear
+  in the switcher. The switcher lists only the instances the
   signed-in identity is a member of (S166); surfaces.yaml
   `account.switcher` draws no greyed entry.
 - **S202.** How a refusal reads on the surface, between its causes
-  (249, 252): an identity the flywheel does not admit, on a hosted
+  (249, 252): an identity the instance does not admit, on a hosted
   tier a member without the tool's permission, and a tool whose
   permission the host's environment lacks. All are recorded the same
   way and shown inline with an attention line (S165), and whether the
@@ -1886,7 +1888,7 @@ What no mockup settled.
   whether the upgrade (247a) is announced on the page at all, or is
   only ever the service's act the operator learns about elsewhere.
 - **S192.** The visual shape of the hosts settings screen and the
-  flywheel's package store: how headings and slots are laid out against the
+  instance's package store: how headings and slots are laid out against the
   row list, how a list heading (sinks, adapters, runners per role)
   grows, where a slot's catalogue opens, and how a pool's hosts fold
   under its row. The mockup round settles it; S114–S117, S156 and

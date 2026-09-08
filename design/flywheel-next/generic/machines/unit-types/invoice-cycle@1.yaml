@@ -11,7 +11,7 @@
 # growth list in ../../README.md:
 #   growth-2  a package-declared record set (`key`, `record_type` naming the
 #             `Cycle` descriptor in ../records.yaml, whose fields are this
-#             unit's; recutils files in git are already how the flywheel stores
+#             unit's; recutils files in git are already how the instance stores
 #             its own records, so what is new is the declaration and the
 #             enforcement at the write, not the storage)
 #   growth-3  timers declared by the type (`timers:` on awaiting_invoice)
@@ -44,7 +44,7 @@ key: [vendor, month]                 # needs: growth-2 — vendor plus month is 
 record_type: Cycle                   # needs: growth-2 — the %rec block in ../records.yaml
 record:
   needs_change_directory: "false"
-  lands_on: none                     # needs: growth-1 — a process flywheel has no built repository
+  lands_on: none                     # needs: growth-1 — a process instance has no built repository
   vendor: ref                        # -> vendor record (records.yaml)
   month: string                      # YYYY-MM
   suppressed: bool

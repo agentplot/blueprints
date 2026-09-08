@@ -1,14 +1,14 @@
-# Flywheel hosted physical design
+# Instance hosted physical design
 
-One flywheel on the hosted tier, drawn as the machines that exist and what
+One instance on the hosted tier, drawn as the machines that exist and what
 each one holds. Self-managed hosts are the same binary on your own computer with
 none of the right-hand side.
 
 > **The promise, in one sentence.** Two components of ours see traffic from more
-> than one flywheel, the receiver and the chat application, and each sees a
+> than one instance, the receiver and the chat application, and each sees a
 > payload once, in transit, and keeps nothing. Your code exists only on a machine
 > created for your work and destroyed when it ends. Everything we keep between
-> ticks is encrypted at rest under a key that exists for your flywheel alone
+> ticks is encrypted at rest under a key that exists for your instance alone
 > and is unwrapped only while your tick runs.
 
 ## What runs where
@@ -31,7 +31,7 @@ flowchart LR
     proj[("Page projection<br/>one small S3 object per org, org key<br/>status view and rail as data")]
     sched["Scheduler<br/>one one-shot entry per org<br/>60-second precision"]
     pool["Pool host<br/>MicroVM from your image<br/>baseline up to 8 GB / 4 vCPU<br/>bursting to 32 GB / 16 vCPU · 32 GB disk<br/>one org · terminated at retire"]
-    key{{"KMS key<br/>one per flywheel, tagged<br/>the tier role's policy: resource tag = session tag"}}
+    key{{"KMS key<br/>one per instance, tagged<br/>the tier role's policy: resource tag = session tag"}}
   end
   gh -- "webhooks" --> rcv
   chat -- "interactions · events" --> rcv
@@ -61,26 +61,26 @@ flowchart LR
 | machine | what it is | what it holds | when it exists |
 |---|---|---|---|
 | Receiver function | A stateless function in front of one SQS FIFO queue per flywheel. Our Slack app, Discord app and GitHub App each have exactly one inbound URL for every workspace, guild and installation, so the payload has to be demultiplexed by workspace id to your queue, and that is compute. It verifies Discord's Ed25519 signature, answers `PING` with `PONG`, defers the interaction inside three seconds, checks Slack's signed request and echoes `url_verification`, checks GitHub's HMAC, and enqueues. It holds an encrypt-side grant on your key and no grant that decrypts, and it reads no queue | An inbound payload once, in transit. Nothing at rest | Always. The second of the two shared components |
-| Page and tool server | The same function, invoked per request, behind the tier's served name. The page is a static bundle at that name; the tool server is the binary's own tool catalogue, reached over HTTP with the Frontegg token by the page and over stdio or in-process, MCP-shaped, by sessions and by the interpreter. The agent is a client of the tools and never serves them. It verifies the token on every call and checks it for the permission the tool declares. A request never downloads or decrypts the warm cache: the flywheel is in the path, the server checks the token's membership of it, assumes the tier role tagged with it, decrypts that flywheel's page projection and returns it. A write goes through a tool call enqueued on your queue, which decrypts nothing, and is captured and ticked like any other | One flywheel's page projection for the length of one request. Never the bundle, never another flywheel's anything | On request. Never a tick |
-| Page projection | One small S3 object per flywheel beside the warm cache, encrypted under that flywheel's key: the status view and the rail as data, with each member's page sink and its mark. The tick writes it as the page sink's delivery; a page request is one GET and one small KMS decrypt against it. It is a projection and never truth — losing it costs the next tick's write and no decision | The rail as the page draws it. Never code, never raw capture material | Always, encrypted. Rewritten every tick that delivers |
-| Your queue | One SQS FIFO queue per flywheel, with the flywheel as the message group id. Every invoker enqueues here: the receiver, the scheduler, and a write from the page. The queue admits one tick of a flywheel at a time, so two ticks of yours never overlap | Queued captures and wakes, encrypted under your key. The caller's retry buffer and not state | Always |
-| Dispatcher function | One Lambda function per tier. Each invocation is one flywheel's tick: it assumes the tier role with a session tag naming that flywheel, and the role's own policy allows a key or object only when the resource's tag equals the session's, so no key names a role. It is the cloud agent: it fetches, runs one tick, interprets each chat message with one bounded model call and triages the captures whose whole content is in the queue, pushes with compare-and-swap, delivers the rail to the page and the chat, wipes its scratch directory, and exits. Which of those two model jobs it runs at all, and at which class, is your plan's fact: Hobby buys neither, so its free text is interpreted in the page's browser and its self-contained captures are triaged in one daily batch at the sweep, and both are in the tick from Pro up. Model access is the service's under the tagged role, metered into the plan against an included budget on the small class, or a key you place, which is welcome on every plan and required on none. A tick has 15 minutes; when the budget is short it carries triage before it carries a reply | During a run: one flywheel's plaintext state in memory and scratch disk. Nothing between runs by construction: the scratch is wiped and the data key dropped before exit, and the sandbox is reused across flywheels | Only while a tick runs. Woken only through your queue |
-| Warm cache | One object per flywheel in S3, encrypted under that flywheel's key, holding a git bundle of two sparse shallow clones. The tick downloads it to scratch disk and uploads it back. No VPC, no mount | The state repository and the blueprints repository restricted to the manifest, claims and the flywheel prefix. Never code, never raw capture material | Always, encrypted. Deleted and re-cloned when the flywheel has been idle |
-| Scheduler | EventBridge Scheduler, one one-shot entry per flywheel written at the end of each tick from the machines' own timers, create-or-update, deleted after it fires. Its target is your queue and never the function, so a due time is one more invoker that serializes with the rest. 60-second precision; a daily sweep as the backstop | The next due time only | Only while something is due; an idle flywheel has no entry. That entry is also the dispatcher's liveness: an invoked host is alive while its entry stands or its queue holds items |
-| Pool host | A MicroVM created from the flywheel's image when the rail approves work: baseline up to 8 GB of memory and 4 vCPU, bursting to 32 GB and 16 vCPU above baseline and billed per second there, 32 GB of disk at the top size, no VPC needed, and a container runtime runs inside it so devcontainer features and Docker-in-Docker work. Fargate with an attached EBS volume in a minimal VPC is the fallback for sessions past eight hours and for a flywheel that must have its own key on the disk. Its image is built on a pool host or your own machine, never in the dispatcher, because building it reads your repositories' environment declarations. It enrols as a host, clones the code it needs, runs the session in a worktree, pushes the pull request, and is terminated | Your code and your raw capture material for the length of the work, on a disk the platform isolates per host and destroys at terminate under the platform's own encryption. Triage over raw material a capture points at runs here or on your laptop, never in the dispatcher; the dispatcher itself interprets chat and triages self-contained captures in-process | Only while work runs. Terminated at retire, disk destroyed |
-| KMS key | One customer-managed key per flywheel in the service account, tagged with the flywheel. The tier role's own IAM policy allows the call only when the resource's flywheel tag equals the session's principal tag, so no key policy names a role and no count of roles limits it. The receiver may encrypt and never decrypt | Encrypts the queue, the cache, the logs, and what a pool host writes to S3. Not the pool host's own disk, which is under the platform's key | Always. On the enterprise tier the key, the cache and the queue are in your own account, reached by a role you create that trusts our OIDC issuer for your flywheel; under its second shape the dispatcher that reads them is in your account too. We store no credential; deleting the role ends our access |
+| Page and tool server | The same function, invoked per request, behind the tier's served name. The page is a static bundle at that name; the tool server is the binary's own tool catalogue, reached over HTTP with the Frontegg token by the page and over stdio or in-process, MCP-shaped, by sessions and by the interpreter. The agent is a client of the tools and never serves them. It verifies the token on every call and checks it for the permission the tool declares. A request never downloads or decrypts the warm cache: the instance is in the path, the server checks the token's membership of it, assumes the tier role tagged with it, decrypts that instance's page projection and returns it. A write goes through a tool call enqueued on your queue, which decrypts nothing, and is captured and ticked like any other | One instance's page projection for the length of one request. Never the bundle, never another instance's anything | On request. Never a tick |
+| Page projection | One small S3 object per instance beside the warm cache, encrypted under that instance's key: the status view and the rail as data, with each member's page sink and its mark. The tick writes it as the page sink's delivery; a page request is one GET and one small KMS decrypt against it. It is a projection and never truth — losing it costs the next tick's write and no decision | The rail as the page draws it. Never code, never raw capture material | Always, encrypted. Rewritten every tick that delivers |
+| Your queue | One SQS FIFO queue per instance, with the instance as the message group id. Every invoker enqueues here: the receiver, the scheduler, and a write from the page. The queue admits one tick of an instance at a time, so two ticks of yours never overlap | Queued captures and wakes, encrypted under your key. The caller's retry buffer and not state | Always |
+| Dispatcher function | One Lambda function per tier. Each invocation is one instance's tick: it assumes the tier role with a session tag naming that instance, and the role's own policy allows a key or object only when the resource's tag equals the session's, so no key names a role. It is the cloud agent: it fetches, runs one tick, interprets each chat message with one bounded model call and triages the captures whose whole content is in the queue, pushes with compare-and-swap, delivers the rail to the page and the chat, wipes its scratch directory, and exits. Which of those two model jobs it runs at all, and at which class, is your plan's fact: Hobby buys neither, so its free text is interpreted in the page's browser and its self-contained captures are triaged in one daily batch at the sweep, and both are in the tick from Pro up. Model access is the service's under the tagged role, metered into the plan against an included budget on the small class, or a key you place, which is welcome on every plan and required on none. A tick has 15 minutes; when the budget is short it carries triage before it carries a reply | During a run: one instance's plaintext state in memory and scratch disk. Nothing between runs by construction: the scratch is wiped and the data key dropped before exit, and the sandbox is reused across instances | Only while a tick runs. Woken only through your queue |
+| Warm cache | One object per instance in S3, encrypted under that instance's key, holding a git bundle of two sparse shallow clones. The tick downloads it to scratch disk and uploads it back. No VPC, no mount | The state repository and the blueprints repository restricted to the manifest, claims and the instance prefix. Never code, never raw capture material | Always, encrypted. Deleted and re-cloned when the instance has been idle |
+| Scheduler | EventBridge Scheduler, one one-shot entry per instance written at the end of each tick from the machines' own timers, create-or-update, deleted after it fires. Its target is your queue and never the function, so a due time is one more invoker that serializes with the rest. 60-second precision; a daily sweep as the backstop | The next due time only | Only while something is due; an idle instance has no entry. That entry is also the dispatcher's liveness: an invoked host is alive while its entry stands or its queue holds items |
+| Pool host | A MicroVM created from the instance's image when the rail approves work: baseline up to 8 GB of memory and 4 vCPU, bursting to 32 GB and 16 vCPU above baseline and billed per second there, 32 GB of disk at the top size, no VPC needed, and a container runtime runs inside it so devcontainer features and Docker-in-Docker work. Fargate with an attached EBS volume in a minimal VPC is the fallback for sessions past eight hours and for an instance that must have its own key on the disk. Its image is built on a pool host or your own machine, never in the dispatcher, because building it reads your repositories' environment declarations. It enrols as a host, clones the code it needs, runs the session in a worktree, pushes the pull request, and is terminated | Your code and your raw capture material for the length of the work, on a disk the platform isolates per host and destroys at terminate under the platform's own encryption. Triage over raw material a capture points at runs here or on your laptop, never in the dispatcher; the dispatcher itself interprets chat and triages self-contained captures in-process | Only while work runs. Terminated at retire, disk destroyed |
+| KMS key | One customer-managed key per instance in the service account, tagged with the flywheel. The tier role's own IAM policy allows the call only when the resource's instance tag equals the session's principal tag, so no key policy names a role and no count of roles limits it. The receiver may encrypt and never decrypt | Encrypts the queue, the cache, the logs, and what a pool host writes to S3. Not the pool host's own disk, which is under the platform's key | Always. On the enterprise tier the key, the cache and the queue are in your own account, reached by a role you create that trusts our OIDC issuer for your instance; under its second shape the dispatcher that reads them is in your account too. We store no credential; deleting the role ends our access |
 | Chat application | The service's Slack app and Discord app, installed into your workspace. Discord free text reaches it as the string option of a slash command, because plain channel replies arrive only over a gateway socket no function holds; Slack free text arrives over the Events API | The rail lines it sends and the interactions it receives. The first of the two shared components, and it carries only rail text | Always, managed by the platforms |
 
 ## One tick, step by step
 
-1. A GitHub webhook, a chat interaction, a capture, or the scheduler's due time reaches the receiver or the scheduler, and lands as one message on your queue under your flywheel's group id. The receiver has already answered the caller inside its deadline, deferring the interaction where the platform asks for that.
+1. A GitHub webhook, a chat interaction, a capture, or the scheduler's due time reaches the receiver or the scheduler, and lands as one message on your queue under your instance's group id. The receiver has already answered the caller inside its deadline, deferring the interaction where the platform asks for that.
 2. The queue releases one message group at a time, so one tick of yours starts and no second one can. The dispatcher assumes the tier role tagged with your flywheel. The role's policy admits a key or object only when its tag equals the session's, so the cache object downloads and decrypts into scratch disk.
 3. It fetches both shared lines from GitHub, applies the queued captures and responses, evaluates the machines, and pushes with compare-and-swap. If the push loses, it refetches and tries once more.
-4. It delivers the rail: lines to your channel through the application, and the real reply to a deferred interaction inside the interaction token's window or as an ordinary message. The page sink's delivery is a write of its own — one small page projection for your flywheel, the status view and the rail as data, encrypted under your key — which is what a page request later reads.
+4. It delivers the rail: lines to your channel through the application, and the real reply to a deferred interaction inside the interaction token's window or as an ordinary message. The page sink's delivery is a write of its own — one small page projection for your instance, the status view and the rail as data, encrypted under your key — which is what a page request later reads.
 5. If approved work is waiting, it provisions a pool host from your image with your role and an enrolment token, and records it as a host.
 6. It records when you are next due as a one-shot scheduler entry targeting your queue, wipes its scratch, drops the data key, and exits within its 15 minutes. Nothing of yours is running. The cache is ciphertext under your key.
 
-A page request is none of this, and it never opens the bundle. Step 4 above wrote your page projection: one small object under your key holding the status view and the rail as data. A request carries your flywheel in the path, the server checks your Frontegg token for membership of that flywheel, assumes the tier role tagged with it, decrypts that one object and returns it — one GET and one small KMS decrypt, no git, no bundle, and nothing of any other flywheel, because the tag is the flywheel in the path. The only writing a request does is a tool call, enqueued on your queue without decrypting anything, which reaches the tick like everything else. The flywheel switcher lists only the flywheels your token is assigned to; one you are not a member of does not appear.
+A page request is none of this, and it never opens the bundle. Step 4 above wrote your page projection: one small object under your key holding the status view and the rail as data. A request carries your instance in the path, the server checks your Frontegg token for membership of that instance, assumes the tier role tagged with it, decrypts that one object and returns it — one GET and one small KMS decrypt, no git, no bundle, and nothing of any other instance, because the tag is the instance in the path. The only writing a request does is a tool call, enqueued on your queue without decrypting anything, which reaches the tick like everything else. The instance switcher lists only the instances your token is assigned to; one you are not a member of does not appear.
 
 ## Where your data is, and who can read it
 
@@ -88,9 +88,9 @@ A page request is none of this, and it never opens the bundle. Step 4 above wrot
 |---|---|---|
 | Source code | GitHub, your laptop, a pool host during work | You, and the pool host that exists for you. No shared machine, ever |
 | State and manifest | GitHub in plaintext, your warm cache encrypted | You on GitHub. Your dispatcher role during a tick. No human path to the cache, and no page request either |
-| The rail as the page draws it | Your page projection, one small encrypted object | The tick that writes it, and the page-and-tool-server function under your token, for the flywheel in the request's path and no other |
-| Captures and signals | GitHub under the flywheel prefix, your queue briefly | Same as state, plus the receiver, which sees one payload in transit before it is queued |
-| Inbound webhook and chat payloads | The receiver, in transit; then your queue, encrypted | The receiver sees every flywheel's, once, and keeps none |
+| The rail as the page draws it | Your page projection, one small encrypted object | The tick that writes it, and the page-and-tool-server function under your token, for the instance in the request's path and no other |
+| Captures and signals | GitHub under the instance prefix, your queue briefly | Same as state, plus the receiver, which sees one payload in transit before it is queued |
+| Inbound webhook and chat payloads | The receiver, in transit; then your queue, encrypted | The receiver sees every instance's, once, and keeps none |
 | Raw capture material | Your laptop, or a bucket you own, or a pool host while triage runs | Never the dispatcher. Never a shared machine |
 | Plan lines in chat | Your Slack or Discord | Your workspace, delivered by the shared application |
 | Model calls | The provider the tier statement names, or yours if you place a key | Plan text and chat messages only. Never transcripts, never code |
@@ -100,18 +100,18 @@ A page request is none of this, and it never opens the bundle. Step 4 above wrot
 | if they steal | they get |
 |---|---|
 | A disk or snapshot from us | Ciphertext. The key is in KMS and the tier role's policy admits it only under your tag |
-| One tick's tagged credential | That flywheel's state during that tick. Nobody else's, because every key and object checks the tag |
-| The receiver's role | Inbound payloads in transit, and the ability to enqueue on any flywheel's queue. It cannot decrypt a queue or a cache, and it reads nothing at rest |
-| A pool host | That flywheel's code for that job. It is terminated at retire |
+| One tick's tagged credential | That instance's state during that tick. Nobody else's, because every key and object checks the tag |
+| The receiver's role | Inbound payloads in transit, and the ability to enqueue on any instance's queue. It cannot decrypt a queue or a cache, and it reads nothing at rest |
+| A pool host | That instance's code for that job. It is terminated at retire |
 | The shared application's token | The ability to post rail lines. No repository access, no key access |
 | The page-and-tool-server function without a token | Nothing. Every call is refused and recorded |
-| A token for one flywheel | That flywheel's page projection, the rail as the page draws it. Not its bundle, not its code, and nothing of any other flywheel: the role's tag is the flywheel in the request's path |
+| A token for one instance | That instance's page projection, the rail as the page draws it. Not its bundle, not its code, and nothing of any other instance: the role's tag is the instance in the request's path |
 
 The residual risks are two. A compromised dispatcher process while your tick runs
-holds that flywheel's plaintext state, and the function's sandbox is reused
-across flywheels' ticks in turn, holding nothing between them by construction
+holds that instance's plaintext state, and the function's sandbox is reused
+across instances' ticks in turn, holding nothing between them by construction
 rather than by isolation. A compromised receiver sees inbound payloads from every
-flywheel in the clear before they are queued, which is why it holds no
+instance in the clear before they are queued, which is why it holds no
 decrypting grant and no read on any queue. The enterprise tier gives a dispatcher
 function of its own in the service account, or the whole design in your account
 under tier 3's second shape, when policy needs process separation. The upgrades that shrink the rest are cache
@@ -129,7 +129,7 @@ heartbeats, and is alive again with nothing to answer, and the rail shows what
 happened while it was closed.
 
 The cloud agent is judged the other way round. It exists only during a tick, so
-its last heartbeat is as old as its last tick, and a flywheel due in six
+its last heartbeat is as old as its last tick, and an instance due in six
 hours would read as stale on a five-minute window. Its liveness is its scheduler
 entry instead: alive while an entry stands or the queue holds items, stale past
 the due time it wrote plus the grace, and gone with no entry, no queued item and
@@ -142,7 +142,7 @@ no heartbeat.
 | 0 · your computer | Nothing. The binary on your laptop, device-flow sign-in | Nothing |
 | 1 · cloud agent | Sign in to the hosted account, invite the application, install the App on your GitHub organization | Your queue behind the shared receiver, a role and key, a cache object, a scheduler entry, the page and tool server at our served name. No pool: your laptop still builds |
 | 2 · pools | An image and a bound | Tier 1 plus pool hosts on demand |
-| 3 · your account, stores only | One IAM role in your AWS account trusting our OIDC issuer for your flywheel, registered as an identity provider there; your key, cache, queue and pool image live there | The same dispatcher, assuming your role with a per-tick token. Enterprise buys a dispatcher function of its own in our account. We store nothing of yours |
+| 3 · your account, stores only | One IAM role in your AWS account trusting our OIDC issuer for your instance, registered as an identity provider there; your key, cache, queue and pool image live there | The same dispatcher, assuming your role with a per-tick token. Enterprise buys a dispatcher function of its own in our account. We store nothing of yours |
 | 3 · your account, stores and compute | The same role. Our deployer applies the stack into your account through it; you choose the dedicated compute from the console | The control plane only: the registry, the deployer, and the Frontegg environment. The chat application is still ours. Nothing of ours runs in your account |
 
 Tier 3 is two shapes, and the management console chooses between them. **Stores
@@ -150,7 +150,7 @@ only** is the row above it: your key, queue, cache and pool image in your
 account, our compute assuming the role you grant. **Stores and compute** moves
 the binary too — provisioned into your own account through that same role, with
 nothing of ours running there. Its control plane is three machines, not one — a
-**registry** of flywheel names, tier, health and counters; a **deployer**
+**registry** of instance names, tier, health and counters; a **deployer**
 that applies a stack through the role you grant and stamps our binary's version;
 and **identity**, the Frontegg environment holding the redirect entry for your
 host's served name. The chat application in that shape is still ours, which is
@@ -172,11 +172,11 @@ changes:
 ## Scheduling
 
 Each tick writes one named one-shot EventBridge Scheduler entry per
-flywheel, carrying the due time that tick computed, with
+instance, carrying the due time that tick computed, with
 delete-after-completion; there is no upsert call, so it is a create and an update
-on conflict. The name is the flywheel's, so an interim tick replaces the
+on conflict. The name is the instance's, so an interim tick replaces the
 entry with its own due time, later or earlier, and at most one entry per
-flywheel ever exists. Precision is 60 seconds. The entry's target is your
+instance ever exists. Precision is 60 seconds. The entry's target is your
 queue, not the dispatcher, so a due time serializes with every other invoker and
 never starts a second concurrent tick. An entry that fires and finds nothing due,
 because an interim tick already handled the work, is one idempotent tick: it
@@ -194,10 +194,10 @@ sections after this one describe the role, not the shape.
 
 **What changes for you.** You create an IAM OIDC identity provider in your own
 AWS account for our issuer, then one IAM role whose trust policy accepts that
-provider with a subject naming your flywheel and allows `sts:TagSession`, so
-that the token we mint can carry your flywheel as a principal tag. A
+provider with a subject naming your instance and allows `sts:TagSession`, so
+that the token we mint can carry your instance as a principal tag. A
 web-identity session takes its tags only from the token's tag claim, which is why
-our issuer has to put your flywheel there and your trust policy has to allow
+our issuer has to put your instance there and your trust policy has to allow
 the tagging. Your key, your cache object, your queue and your pool image live in
 your account. The only standing grants there are that role's trust and your key's
 grant to that role. Deleting the role ends our access.
@@ -212,7 +212,7 @@ table above are what the console offers you there.
 **What changes for us.** Nothing is stored. The dispatcher's tick assumes your
 role with a per-tick web-identity token, so there is no credential of yours to
 keep, rotate or leak, and every use of your key is logged in your account. The
-wake is content-free: your queue raises an event carrying your flywheel's
+wake is content-free: your queue raises an event carrying your instance's
 name and nothing else, and the tick reads the queue itself under the assumed
 role. No poller of ours holds a standing decrypting grant on your key, which is
 what makes deleting the role close every path rather than most of them.
