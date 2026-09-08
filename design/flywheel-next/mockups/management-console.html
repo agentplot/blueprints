@@ -54,6 +54,26 @@
     Deliverable producers, Map vocabularies, Templates and Scenario packs, each a list of slots with
     configure, retire and restore, and "add" opening that heading's catalogue. An organization package
     never appears on a host and a host part never appears in the store (S124, S158).
+  - Identity is a host binding with two kinds (S164, S165, S199, flow 2.26/S204), and the console
+    reads it that way throughout. A host declares a kind and runs no sign-in part at all: the host
+    screen's Identity heading is read-only and says `github` — every self-managed host, GitHub's
+    device flow, a localhost port, no environment and no registered redirect — or `frontegg`, the
+    hosted tiers, the provider's hosted login with its environment and the served name the redirect
+    is built from. The sign-in packages are gone from the catalogue with it, and a second read-only
+    heading, the git App, says which App reaches the repositories and where its key lives (S198).
+    What the page shows follows the serving host's kind (?served=): the GitHub username on a
+    `github` host, the Frontegg user with the GitHub username beside it on a `frontegg` one, and
+    authorship is the GitHub username in both. Membership follows it too: on a `github` host the
+    operators list is the manifest's, authored whole on the settings form, with no roles and no
+    members section, because every listed operator holds every permission; on a `frontegg` host the
+    identities and their roles are derived from the account and read-only, the addresses stay
+    authored beside them, and the members section carries invite, assign, revoke, set-role and the
+    flags, each one recorded call under fw.identity.admin. The "+ organization" wizard's fifth step
+    branches on the tier the same way: an operators list for a self-managed organization, a Frontegg
+    account with the creating user as owner for a hosted one. One rule is carried across rather than
+    read off a statement: revoking your own assignment is refused inline, which is what S155 already
+    says about a save that would remove the saving identity from the operators list. Moving between them is the upgrade and
+    not a migration, and the console says so where it matters.
   - "+ organization" sits under Organizations in the side navigation and is the second wizard,
     over 204, 206, 207/207a, 218-222, 233, 247 and 253, in that order: name it (219: an
     organization is the operator's name for it and need not coincide with an organization at the
@@ -116,7 +136,8 @@
 
   Review switches: ?theme=dark|light, ?org=willdan|agentplot|integral-analytics|personal,
   ?page=overview|repositories|members|sinks|adapters|packages|pools, ?host=<id>, ?addhost=1,
-  ?addorg=1&ostep=0..6,
+  ?addorg=1&ostep=0..6, ?served=studio|willdan-cloud (which host serves this page, and so which
+  identity kind it shows),
   ?panel=1 (opens the seeded catalogue), ?flash=1.
 -->
 <meta charset="utf-8">
@@ -432,9 +453,6 @@ const INDEX = [
   {id:'router-local', kind:'router', name:'local router', v:'1.5.0', tag:'shipped', plat:['machine'], needs:'nothing · portless', enables:'https://&lt;place&gt;.localhost (46)'},
   {id:'router-private', kind:'router', name:'private-network router', v:'1.5.0', tag:'shipped', plat:['any'], needs:'a tailnet node on the host', enables:'https://&lt;place&gt;.willdan.internal · nothing beyond the private network (191)'},
   {id:'router-platform', kind:'router', name:'platform router', v:'1.2.0', tag:'shipped', plat:['cloud'], needs:'the flywheel-cloud ingress', enables:'a public route you open per named caller (46, 191)'},
-  {id:'auth-github', kind:'sign-in', name:'GitHub', v:'1.4.0', tag:'shipped', plat:['any'], needs:'an OAuth app, or the device flow on your own computer · the organization for the membership check', enables:'sign-in on the page and the tools; the identity is the GitHub username (234)'},
-  {id:'auth-tailnet', kind:'sign-in', name:'tailnet', v:'1.0.0', tag:'index', plat:['any'], needs:'a tailnet the host is a node of', enables:'the tailnet identity on the page and the tools'},
-  {id:'auth-okta', kind:'sign-in', name:'Okta SSO · OIDC', v:'0.9.0', tag:'index', plat:['cloud','container'], needs:'issuer and audience · the router ingress in front', enables:'SSO whose subject maps to the GitHub username for membership (233, 234)'},
   {id:'ut-default', kind:'unit type', name:'default', v:'2.1.0', tag:'shipped', plat:['any'], needs:'nothing', enables:'spec · build x2 · review · merge'},
   {id:'ut-fast', kind:'unit type', name:'fast', v:'2.1.0', tag:'shipped', plat:['any'], needs:'nothing', enables:'spec · build · merge'},
   {id:'ut-chore', kind:'unit type', name:'chore', v:'2.1.0', tag:'shipped', plat:['any'], needs:'nothing', enables:'chore · merge · one session, no bolt (60)'},
@@ -473,15 +491,12 @@ const SCHEMA = {
   'router-local':[],
   'router-private':[{k:'node',label:'tailnet node',ph:'<host>.willdan.internal'}],
   'router-platform':[{k:'routes',label:'public routes · one per named caller',ph:'none yet · opened per caller (46)'}],
-  'auth-github':[{k:'flow',label:'flow',kind:'select',opts:['device flow · on your own computer','OAuth web flow · behind a host on the network']},{k:'org',label:'organization · the membership check',ph:'willdan'},{k:'secret',label:'client secret · the web flow only',kind:'secret',file:'github-oauth.client-secret',op:'op://willdan/github oauth/client secret',when:['flow','OAuth web flow · behind a host on the network']}],
-  'auth-tailnet':[{k:'tailnet',label:'tailnet',ph:'willdan.internal'}],
-  'auth-okta':[{k:'issuer',label:'issuer',ph:'https://willdan.okta.com'},{k:'audience',label:'audience',ph:'flywheel'},{k:'secret',label:'client secret',kind:'secret',file:'okta.client-secret',op:'op://willdan/okta/client secret'}],
   'ut-migration':[{k:'rehearse',label:'rehearsal database',kind:'select',opts:['a copy the built repository names','a container per run']}],
   'et-research':[{k:'model',label:'model',kind:'select',opts:MODELS}],
   'et-interview':[{k:'bound',label:'questions per interview',kind:'number',ph:'6'}],
   'dp-diagram':[{k:'model',label:'model',kind:'select',opts:MODELS},{k:'renderer',label:'SVG renderer',kind:'select',opts:['resvg','rsvg-convert']}],
 };
-const HOST_KINDS = ['adapter','chat sink','runner','router','sign-in'];
+const HOST_KINDS = ['adapter','chat sink','runner','router'];
 const ORG_KINDS = ['unit type','elaboration type','deliverable producer','map vocabulary','template','scenario pack'];
 const ORG_DIRS = {'unit type':'types','elaboration type':'types','deliverable producer':'producers','map vocabulary':'map','template':'templates','scenario pack':'scenarios'};
 const STORE_HEADINGS = [
@@ -499,7 +514,7 @@ const pkgFits = (p, plat) => p.plat.includes('any') || p.plat.some(t => plat.inc
 /* --- the willdan hosts, as rail-and-board seeds them --- */
 const willdanHosts = () => [
   {id:'studio', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:4, last:'07:39', joined:'08-12', joinedVia:'a laptop', serves:true,
-   root:'~/willdan', launcher:'launchd · com.flywheel.willdan', binary:'0.9.4', binaryLatest:'0.9.4',
+   identity:{kind:'github', how:'GitHub&#8217;s device flow on the page: the code and the address to enter it at, then the GitHub username (243, 246, 253)', served:'a localhost port, any port · no proxy, no name asked, no redirect registered (245)', env:null}, gitApp:{own:true, app:'willdan-flywheel · app id 8812', key:'~/willdan/secrets/github-app.pem', placed:true}, root:'~/willdan', launcher:'launchd · com.flywheel.willdan', binary:'0.9.4', binaryLatest:'0.9.4',
    note:'lease holder for plan, curation and the page · serves this console',
    roles:{elaboration:{runner:'runner-pane', model:'claude-fable-5-1'}, construction:{runner:'runner-pane', model:'claude-fable-5-1'}, machinery:{runner:'runner-pane', model:'claude-haiku-4-5'}},
    agent:{on:true, runner:'runner-pane', what:'your key from the keychain · one bounded call per message (194)'},
@@ -511,20 +526,18 @@ const willdanHosts = () => [
      {k:'chat sink', pkg:'discord', state:'installed 08-12', lease:true, cfg:{app:'1284 5570 0091', guild:'willdan', channel:'#willdan-plan'}, secrets:{token:true}},
      {k:'runner', pkg:'runner-pane', state:'installed 08-12', cfg:{bound:'4', login:'Claude Code'}},
      {k:'router', pkg:'router-local', state:'installed 08-12', cfg:{}},
-     {k:'sign-in', pkg:'auth-github', state:'installed 08-12', cfg:{flow:'device flow · on your own computer', org:'willdan'}, secrets:{}},
    ]},
   {id:'mac-mini', kind:'home host', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:false, gone:'41m', bound:2, last:'06:59', joined:'08-20', joinedVia:'adopt existing',
-   root:'~/willdan', launcher:'launchd · com.flywheel.willdan', binary:'0.9.2', binaryLatest:'0.9.4',
+   identity:{kind:'github', how:'GitHub&#8217;s device flow on the page: the code and the address to enter it at, then the GitHub username (243, 246, 253)', served:'a localhost port, any port · no proxy, no name asked, no redirect registered (245)', env:null}, gitApp:{own:true, app:'willdan-flywheel · app id 8812', key:'~/willdan/secrets/github-app.pem', placed:true}, root:'~/willdan', launcher:'launchd · com.flywheel.willdan', binary:'0.9.2', binaryLatest:'0.9.4',
    note:'gone 41m · lease expires 07:59, then its sessions are released',
    roles:{elaboration:{runner:null, model:'claude-fable-5-1'}, construction:{runner:'runner-pane', model:'claude-fable-5-1'}, machinery:{runner:'runner-pane', model:'claude-haiku-4-5'}},
    agent:{on:false, runner:null, what:'presents no chat · nothing to interpret here'},
    env:{provider:'nix', repos:{atlas:{ok:true}, switchboard:{ok:true}, 'new-repo':{ok:true}}},
    parts:[
      {k:'runner', pkg:'runner-pane', state:'installed 08-20', cfg:{bound:'2', login:'Claude Code'}},
-     {k:'sign-in', pkg:'auth-tailnet', state:'installed 08-20', cfg:{tailnet:'willdan.internal'}},
    ]},
   {id:'willdan-cloud', kind:'cloud', platform:'flywheel-cloud · container', plat:['cloud','container','linux'], alive:true, bound:0, last:'07:40', joined:'09-03', joinedVia:'flywheel-cloud managed', dispatcher:true,
-   root:'/srv/flywheel/willdan', launcher:'systemd · flywheel.service', binary:'0.9.4', binaryLatest:'0.9.4',
+   identity:{kind:'frontegg', how:'the provider&#8217;s hosted login on the page; the identity is the Frontegg user, and the GitHub username its connection carries is what authorship uses (244, 246)', served:'willdan-cloud.flywheel.cloud · registered once on the environment&#8217;s redirect list, never per organization (244)', env:'flywheel-cloud · production'}, gitApp:{own:false}, root:'/srv/flywheel/willdan', launcher:'systemd · flywheel.service', binary:'0.9.4', binaryLatest:'0.9.4',
    note:'the dispatcher placement · bound 0, so it takes no construction work and changes no runway reading (dispatch 2, 5)',
    roles:{elaboration:{runner:'runner-inproc', model:'claude-sonnet-5'}, construction:{runner:null, model:'claude-opus-5'}, machinery:{runner:'runner-inproc', model:'claude-haiku-4-5'}},
    agent:{on:true, runner:'runner-inproc', what:'the runtime role, no key on the host · one bounded call per message (194)'},
@@ -536,7 +549,6 @@ const willdanHosts = () => [
      {k:'chat sink', pkg:'slack', state:'disabled', why:'turned off 06:50 · every Slack address is undelivered until a host presents Slack (236a)', cfg:{channel:'#willdan-plan'}, secrets:{token:true, signing:true}},
      {k:'runner', pkg:'runner-inproc', state:'installed 09-03', cfg:{'model.triage':'claude-sonnet-5', 'model.interpreter':'claude-haiku-4-5', access:'the runtime Bedrock role'}},
      {k:'router', pkg:'router-platform', state:'installed 09-03', cfg:{routes:'one · datadog'}},
-     {k:'sign-in', pkg:'auth-okta', state:'installed 09-03', cfg:{issuer:'https://willdan.okta.com', audience:'flywheel'}, secrets:{secret:true}},
    ],
    joinedSteps:[
      ['platform','done','09-03 14:02','flywheel-cloud managed'],
@@ -547,7 +559,7 @@ const willdanHosts = () => [
      ['alive','done','09-03 14:10','first heartbeat as host/willdan-cloud'],
    ]},
   {id:'pool-a1', kind:'pool host', pool:'willdan-pool', platform:'flywheel-cloud · image 0.9.4-0903', plat:['cloud','container','linux'], alive:true, bound:2, last:'07:40', joined:'06:10', joinedVia:'the pool · enrolment token (240)',
-   root:'/srv/flywheel/willdan', launcher:'the pool · systemd', binary:'0.9.4', binaryLatest:'0.9.4', idle:'busy · retires 30m after its last session',
+   identity:{kind:'frontegg', how:'the provider&#8217;s hosted login on the page; the identity is the Frontegg user, and the GitHub username its connection carries is what authorship uses (244, 246)', served:'the pool&#8217;s host name under the platform&#8217;s ingress', env:'flywheel-cloud · production'}, gitApp:{own:false}, root:'/srv/flywheel/willdan', launcher:'the pool · systemd', binary:'0.9.4', binaryLatest:'0.9.4', idle:'busy · retires 30m after its last session',
    note:'a pool host · serves one organization (241) · every part is declared by the pool and configured there',
    roles:{elaboration:{runner:'runner-inproc', model:'claude-sonnet-5'}, construction:{runner:'runner-inproc', model:'claude-fable-5-1'}, machinery:{runner:'runner-inproc', model:'claude-haiku-4-5'}},
    agent:{on:true, runner:'runner-inproc', what:'the runtime role · declared by the pool'},
@@ -555,11 +567,10 @@ const willdanHosts = () => [
    parts:[
      {k:'runner', pkg:'runner-inproc', state:'installed 06:10', cfg:{access:'the runtime Bedrock role'}, byPool:true},
      {k:'router', pkg:'router-platform', state:'installed 06:10', cfg:{}, byPool:true},
-     {k:'sign-in', pkg:'auth-github', state:'installed 06:10', cfg:{flow:'OAuth web flow · behind a host on the network', org:'willdan'}, byPool:true},
    ],
    joinedSteps:[['the pool','done','06:10','minted an enrolment token while approved work waited (242)'],['join','done','06:10','read the manifest and the pool declaration'],['alive','done','06:11','first heartbeat as host/pool-a1']]},
   {id:'pool-a2', kind:'pool host', pool:'willdan-pool', platform:'flywheel-cloud · image 0.9.4-0903', plat:['cloud','container','linux'], alive:true, bound:2, last:'07:40', joined:'07:02', joinedVia:'the pool · enrolment token (240)',
-   root:'/srv/flywheel/willdan', launcher:'the pool · systemd', binary:'0.9.4', binaryLatest:'0.9.4', retiring:'idle 12m of 30m', idle:'idle 12m · retires at 30m',
+   identity:{kind:'frontegg', how:'the provider&#8217;s hosted login on the page; the identity is the Frontegg user, and the GitHub username its connection carries is what authorship uses (244, 246)', served:'the pool&#8217;s host name under the platform&#8217;s ingress', env:'flywheel-cloud · production'}, gitApp:{own:false}, root:'/srv/flywheel/willdan', launcher:'the pool · systemd', binary:'0.9.4', binaryLatest:'0.9.4', retiring:'idle 12m of 30m', idle:'idle 12m · retires at 30m',
    note:'a pool host · retiring · its places are re-made from their lines elsewhere by the machinery (52)',
    roles:{elaboration:{runner:'runner-inproc', model:'claude-sonnet-5'}, construction:{runner:'runner-inproc', model:'claude-fable-5-1'}, machinery:{runner:'runner-inproc', model:'claude-haiku-4-5'}},
    agent:{on:true, runner:'runner-inproc', what:'the runtime role · declared by the pool'},
@@ -567,7 +578,6 @@ const willdanHosts = () => [
    parts:[
      {k:'runner', pkg:'runner-inproc', state:'installed 07:02', cfg:{access:'the runtime Bedrock role'}, byPool:true},
      {k:'router', pkg:'router-platform', state:'installed 07:02', cfg:{}, byPool:true},
-     {k:'sign-in', pkg:'auth-github', state:'installed 07:02', cfg:{flow:'OAuth web flow · behind a host on the network', org:'willdan'}, byPool:true},
    ],
    joinedSteps:[['the pool','done','07:02','minted an enrolment token while approved work waited (242)'],['join','done','07:02','read the manifest and the pool declaration'],['alive','done','07:03','first heartbeat as host/pool-a2']]},
 ];
@@ -617,11 +627,11 @@ const ORGS = {
     ],
     pools:[],
     store:{'ut-default':{state:'installed 07-30'},'ut-fast':{state:'installed 07-30'},'et-research':{state:'installed 07-30'},'et-writeback':{state:'installed 07-30'},'dp-mdbook':{state:'installed 07-30'},'mv-ddd':{state:'installed 09-05'}},
-    hosts:[{id:'studio', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:4, last:'07:39', joined:'07-30', joinedVia:'a laptop', serves:true, root:'~/agentplot', launcher:'launchd · com.flywheel.agentplot', binary:'0.9.4', binaryLatest:'0.9.4', note:'the same machine serves both organizations from their own roots (218)',
+    hosts:[{id:'studio', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:4, last:'07:39', joined:'07-30', joinedVia:'a laptop', serves:true, identity:{kind:'github', how:'GitHub&#8217;s device flow on the page: the code and the address to enter it at, then the GitHub username (243, 246, 253)', served:'a localhost port, any port · no proxy, no name asked, no redirect registered (245)', env:null}, gitApp:{own:true, app:'agentplot-flywheel · app id 9014', key:'~/agentplot/secrets/github-app.pem', placed:true}, root:'~/agentplot', launcher:'launchd · com.flywheel.agentplot', binary:'0.9.4', binaryLatest:'0.9.4', note:'the same machine serves both organizations from their own roots (218)',
       roles:{elaboration:{runner:'runner-pane', model:'claude-fable-5-1'}, construction:{runner:'runner-pane', model:'claude-fable-5-1'}, machinery:{runner:'runner-pane', model:'claude-haiku-4-5'}},
       agent:{on:true, runner:'runner-pane', what:'your key from the keychain'},
       env:{provider:'devenv', repos:{flywheel:{ok:true}, blueprints:{ok:true}}},
-      parts:[{k:'adapter', pkg:'capture-box', state:'installed 07-30', lastRun:'06:20 · 1 capture', cfg:{}},{k:'runner', pkg:'runner-pane', state:'installed 07-30', cfg:{bound:'4', login:'Claude Code'}},{k:'router', pkg:'router-private', state:'installed 07-30', cfg:{node:'studio.willdan.internal'}},{k:'sign-in', pkg:'auth-github', state:'installed 07-30', cfg:{flow:'device flow · on your own computer', org:'agentplot'}}]}],
+      parts:[{k:'adapter', pkg:'capture-box', state:'installed 07-30', lastRun:'06:20 · 1 capture', cfg:{}},{k:'runner', pkg:'runner-pane', state:'installed 07-30', cfg:{bound:'4', login:'Claude Code'}},{k:'router', pkg:'router-private', state:'installed 07-30', cfg:{node:'studio.willdan.internal'}}]}],
     decisions:2,
   },
   'integral-analytics': {
@@ -633,11 +643,11 @@ const ORGS = {
     repos:[{id:'ledger', kinds:['service'], caps:['http','rows'], landing:'pull request', merge:'squash', envFile:'flywheel/environment.yaml', envHash:'sha256:5d77…20a', claims:'3 in scope · 1 unmet'},{id:'blueprints', kinds:['books'], caps:[], landing:'direct merge', merge:'merge', envFile:'flywheel/environment.yaml', envHash:'sha256:9e01…7fd', claims:'the claims live here'}],
     pools:[],
     store:{'ut-default':{state:'installed 08-05'},'et-research':{state:'installed 08-05'},'dp-mdbook':{state:'installed 08-05'},'mv-ddd':{state:'installed 09-05'}},
-    hosts:[{id:'integral-cloud', kind:'cloud', platform:'flywheel-cloud · container', plat:['cloud','container','linux'], alive:true, bound:2, last:'07:38', joined:'08-05', joinedVia:'flywheel-cloud managed', root:'/srv/flywheel/integral', launcher:'systemd · flywheel.service', binary:'0.9.4', binaryLatest:'0.9.4', note:'one host, one organization (241)',
+    hosts:[{id:'integral-cloud', kind:'cloud', platform:'flywheel-cloud · container', plat:['cloud','container','linux'], alive:true, bound:2, last:'07:38', joined:'08-05', joinedVia:'flywheel-cloud managed', identity:{kind:'frontegg', how:'the provider&#8217;s hosted login on the page; the identity is the Frontegg user, and the GitHub username its connection carries is what authorship uses (244, 246)', served:'integral-cloud.flywheel.cloud', env:'flywheel-cloud · production'}, gitApp:{own:false}, root:'/srv/flywheel/integral', launcher:'systemd · flywheel.service', binary:'0.9.4', binaryLatest:'0.9.4', note:'one host, one organization (241)',
       roles:{elaboration:{runner:'runner-inproc', model:'claude-sonnet-5'}, construction:{runner:'runner-agentcore', model:'claude-opus-5'}, machinery:{runner:'runner-inproc', model:'claude-haiku-4-5'}},
       agent:{on:true, runner:'runner-inproc', what:'the runtime role'},
       env:{provider:'image', repos:{ledger:{ok:true}, blueprints:{ok:true}}},
-      parts:[{k:'chat sink', pkg:'slack', state:'installed 08-05', lease:true, cfg:{channel:'#integral-plan'}, secrets:{token:true, signing:true}},{k:'runner', pkg:'runner-inproc', state:'installed 08-05', cfg:{access:'the runtime Bedrock role'}},{k:'runner', pkg:'runner-agentcore', state:'installed 08-20', cfg:{region:'us-west-2'}},{k:'router', pkg:'router-platform', state:'installed 08-05', cfg:{}},{k:'sign-in', pkg:'auth-okta', state:'installed 08-05', cfg:{issuer:'https://integral.okta.com', audience:'flywheel'}, secrets:{secret:true}}]}],
+      parts:[{k:'chat sink', pkg:'slack', state:'installed 08-05', lease:true, cfg:{channel:'#integral-plan'}, secrets:{token:true, signing:true}},{k:'runner', pkg:'runner-inproc', state:'installed 08-05', cfg:{access:'the runtime Bedrock role'}},{k:'runner', pkg:'runner-agentcore', state:'installed 08-20', cfg:{region:'us-west-2'}},{k:'router', pkg:'router-platform', state:'installed 08-05', cfg:{}}]}],
     decisions:1,
   },
   personal: {
@@ -647,23 +657,25 @@ const ORGS = {
     router:'local router', curation:'on demand', triageCadence:'on demand', channels:[],
     repos:[{id:'blueprints', kinds:['books'], caps:[], landing:'direct merge', merge:'merge', envFile:'none yet', envHash:'—', claims:'nothing yet'}],
     pools:[], store:{},
-    hosts:[{id:'studio', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:2, last:'07:39', joined:'09-04', joinedVia:'a laptop', serves:true, root:'~/personal', launcher:'launchd · com.flywheel.personal', binary:'0.9.4', binaryLatest:'0.9.4', note:'one laptop, nothing else yet',
+    hosts:[{id:'studio', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:2, last:'07:39', joined:'09-04', joinedVia:'a laptop', serves:true, identity:{kind:'github', how:'GitHub&#8217;s device flow on the page: the code and the address to enter it at, then the GitHub username (243, 246, 253)', served:'a localhost port, any port · no proxy, no name asked, no redirect registered (245)', env:null}, gitApp:{own:true, app:'chuck-flywheel · app id 9101', key:'~/personal/secrets/github-app.pem', placed:false}, root:'~/personal', launcher:'launchd · com.flywheel.personal', binary:'0.9.4', binaryLatest:'0.9.4', note:'one laptop, nothing else yet',
       roles:{elaboration:{runner:'runner-pane', model:'claude-fable-5-1'}, construction:{runner:'runner-pane', model:'claude-fable-5-1'}, machinery:{runner:null, model:'claude-haiku-4-5'}},
       agent:{on:false, runner:null, what:'no chat sink here yet'},
       env:{provider:'devenv', repos:{blueprints:{ok:true}}},
-      parts:[{k:'runner', pkg:'runner-pane', state:'installed 09-04', cfg:{bound:'2', login:'Claude Code'}},{k:'sign-in', pkg:'auth-github', state:'installed 09-04', cfg:{flow:'device flow · on your own computer', org:'personal'}}]}],
+      parts:[{k:'runner', pkg:'runner-pane', state:'installed 09-04', cfg:{bound:'2', login:'Claude Code'}}]}],
     decisions:0,
   },
 };
 
-const IDENTITY = {handle:'chuck', name:'Chuck Swanberg', kind:'GitHub', servingHost:'studio',
-  how:'GitHub device flow on this computer · the identity is the GitHub username, the same everywhere (S153, S164)'};
+/* the identity the page shows is the one the serving host's kind vouched for (S153, S164):
+   the GitHub username on a `github` host, the Frontegg user on a `frontegg` host, with the
+   GitHub username beside it because authorship is the GitHub username in both (S199). */
+const IDENTITY = {handle:'chuck', name:'Chuck Swanberg', github:'chuck', frontegg:'chuck@willdan.com'};
 
 /* ===========================================================================
    state
    =========================================================================== */
 const S = {
-  org:'willdan', page:'overview', host:null, addhost:null, addorg:null, orgWizard:null,
+  org:'willdan', page:'overview', host:null, addhost:null, addorg:null, orgWizard:null, served:null,
   panel:null,           /* {mode:'catalogue'|'sheet'|'configure'|'secret'|'joined', ...} */
   flashes:[], menu:null, navOpen:false, lit:null,
   nextDecision:425, raised:[], log:[],
@@ -674,6 +686,10 @@ const hosts = () => org().hosts;
 const host = id => hosts().find(h => h.id === id);
 const partOn = (h, id) => h.parts.find(p => p.pkg === id);
 const memberOrgs = () => Object.keys(ORGS).filter(k => ORGS[k].members.some(m => m.id === IDENTITY.handle));
+const servingHost = () => hosts().find(h => h.id === S.served) || hosts().find(h => h.serves) || hosts()[0];
+const servingKind = () => ((servingHost() || {}).identity || {kind:'github'}).kind;
+const isHosted = () => servingKind() === 'frontegg';
+const shownIdentity = () => isHosted() ? IDENTITY.frontegg : IDENTITY.github;
 
 /* ===========================================================================
    Cloudscape components, drawn by hand
@@ -759,7 +775,7 @@ function pageOverview(){
     body: kv([
       ['Name', `<b>${esc(o.name)}</b> ${o.sample ? '<span class="sample">sample seed</span>' : ''}`],
       ['What it is', esc(o.what)],
-      ['Root on this host', `<span class="mono">${esc(host(IDENTITY.servingHost) ? host(IDENTITY.servingHost).root : '—')}</span>`],
+      ['Root on this host', `<span class="mono">${esc(host(servingHost().id) ? host(servingHost().id).root : '—')}</span>`],
       ['As of', `${TODAY} ${NOW} · the read this console was built from`],
       ['Hosts', `${alive} alive of ${o.hosts.length}${pool ? ` · pool ${pool.live} live of ${pool.bound}` : ''}`],
       ['Repositories', o.repos.map(r => esc(r.id)).join(' · ')],
@@ -775,9 +791,13 @@ function pageOverview(){
       ['Router', esc(o.router)],
       ['Curation cadence', esc(o.curation)],
       ['Triage cadence', esc(o.triageCadence)],
-      ['Sign-in', `${esc(IDENTITY.kind)} · a setting of the serving host, the same for every organization it serves (S164)`],
+      ['Identity', `${badge(esc(servingKind()), 'blue')} · a binding of the serving host, the same for every organization it serves · ${isHosted() ? 'the provider&#8217;s hosted login, and members are the account&#8217;s assigned users' : 'GitHub&#8217;s device flow, and members are this organization&#8217;s authored operators list'} (S164, S165)`],
       ['Raw store', 'per host · the platform bucket on the cloud host, the machine itself on a laptop'],
       ['Landing policy', 'per repository · see Repositories'],
+      ['Operators', isHosted()
+        ? 'derived from the account and shown read-only; the addresses beside them stay authored (248, S155)'
+        : 'authored whole on this form: a GitHub username added is a member added (S155)'],
+      ['A host&#8217;s keys', 'root, bound, declaration, provider, identity kind and router are shown read-only with a link to the host&#8217;s own screen (S155)'],
     ])});
   const raised = S.raised.length ? ctr({title:'Decisions this console raised', counter:S.raised.length,
     desc:'nothing here is in the count until it appears in the rail; every one is answered there (S113)',
@@ -832,7 +852,7 @@ function pageRepos(){
 
 /* --- members and roles (S166–S171) --- */
 function pageMembers(){
-  const o = org();
+  const o = org(), hosted = isHosted();
   const sinkState = (m, kind) => {
     const presenting = o.hosts.find(h => (partOn(h, kind === 'discord' ? 'discord' : 'slack') || {}).state && /^installed/.test((partOn(h, kind === 'discord' ? 'discord' : 'slack')||{}).state));
     return presenting ? st('success', `delivered · ${esc(presenting.id)}`) : st('warning', 'undelivered · no host presents it');
@@ -842,34 +862,65 @@ function pageMembers(){
     Object.keys(m.addresses).length
       ? Object.entries(m.addresses).map(([k,v]) => `<div>${esc(k)} <span class="mono">${esc(v)}</span> ${sinkState(m,k)}</div>`).join('')
       : `<span class="small">no address · a page sink only (S168)</span>`,
-    m.roles.length ? m.roles.map(r => badge(esc(r))).join(' ') : `<span class="small">none</span>`,
-    `<div class="acts">${btn('Edit addresses', `data-edit="member|${m.id}"`)}${btn('Remove', `data-rm-member="${m.id}"`, 'link')}</div>`,
+    hosted
+      ? (m.roles.length ? m.roles.map(r => badge(esc(r))).join(' ') : badge('member')) + sub('read-only · from the account&#8217;s token (248)')
+      : `<span class="small">none · every listed operator holds every permission (S165, S199)</span>`,
+    `<div class="acts">${btn('Edit addresses', `data-edit="member|${m.id}"`)}${hosted
+      ? btn('Assign', `data-idadmin="assign|${m.id}"`) + btn('Revoke', `data-idadmin="revoke|${m.id}"`, 'link') + btn('Role…', `data-idadmin="role|${m.id}"`, 'link')
+      : btn('Remove', `data-rm-member="${m.id}"`, 'link')}</div>`,
   ]}));
   const members = ctr({title:'Operators', counter:o.members.length,
-    desc:'who may respond in this organization · a response from an identity not on this list is refused before any record is written (S165). Removing the identity that saves the form is refused inline (S155)',
-    actions: btn('Add operator', 'data-add-member="1"', 'primary'),
+    desc: hosted
+      ? 'derived from the organization&#8217;s account at every fetch and shown read-only: membership is the assignment of the flywheel Application to a user (247, 248). What stays authored is each member&#8217;s chat addresses (236a)'
+      : 'the manifest&#8217;s authored operators list, edited and saved like any other field of the form (S155): adding a GitHub username adds a member, removing one removes them, and a save that would remove the saving identity is refused inline. A response from an identity not on the list is refused before any record is written (S165)',
+    actions: hosted
+      ? btn('Invite…', 'data-idadmin="invite|"', 'primary')
+      : btn('Add operator', 'data-add-member="1"', 'primary'),
     tight:true,
-    body: table(['Member','Addresses per chat kind','Roles',''], rows)});
+    body: table(['Member', 'Addresses per chat kind', hosted ? 'Roles' : 'Permissions', ''], rows)});
+  const admin = hosted ? ctr({title:'Identity administration',
+    desc:'this section is where identity administration happens and there is no second console (255, S195) · each control is one recorded tool call under <span class="mono">fw.identity.admin</span>',
+    body: kv([
+      ['invite-member', 'invites a GitHub username to the account by email; the addresses come over unchanged on an upgrade (247a, S204)'],
+      ['assign-application', 'assignment is membership: it admits the identity to this organization (247)'],
+      ['revoke-application', 'revoking takes the member&#8217;s page sink and their chat sinks with it; their addresses stay on the entry until the form removes them (236a, S168)'],
+      ['set-role', 'the role the token carries, which is what authorizes each tool (248, 249)'],
+      ['target-flag', 'a flag hides a surface per account and never authorizes (250, S197)'],
+      ['Without <span class="mono">fw.identity.admin</span>', 'a member reads this section and sees no control on it (S195)'],
+    ], 'rows')}) : ctr({title:'No members section here',
+    desc:'a <span class="mono">github</span> host has no members section at all: the operators list on the settings form is the whole of administration (S195)',
+    body: kv([
+      ['Permissions', 'every listed operator holds every permission on their own organization; there are no roles to administer (S165, S199)'],
+      ['Flags', 'they stand at their defaults, because one small team administering roles against itself is ceremony (S199)'],
+      ['When that changes', 'moving to a hosted tier: the same usernames are invited to an account, roles and per-account flags become the tier&#8217;s, and the addresses come over (247a, S204)'],
+    ], 'rows')});
   const roleRows = o.roles.map(r => ({cells:[
     `<b>${esc(r.id)}</b>${sub(esc(r.what))}`,
     r.members.map(m => badge(esc(m))).join(' ') || `<span class="small">nobody</span>`,
     `<div class="acts">${btn('Edit members', `data-edit="role|${r.id}"`)}</div>`,
   ]}));
-  const roles = ctr({title:'Roles', counter:o.roles.length,
-    desc:'a role is a list of members (237) and may own a decision. Ownership changes nothing about who may answer: the answers on an owned card are the same for every member (S169), and "assign" is a control on the decision in the plan console (S170)',
+  const roles = ctr({title:'Roles a decision may be owned by', counter:o.roles.length,
+    desc:'a role here is a list of members a decision may name as its owner (237). Ownership changes nothing about who may answer — the answers on an owned card are the same for every member (S169) — and "assign" is a control on the decision in the plan console (S170). ' + (hosted
+      ? 'On this host the account&#8217;s roles authorize tools (248, 249); these ownership roles are the manifest&#8217;s and are a different thing.'
+      : 'On a <span class="mono">github</span> host they authorize nothing: every listed operator holds every permission (S165).'),
     actions: btn('Add role', 'data-add-role="1"'),
     tight:true,
     body: table(['Role','Members',''], roleRows, ['No roles', 'every decision here is unowned, which is everyone&#8217;s (S169)'])});
-  const note = ctr({title:'Sign-in', desc:'one sign-in per host, the same for every organization it serves (S164)',
+  const note = ctr({title:'Identity', desc:'a binding of the serving host, one kind per host and the same for every organization it serves (S164)',
     body: kv([
-      ['You are', `<b>${esc(IDENTITY.handle)}</b> · ${esc(IDENTITY.kind)}`],
-      ['How', esc(IDENTITY.how)],
-      ['Serving host', `${esc(IDENTITY.servingHost)} · <a href="#" data-host="${IDENTITY.servingHost}">its Sign-in heading</a>`],
+      ['You are', `<b>${esc(shownIdentity())}</b> · ${badge(esc(servingKind()),'blue')}${isHosted() ? ` · GitHub <span class="mono">${esc(IDENTITY.github)}</span> for authorship` : ''}`],
+      ['How', isHosted()
+        ? 'the provider&#8217;s hosted login on the page; the redirect is built from the served name and registered once on the environment, never per organization (244)'
+        : 'GitHub&#8217;s device flow on the page: the code and the address to enter it at · no provider account, no environment, no registered redirect (243, 245, S199)'],
+      ['Serving host', `${esc(servingHost().id)} · <a href="#" data-host="${servingHost().id}">its Identity heading</a>`],
       ['Board', 'one board per organization: every member reads the same rail with the same numbers and the same count (S167)'],
-    ])});
+      ['Upgrading', 'moving to a hosted tier is not a migration: the same GitHub usernames are invited to the account, the addresses come over, and the board, the numbers and the repositories never move (247a, S204)'],
+    ], 'rows')});
   return crumbs([[org().name,'org'],['Members and roles']])
-    + pageHead('Members and roles', 'the operators list, their chat addresses, and the roles a decision may be owned by')
-    + `<div class="stack-l">${members}${roles}${note}</div>`;
+    + pageHead('Members and roles', hosted
+        ? 'the account&#8217;s assigned users, read-only, with their addresses beside them and the identity tools on this section (247, S195)'
+        : 'the manifest&#8217;s authored operators list, their chat addresses, and the roles a decision may be owned by (S155, S199)')
+    + `<div class="stack-l">${members}${admin}${roles}${note}</div>`;
 }
 
 /* --- sinks: one per member, one per address, plus shared channels (S168, S173) --- */
@@ -880,7 +931,7 @@ function pageSinks(){
   o.members.forEach(m => {
     rows.push({cells:[
       `<b>${esc(m.id)} · page</b>${sub('keyed by the identity · every member has one (S168)')}`,
-      'page', `<span class="mono">—</span>`, esc(IDENTITY.servingHost), st('success','delivered'), `<span class="num">${NOW}</span>`]});
+      'page', `<span class="mono">—</span>`, esc(servingHost().id), st('success','delivered'), `<span class="num">${NOW}</span>`]});
     Object.entries(m.addresses).forEach(([kind, addr]) => {
       const pkgId = kind === 'discord' ? 'discord' : 'slack';
       const h = presenter(pkgId);
@@ -901,7 +952,7 @@ function pageSinks(){
     actions: btn('Add a Slack sink on a host', 'data-addsink="slack"', 'primary'),
     body: st('warning','the Slack sink on willdan-cloud is disabled · turned off 06:50 · nothing else presents Slack')}) : '';
   return crumbs([[org().name,'org'],['Sinks']])
-    + pageHead('Sinks', 'one page sink per member and one chat sink per address, each with its own delivery mark and the host presenting it (236, 236a)')
+    + pageHead('Sinks', `one page sink per member and one chat sink per address, each with its own delivery mark and the host presenting it (236, 236a) · a member here is ${isHosted() ? 'a user the account assigns the Application to' : 'an entry in the authored operators list'} (S168)`)
     + `<div class="stack-l">${alert}${ctr({title:'Sinks', counter:rows.length, tight:true,
         body: table(['Sink','Kind','Address','Presented by','Delivery','Mark'], rows)})}</div>`;
 }
@@ -1058,8 +1109,31 @@ function pageHost(){
   };
   const platNote = h.plat.includes('herdr') ? '' : `<div class="slot empty-slot"><div class="sl-main"><div class="small">the pane runner needs herdr on the host, which this platform cannot take</div></div></div>`;
 
-  const signin = headingCtr('Sign-in', 'one slot · the kind is a setting of this host, the same for every organization it serves; GitHub is the default and the identity is the GitHub username (233, 234, S164)',
-    '', single('sign-in', 'GitHub · tailnet · OAuth · OIDC'));
+  const id = h.identity || {kind:'github'};
+  const identity = headingCtr('Identity', 'no slot · the kind this host declares, read-only · one kind per host and the same for every organization it serves (S115, S164, 243)',
+    '', `<div class="ctr-body">${kv([
+      ['Kind', id.kind === 'github'
+        ? `${badge('github','blue')} every self-managed host`
+        : `${badge('frontegg','blue')} the hosted tiers`],
+      ['How the page signs in', raw(id.how || '')],
+      ['Served at', raw(id.served || '')],
+      ['Environment', id.env ? raw(id.env) : 'none · a <span class="mono">github</span> host declares no provider environment and registers no redirect (S164, 245)'],
+      ['Identity here', id.kind === 'github'
+        ? 'the GitHub username · membership is this organization&#8217;s authored operators list, and every listed operator holds every permission (S165, S199)'
+        : 'the Frontegg user, with the GitHub username its connection carries used for authorship · membership is the assignment of the Application to the account, and permission is what the token carries (247, 249)'],
+      ['Authorship', 'the GitHub username in both kinds (S199)'],
+    ], 'rows')}</div>`);
+  const ga = h.gitApp || {own:true};
+  const gitApp = headingCtr('The git App', 'no slot · which GitHub App reaches the repositories and where its key lives (207, 207a, S198)',
+    '', `<div class="ctr-body">${kv([
+      ['App', ga.own ? `<b>${esc(ga.app || '')}</b> · this organization&#8217;s own` : 'the service&#8217;s App · the hosted tiers use it'],
+      ['Its key', ga.own
+        ? (ga.placed
+            ? `<span class="mono">${esc(ga.key || '')}</span> · ${st('success','placed')}`
+            : `<span class="mono">${esc(ga.key || '')}</span> · ${st('warning','not placed · one attention line asks for it, never a value')}`)
+        : 'never leaves the service · no path here and no control, and a pool host asks the service for its installation tokens (207a)'],
+      ['Tokens a session gets', 'short-lived and scoped to one repository · no host or session uses a personal token or an operator&#8217;s identity for git (251)'],
+    ], 'rows')}</div>`);
   const router = headingCtr('Router', 'one slot · what a served place is reached at, and nothing beyond the private network unless a route is opened per named caller (191)',
     '', single('router', 'local · private-network · platform'));
 
@@ -1137,6 +1211,7 @@ function pageHost(){
     esc(h.note),
     `${btn('Open in the plan console', `data-plan="host:${h.id}"`)}${h.alive ? '' : btn('Takeover', `data-takeover="${h.id}"`, 'primary')}`);
   const summary = ctr({body: kv([
+    ['Identity kind', badge(esc((h.identity||{kind:'github'}).kind), 'blue')],
     ['Alive', h.alive ? st('success','alive · ' + esc(h.last)) : st('error','gone ' + esc(h.gone||''))],
     ['Bound', String(h.bound)],
     ['Platform', esc(h.platform)],
@@ -1145,7 +1220,7 @@ function pageHost(){
     ['Binary', esc(h.binary)],
   ])});
   return crumbs([[org().name,'org'],['Hosts','none'],[h.id]]) + head
-    + `<div class="stack-l">${summary}${signin}${router}${runners}${agent}${sinks}${adapters}${triage}${env}${pool}${facts}${joined}</div>`;
+    + `<div class="stack-l">${summary}${identity}${router}${runners}${agent}${sinks}${adapters}${triage}${env}${gitApp}${pool}${facts}${joined}</div>`;
 }
 
 /* ===========================================================================
@@ -1218,10 +1293,12 @@ function pageAddHost(){
     canNext = !!w.name && w.journey !== 'pool' && (w.adopt || !!w.platform);
   } else if(w.step === 1){
     const plat = wizPlat();
-    const headings = [['sign-in','Sign-in','one slot'],['router','Router','one slot'],['runner','Runners','one slot per role'],['chat sink','Chat sinks','a list'],['adapter','Capture adapters','a list']];
+    const headings = [['router','Router','one slot'],['runner','Runners','one slot per role'],['chat sink','Chat sinks','a list'],['adapter','Capture adapters','a list']];
     body = ctr({title:'Parts', desc:'the same headings as a host&#8217;s settings screen, empty · each opens its own catalogue, filtered to this platform (S117, S120). The agent and triage come with the binary wherever a runner gives them a place.',
       tight:true,
-      body: headings.map(([kind, title, note]) => {
+      body: `<div class="hd-sec"><div class="hd-bar"><div class="ht"><h3>Identity</h3>
+          <div class="small">no part to choose: a host declares a kind, and this one will be <b>${esc(w.adopt || w.platform === 'laptop' || w.platform === 'container' ? 'github' : 'frontegg')}</b> — ${esc(w.adopt || w.platform === 'laptop' || w.platform === 'container' ? 'GitHub&#8217;s device flow on a localhost port' : 'the provider&#8217;s hosted login at the served name')} (S164)</div></div></div></div>`
+        + headings.map(([kind, title, note]) => {
         const chosen = w.parts.filter(p => pkg(p.pkg).kind === kind);
         return `<div class="hd-sec"><div class="hd-bar"><div class="ht"><h3>${esc(title)}</h3><div class="small">${esc(note)}</div></div>
           ${btn('Add', `data-catalogue="__new|${kind}"`)}</div>
@@ -1234,7 +1311,7 @@ function pageAddHost(){
     body = ctr({title:'Provision', desc:'provisioning runs from the host you are on with your own platform credentials, read at run time and never stored (S120)',
       body: w.adopt ? `<div>${st('info','nothing to provision · the host already runs the binary')}</div>`
         : `<div class="steps">${[
-            ['read your flywheel-cloud credentials', w.provisioned ? 'done' : 'waiting on you', 'from your credential store on ' + IDENTITY.servingHost + ' · never stored by the flywheel'],
+            ['read your flywheel-cloud credentials', w.provisioned ? 'done' : 'waiting on you', 'from your credential store on ' + servingHost().id + ' · never stored by the flywheel'],
             ['create the container', w.provisioned ? 'done' : 'queued', 'from the organization image · the pool&#8217;s image when it joins a pool (S175)'],
             ['open its route', w.provisioned ? 'done' : 'queued', 'behind the router you chose'],
           ].map(([n,s,b]) => `<div class="step-row">${s === 'done' ? st('success','') : st('pending','')}<div><b>${esc(n)}</b> <span class="small">${esc(s)}</span><div class="small">${esc(b)}</div></div></div>`).join('')}</div>
@@ -1281,7 +1358,7 @@ const ORG_WIZ_STEPS = [
   ['GitHub', 'where the App reaches (207)'],
   ['Repositories', 'state and blueprints (204, 206)'],
   ['The App', 'install or extend (207, 207a)'],
-  ['Account', 'the account is the organization (247)'],
+  ['Membership', 'who may respond, and how (247)'],
   ['Root on this host', 'one root, one address (205, 205a)'],
   ['Initialize', 'one decision, one first tick (204)'],
 ];
@@ -1295,7 +1372,7 @@ const TEMPLATE_SET = 'v0.9.4 · blueprints template · built-repository template
 function newOrgWizard(){
   return {step:0, name:'', tier:'self', gh:null,
     repos:{state:{mode:'create', url:''}, blueprints:{mode:'create', url:''}},
-    keyPlaced:false, account:false, root:'', firstHost:IDENTITY.servingHost,
+    keyPlaced:false, account:false, root:'', firstHost:servingHost().id,
     decision:null, ticked:false};
 }
 const owHosted = () => S.orgWizard && S.orgWizard.tier === 'hosted';
@@ -1369,17 +1446,25 @@ function pageAddOrg(){
                 ${w.keyPlaced ? st('success','placed · the host answered that it is present') : st('warning','not placed · it sits under attention until it is, and the first tick waits on it (149, S123)')}</div></div>
           </div>`});
   } else if(w.step === 4){
-    body = ctr({title:'The account', desc:'membership is the assignment of the flywheel Application to the organization&#8217;s Frontegg account, and the account is the organization (247)',
-      body:`<div class="stack">${kv([
-          ['The account', owHosted()
-            ? `created as a sub-account of the service&#8217;s own account, as the hosted service creates its tenants (247)`
-            : `created as a top-level account · the organization is the account (247)`],
-          ['You', `<b>${esc(IDENTITY.handle)}</b> holds <b>owner</b> on it: an organization created on a self-managed host is created as an account whose creating user holds owner, so a fresh organization is never locked out and a single operator is never asked to administer roles (253)`],
-          ['Operators', 'derived from the account&#8217;s assigned users at every fetch and read-only on the settings form (234, 247) · what stays authored is each member&#8217;s chat addresses, keyed by user id (236a)'],
-          ['Adding a member', 'an act on the account — invite, assign, revoke, set-role on the members section — and never a commit (247, S195)'],
-          ['Identity', 'unchanged by this: one provider and one Application for the whole flywheel, and switching organization never changes who you are (233, 243)'],
-        ], 'rows')}
-        <div>${w.account ? st('success','the account will be created with you as owner') : btn('Create it with me as owner', 'data-owizaccount="1"', 'primary')}</div></div>`});
+    body = owHosted()
+      ? ctr({title:'The account', desc:'on a hosted tier membership is the assignment of the flywheel Application to the organization&#8217;s Frontegg account, and the account is the organization (247)',
+          body:`<div class="stack">${kv([
+            ['The account', 'created as a sub-account of the service&#8217;s own account, as the hosted service creates its tenants (247)'],
+            ['You', `<b>${esc(IDENTITY.github)}</b> holds <b>owner</b> on it, so a fresh organization is never locked out and a single operator is never asked to administer roles (253)`],
+            ['Operators', 'derived from the account&#8217;s assigned users at every fetch and read-only on the settings form (248) · what stays authored is each member&#8217;s chat addresses (236a)'],
+            ['Adding a member', 'an act on the account — invite, assign, revoke, set-role on the members section — and never a commit (247, S195)'],
+            ['Sign-in', 'the hosts of this organization are <span class="mono">frontegg</span> hosts: the provider&#8217;s hosted login on the page, the identity the Frontegg user, and the GitHub username its connection carries used for authorship (S164)'],
+          ], 'rows')}
+          <div>${w.account ? st('success','the account will be created with you as owner') : btn('Create it with me as owner', 'data-owizaccount="1"', 'primary')}</div></div>`})
+      : ctr({title:'The operators list', desc:'a self-managed organization has no provider account: membership is the manifest&#8217;s authored operators list, and every listed operator holds every permission (S165, S199)',
+          body:`<div class="stack">${kv([
+            ['Who may respond', `<b>${esc(IDENTITY.github)}</b>, the GitHub username signing in here, is the list&#8217;s first entry · add the rest as usernames on the settings form (S155)`],
+            ['Permissions', 'there are none to administer: every listed operator holds every permission on their own organization, and flags stand at their defaults (S199)'],
+            ['Sign-in', 'the hosts of this organization are <span class="mono">github</span> hosts: GitHub&#8217;s device flow on the page, on a localhost port, with no provider account, no environment and no registered redirect (S164, 245)'],
+            ['Adding a member', 'a GitHub username added to the list on the settings form and saved like any other field; removing one removes them, and a save that would remove you is refused inline (S155)'],
+            ['If you move to a hosted tier later', 'the same usernames are invited to an account, the addresses come over, and the board, the numbers and the repositories never move (247a, S204)'],
+          ], 'rows')}
+          <div>${w.account ? st('success','you will be the operators list&#8217;s first entry') : btn('Put me on the operators list', 'data-owizaccount="1"', 'primary')}</div></div>`});
     canNext = w.account;
   } else if(w.step === 5){
     const h = host(w.firstHost) || hosts()[0];
@@ -1414,7 +1499,9 @@ function pageAddOrg(){
             ['state', esc(r('state'))],
             ['blueprints', esc(r('blueprints'))],
             ['App', owHosted() ? 'the service&#8217;s App · its key never leaves the service (207a)' : `your own App · key ${w.keyPlaced ? 'placed' : 'not placed yet'} (207, 207a)`],
-            ['Account', `a Frontegg account with ${esc(IDENTITY.handle)} as owner (247, 253)`],
+            ['Membership', owHosted()
+              ? `a Frontegg account with ${esc(IDENTITY.github)} as owner (247, 253)`
+              : `an authored operators list with ${esc(IDENTITY.github)} on it · no provider account (S165, S199)`],
             ['Root', `<span class="mono">${esc(w.root || ('~/' + (w.name || 'org')))}</span> on ${esc(w.firstHost)} (205)`],
             ['Template set', TEMPLATE_SET],
           ], 'rows')}
@@ -1433,8 +1520,9 @@ function orgFirstTick(){
   const root = w.root || (/^\//.test(serving.root || '') ? `/srv/flywheel/${id}` : `~/${id}`);
   ORGS[id] = {
     name:id, what:`${owHosted() ? 'hosted' : 'self-managed'} · from zero · initialized ${TODAY} ${NOW}`, sample:true, fromZero:true,
-    members:[{id:IDENTITY.handle, name:IDENTITY.name, signin:'the provider', addresses:{}, roles:['owner'], since:TODAY.slice(5)}],
-    roles:[{id:'owner', what:'the creating user holds owner on the account (253)', members:[IDENTITY.handle]}],
+    members:[{id:IDENTITY.handle, name:IDENTITY.name, signin: owHosted() ? 'the provider' : 'GitHub', addresses:{},
+      roles: owHosted() ? ['owner'] : [], since:TODAY.slice(5)}],
+    roles: owHosted() ? [{id:'owner', what:'the creating user holds owner on the account (253)', members:[IDENTITY.handle]}] : [],
     runnerRoles:[{role:'elaboration', kind:'pane', model:'claude-fable-5-1'},{role:'construction', kind:'pane', model:'claude-fable-5-1'},{role:'machinery', kind:'pane', model:'claude-haiku-4-5'},{role:'triage', kind:'in-process', model:'claude-sonnet-5'},{role:'interpreter', kind:'in-process', model:'claude-haiku-4-5'}],
     router:'local router', curation:'every 30s', triageCadence:'per capture', channels:[],
     repos:[
@@ -1446,6 +1534,12 @@ function orgFirstTick(){
       joined:TODAY.slice(5), joinedVia:'registered by init as the first host (204)', serves:true,
       root, launcher:serving.launcher, binary:serving.binary, binaryLatest:serving.binaryLatest,
       note:`the first host · serves ${id} at this host&#8217;s one address, /${id}/… (205a)`,
+      identity: owHosted()
+        ? {kind:'frontegg', how:'the provider&#8217;s hosted login on the page; the identity is the Frontegg user, and the GitHub username its connection carries is what authorship uses (244, 246)',
+           served:`${id}.flywheel.cloud · registered once on the environment&#8217;s redirect list (244)`, env:'flywheel-cloud · production'}
+        : {kind:'github', how:'GitHub&#8217;s device flow on the page: the code and the address to enter it at, then the GitHub username (243, 246, 253)',
+           served:'a localhost port, any port · no proxy, no name asked, no redirect registered (245)', env:null},
+      gitApp: owHosted() ? {own:false} : {own:true, app:`${id}-flywheel`, key:`${root}/secrets/github-app.pem`, placed:w.keyPlaced},
       roles:{elaboration:{runner:'runner-pane', model:'claude-fable-5-1'}, construction:{runner:'runner-pane', model:'claude-fable-5-1'}, machinery:{runner:null, model:'claude-haiku-4-5'}},
       agent:{on:false, runner:null, what:'no chat sink here yet'},
       env:{provider:'devenv', repos:{state:{ok:true}, blueprints:{ok:true}}},
@@ -1454,7 +1548,9 @@ function orgFirstTick(){
       joinedSteps:[['blueprints ready','done',NOW, w.repos.blueprints.mode === 'create' ? 'created from the blueprints template' : 'adopted ' + w.repos.blueprints.url],
         ['state ready','done',NOW, w.repos.state.mode === 'create' ? 'created with the profile&#8217;s layout' : 'adopted ' + w.repos.state.url],
         ['connected','done',NOW, owHosted() ? 'the service&#8217;s App covers both repositories (207a)' : 'your App&#8217;s installation extended to both repositories (207)'],
-        ['account','done',NOW, `a Frontegg account with ${IDENTITY.handle} as owner (247, 253)`],
+        [owHosted() ? 'account' : 'operators','done',NOW, owHosted()
+          ? `a Frontegg account with ${IDENTITY.github} as owner (247, 253)`
+          : `the operators list authored with ${IDENTITY.github} on it · no provider account (S199)`],
         ['hosted','done',NOW, `registered ${serving.id} as the first host, root ${root} (204, 205)`]]}],
     decisions:0,
   };
@@ -1594,9 +1690,13 @@ function menuHtml(){
     const o = org();
     const me = o.members.find(m => m.id === IDENTITY.handle);
     return `<div class="menu" id="menu"><h4>Who you are</h4>
-      <div style="padding:4px 10px" class="small"><b>${esc(IDENTITY.handle)}</b> · ${esc(IDENTITY.kind)}<br>${esc(IDENTITY.how)}<br>served by ${esc(IDENTITY.servingHost)}</div>
+      <div style="padding:4px 10px" class="small"><b>${esc(shownIdentity())}</b> · ${esc(servingKind())}<br>
+        ${isHosted()
+          ? `the Frontegg user · GitHub <span class="mono">${esc(IDENTITY.github)}</span>, which is what authorship uses (246)`
+          : `the GitHub username · every listed operator holds every permission here (S165, S199)`}<br>
+        served by ${esc(servingHost().id)} · ${isHosted() ? 'the provider&#8217;s hosted login at its served name' : 'GitHub&#8217;s device flow on a localhost port'}</div>
       <hr><h4>Your sinks here</h4>
-      <div style="padding:4px 10px" class="small">page · ${esc(IDENTITY.servingHost)} · mark ${NOW}${me ? Object.entries(me.addresses).map(([k,v]) => `<br>${esc(k)} <span class="mono">${esc(v)}</span> · ${k === 'discord' ? 'presented by studio' : 'undelivered · no host presents Slack'}`).join('') : ''}</div>
+      <div style="padding:4px 10px" class="small">page · ${esc(servingHost().id)} · mark ${NOW}${me ? Object.entries(me.addresses).map(([k,v]) => `<br>${esc(k)} <span class="mono">${esc(v)}</span> · ${k === 'discord' ? 'presented by studio' : 'undelivered · no host presents Slack'}`).join('') : ''}</div>
       <hr><button data-page="overview">Settings</button><button data-host="${hosts()[0].id}">Hosts</button><button data-page="packages">Organization store</button>
       <hr><button data-signout="1">Sign out</button></div>`;
   }
@@ -1610,7 +1710,7 @@ function render(){
     : S.page === 'packages' ? pagePackages() : S.page === 'pools' ? pagePools() : pageOverview();
   document.getElementById('main').innerHTML = `<div class="main-inner">${flashbarHtml()}${page}</div>`;
   document.getElementById('orgsel-name').textContent = org().name;
-  document.getElementById('acct-name').textContent = IDENTITY.handle;
+  document.getElementById('acct-name').textContent = shownIdentity();
   const layout = document.getElementById('layout');
   const old = document.getElementById('split'); if(old) old.remove();
   const oldMenu = document.getElementById('menu'); if(oldMenu) oldMenu.remove();
@@ -1641,7 +1741,7 @@ function openSheet(target, pkgId, mode){
   render();
 }
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-org],[data-page],[data-host],[data-addhost],[data-crumb],[data-catalogue],[data-sheet],[data-configure],[data-part],[data-agent],[data-store],[data-rebuild],[data-upgrade],[data-secret],[data-placed],[data-panelclose],[data-sheetsave],[data-sheetsecret],[data-sheetlater],[data-copy],[data-dismiss],[data-edit],[data-editpool],[data-add-member],[data-add-role],[data-rm-member],[data-addrepo],[data-addsink],[data-formsave],[data-wiznext],[data-wizprev],[data-wizcancel],[data-wizprov],[data-wizsecret],[data-wizenrol],[data-wizjoin],[data-wizrm],[data-takeover],[data-plan],[data-signout],[data-env],[data-addorg],[data-owiznext],[data-owizprev],[data-owizcancel],[data-owizkey],[data-owizaccount],[data-owizraise],[data-owiztick],[data-retireorg],[data-wizadv],[data-wizpool]');
+  const t = e.target.closest('[data-org],[data-page],[data-host],[data-addhost],[data-crumb],[data-catalogue],[data-sheet],[data-configure],[data-part],[data-agent],[data-store],[data-rebuild],[data-upgrade],[data-secret],[data-placed],[data-panelclose],[data-sheetsave],[data-sheetsecret],[data-sheetlater],[data-copy],[data-dismiss],[data-edit],[data-editpool],[data-add-member],[data-add-role],[data-rm-member],[data-addrepo],[data-addsink],[data-formsave],[data-wiznext],[data-wizprev],[data-wizcancel],[data-wizprov],[data-wizsecret],[data-wizenrol],[data-wizjoin],[data-wizrm],[data-takeover],[data-plan],[data-signout],[data-env],[data-addorg],[data-owiznext],[data-owizprev],[data-owizcancel],[data-owizkey],[data-owizaccount],[data-owizraise],[data-owiztick],[data-retireorg],[data-wizadv],[data-wizpool],[data-idadmin]');
   if(!t){ if(S.menu){ S.menu = null; render(); } return; }
   const d = t.dataset;
   if(t.tagName === 'A' && !d.crumb && !d.host && !d.secret) return;
@@ -1684,12 +1784,13 @@ document.addEventListener('click', e => {
   else if(d.addMember){ addMemberForm(); return; }
   else if(d.addRole){ addRoleForm(); return; }
   else if(d.rmMember){ removeMember(d.rmMember); }
+  else if(d.idadmin){ identityAdmin(d.idadmin); }
   else if(d.addrepo){ raiseDecision('baseline', 'add a repository to ' + org().name, 'a yes creates the repository and its baseline before the first read arrives (S72)'); }
-  else if(d.addsink){ openCatalogue(IDENTITY.servingHost, 'chat sink'); return; }
+  else if(d.addsink){ openCatalogue(servingHost().id, 'chat sink'); return; }
   else if(d.takeover){ const h = host(d.takeover);
     logged(`takeover on ${h.id}`, 'its places are released and re-made from their lines on an alive host (S50)'); }
   else if(d.plan){ window.location.href = 'rail-and-board.html?setup=1&host=' + d.plan.split(':')[1]; return; }
-  else if(d.signout){ S.menu = null; flash('info','Sign-out','sign-out ends the page&#8217;s session with the serving host&#8217;s sign-in kind and records nothing (S153) · the hosts keep running'); }
+  else if(d.signout){ S.menu = null; flash('info','Sign-out','sign-out ends the page&#8217;s session with the serving host&#8217;s kind and records nothing (S153) · the hosts keep running'); }
   else if(d.env){ flash('info','Environment provider', 'the console changes no provider: a provider is a host&#8217;s declaration and is changed where the host is declared (S174, S155)'); }
   else if(d.wizadv){ S.wizard.advanced = !S.wizard.advanced; }
   else if(d.wizpool){ S.addhost = null; S.wizard = null; S.page = 'pools'; poolForm('new'); return; }
@@ -1793,6 +1894,27 @@ function storeAction(spec){
   if(act === 'retire'){ org().store[id].state = `retired ${NOW}`; logged(`retire ${P.name} from the blueprints`, 'every host stops reading it on its next tick'); }
   else { org().store[id].state = `installed ${NOW} · restored`; logged(`restore ${P.name} in the blueprints`, 'every host reads it on its next tick'); }
   S.lit = 'org|' + id;
+}
+/* the identity tools of S195, on a `frontegg` host only: each is one recorded call, never a commit */
+function identityAdmin(spec){
+  const [act, id] = spec.split('|'), o = org();
+  if(act === 'invite') return openForm({title:'Invite a member', saveLabel:'Invite',
+    desc:'one <span class="mono">invite-member(organization, email)</span> call under <span class="mono">fw.identity.admin</span> · an act on the account, never a commit (247, S195)',
+    fields:[{k:'email', label:'Email', ph:'rhea@willdan.com'},{k:'github', label:'GitHub username', fd:'what authorship uses, and what an upgrade carries over unchanged (246, 247a)', ph:'rhea'}],
+    onSave(v){ if(!v.github) return;
+      o.members.push({id:v.github, name:v.github, signin:'the provider', addresses:{}, roles:['member'], since:TODAY.slice(5)});
+      logged(`invite-member ${o.name} ${v.email || v.github}`, 'the invitation is on the account; the member appears here once the Application is assigned to them'); }});
+  const m = o.members.find(x => x.id === id); if(!m) return;
+  if(act === 'assign'){ if(!m.roles.length) m.roles = ['member'];
+    logged(`assign-application ${o.name} ${m.id}`, 'assignment is membership: it admits the identity and gives them their page sink and one chat sink per address (247, S168)'); return; }
+  if(act === 'revoke'){
+    if(m.id === IDENTITY.handle){ flash('error','Refused', 'revoking your own assignment would lock you out of this organization — the same rule the settings form applies to a save that would remove the saving identity (S155)'); return; }
+    o.members = o.members.filter(x => x !== m);
+    logged(`revoke-application ${o.name} ${m.id}`, 'their page sink and their chat sinks go with it; their addresses stay on the entry until the form removes them (236a, S195)'); return; }
+  if(act === 'role') return openForm({title:`Role for ${m.id}`, saveLabel:'Set role',
+    desc:'one <span class="mono">set-role(organization, user, role)</span> call · the role the token carries is what authorizes each tool (248, 249)',
+    fields:[{k:'role', label:'Role', kind:'select', opts:['owner','admin','member','reader'], value:m.roles[0] || 'member'}],
+    onSave(v){ m.roles = [v.role]; logged(`set-role ${o.name} ${m.id} ${v.role}`); }});
 }
 function removeMember(id){
   if(id === IDENTITY.handle){ flash('error','Refused', 'a save that would remove the saving identity from the operators list is refused inline (S155)'); return; }
@@ -1912,7 +2034,7 @@ function wizJoin(){
     env:{provider: w.platform === 'laptop' ? 'devenv' : 'image', repos:Object.fromEntries(o.repos.map(r => [r.id, {ok:true}]))},
     parts,
     joinedSteps:[['platform','done',NOW, w.adopt ? 'read at join' : (PLATFORMS.find(x => x[0] === w.platform)||[])[1]],
-      ['provision','done',NOW, w.adopt ? 'skipped · adopt existing' : 'ran from ' + IDENTITY.servingHost + ' with your own credentials, read at run time and never stored'],
+      ['provision','done',NOW, w.adopt ? 'skipped · adopt existing' : 'ran from ' + servingHost().id + ' with your own credentials, read at run time and never stored'],
       ['hand over secrets','done',NOW, `${Object.keys(w.secrets).length} placed · the rest wait under attention`],
       ['enrol','done',NOW, `decision ${w.decision} · one-time token · expires in 24h · used once`],
       ['join','done',NOW,'read the manifest and installed the parts you chose'],
@@ -1927,6 +2049,7 @@ function wizJoin(){
   if(q.get('theme')) document.documentElement.dataset.theme = q.get('theme');
   if(q.get('org') && ORGS[q.get('org')]) S.org = q.get('org');
   if(q.get('page')) S.page = q.get('page');
+  if(q.get('served')) S.served = q.get('served');
   if(q.get('host') && host(q.get('host'))) S.host = q.get('host');
   if(q.get('addhost')){ S.addhost = true; S.wizard = newWizard(); }
   if(q.get('addorg')){ S.addorg = true; S.orgWizard = newOrgWizard(); if(q.get('ostep')) S.orgWizard.step = +q.get('ostep'); }
