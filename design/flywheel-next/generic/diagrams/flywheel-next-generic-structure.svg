@@ -1,0 +1,208 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 960" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="mN" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+    <marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+    <marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e9e5b"/></marker>
+    <marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+    <marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+    <g id="gear">
+      <circle r="9" fill="#fff" stroke="currentColor" stroke-width="2.4"/>
+      <circle r="3" fill="currentColor"/>
+      <g stroke="currentColor" stroke-width="2.4">
+        <line y1="-9" y2="-13.5"/><line y1="9" y2="13.5"/>
+        <line x1="-9" x2="-13.5"/><line x1="9" x2="13.5"/>
+        <line x1="-6.4" y1="-6.4" x2="-9.5" y2="-9.5"/><line x1="6.4" y1="6.4" x2="9.5" y2="9.5"/>
+        <line x1="-6.4" y1="6.4" x2="-9.5" y2="9.5"/><line x1="6.4" y1="-6.4" x2="9.5" y2="-9.5"/>
+      </g>
+    </g>
+    <g id="cube" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">
+      <path d="M -14 -7 L 0 -15 L 14 -7 L 14 9 L 0 17 L -14 9 Z" fill="#fff"/>
+      <path d="M -14 -7 L 0 1 L 14 -7 M 0 1 L 0 17" fill="none"/>
+    </g>
+    <g id="repo">
+      <rect x="-26" y="-18" width="52" height="36" rx="7" fill="#fff" stroke="currentColor" stroke-width="2"/>
+      <circle cx="-9" cy="8" r="3.2" fill="currentColor"/>
+      <circle cx="9" cy="-8" r="3.2" fill="currentColor"/>
+      <path d="M -9 8 v-8 a 8 8 0 0 1 8 -8 h 1" fill="none" stroke="currentColor" stroke-width="2"/>
+    </g>
+    <g id="cyl">
+      <path d="M -22 -10 L -22 12 A 22 7 0 0 0 22 12 L 22 -10" fill="#fff" stroke="currentColor" stroke-width="1.6"/>
+      <ellipse cx="0" cy="-10" rx="22" ry="7" fill="currentColor" fill-opacity="0.16" stroke="currentColor" stroke-width="1.6"/>
+    </g>
+    <g id="person">
+      <circle cy="-6" r="4" fill="#fff" stroke="currentColor" stroke-width="1.8"/>
+      <path d="M -7 8 a 7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    </g>
+    <g id="browser">
+      <rect x="-22" y="-14" width="44" height="28" rx="4" fill="#fff" stroke="currentColor" stroke-width="2"/>
+      <line x1="-22" y1="-6" x2="22" y2="-6" stroke="currentColor" stroke-width="2"/>
+      <circle cx="-16" cy="-10" r="1.6" fill="currentColor"/><circle cx="-11" cy="-10" r="1.6" fill="currentColor"/>
+    </g>
+    <g id="clock">
+      <circle r="9" fill="#fff" stroke="currentColor" stroke-width="2"/>
+      <path d="M 0 -5 V 0 H 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    </g>
+    <g id="key">
+      <rect x="-7" y="-2" width="14" height="10" rx="2" fill="#fff" stroke="currentColor" stroke-width="1.8"/>
+      <path d="M -4 -2 v-3 a 4 4 0 0 1 8 0 v3" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    </g>
+    <g id="mail">
+      <rect x="-13" y="-9" width="26" height="18" rx="2" fill="#fff" stroke="currentColor" stroke-width="1.8"/>
+      <path d="M -13 -9 L 0 2 L 13 -9" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    </g>
+    <g id="gate" stroke="#c05b5b" stroke-width="3" stroke-linecap="round">
+      <line x1="-8" y1="-11" x2="-8" y2="11"/><line x1="8" y1="-11" x2="8" y2="11"/><line x1="-8" y1="-3" x2="8" y2="-3"/>
+    </g>
+  </defs>
+  <rect width="1680" height="960" fill="#fff"/>
+
+  <text x="40" y="38" font-size="19" font-weight="700" fill="#1a1a1a">The billing organization — the same loop, with no code</text>
+  <text x="40" y="59" font-size="12" fill="#666">records in git · machines on the tick · judgment in sessions · effects with proofs</text>
+
+  <!-- ============ YOUR SIDE ============ -->
+  <rect x="40" y="88" width="1600" height="155" rx="10" fill="#fbfbfa" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="58" y="114" font-size="12" font-weight="700" fill="#333">YOUR SIDE</text>
+  <text x="152" y="114" font-size="10" fill="#999">one operator · three vendors</text>
+  <use href="#person" x="700" y="168" color="#8a8a86"/>
+  <text x="700" y="198" font-size="9.5" fill="#666" text-anchor="middle">operator</text>
+  <text x="700" y="212" font-size="8.5" fill="#999" text-anchor="middle">answers · dictates</text>
+  <rect x="748" y="155" width="92" height="24" rx="12" fill="#fff" stroke="#8a8a86" stroke-width="1.4"/>
+  <text x="794" y="171" font-size="9.5" fill="#5f6b7a" text-anchor="middle">Slack sink</text>
+  <text x="794" y="196" font-size="8.5" fill="#999" text-anchor="middle">where the batch arrives</text>
+  <use href="#browser" x="900" y="166" color="#8a8a86"/>
+  <text x="900" y="198" font-size="9.5" fill="#666" text-anchor="middle">the page</text>
+  <text x="900" y="212" font-size="8.5" fill="#999" text-anchor="middle">the same decisions, and the ledger</text>
+  <use href="#person" x="1280" y="168" color="#8a8a86"/>
+  <use href="#person" x="1400" y="168" color="#8a8a86"/>
+  <use href="#person" x="1520" y="168" color="#8a8a86"/>
+  <text x="1280" y="198" font-size="9.5" fill="#666" text-anchor="middle">acme-eng</text>
+  <text x="1400" y="198" font-size="9.5" fill="#666" text-anchor="middle">northlake</text>
+  <text x="1520" y="198" font-size="9.5" fill="#666" text-anchor="middle">rivet</text>
+  <text x="1400" y="216" font-size="8.5" fill="#999" text-anchor="middle">mail is all that reaches them</text>
+
+  <!-- ============ GITHUB ============ -->
+  <rect x="40" y="278" width="470" height="486" rx="10" fill="#e9f6ee" stroke="#2e9e5b" stroke-width="1.4"/>
+  <text x="58" y="304" font-size="12" font-weight="700" fill="#27824c">GITHUB</text>
+  <text x="132" y="304" font-size="10" fill="#999">the whole state of the business</text>
+  <use href="#repo" x="150" y="372" color="#2e9e5b"/>
+  <text x="150" y="406" font-size="9.5" fill="#666" text-anchor="middle">blueprints repository</text>
+  <text x="150" y="420" font-size="8.5" fill="#999" text-anchor="middle">the book · the types · the claims</text>
+  <use href="#repo" x="400" y="372" color="#2e9e5b"/>
+  <text x="400" y="406" font-size="9.5" fill="#666" text-anchor="middle">state repository</text>
+  <text x="400" y="420" font-size="8.5" fill="#999" text-anchor="middle">one commit per record change</text>
+  <g font-size="9.5" font-family="monospace" fill="#fff" text-anchor="middle">
+    <rect x="341" y="442" width="118" height="22" rx="11" fill="#2e9e5b"/><text x="400" y="457">Vendor</text>
+    <rect x="341" y="472" width="118" height="22" rx="11" fill="#2e9e5b"/><text x="400" y="487">Hours</text>
+    <rect x="341" y="502" width="118" height="22" rx="11" fill="#2e9e5b"/><text x="400" y="517">Cycle</text>
+    <rect x="341" y="532" width="118" height="22" rx="11" fill="#2e9e5b"/><text x="400" y="547">Contract</text>
+    <rect x="341" y="562" width="118" height="22" rx="11" fill="#2e9e5b"/><text x="400" y="577">Payroll</text>
+  </g>
+  <text x="400" y="604" font-size="8.5" fill="#999" text-anchor="middle">*.rec — the descriptor is the gate</text>
+  <text x="400" y="618" font-size="8.5" fill="#999" text-anchor="middle">the Cycle set is the unit's own fields</text>
+  <rect x="62" y="500" width="212" height="56" rx="8" fill="#fafafa" stroke="#8a8a86" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <text x="168" y="526" font-size="10" font-weight="700" fill="#5f6b7a" text-anchor="middle">no built repository</text>
+  <text x="168" y="543" font-size="8.5" fill="#999" text-anchor="middle">this organization has no code</text>
+
+  <!-- ============ THE HOST ============ -->
+  <rect x="550" y="278" width="560" height="486" rx="10" fill="#eef3f9" stroke="#4a7fb5" stroke-width="1.4"/>
+  <text x="568" y="304" font-size="12" font-weight="700" fill="#3f6d9c">THE HOST</text>
+  <text x="652" y="304" font-size="10" fill="#999">a laptop or a cloud agent</text>
+  <polygon points="760,314 806,346 760,378 714,346" fill="#fffdf6" stroke="#c9962e" stroke-width="2"/>
+  <text x="760" y="344" font-size="10" font-weight="700" fill="#8a6a1d" text-anchor="middle">DECIDE</text>
+  <text x="760" y="358" font-size="8.5" fill="#a97e26" text-anchor="middle">per vendor</text>
+  <text x="760" y="398" font-size="8.5" fill="#999" text-anchor="middle">batched by month · silence acts</text>
+  <use href="#gear" transform="translate(640,470) scale(2)" color="#4a7fb5"/>
+  <text x="640" y="522" font-size="11" font-weight="700" fill="#3f6d9c" text-anchor="middle">TICK</text>
+  <text x="640" y="536" font-size="8.5" fill="#999" text-anchor="middle">the only clock here</text>
+  <use href="#clock" x="790" y="462" color="#4a7fb5"/>
+  <use href="#clock" x="826" y="462" color="#4a7fb5"/>
+  <use href="#clock" x="862" y="462" color="#4a7fb5"/>
+  <text x="826" y="492" font-size="9.5" fill="#666" text-anchor="middle">timers</text>
+  <text x="826" y="506" font-size="8.5" fill="#999" text-anchor="middle">2d · 7d · 14d, from the type</text>
+  <rect x="580" y="566" width="250" height="88" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+  <text x="594" y="590" font-size="11" font-weight="700" fill="#333">producers</text>
+  <text x="594" y="610" font-size="9.5" font-family="monospace" fill="#666">month-init · mail-rule-sync</text>
+  <text x="594" y="628" font-size="9" font-weight="700" fill="#3f6d9c">on the tick</text>
+  <text x="594" y="645" font-size="8.5" fill="#999">idempotent by key · proof read back</text>
+  <rect x="850" y="566" width="240" height="88" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.6"/>
+  <text x="864" y="590" font-size="11" font-weight="700" fill="#333">sessions</text>
+  <text x="864" y="610" font-size="9.5" font-family="monospace" fill="#666">reminder-draft · booking</text>
+  <text x="864" y="628" font-size="9" font-weight="700" fill="#5a3f95">judgment only</text>
+  <text x="864" y="645" font-size="8.5" fill="#999">no tool that moves state</text>
+  <text x="1000" y="312" font-size="9.5" fill="#666" text-anchor="middle">adapters</text>
+  <g font-size="9" fill="#1f6e6e">
+    <use href="#cube" x="1000" y="330" color="#2b8a8a"/><use href="#key" x="1026" y="330" color="#2b8a8a"/><text x="1042" y="334">paperless</text>
+    <use href="#cube" x="1000" y="378" color="#2b8a8a"/><use href="#key" x="1026" y="378" color="#2b8a8a"/><text x="1042" y="382">zoho-books</text>
+    <use href="#cube" x="1000" y="426" color="#2b8a8a"/><use href="#key" x="1026" y="426" color="#2b8a8a"/><text x="1042" y="430">onpay</text>
+    <use href="#cube" x="1000" y="474" color="#2b8a8a"/><use href="#key" x="1026" y="474" color="#2b8a8a"/><text x="1042" y="478">mail</text>
+    <use href="#cube" x="1000" y="522" color="#2b8a8a"/><use href="#key" x="1026" y="522" color="#2b8a8a"/><text x="1042" y="526">workdrive</text>
+  </g>
+  <text x="998" y="554" font-size="8.5" fill="#999" text-anchor="end">one package each · its secret placed by name</text>
+
+  <!-- ============ EXTERNAL ============ -->
+  <rect x="1150" y="278" width="490" height="486" rx="10" fill="#e8f3f3" stroke="#2b8a8a" stroke-width="1.4"/>
+  <text x="1168" y="304" font-size="12" font-weight="700" fill="#1f6e6e">EXTERNAL SYSTEMS</text>
+  <text x="1330" y="304" font-size="10" fill="#999">reached only through an adapter</text>
+  <use href="#cyl" x="1250" y="364" color="#2b8a8a"/>
+  <text x="1250" y="400" font-size="9.5" fill="#666" text-anchor="middle">Paperless</text>
+  <text x="1250" y="414" font-size="8.5" fill="#999" text-anchor="middle">documents in · rules out</text>
+  <use href="#cyl" x="1500" y="364" color="#2b8a8a"/>
+  <text x="1500" y="400" font-size="9.5" fill="#666" text-anchor="middle">Zoho Books</text>
+  <text x="1500" y="414" font-size="8.5" fill="#999" text-anchor="middle">the bill · the payment</text>
+  <use href="#cyl" x="1250" y="510" color="#2b8a8a"/>
+  <text x="1250" y="546" font-size="9.5" fill="#666" text-anchor="middle">WorkDrive</text>
+  <text x="1250" y="560" font-size="8.5" fill="#999" text-anchor="middle">the archive · seven years</text>
+  <use href="#cyl" x="1500" y="510" color="#2b8a8a"/>
+  <text x="1500" y="546" font-size="9.5" fill="#666" text-anchor="middle">OnPay</text>
+  <text x="1500" y="560" font-size="8.5" fill="#999" text-anchor="middle">the payroll run</text>
+  <use href="#mail" x="1560" y="650" color="#2b8a8a"/>
+  <text x="1560" y="680" font-size="9.5" fill="#666" text-anchor="middle">mail</text>
+  <text x="1560" y="694" font-size="8.5" fill="#999" text-anchor="middle">the reminder, nothing else</text>
+
+  <!-- ============ SWEEPS ============ -->
+  <path d="M 1224 366 C 1180 362, 1100 334, 1022 331" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+  <text x="1122" y="322" font-size="9" fill="#1f6e6e" text-anchor="middle">webhook in</text>
+  <path d="M 1018 516 C 1090 508, 1150 500, 1224 498" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+  <text x="1122" y="492" font-size="9" fill="#1f6e6e" text-anchor="middle">effect out</text>
+  <path d="M 1224 526 C 1160 546, 1090 552, 1022 534" fill="none" stroke="#2b8a8a" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mT)"/>
+  <rect x="1074" y="566" width="104" height="18" rx="9" fill="#2b8a8a"/>
+  <text x="1126" y="579" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">pkg 2026-09</text>
+  <text x="1190" y="579" font-size="9" fill="#1f6e6e">the proof</text>
+  <path d="M 1562 634 C 1576 520, 1584 300, 1544 174" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+  <rect x="1516" y="452" width="96" height="18" rx="9" fill="#2b8a8a"/>
+  <text x="1564" y="465" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">msg 7f2a</text>
+  <text x="1540" y="612" font-size="9" fill="#1f6e6e" text-anchor="end">the reminder goes out</text>
+  <path d="M 606 450 C 572 420, 542 372, 500 348" fill="none" stroke="#2e9e5b" stroke-width="2.2" marker-end="url(#mG)"/>
+  <text x="604" y="432" font-size="9" fill="#27824c" text-anchor="end">capture written</text>
+  <use href="#gate" x="480" y="344"/>
+  <text x="504" y="316" font-size="8.5" fill="#a34848" text-anchor="end">refuses what the descriptor bars</text>
+  <path d="M 466 348 C 452 352, 442 354, 430 357" fill="none" stroke="#2e9e5b" stroke-width="2.2" marker-end="url(#mG)"/>
+  <path d="M 760 312 C 758 278, 768 228, 788 184" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+  <text x="800" y="252" font-size="9" fill="#a97e26">decision delivered</text>
+
+  <!-- ============ LEGEND ============ -->
+  <rect x="40" y="800" width="1600" height="130" rx="10" fill="#fafafa" stroke="#d5d5d0"/>
+  <g font-size="10.5" fill="#555">
+    <use href="#person" x="70" y="838" color="#777"/><text x="92" y="842">people</text>
+    <use href="#repo" x="190" y="838" color="#777"/><text x="226" y="842">repository</text>
+    <rect x="330" y="829" width="70" height="18" rx="9" fill="#777"/><text x="410" y="842">record set</text>
+    <use href="#gear" x="520" y="838" color="#777"/><text x="540" y="842">machine</text>
+    <use href="#clock" x="640" y="838" color="#777"/><text x="658" y="842">timer</text>
+    <polygon points="760,826 782,838 760,850 738,838" fill="#fff" stroke="#c9962e" stroke-width="1.6"/><text x="792" y="842">decision</text>
+    <use href="#cube" x="900" y="838" color="#777"/><use href="#key" x="924" y="838" color="#777"/><text x="942" y="842">adapter · its secret</text>
+    <use href="#cyl" x="1120" y="838" color="#777"/><text x="1148" y="842">external system</text>
+    <use href="#gate" x="1300" y="838"/><text x="1318" y="842">the write gate</text>
+    <line x1="1440" y1="838" x2="1480" y2="838" stroke="#777" stroke-width="2" stroke-dasharray="4 3"/><text x="1490" y="842">proof coming back</text>
+  </g>
+  <g font-size="10.5" fill="#555">
+    <line x1="70" y1="878" x2="110" y2="878" stroke="#4a7fb5" stroke-width="3"/><text x="120" y="882">machinery — tick, timers, producers</text>
+    <line x1="390" y1="878" x2="430" y2="878" stroke="#c9962e" stroke-width="3"/><text x="440" y="882">decisions and proposals</text>
+    <line x1="620" y1="878" x2="660" y2="878" stroke="#2e9e5b" stroke-width="3"/><text x="670" y="882">records in git</text>
+    <line x1="790" y1="878" x2="830" y2="878" stroke="#7b5cb8" stroke-width="3"/><text x="840" y="882">sessions — judgment</text>
+    <line x1="1000" y1="878" x2="1040" y2="878" stroke="#2b8a8a" stroke-width="3"/><text x="1050" y="882">external systems · adapters</text>
+    <line x1="1240" y1="878" x2="1280" y2="878" stroke="#c05b5b" stroke-width="3"/><text x="1290" y="882">a refusal or a gate</text>
+    <line x1="1430" y1="878" x2="1470" y2="878" stroke="#8a8a86" stroke-width="3"/><text x="1480" y="882">people and places</text>
+  </g>
+  <text x="70" y="908" font-size="10.5" fill="#666">every arrow that leaves the host comes back with a proof · nothing reaches the record store except through the gate</text>
+  <text x="70" y="924" font-size="10.5" fill="#666">a session drafts and books; only a response sends, and only a proof moves a count</text>
+</svg>
