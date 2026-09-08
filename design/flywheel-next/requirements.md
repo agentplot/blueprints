@@ -1828,8 +1828,9 @@ requirements, iterated against the running rail rather than on paper.
     leak, and every use of the key is logged in the instance's own
     account. Revocation is deleting the role: the next tick refuses with
     the attention line 260 requires, and running work is not killed. The
-    instance registers the service's issuer as an identity provider
-    in its account and allows the role's session to be tagged, and the
+    customer registers the service's issuer as an identity provider
+    in their own cloud account and allows the role's session to be
+    tagged with the instance, and the
     token the service mints carries the instance as a principal tag,
     because a web-identity session takes its tags only from the token it
     presents. The only standing grants in that cloud account are
