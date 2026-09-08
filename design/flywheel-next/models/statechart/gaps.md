@@ -31,7 +31,7 @@ the operator may reverse by a response on the file; an entry with
   one decision with two answers, on the bolt, created by the citation
   region (`bolt.open[citations].moved`), not by planning. Planning
   follows the answer. A decision per answer would double-count the same
-  choice in the plan's count.
+  choice in the rail's count.
 
 - **11 "yes all".** The presenter expands `yes all` into one response
   per approve decision it delivered, each with its own id. If a
@@ -63,7 +63,7 @@ the operator may reverse by a response on the file; an entry with
   change.
 
 - **35 "replaced by planning's next proposal, silently".** A superseded
-  proposal leaves the plan with no tail entry, so an operator who was
+  proposal leaves the rail with no tail entry, so an operator who was
   reading the proposal sees it vanish and a new number appear. The
   register's retired entry lets a reply to the old number be reported
   as unapplicable. Stated; nothing better follows from "silently".
@@ -108,7 +108,7 @@ the operator may reverse by a response on the file; an entry with
 - **58 finding "about the session's own bolt".** A finding about the
   session's bolt becomes a `fast` unit in `proposed` targeting that
   bolt (S28's "routed to it as a proposal"). The requirement says "a
-  proposal on the plan for that thread" without saying unit or
+  proposal on the rail for that thread" without saying unit or
   elaboration. **Decision**: unit on the construction side,
   elaboration on the design side.
 
@@ -127,7 +127,7 @@ the operator may reverse by a response on the file; an entry with
 
 - **69 the operator's session "with the machinery's read tools".** The
   `operator-console` agent is given the read side of the `flywheel`
-  command (status, plan, the register) and the dictation grammar; it
+  command (status, rail, the register) and the dictation grammar; it
   cannot run an effect. Whether that is enough of "the machinery's
   tools" is the operator's to say after use. **Decision**.
 
@@ -213,7 +213,7 @@ the operator may reverse by a response on the file; an entry with
 
 - **122 "since the operator last reviewed".** The mark is a response
   `reviewed` given on the review page; it is recorded on the
-  organization's `plan` object, since there is no blueprints object
+  organization's `rail` object, since there is no blueprints object
   machine. Slight stretch of "the response is recorded with the object
   it concerns" (153).
 
@@ -230,7 +230,7 @@ the operator may reverse by a response on the file; an entry with
   unit came from a proposal or from a finding. `rename` names the
   proposed bolt and reaches every unit of the proposal targeting it.
   The cost: a proposal's yes cascades over a tick, one unit per object,
-  and the plan may show the proposal `approved` a tick before its last
+  and the rail may show the proposal `approved` a tick before its last
   unit is. **Decision**. A unit dropped inside a proposal is gone
   before the yes; the document still shows it, marked dropped on the
   page.
@@ -533,7 +533,7 @@ the operator may reverse by a response on the file; an entry with
 
 - **209 / 210 one form per kind.** The forms are named in
   `render_status` and the page binding and drawn nowhere yet; the
-  plan mockup (`plan-mockup.md`) predates 209 and shows decisions as
+  plan mockup (`rail-mockup.md`) predates 209 and shows decisions as
   cards but proposals and bolts as lists, so it is behind. The chat
   keeps the forms as one line each, which is 18's rule; a tracker's
   board shows only placement, so the tracker profile's status view is
@@ -607,7 +607,7 @@ the operator may reverse by a response on the file; an entry with
 
 - **216–217k dispatch.** Bound by `models/dispatch/model.md`; nothing
   in `machines/` names dispatch (C.1), so 216 and 217 are cited on the
-  sink and capture machines and on `deliver_plan`. The suffixed
+  sink and capture machines and on `deliver_rail`. The suffixed
   clauses 216a and 217a–k are traced through their base numbers:
   `satisfies` is integer in `schema.json` and `Vec<u32>` in the
   engine, and `check.py` reads a suffixed item as a clause of its base
@@ -652,7 +652,7 @@ the operator may reverse by a response on the file; an entry with
 - **228–231 packages and setup.** A package's install decision is the
   only setup item in the count; the `package-secret` and
   `host-enrol-lapsed` decisions are `attention`, outside it, as the
-  plan's attention lines are (14). **Decision**. `add-host` carries
+  rail's attention lines are (14). **Decision**. `add-host` carries
   the operator's platform credentials in the call and the binding
   says they are dropped after provisioning; nothing in the model can
   prove a negative, and the platform's own audit is the check. Stated.
@@ -787,7 +787,7 @@ the operator may reverse by a response on the file; an entry with
 
 - **150a intermittent hosts.** `host.work_waiting` is read by the
   hosts that are alive, since the away host reads nothing; a decision
-  on an object the away host holds stands numbered on the plan
+  on an object the away host holds stands numbered on the rail
   meanwhile and only its takeover is deferred. **Decision**. The stall
   clock pauses by advancing the recorded `idle_since` on return rather
   than by a paused clock in the engine, so no engine change and no
@@ -849,7 +849,7 @@ the operator may reverse by a response on the file; an entry with
   it carries a reply; whether a carried remainder ages is still
   unstated. **Open**. Model access on
   the hosted tiers is the service's under the tagged role and metered
-  into the plan, or a key the operator places, and 269 states it while
+  into the rail, or a key the operator places, and 269 states it while
   `identity.yaml` `plans.limits` carries `model_usage` (**Decision**);
   which provider the service's access resolves to, and how a placed key
   is metered against a plan that includes usage, are unbound. **Open**. The microVM
@@ -1018,7 +1018,7 @@ the operator may reverse by a response on the file; an entry with
   ladder is a shipped definition an installer overrides, an organization
   package (228), or a default the sync writes only where a payment
   provider is bound decides what `fw-identity-sync` writes on such an
-  install and what the plan surface shows there. **Open**. **The update
+  install and what the rail surface shows there. **Open**. **The update
   path when the binary's version moves ahead of an installed control
   plane** has a failure mode and no operation: 252 refuses a tool whose
   permission the environment lacks, but who runs the sync in an installed
@@ -1040,7 +1040,7 @@ the operator may reverse by a response on the file; an entry with
 - **306–314 the phone.** Ruled: parity is a requirement of the first
   build and not a surface ruling, the phone being the same served bundle
   under 760px with two tabs and a full-screen dock; deep links from every
-  chat rendering, notification and plan line; the notification the chat
+  chat rendering, notification and rail line; the notification the chat
   sink's own with no push of the machinery's; one request and no client
   state a reload loses; every answer one tap or one short reply; the
   management console and the managed add-host journeys completing on a

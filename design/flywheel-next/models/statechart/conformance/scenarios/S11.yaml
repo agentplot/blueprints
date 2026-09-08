@@ -1,5 +1,5 @@
 scenario: S11
-title: forty commits in a week, no claim changed; no verdict recomputed; the plan did not change
+title: forty commits in a week, no claim changed; no verdict recomputed; the rail did not change
 profiles: [all]
 satisfies: [101]
 invariants: [I10]

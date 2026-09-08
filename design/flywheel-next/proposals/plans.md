@@ -16,7 +16,7 @@ refused add, never a stopped loop.
 | plan | tier | who | what it unlocks | limits |
 |---|---|---|---|---|
 | **Free** | 0 · your computer | one person, own hardware | the binary, GitHub device flow, your own GitHub App and chat bot, every package, every surface | none we enforce; nothing runs on our side |
-| **Hobby** | 1 · cloud agent | one person who closes the laptop | the service's bot and App, captures and chat while your machines sleep, the plan in Slack or Discord, the page at a served name. No API key needed: chat is buttons and slash commands, free text is interpreted in the page, captures are triaged in a daily batch | 1 organization · 1 member · no pools · captures included per month on the small model class |
+| **Hobby** | 1 · cloud agent | one person who closes the laptop | the service's bot and App, captures and chat while your machines sleep, the rail in Slack or Discord, the page at a served name. No API key needed: chat is buttons and slash commands, free text is interpreted in the page, captures are triaged in a daily batch | 1 organization · 1 member · no pools · captures included per month on the small model class |
 | **Pro** | 1 + 2 | one person with more to build | Hobby plus pools with an included hour allowance and metered overage, the package store, the book view, presets, and immediate triage and free text in chat | 3 organizations · 1 member · pool hosts up to 8 GB · included pool hours · included model budget |
 | **Team** | 2 · pools | a team | Pro plus members with roles, ownership and assignment, the management console, identity administration, pools up to 32 GB, priority ticks, and a model class raisable per type and stage | per-seat · unlimited organizations · pooled pool hours |
 | **Enterprise** | 3 · your account | a company with a security policy | Team plus your own AWS account in either shape — stores only, or stores and compute with dedicated dispatcher and pools created from the console — SSO and SCIM through your identity provider, audit export, private pool images, an SLA | custom |
@@ -61,7 +61,7 @@ own key is metered on none of it.
 **Hobby is cheap to run because it spends almost no model.** Its chat is
 structured. A decision carries its answers as buttons, and free text in chat is a
 slash command with its arguments (`/fw yes 412`, `/fw capture <text>`), so
-answering, capturing and delivering the plan cost no model call at all. Free-text
+answering, capturing and delivering the rail cost no model call at all. Free-text
 interpretation happens in the page instead, where the model running in the
 browser does the interpreter's job at no cost to us (216a). A capture arriving
 from a GitHub webhook or a chat interaction is written immediately, which needs
@@ -78,7 +78,7 @@ A budget spent is one attention line and a slower cadence, never a stopped loop:
 free text falls back to the page's browser model and self-contained captures to
 the daily batch. The runners heading on a host's detail shows which key that host
 uses and the month's model spend beside the pool hours, and the tier statement
-names which model provider sees plan text and messages.
+names which model provider sees rail text and messages.
 
 ## Enterprise — your account, in two shapes
 
@@ -94,7 +94,7 @@ our side is the control plane alone: a **registry** of organization names, tier,
 health and counters; the **deployer**, which applies the stack through your role
 and stamps our binary's version; and **identity**, the Frontegg environment
 holding the redirect entry for your host's served name. The chat application is
-still ours, which is what keeps plan lines arriving from one bot. This is design
+still ours, which is what keeps rail lines arriving from one bot. This is design
 C in security.md §4.
 
 Enterprise includes both. Under the second shape the console offers dedicated

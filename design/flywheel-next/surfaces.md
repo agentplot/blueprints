@@ -1,6 +1,6 @@
 # Flywheel next — surfaces
 
-The surfaces the operator works: the plan page with its rail, board,
+The surfaces the operator works: the page with its rail, board,
 dock and capture box; the board's three views, phases, map and book;
 the artifact views behind every object; the flywheel instrument; the
 hosts surface and the account item; identity, members and owners; the
@@ -16,17 +16,17 @@ Sources and precedence:
 |---|---|
 | `requirements.md` | the contract; this document may not contradict it. A.2, B.4, B.6, 155, 193–194, 196, 209–214 bind the surfaces directly: 213 the artifact views, 214 the flywheel instrument. A.26 (218–222, 233) binds the account item; A.28 (228–232) the hosts surface and enrolment; A.29 (234–237) members and owners; A.30 (238–239) environments and the image; A.31 (240–242) pools; A.32 (243–255, with 247a) the two identity kinds, membership, roles, permissions, flags, the degraded page and the upgrade. |
 | `models/context-map/model.md` §5, §6 | the map's rendering at both levels; the current text of 198–202 |
-| `models/statechart/model.md` §5 | the plan's derivation, numbers, decision catalogue, sinks, responses and tool surface |
+| `models/statechart/model.md` §5 | the rail's derivation, numbers, decision catalogue, sinks, responses and tool surface |
 | `models/statechart/profiles/surfaces.yaml` | the tool catalogue the page's controls call (193); the account, members, owner, hosts-surface and instrument bindings |
 | `models/statechart/profiles/identity.yaml` | the two identity kinds, `github` and `frontegg`; the device flow and the authored operators list, the hosted login and Application assignment; the roles, the `fw.*` permissions per tool, the `fw.ff.*` flags and their defaults, the degraded page, the identity tools and the upgrade |
 | `models/statechart/profiles/host.yaml` | the identity kind a host declares, its one address and the localhost port on the operator's own computer, the environment providers, the image, the pool declaration, packages and add-host |
 | `models/statechart/machines/pool.yaml`, `machines/engine/sink.yaml` | the pool's image and hosts regions; one sink per member with its own mark |
 | `models/dispatch/model.md` §1–§5 | the vocabulary of a host's parts: presenter, capture endpoint, triage, interpreter, adapters, runners, placements |
-| `plan-mockup.md` | the seed: organization willdan, 2026-09-04 07:40, decisions 412–421 |
-| `mockups/rail-and-board.html` | the direction for the plan page; illustrates §1.1–§1.2, §1.4–§1.11, and §1.13's switcher, identity block and sign-out. It carries no management surface: hosts, the package store, the settings form and the wizards are the console's |
+| `rail-mockup.md` | the seed: organization willdan, 2026-09-04 07:40, decisions 412–421 |
+| `mockups/rail-and-board.html` | the direction for the page; illustrates §1.1–§1.2, §1.4–§1.11, and §1.13's switcher, identity block and sign-out. It carries no management surface: hosts, the package store, the settings form and the wizards are the console's |
 | `mockups/management-console.html` | the management surfaces, drawn in Cloudscape; illustrates §1.12, §1.13's settings, hosts and organization-store entries, and §1.14, with "+ organization" and "retire organization" beside "+ host" |
 | `mockups/context-map-ddd.html` | the adopted map model drawn at both levels; illustrates §1.3 |
-| retired mockups (workbench, queue, deck, river, v1 context map) | removed from the tree on 2026-09-07; §5 cites them by name for the rulings they produced; their seed lives in rail-and-board and `plan-mockup.md` |
+| retired mockups (workbench, queue, deck, river, v1 context map) | removed from the tree on 2026-09-07; §5 cites them by name for the rulings they produced; their seed lives in rail-and-board and `rail-mockup.md` |
 
 Where two mockups disagree, rail-and-board and context-map-ddd win.
 Every statement is numbered S1, S2, … so a claim or a work order can
@@ -38,9 +38,9 @@ were settled, not their place on the page.
 
 ## 1. Surfaces
 
-### 1.1 The plan page
+### 1.1 The page
 
-- **S1.** The plan page is one page, served on the operator's private
+- **S1.** The page is one page, served on the operator's private
   network, that works on a phone (155). It has four regions: a header,
   a machinery strip, a rail, and a board. A dock opens over the board.
 - **S2.** The header shows the organization, the as-of time of the
@@ -49,7 +49,7 @@ were settled, not their place on the page.
   responses sent with a control that opens the sent log, a theme
   control (light, dark, system), and the account item at its right
   (S152).
-- **S3.** The rail is titled "Decisions". It is one plan delivery
+- **S3.** The rail is titled "Decisions". It is one rail delivery
   (model 5.5): the numbered decisions in the model's order, approve
   then decide then answer, each group sorted by number; then attention,
   outside the count; then the SINCE tail, outside the count. It is the
@@ -78,7 +78,7 @@ were settled, not their place on the page.
 - **S7.** "yes all" sends one `answer` per approve decision, in number
   order, each recorded on its own (model 5.6). It never sends a batch.
   Every answer on the rail, that one included, is under
-  `fw.plan.answer`, so on a hosted tier a viewer reads the rail's
+  `fw.rail.answer`, so on a hosted tier a viewer reads the rail's
   cards with no answers on them and no "yes all" (249).
 - **S8.** Attention lines carry one-word answers: takeover or wait on a
   lost host; ok on a response that could not apply, on an uncovered
@@ -356,7 +356,7 @@ were settled, not their place on the page.
 
 ### 1.8 The status view on a phone
 
-- **S38.** Under 760px the plan page is two tabs at the foot,
+- **S38.** Under 760px the page is two tabs at the foot,
   Decisions and Board, each with its count badge. The rail is the
   Decisions tab, unchanged. The Board tab stacks the four lanes in
   order; its header switches to the map, rendered as the stacked list
@@ -592,7 +592,7 @@ were settled, not their place on the page.
   repository, and no host or session uses a personal token or an
   operator's identity for git (251).
 - **S116.** The host's "agent" is the name on this surface for the job
-  that reads the plan and the objects, answers the operator in chat,
+  that reads the rail and the objects, answers the operator in chat,
   and proposes writes as tool calls the operator confirms (194): the
   dispatch model's interpreter job. The chip's hint says so: "reads and
   answers; every write is a proposed call you confirm". The model keeps
@@ -961,7 +961,7 @@ were settled, not their place on the page.
   roles beside them (248), one choice sending one
   `assign(decision, owner)` response, logged like any other;
   "unassign" sends the same with no owner. It is guarded by
-  `fw.plan.assign`, so on a hosted tier a reviewer reads the chip and
+  `fw.rail.assign`, so on a hosted tier a reviewer reads the chip and
   has no control. Nothing about the decision changes but its chip and
   who filters it in.
 - **S171.** The rail's filter is mine · all, default all. mine shows the
@@ -1000,7 +1000,7 @@ page shows after.
 
 - **S41.** 1. Rail: Enter on card 422 opens the proposal page in the
   dock; the sheet in the gate lights. 2. Dock: the bolt select on unit
-  u4 changed to plan-tail → `answer(422, "u4: bolt plan-tail")`, sent
+  u4 changed to rail-tail → `answer(422, "u4: bolt rail-tail")`, sent
   the moment it is given; the log gains one line; the sheet's foot
   counts one per-unit response. 3. Dock: drop on u2, which u3 depends
   on → refused inline with the reason and "drop u3 too"; taking the
@@ -1010,14 +1010,14 @@ page shows after.
   cursor")`. 6. Dock footer: yes → `answer(422, yes)`. 7. The sheet
   leaves the gate; each bolt appears or grows in Construction with its
   units queued or building, dependency-free units starting at once;
-  SINCE gains "accepted · plan atlas · n units on m bolts"; the next
+  SINCE gains "accepted · rail atlas · n units on m bolts"; the next
   decision that is the operator's is each bolt's close (13).
 
 ### 2.3 Redo with notes
 
 - **S42.** 1. Dock, proposal page: text in "that's all wrong" and
   "redo 422" → `answer(422, redo, <notes>)`. 2. The proposal is
-  withdrawn: its sheet leaves the gate, SINCE gains "redo · plan atlas ·
+  withdrawn: its sheet leaves the gate, SINCE gains "redo · rail atlas ·
   withdrawn · planning charged again", and a planning-in-progress row
   appears in the gate with the operator's notes and a session chip. 3.
   When planning exits, a new proposal arrives under a new number (model
@@ -1100,7 +1100,7 @@ page shows after.
   page: every difference with a link, and the review history with the
   mark. 3. A map link opens the element's page; a book link jumps to
   its anchor; an element's ref opens the chapter. 4. "mark reviewed" →
-  `reviewed` on the plan object; the mark moves to now; both views
+  `reviewed` on the rail object; the mark moves to now; both views
   show nothing changed (122).
 
 ### 2.10 A blocked session's question
@@ -1271,7 +1271,7 @@ page shows after.
   same laptop is a second port (232). 2. Opening it with no session
   shows the device flow: a code and github.com/login/device. Chuck
   enters the code there and approves, and the page waits until GitHub
-  confirms (253). 3. The page turns to the plan: the account item
+  confirms (253). 3. The page turns to the rail: the account item
   reads chuck, the GitHub username, and the header count is
   willdan's, the organization whose operators list carries chuck. As a
   listed operator chuck holds every permission, and the flags stand at
@@ -1282,7 +1282,7 @@ page shows after.
   the same way with the Frontegg user as the identity, the GitHub
   username beside it for authorship, and that account's roles (244,
   246). 5. A first hosted sign-in with no GitHub connection lands on
-  the plan all the same, with "connect GitHub" in the identity block;
+  the rail all the same, with "connect GitHub" in the identity block;
   chuck may respond and may not be an author until it is connected.
 
 ### 2.22 A second answer refused
@@ -1448,7 +1448,7 @@ where a thing sits, never by its form.
 | h, l | none | not bound as movement |
 
 - **S57.** The one-axis rule: the rail is one list and j and k walk
-  it. There is no second axis anywhere on the plan page; h and l move
+  it. There is no second axis anywhere on the page; h and l move
   nothing. A key that a card does not offer is refused with the card's
   answers listed, never remapped.
 - **S58.** Modes, how each is entered and left:
@@ -1543,7 +1543,7 @@ Dated 2026-09-05.
   operator's yes creates or registers it (206). Both map mockups, which
   added the repository on one click, are corrected here. The baseline
   decision arrives after the first planning runs, not at the add (104).
-- **S73.** Marking reviewed is a response on the plan object, recorded
+- **S73.** Marking reviewed is a response on the rail object, recorded
   like any other (122, statechart §10), under `fw.review.mark` (249).
   The rail-and-board map logged it
   as a dictation; it is one recorded response and moves both the map's
@@ -1658,7 +1658,7 @@ Dated 2026-09-07.
   sign-in, and the refusal is recorded and read under attention. The
   local-user case is rejected because it gave one operator two names
   and left a response with no identity to carry (153).
-- **S184.** One board, refused before recorded (235). The plan is one
+- **S184.** One board, refused before recorded (235). The rail is one
   list from one register and every member reads the same numbers, so
   a decision answered by one member is answered for all. The second
   response is refused before any record exists rather than recorded

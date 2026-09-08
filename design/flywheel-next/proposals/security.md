@@ -59,13 +59,13 @@ that answers a chat message, one bounded call per message, and the triage of a s
 capture whose whole content is already in the queue, both bounded per tick with the remainder
 carried to the next (269). What it never does is follow a capture's pointer into the raw store
 (263), and it never runs an elaboration or a construction session; those need a machine of the
-customer's own or a pool host. So plan text and chat messages pass through the model the tier
+customer's own or a pool host. So rail text and chat messages pass through the model the tier
 role reaches, and transcripts and code do not.
 
 **Unwrapped for a tick and no longer.** The ticker assumes the organization's role, calls
-`Decrypt` once, opens that organization's directory, evaluates its plan, writes its effects
+`Decrypt` once, opens that organization's directory, evaluates its rail, writes its effects
 and drops the key. The plaintext data key exists in a process evaluating that organization's
-plan and at no other moment.
+rail and at no other moment.
 
 **What an attacker actually gets.** From a stolen disk, a lost volume or a leaked snapshot,
 ciphertext with no data key on it. From a stolen backup of the queue or the index, ids and
@@ -153,7 +153,7 @@ external id, and never hold their content at all. Their GitHub App, their bot, t
 **Covers** everything but the metadata we need for billing and support and our own supply
 chain, since our binary still runs there. **Costs** the slowest onboarding, a per-customer
 always-on floor, and a support story where we cannot see what broke. The chat application
-stays ours even here, so plan lines still arrive from one bot and 277 holds; what moves is the
+stays ours even here, so rail lines still arrive from one bot and 277 holds; what moves is the
 binary, the keys and the App. **Breaks** tier 1's economics, which is why it is Enterprise's second shape and never a rung of
 its own. **Smallest proof:** `flywheel init` into a fresh customer
 account reaching a first green tick, with an egress check showing the control plane received
@@ -224,9 +224,9 @@ change of the key's home and one role's trust policy, not a re-architecture.
 **The solo developer who adds a cloud agent.** You run the flywheel on your own machine and
 sign in with GitHub device flow; nothing leaves the laptop. You want captures read and chat
 answered while it sleeps, so you open a hosted account and turn on the cloud agent. What we
-can say: your code never goes to it, because the machine that reads your plan is declared to
+can say: your code never goes to it, because the machine that reads your rail is declared to
 hold no repository at all. Your transcripts never go to it either — they stay on your machine,
-and the session that reads them runs there. Your plan and your decisions do go, and everything
+and the session that reads them runs there. Your rail and your decisions do go, and everything
 we hold about you is encrypted at rest under a key that exists for your organization alone and
 is unwrapped only while your plan is evaluated. Turn the cloud agent off and the same binary
 keeps ticking on your laptop.
@@ -234,7 +234,7 @@ keeps ticking on your laptop.
 **The team on the hosted tier.** You sign in, we create the two repositories under your own
 GitHub account, and you invite our bot to a channel. What we can say: everything we hold about
 you is encrypted at rest under a key that exists for your organization alone, and it is
-unwrapped only while your plan is being evaluated — a stolen disk or a leaked snapshot of ours
+unwrapped only while your rail is being evaluated — a stolen disk or a leaked snapshot of ours
 is ciphertext. Your code only ever exists on a machine created for your organization and
 destroyed when the work ends. Your raw capture material is read only on your own machine or on
 such a machine, and never on anything shared. Your repositories sit on GitHub under GitHub's

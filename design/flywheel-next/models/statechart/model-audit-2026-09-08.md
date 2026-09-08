@@ -15,7 +15,7 @@ still carry the pre-amendment rulings, and in three of §12's answers.
 | section | clauses | model.md | verdict | note |
 |---|---|---|---|---|
 | A.1 the operator's response | 1–6 | §2.2, §5.6, §5.7 | current | undo-or-defer list, `applied_responses`, exactly-once all stated |
-| A.2 the plan | 7–19 | §5.1–§5.7 | current | derivation, register, tail, capture box |
+| A.2 the rail | 7–19 | §5.1–§5.7 | current | derivation, register, tail, capture box |
 | A.3 intents and curation | 20–23 | §9, §8.1 | current | |
 | A.4 elaborations and types | 24–27 | §10.4 | current | |
 | A.5 planning and construction | 28–57 | §6, §7 | current | |

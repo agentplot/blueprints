@@ -14,7 +14,7 @@ given:
     - {name: dispatcher, bound: 0, declares: {kinds: [], presents: [chat]}}
   sinks:
     - {id: sink/chat, kind: chat, surface: "#flywheel", pinned_to: dispatcher, routes: [approve, decide, answer, attention]}
-    - {id: sink/page, kind: page, surface: /plan, routes: [approve, decide, answer, attention]}
+    - {id: sink/page, kind: page, surface: /rail, routes: [approve, decide, answer, attention]}
   register: {next: 100}
 when:
   - host: {name: mac-mini, and: studio, and_also: dispatcher, concurrent: true}
@@ -22,8 +22,8 @@ when:
   - tick: {}
   - tick: {}
 then:
-  transitions: [{object: plan/willdan, from: current, to: numbering}, {object: sink/chat, from: idle, to: delivering}, {object: sink/page, from: idle, to: delivering}]
-  effects: [{do: number_decisions, count: 1}, {do: deliver_plan, count: 2}]
+  transitions: [{object: rail/willdan, from: current, to: numbering}, {object: sink/chat, from: idle, to: delivering}, {object: sink/page, from: idle, to: delivering}]
+  effects: [{do: number_decisions, count: 1}, {do: deliver_rail, count: 2}]
   decisions: [{after_step: 4, present: [intent-proposed, unit-proposed], count: 2, numbers: {intent/a/intent-proposed: 100, unit/atlas/u/unit-proposed: 101}}]
   leases: {sink/chat: {holder: dispatcher, holders_ever: 1}, sink/page: {holders_ever: 1, holder_in: [mac-mini, studio]}}
   state_store: {chat_lines: 2, chat_numbers: [100, 101], page_numbers: [100, 101], chat_links_page: true, dispatcher_took_object_leases: 0}

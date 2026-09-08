@@ -15,7 +15,7 @@ scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
 how the engine runs them; 3 names every store; 4 binds each profile; 5
-derives the plan; 6 to 11 cover planning, lines, the ledger, signals,
+derives the rail; 6 to 11 cover planning, lines, the ledger, signals,
 sessions and hosts; 12 answers section 10 of the requirements one
 heading at a time; 13 gives the crate boundary; 14 walks S1 to S34; 15
 checks the invariants; 16 describes the diagrams; 17 covers the agent
@@ -55,7 +55,7 @@ uv run --with pyyaml python3 machines/render.py
 
 An object carries a machine when it has a lifecycle the machinery must
 remember between runs and share between hosts (75), or when it is a
-place a plan decision can stand. Everything else is a record attribute
+place a rail decision can stand. Everything else is a record attribute
 of some object, or a file the machinery reads as evidence.
 
 | machine | kind | governs | parent · owns | file |
@@ -84,7 +84,7 @@ of some object, or a file the machinery reads as evidence.
 | `repository` | object | a built repository the flywheel tracks: proposed, creating, registering, covering, tracked (206) | organization · — | `machines/repository.yaml` |
 | `pool` | object | a platform that provisions hosts on demand from the image, up to a bound, and retires them idle: image current or behind; hosts adding, steady, retiring (240–242) | organization · — | `machines/pool.yaml` |
 | `package` | object | one package of one kind — adapter, chat sink, runner, router, sign-in, type, producer, vocabulary, template, scenario pack — added, awaiting install, needing a secret, installing, installed, disabled, removed (228, 229) | organization · — | `machines/package.yaml` |
-| `host`, `lease`, `response`, `plan`, `sink` | engine | a host, an object's ownership, one operator response, the plan's decision register, one delivery sink | — | `machines/engine/` |
+| `host`, `lease`, `response`, `rail`, `sink` | engine | a host, an object's ownership, one operator response, the rail's decision register, one delivery sink | — | `machines/engine/` |
 
 ### 1.2 What is an attribute, not a machine
 
@@ -114,7 +114,7 @@ of some object, or a file the machinery reads as evidence.
   fingerprint includes every unconsumed ask, so it is planning's input,
   and `propose_units` sets `consumed_by`.
 - **decision** — a state of its object (section 5), never a record of
-  its own. What is recorded about it is one line in the plan's
+  its own. What is recorded about it is one line in the rail's
   register: its id, its number, and when it was numbered.
 - **delivery mark** — the `delivered_at` field of a `sink` record: the
   one recorded piece of state behind the tail (14).
@@ -146,7 +146,7 @@ Three relations, and only three:
    `place` and `services`; `work-item` and `elaboration` have `life` and
    `place`; `intent.open` has `material` and `close`; `bolt.open` has
    `citations` and `close`; `session.alive` has `activity` and
-   `presence`; `plan` has `register` and `status`. One transition per
+   `presence`; `rail` has `register` and `status`. One transition per
    region per tick. A region reads a sibling through `{region: {name,
    in}}`, and the name may be a dotted path into a submachine run beside
    it (`place.place.life`), never a path into another object.
@@ -215,7 +215,7 @@ engine never interprets a value; it compares.
 this object, whose answer matches `X` (a bare word, or `word <arg>` /
 `word: <text>` binding `$response`), and whose id is not in the object's
 `applied_responses`. A response concerns the object in one of two ways:
-as an **answer**, it names a decision number that the plan's register
+as an **answer**, it names a decision number that the rail's register
 resolves to this object's active decision state; as a **dictation**, it
 names the object outright (12). A dictation may name only a transition
 that undoes or defers work — `drop`, `hold`, `release`, `send back`,
@@ -254,10 +254,10 @@ a second pane by that name.
 
 ### 2.4 Decisions and the tail
 
-A state with a `decision:` is a plan decision while it is active, and
+A state with a `decision:` is a rail decision while it is active, and
 nothing else is (9). A state with a `tail:` is reported once in a
 sink's tail when entered after that sink's delivery mark. Section 5
-derives the plan from this.
+derives the rail from this.
 
 ### 2.5 The engine/domain line
 
@@ -272,7 +272,7 @@ no atom with the flywheel.
 
 The domain is `atoms.yaml` plus every file under `machines/` except
 `engine/` (87). The five engine machines (`host`, `lease`, `response`,
-`plan`, `sink`) are shipped with the engine because they name no domain
+`rail`, `sink`) are shipped with the engine because they name no domain
 object; they are still data, so their windows (5m stale, 30m gone, 24h
 expiry, 30 days of register retention, 24h enrolment token) are the
 operator's to change through `flywheel.yaml` `engine:`, read at load with
@@ -292,7 +292,7 @@ needed to walk S1 to S34.
 
 | store | holds | real system | profile |
 |---|---|---|---|
-| **state store** | every object's record: state per region, `entered_at`, `seq`, record fields, `applied_responses`; the thread on the object (questions, answers, notes, exits, offers, refusals, moves); op-responses; leases; host heartbeats; the plan's register; the sinks' marks; asks; the run record | tracker profile: GitHub issues, milestones and a Projects v2 board in the organization's `flywheel-state` repository. git-only profile: the `flywheel-state` git repository, branch `main` | differs |
+| **state store** | every object's record: state per region, `entered_at`, `seq`, record fields, `applied_responses`; the thread on the object (questions, answers, notes, exits, offers, refusals, moves); op-responses; leases; host heartbeats; the rail's register; the sinks' marks; asks; the run record | tracker profile: GitHub issues, milestones and a Projects v2 board in the organization's `flywheel-state` repository. git-only profile: the `flywheel-state` git repository, branch `main` | differs |
 | **blueprints repository** | the organization's (203): chapters that include their claims by anchor, the standing specifications (`openspec/specs/<capability>/spec.md`) that hold the claims themselves, the system context map (`context-map/`, the scope surface), the manifest `flywheel.yaml`, OpenSpec change directories (one per intent) and their archive, the shipped instructions, schemas, skills and type files under `flywheel/`; the machinery's own, under `flywheel/` only: captures, signals and moves, the ledger and the rendered maps | git repository, mdBook, OpenSpec, recutils files parsed by the binary | same in every profile |
 | **built repositories** | its owners' (203): the shared line, bolt lines, places; code; as-built statements; persona definitions; the repository's declarations under `flywheel/` — `services.yaml` (47), read at the head of the bolt's place and changed only by a chore (48), `commit-types.yaml` (185); the standing specifications (`openspec/specs/`), which are the as-built: every requirement in them names the claim and version it serves (99); the machinery's own: OpenSpec change directories for units, holding the finding and chore documents, the acceptance file, and under the machinery's prefix the index of that standing set written at landing (192), plus an untracked `.flywheel/` per place | git repositories with their own merge gates | same |
 | **the multiplexer** | pane existence, activity and the last keystroke per session | herdr, read through `herdr agent status` | same; evidence only, never durable state |
@@ -322,8 +322,8 @@ worktree's presence — is not state and is re-observed after a restart
 | capture, signal, move | the recutils files in the blueprints repository | the status view's unmoved counts |
 | host, lease | the heartbeat and lease records in the state store | the status view's "alive/stale" |
 | response | the op-response record in the state store | the ✅ reaction on the chat message |
-| plan decisions | derived every tick from every object's active states | the chat message, the page, the decision issue |
-| decision numbers | the plan's register in the state store | the number shown on every surface |
+| rail decisions | derived every tick from every object's active states | the chat message, the page, the decision issue |
+| decision numbers | the rail's register in the state store | the number shown on every surface |
 | the tail | derived from the objects' `entered_at` after a sink's mark | the chat message, the page |
 
 ### 3.3 Drift
@@ -379,7 +379,7 @@ declares: kinds=all repositories=atlas,switchboard unit_types=default,fast,chore
 last_seen: 2026-09-04T09:14:10Z
 ```
 
-A response, the plan's register, and a sink:
+A response, the rail's register, and a sink:
 
 ```
 %rec: op-response
@@ -394,8 +394,8 @@ given_at: 2026-09-04T07:41:12Z
 delivery: discord message 1421330001234 in #flywheel
 
 %rec: object
-id: plan/willdan
-kind: plan
+id: rail/willdan
+kind: rail
 state: register=current status=current
 next_number: 422
 register: 412 intent/atlas-provider-limits/intent-proposed/2026-09-04T06:10:00Z since=2026-09-04T06:10:04Z
@@ -563,7 +563,7 @@ operators:                   # membership, authored whole on a self-managed host
   - {github: sam}                                        # no chat address: a page sink only
 sinks:                       # where decisions and the tail go (82); one presenter each (148)
   chat: {discord: {guild: 118..., channel: flywheel}, routes: [approve, decide, answer, attention], cadence: "0 7,12,17 * * *", presenter: dispatcher}   # the shared channel: one sink, one mark, no member
-  page: {url: https://flywheel.tail1234.ts.net/willdan/plan, routes: [approve, decide, answer, attention]}   # the organization in the path (205a); each member's page sink has its own mark (236)
+  page: {url: https://flywheel.tail1234.ts.net/willdan/rail, routes: [approve, decide, answer, attention]}   # the organization in the path (205a); each member's page sink has its own mark (236)
   bell: {surface: "herdr:operator-desk", routes: [answer, attention, land-failed]}
 curation: {threshold: 12, cadence: "0 6 * * 1-5"}
 ```
@@ -578,7 +578,7 @@ shared, two are the profiles.
 | `profiles/host.yaml` | the world the machinery acts on: git, worktrunk `wt` (worktrees and tethered processes), portless, OpenSpec on both sides, the manifest's declarations, the repositories' service declarations. Its line-and-place half is swappable: a build with no construction may bind those effects to a recorded stand-in that writes each proof's evidence and touches no repository (93a, `workspace: recorded`) | yes |
 | `profiles/sessions.yaml` | the session binding: herdr panes, Claude Code, and the `flywheel exit\|offer\|note\|refuse` command sessions report through (67) | yes |
 | `profiles/sessions-stand-in.yaml` | the same names bound to a scripted player, swapped in by `flywheel scenario run` (93); never loaded by a host | test only |
-| `profiles/sessions.yaml` `runners.operator` | the same names with no agent at all: the machinery prepares the place and records the session, the plan shows it as the operator's to run, and the operator reports through the session command (93b) | yes, host-selected |
+| `profiles/sessions.yaml` `runners.operator` | the same names with no agent at all: the machinery prepares the place and records the session, the rail shows it as the operator's to run, and the operator reports through the session command (93b) | yes, host-selected |
 | `profiles/blueprints.yaml` | the blueprints repository as a store: ledger, captures, signals, moves, curation and planning inputs | yes |
 | `profiles/record-derived.yaml` | every evidence and effect that is a function of the object record and its thread, stated over six record operations (`get`, `put`, `append`, `list`, `responses`, `leases`) | yes |
 | `profiles/surfaces.yaml` | the sinks (chat, page, bell) and the review surfaces (plannotator for documents, lavish for rich pages) | yes |
@@ -596,7 +596,7 @@ the world is shared.
 ### 4.1 The tracker profile, in short
 
 - **Object** = an issue in `<org>/flywheel-state`, body = one fenced
-  record block, for every object with a plan-facing lifecycle (157).
+  record block, for every object with a rail-facing lifecycle (157).
   Milestone per bolt and per intent. Board columns are projections.
 - **Decision** = one issue per numbered decision, labelled
   `kind:decision`, titled `#<number> <kind> <object>`, opened by the
@@ -624,9 +624,9 @@ the world is shared.
 
 - **Layout**: one repository `<org>/flywheel-state`, branch `main` the
   shared line; `objects/<kind>/<id>/object.rec` and `thread.rec`;
-  `responses/`, `asks/`, `runs/`, `status.html`. The plan's register
-  and the sinks' marks are the `plan` and `sink` objects' records. No
-  plan page is committed (15). Leases and heartbeats are single-commit
+  `responses/`, `asks/`, `runs/`, `status.html`. The rail's register
+  and the sinks' marks are the `rail` and `sink` objects' records. No
+  rendering of the rail is committed (15). Leases and heartbeats are single-commit
   branches `lease/<id>` and `host/<id>`, replaced with
   `--force-with-lease`, so months of renewals add nothing to `main`'s
   history.
@@ -710,11 +710,11 @@ change directory (187), its session with its last activity (65–68),
 and, when a gathering covers it, the gathering it is in (188); the
 intent's surface lists its elaborations in order and opens each.
 
-## 5. The plan
+## 5. The rail
 
 ### 5.1 Derivation
 
-The plan is a pure function of the active states of every listed
+The rail is a pure function of the active states of every listed
 object, plus the register that numbers them:
 
 ```
@@ -726,7 +726,7 @@ decisions(objects, register) =
   drop decisions whose fold guard says they are shown with their parent
     (an elaboration proposed under a proposed intent)
   attach each decision's number from the register; a decision with no
-    entry is unnumbered, and the plan machine numbers it this tick
+    entry is unnumbered, and the rail machine numbers it this tick
   order: group (approve, decide, answer, attention), then number
 ```
 
@@ -740,12 +740,12 @@ machines.
 ### 5.2 Numbers
 
 Every decision carries a short number, unique in the organization,
-given once and never reused (15). The `plan` machine (one per
+given once and never reused (15). The `rail` machine (one per
 organization) holds the register: `next_number`, which only grows, and
 one entry per numbered decision (`decision id → number, since`). On a
 tick where a standing decision has no entry, `number_decisions` writes
-the entries and the bumped counter in one atomic write of the plan
-record; the plan's lease makes it single-writer. A decision's id
+the entries and the bumped counter in one atomic write of the rail
+record; the rail's lease makes it single-writer. A decision's id
 includes the `entered_at` of its state, so a decision state that is
 left and re-entered (a bolt's close offered, withdrawn by new work, and
 offered again; a deferred unit re-proposed after a week) is a new
@@ -818,8 +818,8 @@ manifest names is a sink with one mark and no member, and a bell on a
 named multiplexer surface is another. Each carries the decision
 kinds routed to it (82), a cadence, and its **delivery mark**. It is
 `due` when a decision routed to it was numbered after its mark, when
-its cadence fired, or when the operator asked (`plan` in chat, a
-reload). `deliver_plan` delivers the numbered decisions routed to the
+its cadence fired, or when the operator asked (`rail` in chat, a
+reload). `deliver_rail` delivers the numbered decisions routed to the
 sink and the tail since its mark, then advances the mark in the same
 write. The chat carries one line per decision with its number and a
 link to the page (18); the page shows the same numbers with the answers
@@ -1462,7 +1462,7 @@ section 8.2), rendered by the machinery into `flywheel/map/*.json` and
 into the book, all versioned with the book; the review view is
 `flywheel review` served at
 `/review`: the chapters and map nodes changed since the operator's
-last `reviewed` mark (a response on the plan object), with the previous
+last `reviewed` mark (a response on the rail object), with the previous
 version beside each (S25, 122).
 
 ### 10.7 The type registry
@@ -1596,7 +1596,7 @@ was expected; `retry` after the operator fixes it.
 Twelve object kinds carry a machine (section 1.1): intent, elaboration,
 bolt, unit, work-item, operator-session, claim, ledger-cell, capture,
 signal, curation and planning; five engine objects (host, lease,
-response, plan, sink); and seven templates (session, stage, line, place,
+response, rail, sink); and seven templates (session, stage, line, place,
 and the type families). Verdicts, moves, offers, as-built statements,
 asks, decision numbers, delivery marks and instructions are attributes
 or files (1.2). The machines relate by nesting (a state runs a
@@ -1627,9 +1627,9 @@ invisible to the machinery (10.2). The owner decides what an exit
 means (`self-closing` finishes on done; `standing` and `with-operator`
 ignore done; a stage judges by its join rule).
 
-### 12.4 How is the plan derived, and what makes a decision impossible to miss?
+### 12.4 How is the rail derived, and what makes a decision impossible to miss?
 
-Decisions are states with a `decision:` attribute; the plan is the fold
+Decisions are states with a `decision:` attribute; the rail is the fold
 of every listed object's active decision states, numbered from the
 register (5.1). A decision exists on every host on every tick while
 the state is active and vanishes when it is left, so there is no
@@ -1823,7 +1823,7 @@ nothing. `flywheel tick` and `flywheel request` are that same binary
 invoked by a control plane through the contract of 297, which provides
 the organization, its tier, the tagged role session, the cache and
 projection objects, the queue and the scratch budget, and takes back
-the cache uploaded, the projection written, the plan delivered and the
+the cache uploaded, the projection written, the rail delivered and the
 run record. Nothing is compiled differently for a hosted host: it runs
 the same bytes as a laptop and differs only in what its manifest binds
 (299).
@@ -1839,7 +1839,7 @@ conflict, presenters, uncovered objects, strays and holds, notification
 routing, dictated undoing, the tracker's direct action).
 
 **S1 — approve an elaboration from the phone.** `elaboration.proposed`
-(+`elaboration-proposed`, numbered #n by the plan). Discord reply `yes
+(+`elaboration-proposed`, numbered #n by the rail). Discord reply `yes
 n` → response `discord/<id>` resolved through the register to
 `elaboration/<id>/elaboration-proposed`; `{response: yes}` fires
 `proposed → approved`, `applied_responses += id` (−decision). Next tick
@@ -2088,7 +2088,7 @@ names #57, the register resolves it, the unit's transition applies it;
 the item runs `fast@3`'s one stage, `ff-apply`, archives its change and
 merges; `bolt.close` is
 offered and numbered afresh. At 16:00 the chat sink is due; its mark
-is 07:40; `deliver_plan` lists the items' and the unit's `merged`
+is 07:40; `deliver_rail` lists the items' and the unit's `merged`
 entries since then, and the only counted decision is `bolt-close`. #57
 is never reused; no rendering was stored.
 
@@ -2145,7 +2145,7 @@ directly, is removed. The intent's delta is archived into
 
 One per machine family, in the house style, each validated by
 `check.py` against the machines through its `data-state`,
-`data-decision` and `data-effect` attributes. Amber pills are plan
+`data-decision` and `data-effect` attributes. Amber pills are rail
 decisions; a decision is created on entering the state under the pill
 and retracted by the response that leaves it. Red solid edges write
 the ledger; red dotted edges read it.
@@ -2204,7 +2204,7 @@ Not shown: the `split` answer on an intent, the baseline fold, the
 The tick as a numbered walk, the two profile bindings as cards, the
 stores every profile shares, and the engine machines. The ledger is
 one of the stores read at step 3 and is written only through an
-effect at step 5 whose proof is a verdict record. The plan lane shows
+effect at step 5 whose proof is a verdict record. The rail lane shows
 the register numbering decisions and a sink delivering them; the
 response lane shows a reply resolved by number. Two decisions:
 `response-unapplicable` and `host-gone`. Not shown: the `uncovered`
@@ -2671,7 +2671,7 @@ One board: every member reads the one register, so numbers and count
 are the same; a retracted entry keeps `answered_by` and `answered_at`
 from the response, every member's delivery shows them, and the tool
 server refuses a second response to that number before any record
-exists (235; `plan.yaml` v3, `surfaces.yaml` `members`). Sinks are per
+exists (235; `rail.yaml` v3, `surfaces.yaml` `members`). Sinks are per
 member: the `sink` record carries `member`, and each member has one page
 sink with a delivery mark of its own. Chat sinks are one per member per
 chat address on their operators entry — a Discord user id, a Slack
@@ -2685,7 +2685,7 @@ and only the addresses are authored, so adding or removing a member is
 an act on the account and never a commit (247, 255). A decision's owner is its object's record
 `owner`, one member of the organization or nobody — a role authorizes
 and never owns — set by planning's proposal,
-by a type, or by the `assign <owner>` response the plan machine
+by a type, or by the `assign <owner>` response the rail machine
 applies through `assign_owner`, which refuses an argument that is not
 an identity in `operators:` (237); `filter own` on a member's sink
 narrows their rail and chat and nothing else.
@@ -2772,7 +2772,7 @@ organization's content. A store keyed per filesystem, volume, queue or
 table is not the promise; the promise is one level in, at the object
 (256). The key is unwrapped for the length of one tick and by the role
 that runs it alone, so the plaintext data key exists in a process
-evaluating that organization's plan and nowhere else (257). That role
+evaluating that organization's rail and nowhere else (257). That role
 is scoped to one organization by a session tag matched against the tag
 on every key and object it opens, so one compromised credential reaches
 one organization and no count of roles bounds the tenancy (259). The
@@ -2817,7 +2817,7 @@ binding and never a second machinery. On tiers 1 to 3 the host is one
 function per tier and each invocation is one organization's tick: it
 assumes the tier's role under the organization's session tag, downloads
 the warm cache, fetches, evaluates, pushes by compare-and-swap,
-delivers the plan, uploads the cache, wipes its scratch and exits,
+delivers the rail, uploads the cache, wipes its scratch and exits,
 retaining nothing between invocations (269). The sandbox is reused
 across organizations, so retaining nothing is the tick's own act:
 scratch wiped and the data key dropped before exit. A tick has a fixed
@@ -2836,9 +2836,9 @@ machine of the operator's own or to a pool host. It never holds code,
 because its declaration takes no object kind, no repository and no unit
 type (217), and a failure in one organization's tick ends that tick and
 no other (218). Model access on a hosted tier is the service's, carried
-by the tier role and metered into the plan, unless the organization
+by the tier role and metered into the rail, unless the organization
 places a model key of its own, and the tier statement names which model
-provider sees plan text and messages (261, 279, `host.yaml`
+provider sees rail text and messages (261, 279, `host.yaml`
 `tier.model`).
 
 The tick is invoked and not looped (270): a clock, a notification, an
@@ -2898,7 +2898,7 @@ and what stays on the service side is the control plane alone — a
 registry of organization names, tier, health and counters; the deployer;
 and the identity environment holding the redirect entry for the host's
 served name (276a, 208, 243, 291, `host.yaml` `tier.dedicated`). The
-chat application is still the service's, so plan lines still arrive from
+chat application is still the service's, so rail lines still arrive from
 one bot. Under that shape the console offers dedicated compute created
 in the organization's account by the deployer, each option stated with
 what it changes: the dispatcher invoked as a function or long-lived as a
@@ -2912,7 +2912,7 @@ shape, which the console does not offer and marketing does not show: the
 whole control plane installed in the customer's own accounts, which is
 §20 (296–305, 304). Chat on the hosted
 tiers may be the service's own Slack or Discord application scoped to
-the organization's channel, carrying plan text and interactions and
+the organization's channel, carrying rail text and interactions and
 nothing else, the record still naming who responded (277, `sink`
 machine). On the invoked placement Discord free text is the string
 option of the application's slash command, plain channel replies needing
@@ -2983,7 +2983,7 @@ the route (217i).
 `fw.ff.*` entitlement features plus a few stated limits, held by the
 identity provider and billed through the payment provider, read only
 from the token and the SDK (279, `identity.yaml` `plans`). A
-self-managed host has no plan and every flag stands at its definition
+self-managed host has no rail and every flag stands at its definition
 default. A plan hides and it meters and it never authorizes:
 permissions come from roles and are checked on every tool call, and
 exceeding a limit is one attention line and a refused add with the
@@ -2991,7 +2991,7 @@ reason, never a stopped loop (280). The ladder is five rungs over the
 four tiers: Free at tier 0; Hobby at tier 1, cheap to run and needing no
 model key of the operator's, its chat structured so no model call is
 spent on it — answers as buttons, free text a slash command with its
-arguments, the plan delivered at no model cost — its free text
+arguments, the rail delivered at no model cost — its free text
 interpreted in the page by the browser model instead and its
 self-contained captures triaged in one daily batch at the sweep on the
 small model class, with immediate triage and free text in chat unlocked
@@ -3011,12 +3011,12 @@ in-tick jobs run at (282, 294, `plans.limits`).
 
 Model cost is a plan fact of the same kind (294, `host.yaml`
 `tier.model`). The organization's own model key is welcome on every
-hosted plan and required on none, and an organization that places one is
+hosted rail and required on none, and an organization that places one is
 metered on none of the service's usage. Each plan includes a budget on
 the small model class for the jobs the dispatcher runs inside a tick,
 reading a capture and answering a message, stated as a count of captures
 and messages a month; usage past it is metered through the payment
-provider like any other overage. The model class per job is the plan's
+provider like any other overage. The model class per job is the rail's
 ceiling and the type's choice within it, small on Hobby and Pro and
 raisable per unit type, per elaboration type and per stage on Team and
 Enterprise (285, `stage.yaml`). A budget spent is one attention line and
@@ -3024,9 +3024,9 @@ a slower cadence and never a stopped loop, because the work still
 happens in the page's browser or in the daily batch (280, 216a, 281).
 The runners heading on a host's detail shows which model key that host
 uses and the month's model spend beside the pool hours, and the tier
-statement names which model provider sees plan text and messages (261).
+statement names which model provider sees rail text and messages (261).
 
-What `+ host` offers at all is the host's identity kind and the plan
+What `+ host` offers at all is the host's identity kind and the rail
 together (295, `host.yaml` `tier.add_offers`, `surfaces.yaml`
 `hosts_surface.add_offers`). A `github` host offers only hosts the
 operator controls — another computer of theirs, a virtual machine on
@@ -3036,7 +3036,7 @@ line offering to move the organization to the hosted service in place of
 the managed options (230, 247a). A `frontegg` host offers those and the
 managed ones beside them, each gated by its plan flag: the cloud agent
 from Hobby, a pool from Pro, and the dedicated compute of tier 3's second
-shape on Enterprise (276a, 279–282). An offer the plan does not unlock is
+shape on Enterprise (276a, 279–282). An offer the rail does not unlock is
 not shown, and the tool behind it is still guarded by its permission
 (250, 280).
 
@@ -3073,7 +3073,7 @@ can read (289).
 
 **Two products (296).** The **flywheel binary** is open source under a
 permissive licence and is everything a self-managed operator runs: the
-machines and the profiles, the page bundle with the plan console and the
+machines and the profiles, the page bundle with the rail console and the
 management console, the tool server and its model context protocol
 endpoint, the adapters, runners and routers, the definitions of
 permissions, roles, features, flags and plans, and the command line
@@ -3100,7 +3100,7 @@ objects, the organization's queue with the messages on it, the standing
 scheduler entry, the identity environment's issuer with the definitions
 version it holds, a model credential or none, and a scratch directory
 with the budget the placement states; the binary returns the cache
-uploaded, the projection written, the plan delivered, the shared lines
+uploaded, the projection written, the rail delivered, the shared lines
 pushed by compare-and-swap, each message acknowledged or left under its
 idempotent key, one next due time or a deletion, the run record, and an
 exit with the scratch wiped and the data key dropped (111, 162, 256,
@@ -3190,7 +3190,7 @@ a smaller size and not a metaphor of its own (S38, S60). One bundle is
 built, one is served, and its version is the binary's (291).
 
 **A link reaches the object (308).** Every chat rendering, every
-notification and every plan line carries a link to the object on the
+notification and every rail line carries a link to the object on the
 page, at the host's address with the organization in the path (205a,
 `sink` machine). The link opens that object in the dock with its answer
 controls in reach, and it works whether the page is served on a

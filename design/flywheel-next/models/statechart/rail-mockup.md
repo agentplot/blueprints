@@ -1,10 +1,10 @@
-# The plan — mockup for iteration
+# The rail — mockup for iteration
 
-The plan at one moment, every decision kind shown once. The tree is
+The rail at one moment, every decision kind shown once. The tree is
 the page; the chat shows the same decisions compressed to one line
 each with the same numbers, and a link to the page. Numbers are given
 once per organization and never reused, so a reply names a decision
-without a snapshot of the plan. The page is served on the operator's
+without a snapshot of the rail. The page is served on the operator's
 private network and works on a phone.
 
 ```
@@ -15,13 +15,13 @@ PLAN · willdan · 2026-09-04 07:40 · 10 decisions · "yes all" answers 412-417
 │  │      elaborations: research (self-closing) · prototype (standing)
 │  │      challenges claim providers/one-writer @v3
 │  │      → yes · drop · split
-│  ├─ 413 unit     atlas · status-writer            → bolt plan-decisions (open) · after: none
+│  ├─ 413 unit     atlas · status-writer            → bolt rail-decisions (open) · after: none
 │  │      covers one-writer sc.1,2 · completes it · type default
 │  │      yes starts: spec → build ×2 → review → merge · no further response until the close
 │  │      → yes · drop · redo: <notes> · bolt <name> · new bolt <name>
 │  ├─ 414 unit     atlas · retry-jitter             → new bolt atlas-retry-behaviour-and-jitter-limits
 │  │      routed from ask "retries hammer the provider" · no intent · type fast
-│  │      → yes · drop · rename <name> · bolt plan-decisions
+│  │      → yes · drop · rename <name> · bolt rail-decisions
 │  ├─ 415 chores   atlas · 3                        a stale AGENTS.md · b citation fix · c rename ref
 │  │      → yes · pick a c · no
 │  ├─ 416 land     switchboard/plan-rows                 4 units merged · gates green
@@ -32,13 +32,13 @@ PLAN · willdan · 2026-09-04 07:40 · 10 decisions · "yes all" answers 412-417
 ├─ DECIDE             a choice · no default · not touched by "yes all"
 │  ├─ 418 close    intent loop-granularity          all 4 elaborations done
 │  │      → close · keep open
-│  ├─ 419 idle     prototype plan-derivation        standing · idle 14h · intent atlas-provider-limits
+│  ├─ 419 idle     prototype rail-derivation        standing · idle 14h · intent atlas-provider-limits
 │  │      → finish · keep
-│  └─ 420 moved    claim sessions/one-writer v3→v4  bolt plan-decisions cites v3 · 2 items in flight
+│  └─ 420 moved    claim sessions/one-writer v3→v4  bolt rail-decisions cites v3 · 2 items in flight
 │         → amend bolt · land and follow
 │
 ├─ ANSWER             needs text · page only
-│  └─ 421 blocked  wi-#418 build · plan-decisions        "should Ready imply Backlog cleared?"
+│  └─ 421 blocked  wi-#418 build · rail-decisions        "should Ready imply Backlog cleared?"
 │         session alive · other items of the bolt running
 │         → reply on page
 │
@@ -47,7 +47,7 @@ PLAN · willdan · 2026-09-04 07:40 · 10 decisions · "yes all" answers 412-417
 │  └─ response "yes 413" from 06:10 could not apply      unit already dropped by 05:58 edit
 │
 └─ SINCE 2026-09-03 18:05   what finished since the last delivery to this sink · outside the count
-   ├─ merged   plan-decisions · unit decision-grouping      3 items · review passed first time
+   ├─ merged   rail-decisions · unit decision-grouping      3 items · review passed first time
    ├─ landed   switchboard/idle-timeout            gates green · 06:52
    ├─ closed   intent host-liveness               by your response 18:10
    └─ dropped  chore atlas 2b                     by your response 18:10
@@ -98,7 +98,7 @@ with the operator's annotations. The decision is the summary and the place
 to answer. "Redo" with notes sends it back to planning; an annotation
 left on the document is the response on it.
 
-## What is on the plan
+## What is on the rail
 
 - one decision per decision that is the operator's to make right now
 - the weight behind a decision (signals, units, items) as a short tail
@@ -107,7 +107,7 @@ left on the document is the response on it.
 - outside the count: attention items, and what finished since the last
   rendering the operator received
 
-## What is not on the plan
+## What is not on the rail
 
 - work in progress with no decision pending (the status view)
 - signals, moves, or anything already answered

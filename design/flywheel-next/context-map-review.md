@@ -285,7 +285,7 @@ meaning and v1's grid layout is what made the card need a zoom.
 | home tags | `node.home`, `context.home`, the manifest names, and the derivation result for the repository panel |
 | attachment chips | `attachments` joined to the standing specifications for standing versus proposed; a proposed claim's chip is hollow |
 | verdict dots | the rendered map's `scope_repos` per claim joined to the ledger by `(claim, version, repository)`; a context homed in two repositories shows two dots, not a merged one |
-| decision markers | the plan's decisions with the element id each concerns; the marker is a rail card inline |
+| decision markers | the rail's decisions with the element id each concerns; the marker is a rail card inline |
 | capture from a question | the question id and its text; the gesture sends one capture citing it |
 
 **Never on the canvas.** Blurbs. Refs as text. Relation labels at level

@@ -73,10 +73,10 @@ dispatch needs to serve them are one document.
 - A pull request opened by hand, outside any bolt, is signal only. Its
   conversation may be captured (178). Nothing in it changes an intent
   except through curation (20).
-- Switchboard's release-manager and approver queues are not the plan.
+- Switchboard's release-manager and approver queues are not the rail.
   An update-available row and an awaiting-gate row are switchboard's
   decisions for switchboard's people. The operator's response never
-  answers them and they never wait on the plan.
+  answers them and they never wait on the rail.
 - A session's finding about another thread is a signal the machinery
   writes itself (58, 62). It has no source event and is not in this
   inventory.

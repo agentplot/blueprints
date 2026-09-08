@@ -52,7 +52,7 @@ deferred acknowledgement, and the tick posts the real reply within the
 15-minute interaction-token window or as an ordinary bot message.
 
 **3. Nobody draws who serves the page, or where the tool server runs, when
-no tick is running.** Claim: "the plan reaches ... the page at a served
+no tick is running.** Claim: "the rail reaches ... the page at a served
 name" (281), "woken ... by a page request" (all diagrams), "the tool server
 verifies the token" (243, 249). Why unclear: a browser request is not a
 tick; it is a read with an identity check, and the diagrams make it invoke
@@ -88,7 +88,7 @@ scheduler, the queue and a page request are three independent invokers;
 Lambda scales them concurrently, so two ticks of the same organization can
 overlap. Git's compare-and-swap keeps state safe, but both ticks upload the
 bundle (last writer wins, harmless because it is a projection), both may
-post the plan to chat before the sink's mark lands, and both hold the same
+post the rail to chat before the sink's mark lands, and both hold the same
 host id, so the sink lease (148, 150) does not separate them. Fix: route
 every invoker through the organization's FIFO queue with the organization
 as the message group id (the scheduler's target is the queue, not the

@@ -87,7 +87,7 @@ a keystroke, an exit reported by running the same `flywheel exit`
 command a session would, offers by `flywheel offer`, a refusal by
 `flywheel refuse`, commits made into the place with git. Only this
 binding is faked (93); the state store, the engine, the git effects
-on real (sandbox) repositories, the plan and the page run as built. A
+on real (sandbox) repositories, the rail and the page run as built. A
 scenario may set the session evidence names directly in an `evidence`
 step instead; the script is the way to say what a session would have
 done.

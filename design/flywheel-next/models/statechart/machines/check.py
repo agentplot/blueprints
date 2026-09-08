@@ -13,7 +13,7 @@ the requirements.
 - every file carries `tier: core | extensible` matching its directory; a type file is named
   `<machine>@<version>.yaml`, two files never declare the same name and version, and a registered
   file's content hash (machines/registry.yaml, written by `check.py --register`) never moves
-- every decision has a kind, group, answers and satisfies; decision kinds are collected for the plan catalogue
+- every decision has a kind, group, answers and satisfies; decision kinds are collected for the rail catalogue
 - every diagram in ../diagrams/*.svg names states (data-state="machine.state"), decision kinds
   (data-decision) and effects (data-effect) that exist, so a picture cannot drift from the runtime (83)
 - every profile marked complete binds every evidence and effect name (140)

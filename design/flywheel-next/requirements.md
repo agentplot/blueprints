@@ -4,7 +4,7 @@ A statement of what the flywheel must do and what must always hold,
 written to admit any model that satisfies it.
 
 The statement is in three parts. Part A is the data plane: the objects,
-their machines, the claims and the ledger, the signals, the plan, and
+their machines, the claims and the ledger, the signals, the rail, and
 the engine that drives them. Part B is the state store contract: the
 few operations the engine needs from durable, shared storage, and the
 guarantees each must give. Part C is the profiles: the ways that
@@ -60,7 +60,7 @@ redefine these.
   an open one, or a new one with a proposed name.
 - **proposal** — planning's document for one run: the bolts it
   proposes, new or open, and the units in each with their types and
-  dependencies. One decision on the plan; nothing in it is a bolt or a
+  dependencies. One decision on the rail; nothing in it is a bolt or a
   unit until its yes.
 - **work item** — one task of a unit, worked through construction
   stages by sessions, merged into the bolt when complete.
@@ -88,20 +88,21 @@ redefine these.
   boundary or outside its job. Offered; if accepted, it is a unit of
   the chore type: one agent scoped to the right place, no change
   directory, never a bolt of its own.
-- **decision** — one thing the plan asks the operator: created when a
+- **decision** — one thing the rail asks the operator: created when a
   choice becomes the operator's to make, retracted when it is made or
   can no longer be made, numbered once for the organization.
 - **response** — the operator's answer to a decision, or a dictation;
   recorded as `op-response`, applied exactly once.
-- **the plan** — the single surface where everything awaiting the
-  operator's response is presented, and where the response is given.
+- **rail** — the derived, numbered list of the decisions that stand, in
+  the model's order; the page draws it as the rail titled Decisions, the
+  chat prints it as a numbered list; formerly the plan.
 - **curation** — the step that turns many raw signals into a few
   intents worth elaborating.
 - **signal** — one raw piece of input from a source: an excerpt of a
   meeting transcript, a log observation, a piece of user feedback, a
   chat message, a session's finding about something outside its job.
   A signal is a record with a source and a date; it is never work and
-  never a plan decision on its own.
+  never a rail decision on its own.
 - **capture** — one source event as recorded: a meeting, a day of one
   chat channel, a log run, a forwarded message. It holds provenance and
   the pointer to the raw material, and the signals read from it.
@@ -135,7 +136,7 @@ redefine these.
 - **lease** — a host's recorded ownership of an object for a bounded
   time, renewed while the host works and expired by rule when it does
   not.
-- **data plane** — the objects, machines, claims, ledger, signals, plan
+- **data plane** — the objects, machines, claims, ledger, signals, rail
   derivation and scenarios: what the flywheel is about, independent of
   where its state is kept.
 - **state store** — durable, shared storage and the operator's
@@ -145,7 +146,7 @@ redefine these.
   entirely.
 - **engine** — the generic part: it loads definitions, evaluates
   predicates over evidence, chooses transitions, runs effects
-  idempotently, and derives the plan's decisions. It holds no knowledge of
+  idempotently, and derives the rail's decisions. It holds no knowledge of
   what the flywheel is about.
 - **domain** — the flywheel's own part: its machine definitions and the
   predicate and effect atoms those definitions name.
@@ -184,7 +185,7 @@ model.
 
 ### A.1 The operator's response
 
-1. The operator gives their response in one place, the plan, and the response
+1. The operator gives their response in one place, the rail, and the response
    is applied exactly once.
 2. The response can be given from a phone: a short reply in a chat
    channel, or a choice on a served page, are both sufficient for
@@ -203,13 +204,13 @@ model.
 6. Approval given once is never re-asked, and never silently
    discarded. A given response that cannot be applied is reported.
 
-### A.2 The plan
+### A.2 The rail
 
-7. The plan is derivable: at any moment its content is a function of
+7. The rail is derivable: at any moment its content is a function of
    the current state of the system, not of what any process remembers.
-   If the machinery restarts, the same plan results.
-8. The plan is always current. New material joins the standing plan;
-   nothing waits for a next one. The operator who opens the plan sees
+   If the machinery restarts, the same rail results.
+8. The rail is always current. New material joins the standing rail;
+   nothing waits for a next one. The operator who opens the rail sees
    everything that stands.
 9. A decision appears exactly when a choice becomes the operator's
    to make, and disappears when the decision is made or can no longer
@@ -225,9 +226,9 @@ model.
    - a chore offered by a session: accept or reject
    - a question a session cannot answer itself
 11. Decisions are grouped so that "yes to all" is a meaningful answer for a
-    simple plan, and any single decision can be answered on its own.
+    simple rail, and any single decision can be answered on its own.
 12. The operator's own dictation ("add this idea", "do this chore")
-    skips the plan and is applied directly.
+    skips the rail and is applied directly.
 13. One response is enough. After a response is applied, everything that follows
     without a further decision proceeds by the machinery on its own: an
     approved unit becomes items, items start sessions, exits advance
@@ -235,13 +236,13 @@ model.
     nudges. A decision says what its yes starts, and after a yes the only
     things that wait are a session's work and the next decision that is
     the operator's.
-14. The plan shows, outside its count of decisions, what has reached done,
+14. The rail shows, outside its count of decisions, what has reached done,
     landed, closed or dropped since the last delivery to the sink the
     operator is reading. One delivery mark per sink is recorded state,
     so the tail is derivable like the decisions.
 15. Every decision carries a short number, unique in the organization, given
     once and never reused. The page and the chat show the same number,
-    a response names it, and no rendering of the plan is stored.
+    a response names it, and no rendering of the rail is stored.
 16. A decision for construction says where the work goes. A proposed unit
     names its target bolt: an open bolt, or a new one with a proposed
     name. On the decision the operator may rename the bolt or route the unit
@@ -249,7 +250,7 @@ model.
 17. A unit proposal is a document, reviewed on its own surface. The decision's
     answers are yes, drop, or redo with the operator's notes; an
     annotation the operator leaves on the document is the response on it.
-18. A chat rendering of the plan carries the same decisions and numbers as the
+18. A chat rendering of the rail carries the same decisions and numbers as the
     page, one line each, and a link to the page.
 19. The page is also a capture surface. Text the operator types there is
     a capture with one signal of kind ask, so curation sees it. The
@@ -259,8 +260,8 @@ model.
     response.
 
 The catalogue of decisions, the reply grammar and the counting rules are
-mocked in `design/flywheel-next/plan-mockup.md`: one rendering of these
-requirements, iterated against the running plan rather than on paper.
+mocked in `design/flywheel-next/rail-mockup.md`: one rendering of these
+requirements, iterated against the running rail rather than on paper.
 
 ### A.3 Intents and curation
 
@@ -289,7 +290,7 @@ requirements, iterated against the running plan rather than on paper.
       written, and the machinery finishes the elaboration.
     - **standing**: an exploration, a prototype the operator wants to
       see running, an interactive page. The session stays alive after
-      it goes idle. Idle is offered on the plan as "finish or keep";
+      it goes idle. Idle is offered on the rail as "finish or keep";
       only the operator's response ends it.
     - **with-operator**: a back-and-forth the operator is in. The
       machinery never asks about it, and ends it only by the operator's
@@ -329,7 +330,7 @@ requirements, iterated against the running plan rather than on paper.
 34. Work may reach a bolt without an intent. The operator's dictation
     naming a bolt is applied directly; a planning judgment may route an
     ask, a finding or a signal to a unit on an open bolt, as a proposal
-    on the plan. Either way the unit carries a type, a bolt and its
+    on the rail. Either way the unit carries a type, a bolt and its
     dependencies like any other.
 35. A proposed unit whose cited claim moved is replaced by planning's
     next proposal, silently, because a proposal is not work. An approved
@@ -346,7 +347,7 @@ requirements, iterated against the running plan rather than on paper.
 38. Several work items may be in flight at once. Merges into the bolt
     happen one at a time in a fixed order.
 39. A bolt lands once, when the operator closes it, and only if every
-    unit is finished. The close is proposed on the plan when that holds.
+    unit is finished. The close is proposed on the rail when that holds.
 40. A landing that fails is reported and leaves the bolt open.
 41. A stage may send an item back to an earlier stage. The unit's type names, for each stage, the agent that works it, the stage an item
     returns to when the stage judges it not done, and how many times
@@ -450,7 +451,7 @@ requirements, iterated against the running plan rather than on paper.
 ### A.6 Findings and chores
 
 58. A session may offer a finding at any time. A finding about the
-    session's own intent or bolt is a proposal on the plan for that
+    session's own intent or bolt is a proposal on the rail for that
     thread. A finding about anything else is a signal (A.15). Neither
     is work until the operator says so, and neither interrupts the
     session that offered it.
@@ -461,7 +462,7 @@ requirements, iterated against the running plan rather than on paper.
     stage, one session scoped to the repository and line of work the fix
     belongs on — a bolt's line when it was raised there, the shared line
     otherwise — and merged there by the machinery. Accepting one is a
-    response on the plan and nothing more. A chore never creates a bolt.
+    response on the rail and nothing more. A chore never creates a bolt.
 61. Updating agent instructions, citations, references, and similar
     housekeeping are chores, not units.
 62. A finding and a chore are documents of the change they arose in,
@@ -498,7 +499,7 @@ requirements, iterated against the running plan rather than on paper.
     machinery's read tools and dictation, and no intent behind it. It is
     a with-operator session on no thread, and it ends by dictation.
 70. A session blocked on a question stops only itself. Its item waits on
-    the plan; every other item, unit and bolt continues. The answer is
+    the rail; every other item, unit and bolt continues. The answer is
     recorded with the item and given to the same session if it still
     lives, otherwise to a fresh session that starts with it. How often
     each type and stage blocks is recorded, so a type that blocks too
@@ -563,11 +564,11 @@ requirements, iterated against the running plan rather than on paper.
 84. The definition is testable without any live service: given a
     described state of the stores, the model's decisions can be
     asserted.
-85. Adding an elaboration type, a construction stage, or a plan decision
+85. Adding an elaboration type, a construction stage, or a rail decision
     kind is a change to the definition, not to the machinery's code.
 86. The engine is generic. It loads definitions, evaluates predicates
     over evidence, chooses transitions, runs effects idempotently, and
-    derives the plan's decisions. It knows nothing of intents, elaborations,
+    derives the rail's decisions. It knows nothing of intents, elaborations,
     bolts, units, work items, claims or verdicts, and no name of any of
     them appears in it.
 87. The domain is the flywheel's machine definitions and the atoms
@@ -595,7 +596,7 @@ requirements, iterated against the running plan rather than on paper.
     store, with no live service of any kind.
 93. The whole machinery runs with sessions replaced by a stand-in that
     plays a scenario's scripted exits, so that seeding a scenario
-    exercises the stores, the engine, the git effects, the plan and the
+    exercises the stores, the engine, the git effects, the rail and the
     page with no agent running. Only the session binding is faked;
     everything the machinery owns is real.
 93a. A build that performs no construction may bind the effects that
@@ -610,7 +611,7 @@ requirements, iterated against the running plan rather than on paper.
 93b. A host may declare the operator as its session binding. Under it
     the machinery charges a session as it always does — a place
     prepared, a work order rendered (89), the session recorded — and
-    the plan shows the session as the operator's to run; the operator
+    the rail shows the session as the operator's to run; the operator
     does the work and reports through the same command a session
     reports through (67). The exits, the offers and the refusals are
     the same records, so nothing downstream tells the two apart, and a
@@ -1135,7 +1136,7 @@ requirements, iterated against the running plan rather than on paper.
     the page and nothing else (194). It presents no sink, writes no
     capture except through the capture tool the page already calls
     (19), and reads no capture. An organization may run with no other
-    part of dispatch; the plan is then served, answered and captured
+    part of dispatch; the rail is then served, answered and captured
     on the page, and nothing arrives through chat or through a
     webhook.
 
@@ -1415,7 +1416,7 @@ requirements, iterated against the running plan rather than on paper.
     carries the identity (153). A page served on the operator's own
     computer signs in through the same kind, so the identity is the
     same there as anywhere.
-235. One board per organization. Every member sees the same plan with
+235. One board per organization. Every member sees the same rail with
     the same numbers and the same count. A decision answered by one
     member is applied once (7) and shown to every other member as
     answered, by whom and when (153); a second response to it is
@@ -1614,7 +1615,7 @@ requirements, iterated against the running plan rather than on paper.
     content in the clear; it is sealed under that key inside the store.
 257. The organization's key is unwrapped only for the duration of a tick
     and only by the role that runs it. The plaintext data key exists in
-    a process evaluating that organization's plan and at no other time.
+    a process evaluating that organization's rail and at no other time.
 258. The cache is a projection and its loss costs a clone. An
     organization idle past a stated time keeps nothing warm, and its
     next tick re-clones.
@@ -1691,7 +1692,7 @@ requirements, iterated against the running plan rather than on paper.
 269. On the hosted tiers the dispatcher is one function per tier, and
     each invocation is one organization's tick. It assumes the tier's
     role under a session tag naming that organization (259), fetches,
-    evaluates, pushes by compare-and-swap (162), delivers the plan,
+    evaluates, pushes by compare-and-swap (162), delivers the rail,
     wipes its scratch and exits, retaining nothing between invocations
     (217a); the sandbox is reused across organizations, so retaining
     nothing is the tick's own act, its scratch wiped and its data key
@@ -1716,9 +1717,9 @@ requirements, iterated against the running plan rather than on paper.
     repository and no unit type (217), so there is nothing for it to
     clone. A failure in one organization's tick ends that tick and no
     other (218). Model access on a hosted tier is the service's, carried
-    by the tier role and metered into the plan (279, 294), unless the
+    by the tier role and metered into the rail (279, 294), unless the
     organization places a model key of its own instead (207); which
-    model provider sees plan text and messages is named in the tier
+    model provider sees rail text and messages is named in the tier
     statement (261).
 270. The tick is invoked, not looped. A long-lived process its
     platform's launcher starts is one invoker among several: a clock, a
@@ -1770,7 +1771,7 @@ requirements, iterated against the running plan rather than on paper.
     a poll costs the service for every organization whether or not
     anything happened.
 275. A pool host on a hosted tier is a microVM created from the
-    organization's image (239) when the plan approves work the pool
+    organization's image (239) when the rail approves work the pool
     covers. No shared network of the service's is required, a container
     runtime runs inside it so a repository's own environment declaration
     works unchanged (238), and it is terminated at retire and never
@@ -1815,7 +1816,7 @@ requirements, iterated against the running plan rather than on paper.
     stamps the binary's version (208); and **identity**, the provider's
     environment holding the redirect entry for the host's served name
     (243, 244, 291). The chat application is still the service's (277,
-    290), so plan lines arrive from one bot. Under this shape the
+    290), so rail lines arrive from one bot. Under this shape the
     management console offers dedicated compute, created in the
     organization's account by the deployer through the same role, and
     each option is stated with what it changes: the dispatcher as an
@@ -1831,7 +1832,7 @@ requirements, iterated against the running plan rather than on paper.
     own Slack or Discord application, installed into the organization's
     workspace and scoped to the organization's channel, beside the bot
     the manifest names and the token the operator placed (217d). It
-    carries plan text and the interactions it receives and nothing else:
+    carries rail text and the interactions it receives and nothing else:
     no repository reach and no key. The record still names who responded
     (153); the application is the service's. On a function placement
     Discord free text is the string option of the application's slash
@@ -1912,16 +1913,16 @@ requirements, iterated against the running plan rather than on paper.
     entitlement features 250 defines, keyed `fw.ff.*`, together with a
     few stated limits, held by the identity provider and billed through
     the payment provider. The flywheel reads it only from the identity
-    token and the provider's SDK; it keeps no plan of its own and asks
+    token and the provider's SDK; it keeps no rail of its own and asks
     no billing system a question at run time. A self-managed host has no
-    plan at all, and every flag stands at its definition default there
+    rail at all, and every flag stands at its definition default there
     (250).
 280. A plan hides and it meters; it never authorizes. Permissions come
     from roles and are checked on every tool call (248, 249), and a
     surface a flag hides is still guarded by its permission. Exceeding a
     limit is one attention line (149) and a refused add with the reason,
     never a stopped loop: work already running runs, and the machinery
-    never halts a tick over a plan.
+    never halts a tick over a rail.
 281. The ladder is five rungs over the four tiers (268), and what each
     unlocks is a requirement while its price is not. **Free** is tier 0:
     the binary, its sign-in, the organization's own App and bot, every
@@ -1930,7 +1931,7 @@ requirements, iterated against the running plan rather than on paper.
     of the operator's. Its chat is structured: a decision carries its
     answers as buttons, and free text in chat is a slash command with
     its arguments (`/fw yes 412`, `/fw capture <text>`), so no model
-    call is spent on chat and the plan delivered to chat costs no model
+    call is spent on chat and the rail delivered to chat costs no model
     at all (277). Free-text interpretation on Hobby is the page's
     instead: the model running in the page's browser does the
     interpreter's job there, at no cost to the service (216a). A
@@ -1941,7 +1942,7 @@ requirements, iterated against the running plan rather than on paper.
     Immediate triage, and free-text interpretation in chat, are
     unlocked on Hobby by placing a model key of the operator's own
     (207) and are included from Pro up. So chat is usable with the
-    laptop closed, and the plan reaches the organization's chat and the
+    laptop closed, and the rail reaches the organization's chat and the
     page at a served name (291). What waits for the operator's own
     machine or a pool host is raw-material triage, elaboration and
     construction. **Pro** adds pools with an included allowance and
@@ -1992,10 +1993,10 @@ requirements, iterated against the running plan rather than on paper.
     attention line and a slower cadence and never a stopped loop (280).
     The surface that lists a host's runners shows which model key that
     host uses and the month's model spend beside the pool hours, and
-    the tier statement names which model provider sees plan text and
+    the tier statement names which model provider sees rail text and
     messages (261).
 295. What "add a host" offers depends on the host serving the surface,
-    and the offers are the plan's and the identity kind's together
+    and the offers are the rail's and the identity kind's together
     (243). A self-managed host offers only hosts the operator controls:
     another computer of theirs, a virtual machine on their own network,
     a container on a platform of their own reached with their own
@@ -2047,7 +2048,7 @@ requirements, iterated against the running plan rather than on paper.
 
 296. There are two products. The **flywheel binary** is open source under a
     permissive licence, and it is everything a self-managed operator runs:
-    the machines and the profiles, the page bundle with the plan console
+    the machines and the profiles, the page bundle with the rail console
     and the management console, the tool server and its model context
     protocol endpoint (193, 291, 293), the adapters, runners and routers
     (191, 215), the definitions of permissions, roles, features, flags and
@@ -2074,7 +2075,7 @@ requirements, iterated against the running plan rather than on paper.
     scheduler entry now standing, the identity environment's issuer with
     the definitions version it holds, a model credential or none (294), and
     a scratch directory with a stated budget; the binary returns the cache
-    uploaded, the projection written, the plan delivered, the shared lines
+    uploaded, the projection written, the rail delivered, the shared lines
     pushed by compare-and-swap, each message acknowledged or left under its
     idempotent key (111), one next due time or a deletion, the run record,
     and an exit with the scratch wiped and the data key dropped (269). In
@@ -2172,7 +2173,7 @@ requirements, iterated against the running plan rather than on paper.
     dock full screen and a back control, which is the desktop's metaphor
     at a smaller size and not a metaphor of its own (S38, S60). One bundle
     is built, one is served, and its version is the binary's (291).
-308. Every chat rendering, every notification and every plan line carries
+308. Every chat rendering, every notification and every rail line carries
     a link to the object on the page, at the host's address with the
     organization in the path (205a). The link opens that object in the
     dock with its answer controls in reach. It works whether the page is
@@ -2216,7 +2217,7 @@ through these operations, and depends only on these guarantees.
 
 125. The state store offers exactly these operations, and the engine
     needs no others: read an object's evidence; write an effect; take,
-    renew and release a lease on an object; present the plan's decisions and
+    renew and release a lease on an object; present the rail's decisions and
     receive the operator's response; notify a host that state has changed;
     list the objects in a scope; serve the status view. An engine that
     needs a further operation is a change to this contract, stated
@@ -2290,7 +2291,7 @@ through these operations, and depends only on these guarantees.
     bolt, unit, work item and session with its current state, grouped
     by state: queued, in progress, waiting on the operator, done; and
     for each, which host holds it, which host runs it, and whether that
-    host is alive. This is a view of the whole, separate from the plan,
+    host is alive. This is a view of the whole, separate from the rail,
     and it needs no machinery running to be read.
 142. The status view is a projection of the same state the engine reads.
     It is never a source of truth, and it is never written by hand to
@@ -2356,7 +2357,7 @@ through these operations, and depends only on these guarantees.
 147. More than one host may run the machinery for one organization at
     once. Every host works from the same shared line of every
     repository and the same central state.
-148. There is one plan per organization, derived from the shared state;
+148. There is one rail per organization, derived from the shared state;
     any host can serve it. Exactly one presenter delivers it to each
     sink at a time, held by lease or pinned by the manifest, and a
     dispatcher running outside every host may be that presenter.
@@ -2431,7 +2432,7 @@ service.
 | read evidence | the item's own fields, its grouping, its board placement and its comments |
 | write an effect | a change to an item, carrying the effect's identity so a repeat is recognized |
 | lease | a recorded holder on the item, with the time it was taken and renewed |
-| present and receive | decisions presented on the item and on the plan page; the response arrives as a short written reply |
+| present and receive | decisions presented on the item and on the page; the response arrives as a short written reply |
 | notify | the tracker's own notification of a change to an item |
 | list objects in scope | a query over the organization's items |
 | serve the status view | the board, plus a page served from the same items |
@@ -2445,7 +2446,7 @@ like any other.
 
 156. The tracker holds every object's state, is durable, and is
      readable with no host of the operator's running.
-157. Objects with a plan-facing lifecycle — intent, elaboration, bolt,
+157. Objects with a rail-facing lifecycle — intent, elaboration, bolt,
     unit, work item, decision — are tracker items. Signals, moves, claims,
     verdicts and definitions are files in the blueprints repository in every
     profile, never items.
@@ -2525,12 +2526,12 @@ These hold at every moment, not just at the end of an operation.
 
 - I1. No work exists without an approval that can be pointed to.
 - I2. No approval is applied twice or lost.
-- I3. Every plan decision has exactly one creating condition and one
+- I3. Every rail decision has exactly one creating condition and one
   retracting condition.
 - I4. Every state has exactly one source of truth.
 - I5. A working session is never interrupted by the machinery.
 - I6. A standing session is ended only by the operator's response.
-- I7. Restarting the machinery changes no state and no plan.
+- I7. Restarting the machinery changes no state and no rail.
 - I8. The machinery never creates a bolt for a chore.
 - I9. Every as-built statement names a standing claim.
 - I10. No verdict is recomputed while its inputs are unchanged.
@@ -2555,7 +2556,7 @@ These hold at every moment, not just at the end of an operation.
 - Replacing the git hosting or the agent runtime.
 - Multi-operator arbitration. One operator per organization.
 - Scheduling across hosts for performance. Correctness first.
-- A user interface beyond the plan page, the status view, and the chat
+- A user interface beyond the page, the status view, and the chat
   reply.
 
 Which state store the flywheel runs on is a profile choice, made per
@@ -2625,13 +2626,13 @@ Not requirements; the places where the modeler's judgment is wanted.
   and how does one drive the other?
 - Where does an agent's free reasoning sit relative to the machine,
   and how are its exits kept to the fixed set?
-- How is the plan derived, and what makes it impossible to miss a decision?
+- How is the rail derived, and what makes it impossible to miss a decision?
 - What is the minimal set of stores, and what is the source of truth
   for each state?
 - How does curation connect to the flywheel without the flywheel
   taking on the batching of signals?
 - Where does the ledger live, who writes a verdict, and how does a
-  stale verdict become a plan decision that cannot be missed?
+  stale verdict become a rail decision that cannot be missed?
 - Which profile is built first, and what test proves that a second
   profile conforms without changing a machine definition?
 - Where is the line drawn between an engine primitive and a domain
@@ -2666,28 +2667,28 @@ by walking each one. Each is tagged with the profiles it applies to.
   work "needs approval" afresh.
 - **S2.** *(all profiles)* A prototype elaboration of the standing type
   finishes its build and goes idle. The prototype keeps running. The
-  plan offers "finish or keep". The operator opens the prototype the
+  rail offers "finish or keep". The operator opens the prototype the
   next morning and it is still there.
 - **S3.** *(all profiles)* A construction session notices that a shared
   instruction file is stale. It finishes its own job, offers the fix as
   a chore. The operator accepts with one word. One agent fixes the file
   in the right place and it lands. No bolt and no change directory were created.
 - **S4.** *(all profiles)* A session offers a finding: a better approach
-  to a related subject. The plan shows it as a proposed elaboration on
+  to a related subject. The rail shows it as a proposed elaboration on
   the relevant intent. The operator drops it. Nothing was created.
 - **S5.** *(all profiles)* The machinery is restarted mid-day. Every
-  running session is still running. The plan is identical before and
+  running session is still running. The rail is identical before and
   after. No object changed state.
 - **S6.** *(all profiles)* A host is slow; starting a session takes two
   minutes. The session starts once. No duplicate session is started, and
   nothing is reported as failed.
 - **S7.** *(all profiles)* All elaborations on an intent are done. The
-  plan offers the intent's close. The operator says yes. The intent is
+  rail offers the intent's close. The operator says yes. The intent is
   closed and its records archived. Nothing else moved.
 - **S8.** *(all profiles)* Twenty signals arrive from a meeting
   transcript. Curation attaches six to open intents, drops nine, and
   clusters five into two proposed intents, one of which challenges a
-  standing claim. The plan shows two decisions with their signal weight, not
+  standing claim. The rail shows two decisions with their signal weight, not
   twenty. Every signal has a stored move the operator can read.
 - **S9.** *(all profiles)* A build session learns that the boundary a
   claim draws is wrong. It finishes its job and offers a finding. The
@@ -2700,7 +2701,7 @@ by walking each one. Each is tagged with the profiles it applies to.
   once and offers one proposal with the unsatisfied set. Claims that do
   not concern it get not-applicable, stored, and are never judged again.
 - **S11.** *(all profiles)* A built repository takes forty commits in a
-  week. No claim changed. No verdict was recomputed and the plan did not
+  week. No claim changed. No verdict was recomputed and the rail did not
   change.
 - **S12.** *(all profiles)* The operator opens the status view from
   their phone with no machinery running and sees every bolt, unit, and
@@ -2723,7 +2724,7 @@ by walking each one. Each is tagged with the profiles it applies to.
 - **S16.** *(all profiles)* The operator dictates a scenario in a
   sentence. It becomes scenario data, runs against a stand-in state
   store with no live service, and produces the transitions, the effects
-  and the plan decisions it asserts, rendered afterwards as a trace the
+  and the rail decisions it asserts, rendered afterwards as a trace the
   operator reads.
 - **S17.** *(profile: git-only)* Two hosts see the same approved unit at
   the same moment and both try to take it. Exactly one takes it. The
@@ -2786,7 +2787,7 @@ by walking each one. Each is tagged with the profiles it applies to.
   is still alive and continues with the answer. The block and the answer
   are on the item, and the type's count of blocks moved by one.
 - **S31.** *(all profiles)* The operator answers yes to one unit at
-  07:40 and looks again at 16:00. Nothing was nudged. The plan's tail
+  07:40 and looks again at 16:00. Nothing was nudged. The rail's tail
   shows the unit's items built, reviewed and merged since 07:40, and the
   only new decision is the bolt's close.
 - **S32.** *(all profiles)* Two units of one bolt build side by side.
@@ -2813,7 +2814,7 @@ by walking each one. Each is tagged with the profiles it applies to.
 A model that answers section 10, satisfies Parts A, B and C and section
 7, and walks section 11 — as a written model plus diagrams in the house
 style (`design-diagram`), one per machine family, each stating its claim
-in the title. The diagram shows where plan decisions are created and
+in the title. The diagram shows where rail decisions are created and
 retracted on each machine, and where the ledger is read and written.
 
 Every part of the model names the real tool, library, service or file

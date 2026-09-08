@@ -6,7 +6,7 @@ page"), and proposes what would stand in its place.
 
 ## 1. The premise
 
-One input on the plan page — opened with ⌘K, or a bar always visible at
+One input on the page — opened with ⌘K, or a bar always visible at
 the header — over the same tool catalogue every other client already
 speaks (193, 291, 293). A palette is not a second write path: it
 enumerates the catalogue the page's controls call, resolves the
@@ -89,7 +89,7 @@ j j  ⌘K  (scoped: 415)  pick  c  ↵   → will send: pick c on 415
 Text that is neither a number, a command nor a capture is handed to the
 model running in the page's browser, which proposes exactly one tool call
 per thing asked, each shown as what will be sent and confirmed on its own
-(216a, 194). Where no interpreter runs — the plan has no key of its own,
+(216a, 194). Where no interpreter runs — the rail has no key of its own,
 or the organization runs without one — the palette says what it does
 accept and offers the nearest shapes, rather than guessing (194: a name
 that resolves to nothing is asked about, never guessed).
@@ -227,9 +227,9 @@ only; there is no global input.
   every answer is already one tap there (311, 306)?
 - Does the palette respect the rail's mine · all filter, or reach every
   decision regardless (S171, 235)?
-- What does the palette show a viewer whose token lacks `fw.plan.answer`
+- What does the palette show a viewer whose token lacks `fw.rail.answer`
   or `fw.capture.write` (249) — a refused entry, or no entry?
-- Does the console's palette share the plan page's, or is it a second
+- Does the console's palette share the page's, or is it a second
   instance over the same catalogue (312, 193)?
 - Is the palette behind its own flag, and on by default (250, S197)?
 - Does voice through the mobile app land in the same grammar (313)?

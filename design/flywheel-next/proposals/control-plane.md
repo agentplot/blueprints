@@ -23,7 +23,7 @@ hosted tiers work:
 
 - the machines and the profiles: the statechart definitions, the atoms, and
   every binding that satisfies the state store contract of Part B;
-- the page bundle, with the plan console — rail, board, dock — and the
+- the page bundle, with the rail console — rail, board, dock — and the
   management console;
 - the tool server and its model context protocol endpoint (193, 291, 293);
 - the adapters, the runners and the routers (191, 215, 217c);
@@ -70,7 +70,7 @@ control plane to this contract; ours is the reference implementation.
 
 | mode | what the control plane provides | what the binary returns |
 |---|---|---|
-| **tick** | the organization's name and its tier; a role session tagged with that organization (259); the warm cache object's locator and its key; the page projection object's locator; the organization's queue and the messages waiting on it in the stated envelope; the scheduler entry now standing for the organization; the identity environment's issuer and the definitions version that environment holds; a model credential carried by the role, or none where the organization placed its own (207, 294); a scratch directory and a stated budget, fifteen minutes on the function placement | the warm cache uploaded; the page projection written as the page sink's delivery (291); the plan delivered to every sink whose mark moved; the shared lines pushed by compare-and-swap (162); each queue message acknowledged or left for retry under its idempotent key (111); one next due time as a scheduler entry, or a deletion when nothing is due (273); the run record; and an exit with the scratch wiped and the data key dropped (269) |
+| **tick** | the organization's name and its tier; a role session tagged with that organization (259); the warm cache object's locator and its key; the page projection object's locator; the organization's queue and the messages waiting on it in the stated envelope; the scheduler entry now standing for the organization; the identity environment's issuer and the definitions version that environment holds; a model credential carried by the role, or none where the organization placed its own (207, 294); a scratch directory and a stated budget, fifteen minutes on the function placement | the warm cache uploaded; the page projection written as the page sink's delivery (291); the rail delivered to every sink whose mark moved; the shared lines pushed by compare-and-swap (162); each queue message acknowledged or left for retry under its idempotent key (111); one next due time as a scheduler entry, or a deletion when nothing is due (273); the run record; and an exit with the scratch wiped and the data key dropped (269) |
 | **request** | the caller's identity token; the organization named in the request's path (205a); a role session tagged with that same organization; the page projection object's locator and its key; the definitions version the environment holds; the bundle's location, where the distribution does not serve it directly | the page bundle, or the projection rendered as the request asks; for a write, one tool call enqueued on the organization's queue, decrypting nothing (271, 291); for a call whose caller lacks membership or the tool's declared permission, a refusal with the reason and a run-record entry naming the identity, the tool and the object (249); never a tick, and never a read of the warm cache (270, 272) |
 
 Five things in that environment are stated shapes rather than free choices, and
@@ -123,7 +123,7 @@ parameters.
 | `fw-identity-sync` | the release-time sync of the binary's permissions, roles, features, flags and plans into the identity environment, by difference, under the provider's write ceiling, deleting nothing not named as retired and writing no hostname (252) | the environment and its management token; the write ceiling; the Application's id; the retire list |
 | `fw-billing` | the payment provider's plan and price objects and the meter that overage is reported on (279, 282, 294) | **optional**: absent when the installer sells nothing, and the ladder's plans are then entitlement targets alone |
 | `fw-chat` | the registration and inbound routes of the chat applications the installer owns (277, 290) | which platforms; the installer's own application ids, tokens and signing secrets |
-| `fw-pools` | the pool placement — the microVM service, the image registry holding each organization's image, and the fallback container placement — and the image build job (239, 240, 275) | the placement kind; the lifetime ceiling and the fallback; the image home; the memory and vCPU ceiling the plan admits (282) |
+| `fw-pools` | the pool placement — the microVM service, the image registry holding each organization's image, and the fallback container placement — and the image build job (239, 240, 275) | the placement kind; the lifetime ceiling and the fallback; the image home; the memory and vCPU ceiling the rail admits (282) |
 
 Three of those parameters are the tenancy choices, and they are what an
 installer actually decides:
@@ -161,7 +161,7 @@ their own business units.
 | AWS account | the composition deploys into willdan's Switchboard-connected accounts, through `SwitchboardAccess` like every other app; the control plane's stacks stand in the platform account beside Switchboard's own | none. No account of ours is in the path |
 | Identity environment | willdan's Frontegg environment, one per environment class, with the flywheel Application in it beside `platform-nonprod` and Switchboard's own. `fw-identity-sync` writes the flywheel's permissions, roles, features and flags there at release, by difference | none. Our environment holds nothing of willdan's, and their organizations are not accounts under ours |
 | Billing | absent. `fw-billing` is not in the member set. The ladder's plans exist as entitlement targets on the Frontegg account — a plan is still a named set of `fw.ff.*` features plus limits, and it still hides and meters — but nothing is charged and no payment provider is bound | none |
-| Chat | willdan's own Slack application, installed in willdan's workspace, carrying plan text and interactions and nothing else. Their bot, their tokens, their signing secret | none. The agentplot Slack and Discord applications are not installed anywhere in willdan's workspace |
+| Chat | willdan's own Slack application, installed in willdan's workspace, carrying rail text and interactions and nothing else. Their bot, their tokens, their signing secret | none. The agentplot Slack and Discord applications are not installed anywhere in willdan's workspace |
 | Git host connection | willdan's own GitHub App on their organizations (207) | none |
 | Organizations served | willdan's business units, each an account in willdan's Frontegg tree, each with its own queue, key, cache, projection and scheduler entry | none. They are not in our registry, and no counter of theirs reaches us |
 | The binary | the same released bytes we ship, stamped by their deployer with the version it applied | ours to release; theirs to run |
@@ -214,7 +214,7 @@ our management console does not know they exist.
    entry; or the ladder is a stated default the sync writes only where a
    payment provider is bound, leaving the environment's plans empty otherwise.
    The choice decides what `fw-identity-sync` writes on a willdan-shaped
-   install and what the plan surface shows there.
+   install and what the rail surface shows there.
 
 3. **The update path when the binary moves ahead of an installed control
    plane.** 252 gives the failure mode — a binary naming a permission the

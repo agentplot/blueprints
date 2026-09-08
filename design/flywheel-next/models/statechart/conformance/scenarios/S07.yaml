@@ -1,5 +1,5 @@
 scenario: S7
-title: all elaborations done; the plan offers the intent's close; yes closes and archives it; nothing else moved
+title: all elaborations done; the rail offers the intent's close; yes closes and archives it; nothing else moved
 profiles: [all]
 satisfies: [22, 49, 54]
 given:

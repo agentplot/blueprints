@@ -134,7 +134,7 @@ extensible (119, 190, 198).
 | file | machine | kind | class | at an organization |
 |---|---|---|---|---|
 | `bolt.yaml`, `capture.yaml`, `claim.yaml`, `curation.yaml`, `elaboration.yaml`, `intent.yaml`, `ledger-cell.yaml`, `operator-session.yaml`, `organization.yaml`, `planning.yaml`, `proposal.yaml`, `repository.yaml`, `service.yaml`, `signal.yaml`, `unit.yaml`, `work-item.yaml` | the sixteen object machines | object | core | in the binary; never in the blueprints |
-| `engine/host.yaml`, `engine/lease.yaml`, `engine/plan.yaml`, `engine/response.yaml`, `engine/sink.yaml` | the five engine machines | engine | core | in the binary; their windows (5m, 30m, 24h, 7d) are "the operator's to change" (`model.md` 2.5) — **unstated** through what: no manifest key names them |
+| `engine/host.yaml`, `engine/lease.yaml`, `engine/rail.yaml`, `engine/response.yaml`, `engine/sink.yaml` | the five engine machines | engine | core | in the binary; their windows (5m, 30m, 24h, 7d) are "the operator's to change" (`model.md` 2.5) — **unstated** through what: no manifest key names them |
 | `line.yaml`, `place.yaml`, `session.yaml`, `stage.yaml` | the structural templates | template | core | in the binary |
 | `atoms.yaml`, `schema.json` | the atoms and the machine schema | — | core | in the binary; `flywheel-atoms` generates the name registries from them |
 | `unit-types/chore.yaml`, `unit-types/default.yaml`, `unit-types/fast.yaml` | the shipped unit types | template | extensible, shipped | `flywheel/types/units/<type>.yaml`, placed by the blueprints template (208), overridden by editing the file (a chore, 123) |
