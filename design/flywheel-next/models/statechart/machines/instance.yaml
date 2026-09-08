@@ -8,7 +8,7 @@
 # A host runs several instances at once, each an object of its own,
 # isolated on disk (`<root>/<instance>/`) and in state (its own state repository,
 # its own sinks, its own decision counter): nothing crosses (218). The name
-# is the operator's and need not be a git-host instance; repositories are
+# is the operator's and need not be a git-host organization; repositories are
 # listed by URL (219). Init adopts what exists and creates what does not, for
 # the blueprints, the state and each tracked repository; an existing repository
 # without the layout is upgraded by a chore, never rewritten (220). Removal is
@@ -54,7 +54,7 @@ singleton: instance
 owns: [repository, package, pool]
 satisfies: [15, 204, 207, 208, 218, 219, 220, 221, 241, 247, 255, 261, 265, 266, 267, 276, 279, 281, 282, 294, 302, 304, 312]
 record:
-  name: string           # the operator's name for it; may but need not coincide with a git-host instance (219)
+  name: string           # the operator's name for it; may but need not coincide with a git-host organization (219)
   blueprints: string          # <instance>/<blueprints repository>
   state: string          # <instance>/<state repository>
   profile: string        # tracker | git-only (C.1, C.2)
