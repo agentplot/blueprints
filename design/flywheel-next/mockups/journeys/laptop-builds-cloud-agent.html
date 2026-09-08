@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--
+  Journey - the solo developer whose laptop stays the code builder and who adds an agent in the cloud.
+  Six screens, one at a time, the stepper across the top, and the exact promise stated on every screen.
+  Drawn in rail-and-board.html's visual language (its tokens, Manrope and JetBrains Mono).
+
+  Source: ../../proposals/security.md as revised - section 5 "Customer journeys", first journey;
+  section 2 "The warm cache" for what is kept between ticks and under whose key; section 4 Design A.
+  Clauses: 256 (everything kept between ticks is sealed under a key naming one organization, inside
+  stores whose own keys are per volume and per queue), 257 (unwrapped only for a tick, only by the
+  role that runs it), 258 (the cache is a projection; an idle organization keeps nothing warm),
+  259 (a role scoped to one organization per tick), 260 (a revoked key fails closed), 261 (what we
+  hold is stated on the settings form), 262 (the shared tier's sparse read set), 263 (raw material
+  never read on a shared host), 264 (code never on a shared host), 265 (envelopes on GitHub are a
+  declaration and never the default). Requirements: 207 and 217 (the App, its scoped tokens, and the
+  dispatcher's declaration naming no repository), 219, 245-246 (the due index and the capture queue),
+  251, S114 (a bound-0 host takes no construction work).
+
+  Sign-in as the revised journey states it: the laptop signs in with GitHub's device flow, and the
+  hosted account the cloud agent needs is the hosted tier's identity provider. Nothing here claims
+  the customer's git contents are encrypted: GitHub holds both repositories in plaintext under its
+  own key, and the page says so.
+
+  Invented and marked as such: the host name chuck-cloud, decision number 431, the adapter table's
+  rows beyond rail-and-board's seed, and the wording of every control. The promises are quoted or
+  paraphrased from security.md sections 2 and 5, never enlarged.
+
+  Review switches: ?screen=1..6, ?theme=dark|light.
+-->
+<meta charset="utf-8">
+<title>Laptop builds, cloud agent answers</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#EEF1F4; --surface:#FFFFFF; --surface2:#F6F8FA; --ink:#16202A; --ink2:#4A5763; --ink3:#7A8794;
+  --line:#D5DBE1; --line2:#E4E8EC; --accent:#0B6E79; --accent-ink:#FFFFFF; --accent-soft:#D9EEF0; --accent-hatch:rgba(11,110,121,.10);
+  --ok:#2E8B57; --warn:#B7791F; --crit:#B3362B; --lit:#FFF3C4; --lit-line:#E5C34A;
+  --shadow:0 10px 30px rgba(22,32,42,.16);
+  --sans:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#12171C; --surface:#1A2128; --surface2:#20282F; --ink:#E6EBEF; --ink2:#A9B4BE; --ink3:#74818C;
+  --line:#2A333C; --line2:#232C34; --accent:#4FB3BF; --accent-ink:#0E1A1C; --accent-soft:#173A3E; --accent-hatch:rgba(79,179,191,.10);
+  --ok:#5CB57F; --warn:#D9A24A; --crit:#E0675B; --lit:#3A3416; --lit-line:#B89B2D; --shadow:0 10px 30px rgba(0,0,0,.5); color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#12171C; --surface:#1A2128; --surface2:#20282F; --ink:#E6EBEF; --ink2:#A9B4BE; --ink3:#74818C;
+  --line:#2A333C; --line2:#232C34; --accent:#4FB3BF; --accent-ink:#0E1A1C; --accent-soft:#173A3E; --accent-hatch:rgba(79,179,191,.10);
+  --ok:#5CB57F; --warn:#D9A24A; --crit:#E0675B; --lit:#3A3416; --lit-line:#B89B2D; --shadow:0 10px 30px rgba(0,0,0,.5); color-scheme:dark; }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:13.5px/1.5 var(--sans)}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+h1,h2,h3{margin:0;font-weight:800;text-wrap:balance}
+h1{font-size:19px;letter-spacing:-.01em}
+h2{font-size:17px}
+h3{font-size:13.5px;font-weight:700}
+p{margin:0}
+.mono{font-family:var(--mono);font-size:12px}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:700}
+.sample{font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);border:1px dashed var(--line);border-radius:3px;padding:0 4px;white-space:nowrap}
+.wrap{max-width:960px;margin:0 auto;padding:16px 16px 64px}
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:14px}
+.top .who{margin-left:auto;font-size:12px;color:var(--ink3)}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:6px;padding:5px 10px;background:var(--surface);font-weight:600;font-size:12.5px;line-height:1.2;white-space:nowrap}
+.btn:hover{border-color:var(--ink3)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.quiet{border-color:transparent;color:var(--ink2)}
+.btn:disabled{opacity:.45;cursor:default}
+.chip{display:inline-flex;align-items:center;font:10.5px var(--mono);padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--ink2);background:var(--surface2)}
+.chip.g{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.chip.w{border-color:var(--warn);color:var(--warn)}
+/* stepper */
+.stepper{display:flex;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:14px}
+.step{flex:1;display:flex;gap:8px;align-items:flex-start;padding:10px 12px;border-left:1px solid var(--line2);text-align:left;color:var(--ink3);min-width:0}
+.step:first-child{border-left:0}
+.step .n{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font:600 11px var(--mono);flex:none}
+.step .l{min-width:0}
+.step .l b{display:block;font-size:12px;font-weight:700;color:var(--ink2);overflow-wrap:anywhere}
+.step .l span{font-size:11px;line-height:15px;display:block}
+.step.done{color:var(--ink2)}
+.step.done .n{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.step.now{background:var(--accent-soft)}
+.step.now .n{border-color:var(--accent);color:var(--accent)}
+.step.now .l b{color:var(--ink)}
+/* screen */
+.screen{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}
+.screen-h{padding:14px 16px;border-bottom:1px solid var(--line2)}
+.screen-h .sub{color:var(--ink2);margin-top:4px}
+.screen-b{padding:16px;display:flex;flex-direction:column;gap:14px}
+.promise{border:1px solid var(--accent);background:var(--accent-soft);border-radius:10px;padding:12px 14px}
+.promise .eyebrow{color:var(--accent)}
+.promise p{margin-top:4px;color:var(--ink)}
+.promise ul{margin:6px 0 0;padding-left:18px}
+.promise li{margin:3px 0}
+.never{border:1px dashed var(--line);border-radius:10px;padding:12px 14px;background:var(--surface2)}
+.never .eyebrow{color:var(--ink3)}
+.never ul{margin:6px 0 0;padding-left:18px}
+.card{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--surface)}
+.card + .card{margin-top:8px}
+.card .ct{font-weight:700}
+.card .cs{color:var(--ink2);font-size:12.5px;margin-top:3px}
+.pick{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.pick input{margin-top:3px;accent-color:var(--accent);flex:none}
+.pick.on{border-color:var(--accent);background:var(--accent-soft)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 16px}
+.kv .k{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);font-weight:700}
+.kv .v{margin-top:2px}
+.rows{display:flex;flex-direction:column;gap:8px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.spread{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.foot{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;border-top:1px solid var(--line2);background:var(--surface2)}
+.note{font-size:12px;color:var(--ink3)}
+.cmd{font-family:var(--mono);font-size:12px;background:var(--surface2);border:1px solid var(--line2);border-radius:8px;padding:8px;word-break:break-all}
+.flow{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap}
+.flow .box{flex:1;min-width:150px;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--surface2)}
+.flow .box.here{border-color:var(--accent);background:var(--accent-soft)}
+.flow .box b{display:block}
+.flow .box .small{font-size:11.5px;color:var(--ink2);margin-top:4px}
+.arrow{align-self:center;color:var(--ink3);font-size:16px}
+table.t{width:100%;border-collapse:collapse;font-size:12.5px}
+.t th{text-align:left;color:var(--ink3);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:6px 8px;border-bottom:1px solid var(--line2)}
+.t td{padding:7px 8px;border-bottom:1px solid var(--line2);vertical-align:top}
+.t tr:last-child td{border-bottom:0}
+.tw{overflow-x:auto}
+@media (max-width:760px){
+  .wrap{padding:10px 10px 48px}
+  .stepper{flex-direction:column}
+  .step{border-left:0;border-top:1px solid var(--line2)}
+  .step:first-child{border-top:0}
+  .flow{flex-direction:column}
+  .arrow{transform:rotate(90deg)}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>A cloud agent beside your laptop</h1>
+    <span class="chip">journey · solo developer</span>
+    <span class="who">shared tier · Design A</span>
+  </div>
+  <div class="stepper" id="stepper"></div>
+  <div id="screen"></div>
+</div>
+<script>
+const SCREENS = [
+ {
+  "step": "Where you are",
+  "stepNote": "one laptop, nothing leaves it",
+  "title": "Your laptop is the code builder",
+  "sub": "You run the flywheel on this machine and sign in with GitHub device flow. This flow adds one thing beside it: an agent in the cloud that reads captures and answers chat while the laptop sleeps.",
+  "promise": "<b>Turn the cloud agent off and the same binary keeps ticking on your laptop</b>, against the same repositories, with the same numbers.",
+  "promiseList": [
+   "your laptop keeps signing in the way it does now, with GitHub&#8217;s device flow — the code and the approval, and nothing else",
+   "turning the agent on opens a hosted account for the organization; the identity provider is the hosted tier&#8217;s, and your laptop&#8217;s sign-in is unchanged"
+  ],
+  "body": "<div class=\"flow\">\n      <div class=\"box here\"><b>studio · your laptop</b><div class=\"small\">bound 4 · builds code, runs units, reads your meeting transcripts and your Drop folder · GitHub device flow</div></div>\n      <span class=\"arrow\">&#8594;</span>\n      <div class=\"box\"><b>the cloud agent</b><div class=\"small\">bound 0 · presents chat, receives webhook captures, ticks while the laptop sleeps</div></div>\n    </div>\n    <div class=\"kv\">\n      <div><div class=\"k\">What it is</div><div class=\"v\">one host of yours, on the shared tier, that takes no construction work</div></div>\n      <div><div class=\"k\">What it costs you to set up</div><div class=\"v\">no token to place, no key to create</div></div>\n      <div><div class=\"k\">How it ends</div><div class=\"v\">one enrolment decision you answer in the plan console</div></div>\n    </div>",
+  "never": [
+   "run a unit, a build or a test — its declaration names no unit type and no repository (217)",
+   "become the only place anything lives: your laptop stays a full host",
+   "change how you sign in on this machine"
+  ],
+  "next": "Connect GitHub"
+ },
+ {
+  "step": "GitHub",
+  "stepNote": "the App on your org",
+  "title": "Connect GitHub",
+  "sub": "One GitHub App is the connection. You install it on the account that holds your repositories, and its installation covers exactly the repositories your manifest lists.",
+  "promise": "<b>Your code never goes to the cloud agent</b>, because the machine that reads your plan is declared to hold no repository at all (217).",
+  "promiseList": [
+   "the installation token a session gets is short-lived, scoped to one repository, and written nowhere but the place it is issued into (207)",
+   "no host and no session ever uses a personal token of yours (207, 251)",
+   "the shared tier clones your state, and blueprints partially — the manifest, the claims and <span class=\"mono\">flywheel/</span> — and never a built repository (262)"
+  ],
+  "body": "<div class=\"card pick on\"><input type=\"radio\" checked><div><div class=\"ct\">chuck <span class=\"chip\">personal account</span></div>\n      <div class=\"cs\">install the App here · it will cover <span class=\"mono\">atlas</span> and <span class=\"mono\">flywheel-state</span></div></div></div>\n    <div class=\"card pick\"><input type=\"radio\"><div><div class=\"ct\">another account</div><div class=\"cs\">an organization you own or belong to; repositories are listed by URL, so they may live under any account the App reaches (219)</div></div></div>\n    <div class=\"note\">Adding a repository later extends this installation, or it surfaces as a decision under attention (149, 207).</div>",
+  "never": [
+   "ask for a password, a personal access token, or write access to anything you did not list",
+   "read a repository the installation does not name"
+  ],
+  "next": "Pick chat"
+ },
+ {
+  "step": "Chat",
+  "stepNote": "the platform&#8217;s bot",
+  "title": "Where the plan is printed",
+  "sub": "The cloud agent presents one chat sink: the plan printed as decisions you can answer from your phone.",
+  "promise": "<b>You place no secret at all.</b> Chat runs through the platform&#8217;s shared bot, so there is no bot token of yours to create, hold or rotate.",
+  "promiseList": [
+   "the bot posts to the one channel or direct message you name, and reads replies on it",
+   "your replies are your responses; each carries your identity and is applied exactly once",
+   "turning the sink off later takes the bot with it and leaves everything else in place"
+  ],
+  "body": "<div class=\"grid\">\n      <div class=\"card pick on\"><input type=\"radio\" checked><div><div class=\"ct\">Slack</div><div class=\"cs\">our bot, invited to your channel · buttons on each decision · no app to register, no signing secret</div></div></div>\n      <div class=\"card pick\"><input type=\"radio\"><div><div class=\"ct\">Discord</div><div class=\"cs\">our bot, added to your server · the plan printed to a channel, answers read back · no bot token to place</div></div></div>\n    </div>\n    <div class=\"rows\"><div class=\"row\"><span class=\"chip g\">no secret to place</span><span class=\"note\">the platform holds the bot&#8217;s credential; it is never yours to lose</span></div>\n    <div class=\"row\"><span class=\"chip\">your own bot instead</span><span class=\"note\">available on any host of yours — a token you place, under the same rules as every other secret (204, 207)</span></div></div>",
+  "never": [
+   "ask you for a bot token, an app token or a signing secret",
+   "post anything but your own plan into the channel you name"
+  ],
+  "next": "Pick capture adapters"
+ },
+ {
+  "step": "Captures",
+  "stepNote": "what reads what, and where",
+  "title": "Where your material is read",
+  "sub": "An adapter is one source on one host. Which host reads a source decides where that source&#8217;s content goes.",
+  "promise": "<b>Your meeting transcripts never go to the cloud agent.</b> They stay on your machine, and the session that reads them runs on your machine (263).",
+  "promiseList": [
+   "raw material a capture points at is never read on a host serving more than one organization",
+   "triage runs on your own machine, or on a machine created for your organization alone — never on anything shared",
+   "what the cloud agent receives is what a webhook sends it — a comment, a finding — held in a queue as your caller&#8217;s retry buffer, its body written under your organization&#8217;s key (246, 256)"
+  ],
+  "body": "<div class=\"tw\"><table class=\"t\">\n      <tr><th>Adapter</th><th>Runs on</th><th>What leaves your machine</th></tr>\n      <tr><td><b>meeting transcripts</b><div class=\"note\">Granola, as meetings end</div></td><td>studio · your laptop</td><td>nothing · the transcript stays here and triage runs here</td></tr>\n      <tr><td><b>folder drop</b><div class=\"note\">~/Drop, on change</div></td><td>studio · your laptop</td><td>nothing · the file stays here</td></tr>\n      <tr><td><b>PR conversation</b><div class=\"note\">comments on atlas</div></td><td>the cloud agent</td><td>the comment text GitHub sends, as one capture</td></tr>\n      <tr><td><b>the capture box</b><div class=\"note\">text you type on the page</div></td><td>whichever host serves the page</td><td>what you typed</td></tr>\n    </table></div>\n    <div class=\"note\">You can move any of these later; the console shows, per adapter, which host reads it.</div>",
+  "never": [
+   "copy a folder, a transcript or a repository to the cloud agent",
+   "read raw material on a host that serves anyone else"
+  ],
+  "next": "What we hold"
+ },
+ {
+  "step": "What we hold",
+  "stepNote": "the warm cache, and its key",
+  "title": "What sits on our disks between ticks",
+  "sub": "The shared tier is fast because it does not re-clone your repositories every tick. That warm copy is the thing worth asking about, so here it is, with the key that seals it.",
+  "promise": "<b>Everything we hold about you is encrypted at rest under a key that exists for your organization alone, and it is unwrapped only while your plan is being evaluated</b> (256, 257).",
+  "promiseList": [
+   "the ticker assumes your organization&#8217;s role, decrypts once, evaluates your plan, writes its effects and drops the key — the plaintext data key exists at no other moment (257, 259)",
+   "a stolen disk, a lost volume or a leaked snapshot of ours is ciphertext with no data key on it",
+   "if the key is revoked or unreachable, no tick proceeds on state it cannot open, every host shows one attention line naming the key and since when, and nothing is ever kept unencrypted as a fallback (260)"
+  ],
+  "body": "<div class=\"grid\">\n      <div class=\"card\"><div class=\"ct\">What we keep between ticks</div><div class=\"cs\">a full clone of your state repository · a blobless partial clone of blueprints, sparse to the manifest, the claims and <span class=\"mono\">flywheel/</span> · one due-index row naming the earliest time your tick could change anything (245) · queued captures, which are your caller&#8217;s retry buffer (246). Ten to fifty megabytes.</div></div>\n      <div class=\"card\"><div class=\"ct\">What we never keep</div><div class=\"cs\">your code, because the ticker&#8217;s declaration names no repository (217, 264) · your book · your raw capture material, because triage runs on your machine (263) · a credential of yours, because it holds none (251)</div></div>\n      <div class=\"card\"><div class=\"ct\">The residual, stated plainly</div><div class=\"cs\">a compromised ticker <i>while it is running</i> sees the plaintext of the organization whose tick it is running, and of any other ticking in the same process at that moment. It is real. It shrinks by evicting an idle organization&#8217;s cache (258), by giving each organization its own role and tick boundary (259), by an enclave, and by moving the key into your account.</div></div>\n      <div class=\"card\"><div class=\"ct\">Your repositories on GitHub</div><div class=\"cs\">GitHub holds both of them in plaintext, exactly as it holds every repository on the platform, under its own encryption and its own key. Nothing here changes that. If you want GitHub to see ciphertext too, that is a declaration you turn on, and it is never the default (265).</div></div>\n    </div>\n    <div class=\"kv\">\n      <div><div class=\"k\">Key</div><div class=\"v\">held by the service for your organization alone <span class=\"chip g\">one key, one organization</span></div></div>\n      <div><div class=\"k\">Its use</div><div class=\"v\">logged · and what we hold, which key opens it, which role may use it and when the cache was last evicted are shown on your settings form (261)</div></div>\n      <div><div class=\"k\">Later</div><div class=\"v\">move the key into your own account without a migration: every tier seals the same stores the same way, and only the data keys are re-wrapped</div></div>\n    </div>",
+  "never": [
+   "read your code, your transcripts or your Drop folder",
+   "hold your content in a store whose only key is ours — the store&#8217;s key is per volume and per queue, and your content is sealed under your key inside it (256)",
+   "keep the key unwrapped between ticks (257)"
+  ],
+  "next": "Finish"
+ },
+ {
+  "step": "Done",
+  "stepNote": "one decision, then a host",
+  "title": "One decision, then it is a host like any other",
+  "sub": "Nothing above has created anything yet. The flow ends by raising one enrolment decision, and the yes is what acts.",
+  "promise": "<b>You answer it in the plan console</b>, and from then on the cloud agent is an ordinary host on your hosts list: alive, bound 0, with the parts you chose.",
+  "body": "<div class=\"card\"><div class=\"ct\">decision 431 · enrol host <span class=\"mono\">chuck-cloud</span> · approve · yes · no</div>\n      <div class=\"cs\">the yes hands back a one-time token that expires in 24h; the host joins with it, reads the manifest and installs the Slack sink and the PR-conversation adapter you chose. <a href=\"../rail-and-board.html?open=d:431\">answer in the plan console</a></div></div>\n    <div class=\"card\"><div class=\"ct\">In the plan console afterwards</div>\n      <div class=\"cs\">a host pill <span class=\"mono\">chuck-cloud</span> beside <span class=\"mono\">studio</span> in the machinery strip, <b>bound 0</b>, so it takes no construction work and moves no runway reading; your Slack sink shows it as the presenter; your laptop keeps every unit it had.</div></div>\n    <div class=\"rows\"><div class=\"row\"><span class=\"chip\">turn it off</span><span class=\"note\">one response · the sink stops, the adapter stops, the laptop is unchanged</span></div>\n    <div class=\"row\"><span class=\"chip\">idle</span><span class=\"note\">an organization idle past the stated time keeps nothing warm at all; its next tick re-clones (258)</span></div>\n    <div class=\"row\"><span class=\"chip\">what we can still see</span><span class=\"note\">your organization&#8217;s name, its health and its bill — and the sealed cache</span></div></div>",
+  "never": [
+   "change what your laptop does",
+   "take a number, a lease or a session away from your laptop"
+  ],
+  "next": "Done"
+ }
+];
+let i = 0;
+function render(){
+  document.getElementById('stepper').innerHTML = SCREENS.map((s, n) =>
+    `<button class="step ${n < i ? 'done' : ''} ${n === i ? 'now' : ''}" data-go="${n}">
+      <span class="n">${n < i ? '&#10003;' : n + 1}</span>
+      <span class="l"><b>${s.step}</b><span>${s.stepNote}</span></span></button>`).join('');
+  const s = SCREENS[i];
+  document.getElementById('screen').innerHTML = `<div class="screen">
+    <div class="screen-h"><span class="eyebrow">screen ${i + 1} of ${SCREENS.length}</span>
+      <h2>${s.title}</h2><div class="sub">${s.sub}</div></div>
+    <div class="screen-b">
+      <div class="promise"><span class="eyebrow">the promise at this step</span><p>${s.promise}</p>${s.promiseList ? `<ul>${s.promiseList.map(x => `<li>${x}</li>`).join('')}</ul>` : ''}</div>
+      ${s.body}
+      ${s.never ? `<div class="never"><span class="eyebrow">what this step never does</span><ul>${s.never.map(x => `<li>${x}</li>`).join('')}</ul></div>` : ''}
+    </div>
+    <div class="foot">
+      <button class="btn quiet" data-go="${Math.max(0, i - 1)}" ${i === 0 ? 'disabled' : ''}>Back</button>
+      <button class="btn pri" data-go="${Math.min(SCREENS.length - 1, i + 1)}" ${i === SCREENS.length - 1 ? 'disabled' : ''}>${s.next || 'Next'}</button>
+    </div></div>`;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-go]');
+  if(!b || b.disabled) return;
+  i = +b.dataset.go; render(); window.scrollTo(0, 0);
+});
+const q = new URLSearchParams(location.search);
+if(q.get('theme')) document.documentElement.dataset.theme = q.get('theme');
+if(q.get('screen')) i = Math.max(0, Math.min(6 - 1, +q.get('screen') - 1));
+render();
+</script>
+</body>
+</html>

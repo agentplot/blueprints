@@ -1,0 +1,222 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1040"
+     font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="mW" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c05b5b"/></marker>
+    <marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+    <g id="cube" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"> <path d="M -16 -8 L 0 -17 L 16 -8 L 16 10 L 0 19 L -16 10 Z" fill="#fff" /> <path d="M -16 -8 L 0 1 L 16 -8 M 0 1 L 0 19" fill="none" /> </g>
+    <g id="cloud" fill="#fff" stroke="currentColor" stroke-width="1.8"> <path d="M -14 8 a 7 7 0 0 1 1 -14 a 9 9 0 0 1 17 -3 a 7 7 0 0 1 10 6 a 6 6 0 0 1 -2 11 z" /> </g>
+    <g id="browser"> <rect x="-22" y="-14" width="44" height="28" rx="4" fill="#fff" stroke="currentColor" stroke-width="2" /> <line x1="-22" y1="-6" x2="22" y2="-6" stroke="currentColor" stroke-width="2" /> <circle cx="-16" cy="-10" r="1.6" fill="currentColor" /><circle cx="-11" cy="-10" r="1.6" fill="currentColor" /> </g>
+    <g id="rack" stroke="currentColor" stroke-width="1.8" fill="#fff"> <rect x="-17" y="-18" width="34" height="12" rx="2.5"/> <rect x="-17" y="-3" width="34" height="12" rx="2.5"/> <circle cx="10" cy="-12" r="1.8" fill="currentColor" stroke="none"/> <circle cx="10" cy="3" r="1.8" fill="currentColor" stroke="none"/> </g>
+    <g id="cyl"> <path d="M -30 -12 L -30 15 A 30 9 0 0 0 30 15 L 30 -12" fill="#f1f1ee" stroke="#8a8a86" stroke-width="1.6" /> <ellipse cx="0" cy="-12" rx="30" ry="9" fill="#e3e3df" stroke="#8a8a86" stroke-width="1.6" /> </g>
+    <g id="clock"> <circle r="8" fill="#fff" stroke="#c05b5b" stroke-width="2" /> <path d="M 0 -4.5 V 0 H 3.6" fill="none" stroke="#c05b5b" stroke-width="2.2" stroke-linecap="round" /> </g>
+    <g id="chip"> <rect x="-52" y="-11" width="104" height="22" rx="11" fill="#fff" stroke="currentColor" stroke-width="1.3"/> </g>
+  </defs>
+  <rect width="1800" height="1040" fill="#fff"/>
+  <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Flywheel next — four tiers of one machinery: what runs, what wakes it, what it clones · git stays the one state store under all four</text>
+  <text x="40" y="57" font-size="12" fill="#666">no tier above 0 is a new architecture — a tick is a pure function of fetched state (136, 217a), so a tier differs only in where the tick is invoked, what the process clones and who owns the bot · the wake path is an event reaching a stopped machine; the tick path is the same fetch → list → read → evaluate → effect everywhere</text>
+
+  <!-- WAKE -->
+  <rect x="60" y="80" width="1000" height="130" rx="10" fill="#fdf6f6" stroke="#c05b5b" stroke-width="1.4"/>
+  <text x="76" y="102" font-size="12" font-weight="700" fill="#a34848">WAKE · the tick is invoked, not looped (244) — every invoker produces the same tick</text>
+  <use href="#chip" x="158" y="140" color="#c05b5b"/><text x="158" y="144" font-size="9.5" font-weight="700" fill="#a34848" text-anchor="middle">inbound webhook</text>
+  <use href="#chip" x="276" y="140" color="#c05b5b"/><text x="276" y="144" font-size="9.5" font-weight="700" fill="#a34848" text-anchor="middle">chat interaction</text>
+  <use href="#chip" x="394" y="140" color="#c05b5b"/><text x="394" y="144" font-size="9.5" font-weight="700" fill="#a34848" text-anchor="middle">page request</text>
+  <path d="M 450 140 L 484 140" fill="none" stroke="#c05b5b" stroke-width="2.4" marker-end="url(#mW)"/>
+  <rect x="492" y="120" width="190" height="42" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.4"/>
+  <text x="587" y="136" font-size="10" font-weight="700" fill="#333" text-anchor="middle">store-and-forward receiver</text>
+  <text x="587" y="152" font-size="8.5" fill="#666" text-anchor="middle">acks inside three seconds · a retry buffer, not state (246)</text>
+  <path d="M 686 140 L 720 140" fill="none" stroke="#c05b5b" stroke-width="2.4" marker-end="url(#mW)"/>
+  <rect x="728" y="120" width="180" height="42" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.4"/>
+  <text x="818" y="136" font-size="10" font-weight="700" fill="#333" text-anchor="middle">the platform proxy</text>
+  <text x="818" y="152" font-size="8.5" font-family="monospace" fill="#666" text-anchor="middle">auto_start wakes · auto_stop parks</text>
+  <use href="#clock" x="82" y="184"/>
+  <text x="98" y="181" font-size="9.5" font-weight="700" fill="#a34848">the scheduler · always on, because the platform has no cron</text>
+  <text x="98" y="196" font-size="9" fill="#666">it sweeps the due index (245) — one row per organization, the earliest time a tick could change anything — and starts the due tenants through the Machines API</text>
+  <text x="928" y="181" font-size="9" font-weight="700" fill="#a34848">two always-on parts</text>
+  <text x="928" y="195" font-size="8.5" fill="#666">before the first tenant:</text>
+  <text x="928" y="206" font-size="8.5" fill="#666">idle is cheap, not free</text>
+
+  <!-- PLATFORMS -->
+  <rect x="1080" y="80" width="660" height="130" rx="10" fill="#fffdf6" stroke="#c9962e" stroke-width="1.4"/>
+  <text x="1096" y="102" font-size="12" font-weight="700" fill="#8a6a1d">PLATFORMS · Fly.io Machines vs Lambda microVMs — both Firecracker; the contract differs</text>
+  <text x="1096" y="116" font-size="8.5" fill="#999">Lambda sells a bounded invocation with no durable disk · Fly sells a microVM you create, stop and restart with a volume attached</text>
+  <text x="1200" y="136" font-size="9" font-weight="700" fill="#8a6a1d">pool host (240–242)</text>
+  <text x="1470" y="136" font-size="9" font-weight="700" fill="#8a6a1d">dispatcher, scale-to-zero</text>
+  <line x1="1096" y1="143" x2="1724" y2="143" stroke="#c9962e" stroke-width="1" opacity="0.5"/>
+  <text x="1096" y="161" font-size="10" font-weight="700" fill="#333">Lambda</text>
+  <text x="1200" y="161" font-size="8.5" font-weight="700" fill="#a34848">disqualified</text>
+  <text x="1200" y="172" font-size="8.5" fill="#666">a 900-second cap against sessions of hours (I5);</text>
+  <text x="1200" y="183" font-size="8.5" fill="#666">/tmp gone between environments, so 205's root cannot persist</text>
+  <text x="1470" y="161" font-size="8.5" font-weight="700" fill="#8a6a1d">the capture endpoint and Slack interactions</text>
+  <text x="1470" y="172" font-size="8.5" fill="#666">but it cannot hold the Discord gateway, so 216's</text>
+  <text x="1470" y="183" font-size="8.5" fill="#666">presenter job has no home there</text>
+  <line x1="1096" y1="190" x2="1724" y2="190" stroke="#c9962e" stroke-width="0.8" opacity="0.35"/>
+  <text x="1096" y="206" font-size="10" font-weight="700" fill="#333">Fly</text>
+  <text x="1200" y="206" font-size="8.5" fill="#666"><tspan font-weight="700" fill="#1f6e6e">the fit</tspan> — from the tenant's image, one volume, no cap</text>
+  <text x="1470" y="206" font-size="8.5" fill="#666">the proxy wakes it; stopped, it is billed for rootfs only</text>
+
+  <!-- TIER 0 -->
+  <rect x="60" y="235" width="390" height="440" rx="10" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+  <use href="#browser" x="416" y="263" color="#2b8a8a"/>
+  <text x="76" y="261" font-size="9" font-weight="700" fill="#8a8a86">TIER 0</text>
+  <text x="76" y="281" font-size="13.5" font-weight="700" fill="#333">your computer</text>
+  <text x="76" y="299" font-size="9.5" fill="#999">the whole machinery on one machine · zero cost to serve</text>
+  <line x1="76" y1="313" x2="434" y2="313" stroke="#2b8a8a" stroke-width="1" opacity="0.4"/>
+  <text x="76" y="337" font-size="9.5" font-weight="700" fill="#1f6e6e">what runs</text>
+  <use href="#chip" x="158" y="365" color="#2b8a8a"/><text x="158" y="369" font-size="9.5" font-weight="700" fill="#1f6e6e" text-anchor="middle">the page</text>
+  <use href="#chip" x="276" y="365" color="#2b8a8a"/><text x="276" y="369" font-size="9.5" font-weight="700" fill="#1f6e6e" text-anchor="middle">adapters</text>
+  <use href="#chip" x="394" y="365" color="#2b8a8a"/><text x="394" y="369" font-size="9.5" font-weight="700" fill="#1f6e6e" text-anchor="middle">sinks</text>
+  <use href="#chip" x="158" y="399" color="#2b8a8a"/><text x="158" y="403" font-size="9.5" font-weight="700" fill="#1f6e6e" text-anchor="middle">worktrees</text>
+  <text x="220" y="403" font-size="9" fill="#999">design and construction places, on disk</text>
+  <text x="76" y="443" font-size="9.5" font-weight="700" fill="#1f6e6e">clones</text>
+  <text x="196" y="443" font-size="9.5" fill="#666">state and blueprints in full, and every</text>
+  <text x="196" y="457" font-size="9.5" fill="#666">tracked built repository (205)</text>
+  <text x="76" y="491" font-size="9.5" font-weight="700" fill="#1f6e6e">dispatcher</text>
+  <text x="196" y="491" font-size="9.5" fill="#666">local — a pane or a daemon — or the</text>
+  <text x="196" y="505" font-size="9.5" fill="#666">browser interpreter alone</text>
+  <text x="76" y="539" font-size="9.5" font-weight="700" fill="#1f6e6e">work</text>
+  <text x="196" y="539" font-size="9.5" fill="#666">your machine, in its own worktrees</text>
+  <text x="76" y="573" font-size="9.5" font-weight="700" fill="#1f6e6e">chat</text>
+  <text x="196" y="573" font-size="9.5" fill="#666">whatever you set up · your own bot and token</text>
+  <text x="76" y="621" font-size="9" font-weight="700" fill="#a34848">costs nothing and serves nobody but you</text>
+  <text x="76" y="637" font-size="8.5" fill="#666">asleep when the laptop is asleep; the sink lease waits with the pin</text>
+  <text x="76" y="659" font-size="8.5" fill="#999">205 · 217 · 232</text>
+
+  <!-- TIER 1 -->
+  <rect x="470" y="235" width="390" height="440" rx="10" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+  <use href="#cloud" x="826" y="265" color="#2b8a8a"/>
+  <text x="486" y="261" font-size="9" font-weight="700" fill="#8a8a86">TIER 1</text>
+  <text x="486" y="281" font-size="13.5" font-weight="700" fill="#333">cloud agent</text>
+  <text x="486" y="299" font-size="9.5" fill="#999">one step above your own computer · cents per tenant per month</text>
+  <line x1="486" y1="313" x2="844" y2="313" stroke="#2b8a8a" stroke-width="1" opacity="0.4"/>
+  <text x="486" y="337" font-size="9.5" font-weight="700" fill="#1f6e6e">what runs</text>
+  <rect x="560" y="351" width="284" height="50" rx="8" fill="#fafafa" stroke="#8a8a86" stroke-width="1.4" stroke-dasharray="5 3"/>
+  <use href="#cube" x="594" y="377" color="#8a8a86"/>
+  <text x="624" y="371" font-size="10.5" font-weight="700" fill="#333">a per-tenant dispatcher machine</text>
+  <text x="624" y="386" font-size="9" fill="#8a8a86">stopped when idle — no process, rootfs only on the bill</text>
+  <text x="810" y="368" font-size="8.5" font-weight="700" fill="#8a8a86">z z z</text>
+  <text x="486" y="425" font-size="9.5" font-weight="700" fill="#1f6e6e">fetches</text>
+  <text x="596" y="425" font-size="9.5" fill="#666">the state repository's shared line, and the</text>
+  <text x="596" y="439" font-size="9.5" fill="#666">blueprints shared line — blobless, sparse</text>
+  <text x="596" y="453" font-size="9" fill="#999">manifest, claims (157), flywheel/ · 10–50 MB, evictable</text>
+  <text x="486" y="477" font-size="9.5" font-weight="700" fill="#1f6e6e">pushes</text>
+  <text x="596" y="477" font-size="9.5" fill="#666">records, threads, responses, its sink lease,</text>
+  <text x="596" y="491" font-size="9.5" fill="#666">its heartbeat, run records, the status page</text>
+  <text x="596" y="505" font-size="9" fill="#999">to blueprints only under flywheel/ (203)</text>
+  <text x="486" y="529" font-size="9.5" font-weight="700" fill="#a34848">never</text>
+  <text x="596" y="529" font-size="9.5" font-weight="700" fill="#a34848">a built repository, a place, a worktree</text>
+  <text x="486" y="555" font-size="9.5" font-weight="700" fill="#1f6e6e">work</text>
+  <text x="596" y="555" font-size="9.5" fill="#666">none —</text>
+  <rect x="646" y="544" width="76" height="18" rx="9" fill="#fffdf6" stroke="#c9962e" stroke-width="1.3"/>
+  <text x="684" y="557" font-size="9.5" font-family="monospace" font-weight="700" fill="#8a6a1d" text-anchor="middle">bound: 0</text>
+  <text x="730" y="557" font-size="9" fill="#999">approved work waits</text>
+  <text x="486" y="581" font-size="9.5" font-weight="700" fill="#1f6e6e">chat</text>
+  <text x="596" y="581" font-size="9.5" fill="#666">the platform's shared bot, interactions mode</text>
+  <text x="596" y="595" font-size="9" fill="#999">controls and the numbered grammar; no secret placed (217d)</text>
+  <text x="486" y="621" font-size="9" font-weight="700" fill="#a34848">gives up plain typed messages while the machine sleeps</text>
+  <text x="486" y="637" font-size="8.5" fill="#666">every decision is still answerable by control and number (155)</text>
+  <text x="486" y="659" font-size="8.5" fill="#999">217d · 218 · 219 · 244 · 245 · 246 · 247</text>
+
+  <!-- TIER 2 -->
+  <rect x="880" y="235" width="390" height="440" rx="10" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+  <use href="#cube" x="1236" y="267" color="#2b8a8a"/>
+  <text x="896" y="261" font-size="9" font-weight="700" fill="#8a8a86">TIER 2</text>
+  <text x="896" y="281" font-size="13.5" font-weight="700" fill="#333">pools</text>
+  <text x="896" y="299" font-size="9.5" fill="#999">work on demand · the bill tracks usage, not tenancy</text>
+  <line x1="896" y1="313" x2="1254" y2="313" stroke="#2b8a8a" stroke-width="1" opacity="0.4"/>
+  <text x="896" y="337" font-size="9.5" font-weight="700" fill="#1f6e6e">what runs</text>
+  <rect x="970" y="351" width="284" height="62" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.4"/>
+  <use href="#cube" x="1004" y="379" color="#2b8a8a"/>
+  <text x="1034" y="371" font-size="10.5" font-weight="700" fill="#333">pool hosts, created on demand</text>
+  <text x="1034" y="386" font-size="9" fill="#666">from the organization's image (239), through the platform's API</text>
+  <text x="1034" y="400" font-size="9" fill="#666">for one session or more · retired when idle (240)</text>
+  <text x="896" y="443" font-size="9.5" font-weight="700" fill="#1f6e6e">isolation</text>
+  <text x="1006" y="443" font-size="9.5" font-weight="700" fill="#a34848">one organization per pool host (241)</text>
+  <text x="896" y="475" font-size="9.5" font-weight="700" fill="#1f6e6e">drain</text>
+  <text x="1006" y="475" font-size="9.5" fill="#666">hosts added while demand holds, within bound</text>
+  <text x="1006" y="489" font-size="9.5" fill="#666">and cost; retired as the queue drains (242)</text>
+  <rect x="1006" y="498" width="248" height="14" rx="7" fill="#f1f1ee" stroke="#8a8a86" stroke-width="1"/>
+  <rect x="1006" y="498" width="144" height="14" rx="7" fill="#c9962e" opacity="0.5"/>
+  <text x="1160" y="509" font-size="8" fill="#8a6a1d">drain, on the instrument</text>
+  <rect x="896" y="524" width="358" height="52" rx="8" fill="#fdf6f6" stroke="#c05b5b" stroke-width="1.3"/>
+  <text x="910" y="541" font-size="9.5" font-weight="700" fill="#a34848">retire destroys the machine — it never merely stops it</text>
+  <text x="910" y="555" font-size="8.5" fill="#666">a stopped machine keeps its host id and stops heartbeating: stale at five minutes,</text>
+  <text x="910" y="567" font-size="8.5" fill="#666">gone at thirty, raising a takeover decision for a host that is only parked</text>
+  <text x="896" y="597" font-size="9.5" font-weight="700" fill="#1f6e6e">clones</text>
+  <text x="1006" y="597" font-size="9.5" fill="#666">state, blueprints and the tracked built repositories</text>
+  <text x="1006" y="611" font-size="9" fill="#999">worktrees live here · the volume outlives the host as a cache (248)</text>
+  <text x="896" y="637" font-size="9" font-weight="700" fill="#1f6e6e">the dispatcher stays tier 1's · a pool adds work, never a second dispatcher</text>
+  <text x="896" y="659" font-size="8.5" fill="#999">230 · 239 · 240 · 241 · 242 · 248</text>
+
+  <!-- TIER 3 -->
+  <rect x="1290" y="235" width="390" height="440" rx="10" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+  <use href="#rack" x="1646" y="267" color="#2b8a8a"/>
+  <text x="1306" y="261" font-size="9" font-weight="700" fill="#8a8a86">TIER 3</text>
+  <text x="1306" y="281" font-size="13.5" font-weight="700" fill="#333">dedicated hosts</text>
+  <text x="1306" y="299" font-size="9.5" fill="#999">your own container, bot and network · a machine plus your platform</text>
+  <line x1="1306" y1="313" x2="1664" y2="313" stroke="#2b8a8a" stroke-width="1" opacity="0.4"/>
+  <text x="1306" y="337" font-size="9.5" font-weight="700" fill="#1f6e6e">what runs</text>
+  <rect x="1380" y="351" width="284" height="50" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.4"/>
+  <use href="#rack" x="1414" y="377" color="#2b8a8a"/>
+  <text x="1444" y="371" font-size="10.5" font-weight="700" fill="#333">a resident host, always awake</text>
+  <text x="1444" y="386" font-size="9" fill="#666">the long-lived loop, one process per host id (231)</text>
+  <text x="1306" y="431" font-size="9.5" font-weight="700" fill="#1f6e6e">clones</text>
+  <text x="1426" y="431" font-size="9.5" fill="#666">everything 205 names, resident on disk</text>
+  <text x="1306" y="465" font-size="9.5" font-weight="700" fill="#1f6e6e">dispatcher</text>
+  <text x="1426" y="465" font-size="9.5" fill="#666">your own, on your own placement</text>
+  <text x="1306" y="499" font-size="9.5" font-weight="700" fill="#1f6e6e">work</text>
+  <text x="1426" y="499" font-size="9.5" fill="#666">your own pool, at whatever bound you set</text>
+  <text x="1306" y="533" font-size="9.5" font-weight="700" fill="#1f6e6e">chat</text>
+  <text x="1426" y="533" font-size="9.5" fill="#666">your own app and token · the audit line names it</text>
+  <text x="1306" y="567" font-size="9.5" font-weight="700" fill="#1f6e6e">network</text>
+  <text x="1426" y="567" font-size="9.5" fill="#666">your tailnet node or your ingress · the endpoint yours</text>
+  <text x="1306" y="621" font-size="9" font-weight="700" fill="#1f6e6e">gives up nothing · costs a machine that runs whether or not anything happens</text>
+  <text x="1306" y="637" font-size="8.5" fill="#666">the only tier whose tick is a loop rather than an invocation</text>
+  <text x="1306" y="659" font-size="8.5" fill="#999">205 · 218 · 231 · 243</text>
+
+  <!-- GIT HOST -->
+  <rect x="60" y="720" width="1620" height="130" rx="10" fill="#f7f7f5" stroke="#8a8a86" stroke-width="1.6"/>
+  <text x="76" y="744" font-size="12" font-weight="700" fill="#5e5e5a">GIT HOST · the one state store, under every tier</text>
+  <text x="400" y="744" font-size="9.5" fill="#8a8a86">an effect lands by compare-and-swap on a ref, and a repeat under the same key writes nothing (134, 111, I15) · every tier fetches here and pushes here, and holds nothing else as truth (I14)</text>
+  <use href="#cyl" x="300" y="802"/>
+  <text x="300" y="808" font-size="10" font-weight="700" fill="#5e5e5a" text-anchor="middle">state</text>
+  <text x="300" y="838" font-size="8.5" fill="#999" text-anchor="middle">object records · threads · responses · leases · decisions · heartbeats — one root per organization</text>
+  <use href="#cyl" x="1100" y="802"/>
+  <text x="1100" y="808" font-size="10" font-weight="700" fill="#5e5e5a" text-anchor="middle">blueprints</text>
+  <text x="1100" y="838" font-size="8.5" fill="#999" text-anchor="middle">machines · profiles · claims · the books — the shared line every tier reads, written under flywheel/</text>
+  <text x="1640" y="782" font-size="8.5" fill="#999" text-anchor="end">history is the audit record (167)</text>
+  <text x="1640" y="796" font-size="8.5" fill="#999" text-anchor="end">nothing crosses between roots (218)</text>
+
+  <!-- WAKE EDGES -->
+  <path d="M 812 164 C 812 196, 790 208, 772 231" fill="none" stroke="#c05b5b" stroke-width="2.6" marker-end="url(#mW)"/>
+  <text x="826" y="200" font-size="9" font-weight="700" fill="#a34848">wake · an event</text>
+  <path d="M 700 202 C 690 214, 670 218, 652 231" fill="none" stroke="#c05b5b" stroke-width="2.6" marker-end="url(#mW)"/>
+  <text x="560" y="224" font-size="9" font-weight="700" fill="#a34848">wake · due</text>
+
+  <!-- TICK EDGES -->
+  <path d="M 255 679 L 255 716" fill="none" stroke="#4a7fb5" stroke-width="2.4" stroke-dasharray="7 5" marker-end="url(#mT)"/>
+  <path d="M 665 679 L 665 716" fill="none" stroke="#4a7fb5" stroke-width="2.4" stroke-dasharray="7 5" marker-end="url(#mT)"/>
+  <path d="M 1075 679 L 1075 716" fill="none" stroke="#4a7fb5" stroke-width="2.4" stroke-dasharray="7 5" marker-end="url(#mT)"/>
+  <path d="M 1485 679 L 1485 716" fill="none" stroke="#4a7fb5" stroke-width="2.4" stroke-dasharray="7 5" marker-end="url(#mT)"/>
+  <text x="263" y="702" font-size="9" font-weight="700" fill="#3a6a99">tick</text>
+  <text x="673" y="702" font-size="9" font-weight="700" fill="#3a6a99">tick</text>
+  <text x="1083" y="702" font-size="9" font-weight="700" fill="#3a6a99">tick</text>
+  <text x="1493" y="702" font-size="9" font-weight="700" fill="#3a6a99">tick</text>
+
+  <!-- LEGEND -->
+  <rect x="40" y="870" width="1720" height="140" rx="10" fill="#fafafa"/>
+  <path d="M 70 896 L 130 896" fill="none" stroke="#c05b5b" stroke-width="2.6" marker-end="url(#mW)"/>
+  <text x="146" y="900" font-size="10" fill="#333">wake path · an event reaches a stopped machine and starts it</text>
+  <path d="M 520 896 L 580 896" fill="none" stroke="#4a7fb5" stroke-width="2.4" stroke-dasharray="7 5" marker-end="url(#mT)"/>
+  <text x="596" y="900" font-size="10" fill="#333">tick path · fetch → list → read → evaluate → effect, the same at every tier</text>
+  <use href="#cube" transform="translate(1044,896) scale(0.5)" color="#8a8a86"/>
+  <text x="1068" y="900" font-size="10" fill="#333">a machine · dashed and grey when it is stopped between events</text>
+  <use href="#cyl" transform="translate(1504,898) scale(0.42)"/>
+  <text x="1528" y="900" font-size="10" fill="#333">a repository on the git host</text>
+  <line x1="70" y1="920" x2="1730" y2="920" stroke="#c9c9c5" stroke-width="1"/>
+  <text x="60" y="944" font-size="10.5" font-weight="700" fill="#333">INVARIANTS KEPT AT EVERY TIER</text>
+  <text x="330" y="944" font-size="10.5" fill="#333">exactly-once responses — one keyed record per response, and a repeat under the same key writes nothing (111, 153) · git is the one state store, every write a compare-and-swap (I14, I15, 134)</text>
+  <text x="330" y="964" font-size="10.5" fill="#333">one organization per pool host (241) · a secret never travels through the page — the platform's store injects it at start, and a missing one waits under attention (207, 229)</text>
+  <text x="60" y="988" font-size="8.5" fill="#999">a tier is a binding, not an architecture: it changes where the tick is invoked, what the process clones and who owns the bot, and no machine, atom or profile operation (217j) · 111 · 134 · 136 · 153 · 205 · 207 · 218 · 231 · 241 · 244 · 245 · 246 · 247</text>
+  <text x="60" y="1002" font-size="8.5" fill="#999">per-tenant machines earn their place at tiers 2 and 3, where the tenant pays and isolation is the product; a shared batch ticker reaches the same two always-on parts with fewer, and bends only 231</text>
+</svg>

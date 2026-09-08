@@ -1,0 +1,1939 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--
+  Management console — everything the operator administers, drawn in the AWS Cloudscape design system.
+  Cut from rail-and-board.html and carrying its seed: organization willdan, 2026-09-04 07:40, members
+  chuck · rhea · lee, hosts studio · mac-mini · willdan-cloud, pool willdan-pool with pool-a1 and
+  pool-a2, repositories atlas · switchboard · new-repo · books, and the package index. The plan console
+  (rail-and-board.html) keeps the rail, the board, the dock and the flywheel; nothing was removed from
+  it — this file is a second reading of the same state for evaluation.
+
+  Cloudscape: the ESM route was tried and refused. https://cdn.jsdelivr.net/npm/@cloudscape-design/components@3/+esm
+  is 2.7MB, imports React 19 itself (so a React 18 UMD beside it is moot) and references no stylesheet:
+  Cloudscape ships its components' CSS as build-time CSS modules, and the +esm bundle carries none, so
+  every component would render unstyled. The visual language is drawn by hand instead, against the real
+  token values read from @cloudscape-design/design-tokens@3.0.111 index-visual-refresh.json, light and
+  dark: the greys (#0f141a · #424650 · #656871 · #8c8c94 · #c6c6cd · #ebebf0 · #f9f9fa), the blues
+  (#006ce0 light · #42b4ff dark), the status colours, the 16px container radius, the 20px button radius,
+  Open Sans at 14px/20px, and the dark surfaces (#0f141a ground, #161d26 container). Reproduced by hand:
+  top navigation, side navigation, content layout with breadcrumbs and a page header, container with
+  header, table with a header counter and actions, key-value pairs, status indicators, badges, buttons
+  (primary · normal · link · inline icon), form field, input, select, radio group, checkbox, expandable
+  section, tabs, wizard, flashbar and split panel.
+
+  Decisions taken while building:
+  - The console is administration only. Every answer stays in the plan console: an install, an
+    enrolment, an image rebuild and a binary upgrade are shown raising one decision with its number
+    and a link "answer in the plan console" (S113, S118, S124). Nothing here is in the count, nothing
+    here is answered, and no install runs from a form.
+  - A configuration change is one logged response, applied by the machinery as a re-install of that
+    package (S119); a flashbar confirms it and says what was logged. Retire and restore in the
+    organization store are one logged response each (S156).
+  - Side navigation is two sections. Organizations: one entry per organization the signed-in identity
+    is a member of (willdan, agentplot, integral-analytics, personal), each expanding to Overview ·
+    Repositories · Members and roles · Sinks · Adapters · Packages · Pools. Hosts: one entry per host
+    of the organization in hand, each opening its settings screen, and "+ host". Hosts are per
+    organization because a host serves one organization (241) and its parts are read from that
+    organization's manifest.
+  - The host settings screen is by heading, each heading a slot or a list of slots (S115): Sign-in,
+    Router, Runners (one slot per role: elaboration · construction · machinery), Agent, Chat sinks,
+    Capture adapters, Triage (derived from the adapters, no slot), Environment, Pool, Host facts.
+    A slot shows the package's name and version and its state: installed · adding, decision n · needs
+    a secret · installing · disabled. An empty slot says what the heading takes and carries "add".
+  - There is no index across kinds and no search over the whole store (S117). "add" and "change" open
+    the split panel as the catalogue for that one heading, filtered to the host's platform, with a
+    search box inside it and "any platform" showing the rest greyed with what they need. Choosing a
+    package opens its add sheet in the same panel; "add to <host>" ends the flow by raising the
+    install decision and closing the panel to the slot, which reads "adding · decision n".
+  - A secret is never a field and never shown back (204, 207, S123): the sheet shows the place-it
+    command for the target host, "copy", and a "check" that asks the host whether it is present, or
+    "I'll place it later · under attention". The unplaced github-app.pem on willdan-cloud is seeded
+    under attention with its place-it command, as install chore wi-#429 waits on it.
+  - The organization store is the same settings screen without a host (S156): headings Types,
+    Deliverable producers, Map vocabularies, Templates and Scenario packs, each a list of slots with
+    configure, retire and restore, and "add" opening that heading's catalogue. An organization package
+    never appears on a host and a host part never appears in the store (S124, S158).
+  - "+ organization" sits under Organizations in the side navigation and is the second wizard,
+    over 204, 206, 207/207a, 218-222, 233, 247 and 253, in that order: name it (219: an
+    organization is the operator's name for it and need not coincide with an organization at the
+    git host) and say whether it is self-managed or hosted, because 207a splits the App on that;
+    pick the GitHub account the signed-in user's connection can install the App on, remembering
+    that repositories are listed by URL and may live under any account the App reaches (219);
+    create or adopt the two repositories, state with the profile's layout and blueprints from the
+    blueprints template, an adopted one that lacks the layout upgraded by a chore and never
+    rewritten (204, 206, 220, 208); install the App or extend its installation to the new
+    repositories (207) - a self-managed organization uses its own App, whose key is a secret the
+    operator places and never an agent (204, 207a, S198), and a hosted tier uses the service's
+    App, whose key never leaves the service and which mints a pool host's installation tokens;
+    create the organization's Frontegg account with the creating user as owner (247, 253), the
+    account being the organization itself, a sub-account of the service's own only on the hosted
+    tiers, with the operators list derived from the assigned users and never authored; name a
+    root on this host, under which it clones state, blueprints and every tracked repository as
+    bare repositories (205) and serves the organization at the host's one address with the
+    organization in the path (205a); and end by raising the first-tick decision, whose yes runs
+    `flywheel init` as effects with proofs, so running it again changes nothing and the
+    reconciler advances a half-finished bootstrap (204, 222). Nothing in the wizard creates
+    anything: it collects, and the decision is what acts.
+  - "retire organization" sits on the organization's overview and raises a decision, never a
+    button that acts (221): the yes ends its sessions, removes its places, archives its state and
+    leaves its git repositories on disk, and its numbers are never reused (15, 221).
+  - "+ host" opens on a choice of next steps, not on the platform list: a machine of yours that
+    drains construction work, an agent in the cloud for captures and chat at bound 0, more drain
+    managed for you (which is a pool, so it opens the pool form rather than pretending to be one
+    host), and a host already running the binary. Each card states the promise the choice makes
+    and sets the platform, the parts and the flow behind it; the platform list and "adopt
+    existing" stay reachable under "advanced". Why: the flow of S120 is unchanged, but its first
+    screen asked the operator to know what a container on any platform was before it asked what
+    they wanted.
+  - "+ host" is the Cloudscape wizard over the flow of S120: platform and name · parts, heading by
+    heading, from each filtered catalogue · provision, run from the host you are on with your own
+    platform credentials, read at run time and never stored · hand over only the chosen parts' secrets
+    · enrol, which raises the enrolment decision with a one-time token that expires in 24h, then join
+    and alive. "adopt existing" (S121) skips platform, provisioning and the hand-over.
+  - Pools (S176): a pool is a row of its own with platform, image state, live of bound, idle-retire and
+    cost, its hosts folded under it, each a host row with a pool chip and a retiring state. Nothing on
+    the row adds or retires a host; the machinery does both within bound and cost. "rebuild" on an
+    image behind raises the rebuild as a chore decision (S175).
+  - Members and roles (S166–S171): the operators list with each member's addresses per chat kind, the
+    sinks each address makes with its own mark and presenting host, and the roles as lists of members.
+    Ownership is administered here and answered there: "assign" lives on the decision in the plan
+    console (S170), and this console says so rather than drawing an answer control.
+  - Environment (S174): a repository's row carries its declaration and one line per host, satisfied or
+    the first tool it cannot produce; a host's Environment heading shows the same from the host's side.
+    The console changes no provider — a provider is a host's declaration, changed with the host.
+  - Settings, the organization's manifest as a form (S155), is split across the organization's pages
+    rather than drawn as one long form: Overview carries profile, router, cadences and the runner
+    defaults per role; Repositories, Members and roles, Sinks, Adapters and Pools carry the rest. Save
+    is one configure-organization response per form and the console says the machinery applies it as
+    one manifest commit.
+
+  Invented beyond the requirements and the seed: the member roles as lists of members (construction,
+  design, ops) and their members, the console's own page set and its breadcrumbs, the decision numbers
+  425 and up, the 24h enrolment token's text, the per-page save lines, today's pool spend, and the
+  wording of every catalogue entry's "needs" and "enables" beyond what rail-and-board's index carries.
+  Marked sample where it is not from the seed.
+
+  Review switches: ?theme=dark|light, ?org=willdan|agentplot|integral-analytics|personal,
+  ?page=overview|repositories|members|sinks|adapters|packages|pools, ?host=<id>, ?addhost=1,
+  ?addorg=1&ostep=0..6,
+  ?panel=1 (opens the seeded catalogue), ?flash=1.
+-->
+<meta charset="utf-8">
+<title>Management console</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Cloudscape visual-refresh tokens, read from @cloudscape-design/design-tokens@3.0.111 */
+:root{
+  --ground:#f9f9fa; --surface:#ffffff; --shaded:#f6f6f9; --hover:#f3f3f7;
+  --text:#0f141a; --heading:#0f141a; --secondary:#424650; --tertiary:#656871; --disabled:#8c8c94;
+  --divider:#c6c6cd; --divider-2:#ebebf0; --input-border:#8c8c94; --disabled-bg:#ebebf0;
+  --link:#006ce0; --link-hover:#002b66; --primary-bg:#006ce0; --primary-text:#ffffff; --primary-hover:#002b66;
+  --success:#00802f; --error:#db0000; --warning:#855900; --info:#006ce0; --inactive:#656871;
+  --bg-success:#effff1; --bg-error:#fff5f5; --bg-warning:#fffef0; --bg-info:#f0fbff; --selected:#f0fbff;
+  --shadow:0px 1px 1px 1px #e9ebed, 0px 6px 36px rgba(0,7,22,.10);
+  --sans:"Open Sans","Helvetica Neue",Roboto,Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --nav:272px; --top:56px; --panel:380px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --ground:#0f141a; --surface:#161d26; --shaded:#1b232d; --hover:#131920;
+  --text:#c6c6cd; --heading:#ebebf0; --secondary:#a4a4ad; --tertiary:#a4a4ad; --disabled:#8c8c94;
+  --divider:#424650; --divider-2:#232b37; --input-border:#656871; --disabled-bg:#1b232d;
+  --link:#42b4ff; --link-hover:#75cfff; --primary-bg:#42b4ff; --primary-text:#0f141a; --primary-hover:#75cfff;
+  --success:#2bb534; --error:#ff7a7a; --warning:#fbd332; --info:#42b4ff; --inactive:#a4a4ad;
+  --bg-success:#001401; --bg-error:#1f0000; --bg-warning:#191100; --bg-info:#001129; --selected:#001129;
+  --shadow:0px 1px 1px 1px #192534, 0px 6px 36px #00040c;
+  color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --ground:#0f141a; --surface:#161d26; --shaded:#1b232d; --hover:#131920;
+  --text:#c6c6cd; --heading:#ebebf0; --secondary:#a4a4ad; --tertiary:#a4a4ad; --disabled:#8c8c94;
+  --divider:#424650; --divider-2:#232b37; --input-border:#656871; --disabled-bg:#1b232d;
+  --link:#42b4ff; --link-hover:#75cfff; --primary-bg:#42b4ff; --primary-text:#0f141a; --primary-hover:#75cfff;
+  --success:#2bb534; --error:#ff7a7a; --warning:#fbd332; --info:#42b4ff; --inactive:#a4a4ad;
+  --bg-success:#001401; --bg-error:#1f0000; --bg-warning:#191100; --bg-info:#001129; --selected:#001129;
+  --shadow:0px 1px 1px 1px #192534, 0px 6px 36px #00040c;
+  color-scheme:dark; }
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ground);color:var(--text);font:14px/20px var(--sans);display:flex;flex-direction:column;overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+a{color:var(--link);text-decoration:none}
+a:hover{color:var(--link-hover);text-decoration:underline}
+input,select,textarea{font:inherit;color:var(--text);background:var(--surface);border:2px solid var(--input-border);border-radius:8px;padding:4px 8px;min-height:32px}
+input[type=checkbox],input[type=radio]{width:16px;height:16px;min-height:16px;padding:0;margin:2px 0 0;flex:none;accent-color:var(--link);border-radius:4px}
+input:focus,select:focus,textarea:focus,button:focus-visible,[tabindex]:focus-visible,a:focus-visible{outline:2px solid var(--link);outline-offset:2px;border-radius:2px}
+h1,h2,h3,h4{margin:0;color:var(--heading);font-weight:700}
+h1{font-size:24px;line-height:30px}
+h2{font-size:18px;line-height:22px}
+h3{font-size:16px;line-height:20px}
+h4{font-size:14px;line-height:18px}
+p{margin:0}
+.mono{font-family:var(--mono);font-size:12.5px}
+.muted{color:var(--secondary)}
+.small{font-size:12px;line-height:16px;color:var(--secondary)}
+.sample{font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--tertiary);border:1px solid var(--divider);border-radius:4px;padding:0 4px;white-space:nowrap}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.spread{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.stack{display:flex;flex-direction:column;gap:8px}
+.stack-l{display:flex;flex-direction:column;gap:20px}
+
+/* ---------- top navigation ---------- */
+.topnav{flex:none;height:var(--top);display:flex;align-items:center;gap:16px;padding:0 16px;background:var(--surface);border-bottom:1px solid var(--divider);position:relative;z-index:40;overflow:hidden;min-width:0}
+.topnav .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;color:var(--heading);white-space:nowrap}
+.brand .wheel{width:22px;height:22px;border-radius:50%;border:3px solid var(--link);border-right-color:transparent;display:inline-block}
+.topnav .util{margin-left:auto;display:flex;align-items:center;gap:4px;min-width:0}
+.topnav #orgsel{min-width:0;max-width:150px}
+.topnav #orgsel span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tn-btn{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;color:var(--secondary);font-weight:600;white-space:nowrap}
+.tn-btn:hover{background:var(--hover);color:var(--heading)}
+.tn-btn .caret{font-size:10px;color:var(--tertiary)}
+.tn-sep{width:1px;height:24px;background:var(--divider-2)}
+.avatar{width:24px;height:24px;border-radius:50%;background:var(--link);color:var(--primary-text);font-size:11px;font-weight:700;display:grid;place-items:center}
+.menu{position:absolute;top:calc(var(--top) - 6px);right:16px;min-width:280px;background:var(--surface);border:1px solid var(--divider);border-radius:12px;box-shadow:var(--shadow);padding:8px;z-index:60}
+.menu.left{right:auto;left:180px}
+.menu h4{padding:6px 10px 4px;color:var(--tertiary);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.menu button{display:block;width:100%;text-align:left;padding:8px 10px;border-radius:8px;color:var(--text)}
+.menu button:hover{background:var(--hover)}
+.menu button[aria-current="true"]{background:var(--selected);color:var(--link);font-weight:700}
+.menu .mi-sub{display:block;font-size:12px;color:var(--tertiary);font-weight:400}
+.menu hr{border:0;border-top:1px solid var(--divider-2);margin:6px 4px}
+
+/* ---------- layout ---------- */
+.layout{flex:1;display:grid;grid-template-columns:var(--nav) minmax(0,1fr);min-height:0;min-width:0}
+.layout.panel-open{grid-template-columns:var(--nav) minmax(0,1fr) var(--panel)}
+.sidenav{background:var(--surface);border-right:1px solid var(--divider);overflow:auto;padding:20px 8px 40px}
+.main{overflow:auto;padding:24px 24px 64px;background:var(--ground);min-width:0}
+.main-inner{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:20px;min-width:0}
+
+/* ---------- side navigation ---------- */
+.sn-head{padding:6px 12px 12px;border-bottom:1px solid var(--divider-2);margin-bottom:8px}
+.sn-head b{font-size:16px;color:var(--heading)}
+.sn-sec{margin:12px 0 4px;padding:4px 12px;font-weight:700;color:var(--heading)}
+.sn-item{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:6px 12px;border-radius:8px;color:var(--text)}
+.sn-item:hover{background:var(--hover)}
+.sn-item[aria-current="page"]{background:var(--selected);color:var(--link);font-weight:700}
+.sn-item .badge-n{margin-left:auto}
+.sn-sub{padding-left:20px}
+.sn-org{display:flex;align-items:center;gap:6px;width:100%;padding:6px 12px;border-radius:8px;font-weight:700;color:var(--heading)}
+.sn-org:hover{background:var(--hover)}
+.sn-org .tw{font-size:10px;color:var(--tertiary);width:10px}
+.sn-div{border:0;border-top:1px solid var(--divider-2);margin:12px 8px}
+.sn-note{padding:4px 12px 0;font-size:12px;color:var(--tertiary)}
+
+/* ---------- content layout ---------- */
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:14px;color:var(--tertiary)}
+.crumbs .sep{color:var(--disabled)}
+.page-head{display:flex;flex-direction:column;gap:4px}
+.page-head .desc{color:var(--secondary)}
+.page-head .hd{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* ---------- container ---------- */
+.ctr{background:var(--surface);border:1px solid var(--divider-2);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.ctr-head{padding:16px 20px;border-bottom:1px solid var(--divider-2);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.ctr-head.plain{border-bottom:0;padding-bottom:0}
+.ctr-head .ct{display:flex;flex-direction:column;gap:2px}
+.ctr-head .counter{color:var(--tertiary);font-weight:400}
+.ctr-body{padding:20px}
+.ctr-body.tight{padding:0}
+.ctr-foot{padding:12px 20px;border-top:1px solid var(--divider-2);background:var(--shaded);display:flex;justify-content:flex-end;gap:8px}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:6px;border-radius:20px;padding:4px 20px;font-weight:700;font-size:14px;line-height:22px;white-space:nowrap;border:2px solid transparent}
+.btn.normal{border-color:var(--link);color:var(--link);background:var(--surface)}
+.btn.normal:hover{border-color:var(--link-hover);color:var(--link-hover);background:var(--hover)}
+.btn.primary{background:var(--primary-bg);color:var(--primary-text);border-color:var(--primary-bg)}
+.btn.primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
+.btn.link{color:var(--link);padding:4px 8px}
+.btn.link:hover{color:var(--link-hover);text-decoration:underline}
+.btn:disabled{border-color:var(--disabled);color:var(--disabled);cursor:not-allowed;background:transparent}
+.btn.primary:disabled{background:var(--disabled-bg);border-color:var(--disabled-bg);color:var(--disabled)}
+.btn.sm{padding:2px 14px;font-size:13px}
+
+/* ---------- status, badges ---------- */
+.st{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.st .g{font-size:13px;line-height:1}
+.st.success{color:var(--success)} .st.error{color:var(--error)} .st.warning{color:var(--warning)}
+.st.info{color:var(--info)} .st.pending,.st.inactive,.st.stopped{color:var(--inactive)}
+.st.loading{color:var(--secondary)}
+.badge{display:inline-flex;align-items:center;border-radius:4px;padding:0 6px;font-size:12px;line-height:18px;font-weight:600;background:var(--shaded);color:var(--secondary);border:1px solid var(--divider-2);white-space:nowrap}
+.badge.blue{background:var(--bg-info);color:var(--link);border-color:var(--link)}
+.badge.grey{color:var(--tertiary)}
+.badge-n{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--link);color:var(--primary-text);font-size:12px;font-weight:700}
+
+/* ---------- table ---------- */
+.tbl-wrap{overflow-x:auto}
+table.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;font-weight:700;color:var(--heading);padding:10px 20px;border-bottom:1px solid var(--divider-2);white-space:nowrap;background:var(--surface)}
+.tbl td{padding:12px 20px;border-bottom:1px solid var(--divider-2);vertical-align:top}
+.tbl tr:last-child td{border-bottom:0}
+.tbl tr.sub td{background:var(--shaded)}
+.tbl tr.sub td:first-child{padding-left:40px}
+.tbl td .cell-sub{display:block;font-size:12px;line-height:16px;color:var(--tertiary);margin-top:2px}
+.tbl .num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl .acts{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.empty{padding:32px 20px;text-align:center;color:var(--secondary)}
+.empty b{display:block;color:var(--heading);margin-bottom:4px}
+
+/* ---------- key value pairs ---------- */
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px 24px}
+.kv .k{font-size:14px;color:var(--secondary);font-weight:400;margin-bottom:2px}
+.kv .v{color:var(--text)}
+.kv.cols-2{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.kv.rows{grid-template-columns:minmax(0,1fr);gap:12px}
+
+/* ---------- settings headings and slots ---------- */
+.hd-sec{display:flex;flex-direction:column}
+.hd-sec + .hd-sec{border-top:1px solid var(--divider-2)}
+.hd-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;flex-wrap:wrap}
+.hd-bar .ht{display:flex;flex-direction:column;gap:2px}
+.slot{display:flex;align-items:flex-start;gap:12px;padding:12px 20px;border-top:1px solid var(--divider-2);flex-wrap:wrap}
+.slot .sl-main{flex:1;min-width:220px;display:flex;flex-direction:column;gap:4px}
+.slot .sl-name{font-weight:700;color:var(--heading)}
+.slot .sl-acts{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.slot.empty-slot{color:var(--secondary)}
+.slot.lit{background:var(--selected)}
+.cfg-line{font-size:12px;line-height:18px;color:var(--tertiary);font-family:var(--mono)}
+
+/* ---------- flashbar ---------- */
+.flashbar{display:flex;flex-direction:column;gap:8px}
+.flash{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-radius:12px;color:#fff;font-size:14px}
+.flash.success{background:#00802f} .flash.info{background:#006ce0} .flash.error{background:#db0000}
+.flash.warning{background:#fbd332;color:#0f141a}
+.flash b{font-weight:700}
+.flash a{color:#fff;text-decoration:underline}
+.flash.warning a{color:#0f141a}
+.flash .fx{margin-left:auto;font-size:16px;line-height:1;opacity:.9}
+
+/* ---------- form ---------- */
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:16px}
+.field label{font-weight:700;color:var(--heading)}
+.field .fd{font-size:12px;line-height:16px;color:var(--secondary)}
+.field input,.field select{width:100%}
+.radio{display:flex;gap:8px;align-items:flex-start;padding:6px 0;font-weight:400}
+.radio b{font-weight:700}
+.radio input{min-height:auto;width:auto;margin-top:3px}
+.secret{border:1px solid var(--divider);border-radius:12px;padding:12px;background:var(--shaded)}
+.cmd{font-family:var(--mono);font-size:12px;line-height:18px;background:var(--surface);border:1px solid var(--divider-2);border-radius:8px;padding:8px;word-break:break-all;margin:6px 0}
+
+/* ---------- split panel ---------- */
+.split{background:var(--surface);border-left:1px solid var(--divider);display:flex;flex-direction:column;min-height:0}
+.split-head{padding:16px 20px;border-bottom:1px solid var(--divider-2);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.split-body{overflow:auto;padding:16px 20px 40px;flex:1}
+.split-foot{padding:12px 20px;border-top:1px solid var(--divider-2);background:var(--shaded);display:flex;justify-content:flex-end;gap:8px}
+.pk{border:1px solid var(--divider-2);border-radius:12px;padding:12px;margin-bottom:8px;background:var(--surface)}
+.pk.off{opacity:.55}
+.pk .pkh{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.pk .pkh b{color:var(--heading)}
+.pk .pkl{font-size:12px;line-height:17px;color:var(--secondary)}
+.pk .pkl i{font-style:normal;color:var(--tertiary);font-weight:600}
+.pk .pka{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.search{width:100%;margin-bottom:12px}
+
+/* ---------- wizard ---------- */
+.wiz{display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:start}
+.wiz-nav{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.wiz-nav li{display:flex;gap:10px;padding:8px 0;color:var(--secondary)}
+.wiz-nav .n{width:22px;height:22px;border-radius:50%;border:2px solid var(--divider);display:grid;place-items:center;font-size:12px;font-weight:700;flex:none;color:var(--tertiary)}
+.wiz-nav li.done .n{background:var(--link);border-color:var(--link);color:var(--primary-text)}
+.wiz-nav li.now{color:var(--link);font-weight:700}
+.wiz-nav li.now .n{border-color:var(--link);color:var(--link)}
+.wiz-nav .lbl{display:flex;flex-direction:column}
+.wiz-nav .lbl small{font-weight:400;font-size:12px;color:var(--tertiary)}
+.wiz-foot{display:flex;justify-content:flex-end;gap:8px;padding-top:16px}
+.steps{display:flex;flex-direction:column;gap:8px}
+.step-row{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--divider-2)}
+.step-row:last-child{border-bottom:0}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--divider);margin-bottom:16px;overflow-x:auto}
+.tab{padding:8px 16px;font-weight:700;font-size:16px;color:var(--secondary);border-bottom:2px solid transparent;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--link);border-bottom-color:var(--link)}
+
+.field input[type=checkbox],.field input[type=radio],input[type=checkbox],input[type=radio]{width:16px;height:16px;min-height:16px;padding:0;margin:0 8px 0 0;flex:none;display:inline-block;vertical-align:-2px;accent-color:var(--link)}
+.field label input[type=checkbox]{margin-right:8px}
+.exp{border-top:1px solid var(--divider-2);margin-top:12px;padding-top:12px}
+.exp-h{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--link);padding:4px 0}
+.exp-h .tw{font-size:10px}
+.exp-b{padding:8px 0 0}
+.jrn{display:flex;gap:12px;align-items:flex-start;padding:12px;border:2px solid var(--divider-2);border-radius:12px;margin-bottom:8px;cursor:pointer;background:var(--surface)}
+.jrn:hover{border-color:var(--input-border)}
+.jrn.on{border-color:var(--link);background:var(--selected)}
+.jrn .jt{font-weight:700;color:var(--heading)}
+.jrn .jp{font-size:12px;line-height:17px;color:var(--secondary);margin-top:4px}
+.jrn .jp b{color:var(--heading)}
+.hamburger{display:none}
+@media (max-width:900px){
+  .layout,.layout.panel-open{grid-template-columns:minmax(0,1fr)}
+  .sidenav{position:fixed;top:var(--top);bottom:0;left:0;width:var(--nav);z-index:50;box-shadow:var(--shadow);transform:translateX(-100%);transition:transform .15s}
+  body.nav-open .sidenav{transform:none}
+  .split{position:fixed;top:var(--top);bottom:0;right:0;width:min(var(--panel),100%);z-index:45;box-shadow:var(--shadow)}
+  .hamburger{display:inline-flex}
+  .main{padding:16px 12px 64px}
+  .wiz{grid-template-columns:minmax(0,1fr)}
+  .menu{right:8px;left:8px;min-width:0}
+  .menu.left{left:8px}
+  .tbl th,.tbl td{padding:10px 12px}
+}
+@media (max-width:640px){
+  .topnav{gap:8px;padding:0 8px}
+  .topnav .brand{font-size:15px}
+  #plan-link .lbl{display:none}
+  .tn-btn{padding:6px 6px}
+  .page-head h1{font-size:20px;line-height:26px}
+  .ctr-head,.ctr-body,.slot,.hd-bar{padding-left:12px;padding-right:12px}
+}
+</style>
+</head>
+<body>
+<header class="topnav">
+  <button class="tn-btn hamburger" id="ham" aria-label="Open navigation">&#9776;</button>
+  <span class="brand"><span class="wheel" aria-hidden="true"></span>flywheel</span>
+  <button class="tn-btn" id="orgsel"><span id="orgsel-name">willdan</span> <span class="caret">&#9660;</span></button>
+  <div class="util">
+    <a class="tn-btn" id="plan-link" href="rail-and-board.html"><span class="lbl">plan console</span> <span aria-hidden="true">&#8599;</span></a>
+    <span class="tn-sep" aria-hidden="true"></span>
+    <button class="tn-btn" id="acct"><span class="avatar">C</span><span id="acct-name">chuck</span> <span class="caret">&#9660;</span></button>
+  </div>
+</header>
+<div class="layout" id="layout">
+  <nav class="sidenav" id="sidenav" aria-label="Service navigation"></nav>
+  <main class="main" id="main"></main>
+</div>
+<script>
+/* ===========================================================================
+   seed — the same state rail-and-board.html carries, read for administration
+   =========================================================================== */
+const NOW = '07:40', TODAY = '2026-09-04';
+const MODELS = ['claude-opus-5','claude-fable-5-1','claude-sonnet-5','claude-haiku-4-5'];
+
+/* the package index: what a host or the organization could run (228) */
+const INDEX = [
+  {id:'meeting', kind:'adapter', name:'meeting transcripts', v:'1.4.0', tag:'shipped', plat:['machine'], needs:'the notes tool on this machine · the raw store, or "capture where it lies" with triage declared here', enables:'one capture per meeting · key: the meeting id'},
+  {id:'folder', kind:'adapter', name:'folder drop', v:'1.2.1', tag:'shipped', plat:['machine'], needs:'a folder to watch · nothing else', enables:'one capture per file · key: the file hash'},
+  {id:'chat-forward', kind:'adapter', name:'chat forward', v:'1.1.0', tag:'shipped', plat:['any'], needs:'a chat sink on the same host', enables:'a forwarded message becomes one capture with its one signal'},
+  {id:'capture-box', kind:'adapter', name:'the capture box', v:'1.0.0', tag:'shipped', plat:['any'], needs:'the host serves the page', enables:'text sent unparsed to the capture tool · one signal of kind ask (19)'},
+  {id:'pr-conversation', kind:'adapter', name:'PR conversation', v:'2.0.3', tag:'shipped', plat:['any'], needs:'the GitHub App private key, a secret you place (204) · the App installed on the repository', enables:'PR comments as captures · read with a scoped installation token (207)'},
+  {id:'issue-tracker', kind:'adapter', name:'issue tracker', v:'0.9.0', tag:'index', plat:['any'], needs:'the App key · the App installed on the repository', enables:'issue events as captures · key: the issue event id'},
+  {id:'datadog', kind:'adapter', name:'Datadog webhook', v:'1.0.2', tag:'index', plat:['cloud','container'], needs:'an inbound secret per caller, placed on both sides · a public route opened for the named caller (46)', enables:'a monitor finding as one capture at the endpoint'},
+  {id:'switchboard', kind:'adapter', name:'switchboard connector', v:'0.8.0', tag:'index', plat:['cloud','container'], needs:'an inbound secret · a public route for switchboard', enables:'delivery findings and dependencies as captures'},
+  {id:'discord', kind:'chat sink', name:'Discord', v:'1.6.0', tag:'shipped', plat:['any'], needs:'the bot own token, never yours · a long-lived process holding the gateway socket', enables:'the plan printed to a channel, answers read back, a check mark when recorded (148)'},
+  {id:'slack', kind:'chat sink', name:'Slack', v:'1.3.0', tag:'shipped', plat:['any'], needs:'a bot token and a signing secret · a URL the platform can call, behind the router', enables:'the plan in a channel with buttons; replies arrive over the URL'},
+  {id:'teams', kind:'chat sink', name:'Microsoft Teams', v:'0.5.0', tag:'index', plat:['cloud','container'], needs:'an app registration · a URL behind the router', enables:'the plan as adaptive cards in a team channel'},
+  {id:'webex', kind:'chat sink', name:'Webex', v:'0.3.0', tag:'index', plat:['cloud','container'], needs:'a bot token · a URL behind the router', enables:'the plan in a Webex space'},
+  {id:'runner-pane', kind:'runner', name:'pane', v:'1.8.0', tag:'shipped', plat:['herdr'], needs:'herdr on the host · an agent program signed in under your login · no key', enables:'sessions in the machinery multiplexer (174, 196)'},
+  {id:'runner-inproc', kind:'runner', name:'in-process', v:'1.8.0', tag:'shipped', plat:['any'], needs:'an API key, or the runtime Bedrock or Vertex role (173, 207)', enables:'the agent everywhere · triage inside the binary'},
+  {id:'runner-agentcore', kind:'runner', name:'managed · Bedrock AgentCore', v:'0.4.0', tag:'index', plat:['cloud','container'], needs:'the platform credential · a VPC route to the private network', enables:'sessions on the platform; tools over remote MCP carrying the 197 identity'},
+  {id:'runner-managed-claude', kind:'runner', name:'managed · Claude managed agent', v:'0.4.0', tag:'index', plat:['cloud','container'], needs:'a self-hosted sandbox on your network · vault credentials', enables:'sessions by schedule or per capture; never the presenter'},
+  {id:'router-local', kind:'router', name:'local router', v:'1.5.0', tag:'shipped', plat:['machine'], needs:'nothing · portless', enables:'https://&lt;place&gt;.localhost (46)'},
+  {id:'router-private', kind:'router', name:'private-network router', v:'1.5.0', tag:'shipped', plat:['any'], needs:'a tailnet node on the host', enables:'https://&lt;place&gt;.willdan.internal · nothing beyond the private network (191)'},
+  {id:'router-platform', kind:'router', name:'platform router', v:'1.2.0', tag:'shipped', plat:['cloud'], needs:'the flywheel-cloud ingress', enables:'a public route you open per named caller (46, 191)'},
+  {id:'auth-github', kind:'sign-in', name:'GitHub', v:'1.4.0', tag:'shipped', plat:['any'], needs:'an OAuth app, or the device flow on your own computer · the organization for the membership check', enables:'sign-in on the page and the tools; the identity is the GitHub username (234)'},
+  {id:'auth-tailnet', kind:'sign-in', name:'tailnet', v:'1.0.0', tag:'index', plat:['any'], needs:'a tailnet the host is a node of', enables:'the tailnet identity on the page and the tools'},
+  {id:'auth-okta', kind:'sign-in', name:'Okta SSO · OIDC', v:'0.9.0', tag:'index', plat:['cloud','container'], needs:'issuer and audience · the router ingress in front', enables:'SSO whose subject maps to the GitHub username for membership (233, 234)'},
+  {id:'ut-default', kind:'unit type', name:'default', v:'2.1.0', tag:'shipped', plat:['any'], needs:'nothing', enables:'spec · build x2 · review · merge'},
+  {id:'ut-fast', kind:'unit type', name:'fast', v:'2.1.0', tag:'shipped', plat:['any'], needs:'nothing', enables:'spec · build · merge'},
+  {id:'ut-chore', kind:'unit type', name:'chore', v:'2.1.0', tag:'shipped', plat:['any'], needs:'nothing', enables:'chore · merge · one session, no bolt (60)'},
+  {id:'ut-migration', kind:'unit type', name:'migration', v:'0.6.0', tag:'index', plat:['any'], needs:'a database the built repository names', enables:'spec · build · rehearse on a copy · review · merge'},
+  {id:'et-research', kind:'elaboration type', name:'research', v:'1.3.0', tag:'shipped', plat:['any'], needs:'a model', enables:'a self-closing session that answers a factual question with evidence'},
+  {id:'et-prototype', kind:'elaboration type', name:'prototype', v:'1.3.0', tag:'shipped', plat:['any'], needs:'a spike repository', enables:'a throwaway that proves a fact; a finding note; the worktree dies'},
+  {id:'et-writeback', kind:'elaboration type', name:'writeback', v:'1.3.0', tag:'shipped', plat:['any'], needs:'the blueprints repository', enables:'chapters rewritten in destination voice, the map moved, the gates run'},
+  {id:'et-interview', kind:'elaboration type', name:'interview', v:'0.2.0', tag:'index', plat:['any'], needs:'a chat sink with the operator', enables:'a bounded set of questions asked in chat, the answers written as records'},
+  {id:'dp-mdbook', kind:'deliverable producer', name:'mdBook renderer', v:'1.1.0', tag:'shipped', plat:['any'], needs:'nothing', enables:'each book served for the book view (S91)'},
+  {id:'dp-diagram', kind:'deliverable producer', name:'diagram skill', v:'0.7.0', tag:'index', plat:['any'], needs:'a model · an SVG renderer on the host', enables:'a session records an SVG deliverable drawn from the map or a spec (212)'},
+  {id:'mv-ddd', kind:'map vocabulary', name:'DDD context map', v:'1.0.0', tag:'shipped', plat:['any'], needs:'nothing', enables:'contexts, relationships, U/D, OHS, PL, ACL, a shared kernel, separate ways'},
+  {id:'mv-c4', kind:'map vocabulary', name:'C4', v:'0.3.0', tag:'index', plat:['any'], needs:'nothing', enables:'system, container, component as facets over the same map'},
+  {id:'tp-intent', kind:'template', name:'intent proposal', v:'1.2.0', tag:'shipped', plat:['any'], needs:'nothing', enables:'proposal.md as why · what changes · impact'},
+  {id:'tp-adr', kind:'template', name:'ADR', v:'0.4.0', tag:'index', plat:['any'], needs:'nothing', enables:'a decision record per closed decision in the intent change directory'},
+  {id:'sp-flywheel', kind:'scenario pack', name:'flywheel acceptance', v:'1.0.0', tag:'shipped', plat:['any'], needs:'nothing', enables:'the scenarios behind a bolt acceptance file'},
+  {id:'sp-sinks', kind:'scenario pack', name:'sink delivery', v:'0.5.0', tag:'index', plat:['any'], needs:'nothing', enables:'delivery-mark scenarios for every chat sink'},
+];
+/* each package's configuration schema (sample); a secret names the file it is placed as and is never a field */
+const SCHEMA = {
+  meeting:[{k:'source',label:'notes tool',kind:'select',opts:['Granola','Notion','a folder of transcripts']},{k:'cadence',label:'cadence',kind:'select',opts:['as meetings end','hourly','daily 18:00']}],
+  folder:[{k:'path',label:'folder to watch',ph:'~/Drop'},{k:'cadence',label:'cadence',kind:'select',opts:['on change','every 5m','hourly']}],
+  'chat-forward':[{k:'sink',label:'the chat sink it listens on',kind:'select',opts:['Discord','Slack','Microsoft Teams','Webex']}],
+  'capture-box':[],
+  'pr-conversation':[{k:'app',label:'GitHub App',ph:'willdan-flywheel · app id 8812'},{k:'repos',label:'repositories',ph:'atlas switchboard new-repo blueprints'},{k:'key',label:'the App private key',kind:'secret',file:'github-app.pem',op:'op://willdan/flywheel github app/private key'}],
+  'issue-tracker':[{k:'app',label:'GitHub App',ph:'willdan-flywheel'},{k:'repos',label:'repositories',ph:'atlas switchboard'},{k:'key',label:'the App private key',kind:'secret',file:'github-app.pem',op:'op://willdan/flywheel github app/private key'}],
+  datadog:[{k:'caller',label:'named caller',ph:'datadog · monitors on prod'},{k:'route',label:'public route · opened for the caller',ph:'https://<host>.flywheel.cloud/capture/datadog'},{k:'inbound',label:'inbound secret · placed on both sides',kind:'secret',file:'datadog.inbound',op:'op://willdan/datadog/inbound'}],
+  switchboard:[{k:'caller',label:'named caller',ph:'switchboard'},{k:'route',label:'public route',ph:'https://<host>.flywheel.cloud/capture/switchboard'},{k:'inbound',label:'inbound secret',kind:'secret',file:'switchboard.inbound',op:'op://willdan/switchboard/inbound'}],
+  discord:[{k:'app',label:'application id',ph:'1284 5570 0091'},{k:'guild',label:'guild',ph:'willdan'},{k:'channel',label:'channel',ph:'#willdan-plan'},{k:'token',label:'bot token · the bot own, never yours',kind:'secret',file:'discord.bot-token',op:'op://willdan/discord bot/token'}],
+  slack:[{k:'channel',label:'channel',ph:'#willdan-plan'},{k:'token',label:'app token',kind:'secret',file:'slack.app-token',op:'op://willdan/slack app/token'},{k:'signing',label:'signing secret',kind:'secret',file:'slack.signing-secret',op:'op://willdan/slack app/signing secret'}],
+  teams:[{k:'app',label:'app registration',ph:'willdan-flywheel'},{k:'channel',label:'team channel',ph:'Engineering / plan'},{k:'secret',label:'client secret',kind:'secret',file:'teams.client-secret',op:'op://willdan/teams/client secret'}],
+  webex:[{k:'space',label:'space',ph:'willdan plan'},{k:'token',label:'bot token',kind:'secret',file:'webex.bot-token',op:'op://willdan/webex/token'}],
+  'runner-pane':[{k:'bound',label:'bound · sessions at once',kind:'number',ph:'2'},{k:'login',label:'agent program · under your login',kind:'select',opts:['Claude Code','Codex']}],
+  'runner-inproc':[{k:'model.triage',label:'model · triage',kind:'select',opts:MODELS},{k:'model.interpreter',label:'model · interpreter',kind:'select',opts:MODELS},{k:'access',label:'model access',kind:'select',opts:['an API key','the runtime Bedrock role','the runtime Vertex role']},{k:'key',label:'API key',kind:'secret',file:'model.api-key',op:'op://willdan/model/api key',when:['access','an API key']}],
+  'runner-agentcore':[{k:'region',label:'region',ph:'us-west-2'},{k:'role',label:'runtime role',ph:'arn:aws:iam::…:role/flywheel-triage'},{k:'model.triage',label:'model · triage',kind:'select',opts:MODELS}],
+  'runner-managed-claude':[{k:'sandbox',label:'self-hosted sandbox',ph:'https://sandbox.willdan.internal'},{k:'vault',label:'vault credential',kind:'secret',file:'vault.credential',op:'op://willdan/vault/credential'}],
+  'router-local':[],
+  'router-private':[{k:'node',label:'tailnet node',ph:'<host>.willdan.internal'}],
+  'router-platform':[{k:'routes',label:'public routes · one per named caller',ph:'none yet · opened per caller (46)'}],
+  'auth-github':[{k:'flow',label:'flow',kind:'select',opts:['device flow · on your own computer','OAuth web flow · behind a host on the network']},{k:'org',label:'organization · the membership check',ph:'willdan'},{k:'secret',label:'client secret · the web flow only',kind:'secret',file:'github-oauth.client-secret',op:'op://willdan/github oauth/client secret',when:['flow','OAuth web flow · behind a host on the network']}],
+  'auth-tailnet':[{k:'tailnet',label:'tailnet',ph:'willdan.internal'}],
+  'auth-okta':[{k:'issuer',label:'issuer',ph:'https://willdan.okta.com'},{k:'audience',label:'audience',ph:'flywheel'},{k:'secret',label:'client secret',kind:'secret',file:'okta.client-secret',op:'op://willdan/okta/client secret'}],
+  'ut-migration':[{k:'rehearse',label:'rehearsal database',kind:'select',opts:['a copy the built repository names','a container per run']}],
+  'et-research':[{k:'model',label:'model',kind:'select',opts:MODELS}],
+  'et-interview':[{k:'bound',label:'questions per interview',kind:'number',ph:'6'}],
+  'dp-diagram':[{k:'model',label:'model',kind:'select',opts:MODELS},{k:'renderer',label:'SVG renderer',kind:'select',opts:['resvg','rsvg-convert']}],
+};
+const HOST_KINDS = ['adapter','chat sink','runner','router','sign-in'];
+const ORG_KINDS = ['unit type','elaboration type','deliverable producer','map vocabulary','template','scenario pack'];
+const ORG_DIRS = {'unit type':'types','elaboration type':'types','deliverable producer':'producers','map vocabulary':'map','template':'templates','scenario pack':'scenarios'};
+const STORE_HEADINGS = [
+  ['Types', ['unit type','elaboration type'], 'unit types shape construction; elaboration types shape inception (208)'],
+  ['Deliverable producers', ['deliverable producer'], 'what a session can record as a deliverable (212)'],
+  ['Map vocabularies', ['map vocabulary'], 'the words the context map is drawn in'],
+  ['Templates', ['template'], 'the shape of a proposal, a record, a decision'],
+  ['Scenario packs', ['scenario pack'], 'the scenarios behind acceptance files'],
+];
+const pkg = id => INDEX.find(p => p.id === id);
+const schemaOf = p => (p && SCHEMA[p.id]) || [];
+const secretFields = p => schemaOf(p).filter(f => f.kind === 'secret');
+const pkgFits = (p, plat) => p.plat.includes('any') || p.plat.some(t => plat.includes(t));
+
+/* --- the willdan hosts, as rail-and-board seeds them --- */
+const willdanHosts = () => [
+  {id:'studio', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:4, last:'07:39', joined:'08-12', joinedVia:'a laptop', serves:true,
+   root:'~/willdan', launcher:'launchd · com.flywheel.willdan', binary:'0.9.4', binaryLatest:'0.9.4',
+   note:'lease holder for plan, curation and the page · serves this console',
+   roles:{elaboration:{runner:'runner-pane', model:'claude-fable-5-1'}, construction:{runner:'runner-pane', model:'claude-fable-5-1'}, machinery:{runner:'runner-pane', model:'claude-haiku-4-5'}},
+   agent:{on:true, runner:'runner-pane', what:'your key from the keychain · one bounded call per message (194)'},
+   env:{provider:'devenv', repos:{atlas:{ok:true}, switchboard:{ok:true}, 'new-repo':{ok:false, why:'devcontainer · flywheel/environment.yaml changed 09-03 17:20 and the container was not rebuilt · node 22.6 not produced'}}},
+   parts:[
+     {k:'adapter', pkg:'meeting', state:'installed 08-12', lastRun:'07:12 · 1 capture', cfg:{source:'Granola', cadence:'as meetings end'}},
+     {k:'adapter', pkg:'folder', state:'installed 08-12', lastRun:'06:40 · 3 captures', cfg:{path:'~/Drop', cadence:'on change'}},
+     {k:'adapter', pkg:'capture-box', state:'installed 08-12', lastRun:'07:33 · 1 capture', cfg:{}},
+     {k:'chat sink', pkg:'discord', state:'installed 08-12', lease:true, cfg:{app:'1284 5570 0091', guild:'willdan', channel:'#willdan-plan'}, secrets:{token:true}},
+     {k:'runner', pkg:'runner-pane', state:'installed 08-12', cfg:{bound:'4', login:'Claude Code'}},
+     {k:'router', pkg:'router-local', state:'installed 08-12', cfg:{}},
+     {k:'sign-in', pkg:'auth-github', state:'installed 08-12', cfg:{flow:'device flow · on your own computer', org:'willdan'}, secrets:{}},
+   ]},
+  {id:'mac-mini', kind:'home host', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:false, gone:'41m', bound:2, last:'06:59', joined:'08-20', joinedVia:'adopt existing',
+   root:'~/willdan', launcher:'launchd · com.flywheel.willdan', binary:'0.9.2', binaryLatest:'0.9.4',
+   note:'gone 41m · lease expires 07:59, then its sessions are released',
+   roles:{elaboration:{runner:null, model:'claude-fable-5-1'}, construction:{runner:'runner-pane', model:'claude-fable-5-1'}, machinery:{runner:'runner-pane', model:'claude-haiku-4-5'}},
+   agent:{on:false, runner:null, what:'presents no chat · nothing to interpret here'},
+   env:{provider:'nix', repos:{atlas:{ok:true}, switchboard:{ok:true}, 'new-repo':{ok:true}}},
+   parts:[
+     {k:'runner', pkg:'runner-pane', state:'installed 08-20', cfg:{bound:'2', login:'Claude Code'}},
+     {k:'sign-in', pkg:'auth-tailnet', state:'installed 08-20', cfg:{tailnet:'willdan.internal'}},
+   ]},
+  {id:'willdan-cloud', kind:'cloud', platform:'flywheel-cloud · container', plat:['cloud','container','linux'], alive:true, bound:0, last:'07:40', joined:'09-03', joinedVia:'flywheel-cloud managed', dispatcher:true,
+   root:'/srv/flywheel/willdan', launcher:'systemd · flywheel.service', binary:'0.9.4', binaryLatest:'0.9.4',
+   note:'the dispatcher placement · bound 0, so it takes no construction work and changes no runway reading (dispatch 2, 5)',
+   roles:{elaboration:{runner:'runner-inproc', model:'claude-sonnet-5'}, construction:{runner:null, model:'claude-opus-5'}, machinery:{runner:'runner-inproc', model:'claude-haiku-4-5'}},
+   agent:{on:true, runner:'runner-inproc', what:'the runtime role, no key on the host · one bounded call per message (194)'},
+   env:{provider:'image', repos:{atlas:{ok:true}, switchboard:{ok:true}, 'new-repo':{ok:false, why:'the image is behind the declaration · rebuild the pool image (239)'}}},
+   parts:[
+     {k:'adapter', pkg:'pr-conversation', state:'needs a secret', secret:'key', wi:'wi-#429', lastRun:'never · waits on the key', cfg:{app:'willdan-flywheel · app id 8812', repos:'atlas switchboard new-repo blueprints'}, secrets:{key:false}},
+     {k:'adapter', pkg:'datadog', state:'installed 09-03', lastRun:'07:38 · 0 findings', cfg:{caller:'datadog · monitors on prod', route:'https://willdan-cloud.flywheel.cloud/capture/datadog'}, secrets:{inbound:true}},
+     {k:'adapter', pkg:'chat-forward', state:'installed 09-03', lastRun:'06:02 · 1 capture', cfg:{sink:'Slack'}},
+     {k:'chat sink', pkg:'slack', state:'disabled', why:'turned off 06:50 · every Slack address is undelivered until a host presents Slack (236a)', cfg:{channel:'#willdan-plan'}, secrets:{token:true, signing:true}},
+     {k:'runner', pkg:'runner-inproc', state:'installed 09-03', cfg:{'model.triage':'claude-sonnet-5', 'model.interpreter':'claude-haiku-4-5', access:'the runtime Bedrock role'}},
+     {k:'router', pkg:'router-platform', state:'installed 09-03', cfg:{routes:'one · datadog'}},
+     {k:'sign-in', pkg:'auth-okta', state:'installed 09-03', cfg:{issuer:'https://willdan.okta.com', audience:'flywheel'}, secrets:{secret:true}},
+   ],
+   joinedSteps:[
+     ['platform','done','09-03 14:02','flywheel-cloud managed'],
+     ['provision','done','09-03 14:04','ran from studio with your flywheel-cloud credentials · read at run time, never stored'],
+     ['hand over secrets','done','09-03 14:06','the Slack bot token and signing secret into the platform secret store · the App key was left for later and waits under attention now'],
+     ['enrol','done','09-03 14:07','decision 405 · one-time token · expired 15:07 · used once'],
+     ['join','done','09-03 14:09','read the manifest · installed 8 of 9 declared parts'],
+     ['alive','done','09-03 14:10','first heartbeat as host/willdan-cloud'],
+   ]},
+  {id:'pool-a1', kind:'pool host', pool:'willdan-pool', platform:'flywheel-cloud · image 0.9.4-0903', plat:['cloud','container','linux'], alive:true, bound:2, last:'07:40', joined:'06:10', joinedVia:'the pool · enrolment token (240)',
+   root:'/srv/flywheel/willdan', launcher:'the pool · systemd', binary:'0.9.4', binaryLatest:'0.9.4', idle:'busy · retires 30m after its last session',
+   note:'a pool host · serves one organization (241) · every part is declared by the pool and configured there',
+   roles:{elaboration:{runner:'runner-inproc', model:'claude-sonnet-5'}, construction:{runner:'runner-inproc', model:'claude-fable-5-1'}, machinery:{runner:'runner-inproc', model:'claude-haiku-4-5'}},
+   agent:{on:true, runner:'runner-inproc', what:'the runtime role · declared by the pool'},
+   env:{provider:'image', repos:{atlas:{ok:true}, switchboard:{ok:true}, 'new-repo':{ok:false, why:'the image is behind the declaration (239)'}}},
+   parts:[
+     {k:'runner', pkg:'runner-inproc', state:'installed 06:10', cfg:{access:'the runtime Bedrock role'}, byPool:true},
+     {k:'router', pkg:'router-platform', state:'installed 06:10', cfg:{}, byPool:true},
+     {k:'sign-in', pkg:'auth-github', state:'installed 06:10', cfg:{flow:'OAuth web flow · behind a host on the network', org:'willdan'}, byPool:true},
+   ],
+   joinedSteps:[['the pool','done','06:10','minted an enrolment token while approved work waited (242)'],['join','done','06:10','read the manifest and the pool declaration'],['alive','done','06:11','first heartbeat as host/pool-a1']]},
+  {id:'pool-a2', kind:'pool host', pool:'willdan-pool', platform:'flywheel-cloud · image 0.9.4-0903', plat:['cloud','container','linux'], alive:true, bound:2, last:'07:40', joined:'07:02', joinedVia:'the pool · enrolment token (240)',
+   root:'/srv/flywheel/willdan', launcher:'the pool · systemd', binary:'0.9.4', binaryLatest:'0.9.4', retiring:'idle 12m of 30m', idle:'idle 12m · retires at 30m',
+   note:'a pool host · retiring · its places are re-made from their lines elsewhere by the machinery (52)',
+   roles:{elaboration:{runner:'runner-inproc', model:'claude-sonnet-5'}, construction:{runner:'runner-inproc', model:'claude-fable-5-1'}, machinery:{runner:'runner-inproc', model:'claude-haiku-4-5'}},
+   agent:{on:true, runner:'runner-inproc', what:'the runtime role · declared by the pool'},
+   env:{provider:'image', repos:{atlas:{ok:true}, switchboard:{ok:true}, 'new-repo':{ok:false, why:'the image is behind the declaration (239)'}}},
+   parts:[
+     {k:'runner', pkg:'runner-inproc', state:'installed 07:02', cfg:{access:'the runtime Bedrock role'}, byPool:true},
+     {k:'router', pkg:'router-platform', state:'installed 07:02', cfg:{}, byPool:true},
+     {k:'sign-in', pkg:'auth-github', state:'installed 07:02', cfg:{flow:'OAuth web flow · behind a host on the network', org:'willdan'}, byPool:true},
+   ],
+   joinedSteps:[['the pool','done','07:02','minted an enrolment token while approved work waited (242)'],['join','done','07:02','read the manifest and the pool declaration'],['alive','done','07:03','first heartbeat as host/pool-a2']]},
+];
+
+const ORGS = {
+  willdan: {
+    name:'willdan', what:'the platform · 3 hosts and a pool · 4 repositories',
+    members:[
+      {id:'chuck', name:'Chuck Swanberg', signin:'GitHub', addresses:{discord:'@chuck', slack:'U0CHUCK'}, roles:['construction','ops'], since:'08-12'},
+      {id:'rhea', name:'Rhea Okonkwo', signin:'GitHub', addresses:{slack:'U0RHEA'}, roles:['design'], since:'08-28'},
+      {id:'lee', name:'Lee Fujimoto', signin:'GitHub', addresses:{slack:'U0LEE'}, roles:['construction'], since:'09-01'},
+    ],
+    roles:[
+      {id:'construction', what:'owns unit and proposal decisions on built repositories', members:['chuck','lee']},
+      {id:'design', what:'owns elaboration decisions and writebacks', members:['rhea']},
+      {id:'ops', what:'owns host, secret and environment attention', members:['chuck']},
+    ],
+    runnerRoles:[
+      {role:'elaboration', kind:'pane', model:'claude-fable-5-1'},
+      {role:'construction', kind:'pane', model:'claude-fable-5-1'},
+      {role:'machinery', kind:'pane', model:'claude-haiku-4-5'},
+      {role:'triage', kind:'in-process', model:'claude-sonnet-5'},
+      {role:'interpreter', kind:'in-process', model:'claude-haiku-4-5'},
+    ],
+    router:'local router · private-network router on the cloud host', curation:'every 30s', triageCadence:'per capture',
+    channels:[{id:'#willdan-plan · Discord', kind:'discord', host:'studio', mark:'07:40', state:'ok'}],
+    repos:[
+      {id:'atlas', kinds:['service','data-product'], caps:['http','worker','provider-calls','status-table'], landing:'direct merge', merge:'squash', envFile:'flywheel/environment.yaml', envHash:'sha256:1f9c…4a2', claims:'8 in scope · 3 unmet'},
+      {id:'switchboard', kinds:['service'], caps:['http','pipeline','rows','sinks'], landing:'pull request', merge:'squash', envFile:'.devcontainer/devcontainer.json · named in flywheel.yaml', envHash:'sha256:77b0…e19', claims:'6 in scope · 1 unjudged'},
+      {id:'new-repo', kinds:['service'], caps:['http'], landing:'pull request', merge:'merge', envFile:'flywheel/environment.yaml · changed 09-03 17:20', envHash:'sha256:c30d…8b5', claims:'13 in scope · 11 unmet · joined 09-03 23:00'},
+      {id:'blueprints', kinds:['books'], caps:[], landing:'direct merge', merge:'merge', envFile:'flywheel/environment.yaml', envHash:'sha256:0ab4…d61', claims:'the claims live here'},
+    ],
+    pools:[{id:'willdan-pool', platform:'flywheel-cloud', image:'willdan/flywheel:0.9.4-0903', imageState:'behind', imageWhy:'new-repo/flywheel/environment.yaml changed 09-03 17:20 · no host is provisioned until the image is current', bound:8, hostBound:2, live:2, idleRetire:'30m', cost:'ceiling $40/day · today $9', covers:'atlas · switchboard · new-repo'}],
+    store:{'ut-default':{state:'installed 08-12'},'ut-fast':{state:'installed 08-12'},'ut-chore':{state:'installed 08-12'},'et-research':{state:'installed 08-12', cfg:{model:'claude-fable-5-1'}},'et-prototype':{state:'installed 08-12'},'et-writeback':{state:'installed 08-12'},'dp-mdbook':{state:'installed 08-12'},'mv-ddd':{state:'installed 09-05'},'tp-intent':{state:'installed 08-12'},'sp-flywheel':{state:'installed 08-12'}},
+    hosts: willdanHosts(),
+    decisions:8,
+  },
+  agentplot: {
+    name:'agentplot', what:'the flywheel and its blueprints · 1 host', sample:true,
+    members:[{id:'chuck', name:'Chuck Swanberg', signin:'GitHub', addresses:{discord:'@chuck', slack:'U0CHUCK'}, roles:['construction'], since:'07-30'}],
+    roles:[{id:'construction', what:'owns unit and proposal decisions', members:['chuck']}],
+    runnerRoles:[{role:'elaboration', kind:'pane', model:'claude-fable-5-1'},{role:'construction', kind:'pane', model:'claude-fable-5-1'},{role:'machinery', kind:'pane', model:'claude-haiku-4-5'},{role:'triage', kind:'in-process', model:'claude-sonnet-5'},{role:'interpreter', kind:'in-process', model:'claude-haiku-4-5'}],
+    router:'private-network router', curation:'every 30s', triageCadence:'per capture', channels:[],
+    repos:[
+      {id:'flywheel', kinds:['service','cli'], caps:['http','worker'], landing:'pull request', merge:'squash', envFile:'flywheel/environment.yaml', envHash:'sha256:aa10…9f3', claims:'3 in scope · 1 unmet'},
+      {id:'blueprints', kinds:['books'], caps:[], landing:'direct merge', merge:'merge', envFile:'flywheel/environment.yaml', envHash:'sha256:be22…1c8', claims:'the claims live here'},
+    ],
+    pools:[],
+    store:{'ut-default':{state:'installed 07-30'},'ut-fast':{state:'installed 07-30'},'et-research':{state:'installed 07-30'},'et-writeback':{state:'installed 07-30'},'dp-mdbook':{state:'installed 07-30'},'mv-ddd':{state:'installed 09-05'}},
+    hosts:[{id:'studio', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:4, last:'07:39', joined:'07-30', joinedVia:'a laptop', serves:true, root:'~/agentplot', launcher:'launchd · com.flywheel.agentplot', binary:'0.9.4', binaryLatest:'0.9.4', note:'the same machine serves both organizations from their own roots (218)',
+      roles:{elaboration:{runner:'runner-pane', model:'claude-fable-5-1'}, construction:{runner:'runner-pane', model:'claude-fable-5-1'}, machinery:{runner:'runner-pane', model:'claude-haiku-4-5'}},
+      agent:{on:true, runner:'runner-pane', what:'your key from the keychain'},
+      env:{provider:'devenv', repos:{flywheel:{ok:true}, blueprints:{ok:true}}},
+      parts:[{k:'adapter', pkg:'capture-box', state:'installed 07-30', lastRun:'06:20 · 1 capture', cfg:{}},{k:'runner', pkg:'runner-pane', state:'installed 07-30', cfg:{bound:'4', login:'Claude Code'}},{k:'router', pkg:'router-private', state:'installed 07-30', cfg:{node:'studio.willdan.internal'}},{k:'sign-in', pkg:'auth-github', state:'installed 07-30', cfg:{flow:'device flow · on your own computer', org:'agentplot'}}]}],
+    decisions:2,
+  },
+  'integral-analytics': {
+    name:'integral-analytics', what:'a client · one cloud host', sample:true,
+    members:[{id:'chuck', name:'Chuck Swanberg', signin:'GitHub', addresses:{slack:'U0CHUCK'}, roles:['ops'], since:'08-05'},{id:'ops-integral', name:'Integral ops', signin:'GitHub', addresses:{slack:'U0OPS'}, roles:['ops'], since:'08-05'}],
+    roles:[{id:'ops', what:'owns every decision here', members:['chuck','ops-integral']}],
+    runnerRoles:[{role:'elaboration', kind:'in-process', model:'claude-sonnet-5'},{role:'construction', kind:'managed', model:'claude-opus-5'},{role:'machinery', kind:'in-process', model:'claude-haiku-4-5'},{role:'triage', kind:'in-process', model:'claude-sonnet-5'},{role:'interpreter', kind:'in-process', model:'claude-haiku-4-5'}],
+    router:'platform router', curation:'every 5m', triageCadence:'per capture', channels:[],
+    repos:[{id:'ledger', kinds:['service'], caps:['http','rows'], landing:'pull request', merge:'squash', envFile:'flywheel/environment.yaml', envHash:'sha256:5d77…20a', claims:'3 in scope · 1 unmet'},{id:'blueprints', kinds:['books'], caps:[], landing:'direct merge', merge:'merge', envFile:'flywheel/environment.yaml', envHash:'sha256:9e01…7fd', claims:'the claims live here'}],
+    pools:[],
+    store:{'ut-default':{state:'installed 08-05'},'et-research':{state:'installed 08-05'},'dp-mdbook':{state:'installed 08-05'},'mv-ddd':{state:'installed 09-05'}},
+    hosts:[{id:'integral-cloud', kind:'cloud', platform:'flywheel-cloud · container', plat:['cloud','container','linux'], alive:true, bound:2, last:'07:38', joined:'08-05', joinedVia:'flywheel-cloud managed', root:'/srv/flywheel/integral', launcher:'systemd · flywheel.service', binary:'0.9.4', binaryLatest:'0.9.4', note:'one host, one organization (241)',
+      roles:{elaboration:{runner:'runner-inproc', model:'claude-sonnet-5'}, construction:{runner:'runner-agentcore', model:'claude-opus-5'}, machinery:{runner:'runner-inproc', model:'claude-haiku-4-5'}},
+      agent:{on:true, runner:'runner-inproc', what:'the runtime role'},
+      env:{provider:'image', repos:{ledger:{ok:true}, blueprints:{ok:true}}},
+      parts:[{k:'chat sink', pkg:'slack', state:'installed 08-05', lease:true, cfg:{channel:'#integral-plan'}, secrets:{token:true, signing:true}},{k:'runner', pkg:'runner-inproc', state:'installed 08-05', cfg:{access:'the runtime Bedrock role'}},{k:'runner', pkg:'runner-agentcore', state:'installed 08-20', cfg:{region:'us-west-2'}},{k:'router', pkg:'router-platform', state:'installed 08-05', cfg:{}},{k:'sign-in', pkg:'auth-okta', state:'installed 08-05', cfg:{issuer:'https://integral.okta.com', audience:'flywheel'}, secrets:{secret:true}}]}],
+    decisions:1,
+  },
+  personal: {
+    name:'personal', what:'from zero · this machine only', sample:true, fromZero:true,
+    members:[{id:'chuck', name:'Chuck Swanberg', signin:'GitHub', addresses:{}, roles:[], since:'09-04'}],
+    roles:[], runnerRoles:[{role:'construction', kind:'pane', model:'claude-fable-5-1'},{role:'triage', kind:'pane', model:'claude-sonnet-5'}],
+    router:'local router', curation:'on demand', triageCadence:'on demand', channels:[],
+    repos:[{id:'blueprints', kinds:['books'], caps:[], landing:'direct merge', merge:'merge', envFile:'none yet', envHash:'—', claims:'nothing yet'}],
+    pools:[], store:{},
+    hosts:[{id:'studio', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:2, last:'07:39', joined:'09-04', joinedVia:'a laptop', serves:true, root:'~/personal', launcher:'launchd · com.flywheel.personal', binary:'0.9.4', binaryLatest:'0.9.4', note:'one laptop, nothing else yet',
+      roles:{elaboration:{runner:'runner-pane', model:'claude-fable-5-1'}, construction:{runner:'runner-pane', model:'claude-fable-5-1'}, machinery:{runner:null, model:'claude-haiku-4-5'}},
+      agent:{on:false, runner:null, what:'no chat sink here yet'},
+      env:{provider:'devenv', repos:{blueprints:{ok:true}}},
+      parts:[{k:'runner', pkg:'runner-pane', state:'installed 09-04', cfg:{bound:'2', login:'Claude Code'}},{k:'sign-in', pkg:'auth-github', state:'installed 09-04', cfg:{flow:'device flow · on your own computer', org:'personal'}}]}],
+    decisions:0,
+  },
+};
+
+const IDENTITY = {handle:'chuck', name:'Chuck Swanberg', kind:'GitHub', servingHost:'studio',
+  how:'GitHub device flow on this computer · the identity is the GitHub username, the same everywhere (S153, S164)'};
+
+/* ===========================================================================
+   state
+   =========================================================================== */
+const S = {
+  org:'willdan', page:'overview', host:null, addhost:null, addorg:null, orgWizard:null,
+  panel:null,           /* {mode:'catalogue'|'sheet'|'configure'|'secret'|'joined', ...} */
+  flashes:[], menu:null, navOpen:false, lit:null,
+  nextDecision:425, raised:[], log:[],
+  wizard:null,
+};
+const org = () => ORGS[S.org];
+const hosts = () => org().hosts;
+const host = id => hosts().find(h => h.id === id);
+const partOn = (h, id) => h.parts.find(p => p.pkg === id);
+const memberOrgs = () => Object.keys(ORGS).filter(k => ORGS[k].members.some(m => m.id === IDENTITY.handle));
+
+/* ===========================================================================
+   Cloudscape components, drawn by hand
+   =========================================================================== */
+const esc = s => String(s == null ? '' : s).replace(/&(?!#?\w+;)/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const raw = s => String(s == null ? '' : s);
+const ST_GLYPH = {success:'&#10003;', error:'&#10005;', warning:'&#9888;', info:'&#9432;', pending:'&#9711;', loading:'&#8635;', stopped:'&#9723;', inactive:'&#8722;'};
+const st = (type, text) => `<span class="st ${type}"><span class="g" aria-hidden="true">${ST_GLYPH[type]||''}</span>${raw(text)}</span>`;
+const badge = (text, cls) => `<span class="badge ${cls||''}">${raw(text)}</span>`;
+const btn = (label, attrs, kind) => `<button class="btn ${kind||'normal'} sm" ${attrs}>${raw(label)}</button>`;
+const answerLink = n => `<a href="rail-and-board.html?open=d:${n}">answer in the plan console</a>`;
+
+function ctr(o){
+  const counter = o.counter ? ` <span class="counter">(${esc(o.counter)})</span>` : '';
+  const head = o.title ? `<div class="ctr-head"><div class="ct"><h2>${raw(o.title)}${counter}</h2>${o.desc ? `<div class="small">${raw(o.desc)}</div>` : ''}</div>${o.actions ? `<div class="row">${o.actions}</div>` : ''}</div>` : '';
+  const body = o.body == null ? '' : `<div class="ctr-body ${o.tight ? 'tight' : ''}">${o.body}</div>`;
+  return `<section class="ctr">${head}${body}${o.footer ? `<div class="ctr-foot">${o.footer}</div>` : ''}</section>`;
+}
+function table(cols, rows, empty){
+  if(!rows.length) return `<div class="empty"><b>${esc(empty && empty[0] || 'No resources')}</b><div class="small">${raw(empty && empty[1] || '')}</div></div>`;
+  return `<div class="tbl-wrap"><table class="tbl"><thead><tr>${cols.map(c => `<th>${raw(c)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr class="${r.cls||''}">${r.cells.map(c => `<td>${raw(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+const kv = (pairs, cls) => `<div class="kv ${cls||''}">${pairs.map(([k,v]) => `<div><div class="k">${raw(k)}</div><div class="v">${raw(v)}</div></div>`).join('')}</div>`;
+const sub = t => `<span class="cell-sub">${raw(t)}</span>`;
+
+/* ===========================================================================
+   responses and decisions — the two ways this console changes anything
+   =========================================================================== */
+function flash(type, header, text){ S.flashes.unshift({type, header, text, id:Math.random().toString(36).slice(2)}); }
+function logged(what, detail){
+  S.log.unshift({what, at:NOW});
+  flash('success', 'Response recorded', `${esc(what)} · one logged response, applied by the machinery as it reads the manifest on its next tick${detail ? ' · ' + detail : ''}`);
+}
+function raiseDecision(kind, title, note){
+  const n = S.nextDecision++;
+  S.raised.unshift({n, kind, title, at:NOW});
+  const guard = kind === 'package-install' ? 'nothing is installed until it is answered (S118, S124)' : 'nothing changes until it is answered (S113)';
+  flash('info', `Decision ${n} raised`, `${esc(title)} · kind ${esc(kind)} · ${guard}. ${note ? esc(note) + ' · ' : ''}${answerLink(n)}`);
+  return n;
+}
+
+/* ===========================================================================
+   side navigation
+   =========================================================================== */
+const PAGES = [['overview','Overview'],['repositories','Repositories'],['members','Members and roles'],['sinks','Sinks'],['adapters','Adapters'],['packages','Packages'],['pools','Pools']];
+function sidenavHtml(){
+  const orgs = memberOrgs();
+  const orgItems = orgs.map(id => {
+    const open = id === S.org;
+    const o = ORGS[id];
+    const kids = open ? `<div class="sn-sub">${PAGES.map(([p,label]) =>
+      `<button class="sn-item" data-page="${p}" ${S.page===p && !S.host && !S.addhost && !S.addorg ? 'aria-current="page"' : ''}>${label}</button>`).join('')}</div>` : '';
+    return `<button class="sn-org" data-org="${id}" aria-expanded="${open}"><span class="tw" aria-hidden="true">${open ? '&#9660;' : '&#9654;'}</span>${esc(o.name)}${o.decisions ? `<span class="badge-n" title="${o.decisions} decisions in the plan console">${o.decisions}</span>` : ''}</button>${kids}`;
+  }).join('');
+  const hostItems = hosts().map(h =>
+    `<button class="sn-item" data-host="${h.id}" ${S.host===h.id ? 'aria-current="page"' : ''}>${esc(h.id)}${h.pool ? badge('pool','grey') : ''}${h.alive ? '' : st('error','')}</button>`).join('');
+  return `<div class="sn-head"><b>Management console</b><div class="small">administration · every answer stays in the plan console</div></div>
+    <div class="sn-sec">Organizations</div>${orgItems}
+    <button class="sn-item" data-addorg="1" ${S.addorg ? 'aria-current="page"' : ''}>+ organization</button>
+    <hr class="sn-div">
+    <div class="sn-sec">Hosts</div>${hostItems}
+    <button class="sn-item" data-addhost="1" ${S.addhost ? 'aria-current="page"' : ''}>+ host</button>
+    <div class="sn-note">hosts of ${esc(org().name)} · a host serves one organization (241)</div>`;
+}
+
+/* ===========================================================================
+   pages
+   =========================================================================== */
+function crumbs(parts){
+  return `<div class="crumbs">${parts.map((p,i) => i === parts.length-1
+    ? `<span>${esc(p[0])}</span>`
+    : `<a href="#" data-crumb="${p[1]||''}">${esc(p[0])}</a><span class="sep" aria-hidden="true">/</span>`).join('')}</div>`;
+}
+function pageHead(title, desc, actions){
+  return `<div class="page-head"><div class="hd"><div><h1>${raw(title)}</h1>${desc ? `<div class="desc">${raw(desc)}</div>` : ''}</div>${actions ? `<div class="row">${actions}</div>` : ''}</div></div>`;
+}
+
+/* --- overview: the manifest's profile, router, cadences and runner defaults (S155) --- */
+function pageOverview(){
+  const o = org(), alive = o.hosts.filter(h => h.alive).length, pool = o.pools[0];
+  const facts = ctr({title:'Organization', desc:'the manifest profile · save is one configure-organization response, applied as one manifest commit (S155)',
+    actions: btn('Edit', 'data-edit="profile"'),
+    body: kv([
+      ['Name', `<b>${esc(o.name)}</b> ${o.sample ? '<span class="sample">sample seed</span>' : ''}`],
+      ['What it is', esc(o.what)],
+      ['Root on this host', `<span class="mono">${esc(host(IDENTITY.servingHost) ? host(IDENTITY.servingHost).root : '—')}</span>`],
+      ['As of', `${TODAY} ${NOW} · the read this console was built from`],
+      ['Hosts', `${alive} alive of ${o.hosts.length}${pool ? ` · pool ${pool.live} live of ${pool.bound}` : ''}`],
+      ['Repositories', o.repos.map(r => esc(r.id)).join(' · ')],
+      ['Members', o.members.map(m => esc(m.id)).join(' · ')],
+      ['Decisions', o.decisions ? `${o.decisions} waiting · <a href="rail-and-board.html">open the plan console</a>` : 'none waiting'],
+    ])});
+  const defaults = ctr({title:'Runner defaults per role', desc:'what a session of each role runs on when a host declares nothing of its own (173)',
+    actions: btn('Edit', 'data-edit="roles"'),
+    tight:true,
+    body: table(['Role','Runner kind','Model'], o.runnerRoles.map(r => ({cells:[`<b>${esc(r.role)}</b>`, esc(r.kind), `<span class="mono">${esc(r.model)}</span>`]})))});
+  const wiring = ctr({title:'Wiring', desc:'the rest of the manifest, each field where the machinery reads it',
+    body: kv([
+      ['Router', esc(o.router)],
+      ['Curation cadence', esc(o.curation)],
+      ['Triage cadence', esc(o.triageCadence)],
+      ['Sign-in', `${esc(IDENTITY.kind)} · a setting of the serving host, the same for every organization it serves (S164)`],
+      ['Raw store', 'per host · the platform bucket on the cloud host, the machine itself on a laptop'],
+      ['Landing policy', 'per repository · see Repositories'],
+    ])});
+  const raised = S.raised.length ? ctr({title:'Decisions this console raised', counter:S.raised.length,
+    desc:'nothing here is in the count until it appears in the rail; every one is answered there (S113)',
+    tight:true,
+    body: table(['Decision','Kind','What it asks','Answer'], S.raised.map(d => ({cells:[
+      `<b>${d.n}</b>`, esc(d.kind), esc(d.title), answerLink(d.n)]})))}) : '';
+  const logs = S.log.length ? ctr({title:'Responses logged here', counter:S.log.length, tight:true,
+    body: table(['At','Response'], S.log.map(l => ({cells:[`<span class="num">${esc(l.at)}</span>`, esc(l.what)]})))}) : '';
+  const retire = ctr({title:'Retire this organization',
+    desc:'an organization is removed by a response, never by deleting files (221) · this raises the decision and nothing else',
+    actions: btn('Retire organization…', 'data-retireorg="1"'),
+    body: kv([
+      ['What a yes does', 'ends its sessions, removes its places, archives its state, and leaves its git repositories on disk (221)'],
+      ['What it never does', 'delete a repository, delete the account, or reuse a number: an organization&#8217;s numbers are never reused (15, 221)'],
+      ['Where it is answered', 'in the rail like any other decision; until it is answered nothing about this organization changes'],
+      ['Its account', 'a retired organization&#8217;s Frontegg account is not deleted here; membership is revoked on the account (247, S195)'],
+    ], 'rows')});
+  return crumbs([[org().name, 'org'],['Overview']]) + pageHead(esc(o.name), esc(o.what),
+      `<a class="btn normal sm" href="rail-and-board.html">plan console</a>`)
+    + `<div class="stack-l">${facts}${defaults}${wiring}${raised}${logs}${retire}</div>`;
+}
+
+/* --- repositories: landing policy and the environment declaration per host (S174) --- */
+function pageRepos(){
+  const o = org();
+  const rows = o.repos.map(r => {
+    const perHost = o.hosts.filter(h => h.env && h.env.repos[r.id]).map(h => {
+      const e = h.env.repos[r.id];
+      return `<div>${st(e.ok ? 'success' : 'warning', `${esc(h.id)} · ${esc(h.env.provider)}`)}${e.ok ? '' : sub(esc(e.why))}</div>`;
+    }).join('') || `<span class="small">no host covers it</span>`;
+    return {cells:[
+      `<b>${esc(r.id)}</b>${sub(r.kinds.map(esc).join(' · ') + (r.caps.length ? ' · ' + r.caps.map(esc).join(' · ') : ''))}`,
+      `${esc(r.landing)}${sub('item merge · ' + esc(r.merge))}`,
+      `<span class="mono">${esc(r.envFile)}</span>${sub('declaration ' + esc(r.envHash))}`,
+      perHost,
+      `<div class="acts">${btn('Edit policy', `data-edit="repo|${r.id}"`)}</div>`,
+    ]};
+  });
+  const unsat = o.hosts.flatMap(h => Object.entries((h.env && h.env.repos) || {}).filter(([,e]) => !e.ok).map(([rid,e]) => [h, rid, e]));
+  const att = unsat.length ? ctr({title:'Under attention', counter:unsat.length,
+    desc:'a host that cannot satisfy a repository covers none of its work · the line sits under attention in the rail with ok as the acknowledgement (S174)',
+    tight:true,
+    body: table(['Host','Repository','What it cannot produce','Where'], unsat.map(([h, rid, e]) => ({cells:[
+      `<b>${esc(h.id)}</b>${sub('provider ' + esc(h.env.provider))}`, esc(rid), esc(e.why),
+      `<div class="acts">${btn('Host environment', `data-host="${h.id}"`)}</div>`]})))}) : '';
+  return crumbs([[org().name,'org'],['Repositories']])
+    + pageHead('Repositories', 'what the organization tracks · landing policy, and the environment declaration each host is judged against (238)')
+    + `<div class="stack-l">${ctr({title:'Repositories', counter:o.repos.length, tight:true,
+        actions: btn('Add repository', 'data-addrepo="1"'),
+        body: table(['Repository','Landing','Environment declaration','Hosts',''], rows)})}${att}</div>`;
+}
+
+/* --- members and roles (S166–S171) --- */
+function pageMembers(){
+  const o = org();
+  const sinkState = (m, kind) => {
+    const presenting = o.hosts.find(h => (partOn(h, kind === 'discord' ? 'discord' : 'slack') || {}).state && /^installed/.test((partOn(h, kind === 'discord' ? 'discord' : 'slack')||{}).state));
+    return presenting ? st('success', `delivered · ${esc(presenting.id)}`) : st('warning', 'undelivered · no host presents it');
+  };
+  const rows = o.members.map(m => ({cells:[
+    `<b>${esc(m.id)}</b>${sub(esc(m.name) + ' · ' + esc(m.signin) + ' · member since ' + esc(m.since))}`,
+    Object.keys(m.addresses).length
+      ? Object.entries(m.addresses).map(([k,v]) => `<div>${esc(k)} <span class="mono">${esc(v)}</span> ${sinkState(m,k)}</div>`).join('')
+      : `<span class="small">no address · a page sink only (S168)</span>`,
+    m.roles.length ? m.roles.map(r => badge(esc(r))).join(' ') : `<span class="small">none</span>`,
+    `<div class="acts">${btn('Edit addresses', `data-edit="member|${m.id}"`)}${btn('Remove', `data-rm-member="${m.id}"`, 'link')}</div>`,
+  ]}));
+  const members = ctr({title:'Operators', counter:o.members.length,
+    desc:'who may respond in this organization · a response from an identity not on this list is refused before any record is written (S165). Removing the identity that saves the form is refused inline (S155)',
+    actions: btn('Add operator', 'data-add-member="1"', 'primary'),
+    tight:true,
+    body: table(['Member','Addresses per chat kind','Roles',''], rows)});
+  const roleRows = o.roles.map(r => ({cells:[
+    `<b>${esc(r.id)}</b>${sub(esc(r.what))}`,
+    r.members.map(m => badge(esc(m))).join(' ') || `<span class="small">nobody</span>`,
+    `<div class="acts">${btn('Edit members', `data-edit="role|${r.id}"`)}</div>`,
+  ]}));
+  const roles = ctr({title:'Roles', counter:o.roles.length,
+    desc:'a role is a list of members (237) and may own a decision. Ownership changes nothing about who may answer: the answers on an owned card are the same for every member (S169), and "assign" is a control on the decision in the plan console (S170)',
+    actions: btn('Add role', 'data-add-role="1"'),
+    tight:true,
+    body: table(['Role','Members',''], roleRows, ['No roles', 'every decision here is unowned, which is everyone&#8217;s (S169)'])});
+  const note = ctr({title:'Sign-in', desc:'one sign-in per host, the same for every organization it serves (S164)',
+    body: kv([
+      ['You are', `<b>${esc(IDENTITY.handle)}</b> · ${esc(IDENTITY.kind)}`],
+      ['How', esc(IDENTITY.how)],
+      ['Serving host', `${esc(IDENTITY.servingHost)} · <a href="#" data-host="${IDENTITY.servingHost}">its Sign-in heading</a>`],
+      ['Board', 'one board per organization: every member reads the same rail with the same numbers and the same count (S167)'],
+    ])});
+  return crumbs([[org().name,'org'],['Members and roles']])
+    + pageHead('Members and roles', 'the operators list, their chat addresses, and the roles a decision may be owned by')
+    + `<div class="stack-l">${members}${roles}${note}</div>`;
+}
+
+/* --- sinks: one per member, one per address, plus shared channels (S168, S173) --- */
+function pageSinks(){
+  const o = org();
+  const presenter = pkgId => o.hosts.find(h => { const p = partOn(h, pkgId); return p && /^installed/.test(p.state); });
+  const rows = [];
+  o.members.forEach(m => {
+    rows.push({cells:[
+      `<b>${esc(m.id)} · page</b>${sub('keyed by the identity · every member has one (S168)')}`,
+      'page', `<span class="mono">—</span>`, esc(IDENTITY.servingHost), st('success','delivered'), `<span class="num">${NOW}</span>`]});
+    Object.entries(m.addresses).forEach(([kind, addr]) => {
+      const pkgId = kind === 'discord' ? 'discord' : 'slack';
+      const h = presenter(pkgId);
+      const part = o.hosts.map(x => partOn(x, pkgId)).find(Boolean);
+      rows.push({cells:[
+        `<b>${esc(m.id)} · ${esc(kind)}</b>${sub('a direct message from that kind&#8217;s bot · its own mark and the member&#8217;s filter (S173)')}`,
+        esc(kind), `<span class="mono">${esc(addr)}</span>`,
+        h ? esc(h.id) : `<span class="small">nobody</span>`,
+        h ? st('success','delivered') : st('warning', part && part.state === 'disabled' ? 'undelivered · the sink is disabled' : 'undelivered'),
+        h ? `<span class="num">07:2${rows.length % 9}</span>` : `<span class="small">no mark yet</span>`]});
+    });
+  });
+  o.channels.forEach(c => rows.push({cells:[
+    `<b>${esc(c.id)}</b>${sub('a shared channel is one sink with one mark and no member · delivered under all (S173)')}`,
+    esc(c.kind), `<span class="mono">shared</span>`, esc(c.host), st('success','delivered'), `<span class="num">${esc(c.mark)}</span>`]}));
+  const undelivered = rows.filter(r => /undelivered/.test(r.cells[4])).length;
+  const alert = undelivered ? ctr({title:'Undelivered', desc:`${undelivered} sink${undelivered>1?'s have':' has'} no host presenting them. An address whose kind no host runs shows its sink as undelivered with "add a sink on a host" (S166).`,
+    actions: btn('Add a Slack sink on a host', 'data-addsink="slack"', 'primary'),
+    body: st('warning','the Slack sink on willdan-cloud is disabled · turned off 06:50 · nothing else presents Slack')}) : '';
+  return crumbs([[org().name,'org'],['Sinks']])
+    + pageHead('Sinks', 'one page sink per member and one chat sink per address, each with its own delivery mark and the host presenting it (236, 236a)')
+    + `<div class="stack-l">${alert}${ctr({title:'Sinks', counter:rows.length, tight:true,
+        body: table(['Sink','Kind','Address','Presented by','Delivery','Mark'], rows)})}</div>`;
+}
+
+/* --- adapters across the hosts (dispatch 4) --- */
+function pageAdapters(){
+  const o = org();
+  const rows = [];
+  o.hosts.forEach(h => (h.parts || []).filter(p => p.k === 'adapter').forEach(p => {
+    const P = pkg(p.pkg);
+    rows.push({cells:[
+      `<b>${esc(P.name)}</b>${sub('v' + esc(P.v) + ' · ' + esc(P.tag))}`,
+      `<a href="#" data-host="${h.id}">${esc(h.id)}</a>`,
+      esc(P.enables),
+      esc(p.lastRun || '—'),
+      slotState({...p, host:h.id}),
+      `<div class="acts">${btn('Configure', `data-configure="${h.id}|${p.pkg}"`)}</div>`]});
+  }));
+  const triage = ctr({title:'Triage', desc:'derived from the adapters and never configured on its own (S115, S147): the sources it reads are the adapters installed on the host',
+    tight:true,
+    body: table(['Host','Sources it reads','Bound'], o.hosts.filter(h => (h.parts||[]).some(p => p.k === 'adapter')).map(h => ({cells:[
+      `<b>${esc(h.id)}</b>`,
+      (h.parts||[]).filter(p => p.k === 'adapter').map(p => esc(pkg(p.pkg).name)).join(' · '),
+      h.id === 'studio' ? '2 readers in panes under your login · off the shared line' : '2 readers · copy then capture into the raw store']})))});
+  return crumbs([[org().name,'org'],['Adapters']])
+    + pageHead('Adapters', 'where captures come from · one adapter is one source on one host, and triage reads whatever they bring (dispatch 4)')
+    + `<div class="stack-l">${ctr({title:'Capture adapters', counter:rows.length, tight:true,
+        desc:'"add" lives on a host&#8217;s Capture adapters heading, where the catalogue is filtered to that host&#8217;s platform (S117)',
+        body: table(['Adapter','Host','What it brings','Last run','State',''], rows)})}${triage}</div>`;
+}
+
+/* --- packages: the organization store (S156) --- */
+function pagePackages(){
+  const o = org();
+  const entries = Object.entries(o.store).map(([id, v]) => ({id, ...v, p:pkg(id)}));
+  const sections = STORE_HEADINGS.map(([title, kinds, note]) => {
+    const mine = entries.filter(e => kinds.includes(e.p.kind));
+    const rows = mine.map(e => ({cells:[
+      `<b>${esc(e.p.name)}</b>${sub((kinds.length > 1 ? esc(e.p.kind) + ' · ' : '') + 'v' + esc(e.p.v) + ' · ' + esc(e.p.tag))}`,
+      `<span class="mono">flywheel/${esc(ORG_DIRS[e.p.kind])}/${esc(e.id.replace(/^[a-z]+-/,''))}.md</span>${sub(esc(e.p.enables))}`,
+      storeState(e),
+      `<div class="acts">${schemaOf(e.p).length ? btn('Configure', `data-configure="org|${e.id}"`) : ''}${/^retired/.test(e.state)
+        ? btn('Restore', `data-store="restore|${e.id}"`)
+        : btn('Retire', `data-store="retire|${e.id}"`, 'link')}</div>`]}));
+    return ctr({title:esc(title), counter:mine.length, desc:esc(note), tight:true,
+      actions: btn('Add', `data-catalogue="org|${kinds[0]}"`),
+      body: table(['Package','In the blueprints','State',''], rows, ['Nothing of this kind in the blueprints yet', 'add opens this heading&#8217;s catalogue'])});
+  }).join('');
+  const note = ctr({title:'How the store works', body: kv([
+    ['Where it lands', `the blueprints repository under <span class="mono">flywheel/</span> · no host runs these; every host reads them (233)`],
+    ['Adding', 'the same flow as a host part, without a host: configuration collected, then one install decision on the organization (S156)'],
+    ['Separate stores', 'an organization package never appears on a host and a host part never appears here (S124, S158)'],
+    ['Retire', 'one logged response · every host stops reading it on its next tick; restore undoes it'],
+  ])});
+  return crumbs([[org().name,'org'],['Packages']])
+    + pageHead('Packages', 'the organization store · what the blueprints carry for every host to read (190, 208)')
+    + `<div class="stack-l">${sections}${note}</div>`;
+}
+function storeState(e){
+  if(/^retired/.test(e.state)) return st('stopped', esc(e.state));
+  if(/^adding/.test(e.state)) return st('pending', esc(e.state) + ' · ' + answerLink(e.decision));
+  if(/^installing/.test(e.state)) return st('loading', esc(e.state));
+  return st('success', 'installed' + (e.state.replace('installed','') ? ' ·' + esc(e.state.replace('installed','')) : ''));
+}
+
+/* --- pools (S176) --- */
+function pagePools(){
+  const o = org();
+  if(!o.pools.length) return crumbs([[org().name,'org'],['Pools']]) + pageHead('Pools', 'a pool the machinery adds hosts to and retires them from, within bound and cost (240–242)')
+    + ctr({title:'Pools', tight:true, actions: btn('Declare a pool', 'data-editpool="new"'),
+        body: table([''], [], ['No pool', 'without one the flywheel reads "drain is the limit: add a host" instead of the pool line (S106)'])});
+  const rows = [];
+  o.pools.forEach(p => {
+    rows.push({cells:[
+      `<b>${esc(p.id)}</b>${sub(esc(p.platform) + ' · covers ' + esc(p.covers))}`,
+      `<span class="mono">${esc(p.image)}</span>${sub(p.imageState === 'behind' ? esc(p.imageWhy) : 'built from the declarations of every repository it covers (239)')}`,
+      p.imageState === 'behind' ? st('warning','image behind') : st('success','image current'),
+      `<span class="num">${p.live} live of ${p.bound}</span>${sub('each host bound ' + p.hostBound + ' · idle-retire ' + esc(p.idleRetire))}`,
+      `${esc(p.cost)}`,
+      `<div class="acts">${p.imageState === 'behind' ? btn('Rebuild image', `data-rebuild="${p.id}"`, 'primary') : ''}${btn('Edit', `data-editpool="${p.id}"`)}</div>`]});
+    o.hosts.filter(h => h.pool === p.id).forEach(h => rows.push({cls:'sub', cells:[
+      `<a href="#" data-host="${h.id}">${esc(h.id)}</a> ${badge('pool','grey')}${sub(esc(h.note))}`,
+      `<span class="mono">${esc(h.platform)}</span>`,
+      h.retiring ? st('pending', 'retiring · ' + esc(h.retiring)) : st('success','alive'),
+      `<span class="num">bound ${h.bound}</span>${sub(esc(h.idle || ''))}`,
+      `joined ${esc(h.joined)}`,
+      `<div class="acts">${btn('Settings', `data-host="${h.id}"`)}</div>`]}));
+  });
+  const note = ctr({title:'What the pool does and what it never does', body: kv([
+    ['The machinery adds and retires', 'while drain is the limit, within bound and cost (242) · nothing on this page adds or retires a host by hand (S124)'],
+    ['A retiring host', 'leaves the list when the platform ends it; its places are re-made from their lines elsewhere (52) and it raises nothing (S176)'],
+    ['An image behind', 'provisions no host until it is current · "rebuild" raises the rebuild as a chore, shown under the chores head of Construction (S175)'],
+    ['In the flywheel', 'pool hosts count in drain; the strip draws the pool as one dashed pill "pool willdan-pool · 2 of 8" (S177)'],
+  ])});
+  return crumbs([[org().name,'org'],['Pools']])
+    + pageHead('Pools', 'a pool the machinery adds hosts to and retires them from, within bound and cost (240–242)')
+    + `<div class="stack-l">${ctr({title:'Pools and their hosts', counter:o.pools.length + o.hosts.filter(h=>h.pool).length, tight:true,
+        body: table(['Pool · host','Image · platform','State','Live of bound','Cost',''], rows)})}${note}</div>`;
+}
+
+/* ===========================================================================
+   the host settings screen, by heading (S115)
+   =========================================================================== */
+function slotState(p){
+  const s = p.state;
+  if(/^adding/.test(s)) return st('pending', `adding · decision ${p.decision} · ` + answerLink(p.decision));
+  if(s === 'needs a secret') return st('warning', `needs a secret · <a href="#" data-secret="${p.host||''}|${p.pkg}">place it</a>${p.wi ? ' · install chore ' + esc(p.wi) + ' waits on it' : ''}`);
+  if(/^installing/.test(s)) return st('loading', esc(s));
+  if(s === 'disabled') return st('stopped', 'disabled' + (p.why ? ' · ' + esc(p.why) : ''));
+  return st('success', esc(s));
+}
+function cfgLine(p){
+  const P = pkg(p.pkg), vals = p.cfg || {};
+  const parts = schemaOf(P).filter(f => f.kind !== 'secret' && vals[f.k]).map(f => `${f.k} ${vals[f.k]}`);
+  const secrets = schemaOf(P).filter(f => f.kind === 'secret' && (!f.when || vals[f.when[0]] === f.when[1]))
+    .map(f => `${f.file} ${(p.secrets||{})[f.k] ? 'placed' : 'not placed'}`);
+  const all = parts.concat(secrets);
+  return all.length ? `<div class="cfg-line">${esc(all.join(' · '))}</div>` : '';
+}
+function slot(h, p, opts){
+  const P = pkg(p.pkg); opts = opts || {};
+  const acts = [];
+  if(p.byPool) acts.push(`<span class="small">declared by the pool · configured there</span>`);
+  else {
+    if(schemaOf(P).length) acts.push(btn('Configure', `data-configure="${h.id}|${p.pkg}"`));
+    if(opts.single) acts.push(btn('Change', `data-catalogue="${h.id}|${P.kind}|replace:${p.pkg}"`));
+    if(p.state === 'disabled') acts.push(btn('Enable', `data-part="enable|${h.id}|${p.pkg}"`));
+    else if(/^installed/.test(p.state)) acts.push(btn('Disable', `data-part="disable|${h.id}|${p.pkg}"`, 'link'));
+    if(!opts.single) acts.push(btn('Remove', `data-part="remove|${h.id}|${p.pkg}"`, 'link'));
+  }
+  return `<div class="slot ${S.lit === h.id + '|' + p.pkg ? 'lit' : ''}">
+    <div class="sl-main"><div class="sl-name">${esc(P.name)} <span class="small">v${esc(P.v)} · ${esc(P.tag)}</span>${p.lease ? ' ' + badge('lease','blue') : ''}</div>
+      <div class="small">${raw(P.enables)}</div>${cfgLine({...p, host:h.id})}
+      <div>${slotState({...p, host:h.id})}</div>${p.lastRun ? `<div class="small">last run ${esc(p.lastRun)}</div>` : ''}</div>
+    <div class="sl-acts">${acts.join('')}</div></div>`;
+}
+function emptySlot(h, kind, takes){
+  return `<div class="slot empty-slot"><div class="sl-main"><div class="sl-name">Empty</div><div class="small">${raw(takes)}</div></div>
+    <div class="sl-acts">${btn('Add', `data-catalogue="${h.id}|${kind}"`)}</div></div>`;
+}
+function headingCtr(title, desc, actions, inner){
+  return `<section class="ctr"><div class="ctr-head"><div class="ct"><h2>${raw(title)}</h2><div class="small">${raw(desc)}</div></div>${actions ? `<div class="row">${actions}</div>` : ''}</div>${inner}</section>`;
+}
+function pageHost(){
+  const h = host(S.host);
+  if(!h) return pageHead('Host not found', '');
+  const single = (kind, takes) => {
+    const p = h.parts.find(x => x.k === kind);
+    return p ? slot(h, p, {single:true}) : emptySlot(h, kind, takes);
+  };
+  const list = (kind, empty) => {
+    const ps = h.parts.filter(x => x.k === kind);
+    return ps.length ? ps.map(p => slot(h, p)).join('') : `<div class="slot empty-slot"><div class="sl-main"><div class="small">${raw(empty)}</div></div></div>`;
+  };
+  const platNote = h.plat.includes('herdr') ? '' : `<div class="slot empty-slot"><div class="sl-main"><div class="small">the pane runner needs herdr on the host, which this platform cannot take</div></div></div>`;
+
+  const signin = headingCtr('Sign-in', 'one slot · the kind is a setting of this host, the same for every organization it serves; GitHub is the default and the identity is the GitHub username (233, 234, S164)',
+    '', single('sign-in', 'GitHub · tailnet · OAuth · OIDC'));
+  const router = headingCtr('Router', 'one slot · what a served place is reached at, and nothing beyond the private network unless a route is opened per named caller (191)',
+    '', single('router', 'local · private-network · platform'));
+
+  const runnerRoles = ['elaboration','construction','machinery'].map(role => {
+    const r = (h.roles || {})[role] || {};
+    const P = r.runner && pkg(r.runner);
+    return `<div class="slot"><div class="sl-main"><div class="sl-name">${esc(role)}</div>
+      <div class="small">${P ? `${esc(P.name)} · <span class="mono">${esc(r.model)}</span>` : `no runner on this host for ${esc(role)} · sessions of this role run elsewhere`}</div>
+      ${P ? st('success', 'installed') : st('inactive','empty')}</div>
+      <div class="sl-acts">${btn(P ? 'Change runner' : 'Add runner', `data-catalogue="${h.id}|runner"`)}</div></div>`;
+  }).join('');
+  const runnersInstalled = h.parts.filter(x => x.k === 'runner').map(p => slot(h, p)).join('');
+  const runners = headingCtr('Runners', 'one slot per role · a runner names where a session of that role runs; the model beside it is the manifest&#8217;s default per role, and whether a host may declare its own is not settled (173, S147)',
+    btn('Add runner', `data-catalogue="${h.id}|runner"`),
+    runnerRoles + `<div class="hd-bar"><div class="ht"><h3>Runners installed here</h3><div class="small">what the roles above can be pointed at</div></div></div>` + runnersInstalled + platNote);
+
+  const ag = h.agent || {};
+  const agent = headingCtr('Agent', 'reads the plan and the objects, answers in chat, and proposes every write as a tool call you confirm (194) · the model keeps the name "interpreter"; the surface says agent (S116)',
+    '', `<div class="slot"><div class="sl-main"><div class="sl-name">agent</div><div class="small">${esc(ag.what || '')}</div>
+      ${ag.on ? st('success', `on · ${esc(ag.runner ? pkg(ag.runner).name : 'no runner')}`) : st('stopped','off')}</div>
+      <div class="sl-acts">${btn(ag.on ? 'Turn off' : 'Turn on', `data-agent="${h.id}"`)}</div></div>`);
+
+  const sinks = headingCtr('Chat sinks', 'a list · each sink this host presents, with a lease badge on the one whose presenter lease it holds (148)',
+    btn('Add', `data-catalogue="${h.id}|chat sink"`), list('chat sink', 'this host presents no chat sink'));
+  const adapters = headingCtr('Capture adapters', 'a list · each names its source (dispatch 4)',
+    btn('Add', `data-catalogue="${h.id}|adapter"`), list('adapter', 'this host reads no source'));
+  const srcs = h.parts.filter(x => x.k === 'adapter');
+  const triage = headingCtr('Triage', 'derived from the adapters, with no slot of its own (S115)', '',
+    `<div class="slot"><div class="sl-main"><div class="sl-name">triage</div>
+      <div class="small">${srcs.length ? 'sources: ' + srcs.map(p => esc(pkg(p.pkg).name)).join(' · ') : 'no sources · nothing to read here'}</div>
+      ${srcs.length ? st('success','running · bound 2') : st('inactive','nothing to read')}</div>
+      <div class="sl-acts"><span class="small">add or remove an adapter to change it</span></div></div>`);
+
+  const envRows = Object.entries((h.env && h.env.repos) || {}).map(([rid, e]) => ({cells:[
+    `<b>${esc(rid)}</b>`,
+    esc((org().repos.find(r => r.id === rid) || {}).envFile || '—'),
+    e.ok ? st('success','satisfied') : st('warning','cannot satisfy'),
+    e.ok ? '<span class="small">every tool the declaration names is produced</span>' : esc(e.why)]}));
+  const env = headingCtr('Environment', `the provider in force on this host and the repositories it covers (238) · a provider is this host&#8217;s declaration and is changed with the host, not from the page (S174)`,
+    '',
+    `<div class="slot"><div class="sl-main"><div class="sl-name">provider · ${esc(h.env ? h.env.provider : '—')}</div>
+      <div class="small">devenv · devcontainer · nix · image</div></div></div>` + table(['Repository','Declaration','State','Why'], envRows));
+
+  const pool = h.pool ? (() => {
+    const p = org().pools.find(x => x.id === h.pool);
+    return headingCtr('Pool', 'this host belongs to a pool; every part above is declared by the pool and configured there (S176)', btn('Open the pool', 'data-page="pools"'),
+      `<div class="ctr-body">${kv([
+        ['Pool', `<b>${esc(p.id)}</b> · ${esc(p.platform)}`],
+        ['Image', `<span class="mono">${esc(p.image)}</span> · ${p.imageState === 'behind' ? 'behind' : 'current'}`],
+        ['This host', h.retiring ? `retiring · ${esc(h.retiring)}` : esc(h.idle || 'busy')],
+        ['Joined', `${esc(h.joined)} · ${esc(h.joinedVia)}`],
+      ])}</div>`);
+  })() : '';
+
+  const behind = h.binary !== h.binaryLatest;
+  const facts = headingCtr('Host', 'what this host is and how it was reached', '',
+    `<div class="ctr-body">${kv([
+      ['Kind', esc(h.kind)],
+      ['Platform', esc(h.platform)],
+      ['Alive', h.alive ? st('success', `alive · last heartbeat ${esc(h.last)}`) : st('error', `gone ${esc(h.gone || '')} · last heartbeat ${esc(h.last)}`)],
+      ['Bound', `${h.bound}${h.bound === 0 ? ' · takes no construction work' : ' sessions at once'}`],
+      ['Root', `<span class="mono">${esc(h.root)}</span>`],
+      ['Launcher entry', `<span class="mono">${esc(h.launcher)}</span>`],
+      ['Joined', `${esc(h.joined)} · ${esc(h.joinedVia)}`],
+      ['Binary', behind
+        ? `${st('warning', esc(h.binary) + ' · behind ' + esc(h.binaryLatest))} ${btn('Upgrade', `data-upgrade="${h.id}"`, 'primary')}`
+        : st('success', esc(h.binary) + ' · current')],
+    ])}${behind ? `<div class="small" style="margin-top:12px">an upgrade is a chore: the decision&#8217;s yes runs it and the launcher restarts the host</div>` : ''}</div>`);
+
+  const joined = h.joinedSteps ? headingCtr('How it joined', 'the record of the enrolment, folded into the host (S122)', '',
+    `<div class="ctr-body"><div class="steps">${h.joinedSteps.map(([name, state, at, body]) =>
+      `<div class="step-row"><div>${st('success','')}</div><div><b>${esc(name)}</b> <span class="small">${esc(at)}</span><div class="small">${esc(body)}</div></div></div>`).join('')}</div></div>`) : '';
+
+  const head = pageHead(esc(h.id) + (h.pool ? ' ' + badge('pool host','grey') : '') + (h.dispatcher ? ' ' + badge('dispatcher','grey') : ''),
+    esc(h.note),
+    `${btn('Open in the plan console', `data-plan="host:${h.id}"`)}${h.alive ? '' : btn('Takeover', `data-takeover="${h.id}"`, 'primary')}`);
+  const summary = ctr({body: kv([
+    ['Alive', h.alive ? st('success','alive · ' + esc(h.last)) : st('error','gone ' + esc(h.gone||''))],
+    ['Bound', String(h.bound)],
+    ['Platform', esc(h.platform)],
+    ['Environment', h.env ? esc(h.env.provider) : '—'],
+    ['Parts', String(h.parts.length)],
+    ['Binary', esc(h.binary)],
+  ])});
+  return crumbs([[org().name,'org'],['Hosts','none'],[h.id]]) + head
+    + `<div class="stack-l">${summary}${signin}${router}${runners}${agent}${sinks}${adapters}${triage}${env}${pool}${facts}${joined}</div>`;
+}
+
+/* ===========================================================================
+   "+ host" — the wizard over the flow of S120
+   =========================================================================== */
+const WIZ_STEPS = [
+  ['Next step','what you want to add'],
+  ['Parts','heading by heading'],
+  ['Provision','from the host you are on'],
+  ['Hand over secrets','into the platform store'],
+  ['Enrol','one decision, one token'],
+];
+/* the first screen is a choice of next steps, not a platform list; the platforms sit under "advanced" */
+const JOURNEYS = [
+  ['machine', 'A machine of yours', 'a laptop or a home host with herdr',
+   'It <b>drains construction work</b>: the pane runner under your login takes units at its bound, so the flywheel&#8217;s runway grows by what you set here (S103, S114).',
+   {platform:'laptop', parts:['runner-pane'], adopt:false}],
+  ['cloud-agent', 'An agent in the cloud', 'a container flywheel-cloud runs, for captures and chat',
+   'It <b>presents chat and reads captures while your machines sleep</b>, and it is bound 0, so it takes no construction work and changes no runway reading (S114, dispatch 2, 5).',
+   {platform:'managed', parts:['runner-inproc'], adopt:false}],
+  ['pool', 'More drain, managed for you', 'a pool the machinery adds hosts to and retires',
+   'The machinery <b>adds and retires hosts itself</b> while drain is the limit, within the bound and the cost ceiling you set (240–242, S176). This is not one host: it opens the pool form.',
+   {pool:true}],
+  ['adopt', 'A host already running the binary', 'adopt an existing machine or container',
+   'Enrolment <b>by token alone</b>: no platform, no provisioning and no hand-over, because the host is already there and its secrets are checked at join (S121).',
+   {adopt:true, parts:[]}],
+];
+const PLATFORMS = [
+  ['managed','flywheel-cloud managed','a container flywheel-cloud runs and fronts with its router',['cloud','container','linux'],0],
+  ['container','a container on any platform','Fly, Cloud Run, ECS, a VM · one image, the binary unchanged · you bring the secret store and a tailnet node',['container','linux'],0],
+  ['laptop','a laptop','a machine of yours with herdr · the pane runner under your login · drains construction work',['machine','macos','herdr'],2],
+];
+function newWizard(){ return {step:0, journey:null, advanced:false, adopt:false, platform:null, name:'', parts:[], provisioned:false, secrets:{}, decision:null, joined:false}; }
+function pickJourney(id){
+  const w = S.wizard, j = JOURNEYS.find(x => x[0] === id);
+  if(!j) return;
+  w.journey = id;
+  if(j[4].pool) return;
+  w.adopt = !!j[4].adopt;
+  w.platform = j[4].platform || null;
+  w.parts = (j[4].parts || []).map(pkgId => ({pkg:pkgId, cfg:{}}));
+  if(!w.name) w.name = id === 'machine' ? 'chuck-air' : id === 'cloud-agent' ? (org().name + '-cloud-2') : 'mac-mini-2';
+}
+function wizPlat(){ const w = S.wizard; return w.adopt ? ['any'] : (PLATFORMS.find(p => p[0] === w.platform) || [null,null,null,['any']])[3]; }
+function pageAddHost(){
+  const w = S.wizard = S.wizard || newWizard();
+  const steps = `<ul class="wiz-nav">${WIZ_STEPS.map((s,i) =>
+    `<li class="${i < w.step ? 'done' : ''} ${i === w.step ? 'now' : ''}"><span class="n">${i < w.step ? '&#10003;' : i+1}</span><span class="lbl">${esc(s[0])}<small>${esc(s[1])}</small></span></li>`).join('')}</ul>`;
+  let body = '', next = 'Next', canNext = true;
+  if(w.step === 0){
+    const chosen = JOURNEYS.find(j => j[0] === w.journey);
+    body = ctr({title:'What do you want to add?', desc:'each of these is one host and one promise · the platform, the parts and the flow behind it follow from the choice, and every one of them still ends at a decision you answer in the plan console (S113, S120)',
+      body: JOURNEYS.map(([id, title, what, promise]) =>
+          `<label class="jrn ${w.journey === id ? 'on' : ''}"><input type="radio" name="w-journey" value="${id}" ${w.journey === id ? 'checked' : ''}>
+            <div><div class="jt">${esc(title)}</div><div class="small">${esc(what)}</div>
+            <div class="jp">${raw(promise)}</div></div></label>`).join('')
+        + (w.journey === 'pool' ? `<div class="small">${st('info','the pool form is on the Pools page; this wizard adds one host')} ${btn('Open the pool form','data-wizpool="1"','primary')}</div>`
+          : `<div class="field" style="margin-top:16px"><label for="w-name">Name</label>
+              <div class="fd">the host&#8217;s name in the strip and in every session chip${chosen ? ' · this journey ' + (chosen[4].adopt ? 'reads its platform at join' : 'runs on ' + esc((PLATFORMS.find(x => x[0] === chosen[4].platform)||[])[1] || '')) : ''}</div>
+              <input id="w-name" value="${esc(w.name)}" placeholder="willdan-cloud-2"></div>`)
+        + `<div class="exp"><button class="exp-h" data-wizadv="1" aria-expanded="${w.advanced ? 'true' : 'false'}"><span class="tw" aria-hidden="true">${w.advanced ? '&#9660;' : '&#9654;'}</span>Advanced</button>
+            ${w.advanced ? `<div class="exp-b">
+              <div class="field"><label><input type="checkbox" id="w-adopt" ${w.adopt ? 'checked' : ''}> adopt an existing host</label>
+                <div class="fd">the platform is read at join and secrets already on the host are checked then (S121)</div></div>
+              <div class="field"><label>Platform</label><div class="fd">choose it yourself; the journeys above set it for you</div>
+                ${w.adopt ? '<div class="small">read at join</div>' : PLATFORMS.map(p =>
+                  `<label class="radio"><input type="radio" name="w-plat" value="${p[0]}" ${w.platform === p[0] ? 'checked' : ''}><span><b>${esc(p[1])}</b><div class="small">${esc(p[2])} · bound ${p[4]}</div></span></label>`).join('')}</div>
+              <div class="small">every part is chosen on the next step whatever you pick here; nothing is installed until the enrolment decision is answered (S118, S124)</div>
+            </div>` : ''}</div>`});
+    canNext = !!w.name && w.journey !== 'pool' && (w.adopt || !!w.platform);
+  } else if(w.step === 1){
+    const plat = wizPlat();
+    const headings = [['sign-in','Sign-in','one slot'],['router','Router','one slot'],['runner','Runners','one slot per role'],['chat sink','Chat sinks','a list'],['adapter','Capture adapters','a list']];
+    body = ctr({title:'Parts', desc:'the same headings as a host&#8217;s settings screen, empty · each opens its own catalogue, filtered to this platform (S117, S120). The agent and triage come with the binary wherever a runner gives them a place.',
+      tight:true,
+      body: headings.map(([kind, title, note]) => {
+        const chosen = w.parts.filter(p => pkg(p.pkg).kind === kind);
+        return `<div class="hd-sec"><div class="hd-bar"><div class="ht"><h3>${esc(title)}</h3><div class="small">${esc(note)}</div></div>
+          ${btn('Add', `data-catalogue="__new|${kind}"`)}</div>
+          ${chosen.length ? chosen.map(p => `<div class="slot"><div class="sl-main"><div class="sl-name">${esc(pkg(p.pkg).name)}</div>
+            <div class="small">${esc(pkg(p.pkg).enables)}</div>${st('pending','chosen · installed when the host joins')}</div>
+            <div class="sl-acts">${btn('Remove', `data-wizrm="${p.pkg}"`, 'link')}</div></div>`).join('')
+            : `<div class="slot empty-slot"><div class="sl-main"><div class="small">nothing chosen · this heading may stay empty</div></div></div>`}</div>`;
+      }).join('')});
+  } else if(w.step === 2){
+    body = ctr({title:'Provision', desc:'provisioning runs from the host you are on with your own platform credentials, read at run time and never stored (S120)',
+      body: w.adopt ? `<div>${st('info','nothing to provision · the host already runs the binary')}</div>`
+        : `<div class="steps">${[
+            ['read your flywheel-cloud credentials', w.provisioned ? 'done' : 'waiting on you', 'from your credential store on ' + IDENTITY.servingHost + ' · never stored by the flywheel'],
+            ['create the container', w.provisioned ? 'done' : 'queued', 'from the organization image · the pool&#8217;s image when it joins a pool (S175)'],
+            ['open its route', w.provisioned ? 'done' : 'queued', 'behind the router you chose'],
+          ].map(([n,s,b]) => `<div class="step-row">${s === 'done' ? st('success','') : st('pending','')}<div><b>${esc(n)}</b> <span class="small">${esc(s)}</span><div class="small">${esc(b)}</div></div></div>`).join('')}</div>
+          <div style="margin-top:16px">${w.provisioned ? st('success','provisioned') : btn('Run provisioning', 'data-wizprov="1"', 'primary')}</div>`});
+    canNext = w.adopt || w.provisioned;
+  } else if(w.step === 3){
+    const needed = w.parts.flatMap(p => secretFields(pkg(p.pkg)).map(f => [pkg(p.pkg), f]));
+    body = ctr({title:'Hand over secrets', desc:'only the chosen parts&#8217; secrets are listed, and you hand them over into the platform&#8217;s secret store · the page never carries a value (204, 207, S123)',
+      tight:true,
+      body: needed.length ? needed.map(([P, f]) => `<div class="slot"><div class="sl-main"><div class="sl-name">${esc(P.name)} · ${esc(f.label)}</div>
+        <div class="cfg-line">${esc(f.file)}</div>
+        <div class="cmd">op read "${esc(f.op || 'op://vault/item/field')}" | flywheel secret place --host ${esc(w.name || '&lt;host&gt;')} ${esc(f.file)}</div>
+        ${w.secrets[P.id + '|' + f.k] ? st('success','placed · the host answered that it is present') : st('warning','not placed · it will sit under attention after the join')}</div>
+        <div class="sl-acts">${btn('Copy', `data-copy="${esc(f.op || '')}"`)}${btn('Check', `data-wizsecret="${P.id}|${f.k}"`)}</div></div>`).join('')
+        : `<div class="empty"><b>Nothing to hand over</b><div class="small">none of the chosen parts declares a secret</div></div>`});
+  } else {
+    body = ctr({title:'Enrol', desc:'enrolment is a decision like any other: it appears in the rail and is answered there (S120)',
+      body: w.decision
+        ? `<div class="stack">${st('pending', `decision ${w.decision} · enrol host ${esc(w.name)} · approve · yes · no`)}
+            <div>the yes hands back a one-time token that expires in 24h; the host joins with the token by one command (205), reads the manifest and installs the parts you chose.</div>
+            <div class="cmd">flywheel join --token &lt;the token the yes hands back&gt;</div>
+            <div>${answerLink(w.decision)}</div>
+            ${w.joined ? st('success', `${esc(w.name)} joined and is alive · its row is in Hosts`) : btn('Simulate the join', 'data-wizjoin="1"')}</div>`
+        : `<div class="stack">${kv([
+            ['Name', `<b>${esc(w.name)}</b>`],
+            ['Platform', esc(w.adopt ? 'read at join · adopt existing' : (PLATFORMS.find(p => p[0] === w.platform)||[])[1] || '—')],
+            ['Parts', w.parts.length ? w.parts.map(p => esc(pkg(p.pkg).name)).join(' · ') : 'none · it joins bare and reads the manifest'],
+            ['Secrets placed', `${Object.keys(w.secrets).length} of ${w.parts.flatMap(p => secretFields(pkg(p.pkg))).length}`],
+          ])}<div>${btn('Raise the enrolment decision', 'data-wizenrol="1"', 'primary')}</div></div>`});
+    next = 'Close';
+  }
+  const foot = `<div class="wiz-foot">${btn('Cancel','data-wizcancel="1"','link')}${w.step > 0 ? btn('Previous','data-wizprev="1"') : ''}
+    ${btn(next, 'data-wiznext="1"' + (canNext ? '' : ' disabled'), 'primary')}</div>`;
+  return crumbs([[org().name,'org'],['Hosts','none'],['+ host']])
+    + pageHead('Add a host', 'what you want to add · parts · provision · hand over secrets · enrol, then join and alive (S120)')
+    + `<div class="wiz">${steps}<div>${body}${foot}</div></div>`;
+}
+
+/* ===========================================================================
+   "+ organization" — the wizard over 204, 206, 207/207a, 218-222, 233, 247, 253
+   =========================================================================== */
+const ORG_WIZ_STEPS = [
+  ['Name', 'yours to name (219)'],
+  ['GitHub', 'where the App reaches (207)'],
+  ['Repositories', 'state and blueprints (204, 206)'],
+  ['The App', 'install or extend (207, 207a)'],
+  ['Account', 'the account is the organization (247)'],
+  ['Root on this host', 'one root, one address (205, 205a)'],
+  ['Initialize', 'one decision, one first tick (204)'],
+];
+/* the accounts the signed-in user's GitHub connection reaches (246); sample */
+const GH_ACCOUNTS = [
+  ['willdan', 'organization · the App is installed, covering 4 repositories', true],
+  ['agentplot', 'organization · the App is installed, covering 2 repositories', true],
+  ['chuck', 'your personal account · the App is not installed here', false],
+];
+const TEMPLATE_SET = 'v0.9.4 · blueprints template · built-repository template · map schema and derivation table · shipped skills (208)';
+function newOrgWizard(){
+  return {step:0, name:'', tier:'self', gh:null,
+    repos:{state:{mode:'create', url:''}, blueprints:{mode:'create', url:''}},
+    keyPlaced:false, account:false, root:'', firstHost:IDENTITY.servingHost,
+    decision:null, ticked:false};
+}
+const owHosted = () => S.orgWizard && S.orgWizard.tier === 'hosted';
+function pageAddOrg(){
+  const w = S.orgWizard = S.orgWizard || newOrgWizard();
+  const nav = `<ul class="wiz-nav">${ORG_WIZ_STEPS.map((s2,i) =>
+    `<li class="${i < w.step ? 'done' : ''} ${i === w.step ? 'now' : ''}"><span class="n">${i < w.step ? '&#10003;' : i+1}</span><span class="lbl">${esc(s2[0])}<small>${esc(s2[1])}</small></span></li>`).join('')}</ul>`;
+  let body = '', next = 'Next', canNext = true;
+
+  if(w.step === 0){
+    body = ctr({title:'Name the organization',
+      desc:'an organization is the operator&#8217;s name for it; it may but need not coincide with an organization at the git host, and its repositories are listed by URL, so they may live under any account the App reaches (219)',
+      body:`<div class="field"><label for="o-name">Name</label>
+          <div class="fd">what the switcher, the page&#8217;s path and every session chip call it (218, 205a)</div>
+          <input id="o-name" data-ofield="name" value="${esc(w.name)}" placeholder="northwind"></div>
+        <div class="field"><label>How it is run</label>
+          <div class="fd">this decides the App: 207a splits self-managed from the hosted tiers</div>
+          <label class="radio"><input type="radio" name="o-tier" value="self" ${w.tier === 'self' ? 'checked' : ''}><span><b>self-managed</b>
+            <div class="small">your own hosts and your own GitHub App, whose key you place (204, 207a) · a host on your own computer is not an exception: same page, same identity, same membership (253)</div></span></label>
+          <label class="radio"><input type="radio" name="o-tier" value="hosted" ${w.tier === 'hosted' ? 'checked' : ''}><span><b>hosted</b>
+            <div class="small">the service&#8217;s App, whose key never leaves the service and which mints a pool host&#8217;s installation tokens (207a) · the account is created as a sub-account of the service&#8217;s own (247)</div></span></label></div>
+        <div class="small">Nothing on this page creates anything. The wizard collects; the decision at the end is what acts (204).</div>`});
+    canNext = !!w.name.trim();
+  } else if(w.step === 1){
+    body = ctr({title:'The GitHub account', desc:'one GitHub App is the connection and its installation covers every repository the manifest lists (207) · the accounts your GitHub connection reaches (246)',
+      tight:true,
+      body: GH_ACCOUNTS.map(([id, note, installed]) =>
+        `<label class="slot" style="cursor:pointer"><input type="radio" name="o-gh" value="${id}" ${w.gh === id ? 'checked' : ''} style="margin-top:4px">
+          <div class="sl-main"><div class="sl-name">${esc(id)}</div><div class="small">${esc(note)}</div>
+          ${installed ? st('success', owHosted() ? 'the service&#8217;s App is installed here' : 'your App is installed here · this organization extends the installation')
+                      : st('pending', 'the App is not installed here · this organization installs it')}</div></label>`).join('')
+        + `<div class="slot empty-slot"><div class="sl-main"><div class="small">a repository under another account is added later by URL; the installation extends to it or the extension surfaces as a decision under attention (149, 207, 219)</div></div></div>`});
+    canNext = !!w.gh;
+  } else if(w.step === 2){
+    const repoRow = (key, title, what, template) => {
+      const r = w.repos[key];
+      return `<div class="hd-sec"><div class="hd-bar"><div class="ht"><h3>${esc(title)}</h3><div class="small">${raw(what)}</div></div></div>
+        <div class="slot"><div class="sl-main">
+          <label class="radio"><input type="radio" name="o-${key}" value="create" ${r.mode === 'create' ? 'checked' : ''}><span><b>create it</b>
+            <div class="small">${raw(template)}</div></span></label>
+          <label class="radio"><input type="radio" name="o-${key}" value="adopt" ${r.mode === 'adopt' ? 'checked' : ''}><span><b>adopt an existing repository</b>
+            <div class="small">the same steps without the creation (206) · one that lacks the layout is upgraded by a chore and never rewritten (220, 208)</div></span></label>
+          ${r.mode === 'adopt' ? `<div class="field" style="margin-top:8px"><label for="o-${key}-url">URL</label>
+            <input id="o-${key}-url" data-ofield="repo.${key}" value="${esc(r.url)}" placeholder="https://github.com/${esc(w.gh || 'account')}/${esc(w.name || 'org')}-${esc(key)}"></div>` : ''}
+        </div></div></div>`;
+    };
+    body = ctr({title:'The two repositories', desc:'init creates or adopts the blueprints repository from the blueprints template and the state repository with the profile&#8217;s layout (204, 220) · every tracked repository is added later the same way (206)',
+      tight:true,
+      body: repoRow('state', 'state', 'the organization&#8217;s state: its manifest, its register of numbers, its ledger (C.2)', 'created with the profile&#8217;s layout, stamped with the template set it used (204, 208)')
+        + repoRow('blueprints', 'blueprints', 'the books and the claims; the map lives here (S91, 199)', 'created from the blueprints template, stamped with the template set it used (204, 208)')
+        + `<div class="slot empty-slot"><div class="sl-main"><div class="small">template set <span class="mono">${esc(TEMPLATE_SET)}</span> <span class="sample">sample</span></div></div></div>`});
+    canNext = ['state','blueprints'].every(k => w.repos[k].mode === 'create' || w.repos[k].url.trim());
+  } else if(w.step === 3){
+    body = ctr({title:'The App', desc:'one GitHub App is the connection; no host or session uses a personal token, and a session gets a short-lived installation token scoped to one repository (207)',
+      body: owHosted()
+        ? `<div class="stack">${st('info','the hosted tiers use the service&#8217;s App (207a)')}
+            ${kv([
+              ['Its key', 'never leaves the service · there is no path here and no control (S198)'],
+              ['Pool hosts', 'the service mints their installation tokens, scoped as 207 scopes them (207a, 240)'],
+              ['This organization', `the installation is extended to ${esc(w.gh || 'the account')} and to the two repositories above (207)`],
+            ])}</div>`
+        : `<div class="stack">${st('info','a self-managed organization uses its own App (207a)')}
+            ${kv([
+              ['Installation', `covers every repository the manifest lists · it is ${GH_ACCOUNTS.find(a => a[0] === w.gh) && GH_ACCOUNTS.find(a => a[0] === w.gh)[2] ? 'extended to the two repositories above' : 'installed on ' + esc(w.gh || 'the account')} (207)`],
+              ['Adding a repository later', 'extends the installation, or surfaces as a decision under attention (149, 207)'],
+            ])}
+            <div class="secret"><div class="small">the App&#8217;s private key is a secret the operator places, never an agent (204) · the page never carries the value (207)</div>
+              <div class="cmd">op read "op://${esc(w.name || 'org')}/flywheel github app/private key" | flywheel secret place --host ${esc(w.firstHost)} github-app.pem</div>
+              <div class="row">${btn('Copy', 'data-copy="op://' + esc(w.name || 'org') + '/flywheel github app/private key"')}
+                ${btn('Check', 'data-owizkey="1"')}
+                ${w.keyPlaced ? st('success','placed · the host answered that it is present') : st('warning','not placed · it sits under attention until it is, and the first tick waits on it (149, S123)')}</div></div>
+          </div>`});
+  } else if(w.step === 4){
+    body = ctr({title:'The account', desc:'membership is the assignment of the flywheel Application to the organization&#8217;s Frontegg account, and the account is the organization (247)',
+      body:`<div class="stack">${kv([
+          ['The account', owHosted()
+            ? `created as a sub-account of the service&#8217;s own account, as the hosted service creates its tenants (247)`
+            : `created as a top-level account · the organization is the account (247)`],
+          ['You', `<b>${esc(IDENTITY.handle)}</b> holds <b>owner</b> on it: an organization created on a self-managed host is created as an account whose creating user holds owner, so a fresh organization is never locked out and a single operator is never asked to administer roles (253)`],
+          ['Operators', 'derived from the account&#8217;s assigned users at every fetch and read-only on the settings form (234, 247) · what stays authored is each member&#8217;s chat addresses, keyed by user id (236a)'],
+          ['Adding a member', 'an act on the account — invite, assign, revoke, set-role on the members section — and never a commit (247, S195)'],
+          ['Identity', 'unchanged by this: one provider and one Application for the whole flywheel, and switching organization never changes who you are (233, 243)'],
+        ], 'rows')}
+        <div>${w.account ? st('success','the account will be created with you as owner') : btn('Create it with me as owner', 'data-owizaccount="1"', 'primary')}</div></div>`});
+    canNext = w.account;
+  } else if(w.step === 5){
+    const h = host(w.firstHost) || hosts()[0];
+    const def = (h && /^\//.test(h.root || '')) ? `/srv/flywheel/${w.name || 'org'}` : `~/${w.name || 'org'}`;
+    body = ctr({title:'A root on this host', desc:'a host joins by one command and never by hand; it clones the state, the blueprints and every tracked repository as bare repositories under one root the manifest names (205)',
+      body:`<div class="field"><label for="o-root">Root</label>
+          <div class="fd">the layout under it is the profile&#8217;s; a host that finds a hand-made layout refuses to start and says what differs (205)</div>
+          <input id="o-root" data-ofield="root" value="${esc(w.root)}" placeholder="${esc(def)}"></div>
+        <div class="field"><label for="o-host">First host</label>
+          <div class="fd">the hosts this computer already runs; the one you pick is registered as the first host of this organization and serves it at <span class="mono">/${esc(w.name || 'org')}/…</span> (204, 205a) · the others join later from the Hosts section</div>
+          <select id="o-host" data-ofield="firstHost">${hosts().map(x => `<option ${w.firstHost === x.id ? 'selected' : ''}>${esc(x.id)}</option>`).join('')}</select></div>
+        ${kv([
+          ['Address', `this host has one address and the organization is in the path: <span class="mono">/${esc(w.name || 'org')}/…</span> (205a)`],
+          ['Isolation', 'nothing crosses between the organizations a host runs — no lease, no id, no session, no decision number (218)'],
+          ['Checkouts', 'one checkout of each shared line for the machinery&#8217;s own merges; worktrees only for places (205)'],
+          ['Every tick', 'reconciles this root against the state; anything missing, moved or changed by hand is a decision under attention with the difference and the proposed repair (222)'],
+        ], 'rows')}`});
+  } else {
+    const r = k => w.repos[k].mode === 'create' ? 'create' : 'adopt ' + (w.repos[k].url || '—');
+    body = ctr({title:'Initialize', desc:'initialization is the machinery&#8217;s, deterministic and repeatable: every step is an effect with a proof, so running it again changes nothing, and the reconciler advances a half-finished bootstrap (204)',
+      body: w.decision
+        ? `<div class="stack">${st('pending', `decision ${w.decision} · initialize ${esc(w.name)} · approve · yes · no`)}
+            <div>The yes runs <span class="mono">flywheel init</span> and the organization&#8217;s machine walks absent → blueprints ready → state ready → connected → hosted (204). Nothing before the yes has created a repository, an installation, an account or a root.</div>
+            <div class="row">${['absent','blueprints ready','state ready','connected','hosted'].map((x,i) =>
+              badge(esc(x), w.ticked ? 'blue' : i === 0 ? 'blue' : 'grey')).join(' ')}</div>
+            <div>${answerLink(w.decision)}</div>
+            ${w.keyPlaced || owHosted() ? '' : `<div>${st('warning','the App key is not placed · the init chore waits on it under attention (149, 204)')}</div>`}
+            <div>${w.ticked ? st('success', `${esc(w.name)} is hosted · it is in the switcher and in the side navigation`) : btn('Simulate the first tick', 'data-owiztick="1"')}</div></div>`
+        : `<div class="stack">${kv([
+            ['Name', `<b>${esc(w.name)}</b> · ${owHosted() ? 'hosted' : 'self-managed'}`],
+            ['GitHub account', esc(w.gh || '—')],
+            ['state', esc(r('state'))],
+            ['blueprints', esc(r('blueprints'))],
+            ['App', owHosted() ? 'the service&#8217;s App · its key never leaves the service (207a)' : `your own App · key ${w.keyPlaced ? 'placed' : 'not placed yet'} (207, 207a)`],
+            ['Account', `a Frontegg account with ${esc(IDENTITY.handle)} as owner (247, 253)`],
+            ['Root', `<span class="mono">${esc(w.root || ('~/' + (w.name || 'org')))}</span> on ${esc(w.firstHost)} (205)`],
+            ['Template set', TEMPLATE_SET],
+          ], 'rows')}
+          <div>${btn('Raise the first-tick decision', 'data-owizraise="1"', 'primary')}</div></div>`});
+    next = 'Close';
+  }
+  const foot = `<div class="wiz-foot">${btn('Cancel','data-owizcancel="1"','link')}${w.step > 0 ? btn('Previous','data-owizprev="1"') : ''}
+    ${btn(next, 'data-owiznext="1"' + (canNext ? '' : ' disabled'), 'primary')}</div>`;
+  return crumbs([['Organizations','none'],['+ organization']])
+    + pageHead('Add an organization', 'name · GitHub · repositories · the App · the account · a root on this host, then one decision that initializes it (204, 218-222, 247)')
+    + `<div class="wiz">${nav}<div>${body}${foot}</div></div>`;
+}
+function orgFirstTick(){
+  const w = S.orgWizard, id = w.name;
+  const serving = host(w.firstHost) || hosts()[0];
+  const root = w.root || (/^\//.test(serving.root || '') ? `/srv/flywheel/${id}` : `~/${id}`);
+  ORGS[id] = {
+    name:id, what:`${owHosted() ? 'hosted' : 'self-managed'} · from zero · initialized ${TODAY} ${NOW}`, sample:true, fromZero:true,
+    members:[{id:IDENTITY.handle, name:IDENTITY.name, signin:'the provider', addresses:{}, roles:['owner'], since:TODAY.slice(5)}],
+    roles:[{id:'owner', what:'the creating user holds owner on the account (253)', members:[IDENTITY.handle]}],
+    runnerRoles:[{role:'elaboration', kind:'pane', model:'claude-fable-5-1'},{role:'construction', kind:'pane', model:'claude-fable-5-1'},{role:'machinery', kind:'pane', model:'claude-haiku-4-5'},{role:'triage', kind:'in-process', model:'claude-sonnet-5'},{role:'interpreter', kind:'in-process', model:'claude-haiku-4-5'}],
+    router:'local router', curation:'every 30s', triageCadence:'per capture', channels:[],
+    repos:[
+      {id:'state', kinds:['state'], caps:[], landing:'direct merge', merge:'merge', envFile:'the profile&#8217;s layout (C.2)', envHash:'stamped ' + TEMPLATE_SET.split(' · ')[0], claims:'no claims here'},
+      {id:'blueprints', kinds:['books'], caps:[], landing:'direct merge', merge:'merge', envFile:'flywheel/environment.yaml', envHash:'stamped ' + TEMPLATE_SET.split(' · ')[0], claims:'the claims live here'},
+    ],
+    pools:[], store:{},
+    hosts:[{id:serving.id, kind:serving.kind, platform:serving.platform, plat:serving.plat, alive:true, bound:serving.bound, last:NOW,
+      joined:TODAY.slice(5), joinedVia:'registered by init as the first host (204)', serves:true,
+      root, launcher:serving.launcher, binary:serving.binary, binaryLatest:serving.binaryLatest,
+      note:`the first host · serves ${id} at this host&#8217;s one address, /${id}/… (205a)`,
+      roles:{elaboration:{runner:'runner-pane', model:'claude-fable-5-1'}, construction:{runner:'runner-pane', model:'claude-fable-5-1'}, machinery:{runner:null, model:'claude-haiku-4-5'}},
+      agent:{on:false, runner:null, what:'no chat sink here yet'},
+      env:{provider:'devenv', repos:{state:{ok:true}, blueprints:{ok:true}}},
+      parts:[{k:'runner', pkg:'runner-pane', state:`installed ${NOW}`, cfg:{bound:String(serving.bound), login:'Claude Code'}},
+             {k:'router', pkg:'router-local', state:`installed ${NOW}`, cfg:{}}],
+      joinedSteps:[['blueprints ready','done',NOW, w.repos.blueprints.mode === 'create' ? 'created from the blueprints template' : 'adopted ' + w.repos.blueprints.url],
+        ['state ready','done',NOW, w.repos.state.mode === 'create' ? 'created with the profile&#8217;s layout' : 'adopted ' + w.repos.state.url],
+        ['connected','done',NOW, owHosted() ? 'the service&#8217;s App covers both repositories (207a)' : 'your App&#8217;s installation extended to both repositories (207)'],
+        ['account','done',NOW, `a Frontegg account with ${IDENTITY.handle} as owner (247, 253)`],
+        ['hosted','done',NOW, `registered ${serving.id} as the first host, root ${root} (204, 205)`]]}],
+    decisions:0,
+  };
+  w.ticked = true;
+  flash('success','Hosted', `${esc(id)} initialized · every step recorded its proof, so running init again changes nothing (204)`);
+}
+/* ===========================================================================
+   split panel — the catalogue for one heading, the add sheet, configure, a secret
+   =========================================================================== */
+function catalogueBody(){
+  const p = S.panel, isOrg = p.target === 'org';
+  const plat = isOrg ? ['any'] : (p.target === '__new' ? wizPlat() : host(p.target).plat);
+  const all = INDEX.filter(x => x.kind === p.kind || (isOrg && p.kinds && p.kinds.includes(x.kind)));
+  const q = (p.q || '').toLowerCase();
+  const matched = all.filter(x => !q || (x.name + ' ' + x.id + ' ' + x.enables).toLowerCase().includes(q));
+  const fits = matched.filter(x => isOrg || pkgFits(x, plat));
+  const rest = matched.filter(x => !(isOrg || pkgFits(x, plat)));
+  const already = id => {
+    if(isOrg) return org().store[id];
+    if(p.target === '__new') return (S.wizard.parts || []).find(x => x.pkg === id);
+    return partOn(host(p.target), id);
+  };
+  const card = (x, off) => {
+    const on = already(x.id);
+    return `<div class="pk ${off ? 'off' : ''}">
+      <div class="pkh"><b>${esc(x.name)}</b>${badge('v' + x.v)}${badge(x.tag, x.tag === 'shipped' ? 'blue' : 'grey')}</div>
+      <div class="pkl"><i>needs</i> ${raw(x.needs)}</div>
+      <div class="pkl"><i>enables</i> ${raw(x.enables)}</div>
+      ${off ? `<div class="pkl"><i>platform</i> ${esc(x.plat.join(' · '))} · this host is ${esc(plat.join(' · '))}</div>` : ''}
+      <div class="pka">${on
+        ? st(on.state === 'disabled' ? 'stopped' : /^adding/.test(on.state||'') ? 'pending' : 'success',
+            (isOrg ? 'in the blueprints' : 'on ' + esc(p.target === '__new' ? 'the new host' : p.target))
+            + (on.state && !/^installed/.test(on.state) ? ' · ' + esc(on.state) : ''))
+        : off ? `<span class="small">not for this platform</span>`
+        : btn(p.replaces ? 'Replace with' : 'Add', `data-sheet="${x.id}"`, 'primary')}</div></div>`;
+  };
+  return `<input class="search" id="cat-q" placeholder="Find a ${esc(p.kind)}" value="${esc(p.q || '')}">
+    ${p.replaces ? `<div class="small" style="margin-bottom:8px">this heading takes one · what you choose replaces <b>${esc(pkg(p.replaces).name)}</b>, which leaves the slot when the new one reads installed</div>` : ''}
+    ${fits.map(x => card(x, false)).join('') || `<div class="empty"><b>Nothing matches</b><div class="small">the catalogue is one heading&#8217;s kind only; there is no index across kinds (S117)</div></div>`}
+    ${isOrg ? '' : `<div class="field" style="margin-top:12px"><label><input type="checkbox" id="cat-any" ${p.any ? 'checked' : ''}> any platform</label>
+      <div class="fd">shows the rest greyed with what they need</div></div>
+      ${p.any ? rest.map(x => card(x, true)).join('') : ''}`}`;
+}
+function sheetBody(){
+  const p = S.panel, P = pkg(p.pkg), isOrg = p.target === 'org';
+  const vals = p.values || (p.values = {});
+  const fields = schemaOf(P).filter(f => !f.when || vals[f.when[0]] === f.when[1]);
+  const form = fields.map(f => {
+    if(f.kind === 'secret') return `<div class="field"><label>${esc(f.label)}</label>
+      <div class="secret"><div class="small">the page never carries the value (204, 207). Place it on ${esc(isOrg ? 'the blueprints host' : p.target === '__new' ? (S.wizard.name || 'the new host') : p.target)} and let the machinery check the path.</div>
+        <div class="cmd">op read "${esc(f.op || 'op://vault/item/field')}" | flywheel secret place --host ${esc(p.target === '__new' ? (S.wizard.name || '&lt;host&gt;') : p.target)} ${esc(f.file)}</div>
+        <div class="row">${btn('Copy', `data-copy="${esc(f.op||'')}"`)}${btn('Check', `data-sheetsecret="${f.k}"`)}
+          ${btn('I&#8217;ll place it later', `data-sheetlater="${f.k}"`, 'link')}
+          ${p.secrets && p.secrets[f.k] === true ? st('success','placed') : p.secrets && p.secrets[f.k] === 'later' ? st('warning','later · under attention after the install') : st('pending','not placed')}</div>
+      </div></div>`;
+    if(f.kind === 'select') return `<div class="field"><label for="f-${f.k}">${esc(f.label)}</label>
+      <select id="f-${f.k}" data-field="${f.k}">${f.opts.map(o => `<option ${vals[f.k] === o ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select></div>`;
+    return `<div class="field"><label for="f-${f.k}">${esc(f.label)}</label>
+      <input id="f-${f.k}" data-field="${f.k}" value="${esc(vals[f.k] || '')}" placeholder="${esc(f.ph || '')}"></div>`;
+  }).join('') || `<div class="small">this package has nothing to configure</div>`;
+  return `<div class="stack" style="margin-bottom:12px">
+      <div class="pkl"><i>needs</i> ${raw(P.needs)}</div>
+      <div class="pkl"><i>enables</i> ${raw(P.enables)}</div>
+      ${p.replaces ? `<div class="small">replaces <b>${esc(pkg(p.replaces).name)}</b> in this slot; the decision&#8217;s title carries it</div>` : ''}
+    </div>${form}
+    <div class="small">${p.mode === 'configure'
+      ? 'save is one logged response; the machinery applies it as a re-install of this package (S119)'
+      : 'nothing is installed by this form: it ends by raising one install decision in the rail, and the yes runs the install as the machinery&#8217;s effects with proofs (S118)'}</div>`;
+}
+function secretBody(){
+  const p = S.panel, P = pkg(p.pkg), f = schemaOf(P).find(x => x.k === p.key) || {file:'the secret'};
+  const where = p.target === 'willdan-cloud' ? 'the platform&#8217;s secret store on flywheel-cloud' : 'the keychain, or a sealed file under the root, on this machine';
+  return `<div class="stack">
+    <div>${st('warning', `${esc(P.name)} on ${esc(p.target)} needs ${esc(f.file)}`)}</div>
+    <div class="small">Where this host keeps its secrets: ${raw(where)}. The page never carries the value (204, 207).</div>
+    <div class="cmd">op read "${esc(f.op || 'op://vault/item/field')}" | flywheel secret place --host ${esc(p.target)} ${esc(f.file)}</div>
+    <div class="row">${btn('Copy', `data-copy="${esc(f.op||'')}"`)}${btn('Placed', `data-placed="1"`, 'primary')}</div>
+    <div class="small">"placed" is one word answered on the attention line in the plan console; the machinery checks the path and the line clears (S123). The install chore waiting on it starts as soon as the check passes.</div>
+  </div>`;
+}
+function panelHtml(){
+  const p = S.panel;
+  if(!p) return '';
+  const titles = {
+    catalogue:['Add ' + (p.kind || ''), p.target === 'org' ? 'the catalogue for this heading · organization packages only' : `filtered to ${p.target === '__new' ? 'the new host&#8217;s platform' : p.target + '&#8217;s platform'} · one heading&#8217;s kind, no index across kinds (S117)`],
+    sheet:[(p.mode === 'configure' ? 'Configure ' : 'Add ') + (pkg(p.pkg) || {}).name, p.target === 'org' ? 'the organization store' : p.target === '__new' ? 'the host you are adding' : 'on ' + p.target],
+    secret:['Place a secret', 'on ' + p.target],
+  };
+  const t = titles[p.kind && p.mode !== 'sheet' && p.mode !== 'configure' && p.mode !== 'secret' ? 'catalogue' : p.mode === 'secret' ? 'secret' : 'sheet'] || ['','' ];
+  const body = p.mode === 'catalogue' ? catalogueBody() : p.mode === 'secret' ? secretBody() : sheetBody();
+  const foot = p.mode === 'catalogue' ? '' : p.mode === 'secret' ? '' :
+    `${btn('Cancel','data-panelclose="1"','link')}${btn(p.mode === 'configure' ? 'Save' : p.target === '__new' ? 'Choose it' : p.target === 'org' ? 'Add to the blueprints' : 'Add to ' + p.target, 'data-sheetsave="1"', 'primary')}`;
+  return `<aside class="split" id="split" aria-label="Side panel">
+    <div class="split-head"><div class="ct"><h2>${esc(t[0])}</h2><div class="small">${raw(t[1])}</div></div>
+      <button class="btn link sm" data-panelclose="1" aria-label="Close panel">&#10005;</button></div>
+    <div class="split-body">${body}</div>${foot ? `<div class="split-foot">${foot}</div>` : ''}</aside>`;
+}
+
+/* ===========================================================================
+   a settings form in the split panel — the manifest as a form (S155)
+   =========================================================================== */
+function openForm(o){ S.panel = {mode:'form', ...o, values:Object.fromEntries((o.fields||[]).map(f => [f.k, f.value == null ? '' : f.value]))}; render(); }
+function formPanel(){
+  const p = S.panel;
+  const body = (p.fields || []).map(f => {
+    const v = p.values[f.k];
+    if(f.kind === 'select') return `<div class="field"><label for="f-${f.k}">${esc(f.label)}</label>${f.fd ? `<div class="fd">${raw(f.fd)}</div>` : ''}
+      <select id="f-${f.k}" data-field="${f.k}">${f.opts.map(o => `<option ${v === o ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select></div>`;
+    if(f.kind === 'checks') return `<div class="field"><label>${esc(f.label)}</label>${f.fd ? `<div class="fd">${raw(f.fd)}</div>` : ''}
+      ${f.opts.map(o => `<label class="radio"><input type="checkbox" data-check="${f.k}" value="${esc(o)}" ${String(v).split(',').includes(o) ? 'checked' : ''}> ${esc(o)}</label>`).join('')}</div>`;
+    if(f.kind === 'static') return `<div class="field"><label>${esc(f.label)}</label><div class="small">${raw(f.fd || '')}</div><div>${raw(v)}</div></div>`;
+    return `<div class="field"><label for="f-${f.k}">${esc(f.label)}</label>${f.fd ? `<div class="fd">${raw(f.fd)}</div>` : ''}
+      <input id="f-${f.k}" data-field="${f.k}" value="${esc(v)}" placeholder="${esc(f.ph || '')}"></div>`;
+  }).join('');
+  return `<aside class="split" id="split" aria-label="Side panel">
+    <div class="split-head"><div class="ct"><h2>${esc(p.title)}</h2><div class="small">${raw(p.desc || '')}</div></div>
+      <button class="btn link sm" data-panelclose="1" aria-label="Close panel">&#10005;</button></div>
+    <div class="split-body">${body}<div class="small">${raw(p.note || 'save is one configure-organization response for the whole form; the machinery applies it as one manifest commit and the page re-reads (S155)')}</div></div>
+    <div class="split-foot">${btn('Cancel','data-panelclose="1"','link')}${btn(p.saveLabel || 'Save','data-formsave="1"','primary')}</div></aside>`;
+}
+
+/* ===========================================================================
+   render
+   =========================================================================== */
+function flashbarHtml(){
+  if(!S.flashes.length) return '';
+  return `<div class="flashbar">${S.flashes.map(f => `<div class="flash ${f.type}"><div><b>${raw(f.header)}</b><div>${raw(f.text)}</div></div>
+    <button class="fx" data-dismiss="${f.id}" aria-label="Dismiss">&#10005;</button></div>`).join('')}</div>`;
+}
+function menuHtml(){
+  if(S.menu === 'org'){
+    return `<div class="menu left" id="menu"><h4>Organizations</h4>${memberOrgs().map(id =>
+      `<button data-org="${id}" ${id === S.org ? 'aria-current="true"' : ''}>${esc(ORGS[id].name)}<span class="mi-sub">${esc(ORGS[id].what)}</span></button>`).join('')}
+      <hr><div class="small" style="padding:4px 10px">the switcher lists the organizations the serving host has a root for (218); one whose operators list does not carry you is marked "not a member" — whether such an organization is hidden or greyed is open (S191).</div></div>`;
+  }
+  if(S.menu === 'acct'){
+    const o = org();
+    const me = o.members.find(m => m.id === IDENTITY.handle);
+    return `<div class="menu" id="menu"><h4>Who you are</h4>
+      <div style="padding:4px 10px" class="small"><b>${esc(IDENTITY.handle)}</b> · ${esc(IDENTITY.kind)}<br>${esc(IDENTITY.how)}<br>served by ${esc(IDENTITY.servingHost)}</div>
+      <hr><h4>Your sinks here</h4>
+      <div style="padding:4px 10px" class="small">page · ${esc(IDENTITY.servingHost)} · mark ${NOW}${me ? Object.entries(me.addresses).map(([k,v]) => `<br>${esc(k)} <span class="mono">${esc(v)}</span> · ${k === 'discord' ? 'presented by studio' : 'undelivered · no host presents Slack'}`).join('') : ''}</div>
+      <hr><button data-page="overview">Settings</button><button data-host="${hosts()[0].id}">Hosts</button><button data-page="packages">Organization store</button>
+      <hr><button data-signout="1">Sign out</button></div>`;
+  }
+  return '';
+}
+function render(){
+  document.getElementById('sidenav').innerHTML = sidenavHtml();
+  const page = S.addorg ? pageAddOrg() : S.addhost ? pageAddHost() : S.host ? pageHost()
+    : S.page === 'repositories' ? pageRepos() : S.page === 'members' ? pageMembers()
+    : S.page === 'sinks' ? pageSinks() : S.page === 'adapters' ? pageAdapters()
+    : S.page === 'packages' ? pagePackages() : S.page === 'pools' ? pagePools() : pageOverview();
+  document.getElementById('main').innerHTML = `<div class="main-inner">${flashbarHtml()}${page}</div>`;
+  document.getElementById('orgsel-name').textContent = org().name;
+  document.getElementById('acct-name').textContent = IDENTITY.handle;
+  const layout = document.getElementById('layout');
+  const old = document.getElementById('split'); if(old) old.remove();
+  const oldMenu = document.getElementById('menu'); if(oldMenu) oldMenu.remove();
+  const ph = S.panel ? (S.panel.mode === 'form' ? formPanel() : panelHtml()) : '';
+  layout.classList.toggle('panel-open', !!ph);
+  if(ph) layout.insertAdjacentHTML('beforeend', ph);
+  const m = menuHtml(); if(m) document.body.insertAdjacentHTML('beforeend', m);
+  document.body.classList.toggle('nav-open', S.navOpen);
+}
+
+/* ===========================================================================
+   events
+   =========================================================================== */
+const closePanel = () => { S.panel = null; };
+function openCatalogue(target, kind, replaces){
+  S.panel = {mode:'catalogue', target, kind, replaces:replaces || null, q:'', any:false,
+    kinds: target === 'org' ? (STORE_HEADINGS.find(h => h[1].includes(kind)) || [null,[kind]])[1] : null};
+  render();
+}
+function openSheet(target, pkgId, mode){
+  const P = pkg(pkgId); if(!P) return;
+  const existing = target === 'org' ? org().store[pkgId] : target === '__new' ? (S.wizard.parts||[]).find(x => x.pkg === pkgId) : partOn(host(target), pkgId);
+  const values = {};
+  schemaOf(P).forEach(f => { if(f.kind !== 'secret') values[f.k] = (existing && existing.cfg && existing.cfg[f.k]) || (f.kind === 'select' ? f.opts[0] : ''); });
+  const secrets = {};
+  if(mode === 'configure' && existing && existing.secrets) Object.entries(existing.secrets).forEach(([k,v]) => { if(v) secrets[k] = true; });
+  S.panel = {mode: mode || 'sheet', target, pkg:pkgId, values, secrets, replaces: (S.panel && S.panel.replaces) || null};
+  render();
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-org],[data-page],[data-host],[data-addhost],[data-crumb],[data-catalogue],[data-sheet],[data-configure],[data-part],[data-agent],[data-store],[data-rebuild],[data-upgrade],[data-secret],[data-placed],[data-panelclose],[data-sheetsave],[data-sheetsecret],[data-sheetlater],[data-copy],[data-dismiss],[data-edit],[data-editpool],[data-add-member],[data-add-role],[data-rm-member],[data-addrepo],[data-addsink],[data-formsave],[data-wiznext],[data-wizprev],[data-wizcancel],[data-wizprov],[data-wizsecret],[data-wizenrol],[data-wizjoin],[data-wizrm],[data-takeover],[data-plan],[data-signout],[data-env],[data-addorg],[data-owiznext],[data-owizprev],[data-owizcancel],[data-owizkey],[data-owizaccount],[data-owizraise],[data-owiztick],[data-retireorg],[data-wizadv],[data-wizpool]');
+  if(!t){ if(S.menu){ S.menu = null; render(); } return; }
+  const d = t.dataset;
+  if(t.tagName === 'A' && !d.crumb && !d.host && !d.secret) return;
+  e.preventDefault();
+  if(S.menu && !d.org && !d.page && !d.host && !d.signout) S.menu = null;
+
+  if(d.org){ S.org = d.org; S.host = null; S.addhost = null; S.addorg = null; S.page = 'overview'; S.panel = null; S.menu = null; S.wizard = null; }
+  else if(d.page){ S.page = d.page; S.host = null; S.addhost = null; S.addorg = null; S.menu = null; S.navOpen = false; }
+  else if(d.host){ S.host = d.host; S.addhost = null; S.addorg = null; S.menu = null; S.navOpen = false; }
+  else if(d.addhost){ S.addhost = true; S.host = null; S.addorg = null; S.wizard = S.wizard || newWizard(); S.navOpen = false; }
+  else if(d.addorg){ S.addorg = true; S.host = null; S.addhost = null; S.orgWizard = S.orgWizard || newOrgWizard(); S.navOpen = false; }
+  else if(d.crumb === 'org'){ S.host = null; S.addhost = null; S.page = 'overview'; }
+  else if(d.crumb === 'none'){ /* the hosts crumb is a place, not a page */ }
+  else if(d.catalogue){ const [target, kind, rep] = d.catalogue.split('|'); openCatalogue(target, kind, rep && rep.replace('replace:','')); return; }
+  else if(d.sheet){ openSheet(S.panel.target, d.sheet, 'sheet'); return; }
+  else if(d.configure){ const [target, id] = d.configure.split('|'); openSheet(target, id, 'configure'); return; }
+  else if(d.secret){ const [hid, id] = d.secret.split('|'); S.panel = {mode:'secret', target:hid, pkg:id, key:(secretFields(pkg(id))[0]||{}).k}; }
+  else if(d.placed){ const p = S.panel, h = host(p.target), part = partOn(h, p.pkg);
+    part.state = 'installing · ' + (part.wi || 'the install chore'); part.secrets = {...(part.secrets||{}), [p.key]:true};
+    logged(`placed ${(schemaOf(pkg(p.pkg)).find(f => f.k === p.key)||{}).file} on ${p.target}`, 'the machinery checked the path and the chore it held is running');
+    closePanel(); }
+  else if(d.panelclose){ closePanel(); }
+  else if(d.sheetsecret){ S.panel.secrets = {...S.panel.secrets, [d.sheetsecret]:true}; }
+  else if(d.sheetlater){ S.panel.secrets = {...S.panel.secrets, [d.sheetlater]:'later'}; }
+  else if(d.copy){ navigator.clipboard && navigator.clipboard.writeText(d.copy).catch(() => {}); flash('info','Copied','the place-it command is on your clipboard · run it on the host; the page never carries the value'); }
+  else if(d.sheetsave){ sheetSave(); }
+  else if(d.formsave){ const p = S.panel; if(p.onSave) p.onSave(p.values); closePanel(); }
+  else if(d.dismiss){ S.flashes = S.flashes.filter(f => f.id !== d.dismiss); }
+  else if(d.part){ partAction(d.part); }
+  else if(d.agent){ const h = host(d.agent); h.agent.on = !h.agent.on;
+    logged(`${h.agent.on ? 'enable' : 'disable'} the agent on ${h.id}`, 'the host reads the manifest on its next tick'); }
+  else if(d.store){ storeAction(d.store); }
+  else if(d.rebuild){ const p = org().pools.find(x => x.id === d.rebuild);
+    const n = raiseDecision('chore', `rebuild the image for pool ${p.id}`, 'the chore runs the build and the pool provisions no host until the platform lists the new tag (S175)');
+    p.imageState = 'rebuilding'; p.imageWhy = `rebuild raised as decision ${n} · building once it is answered`; }
+  else if(d.upgrade){ const h = host(d.upgrade);
+    raiseDecision('chore', `upgrade the flywheel binary on ${h.id} to ${h.binaryLatest}`, 'the yes runs the chore and the launcher restarts the host'); }
+  else if(d.edit){ editForm(d.edit); return; }
+  else if(d.editpool){ poolForm(d.editpool); return; }
+  else if(d.addMember){ addMemberForm(); return; }
+  else if(d.addRole){ addRoleForm(); return; }
+  else if(d.rmMember){ removeMember(d.rmMember); }
+  else if(d.addrepo){ raiseDecision('baseline', 'add a repository to ' + org().name, 'a yes creates the repository and its baseline before the first read arrives (S72)'); }
+  else if(d.addsink){ openCatalogue(IDENTITY.servingHost, 'chat sink'); return; }
+  else if(d.takeover){ const h = host(d.takeover);
+    logged(`takeover on ${h.id}`, 'its places are released and re-made from their lines on an alive host (S50)'); }
+  else if(d.plan){ window.location.href = 'rail-and-board.html?setup=1&host=' + d.plan.split(':')[1]; return; }
+  else if(d.signout){ S.menu = null; flash('info','Sign-out','sign-out ends the page&#8217;s session with the serving host&#8217;s sign-in kind and records nothing (S153) · the hosts keep running'); }
+  else if(d.env){ flash('info','Environment provider', 'the console changes no provider: a provider is a host&#8217;s declaration and is changed where the host is declared (S174, S155)'); }
+  else if(d.wizadv){ S.wizard.advanced = !S.wizard.advanced; }
+  else if(d.wizpool){ S.addhost = null; S.wizard = null; S.page = 'pools'; poolForm('new'); return; }
+  else if(d.wizrm){ S.wizard.parts = S.wizard.parts.filter(x => x.pkg !== d.wizrm); }
+  else if(d.wiznext){ wizNext(); }
+  else if(d.wizprev){ S.wizard.step = Math.max(0, S.wizard.step - 1); }
+  else if(d.wizcancel){ S.wizard = null; S.addhost = null; S.host = null; S.page = 'overview'; }
+  else if(d.wizprov){ S.wizard.provisioned = true; }
+  else if(d.wizsecret){ S.wizard.secrets[d.wizsecret] = true; }
+  else if(d.wizenrol){ S.wizard.decision = raiseDecision('host-enrol', `enrol host ${S.wizard.name}`, 'the yes hands back a one-time token that expires in 24h'); }
+  else if(d.wizjoin){ wizJoin(); }
+  else if(d.owiznext){ orgWizNext(); }
+  else if(d.owizprev){ S.orgWizard.step = Math.max(0, S.orgWizard.step - 1); }
+  else if(d.owizcancel){ S.orgWizard = null; S.addorg = null; S.page = 'overview'; }
+  else if(d.owizkey){ S.orgWizard.keyPlaced = true;
+    flash('success','Placed', 'the host answered that <span class="mono">github-app.pem</span> is present · the page never carried the value (204, 207)'); }
+  else if(d.owizaccount){ S.orgWizard.account = true; }
+  else if(d.owizraise){ const w = S.orgWizard;
+    w.decision = raiseDecision('organization-init', `initialize ${w.name}`,
+      'the yes runs flywheel init as effects with proofs; nothing is created before it (204)'); }
+  else if(d.owiztick){ orgFirstTick(); }
+  else if(d.retireorg){ raiseDecision('organization-retire', `retire ${org().name}`,
+    'the yes ends its sessions, removes its places, archives its state and leaves its git repositories on disk; its numbers are never reused (15, 221)'); }
+  render();
+});
+document.addEventListener('input', e => {
+  const f = e.target.dataset.field;
+  if(f && S.panel){ S.panel.values[f] = e.target.value; return; }
+  if(e.target.dataset.check && S.panel){
+    const k = e.target.dataset.check;
+    const on = Array.from(document.querySelectorAll(`[data-check="${k}"]:checked`)).map(x => x.value);
+    S.panel.values[k] = on.join(','); return;
+  }
+  if(e.target.id === 'cat-q' && S.panel){ S.panel.q = e.target.value; const at = e.target.selectionStart; render();
+    const el = document.getElementById('cat-q'); if(el){ el.focus(); el.setSelectionRange(at, at); } return; }
+  const of_ = e.target.dataset.ofield;
+  if(of_ && S.orgWizard){
+    const at = e.target.selectionStart, id = e.target.id;
+    if(of_.startsWith('repo.')) S.orgWizard.repos[of_.slice(5)].url = e.target.value;
+    else S.orgWizard[of_] = e.target.value;
+    render();
+    const el = document.getElementById(id);
+    if(el && el.setSelectionRange){ el.focus(); el.setSelectionRange(at, at); } else if(el) el.focus();
+    return;
+  }
+  if(e.target.id === 'w-name'){ S.wizard.name = e.target.value; const at = e.target.selectionStart; render();
+    const el = document.getElementById('w-name'); if(el){ el.focus(); el.setSelectionRange(at, at); } return; }
+});
+document.addEventListener('change', e => {
+  if(e.target.id === 'cat-any' && S.panel){ S.panel.any = e.target.checked; render(); }
+  if(e.target.id === 'w-adopt'){ S.wizard.adopt = e.target.checked; S.wizard.platform = null; render(); }
+  if(e.target.name === 'w-plat'){ S.wizard.platform = e.target.value; S.wizard.journey = null; render(); }
+  if(e.target.name === 'w-journey'){ pickJourney(e.target.value); render(); }
+  if(e.target.name === 'o-tier'){ S.orgWizard.tier = e.target.value; render(); }
+  if(e.target.name === 'o-gh'){ S.orgWizard.gh = e.target.value; render(); }
+  if(e.target.name === 'o-state'){ S.orgWizard.repos.state.mode = e.target.value; render(); }
+  if(e.target.name === 'o-blueprints'){ S.orgWizard.repos.blueprints.mode = e.target.value; render(); }
+  if(e.target.dataset.ofield === 'firstHost'){ S.orgWizard.firstHost = e.target.value; render(); }
+});
+document.getElementById('ham').addEventListener('click', () => { S.navOpen = !S.navOpen; render(); });
+document.getElementById('orgsel').addEventListener('click', e => { e.stopPropagation(); S.menu = S.menu === 'org' ? null : 'org'; render(); });
+document.getElementById('acct').addEventListener('click', e => { e.stopPropagation(); S.menu = S.menu === 'acct' ? null : 'acct'; render(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape'){ if(S.panel){ closePanel(); render(); } else if(S.menu){ S.menu = null; render(); } } });
+
+/* ---- the actions themselves ---- */
+function sheetSave(){
+  const p = S.panel, P = pkg(p.pkg);
+  const secrets = {}; secretFields(P).forEach(f => { secrets[f.k] = p.secrets[f.k] === true; });
+  if(p.mode === 'configure'){
+    if(p.target === 'org'){ org().store[p.pkg].cfg = {...p.values}; }
+    else { const part = partOn(host(p.target), p.pkg); part.cfg = {...p.values}; part.secrets = {...(part.secrets||{}), ...secrets}; }
+    logged(`configure ${P.name} on ${p.target === 'org' ? 'the blueprints' : p.target}`, 'applied as a re-install of this package; a changed secret is placed again through "place it" (S119)');
+    S.lit = p.target + '|' + p.pkg; closePanel(); return;
+  }
+  if(p.target === '__new'){
+    S.wizard.parts.push({pkg:p.pkg, cfg:{...p.values}});
+    flash('success','Chosen', `${esc(P.name)} joins the new host · nothing is installed until it joins`);
+    closePanel(); return;
+  }
+  const later = secretFields(P).some(f => p.secrets[f.k] === 'later');
+  const title = p.target === 'org'
+    ? `install ${P.name} in the blueprints`
+    : `install ${P.name} on ${p.target}${p.replaces ? ` · replaces ${pkg(p.replaces).name}` : ''}`;
+  const n = raiseDecision('package-install', title, later ? 'a secret was left for later, so the slot reads "needs a secret" after the yes' : '');
+  if(p.target === 'org') org().store[p.pkg] = {state:`adding, decision ${n}`, decision:n, cfg:{...p.values}};
+  else host(p.target).parts.push({k:P.kind, pkg:p.pkg, state:`adding · decision ${n}`, decision:n, cfg:{...p.values}, secrets, replaces:p.replaces});
+  S.lit = p.target + '|' + p.pkg;
+  closePanel();
+}
+function partAction(spec){
+  const [act, hid, id] = spec.split('|');
+  const h = host(hid), part = partOn(h, id), P = pkg(id);
+  if(act === 'remove'){ h.parts = h.parts.filter(x => x !== part);
+    logged(`remove ${P.name} from ${hid}`, 'what it ran ends; its records stay (229)'); return; }
+  part.state = act === 'disable' ? 'disabled' : `installed ${NOW}`;
+  if(act === 'disable') part.why = `turned off ${NOW}`; else delete part.why;
+  logged(`${act} ${P.name} on ${hid}`, 'one logged response · the host reads it on its next tick');
+}
+function storeAction(spec){
+  const [act, id] = spec.split('|'), P = pkg(id);
+  if(act === 'retire'){ org().store[id].state = `retired ${NOW}`; logged(`retire ${P.name} from the blueprints`, 'every host stops reading it on its next tick'); }
+  else { org().store[id].state = `installed ${NOW} · restored`; logged(`restore ${P.name} in the blueprints`, 'every host reads it on its next tick'); }
+  S.lit = 'org|' + id;
+}
+function removeMember(id){
+  if(id === IDENTITY.handle){ flash('error','Refused', 'a save that would remove the saving identity from the operators list is refused inline (S155)'); return; }
+  const o = org(); o.members = o.members.filter(m => m.id !== id);
+  o.roles.forEach(r => r.members = r.members.filter(m => m !== id));
+  logged(`operators · remove ${id}`, 'their sinks are removed in the same write as the entry (S168); a response from them is refused before any record is written (S165)');
+}
+function editForm(spec){
+  const [what, id] = spec.split('|'), o = org();
+  if(what === 'profile') return openForm({title:'Organization profile', desc:'the manifest as a form (S155)',
+    fields:[{k:'what', label:'What it is', value:o.what},
+      {k:'router', label:'Router', kind:'select', opts:['local router','private-network router','platform router','local router · private-network router on the cloud host'], value:o.router},
+      {k:'curation', label:'Curation cadence', kind:'select', opts:['every 30s','every 5m','on demand'], value:o.curation},
+      {k:'triage', label:'Triage cadence', kind:'select', opts:['per capture','every 5m','hourly','on demand'], value:o.triageCadence},
+      {k:'signin', label:'Sign-in', kind:'static', value:'GitHub · the serving host&#8217;s setting', fd:'a host&#8217;s declaration is changed on hosts, not here (S155)'}],
+    onSave(v){ o.what = v.what; o.router = v.router; o.curation = v.curation; o.triageCadence = v.triage;
+      logged(`settings · router ${v.router} · curation ${v.curation} · triage ${v.triage}`); }});
+  if(what === 'roles') return openForm({title:'Runner defaults per role', desc:'what a session of each role runs on when a host declares nothing of its own (173)',
+    fields:o.runnerRoles.map(r => ({k:r.role, label:r.role, kind:'select', opts:MODELS, value:r.model})),
+    onSave(v){ o.runnerRoles.forEach(r => { r.model = v[r.role] || r.model; });
+      logged('settings · defaults per role ' + o.runnerRoles.map(r => `${r.role} ${r.model}`).join(' · ')); }});
+  if(what === 'repo'){ const r = o.repos.find(x => x.id === id);
+    return openForm({title:`Repository ${r.id}`, desc:'landing policy and item merge · the environment declaration is the repository&#8217;s own file and is not edited here (S174)',
+      fields:[{k:'landing', label:'Landing', kind:'select', opts:['direct merge','pull request'], value:r.landing},
+        {k:'merge', label:'Item merge', kind:'select', opts:['squash','merge','rebase'], value:r.merge},
+        {k:'env', label:'Environment declaration', kind:'static', value:`<span class="mono">${esc(r.envFile)}</span>`, fd:'derived from the repository (238)'}],
+      onSave(v){ r.landing = v.landing; r.merge = v.merge; logged(`settings · ${r.id} landing ${v.landing} · item merge ${v.merge}`); }}); }
+  if(what === 'member'){ const m = o.members.find(x => x.id === id);
+    return openForm({title:`Operator ${m.id}`, desc:'each address is one chat sink of its own, with its own mark (236a) · the sinks are added and removed in the same write as the entry (S168)',
+      fields:[{k:'discord', label:'Discord address', value:m.addresses.discord || '', ph:'@name'},
+        {k:'slack', label:'Slack address', value:m.addresses.slack || '', ph:'U0…'},
+        {k:'roles', label:'Roles', kind:'checks', opts:o.roles.map(r => r.id), value:m.roles.join(',')}],
+      onSave(v){ m.addresses = {}; if(v.discord) m.addresses.discord = v.discord; if(v.slack) m.addresses.slack = v.slack;
+        m.roles = String(v.roles || '').split(',').filter(Boolean);
+        o.roles.forEach(r => { const has = m.roles.includes(r.id); r.members = r.members.filter(x => x !== m.id); if(has) r.members.push(m.id); });
+        logged(`operators · ${m.id} addresses ${Object.entries(m.addresses).map(([k,x]) => k + ' ' + x).join(' · ') || 'none'} · roles ${m.roles.join(' ') || 'none'}`); }}); }
+  if(what === 'role'){ const r = o.roles.find(x => x.id === id);
+    return openForm({title:`Role ${r.id}`, desc:'a role is a list of members (237); a decision owned by it is filtered in by "mine" for each of them (S171)',
+      fields:[{k:'members', label:'Members', kind:'checks', opts:o.members.map(m => m.id), value:r.members.join(',')}],
+      onSave(v){ r.members = String(v.members || '').split(',').filter(Boolean);
+        o.members.forEach(m => { m.roles = m.roles.filter(x => x !== r.id); if(r.members.includes(m.id)) m.roles.push(r.id); });
+        logged(`settings · role ${r.id} · ${r.members.join(' ') || 'nobody'}`); }}); }
+}
+function poolForm(id){
+  const o = org();
+  if(id === 'new') return openForm({title:'Declare a pool', desc:'the pool the machinery adds hosts to while drain is the limit (240, 242)',
+    fields:[{k:'name', label:'Name', ph:'willdan-pool'},{k:'platform', label:'Platform', kind:'select', opts:['flywheel-cloud'], value:'flywheel-cloud'},
+      {k:'bound', label:'Bound · hosts', value:'8'},{k:'hostBound', label:'Sessions per host', value:'2'},
+      {k:'idle', label:'Idle-retire', kind:'select', opts:['15m','30m','1h'], value:'30m'},{k:'cost', label:'Cost ceiling', value:'$40/day'}],
+    onSave(v){ o.pools.push({id:v.name || 'pool', platform:v.platform, image:'building', imageState:'behind', imageWhy:'no image yet · built from the declarations of every repository it covers (239)',
+        bound:+v.bound || 1, hostBound:+v.hostBound || 1, live:0, idleRetire:v.idle, cost:'ceiling ' + v.cost + ' · today $0', covers:o.repos.map(r => r.id).join(' · ')});
+      logged(`settings · pool ${v.name} · bound ${v.bound} · idle-retire ${v.idle} · ceiling ${v.cost}`); }});
+  const p = o.pools.find(x => x.id === id);
+  return openForm({title:`Pool ${p.id}`, desc:'bound, cost and retire time are the manifest&#8217;s and are changed here; the machinery adds and retires hosts within them (S155, S176)',
+    fields:[{k:'bound', label:'Bound · hosts', value:String(p.bound)},
+      {k:'hostBound', label:'Sessions per host', value:String(p.hostBound)},
+      {k:'idle', label:'Idle-retire', kind:'select', opts:['15m','30m','1h'], value:p.idleRetire},
+      {k:'cost', label:'Cost ceiling', value:p.cost.replace(/^ceiling /,'').split(' · ')[0]},
+      {k:'image', label:'Image', kind:'static', value:`<span class="mono">${esc(p.image)}</span>`, fd:'built from the declarations of every repository it covers · rebuilt as a chore (239, S175)'}],
+    onSave(v){ p.bound = +v.bound || p.bound; p.hostBound = +v.hostBound || p.hostBound; p.idleRetire = v.idle;
+      p.cost = 'ceiling ' + v.cost + ' · today $9';
+      logged(`settings · pool ${p.id} · bound ${p.bound} · idle-retire ${p.idleRetire} · ${p.cost}`); }});
+}
+function addMemberForm(){
+  const o = org();
+  openForm({title:'Add an operator', desc:'the operators list decides who may respond in this organization (S165); the identity is a GitHub username (234)',
+    saveLabel:'Add',
+    fields:[{k:'id', label:'GitHub username', ph:'rhea'},{k:'name', label:'Name', ph:'Rhea Okonkwo'},
+      {k:'discord', label:'Discord address', ph:'@name'},{k:'slack', label:'Slack address', ph:'U0…'},
+      {k:'roles', label:'Roles', kind:'checks', opts:o.roles.map(r => r.id), value:''}],
+    onSave(v){ if(!v.id) return;
+      const addresses = {}; if(v.discord) addresses.discord = v.discord; if(v.slack) addresses.slack = v.slack;
+      const roles = String(v.roles || '').split(',').filter(Boolean);
+      o.members.push({id:v.id, name:v.name || v.id, signin:'GitHub', addresses, roles, since:TODAY.slice(5)});
+      roles.forEach(r => (o.roles.find(x => x.id === r) || {members:[]}).members.push(v.id));
+      logged(`operators · add ${v.id} · ${Object.keys(addresses).join(' · ') || 'no address'}`, 'their page sink and one chat sink per address are added in the same write (S168)'); }});
+}
+function addRoleForm(){
+  const o = org();
+  openForm({title:'Add a role', desc:'a role the manifest names may own a decision (237)', saveLabel:'Add',
+    fields:[{k:'id', label:'Role', ph:'construction'},{k:'what', label:'What it owns', ph:'unit and proposal decisions'},
+      {k:'members', label:'Members', kind:'checks', opts:o.members.map(m => m.id), value:''}],
+    onSave(v){ if(!v.id) return;
+      const members = String(v.members || '').split(',').filter(Boolean);
+      o.roles.push({id:v.id, what:v.what || 'named in the manifest', members});
+      members.forEach(m => (o.members.find(x => x.id === m) || {roles:[]}).roles.push(v.id));
+      logged(`settings · role ${v.id} · ${members.join(' ') || 'nobody'}`); }});
+}
+function wizNext(){
+  const w = S.wizard;
+  if(w.step === WIZ_STEPS.length - 1){ S.addhost = null; S.host = w.joined ? w.name : null; S.page = 'overview'; S.wizard = w.joined ? null : w; return; }
+  w.step++;
+  if(w.step === 3 && w.adopt) w.step = 4;
+  if(w.step === 2 && w.adopt) w.step = 4;
+}
+function orgWizNext(){
+  const w = S.orgWizard;
+  if(w.step === ORG_WIZ_STEPS.length - 1){
+    S.addorg = null;
+    if(w.ticked){ S.org = w.name; S.page = 'overview'; S.orgWizard = null; }
+    return;
+  }
+  w.step++;
+}
+function wizJoin(){
+  const w = S.wizard, o = org();
+  const parts = w.parts.map(p => ({k:pkg(p.pkg).kind, pkg:p.pkg, state:secretFields(pkg(p.pkg)).some(f => !w.secrets[pkg(p.pkg).id + '|' + f.k]) ? 'needs a secret' : `installed ${NOW}`, cfg:p.cfg, secrets:{}}));
+  const plat = w.adopt ? ['machine','macos','herdr'] : (PLATFORMS.find(x => x[0] === w.platform) || [])[3] || ['any'];
+  const bound = w.adopt ? 2 : (PLATFORMS.find(x => x[0] === w.platform) || [])[4] || 0;
+  o.hosts.push({id:w.name, kind: w.adopt ? 'adopted host' : w.platform === 'laptop' ? 'laptop' : 'cloud',
+    platform: w.adopt ? 'read at join' : (PLATFORMS.find(x => x[0] === w.platform) || [])[1], plat, alive:true, bound, last:NOW,
+    joined:TODAY.slice(5), joinedVia: w.adopt ? 'adopt existing' : (PLATFORMS.find(x => x[0] === w.platform)||[])[1],
+    root:`/srv/flywheel/${o.name}`, launcher:'systemd · flywheel.service', binary:'0.9.4', binaryLatest:'0.9.4',
+    note:`joined ${NOW} with the token from decision ${w.decision}`,
+    roles:{elaboration:{runner:null, model:'claude-sonnet-5'}, construction:{runner:null, model:'claude-fable-5-1'}, machinery:{runner:null, model:'claude-haiku-4-5'}},
+    agent:{on:parts.some(p => p.k === 'chat sink'), runner:null, what:'the binary&#8217;s interpreter job'},
+    env:{provider: w.platform === 'laptop' ? 'devenv' : 'image', repos:Object.fromEntries(o.repos.map(r => [r.id, {ok:true}]))},
+    parts,
+    joinedSteps:[['platform','done',NOW, w.adopt ? 'read at join' : (PLATFORMS.find(x => x[0] === w.platform)||[])[1]],
+      ['provision','done',NOW, w.adopt ? 'skipped · adopt existing' : 'ran from ' + IDENTITY.servingHost + ' with your own credentials, read at run time and never stored'],
+      ['hand over secrets','done',NOW, `${Object.keys(w.secrets).length} placed · the rest wait under attention`],
+      ['enrol','done',NOW, `decision ${w.decision} · one-time token · expires in 24h · used once`],
+      ['join','done',NOW,'read the manifest and installed the parts you chose'],
+      ['alive','done',NOW,'first heartbeat as host/' + w.name]]});
+  w.joined = true;
+  flash('success','Alive', `${esc(w.name)} joined and is alive · its row is in Hosts`);
+}
+
+/* ---- review switches ---- */
+(function init(){
+  const q = new URLSearchParams(location.search);
+  if(q.get('theme')) document.documentElement.dataset.theme = q.get('theme');
+  if(q.get('org') && ORGS[q.get('org')]) S.org = q.get('org');
+  if(q.get('page')) S.page = q.get('page');
+  if(q.get('host') && host(q.get('host'))) S.host = q.get('host');
+  if(q.get('addhost')){ S.addhost = true; S.wizard = newWizard(); }
+  if(q.get('addorg')){ S.addorg = true; S.orgWizard = newOrgWizard(); if(q.get('ostep')) S.orgWizard.step = +q.get('ostep'); }
+  if(q.get('panel')) S.panel = {mode:'catalogue', target:S.host || 'studio', kind:'chat sink', q:'', any:false};
+  if(q.get('flash')) flash('info','Decision 425 raised','install Slack on studio · kind package-install · nothing is installed until it is answered · ' + answerLink(425));
+  render();
+})();
+</script>
+</body>
+</html>

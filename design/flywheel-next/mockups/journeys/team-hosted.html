@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--
+  Journey - a team moving to the hosted tier. Six screens, one at a time, the stepper across the top,
+  and the exact promise stated on every screen. Drawn in rail-and-board.html's visual language.
+
+  Source: ../../proposals/security.md as revised - section 5 "Customer journeys", second journey;
+  section 2 "The warm cache"; section 4 Design A, the recommended default for this tier. Clauses:
+  256 (everything kept between ticks sealed under a key naming one organization, inside stores whose
+  own keys are per volume, per queue and per table), 257 (unwrapped only for a tick), 258 (eviction),
+  259 (a role per organization per tick), 260 (fail closed), 261 (stated on the settings form),
+  262 (the sparse read set), 263 (raw material only on the operator's own machine or a single-
+  organization machine), 264 (code only on a single-organization machine, destroyed at retire),
+  265 (envelopes on GitHub are a declaration, never the default). Requirements: 239-241 (the image,
+  the pool, one organization per host), 247 and 253 (the account is the organization on this tier;
+  the creating user holds owner), 204 (init as effects with proofs).
+
+  Sign-in as the revised journeys state it: the hosted tier's identity provider here; a machine of
+  the operator's own signs in with GitHub's device flow. The repositories on GitHub are plaintext
+  under GitHub's key, and the page says so rather than promising ciphertext.
+
+  Invented and marked as such: decision number 432, the three seeded members and their addresses
+  (from rail-and-board's seed), the pool's numbers, and the wording of every control.
+
+  Review switches: ?screen=1..6, ?theme=dark|light.
+-->
+<meta charset="utf-8">
+<title>A team on the hosted tier</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#EEF1F4; --surface:#FFFFFF; --surface2:#F6F8FA; --ink:#16202A; --ink2:#4A5763; --ink3:#7A8794;
+  --line:#D5DBE1; --line2:#E4E8EC; --accent:#0B6E79; --accent-ink:#FFFFFF; --accent-soft:#D9EEF0; --accent-hatch:rgba(11,110,121,.10);
+  --ok:#2E8B57; --warn:#B7791F; --crit:#B3362B; --lit:#FFF3C4; --lit-line:#E5C34A;
+  --shadow:0 10px 30px rgba(22,32,42,.16);
+  --sans:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#12171C; --surface:#1A2128; --surface2:#20282F; --ink:#E6EBEF; --ink2:#A9B4BE; --ink3:#74818C;
+  --line:#2A333C; --line2:#232C34; --accent:#4FB3BF; --accent-ink:#0E1A1C; --accent-soft:#173A3E; --accent-hatch:rgba(79,179,191,.10);
+  --ok:#5CB57F; --warn:#D9A24A; --crit:#E0675B; --lit:#3A3416; --lit-line:#B89B2D; --shadow:0 10px 30px rgba(0,0,0,.5); color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#12171C; --surface:#1A2128; --surface2:#20282F; --ink:#E6EBEF; --ink2:#A9B4BE; --ink3:#74818C;
+  --line:#2A333C; --line2:#232C34; --accent:#4FB3BF; --accent-ink:#0E1A1C; --accent-soft:#173A3E; --accent-hatch:rgba(79,179,191,.10);
+  --ok:#5CB57F; --warn:#D9A24A; --crit:#E0675B; --lit:#3A3416; --lit-line:#B89B2D; --shadow:0 10px 30px rgba(0,0,0,.5); color-scheme:dark; }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:13.5px/1.5 var(--sans)}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+h1,h2,h3{margin:0;font-weight:800;text-wrap:balance}
+h1{font-size:19px;letter-spacing:-.01em}
+h2{font-size:17px}
+h3{font-size:13.5px;font-weight:700}
+p{margin:0}
+.mono{font-family:var(--mono);font-size:12px}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:700}
+.sample{font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);border:1px dashed var(--line);border-radius:3px;padding:0 4px;white-space:nowrap}
+.wrap{max-width:960px;margin:0 auto;padding:16px 16px 64px}
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:14px}
+.top .who{margin-left:auto;font-size:12px;color:var(--ink3)}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:6px;padding:5px 10px;background:var(--surface);font-weight:600;font-size:12.5px;line-height:1.2;white-space:nowrap}
+.btn:hover{border-color:var(--ink3)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.quiet{border-color:transparent;color:var(--ink2)}
+.btn:disabled{opacity:.45;cursor:default}
+.chip{display:inline-flex;align-items:center;font:10.5px var(--mono);padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--ink2);background:var(--surface2)}
+.chip.g{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.chip.w{border-color:var(--warn);color:var(--warn)}
+/* stepper */
+.stepper{display:flex;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:14px}
+.step{flex:1;display:flex;gap:8px;align-items:flex-start;padding:10px 12px;border-left:1px solid var(--line2);text-align:left;color:var(--ink3);min-width:0}
+.step:first-child{border-left:0}
+.step .n{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font:600 11px var(--mono);flex:none}
+.step .l{min-width:0}
+.step .l b{display:block;font-size:12px;font-weight:700;color:var(--ink2);overflow-wrap:anywhere}
+.step .l span{font-size:11px;line-height:15px;display:block}
+.step.done{color:var(--ink2)}
+.step.done .n{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.step.now{background:var(--accent-soft)}
+.step.now .n{border-color:var(--accent);color:var(--accent)}
+.step.now .l b{color:var(--ink)}
+/* screen */
+.screen{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}
+.screen-h{padding:14px 16px;border-bottom:1px solid var(--line2)}
+.screen-h .sub{color:var(--ink2);margin-top:4px}
+.screen-b{padding:16px;display:flex;flex-direction:column;gap:14px}
+.promise{border:1px solid var(--accent);background:var(--accent-soft);border-radius:10px;padding:12px 14px}
+.promise .eyebrow{color:var(--accent)}
+.promise p{margin-top:4px;color:var(--ink)}
+.promise ul{margin:6px 0 0;padding-left:18px}
+.promise li{margin:3px 0}
+.never{border:1px dashed var(--line);border-radius:10px;padding:12px 14px;background:var(--surface2)}
+.never .eyebrow{color:var(--ink3)}
+.never ul{margin:6px 0 0;padding-left:18px}
+.card{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--surface)}
+.card + .card{margin-top:8px}
+.card .ct{font-weight:700}
+.card .cs{color:var(--ink2);font-size:12.5px;margin-top:3px}
+.pick{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.pick input{margin-top:3px;accent-color:var(--accent);flex:none}
+.pick.on{border-color:var(--accent);background:var(--accent-soft)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 16px}
+.kv .k{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);font-weight:700}
+.kv .v{margin-top:2px}
+.rows{display:flex;flex-direction:column;gap:8px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.spread{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.foot{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;border-top:1px solid var(--line2);background:var(--surface2)}
+.note{font-size:12px;color:var(--ink3)}
+.cmd{font-family:var(--mono);font-size:12px;background:var(--surface2);border:1px solid var(--line2);border-radius:8px;padding:8px;word-break:break-all}
+.flow{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap}
+.flow .box{flex:1;min-width:150px;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--surface2)}
+.flow .box.here{border-color:var(--accent);background:var(--accent-soft)}
+.flow .box b{display:block}
+.flow .box .small{font-size:11.5px;color:var(--ink2);margin-top:4px}
+.arrow{align-self:center;color:var(--ink3);font-size:16px}
+table.t{width:100%;border-collapse:collapse;font-size:12.5px}
+.t th{text-align:left;color:var(--ink3);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:6px 8px;border-bottom:1px solid var(--line2)}
+.t td{padding:7px 8px;border-bottom:1px solid var(--line2);vertical-align:top}
+.t tr:last-child td{border-bottom:0}
+.tw{overflow-x:auto}
+@media (max-width:760px){
+  .wrap{padding:10px 10px 48px}
+  .stepper{flex-direction:column}
+  .step{border-left:0;border-top:1px solid var(--line2)}
+  .step:first-child{border-top:0}
+  .flow{flex-direction:column}
+  .arrow{transform:rotate(90deg)}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>Your team on the hosted tier</h1>
+    <span class="chip">journey · team</span>
+    <span class="who">hosted tier · Design A</span>
+  </div>
+  <div class="stepper" id="stepper"></div>
+  <div id="screen"></div>
+</div>
+<script>
+const SCREENS = [
+ {
+  "step": "What moves",
+  "stepNote": "and what stays yours",
+  "title": "Your team on the hosted tier",
+  "sub": "You sign in, we create the two repositories under your own GitHub account, and you invite our bot to a channel. The flywheel runs for your team without a machine of yours having to stay awake.",
+  "promise": "<b>The repositories are yours, under your own GitHub account, from the first minute.</b> We create them there; we never hold the only copy of anything.",
+  "promiseList": [
+   "your repositories sit on GitHub under GitHub&#8217;s own encryption, the same as every other repository you own",
+   "sign-in on the hosted tier is the tier&#8217;s identity provider; a machine of your own keeps signing in with GitHub&#8217;s device flow"
+  ],
+  "body": "<div class=\"flow\">\n      <div class=\"box\"><b>your GitHub account</b><div class=\"small\">flywheel-state · blueprints · your built repositories</div></div>\n      <span class=\"arrow\">&#8594;</span>\n      <div class=\"box here\"><b>the shared tier</b><div class=\"small\">the ticker that reads your plan, over a warm cache sealed under your key · your chat sink · the queue that receives captures</div></div>\n      <span class=\"arrow\">&#8594;</span>\n      <div class=\"box\"><b>your pool</b><div class=\"small\">a machine created for your organization and destroyed when the work ends</div></div>\n    </div>\n    <div class=\"kv\">\n      <div><div class=\"k\">You create</div><div class=\"v\">nothing · no key, no App key, no bot token</div></div>\n      <div><div class=\"k\">We create</div><div class=\"v\">the two repositories under your account, your organization&#8217;s account, and the key that seals what we hold</div></div>\n      <div><div class=\"k\">Ends at</div><div class=\"v\">one decision you answer in the plan console</div></div>\n    </div>",
+  "never": [
+   "keep the only copy of your state or your books — both are repositories in your account",
+   "put your code on a machine that runs anybody else&#8217;s work (264)"
+  ],
+  "next": "Create the account"
+ },
+ {
+  "step": "The account",
+  "stepNote": "membership is the account",
+  "title": "Your organization&#8217;s account",
+  "sub": "On the hosted tier an organization is an account with the flywheel&#8217;s Application assigned to its users. We create it for you, with you as its owner.",
+  "promise": "<b>You hold owner from the moment it exists</b>, so a fresh organization is never locked out and one operator is never asked to administer roles (247, 253).",
+  "promiseList": [
+   "membership is the assignment of the Application to a user — that is the whole of &#8220;may respond here&#8221; (247)",
+   "the operators list on the settings form is derived from the account at every fetch and is never authored by hand",
+   "what stays yours to author is each member&#8217;s chat addresses"
+  ],
+  "body": "<div class=\"kv\">\n      <div><div class=\"k\">Organization</div><div class=\"v\"><b>willdan</b> <span class=\"sample\">sample</span></div></div>\n      <div><div class=\"k\">Account</div><div class=\"v\">a tenant of the service&#8217;s own account · the identity provider is the hosted tier&#8217;s (247)</div></div>\n      <div><div class=\"k\">Owner</div><div class=\"v\"><b>chuck</b> · the user creating it</div></div>\n      <div><div class=\"k\">Authorship</div><div class=\"v\">your GitHub connection supplies the username that signs commits and pull requests</div></div>\n    </div>\n    <div class=\"note\">Your key is created with the account: one key that names your organization and no other, and its use is logged (256, 261).</div>",
+  "never": [
+   "become the owner of your organization ourselves",
+   "let a second organization&#8217;s users be assigned to your account"
+  ],
+  "next": "Invite your team"
+ },
+ {
+  "step": "Members",
+  "stepNote": "by GitHub username",
+  "title": "Invite your team",
+  "sub": "Add the people who may answer. Each becomes a member of the account, and each gets their own sinks: a page sink, and one chat sink per address they carry.",
+  "promise": "<b>Every member reads the same board and the same numbers</b>, and any one of them can answer any decision; who answered is recorded on the response and shown in the tail.",
+  "promiseList": [
+   "revoking a member takes their page sink and their chat sinks with it, in the same act",
+   "a response from someone the account does not assign is refused before any record is written"
+  ],
+  "body": "<div class=\"tw\"><table class=\"t\">\n      <tr><th>GitHub username</th><th>Role</th><th>Chat address</th><th>State</th></tr>\n      <tr><td><b>chuck</b></td><td>owner</td><td>slack U0CHUCK</td><td><span class=\"chip g\">assigned</span></td></tr>\n      <tr><td><b>rhea</b></td><td>member</td><td>slack U0RHEA</td><td><span class=\"chip\">invited · not yet accepted</span></td></tr>\n      <tr><td><b>lee</b></td><td>member</td><td>slack U0LEE</td><td><span class=\"chip\">invited · not yet accepted</span></td></tr>\n    </table></div>\n    <div class=\"row\"><button class=\"btn\">Invite by GitHub username</button><span class=\"note\">an invitation is an act on the account, never a commit (247)</span></div>",
+  "never": [
+   "give a member access to another organization on the same tier",
+   "write a member into a file that someone could edit into membership"
+  ],
+  "next": "Set up the pool"
+ },
+ {
+  "step": "The pool",
+  "stepNote": "machines that are only yours",
+  "title": "Where your code and your material are read",
+  "sub": "Construction work needs a machine with your code on it, and triage needs to read whatever a capture points at. Both happen on a machine that belongs to your organization alone.",
+  "promise": "<b>Your code only ever exists on a machine created for your organization and destroyed when the work ends</b>, and <b>your raw capture material is read only on your own machine or on such a machine, and never on anything shared</b> (263, 264).",
+  "promiseList": [
+   "a pool host serves one organization and one only (241), and retire destroys the host and its disk (240)",
+   "the machine is built from your organization&#8217;s image, made from the environment declarations of the repositories it covers (239)",
+   "the shared ticker clones no built repository at all, because its declaration names none (217, 262)"
+  ],
+  "body": "<div class=\"kv\">\n      <div><div class=\"k\">Image</div><div class=\"v\"><span class=\"mono\">willdan/flywheel:0.9.4-0903</span> · built from your repositories&#8217; declarations</div></div>\n      <div><div class=\"k\">Bound</div><div class=\"v\">8 hosts, 2 sessions each · the ceiling you set</div></div>\n      <div><div class=\"k\">Idle-retire</div><div class=\"v\">30m · then the host and its disk are destroyed</div></div>\n      <div><div class=\"k\">Cost ceiling</div><div class=\"v\">$40/day · the machinery stops adding rather than pass it</div></div>\n    </div>\n    <div class=\"card\"><div class=\"ct\">What runs where</div><div class=\"cs\">\n      the shared ticker reads your plan over its warm cache and never clones a built repository (217, 262) ·\n      triage, which reads the raw material a capture points at, runs on a pool host or on a machine of yours, never on a shared one (263) ·\n      units, builds and tests run on the pool host, which is yours alone (264)</div></div>",
+  "never": [
+   "clone your code onto the shared ticker",
+   "keep a pool host&#8217;s disk after it retires",
+   "let a pool host serve a second organization"
+  ],
+  "next": "What we hold"
+ },
+ {
+  "step": "What we hold",
+  "stepNote": "the warm cache, and its key",
+  "title": "What sits on our disks between ticks",
+  "sub": "The shared tier is fast because it keeps a warm copy of two repositories per organization. This is that copy, and the key that seals it. It is also rendered on your settings form (261).",
+  "promise": "<b>Everything we hold about you is encrypted at rest under a key that exists for your organization alone, and it is unwrapped only while your plan is being evaluated — a stolen disk or a leaked snapshot of ours is ciphertext.</b>",
+  "promiseList": [
+   "the ticker assumes your organization&#8217;s role, decrypts once, evaluates your plan, writes its effects and drops the key (257, 259)",
+   "the stores themselves are keyed per volume, per queue and per table, never per tenant — so the promise is carried one level in, by your key, inside them (256)",
+   "a queued capture carries an organization id and a pointer, its body written under your key, so the shared queue holds no tenant content at all (246, 256)",
+   "an organization idle past the stated time keeps nothing warm; its next tick re-clones (258)",
+   "if the key is revoked or unreachable, nothing ticks on state it cannot open and nothing is ever kept unencrypted as a fallback (260)"
+  ],
+  "body": "<div class=\"grid\">\n      <div class=\"card\"><div class=\"ct\">Sealed under your key</div><div class=\"cs\">your organization&#8217;s cache directory: a full clone of state and a sparse, blobless clone of blueprints · the body of every queued capture · every store holding your content</div></div>\n      <div class=\"card\"><div class=\"ct\">Holds no content by construction</div><div class=\"cs\">the due index, which is times and ids and is rebuilt by ticking (245, 258)</div></div>\n      <div class=\"card\"><div class=\"ct\">Never on a shared disk at all</div><div class=\"cs\">your code (264) · your raw capture material (263) · your book</div></div>\n      <div class=\"card\"><div class=\"ct\">Your repositories on GitHub</div><div class=\"cs\">GitHub holds them in plaintext under its own encryption and its own key, exactly as it holds every repository you own. Nothing here changes that. If your concern is GitHub rather than us, writing state records as envelopes is a declaration you turn on, and it is never the default (265).</div></div>\n      <div class=\"card\"><div class=\"ct\">The residual, stated plainly</div><div class=\"cs\">a compromised ticker <i>while it is running</i> sees the plaintext of the organization whose tick it is running, and of any other ticking in the same process at that moment. It shrinks by eviction (258), by a role and a tick boundary per organization (259), by an enclave, and by your holding the key — and the next tier is exactly that.</div></div>\n      <div class=\"card\"><div class=\"ct\">On your settings form</div><div class=\"cs\">which stores hold your content, which key opens them, which role may use it, and when the cache was last evicted (261)</div></div>\n    </div>",
+  "never": [
+   "use your key for another organization",
+   "keep the key unwrapped between ticks (257)",
+   "claim your key protects you from us on this tier — on the shared tier we hold it, and the next tier is where that changes"
+  ],
+  "next": "Finish"
+ },
+ {
+  "step": "Done",
+  "stepNote": "one decision, then it runs",
+  "title": "One decision, then the flywheel is running",
+  "sub": "Nothing above has created a repository, an account or a machine. The flow ends by raising one decision, and the yes is what acts.",
+  "promise": "<b>You answer it in the plan console</b>, and everything the machinery does from there is an effect with a proof, so a half-finished setup is finished by the next tick rather than started again.",
+  "body": "<div class=\"card\"><div class=\"ct\">decision 432 · initialize <span class=\"mono\">willdan</span> on the hosted tier · approve · yes · no</div>\n      <div class=\"cs\">the yes creates the two repositories under your account, the account and its key, and the first tick registers the ticker as your host. <a href=\"../rail-and-board.html?open=d:432\">answer in the plan console</a></div></div>\n    <div class=\"kv\">\n      <div><div class=\"k\">Then</div><div class=\"v\">invitations go out; each member signs in and reads the same board</div></div>\n      <div><div class=\"k\">First work</div><div class=\"v\">the machinery adds the first pool host when there is approved work to drain</div></div>\n      <div><div class=\"k\">Moving up later</div><div class=\"v\">no migration: every tier seals the same stores the same way, and what changes is where the key lives and who may unwrap it</div></div>\n    </div>",
+  "never": [
+   "migrate you when you move key homes",
+   "rewrite your history to change key material"
+  ],
+  "next": "Done"
+ }
+];
+let i = 0;
+function render(){
+  document.getElementById('stepper').innerHTML = SCREENS.map((s, n) =>
+    `<button class="step ${n < i ? 'done' : ''} ${n === i ? 'now' : ''}" data-go="${n}">
+      <span class="n">${n < i ? '&#10003;' : n + 1}</span>
+      <span class="l"><b>${s.step}</b><span>${s.stepNote}</span></span></button>`).join('');
+  const s = SCREENS[i];
+  document.getElementById('screen').innerHTML = `<div class="screen">
+    <div class="screen-h"><span class="eyebrow">screen ${i + 1} of ${SCREENS.length}</span>
+      <h2>${s.title}</h2><div class="sub">${s.sub}</div></div>
+    <div class="screen-b">
+      <div class="promise"><span class="eyebrow">the promise at this step</span><p>${s.promise}</p>${s.promiseList ? `<ul>${s.promiseList.map(x => `<li>${x}</li>`).join('')}</ul>` : ''}</div>
+      ${s.body}
+      ${s.never ? `<div class="never"><span class="eyebrow">what this step never does</span><ul>${s.never.map(x => `<li>${x}</li>`).join('')}</ul></div>` : ''}
+    </div>
+    <div class="foot">
+      <button class="btn quiet" data-go="${Math.max(0, i - 1)}" ${i === 0 ? 'disabled' : ''}>Back</button>
+      <button class="btn pri" data-go="${Math.min(SCREENS.length - 1, i + 1)}" ${i === SCREENS.length - 1 ? 'disabled' : ''}>${s.next || 'Next'}</button>
+    </div></div>`;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-go]');
+  if(!b || b.disabled) return;
+  i = +b.dataset.go; render(); window.scrollTo(0, 0);
+});
+const q = new URLSearchParams(location.search);
+if(q.get('theme')) document.documentElement.dataset.theme = q.get('theme');
+if(q.get('screen')) i = Math.max(0, Math.min(6 - 1, +q.get('screen') - 1));
+render();
+</script>
+</body>
+</html>
