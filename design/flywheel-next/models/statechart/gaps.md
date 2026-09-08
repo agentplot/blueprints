@@ -784,16 +784,20 @@ the operator may reverse by a response on the file; an entry with
   guarantee against a compromise mid-tick, and the residual is named in
   `proposals/security.md` §2 rather than closed. **Stated**. 263 and 269
   were reconciled with `proposals/hosted-design.md` as it now stands: the
-  dispatcher answers chat and triages a capture whose whole content is
-  already in the queue within its own tick, and only triage that must
-  follow a pointer into the raw store is pushed onto the operator's
-  machine or a pool host. `security.md` §2 and §4 still read as though no
+  dispatcher runs the interpreter and triages a capture whose whole
+  content is already in the queue within its own tick, both bounded per
+  tick with the remainder carried to the next, and only triage that must
+  follow a pointer into the raw store, along with every elaboration and
+  construction session, is pushed onto the operator's own machine or a
+  pool host. What that per-tick bound is, and whether a carried remainder
+  ages, are unstated. **Open**. `security.md` §2 and §4 still read as though no
   triage at all runs on a shared host; the guarantee 263 makes is about
   raw material, not about the word triage. **Decision**. Model access on
   the hosted tiers is the service's under the tagged role and metered
-  into the plan, or a key the operator places; nothing in A.35 carries
-  that as a limit and `identity.yaml` `plans.limits` names none.
-  **Open**. The microVM
+  into the plan, or a key the operator places, and 269 states it while
+  `identity.yaml` `plans.limits` carries `model_usage` (**Decision**);
+  which provider the service's access resolves to, and how a placed key
+  is metered against a plan that includes usage, are unbound. **Open**. The microVM
   placement's maximum lifetime, its memory and disk ceilings, and
   whether a container runtime runs inside it are one platform's facts
   read from its documentation and verified against none; 275 states the

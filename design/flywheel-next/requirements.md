@@ -1618,13 +1618,24 @@ requirements, iterated against the running plan rather than on paper.
     role under a session tag naming that organization (259), fetches,
     evaluates, pushes by compare-and-swap (162), delivers the plan,
     wipes its scratch and exits, retaining nothing between invocations
-    (217a). It never reads raw material a capture points at (263) and
-    never holds code (264): the declaration it runs takes no object
-    kind, no repository and no unit type (217), so there is nothing for
-    it to clone. It answers chat and triages a capture whose whole
-    content is in hand within its own tick (217b, 217e), and hands
-    everything else to a host that serves one organization. A failure in one
-    organization's tick ends that tick and no other (218).
+    (217a). It runs a model. The interpreter that answers a message is
+    one bounded call per message on the in-process runner (216, 217b,
+    217c), and the triage of a self-contained capture, one whose whole
+    content is already in the queue such as a chat message or a webhook
+    body, runs beside it (217e); both are bounded per tick, and what
+    does not fit is carried to the next tick. Two things never run in
+    it: triage over raw material a capture points at, which is a
+    transcript on the operator's own machine or in a store they own
+    (263), and every elaboration and construction session. Those run on
+    a machine of the operator's own or on a pool host. It never holds
+    code (264): the declaration it runs takes no object kind, no
+    repository and no unit type (217), so there is nothing for it to
+    clone. A failure in one organization's tick ends that tick and no
+    other (218). Model access on a hosted tier is the service's, carried
+    by the tier role and metered into the plan (279), unless the
+    organization places a model key of its own instead (207); which
+    model provider sees plan text and messages is named in the tier
+    statement (261).
 270. The tick is invoked, not looped. A long-lived process its
     platform's launcher starts is one invoker among several: a clock, a
     notification, an arriving capture, a chat event, a request for the
@@ -1717,17 +1728,21 @@ requirements, iterated against the running plan rather than on paper.
     unlocks is a requirement while its price is not. **Free** is tier 0:
     the binary, its sign-in, the organization's own App and bot, every
     package and every surface, with nothing running on the service side.
-    **Hobby** is tier 1: the service's App and bot, captures read and
-    chat answered while the operator's machines sleep, the plan in the
-    organization's chat, and the page at a served name. **Pro** adds
-    pools with an included allowance and metered overage, the package
-    store, the book view and the presets. **Team** adds members with
-    roles, ownership and assignment (237), identity administration
-    (255), the management console, and a higher ceiling on a pool host.
-    **Enterprise** is tier 3: federation into the organization's own
-    account (276), enterprise sign-in and provisioning through the
-    organization's own directory, a dispatcher function of its own,
-    audit export and a private pool image.
+    **Hobby** is tier 1: the service's App and bot, with the interpreter
+    and the triage of self-contained captures running in the cloud, so
+    chat is fully usable with the laptop closed: a decision is answered
+    by button or by free text, a capture is written as text, and the
+    query tools answer (269). The plan reaches the organization's chat
+    and the page at a served name. What waits for the operator's own
+    machine or a pool host is raw-material triage, elaboration and
+    construction. **Pro** adds pools with an included allowance and
+    metered overage, the package store, the book view and the presets.
+    **Team** adds members with roles, ownership and assignment (237),
+    identity administration (255), the management console, and a higher
+    ceiling on a pool host. **Enterprise** is tier 3: federation into
+    the organization's own account (276), enterprise sign-in and
+    provisioning through the organization's own directory, a dispatcher
+    function of its own, audit export and a private pool image.
 282. Limits are plan metadata and not flags: how many organizations, how
     many members, how many pool hours are included, and how much memory
     a pool host may take. The tool server reads them beside the flags

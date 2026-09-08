@@ -2595,11 +2595,20 @@ function per tier and each invocation is one organization's tick: it
 assumes the tier's role under the organization's session tag, downloads
 the warm cache, fetches, evaluates, pushes by compare-and-swap,
 delivers the plan, uploads the cache, wipes its scratch and exits,
-retaining nothing between invocations (269). It never reads raw material a
-capture points at and never holds code, because its declaration takes
-no object kind, no repository and no unit type (217); it answers chat
-and triages a self-contained capture in its own tick (217b, 217e), and
-a failure in one organization's tick ends that tick and no other (218).
+retaining nothing between invocations (269). It runs a model: the interpreter,
+one bounded call per message on the `inproc` runner, and the triage of
+a self-contained capture whose whole content is already in the queue,
+both bounded per tick with the remainder carried to the next (216,
+217b, 217c, 217e). Two things never run in it, raw-material triage
+(263) and every elaboration and construction session; those go to a
+machine of the operator's own or to a pool host. It never holds code,
+because its declaration takes no object kind, no repository and no unit
+type (217), and a failure in one organization's tick ends that tick and
+no other (218). Model access on a hosted tier is the service's, carried
+by the tier role and metered into the plan, unless the organization
+places a model key of its own, and the tier statement names which model
+provider sees plan text and messages (261, 279, `host.yaml`
+`tier.model`).
 
 The tick is invoked and not looped (270): a clock, a notification, an
 arriving capture, a chat event and a request for the page are all
@@ -2643,10 +2652,13 @@ default. A plan hides and it meters and it never authorizes:
 permissions come from roles and are checked on every tool call, and
 exceeding a limit is one attention line and a refused add with the
 reason, never a stopped loop (280). The ladder is five rungs over the
-four tiers — Free at tier 0, Hobby at tier 1, Pro adding pools and the
-store, Team adding members and the console, Enterprise at tier 3 with
-federation, enterprise sign-in, a dispatcher of its own and audit
-export — and what each unlocks is the requirement while the price is
+four tiers: Free at tier 0; Hobby at tier 1, where the interpreter and
+the triage of self-contained captures run in the cloud so chat is fully
+usable with the laptop closed and only raw-material triage, elaboration
+and construction wait for a machine of the operator's own; Pro adding
+pools and the store; Team adding members and the console; Enterprise at
+tier 3 with federation, enterprise sign-in, a dispatcher of its own and
+audit export. What each unlocks is the requirement while the price is
 not (281, `identity.yaml` `plans.ladder`). Limits are plan metadata and
 not flags: organizations, members, included pool hours, the largest
 pool host (282, `plans.limits`).
