@@ -74,10 +74,14 @@ unbound (140). Machines reach the profiles' world only through those
 names. Three bindings do name type files: `item.retry_max` reads "the
 unit type file at `get(unit).type_version`", `set_type` and
 `create_items` write "the type file's version in force", and
-`sessions.yaml` `models:` gives a kind and model per role that "a unit
-type, a stage or an elaboration type may override with its own `kind:`
-and `model:`" (173) — though no type file in `machines/` carries such a
-field and `schema.json` would refuse one. The deliverables binding
+`sessions.yaml` `models:` gives a kind and model per role. 285 amends
+173 on which of the two rules: every unit type and elaboration type
+declares the model class each of its stages runs, so a stage that
+reviews code may name a different class from the stage that writes it,
+and the manifest's per-role model is the fallback where a type names
+none. The declaration is the type file's own field, bound to
+`stage.yaml` (`model.md` §19), and the runner's model is the default
+where neither names one. The deliverables binding
 (`profiles/deliverables.yaml`) is what a type file's `deliverables:`
 entries resolve against: `default` is the shipped entry or the
 manifest's override, `by-type` the stage's own skill and schema (190).
@@ -232,6 +236,24 @@ host's own blueprints checkout is outside it.
 Every table has the same rows; a row reads "carried: what" or
 "unstated: what would need ruling". A column per stage where the type
 has stages.
+
+Two of the rows are dispatch's rather than a type's, and 217b makes
+both sessions of A.7, so 226's enumeration covers them too. **Triage**
+(`dispatch-triage`) is charged by the dispatcher's tick, or by the tick
+of whichever host declares the capture's source (217e), and takes the
+capture-reader's context unchanged, with the runner from the sessions
+binding (217c). **The host's agent** (`host-agent`) is charged one
+session per message on a surface, with no context carried from one
+message to the next (217a, 217b), and runs `inproc` (217c): its schema
+instruction is the tool catalogue's schemas, its work order is the
+message, the messages it replies to as the chat holds them, the live
+objects through list and read, the query tools and the catalogue. It
+has no deliverables, because its writes are proposed tool calls the
+operator confirms, one card each, and the confirmed call is the record
+(194). Its identity is dispatch's or the page's and never a person's
+account (217d), and it never receives a write without the operator's
+confirmation, nor context from a previous message. Both rows are in
+`profiles/context.yaml` under those names.
 
 ### 2.1 Curation (`curation.running`, agent `curator`, machinery session)
 
@@ -475,11 +497,13 @@ produced and recorded as expected, lands wherever the place's merge
 carries it, and is fed to no later session unless it happens to be a
 chapter or a record of the change. Requirement 227 closes it.
 
-## 4. Proposed requirements
+## 4. Requirements 223–227, as ratified
 
-Numbered from 223; 213–222 are reserved. Each in the form of section 4
-of `requirements.md`, to be placed under A.10 (223–225) and A.11
-(226–227).
+223–227 are ratified requirements of `requirements.md`, A.27 (223–225)
+and A.11 (226–227), and 213–222 were ratified with them. They are
+reproduced here because this document is the working note behind them
+and the tables of section 2 are what 226 asks for; `requirements.md` is
+the contract and this copy may not contradict it.
 
 223. The machines are of two tiers, and the tier is marked in the
     definition. A **core** machine — every object machine, every engine
@@ -553,10 +577,14 @@ of `requirements.md`, to be placed under A.10 (223–225) and A.11
     refused when the type file is loaded, and the refusal is reported
     (79).
 
-## 5. The rulings the operator is asked for
+## 5. The rulings the operator was asked for
 
-Every **unstated** above, gathered, so a response on this file can
-settle each.
+Every **unstated** above, gathered. All twenty-four are answered, and
+the answers are `profiles/context.yaml` `rulings:`, which is the
+statement of record: the list below is the question each ruling
+settles, kept so a reader can follow an **unstated** in the tables to
+the ruling that closed it. A response on this file reverses a ruling by
+changing that file.
 
 1. How chapters and claim blocks from the blueprints reach a place that is a
    worktree of a built repository, for planning, construction and chore

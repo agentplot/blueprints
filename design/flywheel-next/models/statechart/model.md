@@ -9,7 +9,8 @@ machines themselves are in `machines/`, the profile bindings in
 `profiles/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
-Requirements are cited by their number in `requirements.md` (1–212);
+Requirements are cited by their number in `requirements.md` (1–314,
+lettered sub-clauses such as 150a, 205a, 217e and 253a among them);
 scenarios as S1–S34 and invariants as I1–I16.
 
 Reading order: section 1 says what is a machine and what is not; 2 says
@@ -532,12 +533,22 @@ repositories:
     landing: direct
     take_cadence: "0 6 * * *"
 hosts:                       # what each host takes (149); a host takes leases only within this
-  - {name: mac-mini, bound: 3, kinds: [all], repositories: [atlas, switchboard], unit_types: [default, fast, chore, persona-test], presents: [page, bell]}
-  - {name: studio, bound: 2, kinds: [all], repositories: [atlas], unit_types: [default, fast, chore], presents: []}
-  - {name: dispatcher, bound: 0, kinds: [], presents: [chat]}    # runs outside every host; presents only
+  # identity is the host's kind (243), tier what exists on the service side (268),
+  # intermittent whether the host goes away rather than gone (150a), provider the
+  # environment it can satisfy (238), router how a place's services are reached (191)
+  - {name: mac-mini, bound: 3, kinds: [all], repositories: [atlas, switchboard], unit_types: [default, fast, chore, persona-test], presents: [page, bell],
+     identity: github, tier: 0, intermittent: true, provider: devenv, router: portless}
+  - {name: studio, bound: 2, kinds: [all], repositories: [atlas], unit_types: [default, fast, chore], presents: [],
+     identity: github, tier: 0, intermittent: true, provider: devenv, router: tailnet}
+  - {name: dispatcher, bound: 0, kinds: [], presents: [chat],
+     identity: github, tier: 0, intermittent: false, provider: none, router: tailnet}   # takes nothing; presents only
+pools: []                    # a pool names its platform, bound, cost ceiling and retire time (240); none at tier 0
+operators:                   # membership, authored whole on a self-managed host (234, 247)
+  - {github: chuck, discord: "440812…", slack: U04AB…}   # one chat sink per address, keyed by identity (236a)
+  - {github: sam}                                        # no chat address: a page sink only
 sinks:                       # where decisions and the tail go (82); one presenter each (148)
-  chat: {discord: {guild: 118..., channel: flywheel}, routes: [approve, decide, answer, attention], cadence: "0 7,12,17 * * *", presenter: dispatcher}
-  page: {url: https://flywheel.tail1234.ts.net/plan, routes: [approve, decide, answer, attention]}
+  chat: {discord: {guild: 118..., channel: flywheel}, routes: [approve, decide, answer, attention], cadence: "0 7,12,17 * * *", presenter: dispatcher}   # the shared channel: one sink, one mark, no member
+  page: {url: https://flywheel.tail1234.ts.net/willdan/plan, routes: [approve, decide, answer, attention]}   # the organization in the path (205a); each member's page sink has its own mark (236)
   bell: {surface: "herdr:operator-desk", routes: [answer, attention, land-failed]}
 curation: {threshold: 12, cadence: "0 6 * * 1-5"}
 ```
@@ -556,7 +567,7 @@ shared, two are the profiles.
 | `profiles/blueprints.yaml` | the blueprints repository as a store: ledger, captures, signals, moves, curation and planning inputs | yes |
 | `profiles/record-derived.yaml` | every evidence and effect that is a function of the object record and its thread, stated over six record operations (`get`, `put`, `append`, `list`, `responses`, `leases`) | yes |
 | `profiles/surfaces.yaml` | the sinks (chat, page, bell) and the review surfaces (plannotator for documents, lavish for rich pages) | yes |
-| `profiles/tracker.yaml` | the six operations, the eight contract operations of B.1 and the five guarantees of B.2 on GitHub issues, milestones and a Projects board; the decision issues | tracker |
+| `profiles/tracker.yaml` | the six record operations, the seven operations of B.1 — eight methods on `StateStore`, because present and receive are two — and the five guarantees of B.2 on GitHub issues, milestones and a Projects board; the decision issues | tracker |
 | `profiles/git-only.yaml` | the same on the `flywheel-state` git repository, with the layout of section 3.4 | git-only |
 
 `check.py` refuses a profile marked `complete: true` that leaves any
@@ -630,7 +641,9 @@ the world is shared.
 ### 4.3 The status view
 
 Served by the page sink's presenter at `/status` (axum, Tailscale) and
-written as `status.html` by `render_status`. Derived from `list` and
+written as `status.html` by `render_status`. It is central: one place
+for the whole organization, reachable from the phone, however many
+hosts run machinery (143). Derived from `list` and
 `get` alone: every intent, elaboration, bolt, unit, work-item,
 operator-session and session grouped by the decision-free leaf of its
 state (queued: `waiting`, `ready`, `approved`; in progress: `in-flight`,
@@ -746,6 +759,20 @@ the chat both read the register, so they show the same number (18).
 | `host-gone` | attention | `host.gone` (no heartbeat 30m) | takeover → released; the host returns → alive | takeover · wait |
 | `uncovered` | attention | `lease.uncovered`: no host's declaration covers the object (149) | a declaration covers it → free; ok → acknowledged | ok |
 | `response-unapplicable` | attention | `response.unapplicable` (the decision was gone, or a dictation asserted work done) | reported once → reported | ok |
+| `repository-proposed` | approve | `repository.proposed`: a create-or-adopt proposal with its map nodes and homes, from an elaboration's offer or a dictation; its document is reviewed on the review surface (206) | yes → created on the git host, or registered when adopted; drop | yes · drop |
+| `package-install` | approve | `package.added`: a package chosen on the setup surface, its configuration collected against its schema and its secrets named in the same flow (228, 229) | yes → installing, as effects with proofs; drop | yes · drop |
+| `host-enrol` | approve | `host.proposed`: a host added from a host that exists, with its platform and its parts (230) | yes → the parts' secrets are placed and a one-time token issued; drop | yes · drop |
+| `app-install` | attention | `organization.awaiting-app`: the organization's own GitHub App is not installed yet (204, 207) | installed → the organization proceeds | installed |
+| `app-coverage` | attention | `repository.uncovered`: the App does not reach a repository the manifest names (207) | retry; drop | retry · drop |
+| `package-secret` | attention | `package.needs-secret`: an install waiting on a secret only the operator can place (207, 229) | placed → installing | placed |
+| `host-enrol-lapsed` | attention | `host.lapsed`: the enrolment token expired before the host used it (230) | reissue; drop | reissue · drop |
+| `host-environment` | attention | `host.unsatisfied`: the host cannot satisfy a repository's environment declaration (238) | retry | retry |
+| `host-refused` | attention | `host.refused`: the layout on disk differs from the profile's, so the host refused to start (205, 222) | repair → the repair the decision showed runs; retry | repair · retry |
+| `service-failed` | attention | `service.failed`: a declared service the operator started exited (47) | start; stop | start · stop |
+
+Twenty-five kinds in all, and `check.py` prints them with the states
+that raise them, so a kind added to a machine and not to this table is
+visible in one run.
 
 The mockup's ten decisions are, in order: `intent-proposed`,
 `unit-proposed` ×3 (the third folded chores), `bolt-close`,
@@ -768,8 +795,12 @@ and the operator's annotations there come back as the response on it
 
 ### 5.5 Sinks, delivery and the tail
 
-A `sink` machine exists per sink the manifest names: the chat, the
-page, a bell on a named multiplexer surface. Each carries the decision
+A `sink` machine exists per sink, and sinks are per member (236): each
+member's page is a sink of their own, and each chat address on their
+operators entry is a chat sink of their own, one per member per
+address and none without an address (236a). A shared channel the
+manifest names is a sink with one mark and no member, and a bell on a
+named multiplexer surface is another. Each carries the decision
 kinds routed to it (82), a cadence, and its **delivery mark**. It is
 `due` when a decision routed to it was numbered after its mark, when
 its cadence fired, or when the operator asked (`plan` in chat, a
@@ -1138,7 +1169,7 @@ homes by the table the schema fixes — kinds from their kinds,
 capabilities from the contracts among them — and scope never reads
 them, so a change to a tag, a kind, a facet, a derivation row or a
 vocabulary moves no verdict; only a home change, a re-attachment or a
-claim version does (the ledger invariant, model.md 4.8). The manifest
+claim version does (the ledger invariant of this section). The manifest
 entry carries only git details, and `flywheel map check` fails a home
 naming no entry or an entry nothing homes. A repository joins the
 fleet when the target map first homes something in it; its cells are
@@ -1430,19 +1461,40 @@ session to write (124) — never an edit of the version in force.
 
 ## 11. Hosts and leases
 
-A host is one static binary (`flywheel host`) with a name, a bound and
-a **declaration** from the manifest: the object kinds, repositories and
-unit types it takes, and the sinks it presents (149). It heartbeats
-every minute. The `host` machine reads the heartbeat: `alive`, `stale`
-at 5 minutes, `gone` at 30 minutes (the `host-gone` attention
-decision), `released` when the operator answers `takeover` or 24 hours
-pass. While `alive` it reconciles its own disk: a stray place is
+A host is the binary with a name, a bound and a **declaration** from
+the manifest: the object kinds, repositories and unit types it takes,
+and the sinks it presents (149). A standing `flywheel host` process is
+one way to run it and not the rule: the tick is invoked, and a clock, a
+notification, an arriving capture and a chat event are all invokers of
+the same tick (270). A standing host heartbeats once a minute; an
+invoked host heartbeats once per tick, and its stale window is the due
+time that tick wrote plus the profile's grace rather than a fixed five
+minutes (292). The `host` machine reads the heartbeat against whichever
+window applies: `alive`, then `stale` past it. What follows `stale` is
+the record's `intermittent` — a laptop by default, a cloud or pool host
+not. An intermittent host is `away`: shown with since-when, raising no
+attention line, its leases standing and its sessions' idle clocks
+paused, and it reaches `gone` only when a numbered decision or approved
+work waits on it or at the 24h bound (150a). A host that is not
+intermittent goes `gone` at 30 minutes, which is the `host-gone`
+attention decision either way. `released` follows the operator's
+`takeover` or 24 hours. While `alive` it reconciles its own disk: a stray place is
 removed and recorded (7.6). The `lease` machine on each object reads
 the holder and renewal: `held`, `stale` at 5 minutes (shown on the
 status view; the holder may still renew and continue, S13), `expired`
 at 24 hours or on the host's release, `free` when released, and
 `uncovered` — an attention decision — when no host's declaration covers
 the object, so nothing waits silently (149).
+
+**Coexistence (96).** The declaration is also what lets the new
+flywheel run beside the current one against the same organization. A
+host takes a lease only on an object its declaration covers, so the two
+run against disjoint sets of objects and neither can act on the
+other's: the new machinery's scope is the kinds, repositories and unit
+types its hosts declare, written down in the manifest and readable, and
+an object no declaration covers raises the `uncovered` attention
+decision rather than being taken by default (149). Nothing is shared
+between the two but the git host and the repositories they read.
 
 Which host acts on an object: the one holding its lease. A host takes
 a lease only on an object its declaration covers, with a transition
@@ -1534,10 +1586,18 @@ no rendering is stored (15).
 
 ### 12.5 What is the minimal set of stores?
 
-Four (3.1): the state store (tracker or state repository), the blueprints
-repository, the built repositories, and the multiplexer (evidence
-only). The place's disk is not a store: a session reports through the
-command. Section 3.2 names one source of truth per state and lists the
+Four on a self-managed host (3.1): the state store (tracker or state
+repository), the blueprints repository, the built repositories, and the
+multiplexer (evidence only). A hosted tier adds three that the control
+plane holds between invocations and the binary reads through the
+invocation contract, none of them a source of truth: the warm cache
+object, one encrypted bundle of two sparse shallow clones downloaded
+per tick and uploaded back, whose loss costs a clone (272); the page
+projection object, the status view and the rail as data, which one page
+request decrypts and returns (291); and the organization's queue, the
+caller's retry buffer, which holds what an invoker enqueued and
+decrypts nothing (271). The place's disk is not a store: a session
+reports through the command. Section 3.2 names one source of truth per state and lists the
 projections.
 
 ### 12.6 How does curation connect without the flywheel batching signals?
@@ -1638,13 +1698,22 @@ the effect of a response.
 
 ### 12.14 How does the phone reply become a commit, and how is the status page served without a central process?
 
-The presenter of the sink the reply came through — the dispatcher for
-the chat, the page sink's lease holder for the page — commits
-`responses/<delivery id>.rec` and pushes; the ✅ reaction follows the
-push (4.2). The status page is `status.html`, rebuilt by
-`render_status` whenever state moved and committed; any host serves it
-and, with none running, it is read as a file of the branch and says its
-as-of commit (S20).
+On a self-managed host the presenter of the sink the reply came
+through — the dispatcher for the chat, the page sink's lease holder for
+the page — commits `responses/<delivery id>.rec` and pushes; the ✅
+reaction follows the push (4.2). The status page is `status.html`,
+rebuilt by `render_status` whenever state moved and committed; any host
+serves it and, with none running, it is read as a file of the branch
+and says its as-of commit (S20). On a hosted tier the same reply
+reaches the same record by another path: a write is a tool call
+enqueued on the organization's queue, which decrypts nothing, and a
+later tick applies it and records the response like any other (271,
+291). The status view there is not a file but the page projection that
+tick wrote under the organization's key, which one request decrypts and
+returns, so the phone renders it from one request and holds no client
+state a reload loses (291, 310). Either way the response is recorded
+with the object it concerns, the decision it answers, who gave it and
+when, before any work follows from it (153).
 
 ### 12.15 How is history kept from growing without bound?
 
@@ -1680,16 +1749,23 @@ The boundary falls out of the model's three kinds of thing: the engine
 | `flywheel-sessions` | `Sessions` over herdr (`herdr agent`) and Claude Code, plus the `flywheel exit\|offer\|note\|refuse` subcommands that write through `StateStore::append`; `profiles/sessions.yaml` | `flywheel-atoms` |
 | `flywheel-store-git` | `StateStore` over the state repository (`gix`, `git push --force-with-lease`); `profiles/git-only.yaml` | `flywheel-atoms` |
 | `flywheel-store-tracker` | `StateStore` over GitHub (`octocrab`); `profiles/tracker.yaml` | `flywheel-atoms` |
-| `flywheel-surface` | the sinks: the Discord bot (`serenity`), the pages (`axum`), the bell (`herdr`), the reply grammar, the review-surface launchers (plannotator, lavish); `profiles/surfaces.yaml`; profile-neutral because it writes responses through `StateStore::receive` | `flywheel-atoms` |
+| `flywheel-surface` | the sinks: the Discord bot (`serenity`), the pages (`axum`), the bell (`herdr`), the reply grammar, the review-surface launchers (plannotator, lavish); the page bundle and the tool server that answers a **request** under the caller's token — the binary's own catalogue of tools, over HTTP for the page and in the shape of the model context protocol for sessions, the interpreter and a member's own client (193, 291, 293); `profiles/surfaces.yaml`; profile-neutral because it writes responses through `StateStore::receive` | `flywheel-atoms` |
 | `flywheel-scenario` | the stand-in state store (in-memory `StateStore` and `World`), the scripted `Sessions` stand-in (`profiles/sessions-stand-in.yaml`), the conformance runner, the trace renderer | `flywheel-engine`, `flywheel-atoms`, `flywheel-domain` |
-| `flywheel` | the binary: `host`, `dispatch`, `scenario`, `capture`, `claims check`, `render-order`, `review`, `exit`, `offer`, `note`, `refuse` | all |
+| `flywheel` | the binary: `host` (the standing loop), `tick` and `request` (the two modes of the invocation contract, one organization per invocation, 297), `dispatch`, `scenario`, `capture`, `claims check`, `render-order`, `review`, `exit`, `offer`, `note`, `refuse` | all |
 
 Nothing in a machine file, a scenario or a profile binding names Rust:
 the same files would drive any engine that implements `schema.json`.
 The one static binary per host is `flywheel` with both state stores
 compiled in and chosen by the manifest's `profile`; `flywheel dispatch`
 is the same binary run with a declaration that presents and takes
-nothing.
+nothing. `flywheel tick` and `flywheel request` are that same binary
+invoked by a control plane through the contract of 297, which provides
+the organization, its tier, the tagged role session, the cache and
+projection objects, the queue and the scratch budget, and takes back
+the cache uploaded, the projection written, the plan delivered and the
+run record. Nothing is compiled differently for a hosted host: it runs
+the same bytes as a laptop and differs only in what its manifest binds
+(299).
 
 ## 14. The scenarios, walked
 
@@ -2147,6 +2223,18 @@ product is a repository in the manifest like any other. Operation is
 therefore a profile binding — the adapters that capture and the
 evidence that reads links — and not a machine (`gaps.md`).
 
+**183 — every tool driven by written configuration.** The worktree
+tool, the multiplexer and git are driven by explicit arguments and a
+configuration the machinery writes from the manifest, never by the
+tool's own configuration on the host or in the operator's home:
+`profiles/host.yaml` renders each command in full and passes the
+written file, so the same manifest on two hosts yields the same
+commands and a host with a personal git config or a stray worktrunk
+setting behaves like any other. Where a tool generates text — a commit
+title, a merge message — it runs under that written configuration and
+the result is recorded with the effect, so the run record shows what
+was generated and under which configuration (183, 79).
+
 **A.20 — intents as changes; gathered elaborations.** An intent is an
 OpenSpec change in the blueprints (`open_intent`, `archive_intent`), and
 its change directory is where its elaborations leave their records —
@@ -2225,13 +2313,19 @@ host's tailnet hostname through `tailscale serve`, registered on
 service through the host's own caddy driven by its admin API, holding
 the tailnet certificate. `platform`, a managed host: bind 0.0.0.0 so
 the platform's ingress reaches the port on every interface, the
-endpoint read from the hostname or URL the platform hands the host,
-published within the operator's private network by the platform's own
-access control. `$PORT` and `$BIND` are the only things a declaration
-sees, so one `flywheel/services.yaml` serves under every router;
-`service.endpoint` and `place.endpoints_served` read through the
-router in force; the machinery publishes nothing wider than the
-private network under any of them (46). A reverse proxy inside the
+endpoint read from the hostname or URL the platform hands the host.
+`$PORT` and `$BIND` are the only things a declaration sees, so one
+`flywheel/services.yaml` serves under every router; `service.endpoint`
+and `place.endpoints_served` read through the router in force. What
+bounds what a host serves depends on the host. On a self-managed host
+the operator's private network is that bound, and the machinery
+publishes nothing wider under either router there. A hosted host has no
+private network: its page and its tool server are served at the tier's
+own name, and the identity token is the boundary instead — checked for
+membership of the organization named in the path and for the permission
+the tool declares before any response exists (46, 191, 249, 291,
+217c). Under both, publishing a place's endpoint past that boundary is
+the operator's choice and never the machinery's (46). A reverse proxy inside the
 flywheel binary would be a fourth router, not a requirement
 (`gaps.md`).
 
@@ -2358,6 +2452,28 @@ everywhere (`profiles/sessions.yaml` `runners`). Nothing in
 `machines/` names dispatch (C.1): the sink machine cites 216 and 217
 because the presenter is its lease holder, the capture machine because
 the endpoint writes its records.
+Four properties follow from that and are worth naming, because a
+reader looks for them here. Nothing addresses dispatch: no host,
+session or loop calls it, it learns of state through the profile's
+notify and its bounded fetch and through nothing else, and it reaches
+the operator through the sink's own identity — the bot the manifest
+names and the token the operator placed — never through a person's
+account (217d, 130, 165, 166). Nothing is lost while it is down:
+decisions are state and any host serves the page, replies wait in the
+chat and are applied once by their delivery id when the presenter
+returns, a caller of the endpoint retries under the same idempotent key
+and writes nothing twice, a capture waits with its pointer, and the
+sink's lease expires by the stated rule and never by racing (217f,
+111, 137, 148, 150). Capture is decentralized: any adapter that can
+read its source and push to the blueprints repository writes captures
+through its own binary from any machine and never through dispatch, the
+endpoint being for callers that cannot write git, and triage reads
+every capture wherever it was written (217g, 114). And a capture's
+pointer is reachable by whichever host reads it: the manifest names a
+raw store per source, an adapter puts the raw material there before
+writing the capture or the host holding it declares that it triages
+that source, and a reader is never charged for a pointer it cannot
+reach — the capture becomes an attention decision instead (217h, 149).
 
 **A.26 — organizations.** The `organization` machine is one object per
 organization, and a host runs several: each has its own root
@@ -2451,33 +2567,57 @@ organization shown with a switch to any other the host has a root for,
 its settings as a form (`configure-organization`, one response per
 save), its hosts and parts, its package store apart from any host's,
 sign-out.
-Served locally with no sign-in kind the page shows the local user and
-needs no account; behind a kind declared on the host (`host.yaml`
-`sign_in`: tailnet, oauth, oidc — a per-host package) it shows the
-vouched identity, and every op-response the page writes carries it as
-`given_by` (153). Authentication is the host's and authorization the
-organization's: one sign-in kind per host, the same for every
-organization it serves, so switching never changes the identity; each
-organization's manifest `operators:` lists who may respond, the tool
-server refuses a call from any other identity before a response exists
-and records the refusal in the run record (`surfaces.yaml`
-`tools.identity`), and the switcher shows such an organization as not a
-member.
+A page served on the operator's own computer signs in like any other,
+through the host's identity kind, so the identity is the same there as
+anywhere: there is no local-user case and no unauthenticated page (233,
+243, 253). The page shows the identity that kind vouched for, and every
+op-response it writes carries that identity as `given_by` (153). The
+single exception is 253a. Until an organization lists more than one
+operator, a self-managed host may serve the page on the operator's
+private network with no sign-in: the one entry of the operators list is
+the identity every response records as given by, the private network is
+the boundary, and the host refuses to serve unsigned-in as soon as a
+second operator is listed or the page is reached at any address but
+that network's. The exception closes when the account item exists.
+Authentication is the host's and authorization the organization's: one
+identity kind per host, the same for every organization it serves, so
+switching never changes the identity. Membership is the authored
+`operators:` list on a self-managed host and the Application's
+assignment on the organization's account on a hosted tier (247); the
+tool server refuses a call from an identity that is neither, before any
+response exists, and records the refusal in the run record
+(`surfaces.yaml` `tools.identity`), and the switcher shows such an
+organization as not a member.
 
-**234–237 — users and ownership.** Identity is the one provider's
-(A.32 below): the identity is the Frontegg user on every host, the
-operator's own computer included, its GitHub connection supplying the
-username authorship uses (234, 246), and the members are the users
-assigned the Application on the organization's account, derived and
-never authored (247).
+**234–237 — users and ownership.** An organization's operators are
+identities of the host's kind (234, 243, A.32 below). On a self-managed
+host the identity is the GitHub username the device flow issued and
+membership is the authored operators list in the manifest. On a hosted
+host the identity is the Frontegg user and membership is the assignment
+of the flywheel Application on the organization's account, the list
+derived from the account at every fetch and rendered read-only, with
+only the members' chat addresses authored (247). Authorship is the
+GitHub username under both kinds — on a hosted host from the GitHub
+social connection on the Frontegg user, and a user with no connection
+may respond and may not be an author (246). A page served on the
+operator's own computer signs in through that same kind, so the
+identity is the same there as anywhere (234).
 One board: every member reads the one register, so numbers and count
 are the same; a retracted entry keeps `answered_by` and `answered_at`
 from the response, every member's delivery shows them, and the tool
 server refuses a second response to that number before any record
 exists (235; `plan.yaml` v3, `surfaces.yaml` `members`). Sinks are per
-member: the `sink` record carries `member`, one page and one chat sink
-per identity in `operators:` with its own mark, a shared channel a
-sink with none (236). A decision's owner is its object's record
+member: the `sink` record carries `member`, and each member has one page
+sink with a delivery mark of its own. Chat sinks are one per member per
+chat address on their operators entry — a Discord user id, a Slack
+member id, keyed by the member's identity — each presented by whichever
+host runs that kind's package and holds the lease; a member with no
+address has a page sink only, and adding or removing an address adds or
+removes the sink in the same write as the list (236, 236a). A shared
+channel is a sink with one mark and no member. On a self-managed host
+the list is authored whole; on a hosted tier its identities are derived
+and only the addresses are authored, so adding or removing a member is
+an act on the account and never a commit (247, 255). A decision's owner is its object's record
 `owner`, one member of the organization or nobody — a role authorizes
 and never owns — set by planning's proposal,
 by a type, or by the `assign <owner>` response the plan machine

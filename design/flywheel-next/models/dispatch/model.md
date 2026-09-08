@@ -30,7 +30,7 @@ split them.
 | **presenter** to the chat sink | delivers the numbered decisions and the tail to the chat on the sink's cadence or when due; turns a short reply, a button press or a confirmed proposal into one op-response; reacts ✅ when it is recorded (148, 152–155, 18, 14) | the plan's register, the objects it names, the sink record and its mark (B.1 read, list) | the sink's mark and delivery id; one `op-response` per reply (B.1 write, receive) | no | yes for a chat that pushes replies over a socket; no for a chat that calls a URL on a reply | the bot token; the state-store credential (the App's installation token, C.1; push credential, C.2) | yes — that is its purpose (132, 143, 156) |
 | **capture endpoint** | accepts one source event from a caller that cannot write git; writes one capture record with the event key; the same key returns the existing capture and writes nothing (106, 111, 112, S22); writes one signal only for a forwarded single message (S21) | nothing but the existing captures under the key | one capture record; for a forwarded message, one signal record; on the blueprints' shared line under `flywheel/signals/` (203) | no | no — one request, one commit | the inbound secret per caller; the blueprints push credential | yes |
 | **triage** | one session per capture with material to read, in a place off the blueprints' shared line; reads the raw material the capture points at; writes the signals once, immutable, with excerpt and position (113, 115) | the capture, its raw material, the claims index (108) | the capture's signal records, one commit | yes — this is judgment (115) | no — a bounded session: it starts, delivers, exits (65, 110) | none of its own; a session identity (197) and a scoped token issued into its place (207) | yes when its runner is reachable from where dispatch runs (§5) |
-| **interpreter** for chat | turns one free-text message into exactly one proposed tool call, shown with a confirm control; calls the tool on the operator's confirmation; asks about a name that resolves to nothing or to two things (194) | the live objects (list and read), the tool catalogue (193), the message and, when it is a reply, the messages it replies to | nothing — the confirmed call is the response, recorded by the tool once (153) | yes — one bounded call per message | no — one request, one model call | the model credential for that call | yes |
+| **the host's agent** for chat | serves the operator's free text on the surface (194): it reads and answers a question with the query tools on its own, and proposes every write as a card with a confirm control, calling the tool on the operator's confirmation. Its interpreter, the function that turns text into a proposed call, resolves names against the live objects; a message that asks for several things yields several proposed calls, one card each, each confirmed and recorded on its own, and a name that resolves to nothing or to two things is asked about, never guessed | the live objects (list and read), the tool catalogue (193), the message and, when it is a reply, the messages it replies to | nothing — each confirmed call is the response, recorded by the tool once (153) | yes — bounded per message | no — one request, one bounded model call | the model credential for that call | yes |
 
 Three rules fall out of the table.
 
@@ -46,9 +46,11 @@ Three rules fall out of the table.
   presenter a long-lived process. A chat that calls a URL on a button
   press or a slash command does not. Every other job is one request or
   one tick.
-- **The browser model is the interpreter job and nothing else.** A
-  model in the page's browser resolves names and proposes one tool
-  call (194, surfaces.yaml `interpreter.page`). It presents nothing,
+- **The browser model is the host's agent for the page and nothing
+  else.** A model in the page's browser answers from the query tools
+  and proposes each write as a card, one per thing the message asks
+  for, which the operator confirms (194, 216a, surfaces.yaml
+  `host_agent.page`). It presents nothing,
   because the page is a sink whose presenter is the host that serves
   it. It captures nothing, because the capture box sends its text to
   the capture tool unparsed (19). It triages nothing, because a capture
@@ -267,7 +269,7 @@ carries them for an organization whose hosts sleep.
 
 | placement | process | model access | secrets | network | chat | capture endpoint | triage | what it gives up |
 |---|---|---|---|---|---|---|---|---|
-| **browser interpreter only** (get-started) | none of dispatch's; the page-serving host's own | a model shipped as a script with the page; inference in the operator's browser; no text leaves the private network (surfaces.yaml `interpreter.page`) | none — no API key exists | works wherever the page does: the host serves the page and the tools over the tailnet (155, 191), the phone runs the model | none | none; the page's capture box is the capture tool (19) | none; captures wait for a host declaring triage | chat, webhooks, transcripts. Every decision is still answerable by control and number. |
+| **the browser agent alone** (get-started) | none of dispatch's; the page-serving host's own | a model shipped as a script with the page; inference in the operator's browser; no text leaves the private network (surfaces.yaml `interpreter.page`) | none — no API key exists | works wherever the page does: the host serves the page and the tools over the tailnet (155, 191), the phone runs the model | none | none; the page's capture box is the capture tool (19) | none; captures wait for a host declaring triage | chat, webhooks, transcripts. Every decision is still answerable by control and number. |
 | **local dispatcher** | `flywheel dispatch` on the operator's machine, as a process or a pane in `flywheel-<org>-machinery` | `pane` for triage under the operator's Claude Code login; `inproc` for the interpreter with a key, or Bedrock credentials, placed by the operator | bot token, App key or push credential, model key, inbound secrets, in the machine's keychain or a sealed file under the root | the machine's tailnet node; the endpoint reachable on the private network only; a public webhook needs a funnel the operator opens for named callers (46) | the bot, while the machine is awake | yes, private | yes | the plan in chat while the machine sleeps; the sink lease then sits with the pin until the machine wakes |
 | **invoked dispatcher** (the hosted tiers) | no process stands: one function per tier, each invocation one organization's tick, woken only through that organization's queue (270) | `inproc` under the tier role, the service's model access metered into the plan, or a key the operator places | the tier's own store; no secret of the organization's is held between ticks | no private network at all: the page and the tool server are served at the tier's name and the identity token is the boundary (191, 291) | the service's Slack or Discord application; Discord free text is a slash-command option, Slack free text arrives over the Events API (277) | yes, one queue per organization behind a shared receiver (271) | yes, for a capture whose whole content is in the queue; raw-material triage goes elsewhere (263) | plain Discord channel replies, which need a gateway socket; and anything that will not fit a fifteen-minute tick |
 | **cloud dispatcher** | the same binary, placed as §5.1 lists | `inproc` with a key or the runtime's role; `managed` when the platform's sandbox reaches the tailnet | the platform's secret store or vault; never a key that reaches a host (207) | a tailnet node or the platform router's ingress (191); the endpoint public for named callers with their secrets | the bot, always | yes | yes | nothing of the four; costs a running process |
@@ -296,7 +298,7 @@ network: the page and the tool server are the same request-invoked
 function behind the tier's served name, and the identity token the
 server verifies on every call is the boundary (191, 291).
 
-**What ships first.** The browser interpreter and the local
+**What ships first.** The browser agent and the local
 dispatcher, because both are the binary already specified and neither
 needs a platform, a container image or a public route. Then the
 invoked dispatcher, because that is what the hosted tiers run: one
@@ -337,10 +339,10 @@ the plan ladder is five rungs over them (281).
 
 | tier | sign-in and identity | chat | dispatcher placement | triage runner | audit | what is a manifest binding | what is code |
 |---|---|---|---|---|---|---|---|
-| **0 · your computer** (Free) | `github`: the page signs in with GitHub's device flow, the GitHub username is the identity, the manifest's `operators:` list is membership (243, 253) | the organization's own Discord or Slack application and bot | browser interpreter only, or the local dispatcher | `pane` under the operator's login; no key | history is the audit (167) | `hosts.<host>.identity: {kind: github}`, `hosts.dispatcher`, `sinks.chat.discord` | the Discord adapter, the local and tailnet routers, the device-flow sign-in |
+| **0 · your computer** (Free) | `github`: the page signs in with GitHub's device flow, the GitHub username is the identity, the manifest's `operators:` list is membership (243, 253) | the organization's own Discord or Slack application and bot | the browser agent alone, or the local dispatcher | `pane` under the operator's login; no key | history is the audit (167) | `hosts.<host>.identity: {kind: github}`, `hosts.dispatcher`, `sinks.chat.discord` | the Discord adapter, the local and tailnet routers, the device-flow sign-in |
 | **1 · cloud agent** (Hobby) | `frontegg`: the hosted login, the served name registered once on the environment's redirect list (243, 244) | the service's Slack or Discord application, scoped to the organization's channel (277) | the invoked dispatcher: one function per tier, woken through the organization's queue | `inproc` at bound zero, the service's model access under the tier role | history plus the App's own log; every response recorded with who and when (153) | `hosts.<host>.identity: {kind: frontegg, environment, client_id}`, `hosts.<host>.tier: 1`, `sinks.chat.slack` or `.discord` | the receiver, the queue and scheduler bindings, the Frontegg sign-in, the platform router |
 | **2 · pools** (Pro, Team) | as tier 1, with roles and ownership held per account and carried in the token (248) | as tier 1 | as tier 1 | as tier 1 | as tier 1, with identity administration a surface of the flywheel (255) | `hosts.<host>.tier: 2`, `pools.<name>` with image, bound, cost and retire time | the pool platform binding, the image builder, the management console |
-| **3 · your account** (Enterprise) | as tier 1, with the organization's own directory connected to its Frontegg account (243) | as tier 1 | the same dispatcher assuming a role the organization grants, or a function of its own in the service account (276, 281) | as tier 1, under the granted role | as tier 1, exported from history to the organization's log (167) | `hosts.<host>.tier: 3` and the role, key and store names in the organization's account | the federation binding: the issuer, the tagged web-identity session, the content-free wake |
+| **3 · your account** (Enterprise) | as tier 1, with the organization's own directory connected to its account (243) | as tier 1 under the first two shapes; the installer's own applications under the third (303) | three shapes (276, 276a, 304, 305). **Stores only:** the same dispatcher, or one of its own in the service account, assuming a role the organization grants. **Stores and compute:** the binary provisioned into that account by the deployer, with only the registry, the deployer and the identity environment left on the service side. **The whole control plane installed** in the installer's own accounts, sold and installed by us, shown in no marketing and no console | as tier 1, under the granted role | as tier 1, exported from history to the organization's log (167) | `hosts.<host>.tier: 3` and the role, key and store names in the organization's account | the federation binding: the issuer, the tagged web-identity session, the content-free wake. Under the third shape nothing more: the binary reads its service side through the invocation contract alone and cannot tell whose control plane it is (297, 305) |
 
 The line between the columns: an adapter for a chat platform, a
 sign-in kind, a router kind and a runner are each one piece of code
@@ -349,19 +351,20 @@ manifest. Which of them an organization uses, on which channel, with
 which provider, is data (139, 119). No tier changes a machine
 definition, an atom or a profile operation.
 
-## 7. Proposed requirements
+## 7. Requirements 216–217k, as ratified
 
-These replace the drafts numbered 216 and 217. They are written to be
-shown true or false of a model, like every requirement in Parts A–C.
+216–217k are ratified requirements of `requirements.md`, A.25. They are
+reproduced here because this document is their binding;
+`requirements.md` is the contract and this copy may not contradict it.
 
 216. Dispatch is four jobs and no more: the presenter of the chat sink
     (148, 152–155), the capture endpoint for callers that cannot write
     the blueprints repository (106, 112), the capture-reading session (115),
-    and the interpreter for chat (194). Each job reads and writes only
+    and the host's agent for chat (194). Each job reads and writes only
     through the state store's operations and tools (125, 193). The
     data plane names none of them (C.1).
 
-216a. A model running in the page's browser is the interpreter job for
+216a. A model running in the page's browser is the host's agent for
     the page and nothing else (194). It presents no sink, writes no
     capture except through the capture tool the page already calls
     (19), and reads no capture. An organization may run with no other
@@ -435,9 +438,11 @@ shown true or false of a model, like every requirement in Parts A–C.
     for a pointer that cannot be reached; the capture is a decision
     under attention instead (149).
 
-217i. The placements of dispatch are: the browser interpreter alone,
+217i. The placements of dispatch are: the browser agent alone,
     the dispatcher on the operator's machine or in its multiplexer,
-    and the dispatcher in a long-lived process on a platform. All run
+    the dispatcher in a long-lived process on a platform, and the
+    invoked dispatcher of 270, which is a placement in its own right
+    and is the one the hosted tiers use. All run
     the same declaration. What differs between them is placement,
     the store the secrets are placed in, the network route, and the
     model access (191, 207) — all named in the manifest and none in a
@@ -497,8 +502,8 @@ shown true or false of a model, like every requirement in Parts A–C.
    manifest. Should the status view show unread captures by source
    beside unmoved signals by source (118), so a stalled triage is as
    visible as a stalled curation?
-8. **The interpreter model's size in the browser.** A phone runs a
-   small model. Is the browser interpreter's job narrowed to name
+8. **The agent model's size in the browser.** A phone runs a
+   small model. Is the browser agent's job narrowed to name
    resolution over the live objects with the tool chosen by control,
    so that a small model suffices, or does it propose the tool too?
 9. **One dispatcher per organization.** 148 allows one presenter per
