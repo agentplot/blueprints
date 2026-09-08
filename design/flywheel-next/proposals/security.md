@@ -32,9 +32,10 @@ warm copy is the thing a customer is right to ask about.
 
 **What we keep between ticks.** Per organization: a full clone of the state
 repository and a blobless partial clone of blueprints sparse-checked to the manifest, the
-claims and `flywheel/`, ten to fifty megabytes together. One row in the due index naming the
-earliest time that organization's tick could change anything (245). Queued captures, the
-caller's retry buffer and not state (246). No code, no raw material.
+claims and `flywheel/`, ten to fifty megabytes together. One scheduler entry naming the
+earliest time that organization's tick could change anything (273). Queued captures, the
+caller's retry buffer and not state (271). No code, and no raw material a capture points at:
+a transcript stays on the customer's own machine or in a store they own.
 
 **Which stores hold it, and under whose key.** On AWS the clones live on EFS, the due index on
 DynamoDB, queued captures on SQS with their bodies on S3; on Fly, a volume on the ticker
@@ -43,9 +44,18 @@ table and never per tenant, so the store's own key is ours and does not carry th
 promise is carried one level in: each organization's cache directory is sealed under a data
 key wrapped by that organization's KMS key, which is tagged with the organization and whose
 policy admits only a principal whose session tag matches, so the role that ticks that
-organization opens that organization's directory and no other. A queued capture carries an organization id and a pointer, its body written to
-S3 under that organization's key, so the shared queue holds no tenant content at all, and the
-due index holds times and ids by construction because ticking rebuilds it.
+organization opens that organization's directory and no other. A queued capture carries an organization id, and its body — a chat message, a
+webhook payload, or a pointer to raw material held elsewhere — is written to S3 under that
+organization's key, so the shared queue holds nothing readable without that key, and the
+scheduler holds times and ids by construction because ticking rebuilds them.
+
+**What the dispatcher itself runs.** It is not a pure state machine. It runs the interpreter
+that answers a chat message, one bounded call per message, and the triage of a self-contained
+capture whose whole content is already in the queue, both bounded per tick with the remainder
+carried to the next (269). What it never does is follow a capture's pointer into the raw store
+(263), and it never runs an elaboration or a construction session; those need a machine of the
+customer's own or a pool host. So plan text and chat messages pass through the model the tier
+role reaches, and transcripts and code do not.
 
 **Unwrapped for a tick and no longer.** The ticker assumes the organization's role, calls
 `Decrypt` once, opens that organization's directory, evaluates its plan, writes its effects
@@ -149,8 +159,10 @@ blueprints as a blobless partial clone sparse-checked to the manifest, the claim
 `flywheel/`. It never clones a built repository, because its declaration names none. **Covers** source code absolutely, and books and specs, by making them absent rather than
 protected. **The gap it exposes is the important one:** triage reads the raw material a
 capture points at (dispatch model §4), and that is the most sensitive content the customer
-has. A shared ticker that triages is a shared ticker holding meeting transcripts. Minimisation
-is only honest if triage runs on a host serving one organization. **Costs** nothing and saves
+has. A shared dispatcher that follows those pointers is a shared dispatcher holding meeting
+transcripts. Minimisation is only honest if pointer-following triage runs on a host serving
+one organization; the triage of a capture whose whole content is already in the queue carries
+no pointer and runs in the tick (269). **Costs** nothing and saves
 clone time. **Breaks** nothing. **Smallest proof:** a ticker whose clone spec is enforced at
 read time, where a path outside the declared set is a refusal in the run record and not a log
 line.
@@ -159,8 +171,11 @@ line.
 
 **Design A — trust the service.** Options (a) and (f): a key per organization over every store
 the shared tier touches, the cache sealed and unwrapped only for a tick, minimised sparse
-clones, no code and no raw material on any shared host, triage and all work on pool hosts that
-serve one organization and are destroyed at retire (240, 241). Chat runs through the
+clones, no code and no raw material a capture points at on any shared host, raw-material
+triage and every elaboration and construction session on pool hosts that serve one
+organization and are destroyed at retire (240, 241); the dispatcher keeps the interpreter and
+the triage of self-contained captures, which is what makes chat usable with the laptop closed
+(269). Chat runs through the
 platform's bot, so the customer places no secret at all.
 
 **Design B — your account by federation.** Design A with the key and the warm stores moved

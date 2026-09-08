@@ -790,9 +790,7 @@ the operator may reverse by a response on the file; an entry with
   follow a pointer into the raw store, along with every elaboration and
   construction session, is pushed onto the operator's own machine or a
   pool host. What that per-tick bound is, and whether a carried remainder
-  ages, are unstated. **Open**. `security.md` §2 and §4 still read as though no
-  triage at all runs on a shared host; the guarantee 263 makes is about
-  raw material, not about the word triage. **Decision**. Model access on
+  ages, are unstated. **Open**. Model access on
   the hosted tiers is the service's under the tagged role and metered
   into the plan, or a key the operator places, and 269 states it while
   `identity.yaml` `plans.limits` carries `model_usage` (**Decision**);
