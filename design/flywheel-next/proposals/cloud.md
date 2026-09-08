@@ -28,7 +28,7 @@ The model does not require a resident host per tenant; the phrasing of three cla
 
 **Bends** nothing in Part B, but it opens a window where a capture is accepted and not yet in git, which I14 forbids to be called state. The honest framing: the queue is the caller's retry buffer held on the caller's behalf, and a lost queue is indistinguishable from a caller that never called. Say so explicitly or someone will treat it as durable.
 
-**Cost.** Effectively free at every scale. One HTTP function plus one queue with a tenant key — cheaper than a queue per tenant and equally correct, because the drain is per-organization regardless. 100,000 tenants at a handful of captures a day is dollars.
+**Cost.** Effectively free at every scale. One stateless receiver function plus one FIFO queue per organization, with the organization as the message group id: the queue per organization is what carries the per-organization key and what admits one tick of an organization at a time, so a single shared queue is not equivalent. 100,000 tenants at a handful of captures a day is dollars.
 
 **Experiment.** Point a Slack Events subscription and a GitHub webhook at a function that enqueues, let the batch ticker drain, send the same event five times, assert one capture record.
 
@@ -198,15 +198,15 @@ The product in question is **AWS Lambda MicroVMs**, generally available 22 June 
 | ECS Fargate task (+ EBS attach, 2024) | unbounded | 20–200 GiB ephemeral, or an EBS volume attached to the task | 20–40 s | zero at zero tasks | task-level; EBS with a per-tenant CMK | per vCPU-second and GB-second | (a) **the no-cap fallback**; (b) too slow to wake for a 3 s ack; (c) no |
 | App Runner | unbounded | ephemeral | — | never zero; in maintenance mode as of 2026 | service-level | per instance-hour | none |
 | EC2 + warm pool | unbounded | EBS, survives stop | seconds to tens of seconds | stopped: EBS only | full VM; per-tenant CMK on the volume | EC2 + EBS | (a) tier 3; (b) no; (c) no |
-| API Gateway → SQS, direct | n/a | n/a | milliseconds | zero | queue-level, KMS on the queue | per request | (c) **yes** — acknowledges well inside 3 s with no compute in the path |
+| Receiver function → SQS | stateless, per request | none | milliseconds | zero | queue per organization, KMS on the queue | per request | (c) **yes** — acknowledges well inside 3 s; a direct gateway integration cannot, because signatures, `PING` and workspace routing are compute |
 | EventBridge Scheduler | n/a | n/a | — | zero | — | per invocation | the sweeper Fly lacks — wakes due tenants with no always-on machine |
 
-**On per-tenant encryption.** The microVM security surface names build and execution roles and port-scoped tokens, and no customer-managed key for images or snapshots — SnapStart takes `--kms-key-arn`, MicroVMs do not. So per-tenant encryption under I13 lives in the *data*: S3, DynamoDB, EBS and EFS each take a per-tenant CMK. The compute is isolated but the key story is the store's.
+**On per-tenant encryption.** The microVM security surface names build and execution roles and port-scoped tokens, and no customer-managed key for images or snapshots — SnapStart takes `--kms-key-arn`, MicroVMs do not. So per-tenant encryption under I13 lives in the *data*: S3, SQS and EBS each take a per-tenant CMK, and the pool host's own disk stays under the platform's key, isolated per host and destroyed at terminate. An organization whose tier statement must promise its own key on that disk takes the Fargate-with-EBS fallback. The compute is isolated but the key story is the store's.
 
 ### Recommended AWS mapping
 
-1. **Tier 1 dispatcher** — a Lambda function behind a function URL for the webhook and interaction paths, plus EventBridge Scheduler sweeping the due index (245) and invoking the batch tick per organization. Warm clones live in one EFS filesystem mounted from the VPC, keyed by organization, evictable.
-2. **Capture (c)** — API Gateway REST integrated directly to SQS, no compute in the acknowledgement path, drained per organization by the same tick. Clause 246 stays load-bearing.
+1. **Tier 1 dispatcher** — one Lambda function per tier, each invocation one organization's tick, woken only through that organization's queue. EventBridge Scheduler writes one one-shot entry per organization and targets the queue, not the function, so a due time serializes with every other invoker. The warm copy is one S3 object per organization, a git bundle of two sparse shallow clones downloaded to scratch and uploaded back: no EFS, no mount, no VPC, evictable when idle.
+2. **Capture (c)** — one small stateless receiver function in front of one SQS FIFO queue per organization. The service's Slack app, Discord app and GitHub App each have exactly one inbound URL for every workspace, guild and installation, so the payload must be demultiplexed by workspace id, Discord's signature verified and its `PING` answered, Slack's signed request checked and its `url_verification` echoed, and GitHub's HMAC checked, all inside three seconds. A pure gateway-to-queue integration does none of that. The receiver encrypts what it enqueues and holds no grant that decrypts, and the queue is drained per organization by the same tick.
 3. **Tier 2 pool (a)** — Lambda MicroVMs launched from the organization's image (239), one per work session, terminated at retire. ECS Fargate with an attached EBS volume is the fallback for any session that will not fit 8 hours.
 4. **Tier 3** — the tenant's own account by OIDC federation: one IAM role there trusting our issuer with a subject naming the organization, and the key, the cache object, the queue and the pool image all living in that account. We store no credential; deleting the role ends our access.
 

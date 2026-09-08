@@ -1,6 +1,6 @@
 # Gaps — requirements not satisfied, or found contradictory
 
-By requirement number (1–231 in `requirements.md`). Each entry says what
+By requirement number (1–292 in `requirements.md`). Each entry says what
 the model does instead and why. An entry with **decision** is a judgment
 the operator may reverse by a response on the file; an entry with
 **open** is unsatisfied.
@@ -757,10 +757,13 @@ the operator may reverse by a response on the file; an entry with
 
 - **256–267 tenancy and encryption.** The stores are named generically
   and bound to no platform: a managed queue, an object store, a key
-  service whose policy conditions use on a principal's session tag. The
-  tag-matching key policy, the per-organization key quota and the cost
-  per key are taken from one provider's documentation and verified
-  against none. **Open** until a hosted tick runs. 265's envelope
+  service whose policy conditions use on a principal's session tag. 259
+  now writes the match as the role's own policy over every key and
+  object of the account rather than as a condition in each key's policy,
+  because a key policy cannot read a resource tag; the per-organization
+  key quota and the cost per key are still taken from one provider's
+  documentation and verified against none. **Open** until a hosted tick
+  runs. 265's envelope
   declaration has no binding: no profile writes state records as
   envelopes, and the C.2 conformance suite has never been run against an
   encrypting binding, so 265 and 266 stand as a declaration the model
@@ -771,7 +774,7 @@ the operator may reverse by a response on the file; an entry with
   function placement exits and reschedules or retries in place is
   unstated; the model admits either and the binding picks. **Open**.
 
-- **268–278 the hosted tiers.** The tier is a per-host fact
+- **268–278 and 290–292, the hosted tiers.** The tier is a per-host fact
   (`host.yaml` `tier`) while a plan is a per-account fact
   (`identity.yaml` `plans`), so the two can disagree. The ruling taken
   here: the plan's flag hides the add, so a host is never created at a
@@ -779,9 +782,10 @@ the operator may reverse by a response on the file; an entry with
   below a live host's tier raises one attention line and refuses the
   next add, never stopping the loop (280). **Decision**. The dispatcher
   as one function per tier means the sandbox is reused across
-  organizations' ticks in turn; 269 requires it to retain nothing
-  between invocations, which is a construction claim and not a
-  guarantee against a compromise mid-tick, and the residual is named in
+  organizations' ticks in turn; 269 now says so outright and makes
+  retaining nothing the tick's own act, scratch wiped and the data key
+  dropped before exit, which is a construction claim and not a
+  guarantee against a compromise mid-tick; the residual is named in
   `proposals/security.md` §2 rather than closed. **Stated**. 263 and 269
   were reconciled with `proposals/hosted-design.md` as it now stands: the
   dispatcher runs the interpreter and triages a capture whose whole
@@ -789,8 +793,10 @@ the operator may reverse by a response on the file; an entry with
   tick with the remainder carried to the next, and only triage that must
   follow a pointer into the raw store, along with every elaboration and
   construction session, is pushed onto the operator's own machine or a
-  pool host. What that per-tick bound is, and whether a carried remainder
-  ages, are unstated. **Open**. Model access on
+  pool host. 269 now names the budget on the function placement,
+  fifteen minutes, and rules that a short budget carries triage before
+  it carries a reply; whether a carried remainder ages is still
+  unstated. **Open**. Model access on
   the hosted tiers is the service's under the tagged role and metered
   into the plan, or a key the operator places, and 269 states it while
   `identity.yaml` `plans.limits` carries `model_usage` (**Decision**);
@@ -802,6 +808,39 @@ the operator may reverse by a response on the file; an entry with
   shape and names the fallback placement without naming the platform.
   **Open**. 274 relaxes 166's bound to a per-channel statement and no
   profile yet states the two numbers. **Open**.
+
+  The hosted-design review (`proposals/hosted-design-review.md`) closed
+  four gaps and opened five. Closed: the acknowledgement path is no
+  longer claimed to be compute-free, since the service's own chat and
+  git applications each have one inbound URL for every workspace and a
+  payload must be demultiplexed, signed-request-checked and answered
+  inside three seconds, so 271 now carries a stateless receiver with an
+  encrypt-side grant only and 290 names it the second shared component;
+  270 now routes every invoker through the organization's queue as the
+  serialized group, so two ticks of one organization no longer overlap;
+  291 says who serves the page and the tool server between ticks and
+  makes a request a read and never a tick; 292 gives an invoked host a
+  liveness reading, so a dispatcher whose next due time is hours away is
+  not stale.
+
+  Opened. The receiver is a process of the machinery's that sees every
+  organization's inbound payload in the clear before it is queued, which
+  is a wider blast radius than the bot alone and is not yet drawn in a
+  threat model of its own. **Open**. The pool host's disk is under the
+  platform's key, not the organization's (275): whether a customer-
+  managed key can reach a microVM's disk or snapshot is not documented
+  and is treated as absent rather than refuted, so an organization whose
+  tier statement must promise its own key on the disk falls to the
+  fallback placement and pays its cold start. **Open**. Whether a
+  platform caps the number of event-source mappings per account, which a
+  queue per organization consumes, is unfound. **Open**. Whether a
+  gateway's direct queue integration needs a data-key grant on the
+  queue's key through its integration role is asserted from prior
+  knowledge and unverified. **Open**. Design C, the binary provisioned
+  into the organization's own account behind a control plane of
+  registry, deployer and identity, is a design and not a tier of 268;
+  268 still has four tiers and 281's Enterprise is a dispatcher function
+  of its own in the service account, so C is unratified. **Open**.
 
 - **279–284 plans and presets.** The payment provider appears in no
   profile: 279 says a plan is billed through one, and nothing binds

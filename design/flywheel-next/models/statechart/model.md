@@ -2545,7 +2545,7 @@ idle clocks paused (`sessions.yaml` `session.idle_since`), and `gone`
 covers) or at the 24h bound; its next heartbeat returns it to `alive`
 with nothing to answer.
 
-## 19. Ratified 256–289: tenancy, the hosted tiers and plans
+## 19. Ratified 256–292: tenancy, the hosted tiers and plans
 
 **A.33 — tenancy and encryption (256–267).** Everything a shared host
 keeps between ticks is sealed under a key naming one organization
@@ -2558,7 +2558,11 @@ that runs it alone, so the plaintext data key exists in a process
 evaluating that organization's plan and nowhere else (257). That role
 is scoped to one organization by a session tag matched against the tag
 on every key and object it opens, so one compromised credential reaches
-one organization and no count of roles bounds the tenancy (259). A key
+one organization and no count of roles bounds the tenancy (259). The
+match is written as the role's own policy over every key and object of
+the account, the resource's organization tag equal to the session's, so
+no key names a role and no role is added for an organization
+(`host.yaml` `tier.tagging`). A key
 the host cannot reach fails closed: no tick proceeds, one attention
 line names the key and since when, running work is untouched, and
 nothing is kept unencrypted as a fallback (260). The cache is a
@@ -2587,7 +2591,7 @@ service's account, a key in the organization's own account behind a
 role that trusts the service's issuer — and moving between them
 re-wraps data keys and changes no history (267).
 
-**A.34 — the hosted tiers (268–278).** A host carries a tier, 0 to 3,
+**A.34 — the hosted tiers (268–278, 290–292).** A host carries a tier, 0 to 3,
 named by what exists on the service side: your computer, the cloud
 agent, pools, your account (268, `host.yaml` `tier`). A tier is a
 binding and never a second machinery. On tiers 1 to 3 the host is one
@@ -2595,7 +2599,11 @@ function per tier and each invocation is one organization's tick: it
 assumes the tier's role under the organization's session tag, downloads
 the warm cache, fetches, evaluates, pushes by compare-and-swap,
 delivers the plan, uploads the cache, wipes its scratch and exits,
-retaining nothing between invocations (269). It runs a model: the interpreter,
+retaining nothing between invocations (269). The sandbox is reused
+across organizations, so retaining nothing is the tick's own act:
+scratch wiped and the data key dropped before exit. A tick has a fixed
+budget the placement states, fifteen minutes on the function placement,
+and a short budget carries triage before it carries a reply. It runs a model: the interpreter,
 one bounded call per message on the `inproc` runner, and the triage of
 a self-contained capture whose whole content is already in the queue,
 both bounded per tick with the remainder carried to the next (216,
@@ -2611,12 +2619,21 @@ provider sees plan text and messages (261, 279, `host.yaml`
 `tier.model`).
 
 The tick is invoked and not looped (270): a clock, a notification, an
-arriving capture, a chat event and a request for the page are all
-invokers of the same tick, which is 231 read as *nothing but the tick
-keeps time* rather than *a process stands*. The capture endpoint on a
-hosted tier is a managed queue per organization with no compute of the
-machinery's in the acknowledgement path, the caller's retry buffer and
-not state (271). The warm cache is one encrypted object per
+arriving capture and a chat event are all invokers of the same tick,
+which is 231 read as *nothing but the tick keeps time* rather than *a
+process stands*. Every invoker enqueues on the organization's queue and
+the queue admits one tick of an organization at a time, the organization
+naming the group it serializes, so the scheduler's target is the queue
+and never the function; a request for the page is a read under the
+caller's identity and no invoker at all. The capture endpoint on a
+hosted tier is a managed queue per organization behind one stateless
+receiver of the machinery's, which verifies the caller's signature,
+answers the platform's liveness check, acknowledges inside the
+platform's deadline and routes by workspace id to the organization's
+queue, holding no key that decrypts and reading no queue; its grant on
+the key is the encrypting one and the tagged session holds the
+decrypting one. The queue behind it is the caller's retry buffer and
+not state (271, `host.yaml` `tier.receiver`). The warm cache is one encrypted object per
 organization holding a bundle of two sparse shallow clones, the state
 repository and the blueprints restricted to the manifest, the claims
 and the prefix, downloaded per tick and uploaded back (272).
@@ -2631,17 +2648,66 @@ A pool host on a hosted tier is a microVM from the organization's
 image with a container runtime inside it, no shared network required,
 a stated maximum lifetime and a named fallback placement for longer
 sessions; it is terminated at retire and never suspended, so its disk
-goes with it (275, `host.yaml` `pool.hosted`). Tier 3 is federation:
+goes with it (275, `host.yaml` `pool.hosted`). That disk is isolated per
+host and destroyed at terminate under the platform's own encryption and
+not under the organization's key; an organization whose tier statement
+must name its own key on the disk binds its pool to the fallback
+placement, a container task with a volume under the key. The image is
+built on a pool host or the operator's own machine and never on a shared
+host, because building it reads the repositories' environment
+declarations, and its artifact is written under the organization's key
+(238, 239, 275). Tier 3 is federation:
 one role in the organization's own account trusting the service's
 issuer with the organization as subject, assumed per tick with a minted
 token, the key, cache, queue and pool image living there, revocation by
-deleting the role and no credential stored (276). Chat on the hosted
+deleting the role and no credential stored (276). The organization
+registers the service's issuer as an identity provider in its account
+and allows the role's session to be tagged, since a web-identity session
+takes its tags only from the token it presents. The only standing grants
+in that account are the role's trust and the key's grant to that role:
+the wake from the organization's queue carries the organization's name
+and nothing else, and the tick reads the queue itself under the assumed
+role, so nothing of the service's stands with a decrypting grant
+(`host.yaml` `tier.federation`). Chat on the hosted
 tiers may be the service's own Slack or Discord application scoped to
 the organization's channel, carrying plan text and interactions and
 nothing else, the record still naming who responded (277, `sink`
-machine). An intermittent host keeps its place: the laptop is away, its
+machine). On the invoked placement Discord free text is the string
+option of the application's slash command, plain channel replies needing
+a gateway socket nobody holds, while Slack free text arrives over the
+events subscription and needs none; the receiver answers an interaction
+with a deferred acknowledgement inside the platform's deadline and the
+tick posts the real reply within the interaction token's window or as an
+ordinary message (`host.yaml` `tier.chat`). An intermittent host keeps its place: the laptop is away, its
 leases stand and its clocks pause, and the cloud agent keeps ticking
 everything else (278, 150a).
+
+**A.34 — the invoked placement's three additions (290–292).** The
+receiver and the chat application are the two shared components of the
+hosted tiers and the only two: each sees an inbound payload once, in
+transit, keeps nothing, and is a stated fact of the tier, and no other
+process of the service's is reached by more than one organization's
+traffic (290, `host.yaml` `tier.receiver`). The page and the tool server
+are served at the tier's name by the same function on request, under the
+caller's token: the page a static bundle at that name, the tool server
+the binary's own tool catalogue reached over HTTP with the identity
+token by the page and over stdio or in-process, in the shape of the
+model context protocol, by sessions and by the interpreter, the agent a
+client of the tools and never their server. A request reads the cache
+and the shared line, writes only through a tool call that is captured
+and ticked like any other, and is never a tick; on a hosted host that
+token is the boundary the private network is on a self-managed one (193,
+243, 249, 291, `host.yaml` `tier.served`, 46, 191, 217c). An invoked
+host is alive while its scheduler entry stands or its queue holds items:
+it heartbeats once per tick, `host.last_seen` reads the later of that
+heartbeat and the standing entry's due time and reads now while an item
+is queued, so its stale window is the due time it wrote plus the
+engine's grace and 150's takeover is raised for it only past that (292,
+`record-derived.yaml` `host.last_seen`, `host.yaml` `tier.liveness`).
+The invoked placement is a placement in its own right: the scheduler
+gives it the clock, the interactions endpoint gives it the replies a
+socket would carry, and the served name with an identity check gives it
+the route (217i).
 
 **A.35 — plans and presets (279–284).** A plan is a named set of the
 `fw.ff.*` entitlement features plus a few stated limits, held by the
@@ -2657,8 +2723,8 @@ the triage of self-contained captures run in the cloud so chat is fully
 usable with the laptop closed and only raw-material triage, elaboration
 and construction wait for a machine of the operator's own; Pro adding
 pools and the store; Team adding members and the console; Enterprise at
-tier 3 with federation, enterprise sign-in, a dispatcher of its own and
-audit export. What each unlocks is the requirement while the price is
+tier 3 with federation, enterprise sign-in, a dispatcher function of its
+own in the service account and audit export. What each unlocks is the requirement while the price is
 not (281, `identity.yaml` `plans.ladder`). Limits are plan metadata and
 not flags: organizations, members, included pool hours, the largest
 pool host (282, `plans.limits`).

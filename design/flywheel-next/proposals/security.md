@@ -37,17 +37,22 @@ earliest time that organization's tick could change anything (273). Queued captu
 caller's retry buffer and not state (271). No code, and no raw material a capture points at:
 a transcript stays on the customer's own machine or in a store they own.
 
-**Which stores hold it, and under whose key.** On AWS the clones live on EFS, the due index on
-DynamoDB, queued captures on SQS with their bodies on S3; on Fly, a volume on the ticker
-machine. EFS, EBS, SQS and DynamoDB are keyed per filesystem, per volume, per queue and per
-table and never per tenant, so the store's own key is ours and does not carry the promise. The
-promise is carried one level in: each organization's cache directory is sealed under a data
-key wrapped by that organization's KMS key, which is tagged with the organization and whose
-policy admits only a principal whose session tag matches, so the role that ticks that
-organization opens that organization's directory and no other. A queued capture carries an organization id, and its body — a chat message, a
-webhook payload, or a pointer to raw material held elsewhere — is written to S3 under that
-organization's key, so the shared queue holds nothing readable without that key, and the
-scheduler holds times and ids by construction because ticking rebuilds them.
+**Which stores hold it, and under whose key.** The warm copy is one S3 object per
+organization, a git bundle of two sparse shallow clones downloaded to the tick's scratch disk
+and uploaded back; there is no shared filesystem and no VPC. Captures wait on one SQS FIFO
+queue per organization, whose message group id is the organization, so the queue is also what
+admits one tick of an organization at a time. The due time is one one-shot scheduler entry
+per organization and holds times and ids by construction, because ticking rebuilds it. Each
+of those stores is encrypted under a KMS key tagged with the organization, and the match is
+written as the tier role's own policy over every key and object of the account — the
+resource's tag equal to the session's principal tag — so no key policy names a role and no
+role is added per organization. The receiver in front of the queues holds an encrypt-side
+grant and no grant that decrypts. A queued capture's body — a chat message, a webhook
+payload, or a pointer to raw material held elsewhere — is encrypted the same way, so the
+queue holds nothing readable without that organization's key. A pool host's own disk is the
+one exception: the platform isolates it per host and destroys it at terminate under the
+platform's key, and an organization that must have its own key on that disk takes the
+container-task fallback with a volume under it.
 
 **What the dispatcher itself runs.** It is not a pure state machine. It runs the interpreter
 that answers a chat message, one bounded call per message, and the triage of a self-contained
@@ -147,8 +152,9 @@ the same binary into the customer's AWS or Fly account through a role they grant
 external id, and never hold their content at all. Their GitHub App, their bot, their keys.
 **Covers** everything but the metadata we need for billing and support and our own supply
 chain, since our binary still runs there. **Costs** the slowest onboarding, a per-customer
-always-on floor, and a support story where we cannot see what broke. **Breaks** the shared bot
-identity and tier 1's economics. **Smallest proof:** `flywheel init` into a fresh customer
+always-on floor, and a support story where we cannot see what broke. The chat application
+stays ours even here, so plan lines still arrive from one bot and 277 holds; what moves is the
+binary, the keys and the App. **Breaks** tier 1's economics. **Smallest proof:** `flywheel init` into a fresh customer
 account reaching a first green tick, with an egress check showing the control plane received
 no record body.
 

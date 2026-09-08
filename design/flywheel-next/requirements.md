@@ -369,7 +369,10 @@ requirements, iterated against the running plan rather than on paper.
     place and shown on the page beside the bolt, so the operator reaches
     a bolt's running system by a link. Publishing an endpoint beyond the
     operator's private network is the operator's choice, never the
-    machinery's.
+    machinery's. A hosted host has no private network: the page and the
+    tool server are served at the tier's own name and the identity token
+    is the boundary there (191, 249, 291), and a place's endpoints are
+    still published beyond it only on the operator's word.
 47. A repository declares its services — a dev server, a worker, anything
     that listens — as data in the repository: a name, how it starts in a
     place, and what it serves. Every open bolt's place carries one
@@ -1001,7 +1004,13 @@ requirements, iterated against the running plan rather than on paper.
     them within the operator's private network. The manifest names the
     router per host; the same repository declaration serves under
     every router; nothing beyond the private network is published
-    unless the operator says so (46).
+    unless the operator says so (46). On a hosted host there is no
+    private network: the tier's router is the platform's ingress at the
+    host's served name, and what stands in for the private network is
+    the identity token the tool server verifies on every call (249,
+    291). The boundary is the token there and the network on a
+    self-managed host; a place's own services are published beyond it
+    only when the operator says so, as everywhere.
 
 ### A.23 Where files live
 
@@ -1120,7 +1129,10 @@ requirements, iterated against the running plan rather than on paper.
     answers within the operator's patience for a chat reply. A runner
     on an agent platform reaches the tool server only over remote MCP
     with the session's identity, and only across the operator's
-    private network (46, 191).
+    private network (46, 191). On a hosted host the tool server is
+    reached at the host's served name and the identity token it
+    verifies is the boundary (249, 291); the private network is the
+    boundary on a self-managed host.
 
 217d. No host, session or loop addresses dispatch. Dispatch learns of
     state through the profile's notify and its bounded fetch (130,
@@ -1158,14 +1170,18 @@ requirements, iterated against the running plan rather than on paper.
     under attention instead (149).
 
 217i. The placements of dispatch are: the browser agent alone, the
-    dispatcher on the operator's machine or in its multiplexer, and
-    the dispatcher in a long-lived process on a platform. All run the
-    same declaration. What differs between them is placement, the
+    dispatcher on the operator's machine or in its multiplexer, the
+    dispatcher in a long-lived process on a platform, and the invoked
+    dispatcher of 270, which is a placement in its own right and is the
+    one the hosted tiers use. All run the same declaration. What differs between them is placement, the
     store the secrets are placed in, the network route, and the model
     access (191, 207) — all named in the manifest and none in a
-    machine, an atom or a profile operation. A placement that cannot
-    hold a socket, a clock and a private-network route is not a
-    placement for the presenter or the endpoint.
+    machine, an atom or a profile operation. A placement that holds no
+    socket, no clock and no private route is a placement when a
+    scheduler gives it the clock (273), an interactions endpoint gives
+    it the replies a socket would carry (277), and a served name with
+    an identity check gives it the route (243, 291); it gives up only
+    the replies a chat platform delivers over a socket alone (277).
 
 217j. The installation tiers are bindings. A chat platform's adapter, a
     sign-in kind, a router kind and a runner are each code shipped
@@ -1557,7 +1573,10 @@ requirements, iterated against the running plan rather than on paper.
     reaches one organization. The scope may be carried by a session tag
     naming the organization, matched against the tag on every key and
     object it opens, so the number of organizations is bounded by no
-    count of roles.
+    count of roles. The match is written as the role's own policy over
+    every key and object of the account, the resource's organization tag
+    equal to the session's, so no key names a role and no role is added
+    for an organization.
 260. A key that is unreachable, deleted or behind a role that no longer
     trusts the service, fails closed. No tick proceeds on state it
     cannot open, every host of that organization shows one attention
@@ -1618,7 +1637,12 @@ requirements, iterated against the running plan rather than on paper.
     role under a session tag naming that organization (259), fetches,
     evaluates, pushes by compare-and-swap (162), delivers the plan,
     wipes its scratch and exits, retaining nothing between invocations
-    (217a). It runs a model. The interpreter that answers a message is
+    (217a); the sandbox is reused across organizations, so retaining
+    nothing is the tick's own act, its scratch wiped and its data key
+    dropped before exit. It runs a model. A tick has a fixed budget the
+    placement states, fifteen minutes on the function placement; when
+    the budget is short the tick carries triage before it carries a
+    reply. The interpreter that answers a message is
     one bounded call per message on the in-process runner (216, 217b,
     217c), and the triage of a self-contained capture, one whose whole
     content is already in the queue such as a chat message or a webhook
@@ -1642,11 +1666,22 @@ requirements, iterated against the running plan rather than on paper.
     page. Every invoker produces the same tick, and a run missed while
     nothing invoked it is caught up by the next one under the idempotent
     key (111). This amends 231: what 231 requires is that nothing but
-    the tick keeps time, not that a process stands.
+    the tick keeps time, not that a process stands. Every invoker
+    enqueues on the organization's queue and the queue admits one tick
+    of an organization at a time, the organization naming the group the
+    queue serializes, so the scheduler's target is the queue and never
+    the function. A request for the page is a read under the caller's
+    identity and is not an invoker (291).
 271. On the hosted tiers the capture endpoint (216) is a managed queue
-    per organization with no compute of the machinery's in the
-    acknowledgement path: the platform answers the caller, and the item
-    waits for a tick. The queue is the caller's retry buffer and not
+    per organization with one stateless receiver of the machinery's in
+    the acknowledgement path, which verifies the caller's signature,
+    answers the platform's liveness check, acknowledges within the
+    platform's deadline, and routes by workspace to the organization's
+    queue; it holds no key that decrypts and reads no queue. The
+    receiver may encrypt what it enqueues and never decrypt, so its
+    grant on an organization's key is the encrypting one and the
+    tagged session of 259 holds the decrypting one. The item waits for
+    a tick. The queue is the caller's retry buffer and not
     state. A capture is captured when its commit lands, a lost queue is
     indistinguishable from a call that never arrived, and a repeat under
     the same key writes nothing (111). Every body it holds is encrypted
@@ -1683,7 +1718,14 @@ requirements, iterated against the running plan rather than on paper.
     fixed maximum lifetime, and the manifest names a fallback placement
     for a session that must run longer. It serves one organization (241)
     and holds that organization's code and raw material for the length
-    of the work, on a disk encrypted under the organization's key (256).
+    of the work, on a disk the platform isolates per host and destroys
+    at terminate under the platform's own encryption; an organization
+    whose tier statement must name its own key on that disk (261) binds
+    its pool to a placement that takes one, a container task with a
+    volume under the key. The image is built on a pool host or the
+    operator's own machine and never on a shared host, because building
+    it reads the repositories' environment declarations (238, 239), and
+    its artifact is stored under the organization's key (256).
 276. Tier 3 is federation. The organization creates one role in its own
     account whose trust admits the service's issuer with the
     organization as the subject, and the key, the warm cache, the
@@ -1692,14 +1734,32 @@ requirements, iterated against the running plan rather than on paper.
     no credential of the organization's and has nothing to rotate or
     leak, and every use of the key is logged in the organization's own
     account. Revocation is deleting the role: the next tick refuses with
-    the attention line 260 requires, and running work is not killed.
+    the attention line 260 requires, and running work is not killed. The
+    organization registers the service's issuer as an identity provider
+    in its account and allows the role's session to be tagged, and the
+    token the service mints carries the organization as a principal tag,
+    because a web-identity session takes its tags only from the token it
+    presents. The only standing grants in the organization's account are
+    the role's trust and the key's grant to that role. The wake from the
+    organization's queue carries the organization's name and nothing
+    else, and the tick reads the queue itself under the assumed role, so
+    nothing of the service's stands with a decrypting grant on the
+    organization's key and deleting the role ends every path.
 277. On the hosted tiers the chat sink's identity may be the service's
     own Slack or Discord application, installed into the organization's
     workspace and scoped to the organization's channel, beside the bot
     the manifest names and the token the operator placed (217d). It
     carries plan text and the interactions it receives and nothing else:
     no repository reach and no key. The record still names who responded
-    (153); the application is the service's.
+    (153); the application is the service's. On a function placement
+    Discord free text is the string option of the application's slash
+    command; plain replies in a channel are read only by a placement
+    holding the gateway socket. Slack free text arrives over the events
+    subscription and needs no socket. The receiver answers an
+    interaction with a deferred acknowledgement inside the platform's
+    deadline (271), and the tick posts the real reply within the
+    interaction token's window or as an ordinary message from the
+    application.
 278. An intermittent host (150a) keeps its place on a hosted tier. A
     laptop closed past its stale window is away, its leases stand and
     its sessions' clocks pause, and the cloud agent keeps ticking
@@ -1707,6 +1767,27 @@ requirements, iterated against the running plan rather than on paper.
     captures are accepted and queued while the machine that usually does
     it sleeps. What waits for the lid is only the work that host alone
     covers, and triage still runs only where 263 allows.
+290. The receiver of 271 and the chat application of 277 are the two
+    shared components of the hosted tiers, and they are the only two.
+    Each sees an inbound payload once, in transit, and keeps nothing;
+    each is a stated fact of the tier (261). No other process of the
+    service's is reached by more than one organization's traffic.
+291. The page and the tool server on a hosted tier are served at the
+    tier's name by the same function on request, under the caller's
+    token (243, 249). The page is a static bundle served at that name.
+    The tool server is the binary's own catalogue of tools (193),
+    reached over HTTP with the identity token by the page, and over
+    standard input and output or in-process, in the shape of the model
+    context protocol, by sessions and by the interpreter; the agent is a
+    client of the tools and never serves them. A request is a read under
+    the caller's identity and never a tick (270): it reads the cache and
+    the shared line, and it writes only through a tool call, which is
+    captured and ticked like any other.
+292. An invoked host is alive while its scheduler entry stands or its
+    queue holds items. It heartbeats once per tick, its stale window is
+    the due time it wrote plus the profile's grace, and 150's takeover
+    is raised for it only past that. A host with no entry, no queued
+    item and no heartbeat is gone.
 
 ### A.35 Plans and presets
 
@@ -1731,9 +1812,10 @@ requirements, iterated against the running plan rather than on paper.
     **Hobby** is tier 1: the service's App and bot, with the interpreter
     and the triage of self-contained captures running in the cloud, so
     chat is fully usable with the laptop closed: a decision is answered
-    by button or by free text, a capture is written as text, and the
-    query tools answer (269). The plan reaches the organization's chat
-    and the page at a served name. What waits for the operator's own
+    by button, by slash command, and in Slack by free text (277), a
+    capture is written as text, and the query tools answer (269). The
+    plan reaches the organization's chat and the page at a served name
+    (291). What waits for the operator's own
     machine or a pool host is raw-material triage, elaboration and
     construction. **Pro** adds pools with an included allowance and
     metered overage, the package store, the book view and the presets.
@@ -1742,7 +1824,8 @@ requirements, iterated against the running plan rather than on paper.
     ceiling on a pool host. **Enterprise** is tier 3: federation into
     the organization's own account (276), enterprise sign-in and
     provisioning through the organization's own directory, a dispatcher
-    function of its own, audit export and a private pool image.
+    function of its own in the service account, audit export and a
+    private pool image.
 282. Limits are plan metadata and not flags: how many organizations, how
     many members, how many pool hours are included, and how much memory
     a pool host may take. The tool server reads them beside the flags
