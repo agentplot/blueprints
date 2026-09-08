@@ -2502,35 +2502,34 @@ hosts and its image (240). The instrument's drain sums alive hosts'
 bounds, pool hosts included, so a host added or retired shows as drain
 changing (242).
 
-**A.32 — identity (243–255).** One provider, Frontegg, bound in
-`profiles/identity.yaml` and inherited by both profiles. The page runs
-the SDK and the tool server verifies the token; a host declares the
-provider's environment (`hosts.<host>.identity`), never a sign-in kind,
-and the sign-in packages of 233 are gone (243). The host's served name
-is the only per-host fact, registered once on the environment's
-redirect list (244); on the operator's own computer the flywheel's own
-per-computer proxy (`host.yaml` `router.local`) serves
-`https://<host>.flywheel.localhost` and a place's services beside it,
-so one wildcard entry admits every host (245). Membership is the
-Application's assignment on the organization's account — a top-level
-account, or a sub-account of the hosted service's — so `operators:`
-and `roles:` are derived and shown read-only, and only `addresses:`
-keyed by user id is authored (247, 248, 236a). The tool server checks
-the token's permission per tool (`identity.yaml` `permissions.by_tool`)
-before any response exists and records a refusal in the run record
-(249); flags hide surfaces per account and never authorize (250);
-sessions act with the machinery's identity token and the App's
-installation token, never a user credential (251). The definitions
-ship with the set (`identity.yaml` `definitions`) and only the hosted
-service's release syncs them; a self-managed host uses the Production
-environment as released and refuses a tool whose permission the
-environment lacks (252, 253). When the provider is unreachable the page
-goes read-only past the token's expiry, unbounded, and the hosts cover
-work with the App token regardless (254). Identity administration is
-five tools on the account item under `fw.identity.admin` (255). 207a:
-a self-managed organization's own App with the operator's key; the
-hosted service's App whose key never leaves it, minting installation
-tokens for pool hosts (`host.yaml` `app`). 205a: one address per host
-with the organization in the path, the settings form editing the
-organization's keys and showing the host's read-only (`host.yaml`
-`identity.address`, `surfaces.yaml` `account.settings_form`).
+**A.32 — identity (243–255).** A host binding with two kinds, bound
+in `profiles/identity.yaml` and inherited by both profiles
+(`hosts.<host>.identity`). `github`, for self-managed hosts: GitHub's
+device flow, the GitHub username the identity, the manifest's authored
+`operators:` list with each member's addresses the membership, every
+listed operator holding every permission, flags at their defaults, no
+environment and no sync, no provider to lose (243, 246–250, 253, 254).
+`frontegg`, for the hosted tiers: Frontegg through its SDK with one
+Application, hosted login with the served name registered once (244),
+membership as the Application's assignment on the organization's
+account — a top-level account or a sub-account of the hosted service's
+— so `operators:` identities are derived and only addresses authored
+(247), roles and permissions from the token checked per tool before
+any response exists (248, 249, `identity.yaml` `permissions.by_tool`),
+flags per account (250), definitions shipped with the set and synced
+by the service's release alone (252), read-only degraded mode past a
+token's expiry, unbounded (254), and identity administration as five
+tools on the account item (255). The page on the operator's own
+computer serves on a localhost port, any port, no proxy and no name
+required; portless or a proxy is advice, never a requirement, and the
+routers of `host.yaml` serve a place's services only (245). Sessions
+act with the machinery's identity token and the App's installation
+token, never a user credential (251). 247a: the upgrade to a hosted
+tier creates the account, invites the same GitHub usernames and
+carries the addresses over. 207a: a self-managed organization's own
+App with the operator's key; the hosted service's App whose key never
+leaves it, minting installation tokens for pool hosts (`host.yaml`
+`app`). 205a: one address per host with the organization in the path,
+the settings form editing the organization's keys and showing the
+host's read-only (`host.yaml` `identity.address`, `surfaces.yaml`
+`account.settings_form`).
