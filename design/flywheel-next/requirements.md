@@ -588,8 +588,8 @@ requirements, iterated against the running plan rather than on paper.
 
 ### A.12 Scenarios and testing as data
 
-92. Every machine is testable on its own against a stand-in control
-    plane, with no live service of any kind.
+92. Every machine is testable on its own against a stand-in state
+    store, with no live service of any kind.
 93. The whole machinery runs with sessions replaced by a stand-in that
     plays a scenario's scripted exits, so that seeding a scenario
     exercises the stores, the engine, the git effects, the plan and the
@@ -2676,8 +2676,8 @@ by walking each one. Each is tagged with the profiles it applies to.
   inside it. Nothing about the repository's lines of work was changed by
   the session.
 - **S16.** *(all profiles)* The operator dictates a scenario in a
-  sentence. It becomes scenario data, runs against a stand-in control
-  plane with no live service, and produces the transitions, the effects
+  sentence. It becomes scenario data, runs against a stand-in state
+  store with no live service, and produces the transitions, the effects
   and the plan decisions it asserts, rendered afterwards as a trace the
   operator reads.
 - **S17.** *(profile: git-only)* Two hosts see the same approved unit at
