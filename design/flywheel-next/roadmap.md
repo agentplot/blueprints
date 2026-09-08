@@ -14,6 +14,16 @@ willdan until phase 2 lands and is never modified.
 | 4 | Dispatch | Dispatch as a host: the four jobs, the receiver, the interpreter in the page's browser and in-process, triage placements, several organizations on one host, users and ownership, environments | A.25, A.26, A.29, A.30 |
 | 5 | Scale | The hosted tiers: identity by Frontegg, the per-tier dispatcher, queues, cache, scheduler, pools, tenancy and encryption, plans and presets, the management console, the MCP endpoint, federation into the customer's account | A.31–A.36 |
 
+## Repositories
+
+| repository | what it is |
+|---|---|
+| `agentplot/blueprints` (public) | this design: requirements, surfaces, models, proposals, roadmap, the generic track |
+| `agentplot/flywheel-next` (public) | the binary, open source; the prototype is its seed; work is OpenSpec changes, one per phase (`stage1` is phase 1), each artifact reviewed before the next, `apply` after the tasks review |
+| `agentplot/flywheel-cloud` (private) | the control plane (A.37); source-available to enterprise customers; Switchboard composition |
+
+Each repository's AGENTS.md states the line between them and points back here.
+
 ## Phase gates
 
 A phase ends when its scenarios pass in conformance and the willdan operator
