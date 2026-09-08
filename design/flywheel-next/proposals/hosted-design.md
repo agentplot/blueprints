@@ -51,7 +51,7 @@ flowchart LR
 | Warm cache | One object per organization in S3, encrypted under that organization's key, holding a git bundle of two sparse shallow clones. The tick downloads it to scratch disk and uploads it back. No VPC, no mount | The state repository and the blueprints repository restricted to the manifest, claims and the flywheel prefix. Never code, never raw capture material | Always, encrypted. Deleted and re-cloned when the organization has been idle |
 | Scheduler | EventBridge Scheduler, one one-shot entry per organization written at the end of each tick from the machines' own timers; a daily sweep as the backstop | The next due time only | Only while something is due; an idle organization has no entry |
 | Pool host | A Lambda MicroVM created from the organization's image when the plan approves work: 8 to 32 GB of memory, 4 to 16 vCPU, up to 32 GB of disk, no VPC needed, and Docker runs inside it so devcontainer features and Docker-in-Docker work. Fargate in a minimal VPC is the fallback for sessions past eight hours, without Docker inside. It enrols as a host, clones the code it needs, runs the session in a worktree, pushes the pull request, and is terminated | Your code and your raw capture material, on a disk encrypted under the organization key, for the length of the work. Triage sessions run here too, never in the dispatcher | Only while work runs. Terminated at retire, disk destroyed |
-| KMS key | One customer-managed key per organization in the service account, tagged with the organization. Its policy allows a principal only when the principal's session tag equals the key's tag, so no count of roles limits it | Encrypts the queue, the cache, the pool disk, the logs | Always. On the enterprise tier the key is in your account and we hold a grant you can revoke |
+| KMS key | One customer-managed key per organization in the service account, tagged with the organization. Its policy allows a principal only when the principal's session tag equals the key's tag, so no count of roles limits it | Encrypts the queue, the cache, the pool disk, the logs | Always. On the enterprise tier the key, the cache and the queue are in your own account, reached by a role you create that trusts our OIDC issuer for your organization. We store no credential; deleting the role ends our access |
 | Chat bot | The service's Slack app and Discord app, installed into your workspace | The plan lines it sends and the interactions it receives. The one shared component, and it carries only plan text | Always, managed by the platforms |
 
 ## One tick, step by step
@@ -87,7 +87,8 @@ the function's sandbox is reused across organizations' ticks in turn, holding
 nothing between them by construction. The enterprise tier gives a dedicated
 function or your own account when policy needs process separation. The upgrades
 that shrink it are cache eviction when idle, Nitro Enclaves with attestation for
-the dispatcher, and a key in your own account that you can revoke.
+the dispatcher, and moving the key and the warm stores into your own account behind a role
+you can delete.
 
 ## Your laptop while it is closed
 
@@ -106,7 +107,7 @@ happened while it was closed.
 | 0 · your computer | Nothing. The binary on your laptop, device-flow sign-in | Nothing |
 | 1 · cloud agent | Sign in to the hosted account, invite the bot, install the App on your GitHub organization | Receiver queue, a role and key, a cache object, a scheduler entry. No pool: your laptop still builds |
 | 2 · pools | An image and a bound | Tier 1 plus pool hosts on demand |
-| 3 · your account | Your AWS account and your key | Provisioning only. We hold names, health and billing |
+| 3 · your account | One IAM role in your AWS account trusting our OIDC issuer for your organization; your key, cache, queue and pool image live there | The same dispatcher, assuming your role with a per-tick token. We store nothing of yours |
 
 ## Scheduling
 
@@ -119,15 +120,21 @@ an interim tick already handled the work, is one idempotent tick: it fetches,
 finds no work, and reschedules or deletes. That costs one invocation and nothing
 else. The daily sweep is the backstop for an entry that was never written.
 
-## Federation by OIDC
+## The upgrade: federation by OIDC
 
-The enterprise variant is the one where nothing of the customer's lives in the
-service account. The customer creates one IAM role in their own account whose
-trust policy accepts the service's OIDC issuer with a subject naming their
-organization. The dispatcher's tick assumes that role with a per-tick
-web-identity token, so the service stores no credential of theirs. The key, the
-cache object, the queue and the pool image all live in the customer's account,
-and revoking access is deleting the role.
+The default above is the tagged tier role over per-organization keys and objects
+in the service account. The upgrade is the variant where nothing of yours lives
+in the service account at all.
+
+**What changes for you.** You create one IAM role in your own AWS account. Its
+trust policy accepts our OIDC issuer with a subject naming your organization, so
+you paste our issuer and your organization's subject and you are done. Your key,
+your cache object, your queue and your pool image live in your account. Deleting
+that role ends our access.
+
+**What changes for us.** Nothing is stored. The dispatcher's tick assumes your
+role with a per-tick web-identity token, so there is no credential of yours to
+keep, rotate or leak, and every use of your key is logged in your account.
 
 The page's sign-in federation is a separate thing and is already A.32: Frontegg
 is the OIDC provider for the page, federating to the customer's own identity

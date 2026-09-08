@@ -113,7 +113,7 @@ The free tier is therefore Slack-first, or Discord in interactions mode: the num
 | 0 | your own computer | local, or browser interpreter only | your machine | whatever you set up | zero |
 | 1 | cloud agent, free or cheap | a slot in the shared batch ticker, `bound: 0` | none | the platform's shared bot, interactions mode | cents/tenant/month |
 | 2 | pools on demand | the same shared ticker | per-run pool hosts | tier 1's, or your own bot | tracks usage |
-| 3 | dedicated | your own container, bot and network | your own pool | your own app | a container plus your platform |
+| 3 | your own account, by federation | the same dispatcher, assuming a role you create in your account with a per-tick OIDC token | your own pool, from your image, in your account | your own app, or ours | your platform's bill, plus our control plane |
 
 Tier 1 answers "one step above using your own computer": sign in with GitHub, the machinery creates the state repository under the tenant's own account (219 already allows repositories under any account the App reaches), invite a bot, and get a page, a chat, a capture endpoint and triage — with no work sessions, so no compute scaling with anything but the tenant's own activity.
 
@@ -218,7 +218,7 @@ The product in question is **AWS Lambda MicroVMs**, generally available 22 June 
 1. **Tier 1 dispatcher** — a Lambda function behind a function URL for the webhook and interaction paths, plus EventBridge Scheduler sweeping the due index (245) and invoking the batch tick per organization. Warm clones live in one EFS filesystem mounted from the VPC, keyed by organization, evictable.
 2. **Capture (c)** — API Gateway REST integrated directly to SQS, no compute in the acknowledgement path, drained per organization by the same tick. Clause 246 stays load-bearing.
 3. **Tier 2 pool (a)** — Lambda MicroVMs launched from the organization's image (239), one per work session, terminated at retire. ECS Fargate with an attached EBS volume is the fallback for any session that will not fit 8 hours.
-4. **Tier 3** — the tenant's own account: Fargate or an EC2 warm pool, its own VPC, its own CMK, its own bot.
+4. **Tier 3** — the tenant's own account by OIDC federation: one IAM role there trusting our issuer with a subject naming the organization, and the key, the cache object, the queue and the pool image all living in that account. We store no credential; deleting the role ends our access.
 
 **The AWS advantage over Fly is the scheduler.** Fly has no cron, so a scale-to-zero dispatcher there still pays for one always-on machine to sweep the due index and one to hold the 3-second acknowledgement. On AWS both of those are managed and bill per event: EventBridge Scheduler for the sweep, API Gateway to SQS for the ack. A tenant that does nothing costs storage only, with no always-on component at all.
 

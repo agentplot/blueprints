@@ -1,7 +1,7 @@
 # Encryption and tenancy — a brainstorm
 
 What we can honestly tell a customer about where their content sits, who can read it, and what
-they can revoke. Sources: `cloud.md`; `requirements.md` A.10–A.12, 157, 203–208, 216–217k,
+they can cut off. Sources: `cloud.md`; `requirements.md` A.10–A.12, 157, 203–208, 216–217k,
 239–242, A.32; `models/dispatch/model.md` §1–§5. Platform facts carry the date read.
 
 ## 1. Threat model
@@ -41,8 +41,9 @@ DynamoDB, queued captures on SQS with their bodies on S3; on Fly, a volume on th
 machine. EFS, EBS, SQS and DynamoDB are keyed per filesystem, per volume, per queue and per
 table and never per tenant, so the store's own key is ours and does not carry the promise. The
 promise is carried one level in: each organization's cache directory is sealed under a data
-key wrapped by that organization's KMS key, whose policy names only the role that ticks that
-organization. A queued capture carries an organization id and a pointer, its body written to
+key wrapped by that organization's KMS key, which is tagged with the organization and whose
+policy admits only a principal whose session tag matches, so the role that ticks that
+organization opens that organization's directory and no other. A queued capture carries an organization id and a pointer, its body written to
 S3 under that organization's key, so the shared queue holds no tenant content at all, and the
 due index holds times and ids by construction because ticking rebuilds it.
 
@@ -61,8 +62,9 @@ sleeping tenant has nothing warm to steal; the price is a cold tick of a few sec
 warm one of a few hundred milliseconds, paid by a tenant who was idle anyway. Give each
 organization its own role and its own tick boundary, so one compromised credential reaches one
 tenant. Run the ticker in a Nitro Enclave with the key policy conditioned on attestation
-(option d), which removes our staff and a compromised image entirely. Let the customer hold
-the key (option b), so revocation is their kill switch and not our promise.
+(option d), which removes our staff and a compromised image entirely. Move the key and the
+warm stores into the customer's own account behind a federated role (option b), so the cut-off
+is theirs to make and not our promise.
 
 **What this does not change.** GitHub holds both repositories in plaintext, as it holds every
 repository on the platform, under their key. A customer who needs that changed wants (c).
@@ -72,27 +74,30 @@ repository on the platform, under their key. A customer who needs that changed w
 ### (a) Provider-managed encryption, one key per tenant
 
 **Maps to** §2 exactly: one customer-managed KMS key per organization over the clone cache,
-the body store, the queue, the due index and the pool host's disk, its policy naming that
-organization's ticker role. **Covers** the cloud provider, a lost disk and a stolen snapshot,
+the body store, the queue, the due index and the pool host's disk. Each key and each object is
+tagged with its organization, and the key's policy admits a principal only when the principal's
+session tag equals that tag, so the dispatcher's per-tier role carries the organization as a
+session tag and no count of roles bounds the design. **Covers** the cloud provider, a lost disk and a stolen snapshot,
 and bounds blast radius to one key and one audit trail. It does **not** cover our staff, who
 can assume the role, nor a compromised ticker mid-tick. **Costs** nothing measurable in
 latency and about a dollar per key per month; key quotas bite near ten thousand tenants.
 **Breaks** nothing. **Smallest proof:** delete one organization's key alias, and its tick must
 fail closed with a named attention line rather than retry.
 
-### (b) Customer-managed key by grant (BYOK)
+### (b) The customer's own account by OIDC federation
 
-**Maps to** the same stores, with the key living in the customer's own AWS account. We hold a
-grant for `Decrypt` and `GenerateDataKey` under an encryption context naming the organization.
-The customer calls `RevokeGrant` and our access ends everywhere at once, usually under five
-minutes, since grants are eventually consistent ([AWS KMS docs, read
-2026-09-07](https://docs.aws.amazon.com/kms/latest/developerguide/grant-delete.html)).
-**Covers** our staff over time, because the customer ends it without asking us, and it logs
-every use in their own account. It does not cover a live compromise while the grant stands.
-**Costs** one KMS round trip per tick, which the tick already absorbs; caching the data key
-across ticks would blunt revocation to the cache lifetime, so do not cache it. **Breaks**
-nothing. **Smallest proof:** revoke mid-run, and the next tick refuses, the status view names
-the key, and running work is not killed.
+**Maps to** the same stores, moved wholesale into the customer's own AWS account: the key, the
+clone cache, the capture queue and the pool image. The customer creates one IAM role there
+whose trust policy accepts our OIDC issuer with a subject naming their organization. Each tick
+assumes that role with a per-tick web-identity token, so we store no credential of theirs and
+there is nothing to rotate or leak. **Covers** our staff over time, because the customer ends
+it without asking us — deleting the role ends every path at once — and every use of the key is
+logged in their account, not ours. It does not cover a live compromise while the role stands.
+**Costs** one `AssumeRoleWithWebIdentity` and one KMS round trip per tick, which the tick
+already absorbs; caching the session across ticks would blunt the cut-off to the cache
+lifetime, so keep it per tick. **Breaks** nothing. **Smallest proof:** delete the role
+mid-run, and the next tick refuses, the status view names the role, and running work is not
+killed.
 
 ### (c) Client-side encryption of the state repository's contents — an optional upgrade
 
@@ -158,9 +163,10 @@ clones, no code and no raw material on any shared host, triage and all work on p
 serve one organization and are destroyed at retire (240, 241). Chat runs through the
 platform's bot, so the customer places no secret at all.
 
-**Design B — your key, our compute.** Design A with the key moved into the customer's account
-under a revocable grant (b), plus (d) where they want our staff out of the trust set rather
-than merely holding a switch, and (c) as a declaration if their concern is GitHub too.
+**Design B — your account by federation.** Design A with the key and the warm stores moved
+into the customer's account behind one role that trusts our OIDC issuer (b), plus (d) where
+they want our staff out of the trust set rather than merely holding a switch, and (c) as a
+declaration if their concern is GitHub too.
 
 **Design C — your account, our control plane.** Option (e). We provision the binary into their
 account, hold no content, and see organization names, health and billing counters. Their App,
@@ -170,19 +176,19 @@ their bot, their pools, their bill.
 |---|---|---|---|
 | stolen disk or snapshot | yes | yes | their problem |
 | co-tenant | yes: own key, own role, own pool host | yes | no co-tenant exists |
-| our staff | no | revocable; absolute with (d) | **yes** |
-| compromised ticker mid-tick | no: that tenant, that tick | no, unless (d) | nothing shared to compromise |
+| our staff | no | ended by deleting the role; absolute with (d) | **yes** |
+| compromised dispatcher mid-tick | no: that tenant, that tick | no, unless (d) | nothing shared to compromise |
 | GitHub and repo readers | no; only with (c) | no; only with (c) | no; only with (c) |
-| customer must do | invite a bot | create a key and grant it | run an AWS account and an App |
-| cost to serve | cents per tenant per month | plus a KMS call per tick | a per-customer floor |
-| ops burden on us | one key per tenant | key homes, revocation paths | per-customer provisioning, blind support |
+| customer must do | invite a bot | create one role trusting our issuer | run an AWS account and an App |
+| cost to serve | cents per tenant per month | plus an assume-role and a KMS call per tick | a per-customer floor |
+| ops burden on us | one tagged key per tenant | key homes, federation trust per customer | per-customer provisioning, blind support |
 | fits tiers | 1 and 2 | 2 and 3 | 3 |
 
 **Recommended default for the hosted tier: Design A.** A key per organization over every warm
 store, unwrapped only while that organization's plan is evaluated, plus minimisation and pool
 and triage isolation. It answers what a customer actually asks — what sits on your disks
 between ticks and who can read it — without asking them to do anything. Design B is then a
-key-provider swap, not a re-architecture.
+change of the key's home and one role's trust policy, not a re-architecture.
 
 ## 5. Customer journeys
 
@@ -205,17 +211,19 @@ destroyed when the work ends. Your raw capture material is read only on your own
 such a machine, and never on anything shared. Your repositories sit on GitHub under GitHub's
 own encryption, the same as every other repository you own.
 
-**The enterprise with its own AWS account.** You create the key in your account and grant us
-its use. What we can say: everything above, plus the key is yours — we cannot use it once you
-revoke it, and revocation stops us reading anything, anywhere, within minutes, with no ticket
-and no waiting on a deletion job. Every use of your key is logged in your account, not ours.
+**The enterprise with its own AWS account.** You create one IAM role in your account whose
+trust policy accepts our OIDC issuer with a subject naming your organization, and your key,
+your cache, your queue and your pool image live there. What we can say: everything above, plus
+we hold no credential of yours — each tick assumes your role with a token minted for that tick
+— and deleting the role stops us reading anything, anywhere, at once, with no ticket and no
+waiting on a deletion job. Every use of your key is logged in your account, not ours.
 If you want our staff out of the picture rather than merely revocable, we run your ticks in an
 enclave that releases your key only to an attested image. If you would rather we held nothing
 at all, we provision the whole thing into your account and keep only your name and your bill.
 
 **The upgrade path.** None of this is a migration. Every tier seals the same stores the same
-way and what changes is where the key lives and who may unwrap it. Move from our key to yours
-and we re-wrap the data keys and leave your history alone. Move to your own account and the
+way and what changes is where the key lives and who may unwrap it. Move from our tagged key
+to a role in your own account and we re-wrap the data keys and leave your history alone. Move to your own account and the
 binary, the manifest and the repositories are the ones you already have. What you give up is
 our ability to help you debug, and we will say so rather than ask you for a copy.
 
@@ -231,8 +239,11 @@ our ability to help you debug, and we will say so rather than ask you for a copy
 - **258.** The cache is a projection and its loss costs a clone. An organization idle past a
   stated time keeps nothing warm, and its next tick re-clones.
 - **259.** A shared host assumes a role scoped to one organization for the duration of that
-  organization's tick, so one compromised credential reaches one organization.
-- **260.** A key that is revoked or unreachable fails closed. No tick proceeds on state it
+  organization's tick, so one compromised credential reaches one organization. The scope may
+  be carried by a session tag naming the organization, matched against the tag on every key
+  and object it opens, so the number of organizations is bounded by no count of roles.
+- **260.** A key that is unreachable — deleted, or behind a role that no longer trusts us —
+  fails closed. No tick proceeds on state it
   cannot open, every host of that organization shows one attention line naming the key and
   since when, running work is not interrupted, and nothing is kept unencrypted as a fallback.
 - **261.** What we hold and under which key is a stated fact of the tier, rendered on the
@@ -252,3 +263,10 @@ our ability to help you debug, and we will say so rather than ask you for a copy
 - **266.** Under that declaration the blueprints repository stays plaintext except the
   machinery's own prefix, where captures and signals are envelopes under the same key. The
   manifest, the book, the claims and the map are read by people and are never encrypted.
+- **267.** An organization's key has one of three homes: the operator's own hosts when the
+  organization is self-managed, a key tagged with that organization in the service account, or
+  a key in the organization's own account reached through a role that trusts our issuer for
+  that organization. The home is a stated fact of the tier (261), moving between homes
+  re-wraps data keys and changes no history, and in the third home we hold no credential:
+  each tick assumes the role with a token minted for it, and deleting the role ends every
+  path.
