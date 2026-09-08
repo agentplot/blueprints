@@ -188,3 +188,41 @@ Both are Firecracker. The difference is not isolation but the shape of the contr
 - **Never** a built repository, a place, a worktree, or the raw material a capture points at, which stays outside version control (111).
 
 The cache follows from that. The state repository is one record file per object plus append-only threads, with history dominating because every effect is a commit — single-digit to low tens of megabytes. The blueprints repository is read only for the manifest, the claims (157) and `flywheel/`, so a blobless partial clone with a sparse checkout of those three holds tens of megabytes rather than the whole book. Budget 10–50 MB per tenant: 10–50 GB at 1,000 tenants, 1–5 TB at 100,000. At that size the cache must be evictable, which is exactly what clause 245 already grants it and what a per-tenant volume cannot be without destroying the tenant's host.
+
+---
+
+## AWS options
+
+The product in question is **AWS Lambda MicroVMs**, generally available 22 June 2026 — a Firecracker primitive *beside* Lambda functions, not a longer function. It does **not** carry the 15-minute cap and its disk is not `/tmp`. A microVM has a fixed **8-hour** maximum lifetime, up to 32 GB of disk that survives suspend and resume, its own HTTPS endpoint with port-scoped JWE tokens, egress to the internet or a VPC, and `run` / `suspend` / `resume` / `terminate` as explicit API calls. It is the closest thing AWS sells to a Fly Machine. Two facts bound it: the 8-hour ceiling is not adjustable, and the disk dies with the microVM — there is no detachable volume, so Fly's "the volume outlives the machine" trick has no AWS equivalent inside the primitive.
+
+| candidate | max run | disk | start | idle cost | isolation, keys | price shape | fit for (a) pool / (b) dispatcher / (c) capture |
+|---|---|---|---|---|---|---|---|
+| **Lambda MicroVMs** (GA 2026-06-22) | 8 h, fixed | 32 GB, snapshot-backed, destroyed at terminate | seconds from snapshot; resume "near-instant" | no compute while suspended; ~$0.08/GB-month snapshot, ~$0.0038/GB to suspend, ~$0.00155/GB to resume | own kernel, memory and disk per VM; port-scoped JWE tokens; build and execution IAM roles; **no customer-managed key documented** for images or snapshots | ~$0.0997/vCPU-hour (ARM, us-east-1) + snapshot + egress; baseline ≤4 vCPU/8 GB bursting to 4× | (a) **yes, if a session fits 8 h**; (b) yes; (c) no |
+| Lambda function | 15 min | `/tmp`, 512 MB–10 GB, ephemeral | ms with SnapStart | zero | per-invocation environment; CMK supported | per GB-ms | (a) no; (b) **yes**; (c) yes |
+| Lambda durable functions (Dec 2025; CMK Jul 2026) | 366 days by checkpoint-and-replay | none of its own | ms | zero between steps | CMK supported | per step plus state | (a) no — replay is not a shell; (b) the tick's orchestrator; (c) no |
+| Lambda managed instances (re:Invent 2025) | function limits, on EC2 | instance storage | no cold start | you pay for the instances | EC2-level | EC2 rates, Savings Plans, up to 72% off | none of the three; it removes cold starts, not the cap |
+| Bedrock AgentCore Runtime | 8 h per session, microVM destroyed and memory sanitized after | ephemeral, per session | ~2–6 s cold; sub-second off its warm pool | billed on active CPU only; no idle charge | one microVM per session id | ~$0.0895/vCPU-hour, ~$0.00945/GB-hour | (a) right shape, no durable disk, ARM64 container contract; (b) no; (c) no |
+| ECS Fargate task (+ EBS attach, 2024) | unbounded | 20–200 GiB ephemeral, or an EBS volume attached to the task | 20–40 s | zero at zero tasks | task-level; EBS with a per-tenant CMK | per vCPU-second and GB-second | (a) **the no-cap fallback**; (b) too slow to wake for a 3 s ack; (c) no |
+| App Runner | unbounded | ephemeral | — | never zero; in maintenance mode as of 2026 | service-level | per instance-hour | none |
+| EC2 + warm pool | unbounded | EBS, survives stop | seconds to tens of seconds | stopped: EBS only | full VM; per-tenant CMK on the volume | EC2 + EBS | (a) tier 3; (b) no; (c) no |
+| API Gateway → SQS, direct | n/a | n/a | milliseconds | zero | queue-level, KMS on the queue | per request | (c) **yes** — acknowledges well inside 3 s with no compute in the path |
+| EventBridge Scheduler | n/a | n/a | — | zero | — | per invocation | the sweeper Fly lacks — wakes due tenants with no always-on machine |
+
+**On per-tenant encryption.** The microVM security surface names build and execution roles and port-scoped tokens, and no customer-managed key for images or snapshots — SnapStart takes `--kms-key-arn`, MicroVMs do not. So per-tenant encryption under I13 lives in the *data*: S3, DynamoDB, EBS and EFS each take a per-tenant CMK. The compute is isolated but the key story is the store's.
+
+### Recommended AWS mapping
+
+1. **Tier 1 dispatcher** — a Lambda function behind a function URL for the webhook and interaction paths, plus EventBridge Scheduler sweeping the due index (245) and invoking the batch tick per organization. Warm clones live in one EFS filesystem mounted from the VPC, keyed by organization, evictable.
+2. **Capture (c)** — API Gateway REST integrated directly to SQS, no compute in the acknowledgement path, drained per organization by the same tick. Clause 246 stays load-bearing.
+3. **Tier 2 pool (a)** — Lambda MicroVMs launched from the organization's image (239), one per work session, terminated at retire. ECS Fargate with an attached EBS volume is the fallback for any session that will not fit 8 hours.
+4. **Tier 3** — the tenant's own account: Fargate or an EC2 warm pool, its own VPC, its own CMK, its own bot.
+
+**The AWS advantage over Fly is the scheduler.** Fly has no cron, so a scale-to-zero dispatcher there still pays for one always-on machine to sweep the due index and one to hold the 3-second acknowledgement. On AWS both of those are managed and bill per event: EventBridge Scheduler for the sweep, API Gateway to SQS for the ack. A tenant that does nothing costs storage only, with no always-on component at all.
+
+### Retire versus suspend
+
+The same ruling the Fly section makes, with one addition. `suspend-microvm` is not the model's *retire*: a suspended microVM keeps its host id and stops heartbeating, so `host.yaml`'s life region takes it to stale at five minutes and gone at thirty, raising a takeover decision under attention for a host that is merely parked. **Retire must call `terminate-microvm`**, ending the host object exactly as 240 says.
+
+What differs from Fly is where the warm mirror can then live. Fly's volume survives its machine and is reattached by the next pool host in the region; a microVM's 32 GB disk is destroyed with it. So on AWS the mirror has to live somewhere the host does not own — baked into the image (248's "what an image carries is what a joining host does not clone"), or on an EFS filesystem mounted over the VPC, or pulled from an S3 cache at join. That is a real consequence for 239 and 248, and it should be stated as a binding rather than left to the platform.
+
+Second, **the 8-hour ceiling is a clause-level fact, not an implementation detail.** A work session that would run past eight hours is interrupted, which is exactly what I5 forbids, and unlike Fly's uncapped machine there is no configuration that lifts it. Either the pool machine states that a session is bounded and what happens when the bound is reached, or the AWS pool tier binds to Fargate instead. This is the honest version of the owner's question: AWS's microVM product does not carry Lambda's 15-minute cap, but it carries a cap, and the model has to say what a capped host does.
