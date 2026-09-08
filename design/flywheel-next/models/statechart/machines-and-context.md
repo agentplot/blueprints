@@ -30,7 +30,7 @@ sixteen `kind: object`, eleven `kind: template`, five `kind: engine`
 **What identifies one.** The `machine:` field, not the file name.
 `check.py` keys its table by `machine:`; a file name is a convention
 that happens to match. `kind:` is `object` (governs one object kind the
-control plane lists; carries `object:`, `parent:`, `owns:`,
+state store lists; carries `object:`, `parent:`, `owns:`,
 `singleton:`), `template` (instantiated inside another machine's state
 with `params:`) or `engine` (shipped with the engine, names no domain
 object). `version:` is an integer from 1. `satisfies:` names the

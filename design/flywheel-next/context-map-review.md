@@ -281,7 +281,7 @@ meaning and v1's grid layout is what made the card need a zoom.
 | surface | needs |
 | --- | --- |
 | current → target overlay | both maps by id; per element added, removed, changed with the field list; the other map's exclusives as ghosts. All computed; the check's drift pass is the same function. |
-| since last review | the operator's review mark (state: one mark per operator, stored by the control plane) and the git history of the map files between the mark and head, keyed by element id. Needs a text format with one element per block sorted by id so a history diff reads as element changes. Nothing is stored on the element. |
+| since last review | the operator's review mark (state: one mark per operator, stored by the state store) and the git history of the map files between the mark and head, keyed by element id. Needs a text format with one element per block sorted by id so a history diff reads as element changes. Nothing is stored on the element. |
 | home tags | `node.home`, `context.home`, the manifest names, and the derivation result for the repository panel |
 | attachment chips | `attachments` joined to the claims index for standing versus proposed; a proposed claim's chip is hollow |
 | verdict dots | the rendered map's `scope_repos` per claim joined to the ledger by `(claim, version, repository)`; a context homed in two repositories shows two dots, not a merged one |
