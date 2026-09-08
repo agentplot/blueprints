@@ -1760,6 +1760,20 @@ Dated 2026-09-08.
   the organization's routing and belong to neither provider. A second
   admin console is rejected in both: administration is a surface of
   the flywheel, recorded like any other response (153). Closed.
+- **S206.** Every surface speaks to the customer, never to the
+  designer. No name of a provider we buy appears anywhere on a surface:
+  the hosted sign-in reads **Flywheel Cloud** and the self-managed one
+  reads **GitHub**, which is the operator's own git host and not a
+  vendor of ours. No tier number, no clause number and no surface number
+  appears in copy: a plan is named by its name ("included in Team"), and
+  a host is named by what it does for the operator ("a cloud agent that
+  keeps working while your laptop sleeps"), never by the rung or the
+  clause that defines it. The reason is that a number is a fact about
+  our design and not about the operator's work: it tells them nothing
+  they can act on and asks them to hold our model in their head. Design
+  references — clause numbers, S-numbers, the ruling that settled a
+  screen — live in the mockups' header comments, where the next designer
+  reads them and the customer never does. Closed.
 
 ## 6. Open
 

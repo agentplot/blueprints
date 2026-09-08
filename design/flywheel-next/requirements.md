@@ -1946,6 +1946,23 @@ requirements, iterated against the running plan rather than on paper.
     host uses and the month's model spend beside the pool hours, and
     the tier statement names which model provider sees plan text and
     messages (261).
+295. What "add a host" offers depends on the host serving the surface,
+    and the offers are the plan's and the identity kind's together
+    (243). A self-managed host offers only hosts the operator controls:
+    another computer of theirs, a virtual machine on their own network,
+    a container on a platform of their own reached with their own
+    credentials and their own secret store, and adopting a host already
+    running the binary (230). It offers no cloud agent and no pool, and
+    in their place shows one line offering to move the organization to
+    the hosted service (247a). A hosted host offers those same options
+    and the managed ones beside them, each gated by the plan (279–282):
+    the cloud agent from Hobby, pools from Pro, and under tier 3's
+    second shape the dedicated compute options on Enterprise (276a,
+    281). What the flow asks after the choice is 283's: a managed host
+    is asked nothing about routers or runners, because the tier fixes
+    both, while a machine of the operator's own is asked for each under
+    the advanced disclosure. The flow itself is the guided one the
+    surface specification carries (212, S120).
 
 ### A.36 Rulings carried over
 

@@ -2547,7 +2547,7 @@ idle clocks paused (`sessions.yaml` `session.idle_since`), and `gone`
 covers) or at the 24h bound; its next heartbeat returns it to `alive`
 with nothing to answer.
 
-## 19. Ratified 256–294: tenancy, the hosted tiers, plans and model cost
+## 19. Ratified 256–295: tenancy, the hosted tiers, plans, model cost and the add-host offers
 
 **A.33 — tenancy and encryption (256–267).** Everything a shared host
 keeps between ticks is sealed under a key naming one organization
@@ -2761,7 +2761,7 @@ gives it the clock, the interactions endpoint gives it the replies a
 socket would carry, and the served name with an identity check gives it
 the route (217i).
 
-**A.35 — plans, presets and model cost (279–284, 294).** A plan is a named set of the
+**A.35 — plans, presets, model cost and the add-host offers (279–284, 294, 295).** A plan is a named set of the
 `fw.ff.*` entitlement features plus a few stated limits, held by the
 identity provider and billed through the payment provider, read only
 from the token and the SDK (279, `identity.yaml` `plans`). A
@@ -2807,6 +2807,20 @@ happens in the page's browser or in the daily batch (280, 216a, 281).
 The runners heading on a host's detail shows which model key that host
 uses and the month's model spend beside the pool hours, and the tier
 statement names which model provider sees plan text and messages (261).
+
+What `+ host` offers at all is the host's identity kind and the plan
+together (295, `host.yaml` `tier.add_offers`, `surfaces.yaml`
+`hosts_surface.add_offers`). A `github` host offers only hosts the
+operator controls — another computer of theirs, a virtual machine on
+their own network, a container on a platform of their own with their own
+credentials and secret store, and adopt-existing by token — and shows one
+line offering to move the organization to the hosted service in place of
+the managed options (230, 247a). A `frontegg` host offers those and the
+managed ones beside them, each gated by its plan flag: the cloud agent
+from Hobby, a pool from Pro, and the dedicated compute of tier 3's second
+shape on Enterprise (276a, 279–282). An offer the plan does not unlock is
+not shown, and the tool behind it is still guarded by its permission
+(250, 280).
 
 Adding a cloud agent asks nothing about routers or runners, because the
 tier fixes both; one screen asks the chat platform, the meeting source

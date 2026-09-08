@@ -1,6 +1,6 @@
 # Gaps — requirements not satisfied, or found contradictory
 
-By requirement number (1–294 in `requirements.md`). Each entry says what
+By requirement number (1–295 in `requirements.md`). Each entry says what
 the model does instead and why. An entry with **decision** is a judgment
 the operator may reverse by a response on the file; an entry with
 **open** is unsatisfied.
@@ -905,6 +905,23 @@ the operator may reverse by a response on the file; an entry with
   spend is shown beside the pool hours on a host's runners heading,
   which needs a reading from the provider at read time, the same
   unbound cost read as 242's (`surfaces.md` S193). **Open**.
+
+- **295 the add-host offers.** Ruled: what `+ host` offers is the
+  serving host's identity kind and the plan together — a self-managed
+  host offers only hosts the operator controls plus one line to move to
+  the hosted service, a hosted host offers the managed options beside
+  them under their flags. **Decision**: the alternative, one offer set
+  everywhere with the unavailable ones shown disabled, would advertise
+  the service on a surface the operator runs themselves and would put a
+  cloud agent in front of someone with no account to bill it to. What
+  the self-managed offers cost to bind is unstated: a virtual machine on
+  the operator's own network and a container on a platform of their own
+  are two provisioning paths `add-host` takes today only as `platform`
+  and `parts`, and neither has a binding naming how credentials are read
+  at run time per platform. **Open**. The upgrade line's behaviour is
+  unbound too: whether it opens the hosted sign-up, records a response,
+  or is a link out is the surface owner's, and 247a describes the move
+  and not its offer. **Open**.
 
 - **285–289 the carried-over rulings.** 285's model class is carried on
   the stage's `agents` param (`machines/stage.yaml`) and on nothing
