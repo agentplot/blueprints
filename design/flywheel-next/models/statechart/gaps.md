@@ -673,6 +673,17 @@ the operator may reverse by a response on the file; an entry with
   sign-in kinds ship is the dispatch model's tiers (217j); their
   verifiers are not in this model. **Open**.
 
+- **237 an owner is one member.** Ruled: an owner is one member of the
+  organization or nobody, and a role is never an owner. `assign_owner`
+  refuses an argument that is not an identity in `operators:`, a role
+  name among them, with the reason (`host.yaml` effects). **Decision**:
+  a role owner would make "mine" ambiguous for a member holding several
+  roles and would put a decision's filter on a token claim rather than
+  on the organization's own list; roles authorize and nothing else
+  (248). What a decision owned by a member who later leaves the account
+  reads as — unowned, or owned by an identity no longer listed — is
+  unbound. **Open**.
+
 - **234–237 users and ownership.** GitHub's device flow on the
   operator's own computer means a first run needs the network and a
   GitHub account before the page answers anything; there is no
@@ -906,6 +917,26 @@ the operator may reverse by a response on the file; an entry with
   the package kinds a package may be and the surfaces it may not touch;
   the renderer kind is new here and appears in no other clause.
   **Open**.
+
+- **291 the page request reads a projection.** Ruled: a request neither
+  downloads nor decrypts the warm cache. The page sink's delivery is the
+  tick writing one small page projection per organization — the status
+  view and the rail as data, with each member's page sink and its mark —
+  under the organization's key, and a request checks the token's
+  membership of the organization named in the path (205a), assumes the
+  tier role tagged with it, decrypts that one object and returns it;
+  a write is a tool call enqueued on the queue and decrypts nothing.
+  **Decision**: it makes a request one small decrypt instead of a bundle
+  download, and it makes cross-organization reads impossible by
+  construction, since the tag is the path's organization. The switcher
+  shows only the organizations the token is assigned to (`surfaces.md`
+  S191). What is unbound: how stale a projection may be before the page
+  says so, since it is written only by a tick that delivers and a
+  request never triggers one (270); whether a member's `filter own` view
+  is a slice of the one per-organization object or a per-member object
+  of its own, which is the difference between one decrypt and one per
+  member; and what the page shows for an organization whose tick has
+  never delivered, so no projection exists. **Open**.
 
 - **213, 214 and 229–230 on the mockup.** The rail-and-board mockup
   (`design/flywheel-next/mockups/rail-and-board.html`) illustrates the

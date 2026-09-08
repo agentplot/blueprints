@@ -2468,9 +2468,11 @@ exists (235; `plan.yaml` v3, `surfaces.yaml` `members`). Sinks are per
 member: the `sink` record carries `member`, one page and one chat sink
 per identity in `operators:` with its own mark, a shared channel a
 sink with none (236). A decision's owner is its object's record
-`owner`, a member or a role from `roles:`, set by planning's proposal,
+`owner`, one member of the organization or nobody — a role authorizes
+and never owns — set by planning's proposal,
 by a type, or by the `assign <owner>` response the plan machine
-applies through `assign_owner` (237); `filter own` on a member's sink
+applies through `assign_owner`, which refuses an argument that is not
+an identity in `operators:` (237); `filter own` on a member's sink
 narrows their rail and chat and nothing else.
 
 **238–239 — environments.** A repository declares its environment in
@@ -2715,9 +2717,21 @@ caller's token: the page a static bundle at that name, the tool server
 the binary's own tool catalogue reached over HTTP with the identity
 token by the page and over stdio or in-process, in the shape of the
 model context protocol, by sessions and by the interpreter, the agent a
-client of the tools and never their server. A request reads the cache
-and the shared line, writes only through a tool call that is captured
-and ticked like any other, and is never a tick; on a hosted host that
+client of the tools and never their server. A request is never a tick
+and neither downloads nor decrypts the warm cache. The page sink's
+delivery is the tick writing one small page projection per organization
+— the status view and the rail as data, carrying each member's page sink
+and its mark — to an object under the organization's key (14, 148, 236,
+256, `host.yaml` `tier.projection`, `sink` machine). A request names the
+organization in its path, the server checks the caller's token for
+membership of it, assumes the tier role tagged with it, decrypts that
+one projection and returns it, so a request costs one small decrypt,
+reaches neither the git host nor the bundle, and decrypts nothing of
+another organization because the tag is the path's organization (205a,
+247, 249, 259, 272). A write is a tool call enqueued on the
+organization's queue, which decrypts nothing, and is captured and ticked
+like any other (271). The organization switcher lists only the
+organizations the caller's token is assigned to. On a hosted host that
 token is the boundary the private network is on a self-managed one (193,
 243, 249, 291, `host.yaml` `tier.served`, 46, 191, 217c). The bundle is
 held in an object store behind a content distribution at the served

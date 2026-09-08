@@ -935,8 +935,8 @@ were settled, not their place on the page.
   and a notification is routed to a member's sinks. Takeover, wait,
   placed and every numbered answer act on the object and are applied
   once for everyone (S167).
-- **S169.** A decision may carry an owner: a member, or on a
-  `frontegg` host a role the token carries (237, 248). The owner is set by planning's proposal per
+- **S169.** A decision may carry an owner: one member, never a role
+  (237). The owner is set by planning's proposal per
   unit, by a unit or elaboration type for its decisions, or by a
   member's assign (S170); an unowned decision is everyone's. The owner
   shows as one chip on the decision's object, the unit slip or its
@@ -1382,7 +1382,7 @@ where a thing sits, never by its form.
 | part | a chip on a host's row; a slot under a heading in its detail | kind word, name, state (installed, adding, needs a secret, installing, disabled), "lease" on a presenting sink | the chip and its attention line when one waits | disabled; an empty slot with "add" |
 | package | a row in the catalogue a slot opens | name, version, shipped or index, needs, enables, "add" or its state on the host or in the blueprints | the row | greyed under "any platform" with what it needs |
 | image | a line on a pool row and at the head of the hosts list | tag, hash, current · behind · building, "rebuild" when behind | none | none |
-| owner | a chip on a decision's object and in its card's tail | the member or role | none | none; unowned shows no chip |
+| owner | a chip on a decision's object and in its card's tail | the member | none | none; unowned shows no chip |
 | member | a row in the settings form's operators list; on a `frontegg` host also in its members section | the identity, the GitHub username authorship uses, addresses per chat kind, sinks with their marks; on a hosted tier roles read-only from the account and the identity controls beside them | none | leaves the list when the entry is removed or the assignment revoked, and its sinks with it |
 | account item | a chip at the header's right | the signed-in identity; open: the identity block, the switcher, settings (with its members section on a hosted tier), hosts, organization store, sign-out — hosts and store only where their flags are on (S197) | none | none |
 

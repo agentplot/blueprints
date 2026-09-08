@@ -28,6 +28,7 @@ flowchart LR
     disp["Dispatcher function (one per tier)<br/>assumes the tier role tagged with the org<br/>one tick, 15 minutes, then exits"]
     page["Page and tool server<br/>the same function, request-invoked<br/>at the tier's served name<br/>verifies the identity token on every call<br/>a request is a read, never a tick"]
     cache[("Warm cache<br/>one S3 object per org, org key<br/>a git bundle of two sparse clones")]
+    proj[("Page projection<br/>one small S3 object per org, org key<br/>status view and rail as data")]
     sched["Scheduler<br/>one one-shot entry per org<br/>60-second precision"]
     pool["Pool host<br/>MicroVM from your image<br/>baseline up to 8 GB / 4 vCPU<br/>bursting to 32 GB / 16 vCPU · 32 GB disk<br/>one org · terminated at retire"]
     key{{"KMS key<br/>one per organization, tagged<br/>the tier role's policy: resource tag = session tag"}}
@@ -47,7 +48,10 @@ flowchart LR
   disp -- "plan lines · deferred replies" --> chat
   disp -- "approved work: provision" --> pool
   pool <-- "clone code · push PR" --> gh
+  disp -- "page sink delivery: writes the projection" --> proj
+  page -- "one GET, one small decrypt<br/>org from the path" --> proj
   key -. "unwrap during tick" .-> cache
+  key -. "unwrap on a page request" .-> proj
   key -. "the receiver encrypts" .-> q
   key -. "what a pool host writes to S3" .-> pool
 ```
@@ -57,7 +61,8 @@ flowchart LR
 | machine | what it is | what it holds | when it exists |
 |---|---|---|---|
 | Receiver function | A stateless function in front of one SQS FIFO queue per organization. Our Slack app, Discord app and GitHub App each have exactly one inbound URL for every workspace, guild and installation, so the payload has to be demultiplexed by workspace id to your queue, and that is compute. It verifies Discord's Ed25519 signature, answers `PING` with `PONG`, defers the interaction inside three seconds, checks Slack's signed request and echoes `url_verification`, checks GitHub's HMAC, and enqueues. It holds an encrypt-side grant on your key and no grant that decrypts, and it reads no queue | An inbound payload once, in transit. Nothing at rest | Always. The second of the two shared components |
-| Page and tool server | The same function, invoked per request, behind the tier's served name. The page is a static bundle at that name; the tool server is the binary's own tool catalogue, reached over HTTP with the Frontegg token by the page and over stdio or in-process, MCP-shaped, by sessions and by the interpreter. The agent is a client of the tools and never serves them. It verifies the token on every call and checks it for the permission the tool declares. A request is a read of the cache and the shared line; a write goes through a tool call, which is captured and ticked like any other | One organization's state for the length of one request | On request. Never a tick |
+| Page and tool server | The same function, invoked per request, behind the tier's served name. The page is a static bundle at that name; the tool server is the binary's own tool catalogue, reached over HTTP with the Frontegg token by the page and over stdio or in-process, MCP-shaped, by sessions and by the interpreter. The agent is a client of the tools and never serves them. It verifies the token on every call and checks it for the permission the tool declares. A request never downloads or decrypts the warm cache: the organization is in the path, the server checks the token's membership of it, assumes the tier role tagged with it, decrypts that organization's page projection and returns it. A write goes through a tool call enqueued on your queue, which decrypts nothing, and is captured and ticked like any other | One organization's page projection for the length of one request. Never the bundle, never another organization's anything | On request. Never a tick |
+| Page projection | One small S3 object per organization beside the warm cache, encrypted under that organization's key: the status view and the rail as data, with each member's page sink and its mark. The tick writes it as the page sink's delivery; a page request is one GET and one small KMS decrypt against it. It is a projection and never truth — losing it costs the next tick's write and no decision | The plan as the page draws it. Never code, never raw capture material | Always, encrypted. Rewritten every tick that delivers |
 | Your queue | One SQS FIFO queue per organization, with the organization as the message group id. Every invoker enqueues here: the receiver, the scheduler, and a write from the page. The queue admits one tick of an organization at a time, so two ticks of yours never overlap | Queued captures and wakes, encrypted under your key. The caller's retry buffer and not state | Always |
 | Dispatcher function | One Lambda function per tier. Each invocation is one organization's tick: it assumes the tier role with a session tag naming that organization, and the role's own policy allows a key or object only when the resource's tag equals the session's, so no key names a role. It is the cloud agent: it fetches, runs one tick, interprets each chat message with one bounded model call and triages the captures whose whole content is in the queue, pushes with compare-and-swap, delivers the plan to the page and the chat, wipes its scratch directory, and exits. Which of those two model jobs it runs at all, and at which class, is your plan's fact: Hobby buys neither, so its free text is interpreted in the page's browser and its self-contained captures are triaged in one daily batch at the sweep, and both are in the tick from Pro up. Model access is the service's under the tagged role, metered into the plan against an included budget on the small class, or a key you place, which is welcome on every plan and required on none. A tick has 15 minutes; when the budget is short it carries triage before it carries a reply | During a run: one organization's plaintext state in memory and scratch disk. Nothing between runs by construction: the scratch is wiped and the data key dropped before exit, and the sandbox is reused across organizations | Only while a tick runs. Woken only through your queue |
 | Warm cache | One object per organization in S3, encrypted under that organization's key, holding a git bundle of two sparse shallow clones. The tick downloads it to scratch disk and uploads it back. No VPC, no mount | The state repository and the blueprints repository restricted to the manifest, claims and the flywheel prefix. Never code, never raw capture material | Always, encrypted. Deleted and re-cloned when the organization has been idle |
@@ -71,18 +76,19 @@ flowchart LR
 1. A GitHub webhook, a chat interaction, a capture, or the scheduler's due time reaches the receiver or the scheduler, and lands as one message on your queue under your organization's group id. The receiver has already answered the caller inside its deadline, deferring the interaction where the platform asks for that.
 2. The queue releases one message group at a time, so one tick of yours starts and no second one can. The dispatcher assumes the tier role tagged with your organization. The role's policy admits a key or object only when its tag equals the session's, so the cache object downloads and decrypts into scratch disk.
 3. It fetches both shared lines from GitHub, applies the queued captures and responses, evaluates the machines, and pushes with compare-and-swap. If the push loses, it refetches and tries once more.
-4. It delivers the plan: lines to your channel through the application, and the real reply to a deferred interaction inside the interaction token's window or as an ordinary message. The page is not delivered to; anyone signed in reads it on request.
+4. It delivers the plan: lines to your channel through the application, and the real reply to a deferred interaction inside the interaction token's window or as an ordinary message. The page sink's delivery is a write of its own — one small page projection for your organization, the status view and the rail as data, encrypted under your key — which is what a page request later reads.
 5. If approved work is waiting, it provisions a pool host from your image with your role and an enrolment token, and records it as a host.
 6. It records when you are next due as a one-shot scheduler entry targeting your queue, wipes its scratch, drops the data key, and exits within its 15 minutes. Nothing of yours is running. The cache is ciphertext under your key.
 
-A page request is none of this. It is a read under your Frontegg token against the cache and the shared line, and the only writing it does is a tool call, which is captured and reaches the tick like everything else.
+A page request is none of this, and it never opens the bundle. Step 4 above wrote your page projection: one small object under your key holding the status view and the rail as data. A request carries your organization in the path, the server checks your Frontegg token for membership of that organization, assumes the tier role tagged with it, decrypts that one object and returns it — one GET and one small KMS decrypt, no git, no bundle, and nothing of any other organization, because the tag is the organization in the path. The only writing a request does is a tool call, enqueued on your queue without decrypting anything, which reaches the tick like everything else. The organization switcher lists only the organizations your token is assigned to; one you are not a member of does not appear.
 
 ## Where your data is, and who can read it
 
 | data | where | who can read it |
 |---|---|---|
 | Source code | GitHub, your laptop, a pool host during work | You, and the pool host that exists for you. No shared machine, ever |
-| State and manifest | GitHub in plaintext, your warm cache encrypted | You on GitHub. Your dispatcher role during a tick, and the page-and-tool-server function under your token. No human path to the cache |
+| State and manifest | GitHub in plaintext, your warm cache encrypted | You on GitHub. Your dispatcher role during a tick. No human path to the cache, and no page request either |
+| The plan as the page draws it | Your page projection, one small encrypted object | The tick that writes it, and the page-and-tool-server function under your token, for the organization in the request's path and no other |
 | Captures and signals | GitHub under the flywheel prefix, your queue briefly | Same as state, plus the receiver, which sees one payload in transit before it is queued |
 | Inbound webhook and chat payloads | The receiver, in transit; then your queue, encrypted | The receiver sees every organization's, once, and keeps none |
 | Raw capture material | Your laptop, or a bucket you own, or a pool host while triage runs | Never the dispatcher. Never a shared machine |
@@ -99,6 +105,7 @@ A page request is none of this. It is a read under your Frontegg token against t
 | A pool host | That organization's code for that job. It is terminated at retire |
 | The shared application's token | The ability to post plan lines. No repository access, no key access |
 | The page-and-tool-server function without a token | Nothing. Every call is refused and recorded |
+| A token for one organization | That organization's page projection, the plan as the page draws it. Not its bundle, not its code, and nothing of any other organization: the role's tag is the organization in the request's path |
 
 The residual risks are two. A compromised dispatcher process while your tick runs
 holds that organization's plaintext state, and the function's sandbox is reused

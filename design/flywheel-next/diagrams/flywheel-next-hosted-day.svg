@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 800" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <marker id="mN" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+    <marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+    <marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e9e5b"/></marker>
+    <marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+    <marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+    <g id="gear"> <circle r="9" fill="#fff" stroke="currentColor" stroke-width="2.4"/> <circle r="3" fill="currentColor"/> <g stroke="currentColor" stroke-width="2.4"> <line y1="-9" y2="-13.5"/><line y1="9" y2="13.5"/> <line x1="-9" x2="-13.5"/><line x1="9" x2="13.5"/> <line x1="-6.4" y1="-6.4" x2="-9.5" y2="-9.5"/><line x1="6.4" y1="6.4" x2="9.5" y2="9.5"/> <line x1="-6.4" y1="6.4" x2="-9.5" y2="9.5"/><line x1="6.4" y1="-6.4" x2="9.5" y2="-9.5"/> </g> </g>
+    <g id="repo"> <rect x="-26" y="-18" width="52" height="36" rx="7" fill="#fff" stroke="currentColor" stroke-width="2"/> <circle cx="-9" cy="8" r="3.2" fill="currentColor"/> <circle cx="9" cy="-8" r="3.2" fill="currentColor"/> <path d="M -9 8 v-8 a 8 8 0 0 1 8 -8 h 1" fill="none" stroke="currentColor" stroke-width="2"/> </g>
+    <g id="lam"> <circle r="10" fill="#fff" stroke="currentColor" stroke-width="1.8"/> <text y="4.5" font-size="12" font-weight="700" text-anchor="middle" fill="currentColor">λ</text> </g>
+    <g id="row" stroke="currentColor" stroke-width="1.6" fill="none"><rect x="-8" y="-6" width="16" height="12" rx="2"/><line x1="-4" y1="-1" x2="4" y2="-1"/><line x1="-4" y1="3" x2="1" y2="3"/></g>
+    <g id="wave-t" fill="none" stroke="#2b8a8a" stroke-width="2.2" stroke-linecap="round"> <path d="M -18 0 q 4.5 -8 9 0 t 9 0 t 9 0 t 9 0"/> </g>
+    <g id="bolt"><polygon points="-2.5,-11 5,-11 0.5,-2.5 6,-2.5 -4.5,11 -1,0.5 -6,0.5" fill="currentColor"/></g>
+    <g id="clock"> <circle r="9" fill="#fff" stroke="#c9962e" stroke-width="2"/> <path d="M 0 -5 V 0 H 4" fill="none" stroke="#c9962e" stroke-width="2.2" stroke-linecap="round"/> </g>
+    <g id="check" fill="none" stroke="#2e9e5b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"> <path d="M -6 0 L -2 4 L 6 -5"/> </g>
+    <g id="pause"> <circle r="9" fill="#fff" stroke="#c9962e" stroke-width="2"/> <line x1="-2.8" y1="-4" x2="-2.8" y2="4" stroke="#c9962e" stroke-width="2.4" stroke-linecap="round"/> <line x1="2.8" y1="-4" x2="2.8" y2="4" stroke="#c9962e" stroke-width="2.4" stroke-linecap="round"/> </g>
+    <g id="switch"> <rect x="-22" y="-9" width="44" height="18" rx="9" fill="#fff" stroke="#8a8a86" stroke-width="1.4"/> <circle cx="-12" cy="0" r="6" fill="#8a8a86"/> </g>
+    <g id="key"> <rect x="-7" y="-2" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/> <path d="M -4 -2 v-3 a 4 4 0 0 1 8 0 v3" fill="none" stroke="currentColor" stroke-width="1.8"/> </g>
+    <g id="marker"> <circle r="7" fill="#fff" stroke="currentColor" stroke-width="2.2"/> <circle r="2.6" fill="currentColor"/> </g>
+  </defs>
+  <rect width="1680" height="800" fill="#fff"/>
+
+  <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">A Hobby day with the lid closed — chat is answered, captures are kept, only the laptop's own work waits</text>
+  <text x="40" y="57" font-size="12" fill="#666">tier 1, one organization, one working day · on Hobby a decision is answered by button or slash command, and captures wait for the daily sweep</text>
+
+  <!-- axis -->
+  <line x1="150" y1="106" x2="1600" y2="106" stroke="#ddd" stroke-width="1.6"/>
+  <g font-size="10.5" fill="#999" text-anchor="middle">
+    <text x="250" y="92">08:00 lid closes</text><text x="520" y="92">09:10 Slack event</text><text x="740" y="92">09:11 tick 47</text>
+    <text x="1000" y="92">12:00 due</text><text x="1250" y="92">17:30 daily sweep</text><text x="1500" y="92">18:00 lid opens</text>
+  </g>
+  <g stroke="#ccc" stroke-width="1.4">
+    <line x1="250" y1="101" x2="250" y2="111"/><line x1="520" y1="101" x2="520" y2="111"/><line x1="740" y1="101" x2="740" y2="111"/>
+    <line x1="1000" y1="101" x2="1000" y2="111"/><line x1="1250" y1="101" x2="1250" y2="111"/><line x1="1500" y1="101" x2="1500" y2="111"/>
+  </g>
+
+  <!-- lane: laptop -->
+  <text x="40" y="174" font-size="11.5" font-weight="700" fill="#5f6b7a">laptop</text>
+  <line x1="150" y1="170" x2="1600" y2="170" stroke="#8a8a86" stroke-width="2" opacity="0.35"/>
+  <use href="#switch" x="250" y="170"/>
+  <text x="250" y="196" font-size="8.5" fill="#999" text-anchor="middle">away · leases stand, clocks pause</text>
+  <use href="#gear" x="1500" y="170" color="#8a8a86"/>
+  <use href="#key" x="1580" y="170" color="#7b5cb8"/>
+  <text x="1636" y="214" font-size="8.5" fill="#6a4da3" text-anchor="end">device-flow sign-in stands</text>
+  <text x="1500" y="196" font-size="8.5" fill="#999" text-anchor="middle">fetches, heartbeats, alive again</text>
+  <rect x="286" y="160" width="1180" height="20" rx="10" fill="#fbeeee" stroke="#c05b5b"/>
+  <text x="876" y="174" font-size="10" font-weight="700" fill="#a34848" text-anchor="middle">what waited: 1 approved unit for this host · 0 decisions · 0 captures lost</text>
+
+  <!-- lane: chat -->
+  <text x="40" y="264" font-size="11.5" font-weight="700" fill="#1f6e6e">chat</text>
+  <line x1="150" y1="260" x2="1600" y2="260" stroke="#2b8a8a" stroke-width="2" opacity="0.35"/>
+  <use href="#wave-t" x="520" y="260"/>
+  <rect x="470" y="282" width="100" height="18" rx="9" fill="#2b8a8a"/>
+  <text x="520" y="295" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">/fw yes 412</text>
+  <text x="520" y="314" font-size="8.5" fill="#1f6e6e" text-anchor="middle">a button, or the slash command</text>
+  <use href="#wave-t" x="880" y="260"/>
+  <text x="908" y="266" font-size="8.5" fill="#1f6e6e">the real reply, inside the token's window</text>
+  <use href="#marker" x="1500" y="260" color="#2b8a8a"/>
+  <text x="1500" y="286" font-size="8.5" fill="#1f6e6e" text-anchor="middle">the rail shows what happened</text>
+
+  <!-- lane: receiver and queue -->
+  <text x="40" y="374" font-size="11.5" font-weight="700" fill="#a97e26">receiver · queue</text>
+  <line x1="150" y1="370" x2="1600" y2="370" stroke="#c9962e" stroke-width="2" opacity="0.35"/>
+  <use href="#lam" x="560" y="370" color="#4a7fb5"/>
+  <text x="560" y="396" font-size="8.5" fill="#999" text-anchor="middle">deferred in three seconds</text>
+  <use href="#row" x="620" y="370" color="#c9962e"/>
+  <use href="#clock" x="1000" y="370"/>
+  <text x="1000" y="396" font-size="8.5" fill="#a97e26" text-anchor="middle">the due entry fires onto the queue</text>
+  <use href="#row" x="1046" y="370" color="#c9962e"/>
+  <use href="#row" x="330" y="370" color="#c9962e"/><use href="#row" x="360" y="370" color="#c9962e"/>
+  <text x="345" y="396" font-size="8.5" fill="#a97e26" text-anchor="middle">captures keep arriving, encrypted</text>
+  <use href="#row" x="1180" y="370" color="#c9962e"/><use href="#row" x="1210" y="370" color="#c9962e"/>
+  <use href="#pause" x="1250" y="370"/>
+  <text x="1250" y="396" font-size="8.5" fill="#a97e26" text-anchor="middle">held until the sweep, not read</text>
+
+  <!-- lane: dispatcher -->
+  <text x="40" y="494" font-size="11.5" font-weight="700" fill="#3f6d9c">dispatcher</text>
+  <line x1="150" y1="490" x2="1600" y2="490" stroke="#4a7fb5" stroke-width="2" opacity="0.35"/>
+  <polygon points="740,456 782,490 740,524 698,490" fill="#fff" stroke="#4a7fb5" stroke-width="2.2"/>
+  <text x="740" y="488" font-size="10" font-weight="700" fill="#3f6d9c" text-anchor="middle">TICK 47</text>
+  <text x="740" y="502" font-size="8.5" fill="#3f6d9c" text-anchor="middle">4.1 s</text>
+  <text x="740" y="546" font-size="8.5" fill="#999" text-anchor="middle">decision 412 answered · no model call on this path</text>
+  <use href="#lam" x="1000" y="490" color="#4a7fb5"/>
+  <text x="1000" y="516" font-size="8.5" fill="#999" text-anchor="middle">tick 48 · nothing due, reschedules</text>
+  <polygon points="1250,456 1292,490 1250,524 1208,490" fill="#fff" stroke="#4a7fb5" stroke-width="2.2"/>
+  <text x="1250" y="488" font-size="10" font-weight="700" fill="#3f6d9c" text-anchor="middle">TICK 49</text>
+  <text x="1250" y="502" font-size="8.5" fill="#3f6d9c" text-anchor="middle">daily triage</text>
+  <text x="1250" y="546" font-size="8.5" fill="#999" text-anchor="middle">the day's captures read once, signals written</text>
+  <use href="#lam" x="1500" y="490" color="#8a8a86"/>
+  <text x="1500" y="516" font-size="8.5" fill="#999" text-anchor="middle">nothing of yours running between these</text>
+
+  <!-- lane: GitHub -->
+  <text x="40" y="624" font-size="11.5" font-weight="700" fill="#27824c">GitHub</text>
+  <line x1="150" y1="620" x2="1600" y2="620" stroke="#2e9e5b" stroke-width="2" opacity="0.35"/>
+  <use href="#repo" x="740" y="620" color="#2e9e5b"/>
+  <rect x="778" y="611" width="112" height="18" rx="9" fill="#2e9e5b"/>
+  <text x="834" y="624" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">response 412</text>
+  <text x="740" y="652" font-size="8.5" fill="#27824c" text-anchor="middle">pushed by compare-and-swap</text>
+  <use href="#repo" x="1250" y="620" color="#2e9e5b"/>
+  <rect x="1288" y="611" width="96" height="18" rx="9" fill="#2e9e5b"/>
+  <text x="1336" y="624" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">9 signals</text>
+  <use href="#check" x="1500" y="620"/>
+  <text x="1500" y="648" font-size="8.5" fill="#27824c" text-anchor="middle">the lid opens on state already moved</text>
+
+  <!-- vertical sweeps -->
+  <path d="M 528 276 C 540 310, 548 340, 556 356" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+  <path d="M 634 376 C 668 408, 700 444, 714 466" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+  <text x="646" y="432" font-size="9" fill="#a97e26">released, one at a time</text>
+  <path d="M 748 522 C 748 560, 744 590, 740 598" fill="none" stroke="#2e9e5b" stroke-width="2.2" marker-end="url(#mG)"/>
+  <path d="M 762 470 C 800 400, 840 310, 868 278" fill="none" stroke="#2b8a8a" stroke-width="2.2" marker-end="url(#mT)"/>
+  <path d="M 1010 384 C 1006 420, 1002 452, 1000 476" fill="none" stroke="#c9962e" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mA)"/>
+  <path d="M 1244 384 C 1240 420, 1244 452, 1248 456" fill="none" stroke="#c9962e" stroke-width="2.2" marker-end="url(#mA)"/>
+  <path d="M 1252 524 C 1252 560, 1250 590, 1250 598" fill="none" stroke="#2e9e5b" stroke-width="2.2" marker-end="url(#mG)"/>
+
+  <!-- legend -->
+  <rect x="40" y="676" width="1600" height="102" rx="10" fill="#fafafa" stroke="#d5d5d0"/>
+  <g font-size="10" fill="#555">
+    <line x1="60" y1="702" x2="100" y2="702" stroke="#4a7fb5" stroke-width="3"/><text x="108" y="706">the machinery we run</text>
+    <line x1="270" y1="702" x2="310" y2="702" stroke="#c9962e" stroke-width="3"/><text x="318" y="706">your stores under your key</text>
+    <line x1="520" y1="702" x2="560" y2="702" stroke="#2e9e5b" stroke-width="3"/><text x="568" y="706">GitHub and code</text>
+    <line x1="720" y1="702" x2="760" y2="702" stroke="#7b5cb8" stroke-width="3"/><text x="768" y="706">identity</text>
+    <line x1="880" y1="702" x2="920" y2="702" stroke="#c05b5b" stroke-width="3"/><text x="928" y="706">what waited</text>
+    <line x1="1060" y1="702" x2="1100" y2="702" stroke="#2b8a8a" stroke-width="3"/><text x="1108" y="706">chat</text>
+    <line x1="1190" y1="702" x2="1230" y2="702" stroke="#8a8a86" stroke-width="3"/><text x="1238" y="706">people, places, accounts</text>
+    <use href="#pause" x="1470" y="702"/><text x="1486" y="706">held for the sweep</text>
+  </g>
+  <g font-size="10.5" fill="#333">
+    <text x="60" y="736">on Hobby the chat path runs no model call: an answer is a button or the slash command's option, and the plan lines are written by the machines</text>
+    <text x="60" y="756">a capture is kept the moment it arrives and triaged once, at the daily sweep · what waits for the lid is only the work this host alone covers</text>
+  </g>
+</svg>

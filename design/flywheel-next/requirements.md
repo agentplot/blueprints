@@ -1394,9 +1394,11 @@ requirements, iterated against the running plan rather than on paper.
     host the list is authored whole; on a hosted tier its identities are
     derived and only the addresses are authored, and adding or removing a
     member is an act on the account (255), never a commit.
-237. A decision may carry an owner: a member, or on a hosted tier a role
-    the token carries (248). Planning's proposal, the unit or elaboration type, or a
-    member's response (assign) sets it; an unowned decision is
+237. A decision may carry an owner, and an owner is one member or
+    nobody: a role is never an owner. Planning's proposal, the unit or
+    elaboration type, or a
+    member's response (assign) sets it, and the member named must be one
+    of the organization's (247); an unowned decision is
     everyone's. The rail and the chat filter to a member's own.
     Ownership never changes what a decision is, whether it counts, or
     who may answer it.
@@ -1812,9 +1814,23 @@ requirements, iterated against the running plan rather than on paper.
     standard input and output or in-process, in the shape of the model
     context protocol, by sessions and by the interpreter; the agent is a
     client of the tools and never serves them. A request is a read under
-    the caller's identity and never a tick (270): it reads the cache and
-    the shared line, and it writes only through a tool call, which is
-    captured and ticked like any other. On a hosted tier the bundle is
+    the caller's identity and never a tick (270), and it neither
+    downloads nor decrypts the warm cache (272). The page sink's
+    delivery is the tick writing one small page projection per
+    organization — the status view and the rail as data, carrying each
+    member's page sink and its mark (14, 148, 236) — to an object
+    encrypted under the organization's key (256). A request names the
+    organization in its path (205a): the server checks the caller's
+    token for that user's membership of that organization (247, 249),
+    assumes the tier role tagged with it (259), decrypts that one
+    projection and returns it. So a request costs one small decrypt and
+    reaches neither the git host nor the bundle, and nothing of another
+    organization is ever decrypted on a request, because the tag is the
+    path's organization. A write is a tool call enqueued on the
+    organization's queue, which decrypts nothing (271), and it is
+    captured and ticked like any other. The organization switcher lists
+    only the organizations the caller's token is assigned to; one they
+    are not assigned to is not shown. On a hosted tier the bundle is
     held in an object store behind a content distribution at the served
     name, which fronts the store for the bundle and the function for the
     tool paths, and it is uploaded at release so its version is the
