@@ -2454,11 +2454,12 @@ and records the refusal in the run record (`surfaces.yaml`
 `tools.identity`), and the switcher shows such an organization as not a
 member.
 
-**234–237 — users and ownership.** The sign-in kind defaults to
-GitHub on every host (`host.yaml` `sign_in`: the web flow behind a
-host, the device flow on the operator's own computer), so the identity
-is the GitHub username everywhere, the local-user case is gone, and
-`operators:` lists usernames unless a host binds another kind (234).
+**234–237 — users and ownership.** Identity is the one provider's
+(A.32 below): the identity is the Frontegg user on every host, the
+operator's own computer included, its GitHub connection supplying the
+username authorship uses (234, 246), and the members are the users
+assigned the Application on the organization's account, derived and
+never authored (247).
 One board: every member reads the one register, so numbers and count
 are the same; a retracted entry keeps `answered_by` and `answered_at`
 from the response, every member's delivery shows them, and the tool
@@ -2500,3 +2501,36 @@ operator's eye; the hosts surface shows the pool, its bound, its live
 hosts and its image (240). The instrument's drain sums alive hosts'
 bounds, pool hosts included, so a host added or retired shows as drain
 changing (242).
+
+**A.32 — identity (243–255).** One provider, Frontegg, bound in
+`profiles/identity.yaml` and inherited by both profiles. The page runs
+the SDK and the tool server verifies the token; a host declares the
+provider's environment (`hosts.<host>.identity`), never a sign-in kind,
+and the sign-in packages of 233 are gone (243). The host's served name
+is the only per-host fact, registered once on the environment's
+redirect list (244); on the operator's own computer the flywheel's own
+per-computer proxy (`host.yaml` `router.local`) serves
+`https://<host>.flywheel.localhost` and a place's services beside it,
+so one wildcard entry admits every host (245). Membership is the
+Application's assignment on the organization's account — a top-level
+account, or a sub-account of the hosted service's — so `operators:`
+and `roles:` are derived and shown read-only, and only `addresses:`
+keyed by user id is authored (247, 248, 236a). The tool server checks
+the token's permission per tool (`identity.yaml` `permissions.by_tool`)
+before any response exists and records a refusal in the run record
+(249); flags hide surfaces per account and never authorize (250);
+sessions act with the machinery's identity token and the App's
+installation token, never a user credential (251). The definitions
+ship with the set (`identity.yaml` `definitions`) and only the hosted
+service's release syncs them; a self-managed host uses the Production
+environment as released and refuses a tool whose permission the
+environment lacks (252, 253). When the provider is unreachable the page
+goes read-only past the token's expiry, unbounded, and the hosts cover
+work with the App token regardless (254). Identity administration is
+five tools on the account item under `fw.identity.admin` (255). 207a:
+a self-managed organization's own App with the operator's key; the
+hosted service's App whose key never leaves it, minting installation
+tokens for pool hosts (`host.yaml` `app`). 205a: one address per host
+with the organization in the path, the settings form editing the
+organization's keys and showing the host's read-only (`host.yaml`
+`identity.address`, `surfaces.yaml` `account.settings_form`).

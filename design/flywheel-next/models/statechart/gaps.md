@@ -716,6 +716,30 @@ the operator may reverse by a response on the file; an entry with
   delete calls (fly, a cloud API) are named generically and bound to
   none. **Open**.
 
+- **243–255 identity.** The proposal's six open questions are closed
+  by ruling: one Application; an organization is a top-level account
+  except the hosted service's tenants, which are sub-accounts of the
+  service's account; self-managed hosts use the flywheel's Production
+  environment and never sync (a binary naming a permission the
+  environment lacks refuses that tool with the reason); flags per
+  account only; degraded mode unbounded for the page and irrelevant to
+  work. **Decision**. 245's amendment makes the flywheel's own
+  per-computer proxy the default router on the operator's computer
+  (`router.local`), where gaps 191 had it as an option: portless cannot
+  serve the host's page name, so it is now the option and the proxy the
+  requirement. **Decision**. Citations: 205a and 207a are clauses of
+  205 and 207 and trace through them. The identity tools (255) are
+  control-plane calls with no machine transition — assignment lives on
+  the provider's account, not in state — so they are cited on the
+  organization machine and bound in `surfaces.yaml`. **Decision**. A
+  member removed from the account keeps their `addresses:` entry until
+  the form's next save; the sink goes with the assignment. Stated. The
+  provider's SDK, its redirect-list semantics for `*.localhost`, and its
+  write ceilings are taken from its documentation and verified against
+  none. **Open**. `surfaces.md` S153, S164 and S165 still describe the
+  per-host sign-in kind of the earlier 233/234 and are the surface
+  owner's to bring up to A.32.
+
 - **213, 214 and 229–230 on the mockup.** The rail-and-board mockup
   (`design/flywheel-next/mockups/rail-and-board.html`) illustrates the
   artifact views behind an object (213), the flywheel instrument

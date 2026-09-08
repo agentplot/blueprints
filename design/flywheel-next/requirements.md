@@ -1044,6 +1044,12 @@ requirements, iterated against the running plan rather than on paper.
     only for places (43) and the operator's bolt places (44). The
     layout on disk is the profile's; a host that finds a hand-made
     layout refuses to start and says what differs.
+205a. A host has one address, and the organization is in the path: a
+    host serving several organizations (218) serves them all at that
+    one address, `/<org>/...`, and a link names the organization it
+    opens. The settings form edits the keys 233 assigns to the
+    organization and shows the host's keys read-only, with a link to
+    the host's own screen.
 206. A repository is created by the machinery from a response, never by
     a session. An elaboration or a dictation proposes it with its map
     nodes and homes (199, 202); the yes creates it on the git host
@@ -1057,6 +1063,11 @@ requirements, iterated against the running plan rather than on paper.
     host or session uses a personal token. A session in a place is
     given a short-lived installation token scoped to that repository,
     issued by the machinery into the place and written nowhere else.
+207a. A self-managed organization uses its own GitHub App, its key
+    placed by the operator as 207 says. The hosted tiers use the
+    service's App: its key never leaves the service, and the
+    installation tokens a pool host (240) needs are minted for it by
+    the service, scoped as 207 scopes them.
 208. The blueprints template, the built-repository template, the map schema
     and derivation table (198, 199), and the shipped skills and
     deliverables (190) are one versioned set released with the
@@ -1206,19 +1217,19 @@ requirements, iterated against the running plan rather than on paper.
     organization's settings (its manifest as a form, one response per
     save), its hosts and their parts (229), the organization's store
     apart from any host's (228), and sign-out. A page served on the
-    operator's own computer signs in like any other, through the host's
-    sign-in kind, GitHub by default (234), so the identity is the same
-    there as anywhere; every response the page records carries that
-    identity (153). Authentication is the host's and authorization
-    the organization's: a host serving the page has one sign-in kind,
-    declared on the host and the same for every organization it serves,
-    a per-host package (228) and never an organization's (207, 217j);
-    switching organizations never changes the signed-in identity. Each
-    organization's manifest lists the identities allowed to respond in
-    it, and a response from an identity not listed is refused and
-    recorded as refused; the switcher shows an organization the identity
-    is not allowed in as not a member. The organization's store and a
-    host's store are separate surfaces.
+    operator's own computer signs in like any other, through the one
+    identity provider (243), so the identity is the same there as
+    anywhere; every response the page records carries that identity
+    (153). Authentication is the provider's and authorization the
+    organization's: a host declares the provider's environment, the
+    same for every organization it serves, and switching organizations
+    never changes the signed-in identity. Membership in an organization
+    is the assignment of the flywheel's Application to the
+    organization's account (247); what a member may do is the
+    permission the token carries (249), and a call without it is
+    refused and recorded as refused; the switcher shows an organization
+    whose account the identity is not assigned to as not a member. The
+    organization's store and a host's store are separate surfaces.
 
 ### A.27 Machines, types and context
 
@@ -1339,12 +1350,12 @@ requirements, iterated against the running plan rather than on paper.
 
 ### A.29 Users and ownership
 
-234. An organization's operators are identities of one sign-in kind,
-    GitHub by default: a page served on the operator's own computer
-    signs in through GitHub as well, so the identity is the GitHub
-    username everywhere and every response carries it (153). An
-    organization may bind another sign-in kind on a host (233); its
-    identities appear in the operators list as that kind renders them.
+234. An organization's operators are the users assigned to its account
+    (247), derived and never authored. The identity is the provider's
+    user (246); its GitHub connection supplies the username authorship
+    uses, and every response carries the identity (153). A page served
+    on the operator's own computer signs in through the same provider,
+    so the identity is the same there as anywhere.
 235. One board per organization. Every member sees the same plan with
     the same numbers and the same count. A decision answered by one
     member is applied once (7) and shown to every other member as
@@ -1354,15 +1365,16 @@ requirements, iterated against the running plan rather than on paper.
     their own with their own delivery mark (14, 148), so the tail since
     the last look, attention acknowledgements and notifications are
     that member's. A shared channel is a sink of its own with one mark.
-236a. An entry in the operators list may carry the member's address per
-    chat kind — a Discord user id, a Slack member id. The organization's
-    sinks gain one chat sink per member per address, presented by
-    whichever host runs that kind's package (228) and holds the lease
-    (148); a member with no chat address has a page sink only. Adding
-    or removing an address adds or removes the sink in the same write
-    as the operators list.
-237. A decision may carry an owner: a member or a role the manifest
-    names. Planning's proposal, the unit or elaboration type, or a
+236a. The manifest carries an addresses list keyed by the member's user
+    id (247): a member's address per chat kind — a Discord user id, a
+    Slack member id. The organization's sinks gain one chat sink per
+    member per address, presented by whichever host runs that kind's
+    package (228) and holds the lease (148); a member with no chat
+    address has a page sink only. Adding or removing an address adds or
+    removes the sink in the same write as the addresses list; adding or
+    removing a member is an act on the account (255), never a commit.
+237. A decision may carry an owner: a member or a role the token
+    carries (248). Planning's proposal, the unit or elaboration type, or a
     member's response (assign) sets it; an unowned decision is
     everyone's. The rail and the chat filter to a member's own.
     Ownership never changes what a decision is, whether it counts, or
@@ -1405,6 +1417,100 @@ requirements, iterated against the running plan rather than on paper.
     cost setting the manifest names, and retires them as the queue
     drains. Every such change is an effect with a proof, and the
     flywheel instrument shows it as drain changing.
+
+### A.32 Identity
+
+243. Identity is Frontegg's, through its SDK, and there is one provider
+    and one Application for the whole flywheel. The page runs the React
+    SDK and the tool server verifies the token the SDK carries; nothing
+    else vouches for an operator. The flywheel never talks to GitHub or
+    to an enterprise directory for sign-in: GitHub stays the git host
+    and the App that reaches the repositories (207). A host declares
+    the provider's environment, not a sign-in kind (233).
+244. Sign-in is Frontegg's hosted login. The SDK builds `redirect_uri`
+    from the origin the page is served on, so the host's served name is
+    the only per-host fact and it is registered once, as an entry on the
+    environment's redirect list, never per organization.
+245. A host serving the page on the operator's own computer serves it
+    under a name, not a port. A wildcard redirect entry never matches a
+    port and several hosts run on one computer (232), so each host is
+    reached at `https://<host>.flywheel.localhost`, and the flywheel
+    serves that name itself through the per-computer proxy it already
+    needs for a place's services (191); one wildcard entry
+    `https://*.localhost/oauth/callback` on the environment admits every
+    host on every operator's machine. The flywheel adds no redirect
+    entry of its own at run time and assumes no outside tool.
+246. The identity is the Frontegg user. GitHub is one social connection
+    on it, and the GitHub username the connection carries is what
+    authorship uses — commit trailers, pull requests, the git host's
+    view of who did the work. A user with no GitHub connection may
+    respond and may not be an author; the flywheel asks for the
+    connection at first sign-in.
+247. Membership is the assignment of the flywheel Application to the
+    organization's Frontegg account. The account is the organization
+    (218) — a top-level account, except that the hosted service creates
+    its tenants as sub-accounts of the service's own account — and
+    assignment is the whole of "may respond in it" (233). The manifest's
+    operators list is derived from the account's assigned users at
+    every fetch and rendered read-only on the settings form. What stays
+    authored is the member's chat addresses (236a), keyed by user id;
+    adding or removing a member is an act on the account, never a
+    commit.
+248. Roles are held per account and carried in the token. A role
+    assigned on a parent account applies down the branch, so a tenant
+    of the hosted service inherits the service's roles. The manifest's
+    roles are likewise derived, not authored: a decision's owner names a
+    member or a role, and the rail filters on it (237).
+249. Permissions are read from the token by the tool server. Before any
+    op-response is written the server checks the caller's token for the
+    permission the tool declares, on the organization's account; a call
+    without it is refused, no response is recorded, and the refusal is
+    written to the run record with the identity, the tool and the
+    object (79, 153). Membership admits the identity to the
+    organization; the permission authorizes the tool.
+250. Feature flags are entitlement features, one flag per feature, keyed
+    `fw.ff.*`, evaluated in the page and on the tool server, and
+    targeted per account only. A flag hides a surface; it never
+    authorizes, and the tool behind a hidden surface is still guarded
+    by its permission.
+251. Agents never sign in through the browser. A session in a place acts
+    with the identity token the machinery issued it (197) and reaches
+    the git host with the App's installation token (207); no session,
+    host process or dispatch agent holds a Frontegg user credential.
+252. The definitions — permissions, roles, features and flags — ship in
+    the flywheel binary with the set version (208, 224) and are the one
+    place they are defined. Only the hosted service's release syncs
+    them to the environment: the sync reads the environment's current
+    definitions and writes only the difference, respecting the
+    provider's write ceiling on features, plans and flags; it deletes
+    nothing not named as retired, and it never writes a hostname. A
+    self-managed host never syncs; it uses the flywheel's Production
+    environment as released, and a binary that names a permission the
+    environment lacks refuses that tool with the reason.
+253. Self-managed hosts are not an exception. A host on the operator's
+    own computer or their own cloud serves the same page, so identity,
+    membership, roles, permissions and flags all apply there exactly as
+    on a served host. There is no local-user case and no
+    unauthenticated page. An organization created on a self-managed
+    host is created as a Frontegg account whose creating user holds
+    `owner`, so a fresh organization is never locked out and a single
+    operator is never asked to administer roles.
+254. A host degrades rather than fails when Frontegg is unreachable. A
+    token already issued is honoured until it expires; past that the
+    page is read-only — the status view, the book and the map render,
+    the rail shows its decisions and every control that would write is
+    absent, with one attention line saying identity is unreachable and
+    since when — for as long as it takes, unbounded. It is irrelevant
+    to work: hosts cover work with the App token, not with an identity,
+    so the loops keep running and nothing that needs a response is
+    answered. Flags fall back to their last-seen values, and to their
+    definition defaults when none were seen.
+255. Identity administration is a surface of the flywheel, not a second
+    console: the account item lists the organization's members with
+    their roles and their chat addresses, invites a user to the account,
+    grants and revokes the Application, and targets a flag on the
+    account. Every one of those is a tool call under the identity
+    administration permission, recorded like any response (153).
 
 ## 5. Requirements — Part B, the control plane contract
 

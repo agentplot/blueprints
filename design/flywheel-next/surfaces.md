@@ -1518,6 +1518,18 @@ Dated 2026-09-07.
   exists because the machinery is already doing it; the bound and the
   ceiling are the operator's levers, in settings.
 
+Dated 2026-09-08.
+
+- **S163.** One address per host, the organization in the path
+  (205a). A host serving several organizations serves them all at that
+  one address, `/<org>/...`, so a link names the organization it opens
+  and the switcher only changes the path; the identity is the host's
+  session and never changes with it (233). The settings form edits the
+  keys 233 assigns to the organization — name, profile, repositories,
+  pools, sinks, curation, addresses — and shows the host's keys — root,
+  bound, declaration, provider, identity environment, router —
+  read-only with a link to the host's own screen. Closed.
+
 ## 6. Open
 
 What no mockup settled.
@@ -1579,11 +1591,6 @@ What no mockup settled.
 - **S151.** Whether thumbnails render on a phone at all, or only the
   caption's counts, and whether the stacked list when drilled draws a
   link as more than its target's name.
-- **S163.** The switcher's source and the form's extent. The switcher
-  lists the organizations the serving host has a root for; whether a
-  host that serves several organizations serves them at one address
-  or one per organization, and which manifest keys the settings form
-  carries against those it only shows, is not settled (203, 205).
 - **S191.** Non-member organizations in the switcher: hidden, or
   greyed as "not a member" with the read-only status view behind
   them (S166). surfaces.yaml `account.switcher` draws them greyed;
