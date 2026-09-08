@@ -33,7 +33,7 @@ hosted tiers work:
 - the command line: `flywheel init`, `flywheel host`, `flywheel host join`,
   `flywheel capture`, `flywheel map`, `flywheel claims`, the doctor.
 
-A tier-0 organization is the whole of that and nothing else. Free is not a
+A tier-0 flywheel is the whole of that and nothing else. Free is not a
 crippled edition; it is the product with no service side.
 
 **The control plane — commercial, source-available to enterprise customers for
@@ -41,15 +41,15 @@ self-hosting.** Everything that exists on the service side:
 
 - the receiver, the stateless front for the capture endpoint (271, 290);
 - the per-tier dispatcher packaging, and the roles and tags that scope one
-  invocation to one organization (259, 269);
-- the queues, one per organization, and their serialization (270, 271);
-- the scheduler, one one-shot entry per organization (273);
+  invocation to one flywheel (259, 269);
+- the queues, one per flywheel, and their serialization (270, 271);
+- the scheduler, one one-shot entry per flywheel (273);
 - the warm cache and page projection stores, and the keys that seal them
   (256, 272, 291);
 - the page distribution: the object store and the content distribution at the
   served name (291);
-- the registry of organization names, tier, health and counters (276a);
-- the deployer, which applies the stack into an organization's own account
+- the registry of flywheel names, tier, health and counters (276a);
+- the deployer, which applies the stack into the customer's own cloud account
   through the role it grants and stamps the binary's version (276a);
 - the identity environment and the release-time sync of the binary's
   definitions into it (243, 252);
@@ -70,18 +70,18 @@ control plane to this contract; ours is the reference implementation.
 
 | mode | what the control plane provides | what the binary returns |
 |---|---|---|
-| **tick** | the organization's name and its tier; a role session tagged with that organization (259); the warm cache object's locator and its key; the page projection object's locator; the organization's queue and the messages waiting on it in the stated envelope; the scheduler entry now standing for the organization; the identity environment's issuer and the definitions version that environment holds; a model credential carried by the role, or none where the organization placed its own (207, 294); a scratch directory and a stated budget, fifteen minutes on the function placement | the warm cache uploaded; the page projection written as the page sink's delivery (291); the rail delivered to every sink whose mark moved; the shared lines pushed by compare-and-swap (162); each queue message acknowledged or left for retry under its idempotent key (111); one next due time as a scheduler entry, or a deletion when nothing is due (273); the run record; and an exit with the scratch wiped and the data key dropped (269) |
-| **request** | the caller's identity token; the organization named in the request's path (205a); a role session tagged with that same organization; the page projection object's locator and its key; the definitions version the environment holds; the bundle's location, where the distribution does not serve it directly | the page bundle, or the projection rendered as the request asks; for a write, one tool call enqueued on the organization's queue, decrypting nothing (271, 291); for a call whose caller lacks membership or the tool's declared permission, a refusal with the reason and a run-record entry naming the identity, the tool and the object (249); never a tick, and never a read of the warm cache (270, 272) |
+| **tick** | the flywheel's name and its tier; a role session tagged with that flywheel (259); the warm cache object's locator and its key; the page projection object's locator; the flywheel's queue and the messages waiting on it in the stated envelope; the scheduler entry now standing for the flywheel; the identity environment's issuer and the definitions version that environment holds; a model credential carried by the role, or none where the flywheel placed its own (207, 294); a scratch directory and a stated budget, fifteen minutes on the function placement | the warm cache uploaded; the page projection written as the page sink's delivery (291); the rail delivered to every sink whose mark moved; the shared lines pushed by compare-and-swap (162); each queue message acknowledged or left for retry under its idempotent key (111); one next due time as a scheduler entry, or a deletion when nothing is due (273); the run record; and an exit with the scratch wiped and the data key dropped (269) |
+| **request** | the caller's identity token; the flywheel named in the request's path (205a); a role session tagged with that same flywheel; the page projection object's locator and its key; the definitions version the environment holds; the bundle's location, where the distribution does not serve it directly | the page bundle, or the projection rendered as the request asks; for a write, one tool call enqueued on the flywheel's queue, decrypting nothing (271, 291); for a call whose caller lacks membership or the tool's declared permission, a refusal with the reason and a run-record entry naming the identity, the tool and the object (249); never a tick, and never a read of the warm cache (270, 272) |
 
 Five things in that environment are stated shapes rather than free choices, and
 they are what a second control plane has to match:
 
 - **the queue message** — one envelope per invoker (a capture, a chat
   interaction, a webhook, a page write, a due time), carrying the
-  organization's name, the idempotent key (111), the source, and the body
-  sealed under the organization's key (256, 271);
-- **the scheduler entry** — one named entry per organization, its name the
-  organization's, its target the queue and never the function, one-shot and
+  flywheel's name, the idempotent key (111), the source, and the body
+  sealed under the flywheel's key (256, 271);
+- **the scheduler entry** — one named entry per flywheel, its name the
+  flywheel's, its target the queue and never the function, one-shot and
   deleted when it completes (273);
 - **the cache object** — one object holding a git bundle of two sparse shallow
   clones, the state repository and the blueprints restricted to the manifest,
@@ -89,7 +89,7 @@ they are what a second control plane has to match:
 - **the projection object** — one small object holding the status view and the
   rail as data, with each member's page sink and its mark (291);
 - **the identity token claims** — the identity, the accounts assigned, the
-  roles and the permissions on the organization's account, and the entitlement
+  roles and the permissions on the account, and the entitlement
   features and their flags (243, 248, 249, 250).
 
 The definitions version is the sixth and the one that couples the two products
@@ -112,18 +112,18 @@ parameters.
 
 | stack | what it holds | tenancy parameters |
 |---|---|---|
-| `fw-receiver` | the stateless receiver behind one inbound route per chat platform and one for the git host: signature verification, the platform's liveness answer, the deferred acknowledgement, and the routing by workspace id to the organization's queue. An encrypt-side grant on every organization's key and no grant that decrypts (271, 290) | the chat applications' signing secrets and the git App's webhook secret; the workspace-to-organization map's home; the queue naming convention |
-| `fw-dispatcher` | one function per tier, the invoked placement of 269: its execution role, the tier role it assumes, the budget, the scratch, and the model access the role carries | the tier list; per-tier role name; the tag key and the policy condition that matches a resource's organization tag to the session's (259); the budget; which model provider the tier statement names (261) |
-| `fw-queues` | one queue per organization, the organization the group id the queue serializes, with its dead-letter queue (270, 271) | the queue home — this account, or the organization's own under tier 3 (276); retention; who holds the encrypt-side and decrypt-side grants |
-| `fw-scheduler` | the schedule group holding at most one one-shot entry per organization, targeting that organization's queue, and the daily sweep rule (273) | the group name; the sweep cadence; the grace added to a due time for the stale window (292) |
-| `fw-stores` | the warm cache objects, the page projection objects, and one customer-managed key per organization, tagged with it (256, 272, 291) | the key home, one of the three of 267; the tag key; the eviction window (258); whether the projection sits beside the cache or in a store of its own |
+| `fw-receiver` | the stateless receiver behind one inbound route per chat platform and one for the git host: signature verification, the platform's liveness answer, the deferred acknowledgement, and the routing by workspace id to the flywheel's queue. An encrypt-side grant on every flywheel's key and no grant that decrypts (271, 290) | the chat applications' signing secrets and the git App's webhook secret; the workspace-to-flywheel map's home; the queue naming convention |
+| `fw-dispatcher` | one function per tier, the invoked placement of 269: its execution role, the tier role it assumes, the budget, the scratch, and the model access the role carries | the tier list; per-tier role name; the tag key and the policy condition that matches a resource's flywheel tag to the session's (259); the budget; which model provider the tier statement names (261) |
+| `fw-queues` | one queue per flywheel, the flywheel the group id the queue serializes, with its dead-letter queue (270, 271) | the queue home — this account, or the flywheel's own under tier 3 (276); retention; who holds the encrypt-side and decrypt-side grants |
+| `fw-scheduler` | the schedule group holding at most one one-shot entry per flywheel, targeting that flywheel's queue, and the daily sweep rule (273) | the group name; the sweep cadence; the grace added to a due time for the stale window (292) |
+| `fw-stores` | the warm cache objects, the page projection objects, and one customer-managed key per flywheel, tagged with it (256, 272, 291) | the key home, one of the three of 267; the tag key; the eviction window (258); whether the projection sits beside the cache or in a store of its own |
 | `fw-page` | the object store holding the page bundle and the content distribution at the served name, which fronts the store for the bundle and the dispatcher's request mode for the tool paths, with the certificate and the record for that name (291) | the served name and its zone; the certificate; the release channel the bundle is uploaded on (208) |
-| `fw-registry` | the register of organization names, tier, health and counters — the only cross-organization store, and it holds no organization content (276a) | which tiers it admits; the retention on counters |
-| `fw-deployer` | the applier of the tier-3 stack into an organization's own account through the role that organization grants, stamping the binary's version (276a) | the granted role's name and the trust issuer; which stack set it applies; the dedicated compute options the console may offer (`fw.ff.dedicated-compute`) |
+| `fw-registry` | the register of flywheel names, tier, health and counters — the only cross-flywheel store, and it holds no flywheel content (276a) | which tiers it admits; the retention on counters |
+| `fw-deployer` | the applier of the tier-3 stack into the customer's own cloud account through the role that flywheel grants, stamping the binary's version (276a) | the granted role's name and the trust issuer; which stack set it applies; the dedicated compute options the console may offer (`fw.ff.dedicated-compute`) |
 | `fw-identity-sync` | the release-time sync of the binary's permissions, roles, features, flags and plans into the identity environment, by difference, under the provider's write ceiling, deleting nothing not named as retired and writing no hostname (252) | the environment and its management token; the write ceiling; the Application's id; the retire list |
 | `fw-billing` | the payment provider's plan and price objects and the meter that overage is reported on (279, 282, 294) | **optional**: absent when the installer sells nothing, and the ladder's plans are then entitlement targets alone |
 | `fw-chat` | the registration and inbound routes of the chat applications the installer owns (277, 290) | which platforms; the installer's own application ids, tokens and signing secrets |
-| `fw-pools` | the pool placement — the microVM service, the image registry holding each organization's image, and the fallback container placement — and the image build job (239, 240, 275) | the placement kind; the lifetime ceiling and the fallback; the image home; the memory and vCPU ceiling the rail admits (282) |
+| `fw-pools` | the pool placement — the microVM service, the image registry holding each flywheel's image, and the fallback container placement — and the image build job (239, 240, 275) | the placement kind; the lifetime ceiling and the fallback; the image home; the memory and vCPU ceiling the rail admits (282) |
 
 Three of those parameters are the tenancy choices, and they are what an
 installer actually decides:
@@ -132,10 +132,10 @@ installer actually decides:
   and that the match is written as the role's own policy over every key and
   object of the account rather than as a key policy naming a role (259);
 - **key homes** — the operator's own hosts, a tagged key in the control plane's
-  account, or a key in the organization's own account behind a role that trusts
+  account, or a key in the customer's own cloud account behind a role that trusts
   the control plane's issuer (267);
 - **store homes** — whether the queue, the cache, the projection and the pool
-  image live in the control plane's account or the organization's (276).
+  image live in the control plane's account or the flywheel's (276).
 
 Switchboard deploys this the way it deploys anything: the composition is an app
 in the catalog with `MEMBER#` rows for each stack, a channel per member, one
@@ -159,11 +159,11 @@ their own business units.
 | what | willdan's | ours |
 |---|---|---|
 | AWS account | the composition deploys into willdan's Switchboard-connected accounts, through `SwitchboardAccess` like every other app; the control plane's stacks stand in the platform account beside Switchboard's own | none. No account of ours is in the path |
-| Identity environment | willdan's Frontegg environment, one per environment class, with the flywheel Application in it beside `platform-nonprod` and Switchboard's own. `fw-identity-sync` writes the flywheel's permissions, roles, features and flags there at release, by difference | none. Our environment holds nothing of willdan's, and their organizations are not accounts under ours |
+| Identity environment | willdan's Frontegg environment, one per environment class, with the flywheel Application in it beside `platform-nonprod` and Switchboard's own. `fw-identity-sync` writes the flywheel's permissions, roles, features and flags there at release, by difference | none. Our environment holds nothing of willdan's, and their flywheels are not accounts under ours |
 | Billing | absent. `fw-billing` is not in the member set. The ladder's plans exist as entitlement targets on the Frontegg account — a plan is still a named set of `fw.ff.*` features plus limits, and it still hides and meters — but nothing is charged and no payment provider is bound | none |
 | Chat | willdan's own Slack application, installed in willdan's workspace, carrying rail text and interactions and nothing else. Their bot, their tokens, their signing secret | none. The agentplot Slack and Discord applications are not installed anywhere in willdan's workspace |
-| Git host connection | willdan's own GitHub App on their organizations (207) | none |
-| Organizations served | willdan's business units, each an account in willdan's Frontegg tree, each with its own queue, key, cache, projection and scheduler entry | none. They are not in our registry, and no counter of theirs reaches us |
+| Git host connection | willdan's own GitHub App on their flywheels (207) | none |
+| Flywheels served | willdan's business units, each an account in willdan's Frontegg tree, each with its own queue, key, cache, projection and scheduler entry | none. They are not in our registry, and no counter of theirs reaches us |
 | The binary | the same released bytes we ship, stamped by their deployer with the version it applied | ours to release; theirs to run |
 
 The willdan instance is the third shape of tier 3 read from the other side.
@@ -191,8 +191,8 @@ artifact or an agreement:
   a process we run.
 
 No process of ours runs in an installed control plane's accounts. No traffic of
-its organizations reaches a machine of ours. No key of theirs is reachable by
-any credential of ours. Their organizations do not appear in our registry, and
+its flywheels reaches a machine of ours. No key of theirs is reachable by
+any credential of ours. Their flywheels do not appear in our registry, and
 our management console does not know they exist.
 
 ## 6. Open questions
@@ -210,7 +210,7 @@ our management console does not know they exist.
    and bind no payment provider, so its plans are entitlement targets with no
    price. Three readings are open: the ladder is a definition the binary ships
    and an installer overrides in its own environment; the ladder is an
-   organization package (228) and the shipped one is only the default index's
+   flywheel package (228) and the shipped one is only the default index's
    entry; or the ladder is a stated default the sync writes only where a
    payment provider is bound, leaving the environment's plans empty otherwise.
    The choice decides what `fw-identity-sync` writes on a willdan-shaped
@@ -228,7 +228,7 @@ our management console does not know they exist.
 
 4. **Whether an installed control plane reports anything at all.** 288 has the
    binary writing captures about its own operation to the agentplot
-   organization's flywheel, on by default on the hosted tiers and opt-in on a
+   flywheel's flywheel, on by default on the hosted tiers and opt-in on a
    self-managed host. An installed control plane is neither: its hosts read as
    hosted, and their instrumentation would reach us. Whether it is off by
    default there, redirected to the installer's own flywheel, or a term of the

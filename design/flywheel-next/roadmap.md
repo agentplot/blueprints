@@ -8,10 +8,10 @@ willdan until phase 2 lands and is never modified.
 
 | phase | name | what is real at the end | requirements |
 |---|---|---|---|
-| 1 | The loop | One organization, one laptop host. Captures land, the tick evaluates the machines, decisions are raised and delivered to the page and one chat sink, responses are recorded, the run record is readable. Statechart machines and profiles run from their definitions, on the git-only profile: state is the state repository, no tracker. No construction | A.1–A.16, A.22–A.24, A.38 (306–311, 314), B, C.2 |
+| 1 | The loop | One flywheel, one laptop host. Captures land, the tick evaluates the machines, decisions are raised and delivered to the page and one chat sink, responses are recorded, the run record is readable. Statechart machines and profiles run from their definitions, on the git-only profile: state is the state repository, no tracker. No construction | A.1–A.16, A.22–A.24, A.38 (306–311, 314), B, C.2 |
 | 2 | Construction | Units and bolts land on willdan repositories: spec, build, review, merge, landing by pull request; the tracker profile (C.1) joins here for willdan's board. Claims are standing OpenSpec requirement blocks in the blueprints' `openspec/specs/` with no book yet; the ledger holds verdicts; planning reads the backlog and proposes units and bolts against them (A.14, 28, 102, 104); scope comes from the map derived from the manifest, one context per repository, until the operator draws one (199a). Sessions charged by the machinery on the pane runner. The flywheel instrument reads runway, feed, pressure and drain. willdan moves off the old flywheel and is building from the flywheel from here on | A.5, A.14, A.17–A.21, A.27 (types) |
 | 3 | Context | The book, its chapters including claims by anchor; the hand-drawn context map replacing the derived one; OpenSpec artifact views in the dock; packages and the package store; scenario packs behind their flag | A.21, A.26–A.28, 195–202 |
-| 4 | Dispatch | Dispatch as a host: the four jobs, the receiver, the interpreter in the page's browser and in-process, triage placements, several organizations on one host, users and ownership, environments | A.25, A.26, A.29, A.30 |
+| 4 | Dispatch | Dispatch as a host: the four jobs, the receiver, the interpreter in the page's browser and in-process, triage placements, several flywheels on one host, users and ownership, environments | A.25, A.26, A.29, A.30 |
 | 5 | Scale | The hosted tiers: identity by Frontegg, the per-tier dispatcher, queues, cache, scheduler, pools, tenancy and encryption, plans and presets, the management console, the MCP endpoint, federation into the customer's account | A.31–A.36 |
 
 ## Repositories
@@ -34,7 +34,7 @@ week, and the old repository is archived unchanged.
 ## The generic track
 
 Runs beside the ladder, not on it. It starts after phase 1 with Mad Swan's
-billing operations (generic/billing-brief.md) as the first organization with
+billing operations (generic/billing-brief.md) as the first flywheel with
 records and no code, on a laptop host, then a cloud agent at phase 5. Its
 machines are drafted (generic/machines/) and lean on eight growth points
 (generic/README.md); each growth point becomes a requirement clause when the
@@ -42,7 +42,7 @@ phase that needs it opens:
 
 | growth point | lands in phase |
 |---|---|
-| an organization with no built repository | 2 |
+| a flywheel with no built repository | 2 |
 | domain record sets declared by a package, recutils descriptors as the write gate | 3 |
 | timers declared by the type, a suppressed stage | 3 |
 | scheduled producers | 3 |
@@ -58,7 +58,7 @@ evidence.
 ## The commercial ladder
 
 Free ships with phase 1 (the binary on your computer). Hobby, Pro and Team
-ship with phase 5 in that order, each on a real organization first: Hobby on
+ship with phase 5 in that order, each on a real flywheel first: Hobby on
 Mad Swan billing, Team on willdan. Enterprise, tier 3 in both shapes, follows
 the first customer who needs it. Tier 3's third shape — the whole control plane
 installed in the customer's own accounts, sold and installed by us and shown in

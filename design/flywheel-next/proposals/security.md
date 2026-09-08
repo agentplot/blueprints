@@ -30,28 +30,28 @@ declaration names no repository and no unit type, so the shared tier clones no c
 The shared tier is fast because it does not re-clone two repositories every tick, and that
 warm copy is the thing a customer is right to ask about.
 
-**What we keep between ticks.** Per organization: a full clone of the state
+**What we keep between ticks.** Per flywheel: a full clone of the state
 repository and a blobless partial clone of blueprints sparse-checked to the manifest, the
 claims and `flywheel/`, ten to fifty megabytes together. One scheduler entry naming the
-earliest time that organization's tick could change anything (273). Queued captures, the
+earliest time that flywheel's tick could change anything (273). Queued captures, the
 caller's retry buffer and not state (271). No code, and no raw material a capture points at:
 a transcript stays on the customer's own machine or in a store they own.
 
 **Which stores hold it, and under whose key.** The warm copy is one S3 object per
-organization, a git bundle of two sparse shallow clones downloaded to the tick's scratch disk
+flywheel, a git bundle of two sparse shallow clones downloaded to the tick's scratch disk
 and uploaded back; there is no shared filesystem and no VPC. Captures wait on one SQS FIFO
-queue per organization, whose message group id is the organization, so the queue is also what
-admits one tick of an organization at a time. The due time is one one-shot scheduler entry
-per organization and holds times and ids by construction, because ticking rebuilds it. Each
-of those stores is encrypted under a KMS key tagged with the organization, and the match is
+queue per flywheel, whose message group id is the flywheel, so the queue is also what
+admits one tick of a flywheel at a time. The due time is one one-shot scheduler entry
+per flywheel and holds times and ids by construction, because ticking rebuilds it. Each
+of those stores is encrypted under a KMS key tagged with the flywheel, and the match is
 written as the tier role's own policy over every key and object of the account — the
 resource's tag equal to the session's principal tag — so no key policy names a role and no
-role is added per organization. The receiver in front of the queues holds an encrypt-side
+role is added per flywheel. The receiver in front of the queues holds an encrypt-side
 grant and no grant that decrypts. A queued capture's body — a chat message, a webhook
 payload, or a pointer to raw material held elsewhere — is encrypted the same way, so the
-queue holds nothing readable without that organization's key. A pool host's own disk is the
+queue holds nothing readable without that flywheel's key. A pool host's own disk is the
 one exception: the platform isolates it per host and destroys it at terminate under the
-platform's key, and an organization that must have its own key on that disk takes the
+platform's key, and a flywheel that must have its own key on that disk takes the
 container-task fallback with a volume under it.
 
 **What the dispatcher itself runs.** It is not a pure state machine. It runs the interpreter
@@ -62,20 +62,20 @@ carried to the next (269). What it never does is follow a capture's pointer into
 customer's own or a pool host. So rail text and chat messages pass through the model the tier
 role reaches, and transcripts and code do not.
 
-**Unwrapped for a tick and no longer.** The ticker assumes the organization's role, calls
-`Decrypt` once, opens that organization's directory, evaluates its rail, writes its effects
-and drops the key. The plaintext data key exists in a process evaluating that organization's
+**Unwrapped for a tick and no longer.** The ticker assumes the flywheel's role, calls
+`Decrypt` once, opens that flywheel's directory, evaluates its rail, writes its effects
+and drops the key. The plaintext data key exists in a process evaluating that flywheel's
 rail and at no other moment.
 
 **What an attacker actually gets.** From a stolen disk, a lost volume or a leaked snapshot,
 ciphertext with no data key on it. From a stolen backup of the queue or the index, ids and
-timestamps. From a compromised ticker process while it runs, that organization's plaintext for
-that tick and any other organization ticking in the same process. That is the residual.
+timestamps. From a compromised ticker process while it runs, that flywheel's plaintext for
+that tick and any other flywheel ticking in the same process. That is the residual.
 
 **How the residual shrinks, in order of cost.** Evict on idleness and re-clone next tick, so a
 sleeping tenant has nothing warm to steal; the price is a cold tick of a few seconds against a
 warm one of a few hundred milliseconds, paid by a tenant who was idle anyway. Give each
-organization its own role and its own tick boundary, so one compromised credential reaches one
+flywheel its own role and its own tick boundary, so one compromised credential reaches one
 tenant. Run the ticker in a Nitro Enclave with the key policy conditioned on attestation
 (option d), which removes our staff and a compromised image entirely. Move the key and the
 warm stores into the customer's own account behind a federated role (option b), so the cut-off
@@ -88,22 +88,22 @@ repository on the platform, under their key. A customer who needs that changed w
 
 ### (a) Provider-managed encryption, one key per tenant
 
-**Maps to** §2 exactly: one customer-managed KMS key per organization over the clone cache,
+**Maps to** §2 exactly: one customer-managed KMS key per flywheel over the clone cache,
 the body store, the queue, the due index and the pool host's disk. Each key and each object is
-tagged with its organization, and the key's policy admits a principal only when the principal's
-session tag equals that tag, so the dispatcher's per-tier role carries the organization as a
+tagged with its flywheel, and the key's policy admits a principal only when the principal's
+session tag equals that tag, so the dispatcher's per-tier role carries the flywheel as a
 session tag and no count of roles bounds the design. **Covers** the cloud provider, a lost disk and a stolen snapshot,
 and bounds blast radius to one key and one audit trail. It does **not** cover our staff, who
 can assume the role, nor a compromised ticker mid-tick. **Costs** nothing measurable in
 latency and about a dollar per key per month; key quotas bite near ten thousand tenants.
-**Breaks** nothing. **Smallest proof:** delete one organization's key alias, and its tick must
+**Breaks** nothing. **Smallest proof:** delete one flywheel's key alias, and its tick must
 fail closed with a named attention line rather than retry.
 
 ### (b) The customer's own account by OIDC federation
 
 **Maps to** the same stores, moved wholesale into the customer's own AWS account: the key, the
 clone cache, the capture queue and the pool image. The customer creates one IAM role there
-whose trust policy accepts our OIDC issuer with a subject naming their organization. Each tick
+whose trust policy accepts our OIDC issuer with a subject naming their flywheel. Each tick
 assumes that role with a per-tick web-identity token, so we store no credential of theirs and
 there is nothing to rotate or leak. **Covers** our staff over time, because the customer ends
 it without asking us — deleting the role ends every path at once — and every use of the key is
@@ -117,7 +117,7 @@ killed.
 ### (c) Client-side encryption of the state repository's contents — an optional upgrade
 
 **Maps to** B.1's read and write against the C.2 layout, and to the machinery's own prefix in
-blueprints (203). An organization may declare that records are written as sops/age envelopes
+blueprints (203). A flywheel may declare that records are written as sops/age envelopes
 under its key: self-managed, the operator's age recipients on their hosts; hosted, a data key
 wrapped by the tenant's KMS key. sops takes both backends at once and M-of-N key groups, so a
 lost KMS does not lose history ([sops, read 2026-09-07](https://github.com/getsops/sops)).
@@ -168,7 +168,7 @@ protected. **The gap it exposes is the important one:** triage reads the raw mat
 capture points at (dispatch model §4), and that is the most sensitive content the customer
 has. A shared dispatcher that follows those pointers is a shared dispatcher holding meeting
 transcripts. Minimisation is only honest if pointer-following triage runs on a host serving
-one organization; the triage of a capture whose whole content is already in the queue carries
+one flywheel; the triage of a capture whose whole content is already in the queue carries
 no pointer and runs in the tick (269). **Costs** nothing and saves
 clone time. **Breaks** nothing. **Smallest proof:** a ticker whose clone spec is enforced at
 read time, where a path outside the declared set is a refusal in the run record and not a log
@@ -176,11 +176,11 @@ line.
 
 ## 4. Three designs
 
-**Design A — trust the service.** Options (a) and (f): a key per organization over every store
+**Design A — trust the service.** Options (a) and (f): a key per flywheel over every store
 the shared tier touches, the cache sealed and unwrapped only for a tick, minimised sparse
 clones, no code and no raw material a capture points at on any shared host, raw-material
 triage and every elaboration and construction session on pool hosts that serve one
-organization and are destroyed at retire (240, 241); the dispatcher keeps the interpreter and
+flywheel and are destroyed at retire (240, 241); the dispatcher keeps the interpreter and
 the triage of self-contained captures, which is what makes chat usable with the laptop closed
 (269). Chat runs through the
 platform's bot, so the customer places no secret at all.
@@ -191,7 +191,7 @@ they want our staff out of the trust set rather than merely holding a switch, an
 declaration if their concern is GitHub too.
 
 **Design C — your account, our control plane.** Option (e). We provision the binary into their
-account, hold no content, and see organization names, health and billing counters. Their App,
+account, hold no content, and see flywheel names, health and billing counters. Their App,
 their pools, their bill; the chat application stays ours. Design C is ratified as tier 3's
 second shape, stores and compute (268, 276a), and Enterprise includes it beside design B's
 stores-only shape. The customer chooses between the two in the management console, and under C
@@ -213,8 +213,8 @@ lifetime ceiling.
 | ops burden on us | one tagged key per tenant | key homes, federation trust per customer | per-customer provisioning, blind support |
 | fits tiers | 1 and 2 | 2 and 3 · tier 3's first shape | tier 3's second shape |
 
-**Recommended default for the hosted tier: Design A.** A key per organization over every warm
-store, unwrapped only while that organization's plan is evaluated, plus minimisation and pool
+**Recommended default for the hosted tier: Design A.** A key per flywheel over every warm
+store, unwrapped only while that flywheel's plan is evaluated, plus minimisation and pool
 and triage isolation. It answers what a customer actually asks — what sits on your disks
 between ticks and who can read it — without asking them to do anything. Design B is then a
 change of the key's home and one role's trust policy, not a re-architecture.
@@ -227,21 +227,21 @@ answered while it sleeps, so you open a hosted account and turn on the cloud age
 can say: your code never goes to it, because the machine that reads your rail is declared to
 hold no repository at all. Your transcripts never go to it either — they stay on your machine,
 and the session that reads them runs there. Your rail and your decisions do go, and everything
-we hold about you is encrypted at rest under a key that exists for your organization alone and
+we hold about you is encrypted at rest under a key that exists for your flywheel alone and
 is unwrapped only while your plan is evaluated. Turn the cloud agent off and the same binary
 keeps ticking on your laptop.
 
 **The team on the hosted tier.** You sign in, we create the two repositories under your own
 GitHub account, and you invite our bot to a channel. What we can say: everything we hold about
-you is encrypted at rest under a key that exists for your organization alone, and it is
+you is encrypted at rest under a key that exists for your flywheel alone, and it is
 unwrapped only while your rail is being evaluated — a stolen disk or a leaked snapshot of ours
-is ciphertext. Your code only ever exists on a machine created for your organization and
+is ciphertext. Your code only ever exists on a machine created for your flywheel and
 destroyed when the work ends. Your raw capture material is read only on your own machine or on
 such a machine, and never on anything shared. Your repositories sit on GitHub under GitHub's
 own encryption, the same as every other repository you own.
 
 **The enterprise with its own AWS account.** You create one IAM role in your account whose
-trust policy accepts our OIDC issuer with a subject naming your organization, and your key,
+trust policy accepts our OIDC issuer with a subject naming your flywheel, and your key,
 your cache, your queue and your pool image live there. What we can say: everything above, plus
 we hold no credential of yours — each tick assumes your role with a token minted for that tick
 — and deleting the role stops us reading anything, anywhere, at once, with no ticket and no

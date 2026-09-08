@@ -1,6 +1,6 @@
 # The billing scenario pack: every Scenario of billing-brief.md as one row,
 # naming the machine and the transition it exercises. The brief's scenarios are
-# the acceptance file for this organization (192), so nothing here is invented —
+# the acceptance file for this flywheel (192), so nothing here is invented —
 # each row's `brief` field is the scenario's own heading and each row's
 # given/when/then is that scenario's WHEN/THEN read against the machines.
 #
@@ -372,7 +372,7 @@ scenarios:
     requirement: "Credentials are never held in configuration"
     exercises: {file: machines/producers.yaml, construct: secrets}
     needs: growth-7
-    given: "every adapter declaration of this organization"
+    given: "every adapter declaration of this flywheel"
     when: "the configuration is examined"
     then: "each names a secret by name and holds no token, key or password; the secret is placed on the host by the operator, never by an agent (207)"
 

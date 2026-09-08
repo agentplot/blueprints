@@ -44,7 +44,7 @@ key: [vendor, month]                 # needs: growth-2 — vendor plus month is 
 record_type: Cycle                   # needs: growth-2 — the %rec block in ../records.yaml
 record:
   needs_change_directory: "false"
-  lands_on: none                     # needs: growth-1 — a process organization has no built repository
+  lands_on: none                     # needs: growth-1 — a process flywheel has no built repository
   vendor: ref                        # -> vendor record (records.yaml)
   month: string                      # YYYY-MM
   suppressed: bool

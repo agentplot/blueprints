@@ -90,7 +90,7 @@ Text that is neither a number, a command nor a capture is handed to the
 model running in the page's browser, which proposes exactly one tool call
 per thing asked, each shown as what will be sent and confirmed on its own
 (216a, 194). Where no interpreter runs — the rail has no key of its own,
-or the organization runs without one — the palette says what it does
+or the flywheel runs without one — the palette says what it does
 accept and offers the nearest shapes, rather than guessing (194: a name
 that resolves to nothing is asked about, never guessed).
 

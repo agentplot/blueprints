@@ -15,7 +15,7 @@ ledger has no gaps is the state repository with numbers never reused (15).
 
 | brief | flywheel-next |
 |---|---|
-| the business | an organization (218) with a state repository and a blueprints repository and no built repository at all |
+| the business | a flywheel (218) with a state repository and a blueprints repository and no built repository at all |
 | `invoices.rec`, plain text, schema-enforced, versioned | the state repository: records as recutils files, one commit per change (35, 41), the record set's own descriptor as the write gate, enforced by the binary that already parses them (section 13) |
 | Vendor | a record of a `vendor` record type in the state repository; rarely changed; the source the mail-rule producer derives from |
 | Paperless mail rules generated from vendors | a deliverable producer (190) with a store on the Paperless host: rebuild is idempotent, proof is the rule set read back |
@@ -41,9 +41,9 @@ ledger has no gaps is the state repository with numbers never reused (15).
 
 ## What the model must grow
 
-1. **An organization with no built repository.** 219 lists repositories by
+1. **A flywheel with no built repository.** 219 lists repositories by
    URL; nothing forbids zero, but the bootstrap, the map and the runway
-   readings assume construction. A process organization has elaboration
+   readings assume construction. A process flywheel has elaboration
    sessions and effects and never a build. Runway must read as units drained
    by sessions of any kind.
 2. **Domain record sets declared by a package.** The flywheel already stores
@@ -66,7 +66,7 @@ ledger has no gaps is the state repository with numbers never reused (15).
    tiers (A.34) and as the host's own timer locally.
 5. **Aggregate units.** A unit whose transition is gated on sibling units
    (the month over its cycles), with the refusal naming the blockers.
-6. **Elaboration outputs as proposals to people outside the organization.**
+6. **Elaboration outputs as proposals to people outside the flywheel.**
    A draft to a vendor is a proposal whose yes sends mail. The effect runs
    through a mail adapter with the message id as proof.
 7. **Adapters as packages:** Paperless (webhook in, rules and documents out),
@@ -96,7 +96,7 @@ ledger has no gaps is the state repository with numbers never reused (15).
 ## Phasing
 
 This process runs after phase 1 of the flywheel (the loop) is real on willdan
-work, as the first organization of the generic track: an organization with
+work, as the first flywheel of the generic track: a flywheel with
 records, timers, scheduled producers and adapters and no code. The machines
 and scenario packs drawn from the brief are in models/ beside the core; the
 brief's scenarios are the acceptance file (192).

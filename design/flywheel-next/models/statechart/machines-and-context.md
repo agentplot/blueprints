@@ -58,7 +58,7 @@ template's states, not against the referenced machine's.
 
 **Where the operator's copies live.** The files under
 `machines/unit-types/` and `machines/elaboration-types/` are what an
-organization's own type files look like (`model.md` 1.3, 10.6): the
+flywheel's own type files look like (`model.md` 1.3, 10.6): the
 engine loads `flywheel/types/units/<type>.yaml` and
 `flywheel/types/elaborations/<type>.yaml` from the blueprints repository, at
 the version the object recorded (57), and `persona-test.yaml` is the S26
@@ -106,9 +106,9 @@ scenario; the requirement trace both ways.
   machine runs under (objects record only `type_version`);
 - two files with the same `machine:` silently replace one another;
 - nothing ties a file's directory to its kind, and nothing marks which
-  files an organization may edit;
+  files a flywheel may edit;
 - `check.py` runs over `machines/`, never over a blueprints repository, so an
-  organization's type files are validated by nothing until the engine
+  flywheel's type files are validated by nothing until the engine
   loads them;
 - the elaboration site writes `$type` without a version while the
   work-item site writes `$unit.type@$unit.type_version`; the version is
@@ -123,26 +123,26 @@ scenario; the requirement trace both ways.
 `place`, `session` and `stage`: every object machine instantiates them
 and they name the effects only the machinery may perform (42, 43, I12).
 Core machines ship with the release, compiled into the binary, and no
-organization edits one. A machine is **extensible** when it is a file an
-organization adds or overrides under `flywheel/` in its blueprints (203,
+flywheel edits one. A machine is **extensible** when it is a file an
+flywheel adds or overrides under `flywheel/` in its blueprints (203,
 208): a unit type or an elaboration type. Beside the machines, the same
 line divides the other data the engine reads: atoms and the schema are
 core (a new atom needs a binding, and a binding is a release, 57, 140);
 deliverables, vocabularies, instructions, schemas and skills are
 extensible (119, 190, 198).
 
-| file | machine | kind | class | at an organization |
+| file | machine | kind | class | at a flywheel |
 |---|---|---|---|---|
-| `bolt.yaml`, `capture.yaml`, `claim.yaml`, `curation.yaml`, `elaboration.yaml`, `intent.yaml`, `ledger-cell.yaml`, `operator-session.yaml`, `organization.yaml`, `planning.yaml`, `proposal.yaml`, `repository.yaml`, `service.yaml`, `signal.yaml`, `unit.yaml`, `work-item.yaml` | the sixteen object machines | object | core | in the binary; never in the blueprints |
+| `bolt.yaml`, `capture.yaml`, `claim.yaml`, `curation.yaml`, `elaboration.yaml`, `intent.yaml`, `ledger-cell.yaml`, `operator-session.yaml`, `flywheel.yaml`, `planning.yaml`, `proposal.yaml`, `repository.yaml`, `service.yaml`, `signal.yaml`, `unit.yaml`, `work-item.yaml` | the sixteen object machines | object | core | in the binary; never in the blueprints |
 | `engine/host.yaml`, `engine/lease.yaml`, `engine/rail.yaml`, `engine/response.yaml`, `engine/sink.yaml` | the five engine machines | engine | core | in the binary; their windows (5m, 30m, 24h, 7d) are "the operator's to change" (`model.md` 2.5) — **unstated** through what: no manifest key names them |
 | `line.yaml`, `place.yaml`, `session.yaml`, `stage.yaml` | the structural templates | template | core | in the binary |
 | `atoms.yaml`, `schema.json` | the atoms and the machine schema | — | core | in the binary; `flywheel-atoms` generates the name registries from them |
 | `unit-types/chore.yaml`, `unit-types/default.yaml`, `unit-types/fast.yaml` | the shipped unit types | template | extensible, shipped | `flywheel/types/units/<type>.yaml`, placed by the blueprints template (208), overridden by editing the file (a chore, 123) |
-| `unit-types/persona-test.yaml` | an organization's own unit type (S26) | template | extensible, an organization's | `flywheel/types/units/persona-test.yaml`, added by a commit; not in the shipped set |
+| `unit-types/persona-test.yaml` | a flywheel's own unit type (S26) | template | extensible, a flywheel's | `flywheel/types/units/persona-test.yaml`, added by a commit; not in the shipped set |
 | `elaboration-types/self-closing.yaml`, `elaboration-types/standing.yaml`, `elaboration-types/with-operator.yaml` | the shipped elaboration types | template | extensible, shipped | `flywheel/types/elaborations/<type>.yaml`; `with-operator` is also the operator's own session's type (69), so a core machine names it by bare name: it may be overridden, never removed, and its `done` final is part of the contract |
 | `profiles/deliverables.yaml` `shipped:` | the deliverables binding | — | extensible, shipped | producers, schemas and surfaces under `flywheel/`, overridden per name in `flywheel.yaml` `deliverables.<name>` (190) |
 | `profiles/host.yaml`, `sessions.yaml`, `blueprints.yaml`, `record-derived.yaml`, `surfaces.yaml`, `tracker.yaml`, `git-only.yaml` | the bindings | — | core | in the binary; a third profile is a release (168) |
-| `flywheel/map-vocabulary.yaml`, `flywheel/instructions/*.md`, `flywheel/schemas/*.md`, `flywheel/skills/**/SKILL.md` | not machines | — | extensible | the organization's, under the prefix (198, 119, 88) |
+| `flywheel/map-vocabulary.yaml`, `flywheel/instructions/*.md`, `flywheel/schemas/*.md`, `flywheel/skills/**/SKILL.md` | not machines | — | extensible | the flywheel's, under the prefix (198, 119, 88) |
 
 **Marking it.** `schema.json` gains a required field `tier: core |
 extensible`. A file's directory mirrors it — `machines/` and
@@ -172,7 +172,7 @@ was created under, so a release can tell the objects that predate it.
   core machine with its version and content hash; every shipped
   extensible file with its version; the exceptions (a core machine's
   bare reference to a shipped type);
-- the organization's additions are its files under `flywheel/types/`,
+- the flywheel's additions are its files under `flywheel/types/`,
   and the machinery renders `flywheel/registry.json` under its prefix
   (203): for every type name, the
   versions seen, the blueprints commit each version first appeared at, its
@@ -289,7 +289,7 @@ confirmation, nor context from a previous message. Both rows are in
 
 ### 2.3 Capture reading (`capture.reading`, agent `capture-reader`, machinery session)
 
-Triage of raw ideas by the organization's dispatch agent (C.1, the
+Triage of raw ideas by the flywheel's dispatch agent (C.1, the
 capture endpoint) is outside `machines/`: dispatch writes captures and
 signals through the blueprints binding and the data plane reads them through
 curation. Its own context is ruled by the dispatch model, not here.
@@ -404,7 +404,7 @@ later stage sees the earlier stage's commits on disk.
 | map elements, homes, attachments | the map section `prepare_place` writes from `flywheel/map/target.json`: the elements the unit builds — the ids its claims attach to, and those homed in the repository that the chapters name — each with context, kind and effective home, and the claims attached to each with versions (211) | the same | the same |
 | surface specification | the chapter in force at the header's blueprints commit "when a claim the unit cites is about a surface" (212) — **unstated** how "about a surface" is decided (an attachment to an element of a surface kind, a chapter under the specification's section, or a claim field) | the same | the same |
 | deliverables and producers in force | `change-directory`, `spec` (by-type, no surface) | `commits`, `as-built-statements-naming-claims` (by-type) | `review-verdict` (by-type), `verdict` (default: producer, schema, surface `ledger`) — `model.md` 8.2 calls this `verdicts-for-named-claims`; one name should hold |
-| identity | the token in the header; the place-scoped installation token in `.flywheel/token` (207); `flywheel exit | offer | note`, `flywheel service start | stop` (48); the multiplexer session `flywheel-<org>-bolts` (174), model per the construction role (173) | the same | the same |
+| identity | the token in the header; the place-scoped installation token in `.flywheel/token` (207); `flywheel exit | offer | note`, `flywheel service start | stop` (48); the multiplexer session `flywheel-<flywheel>-bolts` (174), model per the construction role (173) | the same | the same |
 | never receives | `git branch | merge | push | worktree`, `wt`, `herdr` (7.8, 43); the blueprints repository as a tree; the state store; the bolt's operator place (44); sibling items' places; another session's thread (197). A push of its own place's branch: `host.yaml` gives the place token for it (207) and the `pre-push` hook refuses line operations (43) — **unstated** whether a session pushes its place branch or only commits | the same | the same |
 
 ### 2.11 Unit type `fast` (build, review)
@@ -493,7 +493,7 @@ stores and writes the work order; nothing is fed any other way (89).
 | | a review stage | the as-built statements to name in the verdict | 99 |
 | the bolt's line | every session of the bolt | the place at the line's head, refreshed by rebase while idle | 44, 51 |
 
-The gap the diagram draws dashed: a deliverable an organization adds
+The gap the diagram draws dashed: a deliverable a flywheel adds
 (a diagram of its own kind, a decision record, a data sample) is
 produced and recorded as expected, lands wherever the place's merge
 carries it, and is fed to no later session unless it happens to be a
@@ -511,9 +511,9 @@ the contract and this copy may not contradict it.
     definition. A **core** machine — every object machine, every engine
     machine, and the structural templates for a line, a place, a
     session and a stage — ships with the release and is never edited by
-    an organization; the atoms, the schema and the bindings are core
+    a flywheel; the atoms, the schema and the bindings are core
     with it. An **extensible** machine — a unit type or an elaboration
-    type — is a file an organization adds or overrides under the
+    type — is a file a flywheel adds or overrides under the
     prefix in its blueprints (203), and so are the deliverables, the
     vocabularies, the instructions, the schemas and the skills (119,
     190, 198). A core machine may name an extensible one only when the
@@ -532,7 +532,7 @@ the contract and this copy may not contradict it.
     is refused (123). An object records the version of the extensible
     machine it runs under (57) and the set version it was created
     under. The registry is a manifest in two parts, validated as one:
-    the release's manifest of what it ships, and the organization's
+    the release's manifest of what it ships, and the flywheel's
     additions, rendered under the prefix as a registration that lists
     every type name, every version seen, the blueprints commit each first
     appeared at, and whether it is shipped, overridden or added. The
@@ -570,7 +570,7 @@ the contract and this copy may not contradict it.
     session type whose enumeration is incomplete is not a session type
     the machinery may charge.
 
-227. Every deliverable entry, shipped or added by an organization, names
+227. Every deliverable entry, shipped or added by a flywheel, names
     the store the machinery carries it into and the session types that
     are fed it, beside its producer, schema and surface (190). The
     machinery carries a deliverable into its named store by an effect

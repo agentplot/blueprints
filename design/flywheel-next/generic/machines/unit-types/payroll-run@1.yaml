@@ -4,7 +4,7 @@
 # the flywheel holds is the prompt, the record and the artifacts written back.
 #
 # Growth this type leans on (../../README.md):
-#   growth-1  an organization with no built repository
+#   growth-1  a flywheel with no built repository
 #   growth-2  the payroll-record type and its key
 #   growth-4  a scheduled producer firing on pay dates
 #   growth-7  the OnPay adapter as a package
