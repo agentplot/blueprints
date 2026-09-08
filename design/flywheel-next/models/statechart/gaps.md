@@ -955,6 +955,48 @@ the operator may reverse by a response on the file; an entry with
   member; and what the page shows for an organization whose tick has
   never delivered, so no projection exists. **Open**.
 
+- **296–305 the control plane as a product.** Ruled: two products, the
+  binary open source under a permissive licence and the control plane
+  commercial and source-available for self-hosting, with the invocation
+  contract as the public line between them; the control plane installable
+  as a composition whose tenancy choices are parameters; and a
+  self-hosted control plane the third shape of tier 3, indistinguishable
+  from the service's own to the binary. **Decision**: the alternative,
+  an open binary with the hosted behaviour compiled out, would make
+  "the same binary bytes" untrue and would put the service's own tiers on
+  a different code path from every operator's laptop.
+
+  Three questions are open, and they are the ones
+  `proposals/control-plane.md` §6 carries. **The licence choice** is
+  unmade: which permissive licence, and whether the definitions of
+  permissions, roles, features, flags and plans travel under it, since
+  the plan ladder in them names the commercial rungs (252,
+  `identity.yaml` `definitions`). **Open**. **How the plan definitions in
+  the open binary relate to a control plane that has none** is unbound:
+  a self-managed host reads no plan at all (250, 279) and an installed
+  control plane may bind no payment provider (302), so whether the
+  ladder is a shipped definition an installer overrides, an organization
+  package (228), or a default the sync writes only where a payment
+  provider is bound decides what `fw-identity-sync` writes on such an
+  install and what the plan surface shows there. **Open**. **The update
+  path when the binary's version moves ahead of an installed control
+  plane** has a failure mode and no operation: 252 refuses a tool whose
+  permission the environment lacks, but who runs the sync in an installed
+  control plane and on whose release, what an operator sees while their
+  control plane is a set version behind (208), and whether the contract
+  carries a stated compatibility window are all unstated. **Open**.
+
+  Two more are unbound rather than ruled. 288's instrumentation is on by
+  default on the hosted tiers and opt-in on a self-managed host; an
+  installed control plane's hosts read as hosted, so whether their
+  readings reach the agentplot organization, the installer's own
+  flywheel, or nowhere is unstated. **Open**. The Switchboard composition
+  of `proposals/control-plane.md` §3 names twelve stacks and their
+  parameters from the deployment vocabulary and not from a built
+  instance; nothing in this model has been deployed, so every stack
+  boundary and every parameter there is a proposal. **Open** until the
+  willdan instance stands.
+
 - **213, 214 and 229–230 on the mockup.** The rail-and-board mockup
   (`design/flywheel-next/mockups/rail-and-board.html`) illustrates the
   artifact views behind an object (213), the flywheel instrument

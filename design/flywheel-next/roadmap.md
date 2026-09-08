@@ -50,7 +50,11 @@ evidence.
 Free ships with phase 1 (the binary on your computer). Hobby, Pro and Team
 ship with phase 5 in that order, each on a real organization first: Hobby on
 Mad Swan billing, Team on willdan. Enterprise, tier 3 in both shapes, follows
-the first customer who needs it.
+the first customer who needs it. Tier 3's third shape — the whole control plane
+installed in the customer's own accounts, sold and installed by us and shown in
+no marketing and no console (A.37, 296–305) — follows the first customer who
+needs that; the willdan-owned control plane deployed in switchboard is the first
+instance.
 
 ## What is not scheduled
 

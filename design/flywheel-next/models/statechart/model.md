@@ -2692,7 +2692,10 @@ organization's own, and pools on microVMs, container tasks or such
 instances. A long-lived dispatcher holds the chat platform's gateway
 socket, so free text in a channel is answered where an invoked function
 must take a slash command; a pool host on an instance has no lifetime
-ceiling, so 275's fallback placement is not needed. Chat on the hosted
+ceiling, so 275's fallback placement is not needed. Tier 3 has a third
+shape, which the console does not offer and marketing does not show: the
+whole control plane installed in the customer's own accounts, which is
+§20 (296–305, 304). Chat on the hosted
 tiers may be the service's own Slack or Discord application scoped to
 the organization's channel, carrying plan text and interactions and
 nothing else, the record still naming who responded (277, `sink`
@@ -2850,3 +2853,109 @@ default on the hosted tiers and opt-in on a self-managed host (288,
 `capture` machine). Code isolation is the guarantee the settings form's
 tier statement names, and it is 264 restated as a promise the operator
 can read (289).
+
+## 20. Ratified 296–305: the control plane as a product
+
+**Two products (296).** The **flywheel binary** is open source under a
+permissive licence and is everything a self-managed operator runs: the
+machines and the profiles, the page bundle with the plan console and the
+management console, the tool server and its model context protocol
+endpoint, the adapters, runners and routers, the definitions of
+permissions, roles, features, flags and plans, and the command line
+(191, 193, 215, 252, 291, 293). Nothing is held back from it to make a
+hosted tier work, so tier 0 is the whole product with no service side
+(268, 281). The **control plane** is commercial, source-available to
+enterprise customers for self-hosting, and is everything on the service
+side: the receiver, the per-tier dispatcher packaging with its roles and
+tags, the queues, the scheduler, the cache and projection stores and
+their keys, the page distribution, the registry, the deployer, the
+identity environment and its sync, the plan and billing integration, the
+pool image build and provisioning, and the shared chat applications
+(239, 240, 243, 252, 256, 259, 269–277, 279, 282, 290, 291, 294, 276a).
+Neither reimplements the other: the control plane evaluates no guard and
+decides nothing. It invokes the binary and holds what the binary cannot
+hold between invocations.
+
+**The line is the invocation contract (297, 298), and it is public.** It
+is documented in the open-source repository and versioned with the set
+(208), and it is bound in `host.yaml` `tier.control_plane`. In **tick**
+the control plane provides the organization and its tier, a role session
+tagged with that organization, the warm cache and page projection
+objects, the organization's queue with the messages on it, the standing
+scheduler entry, the identity environment's issuer with the definitions
+version it holds, a model credential or none, and a scratch directory
+with the budget the placement states; the binary returns the cache
+uploaded, the projection written, the plan delivered, the shared lines
+pushed by compare-and-swap, each message acknowledged or left under its
+idempotent key, one next due time or a deletion, the run record, and an
+exit with the scratch wiped and the data key dropped (111, 162, 256,
+259, 269, 272, 273, 291, 294). In **request** it provides the caller's
+token, the organization named in the path, a role session tagged with
+that same organization, the projection object and the definitions
+version; the binary returns the bundle or the projection, a tool call
+enqueued on the queue for a write, or a refusal with its reason and run
+record (205a, 249, 270, 271, 291). Five shapes in that environment are
+stated and are what a second control plane must match — the queue
+message, the scheduler entry, the cache object, the projection object
+and the identity token's claims — and the definitions version is the
+sixth, which couples the two products in time (243, 248, 249, 250, 252,
+271, 272, 273, 291).
+
+**Anyone may build a control plane to it; ours is the reference (299).**
+A self-managed host and a hosted host run the same binary bytes: nothing
+is compiled differently and nothing is gated at build time, so a hosted
+host differs from a laptop only in what its manifest binds — a tier, an
+identity kind and a router (191, 217j, 243, `host.yaml`).
+
+**The control plane is installable and customizable (300).** It ships as
+one composition of applications and stacks — receiver, dispatcher,
+scheduler, stores and keys, page, registry, deployer, identity sync,
+billing, chat and pools — each holding one part of 296's list and taking
+the tenancy choices as parameters: the tier roles and the tag key with
+the policy that matches a resource's organization tag to the session's
+(259), the key homes (267), and whether the queue, the cache, the
+projection and the pool image live in the control plane's account or the
+organization's (276). Installing it is bringing the composition into an
+environment; customizing it is those parameters and never a fork
+(`host.yaml` `tier.installed`).
+
+Three things are the installer's own. The **identity environment** is
+theirs — their environment with the flywheel Application in it, or any
+provider that issues the token claims of 298, the named provider being
+the reference implementation. This amends 252, which assumed one
+environment and one release: the definitions still ship in the binary
+and are still the one place they are defined, and each control plane's
+own release syncs them into its own environment, by difference, under
+that provider's write ceiling, deleting nothing not named as retired and
+writing no hostname; a self-managed host still has no environment and
+never syncs (301, `identity.yaml` `provider`, `sync`). **Billing** is
+optional: where no payment provider is bound the plans of A.35 are
+entitlement targets alone — still a named set of `fw.ff.*` features plus
+stated limits, still hiding and metering and never authorizing — and the
+billing stack is the one thing omitted (279, 280, 302, `identity.yaml`
+`plans`). The **chat applications** are theirs, installed into the
+workspaces they serve with their own ids, tokens and signing secrets;
+the two shared components are still exactly two, each seeing a payload
+once in transit and keeping nothing (277, 290, 303, `sink` machine,
+`host.yaml` `tier.chat`).
+
+**A self-hosted control plane is tier 3's third shape and Enterprise's
+fourth flavour (304).** It is not shown in marketing and not offered in
+the management console; it is sold and installed by us. Under it nothing
+of the service's runs at all: no process of ours in the installer's
+accounts, no traffic of their organizations reaching a machine of ours,
+no credential of ours reaching a key of theirs, and none of their
+organizations in our registry. What stays ours is the releases with
+their set (208, 252), the invocation contract as a document, the control
+plane's source under the customer's agreement, and the record of who
+holds a grant. The first instance is a willdan-owned control plane
+deployed in switchboard (`proposals/control-plane.md` §4).
+
+**And the binary cannot tell (305).** A hosted host names an environment
+(252) and that environment may be any control plane's; every fact the
+binary reads about its service side arrives through 297's contract and
+298's shapes and through nothing else. This amends 268 and 276a where
+they read "the service side" as ours alone: read it as the control
+plane's side, which may be an installer's own, and tier 3's shapes are
+three — stores only, stores and compute, and the whole control plane
+installed (`host.yaml` `tier`, `tier.dedicated`, `tier.installed`).

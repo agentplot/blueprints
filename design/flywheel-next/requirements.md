@@ -1995,6 +1995,122 @@ requirements, iterated against the running plan rather than on paper.
     work retires (264, 240, 275). No shared host of the service's ever
     holds an organization's code.
 
+### A.37 The control plane
+
+296. There are two products. The **flywheel binary** is open source under a
+    permissive licence, and it is everything a self-managed operator runs:
+    the machines and the profiles, the page bundle with the plan console
+    and the management console, the tool server and its model context
+    protocol endpoint (193, 291, 293), the adapters, runners and routers
+    (191, 215), the definitions of permissions, roles, features, flags and
+    plans (252), and the command line. Nothing is held back from it to make
+    a hosted tier work, so tier 0 is the whole product with no service side
+    (268, 281). The **control plane** is commercial, source-available to
+    enterprise customers for self-hosting, and it is everything that exists
+    on the service side: the receiver (271, 290), the per-tier dispatcher
+    packaging with its roles and tags (259, 269), the queues (270, 271),
+    the scheduler (273), the warm cache and page projection stores and
+    their keys (256, 272, 291), the page distribution (291), the registry,
+    the deployer (276a), the identity environment and its sync (243, 252),
+    the plan and billing integration (279, 282, 294), the pool image build
+    and provisioning (239, 240, 275), and the shared chat applications
+    (277, 290). Neither reimplements the other: the control plane
+    evaluates no guard and decides nothing; it invokes the binary and holds
+    what the binary cannot hold between invocations.
+297. The line between the two products is the **invocation contract**, and
+    it is public, documented in the open-source repository and versioned
+    with the set (208). The control plane invokes the binary in two modes.
+    In **tick** it provides the organization and its tier, a role session
+    tagged with that organization (259), the warm cache and page projection
+    objects, the organization's queue and the messages waiting on it, the
+    scheduler entry now standing, the identity environment's issuer with
+    the definitions version it holds, a model credential or none (294), and
+    a scratch directory with a stated budget; the binary returns the cache
+    uploaded, the projection written, the plan delivered, the shared lines
+    pushed by compare-and-swap, each message acknowledged or left under its
+    idempotent key (111), one next due time or a deletion, the run record,
+    and an exit with the scratch wiped and the data key dropped (269). In
+    **request** it provides the caller's identity token, the organization
+    named in the path (205a), a role session tagged with that same
+    organization, the page projection object and the definitions version;
+    the binary returns the bundle or the projection, a tool call enqueued
+    on the queue for a write, or a refusal with the reason and its run
+    record (249, 291). A request is never a tick and never reads the warm
+    cache (270, 272).
+298. Five shapes in that environment are stated and are what a second
+    control plane must match: the queue message, one envelope per invoker
+    carrying the organization, the idempotent key, the source and a body
+    sealed under the organization's key (111, 256, 271); the scheduler
+    entry, one named entry per organization whose target is the queue
+    (273); the cache object, a bundle of two sparse shallow clones (272);
+    the projection object, the status view and the rail as data with each
+    member's page sink and its mark (291); and the identity token's claims,
+    the identity, the accounts assigned, the roles and permissions on the
+    organization's account, and the entitlement features with their flags
+    (243, 248, 249, 250). The definitions version is the sixth and couples
+    the two products in time (252).
+299. Anyone may build a control plane to that contract, and ours is the
+    reference implementation. A self-managed host and a hosted host run the
+    same binary bytes: nothing is compiled differently and no behaviour is
+    gated at build time, so a hosted host differs from a laptop only in
+    what its manifest binds — a tier, an identity kind and a router (191,
+    217j, 243).
+300. The control plane is installable and customizable. It ships as one
+    composition of applications and stacks — receiver, dispatcher,
+    scheduler, stores and keys, page, registry, deployer, identity sync,
+    billing, chat and pools — each stack holding one part of 296's list and
+    taking the tenancy choices as parameters: the tier roles and the tag
+    key with the policy that matches a resource's organization tag to the
+    session's (259), the key homes (267), and whether the queue, the cache,
+    the projection and the pool image live in the control plane's account
+    or the organization's (276). Installing it is bringing the composition
+    into an environment; customizing it is those parameters and no fork.
+301. An installed control plane's identity environment is the installer's
+    own: their environment with the flywheel Application in it, or any
+    provider that issues the token claims of 298, the named provider of 243
+    being the reference implementation. This amends 252, which assumed one
+    environment and one release: the definitions still ship in the binary
+    and are still the one place they are defined, and it is each control
+    plane's own release that syncs them into its own environment, by
+    difference, under that provider's write ceiling, deleting nothing not
+    named as retired and writing no hostname. A self-managed host still has
+    no environment and never syncs, and a hosted host whose binary names a
+    permission its environment lacks still refuses that tool with the
+    reason.
+302. Billing is optional in an installed control plane. Where no payment
+    provider is bound, the plans of A.35 are entitlement targets alone: a
+    plan is still a named set of the `fw.ff.*` features plus its stated
+    limits, it still hides and still meters and still never authorizes
+    (279, 280), and nothing is charged. A control plane that sells nothing
+    omits the billing stack and no other.
+303. The shared chat applications of an installed control plane are the
+    installer's own, installed into the workspaces it serves with its own
+    ids, tokens and signing secrets. This amends 277 and 290 for such an
+    installation: the two shared components are still exactly two, the
+    receiver and the chat application, each seeing a payload once in
+    transit and keeping nothing, and both belong to the installer.
+304. A self-hosted control plane is the third shape of tier 3 and the
+    fourth flavour of Enterprise (268, 276, 276a, 281). It is not shown in
+    marketing and not offered in the management console; it is sold and
+    installed by us. Under it nothing of the service's runs at all: no
+    process of ours in the installer's accounts, no traffic of their
+    organizations reaching a machine of ours, no credential of ours
+    reaching a key of theirs, and none of their organizations in our
+    registry. What stays ours is the releases with their set (208, 252),
+    the invocation contract as a document, the control plane's source under
+    the customer's agreement, and the record of who holds a grant. The
+    first instance is a willdan-owned control plane deployed in
+    switchboard.
+305. From the binary's point of view a self-hosted control plane is
+    indistinguishable from ours. A hosted host names an environment (252)
+    and that environment may be any control plane's; every fact the binary
+    reads about its service side comes through 297's contract and 298's
+    shapes and through nothing else. This amends 268 and 276a where they
+    read "the service side" as ours alone: read it as the control plane's
+    side, which may be an installer's own, and the shapes of tier 3 are
+    three — stores only, stores and compute, and the whole control plane
+    installed.
+
 ## 5. Requirements — Part B, the control plane contract
 
 The data plane reaches durable, shared state and the operator only
