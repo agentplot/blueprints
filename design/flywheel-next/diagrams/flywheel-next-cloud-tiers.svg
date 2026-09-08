@@ -62,7 +62,7 @@
   <text x="716" y="466" font-size="9" fill="#999">webhook and chat payloads, transient</text>
 
   <!-- dispatcher -->
-  <rect x="700" y="540" width="380" height="190" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="2"/>
+  <rect x="700" y="540" width="380" height="260" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="2"/>
   <use href="#fn" x="734" y="570" color="#4a7fb5"/>
   <text x="762" y="566" font-size="12.5" font-weight="700" fill="#333">dispatcher function</text>
   <text x="762" y="581" font-size="9" fill="#999">one Lambda function per tier · the cloud agent</text>
@@ -73,6 +73,11 @@
   <text x="716" y="682" font-size="9" fill="#999">nothing between runs · in a run, one organization's plaintext in memory and scratch</text>
   <text x="716" y="700" font-size="9" fill="#999">woken by the queue, by the scheduler at the due time, or by a page request</text>
   <text x="716" y="718" font-size="9" fill="#999">if the push loses the compare-and-swap it refetches and tries once more</text>
+  <text x="716" y="731" font-size="8.5" fill="#666">it interprets chat and triages self-contained captures in-process:</text>
+  <text x="716" y="744" font-size="8.5" font-weight="700" fill="#3a6a99">one bounded model call per message · model access under the tagged role, metered into</text>
+  <text x="716" y="757" font-size="8.5" font-weight="700" fill="#3a6a99">the plan, or a key you place</text>
+  <text x="716" y="770" font-size="8.5" fill="#a34848">only triage over the raw material a capture points at, and elaboration and construction,</text>
+  <text x="716" y="783" font-size="8.5" fill="#a34848">run on a laptop or a pool host</text>
 
   <!-- scheduler -->
   <rect x="180" y="545" width="340" height="120" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="1.4"/>
@@ -163,7 +168,7 @@
   <text x="1096" y="466" font-size="9.5" font-weight="700" fill="#5e5e5a">plan lines</text>
 
   <!-- pool to GitHub -->
-  <path d="M 1180 786 C 860 828, 300 830, 150 748 C 104 710, 100 430, 132 360 C 148 320, 166 294, 180 282" fill="none" stroke="#8a8a86" stroke-width="2.2" marker-start="url(#mS)" marker-end="url(#mS)"/>
+  <path d="M 1180 786 C 880 838, 300 836, 150 748 C 104 710, 100 430, 132 360 C 148 320, 166 294, 180 282" fill="none" stroke="#8a8a86" stroke-width="2.2" marker-start="url(#mS)" marker-end="url(#mS)"/>
   <text x="720" y="820" font-size="9.5" font-weight="700" fill="#5e5e5a" text-anchor="middle">clone code · push the pull request</text>
 
   <!-- key edges -->

@@ -52,7 +52,7 @@
   <text x="716" y="432" font-size="9.5" fill="#666">your key encrypts it and your account holds it</text>
   <text x="716" y="450" font-size="9.5" font-weight="700" fill="#8a6a1d">nothing of it ever reaches a service of ours</text>
   <text x="716" y="468" font-size="9" fill="#999">webhook and chat payloads, transient</text>
-  <rect x="700" y="536" width="380" height="190" rx="8" fill="#fff" stroke="#c9962e" stroke-width="2"/>
+  <rect x="700" y="536" width="380" height="246" rx="8" fill="#fff" stroke="#c9962e" stroke-width="2"/>
   <use href="#fn" x="734" y="566" color="#c9962e"/>
   <text x="762" y="562" font-size="12.5" font-weight="700" fill="#333">dispatcher function</text>
   <text x="762" y="577" font-size="9" fill="#999">the same binary, running in your account</text>
@@ -61,9 +61,14 @@
   <text x="716" y="602" font-size="9.5" font-weight="700" fill="#8a6a1d">we provision it through a role you create that trusts our OIDC issuer,</text>
   <text x="716" y="620" font-size="9.5" font-weight="700" fill="#8a6a1d">and revoke our own reach by deleting that role</text>
   <text x="716" y="638" font-size="9.5" fill="#666">it assumes your role, runs one tick, wipes its scratch, and exits</text>
-  <text x="716" y="656" font-size="9.5" font-weight="700" fill="#3a6a99">we see that it started and that it finished; we never see what it read</text>
-  <text x="716" y="674" font-size="9" fill="#a34848">what stays ours is the supply chain: our binary still runs there</text>
-  <text x="716" y="688" font-size="9" fill="#999">and the price is blind support — we cannot see what broke</text>
+  <text x="716" y="656" font-size="9.5" fill="#666">it interprets chat and triages self-contained captures in-process:</text>
+  <text x="716" y="674" font-size="9.5" font-weight="700" fill="#3a6a99">one bounded model call per message · model access under the assumed role,</text>
+  <text x="716" y="692" font-size="9.5" font-weight="700" fill="#3a6a99">metered into the plan, or a key you place</text>
+  <text x="716" y="710" font-size="9" fill="#a34848">only triage over the raw material a capture points at, and elaboration and</text>
+  <text x="716" y="724" font-size="9" fill="#a34848">construction, run on a laptop or a pool host</text>
+  <text x="716" y="738" font-size="9.5" font-weight="700" fill="#3a6a99">we see that it started and that it finished; we never see what it read</text>
+  <text x="716" y="756" font-size="9" fill="#a34848">what stays ours is the supply chain: our binary still runs there</text>
+  <text x="716" y="770" font-size="9" fill="#999">and the price is blind support — we cannot see what broke</text>
   <rect x="180" y="545" width="340" height="116" rx="8" fill="#fff" stroke="#c9962e" stroke-width="1.4"/>
   <use href="#clock" x="214" y="575" color="#c9962e"/>
   <text x="242" y="571" font-size="12.5" font-weight="700" fill="#333">scheduler</text>
