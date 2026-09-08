@@ -27,7 +27,7 @@
   Review switches: ?screen=1..6, ?theme=dark|light.
 -->
 <meta charset="utf-8">
-<title>An enterprise on its own account</title>
+<title>Flywheel in your own account</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
@@ -139,7 +139,7 @@ table.t{width:100%;border-collapse:collapse;font-size:12.5px}
   <div class="top">
     <h1>Your key, then your account</h1>
     <span class="chip">journey · enterprise</span>
-    <span class="who">Designs B and C</span>
+    <span class="who">Flywheel in your own account</span>
   </div>
   <div class="stepper" id="stepper"></div>
   <div id="screen"></div>
@@ -149,13 +149,13 @@ const SCREENS = [
  {
   "step": "The shape",
   "stepNote": "your key, then your account",
-  "title": "Everything the hosted tier promises, plus the key is yours",
-  "sub": "This tier starts from the hosted tier&#8217;s guarantees and moves the key into your account. Past that, if you would rather we held nothing at all, we provision the whole thing into your account and become a control plane.",
+  "title": "Everything Flywheel Cloud promises, plus the key is yours",
+  "sub": "This starts from everything Flywheel Cloud guarantees and moves the key into your account. Past that, if you would rather we held nothing at all, we provision the whole thing into your account and become a control plane.",
   "promise": "<b>Everything above, plus the key is yours</b> — we cannot use it once you revoke it, and revocation stops us reading anything, anywhere, within minutes, with no ticket and no waiting on a deletion job.",
-  "body": "<div class=\"flow\">\n      <div class=\"box\"><b>your key, our compute</b><div class=\"small\">we run the ticks; your KMS key seals every warm store; a grant you revoke is the switch</div></div>\n      <span class=\"arrow\">&#8594;</span>\n      <div class=\"box\"><b>plus an enclave</b><div class=\"small\">the key policy releases it only to an attested image, so our staff and a compromised image are out of the set</div></div>\n      <span class=\"arrow\">&#8594;</span>\n      <div class=\"box here\"><b>your account, our control plane</b><div class=\"small\">the binary runs in your account; we keep names, health and billing counters</div></div>\n    </div>\n    <div class=\"kv\">\n      <div><div class=\"k\">Already true from the tier below</div><div class=\"v\">warm stores sealed under one key per organization, unwrapped only for a tick · code only on a machine created for you and destroyed after · raw material read only there or on your own machine</div></div>\n      <div><div class=\"k\">What this tier adds</div><div class=\"v\">the key lives in your account, its use is logged in your account, and revocation is yours</div></div>\n      <div><div class=\"k\">The trade</div><div class=\"v\">the slowest onboarding, an always-on floor, and support that cannot see what broke</div></div>\n    </div>",
+  "body": "<div class=\"flow\">\n      <div class=\"box\"><b>your key, our compute</b><div class=\"small\">we run the ticks; your KMS key seals every warm store; a grant you revoke is the switch</div></div>\n      <span class=\"arrow\">&#8594;</span>\n      <div class=\"box\"><b>plus an enclave</b><div class=\"small\">the key policy releases it only to an attested image, so our staff and a compromised image are out of the set</div></div>\n      <span class=\"arrow\">&#8594;</span>\n      <div class=\"box here\"><b>your account, our control plane</b><div class=\"small\">the binary runs in your account; we keep names, health and billing counters</div></div>\n    </div>\n    <div class=\"kv\">\n      <div><div class=\"k\">Already true on Flywheel Cloud</div><div class=\"v\">warm stores sealed under one key per organization, unwrapped only for a tick · code only on a machine created for you and destroyed after · raw material read only there or on your own machine</div></div>\n      <div><div class=\"k\">What this adds</div><div class=\"v\">the key lives in your account, its use is logged in your account, and revocation is yours</div></div>\n      <div><div class=\"k\">The trade</div><div class=\"v\">the slowest onboarding, an always-on floor, and support that cannot see what broke</div></div>\n    </div>",
   "never": [
-   "change what GitHub holds — your repositories sit there under GitHub&#8217;s own encryption unless you turn on the envelope declaration (265)",
-   "ask you to migrate: every tier seals the same stores the same way"
+   "change what GitHub holds — your repositories sit there under GitHub&#8217;s own encryption unless you turn on the envelope declaration",
+   "ask you to migrate: however you run it, the same stores are sealed the same way"
   ],
   "next": "Create the key"
  },
@@ -166,14 +166,14 @@ const SCREENS = [
   "sub": "One customer-managed key per organization, its policy naming only the role that ticks your organization, every warm store bound to it by encryption context.",
   "promise": "<b>Revocation stops us reading anything, anywhere, within minutes</b> — no ticket, no request to us, no waiting for a deletion job. <b>Every use of your key is logged in your account, not ours.</b>",
   "promiseList": [
-   "the key is unwrapped only while your plan is being evaluated, by the role that runs that tick and no other (257, 259)",
-   "a revoked or unreachable key fails closed: no tick proceeds on state it cannot open, every host of the organization shows one attention line naming the key and since when, work already running is not interrupted, and nothing is ever kept unencrypted as a fallback (260)",
+   "the key is unwrapped only while your plan is being evaluated, by the role that runs that tick and no other",
+   "a revoked or unreachable key fails closed: no tick proceeds on state it cannot open, every host of the organization shows one attention line naming the key and since when, work already running is not interrupted, and nothing is ever kept unencrypted as a fallback",
    "the key&#8217;s home is named in your manifest, so it is a fact of the organization and not a setting of ours"
   ],
-  "body": "<div class=\"rows\">\n      <div class=\"card\"><div class=\"ct\">1 · create the key</div><div class=\"cs\">a customer-managed KMS key in your account, in the region your hosts run in</div>\n        <div class=\"cmd\">aws kms create-key --description \"flywheel · willdan\" --tags TagKey=flywheel-org,TagValue=willdan</div></div>\n      <div class=\"card\"><div class=\"ct\">2 · grant its use</div><div class=\"cs\">a grant to the role that ticks your organization, with the encryption context that names it · revoke at any time and we stop reading within minutes</div>\n        <div class=\"cmd\">aws kms create-grant --key-id &lt;key&gt; --grantee-principal &lt;the role for willdan&gt; --operations Decrypt GenerateDataKey</div></div>\n      <div class=\"card\"><div class=\"ct\">3 · read the log</div><div class=\"cs\">every <span class=\"mono\">Decrypt</span> is a CloudTrail event in your account: which role, which organization, which tick, and when · the settings form shows the same facts from our side (261)</div></div>\n    </div>",
+  "body": "<div class=\"rows\">\n      <div class=\"card\"><div class=\"ct\">1 · create the key</div><div class=\"cs\">a customer-managed KMS key in your account, in the region your hosts run in</div>\n        <div class=\"cmd\">aws kms create-key --description \"flywheel · willdan\" --tags TagKey=flywheel-org,TagValue=willdan</div></div>\n      <div class=\"card\"><div class=\"ct\">2 · grant its use</div><div class=\"cs\">a grant to the role that ticks your organization, with the encryption context that names it · revoke at any time and we stop reading within minutes</div>\n        <div class=\"cmd\">aws kms create-grant --key-id &lt;key&gt; --grantee-principal &lt;the role for willdan&gt; --operations Decrypt GenerateDataKey</div></div>\n      <div class=\"card\"><div class=\"ct\">3 · read the log</div><div class=\"cs\">every <span class=\"mono\">Decrypt</span> is a CloudTrail event in your account: which role, which organization, which tick, and when · the settings form shows the same facts from our side</div></div>\n    </div>",
   "never": [
    "copy your key material anywhere",
-   "hold a copy of a data key between ticks (257)",
+   "hold a copy of a data key between ticks",
    "ask you for a copy of your state when we cannot read it"
   ],
   "next": "Take us out of the set"
@@ -186,8 +186,8 @@ const SCREENS = [
   "promise": "<b>We run your ticks in an enclave that releases your key only to an attested image</b>, so our staff and a compromised image are out of the trust set rather than merely switchable off.",
   "promiseList": [
    "the key policy conditions release on the image&#8217;s attestation, so a human with production access cannot use it",
-   "it closes the residual the tier below states plainly: a compromised ticker while it is running",
-   "it is an option on this tier, not a default, because it costs a slower and narrower runtime"
+   "it closes the one risk Flywheel Cloud states plainly: a compromised ticker while it is running",
+   "it is an option here, not a default, because it costs a slower and narrower runtime"
   ],
   "body": "<div class=\"grid\">\n      <div class=\"card\"><div class=\"ct\">Without it</div><div class=\"cs\">your key is revocable, and while a tick is running the process evaluating your plan holds your plaintext. That is the residual, and we state it rather than paper over it.</div></div>\n      <div class=\"card\"><div class=\"ct\">With it</div><div class=\"cs\">the key is released only to the measured image; there is no path from a person or a modified build to your plaintext</div></div>\n    </div>\n    <div class=\"note\">The one thing neither covers is our supply chain: the image is still built by us. That is the last residual and it is named here rather than left for you to find.</div>",
   "never": [
@@ -207,7 +207,7 @@ const SCREENS = [
    "the binary we install is the same binary; your manifest and your repositories are the ones you already have",
    "the role is yours to revoke, and what it may do is what its policy says"
   ],
-  "body": "<div class=\"rows\">\n      <div class=\"card\"><div class=\"ct\">Role</div><div class=\"cs\"><span class=\"mono\">arn:aws:iam::&lt;you&gt;:role/flywheel-control-plane</span> · trusted principal: our account · condition: <span class=\"mono\">sts:ExternalId = willdan-8f21</span> <span class=\"sample\">sample</span></div></div>\n      <div class=\"card\"><div class=\"ct\">What it may do</div><div class=\"cs\">create and destroy hosts and pool hosts from your image · read the health of what it created · nothing on your buckets, your repositories or your key beyond the grant you made</div></div>\n      <div class=\"card\"><div class=\"ct\">Region and floor</div><div class=\"cs\">one always-on host for the loops, plus pool hosts while there is approved work · this is the per-customer floor the tier costs</div></div>\n    </div>",
+  "body": "<div class=\"rows\">\n      <div class=\"card\"><div class=\"ct\">Role</div><div class=\"cs\"><span class=\"mono\">arn:aws:iam::&lt;you&gt;:role/flywheel-control-plane</span> · trusted principal: our account · condition: <span class=\"mono\">sts:ExternalId = willdan-8f21</span> <span class=\"sample\">sample</span></div></div>\n      <div class=\"card\"><div class=\"ct\">What it may do</div><div class=\"cs\">create and destroy hosts and pool hosts from your image · read the health of what it created · nothing on your buckets, your repositories or your key beyond the grant you made</div></div>\n      <div class=\"card\"><div class=\"ct\">Region and floor</div><div class=\"cs\">one always-on host for the loops, plus pool hosts while there is approved work · this is the per-customer floor it costs</div></div>\n    </div>",
   "never": [
    "assume the role without the external id",
    "use the role to read a bucket or a repository"
@@ -220,7 +220,7 @@ const SCREENS = [
   "title": "What runs where",
   "sub": "Every part of the flywheel, and which side of the line it is on, once the whole thing is in your account.",
   "promise": "<b>No content crosses the line.</b> What reaches us is your organization&#8217;s name, tick counts, error classes and billing counters — never a record body.",
-  "body": "<div class=\"tw\"><table class=\"t\">\n      <tr><th>Part</th><th>Runs in</th><th>Sees</th></tr>\n      <tr><td><b>the loops and the tick</b></td><td>your account</td><td>your state, opened with your key for that tick (257)</td></tr>\n      <tr><td><b>the warm cache</b></td><td>your account</td><td>your clones, sealed under your key at rest (256)</td></tr>\n      <tr><td><b>the capture endpoint and triage</b></td><td>your account</td><td>your raw material, in a bucket you own (263)</td></tr>\n      <tr><td><b>pool hosts, units, builds and tests</b></td><td>your account</td><td>your code, on machines destroyed at retire (264, 240)</td></tr>\n      <tr><td><b>the chat sink</b></td><td>your account</td><td>your channel, through your own bot</td></tr>\n      <tr><td><b>the GitHub App</b></td><td>yours</td><td>the repositories you listed, under a key you placed (207)</td></tr>\n      <tr><td><b>GitHub</b></td><td>theirs</td><td>your repositories, in plaintext under their own encryption — unchanged by any tier (265 is the declaration that changes it)</td></tr>\n      <tr><td><b>our control plane</b></td><td>ours</td><td>your organization&#8217;s name, health and bill · never a record body</td></tr>\n    </table></div>",
+  "body": "<div class=\"tw\"><table class=\"t\">\n      <tr><th>Part</th><th>Runs in</th><th>Sees</th></tr>\n      <tr><td><b>the loops and the tick</b></td><td>your account</td><td>your state, opened with your key for that tick</td></tr>\n      <tr><td><b>the warm cache</b></td><td>your account</td><td>your clones, sealed under your key at rest</td></tr>\n      <tr><td><b>the capture endpoint and triage</b></td><td>your account</td><td>your raw material, in a bucket you own</td></tr>\n      <tr><td><b>pool hosts, units, builds and tests</b></td><td>your account</td><td>your code, on machines destroyed at retire</td></tr>\n      <tr><td><b>chat delivery</b></td><td>your account</td><td>your channel, through your own bot</td></tr>\n      <tr><td><b>the GitHub App</b></td><td>yours</td><td>the repositories you listed, under a key you placed</td></tr>\n      <tr><td><b>GitHub</b></td><td>theirs</td><td>your repositories, in plaintext under their own encryption — unchanged however you run it (the envelope declaration is what changes it)</td></tr>\n      <tr><td><b>our control plane</b></td><td>ours</td><td>your organization&#8217;s name, health and bill · never a record body</td></tr>\n    </table></div>",
   "never": [
    "receive a record body at the control plane",
    "run one of your sessions on a machine of ours"
@@ -231,18 +231,18 @@ const SCREENS = [
   "step": "The trade",
   "stepNote": "and one decision",
   "title": "What you give up, then one decision",
-  "sub": "Every tier is honest about its cost, and this one costs support. Nothing above has created a host, a pool or a repository: the flow ends by raising one decision, and the yes runs init in your account.",
+  "sub": "Every way of running it is honest about its cost, and this one costs support. Nothing above has created a host, a pool or a repository: the flow ends by raising one decision, and the yes runs init in your account.",
   "promise": "<b>Past the point where you hold the key we genuinely cannot read your state, and we will say so rather than ask you for a copy.</b>",
   "promiseList": [
    "debugging becomes something we walk you through, on your screen, with your logs",
-   "onboarding is the slowest of the three tiers, because it waits on your account, your App and your key",
+   "onboarding is the slowest of the three ways to run it, because it waits on your account, your App and your key",
    "the cost has a per-customer floor: the always-on host exists whether or not you have work"
   ],
-  "body": "<div class=\"card\"><div class=\"ct\">decision 433 · initialize <span class=\"mono\">willdan</span> in your AWS account · approve · yes · no</div>\n      <div class=\"cs\">the yes assumes the role, provisions the first host from your image, registers it, and the first tick opens your state with your key. Init runs as effects with proofs, so running it again changes nothing and a half-finished bootstrap is advanced rather than restarted. <a href=\"../rail-and-board.html?open=d:433\">answer in the plan console</a></div></div>\n    <div class=\"kv\">\n      <div><div class=\"k\">If the key is revoked</div><div class=\"v\">every host of the organization shows one attention line naming the key and since when; nothing is kept unencrypted (260)</div></div>\n      <div><div class=\"k\">If you leave</div><div class=\"v\">the repositories, the manifest and the binary are already yours; revoking the role and the grant ends our reach entirely</div></div>\n      <div><div class=\"k\">Moving here</div><div class=\"v\">not a migration: we re-wrap the data keys and leave your history alone</div></div>\n    </div>",
+  "body": "<div class=\"card\"><div class=\"ct\">decision 433 · initialize <span class=\"mono\">willdan</span> in your AWS account · approve · yes · no</div>\n      <div class=\"cs\">the yes assumes the role, provisions the first host from your image, registers it, and the first tick opens your state with your key. Init runs as effects with proofs, so running it again changes nothing and a half-finished bootstrap is advanced rather than restarted. <a href=\"../rail-and-board.html?open=d:433\">answer in the plan console</a></div></div>\n    <div class=\"kv\">\n      <div><div class=\"k\">If the key is revoked</div><div class=\"v\">every host of the organization shows one attention line naming the key and since when; nothing is kept unencrypted</div></div>\n      <div><div class=\"k\">If you leave</div><div class=\"v\">the repositories, the manifest and the binary are already yours; revoking the role and the grant ends our reach entirely</div></div>\n      <div><div class=\"k\">Moving here</div><div class=\"v\">not a migration: we re-wrap the data keys and leave your history alone</div></div>\n    </div>",
   "never": [
    "pretend we can support what we cannot read",
    "keep a copy when you leave",
-   "charge you for a shared tier you are not on"
+   "charge you for Flywheel Cloud when you are not on it"
   ],
   "next": "Done"
  }

@@ -26,7 +26,7 @@
   Review switches: ?screen=1..6, ?theme=dark|light.
 -->
 <meta charset="utf-8">
-<title>A team on the hosted tier</title>
+<title>Your team on Flywheel Cloud</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
@@ -136,9 +136,9 @@ table.t{width:100%;border-collapse:collapse;font-size:12.5px}
 <body>
 <div class="wrap">
   <div class="top">
-    <h1>Your team on the hosted tier</h1>
+    <h1>Your team on Flywheel Cloud</h1>
     <span class="chip">journey · team</span>
-    <span class="who">hosted tier · Design A</span>
+    <span class="who">Flywheel Cloud</span>
   </div>
   <div class="stepper" id="stepper"></div>
   <div id="screen"></div>
@@ -148,17 +148,17 @@ const SCREENS = [
  {
   "step": "What moves",
   "stepNote": "and what stays yours",
-  "title": "Your team on the hosted tier",
+  "title": "Your team on Flywheel Cloud",
   "sub": "You sign in, we create the two repositories under your own GitHub account, and you invite our bot to a channel. The flywheel runs for your team without a machine of yours having to stay awake.",
   "promise": "<b>The repositories are yours, under your own GitHub account, from the first minute.</b> We create them there; we never hold the only copy of anything.",
   "promiseList": [
    "your repositories sit on GitHub under GitHub&#8217;s own encryption, the same as every other repository you own",
-   "sign-in on the hosted tier is the tier&#8217;s identity provider; a machine of your own keeps signing in with GitHub&#8217;s device flow"
+   "on Flywheel Cloud you sign in with Flywheel Cloud; a machine of your own keeps signing in with GitHub"
   ],
-  "body": "<div class=\"flow\">\n      <div class=\"box\"><b>your GitHub account</b><div class=\"small\">flywheel-state · blueprints · your built repositories</div></div>\n      <span class=\"arrow\">&#8594;</span>\n      <div class=\"box here\"><b>the shared tier</b><div class=\"small\">the ticker that reads your plan, over a warm cache sealed under your key · your chat sink · the queue that receives captures</div></div>\n      <span class=\"arrow\">&#8594;</span>\n      <div class=\"box\"><b>your pool</b><div class=\"small\">a machine created for your organization and destroyed when the work ends</div></div>\n    </div>\n    <div class=\"kv\">\n      <div><div class=\"k\">You create</div><div class=\"v\">nothing · no key, no App key, no bot token</div></div>\n      <div><div class=\"k\">We create</div><div class=\"v\">the two repositories under your account, your organization&#8217;s account, and the key that seals what we hold</div></div>\n      <div><div class=\"k\">Ends at</div><div class=\"v\">one decision you answer in the plan console</div></div>\n    </div>",
+  "body": "<div class=\"flow\">\n      <div class=\"box\"><b>your GitHub account</b><div class=\"small\">flywheel-state · blueprints · your built repositories</div></div>\n      <span class=\"arrow\">&#8594;</span>\n      <div class=\"box here\"><b>Flywheel Cloud</b><div class=\"small\">the ticker that reads your plan, over a warm cache sealed under your key · your chat delivery · the queue that receives captures</div></div>\n      <span class=\"arrow\">&#8594;</span>\n      <div class=\"box\"><b>your pool</b><div class=\"small\">a machine created for your organization and destroyed when the work ends</div></div>\n    </div>\n    <div class=\"kv\">\n      <div><div class=\"k\">You create</div><div class=\"v\">nothing · no key, no App key, no bot token</div></div>\n      <div><div class=\"k\">We create</div><div class=\"v\">the two repositories under your account, your organization&#8217;s account, and the key that seals what we hold</div></div>\n      <div><div class=\"k\">Ends at</div><div class=\"v\">one decision you answer in the plan console</div></div>\n    </div>",
   "never": [
    "keep the only copy of your state or your books — both are repositories in your account",
-   "put your code on a machine that runs anybody else&#8217;s work (264)"
+   "put your code on a machine that runs anybody else&#8217;s work"
   ],
   "next": "Create the account"
  },
@@ -166,14 +166,14 @@ const SCREENS = [
   "step": "The account",
   "stepNote": "membership is the account",
   "title": "Your organization&#8217;s account",
-  "sub": "On the hosted tier an organization is an account with the flywheel&#8217;s Application assigned to its users. We create it for you, with you as its owner.",
-  "promise": "<b>You hold owner from the moment it exists</b>, so a fresh organization is never locked out and one operator is never asked to administer roles (247, 253).",
+  "sub": "On Flywheel Cloud an organization is an account with the flywheel&#8217;s Application assigned to its users. We create it for you, with you as its owner.",
+  "promise": "<b>You hold owner from the moment it exists</b>, so a fresh organization is never locked out and one operator is never asked to administer roles.",
   "promiseList": [
-   "membership is the assignment of the Application to a user — that is the whole of &#8220;may respond here&#8221; (247)",
+   "membership is the assignment of the Application to a user — that is the whole of &#8220;may respond here&#8221;",
    "the operators list on the settings form is derived from the account at every fetch and is never authored by hand",
    "what stays yours to author is each member&#8217;s chat addresses"
   ],
-  "body": "<div class=\"kv\">\n      <div><div class=\"k\">Organization</div><div class=\"v\"><b>willdan</b> <span class=\"sample\">sample</span></div></div>\n      <div><div class=\"k\">Account</div><div class=\"v\">a tenant of the service&#8217;s own account · the identity provider is the hosted tier&#8217;s (247)</div></div>\n      <div><div class=\"k\">Owner</div><div class=\"v\"><b>chuck</b> · the user creating it</div></div>\n      <div><div class=\"k\">Authorship</div><div class=\"v\">your GitHub connection supplies the username that signs commits and pull requests</div></div>\n    </div>\n    <div class=\"note\">Your key is created with the account: one key that names your organization and no other, and its use is logged (256, 261).</div>",
+  "body": "<div class=\"kv\">\n      <div><div class=\"k\">Organization</div><div class=\"v\"><b>willdan</b> <span class=\"sample\">sample</span></div></div>\n      <div><div class=\"k\">Account</div><div class=\"v\">your own account inside Flywheel Cloud · sign-in is Flywheel Cloud&#8217;s</div></div>\n      <div><div class=\"k\">Owner</div><div class=\"v\"><b>chuck</b> · the user creating it</div></div>\n      <div><div class=\"k\">Authorship</div><div class=\"v\">your GitHub connection supplies the username that signs commits and pull requests</div></div>\n    </div>\n    <div class=\"note\">Your key is created with the account: one key that names your organization and no other, and its use is logged.</div>",
   "never": [
    "become the owner of your organization ourselves",
    "let a second organization&#8217;s users be assigned to your account"
@@ -184,15 +184,15 @@ const SCREENS = [
   "step": "Members",
   "stepNote": "by GitHub username",
   "title": "Invite your team",
-  "sub": "Add the people who may answer. Each becomes a member of the account, and each gets their own sinks: a page sink, and one chat sink per address they carry.",
+  "sub": "Add the people who may answer. Each becomes a member of the account, and each gets the plan their own way: this page, and one chat channel per address they carry.",
   "promise": "<b>Every member reads the same board and the same numbers</b>, and any one of them can answer any decision; who answered is recorded on the response and shown in the tail.",
   "promiseList": [
-   "revoking a member takes their page sink and their chat sinks with it, in the same act",
+   "revoking a member takes their page and their chat delivery with it, in the same act",
    "a response from someone the account does not assign is refused before any record is written"
   ],
-  "body": "<div class=\"tw\"><table class=\"t\">\n      <tr><th>GitHub username</th><th>Role</th><th>Chat address</th><th>State</th></tr>\n      <tr><td><b>chuck</b></td><td>owner</td><td>slack U0CHUCK</td><td><span class=\"chip g\">assigned</span></td></tr>\n      <tr><td><b>rhea</b></td><td>member</td><td>slack U0RHEA</td><td><span class=\"chip\">invited · not yet accepted</span></td></tr>\n      <tr><td><b>lee</b></td><td>member</td><td>slack U0LEE</td><td><span class=\"chip\">invited · not yet accepted</span></td></tr>\n    </table></div>\n    <div class=\"row\"><button class=\"btn\">Invite by GitHub username</button><span class=\"note\">an invitation is an act on the account, never a commit (247)</span></div>",
+  "body": "<div class=\"tw\"><table class=\"t\">\n      <tr><th>GitHub username</th><th>Role</th><th>Chat address</th><th>State</th></tr>\n      <tr><td><b>chuck</b></td><td>owner</td><td>slack U0CHUCK</td><td><span class=\"chip g\">assigned</span></td></tr>\n      <tr><td><b>rhea</b></td><td>member</td><td>slack U0RHEA</td><td><span class=\"chip\">invited · not yet accepted</span></td></tr>\n      <tr><td><b>lee</b></td><td>member</td><td>slack U0LEE</td><td><span class=\"chip\">invited · not yet accepted</span></td></tr>\n    </table></div>\n    <div class=\"row\"><button class=\"btn\">Invite by GitHub username</button><span class=\"note\">an invitation is an act on the account, never a commit</span></div>",
   "never": [
-   "give a member access to another organization on the same tier",
+   "give a member access to another organization",
    "write a member into a file that someone could edit into membership"
   ],
   "next": "Set up the pool"
@@ -202,13 +202,13 @@ const SCREENS = [
   "stepNote": "machines that are only yours",
   "title": "Where your code and your material are read",
   "sub": "Construction work needs a machine with your code on it, and triage needs to read whatever a capture points at. Both happen on a machine that belongs to your organization alone.",
-  "promise": "<b>Your code only ever exists on a machine created for your organization and destroyed when the work ends</b>, and <b>your raw capture material is read only on your own machine or on such a machine, and never on anything shared</b> (263, 264).",
+  "promise": "<b>Your code only ever exists on a machine created for your organization and destroyed when the work ends</b>, and <b>your raw capture material is read only on your own machine or on such a machine, and never on anything shared</b>.",
   "promiseList": [
-   "a pool host serves one organization and one only (241), and retire destroys the host and its disk (240)",
-   "the machine is built from your organization&#8217;s image, made from the environment declarations of the repositories it covers (239)",
-   "the shared ticker clones no built repository at all, because its declaration names none (217, 262)"
+   "a pool host serves one organization and one only, and retire destroys the host and its disk",
+   "the machine is built from your organization&#8217;s image, made from the environment declarations of the repositories it covers",
+   "the shared ticker clones no built repository at all, because its declaration names none"
   ],
-  "body": "<div class=\"kv\">\n      <div><div class=\"k\">Image</div><div class=\"v\"><span class=\"mono\">willdan/flywheel:0.9.4-0903</span> · built from your repositories&#8217; declarations</div></div>\n      <div><div class=\"k\">Bound</div><div class=\"v\">8 hosts, 2 sessions each · the ceiling you set</div></div>\n      <div><div class=\"k\">Idle-retire</div><div class=\"v\">30m · then the host and its disk are destroyed</div></div>\n      <div><div class=\"k\">Cost ceiling</div><div class=\"v\">$40/day · the machinery stops adding rather than pass it</div></div>\n    </div>\n    <div class=\"card\"><div class=\"ct\">What runs where</div><div class=\"cs\">\n      the shared ticker reads your plan over its warm cache and never clones a built repository (217, 262) ·\n      triage, which reads the raw material a capture points at, runs on a pool host or on a machine of yours, never on a shared one (263) ·\n      units, builds and tests run on the pool host, which is yours alone (264)</div></div>",
+  "body": "<div class=\"kv\">\n      <div><div class=\"k\">Image</div><div class=\"v\"><span class=\"mono\">willdan/flywheel:0.9.4-0903</span> · built from your repositories&#8217; declarations</div></div>\n      <div><div class=\"k\">Capacity</div><div class=\"v\">8 hosts, 2 sessions each · the ceiling you set</div></div>\n      <div><div class=\"k\">Idle-retire</div><div class=\"v\">30m · then the host and its disk are destroyed</div></div>\n      <div><div class=\"k\">Cost ceiling</div><div class=\"v\">$40/day · the machinery stops adding rather than pass it</div></div>\n    </div>\n    <div class=\"card\"><div class=\"ct\">What runs where</div><div class=\"cs\">\n      the shared ticker reads your plan over its warm cache and never clones a built repository ·\n      triage, which reads the raw material a capture points at, runs on a pool host or on a machine of yours, never on a shared one ·\n      units, builds and tests run on the pool host, which is yours alone</div></div>",
   "never": [
    "clone your code onto the shared ticker",
    "keep a pool host&#8217;s disk after it retires",
@@ -220,20 +220,20 @@ const SCREENS = [
   "step": "What we hold",
   "stepNote": "the warm cache, and its key",
   "title": "What sits on our disks between ticks",
-  "sub": "The shared tier is fast because it keeps a warm copy of two repositories per organization. This is that copy, and the key that seals it. It is also rendered on your settings form (261).",
+  "sub": "Flywheel Cloud is fast because it keeps a warm copy of two repositories per organization. This is that copy, and the key that seals it. It is also rendered on your settings form.",
   "promise": "<b>Everything we hold about you is encrypted at rest under a key that exists for your organization alone, and it is unwrapped only while your plan is being evaluated — a stolen disk or a leaked snapshot of ours is ciphertext.</b>",
   "promiseList": [
-   "the ticker assumes your organization&#8217;s role, decrypts once, evaluates your plan, writes its effects and drops the key (257, 259)",
-   "the stores themselves are keyed per volume, per queue and per table, never per tenant — so the promise is carried one level in, by your key, inside them (256)",
-   "a queued capture carries an organization id and a pointer, its body written under your key, so the shared queue holds no tenant content at all (246, 256)",
-   "an organization idle past the stated time keeps nothing warm; its next tick re-clones (258)",
-   "if the key is revoked or unreachable, nothing ticks on state it cannot open and nothing is ever kept unencrypted as a fallback (260)"
+   "the ticker assumes your organization&#8217;s role, decrypts once, evaluates your plan, writes its effects and drops the key",
+   "the stores themselves are keyed per volume, per queue and per table, never per customer — so the promise is carried one level in, by your key, inside them",
+   "a queued capture carries an organization id and a pointer, its body written under your key, so the shared queue holds no customer content at all",
+   "an organization idle past the stated time keeps nothing warm; its next tick re-clones",
+   "if the key is revoked or unreachable, nothing ticks on state it cannot open and nothing is ever kept unencrypted as a fallback"
   ],
-  "body": "<div class=\"grid\">\n      <div class=\"card\"><div class=\"ct\">Sealed under your key</div><div class=\"cs\">your organization&#8217;s cache directory: a full clone of state and a sparse, blobless clone of blueprints · the body of every queued capture · every store holding your content</div></div>\n      <div class=\"card\"><div class=\"ct\">Holds no content by construction</div><div class=\"cs\">the due index, which is times and ids and is rebuilt by ticking (245, 258)</div></div>\n      <div class=\"card\"><div class=\"ct\">Never on a shared disk at all</div><div class=\"cs\">your code (264) · your raw capture material (263) · your book</div></div>\n      <div class=\"card\"><div class=\"ct\">Your repositories on GitHub</div><div class=\"cs\">GitHub holds them in plaintext under its own encryption and its own key, exactly as it holds every repository you own. Nothing here changes that. If your concern is GitHub rather than us, writing state records as envelopes is a declaration you turn on, and it is never the default (265).</div></div>\n      <div class=\"card\"><div class=\"ct\">The residual, stated plainly</div><div class=\"cs\">a compromised ticker <i>while it is running</i> sees the plaintext of the organization whose tick it is running, and of any other ticking in the same process at that moment. It shrinks by eviction (258), by a role and a tick boundary per organization (259), by an enclave, and by your holding the key — and the next tier is exactly that.</div></div>\n      <div class=\"card\"><div class=\"ct\">On your settings form</div><div class=\"cs\">which stores hold your content, which key opens them, which role may use it, and when the cache was last evicted (261)</div></div>\n    </div>",
+  "body": "<div class=\"grid\">\n      <div class=\"card\"><div class=\"ct\">Sealed under your key</div><div class=\"cs\">your organization&#8217;s cache directory: a full clone of state and a sparse, blobless clone of blueprints · the body of every queued capture · every store holding your content</div></div>\n      <div class=\"card\"><div class=\"ct\">Holds no content by construction</div><div class=\"cs\">the due index, which is times and ids and is rebuilt by ticking</div></div>\n      <div class=\"card\"><div class=\"ct\">Never on a shared disk at all</div><div class=\"cs\">your code · your raw capture material · your book</div></div>\n      <div class=\"card\"><div class=\"ct\">Your repositories on GitHub</div><div class=\"cs\">GitHub holds them in plaintext under its own encryption and its own key, exactly as it holds every repository you own. Nothing here changes that. If your concern is GitHub rather than us, writing state records as envelopes is a declaration you turn on, and it is never the default.</div></div>\n      <div class=\"card\"><div class=\"ct\">The residual, stated plainly</div><div class=\"cs\">a compromised ticker <i>while it is running</i> sees the plaintext of the organization whose tick it is running, and of any other ticking in the same process at that moment. It shrinks by eviction, by a role and a tick boundary per organization, by an enclave, and by your holding the key — and running it in your own account is exactly that.</div></div>\n      <div class=\"card\"><div class=\"ct\">On your settings form</div><div class=\"cs\">which stores hold your content, which key opens them, which role may use it, and when the cache was last evicted</div></div>\n    </div>",
   "never": [
    "use your key for another organization",
-   "keep the key unwrapped between ticks (257)",
-   "claim your key protects you from us on this tier — on the shared tier we hold it, and the next tier is where that changes"
+   "keep the key unwrapped between ticks",
+   "claim your key protects you from us here — on Flywheel Cloud we hold it, and running it in your own account is where that changes"
   ],
   "next": "Finish"
  },
@@ -243,7 +243,7 @@ const SCREENS = [
   "title": "One decision, then the flywheel is running",
   "sub": "Nothing above has created a repository, an account or a machine. The flow ends by raising one decision, and the yes is what acts.",
   "promise": "<b>You answer it in the plan console</b>, and everything the machinery does from there is an effect with a proof, so a half-finished setup is finished by the next tick rather than started again.",
-  "body": "<div class=\"card\"><div class=\"ct\">decision 432 · initialize <span class=\"mono\">willdan</span> on the hosted tier · approve · yes · no</div>\n      <div class=\"cs\">the yes creates the two repositories under your account, the account and its key, and the first tick registers the ticker as your host. <a href=\"../rail-and-board.html?open=d:432\">answer in the plan console</a></div></div>\n    <div class=\"kv\">\n      <div><div class=\"k\">Then</div><div class=\"v\">invitations go out; each member signs in and reads the same board</div></div>\n      <div><div class=\"k\">First work</div><div class=\"v\">the machinery adds the first pool host when there is approved work to drain</div></div>\n      <div><div class=\"k\">Moving up later</div><div class=\"v\">no migration: every tier seals the same stores the same way, and what changes is where the key lives and who may unwrap it</div></div>\n    </div>",
+  "body": "<div class=\"card\"><div class=\"ct\">decision 432 · initialize <span class=\"mono\">willdan</span> on Flywheel Cloud · approve · yes · no</div>\n      <div class=\"cs\">the yes creates the two repositories under your account, the account and its key, and the first tick registers the ticker as your host. <a href=\"../rail-and-board.html?open=d:432\">answer in the plan console</a></div></div>\n    <div class=\"kv\">\n      <div><div class=\"k\">Then</div><div class=\"v\">invitations go out; each member signs in and reads the same board</div></div>\n      <div><div class=\"k\">First work</div><div class=\"v\">the machinery adds the first pool host when there is approved work waiting</div></div>\n      <div><div class=\"k\">Moving up later</div><div class=\"v\">no migration: however you run it, the same stores are sealed the same way, and what changes is where the key lives and who may unwrap it</div></div>\n    </div>",
   "never": [
    "migrate you when you move key homes",
    "rewrite your history to change key material"

@@ -142,7 +142,7 @@ table.t{width:100%;border-collapse:collapse;font-size:12.5px}
   <div class="top">
     <h1>A cloud agent beside your laptop</h1>
     <span class="chip">journey · solo developer</span>
-    <span class="who">shared tier · Design A</span>
+    <span class="who">your laptop and Flywheel Cloud</span>
   </div>
   <div class="stepper" id="stepper"></div>
   <div id="screen"></div>
@@ -153,15 +153,15 @@ const SCREENS = [
   "step": "Where you are",
   "stepNote": "one laptop, nothing leaves it",
   "title": "Your laptop is the code builder",
-  "sub": "You run the flywheel on this machine and sign in with GitHub device flow. This flow adds one thing beside it: an agent in the cloud that reads captures and answers chat while the laptop sleeps.",
+  "sub": "You run the flywheel on this machine and sign in with GitHub. This flow adds one thing beside it: an agent in the cloud that reads captures and answers chat while the laptop sleeps.",
   "promise": "<b>Turn the cloud agent off and the same binary keeps ticking on your laptop</b>, against the same repositories, with the same numbers.",
   "promiseList": [
-   "your laptop keeps signing in the way it does now, with GitHub&#8217;s device flow — the code and the approval, and nothing else",
-   "turning the agent on opens a hosted account for the organization; the identity provider is the hosted tier&#8217;s, and your laptop&#8217;s sign-in is unchanged"
+   "your laptop keeps signing in the way it does now, with GitHub — the code and the approval, and nothing else",
+   "turning the agent on opens a hosted account for the organization; sign-in is Flywheel Cloud&#8217;s, and your laptop&#8217;s sign-in is unchanged"
   ],
-  "body": "<div class=\"flow\">\n      <div class=\"box here\"><b>studio · your laptop</b><div class=\"small\">bound 4 · builds code, runs units, reads your meeting transcripts and your Drop folder · GitHub device flow</div></div>\n      <span class=\"arrow\">&#8594;</span>\n      <div class=\"box\"><b>the cloud agent</b><div class=\"small\">bound 0 · presents chat, receives webhook captures, ticks while the laptop sleeps</div></div>\n    </div>\n    <div class=\"kv\">\n      <div><div class=\"k\">What it is</div><div class=\"v\">one host of yours, on the shared tier, that takes no construction work</div></div>\n      <div><div class=\"k\">What it costs you to set up</div><div class=\"v\">no token to place, no key to create</div></div>\n      <div><div class=\"k\">How it ends</div><div class=\"v\">one enrolment decision you answer in the plan console</div></div>\n    </div>",
+  "body": "<div class=\"flow\">\n      <div class=\"box here\"><b>studio · your laptop</b><div class=\"small\">4 sessions at once · builds code, runs units, reads your meeting transcripts and your Drop folder · sign in with GitHub</div></div>\n      <span class=\"arrow\">&#8594;</span>\n      <div class=\"box\"><b>the cloud agent</b><div class=\"small\">no build sessions · presents chat, receives webhook captures, ticks while the laptop sleeps</div></div>\n    </div>\n    <div class=\"kv\">\n      <div><div class=\"k\">What it is</div><div class=\"v\">one host of yours, run by Flywheel Cloud, that takes no construction work</div></div>\n      <div><div class=\"k\">What it costs you to set up</div><div class=\"v\">no token to place, no key to create</div></div>\n      <div><div class=\"k\">How it ends</div><div class=\"v\">one enrolment decision you answer in the plan console</div></div>\n    </div>",
   "never": [
-   "run a unit, a build or a test — its declaration names no unit type and no repository (217)",
+   "run a unit, a build or a test — its declaration names no unit type and no repository",
    "become the only place anything lives: your laptop stays a full host",
    "change how you sign in on this machine"
   ],
@@ -172,13 +172,13 @@ const SCREENS = [
   "stepNote": "the App on your org",
   "title": "Connect GitHub",
   "sub": "One GitHub App is the connection. You install it on the account that holds your repositories, and its installation covers exactly the repositories your manifest lists.",
-  "promise": "<b>Your code never goes to the cloud agent</b>, because the machine that reads your plan is declared to hold no repository at all (217).",
+  "promise": "<b>Your code never goes to the cloud agent</b>, because the machine that reads your plan is declared to hold no repository at all.",
   "promiseList": [
-   "the installation token a session gets is short-lived, scoped to one repository, and written nowhere but the place it is issued into (207)",
-   "no host and no session ever uses a personal token of yours (207, 251)",
-   "the shared tier clones your state, and blueprints partially — the manifest, the claims and <span class=\"mono\">flywheel/</span> — and never a built repository (262)"
+   "the installation token a session gets is short-lived, scoped to one repository, and written nowhere but the place it is issued into",
+   "no host and no session ever uses a personal token of yours",
+   "Flywheel Cloud clones your state, and blueprints partially — the manifest, the claims and <span class=\"mono\">flywheel/</span> — and never a built repository"
   ],
-  "body": "<div class=\"card pick on\"><input type=\"radio\" checked><div><div class=\"ct\">chuck <span class=\"chip\">personal account</span></div>\n      <div class=\"cs\">install the App here · it will cover <span class=\"mono\">atlas</span> and <span class=\"mono\">flywheel-state</span></div></div></div>\n    <div class=\"card pick\"><input type=\"radio\"><div><div class=\"ct\">another account</div><div class=\"cs\">an organization you own or belong to; repositories are listed by URL, so they may live under any account the App reaches (219)</div></div></div>\n    <div class=\"note\">Adding a repository later extends this installation, or it surfaces as a decision under attention (149, 207).</div>",
+  "body": "<div class=\"card pick on\"><input type=\"radio\" checked><div><div class=\"ct\">chuck <span class=\"chip\">personal account</span></div>\n      <div class=\"cs\">install the App here · it will cover <span class=\"mono\">atlas</span> and <span class=\"mono\">flywheel-state</span></div></div></div>\n    <div class=\"card pick\"><input type=\"radio\"><div><div class=\"ct\">another account</div><div class=\"cs\">an organization you own or belong to; repositories are listed by URL, so they may live under any account the App reaches</div></div></div>\n    <div class=\"note\">Adding a repository later extends this installation, or it surfaces as a decision under attention.</div>",
   "never": [
    "ask for a password, a personal access token, or write access to anything you did not list",
    "read a repository the installation does not name"
@@ -189,14 +189,14 @@ const SCREENS = [
   "step": "Chat",
   "stepNote": "the platform&#8217;s bot",
   "title": "Where the plan is printed",
-  "sub": "The cloud agent presents one chat sink: the plan printed as decisions you can answer from your phone.",
+  "sub": "The cloud agent delivers the plan to one chat: decisions you can answer from your phone.",
   "promise": "<b>You place no secret at all.</b> Chat runs through the platform&#8217;s shared bot, so there is no bot token of yours to create, hold or rotate.",
   "promiseList": [
    "the bot posts to the one channel or direct message you name, and reads replies on it",
    "your replies are your responses; each carries your identity and is applied exactly once",
-   "turning the sink off later takes the bot with it and leaves everything else in place"
+   "turning chat off later takes the bot with it and leaves everything else in place"
   ],
-  "body": "<div class=\"grid\">\n      <div class=\"card pick on\"><input type=\"radio\" checked><div><div class=\"ct\">Slack</div><div class=\"cs\">our bot, invited to your channel · buttons on each decision · no app to register, no signing secret</div></div></div>\n      <div class=\"card pick\"><input type=\"radio\"><div><div class=\"ct\">Discord</div><div class=\"cs\">our bot, added to your server · the plan printed to a channel, answers read back · no bot token to place</div></div></div>\n    </div>\n    <div class=\"rows\"><div class=\"row\"><span class=\"chip g\">no secret to place</span><span class=\"note\">the platform holds the bot&#8217;s credential; it is never yours to lose</span></div>\n    <div class=\"row\"><span class=\"chip\">your own bot instead</span><span class=\"note\">available on any host of yours — a token you place, under the same rules as every other secret (204, 207)</span></div></div>",
+  "body": "<div class=\"grid\">\n      <div class=\"card pick on\"><input type=\"radio\" checked><div><div class=\"ct\">Slack</div><div class=\"cs\">our bot, invited to your channel · buttons on each decision · no app to register, no signing secret</div></div></div>\n      <div class=\"card pick\"><input type=\"radio\"><div><div class=\"ct\">Discord</div><div class=\"cs\">our bot, added to your server · the plan printed to a channel, answers read back · no bot token to place</div></div></div>\n    </div>\n    <div class=\"rows\"><div class=\"row\"><span class=\"chip g\">no secret to place</span><span class=\"note\">the platform holds the bot&#8217;s credential; it is never yours to lose</span></div>\n    <div class=\"row\"><span class=\"chip\">your own bot instead</span><span class=\"note\">available on any host of yours — a token you place, under the same rules as every other secret</span></div></div>",
   "never": [
    "ask you for a bot token, an app token or a signing secret",
    "post anything but your own plan into the channel you name"
@@ -208,11 +208,11 @@ const SCREENS = [
   "stepNote": "what reads what, and where",
   "title": "Where your material is read",
   "sub": "An adapter is one source on one host. Which host reads a source decides where that source&#8217;s content goes.",
-  "promise": "<b>Your meeting transcripts never go to the cloud agent.</b> They stay on your machine, and the session that reads them runs on your machine (263).",
+  "promise": "<b>Your meeting transcripts never go to the cloud agent.</b> They stay on your machine, and the session that reads them runs on your machine.",
   "promiseList": [
    "raw material a capture points at is never read on a host serving more than one organization",
    "triage runs on your own machine, or on a machine created for your organization alone — never on anything shared",
-   "what the cloud agent receives is what a webhook sends it — a comment, a finding — held in a queue as your caller&#8217;s retry buffer, its body written under your organization&#8217;s key (246, 256)"
+   "what the cloud agent receives is what a webhook sends it — a comment, a finding — held in a queue as your caller&#8217;s retry buffer, its body written under your organization&#8217;s key"
   ],
   "body": "<div class=\"tw\"><table class=\"t\">\n      <tr><th>Adapter</th><th>Runs on</th><th>What leaves your machine</th></tr>\n      <tr><td><b>meeting transcripts</b><div class=\"note\">Granola, as meetings end</div></td><td>studio · your laptop</td><td>nothing · the transcript stays here and triage runs here</td></tr>\n      <tr><td><b>folder drop</b><div class=\"note\">~/Drop, on change</div></td><td>studio · your laptop</td><td>nothing · the file stays here</td></tr>\n      <tr><td><b>PR conversation</b><div class=\"note\">comments on atlas</div></td><td>the cloud agent</td><td>the comment text GitHub sends, as one capture</td></tr>\n      <tr><td><b>the capture box</b><div class=\"note\">text you type on the page</div></td><td>whichever host serves the page</td><td>what you typed</td></tr>\n    </table></div>\n    <div class=\"note\">You can move any of these later; the console shows, per adapter, which host reads it.</div>",
   "never": [
@@ -225,18 +225,18 @@ const SCREENS = [
   "step": "What we hold",
   "stepNote": "the warm cache, and its key",
   "title": "What sits on our disks between ticks",
-  "sub": "The shared tier is fast because it does not re-clone your repositories every tick. That warm copy is the thing worth asking about, so here it is, with the key that seals it.",
-  "promise": "<b>Everything we hold about you is encrypted at rest under a key that exists for your organization alone, and it is unwrapped only while your plan is being evaluated</b> (256, 257).",
+  "sub": "Flywheel Cloud is fast because it does not re-clone your repositories every tick. That warm copy is the thing worth asking about, so here it is, with the key that seals it.",
+  "promise": "<b>Everything we hold about you is encrypted at rest under a key that exists for your organization alone, and it is unwrapped only while your plan is being evaluated</b>.",
   "promiseList": [
-   "the ticker assumes your organization&#8217;s role, decrypts once, evaluates your plan, writes its effects and drops the key — the plaintext data key exists at no other moment (257, 259)",
+   "the ticker assumes your organization&#8217;s role, decrypts once, evaluates your plan, writes its effects and drops the key — the plaintext data key exists at no other moment",
    "a stolen disk, a lost volume or a leaked snapshot of ours is ciphertext with no data key on it",
-   "if the key is revoked or unreachable, no tick proceeds on state it cannot open, every host shows one attention line naming the key and since when, and nothing is ever kept unencrypted as a fallback (260)"
+   "if the key is revoked or unreachable, no tick proceeds on state it cannot open, every host shows one attention line naming the key and since when, and nothing is ever kept unencrypted as a fallback"
   ],
-  "body": "<div class=\"grid\">\n      <div class=\"card\"><div class=\"ct\">What we keep between ticks</div><div class=\"cs\">a full clone of your state repository · a blobless partial clone of blueprints, sparse to the manifest, the claims and <span class=\"mono\">flywheel/</span> · one due-index row naming the earliest time your tick could change anything (245) · queued captures, which are your caller&#8217;s retry buffer (246). Ten to fifty megabytes.</div></div>\n      <div class=\"card\"><div class=\"ct\">What we never keep</div><div class=\"cs\">your code, because the ticker&#8217;s declaration names no repository (217, 264) · your book · your raw capture material, because triage runs on your machine (263) · a credential of yours, because it holds none (251)</div></div>\n      <div class=\"card\"><div class=\"ct\">The residual, stated plainly</div><div class=\"cs\">a compromised ticker <i>while it is running</i> sees the plaintext of the organization whose tick it is running, and of any other ticking in the same process at that moment. It is real. It shrinks by evicting an idle organization&#8217;s cache (258), by giving each organization its own role and tick boundary (259), by an enclave, and by moving the key into your account.</div></div>\n      <div class=\"card\"><div class=\"ct\">Your repositories on GitHub</div><div class=\"cs\">GitHub holds both of them in plaintext, exactly as it holds every repository on the platform, under its own encryption and its own key. Nothing here changes that. If you want GitHub to see ciphertext too, that is a declaration you turn on, and it is never the default (265).</div></div>\n    </div>\n    <div class=\"kv\">\n      <div><div class=\"k\">Key</div><div class=\"v\">held by the service for your organization alone <span class=\"chip g\">one key, one organization</span></div></div>\n      <div><div class=\"k\">Its use</div><div class=\"v\">logged · and what we hold, which key opens it, which role may use it and when the cache was last evicted are shown on your settings form (261)</div></div>\n      <div><div class=\"k\">Later</div><div class=\"v\">move the key into your own account without a migration: every tier seals the same stores the same way, and only the data keys are re-wrapped</div></div>\n    </div>",
+  "body": "<div class=\"grid\">\n      <div class=\"card\"><div class=\"ct\">What we keep between ticks</div><div class=\"cs\">a full clone of your state repository · a blobless partial clone of blueprints, sparse to the manifest, the claims and <span class=\"mono\">flywheel/</span> · one due-index row naming the earliest time your tick could change anything · queued captures, which are your caller&#8217;s retry buffer. Ten to fifty megabytes.</div></div>\n      <div class=\"card\"><div class=\"ct\">What we never keep</div><div class=\"cs\">your code, because the ticker&#8217;s declaration names no repository · your book · your raw capture material, because triage runs on your machine · a credential of yours, because it holds none</div></div>\n      <div class=\"card\"><div class=\"ct\">The residual, stated plainly</div><div class=\"cs\">a compromised ticker <i>while it is running</i> sees the plaintext of the organization whose tick it is running, and of any other ticking in the same process at that moment. It is real. It shrinks by evicting an idle organization&#8217;s cache, by giving each organization its own role and tick boundary, by an enclave, and by moving the key into your own account.</div></div>\n      <div class=\"card\"><div class=\"ct\">Your repositories on GitHub</div><div class=\"cs\">GitHub holds both of them in plaintext, exactly as it holds every repository on the platform, under its own encryption and its own key. Nothing here changes that. If you want GitHub to see ciphertext too, that is a declaration you turn on, and it is never the default.</div></div>\n    </div>\n    <div class=\"kv\">\n      <div><div class=\"k\">Key</div><div class=\"v\">held by the service for your organization alone <span class=\"chip g\">one key, one organization</span></div></div>\n      <div><div class=\"k\">Its use</div><div class=\"v\">logged · and what we hold, which key opens it, which role may use it and when the cache was last evicted are shown on your settings form</div></div>\n      <div><div class=\"k\">Later</div><div class=\"v\">move the key into your own account without a migration: however you run it, the same stores are sealed the same way, and only the data keys are re-wrapped</div></div>\n    </div>",
   "never": [
    "read your code, your transcripts or your Drop folder",
-   "hold your content in a store whose only key is ours — the store&#8217;s key is per volume and per queue, and your content is sealed under your key inside it (256)",
-   "keep the key unwrapped between ticks (257)"
+   "hold your content in a store whose only key is ours — the store&#8217;s key is per volume and per queue, and your content is sealed under your key inside it",
+   "keep the key unwrapped between ticks"
   ],
   "next": "Finish"
  },
@@ -245,8 +245,8 @@ const SCREENS = [
   "stepNote": "one decision, then a host",
   "title": "One decision, then it is a host like any other",
   "sub": "Nothing above has created anything yet. The flow ends by raising one enrolment decision, and the yes is what acts.",
-  "promise": "<b>You answer it in the plan console</b>, and from then on the cloud agent is an ordinary host on your hosts list: alive, bound 0, with the parts you chose.",
-  "body": "<div class=\"card\"><div class=\"ct\">decision 431 · enrol host <span class=\"mono\">chuck-cloud</span> · approve · yes · no</div>\n      <div class=\"cs\">the yes hands back a one-time token that expires in 24h; the host joins with it, reads the manifest and installs the Slack sink and the PR-conversation adapter you chose. <a href=\"../rail-and-board.html?open=d:431\">answer in the plan console</a></div></div>\n    <div class=\"card\"><div class=\"ct\">In the plan console afterwards</div>\n      <div class=\"cs\">a host pill <span class=\"mono\">chuck-cloud</span> beside <span class=\"mono\">studio</span> in the machinery strip, <b>bound 0</b>, so it takes no construction work and moves no runway reading; your Slack sink shows it as the presenter; your laptop keeps every unit it had.</div></div>\n    <div class=\"rows\"><div class=\"row\"><span class=\"chip\">turn it off</span><span class=\"note\">one response · the sink stops, the adapter stops, the laptop is unchanged</span></div>\n    <div class=\"row\"><span class=\"chip\">idle</span><span class=\"note\">an organization idle past the stated time keeps nothing warm at all; its next tick re-clones (258)</span></div>\n    <div class=\"row\"><span class=\"chip\">what we can still see</span><span class=\"note\">your organization&#8217;s name, its health and its bill — and the sealed cache</span></div></div>",
+  "promise": "<b>You answer it in the plan console</b>, and from then on the cloud agent is an ordinary host on your hosts list: alive, running no build sessions, with the parts you chose.",
+  "body": "<div class=\"card\"><div class=\"ct\">decision 431 · enrol host <span class=\"mono\">chuck-cloud</span> · approve · yes · no</div>\n      <div class=\"cs\">the yes hands back a one-time token that expires in 24h; the host joins with it, reads the manifest and sets up Slack delivery and the PR-conversation adapter you chose. <a href=\"../rail-and-board.html?open=d:431\">answer in the plan console</a></div></div>\n    <div class=\"card\"><div class=\"ct\">In the plan console afterwards</div>\n      <div class=\"cs\">a host pill <span class=\"mono\">chuck-cloud</span> beside <span class=\"mono\">studio</span> in the machinery strip, <b>no build sessions</b>, so it takes no construction work and moves no runway reading; your Slack shows it as the host that sends the plan; your laptop keeps every unit it had.</div></div>\n    <div class=\"rows\"><div class=\"row\"><span class=\"chip\">turn it off</span><span class=\"note\">one response · chat delivery stops, the adapter stops, the laptop is unchanged</span></div>\n    <div class=\"row\"><span class=\"chip\">idle</span><span class=\"note\">an organization idle past the stated time keeps nothing warm at all; its next tick re-clones</span></div>\n    <div class=\"row\"><span class=\"chip\">what we can still see</span><span class=\"note\">your organization&#8217;s name, its health and its bill — and the sealed cache</span></div></div>",
   "never": [
    "change what your laptop does",
    "take a number, a lease or a session away from your laptop"
