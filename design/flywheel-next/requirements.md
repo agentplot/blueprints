@@ -962,12 +962,11 @@ requirements, iterated against the running plan rather than on paper.
     request, an environment still up, a signal not yet moved — and for
     a bounded window after, then leaves every view and stays in
     history. Nothing is deleted; the views are derived (B.4).
-192. At landing the machinery writes, in the built repository under its
-    prefix, the index of the as-built: each claim the standing
-    specifications name, its version, its anchor and its scenarios, as
-    one file any delivery system may read from git.
-    Generating and running a suite from it is the delivery system's;
-    the machinery writes the file and nothing more (181).
+192. At landing the built repository's standing specifications are the
+    as-built: each claim they name, its version and its scenarios, which
+    any delivery system may read from git. Generating and running a
+    suite from them is the delivery system's; the machinery writes no
+    index beside them (181).
 
 ### A.20 Intents as changes; gathered elaborations
 

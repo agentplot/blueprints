@@ -64,11 +64,9 @@ the requirement the unit builds, with one line, `Claim:
 (99); the unit's landing archives it into the built repository's
 `openspec/specs/`. That standing set is the as-built: every requirement
 in it names a claim and version, and construction never satisfies a
-claim it does not name (99). The file 192 asks for at landing is the
-index of that set, `flywheel/claims.json` in the built repository:
-claim, version, the requirement's anchor and its scenarios, one file a
-delivery system reads from git and turns into a suite (181). The
-machinery writes the index and nothing more.
+claim it does not name (99). That set is what a delivery system reads
+from git to generate and run its suite (181, 192); the machinery writes
+no index beside it.
 
 The same schema serves both halves. The intent's delta and the unit's
 delta are the same OpenSpec shape; a requirement on the construction
@@ -91,8 +89,8 @@ not-applicable verdict, the claim is in the backlog; the backlog is
 carved into units, the units into a bolt plan, and the plan is proposed.
 A joining repository has an empty ledger and gets the whole scope as one
 proposal (104). The index curation clusters against (108) is the
-blueprints' `flywheel/claims.json`, rendered from `openspec/specs/` by
-the tick under the machinery's prefix (203).
+blueprints' `openspec/specs/` itself, read by the tick; nothing is
+rendered beside it.
 
 ## What changes where
 
@@ -101,13 +99,13 @@ the tick under the machinery's prefix (203).
 | requirements 97 | the chapter includes the claim by anchor; the claim's text is the spec's |
 | requirements 99 | an as-built statement is a standing requirement of the built repository carrying a `Claim:` line |
 | requirements 105 | the attachment is the capability directory and the requirement's `Attaches:` line |
-| requirements 192 | the file at landing is the index of the built repository's standing specifications |
+| requirements 192 | the as-built is the built repository's standing specifications; a delivery system reads them from git; no index file |
 | glossary: claim, as-built | as above |
 | model.md 8.1, 12.12 | rewritten to this ruling |
 | machines/claim.yaml | the state is which tree holds the requirement: an intent's delta, proposed; `openspec/specs/` on the shared line, standing; removed, retired. The evidence name `claim.on_shared_line` keeps its meaning |
-| profiles/host.yaml | OpenSpec is the claim store on both sides; the index is written by the tick |
+| profiles/host.yaml | OpenSpec is the claim store on both sides; nothing is written beside it |
 | surfaces | a claim renders as a requirement with its scenarios, name, version and scope; the chapter shows it included |
-| roadmap | phase 3 (context) builds the include, the index and the ledger over specs; phase 2's landing archives unit deltas |
+| roadmap | phase 3 (context) builds the include and the ledger over specs; phase 2's landing archives unit deltas |
 
 Phase 1 is touched only in the claim machine's comments; no phase-1
 scenario reads a chapter or a spec.
@@ -117,6 +115,3 @@ scenario reads a chapter or a spec.
 - Whether a capability directory must be a map id, or may be a plain
   name with every attachment on the `Attaches:` line. The first keeps
   scope derivable from the directory alone and is proposed here.
-- Whether the built repository's `flywheel/claims.json` stays a written
-  file (192) or the delivery system reads `openspec/specs/` itself. The
-  file is kept, since 181 wants one file any delivery system reads.
