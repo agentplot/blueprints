@@ -195,6 +195,31 @@
     endpoint, the identity a client signs in against, the catalogue filtered by the caller's
     permissions, and the two-line Claude Code command. A self-managed host shows its localhost
     address instead of a served name (245, 293).
+  - The four "+ host" journeys carry the tier they are and where they will run, and the plan
+    decides which may be chosen. A machine of yours and an adopted host are every plan's and
+    declare `github`. An agent in the cloud is tier 1: on Free the card stays on the screen, says
+    "needs Hobby" with a link to the Plan page and cannot be chosen, and on Hobby it is refused
+    with the reason once one exists, because Hobby includes one per organization. More drain,
+    managed for you, is tier 2 and says "needs Pro" below that. A card that a plan refuses states
+    the reason on its own face as one attention line; there is no modal, nothing running stops,
+    and the loop is not halted (280, 282). Why on the card: the operator is choosing between the
+    journeys at that moment, so the reason belongs where the choice is, not behind a dialog.
+  - Under Enterprise's second shape the cloud-agent and pool cards say the host runs in your own
+    account, through the role you granted, and the provision step becomes the deployer's: it
+    assumes that role, applies the stack in your account and stamps the binary's version, with
+    nothing running from the operator's machine (276, 276a, 208). The cloud agent's one-screen
+    parts step gains a fourth selector, the dispatcher — a function, long-lived on a container
+    service, or long-lived on an instance of your own — with the consequence stated beside each,
+    because that choice is what decides whether plain free text in a Discord channel is answered
+    or arrives as a slash command (276a, 277).
+  - A pool's placement follows the plan: microVM alone up to Team, and on Enterprise the select
+    also offers a container task with a volume under your own key and an instance of your own,
+    which has no lifetime ceiling and so needs no fallback placement (275, 276a).
+  - "+ organization" asks for the plan as a step of its own, drawn as the ladder's rungs, because
+    the rung is what settles the rest: Free is self-managed and states that nothing runs on our
+    side, with `github` sign-in and the organization's own App whose key the operator places;
+    every hosted rung takes `frontegg` sign-in and the service's App, whose key never leaves the
+    service (207a, 268, 281). The membership step branches on it exactly as it did.
 
   Layout decisions:
   - Sections in the side navigation, not entities. A navigation that listed every organization and
@@ -227,7 +252,7 @@
   ?page=overview|hosts|pools|members|repositories|sinks|adapters|store|plan|settings,
   ?host=<id>&tab=parts|environment|sinks|facts, ?pool=<id>&ptab=hosts|image|limits,
   ?member=<id>, ?repo=<id>, ?addhost=1&journey=machine|cloud-agent|adopt&wstep=0..4,
-  ?addorg=1&ostep=0..6, ?served=studio|willdan-cloud (which host serves this page, and so which
+  ?addorg=1&ostep=0..7, ?served=studio|willdan-cloud (which host serves this page, and so which
   identity kind it shows), ?panel=1 (opens the seeded catalogue), ?flash=1,
   ?plan=hobby|pro|team|enterprise (the Plan page's rung), ?shape=stores|compute (tier 3's shape),
   ?key=out (the key unreachable, 260).
@@ -483,6 +508,13 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .jrn{display:flex;gap:12px;align-items:flex-start;padding:12px;border:2px solid var(--divider-2);border-radius:12px;margin-bottom:8px;cursor:pointer;background:var(--surface)}
 .jrn:hover{border-color:var(--input-border)}
 .jrn.on{border-color:var(--link);background:var(--selected)}
+.jrn.off{opacity:.7;cursor:not-allowed;background:var(--shaded)}
+.jrn > div{min-width:0;flex:1}
+.jrn .st{white-space:normal}
+.gate-warn{margin-top:6px;font-size:12px;line-height:17px;color:var(--warning)}
+.gate-warn b{color:var(--warning)}
+.gate-warn .mono{font-size:11.5px}
+.jrn.off:hover{border-color:var(--divider-2)}
 .jrn .jt{font-weight:700;color:var(--heading)}
 .jrn .jp{font-size:12px;line-height:17px;color:var(--secondary);margin-top:4px}
 .jrn .jp b{color:var(--heading)}
@@ -676,6 +708,43 @@ const KEY_HOMES = [
 ];
 /* the plan in force for the page · ?plan= overrides an organization that has one, never gives one */
 const planOf = o => (S.plan && o.plan) ? S.plan : o.plan;
+/* the ladder, in order · Free is the rung a self-managed organization sits on and buys nothing (281) */
+const LADDER = ['Free','Hobby','Pro','Team','Enterprise'];
+const planName = () => planOf(org()) || 'Free';
+const planAllows = need => LADDER.indexOf(planName()) >= LADDER.indexOf(need);
+const isFreePlan = () => planName() === 'Free';
+/* Enterprise's second shape: the binary provisioned into the organization's own account (276a) */
+const entCompute = () => planName() === 'Enterprise' && S.shape === 'compute';
+/* where a journey's host will run, which the tier and the shape settle between them (268, 276a) */
+function whereItRuns(id){
+  if(id === 'machine') return 'on a machine of yours, with herdr · nothing of it on the service side (268, tier 0)';
+  if(id === 'adopt') return 'wherever it already runs · the platform is read at join (S121)';
+  return entCompute()
+    ? 'in your AWS account, through the role you granted · our deployer applies it and nothing of the service&#8217;s runs there (276a)'
+    : 'on flywheel-cloud, in the service&#8217;s account, under a key tagged with this organization (259, 268)';
+}
+/* what a plan admits · a refused add is one attention line with the reason, never a stopped loop (280) */
+function journeyGate(id){
+  const o = org(), plan = planName();
+  if(id === 'cloud-agent'){
+    if(!planAllows('Hobby')) return {ok:false, needs:'Hobby',
+      why:`a host of tier 1 is what Hobby buys · <span class="mono">fw.ff.cloud-agent</span> is off on ${esc(plan)}, and on a self-managed organization nothing runs on the service side at all (250, 268, 281)`};
+    const have = o.hosts.find(h => h.invoked);
+    if(plan === 'Hobby' && have) return {ok:false, chip:'one per organization',
+      why:`Hobby includes one cloud agent per organization and <b>${esc(have.id)}</b> is it · the add is refused with the reason, and nothing already running stops (280, 282)`};
+    return {ok:true};
+  }
+  if(id === 'pool'){
+    if(!planAllows('Pro')) return {ok:false, needs:'Pro',
+      why:`a pool may be declared from Pro up · <span class="mono">fw.ff.pools</span> is off on ${esc(plan)}, so your own machines still build (250, 268, 281)`};
+    return {ok:true};
+  }
+  return {ok:true};
+}
+/* the placements a pool may take, which Enterprise's second shape widens (275, 276a) */
+const poolPlacements = () => planAllows('Enterprise')
+  ? ['microVM', 'a container task with a volume under your key', 'an instance of your own']
+  : ['microVM'];
 const useOf = o => ({...(PLAN_USE[planOf(o)] || {}), ...(o.use || {})});
 /* the tier statement of 261: what is held, under which key, where it lives, and who may use it */
 function tenancyOf(o){
@@ -1600,7 +1669,7 @@ function pagePool(){
 /* --- plan: the commercial ladder as this organization sits on it (plans.md) --- */
 function pagePlan(){
   const o = org();
-  if(!o.plan){
+  if(!planOf(o) || planOf(o) === 'Free'){
     const free = PLANS.Free;
     const promise = ctr({title:'No plan on a self-managed host',
       desc:'a plan is a Frontegg plan on a hosted account, billed by Stripe; a self-managed organization has no plan object at all and every flag stands at its definition default (250, plans.md)',
@@ -2092,17 +2161,19 @@ const PLATFORMS = [
   ['laptop','a laptop','a machine of yours with herdr · the pane runner under your login · drains construction work',['machine','macos','herdr'],2],
 ];
 function newWizard(){ return {step:0, journey:null, advanced:false, partsAdv:false, adopt:false, platform:null, name:'', parts:[],
-  sel:{chat:'none', meetings:'none', captures:['pr-conversation']}, preset:null,
+  sel:{chat:'none', meetings:'none', captures:['pr-conversation'], dispatcher:'function'}, preset:null,
   provisioned:false, secrets:{}, decision:null, joined:false}; }
 function pickJourney(id){
   const w = S.wizard, j = JOURNEYS.find(x => x[0] === id);
   if(!j) return;
+  const g = journeyGate(id);
+  if(!g.ok){ w.journey = null; return; }   /* the card states the reason inline; nothing opens (280) */
   w.journey = id;
   if(j[4].pool) return;
   w.adopt = !!j[4].adopt;
   w.platform = j[4].platform || null;
   w.parts = (j[4].parts || []).map(pkgId => ({pkg:pkgId, cfg:{}}));
-  if(id === 'cloud-agent'){ w.sel = {chat:'none', meetings:'none', captures:['pr-conversation']}; w.preset = null; applyCloudSelectors(); }
+  if(id === 'cloud-agent'){ w.sel = {chat:'none', meetings:'none', captures:['pr-conversation'], dispatcher:w.sel && w.sel.dispatcher || 'function'}; w.preset = null; applyCloudSelectors(); }
   if(!w.name) w.name = id === 'machine' ? 'chuck-air' : id === 'cloud-agent' ? (org().name + '-cloud-2') : 'mac-mini-2';
 }
 function wizPlat(){ const w = S.wizard; return w.adopt ? ['any'] : (PLATFORMS.find(p => p[0] === w.platform) || [null,null,null,['any']])[3]; }
@@ -2132,7 +2203,21 @@ function cloudPartsScreen(){
     <div class="slot empty-slot"><div class="sl-main"><div class="sl-name">in-process runner · bound 0</div>
       <div class="small">it takes no construction work and changes no runway reading (S114, dispatch 2, 5) · the agent and triage run inside the binary</div></div></div>
     <div class="slot empty-slot"><div class="sl-main"><div class="sl-name">identity · <span class="mono">frontegg</span></div>
-      <div class="small">the provider&#8217;s hosted login at the served name (S164)</div></div></div></div>`;
+      <div class="small">the provider&#8217;s hosted login at the served name (S164)</div></div></div>
+    <div class="slot empty-slot"><div class="sl-main"><div class="sl-name">where it runs</div>
+      <div class="small">${raw(whereItRuns('cloud-agent'))}</div></div></div></div>`;
+  const DISPATCHERS = [
+    ['function', 'a function (default)', 'invoked per tick, a fifteen-minute budget, nothing between invocations · Discord free text stays a <span class="mono">/fw</span> slash command with its arguments (269, 277)'],
+    ['container', 'long-lived, on a container service', 'it holds the chat platform&#8217;s gateway socket, so plain free text in a Discord channel is answered · no fifteen-minute ceiling on a tick (276a, 277)'],
+    ['instance', 'long-lived, on an instance of your own', 'the same, on hardware you name · pool hosts there have no lifetime ceiling either, so no fallback placement is needed (275, 276a)'],
+  ];
+  const dispatcher = entCompute()
+    ? `<div class="hd-sec"><div class="hd-bar"><div class="ht"><h3>The dispatcher</h3>
+        <div class="small">under tier 3&#8217;s second shape this is yours to place: the deployer creates it in your own account through the role you granted, and what it changes is stated beside each (276a)</div></div></div>
+      <div class="ctr-body">${DISPATCHERS.map(([v, label, what]) =>
+        `<label class="radio"><input type="radio" name="cl-disp" value="${esc(v)}" ${s.dispatcher === v ? 'checked' : ''} data-clouddisp="1">
+          <span><b>${esc(label)}</b><div class="small">${raw(what)}</div></span></label>`).join('')}</div></div>`
+    : '';
   const chosen = w.parts.filter(p => !p.fixed);
   const summary = `<div class="hd-sec"><div class="hd-bar"><div class="ht"><h3>What joins with it</h3>
       <div class="small">${w.preset ? `the <b>${esc(pkg(w.preset).name)}</b> bundle · a bundle is a named set of parts with their configuration defaults, and its install is one decision for the set (plans.md)` : 'your own set · every part is installed by the one enrolment decision at the end of this wizard (S118, S120)'}</div></div></div>
@@ -2144,7 +2229,7 @@ function cloudPartsScreen(){
     body:`<div class="ctr-body" style="border-bottom:1px solid var(--divider-2)">${presets}</div>`
       + radios('Chat', 'where the plan is printed and answered · one host presents a kind and holds its lease (148)', 'cl-chat', CLOUD_CHAT, s.chat)
       + radios('Meetings', 'one capture per meeting, keyed by the meeting id (dispatch 4)', 'cl-meet', CLOUD_MEETINGS, s.meetings)
-      + captures + fixedParts + summary});
+      + captures + dispatcher + fixedParts + summary});
 }
 function pageAddHost(){
   const w = S.wizard = S.wizard || newWizard();
@@ -2155,10 +2240,18 @@ function pageAddHost(){
   if(w.step === 0){
     const chosen = JOURNEYS.find(j => j[0] === w.journey);
     body = ctr({title:'What do you want to add?', desc:'each of these is one host and one promise · the platform, the parts and the flow behind it follow from the choice, and every one of them still ends at a decision you answer in the plan console (S113, S120)',
-      body: JOURNEYS.map(([id, title, what, promise]) =>
-          `<label class="jrn ${w.journey === id ? 'on' : ''}"><input type="radio" name="w-journey" value="${id}" ${w.journey === id ? 'checked' : ''}>
-            <div><div class="jt">${esc(title)}</div><div class="small">${esc(what)}</div>
-            <div class="jp">${raw(promise)}</div></div></label>`).join('')
+      body: JOURNEYS.map(([id, title, what, promise, cfg]) => {
+          const g = journeyGate(id), tier = cfg.pool ? '2 · pools' : id === 'cloud-agent' ? '1 · cloud agent' : '0 · your computer';
+          return `<label class="jrn ${w.journey === id ? 'on' : ''} ${g.ok ? '' : 'off'}"><input type="radio" name="w-journey" value="${id}" ${w.journey === id ? 'checked' : ''} ${g.ok ? '' : 'disabled'}>
+            <div><div class="jt">${esc(title)} ${badge('tier ' + tier, 'grey')}${g.ok ? '' : ' ' + badge(g.chip || (g.needs ? 'needs ' + g.needs : 'not available'), 'blue')}</div>
+            <div class="small">${esc(what)}</div>
+            <div class="jp">${raw(promise)}</div>
+            <div class="small" style="margin-top:6px">${id === 'machine' || id === 'adopt'
+              ? `identity ${badge('github','blue')} · GitHub&#8217;s device flow on a localhost port, on every plan (243, 245)`
+              : `identity ${badge('frontegg','blue')} · the provider&#8217;s hosted login at the served name (244)`} · runs ${raw(whereItRuns(id))}</div>
+            ${g.ok ? '' : `<div class="gate-warn"><span aria-hidden="true">&#9888;</span> ${raw(g.why)}${g.needs ? ` &#183; <a href="#" data-page="plan">see the Plan page</a>` : ''}</div>`}
+            </div></label>`;
+        }).join('')
         + (w.journey === 'pool' ? `<div class="small">${st('info','the pool form is on the Pools page; this wizard adds one host')} ${btn('Open the pool form','data-wizpool="1"','primary')}</div>`
           : `<div class="field" style="margin-top:16px"><label for="w-name">Name</label>
               <div class="fd">the host&#8217;s name in the strip and in every session chip${chosen ? ' · this journey ' + (chosen[4].adopt ? 'reads its platform at join' : 'runs on ' + esc((PLATFORMS.find(x => x[0] === chosen[4].platform)||[])[1] || '')) : ''}</div>
@@ -2172,7 +2265,7 @@ function pageAddHost(){
                   `<label class="radio"><input type="radio" name="w-plat" value="${p[0]}" ${w.platform === p[0] ? 'checked' : ''}><span><b>${esc(p[1])}</b><div class="small">${esc(p[2])} · bound ${p[4]}</div></span></label>`).join('')}</div>
               <div class="small">every part is chosen on the next step whatever you pick here; nothing is installed until the enrolment decision is answered (S118, S124)</div>
             </div>` : ''}</div>`});
-    canNext = !!w.name && w.journey !== 'pool' && (w.adopt || !!w.platform);
+    canNext = !!w.name && !!w.journey && w.journey !== 'pool' && journeyGate(w.journey).ok && (w.adopt || !!w.platform);
   } else if(w.step === 1 && w.journey === 'cloud-agent'){
     body = cloudPartsScreen();
   } else if(w.step === 1){
@@ -2196,14 +2289,20 @@ function pageAddHost(){
             <div class="small">the sensible default for this journey is already chosen: ${w.parts.filter(p => ['router','runner'].includes(pkg(p.pkg).kind)).map(p => `<b>${esc(pkg(p.pkg).name)}</b>`).join(' · ') || 'nothing yet'}. Open this only to change it.</div></div></div>
           ${w.partsAdv ? kindHeading('router', 'Router', 'one slot · what a served place is reached at (191)') + kindHeading('runner', 'Runners', 'one slot per role · where a session of that role runs (173)') : ''}</div>`});
   } else if(w.step === 2){
-    body = ctr({title:'Provision', desc:'provisioning runs from the host you are on with your own platform credentials, read at run time and never stored (S120)',
+    const deployed = entCompute() && !w.adopt;
+    const steps2 = deployed
+      ? [['the deployer assumes the role you granted', w.provisioned ? 'done' : 'waiting on you', 'our deployer, not your machine · nothing of this runs from where you are sitting, and every use of the role is logged in your own account (276, 276a)'],
+         ['it applies the stack in your account', w.provisioned ? 'done' : 'queued', 'the binary itself is provisioned into your account, and nothing of the service&#8217;s runs there (276a)'],
+         ['it stamps the binary&#8217;s version', w.provisioned ? 'done' : 'queued', 'the version is the release&#8217;s, recorded by the deployer so the host and the page carry the same one (208, 276a)']]
+      : [['read your flywheel-cloud credentials', w.provisioned ? 'done' : 'waiting on you', 'from your credential store on ' + servingHost().id + ' · never stored by the flywheel'],
+         ['create the container', w.provisioned ? 'done' : 'queued', 'from the organization image · the pool&#8217;s image when it joins a pool (S175)'],
+         ['open its route', w.provisioned ? 'done' : 'queued', 'behind the router you chose']];
+    body = ctr({title:'Provision', desc: deployed
+        ? 'under tier 3&#8217;s second shape provisioning is the deployer&#8217;s, applied in your own account through the role you granted · nothing runs from your machine (276a)'
+        : 'provisioning runs from the host you are on with your own platform credentials, read at run time and never stored (S120)',
       body: w.adopt ? `<div>${st('info','nothing to provision · the host already runs the binary')}</div>`
-        : `<div class="steps">${[
-            ['read your flywheel-cloud credentials', w.provisioned ? 'done' : 'waiting on you', 'from your credential store on ' + servingHost().id + ' · never stored by the flywheel'],
-            ['create the container', w.provisioned ? 'done' : 'queued', 'from the organization image · the pool&#8217;s image when it joins a pool (S175)'],
-            ['open its route', w.provisioned ? 'done' : 'queued', 'behind the router you chose'],
-          ].map(([n,s,b]) => `<div class="step-row">${s === 'done' ? st('success','') : st('pending','')}<div><b>${esc(n)}</b> <span class="small">${esc(s)}</span><div class="small">${esc(b)}</div></div></div>`).join('')}</div>
-          <div style="margin-top:16px">${w.provisioned ? st('success','provisioned') : btn('Run provisioning', 'data-wizprov="1"', 'primary')}</div>`});
+        : `<div class="steps">${steps2.map(([n,s2,b2]) => `<div class="step-row">${s2 === 'done' ? st('success','') : st('pending','')}<div><b>${raw(n)}</b> <span class="small">${esc(s2)}</span><div class="small">${raw(b2)}</div></div></div>`).join('')}</div>
+          <div style="margin-top:16px">${w.provisioned ? st('success', deployed ? 'applied in your account · the stack is stamped' : 'provisioned') : btn(deployed ? 'Run the deployer' : 'Run provisioning', 'data-wizprov="1"', 'primary')}</div>`});
     canNext = w.adopt || w.provisioned;
   } else if(w.step === 3){
     const needed = w.parts.flatMap(p => secretFields(pkg(p.pkg)).map(f => [pkg(p.pkg), f]));
@@ -2225,9 +2324,15 @@ function pageAddHost(){
             ${w.joined ? st('success', `${esc(w.name)} joined and is alive · its row is in Hosts`) : btn('Simulate the join', 'data-wizjoin="1"')}</div>`
         : `<div class="stack">${kv([
             ['Name', `<b>${esc(w.name)}</b>`],
+            ['Tier', badge(w.journey === 'cloud-agent' ? 'tier 1 · cloud agent' : 'tier 0 · your computer', 'grey')],
+            ['Where it runs', raw(whereItRuns(w.journey || 'machine'))],
             ['Platform', esc(w.adopt ? 'read at join · adopt existing' : (PLATFORMS.find(p => p[0] === w.platform)||[])[1] || '—')],
+            ...(w.journey === 'cloud-agent' && entCompute()
+              ? [['Dispatcher', esc({function:'a function · invoked per tick', container:'long-lived, on a container service · it holds the gateway socket', instance:'long-lived, on an instance of your own'}[w.sel.dispatcher] || '')]]
+              : []),
             ['Parts', w.parts.length ? w.parts.map(p => esc(pkg(p.pkg).name)).join(' · ') : 'none · it joins bare and reads the manifest'],
             ['Secrets placed', `${Object.keys(w.secrets).length} of ${w.parts.flatMap(p => secretFields(pkg(p.pkg))).length}`],
+            ['Plan', `${badge(esc(planName()),'blue')} · this add is within its limits; one that exceeded a limit would be refused inline with the reason, and nothing running would stop (280, 282)`],
           ])}<div>${btn('Raise the enrolment decision', 'data-wizenrol="1"', 'primary')}</div></div>`});
     next = 'Close';
   }
@@ -2243,6 +2348,7 @@ function pageAddHost(){
    =========================================================================== */
 const ORG_WIZ_STEPS = [
   ['Name', 'yours to name (219)'],
+  ['Plan', 'the rung, and the tier it gives (279, 281)'],
   ['GitHub', 'where the App reaches (207)'],
   ['Repositories', 'state and blueprints (204, 206)'],
   ['The App', 'install or extend (207, 207a)'],
@@ -2258,7 +2364,7 @@ const GH_ACCOUNTS = [
 ];
 const TEMPLATE_SET = 'v0.9.4 · blueprints template · built-repository template · map schema and derivation table · shipped skills (208)';
 function newOrgWizard(){
-  return {step:0, name:'', tier:'self', gh:null,
+  return {step:0, name:'', plan:null, tier:'self', gh:null,
     repos:{state:{mode:'create', url:''}, blueprints:{mode:'create', url:''}},
     keyPlaced:false, account:false, root:'', firstHost:servingHost().id,
     decision:null, ticked:false};
@@ -2276,15 +2382,25 @@ function pageAddOrg(){
       body:`<div class="field"><label for="o-name">Name</label>
           <div class="fd">what the switcher, the page&#8217;s path and every session chip call it (218, 205a)</div>
           <input id="o-name" data-ofield="name" value="${esc(w.name)}" placeholder="northwind"></div>
-        <div class="field"><label>How it is run</label>
-          <div class="fd">this decides the App: 207a splits self-managed from the hosted tiers</div>
-          <label class="radio"><input type="radio" name="o-tier" value="self" ${w.tier === 'self' ? 'checked' : ''}><span><b>self-managed</b>
-            <div class="small">your own hosts and your own GitHub App, whose key you place (204, 207a) · a host on your own computer is not an exception: same page, same identity, same membership (253)</div></span></label>
-          <label class="radio"><input type="radio" name="o-tier" value="hosted" ${w.tier === 'hosted' ? 'checked' : ''}><span><b>hosted</b>
-            <div class="small">the service&#8217;s App, whose key never leaves the service and which mints a pool host&#8217;s installation tokens (207a) · the account is created as a sub-account of the service&#8217;s own (247)</div></span></label></div>
         <div class="small">Nothing on this page creates anything. The wizard collects; the decision at the end is what acts (204).</div>`});
     canNext = !!w.name.trim();
   } else if(w.step === 1){
+    body = ctr({title:'The plan',
+      desc:'the rung decides the tier, and the tier decides the identity kind and the App: a self-managed organization runs on Free with its own App, and every hosted rung uses the service&#8217;s (207a, 268, 279, 281)',
+      body: LADDER.map(n => {
+        const x = PLANS[n], self = n === 'Free';
+        return `<label class="jrn ${w.plan === n ? 'on' : ''}"><input type="radio" name="o-plan" value="${n}" ${w.plan === n ? 'checked' : ''}>
+          <div><div class="jt">${esc(n)} ${badge('tier ' + esc(x.tier), 'grey')} ${badge(self ? 'github' : 'frontegg', 'blue')}</div>
+          <div class="small">${esc(x.who)}</div>
+          <div class="jp">${raw(x.unlocks)}</div>
+          <div class="small" style="margin-top:6px">${self
+            ? '<b>Free, nothing runs on our side.</b> The binary on your own computer, GitHub&#8217;s device flow on a localhost port, your own GitHub App whose key you place, and every flag at its definition default (250, 268, 281). A host on your own computer is not an exception: same page, same identity, same membership (253).'
+            : `the service&#8217;s App, whose key never leaves the service and which mints a pool host&#8217;s installation tokens (207a) · the account is created as a sub-account of the service&#8217;s own, with you as owner (247, 253) · limits: ${x.limits.map(l => esc(l[0]) + ' ' + esc(l[1])).join(' · ')}`}</div>
+          </div></label>`;
+      }).join('')
+        + `<div class="small" style="margin-top:12px">A plan hides a surface and meters a quantity; it never authorizes, and permission comes from roles (248, 249, 280). Billing is on the hosted account and is not authored here.</div>`});
+    canNext = !!w.plan;
+  } else if(w.step === 2){
     body = ctr({title:'The GitHub account', desc:'one GitHub App is the connection and its installation covers every repository the manifest lists (207) · the accounts your GitHub connection reaches (246)',
       tight:true,
       body: GH_ACCOUNTS.map(([id, note, installed]) =>
@@ -2294,7 +2410,7 @@ function pageAddOrg(){
                       : st('pending', 'the App is not installed here · this organization installs it')}</div></label>`).join('')
         + `<div class="slot empty-slot"><div class="sl-main"><div class="small">a repository under another account is added later by URL; the installation extends to it or the extension surfaces as a decision under attention (149, 207, 219)</div></div></div>`});
     canNext = !!w.gh;
-  } else if(w.step === 2){
+  } else if(w.step === 3){
     const repoRow = (key, title, what, template) => {
       const r = w.repos[key];
       return `<div class="hd-sec"><div class="hd-bar"><div class="ht"><h3>${esc(title)}</h3><div class="small">${raw(what)}</div></div></div>
@@ -2313,7 +2429,7 @@ function pageAddOrg(){
         + repoRow('blueprints', 'blueprints', 'the books and the claims; the map lives here (S91, 199)', 'created from the blueprints template, stamped with the template set it used (204, 208)')
         + `<div class="slot empty-slot"><div class="sl-main"><div class="small">template set <span class="mono">${esc(TEMPLATE_SET)}</span> <span class="sample">sample</span></div></div></div>`});
     canNext = ['state','blueprints'].every(k => w.repos[k].mode === 'create' || w.repos[k].url.trim());
-  } else if(w.step === 3){
+  } else if(w.step === 4){
     body = ctr({title:'The App', desc:'one GitHub App is the connection; no host or session uses a personal token, and a session gets a short-lived installation token scoped to one repository (207)',
       body: owHosted()
         ? `<div class="stack">${st('info','the hosted tiers use the service&#8217;s App (207a)')}
@@ -2333,7 +2449,7 @@ function pageAddOrg(){
                 ${btn('Check', 'data-owizkey="1"')}
                 ${w.keyPlaced ? st('success','placed · the host answered that it is present') : st('warning','not placed · it sits under attention until it is, and the first tick waits on it (149, S123)')}</div></div>
           </div>`});
-  } else if(w.step === 4){
+  } else if(w.step === 5){
     body = owHosted()
       ? ctr({title:'The account', desc:'on a hosted tier membership is the assignment of the flywheel Application to the organization&#8217;s Frontegg account, and the account is the organization (247)',
           body:`<div class="stack">${kv([
@@ -2354,7 +2470,7 @@ function pageAddOrg(){
           ], 'rows')}
           <div>${w.account ? st('success','you will be the operators list&#8217;s first entry') : btn('Put me on the operators list', 'data-owizaccount="1"', 'primary')}</div></div>`});
     canNext = w.account;
-  } else if(w.step === 5){
+  } else if(w.step === 6){
     const h = host(w.firstHost) || hosts()[0];
     const def = (h && /^\//.test(h.root || '')) ? `/srv/flywheel/${w.name || 'org'}` : `~/${w.name || 'org'}`;
     body = ctr({title:'A root on this host', desc:'a host joins by one command and never by hand; it clones the state, the blueprints and every tracked repository as bare repositories under one root the manifest names (205)',
@@ -2383,6 +2499,7 @@ function pageAddOrg(){
             <div>${w.ticked ? st('success', `${esc(w.name)} is hosted · it is in the switcher and in the side navigation`) : btn('Simulate the first tick', 'data-owiztick="1"')}</div></div>`
         : `<div class="stack">${kv([
             ['Name', `<b>${esc(w.name)}</b> · ${owHosted() ? 'hosted' : 'self-managed'}`],
+            ['Plan', `${badge(esc(w.plan || 'Free'),'blue')} · tier ${raw((PLANS[w.plan || 'Free']||{}).tier || '')} · identity ${badge(owHosted() ? 'frontegg' : 'github','blue')} (207a, 279, 281)`],
             ['GitHub account', esc(w.gh || '—')],
             ['state', esc(r('state'))],
             ['blueprints', esc(r('blueprints'))],
@@ -2399,7 +2516,7 @@ function pageAddOrg(){
   const foot = `<div class="wiz-foot">${btn('Cancel','data-owizcancel="1"','link')}${w.step > 0 ? btn('Previous','data-owizprev="1"') : ''}
     ${btn(next, 'data-owiznext="1"' + (canNext ? '' : ' disabled'), 'primary')}</div>`;
   return crumbs([['Organizations','none'],['+ organization']])
-    + pageHead('Add an organization', 'name · GitHub · repositories · the App · the account · a root on this host, then one decision that initializes it (204, 218-222, 247)')
+    + pageHead('Add an organization', 'name · the plan, and the tier it gives · GitHub · repositories · the App · the account · a root on this host, then one decision that initializes it (204, 218-222, 247, 279)')
     + `<div class="wiz">${nav}<div>${body}${foot}</div></div>`;
 }
 function orgFirstTick(){
@@ -2408,6 +2525,8 @@ function orgFirstTick(){
   const root = w.root || (/^\//.test(serving.root || '') ? `/srv/flywheel/${id}` : `~/${id}`);
   ORGS[id] = {
     name:id, what:`${owHosted() ? 'hosted' : 'self-managed'} · from zero · initialized ${TODAY} ${NOW}`, sample:true, fromZero:true,
+    plan: owHosted() ? w.plan : null,
+    use: owHosted() ? {organizations:1, members:1, seats:1} : null,
     members:[{id:IDENTITY.handle, name:IDENTITY.name, signin: owHosted() ? 'the provider' : 'GitHub', addresses:{},
       roles: owHosted() ? ['owner'] : [], since:TODAY.slice(5)}],
     roles: owHosted() ? [{id:'owner', what:'the creating user holds owner on the account (253)', members:[IDENTITY.handle]}] : [],
@@ -2765,11 +2884,12 @@ document.addEventListener('change', e => {
     S.wizard.sel[e.target.dataset.cloudsel === 'cl-chat' ? 'chat' : 'meetings'] = e.target.value;
     S.wizard.preset = null; applyCloudSelectors(); render();
   }
+  if(e.target.dataset.clouddisp){ S.wizard.sel.dispatcher = e.target.value; render(); }
   if(e.target.dataset.cloudcap){
     S.wizard.sel.captures = Array.from(document.querySelectorAll('[data-cloudcap]')).filter(x => x.checked).map(x => x.value);
     S.wizard.preset = null; applyCloudSelectors(); render();
   }
-  if(e.target.name === 'o-tier'){ S.orgWizard.tier = e.target.value; render(); }
+  if(e.target.name === 'o-plan'){ const w = S.orgWizard; w.plan = e.target.value; w.tier = e.target.value === 'Free' ? 'self' : 'hosted'; render(); }
   if(e.target.name === 'o-gh'){ S.orgWizard.gh = e.target.value; render(); }
   if(e.target.name === 'o-state'){ S.orgWizard.repos.state.mode = e.target.value; render(); }
   if(e.target.name === 'o-blueprints'){ S.orgWizard.repos.blueprints.mode = e.target.value; render(); }
@@ -2890,10 +3010,15 @@ function poolForm(id){
   if(id === 'new') return openForm({title:'Declare a pool', desc:'the pool the machinery adds hosts to while drain is the limit (240, 242)',
     fields:[{k:'name', label:'Name', ph:'willdan-pool'},{k:'platform', label:'Platform', kind:'select', opts:['flywheel-cloud'], value:'flywheel-cloud'},
       {k:'bound', label:'Bound · hosts', value:'8'},{k:'hostBound', label:'Sessions per host', value:'2'},
-      {k:'idle', label:'Idle-retire', kind:'select', opts:['15m','30m','1h'], value:'30m'},{k:'cost', label:'Cost ceiling', value:'$40/day'}],
+      {k:'idle', label:'Idle-retire', kind:'select', opts:['15m','30m','1h'], value:'30m'},{k:'cost', label:'Cost ceiling', value:'$40/day'},
+      {k:'placement', label:'Placement', kind:'select', opts:poolPlacements(), value:poolPlacements()[0],
+        fd: planAllows('Enterprise')
+          ? 'a container task takes a volume under your own key; an instance of your own has no lifetime ceiling, so no fallback placement is needed (275, 276a)'
+          : `microVM on ${esc(planName())} · the other placements are Enterprise, under tier 3&#8217;s second shape (275, 276a)`}],
     onSave(v){ o.pools.push({id:v.name || 'pool', platform:v.platform, image:'building', imageState:'behind', imageWhy:'no image yet · built from the declarations of every repository it covers (239)',
         bound:+v.bound || 1, hostBound:+v.hostBound || 1, live:0, idleRetire:v.idle, ceiling:v.cost, rate:'$0.11 per host-hour',
-        stopped:'no addition has been stopped by the ceiling', placement:'microVM', lifetime:'8h maximum · the microVM placement states it (275)',
+        stopped:'no addition has been stopped by the ceiling', placement:v.placement || 'microVM',
+        lifetime:(v.placement === 'an instance of your own') ? 'none · an instance of your own has no lifetime ceiling (276a)' : '8h maximum · the placement states it (275)',
         fallback:'a container task with a volume, for a session that must run longer', disk:'the platform&#8217;s key · isolated per host and destroyed at terminate (275)',
         covers:o.repos.map(r => r.id).join(' · ')});
       logged(`settings · pool ${v.name} · bound ${v.bound} · idle-retire ${v.idle} · ceiling ${v.cost}`); }});
@@ -2903,7 +3028,10 @@ function poolForm(id){
       {k:'hostBound', label:'Sessions per host', value:String(p.hostBound)},
       {k:'idle', label:'Idle-retire', kind:'select', opts:['15m','30m','1h'], value:p.idleRetire},
       {k:'cost', label:'Cost ceiling', value:p.ceiling || ''},
-      {k:'placement', label:'Placement', kind:'select', opts:['microVM','a container task with a volume under your key','an instance of your own · Enterprise'], value:p.placement === 'microVM' ? 'microVM' : p.placement},
+      {k:'placement', label:'Placement', kind:'select', opts:poolPlacements(), value:poolPlacements().includes(p.placement) ? p.placement : poolPlacements()[0],
+        fd: planAllows('Enterprise')
+          ? 'a container task takes a volume under your own key; an instance of your own has no lifetime ceiling (275, 276a)'
+          : `microVM on ${esc(planName())} · the other placements are Enterprise (275, 276a)`},
       {k:'image', label:'Image', kind:'static', value:`<span class="mono">${esc(p.image)}</span>`, fd:'built from the declarations of every repository it covers · rebuilt as a chore (239, S175)'}],
     onSave(v){ p.bound = +v.bound || p.bound; p.hostBound = +v.hostBound || p.hostBound; p.idleRetire = v.idle;
       p.ceiling = v.cost; p.placement = v.placement;
