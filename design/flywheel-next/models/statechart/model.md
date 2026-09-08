@@ -2544,3 +2544,138 @@ idle clocks paused (`sessions.yaml` `session.idle_since`), and `gone`
 (a numbered decision on an object it holds, or approved work only it
 covers) or at the 24h bound; its next heartbeat returns it to `alive`
 with nothing to answer.
+
+## 19. Ratified 256–289: tenancy, the hosted tiers and plans
+
+**A.33 — tenancy and encryption (256–267).** Everything a shared host
+keeps between ticks is sealed under a key naming one organization
+(`host.yaml` `tier.cache`, `tier.key`): the warm cache object, the
+bodies queued behind the capture endpoint, every store holding the
+organization's content. A store keyed per filesystem, volume, queue or
+table is not the promise; the promise is one level in, at the object
+(256). The key is unwrapped for the length of one tick and by the role
+that runs it alone, so the plaintext data key exists in a process
+evaluating that organization's plan and nowhere else (257). That role
+is scoped to one organization by a session tag matched against the tag
+on every key and object it opens, so one compromised credential reaches
+one organization and no count of roles bounds the tenancy (259). A key
+the host cannot reach fails closed: no tick proceeds, one attention
+line names the key and since when, running work is untouched, and
+nothing is kept unencrypted as a fallback (260). The cache is a
+projection whose loss costs a clone, so an organization idle past the
+stated time keeps nothing warm (258, `host.yaml` `tier.cache`).
+
+What the service holds and under which key is a stated fact of the tier
+on the settings form, down to when the cache was last evicted (261,
+`organization` machine). The shared host reads the manifest, the
+register, the leases, the sink's mark and the machinery's prefix and
+nothing else, the clone sparse to exactly that set and a read outside
+it a refusal in the run record (262). Raw capture material is never
+read on a host serving more than one organization, so triage that must
+follow a pointer into the raw store runs on the operator's own machine
+or on a pool host, while a capture whose whole content is in hand
+carries no pointer and may be triaged in the tick that took it (263,
+`capture` machine);
+code is never on a shared host at all, cloned only onto a pool host
+that serves one organization and dies with it (264, `pool` machine).
+An organization may declare its state records written as envelopes
+under its key, paths and commit metadata staying plaintext because
+`list`, the count and the compare-and-swap read only those, with the
+blueprints plaintext outside the machinery's prefix (265, 266). The key
+has three homes — the operator's own hosts, a tagged key in the
+service's account, a key in the organization's own account behind a
+role that trusts the service's issuer — and moving between them
+re-wraps data keys and changes no history (267).
+
+**A.34 — the hosted tiers (268–278).** A host carries a tier, 0 to 3,
+named by what exists on the service side: your computer, the cloud
+agent, pools, your account (268, `host.yaml` `tier`). A tier is a
+binding and never a second machinery. On tiers 1 to 3 the host is one
+function per tier and each invocation is one organization's tick: it
+assumes the tier's role under the organization's session tag, downloads
+the warm cache, fetches, evaluates, pushes by compare-and-swap,
+delivers the plan, uploads the cache, wipes its scratch and exits,
+retaining nothing between invocations (269). It never reads raw material a
+capture points at and never holds code, because its declaration takes
+no object kind, no repository and no unit type (217); it answers chat
+and triages a self-contained capture in its own tick (217b, 217e), and
+a failure in one organization's tick ends that tick and no other (218).
+
+The tick is invoked and not looped (270): a clock, a notification, an
+arriving capture, a chat event and a request for the page are all
+invokers of the same tick, which is 231 read as *nothing but the tick
+keeps time* rather than *a process stands*. The capture endpoint on a
+hosted tier is a managed queue per organization with no compute of the
+machinery's in the acknowledgement path, the caller's retry buffer and
+not state (271). The warm cache is one encrypted object per
+organization holding a bundle of two sparse shallow clones, the state
+repository and the blueprints restricted to the manifest, the claims
+and the prefix, downloaded per tick and uploaded back (272).
+Scheduling is one named one-shot entry per organization upserted at the
+end of every tick with the due time the machines computed: an interim
+tick replaces it, at most one exists, an entry that fires with nothing
+due is one idempotent tick, and a daily sweep is the backstop; the set
+of entries is a projection that ticking rebuilds (273). Notify is
+primary and the poll the backstop, bounded per channel (274).
+
+A pool host on a hosted tier is a microVM from the organization's
+image with a container runtime inside it, no shared network required,
+a stated maximum lifetime and a named fallback placement for longer
+sessions; it is terminated at retire and never suspended, so its disk
+goes with it (275, `host.yaml` `pool.hosted`). Tier 3 is federation:
+one role in the organization's own account trusting the service's
+issuer with the organization as subject, assumed per tick with a minted
+token, the key, cache, queue and pool image living there, revocation by
+deleting the role and no credential stored (276). Chat on the hosted
+tiers may be the service's own Slack or Discord application scoped to
+the organization's channel, carrying plan text and interactions and
+nothing else, the record still naming who responded (277, `sink`
+machine). An intermittent host keeps its place: the laptop is away, its
+leases stand and its clocks pause, and the cloud agent keeps ticking
+everything else (278, 150a).
+
+**A.35 — plans and presets (279–284).** A plan is a named set of the
+`fw.ff.*` entitlement features plus a few stated limits, held by the
+identity provider and billed through the payment provider, read only
+from the token and the SDK (279, `identity.yaml` `plans`). A
+self-managed host has no plan and every flag stands at its definition
+default. A plan hides and it meters and it never authorizes:
+permissions come from roles and are checked on every tool call, and
+exceeding a limit is one attention line and a refused add with the
+reason, never a stopped loop (280). The ladder is five rungs over the
+four tiers — Free at tier 0, Hobby at tier 1, Pro adding pools and the
+store, Team adding members and the console, Enterprise at tier 3 with
+federation, enterprise sign-in, a dispatcher of its own and audit
+export — and what each unlocks is the requirement while the price is
+not (281, `identity.yaml` `plans.ladder`). Limits are plan metadata and
+not flags: organizations, members, included pool hours, the largest
+pool host (282, `plans.limits`).
+
+Adding a cloud agent asks nothing about routers or runners, because the
+tier fixes both; one screen asks the chat platform, the meeting source
+and the capture sources, with presets beside the selectors, and a
+router or a runner is chosen only for a machine of the operator's own
+or an adopted host under the advanced disclosure (283, `host.yaml`
+`tier.add_form`). A preset is a package of the **bundle** kind, a named
+set of parts with their configuration defaults installed under one
+install decision for the set, running nothing itself and removing only
+what it installed (284, `host.yaml` `packages.kinds`).
+
+**A.36 — rulings carried over (285–289).** A unit type or an
+elaboration type declares the model class each of its stages runs, so a
+stage that reviews code may name a different class from the stage that
+writes it; the runner's own model is the default where the type names
+none, which makes 173's per-role model the fallback rather than the
+rule (285, `stage` machine). A scenario pack is a development-time
+organization package, hidden behind `fw.ff.scenario-packs` and never in
+the production index (286). Packages contribute renderers, adapters,
+sinks, runners, routers, types, deliverable producers, map
+vocabularies, templates and bundles, and never a core surface: the
+rail, the board, the dock and the console ship in the binary (287). The
+binary carries its own instrumentation, writing captures about its
+operation — stalls, refusals, runway readings — to the agentplot
+organization's flywheel, carrying no organization content, on by
+default on the hosted tiers and opt-in on a self-managed host (288,
+`capture` machine). Code isolation is the guarantee the settings form's
+tier statement names, and it is 264 restated as a promise the operator
+can read (289).

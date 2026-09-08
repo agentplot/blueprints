@@ -1539,6 +1539,245 @@ requirements, iterated against the running plan rather than on paper.
     any response (153). On a self-managed host the operators list on
     the settings form is the administration.
 
+### A.33 Tenancy and encryption
+
+256. Everything a shared host keeps between ticks is encrypted at rest
+    under a key naming one organization: the clone cache, the body of
+    every queued capture, every store holding its content. A store keyed
+    per filesystem, volume, queue or table holds no organization's
+    content in the clear; it is sealed under that key inside the store.
+257. The organization's key is unwrapped only for the duration of a tick
+    and only by the role that runs it. The plaintext data key exists in
+    a process evaluating that organization's plan and at no other time.
+258. The cache is a projection and its loss costs a clone. An
+    organization idle past a stated time keeps nothing warm, and its
+    next tick re-clones.
+259. A shared host assumes a role scoped to one organization for the
+    duration of that organization's tick, so one compromised credential
+    reaches one organization. The scope may be carried by a session tag
+    naming the organization, matched against the tag on every key and
+    object it opens, so the number of organizations is bounded by no
+    count of roles.
+260. A key that is unreachable, deleted or behind a role that no longer
+    trusts the service, fails closed. No tick proceeds on state it
+    cannot open, every host of that organization shows one attention
+    line naming the key and since when (149), running work is not
+    interrupted, and nothing is kept unencrypted as a fallback.
+261. What the service holds and under which key is a stated fact of the
+    tier, rendered on the settings form (233): which stores hold the
+    organization's content, which key opens them, which role may use it,
+    and when the cache was last evicted.
+262. A shared host reads the manifest, the register, the leases, the
+    sink's mark and the machinery's prefix (203) and nothing else. The
+    clone is partial and sparse to exactly that set, and a read outside
+    it is a refusal in the run record (79).
+263. Raw material a capture points at (217h) is never read on a host
+    serving more than one organization. Triage (217e) that must follow
+    a pointer into the raw store runs on the operator's own machine or
+    on a pool host, and the manifest's raw store is reachable only from
+    those. A capture whose whole content is already in hand carries no
+    pointer and needs no raw store, so a shared host may triage it in
+    the tick that took it.
+264. Code is never on a shared host. A built repository is cloned only
+    into a pool host serving one organization (241), and retire destroys
+    that host and its disk (240).
+265. An organization may declare that the machinery writes its state
+    records as envelopes under its key. Paths, file names and commit
+    metadata stay plaintext, because list, the count and the
+    compare-and-swap read only those (162). It is a declaration, never
+    the default.
+266. Under that declaration the blueprints repository stays plaintext
+    except the machinery's own prefix (203), where captures and signals
+    are envelopes under the same key. The manifest, the book, the claims
+    and the map are read by people and are never encrypted.
+267. An organization's key has one of three homes: the operator's own
+    hosts when the organization is self-managed, a key tagged with that
+    organization in the service's account, or a key in the
+    organization's own account reached through a role that trusts the
+    service's issuer for that organization. The home is a stated fact of
+    the tier (261), moving between homes re-wraps data keys and changes
+    no history, and in the third home the service holds no credential:
+    each tick assumes the role with a token minted for it, and deleting
+    the role ends every path.
+
+### A.34 The hosted tiers
+
+268. The tiers are four, named by what exists on the service side. Tier
+    0 is your computer: the binary on the operator's own machine, its
+    own sign-in kind (243), and nothing of the organization's on the
+    service side at all. Tier 1 is the cloud agent: a capture queue, a
+    key, a role, a warm cache object and a scheduler entry for the
+    organization, with no pool, so the operator's own machines still
+    build. Tier 2 is pools: tier 1 with hosts provisioned on demand from
+    the organization's image (240). Tier 3 is your account: the same
+    machinery, reaching stores the organization owns through a role it
+    grants (267). A tier is a binding named in the manifest (217j) and
+    never a second machinery.
+269. On the hosted tiers the dispatcher is one function per tier, and
+    each invocation is one organization's tick. It assumes the tier's
+    role under a session tag naming that organization (259), fetches,
+    evaluates, pushes by compare-and-swap (162), delivers the plan,
+    wipes its scratch and exits, retaining nothing between invocations
+    (217a). It never reads raw material a capture points at (263) and
+    never holds code (264): the declaration it runs takes no object
+    kind, no repository and no unit type (217), so there is nothing for
+    it to clone. It answers chat and triages a capture whose whole
+    content is in hand within its own tick (217b, 217e), and hands
+    everything else to a host that serves one organization. A failure in one
+    organization's tick ends that tick and no other (218).
+270. The tick is invoked, not looped. A long-lived process its
+    platform's launcher starts is one invoker among several: a clock, a
+    notification, an arriving capture, a chat event, a request for the
+    page. Every invoker produces the same tick, and a run missed while
+    nothing invoked it is caught up by the next one under the idempotent
+    key (111). This amends 231: what 231 requires is that nothing but
+    the tick keeps time, not that a process stands.
+271. On the hosted tiers the capture endpoint (216) is a managed queue
+    per organization with no compute of the machinery's in the
+    acknowledgement path: the platform answers the caller, and the item
+    waits for a tick. The queue is the caller's retry buffer and not
+    state. A capture is captured when its commit lands, a lost queue is
+    indistinguishable from a call that never arrived, and a repeat under
+    the same key writes nothing (111). Every body it holds is encrypted
+    under the organization's key (256).
+272. The warm cache is one encrypted object per organization (256)
+    holding a bundle of two sparse shallow clones: the state repository,
+    and the blueprints restricted to the manifest, the claims and the
+    machinery's prefix (203, 262). A tick downloads it, works in its own
+    scratch, and uploads it back; it is mounted nowhere and shared with
+    nothing. It is evicted when the organization has been idle past the
+    stated time, and the next tick re-clones (258).
+273. Scheduling on the hosted tiers is one named entry per organization.
+    At the end of every tick the machinery upserts a single one-shot
+    entry carrying the due time the machines computed, deleted when it
+    completes. The name is the organization's, so an interim tick
+    replaces the entry with its own due time, earlier or later, and at
+    most one entry per organization ever exists. An entry that fires and
+    finds nothing due is one idempotent tick that reschedules or deletes
+    (111). A daily sweep is the backstop for an entry never written. The
+    set of entries is a projection: it only shortens the wait, ticking
+    rebuilds it, and its loss costs a sweep and never a decision (136).
+274. Notification is the primary way a host learns of new state and the
+    poll is the backstop (166). The bound is stated per notification
+    channel: seconds where a live push reaches the host, a named
+    interval where none does. No unconditional poll is the floor, since
+    a poll costs the service for every organization whether or not
+    anything happened.
+275. A pool host on a hosted tier is a microVM created from the
+    organization's image (239) when the plan approves work the pool
+    covers. No shared network of the service's is required, a container
+    runtime runs inside it so a repository's own environment declaration
+    works unchanged (238), and it is terminated at retire and never
+    suspended, so its disk goes with it (240). The placement states a
+    fixed maximum lifetime, and the manifest names a fallback placement
+    for a session that must run longer. It serves one organization (241)
+    and holds that organization's code and raw material for the length
+    of the work, on a disk encrypted under the organization's key (256).
+276. Tier 3 is federation. The organization creates one role in its own
+    account whose trust admits the service's issuer with the
+    organization as the subject, and the key, the warm cache, the
+    capture queue and the pool image live there (267). Each tick assumes
+    that role with a token minted for that tick, so the service stores
+    no credential of the organization's and has nothing to rotate or
+    leak, and every use of the key is logged in the organization's own
+    account. Revocation is deleting the role: the next tick refuses with
+    the attention line 260 requires, and running work is not killed.
+277. On the hosted tiers the chat sink's identity may be the service's
+    own Slack or Discord application, installed into the organization's
+    workspace and scoped to the organization's channel, beside the bot
+    the manifest names and the token the operator placed (217d). It
+    carries plan text and the interactions it receives and nothing else:
+    no repository reach and no key. The record still names who responded
+    (153); the application is the service's.
+278. An intermittent host (150a) keeps its place on a hosted tier. A
+    laptop closed past its stale window is away, its leases stand and
+    its sessions' clocks pause, and the cloud agent keeps ticking
+    everything else, so decisions are delivered and answered and
+    captures are accepted and queued while the machine that usually does
+    it sleeps. What waits for the lid is only the work that host alone
+    covers, and triage still runs only where 263 allows.
+
+### A.35 Plans and presets
+
+279. On a hosted tier an organization has a plan: a named set of the
+    entitlement features 250 defines, keyed `fw.ff.*`, together with a
+    few stated limits, held by the identity provider and billed through
+    the payment provider. The flywheel reads it only from the identity
+    token and the provider's SDK; it keeps no plan of its own and asks
+    no billing system a question at run time. A self-managed host has no
+    plan at all, and every flag stands at its definition default there
+    (250).
+280. A plan hides and it meters; it never authorizes. Permissions come
+    from roles and are checked on every tool call (248, 249), and a
+    surface a flag hides is still guarded by its permission. Exceeding a
+    limit is one attention line (149) and a refused add with the reason,
+    never a stopped loop: work already running runs, and the machinery
+    never halts a tick over a plan.
+281. The ladder is five rungs over the four tiers (268), and what each
+    unlocks is a requirement while its price is not. **Free** is tier 0:
+    the binary, its sign-in, the organization's own App and bot, every
+    package and every surface, with nothing running on the service side.
+    **Hobby** is tier 1: the service's App and bot, captures read and
+    chat answered while the operator's machines sleep, the plan in the
+    organization's chat, and the page at a served name. **Pro** adds
+    pools with an included allowance and metered overage, the package
+    store, the book view and the presets. **Team** adds members with
+    roles, ownership and assignment (237), identity administration
+    (255), the management console, and a higher ceiling on a pool host.
+    **Enterprise** is tier 3: federation into the organization's own
+    account (276), enterprise sign-in and provisioning through the
+    organization's own directory, a dispatcher function of its own,
+    audit export and a private pool image.
+282. Limits are plan metadata and not flags: how many organizations, how
+    many members, how many pool hours are included, and how much memory
+    a pool host may take. The tool server reads them beside the flags
+    and refuses the add that would exceed one, with the reason (280).
+283. Adding a cloud agent asks nothing about routers or runners: the
+    tier fixes both, the platform router at the served name and the
+    in-process runner at bound zero (191, 217, 217c). One screen asks
+    what the agent listens to and speaks through, its chat platform, its
+    meeting source and its capture sources, and offers presets beside
+    the selectors. A router or a runner is chosen only for a machine of
+    the operator's own or an adopted host, under an advanced disclosure.
+284. A preset is a package of the bundle kind: a named set of parts with
+    their configuration defaults, offered as one choice and installed
+    under one install decision for the whole set (228, 229). A bundle
+    runs nothing itself, and removing it removes what it installed and
+    no more. The shipped set covers the common cloud-agent shapes, and
+    an organization publishes its own bundles in the store like any
+    package.
+
+### A.36 Rulings carried over
+
+285. Every unit type and elaboration type declares the model class each
+    of its stages runs, so a stage that reviews code may name a
+    different class from the stage that writes it. The runner's own
+    model is the default where a type names none. This amends 173: the
+    manifest's per-role model is the fallback, not the rule.
+286. A scenario pack (228) is a development-time organization package.
+    It is hidden behind a flag (250) and is never listed in the
+    production index, so an organization's operator never meets one by
+    browsing the store.
+287. Packages contribute renderers, adapters, sinks, runners, routers,
+    unit and elaboration types, deliverable producers, map vocabularies,
+    templates and bundles, which extends 228's list with the bundle kind
+    (284). They never contribute a core surface: the rail, the board,
+    the dock and the console ship in the binary and are the same on
+    every host, so no package moves what the operator answers or where
+    they answer it.
+288. The binary carries its own instrumentation: captures about its own
+    operation, its stalls, its refusals and its runway readings (214),
+    written to the agentplot organization's flywheel through the capture
+    endpoint (216). They carry no organization content, only the
+    machinery's own readings. It is on by default on the hosted tiers,
+    where it is a stated fact of the tier (261), and off by default and
+    opt-in on a self-managed host.
+289. Code isolation is the guarantee the settings form's tier statement
+    names (261): a built repository is cloned only onto a host serving
+    one organization, and that host is terminated with its disk when the
+    work retires (264, 240, 275). No shared host of the service's ever
+    holds an organization's code.
+
 ## 5. Requirements — Part B, the control plane contract
 
 The data plane reaches durable, shared state and the operator only

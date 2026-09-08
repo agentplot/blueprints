@@ -227,46 +227,9 @@ to a role in your own account and we re-wrap the data keys and leave your histor
 binary, the manifest and the repositories are the ones you already have. What you give up is
 our ability to help you debug, and we will say so rather than ask you for a copy.
 
-## 6. Requirement clauses to add
+## 6. Requirement clauses
 
-- **256.** Everything the shared tier keeps between ticks is encrypted at rest under a key
-  naming one organization: the clone cache, the body of every queued capture, every store
-  holding its content. A store keyed per filesystem, volume, queue or table holds no
-  organization's content in the clear; it is sealed under that key inside the store.
-- **257.** The organization's key is unwrapped only for the duration of a tick and only by the
-  role that runs it. The plaintext data key exists in a process evaluating that organization's
-  plan and at no other time.
-- **258.** The cache is a projection and its loss costs a clone. An organization idle past a
-  stated time keeps nothing warm, and its next tick re-clones.
-- **259.** A shared host assumes a role scoped to one organization for the duration of that
-  organization's tick, so one compromised credential reaches one organization. The scope may
-  be carried by a session tag naming the organization, matched against the tag on every key
-  and object it opens, so the number of organizations is bounded by no count of roles.
-- **260.** A key that is unreachable — deleted, or behind a role that no longer trusts us —
-  fails closed. No tick proceeds on state it
-  cannot open, every host of that organization shows one attention line naming the key and
-  since when, running work is not interrupted, and nothing is kept unencrypted as a fallback.
-- **261.** What we hold and under which key is a stated fact of the tier, rendered on the
-  settings form: which stores hold the organization's content, which key opens them, which
-  role may use it, and when the cache was last evicted.
-- **262.** The shared tier reads the manifest, the register, the leases, the sink's mark and
-  the machinery's prefix and nothing else. The clone is partial and sparse to exactly that
-  set, and a read outside it is a refusal in the run record.
-- **263.** Raw material a capture points at is never read on a host serving more than one
-  organization. Triage runs on the operator's own machine or on a pool host, and the
-  manifest's raw store is reachable only from those.
-- **264.** Code is never on a shared host. A built repository is cloned only into a pool host
-  serving one organization (241), and retire destroys that host and its disk (240).
-- **265.** An organization may declare that the machinery writes its state records as
-  envelopes under its key; paths, file names and commit metadata stay plaintext, because
-  `list`, the count and push-as-CAS read only those. It is a declaration, never the default.
-- **266.** Under that declaration the blueprints repository stays plaintext except the
-  machinery's own prefix, where captures and signals are envelopes under the same key. The
-  manifest, the book, the claims and the map are read by people and are never encrypted.
-- **267.** An organization's key has one of three homes: the operator's own hosts when the
-  organization is self-managed, a key tagged with that organization in the service account, or
-  a key in the organization's own account reached through a role that trusts our issuer for
-  that organization. The home is a stated fact of the tier (261), moving between homes
-  re-wraps data keys and changes no history, and in the third home we hold no credential:
-  each tick assumes the role with a token minted for it, and deleting the role ends every
-  path.
+Ratified as requirements A.33, clauses 256–267.
+
+The clauses that were drafted here are now in `../requirements.md`; the rest of
+this file is the narrative behind them.

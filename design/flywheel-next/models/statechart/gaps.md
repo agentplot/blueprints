@@ -755,6 +755,79 @@ the operator may reverse by a response on the file; an entry with
   session's process survives a laptop's sleep is the multiplexer's;
   a pane gone on return is `lost` as before. Stated.
 
+- **256–267 tenancy and encryption.** The stores are named generically
+  and bound to no platform: a managed queue, an object store, a key
+  service whose policy conditions use on a principal's session tag. The
+  tag-matching key policy, the per-organization key quota and the cost
+  per key are taken from one provider's documentation and verified
+  against none. **Open** until a hosted tick runs. 265's envelope
+  declaration has no binding: no profile writes state records as
+  envelopes, and the C.2 conformance suite has never been run against an
+  encrypting binding, so 265 and 266 stand as a declaration the model
+  admits and nothing implements. **Open**. 261's stated-fact rendering
+  names four things the settings form must show, including when the
+  cache was last evicted, and no evidence name carries that reading yet.
+  **Open**. Whether a tick that loses the compare-and-swap twice on a
+  function placement exits and reschedules or retries in place is
+  unstated; the model admits either and the binding picks. **Open**.
+
+- **268–278 the hosted tiers.** The tier is a per-host fact
+  (`host.yaml` `tier`) while a plan is a per-account fact
+  (`identity.yaml` `plans`), so the two can disagree. The ruling taken
+  here: the plan's flag hides the add, so a host is never created at a
+  tier the plan does not unlock, and an account whose plan later drops
+  below a live host's tier raises one attention line and refuses the
+  next add, never stopping the loop (280). **Decision**. The dispatcher
+  as one function per tier means the sandbox is reused across
+  organizations' ticks in turn; 269 requires it to retain nothing
+  between invocations, which is a construction claim and not a
+  guarantee against a compromise mid-tick, and the residual is named in
+  `proposals/security.md` §2 rather than closed. **Stated**. 263 and 269
+  were reconciled with `proposals/hosted-design.md` as it now stands: the
+  dispatcher answers chat and triages a capture whose whole content is
+  already in the queue within its own tick, and only triage that must
+  follow a pointer into the raw store is pushed onto the operator's
+  machine or a pool host. `security.md` §2 and §4 still read as though no
+  triage at all runs on a shared host; the guarantee 263 makes is about
+  raw material, not about the word triage. **Decision**. Model access on
+  the hosted tiers is the service's under the tagged role and metered
+  into the plan, or a key the operator places; nothing in A.35 carries
+  that as a limit and `identity.yaml` `plans.limits` names none.
+  **Open**. The microVM
+  placement's maximum lifetime, its memory and disk ceilings, and
+  whether a container runtime runs inside it are one platform's facts
+  read from its documentation and verified against none; 275 states the
+  shape and names the fallback placement without naming the platform.
+  **Open**. 274 relaxes 166's bound to a per-channel statement and no
+  profile yet states the two numbers. **Open**.
+
+- **279–284 plans and presets.** The payment provider appears in no
+  profile: 279 says a plan is billed through one, and nothing binds
+  which, what a webhook from it does, or what happens between a failed
+  payment and a plan that has not yet changed. **Open**. Who writes the
+  limits is unstated: `identity.yaml` `sync:` has the release writing
+  features, plans and flags, and 282's limits are plan metadata that
+  the release could write or the billing system could own. **Open**.
+  283's one-screen add form is not in `surfaces.md`, and neither are
+  the presets; the surface owner's to bring up to A.35. **Open**. A
+  bundle is a package kind that installs other packages, so the install
+  decision's proof is the set's proofs together and a partly-installed
+  bundle has no state of its own; the ruling taken here is that the
+  bundle's install effect is not proved until every part it names is
+  (284, `package` machine). **Decision**.
+
+- **285–289 the carried-over rulings.** 285's model class is carried on
+  the stage's `agents` param (`machines/stage.yaml`) and on nothing
+  else; what a model class names — a provider's model id, a tier the
+  binding resolves — is unstated, and 173's per-role manifest default
+  is now two levels down. **Open**. 288's instrumentation names the
+  agentplot organization's flywheel as its destination and binds no
+  source, adapter or endpoint for it, and says nothing about what a
+  self-managed operator sees when they opt in. **Open**. 287 enumerates
+  the package kinds a package may be and the surfaces it may not touch;
+  the renderer kind is new here and appears in no other clause.
+  **Open**.
+
 - **213, 214 and 229–230 on the mockup.** The rail-and-board mockup
   (`design/flywheel-next/mockups/rail-and-board.html`) illustrates the
   artifact views behind an object (213), the flywheel instrument

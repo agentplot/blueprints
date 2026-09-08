@@ -146,23 +146,13 @@ that exist per organization, what each holds, and one tick step by step.
 
 ---
 
-## Requirement clauses to change or add
+## Requirement clauses
 
-**Amend.**
-
-- **231** — "a host is one long-lived process that the platform's own launcher starts" relaxes to: the tick is invoked, and a long-lived loop is one invoker among several (a cron, a webhook, a queue drain). The catch-up and idempotency sentences already carry the weight.
-- **166 and C.2's notify row** — state the bound per notification channel: seconds with a live push webhook, a named backstop interval without one. Drop the unconditional 30s poll as the floor; it is the one O(tenants) cost in the design.
-- **217d** — allow the sink's identity to be the platform's shared bot scoped to the organization's channel, beside the bot the manifest names and the token the operator placed, and say what the audit record shows then (153 still names who responded; the bot is the platform's).
-- **239 and 240** — let a pool's image carry a warm mirror of the repositories the pool covers, and make `pool.image_current` false when those repositories, not only the declarations, have moved far.
-
-**Add.**
-
-- **243. A host serving several organizations keeps a root, a credential set, a heartbeat and a lease set per organization; a failure in one organization's tick ends that tick and no other.** The isolation 218 asserts, stated as a runtime obligation rather than a disk fact.
-- **244. A host's tick may be invoked by a clock, a notification, an arriving capture or a chat event, and every invoker produces the same tick.** Makes 231's relaxation testable.
-- **245. A due index is a projection naming, per organization, the earliest time a tick could change anything. It only shortens the wait, it is rebuilt by ticking, and its loss costs a sweep and never a decision.** Keeps 136 and I4 intact while permitting the scheduler.
-- **246. A queue between a capture endpoint and its commit is the caller's retry buffer and not state. A capture is captured when its commit lands, and a lost queue is indistinguishable from a call that never arrived.** Closes the I14 hole idea 2 opens.
-- **247. An organization's chat tier is a binding: full, where plain messages are read, and controls-only, where the numbered grammar is a slash command and answers are controls. Every decision is answerable in both.** Makes tier 1's Discord mode a stated tier, not a degradation.
-- **248. A pool host's life may be one session, and what an image carries is what a joining host does not clone.** Names the cold-start budget as a design surface.
+Ratified as requirements A.34, clauses 268–278, which carry the tiering, the
+invoked tick, the capture queue, the warm cache, the scheduling, the pool
+placement, the federation upgrade and the shared chat application, and which
+amend 231, 166 and 217d in place. The rest of this file is the narrative and
+the platform comparison behind them.
 
 ---
 
