@@ -876,10 +876,8 @@ were settled, not their place on the page.
   (248). An address whose kind no host runs shows its sink as
   undelivered with "add a <kind> sink on a host", opening the hosts
   surface on the sinks heading (S115). The switcher (S154) lists the
-  member organizations with their counts and marks the rest "not a
-  member"; how a non-member organization is drawn, hidden or greyed,
-  is open (S191). Choosing one shows its status view with every
-  control absent.
+  member organizations with their counts and nothing else; a
+  non-member organization does not appear (S191).
 - **S196.** A `frontegg` host degrades and does not fail when the
   provider is unreachable (254). A token already issued is honoured
   until it expires; past that the page is read-only — the status view,
@@ -1830,10 +1828,10 @@ What no mockup settled.
 - **S151.** Whether thumbnails render on a phone at all, or only the
   caption's counts, and whether the stacked list when drilled draws a
   link as more than its target's name.
-- **S191.** Non-member organizations in the switcher: hidden, or
-  greyed as "not a member" with the read-only status view behind
-  them (S166). surfaces.yaml `account.switcher` draws them greyed;
-  Chuck's ruling is pending.
+- **S191.** Ruled 2026-09-08: non-member organizations do not appear
+  in the switcher. The switcher lists only the organizations the
+  signed-in identity is a member of (S166); surfaces.yaml
+  `account.switcher` draws no greyed entry.
 - **S202.** How a refusal reads on the surface, between its causes
   (249, 252): an identity the organization does not admit, on a hosted
   tier a member without the tool's permission, and a tool whose
@@ -1861,10 +1859,10 @@ What no mockup settled.
   grows, where a slot's catalogue opens, and how a pool's hosts fold
   under its row. The mockup round settles it; S114–S117, S156 and
   S176 bind what it must show.
-- **S193.** What the pool row shows about cost: the ceiling and the
-  per-host-hour rate are the manifest's, and whether the row shows
-  today's spend against the ceiling, which needs the platform's price
-  at read time, or only that the ceiling stopped an addition (242).
-- **S194.** Whether an owner of kind role is drawn as the role's name
-  or as its current members, and whether "mine" on a member who holds
-  several roles reads as a union or asks which (237, S171).
+- **S193.** Ruled 2026-09-08: the pool row shows the ceiling and the
+  per-host-hour rate from the manifest, and whether the ceiling
+  stopped an addition (242). It shows no live spend; that would need
+  the platform's price at read time.
+- **S194.** Ruled 2026-09-08: an owner is one member or nobody; roles
+  are not owners (237 amended), so "mine" is the decisions owned by
+  the signed-in member and nothing else (S171).
