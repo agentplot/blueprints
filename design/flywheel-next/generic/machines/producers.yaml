@@ -1,0 +1,159 @@
+# The producers of the billing organization. Two kinds:
+#
+#   scheduled — a producer that runs on a calendar rather than on a capture
+#               (growth-4). The tick is the scheduler (231): every one of these
+#               is a guard on a host's tick, and nothing else keeps time. A run
+#               missed while the host was down is caught up on the next tick,
+#               and the idempotent key makes the catch-up write nothing twice
+#               (111, 231).
+#   derived   — a deliverable producer (190) whose output is rebuilt from
+#               records rather than accumulated. Rebuild is idempotent and the
+#               proof is the thing read back from the store.
+#
+# Every entry names its proof and its store (227). A deliverable whose entry
+# names no store is refused when the type file is loaded, so the store column is
+# not documentation — it is the load gate.
+#
+# This file is not a machine file and does not validate against
+# machines/schema.json.
+format: flywheel-producers/1
+satisfies: [73, 79, 111, 190, 215, 227, 228, 231]
+satisfies_brief:
+  - "Every active vendor gets a cycle record each month"
+  - "Document intake routing derives from vendor config"
+  - "Archiving requires a complete month"
+  - "Payroll runs are scheduled, recorded, and never silent"
+  - "Sensitive records meet retention and protection obligations"
+
+stores:
+  doc: >-
+    the store each producer carries its output into (227). Retention, encryption
+    and backup are stated facts of the store, never behaviours of a machine: a
+    machine cannot promise seven years, and a store can be asked whether it
+    holds them.
+  state-repository:
+    doc: "the engine-managed record store; one commit per record change (203)"
+    retention: "for the life of the organization; archived with it at retirement (221)"
+  workdrive-archive:
+    doc: "Zoho WorkDrive, reached through the WorkDrive adapter package (growth-7)"
+    retention: "seven years minimum for tax-relevant documents — a stated fact of the store, asserted by the store's declaration and not by any producer"
+    encryption: "at rest, by the store"
+    backup: "by the store, with a restore exercise as the proof (brief, 'Recoverable')"
+    index: "the state repository holds the index of what the store holds; the package ids are records, the bytes are not"
+  paperless:
+    doc: "Paperless-ngx, reached through the Paperless adapter package (growth-7); the source of vendor invoice documents and the target of the mail rules"
+    retention: "as the Paperless instance declares; the archive package, not Paperless, carries the seven-year floor"
+
+secrets:
+  doc: >-
+    every adapter below resolves its credential from the secret manager by name
+    at run time (207). No configuration in this file or any other holds a
+    literal token, key or password, and a secret is placed on a host by the
+    operator, never by an agent (207, 229).
+  satisfies_brief: ["Credentials are never held in configuration"]
+  entries:
+    - {adapter: paperless, secret: paperless-api-token, placed_on: the host declaring the Paperless source}
+    - {adapter: zoho-books, secret: zoho-books-oauth, placed_on: the host running the booking sessions}
+    - {adapter: workdrive, secret: zoho-workdrive-oauth, placed_on: the host running the archive-packager}
+    - {adapter: onpay, secret: onpay-api-key, placed_on: the host running the payroll-runner}
+    - {adapter: mail, secret: mail-send-credential, placed_on: the host running the reminder and discrepancy sends}
+
+scheduled:
+  doc: "growth-4 — a producer that fires on a calendar. Each entry states its cadence, its idempotent key, its proof and its store."
+  needs: growth-4
+
+  month-init:
+    doc: >-
+      opens the month. One capture per active vendor per month; the cycle is
+      created if absent and left exactly as it stands if present, so the day-1
+      run and every catch-up run after it converge on the same slate. The month
+      unit of billing-month@1 is created by the same run.
+    cadence: "day 1 of each month, on the host declaring the billing source"
+    key: "month-init/<YYYY-MM>/<vendor id>"
+    produces:
+      - {object: "unit of billing-month@1", state: open, one_per: month}
+      - {object: "unit of invoice-cycle@1", state: awaiting_invoice, one_per: [vendor, month], only_when: "vendor.active is true"}
+    proof: "cycle.exists for every active vendor of the month; the second run of the same key writes nothing (73, 111)"
+    store: state-repository
+    satisfies_brief:
+      - "Month opens with a full slate"
+      - "Initialization is idempotent"
+      - "Deactivation stops future cycles without erasing history"
+    rulings:
+      - "idempotence is by key, not by comparison: the producer does not read a cycle and decide whether it differs, it writes under a key the store already holds and the write is a no-op"
+      - "a vendor deactivated between two runs simply is not in the second run's slate; nothing is removed"
+
+  payroll-prompt:
+    doc: >-
+      raises one payroll-run@1 unit per pay date, in `due`, whose decision is
+      the prompt. Nobody creates a payroll task by hand and none goes silent.
+    cadence: "each pay date in the organization's payroll calendar"
+    key: "payroll/<pay date>"
+    produces:
+      - {object: "unit of payroll-run@1", state: due, one_per: pay_date}
+    proof: "a payroll-record exists for the pay date; the pay_date uniqueness constraint makes a repeat a no-op (records.yaml)"
+    store: state-repository
+    satisfies_brief: ["Scheduled prompt"]
+
+  year-end-forms:
+    doc: >-
+      collects W-2 and W-3 documents against the tax year's payroll records once
+      the year closes. A producer over the year's units, not a stage of any one
+      of them.
+    cadence: "at the close of each tax year"
+    key: "year-end-forms/<tax year>"
+    produces:
+      - {deliverable: year-end-forms, over: "every payroll-record of the tax year"}
+    proof: "payroll.year_forms_collected on every run of the year; incomplete while any run of the year lacks its W-2"
+    store: state-repository
+    satisfies_brief: ["Year-end forms are collected"]
+    rulings:
+      - "the producer refuses to report complete while a run of the year is missing its forms, and the incomplete list is the refusal's content — the same shape as billing-month@1's archive refusal (growth-5)"
+
+derived:
+  doc: >-
+    growth-7 and 190 — a deliverable producer whose output is rebuilt from
+    records. Idempotent by construction: the input is the record set, so the
+    same records yield the same output and the proof is what the store reads
+    back.
+
+  mail-rule-sync:
+    doc: >-
+      generates the Paperless mail rules from the vendor records. Adding a
+      vendor creates their intake path; losing the Paperless instance loses
+      nothing, because the rules are not the source of truth and the sync
+      restores the complete set.
+    derived_from: "every vendor record with active true (records.yaml)"
+    produces:
+      - {deliverable: paperless-mail-rules, one_per: vendor, doc: "filters incoming mail by the vendor's invoice_sender_email, narrowed by subject_pattern when the record carries one; assigns document type, correspondent and tags from the same record"}
+    proof: "paperless.rules_match_vendors — the rule set read back from Paperless equals the set derived from the records; the proof is the read-back, not the write's return"
+    store: paperless
+    trigger: "a vendor record changed, or the operator asked; the sync is also safe to run on any tick (73)"
+    satisfies_brief:
+      - "Adding a vendor creates their intake path"
+      - "Matched invoices are classified on arrival"
+      - "Mail rules are reproducible"
+    rulings:
+      - "a rule in Paperless naming no vendor record is removed by the sync: the records are the source of truth, so a hand-made rule does not survive a rebuild"
+      - "classification on arrival is the rule's doing, not a machine's; the machine reads the classified document as a capture (215) and resolves it to a cycle by correspondent plus month"
+
+  month-archive-package:
+    doc: >-
+      the month's archive package in WorkDrive: the month's invoice documents
+      retrieved from Paperless and a summary of vendors, amounts and hours. Run
+      by the archive-packager session of billing-month@1's `complete` stage; the
+      package existing in WorkDrive is the proof, and the cycles move to
+      archived on it.
+    derived_from: "every cycle of the month and the hours records for the same vendor-months"
+    produces:
+      - {deliverable: month-archive-package, one_per: month}
+      - {deliverable: month-summary, one_per: month, doc: "vendors, amounts and hours; a record in the state repository, so the index is queryable without opening the store"}
+    proof: "month.archive_proven — the package read back from WorkDrive; a repeat with the same month writes nothing (73)"
+    store: workdrive-archive
+    satisfies_brief:
+      - "Complete month produces an archive package"
+      - "Retention floor"
+      - "Recoverable"
+    rulings:
+      - "the producer never runs on an incomplete month: billing-month@1 gates it, and the gate's refusal names the blockers (growth-5)"
+      - "retention, encryption and backup are the store's, stated in `stores` above; this producer asserts none of them and would be lying if it did"

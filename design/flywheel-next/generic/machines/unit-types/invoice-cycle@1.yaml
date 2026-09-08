@@ -1,0 +1,192 @@
+# One vendor for one month (billing-brief, "Domain Model"). The unit type of
+# the generic track's first business process: no change directory, no built
+# repository, no code. Its stages are the brief's phases and every transition
+# is earned by evidence, never asserted — a Paperless document capture, a Zoho
+# bill written back, timesheet hours captured, a payment reported, an archive
+# package proven. The key is vendor plus month, so the ledger has no gaps: a
+# month a vendor was not expected to invoice is a cycle in `suppressed` with a
+# reason, not an absent record.
+#
+# What this type leans on that the core model does not have yet, from the
+# growth list in ../../README.md:
+#   growth-2  record types (`key`, `record_type`, the fields below)
+#   growth-3  timers declared by the type (`timers:` on awaiting_invoice)
+#   growth-6  an elaboration whose proposal's yes sends mail outside the org
+#   growth-7  the Paperless, Zoho Books and mail adapters as packages
+#   growth-8  the machine asking the operator for a datum (timesheet hours)
+# Every construct that needs one carries `needs: growth-N`.
+#
+# Addressed as invoice-cycle@1; a change is a new file at a new version,
+# never an edit of this one (57).
+machine: invoice-cycle
+version: 1
+kind: template
+tier: extensible
+satisfies: [4, 15, 19, 41, 56, 57, 79, 111, 153, 190, 215, 227, 231]
+satisfies_brief:
+  - "Every active vendor gets a cycle record each month"
+  - "Suppression preserves a gapless ledger"
+  - "Reminders escalate on a fixed schedule"
+  - "Outbound email is drafted by an agent and approved by a human"
+  - "Arriving invoices advance their cycle automatically"
+  - "Bills are created from validated cycle data"
+  - "Invoiced hours are reconciled against recorded hours"
+  - "Timesheet access degrades gracefully"
+  - "Deterministic and intelligent work are separated"
+doc: unit type
+params:
+  place: the cycle's place, used only by the stages that charge a session
+key: [vendor, month]                 # needs: growth-2 — vendor plus month is unique
+record_type: cycle                   # needs: growth-2 — declared in ../records.yaml
+record:
+  needs_change_directory: "false"
+  lands_on: none                     # needs: growth-1 — a process organization has no built repository
+  vendor: ref                        # -> vendor record (records.yaml)
+  month: string                      # YYYY-MM
+  suppressed: bool
+  suppression_reason: string
+  reminder_count: int
+  last_reminder_at: time
+  paperless_document_id: string
+  invoice_amount: decimal
+  invoice_hours: decimal
+  invoice_received_at: time
+  extraction_confidence: decimal
+  low_confidence: bool
+  zoho_bill_id: string
+  timesheet_hours: decimal
+  reconciliation_class: string       # missing | low | mismatch | ok
+  paid_at: time
+  archive_date: time
+regions:
+  stages:
+    doc: the brief's phase machine; each phase implies every prior phase is complete
+    initial: awaiting_invoice
+    states:
+      awaiting_invoice:
+        doc: >-
+          opened by the month-init producer on day 1 (producers.yaml) for every
+          active vendor. The escalation ladder lives here as type-declared
+          timers; a suppressed cycle never enters this state, so the timers are
+          silenced by construction rather than by a guard on every rung.
+        timers:                      # needs: growth-3 — a unit type declaring its own stage timers
+          - {at: 2d,  when: {ev: cycle.reminder_count, is: 0}, raises: {elaboration: reminder-draft@1, tone: friendly}, needs: growth-3}
+          - {at: 7d,  when: {ev: cycle.reminder_count, is: 1}, raises: {elaboration: reminder-draft@1, tone: direct},   needs: growth-3}
+          - {at: 14d, when: {ev: cycle.reminder_count, is: 2}, raises: {elaboration: reminder-draft@1, tone: firm},     needs: growth-3}
+        transitions:
+          - when: {all: [{ev: cycle.document_ingested, is: true}, {ev: cycle.invoice_amount, exists: true}]}
+            to: invoice_received
+            note: >-
+              the earned transition. A Paperless capture keyed by the vendor's
+              correspondent and the month resolves to this cycle (111, 215); the
+              amount, the hours and the document id are written with it. A
+              capture resolving to no cycle never lands here — see
+              billing-month@1 and the unattributable-invoice attention line.
+            effects:
+              - {do: record_invoice, args: {document: cycle.paperless_document_id, amount: cycle.invoice_amount, hours: cycle.invoice_hours}, note: "the invoice landed; the chase stops here (79)", needs: growth-2}
+          - when: {response: "suppress: <reason>"}
+            to: suppressed
+            note: the operator's dictation; the record stays and the reason is written with it (4)
+      invoice_received:
+        doc: >-
+          the bill is booked by a session, not by the machinery: the Zoho Books
+          and Paperless mutations are the agent's (brief, "External calls
+          originate from the agent"), run as effects with proofs.
+        machine: stage
+        params:
+          agents: [bill-booker]
+          join: all
+          on_fail: invoice_received
+          max_send_backs: 2
+          deliverables:
+            - {name: bill-booking, producer: by-type, schema: by-type, surface: none}
+        transitions:
+          - when: {all: [{final: passed}, {ev: cycle.bill_created, is: true}, {ev: cycle.bill_has_document, is: true}]}
+            to: timesheet_pending
+            note: the Zoho bill id written back is the proof; the invoice PDF retrieved from Paperless travels with it
+          - when: {all: [{final: passed}, {ev: cycle.extraction_confidence, lt_ev: cycle.confidence_threshold}]}
+            to: timesheet_pending
+            effects:
+              - {do: mark_bill_for_review, note: "low-confidence extraction is flagged in Zoho Books and carried as an attention line on the cycle, never as a stage of its own (79)", needs: growth-7}
+          - when: {final: stopped}
+            to: stopped
+          - when: {response: "suppress: <reason>"}
+            to: suppressed
+      timesheet_pending:
+        doc: >-
+          the reconciliation check is a deterministic machine transition, run on
+          every tick (231), classifying missing | low | mismatch | ok. Only `ok`
+          advances; anything else raises a discrepancy-draft elaboration and the
+          cycle stays here, so a discrepancy is a conversation and never a state
+          change.
+        transitions:
+          - when: {all: [{not: {ev: cycle.timesheet_hours, exists: true}}, {ev: cycle.timesheet_source, is: none}]}
+            to: hours_asked
+            note: >-
+              no automated timesheet source. The machine asks the operator for
+              the datum rather than blocking; the answer arrives as a capture
+              (19) and the check re-runs on the next tick.
+            needs: growth-8
+          - when: {ev: cycle.reconciliation_class, is: ok}
+            to: reconciled
+            effects: [{do: record_reconciliation, args: {class: ok}, needs: growth-2}]
+          - when: {ev: cycle.reconciliation_class, in: [missing, low, mismatch]}
+            to: timesheet_pending
+            effects:
+              - {do: raise_elaboration, args: {type: discrepancy-draft@1, about: cycle, class: cycle.reconciliation_class}, note: "one elaboration per cycle per class; a repeat while one stands adds nothing (73)", needs: growth-6}
+          - when: {response: "suppress: <reason>"}
+            to: suppressed
+      hours_asked:
+        doc: >-
+          the ask-the-operator decision (growth-8). It names the vendor and the
+          month and nothing else; the answer is a capture from the capture box
+          (19) that writes the hours record, and the next tick re-checks.
+        needs: growth-8
+        decision:
+          kind: timesheet-hours-wanted
+          group: answer
+          answers: ["hours <number>", "no hours", "suppress: <reason>"]
+          shows: [cycle.vendor, cycle.month, cycle.invoice_hours]
+          satisfies: [15, 19, 153]
+        transitions:
+          - when: {response: "hours <number>"}
+            to: timesheet_pending
+            effects: [{do: write_hours, args: {vendor: cycle.vendor, month: cycle.month, hours: $response}, note: "one hours ledger, written once per vendor-month and read by both sides of the ledger (README, receivables)", needs: growth-2}]
+          - when: {response: "no hours"}
+            to: timesheet_pending
+            effects: [{do: record_reconciliation, args: {class: missing}, needs: growth-2}]
+          - when: {response: "suppress: <reason>"}
+            to: suppressed
+      reconciled:
+        doc: >-
+          the month may archive from here. Payment is one more earned
+          transition, not a gate on the archive: the brief leaves payment
+          execution out of scope, so `paid` is entered only when the Zoho Books
+          adapter reports the bill paid (README, payment status).
+        transitions:
+          - when: {ev: cycle.payment_reported, is: true}
+            to: paid
+            effects: [{do: record_payment, args: {at: cycle.paid_at}, needs: growth-7}]
+          - when: {ev: cycle.archive_proven, is: true}
+            to: archived
+            note: the month's archive package is proven in WorkDrive; the cycle moves with it
+      paid:
+        doc: a Zoho Books capture (bill paid) earned this; the month's archive is unaffected either way
+        transitions:
+          - when: {ev: cycle.archive_proven, is: true}
+            to: archived
+      suppressed:
+        doc: >-
+          a gapless ledger: the record exists with a reason. Timers, producers
+          and the reconciliation check all skip it, and the month counts it as
+          complete without requiring it to reconcile.
+        transitions:
+          - when: {response: unsuppress}
+            to: awaiting_invoice
+            note: dictation undoes it; the reminder count is not reset, so the ladder resumes where it stood (4)
+      archived:
+        doc: the archive date is on the record; nothing moves a cycle out of here
+        final: true
+      stopped:
+        doc: the booking stage exhausted its send-backs and waits on the operator (41)
+        final: true

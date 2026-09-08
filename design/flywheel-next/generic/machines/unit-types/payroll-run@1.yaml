@@ -1,0 +1,98 @@
+# One payroll run (billing-brief, "Payroll"). Created by a scheduled producer
+# on each pay date, so a run is never silent and never depends on anyone
+# remembering it. The run itself happens in OnPay, outside the flywheel; what
+# the flywheel holds is the prompt, the record and the artifacts written back.
+#
+# Growth this type leans on (../../README.md):
+#   growth-1  an organization with no built repository
+#   growth-2  the payroll-record type and its key
+#   growth-4  a scheduled producer firing on pay dates
+#   growth-7  the OnPay adapter as a package
+#
+# Addressed as payroll-run@1; a change is a new file at a new version (57).
+machine: payroll-run
+version: 1
+kind: template
+tier: extensible
+satisfies: [4, 15, 41, 79, 153, 190, 227, 231]
+satisfies_brief:
+  - "Payroll runs are scheduled, recorded, and never silent"
+doc: unit type
+params:
+  place: the run's place, used by the processing stage
+key: [pay_date]                      # needs: growth-2
+record_type: payroll-record          # needs: growth-2
+record:
+  needs_change_directory: "false"
+  lands_on: none                     # needs: growth-1
+  pay_period_start: date
+  pay_period_end: date
+  pay_date: date
+  employees: list                    # [{employee, gross, net, stub_document}]
+  stub_documents: list               # Paperless document ids for the pay stubs
+  onpay_run_id: string
+  tax_year: string
+regions:
+  stages:
+    initial: due
+    states:
+      due:
+        doc: >-
+          the pay date arrived and the scheduled producer raised this run; the
+          decision is the prompt the brief asks for. Nobody created it by hand
+          and it does not go away by being ignored.
+        needs: growth-4
+        decision:
+          kind: payroll-due
+          group: approve
+          answers: ["yes", "later", "skip: <reason>"]
+          shows: [payroll-run.pay_period_start, payroll-run.pay_period_end, payroll-run.pay_date]
+          satisfies: [15, 153]
+        transitions:
+          - when: {response: "yes"}
+            to: processing
+          - when: {response: later}
+            to: due
+            note: the decision stands; it is not withdrawn by being deferred, because a payroll run is never silent
+          - when: {response: "skip: <reason>"}
+            to: skipped
+      processing:
+        doc: >-
+          the run is processed in OnPay by a session with the adapter and its
+          secret (207); the per-employee gross and net and the pay stub PDFs are
+          written back as the proof.
+        machine: stage
+        params:
+          agents: [payroll-runner]
+          join: all
+          on_fail: processing
+          max_send_backs: 2
+          deliverables:
+            - {name: payroll-run-record, producer: by-type, schema: by-type, surface: none}
+            - {name: pay-stubs, producer: by-type, schema: by-type, surface: none}
+        transitions:
+          - when: {all: [{final: passed}, {ev: payroll.run_recorded, is: true}, {ev: payroll.stubs_attached, is: true}]}
+            to: recorded
+            effects:
+              - {do: record_payroll_run, args: {run: payroll-run.onpay_run_id, employees: payroll-run.employees}, needs: growth-2}
+          - when: {final: stopped}
+            to: stopped
+      recorded:
+        doc: >-
+          the run is a record with its artifacts. Year-end forms are not a stage
+          here: the W-2/W-3 collection is a producer over the year's runs
+          (producers.yaml), which reads every run of the tax year and refuses to
+          complete while one is missing.
+        transitions:
+          - when: {ev: payroll.year_forms_collected, is: true}
+            to: closed
+            needs: growth-4
+      closed:
+        doc: the tax year closed and this run's W-2/W-3 documents are collected against it
+        final: true
+      skipped:
+        doc: a gapless ledger applies here too — the run exists with a reason, never absent
+        final: true
+      stopped:
+        doc: the processing stage exhausted its send-backs and waits on the operator (41)
+        final: true

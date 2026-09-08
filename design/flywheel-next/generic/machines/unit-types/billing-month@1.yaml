@@ -1,0 +1,113 @@
+# One month over its invoice cycles (billing-brief, "Month-End Archive"). An
+# aggregate unit: its own transition is gated on sibling units, and the refusal
+# names the blockers rather than merely failing. The archive package is a
+# producer into Zoho WorkDrive with a proof, and every cycle in the month moves
+# to `archived` when the package is proven.
+#
+# Growth this type leans on (../../README.md):
+#   growth-1  an organization with no built repository
+#   growth-2  record types and a key
+#   growth-4  a scheduled producer opens the month on day 1
+#   growth-5  an aggregate unit whose transition is gated on its children
+#   growth-7  the WorkDrive and Paperless adapters as packages
+#
+# Addressed as billing-month@1; a change is a new file at a new version (57).
+machine: billing-month
+version: 1
+kind: template
+tier: extensible
+satisfies: [4, 15, 55, 79, 153, 190, 227, 231]
+satisfies_brief:
+  - "Every active vendor gets a cycle record each month"
+  - "Archiving requires a complete month"
+  - "Sensitive records meet retention and protection obligations"
+doc: unit type
+params:
+  place: the month's place, used by the archive-packaging stage
+key: [month]                         # needs: growth-2
+record_type: billing-month           # needs: growth-2
+record:
+  needs_change_directory: "false"
+  lands_on: none                     # needs: growth-1
+  month: string                      # YYYY-MM
+  cycle_count: int
+  incomplete: list                   # [{vendor, stage}] — the refusal's content, refreshed each tick
+  archive_package_id: string         # the WorkDrive package, the producer's proof
+  archived_at: time
+regions:
+  stages:
+    initial: open
+    states:
+      open:
+        doc: >-
+          the month runs while its cycles run. The month-init producer created
+          one cycle per active vendor on day 1 (producers.yaml, growth-4); a
+          vendor deactivated since keeps its historical cycles and gets no new
+          one.
+        needs: growth-5
+        transitions:
+          - when: {children: {kind: invoice-cycle, none: [awaiting_invoice, invoice_received, timesheet_pending, hours_asked, stopped]}}
+            to: complete
+            note: >-
+              every non-suppressed cycle has reached reconciled, paid or
+              archived; suppressed cycles count as complete without reconciling
+              (growth-5)
+          - when: {response: archive}
+            to: refused
+            note: >-
+              the operator asked to archive while cycles are open. The refusal
+              is a state, not a silent no: it carries the incomplete list.
+      refused:
+        doc: >-
+          the archive was attempted and refused. The attention line names each
+          incomplete vendor and its current stage, which is what the brief asks
+          for by "rejected with specifics". Leaving here needs no response — the
+          next tick that finds the month complete moves it on.
+        needs: growth-5
+        entry:
+          - {do: report, args: {text: "archive refused: incomplete cycles"}, note: "the refusal is recorded with its evidence, the incomplete list (79)"}
+        decision:
+          kind: month-archive-refused
+          group: attention
+          answers: [ok]
+          shows: [billing-month.month, billing-month.incomplete]
+          satisfies: [15, 79, 153]
+        transitions:
+          - when: {children: {kind: invoice-cycle, none: [awaiting_invoice, invoice_received, timesheet_pending, hours_asked, stopped]}}
+            to: complete
+          - when: {response: ok}
+            to: open
+            note: the attention line is dismissed; the month goes on being open
+      complete:
+        doc: >-
+          every non-suppressed cycle is reconciled. The archive package is
+          assembled by a session running the WorkDrive and Paperless adapters,
+          because the package's contents — the month's invoice documents and a
+          summary of vendors, amounts and hours — are the agent's work, and its
+          existence in WorkDrive is the proof.
+        machine: stage
+        params:
+          agents: [archive-packager]
+          join: all
+          on_fail: complete
+          max_send_backs: 2
+          deliverables:
+            - {name: month-archive-package, producer: by-type, schema: by-type, surface: none}
+            - {name: month-summary, producer: by-type, schema: by-type, surface: none}
+        transitions:
+          - when: {all: [{final: passed}, {ev: month.archive_proven, is: true}]}
+            to: archived
+            effects:
+              - {do: archive_month, args: {month: billing-month.month, package: billing-month.archive_package_id}, note: "the package is proven in WorkDrive; every cycle of the month reads month.archive_proven and moves to archived with the date (73)", needs: growth-7}
+          - when: {final: stopped}
+            to: stopped
+      archived:
+        doc: >-
+          the month is closed. Retention is a stated fact of the store, not a
+          behaviour of this machine: the WorkDrive store declaration in
+          producers.yaml carries the seven-year floor, the encryption and the
+          backup, and the state repository holds the index.
+        final: true
+      stopped:
+        doc: the packaging stage exhausted its send-backs and waits on the operator (41)
+        final: true

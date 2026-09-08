@@ -1,0 +1,161 @@
+# The elaboration a cycle's escalation timer raises (billing-brief, "Outbound
+# email is drafted by an agent and approved by a human"). A session drafts one
+# reminder per vendor at the rung the timer named; the output is a proposal
+# with one decision carrying one answer per vendor — approve is the yes, edit is
+# a proposal edit (184), skip drops that vendor's draft. The yes runs the send
+# through the mail adapter with the sent message id as the proof, and the
+# reminder count and last-reminder date move on that proof and on nothing else.
+# Silence sends nothing: a response is the only thing that acts (153).
+#
+# Growth this type leans on (../../README.md):
+#   growth-6  an elaboration whose proposal's yes sends mail to people outside
+#             the organization
+#   growth-7  the mail adapter as a per-host package with its secret (207)
+#   growth-3  the timer on invoice-cycle@1 that raises this type
+#
+# Addressed as reminder-draft@1; a change is a new file at a new version (57).
+machine: reminder-draft
+version: 1
+kind: template
+tier: extensible
+satisfies: [15, 17, 66, 79, 153, 171, 172, 184, 190, 227]
+satisfies_brief:
+  - "Reminders escalate on a fixed schedule"
+  - "Outbound email is drafted by an agent and approved by a human"
+  - "Deterministic and intelligent work are separated"
+params:
+  place: the elaboration's place
+  agent: the agent for the session
+  deliverables: "entries {name, producer, schema, surface}; the default below is the draft set this type asks for"
+record:
+  tone: string                       # friendly | direct | firm, from the rung the timer named
+  cycles: list                       # the cycles this batch drafts for, one draft each
+  month: string                      # the batch key: one decision per month, not one per vendor
+  sent: list                         # [{cycle, message_id}] — the proofs the yes produced
+regions:
+  work:
+    initial: session
+    states:
+      session:
+        doc: >-
+          the session reads the cycles, the vendor records and the reminder
+          history and writes one draft per vendor. It sends nothing and moves no
+          state (66); its deliverable is the proposal document.
+        machine: session
+        params:
+          agent: $agent
+          place: $place
+          work_order: rendered
+          keep_alive: false
+          deliverables:
+            - {name: reminder-proposal, producer: default, schema: default, surface: plannotator}
+        transitions:
+          - when: {all: [{final: exited}, {ev: session.exit, is: done}]}
+            to: drafted
+          - when: {all: [{final: exited}, {ev: session.exit, in: [stalled, invalid]}]}
+            to: stalled
+          - when: {final: lost}
+            to: stalled
+          - when: {ev: cycle.left_awaiting, is: true}
+            to: dropped
+            note: >-
+              receipt cancels the chase. A cycle that advanced past
+              awaiting_invoice while the draft was being written takes its draft
+              out of the batch; a batch left empty ends here.
+      drafted:
+        doc: >-
+          the one decision of the run, delivered to the operator's chat sink and
+          to the page. One answer per vendor before the yes, exactly as a
+          planning proposal's per-unit answers work (172, 184): the answers are
+          forwarded to each cycle's draft and the yes acts on what stands.
+        needs: growth-6
+        decision:
+          kind: reminder-batch
+          group: approve
+          batch: month
+          document: document
+          answers:
+            - "yes"
+            - "drop"
+            - "later"
+            - "<vendor>: yes"
+            - "<vendor>: edit: <text>"
+            - "<vendor>: skip"
+          shows: [reminder-draft.tone, reminder-draft.cycles]
+          satisfies: [15, 17, 153, 172, 184]
+        transitions:
+          - when: {response: "<vendor>: edit: <text>"}
+            to: drafted
+            effects: [{do: edit_draft, args: {vendor: $response, text: $response}, note: "a proposal edit before the yes (184); the edited text is what a later yes sends"}]
+          - when: {response: "<vendor>: skip"}
+            to: drafted
+            effects: [{do: drop_draft, args: {vendor: $response}, note: "that vendor's draft leaves the batch; its cycle's reminder count does not move"}]
+          - when: {response: "<vendor>: yes"}
+            to: drafted
+            effects: [{do: approve_draft, args: {vendor: $response}}]
+          - when: {response: "yes"}
+            to: sending
+            note: every draft still standing is approved; the ones skipped stay skipped
+          - when: {response: drop}
+            to: dropped
+            note: nothing is sent and no count moves
+          - when: {response: later}
+            to: drafted
+            note: >-
+              the decision stands. A reminder deferred is not a reminder sent,
+              and the next rung's timer will raise its own batch when its day
+              comes.
+      sending:
+        doc: >-
+          the send is the effect and the sent message id is its proof (growth-6,
+          growth-7). The counters move on the proof: a send that did not prove
+          itself did not happen, so a repeat of this state re-sends nothing that
+          already carries an id (73).
+        needs: growth-6
+        entry:
+          - {do: send_reminder, args: {drafts: reminder-draft.approved}, note: "through the mail adapter on a host that has it and its secret (207); one message per approved draft, keyed by cycle so a repeat writes nothing twice", needs: growth-7}
+        transitions:
+          - when: {ev: reminder.all_sent, is: true}
+            to: recorded
+          - when: {ev: reminder.send_failed, is: true}
+            to: send_failed
+      recorded:
+        doc: the counters move, one cycle at a time, off the proofs
+        entry:
+          - {do: record_reminder_sent, args: {sent: reminder-draft.sent}, note: "per cycle: reminder_count bumped, last_reminder_at set to the send time, the message id kept as the proof (79)", needs: growth-2}
+        transitions:
+          - when: {ev: reminder.counts_recorded, is: true}
+            to: done
+      send_failed:
+        doc: >-
+          the mail adapter refused or the host could not reach it. This is a
+          machinery problem, reported through the attention lines, never filed
+          as work (79/81); the drafts that did send carry their ids and their
+          counts moved.
+        decision:
+          kind: reminder-send-failed
+          group: attention
+          answers: [retry, drop]
+          shows: [reminder-draft.sent, reminder.failure]
+          satisfies: [15, 79, 153]
+        transitions:
+          - when: {response: retry}
+            to: sending
+          - when: {response: drop}
+            to: done
+      stalled:
+        decision:
+          kind: stalled
+          group: decide
+          answers: [retry, drop]
+          satisfies: [15, 153]
+        transitions:
+          - when: {response: retry}
+            to: session
+          - when: {response: drop}
+            to: dropped
+      done:
+        final: true
+      dropped:
+        doc: nothing was sent; the cycles are untouched and the next rung stands on its own
+        final: true

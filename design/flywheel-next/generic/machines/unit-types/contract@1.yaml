@@ -1,0 +1,94 @@
+# One client contract (billing-brief, "Client Contracts"). A long-lived unit
+# whose whole job is to be visible before it lapses: timers at 90, 60 and 30
+# days before the end date, each raising one attention line naming the client
+# and the days remaining. An amendment is a new record referencing the prior,
+# never an overwrite — the amendment transition returns the contract to
+# `active` with new terms and the prior terms intact behind it.
+#
+# Growth this type leans on (../../README.md):
+#   growth-1  an organization with no built repository
+#   growth-2  the contract record type, its key and its self-reference
+#   growth-3  timers declared by the type, here counting down to a date on the
+#             record rather than up from the state's entry
+#
+# Addressed as contract@1; a change is a new file at a new version (57).
+machine: contract
+version: 1
+kind: template
+tier: extensible
+satisfies: [4, 15, 79, 153, 227, 231]
+satisfies_brief:
+  - "Contract expiry is surfaced before it happens"
+doc: unit type
+params:
+  place: unused by this type; a contract charges no session
+key: [client, start_date]            # needs: growth-2
+record_type: contract                # needs: growth-2
+record:
+  needs_change_directory: "false"
+  lands_on: none                     # needs: growth-1
+  client: ref                        # -> client record
+  start_date: date
+  end_date: date
+  value: decimal
+  terms: string
+  source_document: string            # the contract PDF, a Paperless document id
+  amends: ref                        # the prior contract record this one amends, or none
+  alerts_raised: list                # [90, 60, 30] — which rungs have fired
+regions:
+  life:
+    initial: active
+    states:
+      active:
+        doc: >-
+          the contract runs. The timers count down to end_date, not up from the
+          state's entry, which is what makes them different from the escalation
+          ladder of invoice-cycle@1 and is the second thing growth-3 has to
+          cover.
+        timers:                      # needs: growth-3
+          - {before: end_date, at: 90d, when: {not: {ev: contract.alert_90_raised, is: true}}, raises: {attention: contract-renewal-due, tier: 90}, needs: growth-3}
+          - {before: end_date, at: 60d, when: {not: {ev: contract.alert_60_raised, is: true}}, raises: {attention: contract-renewal-due, tier: 60}, needs: growth-3}
+          - {before: end_date, at: 30d, when: {not: {ev: contract.alert_30_raised, is: true}}, raises: {attention: contract-renewal-due, tier: 30}, needs: growth-3}
+        decision:
+          kind: contract-renewal-due
+          group: attention
+          answers: [ok, "renewed", "amend: <notes>"]
+          shows: [contract.client, contract.end_date, contract.days_remaining, contract.value]
+          satisfies: [15, 153]
+          note: >-
+            the decision stands only while a timer rung has fired and has not
+            been answered; the three rungs fold into one numbered decision that
+            is re-raised at each tier rather than three decisions (15)
+        transitions:
+          - when: {response: "amend: <notes>"}
+            to: amending
+          - when: {response: renewed}
+            to: active
+            effects: [{do: clear_renewal_alerts, note: "the rungs reset against the new end_date once the amendment lands", needs: growth-3}]
+          - when: {response: ok}
+            to: active
+            note: the line is acknowledged; the next rung raises it again
+          - when: {ev: contract.past_end_date, is: true}
+            to: lapsed
+      amending:
+        doc: >-
+          the amendment is written as a new contract record whose `amends` names
+          this one. This unit does not change its own terms; it ends as
+          `superseded` and the new record is a new unit under this same type.
+          That is what "amendments do not overwrite history" means in a state
+          repository with one commit per record change.
+        needs: growth-2
+        transitions:
+          - when: {ev: contract.amendment_recorded, is: true}
+            to: superseded
+            effects:
+              - {do: write_contract_amendment, args: {amends: contract.id, notes: $response}, note: "a new record referencing the prior; the prior terms are never discarded (79)", needs: growth-2}
+      superseded:
+        doc: amended; the successor record carries the current terms and this one stays queryable
+        final: true
+      lapsed:
+        doc: >-
+          the end date passed with no renewal and no amendment. Not an error —
+          a fact, and a queryable one; the alerts that preceded it are on the
+          record.
+        final: true

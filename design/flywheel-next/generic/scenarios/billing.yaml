@@ -1,0 +1,406 @@
+# The billing scenario pack: every Scenario of billing-brief.md as one row,
+# naming the machine and the transition it exercises. The brief's scenarios are
+# the acceptance file for this organization (192), so nothing here is invented —
+# each row's `brief` field is the scenario's own heading and each row's
+# given/when/then is that scenario's WHEN/THEN read against the machines.
+#
+# Shape: models/statechart/conformance/schema.json defines one scenario per
+# file, and a pack of forty files would bury the mapping this track is for. This
+# is a pack — `format: flywheel-scenario-pack/1` — whose rows carry the same
+# given/when/then vocabulary. Splitting it into conformance-shaped files is
+# mechanical once the growth points below are real; the rows that would fail to
+# split today are the ones whose `needs` names growth that has no atom yet.
+#
+# `profiles: [stand-in]` throughout: no real profile binds the Paperless, Zoho,
+# WorkDrive, OnPay or mail adapters yet (growth-7).
+format: flywheel-scenario-pack/1
+pack: billing
+title: Mad Swan billing operations — the brief's scenarios against the generic-track machines
+profiles: [stand-in]
+source: ../billing-brief.md
+satisfies: [15, 19, 41, 79, 111, 153, 172, 184, 190, 215, 227, 231]
+
+scenarios:
+
+  # ---- Vendor Roster ---------------------------------------------------------
+
+  - id: B01
+    brief: "Vendor record carries billing identity"
+    requirement: "Vendor records are the single source of truth"
+    exercises: {file: machines/records.yaml, type: vendor}
+    needs: growth-2
+    given: "a vendor record exists"
+    when: "the record is read"
+    then: "it carries id, display_name, invoice_sender_email, zoho_contact_id, zoho_line_item_type, expected_hours_min, expected_hours_max and active; a write missing any mandatory field is refused by the write gate"
+
+  - id: B02
+    brief: "Vendor record carries document-routing metadata"
+    requirement: "Vendor records are the single source of truth"
+    exercises: {file: machines/records.yaml, type: vendor}
+    needs: growth-2
+    given: "a vendor record exists"
+    when: "the record is read"
+    then: "it carries paperless_correspondent, paperless_document_type and paperless_tags, and subject_pattern when set"
+
+  - id: B03
+    brief: "Deactivation stops future cycles without erasing history"
+    requirement: "Vendor records are the single source of truth"
+    exercises: {file: machines/producers.yaml, producer: month-init}
+    needs: growth-4
+    given: "a vendor with active true and cycles in three past months"
+    when: "active is set false, then month-init runs for the next month"
+    then: "no cycle is created for that vendor in the new month; the three past cycles are unchanged and queryable"
+
+  - id: B04
+    brief: "Adding a vendor creates their intake path"
+    requirement: "Document intake routing derives from vendor config"
+    exercises: {file: machines/producers.yaml, producer: mail-rule-sync}
+    needs: growth-7
+    given: "a vendor record added with invoice_sender_email set"
+    when: "mail-rule-sync runs"
+    then: "a Paperless mail rule filtering that sender address exists; proof is paperless.rules_match_vendors read back from the store"
+
+  - id: B05
+    brief: "Matched invoices are classified on arrival"
+    requirement: "Document intake routing derives from vendor config"
+    exercises: {file: machines/producers.yaml, producer: mail-rule-sync}
+    needs: growth-7
+    given: "the vendor's mail rule exists"
+    when: "mail matching the rule is ingested"
+    then: "the document carries document type Vendor Invoice, the vendor's correspondent and the vendor's tags; the classification is the rule's doing and no machine transition fires yet"
+
+  - id: B06
+    brief: "Mail rules are reproducible"
+    requirement: "Document intake routing derives from vendor config"
+    exercises: {file: machines/producers.yaml, producer: mail-rule-sync}
+    needs: growth-7
+    given: "three vendor records and a Paperless instance with no rules"
+    when: "mail-rule-sync runs"
+    then: "the complete rule set exists; a second run writes nothing (73)"
+
+  # ---- Monthly Cycle ---------------------------------------------------------
+
+  - id: B07
+    brief: "Month opens with a full slate"
+    requirement: "Every active vendor gets a cycle record each month"
+    exercises: {file: machines/producers.yaml, producer: month-init, then: "machines/unit-types/invoice-cycle@1.yaml initial state awaiting_invoice"}
+    needs: growth-4
+    given: "three active vendors and one inactive"
+    when: "month-init runs on day 1"
+    then: "three invoice-cycle@1 units exist in awaiting_invoice, one billing-month@1 unit exists in open, and the inactive vendor has none"
+
+  - id: B08
+    brief: "Initialization is idempotent"
+    requirement: "Every active vendor gets a cycle record each month"
+    exercises: {file: machines/producers.yaml, producer: month-init}
+    needs: growth-4
+    given: "cycles already exist for the month, one of them advanced to invoice_received"
+    when: "month-init runs again under the same key"
+    then: "no duplicate is created and the advanced cycle is left in invoice_received; writes for the tick are zero (78)"
+
+  - id: B09
+    brief: "A suppressed month is recorded, not skipped"
+    requirement: "Suppression preserves a gapless ledger"
+    exercises: {file: machines/unit-types/invoice-cycle@1.yaml, transition: "awaiting_invoice -> suppressed"}
+    given: "a cycle in awaiting_invoice"
+    when: 'the operator responds "suppress: on leave"'
+    then: "the cycle is in suppressed with suppression_reason recorded; the record exists and is counted in the month"
+
+  - id: B10
+    brief: "Suppressed cycles are inert"
+    requirement: "Suppression preserves a gapless ledger"
+    exercises: {file: machines/unit-types/invoice-cycle@1.yaml, state: suppressed}
+    needs: growth-3
+    given: "a cycle in suppressed for 30 days"
+    when: "ticks pass over day 2, day 7 and day 14"
+    then: "no reminder-draft elaboration is raised, no bill is created, no reconciliation class is computed, and effects for the cycle number zero"
+
+  # ---- Invoice Collection ----------------------------------------------------
+
+  - id: B11
+    brief: "Escalation ladder"
+    requirement: "Reminders escalate on a fixed schedule"
+    exercises: {file: machines/unit-types/invoice-cycle@1.yaml, state: awaiting_invoice, construct: "timers 2d / 7d / 14d"}
+    needs: growth-3
+    given: "a cycle in awaiting_invoice with reminder_count 0"
+    when: "the clock advances past day 2, then day 7, then day 14, with one reminder sent after each"
+    then: "one reminder-draft@1 elaboration is raised at each rung, tone friendly then direct then firm, each conditional on the reminder count the prior send moved"
+
+  - id: B12
+    brief: "Receipt cancels the chase"
+    requirement: "Reminders escalate on a fixed schedule"
+    exercises: {file: machines/unit-types/invoice-cycle@1.yaml, transition: "awaiting_invoice -> invoice_received"}
+    given: "a cycle in awaiting_invoice with reminder_count 1"
+    when: "the invoice document is ingested and the clock advances past day 14"
+    then: "the cycle is in invoice_received and no further reminder-draft is raised; a draft in flight for that cycle leaves its batch (reminder-draft@1, cycle.left_awaiting)"
+
+  - id: B13
+    brief: "Reminder history is recorded"
+    requirement: "Reminders escalate on a fixed schedule"
+    exercises: {file: machines/elaboration-types/reminder-draft@1.yaml, transition: "sending -> recorded"}
+    needs: growth-6
+    given: "an approved draft batch"
+    when: "send_reminder proves itself with a message id"
+    then: "reminder_count is bumped and last_reminder_at is set, per cycle, off the proof and off nothing else; a send that produced no id moves no counter"
+
+  - id: B14
+    brief: "Drafts are presented for approval"
+    requirement: "Outbound email is drafted by an agent and approved by a human"
+    exercises: {file: machines/elaboration-types/reminder-draft@1.yaml, state: drafted, decision: reminder-batch}
+    needs: growth-6
+    given: "reminders due for three vendors"
+    when: "the drafting session exits done"
+    then: "one numbered decision stands, batched by month, delivered to the chat sink and the page, with per-vendor yes / edit / skip answers"
+
+  - id: B15
+    brief: "Approval sends, silence does not"
+    requirement: "Outbound email is drafted by an agent and approved by a human"
+    exercises: {file: machines/elaboration-types/reminder-draft@1.yaml, transition: "drafted -> sending"}
+    needs: growth-6
+    given: "three drafts standing"
+    when: 'one vendor is answered "<vendor>: skip", another "<vendor>: edit: ...", then the batch is answered "yes"'
+    then: "two messages are sent — the edited text for the edited one — the skipped vendor's counter does not move, and a batch never answered sends nothing at all"
+
+  - id: B16
+    brief: "New invoice detected"
+    requirement: "Arriving invoices advance their cycle automatically"
+    exercises: {file: machines/unit-types/invoice-cycle@1.yaml, transition: "awaiting_invoice -> invoice_received"}
+    needs: growth-7
+    given: "a cycle in awaiting_invoice and a Paperless capture matching its vendor and month"
+    when: "the tick reads the capture"
+    then: "paperless_document_id, invoice_amount, invoice_hours and invoice_received_at are on the record and the cycle is in invoice_received"
+
+  - id: B17
+    brief: "Unattributable invoice is escalated, not guessed"
+    requirement: "Arriving invoices advance their cycle automatically"
+    exercises: {file: machines/records.yaml, construct: write_gate, and: "the attention line of 79"}
+    needs: growth-7
+    given: "an ingested invoice whose correspondent matches no active vendor"
+    when: "the tick reads the capture"
+    then: "an attention line names the document id; no cycle is created and no cycle is modified"
+
+  # ---- Payables in Zoho Books ------------------------------------------------
+
+  - id: B18
+    brief: "Bill uses stored booking identity"
+    requirement: "Bills are created from validated cycle data"
+    exercises: {file: machines/unit-types/invoice-cycle@1.yaml, state: invoice_received, stage_agent: bill-booker}
+    needs: growth-7
+    given: "a cycle in invoice_received and its vendor record"
+    when: "the booking session runs"
+    then: "the bill carries the vendor's zoho_contact_id and zoho_line_item_type and the cycle's amount and hours; none of these is read from anywhere but the records"
+
+  - id: B19
+    brief: "Source document travels with the bill"
+    requirement: "Bills are created from validated cycle data"
+    exercises: {file: machines/unit-types/invoice-cycle@1.yaml, guard: cycle.bill_has_document}
+    needs: growth-7
+    given: "a bill created for a cycle"
+    when: "the transition to timesheet_pending is evaluated"
+    then: "it does not fire until the invoice PDF retrieved from Paperless is attached to the Zoho bill; the attachment is part of the proof, not a follow-up"
+
+  - id: B20
+    brief: "Bill creation advances the cycle"
+    requirement: "Bills are created from validated cycle data"
+    exercises: {file: machines/unit-types/invoice-cycle@1.yaml, transition: "invoice_received -> timesheet_pending"}
+    needs: growth-7
+    given: "a booking session that exits done with a bill id written back"
+    when: "the next tick runs"
+    then: "zoho_bill_id is on the record and the cycle is in timesheet_pending"
+
+  - id: B21
+    brief: "Low-confidence extraction is flagged"
+    requirement: "Bills are created from validated cycle data"
+    exercises: {file: machines/unit-types/invoice-cycle@1.yaml, transition: "invoice_received -> timesheet_pending", effect: mark_bill_for_review}
+    needs: growth-7
+    given: "extraction_confidence below the threshold"
+    when: "the booking session exits done"
+    then: "the bill is marked for review in Zoho Books and the cycle carries an attention line; the cycle still moves to timesheet_pending, because review is not a phase"
+
+  # ---- Reconciliation --------------------------------------------------------
+
+  - id: B22
+    brief: "Discrepancy classification"
+    requirement: "Invoiced hours are reconciled against recorded hours"
+    exercises: {file: machines/unit-types/invoice-cycle@1.yaml, state: timesheet_pending, guard: cycle.reconciliation_class}
+    given: "four cycles in timesheet_pending: no hours record; hours below expected_hours_min; hours differing from invoice_hours beyond threshold; hours matching"
+    when: "the tick runs the check"
+    then: "the classes are missing, low, mismatch and ok respectively; the check is a machine transition, deterministic, and charges no session"
+
+  - id: B23
+    brief: "Only clean cycles reconcile"
+    requirement: "Invoiced hours are reconciled against recorded hours"
+    exercises: {file: machines/unit-types/invoice-cycle@1.yaml, transition: "timesheet_pending -> reconciled"}
+    given: "a cycle whose class is ok"
+    when: "the tick runs"
+    then: "the cycle is in reconciled; a cycle of any other class is still in timesheet_pending"
+
+  - id: B24
+    brief: "Discrepancies produce a conversation, not a state change"
+    requirement: "Invoiced hours are reconciled against recorded hours"
+    exercises: {file: machines/unit-types/invoice-cycle@1.yaml, transition: "timesheet_pending -> timesheet_pending", effect: raise_elaboration}
+    needs: growth-6
+    given: "a cycle whose class is low"
+    when: "the tick runs, the discrepancy-draft@1 batch is approved and the message sends"
+    then: "the cycle is still in timesheet_pending; the class, the message id and the send time are on its record and its stage did not move"
+
+  - id: B25
+    brief: "No automated source available"
+    requirement: "Timesheet access degrades gracefully"
+    exercises: {file: machines/unit-types/invoice-cycle@1.yaml, transition: "timesheet_pending -> hours_asked", decision: timesheet-hours-wanted}
+    needs: growth-8
+    given: "a cycle in timesheet_pending with no hours record and cycle.timesheet_source none"
+    when: "the tick runs, then the operator answers 'hours 148'"
+    then: "the decision named the vendor and the month; the answer writes an hours record with source operator; the next tick re-runs the check and the cycle moves on its class"
+
+  # ---- Month-End Archive -----------------------------------------------------
+
+  - id: B26
+    brief: "Incomplete month is rejected with specifics"
+    requirement: "Archiving requires a complete month"
+    exercises: {file: machines/unit-types/billing-month@1.yaml, transition: "open -> refused", decision: month-archive-refused}
+    needs: growth-5
+    given: "a month with one cycle reconciled, one in timesheet_pending, one suppressed"
+    when: "the operator responds 'archive'"
+    then: "the month is in refused; the attention line names the incomplete vendor and its stage; the suppressed cycle is not named, because suppressed counts as complete"
+
+  - id: B27
+    brief: "Complete month produces an archive package"
+    requirement: "Archiving requires a complete month"
+    exercises: {file: machines/unit-types/billing-month@1.yaml, transition: "complete -> archived", producer: month-archive-package}
+    needs: [growth-5, growth-7]
+    given: "every non-suppressed cycle of the month reconciled"
+    when: "the archive-packager session runs and month.archive_proven becomes true"
+    then: "a WorkDrive package holds the month's invoice documents and a summary of vendors, amounts and hours; every cycle of the month is in archived with archive_date set"
+
+  # ---- Payroll ---------------------------------------------------------------
+
+  - id: B28
+    brief: "Scheduled prompt"
+    requirement: "Payroll runs are scheduled, recorded, and never silent"
+    exercises: {file: machines/producers.yaml, producer: payroll-prompt, then: "machines/unit-types/payroll-run@1.yaml state due"}
+    needs: growth-4
+    given: "a pay date in the payroll calendar and no unit for it"
+    when: "the pay date arrives and the tick runs"
+    then: "a payroll-run@1 unit is in due with a numbered payroll-due decision; nobody created it by hand"
+
+  - id: B29
+    brief: "Run is recorded with artifacts"
+    requirement: "Payroll runs are scheduled, recorded, and never silent"
+    exercises: {file: machines/unit-types/payroll-run@1.yaml, transition: "processing -> recorded"}
+    needs: growth-7
+    given: "a run approved and processed in OnPay"
+    when: "the session writes the result back"
+    then: "the record carries pay_period_start, pay_period_end, pay_date and per-employee gross and net, with the pay stub PDFs attached; the transition does not fire until both proofs hold"
+
+  - id: B30
+    brief: "Year-end forms are collected"
+    requirement: "Payroll runs are scheduled, recorded, and never silent"
+    exercises: {file: machines/producers.yaml, producer: year-end-forms, then: "machines/unit-types/payroll-run@1.yaml transition recorded -> closed"}
+    needs: growth-4
+    given: "every payroll run of the tax year in recorded"
+    when: "the tax year closes and the producer runs"
+    then: "W-2 and W-3 documents are collected against the year's records and each run moves to closed; the producer reports incomplete while any run of the year lacks its forms"
+
+  # ---- Client Contracts ------------------------------------------------------
+
+  - id: B31
+    brief: "Contract carries commercial terms"
+    requirement: "Contract expiry is surfaced before it happens"
+    exercises: {file: machines/records.yaml, type: contract}
+    needs: growth-2
+    given: "a contract record exists"
+    when: "the record is read"
+    then: "it carries client, start_date, end_date, value, terms and source_document; a write with end_date before start_date is refused"
+
+  - id: B32
+    brief: "Tiered renewal alerts"
+    requirement: "Contract expiry is surfaced before it happens"
+    exercises: {file: machines/unit-types/contract@1.yaml, state: active, construct: "timers 90d / 60d / 30d before end_date", decision: contract-renewal-due}
+    needs: growth-3
+    given: "a contract in active with an end_date 120 days out"
+    when: "the clock advances to 90, then 60, then 30 days remaining"
+    then: "an attention line is raised at each tier naming the client and the days remaining; the three fold into one numbered decision re-raised per tier"
+
+  - id: B33
+    brief: "Amendments do not overwrite history"
+    requirement: "Contract expiry is surfaced before it happens"
+    exercises: {file: machines/unit-types/contract@1.yaml, transition: "amending -> superseded", and: "machines/records.yaml type contract"}
+    needs: growth-2
+    given: "a contract in active"
+    when: 'the operator answers "amend: extend to 2027-06-30" and the amendment record is written'
+    then: "a new contract record exists whose amends names the prior; the prior record's terms are unchanged and it is in superseded"
+
+  # ---- Cross-Cutting ---------------------------------------------------------
+
+  - id: B34
+    brief: "Schema violations are caught"
+    requirement: "State is plain text, schema-enforced, and version controlled"
+    exercises: {file: machines/records.yaml, construct: write_gate}
+    needs: growth-2
+    given: "the record types as declared"
+    when: "an hours record names a vendor that does not exist; a second vendor is written with an existing invoice_sender_email; a cycle is written with no month"
+    then: "each write is refused with the field, the constraint and the value; the store is unchanged; the refusal is reported through the attention lines (79)"
+
+  - id: B35
+    brief: "Changes are auditable"
+    requirement: "State is plain text, schema-enforced, and version controlled"
+    exercises: {file: machines/records.yaml, store: state-repository}
+    given: "any accepted write"
+    when: "the state repository is read"
+    then: "one commit per record change with a readable per-record diff, carrying the reason and the evidence the write was based on (79)"
+
+  - id: B36
+    brief: "Workflows return data, not prose"
+    requirement: "Deterministic and intelligent work are separated"
+    exercises: {file: machines/unit-types/invoice-cycle@1.yaml, construct: "the reconciliation transition; the stage deliverables"}
+    given: "a reconciliation check and a booking stage"
+    when: "each completes"
+    then: "the check yields a class from a closed set and the stage yields named deliverables against a schema; no prose crosses the boundary, and a session's only report is through the fixed exits (66)"
+
+  - id: B37
+    brief: "External calls originate from the agent"
+    requirement: "Deterministic and intelligent work are separated"
+    exercises: {file: machines/unit-types/invoice-cycle@1.yaml, state: invoice_received, and: "machines/unit-types/billing-month@1.yaml state complete"}
+    needs: growth-7
+    given: "a Zoho Books, WorkDrive or Paperless mutation is required"
+    when: "the machine reaches the state that needs it"
+    then: "a session on a host with the adapter and its secret performs it and writes the result back as a proof; the machine performs no external mutation itself"
+
+  - id: B38
+    brief: "No literal secrets"
+    requirement: "Credentials are never held in configuration"
+    exercises: {file: machines/producers.yaml, construct: secrets}
+    needs: growth-7
+    given: "every adapter declaration of this organization"
+    when: "the configuration is examined"
+    then: "each names a secret by name and holds no token, key or password; the secret is placed on the host by the operator, never by an agent (207)"
+
+  - id: B39
+    brief: "Retention floor"
+    requirement: "Sensitive records meet retention and protection obligations"
+    exercises: {file: machines/producers.yaml, store: workdrive-archive}
+    needs: growth-7
+    given: "a month archived to WorkDrive"
+    when: "the store's declaration is examined"
+    then: "the seven-year floor, the encryption and the backup are stated facts of the store; the state repository holds the index of what it holds"
+
+  - id: B40
+    brief: "Recoverable"
+    requirement: "Sensitive records meet retention and protection obligations"
+    exercises: {file: machines/producers.yaml, store: workdrive-archive}
+    needs: growth-7
+    given: "an archived month and the store's backup"
+    when: "a restore is exercised"
+    then: "the archived documents are recoverable; the exercise is the proof and the store's declaration is what is being checked, not any machine's behaviour"
+
+  # ---- Beyond the brief, from the README's answers ---------------------------
+
+  - id: B41
+    brief: "(README, payment status) a Zoho Books capture is one more earned transition"
+    requirement: "not a brief Requirement; the README's answer to the brief's open question"
+    exercises: {file: machines/unit-types/invoice-cycle@1.yaml, transition: "reconciled -> paid"}
+    needs: growth-7
+    given: "a cycle in reconciled"
+    when: "the Zoho Books adapter reports the bill paid"
+    then: "the cycle is in paid with paid_at recorded; the month's archive is unaffected either way, since payment execution is out of the brief's scope"

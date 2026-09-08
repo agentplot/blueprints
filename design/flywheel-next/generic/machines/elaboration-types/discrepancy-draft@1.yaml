@@ -1,0 +1,150 @@
+# The elaboration a non-ok reconciliation raises (billing-brief, "Discrepancies
+# produce a conversation, not a state change"). The same shape as
+# reminder-draft@1 — a session drafts, a proposal carries one decision with one
+# answer per vendor, the yes sends through the mail adapter with the message id
+# as the proof — and the same rule about what moves on that proof. What differs
+# is what the session is asked to write and what the send does not change: the
+# cycle stays in timesheet_pending whatever the outcome. A discrepancy is
+# answered by hours arriving, never by a message going out.
+#
+# Growth this type leans on (../../README.md):
+#   growth-6  an elaboration whose proposal's yes sends mail outside the org
+#   growth-7  the mail adapter as a per-host package with its secret (207)
+#   growth-8  the operator as a data source, when the reply carries the hours
+#
+# Addressed as discrepancy-draft@1; a change is a new file at a new version (57).
+machine: discrepancy-draft
+version: 1
+kind: template
+tier: extensible
+satisfies: [15, 17, 19, 66, 79, 153, 171, 172, 184, 190, 227]
+satisfies_brief:
+  - "Invoiced hours are reconciled against recorded hours"
+  - "Timesheet access degrades gracefully"
+  - "Deterministic and intelligent work are separated"
+params:
+  place: the elaboration's place
+  agent: the agent for the session
+  deliverables: "entries {name, producer, schema, surface}; the default below is the draft set this type asks for"
+record:
+  classes: list                      # [{cycle, class}] — missing | low | mismatch, per cycle
+  cycles: list
+  month: string                      # the batch key
+  sent: list                         # [{cycle, message_id}]
+regions:
+  work:
+    initial: session
+    states:
+      session:
+        doc: >-
+          the session is given the class, the invoice hours, the timesheet hours
+          and the vendor's expected range, and writes a message that explains
+          the specific discrepancy. Investigating why a timesheet is short is
+          the judgment half of the brief's principle; classifying it was the
+          deterministic half and already happened in the machine.
+        machine: session
+        params:
+          agent: $agent
+          place: $place
+          work_order: rendered
+          keep_alive: false
+          deliverables:
+            - {name: discrepancy-proposal, producer: default, schema: default, surface: plannotator}
+        transitions:
+          - when: {all: [{final: exited}, {ev: session.exit, is: done}]}
+            to: drafted
+          - when: {all: [{final: exited}, {ev: session.exit, in: [stalled, invalid]}]}
+            to: stalled
+          - when: {final: lost}
+            to: stalled
+          - when: {ev: cycle.reconciled, is: true}
+            to: dropped
+            note: >-
+              the hours arrived while the draft was being written and the check
+              re-ran clean. The conversation is moot; nothing is sent.
+      drafted:
+        doc: >-
+          one decision, one answer per vendor, delivered to the operator's chat
+          sink and the page. Approve is the yes, edit is a proposal edit (184),
+          skip drops that vendor's draft.
+        needs: growth-6
+        decision:
+          kind: discrepancy-batch
+          group: approve
+          batch: month
+          document: document
+          answers:
+            - "yes"
+            - "drop"
+            - "later"
+            - "<vendor>: yes"
+            - "<vendor>: edit: <text>"
+            - "<vendor>: skip"
+          shows: [discrepancy-draft.classes, discrepancy-draft.cycles]
+          satisfies: [15, 17, 153, 172, 184]
+        transitions:
+          - when: {response: "<vendor>: edit: <text>"}
+            to: drafted
+            effects: [{do: edit_draft, args: {vendor: $response, text: $response}}]
+          - when: {response: "<vendor>: skip"}
+            to: drafted
+            effects: [{do: drop_draft, args: {vendor: $response}}]
+          - when: {response: "<vendor>: yes"}
+            to: drafted
+            effects: [{do: approve_draft, args: {vendor: $response}}]
+          - when: {response: "yes"}
+            to: sending
+          - when: {response: drop}
+            to: dropped
+          - when: {response: later}
+            to: drafted
+      sending:
+        doc: >-
+          the send is the effect and the message id is the proof. The cycle's
+          stage does not move: the message is a conversation, and only hours
+          landing in the ledger reconciles anything.
+        needs: growth-6
+        entry:
+          - {do: send_discrepancy_message, args: {drafts: discrepancy-draft.approved}, note: "through the mail adapter with its secret (207); keyed by cycle and class so a repeat writes nothing twice", needs: growth-7}
+        transitions:
+          - when: {ev: discrepancy.all_sent, is: true}
+            to: recorded
+          - when: {ev: discrepancy.send_failed, is: true}
+            to: send_failed
+      recorded:
+        doc: >-
+          what moves on the proof is the conversation's history on the cycle —
+          the class raised, the message id, the date — and nothing about the
+          cycle's stage.
+        entry:
+          - {do: record_discrepancy_sent, args: {sent: discrepancy-draft.sent}, note: "per cycle: the class, the message id and the send time on the record (79)", needs: growth-2}
+        transitions:
+          - when: {ev: discrepancy.history_recorded, is: true}
+            to: done
+      send_failed:
+        decision:
+          kind: discrepancy-send-failed
+          group: attention
+          answers: [retry, drop]
+          shows: [discrepancy-draft.sent, discrepancy.failure]
+          satisfies: [15, 79, 153]
+        transitions:
+          - when: {response: retry}
+            to: sending
+          - when: {response: drop}
+            to: done
+      stalled:
+        decision:
+          kind: stalled
+          group: decide
+          answers: [retry, drop]
+          satisfies: [15, 153]
+        transitions:
+          - when: {response: retry}
+            to: session
+          - when: {response: drop}
+            to: dropped
+      done:
+        final: true
+      dropped:
+        final: true
