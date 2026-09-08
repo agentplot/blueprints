@@ -1,6 +1,7 @@
 scenario: X9
 title: a bolt's place declares two services; the operator starts one by dictation and a session starts the other through the command; both are one record; a crash is a decision under attention; the place's removal takes the services with it
 profiles: [all]
+requires: [real-workspace]     # the place's declared services run as real tethered processes and end with the worktree
 satisfies: [45, 46, 47, 48, 55]
 invariants: [I1, I13]
 given:
@@ -28,7 +29,7 @@ given:
 when:
   - tick: {}                                                             # 1: the place is ready; declare_services makes service/atlas/plan-rows/web and /worker in stopped
   - tick: {}                                                             # 2: nothing starts on its own
-  - direct: {chat: "start bolt/atlas/plan-rows/web", by: chuck}          # 3: the operator's dictation
+  - direct: {do: dictation, text: "start bolt/atlas/plan-rows/web", by: chuck}          # 3: the operator's dictation
   - tick: {}                                                             # 4: web -> starting, start_service; the session runs `flywheel service start worker`
   - tick: {}                                                             # 5: worker -> starting by the same kind of record
   - evidence: {service.process: {service/atlas/plan-rows/web: present, service/atlas/plan-rows/worker: present}, service.serving: {"*": true}, service.endpoint: {service/atlas/plan-rows/web: "https://web-3f9a.atlas.ts.net/"}}
@@ -40,7 +41,7 @@ when:
   - tick: {}                                                             # 12: web -> starting again
   - evidence: {service.process: {service/atlas/plan-rows/web: present}}
   - tick: {}                                                             # 14: web -> running
-  - direct: {chat: "drop bolt/atlas/plan-rows", by: chuck}               # 15
+  - direct: {do: dictation, text: "drop bolt/atlas/plan-rows", by: chuck}               # 15
   - tick: {}                                                             # 16: the bolt is dropped; its place enters removing
   - evidence: {place.absent: {bolt/atlas/plan-rows: true}, service.place_present: {"*": false}, service.process: {"*": absent}}
   - tick: {}                                                             # 18: the place is removed; the services are gone with it

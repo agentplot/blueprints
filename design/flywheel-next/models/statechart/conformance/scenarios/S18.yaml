@@ -28,9 +28,8 @@ then:
     - {object: work-item/atlas/wi-418, from: build, to: verify, host: mac-mini}
     - {object: unit/atlas/retry-jitter, from: approved, to: in-flight, host: studio}
   state_store:
-    mac_mini_local_commits_while_offline: ">= 1"
-    mac_mini_took_leases_while_offline: 0
-    mac_mini_started_sessions_while_offline: 0
-    studio_commits_present_after_reconnect: true
-    mac_mini_commits_landed_after_reconnect: true
-    status_page_as_of_after_reconnect: latest
+    local_commits_while_offline: {mac-mini: ">= 1"}
+    leases_taken_while_offline: {mac-mini: 0}
+    sessions_started_while_offline: {mac-mini: 0}
+    commits_present_after_reconnect: {studio: true, mac-mini: true}
+    status_as_of_after_reconnect: latest

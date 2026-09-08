@@ -10,8 +10,7 @@ given:
   hosts: [{name: mac-mini, bound: 3}, {name: studio, bound: 2}]
   evidence: {unit.deps_merged: {"*": true}}
 when:
-  - host: {name: mac-mini, and: studio, concurrent: true}
-  - tick: {}
+  - tick: {concurrent_hosts: [mac-mini, studio]}
   - tick: {}
 then:
   transitions: [{object: unit/atlas/status-writer, from: approved, to: in-flight}]

@@ -4,13 +4,13 @@ profiles: [all]
 satisfies: [134, 162]
 invariants: [I15]
 machines: ./contract/lamp
+hooks: [bypass_lease]        # force both to attempt the write without taking the lease
 given:
   objects: [{id: lamp/1, machine: lamp, state: {power: "off"}}]
   evidence: {lamp.switch: {lamp/1: up}}
   hosts: [{name: a, bound: 1}, {name: b, bound: 1}]
 when:
-  - host: {name: a, and: b, concurrent: true, bypass_lease: true}   # force both to attempt the write
-  - tick: {}
+  - tick: {concurrent_hosts: [a, b]}
 then:
   transitions: [{object: lamp/1, from: "off", to: "on"}]
   state_store: {writes_attempted: 2, writes_succeeded: 1, loser_told: true, loser_reread_before_deciding: true}

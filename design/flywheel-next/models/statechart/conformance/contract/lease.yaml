@@ -9,8 +9,7 @@ given:
   evidence: {lamp.switch: {lamp/1: up}}
   hosts: [{name: a, bound: 1}, {name: b, bound: 1}]
 when:
-  - host: {name: a, and: b, concurrent: true}
-  - tick: {}
+  - tick: {concurrent_hosts: [a, b]}
   - host: {name: a}
   - clock: {advance: 6m}
   - tick: {}

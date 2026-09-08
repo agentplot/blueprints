@@ -9,7 +9,7 @@ given:
   hosts: [{name: mac-mini, bound: 3}, {name: studio, bound: 2}]
   evidence: {line.contains_parent: {"*": true}, intent.archived: {"*": false}}
 when:
-  - direct: {commit: {file: objects/intent/loop-granularity/object.rec, set: {state: "life=archiving"}, sha: abc123}}
+  - direct: {do: commit, file: objects/intent/loop-granularity/object.rec, set: {state: "life=archiving"}, sha: abc123, by: chuck}
   - host: {name: mac-mini}
   - tick: {}
   - host: {name: studio}

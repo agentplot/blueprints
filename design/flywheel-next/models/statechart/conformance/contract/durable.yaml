@@ -10,8 +10,9 @@ given:
 when:
   - host: {name: a}
   - tick: {}
-  - host: {name: none, lose: all}
-  - host: {name: c, fresh: true}
+  - host: {name: a, lose: true}
+  - host: {name: b, lose: true}
+  - host: {name: c, start: true}
   - tick: {}
 then:
   states: {lamp/1: {power: "on"}}

@@ -1,6 +1,7 @@
 scenario: X6
 title: a bolt lands; its place is removed and its tethered server ends; a stray worktree from a crashed session is found by reconciliation and removed; a place the operator holds by dictation stays; every removal is recorded
 profiles: [all]
+requires: [real-workspace]     # the landing, the place's removal, and a stray worktree found by reconciling
 satisfies: [45, 55, 74]
 invariants: [I12]
 given:
@@ -11,14 +12,14 @@ given:
   files: {"host mac-mini places/": "bolt/atlas/plan-rows, bolt/atlas/other, work-item/atlas/wi-300 (its item was dropped last week)"}
   evidence: {line.landed: {"*": true}, line.absent: {"*": true}, place.held: {"*": false}, host.stray_places: {host/mac-mini: true}}
 when:
-  - direct: {chat: "hold place bolt/atlas/other", by: chuck}
+  - direct: {do: dictation, text: "hold place bolt/atlas/other", by: chuck}
   - evidence: {place.held: {bolt/atlas/other: true}}
   - tick: {}
   - tick: {}
   - tick: {}
   - evidence: {place.absent: {bolt/atlas/plan-rows: true}, host.stray_places: {host/mac-mini: false}}
   - tick: {}
-  - direct: {chat: "release place bolt/atlas/other", by: chuck}
+  - direct: {do: dictation, text: "release place bolt/atlas/other", by: chuck}
   - evidence: {place.held: {bolt/atlas/other: false}}
   - tick: {}
   - evidence: {place.absent: {bolt/atlas/other: true}}

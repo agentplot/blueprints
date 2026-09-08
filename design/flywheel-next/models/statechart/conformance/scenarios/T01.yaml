@@ -11,7 +11,7 @@ given:
   hosts: [{name: mac-mini, bound: 3}]
 when:
   - tick: {}
-  - direct: {tracker: {issue: "unit unit/atlas/status-writer", board_move: Approved, event_id: "timeline/7781", by: chuck}}
+  - direct: {do: board, issue: "unit unit/atlas/status-writer", column: Approved, event_id: "timeline/7781", by: chuck}
   - tick: {}
   - tick: {}
 then:

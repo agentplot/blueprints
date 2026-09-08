@@ -11,10 +11,10 @@ when:
   - files: {"intent line commit c9": "openspec/changes/atlas-provider-limits/specs/providers/spec.md (the requirement one-writer amended, so its content hash moves; nothing else recomputed), src/providers/one-writer.md (the chapter that includes it), src/context-map.md, context-map.json"}
   - evidence: {session.exit: {"*": done}}
   - tick: {}
-  - direct: {page: "/review", by: chuck}
+  - direct: {do: page, path: "/review", by: chuck}
 then:
   state_store:
-    precommit_lock_check_passed: true
+    map_check_passed: true
     one_commit_touched: ["src/providers/one-writer.md", "src/context-map.md", "context-map.json"]
     review_view_derived_from_history: true
     review_view_points_to: ["providers/one-writer chapter", "context-map node providers"]

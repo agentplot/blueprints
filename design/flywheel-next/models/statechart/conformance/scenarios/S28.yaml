@@ -11,7 +11,7 @@ given:
 when:
   - clock: {advance: 21d}
   - tick: {}
-  - direct: {chat: "unit plan-rows: status rows lose their numbers after a merge", by: chuck}
+  - direct: {do: dictation, text: "unit plan-rows: status rows lose their numbers after a merge", by: chuck}
   - tick: {}
   - clock: {advance: 1d}
   - evidence: {planning.fingerprint: {planning/atlas: a1}}

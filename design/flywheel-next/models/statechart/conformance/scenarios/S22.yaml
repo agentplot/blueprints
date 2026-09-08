@@ -6,10 +6,10 @@ given:
   objects: [{id: capture/meeting-2026-09-02-willdan-weekly, machine: capture, state: {reading: read}, record: {event_key: meeting/2026-09-02/willdan-weekly}}]
   evidence: {capture.signals_present: {"*": true}}
 when:
-  - direct: {adapter: "flywheel capture meeting 2026-09-02-willdan-weekly.vtt"}
+  - direct: {do: adapter, command: "flywheel capture meeting meeting/2026-09-02-willdan-weekly.vtt"}
   - tick: {}
   - clock: {advance: 1d}
-  - direct: {adapter: "flywheel capture meeting 2026-09-02-willdan-weekly.vtt"}
+  - direct: {do: adapter, command: "flywheel capture meeting meeting/2026-09-02-willdan-weekly.vtt"}
   - tick: {}
 then:
   effects: [{do: start_session, count: 0}]

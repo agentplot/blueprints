@@ -1,6 +1,7 @@
 scenario: X8
 title: the operator drops an in-flight unit by dictation; its sessions are retired and its places released; a dictation asserting an item done is refused and reported; a pane killed by hand is a session gone, never a response
 profiles: [all]
+requires: [real-workspace]     # the fresh attempt merges after the hand-run stop
 satisfies: [4, 12, 66, 74]
 invariants: [I1, I6]
 given:
@@ -12,15 +13,15 @@ given:
     - {id: work-item/atlas/v/1, machine: work-item, parent: unit/atlas/v, state: {life: in-type, in-type.stages: build, build.run: sessions, session.life: alive, alive.activity: working, placing.place: ready}, record: {ordinal: 2}}
   evidence: {session.pane: {"*": present}, session.activity: {"*": working}, place.held: {"*": false}}
 when:
-  - direct: {chat: "drop unit/atlas/u", by: chuck}
+  - direct: {do: dictation, text: "drop unit/atlas/u", by: chuck}
   - tick: {}
   - tick: {}
   - evidence: {session.pane_absent: {"work-item/atlas/u/1/build/1": true}, place.absent: {work-item/atlas/u/1: true}}
   - tick: {}
-  - direct: {chat: "done work-item/atlas/v/1", by: chuck}
+  - direct: {do: dictation, text: "done work-item/atlas/v/1", by: chuck}
   - tick: {}
   - tick: {}
-  - direct: {shell: "herdr agent stop work-item/atlas/v/1/build/1", by: chuck}
+  - direct: {do: shell, command: "herdr agent stop work-item/atlas/v/1/build/1", by: chuck}
   - evidence: {session.pane: {"work-item/atlas/v/1/build/1": absent}}
   - tick: {}
   - tick: {}

@@ -17,8 +17,7 @@ given:
     - {id: sink/page, kind: page, surface: /rail, routes: [approve, decide, answer, attention]}
   register: {next: 100}
 when:
-  - host: {name: mac-mini, and: studio, and_also: dispatcher, concurrent: true}
-  - tick: {}
+  - tick: {concurrent_hosts: [mac-mini, studio, dispatcher]}
   - tick: {}
   - tick: {}
 then:

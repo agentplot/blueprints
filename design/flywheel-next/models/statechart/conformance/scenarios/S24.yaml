@@ -8,7 +8,7 @@ given:
     - {id: curation/willdan, machine: curation, state: {run: idle}, record: {threshold: 1}}
   evidence: {signal.move: {"signal/s3": drop}, curation.unmoved_count: {curation/willdan: 0}}
 when:
-  - direct: {chat: "revive s3", by: chuck}
+  - direct: {do: dictation, text: "revive s3", by: chuck}
   - evidence: {signal.move: {"signal/s3": none}, curation.unmoved_count: {curation/willdan: 1}}
   - tick: {}
   - tick: {}

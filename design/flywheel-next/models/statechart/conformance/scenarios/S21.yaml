@@ -6,7 +6,7 @@ given:
   objects: [{id: curation/willdan, machine: curation, state: {run: idle}, record: {threshold: 12}}]
   evidence: {curation.unmoved_count: {curation/willdan: 0}}
 when:
-  - direct: {chat: "capture: <forwarded message 1421>", by: chuck}
+  - direct: {do: dictation, text: "capture: <forwarded message 1421>", by: chuck}
   - tick: {}
   - evidence: {capture.source: {capture/message-1421: forwarded-message}, capture.signals_present: {capture/message-1421: false}}
   - tick: {}

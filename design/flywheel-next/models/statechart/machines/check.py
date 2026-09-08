@@ -18,7 +18,9 @@ the requirements.
   (data-decision) and effects (data-effect) that exist, so a picture cannot drift from the runtime (83)
 - every profile marked complete binds every evidence and effect name (140)
 - every conformance scenario validates against ../conformance/schema.json and names only real decision
-  kinds and effects
+  kinds and effects; every `then.state_store` key is bound in ../conformance/observations.yaml, for
+  every profile the scenario runs on, and every bound key is asserted by some scenario; `hooks:` is
+  declared only by a scenario under conformance/contract/
 - the requirement trace (section 12 of the requirements): every machine, decision kind, effect and
   conformance scenario carries `satisfies: [numbers]`; a number that names no requirement fails; a
   requirement cited nowhere fails. The requirement numbers are read from ../../../requirements.md.
@@ -292,11 +294,25 @@ for prof in sorted(glob.glob(os.path.join(ROOT, 'profiles', '*.yaml'))):
 
 # conformance scenarios must validate, name only real decisions and effects, and cite requirements
 sschema_path = os.path.join(ROOT, 'conformance', 'schema.json')
+obs_path = os.path.join(ROOT, 'conformance', 'observations.yaml')
+ALL_PROFILES = {'stand-in', 'git-only', 'tracker'}
+observations = {}
+if os.path.exists(obs_path):
+    observations = (yaml.safe_load(open(obs_path)) or {}).get('observations') or {}
+    for k, spec in observations.items():
+        if not (spec or {}).get('doc'):
+            bad.append(f"observations.yaml: {k} has no doc")
+        p_ = set((spec or {}).get('profiles') or [])
+        if not p_ or not p_ <= (ALL_PROFILES | {'all'}):
+            bad.append(f"observations.yaml: {k} names no profile, or one that is not a profile")
+else:
+    bad.append("conformance/observations.yaml not found; every state_store key must be bound there")
+observed = set()
 nscen = 0
 if os.path.exists(sschema_path):
     sschema = json.load(open(sschema_path))
     for path in sorted(glob.glob(os.path.join(ROOT, 'conformance', '**', '*.yaml'), recursive=True)):
-        if '/lamp/' in path:
+        if '/lamp/' in path or os.path.basename(path) == 'observations.yaml':
             continue
         rel = os.path.relpath(path, ROOT)
         sc = yaml.safe_load(open(path))
@@ -306,6 +322,21 @@ if os.path.exists(sschema_path):
             bad.append(f"{rel}: scenario schema: {e.message} at {'/'.join(map(str, e.path))}"); continue
         nscen += 1
         cite(sc.get('satisfies'), f"scenario {sc['scenario']}")
+        # every state_store key is bound in observations.yaml, for every profile the scenario runs on (94)
+        runs = ALL_PROFILES if 'all' in (sc.get('profiles') or []) else set(sc.get('profiles') or [])
+        for k in (sc.get('then', {}).get('state_store') or {}):
+            observed.add(k)
+            spec = observations.get(k)
+            if spec is None:
+                bad.append(f"{rel}: state_store key {k} is bound in no observations.yaml entry")
+                continue
+            answers = ALL_PROFILES if 'all' in (spec.get('profiles') or []) else set(spec.get('profiles') or [])
+            missing = runs - answers
+            if missing:
+                bad.append(f"{rel}: state_store key {k} runs on {sorted(missing)}, which do not answer it")
+        # hooks force a race the machinery prevents; only a contract scenario may declare one
+        if sc.get('hooks') and os.path.dirname(rel) != os.path.join('conformance', 'contract'):
+            bad.append(f"{rel}: hooks are allowed only under conformance/contract/")
         if sc.get('machines'):
             continue  # a toy machine set; not checked against the flywheel's decisions
         then = sc.get('then', {})
@@ -319,6 +350,9 @@ if os.path.exists(sschema_path):
             if w and w.get('decision') and w['decision'].rsplit('/', 1)[-1] not in decisions:
                 bad.append(f"{rel}: response decision kind {w['decision'].rsplit('/', 1)[-1]} does not exist")
 
+for k in sorted(set(observations) - observed):
+    bad.append(f"observations.yaml: {k} is bound but no scenario asserts it")
+
 # the trace: every requirement cited somewhere
 uncited = sorted(req_numbers - set(cited))
 for n in uncited:
@@ -326,6 +360,7 @@ for n in uncited:
 
 nclauses = sum(len(v) for v in req_clauses.values())
 print(f"scenarios: {nscen} · requirements: {len(req_numbers)} (+{nclauses} clauses) · cited: {len(cited)} · uncited: {len(uncited)}")
+print(f"observations: {len(observations)} bound · {len(observed)} asserted")
 print(f"machines: {len(machines)} · evidence: {len(evidence)} · effects: {len(effects)} · decision kinds: {len(decisions)}")
 for k, v in sorted(decisions.items()): print(f"  decision {k}: {', '.join(v)}")
 for b in bad: print("FAIL", b)

@@ -8,7 +8,7 @@ given:
   evidence: {lamp.switch: {lamp/1: up}}
 when:
   - tick: {}
-  - direct: {projection: {object: lamp/1, set: {column: "off"}}}   # a projection drifts
+  - direct: {do: projection, object: lamp/1, set: {column: "off"}}   # a projection drifts
   - tick: {}
 then:
   states: {lamp/1: {power: "on"}}
