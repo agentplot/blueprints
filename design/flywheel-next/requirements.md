@@ -796,6 +796,14 @@ requirements, iterated against the running plan rather than on paper.
     map check fails a home naming no manifest entry and a manifest
     entry that no element or context homes.
 
+199a. Until the operator draws a map, the map is derived from the
+    manifest by a fixed table: one context per repository, homed there,
+    carrying the repository's name and nothing else. A claim's default
+    attachment is then a repository's context, its scope that
+    repository, and planning, verdicts and the backlog work with no
+    book and no drawn map (195, 200). Drawing the map replaces the
+    derived contexts with the operator's; no claim moves for it unless
+    its attachment does.
 200. A claim attaches to a context, an element, a relationship or a
     link, and the attachment lives with the claim (97). Its scope is the
     set of repositories homing what it attaches to, both ends of a
