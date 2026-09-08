@@ -3,7 +3,7 @@
 The surfaces the operator works: the plan page with its rail, board,
 dock and capture box; the board's three views, phases, map and book;
 the artifact views behind every object; the flywheel instrument; the
-hosts surface and the account item; sign-in, members and owners; the
+hosts surface and the account item; identity, members and owners; the
 chat rendering; the review surface bindings; the status view on a
 phone. This document records decisions, flows, forms
 and rulings. It records no pixels and no code. A construction session
@@ -14,11 +14,12 @@ Sources and precedence:
 
 | source | role |
 |---|---|
-| `requirements.md` | the contract; this document may not contradict it. A.2, B.4, B.6, 155, 193–194, 196, 209–214 bind the surfaces directly: 213 the artifact views, 214 the flywheel instrument. A.26 (218–222, 233) binds the account item; A.28 (228–232) the hosts surface and enrolment; A.29 (234–237) sign-in, members and owners; A.30 (238–239) environments and the image; A.31 (240–242) pools. |
+| `requirements.md` | the contract; this document may not contradict it. A.2, B.4, B.6, 155, 193–194, 196, 209–214 bind the surfaces directly: 213 the artifact views, 214 the flywheel instrument. A.26 (218–222, 233) binds the account item; A.28 (228–232) the hosts surface and enrolment; A.29 (234–237) members and owners; A.30 (238–239) environments and the image; A.31 (240–242) pools; A.32 (243–255) identity, membership, roles, permissions, flags and the degraded page. |
 | `models/context-map/model.md` §5, §6 | the map's rendering at both levels; the current text of 198–202 |
 | `models/statechart/model.md` §5 | the plan's derivation, numbers, decision catalogue, sinks, responses and tool surface |
 | `models/statechart/profiles/surfaces.yaml` | the tool catalogue the page's controls call (193); the account, members, owner, hosts-surface and instrument bindings |
-| `models/statechart/profiles/host.yaml` | sign-in kinds, the environment providers, the image, the pool declaration, packages and add-host |
+| `models/statechart/profiles/identity.yaml` | the provider, hosted login and the served name, membership as Application assignment, the roles, the `fw.*` permissions per tool, the `fw.ff.*` flags, the degraded page and the identity tools |
+| `models/statechart/profiles/host.yaml` | the identity environment a host declares, its one address, the local proxy that serves the host's name, the environment providers, the image, the pool declaration, packages and add-host |
 | `models/statechart/machines/pool.yaml`, `machines/engine/sink.yaml` | the pool's image and hosts regions; one sink per member with its own mark |
 | `models/dispatch/model.md` §1–§5 | the vocabulary of a host's parts: presenter, capture endpoint, triage, interpreter, adapters, runners, placements |
 | `plan-mockup.md` | the seed: organization willdan, 2026-09-04 07:40, decisions 412–421 |
@@ -75,6 +76,9 @@ were settled, not their place on the page.
   focus moves to the next card.
 - **S7.** "yes all" sends one `answer` per approve decision, in number
   order, each recorded on its own (model 5.6). It never sends a batch.
+  Every answer on the rail, that one included, is under
+  `fw.plan.answer`, so a viewer reads the rail's cards with no answers
+  on them and no "yes all" (249).
 - **S8.** Attention lines carry one-word answers: takeover or wait on a
   lost host; ok on a response that could not apply, on an uncovered
   object, on a host that cannot satisfy a repository's environment
@@ -108,7 +112,9 @@ were settled, not their place on the page.
   chip; explorations the operator opened (189) as rows; every open or
   proposed intent as a thread with its elaborations as beads; a closed
   intent greyed with its countdown (186). Its head carries the
-  "explore…" control, which enters the explore mode (S43, S58).
+  "explore…" control, which enters the explore mode (S43, S58); the
+  control is behind `fw.ff.explore` and the tool behind it under
+  `fw.capture.write` (249, 250, S197).
 - **S14.** Bolt plan shows: planning in progress as a session row when
   a redo charged it again; the current proposal as a sheet; single unit
   proposals as slips; a baseline as a sheet of its own; a deferred
@@ -192,8 +198,12 @@ were settled, not their place on the page.
   layer or runtime as a box; the current map as a second drawing; saved
   camera state beyond the one memory of S88 (map 5.5).
 - **S26.** Requirements served: 122, 195, 198–202 as rewritten, 104,
-  105, 112. Tools called: `attach` (S71), `capture` (S22),
+  105, 112, 249. Tools called: `attach` (S71), `capture` (S22),
   `create-repository` or `adopt-repository` (S72), `reviewed` (S73).
+  The map's writing controls — attach, detach, set-home, set-status,
+  map-edit and the repository tools — are under `fw.map.edit`, and
+  reviewed under `fw.review.mark`; a token with `fw.read` alone draws
+  the map with none of them.
 - **S85.** Every relationship edge at rest carries a pill counting the
   element-to-element links that cross it (map 2.4). Separate ways reads
   "none · by rule", or "n cross · fails" when a link crosses it.
@@ -280,7 +290,8 @@ were settled, not their place on the page.
   is sent unparsed to the `capture` tool as a capture with one signal of
   kind ask, source the page (19, 194). A "this is an intent" toggle
   makes the same submission also call `mark-intent` on the capture
-  (12). Under the box the page says what it will send: "will send:
+  (12). Both are under `fw.capture.write`, so a viewer reads the page
+  with no capture box at all (249). Under the box the page says what it will send: "will send:
   capture" or "will send: capture · intent". Enter sends. The page
   acknowledges the recorded response (154) and the curation counter
   moves by one, or the new intent appears as a thread.
@@ -366,7 +377,10 @@ were settled, not their place on the page.
   chapter tree, one chapter at a time with previous and next, headings
   with anchors, and the claim blocks as the flywheel renders them. The
   view is entered with b or from the board's header, and b leaves it.
-  The rail stays beside it and j and k walk the rail only.
+  The rail stays beside it and j and k walk the rail only. The view is
+  behind `fw.ff.book-view` (250): with the flag off the board's header
+  carries no book entry and b does nothing, and reading it needs
+  `fw.read` either way (249).
 - **S92.** A claim block shows the claim's name and version, standing
   or proposed (98), what it attaches to, the scope line derived from
   its attachments (200), and one verdict dot per repository in scope
@@ -514,9 +528,15 @@ were settled, not their place on the page.
   account item's hosts entry (S157), from the setup control in the
   hosts strip, from a host's dock page, from the flywheel's "add a
   host" or its pool control, or from an attention line about a host.
-  It is separate from the operator's decisions: nothing on it is in
-  the count until a flow on it raises a decision, which then appears in
-  the rail like any other (229).
+  Everything on it past the one host serving the page is behind
+  `fw.ff.management-console` (250): with the flag off the account item
+  carries no hosts entry, the strip's setup control opens the serving
+  host's own screen, and the surface is not reached. Its writing
+  controls are guarded by `fw.hosts.manage` and `fw.packages.manage`
+  whether the flag is on or off (249, S197). It is separate from the
+  operator's decisions: nothing on it is in the count until a flow on
+  it raises a decision, which then appears in the rail like any other
+  (229).
 - **S114.** Hosts is a settings screen: on the left one row per host
   and one row per pool, and on the right the detail of the row in
   hand. A host row shows kind and platform (a laptop or a home host on
@@ -528,28 +548,44 @@ were settled, not their place on the page.
   reading (dispatch 2, 5).
 - **S115.** A host's detail is organised by headings, one per kind of
   thing a host runs or is bound to, each heading holding a slot or a
-  list of slots: sign-in, one slot (GitHub · tailnet · OAuth · OIDC;
-  S164); router, one slot (191); runners, one slot per role (pane ·
+  list of slots: identity, no slot at all but the environment the host
+  declares and the served name its redirect is built from, both
+  read-only (S164, 244); router, one slot (191); runners, one slot per role (pane ·
   in-process · managed, dispatch 2); agent, one slot (S116); sinks, a
   list, each with a "lease" badge on the sink whose presenter lease
   this host holds (148); adapters, a list, each naming its source
   (dispatch 4); triage, derived from the manifest with the sources it
   reads and no slot; environment, the provider in force (devenv ·
   devcontainer · nix · image) and the repositories it satisfies or
-  cannot (S174); pool, the pool it belongs to when it does (S176), with
+  cannot (S174); the git App, no slot either but which App reaches the
+  repositories and where its key is (S198); pool, the pool it belongs
+  to when it does (S176), with
   its joining record (S122). A slot shows the package's name and
   version and its state: installed · adding, decision n · needs a
   secret, under attention with "place it" (S123) · installing ·
   disabled, with "enable" as one logged response. An empty slot says
   what the heading takes and carries "add" (S117). A heading the host's
   platform cannot take says so.
+- **S198.** The host's screen says which GitHub App reaches the
+  repositories and where its key lives (207, 207a). A self-managed
+  organization uses its own App: the heading reads the App's id from
+  the manifest and shows the key's path on this host with "placed" or
+  the attention line that asks for it, never a value (S123, S187). The
+  hosted tiers use the service's App: the heading says so, shows no
+  path and offers no control, because the key never leaves the service
+  and a pool host asks the service for its installation tokens. Either
+  way the tokens a session gets are short-lived, scoped to one
+  repository, and no host or session uses a personal token or an
+  operator's identity for git (251).
 - **S116.** The host's "agent" is the name on this surface for the job
   that reads the plan and the objects, answers the operator in chat,
   and proposes writes as tool calls the operator confirms (194): the
   dispatch model's interpreter job. The chip's hint says so: "reads and
   answers; every write is a proposed call you confirm". The model keeps
   "interpreter"; the surface says "agent".
-- **S117.** "add" on a slot opens the catalogue filtered to that slot:
+- **S117.** "add" on a slot opens the catalogue filtered to that slot,
+  behind `fw.ff.store` (250): with the flag off an empty slot says what
+  it takes and carries no "add". The catalogue lists
   the per-host packages of the heading's kind that run on the host's
   platform, with "any platform" showing the rest greyed with what they
   need (228). Each entry shows name, version, "shipped" or "index",
@@ -604,7 +640,8 @@ were settled, not their place on the page.
   its secrets (the keychain or a sealed file under the root on a
   machine, the platform's secret store on a platform), the command to
   run there, that the page never carries the value, and a one-word
-  "placed" answer that has the machinery check the path. The slot in
+  "placed" answer, under `fw.secrets.place` (249), that has the
+  machinery check the path. The slot in
   "needs a secret" shows the same form in place. The slot links to the
   attention line and the line back to the host; the strip's setup
   control carries "secret" while one waits (149).
@@ -633,7 +670,10 @@ were settled, not their place on the page.
   session runs the build effect and current when the platform lists
   the new tag. A pool whose image is behind provisions no host until
   it is current, and its row says so.
-- **S176.** Pools. A pool row shows the pool's name, platform, image
+- **S176.** Pools, behind `fw.ff.pools` (250): with the flag off no
+  pool row is drawn on the hosts surface, the strip shows no pool pill
+  and the flywheel offers no pool control, and the settings form's
+  pools fields are absent. A pool row shows the pool's name, platform, image
   state (S175), live hosts of bound, the cost ceiling the manifest
   names, its retire time, and what it covers (240). Its hosts are
   listed under it, collapsed by default, each a host row of S114 with
@@ -665,55 +705,78 @@ were settled, not their place on the page.
   blueprints; "placed", "enable" on an attention line, and the install
   and enrol decisions are `answer`. Nothing on the surface calls
   anything else.
-- **S125.** Requirements served: 149, 191, 204, 205, 207, 228–230,
-  238–242. Tools called: `answer`, `add-package`, `configure-package`,
+- **S125.** Requirements served: 149, 191, 204, 205, 207, 207a,
+  228–230, 238–242, 244, 245, 249–252. Tools called: `answer`, `add-package`, `configure-package`,
   `disable-package`, `enable-package`, `remove-package`, `add-host`,
   `propose-chore`.
 
 ### 1.13 The account item
 
 - **S152.** A standard account item sits at the right of the header:
-  who you are and the sign-in kind, as a chip. It expands to a menu in
-  a fixed order: the identity block (S166), the organization switcher,
-  then settings, hosts, the organization store, and sign-out. It is the
-  one place the page reaches the organization as a whole rather than
-  an object in it. Nothing in the menu is in the count; a flow in it
-  that needs the operator's yes raises a decision in the rail like any
-  other.
-- **S153.** Who you are is the identity the serving host's sign-in
-  kind vouched for and the kind's name: "chuck · GitHub" by default,
-  the GitHub username, the same on a page served on the operator's own
-  computer as behind a host on the network (S164); the identity a
-  tailnet, OAuth or OIDC kind renders when the host binds one. There
+  who you are, as a chip. It expands to a menu in a fixed order: the
+  identity block (S166), the organization switcher, then settings,
+  hosts, the organization store, and sign-out. It is the one place the
+  page reaches the organization as a whole rather than an object in
+  it. Nothing in the menu is in the count; a flow in it that needs the
+  operator's yes raises a decision in the rail like any other.
+- **S153.** Who you are is the Frontegg user the token vouches for
+  (243, 246): the chip reads that user's name, and the identity block
+  adds the GitHub username the user's GitHub connection carries, which
+  is what authorship uses on commits and pull requests. It is the same
+  identity on a page served on the operator's own computer as behind a
+  host on the network (S164), and the same for every organization the
+  host serves. A user with no GitHub connection may respond and may
+  not be an author; the block carries "connect GitHub" for them. There
   is no signed-out page and no local-user case. Sign-out ends the
-  page's session with the serving host's sign-in kind and records
-  nothing (233).
+  page's session with the provider and records nothing (233).
 - **S154.** The organization switcher lists every organization the
   serving host has a root for (218), each with its decision count,
-  and marks one whose operators list does not carry the signed-in
-  identity as "not a member" (S166). Choosing a member organization
-  swaps the whole page to it: the rail, the board in every view, the
-  machinery strip's hosts and repositories, the flywheel reading, the
-  blueprints and the map. The as-of time is that organization's read.
-  Nothing carries across: no focus, no open dock, no mode, no overlay,
-  and never the identity, which is the host's. The page's address
-  names the organization, so a link opens it directly and the chat's
-  link (S32) lands on the right one.
+  and marks one whose account does not assign the flywheel
+  Application to the signed-in user as "not a member" (247, S166).
+  Choosing a member organization swaps the whole page to it: the rail,
+  the board in every view, the machinery strip's hosts and
+  repositories, the flywheel reading, the blueprints and the map. The
+  as-of time is that organization's read. Nothing carries across: no
+  focus, no open dock, no mode, no overlay, and never the identity,
+  which is the provider's and the same everywhere (233). The page's
+  address is the host's one address with the organization in the path,
+  `/<org>/…` (205a), so a link opens it directly and the chat's link
+  (S32) lands on the right one.
 - **S155.** Settings is the manifest as a form: the organization's
   declarations grouped as the manifest groups them, profile, defaults
-  per role (173), the operators list of identities, each entry with
-  its addresses per chat kind (234, 236a), the roles as lists of
-  members (237), the shared sinks and their presenters, pools with
+  per role (173), the shared sinks and their presenters, pools with
   bound, cost and retire time (240), routers, raw stores, callers,
   curation and triage cadences, each field with what it is and where
-  the machinery reads it. Save is one `configure-organization`
-  response for the whole form; the machinery applies it as one manifest
-  commit and the page re-reads. A save that would remove the saving
-  identity from the operators list is refused inline. A secret is
-  never a field: it is placed (S123). A host's declaration is changed
-  on hosts, a repository's is derived, and the form says so beside
-  each field it does not carry.
-- **S156.** The organization store is a settings screen of the same
+  the machinery reads it. Its members section shows the account's
+  assigned users with their roles read-only, derived at every fetch
+  (247, 248); the one authored thing beside them is the `addresses:`
+  list, each member's address per chat kind keyed by their user id
+  (236a). Save is one `configure-organization` response for the whole
+  form; the machinery applies it as one manifest commit and the page
+  re-reads. The form is under `fw.org.configure` and reads read-only
+  without it; retiring the organization is `fw.org.remove` and belongs
+  to an owner alone (249). A secret is never a field: it is placed (S123). A host's
+  keys — root, bound, declaration, provider, identity environment,
+  router — are shown read-only with a link to the host's own screen
+  (205a), a repository's are derived, and the form says so beside each
+  field it does not carry.
+- **S195.** The members section is where identity administration
+  happens, and there is no second console (255). Beside the read-only
+  list sit "invite…", and per member "assign", "revoke" and a role
+  choice; a flags list on the same section carries a per-account
+  toggle. Each is one recorded tool call under `fw.identity.admin`
+  (153): `invite-member(organization, email)`,
+  `assign-application(organization, user)`,
+  `revoke-application(organization, user)`,
+  `set-role(organization, user, role)`,
+  `target-flag(organization, flag, on)`. Revoking a member's
+  assignment takes their page sink and their chat sinks with it
+  (236a); their `addresses:` entry stays until the form removes it. A
+  member without `fw.identity.admin` reads the section and sees no
+  control on it.
+- **S156.** The organization store is behind `fw.ff.store` (250): the
+  menu carries no store entry on an account the flag is off for. It is
+  a settings screen of the same
   shape as a host's detail (S115): headings for unit and elaboration
   types, deliverable producers, map vocabularies, templates and
   scenario packs (190, 208), each a list of slots showing the package's
@@ -723,55 +786,95 @@ were settled, not their place on the page.
   and runs the one flow of S118 without a host: configuration
   collected, then one install decision on the organization; its yes
   installs the package into the blueprints repository as the
-  machinery's effects and the default set (190) grows. Nothing here
-  names a host and no index spans the headings.
-- **S157.** Hosts in the menu opens the hosts surface of §1.12. The
-  strip's setup control opens the same surface; it is a shortcut to
-  hosts and to nothing else.
+  machinery's effects and the default set (190) grows. Every control
+  on it is guarded by `fw.packages.manage` (249). Nothing here names a
+  host and no index spans the headings.
+- **S157.** Hosts in the menu opens the hosts surface of §1.12, behind
+  `fw.ff.management-console` for everything past the one host serving
+  the page (250). The strip's setup control opens the same surface; it
+  is a shortcut to hosts and to nothing else.
 - **S158.** The account item never: answers a decision; shows a
   secret's value; lists an organization the serving host has no root
-  for; opens a control in an organization the identity is not a member
-  of; changes the identity on a switch; installs anything without a
-  decision; mixes an organization package into a host's store or a
-  host's part into the organization store.
-- **S159.** Requirements served: 149, 173, 190, 203, 205, 208, 218,
-  233–234. Tools called: `answer` (the install decision),
-  `switch-organization`, `configure-organization`, `sign-out`,
-  `add-package` (the store's add, with no host).
+  for; opens a control in an organization whose account does not
+  assign the Application to the identity; changes the identity on a
+  switch; installs anything without a decision; mixes an organization
+  package into a host's store or a host's part into the organization
+  store; lets a flag stand in for a permission (250, S197).
+- **S159.** Requirements served: 149, 173, 190, 203, 205, 205a, 208,
+  218, 233–234, 236a, 243, 246–250, 255. Tools called: `answer` (the
+  install decision), `switch-organization`, `configure-organization`,
+  `sign-out`, `add-package` (the store's add, with no host),
+  `invite-member`, `assign-application`, `revoke-application`,
+  `set-role`, `target-flag`.
 
-### 1.14 Sign-in, members and owners
+### 1.14 Identity, members and owners
 
-- **S164.** An operator signs in once per host. The sign-in kind is a
-  setting of the serving host, the same for every organization it
-  serves, and its default is GitHub (233, 234): behind a host on the
-  private network the page runs GitHub's OAuth web flow; on a page
-  served on the operator's own computer it runs GitHub's device flow,
-  showing the code and the address to enter it at and waiting until
-  GitHub confirms. Either way the identity is the GitHub username,
-  the same everywhere. A host may bind another kind (tailnet, OAuth,
-  OIDC; host.yaml `sign_in`), and its identities read as that kind
-  renders them. Switching organization never changes the identity.
+- **S164.** Sign-in is the provider's hosted login, on the page (243,
+  244). The page runs the provider's SDK; the SDK builds the redirect
+  from the origin the page is served on, so the host's served name is
+  the only per-host fact and it is registered once on the environment's
+  redirect list, never per organization. A host declares one thing
+  about identity, the provider environment it serves the page under,
+  and that environment serves every organization it serves. On the
+  operator's own computer the page is served under a name and not a
+  port, `https://<host>.flywheel.localhost`, by the flywheel's own
+  per-computer proxy (245, host.yaml `router.local`), so several hosts
+  on one computer each have their own name and one wildcard redirect
+  entry admits them all. The identity is the Frontegg user (246), the
+  same on every host, and switching organization never changes it
+  (233, 253). An organization that needs its own directory connects it
+  to its account, never to a host, and no host runs a sign-in part.
 - **S165.** Every response the page records carries the identity
-  (153). An organization's operators list decides who may respond in
-  it: a response from an identity not listed is refused before any
-  record is written, the refusal is recorded with the identity, the
-  tool and the object, and the page shows it inline on the control
-  that sent it and under attention on the next delivery with ok as
-  the acknowledgement (S8). The read-only query tools answer any
-  identity the host admits.
-- **S166.** The account item's identity block shows the identity, the
-  kind that vouched for it, the host that serves the page, and the
-  organizations on this host the identity is a member of, each with
-  its roles from the manifest (237) and its sinks line: the page sink
-  and one chat sink per address in the member's operators entry
-  (236a), each with its kind, its mark and the host presenting it. An
-  address whose kind no host runs shows its sink as undelivered with
-  "add a <kind> sink on a host", opening the hosts surface on the
-  sinks heading (S115). The switcher (S154) lists the
-  member organizations with their counts and marks the rest "not a
-  member"; how a non-member organization is drawn, hidden or greyed, is
-  open (S191). Choosing one the identity is not a member of shows its
-  status view with every control absent.
+  (153), and there are two separate gates on it. Membership admits
+  the identity to the organization: it is the assignment of the
+  flywheel Application to the organization's account (247), and a
+  caller whose user the account does not assign is refused before any
+  record is written. Permission authorizes the tool: the tool server
+  reads the caller's token for the permission the tool declares, on
+  that account, and refuses a call without it (249). Either refusal
+  writes no response, is recorded to the run record with the identity,
+  the tool and the object (79), and shows inline on the control that
+  sent it and under attention on the next delivery with ok as the
+  acknowledgement (S8). A tool whose permission the host's environment
+  lacks is refused with that reason (252). The read-only query tools
+  answer any token carrying `fw.read`.
+- **S166.** The account item's identity block shows the Frontegg user,
+  the GitHub username its connection carries and what authorship uses
+  (246), the host that serves the page and the environment it
+  declares, and the organizations on this host whose accounts assign
+  the Application to that user, each with its roles from the token
+  (248) and its sinks line: the page sink and one chat sink per
+  address the manifest's `addresses:` carries for that user id (236a),
+  each with its kind, its mark and the host presenting it. An address
+  whose kind no host runs shows its sink as undelivered with "add a
+  <kind> sink on a host", opening the hosts surface on the sinks
+  heading (S115). The switcher (S154) lists the member organizations
+  with their counts and marks the rest "not a member"; how a
+  non-member organization is drawn, hidden or greyed, is open (S191).
+  Choosing one the account does not assign shows its status view with
+  every control absent.
+- **S196.** When the provider is unreachable the page degrades and
+  does not fail (254). A token already issued is honoured until it
+  expires; past that the page is read-only — the status view, the
+  board in every view, the book, the map and the rail's decisions all
+  render, and every control that would write is absent, the capture
+  box included. One attention line says identity is unreachable and
+  since when, and it stays for as long as it takes, unbounded. Work is
+  unaffected: hosts cover work with the App's installation token, not
+  with an identity (207, 251), so the loops keep running and the
+  numbers keep moving while nothing that needs a response is answered.
+  Flags fall back to their last-seen values, then to their definition
+  defaults, so a surface a flag hid stays hidden.
+- **S197.** A flag hides a surface and never authorizes (250). Five
+  flags are keyed `fw.ff.*` and targeted per account: `fw.ff.pools`
+  hides the pool rows and the pool control (S176), `fw.ff.book-view`
+  the board's book view (S91), `fw.ff.explore` the explore mode (S43),
+  `fw.ff.store` the organization store and a host's catalogue (S117,
+  S156), and `fw.ff.management-console` the hosts surface past the one
+  host serving the page (S113). A hidden surface's entry, control and
+  key are all absent rather than greyed, and the tool behind it is
+  still guarded by its permission, so a call that reaches it another
+  way is refused exactly as it would be with the surface shown.
 - **S167.** One board per organization (235). Every member reads the
   same rail with the same numbers and the same count, and there is
   nothing per member on the board but the delivery mark (S168) and the
@@ -783,12 +886,14 @@ were settled, not their place on the page.
   record exists, with "already answered by <member>" inline on the
   card, and nothing is recorded for it.
 - **S168.** Sinks are per member (236) and chat sinks per address
-  (236a). Each member has a page sink keyed by the identity and one
-  chat sink per address their operators entry carries, one per chat
-  kind (discord: a user id, slack: a member id), each with its own
-  delivery mark; the sinks are
-  added and removed in the same write as the entry, so a member with
-  no address has a page sink only. A chat sink is presented by
+  (236a). A member is a user the account assigns the Application to
+  (247); the page sink follows the assignment, keyed by the user id,
+  and a chat sink follows each address the manifest's `addresses:`
+  carries for that id, one per chat kind (discord: a user id, slack: a
+  member id), each with its own delivery mark. An address is added or
+  removed in the same write as the addresses list, so a member with no
+  address has a page sink only, and revoking the assignment takes
+  every one of that member's sinks. A chat sink is presented by
   whichever host runs that kind's package and holds the lease (148).
   A shared channel is one sink with one mark and no member. So SINCE
   is what entered a tail state since this member's last look on that
@@ -797,7 +902,7 @@ were settled, not their place on the page.
   placed and every numbered answer act on the object and are applied
   once for everyone (S167).
 - **S169.** A decision may carry an owner, a member or a role the
-  manifest names (237). The owner is set by planning's proposal per
+  token carries (237, 248). The owner is set by planning's proposal per
   unit, by a unit or elaboration type for its decisions, or by a
   member's assign (S170); an unowned decision is everyone's. The owner
   shows as one chip on the decision's object, the unit slip or its
@@ -806,19 +911,24 @@ were settled, not their place on the page.
   is, whether it counts, or who may answer it: the answers on an owned
   card are the same for every member.
 - **S170.** "assign…" is a dock control on the decision page: a list
-  of the operators and the manifest's roles, one choice sending one
-  `assign(decision, owner)` response, logged like any other; "unassign"
-  sends the same with no owner. Nothing about the decision changes but
-  its chip and who filters it in.
+  of the account's assigned members and the shipped roles (248), one
+  choice sending one `assign(decision, owner)` response, logged like
+  any other; "unassign" sends the same with no owner. It is guarded by
+  `fw.plan.assign`, so a reviewer reads the chip and has no control.
+  Nothing about the decision changes but its chip and who filters it
+  in.
 - **S171.** The rail's filter is mine · all, default all. mine shows the
-  decisions owned by this member or a role they hold, and the chat's
+  decisions owned by this member or a role their token carries (248),
+  and the chat's
   delivery follows the same setting; the choice is one
   `filter(sink, own | all)` response recorded on this member's sink and
   kept until changed. The header's count stays the organization's and
   gains "n mine" while the filter is on; "yes all" answers the approve
   decisions the rail shows. Attention and SINCE are never filtered.
-- **S172.** Requirements served: 153, 218, 233–237, 236a. Tools called:
-  `answer`, `assign`, `filter`, `sign-out`, `switch-organization`.
+- **S172.** Requirements served: 79, 153, 207, 218, 233–237, 236a,
+  243–255. Tools called: `answer`, `assign`, `filter`, `sign-out`,
+  `switch-organization`, `invite-member`, `assign-application`,
+  `revoke-application`, `set-role`, `target-flag`.
 
 ## 2. Flows
 
@@ -1060,16 +1170,20 @@ page shows after.
 
 ### 2.18 Switching organization
 
-- **S160.** 1. Header: the account item reads "chuck · GitHub"; a
-  click opens the menu with the identity block, then the switcher:
-  willdan · 9, mad-swan · 2, acme · not a member. 2. mad-swan chosen →
+- **S160.** 1. Header: the account item reads chuck; a click opens the
+  menu with the identity block, then the switcher: willdan · 9,
+  mad-swan · 2, acme · not a member, acme's account not assigning
+  chuck the Application (247). 2. mad-swan chosen →
   `switch-organization(mad-swan)`. 3. The whole page swaps: the rail
   shows mad-swan's two decisions, the board its lanes, the strip its
-  hosts and repositories, the flywheel its runway, the address names
-  mad-swan; the dock that was open is closed, no card is focused, the
-  view is phases. 4. The header's as-of time is mad-swan's read; the
-  account item reads the same identity. 5. The switcher again returns
-  to willdan the same way, with nothing remembered from before.
+  hosts and repositories, the flywheel its runway, the address is the
+  same host with `/mad-swan/` in the path (205a); the dock that was
+  open is closed, no card is focused, the view is phases. 4. The
+  header's as-of time is mad-swan's read; the account item reads the
+  same identity, and chuck's roles are mad-swan's account's, so a
+  control chuck holds in willdan may be absent here. 5. The switcher
+  again returns to willdan the same way, with nothing remembered from
+  before.
 
 ### 2.19 Adding an organization package
 
@@ -1101,15 +1215,21 @@ page shows after.
 
 ### 2.21 Signing in on your own computer
 
-- **S178.** 1. The page served by the laptop's own host opens on the
-  sign-in screen: "sign in with GitHub", the host's kind. 2. The page
-  shows a device code and github.com/login/device; the operator enters
-  the code there and approves. 3. The page turns to the plan with the
-  account item reading "chuck · GitHub"; the address names willdan,
-  the organization whose operators list carries chuck; the header
-  count is willdan's. 4. The same page served behind studio on the
-  network runs the web flow instead and lands the same way, with the
-  same identity.
+- **S178.** 1. The laptop's own host serves its page at
+  `https://laptop.flywheel.localhost/willdan/`, the name the
+  flywheel's per-computer proxy answers (245); opening it with no
+  token sends the page to the provider's hosted login, the redirect
+  built from that origin. 2. Chuck signs in there and comes back to
+  the same address. 3. The page turns to the plan: the account item
+  reads chuck, the identity block adds the GitHub username the
+  connection carries, and the header count is willdan's, the
+  organization whose account assigns chuck the Application. 4. The
+  same page served behind studio on the network sends chuck to the
+  same hosted login with studio's origin in the redirect and lands the
+  same way, with the same identity and the same roles (233, 253). 5.
+  A first sign-in with no GitHub connection lands on the plan all the
+  same, with "connect GitHub" in the identity block; chuck may respond
+  and may not be an author until it is connected (246).
 
 ### 2.22 A second answer refused
 
@@ -1200,7 +1320,8 @@ where a thing sits, never by its form.
 | package | a row in the catalogue a slot opens | name, version, shipped or index, needs, enables, "add" or its state on the host or in the blueprints | the row | greyed under "any platform" with what it needs |
 | image | a line on a pool row and at the head of the hosts list | tag, hash, current · behind · building, "rebuild" when behind | none | none |
 | owner | a chip on a decision's object and in its card's tail | the member or role | none | none; unowned shows no chip |
-| account item | a chip at the header's right | the identity and the sign-in kind; open: the identity block, the switcher, settings, hosts, organization store, sign-out | none | none |
+| member | a row in settings' members section | the user, the GitHub username authorship uses, roles read-only from the account, addresses per chat kind, sinks with their marks; the identity controls beside it under `fw.identity.admin` | none | leaves the list when the assignment is revoked, and its sinks with it |
+| account item | a chip at the header's right | the signed-in user; open: the identity block, the switcher, settings (with its members section), hosts, organization store, sign-out — hosts and store only where their flags are on (S197) | none | none |
 
 - **S52.** Markers: a decision's number with its group glyph on the
   object it concerns (S17), one glyph set everywhere: on a lane, on a
@@ -1348,7 +1469,8 @@ Dated 2026-09-05.
   added the repository on one click, are corrected here. The baseline
   decision arrives after the first planning runs, not at the add (104).
 - **S73.** Marking reviewed is a response on the plan object, recorded
-  like any other (122, statechart §10). The rail-and-board map logged it
+  like any other (122, statechart §10), under `fw.review.mark` (249).
+  The rail-and-board map logged it
   as a dictation; it is one recorded response and moves both the map's
   and the book's review view.
 - **S74.** An attention acknowledgement is recorded. "ok" on a response
@@ -1427,7 +1549,7 @@ Dated 2026-09-07.
   surfaces, both reached from the account item. A unit type, a
   producer, a map vocabulary, a template or a scenario pack belongs to
   the organization, installs into the blueprints and runs on no host; an
-  adapter, a sink, the agent, triage, a runner, a router or sign-in is
+  adapter, a sink, the agent, triage, a runner or a router is
   a host's part and installs on one host. One list that mixed them
   asked the operator to pick a host for something no host runs, so the
   organization store hangs off the organization (the account item)
@@ -1453,15 +1575,13 @@ Dated 2026-09-07.
 - **S143.** The review flow is one flow across map and book. One
   switch, one mark, one `reviewed` (S73). Two marks would let the book
   and the map disagree about what the operator has seen.
-- **S183.** Sign-in is the host's and membership the organization's
-  (233, 234). A host serves the page and vouches for one identity by
-  one kind, and an organization's operators list says who may respond;
-  so an operator signs in once per host, the identity holds across a
-  switch, and refusal is authorization, never a second sign-in. GitHub
-  is the default so that the identity is the same username on a
-  laptop's own page as behind a host; the local-user case is rejected
-  because it gave one operator two names and left a response with no
-  identity to carry (153).
+- **S183.** Membership is the organization's and refusal is
+  authorization (233, 234). An operator signs in once and the identity
+  holds across a switch, so an organization that does not admit that
+  identity refuses the call rather than asking for a second sign-in;
+  the refusal is recorded and read under attention. The local-user
+  case is rejected because it gave one operator two names and left a
+  response with no identity to carry (153).
 - **S184.** One board, refused before recorded (235). The plan is one
   list from one register and every member reads the same numbers, so
   a decision answered by one member is answered for all. The second
@@ -1529,6 +1649,42 @@ Dated 2026-09-08.
   pools, sinks, curation, addresses — and shows the host's keys — root,
   bound, declaration, provider, identity environment, router —
   read-only with a link to the host's own screen. Closed.
+- **S199.** Identity is the provider's and the same on every host
+  (243–246, 253). One provider and one Application serve the whole
+  flywheel, so sign-in is the provider's hosted login on the page and
+  a host declares only the environment it serves under; the served
+  name the redirect is built from is the one per-host fact, and on the
+  operator's own computer the flywheel serves that name itself through
+  the proxy a place's services already need (191, 245). Per-host
+  sign-in kinds are rejected: they gave one operator a different
+  identity per host, made every host a place a directory had to be
+  wired to, and left the laptop's page as a case of its own. There is
+  no local-user case and no unauthenticated page. The identity is the
+  Frontegg user; GitHub stays the git host and supplies, through its
+  connection on that user, the username authorship writes. Closed.
+- **S200.** Flags hide, permissions authorize (249, 250). A feature
+  flag is targeted per account and decides only whether a surface is
+  drawn, so the entry, the control and the key are absent together and
+  a flag is never read as a right; the tool server checks the token
+  for the permission the tool declares before any response is written,
+  so a hidden surface's tool is still refused to a caller without the
+  permission and a shown one is still refused to a caller who lacks
+  it. Greying a control the flag hides is rejected: it advertises a
+  surface the account does not have. Using a flag to gate a write is
+  rejected: a flag is evaluated in the page, and authorization that
+  the page can decide is not authorization. Closed.
+- **S201.** Membership is not a commit (247, 255, 236a). Who may
+  respond in an organization is the assignment of the Application on
+  its account, read at every fetch, so the settings form shows members
+  and their roles read-only and invite, assign, revoke and set-role
+  are recorded tool calls under `fw.identity.admin` rather than edits
+  to a file. The one authored thing about a member is their chat
+  addresses, keyed by user id, because those are the organization's
+  routing and not the provider's. An authored operators list is
+  rejected: it let the manifest and the account disagree about who was
+  a member, and made adding a person a pull request. A second admin
+  console is rejected: administration is a surface of the flywheel,
+  recorded like any other response (153). Closed.
 
 ## 6. Open
 
@@ -1561,12 +1717,15 @@ What no mockup settled.
   Tab moves between the rail and the canvas. j and k walk the rail in
   one and the focus ring in the other, so the answer decides which the
   keys reach first.
-- **S144.** 213, 214, 229 and 230 are ratified and bind §1.10–§1.12
-  as their text now reads. Open from reading the statements against
-  them: 229's "added, awaiting install" is shown as "adding · decision
-  n" and its removal keeps the package's records, and whether a
-  removed package leaves a greyed slot that opens those records or an
-  empty slot with "add" is not settled.
+- **S144.** 213, 214, 229 and 230 are ratified and bind §1.10–§1.12,
+  and 205a, 207a and 243–255 bind §1.13–§1.14, all as their text now
+  reads. Open from reading the statements against them: 229's "added,
+  awaiting install" is shown as "adding · decision n" and its removal
+  keeps the package's records, and whether a removed package leaves a
+  greyed slot that opens those records or an empty slot with "add" is
+  not settled; and 252's refusal of a tool whose permission the host's
+  environment lacks has no surface of its own yet, being drawn as the
+  same inline refusal and attention line as any other (S165, S202).
 - **S146.** The decision kinds the hosts surface raises are the
   model's: package-install, package-secret, host-enrol and
   host-enrol-lapsed (model A.28), host-environment (238). What the
@@ -1595,6 +1754,21 @@ What no mockup settled.
   greyed as "not a member" with the read-only status view behind
   them (S166). surfaces.yaml `account.switcher` draws them greyed;
   Chuck's ruling is pending.
+- **S202.** How a refusal reads on the surface, between its three
+  causes (249, 252): a member without the tool's permission, a caller
+  the organization's account does not assign, and a tool whose
+  permission the host's environment lacks. All three are recorded the
+  same way and shown inline with an attention line (S165), and whether
+  the operator is told which cause it was, and in what words, is not
+  settled. The controls a member has no permission for are absent
+  rather than greyed by the same reasoning as S200, so the first cause
+  should be rare and reached only by a stale page.
+- **S203.** What the members section shows about a member who has no
+  chat address and no `fw.read` role — a viewer invited but not yet
+  assigned, or one whose invitation is outstanding. The account knows
+  an invitation before an assignment exists (255), and whether the
+  section lists it as a pending row or shows nothing until the
+  Application is assigned is not settled.
 - **S192.** The visual shape of the hosts settings screen and the
   organization store: how headings and slots are laid out against the
   row list, how a list heading (sinks, adapters, runners per role)
