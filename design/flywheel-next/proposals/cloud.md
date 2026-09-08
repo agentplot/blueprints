@@ -160,3 +160,31 @@ Tier 1 answers "one step above using your own computer": sign in with GitHub, th
 - **246. A queue between a capture endpoint and its commit is the caller's retry buffer and not state. A capture is captured when its commit lands, and a lost queue is indistinguishable from a call that never arrived.** Closes the I14 hole idea 2 opens.
 - **247. An organization's chat tier is a binding: full, where plain messages are read, and controls-only, where the numbered grammar is a slash command and answers are controls. Every decision is answerable in both.** Makes tier 1's Discord mode a stated tier, not a degradation.
 - **248. A pool host's life may be one session, and what an image carries is what a joining host does not clone.** Names the cold-start budget as a design surface.
+
+---
+
+## Platforms: Fly.io Machines vs Lambda microVMs
+
+Both are Firecracker. The difference is not isolation but the shape of the contract: Lambda sells a bounded invocation with no durable disk, Fly sells a microVM you create, stop and restart with a volume attached. That difference decides both questions below in the same direction.
+
+| | pool host (240–242) | dispatcher, scale-to-zero |
+|---|---|---|
+| Lambda | **disqualified.** 900-second cap against sessions of minutes to hours; killing one at 15 minutes is exactly the interruption I5 forbids. `/tmp` is ephemeral, 512 MB–10 GB, gone between execution environments, so 205's root cannot persist; EFS over a VPC restores durability but git on NFS is slow and adds cold start. | viable for the capture endpoint and Slack interactions; cannot hold the Discord gateway, so 216's presenter job has no home. |
+| Fly Machines | **the fit.** Created on demand from the tenant's image (239) through the Machines API, no execution cap, one volume per machine holding the layout, destroyed or stopped when the queue drains. | Fly Proxy's `auto_start_machines` wakes a stopped machine on an inbound request; `auto_stop_machines = "stop"` or `"suspend"` puts it back. Stopped machines are billed for rootfs only, $0.15/GB per 30 days, no compute. |
+
+**1. The pool.** Fly, and not closely. But note that Fly's *stop* is not the model's *retire*. A stopped machine keeps its host id and stops heartbeating, so `host.yaml`'s life region takes it to stale at five minutes and gone at thirty, raising a takeover decision under attention for a host that is merely parked. Retire should therefore destroy the machine, ending the host object exactly as 240 says, while the volume survives unattached as a cache that the next pool host in that region reattaches. The volume holds only mirrors of what git holds, so I14 is untouched and a lost volume costs a clone.
+
+**2. Dispatchers that scale to zero.** Yes, the proxy can wake a per-tenant dispatcher machine, routed either as one app per tenant or through a router app returning `fly-replay` to the tenant's app and instance. But two things make "pays nothing idle" false before the first tenant.
+
+- **Nothing wakes it for a due tick.** Fly has no cron. A small always-on machine must sweep the due index (245) and start the due tenants' machines through the Machines API. That is one machine you pay for at all times.
+- **The 3-second acknowledgement.** Slack and Discord both require an interaction acknowledged within three seconds. A cold wake is microVM start plus process boot plus the fetch of two repositories, roughly one to six seconds, and suspend-resume shortens only the first term. So the store-and-forward receiver of idea 2 is mandatory rather than optional for a scale-to-zero dispatcher, and clause 246 becomes load-bearing. That is a second always-on component.
+
+**The better first step is still the batch ticker**, for a reason worth stating plainly: per-tenant machines buy no requirement purity that the batch ticker lacks. 241 constrains pool hosts, not the dispatcher, and 218 positively permits one host serving several organizations, so neither 241 nor 217d is bent either way. The only clause the batch ticker bends is 231. Against that, per-tenant machines add three moving parts (per-tenant app or replay router, per-tenant volume, scheduler machine) to reach the same two always-on components, and their storage has the wrong granularity: the smallest Fly volume is 1 GB, so a tenant holding 30 MB of warm clones still pays for 1 GB, a floor of $0.15 per tenant per month, or $15,000 a month at 100,000 tenants for space barely used. A shared cache pays for bytes actually held and evicts the cold ones. Per-tenant machines earn their place at tiers 2 and 3, where the tenant pays and isolation is the product.
+
+**3. What a dispatcher-tier tick touches.** The dispatcher's declaration names no repository and no unit type (217), so it clones no built repository.
+
+- **Fetches** the state repository's shared line, with its lease and host branches read by `ls-remote`, and the blueprints repository's shared line.
+- **Pushes** to the state repository: object records and thread entries, response records, its lease on the sink, its own host heartbeat branch, run records and the status page. To the blueprints repository it pushes only under the `flywheel/` prefix (203): captures from the endpoint job, signals from triage. Moves belong to curation, which is not dispatch's job.
+- **Never** a built repository, a place, a worktree, or the raw material a capture points at, which stays outside version control (111).
+
+The cache follows from that. The state repository is one record file per object plus append-only threads, with history dominating because every effect is a commit — single-digit to low tens of megabytes. The blueprints repository is read only for the manifest, the claims (157) and `flywheel/`, so a blobless partial clone with a sparse checkout of those three holds tens of megabytes rather than the whole book. Budget 10–50 MB per tenant: 10–50 GB at 1,000 tenants, 1–5 TB at 100,000. At that size the cache must be evictable, which is exactly what clause 245 already grants it and what a per-tenant volume cannot be without destroying the tenant's host.
