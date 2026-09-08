@@ -30,13 +30,15 @@
   - A configuration change is one logged response, applied by the machinery as a re-install of that
     package (S119); a flashbar confirms it and says what was logged. Retire and restore in the
     organization store are one logged response each (S156).
-  - Side navigation is two sections. Organizations: one entry per organization the signed-in identity
-    is a member of (willdan, agentplot, integral-analytics, personal), each expanding to Overview ·
-    Repositories · Members and roles · Sinks · Adapters · Packages · Pools. Hosts: one entry per host
-    of the organization in hand, each opening its settings screen, and "+ host". Hosts are per
-    organization because a host serves one organization (241) and its parts are read from that
-    organization's manifest.
-  - The host settings screen is by heading, each heading a slot or a list of slots (S115): Sign-in,
+  - The organization is chosen in the top navigation and nowhere else. The side navigation lists the
+    sections of the organization in hand and no entity of any kind: Overview · Hosts · Pools ·
+    Members · Repositories · Sinks · Adapters · Store · Plan · Settings. "+ organization" sits in the
+    top navigation's organization menu, beside the organizations it would join.
+  - Every collection is a table and every entity is a drill-in from it: Hosts, Pools, Members and
+    Repositories each list rows, and a name in the first column opens that one thing under
+    breadcrumbs, a page header with its state and actions, and tabs. A host drills in to Parts ·
+    Environment · Sinks · Facts, a pool to Hosts · Image · Limits.
+  - The host's Parts tab is by heading, each heading a slot or a list of slots (S115): Sign-in,
     Router, Runners (one slot per role: elaboration · construction · machinery), Agent, Chat sinks,
     Capture adapters, Triage (derived from the adapters, no slot), Environment, Pool, Host facts.
     A slot shows the package's name and version and its state: installed · adding, decision n · needs
@@ -111,22 +113,60 @@
     platform credentials, read at run time and never stored · hand over only the chosen parts' secrets
     · enrol, which raises the enrolment decision with a one-time token that expires in 24h, then join
     and alive. "adopt existing" (S121) skips platform, provisioning and the hand-over.
+  - "An agent in the cloud" is never asked about a router or a runner: the tier fixes both, the
+    platform router at the served name and the in-process runner at bound 0 (plans.md, hosted
+    tier 1). Its Parts step is one screen of three selectors — Chat (Slack · Discord · none),
+    Meetings (Granola · Notion · a folder of transcripts · none), Captures (GitHub, already on and
+    read-only · Datadog · a webhook) — with a row of presets above them that fill the selectors.
+    A preset is a bundle package, a named set of parts with their configuration defaults, and its
+    install is one decision for the set, not one per part (plans.md). Routers and runners are
+    offered only on "a machine of yours" and "adopt", and there only under an Advanced disclosure
+    with the sensible default already chosen.
+  - Plan is a section of its own: the plan the organization's account is on, the tier it allows, the
+    entitlement flags it turns on, and each limit with the use against it (plans.md). "change plan"
+    says billing is on the hosted account and links out to it; nothing about a plan is authored
+    here. A self-managed organization has no plan object at all — its Plan page says so and states
+    Free's promise instead (plans.md, 250).
   - Pools (S176): a pool is a row of its own with platform, image state, live of bound, idle-retire and
     cost, its hosts folded under it, each a host row with a pool chip and a retiring state. Nothing on
     the row adds or retires a host; the machinery does both within bound and cost. "rebuild" on an
     image behind raises the rebuild as a chore decision (S175).
-  - Members and roles (S166–S171): the operators list with each member's addresses per chat kind, the
-    sinks each address makes with its own mark and presenting host, and the roles as lists of members.
-    Ownership is administered here and answered there: "assign" lives on the decision in the plan
-    console (S170), and this console says so rather than drawing an answer control.
+  - Members (S166–S171): a table of the operators list, and one member's addresses, roles and sinks
+    behind their name. The sinks each address makes carry their own mark and presenting host, and the
+    roles are lists of members. Ownership is administered here and answered there: "assign" lives on
+    the decision in the plan console (S170), and this console says so rather than drawing an answer
+    control.
   - Environment (S174): a repository's row carries its declaration and one line per host, satisfied or
     the first tool it cannot produce; a host's Environment heading shows the same from the host's side.
     The console changes no provider — a provider is a host's declaration, changed with the host.
-  - Settings, the organization's manifest as a form (S155), is split across the organization's pages
-    rather than drawn as one long form: Overview carries profile, router, cadences and the runner
-    defaults per role; Repositories, Members and roles, Sinks, Adapters and Pools carry the rest. Save
-    is one configure-organization response per form and the console says the machinery applies it as
-    one manifest commit.
+  - Settings, the organization's manifest as a form (S155), is split by what the field belongs to
+    rather than drawn as one long form: the Settings section carries the profile, the router, the
+    cadences and the runner defaults per role, a repository's landing policy is on that repository, a
+    pool's bound and cost on that pool, and a host's own fields on that host. Save is one
+    configure-organization response per form and the console says the machinery applies it as one
+    manifest commit. Overview authors nothing: it reads what the organization is and what is under
+    attention.
+
+  Layout decisions:
+  - Sections in the side navigation, not entities. A navigation that listed every organization and
+    every host grew with the estate and put two kinds of thing — a place you are and a thing you
+    administer — in one list, so switching organization and opening a host looked alike. The
+    organization is the one axis the whole page hangs from, so it belongs in the top navigation,
+    chosen once; below it the side navigation is a fixed list of the sections of that one
+    organization, the same ten entries whether the organization has one host or forty.
+  - Tables and drill-in, not a nav entry per thing. A host, a pool, a member and a repository are
+    all collections that grow, and each has state worth comparing across rows: alive, bound, pool,
+    last heartbeat, attention. A table shows that at once and sorts the estate; the name in the
+    first column is the way in. The drill-in then owns the whole of one thing under breadcrumbs and
+    tabs, so the settings screen keeps its heading-by-heading shape without competing with
+    navigation for the same space.
+  - The cloud agent asks only about sinks and adapters. Router and runner are not choices on that
+    tier — they are what the tier is: the platform router at the served name, the in-process runner
+    at bound 0. Offering them would ask the operator to re-decide something already decided, and
+    every wrong answer would break the host. What is genuinely open is what the agent listens to
+    and speaks through, which is three selectors and a row of presets on one screen. The platform
+    list, the router and the runner stay reachable on the journeys where they are real choices, a
+    machine of yours and an adopted host, under Advanced with defaults preselected.
 
   Invented beyond the requirements and the seed: the member roles as lists of members (construction,
   design, ops) and their members, the console's own page set and its breadcrumbs, the decision numbers
@@ -135,10 +175,14 @@
   Marked sample where it is not from the seed.
 
   Review switches: ?theme=dark|light, ?org=willdan|agentplot|integral-analytics|personal,
-  ?page=overview|repositories|members|sinks|adapters|packages|pools, ?host=<id>, ?addhost=1,
+  ?page=overview|hosts|pools|members|repositories|sinks|adapters|store|plan|settings,
+  ?host=<id>&tab=parts|environment|sinks|facts, ?pool=<id>&ptab=hosts|image|limits,
+  ?member=<id>, ?repo=<id>, ?addhost=1&journey=machine|cloud-agent|adopt&wstep=0..4,
   ?addorg=1&ostep=0..6, ?served=studio|willdan-cloud (which host serves this page, and so which
-  identity kind it shows),
-  ?panel=1 (opens the seeded catalogue), ?flash=1.
+  identity kind it shows), ?panel=1 (opens the seeded catalogue), ?flash=1.
+
+  The Hosts table is ?page=hosts; a host drill-in is ?host=willdan-cloud (its tabs ?host=…&tab=…);
+  the cloud agent's one-screen Parts is ?addhost=1&journey=cloud-agent&wstep=1.
 -->
 <meta charset="utf-8">
 <title>Management console</title>
@@ -245,6 +289,8 @@ p{margin:0}
 .sn-org .tw{font-size:10px;color:var(--tertiary);width:10px}
 .sn-div{border:0;border-top:1px solid var(--divider-2);margin:12px 8px}
 .sn-note{padding:4px 12px 0;font-size:12px;color:var(--tertiary)}
+.sn-count{margin-left:auto;font-size:12px;color:var(--tertiary);font-weight:400;font-variant-numeric:tabular-nums}
+.sn-item[aria-current="page"] .sn-count{color:var(--link)}
 
 /* ---------- content layout ---------- */
 .crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:14px;color:var(--tertiary)}
@@ -289,8 +335,10 @@ p{margin:0}
 /* ---------- table ---------- */
 .tbl-wrap{overflow-x:auto}
 table.tbl{width:100%;border-collapse:collapse;font-size:14px}
-.tbl th{text-align:left;font-weight:700;color:var(--heading);padding:10px 20px;border-bottom:1px solid var(--divider-2);white-space:nowrap;background:var(--surface)}
-.tbl td{padding:12px 20px;border-bottom:1px solid var(--divider-2);vertical-align:top}
+.tbl th{text-align:left;font-weight:700;color:var(--heading);padding:10px 14px;border-bottom:1px solid var(--divider-2);white-space:nowrap;background:var(--surface)}
+.tbl td{padding:12px 14px;border-bottom:1px solid var(--divider-2);vertical-align:top}
+.tbl th:first-child,.tbl td:first-child{padding-left:20px}
+.tbl th:last-child,.tbl td:last-child{padding-right:20px}
 .tbl tr:last-child td{border-bottom:0}
 .tbl tr.sub td{background:var(--shaded)}
 .tbl tr.sub td:first-child{padding-left:40px}
@@ -387,6 +435,12 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .jrn .jt{font-weight:700;color:var(--heading)}
 .jrn .jp{font-size:12px;line-height:17px;color:var(--secondary);margin-top:4px}
 .jrn .jp b{color:var(--heading)}
+/* ---------- presets: a bundle offered as one choice on the cloud agent's parts screen ---------- */
+.preset-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.preset{display:flex;flex-direction:column;gap:4px;align-items:flex-start;text-align:left;padding:12px;border:2px solid var(--divider-2);border-radius:12px;background:var(--surface)}
+.preset:hover{border-color:var(--input-border)}
+.preset.on{border-color:var(--link);background:var(--selected)}
+.preset b{color:var(--heading)}
 .hamburger{display:none}
 @media (max-width:900px){
   .layout,.layout.panel-open{grid-template-columns:minmax(0,1fr)}
@@ -434,7 +488,7 @@ const MODELS = ['claude-opus-5','claude-fable-5-1','claude-sonnet-5','claude-hai
 
 /* the package index: what a host or the organization could run (228) */
 const INDEX = [
-  {id:'meeting', kind:'adapter', name:'meeting transcripts', v:'1.4.0', tag:'shipped', plat:['machine'], needs:'the notes tool on this machine · the raw store, or "capture where it lies" with triage declared here', enables:'one capture per meeting · key: the meeting id'},
+  {id:'meeting', kind:'adapter', name:'meeting transcripts', v:'1.4.0', tag:'shipped', plat:['any'], needs:'the notes tool reached — on this machine, or by its API from a cloud host · the raw store, or "capture where it lies" with triage declared here', enables:'one capture per meeting · key: the meeting id'},
   {id:'folder', kind:'adapter', name:'folder drop', v:'1.2.1', tag:'shipped', plat:['machine'], needs:'a folder to watch · nothing else', enables:'one capture per file · key: the file hash'},
   {id:'chat-forward', kind:'adapter', name:'chat forward', v:'1.1.0', tag:'shipped', plat:['any'], needs:'a chat sink on the same host', enables:'a forwarded message becomes one capture with its one signal'},
   {id:'capture-box', kind:'adapter', name:'the capture box', v:'1.0.0', tag:'shipped', plat:['any'], needs:'the host serves the page', enables:'text sent unparsed to the capture tool · one signal of kind ask (19)'},
@@ -469,6 +523,11 @@ const INDEX = [
   {id:'tp-adr', kind:'template', name:'ADR', v:'0.4.0', tag:'index', plat:['any'], needs:'nothing', enables:'a decision record per closed decision in the intent change directory'},
   {id:'sp-flywheel', kind:'scenario pack', name:'flywheel acceptance', v:'1.0.0', tag:'shipped', plat:['any'], needs:'nothing', enables:'the scenarios behind a bolt acceptance file'},
   {id:'sp-sinks', kind:'scenario pack', name:'sink delivery', v:'0.5.0', tag:'index', plat:['any'], needs:'nothing', enables:'delivery-mark scenarios for every chat sink'},
+  /* a bundle is a named set of parts with their configuration defaults, offered as one choice and
+     installed as one decision for the set (plans.md) · an organization may publish its own */
+  {id:'bundle-slack-granola', kind:'bundle', name:'Slack + Granola', v:'1.0.0', tag:'shipped', plat:['any'], needs:'the Slack app and the notes tool', enables:'the plan in a Slack channel and one capture per meeting'},
+  {id:'bundle-discord-github', kind:'bundle', name:'Discord + GitHub only', v:'1.0.0', tag:'shipped', plat:['any'], needs:'the bot own Discord token', enables:'the plan in a Discord channel and PR conversation as captures'},
+  {id:'bundle-everything', kind:'bundle', name:'Everything', v:'1.0.0', tag:'shipped', plat:['any'], needs:'every secret the parts below name', enables:'chat, meetings and every capture source at once'},
 ];
 /* each package's configuration schema (sample); a secret names the file it is placed as and is never a field */
 const SCHEMA = {
@@ -506,6 +565,32 @@ const STORE_HEADINGS = [
   ['Templates', ['template'], 'the shape of a proposal, a record, a decision'],
   ['Scenario packs', ['scenario pack'], 'the scenarios behind acceptance files'],
 ];
+/* the commercial ladder over the tiers (plans.md) · a plan never authorizes: it hides a surface and
+   meters a quantity, and permission comes from roles (248, 249) */
+const FLAGS = [
+  ['fw.ff.cloud-agent', 'a host of tier 1 may be added', ['Hobby','Pro','Team','Enterprise']],
+  ['fw.ff.pools', 'a pool may be declared', ['Pro','Team','Enterprise']],
+  ['fw.ff.store', 'the package store', ['Pro','Team','Enterprise']],
+  ['fw.ff.book-view', 'the book view', ['Free','Hobby','Pro','Team','Enterprise']],
+  ['fw.ff.explore', 'explore', ['Free','Hobby','Pro','Team','Enterprise']],
+  ['fw.ff.management-console', 'this console beyond one host', ['Team','Enterprise']],
+  ['fw.ff.members', 'roles, invite, assignment, ownership', ['Team','Enterprise']],
+  ['fw.ff.federation', 'the organization&#8217;s key and stores in its own AWS account', ['Enterprise']],
+  ['fw.ff.sso', 'enterprise SSO and SCIM on the account', ['Enterprise']],
+  ['fw.ff.dedicated-dispatcher', 'a dispatcher function of its own', ['Enterprise']],
+];
+const PLANS = {
+  Free:{tier:'0 · your computer', who:'one person, own hardware', unlocks:'the binary, GitHub&#8217;s device flow, your own GitHub App and chat bot, every package, every surface',
+    limits:[['Organizations','none we enforce'],['Members','none we enforce'],['Pool hours','no pools'],['Pool memory','no pools']]},
+  Hobby:{tier:'1 · cloud agent', who:'one person who closes the laptop', unlocks:'the service&#8217;s bot and App, captures and chat while your machines sleep, the plan in Slack or Discord, the page at a served name',
+    limits:[['Organizations','1'],['Members','1'],['Pool hours','no pools'],['Pool memory','no pools']]},
+  Pro:{tier:'1 + 2', who:'one person with more to build', unlocks:'Hobby plus pools with an included hour allowance and metered overage, the store, the book view, presets',
+    limits:[['Organizations','3'],['Members','1'],['Pool hours','included, then metered'],['Pool memory','8 GB per pool host']]},
+  Team:{tier:'2 · pools', who:'a team', unlocks:'Pro plus members with roles, ownership and assignment, this management console, identity administration, priority ticks',
+    limits:[['Organizations','unlimited'],['Members','per seat'],['Pool hours','100 a month, pooled'],['Pool memory','32 GB per pool host']]},
+  Enterprise:{tier:'3 · your account', who:'a company with a security policy', unlocks:'Team plus your own AWS account by OIDC federation, SSO and SCIM through your identity provider, a dedicated dispatcher function, audit export, private pool images, an SLA',
+    limits:[['Organizations','custom'],['Members','custom'],['Pool hours','custom'],['Pool memory','custom']]},
+};
 const pkg = id => INDEX.find(p => p.id === id);
 const schemaOf = p => (p && SCHEMA[p.id]) || [];
 const secretFields = p => schemaOf(p).filter(f => f.kind === 'secret');
@@ -585,6 +670,7 @@ const willdanHosts = () => [
 const ORGS = {
   willdan: {
     name:'willdan', what:'the platform · 3 hosts and a pool · 4 repositories',
+    plan:'Team', use:{organizations:3, members:6, poolHours:41, poolMemory:'32 GB'},
     members:[
       {id:'chuck', name:'Chuck Swanberg', signin:'GitHub', addresses:{discord:'@chuck', slack:'U0CHUCK'}, roles:['construction','ops'], since:'08-12'},
       {id:'rhea', name:'Rhea Okonkwo', signin:'GitHub', addresses:{slack:'U0RHEA'}, roles:['design'], since:'08-28'},
@@ -636,6 +722,7 @@ const ORGS = {
   },
   'integral-analytics': {
     name:'integral-analytics', what:'a client · one cloud host', sample:true,
+    plan:'Pro', use:{organizations:1, members:2, poolHours:0, poolMemory:'8 GB'},
     members:[{id:'chuck', name:'Chuck Swanberg', signin:'GitHub', addresses:{slack:'U0CHUCK'}, roles:['ops'], since:'08-05'},{id:'ops-integral', name:'Integral ops', signin:'GitHub', addresses:{slack:'U0OPS'}, roles:['ops'], since:'08-05'}],
     roles:[{id:'ops', what:'owns every decision here', members:['chuck','ops-integral']}],
     runnerRoles:[{role:'elaboration', kind:'in-process', model:'claude-sonnet-5'},{role:'construction', kind:'managed', model:'claude-opus-5'},{role:'machinery', kind:'in-process', model:'claude-haiku-4-5'},{role:'triage', kind:'in-process', model:'claude-sonnet-5'},{role:'interpreter', kind:'in-process', model:'claude-haiku-4-5'}],
@@ -675,7 +762,10 @@ const IDENTITY = {handle:'chuck', name:'Chuck Swanberg', github:'chuck', fronteg
    state
    =========================================================================== */
 const S = {
-  org:'willdan', page:'overview', host:null, addhost:null, addorg:null, orgWizard:null, served:null,
+  org:'willdan', page:'overview', addhost:null, addorg:null, orgWizard:null, served:null,
+  host:null, tab:'parts',      /* the host drill-in and its tab */
+  pool:null, ptab:'hosts',     /* the pool drill-in and its tab */
+  member:null, repo:null,      /* the member and repository drill-ins */
   panel:null,           /* {mode:'catalogue'|'sheet'|'configure'|'secret'|'joined', ...} */
   flashes:[], menu:null, navOpen:false, lit:null,
   nextDecision:425, raised:[], log:[],
@@ -690,6 +780,21 @@ const servingHost = () => hosts().find(h => h.id === S.served) || hosts().find(h
 const servingKind = () => ((servingHost() || {}).identity || {kind:'github'}).kind;
 const isHosted = () => servingKind() === 'frontegg';
 const shownIdentity = () => isHosted() ? IDENTITY.frontegg : IDENTITY.github;
+/* a host's tier is read off what it is, never authored: a pool host is the pool's, a `frontegg`
+   host is the cloud agent's, and everything else is your own computer (hosted-design.md) */
+const tierOf = h => h.pool ? '2 · pools' : ((h.identity||{}).kind === 'frontegg' ? '1 · cloud agent' : '0 · your computer');
+/* every line this host puts under attention in the rail, gathered for the table's last column */
+function hostAttention(h){
+  const out = [];
+  if(!h.alive) out.push(`gone ${h.gone || ''} · its lease expires and its sessions are released`);
+  (h.parts || []).forEach(p => { if(p.state === 'needs a secret')
+    out.push(`${pkg(p.pkg).name} needs ${(secretFields(pkg(p.pkg))[0]||{}).file || 'a secret'}${p.wi ? ' · ' + p.wi + ' waits on it' : ''}`); });
+  Object.entries((h.env && h.env.repos) || {}).forEach(([rid, e]) => { if(!e.ok) out.push(`${rid} · the environment cannot be satisfied`); });
+  if(h.binary !== h.binaryLatest) out.push(`binary ${h.binary} · behind ${h.binaryLatest}`);
+  if(h.gitApp && h.gitApp.own && h.gitApp.placed === false) out.push('the App key is not placed');
+  return out;
+}
+const orgAttention = () => hosts().reduce((n, h) => n + hostAttention(h).length, 0);
 
 /* ===========================================================================
    Cloudscape components, drawn by hand
@@ -734,25 +839,35 @@ function raiseDecision(kind, title, note){
 /* ===========================================================================
    side navigation
    =========================================================================== */
-const PAGES = [['overview','Overview'],['repositories','Repositories'],['members','Members and roles'],['sinks','Sinks'],['adapters','Adapters'],['packages','Packages'],['pools','Pools']];
+/* the sections of the organization in hand · no entity is ever a navigation entry: the organization
+   is chosen in the top navigation, and a host, a pool, a member and a repository are rows in a table */
+const PAGES = [
+  ['overview','Overview'], ['hosts','Hosts'], ['pools','Pools'], ['members','Members'],
+  ['repositories','Repositories'], ['sinks','Sinks'], ['adapters','Adapters'],
+  ['store','Store'], ['plan','Plan'], ['settings','Settings'],
+];
+/* which section the page in hand belongs to, drill-ins included */
+function currentSection(){
+  if(S.addorg) return null;
+  if(S.host || S.addhost) return 'hosts';
+  if(S.pool) return 'pools';
+  if(S.member) return 'members';
+  if(S.repo) return 'repositories';
+  return S.page;
+}
 function sidenavHtml(){
-  const orgs = memberOrgs();
-  const orgItems = orgs.map(id => {
-    const open = id === S.org;
-    const o = ORGS[id];
-    const kids = open ? `<div class="sn-sub">${PAGES.map(([p,label]) =>
-      `<button class="sn-item" data-page="${p}" ${S.page===p && !S.host && !S.addhost && !S.addorg ? 'aria-current="page"' : ''}>${label}</button>`).join('')}</div>` : '';
-    return `<button class="sn-org" data-org="${id}" aria-expanded="${open}"><span class="tw" aria-hidden="true">${open ? '&#9660;' : '&#9654;'}</span>${esc(o.name)}${o.decisions ? `<span class="badge-n" title="${o.decisions} decisions in the plan console">${o.decisions}</span>` : ''}</button>${kids}`;
+  const o = org(), sec = currentSection(), att = orgAttention();
+  const counts = {hosts:o.hosts.length, pools:o.pools.length, members:o.members.length, repositories:o.repos.length};
+  const items = PAGES.map(([p, label]) => {
+    const n = counts[p];
+    return `<button class="sn-item" data-page="${p}" ${sec === p ? 'aria-current="page"' : ''}>${label}${
+      p === 'hosts' && att ? `<span class="badge-n" title="${att} lines under attention across the hosts">${att}</span>` : ''}${
+      n != null && !(p === 'hosts' && att) ? `<span class="sn-count">${n}</span>` : ''}</button>`;
   }).join('');
-  const hostItems = hosts().map(h =>
-    `<button class="sn-item" data-host="${h.id}" ${S.host===h.id ? 'aria-current="page"' : ''}>${esc(h.id)}${h.pool ? badge('pool','grey') : ''}${h.alive ? '' : st('error','')}</button>`).join('');
-  return `<div class="sn-head"><b>Management console</b><div class="small">administration · every answer stays in the plan console</div></div>
-    <div class="sn-sec">Organizations</div>${orgItems}
-    <button class="sn-item" data-addorg="1" ${S.addorg ? 'aria-current="page"' : ''}>+ organization</button>
+  return `<div class="sn-head"><b>${esc(o.name)}</b><div class="small">management console · administration · every answer stays in the plan console</div></div>
+    ${items}
     <hr class="sn-div">
-    <div class="sn-sec">Hosts</div>${hostItems}
-    <button class="sn-item" data-addhost="1" ${S.addhost ? 'aria-current="page"' : ''}>+ host</button>
-    <div class="sn-note">hosts of ${esc(org().name)} · a host serves one organization (241)</div>`;
+    <div class="sn-note">the sections of ${esc(o.name)} · the organization is chosen in the top navigation, and a host, a pool, a member and a repository are rows in their table</div>`;
 }
 
 /* ===========================================================================
@@ -761,44 +876,41 @@ function sidenavHtml(){
 function crumbs(parts){
   return `<div class="crumbs">${parts.map((p,i) => i === parts.length-1
     ? `<span>${esc(p[0])}</span>`
-    : `<a href="#" data-crumb="${p[1]||''}">${esc(p[0])}</a><span class="sep" aria-hidden="true">/</span>`).join('')}</div>`;
+    : `<a href="#" data-crumb="${p[1]||''}">${esc(p[0])}</a><span class="sep" aria-hidden="true">&#8250;</span>`).join('')}</div>`;
+}
+/* the tabs of a drill-in · `key` is the dataset attribute the click handler reads */
+function tabsHtml(tabs, cur, key){
+  return `<div class="tabs" role="tablist">${tabs.map(([id, label]) =>
+    `<button class="tab" role="tab" data-${key}="${id}" aria-selected="${cur === id ? 'true' : 'false'}">${esc(label)}</button>`).join('')}</div>`;
 }
 function pageHead(title, desc, actions){
   return `<div class="page-head"><div class="hd"><div><h1>${raw(title)}</h1>${desc ? `<div class="desc">${raw(desc)}</div>` : ''}</div>${actions ? `<div class="row">${actions}</div>` : ''}</div></div>`;
 }
 
-/* --- overview: the manifest's profile, router, cadences and runner defaults (S155) --- */
+/* --- overview: what the organization is and what wants a hand, with no form on it --- */
 function pageOverview(){
   const o = org(), alive = o.hosts.filter(h => h.alive).length, pool = o.pools[0];
-  const facts = ctr({title:'Organization', desc:'the manifest profile · save is one configure-organization response, applied as one manifest commit (S155)',
-    actions: btn('Edit', 'data-edit="profile"'),
+  const facts = ctr({title:'Organization', desc:'read-only here · every field of it is authored on Settings, as one configure-organization response applied as one manifest commit (S155)',
+    actions: btn('Settings', 'data-page="settings"'),
     body: kv([
       ['Name', `<b>${esc(o.name)}</b> ${o.sample ? '<span class="sample">sample seed</span>' : ''}`],
       ['What it is', esc(o.what)],
+      ['Plan', o.plan ? `${badge(esc(o.plan),'blue')} · tier ${esc(PLANS[o.plan].tier)} · <a href="#" data-page="plan">Plan</a>` : `self-managed · no plan on a self-managed host (250) · <a href="#" data-page="plan">Plan</a>`],
       ['Root on this host', `<span class="mono">${esc(host(servingHost().id) ? host(servingHost().id).root : '—')}</span>`],
       ['As of', `${TODAY} ${NOW} · the read this console was built from`],
-      ['Hosts', `${alive} alive of ${o.hosts.length}${pool ? ` · pool ${pool.live} live of ${pool.bound}` : ''}`],
+      ['Hosts', `${alive} alive of ${o.hosts.length}${pool ? ` · pool ${pool.live} live of ${pool.bound}` : ''} · <a href="#" data-page="hosts">Hosts</a>`],
       ['Repositories', o.repos.map(r => esc(r.id)).join(' · ')],
       ['Members', o.members.map(m => esc(m.id)).join(' · ')],
       ['Decisions', o.decisions ? `${o.decisions} waiting · <a href="rail-and-board.html">open the plan console</a>` : 'none waiting'],
     ])});
-  const defaults = ctr({title:'Runner defaults per role', desc:'what a session of each role runs on when a host declares nothing of its own (173)',
-    actions: btn('Edit', 'data-edit="roles"'),
+  const attRows = o.hosts.flatMap(h => hostAttention(h).map(line => ({cells:[
+    `<a href="#" data-host="${h.id}">${esc(h.id)}</a>${sub(esc(tierOf(h)))}`,
+    raw(line),
+    `<div class="acts">${btn('Open the host', `data-host="${h.id}"`)}</div>`]})));
+  const attention = ctr({title:'Under attention', counter:attRows.length,
+    desc:'every line here is one line in the rail, answered there and not on this page (S113)',
     tight:true,
-    body: table(['Role','Runner kind','Model'], o.runnerRoles.map(r => ({cells:[`<b>${esc(r.role)}</b>`, esc(r.kind), `<span class="mono">${esc(r.model)}</span>`]})))});
-  const wiring = ctr({title:'Wiring', desc:'the rest of the manifest, each field where the machinery reads it',
-    body: kv([
-      ['Router', esc(o.router)],
-      ['Curation cadence', esc(o.curation)],
-      ['Triage cadence', esc(o.triageCadence)],
-      ['Identity', `${badge(esc(servingKind()), 'blue')} · a binding of the serving host, the same for every organization it serves · ${isHosted() ? 'the provider&#8217;s hosted login, and members are the account&#8217;s assigned users' : 'GitHub&#8217;s device flow, and members are this organization&#8217;s authored operators list'} (S164, S165)`],
-      ['Raw store', 'per host · the platform bucket on the cloud host, the machine itself on a laptop'],
-      ['Landing policy', 'per repository · see Repositories'],
-      ['Operators', isHosted()
-        ? 'derived from the account and shown read-only; the addresses beside them stay authored (248, S155)'
-        : 'authored whole on this form: a GitHub username added is a member added (S155)'],
-      ['A host&#8217;s keys', 'root, bound, declaration, provider, identity kind and router are shown read-only with a link to the host&#8217;s own screen (S155)'],
-    ])});
+    body: table(['Host','What it says',''], attRows, ['Nothing under attention', 'every host is alive, current, and satisfies the declarations it covers'])});
   const raised = S.raised.length ? ctr({title:'Decisions this console raised', counter:S.raised.length,
     desc:'nothing here is in the count until it appears in the rail; every one is answered there (S113)',
     tight:true,
@@ -806,6 +918,38 @@ function pageOverview(){
       `<b>${d.n}</b>`, esc(d.kind), esc(d.title), answerLink(d.n)]})))}) : '';
   const logs = S.log.length ? ctr({title:'Responses logged here', counter:S.log.length, tight:true,
     body: table(['At','Response'], S.log.map(l => ({cells:[`<span class="num">${esc(l.at)}</span>`, esc(l.what)]})))}) : '';
+  return crumbs([[org().name, 'org'],['Overview']]) + pageHead(esc(o.name), esc(o.what),
+      `<a class="btn normal sm" href="rail-and-board.html">plan console</a>${btn('+ host', 'data-addhost="1"', 'primary')}`)
+    + `<div class="stack-l">${facts}${attention}${raised}${logs}</div>`;
+}
+
+/* --- settings: the manifest as a form, the part of it that is the organization's own (S155) --- */
+function pageSettings(){
+  const o = org();
+  const profile = ctr({title:'Profile', desc:'the manifest profile · save is one configure-organization response, applied as one manifest commit (S155)',
+    actions: btn('Edit', 'data-edit="profile"'),
+    body: kv([
+      ['Name', `<b>${esc(o.name)}</b> ${o.sample ? '<span class="sample">sample seed</span>' : ''}`],
+      ['What it is', esc(o.what)],
+      ['Router', esc(o.router)],
+      ['Curation cadence', esc(o.curation)],
+      ['Triage cadence', esc(o.triageCadence)],
+    ])});
+  const defaults = ctr({title:'Runner defaults per role', desc:'what a session of each role runs on when a host declares nothing of its own (173)',
+    actions: btn('Edit', 'data-edit="roles"'),
+    tight:true,
+    body: table(['Role','Runner kind','Model'], o.runnerRoles.map(r => ({cells:[`<b>${esc(r.role)}</b>`, esc(r.kind), `<span class="mono">${esc(r.model)}</span>`]})))});
+  const wiring = ctr({title:'Wiring', desc:'the rest of the manifest, each field where the machinery reads it',
+    body: kv([
+      ['Identity', `${badge(esc(servingKind()), 'blue')} · a binding of the serving host, the same for every organization it serves · ${isHosted() ? 'the provider&#8217;s hosted login, and members are the account&#8217;s assigned users' : 'GitHub&#8217;s device flow, and members are this organization&#8217;s authored operators list'} (S164, S165)`],
+      ['Raw store', 'per host · the platform bucket on the cloud host, the machine itself on a laptop'],
+      ['Landing policy', 'per repository · authored on a repository&#8217;s own page'],
+      ['Operators', isHosted()
+        ? 'derived from the account and shown read-only; the addresses beside them stay authored (248, S155)'
+        : 'authored whole on this form: a GitHub username added is a member added (S155)'],
+      ['A host&#8217;s keys', 'root, bound, declaration, provider, identity kind and router are shown read-only with a link to the host&#8217;s own screen (S155)'],
+      ['Plan and limits', o.plan ? 'on the hosted account, billed by Stripe and never authored here (plans.md)' : 'none · a self-managed host has no plan object at all (250)'],
+    ])});
   const retire = ctr({title:'Retire this organization',
     desc:'an organization is removed by a response, never by deleting files (221) · this raises the decision and nothing else',
     actions: btn('Retire organization…', 'data-retireorg="1"'),
@@ -815,25 +959,25 @@ function pageOverview(){
       ['Where it is answered', 'in the rail like any other decision; until it is answered nothing about this organization changes'],
       ['Its account', 'a retired organization&#8217;s Frontegg account is not deleted here; membership is revoked on the account (247, S195)'],
     ], 'rows')});
-  return crumbs([[org().name, 'org'],['Overview']]) + pageHead(esc(o.name), esc(o.what),
-      `<a class="btn normal sm" href="rail-and-board.html">plan console</a>`)
-    + `<div class="stack-l">${facts}${defaults}${wiring}${raised}${logs}${retire}</div>`;
+  return crumbs([[org().name,'org'],['Settings']])
+    + pageHead('Settings', 'the organization&#8217;s own manifest fields · a host&#8217;s are on the host, a repository&#8217;s on the repository (S155)')
+    + `<div class="stack-l">${profile}${defaults}${wiring}${retire}</div>`;
 }
 
-/* --- repositories: landing policy and the environment declaration per host (S174) --- */
+/* --- repositories: a table, and one repository's declaration and per-host lines behind it (S174) --- */
 function pageRepos(){
   const o = org();
   const rows = o.repos.map(r => {
-    const perHost = o.hosts.filter(h => h.env && h.env.repos[r.id]).map(h => {
-      const e = h.env.repos[r.id];
-      return `<div>${st(e.ok ? 'success' : 'warning', `${esc(h.id)} · ${esc(h.env.provider)}`)}${e.ok ? '' : sub(esc(e.why))}</div>`;
-    }).join('') || `<span class="small">no host covers it</span>`;
+    const covering = o.hosts.filter(h => h.env && h.env.repos[r.id]);
+    const ok = covering.filter(h => h.env.repos[r.id].ok).length;
     return {cells:[
-      `<b>${esc(r.id)}</b>${sub(r.kinds.map(esc).join(' · ') + (r.caps.length ? ' · ' + r.caps.map(esc).join(' · ') : ''))}`,
+      `<a href="#" data-repo="${r.id}"><b>${esc(r.id)}</b></a>${sub(esc(r.claims))}`,
+      r.kinds.map(k => badge(esc(k))).join(' ') + (r.caps.length ? sub(r.caps.map(esc).join(' · ')) : ''),
       `${esc(r.landing)}${sub('item merge · ' + esc(r.merge))}`,
       `<span class="mono">${esc(r.envFile)}</span>${sub('declaration ' + esc(r.envHash))}`,
-      perHost,
-      `<div class="acts">${btn('Edit policy', `data-edit="repo|${r.id}"`)}</div>`,
+      covering.length
+        ? (ok === covering.length ? st('success', `${ok} of ${covering.length} satisfied`) : st('warning', `${ok} of ${covering.length} satisfied`))
+        : `<span class="small">no host covers it</span>`,
     ]};
   });
   const unsat = o.hosts.flatMap(h => Object.entries((h.env && h.env.repos) || {}).filter(([,e]) => !e.ok).map(([rid,e]) => [h, rid, e]));
@@ -841,13 +985,45 @@ function pageRepos(){
     desc:'a host that cannot satisfy a repository covers none of its work · the line sits under attention in the rail with ok as the acknowledgement (S174)',
     tight:true,
     body: table(['Host','Repository','What it cannot produce','Where'], unsat.map(([h, rid, e]) => ({cells:[
-      `<b>${esc(h.id)}</b>${sub('provider ' + esc(h.env.provider))}`, esc(rid), esc(e.why),
-      `<div class="acts">${btn('Host environment', `data-host="${h.id}"`)}</div>`]})))}) : '';
+      `<a href="#" data-host="${h.id}"><b>${esc(h.id)}</b></a>${sub('provider ' + esc(h.env.provider))}`, esc(rid), esc(e.why),
+      `<div class="acts">${btn('Host environment', `data-host="${h.id}|environment"`)}</div>`]})))}) : '';
   return crumbs([[org().name,'org'],['Repositories']])
-    + pageHead('Repositories', 'what the organization tracks · landing policy, and the environment declaration each host is judged against (238)')
+    + pageHead('Repositories', 'what the organization tracks · landing policy, and the environment declaration each host is judged against (238)',
+        btn('+ repository', 'data-addrepo="1"', 'primary'))
     + `<div class="stack-l">${ctr({title:'Repositories', counter:o.repos.length, tight:true,
-        actions: btn('Add repository', 'data-addrepo="1"'),
-        body: table(['Repository','Landing','Environment declaration','Hosts',''], rows)})}${att}</div>`;
+        body: table(['Repository','Kind','Landing','Environment declaration','Hosts'], rows)})}${att}</div>`;
+}
+/* --- one repository: its declaration, and one line per host judged against it (S174) --- */
+function pageRepo(){
+  const o = org(), r = o.repos.find(x => x.id === S.repo);
+  if(!r) return pageHead('Repository not found', '');
+  const declaration = ctr({title:'Declaration', desc:'the repository&#8217;s own file · it is the repository&#8217;s and is never edited from this console (238, S174)',
+    body: kv([
+      ['File', `<span class="mono">${esc(r.envFile)}</span>`],
+      ['Hash', `<span class="mono">${esc(r.envHash)}</span>`],
+      ['Kinds', r.kinds.map(k => badge(esc(k))).join(' ')],
+      ['Capabilities', r.caps.length ? r.caps.map(c => badge(esc(c),'grey')).join(' ') : '<span class="small">none declared</span>'],
+      ['Claims', esc(r.claims)],
+    ], 'rows')});
+  const policy = ctr({title:'Landing policy', desc:'how a bolt lands and how one item merges · authored here as one configure-organization response (S155)',
+    actions: btn('Edit policy', `data-edit="repo|${r.id}"`),
+    body: kv([['Landing', esc(r.landing)], ['Item merge', esc(r.merge)]])});
+  const envRows = o.hosts.filter(h => h.env && h.env.repos[r.id]).map(h => {
+    const e = h.env.repos[r.id];
+    return {cells:[
+      `<a href="#" data-host="${h.id}"><b>${esc(h.id)}</b></a>${sub(esc(tierOf(h)))}`,
+      esc(h.env.provider),
+      e.ok ? st('success','satisfied') : st('warning','cannot satisfy'),
+      e.ok ? '<span class="small">every tool the declaration names is produced</span>' : esc(e.why),
+      `<div class="acts">${btn('Environment', `data-host="${h.id}|environment"`)}</div>`]};
+  });
+  const perHost = ctr({title:'Per host', counter:envRows.length,
+    desc:'one line per host that covers this repository · a host that cannot satisfy it covers none of its work (238, S174) · the console changes no provider: a provider is a host&#8217;s declaration and is changed with the host',
+    tight:true,
+    body: table(['Host','Provider','State','Why',''], envRows, ['No host covers it', 'nothing here is judged against this declaration yet'])});
+  return crumbs([[o.name,'org'],['Repositories','repositories'],[r.id]])
+    + pageHead(esc(r.id), esc(r.kinds.join(' · ')), btn('Edit policy', `data-edit="repo|${r.id}"`))
+    + `<div class="stack-l">${declaration}${policy}${perHost}</div>`;
 }
 
 /* --- members and roles (S166–S171) --- */
@@ -858,16 +1034,13 @@ function pageMembers(){
     return presenting ? st('success', `delivered · ${esc(presenting.id)}`) : st('warning', 'undelivered · no host presents it');
   };
   const rows = o.members.map(m => ({cells:[
-    `<b>${esc(m.id)}</b>${sub(esc(m.name) + ' · ' + esc(m.signin) + ' · member since ' + esc(m.since))}`,
+    `<a href="#" data-member="${m.id}"><b>${esc(m.id)}</b></a>${sub(esc(m.name) + ' · ' + esc(m.signin) + ' · member since ' + esc(m.since))}`,
     Object.keys(m.addresses).length
       ? Object.entries(m.addresses).map(([k,v]) => `<div>${esc(k)} <span class="mono">${esc(v)}</span> ${sinkState(m,k)}</div>`).join('')
       : `<span class="small">no address · a page sink only (S168)</span>`,
     hosted
       ? (m.roles.length ? m.roles.map(r => badge(esc(r))).join(' ') : badge('member')) + sub('read-only · from the account&#8217;s token (248)')
       : `<span class="small">none · every listed operator holds every permission (S165, S199)</span>`,
-    `<div class="acts">${btn('Edit addresses', `data-edit="member|${m.id}"`)}${hosted
-      ? btn('Assign', `data-idadmin="assign|${m.id}"`) + btn('Revoke', `data-idadmin="revoke|${m.id}"`, 'link') + btn('Role…', `data-idadmin="role|${m.id}"`, 'link')
-      : btn('Remove', `data-rm-member="${m.id}"`, 'link')}</div>`,
   ]}));
   const members = ctr({title:'Operators', counter:o.members.length,
     desc: hosted
@@ -875,9 +1048,9 @@ function pageMembers(){
       : 'the manifest&#8217;s authored operators list, edited and saved like any other field of the form (S155): adding a GitHub username adds a member, removing one removes them, and a save that would remove the saving identity is refused inline. A response from an identity not on the list is refused before any record is written (S165)',
     actions: hosted
       ? btn('Invite…', 'data-idadmin="invite|"', 'primary')
-      : btn('Add operator', 'data-add-member="1"', 'primary'),
+      : btn('+ operator', 'data-add-member="1"', 'primary'),
     tight:true,
-    body: table(['Member', 'Addresses per chat kind', hosted ? 'Roles' : 'Permissions', ''], rows)});
+    body: table(['Member', 'Addresses per chat kind', hosted ? 'Roles' : 'Permissions'], rows)});
   const admin = hosted ? ctr({title:'Identity administration',
     desc:'this section is where identity administration happens and there is no second console (255, S195) · each control is one recorded tool call under <span class="mono">fw.identity.admin</span>',
     body: kv([
@@ -916,11 +1089,73 @@ function pageMembers(){
       ['Board', 'one board per organization: every member reads the same rail with the same numbers and the same count (S167)'],
       ['Upgrading', 'moving to a hosted tier is not a migration: the same GitHub usernames are invited to the account, the addresses come over, and the board, the numbers and the repositories never move (247a, S204)'],
     ], 'rows')});
-  return crumbs([[org().name,'org'],['Members and roles']])
-    + pageHead('Members and roles', hosted
+  return crumbs([[org().name,'org'],['Members']])
+    + pageHead('Members', hosted
         ? 'the account&#8217;s assigned users, read-only, with their addresses beside them and the identity tools on this section (247, S195)'
         : 'the manifest&#8217;s authored operators list, their chat addresses, and the roles a decision may be owned by (S155, S199)')
     + `<div class="stack-l">${members}${admin}${roles}${note}</div>`;
+}
+
+/* --- one member: addresses, roles, and the sinks the two of them make (S168, S173) --- */
+function pageMember(){
+  const o = org(), hosted = isHosted();
+  const m = o.members.find(x => x.id === S.member);
+  if(!m) return pageHead('Member not found', '');
+  const presenter = pkgId => o.hosts.find(h => { const p = partOn(h, pkgId); return p && /^installed/.test(p.state); });
+  const who = ctr({title:'Who they are', body: kv([
+    ['Handle', `<b>${esc(m.id)}</b>`],
+    ['Name', esc(m.name)],
+    ['Sign-in', `${esc(m.signin)} · ${badge(esc(servingKind()),'blue')}`],
+    ['Member since', esc(m.since)],
+    ['How they got here', hosted
+      ? 'the flywheel Application is assigned to them on the account: assignment is membership (247)'
+      : 'their GitHub username is on the manifest&#8217;s authored operators list (S165)'],
+  ])});
+  const addresses = ctr({title:'Addresses', counter:Object.keys(m.addresses).length,
+    desc:'one chat address per kind · each is one sink of its own with its own delivery mark, and the addresses stay authored on both kinds of host (236a, S168)',
+    actions: btn('Edit addresses', `data-edit="member|${m.id}"`),
+    tight:true,
+    body: table(['Kind','Address','Presented by','Delivery'], Object.entries(m.addresses).map(([k, v]) => {
+      const h = presenter(k === 'discord' ? 'discord' : 'slack');
+      return {cells:[esc(k), `<span class="mono">${esc(v)}</span>`,
+        h ? `<a href="#" data-host="${h.id}">${esc(h.id)}</a>` : `<span class="small">nobody</span>`,
+        h ? st('success','delivered') : st('warning','undelivered · no host presents this kind')]};
+    }), ['No address', 'they have their page sink and nothing else (S168)'])});
+  const roles = ctr({title:'Roles', desc: hosted
+      ? 'two different things share the word · the account&#8217;s role is what the token carries and authorizes each tool (248, 249); an ownership role is a list of members a decision may name (237)'
+      : 'on a <span class="mono">github</span> host a role authorizes nothing: every listed operator holds every permission, and a role here is only a list a decision may name as its owner (S165, S199)',
+    actions: hosted ? btn('Set role…', `data-idadmin="role|${m.id}"`) : '',
+    body: kv([
+      [hosted ? 'On the account' : 'Permissions', hosted
+        ? (m.roles.length ? m.roles.map(r => badge(esc(r))).join(' ') : badge('member')) + ' · read-only, from the token (248)'
+        : 'every permission · there is nothing to administer (S199)'],
+      ['Ownership roles', o.roles.filter(r => r.members.includes(m.id)).map(r => badge(esc(r.id))).join(' ') || '<span class="small">none</span>'],
+      ['Answering', 'ownership changes nothing about who may answer: the answers on an owned card are the same for every member (S169)'],
+    ], 'rows')});
+  const sinkRows = [{cells:[`<b>page</b>${sub('keyed by the identity · every member has one (S168)')}`,
+    `<span class="mono">—</span>`, esc(servingHost().id), st('success','delivered'), `<span class="num">${NOW}</span>`]}]
+    .concat(Object.entries(m.addresses).map(([k, v]) => {
+      const h = presenter(k === 'discord' ? 'discord' : 'slack');
+      return {cells:[`<b>${esc(k)}</b>${sub('a direct message from that kind&#8217;s bot, with the member&#8217;s own filter (S173)')}`,
+        `<span class="mono">${esc(v)}</span>`, h ? esc(h.id) : `<span class="small">nobody</span>`,
+        h ? st('success','delivered') : st('warning','undelivered'),
+        h ? `<span class="num">07:24</span>` : `<span class="small">no mark yet</span>`]};
+    }));
+  const sinks = ctr({title:'Sinks', counter:sinkRows.length, tight:true,
+    desc:'the page sink and one chat sink per address, added and removed in the same write as the entry (S168)',
+    body: table(['Sink','Address','Presented by','Delivery','Mark'], sinkRows)});
+  const admin = hosted ? ctr({title:'Identity administration',
+    desc:'each control is one recorded call under <span class="mono">fw.identity.admin</span>, an act on the account and never a commit (247, S195)',
+    body:`<div class="row">${btn('Assign', `data-idadmin="assign|${m.id}"`)}${btn('Set role…', `data-idadmin="role|${m.id}"`)}${btn('Revoke', `data-idadmin="revoke|${m.id}"`, 'link')}</div>
+      <div class="small" style="margin-top:8px">revoking takes their page sink and their chat sinks with it; their addresses stay on the entry until the form removes them (236a, S168). Revoking your own assignment is refused inline.</div>`})
+    : ctr({title:'Remove from the operators list',
+      desc:'removing a username removes the member; a save that would remove the saving identity is refused inline (S155)',
+      body:`<div class="row">${btn('Remove', `data-rm-member="${m.id}"`, 'link')}</div>`});
+  return crumbs([[o.name,'org'],['Members','members'],[m.id]])
+    + pageHead(esc(m.id) + ' ' + (hosted ? (m.roles.length ? m.roles.map(r => badge(esc(r))).join(' ') : badge('member')) : badge('operator','grey')),
+        esc(m.name) + ' · ' + esc(m.signin),
+        btn('Edit addresses', `data-edit="member|${m.id}"`))
+    + `<div class="stack-l">${who}${addresses}${roles}${sinks}${admin}</div>`;
 }
 
 /* --- sinks: one per member, one per address, plus shared channels (S168, S173) --- */
@@ -1007,8 +1242,8 @@ function pagePackages(){
     ['Separate stores', 'an organization package never appears on a host and a host part never appears here (S124, S158)'],
     ['Retire', 'one logged response · every host stops reading it on its next tick; restore undoes it'],
   ])});
-  return crumbs([[org().name,'org'],['Packages']])
-    + pageHead('Packages', 'the organization store · what the blueprints carry for every host to read (190, 208)')
+  return crumbs([[org().name,'org'],['Store']])
+    + pageHead('Store', 'the organization store · what the blueprints carry for every host to read (190, 208)')
     + `<div class="stack-l">${sections}${note}</div>`;
 }
 function storeState(e){
@@ -1018,39 +1253,183 @@ function storeState(e){
   return st('success', 'installed' + (e.state.replace('installed','') ? ' ·' + esc(e.state.replace('installed','')) : ''));
 }
 
-/* --- pools (S176) --- */
+/* --- hosts: the table the estate is read from, and the way into one host --- */
+function hostState(h){
+  if(!h.alive) return st('error', `gone ${esc(h.gone || '')}`);
+  if(h.retiring) return st('pending', `retiring · ${esc(h.retiring)}`);
+  return st('success','alive');
+}
+function pageHosts(){
+  const o = org();
+  const rows = o.hosts.map(h => {
+    const att = hostAttention(h);
+    return {cells:[
+      `<a href="#" data-host="${h.id}"><b>${esc(h.id)}</b></a>${h.dispatcher ? ' ' + badge('dispatcher','grey') : ''}${h.serves ? sub('serves this page') : ''}`,
+      `${esc(h.kind)}${sub('tier ' + esc(tierOf(h).split(' · ')[0]) + ' · ' + esc(tierOf(h).split(' · ')[1]))}`,
+      `${esc(h.platform.split(' · ')[0])}${sub(esc(h.platform.split(' · ').slice(1).join(' · ') || '—'))}`,
+      hostState(h) + sub(h.binary === h.binaryLatest ? esc(h.binary) : esc(h.binary) + ' · behind'),
+      `<span class="num">${h.bound}</span>`,
+      h.pool ? `<a href="#" data-pool="${h.pool}">${esc(h.pool)}</a>` : `<span class="small">—</span>`,
+      `<span class="num">${esc(h.last)}</span>`,
+      att.length ? st('warning', `${att.length} line${att.length > 1 ? 's' : ''}`) : st('success','none'),
+    ]};
+  });
+  const note = ctr({title:'What a host is here', body: kv([
+    ['One organization', 'a host serves one organization and reads its parts from that organization&#8217;s manifest (241)'],
+    ['Its tier', 'read off what the host is, never authored: your computer, a cloud agent at bound 0, or a host the pool made (hosted-design.md)'],
+    ['Nothing installs from a table', 'every add, change and upgrade on a host ends at a decision answered in the plan console (S113, S118)'],
+  ])});
+  return crumbs([[o.name,'org'],['Hosts']])
+    + pageHead('Hosts', 'every host of this organization · a name opens it')
+    + `<div class="stack-l">${ctr({title:'Hosts', counter:o.hosts.length, tight:true,
+        actions: btn('+ host', 'data-addhost="1"', 'primary'),
+        body: table(['Name','Kind · tier','Platform','State','Bound','Pool','Last heartbeat','Attention'], rows,
+          ['No host yet', 'without one nothing runs · "+ host" opens the four journeys'])})}${note}</div>`;
+}
+
+/* --- pools (S176): a table, and one pool behind it --- */
 function pagePools(){
   const o = org();
-  if(!o.pools.length) return crumbs([[org().name,'org'],['Pools']]) + pageHead('Pools', 'a pool the machinery adds hosts to and retires them from, within bound and cost (240–242)')
-    + ctr({title:'Pools', tight:true, actions: btn('Declare a pool', 'data-editpool="new"'),
+  if(!o.pools.length) return crumbs([[o.name,'org'],['Pools']]) + pageHead('Pools', 'a pool the machinery adds hosts to and retires them from, within bound and cost (240–242)')
+    + ctr({title:'Pools', tight:true, actions: btn('+ pool', 'data-editpool="new"', 'primary'),
         body: table([''], [], ['No pool', 'without one the flywheel reads "drain is the limit: add a host" instead of the pool line (S106)'])});
-  const rows = [];
-  o.pools.forEach(p => {
-    rows.push({cells:[
-      `<b>${esc(p.id)}</b>${sub(esc(p.platform) + ' · covers ' + esc(p.covers))}`,
-      `<span class="mono">${esc(p.image)}</span>${sub(p.imageState === 'behind' ? esc(p.imageWhy) : 'built from the declarations of every repository it covers (239)')}`,
-      p.imageState === 'behind' ? st('warning','image behind') : st('success','image current'),
-      `<span class="num">${p.live} live of ${p.bound}</span>${sub('each host bound ' + p.hostBound + ' · idle-retire ' + esc(p.idleRetire))}`,
-      `${esc(p.cost)}`,
-      `<div class="acts">${p.imageState === 'behind' ? btn('Rebuild image', `data-rebuild="${p.id}"`, 'primary') : ''}${btn('Edit', `data-editpool="${p.id}"`)}</div>`]});
-    o.hosts.filter(h => h.pool === p.id).forEach(h => rows.push({cls:'sub', cells:[
-      `<a href="#" data-host="${h.id}">${esc(h.id)}</a> ${badge('pool','grey')}${sub(esc(h.note))}`,
-      `<span class="mono">${esc(h.platform)}</span>`,
-      h.retiring ? st('pending', 'retiring · ' + esc(h.retiring)) : st('success','alive'),
-      `<span class="num">bound ${h.bound}</span>${sub(esc(h.idle || ''))}`,
-      `joined ${esc(h.joined)}`,
-      `<div class="acts">${btn('Settings', `data-host="${h.id}"`)}</div>`]}));
-  });
+  const rows = o.pools.map(p => ({cells:[
+    `<a href="#" data-pool="${p.id}"><b>${esc(p.id)}</b></a>${sub('covers ' + esc(p.covers))}`,
+    esc(p.platform),
+    `<span class="mono">${esc(p.image)}</span>`,
+    p.imageState === 'behind' ? st('warning','image behind') : st('success','image current'),
+    `<span class="num">${p.live} live of ${p.bound}</span>${sub('each host bound ' + p.hostBound)}`,
+    esc(p.idleRetire),
+    esc(p.cost)]}));
   const note = ctr({title:'What the pool does and what it never does', body: kv([
     ['The machinery adds and retires', 'while drain is the limit, within bound and cost (242) · nothing on this page adds or retires a host by hand (S124)'],
     ['A retiring host', 'leaves the list when the platform ends it; its places are re-made from their lines elsewhere (52) and it raises nothing (S176)'],
     ['An image behind', 'provisions no host until it is current · "rebuild" raises the rebuild as a chore, shown under the chores head of Construction (S175)'],
     ['In the flywheel', 'pool hosts count in drain; the strip draws the pool as one dashed pill "pool willdan-pool · 2 of 8" (S177)'],
   ])});
-  return crumbs([[org().name,'org'],['Pools']])
+  return crumbs([[o.name,'org'],['Pools']])
     + pageHead('Pools', 'a pool the machinery adds hosts to and retires them from, within bound and cost (240–242)')
-    + `<div class="stack-l">${ctr({title:'Pools and their hosts', counter:o.pools.length + o.hosts.filter(h=>h.pool).length, tight:true,
-        body: table(['Pool · host','Image · platform','State','Live of bound','Cost',''], rows)})}${note}</div>`;
+    + `<div class="stack-l">${ctr({title:'Pools', counter:o.pools.length, tight:true,
+        actions: btn('+ pool', 'data-editpool="new"', 'primary'),
+        body: table(['Pool','Platform','Image','State','Live of bound','Idle-retire','Cost'], rows)})}${note}</div>`;
+}
+/* --- one pool: Hosts · Image · Limits --- */
+const POOL_TABS = [['hosts','Hosts'],['image','Image'],['limits','Limits']];
+function pagePool(){
+  const o = org(), p = o.pools.find(x => x.id === S.pool);
+  if(!p) return pageHead('Pool not found', '');
+  const mine = o.hosts.filter(h => h.pool === p.id);
+  let body = '';
+  if(S.ptab === 'image'){
+    body = ctr({title:'Image', desc:'built from the environment declaration of every repository the pool covers; a pool provisions no host until its image is current (239, S175)',
+      actions: p.imageState === 'behind' ? btn('Rebuild image', `data-rebuild="${p.id}"`, 'primary') : '',
+      body: kv([
+        ['Tag', `<span class="mono">${esc(p.image)}</span>`],
+        ['State', p.imageState === 'behind' ? st('warning','behind') : st('success','current')],
+        ['Why', esc(p.imageWhy || 'built from the declarations of every repository it covers (239)')],
+        ['Covers', esc(p.covers)],
+        ['Rebuild', 'one chore decision · it runs the build, and the pool provisions no host until the platform lists the new tag (S175)'],
+      ], 'rows')});
+  } else if(S.ptab === 'limits'){
+    body = ctr({title:'Limits', desc:'bound, sessions per host, idle-retire and the cost ceiling are the manifest&#8217;s and are changed here; the machinery adds and retires hosts within them (S155, S176)',
+      actions: btn('Edit', `data-editpool="${p.id}"`),
+      body: kv([
+        ['Bound · hosts', `<span class="num">${p.bound}</span>`],
+        ['Sessions per host', `<span class="num">${p.hostBound}</span>`],
+        ['Idle-retire', esc(p.idleRetire)],
+        ['Cost', esc(p.cost)],
+        ['Memory ceiling', `${esc((o.plan && PLANS[o.plan].limits[3][1]) || 'no plan · no ceiling we enforce')} · the plan&#8217;s, refused with its reason rather than silently clamped (plans.md)`],
+      ])});
+  } else {
+    const rows = mine.map(h => ({cells:[
+      `<a href="#" data-host="${h.id}"><b>${esc(h.id)}</b></a>${sub(esc(h.note))}`,
+      `<span class="mono">${esc(h.platform)}</span>`,
+      h.retiring ? st('pending','retiring · ' + esc(h.retiring)) : st('success','alive'),
+      `<span class="num">bound ${h.bound}</span>${sub(esc(h.idle || ''))}`,
+      `joined ${esc(h.joined)}`,
+      `<div class="acts">${btn('Open', `data-host="${h.id}"`)}</div>`]}));
+    body = ctr({title:'Hosts', counter:mine.length,
+      desc:'the machinery adds and retires these within bound and cost; nothing here adds or retires one by hand (242, S124)',
+      tight:true,
+      body: table(['Host','Platform','State','Bound','Joined',''], rows,
+        ['No host live', 'the pool adds one when approved work waits and drain is the limit (242)'])});
+  }
+  return crumbs([[o.name,'org'],['Pools','pools'],[p.id]])
+    + pageHead(esc(p.id) + ' ' + badge(esc(p.platform),'grey'),
+        `${p.live} live of ${p.bound} · ${esc(p.cost)}`,
+        `${p.imageState === 'behind' ? btn('Rebuild image', `data-rebuild="${p.id}"`, 'primary') : ''}${btn('Edit', `data-editpool="${p.id}"`)}`)
+    + tabsHtml(POOL_TABS, S.ptab, 'ptab')
+    + `<div class="stack-l">${body}</div>`;
+}
+
+/* --- plan: the commercial ladder as this organization sits on it (plans.md) --- */
+function pagePlan(){
+  const o = org();
+  if(!o.plan){
+    const free = PLANS.Free;
+    const promise = ctr({title:'No plan on a self-managed host',
+      desc:'a plan is a Frontegg plan on a hosted account, billed by Stripe; a self-managed organization has no plan object at all and every flag stands at its definition default (250, plans.md)',
+      body: kv([
+        ['What you have', `<b>Free</b> · tier ${raw(free.tier)}`],
+        ['What it is', 'the binary on your own computer'],
+        ['What it unlocks', raw(free.unlocks)],
+        ['What we meter', 'nothing · nothing of yours runs on our side, so there is nothing for us to count'],
+        ['Flags', 'every flag at its definition default · a plan hides a surface and meters a quantity, and never authorizes: permission comes from roles (248, 249)'],
+      ], 'rows')});
+    const upgrade = ctr({title:'If you wanted a plan',
+      desc:'the first rung is Hobby: sign in to the hosted account with the same GitHub identity, and the service creates the account, invites the same usernames and carries every address (247a, S204)',
+      body: kv([
+        ['What moves', 'nothing · the board, the numbers and the repositories stay where they are; the laptop keeps its place as a host'],
+        ['What changes', 'the hosts of this organization become <span class="mono">frontegg</span> hosts, and one cloud agent is added from a preset (S164, plans.md)'],
+        ['Not a migration', 'moving between the kinds is the upgrade and never a migration (247a, S204)'],
+      ], 'rows')});
+    const ladder = ctr({title:'The ladder', counter:Object.keys(PLANS).length, tight:true,
+      body: table(['Plan','Tier','Who it is for','What it unlocks'], Object.entries(PLANS).map(([name, p]) => ({
+        cls: name === 'Free' ? 'sub' : '',
+        cells:[`<b>${esc(name)}</b>${name === 'Free' ? sub('yours') : ''}`, esc(p.tier), esc(p.who), raw(p.unlocks)]})))});
+    return crumbs([[o.name,'org'],['Plan']])
+      + pageHead('Plan', 'self-managed · the binary on your computer, and no plan behind it (250)')
+      + `<div class="stack-l">${promise}${upgrade}${ladder}</div>`;
+  }
+  const p = PLANS[o.plan], u = o.use || {};
+  const current = ctr({title:'Current plan',
+    desc:'a plan hides a surface and meters a quantity · it never authorizes, and permission comes from roles (248, 249, plans.md)',
+    body: kv([
+      ['Plan', `${badge(esc(o.plan),'blue')}`],
+      ['Tier it allows', raw(p.tier) + ' · a host of a higher tier is refused with its reason'],
+      ['Who it is for', raw(p.who)],
+      ['What it unlocks', raw(p.unlocks)],
+      ['Billing', 'on the hosted account, by Stripe · nothing about a plan is authored in this console'],
+    ], 'rows')});
+  const flagRows = FLAGS.map(([id, what, plans]) => ({cells:[
+    `<span class="mono">${esc(id)}</span>${sub(raw(what))}`,
+    plans.includes(o.plan) ? st('success','on') : st('inactive','off'),
+    esc(plans[0] + ' and up')]}));
+  const flags = ctr({title:'Flags on', counter:FLAGS.filter(f => f[2].includes(o.plan)).length,
+    desc:'the features list in <span class="mono">identity.yaml</span>, each <span class="mono">default: off</span> and targeted per account by the plan (250, S197)',
+    tight:true,
+    body: table(['Flag','State','From'], flagRows)});
+  const meter = (label, use, limit, note) => [label, `<b>${raw(use)}</b> of ${raw(limit)}${note ? `<div class="small">${raw(note)}</div>` : ''}`];
+  const limits = ctr({title:'Limits', desc:'plan metadata read beside the flags · exceeding one is one attention line and a refused add, never a stopped loop (plans.md)',
+    body: kv([
+      meter('Organizations', String(u.organizations != null ? u.organizations : memberOrgs().length), esc(p.limits[0][1])),
+      meter('Members', String(o.members.length), `${u.members || o.members.length} seats`, 'a seat is billed whether or not it is assigned'),
+      meter('Pool hours this month', String(u.poolHours || 0), esc(p.limits[2][1]), 'overage is metered, not refused'),
+      ['Pool memory', `max <b>${esc(u.poolMemory || p.limits[3][1])}</b><div class="small">the pool host that would exceed it is refused with the reason, and the loop is not stopped</div>`],
+    ], 'rows')});
+  const change = ctr({title:'Changing it',
+    desc:'billing lives on the hosted account and not in this console',
+    body:`<div class="stack">${st('info','the plan and the card are on the hosted account, billed by Stripe')}
+      <div class="small">changing a plan changes which flags the account carries and which limits the tool server reads beside them; nothing in the manifest changes and no host is touched (plans.md, 250).</div>
+      <div class="row">${btn('open billing &#8599;', 'data-changeplan="1"', 'primary')}<span class="small">the account&#8217;s billing portal · it opens outside the console</span></div></div>`});
+  const ladder = ctr({title:'The ladder', counter:Object.keys(PLANS).length, tight:true,
+    body: table(['Plan','Tier','Who it is for','What it unlocks'], Object.entries(PLANS).map(([name, x]) => ({
+      cls: name === o.plan ? 'sub' : '',
+      cells:[`<b>${esc(name)}</b>${name === o.plan ? sub('yours') : ''}`, esc(x.tier), esc(x.who), raw(x.unlocks)]})))});
+  return crumbs([[o.name,'org'],['Plan']])
+    + pageHead('Plan ' + badge(esc(o.plan),'blue'), `tier ${raw(p.tier)} · billed on the hosted account`,
+        btn('change plan', 'data-changeplan="1"', 'primary'))
+    + `<div class="stack-l">${current}${flags}${limits}${change}${ladder}</div>`;
 }
 
 /* ===========================================================================
@@ -1179,7 +1558,7 @@ function pageHost(){
 
   const pool = h.pool ? (() => {
     const p = org().pools.find(x => x.id === h.pool);
-    return headingCtr('Pool', 'this host belongs to a pool; every part above is declared by the pool and configured there (S176)', btn('Open the pool', 'data-page="pools"'),
+    return headingCtr('Pool', 'this host belongs to a pool; every part above is declared by the pool and configured there (S176)', btn('Open the pool', `data-pool="${p.id}"`),
       `<div class="ctr-body">${kv([
         ['Pool', `<b>${esc(p.id)}</b> · ${esc(p.platform)}`],
         ['Image', `<span class="mono">${esc(p.image)}</span> · ${p.imageState === 'behind' ? 'behind' : 'current'}`],
@@ -1207,21 +1586,60 @@ function pageHost(){
     `<div class="ctr-body"><div class="steps">${h.joinedSteps.map(([name, state, at, body]) =>
       `<div class="step-row"><div>${st('success','')}</div><div><b>${esc(name)}</b> <span class="small">${esc(at)}</span><div class="small">${esc(body)}</div></div></div>`).join('')}</div></div>`) : '';
 
-  const head = pageHead(esc(h.id) + (h.pool ? ' ' + badge('pool host','grey') : '') + (h.dispatcher ? ' ' + badge('dispatcher','grey') : ''),
+  /* the delivery view of this one host: which sinks it presents for whom (236, 236a, S173) */
+  const o = org();
+  const sinkRows = [];
+  o.members.forEach(m => Object.entries(m.addresses).forEach(([kind, addr]) => {
+    const part = partOn(h, kind === 'discord' ? 'discord' : 'slack');
+    if(!part) return;
+    const live = /^installed/.test(part.state);
+    sinkRows.push({cells:[
+      `<a href="#" data-member="${m.id}"><b>${esc(m.id)}</b></a>${sub('a direct message from this host&#8217;s bot, with the member&#8217;s own filter (S173)')}`,
+      esc(kind), `<span class="mono">${esc(addr)}</span>`,
+      live ? st('success','delivered') : st('warning', part.state === 'disabled' ? 'undelivered · the sink is disabled here' : 'undelivered · ' + esc(part.state)),
+      live ? `<span class="num">07:24</span>` : `<span class="small">no mark yet</span>`]});
+  }));
+  o.channels.filter(c => c.host === h.id).forEach(c => sinkRows.push({cells:[
+    `<b>${esc(c.id)}</b>${sub('a shared channel is one sink with one mark and no member · delivered under all (S173)')}`,
+    esc(c.kind), `<span class="mono">shared</span>`, st('success','delivered'), `<span class="num">${esc(c.mark)}</span>`]}));
+  const presented = ctr({title:'Sinks this host presents', counter:sinkRows.length,
+    desc:'a chat sink is presented by the host holding that kind&#8217;s presenter lease; every address of that kind is delivered through it (148, 236a)',
+    tight:true,
+    body: table(['Sink','Kind','Address','Delivery','Mark'], sinkRows,
+      ['This host presents no sink', 'add a chat sink on the Parts tab and every address of its kind is delivered through it (S166)'])});
+  const leases = ctr({title:'Leases', body: kv([
+    ['Presenter lease', h.parts.some(p => p.lease) ? st('success', 'held · ' + h.parts.filter(p => p.lease).map(p => esc(pkg(p.pkg).name)).join(' · ')) : st('inactive','none held here')],
+    ['If this host goes', 'the lease expires and another alive host presenting that kind takes it; nothing is lost and no address is re-authored (148)'],
+  ])});
+
+  const att = hostAttention(h);
+  const head = pageHead(esc(h.id) + ' ' + hostState(h) + (h.pool ? ' ' + badge('pool host','grey') : '') + (h.dispatcher ? ' ' + badge('dispatcher','grey') : ''),
     esc(h.note),
-    `${btn('Open in the plan console', `data-plan="host:${h.id}"`)}${h.alive ? '' : btn('Takeover', `data-takeover="${h.id}"`, 'primary')}`);
+    `${btn('Open in the plan console', `data-plan="host:${h.id}"`)}${h.binary !== h.binaryLatest ? btn('Upgrade the binary', `data-upgrade="${h.id}"`) : ''}${h.alive ? '' : btn('Takeover', `data-takeover="${h.id}"`, 'primary')}`);
   const summary = ctr({body: kv([
+    ['Tier', badge(esc(tierOf(h)), 'grey')],
     ['Identity kind', badge(esc((h.identity||{kind:'github'}).kind), 'blue')],
     ['Alive', h.alive ? st('success','alive · ' + esc(h.last)) : st('error','gone ' + esc(h.gone||''))],
     ['Bound', String(h.bound)],
     ['Platform', esc(h.platform)],
     ['Environment', h.env ? esc(h.env.provider) : '—'],
     ['Parts', String(h.parts.length)],
-    ['Binary', esc(h.binary)],
+    ['Attention', att.length ? st('warning', att.length + ' line' + (att.length > 1 ? 's' : '')) : st('success','none')],
   ])});
-  return crumbs([[org().name,'org'],['Hosts','none'],[h.id]]) + head
-    + `<div class="stack-l">${summary}${identity}${router}${runners}${agent}${sinks}${adapters}${triage}${env}${gitApp}${pool}${facts}${joined}</div>`;
+  const attention = att.length ? ctr({title:'Under attention', counter:att.length,
+    desc:'every one of these is a line in the rail, answered there (S113)',
+    tight:true, body: table(['What it says'], att.map(line => ({cells:[raw(line)]})))}) : '';
+
+  const tab = S.tab || 'parts';
+  const body = tab === 'environment' ? env
+    : tab === 'sinks' ? presented + leases
+    : tab === 'facts' ? summary + attention + facts + identity + gitApp + pool + joined
+    : router + runners + agent + sinks + adapters + triage;
+  return crumbs([[o.name,'org'],['Hosts','hosts'],[h.id]]) + head
+    + tabsHtml(HOST_TABS, tab, 'tab')
+    + `<div class="stack-l">${body}</div>`;
 }
+const HOST_TABS = [['parts','Parts'],['environment','Environment'],['sinks','Sinks'],['facts','Facts']];
 
 /* ===========================================================================
    "+ host" — the wizard over the flow of S120
@@ -1237,23 +1655,63 @@ const WIZ_STEPS = [
 const JOURNEYS = [
   ['machine', 'A machine of yours', 'a laptop or a home host with herdr',
    'It <b>drains construction work</b>: the pane runner under your login takes units at its bound, so the flywheel&#8217;s runway grows by what you set here (S103, S114).',
-   {platform:'laptop', parts:['runner-pane'], adopt:false}],
+   {platform:'laptop', parts:['runner-pane','router-local'], adopt:false}],
   ['cloud-agent', 'An agent in the cloud', 'a container flywheel-cloud runs, for captures and chat',
-   'It <b>presents chat and reads captures while your machines sleep</b>, and it is bound 0, so it takes no construction work and changes no runway reading (S114, dispatch 2, 5).',
-   {platform:'managed', parts:['runner-inproc'], adopt:false}],
+   'It <b>presents chat and reads captures while your machines sleep</b>, and it is bound 0, so it takes no construction work and changes no runway reading (S114, dispatch 2, 5). The tier fixes its router and its runner, so it is only asked what to listen to.',
+   {platform:'managed', parts:[], adopt:false}],
   ['pool', 'More drain, managed for you', 'a pool the machinery adds hosts to and retires',
    'The machinery <b>adds and retires hosts itself</b> while drain is the limit, within the bound and the cost ceiling you set (240–242, S176). This is not one host: it opens the pool form.',
    {pool:true}],
   ['adopt', 'A host already running the binary', 'adopt an existing machine or container',
    'Enrolment <b>by token alone</b>: no platform, no provisioning and no hand-over, because the host is already there and its secrets are checked at join (S121).',
-   {adopt:true, parts:[]}],
+   {adopt:true, parts:['runner-pane','router-local']}],
 ];
+/* the cloud agent's one screen: what it listens to and what it speaks through, and nothing else.
+   The tier fixes the router (the platform router at the served name) and the runner (in-process at
+   bound 0), so neither is a question here (plans.md, hosted tier 1). */
+const CLOUD_CHAT = [
+  ['none', 'none', 'no chat sink · the plan is read on the page and answered there'],
+  ['slack', 'Slack', 'the plan in a channel with buttons; replies arrive over the URL · a bot token and a signing secret'],
+  ['discord', 'Discord', 'the plan printed to a channel, answers read back, a check mark when recorded (148) · the bot own token'],
+];
+const CLOUD_MEETINGS = [
+  ['none', 'none', 'no meeting captures'],
+  ['Granola', 'Granola', 'one capture per meeting, keyed by the meeting id · read by its API from the cloud host'],
+  ['Notion', 'Notion', 'the same, from Notion&#8217;s meeting notes'],
+  ['a folder of transcripts', 'a folder of transcripts', 'a watched folder · one capture per file, keyed by the file hash'],
+];
+const CLOUD_CAPTURES = [
+  ['pr-conversation', 'GitHub', 'PR conversation as captures, read with a scoped installation token (207) · already on with the App', true],
+  ['datadog', 'Datadog', 'a monitor finding as one capture · an inbound secret per caller and a public route opened for it (46)', false],
+  ['switchboard', 'a webhook', 'the switchboard connector · delivery findings and dependencies as captures over one named inbound route', false],
+];
+/* a preset is a bundle package: a named set of parts with their configuration defaults, offered as
+   one choice, and its install is one decision for the set and not one per part (plans.md) */
+const PRESETS = [
+  ['bundle-slack-granola', {chat:'slack', meetings:'Granola', captures:['pr-conversation']}],
+  ['bundle-discord-github', {chat:'discord', meetings:'none', captures:['pr-conversation']}],
+  ['bundle-everything', {chat:'slack', meetings:'Granola', captures:['pr-conversation','datadog','switchboard']}],
+];
+/* the selectors are the source of truth on this journey; the parts list is derived from them */
+function applyCloudSelectors(){
+  const w = S.wizard, s = w.sel;
+  const parts = [
+    {pkg:'router-platform', cfg:{routes:'the served name'}, fixed:true},
+    {pkg:'runner-inproc', cfg:{access:'the runtime Bedrock role'}, fixed:true},
+  ];
+  if(s.chat !== 'none') parts.push({pkg:s.chat, cfg:{channel:'#' + org().name + '-plan'}});
+  if(s.meetings !== 'none') parts.push({pkg:'meeting', cfg:{source:s.meetings, cadence:'as meetings end'}});
+  s.captures.forEach(id => parts.push({pkg:id, cfg:{}}));
+  w.parts = parts;
+}
 const PLATFORMS = [
   ['managed','flywheel-cloud managed','a container flywheel-cloud runs and fronts with its router',['cloud','container','linux'],0],
   ['container','a container on any platform','Fly, Cloud Run, ECS, a VM · one image, the binary unchanged · you bring the secret store and a tailnet node',['container','linux'],0],
   ['laptop','a laptop','a machine of yours with herdr · the pane runner under your login · drains construction work',['machine','macos','herdr'],2],
 ];
-function newWizard(){ return {step:0, journey:null, advanced:false, adopt:false, platform:null, name:'', parts:[], provisioned:false, secrets:{}, decision:null, joined:false}; }
+function newWizard(){ return {step:0, journey:null, advanced:false, partsAdv:false, adopt:false, platform:null, name:'', parts:[],
+  sel:{chat:'none', meetings:'none', captures:['pr-conversation']}, preset:null,
+  provisioned:false, secrets:{}, decision:null, joined:false}; }
 function pickJourney(id){
   const w = S.wizard, j = JOURNEYS.find(x => x[0] === id);
   if(!j) return;
@@ -1262,12 +1720,54 @@ function pickJourney(id){
   w.adopt = !!j[4].adopt;
   w.platform = j[4].platform || null;
   w.parts = (j[4].parts || []).map(pkgId => ({pkg:pkgId, cfg:{}}));
+  if(id === 'cloud-agent'){ w.sel = {chat:'none', meetings:'none', captures:['pr-conversation']}; w.preset = null; applyCloudSelectors(); }
   if(!w.name) w.name = id === 'machine' ? 'chuck-air' : id === 'cloud-agent' ? (org().name + '-cloud-2') : 'mac-mini-2';
 }
 function wizPlat(){ const w = S.wizard; return w.adopt ? ['any'] : (PLATFORMS.find(p => p[0] === w.platform) || [null,null,null,['any']])[3]; }
+/* the cloud agent's Parts step: one screen, three selectors, a row of presets above them */
+function cloudPartsScreen(){
+  const w = S.wizard, s = w.sel;
+  const presets = `<div class="preset-row">${PRESETS.map(([id]) => {
+    const P = pkg(id), on = w.preset === id;
+    return `<button class="preset ${on ? 'on' : ''}" data-preset="${id}" aria-pressed="${on ? 'true' : 'false'}">
+      <b>${esc(P.name)}</b><span class="small">${raw(P.enables)}</span>
+      ${on ? st('success','filled in below') : `<span class="small">${badge('bundle','grey')} one decision for the set</span>`}</button>`;
+  }).join('')}</div>`;
+  const radios = (title, note, name, opts, cur) =>
+    `<div class="hd-sec"><div class="hd-bar"><div class="ht"><h3>${esc(title)}</h3><div class="small">${raw(note)}</div></div></div>
+      <div class="ctr-body">${opts.map(([v, label, what]) =>
+        `<label class="radio"><input type="radio" name="${name}" value="${esc(v)}" ${cur === v ? 'checked' : ''} data-cloudsel="${name}">
+          <span><b>${esc(label)}</b><div class="small">${raw(what)}</div></span></label>`).join('')}</div></div>`;
+  const captures = `<div class="hd-sec"><div class="hd-bar"><div class="ht"><h3>Captures</h3>
+      <div class="small">what it reads work out of · triage is derived from whatever they bring and is never configured on its own (S115, dispatch 4)</div></div></div>
+    <div class="ctr-body">${CLOUD_CAPTURES.map(([id, label, what, fixed]) =>
+      `<label class="radio"><input type="checkbox" value="${esc(id)}" data-cloudcap="1" ${s.captures.includes(id) ? 'checked' : ''} ${fixed ? 'disabled' : ''}>
+        <span><b>${esc(label)}</b>${fixed ? ' ' + badge('already on','grey') : ''}<div class="small">${raw(what)}</div></span></label>`).join('')}</div></div>`;
+  const fixedParts = `<div class="hd-sec"><div class="hd-bar"><div class="ht"><h3>Fixed by the tier</h3>
+      <div class="small">an agent in the cloud is not asked about a router or a runner: the tier is what they are (plans.md, hosted tier 1)</div></div></div>
+    <div class="slot empty-slot"><div class="sl-main"><div class="sl-name">platform router</div>
+      <div class="small">the served name under the platform&#8217;s ingress · a public route is opened per named caller and nothing else is reachable (46, 191)</div></div></div>
+    <div class="slot empty-slot"><div class="sl-main"><div class="sl-name">in-process runner · bound 0</div>
+      <div class="small">it takes no construction work and changes no runway reading (S114, dispatch 2, 5) · the agent and triage run inside the binary</div></div></div>
+    <div class="slot empty-slot"><div class="sl-main"><div class="sl-name">identity · <span class="mono">frontegg</span></div>
+      <div class="small">the provider&#8217;s hosted login at the served name (S164)</div></div></div></div>`;
+  const chosen = w.parts.filter(p => !p.fixed);
+  const summary = `<div class="hd-sec"><div class="hd-bar"><div class="ht"><h3>What joins with it</h3>
+      <div class="small">${w.preset ? `the <b>${esc(pkg(w.preset).name)}</b> bundle · a bundle is a named set of parts with their configuration defaults, and its install is one decision for the set (plans.md)` : 'your own set · every part is installed by the one enrolment decision at the end of this wizard (S118, S120)'}</div></div></div>
+    ${chosen.length ? chosen.map(p => `<div class="slot"><div class="sl-main"><div class="sl-name">${esc(pkg(p.pkg).name)}</div>
+        <div class="small">${raw(pkg(p.pkg).enables)}</div>${st('pending','chosen · installed when the host joins')}</div></div>`).join('')
+      : `<div class="slot empty-slot"><div class="sl-main"><div class="small">nothing chosen yet · it would join and read the manifest with the tier&#8217;s parts alone</div></div></div>`}</div>`;
+  return ctr({title:'What should it listen to?', tight:true,
+    desc:'one screen · a preset fills the selectors below, and every one of them stays yours to change afterwards',
+    body:`<div class="ctr-body" style="border-bottom:1px solid var(--divider-2)">${presets}</div>`
+      + radios('Chat', 'where the plan is printed and answered · one host presents a kind and holds its lease (148)', 'cl-chat', CLOUD_CHAT, s.chat)
+      + radios('Meetings', 'one capture per meeting, keyed by the meeting id (dispatch 4)', 'cl-meet', CLOUD_MEETINGS, s.meetings)
+      + captures + fixedParts + summary});
+}
 function pageAddHost(){
   const w = S.wizard = S.wizard || newWizard();
-  const steps = `<ul class="wiz-nav">${WIZ_STEPS.map((s,i) =>
+  const stepsDef = WIZ_STEPS.map((s, i) => (i === 1 && w.journey === 'cloud-agent') ? ['Parts', 'chat, meetings, captures'] : s);
+  const steps = `<ul class="wiz-nav">${stepsDef.map((s,i) =>
     `<li class="${i < w.step ? 'done' : ''} ${i === w.step ? 'now' : ''}"><span class="n">${i < w.step ? '&#10003;' : i+1}</span><span class="lbl">${esc(s[0])}<small>${esc(s[1])}</small></span></li>`).join('')}</ul>`;
   let body = '', next = 'Next', canNext = true;
   if(w.step === 0){
@@ -1291,22 +1791,28 @@ function pageAddHost(){
               <div class="small">every part is chosen on the next step whatever you pick here; nothing is installed until the enrolment decision is answered (S118, S124)</div>
             </div>` : ''}</div>`});
     canNext = !!w.name && w.journey !== 'pool' && (w.adopt || !!w.platform);
+  } else if(w.step === 1 && w.journey === 'cloud-agent'){
+    body = cloudPartsScreen();
   } else if(w.step === 1){
-    const plat = wizPlat();
-    const headings = [['router','Router','one slot'],['runner','Runners','one slot per role'],['chat sink','Chat sinks','a list'],['adapter','Capture adapters','a list']];
-    body = ctr({title:'Parts', desc:'the same headings as a host&#8217;s settings screen, empty · each opens its own catalogue, filtered to this platform (S117, S120). The agent and triage come with the binary wherever a runner gives them a place.',
+    const kindHeading = (kind, title, note) => {
+      const chosen = w.parts.filter(p => pkg(p.pkg).kind === kind);
+      return `<div class="hd-sec"><div class="hd-bar"><div class="ht"><h3>${esc(title)}</h3><div class="small">${raw(note)}</div></div>
+        ${btn('Add', `data-catalogue="__new|${kind}"`)}</div>
+        ${chosen.length ? chosen.map(p => `<div class="slot"><div class="sl-main"><div class="sl-name">${esc(pkg(p.pkg).name)}</div>
+          <div class="small">${raw(pkg(p.pkg).enables)}</div>${st('pending','chosen · installed when the host joins')}</div>
+          <div class="sl-acts">${btn('Remove', `data-wizrm="${p.pkg}"`, 'link')}</div></div>`).join('')
+          : `<div class="slot empty-slot"><div class="sl-main"><div class="small">nothing chosen · this heading may stay empty</div></div></div>`}</div>`;
+    };
+    body = ctr({title:'Parts', desc:'what this host listens to and speaks through · each heading opens its own catalogue, filtered to this platform (S117, S120). The agent and triage come with the binary wherever a runner gives them a place.',
       tight:true,
       body: `<div class="hd-sec"><div class="hd-bar"><div class="ht"><h3>Identity</h3>
           <div class="small">no part to choose: a host declares a kind, and this one will be <b>${esc(w.adopt || w.platform === 'laptop' || w.platform === 'container' ? 'github' : 'frontegg')}</b> — ${esc(w.adopt || w.platform === 'laptop' || w.platform === 'container' ? 'GitHub&#8217;s device flow on a localhost port' : 'the provider&#8217;s hosted login at the served name')} (S164)</div></div></div></div>`
-        + headings.map(([kind, title, note]) => {
-        const chosen = w.parts.filter(p => pkg(p.pkg).kind === kind);
-        return `<div class="hd-sec"><div class="hd-bar"><div class="ht"><h3>${esc(title)}</h3><div class="small">${esc(note)}</div></div>
-          ${btn('Add', `data-catalogue="__new|${kind}"`)}</div>
-          ${chosen.length ? chosen.map(p => `<div class="slot"><div class="sl-main"><div class="sl-name">${esc(pkg(p.pkg).name)}</div>
-            <div class="small">${esc(pkg(p.pkg).enables)}</div>${st('pending','chosen · installed when the host joins')}</div>
-            <div class="sl-acts">${btn('Remove', `data-wizrm="${p.pkg}"`, 'link')}</div></div>`).join('')
-            : `<div class="slot empty-slot"><div class="sl-main"><div class="small">nothing chosen · this heading may stay empty</div></div></div>`}</div>`;
-      }).join('')});
+        + kindHeading('chat sink', 'Chat sinks', 'a list · what the plan is printed to and answered in')
+        + kindHeading('adapter', 'Capture adapters', 'a list · each names one source')
+        + `<div class="hd-sec"><div class="hd-bar"><div class="ht">
+            <button class="exp-h" data-partsadv="1" aria-expanded="${w.partsAdv ? 'true' : 'false'}"><span class="tw" aria-hidden="true">${w.partsAdv ? '&#9660;' : '&#9654;'}</span>Advanced · router and runners</button>
+            <div class="small">the sensible default for this journey is already chosen: ${w.parts.filter(p => ['router','runner'].includes(pkg(p.pkg).kind)).map(p => `<b>${esc(pkg(p.pkg).name)}</b>`).join(' · ') || 'nothing yet'}. Open this only to change it.</div></div></div>
+          ${w.partsAdv ? kindHeading('router', 'Router', 'one slot · what a served place is reached at (191)') + kindHeading('runner', 'Runners', 'one slot per role · where a session of that role runs (173)') : ''}</div>`});
   } else if(w.step === 2){
     body = ctr({title:'Provision', desc:'provisioning runs from the host you are on with your own platform credentials, read at run time and never stored (S120)',
       body: w.adopt ? `<div>${st('info','nothing to provision · the host already runs the binary')}</div>`
@@ -1345,7 +1851,7 @@ function pageAddHost(){
   }
   const foot = `<div class="wiz-foot">${btn('Cancel','data-wizcancel="1"','link')}${w.step > 0 ? btn('Previous','data-wizprev="1"') : ''}
     ${btn(next, 'data-wiznext="1"' + (canNext ? '' : ' disabled'), 'primary')}</div>`;
-  return crumbs([[org().name,'org'],['Hosts','none'],['+ host']])
+  return crumbs([[org().name,'org'],['Hosts','hosts'],['+ host']])
     + pageHead('Add a host', 'what you want to add · parts · provision · hand over secrets · enrol, then join and alive (S120)')
     + `<div class="wiz">${steps}<div>${body}${foot}</div></div>`;
 }
@@ -1683,8 +2189,9 @@ function flashbarHtml(){
 function menuHtml(){
   if(S.menu === 'org'){
     return `<div class="menu left" id="menu"><h4>Organizations</h4>${memberOrgs().map(id =>
-      `<button data-org="${id}" ${id === S.org ? 'aria-current="true"' : ''}>${esc(ORGS[id].name)}<span class="mi-sub">${esc(ORGS[id].what)}</span></button>`).join('')}
-      <hr><div class="small" style="padding:4px 10px">the switcher lists the organizations the serving host has a root for (218); one whose operators list does not carry you is marked "not a member" — whether such an organization is hidden or greyed is open (S191).</div></div>`;
+      `<button data-org="${id}" ${id === S.org ? 'aria-current="true"' : ''}>${esc(ORGS[id].name)}<span class="mi-sub">${esc(ORGS[id].what)}${ORGS[id].plan ? ' · ' + esc(ORGS[id].plan) : ' · self-managed'}</span></button>`).join('')}
+      <hr><button data-addorg="1">+ organization<span class="mi-sub">name it, connect it, and one decision initializes it (204, 218-222)</span></button>
+      <hr><div class="small" style="padding:4px 10px">the organization is chosen here and nowhere else. The switcher lists the organizations the serving host has a root for (218); one whose operators list does not carry you is marked "not a member" — whether such an organization is hidden or greyed is open (S191).</div></div>`;
   }
   if(S.menu === 'acct'){
     const o = org();
@@ -1697,17 +2204,20 @@ function menuHtml(){
         served by ${esc(servingHost().id)} · ${isHosted() ? 'the provider&#8217;s hosted login at its served name' : 'GitHub&#8217;s device flow on a localhost port'}</div>
       <hr><h4>Your sinks here</h4>
       <div style="padding:4px 10px" class="small">page · ${esc(servingHost().id)} · mark ${NOW}${me ? Object.entries(me.addresses).map(([k,v]) => `<br>${esc(k)} <span class="mono">${esc(v)}</span> · ${k === 'discord' ? 'presented by studio' : 'undelivered · no host presents Slack'}`).join('') : ''}</div>
-      <hr><button data-page="overview">Settings</button><button data-host="${hosts()[0].id}">Hosts</button><button data-page="packages">Organization store</button>
+      <hr><button data-page="settings">Settings</button><button data-page="hosts">Hosts</button><button data-page="store">Organization store</button><button data-page="plan">Plan</button>
       <hr><button data-signout="1">Sign out</button></div>`;
   }
   return '';
 }
 function render(){
   document.getElementById('sidenav').innerHTML = sidenavHtml();
-  const page = S.addorg ? pageAddOrg() : S.addhost ? pageAddHost() : S.host ? pageHost()
+  const page = S.addorg ? pageAddOrg() : S.addhost ? pageAddHost()
+    : S.host ? pageHost() : S.pool ? pagePool() : S.member ? pageMember() : S.repo ? pageRepo()
+    : S.page === 'hosts' ? pageHosts() : S.page === 'pools' ? pagePools()
     : S.page === 'repositories' ? pageRepos() : S.page === 'members' ? pageMembers()
     : S.page === 'sinks' ? pageSinks() : S.page === 'adapters' ? pageAdapters()
-    : S.page === 'packages' ? pagePackages() : S.page === 'pools' ? pagePools() : pageOverview();
+    : S.page === 'store' ? pagePackages() : S.page === 'plan' ? pagePlan()
+    : S.page === 'settings' ? pageSettings() : pageOverview();
   document.getElementById('main').innerHTML = `<div class="main-inner">${flashbarHtml()}${page}</div>`;
   document.getElementById('orgsel-name').textContent = org().name;
   document.getElementById('acct-name').textContent = shownIdentity();
@@ -1741,20 +2251,29 @@ function openSheet(target, pkgId, mode){
   render();
 }
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-org],[data-page],[data-host],[data-addhost],[data-crumb],[data-catalogue],[data-sheet],[data-configure],[data-part],[data-agent],[data-store],[data-rebuild],[data-upgrade],[data-secret],[data-placed],[data-panelclose],[data-sheetsave],[data-sheetsecret],[data-sheetlater],[data-copy],[data-dismiss],[data-edit],[data-editpool],[data-add-member],[data-add-role],[data-rm-member],[data-addrepo],[data-addsink],[data-formsave],[data-wiznext],[data-wizprev],[data-wizcancel],[data-wizprov],[data-wizsecret],[data-wizenrol],[data-wizjoin],[data-wizrm],[data-takeover],[data-plan],[data-signout],[data-env],[data-addorg],[data-owiznext],[data-owizprev],[data-owizcancel],[data-owizkey],[data-owizaccount],[data-owizraise],[data-owiztick],[data-retireorg],[data-wizadv],[data-wizpool],[data-idadmin]');
+  const t = e.target.closest('[data-org],[data-page],[data-host],[data-pool],[data-member],[data-repo],[data-tab],[data-ptab],[data-addhost],[data-crumb],[data-catalogue],[data-sheet],[data-configure],[data-part],[data-agent],[data-store],[data-rebuild],[data-upgrade],[data-secret],[data-placed],[data-panelclose],[data-sheetsave],[data-sheetsecret],[data-sheetlater],[data-copy],[data-dismiss],[data-edit],[data-editpool],[data-add-member],[data-add-role],[data-rm-member],[data-addrepo],[data-addsink],[data-formsave],[data-wiznext],[data-wizprev],[data-wizcancel],[data-wizprov],[data-wizsecret],[data-wizenrol],[data-wizjoin],[data-wizrm],[data-takeover],[data-plan],[data-signout],[data-env],[data-addorg],[data-owiznext],[data-owizprev],[data-owizcancel],[data-owizkey],[data-owizaccount],[data-owizraise],[data-owiztick],[data-retireorg],[data-wizadv],[data-partsadv],[data-preset],[data-changeplan],[data-wizpool],[data-idadmin]');
   if(!t){ if(S.menu){ S.menu = null; render(); } return; }
   const d = t.dataset;
-  if(t.tagName === 'A' && !d.crumb && !d.host && !d.secret) return;
+  if(t.tagName === 'A' && d.crumb === undefined && !d.host && !d.secret && !d.pool && !d.member && !d.repo && !d.page) return;
   e.preventDefault();
   if(S.menu && !d.org && !d.page && !d.host && !d.signout) S.menu = null;
+  /* opening any one thing leaves whatever else was open */
+  const drillTo = o => { S.host = null; S.pool = null; S.member = null; S.repo = null; S.addhost = null; S.addorg = null;
+    Object.assign(S, o); S.menu = null; S.navOpen = false; };
 
-  if(d.org){ S.org = d.org; S.host = null; S.addhost = null; S.addorg = null; S.page = 'overview'; S.panel = null; S.menu = null; S.wizard = null; }
-  else if(d.page){ S.page = d.page; S.host = null; S.addhost = null; S.addorg = null; S.menu = null; S.navOpen = false; }
-  else if(d.host){ S.host = d.host; S.addhost = null; S.addorg = null; S.menu = null; S.navOpen = false; }
-  else if(d.addhost){ S.addhost = true; S.host = null; S.addorg = null; S.wizard = S.wizard || newWizard(); S.navOpen = false; }
-  else if(d.addorg){ S.addorg = true; S.host = null; S.addhost = null; S.orgWizard = S.orgWizard || newOrgWizard(); S.navOpen = false; }
-  else if(d.crumb === 'org'){ S.host = null; S.addhost = null; S.page = 'overview'; }
-  else if(d.crumb === 'none'){ /* the hosts crumb is a place, not a page */ }
+  if(d.org){ S.org = d.org; S.page = 'overview'; S.panel = null; S.wizard = null; drillTo({}); }
+  else if(d.page){ S.page = d.page; drillTo({}); }
+  else if(d.host){ const [hid, tab] = d.host.split('|'); drillTo({host:hid, tab: tab || 'parts'}); }
+  else if(d.pool){ drillTo({pool:d.pool, ptab:'hosts'}); }
+  else if(d.member){ drillTo({member:d.member}); }
+  else if(d.repo){ drillTo({repo:d.repo}); }
+  else if(d.tab){ S.tab = d.tab; }
+  else if(d.ptab){ S.ptab = d.ptab; }
+  else if(d.addhost){ drillTo({addhost:true}); S.wizard = S.wizard || newWizard(); }
+  else if(d.addorg){ drillTo({addorg:true}); S.orgWizard = S.orgWizard || newOrgWizard(); }
+  else if(d.crumb === 'org'){ drillTo({}); S.page = 'overview'; }
+  else if(d.crumb && PAGES.some(p => p[0] === d.crumb)){ const to = d.crumb; drillTo({}); S.page = to; }
+  else if(d.crumb === 'none' || d.crumb === ''){ /* a crumb that names a place, not a page */ }
   else if(d.catalogue){ const [target, kind, rep] = d.catalogue.split('|'); openCatalogue(target, kind, rep && rep.replace('replace:','')); return; }
   else if(d.sheet){ openSheet(S.panel.target, d.sheet, 'sheet'); return; }
   else if(d.configure){ const [target, id] = d.configure.split('|'); openSheet(target, id, 'configure'); return; }
@@ -1793,11 +2312,17 @@ document.addEventListener('click', e => {
   else if(d.signout){ S.menu = null; flash('info','Sign-out','sign-out ends the page&#8217;s session with the serving host&#8217;s kind and records nothing (S153) · the hosts keep running'); }
   else if(d.env){ flash('info','Environment provider', 'the console changes no provider: a provider is a host&#8217;s declaration and is changed where the host is declared (S174, S155)'); }
   else if(d.wizadv){ S.wizard.advanced = !S.wizard.advanced; }
+  else if(d.partsadv){ S.wizard.partsAdv = !S.wizard.partsAdv; }
+  else if(d.preset){ const set = (PRESETS.find(p => p[0] === d.preset) || [])[1];
+    if(set){ S.wizard.preset = d.preset; S.wizard.sel = {chat:set.chat, meetings:set.meetings, captures:set.captures.slice()}; applyCloudSelectors();
+      flash('info', 'Preset chosen', `${esc(pkg(d.preset).name)} · a bundle is a named set of parts with their configuration defaults, and its install is one decision for the set (plans.md) · every selector below stays yours to change`); } }
+  else if(d.changeplan){ flash('info', 'Billing is on the hosted account',
+    `the plan and the card live on ${esc(org().name)}&#8217;s account and are billed by Stripe; this console reads the plan and never authors it. <a href="https://billing.stripe.com/p/session/sample" target="_blank" rel="noreferrer">open the billing portal &#8599;</a> <span class="sample">sample link</span>`); }
   else if(d.wizpool){ S.addhost = null; S.wizard = null; S.page = 'pools'; poolForm('new'); return; }
   else if(d.wizrm){ S.wizard.parts = S.wizard.parts.filter(x => x.pkg !== d.wizrm); }
   else if(d.wiznext){ wizNext(); }
   else if(d.wizprev){ S.wizard.step = Math.max(0, S.wizard.step - 1); }
-  else if(d.wizcancel){ S.wizard = null; S.addhost = null; S.host = null; S.page = 'overview'; }
+  else if(d.wizcancel){ S.wizard = null; S.addhost = null; S.host = null; S.page = 'hosts'; }
   else if(d.wizprov){ S.wizard.provisioned = true; }
   else if(d.wizsecret){ S.wizard.secrets[d.wizsecret] = true; }
   else if(d.wizenrol){ S.wizard.decision = raiseDecision('host-enrol', `enrol host ${S.wizard.name}`, 'the yes hands back a one-time token that expires in 24h'); }
@@ -1844,6 +2369,14 @@ document.addEventListener('change', e => {
   if(e.target.id === 'w-adopt'){ S.wizard.adopt = e.target.checked; S.wizard.platform = null; render(); }
   if(e.target.name === 'w-plat'){ S.wizard.platform = e.target.value; S.wizard.journey = null; render(); }
   if(e.target.name === 'w-journey'){ pickJourney(e.target.value); render(); }
+  if(e.target.dataset.cloudsel){
+    S.wizard.sel[e.target.dataset.cloudsel === 'cl-chat' ? 'chat' : 'meetings'] = e.target.value;
+    S.wizard.preset = null; applyCloudSelectors(); render();
+  }
+  if(e.target.dataset.cloudcap){
+    S.wizard.sel.captures = Array.from(document.querySelectorAll('[data-cloudcap]')).filter(x => x.checked).map(x => x.value);
+    S.wizard.preset = null; applyCloudSelectors(); render();
+  }
   if(e.target.name === 'o-tier'){ S.orgWizard.tier = e.target.value; render(); }
   if(e.target.name === 'o-gh'){ S.orgWizard.gh = e.target.value; render(); }
   if(e.target.name === 'o-state'){ S.orgWizard.repos.state.mode = e.target.value; render(); }
@@ -1910,6 +2443,7 @@ function identityAdmin(spec){
   if(act === 'revoke'){
     if(m.id === IDENTITY.handle){ flash('error','Refused', 'revoking your own assignment would lock you out of this organization — the same rule the settings form applies to a save that would remove the saving identity (S155)'); return; }
     o.members = o.members.filter(x => x !== m);
+    if(S.member === m.id) S.member = null;
     logged(`revoke-application ${o.name} ${m.id}`, 'their page sink and their chat sinks go with it; their addresses stay on the entry until the form removes them (236a, S195)'); return; }
   if(act === 'role') return openForm({title:`Role for ${m.id}`, saveLabel:'Set role',
     desc:'one <span class="mono">set-role(organization, user, role)</span> call · the role the token carries is what authorizes each tool (248, 249)',
@@ -1920,6 +2454,7 @@ function removeMember(id){
   if(id === IDENTITY.handle){ flash('error','Refused', 'a save that would remove the saving identity from the operators list is refused inline (S155)'); return; }
   const o = org(); o.members = o.members.filter(m => m.id !== id);
   o.roles.forEach(r => r.members = r.members.filter(m => m !== id));
+  if(S.member === id) S.member = null;
   logged(`operators · remove ${id}`, 'their sinks are removed in the same write as the entry (S168); a response from them is refused before any record is written (S165)');
 }
 function editForm(spec){
@@ -2005,7 +2540,7 @@ function addRoleForm(){
 }
 function wizNext(){
   const w = S.wizard;
-  if(w.step === WIZ_STEPS.length - 1){ S.addhost = null; S.host = w.joined ? w.name : null; S.page = 'overview'; S.wizard = w.joined ? null : w; return; }
+  if(w.step === WIZ_STEPS.length - 1){ S.addhost = null; S.host = w.joined ? w.name : null; S.tab = 'parts'; S.page = 'hosts'; S.wizard = w.joined ? null : w; return; }
   w.step++;
   if(w.step === 3 && w.adopt) w.step = 4;
   if(w.step === 2 && w.adopt) w.step = 4;
@@ -2051,7 +2586,16 @@ function wizJoin(){
   if(q.get('page')) S.page = q.get('page');
   if(q.get('served')) S.served = q.get('served');
   if(q.get('host') && host(q.get('host'))) S.host = q.get('host');
-  if(q.get('addhost')){ S.addhost = true; S.wizard = newWizard(); }
+  if(q.get('tab') && HOST_TABS.some(t => t[0] === q.get('tab'))) S.tab = q.get('tab');
+  if(q.get('pool') && org().pools.some(p => p.id === q.get('pool'))) S.pool = q.get('pool');
+  if(q.get('ptab') && POOL_TABS.some(t => t[0] === q.get('ptab'))) S.ptab = q.get('ptab');
+  if(q.get('member') && org().members.some(m => m.id === q.get('member'))) S.member = q.get('member');
+  if(q.get('repo') && org().repos.some(r => r.id === q.get('repo'))) S.repo = q.get('repo');
+  if(q.get('addhost')){
+    S.addhost = true; S.wizard = newWizard();
+    if(q.get('journey')) pickJourney(q.get('journey'));
+    if(q.get('wstep')) S.wizard.step = Math.max(0, Math.min(WIZ_STEPS.length - 1, +q.get('wstep')));
+  }
   if(q.get('addorg')){ S.addorg = true; S.orgWizard = newOrgWizard(); if(q.get('ostep')) S.orgWizard.step = +q.get('ostep'); }
   if(q.get('panel')) S.panel = {mode:'catalogue', target:S.host || 'studio', kind:'chat sink', q:'', any:false};
   if(q.get('flash')) flash('info','Decision 425 raised','install Slack on studio · kind package-install · nothing is installed until it is answered · ' + answerLink(425));
