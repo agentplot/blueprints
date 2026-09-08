@@ -5,14 +5,14 @@ satisfies: [5, 35, 103]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
-    - {id: unit/atlas/p, machine: unit, parent: bolt/atlas/plan-rows, state: {life: proposed}, record: {type: fast, claims: ["providers/one-writer@3"]}}
-    - {id: unit/atlas/a, machine: unit, parent: bolt/atlas/plan-rows, state: {life: waiting}, record: {type: fast, claims: ["providers/one-writer@3"], depends_on: [unit/atlas/s]}}
-    - {id: unit/atlas/s, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: fast, claims: ["providers/one-writer@3"]}}
+    - {id: unit/atlas/p, machine: unit, parent: bolt/atlas/plan-rows, state: {life: proposed}, record: {type: fast, claims: ["providers/one-writer@sha256:4b2d…e1"]}}
+    - {id: unit/atlas/a, machine: unit, parent: bolt/atlas/plan-rows, state: {life: waiting}, record: {type: fast, claims: ["providers/one-writer@sha256:4b2d…e1"], depends_on: [unit/atlas/s]}}
+    - {id: unit/atlas/s, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: fast, claims: ["providers/one-writer@sha256:4b2d…e1"]}}
     - {id: planning/atlas, machine: planning, state: {run: current}, record: {planned_fingerprint: f0}}
   evidence: {planning.fingerprint: {planning/atlas: f0}, unit.claim_moved: {"*": false}, bolt.citations_moved: {"*": false}}
 when:
   - tick: {}
-  - files: {"blueprints src/providers/one-writer.md": "claim block version 4 on the shared line"}
+  - files: {"blueprints openspec/specs/providers/spec.md": "the requirement one-writer amended on the shared line; its content hash is now sha256:9f07…c3"}
   - evidence: {unit.claim_moved: {unit/atlas/p: true, unit/atlas/a: true}, bolt.citations_moved: {bolt/atlas/plan-rows: true}, planning.fingerprint: {planning/atlas: f1}}
   - tick: {}
   - tick: {}

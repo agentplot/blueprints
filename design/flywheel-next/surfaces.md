@@ -98,7 +98,8 @@ were settled, not their place on the page.
   phases and map and the b key between phases and book. The dock opens
   over the board and the board does not move. A focused rail card
   lights its object in whichever view is shown: the marker on a lane,
-  the card or edge on the map, the claim block in the book.
+  the card or edge on the map, the rendered claim in the chapter that
+  includes it.
 - **S11.** Requirements served: 7–19, 141–146, 155, 193–194, 209. Tools
   called from the rail: `answer`.
 
@@ -381,20 +382,26 @@ were settled, not their place on the page.
   itself. The organization's blueprints are mdBook sources in the blueprints
   repository; the server serves each chapter, and the page draws the
   chapter tree, one chapter at a time with previous and next, headings
-  with anchors, and the claim blocks as the flywheel renders them. The
+  with anchors, and, where a chapter includes a claim by anchor
+  (`{{#claim <capability>/<name>}}`), the requirement rendered in place
+  as the flywheel renders it (97). The
   view is entered with b or from the board's header, and b leaves it.
   The rail stays beside it and j and k walk the rail only. The view is
   behind `fw.ff.book-view`, on by default (250, S197): with the flag
   off the board's header carries no book entry and b does nothing.
-- **S92.** A claim block shows the claim's name and version, standing
-  or proposed (98), what it attaches to, the scope line derived from
-  its attachments (200), and one verdict dot per repository in scope
-  read from the ledger (100, 101). A proposed claim is dashed and
-  carries no verdicts. The block carries "evidence", opening the
-  claim's artifact view (S99), and its decision markers in the chapter
-  margin.
+- **S92.** A claim renders where its chapter includes it, as the
+  requirement it is: the name `<capability>/<name>`, the version,
+  standing or proposed (98), the requirement's own prose and every one
+  of its scenarios, what it attaches to, the scope derived from those
+  attachments (200), and one verdict dot per repository in scope read
+  from the ledger (100, 101). The text shown is the specification's,
+  never a copy, so the chapter cannot drift from it (97). A proposed
+  claim is dashed and carries no verdicts. The rendering carries
+  "evidence", opening the claim's artifact view (S99), and its decision
+  markers in the chapter margin.
 - **S93.** The rail drives the viewer. A focused card jumps the book
-  to the chapter and anchor the decision concerns and lights the block:
+  to the chapter and anchor the decision concerns and lights the
+  rendered claim:
   a unit's cited claim, an intent's chapters, a bolt's or a landing's
   claims, a proposal's claims per unit, a gathered elaboration's shared
   claim, a moved claim itself. A ref in the book in hand wins;
@@ -414,7 +421,7 @@ were settled, not their place on the page.
   specification is listed as a shipped book (212).
 - **S96.** The review flow is one flow for the map and the book (122).
   "since last review" is the same switch and mark in both views. In the
-  book, changed paragraphs and claim blocks are outlined and washed
+  book, changed paragraphs and changed claims are outlined and washed
   with a note, unchanged chapters dim in the tree, and a changes list at
   the head of the tree links each change to its anchor and opens the
   changes page (S28). "mark reviewed" sends `reviewed` once (S73); the

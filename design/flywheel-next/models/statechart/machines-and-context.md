@@ -174,7 +174,7 @@ was created under, so a release can tell the objects that predate it.
   bare reference to a shipped type);
 - the organization's additions are its files under `flywheel/types/`,
   and the machinery renders `flywheel/registry.json` under its prefix
-  (203), as it renders `flywheel/claims.json`: for every type name, the
+  (203): for every type name, the
   versions seen, the blueprints commit each version first appeared at, its
   hash, and whether it is shipped, overridden or added.
 
@@ -221,11 +221,13 @@ its thread (`deliver_answer`, `tell_moved`, 197). `flywheel render-order
 
 Two facts shape every table below. A **design** session's place is a
 worktree of the blueprints repository at the intent's line, so the whole
-book, every claim block, both maps, the vocabulary, the instructions and
+book, the standing specifications that hold every claim, both maps, the
+vocabulary, the instructions and
 the intent's change directory are on its disk; the work order points
 into that tree. A **construction** or **planning** session's place is a
 worktree of a built repository, so nothing of the blueprints is on its disk,
-and whatever it needs from the blueprints — chapters, claim blocks, the map
+and whatever it needs from the blueprints — chapters, the claims their
+specifications hold, the map
 section, the surface specification — must be copied into the place by
 `prepare_place`. `host.yaml` states the map section and the surface
 specification are; the chapters and claims it lists as inputs without
@@ -261,9 +263,9 @@ confirmation, nor context from a previous message. Both rows are in
 |---|---|
 | schema instruction | the exit schema in force (65); a schema for the delivered moves and proposed intents and gatherings: **unstated** (no `flywheel/schemas/move.md` or `intent-proposal.md` is named) |
 | type skill | the curator's skill: `flywheel/skills/<session type>/SKILL.md` per `model.md` 10.6, keyed by **unstated** (the agent name `curator`, or a type name) |
-| work order fields | the unmoved signals (records with excerpt, kind, subject tags, `argues_with`), `flywheel/claims.json`, the open intents (`model.md` 9); the threshold and cadence are not its business. For a gathering (188): the elaboration types it may propose — **unstated** whether the type catalogue is handed in. For a route offer (116): the repository a chore lands on — **unstated** whether the manifest's repository list is handed in |
+| work order fields | the unmoved signals (records with excerpt, kind, subject tags, `argues_with`), the standing claims from `openspec/specs/`, the open intents (`model.md` 9); the threshold and cadence are not its business. For a gathering (188): the elaboration types it may propose — **unstated** whether the type catalogue is handed in. For a route offer (116): the repository a chore lands on — **unstated** whether the manifest's repository list is handed in |
 | artifacts of the change | none: the place is off the blueprints' shared line (`inputs: work-order, keep: false`) and commits nothing to a line (`model.md` 7.1); it delivers everything through its exit |
-| book chapters and claims | the claims index is in the work order; the chapters are on disk (a blueprints worktree) but the work order names none — **unstated** whether the curator is told to read chapters behind the claims a signal argues with |
+| book chapters and claims | the standing claims are in the work order; the chapters are on disk (a blueprints worktree) but the work order names none — **unstated** whether the curator is told to read chapters behind the claims a signal argues with |
 | map elements, homes, attachments | on disk; not in the work order — **unstated** whether subject tags are matched against map elements |
 | surface specification | no |
 | deliverables and producers in force | the machine names no `deliverables:`, so `session.expected` is empty and its exit's moves, intents and gatherings are compared with nothing (80) — **unstated**; the binding has no entry for a move or a proposed intent |
@@ -278,7 +280,7 @@ confirmation, nor context from a previous message. Both rows are in
 | type skill | the planner's own skill (path **unstated**) and, through the binding, `producers/proposal-document` and `producers/verdict` |
 | work order fields | the backlog: every cell in scope not `satisfied` or `not-applicable`, with claim version and freshness (102); the as-built statements; every open bolt of the repository with its units, their states, their cited claim versions and citation choices (`needs_amend`, 29, 103, 172); unconsumed asks naming the repository; redo notes (`model.md` 6). The challenge signals a stale cell rests on, which the proposal must cite (101): in the fingerprint, **unstated** in the work order. The unit types a proposed unit may name: **unstated**. The repository's derived kinds and capabilities (199; "read by skills when they choose a template or deliverable", `blueprints.yaml`): **unstated** whether written into the work order |
 | artifacts of the change | the built repository at its shared line (`built-shared-line`): the code, `openspec/specs` (the as-built), `flywheel/services.yaml`; no line of its own |
-| book chapters and claims | the standing claims in scope with versions and scenarios are what a verdict judges (100) and what a unit cites — they live in the blueprints, and the place is a built repository: **unstated** how the claim blocks and their chapters reach the place |
+| book chapters and claims | the standing claims in scope with versions and scenarios are what a verdict judges (100) and what a unit cites — they live in the blueprints' `openspec/specs/`, and the place is a built repository: **unstated** how the claims and their chapters reach the place |
 | map elements, homes, attachments | the fingerprint hashes the homed elements and the attachments (199, 200); `host.yaml` writes a map section "for a construction session" only — **unstated** for planning |
 | surface specification | no |
 | deliverables and producers in force | `planning.yaml` passes no `deliverables:` to its session, so `session.expected` is empty although the binding has `proposal-document` and `verdict` — **unstated**, a gap in the machine; the proposal (172) and the verdicts (100) are read from the exit by `record_proposal`, `propose_units`, `record_verdict` |
@@ -298,7 +300,7 @@ curation. Its own context is ruled by the dispatch model, not here.
 | type skill | the reader's skill (path **unstated**) |
 | work order fields | the capture record: source, event key, event time, who captured it, the pointer to the raw material (111) |
 | artifacts of the change | none; the place is off the blueprints' shared line and is removed on exit |
-| book chapters and claims | a signal names the claims it argues with (113), so the reader needs the claims index — **unstated** whether `flywheel/claims.json` is in the work order; on disk in any case |
+| book chapters and claims | a signal names the claims it argues with (113), so the reader needs the standing claims — **unstated** whether they are named in the work order; on disk in the blueprints' `openspec/specs/` in any case |
 | map elements, homes, attachments | no; the map view's one-gesture capture arrives as a forwarded-message capture and needs no reader (201, `ensure_signal`) |
 | surface specification | no |
 | deliverables and producers in force | none named; the signals are offered through `flywheel offer signal` and written once by `record_offers` — **unstated** as an entry of the binding; the subject-tag vocabulary a signal uses: **unstated** |
@@ -398,7 +400,7 @@ later stage sees the earlier stage's commits on disk.
 | type skill | `by-type`: keyed by the stage or by the agent name `spec-writer` — **unstated** which | `builder` | `reviewer`, and `producers/verdict` |
 | work order fields | the unit document (the proposal, from the state store, copied into `.flywheel/`), the unit's `claims` (name@version), `depends_on`, the target bolt, the item's ordinal and task; the type version in force (57) — **unstated** whether written in the header | the same; a `moved` entry after any rebase (51); an answer to a block at the top of a fresh session's order (70) | the same, plus what the verdict must judge: the named claims at their versions (99, 100); the send-back rule the stage applies to a not-done verdict (41) — **unstated** whether the session is told the bound |
 | artifacts of the change | the built repository at the item's place; the change directory it writes (`needs_change_directory: true`, `openspec/changes/<unit>/`) | the change directory and the spec from the spec stage, on disk | the change directory, the spec, the commits, the as-built statements, on disk |
-| book chapters and claims | the cited chapters and their claim blocks (97: "what a construction session reads to know what the claim means") — **unstated** how they cross from the blueprints into a built repository's place | the same | the same, with the claims' scenarios for the verdict |
+| book chapters and claims | the cited chapters and the requirements they include (97: "what a construction session reads to know what the claim means") — **unstated** how they cross from the blueprints into a built repository's place | the same | the same, with the claims' scenarios for the verdict |
 | map elements, homes, attachments | the map section `prepare_place` writes from `flywheel/map/target.json`: the elements the unit builds — the ids its claims attach to, and those homed in the repository that the chapters name — each with context, kind and effective home, and the claims attached to each with versions (211) | the same | the same |
 | surface specification | the chapter in force at the header's blueprints commit "when a claim the unit cites is about a surface" (212) — **unstated** how "about a surface" is decided (an attachment to an element of a surface kind, a chapter under the specification's section, or a claim field) | the same | the same |
 | deliverables and producers in force | `change-directory`, `spec` (by-type, no surface) | `commits`, `as-built-statements-naming-claims` (by-type) | `review-verdict` (by-type), `verdict` (default: producer, schema, surface `ledger`) — `model.md` 8.2 calls this `verdicts-for-named-claims`; one name should hold |
@@ -462,7 +464,7 @@ the producer's path, the schema's path and the surface, never the text
 | deliverable | producer | written by | carried into | by |
 |---|---|---|---|---|
 | book chapter, with its diagrams | `producers/book-chapter`, `producers/*-diagram` | every elaboration type | the book `src/`, on the intent's line, then the shared line at the archive | `merge_place` into the intent's line (54); `archive_intent` and the line's landing (49) |
-| claim | `producers/claim` | every elaboration type | the chapter, as a fenced block with `attaches:`; rendered into `flywheel/claims.json` | the same commit as the chapter (120); `proposed` until the landing makes it `standing` (49, 98) |
+| claim | `producers/claim` | every elaboration type | a requirement block in the intent's delta (`openspec/changes/<intent>/specs/<capability>/spec.md`) with its scenarios and, where it attaches beyond its capability, an `Attaches:` line; the chapter that explains it includes it by anchor | the same commit as the chapter (120); `proposed` until the landing makes it `standing` (49, 98) |
 | context map | `producers/context-map` | an elaboration in its writeback; the landing construction session's writeback for the current map | `context-map/target.yaml` (or `current.yaml`); rendered into `flywheel/map/*.json` | `map_edit`, `attach_claim`, `set_home`, only inside a writeback that writes the chapter (211) |
 | surface specification | `producers/surface-specification` | a standing elaboration (an exploration, an interactive page) | the book, as a chapter citing the mockups as records (212) | as a chapter |
 | records: research note, prototype note, session record, interactive page | by-type | every elaboration type | the intent's change directory `openspec/changes/<intent>/`, one per covered intent; archived with the change | `record_per_intent` for the covered intents beyond the parent (188); `merge_place` for the parent's (54) |
@@ -477,9 +479,9 @@ stores and writes the work order; nothing is fed any other way (89).
 
 | store | feeds | with | by requirement |
 |---|---|---|---|
-| the book and its claims index | a construction stage | the cited chapters and their claim blocks; the claims' scenarios for a verdict | 97, 99, 100 |
+| the book and the standing specifications | a construction stage | the cited chapters and the requirements they include; the claims' scenarios for a verdict | 97, 99, 100 |
 | | an explore or gathered elaboration | the covered intents' chapters and claims | 189 |
-| | curation, planning, capture reading | `flywheel/claims.json` | 108 |
+| | curation, planning, capture reading | the standing claims in `openspec/specs/` | 108 |
 | the context map | a construction stage | the elements the unit builds, their homes, the claims attached there | 211 |
 | | a construction stage whose cited claim is about a surface | the surface specification in force | 212 |
 | the intent's change directory | the next elaboration on the intent, and an explore over it | the records of earlier elaborations, unchanged by it | 187, 189 |
@@ -586,7 +588,7 @@ settles, kept so a reader can follow an **unstated** in the tables to
 the ruling that closed it. A response on this file reverses a ruling by
 changing that file.
 
-1. How chapters and claim blocks from the blueprints reach a place that is a
+1. How chapters and claims from the blueprints reach a place that is a
    worktree of a built repository, for planning, construction and chore
    sessions (2.2, 2.10, 2.12; 89 denies reads outside the place).
 2. How "a claim about a surface" is decided for 212: by an attachment

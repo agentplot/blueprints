@@ -293,8 +293,8 @@ needed to walk S1 to S34.
 | store | holds | real system | profile |
 |---|---|---|---|
 | **state store** | every object's record: state per region, `entered_at`, `seq`, record fields, `applied_responses`; the thread on the object (questions, answers, notes, exits, offers, refusals, moves); op-responses; leases; host heartbeats; the plan's register; the sinks' marks; asks; the run record | tracker profile: GitHub issues, milestones and a Projects v2 board in the organization's `flywheel-state` repository. git-only profile: the `flywheel-state` git repository, branch `main` | differs |
-| **blueprints repository** | the organization's (203): chapters with fenced claim blocks, the system context map (`context-map/`, the scope surface), the manifest `flywheel.yaml`, OpenSpec change directories (one per intent) and their archive, the shipped instructions, schemas, skills and type files under `flywheel/`; the machinery's own, under `flywheel/` only: captures, signals and moves, the ledger, the rendered maps and claims index | git repository, mdBook, OpenSpec, recutils files parsed by the binary | same in every profile |
-| **built repositories** | its owners' (203): the shared line, bolt lines, places; code; as-built statements; persona definitions; the repository's declarations under `flywheel/` — `services.yaml` (47), read at the head of the bolt's place and changed only by a chore (48), `commit-types.yaml` (185); the machinery's own: OpenSpec change directories for units, holding the finding and chore documents, the acceptance file (192), and an untracked `.flywheel/` per place | git repositories with their own merge gates | same |
+| **blueprints repository** | the organization's (203): chapters that include their claims by anchor, the standing specifications (`openspec/specs/<capability>/spec.md`) that hold the claims themselves, the system context map (`context-map/`, the scope surface), the manifest `flywheel.yaml`, OpenSpec change directories (one per intent) and their archive, the shipped instructions, schemas, skills and type files under `flywheel/`; the machinery's own, under `flywheel/` only: captures, signals and moves, the ledger and the rendered maps | git repository, mdBook, OpenSpec, recutils files parsed by the binary | same in every profile |
+| **built repositories** | its owners' (203): the shared line, bolt lines, places; code; as-built statements; persona definitions; the repository's declarations under `flywheel/` — `services.yaml` (47), read at the head of the bolt's place and changed only by a chore (48), `commit-types.yaml` (185); the standing specifications (`openspec/specs/`), which are the as-built: every requirement in them names the claim and version it serves (99); the machinery's own: OpenSpec change directories for units, holding the finding and chore documents, the acceptance file, and under the machinery's prefix the index of that standing set written at landing (192), plus an untracked `.flywheel/` per place | git repositories with their own merge gates | same |
 | **the multiplexer** | pane existence, activity and the last keystroke per session | herdr, read through `herdr agent status` | same; evidence only, never durable state |
 
 Nothing else. A host's memory holds only what it read this tick. The
@@ -317,7 +317,7 @@ worktree's presence — is not state and is re-observed after a restart
 | line `absent/current/taking/conflict/landing/landed/removing/removed` | git: the ref and `merge-base --is-ancestor` between heads; `landing` by the pull request's checks | the record's `head` field |
 | place `absent/preparing/ready/behind/conflict/merging/merged/removing/held/removed` | git and `wt worktree list` on the host that owns it, plus the record for the retry counters, the endpoints and the hold | the record's `head` |
 | service `stopped/starting/running/failed/gone` | the service's record for the intended state (moved only by a response); `wt tether status` and the readiness check for whether the process is present and serves | the page's service line beside the bolt, with its endpoint and controls |
-| claim `proposed/standing` | which line of the blueprints repository holds the fenced block | the ledger's `claim_version` copy |
+| claim `proposed/standing` | which tree holds the requirement block: an intent's delta, or `openspec/specs/` on the blueprints' shared line | the ledger's `claim_version` copy |
 | ledger-cell | the ledger record in the blueprints repository | the backlog (derived, never stored) |
 | capture, signal, move | the recutils files in the blueprints repository | the status view's unmoved counts |
 | host, lease | the heartbeat and lease records in the state store | the status view's "alive/stale" |
@@ -499,19 +499,34 @@ at: 2026-09-03T06:10:00Z
 by: curation/2026-09-03T06:00
 ```
 
-A fenced claim block, in the chapter that explains it
-(`src/providers/one-writer.md` of the blueprints):
+A claim, in the blueprints' standing specifications
+(`openspec/specs/providers/spec.md`); its name is `providers/one-writer`
+and its version is the hash of this block without the `Attaches:` line:
 
 ````
-```claim
-name: providers/one-writer
-version: 3
-scope: capability:provider-client
-lock: sha256:4b2d…e1
-scenario: two hosts each hold a client; only the lease holder writes; the other reads its refusal
-scenario: a write from a host whose lease expired is rejected by the provider adapter
-```
+### Requirement: one-writer
+
 One process writes to a provider at a time. The lease is …
+
+Attaches: element:provider-client
+
+#### Scenario: two hosts hold a client
+- **WHEN** two hosts each hold a client for one provider
+- **THEN** only the lease holder writes, and the other reads its refusal
+
+#### Scenario: an expired lease is refused
+- **WHEN** a host whose lease expired writes
+- **THEN** the provider adapter rejects the write
+````
+
+The chapter that explains it (`src/providers/one-writer.md` of the
+blueprints) includes it by anchor, and the preprocessor renders the
+requirement in place with its name, version and derived scope:
+
+````
+Providers are single-writer for the reason the lease exists …
+
+{{#claim providers/one-writer}}
 ````
 
 The manifest (`flywheel.yaml` at the root of the blueprints repository):
@@ -560,7 +575,7 @@ shared, two are the profiles.
 
 | file | binds | same in every profile? |
 |---|---|---|
-| `profiles/host.yaml` | the world the machinery acts on: git, worktrunk `wt` (worktrees and tethered processes), portless, OpenSpec, claim blocks, the manifest's declarations, the repositories' service declarations. Its line-and-place half is swappable: a build with no construction may bind those effects to a recorded stand-in that writes each proof's evidence and touches no repository (93a, `workspace: recorded`) | yes |
+| `profiles/host.yaml` | the world the machinery acts on: git, worktrunk `wt` (worktrees and tethered processes), portless, OpenSpec on both sides, the manifest's declarations, the repositories' service declarations. Its line-and-place half is swappable: a build with no construction may bind those effects to a recorded stand-in that writes each proof's evidence and touches no repository (93a, `workspace: recorded`) | yes |
 | `profiles/sessions.yaml` | the session binding: herdr panes, Claude Code, and the `flywheel exit\|offer\|note\|refuse` command sessions report through (67) | yes |
 | `profiles/sessions-stand-in.yaml` | the same names bound to a scripted player, swapped in by `flywheel scenario run` (93); never loaded by a host | test only |
 | `profiles/sessions.yaml` `runners.operator` | the same names with no agent at all: the machinery prepares the place and records the session, the plan shows it as the operator's to run, and the operator reports through the session command (93b) | yes, host-selected |
@@ -1108,30 +1123,53 @@ commits in its place; the machinery does everything else (I12).
 
 ## 8. Claims, the ledger and as-built
 
-### 8.1 Claims are fenced blocks with a hash lock
+### 8.1 Claims are OpenSpec requirement blocks
 
-A claim is a fenced ```` ```claim ```` block inside the chapter that
-explains it (`src/**/*.md` of the blueprints), carrying `name`, `version`,
-`scope`, `scenario` lines and `lock: sha256:<hash of the block text
-without the lock line>`. The blueprints' pre-commit hook `flywheel claims
-check` refuses a commit where a block's text changed and its version
-did not, or where the lock does not match, so "version moves only when
-its text moves" is enforced where the text lives (97). The mdBook
-preprocessor `mdbook-flywheel-claims` renders the block as a callout
-with its name, version and the scope rendered from its map attachments
-(200), and writes `flywheel/claims.json` under the machinery's prefix
-(203): the index curation clusters against (108) and planning reads.
+A claim is a requirement block in the blueprints' standing
+specifications: `### Requirement: <name>` in
+`openspec/specs/<capability>/spec.md`, with its `#### Scenario:` blocks
+under it and, where it attaches to more than its capability, one
+`Attaches:` line. Its name is `<capability>/<name>`. OpenSpec refuses a
+requirement with no scenario, so "at least one scenario saying how one
+would know it holds" is the format's own rule (97, 112).
 
-The claim's state is where its block is: on an intent's line only,
-`proposed`; on the blueprints' shared line, `standing`; gone from the
-shared line, `retired`. The `claim` machine writes nothing.
+The version is the content hash of the requirement block — its heading,
+its prose and its scenarios, and not the attachment line. No hook and
+no lock enforces "the version moves only when its text moves": it is
+true by definition, because the version *is* the text. Nothing has to
+be checked at commit time, so the blueprints carry no claims hook.
 
-OpenSpec keeps the intent's change directory (`openspec/changes/<intent
-id>/`: proposal, design, tasks, findings, chores) and its archive; the
-archive of the change is the commit before the intent's line lands, and
-the landing is what makes the claims standing (49, S34). OpenSpec
-requirement blocks are not the claims: they would put the claim in a
-spec file and its explanation in a chapter, two sources.
+The chapter that explains a claim includes it by anchor,
+`{{#claim providers/one-writer}}`, and the mdBook preprocessor renders
+the requirement in place with its name, version and the scope derived
+from its map attachments (200). The text lives in one place, the spec,
+so the chapter cannot drift from it, which is what 97 asks for. A
+construction session reads the chapter to know what the claim means and
+the specification to know what it says (89); both are one source. The
+standing specifications are what curation clusters against and what
+planning reads (108): the tick reads `openspec/specs/` on the
+blueprints' shared line directly, and the machinery writes nothing
+beside it.
+
+The claim's state is which tree holds the requirement: the intent's
+delta only (`openspec/changes/<intent>/specs/<capability>/spec.md`,
+under ADDED, MODIFIED or REMOVED), `proposed`; `openspec/specs/` on the
+blueprints' shared line, `standing`; REMOVED and archived, `retired`.
+The intent's landing archives the delta into the standing
+specifications, and that is what makes the claims standing (49, 187,
+S34). The `claim` machine writes nothing.
+
+The same shape serves the other half. A unit is a change in its built
+repository (37, 187), its delta carries the requirement the unit
+builds with one `Claim: <capability>/<name>@<version>` line naming the
+standing claim it serves, and the unit's landing archives it into that
+repository's `openspec/specs/`. That standing set is the as-built:
+every requirement in it names a claim and a version, and construction
+never satisfies a claim it does not name (99). It is also what a
+delivery system reads from git to generate and run its suite, and the
+machinery writes no index beside it (181, 192). A requirement on the
+construction side differs from one on the design side by its `Claim:`
+line and nothing else.
 
 ### 8.2 The ledger
 
@@ -1141,7 +1179,8 @@ claims because a verdict names a claim version, which is the blueprints'
 history, and because a claim in scope for two repositories has one
 cell per repository side by side (105). A `ledger-cell` object
 exists for every (standing claim, repository in scope) pair; `list`
-derives the pairs from `claims.json` and the manifest, so a cell needs
+derives the pairs from the blueprints' standing specifications and the
+manifest, so a cell needs
 no record until it is judged (a joining repository has every cell
 `unjudged` with no file, 104). Scope resolves through the system
 context map, which is the scope surface (198), bound to the model in
@@ -1161,7 +1200,9 @@ versioned with the book (121). Every element names its home, the git
 repository it is built in, or inherits its context's; an external
 context homes nothing (199). A claim attaches to any id — context,
 element, relationship or link — and the attachment lives with the
-claim in its chapter block (97): its scope is the set of repositories
+claim: the specification's capability is one attachment and the
+requirement's `Attaches:` line holds any more (97, 105). Its scope is
+the set of repositories
 homing what it attaches to, both ends of a relationship or a link,
 computed from the target map and never chosen (105, 200). A
 repository's kinds and capabilities are derived from the elements it
@@ -1184,7 +1225,8 @@ and the cell is out of the backlog, returning to `judged` if scope
 returns. A claim attached to nothing has an empty scope and is not
 planned against (98). The map moves only through the tools (211):
 `attach` and `detach` on a claim (`attach_claim`, `detach_claim`,
-writing the block's `attaches:` list outside the lock hash), `set-home`,
+writing the requirement's `Attaches:` line, which is outside the hash,
+so the version does not move for an attachment, 200), `set-home`,
 `map-edit` (refused without a chapter ref), `set-status`, `capture`,
 `mark-reviewed` and `add-repository`; a session moves it only in a
 writeback that also writes the chapter, and the landing construction
@@ -1200,6 +1242,19 @@ when the unit names a claim), never by the machinery's own judgment
 (100). The record
 holds the claim version, the repository revision, the evidence paths,
 the date and the session (`judged_by`).
+
+Two of the inputs the judging session is handed are mechanical, and the
+machinery reads them for it: whether the repository's standing
+specifications hold a requirement naming this claim, and whether the
+version that requirement names equals the claim's current version (99).
+A naming requirement whose version matches, with its scenarios passing,
+is strong evidence and is not the verdict; a verdict is still a
+judgment made by an agent and stored with its inputs (100). The two
+facts are read from the built repository's `openspec/specs/` at its
+shared head, which is the as-built and needs no index beside it (192),
+so they cost no session, and they are what makes a stale cell cheap to
+spot: the claim's version moving
+is the same comparison (101, 8.3).
 
 ### 8.3 Stale, and the decision that cannot be missed
 
@@ -1255,7 +1310,7 @@ message, whose one signal `ensure_signal` writes with no judgment
 
 Curation is one machine per organization. It runs a `curator` session
 when the unmoved count crosses the manifest's threshold or the cadence
-fires; the work order lists the unmoved signals, `claims.json`, and
+fires; the work order lists the unmoved signals, the standing claims, and
 the open intents. The session delivers one move per signal (attach,
 challenge, join, answered, route, drop, each with a reason) and one
 proposed intent per join cluster, with its proposed elaborations and
@@ -1419,8 +1474,7 @@ same shape as `machines/unit-types/` and `machines/elaboration-types/`
 here. A type file is immutable once registered. The registry records
 the content hash of every file at registration (`machines/registry.yaml`
 in this model, written by `check.py --register`; `flywheel/registry.json`
-under the machinery's prefix at an organization, as `flywheel/claims.json`
-is), and the check — `check.py` here, `flywheel types check` in the
+under the machinery's prefix at an organization), and the check — `check.py` here, `flywheel types check` in the
 blueprints' pre-commit hook and on every host at every fetch — fails a file
 whose hash moved and two files declaring the same name and version. A
 change to a type is a new file at a new version, never an edit (57,
@@ -1670,10 +1724,17 @@ requested only from `place.ready` (7.3, I16).
 
 ### 12.12 Are claims OpenSpec requirement blocks or fenced claim blocks?
 
-Fenced claim blocks with a hash lock, in the chapter that explains them,
-checked by the blueprints' pre-commit hook and rendered by an mdBook
-preprocessor (8.1). OpenSpec keeps the intent's change directory and
-its archive, and holds the finding and chore documents.
+OpenSpec requirement blocks (8.1). A claim is
+`### Requirement: <name>` in `openspec/specs/<capability>/spec.md` of
+the blueprints, with its scenarios under it; the chapter that explains
+it includes it by anchor and the preprocessor renders it in place, so
+the text has one home and cannot drift (97). The version is the hash of
+the block, which needs no hook and no lock. The design side and the
+construction side then speak one language: an intent's delta carries
+proposed claims, a unit's delta carries the requirement it builds with
+a `Claim:` line naming the standing claim it serves, and each landing
+archives its delta into the standing specifications on its own side
+(49, 99, 187).
 
 ### 12.13 What is the layout of state in git, and what does a race look like?
 
@@ -1744,14 +1805,14 @@ The boundary falls out of the model's three kinds of thing: the engine
 |---|---|---|
 | `flywheel-engine` | the machine loader (`schema.json` as `serde` types), the guard evaluator, regions and submachines, the tick planner (`plan_tick(defs, snapshot) -> Vec<Transition>` — pure, no IO), decision derivation and the register, proofs and effect ids, the five engine machines | `serde`, `serde_yaml`, nothing else; no string from `atoms.yaml` |
 | `flywheel-atoms` | the `Evidence` and `Effect` name registries generated from `atoms.yaml` at build time; the `StateStore` trait (`list`, `read`, `write_effect`, `lease`, `present`, `receive`, `notify`, `status`); the `World` trait (one method per host effect); the `Sessions` trait (one method per session effect, one per session evidence); the scenario file types | `flywheel-engine` |
-| `flywheel-domain` | the machine files embedded with `include_dir`, the type catalogue loader (from the blueprints), the work order renderer, the claim block parser and lock, the recutils reader and writer, the fingerprint | `flywheel-atoms` |
+| `flywheel-domain` | the machine files embedded with `include_dir`, the type catalogue loader (from the blueprints), the work order renderer, the OpenSpec specification parser and the requirement hash, the recutils reader and writer, the fingerprint | `flywheel-atoms` |
 | `flywheel-world-host` | `World` over worktrunk (`wt`), portless, `git` and `gix`, OpenSpec; `profiles/host.yaml` is its specification | `flywheel-atoms` |
 | `flywheel-sessions` | `Sessions` over herdr (`herdr agent`) and Claude Code, plus the `flywheel exit\|offer\|note\|refuse` subcommands that write through `StateStore::append`; `profiles/sessions.yaml` | `flywheel-atoms` |
 | `flywheel-store-git` | `StateStore` over the state repository (`gix`, `git push --force-with-lease`); `profiles/git-only.yaml` | `flywheel-atoms` |
 | `flywheel-store-tracker` | `StateStore` over GitHub (`octocrab`); `profiles/tracker.yaml` | `flywheel-atoms` |
 | `flywheel-surface` | the sinks: the Discord bot (`serenity`), the pages (`axum`), the bell (`herdr`), the reply grammar, the review-surface launchers (plannotator, lavish); the page bundle and the tool server that answers a **request** under the caller's token — the binary's own catalogue of tools, over HTTP for the page and in the shape of the model context protocol for sessions, the interpreter and a member's own client (193, 291, 293); `profiles/surfaces.yaml`; profile-neutral because it writes responses through `StateStore::receive` | `flywheel-atoms` |
 | `flywheel-scenario` | the stand-in state store (in-memory `StateStore` and `World`), the scripted `Sessions` stand-in (`profiles/sessions-stand-in.yaml`), the conformance runner, the trace renderer | `flywheel-engine`, `flywheel-atoms`, `flywheel-domain` |
-| `flywheel` | the binary: `host` (the standing loop), `tick` and `request` (the two modes of the invocation contract, one organization per invocation, 297), `dispatch`, `scenario`, `capture`, `claims check`, `render-order`, `review`, `exit`, `offer`, `note`, `refuse` | all |
+| `flywheel` | the binary: `host` (the standing loop), `tick` and `request` (the two modes of the invocation contract, one organization per invocation, 297), `dispatch`, `scenario`, `capture`, `render-order`, `review`, `exit`, `offer`, `note`, `refuse` | all |
 
 Nothing in a machine file, a scenario or a profile binding names Rust:
 the same files would drive any engine that implements `schema.json`.
@@ -1851,7 +1912,7 @@ decisions showing weight; 0 per signal. Every signal has a move file.
 
 **S9 — a claim's boundary is wrong.** Build session offers a finding on
 its intent → `elaboration.proposed` → yes → a self-closing session
-amends the chapter and the claim block (version 3 → 4) → intent close →
+amends the chapter and the requirement (version 3 → 4) → intent close →
 archive lands, claim `standing` at 4. The bolt's started unit cites
 `@3`: `bolt.open[citations]: current → moved` (+`claim-moved`, one
 decision with two answers). `amend bolt` → `record_citation_choice
@@ -1963,8 +2024,11 @@ move file; `signal: dropped → unmoved`; the count moves; the next run
 clusters it.
 
 **S25 — a claim amended in one commit.** The default instruction makes
-the session change the chapter, the claim block and the context map —
-the claim's attachment, so its scope derives (200) — in one commit; the pre-commit hook checks the lock and the version bump.
+the session change the chapter, the requirement in
+`openspec/specs/` and the context map — the claim's attachment, so its
+scope derives (200) — in one commit. Nothing checks a lock: the version
+is the hash of the requirement, so amending the text is the version
+move.
 `flywheel review` diffs `src/` and `context-map.json` from the last
 `reviewed` response to the intent's landing and serves the changed
 chapter and node with the previous version beside it.
@@ -2052,7 +2116,8 @@ merging`) → `merge_place` into the intent's line → `removing` →
 prototype's place is `behind` → rebased while idle → `ready`, kept
 (`keep: by-type`). The intent's close offered; `close` → `archiving`:
 `archive_intent`, the line takes the blueprints' shared line, lands
-directly, is removed. The two claim blocks are on the shared line:
+directly, is removed. The intent's delta is archived into
+`openspec/specs/`, so the two requirements are on the shared line:
 `claim.proposed → standing`.
 
 ## 15. Invariants
@@ -2089,8 +2154,8 @@ the ledger; red dotted edges read it.
 
 Intent, elaboration, the three elaboration types, the session, and the
 intent's line and places. The archive diamond is where the intent's
-line lands on the blueprints' shared line and its claim blocks become
-standing; the ledger reads that version and a cell falls stale. Four
+line lands on the blueprints' shared line and the delta it archives
+makes its claims standing; the ledger reads that version and a cell falls stale. Four
 decisions are on this picture: `intent-proposed`, `intent-close`,
 `elaboration-proposed`, `idle`, plus `question` on the session. The
 picture does not show the `material` region of an open intent, which
@@ -2200,8 +2265,8 @@ question (180).
 **A.19 — operation.** Nothing in `machines/` runs after a bolt lands:
 releases, environments and runs are the delivery system's. What comes
 back is a signal an adapter captures (106) or a link the git host
-binding reads (177); what goes out is the book, the claim blocks and
-the ledger, files on the blueprints' shared line any system can read from
+binding reads (177); what goes out is the book, the standing
+specifications and the ledger, files on the blueprints' shared line any system can read from
 git (181). An anomaly, an incident or a review raised in operation is a
 signal, curation's move decides whether it joins an intent, and
 planning may route it as a unit or a chore on an open bolt, or a chore
@@ -2239,8 +2304,8 @@ was generated and under which configuration (183, 79).
 OpenSpec change in the blueprints (`open_intent`, `archive_intent`), and
 its change directory is where its elaborations leave their records —
 research notes, session records, prototype notes, an interactive page
-— while what they conclude goes to the chapters and the claim blocks
-(187). A bolt has no change in the blueprints; a unit's change is in its
+— while what they conclude goes to the chapters and the requirement
+deltas the landing archives (187). A bolt has no change in the blueprints; a unit's change is in its
 built repository, written at the unit's first stage; a proposal's
 document sits beside the proposal record in the state store, so the
 unit record's `document` points there and never into a change
@@ -2332,13 +2397,13 @@ flywheel binary would be a fourth router, not a requirement
 **A.23 — where files live.** Three repositories, three owners (203).
 The state repository is the machinery's: nothing a person or a session
 writes lives there, and its layout is the profile's (4.2, 12.13). The
-blueprints repository is the organization's: the book, the claim blocks,
-the context map, the manifest, the OpenSpec changes for intents and
+blueprints repository is the organization's: the book, the standing
+specifications, the context map, the manifest, the OpenSpec changes for intents and
 the elaboration records inside them are written by people and sessions
 under the book's own layout; the machinery writes only under
 `flywheel/` — `flywheel/signals/` (captures, signals, moves),
-`flywheel/ledger/`, `flywheel/map/` (the rendered maps),
-`flywheel/claims.json` — and the change directory `open_intent`
+`flywheel/ledger/`, `flywheel/map/` (the rendered maps) — and the
+change directory `open_intent`
 creates (`profiles/blueprints.yaml` `layout:`). A built repository is its
 owners': code, and its declarations to the flywheel under `flywheel/`
 — `services.yaml` (47), `commit-types.yaml` (185) — are theirs; the
@@ -2511,7 +2576,7 @@ identity and what it must never receive; `prepare_place` renders the
 work order from the row and nothing else, and the session template
 cites it. The 24 unstated points of `machines-and-context.md` section
 5 are resolved in that file's `rulings:` — among them: chapters and
-claim blocks reach a built repository's place by copy under
+claims reach a built repository's place by copy under
 `.flywheel/blueprints/`; skills are keyed by agent name; planning and
 curation name their deliverables (planning@3, curation@4, capture@2
 pass them); a session commits and never pushes; the fast type produces

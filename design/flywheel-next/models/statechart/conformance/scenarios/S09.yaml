@@ -5,14 +5,14 @@ satisfies: [58, 103]
 given:
   objects:
     - {id: bolt/atlas/plan-rows, machine: bolt, state: {life: open, line: current, place: ready, open.citations: current, open.close: not-offered}, record: {repository: atlas}}
-    - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 5, claims: ["providers/one-writer@3"]}}
-    - {id: claim/providers-one-writer, machine: claim, state: {standing: standing}, record: {name: providers/one-writer, version: 3}}
+    - {id: unit/atlas/status-writer, machine: unit, parent: bolt/atlas/plan-rows, state: {life: in-flight}, record: {type: default, type_version: 5, claims: ["providers/one-writer@sha256:4b2d…e1"]}}
+    - {id: claim/providers-one-writer, machine: claim, state: {standing: standing}, record: {name: providers/one-writer, version: "sha256:4b2d…e1"}}
     - {id: planning/atlas, machine: planning, state: {run: current}, record: {planned_fingerprint: f0}}
-  evidence: {claim.version: {claim/providers-one-writer: 3}, bolt.citations_moved: {"*": false}, planning.fingerprint: {planning/atlas: f0}, planning.planned_fingerprint: {planning/atlas: f0}}
+  evidence: {claim.version: {claim/providers-one-writer: "sha256:4b2d…e1"}, bolt.citations_moved: {"*": false}, planning.fingerprint: {planning/atlas: f0}, planning.planned_fingerprint: {planning/atlas: f0}}
 when:
   - tick: {}
-  - files: {"blueprints src/providers/one-writer.md": "claim block version 4 on the shared line (the finding's elaboration landed)"}
-  - evidence: {claim.version: {claim/providers-one-writer: 4}, bolt.citations_moved: {bolt/atlas/plan-rows: true}, bolt.moved_claim: {bolt/atlas/plan-rows: "providers/one-writer 3 -> 4"}}
+  - files: {"blueprints openspec/specs/providers/spec.md": "the requirement one-writer amended on the shared line, so its content hash is now sha256:9f07…c3 (the finding's elaboration landed and its delta was archived)"}
+  - evidence: {claim.version: {claim/providers-one-writer: "sha256:9f07…c3"}, bolt.citations_moved: {bolt/atlas/plan-rows: true}, bolt.moved_claim: {bolt/atlas/plan-rows: "providers/one-writer sha256:4b2d…e1 -> sha256:9f07…c3"}}
   - tick: {}
   - response: {decision: bolt/atlas/plan-rows/claim-moved, answer: "amend bolt", id: discord/5001}
   - tick: {}

@@ -9,7 +9,7 @@
 <rect width="1378" height="461" fill="#fff"/>
 <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">pool — object v1, core · object pool · parent organization</text>
 <text x="40" y="57" font-size="12" fill="#666">A host pool (240): a platform that provisions hosts on demand from the organization&#x27;s image (239), up to a bound, each joining by an enrolment token the machinery issues (230), covering w…</text>
-<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 204, 230, 239, 240, 241, 242 · pool.yaml · record name, platform, image, bound, cost, retire_after, covers</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 204, 230, 239, 240, 241, 242, 264, 275, 289 · pool.yaml · record name, platform, image, bound, cost, retire_after, covers</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">image<title>the image the pool provisions from, built from the environment declarations of every repository the pool covers (239); behind when a declaration moved since the build, visible on the hosts surface; rebuilt by a chore</title></text>
 <line x1="86" y1="103" x2="477.75" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
 <circle cx="52.0" cy="166.0" r="4" fill="#1a1a1a"/>

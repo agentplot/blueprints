@@ -9,7 +9,7 @@
 <rect width="1378" height="316" fill="#fff"/>
 <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">organization — object v2, core · object organization · one per organization · owns repository, package, pool</text>
 <text x="40" y="57" font-size="12" fill="#666">The organization (204): one object per organization with a machine of its own, driven by `flywheel init` and advanced by the same reconciler that advances work.</text>
-<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 15, 204, 207, 208, 218, 219, 220, 221, 241, 247, 255 · organization.yaml · record name, blueprints, state, profile, app_id, template_version, root</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 15, 204, 207, 208, 218, 219, 220, 221, 241, 247, 255, 261, 265, 266, 267, 276, 279, 281, 282, 294, 302, 304, 312 · organization.yaml · record name, blueprints, state, profile, app_id, template_version, root</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
 <line x1="80" y1="103" x2="1197.75" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
 <circle cx="52.0" cy="196.0" r="4" fill="#1a1a1a"/>

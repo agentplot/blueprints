@@ -92,7 +92,7 @@ Feedback so far, in order:
 - Book mode (2026-09-07): the board gains a third view, an embedded
   mdBook viewer the page draws itself (key b), because the blueprints are
   mdBook and the server is Rust so the integration can be tight. The
-  rail jumps the viewer to the chapter and claim block a decision
+  rail jumps the viewer to the chapter and claim requirement a decision
   concerns and lights it; decision markers sit in the chapter margin;
   every dock page and the map's scope box carry "read in book"; a
   library overlay lists the organization's blueprints with chapters, claims

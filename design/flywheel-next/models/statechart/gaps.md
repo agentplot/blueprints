@@ -199,10 +199,13 @@ the operator may reverse by a response on the file; an entry with
   scoping; the two share the blueprints repository and the built
   repositories' shared lines, which they must.
 
-- **97 one source.** Satisfied by the fenced claim block inside the
-  chapter. The cost: an mdBook preprocessor
-  (`mdbook-flywheel-claims`) and a pre-commit hook to write. Named,
-  not built.
+- **97 one source.** Satisfied by the claim living in the blueprints'
+  standing specifications and the chapter including it by anchor. The
+  cost is one mdBook preprocessor that resolves `{{#claim <name>}}` and
+  renders the requirement in place with its name, version and derived
+  scope. No hook is needed and none is written: the version is the
+  content hash of the requirement block, so it moves when and only when
+  the text moves. Named, not built.
 
 - **111 raw material outside version control.** The capture cites a
   `file://` or `https://` pointer. On a second host the pointer may
@@ -306,7 +309,7 @@ the operator may reverse by a response on the file; an entry with
   commit or request; under pull-request a review chore that merges
   afterwards moves the line, and the file is rewritten only if the
   bolt's cited claims changed, which its proof checks. The scenarios
-  are copied from the claim blocks at the cited versions rather than
+  are copied from the requirements at the cited versions rather than
   referenced, so the file stands alone in the built repository. The
   file's format (`flywheel-acceptance/1`) is named in the host binding
   and specified nowhere else yet. **Decision**, format **open**.
@@ -478,18 +481,22 @@ the operator may reverse by a response on the file; an entry with
   extensions; contracts → contract; stores → store extends service;
   events → domain-event); relations become links, with `backed-by` and
   `fronts` folded into `uses` or the organization's kinds; contexts
-  gain a home and elements homes where they differ; claim blocks'
-  scope lines are lifted into `attaches:` lists — a named-repositories
-  scope becomes attachments to the contexts or elements those
-  repositories home, an `all` scope to every context; then
+  gain a home and elements homes where they differ; each claim's old
+  scope line is lifted into its capability directory and its
+  `Attaches:` line — a named-repositories scope becomes attachments to
+  the contexts or elements those repositories home, an `all` scope to
+  every context; then
   `flywheel map check`. A one-off `flywheel map migrate` in the
   binary; not modelled. **Open**.
 
 - **203 where files live.** The ledger is not named in 203's list of
   what the machinery writes in the blueprints, but the machinery writes it
   (`record_verdict`), so it lives under the prefix as
-  `flywheel/ledger/`; the rendered claims index `flywheel/claims.json`
-  the same. **Decision**. Commit types move from the manifest to the
+  `flywheel/ledger/`. **Decision**. No claims index lives beside it:
+  the claims are the blueprints' `openspec/specs/`, which curation and
+  planning read directly, and the as-built is the built repository's
+  own `openspec/specs/`, which a delivery system reads from git (108,
+  192). Commit types move from the manifest to the
   built repository's `flywheel/commit-types.yaml`, with the manifest
   as fallback, since 203 makes them the repository's declaration; the
   manifest's `unit_types.<type>.commit_type` stays readable for a
@@ -1100,7 +1107,8 @@ the operator may reverse by a response on the file; an entry with
   until the landing (37, 213). The tracker profile's status view is
   the page, and the views are the page's; the board shows none.
   **Decision**. The claim view's "every version from history" is
-  `git log` over the block's chapter and its lock hashes. Stated.
+  `git log` over the requirement's spec file, each revision's version
+  being the hash of the block at that revision. Stated.
 
 - **214 the instrument.** Drain's calibration is the ratio of actual
   to estimate over landed units of the same repository and type, 1

@@ -23,7 +23,7 @@
 <path d="M963.2,222.0 V453.0 H156.0 V210.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
 <rect x="70.0" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
 <text x="118.0" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">idle</text>
-<rect x="210.0" y="182.0" width="324.0" height="246.0" rx="7" fill="#fafafa" stroke="#4a7fb5" stroke-width="1.6"><title>one session, bounded job, fixed exits; it reads the unmoved signals against the claims index and the open intents</title></rect>
+<rect x="210.0" y="182.0" width="324.0" height="246.0" rx="7" fill="#fafafa" stroke="#4a7fb5" stroke-width="1.6"><title>one session, bounded job, fixed exits; it reads the unmoved signals against the standing claims in the blueprints&#x27; `openspec/specs/` and the open intents</title></rect>
 <text x="372.0" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">running</text>
 <line x1="220.0" y1="214.0" x2="524.0" y2="214.0" stroke="#e5e5e5"/>
 <text x="220" y="229" font-size="9.5" font-weight="700" fill="#999">place</text>

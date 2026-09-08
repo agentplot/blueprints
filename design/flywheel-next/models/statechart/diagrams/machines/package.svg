@@ -9,7 +9,7 @@
 <rect width="1421" height="320" fill="#fff"/>
 <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">package — object v1, core · object package · parent organization</text>
 <text x="40" y="57" font-size="12" fill="#666">One package (228): one thing of one kind — an adapter, a chat sink, a runner, a router, a sign-in, a unit type or an elaboration type, a deliverable producer, a map vocabulary, a template…</text>
-<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 5, 204, 207, 224, 228, 229 · package.yaml · record name, kind, scope, host, source, set_version, hash, config, secrets</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 5, 204, 207, 224, 228, 229, 284, 286, 287 · package.yaml · record name, kind, scope, host, source, set_version, hash, config, secrets</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
 <line x1="80" y1="103" x2="1381.15" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
 <circle cx="52.0" cy="193.0" r="4" fill="#1a1a1a"/>

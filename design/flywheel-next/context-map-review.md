@@ -189,7 +189,7 @@ attaching the claim to every worker node, not by naming the kind (risk 4).
 | --- | --- |
 | rename | `layer: repository` → `seam`; `kind: repository` → `seam`; `uses-repository` → `uses`; `publishes-contract` → `publishes`; `consumes-contract` → `consumes`; `invokes-api` → `invokes`; `contextId` → `context` |
 | add home | one `home` per context from an operator-supplied table of context id to manifest name; a node whose repository differs gets its own |
-| lift scope | each claim block's `scope:` line becomes attachments in the target map: named repositories → the context those repositories home; a kind or capability rule → every node the rule matches today, listed for the operator to trim; `all` → every context |
+| lift scope | each claim's old `scope:` line becomes its capability directory and its `Attaches:` line, resolved against the target map: named repositories → the context those repositories home; a kind or capability rule → every node the rule matches today, listed for the operator to trim; `all` → every context |
 | drop | `plane` (kept as `facet` when not `none`), `runtime`, `seamRow`, `tier` (kept as `group`), `verifiedFiles`, `meta`, `book`, book status |
 | move aside | `configurations.js` to the organization's own directory, unchanged |
 | write | YAML, elements sorted by id, one element per block |
@@ -283,7 +283,7 @@ meaning and v1's grid layout is what made the card need a zoom.
 | current → target overlay | both maps by id; per element added, removed, changed with the field list; the other map's exclusives as ghosts. All computed; the check's drift pass is the same function. |
 | since last review | the operator's review mark (state: one mark per operator, stored by the state store) and the git history of the map files between the mark and head, keyed by element id. Needs a text format with one element per block sorted by id so a history diff reads as element changes. Nothing is stored on the element. |
 | home tags | `node.home`, `context.home`, the manifest names, and the derivation result for the repository panel |
-| attachment chips | `attachments` joined to the claims index for standing versus proposed; a proposed claim's chip is hollow |
+| attachment chips | `attachments` joined to the standing specifications for standing versus proposed; a proposed claim's chip is hollow |
 | verdict dots | the rendered map's `scope_repos` per claim joined to the ledger by `(claim, version, repository)`; a context homed in two repositories shows two dots, not a merged one |
 | decision markers | the plan's decisions with the element id each concerns; the marker is a rail card inline |
 | capture from a question | the question id and its text; the gesture sends one capture citing it |
