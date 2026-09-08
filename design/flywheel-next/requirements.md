@@ -109,15 +109,18 @@ redefine these.
   open intent, challenge a standing claim, join a proposed new intent,
   answered by a decision made since, route to the chore or the ask
   curation offered for it, or drop, with a reason.
-- **claim** — one statement in the design book of what is true at the
-  destination: a boundary, an owner, a coupling, a store, an invariant,
-  or a behavior. It has a stable name, a version that moves only when
-  its text moves, at least one scenario saying how one would know it
-  holds, and a scope. A claim is **proposed** while its intent is open
-  and **standing** once the intent is closed.
-- **as-built** — the record, kept with the built software, of what that
-  software does as of all construction landed. Every as-built statement
-  names the claim and claim version it serves.
+- **claim** — one statement of what is true at the destination: a
+  boundary, an owner, a coupling, a store, an invariant, or a behavior.
+  It is a requirement block in the blueprints' OpenSpec specifications,
+  with a stable name, a version that is the hash of its text and so
+  moves only when its text moves, at least one scenario saying how one
+  would know it holds, and a scope. A claim is **proposed** while it
+  sits in its intent's change and **standing** once the intent's
+  landing has archived it into the standing specifications.
+- **as-built** — the built repository's standing OpenSpec
+  specifications: what that software does as of all construction
+  landed. Every as-built statement is a requirement block naming the
+  claim and claim version it serves.
 - **verdict** — one stored judgment that a repository satisfies a claim:
   satisfied, partial, not satisfied, or not applicable, with the claim
   version and repository revision judged, the evidence, and the date.
@@ -629,14 +632,18 @@ requirements, iterated against the running plan rather than on paper.
 
 ### A.14 Claims, as-built, and the ledger
 
-97. The chapter that explains a claim and the claim itself are one
-    source. The prose, the diagram and the sample around a claim are
-    what a construction session reads to know what the claim means;
-    they cannot drift from it.
+97. A claim's text lives in the blueprints' OpenSpec specifications,
+    and the chapter that explains it includes it by anchor, so the two
+    are one source and cannot drift. The prose, the diagram and the
+    sample around the included claim are what a construction session
+    reads to know what the claim means; the specification is what it
+    reads to know what the claim says.
 98. Only standing claims are planned against. Proposed claims are
     visible and never built.
-99. Every as-built statement names the claim and claim version it
-    serves. Construction never satisfies a claim it does not name.
+99. Every as-built statement is a requirement block in the built
+    repository's specifications naming the claim and claim version it
+    serves; a unit's change carries it and the unit's landing archives
+    it. Construction never satisfies a claim it does not name.
 100. Whether a repository satisfies a claim is a judgment made by an
     agent, not a computation, and it is stored as a verdict with the
     inputs it was made from.
@@ -657,8 +664,10 @@ requirements, iterated against the running plan rather than on paper.
     planning judges every claim in scope once and offers the unsatisfied
     set as one proposal.
 105. A claim's scope is part of the claim: what it attaches to on the
-    context map (200), attached when it is written and re-attached by
-    the operator's response. A claim about a contract between two
+    context map (200), the specification's capability being one
+    attachment and the claim's own attachment line holding any more,
+    attached when it is written and re-attached by the operator's
+    response. A claim about a contract between two
     repositories is in scope for both, and each carries its own
     verdict.
 195. A repository's kinds and capabilities are derived from the nodes it
@@ -953,9 +962,10 @@ requirements, iterated against the running plan rather than on paper.
     request, an environment still up, a signal not yet moved — and for
     a bounded window after, then leaves every view and stays in
     history. Nothing is deleted; the views are derived (B.4).
-192. At landing the machinery writes, in the built repository beside the
-    as-built, the claims the bolt's units named with each claim's
-    scenarios, as one file any delivery system may read from git.
+192. At landing the machinery writes, in the built repository under its
+    prefix, the index of the as-built: each claim the standing
+    specifications name, its version, its anchor and its scenarios, as
+    one file any delivery system may read from git.
     Generating and running a suite from it is the delivery system's;
     the machinery writes the file and nothing more (181).
 
