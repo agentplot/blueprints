@@ -23,7 +23,7 @@ doc: unit type
 params:
   place: unused by this type; a contract charges no session
 key: [client, start_date]            # needs: growth-2
-record_type: contract                # needs: growth-2
+record_type: Contract                # needs: growth-2 — the %rec block in ../records.yaml
 record:
   needs_change_directory: "false"
   lands_on: none                     # needs: growth-1

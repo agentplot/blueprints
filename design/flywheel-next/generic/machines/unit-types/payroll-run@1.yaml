@@ -21,7 +21,7 @@ doc: unit type
 params:
   place: the run's place, used by the processing stage
 key: [pay_date]                      # needs: growth-2
-record_type: payroll-record          # needs: growth-2
+record_type: PayrollRecord           # needs: growth-2 — the %rec block in ../records.yaml
 record:
   needs_change_directory: "false"
   lands_on: none                     # needs: growth-1

@@ -27,20 +27,20 @@ scenarios:
   - id: B01
     brief: "Vendor record carries billing identity"
     requirement: "Vendor records are the single source of truth"
-    exercises: {file: machines/records.yaml, type: vendor}
+    exercises: {file: machines/records.yaml, record_set: Vendor}
     needs: growth-2
-    given: "a vendor record exists"
-    when: "the record is read"
-    then: "it carries id, display_name, invoice_sender_email, zoho_contact_id, zoho_line_item_type, expected_hours_min, expected_hours_max and active; a write missing any mandatory field is refused by the write gate"
+    given: "the %rec: Vendor descriptor"
+    when: "a vendor record is written"
+    then: "Id, Display_name, Invoice_sender_email, Zoho_contact_id, Zoho_line_item_type, Expected_hours_min, Expected_hours_max and Active are all in %mandatory, so a write missing any of them is refused with the field and the directive"
 
   - id: B02
     brief: "Vendor record carries document-routing metadata"
     requirement: "Vendor records are the single source of truth"
-    exercises: {file: machines/records.yaml, type: vendor}
+    exercises: {file: machines/records.yaml, record_set: Vendor}
     needs: growth-2
-    given: "a vendor record exists"
-    when: "the record is read"
-    then: "it carries paperless_correspondent, paperless_document_type and paperless_tags, and subject_pattern when set"
+    given: "the %rec: Vendor descriptor"
+    when: "a vendor record is read"
+    then: "it carries Paperless_correspondent and Paperless_document_type (both %mandatory), Paperless_tags repeated once per tag, and Subject_pattern when set"
 
   - id: B03
     brief: "Deactivation stops future cycles without erasing history"
@@ -307,11 +307,11 @@ scenarios:
   - id: B31
     brief: "Contract carries commercial terms"
     requirement: "Contract expiry is surfaced before it happens"
-    exercises: {file: machines/records.yaml, type: contract}
+    exercises: {file: machines/records.yaml, record_set: Contract}
     needs: growth-2
-    given: "a contract record exists"
-    when: "the record is read"
-    then: "it carries client, start_date, end_date, value, terms and source_document; a write with end_date before start_date is refused"
+    given: "the %rec: Contract descriptor"
+    when: "a contract record is written"
+    then: "Client, Start_date, End_date, Value, Terms and Source_document are %mandatory; a write with End_date before Start_date is refused by %constraint: Start_date < End_date"
 
   - id: B32
     brief: "Tiered renewal alerts"
@@ -325,7 +325,7 @@ scenarios:
   - id: B33
     brief: "Amendments do not overwrite history"
     requirement: "Contract expiry is surfaced before it happens"
-    exercises: {file: machines/unit-types/contract@1.yaml, transition: "amending -> superseded", and: "machines/records.yaml type contract"}
+    exercises: {file: machines/unit-types/contract@1.yaml, transition: "amending -> superseded", and: "machines/records.yaml %type: Amends rec Contract"}
     needs: growth-2
     given: "a contract in active"
     when: 'the operator answers "amend: extend to 2027-06-30" and the amendment record is written'
@@ -338,9 +338,9 @@ scenarios:
     requirement: "State is plain text, schema-enforced, and version controlled"
     exercises: {file: machines/records.yaml, construct: write_gate}
     needs: growth-2
-    given: "the record types as declared"
-    when: "an hours record names a vendor that does not exist; a second vendor is written with an existing invoice_sender_email; a cycle is written with no month"
-    then: "each write is refused with the field, the constraint and the value; the store is unchanged; the refusal is reported through the attention lines (79)"
+    given: "the five descriptors as declared"
+    when: "an Hours record names a vendor that does not exist; a second Vendor is written with an existing Invoice_sender_email; a Cycle is written with no Month; a Cycle is written with Reconciliation_class 'unclear'"
+    then: "each write is refused by its directive in turn — %type: Vendor rec Vendor, the second %key, %mandatory, %type: Reconciliation_class enum — named with the field and the offending value; the store is unchanged and the refusal is reported through the attention lines (79)"
 
   - id: B35
     brief: "Changes are auditable"
@@ -348,7 +348,7 @@ scenarios:
     exercises: {file: machines/records.yaml, store: state-repository}
     given: "any accepted write"
     when: "the state repository is read"
-    then: "one commit per record change with a readable per-record diff, carrying the reason and the evidence the write was based on (79)"
+    then: "one commit per record change, the diff readable per record because the files are recutils, carrying the reason and the evidence the write was based on (79)"
 
   - id: B36
     brief: "Workflows return data, not prose"

@@ -1,21 +1,34 @@
-# The record types of the billing organization (billing-brief, "State is plain
-# text, schema-enforced, and version controlled"). Every one of these answers
-# growth point 2 of ../../README.md: today's deliverables are files a producer
-# writes, and a business process needs typed records in the state repository
-# with a schema, a key, uniqueness, references, and refusal on violation as the
-# write gate. This file is what growth-2 has to make real; it is not a machine
-# file and does not validate against machines/schema.json.
+# The record sets of the billing organization (billing-brief, "State is plain
+# text, schema-enforced, and version controlled"), written as recutils record
+# descriptors.
 #
-# The store is the state repository, engine-managed, one commit per record
-# change (35, 41, 203). recutils is one serialization the record store may use
-# and never the model — nothing below names a file format, a column or a path.
+# The flywheel already stores its own records this way: small durable tables are
+# recutils files in git (requirements, section 13 — the binary parses them
+# itself and links no GNU tool), and the blueprints profile's effects are
+# recins/recset writes on `flywheel/ledger/<repository>.rec` and
+# `flywheel/signals/*.rec`. So nothing below asks for a new storage mechanism.
+# What growth point 2 of ../../README.md asks for is that a *package* may
+# declare domain record sets in the state repository as descriptors of exactly
+# this kind, that the machinery enforce the descriptor at every write the way
+# `recfix --check` does and refuse a violating write with the reason, and that a
+# unit type may name a record set whose record is the unit's fields.
 #
-# Vendor, contract, hours and payroll-record are records that stand on their
-# own. A cycle is a unit of invoice-cycle@1 whose fields are a record; its
-# fields live with the unit type and are named here only where another type
-# references them.
-format: flywheel-records/1
+# Two extensions beyond recutils' own grammar, both deliberate and both visible:
+#
+#   1. `%key:` takes a field list, so a composite key — vendor plus month — is
+#      expressible. recutils writes one field.
+#   2. `%key:` may appear more than once, each line one cross-record uniqueness
+#      constraint, the first being the primary key. recutils allows one.
+#
+# Everything else is read as recutils reads it: `%mandatory:` is presence,
+# `%unique:` is at most one occurrence of the field within a record, `%type:`
+# with `rec` is a foreign key into the named record set, `%constraint:` is a
+# selection expression over the record being written, `%auto:` is a value the
+# machinery supplies. This file is not a machine file and does not validate
+# against machines/schema.json.
+format: flywheel-record-sets/1
 needs: growth-2
+store: state-repository
 satisfies: [79, 111, 203, 227]
 satisfies_brief:
   - "Vendor records are the single source of truth"
@@ -24,141 +37,201 @@ satisfies_brief:
 
 write_gate:
   doc: >-
-    growth-2's central ruling. A write that violates a declared type, an enum, a
-    reference, a mandatory field or a uniqueness constraint is refused, and the
-    refusal is recorded with its reason and its evidence (79). The gate is the
-    type's schema and nothing else; no producer, session or adapter may write
-    around it, and a session has no tool that moves state at all (66). A refused
-    write leaves the store as it was, so a partially applied record is not a
-    state the process can reach.
-  refusal: "the field, the constraint and the offending value, reported to the operator through the attention lines (79, 81)"
-  audit: "one commit per record change, the diff readable per record (brief, 'Changes are auditable')"
+    growth-2's central ruling. Every write is checked against the descriptor
+    before it lands, the way `recfix --check` checks a file after the fact: a
+    write violating a `%type`, a `%mandatory`, a `%unique`, a `%key` or a
+    `%constraint` is refused, the store is left as it was, and the refusal names
+    the field, the directive and the offending value (79). The check is the
+    descriptor and nothing else; no producer, session or adapter writes around
+    it, and a session has no tool that moves state at all (66).
+  audit: "one commit per record change (203); a recutils file diffs per record, which is what makes the audit readable"
   needs: growth-2
 
-types:
+record_sets:
 
-  vendor:
+  Vendor:
     doc: >-
       a subcontractor. Changes rarely, and is the single source of truth for
       everything downstream — notably the Paperless mail rules, which are
       derived from these records rather than clicked into a UI
       (producers.yaml, mail-rule-sync).
-    key: [id]
-    unique: [[id], [invoice_sender_email]]
-    needs: growth-2
     satisfies_brief:
       - "Vendor record carries billing identity"
       - "Vendor record carries document-routing metadata"
       - "Deactivation stops future cycles without erasing history"
-    fields:
-      id:                     {type: string,  mandatory: true, doc: stable identity; never reused, never re-pointed}
-      display_name:           {type: string,  mandatory: true}
-      invoice_sender_email:   {type: email,   mandatory: true, doc: the address invoices arrive from; the mail rule's filter}
-      zoho_contact_id:        {type: string,  mandatory: true, doc: the Zoho Books contact the bill books to}
-      zoho_line_item_type:    {type: string,  mandatory: true, doc: the line-item category their work books to}
-      expected_hours_min:     {type: decimal, mandatory: true, doc: the floor of a normal month; the `low` reconciliation class reads it}
-      expected_hours_max:     {type: decimal, mandatory: true}
-      active:                 {type: bool,    mandatory: true, default: true}
-      paperless_correspondent: {type: string, mandatory: true, doc: the correspondent assigned to this vendor's incoming invoices}
-      paperless_document_type: {type: string, mandatory: true, default: "Vendor Invoice"}
-      paperless_tags:         {type: list,    mandatory: true, doc: tags auto-assigned on arrival}
-      subject_pattern:        {type: string,  mandatory: false, doc: optional tighter filter on the mail rule}
-    rulings:
-      - "deactivation sets active false and never deletes: the month-init producer opens no new cycle for an inactive vendor, and every historical cycle stays queryable"
-      - "invoice_sender_email is unique across vendors, because two vendors sharing an address make a mail rule that cannot attribute what it ingests"
+    descriptor: |
+      %rec: Vendor
+      %doc: One subcontractor. Deactivated, never deleted.
+      %key: Id
+      %key: Invoice_sender_email
+      %mandatory: Id Display_name Invoice_sender_email Zoho_contact_id
+      + Zoho_line_item_type Expected_hours_min Expected_hours_max Active
+      + Paperless_correspondent Paperless_document_type
+      %unique: Id Display_name Invoice_sender_email Active Subject_pattern
+      %type: Id line
+      %type: Display_name line
+      %type: Invoice_sender_email email
+      %type: Zoho_contact_id line
+      %type: Zoho_line_item_type line
+      %type: Expected_hours_min real
+      %type: Expected_hours_max real
+      %type: Active bool
+      %type: Paperless_correspondent line
+      %type: Paperless_document_type line
+      %type: Paperless_tags line
+      %type: Subject_pattern line
+      %constraint: Expected_hours_min <= Expected_hours_max
+    notes:
+      "%key: Id": "identity is stable, never reused and never re-pointed; every other record set's `rec Vendor` field resolves through it"
+      "%key: Invoice_sender_email": "the second uniqueness constraint, and the reason for extension 2. Two vendors sharing an address make a mail rule that cannot attribute what it ingests, so the store refuses the second vendor rather than letting the ambiguity reach Paperless."
+      "%mandatory: ...": "a vendor missing any of these cannot be booked, chased or routed; the write gate catches it at the vendor, not three states later at a cycle"
+      "%unique: ...": "each of these is one value per record; Paperless_tags is deliberately absent from the list, since a vendor's invoices carry several tags"
+      "%constraint: Expected_hours_min <= Expected_hours_max": "an inverted range would make the `low` reconciliation class fire on every month; refused at the write"
+      "Active": "deactivation sets this false and deletes nothing. month-init opens no new cycle for an inactive vendor and every historical cycle stays queryable — the gapless-ledger principle at the roster level."
 
-  hours:
+  Hours:
     doc: >-
-      the one hours ledger, written once per vendor-month and read by both
-      sides of the ledger — the payables reconciliation in invoice-cycle@1 and
-      a future client-invoice type. This is the README's answer to the brief's
+      the one hours ledger, written once per vendor-month and read by both sides
+      of the business — the payables reconciliation in invoice-cycle@1 and a
+      future client-invoice type. This is the README's answer to the brief's
       largest open question: one system, not two.
-    key: [vendor, month]
-    unique: [[vendor, month]]
-    references:
-      vendor: {to: vendor, on_missing: refuse}
-    needs: growth-2
     satisfies_brief:
       - "Invoiced hours are reconciled against recorded hours"
       - "Timesheet access degrades gracefully"
-    fields:
-      vendor:  {type: ref,     mandatory: true}
-      month:   {type: string,  mandatory: true, pattern: "YYYY-MM"}
-      hours:   {type: decimal, mandatory: true}
-      source:  {type: enum,    mandatory: true, values: [operator, zoho-people, adapter], doc: phase 1 writes `operator` from the capture the ask-the-operator decision produced (growth-8); a Zoho People adapter later writes the same record with no change to any type}
-      recorded_at: {type: time, mandatory: true}
-    rulings:
-      - "one row per vendor-month; a second write for the same key is an amendment of the same record, not a new row, so the reconciliation check always reads one number"
-      - "the record is the thing the reconciliation check reads; the check never reads an adapter directly (growth-7)"
+    descriptor: |
+      %rec: Hours
+      %doc: Recorded hours for one vendor in one month. One row, whatever wrote it.
+      %key: Vendor Month
+      %mandatory: Vendor Month Hours Source Recorded_at
+      %unique: Vendor Month Hours Source Recorded_at
+      %type: Vendor rec Vendor
+      %type: Month regexp /^[0-9]{4}-[0-9]{2}$/
+      %type: Hours real
+      %type: Source enum operator zoho_people adapter
+      %type: Recorded_at date
+      %auto: Recorded_at
+      %constraint: Hours >= 0
+    notes:
+      "%key: Vendor Month": "the composite key, and the reason for extension 1. One row per vendor-month means the reconciliation check always reads one number; a second write for the same pair amends that row rather than adding a second."
+      "%type: Vendor rec Vendor": "the foreign key. An hours row naming a vendor that does not exist is refused, which is the brief's 'foreign key' clause of the schema-violation scenario."
+      "%type: Source enum operator zoho_people adapter": "phase 1 writes `operator`, from the capture the ask-the-operator decision produced (growth-8). A Zoho People adapter later writes the same row with `zoho_people` and no unit type changes."
+      "%auto: Recorded_at": "supplied by the machinery at the write; a caller cannot backdate the ledger"
+      "%constraint: Hours >= 0": "negative hours are a bad extraction, not a correction"
 
-  payroll-record:
+  PayrollRecord:
     doc: >-
-      one processed payroll run. The unit of payroll-run@1 carries the same
-      fields; this entry is the record type the state store enforces and the
-      year-end forms producer reads over.
-    key: [pay_date]
-    unique: [[pay_date]]
-    needs: growth-2
+      one processed payroll run. The unit of payroll-run@1 names this record set,
+      so the unit's fields are this record (growth-2's third clause); the
+      year-end forms producer reads over it grouped by Tax_year.
     satisfies_brief:
       - "Payroll runs are scheduled, recorded, and never silent"
-    fields:
-      pay_period_start: {type: date,   mandatory: true}
-      pay_period_end:   {type: date,   mandatory: true}
-      pay_date:         {type: date,   mandatory: true}
-      tax_year:         {type: string, mandatory: true, doc: derived from pay_date; the key the year-end forms producer groups on}
-      onpay_run_id:     {type: string, mandatory: false, doc: absent for a run recorded as skipped}
-      employees:        {type: list,   mandatory: true, doc: "[{employee, gross, net, stub_document}]"}
-      stub_documents:   {type: list,   mandatory: false, doc: Paperless document ids for the pay stub PDFs}
-      w2_documents:     {type: list,   mandatory: false, doc: collected when the tax year closes}
-      w3_document:      {type: string, mandatory: false}
-    rulings:
-      - "pay_date is unique, so a scheduled producer firing twice for one date writes nothing the second time (73)"
-      - "a skipped run is a record with a reason, never an absent row — the gapless-ledger principle applies to payroll as it does to invoice cycles"
+    descriptor: |
+      %rec: PayrollRecord
+      %doc: One payroll run. A skipped run is a record with a reason, never an absent row.
+      %key: Pay_date
+      %mandatory: Pay_period_start Pay_period_end Pay_date Tax_year
+      %unique: Pay_period_start Pay_period_end Pay_date Tax_year Onpay_run_id
+      + W3_document Skip_reason
+      %type: Pay_period_start date
+      %type: Pay_period_end date
+      %type: Pay_date date
+      %type: Tax_year regexp /^[0-9]{4}$/
+      %type: Onpay_run_id line
+      %type: Employee_gross line
+      %type: Employee_net line
+      %type: Stub_document line
+      %type: W2_document line
+      %type: W3_document line
+      %type: Skip_reason line
+      %constraint: Pay_period_start <= Pay_period_end
+    notes:
+      "%key: Pay_date": "one run per pay date, which is what makes the payroll-prompt producer idempotent: a second firing for the same date is refused by the key and writes nothing (73)"
+      "%mandatory: ... Tax_year": "the grouping the year-end forms producer reads; mandatory so no run can fall outside a year's collection"
+      "Employee_gross / Employee_net / Stub_document": "repeated fields, one per employee, which is how recutils holds a list; they are absent from `%unique` for that reason"
+      "%mandatory omits Onpay_run_id": "a run recorded as skipped has no OnPay run; the record still exists, with Skip_reason"
+      "%constraint: Pay_period_start <= Pay_period_end": "an inverted period would make the year grouping ambiguous"
 
-  contract:
+  Contract:
     doc: >-
       one client contract, or one amendment of one. An amendment is a new record
-      whose `amends` names the prior; the prior is never overwritten, which is
-      what makes the history queryable rather than merely versioned.
-    key: [client, start_date]
-    unique: [[client, start_date]]
-    references:
-      client: {to: client, on_missing: refuse}
-      amends: {to: contract, on_missing: refuse, optional: true}
-    needs: growth-2
+      whose Amends names the prior; the prior is never overwritten, which is what
+      makes the history queryable rather than merely versioned.
     satisfies_brief:
       - "Contract carries commercial terms"
       - "Amendments do not overwrite history"
-    fields:
-      client:          {type: ref,     mandatory: true}
-      start_date:      {type: date,    mandatory: true}
-      end_date:        {type: date,    mandatory: true}
-      value:           {type: decimal, mandatory: true}
-      terms:           {type: string,  mandatory: true}
-      source_document: {type: string,  mandatory: true, doc: the contract PDF as a Paperless document id}
-      amends:          {type: ref,     mandatory: false}
-    rulings:
-      - "end_date must be after start_date; the write gate refuses the pair, which keeps the 90/60/30 timers of contract@1 from firing against a date already past"
-      - "a record naming `amends` may not also be named by another record's `amends`: an amendment chain is linear, so 'the current terms' is always one record"
+    descriptor: |
+      %rec: Contract
+      %doc: One client contract. An amendment is a new record naming the prior.
+      %key: Client Start_date
+      %mandatory: Client Start_date End_date Value Terms Source_document
+      %unique: Client Start_date End_date Value Terms Source_document Amends
+      %type: Client line
+      %type: Start_date date
+      %type: End_date date
+      %type: Value real
+      %type: Terms line
+      %type: Source_document line
+      %type: Amends rec Contract
+      %constraint: Start_date < End_date
+    notes:
+      "%key: Client Start_date": "composite again (extension 1); a client may hold several contracts, one per start date"
+      "%type: Amends rec Contract": "the self-reference. A record naming a contract that does not exist is refused, so an amendment chain cannot dangle."
+      "%constraint: Start_date < End_date": "this is what keeps contract@1's 90/60/30 timers from firing against a date already past at the moment the record lands"
+      "Client is a line, not a `rec`": "the receivables side has user stories and folder conventions but no state model (brief, Open Questions), so there is no Client record set to point at yet. When receivables is designed this becomes `%type: Client rec Client` and nothing else here changes."
+      "the linear-amendment ruling": "a record named by another record's Amends may not itself be amended, so 'the current terms' is always exactly one record. recutils cannot state this over the set, so the machinery checks it at the write — one of the things growth-2's gate does that `recfix --check` does not."
 
-  client:
-    doc: the counterparty of a contract; thin on purpose, since the receivables side is not designed yet
-    key: [id]
-    unique: [[id]]
-    needs: growth-2
-    fields:
-      id:           {type: string, mandatory: true}
-      display_name: {type: string, mandatory: true}
-      active:       {type: bool,   mandatory: true, default: true}
+  Cycle:
+    doc: >-
+      one vendor for one month. The record set invoice-cycle@1 names, so the
+      unit's fields are this record — growth-2's third clause, and the reason a
+      unit type needs no field vocabulary of its own. The stage lives with the
+      unit; everything else about the cycle lives here.
+    satisfies_brief:
+      - "A suppressed month is recorded, not skipped"
+      - "New invoice detected"
+      - "Bill uses stored booking identity"
+      - "Discrepancy classification"
+    descriptor: |
+      %rec: Cycle
+      %doc: One vendor for one month. Suppressed is a record with a reason, never an absent row.
+      %key: Vendor Month
+      %mandatory: Vendor Month Suppressed Reminder_count
+      %unique: Vendor Month Suppressed Suppression_reason Reminder_count
+      + Last_reminder_at Paperless_document_id Invoice_amount Invoice_hours
+      + Invoice_received_at Extraction_confidence Zoho_bill_id Timesheet_hours
+      + Reconciliation_class Paid_at Archive_date
+      %type: Vendor rec Vendor
+      %type: Month regexp /^[0-9]{4}-[0-9]{2}$/
+      %type: Suppressed bool
+      %type: Suppression_reason line
+      %type: Reminder_count int
+      %type: Last_reminder_at date
+      %type: Paperless_document_id line
+      %type: Invoice_amount real
+      %type: Invoice_hours real
+      %type: Invoice_received_at date
+      %type: Extraction_confidence real
+      %type: Zoho_bill_id line
+      %type: Timesheet_hours real
+      %type: Reconciliation_class enum missing low mismatch ok
+      %type: Paid_at date
+      %type: Archive_date date
+      %constraint: Reminder_count >= 0
+    notes:
+      "%key: Vendor Month": "vendor plus month is unique, which is the brief's own statement of the cycle's identity and what makes month-init idempotent by key rather than by comparison"
+      "%type: Vendor rec Vendor": "the foreign key; an unattributable invoice cannot be forced into a cycle by writing a vendor that is not on the roster"
+      "%type: Reconciliation_class enum missing low mismatch ok": "the closed set the reconciliation transition writes. A class outside it is refused, so the machine's guard reads a value it can always dispatch on."
+      "%mandatory omits every artifact field": "a cycle opens in awaiting_invoice holding almost nothing; the artifacts accumulate as the month progresses, and mandating them would make the day-1 write impossible"
+      "%constraint: Reminder_count >= 0": "the counter moves only on a send proof (reminder-draft@1) and never downward"
 
 references_summary:
   doc: >-
-    the referential integrity the write gate enforces, in one place. Every arrow
-    is refuse-on-missing: the brief's "foreign key" clause of the schema-violation
-    scenario.
+    the `rec`-typed fields, in one place — the referential integrity the write
+    gate enforces. Every one is refuse-on-missing.
   edges:
-    - {from: hours.vendor,     to: vendor.id}
-    - {from: cycle.vendor,     to: vendor.id, doc: "the unit record of invoice-cycle@1"}
-    - {from: contract.client,  to: client.id}
-    - {from: contract.amends,  to: contract, optional: true}
-    - {from: cycle.month,      to: billing-month.month, doc: "the aggregate unit of billing-month@1 (growth-5)"}
+    - {from: "Hours.Vendor", to: "Vendor", directive: "%type: Vendor rec Vendor"}
+    - {from: "Cycle.Vendor", to: "Vendor", directive: "%type: Vendor rec Vendor"}
+    - {from: "Contract.Amends", to: "Contract", directive: "%type: Amends rec Contract", optional: true}
+  not_yet:
+    - {from: "Contract.Client", to: "Client", why: "no receivables state model in the brief; a line field until there is one"}
+    - {from: "Cycle.Month", to: "billing-month@1", why: "the month is an aggregate unit, not a record set; the join is growth-5's, not the descriptor's"}

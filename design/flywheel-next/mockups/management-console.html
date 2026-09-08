@@ -147,6 +147,55 @@
     manifest commit. Overview authors nothing: it reads what the organization is and what is under
     attention.
 
+  Decisions taken 2026-09-08, over A.33 (256-267), A.34 (268-278, 290-294), A.35 (279-284, 294),
+  237 as amended, and the S191/S193/S194 rulings:
+  - Settings carries a Tenancy panel, which is the tier statement of 261 rendered: the stores that
+    hold this organization's content (the capture queue, the warm cache, the page projection, the
+    run logs, and what pool hosts write), the key each is sealed under, which of the three homes of
+    267 that key lives in, which role may use it and for how long, when the cache was last evicted,
+    which model provider sees plan text and messages, and the code-isolation line of 264/289. A key
+    that is unreachable shows the fail-closed line of 260 above it, naming the key and since when,
+    and saying that no tick proceeds while running work continues.
+  - Plan is drawn per rung, because the rungs differ in kind and not only in size. Hobby states
+    that no model key is placed, that chat is buttons and slash commands, that self-contained
+    captures are triaged in one daily batch at the sweep, and how many captures of the month's
+    included count are used (281, 294). Team states the included model budget with the month's
+    spend beside the pool hours, and the model class per job with the control that raises it per
+    type and per stage (285, 294). A model key of the operator's own is a secret placed on the
+    host with a place-it command, never a field on the page (204, 207, S123).
+  - Enterprise draws tier 3 as a choice between its two shapes rather than one journey: stores
+    only, with the federation setup stated (our issuer, the organization's subject, the role ARN
+    the operator pastes, sts:TagSession allowed, and "deleting the role ends our access"), and
+    stores and compute, which adds the dedicated compute options as a table of what each changes.
+    Every one of them raises a decision; none is a button that acts (S113, S124).
+  - Liveness is read per kind of host rather than by one heartbeat age. A cloud agent exists only
+    during a tick, so its row and its Facts tab read its scheduler entry and its queue: next due,
+    queue depth, last tick, the served name, the page projection's last write and the cache's last
+    eviction (269, 291, 292). A closed laptop reads "away · since", its leases standing and its
+    sessions' clocks paused, and raises no attention line of its own (278).
+  - On a cloud agent Router and Runners are read-only and say "fixed by the tier": the platform
+    router at the served name and the in-process runner at bound 0 (283). Under Runners the host
+    says which model key it uses, ours metered or a key the operator placed, and the month's model
+    spend (294).
+  - A pool's Limits tab states its placement (microVM by default, a container task with a volume
+    under your key, an instance of your own on Enterprise), the maximum lifetime that placement
+    states, the fallback placement for a session that must run longer, and whose key the disk is
+    under (275). The pool row shows the ceiling and the per-host-hour rate and no live spend,
+    because a live figure would need the platform's price at read time (S193).
+  - An owner is one member or nobody and a role is never an owner (237 amended, S194), so the
+    members section states ownership as its own panel and roles are drawn as what they are: on a
+    hosted host the account's roles, which authorize tool calls; on a self-managed one, nothing
+    that authorizes at all. The switcher lists only the organizations the identity is a member of;
+    a non-member organization does not appear, greyed or otherwise (S191, 291).
+  - A chat sink says how free text reaches it, because that follows the presenting host's
+    placement: Discord on an invoked function takes /fw slash commands with their arguments and
+    carries buttons on every decision, Discord on a long-lived placement answers plain free text,
+    and Slack takes free text over the Events API either way (277, 281, 276a).
+  - "Connect a client" states the tool server as a remote MCP server at the host's address: the
+    endpoint, the identity a client signs in against, the catalogue filtered by the caller's
+    permissions, and the two-line Claude Code command. A self-managed host shows its localhost
+    address instead of a served name (245, 293).
+
   Layout decisions:
   - Sections in the side navigation, not entities. A navigation that listed every organization and
     every host grew with the estate and put two kinds of thing — a place you are and a thing you
@@ -179,7 +228,9 @@
   ?host=<id>&tab=parts|environment|sinks|facts, ?pool=<id>&ptab=hosts|image|limits,
   ?member=<id>, ?repo=<id>, ?addhost=1&journey=machine|cloud-agent|adopt&wstep=0..4,
   ?addorg=1&ostep=0..6, ?served=studio|willdan-cloud (which host serves this page, and so which
-  identity kind it shows), ?panel=1 (opens the seeded catalogue), ?flash=1.
+  identity kind it shows), ?panel=1 (opens the seeded catalogue), ?flash=1,
+  ?plan=hobby|pro|team|enterprise (the Plan page's rung), ?shape=stores|compute (tier 3's shape),
+  ?key=out (the key unreachable, 260).
 
   The Hosts table is ?page=hosts; a host drill-in is ?host=willdan-cloud (its tabs ?host=…&tab=…);
   the cloud agent's one-screen Parts is ?addhost=1&journey=cloud-agent&wstep=1.
@@ -581,16 +632,83 @@ const FLAGS = [
 ];
 const PLANS = {
   Free:{tier:'0 · your computer', who:'one person, own hardware', unlocks:'the binary, GitHub&#8217;s device flow, your own GitHub App and chat bot, every package, every surface',
+    chat:'your own bot and your own token · nothing of it runs on the service side',
+    triage:'immediate, on your own machine, with your own model key',
+    modelClass:'whatever your key buys · we meter none of it',
     limits:[['Organizations','none we enforce'],['Members','none we enforce'],['Pool hours','no pools'],['Pool memory','no pools']]},
-  Hobby:{tier:'1 · cloud agent', who:'one person who closes the laptop', unlocks:'the service&#8217;s bot and App, captures and chat while your machines sleep, the plan in Slack or Discord, the page at a served name',
+  Hobby:{tier:'1 · cloud agent', who:'one person who closes the laptop', unlocks:'the service&#8217;s application and App, captures and chat while your machines sleep, the plan in Slack or Discord, the page at a served name',
+    chat:'structured · a decision carries its answers as buttons, and free text is a slash command with its arguments (<span class="mono">/fw yes 412</span>, <span class="mono">/fw capture &lt;text&gt;</span>), so no model call is spent on chat (281)',
+    triage:'a self-contained capture is triaged in one daily batch at the sweep, on the small model class · a capture that arrives as a chat interaction or a webhook is captured at once, which needs no model (281)',
+    modelClass:'small · not raisable',
     limits:[['Organizations','1'],['Members','1'],['Pool hours','no pools'],['Pool memory','no pools']]},
-  Pro:{tier:'1 + 2', who:'one person with more to build', unlocks:'Hobby plus pools with an included hour allowance and metered overage, the store, the book view, presets',
+  Pro:{tier:'1 + 2', who:'one person with more to build', unlocks:'Hobby plus pools with an included hour allowance and metered overage, the store, the book view, presets, and the immediate triage of self-contained captures and free text in chat, both in the tick',
+    chat:'free text in chat is interpreted in the tick, one bounded call per message',
+    triage:'immediate, in the tick that took the capture',
+    modelClass:'small · not raisable',
     limits:[['Organizations','3'],['Members','1'],['Pool hours','included, then metered'],['Pool memory','8 GB per pool host']]},
-  Team:{tier:'2 · pools', who:'a team', unlocks:'Pro plus members with roles, ownership and assignment, this management console, identity administration, priority ticks',
+  Team:{tier:'2 · pools', who:'a team', unlocks:'Pro plus members with roles, ownership and assignment, this management console, identity administration, a higher ceiling on a pool host, and the raising of a job&#8217;s model class above the small one',
+    chat:'free text in chat is interpreted in the tick, one bounded call per message',
+    triage:'immediate, in the tick that took the capture',
+    modelClass:'small by default, raisable per unit type, per elaboration type and per stage (285, 294)',
     limits:[['Organizations','unlimited'],['Members','per seat'],['Pool hours','100 a month, pooled'],['Pool memory','32 GB per pool host']]},
-  Enterprise:{tier:'3 · your account', who:'a company with a security policy', unlocks:'Team plus your own AWS account by OIDC federation, SSO and SCIM through your identity provider, a dedicated dispatcher function, audit export, private pool images, an SLA',
+  Enterprise:{tier:'3 · your account', who:'a company with a security policy', unlocks:'Team plus your own account in either shape — stores only, or stores and compute with the dedicated compute the console offers — enterprise sign-in through your own directory, a dispatcher of its own, audit export and a private pool image',
+    chat:'free text in chat is interpreted in the tick · a long-lived dispatcher also answers plain free text in a Discord channel (276a, 277)',
+    triage:'immediate, in the tick that took the capture',
+    modelClass:'raisable per unit type, per elaboration type and per stage',
     limits:[['Organizations','custom'],['Members','custom'],['Pool hours','custom'],['Pool memory','custom']]},
 };
+/* the numbers each plan's seed reads with · ?plan= switches the Plan page between them */
+const PLAN_USE = {
+  Hobby:{organizations:1, members:1, seats:1, poolHours:null, poolMemory:null,
+    captures:{used:214, included:500}, model:null, keyPlaced:false},
+  Pro:{organizations:3, members:1, seats:1, poolHours:12, poolMemory:'8 GB',
+    captures:{used:640, included:2000}, model:{spend:'$6.20', budget:'$25'}, keyPlaced:false},
+  Team:{organizations:3, members:6, seats:6, poolHours:41, poolMemory:'32 GB',
+    captures:{used:1830, included:'unmetered on Team'}, model:{spend:'$18.40', budget:'$60'}, keyPlaced:false},
+  Enterprise:{organizations:3, members:6, seats:24, poolHours:41, poolMemory:'custom',
+    captures:{used:1830, included:'custom'}, model:{spend:'$18.40', budget:'custom'}, keyPlaced:true},
+};
+/* an organization's key has one of three homes, and the home is a stated fact of the tier (267) */
+const KEY_HOMES = [
+  ['your hosts', 'self-managed · the key lives on the operator&#8217;s own hosts and nothing of the organization is on the service side at all (267, tier 0)'],
+  ['our account, tagged', 'a key in the service&#8217;s account tagged with this organization · the role&#8217;s own policy admits it only when the resource&#8217;s tag equals the tick&#8217;s session tag, so no key names a role and one compromised credential reaches one organization (259, 267)'],
+  ['your account, by role', 'a key in the organization&#8217;s own account, reached through a role whose trust admits the service&#8217;s issuer for this organization · the service stores no credential, each tick assumes the role with a token minted for it, and deleting the role ends every path (267, 276)'],
+];
+/* the plan in force for the page · ?plan= overrides an organization that has one, never gives one */
+const planOf = o => (S.plan && o.plan) ? S.plan : o.plan;
+const useOf = o => ({...(PLAN_USE[planOf(o)] || {}), ...(o.use || {})});
+/* the tier statement of 261: what is held, under which key, where it lives, and who may use it */
+function tenancyOf(o){
+  const plan = planOf(o), ent = plan === 'Enterprise', shape = S.shape || 'stores';
+  if(!plan) return {plan:null, tier:'0 · your computer', home:'your hosts',
+    key:'no key of ours · the binary reads and writes on your own machine',
+    role:'none · nothing of this organization is on the service side',
+    evicted:'no cache of ours to evict',
+    provider:'the provider your own model key names · we see nothing',
+    stores:[['nothing of the service&#8217;s', 'a self-managed organization keeps its state in its git repositories and its raw material on its own machines', '—', 'your hosts']]};
+  const home = ent && shape !== 'none' ? 'your account, by role' : 'our account, tagged';
+  const where = ent ? `your account · ${o.name}` : 'our account · tagged organization=' + o.name;
+  const pool = o.pools[0];
+  const poolDisk = pool && /container task/.test(pool.placement || '') ? 'your key' : 'the platform&#8217;s key';
+  return {plan, ent, shape,
+    tier: ent ? (shape === 'compute' ? '3 · your account · stores and compute' : '3 · your account · stores only') : PLANS[plan].tier,
+    home,
+    key: ent ? `<span class="mono">arn:aws:kms:us-west-2:&lt;your account&gt;:key/${esc(o.name)}</span>` : `<span class="mono">kms/${esc(o.name)}</span> · one customer-managed key, tagged <span class="mono">organization=${esc(o.name)}</span>`,
+    role: ent
+      ? `<span class="mono">arn:aws:iam::&lt;your account&gt;:role/flywheel-${esc(o.name)}</span> · you created it, its trust admits our issuer with ${esc(o.name)} as the subject, and deleting it ends our access (276)`
+      : `the tier role, assumed under a session tag naming <b>${esc(o.name)}</b> for the length of one tick and no longer (257, 259)`,
+    evicted: o.name === 'willdan' ? 'never · the cache was re-cloned 09-03 14:09 and is evicted after 14 days idle; its loss costs a clone (258, 272)' : 'evicted 09-01 · the next tick re-clones (258)',
+    provider: 'Anthropic, carried by the tier role and metered into the plan (269, 294) · it sees plan text and chat messages, never a transcript and never code',
+    where,
+    poolDisk,
+    stores:[
+      ['Capture queue', 'the body of every queued capture, encrypted before it is enqueued · the shared receiver holds the encrypting grant and never the decrypting one (271)', 'the organization&#8217;s key', where],
+      ['Warm cache', 'one object holding a bundle of two sparse shallow clones: the state repository, and the blueprints restricted to the manifest, the claims and the machinery&#8217;s prefix (272)', 'the organization&#8217;s key', where],
+      ['Page projection', 'one small object per organization: the status view and the rail as data, with each member&#8217;s page sink and its mark · a page request decrypts this one object and nothing else (291)', 'the organization&#8217;s key', where],
+      ['Run logs', 'the machinery&#8217;s own readings of each tick · no organization content', 'the organization&#8217;s key', where],
+      ['What pool hosts write', 'this organization&#8217;s code and raw material for the length of the work, on a disk the platform isolates per host and destroys at terminate (275)', poolDisk, pool ? 'the pool&#8217;s placement · ' + esc(pool.placement || 'microVM') : 'no pool declared'],
+    ]};
+}
 const pkg = id => INDEX.find(p => p.id === id);
 const schemaOf = p => (p && SCHEMA[p.id]) || [];
 const secretFields = p => schemaOf(p).filter(f => f.kind === 'secret');
@@ -612,9 +730,9 @@ const willdanHosts = () => [
      {k:'runner', pkg:'runner-pane', state:'installed 08-12', cfg:{bound:'4', login:'Claude Code'}},
      {k:'router', pkg:'router-local', state:'installed 08-12', cfg:{}},
    ]},
-  {id:'mac-mini', kind:'home host', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:false, gone:'41m', bound:2, last:'06:59', joined:'08-20', joinedVia:'adopt existing',
+  {id:'mac-mini', kind:'home host', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:false, away:'06:59', bound:2, last:'06:59', joined:'08-20', joinedVia:'adopt existing',
    identity:{kind:'github', how:'GitHub&#8217;s device flow on the page: the code and the address to enter it at, then the GitHub username (243, 246, 253)', served:'a localhost port, any port · no proxy, no name asked, no redirect registered (245)', env:null}, gitApp:{own:true, app:'willdan-flywheel · app id 8812', key:'~/willdan/secrets/github-app.pem', placed:true}, root:'~/willdan', launcher:'launchd · com.flywheel.willdan', binary:'0.9.2', binaryLatest:'0.9.4',
-   note:'gone 41m · lease expires 07:59, then its sessions are released',
+   note:'away since 06:59 · the lid is closed · its leases stand and its sessions&#8217; clocks pause; the cloud agent keeps ticking everything else (278)',
    roles:{elaboration:{runner:null, model:'claude-fable-5-1'}, construction:{runner:'runner-pane', model:'claude-fable-5-1'}, machinery:{runner:'runner-pane', model:'claude-haiku-4-5'}},
    agent:{on:false, runner:null, what:'presents no chat · nothing to interpret here'},
    env:{provider:'nix', repos:{atlas:{ok:true}, switchboard:{ok:true}, 'new-repo':{ok:true}}},
@@ -622,6 +740,9 @@ const willdanHosts = () => [
      {k:'runner', pkg:'runner-pane', state:'installed 08-20', cfg:{bound:'2', login:'Claude Code'}},
    ]},
   {id:'willdan-cloud', kind:'cloud', platform:'flywheel-cloud · container', plat:['cloud','container','linux'], alive:true, bound:0, last:'07:40', joined:'09-03', joinedVia:'flywheel-cloud managed', dispatcher:true,
+   /* an invoked host is judged by its scheduler entry and its queue, never by a heartbeat age (292) */
+   invoked:{nextDue:'08:10 · in 30m', queue:'2 items waiting', lastTick:'07:40 · 4.1s', budget:'15m per tick · the function placement', projection:'07:40 · the status view and the rail as data (291)', cacheEvicted:'never · re-cloned 09-03 14:09, and evicted after 14 days idle (258, 272)', servedName:'willdan-cloud.flywheel.cloud'},
+   model:{key:'ours · metered into the plan (294)', spend:'$18.40 month to date of $60 included', cls:'small · raisable per type and per stage on Team (285, 294)'},
    identity:{kind:'frontegg', how:'the provider&#8217;s hosted login on the page; the identity is the Frontegg user, and the GitHub username its connection carries is what authorship uses (244, 246)', served:'willdan-cloud.flywheel.cloud · registered once on the environment&#8217;s redirect list, never per organization (244)', env:'flywheel-cloud · production'}, gitApp:{own:false}, root:'/srv/flywheel/willdan', launcher:'systemd · flywheel.service', binary:'0.9.4', binaryLatest:'0.9.4',
    note:'the dispatcher placement · bound 0, so it takes no construction work and changes no runway reading (dispatch 2, 5)',
    roles:{elaboration:{runner:'runner-inproc', model:'claude-sonnet-5'}, construction:{runner:null, model:'claude-opus-5'}, machinery:{runner:'runner-inproc', model:'claude-haiku-4-5'}},
@@ -696,7 +817,11 @@ const ORGS = {
       {id:'new-repo', kinds:['service'], caps:['http'], landing:'pull request', merge:'merge', envFile:'flywheel/environment.yaml · changed 09-03 17:20', envHash:'sha256:c30d…8b5', claims:'13 in scope · 11 unmet · joined 09-03 23:00'},
       {id:'blueprints', kinds:['books'], caps:[], landing:'direct merge', merge:'merge', envFile:'flywheel/environment.yaml', envHash:'sha256:0ab4…d61', claims:'the claims live here'},
     ],
-    pools:[{id:'willdan-pool', platform:'flywheel-cloud', image:'willdan/flywheel:0.9.4-0903', imageState:'behind', imageWhy:'new-repo/flywheel/environment.yaml changed 09-03 17:20 · no host is provisioned until the image is current', bound:8, hostBound:2, live:2, idleRetire:'30m', cost:'ceiling $40/day · today $9', covers:'atlas · switchboard · new-repo'}],
+    pools:[{id:'willdan-pool', platform:'flywheel-cloud', image:'willdan/flywheel:0.9.4-0903', imageState:'behind', imageWhy:'new-repo/flywheel/environment.yaml changed 09-03 17:20 · no host is provisioned until the image is current', bound:8, hostBound:2, live:2, idleRetire:'30m',
+      ceiling:'$40/day', rate:'$0.11 per host-hour', stopped:'no addition has been stopped by the ceiling today',
+      placement:'microVM', lifetime:'8h maximum · the microVM placement states it (275)', fallback:'a container task with a volume, for a session that must run longer',
+      disk:'the platform&#8217;s key · isolated per host and destroyed at terminate (275)',
+      covers:'atlas · switchboard · new-repo'}],
     store:{'ut-default':{state:'installed 08-12'},'ut-fast':{state:'installed 08-12'},'ut-chore':{state:'installed 08-12'},'et-research':{state:'installed 08-12', cfg:{model:'claude-fable-5-1'}},'et-prototype':{state:'installed 08-12'},'et-writeback':{state:'installed 08-12'},'dp-mdbook':{state:'installed 08-12'},'mv-ddd':{state:'installed 09-05'},'tp-intent':{state:'installed 08-12'},'sp-flywheel':{state:'installed 08-12'}},
     hosts: willdanHosts(),
     decisions:8,
@@ -766,6 +891,7 @@ const S = {
   host:null, tab:'parts',      /* the host drill-in and its tab */
   pool:null, ptab:'hosts',     /* the pool drill-in and its tab */
   member:null, repo:null,      /* the member and repository drill-ins */
+  plan:null, shape:'stores', keyOut:false,   /* review switches over the plan and the tier statement */
   panel:null,           /* {mode:'catalogue'|'sheet'|'configure'|'secret'|'joined', ...} */
   flashes:[], menu:null, navOpen:false, lit:null,
   nextDecision:425, raised:[], log:[],
@@ -786,7 +912,7 @@ const tierOf = h => h.pool ? '2 · pools' : ((h.identity||{}).kind === 'frontegg
 /* every line this host puts under attention in the rail, gathered for the table's last column */
 function hostAttention(h){
   const out = [];
-  if(!h.alive) out.push(`gone ${h.gone || ''} · its lease expires and its sessions are released`);
+  if(!h.alive && !h.away) out.push(`gone ${h.gone || ''} · its lease expires and its sessions are released`);
   (h.parts || []).forEach(p => { if(p.state === 'needs a secret')
     out.push(`${pkg(p.pkg).name} needs ${(secretFields(pkg(p.pkg))[0]||{}).file || 'a secret'}${p.wi ? ' · ' + p.wi + ' waits on it' : ''}`); });
   Object.entries((h.env && h.env.repos) || {}).forEach(([rid, e]) => { if(!e.ok) out.push(`${rid} · the environment cannot be satisfied`); });
@@ -961,7 +1087,69 @@ function pageSettings(){
     ], 'rows')});
   return crumbs([[org().name,'org'],['Settings']])
     + pageHead('Settings', 'the organization&#8217;s own manifest fields · a host&#8217;s are on the host, a repository&#8217;s on the repository (S155)')
-    + `<div class="stack-l">${profile}${defaults}${wiring}${retire}</div>`;
+    + `<div class="stack-l">${profile}${defaults}${wiring}${tenancyPanel()}${connectClient()}${retire}</div>`;
+}
+
+/* --- tenancy: the tier statement of 261, rendered on the settings form --- */
+function tenancyPanel(){
+  const o = org(), t = tenancyOf(o);
+  const alert = S.keyOut ? ctr({title:'The key is unreachable',
+    desc:'a key that is unreachable, deleted, or behind a role that no longer trusts the service fails closed (260)',
+    body:`<div class="stack">${st('error', `key unreachable since 06:12 · no tick proceeds on state it cannot open`)}
+      <div class="small">Every host of this organization shows this one attention line, naming the key and since when (149, 260). Running work is not interrupted, and nothing is kept unencrypted as a fallback. The line clears when the key answers again.</div>
+      <div class="small">Where it is answered: in the rail like any other attention line.</div></div>`}) : '';
+  const facts = ctr({title:'Tenancy', desc:'what the service holds for this organization and under which key is a stated fact of the tier, and it is stated here (261)',
+    body: kv([
+      ['Tier', `${badge(esc(t.tier),'blue')}`],
+      ['The key', raw(t.key)],
+      ['Where it lives', `<b>${esc(t.home)}</b><div class="small">${raw((KEY_HOMES.find(k => k[0] === t.home)||[])[1] || '')}</div>`],
+      ['Which role may use it', raw(t.role)],
+      ['When it is unwrapped', 'only for the duration of a tick, and only by the role that runs it · the plaintext data key exists in a process evaluating this organization&#8217;s plan and at no other time (257)'],
+      ['Cache last evicted', raw(t.evicted)],
+      ['Model provider', raw(t.provider)],
+      ['Code isolation', 'a built repository is cloned only onto a host serving this organization alone, and that host is terminated with its disk when the work retires · no shared host of the service&#8217;s ever holds this organization&#8217;s code (264, 289)'],
+    ], 'rows')});
+  const stores = ctr({title:'Stores that hold this organization&#8217;s content', counter:t.stores.length,
+    desc:'a store keyed per filesystem, volume, queue or table holds no organization&#8217;s content in the clear; it is sealed under that key inside the store (256)',
+    tight:true,
+    body: table(['Store','What it holds','Under which key','Where'], t.stores.map(r => ({cells:[
+      `<b>${raw(r[0])}</b>`, raw(r[1]), raw(r[2]), raw(r[3])]})))});
+  const homes = ctr({title:'The three homes a key may have', tight:true,
+    desc:'moving between homes re-wraps data keys and changes no history (267)',
+    body: table(['Home','What it means','This organization'], KEY_HOMES.map(([id, what]) => ({
+      cells:[`<b>${esc(id)}</b>`, raw(what), t.home === id ? st('success','in force') : st('inactive','not in force')]})))});
+  const shared = ctr({title:'What is shared, and what is not', body: kv([
+    ['The two shared components', 'the receiver that acknowledges an inbound payload and routes it to this organization&#8217;s queue, and the chat application that carries plan text · each sees a payload once, in transit, and keeps nothing (290)'],
+    ['Everything else', 'no other process of the service&#8217;s is reached by more than one organization&#8217;s traffic (290)'],
+    ['What a shared host reads', 'the manifest, the register, the leases, the sink&#8217;s mark and the machinery&#8217;s prefix, and nothing else · the clone is sparse to exactly that set and a read outside it is a refusal in the run record (262)'],
+    ['Raw material', 'never read on a host serving more than one organization · triage that follows a pointer into the raw store runs on your own machine or on a pool host (263)'],
+    ['State records as envelopes', 'this organization may declare that the machinery writes its state records as envelopes under its key, with paths, file names and commit metadata left plaintext · it is a declaration, never the default (265, 266)'],
+  ], 'rows')});
+  return alert + facts + stores + homes + shared;
+}
+
+/* --- connect a client: the tool server is a remote MCP server at the host's address (293) --- */
+function connectClient(){
+  const o = org(), h = servingHost(), hosted = ((h.identity||{}).kind === 'frontegg');
+  const base = hosted ? `https://${(h.invoked && h.invoked.servedName) || (h.id + '.flywheel.cloud')}` : 'http://localhost:7429';
+  const url = `${base}/${o.name}/mcp`;
+  return ctr({title:'Connect a client',
+    desc:'the tool server at this host&#8217;s address is a remote server of the model context protocol, and a member&#8217;s own client is one of its clients like the page and the interpreter (193, 291, 293)',
+    body:`<div class="stack">${kv([
+      ['Endpoint', `<span class="mono">${esc(url)}</span>`],
+      ['Where it is served', hosted
+        ? 'the tier&#8217;s served name, by the same function that serves the page, invoked per request (291)'
+        : 'this host&#8217;s localhost address · a member adds a self-managed host to their own client as readily as a hosted one (245, 293)'],
+      ['The identity that signs in', hosted
+        ? `the provider&#8217;s hosted login · a hosted host&#8217;s clients hold a ${badge('frontegg','blue')} token (243, 293)`
+        : `GitHub&#8217;s device flow · a self-managed host&#8217;s clients hold what its device flow issued (243, 245, 293)`],
+      ['What the client is shown', 'the tool catalogue filtered by that caller&#8217;s permissions, so a tool the caller may not invoke is not offered (293)'],
+      ['Every call', 'membership admits the identity to the organization and the permission the tool declares authorizes the call; the call is a response recorded like any other, with who gave it and when (153, 248, 249)'],
+    ], 'rows')}
+    <div class="secret"><div class="small">add it to Claude Code — two lines, run on your own machine:</div>
+      <div class="cmd">claude mcp add --transport http flywheel-${esc(o.name)} ${esc(url)}<br>claude mcp list</div>
+      <div class="row">${btn('Copy', `data-copy="claude mcp add --transport http flywheel-${esc(o.name)} ${esc(url)}"`)}
+        <span class="small">the first line registers it; the second lists it and prompts the sign-in above</span></div></div></div>`});
 }
 
 /* --- repositories: a table, and one repository's declaration and per-host lines behind it (S174) --- */
@@ -1072,13 +1260,20 @@ function pageMembers(){
     r.members.map(m => badge(esc(m))).join(' ') || `<span class="small">nobody</span>`,
     `<div class="acts">${btn('Edit members', `data-edit="role|${r.id}"`)}</div>`,
   ]}));
-  const roles = ctr({title:'Roles a decision may be owned by', counter:o.roles.length,
-    desc:'a role here is a list of members a decision may name as its owner (237). Ownership changes nothing about who may answer — the answers on an owned card are the same for every member (S169) — and "assign" is a control on the decision in the plan console (S170). ' + (hosted
-      ? 'On this host the account&#8217;s roles authorize tools (248, 249); these ownership roles are the manifest&#8217;s and are a different thing.'
-      : 'On a <span class="mono">github</span> host they authorize nothing: every listed operator holds every permission (S165).'),
+  const roles = ctr({title:'Roles', counter:o.roles.length,
+    desc:'a role is never an owner (237 amended, S194). ' + (hosted
+      ? 'On this host a role is the account&#8217;s: it is what the token carries and what authorizes each tool call (248, 249). It groups members and it owns nothing.'
+      : 'On a <span class="mono">github</span> host a role authorizes nothing either: every listed operator holds every permission (S165, S199).'),
     actions: btn('Add role', 'data-add-role="1"'),
     tight:true,
-    body: table(['Role','Members',''], roleRows, ['No roles', 'every decision here is unowned, which is everyone&#8217;s (S169)'])});
+    body: table(['Role','Members',''], roleRows, ['No roles', 'nothing to group here'])});
+  const ownership = ctr({title:'Ownership', desc:'an owner is one member or nobody, and a role is never an owner (237 amended, S194)',
+    body: kv([
+      ['Who may own a decision', 'one member of this organization, or nobody · an unowned decision is everyone&#8217;s (237, 247)'],
+      ['Who sets it', 'planning&#8217;s proposal, the unit or elaboration type, or a member&#8217;s response · "assign" is a control on the decision in the plan console and never a form here (S170)'],
+      ['What ownership changes', 'nothing about what a decision is, whether it counts, or who may answer it · the answers on an owned card are the same for every member (237, S169)'],
+      ['"Mine"', 'the decisions owned by the signed-in member and nothing else · a role no longer widens it (S171, S194)'],
+    ], 'rows')});
   const note = ctr({title:'Identity', desc:'a binding of the serving host, one kind per host and the same for every organization it serves (S164)',
     body: kv([
       ['You are', `<b>${esc(shownIdentity())}</b> · ${badge(esc(servingKind()),'blue')}${isHosted() ? ` · GitHub <span class="mono">${esc(IDENTITY.github)}</span> for authorship` : ''}`],
@@ -1093,7 +1288,7 @@ function pageMembers(){
     + pageHead('Members', hosted
         ? 'the account&#8217;s assigned users, read-only, with their addresses beside them and the identity tools on this section (247, S195)'
         : 'the manifest&#8217;s authored operators list, their chat addresses, and the roles a decision may be owned by (S155, S199)')
-    + `<div class="stack-l">${members}${admin}${roles}${note}</div>`;
+    + `<div class="stack-l">${members}${admin}${roles}${ownership}${note}</div>`;
 }
 
 /* --- one member: addresses, roles, and the sinks the two of them make (S168, S173) --- */
@@ -1129,14 +1324,15 @@ function pageMember(){
       [hosted ? 'On the account' : 'Permissions', hosted
         ? (m.roles.length ? m.roles.map(r => badge(esc(r))).join(' ') : badge('member')) + ' · read-only, from the token (248)'
         : 'every permission · there is nothing to administer (S199)'],
-      ['Ownership roles', o.roles.filter(r => r.members.includes(m.id)).map(r => badge(esc(r.id))).join(' ') || '<span class="small">none</span>'],
+      ['Groups they are in', o.roles.filter(r => r.members.includes(m.id)).map(r => badge(esc(r.id))).join(' ') || '<span class="small">none</span>'],
+      ['Ownership', `a decision may name <b>${esc(m.id)}</b> as its owner, because an owner is one member or nobody and a role is never an owner (237 amended, S194)`],
       ['Answering', 'ownership changes nothing about who may answer: the answers on an owned card are the same for every member (S169)'],
     ], 'rows')});
   const sinkRows = [{cells:[`<b>page</b>${sub('keyed by the identity · every member has one (S168)')}`,
     `<span class="mono">—</span>`, esc(servingHost().id), st('success','delivered'), `<span class="num">${NOW}</span>`]}]
     .concat(Object.entries(m.addresses).map(([k, v]) => {
       const h = presenter(k === 'discord' ? 'discord' : 'slack');
-      return {cells:[`<b>${esc(k)}</b>${sub('a direct message from that kind&#8217;s bot, with the member&#8217;s own filter (S173)')}`,
+      return {cells:[`<b>${esc(k)}</b>${sub(h ? chatNote(k, h) : 'a direct message from that kind&#8217;s bot, with the member&#8217;s own filter (S173)')}`,
         `<span class="mono">${esc(v)}</span>`, h ? esc(h.id) : `<span class="small">nobody</span>`,
         h ? st('success','delivered') : st('warning','undelivered'),
         h ? `<span class="num">07:24</span>` : `<span class="small">no mark yet</span>`]};
@@ -1158,6 +1354,20 @@ function pageMember(){
     + `<div class="stack-l">${who}${addresses}${roles}${sinks}${admin}</div>`;
 }
 
+/* how free text and answers reach a chat sink, which follows the presenting host's placement (277, 281) */
+const CHAT_NOTE = {
+  discord:{fn:'free text as <span class="mono">/fw</span> slash commands with their arguments, because an invoked function holds no gateway socket; buttons on every decision (277, 281)',
+    live:'plain free text in the channel is answered, because a long-lived placement holds the gateway socket; buttons on every decision (276a, 277)'},
+  slack:{fn:'free text over the Events API, which needs no socket; buttons on every decision (277)',
+    live:'free text over the Events API, which needs no socket; buttons on every decision (277)'},
+};
+function chatNote(kind, h){
+  const n = CHAT_NOTE[kind === 'discord' ? 'discord' : 'slack']; if(!n || !h) return '';
+  const hosted = ((h.identity||{}).kind === 'frontegg');
+  if(!hosted) return 'your own bot and your own token · the application is the manifest&#8217;s and not the service&#8217;s (217d)';
+  return h.invoked ? n.fn : n.live;
+}
+
 /* --- sinks: one per member, one per address, plus shared channels (S168, S173) --- */
 function pageSinks(){
   const o = org();
@@ -1173,7 +1383,7 @@ function pageSinks(){
       const part = o.hosts.map(x => partOn(x, pkgId)).find(Boolean);
       rows.push({cells:[
         `<b>${esc(m.id)} · ${esc(kind)}</b>${sub('a direct message from that kind&#8217;s bot · its own mark and the member&#8217;s filter (S173)')}`,
-        esc(kind), `<span class="mono">${esc(addr)}</span>`,
+        `${esc(kind)}${h ? sub(chatNote(kind, h)) : ''}`, `<span class="mono">${esc(addr)}</span>`,
         h ? esc(h.id) : `<span class="small">nobody</span>`,
         h ? st('success','delivered') : st('warning', part && part.state === 'disabled' ? 'undelivered · the sink is disabled' : 'undelivered'),
         h ? `<span class="num">07:2${rows.length % 9}</span>` : `<span class="small">no mark yet</span>`]});
@@ -1254,9 +1464,13 @@ function storeState(e){
 }
 
 /* --- hosts: the table the estate is read from, and the way into one host --- */
+/* liveness is read differently per kind of host: an invoked host by its scheduler entry and its
+   queue (292), an intermittent machine by its lid (278, 150a), everything else by its heartbeat */
 function hostState(h){
+  if(h.away) return st('inactive', `away · since ${esc(h.away)}`);
   if(!h.alive) return st('error', `gone ${esc(h.gone || '')}`);
   if(h.retiring) return st('pending', `retiring · ${esc(h.retiring)}`);
+  if(h.invoked) return st('success','alive · an entry stands');
   return st('success','alive');
 }
 function pageHosts(){
@@ -1267,10 +1481,12 @@ function pageHosts(){
       `<a href="#" data-host="${h.id}"><b>${esc(h.id)}</b></a>${h.dispatcher ? ' ' + badge('dispatcher','grey') : ''}${h.serves ? sub('serves this page') : ''}`,
       `${esc(h.kind)}${sub('tier ' + esc(tierOf(h).split(' · ')[0]) + ' · ' + esc(tierOf(h).split(' · ')[1]))}`,
       `${esc(h.platform.split(' · ')[0])}${sub(esc(h.platform.split(' · ').slice(1).join(' · ') || '—'))}`,
-      hostState(h) + sub(h.binary === h.binaryLatest ? esc(h.binary) : esc(h.binary) + ' · behind'),
+      hostState(h) + sub(h.invoked ? 'next due ' + esc(h.invoked.nextDue) + ' · queue ' + esc(h.invoked.queue)
+        : h.away ? 'its leases stand and its sessions&#8217; clocks pause (278)'
+        : (h.binary === h.binaryLatest ? esc(h.binary) : esc(h.binary) + ' · behind')),
       `<span class="num">${h.bound}</span>`,
       h.pool ? `<a href="#" data-pool="${h.pool}">${esc(h.pool)}</a>` : `<span class="small">—</span>`,
-      `<span class="num">${esc(h.last)}</span>`,
+      h.invoked ? `<span class="num">${esc(h.last)}</span>${sub('once per tick · it is judged by its entry, not by a heartbeat age (292)')}` : `<span class="num">${esc(h.last)}</span>`,
       att.length ? st('warning', `${att.length} line${att.length > 1 ? 's' : ''}`) : st('success','none'),
     ]};
   });
@@ -1300,7 +1516,7 @@ function pagePools(){
     p.imageState === 'behind' ? st('warning','image behind') : st('success','image current'),
     `<span class="num">${p.live} live of ${p.bound}</span>${sub('each host bound ' + p.hostBound)}`,
     esc(p.idleRetire),
-    esc(p.cost)]}));
+    `${esc(p.ceiling || '—')}${sub(esc(p.rate || ''))}`]}));
   const note = ctr({title:'What the pool does and what it never does', body: kv([
     ['The machinery adds and retires', 'while drain is the limit, within bound and cost (242) · nothing on this page adds or retires a host by hand (S124)'],
     ['A retiring host', 'leaves the list when the platform ends it; its places are re-made from their lines elsewhere (52) and it raises nothing (S176)'],
@@ -1311,7 +1527,7 @@ function pagePools(){
     + pageHead('Pools', 'a pool the machinery adds hosts to and retires them from, within bound and cost (240–242)')
     + `<div class="stack-l">${ctr({title:'Pools', counter:o.pools.length, tight:true,
         actions: btn('+ pool', 'data-editpool="new"', 'primary'),
-        body: table(['Pool','Platform','Image','State','Live of bound','Idle-retire','Cost'], rows)})}${note}</div>`;
+        body: table(['Pool','Platform','Image','State','Live of bound','Idle-retire','Ceiling · rate'], rows)})}${note}</div>`;
 }
 /* --- one pool: Hosts · Image · Limits --- */
 const POOL_TABS = [['hosts','Hosts'],['image','Image'],['limits','Limits']];
@@ -1331,15 +1547,34 @@ function pagePool(){
         ['Rebuild', 'one chore decision · it runs the build, and the pool provisions no host until the platform lists the new tag (S175)'],
       ], 'rows')});
   } else if(S.ptab === 'limits'){
-    body = ctr({title:'Limits', desc:'bound, sessions per host, idle-retire and the cost ceiling are the manifest&#8217;s and are changed here; the machinery adds and retires hosts within them (S155, S176)',
+    const bounds = ctr({title:'Bounds', desc:'bound, sessions per host, idle-retire and the cost ceiling are the manifest&#8217;s and are changed here; the machinery adds and retires hosts within them (S155, S176)',
       actions: btn('Edit', `data-editpool="${p.id}"`),
       body: kv([
         ['Bound · hosts', `<span class="num">${p.bound}</span>`],
         ['Sessions per host', `<span class="num">${p.hostBound}</span>`],
         ['Idle-retire', esc(p.idleRetire)],
-        ['Cost', esc(p.cost)],
-        ['Memory ceiling', `${esc((o.plan && PLANS[o.plan].limits[3][1]) || 'no plan · no ceiling we enforce')} · the plan&#8217;s, refused with its reason rather than silently clamped (plans.md)`],
-      ])});
+        ['Ceiling', `${esc(p.ceiling || '—')}<div class="small">${esc(p.rate || '')} · the ceiling and the rate are the manifest&#8217;s; no live spend is drawn here, because that would need the platform&#8217;s price at read time (S193)</div>`],
+        ['Did the ceiling stop an addition', esc(p.stopped || 'no')],
+        ['Memory ceiling', `${esc((o.plan && PLANS[o.plan].limits[3][1]) || 'no plan · no ceiling we enforce')}<div class="small">the plan&#8217;s · the pool host that would exceed it is refused with the reason, never silently clamped (282)</div>`],
+      ], 'rows')});
+    const PLACEMENTS = [
+      ['microVM', 'the default · fast start, a stated maximum lifetime, the disk under the platform&#8217;s own key, and a container runtime inside it so a repository&#8217;s environment declaration works unchanged (275)'],
+      ['a container task with a volume under your key', 'for a tier statement that must name your own key on a pool host&#8217;s disk (261, 275)'],
+      ['an instance of your own', 'Enterprise, under tier 3&#8217;s second shape · no lifetime ceiling, so a session that runs for days needs no fallback placement (276a)'],
+    ];
+    const placement = ctr({title:'Placement', desc:'where a pool host runs · the placement states the lifetime, and the manifest names the fallback for a session that must run longer (275)',
+      tight:true,
+      body: table(['Placement','What it changes','This pool'], PLACEMENTS.map(([id, what]) => ({
+        cells:[`<b>${raw(id)}</b>`, raw(what),
+          (p.placement || 'microVM') === id ? st('success','in force') : st('inactive','not chosen')]})))});
+    const disk = ctr({title:'The disk and the lifetime', body: kv([
+      ['Maximum lifetime', esc(p.lifetime || '—')],
+      ['Fallback placement', esc(p.fallback || 'none named')],
+      ['Disk', raw(p.disk || '')],
+      ['At retire', 'the host is terminated and never suspended, so its disk goes with it (240, 275)'],
+      ['Code isolation', 'a built repository is cloned only onto a host serving one organization, and no shared host of the service&#8217;s ever holds this organization&#8217;s code (264, 289)'],
+    ], 'rows')});
+    body = bounds + placement + disk;
   } else {
     const rows = mine.map(h => ({cells:[
       `<a href="#" data-host="${h.id}"><b>${esc(h.id)}</b></a>${sub(esc(h.note))}`,
@@ -1356,7 +1591,7 @@ function pagePool(){
   }
   return crumbs([[o.name,'org'],['Pools','pools'],[p.id]])
     + pageHead(esc(p.id) + ' ' + badge(esc(p.platform),'grey'),
-        `${p.live} live of ${p.bound} · ${esc(p.cost)}`,
+        `${p.live} live of ${p.bound} · ceiling ${esc(p.ceiling || '—')}`,
         `${p.imageState === 'behind' ? btn('Rebuild image', `data-rebuild="${p.id}"`, 'primary') : ''}${btn('Edit', `data-editpool="${p.id}"`)}`)
     + tabsHtml(POOL_TABS, S.ptab, 'ptab')
     + `<div class="stack-l">${body}</div>`;
@@ -1391,45 +1626,143 @@ function pagePlan(){
       + pageHead('Plan', 'self-managed · the binary on your computer, and no plan behind it (250)')
       + `<div class="stack-l">${promise}${upgrade}${ladder}</div>`;
   }
-  const p = PLANS[o.plan], u = o.use || {};
+  const name = planOf(o), p = PLANS[name], u = useOf(o), ent = name === 'Enterprise', raisable = ent || name === 'Team';
   const current = ctr({title:'Current plan',
-    desc:'a plan hides a surface and meters a quantity · it never authorizes, and permission comes from roles (248, 249, plans.md)',
+    desc:'a plan hides a surface and meters a quantity · it never authorizes, and permission comes from roles (248, 249, 280)',
     body: kv([
-      ['Plan', `${badge(esc(o.plan),'blue')}`],
+      ['Plan', `${badge(esc(name),'blue')}`],
       ['Tier it allows', raw(p.tier) + ' · a host of a higher tier is refused with its reason'],
       ['Who it is for', raw(p.who)],
       ['What it unlocks', raw(p.unlocks)],
       ['Billing', 'on the hosted account, by Stripe · nothing about a plan is authored in this console'],
     ], 'rows')});
+
+  /* what the plan buys inside a tick: chat, triage and the model class per job (281, 294) */
+  const inTick = ctr({title:'What the plan runs inside a tick',
+    desc:'which of the two in-tick jobs a plan buys, and at which model class, is the plan&#8217;s fact and not a flag (269, 294)',
+    body: kv([
+      ['Chat', raw(p.chat)],
+      ['Triage of a self-contained capture', raw(p.triage)],
+      ['Free text', name === 'Hobby'
+        ? 'interpreted in the page, where the model running in the browser does the interpreter&#8217;s job at no cost to the service (216a, 281) · placing a model key of your own unlocks it in chat'
+        : 'interpreted in the tick, one bounded call per message on the in-process runner (217b, 217c)'],
+      ['Model class per job', raw(p.modelClass) + (raisable
+        ? `<div class="row" style="margin-top:6px">${btn('Raise a type&#8217;s class…', 'data-raiseclass="1"')}<span class="small">per unit type, per elaboration type and per stage · the plan states the ceiling and the type states the choice within it (285)</span></div>`
+        : `<div class="small">raising it is Team and up (294)</div>`)],
+      ['When a budget is spent', 'one attention line and a slower cadence, never a stopped loop: free text falls back to the page&#8217;s browser model and self-contained captures to the daily batch (280, 294)'],
+    ], 'rows')});
+
+  /* the model key and the included budget (294, 207) */
+  const keyed = !!u.keyPlaced;
+  const model = ctr({title:'Model cost',
+    desc:'your own model key is welcome on every hosted plan and required on none; an organization that places one is metered on none of the budget (207, 294)',
+    body:`<div class="stack">${kv([
+      ['Which key this organization uses', keyed
+        ? st('success','your own key · placed on the host, and we meter none of it')
+        : st('info','ours · carried by the tier role and metered into the plan (269, 294)')],
+      ['Included budget', u.model
+        ? `<b>${esc(u.model.spend)}</b> month to date of ${esc(u.model.budget)} included<div class="small">on the small model class, for the jobs the dispatcher runs inside a tick: reading a capture and answering a message</div>`
+        : 'stated as a count of captures and messages a month, not as money'],
+      ['Captures included', u.captures
+        ? `<b>${esc(String(u.captures.used))}</b> of ${esc(String(u.captures.included))} this month<div class="small">${name === 'Hobby' ? 'triaged in one daily batch at the sweep, on the small model class (281)' : 'triaged in the tick that took them'}</div>`
+        : '—'],
+      ['Past the budget', 'metered through the payment provider like any other overage (279, 282)'],
+      ['Which provider sees what', 'the tier statement on Settings names the provider · it sees plan text and chat messages, never a transcript and never code (261, 294)'],
+    ], 'rows')}
+    ${keyed ? '' : `<div class="secret"><div class="small">place your own model key · it is a secret you place on the host, never a field on this page and never shown back (204, 207, S123)</div>
+      <div class="cmd">op read "op://${esc(o.name)}/model/api key" | flywheel secret place --host ${esc(servingHost().id)} model.api-key</div>
+      <div class="row">${btn('Copy', `data-copy="op://${esc(o.name)}/model/api key"`)}${btn('Check', 'data-modelkey="1"')}
+        ${st('warning','not placed · we meter the in-tick jobs against the included budget until it is')}</div></div>`}</div>`});
+
   const flagRows = FLAGS.map(([id, what, plans]) => ({cells:[
     `<span class="mono">${esc(id)}</span>${sub(raw(what))}`,
-    plans.includes(o.plan) ? st('success','on') : st('inactive','off'),
+    plans.includes(name) ? st('success','on') : st('inactive','off'),
     esc(plans[0] + ' and up')]}));
-  const flags = ctr({title:'Flags on', counter:FLAGS.filter(f => f[2].includes(o.plan)).length,
+  const flags = ctr({title:'Flags on', counter:FLAGS.filter(f => f[2].includes(name)).length,
     desc:'the features list in <span class="mono">identity.yaml</span>, each <span class="mono">default: off</span> and targeted per account by the plan (250, S197)',
     tight:true,
     body: table(['Flag','State','From'], flagRows)});
   const meter = (label, use, limit, note) => [label, `<b>${raw(use)}</b> of ${raw(limit)}${note ? `<div class="small">${raw(note)}</div>` : ''}`];
-  const limits = ctr({title:'Limits', desc:'plan metadata read beside the flags · exceeding one is one attention line and a refused add, never a stopped loop (plans.md)',
+  const limits = ctr({title:'Limits', desc:'plan metadata read beside the flags · exceeding one is one attention line and a refused add with the reason, never a stopped loop (280, 282)',
     body: kv([
       meter('Organizations', String(u.organizations != null ? u.organizations : memberOrgs().length), esc(p.limits[0][1])),
-      meter('Members', String(o.members.length), `${u.members || o.members.length} seats`, 'a seat is billed whether or not it is assigned'),
-      meter('Pool hours this month', String(u.poolHours || 0), esc(p.limits[2][1]), 'overage is metered, not refused'),
-      ['Pool memory', `max <b>${esc(u.poolMemory || p.limits[3][1])}</b><div class="small">the pool host that would exceed it is refused with the reason, and the loop is not stopped</div>`],
+      meter('Members', String(o.members.length), `${u.seats || o.members.length} seats`, 'a seat is billed whether or not it is assigned'),
+      u.poolHours == null
+        ? ['Pool hours this month', `<b>no pools on this plan</b><div class="small">your own machines still build (268, tier 1)</div>`]
+        : meter('Pool hours this month', String(u.poolHours), esc(p.limits[2][1]), 'overage is metered, not refused'),
+      u.model
+        ? ['Model spend this month', `<b>${esc(u.model.spend)}</b> of ${esc(u.model.budget)} included<div class="small">beside the pool hours, because both are metered the same way (294)</div>`]
+        : ['Model spend this month', `<b>none</b><div class="small">Hobby spends almost no model: chat is buttons and slash commands, and free text runs in the page&#8217;s browser (281)</div>`],
+      ['Pool memory', u.poolMemory
+        ? `max <b>${esc(u.poolMemory)}</b><div class="small">the pool host that would exceed it is refused with the reason, and the loop is not stopped</div>`
+        : `<b>no pools on this plan</b>`],
     ], 'rows')});
+
+  const account = ent ? enterpriseShapes(o) : '';
   const change = ctr({title:'Changing it',
     desc:'billing lives on the hosted account and not in this console',
     body:`<div class="stack">${st('info','the plan and the card are on the hosted account, billed by Stripe')}
-      <div class="small">changing a plan changes which flags the account carries and which limits the tool server reads beside them; nothing in the manifest changes and no host is touched (plans.md, 250).</div>
+      <div class="small">changing a plan changes which flags the account carries and which limits the tool server reads beside them; nothing in the manifest changes and no host is touched (279, 280).</div>
       <div class="row">${btn('open billing &#8599;', 'data-changeplan="1"', 'primary')}<span class="small">the account&#8217;s billing portal · it opens outside the console</span></div></div>`});
   const ladder = ctr({title:'The ladder', counter:Object.keys(PLANS).length, tight:true,
-    body: table(['Plan','Tier','Who it is for','What it unlocks'], Object.entries(PLANS).map(([name, x]) => ({
-      cls: name === o.plan ? 'sub' : '',
-      cells:[`<b>${esc(name)}</b>${name === o.plan ? sub('yours') : ''}`, esc(x.tier), esc(x.who), raw(x.unlocks)]})))});
+    body: table(['Plan','Tier','Who it is for','What it unlocks'], Object.entries(PLANS).map(([n, x]) => ({
+      cls: n === name ? 'sub' : '',
+      cells:[`<b>${esc(n)}</b>${n === name ? sub('yours') : ''}`, esc(x.tier), esc(x.who), raw(x.unlocks)]})))});
   return crumbs([[o.name,'org'],['Plan']])
-    + pageHead('Plan ' + badge(esc(o.plan),'blue'), `tier ${raw(p.tier)} · billed on the hosted account`,
+    + pageHead('Plan ' + badge(esc(name),'blue'), `tier ${raw(p.tier)} · billed on the hosted account`,
         btn('change plan', 'data-changeplan="1"', 'primary'))
-    + `<div class="stack-l">${current}${flags}${limits}${change}${ladder}</div>`;
+    + `<div class="stack-l">${current}${inTick}${model}${limits}${account}${flags}${change}${ladder}</div>`;
+}
+
+/* --- Enterprise: tier 3's two shapes, chosen here, and the compute the second one offers --- */
+const COMPUTE = [
+  ['Dispatcher as a function', 'the default · invoked per tick, a fifteen-minute budget, nothing between invocations · Discord free text stays a slash-command option (269, 277)'],
+  ['Dispatcher long-lived, on a container service', 'it holds the chat platform&#8217;s gateway socket, so plain free text in a Discord channel is answered · no fifteen-minute ceiling on a tick (276a, 277)'],
+  ['Dispatcher long-lived, on an instance of your own', 'the same, on hardware you name'],
+  ['Pools on microVMs', 'the default · fast start, a stated maximum lifetime, the disk under the platform&#8217;s key (275)'],
+  ['Pools on container tasks', 'an attached volume under your own key, for a tier statement that must name it (261, 275)'],
+  ['Pools on instances of your own', 'no lifetime ceiling, so a session that runs for days needs no fallback placement (275, 276a)'],
+];
+function enterpriseShapes(o){
+  const shape = S.shape || 'stores';
+  const card = (id, title, what, promise) =>
+    `<label class="jrn ${shape === id ? 'on' : ''}"><input type="radio" name="tier3-shape" value="${id}" ${shape === id ? 'checked' : ''}>
+      <div><div class="jt">${raw(title)}</div><div class="small">${raw(what)}</div><div class="jp">${raw(promise)}</div></div></label>`;
+  const choice = ctr({title:'Your account, in two shapes',
+    desc:'Enterprise is tier 3 and includes both shapes; this console is where the organization chooses between them (268, 281)',
+    body: card('stores', 'Stores only', 'the federation shape',
+        'Your key, your capture queue, your warm cache and your pool image live in <b>your account</b>, and the service&#8217;s own compute reaches them through the role you grant (267, 276).')
+      + card('compute', 'Stores and compute', 'the binary provisioned into your account',
+        'The binary itself is provisioned into your account through that same role, and <b>nothing of the service&#8217;s runs there</b>. What stays on the service side is the control plane and no more (276a).')
+      + `<div class="small">Choosing a shape raises a decision; nothing here provisions anything (S113, S124).</div>`});
+  const federation = ctr({title:'The federation setup',
+    desc:'one role in your own account · the only standing grants in it are the role&#8217;s trust and the key&#8217;s grant to that role (276)',
+    body:`<div class="stack">${kv([
+      ['Our issuer', '<span class="mono">https://issuer.flywheel.cloud</span><div class="small">register it as an identity provider in your account</div>'],
+      ['Your organization&#8217;s subject', `<span class="mono">organization:${esc(o.name)}</span><div class="small">the trust policy admits our issuer with this as the subject, so a token minted for another organization is refused by your own account</div>`],
+      ['Session tagging', '<span class="mono">sts:TagSession</span> must be allowed on the role<div class="small">a web-identity session takes its tags only from the token it presents, so the token we mint carries the organization as a principal tag (259, 276)</div>'],
+      ['What we store', 'no credential of yours · each tick assumes the role with a token minted for that tick, and every use of the key is logged in your own account (276)'],
+      ['Revocation', '<b>deleting the role ends our access.</b> The next tick refuses with the attention line 260 requires, and running work is not killed (276)'],
+    ], 'rows')}
+    <div class="field" style="margin-top:12px"><label for="t3-role">The role ARN you paste</label>
+      <div class="fd">you create the role; this console records which one, and the decision is what binds it</div>
+      <input id="t3-role" value="" placeholder="arn:aws:iam::123456789012:role/flywheel-${esc(o.name)}"></div>
+    <div class="row">${btn('Raise the federation decision', 'data-tier3="stores"', 'primary')}
+      <span class="small">nothing on this page grants anything: the yes is what binds the role and re-wraps the data keys (267, S113)</span></div></div>`});
+  const compute = shape === 'compute' ? ctr({title:'Dedicated compute', counter:COMPUTE.length,
+    desc:'created in your account by our deployer through the same role you granted · each option is stated with what it changes (276a)',
+    tight:true,
+    body: table(['Option','What it changes',''], COMPUTE.map(([id, what]) => ({cells:[
+      `<b>${raw(id)}</b>`, raw(what),
+      `<div class="acts">${btn('Create…', `data-tier3="compute|${esc(id)}"`)}</div>`]})))}) : '';
+  const plane = shape === 'compute' ? ctr({title:'What stays on the service side', body: kv([
+    ['Registry', 'organization names, tier, health and counters · no organization content'],
+    ['Deployer', 'applies the stack through the role you grant and stamps the binary&#8217;s version (208)'],
+    ['Identity', 'the provider&#8217;s environment holding the redirect entry for your host&#8217;s served name (243, 244, 291)'],
+    ['The chat application', 'still the service&#8217;s, which is what keeps plan lines arriving from one bot (277, 290)'],
+    ['Nothing else', 'no compute of the service&#8217;s runs in your account (276a)'],
+  ], 'rows')}) : '';
+  return choice + federation + compute + plane;
 }
 
 /* ===========================================================================
@@ -1513,8 +1846,19 @@ function pageHost(){
         : 'never leaves the service · no path here and no control, and a pool host asks the service for its installation tokens (207a)'],
       ['Tokens a session gets', 'short-lived and scoped to one repository · no host or session uses a personal token or an operator&#8217;s identity for git (251)'],
     ], 'rows')}</div>`);
-  const router = headingCtr('Router', 'one slot · what a served place is reached at, and nothing beyond the private network unless a route is opened per named caller (191)',
-    '', single('router', 'local · private-network · platform'));
+  /* on a cloud agent the tier fixes the router and the runner, so neither is a slot to change (283) */
+  const fixed = !!h.invoked;
+  const fixedNote = what => `<div class="slot empty-slot"><div class="sl-main"><div class="small">${badge('fixed by the tier','grey')} ${raw(what)}</div></div></div>`;
+  const router = fixed
+    ? headingCtr('Router', 'read-only · the tier fixes it: the platform router at the served name, with a public route opened per named caller and nothing else reachable (46, 191, 283)', '',
+        `<div class="ctr-body">${kv([
+          ['Router', `<b>platform router</b> ${badge('fixed by the tier','grey')}`],
+          ['Served at', `<span class="mono">${esc((h.invoked||{}).servedName || '')}</span> · the page is a static bundle at that name and the tool server is the same function on request (291)`],
+          ['Public routes', esc(((partOn(h,'router-platform')||{}).cfg||{}).routes || 'none')],
+          ['Why there is no choice', 'a router is chosen only for a machine of your own or an adopted host, under an advanced disclosure (283)'],
+        ], 'rows')}</div>`)
+    : headingCtr('Router', 'one slot · what a served place is reached at, and nothing beyond the private network unless a route is opened per named caller (191)',
+        '', single('router', 'local · private-network · platform'));
 
   const runnerRoles = ['elaboration','construction','machinery'].map(role => {
     const r = (h.roles || {})[role] || {};
@@ -1525,9 +1869,23 @@ function pageHost(){
       <div class="sl-acts">${btn(P ? 'Change runner' : 'Add runner', `data-catalogue="${h.id}|runner"`)}</div></div>`;
   }).join('');
   const runnersInstalled = h.parts.filter(x => x.k === 'runner').map(p => slot(h, p)).join('');
-  const runners = headingCtr('Runners', 'one slot per role · a runner names where a session of that role runs; the model beside it is the manifest&#8217;s default per role, and whether a host may declare its own is not settled (173, S147)',
-    btn('Add runner', `data-catalogue="${h.id}|runner"`),
-    runnerRoles + `<div class="hd-bar"><div class="ht"><h3>Runners installed here</h3><div class="small">what the roles above can be pointed at</div></div></div>` + runnersInstalled + platNote);
+  /* which model key this host uses and the month's model spend sit under the runners (294) */
+  const m = h.model;
+  const modelLine = m ? `<div class="hd-bar"><div class="ht"><h3>Model</h3><div class="small">which key this host uses and what it has spent this month (294)</div></div></div>
+    <div class="slot"><div class="sl-main"><div class="sl-name">model key</div>
+      <div class="small">${raw(m.key)}</div>${/^ours/.test(m.key) ? st('info','the service&#8217;s key, carried by the tier role') : st('success','your own key · metered on none of it')}</div>
+      <div class="sl-acts">${btn('Place your own key', 'data-page="plan"')}</div></div>
+    <div class="slot"><div class="sl-main"><div class="sl-name">this month</div>
+      <div class="small">${raw(m.spend)} · beside the pool hours on the Plan page</div>
+      <div class="small">class ${raw(m.cls)}</div></div></div>` : '';
+  const runners = fixed
+    ? headingCtr('Runners', 'read-only · the tier fixes it: the in-process runner at bound 0, so this host takes no construction work and changes no runway reading (217c, 283, dispatch 2)', '',
+        fixedNote('in-process runner · bound 0 · the agent and triage run inside the binary, and every elaboration and construction session runs on a machine of your own or on a pool host (269)')
+        + fixedNote('a tick has a fifteen-minute budget on the function placement; when the budget is short the tick carries triage before it carries a reply (269)')
+        + modelLine)
+    : headingCtr('Runners', 'one slot per role · a runner names where a session of that role runs; the model beside it is the manifest&#8217;s default per role, and whether a host may declare its own is not settled (173, S147, 285)',
+        btn('Add runner', `data-catalogue="${h.id}|runner"`),
+        runnerRoles + `<div class="hd-bar"><div class="ht"><h3>Runners installed here</h3><div class="small">what the roles above can be pointed at</div></div></div>` + runnersInstalled + platNote + modelLine);
 
   const ag = h.agent || {};
   const agent = headingCtr('Agent', 'reads the plan and the objects, answers in chat, and proposes every write as a tool call you confirm (194) · the model keeps the name "interpreter"; the surface says agent (S116)',
@@ -1535,7 +1893,11 @@ function pageHost(){
       ${ag.on ? st('success', `on · ${esc(ag.runner ? pkg(ag.runner).name : 'no runner')}`) : st('stopped','off')}</div>
       <div class="sl-acts">${btn(ag.on ? 'Turn off' : 'Turn on', `data-agent="${h.id}"`)}</div></div>`);
 
-  const sinks = headingCtr('Chat sinks', 'a list · each sink this host presents, with a lease badge on the one whose presenter lease it holds (148)',
+  const chatKinds = h.parts.filter(x => x.k === 'chat sink').map(x => x.pkg);
+  const howText = chatKinds.length
+    ? '<div class="small" style="margin-top:4px">' + chatKinds.map(k => `<b>${esc(pkg(k).name)}</b> — ${raw(chatNote(k, h))}`).join('<br>') + '</div>'
+    : '';
+  const sinks = headingCtr('Chat sinks', 'a list · each sink this host presents, with a lease badge on the one whose presenter lease it holds (148)' + howText,
     btn('Add', `data-catalogue="${h.id}|chat sink"`), list('chat sink', 'this host presents no chat sink'));
   const adapters = headingCtr('Capture adapters', 'a list · each names its source (dispatch 4)',
     btn('Add', `data-catalogue="${h.id}|adapter"`), list('adapter', 'this host reads no source'));
@@ -1572,7 +1934,7 @@ function pageHost(){
     `<div class="ctr-body">${kv([
       ['Kind', esc(h.kind)],
       ['Platform', esc(h.platform)],
-      ['Alive', h.alive ? st('success', `alive · last heartbeat ${esc(h.last)}`) : st('error', `gone ${esc(h.gone || '')} · last heartbeat ${esc(h.last)}`)],
+      ['Alive', hostState(h) + (h.invoked ? `<div class="small">next due ${esc(h.invoked.nextDue)} · queue ${esc(h.invoked.queue)} · it exists only during a tick, so its last heartbeat is as old as its last tick (292)</div>` : `<div class="small">last heartbeat ${esc(h.last)}</div>`)],
       ['Bound', `${h.bound}${h.bound === 0 ? ' · takes no construction work' : ' sessions at once'}`],
       ['Root', `<span class="mono">${esc(h.root)}</span>`],
       ['Launcher entry', `<span class="mono">${esc(h.launcher)}</span>`],
@@ -1582,6 +1944,26 @@ function pageHost(){
         : st('success', esc(h.binary) + ' · current')],
     ])}${behind ? `<div class="small" style="margin-top:12px">an upgrade is a chore: the decision&#8217;s yes runs it and the launcher restarts the host</div>` : ''}</div>`);
 
+  const invoked = h.invoked ? headingCtr('The cloud agent', 'it exists only during a tick, so its liveness is its scheduler entry and its queue and never a heartbeat age (269, 292)', '',
+    `<div class="ctr-body">${kv([
+      ['Served name', `<span class="mono">${esc(h.invoked.servedName)}</span> · the page as a static bundle and the tool server as the same function on request (291)`],
+      ['Next due', `${esc(h.invoked.nextDue)}<div class="small">one named one-shot entry per organization; an interim tick replaces it with its own due time, and at most one ever exists (273)</div>`],
+      ['Receiver queue', `${esc(h.invoked.queue)}<div class="small">the managed queue behind the shared receiver · every body it holds is encrypted under this organization&#8217;s key, and the receiver never decrypts (271)</div>`],
+      ['Last tick', `${esc(h.invoked.lastTick)}<div class="small">it fetched, evaluated, pushed by compare-and-swap, delivered the plan, wiped its scratch and exited, retaining nothing (269)</div>`],
+      ['Tick budget', esc(h.invoked.budget)],
+      ['Page projection, last write', `${esc(h.invoked.projection)}<div class="small">one small object per organization; a page request decrypts this one and reaches neither the git host nor the bundle (291)</div>`],
+      ['Cache last evicted', raw(h.invoked.cacheEvicted)],
+      ['Takeover', 'raised only past the due time it wrote plus the profile&#8217;s grace; a host with no entry, no queued item and no heartbeat is gone (292, 150)'],
+    ], 'rows')}</div>`) : '';
+  const away = h.away ? headingCtr('Away', 'an intermittent host keeps its place on a hosted tier (150a, 278)', '',
+    `<div class="ctr-body">${kv([
+      ['Since', `${esc(h.away)} · the lid is closed`],
+      ['Its leases', 'they stand · nothing is released and nothing is re-made'],
+      ['Its sessions', 'neither stalled nor lost · their clocks pause'],
+      ['Meanwhile', 'the cloud agent keeps ticking everything else, so decisions are delivered and answered and captures are accepted and queued (278)'],
+      ['What waits for the lid', 'only the work this host alone covers · triage over raw material still runs only where 263 allows'],
+      ['Takeover', 'offered when a decision or approved work waits on this host, or after a day · it is not an attention line on its own'],
+    ], 'rows')}</div>`) : '';
   const joined = h.joinedSteps ? headingCtr('How it joined', 'the record of the enrolment, folded into the host (S122)', '',
     `<div class="ctr-body"><div class="steps">${h.joinedSteps.map(([name, state, at, body]) =>
       `<div class="step-row"><div>${st('success','')}</div><div><b>${esc(name)}</b> <span class="small">${esc(at)}</span><div class="small">${esc(body)}</div></div></div>`).join('')}</div></div>`) : '';
@@ -1595,7 +1977,7 @@ function pageHost(){
     const live = /^installed/.test(part.state);
     sinkRows.push({cells:[
       `<a href="#" data-member="${m.id}"><b>${esc(m.id)}</b></a>${sub('a direct message from this host&#8217;s bot, with the member&#8217;s own filter (S173)')}`,
-      esc(kind), `<span class="mono">${esc(addr)}</span>`,
+      `${esc(kind)}${sub(chatNote(kind, h))}`, `<span class="mono">${esc(addr)}</span>`,
       live ? st('success','delivered') : st('warning', part.state === 'disabled' ? 'undelivered · the sink is disabled here' : 'undelivered · ' + esc(part.state)),
       live ? `<span class="num">07:24</span>` : `<span class="small">no mark yet</span>`]});
   }));
@@ -1619,7 +2001,7 @@ function pageHost(){
   const summary = ctr({body: kv([
     ['Tier', badge(esc(tierOf(h)), 'grey')],
     ['Identity kind', badge(esc((h.identity||{kind:'github'}).kind), 'blue')],
-    ['Alive', h.alive ? st('success','alive · ' + esc(h.last)) : st('error','gone ' + esc(h.gone||''))],
+    ['Alive', hostState(h) + (h.invoked ? sub('next due ' + esc(h.invoked.nextDue)) : sub('last heartbeat ' + esc(h.last)))],
     ['Bound', String(h.bound)],
     ['Platform', esc(h.platform)],
     ['Environment', h.env ? esc(h.env.provider) : '—'],
@@ -1633,7 +2015,7 @@ function pageHost(){
   const tab = S.tab || 'parts';
   const body = tab === 'environment' ? env
     : tab === 'sinks' ? presented + leases
-    : tab === 'facts' ? summary + attention + facts + identity + gitApp + pool + joined
+    : tab === 'facts' ? summary + attention + invoked + away + facts + identity + gitApp + pool + joined
     : router + runners + agent + sinks + adapters + triage;
   return crumbs([[o.name,'org'],['Hosts','hosts'],[h.id]]) + head
     + tabsHtml(HOST_TABS, tab, 'tab')
@@ -2191,7 +2573,7 @@ function menuHtml(){
     return `<div class="menu left" id="menu"><h4>Organizations</h4>${memberOrgs().map(id =>
       `<button data-org="${id}" ${id === S.org ? 'aria-current="true"' : ''}>${esc(ORGS[id].name)}<span class="mi-sub">${esc(ORGS[id].what)}${ORGS[id].plan ? ' · ' + esc(ORGS[id].plan) : ' · self-managed'}</span></button>`).join('')}
       <hr><button data-addorg="1">+ organization<span class="mi-sub">name it, connect it, and one decision initializes it (204, 218-222)</span></button>
-      <hr><div class="small" style="padding:4px 10px">the organization is chosen here and nowhere else. The switcher lists the organizations the serving host has a root for (218); one whose operators list does not carry you is marked "not a member" — whether such an organization is hidden or greyed is open (S191).</div></div>`;
+      <hr><div class="small" style="padding:4px 10px">the organization is chosen here and nowhere else. The switcher lists only the organizations you are a member of; one you are not assigned to does not appear at all, greyed or otherwise (S191 ruled 2026-09-08, 291).</div></div>`;
   }
   if(S.menu === 'acct'){
     const o = org();
@@ -2205,6 +2587,7 @@ function menuHtml(){
       <hr><h4>Your sinks here</h4>
       <div style="padding:4px 10px" class="small">page · ${esc(servingHost().id)} · mark ${NOW}${me ? Object.entries(me.addresses).map(([k,v]) => `<br>${esc(k)} <span class="mono">${esc(v)}</span> · ${k === 'discord' ? 'presented by studio' : 'undelivered · no host presents Slack'}`).join('') : ''}</div>
       <hr><button data-page="settings">Settings</button><button data-page="hosts">Hosts</button><button data-page="store">Organization store</button><button data-page="plan">Plan</button>
+      <button data-page="settings">Connect a client<span class="mi-sub">the tool server as a remote MCP server at this host&#8217;s address (293)</span></button>
       <hr><button data-signout="1">Sign out</button></div>`;
   }
   return '';
@@ -2251,7 +2634,7 @@ function openSheet(target, pkgId, mode){
   render();
 }
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-org],[data-page],[data-host],[data-pool],[data-member],[data-repo],[data-tab],[data-ptab],[data-addhost],[data-crumb],[data-catalogue],[data-sheet],[data-configure],[data-part],[data-agent],[data-store],[data-rebuild],[data-upgrade],[data-secret],[data-placed],[data-panelclose],[data-sheetsave],[data-sheetsecret],[data-sheetlater],[data-copy],[data-dismiss],[data-edit],[data-editpool],[data-add-member],[data-add-role],[data-rm-member],[data-addrepo],[data-addsink],[data-formsave],[data-wiznext],[data-wizprev],[data-wizcancel],[data-wizprov],[data-wizsecret],[data-wizenrol],[data-wizjoin],[data-wizrm],[data-takeover],[data-plan],[data-signout],[data-env],[data-addorg],[data-owiznext],[data-owizprev],[data-owizcancel],[data-owizkey],[data-owizaccount],[data-owizraise],[data-owiztick],[data-retireorg],[data-wizadv],[data-partsadv],[data-preset],[data-changeplan],[data-wizpool],[data-idadmin]');
+  const t = e.target.closest('[data-org],[data-page],[data-host],[data-pool],[data-member],[data-repo],[data-tab],[data-ptab],[data-addhost],[data-crumb],[data-catalogue],[data-sheet],[data-configure],[data-part],[data-agent],[data-store],[data-rebuild],[data-upgrade],[data-secret],[data-placed],[data-panelclose],[data-sheetsave],[data-sheetsecret],[data-sheetlater],[data-copy],[data-dismiss],[data-edit],[data-editpool],[data-add-member],[data-add-role],[data-rm-member],[data-addrepo],[data-addsink],[data-formsave],[data-wiznext],[data-wizprev],[data-wizcancel],[data-wizprov],[data-wizsecret],[data-wizenrol],[data-wizjoin],[data-wizrm],[data-takeover],[data-plan],[data-signout],[data-env],[data-addorg],[data-owiznext],[data-owizprev],[data-owizcancel],[data-owizkey],[data-owizaccount],[data-owizraise],[data-owiztick],[data-retireorg],[data-wizadv],[data-partsadv],[data-preset],[data-changeplan],[data-raiseclass],[data-modelkey],[data-tier3],[data-wizpool],[data-idadmin]');
   if(!t){ if(S.menu){ S.menu = null; render(); } return; }
   const d = t.dataset;
   if(t.tagName === 'A' && d.crumb === undefined && !d.host && !d.secret && !d.pool && !d.member && !d.repo && !d.page) return;
@@ -2316,6 +2699,14 @@ document.addEventListener('click', e => {
   else if(d.preset){ const set = (PRESETS.find(p => p[0] === d.preset) || [])[1];
     if(set){ S.wizard.preset = d.preset; S.wizard.sel = {chat:set.chat, meetings:set.meetings, captures:set.captures.slice()}; applyCloudSelectors();
       flash('info', 'Preset chosen', `${esc(pkg(d.preset).name)} · a bundle is a named set of parts with their configuration defaults, and its install is one decision for the set (plans.md) · every selector below stays yours to change`); } }
+  else if(d.raiseclass){ raiseClassForm(); return; }
+  else if(d.modelkey){ const o = org(); o.use = {...useOf(o), keyPlaced:true};
+    logged(`place a model key of your own on ${servingHost().id}`, 'the host answered that model.api-key is present · from the next tick the in-tick jobs run on your key and are metered on none of the included budget (207, 294)'); }
+  else if(d.tier3){ const [what, opt] = d.tier3.split('|');
+    if(what === 'compute') raiseDecision('tier-compute', `create ${opt} in ${org().name}&#8217;s own account`,
+      'the deployer applies it through the role you granted; nothing is created before the yes (276a, S113)');
+    else raiseDecision('tier-federation', `bind ${org().name} to the role in your own account`,
+      'the yes re-wraps the data keys into your key and changes no history; deleting the role afterwards ends every path (267, 276)'); }
   else if(d.changeplan){ flash('info', 'Billing is on the hosted account',
     `the plan and the card live on ${esc(org().name)}&#8217;s account and are billed by Stripe; this console reads the plan and never authors it. <a href="https://billing.stripe.com/p/session/sample" target="_blank" rel="noreferrer">open the billing portal &#8599;</a> <span class="sample">sample link</span>`); }
   else if(d.wizpool){ S.addhost = null; S.wizard = null; S.page = 'pools'; poolForm('new'); return; }
@@ -2369,6 +2760,7 @@ document.addEventListener('change', e => {
   if(e.target.id === 'w-adopt'){ S.wizard.adopt = e.target.checked; S.wizard.platform = null; render(); }
   if(e.target.name === 'w-plat'){ S.wizard.platform = e.target.value; S.wizard.journey = null; render(); }
   if(e.target.name === 'w-journey'){ pickJourney(e.target.value); render(); }
+  if(e.target.name === 'tier3-shape'){ S.shape = e.target.value; render(); }
   if(e.target.dataset.cloudsel){
     S.wizard.sel[e.target.dataset.cloudsel === 'cl-chat' ? 'chat' : 'meetings'] = e.target.value;
     S.wizard.preset = null; applyCloudSelectors(); render();
@@ -2500,18 +2892,35 @@ function poolForm(id){
       {k:'bound', label:'Bound · hosts', value:'8'},{k:'hostBound', label:'Sessions per host', value:'2'},
       {k:'idle', label:'Idle-retire', kind:'select', opts:['15m','30m','1h'], value:'30m'},{k:'cost', label:'Cost ceiling', value:'$40/day'}],
     onSave(v){ o.pools.push({id:v.name || 'pool', platform:v.platform, image:'building', imageState:'behind', imageWhy:'no image yet · built from the declarations of every repository it covers (239)',
-        bound:+v.bound || 1, hostBound:+v.hostBound || 1, live:0, idleRetire:v.idle, cost:'ceiling ' + v.cost + ' · today $0', covers:o.repos.map(r => r.id).join(' · ')});
+        bound:+v.bound || 1, hostBound:+v.hostBound || 1, live:0, idleRetire:v.idle, ceiling:v.cost, rate:'$0.11 per host-hour',
+        stopped:'no addition has been stopped by the ceiling', placement:'microVM', lifetime:'8h maximum · the microVM placement states it (275)',
+        fallback:'a container task with a volume, for a session that must run longer', disk:'the platform&#8217;s key · isolated per host and destroyed at terminate (275)',
+        covers:o.repos.map(r => r.id).join(' · ')});
       logged(`settings · pool ${v.name} · bound ${v.bound} · idle-retire ${v.idle} · ceiling ${v.cost}`); }});
   const p = o.pools.find(x => x.id === id);
   return openForm({title:`Pool ${p.id}`, desc:'bound, cost and retire time are the manifest&#8217;s and are changed here; the machinery adds and retires hosts within them (S155, S176)',
     fields:[{k:'bound', label:'Bound · hosts', value:String(p.bound)},
       {k:'hostBound', label:'Sessions per host', value:String(p.hostBound)},
       {k:'idle', label:'Idle-retire', kind:'select', opts:['15m','30m','1h'], value:p.idleRetire},
-      {k:'cost', label:'Cost ceiling', value:p.cost.replace(/^ceiling /,'').split(' · ')[0]},
+      {k:'cost', label:'Cost ceiling', value:p.ceiling || ''},
+      {k:'placement', label:'Placement', kind:'select', opts:['microVM','a container task with a volume under your key','an instance of your own · Enterprise'], value:p.placement === 'microVM' ? 'microVM' : p.placement},
       {k:'image', label:'Image', kind:'static', value:`<span class="mono">${esc(p.image)}</span>`, fd:'built from the declarations of every repository it covers · rebuilt as a chore (239, S175)'}],
     onSave(v){ p.bound = +v.bound || p.bound; p.hostBound = +v.hostBound || p.hostBound; p.idleRetire = v.idle;
-      p.cost = 'ceiling ' + v.cost + ' · today $9';
-      logged(`settings · pool ${p.id} · bound ${p.bound} · idle-retire ${p.idleRetire} · ${p.cost}`); }});
+      p.ceiling = v.cost; p.placement = v.placement;
+      logged(`settings · pool ${p.id} · bound ${p.bound} · idle-retire ${p.idleRetire} · ceiling ${p.ceiling} · placement ${p.placement}`); }});
+}
+/* Team and up: a job's model class is raised per type and per stage, within the plan's ceiling (285, 294) */
+function raiseClassForm(){
+  const o = org();
+  openForm({title:'Raise a model class', saveLabel:'Save',
+    desc:'the plan states the ceiling and the type states the choice within it · small is the default on every plan, and raising it is Team and up (285, 294)',
+    fields:[
+      {k:'type', label:'Type', kind:'select', opts:['unit type · default','unit type · fast','unit type · chore','elaboration type · research','elaboration type · writeback'], value:'unit type · default'},
+      {k:'stage', label:'Stage', kind:'select', opts:['spec','build','review','merge','every stage'], value:'review'},
+      {k:'class', label:'Model class', kind:'select', opts:['small','medium','large'], value:'large'},
+      {k:'note', label:'Where it is read', kind:'static', value:'the type&#8217;s own declaration', fd:'the manifest&#8217;s per-role model is the fallback, not the rule (285)'}],
+    onSave(v){ logged(`settings · ${v.type} · ${v.stage} · model class ${v['class']}`,
+      'the type declares it and the machinery reads it on its next tick; a class above the plan&#8217;s ceiling is refused with the reason (282, 285)'); }});
 }
 function addMemberForm(){
   const o = org();
@@ -2591,6 +3000,9 @@ function wizJoin(){
   if(q.get('ptab') && POOL_TABS.some(t => t[0] === q.get('ptab'))) S.ptab = q.get('ptab');
   if(q.get('member') && org().members.some(m => m.id === q.get('member'))) S.member = q.get('member');
   if(q.get('repo') && org().repos.some(r => r.id === q.get('repo'))) S.repo = q.get('repo');
+  if(q.get('plan')){ const n = q.get('plan'); const k = Object.keys(PLANS).find(x => x.toLowerCase() === n.toLowerCase()); if(k) S.plan = k; }
+  if(q.get('shape') && ['stores','compute'].includes(q.get('shape'))) S.shape = q.get('shape');
+  if(q.get('key') === 'out') S.keyOut = true;
   if(q.get('addhost')){
     S.addhost = true; S.wizard = newWizard();
     if(q.get('journey')) pickJourney(q.get('journey'));

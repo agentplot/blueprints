@@ -9,7 +9,11 @@
 #
 # What this type leans on that the core model does not have yet, from the
 # growth list in ../../README.md:
-#   growth-2  record types (`key`, `record_type`, the fields below)
+#   growth-2  a package-declared record set (`key`, `record_type` naming the
+#             `Cycle` descriptor in ../records.yaml, whose fields are this
+#             unit's; recutils files in git are already how the flywheel stores
+#             its own records, so what is new is the declaration and the
+#             enforcement at the write, not the storage)
 #   growth-3  timers declared by the type (`timers:` on awaiting_invoice)
 #   growth-6  an elaboration whose proposal's yes sends mail outside the org
 #   growth-7  the Paperless, Zoho Books and mail adapters as packages
@@ -37,7 +41,7 @@ doc: unit type
 params:
   place: the cycle's place, used only by the stages that charge a session
 key: [vendor, month]                 # needs: growth-2 — vendor plus month is unique
-record_type: cycle                   # needs: growth-2 — declared in ../records.yaml
+record_type: Cycle                   # needs: growth-2 — the %rec block in ../records.yaml
 record:
   needs_change_directory: "false"
   lands_on: none                     # needs: growth-1 — a process organization has no built repository

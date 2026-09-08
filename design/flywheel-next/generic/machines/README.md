@@ -77,15 +77,22 @@ ruling: the send moves the cycle's conversation history and never its stage. A
 discrepancy is answered by hours arriving, not by a message going out. A cycle
 that reconciles while the draft is being written drops its draft.
 
-**`records.yaml`** — the record types the state repository enforces: `vendor`,
-`hours`, `payroll-record`, `contract` and a thin `client`, each with fields,
-types, mandatory flags, a key, uniqueness constraints and references. The write
-gate is stated once at the top and applies to all of them: a write violating a
-declared type, an enum, a reference, a mandatory field or a uniqueness
-constraint is refused with the field, the constraint and the value, and the
-store is left as it was. `hours` is the one ledger both sides of the business
-read, which is the README's answer to the brief's largest open question. This
-file answers growth point 2 and is not a machine file.
+**`records.yaml`** — five recutils record descriptors, one `%rec` block each:
+`Vendor`, `Hours`, `PayrollRecord`, `Contract` and `Cycle`, with `%key`,
+`%unique`, `%mandatory`, `%type` (including the foreign-key `rec` type),
+`%constraint` and `%auto`, and a note against every directive saying what it is
+for. The flywheel already stores its own records this way, so nothing here asks
+for a new storage mechanism; growth point 2 is that a package may *declare*
+domain record sets like these, that the machinery enforce the descriptor at
+every write the way `recfix --check` does and refuse a violating write with the
+reason, and that a unit type may name a record set whose record is the unit's
+fields — which is what `record_type: Cycle` on `invoice-cycle@1` does. Two
+extensions beyond recutils' grammar are stated at the top of the file and
+nowhere else: `%key` takes a field list, so a composite key is expressible, and
+`%key` may appear more than once, so a set may carry a second uniqueness
+constraint. `Hours` is the one ledger both sides of the business read, which is
+the README's answer to the brief's largest open question. This file is not a
+machine file.
 
 **`producers.yaml`** — the scheduled producers (`month-init` on day 1,
 idempotent by key rather than by comparison; `payroll-prompt` on each pay date;
@@ -110,7 +117,7 @@ conformance-shaped files is mechanical once the growth points are real.
 
 | Brief Requirement | Covered by |
 |---|---|
-| Vendor records are the single source of truth | `records.yaml` (`vendor`, uniqueness on the sender address, deactivation ruling); `producers.yaml` (`month-init` skips inactive vendors) |
+| Vendor records are the single source of truth | `records.yaml` (`%rec: Vendor`, a second `%key` on the sender address, the `Active` ruling); `producers.yaml` (`month-init` skips inactive vendors) |
 | Document intake routing derives from vendor config | `producers.yaml` (`mail-rule-sync`, proof by read-back) |
 | Every active vendor gets a cycle record each month | `producers.yaml` (`month-init`, idempotent by key); `invoice-cycle@1` (initial `awaiting_invoice`); `billing-month@1` (`open`) |
 | Suppression preserves a gapless ledger | `invoice-cycle@1` (`suppressed`, entered by dictation with a reason; timers and checks skip it); `billing-month@1` (suppressed counts as complete) |
@@ -118,12 +125,12 @@ conformance-shaped files is mechanical once the growth points are real.
 | Outbound email is drafted by an agent and approved by a human | `reminder-draft@1` (`session` drafts, `drafted` decides, `sending` sends) |
 | Arriving invoices advance their cycle automatically | `invoice-cycle@1` (`awaiting_invoice → invoice_received`). **Partial:** the unattributable-invoice scenario is an attention line on a capture that resolves to no unit, which is the core model's capture path (79) and not a construct a unit type can hold. Row B17 names it; no machine here owns it. |
 | Bills are created from validated cycle data | `invoice-cycle@1` (`invoice_received` stage; the transition guard requires both the bill id and the attached document; `mark_bill_for_review` on low confidence) |
-| Invoiced hours are reconciled against recorded hours | `invoice-cycle@1` (`timesheet_pending`, the four classes); `discrepancy-draft@1`; `records.yaml` (`hours`) |
-| Timesheet access degrades gracefully | `invoice-cycle@1` (`hours_asked`, the `timesheet-hours-wanted` decision, the answer written as an `hours` record with source `operator`) |
+| Invoiced hours are reconciled against recorded hours | `invoice-cycle@1` (`timesheet_pending`, the four classes, closed by `%type: Reconciliation_class enum`); `discrepancy-draft@1`; `records.yaml` (`%rec: Hours`) |
+| Timesheet access degrades gracefully | `invoice-cycle@1` (`hours_asked`, the `timesheet-hours-wanted` decision, the answer written as an `Hours` record with `Source: operator`) |
 | Archiving requires a complete month | `billing-month@1` (`open → refused` with the incomplete list; `complete → archived`); `producers.yaml` (`month-archive-package`) |
-| Payroll runs are scheduled, recorded, and never silent | `payroll-run@1`; `producers.yaml` (`payroll-prompt`, `year-end-forms`); `records.yaml` (`payroll-record`) |
-| Contract expiry is surfaced before it happens | `contract@1` (timers before `end_date`, the `amending → superseded` chain); `records.yaml` (`contract`, the linear-amendment ruling) |
-| State is plain text, schema-enforced, and version controlled | `records.yaml` (`write_gate`, the reference edges); the auditability half is the state repository's one-commit-per-change, which is core (203) and asserted rather than modelled here |
+| Payroll runs are scheduled, recorded, and never silent | `payroll-run@1`; `producers.yaml` (`payroll-prompt`, `year-end-forms`); `records.yaml` (`%rec: PayrollRecord`, keyed on `Pay_date`) |
+| Contract expiry is surfaced before it happens | `contract@1` (timers before `end_date`, the `amending → superseded` chain); `records.yaml` (`%rec: Contract`, `%type: Amends rec Contract`, the linear-amendment ruling) |
+| State is plain text, schema-enforced, and version controlled | `records.yaml` (the five descriptors and the write gate that enforces them at the write rather than after the fact); the auditability half is the state repository's one-commit-per-change, which is core (203) and reads per record because the files are recutils |
 | Deterministic and intelligent work are separated | Structural, and visible in every file: the reconciliation check and the month's completeness guard are machine transitions; drafting, booking, packaging and payroll are sessions whose only report is a fixed exit with named deliverables |
 | Credentials are never held in configuration | `producers.yaml` (`secrets`). **Declaration only:** no machine enforces it. The enforcement is the core model's secret placement (207), and a machine that claimed to check it would be lying. |
 | Sensitive records meet retention and protection obligations | `producers.yaml` (`stores.workdrive-archive`). **Declaration only:** the seven-year floor, the encryption and the backup are facts of the store. The brief's "Recoverable" scenario is a restore exercise, an operational proof no state machine can hold. |
@@ -149,15 +156,17 @@ of what the core schema must grow:
 | Rejected construct | Files | Growth point |
 |---|---|---|
 | `satisfies_brief` at the root | all six | none — a trace field this track adds |
-| `key`, `record_type` at the root | the four unit types | growth 2, record types with a key |
+| `key`, `record_type` at the root | the four unit types | growth 2, a unit type naming a package-declared record set |
 | `timers` on a state | `invoice-cycle@1`, `contract@1` | growth 3, type-declared timers |
 | `needs` on a state, transition or effect | all six | none — the marker itself |
 | `note` inside a `decision` | `contract@1` | none — the schema allows `note` on a transition and an effect but not on a decision |
 
 `records.yaml` and `producers.yaml` are not machine files and are rejected by
 `machines/schema.json` for missing `machine`, `version`, `kind`, `tier` and
-`regions`, as they should be; they need schemas of their own, which is part of
-growth points 2 and 4. `../scenarios/billing.yaml` is rejected by
+`regions`, as they should be. `records.yaml`'s descriptors are checked by the
+recutils grammar rather than by a JSON Schema, and the two extensions it takes
+are named in its header; `producers.yaml` needs a schema of its own, which is
+part of growth point 4. `../scenarios/billing.yaml` is rejected by
 `conformance/schema.json` for being a pack rather than a single scenario, which
 is the one deliberate shape difference noted above.
 

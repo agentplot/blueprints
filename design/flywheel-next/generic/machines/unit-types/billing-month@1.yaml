@@ -25,7 +25,7 @@ doc: unit type
 params:
   place: the month's place, used by the archive-packaging stage
 key: [month]                         # needs: growth-2
-record_type: billing-month           # needs: growth-2
+record_type: none                    # the month is an aggregate over its cycles (growth-5), not a record set of its own; its fields below live with the unit
 record:
   needs_change_directory: "false"
   lands_on: none                     # needs: growth-1

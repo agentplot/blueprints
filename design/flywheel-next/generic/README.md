@@ -16,7 +16,7 @@ ledger has no gaps is the state repository with numbers never reused (15).
 | brief | flywheel-next |
 |---|---|
 | the business | an organization (218) with a state repository and a blueprints repository and no built repository at all |
-| `invoices.rec`, plain text, schema-enforced, versioned | the state repository: records as files, one commit per change (35, 41), the type's schema as the write gate; recutils is one serialization the record store may use, never the model |
+| `invoices.rec`, plain text, schema-enforced, versioned | the state repository: records as recutils files, one commit per change (35, 41), the record set's own descriptor as the write gate, enforced by the binary that already parses them (section 13) |
 | Vendor | a record of a `vendor` record type in the state repository; rarely changed; the source the mail-rule producer derives from |
 | Paperless mail rules generated from vendors | a deliverable producer (190) with a store on the Paperless host: rebuild is idempotent, proof is the rule set read back |
 | InvoiceCycle | a unit of a new unit type `invoice-cycle@1` whose stages are the phases; vendor plus month is the unit's key |
@@ -46,11 +46,18 @@ ledger has no gaps is the state repository with numbers never reused (15).
    readings assume construction. A process organization has elaboration
    sessions and effects and never a build. Runway must read as units drained
    by sessions of any kind.
-2. **Record types.** Today's deliverables are files a producer writes. A
-   process needs typed records in the state repository with a schema, a key,
-   uniqueness and references, and refusal on violation as the write gate.
-   Vendor, contract and payroll are records; a cycle is a unit whose fields
-   are a record.
+2. **Domain record sets declared by a package.** The flywheel already stores
+   its own records as recutils files in git — the binary parses them itself
+   and links no GNU tool (section 13), and the blueprints profile writes the
+   ledger and the signals with `recins` and `recset`. What is missing is that
+   a *package* may declare domain record sets in the state repository as
+   recutils record descriptors: `%rec` with `%key`, `%unique`, `%mandatory`,
+   `%type` (including the foreign-key `rec` type), `%constraint` and `%auto`.
+   The machinery enforces the descriptor at every write the way `recfix
+   --check` does and refuses a violating write with the reason, rather than
+   checking a file after the fact. And a unit type may name a record set whose
+   record is the unit's fields. Vendor, hours, payroll and contract are record
+   sets; a cycle is a unit naming the `Cycle` set.
 3. **Timers declared by the type.** Stage timers exist for sessions (stall
    clocks) and hosts. A unit type must declare its own timers per stage, with
    what each raises, and a suppressed stage that silences them.
