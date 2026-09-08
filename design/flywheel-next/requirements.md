@@ -5,7 +5,7 @@ written to admit any model that satisfies it.
 
 The statement is in three parts. Part A is the data plane: the objects,
 their machines, the claims and the ledger, the signals, the plan, and
-the engine that drives them. Part B is the control plane contract: the
+the engine that drives them. Part B is the state store contract: the
 few operations the engine needs from durable, shared storage, and the
 guarantees each must give. Part C is the profiles: the ways that
 contract is satisfied, one per kind of storage the flywheel may run on.
@@ -135,22 +135,24 @@ redefine these.
 - **data plane** — the objects, machines, claims, ledger, signals, plan
   derivation and scenarios: what the flywheel is about, independent of
   where its state is kept.
-- **control plane** — durable, shared storage and the operator's
+- **state store** — durable, shared storage and the operator's
   surfaces, reached through a fixed set of operations with fixed
-  guarantees. The data plane touches nothing else.
+  guarantees. The data plane touches nothing else. It is not the
+  control plane, which is the service side of A.37 and another thing
+  entirely.
 - **engine** — the generic part: it loads definitions, evaluates
   predicates over evidence, chooses transitions, runs effects
   idempotently, and derives the plan's decisions. It holds no knowledge of
   what the flywheel is about.
 - **domain** — the flywheel's own part: its machine definitions and the
   predicate and effect atoms those definitions name.
-- **profile** — one way of satisfying the control plane contract: a
+- **profile** — one way of satisfying the state store contract: a
   binding from every evidence and effect name to a real store and
   service, with the guarantees provided.
 - **effect** — one act on the world the engine performs on a
   transition, named by a machine definition, carried out through the
-  control plane, written idempotently, and safe to repeat.
-- **tool** — one operation of the control plane the operator may
+  state store, written idempotently, and safe to repeat.
+- **tool** — one operation of the state store the operator may
   invoke, with a schema naming its arguments by object id: the one way
   anything — a page control, a chat, the dispatch agent, the machinery
   — moves an object. A dictation is a tool the operator invoked.
@@ -483,7 +485,7 @@ requirements, iterated against the running plan rather than on paper.
 66. A session never moves the state of the machinery itself. It emits
     an exit; the machinery decides what the exit means.
 67. A session reports its exit through a command the machinery
-    provides, which writes to the control plane. Nothing a session leaves
+    provides, which writes to the state store. Nothing a session leaves
     on the place's disk is state; what it leaves there is its work.
 68. The operator need never open a pane. Everything a session asks of
     the operator is answerable on the page or in chat, and everything a
@@ -1089,7 +1091,7 @@ requirements, iterated against the running plan rather than on paper.
     (148, 152–155), the capture endpoint for callers that cannot write
     the blueprints repository (106, 112), the capture-reading session (115),
     and the host's agent for chat (194). Each job reads and writes only
-    through the control plane's operations and tools (125, 193). The
+    through the state store's operations and tools (125, 193). The
     data plane names none of them (C.1).
 
 216a. A model running in the page's browser is the host's agent for
@@ -1231,8 +1233,8 @@ requirements, iterated against the running plan rather than on paper.
     they signed in, the organization they are looking at with a switch
     to any other the host has a root for (218), and from it the
     organization's settings (its manifest as a form, one response per
-    save), its hosts and their parts (229), the organization's store
-    apart from any host's (228), and sign-out. A page served on the
+    save), its hosts and their parts (229), the organization's package
+    store apart from any host's (228), and sign-out. A page served on the
     operator's own computer signs in like any other, through the host's
     identity kind (243), so the identity is the same there as anywhere;
     every response the page records carries that identity (153).
@@ -1246,7 +1248,8 @@ requirements, iterated against the running plan rather than on paper.
     permission the token carries on a hosted one (249), and a call
     without it is refused and recorded as refused; the switcher shows
     an organization the identity is not a member of as not a member.
-    The organization's store and a host's store are separate surfaces.
+    The organization's package store and a host's package store are
+    separate surfaces.
 
 ### A.27 Machines, types and context
 
@@ -1927,7 +1930,7 @@ requirements, iterated against the running plan rather than on paper.
     under one install decision for the whole set (228, 229). A bundle
     runs nothing itself, and removing it removes what it installed and
     no more. The shipped set covers the common cloud-agent shapes, and
-    an organization publishes its own bundles in the store like any
+    an organization publishes its own bundles in the package store like any
     package.
 294. On every hosted plan the organization's own model key is welcome
     and never required (207). Each plan includes a budget on the small
@@ -1974,7 +1977,7 @@ requirements, iterated against the running plan rather than on paper.
 286. A scenario pack (228) is a development-time organization package.
     It is hidden behind a flag (250) and is never listed in the
     production index, so an organization's operator never meets one by
-    browsing the store.
+    browsing the package store.
 287. Packages contribute renderers, adapters, sinks, runners, routers,
     unit and elaboration types, deliverable producers, map vocabularies,
     templates and bundles, which extends 228's list with the bundle kind
@@ -2159,21 +2162,21 @@ requirements, iterated against the running plan rather than on paper.
     at a 390px viewport as well as at the desktop's, and the mockups
     render at 390px.
 
-## 5. Requirements — Part B, the control plane contract
+## 5. Requirements — Part B, the state store contract
 
 The data plane reaches durable, shared state and the operator only
 through these operations, and depends only on these guarantees.
 
 ### B.1 The operations
 
-125. The control plane offers exactly these operations, and the engine
+125. The state store offers exactly these operations, and the engine
     needs no others: read an object's evidence; write an effect; take,
     renew and release a lease on an object; present the plan's decisions and
     receive the operator's response; notify a host that state has changed;
     list the objects in a scope; serve the status view. An engine that
     needs a further operation is a change to this contract, stated
     here.
-126. **Read.** Given an object's identity, the control plane returns the
+126. **Read.** Given an object's identity, the state store returns the
     evidence the predicates ask for, as of a point it names. Reading
     twice with nothing changed returns the same evidence and writes
     nothing.
@@ -2189,11 +2192,11 @@ through these operations, and depends only on these guarantees.
     the operator's annotations on it come back as the response on its decision.
     A response that arrives twice is applied once. A response that cannot be
     applied is handed back to the engine, never dropped.
-130. **Notify.** The control plane tells a host that state has changed,
+130. **Notify.** The state store tells a host that state has changed,
     within a bound the profile states, and without the host re-reading
     everything to find out. Notification only shortens the wait: a host
     that is never notified still converges by reading.
-131. **List.** The control plane enumerates the objects in a stated
+131. **List.** The state store enumerates the objects in a stated
     scope, so that an engine which remembers nothing can still find
     everything it must act on.
 132. **Serve the status view.** The status view is served from the same
@@ -2202,7 +2205,7 @@ through these operations, and depends only on these guarantees.
 193. Every operation the operator may invoke — capture, mark as intent,
     answer a decision, drop, later, hold, rename, start or stop a
     service, finish a session, explore over intents, and every other
-    transition 4 grants — is exposed by the control plane as a tool
+    transition 4 grants — is exposed by the state store as a tool
     with a schema naming its arguments by object id. The page's
     controls, the chat, the dispatch agent and the machinery all call
     the same tools; no caller has an operation the others lack.
@@ -2217,7 +2220,7 @@ through these operations, and depends only on these guarantees.
 135. **Atomic per write.** A write is wholly applied or not applied. No
     reader ever sees half of one.
 136. **Derivable.** Every state the engine decides upon is derivable
-    from what read and list return. Nothing the control plane holds
+    from what read and list return. Nothing the state store holds
     privately decides behavior.
 137. **The response, exactly once.** An operator's response takes effect once,
     however many times it is delivered, and whatever restarts happen
@@ -2510,7 +2513,7 @@ These hold at every moment, not just at the end of an operation.
 - A user interface beyond the plan page, the status view, and the chat
   reply.
 
-Which control plane the flywheel runs on is a profile choice, made per
+Which state store the flywheel runs on is a profile choice, made per
 organization, not a non-goal.
 
 ## 9. Environment givens
@@ -2540,7 +2543,7 @@ Constraints of the world, not design choices.
   update whose base is stale, and it can call a URL when a branch
   moves, if configured. No other service of the host may be depended
   on.
-- The rewrite targets Rust: a pure engine crate, control-plane adapters
+- The rewrite targets Rust: a pure engine crate, state-store adapters
   as trait implementations, and one static binary per host. The
   language is a given, not a design input, and the models stay
   language-agnostic: nothing in a machine definition, a scenario, or a

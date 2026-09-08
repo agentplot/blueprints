@@ -25,4 +25,4 @@ then:
   transitions: [{object: work-item/atlas/wi-418, from: working, to: blocked}, {object: sink/chat, from: idle, to: delivering}, {object: sink/page, from: idle, to: delivering}, {object: sink/bell, from: idle, to: delivering}]
   effects: [{do: deliver_plan, count: 3}]
   decisions: [{after_step: 3, present: [question], count: 1}]
-  control_plane: {studio_local_output: none, bell_rung_on: "herdr:operator-desk", question_answerable_from: [chat, page], pane_required: false}
+  state_store: {studio_local_output: none, bell_rung_on: "herdr:operator-desk", question_answerable_from: [chat, page], pane_required: false}

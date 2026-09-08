@@ -16,4 +16,4 @@ when:
 then:
   states: {lamp/1: {power: "on"}}
   effects: [{do: light, count: 1}]
-  control_plane: {reported_written_before_loss: true, read_by_fresh_host: true}
+  state_store: {reported_written_before_loss: true, read_by_fresh_host: true}

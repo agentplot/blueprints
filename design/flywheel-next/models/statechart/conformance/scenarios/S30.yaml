@@ -10,7 +10,7 @@ given:
     - {id: work-item/atlas/wi-419, machine: work-item, parent: unit/atlas/u, state: {life: in-type, in-type.stages: verify, verify.run: sessions, session.life: alive, alive.activity: working}, record: {ordinal: 2}}
   evidence: {session.pane: {"*": present}, session.activity: {"*": working}}
 when:
-  - script: {"work-item/atlas/wi-418/build/1": [{after: "0", exit: blocked, question: "should Ready imply Backlog cleared?"}]}    # played through the exit command, which writes to the control plane (67)
+  - script: {"work-item/atlas/wi-418/build/1": [{after: "0", exit: blocked, question: "should Ready imply Backlog cleared?"}]}    # played through the exit command, which writes to the state store (67)
   - tick: {}
   - evidence: {stage.join_met: {"work-item/atlas/wi-419/verify/1": true}, stage.verdict: {"work-item/atlas/wi-419/verify/1": pass}, item.change_archived: {"*": true}, place.merge_slot: {"*": true}, place.merged: {"*": true}}
   - tick: {}
@@ -30,4 +30,4 @@ then:
   decisions: [{after_step: 3, present: [question], count: 1}, {after_step: 9, absent: [question]}]
   effects: [{do: deliver_answer, count: 1}, {do: start_session, count: 0}]
   records: {"work-item/atlas/wi-418/build/1": {blocks: 1}, work-item/atlas/wi-418: {thread: [question, answer]}}
-  control_plane: {answer_sent_to_same_pane: true, exit_written_through_command: true, state_read_from_place_disk: 0, question_answered_in_pane: false}
+  state_store: {answer_sent_to_same_pane: true, exit_written_through_command: true, state_read_from_place_disk: 0, question_answered_in_pane: false}

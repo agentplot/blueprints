@@ -44,7 +44,7 @@
         "reports": {"type": "array", "items": {"type": "string"}},
         "leases": {"type": "object"},
         "status": {"type": "object"},
-        "control_plane": {"type": "object", "description": "assertions on the profile's own behavior (rejections, ids, as-of)"}
+        "state_store": {"type": "object", "description": "assertions on the profile's own behavior (rejections, ids, as-of)"}
       }
     }
   },

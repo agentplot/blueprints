@@ -23,7 +23,7 @@ Sources and precedence:
 | `models/statechart/machines/pool.yaml`, `machines/engine/sink.yaml` | the pool's image and hosts regions; one sink per member with its own mark |
 | `models/dispatch/model.md` §1–§5 | the vocabulary of a host's parts: presenter, capture endpoint, triage, interpreter, adapters, runners, placements |
 | `plan-mockup.md` | the seed: organization willdan, 2026-09-04 07:40, decisions 412–421 |
-| `mockups/rail-and-board.html` | the direction for the plan page; illustrates §1.1–§1.2, §1.4–§1.11, and §1.13's switcher, identity block and sign-out. It carries no management surface: hosts, the store, the settings form and the wizards are the console's |
+| `mockups/rail-and-board.html` | the direction for the plan page; illustrates §1.1–§1.2, §1.4–§1.11, and §1.13's switcher, identity block and sign-out. It carries no management surface: hosts, the package store, the settings form and the wizards are the console's |
 | `mockups/management-console.html` | the management surfaces, drawn in Cloudscape; illustrates §1.12, §1.13's settings, hosts and organization-store entries, and §1.14, with "+ organization" and "retire organization" beside "+ host" |
 | `mockups/context-map-ddd.html` | the adopted map model drawn at both levels; illustrates §1.3 |
 | retired mockups (workbench, queue, deck, river, v1 context map) | removed from the tree on 2026-09-07; §5 cites them by name for the rulings they produced; their seed lives in rail-and-board and `plan-mockup.md` |
@@ -821,7 +821,7 @@ were settled, not their place on the page.
 - **S159.** Requirements served: 149, 173, 190, 203, 205, 205a, 208,
   218, 233–234, 236a, 243, 246–250, 253, 255. Tools called: `answer`
   (the install decision), `switch-organization`,
-  `configure-organization`, `sign-out`, `add-package` (the store's
+  `configure-organization`, `sign-out`, `add-package` (the package store's
   add, with no host), and on a `frontegg` host `invite-member`,
   `assign-application`, `revoke-application`, `set-role`,
   `target-flag`.
@@ -1269,7 +1269,7 @@ page shows after.
   willdan's, the organization whose operators list carries chuck. As a
   listed operator chuck holds every permission, and the flags stand at
   their defaults, so the book view and explore are there and pools,
-  the store and the hosts list are not (248, 250, S197). 4. On a
+  the package store and the hosts list are not (248, 250, S197). 4. On a
   hosted host the same page instead sends chuck to Frontegg's hosted
   login, the redirect built from that host's served name, and lands
   the same way with the Frontegg user as the identity, the GitHub
@@ -1394,7 +1394,7 @@ where a thing sits, never by its form.
 - **S52.** Markers: a decision's number with its group glyph on the
   object it concerns (S17), one glyph set everywhere: on a lane, on a
   map card, edge, node or neighbour dock, in a chapter margin, on a
-  host's row or a store row. A gathered elaboration's marker sits on
+  host's row or a package-store row. A gathered elaboration's marker sits on
   every covered
   intent. A host marker sits on the bolt whose item it holds. A marker
   click focuses the rail card and opens the dock with the card inline.
@@ -1432,7 +1432,7 @@ where a thing sits, never by its form.
 | b | board | switch phases and book |
 | w | anywhere | open and close the flywheel panel |
 | / | board | focus the capture box |
-| Esc | anywhere | in order: leave a field, close the log, cancel explore selection, cancel re-attach, hide an edge's panel, close the dock, close the account menu, the library, hosts, settings or the store, back from a drill |
+| Esc | anywhere | in order: leave a field, close the log, cancel explore selection, cancel re-attach, hide an edge's panel, close the dock, close the account menu, the library, hosts, settings or the package store, back from a drill |
 | f | map | fit, the only camera command, at either level |
 | o | map | cycle the overlay: none, current → target, since last review |
 | j, k | map canvas | move the focus ring among contexts at rest, among elements when drilled |

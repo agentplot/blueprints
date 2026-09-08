@@ -14,4 +14,4 @@ when:
   - tick: {}
 then:
   transitions: [{object: "signal/s3", from: dropped, to: unmoved}, {object: curation/willdan, from: idle, to: running}]
-  control_plane: {dictation_bypassed_plan: true, decisions_created_by_dictation: 0}
+  state_store: {dictation_bypassed_plan: true, decisions_created_by_dictation: 0}

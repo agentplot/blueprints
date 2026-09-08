@@ -28,4 +28,4 @@ then:
   effects: [{do: prepare_place, count: 1}, {do: start_session, count: 1}, {do: end_session, count: 1}, {do: remove_place, count: 1}]
   decisions: [{after_step: 8, count: 0}, {after_step: 13, count: 0}]
   records: {operator-session/chuck-1: {opened_by: chuck}}
-  control_plane: {thread_behind_session: none, idle_offered: false, presence_read_as: "keystroke within the profile's window"}
+  state_store: {thread_behind_session: none, idle_offered: false, presence_read_as: "keystroke within the profile's window"}

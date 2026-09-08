@@ -26,4 +26,4 @@ then:
   effects: [{do: record_verdict, count: 3}, {do: propose_units, count: 1}, {do: record_fingerprint, count: 1}]
   decisions: [{after_step: 8, present: [unit-proposed], count: 1}]
   states: {ledger-cell/new-repo/c2: {freshness: judged, judged.value: not-applicable}, ledger-cell/new-repo/c1: {freshness: judged, judged.value: not-satisfied}, planning/new-repo: {run: current}}
-  control_plane: {backlog_after: [c1, c3], verdicts_recomputed_after_commits: 0}
+  state_store: {backlog_after: [c1, c3], verdicts_recomputed_after_commits: 0}

@@ -41,5 +41,5 @@ then:
     - {after_step: 1, present: [unit-proposed], count: 1}
     - {after_step: 4, absent: [unit-proposed]}
   records: {unit/atlas/chore-1: {type: chore, batch: bolt/atlas/plan-rows, scope: bolt-line, document: "openspec/changes/status-writer/chores/agents-md.md", approval: discord/2001}}
-  control_plane: {chore_record_holds_text: false, change_directories_created: 0}
+  state_store: {chore_record_holds_text: false, change_directories_created: 0}
   states: {work-item/atlas/chore-1/1: {life: merged}, work-item/atlas/wi-418: {life: in-type}}

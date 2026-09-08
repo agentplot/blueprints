@@ -22,4 +22,4 @@ then:
   decisions: [{after_step: 2, present: [elaboration-proposed], count: 1}, {after_step: 4, count: 0, tail: [dropped]}]
   states: {elaboration/atlas-provider-limits/finding-1: {life: dropped}, elaboration/atlas-provider-limits/research-1: {life: working}}
   records: {elaboration/atlas-provider-limits/finding-1: {document: "openspec/changes/atlas-provider-limits/findings/backoff.md"}}
-  control_plane: {finding_record_holds_text: false, session_interrupted: false}
+  state_store: {finding_record_holds_text: false, session_interrupted: false}

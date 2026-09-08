@@ -155,7 +155,7 @@ the operator may reverse by a response on the file; an entry with
 
 - **93 "only the session binding is faked".** The stand-in plays
   exits by running the same `flywheel exit|offer|refuse` path, so the
-  control plane sees real entries; but the commits a scripted session
+  state store sees real entries; but the commits a scripted session
   "makes" in its place are files the stand-in writes, not an agent's
   work, so the git effects exercise merges of trivial content. Stated:
   it is what "no agent running" allows.

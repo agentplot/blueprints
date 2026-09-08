@@ -18,4 +18,4 @@ then:
   effects: [{do: record_refusals, count: 1}, {do: report, count: 1}, {do: create_line, count: 0}]
   reports: ["a session attempted a line operation and was refused"]
   states: {work-item/atlas/wi-418: {life: in-type, alive.activity: working}}
-  control_plane: {repository_refs_changed_by_session: 0, place_prepared_by: machinery}
+  state_store: {repository_refs_changed_by_session: 0, place_prepared_by: machinery}

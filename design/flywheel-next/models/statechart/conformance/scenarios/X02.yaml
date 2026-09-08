@@ -32,4 +32,4 @@ then:
     - {after_step: 9, present: [claim-moved], absent: [unit-claim-moved]}
   effects: [{do: record_citation_choice, count: 1}, {do: create_items, count: 0}]
   states: {unit/atlas/s: {life: in-flight}}
-  control_plane: {superseded_in_tail: false, proposal_replaced_without_response: true}
+  state_store: {superseded_in_tail: false, proposal_replaced_without_response: true}

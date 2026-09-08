@@ -34,4 +34,4 @@ then:
   effects: [{do: seed_take_conflict, count: 1}, {do: take_parent, count: 2}, {do: create_bolt, count: 0}, {do: merge_place, count: 1}]
   records: {unit/atlas/take-conflict-1: {type: chore, approval: "cadence 0 6 * * *", scope: bolt-line, batch: bolt/atlas/plan-rows}}
   decisions: [{after_step: 4, count: 0}, {after_step: 16, count: 0}]
-  control_plane: {half_done_tree_seen: false, session_touched_a_ref: 0}
+  state_store: {half_done_tree_seen: false, session_touched_a_ref: 0}

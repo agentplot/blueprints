@@ -33,4 +33,4 @@ then:
     - {object: bolt/atlas/other, from: held, to: removing}
     - {object: bolt/atlas/other, from: removing, to: removed}
   effects: [{do: remove_place, count: 2}, {do: remove_stray_places, count: 1}, {do: remove_line, count: 2}]
-  control_plane: {tethered_processes_after_removal: 0, removals_recorded_with_reason: 3, held_place_removed_while_held: false}
+  state_store: {tethered_processes_after_removal: 0, removals_recorded_with_reason: 3, held_place_removed_while_held: false}

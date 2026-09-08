@@ -24,4 +24,4 @@ then:
   effects: [{do: start_session, count: 8}, {do: record_offers, count: 1}]
   records: {work-item/atlas/new-1: {sessions_at_test: [p1, p2, p3]}, work-item/five/new-1: {sessions_at_test: [p1, p2, p3, p4, p5]}}
   states: {work-item/atlas/old-1: {in-type.stages: build}, unit/atlas/old: {type_version: 5}}
-  control_plane: {engine_code_changed: false}
+  state_store: {engine_code_changed: false}

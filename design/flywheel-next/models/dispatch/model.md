@@ -27,7 +27,7 @@ split them.
 
 | job | what it does | reads | writes | needs a model | needs a long-lived process | secrets it holds | runs with no host of the operator's awake |
 |---|---|---|---|---|---|---|---|
-| **presenter** to the chat sink | delivers the numbered decisions and the tail to the chat on the sink's cadence or when due; turns a short reply, a button press or a confirmed proposal into one op-response; reacts ✅ when it is recorded (148, 152–155, 18, 14) | the plan's register, the objects it names, the sink record and its mark (B.1 read, list) | the sink's mark and delivery id; one `op-response` per reply (B.1 write, receive) | no | yes for a chat that pushes replies over a socket; no for a chat that calls a URL on a reply | the bot token; the control-plane credential (the App's installation token, C.1; push credential, C.2) | yes — that is its purpose (132, 143, 156) |
+| **presenter** to the chat sink | delivers the numbered decisions and the tail to the chat on the sink's cadence or when due; turns a short reply, a button press or a confirmed proposal into one op-response; reacts ✅ when it is recorded (148, 152–155, 18, 14) | the plan's register, the objects it names, the sink record and its mark (B.1 read, list) | the sink's mark and delivery id; one `op-response` per reply (B.1 write, receive) | no | yes for a chat that pushes replies over a socket; no for a chat that calls a URL on a reply | the bot token; the state-store credential (the App's installation token, C.1; push credential, C.2) | yes — that is its purpose (132, 143, 156) |
 | **capture endpoint** | accepts one source event from a caller that cannot write git; writes one capture record with the event key; the same key returns the existing capture and writes nothing (106, 111, 112, S22); writes one signal only for a forwarded single message (S21) | nothing but the existing captures under the key | one capture record; for a forwarded message, one signal record; on the blueprints' shared line under `flywheel/signals/` (203) | no | no — one request, one commit | the inbound secret per caller; the blueprints push credential | yes |
 | **triage** | one session per capture with material to read, in a place off the blueprints' shared line; reads the raw material the capture points at; writes the signals once, immutable, with excerpt and position (113, 115) | the capture, its raw material, the claims index (108) | the capture's signal records, one commit | yes — this is judgment (115) | no — a bounded session: it starts, delivers, exits (65, 110) | none of its own; a session identity (197) and a scoped token issued into its place (207) | yes when its runner is reachable from where dispatch runs (§5) |
 | **interpreter** for chat | turns one free-text message into exactly one proposed tool call, shown with a confirm control; calls the tool on the operator's confirmation; asks about a name that resolves to nothing or to two things (194) | the live objects (list and read), the tool catalogue (193), the message and, when it is a reply, the messages it replies to | nothing — the confirmed call is the response, recorded by the tool once (153) | yes — one bounded call per message | no — one request, one model call | the model credential for that call | yes |
@@ -70,7 +70,7 @@ declares — the callers of its endpoint, the sources it triages, and
 the runner its model jobs use — and states what follows.
 
 **One binary.** `flywheel dispatch` is `flywheel host` with that
-declaration (model.md §13). It links both control planes, chosen by
+declaration (model.md §13). It links both state stores, chosen by
 the manifest's profile. It joins by `flywheel host join` (205) and
 clones the state and the blueprints repositories under its root; it clones
 no built repository, because its declaration names none. It
@@ -79,7 +79,7 @@ sink lease or holds the pin, and runs the tick loop every host runs:
 fetch, list, read, evaluate, effect (165, 126–131).
 
 **Stateless between ticks.** A tick reads everything it decides on
-from the control plane (136). The sink's mark says what was delivered
+from the state store (136). The sink's mark says what was delivered
 (14). The capture keys say what was captured (111). The signal files
 say what was triaged (blueprints.yaml `capture.signals_present`). The
 response files say what was answered (137). A restart reads the same
@@ -358,7 +358,7 @@ shown true or false of a model, like every requirement in Parts A–C.
     (148, 152–155), the capture endpoint for callers that cannot write
     the blueprints repository (106, 112), the capture-reading session (115),
     and the interpreter for chat (194). Each job reads and writes only
-    through the control plane's operations and tools (125, 193). The
+    through the state store's operations and tools (125, 193). The
     data plane names none of them (C.1).
 
 216a. A model running in the page's browser is the interpreter job for

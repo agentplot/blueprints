@@ -26,4 +26,4 @@ then:
   effects: [{do: number_decisions, count: 1}, {do: deliver_plan, count: 2}]
   decisions: [{after_step: 4, present: [intent-proposed, unit-proposed], count: 2, numbers: {intent/a/intent-proposed: 100, unit/atlas/u/unit-proposed: 101}}]
   leases: {sink/chat: {holder: dispatcher, holders_ever: 1}, sink/page: {holders_ever: 1, holder_in: [mac-mini, studio]}}
-  control_plane: {chat_lines: 2, chat_numbers: [100, 101], page_numbers: [100, 101], chat_links_page: true, dispatcher_took_object_leases: 0}
+  state_store: {chat_lines: 2, chat_numbers: [100, 101], page_numbers: [100, 101], chat_links_page: true, dispatcher_took_object_leases: 0}

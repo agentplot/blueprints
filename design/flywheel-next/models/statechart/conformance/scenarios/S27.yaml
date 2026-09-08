@@ -24,4 +24,4 @@ when:
 then:
   effects: [{do: propose_units, count: 2}, {do: rename_bolt, count: 1}, {do: route_unit, count: 1}, {do: create_bolt, count: 2}]
   records: {unit/atlas/u1: {target_name: retry}, unit/switchboard/u3: {target_name: other}}
-  control_plane: {planning_runs: 2, bolt_records_with_predecessor_field: 0}
+  state_store: {planning_runs: 2, bolt_records_with_predecessor_field: 0}

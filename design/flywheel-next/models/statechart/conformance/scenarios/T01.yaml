@@ -18,7 +18,7 @@ then:
   transitions: [{object: unit/atlas/status-writer, from: proposed, to: approved, response: tracker/timeline/7781}]
   applied_responses: {unit/atlas/status-writer: [tracker/timeline/7781]}
   effects: [{do: create_items, count: 1}]
-  control_plane:
+  state_store:
     response_comment_written_before_transition: true
     items_in_tracker: [intent, elaboration, bolt, unit, work-item, decision]
     files_in_blueprints_never_items: [signal, move, claim, verdict, definition]

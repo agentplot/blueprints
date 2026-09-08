@@ -30,4 +30,4 @@ when:
 then:
   states: {work-item/atlas/u/1: {life: merged}, work-item/atlas/u/2: {life: merged}, work-item/atlas/u/3: {life: placing}}
   effects: [{do: start_session, count: 2}, {do: prepare_place, count: 3}]
-  control_plane: {sessions_running_max: 2, duplicate_session_names: 0, merges_in_ordinal_order: true}
+  state_store: {sessions_running_max: 2, duplicate_session_names: 0, merges_in_ordinal_order: true}

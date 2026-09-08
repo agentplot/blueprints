@@ -28,4 +28,4 @@ then:
   effects: [{do: create_bolt, count: 0}, {do: remove_place, count: 0}, {do: record_endpoints, count: 1}]
   records: {bolt/atlas/plan-rows: {endpoints: ["https://plan-rows.atlas.portless:4413"]}}
   decisions: [{after_step: 2, count: 0}, {after_step: 11, present: [unit-proposed], count: 1}]
-  control_plane: {bolt_aged_out: false, operator_place_present_throughout: true, endpoint_shown_beside_bolt_on_page: true}
+  state_store: {bolt_aged_out: false, operator_place_present_throughout: true, endpoint_shown_beside_bolt_on_page: true}

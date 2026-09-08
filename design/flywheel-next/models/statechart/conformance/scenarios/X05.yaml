@@ -24,4 +24,4 @@ then:
     - {object: unit/atlas/u, from: approved, to: in-flight}
   decisions: [{after_step: 2, present: [uncovered], count: 0}, {after_step: 6, absent: [uncovered]}]
   leases: {unit/atlas/u: {holder_after_step_6: mac-mini}}
-  control_plane: {lease_taken_outside_declaration: 0}
+  state_store: {lease_taken_outside_declaration: 0}

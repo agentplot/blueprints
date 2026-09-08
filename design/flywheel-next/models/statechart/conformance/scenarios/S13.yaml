@@ -34,4 +34,4 @@ then:
   status: {after_step: 4, stale: [work-item/atlas/wi-418, mac-mini]}
   effects: [{do: expire_leases, count: 1}, {do: start_session, count: 1}, {do: end_session, count: 1}]
   leases: {work-item/atlas/wi-418: {holder_after_step_9: studio, touched_by_studio_before_expiry: false}}
-  control_plane: {sessions_running_at_end: 1, attempt_started_by_studio: 2, mac_mini_ended_own_pane_on_return: true}
+  state_store: {sessions_running_at_end: 1, attempt_started_by_studio: 2, mac_mini_ended_own_pane_on_return: true}

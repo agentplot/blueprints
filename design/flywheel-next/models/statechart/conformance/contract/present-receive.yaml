@@ -26,4 +26,4 @@ then:
   transitions: [{object: lamp/1, from: "off", to: "on", response: chat/100}, {object: lamp/2, from: "off", to: "on"}]
   applied_responses: {lamp/1: [chat/100], lamp/2: []}
   records: {lamp/1: {flips: 1}}
-  control_plane: {response_recorded_before_transition: true, response_acknowledged_to_operator: true, unapplicable_response_returned_to_engine: chat/101}
+  state_store: {response_recorded_before_transition: true, response_acknowledged_to_operator: true, unapplicable_response_returned_to_engine: chat/101}

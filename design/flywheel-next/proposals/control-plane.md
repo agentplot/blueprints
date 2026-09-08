@@ -22,7 +22,7 @@ self-managed operator runs is in it, and nothing is held back to make the
 hosted tiers work:
 
 - the machines and the profiles: the statechart definitions, the atoms, and
-  every binding that satisfies the control plane contract of Part B;
+  every binding that satisfies the state store contract of Part B;
 - the page bundle, with the plan console — rail, board, dock — and the
   management console;
 - the tool server and its model context protocol endpoint (193, 291, 293);

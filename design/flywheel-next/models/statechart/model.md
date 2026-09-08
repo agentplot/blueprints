@@ -95,7 +95,7 @@ of some object, or a file the machinery reads as evidence.
 - **finding, chore offer** — documents a session writes in the change
   directory it works, at the moment it judges them, archived with the
   change (62). The session announces each with `flywheel offer`, which
-  appends one entry to the session's thread through the control plane;
+  appends one entry to the session's thread through the state store;
   `record_offers` turns that entry into one record that points at the
   document: a chore into a `unit` of the chore type in `proposed`, a
   finding on the session's own thread into an `elaboration` (design
@@ -243,7 +243,7 @@ Every effect in `atoms.yaml` names its **proof**: the evidence that
 shows it was done (`start_session` is proven by `session.pane`;
 `merge_place` by `place.merged`; `create_items` by `unit.items_exist`;
 `remove_place` by `place.absent`). The engine performs an effect only
-when its proof is absent, and the control plane's `write_effect` carries
+when its proof is absent, and the state store's `write_effect` carries
 an effect id (`<object>/<transition>/<proof evidence>/<evidence hash>`),
 so a repeat is recognised and not counted (127). This is what makes
 every action safe to repeat (73) and what makes S6 hold: a slow
@@ -300,7 +300,7 @@ Nothing else. A host's memory holds only what it read this tick. The
 place's disk is not a store (67): what a session leaves there is its
 work, and the work order handed into it is an input. A session reports
 its exit, its offers and its notes with the `flywheel` command, which
-writes an entry on the session's thread through the control plane;
+writes an entry on the session's thread through the state store;
 nothing on disk is read back as state. Evidence a host observes about
 the world each tick — a pane's state, a head, a gate's result, a
 worktree's presence — is not state and is re-observed after a restart
@@ -542,7 +542,7 @@ sinks:                       # where decisions and the tail go (82); one present
 curation: {threshold: 12, cadence: "0 6 * * 1-5"}
 ```
 
-## 4. The control plane binding
+## 4. The state store binding
 
 The binding is data in `profiles/`. Eight files: six are partial and
 shared, two are the profiles.
@@ -805,7 +805,7 @@ dropped (6, 129).
 ### 5.7 Dictation, the tool surface and the host's agent
 
 The engine never parses command words out of free text. Every
-operation the operator may invoke is a **tool** of the control plane
+operation the operator may invoke is a **tool** of the state store
 with a schema naming its arguments by object id, and the page's
 controls, the chat, the dispatch agent and the machinery's own
 commands all call the same tools; no caller has an operation the
@@ -1296,7 +1296,7 @@ is what the session reports through the command the machinery provides
 question or a note; `flywheel offer finding|chore|signal <document>
 --about <object>`; `flywheel note <text>`; and `flywheel refuse`, run by
 the hooks. Each appends one entry to the session's thread through the
-control plane and does nothing else; the machinery decides what the
+state store and does nothing else; the machinery decides what the
 entry means (66). The exit entry is validated against the schema in
 force; one that fails it is `invalid` and read as `stalled` with the
 raw text recorded, so the set of exits the machinery can see is closed
@@ -1560,15 +1560,15 @@ once work started.
 
 ### 12.8 Which profile is built first, and what test proves a second conforms?
 
-The git-only profile first: its control plane is `gix` plus the `git`
+The git-only profile first: its state store is `gix` plus the `git`
 binary, which the host binding already needs for lines and places, so
 the first build has one external service (the git host) and the
 conformance suite runs against a local bare repository with no network.
 The tracker profile follows as a second implementation of the same
-`ControlPlane` trait. The proof of conformance is `conformance/`: one
+`StateStore` trait. The proof of conformance is `conformance/`: one
 set of scenario files run by `flywheel scenario run --profile <name>`
 with the session binding replaced by `sessions-stand-in.yaml` (93) —
-against the stand-in control plane, then against each real profile in
+against the stand-in state store, then against each real profile in
 a sandbox (a temporary bare repository; a throwaway GitHub repository),
 with the machine files byte-identical (`check.py` hashes them into the
 run record). A profile is admitted when every scenario passes and
@@ -1665,19 +1665,19 @@ The boundary falls out of the model's three kinds of thing: the engine
 | crate | holds | depends on |
 |---|---|---|
 | `flywheel-engine` | the machine loader (`schema.json` as `serde` types), the guard evaluator, regions and submachines, the tick planner (`plan_tick(defs, snapshot) -> Vec<Transition>` — pure, no IO), decision derivation and the register, proofs and effect ids, the five engine machines | `serde`, `serde_yaml`, nothing else; no string from `atoms.yaml` |
-| `flywheel-atoms` | the `Evidence` and `Effect` name registries generated from `atoms.yaml` at build time; the `ControlPlane` trait (`list`, `read`, `write_effect`, `lease`, `present`, `receive`, `notify`, `status`); the `World` trait (one method per host effect); the `Sessions` trait (one method per session effect, one per session evidence); the scenario file types | `flywheel-engine` |
+| `flywheel-atoms` | the `Evidence` and `Effect` name registries generated from `atoms.yaml` at build time; the `StateStore` trait (`list`, `read`, `write_effect`, `lease`, `present`, `receive`, `notify`, `status`); the `World` trait (one method per host effect); the `Sessions` trait (one method per session effect, one per session evidence); the scenario file types | `flywheel-engine` |
 | `flywheel-domain` | the machine files embedded with `include_dir`, the type catalogue loader (from the blueprints), the work order renderer, the claim block parser and lock, the recutils reader and writer, the fingerprint | `flywheel-atoms` |
 | `flywheel-world-host` | `World` over worktrunk (`wt`), portless, `git` and `gix`, OpenSpec; `profiles/host.yaml` is its specification | `flywheel-atoms` |
-| `flywheel-sessions` | `Sessions` over herdr (`herdr agent`) and Claude Code, plus the `flywheel exit\|offer\|note\|refuse` subcommands that write through `ControlPlane::append`; `profiles/sessions.yaml` | `flywheel-atoms` |
-| `flywheel-cp-git` | `ControlPlane` over the state repository (`gix`, `git push --force-with-lease`); `profiles/git-only.yaml` | `flywheel-atoms` |
-| `flywheel-cp-tracker` | `ControlPlane` over GitHub (`octocrab`); `profiles/tracker.yaml` | `flywheel-atoms` |
-| `flywheel-surface` | the sinks: the Discord bot (`serenity`), the pages (`axum`), the bell (`herdr`), the reply grammar, the review-surface launchers (plannotator, lavish); `profiles/surfaces.yaml`; profile-neutral because it writes responses through `ControlPlane::receive` | `flywheel-atoms` |
-| `flywheel-scenario` | the stand-in control plane (in-memory `ControlPlane` and `World`), the scripted `Sessions` stand-in (`profiles/sessions-stand-in.yaml`), the conformance runner, the trace renderer | `flywheel-engine`, `flywheel-atoms`, `flywheel-domain` |
+| `flywheel-sessions` | `Sessions` over herdr (`herdr agent`) and Claude Code, plus the `flywheel exit\|offer\|note\|refuse` subcommands that write through `StateStore::append`; `profiles/sessions.yaml` | `flywheel-atoms` |
+| `flywheel-store-git` | `StateStore` over the state repository (`gix`, `git push --force-with-lease`); `profiles/git-only.yaml` | `flywheel-atoms` |
+| `flywheel-store-tracker` | `StateStore` over GitHub (`octocrab`); `profiles/tracker.yaml` | `flywheel-atoms` |
+| `flywheel-surface` | the sinks: the Discord bot (`serenity`), the pages (`axum`), the bell (`herdr`), the reply grammar, the review-surface launchers (plannotator, lavish); `profiles/surfaces.yaml`; profile-neutral because it writes responses through `StateStore::receive` | `flywheel-atoms` |
+| `flywheel-scenario` | the stand-in state store (in-memory `StateStore` and `World`), the scripted `Sessions` stand-in (`profiles/sessions-stand-in.yaml`), the conformance runner, the trace renderer | `flywheel-engine`, `flywheel-atoms`, `flywheel-domain` |
 | `flywheel` | the binary: `host`, `dispatch`, `scenario`, `capture`, `claims check`, `render-order`, `review`, `exit`, `offer`, `note`, `refuse` | all |
 
 Nothing in a machine file, a scenario or a profile binding names Rust:
 the same files would drive any engine that implements `schema.json`.
-The one static binary per host is `flywheel` with both control planes
+The one static binary per host is `flywheel` with both state stores
 compiled in and chosen by the manifest's `profile`; `flywheel dispatch`
 is the same binary run with a declaration that presents and takes
 nothing.
@@ -1828,7 +1828,7 @@ No ref of the repository was changed by the session.
 starts a self-closing session with the scenario schema that writes
 `conformance/scenarios/<name>.yaml`, including the `script` the
 stand-in sessions play; `flywheel scenario run` executes it against
-the stand-in control plane with `sessions-stand-in.yaml` and writes
+the stand-in state store with `sessions-stand-in.yaml` and writes
 `<name>.trace.md`: the ticks, the guards read, the transitions, the
 effects with ids, the decisions and numbers after each tick.
 
@@ -1926,7 +1926,7 @@ session name refuses a duplicate.
 
 **S30 — blocked.** Build session runs `flywheel exit blocked
 --question "<text>"`, which appends the exit entry to its thread
-through the control plane → `session.working → blocked` (bump `blocks`,
+through the state store → `session.working → blocked` (bump `blocks`,
 `record_exit`, +`question` decision on the item, routed to the chat,
 the page and the bell). The item's `stage` stays in `sessions`; its
 siblings merge. The page answer → response → `blocked → working`,
@@ -2440,7 +2440,8 @@ organizations, each host running its own set.
 (`profiles/surfaces.yaml` `account`): who and how signed in, the
 organization shown with a switch to any other the host has a root for,
 its settings as a form (`configure-organization`, one response per
-save), its hosts and parts, its store apart from any host's, sign-out.
+save), its hosts and parts, its package store apart from any host's,
+sign-out.
 Served locally with no sign-in kind the page shows the local user and
 needs no account; behind a kind declared on the host (`host.yaml`
 `sign_in`: tailnet, oauth, oidc — a per-host package) it shows the
@@ -2783,7 +2784,7 @@ small model class, with immediate triage and free text in chat unlocked
 by placing a key of the operator's own, and raw-material triage,
 elaboration and construction waiting for a machine of the operator's own
 (216a, 217e, 273, 294); Pro adding
-pools and the store, and including the in-tick interpreter and the
+pools and the package store, and including the in-tick interpreter and the
 immediate triage of self-contained captures; Team adding members, the
 console and a job's model class raised above the small one; Enterprise at
 tier 3 in both shapes, with enterprise sign-in, a dispatcher of its own

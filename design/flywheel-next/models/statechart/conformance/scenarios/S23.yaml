@@ -19,4 +19,4 @@ then:
   transitions: [{object: intent/status-copy, from: proposed, to: dropped, response: discord/8001}]
   effects: [{do: drop_signals, count: 1}]
   states: {"signal/s1": {move: dropped}, "signal/s5": {move: dropped}, curation/willdan: {run: idle}}
-  control_plane: {moves_naming_drop: 5, unmoved_after: 0}
+  state_store: {moves_naming_drop: 5, unmoved_after: 0}

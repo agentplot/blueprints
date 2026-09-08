@@ -13,4 +13,4 @@ when:
   - tick: {}
 then:
   effects: [{do: start_session, count: 0}]
-  control_plane: {captures_existing: 1, capture_files_written_on_second_import: 0, signal_files_written_on_second_import: 0}
+  state_store: {captures_existing: 1, capture_files_written_on_second_import: 0, signal_files_written_on_second_import: 0}

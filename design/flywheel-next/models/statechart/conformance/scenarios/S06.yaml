@@ -21,4 +21,4 @@ then:
     - {object: elaboration/a/research-1, from: requested, to: starting}
     - {object: elaboration/a/research-1, from: starting, to: alive}
   effects: [{do: start_session, count: 3}, {do: report, count: 0}]
-  control_plane: {distinct_session_names_started: 1, multiplexer_refused_duplicates: 2, reported_failed: false}
+  state_store: {distinct_session_names_started: 1, multiplexer_refused_duplicates: 2, reported_failed: false}

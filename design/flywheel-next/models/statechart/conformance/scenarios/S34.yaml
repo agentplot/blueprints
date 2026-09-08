@@ -43,4 +43,4 @@ then:
     - {object: claim/c1, from: proposed, to: standing}
     - {object: claim/c2, from: proposed, to: standing}
   effects: [{do: merge_place, count: 2}, {do: remove_place, count: 2}, {do: rebase_place, count: 1}, {do: archive_intent, count: 1}, {do: land_line, count: 1}, {do: remove_line, count: 1}]
-  control_plane: {prototype_place_kept_until_finish: true, branches_of_intent_after_close: 0}
+  state_store: {prototype_place_kept_until_finish: true, branches_of_intent_after_close: 0}

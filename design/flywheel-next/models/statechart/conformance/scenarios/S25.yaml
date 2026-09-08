@@ -13,7 +13,7 @@ when:
   - tick: {}
   - direct: {page: "/review", by: chuck}
 then:
-  control_plane:
+  state_store:
     precommit_lock_check_passed: true
     one_commit_touched: ["src/providers/one-writer.md", "src/context-map.md", "context-map.json"]
     review_view_derived_from_history: true

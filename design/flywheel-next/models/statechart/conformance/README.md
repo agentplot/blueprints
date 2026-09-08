@@ -72,7 +72,7 @@ naming an object), `evidence` (the world changed: set stand-in
 evidence), `script` (seed or extend what the stand-in sessions play),
 `notify` (a notify for an object), `restart` (drop every in-memory
 thing and start again), `disconnect` / `reconnect` (git-only and
-tracker: the control plane refuses or resumes), `host` (a second host
+tracker: the state store refuses or resumes), `host` (a second host
 ticks), `direct` (the operator acts on the store, the chat, the tracker
 or a pane by hand), `files` (blueprints or built repository files the world
 reports). `then` clauses are all asserted; an unlisted effect with count
@@ -86,7 +86,7 @@ the script entries for it at their offsets: a pane appearing, activity,
 a keystroke, an exit reported by running the same `flywheel exit`
 command a session would, offers by `flywheel offer`, a refusal by
 `flywheel refuse`, commits made into the place with git. Only this
-binding is faked (93); the control plane, the engine, the git effects
+binding is faked (93); the state store, the engine, the git effects
 on real (sandbox) repositories, the plan and the page run as built. A
 scenario may set the session evidence names directly in an `evidence`
 step instead; the script is the way to say what a session would have
@@ -95,14 +95,14 @@ done.
 ## Running
 
 ```bash
-flywheel scenario run conformance/                      # stand-in control plane, stand-in sessions, every file
+flywheel scenario run conformance/                      # stand-in state store, stand-in sessions, every file
 flywheel scenario run --profile git-only conformance/   # against a temporary bare repository
 flywheel scenario run --profile tracker  conformance/   # against a throwaway GitHub repository (needs FLYWHEEL_SANDBOX_REPO)
 flywheel scenario run conformance/scenarios/S30.yaml --trace   # writes S30.trace.md
 ```
 
-The stand-in control plane (`flywheel-scenario`) is an in-memory map
-implementing the same `ControlPlane` and `World` traits; the real
+The stand-in state store (`flywheel-scenario`) is an in-memory map
+implementing the same `StateStore` and `World` traits; the real
 profiles run the same files with the sandbox as their store, the
 scripted `Sessions` stand-in, and a `World` whose git and wt calls run
 against sandbox repositories.

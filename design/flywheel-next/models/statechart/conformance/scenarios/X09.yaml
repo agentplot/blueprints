@@ -76,7 +76,7 @@ then:
     service/atlas/plan-rows/web: [discord/dictation-1, discord/2001]
     service/atlas/plan-rows/worker: ["thread/work-item/atlas/u/1/test/1/1"]
   writes: {max_per_tick_when_unchanged: 0}
-  control_plane:
+  state_store:
     session_command_and_dictation_write_the_same_record_shape: true
     worker_endpoint_absent_because_it_serves_no_url: true
     services_never_started_by_declaration_alone: true

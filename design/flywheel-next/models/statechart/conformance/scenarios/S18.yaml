@@ -27,7 +27,7 @@ then:
   transitions:
     - {object: work-item/atlas/wi-418, from: build, to: verify, host: mac-mini}
     - {object: unit/atlas/retry-jitter, from: approved, to: in-flight, host: studio}
-  control_plane:
+  state_store:
     mac_mini_local_commits_while_offline: ">= 1"
     mac_mini_took_leases_while_offline: 0
     mac_mini_started_sessions_while_offline: 0

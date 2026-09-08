@@ -28,4 +28,4 @@ when:
   - tick: {}
 then:
   decisions: [{after_step: 16, present: [bolt-close], count: 1, tail: [merged, merged]}]
-  control_plane: {responses_after_yes: 0, tail_since: "2026-09-04T07:40:00Z", bolt_close_number_is_new: true, number_57_reused: false, renderings_stored: 0}
+  state_store: {responses_after_yes: 0, tail_since: "2026-09-04T07:40:00Z", bolt_close_number_is_new: true, number_57_reused: false, renderings_stored: 0}

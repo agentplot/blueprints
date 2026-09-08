@@ -32,4 +32,4 @@ then:
     - {object: work-item/atlas/b/1, from: conflict, to: behind}
     - {object: work-item/atlas/b/1, from: behind, to: ready}
   effects: [{do: merge_place, count: 1}, {do: rebase_place, count: 2}, {do: seed_conflict_job, count: 1}, {do: tell_moved, count: 1}]
-  control_plane: {rebase_attempted_while_working: 0, conflict_retries_after: 1}
+  state_store: {rebase_attempted_while_working: 0, conflict_retries_after: 1}

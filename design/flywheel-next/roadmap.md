@@ -10,7 +10,7 @@ willdan until phase 2 lands and is never modified.
 |---|---|---|---|
 | 1 | The loop | One organization, one laptop host. Captures land, the tick evaluates the machines, decisions are raised and delivered to the page and one chat sink, responses are recorded, the run record is readable. Statechart machines and profiles run from their definitions, on the git-only profile: state is the state repository, no tracker. No construction | A.1–A.16, A.22–A.24, A.38, B, C.2 |
 | 2 | Construction | Units and bolts land on willdan repositories: spec, build, review, merge, landing by pull request; the tracker profile (C.1) joins here for willdan's board. Sessions charged by the machinery on the pane runner. The flywheel instrument reads runway, feed, pressure and drain. willdan moves off the old flywheel | A.17–A.21, A.27 (types) |
-| 3 | Context | The context map, the books, the claims and the ledger, OpenSpec artifact views in the dock, packages and the store, scenario packs behind their flag | A.14, A.21, A.26–A.28 |
+| 3 | Context | The context map, the books, the claims and the ledger, OpenSpec artifact views in the dock, packages and the package store, scenario packs behind their flag | A.14, A.21, A.26–A.28 |
 | 4 | Dispatch | Dispatch as a host: the four jobs, the receiver, the interpreter in the page's browser and in-process, triage placements, several organizations on one host, users and ownership, environments | A.25, A.26, A.29, A.30 |
 | 5 | Scale | The hosted tiers: identity by Frontegg, the per-tier dispatcher, queues, cache, scheduler, pools, tenancy and encryption, plans and presets, the management console, the MCP endpoint, federation into the customer's account | A.31–A.36 |
 

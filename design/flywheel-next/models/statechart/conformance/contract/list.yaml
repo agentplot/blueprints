@@ -19,4 +19,4 @@ then:
   transitions: [{object: lamp/1, from: "off", to: "on"}, {object: lamp/2, from: "on", to: "off"}]
   effects: [{do: light, count: 1}, {do: dark, count: 1}]
   decisions: [{after_step: 4, present: [lamp-off, lamp-off], count: 2}]
-  control_plane: {list_returned: [lamp/1, lamp/2, lamp/3], second_tick_writes: 0}
+  state_store: {list_returned: [lamp/1, lamp/2, lamp/3], second_tick_writes: 0}

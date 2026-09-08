@@ -16,4 +16,4 @@ when:
 then:
   transitions: [{object: unit/atlas/status-writer, from: approved, to: in-flight}]
   leases: {unit/atlas/status-writer: {holders_ever: 1}}
-  control_plane: {lease_pushes_attempted: 2, lease_pushes_accepted: 1, loser_fetched_and_read_holder: true, items_created_once: true}
+  state_store: {lease_pushes_attempted: 2, lease_pushes_accepted: 1, loser_fetched_and_read_holder: true, items_created_once: true}

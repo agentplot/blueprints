@@ -15,6 +15,6 @@ when:
   - host: {name: b}
   - tick: {}
 then:
-  control_plane:
+  state_store:
     reader_saw_one_of: [{state: {power: "off"}, flips: 0, applied_responses: []}, {state: {power: "on"}, flips: 1, applied_responses: [chat/1]}]
     reader_never_saw_mixed: true

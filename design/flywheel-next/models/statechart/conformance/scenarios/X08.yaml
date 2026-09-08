@@ -32,4 +32,4 @@ then:
   effects: [{do: end_session, count: 1}, {do: remove_place, count: 1}, {do: start_session, count: 1}, {do: merge_place, count: 0}]
   decisions: [{after_step: 5, count: 0, tail: [dropped]}, {after_step: 8, present: [response-unapplicable], count: 0}]
   states: {work-item/atlas/v/1: {life: in-type}, unit/atlas/v: {life: in-flight}}
-  control_plane: {dictation_asserting_done_applied: false, dictation_asserting_done_reported: true, hand_killed_pane_read_as_response: false, fresh_attempt_for_v: 2}
+  state_store: {dictation_asserting_done_applied: false, dictation_asserting_done_reported: true, hand_killed_pane_read_as_response: false, fresh_attempt_for_v: 2}

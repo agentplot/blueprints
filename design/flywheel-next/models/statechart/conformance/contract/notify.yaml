@@ -14,7 +14,7 @@ when:
   - clock: {advance: 60s}
   - tick: {}
 then:
-  control_plane:
+  state_store:
     notify_latency_bound: 30s
     host_a_notified_objects: [lamp/1]
     host_a_reads_after_notify: 1

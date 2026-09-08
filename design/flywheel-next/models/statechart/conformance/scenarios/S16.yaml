@@ -8,4 +8,4 @@ when:
   - files: {"conformance/scenarios/dictated-keep.yaml": "the scenario a session wrote from the dictation, valid against schema.json"}
   - tick: {run: conformance/scenarios/dictated-keep.yaml}
 then:
-  control_plane: {scenario_valid: true, ran_without_live_service: true, trace_written: "dictated-keep.trace.md", trace_lists: [ticks, guards, transitions, effects, decisions, numbers]}
+  state_store: {scenario_valid: true, ran_without_live_service: true, trace_written: "dictated-keep.trace.md", trace_lists: [ticks, guards, transitions, effects, decisions, numbers]}

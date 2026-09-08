@@ -14,4 +14,4 @@ then:
   effects: []
   effects_closed: true
   writes: {total: 0}
-  control_plane: {read_as_of_named: true, two_reads_equal: true}
+  state_store: {read_as_of_named: true, two_reads_equal: true}

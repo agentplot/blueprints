@@ -13,5 +13,5 @@ when:
   - tick: {}
 then:
   transitions: [{object: lamp/1, from: "off", to: "on"}]
-  control_plane: {writes_attempted: 2, writes_succeeded: 1, loser_told: true, loser_reread_before_deciding: true}
+  state_store: {writes_attempted: 2, writes_succeeded: 1, loser_told: true, loser_reread_before_deciding: true}
   records: {lamp/1: {seq: 1}}
