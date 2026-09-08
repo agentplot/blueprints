@@ -19,7 +19,7 @@ willdan until phase 2 lands and is never modified.
 | repository | what it is |
 |---|---|
 | `agentplot/blueprints` (public) | this design: requirements, surfaces, models, proposals, roadmap, the generic track |
-| `agentplot/flywheel-next` (public) | the binary, open source; the prototype is its seed; work is OpenSpec changes, one per phase (`stage1` is phase 1), each artifact reviewed before the next, `apply` after the tasks review |
+| `agentplot/flywheel-next` (public) | the binary, open source; the prototype is its seed; work is OpenSpec changes, one per phase named for it (`the-loop` is phase 1), each artifact reviewed before the next, `apply` after the tasks review |
 | `agentplot/flywheel-cloud` (private) | the control plane (A.37); source-available to enterprise customers; Switchboard composition |
 
 Each repository's AGENTS.md states the line between them and points back here.
