@@ -160,6 +160,29 @@ the operator may reverse by a response on the file; an entry with
   work, so the git effects exercise merges of trivial content. Stated:
   it is what "no agent running" allows.
 
+- **93a recorded line-and-place effects.** A host that binds
+  `workspace: recorded` performs no git for a line, a place, a merge
+  or a landing; it writes the evidence each proof reads
+  (`place.exists`, `place.merged`, `place.absent`, `line.landed`) and
+  the machines tick over it unchanged. **Decision**: the alternative
+  was to build the `wt` and git binding before there is a bolt to land,
+  or to leave a host calling nothing when an elaboration reaches
+  `placing`. **Open** while it stands: S14, S32, X03 and every other
+  assertion about a real take, merge, rebase, conflict or landing is
+  unproved on such a host, and the run record names the subset the
+  suite ran.
+
+- **93b the operator as the session binding.** Under
+  `runners: {…: operator}` the machinery charges a session with no
+  agent behind it: the place, the work order and the record are the
+  same, and the operator's own `flywheel exit|offer|note|refuse` is the
+  report. **Decision**: 110 already says a person writing the records
+  is curation and 69 already gives the operator a session; 93b states
+  the general case a host with no runner needs. **Open**: start
+  latency (72), the pane's presence evidence and the multiplexer's
+  refusal of a duplicate name (196) are exercised by no host bound this
+  way, so S6's slow start is proved only against the stand-in.
+
 - **95 dictated scenarios.** The dictation-to-data step is a
   session's judgment; the model provides the schema and the runner.
   Rendering "as a trace a person reads" is `<name>.trace.md`. The
@@ -765,6 +788,16 @@ the operator may reverse by a response on the file; an entry with
   unset keeps S13's stale-to-gone path. **Decision**. Whether a
   session's process survives a laptop's sleep is the multiplexer's;
   a pane gone on return is `lost` as before. Stated.
+
+- **253a the unsigned-in page.** While an organization's operators
+  list holds one entry, a self-managed host on the operator's private
+  network serves the page with no sign-in; the entry is `given_by`
+  (153, 236a) and the network is the boundary (155). **Decision**: 253
+  forbids an unauthenticated page and 233's account item is a later
+  phase, so a first build otherwise cannot record who answered while
+  reaching a phone (306). **Open**: the refusal on the second operator
+  and on the first address off the private network is asserted by no
+  scenario yet.
 
 - **256–267 tenancy and encryption.** The stores are named generically
   and bound to no platform: a managed queue, an object store, a key

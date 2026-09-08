@@ -549,9 +549,10 @@ shared, two are the profiles.
 
 | file | binds | same in every profile? |
 |---|---|---|
-| `profiles/host.yaml` | the world the machinery acts on: git, worktrunk `wt` (worktrees and tethered processes), portless, OpenSpec, claim blocks, the manifest's declarations, the repositories' service declarations | yes |
+| `profiles/host.yaml` | the world the machinery acts on: git, worktrunk `wt` (worktrees and tethered processes), portless, OpenSpec, claim blocks, the manifest's declarations, the repositories' service declarations. Its line-and-place half is swappable: a build with no construction may bind those effects to a recorded stand-in that writes each proof's evidence and touches no repository (93a, `workspace: recorded`) | yes |
 | `profiles/sessions.yaml` | the session binding: herdr panes, Claude Code, and the `flywheel exit\|offer\|note\|refuse` command sessions report through (67) | yes |
 | `profiles/sessions-stand-in.yaml` | the same names bound to a scripted player, swapped in by `flywheel scenario run` (93); never loaded by a host | test only |
+| `profiles/sessions.yaml` `runners.operator` | the same names with no agent at all: the machinery prepares the place and records the session, the plan shows it as the operator's to run, and the operator reports through the session command (93b) | yes, host-selected |
 | `profiles/blueprints.yaml` | the blueprints repository as a store: ledger, captures, signals, moves, curation and planning inputs | yes |
 | `profiles/record-derived.yaml` | every evidence and effect that is a function of the object record and its thread, stated over six record operations (`get`, `put`, `append`, `list`, `responses`, `leases`) | yes |
 | `profiles/surfaces.yaml` | the sinks (chat, page, bell) and the review surfaces (plannotator for documents, lavish for rich pages) | yes |
@@ -1573,6 +1574,14 @@ a sandbox (a temporary bare repository; a throwaway GitHub repository),
 with the machine files byte-identical (`check.py` hashes them into the
 run record). A profile is admitted when every scenario passes and
 `check.py` finds its binding complete (`contract/binding.yaml`).
+
+Two bindings beside the state store's are the host's to choose, and
+neither moves a machine: the line-and-place effects may be recorded
+rather than performed while no bolt can land (93a), and a host that
+runs no agent may declare the operator as its session binding (93b).
+A scenario whose assertion is about a real take, merge, rebase,
+conflict or landing is not run against a recorded workspace, so the
+suite a host admits under it is a subset the run record names.
 
 ### 12.9 Where is the line between an engine primitive and a domain atom?
 

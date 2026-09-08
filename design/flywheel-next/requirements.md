@@ -595,6 +595,26 @@ requirements, iterated against the running plan rather than on paper.
     exercises the stores, the engine, the git effects, the plan and the
     page with no agent running. Only the session binding is faked;
     everything the machinery owns is real.
+93a. A build that performs no construction may bind the effects that
+    change a line of work or a place to work in (42) to a recorded
+    stand-in, which writes the evidence each effect's proof reads and
+    touches no repository. The binding is stated like any other (139),
+    the machines and their proofs do not change, and a scenario whose
+    assertion is about a real take, merge, rebase, conflict or landing
+    is not run against it. This is the one binding beside the session's
+    that 93 admits, and it is admitted only while no bolt can land;
+    everything else the machinery owns is real.
+93b. A host may declare the operator as its session binding. Under it
+    the machinery charges a session as it always does — a place
+    prepared, a work order rendered (89), the session recorded — and
+    the plan shows the session as the operator's to run; the operator
+    does the work and reports through the same command a session
+    reports through (67). The exits, the offers and the refusals are
+    the same records, so nothing downstream tells the two apart, and a
+    session charged this way is a with-operator session for every rule
+    that turns on the type (25). The machinery's own sessions (171) are
+    the operator's under the same rule, as 110 already says of
+    curation, and a host so bound starts no agent (69).
 94. A scenario is data: given this evidence, when this tick or event,
     then these transitions, these effects, and these decisions. Scenarios
     live beside the definitions they check.
@@ -1539,6 +1559,14 @@ requirements, iterated against the running plan rather than on paper.
     is never locked out and a single operator is never asked to
     administer roles. An organization created on a hosted tier is a
     Frontegg account whose creating user holds `owner`.
+253a. Until an organization lists more than one operator, a
+    self-managed host may serve the page on the operator's private
+    network with no sign-in. The single entry of the operators list is
+    the identity every response records as given by (153, 236a), the
+    private network is the boundary (155), and the host refuses to
+    serve unsigned-in as soon as a second operator is listed or the
+    page is reached at any address but that network's. This is the one
+    exception to 253, and it closes when the account item (233) exists.
 254. A hosted host degrades rather than fails when Frontegg is
     unreachable. A token already issued is honoured until it expires;
     past that the page is read-only — the status view, the book and the
