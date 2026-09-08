@@ -154,7 +154,8 @@ external id, and never hold their content at all. Their GitHub App, their bot, t
 chain, since our binary still runs there. **Costs** the slowest onboarding, a per-customer
 always-on floor, and a support story where we cannot see what broke. The chat application
 stays ours even here, so plan lines still arrive from one bot and 277 holds; what moves is the
-binary, the keys and the App. **Breaks** tier 1's economics. **Smallest proof:** `flywheel init` into a fresh customer
+binary, the keys and the App. **Breaks** tier 1's economics, which is why it is Enterprise's second shape and never a rung of
+its own. **Smallest proof:** `flywheel init` into a fresh customer
 account reaching a first green tick, with an egress check showing the control plane received
 no record body.
 
@@ -191,7 +192,14 @@ declaration if their concern is GitHub too.
 
 **Design C — your account, our control plane.** Option (e). We provision the binary into their
 account, hold no content, and see organization names, health and billing counters. Their App,
-their bot, their pools, their bill.
+their pools, their bill; the chat application stays ours. Design C is ratified as tier 3's
+second shape, stores and compute (268, 276a), and Enterprise includes it beside design B's
+stores-only shape. The customer chooses between the two in the management console, and under C
+the console also offers the dedicated compute the deployer creates in their account: the
+dispatcher invoked as a function or long-lived on Fargate or EC2, and pools on microVMs, on
+Fargate or on EC2. A long-lived dispatcher holds the Discord gateway socket, so plain free text
+in a channel is answered rather than taken as a slash-command option; pools on EC2 have no
+lifetime ceiling.
 
 | | A | B | C |
 |---|---|---|---|
@@ -203,7 +211,7 @@ their bot, their pools, their bill.
 | customer must do | invite a bot | create one role trusting our issuer | run an AWS account and an App |
 | cost to serve | cents per tenant per month | plus an assume-role and a KMS call per tick | a per-customer floor |
 | ops burden on us | one tagged key per tenant | key homes, federation trust per customer | per-customer provisioning, blind support |
-| fits tiers | 1 and 2 | 2 and 3 | 3 |
+| fits tiers | 1 and 2 | 2 and 3 · tier 3's first shape | tier 3's second shape |
 
 **Recommended default for the hosted tier: Design A.** A key per organization over every warm
 store, unwrapped only while that organization's plan is evaluated, plus minimisation and pool
@@ -240,7 +248,10 @@ we hold no credential of yours — each tick assumes your role with a token mint
 waiting on a deletion job. Every use of your key is logged in your account, not ours.
 If you want our staff out of the picture rather than merely revocable, we run your ticks in an
 enclave that releases your key only to an attested image. If you would rather we held nothing
-at all, we provision the whole thing into your account and keep only your name and your bill.
+at all, we provision the whole thing into your account and keep only your name and your bill —
+that is tier 3's second shape, and Enterprise includes it. There the console also chooses your
+compute: a long-lived dispatcher if you want plain free text answered in a Discord channel,
+pools on EC2 if a session must run for days.
 
 **The upgrade path.** None of this is a migration. Every tier seals the same stores the same
 way and what changes is where the key lives and who may unwrap it. Move from our tagged key
@@ -250,7 +261,9 @@ our ability to help you debug, and we will say so rather than ask you for a copy
 
 ## 6. Requirement clauses
 
-Ratified as requirements A.33, clauses 256–267.
+Ratified as requirements A.33, clauses 256–267. §4's designs are ratified in
+A.34: design A is tiers 1 and 2, design B is tier 3's first shape (276), and
+design C is tier 3's second shape (276a).
 
 The clauses that were drafted here are now in `../requirements.md`; the rest of
 this file is the narrative behind them.

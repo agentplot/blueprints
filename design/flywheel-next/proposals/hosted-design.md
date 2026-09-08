@@ -59,11 +59,11 @@ flowchart LR
 | Receiver function | A stateless function in front of one SQS FIFO queue per organization. Our Slack app, Discord app and GitHub App each have exactly one inbound URL for every workspace, guild and installation, so the payload has to be demultiplexed by workspace id to your queue, and that is compute. It verifies Discord's Ed25519 signature, answers `PING` with `PONG`, defers the interaction inside three seconds, checks Slack's signed request and echoes `url_verification`, checks GitHub's HMAC, and enqueues. It holds an encrypt-side grant on your key and no grant that decrypts, and it reads no queue | An inbound payload once, in transit. Nothing at rest | Always. The second of the two shared components |
 | Page and tool server | The same function, invoked per request, behind the tier's served name. The page is a static bundle at that name; the tool server is the binary's own tool catalogue, reached over HTTP with the Frontegg token by the page and over stdio or in-process, MCP-shaped, by sessions and by the interpreter. The agent is a client of the tools and never serves them. It verifies the token on every call and checks it for the permission the tool declares. A request is a read of the cache and the shared line; a write goes through a tool call, which is captured and ticked like any other | One organization's state for the length of one request | On request. Never a tick |
 | Your queue | One SQS FIFO queue per organization, with the organization as the message group id. Every invoker enqueues here: the receiver, the scheduler, and a write from the page. The queue admits one tick of an organization at a time, so two ticks of yours never overlap | Queued captures and wakes, encrypted under your key. The caller's retry buffer and not state | Always |
-| Dispatcher function | One Lambda function per tier. Each invocation is one organization's tick: it assumes the tier role with a session tag naming that organization, and the role's own policy allows a key or object only when the resource's tag equals the session's, so no key names a role. It is the cloud agent: it fetches, runs one tick, interprets each chat message with one bounded model call and triages the captures whose whole content is in the queue, pushes with compare-and-swap, delivers the plan to the page and the chat, wipes its scratch directory, and exits. Model access is the service's under the tagged role, metered into the plan, or a key you place. A tick has 15 minutes; when the budget is short it carries triage before it carries a reply | During a run: one organization's plaintext state in memory and scratch disk. Nothing between runs by construction: the scratch is wiped and the data key dropped before exit, and the sandbox is reused across organizations | Only while a tick runs. Woken only through your queue |
+| Dispatcher function | One Lambda function per tier. Each invocation is one organization's tick: it assumes the tier role with a session tag naming that organization, and the role's own policy allows a key or object only when the resource's tag equals the session's, so no key names a role. It is the cloud agent: it fetches, runs one tick, interprets each chat message with one bounded model call and triages the captures whose whole content is in the queue, pushes with compare-and-swap, delivers the plan to the page and the chat, wipes its scratch directory, and exits. Which of those two model jobs it runs at all, and at which class, is your plan's fact: Hobby buys neither, so its free text is interpreted in the page's browser and its self-contained captures are triaged in one daily batch at the sweep, and both are in the tick from Pro up. Model access is the service's under the tagged role, metered into the plan against an included budget on the small class, or a key you place, which is welcome on every plan and required on none. A tick has 15 minutes; when the budget is short it carries triage before it carries a reply | During a run: one organization's plaintext state in memory and scratch disk. Nothing between runs by construction: the scratch is wiped and the data key dropped before exit, and the sandbox is reused across organizations | Only while a tick runs. Woken only through your queue |
 | Warm cache | One object per organization in S3, encrypted under that organization's key, holding a git bundle of two sparse shallow clones. The tick downloads it to scratch disk and uploads it back. No VPC, no mount | The state repository and the blueprints repository restricted to the manifest, claims and the flywheel prefix. Never code, never raw capture material | Always, encrypted. Deleted and re-cloned when the organization has been idle |
 | Scheduler | EventBridge Scheduler, one one-shot entry per organization written at the end of each tick from the machines' own timers, create-or-update, deleted after it fires. Its target is your queue and never the function, so a due time is one more invoker that serializes with the rest. 60-second precision; a daily sweep as the backstop | The next due time only | Only while something is due; an idle organization has no entry. That entry is also the dispatcher's liveness: an invoked host is alive while its entry stands or its queue holds items |
 | Pool host | A MicroVM created from the organization's image when the plan approves work: baseline up to 8 GB of memory and 4 vCPU, bursting to 32 GB and 16 vCPU above baseline and billed per second there, 32 GB of disk at the top size, no VPC needed, and a container runtime runs inside it so devcontainer features and Docker-in-Docker work. Fargate with an attached EBS volume in a minimal VPC is the fallback for sessions past eight hours and for an organization that must have its own key on the disk. Its image is built on a pool host or your own machine, never in the dispatcher, because building it reads your repositories' environment declarations. It enrols as a host, clones the code it needs, runs the session in a worktree, pushes the pull request, and is terminated | Your code and your raw capture material for the length of the work, on a disk the platform isolates per host and destroys at terminate under the platform's own encryption. Triage over raw material a capture points at runs here or on your laptop, never in the dispatcher; the dispatcher itself interprets chat and triages self-contained captures in-process | Only while work runs. Terminated at retire, disk destroyed |
-| KMS key | One customer-managed key per organization in the service account, tagged with the organization. The tier role's own IAM policy allows the call only when the resource's organization tag equals the session's principal tag, so no key policy names a role and no count of roles limits it. The receiver may encrypt and never decrypt | Encrypts the queue, the cache, the logs, and what a pool host writes to S3. Not the pool host's own disk, which is under the platform's key | Always. On the enterprise tier the key, the cache and the queue are in your own account, reached by a role you create that trusts our OIDC issuer for your organization. We store no credential; deleting the role ends our access |
+| KMS key | One customer-managed key per organization in the service account, tagged with the organization. The tier role's own IAM policy allows the call only when the resource's organization tag equals the session's principal tag, so no key policy names a role and no count of roles limits it. The receiver may encrypt and never decrypt | Encrypts the queue, the cache, the logs, and what a pool host writes to S3. Not the pool host's own disk, which is under the platform's key | Always. On the enterprise tier the key, the cache and the queue are in your own account, reached by a role you create that trusts our OIDC issuer for your organization; under its second shape the dispatcher that reads them is in your account too. We store no credential; deleting the role ends our access |
 | Chat application | The service's Slack app and Discord app, installed into your workspace. Discord free text reaches it as the string option of a slash command, because plain channel replies arrive only over a gateway socket no function holds; Slack free text arrives over the Events API | The plan lines it sends and the interactions it receives. The first of the two shared components, and it carries only plan text | Always, managed by the platforms |
 
 ## One tick, step by step
@@ -87,6 +87,7 @@ A page request is none of this. It is a read under your Frontegg token against t
 | Inbound webhook and chat payloads | The receiver, in transit; then your queue, encrypted | The receiver sees every organization's, once, and keeps none |
 | Raw capture material | Your laptop, or a bucket you own, or a pool host while triage runs | Never the dispatcher. Never a shared machine |
 | Plan lines in chat | Your Slack or Discord | Your workspace, delivered by the shared application |
+| Model calls | The provider the tier statement names, or yours if you place a key | Plan text and chat messages only. Never transcripts, never code |
 
 ## What an attacker gets
 
@@ -105,8 +106,8 @@ across organizations' ticks in turn, holding nothing between them by constructio
 rather than by isolation. A compromised receiver sees inbound payloads from every
 organization in the clear before they are queued, which is why it holds no
 decrypting grant and no read on any queue. The enterprise tier gives a dispatcher
-function of its own in the service account, or the whole design in your account,
-when policy needs process separation. The upgrades that shrink the rest are cache
+function of its own in the service account, or the whole design in your account
+under tier 3's second shape, when policy needs process separation. The upgrades that shrink the rest are cache
 eviction when idle, Nitro Enclaves with attestation for the dispatcher, and moving
 the key and the warm stores into your own account behind a role you can delete.
 
@@ -134,17 +135,32 @@ no heartbeat.
 | 0 · your computer | Nothing. The binary on your laptop, device-flow sign-in | Nothing |
 | 1 · cloud agent | Sign in to the hosted account, invite the application, install the App on your GitHub organization | Your queue behind the shared receiver, a role and key, a cache object, a scheduler entry, the page and tool server at our served name. No pool: your laptop still builds |
 | 2 · pools | An image and a bound | Tier 1 plus pool hosts on demand |
-| 3 · your account | One IAM role in your AWS account trusting our OIDC issuer for your organization, registered as an identity provider there; your key, cache, queue and pool image live there | The same dispatcher, assuming your role with a per-tick token. Enterprise buys a dispatcher function of its own in our account. We store nothing of yours |
+| 3 · your account, stores only | One IAM role in your AWS account trusting our OIDC issuer for your organization, registered as an identity provider there; your key, cache, queue and pool image live there | The same dispatcher, assuming your role with a per-tick token. Enterprise buys a dispatcher function of its own in our account. We store nothing of yours |
+| 3 · your account, stores and compute | The same role. Our deployer applies the stack into your account through it; you choose the dedicated compute from the console | The control plane only: the registry, the deployer, and the Frontegg environment. The chat application is still ours. Nothing of ours runs in your account |
 
-There is a fourth shape, and it is a design rather than a tier: the binary
-provisioned into your own account, with nothing of ours running there. Its
-control plane is three machines, not one — a **registry** of organization names,
-tier, health and counters; a **deployer** that applies a stack through the role
-you grant and stamps our binary's version; and **identity**, the Frontegg
-environment holding the redirect entry for your host's served name. The chat
-application in that shape is still ours, which is what keeps the plan lines
-arriving from one bot. Until 268 says otherwise, that shape is not a rung on the
-ladder.
+Tier 3 is two shapes, and the management console chooses between them. **Stores
+only** is the row above it: your key, queue, cache and pool image in your
+account, our compute assuming the role you grant. **Stores and compute** moves
+the binary too — provisioned into your own account through that same role, with
+nothing of ours running there. Its control plane is three machines, not one — a
+**registry** of organization names, tier, health and counters; a **deployer**
+that applies a stack through the role you grant and stamps our binary's version;
+and **identity**, the Frontegg environment holding the redirect entry for your
+host's served name. The chat application in that shape is still ours, which is
+what keeps the plan lines arriving from one bot. Enterprise includes both shapes
+(268, 276, 276a).
+
+Under the second shape the console offers dedicated compute, created in your
+account by the deployer through the granted role, each option stated with what it
+changes:
+
+| option | what it changes |
+|---|---|
+| Dispatcher as a Lambda function | The default. Invoked per tick, fifteen minutes, nothing between invocations. Discord free text stays a slash-command option |
+| Dispatcher long-lived, on Fargate or EC2 | It holds the Discord gateway socket, so plain free text in a channel is answered. No fifteen-minute ceiling on a tick |
+| Pools on microVMs | The default. Fast start, a stated maximum lifetime, the disk under the platform's key |
+| Pools on Fargate | An attached EBS volume under your own key, for a tier statement that must name it |
+| Pools on EC2 | No lifetime ceiling, so a session that runs for days needs no fallback placement |
 
 ## Scheduling
 
@@ -164,8 +180,10 @@ written.
 ## The upgrade: federation by OIDC
 
 The default above is the tagged tier role over per-organization keys and objects
-in the service account. The upgrade is the variant where nothing of yours lives
-in the service account at all.
+in the service account. The upgrade is tier 3's first shape, where nothing of
+yours lives in the service account at all. Its second shape goes one step
+further and moves the binary as well; both use the one role below, and the
+sections after this one describe the role, not the shape.
 
 **What changes for you.** You create an IAM OIDC identity provider in your own
 AWS account for our issuer, then one IAM role whose trust policy accepts that
@@ -176,6 +194,13 @@ our issuer has to put your organization there and your trust policy has to allow
 the tagging. Your key, your cache object, your queue and your pool image live in
 your account. The only standing grants there are that role's trust and your key's
 grant to that role. Deleting the role ends our access.
+
+**What changes for us under the second shape.** The deployer applies the stack
+into your account through the same role and stamps our binary's version, so the
+dispatcher, the queue, the cache, the scheduler entry, the page and the tool
+server all run there. We keep the registry, the deployer and the Frontegg
+environment, and the chat application. The dedicated compute options in the
+table above are what the console offers you there.
 
 **What changes for us.** Nothing is stored. The dispatcher's tick assumes your
 role with a per-tick web-identity token, so there is no credential of yours to

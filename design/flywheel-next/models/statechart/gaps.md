@@ -1,6 +1,6 @@
 # Gaps — requirements not satisfied, or found contradictory
 
-By requirement number (1–292 in `requirements.md`). Each entry says what
+By requirement number (1–294 in `requirements.md`). Each entry says what
 the model does instead and why. An entry with **decision** is a judgment
 the operator may reverse by a response on the file; an entry with
 **open** is unsatisfied.
@@ -836,11 +836,19 @@ the operator may reverse by a response on the file; an entry with
   queue per organization consumes, is unfound. **Open**. Whether a
   gateway's direct queue integration needs a data-key grant on the
   queue's key through its integration role is asserted from prior
-  knowledge and unverified. **Open**. Design C, the binary provisioned
+  knowledge and unverified. **Open**. Design C — the binary provisioned
   into the organization's own account behind a control plane of
-  registry, deployer and identity, is a design and not a tier of 268;
-  268 still has four tiers and 281's Enterprise is a dispatcher function
-  of its own in the service account, so C is unratified. **Open**.
+  registry, deployer and identity — is ratified as tier 3's second
+  shape, stores and compute (268, 276a), so tier 3 is now two shapes
+  chosen in the management console and Enterprise includes both.
+  **Decision**. What the second shape costs to support is unbound: the
+  registry's own record, what the deployer does when a customer's stack
+  drifts from the version it stamped, and what support can see when the
+  binary running is one we cannot reach are all unstated. **Open**. The
+  dedicated compute options 276a names — a long-lived dispatcher holding
+  the chat platform's gateway socket, pool hosts on an instance with no
+  lifetime ceiling — are read from the platforms' documentation and
+  verified against none, as 275's microVM facts are. **Open**.
 
 - **279–284 plans and presets.** The payment provider appears in no
   profile: 279 says a plan is billed through one, and nothing binds
@@ -856,6 +864,36 @@ the operator may reverse by a response on the file; an entry with
   bundle has no state of its own; the ruling taken here is that the
   bundle's install effect is not proved until every part it names is
   (284, `package` machine). **Decision**.
+
+- **294 model cost.** 294 settles what a plan buys of the model and
+  closes half of 268–278's model-access gap: the customer's own key is
+  welcome everywhere and required nowhere, each plan includes a budget
+  on the small class, overage is metered through the payment provider,
+  and an organization that places a key is metered on none of the
+  service's usage. Which provider the service's access resolves to is
+  still the tier statement's to name and no profile's. **Open**.
+  Hobby's chat is structured so that no model call
+  is spent on it, and the free text a chat user types is a slash command
+  with arguments; the ruling is that this is a cost decision and not a
+  reduced surface, since the same answers are reachable by button and
+  the page's browser model interprets free text there (216a, 281).
+  **Decision**. What the browser model is — the page's own, the
+  operator's key placed in the page, whatever the browser offers — is
+  216a's gap and not closed here. **Open**. The daily batch is the
+  sweep of 273, so a Hobby capture's triage is up to a day behind the
+  capture; whether the operator is told which captures are waiting for
+  the batch, and where, is the surface owner's. **Open**. The included
+  budget is a count of captures and messages a month
+  (`identity.yaml` `plans.limits` `captures_included`), so a plan that
+  states a count and a provider that bills tokens must be reconciled by
+  a conversion nothing here names. **Open**. `model_class` states the
+  plan's ceiling while 285 lets a type name a class per stage; a type
+  naming a class above its plan's ceiling is refused with the reason
+  (280), and where that refusal is raised — at the type's registration
+  or at the stage's start — is unbound. **Open**. The month's model
+  spend is shown beside the pool hours on a host's runners heading,
+  which needs a reading from the provider at read time, the same
+  unbound cost read as 242's (`surfaces.md` S193). **Open**.
 
 - **285–289 the carried-over rulings.** 285's model class is carried on
   the stage's `agents` param (`machines/stage.yaml`) and on nothing

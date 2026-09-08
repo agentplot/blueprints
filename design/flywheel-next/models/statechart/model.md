@@ -2545,7 +2545,7 @@ idle clocks paused (`sessions.yaml` `session.idle_since`), and `gone`
 covers) or at the 24h bound; its next heartbeat returns it to `alive`
 with nothing to answer.
 
-## 19. Ratified 256–293: tenancy, the hosted tiers and plans
+## 19. Ratified 256–294: tenancy, the hosted tiers, plans and model cost
 
 **A.33 — tenancy and encryption (256–267).** Everything a shared host
 keeps between ticks is sealed under a key naming one organization
@@ -2593,7 +2593,9 @@ re-wraps data keys and changes no history (267).
 
 **A.34 — the hosted tiers (268–278, 290–293).** A host carries a tier, 0 to 3,
 named by what exists on the service side: your computer, the cloud
-agent, pools, your account (268, `host.yaml` `tier`). A tier is a
+agent, pools, your account (268, `host.yaml` `tier`). Tier 3 is two
+shapes chosen in the management console — stores only, and stores and
+compute (276, 276a). A tier is a
 binding and never a second machinery. On tiers 1 to 3 the host is one
 function per tier and each invocation is one organization's tick: it
 assumes the tier's role under the organization's session tag, downloads
@@ -2607,7 +2609,11 @@ and a short budget carries triage before it carries a reply. It runs a model: th
 one bounded call per message on the `inproc` runner, and the triage of
 a self-contained capture whose whole content is already in the queue,
 both bounded per tick with the remainder carried to the next (216,
-217b, 217c, 217e). Two things never run in it, raw-material triage
+217b, 217c, 217e); which of the two a tick runs at all, and at which
+model class, is the plan's fact, and a plan that buys neither has its
+free text interpreted in the page's browser and its self-contained
+captures triaged in one daily batch at the sweep (294, 216a, 273, 281).
+Two things never run in it, raw-material triage
 (263) and every elaboration and construction session; those go to a
 machine of the operator's own or to a pool host. It never holds code,
 because its declaration takes no object kind, no repository and no unit
@@ -2656,7 +2662,7 @@ placement, a container task with a volume under the key. The image is
 built on a pool host or the operator's own machine and never on a shared
 host, because building it reads the repositories' environment
 declarations, and its artifact is written under the organization's key
-(238, 239, 275). Tier 3 is federation:
+(238, 239, 275). Tier 3's first shape, stores only, is federation:
 one role in the organization's own account trusting the service's
 issuer with the organization as subject, assumed per tick with a minted
 token, the key, cache, queue and pool image living there, revocation by
@@ -2668,7 +2674,23 @@ in that account are the role's trust and the key's grant to that role:
 the wake from the organization's queue carries the organization's name
 and nothing else, and the tick reads the queue itself under the assumed
 role, so nothing of the service's stands with a decrypting grant
-(`host.yaml` `tier.federation`). Chat on the hosted
+(`host.yaml` `tier.federation`). Tier 3's second shape, stores and
+compute, moves the binary itself into that account: the deployer applies
+the stack through the same granted role and stamps the binary's version,
+and what stays on the service side is the control plane alone — a
+registry of organization names, tier, health and counters; the deployer;
+and the identity environment holding the redirect entry for the host's
+served name (276a, 208, 243, 291, `host.yaml` `tier.dedicated`). The
+chat application is still the service's, so plan lines still arrive from
+one bot. Under that shape the console offers dedicated compute created
+in the organization's account by the deployer, each option stated with
+what it changes: the dispatcher invoked as a function or long-lived as a
+container, on a container service or on an instance of the
+organization's own, and pools on microVMs, container tasks or such
+instances. A long-lived dispatcher holds the chat platform's gateway
+socket, so free text in a channel is answered where an invoked function
+must take a slash command; a pool host on an instance has no lifetime
+ceiling, so 275's fallback placement is not needed. Chat on the hosted
 tiers may be the service's own Slack or Discord application scoped to
 the organization's channel, carrying plan text and interactions and
 nothing else, the record still naming who responded (277, `sink`
@@ -2725,7 +2747,7 @@ gives it the clock, the interactions endpoint gives it the replies a
 socket would carry, and the served name with an identity check gives it
 the route (217i).
 
-**A.35 — plans and presets (279–284).** A plan is a named set of the
+**A.35 — plans, presets and model cost (279–284, 294).** A plan is a named set of the
 `fw.ff.*` entitlement features plus a few stated limits, held by the
 identity provider and billed through the payment provider, read only
 from the token and the SDK (279, `identity.yaml` `plans`). A
@@ -2734,16 +2756,43 @@ default. A plan hides and it meters and it never authorizes:
 permissions come from roles and are checked on every tool call, and
 exceeding a limit is one attention line and a refused add with the
 reason, never a stopped loop (280). The ladder is five rungs over the
-four tiers: Free at tier 0; Hobby at tier 1, where the interpreter and
-the triage of self-contained captures run in the cloud so chat is fully
-usable with the laptop closed and only raw-material triage, elaboration
-and construction wait for a machine of the operator's own; Pro adding
-pools and the store; Team adding members and the console; Enterprise at
-tier 3 with federation, enterprise sign-in, a dispatcher function of its
-own in the service account and audit export. What each unlocks is the requirement while the price is
+four tiers: Free at tier 0; Hobby at tier 1, cheap to run and needing no
+model key of the operator's, its chat structured so no model call is
+spent on it — answers as buttons, free text a slash command with its
+arguments, the plan delivered at no model cost — its free text
+interpreted in the page by the browser model instead and its
+self-contained captures triaged in one daily batch at the sweep on the
+small model class, with immediate triage and free text in chat unlocked
+by placing a key of the operator's own, and raw-material triage,
+elaboration and construction waiting for a machine of the operator's own
+(216a, 217e, 273, 294); Pro adding
+pools and the store, and including the in-tick interpreter and the
+immediate triage of self-contained captures; Team adding members, the
+console and a job's model class raised above the small one; Enterprise at
+tier 3 in both shapes, with enterprise sign-in, a dispatcher of its own
+— in the service account under the first shape, in the organization's
+own under the second — and audit export. What each unlocks is the requirement while the price is
 not (281, `identity.yaml` `plans.ladder`). Limits are plan metadata and
 not flags: organizations, members, included pool hours, the largest
-pool host (282, `plans.limits`).
+pool host, the captures the model budget covers and the model class the
+in-tick jobs run at (282, 294, `plans.limits`).
+
+Model cost is a plan fact of the same kind (294, `host.yaml`
+`tier.model`). The organization's own model key is welcome on every
+hosted plan and required on none, and an organization that places one is
+metered on none of the service's usage. Each plan includes a budget on
+the small model class for the jobs the dispatcher runs inside a tick,
+reading a capture and answering a message, stated as a count of captures
+and messages a month; usage past it is metered through the payment
+provider like any other overage. The model class per job is the plan's
+ceiling and the type's choice within it, small on Hobby and Pro and
+raisable per unit type, per elaboration type and per stage on Team and
+Enterprise (285, `stage.yaml`). A budget spent is one attention line and
+a slower cadence and never a stopped loop, because the work still
+happens in the page's browser or in the daily batch (280, 216a, 281).
+The runners heading on a host's detail shows which model key that host
+uses and the month's model spend beside the pool hours, and the tier
+statement names which model provider sees plan text and messages (261).
 
 Adding a cloud agent asks nothing about routers or runners, because the
 tier fixes both; one screen asks the chat platform, the meeting source

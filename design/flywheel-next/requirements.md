@@ -1628,10 +1628,16 @@ requirements, iterated against the running plan rather than on paper.
     key, a role, a warm cache object and a scheduler entry for the
     organization, with no pool, so the operator's own machines still
     build. Tier 2 is pools: tier 1 with hosts provisioned on demand from
-    the organization's image (240). Tier 3 is your account: the same
-    machinery, reaching stores the organization owns through a role it
-    grants (267). A tier is a binding named in the manifest (217j) and
-    never a second machinery.
+    the organization's image (240). Tier 3 is your account, in two
+    shapes the organization chooses in the management console: **stores
+    only**, where the key, the capture queue, the warm cache and the
+    pool image live in the organization's account and the service's own
+    compute reaches them through a role the organization grants (267,
+    276); and **stores and compute**, where the binary itself is
+    provisioned into that account through the same granted role and
+    nothing of the service's runs there but the control plane (276a).
+    A tier is a binding named in the manifest (217j) and never a second
+    machinery.
 269. On the hosted tiers the dispatcher is one function per tier, and
     each invocation is one organization's tick. It assumes the tier's
     role under a session tag naming that organization (259), fetches,
@@ -1647,7 +1653,11 @@ requirements, iterated against the running plan rather than on paper.
     217c), and the triage of a self-contained capture, one whose whole
     content is already in the queue such as a chat message or a webhook
     body, runs beside it (217e); both are bounded per tick, and what
-    does not fit is carried to the next tick. Two things never run in
+    does not fit is carried to the next tick. Which of the two a tick
+    runs at all, and at which model class, is the plan's fact (294): a
+    plan that buys neither has its free text interpreted in the page
+    (216a) and its self-contained captures triaged in one daily batch
+    at the sweep (273, 281). Two things never run in
     it: triage over raw material a capture points at, which is a
     transcript on the operator's own machine or in a store they own
     (263), and every elaboration and construction session. Those run on
@@ -1656,7 +1666,7 @@ requirements, iterated against the running plan rather than on paper.
     repository and no unit type (217), so there is nothing for it to
     clone. A failure in one organization's tick ends that tick and no
     other (218). Model access on a hosted tier is the service's, carried
-    by the tier role and metered into the plan (279), unless the
+    by the tier role and metered into the plan (279, 294), unless the
     organization places a model key of its own instead (207); which
     model provider sees plan text and messages is named in the tier
     statement (261).
@@ -1726,7 +1736,8 @@ requirements, iterated against the running plan rather than on paper.
     operator's own machine and never on a shared host, because building
     it reads the repositories' environment declarations (238, 239), and
     its artifact is stored under the organization's key (256).
-276. Tier 3 is federation. The organization creates one role in its own
+276. Tier 3's first shape, stores only, is federation. The organization
+    creates one role in its own
     account whose trust admits the service's issuer with the
     organization as the subject, and the key, the warm cache, the
     capture queue and the pool image live there (267). Each tick assumes
@@ -1745,6 +1756,27 @@ requirements, iterated against the running plan rather than on paper.
     else, and the tick reads the queue itself under the assumed role, so
     nothing of the service's stands with a decrypting grant on the
     organization's key and deleting the role ends every path.
+276a. Tier 3's second shape is stores and compute. The binary is
+    provisioned into the organization's own account through the same
+    role it grants (276), and nothing of the service's runs there.
+    What stays on the service side is the control plane and no more: a
+    **registry** of organization names, tier, health and counters; a
+    **deployer**, which applies the stack through the granted role and
+    stamps the binary's version (208); and **identity**, the provider's
+    environment holding the redirect entry for the host's served name
+    (243, 244, 291). The chat application is still the service's (277,
+    290), so plan lines arrive from one bot. Under this shape the
+    management console offers dedicated compute, created in the
+    organization's account by the deployer through the same role, and
+    each option is stated with what it changes: the dispatcher as an
+    invoked function (269) or as a long-lived container, on a container
+    service or on an instance of the organization's own; and pools on
+    microVMs, on container tasks or on such instances (275). A
+    long-lived dispatcher holds the chat platform's gateway socket, so
+    free text in a channel is answered where an invoked function must
+    take a slash command (277); pool hosts on an instance have no
+    lifetime ceiling, so the fallback placement 275 names is not
+    needed. Enterprise includes both shapes (281).
 277. On the hosted tiers the chat sink's identity may be the service's
     own Slack or Discord application, installed into the organization's
     workspace and scoped to the organization's channel, beside the bot
@@ -1830,23 +1862,39 @@ requirements, iterated against the running plan rather than on paper.
     unlocks is a requirement while its price is not. **Free** is tier 0:
     the binary, its sign-in, the organization's own App and bot, every
     package and every surface, with nothing running on the service side.
-    **Hobby** is tier 1: the service's App and bot, with the interpreter
-    and the triage of self-contained captures running in the cloud, so
-    chat is fully usable with the laptop closed: a decision is answered
-    by button, by slash command, and in Slack by free text (277), a
-    capture is written as text, and the query tools answer (269). The
-    plan reaches the organization's chat and the page at a served name
-    (291). What waits for the operator's own
+    **Hobby** is tier 1, and it is cheap to run and needs no model key
+    of the operator's. Its chat is structured: a decision carries its
+    answers as buttons, and free text in chat is a slash command with
+    its arguments (`/fw yes 412`, `/fw capture <text>`), so no model
+    call is spent on chat and the plan delivered to chat costs no model
+    at all (277). Free-text interpretation on Hobby is the page's
+    instead: the model running in the page's browser does the
+    interpreter's job there, at no cost to the service (216a). A
+    capture that arrives as a chat interaction or a webhook is captured
+    at once, which needs no model, and a self-contained capture (217e)
+    is triaged in one daily batch at the sweep (273) on the small model
+    class, inside a stated included budget of captures a month (294).
+    Immediate triage, and free-text interpretation in chat, are
+    unlocked on Hobby by placing a model key of the operator's own
+    (207) and are included from Pro up. So chat is usable with the
+    laptop closed, and the plan reaches the organization's chat and the
+    page at a served name (291). What waits for the operator's own
     machine or a pool host is raw-material triage, elaboration and
     construction. **Pro** adds pools with an included allowance and
-    metered overage, the package store, the book view and the presets.
+    metered overage, the package store, the book view and the presets,
+    and includes the immediate triage of self-contained captures and
+    the interpretation of free text in chat, both in the tick (269).
     **Team** adds members with roles, ownership and assignment (237),
-    identity administration (255), the management console, and a higher
-    ceiling on a pool host. **Enterprise** is tier 3: federation into
-    the organization's own account (276), enterprise sign-in and
-    provisioning through the organization's own directory, a dispatcher
-    function of its own in the service account, audit export and a
-    private pool image.
+    identity administration (255), the management console, a higher
+    ceiling on a pool host, and the raising of a job's model class
+    above the small one (294). **Enterprise** is tier 3 in both its
+    shapes (268, 276, 276a): the organization's own account holding the
+    stores alone, or the stores and the compute with the dedicated
+    compute options the console offers; enterprise sign-in and
+    provisioning through the organization's own directory; a dispatcher
+    of its own, in the service account under the first shape and in the
+    organization's own under the second; audit export and a private
+    pool image.
 282. Limits are plan metadata and not flags: how many organizations, how
     many members, how many pool hours are included, and how much memory
     a pool host may take. The tool server reads them beside the flags
@@ -1865,6 +1913,23 @@ requirements, iterated against the running plan rather than on paper.
     no more. The shipped set covers the common cloud-agent shapes, and
     an organization publishes its own bundles in the store like any
     package.
+294. On every hosted plan the organization's own model key is welcome
+    and never required (207). Each plan includes a budget on the small
+    model class for the jobs the dispatcher runs inside a tick, reading
+    a capture and answering a message (217b, 269), stated as a count of
+    captures and messages a month; usage past the budget is metered
+    through the payment provider like any other overage (279, 282), and
+    an organization that places a key of its own is metered on none of
+    it. The model class per job is a plan fact, not a flag: small on
+    Hobby and on Pro, and raisable per unit type, per elaboration type
+    and per stage on Team and Enterprise (285). Where a plan buys no
+    in-tick model at all the work still happens, in the page's browser
+    (216a) or in the daily batch (281), so a budget spent is one
+    attention line and a slower cadence and never a stopped loop (280).
+    The surface that lists a host's runners shows which model key that
+    host uses and the month's model spend beside the pool hours, and
+    the tier statement names which model provider sees plan text and
+    messages (261).
 
 ### A.36 Rulings carried over
 

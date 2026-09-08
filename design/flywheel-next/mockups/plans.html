@@ -486,10 +486,11 @@
           <li>Captures and chat while your machines sleep</li>
           <li>The plan delivered in Slack or Discord</li>
           <li>The page at a served name</li>
+          <li>No API key needed &middot; chat by buttons and slash commands &middot; captures triaged daily</li>
         </ul>
         <div class="limits">
           <span class="lab">Limits</span>
-          <p>1 organization · 1 member<br>no pools</p>
+          <p>1 organization · 1 member<br>no pools<br>captures included per month</p>
         </div>
       </div>
 
@@ -504,6 +505,7 @@
           <li>Pools, with an included hour allowance and metered overage</li>
           <li>The package store and cloud-agent presets</li>
           <li>The book view over your own books</li>
+          <li>Immediate triage and free text in chat</li>
         </ul>
         <div class="limits">
           <span class="lab">Limits</span>
@@ -537,9 +539,10 @@
         <div class="rule"></div>
         <ul>
           <li>Everything in Team</li>
-          <li>Your own AWS account by OIDC federation</li>
+          <li>Your account: stores only, or stores and compute</li>
+          <li>Dedicated dispatcher and pools on Fargate or EC2, created from the console</li>
           <li>SSO and SCIM through your identity provider</li>
-          <li>A dedicated dispatcher, audit export, private pool images, an SLA</li>
+          <li>Audit export, private pool images, an SLA</li>
         </ul>
         <div class="limits">
           <span class="lab">Limits</span>
@@ -620,6 +623,24 @@
             <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">yes</td><td class="yes">yes</td>
           </tr>
 
+          <tr class="group"><th colspan="6">The model</th></tr>
+          <tr>
+            <th>Your own key <code>welcome, never required</code></th>
+            <td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td>
+          </tr>
+          <tr>
+            <th>Included model budget <code>model_usage</code></th>
+            <td class="no">—</td><td>captures per month, small class</td><td>captures and messages, small class</td><td>pooled, class raisable</td><td>custom</td>
+          </tr>
+          <tr>
+            <th>Free text in chat</th>
+            <td class="no">your own bot</td><td class="no">slash command; free text in the page</td><td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td>
+          </tr>
+          <tr>
+            <th>Triage cadence</th>
+            <td>your machine</td><td>daily batch</td><td class="yes">immediate</td><td class="yes">immediate</td><td class="yes">immediate</td>
+          </tr>
+
           <tr class="group"><th colspan="6">People</th></tr>
           <tr>
             <th>Members and roles <code>fw.ff.members</code></th>
@@ -644,6 +665,10 @@
             <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">yes</td>
           </tr>
           <tr>
+            <th>Dedicated compute <code>fw.ff.dedicated-compute</code></th>
+            <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">dispatcher and pools on Fargate or EC2</td>
+          </tr>
+          <tr>
             <th>Audit export, private pool images, SLA</th>
             <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">yes</td>
           </tr>
@@ -664,6 +689,14 @@
           <tr>
             <th>Pool hours <code>pool_hours_included</code></th>
             <td class="no">—</td><td class="no">—</td><td>included, then metered</td><td>pooled across seats</td><td>custom</td>
+          </tr>
+          <tr>
+            <th>Captures included <code>captures_included</code></th>
+            <td class="no">—</td><td>included, then next month</td><td>included, then metered</td><td>pooled across seats</td><td>custom</td>
+          </tr>
+          <tr>
+            <th>Model class <code>model_class</code></th>
+            <td class="no">—</td><td>small</td><td>small</td><td>raisable per type and stage</td><td>raisable per type and stage</td>
           </tr>
         </tbody>
       </table>
@@ -781,11 +814,11 @@
         <h4>Your account</h4>
         <dl>
           <dt>You add</dt>
-          <dd>One IAM role in your AWS account trusting our OIDC issuer for your organization.</dd>
+          <dd>One IAM role in your AWS account trusting our OIDC issuer, then a shape: stores only, or stores and compute.</dd>
           <dt>On our side</dt>
-          <dd>The same dispatcher, assuming your role with a per-tick token. We store no credential.</dd>
+          <dd>Stores only: the same dispatcher, assuming your role with a per-tick token. Stores and compute: the control plane alone — registry, deployer, identity — and the chat application.</dd>
           <dt>Your code</dt>
-          <dd>Your key, cache, queue and pool image all live in your account. Deleting the role ends our access.</dd>
+          <dd>Your key, cache, queue and pool image all live in your account, and under the second shape the binary does too. Deleting the role ends our access.</dd>
         </dl>
       </div>
     </div>
@@ -831,7 +864,9 @@
         <h4>Team <span class="arrow">→</span> Enterprise</h4>
         <p>
           One role in your AWS account trusting our issuer. The key and the stores move into
-          your account, and nothing is re-keyed by hand.
+          your account, and nothing is re-keyed by hand. The same role moves the compute too if
+          you take the second shape, and the console then offers a dedicated dispatcher and pools
+          on Fargate or EC2.
         </p>
       </div>
     </div>
@@ -842,7 +877,7 @@
   <div class="wrap">
     <div class="sec-head">
       <div class="kicker">Questions</div>
-      <h2>The four we are asked most</h2>
+      <h2>The five we are asked most</h2>
     </div>
 
     <div class="faq">
@@ -851,6 +886,20 @@
         <p>
           <b>No.</b> Nothing runs on our side at tier 0, and there is no plan object to read.
           Instrumentation is opt-in, and off until you turn it on.
+        </p>
+      </div>
+      <div class="qa">
+        <h4>Do I need an API key?</h4>
+        <p>
+          <b>No, on any plan. Your own key is welcome everywhere and required nowhere.</b>
+          Hobby needs none because it spends almost no model: a decision carries its answers as
+          buttons, free text in chat is a slash command with its arguments
+          (<code>/fw yes 412</code>, <code>/fw capture &lt;text&gt;</code>), and delivering the
+          plan costs no model call at all. Free text you type on the page is interpreted by the
+          model in your browser, at no cost to us, and self-contained captures are triaged in one
+          daily batch on the small model class inside the included budget. Placing your own key on
+          Hobby unlocks immediate triage and free text in chat; both are included from Pro up. Past
+          the budget you get one attention line and a slower cadence, never a stopped loop.
         </p>
       </div>
       <div class="qa">
