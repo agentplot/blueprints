@@ -23,7 +23,8 @@ Sources and precedence:
 | `models/statechart/machines/pool.yaml`, `machines/engine/sink.yaml` | the pool's image and hosts regions; one sink per member with its own mark |
 | `models/dispatch/model.md` §1–§5 | the vocabulary of a host's parts: presenter, capture endpoint, triage, interpreter, adapters, runners, placements |
 | `plan-mockup.md` | the seed: organization willdan, 2026-09-04 07:40, decisions 412–421 |
-| `mockups/rail-and-board.html` | the direction for the plan page; illustrates §1.1–§1.2, §1.4–§1.12 |
+| `mockups/rail-and-board.html` | the direction for the plan page; illustrates §1.1–§1.2, §1.4–§1.11, and §1.13's switcher, identity block and sign-out. It carries no management surface: hosts, the store, the settings form and the wizards are the console's |
+| `mockups/management-console.html` | the management surfaces, drawn in Cloudscape; illustrates §1.12, §1.13's settings, hosts and organization-store entries, and §1.14, with "+ organization" and "retire organization" beside "+ host" |
 | `mockups/context-map-ddd.html` | the adopted map model drawn at both levels; illustrates §1.3 |
 | retired mockups (workbench, queue, deck, river, v1 context map) | removed from the tree on 2026-09-07; §5 cites them by name for the rulings they produced; their seed lives in rail-and-board and `plan-mockup.md` |
 
