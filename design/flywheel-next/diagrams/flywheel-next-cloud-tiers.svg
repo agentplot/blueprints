@@ -118,12 +118,15 @@
   <text x="1584" y="614" font-size="9" fill="#999">so no count of roles limits it</text>
   <text x="1584" y="646" font-size="9" fill="#666">it encrypts the queue, the</text>
   <text x="1584" y="660" font-size="9" fill="#666">cache, the pool disk, the logs</text>
-  <text x="1584" y="692" font-size="9" fill="#999">on the enterprise tier the key</text>
-  <text x="1584" y="706" font-size="9" fill="#999">is in your account and we</text>
-  <text x="1584" y="720" font-size="9" fill="#999">hold a grant you can revoke</text>
-  <text x="1584" y="752" font-size="9" fill="#999">there is no human path to</text>
-  <text x="1584" y="766" font-size="9" fill="#999">the cache: a stolen disk or</text>
-  <text x="1584" y="780" font-size="9" fill="#999">snapshot is ciphertext</text>
+  <text x="1584" y="680" font-size="9" fill="#999">there is no human path to the</text>
+  <text x="1584" y="694" font-size="9" fill="#999">cache: a stolen disk is ciphertext</text>
+  <text x="1584" y="716" font-size="9" fill="#999">on the enterprise tier the key,</text>
+  <text x="1584" y="730" font-size="9" fill="#999">the cache and the queue are in</text>
+  <text x="1584" y="744" font-size="9" fill="#999">your own account, reached by a</text>
+  <text x="1584" y="758" font-size="9" fill="#999">role you create that trusts our</text>
+  <text x="1584" y="772" font-size="9" fill="#999">OIDC issuer for your organization</text>
+  <text x="1584" y="786" font-size="9" fill="#999">we store no credential, and</text>
+  <text x="1584" y="800" font-size="9" fill="#999">deleting the role ends our access</text>
 
   <!-- ===== EDGES ===== -->
   <!-- inbound to receiver -->
@@ -187,8 +190,9 @@
   <text x="920" y="920" font-size="9" fill="#666">an image and a bound</text>
   <text x="920" y="936" font-size="9" font-weight="700" fill="#3a6a99">tier 1 plus pool hosts on demand</text>
   <text x="1342" y="902" font-size="10.5" font-weight="700" fill="#333">3 · your account</text>
-  <text x="1342" y="920" font-size="9" fill="#666">your AWS account and your key</text>
-  <text x="1342" y="936" font-size="9" font-weight="700" fill="#3a6a99">provisioning only — we hold names, health and billing</text>
+  <text x="1342" y="918" font-size="8.5" fill="#666">one IAM role in your AWS account trusting our OIDC issuer;</text>
+  <text x="1342" y="930" font-size="8.5" fill="#666">your key, cache, queue and pool image live there</text>
+  <text x="1342" y="944" font-size="9" font-weight="700" fill="#3a6a99">the same dispatcher assuming your role with a per-tick token; we store nothing of yours</text>
 
   <!-- ============ PROMISE ============ -->
   <rect x="60" y="970" width="1680" height="80" rx="10" fill="#eef2f6"/>
