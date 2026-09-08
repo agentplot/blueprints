@@ -135,10 +135,13 @@ Tier 1 answers "one step above using your own computer": sign in with GitHub, th
 
 ## Recommended path
 
-1. Ship the batch-tick dispatcher first: one process, many organizations, git-only unchanged, each with its own root and heartbeat. Smallest change, and it removes the idling VM.
+The physical design this path builds toward is `hosted-design.md`: the machines
+that exist per organization, what each holds, and one tick step by step.
+
+1. Ship the dispatcher first: one Lambda function per tier, each invocation one organization's tick, assuming the tier role with a session tag naming that organization so tagged keys and objects admit only the matching principal. Git-only unchanged, each organization with its own root and heartbeat. It removes the idling VM, and it keeps no state between invocations: the warm cache is one S3 object per organization, a git bundle of two sparse clones downloaded to scratch disk and uploaded back, with no VPC and no mount.
 2. Make notify primary and the poll a tiered backstop, with the due index declared as a cache. This flattens the curve; do it before tenant count makes it urgent.
 3. Serve tier 1's chat with the platform's own bot in interactions mode, Slack fully and Discord for controls, so no tenant places a secret and no socket is held per tenant.
-4. Leave work on pools unchanged with `retire_after: 0`, and measure the cold start before promising per-run billing.
+4. Run pools as Lambda MicroVMs from the organization's image, up to 32 GB of memory and disk with Docker inside and no VPC, one organization per host, terminated at retire with `retire_after: 0`. Fargate in a minimal VPC is the fallback for sessions past eight hours. Measure the cold start before promising per-run billing.
 5. Write the object-store profile only when the git host's economics break, near 10,000 tenants, as a C.3 profile passing the conformance suite — never as a weakening of C.2.
 
 ---
