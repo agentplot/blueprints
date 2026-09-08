@@ -1,0 +1,889 @@
+<title>Flywheel Plans</title>
+<!--
+  Plans — the commercial ladder as a marketing page.
+  Drawn from proposals/plans.md (the ladder, entitlements, presets, journeys) and
+  proposals/hosted-design.md (the promise, the tiers, where your data is).
+  Prices are illustrative placeholders; the requirement is the ladder, not the number.
+-->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #e9edee;
+    --surface: #ffffff;
+    --surface-2: #f3f6f6;
+    --ink: #101a1e;
+    --muted: #566269;
+    --faint: #7c8891;
+    --line: #ccd5d6;
+    --line-soft: #dfe6e6;
+    --accent: #0a6a60;
+    --accent-ink: #ffffff;
+    --accent-wash: #dcefec;
+    --ember: #a8501c;
+    --ember-wash: #f5e5da;
+    --shadow: 0 1px 0 rgba(16,26,30,.06), 0 8px 24px -18px rgba(16,26,30,.5);
+    --radius: 10px;
+    --sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --display: "Space Grotesk", "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0c1214;
+      --surface: #131c1f;
+      --surface-2: #182225;
+      --ink: #e4ecec;
+      --muted: #97a5a8;
+      --faint: #7c8b8e;
+      --line: #26343a;
+      --line-soft: #1e2a2e;
+      --accent: #58cdba;
+      --accent-ink: #06201d;
+      --accent-wash: #14322f;
+      --ember: #e19c68;
+      --ember-wash: #33241a;
+      --shadow: 0 1px 0 rgba(0,0,0,.4), 0 10px 30px -20px rgba(0,0,0,.9);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0c1214;
+    --surface: #131c1f;
+    --surface-2: #182225;
+    --ink: #e4ecec;
+    --muted: #97a5a8;
+    --faint: #7c8b8e;
+    --line: #26343a;
+    --line-soft: #1e2a2e;
+    --accent: #58cdba;
+    --accent-ink: #06201d;
+    --accent-wash: #14322f;
+    --ember: #e19c68;
+    --ember-wash: #33241a;
+    --shadow: 0 1px 0 rgba(0,0,0,.4), 0 10px 30px -20px rgba(0,0,0,.9);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  h1, h2, h3, h4 { font-family: var(--display); font-weight: 600; letter-spacing: -0.015em; margin: 0; }
+
+  .kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  /* ---- masthead ---- */
+
+  header.top {
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    position: relative;
+  }
+  .top-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 24px;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+  .mark { display: flex; align-items: baseline; gap: 9px; }
+  .mark .dot {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-wash);
+    align-self: center;
+  }
+  .mark b { font-family: var(--display); font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+  .mark span { font-family: var(--mono); font-size: 11px; color: var(--faint); letter-spacing: .08em; }
+
+  .theme-toggle {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  .theme-toggle:hover { color: var(--ink); border-color: var(--accent); }
+
+  /* ---- hero ---- */
+
+  .hero {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    padding: 64px 0 56px;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 5.2vw, 54px);
+    line-height: 1.06;
+    max-width: 17ch;
+    margin: 14px 0 0;
+  }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero .lede {
+    margin: 22px 0 0;
+    font-size: clamp(16px, 1.7vw, 19px);
+    line-height: 1.5;
+    color: var(--muted);
+    max-width: 60ch;
+  }
+  .promise {
+    margin: 30px 0 0;
+    border-left: 3px solid var(--accent);
+    background: var(--accent-wash);
+    padding: 16px 20px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    max-width: 68ch;
+    font-size: 15px;
+  }
+  .promise b { font-family: var(--display); }
+  .hero-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    margin-top: 26px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .hero-facts span::before { content: "· "; color: var(--accent); }
+
+  /* ---- sections ---- */
+
+  section { padding: 60px 0; }
+  section + section { border-top: 1px solid var(--line-soft); }
+  .sec-head { max-width: 62ch; margin-bottom: 30px; }
+  .sec-head h2 { font-size: clamp(22px, 3vw, 30px); margin-top: 8px; }
+  .sec-head p { color: var(--muted); margin: 10px 0 0; }
+
+  /* ---- plan cards ---- */
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+    align-items: stretch;
+  }
+  @media (min-width: 1040px) { .cards { grid-template-columns: repeat(5, 1fr); } }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px 18px 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow);
+  }
+  .card.featured { border-color: var(--accent); }
+  .card .tier {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-wash);
+    border-radius: 4px;
+    padding: 3px 7px;
+    align-self: flex-start;
+  }
+  .card h3 { font-size: 21px; margin: 12px 0 2px; }
+  .card .who { color: var(--muted); font-size: 13.5px; min-height: 40px; }
+  .price {
+    font-family: var(--display);
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin: 14px 0 2px;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .price small { font-family: var(--mono); font-size: 11px; font-weight: 400; color: var(--faint); letter-spacing: .04em; }
+  .price.talk { font-size: 24px; }
+  .rule { height: 1px; background: var(--line-soft); margin: 16px 0 14px; }
+  .card ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; font-size: 13.5px; }
+  .card ul li { display: flex; gap: 8px; align-items: flex-start; }
+  .card ul li::before {
+    content: "";
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--accent);
+    margin-top: 7.5px;
+    flex: none;
+  }
+  .limits {
+    margin-top: auto;
+    padding-top: 16px;
+  }
+  .limits .lab {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    display: block;
+    margin-bottom: 5px;
+  }
+  .limits p { margin: 0; font-family: var(--mono); font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  .footnote {
+    margin-top: 18px;
+    font-size: 12.5px;
+    color: var(--faint);
+    font-style: italic;
+  }
+
+  /* ---- comparison table ---- */
+
+  .scroller { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: 13.5px; }
+  thead th {
+    text-align: left;
+    font-family: var(--display);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 13px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface-2);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+  }
+  thead th:first-child { width: 30%; }
+  tbody td, tbody th {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line-soft);
+    vertical-align: top;
+    text-align: left;
+  }
+  tbody th { font-weight: 500; font-size: 13.5px; }
+  tbody th code { font-family: var(--mono); font-size: 11.5px; color: var(--faint); display: block; }
+  tbody td { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  tbody tr:last-child td, tbody tr:last-child th { border-bottom: 0; }
+  tr.group th {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--faint);
+    background: var(--surface-2);
+    padding-top: 12px; padding-bottom: 8px;
+  }
+  .yes { color: var(--accent); font-weight: 500; }
+  .no { color: var(--faint); opacity: .6; }
+
+  /* ---- presets ---- */
+
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+  .tile {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px 18px 18px;
+  }
+  .tile.picked { border-color: var(--accent); background: var(--surface); box-shadow: inset 0 0 0 1px var(--accent); }
+  .tile h4 { font-size: 16px; margin-bottom: 4px; }
+  .tile .parts { font-family: var(--mono); font-size: 11.5px; color: var(--faint); margin: 8px 0 0; }
+  .tile p.desc { margin: 8px 0 0; font-size: 13.5px; color: var(--muted); }
+  .pickmark { float: right; font-family: var(--mono); font-size: 11px; color: var(--accent); }
+
+  .selectors {
+    margin-top: 16px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px;
+  }
+  .sel-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 0; }
+  .sel-row + .sel-row { border-top: 1px solid var(--line-soft); }
+  .sel-row .lab {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    width: 88px;
+    flex: none;
+  }
+  .chip {
+    font-size: 13px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 4px 12px;
+    color: var(--muted);
+    background: var(--surface-2);
+  }
+  .chip.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 500; }
+  .advanced { margin: 14px 0 0; font-family: var(--mono); font-size: 11.5px; color: var(--faint); }
+
+  /* ---- data strip ---- */
+
+  .strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+  .strip > div { padding: 18px; border-right: 1px solid var(--line-soft); }
+  .strip > div:last-child { border-right: 0; }
+  .strip h4 { font-size: 15px; margin: 8px 0 8px; }
+  .strip dl { margin: 0; font-size: 13px; }
+  .strip dt {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-top: 12px;
+  }
+  .strip dd { margin: 3px 0 0; color: var(--muted); }
+  .strip .n { font-family: var(--mono); font-size: 11px; color: var(--accent); }
+
+  /* ---- stepper ---- */
+
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px 18px 18px;
+    position: relative;
+  }
+  .step .num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    width: 22px; height: 22px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .step h4 { font-size: 15px; margin: 12px 0 6px; font-family: var(--mono); font-weight: 500; letter-spacing: 0; }
+  .step h4 .arrow { color: var(--accent); padding: 0 4px; }
+  .step p { margin: 0; font-size: 13.5px; color: var(--muted); }
+
+  /* ---- faq ---- */
+
+  .faq { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px 32px; }
+  .qa h4 { font-size: 15.5px; margin-bottom: 6px; }
+  .qa p { margin: 0; color: var(--muted); font-size: 14px; }
+  .qa p b { color: var(--ink); font-weight: 600; }
+
+  /* ---- footer ---- */
+
+  footer {
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+    padding: 28px 0 44px;
+    color: var(--faint);
+    font-size: 12.5px;
+  }
+  footer .f-inner { display: flex; flex-wrap: wrap; gap: 12px 26px; justify-content: space-between; }
+  footer .mono { font-family: var(--mono); }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 0 16px; }
+    .top-inner { padding: 12px 16px; }
+    .hero { padding: 44px 0 40px; }
+    section { padding: 44px 0; }
+    .strip > div { border-right: 0; border-bottom: 1px solid var(--line-soft); }
+  }
+</style>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="mark">
+      <div class="dot"></div>
+      <b>the flywheel</b>
+      <span>by agentplot</span>
+    </div>
+    <button class="theme-toggle" onclick="(function(r){r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark';})(document.documentElement)">theme</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="kicker">Plans</div>
+    <h1>The loop keeps turning while your laptop <em>sleeps</em>.</h1>
+    <p class="lede">
+      The flywheel is an always-on planning loop over your GitHub repositories. It takes in
+      your signals — meetings, chat, pull requests — turns them into a plan you answer one
+      line at a time, and drains the approved work through agent sessions on your machines
+      or in the cloud.
+    </p>
+    <p class="promise">
+      <b>The promise, in one sentence.</b> Nothing of yours is ever in a process or on a disk
+      that serves another organization. Your code exists only on a machine created for your
+      work and destroyed when it ends. Everything we keep between ticks is encrypted at rest
+      under a key that exists for your organization alone, and is unwrapped only while your
+      tick runs.
+    </p>
+    <div class="hero-facts">
+      <span>state lives in your GitHub, in plaintext, always</span>
+      <span>a plan never authorizes; roles do</span>
+      <span>exceeding a limit is one attention line, never a stopped loop</span>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">The ladder</div>
+      <h2>Five rungs, four tiers</h2>
+      <p>
+        A tier is what exists on the service side. A plan is how that tier is sold: a set of
+        entitlements and a few stated limits. Self-managed has no plan object at all — it is
+        the binary on your computer, and every flag stands at its default there.
+      </p>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="tier">0 · your computer</div>
+        <h3>Free</h3>
+        <div class="who">One person on their own hardware.</div>
+        <div class="price">$0<small>forever</small></div>
+        <div class="rule"></div>
+        <ul>
+          <li>The binary, with GitHub device-flow sign-in</li>
+          <li>Your own GitHub App and your own chat bot</li>
+          <li>Every package, every surface</li>
+          <li>The book view and explore</li>
+        </ul>
+        <div class="limits">
+          <span class="lab">Limits</span>
+          <p>None we enforce.<br>Nothing runs on our side.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="tier">1 · cloud agent</div>
+        <h3>Hobby</h3>
+        <div class="who">One person who closes the laptop.</div>
+        <div class="price">$15<small>/mo</small></div>
+        <div class="rule"></div>
+        <ul>
+          <li>Our bot and our GitHub App</li>
+          <li>Captures and chat while your machines sleep</li>
+          <li>The plan delivered in Slack or Discord</li>
+          <li>The page at a served name</li>
+        </ul>
+        <div class="limits">
+          <span class="lab">Limits</span>
+          <p>1 organization · 1 member<br>no pools</p>
+        </div>
+      </div>
+
+      <div class="card featured">
+        <div class="tier">1 + 2 · pools</div>
+        <h3>Pro</h3>
+        <div class="who">One person with more to build.</div>
+        <div class="price">$40<small>/mo</small></div>
+        <div class="rule"></div>
+        <ul>
+          <li>Everything in Hobby</li>
+          <li>Pools, with an included hour allowance and metered overage</li>
+          <li>The package store and cloud-agent presets</li>
+          <li>The book view over your own books</li>
+        </ul>
+        <div class="limits">
+          <span class="lab">Limits</span>
+          <p>3 organizations · 1 member<br>pool hosts up to 8 GB<br>included pool hours</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="tier">2 · pools</div>
+        <h3>Team</h3>
+        <div class="who">A team that shares the loop.</div>
+        <div class="price">$30<small>/seat/mo</small></div>
+        <div class="rule"></div>
+        <ul>
+          <li>Everything in Pro</li>
+          <li>Members with roles, ownership and assignment</li>
+          <li>The management console and identity administration</li>
+          <li>Priority ticks</li>
+        </ul>
+        <div class="limits">
+          <span class="lab">Limits</span>
+          <p>per seat · unlimited organizations<br>pools up to 32 GB<br>pooled pool hours</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="tier">3 · your account</div>
+        <h3>Enterprise</h3>
+        <div class="who">A company with a security policy.</div>
+        <div class="price talk">Talk to us</div>
+        <div class="rule"></div>
+        <ul>
+          <li>Everything in Team</li>
+          <li>Your own AWS account by OIDC federation</li>
+          <li>SSO and SCIM through your identity provider</li>
+          <li>A dedicated dispatcher, audit export, private pool images, an SLA</li>
+        </ul>
+        <div class="limits">
+          <span class="lab">Limits</span>
+          <p>Custom.<br>Your account, your ceilings.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="footnote">
+      Prices shown are illustrative placeholders for this mockup. The requirement is the
+      ladder and what each rung unlocks, not the number on it.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Feature by feature</div>
+      <h2>What each plan carries</h2>
+      <p>
+        Every feature is a flag, off by default and targeted per account by the plan. Limits
+        are plan metadata read beside the flags: the tool server refuses the add that would
+        exceed one, with the reason.
+      </p>
+    </div>
+
+    <div class="scroller">
+      <table>
+        <thead>
+          <tr>
+            <th>Feature or limit</th>
+            <th>Free</th>
+            <th>Hobby</th>
+            <th>Pro</th>
+            <th>Team</th>
+            <th>Enterprise</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="group"><th colspan="6">Everywhere</th></tr>
+          <tr>
+            <th>The binary, worktrees, local adapters</th>
+            <td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td>
+          </tr>
+          <tr>
+            <th>Book view <code>fw.ff.book-view</code></th>
+            <td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td>
+          </tr>
+          <tr>
+            <th>Explore <code>fw.ff.explore</code></th>
+            <td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td>
+          </tr>
+          <tr>
+            <th>Your own GitHub App and chat bot</th>
+            <td class="yes">yes</td><td class="no">ours</td><td class="no">ours</td><td class="no">ours</td><td class="yes">yes</td>
+          </tr>
+
+          <tr class="group"><th colspan="6">The service side</th></tr>
+          <tr>
+            <th>Cloud agent <code>fw.ff.cloud-agent</code></th>
+            <td class="no">—</td><td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td>
+          </tr>
+          <tr>
+            <th>Pools <code>fw.ff.pools</code></th>
+            <td class="no">—</td><td class="no">—</td><td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td>
+          </tr>
+          <tr>
+            <th>Package store <code>fw.ff.store</code></th>
+            <td class="no">—</td><td class="no">—</td><td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td>
+          </tr>
+          <tr>
+            <th>Cloud-agent presets</th>
+            <td class="no">—</td><td class="no">—</td><td class="yes">yes</td><td class="yes">yes</td><td class="yes">yes</td>
+          </tr>
+          <tr>
+            <th>Priority ticks</th>
+            <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">yes</td><td class="yes">yes</td>
+          </tr>
+
+          <tr class="group"><th colspan="6">People</th></tr>
+          <tr>
+            <th>Members and roles <code>fw.ff.members</code></th>
+            <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">yes</td><td class="yes">yes</td>
+          </tr>
+          <tr>
+            <th>Management console <code>fw.ff.management-console</code></th>
+            <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">yes</td><td class="yes">yes</td>
+          </tr>
+          <tr>
+            <th>SSO and SCIM <code>fw.ff.sso</code></th>
+            <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">yes</td>
+          </tr>
+
+          <tr class="group"><th colspan="6">Your account</th></tr>
+          <tr>
+            <th>Federation by OIDC <code>fw.ff.federation</code></th>
+            <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">yes</td>
+          </tr>
+          <tr>
+            <th>Dedicated dispatcher <code>fw.ff.dedicated-dispatcher</code></th>
+            <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">yes</td>
+          </tr>
+          <tr>
+            <th>Audit export, private pool images, SLA</th>
+            <td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">yes</td>
+          </tr>
+
+          <tr class="group"><th colspan="6">Limits</th></tr>
+          <tr>
+            <th>Organizations <code>organizations</code></th>
+            <td>unmetered</td><td>1</td><td>3</td><td>unlimited</td><td>custom</td>
+          </tr>
+          <tr>
+            <th>Members <code>members</code></th>
+            <td>1</td><td>1</td><td>1</td><td>per seat</td><td>custom</td>
+          </tr>
+          <tr>
+            <th>Pool memory ceiling <code>pool_memory_max</code></th>
+            <td class="no">—</td><td class="no">—</td><td>8 GB</td><td>32 GB</td><td>custom</td>
+          </tr>
+          <tr>
+            <th>Pool hours <code>pool_hours_included</code></th>
+            <td class="no">—</td><td class="no">—</td><td>included, then metered</td><td>pooled across seats</td><td>custom</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Start in one screen</div>
+      <h2>Adding a cloud agent asks three questions</h2>
+      <p>
+        The tier already fixes the router and the runner, so the screen never mentions them.
+        It asks only what the agent should listen to and speak through. A preset is a bundle
+        package — a named set of parts with their configuration defaults, offered as one
+        choice.
+      </p>
+    </div>
+
+    <div class="tiles">
+      <div class="tile picked">
+        <span class="pickmark">selected</span>
+        <h4>Slack + Granola</h4>
+        <p class="desc">The meeting-driven loop. Notes land as signals, the plan comes back in your channel.</p>
+        <p class="parts">chat: slack · meetings: granola · captures: github</p>
+      </div>
+      <div class="tile">
+        <h4>Discord + GitHub only</h4>
+        <p class="desc">Repository-native. Nothing but what the repositories already emit.</p>
+        <p class="parts">chat: discord · meetings: none · captures: github</p>
+      </div>
+      <div class="tile">
+        <h4>Everything</h4>
+        <p class="desc">Every adapter we ship, wired at once. Turn parts off later, one decision each.</p>
+        <p class="parts">chat: slack · meetings: granola · captures: github · datadog · webhook</p>
+      </div>
+    </div>
+
+    <div class="selectors">
+      <div class="sel-row">
+        <span class="lab">Chat</span>
+        <span class="chip on">Slack</span>
+        <span class="chip">Discord</span>
+        <span class="chip">none</span>
+      </div>
+      <div class="sel-row">
+        <span class="lab">Meetings</span>
+        <span class="chip on">Granola</span>
+        <span class="chip">Notion</span>
+        <span class="chip">a folder of transcripts</span>
+        <span class="chip">none</span>
+      </div>
+      <div class="sel-row">
+        <span class="lab">Captures</span>
+        <span class="chip on">GitHub</span>
+        <span class="chip">Datadog</span>
+        <span class="chip">a webhook</span>
+      </div>
+      <p class="advanced">▸ advanced — routers and runners are chosen only on a machine of yours or an adopted host</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Where your data lives</div>
+      <h2>By tier, machine by machine</h2>
+      <p>
+        Your source code and your state are on GitHub in plaintext, yours, at every tier. What
+        changes as you climb is only what exists on our side, and how little of it there is.
+      </p>
+    </div>
+
+    <div class="strip">
+      <div>
+        <span class="n">tier 0</span>
+        <h4>Your computer</h4>
+        <dl>
+          <dt>You add</dt>
+          <dd>Nothing. The binary on your laptop, device-flow sign-in.</dd>
+          <dt>On our side</dt>
+          <dd>Nothing at all.</dd>
+          <dt>Your code</dt>
+          <dd>GitHub and your own disk.</dd>
+        </dl>
+      </div>
+      <div>
+        <span class="n">tier 1</span>
+        <h4>Cloud agent</h4>
+        <dl>
+          <dt>You add</dt>
+          <dd>A hosted account, the bot in your workspace, the App on your GitHub organization.</dd>
+          <dt>On our side</dt>
+          <dd>A queue, a role and a key, one encrypted cache object, a scheduler entry. No pool.</dd>
+          <dt>Your code</dt>
+          <dd>Still only GitHub and your laptop, which keeps building.</dd>
+        </dl>
+      </div>
+      <div>
+        <span class="n">tier 2</span>
+        <h4>Pools</h4>
+        <dl>
+          <dt>You add</dt>
+          <dd>An image and a bound.</dd>
+          <dt>On our side</dt>
+          <dd>Tier 1, plus pool hosts on demand — one organization each, terminated at retire.</dd>
+          <dt>Your code</dt>
+          <dd>On a machine made for that job, on a disk encrypted under your key, destroyed when it ends.</dd>
+        </dl>
+      </div>
+      <div>
+        <span class="n">tier 3</span>
+        <h4>Your account</h4>
+        <dl>
+          <dt>You add</dt>
+          <dd>One IAM role in your AWS account trusting our OIDC issuer for your organization.</dd>
+          <dt>On our side</dt>
+          <dd>The same dispatcher, assuming your role with a per-tick token. We store no credential.</dd>
+          <dt>Your code</dt>
+          <dd>Your key, cache, queue and pool image all live in your account. Deleting the role ends our access.</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Moving up</div>
+      <h2>Each step is one decision, not a migration</h2>
+      <p>Nothing is re-keyed by hand, and nothing you already have stops working.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <span class="num">1</span>
+        <h4>Free <span class="arrow">→</span> Hobby</h4>
+        <p>
+          Sign in to the hosted account with the same GitHub identity. The service creates the
+          account, invites the same usernames and carries every address. One cloud agent is
+          added from a preset, and the laptop keeps its place as a host.
+        </p>
+      </div>
+      <div class="step">
+        <span class="num">2</span>
+        <h4>Hobby <span class="arrow">→</span> Pro</h4>
+        <p>
+          The pools flag turns on and the pool form appears under Hosts. The first pool
+          declares an image and a bound within the plan's memory ceiling.
+        </p>
+      </div>
+      <div class="step">
+        <span class="num">3</span>
+        <h4>Pro <span class="arrow">→</span> Team</h4>
+        <p>
+          Members and roles turn on, the management console appears, and the operators list
+          becomes derived from the account rather than kept by hand.
+        </p>
+      </div>
+      <div class="step">
+        <span class="num">4</span>
+        <h4>Team <span class="arrow">→</span> Enterprise</h4>
+        <p>
+          One role in your AWS account trusting our issuer. The key and the stores move into
+          your account, and nothing is re-keyed by hand.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Questions</div>
+      <h2>The four we are asked most</h2>
+    </div>
+
+    <div class="faq">
+      <div class="qa">
+        <h4>Does Free phone home?</h4>
+        <p>
+          <b>No.</b> Nothing runs on our side at tier 0, and there is no plan object to read.
+          Instrumentation is opt-in, and off until you turn it on.
+        </p>
+      </div>
+      <div class="qa">
+        <h4>Can I keep my own GitHub App?</h4>
+        <p>
+          <b>Yes, on Free and on Enterprise.</b> In between you use the service's App and bot,
+          which is what lets the loop receive your webhooks while your machines are asleep.
+        </p>
+      </div>
+      <div class="qa">
+        <h4>What happens when my laptop is closed?</h4>
+        <p>
+          <b>It shows as away, with since-when, and no attention line.</b> Its leases stand and
+          its session clocks pause. The cloud agent keeps ticking everything else, and a
+          takeover is offered only when a decision or approved work is waiting on that laptop.
+        </p>
+      </div>
+      <div class="qa">
+        <h4>Can I leave?</h4>
+        <p>
+          <b>Delete the role, or delete the account.</b> Your state, your manifest and your
+          captures are already in your GitHub repositories in plaintext. The loop stops; the
+          record stays yours.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap f-inner">
+    <span class="mono">the flywheel · agentplot</span>
+    <span>Prices on this page are illustrative placeholders.</span>
+    <span class="mono">a plan hides a surface and meters a quantity — it never authorizes</span>
+  </div>
+</footer>
