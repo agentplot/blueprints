@@ -6,8 +6,10 @@
     <g id="repo"> <rect x="-15" y="-11" width="30" height="22" rx="4" fill="#fff" stroke="currentColor" stroke-width="1.8" /> <circle cx="-5" cy="5" r="2.2" fill="currentColor" /> <circle cx="5" cy="-5" r="2.2" fill="currentColor" /> <path d="M -5 5 v-5 a 5 5 0 0 1 5 -5 h 1" fill="none" stroke="currentColor" stroke-width="1.8" /> </g>
     <g id="laptop" stroke="currentColor" stroke-width="1.8" fill="#fff"> <rect x="-14" y="-11" width="28" height="18" rx="2.5"/> <path d="M -19 10 L 19 10 L 15 7 L -15 7 Z" stroke-linejoin="round"/> </g>
     <g id="chat" stroke="currentColor" stroke-width="1.8" fill="#fff" stroke-linejoin="round"> <path d="M -14 -10 h 28 a 3 3 0 0 1 3 3 v 12 a 3 3 0 0 1 -3 3 h -18 l -8 6 v -6 h -2 a 3 3 0 0 1 -3 -3 v -12 a 3 3 0 0 1 3 -3 z"/> </g>
+    <g id="id" stroke="currentColor" stroke-width="1.8" fill="#fff"> <rect x="-14" y="-10" width="28" height="20" rx="3"/> <circle cx="-6" cy="-2" r="3.4"/> <path d="M -11 7 a 5 5 0 0 1 10 0 M 2 -4 h 9 M 2 1 h 6" stroke-width="1.4"/> </g>
     <g id="gate" stroke="currentColor" stroke-width="1.8" fill="#fff"> <path d="M 0 -13 L 13 -6 L 13 8 L 0 15 L -13 8 L -13 -6 Z" stroke-linejoin="round"/> <path d="M -6 1 h 12 M -6 -4 h 12" stroke-width="1.5"/> </g>
     <g id="fn" stroke="currentColor" stroke-width="1.9" fill="none" stroke-linejoin="round"> <rect x="-14" y="-12" width="28" height="24" rx="3" fill="#fff"/> <path d="M -7 -6 L 1 6 M 7 -6 L -1 6" stroke-linecap="round"/> </g>
+    <g id="win" stroke="currentColor" stroke-width="1.8" fill="#fff"> <rect x="-15" y="-11" width="30" height="22" rx="3"/> <path d="M -15 -4 h 30" stroke-width="1.5"/> <circle cx="-10" cy="-7.5" r="1.4" fill="currentColor" stroke="none"/> <circle cx="-5.5" cy="-7.5" r="1.4" fill="currentColor" stroke="none"/> </g>
     <g id="cyl"> <path d="M -22 -10 L -22 11 A 22 7 0 0 0 22 11 L 22 -10" fill="#fff" stroke="currentColor" stroke-width="1.7" /> <ellipse cx="0" cy="-10" rx="22" ry="7" fill="#eef2f6" stroke="currentColor" stroke-width="1.7" /> </g>
     <g id="clock"> <circle r="12" fill="#fff" stroke="currentColor" stroke-width="1.9" /> <path d="M 0 -7 V 0 H 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /> </g>
     <g id="cube" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"> <path d="M -14 -7 L 0 -15 L 14 -7 L 14 9 L 0 17 L -14 9 Z" fill="#fff" /> <path d="M -14 -7 L 0 1 L 14 -7 M 0 1 L 0 17" fill="none" /> </g>
@@ -19,65 +21,85 @@
   <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Flywheel hosted — design B, your account by federation: the same machines, with every store that holds your content in your account</text>
   <text x="40" y="57" font-size="12" fill="#666">design A with the key and the stores it protects moved into the customer's own AWS account, reached by an IAM role that trusts our OIDC issuer · we store no credential of yours, the token is minted per tick, and deleting the role ends our access</text>
   <rect x="60" y="84" width="1680" height="212" rx="10" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
-  <text x="76" y="106" font-size="11.5" font-weight="700" fill="#1f6e6e">YOUR SIDE · the same in all three designs</text>
-  <rect x="120" y="126" width="400" height="150" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.4"/>
+  <text x="76" y="106" font-size="11.5" font-weight="700" fill="#1f6e6e">YOUR SIDE, AND THE THIRD PARTIES · the same in all three designs</text>
+  <rect x="120" y="126" width="370" height="150" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.4"/>
   <use href="#repo" x="154" y="156" color="#2b8a8a"/>
   <text x="182" y="152" font-size="12.5" font-weight="700" fill="#333">GitHub</text>
   <text x="182" y="167" font-size="9" fill="#999">your account, your repositories</text>
   <text x="136" y="192" font-size="9.5" fill="#666">the state repository · the blueprints repository · your code repositories</text>
   <text x="136" y="210" font-size="9.5" font-weight="700" fill="#1f6e6e">plaintext, yours — under GitHub's own encryption, as every repository is</text>
-  <text x="136" y="228" font-size="9" fill="#999">the App is installed on your organization; its token is scoped to the listed repositories</text>
-  <rect x="660" y="126" width="400" height="150" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.4"/>
-  <use href="#laptop" x="694" y="156" color="#2b8a8a"/>
-  <text x="722" y="152" font-size="12.5" font-weight="700" fill="#333">your laptop host</text>
-  <text x="722" y="167" font-size="9" fill="#999">optional · intermittent</text>
-  <text x="676" y="192" font-size="9.5" fill="#666">the page on localhost · device-flow sign-in · local adapters · worktrees</text>
-  <text x="676" y="210" font-size="9.5" fill="#666">unchanged from A, and unchanged by the upgrade</text>
-  <text x="676" y="228" font-size="9" fill="#999">closed past its stale window it shows away: leases stand and their clocks pause</text>
-  <rect x="1200" y="126" width="400" height="150" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.4"/>
-  <use href="#chat" x="1234" y="156" color="#2b8a8a"/>
-  <text x="1262" y="152" font-size="12.5" font-weight="700" fill="#333">Slack or Discord</text>
-  <text x="1262" y="167" font-size="9" fill="#999">your workspace, our bot invited</text>
-  <text x="1216" y="192" font-size="9.5" fill="#666">the service's Slack app and Discord app, installed into your workspace</text>
-  <text x="1216" y="210" font-size="9.5" font-weight="700" fill="#8a6a1d">the one shared component — and it carries only plan text</text>
-  <text x="1216" y="228" font-size="9" fill="#999">a stolen bot token buys the ability to post plan lines: no repository or key access</text>
+  <text x="136" y="228" font-size="9" fill="#999">the App is installed on your organization; its token is scoped to the listed repos</text>
+  <rect x="545" y="126" width="370" height="150" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.4"/>
+  <use href="#laptop" x="579" y="156" color="#2b8a8a"/>
+  <text x="607" y="152" font-size="12.5" font-weight="700" fill="#333">your laptop host</text>
+  <text x="607" y="167" font-size="9" fill="#999">optional · intermittent</text>
+  <text x="561" y="192" font-size="9.5" fill="#666">the page on localhost · local adapters · worktrees</text>
+  <text x="561" y="210" font-size="9.5" fill="#666">unchanged from A, and unchanged by the upgrade</text>
+  <text x="561" y="228" font-size="9" fill="#999">closed past its stale window it shows away: leases stand and their clocks pause</text>
+  <rect x="970" y="126" width="370" height="150" rx="8" fill="#fff" stroke="#2b8a8a" stroke-width="1.4"/>
+  <use href="#chat" x="1004" y="156" color="#2b8a8a"/>
+  <text x="1032" y="152" font-size="12.5" font-weight="700" fill="#333">Slack or Discord</text>
+  <text x="1032" y="167" font-size="9" fill="#999">your workspace, our bot invited</text>
+  <text x="986" y="192" font-size="9.5" fill="#666">Discord free text is a slash command option; plain replies need a socket</text>
+  <text x="986" y="210" font-size="9.5" fill="#666">nobody holds · Slack free text arrives over the Events API</text>
+  <text x="986" y="228" font-size="9" fill="#999">the bot is ours — the one shared component of the chat path, carrying only plan text</text>
+  <rect x="1395" y="126" width="345" height="150" rx="8" fill="#fff" stroke="#7b5cb8" stroke-width="1.4"/>
+  <use href="#id" x="1429" y="156" color="#7b5cb8"/>
+  <text x="1457" y="152" font-size="12.5" font-weight="700" fill="#333">Frontegg</text>
+  <text x="1457" y="167" font-size="9" fill="#999">the hosted tiers' sign-in</text>
+  <text x="1411" y="192" font-size="9.5" fill="#666">sign-in, membership and roles for the served name</text>
+  <text x="1411" y="210" font-size="9.5" font-weight="700" fill="#8a6a1d">its token is verified on every page and tool call (249)</text>
+  <text x="1411" y="228" font-size="9" fill="#999">device flow with GitHub stays the self-managed path (A.32)</text>
   <rect x="60" y="320" width="1680" height="524" rx="10" fill="#fffdf8" stroke="#c9c9c5" stroke-width="1.2" stroke-dasharray="6 4"/>
   <text x="76" y="342" font-size="11.5" font-weight="700" fill="#5e5e5a">THE MACHINES · what stays ours is the compute; what holds your content is yours</text>
-  <rect x="700" y="366" width="380" height="104" rx="8" fill="#fff" stroke="#c9962e" stroke-width="1.4"/>
+  <rect x="180" y="366" width="340" height="150" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="1.4"/>
+  <use href="#win" x="214" y="396" color="#4a7fb5"/>
+  <text x="242" y="392" font-size="12.5" font-weight="700" fill="#333">page and tool server</text>
+  <text x="242" y="407" font-size="9" fill="#999">request-invoked · not a tick</text>
+  <rect x="413" y="378" width="95" height="16" rx="8" fill="#4a7fb5" opacity="0.12"/>
+  <text x="460" y="389" font-size="8.5" font-weight="700" fill="#4a7fb5" text-anchor="middle">our service account</text>
+  <text x="196" y="432" font-size="9.5" fill="#666">the same function, request-invoked, behind the tier's served name</text>
+  <text x="196" y="450" font-size="9.5" font-weight="700" fill="#3a6a99">it verifies the Frontegg token on every call (249) — the identity token</text>
+  <text x="196" y="468" font-size="9.5" font-weight="700" fill="#3a6a99">replaces the private network as the boundary</text>
+  <text x="196" y="486" font-size="9" fill="#999">the page is a static bundle; the tools are the binary's own catalogue over HTTP</text>
+  <text x="196" y="500" font-size="9" fill="#a34848">a request is a read, never a tick · a write from the page enqueues instead</text>
+  <rect x="700" y="366" width="380" height="128" rx="8" fill="#fff" stroke="#c9962e" stroke-width="1.4"/>
   <use href="#gate" x="734" y="396" color="#c9962e"/>
   <text x="762" y="392" font-size="12.5" font-weight="700" fill="#333">capture receiver</text>
-  <text x="762" y="407" font-size="9" fill="#999">API Gateway into one SQS queue — in your account</text>
+  <text x="762" y="407" font-size="9" fill="#999">API Gateway and a receiver function — in your account</text>
   <rect x="987" y="378" width="81" height="16" rx="8" fill="#c9962e" opacity="0.12"/>
   <text x="1027" y="389" font-size="8.5" font-weight="700" fill="#c9962e" text-anchor="middle">your AWS account</text>
-  <text x="716" y="432" font-size="9.5" fill="#666">we never see it at rest: your key encrypts it, in a region you choose</text>
-  <text x="716" y="450" font-size="9.5" font-weight="700" fill="#8a6a1d">the dispatcher reads it through your role, for one tick</text>
-  <text x="716" y="468" font-size="9" fill="#999">webhook and chat payloads, transient</text>
-  <rect x="700" y="536" width="380" height="246" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="2"/>
+  <text x="716" y="432" font-size="9.5" fill="#666">your key encrypts the queue; we never see it at rest</text>
+  <text x="716" y="450" font-size="9.5" font-weight="700" fill="#8a6a1d">a receiver function verifies the signature, answers Discord's PING and</text>
+  <text x="716" y="468" font-size="9.5" font-weight="700" fill="#8a6a1d">routes by workspace id · stateless · the second shared component</text>
+  <text x="716" y="486" font-size="8.5" fill="#a34848">your queue raises a content-free wake — only the org id; the tick reads it under your role</text>
+  <rect x="700" y="536" width="380" height="262" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="2"/>
   <use href="#fn" x="734" y="566" color="#4a7fb5"/>
   <text x="762" y="562" font-size="12.5" font-weight="700" fill="#333">dispatcher function</text>
-  <text x="762" y="577" font-size="9" fill="#999">one Lambda function per tier · ours, in our account</text>
+  <text x="762" y="577" font-size="9" fill="#999">the same dispatcher, not one of its own (281)</text>
   <rect x="973" y="548" width="95" height="16" rx="8" fill="#4a7fb5" opacity="0.12"/>
   <text x="1020" y="559" font-size="8.5" font-weight="700" fill="#4a7fb5" text-anchor="middle">our service account</text>
   <text x="716" y="602" font-size="9.5" font-weight="700" fill="#8a6a1d">it assumes a role in YOUR account that trusts our OIDC issuer, for one tick</text>
-  <text x="716" y="620" font-size="9.5" font-weight="700" fill="#3a6a99">we store no credential of yours — the token is minted per tick and expires,</text>
-  <text x="716" y="638" font-size="9.5" font-weight="700" fill="#3a6a99">and every use of your key is logged in your account, not ours</text>
-  <text x="716" y="656" font-size="9.5" fill="#666">runs one tick, wipes its scratch directory, and exits</text>
-  <text x="716" y="674" font-size="9.5" fill="#666">it interprets chat and triages self-contained captures in-process:</text>
-  <text x="716" y="692" font-size="9.5" font-weight="700" fill="#3a6a99">one bounded model call per message · model access under the assumed role,</text>
-  <text x="716" y="710" font-size="9.5" font-weight="700" fill="#3a6a99">metered into the plan, or a key you place</text>
-  <text x="716" y="728" font-size="9" fill="#a34848">only triage over the raw material a capture points at, and elaboration and</text>
-  <text x="716" y="742" font-size="9" fill="#a34848">construction, run on a laptop or a pool host</text>
-  <text x="716" y="756" font-size="9" fill="#a34848">deleting the role ends our access at once, everywhere, with no ticket to us</text>
-  <text x="716" y="770" font-size="9" fill="#999">optionally a Nitro enclave, so the key is released only to an attested image (d)</text>
-  <rect x="180" y="545" width="340" height="116" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="1.4"/>
-  <use href="#clock" x="214" y="575" color="#4a7fb5"/>
-  <text x="242" y="571" font-size="12.5" font-weight="700" fill="#333">scheduler</text>
-  <text x="242" y="586" font-size="9" fill="#999">EventBridge Scheduler · ours</text>
-  <rect x="413" y="557" width="95" height="16" rx="8" fill="#4a7fb5" opacity="0.12"/>
-  <text x="460" y="568" font-size="8.5" font-weight="700" fill="#4a7fb5" text-anchor="middle">our service account</text>
-  <text x="196" y="611" font-size="9.5" fill="#666">one one-shot entry per organization, written at the end of each tick</text>
-  <text x="196" y="629" font-size="9.5" font-weight="700" fill="#1f6e6e">it holds a due time and no content of yours</text>
-  <text x="196" y="647" font-size="9" fill="#999">which is why it can stay on our side without weakening the promise</text>
+  <text x="716" y="620" font-size="9.5" font-weight="700" fill="#3a6a99">we store no credential of yours — the token is minted per tick and expires</text>
+  <text x="716" y="638" font-size="9.5" fill="#666">it interprets chat and triages self-contained captures in-process:</text>
+  <text x="716" y="656" font-size="9.5" font-weight="700" fill="#3a6a99">one bounded model call per message · model access under the assumed role,</text>
+  <text x="716" y="674" font-size="9.5" font-weight="700" fill="#3a6a99">metered into the plan, or a key you place</text>
+  <text x="716" y="692" font-size="9" fill="#a34848">only triage over the raw material a capture points at, and elaboration and</text>
+  <text x="716" y="706" font-size="9" fill="#a34848">construction, run on a laptop or a pool host</text>
+  <text x="716" y="720" font-size="9.5" font-weight="700" fill="#3a6a99">woken only through your queue: the receiver, the scheduler and a page write</text>
+  <text x="716" y="738" font-size="9.5" font-weight="700" fill="#3a6a99">all enqueue, so one tick of yours runs at a time</text>
+  <text x="716" y="756" font-size="9" fill="#999">a tick has 15 minutes; triage yields to the interpreter</text>
+  <text x="716" y="770" font-size="9" fill="#a34848">the sandbox is reused across organizations; scratch wiped and the data key</text>
+  <text x="716" y="784" font-size="9" fill="#a34848">dropped before exit</text>
+  <rect x="180" y="536" width="340" height="116" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="1.4"/>
+  <use href="#clock" x="214" y="566" color="#4a7fb5"/>
+  <text x="242" y="562" font-size="12.5" font-weight="700" fill="#333">scheduler</text>
+  <text x="242" y="577" font-size="9" fill="#999">EventBridge Scheduler · ours</text>
+  <rect x="413" y="548" width="95" height="16" rx="8" fill="#4a7fb5" opacity="0.12"/>
+  <text x="460" y="559" font-size="8.5" font-weight="700" fill="#4a7fb5" text-anchor="middle">our service account</text>
+  <text x="196" y="602" font-size="9.5" fill="#666">60-second precision · at most one entry per organization</text>
+  <text x="196" y="620" font-size="9.5" font-weight="700" fill="#1f6e6e">it holds a due time and no content of yours, which is why it can stay ours</text>
+  <text x="196" y="638" font-size="9" fill="#999">create-or-update, deleted after it fires · it enqueues, it never invokes</text>
   <rect x="1180" y="486" width="340" height="118" rx="8" fill="#fff" stroke="#c9962e" stroke-width="1.4"/>
   <use href="#cyl" x="1214" y="516" color="#c9962e"/>
   <text x="1242" y="512" font-size="12.5" font-weight="700" fill="#333">warm cache</text>
@@ -93,11 +115,12 @@
   <text x="1242" y="691" font-size="9" fill="#999">created from your image when the plan approves work</text>
   <rect x="1413" y="662" width="95" height="16" rx="8" fill="#4a7fb5" opacity="0.12"/>
   <text x="1460" y="673" font-size="8.5" font-weight="700" fill="#4a7fb5" text-anchor="middle">our service account</text>
-  <text x="1196" y="716" font-size="9.5" fill="#666">a Lambda MicroVM · one organization · terminated at retire with its disk</text>
-  <text x="1196" y="734" font-size="9.5" font-weight="700" fill="#8a6a1d">its disk is encrypted under your key, reached through your role</text>
-  <text x="1196" y="752" font-size="9.5" fill="#666">triage runs here too, never in the dispatcher</text>
-  <text x="1196" y="770" font-size="9" fill="#999">at tier 3 the pool moves into your account with everything else, and this box</text>
-  <text x="1196" y="784" font-size="9" fill="#999">turns amber; at tier 2 it is ours, holding your code only while the work runs</text>
+  <text x="1196" y="716" font-size="9.5" fill="#666">baseline up to 8 GB / 4 vCPU, bursting to 32 GB / 16 vCPU, 32 GB of disk</text>
+  <text x="1196" y="734" font-size="9.5" fill="#666">no VPC needed, and Docker runs inside it, so devcontainer features work</text>
+  <text x="1196" y="752" font-size="9.5" fill="#666">one organization · terminated at retire with its disk</text>
+  <text x="1196" y="770" font-size="9" fill="#999">its image is built on a pool host or your machine, never in the dispatcher</text>
+  <text x="1196" y="784" font-size="9" fill="#999">at tier 3 the pool moves into your account with everything else, and this box</text>
+  <text x="1196" y="798" font-size="9" fill="#999">turns amber; at tier 2 it is ours, holding your code only while the work runs</text>
   <rect x="180" y="672" width="340" height="100" rx="8" fill="#fff" stroke="#4a7fb5" stroke-width="1.4"/>
   <use href="#dash" x="214" y="702" color="#4a7fb5"/>
   <text x="242" y="698" font-size="12.5" font-weight="700" fill="#333">control plane</text>
@@ -110,61 +133,69 @@
   <use href="#key" x="1622" y="432" color="#c9962e"/>
   <text x="1650" y="470" font-size="12.5" font-weight="700" fill="#c9962e" text-anchor="middle">KMS key</text>
   <text x="1650" y="486" font-size="9" fill="#999" text-anchor="middle">in your account</text>
-  <text x="1584" y="514" font-size="9" fill="#666">a customer-managed key you</text>
-  <text x="1584" y="528" font-size="9" fill="#666">create, in your own account,</text>
-  <text x="1584" y="542" font-size="9" fill="#666">under your own policy</text>
-  <text x="1584" y="564" font-size="9" font-weight="700" fill="#8a6a1d">one IAM role trusts our OIDC</text>
-  <text x="1584" y="578" font-size="9" font-weight="700" fill="#8a6a1d">issuer for your organization,</text>
-  <text x="1584" y="592" font-size="9" font-weight="700" fill="#8a6a1d">and that role is the whole of</text>
-  <text x="1584" y="606" font-size="9" font-weight="700" fill="#8a6a1d">our access</text>
-  <text x="1584" y="628" font-size="9" fill="#666">it encrypts the queue, the</text>
-  <text x="1584" y="642" font-size="9" fill="#666">cache, the pool disk, the logs</text>
-  <text x="1584" y="664" font-size="9" fill="#999">every use is logged in your</text>
-  <text x="1584" y="678" font-size="9" fill="#999">account, not ours · delete the</text>
-  <text x="1584" y="692" font-size="9" fill="#999">role and we are locked out at</text>
-  <text x="1584" y="706" font-size="9" fill="#999">once, with nothing to revoke</text>
+  <text x="1583" y="510" font-size="8.7" fill="#666">a customer-managed key you</text>
+  <text x="1583" y="523" font-size="8.7" fill="#666">create, in your own account,</text>
+  <text x="1583" y="536" font-size="8.7" fill="#666">under your own policy</text>
+  <text x="1583" y="556" font-size="8.7" font-weight="700" fill="#8a6a1d">one IAM role trusts our OIDC</text>
+  <text x="1583" y="569" font-size="8.7" font-weight="700" fill="#8a6a1d">issuer for your organization,</text>
+  <text x="1583" y="582" font-size="8.7" font-weight="700" fill="#8a6a1d">and that role is the whole of</text>
+  <text x="1583" y="595" font-size="8.7" font-weight="700" fill="#8a6a1d">our access</text>
+  <text x="1583" y="615" font-size="8.7" fill="#666">it encrypts the queue, the</text>
+  <text x="1583" y="628" font-size="8.7" fill="#666">cache, the logs, and what a</text>
+  <text x="1583" y="641" font-size="8.7" fill="#666">pool host writes to S3</text>
+  <text x="1583" y="661" font-size="8.7" font-weight="700" fill="#a34848">the receiver may encrypt,</text>
+  <text x="1583" y="674" font-size="8.7" font-weight="700" fill="#a34848">never decrypt</text>
+  <text x="1583" y="694" font-size="8.7" fill="#999">every use is logged in your</text>
+  <text x="1583" y="707" font-size="8.7" fill="#999">account, not ours · delete the</text>
+  <text x="1583" y="720" font-size="8.7" fill="#999">role and we are locked out at</text>
+  <text x="1583" y="733" font-size="8.7" fill="#999">once, with nothing to revoke</text>
   <!-- ===== EDGES ===== -->
-  <path d="M 320 280 C 400 328, 640 336, 762 362" fill="none" stroke="#8a8a86" stroke-width="2.2" marker-end="url(#mS)"/>
-  <text x="560" y="326" font-size="9.5" font-weight="700" fill="#5e5e5a">webhooks</text>
-  <path d="M 860 280 C 866 310, 880 336, 886 362" fill="none" stroke="#8a8a86" stroke-width="2.2" marker-end="url(#mS)"/>
-  <text x="898" y="326" font-size="9.5" font-weight="700" fill="#5e5e5a">captures</text>
-  <path d="M 1360 280 C 1300 330, 1120 340, 1018 362" fill="none" stroke="#8a8a86" stroke-width="2.2" marker-end="url(#mS)"/>
-  <text x="1180" y="326" font-size="9.5" font-weight="700" fill="#5e5e5a">interactions</text>
-  <path d="M 890 474 L 890 532" fill="none" stroke="#8a8a86" stroke-width="2.4" marker-end="url(#mS)"/>
-  <text x="900" y="510" font-size="9.5" font-weight="700" fill="#5e5e5a">the queue has items</text>
-  <path d="M 524 604 L 696 604" fill="none" stroke="#8a8a86" stroke-width="2.4" marker-end="url(#mS)"/>
-  <text x="610" y="596" font-size="9.5" font-weight="700" fill="#5e5e5a" text-anchor="middle">due</text>
-  <path d="M 698 598 C 624 550, 602 400, 424 284" fill="none" stroke="#8a8a86" stroke-width="2.4" marker-start="url(#mS)" marker-end="url(#mS)"/>
-  <text x="562" y="446" font-size="9.5" font-weight="700" fill="#5e5e5a">fetch · push (CAS)</text>
+  <path d="M 305 280 C 400 326, 640 334, 762 362" fill="none" stroke="#8a8a86" stroke-width="2.2" marker-end="url(#mS)"/>
+  <text x="548" y="330" font-size="9.5" font-weight="700" fill="#5e5e5a">webhooks</text>
+  <path d="M 730 280 C 760 310, 838 336, 858 362" fill="none" stroke="#8a8a86" stroke-width="2.2" marker-end="url(#mS)"/>
+  <text x="746" y="330" font-size="9.5" font-weight="700" fill="#5e5e5a">captures</text>
+  <path d="M 1155 280 C 1122 316, 1046 342, 1002 362" fill="none" stroke="#8a8a86" stroke-width="2.2" marker-end="url(#mS)"/>
+  <text x="1076" y="322" font-size="9.5" font-weight="700" fill="#5e5e5a">interactions</text>
+  <path d="M 541 226 C 452 244, 384 300, 352 362" fill="none" stroke="#8a8a86" stroke-width="2.2" marker-end="url(#mS)"/>
+  <text x="452" y="306" font-size="9.5" font-weight="700" fill="#5e5e5a">page request</text>
+  <text x="452" y="318" font-size="8.5" fill="#999">a read, never a tick</text>
+  <path d="M 890 498 L 890 532" fill="none" stroke="#8a8a86" stroke-width="2.4" marker-end="url(#mS)"/>
+  <text x="900" y="522" font-size="9.5" font-weight="700" fill="#5e5e5a">the queue has items</text>
+  <path d="M 524 580 C 594 548, 648 476, 696 446" fill="none" stroke="#8a8a86" stroke-width="2.4" marker-end="url(#mS)"/>
+  <text x="586" y="524" font-size="9.5" font-weight="700" fill="#5e5e5a">due · onto the queue</text>
+  <path d="M 524 400 C 580 396, 646 392, 696 390" fill="none" stroke="#8a8a86" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#mS)"/>
+  <text x="610" y="382" font-size="9" font-weight="700" fill="#5e5e5a" text-anchor="middle">a page write enqueues</text>
+  <path d="M 698 598 C 626 552, 606 400, 412 284" fill="none" stroke="#8a8a86" stroke-width="2.4" marker-start="url(#mS)" marker-end="url(#mS)"/>
+  <text x="574" y="452" font-size="9.5" font-weight="700" fill="#5e5e5a">fetch · push (CAS)</text>
   <path d="M 1084 556 C 1120 550, 1146 546, 1176 542" fill="none" stroke="#8a8a86" stroke-width="2.4" marker-start="url(#mS)" marker-end="url(#mS)"/>
   <text x="1130" y="528" font-size="9.5" font-weight="700" fill="#5e5e5a" text-anchor="middle">download · upload</text>
   <text x="1130" y="516" font-size="8.5" fill="#999" text-anchor="middle">during the tick</text>
   <path d="M 1084 694 C 1120 696, 1146 700, 1176 702" fill="none" stroke="#8a8a86" stroke-width="2.4" marker-end="url(#mS)"/>
   <text x="1130" y="686" font-size="9.5" font-weight="700" fill="#5e5e5a" text-anchor="middle">approved work: provision</text>
-  <path d="M 1060 532 C 1118 496, 1116 382, 1140 320 C 1172 290, 1280 282, 1330 282" fill="none" stroke="#8a8a86" stroke-width="2.4" marker-end="url(#mS)"/>
+  <path d="M 1060 532 C 1118 496, 1116 380, 1130 330 C 1140 300, 1122 286, 1106 280" fill="none" stroke="#8a8a86" stroke-width="2.4" marker-end="url(#mS)"/>
   <text x="1096" y="466" font-size="9.5" font-weight="700" fill="#5e5e5a">plan lines</text>
-  <path d="M 1180 786 C 860 832, 280 836, 142 756 C 104 710, 100 430, 132 360 C 148 320, 166 294, 180 282" fill="none" stroke="#8a8a86" stroke-width="2.2" marker-start="url(#mS)" marker-end="url(#mS)"/>
-  <text x="760" y="820" font-size="9.5" font-weight="700" fill="#5e5e5a" text-anchor="middle">clone code · push the pull request</text>
-  <path d="M 696 686 C 640 696, 580 708, 524 714" fill="none" stroke="#8a8a86" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#mS)"/>
-  <text x="610" y="688" font-size="8.5" fill="#999" text-anchor="middle">health · billing counters</text>
+  <path d="M 1180 786 C 880 842, 250 844, 118 758 C 92 718, 90 430, 124 358 C 142 318, 164 292, 180 282" fill="none" stroke="#8a8a86" stroke-width="2.2" marker-start="url(#mS)" marker-end="url(#mS)"/>
+  <text x="800" y="826" font-size="9.5" font-weight="700" fill="#5e5e5a" text-anchor="middle">clone code · push the pull request</text>
   <path d="M 1566 500 C 1548 508, 1536 520, 1524 530" fill="none" stroke="#c9962e" stroke-width="2.2" stroke-dasharray="5 4" marker-end="url(#mK)"/>
   <text x="1545" y="500" font-size="8.5" font-weight="700" fill="#8a6a1d" text-anchor="middle">unwraps</text>
   <path d="M 1566 706 C 1550 720, 1538 730, 1524 736" fill="none" stroke="#c9962e" stroke-width="2.2" stroke-dasharray="5 4" marker-end="url(#mK)"/>
-  <text x="1545" y="700" font-size="8.5" font-weight="700" fill="#8a6a1d" text-anchor="middle">encrypts</text>
-  <path d="M 1566 414 C 1400 356, 1220 350, 1088 394" fill="none" stroke="#c9962e" stroke-width="2.2" stroke-dasharray="5 4" marker-end="url(#mK)"/>
-  <text x="1310" y="346" font-size="9" font-weight="700" fill="#8a6a1d" text-anchor="middle">encrypts the queue</text>
+  <text x="1545" y="700" font-size="8.5" font-weight="700" fill="#8a6a1d" text-anchor="middle">S3 writes</text>
+  <path d="M 1566 414 C 1400 356, 1220 350, 1088 400" fill="none" stroke="#c9962e" stroke-width="2.2" stroke-dasharray="5 4" marker-end="url(#mK)"/>
+  <text x="1310" y="344" font-size="9" font-weight="700" fill="#8a6a1d" text-anchor="middle">the receiver encrypts, only your tagged session decrypts</text>
 
+  <path d="M 696 700 C 640 700, 580 712, 524 718" fill="none" stroke="#8a8a86" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#mS)"/>
+  <text x="608" y="694" font-size="8.5" fill="#999" text-anchor="middle">health · billing counters</text>
   <rect x="60" y="862" width="1680" height="66" rx="10" fill="#fafafa"/>
   <text x="76" y="884" font-size="10.5" font-weight="700" fill="#5e5e5a">WHO OWNS THE ACCOUNT EACH MACHINE RUNS IN</text>
   <rect x="76" y="898" width="12" height="12" rx="3" fill="#4a7fb5" opacity="0.25" stroke="#4a7fb5" stroke-width="1.2"/>
   <text x="96" y="908" font-size="9.5" font-weight="700" fill="#4a7fb5">in our service account</text>
-  <text x="96" y="922" font-size="9" fill="#666">the dispatcher function, the scheduler, the pool host at tier 2, and the control plane</text>
+  <text x="96" y="922" font-size="9" fill="#666">the dispatcher function, the page and tool server, the scheduler, the pool host at tier 2, and the control plane</text>
   <rect x="700" y="898" width="12" height="12" rx="3" fill="#c9962e" opacity="0.25" stroke="#c9962e" stroke-width="1.2"/>
   <text x="720" y="908" font-size="9.5" font-weight="700" fill="#c9962e">in your AWS account</text>
   <text x="720" y="922" font-size="9" fill="#666">the key, the receiver and its queue, the warm cache, your raw store — and the pool host at tier 3</text>
   <rect x="1300" y="898" width="12" height="12" rx="3" fill="#2b8a8a" opacity="0.25" stroke="#2b8a8a" stroke-width="1.2"/>
-  <text x="1320" y="908" font-size="9.5" font-weight="700" fill="#2b8a8a">on your side</text>
-  <text x="1320" y="922" font-size="9" fill="#666">GitHub, the laptop host if you run one, and your chat workspace</text>
+  <text x="1320" y="908" font-size="9.5" font-weight="700" fill="#2b8a8a">on your side and the third parties</text>
+  <text x="1320" y="922" font-size="9" fill="#666">GitHub, the laptop host if you run one, your chat workspace, and Frontegg</text>
   <rect x="60" y="944" width="1680" height="72" rx="10" fill="#eef2f6"/>
   <rect x="60" y="944" width="4" height="72" fill="#3a6a99"/>
   <text x="84" y="968" font-size="11" font-weight="700" fill="#3a6a99">WHAT WE CAN TELL THE CUSTOMER</text>
