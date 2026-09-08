@@ -997,6 +997,41 @@ the operator may reverse by a response on the file; an entry with
   boundary and every parameter there is a proposal. **Open** until the
   willdan instance stands.
 
+- **306–314 the phone.** Ruled: parity is a requirement of the first
+  build and not a surface ruling, the phone being the same served bundle
+  under 760px with two tabs and a full-screen dock; deep links from every
+  chat rendering, notification and plan line; the notification the chat
+  sink's own with no push of the machinery's; one request and no client
+  state a reload loses; every answer one tap or one short reply; the
+  management console and the managed add-host journeys completing on a
+  phone; the Claude mobile app a tool-server client like any other; and
+  every scenario carrying a response run at 390px. **Decision**: the
+  alternative, a phone view ruled by `surfaces.md` alone, let the layout
+  and the parity be revisited together, and it was the parity that had to
+  stop moving.
+
+  Two surface items stay open under it and neither touches parity.
+  `surfaces.md` S78, the phone layout beyond the stacked list: whether
+  the lanes collapse to heads with counts, whether the map's stacked
+  list draws relationships as more than lines of text, where the capture
+  box sits when the rail is the first tab, and how the book's tree is
+  reached. **Open**. `surfaces.md` S151, whether thumbnails render on a
+  phone at all or only the caption's counts, and whether the stacked
+  list when drilled draws a link as more than its target's name; a
+  thumbnail is a rendering and not a control, so 306 does not decide it.
+  **Open**.
+
+  Two things are unbound rather than ruled. 314 asserts the mockups
+  render at 390px, and the rail-and-board mockup's header overflows
+  there today, so what the header drops at that width, and whether the
+  "yes all" numbers and the key hints of S38 are the whole of it, is
+  unstated. **Open**. 313 names the Claude mobile app a client of the
+  tool server, but which authority that client signs in against on a
+  self-managed host, whose address is a localhost port with no name
+  (245, 293), is unbound: the device flow issues what a client on the
+  operator's own machine holds, and a phone off that network reaches no
+  localhost. **Open** until a phone is pointed at a self-managed host.
+
 - **213, 214 and 229–230 on the mockup.** The rail-and-board mockup
   (`design/flywheel-next/mockups/rail-and-board.html`) illustrates the
   artifact views behind an object (213), the flywheel instrument

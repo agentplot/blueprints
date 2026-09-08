@@ -2111,6 +2111,54 @@ requirements, iterated against the running plan rather than on paper.
     three — stores only, stores and compute, and the whole control plane
     installed.
 
+### A.38 The phone
+
+306. Every decision is answerable on a phone, and every control and every
+    form the page carries is available there. Nothing the page offers is
+    reachable only on a desktop, and nothing the phone answers is missing
+    on the desktop (2, 155). This promotes S39 from a ruling of the
+    surface specification to a requirement of the first build: a page that
+    answers on the desktop alone has not met it.
+307. The phone is the same served bundle under 760px, and never a second
+    application. Its layout is two tabs, Decisions and Board, with the
+    dock full screen and a back control, which is the desktop's metaphor
+    at a smaller size and not a metaphor of its own (S38, S60). One bundle
+    is built, one is served, and its version is the binary's (291).
+308. Every chat rendering, every notification and every plan line carries
+    a link to the object on the page, at the host's address with the
+    organization in the path (205a). The link opens that object in the
+    dock with its answer controls in reach. It works whether the page is
+    served on a localhost port of the operator's own computer, over the
+    operator's private network, or at a hosted served name (245, 291), and
+    a link to a host that is away says so rather than failing silently
+    (150a).
+309. A decision raised reaches the operator's phone through the chat
+    sink's own notification, carrying the answer controls the platform
+    provides and the link of 308 (155). The page sends no push of its own,
+    on any tier. The short reply grammar always works beside the controls.
+310. The status view renders from one request, which on the hosted tiers
+    is the page projection and its one decrypt (291). The page holds no
+    client state a reload loses, so a reload after an answer shows the
+    answer recorded, with who gave it and when (153, 154). The bundle
+    carries no dependency the phone must fetch from anywhere else.
+311. Every answer is one tap or one short reply. Nothing is reachable only
+    by hover or by a keyboard, and anything a hover reveals on the desktop
+    is reachable by tap on a phone (S61). A long-form answer, a proposal
+    edit for one unit among several for instance, is given on the phone
+    with the platform's own keyboard.
+312. The management console renders on a phone, its tables as cards. The
+    managed add-host journeys complete on a phone, the cloud agent with
+    its presets among them (283, 295), which is what Hobby promises an
+    operator who has no computer of their own to run (281). A journey that
+    needs a computer of the operator's says so on its card rather than
+    failing part way through.
+313. The tool server's clients include the Claude mobile app, and voice
+    through it (293), under the same membership and permission checks as
+    every other client (248, 249).
+314. Every scenario of section 11 that carries an operator's response runs
+    at a 390px viewport as well as at the desktop's, and the mockups
+    render at 390px.
+
 ## 5. Requirements — Part B, the control plane contract
 
 The data plane reaches durable, shared state and the operator only

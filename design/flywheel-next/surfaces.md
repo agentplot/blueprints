@@ -364,11 +364,16 @@ were settled, not their place on the page.
   header hides the key hints and the "yes all" numbers. The machinery
   strip stays one scrolling row; the flywheel panel is reached from the
   board header (S110). The account item stays in the header and its
-  menu opens full screen with a back control.
+  menu opens full screen with a back control. Promoted to 307: the
+  layout is a requirement of the first build, not a ruling this
+  document may revisit on its own.
 - **S39.** The phone keeps every form of §3 and every control of §1.
   Nothing is answerable on the phone that is not answerable on the
   desktop, and nothing the desktop answers is missing on the phone (2,
-  155).
+  155). Promoted to 306, with the deep links, the notification, the one
+  request, the touch rule, the console and the clients beside it in A.38
+  (306–314). What is open here is the layout beyond the stacked list
+  (S78) and the thumbnails (S151), never whether the phone answers.
 
 ### 1.9 The board, book view
 
@@ -1783,7 +1788,8 @@ What no mockup settled.
   lanes collapse to heads with counts, whether the map's stacked list
   draws relationships as more than lines of text, where the capture
   box sits when the rail is the first tab, and how the book's tree is
-  reached on a phone.
+  reached on a phone. A.38 settles that each is answerable on a phone
+  (306, 307); how it is drawn there is this item.
 - **S79.** The chat's rich controls per platform: which Discord
   components carry which answers, how a per-unit edit or a pick is
   offered, and whether a threaded reply on a decision line is an answer
@@ -1841,7 +1847,8 @@ What no mockup settled.
   when no decision is pending, beyond refusing a note, is not settled.
 - **S151.** Whether thumbnails render on a phone at all, or only the
   caption's counts, and whether the stacked list when drilled draws a
-  link as more than its target's name.
+  link as more than its target's name. A thumbnail is a rendering and
+  not a control, so 306 does not decide it.
 - **S191.** Ruled 2026-09-08: non-member organizations do not appear
   in the switcher. The switcher lists only the organizations the
   signed-in identity is a member of (S166); surfaces.yaml
