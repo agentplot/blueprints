@@ -1,235 +1,259 @@
 # The command palette
 
-Drafted 2026-09-08. Nothing here is ratified. It asks the operator to
-revisit one standing ruling, **S63** ("no typed grammar anywhere on the
-page"), and proposes what would stand in its place.
+Drafted 2026-09-08. The page has one typed input, the palette, in two
+modes. This revisits **S63** ("no typed grammar anywhere on the page"),
+replaces the capture box (S30), and moves the book into a viewer of its
+own.
 
-## 1. The premise
+## 1. Premise
 
-One input on the page — opened with ⌘K, or a bar always visible at
-the header — over the same tool catalogue every other client already
-speaks (193, 291, 293). A palette is not a second write path: it
-enumerates the catalogue the page's controls call, resolves the
-operator's typing to one entry with its arguments named by object id
-(193), shows the call it is about to enqueue, and sends it on the
-operator's confirmation. That confirmation is a control, so the
-interpreter is not involved at all (194: "none at all when the operator
-used a control"), the machinery parses nothing, and the write is a tool
-call enqueued like any other (291). What it would replace in
-rail-and-board: the capture box as a fixed region at Inception's head
-(S30), the `/` key that focuses it (S56), and the typed fields that
-today live only inside a dock footer (redo notes, rename, reply, pick).
-What it must not replace: the rail's answer buttons and every dock
-control, because every answer must stay one tap (311), nothing may be
-reachable only by keyboard (311, 306), and the rail must keep showing
-every decision whether or not anyone types (S3, 8).
+One input on the page, opened with a key from anywhere, over the tool
+catalogue every other client already speaks (193, 291, 293). It is no
+second write path: an entry resolves to one tool call with its arguments
+named by object id (193), shows the call it is about to send, and sends
+it on the operator's confirmation, which is a control and so involves no
+interpreter at all (194). Free text that is not an entry is a capture,
+sent unparsed (19), or — where the flywheel has a model key — read by the
+model in the page's browser, which proposes one call per thing asked,
+each confirmed on its own (216a, 194). Everything the palette sends stays
+reachable by tap (311, 306): the rail's answer buttons and every dock
+control are unchanged, and the palette reaches them rather than replacing
+them.
 
-## 2. Interaction ideas
+## 2. The two modes
 
-### Answer by number
+The pair is VS Code's: one key for what you say, a second for the list of
+what the flywheel can do.
 
-A decision number is unambiguous and is already the deterministic path
-in chat (194, 15). Typing it in the palette is the same tool with the
-same record (193, 153).
+| mode | desktop | phone |
+|---|---|---|
+| **talk** (default) | ⌘K, Ctrl+K, or `/` | the capture control on either tab, which raises the sheet |
+| **actions** | ⌘⇧P, Ctrl+⇧P, or `>` typed at the head of talk | the sheet's "Actions" segment |
 
-```
-⌘K  412 yes  ↵        → will send: yes to 412
-```
+`Esc` closes the palette ahead of everything else in S56's order, and
+backspacing over `>` returns to talk, so one key reaches both.
 
-### Fuzzy-find any object, open it in the dock
+**Talk at rest.** The field, placeholder "What's on your mind?", and
+under it the last five things sent, read from the sent log the header
+already carries (S2) and never from client state (310). No list of
+commands: talk is for words. Where nothing has been sent the line reads
+"Type an idea, or press ⌘⇧P for what this flywheel can do."
 
-Read-only navigation needs no confirmation, so find-and-open is the
-palette's cheapest win and its safest one (S28, S61: the dock keeps the
-board in place). Names resolve against live objects (194).
+**Talk while typing.** One preview line under the field, in the shape the
+capture box used: "will send: capture", or "will send: capture · first
+idea of a thread" when the intent toggle beside the field is on (19,
+S30). Where the flywheel has a model key the line reads "Enter captures
+this. ⇧Enter asks the flywheel to read it", and the read yields one card
+per thing asked, each showing what will be sent and confirmed on its own;
+a name that resolves to nothing is asked about, never guessed (194).
+Where there is no key the field says "Your words are captured as written"
+and offers Actions, rather than guessing (194, 216a).
 
-```
-⌘K  retry backoff  ↵  → opens that intent in the dock
-```
+**Actions at rest.** The catalogue the caller may invoke, grouped: Answer,
+Capture and intents, Work, Navigate, This flywheel, Hosts and members. A
+tool the caller may not invoke is not in the catalogue they are shown and
+so not in the list (293, 249). A feature a plan hides takes its entry with
+it, and names what unlocks it in the plan's own name ("included in
+Team"), never a rung (250, 280, S206).
 
-### Capture with a leading word
+**Actions while typing.** A fuzzy match over entry names and their
+objects, best first, each row naming the call it will send. An entry
+needing an argument the typing did not give asks for it in place: a
+decision number, an object, a bolt name, a set of intents. Where nothing
+matches, "No action matches. Enter captures this instead."
 
-Capture must cost one gesture from wherever the operator is (112) and no
-more than a sentence (112, 111). A leading `+` marks the rest as a
-capture with one signal of kind ask (19), verbatim, with no word of it
-read for meaning (S31, 19).
+## 3. Actions
 
-```
-⌘K  + the nightly run keeps timing out  ↵   → will send: capture
-⌘K  + …  ⇥ intent  ↵                        → will send: capture · intent
-```
+Every action is a seeded command entering the machinery the normal way:
+one or more tool calls, or a capture. Nothing here is a write the
+catalogue lacks (193, 291), and nothing asserts work was done (4).
 
-The intent toggle stays a control, never a word parsed out of the text
-(19, S30).
+| action | what it becomes | clause |
+|---|---|---|
+| Answer 412 · yes / drop / later / redo… | `answer(decision, answer, text)` — the deterministic path, the same tool the rail's buttons call | 194, S6 |
+| Answer everything ready | one `answer` per approve decision in number order, never a batch | S7 |
+| Capture an idea | `capture(text, source: page)` | 19, 111 |
+| Capture and start a thread | `capture` then `mark-intent(capture)` | 19, S30 |
+| Elaborate over these threads | pick intents, then `explore(intents, with-operator \| standing)` | 189, 188 |
+| Ask planning for something | `ask(repository, text)` | 28 |
+| Propose a unit / a chore | `propose-unit(bolt, text)`, `propose-chore(repository, text)` | 34, 60 |
+| Open a session of my own | `open-session(repository, text)` | 69 |
+| Drop · hold · resume · later · rename · send back · retire · finish · end · close | the matching undo-or-defer tool on the object in hand | 4, 193 |
+| Start / stop a service · take over a host | `start`, `stop`, `takeover` | 47, 150 |
+| Attach / detach a claim, set a home, mark reviewed | `attach`, `detach`, `set-home`, `mark-reviewed` | 200, 211, 122 |
+| Add a computer of yours · a cloud agent · a builder pool | `add-host(name, platform, parts, adopt)`, offered by what the serving host offers | 295, 230 |
+| Set up a new capture source | `add-package(package, scope, host, config, secrets)` | 228, 229 |
+| Invite someone · give them access · set their role | `invite-member`, `assign-application`, `set-role` | 255, 248 |
+| Assign a decision · filter to mine | `assign`, `filter(sink, own \| all)` | 237, S171 |
+| Switch flywheel | `switch-instance(instance)`; writes nothing | 218, S154 |
+| Configure this flywheel | opens the console's settings form; one save is one `configure-instance` | 233, S147 |
+| Open <object> | navigation; no write, no confirmation | S28, S61 |
+| Read <chapter> · <claim> in the book | opens the book viewer at that anchor | §5 |
 
-### Slash commands, one grammar with chat
+Actions carrying a guided flow — add a host, set up a capture source,
+invite someone, configure the flywheel — open that flow where it lives,
+the management console, at the screen the action names (S120, S147). The
+palette is the way in, the flow is unchanged, its finish the one call.
 
-The chat's structured path is already `/fw yes 412`, `/fw capture <text>`
-(plans.md, Hobby), and the numbered reply grammar is itself the answer
-tool (194, S32). Accepting the same strings in the palette means one
-grammar to learn and one to document.
+**Picking intents.** "Elaborate over these threads" opens a multi-pick of
+the open intents inside the palette, or takes those already ticked on the
+board. The picked set is the argument and the path after `explore` is
+unchanged (189, S43); the sticky bar at Inception's foot becomes the
+palette's own footer — the count, with-operator or standing, start,
+cancel.
 
-```
-⌘K  /fw 413 redo: split the migration out  ↵
-```
+## 4. Navigation
 
-### Scoped mode
+**Objects.** Typing a name in Actions matches live objects — decisions,
+intents, elaborations, bolts, units, repositories, hosts, members,
+chapters, claims — and opens the one chosen in the dock, over a board
+that stays in place (S61, S28). Reading is not a write, so it asks no
+confirmation; names resolve against the live objects (194).
 
-When a decision is focused on the rail or open in the dock, the palette
-opens already scoped to it and offers only that card's own answers
-(S5, S6). A key a card does not offer is refused with its answers listed
-(S57), and the palette should refuse the same way rather than reaching
-past the card.
+**Recents.** Talk at rest lists what was last sent, Actions at rest what
+was last opened. Both are renderings of the sent log and the page's own
+delivery (S2, 310), never stored client state, so a reload shows the same.
 
-```
-j j  ⌘K  (scoped: 415)  pick  c  ↵   → will send: pick c on 415
-```
+**Scoped mode.** With a card focused on the rail or an object open in the
+dock, the palette opens scoped to it: the object shows as a chip at the
+field's head and Actions lists that object's own answers and controls
+first. An answer the card does not offer is refused with the card's
+answers listed, exactly as a key is (S57); the palette never reaches past
+the card. Backspacing over the chip unscopes.
 
-### Free text to the browser interpreter
+**Not a second axis.** j and k walk the rail and nothing else (S57).
+While the palette is open ↑ and ↓ walk its list and the rail does not
+move; closing it returns the rail's axis. One list at a time, never two.
 
-Text that is neither a number, a command nor a capture is handed to the
-model running in the page's browser, which proposes exactly one tool call
-per thing asked, each shown as what will be sent and confirmed on its own
-(216a, 194). Where no interpreter runs — the rail has no key of its own,
-or the instance runs without one — the palette says what it does
-accept and offers the nearest shapes, rather than guessing (194: a name
-that resolves to nothing is asked about, never guessed).
+## 5. The book viewer
 
-```
-⌘K  drop the second unit and rename the bolt  ↵
-      → two cards, each confirmed on its own
-```
+The book is a standalone viewer, not a view of the page.
 
-### Recent and frequent
+**What it is.** A read-only server rendering the instance's blueprints
+as mdBook: the chapter tree, one chapter at a time with previous and
+next, headings with anchors, and each claim rendered where its chapter
+includes it by anchor, with its name, version, scenarios, attachments,
+derived scope and one verdict dot per repository in scope (97, S92,
+claims-as-specs). This closes **S149**.
 
-An empty palette lists what the operator did last and what the page
-offers now. Recency is a rendering of the sent log the header already
-carries (S2), not stored client state (310).
+**What it is built from.** The blueprints' shared line and only that.
+What is in flight — an intent's proposed claims, a chapter an elaboration
+has not landed — is not in it (187, 98). So the viewer is always the
+standing destination, and the page is where changes to it are answered.
 
-### The preview line
+**Links out.** Every dock page's "read in book" per cited chapter or
+claim, and the map's scope box, open the viewer at that anchor in a place
+of its own; the dock stays as it was (S94). The page embeds no chapter.
 
-Under the input, one line naming the call: "will send: yes to 412",
-mirroring the capture box's existing "will send: capture" (S30). A write
-is a tool call enqueued (291), so the preview is the last point at which
-the operator can see and stop it.
+**Links back.** Every chapter and rendered claim carries a link to the
+object on the page, at the host's address with the flywheel in the path
+(205a, 308): the chapter's intent, the claim's decisions and evidence. A
+link to a host that is away says so rather than failing silently (150a).
 
-### The acknowledgement
+**What "public" means.** On a self-managed host the viewer sits at the
+host's one address beside the page and the operator's private network is
+its boundary (155, 191): everyone on that network reads it, with no
+sign-in while the operators list holds a single entry and the device flow
+as soon as a second is listed or it is reached from elsewhere (253,
+253a). Nothing goes beyond that network unless the operator says so (46).
+On a hosted tier it is served at the tier's name under the caller's token
+like every other request, and reads to members of that flywheel alone
+(247, 249, 291). Serving it to readers who are not members is a separate,
+explicit act: one opt-in per book, stated on the settings form as what it
+is — "anyone with the link can read this book" — and revocable there.
 
-After sending, the palette shows the response recorded with who gave it
-and when (153, 154), the card leaves the rail and focus moves on (S6),
-and a reload shows the same thing because nothing about it lives in the
-client (310). A response that could not apply is reported and gets its
-attention line with its one-word ok (6, S8, S74).
+## 6. The phone
 
-### The phone form
+The palette is a bottom sheet with the platform's own keyboard (311),
+raised by a capture control on both tabs, carrying the two modes as a
+segmented pair. Everything in it is one tap or one short reply: a matched
+action's row is the tap, a captured idea the short reply (306, 311).
+Nothing on the phone needs it — every decision is still answered by tap
+on the Decisions tab, and the palette is the accelerator beside it (307,
+S38, S39). Its rows are touch targets, and what the desktop reveals on
+hover it shows outright (311, S61).
 
-A bottom sheet with the platform's own keyboard (311). It is an
-accelerator on the phone and never the answer path: every decision stays
-answerable by tap on the Decisions tab (306, 307, S38), and a long-form
-answer is typed with the platform keyboard as 311 already says.
+## 7. What changes in rail-and-board
 
-### Parity both ways
+- **Header.** Gains the palette's affordance at its left, with its key
+  hint on the desktop, hidden under 760px as the other hints are (S2, S38).
+- **Inception.** Loses the capture box at its head (S30) and the
+  "explore…" control (S13, S43), keeping the curation counter with its
+  session chip and the exploration rows; the space goes to the threads.
+- **Rail.** Unchanged: answers as buttons on every card, "yes all" in the
+  header, the filter at the rail's head (S3, S5, S7, S171).
+- **Dock.** Typed fields — redo notes, rename, reply, a proposal's
+  "that's all wrong" — open the palette scoped to that object rather than
+  holding a field of their own (S28). Every button stays.
+- **Board header.** Loses the book entry; phases and map remain, and the
+  book is a link out (§5).
+- **Key table (S56).** ⌘K and `/` open talk, ⌘⇧P opens actions, `b` opens
+  the book viewer rather than switching a view, and Esc gains "close the
+  palette" at the head of its order.
+- **Phone.** The Board tab's header offers phases and map only, and a
+  capture control on both tabs raises the sheet (S38).
 
-Everything the palette can send is reachable by tap (311), and everything
-a control sends is reachable in the palette. That symmetry is the test:
-no keyboard-only operation (306, 311), no control the catalogue lacks
-(193).
+## 8. Surface rulings revisited
 
-### The console shares it
+| S | what it says now | proposed |
+|---|---|---|
+| **S63** | "No typed grammar anywhere on the page (194)." | "One typed input on the page, the palette, in two modes: talk, whose text is a capture or a message the flywheel's own model reads into proposed calls, and actions, a list of the catalogue the caller may invoke (193, 194, 216a). No other field on the page parses a word. The workbench's dictation grammar in the capture box is still rejected: the palette's entries are the catalogue, not a grammar of its own." |
+| **S30** | "The capture box sits at the head of Inception…" | "The palette's talk mode is the page's capture surface. Typed text is sent unparsed to `capture` with one signal of kind ask, source the page (19, 194); an intent toggle beside the field makes the same submission also call `mark-intent` (12). Both are under `fw.capture.write`, so a viewer without it sees talk read-only with its send refused and Actions filtered (249). The preview line says what will be sent; Enter sends; the page acknowledges the recorded response (154)." |
+| **S31** | "The capture box never interprets a word of its text…" | "Talk mode never interprets a word of its own: no command grammar, no name resolution, no dictation in the field itself. Text the operator asks the flywheel to read goes to the model in the page's browser as the interpreter (216a, S34), which proposes calls the operator confirms; the field itself parses nothing." |
+| **S13** | "Inception shows: the capture box (S30); … Its head carries the 'explore…' control" | "Inception shows: the curation counter with curation's session chip; explorations as rows; every open or proposed intent as a thread with its elaborations as beads; a closed intent greyed with its countdown. Capture and explore are palette actions (S30, S43)." |
+| **S43** | "1. Inception head: 'explore…' enters the explore mode…" | "1. The palette's 'Elaborate over these threads' opens a multi-pick of open intents, or takes those already ticked on Inception; the footer counts them and offers with-operator or standing. 2. Start → `explore([intents], type)`. Steps 4 and 5 unchanged." |
+| **S56** | "`/` · board · focus the capture box"; "b · board · switch phases and book" | "`⌘K` or `/` · anywhere · open the palette in talk; `⌘⇧P` · anywhere · open the palette in actions; `b` · anywhere · open the book viewer at the object in hand. Esc closes the palette first." |
+| **S57** | "There is no second axis anywhere on the page" | keep, with one sentence: "While the palette is open its list is the one axis and the rail does not move; closing it returns the rail's." |
+| **S58** | modes table: "book · b, the board header, 'read in book' · the viewer with the rail driving it" | replace that row with two: "talk · ⌘K, `/`, the phone's capture control · the field, its preview line and recents · Esc, send"; "actions · ⌘⇧P, `>` · the catalogue the caller may invoke, fuzzy-matched · Esc, choose". The book row leaves the table. |
+| **S91** | "The book view is an mdBook-style viewer the page draws itself… entered with b… The rail stays beside it" | "The book is a standalone read-only viewer served beside the page, built from the blueprints' shared line as mdBook. The page links out to a chapter or a claim and never embeds one. `fw.ff.book-view` gates the viewer and the links to it (250, S197)." |
+| **S93** | "The rail drives the viewer. A focused card jumps the book to the chapter…" | "A focused card's dock page carries 'read in book' per cited chapter or claim, which opens the viewer at that anchor. The rail drives no viewer; decision markers in the chapter margin move to the page's own surfaces." |
+| **S94** | "'read in book' … switches to the book view at that anchor and closes the dock" | "'read in book' opens the viewer at that anchor in a place of its own; the dock stays as it was." |
+| **S95** | "The library is an overlay over the board, opened from a control in the book header." | "The library is the viewer's own index of the flywheel's blueprints; the palette's 'Read … in the book' reaches a book or a chapter directly." |
+| **S96** | "The review flow is one flow for the map and the book (122)." | "The review mark is one mark for both (122): the map's overlay is on the page, the book's changed chapters and claims are shown in the viewer, and 'mark reviewed' sends `reviewed` once from either." |
+| **S149** | open: "How the book viewer is served: chapters rendered by the server from mdBook sources, or mdBook's own build embedded." | Closed: a standalone read-only server rendering mdBook sources from the shared line, with the claim block read from the standing specifications (§5). |
+| **S38** | the Board tab's "header switches to the map… and to the book" | "…switches to the map, rendered as the stacked list of S90. The book is a link out. A capture control on both tabs raises the palette as a bottom sheet." |
 
-The management console renders on a phone and its journeys complete
-there (312). It calls the same catalogue (193), so the same palette
-belongs in it, scoped to hosts, members, sinks and packages, with every
-configuration change staying one logged response (153, S205).
+## 9. Requirements amendments proposed
 
-## 3. What the palette is not
+- **19** — add: "The page's typed input is one palette in two modes: talk
+  is that capture surface, actions offers the catalogue of 193, and
+  neither parses text on the page's side."
+- **112** — amend the gestures: "Capture is one gesture from wherever the
+  operator is: a forwarded message, one word on the phone, a file dropped
+  in a folder, one key on the page that opens its palette ready to
+  capture. It costs no more than a sentence."
+- **193a (new)** — "The catalogue, filtered by the caller's permissions
+  (293), is itself an operator surface: a client may render it as a list
+  of the operations that caller may invoke, and the page does. An entry
+  is one tool call with its arguments named by object id; a client offers
+  no entry the catalogue lacks."
+- **311** — add: "An accelerator — the page's palette, a key, a short
+  reply — never carries an operation that no control also carries."
+- **315 (new, A.39 The book viewer)** — "The instance's book is served by
+  a read-only viewer of its own, built from the blueprints' shared line:
+  chapters as mdBook, each claim rendered where its chapter includes it
+  by anchor from the standing specifications (97). The page links out to
+  a chapter or a claim and embeds neither; every chapter and every
+  rendered claim links back to the object at the host's address with the
+  instance in the path (205a, 308). What is in flight is not in it."
+- **316 (new)** — "The viewer's readers are the host's: on a self-managed
+  host the private network is the boundary and the sign-in is 253's, with
+  253a's exception; on a hosted tier it is served under the caller's token
+  and reads to members of that instance alone (247, 249, 291). Serving a
+  book to readers who are not members is one opt-in per book, stated on
+  the settings form and revocable there, and a stated fact of the tier
+  (261)."
 
-- **Not a second interpreter.** The page has one, the model in its
-  browser (216a); the palette either resolves deterministically or hands
-  the text to that one.
-- **Not client state.** No draft that a reload loses, no queue of staged
-  calls; every edit is its own response, sent when given (310, S64).
-- **Not a superset of the catalogue.** If a tool does not exist, the
-  palette does not offer it — in particular nothing that asserts work was
-  done (4), which is not in the catalogue at all.
-- **Not a way to hide a decision.** The rail stays the one list in the
-  model's order (S3, S59), and the palette never becomes the place where
-  something is pending that the rail does not show (8, 11).
-- **Not a second axis.** The one-axis rule holds: j and k walk the rail
-  and the palette does not add a second thing to walk (S57).
+## 10. Open questions
 
-## 4. Three directions
-
-### A. Palette-only input
-
-Every typed thing on the page goes through the palette. The capture box
-leaves Inception's head, the dock's typed fields (redo notes, rename,
-reply) open the palette pre-scoped, and buttons remain for every answer.
-
-- **For:** one input to learn, one preview line, one place where a write
-  is confirmed; Inception's head gets its space back for the curation
-  counter and the threads (S13).
-- **Against:** capture stops being visible furniture, which is what makes
-  it feel like one gesture (112); a viewer with no capture permission
-  currently just has no box (S30, 249), and a palette must degrade the
-  same way per entry rather than per region.
-- **Changes in rail-and-board:** S30 and S31 rewritten as palette
-  statements; `/` in the key table (S56) rebound to the palette; the
-  Inception head redrawn.
-
-### B. Palette beside the controls
-
-The palette is an accelerator over the same catalogue. The capture box,
-the rail's buttons and every dock control stay exactly as specified; the
-palette reaches all of them, and reaches objects the current view does
-not show.
-
-- **For:** nothing in the current specification is invalidated; 306 and
-  311 are satisfied by the controls that already satisfy them; the
-  palette can ship behind a flag and be judged on use (250, S197).
-- **Against:** two paths to every operation, so two places to keep in
-  step; S63 still has to be amended, because the palette does carry a
-  typed grammar; the redundancy is real and someone pays for it in the
-  specification.
-- **Changes in rail-and-board:** S63 narrowed to "the capture box never
-  interprets" (which is S31 already); one new section for the palette;
-  ⌘K added to S56.
-
-### C. Palette as the dock's header
-
-The palette lives in the dock, scoped to the object in hand, and is the
-typed form of that object's own controls. The board and rail keep buttons
-only; there is no global input.
-
-- **For:** scope is always obvious, so name resolution is nearly free and
-  the wrong-object mistake is hard to make; it fits the dock's job as the
-  place to answer (S36).
-- **Against:** it cannot capture from wherever the operator is (112),
-  cannot find an object not yet open, and gives up most of what a palette
-  is for; it is closer to a command line per card than to ⌘K.
-- **Changes in rail-and-board:** S28's dock pages each gain a header
-  input; the capture box stays; S63 amended only for the dock.
-
-## 5. Open questions
-
-- Is S63 revisited at all, or is a typed grammar on the page still a no?
-- Which direction: the palette as the only input, beside the controls, or
-  inside the dock?
-- Does the palette send on ↵ from the preview, or does it need a second
-  confirmation for a write (291, 194)?
-- Does `+` for capture read as a command grammar, and so reintroduce what
-  S31 forbids — or does the leading word only choose the tool, never the
-  text's meaning?
-- Is an unsent palette draft state a reload may lose (310), and if so does
-  the palette clear on reload or refuse to hold a draft at all?
-- Does the palette accept `yes all`, which today is one control sending
-  one response per decision in number order (S7)?
-- On the phone, is the palette present at all, or desktop-only given that
-  every answer is already one tap there (311, 306)?
-- Does the palette respect the rail's mine · all filter, or reach every
-  decision regardless (S171, 235)?
-- What does the palette show a viewer whose token lacks `fw.rail.answer`
-  or `fw.capture.write` (249) — a refused entry, or no entry?
-- Does the console's palette share the page's, or is it a second
-  instance over the same catalogue (312, 193)?
-- Is the palette behind its own flag, and on by default (250, S197)?
-- Does voice through the mobile app land in the same grammar (313)?
+- Does talk send on Enter, or does a proposed write need a second
+  confirmation past its card (291, 194)?
+- Does the intent toggle stay a control beside the field, or become the
+  action "Capture and start a thread" only?
+- What does a viewer without `fw.capture.write` see — talk with its send
+  refused, or no talk mode at all (249, S30)?
+- Does the console get this palette, or its own over the same catalogue
+  (312, 193)?
+- Is the palette behind a flag, on by default, and does the book viewer
+  share it (250, S197)?
+- Does voice through the mobile app land in talk's grammar (313)?
