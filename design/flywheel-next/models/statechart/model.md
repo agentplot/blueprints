@@ -185,6 +185,12 @@ tick(scope):
     release the lease if the object is quiescent on this host
 ```
 
+Every guard in one tick of an object reads the one `ev` taken before
+the region loop: a region's move this tick is visible to its siblings,
+its parent and its children on the object's next tick, never within the
+same one. A scenario expecting two dependent moves therefore expects two
+ticks.
+
 `fire(t)`: run the source state's `exit` effects, the transition's
 `effects`, then the target's `entry` effects, each **only when its
 proof evidence is absent**; then write one atomic record: new state,
