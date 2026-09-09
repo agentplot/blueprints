@@ -2702,8 +2702,6 @@ Not requirements; the places where the modeler's judgment is wanted.
   repository's backlog changed, and how does it see the open bolts?
 - What is the cadence rule for a line taking its parent, and what
   proves a place is current before its session starts?
-- Are claims OpenSpec requirement blocks included by anchor, or fenced
-  claim blocks with a hash lock?
 - What is the layout of state in git: one repository or one per book;
   one shared branch or one per host merged into it; one file per
   object, per state change, or per kind? What does a race between two

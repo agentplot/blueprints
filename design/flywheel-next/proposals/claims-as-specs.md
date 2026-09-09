@@ -15,7 +15,7 @@ derived all stay as written. Only where the claim's text lives moves.
 
 ## The mapping
 
-| the requirements say (112, 126, 97–105) | in OpenSpec |
+| the requirements say (97–105 and the glossary) | in OpenSpec |
 |---|---|
 | a claim is one statement with a stable name | `### Requirement: <name>` in `openspec/specs/<capability>/spec.md` of the blueprints; the claim's name is `<capability>/<name>` |
 | at least one scenario saying how one would know it holds | its `#### Scenario:` blocks; OpenSpec refuses a requirement without one |
