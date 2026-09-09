@@ -1,49 +1,66 @@
-# books/flywheel — authoring rules
+# books/flywheel: authoring rules
 
-This book is the destination design for the flywheel, the work-loop
-machinery built at `agentplot/flywheel`. The suite-wide rules in
-`books/CLAUDE.md` govern everything here; this file adds the
-per-system flavor.
+This book is the design book for the flywheel. Its source of truth is
+`design/flywheel-next/`, and the book's whole discipline is that it
+includes that source rather than restating it.
 
 ## The one structural rule
 
-The backlog is computed, never stored. This book carries no proposals
-chapter, no roadmap, no work list of any kind: the bolt planner
-derives construction work from the difference between this book and
-the flywheel repo's `openspec/specs/`. If a chapter is tempted to
-enumerate future work, the chapter is describing the destination
-badly — rewrite it to state the destination and let the planner find
-the gap.
+**Part I and Part III are includes, never prose.** A chapter under
+`src/fundamentals/` or `src/surfaces/` is one heading and one or more
+`{{#include ../../../../design/flywheel-next/<file>:<anchor>}}` lines,
+and nothing else. If a clause is wrong, fix it at its source and let the
+build carry it through. Never copy clause text into a chapter, never
+paraphrase a clause in Part I, and never let a chapter's heading
+contradict the section it includes.
+
+Anchors live in the source as `<!-- ANCHOR: name -->` and
+`<!-- ANCHOR_END: name -->` comment pairs. `requirements.md` carries one
+per Part A section (`a01` to `a39`), plus `preamble`, `actors`,
+`glossary`, `part-b`, `part-c`, `invariants`, `non-goals`, `givens`,
+`questions` and `scenarios`. `surfaces.md` carries one per top-level
+section. `roadmap.md` carries one for the whole file. An anchor starts
+after its heading line and ends before the next heading, so it never
+cuts across a clause.
+
+Adding a Part A section to the requirements means adding its anchor, a
+chapter under `src/fundamentals/`, and a line in `src/SUMMARY.md`.
+
+## Part II
+
+Part II is the only place in this book where prose about the design is
+written fresh. Rules for it:
+
+- Cite clause numbers in parentheses, the way the sources do: `(75)`,
+  `(A.14)`, `(I13)`. Cite rather than restate.
+- Six to eight chapters, sixty to a hundred and fifty lines each. A
+  chapter that outgrows that is two chapters.
+- A mermaid diagram only where it shows a mechanism prose cannot. The
+  book has a mermaid preprocessor; use ```` ```mermaid ```` fences.
+- Plain prose. No em-dashes.
 
 ## Vocabulary
 
-`src/glossary.md` is the book's ubiquitous language. Use its terms
-verbatim; never paraphrase a defined term. New terms earn a glossary
-entry only when no DDD name and no plain technical word covers them.
-"Assertion", "handoff", "conductor", and "andon" are retired
-vocabulary and appear nowhere in this book.
+Section 3 of the requirements is this book's ubiquitous language, and
+Part I includes it as the glossary chapter. Use its terms verbatim and
+never redefine one in Part II.
 
 ## Boundaries
 
-Adjacent systems appear as named contracts, never as duplicated
-internals:
+The models, the proposals and the roadmap live in
+`design/flywheel-next/` and are pointed at from Part IV, not duplicated
+into it. The model of record is
+`design/flywheel-next/models/statechart/model.md`; its checker is what
+holds the model and the requirements together.
 
-- **GitHub tracker** — the published language in
-  `src/tracker-protocol.md`; label taxonomy and Project fields are
-  this book's contract.
-- **OpenSpec** — schemas and the `loop:` block in `src/schemas.md`;
-  OpenSpec's own behavior belongs to its docs.
-- **herdr / worktrunk** — session hosting and merge gates; named where
-  used, designed elsewhere.
-- **Design books** — the corpus protocol (chapter refs, sidecars)
-  belongs to the suite; this book only states that the planner reads
-  it.
+## After any edit
 
-## Sources
+Run `mdbook build` here and fix every unresolved include it reports. If
+you touched an anchor in `design/flywheel-next/`, also run, from
+`design/flywheel-next/models/statechart`:
 
-The machinery's implementation is the flywheel repo: `bin/` for the
-loop programs and server, `agents/` for session profiles, `tests/`
-for the verification stages, `design/` for decision drafts not yet
-synthesized here. When this book and the repo disagree, the book
-states the destination and the gap is the backlog — do not "correct"
-the book to match the code.
+```bash
+uv run --with pyyaml --with jsonschema python3 machines/check.py
+```
+
+An anchor comment must never break the clause parser that check uses.

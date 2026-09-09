@@ -37,6 +37,7 @@ Numbers are stable citations and follow the order in which statements
 were settled, not their place on the page.
 
 ## 1. Surfaces
+<!-- ANCHOR: surfaces -->
 
 ### 1.1 The page
 
@@ -993,7 +994,9 @@ were settled, not their place on the page.
   and on a `frontegg` host `invite-member`, `assign-application`,
   `revoke-application`, `set-role`, `target-flag`.
 
+<!-- ANCHOR_END: surfaces -->
 ## 2. Flows
+<!-- ANCHOR: flows -->
 
 Each step names the surface, the control, the tool call, and what the
 page shows after.
@@ -1375,7 +1378,9 @@ page shows after.
   store, the hosts list and pools can be turned on where the tier
   carries them (250, S197).
 
+<!-- ANCHOR_END: flows -->
 ## 3. Forms
+<!-- ANCHOR: forms -->
 
 One form per kind and no two kinds share one (209). Phase is shown by
 where a thing sits, never by its form.
@@ -1438,7 +1443,9 @@ where a thing sits, never by its form.
   is live; a soon countdown (two days or less) is marked. A deferred
   proposal shows the time it was deferred, never a countdown.
 
+<!-- ANCHOR_END: forms -->
 ## 4. Keys and modes
+<!-- ANCHOR: keys-and-modes -->
 
 - **S56.** The key table:
 
@@ -1487,7 +1494,9 @@ where a thing sits, never by its form.
 | dock | Enter, a marker, a card, a pill, a chip | one page of S28 over the board | Esc, ×, a click outside |
 | phone tabs | width under 760px | Decisions or Board | the other tab |
 
+<!-- ANCHOR_END: keys-and-modes -->
 ## 5. Rulings
+<!-- ANCHOR: rulings -->
 
 Each dated, each with its reason.
 
@@ -1805,7 +1814,9 @@ Dated 2026-09-08.
   screen — live in the mockups' header comments, where the next designer
   reads them and the customer never does. Closed.
 
+<!-- ANCHOR_END: rulings -->
 ## 6. Open
+<!-- ANCHOR: open -->
 
 What no mockup settled.
 
@@ -1914,3 +1925,5 @@ What no mockup settled.
 - **S194.** Ruled 2026-09-08: an owner is one member or nobody; roles
   are not owners (237 amended), so "mine" is the decisions owned by
   the signed-in member and nothing else (S171).
+
+<!-- ANCHOR_END: open -->

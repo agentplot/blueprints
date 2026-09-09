@@ -1,4 +1,5 @@
 # Roadmap
+<!-- ANCHOR: roadmap -->
 
 Five phases, each the size of one bolt plan, each run on real willdan work
 before the next starts. The Rust prototype at flywheel-next/main is the
@@ -73,3 +74,5 @@ surface items in surfaces.md are worked when the phase whose surface they
 touch opens. The 390px header overflow is no longer among them: the phone is
 a phase 1 requirement (A.38, 306–314) and the mockups render at 390px (314). proposals/hosted-design-review.md's
 unverified facts are checked when phase 5 opens.
+
+<!-- ANCHOR_END: roadmap -->

@@ -1,4 +1,5 @@
 # Flywheel next — requirements
+<!-- ANCHOR: preamble -->
 
 A statement of what the instance must do and what must always hold,
 written to admit any model that satisfies it.
@@ -23,6 +24,8 @@ runs design work that settles what to build, and construction work
 that builds it, using AI agent sessions for the work and the operator
 for the decisions. Everything it does is inspectable after the fact.
 
+<!-- ANCHOR_END: preamble -->
+<!-- ANCHOR: actors -->
 ## 2. Actors
 
 | actor | may decide | may not |
@@ -32,6 +35,8 @@ for the decisions. Everything it does is inspectable after the fact.
 | **an agent session** | how to do the one job it was given; what to report; whether to raise a question, offer a finding, or offer a chore | it never changes the state of anything outside its job; it never starts other work |
 | **signal sources** (people, meeting transcripts, logs, user feedback, other tools) | nothing; they only supply raw material | |
 
+<!-- ANCHOR_END: actors -->
+<!-- ANCHOR: glossary -->
 ## 3. Vocabulary
 
 Terms are defined by meaning. A model may add terms; it may not
@@ -198,12 +203,14 @@ redefine these.
   of chapters, with the claims fenced in the chapters that explain
   them (23, 97). A chapter is a page of it.
 
+<!-- ANCHOR_END: glossary -->
 ## 4. Requirements — Part A, the data plane
 
 Each requirement is a statement that can be shown true or false of a
 model.
 
 ### A.1 The operator's response
+<!-- ANCHOR: a01 -->
 
 1. The operator gives their response in one place, the rail, and the response
    is applied exactly once.
@@ -224,7 +231,9 @@ model.
 6. Approval given once is never re-asked, and never silently
    discarded. A given response that cannot be applied is reported.
 
+<!-- ANCHOR_END: a01 -->
 ### A.2 The rail
+<!-- ANCHOR: a02 -->
 
 7. The rail is derivable: at any moment its content is a function of
    the current state of the system, not of what any process remembers.
@@ -286,7 +295,9 @@ The catalogue of decisions, the reply grammar and the counting rules are
 mocked in `design/flywheel-next/rail-mockup.md`: one rendering of these
 requirements, iterated against the running rail rather than on paper.
 
+<!-- ANCHOR_END: a02 -->
 ### A.3 Intents and curation
+<!-- ANCHOR: a03 -->
 
 20. Signals arrive from many sources at many rates. Curation, not the
     elaboration machinery, decides which become intents. Curation may
@@ -302,7 +313,9 @@ requirements, iterated against the running rail rather than on paper.
     destination there; anything else they produce is a record, not a
     source of truth.
 
+<!-- ANCHOR_END: a03 -->
 ### A.4 Elaborations and their types
+<!-- ANCHOR: a04 -->
 
 24. An elaboration is one session, one conversation, one place. It is
     not split into many small sessions by the machinery.
@@ -325,7 +338,9 @@ requirements, iterated against the running rail rather than on paper.
 27. The type of an elaboration is chosen when it is proposed and can be
     corrected by the operator's response.
 
+<!-- ANCHOR_END: a04 -->
 ### A.5 Planning and construction
+<!-- ANCHOR: a05 -->
 
 28. Planning is a session of its own, run for one built repository when
     that repository's backlog changes: a claim in scope becomes
@@ -471,7 +486,9 @@ requirements, iterated against the running rail rather than on paper.
     change at all. A unit records the type version it started under, and
     a type change never moves a unit already in flight.
 
+<!-- ANCHOR_END: a05 -->
 ### A.6 Findings and chores
+<!-- ANCHOR: a06 -->
 
 58. A session may offer a finding at any time. A finding about the
     session's own intent or bolt is a proposal on the rail for that
@@ -503,7 +520,9 @@ requirements, iterated against the running rail rather than on paper.
     chores as well as units, and a chore may satisfy a claim and
     produce a verdict.
 
+<!-- ANCHOR_END: a06 -->
 ### A.7 Sessions
+<!-- ANCHOR: a07 -->
 
 65. A session is given one job, one place, and a bounded goal. Inside
     the job it is free; its only outputs to the machinery are a fixed
@@ -549,7 +568,9 @@ requirements, iterated against the running rail rather than on paper.
     program, and the multiplexer's own messaging, are not used by any
     session (173).
 
+<!-- ANCHOR_END: a07 -->
 ### A.8 State and evidence
+<!-- ANCHOR: a08 -->
 
 75. Every object's state is derivable from durable stores at any
     moment. Nothing held only in a process's memory decides behavior
@@ -562,7 +583,9 @@ requirements, iterated against the running rail rather than on paper.
 78. Reading the same stores twice with nothing changed produces the
     same conclusion and no writes.
 
+<!-- ANCHOR_END: a08 -->
 ### A.9 Observability
+<!-- ANCHOR: a09 -->
 
 79. Every write the machinery makes is recorded with its reason and
     the evidence it was based on.
@@ -577,7 +600,9 @@ requirements, iterated against the running rail rather than on paper.
     Nothing the machinery notices is visible only on the host that
     noticed it.
 
+<!-- ANCHOR_END: a09 -->
 ### A.10 The engine, the domain, and the model as an artifact
+<!-- ANCHOR: a10 -->
 
 83. The machines are defined as data in standalone files. The same
     definition is executed by the machinery and is what every diagram of
@@ -599,7 +624,9 @@ requirements, iterated against the running rail rather than on paper.
     evidence, one effect atom per act on the world. New behavior is new
     definitions and new atoms; it is never a change to the engine.
 
+<!-- ANCHOR_END: a10 -->
 ### A.11 Instructions and skills as data
+<!-- ANCHOR: a11 -->
 
 88. The schemas an artifact must satisfy, the instructions for writing
     each artifact, and the skill for each session type are data,
@@ -613,7 +640,9 @@ requirements, iterated against the running rail rather than on paper.
 91. Changing an instruction is a chore. The model says where the
     instructions live and how a change to one reaches every host.
 
+<!-- ANCHOR_END: a11 -->
 ### A.12 Scenarios and testing as data
+<!-- ANCHOR: a12 -->
 
 92. Every machine is testable on its own against a stand-in state
     store, with no live service of any kind.
@@ -648,13 +677,17 @@ requirements, iterated against the running rail rather than on paper.
 95. A scenario can be dictated in the operator's own words, turned into
     that data, run, and rendered afterwards as a trace a person reads.
 
+<!-- ANCHOR_END: a12 -->
 ### A.13 Coexistence
+<!-- ANCHOR: a13 -->
 
 96. The new flywheel runs beside the current one, against the same
     instance, without either interfering with the other. Its
     scope of objects is disjoint and explicit.
 
+<!-- ANCHOR_END: a13 -->
 ### A.14 Claims, as-built, and the ledger
+<!-- ANCHOR: a14 -->
 
 97. A claim's text lives in the blueprints' OpenSpec specifications,
     and the chapter that explains it includes it by anchor, so the two
@@ -706,7 +739,9 @@ requirements, iterated against the running rail rather than on paper.
     their verdicts, and each claim's attachments with a control to
     re-attach it (193).
 
+<!-- ANCHOR_END: a14 -->
 ### A.15 Signals and curation
+<!-- ANCHOR: a15 -->
 
 106. Signals are appended by adapters, one record per signal, at any
     rate. The machinery never reads a signal except through curation.
@@ -771,7 +806,9 @@ requirements, iterated against the running rail rather than on paper.
     declares it (217e). An instance adds an adapter as a package
     (228).
 
+<!-- ANCHOR_END: a15 -->
 ### A.16 Default instructions and the review surface
+<!-- ANCHOR: a16 -->
 
 119. The instructions that shape what a session writes are data the
     operator can change without a code change, and the boundary between
@@ -862,7 +899,9 @@ requirements, iterated against the running rail rather than on paper.
     construction session's work order names the elements it builds,
     their homes, and the claims attached there (89).
 
+<!-- ANCHOR_END: a16 -->
 ### A.17 Sessions charged by the machinery
+<!-- ANCHOR: a17 -->
 
 171. Every agent session is data plane. The engine runs no agent; it
     charges sessions and reads what they leave. A session charged by an
@@ -915,7 +954,9 @@ requirements, iterated against the running rail rather than on paper.
     when absent and removes it when its object leaves every view (186).
     An operator's own session (69) is a workspace of its own.
 
+<!-- ANCHOR_END: a17 -->
 ### A.18 Landing, pull requests and merge-back
+<!-- ANCHOR: a18 -->
 
 175. A bolt's landing policy is its repository's, from the manifest:
     direct or pull-request. Direct: at close the machinery merges the
@@ -975,7 +1016,9 @@ requirements, iterated against the running rail rather than on paper.
     release tooling reading the shared line needs nothing from the
     flywheel.
 
+<!-- ANCHOR_END: a18 -->
 ### A.19 Operation
+<!-- ANCHOR: a19 -->
 
 181. Operation is a phase the flywheel observes and never runs. A landed
     bolt's releases, environments and runs belong to the delivery
@@ -1001,7 +1044,9 @@ requirements, iterated against the running rail rather than on paper.
     suite from them is the delivery system's; the machinery writes no
     index beside them (181).
 
+<!-- ANCHOR_END: a19 -->
 ### A.20 Intents as changes; gathered elaborations
+<!-- ANCHOR: a20 -->
 
 187. An intent is a change in the blueprints repository: its change directory
     is where its elaborations record what they did — research notes,
@@ -1029,7 +1074,9 @@ requirements, iterated against the running rail rather than on paper.
     gathered elaboration carries no other elaboration awaiting approval
     meanwhile (21).
 
+<!-- ANCHOR_END: a20 -->
 ### A.21 Deliverables and their producers
+<!-- ANCHOR: a21 -->
 
 190. An elaboration type or a stage names its deliverables, and for each
     deliverable the skill that produces it, the schema it must satisfy
@@ -1052,7 +1099,9 @@ requirements, iterated against the running rail rather than on paper.
     producer, and every construction session whose work touches a
     surface carries the specification in force in its work order (89).
 
+<!-- ANCHOR_END: a21 -->
 ### A.22 Endpoints and routing
+<!-- ANCHOR: a22 -->
 
 191. How a place's services are reached is a binding of the host, never
     of the machinery: the machinery gives each service a port derived
@@ -1076,7 +1125,9 @@ requirements, iterated against the running rail rather than on paper.
     self-managed host; a place's own services are published beyond it
     only when the operator says so, as everywhere.
 
+<!-- ANCHOR_END: a22 -->
 ### A.23 Where files live
+<!-- ANCHOR: a23 -->
 
 203. Three repositories, three owners. The state repository is the
     machinery's alone: nothing a person or a session writes lives
@@ -1098,7 +1149,9 @@ requirements, iterated against the running rail rather than on paper.
     outside its prefix except as the effect of a response. Raw
     material that captures cite stays outside every repository (111).
 
+<!-- ANCHOR_END: a23 -->
 ### A.24 Bootstrapping and repositories
+<!-- ANCHOR: a24 -->
 
 204. Initialization is the machinery's, deterministic and repeatable. An
     instance is an object with a machine of its own — absent, blueprints
@@ -1147,7 +1200,9 @@ requirements, iterated against the running rail rather than on paper.
     flywheel. Initialization and creation stamp the version they used;
     upgrading a repository's template is a chore (123).
 
+<!-- ANCHOR_END: a24 -->
 ### A.25 Dispatch
+<!-- ANCHOR: a25 -->
 
 216. Dispatch is four jobs and no more: the presenter of the chat sink
     (148, 152–155), the capture endpoint for callers that cannot write
@@ -1264,7 +1319,9 @@ requirements, iterated against the running rail rather than on paper.
     on that placement; a dispatcher running an older binary than the
     manifest's stamped version is visible on the status view (208).
 
+<!-- ANCHOR_END: a25 -->
 ### A.26 Instances
+<!-- ANCHOR: a26 -->
 
 218. A host runs several instances at once, each isolated on disk and in
     state: nothing crosses between them — no lease, no id, no session,
@@ -1319,7 +1376,9 @@ requirements, iterated against the running rail rather than on paper.
     The instance's package store and a host's package store are
     separate surfaces.
 
+<!-- ANCHOR_END: a26 -->
 ### A.27 Machines, types and context
+<!-- ANCHOR: a27 -->
 
 223. The machines are of two tiers, and the tier is marked in the
     definition. A **core** machine — every object machine, every engine
@@ -1389,7 +1448,9 @@ requirements, iterated against the running rail rather than on paper.
     refused when the type file is loaded, and the refusal is reported
     (79).
 
+<!-- ANCHOR_END: a27 -->
 ### A.28 Packages and setup
+<!-- ANCHOR: a28 -->
 
 228. A package is one thing of one kind: an adapter, a chat sink, a
     runner, a router, a sign-in, a unit type or an elaboration type, a
@@ -1436,7 +1497,9 @@ requirements, iterated against the running rail rather than on paper.
     apart by id alone; the scenario tool (95) can start, stop and
     disconnect them by name.
 
+<!-- ANCHOR_END: a28 -->
 ### A.29 Users and ownership
+<!-- ANCHOR: a29 -->
 
 234. An account's operators are identities of the host's kind (243):
     on a self-managed host the GitHub usernames of the authored
@@ -1475,7 +1538,9 @@ requirements, iterated against the running rail rather than on paper.
     Ownership never changes what a decision is, whether it counts, or
     who may answer it.
 
+<!-- ANCHOR_END: a29 -->
 ### A.30 Environments
+<!-- ANCHOR: a30 -->
 
 238. Every tracked repository declares the environment its sessions
     need — tools and their versions — in one file the instance reads
@@ -1493,7 +1558,9 @@ requirements, iterated against the running rail rather than on paper.
     behind the declarations is visible on the hosts surface, and
     rebuilding it is a chore (123).
 
+<!-- ANCHOR_END: a30 -->
 ### A.31 Host pools
+<!-- ANCHOR: a31 -->
 
 240. An instance may declare a pool: a platform that provisions
     hosts on demand from the image (239), up to a bound, each joining by
@@ -1513,7 +1580,9 @@ requirements, iterated against the running rail rather than on paper.
     drains. Every such change is an effect with a proof, and the
     flywheel instrument shows it as drain changing.
 
+<!-- ANCHOR_END: a31 -->
 ### A.32 Identity
+<!-- ANCHOR: a32 -->
 
 243. The identity provider is a host binding with two kinds. `github`,
     for self-managed hosts: the page signs in with GitHub's device
@@ -1641,7 +1710,9 @@ requirements, iterated against the running rail rather than on paper.
     any response (153). On a self-managed host the operators list on
     the settings form is the administration.
 
+<!-- ANCHOR_END: a32 -->
 ### A.33 Tenancy and encryption
+<!-- ANCHOR: a33 -->
 
 256. Everything a shared host keeps between ticks is encrypted at rest
     under a key naming one instance: the clone cache, the body of
@@ -1705,7 +1776,9 @@ requirements, iterated against the running rail rather than on paper.
     each tick assumes the role with a token minted for it, and deleting
     the role ends every path.
 
+<!-- ANCHOR_END: a33 -->
 ### A.34 The hosted tiers
+<!-- ANCHOR: a34 -->
 
 268. The tiers are four, named by what exists on the service side. Tier
     0 is your computer: the binary on the operator's own machine, its
@@ -1943,7 +2016,9 @@ requirements, iterated against the running rail rather than on paper.
     not offered. A tool call from any client is a response recorded like
     any other, with who gave it and when (153).
 
+<!-- ANCHOR_END: a34 -->
 ### A.35 Plans and presets
+<!-- ANCHOR: a35 -->
 
 279. On a hosted tier an instance has a plan: a named set of the
     entitlement features 250 defines, keyed `fw.ff.*`, together with a
@@ -2049,7 +2124,9 @@ requirements, iterated against the running rail rather than on paper.
     the advanced disclosure. The flow itself is the guided one the
     surface specification carries (212, S120).
 
+<!-- ANCHOR_END: a35 -->
 ### A.36 Rulings carried over
+<!-- ANCHOR: a36 -->
 
 285. Every unit type and elaboration type declares the model class each
     of its stages runs, so a stage that reviews code may name a
@@ -2080,7 +2157,9 @@ requirements, iterated against the running rail rather than on paper.
     work retires (264, 240, 275). No shared host of the service's ever
     holds an instance's code.
 
+<!-- ANCHOR_END: a36 -->
 ### A.37 The control plane
+<!-- ANCHOR: a37 -->
 
 296. There are two products. The **flywheel binary** is open source under a
     permissive licence, and it is everything a self-managed operator runs:
@@ -2196,7 +2275,9 @@ requirements, iterated against the running rail rather than on paper.
     three — stores only, stores and compute, and the whole control plane
     installed.
 
+<!-- ANCHOR_END: a37 -->
 ### A.38 The phone
+<!-- ANCHOR: a38 -->
 
 306. Every decision is answerable on a phone, and every control and every
     form the page carries is available there. Nothing the page offers is
@@ -2246,7 +2327,9 @@ requirements, iterated against the running rail rather than on paper.
     at a 390px viewport as well as at the desktop's, and the mockups
     render at 390px.
 
+<!-- ANCHOR_END: a38 -->
 ### A.39 The book viewer
+<!-- ANCHOR: a39 -->
 
 315. The instance's book is served by a read-only viewer of its own,
     built from the blueprints' shared line: chapters as mdBook, each
@@ -2263,7 +2346,9 @@ requirements, iterated against the running rail rather than on paper.
     book, stated on the settings form and revocable there, and a stated
     fact of the tier (261).
 
+<!-- ANCHOR_END: a39 -->
 ## 5. Requirements — Part B, the state store contract
+<!-- ANCHOR: part-b -->
 
 The data plane reaches durable, shared state and the operator only
 through these operations, and depends only on these guarantees.
@@ -2474,7 +2559,9 @@ through these operations, and depends only on these guarantees.
     <text>`) stays as the deterministic path, because a decision number
     is unambiguous, and is itself one of the tools: answer a decision.
 
+<!-- ANCHOR_END: part-b -->
 ## 6. Requirements — Part C, profiles
+<!-- ANCHOR: part-c -->
 
 A profile is a complete binding of Part B to real storage and real
 services. Every profile satisfies every operation of B.1 with every
@@ -2579,7 +2666,9 @@ provide to conform.
 170. A profile that cannot provide a guarantee is rejected as a
      profile. The data plane is never weakened to admit one.
 
+<!-- ANCHOR_END: part-c -->
 ## 7. Invariants
+<!-- ANCHOR: invariants -->
 
 These hold at every moment, not just at the end of an operation.
 
@@ -2610,7 +2699,9 @@ These hold at every moment, not just at the end of an operation.
 - I15. Two commits that change the same object cannot both land without
   one having seen the other. *(profile: git-only)*
 
+<!-- ANCHOR_END: invariants -->
 ## 8. Non-goals
+<!-- ANCHOR: non-goals -->
 
 - Replacing the git hosting or the agent runtime.
 - Multi-operator arbitration. One operator per flywheel.
@@ -2621,7 +2712,9 @@ These hold at every moment, not just at the end of an operation.
 Which state store the flywheel runs on is a profile choice, made per
 instance, not a non-goal.
 
+<!-- ANCHOR_END: non-goals -->
 ## 9. Environment givens
+<!-- ANCHOR: givens -->
 
 Constraints of the world, not design choices.
 
@@ -2673,7 +2766,9 @@ Constraints of the world, not design choices.
   life. A repository's own instructions say how its servers start under
   that rule.
 
+<!-- ANCHOR_END: givens -->
 ## 10. Questions the model must answer
+<!-- ANCHOR: questions -->
 
 Not requirements; the places where the modeler's judgment is wanted.
 
@@ -2713,7 +2808,9 @@ Not requirements; the places where the modeler's judgment is wanted.
 - What replaces a tracker's comment thread on an item in the git-only
   profile, and how does a session leave a note that the operator sees?
 
+<!-- ANCHOR_END: questions -->
 ## 11. Scenarios the model must satisfy
+<!-- ANCHOR: scenarios -->
 
 Behaviors, stated as what the operator experiences. A model is checked
 by walking each one. Each is tagged with the profiles it applies to.
@@ -2866,6 +2963,7 @@ by walking each one. Each is tagged with the profiles it applies to.
   the intent's line on the blueprints' shared line, and the two claims it
   carried are now standing.
 
+<!-- ANCHOR_END: scenarios -->
 ## 12. What to deliver
 
 A model that answers section 10, satisfies Parts A, B and C and section
