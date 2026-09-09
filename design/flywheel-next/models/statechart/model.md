@@ -570,8 +570,8 @@ curation: {threshold: 12, cadence: "0 6 * * 1-5"}
 
 ## 4. The state store binding
 
-The binding is data in `profiles/`. Eight files: six are partial and
-shared, two are the profiles.
+The binding is data in `profiles/`. Nine files: six are partial and
+shared, three are the profiles.
 
 | file | binds | same in every profile? |
 |---|---|---|
@@ -584,14 +584,18 @@ shared, two are the profiles.
 | `profiles/surfaces.yaml` | the sinks (chat, page, bell) and the review surfaces (plannotator for documents, lavish for rich pages) | yes |
 | `profiles/tracker.yaml` | the six record operations, the seven operations of B.1 — eight methods on `StateStore`, because present and receive are two — and the five guarantees of B.2 on GitHub issues, milestones and a Projects board; the decision issues | tracker |
 | `profiles/git-only.yaml` | the same on the `flywheel-state` git repository, with the layout of section 3.4 | git-only |
+| `profiles/stand-in.yaml` | the same again on the in-memory store: one map per object, the rail's register the `rail` object's own record, leases a map, notify an in-process call. It exists so the admission gate has something to read for the stand-in path, since `contract/binding.yaml` runs on every profile (168–170); no host runs on it, and its durability is for the process's life with the trace as the record (92, 95) | stand-in |
 
 `check.py` refuses a profile marked `complete: true` that leaves any
 atom unbound, and a binding that names an atom no machine has (140).
-The machines do not change between the two (139); the diff between
-`tracker.yaml` and `git-only.yaml` is the whole difference between
-running on a tracker and running on git, and it is now only the record
-operations and the contract: everything about sessions, surfaces and
-the world is shared.
+The machines do not change between the three (139); the diff between
+`tracker.yaml`, `git-only.yaml` and `stand-in.yaml` is the whole
+difference between running on a tracker, on git and on a map in memory,
+and it is only the record operations and the contract: everything about
+sessions, surfaces and the world is shared. `stand-in.yaml` is not
+`sessions-stand-in.yaml`: one replaces the state store, the other the
+session binding, and a conformance run with no `--profile` uses both
+(92, 93).
 
 ### 4.1 The tracker profile, in short
 

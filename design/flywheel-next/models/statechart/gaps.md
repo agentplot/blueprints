@@ -160,6 +160,31 @@ the operator may reverse by a response on the file; an entry with
   work, so the git effects exercise merges of trivial content. Stated:
   it is what "no agent running" allows.
 
+- **92 the stand-in profile's durability.** `profiles/stand-in.yaml`
+  is a complete binding, so `contract/binding.yaml` can admit the
+  stand-in path the way it admits any other (168–170), and it names a
+  mechanism for four of the five guarantees the way 169 asks: single
+  writer by the store's own sequence check, atomicity by replacing the
+  object whole, response-once by `applied_responses` beside the delivery
+  id, derivability by rebuilding the rail from the objects each tick.
+  Durability is the fifth and it is not provided. 133 asks that a write
+  survive the loss of every host at once; on this profile a write
+  survives the process and, between runs, a JSON file, and what outlives
+  the run is the trace (95). `contract/durable.yaml` still runs, because
+  it exercises the shape — reported written, every host lost, read by a
+  fresh host — against the map, and the map answers it; but the map is
+  one machine's memory and the scenario proves the contract's shape
+  rather than the storage's promise. 170 says a profile that cannot
+  provide a guarantee is rejected as a profile, and the reading taken
+  here is that 92 admits this one for testability with no live service
+  and for nothing else: no manifest may name it, no host runs on it, and
+  no instance's state is ever kept in it. Whether that is an exception
+  to 170 or an application of it — the stand-in being a test binding
+  rather than a profile an instance runs on, so 170's "rejected as a
+  profile" never bites — is a wording the requirements do not settle.
+  **Open**, and worth one clause if a third party ever writes a profile
+  against 168.
+
 - **93a recorded line-and-place effects.** A host that binds
   `workspace: recorded` performs no git for a line, a place, a merge
   or a landing; it writes the evidence each proof reads
