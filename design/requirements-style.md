@@ -267,7 +267,34 @@ code. If they cannot arrive at a design different from yours and still
 satisfy every clause, then a clause carries your solution and should be
 loosened until they can.
 
-## 8. The prompt
+## 8. What a finished statement is for
+
+The first use is to hand the statement to a strong model with no other
+context at all and ask it for the model of the system. That is both the
+point of having written one and the test of whether it is any good.
+
+Nothing about the modelling form is presumed by the statement. Flywheel
+came back with statecharts because Flywheel is objects moving through
+states over time and its invariants are about transitions, ownership
+and derivability. A composition or a service would come back with a
+component and deployment model, an inventory of resources per seam, and
+perhaps one small lifecycle. Naming a form in the prompt would defeat
+the exercise, since which form the invariants call for is itself a
+judgment worth having the model make and defend.
+
+Two results come back, and both are the reason to do it.
+
+- **The design it proposes**, unprejudiced by whatever solution the
+  author had in mind. If it differs from yours, one of you is reading
+  an invariant the other is not, and finding out which is cheap now.
+- **The questions it asks**, which are the missing invariants. A
+  question the model had to ask marks a place the statement did not say
+  enough, and the answer belongs back in the statement as a clause, not
+  only in the reply.
+
+## 9. The prompts
+
+### Writing a statement
 
 Paste this to an agent together with a description of the product.
 
@@ -362,3 +389,41 @@ solution unprejudiced by the one already in mind. What is fixed goes in
 `<what is fixed>` and lands in the givens, and the cloud that is
 presumed today becomes one external context bound to a seam in the
 third part, where a second binding can be set beside it and compared.
+
+### Reconstructing the model from one
+
+Paste this to a strong model with nothing else in its context, with the
+finished statement in place of `<statement>`.
+
+```
+Below is a statement of invariants for a system: what is always true of
+it, and what it never does. It is written to admit any model that
+satisfies it, and it deliberately names no mechanism in the parts that
+describe the system itself and what it requires across its seams.
+
+<statement>
+
+Read it and propose the model of the system.
+
+Choose the modelling form yourself, the one these invariants actually
+call for, and open by saying which form you chose and why, in a short
+paragraph. Different systems want different forms: a component and
+deployment model, an inventory of resources per seam, a data model, a
+set of lifecycles, a protocol, or some combination. Pick from what the
+invariants demand rather than from habit, and say what you considered
+and rejected.
+
+Then give the model in that form, in enough detail that someone could
+build from it, and for each significant choice name the clauses that
+forced it, by number. Where several designs would satisfy the same
+clauses equally well, say so and recommend one with your reason.
+
+Consult nothing but the statement. Where you need a fact it does not
+give you, do not assume one: list it as a question at the end, naming
+the clause it would sit beside. Those questions are the statement's
+gaps, and they are worth as much to me as the model.
+```
+
+The questions that come back go into the statement as clauses before
+the next reconstruction, which is what makes the second run of this
+prompt worth more than the first.
