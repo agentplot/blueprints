@@ -131,9 +131,17 @@ Three relations, and only three:
    `work-item.in-type` runs `$unit.type@$unit.type_version`, a stage
    runs one `session` per agent, `bolt` and `intent` run a `line` and
    `bolt` the operator's `place` as top-level regions, and every worker
-   state runs a `place`. A submachine, once instantiated, lives in the
-   object's record for the life of the object; leaving the state that
-   instantiated it does not end it. The parent sees a submachine only
+   state runs a `place`. A submachine is instantiated when the state
+   that runs it is entered, and entered again by a self-transition or
+   a return to that state instantiates it afresh: the prior instance
+   is retired into the record under its attempt with its last state
+   readable there, and the live slot holds the new one. Leaving the
+   state neither ends nor clears the live instance: it lives in the
+   object's record for the life of the object, stays readable at its
+   dotted path from any later state of the parent, and may still be
+   commanded by a later state's `enter:` (so `finished` may command
+   `{session: ended}` and a guard may then read `{final: ended}`). The
+   parent sees a submachine only
    through `{final: <name>}` guards (`<region>.<name>` when the state
    has more than one submachine, as `bolt.landing` has `line` and
    `place`) and commands it only through `enter: {child: state}` — the
