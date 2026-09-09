@@ -188,8 +188,9 @@ tick(scope):
 Every guard in one tick of an object reads the one `ev` taken before
 the region loop: a region's move this tick is visible to its siblings,
 its parent and its children on the object's next tick, never within the
-same one. A scenario expecting two dependent moves therefore expects two
-ticks.
+same one. A `final:` guard reads its own submachine's conclusion, not a
+sibling, and is not held. A scenario expecting two dependent moves
+therefore expects two ticks.
 
 `fire(t)`: run the source state's `exit` effects, the transition's
 `effects`, then the target's `entry` effects, each **only when its
