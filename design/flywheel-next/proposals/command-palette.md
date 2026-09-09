@@ -86,6 +86,7 @@ same in the chat after that platform's prefix (281, 293).
 | `/start` · `/stop` · `/takeover` | `start`, `stop`, `takeover` | 47, 150 |
 | `/attach` · `/detach` · `/home` · `/reviewed` | `attach`, `detach`, `set-home`, `mark-reviewed` | 200, 211, 122 |
 | `/add-host` | `add-host(name, platform, parts, adopt)`, offered by what the serving host offers | 295, 230 |
+| `/add-repository` | `add-repository(url, landing, adopt \| create)`: adopts an existing repository by its git details or creates one from the template; a repository record with git details alone, its context derived from the manifest until the map is drawn | 199, 199a, 206, 220 |
 | `/add-source` | `add-package(package, scope, host, config, secrets)` | 228, 229 |
 | `/invite` · `/access` · `/role` | `invite-member`, `assign-application`, `set-role` | 255, 248 |
 | `/assign` · `/mine` · `/all` | `assign`, `filter(sink, own \| all)` | 237, S171 |
