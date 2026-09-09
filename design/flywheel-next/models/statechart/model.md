@@ -897,9 +897,16 @@ and carrying nothing from one to the next (217a, 217b;
 `profiles/surfaces.yaml` `host_agent`).
 The numbered reply grammar — `yes 412`, `421: <text>` — stays as the
 deterministic path because a decision number is unambiguous, and is
-itself the `answer` tool. Text in the page's capture box is a capture
-with one signal of kind ask, unparsed; marking it as an intent is the
-operator's judgment made with a control (19).
+itself the `answer` tool. The page's one typed input is the palette,
+in that same grammar: plain text is a capture with one signal of kind
+ask, sent unparsed, with the intent mark still the operator's judgment
+made with a control; a leading `/` names a command of the catalogue
+above, filtered by the caller's permissions and rendered as a list
+(193a, 293); a bare number is the reply grammar (19, 194;
+`profiles/surfaces.yaml` `palette`). The instance's book is not a
+surface of the page at all: it is a standalone read-only viewer served
+beside it, built from the blueprints' shared line, which the page links
+out to and never embeds (315, 316; `profiles/surfaces.yaml` `viewer`).
 
 ## 6. Planning
 
@@ -2499,7 +2506,7 @@ status view.
 **215, 231 — adapters and the tick.** There is one kind of adapter, an
 enumerator, and seven ship (`profiles/blueprints.yaml` `adapters`): chat
 forward, meeting, webhook, pull request, issue tracker, folder, the
-page's capture box. Each runs by the tick of the host that declares
+page's palette. Each runs by the tick of the host that declares
 its source: `host.adapters_due` is a guard on the host machine's
 `alive` state and `run_adapters` writes one keyed capture per source
 event, twice being once (111), so a run missed while the host was down

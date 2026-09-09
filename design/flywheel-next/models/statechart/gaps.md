@@ -621,7 +621,7 @@ the operator may reverse by a response on the file; an entry with
   numbers only. **Decision**.
 
 - **215 adapters.** Seven ship, one kind: an enumerator run by
-  `run_adapters` on the host machine's tick. The page's capture box is
+  `run_adapters` on the host machine's tick. The page's palette is
   listed as an adapter because it writes one keyed capture per
   submission, though it is the capture tool itself and runs on no
   tick. **Decision**. A webhook adapter needs an inbox the host's
@@ -1078,9 +1078,9 @@ the operator may reverse by a response on the file; an entry with
   Two surface items stay open under it and neither touches parity.
   `surfaces.md` S78, the phone layout beyond the stacked list: whether
   the lanes collapse to heads with counts, whether the map's stacked
-  list draws relationships as more than lines of text, where the capture
-  box sits when the rail is the first tab, and how the book's tree is
-  reached. **Open**. `surfaces.md` S151, whether thumbnails render on a
+  list draws relationships as more than lines of text, where the
+  palette's bottom sheet sits when the rail is the first tab, and how
+  the book viewer's tree is reached. **Open**. `surfaces.md` S151, whether thumbnails render on a
   phone at all or only the caption's counts, and whether the stacked
   list when drilled draws a link as more than its target's name; a
   thumbnail is a rendering and not a control, so 306 does not decide it.
@@ -1096,6 +1096,36 @@ the operator may reverse by a response on the file; an entry with
   (245, 293), is unbound: the device flow issues what a client on the
   operator's own machine holds, and a phone off that network reaches no
   localhost. **Open** until a phone is pointed at a self-managed host.
+
+- **315–316 the book viewer.** Ruled 2026-09-08: the instance's book is
+  served by a standalone read-only viewer of its own beside the page,
+  built from the blueprints' shared line — chapters as mdBook, each
+  claim rendered where its chapter includes it by anchor from the
+  standing specifications, with what is in flight left out — and the
+  page links out to a chapter or a claim and embeds neither, every
+  chapter and rendered claim linking back to the object at the host's
+  address with the instance in the path. **Decision**: the alternative,
+  the book as a third view of the board with the rail driving it
+  (`surfaces.md` S91, S93 as they read before), made the page hold a
+  reader as well as a workbench and had the rail move two things at
+  once; the viewer is the standing destination and the page is where
+  changes to it are answered. This closes `surfaces.md` S149, which
+  asked whether the server rendered mdBook sources or embedded mdBook's
+  own build. The readers are the host's: the private network on a
+  self-managed host with 253's sign-in and 253a's exception, the
+  caller's token on a hosted tier reading to members of that instance
+  alone. The bindings are `profiles/surfaces.yaml` `viewer` and
+  `profiles/blueprints.yaml` `layout.book_viewer`; the citation is
+  `machines/engine/sink.yaml`, the sink the page is served by.
+
+  **Open**: the publishing opt-in's surface. 316 states that serving a
+  book to readers who are not members is one opt-in per book, stated on
+  the settings form as what it is and revocable there, but where that
+  control sits on the form, what it says on a self-managed host where
+  the boundary is the private network rather than a token, and what the
+  link it hands out is — a path on the host's one address, a name of
+  its own, a token in the URL — is unstated. **Open** until the settings
+  form is drawn.
 
 - **213, 214 and 229–230 on the mockup.** The rail-and-board mockup
   (`design/flywheel-next/mockups/rail-and-board.html`) illustrates the

@@ -1,8 +1,8 @@
 # Flywheel next — surfaces
 
 The surfaces the operator works: the page with its rail, board,
-dock and capture box; the board's three views, phases, map and book;
-the artifact views behind every object; the flywheel instrument; the
+dock and palette; the board's two views, phases and map; the book
+viewer served beside the page; the artifact views behind every object; the flywheel instrument; the
 hosts surface and the account item; identity, members and owners; the
 chat rendering; the review surface bindings; the status view on a
 phone. This document records decisions, flows, forms
@@ -93,13 +93,12 @@ were settled, not their place on the page.
   started, finished, accepted, answered, held. A line names the object,
   the reason and the time. "Later" writes no SINCE line (§5).
 - **S10.** The board is the status view (B.4) drawn by phase. It holds
-  objects only, never the count. It has three views: phases, map and
-  book, switched in the board's header, or with the m key between
-  phases and map and the b key between phases and book. The dock opens
-  over the board and the board does not move. A focused rail card
-  lights its object in whichever view is shown: the marker on a lane,
-  the card or edge on the map, the rendered claim in the chapter that
-  includes it.
+  objects only, never the count. It has two views: phases and map,
+  switched in the board's header or with the m key. The book is a
+  viewer of its own, linked out to and never a view of the board
+  (S91). The dock opens over the board and the board does not move. A
+  focused rail card lights its object in whichever view is shown: the
+  marker on a lane, the card or edge on the map.
 - **S11.** Requirements served: 7–19, 141–146, 155, 193–194, 209. Tools
   called from the rail: `answer`.
 
@@ -109,14 +108,13 @@ were settled, not their place on the page.
   Bolt plan is drawn as a narrow hatched gate between Inception and
   Construction: the transition, one proposal per repository in steady
   state. Operation is marked observed and is read-only (181).
-- **S13.** Inception shows: the capture box (S30); the curation
-  counter (unmoved signals, by source, oldest) with curation's session
-  chip; explorations the operator opened (189) as rows; every open or
-  proposed intent as a thread with its elaborations as beads; a closed
-  intent greyed with its countdown (186). Its head carries the
-  "explore…" control, which enters the explore mode (S43, S58); the
-  control is behind `fw.ff.explore`, on by default, and the tool
-  behind it under `fw.capture.write` (249, 250, S197).
+- **S13.** Inception shows: the curation counter (unmoved signals, by
+  source, oldest) with curation's session chip; explorations the
+  operator opened (189) as rows; every open or proposed intent as a
+  thread with its elaborations as beads; a closed intent greyed with
+  its countdown (186). Capture and explore are palette commands (S30,
+  S43); `/elaborate` is behind `fw.ff.explore`, on by default, and the
+  tool behind it under `fw.capture.write` (249, 250, S197).
 - **S14.** Bolt plan shows: planning in progress as a session row when
   a redo charged it again; the current proposal as a sheet; single unit
   proposals as slips; a baseline as a sheet of its own; a deferred
@@ -269,7 +267,7 @@ were settled, not their place on the page.
 | exploration | its row in Inception | the covered intents; where its records go (per intent) and where its conclusions go (the book, once); its session | finish (standing) or end (with-operator) |
 | planning in progress | its row in the gate | what planning reads; the operator's notes it carries; its session | nothing yet; the next proposal is the decision |
 | deferred | its greyed sheet | when later was answered; that it left the count, wrote no SINCE line, and is superseded silently by planning's next run (172, 35) | ask again |
-| repository | the strip, a home chip, a baseline's link, a library row | kinds and capabilities, derived (map 4.3); contexts it homes; claims in scope with verdicts, each claim's attachments beside the re-attach control and "read in book" (195); homed elements; its environment declaration and, per host, whether the host satisfies it (S174); decisions on it | show on map; the baseline decision's answers when one is pending |
+| repository | the strip, a home chip, a baseline's link, the viewer's library row (S95) | kinds and capabilities, derived (map 4.3); contexts it homes; claims in scope with verdicts, each claim's attachments beside the re-attach control and "read in book" (195); homed elements; its environment declaration and, per host, whether the host satisfies it (S174); decisions on it | show on map; the baseline decision's answers when one is pending |
 | host | the host strip | alive or gone with last heartbeat; what it runs against its bound; its leases; its environment provider and the repositories it cannot satisfy (S174); its pool when it belongs to one (S176); "hosts" opening its row on the hosts surface (S115) | takeover · wait when gone; nothing to answer when alive |
 | claim | an attachment chip, a repository's claim row, a claim name anywhere | the claim text and version; attached to (each attachment with its scope contribution); scope, derived; verdicts per repository in scope; "read in book"; "evidence" opening the claim's artifact view | re-attach… (arms the canvas, S70); show on map |
 | map context, element, relationship, link | a card header, a node, an edge or its panel, a neighbour dock | id, ref to the chapter with "read in book", status, tags; the overlay difference when one is on; home (effective and where it came from); ends and marks for a relationship with its crossing links; crossing for a link; attached claims with the derived scope line; verdicts per repository; decisions as markers with the rail card inline; an open element's question with its capture control | open on map · drill into · light on map |
@@ -286,21 +284,23 @@ were settled, not their place on the page.
   `start`, `stop`, `finish`, `end`, `release` (ask again, §6), `attach`,
   `capture`, `create-repository`, `adopt-repository`, `reviewed`.
 
-### 1.5 The capture box
+### 1.5 The palette
 
-- **S30.** The capture box sits at the head of Inception. Typed text
-  is sent unparsed to the `capture` tool as a capture with one signal of
-  kind ask, source the page (19, 194). A "this is an intent" toggle
-  makes the same submission also call `mark-intent` on the capture
-  (12). Both are under `fw.capture.write`, so on a hosted tier a
-  viewer reads the page with no capture box at all (249). Under the box the page says what it will send: "will send:
-  capture" or "will send: capture · intent". Enter sends. The page
+- **S30.** The palette is the page's capture surface. Plain text is
+  sent unparsed to `capture` with one signal of kind ask, source the
+  page (19, 194); an intent toggle beside the field makes the same
+  submission also call `mark-intent` (12). Both are under
+  `fw.capture.write`, so a viewer without it sees the field read-only
+  with its send refused and the command list filtered (249). The
+  preview line says what will be sent — "will send: capture" or "will
+  send: capture · first idea of a thread"; Enter sends; the page
   acknowledges the recorded response (154) and the curation counter
   moves by one, or the new intent appears as a thread.
-- **S31.** The capture box never interprets a word of its text: no
-  command grammar, no name resolution, no dictation. Free text that
-  should become a tool call goes through the interpreter (S34), not the
-  capture box.
+- **S31.** The page parses no word of plain text: a leading `/` and a
+  leading number choose a tool and nothing else, and neither reads the
+  text for meaning. Text the operator asks the flywheel to read goes to
+  the model in the page's browser as the interpreter (216a, S34), which
+  proposes calls the operator confirms.
 
 ### 1.6 The chat rendering
 
@@ -360,8 +360,9 @@ were settled, not their place on the page.
   Decisions and Board, each with its count badge. The rail is the
   Decisions tab, unchanged. The Board tab stacks the four lanes in
   order; its header switches to the map, rendered as the stacked list
-  of S90, and to the book, rendered as one chapter column with the tree
-  behind a control. The dock is full screen with a back control. The
+  of S90. The book is a link out (S91). A capture control on both tabs
+  raises the palette as a bottom sheet (S30). The dock is full screen
+  with a back control. The
   header hides the key hints and the "yes all" numbers. The machinery
   strip stays one scrolling row; the flywheel panel is reached from the
   board header (S110). The account item stays in the header and its
@@ -376,19 +377,25 @@ were settled, not their place on the page.
   (306–314). What is open here is the layout beyond the stacked list
   (S78) and the thumbnails (S151), never whether the phone answers.
 
-### 1.9 The board, book view
+### 1.9 The book viewer
 
-- **S91.** The book view is an mdBook-style viewer the page draws
-  itself. The instance's blueprints are mdBook sources in the blueprints
-  repository; the server serves each chapter, and the page draws the
+- **S91.** The book is a standalone read-only viewer served beside the
+  page, built from the blueprints' shared line as mdBook (315): the
   chapter tree, one chapter at a time with previous and next, headings
   with anchors, and, where a chapter includes a claim by anchor
   (`{{#claim <capability>/<name>}}`), the requirement rendered in place
-  as the instance renders it (97). The
-  view is entered with b or from the board's header, and b leaves it.
-  The rail stays beside it and j and k walk the rail only. The view is
-  behind `fw.ff.book-view`, on by default (250, S197): with the flag
-  off the board's header carries no book entry and b does nothing.
+  as the instance renders it (97). What is in flight — an intent's
+  proposed claims, a chapter an elaboration has not landed — is not in
+  it (98, 187), so the viewer is always the standing destination. The
+  page links out to a chapter or a claim and never embeds one. Its
+  readers are the host's: on a self-managed host the private network is
+  the boundary and the sign-in is 253's with 253a's exception; on a
+  hosted tier it is served under the caller's token and reads to
+  members of that instance alone (247, 249, 291); serving a book to
+  readers who are not members is one opt-in per book, stated on the
+  settings form and revocable there (316, 46, 155). `fw.ff.book-view`
+  gates the viewer and the links to it, on by default (250, S197): with
+  the flag off no dock page carries "read in book" and b does nothing.
 - **S92.** A claim renders where its chapter includes it, as the
   requirement it is: the name `<capability>/<name>`, the version,
   standing or proposed (98), the requirement's own prose and every one
@@ -397,40 +404,40 @@ were settled, not their place on the page.
   from the ledger (100, 101). The text shown is the specification's,
   never a copy, so the chapter cannot drift from it (97). A proposed
   claim is dashed and carries no verdicts. The rendering carries
-  "evidence", opening the claim's artifact view (S99), and its decision
-  markers in the chapter margin.
-- **S93.** The rail drives the viewer. A focused card jumps the book
-  to the chapter and anchor the decision concerns and lights the
-  rendered claim:
-  a unit's cited claim, an intent's chapters, a bolt's or a landing's
-  claims, a proposal's claims per unit, a gathered elaboration's shared
-  claim, a moved claim itself. A ref in the book in hand wins;
-  otherwise the first ref, which loads its book. Decision markers sit
-  in the chapter margin beside the block they concern, in the glyph set
-  of S17; a click focuses the card and opens its dock.
+  "evidence", which links back to the claim's artifact view on the page
+  (S99, 205a).
+- **S93.** A focused card's dock page carries "read in book" per cited
+  chapter or claim, which opens the viewer at that anchor and lights
+  the rendered claim: a unit's cited claim, an intent's chapters, a
+  bolt's or a landing's claims, a proposal's claims per unit, a
+  gathered elaboration's shared claim, a moved claim itself. The rail
+  drives no viewer; the decision markers that sat in the chapter margin
+  move to the page's own surfaces, where a marker in the glyph set of
+  S17 focuses the card and opens its dock.
 - **S94.** "read in book" appears on every dock page per cited chapter
-  or claim (S28) and in the map's scope box. It switches to the book
-  view at that anchor and closes the dock, which would otherwise cover
-  the page; Enter reopens the dock on the focused card.
-- **S95.** The library is an overlay over the board, opened from a
-  control in the book header. It lists the instance's blueprints with
-  chapters, claims standing and proposed, last written, unmet verdicts,
-  "changed since review", and the repositories each book covers.
-  Choosing a book loads it; a repository chip goes to the map view and
-  opens the repository dock; Esc closes. The instance's own surface
-  specification is listed as a shipped book (212).
-- **S96.** The review flow is one flow for the map and the book (122).
-  "since last review" is the same switch and mark in both views. In the
-  book, changed paragraphs and changed claims are outlined and washed
-  with a note, unchanged chapters dim in the tree, and a changes list at
-  the head of the tree links each change to its anchor and opens the
-  changes page (S28). "mark reviewed" sends `reviewed` once (S73); the
-  mark moves and both views empty.
-- **S97.** The book view never shows: a decision as a card; the count;
-  a claim's verdict text or evidence inline (the dot links to the
-  artifact view); an editor. The book is read here and written only by
-  the machinery (98, 121).
-- **S98.** Requirements served: 98, 100, 101, 121, 122, 200, 212.
+  or claim (S28) and in the map's scope box. It opens the viewer at
+  that anchor in a place of its own; the dock stays as it was.
+- **S95.** The library is the viewer's own index of the instance's
+  blueprints: chapters, claims standing and proposed, last written,
+  unmet verdicts, "changed since review", and the repositories each
+  book covers. Choosing a book loads it; a repository chip links back
+  to the page's map view with the repository dock open. `/book`
+  reaches a book, a chapter or a claim directly. The instance's own
+  surface specification is listed as a shipped book (212).
+- **S96.** The review mark is one mark for the map and the book (122).
+  The map's overlay is on the page; the book's changed chapters and
+  claims are shown in the viewer, where changed paragraphs and changed
+  claims are outlined and washed with a note, unchanged chapters dim in
+  the tree, and a changes list at the head of the tree links each
+  change to its anchor and back to the changes page (S28). "mark
+  reviewed" sends `reviewed` once from either (S73); the mark moves and
+  both empty.
+- **S97.** The viewer never shows: a decision as a card; the count; a
+  claim's verdict text or evidence inline (the dot links back to the
+  artifact view on the page); an editor. The book is read here and
+  written only by the machinery (98, 121).
+- **S98.** Requirements served: 98, 100, 101, 121, 122, 200, 212, 315,
+  316.
   Tools called: `reviewed`.
 
 ### 1.10 The artifact views
@@ -901,7 +908,7 @@ were settled, not their place on the page.
   until it expires; past that the page is read-only — the status view,
   the board in every view, the book, the map and the rail's decisions
   all render, and every control that would write is absent, the
-  capture box included. One attention line says identity is
+  palette's send included. One attention line says identity is
   unreachable and since when, and it stays for as long as it takes,
   unbounded. Work is unaffected: hosts cover work with the App's
   installation token, not with an identity (207, 251), so the loops
@@ -913,7 +920,8 @@ were settled, not their place on the page.
   goes on writing.
 - **S197.** A flag hides a surface and never authorizes (250). Five
   flags are keyed `fw.ff.*`: `fw.ff.pools` hides the pool rows and the
-  pool control (S176), `fw.ff.book-view` the board's book view (S91),
+  pool control (S176), `fw.ff.book-view` the book viewer and the
+  links to it (S91),
   `fw.ff.explore` the explore mode (S43), `fw.ff.store` the
   instance's package store and a host's catalogue (S117, S156), and
   `fw.ff.management-console` the hosts surface past the one host
@@ -923,7 +931,7 @@ were settled, not their place on the page.
   refused exactly as it would be with the surface shown. On a
   `frontegg` host each flag is an entitlement feature targeted per
   account. On a `github` host every flag stands at its definition
-  default, so the page there draws the book view and explore and draws
+  default, so the page there has the book viewer and explore and draws
   no pools, no store and no hosts surface past its own host; nothing
   on that host can turn one on.
 - **S167.** One board per instance (235). Every member reads the
@@ -1033,11 +1041,12 @@ page shows after.
 
 ### 2.4 Explore over intents
 
-- **S43.** 1. Inception head: "explore…" enters the explore mode;
-  every open intent's head knot shows a tick target; a sticky bar at
-  the lane's foot says what will happen and offers with-operator or
-  standing, start and cancel. 2. Two intents ticked; the bar counts
-  them. 3. Start → `explore([intents], standing)`. 4. The mode ends; an
+- **S43.** 1. `/elaborate` opens a multi-pick of the open intents, or
+  takes those already ticked on Inception; every open intent's head
+  knot shows a tick target, and the palette's footer says what will
+  happen and offers with-operator or standing, start and cancel. 2. Two
+  intents picked; the footer counts them. 3. Start →
+  `explore([intents], standing)`. 4. The mode ends; an
   exploration row appears at the head of Inception with its session
   chip and "since hh:mm"; each covered intent gains an explore bead;
   the dock opens on the exploration page. 5. Later, finish in the
@@ -1046,13 +1055,13 @@ page shows after.
 
 ### 2.5 Capture with the intent toggle
 
-- **S44.** 1. Inception: text in the capture box; the line under it
-  reads "will send: capture". 2. The toggle "this is an intent" on; the
+- **S44.** 1. ⌘K opens the palette; text in its field; the preview
+  line under it reads "will send: capture". 2. The intent toggle on; the
   line reads "will send: capture · intent". 3. Enter → `capture(text,
   page)` then `mark-intent(capture)`. 4. A new thread appears at the
   head of the intents, state open, first elaboration approved, note
-  "captured by you as an intent"; the log gains the line; the box
-  clears and the toggle resets. Without the toggle, step 4 is instead
+  "captured by you as an intent"; the log gains the line; the palette
+  closes and the toggle resets. Without the toggle, step 4 is instead
   the curation counter moving by one and a toast "capture · 1 signal ·
   curation sees it".
 
@@ -1135,16 +1144,16 @@ page shows after.
 ### 2.12 Reading a decision in the book
 
 - **S126.** 1. Rail: j focuses card 414, a unit citing claim
-  sessions/one-writer. 2. b enters the book view; the viewer loads the
-  claim's book, opens the chapter and scrolls to the block, which
-  lights; the ✓ 414 marker sits in the margin beside it. 3. The block
-  shows the claim's version, standing, its attachments, the derived
-  scope line and a verdict dot per repository in scope. 4. "evidence"
-  opens the claim's artifact view in the dock with the verdict per
-  repository and the as-built statement, commit and session behind
-  each. 5. Esc closes the dock; y on the rail → `answer(414, yes)`; the
-  card leaves and the book stays where it is. 6. b returns to the
-  phases view.
+  sessions/one-writer. 2. b, or "read in book" on the card's dock
+  page, opens the viewer in a place of its own at the claim's chapter
+  and block, which lights; the page's board and dock stay as they were.
+  3. The block shows the claim's version, standing, its attachments,
+  the derived scope line and a verdict dot per repository in scope. 4.
+  "evidence" links back to the claim's artifact view on the page, which
+  opens in the dock with the verdict per repository and the as-built
+  statement, commit and session behind each (205a, 308). 5. y on the
+  rail → `answer(414, yes)`; the card leaves and the viewer stays where
+  it is.
 
 ### 2.13 Drilling into a context and reading a crossing
 
@@ -1281,7 +1290,7 @@ page shows after.
   reads chuck, the GitHub username, and the header count is
   willdan's, the instance whose operators list carries chuck. As a
   listed operator chuck holds every permission, and the flags stand at
-  their defaults, so the book view and explore are there and pools,
+  their defaults, so the book viewer and explore are there and pools,
   the package store and the hosts list are not (248, 250, S197). 4. On a
   hosted host the same page instead sends chuck to Frontegg's hosted
   login, the redirect built from that host's served name, and lands
@@ -1435,17 +1444,17 @@ where a thing sits, never by its form.
 
 | key | region | does |
 |---|---|---|
-| j, k, ↓, ↑ | rail | walk the decisions and attention lines; the dock follows when open; the book follows (S93) |
+| j, k, ↓, ↑ | rail | walk the decisions and attention lines; the dock follows when open |
 | Enter, o | rail | open the focused card in the dock |
 | y | rail | the focused card's yes |
 | n | rail | the focused card's drop or no |
 | l | rail | the focused card's later, where it offers one |
 | ], [ | rail or dock | step through the beads of the intent in hand |
 | m | board | switch phases and map |
-| b | board | switch phases and book |
+| b | anywhere | open the book viewer at the object in hand (S91) |
 | w | anywhere | open and close the flywheel panel |
-| / | board | focus the capture box |
-| Esc | anywhere | in order: leave a field, close the log, cancel explore selection, cancel re-attach, hide an edge's panel, close the dock, close the account menu, the library, hosts, settings or the package store, back from a drill |
+| ⌘K, Ctrl+K, / | anywhere | open the palette; / opens it with the command list already showing |
+| Esc | anywhere | in order: close the palette, leave a field, close the log, cancel explore selection, cancel re-attach, hide an edge's panel, close the dock, close the account menu, hosts, settings or the package store, back from a drill |
 | f | map | fit, the only camera command, at either level |
 | o | map | cycle the overlay: none, current → target, since last review |
 | j, k | map canvas | move the focus ring among contexts at rest, among elements when drilled |
@@ -1456,19 +1465,20 @@ where a thing sits, never by its form.
 - **S57.** The one-axis rule: the rail is one list and j and k walk
   it. There is no second axis anywhere on the page; h and l move
   nothing. A key that a card does not offer is refused with the card's
-  answers listed, never remapped.
+  answers listed, never remapped. While the palette is open its list
+  is the one axis and the rail does not move; closing it returns the
+  rail's.
 - **S58.** Modes, how each is entered and left:
 
 | mode | entered by | shows | left by |
 |---|---|---|---|
-| explore | "explore…" at Inception's head | tick targets on every open intent's head knot; a sticky bar with the count, with-operator or standing, start, cancel; beads never show a tick | start (sends `explore`), cancel, Esc |
+| explore | `/elaborate` in the palette | tick targets on every open intent's head knot; the palette's footer with the count, with-operator or standing, start, cancel; beads never show a tick | start (sends `explore`), cancel, Esc |
 | re-attach | "re-attach…" on a claim page | the dock closes; a bar names the claim; every context, element, edge, link and neighbour dock is a target | one click (sends `attach`), cancel, Esc |
 | overlay | the overlay control or o, on the map or in the book | the difference marks of S24 or S96; "changes · n"; the review mark and "mark reviewed" for the review overlay | none, or o back to none |
 | facet | off, filter, colour, group per facet | dimming, a colour with a legend, or a background wash, at either level; the invariant readout | off |
 | drilled | Enter or a thumbnail click at rest, "drill into" on a dock or a neighbour dock | the context's inside at full size, neighbour docks, the breadcrumb | Esc, the org crumb |
 | edge panel | hover or focus on a relationship edge | the crossing links and claims of S85 | leaving the edge, Esc |
-| book | b, the board header, "read in book" | the viewer with the rail driving it | b, the board header |
-| library | the book header's control | the instance's blueprints with their counts | a choice, Esc |
+| palette | ⌘K, Ctrl+K, `/`, the phone's capture control | the field with its preview line and its recents, and on `/` the commands the caller may invoke, fuzzy-matched | Esc, send, choose |
 | account menu | the account item | the switcher, settings, hosts, instance's package store, sign-out | a choice, Esc, a click outside |
 | hosts | the menu's hosts, the strip's setup control, a host page, "add a host", the pool control, an attention line about a host | host and pool rows on the left, the row's detail by headings and slots on the right; a slot's catalogue, the add and "+ host" flows in place | Esc, × |
 | settings | the menu's settings | the manifest as a form with one save | Esc, ×; an unsaved change asks first |
@@ -1499,12 +1509,14 @@ Dated 2026-09-05.
 - **S62.** One silhouette per kind, never one card class with variants
   (209). Board cards that all looked alike said "same kind of thing"
   about very different things. The dock header takes the object's form.
-- **S63.** No typed grammar anywhere on the page (194). The capture
-  box captures only, with an intent toggle; explore is a control over
-  ticked intents; drop, later, rename, start and stop, finish and ask
-  again are dock buttons. The workbench's dictation grammar in the
-  capture box is rejected. The numbered reply grammar stays in chat,
-  where it is the `answer` tool.
+- **S63.** One typed input on the page, the palette, with one grammar:
+  plain text is a capture or a message the flywheel's own model reads
+  into proposed calls; a leading `/` names a command of the catalogue;
+  a bare number answers a decision (19, 193, 193a, 194, 216a). It is
+  the chat's grammar, not a second one, and no other field on the page
+  parses a word. The workbench's dictation grammar in the capture box
+  is still rejected: the commands are the catalogue's names, never a
+  language of the page's own.
 - **S64.** Every proposal edit is its own response, sent when given and
   applied to the document (172, 184). Nothing is staged to travel with
   the yes. The workbench's staged edits are rejected.
@@ -1799,9 +1811,9 @@ What no mockup settled.
 
 - **S78.** The phone layout beyond the stacked list: whether the
   lanes collapse to heads with counts, whether the map's stacked list
-  draws relationships as more than lines of text, where the capture
-  box sits when the rail is the first tab, and how the book's tree is
-  reached on a phone. A.38 settles that each is answerable on a phone
+  draws relationships as more than lines of text, where the palette's
+  bottom sheet sits when the rail is the first tab, and how the book
+  viewer's tree is reached on a phone. A.38 settles that each is answerable on a phone
   (306, 307); how it is drawn there is this item.
 - **S79.** The chat's rich controls per platform: which Discord
   components carry which answers, how a per-unit edit or a pick is
@@ -1851,9 +1863,11 @@ What no mockup settled.
   defaults per role (173), and so whether they are changed on hosts or
   in settings, is not settled; the environment provider is a host's
   declaration and is changed with it (S174).
-- **S149.** How the book viewer is served: chapters rendered by the
-  server from mdBook sources, or mdBook's own build embedded. The claim
-  block's rendering from the ledger is settled either way (S92).
+- **S149.** Ruled 2026-09-08: the book is served by a standalone
+  read-only viewer beside the page, rendering mdBook sources from the
+  blueprints' shared line, with the claim block read from the standing
+  specifications (315, S91, S92). It is not a view of the board and the
+  page embeds no chapter.
 - **S150.** The artifact keys and the review binding. The views are
   addressed as intent, unit on its bolt, claim, bolt and work item; the
   "review" control reaches a plannotator stub. What a review page shows

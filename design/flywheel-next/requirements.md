@@ -277,7 +277,10 @@ model.
     operator may mark a capture as an intent, which is a judgment made
     with a control, never a word parsed out of the text. The page
     submission is the delivery, so it is recorded once like any
-    response.
+    response. The page's typed input is one palette in one grammar, the
+    same grammar the chat carries: plain text is that capture, a
+    leading `/` names a command of 193's catalogue, and a bare number is
+    the reply grammar of 194. The page parses no text on its own side.
 
 The catalogue of decisions, the reply grammar and the counting rules are
 mocked in `design/flywheel-next/rail-mockup.md`: one rendering of these
@@ -729,8 +732,9 @@ requirements, iterated against the running rail rather than on paper.
     capture cites them. Capturing the same source event twice yields one
     capture.
 112. Capture is one gesture from wherever the operator is: a forwarded
-    message, one word on the phone, a file dropped in a folder. It costs
-    no more than a sentence.
+    message, one word on the phone, a file dropped in a folder, one key
+    on the page opening its palette ready to capture. It costs no more
+    than a sentence.
 113. A signal carries its capture, a kind from a small fixed set
     (constraint, ask, question, commitment, reaction), who asserted it,
     subject tags, the assertion in a sentence, the verbatim excerpt with
@@ -1978,7 +1982,7 @@ requirements, iterated against the running rail rather than on paper.
     page at a served name (291). What waits for the operator's own
     machine or a pool host is raw-material triage, elaboration and
     construction. **Pro** adds pools with an included allowance and
-    metered overage, the package store, the book view and the presets,
+    metered overage, the package store, the book viewer and the presets,
     and includes the immediate triage of self-contained captures and
     the interpretation of free text in chat, both in the tick (269).
     **Team** adds members with roles, ownership and assignment (237),
@@ -2226,7 +2230,9 @@ requirements, iterated against the running rail rather than on paper.
     by hover or by a keyboard, and anything a hover reveals on the desktop
     is reachable by tap on a phone (S61). A long-form answer, a proposal
     edit for one unit among several for instance, is given on the phone
-    with the platform's own keyboard.
+    with the platform's own keyboard. An accelerator — the page's
+    palette, a key, a short reply — never carries an operation that no
+    control also carries.
 312. The management console renders on a phone, its tables as cards. The
     managed add-host journeys complete on a phone, the cloud agent with
     its presets among them (283, 295), which is what Hobby promises an
@@ -2239,6 +2245,23 @@ requirements, iterated against the running rail rather than on paper.
 314. Every scenario of section 11 that carries an operator's response runs
     at a 390px viewport as well as at the desktop's, and the mockups
     render at 390px.
+
+### A.39 The book viewer
+
+315. The instance's book is served by a read-only viewer of its own,
+    built from the blueprints' shared line: chapters as mdBook, each
+    claim rendered where its chapter includes it by anchor from the
+    standing specifications (97). The page links out to a chapter or a
+    claim and embeds neither; every chapter and every rendered claim
+    links back to the object at the host's address with the instance in
+    the path (205a, 308). What is in flight is not in it.
+316. The viewer's readers are the host's: on a self-managed host the
+    private network is the boundary and the sign-in is 253's, with
+    253a's exception; on a hosted tier it is served under the caller's
+    token and reads to members of that instance alone (247, 249, 291).
+    Serving a book to readers who are not members is one opt-in per
+    book, stated on the settings form and revocable there, and a stated
+    fact of the tier (261).
 
 ## 5. Requirements — Part B, the state store contract
 
@@ -2287,6 +2310,10 @@ through these operations, and depends only on these guarantees.
     with a schema naming its arguments by object id. The page's
     controls, the chat, the dispatch agent and the machinery all call
     the same tools; no caller has an operation the others lack.
+193a. The catalogue, filtered by the caller's permissions (293), is
+    itself an operator surface: a client may render it as a list of
+    commands that caller may invoke, one call each with its arguments
+    named by object id, and offers no command the catalogue lacks.
 
 ### B.2 The guarantees
 
