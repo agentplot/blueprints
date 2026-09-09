@@ -38,38 +38,45 @@ the requirements and the model never gets a chance.
 
 ## 2. The three parts
 
-The parts are levels of abstraction, and only the first is always
-present.
+A statement describes one system: a bounded context, or a set of them
+held together. Everything else is an external context, and the
+relationships between the system and those contexts are its **seams**.
+The parts are levels of abstraction over that, and only the first is
+always present.
 
-1. **What must hold of the thing itself.** Required. The invariants of
-   the system considered on its own, with nothing outside it named.
+1. **What must hold of the system.** Required. The invariants of the
+   system considered on its own, with no external context named.
    Divided into lettered sections by concern, and usually the bulk of
    the file.
-2. **What the system needs from the world.** Optional, and warranted
-   only when the system has seams to an environment it does not own:
-   storage, a network, a host, another service. Written as the few
-   operations it asks for and the guarantee each must give, and as the
-   rule that binds those abstract names to something real.
-3. **How the world provides it.** Optional, and only meaningful when
-   the second part exists. One section per way the second part is
-   satisfied, each naming real tools and mapping every operation to how
-   that way satisfies it.
+2. **What it requires across its seams.** Optional, and warranted only
+   when the system has seams at all. One section per seam, written as
+   the few operations required across it and the guarantee each must
+   give, in abstract names only, plus the rule binding those names to
+   something concrete.
+3. **How each seam is bound.** Optional, and only meaningful when the
+   second part exists. One section per way a seam is satisfied, each
+   naming the external context it binds to and mapping every operation
+   of the second part to how that binding satisfies it.
 
-A system with no seam, a calculation, a format, a protocol, has only
-the first part, and inventing the other two for it produces ceremony
-with nothing in it.
+Draw the context map before writing the second part, even as a sketch
+on paper: the seams are exactly its relationships that cross the
+system's boundary, and a seam you have not drawn is one you will
+discover later as a clause that will not stay mechanism-free. A system
+with no external contexts, a calculation, a format, a protocol, has
+only the first part, and inventing the other two for it produces
+ceremony with nothing in it.
 
-Flywheel's statement is the worked instance:
+Flywheel's statement is the worked instance. Its one seam is durable
+shared storage, so its second part is named for that:
 
 | the part | Flywheel calls it | what it holds |
 |---|---|---|
-| what must hold of the thing itself | Part A, the data plane | the objects, their machines, the claims and the ledger, the signals, the rail, the engine |
-| what the system needs from the world | Part B, the state store contract | seven operations, five guarantees, and the rules binding evidence and effect names to a profile |
-| how the world provides it | Part C, the profiles | the tracker profile, the git-only profile, a custom profile |
+| what must hold of the system | Part A, the data plane | the objects, their machines, the claims and the ledger, the signals, the rail, the engine |
+| what it requires across its seams | Part B, the state store contract | seven operations, five guarantees, and the rules binding evidence and effect names to a profile |
+| how each seam is bound | Part C, the profiles | the tracker profile, the git-only profile, a custom profile |
 
-The names in the middle column are Flywheel's, chosen because storage
-is the seam it has. A statement whose seam is a network or a scheduler
-names its second part after that.
+A statement whose seams are a scheduler and a payment processor names
+its second part's sections after those, one each.
 
 ## 3. The shape of the document
 
@@ -92,8 +99,8 @@ One flat file, in this order.
    than one concern, gathered so a model can be checked against them at
    a glance.
 7. **Non-goals.** What the statement declines to cover.
-8. **Environment givens.** Constraints of the world, not design
-   choices. See section 6.
+8. **Environment givens.** Constraints already fixed by the
+   surroundings, not design choices. See section 6.
 9. **Questions the model must answer.** Where the modeller's judgment
    is wanted, marked as not requirements.
 10. **Scenarios the model must satisfy.** Numbered `S1` onward, stated
@@ -228,29 +235,29 @@ customer's word for the same thing on every surface.
 The givens section holds two kinds of thing, and marking which is which
 is its whole value.
 
-- **A constraint of the world.** "Design books are markdown books in a
-  git repository." A model may not contradict it, and a clause may lean
-  on it.
+- **A constraint already fixed by the surroundings.** "Design books are
+  markdown books in a git repository." A model may not contradict it,
+  and a clause may lean on it.
 - **A default of the stack**, introduced as "the rest of the stack,
   which a model builds on unless it says why not": the multiplexer, the
   chat, the book renderer. A model may displace one by saying why.
 
 The third part is where a given becomes a binding, one section per way
-the world provides what the second part asks for. The test that it is
+a seam is satisfied by a concrete external context. The test that it is
 doing its job is stated at the head of it: "Parts A and B do not change
-to admit a profile." If adding a second way forces an edit in the first
-two parts, then one of them fixed a mechanism, and the fix belongs
-there rather than in the new profile.
+to admit a profile." If adding a second binding forces an edit in the
+first two parts, then one of them fixed a mechanism, and the fix
+belongs there rather than in the new profile.
 
 ## 7. When the author already has a solution
 
 This is the normal case, not a failure. Write the invariant the
 solution satisfies, then put the solution where it can be argued with.
 
-- A way the world provides something goes in the third part, as one
-  profile.
-- A tool the world has already fixed goes in the givens, marked as a
-  constraint or as a displaceable default.
+- A particular external context that satisfies a seam goes in the third
+  part, as one profile.
+- A tool the surroundings have already fixed goes in the givens, marked
+  as a constraint or as a displaceable default.
 - A choice you have made and want defended goes in a proposal file
   beside the statement, whose clauses are ratified into the statement
   when the operator rules on them.
@@ -283,18 +290,27 @@ not"; (2) a glossary of the objects, one entry each, a definition and
 nothing else. Ask me whatever you need to get those right. I will
 correct them, and every clause you then write uses only those words.
 
-The statement has up to three parts, in levels of abstraction:
-(1) what must hold of the thing itself, required, in lettered sections
-    by concern, naming nothing outside the system;
-(2) what the system needs from the world, only if it has seams to an
-    environment it does not own: the few operations it asks for and the
-    guarantee each must give, plus the rule binding those abstract
-    names to something real;
-(3) how the world provides it, only if (2) exists: one section per way,
-    naming real tools, with a table mapping every operation of (2) to
-    how that way satisfies it.
-Name the parts for this system's own subject matter. If there is no
-seam, write only (1) and say so.
+The statement describes one system: a bounded context, or a set of them
+held together. Everything else is an external context, and the
+relationships crossing the system's boundary are its seams. Sketch a
+context map first and tell me what you find, because the seams are
+exactly those relationships, and a seam you have not drawn is one that
+surfaces later as a clause that will not stay mechanism-free.
+
+The statement then has up to three parts, in levels of abstraction:
+(1) what must hold of the system, required, in lettered sections by
+    concern, naming no external context;
+(2) what it requires across its seams, only if it has seams: one
+    section per seam, giving the few operations required across it and
+    the guarantee each must give, in abstract names only, plus the rule
+    binding those names to something concrete;
+(3) how each seam is bound, only if (2) exists: one section per way a
+    seam is satisfied, naming the external context it binds to, with a
+    table mapping every operation of (2) to how that binding satisfies
+    it.
+Name the parts and the seam sections for this system's own subject
+matter. If the system has no external contexts, write only (1) and say
+so.
 
 Document shape, one flat markdown file in this order: title and
 preamble; purpose in a paragraph; the actor table; the glossary; the
@@ -344,5 +360,5 @@ what Switchboard Kit must always do and never do without naming AWS or
 any cloud anywhere in the first two parts, so a model can propose a
 solution unprejudiced by the one already in mind. What is fixed goes in
 `<what is fixed>` and lands in the givens, and the cloud that is
-presumed today becomes one way in the third part, where a second can be
-set beside it and compared.
+presumed today becomes one external context bound to a seam in the
+third part, where a second binding can be set beside it and compared.
