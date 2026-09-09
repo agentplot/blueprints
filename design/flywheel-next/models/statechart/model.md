@@ -6,7 +6,8 @@ evidence, evaluates guards, and performs effects whose proof is absent.
 Plan decisions are states. Unit types and elaboration types are machine
 definitions the operator adds. This document is the written model; the
 machines themselves are in `machines/`, the profile bindings in
-`profiles/`, the conformance suite in `conformance/`, the diagrams in
+`profiles/`, the shipped schemas, instructions and skills in
+`instructions/`, the conformance suite in `conformance/`, the diagrams in
 `diagrams/`, and what the model could not satisfy in `gaps.md`.
 
 Requirements are cited by their number in `requirements.md` (1–314,
@@ -25,7 +26,10 @@ and routing, where files live, and bootstrapping (A.17 to A.24).
 
 `machines/check.py` validates every machine against `machines/schema.json`,
 every guard and effect name against `machines/atoms.yaml`, every profile
-for completeness, every diagram's `data-state`, `data-decision` and
+for completeness, the shipped instruction set — every file's front
+matter, its place against its `path`, its text against the version it
+declares (123), every path a profile names, and a skill and a definition
+for every agent a machine names — every diagram's `data-state`, `data-decision` and
 `data-effect` attributes against the machines so the pictures cannot
 drift from the runtime (83), and the requirement trace: every machine,
 decision kind, effect and conformance scenario carries `satisfies:
@@ -1534,7 +1538,30 @@ type>/SKILL.md`, `flywheel/types/units/<type>@<version>.yaml` and
 of `machines/unit-types/` and `machines/elaboration-types/` are what the
 operator's files look like; the engine loads them from the blueprints at
 the version the object recorded, through the registry of 10.7), and
-the manifest. `prepare_place`
+the manifest.
+
+The texts themselves are `instructions/` beside `machines/`, and that
+directory is the shipped set: `instructions/` for the four defaults of
+120, `schemas/` for one schema per deliverable of the shipped set and
+one per `by-type` stage of each unit type, `skills/producers/<deliverable>/`
+for how each deliverable is written, and `skills/<agent>/` with
+`agents/<agent>.md` for the type skill and the agent definition of every
+agent a machine or a stage names. The layout mirrors the prefix: cut
+`flywheel/` off a file's `path` and what is left is where the file sits,
+so nothing resolves by convention. Every file carries its own `version`
+and the set version it was written against (224), and a session type
+does not name its default instructions — `instructions/set.yaml`
+`carries:` gives them by the type's directory, an elaboration type's
+sessions taking `design-conclusion` and `claim-granularity`, the
+fundamentals type also `fundamentals`, a unit type's stages
+`construction`, and the machinery's own sessions none. A type file may
+name `instructions:` itself, which is how an instance's type carries
+something other than its tier's defaults; no shipped type does. The
+release embeds the set with the machines (D2 of the prototype's change),
+and an instance overrides any file by writing one of the same name under
+its own `flywheel/` prefix (203, 223).
+
+`prepare_place`
 renders `.flywheel/work-order.md` from the closed inputs: the schema
 instruction, the type skill, the work order proper (job, deliverables,
 exit contract), the producer skill, schema and review surface in force
@@ -1542,13 +1569,22 @@ for each deliverable the type names (`profiles/deliverables.yaml`, its
 version in the header; 190), and the artifacts of the change (the unit
 document or the intent's change directory, the cited chapters, the
 open bolts for planning). Nothing else is written into the place, and the place's
-Claude Code settings deny reads outside it (89). Every input is named
-with its version (the blueprints commit) in the work order's header.
-`flywheel render-order <scenario>` renders the exact prompt with no
-session (90, 124). Changing any of these is a chore on the blueprints
-repository; hosts read the blueprints' shared line, so a change reaches
-every host at its next fetch, and a session started before it carries
-the older commit in its header (91, 123).
+Claude Code settings deny reads outside it (89). The work order's header
+names the blueprints commit, the deliverables binding version, the
+instruction set version, and every schema, instruction and skill it
+hands in as `name@version` (226), so two sessions started either side of
+a chore on one instruction are told apart by the header and not by the
+commit alone. `flywheel render-order <session type> <instruction
+version> <scenario>` renders the exact prompt with no session (90, 124).
+
+Changing one of these is a chore on the blueprints
+repository, and the change moves the file's version with its text —
+`check.py` fails text that moved while its version stood still, over the
+hashes in `machines/registry.yaml` under `instructions:` (123, 224).
+Hosts read the blueprints' shared line, so the chore reaches every host
+at its next fetch, exactly as a type file does; a session started before
+it carries the older versions in its header and is unaffected until it
+ends (91, 123).
 
 The default instructions ship in the blueprints repository template:
 `instructions/design-conclusion.md` (write the chapter and the claim in
