@@ -154,6 +154,7 @@ Each is placed beside the clause it would sit next to.
 
 1. Beside clause 6 and 33: what is a stage, and is it a property of the work order, of the type, or of the line the place is prepared from? The model treats it as an input to rendering that supplies only the model class.
 2. Beside clause 9: what is a scenario in "type, version and scenario"? The render function takes it as an input, but nothing says what varies with it.
+2a. Beside clause 13: the statement now distinguishes a server the host runs from one the host reaches (a service elsewhere, reached with a host-held credential). The one-copy rule and the part lifecycle's starting state apply to the first; the enumeration, credential, identity and reachability rules apply to both. The model's gate serves both cases; for a reached server it holds the credential and nothing on the host runs the server.
 3. Beside clause 14 and the pipe-transport given: does a per-session connector that holds no state and offers no catalogue count as "a tool server started per session"? The model says no, and S1's count depends on that reading.
 4. Beside clause 16: are the machinery's own per-session processes (connectors) counted anywhere, or only agent sessions?
 5. Beside clause 17: where does the mapping from a server name to the package that would provide it come from? The model puts it in the tool server declaration; it could instead be a separate catalogue of packages.

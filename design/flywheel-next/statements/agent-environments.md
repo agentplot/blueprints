@@ -119,11 +119,13 @@ redefine these.
 
 ### E.3 Tool servers
 
-13. A tool server is a part of the host, not a part of a session. A
-    host runs exactly one of each server it declares, however many
-    sessions run on it **(new)**.
-14. No session starts a tool server, and no tool server is started per
-    session or per place **(new)**.
+13. A tool server is a part of the host, not a part of a session. It
+    is one the host runs or one the host reaches; a host runs exactly
+    one of each server it runs, however many sessions run on it, and
+    holds one declaration for each server it reaches **(new)**.
+14. No session starts a tool server, no session holds its own way of
+    reaching one, and no tool server is started per session or per
+    place **(new)**.
 15. The tool servers a session may call are part of its closed inputs,
     named in its enumeration and versioned like everything else there.
     A session reaches no tool server its environment does not name (89,
@@ -301,6 +303,8 @@ Constraints of the world, not design choices.
   property of them the statement leans on.
 - Tool servers speak the model context protocol, over a process pipe or
   over a network address. A given server may offer only one of the two.
+  Some are processes started on the host; others are services elsewhere
+  that a host reaches with a credential and never runs.
 - The operator's own machine carries the operator's own instructions,
   settings and tool-server lists, at those same fixed locations, for
   the operator's own use. A host may run on that machine.
