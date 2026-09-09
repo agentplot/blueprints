@@ -8,11 +8,10 @@ core; the schemas, instructions and skills that say what goes into one
 are extensible. Claims are statements about the destination and never
 about a piece of work, so a unit cites the coarse claim it serves or
 cites none at all, and the units that landed citing none are read in
-one batch on the review surface. And the mechanism-free requirements
-statement, the thing this file's own
-requirements are written in, is a part of every book. It is produced
-like any other chapter, with the claims included under the clauses they
-make checkable.
+one batch on the review surface. And the statement of invariants, the
+form this file's own requirements are written in, is a part of every
+book, written by a shipped elaboration type of its own, with the claims
+included under the clauses they make checkable.
 
 ## 1. OpenSpec is a given
 
@@ -170,18 +169,50 @@ exists to be checked.
 samples, with claims included by anchor where a chapter explains one
 (97). The book exists to be understood.
 
-**The fundamentals** are a mechanism-free requirements statement of
-what the system fundamentally is and what must always hold, written as
-numbered clauses in the style of `design/requirements-style.md`. It
-exists to be designed from. It is what a model that has never seen the
-code reads before proposing anything.
+**The fundamentals** are a statement of invariants: what the system
+fundamentally is and what must always hold, written as numbered
+mechanism-free clauses in the style of `design/requirements-style.md`.
+It exists to be designed from. It is what a model that has never seen
+the code reads before proposing anything.
 
-The third is a part of the book, not a fourth artifact. It is produced
-by writing elaborations like any other chapter, under a default
-instruction (120, 190) that says to write the destination as numbered,
-mechanism-free clauses instead of as narrative, and the blueprints
+The third is a part of the book, not a fourth artifact. The blueprints
 template ships the skeleton (208) so every book has the part whether or
 not anything has been written into it yet.
+
+### The type that writes it
+
+The part is written by an elaboration type of its own, shipped in the
+default set, and not by the ordinary writing type pointed at a
+different deliverable.
+
+The grounding is 190. An elaboration type names its deliverables, and
+for each the skill that produces it, the schema it must satisfy and the
+surface that reviews it. A session that delivers the fundamentals part,
+the claims that fall out of it and the map entries those claims attach
+to is naming a different set of deliverables from a session that
+delivers a chapter, a diagram and a claim. By 190 that is what a
+distinct type *is*; calling it the writing type with a substituted
+deliverable would be the same statement wearing a disguise, and it
+would put the style guide's schema in front of every chapter session
+that has no use for it.
+
+It is self-closing (25). The session ends itself when its deliverable
+is written, and the deliverable is written when the part validates
+against the schema the style guide fixes: every clause an invariant,
+numbered in one sequence, naming no mechanism in the first two parts.
+That is a check a session can run on itself, which is what makes
+self-closing the right ending rather than standing.
+
+It ships as an extensible file, never core (223). It is an elaboration
+type, so it is a file under the prefix in the blueprints, shipped in
+the release's manifest and listed in the registry as shipped rather
+than added (224), and an instance may override it like any other. It
+composes only templates and atoms the release already ships (57, 87),
+so adding it is no code change.
+
+The palette offers it as `/elaborate fundamentals`, the type naming the
+subcommand under the existing `/elaborate` entry, which already picks
+intents and opens an elaboration over them (188, 189, 193).
 
 The positioning, stated once:
 
@@ -310,31 +341,41 @@ force.
 > and so that no statement naming a file, a colour, a setting, a plugin
 > or a step of a pipeline is written as a claim; make every session
 > that writes or amends a claim update the system context map so the
-> map stays current; make every session whose conclusion is about what
-> the system fundamentally is write it into the fundamentals part as
-> numbered, mechanism-free clauses (318); and make every construction
-> session cite the standing claim in scope its work serves, cite none
-> when none fits, and never propose a claim for its own work (34a).
+> map stays current; make the elaboration type that writes the
+> fundamentals part write every clause as an invariant, numbered and
+> naming no mechanism (318); and make every construction session cite
+> the standing claim in scope its work serves, cite none when none
+> fits, and never propose a claim for its own work (34a).
 
-**190**, adding one deliverable to the shipped set.
+**190**, adding one deliverable to the shipped set and naming the type
+that produces it.
 
 > …The flywheel ships a default set, versioned as one thing: book
 > chapter, claim, context map, conceptual and logical diagrams in a
 > house style, proposal document, surface specification, fundamentals
-> part, verdict.
+> part, verdict. The fundamentals part is delivered by an elaboration
+> type shipped for it (318) and by no other, since a type is the set of
+> deliverables it names.
 
 **318 (new, A.16).**
 
-> The fundamentals part is a part of the book: a mechanism-free
-> requirements statement of what the system is and what must always
-> hold, written as clauses numbered in one sequence across the part.
-> A clause says what must always hold in language a person judges; a
+> The fundamentals part is a part of the book: a statement of
+> invariants of what the system is and what must always hold, written
+> as clauses numbered in one sequence across the part, each stating
+> something always true or never done, and naming no mechanism. A
+> clause says what must always hold in language a person judges; a
 > claim is the clause the flywheel checks per repository, included by
 > anchor immediately after the clause it makes checkable (97). A clause
 > need not yield a claim, and a claim's prose may cite the clause it
-> serves, which the machinery never reads. Its schema is the style of
-> `design/requirements-style.md`; its producer is a skill like any
-> other deliverable's (190); changing either is a chore (123).
+> serves, which the machinery never reads. The part is written by an
+> elaboration type shipped for it, whose deliverables are the part, the
+> claims it yields and their map attachments (190); the type is
+> self-closing (25) and its session ends when the part validates
+> against the schema, which is the style of
+> `design/requirements-style.md`. The type is an extensible file in the
+> shipped set, never core, composing only templates and atoms the
+> release ships (57, 87, 223, 224); changing the type, its schema or
+> its producer is a chore (123).
 
 **208**, adding the part to what the template ships.
 
@@ -358,10 +399,11 @@ force.
 | `machines/unit.yaml` | `claims` may be empty; a landing with an empty `claims` marks the unit for the review batch, and a chore citing a claim makes that claim's verdict due (64) |
 | `machines/ledger-cell.yaml` | no cell exists for a unit that names no claim; the "no claim needed" record is on the unit, not the ledger |
 | `machines/atoms.yaml` | one atom for the stored "no claim needed" answer, on the pattern of the not-applicable verdict |
-| `profiles/deliverables.yaml` | a `fundamentals-part` entry, store `book`, fed to the design types; the verdict drop for empty claims already reads as 34a and gets the citation |
+| `machines/elaboration-types/fundamentals.yaml` | new, the shipped type: self-closing (25), deliverables the fundamentals part, its claims and their map attachments, composing only shipped templates and atoms (57, 87), listed in the registry as shipped rather than added (224) |
+| `profiles/deliverables.yaml` | a `fundamentals-part` entry, store `book`, `feeds` the fundamentals type alone; the verdict drop for empty claims already reads as 34a and gets the citation |
 | `profiles/blueprints.yaml` | the fundamentals part's path under the book's `src/`, shipped as a skeleton by the template |
-| `profiles/context.yaml` | the session types fed the fundamentals part in force, beside the surface specification; the claim-granularity instruction among the defaults every design type carries |
-| `surfaces.md` | the review view gains the unclaimed-units list with its one question; a unit shows whether a claim was captured, declined, or neither yet; the book viewer renders a fundamentals chapter with its included claims |
+| `profiles/context.yaml` | a row for the fundamentals type: what its work order carries, including the style-guide schema (226); the claim-granularity instruction among the defaults every design type carries |
+| `surfaces.md` | `/elaborate fundamentals` in the palette's command table; the review view gains the unclaimed-units list with its one question; a unit shows whether a claim was captured, declined, or neither yet; the book viewer renders a fundamentals chapter with its included claims |
 | conformance | a scenario for two units landing with no claim, both listed in one review, one answered no, and a later review that lists neither |
 
 ## Open
