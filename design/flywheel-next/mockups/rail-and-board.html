@@ -95,8 +95,17 @@
     carrying a guided flow opens that flow where it lives — the management console at the
     screen it names, or the map's add-repository flow — and its finish is the one call.
     /elaborate carries the multi-pick: the open intents with tick targets and a footer with
-    the count, with-operator or standing, start and cancel. Drop, later, rename, service
-    start/stop, finish and ask-again stay buttons in the dock.
+    the count, with-operator or standing, start and cancel.
+    Every button stays, and no other field on the page takes typed words. The typed ones are
+    the palette's, opened scoped to the object with the command already in the field: a card's
+    redo, reply and rename answers; "rename" on a proposal's unit and on a bolt of the
+    proposal; "rename…" in the bolt dock; "redo n…" in the proposal's "that's all wrong"; and
+    a "note" on a document heading, which opens /redo with the heading in brackets and is
+    offered only where the card has a redo to give. An answer the card does not offer is
+    refused with the card's answers listed, as a key is. What is still picked rather than
+    typed keeps its own control: the bolt select, the elaboration type, the pick lists, and
+    naming a new bolt when a unit is moved to one. Drop, later, service start/stop, finish and
+    ask-again stay buttons in the dock.
     Scoped: with a card focused or an object open, the palette opens scoped to it, the object
     is a chip at the field's head, and a command taking an object takes this one; backspacing
     over the chip unscopes. While it is open ↑ and ↓ walk its list and the rail stays put.
@@ -310,6 +319,7 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
 .lin .lk-w{font-weight:600} .lin .lk-t{color:var(--ink2);margin-left:6px}
 .wrong{margin-top:10px;padding:10px 12px;border:1px dashed var(--crit);border-radius:8px;background:color-mix(in srgb,var(--crit) 6%,transparent)}
 .wrong h4{font-size:12.5px;color:var(--crit);margin-bottom:3px} .wrong p{margin:0 0 6px;font-size:12px;color:var(--ink2)}
+.wrong .wm{font:11px var(--mono);color:var(--ink3)}
 .vd{font:600 10.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:4px;border:1px solid var(--line);color:var(--ink3);white-space:nowrap}
 .vd.satisfied{color:var(--ok);border-color:var(--ok)} .vd.not-satisfied{color:var(--crit);border-color:var(--crit)} .vd.stale{color:var(--warn);border-color:var(--warn)} .vd.unjudged{color:var(--ink2)} .vd.not-applicable{color:var(--ink3);border-style:dashed}
 .claims{display:flex;flex-direction:column}
@@ -757,7 +767,7 @@ body.docked .dock{transform:none}
 .pblock{border:1px solid var(--line);border-radius:7px;margin-bottom:10px;overflow:hidden}
 .pblock .pbh{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--surface2);border-bottom:1px solid var(--line2);font-size:12px}
 .pblock .pbh .bk{font:600 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
-.pblock .pbh input{font:600 12.5px var(--mono);padding:2px 6px;width:220px}
+.pblock .pbh .bn{font:600 12.5px var(--mono)}
 .pblock .pbh .bstate{font:600 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);border-radius:3px;padding:0 5px;color:var(--ink3)}
 .pblock .pbh .bstate.new{color:var(--accent);border-color:var(--accent)}
 .pblock .pbh .bs{margin-left:auto;color:var(--ink3);font-size:11.5px}
@@ -1121,7 +1131,7 @@ const SEED_WILLDAN = () => ({
     {id:'provider-key-rotation', name:'provider-key-rotation', state:'open', chapters:['providers'], note:'from the ops constraint · provider B rotates keys on the 1st', sessions:[]},
   ],
   gatherings:[{n:424, type:'research', state:'proposed', intents:['atlas-provider-limits','loop-cadence','provider-key-rotation']}],
-  explorations:[], planning:null, deferred:[], picked:new Set(), exploreKind:'with', pal:{open:false, q:'', sel:0, scope:null, mode:null},
+  explorations:[], planning:null, deferred:[], picked:new Set(), exploreKind:'with', pal:{open:false, q:'', sel:0, scope:null, mode:null, on:null},
   repos:[
     {id:'atlas', kinds:['service','data-product'], caps:['http','worker','provider-calls','status-table'], manifest:'atlas/flywheel.yaml · landing: direct merge', envFile:'flywheel/environment.yaml',
      claims:[['providers/one-writer @v3','not satisfied','kind:service','unit 413 proposed · completes it'],['providers/rate-envelope @v1','not satisfied','capability:provider-calls','3 intents argue with it · gathering 424'],['plan/sink-marks @v2','satisfied','all','tail-derive merged 09-03'],['plan/tail-cursor @v1','unjudged','all','standing since 05:40 · proposal 422 covers sc.1–3'],['repo/readme @v2','satisfied','all','—'],['repo/ci @v1','satisfied','all','gates on push'],['sessions/one-writer @v4','stale','capability:worker','judged at v3 · decision 420'],['ops/key-rotation @v1','not applicable','capability:queue','atlas declares no queue']]},
@@ -1685,6 +1695,7 @@ const CMDS = [
   {c:'/later', arg:'[number]', w:'defer it out of the count; ask again when you want it back', o:'the decision in hand', sig:'answer(decision, later)'},
   {c:'/redo', arg:'<notes>', w:'withdraw the proposal and charge planning again with your notes', o:'the proposal in hand', sig:'answer(decision, redo, notes)'},
   {c:'/reply', arg:'<text>', w:'answer in your own words', o:'the decision in hand', sig:'answer(decision, reply, text)'},
+  {c:'/rename', arg:'<name>', w:'give it another name', o:'the unit, bolt or decision in hand', sig:'rename(object, name)'},
   {c:'/capture', arg:'<text>', w:'capture an idea exactly as you wrote it', o:'this flywheel', sig:'capture(text, source: page)'},
   {c:'/intent', arg:'<text>', w:'capture it and mark it the first idea of a thread', o:'this flywheel', sig:'capture(text) · mark-intent(capture)'},
   {c:'/elaborate', w:'open one elaboration over several intents · pick them here', o:'the intents you tick', sig:'explore(intents, with-operator | standing)'},
@@ -1757,12 +1768,16 @@ function palList(){
     return d.answers.map(a => ({t:'ans', d, a:a[0], label:a[1] || a[0]})); }
   return [];
 }
-function palOpen(q){ S.pal.open = true; S.pal.q = q || ''; S.pal.sel = 0; S.pal.mode = null;
-  S.pal.scope = (S.open && objOf(S.open)) ? S.open : (S.focus && objOf(S.focus) ? S.focus : null);
+function palOpen(q){ return palOpenAt((S.open && objOf(S.open)) ? S.open : (S.focus && objOf(S.focus) ? S.focus : null), q); }
+/* a typed field on the page is a command with its object already in hand: the dock's buttons
+   open the palette scoped to that object with the command pre-filled, and hold no field. */
+function palOpenAt(scope, q, on){ S.pal.open = true; S.pal.q = q || ''; S.pal.sel = 0; S.pal.mode = null;
+  S.pal.scope = (scope && objOf(scope)) ? scope : null; S.pal.on = on || null;
   palShell(); renderPalette(); const f = $('#pal-q'); if(f){ f.focus(); f.setSelectionRange(f.value.length, f.value.length); } }
-function palClose(){ S.pal.open = false; S.pal.mode = null; S.pal.q = ''; S.picked.clear();
+function palClose(){ S.pal.open = false; S.pal.mode = null; S.pal.q = ''; S.pal.on = null; S.picked.clear();
   const f = $('#pal-q'); if(f) f.blur(); renderPalette(); }
-function palScopeName(){ if(!S.pal.scope) return null; const o = objOf(S.pal.scope); if(!o) return null; const [t] = S.pal.scope.split(':');
+function palScopeName(){ if(S.pal.on) return S.pal.on.label;
+  if(!S.pal.scope) return null; const o = objOf(S.pal.scope); if(!o) return null; const [t] = S.pal.scope.split(':');
   return t==='d' ? `${o.n} · ${o.kind}` : t==='i' ? `intent ${o.name}` : t==='b' ? `bolt ${o.name}` : t==='r' ? `repository ${o.id}` : t==='h' ? `host ${o.id}` : t==='v' ? `${o.kind} · ${o.intent.name}` : (o.name || o.id || S.pal.scope); }
 function palShell(){
   const scope = palScopeName();
@@ -1878,9 +1893,21 @@ function palDo(c, rest){
       const hit = d.answers.find(x => x[0]===a); if(S.inflight[n]){ refuse(n); return; } palClose(); send(n, hit ? a : 'reply', hit ? undefined : a); return; }
     case '/yes all': palClose(); yesAll(); return;
     case '/redo': { const d = scopedDec || dec(S.proposal.n); if(!d){ toast('no proposal in hand', true); return; }
+      if(!d.answers.some(x => x[0]==='redo')){ toast(`${d.n} · no "redo" on this card · ${d.answers.map(x=>x[0]).join(' · ')}`, true); return; }
       if(!rest){ S.pal.q = '/redo '; renderPalette(); return; } if(S.inflight[d.n]){ refuse(d.n); return; } palClose(); send(d.n, 'redo', rest); return; }
     case '/reply': { const d = scopedDec; if(!d){ toast('no decision in hand · name one by its number', true); return; }
+      if(!d.answers.some(x => x[0]==='reply')){ toast(`${d.n} · no "reply" on this card · ${d.answers.map(x=>x[0]).join(' · ')}`, true); return; }
       if(!rest){ S.pal.q = '/reply '; renderPalette(); return; } if(S.inflight[d.n]){ refuse(d.n); return; } palClose(); send(d.n, 'reply', rest); return; }
+    case '/rename': { const on = S.pal.on;
+      if(!rest){ S.pal.q = '/rename '; renderPalette(); return; }
+      if(on && on.kind==='unit'){ const u = S.proposal.units.find(x => x.id===on.id); if(!u){ toast('that unit is no longer in the proposal', true); return; }
+        u.name = rest; palClose(); unitResponse(`${S.proposal.n} ${u.id}: rename ${rest}`); render(); return; }
+      if(on && on.kind==='pbolt'){ const b = S.proposal.bolts.find(x => x.id===on.id); if(!b){ toast('that bolt is no longer in the proposal', true); return; }
+        const old = b.name; b.name = rest; palClose(); unitResponse(`${S.proposal.n} rename ${old} ${rest}`); render(); return; }
+      if(scoped && S.pal.scope[0]==='b'){ const b = scoped; const old = b.name; if(rest===old){ toast('nothing changed · nothing sent', true); return; }
+        b.name = rest; palClose(); say(`rename ${old} ${rest}`); render(); return; }
+      if(scopedDec && scopedDec.answers.some(x => x[0]==='rename')){ if(S.inflight[scopedDec.n]){ refuse(scopedDec.n); return; } palClose(); send(scopedDec.n, 'rename', rest); return; }
+      toast('nothing in hand to rename · open the unit, the bolt or the decision first', true); return; }
     case '/elaborate': S.pal.mode = 'pick'; S.pal.q = ''; if(!S.picked.size && scoped && S.pal.scope[0]==='i') S.picked.add(S.pal.scope.slice(2)); renderPalette(); return;
     case '/mine': S.railMine = true; palClose(); toast('rail · yours and unowned'); render(); return;
     case '/all': S.railMine = false; palClose(); toast('rail · every decision'); render(); return;
@@ -2048,7 +2075,9 @@ function askAgain(key){
    ===================================================================== */
 const KEYS = {yes:'y', drop:'n', no:'n', later:'l'};
 const ACLS = a => a==='yes' ? 'yes' : (a==='drop'||a==='no') ? 'drop' : '';
-const needsArg = a => ({'redo':'text','reply':'text','rename':'text','new bolt':'text','bolt':'select','pick':'picks','type':'typesel'}[a]);
+/* the typed answers are the palette's: the button opens it scoped and pre-filled, and holds no field */
+const PAL_TYPED = {'redo':'/redo ', 'reply':'/reply ', 'rename':'/rename '};
+const needsArg = a => ({'new bolt':'text','bolt':'select','pick':'picks','type':'typesel'}[a]);
 const ELAB_TYPES = ['research','prototype','planning','interactive','writeback'];
 function actsHtml(d, where){
   const btns = d.answers.map(([a,label]) => `<button class="btn ${where==='card'?'sm':''} ${ACLS(a)}" data-a="${esc(a)}" data-n="${d.n}">${esc(label)}${KEYS[a]?`<span class="k">${KEYS[a]}</span>`:''}</button>`).join('');
@@ -2059,9 +2088,7 @@ function actsHtml(d, where){
 function argHtml(d, a){
   const kind = needsArg(a);
   if(kind==='text'){
-    const ph = a==='redo' ? 'what planning should change…' : a==='reply' ? 'your answer to the session…' : a==='rename' ? 'new bolt name' : 'name for the new bolt';
-    const multi = a==='redo' || a==='reply';
-    return `<div class="field">${multi ? `<textarea rows="2" placeholder="${ph}" aria-label="${esc(a)}"></textarea>` : `<input type="text" placeholder="${ph}" aria-label="${esc(a)}">`}<button class="btn pri sm" data-send="${esc(a)}" data-n="${d.n}">send</button><button class="btn quiet sm" data-cancel="1">cancel</button></div>`;
+    return `<div class="field"><input type="text" placeholder="name for the new bolt" aria-label="${esc(a)}"><button class="btn pri sm" data-send="${esc(a)}" data-n="${d.n}">send</button><button class="btn quiet sm" data-cancel="1">cancel</button></div>`;
   }
   if(kind==='select'){
     const opts = S.bolts.filter(b => b.name!==d.bolt && b.id!=='chores-atlas').map(b => `<option>${esc(b.name)}</option>`).join('');
@@ -2296,7 +2323,8 @@ function sessionsHtml(list, note){ list = list.filter(s => s.state!=='queued' &&
   return `<div class="rows">${list.map(s => `<div class="row"><div class="grow"><div class="nm">${esc(s.label)}${s.owner?`<span class="m">${esc(s.owner.name)}</span>`:''}</div><div class="last">${esc(s.last||'')}</div></div>${sessChip(s)}</div>`).join('')}</div>`; }
 const linksHtml = ls => `<div class="links">${ls.map(([k,v]) => `<span class="lk"><b>${esc(k)}</b> ${esc(v)} ↗</span>`).join('')}</div>`;
 function servicesHtml(list, ownerKey){ return `<div class="rows">${list.map((v,i) => `<div class="row"><span class="dot ${v.s==='running'?'':v.s}"></span><div class="grow"><div class="nm">${esc(v.n)}</div><div class="ep">${esc(v.ep)}</div></div><span class="st ${v.s}">${v.s}</span><button class="btn sm ${v.s==='running'?'drop':'yes'}" data-svc="${ownerKey}" data-i="${i}">${v.s==='running'?'stop':'start'}</button></div>`).join('')}</div>`; }
-function docHtml(doc){ return `<div class="doc"><div class="dm">${esc(doc.dm)} · ${SM}</div>${doc.h.map(([h,p]) => `<h4>${esc(h)}<button class="an" data-an="${esc(h)}">note</button></h4><p>${p}</p>`).join('')}</div>`; }
+function docHtml(doc, d){ const notes = d && d.answers.some(x => x[0]==='redo');
+  return `<div class="doc"><div class="dm">${esc(doc.dm)} · ${SM}</div>${doc.h.map(([h,p]) => `<h4>${esc(h)}${notes ? `<button class="an" data-an="${esc(h)}">note</button>` : ''}</h4><p>${p}</p>`).join('')}</div>`; }
 function itemsHtml(items, stages){ return `<div class="stage"><span class="st" style="font:600 10.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink3)">stages</span><span class="chain">${stages.map((s,i) => `<span class="s ${i===0?'now':''}">${s}</span>${i<stages.length-1?'<span class="a">→</span>':''}`).join('')}</span></div>
   <div class="rows">${items.map(([id,st,tx,after]) => `<div class="row"><span class="mono" style="font-size:11.5px;color:var(--ink3);width:56px">${esc(id)}</span><div class="grow"><div class="nm">${esc(st)} <span class="m">${esc(tx)}</span></div></div><span class="t">after ${esc(after)}</span></div>`).join('')}</div>`; }
 function histWithLog(n, base){ const rows = [...(base||[])]; S.log.filter(e => e.n===n).slice().reverse().forEach(e => rows.push(['09-04 '+e.t,'operator',e.fail?'fail':'response',esc(e.text)])); return rows; }
@@ -2341,11 +2369,11 @@ function proposalHtml(){
       ${P.refusal && P.refusal.uid===u.id ? `<div class="refuse">${esc(P.refusal.text)}<div class="acts"><button class="btn sm pri" data-fix="${u.id}">${esc(P.refusal.fix.label)}</button><button class="btn sm quiet" data-fixno="1">leave it</button></div></div>` : ''}
       <div class="argbox" data-u="${u.id}"></div></div>`;
   const blocks = P.bolts.map(b => { const us = P.units.filter(u => u.bolt===b.id); if(!us.length && b.state==='new' && b.id.startsWith('nb-')) return '';
-    return `<div class="pblock"><div class="pbh"><span class="bk">bolt</span><input value="${esc(b.name)}" data-bname="${b.id}" aria-label="bolt name" title="a bolt's name is yours to change · Enter sends rename"><span class="bstate ${b.state}">${b.state}</span><span class="bs">${esc(b.holds)} · ${us.filter(u=>!u.dropped).length} proposed</span></div>${us.map(unitRow).join('') || '<div class="empty" style="padding:8px 10px">no units here · every unit moved elsewhere</div>'}</div>`; }).join('');
+    return `<div class="pblock"><div class="pbh"><span class="bk">bolt</span><span class="bn">${esc(b.name)}</span><button class="btn sm quiet" data-pbrename="${b.id}" title="a bolt's name is yours to change · one recorded response">rename</button><span class="bstate ${b.state}">${b.state}</span><span class="bs">${esc(b.holds)} · ${us.filter(u=>!u.dropped).length} proposed</span></div>${us.map(unitRow).join('') || '<div class="empty" style="padding:8px 10px">no units here · every unit moved elsewhere</div>'}</div>`; }).join('');
   const ready = P.units.filter(u => !u.dropped && !u.after.some(a => !P.units.find(x => x.id===a).dropped)).map(u => u.id);
   return `<div class="dtext" style="margin-bottom:10px"><b>Planning read</b> ${esc(P.reads)}.</div>${blocks}` +
     sec('what a yes starts', `<div class="dtext">${ready.map(id=>`<span class="mono">${id}</span>`).join(', ')} start at once, side by side; the rest wait on their dependencies, which stay within one bolt. Every unit becomes items on its bolt's line; the next decision that is yours is each bolt's close.</div>`) +
-    `<div class="wrong"><h4>that's all wrong</h4><p>Send the plan back whole: planning runs again on atlas with your notes, this proposal is withdrawn, and the next one arrives under a new number.</p><div class="field"><textarea rows="2" data-wrong placeholder="what planning got wrong…" aria-label="notes for planning"></textarea><button class="btn pri sm" data-wrongsend="${P.n}">redo ${P.n}</button></div></div>`;
+    `<div class="wrong"><h4>that's all wrong</h4><p>Send the plan back whole: planning runs again on atlas with your notes, this proposal is withdrawn, and the next one arrives under a new number.</p><div class="field"><button class="btn pri sm" data-wrongsend="${P.n}">redo ${P.n}…</button><span class="wm">opens the palette on this proposal, ready for your notes</span></div></div>`;
 }
 
 function dockDecision(d){
@@ -2354,7 +2382,7 @@ function dockDecision(d){
   parts.push(sec('owner', ownerHtml(d), 'on the unit, elaboration or proposal, not the decision · a member or a role from the repository · assign is one response · it never changes who may answer'));
   { const refs = decRefs(d); if(refs.length) parts.push(sec('in the book', refsHtml(refs), 'the chapter and claim this decision concerns')); }
   if(d.kind==='proposal') parts.push(sec('the proposal · every edit is one response, sent when given', proposalHtml(), esc(S.proposal.session)));
-  if(x.doc) parts.push(sec('document', docHtml(x.doc), 'a note on a section sends redo'));
+  if(x.doc) parts.push(sec('document', docHtml(x.doc, d), d.answers.some(a => a[0]==='redo') ? 'a note opens the palette on this card, ready for your redo' : 'read here · answered by the card\'s own answers'));
   if(x.signals) parts.push(sec('signals · 3 of 7', x.signals.map(([m,t]) => `<div class="dsig">“${esc(t)}”<small>${esc(m)}</small></div>`).join(''), SM));
   if(d.kind==='blocked') parts.push(sec('the question', `<div class="dtext" style="font-size:16px;font-style:italic">“${esc(d.q)}”</div>`));
   if(x.items) parts.push(sec('items and stages', itemsHtml(x.items, x.stages), SM));
@@ -2399,7 +2427,7 @@ function dockBolt(b){
     + sec('claims cited · by its units', claimsRows(b.claims||[], b.repo), 'verdict from the ledger · read in book opens the chapter')
     + sec('units', `<div class="rows">${b.units.map(u => `<div class="row" style="flex-wrap:wrap"><span class="st">${u.state}</span><div class="grow"><div class="nm">${esc(u.name)}${u.type?` <span class="m">type ${u.type}</span>`:''}</div></div><button class="btn sm quiet" data-oart="unit/${b.id}/${esc(u.name)}" title="the unit's change in ${esc(b.repo)}: proposal, spec, tasks, status">${u.state==='queued' ? 'change · not yet' : 'change'}</button>${u.state==='merged' ? '' : `<button class="btn sm quiet drop" data-bdrop="${b.id}" data-unit="${esc(u.name)}">drop</button>`}${(u.items||[]).map(wiHtml).join('')}</div>`).join('')}</div>`, 'drop is recorded as your response · change opens the unit\'s files · a work item opens its commits and report')
     + sec('acceptance file', `<div class="dtext"><button class="btn sm" data-oart="bolt/${b.id}">flywheel/acceptance/${esc(b.id)}.yaml</button> <span style="font-size:12px;color:var(--ink3)">written at landing · previewed now from the units' specs</span></div>`)
-    + sec('name', `<div class="field"><input value="${esc(b.name)}" data-brename="${b.id}" aria-label="bolt name"><button class="btn sm" data-brenamesend="${b.id}">send rename</button></div>`, 'a bolt\'s name is yours to change · one recorded response')
+    + sec('name', `<div class="row"><span class="grow"><span class="mono">${esc(b.name)}</span></span><button class="btn sm" data-brenamesend="${b.id}">rename…</button></div>`, 'a bolt\'s name is yours to change · one recorded response')
     + sec('sessions running', sessionsHtml(sessions.concat(b.machinery||[])), 'with host and last activity')
     + sec(`services of the place · ${esc(b.repo)}/${esc(b.name)}`, servicesHtml(b.services, 'b:'+b.id), 'start and stop are recorded responses')
     + sec('served endpoints', `<div class="rows">${b.endpoints.map(e => `<div class="row"><span class="ep">${esc(e)}</span></div>`).join('')}</div>`)
@@ -2657,7 +2685,7 @@ function renderLoad(){ const L = $('#load'); L.hidden = !S.load; if(!S.load) ret
     <div class="load-foot">every count is derived from the same state the engine reads; the 7-day series and the streaks are history read the same way · a unit is ~${SLOT_DAYS} slot-days, from the last week · esc closes · ${SM}</div></div>`; }
 document.addEventListener('toggle', e => { if(e.target.classList && e.target.classList.contains('adv')) S.adv = e.target.open; }, true);
 /* --- organizations and the account item: the page belongs to one organization at a time; the account item in the top bar switches it (the whole seed swaps: rail, board, hosts strip) and opens settings, hosts, the organization store and sign-out · who you are is name and sign-in kind --- */
-const baseSeed = () => ({minutes:7*60+40, decisions:[], attention:[], railMine:false, pools:[], marks:{page:'07:40'}, since:[], hosts:[], intents:[], gatherings:[], explorations:[], planning:null, deferred:[], picked:new Set(), exploreKind:'with', pal:{open:false, q:'', sel:0, scope:null, mode:null},
+const baseSeed = () => ({minutes:7*60+40, decisions:[], attention:[], railMine:false, pools:[], marks:{page:'07:40'}, since:[], hosts:[], intents:[], gatherings:[], explorations:[], planning:null, deferred:[], picked:new Set(), exploreKind:'with', pal:{open:false, q:'', sel:0, scope:null, mode:null, on:null},
   repos:[{id:'books', kinds:['books'], caps:[], manifest:'books/flywheel.yaml · the books repository · claims live here', claims:[]}], view:'phases', load:false, scopeSel:null, scopeSet:new Set(), addRepo:null,
   map:{nodes:[{id:'books', x:60, y:200}], edges:[]}, review:{on:false, mark:'never', nodes:{}, edges:{}}, bolts:[], landed:[], opsignals:[], curation:{unmoved:0, by:'nothing yet', oldest:'0d', next:'when a signal arrives', session:{label:'curation', state:'scheduled', act:'idle', host:'', agent:'claude', model:'haiku', pane:''}},
   proposal:{session:'', reads:'', bolts:[], units:[], edits:0, refusal:null, n:0}, log:[], inflight:{}, focus:null, open:null, hostlit:null, nextWi:1, acct:false, signedOut:false});
@@ -2846,6 +2874,7 @@ document.addEventListener('click', e => {
   if(S.acct && !t.closest('#acct-wrap')){ S.acct = false; renderAcct(); }
   if(b && b.dataset.a !== undefined){ const n = +b.dataset.n, a = b.dataset.a, d = dec(n); if(!d) return;
     if(S.inflight[n]){ refuse(n); return; }
+    if(PAL_TYPED[a]){ if(!d.answers.some(x => x[0]===a)) return; palOpenAt('d:'+n, PAL_TYPED[a]); return; }
     if(needsArg(a)){ const box = b.closest('.acts').nextElementSibling; const open = box.dataset.arg===a; $$('.argbox[data-n]').forEach(x => { x.innerHTML=''; delete x.dataset.arg; }); if(!open){ box.dataset.arg = a; box.innerHTML = argHtml(d, a); box.querySelector('input,textarea,select')?.focus(); } return; }
     send(n, a); return; }
   if(b && b.dataset.send){ const n = +b.dataset.n, a = b.dataset.send, box = b.closest('.argbox'); let arg = '';
@@ -2898,18 +2927,21 @@ document.addEventListener('click', e => {
   if(b && b.dataset.xfinish){ const x = S.explorations.find(v => v.id===b.dataset.xfinish); x.state='done'; x.leaves='7d'; x.at=hhmm(S.minutes); x.last=`${hhmm(S.minutes)} · finished by your instruction · record written in each intent`; say(`finish explore ${x.names.join(', ')}`); since('finished',`explore ${x.names.join(' + ')}`,'records in each intent · writeback per intent'); render(); return; }
 
   if(b && b.dataset.bdrop){ const bo = bolt(b.dataset.bdrop); const u = bo.units.find(x => x.name===b.dataset.unit); bo.units = bo.units.filter(x => x!==u); say(`drop ${bo.name}/${u.name}`); since('dropped',`unit ${u.name}`,`from bolt ${bo.name} by dictation`); render(); return; }
-  if(b && b.dataset.brenamesend){ const bo = bolt(b.dataset.brenamesend); const v = $(`[data-brename="${bo.id}"]`).value.trim(); if(!v || v===bo.name) return; const old = bo.name; bo.name = v; say(`rename ${old} ${v}`); render(); return; }
-  if(b && b.dataset.wrongsend){ const n = +b.dataset.wrongsend; const ta = b.closest('.wrong').querySelector('textarea'); const v = ta.value.trim(); if(!v){ ta.focus(); return; } send(n, 'redo', v); return; }
+  if(b && b.dataset.brenamesend){ palOpenAt('b:'+b.dataset.brenamesend, '/rename '); return; }
+  if(b && b.dataset.wrongsend){ palOpenAt('d:'+ +b.dataset.wrongsend, '/redo '); return; }
   if(b && b.dataset.svc !== undefined){ const o = objOf(b.dataset.svc); const v = o.services[+b.dataset.i]; v.s = v.s==='running' ? 'stopped' : 'starting'; say(`${v.s==='stopped'?'stop':'start'} ${o.name}/${v.n}`); render(); if(v.s==='starting') setTimeout(() => { v.s='running'; render(); }, 1500); return; }
   /* proposal edits · each one response */
   if(b && b.dataset.udrop !== undefined){ unitDrop(b.dataset.udrop, false); return; }
-  if(b && b.dataset.urename !== undefined){ const box = $(`.argbox[data-u="${b.dataset.urename}"]`); box.innerHTML = `<div class="field"><input placeholder="new unit name" aria-label="rename"><button class="btn pri sm" data-usend="rename" data-u="${b.dataset.urename}">send rename</button><button class="btn quiet sm" data-ucancel="1">cancel</button></div>`; box.querySelector('input').focus(); return; }
-  if(b && b.dataset.usend){ const box = b.closest('.argbox'); const v = box.querySelector('input').value.trim(); if(!v){ box.querySelector('input').focus(); return; } const u = S.proposal.units.find(x => x.id===b.dataset.u);
-    if(b.dataset.usend==='rename'){ u.name = v; unitResponse(`${S.proposal.n} ${u.id}: rename ${v}`); render(); } else unitNewBolt(u.id, v.replace(/\s+/g,'-')); return; }
+  if(b && b.dataset.urename !== undefined){ const u = S.proposal.units.find(x => x.id===b.dataset.urename);
+    palOpenAt('d:'+S.proposal.n, '/rename ', {kind:'unit', id:b.dataset.urename, label:`unit ${u ? u.name : b.dataset.urename}`}); return; }
+  if(b && b.dataset.pbrename !== undefined){ const bo = S.proposal.bolts.find(x => x.id===b.dataset.pbrename);
+    palOpenAt('d:'+S.proposal.n, '/rename ', {kind:'pbolt', id:b.dataset.pbrename, label:`bolt ${bo ? bo.name : b.dataset.pbrename}`}); return; }
+  if(b && b.dataset.usend){ const box = b.closest('.argbox'); const v = box.querySelector('input').value.trim(); if(!v){ box.querySelector('input').focus(); return; }
+    unitNewBolt(b.dataset.u, v.replace(/\s+/g,'-')); return; }
   if(b && b.dataset.ucancel){ b.closest('.argbox').innerHTML=''; renderDock(); return; }
   if(b && b.dataset.fix !== undefined){ const r = S.proposal.refusal; if(!r) return; r.fix.act==='move' ? unitMove(r.uid, r.fix.to, true) : unitDrop(r.uid, true); return; }
   if(b && b.dataset.fixno){ S.proposal.refusal = null; renderDock(); return; }
-  if(b && b.dataset.an !== undefined){ const d = dec(+S.open.split(':')[1]); if(!d) return; const box = $('#dk-f .argbox'); $$('.argbox[data-n]').forEach(x => { x.innerHTML=''; delete x.dataset.arg; }); box.dataset.arg='redo'; box.innerHTML = argHtml(d,'redo'); const ta = box.querySelector('textarea'); ta.value = `[${b.dataset.an}] `; ta.focus(); return; }
+  if(b && b.dataset.an !== undefined){ const d = dec(+S.open.split(':')[1]); if(!d) return; palOpenAt('d:'+d.n, `/redo [${b.dataset.an}] `); return; }
   /* markers, hosts, chrome */
   if(b && b.dataset.mark){ openDock(b.dataset.mark); return; }
   if(b && b.dataset.gotoobj){ openDock(b.dataset.gotoobj); return; }
@@ -2941,7 +2973,6 @@ document.addEventListener('change', e => {
     if(t.value==='__new'){ const box = $(`.argbox[data-u="${u.id}"]`); box.innerHTML = `<div class="field"><input placeholder="name for the new bolt" aria-label="new bolt"><button class="btn pri sm" data-usend="newbolt" data-u="${u.id}">send new bolt</button><button class="btn quiet sm" data-ucancel="1">cancel</button></div>`; box.querySelector('input').focus(); return; }
     unitMove(u.id, t.value, false); return; }
   if(t.dataset.utype){ const u = S.proposal.units.find(x => x.id===t.dataset.utype); if(t.value!==u.type){ u.type = t.value; unitResponse(`${S.proposal.n} ${u.id}: type ${t.value}`); render(); } return; }
-  if(t.dataset.bname){ const b = S.proposal.bolts.find(x => x.id===t.dataset.bname); const v = t.value.trim(); if(v && v!==b.name){ const old = b.name; b.name = v; unitResponse(`${S.proposal.n} rename ${old} ${v}`); render(); } }
   if(t.id==='review-toggle'){ S.review.on = t.checked; render(); return; }
   if(t.id==='ar-name'){ S.addRepo.name = t.value.trim(); render(); $('#ar-name').focus(); return; }
   if(t.dataset.arkind){ const k = t.dataset.arkind; S.addRepo.kinds = t.checked ? [...S.addRepo.kinds, k] : S.addRepo.kinds.filter(x => x!==k); render(); return; }
@@ -2962,7 +2993,7 @@ document.addEventListener('keydown', e => {
     if(e.key==='Backspace' && S.pal.scope && !S.pal.q){ e.preventDefault(); S.pal.scope = null; palShell(); renderPalette(); $('#pal-q').focus(); return; }
     return; }
   if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(S.acct){ S.acct = false; renderAcct(); return; } if(S.signedOut) return; if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.load){ S.load = false; render(); return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
-  if(typing){ if(e.key==='Enter' && e.target.matches('input') && e.target.closest('.argbox')){ e.preventDefault(); e.target.closest('.argbox').querySelector('[data-send],[data-usend]').click(); } if(e.key==='Enter' && (e.target.dataset.bname || e.target.dataset.brename)){ e.preventDefault(); if(e.target.dataset.brename) $(`[data-brenamesend="${e.target.dataset.brename}"]`).click(); else e.target.blur(); } return; }
+  if(typing){ if(e.key==='Enter' && e.target.matches('input') && e.target.closest('.argbox')){ e.preventDefault(); e.target.closest('.argbox').querySelector('[data-send],[data-usend]').click(); } return; }
   if(e.metaKey||e.ctrlKey||e.altKey) return;
   const k = e.key;
   if(k==='j'||k==='ArrowDown'){ e.preventDefault(); step(1); return; }
