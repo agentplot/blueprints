@@ -1433,6 +1433,17 @@ and `end_session` from `ended`, which only the operator's response, a
 type's rule or the retirement of the work reaches (I6, 74). A pane the
 operator kills by hand is `lost`, never a response (4).
 
+`lost` is final on the session, so its owner decides what follows: a
+standing or with-operator type starts it again in the kept place, and a
+stage sends its `sessions` state round again as a fresh attempt over
+the item's place, which stands, with the stage's `attempt` counter and
+so the session id one higher (`stage`, X8). The item never waits on a
+join that can no longer be met. The new name is one the multiplexer
+does not hold, so nothing runs twice, and a session of the set whose
+pane is still present is not started again, because `start_session` is
+proven by the pane. A host that takes over a lease reads the sessions
+left behind the same way and starts attempt `n+1` (150, S13).
+
 The pane and the agent are named by the session id, so `herdr agent
 list` is a status view of its own; the layout around them is the
 session binding's (`profiles/sessions.yaml` `layout:`): one

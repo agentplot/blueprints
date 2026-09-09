@@ -29,7 +29,7 @@ itself, so the picture cannot drift from the runtime (83). Regenerate with
 | `service` | object | core | 2 | service | 4, 12, 45, 46, 47, 48, 55, 191, 203 | [service.svg](service.svg) |
 | `session` | template | core | 4 | template | 4, 24, 65, 66, 67, 70, 71, 72, 73, 80, 93, 150, 171, 173, 174, 190, 196, 197, 226, 251 | [session.svg](session.svg) |
 | `signal` | object | core | 2 | signal | 58, 60, 106, 107, 113, 114, 116, 118 | [signal.svg](signal.svg) |
-| `stage` | template | core | 4 | template | 4, 41, 56, 70, 173, 190, 285 | [stage.svg](stage.svg) |
+| `stage` | template | core | 4 | template | 4, 41, 56, 70, 150, 173, 190, 285 | [stage.svg](stage.svg) |
 | `unit` | object | core | 4 | unit | 4, 5, 13, 16, 17, 31, 35, 36, 37, 57, 60, 74, 172 | [unit.svg](unit.svg) |
 | `work-item` | object | core | 2 | work-item | 4, 32, 38, 41, 42, 43, 57, 74 | [work-item.svg](work-item.svg) |
 

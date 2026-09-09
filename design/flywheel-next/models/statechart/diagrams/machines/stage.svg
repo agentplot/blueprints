@@ -9,17 +9,18 @@
 <rect width="1378" height="355" fill="#fff"/>
 <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">stage — template v4, core</text>
 <text x="40" y="57" font-size="12" fill="#666">One stage of a unit type (56).</text>
-<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 41, 56, 70, 173, 190, 285 · stage.yaml · params agents, join, on_fail, max_send_backs, deliverables</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 41, 56, 70, 150, 173, 190, 285 · stage.yaml · params agents, join, on_fail, max_send_backs, deliverables · record attempt</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">run</text>
 <line x1="73" y1="103" x2="864.4" y2="103" stroke="#2b8a8a" stroke-width="2" opacity="0.3"/>
 <circle cx="52.0" cy="211.0" r="4" fill="#1a1a1a"/>
 <line x1="56.0" y1="211.0" x2="69.0" y2="211.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
-<path d="M118.0,197.0 V174.0 H220.0 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
-<path d="M249.2,197.0 V189.0 H278.4 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"><title>the blocked session&#x27;s own decision stands; the other sessions of the set continue</title></path>
-<path d="M307.6,197.0 V174.0 H488.4 V197.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>dictation sends the item back to the stage the type names (4); never forward</title></path>
-<path d="M366.0,197.0 V189.0 H666.4 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
-<path d="M336.8,197.0 V159.0 H564.4 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
-<path d="M395.2,197.0 V144.0 H768.4 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M118.0,197.0 V189.0 H220.0 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M242.7,197.0 V174.0 H288.1 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"><title>the blocked session&#x27;s own decision stands; the other sessions of the set continue</title></path>
+<path d="M333.6,197.0 V174.0 H488.4 V197.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>dictation sends the item back to the stage the type names (4); never forward</title></path>
+<path d="M265.4,197.0 V189.0 H310.8 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"><title>a session of the set is gone without an exit, whether a pane the operator killed by hand (4), a process that died, or a session left behind on a host whose lease was taken over (150). Its join can no longer be met, so the stage starts a fresh attempt over the item&#x27;s place, which stands, the attempt in the session id one higher; the multiplexer is never asked for a name it already holds. A session of the set whose pane is still present is not started again, since start_session is proven by the pane, and it goes on working</title></path>
+<path d="M379.0,197.0 V189.0 H666.4 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M356.3,197.0 V159.0 H564.4 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M401.7,197.0 V144.0 H768.4 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
 <path d="M424.4,197.0 V129.0 H844.4 V197.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
 <rect x="70.0" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>the session set is found now, against the repository being worked, and recorded with the item</title></rect>
 <text x="118.0" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">resolving</text>
@@ -38,18 +39,20 @@
 <rect x="758.4" y="197.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="2"></rect>
 <rect x="761.4" y="200.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#2b8a8a" stroke-width="1.2"/>
 <text x="806.4" y="219.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">stopped</text>
-<rect x="120.6" y="162.5" width="96.8" height="11" fill="#fff" opacity="0.92"/>
-<text x="169.0" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">stage.agents exists</text>
-<rect x="206.0" y="177.5" width="115.5" height="11" fill="#fff" opacity="0.92"/>
-<text x="263.8" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">stage.verdict = blocked<title>the blocked session&#x27;s own decision stands; the other sessions of the set continue</title></text>
-<rect x="358.9" y="162.5" width="78.1" height="11" fill="#fff" opacity="0.92"/>
-<text x="398.0" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">reply send back<title>dictation sends the item back to the stage the type names (4); never forward</title></text>
-<rect x="425.7" y="177.5" width="181.0" height="11" fill="#fff" opacity="0.92"/>
-<text x="516.2" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">stage.join_met ∧ stage.verdict = pass</text>
-<rect x="269.0" y="147.5" width="363.3" height="11" fill="#fff" opacity="0.92"/>
-<text x="450.6" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">stage.join_met ∧ stage.verdict = not-done ∧ item.send_backs &lt; item.retry_max</text>
-<rect x="400.1" y="132.5" width="363.3" height="11" fill="#fff" opacity="0.92"/>
-<text x="581.8" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">stage.join_met ∧ stage.verdict = not-done ∧ item.send_backs ≥ item.retry_max</text>
+<rect x="120.6" y="177.5" width="96.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="169.0" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">stage.agents exists</text>
+<rect x="207.7" y="162.5" width="115.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="265.4" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">stage.verdict = blocked<title>the blocked session&#x27;s own decision stands; the other sessions of the set continue</title></text>
+<rect x="371.9" y="162.5" width="78.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="411.0" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">reply send back<title>dictation sends the item back to the stage the type names (4); never forward</title></text>
+<rect x="239.7" y="177.5" width="96.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="288.1" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">final lost +attempt<title>a session of the set is gone without an exit, whether a pane the operator killed by hand (4), a process that died, or a session left behind on a host whose lease was taken over (150). Its join can no longer be met, so the stage starts a fresh attempt over the item&#x27;s place, which stands, the attempt in the session id one higher; the multiplexer is never asked for a name it already holds. A session of the set whose pane is still present is not started again, since start_session is proven by the pane, and it goes on working</title></text>
+<rect x="432.2" y="177.5" width="181.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="522.7" y="186.0" font-size="8.5" fill="#333" text-anchor="middle">stage.join_met ∧ stage.verdict = pass</text>
+<rect x="278.7" y="147.5" width="363.3" height="11" fill="#fff" opacity="0.92"/>
+<text x="460.3" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">stage.join_met ∧ stage.verdict = not-done ∧ item.send_backs &lt; item.retry_max</text>
+<rect x="403.4" y="132.5" width="363.3" height="11" fill="#fff" opacity="0.92"/>
+<text x="585.0" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">stage.join_met ∧ stage.verdict = not-done ∧ item.send_backs ≥ item.retry_max</text>
 <rect x="536.9" y="117.5" width="195.0" height="11" fill="#fff" opacity="0.92"/>
 <text x="634.4" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">stage.join_met ∧ stage.verdict = stalled</text>
 <rect x="40" y="311" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
