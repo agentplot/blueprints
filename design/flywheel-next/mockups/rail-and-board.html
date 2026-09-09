@@ -4,8 +4,9 @@
   (planning's proposal for atlas) and 424 (a gathered elaboration).
 
   What this file is, and what it is not. This is the plan surface: the rail, the board in its
-  three views, the dock, the book and its library, the artifact views, the flywheel instrument,
-  the capture box, and the account item with its organization switcher. Administration is not
+  two views, the dock, the palette, the artifact views, the flywheel instrument, and the
+  account item with its organization switcher. The book is a viewer of its own,
+  `book-viewer.html`, and this page links out to it and embeds none of it. Administration is not
   here. Hosts and what each one runs, pools and their images, the organization store, the
   settings form and "+ host" belong to `management-console.html`, drawn in Cloudscape, and the
   account item's one entry into it is "management console", opened for the organization in hand.
@@ -39,10 +40,10 @@
     thread; ] and [ step through the beads of the intent in hand. A bead carries a leading kind
     word (research · prototype · writeback · explore) and its state after its name, so it never
     reads as a sub-intent; the head knot carries an "intent" kicker.
-  - Explore is a mode, not a standing checkbox: "explore…" at the head of Inception enters
-    selection; every intent head knot shows a tick target, a sticky bar at the lane's foot says
-    what will happen and offers with-operator or standing, start and cancel; Esc cancels. Beads
-    never show a tick.
+  - Elaborating over several intents is /elaborate's own multi-pick, inside the palette: the
+    open intents with tick targets, a footer saying what will happen with with-operator or
+    standing, start and cancel; Esc leaves the pick and the field is back. Beads never show a
+    tick, and Inception carries no selection control of its own.
   - Phase is the lane's; kind is the shape's. An object does not repeat its phase; colour stays
     as it was (accent, ok/warn/crit, the phase chip on rail cards). Shape does the new work.
   - Every decision is also a marker on its object ("? 418" on the intent, "! host" on the bolt,
@@ -71,14 +72,37 @@
   - 424 is a gathered research elaboration over three intents (188): answers yes · drop · pick
     · type · <intent>: drop (the decision stays). Each covered intent carries the 424 marker
     and proposes no elaboration of its own meanwhile.
-  - No typed grammar anywhere. The capture box captures only: typed text becomes a capture
-    with one signal, and a "this is an intent" toggle makes it an intent capture; under the
-    box: "will send: capture" or "will send: capture · intent". Explore is a control: tick
-    intents in Inception and press explore (with-operator or standing). Drop, later, rename,
-    service start/stop, finish and ask-again are buttons in the dock.
+  - One typed input on the page, the palette, in the grammar the chat already speaks. ⌘K,
+    Ctrl+K or / opens it from anywhere; Esc closes it ahead of everything else. There is one
+    field and no second mode, and what is typed decides what is sent: plain text is a capture,
+    sent unparsed, with an intent toggle beside the field that makes the same submission also
+    mark it the first idea of a thread; a leading / names a command of the tool catalogue,
+    fuzzy-matched as the operator keeps typing; a bare number lists that decision's own
+    answers, and "412 yes" or "412: <text>" sends at once. The page reads no word of plain
+    text for meaning — the slash and the number choose a tool and nothing else.
+    At rest the palette shows the last five things sent, read from the sent log the header
+    carries. On / each row names the command, what it does in the operator's words and the
+    object it will act on; the list is the catalogue as this caller may invoke it, and a
+    command a plan hides names what unlocks it in the plan's own name ("included in Team").
+    While typing plain text one preview line says what will be sent. Every command is one
+    seeded call shown before it is sent — the send is the confirmation, so nothing interprets
+    anything — and everything it reaches is still one tap: the rail's buttons and every dock
+    control are unchanged, and the palette reaches them rather than replacing them.
+    The commands: /answer · /yes · /yes all · /drop · /later · /redo · /reply · /capture ·
+    /intent · /elaborate · /ask · /unit · /chore · /session · /open · /read-in-book · /assign ·
+    /mine · /all · /start · /stop · /takeover · /attach · /reviewed · /add-host ·
+    /add-repository · /add-adapter · /add-member · /switch-flywheel · /settings. A command
+    carrying a guided flow opens that flow where it lives — the management console at the
+    screen it names, or the map's add-repository flow — and its finish is the one call.
+    /elaborate carries the multi-pick: the open intents with tick targets and a footer with
+    the count, with-operator or standing, start and cancel. Drop, later, rename, service
+    start/stop, finish and ask-again stay buttons in the dock.
+    Scoped: with a card focused or an object open, the palette opens scoped to it, the object
+    is a chip at the field's head, and a command taking an object takes this one; backspacing
+    over the chip unscopes. While it is open ↑ and ↓ walk its list and the rail stays put.
   - A closed intent and a finished elaboration stay in Inception greyed with "leaves in Nd".
-  - The board has three views, switched in its header or with m (phases and map) and b
-    (phases and book): "phases" (the lanes), "map", the system context map as the scope surface (198, accepted; not yet in
+  - The board has two views, switched in its header or with m: "phases" (the lanes) and
+    "map", the system context map as the scope surface (198, accepted; not yet in
     requirements.md). The map draws willdan's repositories and the external systems they meet;
     a repository node carries its kinds and capabilities, a claim summary (standing · unmet,
     coloured by unmet), and the same decision markers as the lanes; a focused rail card lights
@@ -90,36 +114,16 @@
     "Since last review" (122) dims unchanged nodes and edges and outlines the changed ones with
     a note. "Add repository" places a node, asks kinds and capabilities, shows the claims that
     fall into scope, and a baseline decision with a new number appears in the rail (104).
-  - Book mode is an mdBook viewer the page draws itself. The organization's books are mdBook
-    sources in the books repository; the Rust server serves each at /book/<book>/<chapter>.html
-    and the page draws the chapter tree, one chapter at a time with prev and next, headings
-    with anchors, and the claim blocks as the flywheel renders them: name, version, standing or
-    proposed (98), what it attaches to and the scope line derived from it (200), one verdict
-    dot per repository in scope from the ledger (100, 101). A proposed claim is dashed and
-    carries no verdicts. Chapters and prose are invented from the seed's claims, marked sample.
-  - The rail drives the viewer. A focused card jumps the book to the chapter and anchor the
-    decision concerns: a unit's cited claim, an intent's chapters, a bolt's or a landing's
-    claims, a proposal's claims per unit, a gathered elaboration's shared claim, a moved claim
-    itself; the block lights. A ref in the book in hand wins; otherwise the first ref, which
-    loads its book. Decision markers sit in
-    the chapter margin beside the block they concern, the same glyphs as the lanes; a click
-    focuses the card and opens its dock. j/k walk the rail only; the dock stays available; b
-    enters and leaves book mode.
-  - "read in book" appears on every dock page per cited chapter or claim (decision, proposal
-    per unit, bolt, landed bolt, intent, elaboration, the repository dock's claim rows) and in
-    the map's scope box; it switches to book mode at that anchor and closes the dock, which
-    would otherwise cover the page; Enter reopens it on the focused card.
-  - Library: a control in the book header opens an overlay over the board listing the
-    organization's books (platform-kit, switchboard-kit, atlas-kit, gvc-kit, and the flywheel's
-    surface specification as a shipped book) with chapters, claims standing and proposed, last
-    written, unmet verdicts, "changed since review" and its repositories; choosing one loads
-    it; a repository chip goes to the map view and opens the repository dock; Esc closes.
-  - The review flow is one flow for the map and the book (122): "since last review" is the
-    same switch and mark in both views; in the book, changed paragraphs and claim blocks are
-    outlined and washed with a note, unchanged chapters dim in the tree, and a Changes list at
-    the head of the tree links each change to its anchor. "mark reviewed" is one recorded
-    response (S73) that moves the mark and empties both views; "ok" on an attention line is
-    recorded too (S74).
+  - The book is a viewer of its own, `book-viewer.html`, served beside this page and never
+    inside it. This page links out per cited chapter or claim: "read in book" on every dock
+    page (decision, proposal per unit, bolt, landed bolt, intent, elaboration, the repository
+    dock's claim rows) and in the map's scope box, the board header's "open the book", the
+    palette's /read-in-book, and the key b, which opens it at the object in hand — the focused
+    card's first cited chapter or claim. Each opens in a place of its own and the dock stays
+    as it was. The viewer is built from the blueprints' shared line and only that, so what is
+    in flight is not in it; its own index of the flywheel's books stands where the library
+    overlay used to. The review mark is one mark for the map and the book: "since last review"
+    and "mark reviewed" live on the map view here, and one recorded response (S73) moves both.
   - Artifacts (213): every object opens the OpenSpec files behind it in the dock, one view
     per artifact, each headed by a source bar ("derived from <repository @ sha> · <path> ·
     read hh:mm · never stored · edits only through review") with "open source" (the path at
@@ -189,10 +193,13 @@
     account item stay here, because they are read and answered on the plan. The environment
     attention line and the secret attention line stay too: the rail raises them, the dock explains
     them, and the console is where the provider is declared and the secret is placed.
-  - Under 760px the rail and the board are two tabs; the dock is full screen with a back control.
+  - Under 760px the rail and the board are two tabs; the dock is full screen with a back
+    control; the palette is a bottom sheet with the platform's own keyboard, raised by a
+    capture control on both tabs, and / brings the command list as on the desktop. The header's
+    palette affordance is hidden there, as the other key hints are.
     The clock starts at 07:40 and advances a minute per response. Detail beyond the seed is
     invented and marked sample. Review switches: ?theme=dark|light, ?nodock, ?open=<key>,
-    ?view=map|book, ?book=<id>, ?ch=<chapter>, ?review=1, ?library=1, ?load=1, ?host=<id> (lights
+    ?view=map, ?palette=rest|slash|typing, ?review=1, ?load=1, ?host=<id> (lights
     a host pill), ?org=agentplot|personal|integral-analytics, ?acct=1, ?signedout=1,
     ?served=studio|willdan-cloud.
 -->
@@ -284,11 +291,6 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
 .unit{flex-wrap:wrap}
 .wi{cursor:default}
 
-.explore-bar select{padding:2px 6px;font-size:12px}
-.explore-bar .n{font:600 11px var(--mono);color:var(--accent)}
-.capture .cf label{display:inline-flex;align-items:center;gap:5px;color:var(--ink2);cursor:pointer}
-.capture .cf input{margin:0;accent-color:var(--accent)}
-.capture .will{font:11.5px var(--mono);color:var(--ink3)} .capture .will b{color:var(--ink);font-weight:600}
 .gl{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
 .gi{display:inline-flex;align-items:center;gap:2px;font:11.5px var(--mono);padding:2px 4px 2px 8px;border-radius:999px;border:1px solid var(--accent);color:var(--accent);background:var(--accent-soft)}
 .gi .gx{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;color:var(--ink3);font-size:12px;line-height:1}
@@ -529,11 +531,6 @@ label.chore .f{margin-left:auto;font:11px var(--mono);color:var(--ink3)}
 .thread .bead .bs.leave.soon{color:var(--warn)}
 .thread .bead .bead-chip{display:inline-flex}
 @media (max-width:1400px){.thread .bead .bead-chip{flex-basis:100%}}
-.explore-foot{position:sticky;bottom:-60px;margin:12px -10px -60px;padding:8px 10px 66px;background:var(--surface);border-top:2px solid var(--accent);box-shadow:0 -8px 18px rgba(0,0,0,.08);z-index:3}
-.explore-foot .ef-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px}
-.explore-foot .ef-row b{font-family:var(--mono);font-size:12px}
-.explore-foot .ef-note{font-size:11.5px;color:var(--ink2);margin-top:5px;line-height:1.4}
-.explore-foot .seg button{padding:2px 8px;font-size:11.5px}
 .dk-h.dk-bead{box-shadow:inset 4px 0 0 var(--ink2);padding-left:22px}
 .dk-h.dk-bead h2::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;border:2px solid var(--ink2);background:var(--surface);margin:0 8px 2px 0;vertical-align:middle}
 .dk-h.dk-bead .tail button{font:inherit;color:var(--accent);font-weight:600}
@@ -608,10 +605,6 @@ label.chore .f{margin-left:auto;font:11px var(--mono);color:var(--ink3)}
 .unit .sess{margin:0 0 0 auto}
 .svcline{display:flex;gap:10px;font:11px var(--mono);color:var(--ink3);margin-top:6px;overflow:hidden}
 .svcline .ep{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.capture{border:1px solid var(--line);border-radius:7px;background:var(--surface);padding:8px;margin-bottom:8px}
-.capture textarea{width:100%;resize:vertical;min-height:44px;border:0;padding:2px 2px;background:transparent}
-.capture .cf{display:flex;align-items:center;gap:8px;margin-top:4px;font-size:11.5px;color:var(--ink3)}
-.capture .cf .btn{margin-left:auto}
 .curation{font-size:12px;color:var(--ink2);margin:0 2px 8px;display:flex;gap:8px;flex-wrap:wrap}
 .curation b{font-family:var(--mono)}
 .prop .pb{display:flex;align-items:baseline;gap:6px;font-size:12.5px;margin-top:4px;flex-wrap:wrap}
@@ -630,52 +623,52 @@ label.chore .f{margin-left:auto;font:11px var(--mono);color:var(--ink3)}
 ul.sigs{list-style:none;margin:0;padding:0}
 ul.sigs li{margin:0}
 
-/* ---------- book: an mdBook viewer the page draws; tree, one chapter at a time, claim blocks as the flywheel renders them ---------- */
-.book{flex:1;min-height:0;display:grid;grid-template-columns:240px minmax(0,1fr)}
-.book[hidden]{display:none}
-.bk-tree{border-right:1px solid var(--line);background:var(--surface2);overflow:auto;padding:10px 0 30px;font-size:12.5px}
-.bk-tree .bt-h{padding:0 12px 10px;border-bottom:1px solid var(--line2);margin-bottom:6px}
-.bk-tree .bt-title{font:800 14px var(--mono);margin-top:2px}
-.bk-tree .bt-sub{font-size:11.5px;color:var(--ink3);line-height:1.35;margin-top:2px}
-.bk-tree ol{list-style:none;margin:0;padding:0}
-.bk-tree li>button{display:flex;align-items:baseline;gap:8px;width:100%;text-align:left;padding:5px 12px;font-weight:600;color:var(--ink2);border-left:3px solid transparent}
-.bk-tree li>button:hover{background:var(--surface)}
-.bk-tree li>button.on{background:var(--surface);color:var(--ink);border-left-color:var(--accent)}
-.bk-tree li>button.dim{opacity:.45}
-.bk-tree .bt-n{font:600 11px var(--mono);color:var(--ink3);width:14px;flex:none}
-.bk-tree .bt-c{margin-left:auto;font:600 10px var(--mono);color:var(--warn);white-space:nowrap}
-.bk-tree .bt-sub li>button{padding:3px 12px 3px 34px;font-weight:500;font-size:12px;border-left:0;position:relative;color:var(--ink2)}
-.bk-tree .bt-sub li>button::before{content:"";position:absolute;left:22px;top:0;bottom:0;border-left:1px solid var(--line)}
-.bk-tree .bt-sub li>button.cl{font-size:11.5px}
-.bk-tree .bt-sub li>button .v{color:var(--ink3);font:10.5px var(--mono)}
-.bk-tree .bt-sub li>button.lit{background:var(--lit);color:var(--ink)}
-.bk-changes{margin:6px 8px 10px;border:1px solid var(--warn);border-radius:6px;padding:6px 8px;background:color-mix(in srgb,var(--warn) 8%,transparent)}
-.bk-changes .bc-h{display:flex;gap:8px;align-items:baseline;font:700 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--warn);margin-bottom:4px}
-.bk-changes .bc-h span{margin-left:auto}
-.bk-changes button{display:block;width:100%;text-align:left;font:11.5px var(--mono);color:var(--ink2);padding:3px 4px;border-left:2px solid var(--warn);margin:2px 0;line-height:1.35}
-.bk-changes button:hover{background:var(--surface)}
-.bk-tree .bt-foot{padding:10px 12px 0;border-top:1px solid var(--line2);margin-top:10px;font-size:11.5px;color:var(--ink2);display:flex;flex-wrap:wrap;gap:4px 10px}
-.bk-tree .bt-foot .eyebrow,.bk-tree .bt-foot .ot{flex-basis:100%}
-.bk-tree .bt-foot .ot{font-size:11px;color:var(--ink3);line-height:1.4;margin-top:4px}
+/* ---------- the palette: one typed input, opened with ⌘K or / ---------- */
+.palbtn{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--ink3);border:1px solid var(--line);border-radius:999px;padding:4px 6px 4px 12px;background:var(--surface2);max-width:280px}
+.palbtn:hover{border-color:var(--accent);color:var(--ink2)}
+.palbtn .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pal-scrim{position:fixed;inset:0;z-index:40;background:color-mix(in srgb,var(--bg) 58%,transparent);backdrop-filter:blur(2px);display:flex;align-items:flex-start;justify-content:center;padding:9vh 16px 16px}
+.pal-scrim[hidden]{display:none}
+.pal{width:min(680px,100%);max-height:78vh;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);overflow:hidden}
+.pal-f{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--line)}
+.pal-f input{flex:1;min-width:0;border:0;background:transparent;font:15.5px var(--sans);color:var(--ink);padding:2px 0}
+.pal-f input::placeholder{color:var(--ink3)}
+.pal-f .slash{font:700 15px var(--mono);color:var(--accent);flex:none}
+.pal-f label{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--ink2);white-space:nowrap;cursor:pointer}
+.pal-f label input{accent-color:var(--accent);margin:0;flex:none}
+.pal-f .x{font-size:18px;line-height:1;color:var(--ink3);flex:none}
+.pal-scope{display:inline-flex;align-items:center;gap:5px;font:11px var(--mono);border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:4px;padding:2px 7px;flex:none}
+.pal-will{padding:6px 12px;border-bottom:1px solid var(--line2);background:var(--surface2);font:11.5px var(--mono);color:var(--ink3);line-height:1.45}
+.pal-will b{color:var(--ink);font-weight:600}
+.pal-will .send{color:var(--accent)}
+.pal-body{overflow:auto;padding:2px 0 6px}
+.pal-h{display:flex;gap:8px;align-items:baseline;font:600 9.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);padding:9px 12px 3px}
+.pal-h span{font:400 10.5px var(--mono);letter-spacing:0;text-transform:none;color:var(--ink3);margin-left:auto}
+.pal-row{display:flex;align-items:baseline;gap:10px;width:100%;text-align:left;padding:6px 12px;border-left:3px solid transparent}
+.pal-row:hover{background:var(--surface2)}
+.pal-row.on{background:var(--accent-soft);border-left-color:var(--accent)}
+.pal-row .c{font:700 12.5px var(--mono);flex:none;white-space:nowrap}
+.pal-row .arg{font:12px var(--mono);color:var(--ink3);flex:none;white-space:nowrap}
+.pal-row .w{flex:1;min-width:0;font-size:12.5px;color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pal-row .o{font:11px var(--mono);color:var(--ink3);flex:none;white-space:nowrap}
+.pal-row .plan{font:10.5px var(--mono);color:var(--ink3);border:1px solid var(--line2);border-radius:999px;padding:0 7px;flex:none}
+.pal-row.locked{opacity:.6}
+.pal-sent{display:flex;gap:10px;align-items:baseline;padding:4px 12px;font-size:12.5px;color:var(--ink2)}
+.pal-sent time{font:11px var(--mono);color:var(--ink3);flex:none}
+.pal-sent span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pal-empty{padding:10px 12px;font-size:12.5px;color:var(--ink3);line-height:1.5}
+.pal-pick{display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:7px 12px;border-left:3px solid transparent;font-size:13px}
+.pal-pick input{accent-color:var(--accent);margin:0;flex:none}
+.pal-pick.on{background:var(--accent-soft);border-left-color:var(--accent)}
+.pal-pick .nm{font-weight:600} .pal-pick .st{font:11px var(--mono);color:var(--ink3);margin-left:auto}
+.pal-foot{border-top:1px solid var(--line);background:var(--surface2);padding:7px 12px;display:flex;gap:6px 14px;flex-wrap:wrap;align-items:center;font:11px var(--mono);color:var(--ink3)}
+.pal-foot .grow{flex:1;min-width:0}
+.pal-foot .seg button{padding:2px 8px;font-size:11.5px}
+.pal-foot b{color:var(--accent);font-family:var(--mono)}
+
 .vh{display:inline-flex;align-items:center;gap:5px;font:11px var(--mono);color:var(--ink2)}
 .vdot{display:inline-block;width:9px;height:9px;border-radius:50%;box-sizing:border-box;background:var(--ink3);flex:none}
 .vdot.satisfied{background:var(--ok)} .vdot.not-satisfied{background:var(--crit)} .vdot.stale{background:var(--warn)} .vdot.unjudged{background:transparent;border:2px solid var(--ink3)} .vdot.not-applicable{background:transparent;border:1.5px dashed var(--ink3)}
-.bk-content{overflow:auto;background:var(--surface);padding:18px 28px 80px}
-.bk-page{max-width:calc(72ch + 96px);margin:0 auto;padding-left:96px;position:relative}
-.bk-crumb{display:flex;gap:8px;align-items:baseline;font:11px var(--mono);color:var(--ink3);margin-bottom:6px;flex-wrap:wrap}
-.bk-block{position:relative;margin:0 0 12px;border-radius:4px;transition:background .15s}
-.bk-block.h1{margin-bottom:16px}
-.bk-block h1{font-size:24px;font-weight:800;letter-spacing:-.01em;margin:0;padding-bottom:10px;border-bottom:1px solid var(--line)}
-.bk-block h2{font-size:17px;font-weight:800;margin:22px 0 6px;display:flex;gap:8px;align-items:baseline}
-.bk-block .anchor{color:var(--ink3);text-decoration:none;font:400 13px var(--mono);opacity:.45}
-.bk-block .anchor:hover{opacity:1;color:var(--accent)}
-.bk-block p{margin:0;font-size:14px;line-height:1.6;max-width:72ch}
-.bk-block.lit{background:var(--lit);box-shadow:0 0 0 6px var(--lit)}
-.bk-block.changed{background:color-mix(in srgb,var(--warn) 9%,transparent);box-shadow:0 0 0 6px color-mix(in srgb,var(--warn) 9%,transparent);outline:1px solid var(--warn);outline-offset:6px}
-.bk-block.lit.changed{background:var(--lit);box-shadow:0 0 0 6px var(--lit)}
-.bk-block .gut{position:absolute;left:-96px;top:2px;width:84px;display:flex;flex-direction:column;gap:3px;align-items:flex-end}
-.bk-block.h1 .gut{top:6px}
-.chg-note{display:block;font:10.5px var(--mono);color:var(--warn);margin-top:4px}
 .claim-block{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:6px;padding:8px 12px 9px;background:var(--surface2);margin-top:8px}
 .claim-block.proposed{border-style:dashed;border-left-style:dashed;border-left-color:var(--ink3);background:transparent}
 .claim-block .cb-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -692,21 +685,6 @@ ul.sigs li{margin:0}
 .claim-block .cb-note{font:11px var(--mono);color:var(--ink3);margin-top:6px}
 .claim-block .cb-changed{font:10.5px var(--mono);color:var(--warn);margin-top:6px;border-top:1px dashed var(--warn);padding-top:4px}
 .bk-foot{display:flex;justify-content:space-between;gap:8px;margin-top:30px;padding-top:12px;border-top:1px solid var(--line2)}
-/* library: the organization's books, over the board */
-.library{position:absolute;inset:0;z-index:10;background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(2px);display:flex;align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto}
-.library[hidden]{display:none}
-.lib-panel{width:min(860px,100%);background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);padding:14px 16px 12px}
-.lib-h{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
-.lib-h h2{font-size:16px;font-weight:800}
-.lib-h .sub{font-size:12px;color:var(--ink3);flex:1}
-.lib-h .x{font-size:20px;line-height:1;color:var(--ink3)}
-.lib-row{display:grid;grid-template-columns:1fr auto;gap:4px 14px;padding:10px 8px;border-bottom:1px solid var(--line2);cursor:pointer;border-radius:6px}
-.lib-row:hover{background:var(--surface2)} .lib-row.on{background:var(--accent-soft)}
-.lib-row .ln{font-weight:800;font-size:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.lib-row .ls{color:var(--ink2);font-size:12px;margin:1px 0 4px}
-.lib-row .lm{display:flex;flex-wrap:wrap;gap:4px 14px;font:11px var(--mono);color:var(--ink3);align-items:center}
-.lib-row .lm b{color:var(--ink);font-weight:600} .lib-row .lm b.warn{color:var(--warn)}
-.lib-row .la{align-self:center}
 .rowbtn{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:4px 0;border-bottom:1px solid var(--line2)}
 .rowbtn:last-child{border-bottom:0}
 .rowbtn .grow{flex:1;min-width:0;color:var(--ink2)}
@@ -955,6 +933,7 @@ body.docked .dock{transform:none}
 @keyframes up{from{transform:translateY(8px);opacity:0}}
 .tabs{display:none}
 .theme{font:11px var(--mono)}
+.phone-only{display:none}
 
 @media (max-width:759px){
   :root{--hosts:38px}
@@ -967,12 +946,13 @@ body.docked .dock{transform:none}
   .board{display:none;overflow:auto}
   .lanes{grid-template-columns:1fr;grid-auto-rows:auto;overflow:visible}
   .map{grid-template-columns:1fr;grid-auto-rows:auto}
-  .book{grid-template-columns:1fr;grid-template-rows:auto auto}
-  .bk-tree{max-height:38vh;border-right:0;border-bottom:1px solid var(--line)}
-  .bk-content{overflow:visible;padding:14px 12px 60px}
-  .bk-page{padding-left:0}
-  .bk-block .gut{position:static;width:auto;flex-direction:row;flex-wrap:wrap;justify-content:flex-start;margin-bottom:4px}
   .library{padding:10px}
+  .top .palbtn{display:none}
+  .phone-only{display:inline-flex}
+  .pal-scrim{align-items:flex-end;padding:0}
+  .pal{width:100%;max-height:84vh;border-radius:12px 12px 0 0;border-left:0;border-right:0;border-bottom:0}
+  .pal-row,.pal-pick{padding:11px 12px}
+  .pal-sent{padding:8px 12px}
   .lane{overflow:visible;border-right:0;border-bottom:1px solid var(--line);padding-bottom:16px}
   body[data-tab="plan"] .rail{display:block}
   body[data-tab="board"] .board{display:block}
@@ -990,8 +970,9 @@ body.docked .dock{transform:none}
 <header class="top">
   <h1>Rail and Board</h1>
   <span class="meta"><b id="orgname">willdan</b> · 2026-09-04 <span class="mono" id="clock">07:40</span></span>
+  <button class="palbtn" id="pal-open" title="one input: type to capture, / for a command, a number to answer"><span class="t">Capture, or / for a command</span><kbd>⌘K</kbd></button>
   <div class="count"><b id="count">12</b><span>decisions</span><span class="hint" id="yesallhint">· "yes all" answers 412–417, 422, 424</span></div>
-  <span class="keys" style="display:flex;gap:10px;font-size:11px;color:var(--ink3)"><span><kbd>j</kbd><kbd>k</kbd> rail</span><span><kbd>↵</kbd> open</span><span><kbd>y</kbd><kbd>n</kbd><kbd>l</kbd> answer</span><span><kbd>]</kbd><kbd>[</kbd> beads</span><span><kbd>m</kbd> map</span><span><kbd>b</kbd> book</span><span><kbd>w</kbd> load</span><span><kbd>/</kbd> capture</span><span><kbd>esc</kbd> close</span></span>
+  <span class="keys" style="display:flex;gap:10px;font-size:11px;color:var(--ink3)"><span><kbd>j</kbd><kbd>k</kbd> rail</span><span><kbd>↵</kbd> open</span><span><kbd>y</kbd><kbd>n</kbd><kbd>l</kbd> answer</span><span><kbd>]</kbd><kbd>[</kbd> beads</span><span><kbd>m</kbd> map</span><span><kbd>w</kbd> flywheel</span><span><kbd>⌘K</kbd><kbd>/</kbd> palette</span><span><kbd>b</kbd> book</span><span><kbd>esc</kbd> close</span></span>
   <button class="btn quiet theme" id="theme" title="theme">system</button>
   <span class="acct-wrap" id="acct-wrap"></span>
   <button class="btn" id="logbtn" aria-expanded="false"><b id="sent">0</b> sent</button>
@@ -1009,8 +990,6 @@ body.docked .dock{transform:none}
       <section class="lane operation" id="lane-operation" aria-label="Operation"></section>
     </div>
     <div class="map" id="map" hidden><div class="map-stage-wrap" id="map-wrap"><div class="map-stage" id="map-stage"></div></div><aside class="map-panel" id="map-panel"></aside></div>
-    <div class="book" id="book" hidden><aside class="bk-tree" id="bk-tree" aria-label="chapters"></aside><div class="bk-content" id="bk-content"></div></div>
-    <div class="library" id="library" hidden></div>
     <div class="loadp" id="load" hidden></div>
     <div class="library" id="signedout" hidden></div>
     <div class="scrim" id="scrim"></div>
@@ -1026,6 +1005,7 @@ body.docked .dock{transform:none}
   <button role="tab" data-tab="board" aria-selected="false">Board<span class="bd" id="bd-board"></span></button>
 </nav>
 <aside class="log" id="log" hidden><h3>Responses sent <span>each one on its own, the moment it was given</span></h3><ol id="loglist"></ol></aside>
+<div class="pal-scrim" id="pal-scrim" hidden><div class="pal" id="pal" role="dialog" aria-modal="true" aria-label="palette"></div></div>
 <div class="toasts" id="toasts" aria-live="polite"></div>
 
 <script>
@@ -1098,7 +1078,7 @@ const SEED_WILLDAN = () => ({
     {id:'studio', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:4, last:'07:39', joined:'08-12', joinedVia:'a laptop', note:'lease holder for plan, curation and the page', root:'~/willdan', launcher:'launchd · com.flywheel.willdan', binary:'0.9.4', roles:{elaboration:{runner:'runner-pane', model:'claude-fable-5-1'}, construction:{runner:'runner-pane', model:'claude-fable-5-1'}, machinery:{runner:'runner-pane', model:'claude-haiku-4-5'}}, env:{atlas:{provider:'devenv', ok:true}, switchboard:{provider:'devenv', ok:true}, 'new-repo':{provider:'devcontainer', ok:false, why:'flywheel/environment.yaml changed 09-03 17:20 · the devcontainer was not rebuilt'}}, parts:[
       {k:'adapter', pkg:'meeting', name:'meeting transcripts', what:'capture where it lies · the transcript stays on this machine · triaged here', state:'installed 08-12', lastRun:'07:12 · 1 capture', cfg:{values:{source:'Granola', shape:'capture where it lies · this host triages', cadence:'as meetings end'}, secrets:{}}},
       {k:'adapter', pkg:'folder', name:'folder drop', what:'~/Drop · key: the file\'s hash', state:'installed 08-12', lastRun:'06:40 · 3 captures', cfg:{values:{path:'~/Drop', cadence:'on change'}, secrets:{}}},
-      {k:'adapter', pkg:'capture-box', name:'the capture box', what:'this host serves the page · text sent unparsed to the capture tool', state:'installed 08-12', lastRun:'07:33 · 1 capture'},
+      {k:'adapter', pkg:'palette', name:'the page’s palette', what:'this host serves the page · text sent unparsed to the capture tool', state:'installed 08-12', lastRun:'07:33 · 1 capture'},
       {k:'chat', pkg:'discord', name:'Discord', what:'#willdan-plan · for Chuck · the plan printed there, answers read back · the gateway socket held while studio is awake', state:'installed 08-12', lease:'sends the plan · renews 30s', cfg:{values:{app:'1284 5570 0091', guild:'willdan', channel:'#willdan-plan'}, secrets:{token:{placed:true}}}},
       {k:'chat', name:'the page', what:'the plan page itself · this host serves it and keeps it current', state:'installed 08-12', lease:'sends the plan'},
       {k:'agent', name:'agent', what:'in-process · your key from the keychain · one call per message', state:'installed 08-12'},
@@ -1141,7 +1121,7 @@ const SEED_WILLDAN = () => ({
     {id:'provider-key-rotation', name:'provider-key-rotation', state:'open', chapters:['providers'], note:'from the ops constraint · provider B rotates keys on the 1st', sessions:[]},
   ],
   gatherings:[{n:424, type:'research', state:'proposed', intents:['atlas-provider-limits','loop-cadence','provider-key-rotation']}],
-  explorations:[], planning:null, deferred:[], picked:new Set(), exploreMode:false, exploreKind:'with',
+  explorations:[], planning:null, deferred:[], picked:new Set(), exploreKind:'with', pal:{open:false, q:'', sel:0, scope:null, mode:null},
   repos:[
     {id:'atlas', kinds:['service','data-product'], caps:['http','worker','provider-calls','status-table'], manifest:'atlas/flywheel.yaml · landing: direct merge', envFile:'flywheel/environment.yaml',
      claims:[['providers/one-writer @v3','not satisfied','kind:service','unit 413 proposed · completes it'],['providers/rate-envelope @v1','not satisfied','capability:provider-calls','3 intents argue with it · gathering 424'],['plan/sink-marks @v2','satisfied','all','tail-derive merged 09-03'],['plan/tail-cursor @v1','unjudged','all','standing since 05:40 · proposal 422 covers sc.1–3'],['repo/readme @v2','satisfied','all','—'],['repo/ci @v1','satisfied','all','gates on push'],['sessions/one-writer @v4','stale','capability:worker','judged at v3 · decision 420'],['ops/key-rotation @v1','not applicable','capability:queue','atlas declares no queue']]},
@@ -1151,7 +1131,7 @@ const SEED_WILLDAN = () => ({
      claims:[['repo/readme @v2','not satisfied','all','no README at root'],['repo/ci @v1','not satisfied','all','no gate runs on push'],['repo/as-built @v1','not satisfied','all','no as-built record'],['repo/agents-md @v1','not satisfied','all','no AGENTS.md'],['boundary/one-owner @v2','not satisfied','all','no CODEOWNERS'],['boundary/no-cross-import @v1','not satisfied','kind:service','—'],['boundary/ports-derived @v1','not satisfied','kind:service','—'],['owner/named @v1','not satisfied','all','—'],['invariant/health-endpoint @v1','not satisfied','capability:http','—'],['invariant/graceful-stop @v1','not satisfied','capability:http','—'],['behavior/status-row @v1','not satisfied','named','named for new-repo by 09-03 ask'],['providers/rate-envelope @v1','not applicable','capability:provider-calls','no provider calls'],['plan/sink-marks @v2','not applicable','capability:sinks','no sinks']]},
     {id:'books', kinds:['books'], caps:[], manifest:'books/flywheel.yaml · the books repository · claims live here', claims:[]},
   ],
-  view:'phases', book:{id:'platform-kit', ch:'overview', scrollTo:null, hl:null}, library:false, load:false, scopeSel:null, scopeSet:new Set(), addRepo:null,
+  view:'phases', load:false, scopeSel:null, scopeSet:new Set(), addRepo:null,
   map:{
     nodes:[
       {id:'atlas', x:330, y:40}, {id:'switchboard', x:330, y:410}, {id:'new-repo', x:610, y:430}, {id:'books', x:60, y:200},
@@ -1672,72 +1652,251 @@ function bookRefsOf(key){ if(!key) return []; const [t] = key.split(':'); const 
   return []; }
 function refLabel(r){ const b = BOOKS[r.book]; if(!b) return r.ch; const c = b.chapters.find(x => x.id===r.ch); if(!c) return `${b.title} › ${r.ch}`;
   const x = r.a ? c.blocks.find(y => anchorOf(y)===r.a) : null; return `${b.title} › ${c.n}. ${c.title}${x ? ' › ' + (x.t==='claim' ? `${x.name} @${x.v}` : x.text) : ''}`; }
-const bookAttr = r => `${r.book}|${r.ch}|${r.a||''}`;
-const bookBtn = (r, label='read in book') => `<button class="btn sm quiet" data-book="${bookAttr(r)}" title="${esc(refLabel(r))}">${label}</button>`;
+/* the book is a viewer of its own: every "read in book" is a link out, opened in a place of its own; the dock stays as it was */
+const bookHref = r => `book-viewer.html?org=${encodeURIComponent(S.org)}&book=${encodeURIComponent(r.book)}&ch=${encodeURIComponent(r.ch)}${r.a ? '#'+encodeURIComponent(r.a) : ''}`;
+const bookBtn = (r, label='read in book') => `<a class="btn sm quiet" href="${bookHref(r)}" target="_blank" rel="noopener" title="${esc(refLabel(r))} · opens the book viewer">${label} ↗</a>`;
 function refsHtml(refs){ return `<div class="rows">${refs.map(r => `<div class="rowbtn"><div class="grow">${esc(refLabel(r))}</div>${bookBtn(r)}</div>`).join('')}</div>`; }
 function claimsRows(list, repoId){ return `<div class="rows">${list.map(n => { const r = claimRef(n); const rp = repoId && repo(repoId); const row = rp && rp.claims.find(c => c[0].split(' @')[0]===n.split(' @')[0]);
   return `<div class="rowbtn"><button class="mono" style="font:600 12px var(--mono);color:var(--accent)" data-oart="claim/${esc(n.split(' @')[0])}" title="the claim: versions, attachments, verdicts with evidence">${esc(n)}</button><div class="grow">${row ? `<span class="vd ${row[1].replace(' ','-')}">${esc(row[1])}</span>` : ''}</div>${r ? bookBtn(r) : '<span class="t" style="font:11px var(--mono);color:var(--ink3)">not in any book</span>'}</div>`; }).join('')}</div>`; }
-function gotoBook(r, close){ S.view = 'book'; S.library = false; if(BOOKS[r.book]) S.book.id = r.book; S.book.ch = r.ch; S.book.scrollTo = r.a || '_top'; S.book.hl = r.a || '_top';
-  if(close && S.open){ S.open = null; document.body.classList.remove('docked'); }
-  document.body.dataset.tab = 'board'; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab==='board'))); render(); }
-/* the rail drives the viewer: the focused card's first ref is where the book goes */
-function bookFollow(){ const refs = bookRefsOf(S.focus); if(!refs.length) return; const r = refs.find(x => x.book===S.book.id) || refs[0]; if(BOOKS[r.book]) S.book.id = r.book; S.book.ch = r.ch; S.book.scrollTo = r.a || '_top'; S.book.hl = r.a || '_top'; }
+function openViewer(r){ window.open(bookHref(r), '_blank', 'noopener'); toast(`book viewer · ${refLabel(r)} · opened in a place of its own`); }
+/* b opens the viewer at the object in hand: the focused card's first cited chapter or claim */
+function viewerFollow(){ const refs = bookRefsOf(S.focus); if(!refs.length){ window.open(`book-viewer.html?org=${encodeURIComponent(S.org)}`, '_blank', 'noopener'); toast('book viewer · the flywheel\'s blueprints · nothing cited by this card'); return; } openViewer(refs[0]); }
 const scopeOf = c => [...new Set(c.attach.flatMap(a => a.homes))];
 function verdictOf(c, home){ const r = repo(home); const row = r && r.claims.find(x => x[0].split(' @')[0]===c.name); return row ? row[1] : (c.verdicts && c.verdicts[home]) || 'unjudged'; }
-function bookStats(b){ const claims = b.chapters.flatMap(c => c.blocks.filter(x => x.t==='claim')); const standing = claims.filter(c => c.state==='standing'); let unmet = 0;
-  standing.forEach(c => scopeOf(c).forEach(h => { const v = verdictOf(c, h); if(v==='not satisfied'||v==='stale') unmet++; }));
-  return {chapters:b.chapters.length, standing:standing.length, proposed:claims.length-standing.length, unmet, changed:b.changes.length}; }
-function bookMarks(bookId, chId, anchor){ const hit = r => r.book===bookId && r.ch===chId && (r.a||null)===(anchor||null);
-  const ds = S.decisions.filter(d => decRefs(d).some(hit)); const as = S.attention.filter(a => bookRefsOf('a:'+a.id).some(hit));
-  const m = ds.map(d => `<button class="mark ${d.g} ${S.focus==='d:'+d.n?'focused':''}" data-mark="d:${d.n}" title="${esc(d.kind)} · ${esc(d.title.replace(/<[^>]+>/g,''))}">${d.g===APPROVE?'✓':d.g===DECIDE?'?':'✎'} ${d.n}</button>`)
-    .concat(as.map(a => `<button class="mark attention ${S.focus==='a:'+a.id?'focused':''}" data-mark="a:${a.id}">! ${a.id==='host' ? 'host' : 'apply'}</button>`));
-  return m.length ? `<div class="gut">${m.join('')}</div>` : ''; }
-function renderBook(){
-  if(S.view!=='book') return;
-  const b = orgBook(); S.book.id = b.id;
-  if(!b.chapters.find(c => c.id===S.book.ch)) S.book.ch = b.chapters[0].id;
-  const ch = b.chapters.find(c => c.id===S.book.ch); const ci = b.chapters.indexOf(ch); const rv = S.review.on;
-  const focusRefs = bookRefsOf(S.focus).filter(r => r.book===b.id && r.ch===ch.id);
-  const lit = new Set([S.book.hl, ...focusRefs.map(r => r.a || '_top')].filter(Boolean));
-  const changedIn = c => b.changes.filter(x => x.ch===c.id).length;
-  const isChanged = (c, x) => !!(x.changed || b.changes.some(y => y.ch===c.id && y.a && y.a===anchorOf(x)));
-  const changes = rv ? `<div class="bk-changes"><div class="bc-h">changes since ${esc(S.review.mark)}<span>${b.changes.length}</span></div>${b.changes.length ? b.changes.map(x => `<button data-anchor="${b.id}|${x.ch}|${x.a||''}">${esc(x.what)}</button>`).join('') : '<div class="empty" style="padding:2px 0">nothing changed in this book since the mark</div>'}</div>` : '';
-  const tree = `<div class="bt-h"><span class="eyebrow">book</span><div class="bt-title">${esc(b.title)}</div><div class="bt-sub">${esc(b.sub)}</div></div>${changes}<ol>${b.chapters.map(c => { const n = changedIn(c); const on = c.id===ch.id;
-      const subs = on ? `<ol class="bt-sub">${c.blocks.filter(x => x.t==='h' || x.t==='claim').map(x => { const a = anchorOf(x); return `<li><button data-anchor="${b.id}|${c.id}|${a}" class="${lit.has(a)?'lit':''} ${x.t==='claim'?'cl':''}">${x.t==='claim' ? `<span class="mono">${esc(x.name)}</span> <span class="v">@${esc(x.v)}${x.state==='proposed'?' · proposed':''}</span>` : esc(x.text)}${rv && isChanged(c, x) ? '<span class="bt-c">Δ</span>' : ''}</button></li>`; }).join('')}</ol>` : '';
-      return `<li><button data-ch="${c.id}" class="${on?'on':''} ${rv && !n ? 'dim' : ''}" aria-current="${on?'page':'false'}"><span class="bt-n">${c.n}</span><span>${esc(c.title)}</span>${rv && n ? `<span class="bt-c">${n} changed</span>` : ''}</button>${subs}</li>`; }).join('')}</ol>
-    <div class="bt-foot"><span class="eyebrow">verdict dots · one per repository in scope</span>${['satisfied','not satisfied','stale','unjudged','not applicable'].map(v => `<span class="vh"><span class="vdot ${v.replace(' ','-')}"></span>${v}</span>`).join('')}<div class="ot">source ${esc(b.src)} · ${b.shipped ? 'shipped by the flywheel' : 'mdBook · served at /book/'+esc(b.id)+'/'} · ${SM}</div></div>`;
-  $('#bk-tree').innerHTML = tree;
-  const chChanged = rv && b.changes.some(x => x.ch===ch.id && !x.a);
-  const blocks = ch.blocks.map(x => { const a = anchorOf(x); const changed = rv && isChanged(ch, x);
-    const cls = ['bk-block','bk-'+x.t, a && lit.has(a) ? 'lit' : '', changed ? 'changed' : ''].join(' ');
-    const gut = a ? bookMarks(b.id, ch.id, a) : '';
-    if(x.t==='h') return `<div class="${cls}" data-anchor-id="${a}">${gut}<h2 id="${a}">${esc(x.text)}<a class="anchor" href="#${a}" onclick="return false" title="/book/${esc(b.id)}/${esc(ch.id)}.html#${a}">#</a></h2></div>`;
-    if(x.t==='p') return `<div class="${cls}"><p>${x.text}</p>${changed ? '<span class="chg-note">changed since your last review</span>' : ''}</div>`;
-    const scope = scopeOf(x); const proposed = x.state==='proposed';
-    const dots = proposed ? '' : scope.map(h => { const v = verdictOf(x, h); return `<span class="vh" title="${esc(h)} · ${esc(v)}"><span class="vdot ${v.replace(' ','-')}"></span>${esc(h)} <span style="color:var(--ink3)">${esc(v)}</span></span>`; }).join('');
-    return `<div class="${cls}" data-anchor-id="${a}">${gut}<div class="claim-block ${proposed?'proposed':''}" id="${a}"><div class="cb-h"><span class="cb-k">claim</span><span class="cb-n">${esc(x.name)}</span><span class="cb-v">@${esc(x.v)}</span><span class="cb-state ${x.state}">${x.state}</span><a class="anchor" href="#${a}" onclick="return false" title="/book/${esc(b.id)}/${esc(ch.id)}.html#${a}">#</a></div>
-      <div class="cb-t">${x.text}</div>
-      <div class="cb-att">attached to ${x.attach.map(at => `<span class="lk">${esc(at.to)}</span>`).join('')}</div>
-      <div class="cb-scope">scope · ${scope.length ? scope.join(', ') : 'no repository · homes nothing'} · derived from what it attaches to</div>
-      ${proposed ? `<div class="cb-note">proposed · visible, never planned against${x.note ? ' · '+esc(x.note) : ''}</div>` : `<div class="cb-homes">${dots || '<span class="cb-note">in scope for no repository</span>'}<button class="btn sm quiet" data-oart="claim/${esc(x.name)}" title="versions, attachments, verdicts with their evidence" style="margin-left:auto">evidence</button></div>`}
-      ${x.changed && rv ? `<div class="cb-changed">Δ ${esc(x.changed)}${x.was ? ` · was ${esc(x.was)}` : ''}</div>` : ''}</div></div>`; }).join('');
-  const prev = b.chapters[ci-1], next = b.chapters[ci+1];
-  $('#bk-content').innerHTML = `<div class="bk-page"><div class="bk-crumb"><span>${esc(b.title)}</span><span>›</span><span>${esc(b.src)}/${esc(ch.file)}</span><span style="margin-left:auto">${SM}</span></div>
-    <div class="bk-block h1 ${lit.has('_top')?'lit':''} ${chChanged?'changed':''}" data-anchor-id="_top">${bookMarks(b.id, ch.id, null)}<h1>${ch.n}. ${esc(ch.title)}</h1>${chChanged ? '<div class="chg-note">this chapter was rewritten since your last review</div>' : ''}</div>
-    ${blocks}
-    <div class="bk-foot">${prev ? `<button class="btn sm quiet" data-ch="${prev.id}">‹ ${prev.n}. ${esc(prev.title)}</button>` : '<span></span>'}${next ? `<button class="btn sm quiet" data-ch="${next.id}">${next.n}. ${esc(next.title)} ›</button>` : '<span></span>'}</div></div>`;
-}
-function renderLibrary(){ const L = $('#library'); L.hidden = !S.library; if(!S.library) return;
-  const rows = orgBooks().map(b => { const s = bookStats(b); const on = b.id===S.book.id;
-    return `<div class="lib-row ${on?'on':''}" data-libopen="${b.id}" tabindex="0"><div><div class="ln">${esc(b.title)}${on ? ' <span class="chip g">open</span>' : ''}${s.changed ? ` <span class="chip x">${s.changed} changed since review</span>` : ''}</div><div class="ls">${esc(b.sub)}</div>
-      <div class="lm"><span><b>${s.chapters}</b> chapters</span><span><b>${s.standing}</b> standing · <b>${s.proposed}</b> proposed</span><span>written <b>${esc(b.written)}</b></span><span>unmet verdicts <b class="${s.unmet?'warn':''}">${s.unmet}</b></span></div>
-      <div class="lm" style="margin-top:4px"><span>repositories</span>${b.repos.length ? b.repos.map(r => `<button class="repo" data-librepo="${r}" title="open ${esc(r)} on the map">${esc(r)}<span class="hm">${unmetOf(repo(r))} unmet</span></button>`).join('') : `<span>${b.shipped ? 'shipped by the flywheel · no willdan repository' : 'none in the fleet yet · nothing here is planned against'}</span>`}</div></div>
-      <div class="la"><button class="btn sm ${on?'':'pri'}" data-libopen="${b.id}">${on ? 'reading' : 'open'}</button></div></div>`; }).join('');
-  L.innerHTML = `<div class="lib-panel" role="dialog" aria-label="library"><div class="lib-h"><h2>Library</h2><span class="sub">the organization's books · mdBook sources in the books repository · served by the flywheel server</span><button class="x" id="library-close" aria-label="close">×</button></div>${rows}<div class="ot" style="margin-top:8px;font-size:11px;color:var(--ink3)">a book's repositories link to the map view · "changed since review" shares the mark ${esc(S.review.mark)} with the map · ${SM}</div></div>`; }
 /* marking reviewed is one recorded response on the plan object (S73); it moves the map's and the book's mark together (122) */
 function markReviewed(){ S.review.mark = '09-04 '+hhmm(S.minutes); S.review.nodes = {}; S.review.edges = {};
   Object.values(BOOKS).forEach(b => { b.changes = []; b.chapters.forEach(c => c.blocks.forEach(x => { delete x.changed; })); });
   logLine(`reviewed · mark ${S.review.mark}`, {}); toast(`reviewed · mark ${S.review.mark} · recorded · the map's and the book's review views emptied`); render(); }
+
+
+/* =====================================================================
+   The palette · one typed input, one grammar, shared with the chat.
+   Plain text is a capture. A leading / names a command of the catalogue,
+   fuzzy-matched. A bare number answers a decision. The page parses no
+   word of plain text: the slash and the number choose a tool, nothing
+   reads the text for meaning. Every command resolves to one seeded call,
+   shown before it is sent; the send is the confirmation.
+   ===================================================================== */
+const CMDS = [
+  {c:'/answer', arg:'<number> <yes | drop | later | text>', w:'answer a decision by its number', o:'the decision you name', sig:'answer(decision, answer, text)'},
+  {c:'/yes', arg:'[number]', w:'approve it', o:'the decision in hand', sig:'answer(decision, yes)'},
+  {c:'/yes all', w:'approve every decision in the approve group · one response each, in number order', o:'the approve group', sig:'answer(…) per decision'},
+  {c:'/drop', arg:'[number]', w:'say no; the record says it stops here', o:'the decision in hand', sig:'answer(decision, drop)'},
+  {c:'/later', arg:'[number]', w:'defer it out of the count; ask again when you want it back', o:'the decision in hand', sig:'answer(decision, later)'},
+  {c:'/redo', arg:'<notes>', w:'withdraw the proposal and charge planning again with your notes', o:'the proposal in hand', sig:'answer(decision, redo, notes)'},
+  {c:'/reply', arg:'<text>', w:'answer in your own words', o:'the decision in hand', sig:'answer(decision, reply, text)'},
+  {c:'/capture', arg:'<text>', w:'capture an idea exactly as you wrote it', o:'this flywheel', sig:'capture(text, source: page)'},
+  {c:'/intent', arg:'<text>', w:'capture it and mark it the first idea of a thread', o:'this flywheel', sig:'capture(text) · mark-intent(capture)'},
+  {c:'/elaborate', w:'open one elaboration over several intents · pick them here', o:'the intents you tick', sig:'explore(intents, with-operator | standing)'},
+  {c:'/ask', arg:'<text>', w:'ask a question of a repository', o:'a repository', sig:'ask(repository, text)'},
+  {c:'/unit', arg:'<text>', w:'propose a unit of work on a bolt', o:'the bolt in hand', sig:'propose-unit(bolt, text)'},
+  {c:'/chore', arg:'<text>', w:'propose a chore on a repository', o:'a repository', sig:'propose-chore(repository, text)'},
+  {c:'/session', arg:'<text>', w:'open a session on a repository', o:'a repository', sig:'open-session(repository, text)'},
+  {c:'/open', arg:'<name>', w:'open an object here, over the board · reading writes nothing', o:'anything you can name', sig:'navigation · no write'},
+  {c:'/read-in-book', arg:'<chapter | claim>', w:'read the standing chapter or claim in the book viewer', o:'the book', sig:'opens the viewer at that anchor'},
+  {c:'/assign', arg:'<member | role>', w:'give a decision an owner', o:'the decision in hand', sig:'assign(decision, owner)'},
+  {c:'/mine', w:'show only what is yours or unowned', o:'the rail', sig:'filter(sink, own)'},
+  {c:'/all', w:'show every decision again', o:'the rail', sig:'filter(sink, all)'},
+  {c:'/start', arg:'<service>', w:'start a service on a bolt', o:'the bolt in hand', sig:'start(service)'},
+  {c:'/stop', arg:'<service>', w:'stop it', o:'the bolt in hand', sig:'stop(service)'},
+  {c:'/takeover', arg:'<host>', w:'move a lost host’s work onto one that is alive', o:'a host', sig:'takeover(host)'},
+  {c:'/attach', arg:'<claim>', w:'attach a claim so its scope follows what it attaches to', o:'a claim', sig:'attach(claim, element)'},
+  {c:'/reviewed', w:'move your review mark to now', o:'the map and the book', sig:'reviewed()'},
+  {c:'/add-host', w:'add a machine of yours, or an agent in the cloud that keeps working while your laptop sleeps', o:'this flywheel', sig:'add-host(name, platform, parts)', flow:'hosts'},
+  {c:'/add-repository', arg:'<url>', w:'adopt a repository you already have, or create one from the template', o:'this flywheel', sig:'add-repository(url, landing, adopt | create)'},
+  {c:'/add-adapter', w:'add a way for material to arrive here as captures', o:'this flywheel', sig:'add-package(package, scope, host)', flow:'packages'},
+  {c:'/add-member', w:'invite someone by their git username', o:'this flywheel', sig:'invite-member(username)', plan:'included in Team', flow:'members'},
+  {c:'/switch-flywheel', arg:'<name>', w:'go to another flywheel of yours; nothing is written', o:'you', sig:'switch-instance(instance)'},
+  {c:'/settings', w:'open the settings form', o:'this flywheel', sig:'one save is one configure-instance', flow:'settings'},
+];
+const CONSOLE_AT = screen => `management-console.html?org=${encodeURIComponent(S.org)}&screen=${screen}`;
+
+const palQ = () => (S.pal.q || '');
+/* a command name may carry a space ("/yes all"): the longest catalogue name the query starts with wins */
+const palNamed = () => { const q = palQ().trim();
+  return CMDS.filter(c => q===c.c || q.startsWith(c.c+' ')).sort((a,b) => b.c.length - a.c.length)[0] || null; };
+const palHead = () => { const m = palNamed(); return m ? m.c : (palQ().trim().split(/\s+/)[0] || ''); };
+const palRest = () => { const q = palQ().trim(), h = palHead(); return q.startsWith(h) ? q.slice(h.length).trim() : ''; };
+const palIsCmd = () => palQ().startsWith('/');
+const palIsNum = () => /^#?\d+/.test(palQ().trim());
+const palNum = () => +palQ().trim().replace(/^#/, '').split(/\s+/)[0];
+function fuzzy(needle, hay){ const n = needle.toLowerCase(), h = hay.toLowerCase(); let i = 0, score = 0, last = -1;
+  for(const ch of n){ const at = h.indexOf(ch, i); if(at < 0) return null; score += at===last+1 ? 0 : (at - i) + 1; last = at; i = at + 1; }
+  return score + (h.startsWith(n) ? -20 : 0); }
+function palCmds(){ const q = palHead().slice(1); if(!q) return CMDS.map(c => ({...c, s:0}));
+  return CMDS.map(c => { const a = fuzzy(q, c.c.slice(1)), b = fuzzy(q, c.w); const s = a !== null ? a : (b !== null ? b + 40 : null); return s === null ? null : {...c, s}; })
+    .filter(Boolean).sort((x,y) => x.s - y.s); }
+function palObjects(){ const out = [];
+  S.decisions.forEach(d => out.push({key:'d:'+d.n, n:`${d.n} · ${d.title.replace(/<[^>]+>/g,'')}`, k:'decision'}));
+  S.attention.forEach(a => out.push({key:'a:'+a.id, n:a.what ? a.what.replace(/<[^>]+>/g,'') : a.id, k:'attention'}));
+  S.intents.forEach(i => { out.push({key:'i:'+i.id, n:i.name, k:'intent'});
+    threadBeads(i).forEach(sid => { const e = elabOf(i.id+'/'+sid); if(e) out.push({key:'v:'+i.id+'/'+sid, n:`${i.name} · ${e.kind}`, k:'elaboration'}); }); });
+  S.explorations.forEach(x => out.push({key:'x:'+x.id, n:x.names.join(' + '), k:'exploration'}));
+  S.bolts.forEach(b => out.push({key:'b:'+b.id, n:b.name, k:'bolt'}));
+  S.landed.forEach(l => out.push({key:'l:'+l.id, n:l.name, k:'landed bolt'}));
+  S.repos.forEach(r => out.push({key:'r:'+r.id, n:r.id, k:'repository'}));
+  S.hosts.forEach(h => out.push({key:'h:'+h.id, n:h.id, k:'host'}));
+  return out; }
+function palAnchors(){ const out = [];
+  orgBooks().forEach(b => b.chapters.forEach(c => { out.push({r:{book:b.id, ch:c.id, a:null}, n:`${b.title} › ${c.n}. ${c.title}`, k:'chapter'});
+    c.blocks.filter(x => x.t==='claim' && x.state==='standing').forEach(x => out.push({r:{book:b.id, ch:c.id, a:anchorOf(x)}, n:`${x.name} @${x.v}`, k:'claim'})); }));
+  return out; }
+/* the rows the palette is showing, best first */
+function palList(){
+  const q = palQ();
+  if(S.pal.mode==='pick') return [];
+  if(!q.trim()) return S.log.slice(0,5).map(e => ({t:'sent', e}));
+  if(palIsCmd()){
+    const head = palHead(), rest = palRest(), typed = /\s/.test(q);
+    if(typed && head==='/open') return palObjects().map(o => ({...o, s:fuzzy(rest, o.n+' '+o.k)})).filter(o => rest==='' || o.s !== null).sort((a,b) => (a.s||0)-(b.s||0)).slice(0,9).map(o => ({t:'obj', ...o}));
+    if(typed && head==='/read-in-book') return palAnchors().map(o => ({...o, s:fuzzy(rest, o.n)})).filter(o => rest==='' || o.s !== null).sort((a,b) => (a.s||0)-(b.s||0)).slice(0,9).map(o => ({t:'ref', ...o}));
+    if(typed && head==='/switch-flywheel') return Object.keys(SEEDS).filter(o => rest==='' || fuzzy(rest, o) !== null).map(o => ({t:'org', id:o}));
+    return palCmds().map(c => ({t:'cmd', c}));
+  }
+  if(palIsNum()){ const d = dec(palNum()); if(!d) return [];
+    return d.answers.map(a => ({t:'ans', d, a:a[0], label:a[1] || a[0]})); }
+  return [];
+}
+function palOpen(q){ S.pal.open = true; S.pal.q = q || ''; S.pal.sel = 0; S.pal.mode = null;
+  S.pal.scope = (S.open && objOf(S.open)) ? S.open : (S.focus && objOf(S.focus) ? S.focus : null);
+  palShell(); renderPalette(); const f = $('#pal-q'); if(f){ f.focus(); f.setSelectionRange(f.value.length, f.value.length); } }
+function palClose(){ S.pal.open = false; S.pal.mode = null; S.pal.q = ''; S.picked.clear();
+  const f = $('#pal-q'); if(f) f.blur(); renderPalette(); }
+function palScopeName(){ if(!S.pal.scope) return null; const o = objOf(S.pal.scope); if(!o) return null; const [t] = S.pal.scope.split(':');
+  return t==='d' ? `${o.n} · ${o.kind}` : t==='i' ? `intent ${o.name}` : t==='b' ? `bolt ${o.name}` : t==='r' ? `repository ${o.id}` : t==='h' ? `host ${o.id}` : t==='v' ? `${o.kind} · ${o.intent.name}` : (o.name || o.id || S.pal.scope); }
+function palShell(){
+  const scope = palScopeName();
+  $('#pal').innerHTML = `<div class="pal-f">${scope ? `<span class="pal-scope" title="the palette is scoped to what you had in hand · backspace over it to unscope">${esc(scope)}</span>` : '<span class="slash">›</span>'}
+      <input id="pal-q" autocomplete="off" spellcheck="false" placeholder="Capture, or / for a command" aria-label="palette" value="${esc(S.pal.q)}">
+      <label title="the same submission also marks it the first idea of a thread"><input type="checkbox" id="pal-intent" ${S.captureIntent?'checked':''}> intent</label>
+      <button class="x" id="pal-close" aria-label="close">×</button></div>
+    <div id="pal-dyn"></div>`;
+}
+function palDynHtml(){
+  const q = palQ(), rows = palList(), sel = S.pal.sel;
+  if(S.pal.mode==='pick'){
+    const open = S.intents.filter(i => i.state!=='closed' && i.state!=='archived');
+    const picked = [...S.picked].filter(id => intent(id));
+    return `<div class="pal-will">will send: <b class="send">explore</b> over <b>${picked.length}</b> intent${picked.length===1?'':'s'} · ${S.exploreKind==='standing'?'standing':'with-operator'} · one elaboration, fed with their chapters, claims and records</div>
+      <div class="pal-body"><div class="pal-h">open intents<span>space or click to tick</span></div>
+      ${open.map(i => `<label class="pal-pick ${S.picked.has(i.id)?'on':''}"><input type="checkbox" data-pick="${esc(i.id)}" ${S.picked.has(i.id)?'checked':''}><span class="nm">${esc(i.name)}</span><span class="st">${esc(i.state)} · ${threadBeads(i).length} elaboration${threadBeads(i).length===1?'':'s'}</span></label>`).join('') || '<div class="pal-empty">no open intent to elaborate on yet</div>'}</div>
+      <div class="pal-foot"><span class="grow"><b>${picked.length}</b> ticked</span><span class="seg"><button data-palkind="with" aria-pressed="${S.exploreKind==='with'}">with-operator</button><button data-palkind="standing" aria-pressed="${S.exploreKind==='standing'}">standing</button></span><button class="btn pri sm" id="pal-go" ${picked.length?'':'disabled'}>start</button><button class="btn quiet sm" id="pal-cancel">cancel</button></div>`;
+  }
+  const rowHtml = (r, i) => {
+    const on = i===sel ? 'on' : '';
+    if(r.t==='cmd'){ const c = r.c; return `<button class="pal-row ${on} ${c.plan?'locked':''}" data-palrun="${i}"><span class="c">${esc(c.c)}</span>${c.arg?`<span class="arg">${esc(c.arg)}</span>`:''}<span class="w">${esc(c.w)}</span>${c.plan?`<span class="plan">${esc(c.plan)}</span>`:`<span class="o">${esc(c.o)}</span>`}</button>`; }
+    if(r.t==='obj') return `<button class="pal-row ${on}" data-palrun="${i}"><span class="c">${esc(r.k)}</span><span class="w">${esc(r.n)}</span><span class="o">open it here</span></button>`;
+    if(r.t==='ref') return `<button class="pal-row ${on}" data-palrun="${i}"><span class="c">${esc(r.k)}</span><span class="w">${esc(r.n)}</span><span class="o">book viewer ↗</span></button>`;
+    if(r.t==='org') return `<button class="pal-row ${on}" data-palrun="${i}"><span class="c">${esc(r.id)}</span><span class="w">go to this flywheel</span><span class="o">writes nothing</span></button>`;
+    if(r.t==='ans') return `<button class="pal-row ${on}" data-palrun="${i}"><span class="c">${esc(r.d.n)} ${esc(r.a)}</span><span class="w">${esc(r.label)}</span><span class="o">one response</span></button>`;
+    return `<div class="pal-sent"><time>${esc(r.e.t)}</time><span>${esc(r.e.text)}</span></div>`;
+  };
+  const body = rows.map(rowHtml).join('');
+  /* at rest: what was last sent, read from the sent log the header carries */
+  if(!q.trim()) return `<div class="pal-body"><div class="pal-h">last sent<span>from the record, not from this page</span></div>${body || '<div class="pal-empty">nothing sent yet. Type an idea and it is captured as written; type / for a command; type a number to answer that decision.</div>'}</div>
+    <div class="pal-foot"><span class="grow">plain text captures · <b>/</b> commands · a number answers</span><span>↑ ↓ move · ↵ send · esc close</span></div>`;
+  if(palIsCmd()){
+    const head = palHead(), pick = rows[sel], cmd = pick && pick.t==='cmd' ? pick.c : CMDS.find(c => c.c===head);
+    const will = rows.length===0
+      ? `<b>No command by that name.</b> Delete the slash to capture this instead.`
+      : cmd && pick && pick.t==='cmd' ? (cmd.plan ? `<b>${esc(cmd.c)}</b> is ${esc(cmd.plan)} · nothing is sent from here` : `will send: <b class="send">${esc(cmd.sig)}</b> · ↵ sends it`)
+      : pick && pick.t==='obj' ? `opens <b>${esc(pick.n)}</b> here · reading is no write, so nothing is confirmed`
+      : pick && pick.t==='ref' ? `opens the book viewer at <b>${esc(pick.n)}</b> · a place of its own`
+      : pick && pick.t==='org' ? `goes to <b>${esc(pick.id)}</b> · writes nothing`
+      : `will send: <b class="send">${esc((cmd||{}).sig || 'one call')}</b> · ↵ sends it`;
+    const heading = head==='/open' && /\s/.test(q) ? 'objects' : head==='/read-in-book' && /\s/.test(q) ? 'chapters and claims' : head==='/switch-flywheel' && /\s/.test(q) ? 'your flywheels' : 'commands';
+    return `<div class="pal-will">${will}</div><div class="pal-body"><div class="pal-h">${heading}<span>${heading==='commands' ? 'the catalogue as you may invoke it · best first' : 'best first'}</span></div>${body || '<div class="pal-empty">nothing by that name.</div>'}</div>
+      <div class="pal-foot"><span class="grow">every command is one seeded call · the rail’s buttons and the dock still do all of it</span><span>↑ ↓ move · ↵ send · esc close</span></div>`;
+  }
+  if(palIsNum()){
+    const n = palNum(), d = dec(n), rest = palQ().trim().replace(/^#?\d+\s*:?\s*/, '');
+    if(!d) return `<div class="pal-will"><b>${n}</b> is no standing decision. The rail lists what is.</div>
+      <div class="pal-body"><div class="pal-empty">A number that names nothing is said so, never guessed at.</div></div>
+      <div class="pal-foot"><span class="grow">esc closes</span></div>`;
+    const hit = d.answers.find(a => a[0]===rest);
+    return `<div class="pal-will">${hit ? `will send: <b class="send">answer(${n}, ${esc(rest)})</b> · ↵ sends it` : rest ? `will send: <b class="send">answer(${n}, reply, “${esc(rest)}”)</b> · ↵ sends it` : `<b>${n}</b> · ${esc(d.title.replace(/<[^>]+>/g,''))} · its own answers, one row each`}</div>
+      <div class="pal-body">${body}</div>
+      <div class="pal-foot"><span class="grow">a number is unambiguous · nothing here reads your words for meaning</span><span>↑ ↓ move · ↵ send · esc close</span></div>`;
+  }
+  /* plain text · a capture, sent unparsed */
+  return `<div class="pal-will">will send: <b class="send">capture</b>${S.captureIntent?' · <b class="send">intent</b>':''} · your words are captured as written</div>
+    <div class="pal-body"><div class="pal-empty">↵ captures this${S.captureIntent?' and marks it the first idea of a thread':' as one signal curation will see'}. Nothing on this page reads it for meaning.</div></div>
+    <div class="pal-foot"><span class="grow">${S.captureIntent ? 'capture · intent' : 'capture'}</span><span>↵ send · esc close</span></div>`;
+}
+function renderPalette(){ const sc = $('#pal-scrim'); if(!sc) return; sc.hidden = !S.pal.open;
+  if(!S.pal.open){ $('#pal').innerHTML = ''; return; }
+  if(!$('#pal-q')) palShell();
+  const rows = palList(); if(S.pal.sel >= rows.length) S.pal.sel = Math.max(0, rows.length-1);
+  $('#pal-dyn').innerHTML = palDynHtml(); }
+function palMove(dir){ const rows = palList().filter(r => r.t!=='sent'); if(!rows.length) return;
+  S.pal.sel = Math.min(rows.length-1, Math.max(0, S.pal.sel + dir)); renderPalette();
+  const on = $('#pal-dyn .pal-row.on'); if(on) on.scrollIntoView({block:'nearest'}); }
+/* running a row: one call, or navigation, or the guided flow where it lives */
+function palRun(i){ const r = palList()[i]; if(!r) return;
+  if(r.t==='obj'){ palClose(); openDock(r.key); return; }
+  if(r.t==='ref'){ palClose(); openViewer(r.r); return; }
+  if(r.t==='org'){ palClose(); switchOrg(r.id); return; }
+  if(r.t==='ans'){ const n = r.d.n; if(S.inflight[n]){ refuse(n); return; } palClose(); send(n, r.a); return; }
+  if(r.t==='cmd') palDo(r.c, palRest());
+}
+function palGo(){ const q = palQ();
+  if(!q.trim()) return;
+  if(palIsCmd() || palIsNum()){ const rows = palList();
+    if(palIsNum()){ const n = palNum(), d = dec(n), rest = q.trim().replace(/^#?\d+\s*:?\s*/, '');
+      if(d && rest){ const hit = d.answers.find(a => a[0]===rest); if(S.inflight[n]){ refuse(n); return; } palClose(); send(n, hit ? rest : 'reply', hit ? undefined : rest); return; } }
+    palRun(S.pal.sel); return; }
+  palCapture(q.trim()); }
+function palCapture(text){ const asIntent = S.captureIntent; palClose();
+  if(asIntent){ const id = text.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').split('-').slice(0,4).join('-');
+    S.intents.unshift({id, name:id, state:'proposed', note:'captured by you as an intent · curation attaches signals · planning proposes its elaborations', sessions:[]});
+    logLine(`capture · intent: ${text}`, {say:true}); toast(`capture · intent ${id} · recorded`); }
+  else { S.curation.unmoved++; S.curation.by += /page/.test(S.curation.by) ? '' : ' · page 1'; logLine(`capture: ${text}`, {say:true}); toast('capture · 1 signal · curation sees it'); }
+  S.captureIntent = false; render(); }
+function palStart(){ const ids = [...S.picked].filter(intent); if(!ids.length) return; const kind = S.exploreKind; const id = 'x'+(S.explorations.length+1);
+  const names = ids.map(i => intent(i).name);
+  S.explorations.unshift({id, kind, intents:ids, names, label:`explore · ${names.join(' + ')}`, since:hhmm(S.minutes), state:kind==='standing'?'standing':'with', session:{state:kind==='standing'?'working':'with', host:'studio', agent:'claude', model:'fable', pane:newPane('studio')}, last:`${hhmm(S.minutes)} · place prepared off the books shared line · ${kind==='standing'?'standing':'waiting for you'}`});
+  palClose();
+  logLine(`explore ${names.join(', ')} · ${kind==='standing'?'standing':'with-operator'}`, {say:true});
+  toast(`explore · ${kind==='standing'?'standing':'with-operator'} elaboration over ${ids.length} intent${ids.length===1?'':'s'} · opened`); openDock('x:'+id); }
+/* one command · the seeded call it becomes, or the flow where it lives */
+function palDo(c, rest){
+  const scoped = S.pal.scope && objOf(S.pal.scope);
+  const scopedDec = S.pal.scope && S.pal.scope[0]==='d' ? dec(+S.pal.scope.split(':')[1]) : null;
+  const answer = a => { const n = rest ? +rest.replace(/^#/,'').split(/\s+/)[0] : (scopedDec && scopedDec.n); const d = dec(n);
+    if(!d){ toast(`no standing decision by that number · the rail lists what is`, true); return; }
+    if(!d.answers.some(x => x[0]===a)){ toast(`${d.n} · no "${a}" on this card · ${d.answers.map(x=>x[0]).join(' · ')}`, true); return; }
+    if(S.inflight[n]){ refuse(n); return; } palClose(); send(n, a); };
+  switch(c.c){
+    case '/capture': if(!rest){ S.pal.q = '/capture '; renderPalette(); return; } { const t = rest; S.captureIntent = false; palCapture(t); } return;
+    case '/intent': if(!rest){ S.pal.q = '/intent '; renderPalette(); return; } { const t = rest; S.captureIntent = true; palCapture(t); } return;
+    case '/yes': answer('yes'); return;
+    case '/drop': answer('drop'); return;
+    case '/later': answer('later'); return;
+    case '/answer': { const n = +String(rest).replace(/^#/,'').split(/\s+/)[0]; if(!n){ S.pal.q = '/answer '; renderPalette(); return; }
+      const a = String(rest).split(/\s+/).slice(1).join(' '); if(!a){ S.pal.q = String(n); S.pal.sel = 0; renderPalette(); return; }
+      const d = dec(n); if(!d){ toast('no standing decision by that number', true); return; }
+      const hit = d.answers.find(x => x[0]===a); if(S.inflight[n]){ refuse(n); return; } palClose(); send(n, hit ? a : 'reply', hit ? undefined : a); return; }
+    case '/yes all': palClose(); yesAll(); return;
+    case '/redo': { const d = scopedDec || dec(S.proposal.n); if(!d){ toast('no proposal in hand', true); return; }
+      if(!rest){ S.pal.q = '/redo '; renderPalette(); return; } if(S.inflight[d.n]){ refuse(d.n); return; } palClose(); send(d.n, 'redo', rest); return; }
+    case '/reply': { const d = scopedDec; if(!d){ toast('no decision in hand · name one by its number', true); return; }
+      if(!rest){ S.pal.q = '/reply '; renderPalette(); return; } if(S.inflight[d.n]){ refuse(d.n); return; } palClose(); send(d.n, 'reply', rest); return; }
+    case '/elaborate': S.pal.mode = 'pick'; S.pal.q = ''; if(!S.picked.size && scoped && S.pal.scope[0]==='i') S.picked.add(S.pal.scope.slice(2)); renderPalette(); return;
+    case '/mine': S.railMine = true; palClose(); toast('rail · yours and unowned'); render(); return;
+    case '/all': S.railMine = false; palClose(); toast('rail · every decision'); render(); return;
+    case '/reviewed': palClose(); markReviewed(); return;
+    case '/open': if(!rest){ S.pal.q = '/open '; S.pal.sel = 0; renderPalette(); return; } toast('name an object · the list below matches as you type'); return;
+    case '/read-in-book': if(!rest){ S.pal.q = '/read-in-book '; S.pal.sel = 0; renderPalette(); return; } return;
+    case '/switch-flywheel': if(!rest){ S.pal.q = '/switch-flywheel '; S.pal.sel = 0; renderPalette(); return; } return;
+    case '/add-member': toast(`${c.c} · ${c.plan} · not offered on this flywheel`, true); return;
+    case '/add-repository': palClose(); S.addRepo = {name:rest || '', kinds:['service'], caps:['http']}; S.view = 'map';
+      document.body.dataset.tab = 'board'; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab==='board')));
+      render(); $('#ar-name')?.focus(); toast('add repository · adopt one you have or create it from the template · its baseline arrives in the rail'); return;
+    default:
+      if(c.flow){ palClose(); toast(`${c.c} · opens the flow where it lives · its finish is the one call`); window.location.href = CONSOLE_AT(c.flow); return; }
+      palClose(); toast(`${c.c} · would send ${c.sig}`); logLine(`${c.c}${rest?' '+rest:''}`, {say:true}); render(); return;
+  }
+}
 
 /* =====================================================================
    The send · one response, on its own; in flight until it settles
@@ -1932,9 +2091,10 @@ function attHtml(a){
   return `<div class="att ${a.cls} ${S.focus==='a:'+a.id?'focused':''}" data-nav="a:${a.id}" tabindex="0">${a.text}<div class="acts">${a.acts.map(([k,l]) => `<button class="btn sm ${k==='takeover'?'yes':''}" data-att="${a.id}" data-ak="${k}">${esc(l)}</button>`).join('')}</div></div>`;
 }
 function renderRail(){
+  /* the phone raises the palette from either tab; on the desktop the header's affordance is the way in */
   const groups = [[APPROVE,'yes is safe · "yes all" takes these'],[DECIDE,'a choice · no default'],[ANSWER,'needs text']];
   const vis = S.decisions.filter(decVisible); const hidden = S.decisions.length - vis.length;
-  let html = `<div class="rail-h"><h2>Decisions</h2><span class="sub">the plan, in the order the chat prints it · ${S.decisions.length} in the count${S.railMine ? ` · ${vis.length} yours or unowned` : ''}</span><div class="seg mine" role="tablist" title="mine: your own and unowned decisions · all: every decision"><button data-mine="0" aria-pressed="${!S.railMine}">all</button><button data-mine="1" aria-pressed="${S.railMine}">mine${hidden && !S.railMine ? '' : ''}</button></div></div>`;
+  let html = `<div class="rail-h"><h2>Decisions</h2><span class="sub">the plan, in the order the chat prints it · ${S.decisions.length} in the count${S.railMine ? ` · ${vis.length} yours or unowned` : ''}</span><div class="seg mine" role="tablist" title="mine: your own and unowned decisions · all: every decision"><button data-mine="0" aria-pressed="${!S.railMine}">all</button><button data-mine="1" aria-pressed="${S.railMine}">mine${hidden && !S.railMine ? '' : ''}</button></div><button class="btn sm phone-only" id="pal-open-rail" title="the palette: type to capture, / for a command">capture…</button></div>`;
   groups.forEach(([g,rule]) => { const ds = vis.filter(d => d.g===g).sort((a,b) => a.n-b.n); if(!ds.length) return;
     html += `<div class="grp ${g}"><span class="g">${g}</span>${g===APPROVE?`<button class="btn sm" id="yesall2" title="yes ${ds.map(d=>d.n).join(', ')}">yes all · ${ds.length}</button>`:''}<span class="r" style="flex-basis:100%">${rule}</span></div>` + ds.map(cardHtml).join(''); });
   if(!vis.length) html += `<div class="empty">${S.decisions.length ? `Nothing of yours waits · ${hidden} owned by others or by a role · <button class="btn sm quiet" data-mine="0">show all</button>` : 'Nothing waits on you. The board runs on its own until the next decision is yours.'}</div>`;
@@ -1953,7 +2113,7 @@ function bead(s, iid){ const st = s.state==='done' ? `<span class="bs leave ${/^
 function threadHtml(i, full){
   const g = gatheringOf(i.id), x = explorationOf(i.id); const closed = i.state==='closed';
   const beads = i.sessions.map(s => bead(s, i.id)).join('') + (g ? `<div class="bead gather ${S.open==='v:'+i.id+'/g'+g.n?'open-in-dock':''}" data-bead="${i.id}/g${g.n}"><span class="bk">${esc(g.type)}</span><span class="en">gathered</span><span class="bs">proposed</span><span class="chip g">in gathering ${g.n}</span></div>` : '') + (x ? `<div class="bead explore ${S.open==='v:'+i.id+'/'+x.id?'open-in-dock':''}" data-bead="${i.id}/${x.id}"><span class="bk">explore</span><span class="en">${x.names.map(esc).join(' + ')}</span><span class="bs">${x.kind==='standing'?'standing':'with you'}</span></div>` : '');
-  const pickable = S.exploreMode && !closed && !full;
+  const pickable = false;
   return `<div class="${objCls('i:'+i.id,'thread')} ${closed?'closed':''} ${pickable?'pickable':''}" data-obj="i:${i.id}" tabindex="0"><div class="th-head">${pickable ? `<input type="checkbox" class="pickbox" data-pick="${i.id}" ${S.picked.has(i.id)?'checked':''} aria-label="pick ${esc(i.name)} for explore">` : ''}<span class="th-k">intent</span><span class="th-name">${esc(i.name)}</span><span class="th-state">${closed ? `<span class="leave">closed · leaves in ${esc(i.leaves||'7d')}</span>` : esc(i.state)}</span></div>
     <div class="th-line ${closed?'cap':''}"><div class="th-note">${esc(i.note)}${g ? ' · no elaboration proposed while gathered' : ''}</div>${beads || '<div class="bead queued"><span class="leave">no elaboration yet</span></div>'}</div>${marksFor('i:'+i.id)}</div>`;
 }
@@ -2009,14 +2169,11 @@ function marksFor(objKey, sessId){
 }
 function laneHead(title, sub, extra=''){ return `<div class="lane-h"><h2>${title}</h2><span class="sub">${sub}</span>${extra}</div>`; }
 function renderInception(){
-  const cap = `<div class="capture"><textarea id="capture" rows="2" placeholder="Type an idea. It becomes a capture with one signal; curation sees it."></textarea>
-    <div class="cf"><span class="will" id="capture-as">will send: <b>capture</b>${S.captureIntent?' · <b>intent</b>':''}</span><label><input type="checkbox" id="capture-intent" ${S.captureIntent?'checked':''}> this is an intent</label><button class="btn pri sm" id="capture-send">send</button></div></div>
-    <div class="curation">unmoved signals <b>${S.curation.unmoved}</b><span>${esc(S.curation.by)}</span><span>oldest ${S.curation.oldest}</span>${sessChip(S.curation.session)}</div>`;
-  const picked = [...S.picked].filter(id => intent(id));
-  const foot = S.exploreMode ? `<div class="explore-foot"><div class="ef-row"><b>Explore over ${picked.length} intent${picked.length===1?'':'s'}</b><span class="seg"><button data-xkind="with" aria-pressed="${S.exploreKind==='with'}">with-operator</button><button data-xkind="standing" aria-pressed="${S.exploreKind==='standing'}">standing</button></span><button class="btn pri sm" id="explore-go" ${picked.length?'':'disabled'}>start</button><button class="btn quiet sm" id="explore-cancel">cancel</button></div><div class="ef-note">opens one new elaboration covering the ticked intents, fed with their chapters, claims and records; earlier elaborations stay as they are</div></div>` : '';
+  const cap = `<div class="curation">unmoved signals <b>${S.curation.unmoved}</b><span>${esc(S.curation.by)}</span><span>oldest ${S.curation.oldest}</span>${sessChip(S.curation.session)}</div>`;
+  const foot = '';
   const xs = S.explorations.map(x => `<div class="${objCls('x:'+x.id)} explore ${x.state==='done'?'done':''}" data-obj="x:${x.id}" tabindex="0"><div class="oh"><span class="ok">${x.kind==='standing'?'explore · standing':'explore · with-operator'}</span><span class="on">${x.names.map(esc).join(' + ')}</span><span class="os">${x.state==='done' ? `<span class="leave">done · leaves in ${esc(x.leaves)}</span>` : 'since '+esc(x.since)}</span></div><div class="ot">${esc(x.last)}</div>${x.state==='done' ? '' : `<div class="el">${sessChip(x.session)}</div>`}</div>`).join('');
   const list = S.intents.map(i => threadHtml(i)).join('');
-  $('#lane-inception').innerHTML = laneHead('Inception','intents and their elaborations · capture here', S.exploreMode ? `<span class="gate" style="border-color:var(--accent);color:var(--accent)">selecting</span>` : `<button class="btn sm" id="explore-open" title="open one elaboration over several intents">explore…</button>`) + cap + (xs ? `<div class="sec-h">explorations<span class="r">opened by you · over several intents</span></div>${xs}` : '') + `<div class="sec-h">intents<span class="r">lines off the books · a bead is an elaboration · click one</span></div>` + (list || '<div class="empty">nothing open</div>') + foot;
+  $('#lane-inception').innerHTML = laneHead('Inception','intents and their elaborations') + cap + (xs ? `<div class="sec-h">explorations<span class="r">opened by you · over several intents</span></div>${xs}` : '') + `<div class="sec-h">intents<span class="r">lines off the books · a bead is an elaboration · click one</span></div>` + (list || '<div class="empty">nothing open</div>') + foot;
 }
 function renderPlan(){
   const P = S.proposal; const pd = dec(P.n);
@@ -2041,12 +2198,12 @@ function renderHosts(){
     + `<span class="note">a host pill lights its sessions · a repo opens its claims · the wheel opens the flywheel (<kbd>w</kbd>) · what a host runs is administered in the management console</span>`;
 }
 function renderBoardHead(){
-  const v = S.view, map = v==='map', book = v==='book';
-  const bk = orgBook(); const st = book ? bookStats(bk) : null;
-  $('#board-h').innerHTML = `<div class="seg" role="tablist"><button data-view="phases" aria-pressed="${v==='phases'}">phases</button><button data-view="map" aria-pressed="${map}">map</button><button data-view="book" aria-pressed="${book}">book</button></div>
-    <span>${S.fromZero && !map && !book ? 'from zero · nothing yet: type a capture below and mark it an intent, or add a repository on the map · ' : ''}${map ? 'the system context map is the scope surface · a repository node carries its claims · click a node for its dock' : book ? `<b class="mono">${esc(bk.title)}</b> · ${st.chapters} chapters · ${st.standing} standing · ${st.proposed} proposed · the rail jumps the book to what a decision concerns` : 'the status view by phase · objects only · every decision is a marker on its object'}</span>
-    ${map ? `<div class="r"><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}</label><button class="btn sm" id="addrepo-open">add repository</button></div>` : ''}${book ? `<div class="r"><button class="btn sm" id="library-open">library</button><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}${st.changed ? ` · <b>${st.changed}</b> changed` : ''}</label>${S.review.on ? `<button class="btn sm" id="review-mark">mark reviewed · ${hhmm(S.minutes)}</button>` : ''}</div>` : ''}<div class="r" style="margin-left:${map||book?'0':'auto'}"><button class="btn sm ${S.load?'pri':''}" id="load-open" title="the flywheel: runway, what feeds it, what waits, what your hosts finish, the streak">flywheel <kbd style="margin-left:4px">w</kbd></button><kbd>${book ? 'b' : 'm'}</kbd></div>`;
-  $('#lanes').hidden = v!=='phases'; $('#map').hidden = !map; $('#book').hidden = !book;
+  const v = S.view, map = v==='map';
+  $('#board-h').innerHTML = `<div class="seg" role="tablist"><button data-view="phases" aria-pressed="${v==='phases'}">phases</button><button data-view="map" aria-pressed="${map}">map</button></div>
+    <button class="btn sm phone-only" id="pal-open-phone" title="the palette: type to capture, / for a command">capture…</button>
+    <span>${S.fromZero && !map ? 'from zero · nothing yet: press ⌘K to capture an idea and mark it an intent, or add a repository on the map · ' : ''}${map ? 'the system context map is the scope surface · a repository node carries its claims · click a node for its dock' : 'the status view by phase · objects only · every decision is a marker on its object'}</span>
+    ${map ? `<div class="r"><label><input type="checkbox" id="review-toggle" ${S.review.on?'checked':''}> since last review · ${esc(S.review.mark)}</label>${S.review.on ? `<button class="btn sm" id="review-mark">mark reviewed · ${hhmm(S.minutes)}</button>` : ''}<button class="btn sm" id="addrepo-open">add repository</button></div>` : ''}<div class="r" style="margin-left:${map?'0':'auto'}"><a class="btn sm quiet" href="book-viewer.html?org=${encodeURIComponent(S.org)}" target="_blank" rel="noopener" title="the blueprints as a read-only book, in a place of its own">open the book ↗ <kbd style="margin-left:4px">b</kbd></a><button class="btn sm ${S.load?'pri':''}" id="load-open" title="the flywheel: runway, what feeds it, what waits, what your hosts finish, the streak">flywheel <kbd style="margin-left:4px">w</kbd></button><kbd>m</kbd></div>`;
+  $('#lanes').hidden = v!=='phases'; $('#map').hidden = !map;
 }
 /* --- scope rules over the set of built repositories --- */
 function ruleOf(set){
@@ -2124,9 +2281,8 @@ function renderTop(){
 function renderLog(){ $('#loglist').innerHTML = S.log.map(e => `<li class="${e.say?'say':''} ${e.fail?'fail':''}"><time>${e.t}</time><span>${esc(e.text)}</span></li>`).join('') || '<li><span class="empty">nothing sent yet</span></li>'; }
 function render(){
   const keep = ['#rail','.lane','#bk-tree','#bk-content'].flatMap(s => $$(s)).map(el => [el, el.scrollTop]);
-  renderTop(); renderAcct(); renderHosts(); renderBoardHead(); renderRail(); renderInception(); renderPlan(); renderConstruction(); renderOperation(); renderMap(); renderBook(); renderLibrary(); renderLoad(); renderLog();
+  renderTop(); renderAcct(); renderHosts(); renderBoardHead(); renderRail(); renderInception(); renderPlan(); renderConstruction(); renderOperation(); renderMap(); renderPalette(); renderLoad(); renderLog();
   keep.forEach(([el,t]) => el.scrollTop = t);
-  if(S.view==='book' && S.book.scrollTo){ const el = $(`#bk-content [data-anchor-id="${S.book.scrollTo}"]`); if(el) el.scrollIntoView({block:S.book.scrollTo==='_top' ? 'start' : 'center'}); S.book.scrollTo = null; }
   if(S.open) renderDock();
 }
 
@@ -2286,7 +2442,7 @@ function dockRepo0(r){
   const scopeOpts = ['all', ...r.kinds.map(k => 'kind:'+k), ...r.caps.map(c => 'capability:'+c), 'named'];
   return sec('the repository', `<div class="dtext">Repository <span class="mono">${esc(r.id)}</span> declares its kinds and capabilities in its manifest; a claim is in scope when its scope rule matches them, and each repository carries its own verdict per claim. ${esc(r.manifest)}.</div>`)
     + sec('kinds and capabilities · from the manifest', `<div class="kc">${r.kinds.map(k => `<span class="lk"><b>kind</b> ${esc(k)}</span>`).join('')}${r.caps.map(c => `<span class="lk"><b>capability</b> ${esc(c)}</span>`).join('')}${!r.kinds.length && !r.caps.length ? '<span class="empty">none</span>' : ''}</div>`)
-    + (r.claims.length ? sec(`claims in scope · ${r.claims.length}`, `<div class="kc" style="margin-bottom:8px">${counts.map(([v,n]) => `<span class="vd ${v.replace(' ','-')}">${n} ${v}</span>`).join('')}</div><div class="claims">${r.claims.map(c => `<div class="claim"><span class="cn">${esc(c[0])}</span><span class="vd ${c[1].replace(' ','-')}">${esc(c[1])}</span><select data-scope="${esc(c[0])}" data-repo="${r.id}" aria-label="scope of ${esc(c[0])}">${scopeOpts.map(o => `<option ${o===c[2]?'selected':''}>${o}</option>`).join('')}${scopeOpts.includes(c[2])?'':`<option selected>${esc(c[2])}</option>`}</select><button class="btn sm quiet" data-oart="claim/${esc(c[0].split(' @')[0])}" title="the claim: versions, attachments, verdicts with evidence">claim</button><button class="btn sm quiet" data-showmap="${esc(c[0])}" title="show its scope on the map">map</button>${claimRef(c[0]) ? `<button class="btn sm quiet" data-book="${bookAttr(claimRef(c[0]))}" title="${esc(refLabel(claimRef(c[0])))}">book</button>` : '<span></span>'}${c[3]!=='—' ? `<span class="ce">${esc(c[3])}</span>` : ''}</div>`).join('')}</div>`, 'verdict from the ledger · scope is yours to correct, one response each · "map" shows the scope')
+    + (r.claims.length ? sec(`claims in scope · ${r.claims.length}`, `<div class="kc" style="margin-bottom:8px">${counts.map(([v,n]) => `<span class="vd ${v.replace(' ','-')}">${n} ${v}</span>`).join('')}</div><div class="claims">${r.claims.map(c => `<div class="claim"><span class="cn">${esc(c[0])}</span><span class="vd ${c[1].replace(' ','-')}">${esc(c[1])}</span><select data-scope="${esc(c[0])}" data-repo="${r.id}" aria-label="scope of ${esc(c[0])}">${scopeOpts.map(o => `<option ${o===c[2]?'selected':''}>${o}</option>`).join('')}${scopeOpts.includes(c[2])?'':`<option selected>${esc(c[2])}</option>`}</select><button class="btn sm quiet" data-oart="claim/${esc(c[0].split(' @')[0])}" title="the claim: versions, attachments, verdicts with evidence">claim</button><button class="btn sm quiet" data-showmap="${esc(c[0])}" title="show its scope on the map">map</button>${claimRef(c[0]) ? bookBtn(claimRef(c[0]), 'book') : '<span></span>'}${c[3]!=='—' ? `<span class="ce">${esc(c[3])}</span>` : ''}</div>`).join('')}</div>`, 'verdict from the ledger · scope is yours to correct, one response each · "map" shows the scope')
       : sec('claims', `<div class="dtext">The books repository holds the claims; it carries no verdicts of its own.</div>`))
     + sec('decisions on this repository', S.decisions.filter(d => d.repo===r.id || (d.kind==='proposal' && r.id==='atlas')).map(d => `<div class="row"><button class="mark ${d.g}" data-mark="d:${d.n}">${d.n}</button><span class="grow">${d.title}</span><span class="t">${d.g}</span></div>`).join('') || '<div class="empty" style="padding:2px 0">none in the count</div>', 'in the rail, where you answer');
 }
@@ -2501,8 +2657,8 @@ function renderLoad(){ const L = $('#load'); L.hidden = !S.load; if(!S.load) ret
     <div class="load-foot">every count is derived from the same state the engine reads; the 7-day series and the streaks are history read the same way · a unit is ~${SLOT_DAYS} slot-days, from the last week · esc closes · ${SM}</div></div>`; }
 document.addEventListener('toggle', e => { if(e.target.classList && e.target.classList.contains('adv')) S.adv = e.target.open; }, true);
 /* --- organizations and the account item: the page belongs to one organization at a time; the account item in the top bar switches it (the whole seed swaps: rail, board, hosts strip) and opens settings, hosts, the organization store and sign-out · who you are is name and sign-in kind --- */
-const baseSeed = () => ({minutes:7*60+40, decisions:[], attention:[], railMine:false, pools:[], marks:{page:'07:40'}, since:[], hosts:[], intents:[], gatherings:[], explorations:[], planning:null, deferred:[], picked:new Set(), exploreMode:false, exploreKind:'with',
-  repos:[{id:'books', kinds:['books'], caps:[], manifest:'books/flywheel.yaml · the books repository · claims live here', claims:[]}], view:'phases', book:{id:null, ch:null, scrollTo:null, hl:null}, library:false, load:false, scopeSel:null, scopeSet:new Set(), addRepo:null,
+const baseSeed = () => ({minutes:7*60+40, decisions:[], attention:[], railMine:false, pools:[], marks:{page:'07:40'}, since:[], hosts:[], intents:[], gatherings:[], explorations:[], planning:null, deferred:[], picked:new Set(), exploreKind:'with', pal:{open:false, q:'', sel:0, scope:null, mode:null},
+  repos:[{id:'books', kinds:['books'], caps:[], manifest:'books/flywheel.yaml · the books repository · claims live here', claims:[]}], view:'phases', load:false, scopeSel:null, scopeSet:new Set(), addRepo:null,
   map:{nodes:[{id:'books', x:60, y:200}], edges:[]}, review:{on:false, mark:'never', nodes:{}, edges:{}}, bolts:[], landed:[], opsignals:[], curation:{unmoved:0, by:'nothing yet', oldest:'0d', next:'when a signal arrives', session:{label:'curation', state:'scheduled', act:'idle', host:'', agent:'claude', model:'haiku', pane:''}},
   proposal:{session:'', reads:'', bolts:[], units:[], edits:0, refusal:null, n:0}, log:[], inflight:{}, focus:null, open:null, hostlit:null, nextWi:1, acct:false, signedOut:false});
 /* authentication is the host's, authorization the organization's: one sign-in kind per serving host, regardless of the organization shown; each organization's operators list says who is allowed there */
@@ -2518,7 +2674,7 @@ const ME = () => HOST_SIGNIN[PAGE.served];
 const isMember = id => ORGS[id].operators.includes(ME().member);
 function seedAgentplot(){ const s = baseSeed(); Object.assign(s, {org:'agentplot', manifest:{repos:[{id:'flywheel', landing:'pull request', merge:'squash'},{id:'blueprints', landing:'direct merge', merge:'merge'}], roles:[{role:'machinery', kind:'pane', model:'claude-haiku-4-5'},{role:'construction', kind:'pane', model:'claude-fable-5-1'},{role:'triage', kind:'in-process', model:'claude-sonnet-5'},{role:'interpreter', kind:'in-process', model:'claude-haiku-4-5'}], router:'private-network router', cadence:'every 30s'},
   hosts:[{id:'forge', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:2, last:'07:38', joined:'08-30', joinedVia:'a laptop', note:'lease holder for plan and the page', root:'~/agentplot', launcher:'launchd · com.flywheel.agentplot', binary:'0.9.3', parts:[
-      {k:'adapter', pkg:'capture-box', name:'the capture box', what:'this host serves the page · text sent unparsed to the capture tool', state:'installed 08-30'},
+      {k:'adapter', pkg:'palette', name:'the page’s palette', what:'this host serves the page · text sent unparsed to the capture tool', state:'installed 08-30'},
       {k:'chat', pkg:'discord', name:'Discord', what:'#agentplot-plan · the gateway socket held while forge is awake', state:'installed 08-30', lease:'sends the plan · renews 30s', cfg:{values:{app:'1301 2200 0417', guild:'agentplot', channel:'#agentplot-plan'}, secrets:{token:{placed:true}}}},
       {k:'agent', name:'agent', what:'in-process · your key from the keychain · one call per message', state:'installed 08-30'},
       {k:'triage', name:'triage', what:'sources: capture-box · 1 reader at a time', state:'installed 08-30'},
@@ -2563,7 +2719,7 @@ function seedIntegral(){ const s = baseSeed(); Object.assign(s, {org:'integral-a
   return s; }
 function seedPersonal(){ const s = baseSeed(); Object.assign(s, {org:'personal', fromZero:true, manifest:{repos:[], roles:[{role:'construction', kind:'pane', model:'claude-fable-5-1'},{role:'triage', kind:'pane', model:'claude-sonnet-5'}], router:'local router', cadence:'on demand'},
   hosts:[{id:'studio', kind:'laptop', platform:'macOS · herdr', plat:['machine','macos','herdr'], alive:true, bound:1, last:'07:40', joined:'09-06', joinedVia:'a laptop', note:'this machine · serves the page · signed in with GitHub · it has roots for four organizations', parts:[
-      {k:'adapter', pkg:'capture-box', name:'the capture box', what:'this host serves the page · text sent unparsed to the capture tool', state:'installed 09-06'},
+      {k:'adapter', pkg:'palette', name:'the page’s palette', what:'this host serves the page · text sent unparsed to the capture tool', state:'installed 09-06'},
       {k:'runner', pkg:'runner-pane', name:'pane', what:'herdr on this machine · 1 session at a time', state:'installed 09-06', cfg:{values:{bound:'1', login:'Claude Code'}, secrets:{}}},
       {k:'router', pkg:'router-local', name:'local router', what:'portless · https://<place>.localhost', state:'installed 09-06'},
       {k:'sign-in', pkg:'auth-github', name:'GitHub', what:'sign in with GitHub on this computer · it is your own account', state:'installed 09-06', cfg:{values:{client:'Iv1.8a2c…', org:'personal'}, secrets:{secret:{placed:true}}}}]}],
@@ -2572,11 +2728,10 @@ function seedPersonal(){ const s = baseSeed(); Object.assign(s, {org:'personal',
 const SEEDS = {willdan:SEED_WILLDAN, agentplot:seedAgentplot, personal:seedPersonal, 'integral-analytics':seedIntegral};
 const ORG_CACHE = {};
 const orgBooks = () => Object.values(BOOKS).filter(b => b.org===S.org);
-const orgBook = () => (BOOKS[S.book.id] && BOOKS[S.book.id].org===S.org) ? BOOKS[S.book.id] : orgBooks()[0];
 function switchOrg(id){ if(!SEEDS[id] || id===S.org) { S.acct = false; renderAcct(); return; } if(!isMember(id)){ toast(`${id} · not a member · ${ME().handle} is not in its operators`, true); return; }
   ORG_CACHE[S.org] = {...S}; const next = ORG_CACHE[id] || SEEDS[id]();
   Object.keys(S).forEach(k => delete S[k]); Object.assign(S, next);
-  S.acct = false; S.open = null; document.body.classList.remove('docked'); S.hostlit = null; S.library = false; S.load = false; if(!S.focus) S.focus = railKeys()[0] || null;
+  S.acct = false; S.open = null; document.body.classList.remove('docked'); S.hostlit = null; S.pal.open = false; S.pal.q = ''; S.pal.mode = null; S.load = false; if(!S.focus) S.focus = railKeys()[0] || null;
   document.documentElement.dataset.org = id; render(); toast(`${id} · ${S.hosts.length} host${S.hosts.length===1?'':'s'} · ${S.decisions.length} decision${S.decisions.length===1?'':'s'}${S.fromZero ? ' · from zero' : ''}`); }
 X[101] = {text:'Approve the intent. <b>Yes</b> opens <span class="mono">herdr-agent-surface</span> as a line off the blueprints and starts its research. <b>Drop</b> closes it with the signals kept.', hist:[['09-06 09:00','curation','intent','3 signals attached · 2 sources'],['09-06 09:00','plan','decision','101 created · approve the intent']]};
 X[201] = {text:'Approve the intent. <b>Yes</b> opens <span class="mono">ledger-reconciliation</span> as a line off the books and starts its research. <b>Drop</b> closes it with the signals kept.', hist:[['09-05 14:10','curation','intent','5 signals attached from #ledger-plan'],['09-05 14:10','plan','decision','201 created · approve the intent']]};
@@ -2671,9 +2826,9 @@ function renderDock(){
   $('#dk-h').className = 'dk-h ' + form; $('#dk-h').innerHTML = head; $('#dk-b').innerHTML = body; $('#dk-f').innerHTML = t==='a' ? `<div class="acts">${o.acts.map(([k,l]) => `<button class="btn sm ${k==='takeover'?'yes':''}" data-att="${o.id}" data-ak="${k}">${esc(l)}</button>`).join('')}</div>` : dockFooter(key);
   $('#dk-b').scrollTop = keep;
 }
-function openDock(key){ const was = S.open===key; S.open = key; if(key[0]==='d' || key[0]==='a'){ S.focus = key; if(S.view==='book') bookFollow(); } document.body.classList.add('docked'); render(); if(!was) $('#dk-b').scrollTop = 0; }
+function openDock(key){ const was = S.open===key; S.open = key; if(key[0]==='d' || key[0]==='a'){ S.focus = key; } document.body.classList.add('docked'); render(); if(!was) $('#dk-b').scrollTop = 0; }
 function closeDock(){ S.open = null; document.body.classList.remove('docked'); render(); }
-function setFocus(key){ S.focus = key; if(S.view==='book') bookFollow(); if(S.open && (S.open[0]==='d'||S.open[0]==='a')) S.open = key; render(); const el = document.querySelector(`.rail [data-nav="${key}"]`); if(el){ el.scrollIntoView({block:'nearest'}); el.focus({preventScroll:true}); } const lit = $('[data-obj].lit'); if(lit) lit.scrollIntoView({block:'nearest'}); }
+function setFocus(key){ S.focus = key; if(S.open && (S.open[0]==='d'||S.open[0]==='a')) S.open = key; render(); const el = document.querySelector(`.rail [data-nav="${key}"]`); if(el){ el.scrollIntoView({block:'nearest'}); el.focus({preventScroll:true}); } const lit = $('[data-obj].lit'); if(lit) lit.scrollIntoView({block:'nearest'}); }
 function step(dir){ const list = railKeys(); if(!list.length) return; const i = list.indexOf(S.focus); const j = i<0 ? 0 : Math.min(list.length-1, Math.max(0, i+dir)); setFocus(list[j]); }
 
 /* =====================================================================
@@ -2707,16 +2862,15 @@ document.addEventListener('click', e => {
     if(S.open==='a:'+(a&&a.id)) S.open = null, document.body.classList.remove('docked');
     if(S.focus==='a:'+(a&&a.id)) S.focus = railKeys()[0] || null;
     render(); return; }
-  if(b && b.dataset.view){ S.view = b.dataset.view; if(S.view==='book') bookFollow(); render(); return; }
-  /* book and library */
-  if(b && b.dataset.book){ const [bk,ch,a] = b.dataset.book.split('|'); gotoBook({book:bk, ch, a:a||null}, true); return; }
-  if(b && b.dataset.anchor){ const [bk,ch,a] = b.dataset.anchor.split('|'); gotoBook({book:bk, ch, a:a||null}, false); return; }
-  if(b && b.dataset.ch){ S.book.ch = b.dataset.ch; S.book.scrollTo = '_top'; S.book.hl = null; render(); return; }
-  if(b && b.id==='library-open'){ S.library = true; render(); return; }
-  if(b && b.id==='library-close'){ S.library = false; render(); return; }
-  if(b && b.dataset.librepo){ S.library = false; S.view = 'map'; openDock('r:'+b.dataset.librepo); return; }
-  { const lr = t.closest('[data-libopen]'); if(lr){ const id = lr.dataset.libopen; if(BOOKS[id]){ S.book.id = id; S.book.ch = BOOKS[id].chapters[0].id; S.book.scrollTo = '_top'; S.book.hl = null; } S.library = false; render(); return; } }
-  if(t.id==='library'){ S.library = false; render(); return; }
+  if(b && b.dataset.view){ S.view = b.dataset.view; render(); return; }
+  /* the palette · one input, ⌘K or / from anywhere */
+  if(b && (b.id==='pal-open' || b.id==='pal-open-phone' || b.id==='pal-open-rail')){ palOpen(''); return; }
+  if(b && b.id==='pal-close'){ palClose(); return; }
+  if(t.id==='pal-scrim'){ palClose(); return; }
+  if(b && b.dataset.palrun !== undefined){ palRun(+b.dataset.palrun); return; }
+  if(b && b.id==='pal-go'){ palStart(); return; }
+  if(b && b.id==='pal-cancel'){ palClose(); return; }
+  if(b && b.dataset.palkind){ S.exploreKind = b.dataset.palkind; renderPalette(); return; }
   if(b && b.dataset.selclaim){ selectClaim(b.dataset.selclaim); render(); return; }
   if(b && b.dataset.showmap){ selectClaim(b.dataset.showmap); closeDock(); return; }
   if(b && b.dataset.tomap){ S.view = 'map'; closeDock(); return; }
@@ -2742,13 +2896,6 @@ document.addEventListener('click', e => {
   if(b && b.dataset.openrepo){ openDock('r:'+b.dataset.openrepo); return; }
   if(b && b.dataset.askagain){ askAgain(b.dataset.askagain); return; }
   if(b && b.dataset.xfinish){ const x = S.explorations.find(v => v.id===b.dataset.xfinish); x.state='done'; x.leaves='7d'; x.at=hhmm(S.minutes); x.last=`${hhmm(S.minutes)} · finished by your instruction · record written in each intent`; say(`finish explore ${x.names.join(', ')}`); since('finished',`explore ${x.names.join(' + ')}`,'records in each intent · writeback per intent'); render(); return; }
-  if(b && b.id==='explore-open'){ S.exploreMode = true; S.picked.clear(); render(); return; }
-  if(b && b.id==='explore-cancel'){ S.exploreMode = false; S.picked.clear(); render(); return; }
-  if(b && b.dataset.xkind){ S.exploreKind = b.dataset.xkind; render(); return; }
-  if(b && b.id==='explore-go'){ const ids = [...S.picked].filter(intent); if(!ids.length) return; const kind = S.exploreKind; const id = 'x'+(S.explorations.length+1);
-    const names = ids.map(i => intent(i).name);
-    S.explorations.unshift({id, kind, intents:ids, names, label:`explore · ${names.join(' + ')}`, since:hhmm(S.minutes), state:kind==='standing'?'standing':'with', session:{state:kind==='standing'?'working':'with', host:'studio', agent:'claude', model:'fable', pane:newPane('studio')}, last:`${hhmm(S.minutes)} · place prepared off the books shared line · ${kind==='standing'?'standing':'waiting for you'}`});
-    S.picked.clear(); S.exploreMode = false; logLine(`explore ${names.join(', ')} · ${kind==='standing'?'standing':'with-operator'}`, {say:true}); toast(`explore · ${kind==='standing'?'standing':'with-operator'} elaboration over ${ids.length} intent${ids.length===1?'':'s'} · opened`); openDock('x:'+id); return; }
 
   if(b && b.dataset.bdrop){ const bo = bolt(b.dataset.bdrop); const u = bo.units.find(x => x.name===b.dataset.unit); bo.units = bo.units.filter(x => x!==u); say(`drop ${bo.name}/${u.name}`); since('dropped',`unit ${u.name}`,`from bolt ${bo.name} by dictation`); render(); return; }
   if(b && b.dataset.brenamesend){ const bo = bolt(b.dataset.brenamesend); const v = $(`[data-brename="${bo.id}"]`).value.trim(); if(!v || v===bo.name) return; const old = bo.name; bo.name = v; say(`rename ${old} ${v}`); render(); return; }
@@ -2770,7 +2917,6 @@ document.addEventListener('click', e => {
   if(b && b.id==='dk-x'){ closeDock(); return; }
   if(b && (b.id==='yesall'||b.id==='yesall2')){ yesAll(); return; }
   if(b && b.id==='logbtn'){ const l = $('#log'); l.hidden = !l.hidden; b.setAttribute('aria-expanded', String(!l.hidden)); return; }
-  if(b && b.id==='capture-send'){ capture(); return; }
   if(b && b.id==='theme'){ const r = document.documentElement; const cur = r.dataset.theme || 'system'; const next = cur==='system' ? 'light' : cur==='light' ? 'dark' : 'system'; if(next==='system') delete r.dataset.theme; else r.dataset.theme = next; b.textContent = next; return; }
   if(b && b.dataset.tab){ document.body.dataset.tab = b.dataset.tab; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x===b))); return; }
   if(t.closest('label.chore')){ setTimeout(() => $$('label.chore').forEach(l => l.classList.toggle('on', l.querySelector('input').checked)), 0); return; }
@@ -2783,10 +2929,11 @@ document.addEventListener('click', e => {
   const bd = t.closest('[data-bead]'); if(bd && !t.closest('button,input,label')){ openDock('v:'+bd.dataset.bead); return; }
   const obj = t.closest('[data-obj]');
   if(obj && !t.closest('input,textarea,select,button,label')){ openDock(obj.dataset.obj); return; }
-  if(!t.closest('#dock') && S.open && !t.closest('#log,#logbtn,.hosts,.map-panel,.board-h,#library,#load') && !t.closest('input,select,label')){ S.hostlit = null; closeDock(); }
+  if(!t.closest('#dock') && S.open && !t.closest('#log,#logbtn,.hosts,.map-panel,.board-h,#pal-scrim,#load') && !t.closest('input,select,label')){ S.hostlit = null; closeDock(); }
   if(!t.closest('#log,#logbtn') && !$('#log').hidden){ $('#log').hidden = true; $('#logbtn').setAttribute('aria-expanded','false'); }
 });
 document.addEventListener('input', e => { const t = e.target;
+  if(t.id==='pal-q'){ S.pal.q = t.value; S.pal.sel = 0; renderPalette(); return; }
   });
 document.addEventListener('change', e => {
   const t = e.target;
@@ -2799,14 +2946,23 @@ document.addEventListener('change', e => {
   if(t.id==='ar-name'){ S.addRepo.name = t.value.trim(); render(); $('#ar-name').focus(); return; }
   if(t.dataset.arkind){ const k = t.dataset.arkind; S.addRepo.kinds = t.checked ? [...S.addRepo.kinds, k] : S.addRepo.kinds.filter(x => x!==k); render(); return; }
   if(t.dataset.arcap){ const c = t.dataset.arcap; S.addRepo.caps = t.checked ? [...S.addRepo.caps, c] : S.addRepo.caps.filter(x => x!==c); render(); return; }
-  if(t.id==='capture-intent'){ S.captureIntent = t.checked; $('#capture-as').innerHTML = `will send: <b>capture</b>${S.captureIntent?' · <b>intent</b>':''}`; return; }
-  if(t.dataset.pick){ if(t.checked) S.picked.add(t.dataset.pick); else S.picked.delete(t.dataset.pick); render(); return; }
+  if(t.dataset.pick){ if(t.checked) S.picked.add(t.dataset.pick); else S.picked.delete(t.dataset.pick); renderPalette(); return; }
+  if(t.id==='pal-intent'){ S.captureIntent = t.checked; renderPalette(); return; }
   if(t.dataset.scope){ const r = repo(t.dataset.repo); const c = r.claims.find(x => x[0]===t.dataset.scope); const old = c[2]; c[2] = t.value; logLine(`scope ${c[0]} ${t.value}`, {}); toast(`${c[0]} · scope ${old} → ${t.value} · recorded`); render(); return; }
 });
 document.addEventListener('keydown', e => {
   const typing = e.target.matches('input,textarea,select');
-  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(S.acct){ S.acct = false; renderAcct(); return; } if(S.signedOut) return; if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.load){ S.load = false; render(); return; } if(S.library){ S.library = false; render(); return; } if(S.exploreMode){ S.exploreMode = false; S.picked.clear(); render(); return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
-  if(typing){ if(e.key==='Enter' && !e.shiftKey && e.target.id==='capture'){ e.preventDefault(); capture(); } if(e.key==='Enter' && e.target.matches('input') && e.target.closest('.argbox')){ e.preventDefault(); e.target.closest('.argbox').querySelector('[data-send],[data-usend]').click(); } if(e.key==='Enter' && (e.target.dataset.bname || e.target.dataset.brename)){ e.preventDefault(); if(e.target.dataset.brename) $(`[data-brenamesend="${e.target.dataset.brename}"]`).click(); else e.target.blur(); } return; }
+  if((e.metaKey||e.ctrlKey) && (e.key==='k'||e.key==='K')){ e.preventDefault(); S.pal.open ? palClose() : palOpen(''); return; }
+  if(S.pal.open){
+    if(e.key==='Escape'){ e.preventDefault(); if(S.pal.mode==='pick'){ S.pal.mode = null; S.picked.clear(); renderPalette(); return; } palClose(); return; }
+    if(typing && e.target.id!=='pal-q') return;
+    if(e.key==='ArrowDown'){ e.preventDefault(); palMove(1); return; }
+    if(e.key==='ArrowUp'){ e.preventDefault(); palMove(-1); return; }
+    if(e.key==='Enter'){ e.preventDefault(); palGo(); return; }
+    if(e.key==='Backspace' && S.pal.scope && !S.pal.q){ e.preventDefault(); S.pal.scope = null; palShell(); renderPalette(); $('#pal-q').focus(); return; }
+    return; }
+  if(e.key==='Escape'){ if(typing){ e.target.blur(); const box = e.target.closest('.argbox'); if(box){ box.innerHTML=''; delete box.dataset.arg; } return; } if(S.acct){ S.acct = false; renderAcct(); return; } if(S.signedOut) return; if(!$('#log').hidden){ $('#log').hidden = true; return; } if(S.load){ S.load = false; render(); return; } if(S.open){ S.hostlit = null; closeDock(); } return; }
+  if(typing){ if(e.key==='Enter' && e.target.matches('input') && e.target.closest('.argbox')){ e.preventDefault(); e.target.closest('.argbox').querySelector('[data-send],[data-usend]').click(); } if(e.key==='Enter' && (e.target.dataset.bname || e.target.dataset.brename)){ e.preventDefault(); if(e.target.dataset.brename) $(`[data-brenamesend="${e.target.dataset.brename}"]`).click(); else e.target.blur(); } return; }
   if(e.metaKey||e.ctrlKey||e.altKey) return;
   const k = e.key;
   if(k==='j'||k==='ArrowDown'){ e.preventDefault(); step(1); return; }
@@ -2826,37 +2982,32 @@ document.addEventListener('keydown', e => {
     if(next<0){ openDock('i:'+iid); return; } openDock('v:'+iid+'/'+beads[next]); return; }
   if(k==='m'){ e.preventDefault(); S.view = S.view==='map' ? 'phases' : 'map'; document.body.dataset.tab = 'board'; render(); return; }
   if(k==='w'){ e.preventDefault(); S.load = !S.load; document.body.dataset.tab = 'board'; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab==='board'))); render(); return; }
-  if(k==='b'){ e.preventDefault(); if(S.view==='book') S.view = 'phases'; else { S.view = 'book'; bookFollow(); } document.body.dataset.tab = 'board'; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab==='board'))); render(); return; }
-  if(k==='/'){ e.preventDefault(); document.body.dataset.tab = 'board'; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab==='board'))); $('#capture')?.focus(); }
+  if(k==='b'){ e.preventDefault(); viewerFollow(); return; }
+  if(k==='/'){ e.preventDefault(); palOpen('/'); return; }
 });
 function yesAll(){ const list = S.decisions.filter(d => d.g===APPROVE && !S.inflight[d.n]).map(d => d.n).sort((a,b) => a-b); list.forEach((n, i) => setTimeout(() => send(n, 'yes'), i*380)); }
-
-/* capture · typed text is a capture with one signal; the toggle makes it an intent capture (no grammar) */
-function capture(){ const ta = $('#capture'); const v = ta.value.trim(); if(!v){ ta.focus(); return; }
-  if(S.captureIntent){ const id = v.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').split('-').slice(0,4).join('-'); S.intents.unshift({id, name:id, state:'proposed', note:'captured by you as an intent · curation attaches signals · planning proposes its elaborations', sessions:[]}); logLine(`capture · intent: ${v}`, {say:true}); toast(`capture · intent ${id} · recorded`); }
-  else { S.curation.unmoved++; S.curation.by += /page/.test(S.curation.by) ? '' : ' · page 1'; logLine(`capture: ${v}`, {say:true}); toast('capture · 1 signal · curation sees it'); }
-  ta.value=''; S.captureIntent = false; render(); }
 
 /* first frame */
 document.body.dataset.tab = new URLSearchParams(location.search).get('tab')==='board' ? 'board' : 'plan';
 $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.tab===document.body.dataset.tab)));
 const Q = new URLSearchParams(location.search);
 if(Q.get('theme')){ document.documentElement.dataset.theme = Q.get('theme'); $('#theme').textContent = Q.get('theme'); }
-if(['map','book'].includes(Q.get('view'))) S.view = Q.get('view');
-if(Q.get('book') && BOOKS[Q.get('book')]) S.book.id = Q.get('book');
-if(Q.get('ch')) S.book.ch = Q.get('ch');
-if(Q.has('library')) S.library = true;
+if(Q.get('view')==='map') S.view = 'map';
 if(Q.has('load')) S.load = true;
 if(Q.get('org') && SEEDS[Q.get('org')] && Q.get('org')!==S.org){ ORG_CACHE[S.org] = {...S}; const next = SEEDS[Q.get('org')](); Object.keys(S).forEach(k => delete S[k]); Object.assign(S, next); }
 if(Q.get('host') && host(Q.get('host'))) S.hostlit = Q.get('host');
 if(Q.has('acct')) S.acct = true;
 if(Q.has('signedout')) S.signedOut = true;
-if(S.view==='book' && !Q.get('ch')) bookFollow();
-if(Q.has('explore')) S.exploreMode = true;
+/* review switch: the palette at rest, on the command list, or mid-capture */
+{ const pq = Q.get('palette');
+  if(pq==='rest'){ S.pal.open = true; S.pal.q = ''; }
+  if(pq==='slash'){ S.pal.open = true; S.pal.q = '/'; }
+  if(pq==='typing'){ S.pal.open = true; S.pal.q = 'the plan tail should survive a restart'; } }
 if(Q.get('claim')) selectClaim(Q.get('claim'));
 if(Q.get('review')) S.review.on = true;
 render();
 { const k = Q.get('open') || (S.org==='willdan' ? 'd:422' : S.focus); if(!Q.has('nodock') && k && objOf(k)) openDock(k); }
+if(S.pal.open){ const q = S.pal.q; palOpen(q); }
 window.addEventListener('resize', () => renderMap());
 })();
 </script>

@@ -1,0 +1,380 @@
+<!--
+  Book viewer — the instance's blueprints as a read-only book, served beside the page and
+  never inside it. Drawn against `../proposals/command-palette.md` §5 and its proposed
+  requirements 315 and 316; closes S149 and replaces S91, S93–S96 (the embedded book view,
+  the rail driving it, the library overlay).
+
+  Decisions taken while building:
+  - It is a viewer, not a view. `rail-and-board.html` links out here per cited chapter or
+    claim ("read in book", key b) and embeds nothing; the dock on that page stays as it was.
+  - It is built from the blueprints' shared line and only that. A claim an elaboration has
+    proposed and not landed is not here: the viewer is always the standing destination, and
+    the page is where changes to it are answered. The one exception drawn is the note on an
+    absent claim, which names the intent that would write it and links back to it.
+  - mdBook's shape: the chapter tree on the left, one chapter at a time with previous and
+    next, headings with anchors, and the claim rendered where its chapter includes it by
+    anchor — never a claims appendix. The include line is drawn above the block so a reader
+    sees the chapter is citing the specification, not restating it.
+  - A claim renders as a requirement block, the same shape the construction sessions read:
+    the requirement sentence with SHALL, its scenarios as GIVEN · WHEN · THEN, and above it
+    the claim's name, version, what it attaches to, the scope derived from that, and one
+    verdict dot per repository in scope.
+  - Every chapter and every rendered claim links back to the object on the page, at the
+    host's address with the flywheel in the path: "Back to the flywheel" in the chapter head
+    goes to the chapter's intent, and each claim block's link goes to that claim's decisions
+    and evidence. A host that is away says so rather than failing silently.
+  - The library is the viewer's own index, not an overlay on the page: the books of the
+    flywheel in hand, with their chapters, their standing and proposed counts and when each
+    was last written.
+  - Who reads it: on a machine of the operator's own, the private network is the boundary
+    and the page says so; on the hosted tier it reads to members of that flywheel alone.
+    Serving a book to readers who are not members is one opt-in per book on the settings
+    form, shown here as a state, never as a control this page can flip.
+  - Review switches: ?org=<flywheel>, ?book=<id>, ?ch=<chapter>, #<anchor> (lights the
+    block), ?theme=dark|light, ?served=studio|willdan-cloud (who may read), ?away=1 (the
+    page's host is away, so the links back say so).
+  - Chapters and prose are invented from the same seed as `rail-and-board.html`
+    (willdan · 2026-09-04) and marked sample.
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Book viewer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#EEF1F4; --surface:#FFFFFF; --surface2:#F6F8FA; --ink:#16202A; --ink2:#4A5763; --ink3:#7A8794;
+  --line:#D5DBE1; --line2:#E4E8EC; --accent:#0B6E79; --accent-ink:#FFFFFF; --accent-soft:#D9EEF0;
+  --ok:#2E8B57; --warn:#B7791F; --crit:#B3362B; --lit:#FFF3C4;
+  --shadow:0 10px 30px rgba(22,32,42,.16); --top:46px; --tree:264px;
+  --sans:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#12171C; --surface:#1A2128; --surface2:#20282F; --ink:#E6EBEF; --ink2:#A9B4BE; --ink3:#74818C;
+  --line:#2A333C; --line2:#232C34; --accent:#4FB3BF; --accent-ink:#0E1A1C; --accent-soft:#173A3E;
+  --ok:#5CB57F; --warn:#D9A24A; --crit:#E0675B; --lit:#3A3416; --shadow:0 10px 30px rgba(0,0,0,.5); color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#12171C; --surface:#1A2128; --surface2:#20282F; --ink:#E6EBEF; --ink2:#A9B4BE; --ink3:#74818C;
+  --line:#2A333C; --line2:#232C34; --accent:#4FB3BF; --accent-ink:#0E1A1C; --accent-soft:#173A3E;
+  --ok:#5CB57F; --warn:#D9A24A; --crit:#E0675B; --lit:#3A3416; --shadow:0 10px 30px rgba(0,0,0,.5); color-scheme:dark; }
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:13.5px/1.45 var(--sans);display:flex;flex-direction:column;overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+a{color:inherit}
+h1,h2,h3,h4{margin:0;font-weight:700;text-wrap:balance}
+.mono{font-family:var(--mono)}
+kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;color:var(--ink2);background:var(--surface2)}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:700}
+.sample{font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);border:1px dashed var(--line);border-radius:3px;padding:0 4px;vertical-align:middle}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:6px;padding:4px 10px;font-size:12.5px;font-weight:600;background:var(--surface);color:var(--ink2);text-decoration:none}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.sm{padding:2px 8px;font-size:11.5px}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.pri:hover{color:var(--accent-ink);opacity:.9}
+
+/* ---------- top ---------- */
+.top{flex:none;height:var(--top);display:flex;align-items:center;gap:12px;padding:0 14px;background:var(--surface);border-bottom:1px solid var(--line)}
+.top h1{font-size:15px;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+.top .ro{font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);border-radius:3px;padding:1px 6px;color:var(--ink3)}
+.top .meta{color:var(--ink3);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top .r{margin-left:auto;display:flex;align-items:center;gap:8px}
+.readers{font-size:11.5px;color:var(--ink3);display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:2px 10px;background:var(--surface2)}
+.readers b{color:var(--ink2);font-weight:600}
+.readers .dot{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.readers.open .dot{background:var(--warn)}
+
+.wrap{flex:1;min-height:0;display:grid;grid-template-columns:var(--tree) minmax(0,1fr)}
+
+/* ---------- the chapter tree, and the viewer's own index of books ---------- */
+.tree{border-right:1px solid var(--line);background:var(--surface2);overflow:auto;padding:12px 0 40px;font-size:12.5px}
+.tree .th{padding:0 12px 10px;border-bottom:1px solid var(--line2);margin-bottom:6px}
+.tree .th .t{font:800 14px var(--mono);margin-top:3px}
+.tree .th .s{font-size:11.5px;color:var(--ink3);line-height:1.35;margin-top:3px}
+.tree .th .src{font:10.5px var(--mono);color:var(--ink3);margin-top:5px}
+.tree ol{list-style:none;margin:0;padding:0}
+.tree li>a{display:flex;align-items:baseline;gap:8px;padding:5px 12px;font-weight:600;color:var(--ink2);border-left:3px solid transparent;text-decoration:none}
+.tree li>a:hover{background:var(--surface)}
+.tree li>a.on{background:var(--surface);color:var(--ink);border-left-color:var(--accent)}
+.tree .n{font:600 11px var(--mono);color:var(--ink3);width:14px;flex:none}
+.tree .sub{list-style:none;margin:0;padding:0}
+.tree .sub li>a{padding:3px 12px 3px 34px;font-weight:500;font-size:12px;border-left:0;position:relative;color:var(--ink2)}
+.tree .sub li>a::before{content:"";position:absolute;left:22px;top:0;bottom:0;border-left:1px solid var(--line)}
+.tree .sub li>a.cl{font-size:11.5px;font-family:var(--mono)}
+.tree .sub li>a .v{color:var(--ink3);font:10.5px var(--mono)}
+.tree .sub li>a.lit{background:var(--lit);color:var(--ink)}
+.tree .lib{margin:14px 8px 0;border-top:1px solid var(--line2);padding-top:10px}
+.tree .lib .lh{display:flex;align-items:baseline;gap:8px;font:700 9.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);padding:0 4px 4px}
+.tree .lib a{display:block;padding:5px 4px;border-radius:5px;text-decoration:none;color:var(--ink2)}
+.tree .lib a:hover{background:var(--surface)}
+.tree .lib a.on{background:var(--accent-soft);color:var(--ink)}
+.tree .lib .nm{font-weight:700;font-size:12.5px}
+.tree .lib .mm{font:10.5px var(--mono);color:var(--ink3);margin-top:1px}
+.tree .foot{padding:12px 12px 0;margin-top:12px;border-top:1px solid var(--line2);font-size:11.5px;color:var(--ink2);display:flex;flex-wrap:wrap;gap:4px 10px}
+.tree .foot .eyebrow,.tree .foot .ot{flex-basis:100%}
+.tree .foot .ot{font-size:11px;color:var(--ink3);line-height:1.45;margin-top:4px}
+.vh{display:inline-flex;align-items:center;gap:5px;font:11px var(--mono);color:var(--ink2)}
+.vdot{display:inline-block;width:9px;height:9px;border-radius:50%;box-sizing:border-box;background:var(--ink3);flex:none}
+.vdot.satisfied{background:var(--ok)} .vdot.not-satisfied{background:var(--crit)} .vdot.stale{background:var(--warn)}
+.vdot.unjudged{background:transparent;border:2px solid var(--ink3)} .vdot.not-applicable{background:transparent;border:1.5px dashed var(--ink3)}
+
+/* ---------- the chapter ---------- */
+.content{overflow:auto;background:var(--surface);padding:20px 28px 80px}
+.page{max-width:76ch;margin:0 auto}
+.crumb{display:flex;gap:8px;align-items:baseline;font:11px var(--mono);color:var(--ink3);margin-bottom:8px;flex-wrap:wrap}
+.chead{padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.chead h1{font-size:26px;font-weight:800;letter-spacing:-.012em}
+.chead .back{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:12px;color:var(--ink3)}
+.chead .back .why{color:var(--ink3)}
+.away{font:11px var(--mono);color:var(--warn);border:1px solid var(--warn);border-radius:4px;padding:1px 7px}
+.blk{position:relative;margin:0 0 14px;border-radius:4px;scroll-margin-top:16px}
+.blk p{margin:0;font-size:14.5px;line-height:1.62}
+.blk h2{font-size:17.5px;font-weight:800;margin:26px 0 8px;display:flex;gap:8px;align-items:baseline}
+.blk .anchor{color:var(--ink3);text-decoration:none;font:400 13px var(--mono);opacity:.4}
+.blk .anchor:hover{opacity:1;color:var(--accent)}
+.blk.lit{background:var(--lit);box-shadow:0 0 0 8px var(--lit)}
+.include{font:10.5px var(--mono);color:var(--ink3);margin:14px 0 -2px;display:flex;align-items:center;gap:6px}
+.include::before{content:"";flex:none;width:14px;border-top:1px dashed var(--line)}
+
+/* the claim as the requirement block construction reads */
+.claim{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:7px;background:var(--surface2);padding:10px 14px 12px;margin-top:6px}
+.claim .ch{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.claim .k{font:600 9.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.claim .nm{font:700 13.5px var(--mono)}
+.claim .v{font:600 11.5px var(--mono);color:var(--ink2)}
+.claim .state{margin-left:auto;font:600 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--accent);border-radius:3px;padding:0 6px;color:var(--accent)}
+.claim .meta{font:11px var(--mono);color:var(--ink3);margin-top:7px;display:flex;flex-wrap:wrap;gap:3px 6px;align-items:center}
+.claim .lk{display:inline-flex;align-items:center;font:11px var(--mono);border:1px solid var(--line);border-radius:4px;padding:0 6px;color:var(--ink2);background:var(--surface)}
+.claim .homes{display:flex;flex-wrap:wrap;gap:5px 14px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line2)}
+.claim .foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:9px;padding-top:8px;border-top:1px solid var(--line2);font:11px var(--mono);color:var(--ink3)}
+.claim .foot .grow{flex:1;min-width:0}
+.req{border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:9px 12px 10px;margin-top:9px}
+.req .rk{font:600 9.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.req .rt{font-size:13.5px;line-height:1.55;margin-top:4px}
+.req .rt b{font-weight:800}
+.req details{margin-top:7px}
+.req summary{font:11.5px var(--mono);color:var(--accent);cursor:pointer}
+.scn{border-left:2px solid var(--line);padding:4px 0 4px 10px;margin-top:7px;font-size:12.5px;line-height:1.5;color:var(--ink2)}
+.scn .sn{display:block;font:600 11px var(--mono);color:var(--ink);margin-bottom:2px}
+.scn b{font:600 10.5px var(--mono);letter-spacing:.05em;color:var(--ink3)}
+.notyet{border:1px dashed var(--line);border-radius:7px;background:transparent;padding:10px 14px;margin-top:6px;font-size:12.5px;color:var(--ink2);line-height:1.55}
+.notyet b{font-family:var(--mono)}
+
+.pfoot{display:flex;gap:10px;align-items:center;margin-top:34px;padding-top:14px;border-top:1px solid var(--line)}
+.pfoot .sp{flex:1}
+
+@media (max-width:759px){
+  .wrap{grid-template-columns:1fr;grid-auto-rows:auto;overflow:auto}
+  .tree{max-height:40vh;border-right:0;border-bottom:1px solid var(--line)}
+  .content{overflow:visible;padding:16px 14px 60px}
+  .top .meta{display:none}
+}
+@media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
+</style>
+
+<header class="top">
+  <h1>Book</h1>
+  <span class="ro">read only</span>
+  <span class="meta" id="meta"></span>
+  <div class="r">
+    <span class="readers" id="readers"></span>
+    <a class="btn sm" id="tofw" href="rail-and-board.html">Back to the flywheel</a>
+  </div>
+</header>
+<main class="wrap">
+  <aside class="tree" id="tree" aria-label="chapters"></aside>
+  <section class="content"><div class="page" id="page"></div></section>
+</main>
+
+<script>
+(() => {
+'use strict';
+const $ = (s, r=document) => r.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SM = '<span class="sample">sample</span>';
+const Q = new URLSearchParams(location.search);
+
+/* =====================================================================
+   The shared line, and only it. Chapters as mdBook; a claim is included
+   by anchor from the standing specifications, never restated here.
+   Seeded from the same 2026-09-04 willdan state as rail-and-board.html.
+   ===================================================================== */
+const P = text => ({t:'p', text});
+const H = (id, text) => ({t:'h', id, text});
+const INC = (claim, from) => ({t:'inc', claim, from});
+const SC = (name, g, w, t) => ({name, g, w, t});
+
+/* the standing specifications the chapters include, keyed by claim name */
+const CLAIMS = {
+  'sessions/one-writer': {v:'v4', requirement:'One session at a time SHALL hold the write place for a unit; a second session asking for it waits, and never opens a place of its own.',
+    attach:['element sessions/place', 'element sessions/lease'], scope:['atlas','switchboard','new-repo'],
+    verdicts:{atlas:'satisfied', switchboard:'satisfied', 'new-repo':'unjudged'},
+    scenarios:[
+      SC('the second session waits', 'a unit whose place is held by a running session', 'a second session asks for that unit’s place', 'it waits, and the record says which session holds it'),
+      SC('the place is released on exit', 'a session holding a place', 'the session exits, whether it finished or failed', 'the place is released and the next waiting session takes it'),
+      SC('a lost host releases nothing on its own', 'a host that stopped answering while holding a place', 'the operator takes the work over onto a host that is alive', 'the place moves with the work, and the old session cannot write again')]},
+  'plan/tail-cursor': {v:'v1', requirement:'The plan tail SHALL be read from a cursor kept with the plan, so a restart resumes where the last delivery ended rather than from the beginning.',
+    attach:['element plan/delivery'], scope:['switchboard'], verdicts:{switchboard:'not satisfied'},
+    scenarios:[
+      SC('a restart resumes', 'a plan delivered up to a mark', 'the loop restarts', 'delivery resumes at the mark, and nothing already delivered is delivered twice'),
+      SC('a mark that names nothing', 'a cursor naming an entry that no longer exists', 'the loop reads it', 'it starts from the oldest entry it can name and says so in the record')]},
+  'providers/rate-envelope': {v:'v1', requirement:'A provider SHALL be polled inside the envelope its declaration states; a refusal is a signal to curation, never a retry.',
+    attach:['element providers/poller'], scope:['atlas'], verdicts:{atlas:'stale'},
+    scenarios:[
+      SC('inside the envelope', 'a provider with a stated envelope', 'the poller ticks', 'it stays inside the envelope for that provider alone'),
+      SC('a refusal is a signal', 'a provider refusing because the envelope is spent', 'the poller reads the refusal', 'one signal reaches curation and no retry is made')]},
+};
+
+const BOOKS = {
+  'platform-kit': {
+    id:'platform-kit', org:'willdan', title:'platform-kit',
+    sub:'the willdan platform · sessions, providers, the plan, delivery, status, loops, repositories',
+    src:'books/platform-kit', written:'09-04 05:40 · writeback · intent host-liveness', repos:['atlas','switchboard','new-repo'],
+    chapters:[
+      {id:'overview', n:1, title:'How to read this book', file:'src/01-overview.md', intent:'host-liveness', blocks:[
+        P('This book is the source for what the willdan platform is. A chapter explains a design conclusion and states the claim it adds or amends in the same commit, so the prose, the diagram and the claim cannot drift apart. A construction session reads the chapter to know what a claim means.'),
+        H('standing','What is in this book'),
+        P('Only what has landed. A claim becomes <b>standing</b> when the intent that wrote it closes and its line lands on the shared blueprints; until then it is being argued about on the flywheel, not read here. So this book is always the destination, and the flywheel is where changes to it are answered.'),
+        P('A chapter never restates a claim. It includes one by name, and the specification is rendered where the include sits.')]},
+      {id:'sessions', n:2, title:'Sessions and the write place', file:'src/02-sessions.md', intent:'host-liveness', blocks:[
+        P('A unit of work is done by a session, and a session writes in a place of its own — a working copy off the line the unit belongs to. The place is the unit of contention, not the repository: two units on the same repository run side by side, and two sessions on the same unit do not.'),
+        H('one-writer','One writer per unit'),
+        P('The rule that makes the rest safe is that only one session may hold a unit’s place at a time. Everything else — how a session is charged, where it runs, what agent reads it — is free to change without touching what a reader of this chapter needs to know.'),
+        INC('sessions/one-writer', 'the specification'),
+        H('lost','When a host stops answering'),
+        P('A host that stops answering still holds whatever places its sessions held. Nothing is taken from it automatically: the operator is asked, on the flywheel, whether to move the work onto a host that is alive. Taking it over moves the place with the work, and the old session cannot write again even if its host comes back.')]},
+      {id:'plan', n:3, title:'The plan and its delivery', file:'src/03-plan.md', intent:'loop-granularity', blocks:[
+        P('The plan is one list, in one order, delivered to wherever the operator is reading it. What the page draws as a rail and what the chat prints as lines are one delivery rendered twice; neither is the source.'),
+        H('tail','The tail and its cursor'),
+        P('Delivery is a tail read forward. A restart must not re-deliver what the operator already answered, and must not silently skip what arrived while it was down; the cursor is what makes both true.'),
+        INC('plan/tail-cursor', 'the specification'),
+        H('marks','Marks are per reader'),
+        P('Each reader carries a mark of their own. Moving one reader’s mark moves nothing for anyone else, so two people reading the same flywheel never take work out from under one another.'),
+        INC('plan/sink-marks', 'the specification')]},
+      {id:'providers', n:4, title:'Providers and their envelopes', file:'src/04-providers.md', intent:'atlas-provider-limits', blocks:[
+        P('A provider is anything outside the fleet that is polled on a schedule. What every provider has in common is a limit, and the limit is declared once with the provider rather than guessed at by each caller.'),
+        H('envelope','The envelope'),
+        INC('providers/rate-envelope', 'the specification'),
+        H('refusals','A refusal is information'),
+        P('A refusal says the envelope was wrong, or that something else is spending it. Retrying hides that; sending one signal to curation surfaces it, and the argument about what the envelope should be happens on the flywheel where it can be answered.')]},
+      {id:'repositories', n:5, title:'Repositories in scope', file:'src/05-repositories.md', intent:'host-liveness', blocks:[
+        P('A repository joins the fleet by being adopted or created, and from that moment the claims whose scope covers it are judged against it. A repository joined this week carries the same claims as one that has been here a year; what differs is how many of them have been judged yet.'),
+        INC('sessions/one-writer', 'the same specification, included again'),
+        P('A claim included in two chapters is one claim: the same name, the same version, one verdict per repository. There is no second copy to keep in step.')]},
+    ]},
+  'switchboard-kit': {
+    id:'switchboard-kit', org:'willdan', title:'switchboard-kit',
+    sub:'switchboard · the rows pipeline from atlas to the portal and the warehouse',
+    src:'books/switchboard-kit', written:'09-03 17:55 · writeback · intent loop-granularity', repos:['switchboard'],
+    chapters:[
+      {id:'rows', n:1, title:'Rows', file:'src/01-rows.md', intent:'loop-granularity', blocks:[
+        P('Switchboard moves rows from atlas to the portal and the warehouse. A row is written once and read many times; nothing downstream may write back up the pipeline.')]},
+      {id:'loops', n:2, title:'Loops', file:'src/07-loops.md', intent:'loop-granularity', blocks:[
+        P('One loop per bolt. The conclusion the intent reached is that a loop’s granularity follows the work it drives, and a bolt is that unit of work.'),
+        INC('plan/tail-cursor', 'the specification')]},
+    ]},
+  'atlas-kit': {
+    id:'atlas-kit', org:'willdan', title:'atlas-kit',
+    sub:'atlas · the provider poller, the status table and the claim index',
+    src:'books/atlas-kit', written:'09-02 15:40 · writeback · intent provider-status', repos:['atlas'],
+    chapters:[
+      {id:'atlas', n:1, title:'Atlas', file:'src/01-atlas.md', intent:'provider-status', blocks:[
+        P('Atlas polls the providers, keeps their status, and indexes the claims the blueprints state so a construction session can cite one by name. It lands by direct merge.'),
+        INC('providers/rate-envelope', 'the specification')]},
+    ]},
+};
+
+/* what the book cannot show: a claim being written by an intent that has not closed */
+const IN_FLIGHT = {'plan/sink-marks': {v:'v2', intent:'plan-decisions', what:'being written now, on the flywheel'}};
+
+const ORGS = {
+  willdan:{name:'willdan', host:'studio.willdan.local', served:'a machine of your own', readers:'everyone on your private network'},
+  agentplot:{name:'agentplot', host:'willdan-cloud.flywheel.cloud', served:'the hosted tier', readers:'members of this flywheel'},
+};
+const ORG = ORGS[Q.get('org')] || (Q.get('served')==='willdan-cloud' ? ORGS.agentplot : ORGS.willdan);
+const AWAY = Q.has('away');
+
+const books = () => Object.values(BOOKS);
+let BOOK = BOOKS[Q.get('book')] || books()[0];
+let CH = BOOK.chapters.find(c => c.id===Q.get('ch')) || BOOK.chapters[0];
+const HL = decodeURIComponent((location.hash || '').slice(1)) || null;
+
+const anchorOf = x => x.t==='inc' ? 'claim-'+x.claim.replace(/\//g,'-') : x.t==='h' ? x.id : null;
+/* every link back is the host's address with the flywheel in the path */
+const at = path => `rail-and-board.html?org=${encodeURIComponent(ORG.name)}${path}`;
+const objHref = key => at(`&open=${encodeURIComponent(key)}`);
+const chHref = (b, c, a) => `?org=${encodeURIComponent(ORG.name)}&book=${encodeURIComponent(b)}&ch=${encodeURIComponent(c)}${a?'#'+a:''}`;
+const stats = b => { const inc = b.chapters.flatMap(c => c.blocks.filter(x => x.t==='inc'));
+  const names = [...new Set(inc.map(x => x.claim))];
+  return {chapters:b.chapters.length, standing:names.filter(n => CLAIMS[n]).length, included:inc.length}; };
+
+function backLink(label, key, why){
+  if(AWAY) return `<span class="away">${esc(label)} · ${esc(ORG.host)} is away right now</span>`;
+  return `<a class="btn sm" href="${objHref(key)}">${esc(label)}</a>${why ? `<span class="why">${esc(why)}</span>` : ''}`;
+}
+
+function claimHtml(x){
+  const c = CLAIMS[x.claim];
+  const a = anchorOf(x);
+  const inc = `<div class="include">included by anchor from ${esc(x.from)} · <span class="mono">${esc(x.claim)}</span></div>`;
+  if(!c){ const f = IN_FLIGHT[x.claim];
+    return inc + `<div class="notyet" id="${a}"><b>${esc(x.claim)}</b> is not on the shared line yet${f ? ` — it is ${esc(f.what)}` : ''}. What is in flight is not in this book; the flywheel is where it is answered.${f ? ` ${backLink('Open the intent', 'i:'+f.intent)}` : ''}</div>`; }
+  const dots = c.scope.map(h => `<span class="vh" title="${esc(h)} · ${esc(c.verdicts[h]||'unjudged')}"><span class="vdot ${(c.verdicts[h]||'unjudged').replace(' ','-')}"></span>${esc(h)} <span style="color:var(--ink3)">${esc(c.verdicts[h]||'unjudged')}</span></span>`).join('');
+  return inc + `<div class="claim ${HL===a?'lit':''}" id="${a}">
+    <div class="ch"><span class="k">claim</span><span class="nm">${esc(x.claim)}</span><span class="v">@${esc(c.v)}</span><span class="state">standing</span></div>
+    <div class="meta">attached to ${c.attach.map(t => `<span class="lk">${esc(t)}</span>`).join('')}</div>
+    <div class="meta">scope · ${esc(c.scope.join(', '))} · derived from what it attaches to</div>
+    <div class="req"><span class="rk">requirement</span>
+      <div class="rt">${esc(c.requirement).replace(/\b(SHALL|MUST)\b/g,'<b>$1</b>')}</div>
+      <details open><summary>${c.scenarios.length} scenario${c.scenarios.length===1?'':'s'}</summary>
+        ${c.scenarios.map(s => `<div class="scn"><span class="sn">${esc(s.name)}</span><b>GIVEN</b> ${esc(s.g)}<br><b>WHEN</b> ${esc(s.w)}<br><b>THEN</b> ${esc(s.t)}</div>`).join('')}
+      </details></div>
+    <div class="homes">${dots}</div>
+    <div class="foot"><span class="grow">one verdict per repository in scope, from the ledger</span>${backLink('Back to the flywheel', 'o:claim/'+x.claim, 'its decisions and its evidence')}</div>
+  </div>`;
+}
+
+function render(){
+  document.title = `${BOOK.title} · ${CH.title}`;
+  $('#meta').innerHTML = `<b class="mono">${esc(ORG.name)}</b> · ${esc(BOOK.title)} · <span class="mono">${esc(BOOK.src)}/${esc(CH.file)}</span> · built from the shared line ${SM}`;
+  const open = ORG.name!=='willdan';
+  $('#readers').className = 'readers' + (open ? '' : '');
+  $('#readers').innerHTML = `<span class="dot"></span><b>${esc(ORG.readers)}</b> · ${esc(ORG.served)}`;
+  $('#readers').title = ORG.name==='willdan'
+    ? 'the private network is the boundary; nothing goes beyond it unless you say so'
+    : 'served under the caller’s token; reads to members of this flywheel alone';
+  $('#tofw').href = at('');
+
+  /* the tree: this book's chapters, then the viewer's own index of the flywheel's books */
+  const subs = c => c.blocks.filter(x => x.t==='h' || x.t==='inc').map(x => { const a = anchorOf(x);
+    return `<li><a class="${x.t==='inc'?'cl':''} ${HL===a?'lit':''}" href="${chHref(BOOK.id, c.id, a)}">${x.t==='inc'
+      ? `${esc(x.claim)} <span class="v">${CLAIMS[x.claim] ? '@'+esc(CLAIMS[x.claim].v) : 'not on the line'}</span>`
+      : esc(x.text)}</a></li>`; }).join('');
+  $('#tree').innerHTML = `<div class="th"><span class="eyebrow">book</span><div class="t">${esc(BOOK.title)}</div><div class="s">${esc(BOOK.sub)}</div><div class="src">${esc(BOOK.src)} · written ${esc(BOOK.written)}</div></div>
+    <ol>${BOOK.chapters.map(c => `<li><a href="${chHref(BOOK.id, c.id)}" class="${c.id===CH.id?'on':''}" ${c.id===CH.id?'aria-current="page"':''}><span class="n">${c.n}</span><span>${esc(c.title)}</span></a>${c.id===CH.id ? `<ol class="sub">${subs(c)}</ol>` : ''}</li>`).join('')}</ol>
+    <div class="lib"><div class="lh">this flywheel’s books</div>${books().map(b => { const s = stats(b);
+      return `<a href="${chHref(b.id, b.chapters[0].id)}" class="${b.id===BOOK.id?'on':''}"><span class="nm">${esc(b.title)}</span><span class="mm">${s.chapters} chapters · ${s.included} claims included · written ${esc(b.written)}</span></a>`; }).join('')}</div>
+    <div class="foot"><span class="eyebrow">verdict dots · one per repository in scope</span>${['satisfied','not satisfied','stale','unjudged','not applicable'].map(v => `<span class="vh"><span class="vdot ${v.replace(' ','-')}"></span>${v}</span>`).join('')}
+      <div class="ot">mdBook sources at <span class="mono">${esc(BOOK.src)}</span>, rendered read-only. What is in flight — a proposed claim, a chapter an elaboration has not landed — is not here. ${SM}</div></div>`;
+
+  const i = BOOK.chapters.indexOf(CH), prev = BOOK.chapters[i-1], next = BOOK.chapters[i+1];
+  const body = CH.blocks.map(x => {
+    if(x.t==='inc') return claimHtml(x);
+    const a = anchorOf(x);
+    if(x.t==='h') return `<div class="blk ${HL===a?'lit':''}" id="${a}"><h2>${esc(x.text)}<a class="anchor" href="${chHref(BOOK.id, CH.id, a)}">#</a></h2></div>`;
+    return `<div class="blk"><p>${x.text}</p></div>`;
+  }).join('');
+  $('#page').innerHTML = `<div class="crumb"><span>${esc(ORG.name)}</span><span>›</span><span>${esc(BOOK.title)}</span><span>›</span><span class="mono">${esc(CH.file)}</span><span style="margin-left:auto">${SM}</span></div>
+    <div class="chead"><h1>${CH.n}. ${esc(CH.title)}</h1>
+      <div class="back">${backLink('Back to the flywheel', 'i:'+CH.intent, `the intent this chapter was written by · ${CH.intent}`)}</div></div>
+    ${body}
+    <div class="pfoot">${prev ? `<a class="btn" href="${chHref(BOOK.id, prev.id)}">‹ ${prev.n}. ${esc(prev.title)}</a>` : '<span></span>'}<span class="sp"></span>${next ? `<a class="btn" href="${chHref(BOOK.id, next.id)}">${next.n}. ${esc(next.title)} ›</a>` : '<span></span>'}</div>`;
+
+  if(HL){ const el = document.getElementById(HL); if(el) el.scrollIntoView({block:'center'}); }
+}
+
+if(Q.get('theme')) document.documentElement.dataset.theme = Q.get('theme');
+render();
+})();
+</script>
