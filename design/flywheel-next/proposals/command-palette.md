@@ -78,7 +78,7 @@ same in the chat after that platform's prefix (281, 293).
 | `/yes all` | one `answer` per approve decision in number order, never a batch | S7 |
 | `/capture <text>` | `capture(text, source: page)` | 19, 111 |
 | `/intent <text>` | `capture` then `mark-intent(capture)` | 19, S30 |
-| `/elaborate` | pick intents, then `explore(intents, with-operator \| standing)` | 189, 188 |
+| `/elaborate [type]` | pick intents, then `explore(intents, type)`; the type is any the registry holds, `with-operator`, `standing` or a shipped one such as `fundamentals`, named as a subcommand | 189, 188, 190, 318 |
 | `/ask <text>` | `ask(repository, text)` | 28 |
 | `/unit <text>` · `/chore <text>` | `propose-unit(bolt, text)`, `propose-chore(repository, text)` | 34, 60 |
 | `/session <text>` | `open-session(repository, text)` | 69 |

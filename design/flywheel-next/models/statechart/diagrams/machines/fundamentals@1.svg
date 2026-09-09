@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1378" height="359" viewBox="0 0 1378 359" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1378" height="359" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">fundamentals@1 — template, extensible</text>
+<text x="40" y="57" font-size="12" fill="#666">The elaboration type that writes the fundamentals part of the book: a statement of invariants of what the system is and what must always hold, written as clauses numbered in one sequence,…</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 24, 25, 54, 190, 318 · elaboration-types/fundamentals@1.yaml · params place, agent, deliverables</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">work</text>
+<line x1="80" y1="103" x2="630.575" y2="103" stroke="#2b8a8a" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="220.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="220.0" x2="69.0" y2="220.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M306.4,182.0 V159.0 H534.6 V182.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"><title>the session declares done only once the part validates against the style guide&#x27;s schema; the machinery finishes the elaboration (25)</title></path>
+<path d="M80.0,182.0 V129.0 H370.4 V182.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M155.5,182.0 V144.0 H403.8 V182.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"></path>
+<path d="M230.9,182.0 V174.0 H437.2 V182.0" fill="none" stroke="#2b8a8a" stroke-width="1.3" marker-end="url(#mT)"><title>idle with no exit written is a stall for a self-closing type</title></path>
+<path d="M420.5,234.0 V268.0 H193.2 V258.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M470.6,182.0 V174.0 H610.6 V182.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<rect x="70.0" y="182.0" width="246.4" height="76.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"><title>the part, the claims it yields and their map attachments are the three deliverables; a clause that names no behaviour a repository could be judged against yields no claim, and that is the normal case (318)</title></rect>
+<text x="193.2" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">session</text>
+<text x="193.2" y="216.0" font-size="9.5" fill="#2b8a8a" text-anchor="middle" font-weight="700">⧉ session</text>
+<text x="193.2" y="228.0" font-size="8" fill="#999" text-anchor="middle">agent=$agent · place=$place · work_order=rendered ·</text>
+<text x="193.2" y="240.0" font-size="8" fill="#999" text-anchor="middle">keep_alive=False · deliverables=[fundamentals-part,</text>
+<text x="193.2" y="252.0" font-size="8" fill="#999" text-anchor="middle">claim, context-map]</text>
+<rect x="360.4" y="182.0" width="120.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"></rect>
+<text x="420.5" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">stalled</text>
+<rect x="394.0" y="206.0" width="53.1" height="14" rx="7" fill="#c9962e"/>
+<text x="420.5" y="216.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">stalled</text>
+<text x="420.5" y="228.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: retry · drop</text>
+<rect x="524.6" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="2"></rect>
+<rect x="527.6" y="185.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#2b8a8a" stroke-width="1.2"/>
+<text x="572.6" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">done</text>
+<rect x="337.0" y="147.5" width="167.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="420.5" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">final exited ∧ session.exit = done<title>the session declares done only once the part validates against the style guide&#x27;s schema; the machinery finishes the elaboration (25)</title></text>
+<rect x="109.0" y="117.5" width="232.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="225.2" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">final exited ∧ session.exit ∈ {stalled, invalid}</text>
+<rect x="252.3" y="132.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="279.6" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">final lost</text>
+<rect x="208.5" y="162.5" width="251.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="334.1" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">activity ∈ {idle} ∧ session.idle_since older than 2h<title>idle with no exit written is a stall for a self-closing type</title></text>
+<rect x="277.1" y="268.5" width="59.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="306.8" y="277.0" font-size="8.5" fill="#333" text-anchor="middle">reply retry</text>
+<rect x="513.2" y="162.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="540.6" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">reply drop</text>
+<rect x="40" y="315" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="325" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="71" y="334" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="325" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="334" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="325" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="334" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="325" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="334" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="325" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="617.85" y="334" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="325" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="334" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="325" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="334" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="325" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="334" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>

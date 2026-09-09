@@ -260,7 +260,7 @@ were settled, not their place on the page.
 |---|---|---|---|
 | decision | a rail card, a marker on a lane, the map or a chapter margin | the decision's text; the evidence its kind shows (S5); its document when it has one, with a plannotator link (S33); its history with the operator's responses; its owner with "assign…" (S170); "read in book" per cited claim; "the artifacts behind it" | the answers, one response each; in-flight state while one is sending; "answered by <member> at hh:mm" with no controls when another member answered it (S167) |
 | proposal | its decision | the proposal read whole: every bolt (open or new, name editable) with its units; per unit: name, type, why, dependencies, covered claims with "read in book", lineage, controls bolt · new bolt · rename · type · drop; a refusal inline when an edit would break a dependency, with the offer to take dependents along; "what a yes starts"; the "that's all wrong" field; lineage intent → writeback → landing on the blueprints → planning run → proposal (184) | yes · redo · later |
-| unit | its decision or slip | the unit document with a note control per section; items and stages; cited claims with "read in book"; sessions running (none before yes); "change" opening its artifact view once approved, "no change yet" before (187) | yes · drop · redo · bolt · new bolt · rename · type · later |
+| unit | its decision or slip | the unit document with a note control per section; items and stages; cited claims with "read in book", or "no claim cited" and, once landed, whether a claim was captured, declined or neither yet (34a, 317, S207); sessions running (none before yes); "change" opening its artifact view once approved, "no change yet" before (187) | yes · drop · redo · bolt · new bolt · rename · type · later |
 | bolt | a ledger | the ledger; the bolt's repository, line and place; decisions on it (in the rail, where you answer); its units with drop per unstarted unit and "change" per unit; rename; sessions running with host and last activity; services with start and stop; served endpoints; the acceptance file (S99); history | no decision here that is not in the rail; drop, rename, start and stop are dictations |
 | landed bolt | a record | the record; the landing (when, through which gates, place removed); pull request and checks; environments; units landed; the acceptance file; signals from operation with their move | nothing to answer |
 | intent | a thread | the thread; the intent's state and line; decisions on it; sessions running; its change directory (S99) | its decision's answers when one is pending, else nothing to answer |
@@ -281,7 +281,7 @@ were settled, not their place on the page.
 | work item | a chip on a ledger or in a dock | its commits in Conventional Commits form, the deliverables it recorded, its session's report, its session chip | nothing to answer; reply when the item is blocked (S49) |
 
 - **S29.** Requirements served: 17, 47, 68, 141, 144, 146, 172, 184,
-  187–188, 195, 209–210, 213. Tools called: `answer`, `drop`, `rename`,
+  187–188, 195, 209–210, 213, 317. Tools called: `answer`, `drop`, `rename`,
   `start`, `stop`, `finish`, `end`, `release` (ask again, §6), `attach`,
   `capture`, `create-repository`, `adopt-repository`, `reviewed`.
 
@@ -302,6 +302,13 @@ were settled, not their place on the page.
   text for meaning. Text the operator asks the flywheel to read goes to
   the model in the page's browser as the interpreter (216a, S34), which
   proposes calls the operator confirms.
+- **S208.** `/elaborate` takes the elaboration type as a subcommand,
+  and every type the registry holds is one: `/elaborate fundamentals`
+  opens the same multi-pick of intents and sends
+  `explore(intents, fundamentals)`, the type that writes the
+  fundamentals part of the book (318, 190). A type the caller may not
+  reach is not offered, as with every other command (S30). No new entry
+  joins the command table for it; the types are the entry's arguments.
 
 ### 1.6 The chat rendering
 
@@ -354,6 +361,18 @@ were settled, not their place on the page.
   `reviewed` mark: on the map, the review overlay and the changes page;
   in the book, the review overlay of S96. One mark, one switch, one
   "mark reviewed" for both.
+- **S207.** Beneath them the review view lists the units that landed
+  since the mark citing no claim (34a), under one question: is anything
+  here worth a claim. Each row is the unit with its bolt, its type and
+  what it changed, and two answers. Yes opens a picker of the open and
+  proposed intents and sends `claim-needed(unit, captured, intent)`,
+  which attaches the unit's change there as material; the claim is
+  written in that intent by the normal path and the unit is not
+  reopened. No sends `claim-needed(unit, declined)` and the unit is
+  never listed again. The list is derived, never stored, and every unit
+  in it has already landed, so nothing waits on an answer and "mark
+  reviewed" is not gated on giving one. No row here is a rail decision
+  and none carries a number (317).
 
 ### 1.8 The status view on a phone
 
@@ -433,12 +452,19 @@ were settled, not their place on the page.
   change to its anchor and back to the changes page (S28). "mark
   reviewed" sends `reviewed` once from either (S73); the mark moves and
   both empty.
+- **S209.** The book's first part is the fundamentals part and renders
+  like any other (318). Its clauses show as the numbered prose they
+  are, and where a clause is followed by a claim included by anchor,
+  that claim renders in place with everything S92 gives it. Most
+  clauses carry none and show alone; the viewer draws no empty block
+  for them and offers no control to add one. A claim's prose may say
+  which clause it serves, which is text for the reader.
 - **S97.** The viewer never shows: a decision as a card; the count; a
   claim's verdict text or evidence inline (the dot links back to the
   artifact view on the page); an editor. The book is read here and
   written only by the machinery (98, 121).
 - **S98.** Requirements served: 98, 100, 101, 121, 122, 200, 212, 315,
-  316.
+  316, 318.
   Tools called: `reviewed`.
 
 ### 1.10 The artifact views

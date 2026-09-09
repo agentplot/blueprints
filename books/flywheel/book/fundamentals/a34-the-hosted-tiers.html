@@ -1,0 +1,476 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>A.34 The hosted tiers - Flywheel design</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="The design book for the flywheel: the work-loop machinery that turns an operator&#x27;s intent into built software. Part I includes the numbered requirements from their source; Part II explains the loop, design and construction, the book and the context map, the page, instances and hosts, the state store contract and the control plane; Part III includes the surfaces; Part IV points at the roadmap, the models and the proposals.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "../searchindex-65788371.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-5ad3a734.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Flywheel design</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="a34-the-hosted-tiers"><a class="header" href="#a34-the-hosted-tiers">A.34 The hosted tiers</a></h1>
+<ol start="268">
+<li>The tiers are four, named by what exists on the service side. Tier
+0 is your computer: the binary on the operator’s own machine, its
+own sign-in kind (243), and nothing of the instance’s on the
+service side at all. Tier 1 is the cloud agent: a capture queue, a
+key, a role, a warm cache object and a scheduler entry for the
+instance, with no pool, so the operator’s own machines still
+build. Tier 2 is pools: tier 1 with hosts provisioned on demand from
+the instance’s image (240). Tier 3 is your account, in two
+shapes the instance chooses in the management console: <strong>stores
+only</strong>, where the key, the capture queue, the warm cache and the
+pool image live in the customer’s own cloud account and the service’s own
+compute reaches them through a role the instance grants (267,
+276); and <strong>stores and compute</strong>, where the binary itself is
+provisioned into that account through the same granted role and
+nothing of the service’s runs there but the control plane (276a).
+A tier is a binding named in the manifest (217j) and never a second
+machinery.</li>
+<li>On the hosted tiers the dispatcher is one function per tier, and
+each invocation is one instance’s tick. It assumes the tier’s
+role under a session tag naming that instance (259), fetches,
+evaluates, pushes by compare-and-swap (162), delivers the rail,
+wipes its scratch and exits, retaining nothing between invocations
+(217a); the sandbox is reused across instances, so retaining
+nothing is the tick’s own act, its scratch wiped and its data key
+dropped before exit. It runs a model. A tick has a fixed budget the
+placement states, fifteen minutes on the function placement; when
+the budget is short the tick carries triage before it carries a
+reply. The interpreter that answers a message is
+one bounded call per message on the in-process runner (216, 217b,
+217c), and the triage of a self-contained capture, one whose whole
+content is already in the queue such as a chat message or a webhook
+body, runs beside it (217e); both are bounded per tick, and what
+does not fit is carried to the next tick. Which of the two a tick
+runs at all, and at which model class, is the plan’s fact (294): a
+plan that buys neither has its free text interpreted in the page
+(216a) and its self-contained captures triaged in one daily batch
+at the sweep (273, 281). Two things never run in
+it: triage over raw material a capture points at, which is a
+transcript on the operator’s own machine or in a store they own
+(263), and every elaboration and construction session. Those run on
+a machine of the operator’s own or on a pool host. It never holds
+code (264): the declaration it runs takes no object kind, no
+repository and no unit type (217), so there is nothing for it to
+clone. A failure in one instance’s tick ends that tick and no
+other (218). Model access on a hosted tier is the service’s, carried
+by the tier role and metered into the rail (279, 294), unless the
+instance places a model key of its own instead (207); which
+model provider sees rail text and messages is named in the tier
+statement (261).</li>
+<li>The tick is invoked, not looped. A long-lived process its
+platform’s launcher starts is one invoker among several: a clock, a
+notification, an arriving capture, a chat event, a request for the
+page. Every invoker produces the same tick, and a run missed while
+nothing invoked it is caught up by the next one under the idempotent
+key (111). This amends 231: what 231 requires is that nothing but
+the tick keeps time, not that a process stands. Every invoker
+enqueues on the instance’s queue and the queue admits one tick
+of an instance at a time, the instance naming the group the
+queue serializes, so the scheduler’s target is the queue and never
+the function. A request for the page is a read under the caller’s
+identity and is not an invoker (291).</li>
+<li>On the hosted tiers the capture endpoint (216) is a managed queue
+per instance with one stateless receiver of the machinery’s in
+the acknowledgement path, which verifies the caller’s signature,
+answers the platform’s liveness check, acknowledges within the
+platform’s deadline, and routes by workspace to the instance’s
+queue; it holds no key that decrypts and reads no queue. The
+receiver may encrypt what it enqueues and never decrypt, so its
+grant on an instance’s key is the encrypting one and the
+tagged session of 259 holds the decrypting one. The item waits for
+a tick. The queue is the caller’s retry buffer and not
+state. A capture is captured when its commit lands, a lost queue is
+indistinguishable from a call that never arrived, and a repeat under
+the same key writes nothing (111). Every body it holds is encrypted
+under the instance’s key (256).</li>
+<li>The warm cache is one encrypted object per instance (256)
+holding a bundle of two sparse shallow clones: the state repository,
+and the blueprints restricted to the manifest, the claims and the
+machinery’s prefix (203, 262). A tick downloads it, works in its own
+scratch, and uploads it back; it is mounted nowhere and shared with
+nothing. It is evicted when the instance has been idle past the
+stated time, and the next tick re-clones (258).</li>
+<li>Scheduling on the hosted tiers is one named entry per flywheel.
+At the end of every tick the machinery upserts a single one-shot
+entry carrying the due time the machines computed, deleted when it
+completes. The name is the instance’s, so an interim tick
+replaces the entry with its own due time, earlier or later, and at
+most one entry per instance ever exists. An entry that fires and
+finds nothing due is one idempotent tick that reschedules or deletes
+(111). A daily sweep is the backstop for an entry never written. The
+set of entries is a projection: it only shortens the wait, ticking
+rebuilds it, and its loss costs a sweep and never a decision (136).</li>
+<li>Notification is the primary way a host learns of new state and the
+poll is the backstop (166). The bound is stated per notification
+channel: seconds where a live push reaches the host, a named
+interval where none does. No unconditional poll is the floor, since
+a poll costs the service for every instance whether or not
+anything happened.</li>
+<li>A pool host on a hosted tier is a microVM created from the
+instance’s image (239) when the rail approves work the pool
+covers. No shared network of the service’s is required, a container
+runtime runs inside it so a repository’s own environment declaration
+works unchanged (238), and it is terminated at retire and never
+suspended, so its disk goes with it (240). The placement states a
+fixed maximum lifetime, and the manifest names a fallback placement
+for a session that must run longer. It serves one instance (241)
+and holds that instance’s code and raw material for the length
+of the work, on a disk the platform isolates per host and destroys
+at terminate under the platform’s own encryption; an instance
+whose tier statement must name its own key on that disk (261) binds
+its pool to a placement that takes one, a container task with a
+volume under the key. The image is built on a pool host or the
+operator’s own machine and never on a shared host, because building
+it reads the repositories’ environment declarations (238, 239), and
+its artifact is stored under the instance’s key (256).</li>
+<li>Tier 3’s first shape, stores only, is federation. The instance
+creates one role in its own
+account whose trust admits the service’s issuer with the
+instance as the subject, and the key, the warm cache, the
+capture queue and the pool image live there (267). Each tick assumes
+that role with a token minted for that tick, so the service stores
+no credential of the instance’s and has nothing to rotate or
+leak, and every use of the key is logged in the instance’s own
+account. Revocation is deleting the role: the next tick refuses with
+the attention line 260 requires, and running work is not killed. The
+customer registers the service’s issuer as an identity provider
+in their own cloud account and allows the role’s session to be
+tagged with the instance, and the
+token the service mints carries the instance as a principal tag,
+because a web-identity session takes its tags only from the token it
+presents. The only standing grants in that cloud account are
+the role’s trust and the key’s grant to that role. The wake from the
+instance’s queue carries the instance’s name and nothing
+else, and the tick reads the queue itself under the assumed role, so
+nothing of the service’s stands with a decrypting grant on the
+instance’s key and deleting the role ends every path.
+276a. Tier 3’s second shape is stores and compute. The binary is
+provisioned into the customer’s own cloud account through the same
+role it grants (276), and nothing of the service’s runs there.
+What stays on the service side is the control plane and no more: a
+<strong>registry</strong> of instance names, tier, health and counters; a
+<strong>deployer</strong>, which applies the stack through the granted role and
+stamps the binary’s version (208); and <strong>identity</strong>, the provider’s
+environment holding the redirect entry for the host’s served name
+(243, 244, 291). The chat application is still the service’s (277,
+290), so rail lines arrive from one bot. Under this shape the
+management console offers dedicated compute, created in the
+customer’s own cloud account by the deployer through the same role, and
+each option is stated with what it changes: the dispatcher as an
+invoked function (269) or as a long-lived container, on a container
+service or on an instance of the instance’s own; and pools on
+microVMs, on container tasks or on such instances (275). A
+long-lived dispatcher holds the chat platform’s gateway socket, so
+free text in a channel is answered where an invoked function must
+take a slash command (277); pool hosts on an instance have no
+lifetime ceiling, so the fallback placement 275 names is not
+needed. Enterprise includes both shapes (281).</li>
+<li>On the hosted tiers the chat sink’s identity may be the service’s
+own Slack or Discord application, installed into the instance’s
+workspace and scoped to the instance’s channel, beside the bot
+the manifest names and the token the operator placed (217d). It
+carries rail text and the interactions it receives and nothing else:
+no repository reach and no key. The record still names who responded
+(153); the application is the service’s. On a function placement
+Discord free text is the string option of the application’s slash
+command; plain replies in a channel are read only by a placement
+holding the gateway socket. Slack free text arrives over the events
+subscription and needs no socket. The receiver answers an
+interaction with a deferred acknowledgement inside the platform’s
+deadline (271), and the tick posts the real reply within the
+interaction token’s window or as an ordinary message from the
+application.</li>
+<li>An intermittent host (150a) keeps its place on a hosted tier. A
+laptop closed past its stale window is away, its leases stand and
+its sessions’ clocks pause, and the cloud agent keeps ticking
+everything else, so decisions are delivered and answered and
+captures are accepted and queued while the machine that usually does
+it sleeps. What waits for the lid is only the work that host alone
+covers, and triage still runs only where 263 allows.</li>
+<li>The receiver of 271 and the chat application of 277 are the two
+shared components of the hosted tiers, and they are the only two.
+Each sees an inbound payload once, in transit, and keeps nothing;
+each is a stated fact of the tier (261). No other process of the
+service’s is reached by more than one instance’s traffic.</li>
+<li>The page and the tool server on a hosted tier are served at the
+tier’s name by the same function on request, under the caller’s
+token (243, 249). The page is a static bundle served at that name.
+The tool server is the binary’s own catalogue of tools (193),
+reached over HTTP with the identity token by the page, and over
+standard input and output or in-process, in the shape of the model
+context protocol, by sessions and by the interpreter; the agent is a
+client of the tools and never serves them. A request is a read under
+the caller’s identity and never a tick (270), and it neither
+downloads nor decrypts the warm cache (272). The page sink’s
+delivery is the tick writing one small page projection per
+instance — the status view and the rail as data, carrying each
+member’s page sink and its mark (14, 148, 236) — to an object
+encrypted under the instance’s key (256). A request names the
+instance in its path (205a): the server checks the caller’s
+token for that user’s membership of that instance (247, 249),
+assumes the tier role tagged with it (259), decrypts that one
+projection and returns it. So a request costs one small decrypt and
+reaches neither the git host nor the bundle, and nothing of another
+instance is ever decrypted on a request, because the tag is the
+path’s flywheel. A write is a tool call enqueued on the
+instance’s queue, which decrypts nothing (271), and it is
+captured and ticked like any other. The instance switcher lists
+only the instances the caller’s token is assigned to; one they
+are not assigned to is not shown. On a hosted tier the bundle is
+held in an object store behind a content distribution at the served
+name, which fronts the store for the bundle and the function for the
+tool paths, and it is uploaded at release so its version is the
+binary’s (208). A self-managed host embeds the same bundle in the
+binary and serves it itself.</li>
+<li>An invoked host is alive while its scheduler entry stands or its
+queue holds items. It heartbeats once per tick, its stale window is
+the due time it wrote plus the profile’s grace, and 150’s takeover
+is raised for it only past that. A host with no entry, no queued
+item and no heartbeat is gone.</li>
+<li>The tool server at a host’s address is a remote server of the model
+context protocol, and its clients are the page, the chat
+application, the interpreter, the sessions the machinery starts
+(over standard input and output or in-process) and a member’s own
+client, such as a coding agent on their machine (193, 291). Every
+client is checked by the same rules: membership admits the identity
+to the instance and the permission the tool declares authorizes
+the call (248, 249). The authority a client signs in against is the
+host’s identity kind (243), so a hosted host’s clients hold a
+Frontegg token and a self-managed host’s hold what its device flow
+issued, and a member adds a self-managed host to their own client at
+its localhost address (245) as readily as a hosted one at its served
+name. The catalogue a client is shown is the tool catalogue filtered
+by that caller’s permissions, so a tool the caller may not invoke is
+not offered. A tool call from any client is a response recorded like
+any other, with who gave it and when (153).</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../fundamentals/a33-tenancy-and-encryption.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../fundamentals/a35-plans-and-presets.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../fundamentals/a33-tenancy-and-encryption.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../fundamentals/a35-plans-and-presets.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid-eefea253.min.js"></script>
+        <script src="../mermaid-init-ccf746f1.js"></script>
+        <script src="../suite-nav-eae185de.js"></script>
+        <script src="../book-grab-651a5042.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

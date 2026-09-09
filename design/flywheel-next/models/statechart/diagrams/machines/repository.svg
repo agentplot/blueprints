@@ -7,7 +7,7 @@
 <marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
 </defs>
 <rect width="1378" height="347" fill="#fff"/>
-<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">repository — object v1, core · object repository · parent organization</text>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">repository — object v1, core · object repository · parent instance</text>
 <text x="40" y="57" font-size="12" fill="#666">A built repository the flywheel tracks (206).</text>
 <text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 5, 104, 149, 199, 202, 203, 206, 207, 208 · repository.yaml · record name, repo, nodes, document, sources, adopted, template_version</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
@@ -32,7 +32,7 @@
 <text x="166.8" y="216.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">repository-proposed</text>
 <text x="166.8" y="228.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: yes · drop</text>
 <text x="166.8" y="240.0" font-size="8" fill="#8a6a1d" text-anchor="middle">document document on the review surface</text>
-<rect x="307.6" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>created on the git host under the organization from the built-repository template; an adopted repository is already there (206, 208)</title></rect>
+<rect x="307.6" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>created on the git host under the instance from the built-repository template; an adopted repository is already there (206, 208)</title></rect>
 <text x="355.6" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">creating</text>
 <rect x="447.6" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the manifest entry, the `flywheel/` declarations and the map nodes with their homes are written in one blueprints commit, and planning for the repository is put (199, 202, 203, 206)</title></rect>
 <text x="495.6" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">registering</text>

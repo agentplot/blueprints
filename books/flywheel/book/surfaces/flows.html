@@ -1,0 +1,614 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Flows - Flywheel design</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="The design book for the flywheel: the work-loop machinery that turns an operator&#x27;s intent into built software. Part I includes the numbered requirements from their source; Part II explains the loop, design and construction, the book and the context map, the page, instances and hosts, the state store contract and the control plane; Part III includes the surfaces; Part IV points at the roadmap, the models and the proposals.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "../searchindex-65788371.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-5ad3a734.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Flywheel design</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="flows"><a class="header" href="#flows">Flows</a></h1>
+<p>Each step names the surface, the control, the tool call, and what the
+page shows after.</p>
+<h3 id="21-answering-a-decision-from-the-rail"><a class="header" href="#21-answering-a-decision-from-the-rail">2.1 Answering a decision from the rail</a></h3>
+<ul>
+<li><strong>S40.</strong> 1. Rail: j or k focuses card 418; its intent lights in
+Inception and the ? 418 marker on the thread lights. 2. Rail: y is
+refused with the card’s answers listed, because a decide card has no
+yes; the operator presses “close” → <code>answer(418, close)</code>. 3. The card
+shows “sending close 418” and refuses a second click. 4. The response
+settles: the log gains “418 close · recorded”, the card leaves the
+rail, focus moves to the next card, the thread shows “closed · leaves
+in 7d” with an end cap, SINCE gains “closed · intent loop-granularity
+· by your response”.</li>
+</ul>
+<h3 id="22-reviewing-and-approving-a-proposal-with-per-unit-edits"><a class="header" href="#22-reviewing-and-approving-a-proposal-with-per-unit-edits">2.2 Reviewing and approving a proposal with per-unit edits</a></h3>
+<ul>
+<li><strong>S41.</strong> 1. Rail: Enter on card 422 opens the proposal page in the
+dock; the sheet in the gate lights. 2. Dock: the bolt select on unit
+u4 changed to rail-tail → <code>answer(422, "u4: bolt rail-tail")</code>, sent
+the moment it is given; the log gains one line; the sheet’s foot
+counts one per-unit response. 3. Dock: drop on u2, which u3 depends
+on → refused inline with the reason and “drop u3 too”; taking the
+offer sends one response per dependent (184). 4. Dock: the type
+select on u1 → <code>answer(422, "u1: type fast")</code>. 5. Dock: the bolt name
+field on the new bolt, Enter → <code>answer(422, "rename tail-cursor cursor")</code>. 6. Dock footer: yes → <code>answer(422, yes)</code>. 7. The sheet
+leaves the gate; each bolt appears or grows in Construction with its
+units queued or building, dependency-free units starting at once;
+SINCE gains “accepted · rail atlas · n units on m bolts”; the next
+decision that is the operator’s is each bolt’s close (13).</li>
+</ul>
+<h3 id="23-redo-with-notes"><a class="header" href="#23-redo-with-notes">2.3 Redo with notes</a></h3>
+<ul>
+<li><strong>S42.</strong> 1. Dock, proposal page: text in “that’s all wrong” and
+“redo 422” → <code>answer(422, redo, &lt;notes&gt;)</code>. 2. The proposal is
+withdrawn: its sheet leaves the gate, SINCE gains “redo · rail atlas ·
+withdrawn · planning charged again”, and a planning-in-progress row
+appears in the gate with the operator’s notes and a session chip. 3.
+When planning exits, a new proposal arrives under a new number (model
+5.2); a toast names it; its lineage shows the withdrawn proposal, the
+redo response, and the new run. Nothing was created by the withdrawn
+proposal.</li>
+</ul>
+<h3 id="24-explore-over-intents"><a class="header" href="#24-explore-over-intents">2.4 Explore over intents</a></h3>
+<ul>
+<li><strong>S43.</strong> 1. <code>/elaborate</code> opens a multi-pick of the open intents, or
+takes those already ticked on Inception; every open intent’s head
+knot shows a tick target, and the palette’s footer says what will
+happen and offers with-operator or standing, start and cancel. 2. Two
+intents picked; the footer counts them. 3. Start →
+<code>explore([intents], standing)</code>. 4. The mode ends; an
+exploration row appears at the head of Inception with its session
+chip and “since hh:mm”; each covered intent gains an explore bead;
+the dock opens on the exploration page. 5. Later, finish in the
+exploration’s footer → <code>finish(elaboration)</code>; the row shows “done ·
+leaves in 7d”; SINCE gains “finished · explore …”.</li>
+</ul>
+<h3 id="25-capture-with-the-intent-toggle"><a class="header" href="#25-capture-with-the-intent-toggle">2.5 Capture with the intent toggle</a></h3>
+<ul>
+<li><strong>S44.</strong> 1. ⌘K opens the palette; text in its field; the preview
+line under it reads “will send: capture”. 2. The intent toggle on; the
+line reads “will send: capture · intent”. 3. Enter → <code>capture(text, page)</code> then <code>mark-intent(capture)</code>. 4. A new thread appears at the
+head of the intents, state open, first elaboration approved, note
+“captured by you as an intent”; the log gains the line; the palette
+closes and the toggle resets. Without the toggle, step 4 is instead
+the curation counter moving by one and a toast “capture · 1 signal ·
+curation sees it”.</li>
+</ul>
+<h3 id="26-landing-a-bolt-and-watching-it-leave"><a class="header" href="#26-landing-a-bolt-and-watching-it-leave">2.6 Landing a bolt and watching it leave</a></h3>
+<ul>
+<li><strong>S45.</strong> 1. Rail: card 416, “switchboard / plan-rows · 4 units
+merged · gates green”; y → <code>answer(416, yes)</code>. 2. The ledger in
+Construction gains a landing stamp “landing · PR #n”; a record appears
+in Operation with the request open and checks running; SINCE gains
+“landing · PR open · gates running”. 3. When the gates pass, the
+ledger leaves Construction; the record shows the request merged,
+every check green, “leaves in 7d”; SINCE gains “landed · gates green
+· place removed”. 4. If a gate fails, the ledger stays open with the
+failure on it and a land-failed decision appears in the rail (40,
+model 5.3). 5. After the window with nothing live, the record leaves
+Operation and stays in history (186).</li>
+</ul>
+<h3 id="27-onboarding-a-repository-from-the-map"><a class="header" href="#27-onboarding-a-repository-from-the-map">2.7 Onboarding a repository from the map</a></h3>
+<ul>
+<li><strong>S46.</strong> 1. Map strip: “+ repository” opens the add-repository page
+in the dock, seeded with every unhomed element ticked. 2. Dock: a
+name; elements ticked or a context chosen as default home; kinds,
+capabilities and the claims that fall into scope derive live and are
+shown, never typed. 3. Propose → <code>create-repository(name, nodes, document)</code> or <code>adopt-repository(name, repo, nodes, document)</code> (206).
+4. A decision for the repository appears in the rail under approve;
+its yes creates or registers the repository, writes its manifest entry
+and map homes. 5. The repository chip appears in the strip marked
+new; its first planning runs; the baseline decision arrives under a
+new number with the unsatisfied claims as one proposal (104, 202),
+linked from the baseline sheet to the repository page.</li>
+</ul>
+<h3 id="28-correcting-a-scope-by-re-attaching"><a class="header" href="#28-correcting-a-scope-by-re-attaching">2.8 Correcting a scope by re-attaching</a></h3>
+<ul>
+<li><strong>S47.</strong> 1. Repository page or map: a claim’s row; “re-attach…” arms
+the canvas; the dock closes; a bar says “re-attach <claim> — click a
+context, an element, an edge, a link or a neighbour dock · esc
+cancels”. 2. One click on the target → <code>attach(claim, element)</code>. 3.
+The bar clears; the claim page reopens with the new attachment, the
+recomputed scope line and verdicts: a repository newly in scope shows
+unjudged and “planning due”; one that left shows not applicable (195,
+map 4.8). Nothing else on the map moves.</claim></li>
+</ul>
+<h3 id="29-reviewing-what-changed-since-the-last-mark"><a class="header" href="#29-reviewing-what-changed-since-the-last-mark">2.9 Reviewing what changed since the last mark</a></h3>
+<ul>
+<li><strong>S48.</strong> 1. Map control strip, or the book header: overlay “since
+last review”; the mark and its date show; on the map unchanged cards
+and edges dim and changed ones carry the marks of S24 with a note; in
+the book changed paragraphs and blocks are outlined and unchanged
+chapters dim in the tree (S96). 2. “changes · n” opens the changes
+page: every difference with a link, and the review history with the
+mark. 3. A map link opens the element’s page; a book link jumps to
+its anchor; an element’s ref opens the chapter. 4. “mark reviewed” →
+<code>reviewed</code> on the rail object; the mark moves to now; both views
+show nothing changed (122).</li>
+</ul>
+<h3 id="210-a-blocked-sessions-question"><a class="header" href="#210-a-blocked-sessions-question">2.10 A blocked session’s question</a></h3>
+<ul>
+<li><strong>S49.</strong> 1. Rail, answer group: card 421 shows the question verbatim
+and “session alive · other items of the bolt running”; the ✎ 421
+marker sits on the bolt’s ledger under the blocked item. 2. Rail or
+dock: reply opens a text field; send → <code>answer(421, reply, &lt;text&gt;)</code>.
+3. The card leaves; the item’s chip turns from blocked to working
+with “answered: …”; if the session is gone, the chip shows starting
+and “delivered when its place is reachable” (70); SINCE gains
+“answered · wi-#418”.</li>
+</ul>
+<h3 id="211-a-host-lost"><a class="header" href="#211-a-host-lost">2.11 A host lost</a></h3>
+<ul>
+<li><strong>S50.</strong> 1. Host strip: mac-mini’s pill shows gone with the time
+since its last heartbeat; its sessions’ chips dim; the rail’s
+attention shows “host mac-mini last seen 41m · holds wi-#418” with
+takeover and wait; the ! host marker sits on the bolt. 2. The pill
+opens the host page: what it runs, its leases and when they expire.
+3. Footer: “takeover on studio” → <code>answer(host-gone, takeover)</code>; wait
+leaves the lease to expire, when the machinery does the same. 4. The
+attention line leaves; the affected chips move to studio with “taken
+over · place restored”; the pill shows released.</li>
+</ul>
+<h3 id="212-reading-a-decision-in-the-book"><a class="header" href="#212-reading-a-decision-in-the-book">2.12 Reading a decision in the book</a></h3>
+<ul>
+<li><strong>S126.</strong> 1. Rail: j focuses card 414, a unit citing claim
+sessions/one-writer. 2. b, or “read in book” on the card’s dock
+page, opens the viewer in a place of its own at the claim’s chapter
+and block, which lights; the page’s board and dock stay as they were.
+3. The block shows the claim’s version, standing, its attachments,
+the derived scope line and a verdict dot per repository in scope. 4.
+“evidence” links back to the claim’s artifact view on the page, which
+opens in the dock with the verdict per repository and the as-built
+statement, commit and session behind each (205a, 308). 5. y on the
+rail → <code>answer(414, yes)</code>; the card leaves and the viewer stays where
+it is.</li>
+</ul>
+<h3 id="213-drilling-into-a-context-and-reading-a-crossing"><a class="header" href="#213-drilling-into-a-context-and-reading-a-crossing">2.13 Drilling into a context and reading a crossing</a></h3>
+<ul>
+<li><strong>S127.</strong> 1. Map view: j moves the focus ring to Billing; its card’s
+thumbnail shows five dots, three hairlines and one stub toward
+Payments Gateway. 2. Hover on the Billing → Payments Gateway edge:
+the pill reads “1 cross”; the panel lists the link, invoice-settled
+in Billing homed in billing-svc, kind publishes, to settlement in
+Payments Gateway homed in gateway, and the relationship’s one claim.
+3. Enter drills into Billing: the inside at full size, the elements
+as nodes, the link edges with their kinds, Payments Gateway as a dock
+on the right carrying the customer-supplier pattern, D and ACL, and
+the crossing count; the cross-context link lands on the dock with
+settlement named. 4. A node’s open-question badge: the question and
+its capture control; “capture” → <code>capture(question, page)</code>; the badge
+shows captured. 5. Esc returns to the whole map with the camera as
+it was; the focus ring is on Billing.</li>
+</ul>
+<h3 id="214-opening-the-artifact-behind-a-unit"><a class="header" href="#214-opening-the-artifact-behind-a-unit">2.14 Opening the artifact behind a unit</a></h3>
+<ul>
+<li><strong>S128.</strong> 1. Construction: a “change” control on unit u3 in the
+bolt’s dock. 2. The artifact view opens under its source bar: “derived
+from atlas @ 9f3c1 · openspec/changes/u3-… · read 07:41 · never
+stored · edits only through review”; the stepper shows ff · apply ·
+verify · archive with apply current and the unit type’s build stage
+under it; the requirement blocks with their scenarios; tasks.md as a
+checklist with the item and commit that did each task. 3. “open
+source” opens the path at the shared line. 4. “review” opens the
+review page for the change; no decision is pending on it, so the
+footer says so; a note on a section is refused because there is no
+decision to carry it (S36).</li>
+</ul>
+<h3 id="215-reading-the-instance-and-adding-a-host"><a class="header" href="#215-reading-the-instance-and-adding-a-host">2.15 Reading the instance and adding a host</a></h3>
+<ul>
+<li><strong>S129.</strong> 1. Machinery strip: the pill reads “1.5d · 1d 19h · at
+risk”; w opens the panel. 2. The wheel shows 1.5 days in the
+“running dry” band; the reading says “you are the limit: 2 decisions
+older than a day · yes on 422 alone adds ~4 days”; the pipe’s
+inception stage is full and its construction stage low. 3. Rail: y on
+422 → <code>answer(422, yes)</code>; the panel re-renders: runway 5.3 days, the
+reading “drain is the limit: add a host · 9 items on 4 alive slots”.
+4. “add a host to drain faster” opens the hosts surface on “+ host”
+(S131). 5. Esc closes the panel; the pill reads “5.3d · 1d 19h”.</li>
+</ul>
+<h3 id="216-adding-a-part-to-a-host"><a class="header" href="#216-adding-a-part-to-a-host">2.16 Adding a part to a host</a></h3>
+<ul>
+<li><strong>S130.</strong> 1. Hosts: the studio row; its detail shows the agent
+installed, triage with sources meeting and folder, and the sinks
+heading empty. 2. “add” on the sinks heading opens the catalogue
+filtered to chat sinks on macOS; the Discord sink needs a bot token;
+“add” opens the flow. 3. The form collects the guild and channel,
+says the bot token is a secret the operator places, and “done” →
+<code>add-package(discord-sink, studio, config, [bot-token])</code> raises
+decision n in the rail, kind package-install, approve; the slot
+reads “adding · decision n”. 4. Rail: y → <code>answer(n, yes)</code>; the slot
+reads “needs a secret” and the bot token sits under attention with
+“place it” until “placed” → <code>answer(secret, placed)</code> and the
+machinery checks the path; then the slot reads “installing” while
+the install effects run. 5. The proof arrives; the slot reads
+installed, with “lease” once the presenter lease is taken.</li>
+</ul>
+<h3 id="217-enrolling-a-host"><a class="header" href="#217-enrolling-a-host">2.17 Enrolling a host</a></h3>
+<ul>
+<li><strong>S131.</strong> 1. Hosts: “+ host”; platform flywheel-cloud managed, name
+willdan-cloud-2. 2. Parts: the Discord sink and the agent ticked from
+the sinks and agent headings’ catalogues; the image at the head of
+the list reads current. 3. Provisioning runs from the host in hand with
+the operator’s own platform credentials, read now and never stored;
+the step shows running then done. 4. Hand-over lists only the ticked
+parts’ secrets, the bot token and model access; the operator hands
+them into the platform’s store; the step shows done. 5. The
+enrolment decision “enrol host willdan-cloud-2” appears in the rail
+with a one-time token and its expiry; y → <code>answer(enrol, yes)</code>. 6.
+The host joins by one command with the token (205), reads the
+manifest and installs its declared parts; each step shows queued,
+running, done. 7. The row shows alive in the strip and the list; the
+instance’s drain column counts one more host.</li>
+</ul>
+<h3 id="218-switching-instance"><a class="header" href="#218-switching-instance">2.18 Switching instance</a></h3>
+<ul>
+<li><strong>S160.</strong> 1. Header: the account item reads chuck; a click opens the
+menu with the identity block, then the switcher: willdan · 9,
+mad-swan · 2, acme · not a member, acme’s operators list not
+carrying chuck (247). 2. mad-swan chosen →
+<code>switch-flywheel(mad-swan)</code>. 3. The whole page swaps: the rail
+shows mad-swan’s two decisions, the board its lanes, the strip its
+hosts and repositories, the instance its runway, the address is the
+same host with <code>/mad-swan/</code> in the path (205a); the dock that was
+open is closed, no card is focused, the view is phases. 4. The
+header’s as-of time is mad-swan’s read and the account item reads
+the same identity, the host’s kind being one for every instance
+it serves. On a hosted host chuck’s roles are read per account, so a
+control chuck holds in willdan may be absent in mad-swan. 5. The
+switcher again returns to willdan the same way, with nothing
+remembered from before.</li>
+</ul>
+<h3 id="219-adding-an-instance-package"><a class="header" href="#219-adding-an-instance-package">2.19 Adding an instance package</a></h3>
+<ul>
+<li><strong>S161.</strong> 1. Account item: instance’s package store; the list shows
+unit types, producers, vocabularies, templates and scenario packs
+with their states; the “data-product” vocabulary reads not installed
+· index · needs nothing. 2. “add” opens the flow: the vocabulary’s
+configuration (the kinds it adds, the facets it declares), no
+secret; “done” raises decision n in the rail, kind install, approve;
+the row reads “adding · decision n”. 3. Rail: y → <code>answer(n, yes)</code>;
+the row reads installing. 4. The proof arrives: the row reads
+installed in the blueprints; the map’s kind legend and the facet controls
+carry the new kinds at the next read (map 3.3); SINCE gains
+“installed · data-product vocabulary”. No host row changed.</li>
+</ul>
+<h3 id="220-changing-a-setting"><a class="header" href="#220-changing-a-setting">2.20 Changing a setting</a></h3>
+<ul>
+<li><strong>S162.</strong> 1. Account item: settings; the manifest as a form, the
+defaults per role group open: the interpreter’s model, triage’s
+model. 2. Triage’s model changed in its select; the field marks
+itself changed and the form’s foot counts one change. 3. Save sends
+one response for the form; the foot shows “sending” and refuses a
+second save. 4. The response settles: the log gains “settings ·
+triage model · recorded”; the machinery’s manifest commit lands; the
+page re-reads and the form shows the new value with nothing marked.
+The next triage session the machinery charges takes the new default
+(173). The bot token’s row in sinks shows “placed” with no value and
+no field.</li>
+</ul>
+<h3 id="221-signing-in-on-your-own-computer"><a class="header" href="#221-signing-in-on-your-own-computer">2.21 Signing in on your own computer</a></h3>
+<ul>
+<li><strong>S178.</strong> 1. The laptop’s own host is a <code>github</code> host and serves its
+page at <code>http://127.0.0.1:7431/willdan/</code>, a localhost port of its
+own choosing with no proxy and no name (245); a second host on the
+same laptop is a second port (232). 2. Opening it with no session
+shows the device flow: a code and github.com/login/device. Chuck
+enters the code there and approves, and the page waits until GitHub
+confirms (253). 3. The page turns to the rail: the account item
+reads chuck, the GitHub username, and the header count is
+willdan’s, the instance whose operators list carries chuck. As a
+listed operator chuck holds every permission, and the flags stand at
+their defaults, so the book viewer and explore are there and pools,
+the package store and the hosts list are not (248, 250, S197). 4. On a
+hosted host the same page instead sends chuck to Frontegg’s hosted
+login, the redirect built from that host’s served name, and lands
+the same way with the Frontegg user as the identity, the GitHub
+username beside it for authorship, and that account’s roles (244,
+246). 5. A first hosted sign-in with no GitHub connection lands on
+the rail all the same, with “connect GitHub” in the identity block;
+chuck may respond and may not be an author until it is connected.</li>
+</ul>
+<h3 id="222-a-second-answer-refused"><a class="header" href="#222-a-second-answer-refused">2.22 A second answer refused</a></h3>
+<ul>
+<li><strong>S179.</strong> 1. Rail, two members: chuck and dana both have card 418
+in hand. 2. dana presses close → <code>answer(418, close)</code>; the record is
+written with dana’s identity. 3. chuck’s card turns to “answered by
+dana at 07:52” with its controls gone before chuck’s next delivery;
+had chuck’s close raced dana’s, the tool server refuses it as
+already answered, nothing is recorded, and the card says so inline.
+4. On the next delivery the card is gone from every rail and SINCE
+reads “closed · intent loop-granularity · by dana” on chuck’s page
+and “by your response” on dana’s.</li>
+</ul>
+<h3 id="223-assigning-and-filtering"><a class="header" href="#223-assigning-and-filtering">2.23 Assigning and filtering</a></h3>
+<ul>
+<li><strong>S180.</strong> 1. Dock, decision 414: “assign…” lists chuck, dana and the
+role reviewers; dana chosen → <code>assign(414, dana)</code>; the log gains one
+line; the unit slip and the card’s tail gain the chip “dana”. 2. On
+dana’s page the rail’s filter is switched to mine → <code>filter(dana's page sink, own)</code>; the rail shows 414 and the two other decisions
+dana or reviewers own; the header reads “9 · 3 mine”. 3. dana’s
+chat delivers the same three lines. 4. y on 414 on chuck’s page,
+under all, is accepted like any answer: the owner filters, never
+gates.</li>
+</ul>
+<h3 id="224-a-host-that-cannot-satisfy-an-environment"><a class="header" href="#224-a-host-that-cannot-satisfy-an-environment">2.24 A host that cannot satisfy an environment</a></h3>
+<ul>
+<li><strong>S181.</strong> 1. A fetch moves atlas’s environment declaration to node
+22; mac-mini’s provider is devenv and cannot produce it. 2. The rail’s
+attention gains “host mac-mini cannot satisfy atlas: node 22 ·
+covers none of its work” with ok; the strip’s mac-mini pill reads
+“1 uncovered”; atlas’s dock shows mac-mini unsatisfied and studio
+satisfied under its declaration. 3. Hosts: mac-mini’s environment
+heading shows devenv and the same line; atlas’s work runs on studio
+meanwhile. 4. The operator changes the provider where mac-mini is
+declared; the next tick satisfies it, the line leaves on the next
+read, and ok on it before then clears it for this member alone.</li>
+</ul>
+<h3 id="225-the-pool-drains-faster"><a class="header" href="#225-the-pool-drains-faster">2.25 The pool drains faster</a></h3>
+<ul>
+<li><strong>S182.</strong> 1. Rail, in an instance that declares a pool named
+cloud: y on its proposal approves nine units; the instrument’s reading
+turns to “drain is the limit · pool 2 of 8 · 9 items on 4 alive
+slots”. 2. The machinery asks the platform for a host from the
+pool’s image; the strip’s pool pill reads “pool cloud · 3 of 8” with
+“drain changing” and the drain column says the same; nothing enters
+the rail. 3. Hosts: the pool row shows three live of eight,
+image current, and under it the new host with its pool chip, alive,
+its joining record naming the demand. 4. The queue drains; an idle
+pool host reads “retiring · idle 15m” and leaves; the pill reads
+“2 of 8” and the reading returns to “primed”. 5. Later the pool’s
+image reads behind after a declaration moved; “rebuild” →
+<code>propose-chore(blueprints, rebuild image)</code>; the chore appears under
+the chores head, the image reads building, then current.</li>
+</ul>
+<h3 id="226-upgrading-an-instance-to-a-hosted-tier"><a class="header" href="#226-upgrading-an-instance-to-a-hosted-tier">2.26 Upgrading an instance to a hosted tier</a></h3>
+<ul>
+<li><strong>S204.</strong> 1. willdan runs on a <code>github</code> host; its settings form’s
+operators list carries chuck, dana and priya as GitHub usernames,
+each with their chat addresses (247). 2. The instance moves to a
+hosted tier (247a): the service creates willdan’s Frontegg account,
+invites those same three usernames to it, and carries every address
+over unchanged. 3. On the hosted host’s page each of the three signs
+in through Frontegg’s hosted login, connects GitHub at first sign-in
+if they have not, and reads the same board with the same numbers;
+their chat sinks are the same sinks, because the addresses did not
+move (236a). 4. The settings form now shows the identities and their
+roles read-only, derived from the account, with the addresses still
+authored beside them, and the members section appears with the
+identity tools on it (S155, S195). 5. Nothing else about the
+instance moves: the same repositories, the same blueprints, the
+same state, the same register and the same numbers (218). 6. Flags
+that stood at their defaults are now targetable per account, so the
+store, the hosts list and pools can be turned on where the tier
+carries them (250, S197).</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../surfaces/surfaces.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../surfaces/forms-keys-and-modes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../surfaces/surfaces.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../surfaces/forms-keys-and-modes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid-eefea253.min.js"></script>
+        <script src="../mermaid-init-ccf746f1.js"></script>
+        <script src="../suite-nav-eae185de.js"></script>
+        <script src="../book-grab-651a5042.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

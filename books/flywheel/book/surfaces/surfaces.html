@@ -1,0 +1,1234 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The surfaces - Flywheel design</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="The design book for the flywheel: the work-loop machinery that turns an operator&#x27;s intent into built software. Part I includes the numbered requirements from their source; Part II explains the loop, design and construction, the book and the context map, the page, instances and hosts, the state store contract and the control plane; Part III includes the surfaces; Part IV points at the roadmap, the models and the proposals.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "../searchindex-65788371.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-5ad3a734.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Flywheel design</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="the-surfaces"><a class="header" href="#the-surfaces">The surfaces</a></h1>
+<h3 id="11-the-page"><a class="header" href="#11-the-page">1.1 The page</a></h3>
+<ul>
+<li><strong>S1.</strong> The page is one page, served on the operator’s private
+network, that works on a phone (155). It has four regions: a header,
+a machinery strip, a rail, and a board. A dock opens over the board.</li>
+<li><strong>S2.</strong> The header shows the instance, the as-of time of the
+read the page was built from (145), the count of decisions, the
+“yes all” control with the numbers it will answer, the count of
+responses sent with a control that opens the sent log, a theme
+control (light, dark, system), and the account item at its right
+(S152).</li>
+<li><strong>S3.</strong> The rail is titled “Decisions”. It is one rail delivery
+(model 5.5): the numbered decisions in the model’s order, approve
+then decide then answer, each group sorted by number; then attention,
+outside the count; then the SINCE tail, outside the count. It is the
+same list the chat prints, with the answers as controls (18). Its
+head carries the filter mine · all (S171); every member reads the
+same list under all (235).</li>
+<li><strong>S4.</strong> The rail never shows: work in progress with no decision
+pending; signals, moves or anything already answered; machinery
+problems other than a response that could not apply; a decision
+already answered and re-derived (6); more than one decision per
+intent awaiting approval (21); a decision for a session that is
+working (66, 71).</li>
+<li><strong>S5.</strong> Every decision card shows its number, its kind, the phase
+of its object, its title, its tail (the evidence model 5.4 names:
+signal weight on an intent; type, target bolt, dependencies and
+cited claims on a unit; idle time on a session; what a yes starts),
+its owner when one is set (S169), and its answers as buttons. A card
+with a question shows the question verbatim. A card for a gathered elaboration lists the covered intents,
+each with its own drop.</li>
+<li><strong>S6.</strong> Every answer control calls the <code>answer</code> tool with the
+decision number and the answer, plus text where the answer takes it
+(redo, reply, rename, new bolt, pick, type, bolt). One click is one
+response. The card takes an in-flight state and refuses a second
+click until the response settles; then the card leaves the rail and
+focus moves to the next card.</li>
+<li><strong>S7.</strong> “yes all” sends one <code>answer</code> per approve decision, in number
+order, each recorded on its own (model 5.6). It never sends a batch.
+Every answer on the rail, that one included, is under
+<code>fw.rail.answer</code>, so on a hosted tier a viewer reads the rail’s
+cards with no answers on them and no “yes all” (249).</li>
+<li><strong>S8.</strong> Attention lines carry one-word answers: takeover or wait on a
+lost host; ok on a response that could not apply, on an uncovered
+object, on a host that cannot satisfy a repository’s environment
+(S174) and on a refused response (S165); placed on a secret the
+machinery cannot place (S123). Each is an <code>answer</code> call and is
+recorded (153). An ok is the member’s own acknowledgement and clears
+the line on that member’s sinks; takeover, wait and placed act on the
+object and are applied once for everyone (S168).</li>
+<li><strong>S9.</strong> SINCE lists what entered a tail state since this sink’s
+delivery mark (14, model 5.5): merged, landed, closed, dropped,
+started, finished, accepted, answered, held. A line names the object,
+the reason and the time. “Later” writes no SINCE line (§5).</li>
+<li><strong>S10.</strong> The board is the status view (B.4) drawn by phase. It holds
+objects only, never the count. It has two views: phases and map,
+switched in the board’s header or with the m key. The book is a
+viewer of its own, linked out to and never a view of the board
+(S91). The dock opens over the board and the board does not move. A
+focused rail card lights its object in whichever view is shown: the
+marker on a lane, the card or edge on the map.</li>
+<li><strong>S11.</strong> Requirements served: 7–19, 141–146, 155, 193–194, 209. Tools
+called from the rail: <code>answer</code>.</li>
+</ul>
+<h3 id="12-the-board-phases-view"><a class="header" href="#12-the-board-phases-view">1.2 The board, phases view</a></h3>
+<ul>
+<li><strong>S12.</strong> Four lanes: Inception, Bolt plan, Construction, Operation.
+Bolt plan is drawn as a narrow hatched gate between Inception and
+Construction: the transition, one proposal per repository in steady
+state. Operation is marked observed and is read-only (181).</li>
+<li><strong>S13.</strong> Inception shows: the curation counter (unmoved signals, by
+source, oldest) with curation’s session chip; explorations the
+operator opened (189) as rows; every open or proposed intent as a
+thread with its elaborations as beads; a closed intent greyed with
+its countdown (186). Capture and explore are palette commands (S30,
+S43); <code>/elaborate</code> is behind <code>fw.ff.explore</code>, on by default, and the
+tool behind it under <code>fw.capture.write</code> (249, 250, S197).</li>
+<li><strong>S14.</strong> Bolt plan shows: planning in progress as a session row when
+a redo charged it again; the current proposal as a sheet; single unit
+proposals as slips; a baseline as a sheet of its own; a deferred
+proposal or baseline greyed as “deferred · ask again”.</li>
+<li><strong>S15.</strong> Construction shows every open bolt as a ledger: units as a
+left-to-right chain (merged, building, queued), running work items
+with their session chips under the building unit, machinery sessions
+on their own row (a conflict fix), services and the first endpoint at
+the foot, a landing stamp when its request is open. Accepted chores
+show as items on the repository’s shared line, in this lane, under a
+“chores” head per repository and never as a bolt (60, §5).</li>
+<li><strong>S16.</strong> Operation shows every landed bolt as a record while
+something about it is live and for the bounded window after (186),
+with its pull request and checks as a stamp, its environments as
+links, live signals about it as quotes, and “stays · why” or “leaves
+in Nd”. Below the records, signals from operation as quotes with
+their move or “unmoved”.</li>
+<li><strong>S17.</strong> Every decision is also a marker on its object: ✓ n for
+approve, ? n for decide, ✎ n for answer, ! for attention, and a
+dashed “deferred · n” for a deferred proposal. A focused rail card
+lights its object. A marker click focuses the card and opens its
+dock page. Nothing is answered on the board.</li>
+<li><strong>S18.</strong> The phases view never shows: a decision as a card; a
+phase label on an object (phase is the lane’s, kind is the shape’s);
+the count; anything answered; a finished object past its window.</li>
+<li><strong>S19.</strong> Requirements served: 141–146, 186, 209–210, 47. Tools called
+from the lanes: <code>explore</code> (S43), <code>capture</code> and <code>mark-intent</code> (S30);
+every other control on a lane opens the dock.</li>
+</ul>
+<h3 id="13-the-board-map-view"><a class="header" href="#13-the-board-map-view">1.3 The board, map view</a></h3>
+<ul>
+<li><strong>S20.</strong> The map view draws the target map (map 4.4) as bounded
+contexts only: one card per context, a computed layered layout
+upstream to downstream, positions fixed after layout, fit the one
+camera command (map 5). Relationships are one typed edge per pair
+with U and D, OHS, PL and ACL marks, a lens for a shared kernel, a
+barred dotted edge for separate ways; a big ball of mud is hatched,
+an external context dashed. An edge that would cross a card bows
+over it.</li>
+<li><strong>S21.</strong> At rest a card shows its header, name, status, a home chip
+per distinct home with a verdict dot, an attachment count chip, its
+decision markers, an open-question badge and its tags, and carries a
+thumbnail of the map inside it: its elements as dots coloured by kind
+and ringed by home, the links between them as hairlines, a short
+dashed stub toward the other context where an element links out. A
+caption under the thumbnail counts elements, links and links out. The
+thumbnail is read-only. The whole map is readable without opening
+anything; a click on the header opens the dock, a click on the
+thumbnail drills in (map 5.1).</li>
+<li><strong>S22.</strong> The second level is a drill: the canvas becomes the
+context’s inside at full size in the same grammar. Elements are
+nodes with kind, name, home chip with verdict dot, attachment chip,
+markers, status dot, open-question badge with the capture control
+beside it, and tags; links are typed edges with the kind on the edge;
+the neighbouring contexts are collapsed docks at the canvas edges,
+upstream left, downstream right, symmetric above, separate ways
+below, each carrying the pattern and the end marks for its side, the
+kernel, the crossing count, its attachment chip and markers, and a
+“drill into” control; a cross-context link lands on its dock with the
+target element named on the edge. A breadcrumb “org › <context>” sits
+over the canvas; Esc or the org crumb returns to the whole map (map
+5.2).</context></li>
+<li><strong>S23.</strong> A strip above the canvas lists the repositories as chips
+with elements homed, capabilities and unmet count, the map check
+(green or n failures), and “+ repository”. A control strip carries
+the facets (off, filter, colour, group per facet), a legend when one
+colours, the invariant readout “0 moved · 0 edges changed” recomputed
+after every facet switch at the level shown, the overlay control
+(none, current → target, since last review), “changes · n” when an
+overlay is on, the review mark and “mark reviewed” when the review
+overlay is on, and fit. A kind legend sits at the foot of the canvas.</li>
+<li><strong>S24.</strong> Overlays come from one id-keyed difference (map 4.4, 4.5):
+added with a plus mark, changed with a delta and the fields on hover,
+removed ghosted, moved with the old home struck through. The marks
+sit on cards and edges at rest, on dots in the thumbnails, and on
+nodes, link edges and neighbour docks when drilled. The review
+overlay uses a second colour over the target only. Either overlay may
+be on; the map underneath is always the target.</li>
+<li><strong>S25.</strong> The map view never draws: a repository as a node; a claim
+as a node; verdict text or evidence; chapter prose; a lane, tier,
+layer or runtime as a box; the current map as a second drawing; saved
+camera state beyond the one memory of S88 (map 5.5).</li>
+<li><strong>S26.</strong> Requirements served: 122, 195, 198–202 as rewritten, 104,
+105, 112, 249. Tools called: <code>attach</code> (S71), <code>capture</code> (S22),
+<code>create-repository</code> or <code>adopt-repository</code> (S72), <code>reviewed</code> (S73).
+The map’s writing controls — attach, detach, set-home, set-status,
+map-edit and the repository tools — are under <code>fw.map.edit</code>, and
+reviewed under <code>fw.review.mark</code>; on a hosted tier a token with
+<code>fw.read</code> alone draws the map with none of them.</li>
+<li><strong>S85.</strong> Every relationship edge at rest carries a pill counting the
+element-to-element links that cross it (map 2.4). Separate ways reads
+“none · by rule”, or “n cross · fails” when a link crosses it.
+Hovering or focusing the edge slides out a panel at its midpoint that
+lists the crossing links (from element with its context and home, the
+link kind, to element with its context and home; removed ones ghosted
+under an overlay), the claims attached to the relationship, and
+controls to open the relationship’s page or drill either end. The
+panel is the only place a link is listed at rest.</li>
+<li><strong>S86.</strong> Kinds colour permanently: a dot at rest and a node when
+drilled take the kind’s colour from the vocabulary (map 3.1). Homes
+colour rings: a dot’s ring and a node’s home chip take the home’s
+colour, and the repository strip shows the same colours. A colour
+facet overrides the kind colour while it is on and the legend says
+so; turning it off restores the kind colour.</li>
+<li><strong>S87.</strong> Two focus rings, never merged. The lit ring comes from
+outside the canvas: the rail’s focused card, a claim’s scope, a
+“light on map” from the dock; it sits on the object the decision or
+claim concerns and leaves when that focus does. The focus ring is the
+canvas’s own: j and k move it among contexts at rest and among
+elements when drilled, and Enter acts on it. The two may sit on
+different objects at once.</li>
+<li><strong>S88.</strong> One camera memory. A drill keeps the whole map’s camera for
+the way back, and Esc or the org crumb restores it. Nothing else is
+remembered: no positions, no pan history; fit is the only camera
+command at either level, and fit at the drilled level fits the
+inside.</li>
+<li><strong>S89.</strong> Ghost placement: under an overlay a removed element,
+relationship or link is drawn ghosted in a place computed around the
+target’s objects without moving any of them, at rest, in thumbnails
+and when drilled. The target map’s layout never changes for a ghost.</li>
+<li><strong>S90.</strong> Narrow rendering, under 760px, is a stacked list at both
+levels: at rest every context as its card without the thumbnail,
+with its relationships listed under it with their pattern, marks and
+crossing count; drilled, every element as a row with kind, home chip,
+verdict dot, markers and its links named, then the neighbour docks as
+rows with the pattern and end marks. Drill and back, the dock, the
+overlays and the facets work the same as on the canvas.</li>
+</ul>
+<h3 id="14-the-dock"><a class="header" href="#14-the-dock">1.4 The dock</a></h3>
+<ul>
+<li><strong>S27.</strong> The dock is one panel over the right of the board. Esc, the
+× or a click outside closes it. The rail’s move keys change what it
+shows while it stays open. Under 760px it is full screen with a back
+control. Its header takes the form of the object (209); its footer
+carries the object’s answers or dictations, or says “nothing to
+answer” and why. Every page that cites a chapter or a claim carries
+“read in book” per citation (S94), and every page for an object with
+OpenSpec artifacts behind it carries “the artifacts behind it” (S99).</li>
+<li><strong>S28.</strong> Dock pages, one per kind:</li>
+</ul>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>page</th><th>opened from</th><th>body</th><th>footer</th></tr>
+</thead>
+<tbody>
+<tr><td>decision</td><td>a rail card, a marker on a lane, the map or a chapter margin</td><td>the decision’s text; the evidence its kind shows (S5); its document when it has one, with a plannotator link (S33); its history with the operator’s responses; its owner with “assign…” (S170); “read in book” per cited claim; “the artifacts behind it”</td><td>the answers, one response each; in-flight state while one is sending; “answered by <member> at hh:mm” with no controls when another member answered it (S167)</member></td></tr>
+<tr><td>proposal</td><td>its decision</td><td>the proposal read whole: every bolt (open or new, name editable) with its units; per unit: name, type, why, dependencies, covered claims with “read in book”, lineage, controls bolt · new bolt · rename · type · drop; a refusal inline when an edit would break a dependency, with the offer to take dependents along; “what a yes starts”; the “that’s all wrong” field; lineage intent → writeback → landing on the blueprints → planning run → proposal (184)</td><td>yes · redo · later</td></tr>
+<tr><td>unit</td><td>its decision or slip</td><td>the unit document with a note control per section; items and stages; cited claims with “read in book”, or “no claim cited” and, once landed, whether a claim was captured, declined or neither yet (34a, 317, S207); sessions running (none before yes); “change” opening its artifact view once approved, “no change yet” before (187)</td><td>yes · drop · redo · bolt · new bolt · rename · type · later</td></tr>
+<tr><td>bolt</td><td>a ledger</td><td>the ledger; the bolt’s repository, line and place; decisions on it (in the rail, where you answer); its units with drop per unstarted unit and “change” per unit; rename; sessions running with host and last activity; services with start and stop; served endpoints; the acceptance file (S99); history</td><td>no decision here that is not in the rail; drop, rename, start and stop are dictations</td></tr>
+<tr><td>landed bolt</td><td>a record</td><td>the record; the landing (when, through which gates, place removed); pull request and checks; environments; units landed; the acceptance file; signals from operation with their move</td><td>nothing to answer</td></tr>
+<tr><td>intent</td><td>a thread</td><td>the thread; the intent’s state and line; decisions on it; sessions running; its change directory (S99)</td><td>its decision’s answers when one is pending, else nothing to answer</td></tr>
+<tr><td>elaboration</td><td>a bead; ] and [ from the thread</td><td>kind, type and state; its pending decision with the answer controls; its document excerpt; the records it wrote into the intent’s change directory (187), opening the change directory view; its session chip; “in gathering n” when covered (188); the countdown when finished (210); a knot in the header and a back link to the thread</td><td>the decision’s answers; finish on a standing one; nothing else</td></tr>
+<tr><td>exploration</td><td>its row in Inception</td><td>the covered intents; where its records go (per intent) and where its conclusions go (the book, once); its session</td><td>finish (standing) or end (with-operator)</td></tr>
+<tr><td>planning in progress</td><td>its row in the gate</td><td>what planning reads; the operator’s notes it carries; its session</td><td>nothing yet; the next proposal is the decision</td></tr>
+<tr><td>deferred</td><td>its greyed sheet</td><td>when later was answered; that it left the count, wrote no SINCE line, and is superseded silently by planning’s next run (172, 35)</td><td>ask again</td></tr>
+<tr><td>repository</td><td>the strip, a home chip, a baseline’s link, the viewer’s library row (S95)</td><td>kinds and capabilities, derived (map 4.3); contexts it homes; claims in scope with verdicts, each claim’s attachments beside the re-attach control and “read in book” (195); homed elements; its environment declaration and, per host, whether the host satisfies it (S174); decisions on it</td><td>show on map; the baseline decision’s answers when one is pending</td></tr>
+<tr><td>host</td><td>the host strip</td><td>alive or gone with last heartbeat; what it runs against its bound; its leases; its environment provider and the repositories it cannot satisfy (S174); its pool when it belongs to one (S176); “hosts” opening its row on the hosts surface (S115)</td><td>takeover · wait when gone; nothing to answer when alive</td></tr>
+<tr><td>claim</td><td>an attachment chip, a repository’s claim row, a claim name anywhere</td><td>the claim text and version; attached to (each attachment with its scope contribution); scope, derived; verdicts per repository in scope; “read in book”; “evidence” opening the claim’s artifact view</td><td>re-attach… (arms the canvas, S70); show on map</td></tr>
+<tr><td>map context, element, relationship, link</td><td>a card header, a node, an edge or its panel, a neighbour dock</td><td>id, ref to the chapter with “read in book”, status, tags; the overlay difference when one is on; home (effective and where it came from); ends and marks for a relationship with its crossing links; crossing for a link; attached claims with the derived scope line; verdicts per repository; decisions as markers with the rail card inline; an open element’s question with its capture control</td><td>open on map · drill into · light on map</td></tr>
+<tr><td>changes</td><td>“changes · n” on the map or the book</td><td>the difference list with a link per entry, map entries to their object and book entries to their anchor; the review history when the review overlay is on</td><td>mark reviewed (review overlay only)</td></tr>
+<tr><td>map check</td><td>the check button</td><td>every failure, or green</td><td>“+ repository homes the unhomed”</td></tr>
+<tr><td>add repository</td><td>“+ repository”, the check page</td><td>name; the unhomed elements it homes or a context it becomes the default home of; kinds and capabilities derived live; the claims that fall into scope</td><td>propose: one response (S72)</td></tr>
+<tr><td>attention</td><td>an attention line</td><td>what it means and what each answer does</td><td>the one-word answers</td></tr>
+<tr><td>external system</td><td>a dashed card</td><td>what it is; who meets it; that a claim on the contract is in scope for every repository that meets it</td><td>nothing to answer</td></tr>
+<tr><td>artifact</td><td>“the artifacts behind it”, “change”, “evidence”, a work-item chip, the acceptance link</td><td>one view per artifact kind (S99) under a source bar (S100)</td><td>open source · review; the pending decision’s answers when one is pending on the artifact</td></tr>
+<tr><td>work item</td><td>a chip on a ledger or in a dock</td><td>its commits in Conventional Commits form, the deliverables it recorded, its session’s report, its session chip</td><td>nothing to answer; reply when the item is blocked (S49)</td></tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li><strong>S29.</strong> Requirements served: 17, 47, 68, 141, 144, 146, 172, 184,
+187–188, 195, 209–210, 213, 317. Tools called: <code>answer</code>, <code>drop</code>, <code>rename</code>,
+<code>start</code>, <code>stop</code>, <code>finish</code>, <code>end</code>, <code>release</code> (ask again, §6), <code>attach</code>,
+<code>capture</code>, <code>create-repository</code>, <code>adopt-repository</code>, <code>reviewed</code>.</li>
+</ul>
+<h3 id="15-the-palette"><a class="header" href="#15-the-palette">1.5 The palette</a></h3>
+<ul>
+<li><strong>S30.</strong> The palette is the page’s capture surface. Plain text is
+sent unparsed to <code>capture</code> with one signal of kind ask, source the
+page (19, 194); an intent toggle beside the field makes the same
+submission also call <code>mark-intent</code> (12). Both are under
+<code>fw.capture.write</code>, so a viewer without it sees the field read-only
+with its send refused and the command list filtered (249). The
+preview line says what will be sent — “will send: capture” or “will
+send: capture · first idea of a thread”; Enter sends; the page
+acknowledges the recorded response (154) and the curation counter
+moves by one, or the new intent appears as a thread.</li>
+<li><strong>S31.</strong> The page parses no word of plain text: a leading <code>/</code> and a
+leading number choose a tool and nothing else, and neither reads the
+text for meaning. Text the operator asks the flywheel to read goes to
+the model in the page’s browser as the interpreter (216a, S34), which
+proposes calls the operator confirms.</li>
+<li><strong>S208.</strong> <code>/elaborate</code> takes the elaboration type as a subcommand,
+and every type the registry holds is one: <code>/elaborate fundamentals</code>
+opens the same multi-pick of intents and sends
+<code>explore(intents, fundamentals)</code>, the type that writes the
+fundamentals part of the book (318, 190). A type the caller may not
+reach is not offered, as with every other command (S30). No new entry
+joins the command table for it; the types are the entry’s arguments.</li>
+</ul>
+<h3 id="16-the-chat-rendering"><a class="header" href="#16-the-chat-rendering">1.6 The chat rendering</a></h3>
+<ul>
+<li><strong>S32.</strong> The chat carries the same decisions and numbers as the page,
+one line each in the rail’s order, the SINCE tail, and a link to the
+page (18, model 5.5). A decision line is answerable; any other line is
+not. Where the platform offers buttons, menus or threaded replies, the
+decisions carry them as the platform provides them; nothing is
+invented (155). The numbered reply grammar always works beside them:
+<code>yes 412</code>, <code>yes all</code>, <code>no 415</code>, <code>415 pick a c</code>, <code>413 redo: &lt;notes&gt;</code>,
+<code>413 bolt other</code>, <code>414 rename retry</code>, <code>418 close</code>, <code>419 keep</code>,
+<code>421: &lt;text&gt;</code>, <code>takeover</code>. Every reply is the <code>answer</code> tool; the ✅
+reaction is the operator’s proof it was recorded (154).</li>
+<li><strong>S33.</strong> A decision with a document carries the link that opens it
+on the review surface (model 5.4). The chat’s binding is the Discord
+bot; the presenter is the sink’s lease holder or the manifest’s pin.</li>
+<li><strong>S34.</strong> Free text in chat goes to the instance’s dispatch agent
+as interpreter: it proposes exactly one tool call as a reply with a
+confirm control, and the confirmation is the response (194). On the
+page the interpreter is a model in the browser, and a control is a
+tool call with no interpreter at all. On the hosts surface the same
+job is a host’s part named “agent” (S116).</li>
+<li><strong>S173.</strong> The chat is per member (236, 236a): each address a
+member’s operators entry carries is a direct message from that
+kind’s bot, a sink of its own with its own mark and the member’s
+filter (S171), presented by the host that runs the kind’s package
+and holds the lease; a member with no address gets no chat. A
+shared channel the manifest names is one sink with one mark,
+delivered under all. A reply in a member’s direct message carries that
+member’s identity; a reply in a shared channel carries the identity
+of whoever typed it, as the platform vouches for it. An answered
+decision’s line in a channel reads “answered by <member>” on the
+next delivery and takes no further reply (S167).</member></li>
+</ul>
+<h3 id="17-the-review-surface-bindings"><a class="header" href="#17-the-review-surface-bindings">1.7 The review surface bindings</a></h3>
+<ul>
+<li><strong>S35.</strong> A document under review (a unit proposal, a planning
+proposal, an elaboration’s document) opens in plannotator:
+<code>plannotator review &lt;path&gt; --decision &lt;n&gt;</code>. An annotation the operator
+leaves there comes back as the response on that decision (17, 129).
+A rich page opens in lavish (<code>npx -y lavish-axi</code>). Both are bindings
+of the review surface, not parts of the machinery.</li>
+<li><strong>S36.</strong> The page shows the document inline in the dock with a note
+control per section; a note sends <code>answer</code> with redo and the note
+prefixed by the section. The dock never replaces plannotator; it is
+the summary and the place to answer (plan-mockup, “The unit
+document”).</li>
+<li><strong>S37.</strong> The book and the context map are the operator’s review
+surface (122). The review view is what changed in both since the
+<code>reviewed</code> mark: on the map, the review overlay and the changes page;
+in the book, the review overlay of S96. One mark, one switch, one
+“mark reviewed” for both.</li>
+<li><strong>S207.</strong> Beneath them the review view lists the units that landed
+since the mark citing no claim (34a), under one question: is anything
+here worth a claim. Each row is the unit with its bolt, its type and
+what it changed, and two answers. Yes opens a picker of the open and
+proposed intents and sends <code>claim-needed(unit, captured, intent)</code>,
+which attaches the unit’s change there as material; the claim is
+written in that intent by the normal path and the unit is not
+reopened. No sends <code>claim-needed(unit, declined)</code> and the unit is
+never listed again. The list is derived, never stored, and every unit
+in it has already landed, so nothing waits on an answer and “mark
+reviewed” is not gated on giving one. No row here is a rail decision
+and none carries a number (317).</li>
+</ul>
+<h3 id="18-the-status-view-on-a-phone"><a class="header" href="#18-the-status-view-on-a-phone">1.8 The status view on a phone</a></h3>
+<ul>
+<li><strong>S38.</strong> Under 760px the page is two tabs at the foot,
+Decisions and Board, each with its count badge. The rail is the
+Decisions tab, unchanged. The Board tab stacks the four lanes in
+order; its header switches to the map, rendered as the stacked list
+of S90. The book is a link out (S91). A capture control on both tabs
+raises the palette as a bottom sheet (S30). The dock is full screen
+with a back control. The
+header hides the key hints and the “yes all” numbers. The machinery
+strip stays one scrolling row; the flywheel panel is reached from the
+board header (S110). The account item stays in the header and its
+menu opens full screen with a back control. Promoted to 307: the
+layout is a requirement of the first build, not a ruling this
+document may revisit on its own.</li>
+<li><strong>S39.</strong> The phone keeps every form of §3 and every control of §1.
+Nothing is answerable on the phone that is not answerable on the
+desktop, and nothing the desktop answers is missing on the phone (2,
+155). Promoted to 306, with the deep links, the notification, the one
+request, the touch rule, the console and the clients beside it in A.38
+(306–314). What is open here is the layout beyond the stacked list
+(S78) and the thumbnails (S151), never whether the phone answers.</li>
+</ul>
+<h3 id="19-the-book-viewer"><a class="header" href="#19-the-book-viewer">1.9 The book viewer</a></h3>
+<ul>
+<li><strong>S91.</strong> The book is a standalone read-only viewer served beside the
+page, built from the blueprints’ shared line as mdBook (315): the
+chapter tree, one chapter at a time with previous and next, headings
+with anchors, and, where a chapter includes a claim by anchor
+(<code>{{#claim &lt;capability&gt;/&lt;name&gt;}}</code>), the requirement rendered in place
+as the instance renders it (97). What is in flight — an intent’s
+proposed claims, a chapter an elaboration has not landed — is not in
+it (98, 187), so the viewer is always the standing destination. The
+page links out to a chapter or a claim and never embeds one. Its
+readers are the host’s: on a self-managed host the private network is
+the boundary and the sign-in is 253’s with 253a’s exception; on a
+hosted tier it is served under the caller’s token and reads to
+members of that instance alone (247, 249, 291); serving a book to
+readers who are not members is one opt-in per book, stated on the
+settings form and revocable there (316, 46, 155). <code>fw.ff.book-view</code>
+gates the viewer and the links to it, on by default (250, S197): with
+the flag off no dock page carries “read in book” and b does nothing.</li>
+<li><strong>S92.</strong> A claim renders where its chapter includes it, as the
+requirement it is: the name <code>&lt;capability&gt;/&lt;name&gt;</code>, the version,
+standing or proposed (98), the requirement’s own prose and every one
+of its scenarios, what it attaches to, the scope derived from those
+attachments (200), and one verdict dot per repository in scope read
+from the ledger (100, 101). The text shown is the specification’s,
+never a copy, so the chapter cannot drift from it (97). A proposed
+claim is dashed and carries no verdicts. The rendering carries
+“evidence”, which links back to the claim’s artifact view on the page
+(S99, 205a).</li>
+<li><strong>S93.</strong> A focused card’s dock page carries “read in book” per cited
+chapter or claim, which opens the viewer at that anchor and lights
+the rendered claim: a unit’s cited claim, an intent’s chapters, a
+bolt’s or a landing’s claims, a proposal’s claims per unit, a
+gathered elaboration’s shared claim, a moved claim itself. The rail
+drives no viewer; the decision markers that sat in the chapter margin
+move to the page’s own surfaces, where a marker in the glyph set of
+S17 focuses the card and opens its dock.</li>
+<li><strong>S94.</strong> “read in book” appears on every dock page per cited chapter
+or claim (S28) and in the map’s scope box. It opens the viewer at
+that anchor in a place of its own; the dock stays as it was.</li>
+<li><strong>S95.</strong> The library is the viewer’s own index of the instance’s
+blueprints: chapters, claims standing and proposed, last written,
+unmet verdicts, “changed since review”, and the repositories each
+book covers. Choosing a book loads it; a repository chip links back
+to the page’s map view with the repository dock open. <code>/book</code>
+reaches a book, a chapter or a claim directly. The instance’s own
+surface specification is listed as a shipped book (212).</li>
+<li><strong>S96.</strong> The review mark is one mark for the map and the book (122).
+The map’s overlay is on the page; the book’s changed chapters and
+claims are shown in the viewer, where changed paragraphs and changed
+claims are outlined and washed with a note, unchanged chapters dim in
+the tree, and a changes list at the head of the tree links each
+change to its anchor and back to the changes page (S28). “mark
+reviewed” sends <code>reviewed</code> once from either (S73); the mark moves and
+both empty.</li>
+<li><strong>S209.</strong> The book’s first part is the fundamentals part and renders
+like any other (318). Its clauses show as the numbered prose they
+are, and where a clause is followed by a claim included by anchor,
+that claim renders in place with everything S92 gives it. Most
+clauses carry none and show alone; the viewer draws no empty block
+for them and offers no control to add one. A claim’s prose may say
+which clause it serves, which is text for the reader.</li>
+<li><strong>S97.</strong> The viewer never shows: a decision as a card; the count; a
+claim’s verdict text or evidence inline (the dot links back to the
+artifact view on the page); an editor. The book is read here and
+written only by the machinery (98, 121).</li>
+<li><strong>S98.</strong> Requirements served: 98, 100, 101, 121, 122, 200, 212, 315,
+316, 318.
+Tools called: <code>reviewed</code>.</li>
+</ul>
+<h3 id="110-the-artifact-views"><a class="header" href="#110-the-artifact-views">1.10 The artifact views</a></h3>
+<ul>
+<li><strong>S99.</strong> Every object opens the OpenSpec artifacts behind it in the
+dock, one view per artifact kind, derived at the shared line when
+opened and never stored (213):</li>
+</ul>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>artifact</th><th>opened from</th><th>view</th></tr>
+</thead>
+<tbody>
+<tr><td>an intent’s change directory</td><td>the intent and elaboration docks</td><td>proposal.md rendered; the records with kind, date and session (187); the delta specs grouped added · modified · removed as requirement blocks with scenarios folded under a disclosure; design.md; the archive state</td></tr>
+<tr><td>a unit’s change on its bolt’s line</td><td>the unit dock’s “change”, the bolt dock’s “change” per unit</td><td>the OpenSpec steps ff · apply · verify · archive as a stepper with the unit type’s stage under each; the proposal; requirement blocks with scenarios; tasks.md as a checklist saying which item and commit did each task</td></tr>
+<tr><td>a claim</td><td>“evidence” on a book block, a claim name in any list or repository row</td><td>the chapter block; its version history; attachments; a verdict per repository in scope with the as-built statement, its commit and its session as evidence; “read in book”</td></tr>
+<tr><td>a bolt’s acceptance file</td><td>the bolt and landed-bolt docks</td><td>the claims its units named with their scenarios; the landing state; previewed from the specs before landing, read from the file after</td></tr>
+<tr><td>a work item</td><td>every work-item chip</td><td>its commits in Conventional Commits form; the deliverables it recorded; its session’s report</td></tr>
+</tbody>
+</table>
+</div>
+<p>A unit proposal before its yes has no change to open and says so
+(187). An object with no artifact yet opens a skeleton derived from
+the state so every object opens.</p>
+<ul>
+<li><strong>S100.</strong> Every artifact view is headed by a source bar: “derived
+from &lt;repository @ sha&gt; · <path> · read hh:mm · never stored · edits
+only through review”, with two controls: “open source”, the path at
+the shared line, and “review”, which switches to the review binding
+(S35) for that artifact with <code>--decision n</code> when a decision is pending
+on it. The review page is the document with a note control per
+section and the pending decision’s answers in the footer.</path></li>
+<li><strong>S101.</strong> An artifact view never edits: no field writes the file, no
+save exists. A note is a response (S36); everything else is the
+machinery’s (187, 176).</li>
+<li><strong>S102.</strong> Requirements served: 176, 187, 210, 213. Tools called:
+<code>answer</code> through the review binding.</li>
+</ul>
+<h3 id="111-the-flywheel-instrument"><a class="header" href="#111-the-flywheel-instrument">1.11 The flywheel instrument</a></h3>
+<ul>
+<li><strong>S103.</strong> The instance is one instrument with one reading, runway
+in days: approved construction work not yet merged (queued and
+building units, as their estimates less the slot-days already
+occupied, 172) divided by drain, where drain is the alive hosts’
+summed bound at the calibrated rate (S145), pool hosts included
+(S177). A gone host drains nothing. It is drawn as a wheel on a
+week’s scale, a band naming its state (“primed for 5 days”, “running
+dry”, “primed for a week or more”), and is opened from the machinery
+strip’s pill or with w (214).</li>
+<li><strong>S145.</strong> The calibrated rate is derived, never a constant: the
+ratio of actual to estimate over the landed units of the repository
+and type, read from the acceptance files, and 1 while none has
+landed (surfaces.yaml <code>instrument</code>). The drain column names the rate
+it used and how many landed units it rests on.</li>
+<li><strong>S104.</strong> Three columns under the wheel: feed, what waits on the
+operator (proposals to approve with the units they carry,
+elaborations waiting, intents to approve) and the days a yes on each
+adds; pressure, what is approved and waiting or running against the
+alive slots, and the number behind the bound; drain, hosts alive of
+hosts, the pool’s live of bound when one exists, utilization, units
+merged per day at the bound, a seven-day merges sparkline, bolts
+landed per week labelled “history, not a target” (142), and, when
+the instance has no pool, “add a host to drain faster” opening
+the hosts surface on “+ host”.</li>
+<li><strong>S105.</strong> Above the wheel, the two stages of backpressure as a
+two-stage pipe: inception (signals → intents → elaborations →
+proposals) filled by what waits on the operator, a hatched gate,
+then construction (approved → running → merged → landed) filled by
+queue over alive bound and drawn as tall as the alive hosts’ bound,
+so an added host visibly widens it.</li>
+<li><strong>S106.</strong> One reading sentence, chosen in order: “you are the limit:
+n decisions older than a day · yes on <number> alone adds ~d days”
+when decisions are old and runway is under two days; “feed it: n
+decisions approve ~d days of work”; “drain is the limit: add a host ·
+n items on m alive slots” when the instance has no pool, and
+“drain is the limit · pool l of b · n items on m alive slots” when it
+has one (S177); “primed: agents have d days”. Every reading is marked
+a projection, never a target.</number></li>
+<li><strong>S107.</strong> The unattended streak is the score, stated as a reading:
+“agents have run 1d 19h without you”, since when, what puts it at
+risk now (a gone host holding items, a secret waiting, runway under a
+day), the longest streak, and the last one with what ended it. A
+streak counts while approved work runs and nothing stops it;
+decisions arriving do not end it, they are the feed.</li>
+<li><strong>S108.</strong> The three phase gauges with their sparklines and readings
+sit under an “advanced” disclosure whose open state persists across
+renders. They are never the first thing shown.</li>
+<li><strong>S109.</strong> The compact form in the machinery strip is one pill: a
+small wheel, the runway number and the streak, “at risk” when
+something threatens it. It opens the panel like w.</li>
+<li><strong>S110.</strong> The key is w. l stays the focused card’s later (S56); a key
+a card does not offer is refused, never remapped (S57). Under 760px
+the panel is reached from the board header and the columns stack
+under the wheel.</li>
+<li><strong>S111.</strong> The instrument never shows: a target, a goal line, a
+score for the operator, a decision or an answer control. It reads;
+the rail answers.</li>
+<li><strong>S177.</strong> Drain counts pool hosts (242). A pool host that comes
+alive or retires moves the drain, and the instrument shows the move
+as “drain changing · pool l of b” in the drain column and on the
+pill until the next read settles it; the machinery’s own additions
+and retirements are never a decision and never a line in the rail.
+With a pool at its bound the reading says so, “drain is the limit ·
+pool at bound · b”, and the drain column’s control opens the pool’s
+row on the hosts surface, where the bound and the cost ceiling are
+the manifest’s (S155).</li>
+<li><strong>S112.</strong> Requirements served: 142, 145, 214, 242. Tools called:
+none; “add a host” and the pool control open the hosts surface.</li>
+</ul>
+<h3 id="112-the-hosts-surface"><a class="header" href="#112-the-hosts-surface">1.12 The hosts surface</a></h3>
+<ul>
+<li><strong>S113.</strong> Hosts is an overlay over the board, opened from the
+account item’s hosts entry (S157), from the setup control in the
+hosts strip, from a host’s dock page, from the instance’s “add a
+host” or its pool control, or from an attention line about a host.
+Everything on it past the one host serving the page is behind
+<code>fw.ff.management-console</code>, off by default (250, S197): with the
+flag off the account item’s hosts entry opens the serving host’s own
+screen and the list of hosts is not reached, which is where a
+<code>github</code> host stands. Its writing controls are guarded by
+<code>fw.hosts.manage</code> and <code>fw.packages.manage</code> on a <code>frontegg</code> host and
+held by every listed operator on a <code>github</code> host (248, 249). It is separate from the
+operator’s decisions: nothing on it is in the count until a flow on
+it raises a decision, which then appears in the rail like any other
+(229).</li>
+<li><strong>S114.</strong> Hosts is a settings screen: on the left one row per host
+and one row per pool, and on the right the detail of the row in
+hand. A host row shows kind and platform (a laptop or a home host on
+herdr, a container on flywheel-cloud, the dispatcher placement with
+bound 0, a pool host with its pool chip), alive or gone, bound, when
+it joined, its environment provider, and what it runs as chips. A
+pool row is S176. A dispatcher placement is only what a host runs; a
+host with bound 0 takes no construction work and changes no runway
+reading (dispatch 2, 5).</li>
+<li><strong>S115.</strong> A host’s detail is organised by headings, one per kind of
+thing a host runs or is bound to, each heading holding a slot or a
+list of slots: identity, no slot at all but the kind the host
+declares, read-only — <code>github</code>, with the device flow and no
+environment, or <code>frontegg</code> with its environment and the served name
+the redirect is built from (S164, 243, 244); router, one slot (191); runners, one slot per role (pane ·
+in-process · managed, dispatch 2); agent, one slot (S116); sinks, a
+list, each with a “lease” badge on the sink whose presenter lease
+this host holds (148); adapters, a list, each naming its source
+(dispatch 4); triage, derived from the manifest with the sources it
+reads and no slot; environment, the provider in force (devenv ·
+devcontainer · nix · image) and the repositories it satisfies or
+cannot (S174); the git App, no slot either but which App reaches the
+repositories and where its key is (S198); pool, the pool it belongs
+to when it does (S176), with
+its joining record (S122). A slot shows the package’s name and
+version and its state: installed · adding, decision n · needs a
+secret, under attention with “place it” (S123) · installing ·
+disabled, with “enable” as one logged response. An empty slot says
+what the heading takes and carries “add” (S117). A heading the host’s
+platform cannot take says so.</li>
+<li><strong>S198.</strong> The host’s screen says which GitHub App reaches the
+repositories and where its key lives (207, 207a). A self-managed
+instance uses its own App: the heading reads the App’s id from
+the manifest and shows the key’s path on this host with “placed” or
+the attention line that asks for it, never a value (S123, S187). The
+hosted tiers use the service’s App: the heading says so, shows no
+path and offers no control, because the key never leaves the service
+and a pool host asks the service for its installation tokens. Either
+way the tokens a session gets are short-lived, scoped to one
+repository, and no host or session uses a personal token or an
+operator’s identity for git (251).</li>
+<li><strong>S116.</strong> The host’s “agent” is the name on this surface for the job
+that reads the rail and the objects, answers the operator in chat,
+and proposes writes as tool calls the operator confirms (194): the
+dispatch model’s interpreter job. The chip’s hint says so: “reads and
+answers; every write is a proposed call you confirm”. The model keeps
+“interpreter”; the surface says “agent”.</li>
+<li><strong>S117.</strong> “add” on a slot opens the catalogue filtered to that slot,
+behind <code>fw.ff.store</code>, off by default (250, S197): with the flag off
+an empty slot says what it takes and carries no “add”. The catalogue lists
+the per-host packages of the heading’s kind that run on the host’s
+platform, with “any platform” showing the rest greyed with what they
+need (228). Each entry shows name, version, “shipped” or “index”,
+what it needs (secrets, platform, network), what it enables, and
+“add”. There is no single index across kinds and no search box over
+the whole store; a search box sits inside the filtered catalogue.
+Instance packages never appear here; they are the instance
+store’s (S156).</li>
+<li><strong>S118.</strong> “add” is one flow. It collects the package’s configuration
+against its schema and names the secrets it needs in one form, says
+which secrets the machinery places and which the operator must place,
+and ends by raising one install decision in the rail (approve · yes ·
+no, kind package-install). The slot reads “adding · decision n” the
+moment the flow ends. The decision’s yes runs the install as the
+machinery’s effects with proofs (204, 229): the slot reads “needs a
+secret” while a declared secret is unplaced (S123), then “installing”
+while the effects run, then installed once the proof is recorded;
+no takes the package off the host again. Nothing is installed by the
+flow itself, and no session is charged for an install.</li>
+<li><strong>S119.</strong> Configuration is changed later on the same surface: a
+slot’s detail shows its configuration with the same form, and a
+change is one logged response that the machinery applies as a
+re-install of that package. A secret is never shown back; a changed
+secret is placed again through “place it”. A slot also carries
+disable, enable and remove, one response each: remove ends what the
+package runs and keeps its records (229).</li>
+<li><strong>S120.</strong> “+ host” is a guided flow on the same surface, in order:
+pick a platform (flywheel-cloud managed · a container on any platform
+· a laptop) and a name; pick the parts it will run, heading by
+heading, from the filtered catalogue of each; provisioning runs from
+the host you are on with your own platform credentials, read at run
+time and never stored; only the chosen parts’ secrets are listed for
+hand-over into the platform’s secret store, and you hand them over;
+an enrolment decision appears in the rail (“enrol host <name>”,
+approve · yes · no, kind host-enrol) with a one-time token that
+expires in 24h; the host joins with the token by one command (205),
+reads the manifest and installs its declared parts; the row shows
+alive. A platform host is created from the instance’s image, or
+its pool’s (S175). Each step shows its state (queued · running ·
+waiting on you · done · skipped · stopped) and the flow ends with the
+new host row alive in the strip and the list (230). A token that
+lapses is the host-enrol-lapsed attention line (S146).</name></li>
+<li><strong>S121.</strong> “adopt existing” is enrolment by token alone: a host
+already running the binary skips platform, provisioning and the
+hand-over and goes straight to the enrolment decision and its token.</li>
+<li><strong>S122.</strong> A host’s own joining is folded into its detail as the
+record of how it joined, the same steps with their outcomes; the
+cloud host’s detail carries it like any other, and a pool host’s
+names the demand that added it.</li>
+<li><strong>S123.</strong> A secret the machinery cannot place (207) sits under
+attention with “place it”: the secret’s name, where this host keeps
+its secrets (the keychain or a sealed file under the root on a
+machine, the platform’s secret store on a platform), the command to
+run there, that the page never carries the value, and a one-word
+“placed” answer, under <code>fw.secrets.place</code> (249), that has the
+machinery check the path. The slot in
+“needs a secret” shows the same form in place. The slot links to the
+attention line and the line back to the host; the strip’s setup
+control carries “secret” while one waits (149).</li>
+<li><strong>S174.</strong> Environment. A repository’s dock shows its environment
+declaration, the file under the prefix or the devcontainer or devenv
+file it names, with the declaration’s hash, and one line per host:
+the host’s provider and satisfied, or the first tool and version it
+cannot produce (238). A host’s environment heading shows the same
+from the host’s side. A host that cannot satisfy a repository raises
+the host-environment attention line, “host <name> cannot satisfy
+<repository>: <tool> <version> · covers none of its work”, with ok
+as the member’s acknowledgement (S8); the line links to the host’s
+environment heading and to the repository’s dock, and the host’s
+strip pill carries the count of repositories it covers none of. The
+page changes no provider; a provider is a host’s declaration, changed
+where the host is declared (S155, S147).</version></tool></repository></name></li>
+<li><strong>S175.</strong> The image. A platform host is created from an image built
+from the declarations of every repository it will cover (239). The
+image is shown where it is used: on a pool row, and at the head of
+the hosts list for the instance’s image that “+ host” on a
+platform takes. It shows its tag, the declarations’ hash, and its
+state: current · behind, with the repository whose declaration moved
+· building. “rebuild” on an image behind raises the rebuild as a
+chore, accepted like any chore and shown under the chores head of
+Construction (123, S75); the image reads building while the chore’s
+session runs the build effect and current when the platform lists
+the new tag. A pool whose image is behind provisions no host until
+it is current, and its row says so.</li>
+<li><strong>S176.</strong> Pools, behind <code>fw.ff.pools</code>, off by default (250, S197):
+with the flag off no pool row is drawn on the hosts surface, the
+strip shows no pool pill and the instance offers no pool control,
+and the settings form’s pools fields are absent, which is where a
+<code>github</code> host stands. A pool row shows the pool’s name, platform, image
+state (S175), live hosts of bound, the cost ceiling the manifest
+names, its retire time, and what it covers (240). Its hosts are
+listed under it, collapsed by default, each a host row of S114 with
+a pool chip; a pool host retiring shows “retiring · idle 12m” and
+leaves the list when the platform ends it, and its places are
+re-made from their lines elsewhere by the machinery (52). In the
+machinery strip a pool is one pill, “pool <name> · l of b”, and a
+session chip on a pool host names the host with its pool. Nothing on
+a pool row adds or retires a host: the machinery does both while
+drain is the limit, within bound and cost (242, S177); the bound,
+the cost and the retire time are changed in settings (S155). A pool
+host that retires raises nothing; one lost otherwise is a host lost
+like any other (S50).</name></li>
+<li><strong>S124.</strong> The hosts surface never: installs anything without a
+decision; charges a session for an install; shows a secret’s value;
+stores a platform credential; enters the count by itself; runs a
+ladder or an order of installation; draws one index across every
+kind; lists an instance package; adds or retires a pool host by
+hand. Every placement of the dispatch model (dispatch 5) is a host on
+this list with the parts it runs.</li>
+<li><strong>S148.</strong> The tools the surface calls (surfaces.yaml <code>tools</code>):
+“add” ends in <code>add-package(package, host, config, secrets)</code>, which
+writes the package in added and raises the install decision; a
+configuration change is <code>configure-package</code>; disable, enable and
+remove are <code>disable-package</code>, <code>enable-package</code> and
+<code>remove-package</code>; “+ host” and “adopt existing” end in
+<code>add-host(name, platform, parts, adopt)</code>, the credentials carried in
+the call and stored nowhere; “rebuild” is <code>propose-chore</code> on the
+blueprints; “placed”, “enable” on an attention line, and the install
+and enrol decisions are <code>answer</code>. Nothing on the surface calls
+anything else.</li>
+<li><strong>S125.</strong> Requirements served: 149, 191, 204, 205, 207, 207a,
+228–230, 232, 238–242, 243–245, 249–252. Tools called: <code>answer</code>, <code>add-package</code>, <code>configure-package</code>,
+<code>disable-package</code>, <code>enable-package</code>, <code>remove-package</code>, <code>add-host</code>,
+<code>propose-chore</code>.</li>
+</ul>
+<h3 id="113-the-account-item"><a class="header" href="#113-the-account-item">1.13 The account item</a></h3>
+<ul>
+<li><strong>S152.</strong> A standard account item sits at the right of the header:
+who you are, as a chip. It expands to a menu in a fixed order: the
+identity block (S166), the instance switcher, then settings,
+hosts, the instance’s package store, and sign-out. It is the one place the
+page reaches the instance as a whole rather than an object in
+it. Nothing in the menu is in the count; a flow in it that needs the
+operator’s yes raises a decision in the rail like any other.</li>
+<li><strong>S153.</strong> Who you are is the identity the serving host’s kind
+vouched for (243, 246): the GitHub username on a <code>github</code> host, the
+Frontegg user on a <code>frontegg</code> host, with the GitHub username its
+connection carries beside it in the identity block because
+authorship is the GitHub username either way. It is the same for
+every instance the host serves (S164). There is no signed-out
+page and no local-user case. Sign-out ends the page’s session with
+the host’s kind and records nothing (233).</li>
+<li><strong>S154.</strong> The instance switcher, rendered “Switch flywheel” and
+listing flywheels, since flywheel is the operator’s word for an
+instance on every visible surface (S206), lists every instance the
+serving host has a root for (218), grouped by the account that holds
+them (219, 247), each with its decision count, and marks one the
+signed-in identity is not a member of as “not a member” — not in the
+account’s operators list, or on a <code>frontegg</code> host not assigned the
+flywheel Application on that account (247, S166). On the page the
+switcher is one list, because the page serves one instance at a
+time; in the management console the top nav switches accounts and
+the instances of the account in hand are listed inside it.
+Choosing a member instance swaps the whole page to it: the rail,
+the board in every view, the machinery strip’s hosts and
+repositories, the flywheel instrument reading, the blueprints and the map. The
+as-of time is that instance’s read. Nothing carries across: no
+focus, no open dock, no mode, no overlay, and never the identity,
+which is the host’s kind and the same for every instance on it
+(233). The page’s address is the host’s one address with the
+instance in the path, <code>/&lt;instance&gt;/…</code> (205a) — on the operator’s own
+computer a localhost port, any port — so a link opens it directly
+and the chat’s link (S32) lands on the right one.</li>
+<li><strong>S155.</strong> Settings is the manifest as a form: the instance’s
+declarations grouped as the manifest groups them, profile, defaults
+per role (173), the shared sinks and their presenters, pools with
+bound, cost and retire time (240), routers, raw stores, callers,
+curation and triage cadences, each field with what it is and where
+the machinery reads it. The <code>operators:</code> list is one of its fields,
+each entry a member with their addresses per chat kind (236a), and
+how much of it the form edits is the host’s kind (247). On a
+<code>github</code> host the list is authored whole: adding a GitHub username
+adds a member, removing one removes them, and a save that would
+remove the saving identity is refused inline. On a <code>frontegg</code> host
+the identities and their roles are derived from the account at every
+fetch and shown read-only, the addresses staying the one authored
+thing beside them (248, S195). Save is one <code>configure-flywheel</code>
+response for the whole form; the machinery applies it as one manifest
+commit and the page re-reads. The form is under <code>fw.org.configure</code>
+and reads read-only without it; retiring the instance is
+<code>fw.org.remove</code> and belongs to an owner alone (249). A secret is
+never a field: it is placed (S123). A host’s
+keys — root, bound, declaration, provider, identity environment,
+router — are shown read-only with a link to the host’s own screen
+(205a), a repository’s are derived, and the form says so beside each
+field it does not carry.</li>
+<li><strong>S195.</strong> On a <code>frontegg</code> host the members section is where identity
+administration happens, and there is no second console (255). Beside
+the read-only list sit “invite…”, and per member “assign”, “revoke”
+and a role choice; a flags list on the same section carries a
+per-account toggle. Each is one recorded tool call under
+<code>fw.identity.admin</code> (153): <code>invite-member(instance, email)</code>,
+<code>assign-application(instance, user)</code>,
+<code>revoke-application(instance, user)</code>,
+<code>set-role(instance, user, role)</code>,
+<code>target-flag(instance, flag, on)</code>. Revoking a member’s
+assignment takes their page sink and their chat sinks with it
+(236a); their addresses stay on the entry until the form removes
+them. A member without <code>fw.identity.admin</code> reads the section and
+sees no control on it. A <code>github</code> host has no members section at
+all: the operators list on the settings form is the whole of
+administration there, edited and saved like any other field (S155).</li>
+<li><strong>S156.</strong> The instance’s package store is behind <code>fw.ff.store</code>, off by
+default (250, S197): the menu carries no store entry unless the flag
+is on for the account, so a <code>github</code> host shows none. It is
+a settings screen of the same
+shape as a host’s detail (S115): headings for unit and elaboration
+types, deliverable producers, map vocabularies, templates and
+scenario packs (190, 208), each a list of slots showing the package’s
+name, version, “shipped” or “index”, and its state in the blueprints:
+installed · adding, decision n · installing · disabled. “add” on a
+heading opens the catalogue filtered to that heading’s kind (S117)
+and runs the one flow of S118 without a host: configuration
+collected, then one install decision on the instance; its yes
+installs the package into the blueprints repository as the
+machinery’s effects and the default set (190) grows. Every control
+on it is guarded by <code>fw.packages.manage</code> (249). Nothing here names a
+host and no index spans the headings.</li>
+<li><strong>S157.</strong> Hosts in the menu opens the hosts surface of §1.12, behind
+<code>fw.ff.management-console</code> for everything past the one host serving
+the page and off by default (250, S197). The strip’s setup control
+opens the same surface; it is a shortcut to hosts and to nothing
+else. On a <code>github</code> host, where the flag stands at its default, the
+menu’s hosts entry opens the serving host’s own screen.</li>
+<li><strong>S158.</strong> The account item never: answers a decision; shows a
+secret’s value; lists an instance the serving host has no root
+for; opens a control in an instance the identity is not a member
+of; changes the identity on a switch; installs anything without a
+decision; mixes an instance package into a host’s store or a
+host’s part into the instance’s package store; lets a flag stand in for a
+permission (250, S197).</li>
+<li><strong>S159.</strong> Requirements served: 149, 173, 190, 203, 205, 205a, 208,
+218, 233–234, 236a, 243, 246–250, 253, 255. Tools called: <code>answer</code>
+(the install decision), <code>switch-flywheel</code>,
+<code>configure-flywheel</code>, <code>sign-out</code>, <code>add-package</code> (the package store’s
+add, with no host), and on a <code>frontegg</code> host <code>invite-member</code>,
+<code>assign-application</code>, <code>revoke-application</code>, <code>set-role</code>,
+<code>target-flag</code>.</li>
+</ul>
+<h3 id="114-identity-members-and-owners"><a class="header" href="#114-identity-members-and-owners">1.14 Identity, members and owners</a></h3>
+<ul>
+<li><strong>S164.</strong> Identity is a host binding with two kinds, one kind per
+host and the same for every instance it serves (243). On a
+<code>github</code> host — every self-managed host — the page signs in with
+GitHub’s device flow: it shows the code and the address to enter it
+at and waits until GitHub confirms, and the identity is the GitHub
+username (246, 253). The page serves on a localhost port, any port,
+with no proxy and no name asked of the operator; several hosts on
+one computer are several ports (232, 245). Portless or a local proxy
+may be advised for a stable name and is never required; the instance
+serves no name of its own and registers no redirect. On a <code>frontegg</code>
+host — the hosted tiers — sign-in is the provider’s hosted login on
+the page: the SDK builds the redirect from the origin the page is
+served on, so the host’s served name is the only per-host fact and
+it is registered once on the environment’s redirect list, never per
+instance (244), and the identity is the Frontegg user with the
+GitHub username its connection carries used for authorship (246).
+Authorship is the GitHub username in both kinds. Switching
+instance never changes the identity in either (233). An
+instance that needs its own directory connects it to its
+Frontegg account on a hosted tier, never to a host, and no host runs
+a sign-in part.</li>
+<li><strong>S165.</strong> Every response the page records carries the identity
+(153), and what admits it depends on the host’s kind. On a <code>github</code>
+host membership is the manifest’s authored operators list: the tool
+server checks the caller against it before any op-response is
+written, and every listed operator holds every permission on their
+own instance (247–249). On a <code>frontegg</code> host the two gates are
+separate. Membership admits the identity to the instance, as the
+assignment of the flywheel Application to its account (247), and a
+caller the account does not assign is refused. Permission authorizes
+the tool: the tool server reads the caller’s token for the
+permission the tool declares, on that account, and refuses a call
+without it (249); a tool whose permission the host’s environment
+lacks is refused with that reason (252). Every refusal, in either
+kind, writes no response, is recorded to the run record with the
+identity, the tool and the object (79), and shows inline on the
+control that sent it and under attention on the next delivery with
+ok as the acknowledgement (S8). The read-only query tools answer any
+identity the instance admits.</li>
+<li><strong>S166.</strong> The account item’s identity block shows the identity the
+host’s kind vouched for, the host serving the page and its kind, and
+the instances on this host the identity is a member of, each
+with its sinks line: the page sink and one chat sink per address the
+member’s operators entry carries (236a), each with its kind, its
+mark and the host presenting it. On a <code>github</code> host the identity is
+the GitHub username and there are no roles to show, every listed
+operator holding every permission. On a <code>frontegg</code> host the block
+names the Frontegg user, adds the GitHub username its connection
+carries and what authorship uses, carries “connect GitHub” for a
+user with none, and each instance shows its roles from the token
+(248). An address whose kind no host runs shows its sink as
+undelivered with “add a <kind> sink on a host”, opening the hosts
+surface on the sinks heading (S115). The switcher (S154) lists the
+member instances with their counts and nothing else; a
+non-member instance does not appear (S191).</kind></li>
+<li><strong>S196.</strong> A <code>frontegg</code> host degrades and does not fail when the
+provider is unreachable (254). A token already issued is honoured
+until it expires; past that the page is read-only — the status view,
+the board in every view, the book, the map and the rail’s decisions
+all render, and every control that would write is absent, the
+palette’s send included. One attention line says identity is
+unreachable and since when, and it stays for as long as it takes,
+unbounded. Work is unaffected: hosts cover work with the App’s
+installation token, not with an identity (207, 251), so the loops
+keep running and the numbers keep moving while nothing that needs a
+response is answered. Flags fall back to their last-seen values,
+then to their definition defaults, so a surface a flag hid stays
+hidden. A <code>github</code> host has no provider to lose: GitHub unreachable
+blocks a new sign-in and nothing else, and a page already signed in
+goes on writing.</li>
+<li><strong>S197.</strong> A flag hides a surface and never authorizes (250). Five
+flags are keyed <code>fw.ff.*</code>: <code>fw.ff.pools</code> hides the pool rows and the
+pool control (S176), <code>fw.ff.book-view</code> the book viewer and the
+links to it (S91),
+<code>fw.ff.explore</code> the explore mode (S43), <code>fw.ff.store</code> the
+instance’s package store and a host’s catalogue (S117, S156), and
+<code>fw.ff.management-console</code> the hosts surface past the one host
+serving the page (S113). A hidden surface’s entry, control and key
+are all absent rather than greyed, and the tool behind it is still
+guarded by its permission, so a call that reaches it another way is
+refused exactly as it would be with the surface shown. On a
+<code>frontegg</code> host each flag is an entitlement feature targeted per
+account. On a <code>github</code> host every flag stands at its definition
+default, so the page there has the book viewer and explore and draws
+no pools, no store and no hosts surface past its own host; nothing
+on that host can turn one on.</li>
+<li><strong>S167.</strong> One board per instance (235). Every member reads the
+same rail with the same numbers and the same count, and there is
+nothing per member on the board but the delivery mark (S168) and the
+filter (S171). A decision one member answers is applied once; every
+other member’s rail drops it on the next delivery and SINCE gains
+“answered · n · by <member> at hh:mm”. A card in hand when another
+member answers it turns to “answered by <member> at hh:mm” with its
+controls gone; a click that races the record is refused before any
+record exists, with “already answered by <member>” inline on the
+card, and nothing is recorded for it.</member></member></member></li>
+<li><strong>S168.</strong> Sinks are per member (236) and chat sinks per address
+(236a). A member is an entry in the operators list on a <code>github</code>
+host, or a user the account assigns the Application to on a
+<code>frontegg</code> host (247); the page sink follows the membership, keyed
+by the identity, and a chat sink follows each address on that
+member’s entry, one per chat kind (discord: a user id, slack: a
+member id), each with its own delivery mark. An address is added or
+removed in the same write as the entry, so a member with no address
+has a page sink only, and ending the membership takes every one of
+that member’s sinks. A chat sink is presented by
+whichever host runs that kind’s package and holds the lease (148).
+A shared channel is one sink with one mark and no member. So SINCE
+is what entered a tail state since this member’s last look on that
+sink, an ok on an attention line clears it for this member alone,
+and a notification is routed to a member’s sinks. Takeover, wait,
+placed and every numbered answer act on the object and are applied
+once for everyone (S167).</li>
+<li><strong>S169.</strong> A decision may carry an owner: one member, never a role
+(237). The owner is set by planning’s proposal per
+unit, by a unit or elaboration type for its decisions, or by a
+member’s assign (S170); an unowned decision is everyone’s. The owner
+shows as one chip on the decision’s object, the unit slip or its
+row in a proposal, the elaboration’s bead, the proposal’s sheet, and
+in the card’s tail. Ownership changes nothing about what a decision
+is, whether it counts, or who may answer it: the answers on an owned
+card are the same for every member.</li>
+<li><strong>S170.</strong> “assign…” is a dock control on the decision page: a list
+of the instance’s members, and on a <code>frontegg</code> host the shipped
+roles beside them (248), one choice sending one
+<code>assign(decision, owner)</code> response, logged like any other;
+“unassign” sends the same with no owner. It is guarded by
+<code>fw.rail.assign</code>, so on a hosted tier a reviewer reads the chip and
+has no control. Nothing about the decision changes but its chip and
+who filters it in.</li>
+<li><strong>S171.</strong> The rail’s filter is mine · all, default all. mine shows the
+decisions owned by this member, and on a <code>frontegg</code> host by a role
+their token carries (248), and the chat’s
+delivery follows the same setting; the choice is one
+<code>filter(sink, own | all)</code> response recorded on this member’s sink and
+kept until changed. The header’s count stays the instance’s and
+gains “n mine” while the filter is on; “yes all” answers the approve
+decisions the rail shows. Attention and SINCE are never filtered.</li>
+<li><strong>S172.</strong> Requirements served: 79, 153, 207, 218, 232, 233–237,
+236a, 243–255 including 247a. Tools called: <code>answer</code>, <code>assign</code>,
+<code>filter</code>, <code>sign-out</code>, <code>switch-flywheel</code>,
+<code>configure-flywheel</code> (the operators list on a <code>github</code> host),
+and on a <code>frontegg</code> host <code>invite-member</code>, <code>assign-application</code>,
+<code>revoke-application</code>, <code>set-role</code>, <code>target-flag</code>.</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../how/control-plane.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../surfaces/flows.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../how/control-plane.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../surfaces/flows.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid-eefea253.min.js"></script>
+        <script src="../mermaid-init-ccf746f1.js"></script>
+        <script src="../suite-nav-eae185de.js"></script>
+        <script src="../book-grab-651a5042.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

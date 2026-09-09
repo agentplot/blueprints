@@ -86,7 +86,7 @@ sessions:
     charged_by: "nobody: record_offers routes every offer by rule and the operator's answer on the resulting proposal is the routing (171, gaps.md); no machine charges a findings-routing session and no row is needed (ruling 10)"
   self-closing:
     charged_by: elaboration.working (25)
-    schema_instruction: "the schemas of its deliverables (`flywheel/schemas/book-chapter.md`, `claim.md`, `context-map.md`, `diagram-conceptual.md`, `diagram-logical.md`); `flywheel/instructions/design-conclusion.md` (120); the exit schema"
+    schema_instruction: "the schemas of its deliverables (`flywheel/schemas/book-chapter.md`, `claim.md`, `context-map.md`, `diagram-conceptual.md`, `diagram-logical.md`); `flywheel/instructions/design-conclusion.md` and `flywheel/instructions/claim-granularity.md`, the defaults every design type carries (120; ruling 25); the exit schema"
     type_skill: "`flywheel/agents/self-closing.md` and `flywheel/skills/self-closing/SKILL.md` (ruling 3)"
     work_order: "the job from the elaboration's document and sources; the intent's subject, its attached signals and challenges (116); covers (188); the deliverables table, the defaults narrowed by the proposal when it did (190)"
     change_artifacts: "the intent's change directory `openspec/changes/<intent>/` on the intent's line; earlier elaborations' records on disk (187)"
@@ -109,6 +109,15 @@ sessions:
     work_order: "as self-closing; presence is a keystroke within the binding's window and gates only a rebase (25)"
     deliverables: "book-chapter, claim, context-map (with-operator@3)"
     never: "a decision about itself (25); an end other than the dictation `end`"
+  fundamentals:
+    charged_by: elaboration.working (25, 318)
+    as: self-closing
+    schema_instruction: "`flywheel/schemas/fundamentals-part.md`, which is the style of `design/requirements-style.md` — every clause an invariant, numbered in one sequence, naming no mechanism — and validating against it is what lets the session declare done (25, 226; ruling 26); `flywheel/schemas/claim.md` and `context-map.md`; `flywheel/instructions/fundamentals.md` and `flywheel/instructions/claim-granularity.md` beside `design-conclusion.md` (120); the exit schema"
+    type_skill: "`flywheel/agents/fundamentals.md` and `flywheel/skills/fundamentals/SKILL.md` (ruling 3)"
+    work_order: "as self-closing, plus the fundamentals part as it stands with its clause numbers, so a new clause takes the next free number and none is renumbered; the claims already included under a clause, with the clause each names in its prose; the style-guide schema in full (226; ruling 26)"
+    chapters_and_claims: "the whole book on disk, the part among it; the order names the standing claims attached to what the part's clauses concern, so a clause that yields a claim is included by anchor immediately after it (97, 318)"
+    deliverables: "fundamentals-part, claim, context-map (fundamentals@1); a clause that names no behaviour a repository could be judged against yields no claim, and the exit says so rather than inventing one (80, 318)"
+    never: "as self-closing; a mechanism named in a clause; a renumbering of an existing clause; a claim proposed for a clause that constrains only how a model is built (318)"
   operator-session:
     charged_by: operator-session.open (69)
     schema_instruction: "none"
@@ -197,3 +206,5 @@ rulings:
   22: "the engine machines' windows are read from `flywheel.yaml` engine: {stale, gone, expiry, register_retention} at load, the literals in the files being the defaults (record-derived.yaml engine_windows)"
   23: "the review stage's verdict deliverable is named `verdict`; model.md 8.2 says so"
   24: "the read-only query tools are granted to the sessions the machinery charges and to the operator's own session; a construction session's inputs are closed and it gets none"
+  25: "`flywheel/instructions/claim-granularity.md` is a default every design type carries beside `design-conclusion.md`: a claim survives a rewrite of the code, has an observer who would want to know if it stopped holding, and is judgeable from the repository alone, and a statement naming a file, a colour, a setting, a plugin or a step of a pipeline is not one (120, 100). `flywheel/instructions/construction.md` carries the other half: cite the standing claim in scope the work serves, cite none when none fits, and never propose a claim for the work (34a)"
+  26: "the fundamentals type's order carries the style-guide schema in full and the part as it stands with its clause numbers; the session declares done only when the part validates against that schema, which is what makes the type self-closing (25, 318)"

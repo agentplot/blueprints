@@ -1,0 +1,664 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Rulings and what is open - Flywheel design</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="The design book for the flywheel: the work-loop machinery that turns an operator&#x27;s intent into built software. Part I includes the numbered requirements from their source; Part II explains the loop, design and construction, the book and the context map, the page, instances and hosts, the state store contract and the control plane; Part III includes the surfaces; Part IV points at the roadmap, the models and the proposals.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "../searchindex-65788371.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-5ad3a734.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Flywheel design</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="rulings-and-what-is-open"><a class="header" href="#rulings-and-what-is-open">Rulings and what is open</a></h1>
+<h2 id="rulings"><a class="header" href="#rulings">Rulings</a></h2>
+<p>Each dated, each with its reason.</p>
+<p>Dated 2026-09-05.</p>
+<ul>
+<li><strong>S59.</strong> Rail beside board, not four lanes of decisions. The count
+is one list in the model’s order (11, 15, 18; model 5.1, 5.5), so it
+is one rail and one axis. The board is the status view by phase (B.4)
+with objects only and every decision a marker on its object. The
+workbench’s four lanes of cards are retired.</li>
+<li><strong>S60.</strong> Desktop first, mobile consistent. The operator wanted a
+full card view over a board that stays in place. The phone follows
+the same metaphor as two tabs and a full-screen dock (S38) rather than
+a metaphor of its own. The triage deck’s phone-first flick is
+rejected for that reason.</li>
+<li><strong>S61.</strong> The dock keeps the board in place, like an issue over a
+project board. Peek is rejected: hover and long-press popovers on the
+queue and the river were not it; the operator wants the full page.</li>
+<li><strong>S62.</strong> One silhouette per kind, never one card class with variants
+(209). Board cards that all looked alike said “same kind of thing”
+about very different things. The dock header takes the object’s form.</li>
+<li><strong>S63.</strong> One typed input on the page, the palette, with one grammar:
+plain text is a capture or a message the flywheel’s own model reads
+into proposed calls; a leading <code>/</code> names a command of the catalogue;
+a bare number answers a decision (19, 193, 193a, 194, 216a). It is
+the chat’s grammar, not a second one, and no other field on the page
+parses a word. The workbench’s dictation grammar in the capture box
+is still rejected: the commands are the catalogue’s names, never a
+language of the page’s own.</li>
+<li><strong>S64.</strong> Every proposal edit is its own response, sent when given and
+applied to the document (172, 184). Nothing is staged to travel with
+the yes. The workbench’s staged edits are rejected.</li>
+<li><strong>S65.</strong> Later defers into the gate with no SINCE entry. The tail
+lists done, landed, closed and dropped; a deferred proposal is none of
+these. It stays greyed in the gate until asked again, re-offered by
+the machinery after the week, or superseded silently by planning’s
+next run (172, 35). Asked again it is a new decision with a new
+number (model 5.2).</li>
+<li><strong>S66.</strong> Finished objects leave views after a window. A landed bolt,
+a closed intent, a finished elaboration stay while something about
+them is live and for the bounded window after, saying so, then leave
+every view and stay in history (186). Nothing is deleted.</li>
+<li><strong>S67.</strong> Whole map at rest, two zoom levels, fit only (map 5). The
+first level is every context as a card with a thumbnail of its
+inside; the second is a drill into one context’s inside in the same
+grammar, with the way back the one camera memory (S88). No pan
+history, no saved positions. The v1 map’s hop depth and trace-to-store
+are not carried.</li>
+<li><strong>S68.</strong> Facets are tags, never structure (map 2.5, 5.3). A facet
+filters, colours or washes and moves nothing, at either level; the
+control strip proves it after every switch. Lanes, tiers, runtimes
+and stores are tags or kinds.</li>
+<li><strong>S69.</strong> Repositories, claims and lanes are never nodes (map 5.7). A
+repository is a chip because it is not a bounded context; a claim is
+an attachment chip because it is a statement; a lane is a tag. The
+rail-and-board map view, which drew repositories as nodes and let the
+operator toggle repositories in and out of a claim’s scope by a rule,
+is rejected: scope is derived from attachments and never chosen
+(200), and kinds and capabilities are derived and never declared
+(199). The context-map-ddd view replaces it.</li>
+<li><strong>S70.</strong> The v1 map’s layers, lanes and runtime switch are rejected.
+Four bands per card, a control and a data lane, edges ghosted by a
+runtime switch, and a “repository” layer put structure where the
+model has tags and kinds; the seam rename showed the vocabulary was
+wrong. The mockup drawn on that schema was retired.</li>
+<li><strong>S71.</strong> Re-attach is the scope gesture: arm on the claim, one click
+on any map id, one <code>attach</code> call (193, 200). No scope rules, no
+repository set.</li>
+<li><strong>S72.</strong> Adding a repository is a proposal, not a dictation. The map
+gesture sends <code>create-repository</code> or <code>adopt-repository</code> and the
+operator’s yes creates or registers it (206). Both map mockups, which
+added the repository on one click, are corrected here. The baseline
+decision arrives after the first planning runs, not at the add (104).</li>
+<li><strong>S73.</strong> Marking reviewed is a response on the rail object, recorded
+like any other (122, statechart §10), under <code>fw.review.mark</code> (249).
+The rail-and-board map logged it
+as a dictation; it is one recorded response and moves both the map’s
+and the book’s review view.</li>
+<li><strong>S74.</strong> An attention acknowledgement is recorded. “ok” on a response
+that could not apply, and on an uncovered object, is an <code>answer</code> and
+is logged (153; model 5.3). The queue, the river and rail-and-board
+showed it as “seen · not logged”; that is rejected.</li>
+<li><strong>S75.</strong> Accepted chores are items on the repository’s shared line,
+shown in Construction under a chores head per repository, never as a
+bolt ledger (60, 209). The rail-and-board seed’s “chores” ledger is
+corrected here.</li>
+<li><strong>S76.</strong> Light and dark are both required, following the system by
+default with a control to force either.</li>
+<li><strong>S77.</strong> The seed’s tension stands as a seed, not a rule: a
+proposed intent with a standing prototype already on its line (412
+and 419) comes from plan-mockup and shows what the page does when
+states disagree; it is not a state the model produces (21).</li>
+</ul>
+<p>Dated 2026-09-07.</p>
+<ul>
+<li><strong>S132.</strong> The book is a view of the board, not a link out. The
+rail’s decisions concern claims, and a claim lives in a chapter; the
+operator reads it where it is written, with the block rendered from
+the ledger and the decision beside it, and answers on the rail (98,
+122). The blueprints are mdBook and the server draws the chapter itself,
+so the viewer is the page’s own and the rail can drive it. A separate
+book site the page links to is rejected because the rail could not
+light a block in it.</li>
+<li><strong>S133.</strong> Beads are targets and explore is a mode. Each bead opens
+its elaboration’s own page (210), because an elaboration is a surface
+of its own reached from its intent; ] and [ step through them so the
+intent in hand is never lost. A bead carries a leading kind word so it
+never reads as a sub-intent. Explore is entered from the lane head
+and left by start, cancel or Esc, never a standing checkbox, so the
+lane at rest carries no selection state.</li>
+<li><strong>S134.</strong> Thumbnails and drill-in replace opened-in-place. At the
+context level the operator reads shape, not lists: a thumbnail shows
+how much is inside and how it hangs together without the names. The
+inside is read in the same grammar, so nothing is learned twice. A
+card that grew in place put a list where a map belongs and made the
+rest of the map move; both are rejected (map 5.2).</li>
+<li><strong>S135.</strong> Crossing links belong to the relationship edge. The model
+says a link across contexts must cross a relationship (map 2.4), so
+the edge’s pill is the proof of that rule and its panel is the
+evidence, on demand. At rest the detail is not important and is not
+drawn; links are never drawn on the whole map.</li>
+<li><strong>S136.</strong> Two focus rings, one glyph set, one camera memory. The
+rail’s focused card and the canvas’s cursor are two things the
+operator holds at once, so lit and focus are two rings (S87). Markers
+are one glyph set on every surface so a number reads the same on a
+lane, a card, a margin and a setup row (S52). A drill is a push and
+the way back lands where the operator left, which is the one memory;
+everything else is computed, so fit stays the only camera command
+(S88).</li>
+<li><strong>S137.</strong> Artifact views are derived, never stored, and never
+edited. The record is git (187); the page reads it at the shared line
+when asked, says where it read from and when, and offers only “open
+source” and “review”. Any edit is a response through the review
+binding (S36) or the machinery’s own work (176). A page that could
+save a file would make a second writer.</li>
+<li><strong>S138.</strong> One instrument, not three gauges. The game is priming the
+wheel and walking away: in the ideal week the operator primes it and
+construction runs unattended, and hosts are added to drain faster.
+Runway is the one number that says whether the wheel is primed, and
+the reading sentence says what to do about it. The three phase gauges
+survive under “advanced” because they explain, not because they
+decide. The key is w because l is later (S56, S57).</li>
+<li><strong>S139.</strong> Setup is per host, browsed, and “add” is one flow ending
+in one decision. A part is what a host runs (dispatch 2, 5), so the
+surface is the hosts with their parts, not a ladder with an order the
+placements do not have. An offer the operator accepts and then
+configures is two decisions for one thing; “add” collects the
+configuration and the secrets first and raises the install decision
+last, so the yes is the only decision and the count holds nothing
+before it. The install ladder and “offer” are rejected.</li>
+<li><strong>S140.</strong> The instance’s package store and a host’s store are separate
+surfaces, both reached from the account item. A unit type, a
+producer, a map vocabulary, a template or a scenario pack belongs to
+the instance, installs into the blueprints and runs on no host; an
+adapter, a sink, the agent, triage, a runner or a router is
+a host’s part and installs on one host. One list that mixed them
+asked the operator to pick a host for something no host runs, so the
+instance’s package store hangs off the instance (the account item)
+and a host’s store hangs off its host row. The strip’s setup control
+points at hosts, because the strip is where hosts are; it points at
+nothing else. The account item is the standard place because
+switching instance, settings, stores and sign-out are about the
+instance as a whole and none is an object on the board.</li>
+<li><strong>S141.</strong> Enrolment hands over only what the chosen parts need, and
+the operator’s own credentials are never stored. Provisioning runs
+from the host in hand with the operator’s platform credentials read
+at run time (207, dispatch “what the operator places”); the hand-over
+lists only the ticked parts’ secrets, so a host that presents no chat
+never receives a bot token; one enrolment decision carries a one-time
+token and the host joins by one command (205). Adopting an existing
+host is the token alone.</li>
+<li><strong>S142.</strong> The host’s “agent” names the interpreter job. The operator
+reads “agent” as the thing that reads and answers and proposes
+writes; the dispatch model’s word for that job is interpreter (194,
+dispatch 1). The surface uses the operator’s word and the hint says
+what it does; the model keeps its own. No part is named “dispatch” on
+the surface, because dispatch is a placement, not a part.</li>
+<li><strong>S143.</strong> The review flow is one flow across map and book. One
+switch, one mark, one <code>reviewed</code> (S73). Two marks would let the book
+and the map disagree about what the operator has seen.</li>
+<li><strong>S183.</strong> Membership is the instance’s and refusal is
+authorization (233, 234). Authentication is the host’s, one kind for
+every instance it serves, so an operator signs in once and the
+identity holds across a switch; an instance that does not admit
+that identity refuses the call rather than asking for a second
+sign-in, and the refusal is recorded and read under attention. The
+local-user case is rejected because it gave one operator two names
+and left a response with no identity to carry (153).</li>
+<li><strong>S184.</strong> One board, refused before recorded (235). The rail is one
+list from one register and every member reads the same numbers, so
+a decision answered by one member is answered for all. The second
+response is refused before any record exists rather than recorded
+as unapplicable, because an unapplicable response comes back under
+attention (S51) and this one has nothing for the operator to do but
+read who answered. A rail per member with its own numbers is
+rejected: the count would no longer be the instance’s.</li>
+<li><strong>S185.</strong> Sinks are per member, the board is not (236). What a
+member has seen is theirs, so the delivery mark, SINCE and an ok are
+per sink; what a member did is everyone’s, so every answer that acts
+on an object is applied once. A shared channel keeps one mark
+because it is one place everyone reads. A member’s chat sinks come
+from the addresses on their operators entry (236a), so membership
+and delivery are one write and no sink is declared twice; the page
+says where each is presented and when none can be.</li>
+<li><strong>S186.</strong> Ownership is a filter, never a gate (237). An owner chip
+says whose turn it is and lets a member narrow the rail to their
+own; it changes no answer, no count and no kind, because a decision
+gated to one member would stall the wheel when that member is
+away. The filter is a recorded response on the member’s sink so the
+chat delivers the same list as the page.</li>
+<li><strong>S187.</strong> The secret never travels through the page (207, S123). A
+secret is placed where the host keeps it, by the operator, in a
+place the page cannot read; the page carries the secret’s name, the
+command and a one-word “placed”, and the machinery checks the path.
+A field for a secret’s value, on the hosts surface, in settings or
+in an add form, is rejected because the page would then hold it in
+a request, a log or a re-render.</li>
+<li><strong>S188.</strong> The hosts surface is a settings screen, not an index
+(228, 229). A host is a fixed set of things it runs, one slot or
+list per kind, so the operator reads what is there and what is
+empty; “add” on a slot opens the catalogue already filtered to what
+that slot takes, and the instance’s package store takes the same shape
+over its own kinds. One big searchable index across every kind
+asked the operator to know the vocabulary before they could use it,
+and mixed things a host runs with things no host runs; it is
+rejected. The exact visual shape waits on the mockup round (S192).</li>
+<li><strong>S189.</strong> An install is the machinery’s effects, an image rebuild
+is a chore (204, 229, 239). A package install is fetch, check, place,
+register and start, deterministic and repeatable, so it runs as
+effects with proofs and charges no session; the slot reads
+installing while they run. An image build renders declarations into
+a provider’s artefact and may take a machine and a while, so it is
+accepted like any chore and shows under the chores head. The
+earlier “installing · chore wi-#n” on a slot is corrected here.</li>
+<li><strong>S190.</strong> Pool hosts are drain, not hosts the operator tends
+(240–242). A pool host is added and retired by the machinery while
+drain is the limit, within a bound and a cost the manifest names, so
+the surface shows the pool as one row and one pill with live of
+bound and shows the change on the instrument as drain changing; a
+pool host is listed under its pool for reading and never needs a
+response. “add a host” leaves the reading sentence when a pool
+exists because the machinery is already doing it; the bound and the
+ceiling are the operator’s levers, in settings.</li>
+</ul>
+<p>Dated 2026-09-08.</p>
+<ul>
+<li><strong>S163.</strong> One address per host, the instance in the path
+(205a). A host serving several instances serves them all at that
+one address, <code>/&lt;instance&gt;/...</code>, so a link names the instance it opens
+and the switcher only changes the path; the identity is the host’s
+session and never changes with it (233). The settings form edits the
+keys 233 assigns to the instance — name, profile, repositories,
+pools, sinks, curation, addresses — and shows the host’s keys — root,
+bound, declaration, provider, identity environment, router —
+read-only with a link to the host’s own screen. Closed.</li>
+<li><strong>S199.</strong> Identity is a host binding: GitHub locally, Frontegg
+hosted, and the upgrade carries the same usernames (243–247a, 253).
+A self-managed operator already has a GitHub account and already
+gives the instance a GitHub App, so the device flow costs them
+nothing to stand up: no provider account, no environment, no
+registered redirect, and the page on any localhost port it likes
+with no proxy and no name (245). Membership there is the manifest’s
+operators list, every listed operator holds every permission, and
+flags stand at their defaults, because one small team administering
+roles against itself is ceremony. The hosted tiers carry Frontegg,
+where accounts, roles, permissions and per-account flags are what
+the service sells. Moving between them is the upgrade and not a
+migration: the same GitHub usernames are invited, the addresses come
+over, and the board, the numbers and the repositories never move
+(247a, 218). One provider for both is rejected: it made every
+self-managed operator hold an account with a vendor to run their own
+laptop. Per-host sign-in kinds beyond these two are rejected: they
+gave one operator a different identity per host and made every host
+a place a directory had to be wired to. There is no local-user case
+and no unauthenticated page in either kind, and authorship is the
+GitHub username in both. Closed.</li>
+<li><strong>S200.</strong> Flags hide, permissions authorize (249, 250). A flag
+decides only whether a surface is drawn, so the entry, the control
+and the key are absent together and a flag is never read as a right;
+on a hosted tier the tool server checks the token for the permission
+the tool declares before any response is written, so a hidden
+surface’s tool is still refused to a caller without the permission
+and a shown one is still refused to a caller who lacks it. On a
+<code>github</code> host the same shape holds with the membership check in the
+permission’s place and every flag at its default. Greying a control
+the flag hides is rejected: it advertises a surface the account does
+not have. Using a flag to gate a write is rejected: a flag is
+evaluated in the page, and authorization that the page can decide is
+not authorization. Closed.</li>
+<li><strong>S201.</strong> Membership is a commit locally and not one hosted (247,
+255, 236a). On a self-managed host the operators list is the
+manifest’s, edited on the settings form and saved as one response,
+because the manifest is already the instance’s authored truth
+and there is no second system to disagree with it. On a hosted tier
+the same list is derived from the account’s assignments at every
+fetch and shown read-only, and invite, assign, revoke and set-role
+are recorded tool calls under <code>fw.identity.admin</code>, because a
+service’s billing and its members cannot live in a pull request. The
+one thing authored in both is the member’s chat addresses, which are
+the instance’s routing and belong to neither provider. A second
+admin console is rejected in both: administration is a surface of
+the instance, recorded like any other response (153). Closed.</li>
+<li><strong>S206.</strong> Every surface speaks to the customer, never to the
+designer. No name of a provider we buy appears anywhere on a surface:
+the hosted sign-in reads <strong>Instance Cloud</strong> and the self-managed one
+reads <strong>GitHub</strong>, which is the operator’s own git host and not a
+vendor of ours. No tier number, no clause number and no surface number
+appears in copy: a plan is named by its name (“included in Team”), and
+a host is named by what it does for the operator (“a cloud agent that
+keeps working while your laptop sleeps”), never by the rung or the
+clause that defines it. The reason is that a number is a fact about
+our design and not about the operator’s work: it tells them nothing
+they can act on and asks them to hold our model in their head. Design
+references — clause numbers, S-numbers, the ruling that settled a
+screen — live in the mockups’ header comments, where the next designer
+reads them and the customer never does. Closed.</li>
+</ul>
+<h2 id="open"><a class="header" href="#open">Open</a></h2>
+<p>What no mockup settled.</p>
+<ul>
+<li><strong>S78.</strong> The phone layout beyond the stacked list: whether the
+lanes collapse to heads with counts, whether the map’s stacked list
+draws relationships as more than lines of text, where the palette’s
+bottom sheet sits when the rail is the first tab, and how the book
+viewer’s tree is reached on a phone. A.38 settles that each is answerable on a phone
+(306, 307); how it is drawn there is this item.</li>
+<li><strong>S79.</strong> The chat’s rich controls per platform: which Discord
+components carry which answers, how a per-unit edit or a pick is
+offered, and whether a threaded reply on a decision line is an answer
+on that decision.</li>
+<li><strong>S80.</strong> The review surface’s annotation-as-response: which
+plannotator annotation maps to which answer (a note is redo with the
+note; approval of the document is yes; which annotation is drop),
+and how a per-unit edit is expressed as an annotation.</li>
+<li><strong>S81.</strong> Where the elaboration page’s records are rendered from:
+the intent’s change directory on the intent’s line, read through the
+blueprints profile, or a listing the session reports at exit (187, 210).</li>
+<li><strong>S82.</strong> Which tool “ask again” calls on a deferred proposal. The
+catalogue is marked incomplete; <code>release</code> on the deferred object is
+the candidate. The review mark’s tool is the catalogue’s
+<code>mark-reviewed</code>; this document’s <code>reviewed</code> names that entry.</li>
+<li><strong>S83.</strong> Whether a per-unit edit is one <code>answer</code> on the proposal’s
+number naming the unit, as rail-and-board sends it, or an <code>answer</code> on
+the unit’s own decision, which model 5.3 forwards to the unit.</li>
+<li><strong>S84.</strong> Which region has focus when the map view opens, and whether
+Tab moves between the rail and the canvas. j and k walk the rail in
+one and the focus ring in the other, so the answer decides which the
+keys reach first.</li>
+<li><strong>S144.</strong> 213, 214, 229 and 230 are ratified and bind §1.10–§1.12,
+and 205a, 207a and 243–255 including 247a bind §1.13–§1.14, all as
+their text now reads. Open from reading the statements against them:
+229’s “added, awaiting install” is shown as “adding · decision n”
+and its removal keeps the package’s records, and whether a removed
+package leaves a greyed slot that opens those records or an empty
+slot with “add” is not settled; 252’s refusal of a tool whose
+permission the host’s environment lacks has no surface of its own,
+being drawn as the same inline refusal and attention line as any
+other (S165, S202); and 247a’s upgrade has no surface at all,
+running as the service’s act on the instance rather than
+anything the page offers (S204, S205).</li>
+<li><strong>S146.</strong> The decision kinds the hosts surface raises are the
+model’s: package-install, package-secret, host-enrol and
+host-enrol-lapsed (model A.28), host-environment (238). What the
+host-enrol-lapsed attention line offers, a fresh token by one
+answer or the “+ host” flow again, is not settled.</li>
+<li><strong>S147.</strong> The package kinds are 228’s, and a host’s store and the
+instance’s package store are separate by 233 and 228. The agent and
+triage are headings with no package behind them: the agent is the
+binary’s interpreter job and triage the manifest’s job, configured
+per host. Whether their per-host settings (the agent’s model,
+triage’s sources) are the host’s declaration or the manifest’s
+defaults per role (173), and so whether they are changed on hosts or
+in settings, is not settled; the environment provider is a host’s
+declaration and is changed with it (S174).</li>
+<li><strong>S149.</strong> Ruled 2026-09-08: the book is served by a standalone
+read-only viewer beside the page, rendering mdBook sources from the
+blueprints’ shared line, with the claim block read from the standing
+specifications (315, S91, S92). It is not a view of the board and the
+page embeds no chapter.</li>
+<li><strong>S150.</strong> The artifact keys and the review binding. The views are
+addressed as intent, unit on its bolt, claim, bolt and work item; the
+“review” control reaches a plannotator stub. What a review page shows
+when no decision is pending, beyond refusing a note, is not settled.</li>
+<li><strong>S151.</strong> Whether thumbnails render on a phone at all, or only the
+caption’s counts, and whether the stacked list when drilled draws a
+link as more than its target’s name. A thumbnail is a rendering and
+not a control, so 306 does not decide it.</li>
+<li><strong>S191.</strong> Ruled 2026-09-08: non-member instances do not appear
+in the switcher. The switcher lists only the instances the
+signed-in identity is a member of (S166); surfaces.yaml
+<code>account.switcher</code> draws no greyed entry.</li>
+<li><strong>S202.</strong> How a refusal reads on the surface, between its causes
+(249, 252): an identity the instance does not admit, on a hosted
+tier a member without the tool’s permission, and a tool whose
+permission the host’s environment lacks. All are recorded the same
+way and shown inline with an attention line (S165), and whether the
+operator is told which cause it was, and in what words, is not
+settled. Controls a member has no permission for are absent rather
+than greyed by the same reasoning as S200, so the second cause
+should be rare and reached only by a stale page.</li>
+<li><strong>S203.</strong> What a <code>frontegg</code> host’s members section shows about a
+user invited to the account but not yet assigned the Application.
+The account knows an invitation before an assignment exists (255),
+and whether the section lists it as a pending row or shows nothing
+until the assignment lands is not settled.</li>
+<li><strong>S205.</strong> Whether the page says anything about its host’s identity
+kind beyond the host’s own screen (S115). A <code>github</code> host’s page and
+a <code>frontegg</code> host’s differ in what they draw — members section,
+roles, flag-gated surfaces — and whether the operator is told why,
+or simply sees the page their host serves, is not settled. Related:
+whether the upgrade (247a) is announced on the page at all, or is
+only ever the service’s act the operator learns about elsewhere.</li>
+<li><strong>S192.</strong> The visual shape of the hosts settings screen and the
+instance’s package store: how headings and slots are laid out against the
+row list, how a list heading (sinks, adapters, runners per role)
+grows, where a slot’s catalogue opens, and how a pool’s hosts fold
+under its row. The mockup round settles it; S114–S117, S156 and
+S176 bind what it must show.</li>
+<li><strong>S193.</strong> Ruled 2026-09-08: the pool row shows the ceiling and the
+per-host-hour rate from the manifest, and whether the ceiling
+stopped an addition (242). It shows no live spend; that would need
+the platform’s price at read time.</li>
+<li><strong>S194.</strong> Ruled 2026-09-08: an owner is one member or nobody; roles
+are not owners (237 amended), so “mine” is the decisions owned by
+the signed-in member and nothing else (S171).</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../surfaces/forms-keys-and-modes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../reference/roadmap.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../surfaces/forms-keys-and-modes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../reference/roadmap.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid-eefea253.min.js"></script>
+        <script src="../mermaid-init-ccf746f1.js"></script>
+        <script src="../suite-nav-eae185de.js"></script>
+        <script src="../book-grab-651a5042.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

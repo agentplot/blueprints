@@ -31,7 +31,8 @@ tools:
     propose-unit:  {args: [bolt, text], doc: "a unit in approved on the bolt (34)"}
     propose-chore: {args: [repository, text], doc: "a chore unit in approved on the repository's shared line (60)"}
     ask:           {args: [repository, text], doc: "an ask record for planning (28)"}
-    explore:       {args: [intents, type], doc: "an elaboration in approved covering the selected intents, type with-operator or standing (189)"}
+    explore:       {args: [intents, type], doc: "an elaboration in approved covering the selected intents; the type is any elaboration type the registry holds — with-operator, standing, or a shipped or added type named as a subcommand of the palette's `/elaborate`, `fundamentals` among them (189, 190, 318)"}
+    claim-needed:  {args: [unit, answer, intent], doc: "the review view's one answer for a unit that landed citing no claim (317, 34a): `captured` with an intent, open or proposed, attaches the unit's change there as material and the claim is written by the normal path; `declined` stores that nothing there was worth one. Either answer is stored once against the unit, as a not-applicable verdict is stored once against a claim (101), and the unit is never listed again; the unit is not reopened and nothing waits on the answer. Under `fw.capture.write`; calls `record_claim_answer`"}
     open-session:  {args: [repository, text], doc: "the operator's own session (69)"}
     init:          {args: [instance, profile, blueprints, state], doc: "`flywheel init`: writes the instance record in absent and the machine does the rest, repeatably (204)"}
     join-host:     {args: [host], doc: "`flywheel host join`: writes the host record in joining; the clones and the layout check follow (205)"}
@@ -133,6 +134,14 @@ viewer:
   readers: "the host's: on a self-managed host the private network is the boundary and the sign-in is the device flow of 253 with 253a's exception, nothing reaching beyond that network unless the operator says so (316, 155, 191, 46); on a hosted tier it is served at the tier's name under the caller's token like every other request and reads to members of that instance alone (316, 247, 249, 291)"
   public_opt_in: "serving a book to readers who are not members is a separate, explicit act: one opt-in per book, stated on the settings form as what it is — 'anyone with the link can read this book' — revocable there, and a stated fact of the tier (316, 261, account.settings)"
   flag: "`fw.ff.book-view` gates the viewer and the links to it, on by default; with the flag off no dock page carries 'read in book' (250, identity.yaml flags)"
+  fundamentals_part: "the book's first part renders like any other: the clauses as the numbered prose they are, and where a clause is followed by a claim included by anchor, that claim rendered in place from the standing specifications with its version, scenarios, attachments, scope and verdict dots, exactly as a chapter's claim is (318, 97, S92). Most clauses carry none, and the viewer shows the clause alone rather than an empty block; a claim's prose may say which clause it serves, which is text for the reader and is never read by the machinery"
+review:
+  doc: |
+    The book and the context map are the operator's review surface (122).
+    The review view is what changed in both since the `reviewed` mark: the
+    map's overlay on the page, the book's changed chapters and claims in
+    the viewer, one mark and one "mark reviewed" for both.
+  unclaimed_units: "beneath them, the units that landed since the mark citing no claim (34a), as one list under one question: is anything here worth a claim. The list is derived like everything else on this surface — landed units whose claims are empty and whose claim_answer is none — and is never stored. Per unit, the answer is one `claim-needed` call: yes names an intent, open or proposed, and attaches the unit's change there as material, where a claim is written by the normal path (23, 97); no is stored against the unit and it is never listed again (101, 317). Every unit in the list has already landed, so nothing waits on the answer and the mark moves whether or not any was given. It is here and not on the rail on purpose: a decision per landed chore would teach the operator to answer no without reading, which is how a claim that mattered gets lost"
 instances:
   doc: "the page serves one instance at a time and switches with `switch-instance` (218); each instance has its own sinks and presenters, its own register and its own state; nothing on a surface names two"
 phone:

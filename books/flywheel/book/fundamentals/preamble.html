@@ -1,0 +1,452 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Preamble, purpose, actors and vocabulary - Flywheel design</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="The design book for the flywheel: the work-loop machinery that turns an operator&#x27;s intent into built software. Part I includes the numbered requirements from their source; Part II explains the loop, design and construction, the book and the context map, the page, instances and hosts, the state store contract and the control plane; Part III includes the surfaces; Part IV points at the roadmap, the models and the proposals.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "../searchindex-65788371.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-5ad3a734.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Flywheel design</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="preamble-purpose-actors-and-vocabulary"><a class="header" href="#preamble-purpose-actors-and-vocabulary">Preamble, purpose, actors and vocabulary</a></h1>
+<p>A statement of what the instance must do and what must always hold,
+written to admit any model that satisfies it.</p>
+<p>The statement is in three parts. Part A is the data plane: the objects,
+their machines, the claims and the ledger, the signals, the rail, and
+the engine that drives them. Part B is the state store contract: the
+few operations the engine needs from durable, shared storage, and the
+guarantees each must give. Part C is the profiles: the ways that
+contract is satisfied, one per kind of storage the flywheel may run on.</p>
+<p>Parts A and B name no mechanism the model is free to choose: no labels,
+columns, queues, loops, guards, files or services. Two things of the
+world they do name freely, because section 9 fixes them and no model
+may displace them: git, and OpenSpec as the change and specification
+format. Every other real tool is named only in section 9 and in Part C,
+where naming them is the point. A reader who has never seen the current
+code should be able to design from Parts A and B, git and OpenSpec
+alone.</p>
+<h2 id="1-purpose"><a class="header" href="#1-purpose">1. Purpose</a></h2>
+<p>The flywheel turns an operator’s intent into built software with the
+operator spending their attention only where judgment is needed. It
+runs design work that settles what to build, and construction work
+that builds it, using AI agent sessions for the work and the operator
+for the decisions. Everything it does is inspectable after the fact.</p>
+<h2 id="2-actors"><a class="header" href="#2-actors">2. Actors</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>actor</th><th>may decide</th><th>may not</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>operator</strong></td><td>which intents are worth pursuing; whether a proposed piece of work starts; whether a standing session is finished; whether a thread of work is closed; whether an offered idea or chore is accepted; every answer to a question the machinery cannot answer itself</td><td>nothing is required of the operator for work that needs no judgment</td></tr>
+<tr><td><strong>the machinery</strong></td><td>when to start, advance, finish and retire work whose conditions are met; what to offer the operator and when; what to record</td><td>it never invents work, never approves work, never closes a thread on its own</td></tr>
+<tr><td><strong>an agent session</strong></td><td>how to do the one job it was given; what to report; whether to raise a question, offer a finding, or offer a chore</td><td>it never changes the state of anything outside its job; it never starts other work</td></tr>
+<tr><td><strong>signal sources</strong> (people, meeting transcripts, logs, user feedback, other tools)</td><td>nothing; they only supply raw material</td><td></td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="3-vocabulary"><a class="header" href="#3-vocabulary">3. Vocabulary</a></h2>
+<p>Terms are defined by meaning. A model may add terms; it may not
+redefine these.</p>
+<ul>
+<li><strong>intent</strong> — one thread of design work about one subject, pursued
+until the operator closes it. Intents are curated from signals; not
+every signal becomes an intent.</li>
+<li><strong>elaboration</strong> — one unit of design work on an intent, worked by one
+free-flowing session. An elaboration has a <strong>type</strong>, and the type
+determines how it ends (see 5.4). An elaboration is the smallest
+thing the operator approves on the design side.</li>
+<li><strong>bolt</strong> — one delivery of construction work to a built repository:
+it accumulates finished units and lands once, when the operator
+closes it.</li>
+<li><strong>unit</strong> — one approved piece of construction work. Proposed as a
+single document the operator can read whole; once approved it is
+broken into work items and worked by its type.</li>
+<li><strong>unit type</strong> — the named, operator-extensible machine that takes a
+unit from approved to landed: its stages, the sessions each stage
+runs, where an item goes back to when a stage judges it not done,
+whether it needs a change directory, and where its work lands. Chore,
+fast and default are types; so is anything the operator adds.</li>
+<li><strong>planning</strong> — the session that reads one built repository’s backlog,
+as-built and open bolts and proposes units, each with a target bolt:
+an open one, or a new one with a proposed name.</li>
+<li><strong>proposal</strong> — planning’s document for one run: the bolts it
+proposes, new or open, and the units in each with their types and
+dependencies. One decision on the rail; nothing in it is a bolt or a
+unit until its yes.</li>
+<li><strong>work item</strong> — one task of a unit, worked through construction
+stages by sessions, merged into the bolt when complete.</li>
+<li><strong>service</strong> — one process a repository declares that listens in a
+place: a dev server, a worker. A state object per open bolt’s place,
+started and stopped only by the machinery.</li>
+<li><strong>line</strong> — a branch the machinery owns: each repository’s shared
+line, a bolt’s line off a built repository’s shared line, an intent’s
+line off the blueprints’ shared line.</li>
+<li><strong>landing</strong> — the machinery’s effect that moves a line’s work onto
+its parent: a bolt’s line onto the shared line by the repository’s
+policy, direct or pull-request; an intent’s line by the archive. A
+bolt is landing from the operator’s close until the landing passes or
+fails.</li>
+<li><strong>place</strong> — a worktree the machinery prepares for one session off one
+line: a work item’s place off its bolt’s line, an elaboration’s place
+off its intent’s line, and a bolt’s own place for the operator.</li>
+<li><strong>session</strong> — one agent process working one job in one place, with a
+bounded goal and a fixed set of ways to end.</li>
+<li><strong>finding</strong> — an idea a session has while doing its job that it
+judges worth the operator’s consideration but outside its job.
+Offered, never acted on by the session.</li>
+<li><strong>chore</strong> — a small fix a session judges necessary but cannot or
+should not do itself, because it lies across a repository or branch
+boundary or outside its job. Offered; if accepted, it is a unit of
+the chore type: one agent scoped to the right place, no change
+directory, never a bolt of its own.</li>
+<li><strong>decision</strong> — one thing the rail asks the operator: created when a
+choice becomes the operator’s to make, retracted when it is made or
+can no longer be made, numbered once for the flywheel.</li>
+<li><strong>response</strong> — the operator’s answer to a decision, or a dictation;
+recorded as <code>op-response</code>, applied exactly once.</li>
+<li><strong>rail</strong> — the derived, numbered list of the decisions that stand, in
+the model’s order; the page draws it as the rail titled Decisions, the
+chat prints it as a numbered list; formerly the plan.</li>
+<li><strong>curation</strong> — the step that turns many raw signals into a few
+intents worth elaborating.</li>
+<li><strong>signal</strong> — one raw piece of input from a source: an excerpt of a
+meeting transcript, a log observation, a piece of user feedback, a
+chat message, a session’s finding about something outside its job.
+A signal is a record with a source and a date; it is never work and
+never a rail decision on its own.</li>
+<li><strong>capture</strong> — one source event as recorded: a meeting, a day of one
+chat channel, a log run, a forwarded message. It holds provenance and
+the pointer to the raw material, and the signals read from it.</li>
+<li><strong>move</strong> — curation’s stored judgment on one signal: attach to an
+open intent, challenge a standing claim, join a proposed new intent,
+answered by a decision made since, route to the chore or the ask
+curation offered for it, or drop, with a reason.</li>
+<li><strong>claim</strong> — one statement of what is true at the destination: a
+boundary, an owner, a coupling, a store, an invariant, or a behavior.
+It is a requirement block in the blueprints’ OpenSpec specifications,
+with a stable name, a version that is the hash of its text and so
+moves only when its text moves, at least one scenario saying how one
+would know it holds, and a scope. A claim is <strong>proposed</strong> while it
+sits in its intent’s change and <strong>standing</strong> once the intent’s
+landing has archived it into the standing specifications.</li>
+<li><strong>as-built</strong> — the built repository’s standing OpenSpec
+specifications: what that software does as of all construction
+landed. Every as-built statement is a requirement block naming the
+claim and claim version it serves.</li>
+<li><strong>verdict</strong> — one stored judgment that a repository satisfies a claim:
+satisfied, partial, not satisfied, or not applicable, with the claim
+version and repository revision judged, the evidence, and the date.</li>
+<li><strong>ledger</strong> — the verdicts, kept for every repository the instance
+tracks.</li>
+<li><strong>scope</strong> — the repositories a claim applies to: all of them, a kind
+of repository, every repository declaring a capability, or named
+repositories.</li>
+<li><strong>instance</strong> — one thing the state holds: one blueprints repository,
+one state repository, the repositories it tracks, its sinks and its
+numbers, isolated from every other (218, 219). It belongs to exactly
+one account. This is the word every requirement, machine, atom,
+profile and permission uses; the customer’s word for it on every
+surface is <em>flywheel</em> (S206).</li>
+<li><strong>account</strong> — who may respond, and what they may respond to: the
+Frontegg account on a hosted tier, the manifest’s authored operators
+list on a self-managed host. It holds one or more instances, and
+membership, roles and each member’s chat addresses live on it, not on
+an instance (247). A user signs in to an account, sees its instances,
+and switches accounts to see others.</li>
+<li><strong>flywheel</strong> — the product and the machinery: this design, the
+binary, and what it does. On a customer-facing surface it is also the
+customer’s name for an instance, so a control that switches instances
+is rendered “Switch flywheel” and a page that lists them lists
+flywheels (S206).</li>
+<li><strong>organization</strong> — a company, or an organization at the git host. It
+is never the thing the state holds; that is an instance, and who may
+respond in it is an account.</li>
+<li><strong>state</strong> — everything the machinery must remember between runs and
+share between hosts: objects, their states, ownership, verdicts,
+offers, and the operator’s answers.</li>
+<li><strong>lease</strong> — a host’s recorded ownership of an object for a bounded
+time, renewed while the host works and expired by rule when it does
+not.</li>
+<li><strong>data plane</strong> — the objects, machines, claims, ledger, signals, rail
+derivation and scenarios: what the flywheel is about, independent of
+where its state is kept.</li>
+<li><strong>state store</strong> — durable, shared storage and the operator’s
+surfaces, reached through a fixed set of operations with fixed
+guarantees. The data plane touches nothing else. It is not the
+control plane, which is the service side of A.37 and another thing
+entirely.</li>
+<li><strong>engine</strong> — the generic part: it loads definitions, evaluates
+predicates over evidence, chooses transitions, runs effects
+idempotently, and derives the rail’s decisions. It holds no knowledge of
+what the flywheel is about.</li>
+<li><strong>domain</strong> — the flywheel’s own part: its machine definitions and the
+predicate and effect atoms those definitions name.</li>
+<li><strong>profile</strong> — one way of satisfying the state store contract: a
+binding from every evidence and effect name to a real store and
+service, with the guarantees provided.</li>
+<li><strong>effect</strong> — one act on the world the engine performs on a
+transition, named by a machine definition, carried out through the
+state store, written idempotently, and safe to repeat.</li>
+<li><strong>tool</strong> — one operation of the state store the operator may
+invoke, with a schema naming its arguments by object id: the one way
+anything — a page control, a chat, the dispatch agent, the machinery
+— moves an object. A dictation is a tool the operator invoked.</li>
+<li><strong>host’s agent</strong> — the agent that serves the operator’s free text on
+a surface: the instance’s dispatch agent for chat, a model
+running in the page’s browser. It reads and answers with the query
+tools on its own, and every write it makes is a proposed tool call
+the operator confirms. The machinery never parses free text.</li>
+<li><strong>interpreter</strong> — the function of the host’s agent that turns free
+text into a proposed tool call for the operator to confirm; a
+message that asks for several things yields several, one card each.
+Nothing at all when the operator used a control.</li>
+<li><strong>blueprints repository</strong> — an instance’s content repository,
+one of its two central repositories beside the state repository: the
+book, the claims, the context map, the manifest, the OpenSpec changes
+for intents with their records, and what the machinery writes under
+its prefix (203). Short: the blueprints.</li>
+<li><strong>book</strong> — one content type inside the blueprints: the design book
+of chapters, with the claims fenced in the chapters that explain
+them (23, 97). A chapter is a page of it. Its first part is the
+fundamentals part.</li>
+<li><strong>fundamentals part</strong> — the part of the book that states what the
+system fundamentally is and what must always hold, written as a
+statement of invariants, with the claims that make a clause checkable
+included under them (318). It is a part of the book and not a fourth
+artifact beside the book, the claims and the context map.</li>
+<li><strong>statement of invariants</strong> — the form the fundamentals part is
+written in: every clause states one thing that is always true of the
+system or one thing the system never does, the clauses numbered in
+one sequence and naming no mechanism, the whole written to admit any
+model that satisfies it. Short form <strong>the statement</strong>; this file is
+one.</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../fundamentals/a01-the-operators-response.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../fundamentals/a01-the-operators-response.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../mermaid-eefea253.min.js"></script>
+        <script src="../mermaid-init-ccf746f1.js"></script>
+        <script src="../suite-nav-eae185de.js"></script>
+        <script src="../book-grab-651a5042.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

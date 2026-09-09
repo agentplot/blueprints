@@ -1189,6 +1189,27 @@ machinery writes no index beside it (181, 192). A requirement on the
 construction side differs from one on the design side by its `Claim:`
 line and nothing else.
 
+Five facts of that shape are core (223a), and they are the five above:
+a requirement block with a stable name and at least one scenario; a
+change directory holding one delta per capability; an archive at
+landing that merges the deltas into the standing specifications; the
+content hash of the block as its version; and the `Claim:` line naming
+the served claim on the built side. Every machine, atom and proof in
+this model reads them — the `claim` machine's states are which tree
+holds the requirement, `cell.verdict_claim_version` compares a hash to
+a hash, `archive_intent` is what makes a claim standing — so an
+instance that changed one would be running a different flywheel. The
+format that carries the shape is OpenSpec, a given, and the claim
+machine takes no format parameter: a second change or specification
+format beside it is a non-goal.
+
+What is extensible is what goes into a block: the schemas a deliverable
+must satisfy, the instructions that shape what a session writes, and
+the skills that produce it (88, 119, 120, 190). Those are files under
+the instance's prefix in the blueprints, added or overridden like any
+other extensible file (10.6, 10.7), and they are the whole surface an
+instance needs over a claim.
+
 ### 8.2 The ledger
 
 The ledger is `ledger/<repository>.rec` in the blueprints repository, one
@@ -1309,6 +1330,46 @@ As-built statements are files in the built repository
 written by build sessions under the default instruction (120).
 `cell.evidence_present` reads them. A statement naming no standing
 claim fails the repository's own `flywheel asbuilt check` gate (I9).
+
+### 8.5 The unit that cites no claim
+
+`unit.claims` may be empty (34a). A unit's proposal cites the standing
+claims in scope it serves, which planning already holds in its order,
+and cites none when none fits; it never proposes a claim of its own,
+because claims are written on the design side (23, 97). Chores are
+where this is the common case: instructions, citations, references and
+housekeeping are chores by 61 and no claim will ever be written for
+them.
+
+Nothing downstream grows a special case for it. The unit's change is
+written and landed like any other; it produces no as-built statement,
+so `cell.evidence_present` has nothing to read; and no ledger cell
+exists for it, because a cell is a (standing claim, repository in
+scope) pair derived from the specifications and the map and never from
+a unit (8.2). The verdict deliverable is dropped from expected for a
+unit whose claims are empty, which is the rule `deliverables.yaml`
+already carries. A chore that *does* cite a claim is the other half:
+its landing makes that claim's cell due again, which is what 64 grants
+and what makes citing worth anything.
+
+The answer that some of that work wanted a claim after all is stored on
+the unit, not on the ledger. `unit.claim_answer` is `none`, `captured`
+or `declined`, written by `record_claim_answer` and by nothing else,
+on the pattern of the not-applicable verdict: asked once, stored once,
+never asked again (101, 317). No decision kind exists for it. Raising a
+rail decision per landed chore would teach the operator to answer no
+without reading, which is exactly how a claim that mattered gets lost.
+
+The review view carries it instead (122, 10.6). `flywheel review`
+derives the list the same way it derives everything else: the units
+that landed since the operator's `reviewed` mark whose `claims` are
+empty and whose `claim_answer` is `none`, under one question, is
+anything here worth a claim. `captured` runs `record_claim_answer` with
+the intent named, which attaches the unit's change to that intent as
+material, where a claim is written by the normal path; `declined`
+stores the answer and the unit is never listed again. Every unit in the
+list has already landed, so nothing waits on the answer and the mark
+moves whether or not any was given.
 
 ## 9. Signals and curation
 
@@ -1472,8 +1533,20 @@ the older commit in its header (91, 123).
 
 The default instructions ship in the blueprints repository template:
 `instructions/design-conclusion.md` (write the chapter and the claim in
-one commit; update the context map), `instructions/construction.md`
-(name the claim the work serves in every as-built statement). The
+one commit; update the context map),
+`instructions/claim-granularity.md` (write a claim at the granularity
+of the destination — it survives a rewrite of the code, it has an
+observer who would want to know if it stopped holding, and it is
+judgeable from the repository alone; a statement naming a file, a
+colour, a setting, a plugin or a step of a pipeline is not a claim, and
+every claim costs a verdict per repository in scope forever),
+`instructions/fundamentals.md` (every clause an invariant, numbered in
+one sequence, naming no mechanism) and
+`instructions/construction.md` (cite the standing claim in scope the
+work serves, cite none when none fits, never propose a claim for the
+work; name the claim in every as-built statement). The first three
+reach every design type, the last every construction session (120).
+The
 context map is `context-map/current.yaml` and `target.yaml` with the
 instance's `flywheel/map-vocabulary.yaml`, the scope surface (198,
 section 8.2), rendered by the machinery into `flywheel/map/*.json` and
@@ -1481,7 +1554,9 @@ into the book, all versioned with the book; the review view is
 `flywheel review` served at
 `/review`: the chapters and map nodes changed since the operator's
 last `reviewed` mark (a response on the rail object), with the previous
-version beside each (S25, 122).
+version beside each (S25, 122), and beneath them the units that landed
+since the mark citing no claim, as one list under one question (317,
+8.5).
 
 ### 10.7 The type registry
 
@@ -1502,7 +1577,12 @@ The registry is the union of two sets, validated as one:
 
 - **the shipped types**, listed by `name@version` in the release set
   (208) and placed by the blueprints template: `chore@2`, `default@5`,
-  `fast@3` and `self-closing@2`, `standing@2`, `with-operator@3`;
+  `fast@3` and `self-closing@2`, `standing@2`, `with-operator@3`,
+  `fundamentals@1`. The last writes the fundamentals part of the book
+  and is shipped rather than added (224, 318): it is an extensible file
+  like every other type, never core, composing only the `session`
+  template and atoms the release already ships, so a release adds it
+  with no code change and an instance overrides it like any other;
 - **the instance's types**, the files under `flywheel/types/` in
   the blueprints the manifest lists; `persona-test@3` is one (S26). The
   manifest names the directories the registry reads and nothing more.
@@ -1753,6 +1833,33 @@ proposed claims, a unit's delta carries the requirement it builds with
 a `Claim:` line naming the standing claim it serves, and each landing
 archives its delta into the standing specifications on its own side
 (49, 99, 187).
+
+The book carries a third layer above both, the fundamentals part (318).
+It is a deliverable of its own — `fundamentals-part` in the binding,
+store `book`, fed to the `fundamentals` elaboration type and to no
+other — and it is a part of the book rather than a fourth artifact
+beside the book, the claims and the map. Its unit is a clause: a
+numbered sentence saying what must always hold, in language a person
+judges, mechanism-free, written to the style of
+`design/requirements-style.md`, which is the schema the type's session
+validates itself against before it ends (25).
+
+Clause numbers and claim names are two namespaces that meet by
+inclusion and nowhere else. A clause is numbered in one sequence across
+the part, and its number is a stable identifier: a new clause takes the
+next free number, a clause that must be read beside an existing one
+takes a lettered insert, and a clause is rewritten in place rather than
+renumbered. A claim keeps its own name, `<capability>/<name>`, and its
+own version, the hash of its block (8.1). Where a clause names
+something a repository can be judged against, the claim that checks it
+is included by anchor immediately after the clause,
+`{{#claim state/derivable-after-restart}}`, and the preprocessor
+renders it in place from the standing specifications exactly as it does
+in any chapter (97, S92). Most clauses carry no claim: they constrain
+how a model is built rather than a behaviour a repository could
+satisfy, and a verdict against one would be a category error. A claim's
+prose may say which clause it serves; nothing in the machinery reads
+that sentence, and no field on the claim holds a clause number.
 
 ### 12.13 What is the layout of state in git, and what does a race look like?
 

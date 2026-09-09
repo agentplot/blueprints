@@ -7,7 +7,7 @@
 <marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
 </defs>
 <rect width="1421" height="320" fill="#fff"/>
-<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">package — object v1, core · object package · parent organization</text>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">package — object v1, core · object package · parent instance</text>
 <text x="40" y="57" font-size="12" fill="#666">One package (228): one thing of one kind — an adapter, a chat sink, a runner, a router, a sign-in, a unit type or an elaboration type, a deliverable producer, a map vocabulary, a template…</text>
 <text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 5, 204, 207, 224, 228, 229, 284, 286, 287 · package.yaml · record name, kind, scope, host, source, set_version, hash, config, secrets</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
@@ -47,7 +47,7 @@
 <text x="587.0" y="213.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: placed</text>
 <rect x="681.6" y="167.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>fetched at its tag, checked against the set version, placed under the prefix or on the host, hashed and registered, started — effects with proofs, repeatable (204, 224, 228)</title></rect>
 <text x="729.6" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">installing</text>
-<rect x="821.6" y="167.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>in force; every host reads an organization package at the shared line, so no two hosts differ on a type (228); configuration is changed here with one response (229)</title></rect>
+<rect x="821.6" y="167.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>in force; every host reads an instance package at the shared line, so no two hosts differ on a type (228); configuration is changed here with one response (229)</title></rect>
 <text x="869.6" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">installed</text>
 <rect x="961.6" y="167.0" width="129.5" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>what it runs is stopped; its files stay; enable is the install effect again, which finds the files and starts it (229)</title></rect>
 <text x="1026.4" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">disabled</text>

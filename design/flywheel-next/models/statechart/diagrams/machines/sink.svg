@@ -9,7 +9,7 @@
 <rect width="1378" height="278" fill="#fff"/>
 <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">sink — engine v1, core · object sink</text>
 <text x="40" y="57" font-size="12" fill="#666">One sink the operator reads: the chat, the page, or the multiplexer&#x27;s bell on a named surface.</text>
-<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 2, 8, 14, 18, 68, 82, 148, 152, 153, 154, 155, 216, 217, 218, 233, 236, 243, 244, 245, 247, 253, 254, 277, 303, 306, 307, 308, 309, 310, 311 · engine/sink.yaml · record kind, member, filter, surface, routes, cadence, delivered_at, pinned_to</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 2, 8, 14, 18, 68, 82, 148, 152, 153, 154, 155, 216, 217, 218, 233, 236, 243, 244, 245, 247, 253, 254, 277, 303, 306, 307, 308, 309, 310, 311, 315, 316 · engine/sink.yaml · record kind, member, filter, surface, routes, cadence, delivered_at, pinned_to</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">delivery</text>
 <line x1="107" y1="103" x2="335.5" y2="103" stroke="#8a8a86" stroke-width="2" opacity="0.3"/>
 <circle cx="52.0" cy="151.0" r="4" fill="#1a1a1a"/>

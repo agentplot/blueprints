@@ -11,10 +11,14 @@ few operations the engine needs from durable, shared storage, and the
 guarantees each must give. Part C is the profiles: the ways that
 contract is satisfied, one per kind of storage the flywheel may run on.
 
-Parts A and B name no mechanism: no labels, columns, queues, loops,
-guards, files, or tools. A reader who has never seen the current code
-should be able to design from Parts A and B alone. Real tools are named
-only in section 9 and in Part C, where naming them is the point.
+Parts A and B name no mechanism the model is free to choose: no labels,
+columns, queues, loops, guards, files or services. Two things of the
+world they do name freely, because section 9 fixes them and no model
+may displace them: git, and OpenSpec as the change and specification
+format. Every other real tool is named only in section 9 and in Part C,
+where naming them is the point. A reader who has never seen the current
+code should be able to design from Parts A and B, git and OpenSpec
+alone.
 
 ## 1. Purpose
 
@@ -201,7 +205,19 @@ redefine these.
   its prefix (203). Short: the blueprints.
 - **book** — one content type inside the blueprints: the design book
   of chapters, with the claims fenced in the chapters that explain
-  them (23, 97). A chapter is a page of it.
+  them (23, 97). A chapter is a page of it. Its first part is the
+  fundamentals part.
+- **fundamentals part** — the part of the book that states what the
+  system fundamentally is and what must always hold, written as a
+  statement of invariants, with the claims that make a clause checkable
+  included under them (318). It is a part of the book and not a fourth
+  artifact beside the book, the claims and the context map.
+- **statement of invariants** — the form the fundamentals part is
+  written in: every clause states one thing that is always true of the
+  system or one thing the system never does, the clauses numbered in
+  one sequence and naming no mechanism, the whole written to admit any
+  model that satisfies it. Short form **the statement**; this file is
+  one.
 
 <!-- ANCHOR_END: glossary -->
 ## 4. Requirements — Part A, the data plane
@@ -370,6 +386,17 @@ requirements, iterated against the running rail rather than on paper.
     ask, a finding or a signal to a unit on an open bolt, as a proposal
     on the rail. Either way the unit carries a type, a bolt and its
     dependencies like any other.
+34a. A unit's proposal cites the standing claims in scope it serves,
+    which are already among its inputs (89, 102), and cites none when
+    none fits. A unit may therefore cite no claim: it carries a type, a
+    bolt and its dependencies like any other (34), and its change is
+    written and landed like any other, but it produces no as-built
+    statement and no verdict, and the ledger has no cell for it. This
+    is a case of 99, not an exception to it: construction that names no
+    claim satisfies none. A unit never proposes a claim for its own
+    work; claims are written on the design side (23, 97), and small
+    work connects to a coarse claim by citing it. A chore citing a
+    claim makes that claim's verdict due again when it lands (64).
 35. A proposed unit whose cited claim moved is replaced by planning's
     next proposal, silently, because a proposal is not work. An approved
     unit that has not started whose claim moved is a decision: redo or keep.
@@ -818,9 +845,18 @@ requirements, iterated against the running rail rather than on paper.
     them, the instructions in force make every session that settles a
     design conclusion write the chapter that explains it and the claim it
     adds or amends in the same commit; make every session that writes or
-    amends a claim update the system context map so the map stays
-    current; and make every construction session name the claim its work
-    serves.
+    amends a claim write it at the granularity of the destination, so
+    that a claim survives a rewrite of the code, has an observer who
+    would want to know if it stopped holding, and is judgeable from the
+    repository alone (100), and so that no statement naming a file, a
+    colour, a setting, a plugin or a step of a pipeline is written as a
+    claim; make every session that writes or amends a claim update the
+    system context map so the map stays current; make the elaboration
+    type that writes the fundamentals part write every clause as an
+    invariant, numbered and naming no mechanism (318); and make every
+    construction session cite the standing claim in scope its work
+    serves, cite none when none fits, and never propose a claim for its
+    own work (34a).
 121. The system context map is versioned like the book, so two versions
     can be compared and the difference read as a change to the design.
 122. The operator's review surface is the book and the context map. A
@@ -832,6 +868,32 @@ requirements, iterated against the running rail rather than on paper.
     be told apart.
 124. A test can show, for a given instruction version and a scenario,
     what a session would be asked to write, without starting one.
+317. The review surface (122) carries the units that landed citing no
+    claim (34a) since the operator last reviewed, as one list under one
+    question: is anything here worth a claim. Answering yes for a unit
+    attaches its change as material to an intent, open or proposed, and
+    the claim is written there by the normal path (23, 97); the unit
+    itself is not reopened. Answering no is stored against that unit,
+    as a not-applicable verdict is stored once against a claim (101),
+    and that unit is never listed again. Every unit in the list has
+    already landed, so nothing waits on the answer.
+318. The fundamentals part is a part of the book: a statement of
+    invariants of what the system is and what must always hold, written
+    as clauses numbered in one sequence across the part, each stating
+    something always true or never done, and naming no mechanism. A
+    clause says what must always hold in language a person judges; a
+    claim is the clause the flywheel checks per repository, included by
+    anchor immediately after the clause it makes checkable (97). A
+    clause need not yield a claim, and a claim's prose may cite the
+    clause it serves, which the machinery never reads. The part is
+    written by an elaboration type shipped for it, whose deliverables
+    are the part, the claims it yields and their map attachments (190);
+    the type is self-closing (25) and its session ends when the part
+    validates against the schema, which is the style of
+    `design/requirements-style.md`. The type is an extensible file in
+    the shipped set, never core, composing only templates and atoms the
+    release ships (57, 87, 223, 224); changing the type, its schema or
+    its producer is a chore (123).
 198. The system context map is the scope surface. It is the map of the
     bounded contexts the blueprints describe, in the terms of domain-driven
     design: a context, the elements it names, the relationships between
@@ -1083,7 +1145,10 @@ requirements, iterated against the running rail rather than on paper.
     (88), and the surface that reviews it (17). The flywheel ships a
     default set, versioned as one thing: book chapter, claim, context
     map, conceptual and logical diagrams in a house style, proposal
-    document, verdict. An instance replaces or adds a producer per
+    document, surface specification, fundamentals part, verdict. The
+    fundamentals part is delivered by an elaboration type shipped for
+    it (318) and by no other, since a type is the set of deliverables
+    it names. An instance replaces or adds a producer per
     deliverable in the manifest without touching the engine (119), and
     a session is handed the producers in force when it starts (89).
     Changing a producer is a chore (123).
@@ -1195,9 +1260,9 @@ requirements, iterated against the running rail rather than on paper.
     installation tokens a pool host (240) needs are minted for it by
     the service, scoped as 207 scopes them.
 208. The blueprints template, the built-repository template, the map schema
-    and derivation table (198, 199), and the shipped skills and
-    deliverables (190) are one versioned set released with the
-    flywheel. Initialization and creation stamp the version they used;
+    and derivation table (198, 199), the fundamentals part's skeleton
+    (318), and the shipped skills and deliverables (190) are one
+    versioned set released with the flywheel. Initialization and creation stamp the version they used;
     upgrading a repository's template is a chore (123).
 
 <!-- ANCHOR_END: a24 -->
@@ -1397,6 +1462,19 @@ requirements, iterated against the running rail rather than on paper.
     an extensible file is a chore (123). The machinery never moves an
     object because its machine changed: an object in a state its
     machine no longer has is reported under attention (81).
+223a. The claim shape is core (223). A requirement block with a stable
+    name and at least one scenario, a change directory holding one
+    delta per capability, an archive at landing that merges the deltas
+    into the standing specifications, the content hash of the block as
+    its version, and the `Claim:` line naming the served claim on the
+    built side are what every machine, atom and proof reads, and no instance
+    changes them. The format that carries the shape is OpenSpec, a
+    given (section 9), and a second format beside it is not a goal
+    (section 8). What is extensible is what goes into a block: the
+    schemas a deliverable must satisfy, the instructions that shape
+    what a session writes, and the skills that produce it (88, 119,
+    120, 190) are files an instance adds or overrides under its prefix
+    like any other extensible file.
 224. Every machine file carries a version, and the release carries a
     set version that names the version of every core machine and every
     shipped extensible file (208). An extensible file names the set it
@@ -2708,6 +2786,7 @@ These hold at every moment, not just at the end of an operation.
 - Scheduling across hosts for performance. Correctness first.
 - A user interface beyond the page, the status view, and the chat
   reply.
+- A second change or specification format beside OpenSpec.
 
 Which state store the flywheel runs on is a profile choice, made per
 instance, not a non-goal.

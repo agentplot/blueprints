@@ -9,7 +9,7 @@
 <rect width="2412" height="482" fill="#fff"/>
 <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">unit — object v4, core · object unit · parent bolt, intent · owns work-item</text>
 <text x="40" y="57" font-size="12" fill="#666">One approved piece of construction work (36, 37).</text>
-<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 5, 13, 16, 17, 31, 35, 36, 37, 57, 60, 74, 172 · unit.yaml · record type, type_version, document, target, depends_on, claims, estimate, owner, actual, batch, proposal, approval, redo_notes, needs_amend, citation_choices</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 5, 13, 16, 17, 31, 35, 36, 37, 57, 60, 74, 172 · unit.yaml · record type, type_version, document, target, depends_on, claims, claim_answer, estimate, owner, actual, batch, proposal, approval, redo_notes, needs_amend, citation_choices</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
 <line x1="80" y1="103" x2="2371.85" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
 <circle cx="192.0" cy="349.0" r="4" fill="#1a1a1a"/>
@@ -86,7 +86,7 @@
 <rect x="2128.8" y="320.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
 <text x="2173.8" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">dropped</text>
 <text x="2173.8" y="351.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: dropped</text>
-<rect x="2265.8" y="317.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"></rect>
+<rect x="2265.8" y="317.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"><title>a unit that landed with an empty claims list joins the review surface&#x27;s batch — the units landed since the operator&#x27;s mark citing no claim, read in one sitting under one question (317, model.md 8.5). The answer is recorded by record_claim_answer against the unit; the unit is not reopened for it and nothing waits on it. A chore that did cite a claim makes that claim&#x27;s cell due again at its landing (64)</title></rect>
 <rect x="2268.8" y="320.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
 <text x="2313.8" y="339.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">landed</text>
 <rect x="440.3" y="237.5" width="251.1" height="11" fill="#fff" opacity="0.92"/>

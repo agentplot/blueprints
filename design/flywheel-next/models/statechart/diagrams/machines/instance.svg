@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1378" height="316" viewBox="0 0 1378 316" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<defs>
+<marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
+<marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
+<marker id="mG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8a8a86"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
+<marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
+</defs>
+<rect width="1378" height="316" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">instance — object v2, core · object instance · one per instance · owns repository, package, pool</text>
+<text x="40" y="57" font-size="12" fill="#666">The instance (204): one object per instance with a machine of its own, driven by `flywheel init` and advanced by the same reconciler that advances work.</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 15, 204, 207, 208, 218, 219, 220, 221, 241, 247, 255, 261, 265, 266, 267, 276, 279, 281, 282, 294, 302, 304, 312 · instance.yaml · record name, blueprints, state, profile, app_id, template_version, root</text>
+<text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
+<line x1="80" y1="103" x2="1197.75" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="196.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="196.0" x2="69.0" y2="196.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<path d="M156.0,182.0 V159.0 H220.0 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M80.0,182.0 V174.0 H118.0 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M327.6,182.0 V159.0 H391.6 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M255.9,182.0 V174.0 H291.7 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M467.6,182.0 V129.0 H681.8 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M448.6,182.0 V159.0 H531.6 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M410.6,182.0 V174.0 H429.6 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M617.8,182.0 V144.0 H700.8 V182.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M757.8,182.0 V159.0 H821.8 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M719.8,182.0 V174.0 H738.8 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M897.8,182.0 V159.0 H961.8 V182.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>the operator&#x27;s dictation `remove &lt;instance&gt;` (4, 221); never a deletion of files</title></path>
+<path d="M1037.8,182.0 V159.0 H1139.8 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M987.1,182.0 V174.0 H1012.4 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<rect x="70.0" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>`flywheel init` wrote the record; the blueprints repository is created from the blueprints template, or adopted when it exists (204)</title></rect>
+<text x="118.0" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">absent</text>
+<rect x="210.0" y="182.0" width="127.6" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the state repository is created with the profile&#x27;s layout (C.2)</title></rect>
+<text x="273.8" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">blueprints-ready</text>
+<rect x="381.6" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the App&#x27;s installation is recorded as required; the secret is the operator&#x27;s to place (207)</title></rect>
+<text x="429.6" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">state-ready</text>
+<rect x="521.6" y="182.0" width="106.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>a decision under attention until the installation is seen; never done by an agent</title></rect>
+<text x="574.7" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">awaiting-app</text>
+<rect x="537.0" y="206.0" width="75.4" height="14" rx="7" fill="#c9962e"/>
+<text x="574.7" y="216.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">app-install</text>
+<text x="574.7" y="228.0" font-size="8.5" fill="#8a6a1d" text-anchor="middle">answers: installed</text>
+<rect x="671.8" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>the first host is registered; hosts join by their own command from here (205)</title></rect>
+<text x="719.8" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">connected</text>
+<rect x="811.8" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>bootstrapped; repositories are proposed and created under it (206), packages are added under it (228), and a template upgrade is a chore (208)</title></rect>
+<text x="859.8" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">hosted</text>
+<rect x="951.8" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>sessions ended, places removed, state archived, git repositories left on disk (221)</title></rect>
+<text x="999.8" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">removing</text>
+<rect x="1091.8" y="182.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"><title>the state is archived with its decision counter, so no number is ever reused (15, 221); the git repositories stay where they were</title></rect>
+<rect x="1094.8" y="185.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
+<text x="1139.8" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">removed</text>
+<text x="1139.8" y="216.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: closed</text>
+<rect x="125.6" y="147.5" width="124.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="188.0" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">instance.blueprints_ready</text>
+<rect x="42.0" y="162.5" width="129.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="106.8" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ create_blueprints</text>
+<rect x="308.9" y="147.5" width="101.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="359.6" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">instance.state_ready</text>
+<rect x="220.7" y="162.5" width="106.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="273.8" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ create_state</text>
+<rect x="519.2" y="117.5" width="110.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="574.7" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">instance.app_installed</text>
+<rect x="437.0" y="147.5" width="106.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="490.1" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">instance.app_recorded</text>
+<rect x="367.0" y="162.5" width="106.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="420.1" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ register_app</text>
+<rect x="561.8" y="132.5" width="195.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="659.2" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">instance.app_installed ∨ reply installed</text>
+<rect x="729.6" y="147.5" width="120.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="789.8" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">instance.host_registered</text>
+<rect x="673.8" y="162.5" width="110.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="729.2" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ register_host</text>
+<rect x="897.7" y="147.5" width="64.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="929.8" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">reply remove<title>the operator&#x27;s dictation `remove &lt;instance&gt;` (4, 221); never a deletion of files</title></text>
+<rect x="1047.3" y="147.5" width="82.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1088.8" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">instance.retired</text>
+<rect x="939.6" y="162.5" width="120.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="999.8" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">always ⚙ retire_instance</text>
+<rect x="40" y="272" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="282" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="71" y="291" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="282" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="291" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="282" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="291" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="282" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="291" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="282" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="617.85" y="291" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="282" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="291" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="282" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="291" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="282" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="291" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+</svg>
