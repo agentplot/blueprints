@@ -112,7 +112,7 @@ claim of its own. A unit or chore proposal cites the standing claim in
 scope it serves when one exists, and cites nothing when nothing fits.
 It never proposes a claim for the work.
 
-Chuck's four cases, worked:
+Four cases, worked:
 
 - **Change some button colours.** No claim. Nothing in the destination
   moved, and no standing claim covers a colour.
@@ -122,7 +122,7 @@ Chuck's four cases, worked:
 - **A small change to the build pipeline.** Cites the deployment claim
   if one stands in scope, something like "a deploy from the main line
   is one automated step". If no such claim stands, it cites nothing,
-  and the batch at 3 below is where the operator decides whether the
+  and the batched offer below is where the operator decides whether the
   claim was missing.
 
 When a chore citing a claim lands, that claim's verdict is re-judged,
