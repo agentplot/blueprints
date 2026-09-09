@@ -18,7 +18,8 @@ the requirements.
   (data-decision) and effects (data-effect) that exist, so a picture cannot drift from the runtime (83)
 - every profile marked complete binds every evidence and effect name (140)
 - every conformance scenario validates against ../conformance/schema.json and names only real decision
-  kinds and effects; every `then.state_store` key is bound in ../conformance/observations.yaml, for
+  kinds and effects; every asserted transition's from and to are states of one region of the object's
+  machine, submachines expanded, and `region:` on the entry says which when a name is ambiguous; every `then.state_store` key is bound in ../conformance/observations.yaml, for
   every profile the scenario runs on, and every bound key is asserted by some scenario; `hooks:` is
   declared only by a scenario under conformance/contract/
 - the requirement trace (section 12 of the requirements): every machine, decision kind, effect and
@@ -235,6 +236,45 @@ for mname, (path, m) in machines.items():
             for rg in (st or {}).get('regions', {}).values(): collect(rg)
     for region in m['regions'].values(): collect(region)
 all_states = set().union(*template_states.values())
+
+# region paths and the states in each, per machine, with submachines expanded. A
+# `$param` reference is the object's own type, resolved at run time; here it stands
+# for every extensible machine, since any of them may be the one. Used by the
+# conformance check that a transition's from and to are states of one region.
+_regions_cache = {}
+def region_states(mname, _stack=()):
+    """[(region path, {states})] for a machine. A state that hosts a submachine contributes
+    the submachine's own regions under `<path>.<state>.<subregion>`, and its states belong to
+    those and not to the hosting region: leaving a stage is not leaving the state that runs it."""
+    if mname in _regions_cache: return _regions_cache[mname]
+    entry = machines.get(mname)
+    if entry is None or mname in _stack: return []
+    m = entry[1]
+    out = []
+    def subs_of(st):
+        ref = (st or {}).get('machine')
+        if ref and ref.startswith('$'):
+            return [n for n in machines if tiers.get(n) == 'extensible']
+        if ref:
+            t = resolve_machine_ref(ref)
+            return [t[0]] if t else []
+        return []
+    def walk(rs, prefix):
+        for rn, r in (rs or {}).items():
+            path = f"{prefix}{rn}"
+            names = set()
+            for sn, st in (r.get('states') or {}).items():
+                names.add(sn)
+                st = st or {}
+                for sub in subs_of(st):
+                    for subpath, substates in region_states(sub, _stack + (mname,)):
+                        out.append((f"{path}.{sn}.{subpath}", substates))
+                walk(st.get('regions'), f"{path}.{sn}.")
+            out.append((path, names))
+    walk(m['regions'], '')
+    _regions_cache[mname] = out
+    return out
+
 def enters(obj, where):
     for k, v in (obj.get('enter') or {}).items():
         if v not in all_states: bad.append(f"{where}: enter {k}: {v} names no state")
@@ -345,6 +385,26 @@ if os.path.exists(sschema_path):
                 if k not in decisions: bad.append(f"{rel}: decision kind {k} does not exist")
         for e in then.get('effects', []) or []:
             if e['do'] not in effects: bad.append(f"{rel}: effect {e['do']} does not exist")
+        # a transition names one region: from and to are states of the same region of the
+        # object's machine, submachines expanded. `region:` on the entry narrows which.
+        obj_machine = {o['id']: o['machine'] for o in (sc.get('given', {}).get('objects') or [])}
+        for t in then.get('transitions', []) or []:
+            frm, to, oid = t.get('from'), t.get('to'), t.get('object')
+            if frm is None or to is None: continue
+            mname = obj_machine.get(oid) or (oid.split('/')[0] if oid else None)
+            rs = region_states(mname) if mname else []
+            if not rs:
+                bad.append(f"{rel}: transition on {oid} names machine {mname!r}, which has no definition"); continue
+            named = t.get('region')
+            if named is not None:
+                rs = [(p, st) for p, st in rs if p == named or p.endswith('.' + named) or p.split('.')[-1] == named]
+                if not rs:
+                    bad.append(f"{rel}: transition on {oid} names region {named!r}, which {mname} has not"); continue
+            frm_in = sorted(p for p, st in rs if frm in st)
+            to_in = sorted(p for p, st in rs if to in st)
+            if not frm_in or not to_in or not (set(frm_in) & set(to_in)):
+                bad.append(f"{rel}: transition on {oid} from {frm} to {to} crosses regions: "
+                           f"from is in {frm_in or 'no region'}, to is in {to_in or 'no region'} of {mname}")
         for step in sc.get('when', []):
             w = step.get('response')
             if w and w.get('decision') and w['decision'].rsplit('/', 1)[-1] not in decisions:

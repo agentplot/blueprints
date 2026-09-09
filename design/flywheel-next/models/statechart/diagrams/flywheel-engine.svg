@@ -102,10 +102,10 @@
 <!-- lane: plan -->
 <text x="38" y="504" font-size="11.5" font-weight="700" fill="#c9962e">plan</text>
 <line x1="150" y1="500" x2="1380" y2="500" stroke="#c9962e" stroke-width="2" opacity="0.35"/>
-<use href="#marker" x="200" y="500" color="#c9962e" data-state="plan.current"/>
+<use href="#marker" x="200" y="500" color="#c9962e" data-state="rail.current"/>
 <text x="200" y="526" font-size="9.5" fill="#666" text-anchor="middle">current</text>
 <text x="200" y="539" font-size="8.5" fill="#999" text-anchor="middle">active decision states · folded · register</text>
-<use href="#rows" x="460" y="500" color="#c9962e" data-state="plan.numbering"/>
+<use href="#rows" x="460" y="500" color="#c9962e" data-state="rail.numbering"/>
 <text x="460" y="526" font-size="9.5" fill="#666" text-anchor="middle">numbering</text>
 <text x="460" y="539" font-size="8.5" fill="#999" text-anchor="middle">number_decisions · once · never reused</text>
 <rect x="545" y="491" width="180" height="18" rx="9" fill="#c9962e"/><text x="635" y="504" font-size="10" font-family="monospace" fill="#fff" text-anchor="middle">#412 … #421 · 10 decisions</text>
