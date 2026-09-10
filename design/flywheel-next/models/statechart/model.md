@@ -589,8 +589,8 @@ curation: {threshold: 12, cadence: "0 6 * * 1-5"}
 
 ## 4. The state store binding
 
-The binding is data in `profiles/`. Nine files: six are partial and
-shared, three are the profiles.
+The binding is data in `profiles/`. Eight files: six are partial and
+shared, two are the profiles.
 
 | file | binds | same in every profile? |
 |---|---|---|
@@ -602,19 +602,18 @@ shared, three are the profiles.
 | `profiles/record-derived.yaml` | every evidence and effect that is a function of the object record and its thread, stated over six record operations (`get`, `put`, `append`, `list`, `responses`, `leases`) | yes |
 | `profiles/surfaces.yaml` | the sinks (chat, page, bell) and the review surfaces (plannotator for documents, lavish for rich pages) | yes |
 | `profiles/tracker.yaml` | the six record operations, the seven operations of B.1 — eight methods on `StateStore`, because present and receive are two — and the five guarantees of B.2 on GitHub issues, milestones and a Projects board; the decision issues | tracker |
-| `profiles/git-only.yaml` | the same on the `flywheel-state` git repository, with the layout of section 3.4 | git-only |
-| `profiles/stand-in.yaml` | the same again on the in-memory store: one map per object, the rail's register the `rail` object's own record, leases a map, notify an in-process call. It exists so the admission gate has something to read for the stand-in path, since `contract/binding.yaml` runs on every profile (168–170); no host runs on it, and its durability is for the process's life with the trace as the record (92, 95) | stand-in |
+| `profiles/git-only.yaml` | the same on the `flywheel-state` git repository, with the layout of section 3.4. Pointed at a bare repository on the same computer it is also the no-live-service run: no git host, no network, nothing to stand up before a scenario runs, and it is the only state-store profile of the first build (92) | git-only |
 
 `check.py` refuses a profile marked `complete: true` that leaves any
 atom unbound, and a binding that names an atom no machine has (140).
-The machines do not change between the three (139); the diff between
-`tracker.yaml`, `git-only.yaml` and `stand-in.yaml` is the whole
-difference between running on a tracker, on git and on a map in memory,
-and it is only the record operations and the contract: everything about
-sessions, surfaces and the world is shared. `stand-in.yaml` is not
-`sessions-stand-in.yaml`: one replaces the state store, the other the
-session binding, and a conformance run with no `--profile` uses both
-(92, 93).
+The machines do not change between the two (139); the diff between
+`git-only.yaml` and `tracker.yaml` is the whole difference between
+running on git and running on a tracker, and it is only the record
+operations and the contract: everything about sessions, surfaces and
+the world is shared. A conformance run with no `--profile` is
+`git-only.yaml` against a local bare repository with
+`sessions-stand-in.yaml` in place of the session binding, which is
+what 92 and 93 ask for together.
 
 ### 4.1 The tracker profile, in short
 
@@ -1662,8 +1661,8 @@ object starts under it, and the file is never deleted while any object
 cites it — the check fails a registered version whose file is gone, and
 a host refuses to load a state whose objects cite a version it cannot
 read (79). Testing a new type is a new file at a new version referenced
-by a scenario: the scenario's objects record it, the stand-in runs it
-(93, 95), and `flywheel render-order` shows what its stages would ask a
+by a scenario: the scenario's objects record it, the stand-in sessions
+play it (93, 95), and `flywheel render-order` shows what its stages would ask a
 session to write (124) — never an edit of the version in force.
 
 ## 11. Hosts and leases
@@ -1836,10 +1835,11 @@ The tracker profile follows as a second implementation of the same
 `StateStore` trait. The proof of conformance is `conformance/`: one
 set of scenario files run by `flywheel scenario run --profile <name>`
 with the session binding replaced by `sessions-stand-in.yaml` (93) —
-against the stand-in state store, then against each real profile in
-a sandbox (a temporary bare repository; a throwaway GitHub repository),
-with the machine files byte-identical (`check.py` hashes them into the
-run record). A profile is admitted when every scenario passes and
+first on git-only against a temporary bare repository on the same
+computer, which is the no-live-service run (92), then against each
+profile on its own service (a git host; a throwaway GitHub
+repository), with the machine files byte-identical (`check.py` hashes
+them into the run record). A profile is admitted when every scenario passes and
 `check.py` finds its binding complete (`contract/binding.yaml`).
 
 Two bindings beside the state store's are the host's to choose, and
@@ -1991,7 +1991,7 @@ The boundary falls out of the model's three kinds of thing: the engine
 | `flywheel-store-git` | `StateStore` over the state repository (`gix`, `git push --force-with-lease`); `profiles/git-only.yaml` | `flywheel-atoms` |
 | `flywheel-store-tracker` | `StateStore` over GitHub (`octocrab`); `profiles/tracker.yaml` | `flywheel-atoms` |
 | `flywheel-surface` | the sinks: the Discord bot (`serenity`), the pages (`axum`), the bell (`herdr`), the reply grammar, the review-surface launchers (plannotator, lavish); the page bundle and the tool server that answers a **request** under the caller's token — the binary's own catalogue of tools, over HTTP for the page and in the shape of the model context protocol for sessions, the interpreter and a member's own client (193, 291, 293); `profiles/surfaces.yaml`; profile-neutral because it writes responses through `StateStore::receive` | `flywheel-atoms` |
-| `flywheel-scenario` | the stand-in state store (in-memory `StateStore` and `World`), the scripted `Sessions` stand-in (`profiles/sessions-stand-in.yaml`), the conformance runner, the trace renderer | `flywheel-engine`, `flywheel-atoms`, `flywheel-domain` |
+| `flywheel-scenario` | the scripted `Sessions` stand-in (`profiles/sessions-stand-in.yaml`), the recorded `World` (93a), the conformance runner that stands a bare repository up for the no-live-service run (92), the trace renderer; the store under it is `flywheel-store-git` like any other run | `flywheel-engine`, `flywheel-atoms`, `flywheel-domain`, `flywheel-store-git` |
 | `flywheel` | the binary: `host` (the standing loop), `tick` and `request` (the two modes of the invocation contract, one instance per invocation, 297), `dispatch`, `scenario`, `capture`, `render-order`, `review`, `exit`, `offer`, `note`, `refuse` | all |
 
 Nothing in a machine file, a scenario or a profile binding names Rust:
@@ -2153,8 +2153,10 @@ No ref of the repository was changed by the session.
 **S16 — a dictated scenario.** `flywheel scenario dictate "<sentence>"`
 starts a self-closing session with the scenario schema that writes
 `conformance/scenarios/<name>.yaml`, including the `script` the
-stand-in sessions play; `flywheel scenario run` executes it against
-the stand-in state store with `sessions-stand-in.yaml` and writes
+stand-in sessions play; `flywheel scenario run` executes it on
+git-only against a bare repository on the same computer, with no
+network and `sessions-stand-in.yaml` in place of the sessions, and
+writes
 `<name>.trace.md`: the ticks, the guards read, the transitions, the
 effects with ids, the decisions and numbers after each tick.
 

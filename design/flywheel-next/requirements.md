@@ -671,8 +671,15 @@ requirements, iterated against the running rail rather than on paper.
 ### A.12 Scenarios and testing as data
 <!-- ANCHOR: a12 -->
 
-92. Every machine is testable on its own against a stand-in state
-    store, with no live service of any kind.
+92. Every machine is testable on its own with no live service of any
+    kind. The state store a test runs against is held locally, with no
+    network at all: the git-only profile (C.2) against a bare
+    repository on the same computer, so there is no git host, no
+    tracker and nothing to stand up before a test runs. That is the
+    no-live-service run, and in the first build it is the only
+    state-store profile there is; the tracker profile (C.1) joins as a
+    second binding of the same operations when construction lands on
+    the owners' repositories.
 93. The whole machinery runs with sessions replaced by a stand-in that
     plays a scenario's scripted exits, so that seeding a scenario
     exercises the stores, the engine, the git effects, the rail and the
@@ -2954,9 +2961,10 @@ by walking each one. Each is tagged with the profiles it applies to.
   prepares the place, hands it to the session, and the session commits
   inside it. Nothing about the repository's lines of work was changed by
   the session.
-- **S16.** *(all profiles)* The operator dictates a scenario in a
-  sentence. It becomes scenario data, runs against a stand-in state
-  store with no live service, and produces the transitions, the effects
+- **S16.** *(profile: git-only)* The operator dictates a scenario in a
+  sentence. It becomes scenario data, runs against a state store held
+  locally with no network — a bare repository on the same computer, no
+  live service of any kind — and produces the transitions, the effects
   and the rail decisions it asserts, rendered afterwards as a trace the
   operator reads.
 - **S17.** *(profile: git-only)* Two hosts see the same approved unit at

@@ -160,30 +160,24 @@ the operator may reverse by a response on the file; an entry with
   work, so the git effects exercise merges of trivial content. Stated:
   it is what "no agent running" allows.
 
-- **92 the stand-in profile's durability.** `profiles/stand-in.yaml`
-  is a complete binding, so `contract/binding.yaml` can admit the
-  stand-in path the way it admits any other (168–170), and it names a
-  mechanism for four of the five guarantees the way 169 asks: single
-  writer by the store's own sequence check, atomicity by replacing the
-  object whole, response-once by `applied_responses` beside the delivery
-  id, derivability by rebuilding the rail from the objects each tick.
-  Durability is the fifth and it is not provided. 133 asks that a write
-  survive the loss of every host at once; on this profile a write
-  survives the process and, between runs, a JSON file, and what outlives
-  the run is the trace (95). `contract/durable.yaml` still runs, because
-  it exercises the shape — reported written, every host lost, read by a
-  fresh host — against the map, and the map answers it; but the map is
-  one machine's memory and the scenario proves the contract's shape
-  rather than the storage's promise. 170 says a profile that cannot
-  provide a guarantee is rejected as a profile, and the reading taken
-  here is that 92 admits this one for testability with no live service
-  and for nothing else: no manifest may name it, no host runs on it, and
-  no instance's state is ever kept in it. Whether that is an exception
-  to 170 or an application of it — the stand-in being a test binding
-  rather than a profile an instance runs on, so 170's "rejected as a
-  profile" never bites — is a wording the requirements do not settle.
-  **Open**, and worth one clause if a third party ever writes a profile
-  against 168.
+- **92 the no-live-service run.** The store a machine is tested
+  against is git-only pointed at a bare repository on the same
+  computer: the same binding a host runs on, with the git host, the
+  network and the tracker taken away rather than a store of its own.
+  So `contract/binding.yaml` admits the run the way it admits any
+  other (168–170) and all five guarantees keep the mechanisms
+  `git-only.yaml` names — durability a commit that landed on the bare
+  repository's `main`, single writer the expected-old push, atomicity
+  the commit, derivability the tree, response-once the response file
+  named by its delivery id — so `contract/durable.yaml` proves the
+  storage's promise and not only the contract's shape. **Decision**:
+  the alternative was a store of the machinery's own for tests, which
+  would have had to be admitted as a profile no instance runs on.
+  **Open** in one place only: the bare repository is on the computer
+  the hosts run on, so the loss of that computer loses both, and
+  nothing in the local run exercises a route to a remote that can
+  fail. S18's disconnection is asserted against a git host, not
+  against the local bare repository (C.2).
 
 - **93a recorded line-and-place effects.** A host that binds
   `workspace: recorded` performs no git for a line, a place, a merge
@@ -206,7 +200,8 @@ the operator may reverse by a response on the file; an entry with
   the general case a host with no runner needs. **Open**: start
   latency (72), the pane's presence evidence and the multiplexer's
   refusal of a duplicate name (196) are exercised by no host bound this
-  way, so S6's slow start is proved only against the stand-in.
+  way, so S6's slow start is proved only against the stand-in
+  sessions.
 
 - **95 dictated scenarios.** The dictation-to-data step is a
   session's judgment; the model provides the schema and the runner.
@@ -544,7 +539,7 @@ the operator may reverse by a response on the file; an entry with
   `flywheel/` tree and the built template's `openspec/` layout are
   **open** until the set is cut. Joining is a `disk` region beside the
   host's `life` rather than a state before `alive`, so a host record
-  the stand-in seeds (already laid out) fires nothing and the scenario
+  a scenario seeds (already laid out) fires nothing and the scenario
   timings hold; a real host's first tick reads the root and clones
   what is missing. **Decision**. The derivation table (199) is
   shipped data versioned with the set (208): a change re-derives kinds
@@ -764,7 +759,7 @@ the operator may reverse by a response on the file; an entry with
   the `image` provider is the only one a platform host is expected to
   use. Activation is inside `prepare_place` rather than an effect of
   its own, so the place's proof (`place.ready`) covers it and the
-  stand-in needs no new default; an activation that fails is a place
+  scenario bindings need no new default; an activation that fails is a place
   that never proves ready, reported by the owner's place machine.
   **Decision**. `host.environment_satisfied` is checked at every fetch
   that moved a declaration, not every tick, since evaluation can be
@@ -815,8 +810,8 @@ the operator may reverse by a response on the file; an entry with
   on an object the away host holds stands numbered on the rail
   meanwhile and only its takeover is deferred. **Decision**. The stall
   clock pauses by advancing the recorded `idle_since` on return rather
-  than by a paused clock in the engine, so no engine change and no
-  stand-in default; a scenario that loses a host with `intermittent`
+  than by a paused clock in the engine, so no engine change and no new
+  default in the scenario bindings; a scenario that loses a host with `intermittent`
   unset keeps S13's stale-to-gone path. **Decision**. Whether a
   session's process survives a laptop's sleep is the multiplexer's;
   a pane gone on return is `lost` as before. Stated.
