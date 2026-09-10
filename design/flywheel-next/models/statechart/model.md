@@ -649,7 +649,7 @@ what 92 and 93 ask for together.
   `responses/`, `asks/`, `runs/`, `status.html`. The rail's register
   and the sinks' marks are the `rail` and `sink` objects' records. No
   rendering of the rail is committed (15). Leases and heartbeats are single-commit
-  branches `lease/<id>` and `host/<id>`, replaced with
+  branches `lease/<id>/lease` and `host/<id>/heartbeat` (a fixed leaf, so a nested id's lease is never a prefix of its child's), replaced with
   `--force-with-lease`, so months of renewals add nothing to `main`'s
   history.
 - **Write** = one commit per effect, message = effect id, reason,
@@ -1940,7 +1940,7 @@ with `--force-with-lease` (4.2). A race: two hosts commit on `main` from
 the same base and push; the git host rejects the second as stale; the
 loser fetches, rebases its one-file commit, and pushes again. Content
 never conflicts while leases hold; a lease race is two pushes to
-`lease/<id>` with expected-old zero, of which one is rejected, and the
+`lease/<id>/lease` with expected-old zero, of which one is rejected, and the
 loser reads the winner (S17, I15).
 
 Three repositories, three owners (203, A.23): the state repository is
