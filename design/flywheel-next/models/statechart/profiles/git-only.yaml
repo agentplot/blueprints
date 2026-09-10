@@ -50,3 +50,16 @@ guarantees:
   derivable: "the tree at origin/main plus the lease and host branches is everything read; the pages are written from it"
   response_once: "the response file is named by its delivery id, so a second delivery writes the same file (no-op); applied_responses is in the same commit as the state change"
   disconnected: "a host with no route to the git host keeps ticking the objects whose leases it holds (leases expire at 24h, so it may continue up to 24h); it commits locally and may not take a new lease, start a session for an object it does not hold, deliver to a sink, or expire another host's leases. On reconnect it pushes its lease renewals first (a rejection means it lost the object: it ends its own panes for that object, reports, and discards its local commits on it), then rebases and pushes its main commits (S18)"
+
+# How the runner is told what a tick spent (conformance/contract/cost.yaml).
+# The store counts the external processes it spawns and the fetch, push and
+# renewal calls it makes, per tick, and hands the counts to the runner beside
+# the tick's trace. These numbers are the mechanism above stated as a cost;
+# they are the profile's promise, not a tuning, so a binding that reaches the
+# right outcomes by other means fails here.
+observations:
+  fetches_per_tick:        "the `git fetch` calls, counted: one before the tick, plus the fetch `records.put` takes to rebase a rejected push. Nothing else fetches — a push that lands reports the head it landed on, so no fetch follows it"
+  pushes_per_tick:         "the `git push` calls: one per effect commit on main (167), and one `--force-with-lease` on `lease/<id>` per lease whose renewal is due (163)"
+  lease_renewals_per_tick: "the renewal pushes among them. A lease branch is renewed once a minute while its holder works, never once per pass over the object it covers (128, 150)"
+  read_processes_per_tick: "processes the read path spawns: zero. Reads are `gix` over the tree at the fetched `origin/main` in the host's own process, never `git show`, `git cat-file` or `git log` per object"
+  subprocesses_per_tick:   "every external process the store spawns in a tick: the fetch, plus one push per commit and per renewal due, and nothing else. Two on a tick that writes once; one on a tick that writes nothing"

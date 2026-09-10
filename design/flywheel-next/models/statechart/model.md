@@ -1842,6 +1842,21 @@ repository), with the machine files byte-identical (`check.py` hashes
 them into the run record). A profile is admitted when every scenario passes and
 `check.py` finds its binding complete (`contract/binding.yaml`).
 
+Passing the scenarios is not by itself proof that a binding works the
+way its profile says it works. Every scenario asserts outcomes, and a
+binding that reaches those outcomes by reading each object with a
+process of its own, fetching again after every push and renewing every
+lease on every pass reaches all of them. `contract/cost.yaml` is where
+that is caught: it asserts the edges of a tick — one fetch before the
+tick, no push beyond the commits that tick made and the leases actually
+due, no renewal when none is due, no process on the read path, and at
+most two external processes on a tick that writes once. Those numbers
+are the mechanism of C.2 stated as a cost, and a profile states them in
+its own binding as it states the mechanism for each guarantee (169), so
+they are the profile's promise rather than a tuning: a binding that
+ignores its profile's mechanism fails conformance instead of passing on
+its outcomes.
+
 Two bindings beside the state store's are the host's to choose, and
 neither moves a machine: the line-and-place effects may be recorded
 rather than performed while no bolt can land (93a), and a host that
