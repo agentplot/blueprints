@@ -1437,6 +1437,31 @@ requirements, iterated against the running rail rather than on paper.
     217a). The flywheel keeps no memory of a conversation beyond what
     the sink itself holds, and derives no state from it (136).
 
+217o. The agent is not a service and the flywheel exposes one server.
+    The answering session is charged inside a tick and is addressable
+    by nothing (217d): it has no endpoint, no protocol of its own and
+    no registration anywhere, and the flywheel offers no agent for
+    another system's agent to call. The one server the flywheel
+    exposes is the tool catalogue at a host's address (293), and the
+    one agent-shaped thing a member talks to on their own terms is
+    their own client of it (194a, 319). A placement may run the
+    dispatcher on any runtime that can run the binary, which is a
+    choice of where the tick executes and never a way to reach the
+    agent from outside (217i).
+217p. The answering job is the same everywhere; only the wire differs.
+    On every placement it is the bounded call of 217b against the
+    catalogue filtered by the caller's permissions (293), reads
+    performed and writes proposed for the operator to confirm (194),
+    the thread window of 217n as its memory, nothing retained. What a
+    placement changes is how a message arrives and how a reply leaves:
+    a placement holding a socket to the chat platform carries plain
+    messages and free text; a placement woken per request carries the
+    platform's own controls and the numbered grammar as a command
+    (`/answer 412 yes`), which answers every decision but not free
+    text. A reduced presenter is a stated fact of the tier (261) and
+    never a silent difference: where free text cannot arrive, the sink
+    says so rather than ignoring it.
+
 <!-- ANCHOR_END: a25 -->
 ### A.26 Instances
 <!-- ANCHOR: a26 -->

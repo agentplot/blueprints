@@ -475,17 +475,19 @@ reproduced here because this document is their binding;
 
 ## 8. Open questions
 
-1. **Discord's gateway and per-request placements.** Plain replies in
-   a channel need a socket held open; interactions over a URL give
-   buttons and slash commands only. Is a placement that keeps the
-   numbered grammar as a slash command (`/answer 412 yes`) and drops
-   plain replies acceptable as a reduced presenter, or is a socket a
-   requirement of the chat sink?
-2. **The interpreter's context.** One message is often a reply to a
-   proposal the bot posted. How many messages of the thread does the
-   interpreter read, and does it read them from the chat platform or
-   from the response records? The former is stateless; the latter is
-   derivable.
+1. **Closed 2026-09-11 (217p).** A placement woken per request carries
+   the platform's controls and the numbered grammar as a command
+   (`/answer 412 yes`) and is an acceptable reduced presenter: every
+   decision stays answerable, which is what the sink owes. Free text
+   needs a socket, so where free text cannot arrive the sink says so
+   and the tier states it (261). The answering job itself is identical
+   on every placement; only the wire differs.
+2. **Closed 2026-09-11 (217n).** The interpreter reads a bounded window
+   of the sink's own thread — the messages since the operator's last
+   answered decision, or a stated count, whichever is smaller — from
+   the chat platform, not from the response records. The thread is
+   durable, every host reads the same thing, and nothing is held
+   between charges.
 3. **Endpoint reachability for a local dispatcher.** A monitor's
    webhook from the open internet cannot reach a tailnet node. Does the
    local placement open a funnel for named callers, or does every
