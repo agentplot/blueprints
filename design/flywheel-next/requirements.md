@@ -1314,7 +1314,8 @@ requirements, iterated against the running rail rather than on paper.
     closed set of inputs (89), a fixed set of exits, an identity the
     tool server checks (197). Each is charged per capture or per
     message and ends when it delivers. Neither carries context from
-    one charge to the next.
+    one charge to the next: what either remembers is read, not held
+    (217n).
 
 217c. The sessions binding names a runner per model job: a multiplexer
     pane (173, 174), a bounded loop inside the dispatcher's own
@@ -1407,7 +1408,7 @@ requirements, iterated against the running rail rather than on paper.
     per message, answering within the operator's patience for a chat
     reply. It is not a standing session and holds no conversation
     (217a); a second message is a second charge that reads the same
-    state. The model key that call spends is the operator's own,
+    state and the same thread window (217n). The model key that call spends is the operator's own,
     placed as 207m says, and where no key is placed the sink still
     carries decisions, answers by number and captures, and free text
     is reported as needing a key rather than silently ignored.
@@ -1419,6 +1420,22 @@ requirements, iterated against the running rail rather than on paper.
     host's runners names which key that host uses and never its value
     (294). A hosted instance may place one of its own and is then
     metered on none of the service's (294).
+
+217n. The answering session remembers by reading the thread. A person
+    in a chat expects to be understood in context, and the context is
+    already durable where the conversation happened: the sink's own
+    thread, which every host can read, which outlives any process, and
+    which is the operator's own record rather than a model's summary of
+    it. So the closed input of 217b's answering session (89) carries a
+    bounded window of that thread — the messages since the operator's
+    last answered decision, or a stated count, whichever is smaller —
+    together with the message being answered. A follow-up that says
+    "the other one" resolves against that window or is asked about,
+    never guessed (194). Nothing is held between charges: the window is
+    read at each charge, so two hosts answer alike, a restart loses
+    nothing, and what a message costs stays bounded and meterable (294,
+    217a). The flywheel keeps no memory of a conversation beyond what
+    the sink itself holds, and derives no state from it (136).
 
 <!-- ANCHOR_END: a25 -->
 ### A.26 Instances
