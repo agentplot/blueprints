@@ -2782,6 +2782,29 @@ through these operations, and depends only on these guarantees.
     offers rich rendering and built-in controls for answering, the
     profile uses them as the platform provides them. Nothing is
     invented, and the short reply grammar always works beside them.
+155a. A sink declares what its platform can do, and the rendering is
+    written against those capabilities rather than against a platform's
+    name: buttons, menus, threads, reactions, edits, notifications.
+    There are no requirements per chat platform and no branch in the
+    machinery on which one a sink is; a capability a sink does not
+    declare is simply not used, and the numbered grammar carries every
+    answer that is left (155, 194). A platform gaining a capability is
+    a binding's change and never a machine's.
+155b. Where a sink declares threads, an object is a thread. A decision
+    is raised as a message and its discussion goes in the thread under
+    it, which is what makes a rail worked in chat legible: the thread's
+    first message is the decision with its controls, the answer marks
+    it, and a later question about the same object lands in the same
+    place instead of a channel where five decisions are interleaved. A
+    reply inside an object's thread is addressed to that object and
+    needs no number, which is the numbered grammar's whole job done by
+    the platform (194). It is still free text: the agent answers a
+    question from the thread, and anything that would write is a
+    proposed call the operator confirms, so a note worth keeping
+    becomes that object's discussion as a recorded response and idle
+    chatter stays chatter (144, 153). Where a sink declares no threads
+    the same conversation happens in the channel by number, and nothing
+    else changes.
 194. Free text from the operator, sent on a conversational surface, is
     never parsed by the machinery. The host's agent — the instance's
     dispatch agent for chat, a session the sessions binding starts on a

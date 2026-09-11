@@ -323,6 +323,23 @@ were settled, not their place on the page.
   `413 bolt other`, `414 rename retry`, `418 close`, `419 keep`,
   `421: <text>`, `takeover`. Every reply is the `answer` tool; the ✅
   reaction is the operator's proof it was recorded (154).
+- **S32a.** A sink declares its platform's capabilities and the
+  rendering is written against those, never against a platform's name
+  (155a): buttons, menus, threads, reactions, edits, notifications. What
+  a sink does not declare is not used, and the numbered grammar carries
+  what is left.
+- **S32b.** Where threads are declared, an object is a thread (155b).
+  The decision is the thread's first message with its controls; the
+  answer marks it; discussion about that object goes in the thread and
+  needs no number, because the thread is the number. A later question
+  about the same object lands in the same thread rather than in a
+  channel where five decisions are interleaved, which is what makes a
+  rail worked from a phone legible. A reply in a thread is still free
+  text: the agent answers from it, and anything that would write comes
+  back as a proposed call to confirm (194), so a note worth keeping
+  becomes that object's discussion as a recorded response (144) and
+  chatter stays chatter. Where no threads are declared the same
+  conversation happens in the channel by number.
 - **S33.** A decision with a document carries the link that opens it
   on the review surface (model 5.4). The chat's binding is the Discord
   bot; the presenter is the sink's lease holder or the manifest's pin.
