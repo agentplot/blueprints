@@ -1457,8 +1457,8 @@ requirements, iterated against the running rail rather than on paper.
     a placement holding a socket to the chat platform carries plain
     messages and free text; a placement woken per request carries the
     platform's own controls and the numbered grammar as a command
-    (`/answer 412 yes`), which answers every decision but not free
-    text. A reduced presenter is a stated fact of the tier (261) and
+    (`/answer 412 yes`), unless a relay holds the socket on its behalf
+    (271a). A reduced presenter is a stated fact of the tier (261) and
     never a silent difference: where free text cannot arrive, the sink
     says so rather than ignoring it.
 
@@ -2012,6 +2012,19 @@ requirements, iterated against the running rail rather than on paper.
     indistinguishable from a call that never arrived, and a repeat under
     the same key writes nothing (111). Every body it holds is encrypted
     under the instance's key (256).
+271a. Chat reaches a hosted instance the same way a capture does. The
+    service's chat application (277) is one application over every
+    instance, so one stateless relay of the machinery's holds its
+    socket for all of them: it receives a message, routes by channel to
+    the instance's queue as a notify, and holds nothing else. It is the
+    receiver of 271 wearing the chat platform's own protocol — no
+    instance state, no key that decrypts, no memory between messages —
+    so an instance whose tick is invoked still carries plain messages
+    and free text with no computer of the operator's awake, which is
+    what the cloud tier is for. A self-managed host that is invoked
+    rather than standing, and has no relay, is the reduced presenter of
+    217p.
+
 272. The warm cache is one encrypted object per instance (256)
     holding a bundle of two sparse shallow clones: the state repository,
     and the blueprints restricted to the manifest, the claims and the
