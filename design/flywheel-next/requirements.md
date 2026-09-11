@@ -1421,7 +1421,7 @@ requirements, iterated against the running rail rather than on paper.
     (294). A hosted instance may place one of its own and is then
     metered on none of the service's (294).
 
-217n. The answering session remembers by reading the thread. A person
+217n. The answering session recalls rather than remembers. A person
     in a chat expects to be understood in context, and the context is
     already durable where the conversation happened: the sink's own
     thread, which every host can read, which outlives any process, and
@@ -1435,7 +1435,12 @@ requirements, iterated against the running rail rather than on paper.
     read at each charge, so two hosts answer alike, a restart loses
     nothing, and what a message costs stays bounded and meterable (294,
     217a). The flywheel keeps no memory of a conversation beyond what
-    the sink itself holds, and derives no state from it (136).
+    the sink itself holds, and derives no state from it (136). Across
+    threads and across weeks it recalls nothing, and that is the line:
+    anything worth keeping past a conversation is state — a capture, a
+    response, a setting the manifest holds — written where every host
+    and every surface reads it, never a recollection one agent has and
+    the rest of the instance lacks.
 
 217o. The agent is not a service and the flywheel exposes one server.
     The answering session is charged inside a tick and is addressable
