@@ -1396,6 +1396,30 @@ requirements, iterated against the running rail rather than on paper.
     on that placement; a dispatcher running an older binary than the
     manifest's stamped version is visible on the status view (208).
 
+217l. The chat wire on a self-managed host is the host's own process.
+    The host presenting the chat sink holds the connection to the
+    platform under the bot's identity and the token the operator
+    placed (217d, 204), and a message arriving on it is a notify like
+    any other cause of a tick (§2.1). That tick charges the answering
+    session of 217b with the message as its closed input, on the
+    in-process runner (217c), which reaches the tool catalogue in
+    process rather than over a port (291, 293): one bounded model call
+    per message, answering within the operator's patience for a chat
+    reply. It is not a standing session and holds no conversation
+    (217a); a second message is a second charge that reads the same
+    state. The model key that call spends is the operator's own,
+    placed as 207m says, and where no key is placed the sink still
+    carries decisions, answers by number and captures, and free text
+    is reported as needing a key rather than silently ignored.
+217m. A model key is placed by the operator, per instance, in the store
+    the placement names (217i) — a keychain or a sealed file on a
+    self-managed host, the tier's own store on a hosted one. It is
+    written to no record, no manifest field but its name, no page and
+    no state repository (204, 207a), and the surface that lists a
+    host's runners names which key that host uses and never its value
+    (294). A hosted instance may place one of its own and is then
+    metered on none of the service's (294).
+
 <!-- ANCHOR_END: a25 -->
 ### A.26 Instances
 <!-- ANCHOR: a26 -->
@@ -1917,7 +1941,7 @@ requirements, iterated against the running rail rather than on paper.
     clone. A failure in one instance's tick ends that tick and no
     other (218). Model access on a hosted tier is the service's, carried
     by the tier role and metered into the rail (279, 294), unless the
-    instance places a model key of its own instead (207); which
+    instance places a model key of its own instead (217m); which
     model provider sees rail text and messages is named in the tier
     statement (261).
 270. The tick is invoked, not looped. A long-lived process its
@@ -2158,7 +2182,7 @@ requirements, iterated against the running rail rather than on paper.
     class, inside a stated included budget of captures a month (294).
     Immediate triage, and free-text interpretation in chat, are
     unlocked on Hobby by placing a model key of the operator's own
-    (207) and are included from Pro up. So chat is usable with the
+    (217m) and are included from Pro up. So chat is usable with the
     laptop closed, and the rail reaches the instance's chat and the
     page at a served name (291). What waits for the operator's own
     machine or a pool host is raw-material triage, elaboration and
@@ -2196,7 +2220,7 @@ requirements, iterated against the running rail rather than on paper.
     an instance publishes its own bundles in the package store like any
     package.
 294. On every hosted plan the instance's own model key is welcome
-    and never required (207). Each plan includes a budget on the small
+    and never required (217m). Each plan includes a budget on the small
     model class for the jobs the dispatcher runs inside a tick, reading
     a capture and answering a message (217b, 269), stated as a count of
     captures and messages a month; usage past the budget is metered
