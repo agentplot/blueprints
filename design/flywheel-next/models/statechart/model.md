@@ -1849,8 +1849,9 @@ process of its own, fetching again after every push and renewing every
 lease on every pass reaches all of them. `contract/cost.yaml` is where
 that is caught: it asserts the edges of a tick — one fetch before the
 tick, no push beyond the commits that tick made and the leases actually
-due, no renewal when none is due, no process on the read path, and at
-most two external processes on a tick that writes once. Those numbers
+due, no renewal when none is due, no process on the read path or the
+fetch, and one external process — the push — on a tick that writes once
+and none on a tick that writes nothing. Those numbers
 are the mechanism of C.2 stated as a cost, and a profile states them in
 its own binding as it states the mechanism for each guarantee (169), so
 they are the profile's promise rather than a tuning: a binding that
