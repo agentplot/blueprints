@@ -12,9 +12,10 @@
 # default host — and the machines, their proofs and every name below are the
 # same under either.
 #
-# Tools: git (libgit2 through the `gix` crate for reads, the `git` binary for
-# merges, rebases and pushes so hooks and credentials behave as the operator's
-# do); worktrunk `wt` for places (`wt worktree add/remove`, `wt tether` for
+# Tools: git (the `gix` crate, a pure-Rust implementation, for every read —
+# in the host's own process, never a `git show`, `git cat-file` or `git
+# ls-tree` per file; the `git` binary for merges, rebases and pushes so hooks
+# and credentials behave as the operator's do); worktrunk `wt` for places (`wt worktree add/remove`, `wt tether` for
 # the processes bound to a worktree, portless for ports and, under the local
 # router, endpoints; the `router:` section below binds the other routers);
 # mdBook books; OpenSpec change directories;
