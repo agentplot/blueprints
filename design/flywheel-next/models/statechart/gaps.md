@@ -1296,3 +1296,32 @@ the operator may reverse by a response on the file; an entry with
   ingress can address one port per place or needs a path per service
   is the platform's; the binding's `endpoint` read takes either.
   **Open** until a host of each kind runs.
+
+- **A proof the contract cannot read.** `record-derived.yaml` binds
+  `session.refusals_recorded` to "every refusal entry on the session's
+  thread is in the run record", and the run record is a file object
+  written past the store's six operations: no `read` or `list` answers
+  `runs/**`, so as worded the proof is unanswerable through the
+  contract and the apply hardcoded `report.recorded` to true rather
+  than add a seventh operation (2026-09-11, apply10 finding 5). Either
+  the proof reads what the store can read — the effect's own commit,
+  which is what every other proof does — or Part B gains an operation
+  for the record, which is a larger change than the proof is worth.
+  **Open**: needs a ruling, the first shape preferred.
+
+- **What `create_items` counts.** `atoms.yaml` binds the effect to "one
+  work item per task in the approved document", and phase 1 has no unit
+  proposal document (17 waits on the runner), so the apply binds it to
+  the unit's `items` field where a proposal recorded one and makes a
+  single item otherwise, while the scenario harness defaults to two
+  (2026-09-11, apply10 finding 7). The model should say what a unit
+  approved without a document yields before a real week of use.
+  **Open**.
+
+- **`host.work_waiting` is narrower in code than in the profile.**
+  `host.yaml` binds it to "a unit or item is approved or ready and
+  unplaced and every other host covering it is not alive or holds its
+  lease"; the binding checks only the state (2026-09-11, apply10
+  finding 6). Widening it changes the takeover S13 asserts, so it was
+  left as it stands and the fixture was corrected instead. **Open**
+  until a two-host run is trusted.
