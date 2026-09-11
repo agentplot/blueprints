@@ -3442,3 +3442,59 @@ tool's declared permission authorizes the call (248, 249, 293,
 that carries an operator's response runs at a 390px viewport as well as
 at the desktop's, and the mockups render at 390px. S1 is the scenario
 that states it (`conformance/scenarios/S01.yaml`).
+
+## 22. Ratified 319–326: the member's own client
+
+**The client is the member's, not ours (319).** A member works their
+flywheel from the client they already talk to: any client of the model
+context protocol, added at a host's address with the instance in the
+path, holding the whole catalogue that caller may invoke (193, 205a,
+293, `surfaces.yaml` `member_client`). The flywheel ships no client, no
+chat window and no conversation of its own (194a). This is the other
+half of the ruling that put no model in the page (216a): conversation is
+a property of the surface, and a surface that already holds one is where
+a question belongs. What the flywheel offers such a surface is what it
+offers every other: the catalogue, the views, and the record of what was
+done.
+
+**Adding one is an address and a sign-in (320).** The host states the
+address to add and the authority to sign in against (243): its own
+address under the device flow on a self-managed host, its served name
+under the account's token on a hosted tier (244, 247, 253). The member's
+client holds that token. No credential of a member's client is written
+to the state store, the manifest, a record or the page (204, 207), so
+adding a client costs the instance no secret and losing one costs it
+nothing.
+
+**A call is a response (321, 323).** Admitted by membership, authorized
+by the permission the tool declares, recorded once with who gave it and
+when (137, 153, 248, 249). Work done from a client stands in the record
+beside work done on the page and in chat — the same tools, the same
+identities, the same run record, and a refusal written with the
+identity, the tool and the object (79). What the operator taps inside a
+rendered view is one of these calls and nothing else, so there is no
+second write path and nothing to reconcile.
+
+**The views are the page's own (322, 326, 293a).** The rail, the board,
+the status view and one object's detail are each a user-interface
+resource of the tool server carrying the same bundle the host serves
+(307): one implementation, rendered from what the tool returned, fetching
+nothing external and carrying no secret. The resource is versioned with
+the binary that serves it (208, 224, 291), so a client holding an older
+copy fetches it again rather than rendering state it cannot, and a view
+holds no state of its own between renders (310). A client that renders
+none of them is not a lesser member: it still holds every tool, and
+every decision stays answerable as a call (311).
+
+**What the flywheel does not learn (324).** A question the member asks
+their client is the client's to answer from the tools it holds (194a).
+The flywheel keeps no transcript of that conversation and derives no
+state from it; only the calls it is asked to make are its own (136).
+Which model provider a member's client uses is that member's own
+arrangement, and a hosted tier names its own in the tier statement (261).
+
+**A client is not a host (325).** It presents no sink, takes no lease,
+runs no tick and carries no work (148, 149, 231). Every liveness rule,
+every takeover and every presenter lease is about hosts, and a member's
+client is outside all of them: it is a caller, and losing it loses
+nothing (217f).

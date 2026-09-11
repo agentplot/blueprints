@@ -161,6 +161,19 @@ phone:
   touch: "every answer is one tap or one short reply; nothing is reachable only by hover or by a keyboard, and anything a hover reveals on the desktop is reachable by tap (311, S61); a long-form answer, a proposal edit for one unit among several, is given on the phone with the platform's own keyboard"
   console: "the management console renders on a phone with its tables as cards, and the managed add-host journeys complete there, the cloud agent with its presets among them (312, 283, 295, hosts_surface.add_offers), which is what Hobby promises an operator with no computer of their own to run (281); a journey that needs a computer of the operator's says so on its card rather than failing part way through"
   clients: "the tool server's clients include the Claude mobile app and voice through it, under the same membership and permission checks as every other client (313, 248, 249, 293, tools.identity)"
+member_client:
+  doc: |
+    A member works the flywheel from the client they already talk to: any
+    client of the model context protocol added at a host's address with the
+    instance in the path, holding the whole catalogue that caller may invoke
+    (A.40, 319, 193, 205a, 293). The flywheel ships no client and no
+    conversation of its own (194a).
+  added_by: "one address and one sign-in, and no secret of the flywheel's: the host states the address and the authority to sign in against — its own address under the device flow on a self-managed host, its served name under the account's token on a hosted tier (320, 243, 244, 247, 253); no credential of a member's client is written to the state store, the manifest, a record or the page (204, 207)"
+  calls: "a response like any other: admitted by membership, authorized by the permission the tool declares, recorded once with who gave it and when, and a refusal written to the run record with the identity, the tool and the object (321, 79, 137, 153, 248, 249)"
+  views: "the page's own — the rail, the board, the status view, one object's detail — each a user-interface resource of the tool server carrying the same bundle the host serves, versioned with the binary; a client that renders none of them still holds every tool and every decision stays answerable as a call (322, 326, 293a, 307, 311)"
+  taps: "what the operator taps inside a rendered view is a tool call through their own client, checked by the same rules and taking effect once however often it is delivered (323, 137)"
+  conversation: "the client's own: the flywheel keeps no transcript of it and derives no state from it, and only the calls it is asked to make are its own (324, 136, 194a); which model provider the client uses is the member's arrangement (261)"
+  not_a_host: "it presents no sink, takes no lease, runs no tick and carries no work; it is a caller, and losing it loses nothing (325, 148, 149, 231, 217f)"
   conformance: "every scenario of the requirements' section 11 that carries an operator's response runs at a 390px viewport as well as at the desktop's, and the mockups render at 390px (314)"
 account:
   doc: |

@@ -2453,6 +2453,55 @@ requirements, iterated against the running rail rather than on paper.
     fact of the tier (261).
 
 <!-- ANCHOR_END: a39 -->
+
+### A.40 The member's own client
+<!-- ANCHOR: a40 -->
+
+319. A member works their flywheel from the client they already talk to.
+    Any client of the model context protocol, added at a host's address
+    with the instance in the path, holds the whole catalogue that caller
+    may invoke (193, 205a, 293). The flywheel ships no client, no chat
+    window and no conversation of its own (194a); what it offers is the
+    catalogue, the views, and the record of what was done.
+320. Adding an instance to a client takes one address and one sign-in,
+    and no secret of the flywheel's: the host states the address to add
+    and the authority to sign in against (243) — a self-managed host at
+    its own address under the device flow of 253, a hosted host at its
+    served name under the account's token (244, 247). The member's
+    client holds that token, and no credential of a member's client is
+    written to the state store, the manifest, a record or the page
+    (204, 207).
+321. A call from a member's client is a response like any other:
+    admitted by membership, authorized by the permission the tool
+    declares, and recorded once with who gave it and when (137, 153,
+    248, 249). Work done from a client stands in the record beside work
+    done on the page and in chat, and a refusal is written to the run
+    record with the identity, the tool and the object (79).
+322. The views a client may render are the page's own — the rail, the
+    board, the status view, and one object's detail — each a
+    user-interface resource of the tool server carrying the same bundle
+    the host serves (293a, 307). A client that renders none of them
+    still holds every tool, and every decision stays answerable as a
+    call (311).
+323. What the operator taps inside a rendered view is a tool call
+    through their own client (293a): checked by the rules of 321,
+    recorded once by its delivery identity, and taking effect once
+    however often it is delivered (137).
+324. A question the member asks their client is the client's to answer
+    from the tools it holds (194a). The flywheel keeps no transcript of
+    that conversation and derives no state from it; only the calls it is
+    asked to make are its own (136). Which model provider a member's
+    client uses is that member's own arrangement, and a hosted tier
+    names its own in the tier statement (261).
+325. A member's client is not a host. It presents no sink, takes no
+    lease, runs no tick and carries no work (148, 149, 231); it is a
+    caller, and losing it loses nothing (217f).
+326. A rendered view is versioned with the binary that serves it (208,
+    224, 291): a client holding an older copy fetches it again rather
+    than rendering state it cannot, and a view holds no state of its own
+    between renders (310).
+
+<!-- ANCHOR_END: a40 -->
 ## 5. Requirements — Part B, the state store contract
 <!-- ANCHOR: part-b -->
 
