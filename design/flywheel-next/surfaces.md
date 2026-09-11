@@ -299,9 +299,10 @@ were settled, not their place on the page.
   moves by one, or the new intent appears as a thread.
 - **S31.** The page parses no word of plain text: a leading `/` and a
   leading number choose a tool and nothing else, and neither reads the
-  text for meaning. Text the operator asks the flywheel to read goes to
-  the model in the page's browser as the interpreter (216a, S34), which
-  proposes calls the operator confirms.
+  text for meaning. Plain text is a capture, sent verbatim. No model
+  reads what is typed on the page and the page answers no question
+  (19, 194a, 216a); a question is asked on a surface that holds a
+  conversation, and the same views render there (293a, S34).
 - **S208.** `/elaborate` takes the elaboration type as a subcommand,
   and every type the registry holds is one: `/elaborate fundamentals`
   opens the same multi-pick of intents and sends
@@ -327,10 +328,12 @@ were settled, not their place on the page.
   bot; the presenter is the sink's lease holder or the manifest's pin.
 - **S34.** Free text in chat goes to the instance's dispatch agent
   as interpreter: it proposes exactly one tool call as a reply with a
-  confirm control, and the confirmation is the response (194). On the
-  page the interpreter is a model in the browser, and a control is a
-  tool call with no interpreter at all. On the hosts surface the same
-  job is a host's part named "agent" (S116).
+  confirm control, and the confirmation is the response (194). The page
+  has no interpreter: a control and a command are tool calls with no
+  model at all, and plain text is a capture (19, 216a). A member's own
+  client of the tool server carries its own conversation and renders
+  the same views in it (293a). On the hosts surface the same job is a
+  host's part named "agent" (S116).
 - **S173.** The chat is per member (236, 236a): each address a
   member's operators entry carries is a direct message from that
   kind's bot, a sink of its own with its own mark and the member's
@@ -1545,9 +1548,9 @@ Dated 2026-09-05.
   (209). Board cards that all looked alike said "same kind of thing"
   about very different things. The dock header takes the object's form.
 - **S63.** One typed input on the page, the palette, with one grammar:
-  plain text is a capture or a message the flywheel's own model reads
-  into proposed calls; a leading `/` names a command of the catalogue;
-  a bare number answers a decision (19, 193, 193a, 194, 216a). It is
+  plain text is a capture, sent verbatim; a leading `/` names a command
+  of the catalogue; a bare number answers a decision (19, 193, 193a,
+  194, 216a). It is
   the chat's grammar, not a second one, and no other field on the page
   parses a word. The workbench's dictation grammar in the capture box
   is still rejected: the commands are the catalogue's names, never a

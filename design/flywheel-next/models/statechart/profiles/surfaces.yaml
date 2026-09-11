@@ -103,7 +103,7 @@ host_agent:
     agent is a session of A.7 charged per message, with no context carried
     from one message to the next (217a, 217b), run inproc (217c).
   chat: "the instance's dispatch agent (tracker.yaml, 216): it reads the message, answers a question from the query tools in a reply, proposes each write as a card with a confirm control, and calls the tool on the operator's confirmation; a bare number reply (`yes 412`) needs no interpreter and is the answer tool at once"
-  page: "a model running in the page's browser (216a; the page ships it as a script under the same private network; no text leaves the operator's network): it answers from the query tools the page calls and proposes each write as a card; a control on the page is a tool call with no interpreter at all, and the palette sends plain text to the capture tool unparsed (19, 193a)"
+  page: "none. No model runs in the page (216a): a control and a command are tool calls with no interpreter at all, plain text is a capture sent verbatim, and the page answers no question — a question is asked on a surface that holds a conversation, which renders the same views (194a, 293a). Formerly a model in the browser; retired 2026-09-10. A control on the page is a tool call with no interpreter at all, and the palette sends plain text to the capture tool unparsed (19, 193a)"
   none: "a control — a button, a board move, a checklist tick, a plannotator annotation — is already one tool call; nothing is interpreted"
 palette:
   doc: |
@@ -112,7 +112,7 @@ palette:
     render as a list (193a, 293): one field, one grammar, and no command
     the catalogue lacks. It is the grammar the chat carries and not a
     second one, and no other field on the page parses a word (19, 194).
-  grammar: "plain text is a capture sent unparsed, with an intent toggle beside the field making the same submission also call `mark-intent` (19, 12); where the flywheel has a model key, plain text may instead be read by the model running in the page's browser, which proposes one call per thing asked, each confirmed on its own (216a, 194, host_agent.page); a leading `/` names a command of the catalogue and resolves to that one tool call with its arguments named by object id (193); a bare number is the reply grammar, `412`, `412 yes`, `412: <text>`, which is the answer tool and needs no interpreter (194)"
+  grammar: "plain text is a capture sent unparsed, with an intent toggle beside the field making the same submission also call `mark-intent` (19, 12), and never read by a model (216a); a leading `/` names a command of the catalogue and resolves to that one tool call with its arguments named by object id (193); a bare number is the reply grammar, `412`, `412 yes`, `412: <text>`, which is the answer tool and needs no interpreter (194)"
   opened_by: "⌘K, Ctrl+K or `/` from anywhere on the page, and a capture control on both tabs of the phone raising it as a bottom sheet with the platform's own keyboard (112, 311, S30, S38); Esc closes it ahead of everything else"
   at_rest: "the field with its preview line saying what will be sent, and under it the last things sent, read from the sent log the header carries and never from client state (310)"
   commands: "the catalogue filtered by the caller's permissions, fuzzy-matched, each row naming the command, what it does in the operator's words and the object it will act on; a tool the caller may not invoke is not offered and a feature a plan hides takes its command with it, named by the plan's own name and never by a rung (293, 249, 250, 280)"

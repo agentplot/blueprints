@@ -898,10 +898,12 @@ takes the same transition the decision would have taken, with the same
 response; a tool that would assert work was done does not exist, and a
 response that arrives claiming one is `unapplicable` and reported (4).
 
-Free text — typed on the page, sent in chat — goes to the **host's
-agent**, never to a parser (194): the dispatch agent for chat, a model
-running in the page's browser, or none at all when the operator used a
-control. The host's agent reads and answers with the query tools on its
+Free text sent on a conversational surface goes to the **host's
+agent**, never to a parser (194): the dispatch agent for chat, a session
+the sessions binding starts on a host (217c), or none at all when the
+operator used a control. The page is not such a surface: it renders
+state and sends acts, no model reads what is typed on it, and plain text
+typed there is a capture (19, 194a, 216a). The host's agent reads and answers with the query tools on its
 own, and every write it makes is a proposed tool call the operator
 confirms: its **interpreter**, the function that turns text into a
 proposed call, resolves the names against the live objects and proposes
@@ -3025,9 +3027,10 @@ one bounded call per message on the `inproc` runner, and the triage of
 a self-contained capture whose whole content is already in the queue,
 both bounded per tick with the remainder carried to the next (216,
 217b, 217c, 217e); which of the two a tick runs at all, and at which
-model class, is the plan's fact, and a plan that buys neither has its
-free text interpreted in the page's browser and its self-contained
-captures triaged in one daily batch at the sweep (294, 216a, 273, 281).
+model class, is the plan's fact, and a plan that buys neither has no
+free-text interpretation at all, its page being controls, commands and
+the numbered grammar, and its self-contained captures triaged in one
+daily batch at the sweep (294, 216a, 273, 281).
 Two things never run in it, raw-material triage
 (263) and every elaboration and construction session; those go to a
 machine of the operator's own or to a pool host. It never holds code,
@@ -3189,8 +3192,8 @@ reason, never a stopped loop (280). The ladder is five rungs over the
 four tiers: Free at tier 0; Hobby at tier 1, cheap to run and needing no
 model key of the operator's, its chat structured so no model call is
 spent on it — answers as buttons, free text a slash command with its
-arguments, the rail delivered at no model cost — its free text
-interpreted in the page by the browser model instead and its
+arguments, the rail delivered at no model cost — its page needing no
+model at all (216a) and its
 self-contained captures triaged in one daily batch at the sweep on the
 small model class, with immediate triage and free text in chat unlocked
 by placing a key of the operator's own, and raw-material triage,
@@ -3218,8 +3221,9 @@ provider like any other overage. The model class per job is the rail's
 ceiling and the type's choice within it, small on Hobby and Pro and
 raisable per unit type, per elaboration type and per stage on Team and
 Enterprise (285, `stage.yaml`). A budget spent is one attention line and
-a slower cadence and never a stopped loop, because the work still
-happens in the page's browser or in the daily batch (280, 216a, 281).
+a slower cadence and never a stopped loop, because the page's own work
+needs no model at all and the rest waits for the daily batch (280,
+216a, 281).
 The runners heading on a host's detail shows which model key that host
 uses and the month's model spend beside the pool hours, and the tier
 statement names which model provider sees rail text and messages (261).

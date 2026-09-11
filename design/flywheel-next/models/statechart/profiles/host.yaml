@@ -242,8 +242,9 @@ tier:
     a chat message, a webhook body — beside it (217e), both bounded per tick
     with the remainder carried to the next. Which of the two a tick runs at
     all, and at which model class, is the plan's fact (294, identity.yaml
-    plans.limits): a plan that buys neither has its free text interpreted in
-    the page by the browser model (216a) and its self-contained captures
+    plans.limits): a plan that buys neither has no free-text interpretation
+    at all, its page being controls, commands and the numbered grammar
+    (216a, 19), and its self-contained captures
     triaged in one daily batch at the sweep (273, 281). Two things never run in it:
     triage over raw material a capture points at (263) and every elaboration
     and construction session, which run on a machine of the operator's own or

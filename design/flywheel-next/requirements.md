@@ -190,10 +190,11 @@ redefine these.
   anything — a page control, a chat, the dispatch agent, the machinery
   — moves an object. A dictation is a tool the operator invoked.
 - **host's agent** — the agent that serves the operator's free text on
-  a surface: the instance's dispatch agent for chat, a model
-  running in the page's browser. It reads and answers with the query
-  tools on its own, and every write it makes is a proposed tool call
-  the operator confirms. The machinery never parses free text.
+  a conversational surface: the instance's dispatch agent for chat, or
+  a session the sessions binding starts on a host (217c). It reads and
+  answers with the query tools on its own, and every write it makes is
+  a proposed tool call the operator confirms. The machinery never
+  parses free text, and the page carries no agent (19, 194a, 216a).
 - **interpreter** — the function of the host's agent that turns free
   text into a proposed tool call for the operator to confirm; a
   message that asks for several things yields several, one card each.
@@ -305,7 +306,9 @@ model.
     response. The page's typed input is one palette in one grammar, the
     same grammar the chat carries: plain text is that capture, a
     leading `/` names a command of 193's catalogue, and a bare number is
-    the reply grammar of 194. The page parses no text on its own side.
+    the reply grammar of 194. The page parses no text on its own side
+    and no model reads what is typed there: the page shows what is and
+    offers what may be done, and it answers no question (194a, 216a).
 
 The catalogue of decisions, the reply grammar and the counting rules are
 mocked in `design/flywheel-next/rail-mockup.md`: one rendering of these
@@ -1283,12 +1286,13 @@ requirements, iterated against the running rail rather than on paper.
     through the state store's operations and tools (125, 193). The
     data plane names none of them (C.1).
 
-216a. A model running in the page's browser is the host's agent for
-    the page and nothing else (194). It presents no sink, writes no
-    capture except through the capture tool the page already calls
-    (19), and reads no capture. An instance may run with no other
-    part of dispatch; the rail is then served, answered and captured
-    on the page, and nothing arrives through chat or through a
+216a. No model runs in the page. The page is a surface over the tool
+    catalogue and nothing more (19, 193a): it renders state, offers the
+    acts the caller may invoke, and sends each as a tool call named by
+    object id, which needs no interpreter and spends no model call. An
+    instance may run with no dispatch at all; the rail is then served,
+    answered and captured on the page, by control, by command and by
+    the numbered grammar, and nothing arrives through chat or through a
     webhook.
 
 217. Dispatch is a host (149) whose declaration takes no object kind,
@@ -1360,7 +1364,8 @@ requirements, iterated against the running rail rather than on paper.
     for a pointer that cannot be reached; the capture is a decision
     under attention instead (149).
 
-217i. The placements of dispatch are: the browser agent alone, the
+217i. The placements of dispatch are: no dispatch at all, the page
+    standing alone (216a), the
     dispatcher on the operator's machine or in its multiplexer, the
     dispatcher in a long-lived process on a platform, and the invoked
     dispatcher of 270, which is a placement in its own right and is the
@@ -1899,8 +1904,9 @@ requirements, iterated against the running rail rather than on paper.
     body, runs beside it (217e); both are bounded per tick, and what
     does not fit is carried to the next tick. Which of the two a tick
     runs at all, and at which model class, is the plan's fact (294): a
-    plan that buys neither has its free text interpreted in the page
-    (216a) and its self-contained captures triaged in one daily batch
+    plan that buys neither has no free-text interpretation at all, its
+    page being controls, commands and the numbered grammar (216a, 19),
+    and its self-contained captures triaged in one daily batch
     at the sweep (273, 281). Two things never run in
     it: triage over raw material a capture points at, which is a
     transcript on the operator's own machine or in a store they own
@@ -2101,6 +2107,21 @@ requirements, iterated against the running rail rather than on paper.
     not offered. A tool call from any client is a response recorded like
     any other, with who gave it and when (153).
 
+293a. The page's bundle is also a user-interface resource of the tool
+    server, so a member's client renders the flywheel's own views inside
+    the conversation it already holds: a tool names the resource, the
+    client fetches it from the host and renders it isolated from its own
+    surface, and what the operator taps inside it comes back as a tool
+    call through that client, admitted and authorized by 293's rules and
+    recorded like any other (153, 249). It is the same bundle the host
+    serves, rendered from what the tool returned, fetching nothing
+    external (307) and carrying no secret (204), so there is one page and
+    never a second implementation of it. A client that renders no such
+    resource still holds the whole catalogue as tools, and the operator
+    reaches the same views at the host's address (291). The flywheel
+    ships no client of its own for this: the conversation, its history
+    and its prose belong to the client the member already uses (194a).
+
 <!-- ANCHOR_END: a34 -->
 ### A.35 Plans and presets
 <!-- ANCHOR: a35 -->
@@ -2128,9 +2149,9 @@ requirements, iterated against the running rail rather than on paper.
     answers as buttons, and free text in chat is a slash command with
     its arguments (`/fw yes 412`, `/fw capture <text>`), so no model
     call is spent on chat and the rail delivered to chat costs no model
-    at all (277). Free-text interpretation on Hobby is the page's
-    instead: the model running in the page's browser does the
-    interpreter's job there, at no cost to the service (216a). A
+    at all (277). Hobby spends no model on free text at all: its page
+    is controls, commands and the numbered grammar, which need no
+    interpreter (216a, 19). A
     capture that arrives as a chat interaction or a webhook is captured
     at once, which needs no model, and a self-contained capture (217e)
     is triaged in one daily batch at the sweep (273) on the small model
@@ -2184,8 +2205,8 @@ requirements, iterated against the running rail rather than on paper.
     it. The model class per job is a plan fact, not a flag: small on
     Hobby and on Pro, and raisable per unit type, per elaboration type
     and per stage on Team and Enterprise (285). Where a plan buys no
-    in-tick model at all the work still happens, in the page's browser
-    (216a) or in the daily batch (281), so a budget spent is one
+    in-tick model at all the page still works, needing none (216a),
+    and the rest waits for the daily batch (281), so a budget spent is one
     attention line and a slower cadence and never a stopped loop (280).
     The surface that lists a host's runners shows which model key that
     host uses and the month's model spend beside the pool hours, and
@@ -2628,10 +2649,11 @@ through these operations, and depends only on these guarantees.
     offers rich rendering and built-in controls for answering, the
     profile uses them as the platform provides them. Nothing is
     invented, and the short reply grammar always works beside them.
-194. Free text from the operator, typed on the page or sent in chat, is
+194. Free text from the operator, sent on a conversational surface, is
     never parsed by the machinery. The host's agent — the instance's
-    dispatch agent for chat, a model running in the page's browser, or
-    none at all when the operator used a control — reads and answers
+    dispatch agent for chat, a session the sessions binding starts on a
+    host (217c), or none at all when the operator used a control —
+    reads and answers
     with the query tools on its own, and every write is a proposed tool
     call the operator confirms. Its interpreter, the function that
     turns text into a proposed call, resolves names against the live
@@ -2643,6 +2665,17 @@ through these operations, and depends only on these guarantees.
     about, never guessed. The numbered reply grammar (`yes 412`, `421:
     <text>`) stays as the deterministic path, because a decision number
     is unambiguous, and is itself one of the tools: answer a decision.
+
+194a. Conversation is a property of the surface, not of the flywheel.
+    A surface that holds a conversation — the chat sink (152–155), a
+    member's own client of the tool server (293) — carries the host's
+    agent, and a question asked there is answered there, in that
+    surface's own shape. The page holds no conversation: it is rendered
+    from state on every request and keeps no transcript (310, 311), so
+    it shows state and sends acts, and free text typed on it is a
+    capture (19). The tools, the catalogue, the permissions and the
+    records are the same on every surface (193); only conversation
+    differs. No surface gains a second way to write.
 
 <!-- ANCHOR_END: part-b -->
 ## 6. Requirements — Part C, profiles
