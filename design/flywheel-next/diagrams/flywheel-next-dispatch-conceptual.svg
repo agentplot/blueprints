@@ -16,7 +16,7 @@
   </defs>
   <rect width="1800" height="960" fill="#fff"/>
   <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">Flywheel next — dispatch, conceptual: four jobs between the operator's chat and the webhooks on one side and the state and blueprints repositories on the other</text>
-  <text x="40" y="57" font-size="12" fill="#666">presenter · interpreter · capture endpoint · triage — the browser model is the interpreter alone · an adapter on the operator's laptop writes captures without dispatch</text>
+  <text x="40" y="57" font-size="12" fill="#666">presenter · interpreter · capture endpoint · triage — the interpreter serves chat alone (216a) · an adapter on the operator's laptop writes captures without dispatch</text>
 
   <!-- LEFT · the operator's chat -->
   <rect x="60" y="96" width="280" height="302" rx="10" fill="#fbeeee" stroke="#c05b5b" stroke-width="1.4"/>
@@ -62,8 +62,8 @@
   <text x="436" y="314" font-size="10.5" fill="#666">turns one message into one proposed tool call, shown with a confirm control.</text>
   <rect x="436" y="330" width="468" height="38" rx="6" fill="#fbeeee" stroke="#c05b5b" stroke-width="1.2" stroke-dasharray="5 3"/>
   <use href="#browser" x="462" y="349" color="#c05b5b"/>
-  <text x="494" y="346" font-size="10" font-weight="700" fill="#a34848">THE BROWSER MODEL = this job only</text>
-  <text x="494" y="360" font-size="8.5" fill="#a34848">presents nothing · captures only through the capture tool · reads no capture (216a)</text>
+  <text x="494" y="346" font-size="10" font-weight="700" fill="#a34848">THE PAGE = no model at all (216a)</text>
+  <text x="494" y="360" font-size="8.5" fill="#a34848">a control and a command are tool calls · plain text is a capture · no interpreter (19)</text>
   <text x="436" y="388" font-size="8.5" fill="#999">194 · 153 · one bounded model call per message · never guesses a name</text>
 
   <!-- card 3 · capture endpoint -->
@@ -155,5 +155,5 @@
   <text x="1198" y="888" font-size="10" fill="#333">read</text>
   <line x1="1260" y1="884" x2="1300" y2="884" stroke="#2b8a8a" stroke-width="1.4" stroke-dasharray="6 4"/>
   <text x="1308" y="888" font-size="10" fill="#333">an adapter's own path, outside dispatch</text>
-  <text x="60" y="922" font-size="10.5" fill="#333">three of the four are machinery given a host; triage and the interpreter are sessions of A.7, charged per capture or per message with nothing carried between (217b) · the browser model is the interpreter and nothing else (216a)</text>
+  <text x="60" y="922" font-size="10.5" fill="#333">three of the four are machinery given a host; triage and the interpreter are sessions of A.7, charged per capture or per message with nothing carried between (217b) · the page runs no model at all; it sends tool calls (216a)</text>
 </svg>

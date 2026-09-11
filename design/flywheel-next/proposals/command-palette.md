@@ -12,10 +12,10 @@ catalogue every other client already speaks (193, 291, 293). It is no
 second write path: a command resolves to one tool call with its arguments
 named by object id (193), shows the call it is about to send, and sends it
 on the operator's confirmation, which is a control and so involves no
-interpreter at all (194). Plain text is a capture, sent unparsed (19), or
-— where the flywheel has a model key — read by the model in the page's
-browser, which proposes one call per thing asked, each confirmed on its
-own (216a, 194). Everything it sends stays reachable by tap (311, 306):
+interpreter at all (194). Plain text is a capture, sent unparsed (19):
+the palette runs no model and reads no word for meaning, and a question
+is asked on a surface that holds a conversation instead (194a, 216a,
+293a). Everything it sends stays reachable by tap (311, 306):
 the rail's buttons and every dock control are unchanged, and the palette
 reaches them rather than replacing them.
 
@@ -29,7 +29,6 @@ chat already speaks (194, 281).
 | typed | what it is | sends |
 |---|---|---|
 | plain text | a capture, verbatim | `capture` (19) |
-| plain text, where the flywheel has a model key | a message the model in the page's browser reads | one proposed call per thing asked (216a, 194) |
 | `/<command> …` | a command from the catalogue | that command's tool call (193) |
 | `412`, `#412`, `412 yes`, `412: <text>` | the short reply grammar | `answer` (194) |
 
@@ -50,11 +49,11 @@ capture this instead."
 **While typing plain text.** One preview line under the field, in the
 shape the capture box used: "will send: capture", or "will send: capture
 · first idea of a thread" when the intent toggle beside the field is on
-(19, S30). Where the flywheel has a model key it reads "Enter captures
-this. ⇧Enter asks the flywheel to read it", and the read yields one card
-per thing asked, each confirmed on its own; a name resolving to nothing
-is asked about, never guessed (194). Where there is no key it reads "Your
-words are captured as written".
+(19, S30). It reads "Your words are captured as written": Enter sends
+them verbatim and nothing on the page reads them for meaning (194a,
+216a). A question belongs on a surface that holds a conversation — the
+chat sink, or a member's own client of the tool server, where the same
+views render (293a, S34).
 
 **With a number.** `412` or `#412` alone lists that decision's own
 answers, one row each; `412 yes` and `412: <text>` send at once. A number
@@ -199,9 +198,9 @@ S38, S39). Its rows are touch targets (311, S61).
 
 | S | what it says now | proposed |
 |---|---|---|
-| **S63** | "No typed grammar anywhere on the page (194)." | "One typed input on the page, the palette, with one grammar: plain text is a capture or a message the flywheel's own model reads into proposed calls; a leading `/` names a command of the catalogue; a bare number answers a decision (19, 193, 194, 216a). It is the chat's grammar, not a second one, and no other field on the page parses a word. The workbench's dictation grammar in the capture box is still rejected: the commands are the catalogue's names, never a language of the page's own." |
+| **S63** | "No typed grammar anywhere on the page (194)." | "One typed input on the page, the palette, with one grammar: plain text is a capture, sent verbatim; a leading `/` names a command of the catalogue; a bare number answers a decision (19, 193, 193a, 194, 216a). It is the chat's grammar, not a second one, and no other field on the page parses a word. The workbench's dictation grammar in the capture box is still rejected: the commands are the catalogue's names, never a language of the page's own." |
 | **S30** | "The capture box sits at the head of Inception…" | "The palette is the page's capture surface. Plain text is sent unparsed to `capture` with one signal of kind ask, source the page (19, 194); an intent toggle beside the field makes the same submission also call `mark-intent` (12). Both are under `fw.capture.write`, so a viewer without it sees the field read-only with its send refused and the command list filtered (249). The preview line says what will be sent; Enter sends; the page acknowledges the recorded response (154)." |
-| **S31** | "The capture box never interprets a word of its text…" | "The page parses no word of plain text: a leading `/` and a leading number choose a tool and nothing else, and neither reads the text for meaning. Text the operator asks the flywheel to read goes to the model in the page's browser as the interpreter (216a, S34), which proposes calls the operator confirms." |
+| **S31** | "The capture box never interprets a word of its text…" | "The page parses no word of plain text: a leading `/` and a leading number choose a tool and nothing else, and neither reads the text for meaning. Plain text is a capture, sent verbatim. No model reads what is typed on the page and the page answers no question (19, 194a, 216a); a question is asked on a surface that holds a conversation, and the same views render there (293a, S34)." |
 | **S13** | "Inception shows: the capture box (S30); … Its head carries the 'explore…' control" | "Inception shows: the curation counter with curation's session chip; explorations as rows; every open or proposed intent as a thread with its elaborations as beads; a closed intent greyed with its countdown. Capture and explore are palette commands (S30, S43)." |
 | **S43** | "1. Inception head: 'explore…' enters the explore mode…" | "1. `/elaborate` opens a multi-pick of open intents, or takes those already ticked on Inception; the footer counts them and offers with-operator or standing. 2. Start → `explore([intents], type)`. Steps 4 and 5 unchanged." |
 | **S56** | "`/` · board · focus the capture box"; "b · board · switch phases and book" | "`⌘K` or `/` · anywhere · open the palette, `/` with the command list already showing; `b` · anywhere · open the book viewer at the object in hand. Esc closes the palette first." |

@@ -391,12 +391,16 @@ the operator may reverse by a response on the file; an entry with
   `{response: <word>}` guards are the tool names, so a tool that no
   machine guards is unapplicable by construction and a guard word that
   no tool carries is unreachable — `check.py` does not yet check the
-  two against each other. **Open** in check.py. The page's interpreter
-  is a model shipped in the browser so no text leaves the operator's
-  network; which model, and whether a page without one (a phone with
-  no script) falls back to controls only, is the surface binding's.
-  **Open**. The chat interpreter is dispatch, so a chat without
-  dispatch running answers numbers only. **Decision**.
+  two against each other. **Open** in check.py. The page has no
+  interpreter: it renders state and sends each act as a tool call
+  named by object id, so a phone with no script loses nothing and no
+  text is read for meaning there. Whether the page should carry a
+  model of its own was asked and **closed 2026-09-10**: it carries
+  none (216a); a question goes to a surface that holds a conversation
+  (194a), and a member's own client of the tool server renders the
+  page's views inside it (293a). **Decision**. The chat interpreter is
+  dispatch, so a chat without dispatch running answers numbers only.
+  **Decision**.
 
 - **195 kinds and capabilities.** A repository lists `kinds:` (plural;
   the earlier singular `kind:` is gone) and `capabilities:` in the
@@ -609,10 +613,13 @@ the operator may reverse by a response on the file; an entry with
   proposed tool call the operator confirms; "interpreter" now names
   only the function that turns text into a proposed call. A message
   that asks for several things yields several cards, each its own
-  response with its own id. The page's agent is a model in the browser
-  (216a); which model, and whether a page without one falls back to
-  controls only, stays **open** in the surface binding. The chat's
-  agent is dispatch, so a chat without dispatch running answers
+  response with its own id. The page has no agent: it holds no
+  conversation, shows state and sends acts, and free text typed on it
+  is a capture (19, 216a, 194a). Whether the page should run an agent
+  of its own was asked and **closed 2026-09-10**: it runs none, and a
+  member's own client of the tool server renders the page's views
+  inside the conversation it already holds (293a). **Decision**. The
+  chat's agent is dispatch, so a chat without dispatch running answers
   numbers only. **Decision**.
 
 - **215 adapters.** Seven ship, one kind: an enumerator run by
@@ -631,8 +638,10 @@ the operator may reverse by a response on the file; an entry with
   clauses 216a and 217a–k are traced through their base numbers:
   `satisfies` is integer in `schema.json` and `Vec<u32>` in the
   engine, and `check.py` reads a suffixed item as a clause of its base
-  and counts it cited when the base is. **Decision**. The dispatch
-  model's nine open questions (its section 8) stand.
+  and counts it cited when the base is. **Decision**. Of the dispatch
+  model's nine questions (its section 8), eight stand; the ninth, what
+  model the page runs, was **closed 2026-09-10** — none (216a, 194a,
+  293a).
 
 - **218–222 flywheels.** Isolation is by root, state repository,
   blueprints, sinks and register per instance; a host's manifest names
@@ -947,10 +956,13 @@ the operator may reverse by a response on the file; an entry with
   is spent on it, and the free text a chat user types is a slash command
   with arguments; the ruling is that this is a cost decision and not a
   reduced surface, since the same answers are reachable by button and
-  the page's browser model interprets free text there (216a, 281).
-  **Decision**. What the browser model is — the page's own, the
-  operator's key placed in the page, whatever the browser offers — is
-  216a's gap and not closed here. **Open**. The daily batch is the
+  the page sends every act as a tool call with no model at all, plain
+  text typed there being a capture (19, 216a, 281). **Decision**. What
+  model the page runs was asked — the page's own, the operator's key
+  placed in the page, whatever the browser offers — and **closed
+  2026-09-10**: none. A question goes to a surface that holds a
+  conversation, and a member's own client renders the page's views
+  inside it (194a, 293a). **Decision**. The daily batch is the
   sweep of 273, so a Hobby capture's triage is up to a day behind the
   capture; whether the operator is told which captures are waiting for
   the batch, and where, is the surface owner's. **Open**. The included

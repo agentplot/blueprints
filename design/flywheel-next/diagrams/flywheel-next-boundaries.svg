@@ -54,7 +54,7 @@
   <rect x="1180" y="108" width="210" height="76" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6" stroke-dasharray="6 4"/>
   <text x="1194" y="130" font-size="11" font-weight="700" fill="#333">interpreter (194)</text>
   <text x="1194" y="147" font-size="9.5" font-family="monospace" fill="#666">free text → one tool call</text>
-  <text x="1194" y="161" font-size="8.5" fill="#999">chat → dispatch · page → browser model</text>
+  <text x="1194" y="161" font-size="8.5" fill="#999">chat → dispatch · page → no model (216a)</text>
   <text x="1194" y="174" font-size="8.5" fill="#999">control → none · shown, then confirmed</text>
   <path d="M 1390 146 L 1408 146" fill="none" stroke="#c05b5b" stroke-width="2" marker-end="url(#mR)"/>
   <rect x="1410" y="108" width="330" height="76" rx="8" fill="#fff" stroke="#c05b5b" stroke-width="1.6"/>

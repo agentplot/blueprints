@@ -1759,12 +1759,12 @@ function pagePlan(){
       ['Chat', raw(p.chat)],
       ['Triage of a self-contained capture', raw(p.triage)],
       ['Free text', name === 'Hobby'
-        ? 'interpreted in the page, where the model running in the browser does the interpreter&#8217;s job at no cost to the service · placing a model key of your own unlocks it in chat'
+        ? 'a capture on the page, sent verbatim, which spends no model · placing a model key of your own unlocks interpretation in chat'
         : 'interpreted in the tick, one bounded call per message on the in-process runner'],
       ['Model class per job', raw(p.modelClass) + (raisable
         ? `<div class="row" style="margin-top:6px">${btn('Raise a type&#8217;s class…', 'data-raiseclass="1"')}<span class="small">per unit type, per elaboration type and per stage · the plan states the ceiling and the type states the choice within it</span></div>`
         : `<div class="small">raising it is Team and up</div>`)],
-      ['When a budget is spent', 'one attention line and a slower cadence, never a stopped loop: free text falls back to the page&#8217;s browser model and self-contained captures to the daily batch'],
+      ['When a budget is spent', 'one attention line and a slower cadence, never a stopped loop: free text falls back to buttons, slash commands and the numbered reply, which cost no model, and self-contained captures to the daily batch'],
     ], 'rows')});
 
   /* the model key and the included budget (294, 207) */
@@ -1807,7 +1807,7 @@ function pagePlan(){
         : meter('Pool hours this month', String(u.poolHours), esc(p.limits[2][1]), 'overage is metered, not refused'),
       u.model
         ? ['Model spend this month', `<b>${esc(u.model.spend)}</b> of ${esc(u.model.budget)} included<div class="small">beside the pool hours, because both are metered the same way</div>`]
-        : ['Model spend this month', `<b>none</b><div class="small">Hobby spends almost no model: chat is buttons and slash commands, and free text runs in the page&#8217;s browser</div>`],
+        : ['Model spend this month', `<b>none</b><div class="small">Hobby spends almost no model: chat is buttons and slash commands, and the page runs none at all</div>`],
       ['Pool memory', u.poolMemory
         ? `max <b>${esc(u.poolMemory)}</b><div class="small">the pool host that would exceed it is refused with the reason, and the loop is not stopped</div>`
         : `<b>no pools on this plan</b>`],
