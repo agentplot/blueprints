@@ -1905,6 +1905,44 @@ whatever else it does.
 - **S218.** A key the design binds (S56) is shown on the control it
   reaches, as the mockup shows it, and a key a card does not offer is
   refused with the card's answers listed (S57).
+- **S219.** Ruled 2026-09-14: the rail and the board are one
+  selection. One decision is in hand — the first at load, or the one
+  whose object the link opened — and the object it stands on is lit on
+  the board and scrolled into view; where the board does not draw that
+  object it lights the nearest parent it does draw, so a signal's
+  decision lights the capture the operator typed. `j` and `k` move the
+  hand; a mark on a board object takes its decision in hand; a board
+  object with no decision lights alone when picked. Enter and `o` open
+  the one in hand. Selection within a drawn object (the units of a
+  bolt, the beads of an intent) is not yet bound.
+- **S220.** Ruled 2026-09-14: a decision reads as a question in a
+  sentence above its controls, with what the page knows of the object
+  in it (a bolt's close says how many units merged and asks whether to
+  land it). Each control says what pressing it does, in a verb (`land
+  it`, `hold`, `build`, `drop`), carries the key that presses it, and
+  has one line of what follows in its tooltip. The value posted is the
+  model's own word, so the chat's grammar and the page share the write
+  path (193, 194). The affirmative control is filled; the one that sets
+  aside is in the colour for it. The drawer's foot carries the same
+  sentence and the same controls.
+- **S221.** Ruled 2026-09-14: the page keeps itself current. The host
+  raises a generation when its store moved and tells every open page
+  over one event stream; the page fetches itself from the same host and
+  swaps the rail, the board, the drawer and the counts, keeping the
+  decision in hand, the drawer that is open and where each column was
+  scrolled. Nothing is fetched from anywhere but the host (310). A
+  session's report wakes the loop the moment it is written, and a host
+  bound to Herdr waits on each live agent's state through Herdr's own
+  wait, so an agent going idle, blocked or done is a cause now and not
+  at the next poll (130, D6). The poll stays the floor.
+- **S222.** Ruled 2026-09-14: the page says *branch* for what the
+  model calls a line, everywhere — the bolt's branch, the work item's
+  branch, commits on the branch — and never both words for one thing.
+  A bolt's place is the checkout of its branch and is shown as the
+  place alone.
+- **S223.** Ruled 2026-09-14: a capture typed on the page is *from the
+  console*. The console is this page as one source among the dispatch
+  agent and the chat sinks; the page's own title stays Flywheel.
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open
