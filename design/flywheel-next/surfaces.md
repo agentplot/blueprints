@@ -1863,6 +1863,49 @@ Dated 2026-09-08.
   screen — live in the mockups' header comments, where the next designer
   reads them and the customer never does. Closed.
 
+
+Dated 2026-09-14. The rules the page keeps everywhere, ruled after the
+first live walk on flywheel-next; a control that breaks one is wrong
+whatever else it does.
+
+- **S210.** Every control answers at once. Within a frame of the tap or
+  the key the control shows it was used, its form goes busy so a second
+  press does nothing, its cancel is inert while the request is out, and
+  a bar runs at the top of the page until the page comes back. Nothing
+  the operator does is followed by silence (311).
+- **S211.** One place to type. The capture box in the header is the
+  field itself: click into it, or press `/` or ⌘K, and the cursor is
+  there; return sends; while it has the cursor it opens under itself
+  with what was sent lately. It never opens a second box elsewhere on
+  the page. On a phone the same box is the palette (19, S58).
+- **S212.** Every decision the operator can make is a card on the rail,
+  numbered, walked with j and k, answered with one tap or one key. A
+  capture is one the moment it lands (19a). The board carries no
+  control the rail does not; the board is for reading, the rail for
+  answering (15, 311, S57).
+- **S213.** Escape closes the topmost thing, in order: the capture box,
+  the field the cursor is in, the dock, the log. The dock closes on
+  Escape whether a link or the request opened it (S56).
+- **S214.** The page explains nothing about the model. No sentence on
+  it says how the machinery works or cites a requirement; a heading is
+  a name, a subtitle is a count, and an empty region says what to do
+  next in the operator's terms ("Nothing captured yet. Type what you
+  noticed in the box above.").
+- **S215.** Text is shown from its beginning and cut at its end, never
+  the other way round. A quote on a card or the board reads as the
+  operator wrote it.
+- **S216.** A host is a chip in the hosts strip with a dot for whether
+  it is heard from and what it runs; the board and the dock never say
+  "held by". A capture is one line on the board with its words and its
+  source, and its signal is not a second line (141, D16).
+- **S217.** The page asks for no name the operator did not think of. A
+  bolt made from a capture is named from the capture's first words; a
+  name can be changed later, on the object, never demanded first (19a,
+  I1).
+- **S218.** A key the design binds (S56) is shown on the control it
+  reaches, as the mockup shows it, and a key a card does not offer is
+  refused with the card's answers listed (S57).
+
 <!-- ANCHOR_END: rulings -->
 ## 6. Open
 <!-- ANCHOR: open -->

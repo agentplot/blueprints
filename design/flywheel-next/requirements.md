@@ -311,6 +311,15 @@ model.
     and no model reads what is typed there: the page shows what is and
     offers what may be done, and it answers no question (194a, 216a).
 
+19a. A signal with no move is a decision of the operator's, on the rail
+    with a number like any other, the moment it is recorded: build,
+    intent or drop. Build makes a chore unit on a bolt named from the
+    capture's own words and approves it in the same response; the
+    operator types no name. Intent proposes an intent citing the signal,
+    which stands as its own decision. Drop moves it dropped. Curation's
+    batch judgment stands beside this for what arrives in volume; a
+    move either way is the signal's one move (107, 116, 311).
+
 The catalogue of decisions, the reply grammar and the counting rules are
 mocked in `design/flywheel-next/rail-mockup.md`: one rendering of these
 requirements, iterated against the running rail rather than on paper.
