@@ -879,16 +879,17 @@ with a schema naming its arguments by object id, and the page's
 controls, the chat, the dispatch agent and the machinery's own
 commands all call the same tools; no caller has an operation the
 others lack (193). The catalogue is in `profiles/surfaces.yaml`:
-`answer` (a decision by number), `capture`, `mark-intent`,
-`propose-unit`, `propose-chore`, `ask`, `explore`, `open-session`, and
+`answer` (a decision by number), `capture`, `propose-unit`,
+`propose-chore`, `ask`, `explore`, `open-session`, and
 the undo-or-defer verbs of 4 — `drop`, `later`, `hold`, `release`,
 `rename`, `finish`, `end`, `close`, `send-back`, `retire`, `takeover`,
 `revive`, `take` — plus `start` and `stop` on a service, the pair 47
 grants. A **dictation** is a tool the operator invoked outside a
-decision (12): `mark-intent` writes an intent in `open` with its first
-elaboration in `approved` and the response id as the approval that can
-be pointed to (I1); `propose-unit` writes a unit in `approved` on the
-bolt with the response as its `approval`; `propose-chore` a chore unit
+decision (12): `propose-unit` writes a unit in `approved` on the
+bolt with the response as its `approval` that can be pointed to (I1),
+making the bolt first when the name it gives is no bolt yet (34); the
+unit's type defaults to `chore` and the capture it came from is its
+`document`; `propose-chore` a chore unit
 in `approved`; `revive` clears a signal's move; `ask` is an `asks/`
 record for planning; `open-session` the operator's own session (69);
 `explore` an elaboration in `approved` covering the selected intents

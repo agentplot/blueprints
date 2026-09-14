@@ -300,8 +300,9 @@ model.
     page, one line each, and a link to the page.
 19. The page is also a capture surface. Text the operator types there is
     a capture with one signal of kind ask, so curation sees it. The
-    operator may mark a capture as an intent, which is a judgment made
-    with a control, never a word parsed out of the text. The page
+    operator may make a capture the job of a unit on a bolt, which is a
+    dictation made with a control (`propose-unit`, 34), never a word
+    parsed out of the text. The page
     submission is the delivery, so it is recorded once like any
     response. The page's typed input is one palette in one grammar, the
     same grammar the chat carries: plain text is that capture, a
@@ -2627,7 +2628,7 @@ through these operations, and depends only on these guarantees.
 132. **Serve the status view.** The status view is served from the same
     state the engine reads, and is readable with no machinery running
     anywhere.
-193. Every operation the operator may invoke — capture, mark as intent,
+193. Every operation the operator may invoke — capture, propose a unit,
     answer a decision, drop, later, hold, rename, start or stop a
     service, finish a session, explore over intents, and every other
     transition 4 grants — is exposed by the state store as a tool

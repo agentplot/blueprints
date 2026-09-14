@@ -142,7 +142,8 @@ were settled, not their place on the page.
   phase label on an object (phase is the lane's, kind is the shape's);
   the count; anything answered; a finished object past its window.
 - **S19.** Requirements served: 141–146, 186, 209–210, 47. Tools called
-  from the lanes: `explore` (S43), `capture` and `mark-intent` (S30);
+  from the lanes: `explore` (S43), `capture` (S30) and `propose-unit`
+  on a capture (34);
   every other control on a lane opens the dock.
 
 ### 1.3 The board, map view
@@ -289,8 +290,9 @@ were settled, not their place on the page.
 
 - **S30.** The palette is the page's capture surface. Plain text is
   sent unparsed to `capture` with one signal of kind ask, source the
-  page (19, 194); an intent toggle beside the field makes the same
-  submission also call `mark-intent` (12). Both are under
+  page (19, 194); nothing beside the field is a judgment about the
+  text — a capture becomes work by the `propose-unit` control on the
+  capture itself (34, 12). Both are under
   `fw.capture.write`, so a viewer without it sees the field read-only
   with its send refused and the command list filtered (249). The
   preview line says what will be sent — "will send: capture" or "will
@@ -1105,12 +1107,13 @@ page shows after.
 ### 2.5 Capture with the intent toggle
 
 - **S44.** 1. ⌘K opens the palette; text in its field; the preview
-  line under it reads "will send: capture". 2. The intent toggle on; the
-  line reads "will send: capture · intent". 3. Enter → `capture(text,
-  page)` then `mark-intent(capture)`. 4. A new thread appears at the
-  head of the intents, state open, first elaboration approved, note
-  "captured by you as an intent"; the log gains the line; the palette
-  closes and the toggle resets. Without the toggle, step 4 is instead
+  line under it reads "will send: capture". 2. Enter → `capture(text,
+  page)`. 3. The capture appears in the Inception lane as a quote with
+  its `unit` control; the log gains the line; the palette closes.
+  4. `unit` on the quote, a name typed → `propose-unit(bolt, capture)`:
+  a bolt of that name on the tracked repository with the unit in
+  approved on it, note "proposed by you from the capture" (34, 12).
+  Without step 4, step 3 is instead
   the curation counter moving by one and a toast "capture · 1 signal ·
   curation sees it".
 
