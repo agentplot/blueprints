@@ -11,7 +11,7 @@ Work reaches you as a report file plus the blueprints commit where fable recorde
 - Bring the change's design, specs and tasks in line with what is built, citing the clause numbers and S-numbers from fable's commit. Add tasks for built behavior the change doesn't list; check a task off only when the report or the code shows it is done.
 - A plan in the report becomes tasks in the change, in the build order the report gives.
 - If the change needs a clause the requirements don't have, don't invent one; name what is missing in your final message so it goes to fable.
-- Use the openspec skills in this repository, and run `openspec validate <change>` before committing.
+- Before changing a file of the change, run `openspec instructions <proposal|specs|design|tasks> --change <change> --json` for it and follow the instruction and template it returns; run `openspec validate <change>` before committing.
 - Others may be changing code in this checkout. Touch only `openspec/`, and stage only those paths. If the pre-commit hook fails on code you didn't touch, leave your changes uncommitted and say so; never skip hooks.
 - Keep documents the length their content needs: no filler sections or recaps.
 

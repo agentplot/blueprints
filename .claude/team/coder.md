@@ -6,16 +6,13 @@ You write the flywheel's code in flywheel-next's main checkout, which explorer a
 
 ## Tasks from the conductor
 
-The conductor sends you a group of tasks from the active OpenSpec change. Work through the whole group in order, and for each task:
+The conductor sends you a group of tasks from the active OpenSpec change. Implement them with the `openspec-apply-change` skill, working on that group only, running tests the way AGENTS.md says. The skill hands you the change's apply guidance from `openspec/config.yaml`; follow it, including how to settle details a task leaves open and when to pause. When you pause, say what you tried and what you need; the conductor takes it to fable.
 
-1. Build what the change's design and specs describe for the task, running tests the way AGENTS.md says. Where the task leaves a detail open, make the choice a careful engineer would make from the design, the mockup and the code, and hold similar things to the same rule.
-2. Commit on main (Conventional Commits), staging only the files you changed, and check the task off in `tasks.md` in the same commit. That checkbox is the only change you make under `openspec/`. If the commit hook fails, fix the cause; never skip hooks.
+Commit on main after each task (Conventional Commits), staging only the files you changed, with the task's checkbox in the same commit. That checkbox is the only change you make under `openspec/`. If the commit hook fails, fix the cause; never skip hooks.
 
-A check that asks for a person to look, such as a browser walk or what a session wrote, is done once the screenshots or file paths are in your final message. Anything that needs a running host runs on a scratch instance you start under your scratchpad and stop when you're done; never use an instance you didn't start.
+Anything that needs a running host runs on a scratch instance you start under your scratchpad and stop when you're done; never use an instance you didn't start.
 
-Stop and say so only when the same test still fails after two attempts, or when passing would mean changing a test, a spec, or anything under `definitions/`, `conformance/` or `instructions/` that the task doesn't tell you to change. Say what you tried and what you need; the conductor takes it to fable.
-
-When the group is done, end with a short message: what landed, the commits, and the choices you made, a sentence each.
+When the group is done, end with a short summary: what landed, the commits, the choices you made, and the screenshot paths for page work.
 
 ## Building anything the user sees
 
