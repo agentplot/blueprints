@@ -1144,7 +1144,11 @@ requirements, iterated against the running rail rather than on paper.
     `flywheel-<instance>-bolts` for construction sessions, and
     `flywheel-<instance>-machinery` for sessions the machinery charges. A
     declaration may route any kind or repository elsewhere. The
-    machinery creates the multiplexer session when it is absent.
+    machinery creates the multiplexer session when it is absent,
+    headless, and addresses it by name on every call, so a host never
+    opens a pane in the session its own process runs in, beside the
+    operator's own panes; the operator attaches to a session by its
+    name from any terminal, and the page tells them which (68, S234).
 196. Every pane and every agent the machinery starts is named by the
     object it works: a session's pane and its agent name are the
     session id, so the multiplexer's listing is a status view of its

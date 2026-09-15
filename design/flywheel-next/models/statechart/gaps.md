@@ -386,10 +386,24 @@ the operator may reverse by a response on the file; an entry with
   order, as Claude Code does, is **open**. Nothing else in the model
   changes per kind.
 
-- **174 the multiplexer session flag.** `herdr agent start --session`
-  is assumed as the way to open a pane in a named herdr session, and
-  `herdr session new` as the way to create one. Not verified against
-  herdr in this model. **Open**.
+- **174 the multiplexer session.** Verified against herdr 0.9 on
+  2026-09-15: a named session is its own server and socket (`herdr
+  session list|attach|stop|delete`); there is no `herdr session new`
+  and no `--session` flag on `agent start`. A host creates the session
+  it needs headless with `herdr --session <name> server`, detached, and
+  addresses it on every call with `herdr --session <name> <command>`; a
+  socket command against a stopped session is refused with
+  `server_not_running`. The operator attaches with `herdr session
+  attach <name>`. sessions.yaml multiplexer_sessions and layout carry
+  the real commands. **Decision**. As built (sessions-herdr `start`,
+  host.rs `placement_of`): no `--session` is passed, so every pane
+  opens in whatever herdr session the host's own process runs in — the
+  operator's, beside their team — and no machinery session exists; the
+  design holds and the build departs. Not built: the named session's
+  start, the `--session` on every call, the session's name on the
+  session record. What the build already opened in the operator's own
+  session is the operator's to close; the host's reconciliation reaches
+  only the sessions it created by name.
 
 - **176 checks as findings.** A failed check run is read as a review
   that asks for a change and becomes a proposed chore like a
@@ -552,12 +566,24 @@ the operator may reverse by a response on the file; an entry with
   operator's control on the page is the ruling for now. **Decision**.
 
 - **196 / 197 layout and identity.** The herdr workspace, tab and pane
-  commands in `profiles/sessions.yaml` (`herdr workspace create
-  --label`, `herdr tab create`, `herdr pane split`, `herdr agent start
-  --pane`) are written from the intended shape and verified against
-  none; if herdr has no tab or pane concept, a workspace per unit and a
-  pane per session is the fallback and the binding changes, not the
-  machine. **Open**. Tab and workspace removal is a host
+  commands in `profiles/sessions.yaml` are verified against herdr 0.9
+  (2026-09-15): workspaces, tabs and panes exist, `workspace create`
+  answers with the workspace, tab and root pane ids, `tab create` with
+  the tab and root pane, `pane split` with the new pane, and `agent
+  start <name> --kind --pane` opens the agent in a pane at its prompt.
+  **Decision**. As built (host.rs `placement_of`, sessions-herdr
+  `start`): every session gets a workspace labelled by the nearest bolt
+  or intent above it, or by the object itself when none stands above
+  (`instance/agentplot` for curation, `capture/<id>` per capture
+  reader, `intent/<id>`), one tab and one pane, so closing that pane
+  from herdr's menu takes its tab and workspace with it, which is what
+  the operator saw. The design holds: one workspace per bolt and per
+  intent, one tab per unit and per elaboration, one pane per session,
+  and curation, planning and capture reading one workspace each in the
+  machinery session with a tab per run; closing one pane then closes
+  that pane alone and the machine reads the session as lost. Not
+  built. How the operator reaches a pane in a machinery session from
+  the page is S234. Tab and workspace removal is a host
   reconciliation (`remove_stale_layout`) rather than an effect of the
   object's own machine, because the object is final by then and runs
   no transition; a workspace may therefore outlive its object by one

@@ -1555,7 +1555,7 @@ where a thing sits, never by its form.
   click focuses the rail card and opens the dock with the card inline.
 - **S53.** Session chips are one style everywhere: agent · model, the
   host, the activity word, a pane link that opens the session's pane in
-  herdr (68, 196). State is colour and dot only: working filled and
+  herdr (68, 196, S234). State is colour and dot only: working filled and
   pulsing, starting dashed, idle hollow, blocked an amber ring. A host
   pill lights its chips in every lane and dims the rest.
 - **S54.** The machinery strip sits above the lanes: hosts as pills
@@ -2301,6 +2301,24 @@ whatever else it does.
   the page at a time: opening another, opening the palette or a dock
   page, or a render that moves the capture closes it, and Esc closes
   a picker before anything else (S56).
+- **S234.** Ruled 2026-09-15: how the operator reaches a session's
+  pane from the page when the pane lives in a herdr session of the
+  machinery's, not the one their terminal is attached to (174, 196).
+  A web page cannot drive a terminal, so the chip's pane link opens a
+  small popover, not a pane: it names the herdr session the pane is
+  in, the host it runs on, and the pane by its name, which is the
+  session id ("flywheel-agentplot-machinery · on studio · curation/
+  run-12"), and gives two lines to copy — the attach for a terminal
+  not yet in that session, `herdr session attach
+  flywheel-agentplot-machinery`, and the focus once attached, `herdr
+  agent focus curation/run-12` — the first prefixed with herdr's
+  remote attach naming the host's machine when the host is not this
+  computer (232). One copy control per line; the popover closes like a
+  picker (S233). A pane that is gone says so in the popover instead
+  ("no pane: the session exited at 08:12", "lost") and offers nothing
+  to copy. The page never opens, focuses or reads a pane itself: the
+  pane stays reachable for the operator who wants it, and everything
+  the operator needs is on the page already (68).
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open
