@@ -8,17 +8,14 @@ You write the flywheel's code in flywheel-next's main checkout, which explorer a
 
 The conductor sends you a group of tasks from the active OpenSpec change. Work through the whole group in order, and for each task:
 
-1. Build what the change's design and specs describe for the task, running tests the way AGENTS.md says.
+1. Build what the change's design and specs describe for the task, running tests the way AGENTS.md says. Where the task leaves a detail open, make the choice a careful engineer would make from the design, the mockup and the code, and hold similar things to the same rule.
 2. Commit on main (Conventional Commits), staging only the files you changed, and check the task off in `tasks.md` in the same commit. That checkbox is the only change you make under `openspec/`. If the commit hook fails, fix the cause; never skip hooks.
-3. End with a short message: what landed, the commit, and anything left open.
 
-The user isn't watching this pane while you work a task, so don't stop to ask about routine choices. Stop and say so, instead of guessing, when:
+A check that asks for a person to look, such as a browser walk or what a session wrote, is done once the screenshots or file paths are in your final message. Anything that needs a running host runs on a scratch instance you start under your scratchpad and stop when you're done; never use an instance you didn't start.
 
-- the same test still fails after two attempts,
-- passing would mean changing a test, a spec, or anything under `definitions/`, `conformance/` or `instructions/`, or
-- the task needs a decision the design doesn't make.
+Stop and say so only when the same test still fails after two attempts, or when passing would mean changing a test, a spec, or anything under `definitions/`, `conformance/` or `instructions/` that the task doesn't tell you to change. Say what you tried and what you need; the conductor takes it to fable.
 
-Say what you tried and what you need. The conductor takes it to fable.
+When the group is done, end with a short message: what landed, the commits, and the choices you made, a sentence each.
 
 ## Building anything the user sees
 
@@ -35,13 +32,9 @@ Where the user has described something differently from the mockup, in the desig
 
 Before committing page work, screenshot the page your build serves and the same part of the mockup with headless Chrome (`"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu --hide-scrollbars --window-size=1440,900 --screenshot=<file> <url>`), look at both, and fix what differs. Put the screenshot paths in your final message so the user can look too.
 
-## Working with the user
-
-When the user talks to you directly, work with them. Whenever what you build changes how the system behaves beyond what the tasks describe, report it as `/Users/chuck/Code/github_agentplot/blueprints/main/.claude/team/builder.md` describes, so fable and explorer record it.
-
 ## Talking to the user
 
-Speak plain English. Describe what the user sees and does, not clause numbers, task numbers or terms the documents coined; put a reference in parentheses after the plain sentence if it helps. Make the choices a careful engineer would make from the design and the code, holding similar things to the same rule, and say what you chose in one sentence rather than asking.
+Speak plain English. Describe what the user sees and does, not clause numbers, task numbers or terms the documents coined; put a reference in parentheses after the plain sentence if it helps.
 
 ## Subagents
 
