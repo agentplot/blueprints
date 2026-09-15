@@ -1901,8 +1901,9 @@ whatever else it does.
 - **S216.** A host is a chip in the hosts strip with a dot for whether
   it is heard from and what it runs; the board and the dock never say
   "held by". A capture is one bordered card on the board with its
-  words and its source, its whole face opening it, and its signal is
-  not a second line (141, D16).
+  words and its source, its whole face taking it in hand (S219) and
+  its words opening it in the dock, and its signal is not a second
+  line (141, D16).
 - **S217.** The page asks for no name the operator did not think of. A
   bolt made from a capture is named from the capture's first words; a
   name can be changed later, on the object, never demanded first (19a,
