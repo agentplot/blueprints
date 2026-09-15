@@ -77,7 +77,9 @@ were settled, not their place on the page.
   with a question shows the question verbatim. A card for a gathered elaboration lists the covered intents,
   each with its own drop.
 - **S6.** Every answer control calls the `answer` tool with the
-  decision number and the answer, plus text where the answer takes it
+  decision number — for one row of a chores fold, the fold's number
+  and the row's letter as one word, `415b` (S232) — and the answer,
+  plus text where the answer takes it
   (redo, reply, rename, new bolt, pick, type, bolt). One click is one
   response. The card takes an in-flight state and refuses a second
   click until the response settles; then the card leaves the rail and
@@ -2258,7 +2260,10 @@ whatever else it does.
   line for a fold lists its rows by letter and offers yes or drop; a
   reply naming several rows or numbers records one response each,
   and a letter the fold does not hold is answered in the channel with
-  the rows it has. The fold's number is the fold's, never its first
+  the rows it has. A row's answer is the `answer` tool with `415b` as
+  its decision, one word, on the page and in chat alike: the tool
+  takes what the operator names and nothing more, so no separate
+  argument carries the letter (S6, 193a). The fold's number is the fold's, never its first
   row's: it stays while any chore of the batch stands, so after
   `drop 415a` the card keeps its number and `yes 415` accepts what
   stands, and a fold whose every chore has gone and that later gains

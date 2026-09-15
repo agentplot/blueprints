@@ -279,7 +279,18 @@ the operator may reverse by a response on the file; an entry with
   both curators on the round's scratch instance read the flywheel
   binary's own source to check their delivery format, though the order
   says to read only the order; a read of another repository on the
-  operator's machine is not denied either.
+  operator's machine is not denied either. Ruled 2026-09-15: a
+  session's reach is its place and the query tools. `prepare_place`
+  writes, for a kind whose program has a deny list (Claude Code
+  settings, codex or opencode config), a deny of every file read,
+  search and shell command outside the place's tree and the paths the
+  order hands in, beside the git hooks that refuse line operations
+  (host.yaml prepare_place); a kind with no such settings is trusted
+  to the order (gaps 196). The order's own word stays: the delivery
+  format is the schema handed in, and nothing outside the place is to
+  be read. The global instructions stay **open** as above; they are
+  the operator's, and the machinery's correctness rests on nothing the
+  deny list does. **Decision**. Not built.
 
 - **93 "only the session binding is faked".** The stand-in plays
   exits by running the same `flywheel exit|offer|refuse` path, so the
@@ -859,7 +870,16 @@ the operator may reverse by a response on the file; an entry with
   records only, since as built no `--session` is passed (gaps 174).
   An instance's name is unique on its computer, and a host declines to
   start one whose name another host on the computer already runs.
-  **Decision**. Not built.
+  How it finds out, ruled 2026-09-15: the multiplexer is the one thing
+  two hosts on a computer share besides the git host (232), so the
+  session is the mark — a host that starts `flywheel-<instance>-<role>`
+  labels its first workspace `host/<host id>`, and a host that finds
+  the session running reads its workspaces before any other call:
+  its own label is its own session after a restart, another host's
+  label is the collision, and it declines naming that host, starting
+  nothing; a running session with no host label is the operator's and
+  is declined naming the session (sessions.yaml
+  multiplexer_sessions.own). **Decision**. Not built.
 
 - **223–227 machines, types and context.** 223–225 are cited on
   `atoms.yaml` because the registry has no machine of its own.
