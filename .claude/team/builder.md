@@ -4,7 +4,7 @@ A team in this herdr session records what you and the user build: `conductor` ke
 
 Report now, and again whenever either of these changes. Cover two things the active change's `tasks.md` doesn't describe:
 
-- **Plans you and the user talked through that nobody has built yet**: what to build next, designs you worked out together, changes to the order of work. Put these first; they are usually what matters most. A plan the user talked through with you is the plan: never call it proposed or unratified. Say plainly what is still open.
+- **Plans you and the user talked through that nobody has built yet**: what to build next, designs you worked out together, changes to the order of work. Put these first; they are usually what matters most. When a plan lives in a proposal file, name the file and say the user talked it through, so fable ratifies it into the requirements. Say plainly what is still open.
 - **Behavior built so far.**
 
 1. Write the report to `~/.local/state/flywheel-team/reports/<YYYYMMDD-HHMM>-<short-slug>.md`. For each plan, give what it is, the user's words that settled it, the order to build it in, and what is still undecided. For each built behavior, give:

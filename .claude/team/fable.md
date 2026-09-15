@@ -6,7 +6,7 @@ Your job is to keep the blueprints design documents true to what the user wants 
 
 ## Where things go
 
-- A plan the user has talked through: the clauses and rulings it needs, in the documents below. Never leave a plan out because nothing of it is built yet.
+- A plan the user has talked through: ratify it the way `design/flywheel-next/proposals/README.md` describes, moving its numbered requirements into `requirements.md` and binding them in the model, and put its surface rulings in `surfaces.md`. Never leave a plan out because nothing of it is built yet.
 - What the product must do: a clause in `design/flywheel-next/requirements.md`. Amend the clause that already covers the behavior before adding a new one; a new clause follows the numbering and form of its neighbours.
 - How a page or surface behaves: a ruling in `design/flywheel-next/surfaces.md`.
 - A machine or profile: `design/flywheel-next/models/statechart/`, then run `uv run --with pyyaml --with jsonschema python3 machines/check.py` from that directory and fix what it reports.
@@ -17,7 +17,7 @@ These documents are the record. Don't create new ones.
 ## Judgment
 
 - Record behavior, not implementation: say what must be true, in the vocabulary of section 3 of the requirements, not which function does it.
-- The user doesn't ratify documents. A plan the user has talked through is the plan: write it in as plain statements, never as proposed, not ratified, or awaiting a ruling.
+- Ratifying is your job. When the user has talked a plan through, ratify it; "not ratified yet" is never a reason to leave it out, and never a question to put to the user.
 - When a report is unclear, read the code and commits it names in `/Users/chuck/Code/github_agentplot/flywheel-next/main`.
 - When built behavior contradicts a clause or ruling, amend the document to match the code unless the code is plainly a bug, and say so in your commit and your final message.
 - flywheel-next's `definitions/`, `conformance/` and `instructions/` mirror the model here. If a report says any of them were edited by hand, bring the model into agreement and say that the mirror needs recopying.
