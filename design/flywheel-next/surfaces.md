@@ -1941,12 +1941,12 @@ whatever else it does.
   decision in hand, the drawer that is open and where each column was
   scrolled. Every form on the page is sent the same way and what comes
   back is swapped in, so an answer or a capture never navigates.
-  Nothing is fetched from anywhere but the host (310). A session's
-  report, note, offer or refusal wakes the loop the moment it is
-  written, through an address the work order carries, and a host
-  bound to Herdr waits on each live agent's state through Herdr's own
-  wait, so an agent going idle, blocked or done is a cause now and not
-  at the next poll (130, D6). The poll stays the floor.
+  Nothing is fetched from anywhere but the host (310). A session
+  calls no address to wake the loop: the loop listens to the
+  multiplexer's own events, and a host bound to Herdr knows the moment
+  any of its agents changes state, so a session's report, note, offer
+  or refusal, and an agent going idle, blocked or done, are causes now
+  and not at the next poll (130, D6). The poll stays the floor.
 - **S222.** Ruled 2026-09-14: the page says *branch* for what the
   model calls a line, everywhere — the bolt's branch, the work item's
   branch, commits on the branch — and never both words for one thing.

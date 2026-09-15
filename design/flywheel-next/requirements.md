@@ -659,6 +659,11 @@ requirements, iterated against the running rail rather than on paper.
     asserted.
 85. Adding an elaboration type, a construction stage, or a rail decision
     kind is a change to the definition, not to the machinery's code.
+85a. An elaboration or a unit whose type has no definition where it
+    runs takes a null default — a type with no stages and no session,
+    under which the object moves on — rather than stalling or
+    breaking. What a null elaboration or unit delivers is open; that
+    the machinery never breaks on an undefined type is not.
 86. The engine is generic. It loads definitions, evaluates predicates
     over evidence, chooses transitions, runs effects idempotently, and
     derives the rail's decisions. It knows nothing of intents, elaborations,
@@ -1250,9 +1255,9 @@ requirements, iterated against the running rail rather than on paper.
     create the state repository with the profile's layout (C.2), record
     that the flywheel's GitHub App must be installed (a secret the
     operator places, never an agent), and register the first host, at
-    this computer's name on its own network (`http://<name>.local`)
-    when the operator gives no address, never at localhost or a port
-    (191, 205a). Every step is an effect with a proof, so running it again changes
+    localhost when the operator gives no host and at the hostname the
+    operator gives otherwise; init guesses no name (205a). Every step
+    is an effect with a proof, so running it again changes
     nothing, and the reconciler that advances work advances a
     half-finished bootstrap.
 205. A host joins by one command and never by hand. It clones the state,
