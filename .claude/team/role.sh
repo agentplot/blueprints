@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run one flywheel team role in the current pane: role.sh conductor|fable|explorer
+# Run one flywheel team role in the current pane: role.sh conductor|fable|explorer|coder
 set -euo pipefail
 
 root=/Users/chuck/Code/github_agentplot
@@ -27,6 +27,23 @@ case $role in
     cd "$fn"
     args=(--model 'opus[1m]' --effort high --add-dir "$bp" "$fc" --permission-mode acceptEdits
       --allowed-tools 'Bash(openspec:*)' "${git_read[@]}" "${git_write[@]}")
+    ;;
+  coder)
+    coder_worktree() {
+      git -C "$fn" worktree list --porcelain |
+        awk '/^worktree /{path = substr($0, 10)} $0 == "branch refs/heads/coder" {print path}'
+    }
+    if [ -z "$(coder_worktree)" ]; then
+      if git -C "$fn" show-ref --verify --quiet refs/heads/coder; then
+        (cd "$fn" && wt switch coder -x true)
+      else
+        (cd "$fn" && wt switch --create coder -x true)
+      fi
+    fi
+    worktree=$(coder_worktree)
+    [ -n "$worktree" ] || { echo "no worktree for the coder branch" >&2; exit 1; }
+    cd "$worktree"
+    args=(--model 'opus[1m]' --effort xhigh --add-dir "$bp")
     ;;
   *)
     echo "unknown role: $role" >&2
