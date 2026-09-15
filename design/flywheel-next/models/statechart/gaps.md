@@ -413,7 +413,11 @@ the operator may reverse by a response on the file; an entry with
   its budget whatever the host is doing (310a). **Decision**: the run's
   length stands; the per-record commits and the held host are bugs
   against the profile. The change's 22.10 measures against a
-  three-minute bar the design never set.
+  three-minute bar the design never set. The held host is fixed as of
+  2026-09-15 (the-loop 24.6): the page is answered from its last read
+  while a pass records, and a call made then is kept and made on the
+  pass after (310a busy, S235); recording the delivery itself still
+  takes about three minutes, the per-record commits standing.
 
 - **115 / 217e the reader as built.** The capture-reader session runs
   through the herdr binding by the tick of the host declaring the
@@ -1338,15 +1342,30 @@ the operator may reverse by a response on the file; an entry with
   the first view alone ships, dock pages and lists past 50 rows are
   fetched when opened, an update carries the changed regions since the
   page's generation, every response is compressed, and a test seeds two
-  instance sizes and fails a build over any number. **Decision**. As
-  built: none of it; the whole page, uncompressed, every dock page
-  inline, the whole page again on every event; and a proposed intent's
+  instance sizes and fails a build over any number. **Decision**.
+  Built 2026-09-15 (the-loop group 24), the test green at both sizes:
+  first paint 0.45 s and 0.47 s, first press 0.46 s and 0.48 s, a load
+  85.8 KB and 86.4 KB (5.3 KB and 5.8 KB with the bundle cached), the
+  first view's HTML 29.6 KB and 50.9 KB, the update after an answer
+  1.3 KB; the host draws the ten-times first view in 13 ms where it
+  took 172 ms, the tray's counter having passed over every signal and
+  every object for each waiting signal. While the host recorded a
+  curator's delivery for about three minutes the page and the open
+  tray answered 193 times, the slowest in 20 ms, and a capture sent
+  meanwhile was answered at once, recorded once and shown when the
+  pass ended (310a busy, S235). Still standing: a proposed intent's
   card carries a signal count and an age where 109 and S5 say how many,
   from how many sources, over what span, with the elaborations folded
-  in. Recording one curator delivery of 63 signals also held the host
-  about four minutes, every page read waiting about a minute behind it
-  (gaps 110). The mirror's definitions/profiles/surfaces.yaml needs
-  recopying.
+  in; a member's client's read-only calls and opening a session's
+  deliverable still wait for the host while a pass holds the store,
+  where the page is answered whatever the host is doing and the
+  client's view is the same page (310a, 293a) — a bug against the
+  rule; the signals tray's rows run past the right edge at 390px, in
+  the mockup as on the page — a bug in both against 314; and a dock
+  page's away line prints the moment raw
+  (`2026-09-15T17:37:53.062165+00:00`) where 150a says since when and
+  the page speaks in the operator's terms (S214) — a bug. The mirror's
+  definitions/profiles/surfaces.yaml needs recopying.
 
   The 100 KB against the bundle's style and script, ruled 2026-09-15.
   The page's stylesheet, copied whole from the mockup (D16), is 67 KB

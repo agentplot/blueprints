@@ -2681,6 +2681,11 @@ requirements, iterated against the running rail rather than on paper.
     and paged past 50, the count stated. An update carries only the
     regions that changed, at most 8 KB for one move, one answer or one
     capture, never the whole page. Every response is compressed. The
+    page is answered whatever the host is doing: while the host's pass
+    holds the store, a read is answered from the instance as it was
+    last read, and a call made then that writes — an answer, a capture,
+    a run of curation — is taken as sent, kept, and made at the start
+    of the host's next pass, recorded once (137, 153). The
     time and the bytes grow with what is on screen and not with the
     instance: at ten times the signals, intents, captures and facts the
     same first view paints and weighs within a tenth of what it did.

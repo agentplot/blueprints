@@ -2032,6 +2032,10 @@ whatever else it does.
   keeping the decision in hand, the drawer that is open and where each
   column was scrolled; it never fetches the whole page again (S235). Every form on the page is sent the same way and what comes
   back is swapped in, so an answer or a capture never navigates.
+  While the host's pass holds the store the page is answered from
+  the instance as it was last read and a form's call is kept for the
+  pass after, so nothing on the page waits on what the host is doing
+  (S235, 310a).
   Nothing is fetched from anywhere but the host (310). A session
   calls no address to wake the loop, and the machinery builds no wake
   API of its own: the loop listens to the multiplexer's own events,
@@ -2358,7 +2362,19 @@ whatever else it does.
   regions that changed, keyed by the generation the page holds, and
   the page swaps those regions and nothing else; one move, answer or
   capture is at most 8 KB. Every response is compressed with what the
-  browser offers. The budget is
+  browser offers. The page is answered whatever the host is doing:
+  while the host's pass holds the store — recording a curator's
+  delivery, say — a page read, a dock page's fetch, an update and a
+  member's client's view are answered from the instance as it was
+  last read, within the first-press bound, and a call that writes —
+  an answer, a capture, yes all, curate, a write from a member's
+  client — is kept beside the state and answered at once as "sent ·
+  it shows here once the host is free", the control that sent it
+  staying spent until the update that follows draws it again; the
+  host makes the kept calls first on its next pass, each under the
+  delivery it was kept as, so a call made twice is recorded once
+  (137, 153), and the page hears of the pass's moves as one update
+  once they settle (S221). The budget is
   measured as the surfaces profile states (surfaces.yaml budget), on a
   scratch instance seeded at two sizes, with a headless browser
   throttled to a mid-range phone and an ordinary mobile connection;
