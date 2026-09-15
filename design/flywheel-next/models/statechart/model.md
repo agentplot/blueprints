@@ -104,7 +104,13 @@ of some object, or a file the machinery reads as evidence.
   `record_offers` turns that entry into one record that points at the
   document: a chore into a `unit` of the chore type in `proposed`,
   under the bolt it was raised in or else under the repository whose
-  shared line it belongs on (60); a finding on the session's own
+  shared line it belongs on (60) — the one the offer's `--scope` names,
+  by its manifest name, `blueprints` among them; a chore of the
+  blueprints' shared line stands under the `instance`, its `repository`
+  field `blueprints`, and folds by that name as a tracked repository's
+  do; an offer off every bolt whose scope names no tracked repository
+  is refused on the thread with the names, as `commands.ask` refuses
+  (sessions.yaml `commands.offer`); a finding on the session's own
   thread into an `elaboration` (design side) or a `fast` unit
   (construction side) in `proposed`; anything else into a `signal`.
   That signal stands under the capture the session was reading when
@@ -1478,8 +1484,9 @@ challenge, join, answered, route, drop, each with a reason) and one
 proposed intent per join cluster, with its proposed elaborations and
 typed by the material. The curation session is a session like any
 other (58–60): for a signal that argues with no claim it may offer a
-chore through `flywheel offer`, which `record_offers` makes the
-proposed chore unit under the repository, on its shared line (60, 62),
+chore through `flywheel offer`, its `--scope` naming the repository
+whose shared line the fix belongs on, which `record_offers` makes the
+proposed chore unit under that repository, on its shared line (60, 62),
 or an ask by running
 `flywheel ask <repository> <words>` in its place — the `ask` tool
 called with the session's identity, as `flywheel service` is the
@@ -1566,7 +1573,10 @@ Inside `alive.working` the agent is free. What reaches the machinery
 is what the session reports through the command the machinery provides
 (67): `flywheel exit done|blocked|stalled` with deliverables, a
 question or a note; `flywheel offer finding|chore|signal <document>
---about <object>`; `flywheel note <text>`; and `flywheel refuse`, run by
+--about <object> [--scope bolt-line|<repository>]`, the scope where a
+chore's fix belongs (60): the bolt's line, implied under a bolt, or a
+named repository's shared line, required off every bolt; `flywheel
+note <text>`; and `flywheel refuse`, run by
 the hooks. Each appends one entry to the session's thread through the
 state store and does nothing else; the machinery decides what the
 entry means (66). The same command carries the two catalogue tools a

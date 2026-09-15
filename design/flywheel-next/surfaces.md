@@ -2142,6 +2142,13 @@ whatever else it does.
   it lands on the rail as a proposed chore of the repository's shared
   line, one decision folded with that repository's other proposed
   shared-line chores, answered yes or drop like a bolt's (60, 62, S225).
+  The offer says which repository, by the name the operator's
+  `propose-chore` and `ask` tools take, `blueprints` among them (S229;
+  surfaces.yaml tools); the folded decision is headed
+  by that name, and its rows read as a bolt's chores do. An offer that
+  names no repository, or one the instance does not track, is refused
+  on the session's thread with the tracked names and lands nowhere,
+  as an ask is (60).
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open

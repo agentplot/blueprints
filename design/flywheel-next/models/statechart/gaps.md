@@ -126,7 +126,23 @@ the operator may reverse by a response on the file; an entry with
   unit under the repository whose shared line it belongs on (60, 116);
   `unit.yaml` gives a unit a repository as a third parent for that
   case, and a build that made such a chore a signal is to be corrected
-  to the unit. **Decision** (2026-09-15). `flywheel offer signal`,
+  to the unit. **Decision** (2026-09-15). Which repository: the offer
+  says, through `--scope`, the flag 10.2 already lists (60). Under a
+  bolt the scope is `bolt-line` and may be left off; off every bolt it
+  is a repository's manifest name, the vocabulary `propose-chore
+  <repository>` and `flywheel ask <repository>` already use, and
+  `blueprints` is one of the names since an instruction change is a
+  chore there (123). A chore of the blueprints stands under the
+  `instance` (a fourth parent in `unit.yaml`, `instance.yaml` owning
+  it) with `repository: blueprints`, and folds by that name as any
+  repository's shared-line chores do. A chore offered off every bolt
+  whose scope names no tracked repository is refused on the thread
+  with the names, exits 1 and is never pending, as `commands.ask`
+  refuses — nothing is derived from `--about`, which says what the
+  chore concerns and not where its fix lands (sessions.yaml
+  `commands.offer`). The built `flywheel offer` records only the kind
+  and the document and takes neither flag; 19.12 builds `--scope`.
+  **Decision** (2026-09-15). `flywheel offer signal`,
   listed in 10.2 and 56, is not built; a session's own signal reaches
   the record only as a finding nothing stands above. **Open**.
 
@@ -323,7 +339,8 @@ the operator may reverse by a response on the file; an entry with
   signal that argues with no claim it offers a chore or an ask through
   the command like any session; `record_offers` on the curation
   session's exit makes the proposed chore unit on the shared line,
-  under the repository whose line it is (62), or
+  under the repository whose line it is — the one the offer's
+  `--scope` names, as the ask names its repository (62) — or
   the ask record, and `record_moves` writes `route <offer entry id>`
   on the signal. No new effect: the offer path already exists. A route
   whose chore is declined leaves the signal routed, not unmoved; the

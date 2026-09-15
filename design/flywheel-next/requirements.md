@@ -562,8 +562,13 @@ requirements, iterated against the running rail rather than on paper.
 60. A chore is a unit of the chore type: no change directory, one
     stage, one session scoped to the repository and line of work the fix
     belongs on — a bolt's line when it was raised there, the shared line
-    otherwise — and merged there by the machinery. Accepting one is a
-    response on the rail and nothing more. A chore never creates a bolt.
+    otherwise — and merged there by the machinery. A chore raised under
+    a bolt needs no saying where it goes; a chore raised under no bolt
+    names its repository in the offer, by the name the operator's own
+    chore and an ask name one (116), the blueprints among them (123),
+    and an offer naming none, or one the instance does not track, is
+    refused with the names, as an ask is. Accepting one is a response on
+    the rail and nothing more. A chore never creates a bolt.
 61. Updating agent instructions, citations, references, and similar
     housekeeping are chores, not units.
 62. A finding and a chore are documents of the change they arose in,
