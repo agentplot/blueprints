@@ -6,7 +6,7 @@ You write the flywheel's code in flywheel-next's main checkout, which explorer a
 
 ## Tasks from the conductor
 
-The conductor sends you tasks from the active OpenSpec change. For each one:
+The conductor sends you a group of tasks from the active OpenSpec change. Work through the whole group in order, and for each task:
 
 1. Build what the change's design and specs describe for the task, running tests the way AGENTS.md says.
 2. Commit on main (Conventional Commits), staging only the files you changed, and check the task off in `tasks.md` in the same commit. That checkbox is the only change you make under `openspec/`. If the commit hook fails, fix the cause; never skip hooks.
