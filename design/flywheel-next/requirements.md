@@ -383,7 +383,10 @@ requirements, iterated against the running rail rather than on paper.
     its own — a signal or a note carries none — so an elaboration an
     open intent proposes from its attached material is self-closing
     until the operator's response names another. The proposal shows
-    its type and offers only the answers that apply to it.
+    its type and offers only the answers that apply to it. An
+    elaboration is named by its type and the material it was proposed
+    from, in the operator's words, never by its ordinal or its id; the
+    id stays the id and is not the name (S226).
 
 <!-- ANCHOR_END: a04 -->
 ### A.5 Planning and construction

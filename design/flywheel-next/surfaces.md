@@ -2012,7 +2012,11 @@ whatever else it does.
   tray says so in the operator's terms (S214). On a phone the tray is
   the same list under the counter (306).
 - **S226.** Ruled 2026-09-14: an open intent's thread shows its
-  attached signals as quotes and its elaborations as beads. Its card
+  attached signals as quotes and its elaborations as beads. A bead is
+  named by its type and the material it was proposed from, in the
+  operator's words ("research · dispatch agent"), never by its ordinal
+  or its id: "proposed one" is no name, and the id the effect
+  generated stays the id (27). Its card
   proposes one elaboration at a time with the type named beside the
   question ("research · self-closing") and only the answers that
   apply: yes, drop and type; pick and the per-intent drop appear only
