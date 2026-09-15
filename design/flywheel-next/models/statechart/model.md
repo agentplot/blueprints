@@ -127,7 +127,18 @@ of some object, or a file the machinery reads as evidence.
   path, its excerpt empty and its position `whole`; it is unmoved
   until curation or the operator moves it (19a, 107). Every offer is
   recorded on the pass that finds it, so no offer holds a session in
-  `working` (62). The record never holds the text.
+  `working` (62). The record holds the path and the offering place's
+  revision at the offer, never the text; `record_offers` pins that
+  revision on the git host as `refs/flywheel/offers/<session>/<entry>`
+  in the offering repository, since a place's commits reach the git
+  host only at its merge and hosts share nothing but the git host (43,
+  232), so a chore's work order is rendered from the document at the
+  pin on whatever host prepares the chore's place, and the review
+  surface reads a finding there. The pin outlives the place, its
+  rebases and its squash; the host's reconciliation removes it once the
+  record it made has ended (`remove_stale_offer_pins`, 55). A proposed
+  or deferred chore of a bolt that is dropped retires with the bolt
+  (unit.yaml); removing the offering place withdraws nothing.
 - **as-built statement** — a file in the built repository naming
   `claim@version`; evidence for `cell.evidence_present`, never state.
 - **scope, name, dependencies, type version, retry counts, blocks,

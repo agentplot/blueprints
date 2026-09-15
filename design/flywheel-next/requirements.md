@@ -596,14 +596,22 @@ requirements, iterated against the running rail rather than on paper.
     text. The offer names the revision of the offering session's place
     that holds the document, and the record keeps the path and that
     revision; an offer naming a document not committed there is
-    refused. A chore's session is handed the document as its job, in
-    its work order: the machinery reads it at the yes from the
-    offering session's repository at that revision and writes it into
-    the order, since a chore has no change directory (60) and a session
-    on another repository's line cannot reach the place the offer was
-    made in (89). A chore whose offering place was removed without
-    merging before the yes is withdrawn, its document gone with the
-    place.
+    refused. A place's commits reach the git host only when the place
+    merges (43), and hosts share nothing but the git host (232), so
+    the machinery pins that revision on the git host under its own
+    prefix as it records the offer, and every host reads the document
+    from the git host at the pinned revision; the pin outlives the
+    place, its rebases and its squash, and is removed by
+    reconciliation once the record the offer made — unit, proposal or
+    signal — has ended, an effect recorded like any other (42, 55). A
+    chore's session is handed the document as its job, in its work
+    order: the machinery reads it at the pin when it prepares the
+    chore's place and writes it into the order, since a chore has no
+    change directory (60) and a session on another repository's line
+    cannot reach the place the offer was made in (89). Removing the
+    offering place withdraws nothing; a proposed chore of a bolt that
+    is dropped retires with the bolt, as every unit of a dropped bolt
+    does (74).
 63. Chores raised while a bolt is being built are collected at the bolt
     and done by one session, on the bolt's own line of work, before the
     bolt lands. No process coordinates them; the bolt's own state is
@@ -619,7 +627,7 @@ requirements, iterated against the running rail rather than on paper.
 65. A session is given one job, one place, and a bounded goal. Inside
     the job it is free; its only outputs to the machinery are a fixed
     set of exits: done with deliverables, blocked on a question,
-    offering a finding, offering a chore, stalled.
+    offering a finding, a chore or a signal (58, 62), stalled.
 66. A session never moves the state of the machinery itself. It emits
     an exit; the machinery decides what the exit means.
 67. A session reports its exit through a command the machinery

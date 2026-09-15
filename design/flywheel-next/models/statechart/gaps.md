@@ -162,21 +162,31 @@ the operator may reverse by a response on the file; an entry with
   the mockup's 415 (11, 60, S232). **Decision** (2026-09-15).
   Where an offered chore's document lives and how the chore's session
   reads it: the document stays where the offer committed it — the
-  offering session's place, then whatever line that place merges onto
-  — and the offer entry names the place's revision at the offer, which
-  must hold the document or the command refuses; the unit keeps path
-  and revision (`unit.yaml` record). The chore's session is handed the
-  text in its work order as the job, read at the yes from the offering
-  repository at that revision (chore@2 params.job, host.yaml
-  prepare_place, the chore-fixer skill), since a chore has no change
-  directory and a session on another repository's line cannot reach
-  the offering place (60, 62, 89). A chore whose offering place was
-  removed without merging before the yes is withdrawn. **Decision**
-  (2026-09-15). Built 2026-09-15: every work order gives the exact
-  offer command under how to report (67); `--about` is written on the
-  entry and read by nothing. Not built: the revision on the entry and
-  the unit, the document in the chore's order (a built order says only
-  to do what the document says and names none), and the withdrawal.
+  offering session's place — and the offer entry names the place's
+  revision at the offer, which must hold the document or the command
+  refuses; the unit keeps path and revision (`unit.yaml` record). A
+  place's commits reach the git host only when the place merges, a
+  squash rewrites them, and hosts share nothing but the git host (43,
+  232), so `record_offers` pins the revision there as
+  `refs/flywheel/offers/<session>/<entry>` on the pass that records
+  the offer (record-derived.yaml), and every host reads the document
+  from the git host at that pin — a bare clone that lacks the commit
+  fetches the ref (host.yaml prepare_place). The chore's session is
+  handed the text in its work order as the job (chore@2 params.job,
+  the chore-fixer skill), since a chore has no change directory and a
+  session on another repository's line or another host cannot reach
+  the offering place (60, 62, 89). The pin is removed by the host's
+  reconciliation once the unit, elaboration or signal the offer made
+  has ended (`remove_stale_offer_pins`, engine/host.yaml). Removing the
+  offering place withdraws nothing; a proposed or deferred chore of a
+  bolt that is dropped retires with the bolt, a tail entry, as every
+  unit of a dropped bolt does (`unit.yaml` proposed, deferred → retired
+  on parent dropped; 74). **Decision** (2026-09-15). Built 2026-09-15:
+  every work order gives the exact offer command under how to report
+  (67); `--about` is written on the entry and read by nothing. Not
+  built: the revision on the entry and the unit, the pin and its
+  removal, the document in the chore's order (a built order says only
+  to do what the document says and names none), and the retirement.
 
 - **62 "the record never holds the text".** The record holds the
   document's path in the change directory and the offer entry's id.
