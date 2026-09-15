@@ -30,10 +30,11 @@ When the user asks you to start coding, work through the active change's open ta
 
 - A task that waits on a decision the design doesn't make, such as a clause the requirements don't have, goes to fable first. Pick it up once fable has recorded the answer.
 - The coder and explorer both commit to flywheel-next's main checkout, so only one of them works at a time: don't send the coder a task while a report is being recorded, and hold a report for explorer while the coder is on a task.
-- Send `herdr agent prompt coder "Do group <n> in <change>, committing after each task. Build anything on the page to the mockup."` and wait in the background as with fable. Clear the coder (and give its name back) between groups.
-- When the coder settles, look for its commits on main in flywheel-next. Tell the user in a few plain sentences what landed, then send the next group.
-- If the coder stops and says it is stuck, send fable the task number and the coder's message verbatim, then send fable's answer to the coder verbatim. If the answer changes the design, fable records it first.
-- Stop and tell the user when the open tasks run out, or when something needs the user's decision.
+- Send `herdr agent prompt coder "Do group <n> in <change>, committing after each task. Build anything on the page to the mockup."` and wait in the background as with fable. If the wait ends while `herdr agent get coder` still shows it working, wait again. Clear the coder (and give its name back) between groups.
+- When the coder settles, look for its commits on main in flywheel-next. Tell the user in a few plain sentences what landed, then send the next group without waiting for a reply.
+- If the coder stops and says it is stuck, or is blocked on a question or permission prompt (read it, then close it with `herdr agent send-keys coder esc`), send fable the task number and the coder's message verbatim, then send fable's answer to the coder verbatim. If the answer changes the design, fable records it first.
+- A task only the user can do or decide, such as running the loop on real work for a week, waits for the user: pass the question on and go on to the next group.
+- Stop and tell the user when no open task is left that the coder can do without them.
 
 ## When the user asks where things stand
 
