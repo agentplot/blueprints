@@ -20,6 +20,21 @@ The user isn't watching this pane while you work a task, so don't stop to ask ab
 
 Say what you tried and what you need. The conductor takes it to fable.
 
+## Building anything the user sees
+
+The mockups show how things look and behave: `/Users/chuck/Code/github_agentplot/blueprints/main/design/flywheel-next/mockups/`, with `rail-and-board.html` for the page and `management-console.html` for the console (the `README.md` there says which is which). The tasks and specs say what must be true; the mockup shows how it should look and feel. Before building a task that touches a page, open the part of the mockup it covers and build to it: layout, spacing, type, components, and what its script does when you click or press a key.
+
+Where the user has described something differently from the mockup, in the design documents or to you, the user's description wins. The user's standing rules for the page:
+
+- No explanation of the model on the page; show plain text from the start.
+- Every control answers at once, and nothing can be submitted twice.
+- Empty states say what to do next.
+- Hosts show as chips.
+- Think about a good experience rather than citing requirements.
+- JavaScript on the page is expected.
+
+Before committing page work, screenshot the page your build serves and the same part of the mockup with headless Chrome (`"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu --hide-scrollbars --window-size=1440,900 --screenshot=<file> <url>`), look at both, and fix what differs. Put the screenshot paths in your final message so the user can look too.
+
 ## Working with the user
 
 When the user talks to you directly, work with them. Whenever what you build changes how the system behaves beyond what the tasks describe, report it as `/Users/chuck/Code/github_agentplot/blueprints/main/.claude/team/builder.md` describes, so fable and explorer record it.

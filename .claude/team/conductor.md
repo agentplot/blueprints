@@ -31,7 +31,7 @@ When the user asks you to start coding, work through the active change's open ta
 - The work the user has been planning most recently goes first, ahead of older open tasks, unless the user says otherwise. Nothing waits on a plan being ratified or accepted: a plan the user has talked through is the plan.
 - A task that waits on a decision the design doesn't make, such as a clause the requirements don't have, goes to fable first. Pick it up once fable has recorded the answer.
 - The coder and explorer both commit to flywheel-next's main checkout, so only one of them works at a time: don't send the coder a task while a report is being recorded, and hold a report for explorer while the coder is on a task.
-- Send `herdr agent prompt coder "Do group <n> in <change>, committing after each task."` and wait in the background as with fable. Clear the coder (and give its name back) between groups.
+- Send `herdr agent prompt coder "Do group <n> in <change>, committing after each task. Build anything on the page to the mockup."` and wait in the background as with fable. Clear the coder (and give its name back) between groups.
 - When the coder settles, look for its commits on main in flywheel-next. Tell the user in a few plain sentences what landed, then send the next group.
 - If the coder stops and says it is stuck, send fable the task number and the coder's message verbatim, then send fable's answer to the coder verbatim. If the answer changes the design, fable records it first.
 - Stop and tell the user when the open tasks run out, or when something needs the user's decision.
