@@ -117,7 +117,9 @@ were settled, not their place on the page.
   Construction: the transition, one proposal per repository in steady
   state. Operation is marked observed and is read-only (181).
 - **S13.** Inception shows: the curation counter (unmoved signals, by
-  source, oldest) with curation's session chip; explorations the
+  source, oldest) with curation's session chip, the counter opening
+  the signals tray (S225); every capture not yet moved as a quote with
+  its controls (S224); explorations the
   operator opened (189) as rows; every open or proposed intent as a
   thread with its elaborations as beads; a closed intent greyed with
   its countdown (186). Capture and explore are palette commands (S30,
@@ -288,7 +290,7 @@ were settled, not their place on the page.
 | external system | a dashed card | what it is; who meets it; that a claim on the contract is in scope for every repository that meets it | nothing to answer |
 | artifact | "the artifacts behind it", "change", "evidence", a work-item chip, the acceptance link | one view per artifact kind (S99) under a source bar (S100) | open source · review; the pending decision's answers when one is pending on the artifact |
 | work item | a chip on a ledger or in a dock | its unit's job as a quote; its stage, type, host, place and branch; its commits in Conventional Commits form, the deliverables it recorded, its session's report, its session chip | nothing to answer; reply when the item is blocked (S49) |
-| capture | its line on the board, its signal's decision | the words as a quote, from its beginning (S215); "from the console · by <member> · when" (S223); what became of it — built, with the unit linked; an intent, linked; dropped — or that it waits on the operator | its signal's answers while it waits (19a) |
+| capture | its line on the board, its row in the signals tray | the words as a quote, from its beginning (S215); "from the console · by <member> · when" (S223); the line saying who acts next and when (S224); what became of it — built, with the unit linked; an intent, linked; attached, with the intent linked; dropped | build now · make an intent · attach to… · drop while its signal is unmoved (19a, S224); nothing to answer |
 | any other object | a link anywhere | what it cites, in the signals' own words; what it holds, each with its sentence; what it is part of | nothing to answer |
 
 - **S29.** Requirements served: 17, 47, 68, 141, 144, 146, 172, 184,
@@ -1114,18 +1116,27 @@ page shows after.
   exploration's footer → `finish(elaboration)`; the row shows "done ·
   leaves in 7d"; SINCE gains "finished · explore …".
 
-### 2.5 Capture with the intent toggle
+### 2.5 Capture and what becomes of it
 
 - **S44.** 1. ⌘K opens the palette; text in its field; the preview
   line under it reads "will send: capture". 2. Enter → `capture(text,
   page)`. 3. The capture appears in the Inception lane as a quote with
-  its `unit` control; the log gains the line; the palette closes.
-  4. `unit` on the quote, a name typed → `propose-unit(bolt, capture)`:
-  a bolt of that name on the tracked repository with the unit in
-  approved on it, note "proposed by you from the capture" (34, 12).
-  Without step 4, step 3 is instead
-  the curation counter moving by one and a toast "capture · 1 signal ·
-  curation sees it".
+  its controls — build now · make an intent · attach to… · drop — and
+  under it "curation reads it next · 4 waiting · runs at 12, or when
+  you run it"; the curation counter moves by one; SINCE gains
+  "captured · <first words>"; the rail gains nothing; the log gains
+  the line; the palette closes (19a, S224). 4. build now on the quote
+  → `propose-unit(bolt, capture)`: a bolt named from the capture's
+  first words on the tracked repository with the unit in approved on
+  it, note "proposed by you from the capture" (34, 12, S217). Or make
+  an intent → `open-intent(capture)`: an open intent named from the
+  capture's first words appears as a thread in Inception with the
+  signal attached, and its first elaboration is proposed on the rail
+  from it (19a, 21). Or attach to… → the open intents by subject; a
+  pick → `attach-signal(signal, intent)`: the signal lands on that
+  thread and the intent proposes from it. Or drop →
+  `drop-signal(signal)`. Without step 4 the quote waits for curation,
+  which the tray's run now brings to it at once (S225).
 
 ### 2.6 Landing a bolt and watching it leave
 
@@ -1890,7 +1901,9 @@ whatever else it does.
   the page. On a phone the same box is the palette (19, S58).
 - **S212.** Every decision the operator can make is a card on the rail,
   numbered, walked with j and k, answered with one tap or one key. A
-  capture is one the moment it lands (19a). The board carries no
+  capture is never one: it lands acknowledged, its controls on the
+  object and a line under it saying who reads it next (19a, S224).
+  The board carries no
   control the rail does not; the board is for reading, the rail for
   answering (15, 311, S57).
 - **S213.** Escape closes the topmost thing, in order: the capture box,
@@ -1967,6 +1980,63 @@ whatever else it does.
 - **S223.** Ruled 2026-09-14: a capture typed on the page is *from the
   console*. The console is this page as one source among the dispatch
   agent and the chat sinks; the page's own title stays Flywheel.
+- **S224.** Ruled 2026-09-14: a capture is a note, never homework. It
+  lands in Inception as a quote with one line under it saying who acts
+  next and when, in the operator's words ("curation reads it next · 4
+  waiting · runs at 12, or when you run it"), read from the curation
+  record's count, threshold and cadence. The quote, its drawer and its
+  row in the signals tray carry the same four controls, each a verb
+  (`build now`, `make an intent`, `attach to…`, `drop`), and no
+  decision: nothing about a capture is on the rail, walked with j and
+  k, or numbered (19a, S212). `make an intent` opens the intent at
+  once, named from the capture's first words, with the signal attached
+  and its first elaboration proposed from it; the operator's own
+  intent is never put back to them for a yes (12). `attach to…` lists
+  the open intents by subject and a pick is the whole gesture. SINCE
+  gains "captured · <first words>" when a capture lands (S9). Nothing
+  a capture typed on the page says is parsed: the controls are the
+  only way it becomes anything (19).
+- **S225.** Ruled 2026-09-14: the curation counter in Inception is a
+  control that opens the signals tray in the dock: every unmoved
+  signal, grouped by capture and ordered by source and age (the note
+  typed a minute ago, the seventeen from Monday's transcript, the two
+  from the folder), each row a quote with the capture's four controls
+  (S224). At its head, `run curation now` with the automatic trigger
+  stated beside it ("runs on its own at 12, or weekdays at 06:00");
+  pressing it is the `curate` dictation the chat's `/curate` also
+  sends, and it charges the curator session at once (110). While the
+  session runs the tray's head shows it working with a progress bar
+  and curation's session chip, the count falls as moves are written,
+  and each proposed intent and chore lands on the rail as one decision
+  (109, 116); the tray asks nothing itself. With nothing unmoved the
+  tray says so in the operator's terms (S214). On a phone the tray is
+  the same list under the counter (306).
+- **S226.** Ruled 2026-09-14: an open intent's thread shows its
+  attached signals as quotes and its elaborations as beads. Its card
+  proposes one elaboration at a time with the type named beside the
+  question ("research · self-closing") and only the answers that
+  apply: yes, drop and type; pick and the per-intent drop appear only
+  when the elaboration covers more than one intent (188). A proposal
+  that names no type reads self-closing (27), and one naming a type
+  the instance lacks asks for a type before its yes is taken (85a,
+  S6). A yes starts the session in the intent's place; the bead shows
+  it working, then done; the close is offered when every bead is done
+  (22).
+- **S227.** Ruled 2026-09-14: the instance's first real material is
+  the willdan signals — captures read from meeting transcripts with
+  their signals already written — imported by the signals-folder
+  adapter, so the tray fills with real quotes from real meetings and
+  curation is measured over them (114, 215). The second source is a
+  folder drop holding one raw transcript, which shows triage: the
+  capture appears with no signals and a reader's session chip, and its
+  signals appear when the reader delivers (217e). A faked third source
+  is a scripted webhook posting synthetic monitor findings to the
+  capture tool with its own source name, so the tray shows three
+  sources and curation has something to drop. The demo of the round:
+  import, drop one transcript, post the findings, type one note, open
+  the tray, run curation, watch the proposals land, open the one about
+  the flywheel as an intent, approve its first elaboration, read what
+  the session wrote.
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open

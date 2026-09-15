@@ -79,7 +79,7 @@ launcher:
     the source event's key, so twice is once (111).
   tick: "every 60s, and on every notify (130); the tick reads, evaluates every guard, runs the effects whose proofs are absent, and heartbeats"
   several_on_one_computer: "several hosts run on one computer as separate processes, `flywheel host --name <id>` each, told apart by id alone (232): each has its own root (disk: above), its own multiplexer sessions (`flywheel-<instance>-<host>-<role>` when the manifest marks the computer shared, sessions.yaml), its own port range (router: port_range), its own heartbeat branch or record and its own leases; they share nothing but the git host. The launcher holds one entry per host id"
-  adapters: "the sources the host declares in `flywheel.yaml` hosts.<host>.sources — chat-forward, meeting, webhook, pull-request, issue-tracker, folder, page-capture (215, blueprints.yaml adapters:) — each with a cadence or a watch; host.adapters_due reads them and run_adapters runs the due ones"
+  adapters: "the sources the host declares in `flywheel.yaml` hosts.<host>.sources — chat-forward, meeting, webhook, pull-request, issue-tracker, folder, signals, page-capture (215, blueprints.yaml adapters:) — each with a cadence or a watch; host.adapters_due reads them and run_adapters runs the due ones"
 environment:
   doc: |
     Every tracked repository declares the environment its sessions need

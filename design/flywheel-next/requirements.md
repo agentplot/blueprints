@@ -311,14 +311,23 @@ model.
     and no model reads what is typed there: the page shows what is and
     offers what may be done, and it answers no question (194a, 216a).
 
-19a. A signal with no move is a decision of the operator's, on the rail
-    with a number like any other, the moment it is recorded: build,
-    intent or drop. Build makes a chore unit on a bolt named from the
-    capture's own words and approves it in the same response; the
-    operator types no name. Intent proposes an intent citing the signal,
-    which stands as its own decision. Drop moves it dropped. Curation's
-    batch judgment stands beside this for what arrives in volume; a
-    move either way is the signal's one move (107, 116, 311).
+19a. A signal with no move is never a decision of the operator's; a
+    capture is a note, and nothing on the rail asks the operator to
+    classify what they wrote. The capture carries the operator's hand
+    as controls on the object, never on the rail: build now
+    (`propose-unit`, 34), make an intent (`open-intent`: the intent
+    opens at once, the gesture being its approval, with the signal
+    attached, so the intent proposes its first elaboration from it),
+    attach to an open intent the operator picks (`attach-signal`), and
+    drop (`drop-signal`). Each is a dictation of 193's catalogue that
+    writes the record curation would have written (110) and is the
+    signal's one move (107, 116); build names the bolt from the
+    capture's own words and the operator types no name. Under the
+    capture one line says who acts next and when, read from the
+    curation record: how many signals wait, the threshold and cadence
+    that charge curation, and that the operator may run it now (110,
+    118). What the operator leaves alone, curation judges; a move
+    either way is the signal's one move (311).
 
 The catalogue of decisions, the reply grammar and the counting rules are
 mocked in `design/flywheel-next/rail-mockup.md`: one rendering of these
@@ -333,7 +342,10 @@ requirements, iterated against the running rail rather than on paper.
     be a person, an agent, or both, and it may run outside the
     instance; the flywheel must accept its output.
 21. An intent carries at most one elaboration awaiting approval at a
-    time. New material for the intent joins that proposal.
+    time. New material for the intent joins that proposal. This bounds
+    the proposal queue and nothing else: an intent is large and
+    long-lived, has many elaborations over its life, and several
+    approved ones may run at once (24).
 22. An intent's close is proposed when all its elaborations are done,
     and only the operator closes it.
 23. The output of design is the design book: the durable statement of
@@ -365,7 +377,10 @@ requirements, iterated against the running rail rather than on paper.
     idle, because its work items are closed, or because a restart
     forgot it.
 27. The type of an elaboration is chosen when it is proposed and can be
-    corrected by the operator's response.
+    corrected by the operator's response. A proposal that names no type
+    is proposed as self-closing (25); a proposal naming a type the
+    instance does not define is 85a's case. The proposal shows its type
+    and offers only the answers that apply to it.
 
 <!-- ANCHOR_END: a04 -->
 ### A.5 Planning and construction
@@ -815,9 +830,13 @@ requirements, iterated against the running rail rather than on paper.
     weight: how many, from which sources, over what span. The operator
     sees one decision per proposed intent, never a decision per signal.
 110. Curation is a session with a bounded job and the fixed exits of
-    A.7, charged on a cadence or when unmoved signals exceed a
-    threshold. It never opens an intent. A person writing the same
-    records by hand is also curation.
+    A.7, charged on a cadence, when unmoved signals exceed a
+    threshold, or at once by the operator's dictation to run it now
+    (`curate`, 12, 193), which is one dictation whether given by a
+    control on the page or a command in the chat. It never opens an
+    intent. A person writing the same records by hand is also
+    curation, and the operator's controls on a capture are that hand
+    (19a).
 111. A capture is the unit of provenance: one per source event, holding
     the source, the time, who captured it, and a pointer to the raw
     material. Raw transcripts and logs stay outside version control; the
@@ -834,7 +853,10 @@ requirements, iterated against the running rail rather than on paper.
     is immutable once written.
 114. The signal and move record formats are versioned and stable. Any
     tool that writes them is an adapter; captures made before the
-    instance existed are read without conversion.
+    instance existed are read without conversion: a directory of
+    captures whose signals are already written in the record format
+    is read as captures already read, each keeping its own source and
+    event date, and no reader is charged for them (215, 217e).
 115. An adapter splits arithmetic from judgment. Enumerating source
     events and writing captures runs unattended. Turning a capture into
     signals is a session's judgment and never runs unattended.
@@ -850,11 +872,17 @@ requirements, iterated against the running rail rather than on paper.
     records the drop. They are not clustered again unless new signals
     join them.
 118. Weight counts by event date, never by import date. The status view
-    shows the count and age of unmoved signals by source, and an unmoved
-    signal is never discarded.
+    shows the count and age of unmoved signals by source, and lists
+    every unmoved signal by source and age, grouped by capture, each
+    carrying the operator's controls (19a), with the dictation to run
+    curation now beside the trigger that would otherwise charge it
+    (110); while curation runs the listing shows it working, and the
+    count falls as moves are written. An unmoved signal is never
+    discarded.
 215. The flywheel ships these adapters: a chat forward, a meeting
     transcript, a log or monitor webhook, a pull-request conversation,
-    an issue tracker, a folder drop, and the page's capture box (19).
+    an issue tracker, a folder drop, a signals folder of captures
+    already read (114), and the page's capture box (19).
     There is one kind of adapter: an enumerator that writes one keyed
     capture per source event with a pointer to the raw material (111),
     running on whichever host declares the source, by that host's tick
@@ -2654,7 +2682,8 @@ through these operations, and depends only on these guarantees.
     state the engine reads, and is readable with no machinery running
     anywhere.
 193. Every operation the operator may invoke — capture, propose a unit,
-    answer a decision, drop, later, hold, rename, start or stop a
+    open an intent from a capture, attach or drop a signal, run
+    curation, answer a decision, drop, later, hold, rename, start or stop a
     service, finish a session, explore over intents, and every other
     transition 4 grants — is exposed by the state store as a tool
     with a schema naming its arguments by object id. The page's

@@ -880,6 +880,7 @@ controls, the chat, the dispatch agent and the machinery's own
 commands all call the same tools; no caller has an operation the
 others lack (193). The catalogue is in `profiles/surfaces.yaml`:
 `answer` (a decision by number), `capture`, `propose-unit`,
+`open-intent`, `attach-signal`, `drop-signal`, `curate`,
 `propose-chore`, `ask`, `explore`, `open-session`, and
 the undo-or-defer verbs of 4 — `drop`, `later`, `hold`, `release`,
 `rename`, `finish`, `end`, `close`, `send-back`, `retire`, `takeover`,
@@ -889,7 +890,12 @@ decision (12): `propose-unit` writes a unit in `approved` on the
 bolt with the response as its `approval` that can be pointed to (I1),
 making the bolt first when the name it gives is no bolt yet (34); the
 unit's type defaults to `chore` and the capture it came from is its
-`document`; `propose-chore` a chore unit
+`document`; `open-intent` an intent in `open` at once, named from the
+capture's first words with its signal attached, since the operator's
+own intent is never put back to them for a yes (19a); `attach-signal`
+the signal's attach move to an open intent the operator picked;
+`drop-signal` its drop move; `curate` the curation machine's run now
+(110); `propose-chore` a chore unit
 in `approved`; `revive` clears a signal's move; `ask` is an `asks/`
 record for planning; `open-session` the operator's own session (69);
 `explore` an elaboration in `approved` covering the selected intents
@@ -1402,9 +1408,15 @@ message, whose one signal `ensure_signal` writes with no judgment
 (S21, 115).
 
 Curation is one machine per flywheel. It runs a `curator` session
-when the unmoved count crosses the manifest's threshold or the cadence
-fires; the work order lists the unmoved signals, the standing claims, and
-the open intents. The session delivers one move per signal (attach,
+when the unmoved count crosses the manifest's threshold, when the
+cadence fires, or at once on the operator's `curate` dictation, which
+the signals tray's run-now control and the chat's `/curate` both send
+(110); the work order lists the unmoved signals, the standing claims, and
+the open intents. The status view lists the unmoved signals by source
+and age with the operator's controls on each and shows the session
+working while it runs (118, 19a). The session runs on the pane runner
+like a chore for now; the in-process runner is the cheaper seat once
+a model key is placed (217b, 217m). The session delivers one move per signal (attach,
 challenge, join, answered, route, drop, each with a reason) and one
 proposed intent per join cluster, with its proposed elaborations and
 typed by the material. The curation session is a session like any

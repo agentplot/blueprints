@@ -1,6 +1,8 @@
 # A capture on the console
 
-Drafted 2026-09-14. What happens to a sentence typed on the page, said
+Drafted and adopted 2026-09-14; the requirements (19a, 21, 27, 110, 114,
+118, 193, 215), the rulings S224–S227 and the signal, curation, intent
+and capture machines carry it. What happens to a sentence typed on the page, said
 so a person new to the flywheel can predict it; how the signals that
 pile up are seen and curated; and the order the binary is built in to
 make it true on a real instance with real signals. This revisits

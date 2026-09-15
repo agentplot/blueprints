@@ -33,7 +33,7 @@ regions:
     initial: proposed
     states:
       proposed:
-        doc: a decision of its own when the intent is open; folded into the intent's decision when the intent is itself proposed; a gathering shows every intent it covers, and the operator may pick which stay or answer per intent (188); an elaboration whose type the instance does not know stays here, its decision naming the type it lacks and asking the operator to set one with `type <name>` (85a)
+        doc: a decision of its own when the intent is open; folded into the intent's decision when the intent is itself proposed; the card names the type and offers only the answers that apply — pick and the per-intent drop only when covers names more than one intent (27, 188, S226); a gathering shows every intent it covers, and the operator may pick which stay or answer per intent (188); a proposal naming no type is self-closing (27); an elaboration whose type the instance does not know stays here, its decision naming the type it lacks and asking the operator to set one with `type <name>` (85a)
         decision: {kind: elaboration-proposed, group: approve, document: document, answers: ["yes", drop, "type <name>", "pick <intents>", "<intent>: drop"], shows: [elaboration.type, elaboration.type_defined, sources, covers], satisfies: [10, 27, 58, 85, 188]}
         transitions:
           - when: {ev: elaboration.shown_with_parent, is: true}
