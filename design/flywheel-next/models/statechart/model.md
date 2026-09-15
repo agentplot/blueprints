@@ -599,7 +599,7 @@ shared, two are the profiles.
 | file | binds | same in every profile? |
 |---|---|---|
 | `profiles/host.yaml` | the world the machinery acts on: git, worktrunk `wt` (worktrees and tethered processes), portless, OpenSpec on both sides, the manifest's declarations, the repositories' service declarations. Its line-and-place half is swappable: a build with no construction may bind those effects to a recorded stand-in that writes each proof's evidence and touches no repository (93a, `workspace: recorded`) | yes |
-| `profiles/sessions.yaml` | the session binding: herdr panes, Claude Code, and the `flywheel exit\|offer\|note\|refuse` command sessions report through (67) | yes |
+| `profiles/sessions.yaml` | the session binding: herdr panes, Claude Code, and the `flywheel exit\|offer\|note\|refuse\|service\|ask` command sessions report and act through (67) | yes |
 | `profiles/sessions-stand-in.yaml` | the same names bound to a scripted player, swapped in by `flywheel scenario run` (93); never loaded by a host | test only |
 | `profiles/sessions.yaml` `runners.operator` | the same names with no agent at all: the machinery prepares the place and records the session, the rail shows it as the operator's to run, and the operator reports through the session command (93b) | yes, host-selected |
 | `profiles/blueprints.yaml` | the blueprints repository as a store: ledger, captures, signals, moves, curation and planning inputs | yes |
@@ -660,7 +660,8 @@ what 92 and 93 ask for together.
   evidence; push with expected-old; rejection → fetch, rebase, retry
   (no content conflict while the lease holds), three rejections →
   report and re-read. A session's `flywheel exit|offer|note|refuse`
-  appends to its own thread by the same path.
+  appends to its own thread by the same path, and its `flywheel
+  service` and `flywheel ask` write their records by it too.
 - **Lease** = the push is the compare-and-swap on the lease branch.
   Loser fetches and reads again (I15). A sink's presenter lease is
   `lease/sink/<name>`; a sink the manifest pins is taken only by the
@@ -1460,10 +1461,14 @@ proposed intent per join cluster, with its proposed elaborations and
 typed by the material. The curation session is a session like any
 other (58–60): for a signal that argues with no claim it may offer a
 chore through `flywheel offer`, which `record_offers` makes the
-proposed chore unit on the shared line, or an ask through the `ask`
-tool naming the repository and the words, which writes the ask record
-as any dictation does (28, 5.7); the signal's move is `route`, naming
-that offer (116). Where one run proposes elaborations of one type on
+proposed chore unit on the shared line, or an ask by running
+`flywheel ask <repository> <words>` in its place — the `ask` tool
+called with the session's identity, as `flywheel service` is the
+`start` tool (67, 197; sessions.yaml `commands.ask`) — which writes
+the ask record as any dictation does, `by` the session, and prints the
+ask's id (28, 5.7); the signal's move is `route`, naming that offer
+(116). No other path from a session to the ask exists: the exit
+delivers moves and intent proposals, never asks. Where one run proposes elaborations of one type on
 several intents it may deliver them gathered, and `applying` writes
 one proposed elaboration on the first intent named, its `covers`
 naming all of them (`gather_elaborations`, 188); the other covered
@@ -1540,7 +1545,11 @@ question or a note; `flywheel offer finding|chore|signal <document>
 --about <object>`; `flywheel note <text>`; and `flywheel refuse`, run by
 the hooks. Each appends one entry to the session's thread through the
 state store and does nothing else; the machinery decides what the
-entry means (66). The exit entry is validated against the schema in
+entry means (66). The same command carries the two catalogue tools a
+session is granted, each writing the record the operator's dictation
+writes, `by` the session: `flywheel service start|stop <name>` (48)
+and `flywheel ask <repository> <words>`, the curation session's ask
+(116, section 9). The exit entry is validated against the schema in
 force; one that fails it is `invalid` and read as `stalled` with the
 raw text recorded, so the set of exits the machinery can see is closed
 by construction (65). A session is told, in its work order, that its
@@ -2058,12 +2067,12 @@ The boundary falls out of the model's three kinds of thing: the engine
 | `flywheel-atoms` | the `Evidence` and `Effect` name registries generated from `atoms.yaml` at build time; the `StateStore` trait (`list`, `read`, `write_effect`, `lease`, `present`, `receive`, `notify`, `status`); the `World` trait (one method per host effect); the `Sessions` trait (one method per session effect, one per session evidence); the scenario file types | `flywheel-engine` |
 | `flywheel-domain` | the machine files embedded with `include_dir`, the type catalogue loader (from the blueprints), the work order renderer, the OpenSpec specification parser and the requirement hash, the recutils reader and writer, the fingerprint | `flywheel-atoms` |
 | `flywheel-world-host` | `World` over worktrunk (`wt`), portless, `git` and `gix`, OpenSpec; `profiles/host.yaml` is its specification | `flywheel-atoms` |
-| `flywheel-sessions` | `Sessions` over herdr (`herdr agent`) and Claude Code, plus the `flywheel exit\|offer\|note\|refuse` subcommands that write through `StateStore::append`; `profiles/sessions.yaml` | `flywheel-atoms` |
+| `flywheel-sessions` | `Sessions` over herdr (`herdr agent`) and Claude Code, plus the `flywheel exit\|offer\|note\|refuse` subcommands that write through `StateStore::append` and the `flywheel service\|ask` subcommands that call the catalogue as the session; `profiles/sessions.yaml` | `flywheel-atoms` |
 | `flywheel-store-git` | `StateStore` over the state repository (`gix`, `git push --force-with-lease`); `profiles/git-only.yaml` | `flywheel-atoms` |
 | `flywheel-store-tracker` | `StateStore` over GitHub (`octocrab`); `profiles/tracker.yaml` | `flywheel-atoms` |
 | `flywheel-surface` | the sinks: the Discord bot (`serenity`), the pages (`axum`), the bell (`herdr`), the reply grammar, the review-surface launchers (plannotator, lavish); the page bundle and the tool server that answers a **request** under the caller's token — the binary's own catalogue of tools, over HTTP for the page and in the shape of the model context protocol for sessions, the interpreter and a member's own client (193, 291, 293); `profiles/surfaces.yaml`; profile-neutral because it writes responses through `StateStore::receive` | `flywheel-atoms` |
 | `flywheel-scenario` | the scripted `Sessions` stand-in (`profiles/sessions-stand-in.yaml`), the recorded `World` (93a), the conformance runner that stands a bare repository up for the no-live-service run (92), the trace renderer; the store under it is `flywheel-store-git` like any other run | `flywheel-engine`, `flywheel-atoms`, `flywheel-domain`, `flywheel-store-git` |
-| `flywheel` | the binary: `host` (the standing loop), `tick` and `request` (the two modes of the invocation contract, one instance per invocation, 297), `dispatch`, `scenario`, `capture`, `render-order`, `review`, `exit`, `offer`, `note`, `refuse` | all |
+| `flywheel` | the binary: `host` (the standing loop), `tick` and `request` (the two modes of the invocation contract, one instance per invocation, 297), `dispatch`, `scenario`, `capture`, `render-order`, `review`, `exit`, `offer`, `note`, `refuse`, `service`, `ask` | all |
 
 Nothing in a machine file, a scenario or a profile binding names Rust:
 the same files would drive any engine that implements `schema.json`.

@@ -594,6 +594,11 @@ requirements, iterated against the running rail rather than on paper.
 67. A session reports its exit through a command the machinery
     provides, which writes to the state store. Nothing a session leaves
     on the place's disk is state; what it leaves there is its work.
+    The same command is the session's way to every tool of 193 it is
+    granted (197): a curation session files an ask through it (116) as
+    a session starts a service through it (48), carrying the session's
+    identity, and the record written is the one the operator's own
+    dictation writes, given by the session.
 68. The operator need never open a pane. Everything a session asks of
     the operator is answerable on the page or in chat, and everything a
     session shows the operator is reachable from the page. The pane

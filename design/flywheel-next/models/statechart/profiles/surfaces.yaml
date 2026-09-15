@@ -21,7 +21,7 @@ tools:
     tool with a schema naming its arguments by object id, served by the
     state store (the `flywheel` binary's MCP server and its HTTP twin the
     page calls). The page's controls, the Discord bot, the dispatch agent and
-    the machinery's own commands (`flywheel exit|offer|service`) call these
+    the machinery's own commands (`flywheel exit|offer|service|ask`) call these
     and nothing else; no caller has an operation the others lack. Each call
     is recorded once as an op-response with `tool` and `proposed_by` (153).
   catalogue:
@@ -33,7 +33,7 @@ tools:
     drop-signal:   {args: [signal], doc: "the signal's move is drop, the call as its reason (19a, 116); `revive` clears it (107). The capture's `drop` control"}
     curate:        {args: [], doc: "run curation now: the curation machine's idle takes it to running and the curator session is charged at once, with the automatic trigger untouched; the signals tray's control and the chat's `/curate` are this one tool (110, 12)"}
     propose-chore: {args: [repository, text], doc: "a chore unit in approved on the repository's shared line (60)"}
-    ask:           {args: [repository, text], doc: "an ask record for planning (28), by the operator or by curation routing a signal that argues with no claim (116); a dictation and not a document, so the record holds its words"}
+    ask:           {args: [repository, text], doc: "an ask record for planning (28), by the operator or by curation routing a signal that argues with no claim (116); a dictation and not a document, so the record holds its words. A curation session reaches it as `flywheel ask <repository> <text>` run in its place, the session's command carrying its identity, the one path a session has to any tool (67, 197; sessions.yaml commands.ask)"}
     explore:       {args: [intents, type], doc: "an elaboration in approved covering the selected intents; the type is any elaboration type the registry holds — with-operator, standing, or a shipped or added type named as a subcommand of the palette's `/elaborate`, `fundamentals` among them (189, 190, 318)"}
     claim-needed:  {args: [unit, answer, intent], doc: "the review view's one answer for a unit that landed citing no claim (317, 34a): `captured` with an intent, open or proposed, attaches the unit's change there as material and the claim is written by the normal path; `declined` stores that nothing there was worth one. Either answer is stored once against the unit, as a not-applicable verdict is stored once against a claim (101), and the unit is never listed again; the unit is not reopened and nothing waits on the answer. Under `fw.capture.write`; calls `record_claim_answer`"}
     open-session:  {args: [repository, text], doc: "the operator's own session (69)"}
