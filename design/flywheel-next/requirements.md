@@ -570,9 +570,19 @@ requirements, iterated against the running rail rather than on paper.
     written where that change's other artifacts live, at the moment the
     session judged them, and archived with the change. The machinery
     keeps one record in state for each, pointing at the document: a
-    chore becomes a proposed chore unit, a finding on the session's own
-    thread a proposal on that thread, anything else a signal. The
-    document is never state and the record never holds the text.
+    chore becomes a proposed chore unit, of the bolt it was raised
+    under or else of the repository whose shared line it belongs on
+    (60); a finding on the session's own thread a proposal on that
+    thread; anything else a signal. Every offer is recorded on the pass
+    that finds it, so no offer holds a session from its exit. A signal
+    made of an offer belongs to the capture the session was reading
+    when there is one; otherwise the offer is a capture of its own —
+    the session's offer the source event, the session the capturer,
+    the document the material it cites (111) — with that one signal,
+    which asks, asserted by the session, asserting where the document
+    is, with no excerpt, until curation or the operator moves it (19a,
+    113). The document is never state and the record never holds the
+    text.
 63. Chores raised while a bolt is being built are collected at the bolt
     and done by one session, on the bolt's own line of work, before the
     bolt lands. No process coordinates them; the bolt's own state is

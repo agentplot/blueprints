@@ -2128,6 +2128,20 @@ whatever else it does.
   `tools/call` through the client — the same tool on the same object the
   page's form would post — checked, recorded once and idempotent as any
   call (321, 323, 137).
+- **S231.** Ruled 2026-09-15: a finding a session offers with no intent
+  or bolt above it — a curation session's, a capture reader's — is a
+  signal like any other on the page (58, 62). Under the capture the
+  session was reading it is one more row of that capture in the signals
+  tray; otherwise the offer is a capture of its own, from that session,
+  dated when the offer was made, with one row. The row's quote is the
+  document's path, since the record never holds the text (62), its
+  source reads "offer" and its line names the session that offered it.
+  It carries the capture's four controls and no decision (S224, 19a),
+  and a `build now` on it names its chore from the path's words as it
+  would from a note's. A chore offered off every bolt is not a signal:
+  it lands on the rail as a proposed chore of the repository's shared
+  line, one decision folded with that repository's other proposed
+  shared-line chores, answered yes or drop like a bolt's (60, 62, S225).
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open

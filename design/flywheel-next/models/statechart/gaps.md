@@ -112,6 +112,24 @@ the operator may reverse by a response on the file; an entry with
   elaboration. **Decision**: unit on the construction side,
   elaboration on the design side.
 
+- **62 an offer nothing stands above.** A finding offered under
+  neither an intent nor a bolt is a signal (58), and a signal needs a
+  capture (113, `signal.yaml` parent). Under the capture the session
+  was reading it is that capture's next signal; otherwise the offer is
+  a capture of its own, source `offer`, keyed
+  `offer/<session>/<entry>`, captured by the session at the offer's
+  moment, `raw` the document's path, written with its one signal into
+  `flywheel/signals/` by `record_offers`. The signal is of kind `ask`
+  with the path as its assertion and no excerpt, as `ensure_signal`
+  writes for material nothing has judged. **Decision** (2026-09-15).
+  A chore offered off every bolt is not a signal but a proposed chore
+  unit under the repository whose shared line it belongs on (60, 116);
+  `unit.yaml` gives a unit a repository as a third parent for that
+  case, and a build that made such a chore a signal is to be corrected
+  to the unit. **Decision** (2026-09-15). `flywheel offer signal`,
+  listed in 10.2 and 56, is not built; a session's own signal reaches
+  the record only as a finding nothing stands above. **Open**.
+
 - **62 "the record never holds the text".** The record holds the
   document's path in the change directory and the offer entry's id.
   When the change is archived the path moves under `archive/`; the
@@ -304,7 +322,8 @@ the operator may reverse by a response on the file; an entry with
 - **116 the route move.** Curation is a session (58–60), so for a
   signal that argues with no claim it offers a chore or an ask through
   the command like any session; `record_offers` on the curation
-  session's exit makes the proposed chore unit on the shared line or
+  session's exit makes the proposed chore unit on the shared line,
+  under the repository whose line it is (62), or
   the ask record, and `record_moves` writes `route <offer entry id>`
   on the signal. No new effect: the offer path already exists. A route
   whose chore is declined leaves the signal routed, not unmoved; the

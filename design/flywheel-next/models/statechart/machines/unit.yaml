@@ -12,7 +12,7 @@ version: 4
 kind: object
 tier: core
 object: unit
-parent: [bolt, intent]   # an intent owns only the chore units that resolve its line's take conflicts (52)
+parent: [bolt, intent, repository]   # an intent owns only the chore units that resolve its line's take conflicts (52); a repository owns only the chore units on its shared line — a chore offered off every bolt, as curation's route offers (60, 62, 116)
 owns: [work-item]
 satisfies: [4, 5, 13, 16, 17, 31, 35, 36, 37, 57, 60, 74, 172]
 record:
@@ -66,7 +66,7 @@ regions:
           - when: {response: drop}
             to: dropped
       proposed:
-        doc: a finding routed to a bolt or a chore offer, proposed on its own (58, 60); the decision names the target bolt and what a yes starts, derived from the type's stages and the item count (13, 16); the document is reviewed on its own surface and an annotation on it is the response (17); a unit whose type the instance does not know stays here, its decision naming the type it lacks and asking the operator to set one with `type <name>` (85a)
+        doc: a finding routed to a bolt or a chore offer, proposed on its own (58, 60); a chore under a repository is on its shared line and names no bolt, and such chores fold by repository as a bolt's fold by bolt (11, 60); the decision names the target bolt and what a yes starts, derived from the type's stages and the item count (13, 16); the document is reviewed on its own surface and an annotation on it is the response (17); a unit whose type the instance does not know stays here, its decision naming the type it lacks and asking the operator to set one with `type <name>` (85a)
         decision: {kind: unit-proposed, group: approve, batch: batch, document: document,
                    answers: ["yes", drop, "redo: <notes>", "bolt <name>", "new bolt <name>", "rename <name>", "type <name>", "pick <letters>", later],
                    shows: [unit.type, unit.type_defined, target, depends_on, claims, estimate], satisfies: [10, 11, 16, 17, 29, 85, 172]}

@@ -102,10 +102,22 @@ of some object, or a file the machinery reads as evidence.
   change (62). The session announces each with `flywheel offer`, which
   appends one entry to the session's thread through the state store;
   `record_offers` turns that entry into one record that points at the
-  document: a chore into a `unit` of the chore type in `proposed`, a
-  finding on the session's own thread into an `elaboration` (design
-  side) or a `fast` unit (construction side) in `proposed`, anything
-  else into a `signal`. The record never holds the text.
+  document: a chore into a `unit` of the chore type in `proposed`,
+  under the bolt it was raised in or else under the repository whose
+  shared line it belongs on (60); a finding on the session's own
+  thread into an `elaboration` (design side) or a `fast` unit
+  (construction side) in `proposed`; anything else into a `signal`.
+  That signal stands under the capture the session was reading when
+  there is one; otherwise the offer is a capture of its own, source
+  `offer`, keyed `offer/<session>/<entry>`, captured by the session at
+  the moment of the offer, `raw` the document's path, which
+  `record_offers` writes with its one signal into `flywheel/signals/`
+  as `ensure_signal` writes a page capture's (111, 113). The signal is
+  of kind `ask`, asserted by the session, its assertion the document's
+  path, its excerpt empty and its position `whole`; it is unmoved
+  until curation or the operator moves it (19a, 107). Every offer is
+  recorded on the pass that finds it, so no offer holds a session in
+  `working` (62). The record never holds the text.
 - **as-built statement** — a file in the built repository naming
   `claim@version`; evidence for `cell.evidence_present`, never state.
 - **scope, name, dependencies, type version, retry counts, blocks,
@@ -1467,7 +1479,8 @@ proposed intent per join cluster, with its proposed elaborations and
 typed by the material. The curation session is a session like any
 other (58–60): for a signal that argues with no claim it may offer a
 chore through `flywheel offer`, which `record_offers` makes the
-proposed chore unit on the shared line, or an ask by running
+proposed chore unit under the repository, on its shared line (60, 62),
+or an ask by running
 `flywheel ask <repository> <words>` in its place — the `ask` tool
 called with the session's identity, as `flywheel service` is the
 `start` tool (67, 197; sessions.yaml `commands.ask`) — which writes

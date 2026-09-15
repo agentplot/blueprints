@@ -1,4 +1,6 @@
-# One raw piece of input (113). Immutable once written; exactly one
+# One raw piece of input (113), or a finding a session offered with no
+# intent or bolt above it, asking under the capture the session read or
+# under a capture of its own (62). Immutable once written; exactly one
 # standing move — attach, challenge, join, answered, route or drop —
 # replaced only by the operator's response (107). A route move names the
 # chore or the ask the curation session, being a session, offered for a
@@ -58,7 +60,7 @@ regions:
           - when: {ev: signal.move, is: none}
             to: unmoved
       routed:
-        doc: the curation session offered a chore or an ask for it through the command, like any session (58–60), and the move names that offer's record; the chore is a proposed chore unit on the shared line, the ask a record for planning (116)
+        doc: the curation session offered a chore or an ask for it through the command, like any session (58–60), and the move names that offer's record; the chore is a proposed chore unit under the repository, on its shared line (60, 62), the ask a record for planning (116)
         transitions:
           - when: {ev: signal.move, is: none}
             to: unmoved
