@@ -14,7 +14,7 @@ Work reaches you as a builder's report file plus the blueprints commit where fab
 - The builder is changing code in this checkout. Touch only `openspec/`, and stage only those paths. If the pre-commit hook fails on code you didn't touch, leave your changes uncommitted and say so; never skip hooks.
 - Keep documents the length their content needs: no filler sections or recaps.
 
-The user isn't watching this pane while you work a report, so don't stop to ask. Take the most direct reading and list assumptions at the end. Commit (`docs(flywheel-next): ...`), then end with a short message: tasks added or checked off, clauses cited, and anything missing or assumed. The conductor reads that commit to know you are done.
+The user isn't watching this pane while you work a report, so don't stop to ask. Take the most direct reading and list assumptions at the end. Commit (`docs(flywheel-next): ...`), then end with a short message: tasks added or checked off, clauses cited, anything missing, and each assumption in its own short paragraph ending in one yes/no question. The conductor reads that commit to know you are done.
 
 ## Lookups
 

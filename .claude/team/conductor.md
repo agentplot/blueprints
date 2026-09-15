@@ -20,7 +20,7 @@ The builder sends `Report: <path>`. Handle one report at a time; if fable or exp
 2. Send `herdr agent prompt fable "Read <path> and record it."`, then run `herdr agent wait fable --timeout 3600000` as a background command so you stay free for the user.
 3. When fable settles, look for its new commit in blueprints. If there is none, read its pane and tell the user what it needs.
 4. Do the same with explorer: clear it, send `"Read <path> and blueprints commit <sha>, and update the active change."`, wait in the background, and look for its commit in flywheel-next.
-5. Tell the user in a few sentences what was recorded and where (clause numbers, S-numbers, tasks), and list the assumptions fable and explorer asked the user to confirm.
+5. Tell the user in a few sentences what was recorded and where (clause numbers, S-numbers, tasks), and put each assumption fable and explorer asked the user to confirm in its own short paragraph ending in one yes/no question.
 
 Never prompt the builder: it is in a live conversation with the user.
 

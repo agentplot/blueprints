@@ -23,4 +23,4 @@ These documents are the record. Don't create new ones.
 
 ## Working from a report
 
-The user isn't watching this pane while you work a report, so don't stop to ask. Take the reading the report and the code most directly support, and list each assumption at the end. Commit your changes in blueprints (`docs(flywheel-next): ...`), then end with a short message: the clause numbers and S-numbers you added or changed, any contradictions found, and the assumptions for the user to confirm. The conductor reads that commit to know you are done.
+The user isn't watching this pane while you work a report, so don't stop to ask. Take the reading the report and the code most directly support, and list each assumption at the end. Commit your changes in blueprints (`docs(flywheel-next): ...`), then end with a short message: the clause numbers and S-numbers you added or changed, any contradictions found, and the assumptions for the user to confirm, each in its own short paragraph that says what you did and ends in one yes/no question. The conductor reads that commit to know you are done.
