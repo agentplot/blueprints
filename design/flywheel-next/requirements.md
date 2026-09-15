@@ -246,7 +246,9 @@ model.
 5. Nothing the operator has not approved exists as work. Proposals may
    exist; work may not.
 6. Approval given once is never re-asked, and never silently
-   discarded. A given response that cannot be applied is reported.
+   discarded. A given response that cannot be applied — its decision
+   gone, or its answer one no transition of the object's state takes —
+   is reported.
 
 <!-- ANCHOR_END: a01 -->
 ### A.2 The rail

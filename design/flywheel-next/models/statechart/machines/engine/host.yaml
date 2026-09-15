@@ -79,7 +79,7 @@
 # renders are the page's own bundle versioned with the binary (A.40, 319-326,
 # 293a).
 machine: host
-version: 5
+version: 6
 kind: engine
 tier: core
 object: host
@@ -250,6 +250,9 @@ regions:
           - when: {any: [{response: takeover}, {ev: host.last_seen, older: 24h}]}
             to: released
             effects: [{do: expire_leases, note: "operator's response or the 24h bound; other hosts may now take over"}]
+          - when: {response: wait}
+            to: gone
+            note: the operator has read it and waits; the line stands until the host returns or the bound passes
       released:
         transitions:
           - when: {not: {ev: host.last_seen, older: 5m}}

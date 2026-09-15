@@ -848,7 +848,7 @@ the chat both read the register, so they show the same number (18).
 | `question` | answer | `session.alive[activity].blocked` | the text → working, delivered to the same or a fresh session | `<text>` on the page or in chat |
 | `host-gone` | attention | `host.gone` (no heartbeat 30m) | takeover → released; the host returns → alive | takeover · wait |
 | `uncovered` | attention | `lease.uncovered`: no host's declaration covers the object (149) | a declaration covers it → free; ok → acknowledged | ok |
-| `response-unapplicable` | attention | `response.unapplicable` (the decision was gone, or a dictation asserted work done) | reported once → reported | ok |
+| `response-unapplicable` | attention | `response.unapplicable` (the decision was gone, the answer one no transition of the object's active states names, or a dictation asserted work done or is not taken in the object's state) | reported once → reported | ok |
 | `repository-proposed` | approve | `repository.proposed`: a create-or-adopt proposal with its map nodes and homes, from an elaboration's offer or a dictation; its document is reviewed on the review surface (206) | yes → created on the git host, or registered when adopted; drop | yes · drop |
 | `package-install` | approve | `package.added`: a package chosen on the setup surface, its configuration collected against its schema and its secrets named in the same flow (228, 229) | yes → installing, as effects with proofs; drop | yes · drop |
 | `host-enrol` | approve | `host.proposed`: a host added from a host that exists, with its platform and its parts (230) | yes → the parts' secrets are placed and a one-time token issued; drop | yes · drop |
@@ -953,9 +953,16 @@ operators list holds one entry is that operator (153, 236, 253a). The
 reply grammar of the mockup is the union of the `answers`
 lists. `yes all` is expanded by the presenter into one response per
 approve decision it delivered, each with its own id (`<message
-id>/<number>`). A response that arrives after its decision is gone is
+id>/<number>`). A response that arrives after its decision is gone, or
+whose answer no transition of the object's active states names, is
 handed back as `unapplicable` and shown once under attention, never
-dropped (6, 129).
+dropped (6, 129); `response.applied` is read before `response.taken`,
+so a response the object took on the same pass is never judged against
+the state it left. A decision offers only answers its state's
+transitions, or an enclosing state's, name — `check.py` fails one that
+does not — so an answer not taken is a reply outside the decision's
+list, and a dictation not taken is one the object's state does not
+take (gaps 4).
 
 ### 5.7 Dictation, the tool surface and the host's agent
 

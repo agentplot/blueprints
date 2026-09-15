@@ -7,23 +7,24 @@
 <marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
 </defs>
 <rect width="1378" height="544" fill="#fff"/>
-<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">curation — object v4, core · object curation · one per instance</text>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">curation — object v5, core · object curation · one per instance</text>
 <text x="40" y="57" font-size="12" fill="#666">Curation: one machine per instance (A.15).</text>
-<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 20, 58, 60, 108, 110, 116, 118, 171, 182, 188 · curation.yaml · record threshold, cadence</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 12, 20, 58, 60, 74, 108, 110, 116, 118, 171, 182, 188 · curation.yaml · record threshold, cadence</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">run</text>
 <line x1="73" y1="103" x2="1021.1500000000001" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
 <circle cx="52.0" cy="196.0" r="4" fill="#1a1a1a"/>
 <line x1="56.0" y1="196.0" x2="69.0" y2="196.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
-<path d="M118.0,182.0 V174.0 H220.0 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M296.0,182.0 V159.0 H724.6 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M372.0,182.0 V129.0 H925.2 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M448.0,182.0 V144.0 H963.2 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M524.0,182.0 V174.0 H1001.2 V182.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>dictation retires the session (4); the run is due again on the next tick</title></path>
+<path d="M80.0,182.0 V159.0 H220.0 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M156.0,182.0 V174.0 H280.8 V182.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>the operator&#x27;s dictation to run curation now — the signals tray&#x27;s control or the chat&#x27;s `/curate`, one tool, applied at once and recorded like any response (110, 12, 193)</title></path>
+<path d="M341.6,182.0 V174.0 H724.6 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"><title>keep_alive false: the session&#x27;s pane closed on the pass that recorded the exit, after its deliverables were read (74); the run&#x27;s tab goes with the next layout reconciliation</title></path>
+<path d="M402.4,182.0 V129.0 H925.2 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"><title>the pane closed the same way; the report stands on the thread (74)</title></path>
+<path d="M463.2,182.0 V144.0 H963.2 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M524.0,182.0 V159.0 H1001.2 V182.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>dictation retires the session (4); the run is due again on the next tick</title></path>
 <path d="M724.6,222.0 V438.0 H80.0 V210.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
 <path d="M963.2,222.0 V453.0 H156.0 V210.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
 <rect x="70.0" y="182.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
 <text x="118.0" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">idle</text>
-<rect x="210.0" y="182.0" width="324.0" height="246.0" rx="7" fill="#fafafa" stroke="#4a7fb5" stroke-width="1.6"><title>one session, bounded job, fixed exits; it reads the unmoved signals against the standing claims in the blueprints&#x27; `openspec/specs/` and the open intents</title></rect>
+<rect x="210.0" y="182.0" width="324.0" height="246.0" rx="7" fill="#fafafa" stroke="#4a7fb5" stroke-width="1.6"><title>one session, bounded job, fixed exits; it reads the unmoved signals against the standing claims in the blueprints&#x27; `openspec/specs/` and the open intents; the status view shows it working beside the unmoved count, which falls as moves are written (118)</title></rect>
 <text x="372.0" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">running</text>
 <line x1="220.0" y1="214.0" x2="524.0" y2="214.0" stroke="#e5e5e5"/>
 <text x="220" y="229" font-size="9.5" font-weight="700" fill="#999">place</text>
@@ -43,22 +44,24 @@
 <text x="382.0" y="374.0" font-size="9.5" fill="#2b8a8a" text-anchor="middle" font-weight="700">⧉ session</text>
 <text x="382.0" y="386.0" font-size="8" fill="#999" text-anchor="middle">agent=curator · place=own-place · work_order=rendered ·</text>
 <text x="382.0" y="398.0" font-size="8" fill="#999" text-anchor="middle">keep_alive=False · deliverables=[move, intent-proposal]</text>
-<rect x="578.0" y="182.0" width="293.2" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>every judged signal gets its one standing move; each join becomes or grows a proposed intent with its elaborations; a challenge stales the claim&#x27;s verdicts wherever they stand (101, 116); a route names the chore or ask the session offered, which record_offers on the session already turned into a proposed chore unit on the shared line or an ask record (58–60)</title></rect>
+<rect x="578.0" y="182.0" width="293.2" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>every judged signal gets its one standing move; each join becomes or grows a proposed intent with its elaborations; a challenge stales the claim&#x27;s verdicts wherever they stand (101, 116); a route names the chore or ask the session offered — a chore through `flywheel offer --scope &lt;repository&gt;`, which record_offers on the session already turned into a proposed chore unit under the repository the scope names, on its shared line, and the move written on the signal names that unit, not the offer entry (60, 62), an ask through `flywheel ask`, the ask tool called as the session, which already wrote the ask record and printed the id the move names (58–60, 28, 67)</title></rect>
 <text x="724.6" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">applying</text>
 <text x="724.6" y="216.0" font-size="8.5" fill="#666" text-anchor="middle">entry ⚙ record_moves, propose_intents, gather_elaborations</text>
 <rect x="915.2" y="182.0" width="96.0" height="40.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
 <text x="963.2" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">failed</text>
 <text x="963.2" y="216.0" font-size="8.5" fill="#666" text-anchor="middle">entry ⚙ report</text>
-<rect x="42.0" y="162.5" width="461.5" height="11" fill="#fff" opacity="0.92"/>
-<text x="272.7" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">curation.unmoved_count ≥ curation.threshold ∨ (curation.unmoved_count ≥ 1 ∧ curation.cadence_due)</text>
-<rect x="426.8" y="147.5" width="167.0" height="11" fill="#fff" opacity="0.92"/>
-<text x="510.3" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">final exited ∧ session.exit = done</text>
-<rect x="532.4" y="117.5" width="232.4" height="11" fill="#fff" opacity="0.92"/>
-<text x="648.6" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">final exited ∧ session.exit ∈ {stalled, invalid}</text>
-<rect x="678.2" y="132.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
-<text x="705.6" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">final lost</text>
-<rect x="655.7" y="162.5" width="213.7" height="11" fill="#fff" opacity="0.92"/>
-<text x="762.6" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">reply retire ↳ session→ended, place→removing<title>dictation retires the session (4); the run is due again on the next tick</title></text>
+<rect x="42.0" y="147.5" width="461.5" height="11" fill="#fff" opacity="0.92"/>
+<text x="272.7" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">curation.unmoved_count ≥ curation.threshold ∨ (curation.unmoved_count ≥ 1 ∧ curation.cadence_due)</text>
+<rect x="193.4" y="162.5" width="50.1" height="11" fill="#fff" opacity="0.92"/>
+<text x="218.4" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">reply run<title>the operator&#x27;s dictation to run curation now — the signals tray&#x27;s control or the chat&#x27;s `/curate`, one tool, applied at once and recorded like any response (110, 12, 193)</title></text>
+<rect x="449.6" y="162.5" width="167.0" height="11" fill="#fff" opacity="0.92"/>
+<text x="533.1" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">final exited ∧ session.exit = done<title>keep_alive false: the session&#x27;s pane closed on the pass that recorded the exit, after its deliverables were read (74); the run&#x27;s tab goes with the next layout reconciliation</title></text>
+<rect x="547.6" y="117.5" width="232.4" height="11" fill="#fff" opacity="0.92"/>
+<text x="663.8" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">final exited ∧ session.exit ∈ {stalled, invalid}<title>the pane closed the same way; the report stands on the thread (74)</title></text>
+<rect x="685.8" y="132.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="713.2" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">final lost</text>
+<rect x="655.7" y="147.5" width="213.7" height="11" fill="#fff" opacity="0.92"/>
+<text x="762.6" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">reply retire ↳ session→ended, place→removing<title>dictation retires the session (4); the run is due again on the next tick</title></text>
 <rect x="384.3" y="438.5" width="36.0" height="11" fill="#fff" opacity="0.92"/>
 <text x="402.3" y="447.0" font-size="8.5" fill="#333" text-anchor="middle">always</text>
 <rect x="541.6" y="453.5" width="36.0" height="11" fill="#fff" opacity="0.92"/>

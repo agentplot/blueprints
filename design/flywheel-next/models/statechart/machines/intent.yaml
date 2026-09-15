@@ -12,7 +12,7 @@
 # one elaboration, so no other is proposed here meanwhile (21, 189), and its
 # finish counts toward this intent's close (188).
 machine: intent
-version: 4
+version: 5
 kind: object
 tier: core
 object: intent
@@ -23,7 +23,7 @@ record:
   subject: string
   signals: list          # cited signal ids; weight is derived from them by event date
   challenges: list       # standing claims its signals argue with
-  close_declined_at: time
+  close_declined_at: time   # written by keep open on the offered close, and by hold on a failed archive, so the close is not offered again until another elaboration reaches done
 regions:
   life:
     initial: proposed
@@ -97,6 +97,9 @@ regions:
           - when: {response: retry}
             to: archiving
             enter: {line: landing}
+          - when: {response: hold}
+            to: open
+            note: the intent stays open with the failure on it, as a bolt whose landing failed does (40); the hold declines the close, so it is offered again only when another elaboration reaches done
       closed:
         tail: closed
         final: true

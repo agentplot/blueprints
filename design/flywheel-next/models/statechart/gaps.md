@@ -25,6 +25,32 @@ the operator may reverse by a response on the file; an entry with
   refused and reported, but the git-only profile cannot stop the commit
   from landing; it can only decline to honour it.
 
+- **6 / 129 an answer nothing takes.** A decision offers its answers
+  and the object's transitions take them, and the two were one list
+  by discipline alone: on 2026-09-15 four states offered an answer no
+  transition of the state or of a state enclosing it named —
+  `unit.proposed` drop, `host.gone` wait, `intent.archive-failed` hold,
+  `place.conflict-stalled` hold. Built, a drop on a proposed chore, one
+  row of a fold or the whole card, was recorded and never applied, and
+  never reported either, the response machine reading only whether the
+  decision still stood. **Decision**: the four transitions are added —
+  the unit's drop to `dropped`; the host's wait and the place's hold
+  keeping the state as a line's hold does; the intent's hold to `open`,
+  declining the close as a bolt's hold holds it — and `check.py` fails
+  a decision offering an answer no transition of its state or an
+  enclosing one names. The response machine reads `response.taken`
+  beside `response.decision_present`: an answer, or a dictation, that no
+  transition of the object's active states names is `unapplicable` on
+  the pass that would have applied it and comes back once under
+  attention, as a dictation the object's state does not take already
+  did (gaps 4, 110); `applied` is read first, so a response the object
+  took on the same pass is never read against the state it left. The
+  check makes an answer that nothing takes a fault no model ships; the
+  runtime rule stands because 6 says never silently and 129 never
+  dropped, and because a reply outside the decision's list can still
+  reach the record. As built the build had the rule for dictations
+  alone; the answer's half is to build.
+
 - **10 / S9 "offers two decisions".** S9 says the next planning
   "offers two decisions: amend the bolt, or land it and follow". The
   mockup shows one `claim-moved` decision with two answers. **Decision**:
@@ -52,14 +78,17 @@ the operator may reverse by a response on the file; an entry with
   kind and batch is the fold on every later tick, so the number and
   the letters hold while any chore of the batch stands, whichever row
   leaves first, and a fold emptied and refilled is a new decision
-  (model 5.1; S232). The built `rail::derive` names a fold by its
-  first standing chore, so dropping that row renumbers the rest; to be
-  corrected. **Decision** (2026-09-15). No object records a creation
-  time and none is needed: a fold's rows, and any order the engine
-  takes among a batch's objects, follow the ids as they count
+  (model 5.1; S232). **Decision** (2026-09-15). No object records a
+  creation time and none is needed: a fold's rows, and any order the
+  engine takes among a batch's objects, follow the ids as they count
   (`chore-2` before `chore-10`), the order the page's letters already
-  use; the engine's sort by a `created` field the store never fills is
-  to go. **Decision** (2026-09-15).
+  use. **Decision** (2026-09-15). Built the same day: a fold keeps its
+  number and letters whichever row leaves first, a fold emptied and
+  refilled is a new number, and a batch's objects, the dock's and the
+  status view's lists order by their ids as they count. Not built: the
+  register's thirty-day prune of retracted entries, so entries stand.
+  Also as built, the dock's chore rows show the document's path where
+  S232 says its name in words; to be corrected.
 
 - **25 with-operator "present".** Present is a human keystroke in the
   pane within 30 minutes (`herdr agent status`). There is no better
@@ -1347,7 +1376,8 @@ the operator may reverse by a response on the file; an entry with
   render at 390px, and the rail-and-board mockup's header overflows
   there today, so what the header drops at that width, and whether the
   "yes all" numbers and the key hints of S38 are the whole of it, is
-  unstated. **Open**. 313 names the Claude mobile app a client of the
+  unstated; the served dock's id chip runs off the right edge at 390px
+  as well (2026-09-15). **Open**. 313 names the Claude mobile app a client of the
   tool server, but which authority that client signs in against on a
   self-managed host, whose address is a localhost port with no name
   (245, 293), is unbound: the device flow issues what a client on the

@@ -9,7 +9,7 @@
 <rect width="1378" height="541" fill="#fff"/>
 <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">capture — object v2, core · object capture · owns signal</text>
 <text x="40" y="57" font-size="12" fill="#666">One source event as recorded (111).</text>
-<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 19, 106, 111, 112, 114, 115, 178, 181, 215, 216, 263, 271, 288, 290 · capture.yaml · record source, event_key, event_at, captured_by, raw</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 19, 74, 106, 111, 112, 114, 115, 178, 181, 215, 216, 263, 271, 288, 290 · capture.yaml · record source, event_key, event_at, captured_by, raw</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">reading</text>
 <line x1="100" y1="103" x2="698.475" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
 <circle cx="52.0" cy="181.0" r="4" fill="#1a1a1a"/>
@@ -17,8 +17,8 @@
 <path d="M156.0,167.0 V129.0 H561.6 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
 <path d="M80.0,167.0 V159.0 H105.3 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
 <path d="M130.7,167.0 V144.0 H220.0 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M497.6,167.0 V159.0 H637.6 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M220.0,425.0 V435.0 H80.0 V195.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
+<path d="M497.6,167.0 V159.0 H637.6 V167.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"><title>keep_alive false: the reader&#x27;s pane closed on the pass that recorded the exit, after its deliverables were read (74); the run&#x27;s tab goes with the next layout reconciliation</title></path>
+<path d="M220.0,425.0 V435.0 H80.0 V195.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"><title>a stalled or invalid exit closed the pane the same way; a lost pane was already gone (74)</title></path>
 <path d="M497.6,425.0 V450.0 H156.0 V195.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>dictation retires the reader (4)</title></path>
 <rect x="70.0" y="167.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"></rect>
 <text x="118.0" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">captured</text>
@@ -48,14 +48,14 @@
 <text x="599.6" y="189.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">read</text>
 <rect x="301.0" y="117.5" width="115.5" height="11" fill="#fff" opacity="0.92"/>
 <text x="358.8" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">capture.signals_present</text>
-<rect x="42.0" y="147.5" width="241.8" height="11" fill="#fff" opacity="0.92"/>
-<text x="162.9" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">capture.source = forwarded-message ⚙ ensure_signal</text>
+<rect x="42.0" y="147.5" width="279.2" height="11" fill="#fff" opacity="0.92"/>
+<text x="181.6" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">capture.source ∈ {forwarded-message, page} ⚙ ensure_signal</text>
 <rect x="157.3" y="132.5" width="36.0" height="11" fill="#fff" opacity="0.92"/>
 <text x="175.3" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">always</text>
 <rect x="446.7" y="147.5" width="241.8" height="11" fill="#fff" opacity="0.92"/>
-<text x="567.6" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">final exited ∧ session.exit = done ⚙ record_offers</text>
+<text x="567.6" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">final exited ∧ session.exit = done ⚙ record_offers<title>keep_alive false: the reader&#x27;s pane closed on the pass that recorded the exit, after its deliverables were read (74); the run&#x27;s tab goes with the next layout reconciliation</title></text>
 <rect x="42.0" y="435.5" width="344.6" height="11" fill="#fff" opacity="0.92"/>
-<text x="214.3" y="444.0" font-size="8.5" fill="#333" text-anchor="middle">final lost ∨ (final exited ∧ session.exit ∈ {stalled, invalid}) ⚙ report</text>
+<text x="214.3" y="444.0" font-size="8.5" fill="#333" text-anchor="middle">final lost ∨ (final exited ∧ session.exit ∈ {stalled, invalid}) ⚙ report<title>a stalled or invalid exit closed the pane the same way; a lost pane was already gone (74)</title></text>
 <rect x="219.9" y="450.5" width="213.7" height="11" fill="#fff" opacity="0.92"/>
 <text x="326.8" y="459.0" font-size="8.5" fill="#333" text-anchor="middle">reply retire ↳ session→ended, place→removing<title>dictation retires the reader (4)</title></text>
 <rect x="40" y="497" width="1298" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>

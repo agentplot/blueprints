@@ -72,6 +72,7 @@ evidence:
   # ---- response, rail and sinks
   response.decision_present: {of: response, type: bool, doc: the decision this response answers still stands; a dictation is always present}
   response.applied: {of: response, type: bool, doc: the object it concerns lists the response as applied}
+  response.taken:   {of: response, type: bool, doc: some transition of the object's active states, an enclosing state's included, names the response's answer by its first word; for a dictation, the operation it names is one the object's state takes (4). A decision offers only answers its state's transitions name, which check.py enforces, so an answer not taken is one outside the decision's list}
   response.reported: {of: response, type: bool, doc: a delivery after the failure carried the attention line}
   response.answer:  {of: response, type: string}
   rail.unnumbered:  {of: rail, type: bool, doc: a standing decision has no number in the rail's register}

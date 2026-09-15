@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1937" height="678" viewBox="0 0 1937 678" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1937" height="693" viewBox="0 0 1937 693" font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif">
 <defs>
 <marker id="mB" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4a7fb5"/></marker>
 <marker id="mT" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2b8a8a"/></marker>
@@ -6,8 +6,8 @@
 <marker id="mA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c9962e"/></marker>
 <marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
 </defs>
-<rect width="1937" height="678" fill="#fff"/>
-<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">intent — object v3, core · object intent · owns elaboration, unit</text>
+<rect width="1937" height="693" fill="#fff"/>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">intent — object v5, core · object intent · owns elaboration, unit</text>
 <text x="40" y="57" font-size="12" fill="#666">One thread of design work about one subject (A.3).</text>
 <text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 20, 21, 22, 23, 49, 54, 109, 117, 187, 189 · intent.yaml · record subject, signals, challenges, close_declined_at</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
@@ -21,8 +21,9 @@
 <path d="M1572.7,182.0 V144.0 H1838.9 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
 <path d="M1553.7,182.0 V159.0 H1686.8 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
 <path d="M1515.7,182.0 V174.0 H1534.7 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M1686.8,234.0 V485.0 H1534.7 V210.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
-<rect x="70.0" y="182.0" width="148.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>a decision with its proposed elaborations folded in (10); dictation skips this state</title></rect>
+<path d="M1736.9,234.0 V485.0 H1534.7 V210.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"></path>
+<path d="M1636.7,234.0 V500.0 H782.5 V475.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>the intent stays open with the failure on it, as a bolt whose landing failed does (40); the hold declines the close, so it is offered again only when another elaboration reaches done</title></path>
+<rect x="70.0" y="182.0" width="148.2" height="52.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>a decision with its proposed elaborations folded in (10); dictation skips this state. The card shows its signals as their weight — how many, from how many sources, over what span by event date (109, 118) — and its elaborations as the proposed ones with their types (S5)</title></rect>
 <text x="144.1" y="204.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">proposed</text>
 <rect x="95.3" y="206.0" width="97.7" height="14" rx="7" fill="#c9962e"/>
 <text x="144.1" y="216.0" font-size="9" font-family="monospace" fill="#fff" text-anchor="middle">intent-proposed</text>
@@ -92,31 +93,33 @@
 <text x="1620.2" y="156.0" font-size="8.5" fill="#333" text-anchor="middle">final line.land-failed</text>
 <rect x="1444.0" y="162.5" width="162.3" height="11" fill="#fff" opacity="0.92"/>
 <text x="1525.2" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">¬intent.archived ⚙ archive_intent</text>
-<rect x="1545.9" y="485.5" width="129.6" height="11" fill="#fff" opacity="0.92"/>
-<text x="1610.7" y="494.0" font-size="8.5" fill="#333" text-anchor="middle">reply retry ↳ line→landing</text>
-<text x="40" y="537" font-size="11.5" font-weight="700" fill="#8a8a86">line</text>
-<line x1="80" y1="533" x2="335.20000000000005" y2="533" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
-<circle cx="52.0" cy="570.0" r="4" fill="#1a1a1a"/>
-<line x1="56.0" y1="570.0" x2="69.0" y2="570.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
-<rect x="70.0" y="544.0" width="255.2" height="52.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
-<text x="197.6" y="566.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">line</text>
-<text x="197.6" y="578.0" font-size="9.5" fill="#2b8a8a" text-anchor="middle" font-weight="700">⧉ line</text>
-<text x="197.6" y="590.0" font-size="8" fill="#999" text-anchor="middle">parent=blueprints-shared-line · landing_policy=direct</text>
-<rect x="40" y="634" width="1857" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
-<rect x="56" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
-<text x="71" y="653" font-size="9" fill="#666">state</text>
-<rect x="114.75" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
-<text x="129.75" y="653" font-size="9" fill="#666">decision state · amber pill is the kind</text>
-<rect x="341.8" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
-<text x="356.8" y="653" font-size="9" fill="#666">⧉ runs a submachine</text>
-<rect x="469.85" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
-<text x="484.85" y="653" font-size="9" fill="#666">double border: final</text>
-<rect x="602.85" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
-<text x="617.85" y="653" font-size="9" fill="#666">arrow above: forward</text>
-<rect x="735.85" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
-<text x="750.85" y="653" font-size="9" fill="#666">arrow below: back</text>
-<rect x="854.0" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
-<text x="869.0" y="653" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
-<rect x="1066.2" y="644" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
-<text x="1081.2" y="653" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
+<rect x="1571.0" y="485.5" width="129.6" height="11" fill="#fff" opacity="0.92"/>
+<text x="1635.8" y="494.0" font-size="8.5" fill="#333" text-anchor="middle">reply retry ↳ line→landing</text>
+<rect x="1182.2" y="500.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1209.6" y="509.0" font-size="8.5" fill="#333" text-anchor="middle">reply hold<title>the intent stays open with the failure on it, as a bolt whose landing failed does (40); the hold declines the close, so it is offered again only when another elaboration reaches done</title></text>
+<text x="40" y="552" font-size="11.5" font-weight="700" fill="#8a8a86">line</text>
+<line x1="80" y1="548" x2="335.20000000000005" y2="548" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
+<circle cx="52.0" cy="585.0" r="4" fill="#1a1a1a"/>
+<line x1="56.0" y1="585.0" x2="69.0" y2="585.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
+<rect x="70.0" y="559.0" width="255.2" height="52.0" rx="7" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"></rect>
+<text x="197.6" y="581.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">line</text>
+<text x="197.6" y="593.0" font-size="9.5" fill="#2b8a8a" text-anchor="middle" font-weight="700">⧉ line</text>
+<text x="197.6" y="605.0" font-size="8" fill="#999" text-anchor="middle">parent=blueprints-shared-line · landing_policy=direct</text>
+<rect x="40" y="649" width="1857" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="56" y="659" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="71" y="668" font-size="9" fill="#666">state</text>
+<rect x="114.75" y="659" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="129.75" y="668" font-size="9" fill="#666">decision state · amber pill is the kind</text>
+<rect x="341.8" y="659" width="10" height="10" rx="2" fill="#fff" stroke="#2b8a8a" stroke-width="1.6"/>
+<text x="356.8" y="668" font-size="9" fill="#666">⧉ runs a submachine</text>
+<rect x="469.85" y="659" width="10" height="10" rx="2" fill="#fff" stroke="#1a1a1a" stroke-width="1.6"/>
+<text x="484.85" y="668" font-size="9" fill="#666">double border: final</text>
+<rect x="602.85" y="659" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
+<text x="617.85" y="668" font-size="9" fill="#666">arrow above: forward</text>
+<rect x="735.85" y="659" width="10" height="10" rx="2" fill="#fff" stroke="#8a8a86" stroke-width="1.6"/>
+<text x="750.85" y="668" font-size="9" fill="#666">arrow below: back</text>
+<rect x="854.0" y="659" width="10" height="10" rx="2" fill="#fff" stroke="#c9962e" stroke-width="1.6"/>
+<text x="869.0" y="668" font-size="9" fill="#666">amber arrow: the operator&#x27;s response</text>
+<rect x="1066.2" y="659" width="10" height="10" rx="2" fill="#fff" stroke="#666" stroke-width="1.6"/>
+<text x="1081.2" y="668" font-size="9" fill="#666">⚙ effects · ↳ enter commands · +bump · ● initial</text>
 </svg>

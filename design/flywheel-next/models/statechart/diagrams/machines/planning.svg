@@ -9,15 +9,15 @@
 <rect width="1378" height="544" fill="#fff"/>
 <text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">planning — object v3, core · object planning · one per repository · owns proposal</text>
 <text x="40" y="57" font-size="12" fill="#666">Planning: one machine per built repository (section 10).</text>
-<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 28, 29, 60, 64, 98, 101, 102, 104, 171, 172, 182, 198, 199, 200, 202 · planning.yaml · record repository, planned_fingerprint, redo_notes</text>
+<text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 28, 29, 60, 64, 74, 98, 101, 102, 104, 171, 172, 182, 198, 199, 200, 202 · planning.yaml · record repository, planned_fingerprint, redo_notes</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">run</text>
 <line x1="73" y1="103" x2="1235.95" y2="103" stroke="#4a7fb5" stroke-width="2" opacity="0.3"/>
 <circle cx="52.0" cy="196.0" r="4" fill="#1a1a1a"/>
 <line x1="56.0" y1="196.0" x2="69.0" y2="196.0" stroke="#1a1a1a" stroke-width="1.4" marker-end="url(#mI)"/>
 <path d="M118.0,182.0 V159.0 H220.0 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
 <path d="M296.0,182.0 V174.0 H360.0 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M436.0,182.0 V174.0 H902.0 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M512.0,182.0 V129.0 H1140.0 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M436.0,182.0 V174.0 H902.0 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"><title>keep_alive false: the session&#x27;s pane closed on the pass that recorded the exit, after its deliverables were read (74); the run&#x27;s tab goes with the next layout reconciliation</title></path>
+<path d="M512.0,182.0 V129.0 H1140.0 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"><title>the pane closed the same way; the report stands on the thread (74)</title></path>
 <path d="M588.0,182.0 V144.0 H1178.0 V182.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
 <path d="M664.0,182.0 V159.0 H1216.0 V182.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>dictation retires the session (4); the run is due again on the next tick</title></path>
 <path d="M902.0,222.0 V438.0 H80.0 V210.0" fill="none" stroke="#8a8a86" stroke-width="1.3" marker-end="url(#mG)"></path>
@@ -57,9 +57,9 @@
 <rect x="310.0" y="162.5" width="36.0" height="11" fill="#fff" opacity="0.92"/>
 <text x="328.0" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">always</text>
 <rect x="585.5" y="162.5" width="167.0" height="11" fill="#fff" opacity="0.92"/>
-<text x="669.0" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">final exited ∧ session.exit = done</text>
+<text x="669.0" y="171.0" font-size="8.5" fill="#333" text-anchor="middle">final exited ∧ session.exit = done<title>keep_alive false: the session&#x27;s pane closed on the pass that recorded the exit, after its deliverables were read (74); the run&#x27;s tab goes with the next layout reconciliation</title></text>
 <rect x="709.8" y="117.5" width="232.4" height="11" fill="#fff" opacity="0.92"/>
-<text x="826.0" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">final exited ∧ session.exit ∈ {stalled, invalid}</text>
+<text x="826.0" y="126.0" font-size="8.5" fill="#333" text-anchor="middle">final exited ∧ session.exit ∈ {stalled, invalid}<title>the pane closed the same way; the report stands on the thread (74)</title></text>
 <rect x="855.6" y="132.5" width="54.8" height="11" fill="#fff" opacity="0.92"/>
 <text x="883.0" y="141.0" font-size="8.5" fill="#333" text-anchor="middle">final lost</text>
 <rect x="833.1" y="147.5" width="213.7" height="11" fill="#fff" opacity="0.92"/>
