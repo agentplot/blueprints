@@ -101,7 +101,12 @@ were settled, not their place on the page.
   2026-09-14: the page titles it in plain words that say what it holds
   ("Recently done", never "since"), and it has a window: today's
   entries, or the last twenty when today holds fewer; what falls off
-  the window stays on record and is not lost.
+  the window stays on record and is not lost. Ruled 2026-09-15: a line
+  for an object named by its id — a merged or dropped unit, a landed
+  bolt — carries its repository greyed before the name, as the board's
+  slips and the chores card's title do (S14, S231), so two shared
+  lines' `chore-1` read apart; a capture or signal still reads as its
+  own words.
 - **S10.** The board is the status view (B.4) drawn by phase. It holds
   objects only, never the count. It has two views: phases and map,
   switched in the board's header or with the m key. The book is a

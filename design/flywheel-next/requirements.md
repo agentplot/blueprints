@@ -593,7 +593,17 @@ requirements, iterated against the running rail rather than on paper.
     which asks, asserted by the session, asserting where the document
     is, with no excerpt, until curation or the operator moves it (19a,
     113). The document is never state and the record never holds the
-    text.
+    text. The offer names the revision of the offering session's place
+    that holds the document, and the record keeps the path and that
+    revision; an offer naming a document not committed there is
+    refused. A chore's session is handed the document as its job, in
+    its work order: the machinery reads it at the yes from the
+    offering session's repository at that revision and writes it into
+    the order, since a chore has no change directory (60) and a session
+    on another repository's line cannot reach the place the offer was
+    made in (89). A chore whose offering place was removed without
+    merging before the yes is withdrawn, its document gone with the
+    place.
 63. Chores raised while a bolt is being built are collected at the bolt
     and done by one session, on the bolt's own line of work, before the
     bolt lands. No process coordinates them; the bolt's own state is
@@ -619,7 +629,10 @@ requirements, iterated against the running rail rather than on paper.
     granted (197): a curation session files an ask through it (116) as
     a session starts a service through it (48), carrying the session's
     identity, and the record written is the one the operator's own
-    dictation writes, given by the session.
+    dictation writes, given by the session. Every session's work order
+    gives the exact command for each of its exits and for an offer,
+    with everything the command reads filled in (89); the ask's command
+    is given only where the ask is granted (116).
 68. The operator need never open a pane. Everything a session asks of
     the operator is answerable on the page or in chat, and everything a
     session shows the operator is reachable from the page. The pane
