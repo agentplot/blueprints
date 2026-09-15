@@ -28,7 +28,7 @@ Never prompt an agent outside the team, and before prompting a team agent check 
 
 When the user asks you to start coding, work through the active change's open tasks in order, a whole group of related tasks at a time: the coder does its best work with the full group up front, and commits after each task.
 
-- The work the user has been planning most recently goes first, ahead of older open tasks, unless the user says otherwise. A plan the user has talked through goes to fable to ratify into the requirements, then to explorer for tasks; never hold it back because it isn't ratified yet.
+- The work the user has been planning most recently goes first, ahead of older open tasks, unless the user says otherwise. A plan the user has talked through goes to fable, then to explorer for tasks.
 - A task that waits on a decision the design doesn't make, such as a clause the requirements don't have, goes to fable first. Pick it up once fable has recorded the answer.
 - The coder and explorer both commit to flywheel-next's main checkout, so only one of them works at a time: don't send the coder a task while a report is being recorded, and hold a report for explorer while the coder is on a task.
 - Send `herdr agent prompt coder "Do group <n> in <change>, committing after each task. Build anything on the page to the mockup."` and wait in the background as with fable. Clear the coder (and give its name back) between groups.
