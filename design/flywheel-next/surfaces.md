@@ -1942,11 +1942,13 @@ whatever else it does.
   scrolled. Every form on the page is sent the same way and what comes
   back is swapped in, so an answer or a capture never navigates.
   Nothing is fetched from anywhere but the host (310). A session
-  calls no address to wake the loop: the loop listens to the
-  multiplexer's own events, and a host bound to Herdr knows the moment
-  any of its agents changes state, so a session's report, note, offer
-  or refusal, and an agent going idle, blocked or done, are causes now
-  and not at the next poll (130, D6). The poll stays the floor.
+  calls no address to wake the loop, and the machinery builds no wake
+  API of its own: the loop listens to the multiplexer's own events,
+  which already carry what it needs, and a host bound to Herdr knows
+  the moment any of its agents changes state, so a session's report,
+  note, offer or refusal, and an agent going idle, blocked or done,
+  are causes now and not at the next poll (130, D6). The poll stays
+  the floor.
 - **S222.** Ruled 2026-09-14: the page says *branch* for what the
   model calls a line, everywhere — the bolt's branch, the work item's
   branch, commits on the branch — and never both words for one thing.
