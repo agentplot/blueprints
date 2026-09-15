@@ -275,7 +275,11 @@ the operator may reverse by a response on the file; an entry with
   plus the repository at the place. Claude Code's own context (its
   global settings, the operator's `CLAUDE.md`) also reaches it.
   **Open**: the place's settings can deny reads outside the place but
-  not unload the operator's global instructions.
+  not unload the operator's global instructions. Observed 2026-09-15:
+  both curators on the round's scratch instance read the flywheel
+  binary's own source to check their delivery format, though the order
+  says to read only the order; a read of another repository on the
+  operator's machine is not denied either.
 
 - **93 "only the session binding is faked".** The stand-in plays
   exits by running the same `flywheel exit|offer|refuse` path, so the
@@ -350,6 +354,36 @@ the operator may reverse by a response on the file; an entry with
   scope. No hook is needed and none is written: the version is the
   content hash of the requirement block, so it moves when and only when
   the text moves. Named, not built.
+
+- **110 curation as run.** Measured 2026-09-15 on the round's scratch
+  instance, curation charged by the tray's run now over 264 unmoved
+  signals through the herdr binding: pressed 16:47:12, the curator
+  exited 17:03:17, the proposals stood on the rail 17:09:30 — the
+  model's read 15–20 minutes, then about three minutes applying the
+  delivery and about three more before the page's next read answered.
+  The design puts no clock on the curator: the run is charged on a
+  cadence or a threshold and works in the background with the tray
+  showing it (118, S225), and a run in steady state reads the signals
+  since the last, not fourteen meetings at once. What the design does
+  bound the build departs from: `record_moves` is one commit for the
+  delivery (blueprints.yaml) and as built commits once per record,
+  which is the three minutes; and recording one delivery of 63 signals
+  held the host about four minutes with every page read and script
+  call waiting about a minute behind it, where the page answers within
+  its budget whatever the host is doing (310a). **Decision**: the run's
+  length stands; the per-record commits and the held host are bugs
+  against the profile. The change's 22.10 measures against a
+  three-minute bar the design never set.
+
+- **115 / 217e the reader as built.** The capture-reader session runs
+  through the herdr binding by the tick of the host declaring the
+  folder source, with its own work order; its `signal` deliverable is
+  checked against `schemas/signal.md` — kind, who said it, subjects,
+  assertion, excerpt, position, argues-with (113) — and the capture
+  shows the reader's chip on the board while it reads (S227). Not
+  built: the subject-tag vocabulary `flywheel/signal-tags.yaml` the
+  order carries (context.yaml capture-reader), so a tag outside it is
+  not refused. Stated.
 
 - **111 raw material outside version control.** The capture cites a
   `file://` or `https://` pointer. On a second host the pointer may
@@ -817,7 +851,15 @@ the operator may reverse by a response on the file; an entry with
   difference and not a list. **Decision**, conservative. Unreadable
   state (an object file that does not parse) is reported through the
   same decision and never rewritten; the git-only profile cannot stop a
-  hand commit from landing, only decline to honour it (gaps 4).
+  hand commit from landing, only decline to honour it (gaps 4). Two
+  instances of one name on one computer collide: the multiplexer
+  session and every agent name derive from the instance's name and the
+  session id (174, 196), so a scratch instance named agentplot on
+  2026-09-15 addressed the live instance's agent by name — in its own
+  records only, since as built no `--session` is passed (gaps 174).
+  An instance's name is unique on its computer, and a host declines to
+  start one whose name another host on the computer already runs.
+  **Decision**. Not built.
 
 - **223–227 machines, types and context.** 223–225 are cited on
   `atoms.yaml` because the registry has no machine of its own.
@@ -1249,8 +1291,13 @@ the operator may reverse by a response on the file; an entry with
   page's generation, every response is compressed, and a test seeds two
   instance sizes and fails a build over any number. **Decision**. As
   built: none of it; the whole page, uncompressed, every dock page
-  inline, the whole page again on every event. The mirror's
-  definitions/profiles/surfaces.yaml needs recopying.
+  inline, the whole page again on every event; and a proposed intent's
+  card carries a signal count and an age where 109 and S5 say how many,
+  from how many sources, over what span, with the elaborations folded
+  in. Recording one curator delivery of 63 signals also held the host
+  about four minutes, every page read waiting about a minute behind it
+  (gaps 110). The mirror's definitions/profiles/surfaces.yaml needs
+  recopying.
 
 - **306–314 the phone.** Ruled: parity is a requirement of the first
   build and not a surface ruling, the phone being the same served bundle

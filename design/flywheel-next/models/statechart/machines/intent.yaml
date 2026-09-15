@@ -12,7 +12,7 @@
 # one elaboration, so no other is proposed here meanwhile (21, 189), and its
 # finish counts toward this intent's close (188).
 machine: intent
-version: 3
+version: 4
 kind: object
 tier: core
 object: intent
@@ -29,8 +29,8 @@ regions:
     initial: proposed
     states:
       proposed:
-        doc: a decision with its proposed elaborations folded in (10); dictation skips this state
-        decision: {kind: intent-proposed, group: approve, answers: ["yes", drop, split], shows: [signals, challenges], satisfies: [10, 109]}
+        doc: "a decision with its proposed elaborations folded in (10); dictation skips this state. The card shows its signals as their weight — how many, from how many sources, over what span by event date (109, 118) — and its elaborations as the proposed ones with their types (S5)"
+        decision: {kind: intent-proposed, group: approve, answers: ["yes", drop, split], shows: [signals, challenges, elaborations], satisfies: [10, 109]}
         transitions:
           - when: {response: "yes"}
             to: open

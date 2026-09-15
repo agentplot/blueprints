@@ -68,7 +68,10 @@ were settled, not their place on the page.
   working (66, 71).
 - **S5.** Every decision card shows its number, its kind, the phase
   of its object, its title, its tail (the evidence model 5.4 names:
-  signal weight on an intent; type, target bolt, dependencies and
+  signal weight on an intent — how many, from how many sources, over
+  what span, counted by event date — and the elaborations it proposes,
+  each with its type ("curation · 7 signals · 3 sources · 12d",
+  "elaborations: research (self-closing)"; 109, 118, 10); type, target bolt, dependencies and
   cited claims on a unit; idle time on a session; what a yes starts),
   its owner when one is set (S169), and its answers as buttons. A card
   with a question shows the question verbatim. A card for a gathered elaboration lists the covered intents,
@@ -2107,7 +2110,10 @@ whatever else it does.
   named by its type and the material it was proposed from, in the
   operator's words ("research · dispatch agent"), never by its ordinal
   or its id: "proposed one" is no name, and the id the effect
-  generated stays the id (27). Its card
+  generated stays the id (27). The words are the first words of the
+  first signal or note the bead cites, as a capture names its intent
+  (S224), read from the record where the bead is shown, so a corrected
+  type renames it and the words stay. Its card
   proposes one elaboration at a time with the type named beside the
   question ("research · self-closing") and only the answers that
   apply: yes, drop and type; pick and the per-intent drop appear only
@@ -2116,9 +2122,10 @@ whatever else it does.
   the instance lacks asks for a type before its yes is taken (85a,
   S6): the card drops its type line and reads "<name> is not a type
   here · set one with type…", or "no type named · set one with type…"
-  when none was named; a unit's card reads the same. A yes starts the session in the intent's place; the bead shows
-  it working, then done; the close is offered when every bead is done
-  (22).
+  when none was named; a unit's card reads the same. A yes starts the
+  session in a place of its own off the intent's line, merged into the
+  line when it delivers (54); the bead shows it working, then done;
+  the close is offered when every bead is done (22).
 - **S227.** Ruled 2026-09-14: the instance's first real material is
   the willdan signals — captures read from meeting transcripts with
   their signals already written as markdown files with a header block
@@ -2128,7 +2135,9 @@ whatever else it does.
   self-closing elaborations, since a signal names no type (27). The second source is a
   folder drop holding one raw transcript, which shows triage: the
   capture appears with no signals and a reader's session chip, and its
-  signals appear when the reader delivers (217e). A faked third source
+  signals appear when the reader delivers (217e); the dropped file's
+  capture is called by its file name wherever it shows, and dated by
+  the date in that name, else by when the file was last written. A faked third source
   is a scripted webhook posting synthetic monitor findings to the
   capture tool with its own source name, so the tray shows three
   sources and curation has something to drop. The demo of the round:
