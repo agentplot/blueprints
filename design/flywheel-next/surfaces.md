@@ -95,7 +95,9 @@ were settled, not their place on the page.
 - **S9.** SINCE lists what entered a tail state since this sink's
   delivery mark (14, model 5.5): merged, landed, closed, dropped,
   started, finished, accepted, answered, held. A line names the object,
-  the reason and the time. "Later" writes no SINCE line (§5). Ruled
+  the reason and the time. "Later" writes no SINCE line (§5). A moved
+  signal reads by its move: built, intent, dropped, or asked when its
+  route names an ask (S229). Ruled
   2026-09-14: the page titles it in plain words that say what it holds
   ("Recently done", never "since"), and it has a window: today's
   entries, or the last twenty when today holds fewer; what falls off
@@ -290,7 +292,7 @@ were settled, not their place on the page.
 | external system | a dashed card | what it is; who meets it; that a claim on the contract is in scope for every repository that meets it | nothing to answer |
 | artifact | "the artifacts behind it", "change", "evidence", a work-item chip, the acceptance link | one view per artifact kind (S99) under a source bar (S100) | open source · review; the pending decision's answers when one is pending on the artifact |
 | work item | a chip on a ledger or in a dock | its unit's job as a quote; its stage, type, host, place and branch; its commits in Conventional Commits form, the deliverables it recorded, its session's report, its session chip | nothing to answer; reply when the item is blocked (S49) |
-| capture | its line on the board, its row in the signals tray | the words as a quote, from its beginning (S215); "from the console · by <member> · when" (S223); the line saying who acts next and when (S224); what became of it — built, with the unit linked; an intent, linked; attached, with the intent linked; dropped | build now · make an intent · attach to… · drop while its signal is unmoved (19a, S224); nothing to answer |
+| capture | its line on the board, its row in the signals tray | the words as a quote, from its beginning (S215); "from the console · by <member> · when" (S223); the line saying who acts next and when (S224); what became of it — built, with the unit linked; an intent, linked; attached, with the intent linked; asked in <repository> "<words>", the ask's own words, with "asked" under the title (S229); dropped | build now · make an intent · attach to… · drop while its signal is unmoved (19a, S224); nothing to answer |
 | any other object | a link anywhere | what it cites, in the signals' own words; what it holds, each with its sentence; what it is part of | nothing to answer |
 
 - **S29.** Requirements served: 17, 47, 68, 141, 144, 146, 172, 184,
@@ -329,11 +331,16 @@ were settled, not their place on the page.
   fuzzy-matched as typed, each with what it does and what it acts on,
   under the line saying exactly what will be sent. The list is answer,
   capture, drop, later, hold, release, rename, close, finish, end,
-  retire, revive, take and takeover. A command is the catalogue tool
+  retire, revive, take, takeover and ask. A command is the catalogue tool
   of its own name; what is typed after the name is its argument, sent
   as typed; a command that acts on an object takes the one in hand,
   the object the dock has open, else the decision the rail holds, or
-  an id typed after the name. Left out is what the palette cannot seed
+  an id typed after the name. `/ask <repository> <words>` — "ask for
+  work in a repository", acting on a repository — takes the first word
+  as the repository and the rest as the words, the repository typed
+  first because nothing in hand names one (28); `/ask` alone says
+  "type the repository, then the words", and with both the line reads
+  "will send: ask(storefront, …)". Left out is what the palette cannot seed
   as one call: `curate` is the curator's surface, `propose-unit` and
   `open-session` are their own controls with fields, `start` and
   `stop` wait on a service the page shows, and removing the instance
@@ -2079,6 +2086,23 @@ whatever else it does.
   the tray, run curation, watch the proposals land, open the one about
   the flywheel as an intent, approve its first elaboration, read what
   the session wrote.
+- **S229.** Ruled 2026-09-15: on the curator's surface — the page's
+  curation section, where the operator judges each signal when a host
+  runs curation as the operator's (93b) — picking `route` for a signal
+  swaps its target field for "ask in <repository> <words>": the
+  repository is a chip when the instance tracks one and a picker when
+  it tracks several, and the words start as the signal's own, for the
+  operator to change. Submitting files the ask through the `ask` tool,
+  by the operator, and writes the signal's move as `route ask/<id>`
+  (116). Every ask is checked before anything is written, so a refused
+  one leaves no move and no exit; a route that names nothing and asks
+  for nothing is refused, since a route names what was offered. With
+  no repository tracked the field says "no repository to ask in yet ·
+  add one to flywheel.yaml". For every other move the target field
+  reads "the intent or claim it names". A signal routed to an ask reads
+  "asked" under its capture's title, its "what became of it" line
+  shows the repository and the words (S28), and SINCE gains "asked"
+  (S9).
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open

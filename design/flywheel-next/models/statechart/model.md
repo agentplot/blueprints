@@ -118,7 +118,13 @@ of some object, or a file the machinery reads as evidence.
   (`asks/<id>`) with `repository`, `text`, `by`, `at`, `consumed_by`,
   written as the dictation's effect like every other dictation's
   record; it is a dictation and not a document, so the record holds
-  its words, where 62 governs the documents a session writes. It has
+  its words, where 62 governs the documents a session writes. Its id
+  is `<repository>-<n>`, counted per repository from the records on
+  file and never reused; whatever points at an ask — a signal's route
+  move, the response the call was recorded as — names it `ask/<id>`.
+  One delivery is one ask (153). The call is refused, and nothing
+  written, when it names a repository the instance does not track,
+  naming the tracked ones, or gives no words. It has
   no machine: planning's fingerprint includes every unconsumed ask, so
   it is planning's input, and `propose_units` sets `consumed_by`.
 - **decision** — a state of its object (section 5), never a record of
@@ -1468,7 +1474,12 @@ called with the session's identity, as `flywheel service` is the
 the ask record as any dictation does, `by` the session, and prints the
 ask's id (28, 5.7); the signal's move is `route`, naming that offer
 (116). No other path from a session to the ask exists: the exit
-delivers moves and intent proposals, never asks. Where one run proposes elaborations of one type on
+delivers moves and intent proposals, never asks. Where the operator
+runs curation (93b), the curator's surface on the page files a route's
+ask through the same tool, by the operator, before the route names it;
+every ask is checked before any move is written, so a refused one
+leaves no move and no exit, and a route that names nothing and asks
+for nothing is refused (116). Where one run proposes elaborations of one type on
 several intents it may deliver them gathered, and `applying` writes
 one proposed elaboration on the first intent named, its `covers`
 naming all of them (`gather_elaborations`, 188); the other covered

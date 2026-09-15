@@ -881,7 +881,8 @@ requirements, iterated against the running rail rather than on paper.
     that has one (101). Join produces or grows a proposed intent.
     Answered names the claim or record that settled it. Route records
     the chore or the ask that curation, being a session (58–60),
-    offered for a signal that argues with no claim. Drop records the
+    offered for a signal that argues with no claim; a route that offers
+    neither is refused. Drop records the
     reason.
 117. Dropping a proposed intent gives each of its signals a move that
     records the drop. They are not clustered again unless new signals
