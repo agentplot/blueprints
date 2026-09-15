@@ -2675,9 +2675,11 @@ requirements, iterated against the running rail rather than on paper.
     lease, runs no tick and carries no work (148, 149, 231); it is a
     caller, and losing it loses nothing (217f).
 326. A rendered view is versioned with the binary that serves it (208,
-    224, 291): a client holding an older copy fetches it again rather
+    224, 291): its address carries that version and every result carries
+    the version it was rendered under, so a newer binary names a newer
+    address and a client holding an older copy fetches it again rather
     than rendering state it cannot, and a view holds no state of its own
-    between renders (310).
+    between renders (310, S230).
 
 <!-- ANCHOR_END: a40 -->
 ## 5. Requirements — Part B, the state store contract

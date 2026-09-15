@@ -2103,6 +2103,31 @@ whatever else it does.
   "asked" under its capture's title, its "what became of it" line
   shows the repository and the words (S28), and SINCE gains "asked"
   (S9).
+- **S230.** Ruled 2026-09-15: how a member's client gets a view (293a,
+  322). A tool whose result is one of the page's views names that view's
+  resource on its declaration in the catalogue, under the user-interface
+  extension of the model context protocol (`_meta.ui.resourceUri`), so a
+  client that renders such resources fetches the view as it calls the
+  tool; the result names no resource. The address is under the `ui://`
+  scheme and carries the binary's version and the view's name —
+  `ui://flywheel/<version>/rail`, `.../board`, `.../status`,
+  `.../object` — and is read under the caller's token like any call
+  (293), answered as the page's own bundle with the extension's media
+  type (`text/html;profile=mcp-app`). All four addresses read the same
+  bundle; which region it draws, and from what, is what the tool
+  returned, handed to the view by the client, so a view holds nothing
+  between renders (310). Every result carries the version it was
+  rendered under: a newer binary names newer addresses, which is how a
+  client holding an older copy fetches again, and a view whose bundle is
+  of another version than its result shows "this view is out of date ·
+  fetch it again" and nothing of the state (326). The bundle declares no
+  external origin and asks no permission of the client's sandbox (307,
+  310, 204). The four views are listed among the server's resources, so
+  a client can ask for the rail without a tool having been called. A tap
+  inside a rendered view is the control the page has, sent as a
+  `tools/call` through the client — the same tool on the same object the
+  page's form would post — checked, recorded once and idempotent as any
+  call (321, 323, 137).
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open

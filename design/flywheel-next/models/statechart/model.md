@@ -3552,10 +3552,19 @@ second write path and nothing to reconcile.
 the status view and one object's detail are each a user-interface
 resource of the tool server carrying the same bundle the host serves
 (307): one implementation, rendered from what the tool returned, fetching
-nothing external and carrying no secret. The resource is versioned with
-the binary that serves it (208, 224, 291), so a client holding an older
-copy fetches it again rather than rendering state it cannot, and a view
-holds no state of its own between renders (310). A client that renders
+nothing external and carrying no secret. The wire is the protocol's own
+user-interface extension (S230, `surfaces.yaml` `member_client.wire`): a
+tool whose result is a view names the view's resource on its declaration
+in the catalogue, never on its result; the address is under the `ui://`
+scheme, carrying the binary's version and the view's name, and reads
+under the caller's token as the one bundle, which draws the region and
+the state the tool returned. The resource is versioned with the binary
+that serves it (208, 224, 291): a newer binary names a newer address and
+every result carries the version it was rendered under, so a client
+holding an older copy fetches it again rather than rendering state it
+cannot, and a view holds no state of its own between renders (310). The
+bundle declares no external origin and asks no permission of the
+client's sandbox. A client that renders
 none of them is not a lesser member: it still holds every tool, and
 every decision stays answerable as a call (311).
 
