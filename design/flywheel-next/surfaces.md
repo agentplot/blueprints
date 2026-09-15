@@ -1171,11 +1171,12 @@ page shows after.
 
 - **S44.** 1. ⌘K opens the palette; text in its field; the preview
   line under it reads "will send: capture". 2. Enter → `capture(text,
-  page)`. 3. The capture appears in the Inception lane as a quote with
-  its controls — build now · add to bolt… · make an intent · attach
-  to… · drop — and
+  page)`. 3. The capture appears in the Inception lane as a quote,
   under it "curation reads it next · 4 waiting · runs at 12, or when
-  you run it"; the curation counter moves by one; SINCE gains
+  you run it", and its controls — build now · add to bolt… · make an
+  intent · attach to… · drop — show as one row under that line while
+  the pointer or the focus is on it (S233); the curation counter
+  moves by one; SINCE gains
   "captured · <first words>"; the rail gains nothing; the log gains
   the line; the palette closes (19a, S224). 4. build now on the quote
   → `propose-unit(capture)`: a bolt named from the capture's
@@ -1589,7 +1590,9 @@ where a thing sits, never by its form.
 | w | anywhere | open and close the flywheel panel |
 | ⌘K, Ctrl+K, / | anywhere | open the palette; / opens it with the command list already showing |
 | ↓, ↑ | palette | walk the command list, or the card's answers after a number, while the box is open; the rail does not move (S57) |
-| Esc | anywhere | in order: close the palette, leave a field, close the log, cancel explore selection, cancel re-attach, hide an edge's panel, close the dock, close the account menu, hosts, settings or the package store, back from a drill |
+| b, a, m, t, d | a focused capture | its verbs: build now, add to bolt…, make an intent, attach to…, drop; the page's b and m wait until the focus leaves it (S233) |
+| ↓, ↑, Enter | picker | walk the open intents or bolts and pick one; the rail does not move (S233) |
+| Esc | anywhere | in order: close a picker, close the palette, leave a field, close the log, cancel explore selection, cancel re-attach, hide an edge's panel, close the dock, close the account menu, hosts, settings or the package store, back from a drill |
 | f | map | fit, the only camera command, at either level |
 | o | map | cycle the overlay: none, current → target, since last review |
 | j, k | map canvas | move the focus ring among contexts at rest, among elements when drilled |
@@ -1614,6 +1617,7 @@ where a thing sits, never by its form.
 | drilled | Enter or a thumbnail click at rest, "drill into" on a dock or a neighbour dock | the context's inside at full size, neighbour docks, the breadcrumb | Esc, the org crumb |
 | edge panel | hover or focus on a relationship edge | the crossing links and claims of S85 | leaving the edge, Esc |
 | palette | ⌘K, Ctrl+K, `/`, the phone's capture control | the field with its preview line and its recents, and on `/` the commands the caller may invoke, fuzzy-matched | Esc, send, choose |
+| picker | `attach to…` or `add to bolt…` on a capture | the open intents or bolts as a panel in the capture under its verbs, a filter field above eight rows, the empty case with the verb that makes one; one open at a time (S233) | a pick, Esc, a click outside, the palette or another picker opening |
 | account menu | the account item | the switcher, settings, hosts, instance's package store, sign-out | a choice, Esc, a click outside |
 | hosts | the menu's hosts, the strip's setup control, a host page, "add a host", the pool control, an attention line about a host | host and pool rows on the left, the row's detail by headings and slots on the right; a slot's catalogue, the add and "+ host" flows in place | Esc, × |
 | settings | the menu's settings | the manifest as a form with one save | Esc, ×; an unsaved change asks first |
@@ -2249,6 +2253,54 @@ whatever else it does.
   `drop 415a` the card keeps its number and `yes 415` accepts what
   stands, and a fold whose every chore has gone and that later gains
   one is a new decision with a new number (15, model 5.1, 5.2).
+- **S233.** Ruled 2026-09-15: how a capture's five controls sit and
+  how its two pickers open, the same everywhere a capture shows them
+  (S224, S224a). At rest a capture is its words, its source line and
+  the line saying who acts next (S223, S224), and no verb: the lane
+  and the tray read as notes. The five verbs appear as one row under
+  that line — `build now · add to bolt… · make an intent · attach to…
+  · drop`, in that order, quiet buttons that wrap in a narrow column
+  and are never reordered or cut — while the pointer is over the
+  capture, while it holds the keyboard focus, and while it is open in
+  the dock; leaving it hides the row. This holds for the quote in
+  Inception, for every row of the signals tray, where twenty rows read
+  as twenty quotes and only the row under the hand shows its verbs,
+  and for a finding's row (S231). The drawer is the exception: its
+  footer carries the row at rest, as a decision's page carries its
+  answers (S28). A phone has no hover, so the quote and the tray row
+  show no verbs there; a tap opens the drawer full screen and its
+  footer has them (S38, 306). Tab reaches a capture and Enter opens
+  its drawer; while a capture holds the focus its verbs answer to
+  letters given by the rule a card's answers use (S218: the verb's
+  first letter not yet taken and not j, k or o) — `b`, `a`, `m`, `t`,
+  `d`, shown on the buttons — and the page's own `b` and `m` are not
+  heard until the focus leaves it. `attach to…` and `add to bolt…`
+  are one picker: pressing either opens a panel inside the capture,
+  under its row of verbs, the capture growing to hold it, so nothing
+  in a scrolling lane or tray clips it and nothing beside it is
+  covered; the panel is the capture's width up to 320px. In the
+  drawer it opens above the footer at the footer's width; on a phone
+  it is a bottom sheet like the palette (S30).
+  Its head names what it lists and how many ("open intents · 3",
+  "open bolts · 3"); its rows are the intents by subject in
+  Inception's order, or the bolts by name in Construction's order with
+  the repository greyed before the name when the instance tracks more
+  than one (S224a), each one line clipped at its end (S215). Eight
+  rows show and more scroll; above eight a filter field at the head
+  takes the cursor on open and narrows the rows by their words as the
+  palette narrows its commands (S228), the head then adding "type to
+  narrow". `↓` and `↑` walk the rows, Enter picks, Esc closes the
+  picker and puts the focus back on its verb, as a click anywhere
+  outside it does; the rail does not move while a picker is open
+  (S57). A pick is the whole gesture: the picker closes, the capture's
+  row dims while the call sends, and the capture re-renders as moved
+  (S32). With nothing to list the body says so and carries the
+  sibling verb that makes one — "no intent is open yet" with `make an
+  intent`, "no bolt is open yet" with `build now` — so an empty picker
+  is still one gesture from done (S214, S224a). One picker is open on
+  the page at a time: opening another, opening the palette or a dock
+  page, or a render that moves the capture closes it, and Esc closes
+  a picker before anything else (S56).
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open

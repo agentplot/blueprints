@@ -596,6 +596,38 @@ label.chore .f{margin-left:auto;font:11px var(--mono);color:var(--ink3)}
 .quote .qm b{color:var(--ink2);font-weight:500}
 .quote .qm .un{color:var(--warn)}
 .quote.live{border-left-color:var(--accent)} .quote.live .qm b{color:var(--accent)}
+/* capture: a note on the board · its five verbs show on hover, focus or open in the dock, never at rest (S224, S233) */
+.cap{position:relative;border:1px solid var(--line);border-left:3px solid var(--line);border-radius:6px;background:var(--surface);padding:7px 10px 6px 11px;margin:0 2px 6px;cursor:pointer;font-size:12px;color:var(--ink2)}
+.cap q{quotes:"“" "”";font-style:italic;color:var(--ink);display:block;line-height:1.35}
+.cap .qm{display:block;font:11px var(--mono);color:var(--ink3);margin-top:3px}
+.cap .qm .pre{color:var(--ink3)}
+.cap .qn{display:block;font:11px var(--mono);color:var(--ink2);margin-top:2px}
+.cap .qn.moved b{color:var(--accent);font-weight:500}
+.cap.lit{background:var(--lit);border-color:var(--lit-line)}
+.cap:hover,.cap:focus-within,.cap.picking{border-left-color:var(--accent)}
+.cap.open-in-dock{box-shadow:inset 0 0 0 1px var(--accent);border-left-color:var(--accent)}
+.cap.moved{opacity:.7;cursor:default} .cap.moved q{color:var(--ink2)}
+.cap .hand{display:none}
+.cap:hover .hand,.cap:focus-within .hand,.cap.open-in-dock .hand,.cap.picking .hand{display:flex}
+.hand{flex-wrap:wrap;gap:4px;margin-top:6px}
+.hand .pv{position:relative;display:inline-flex}
+.hand .btn.quiet{padding:2px 6px;font-weight:500;color:var(--ink2)} .hand .btn.quiet:hover,.hand .btn.quiet:focus-visible{border-color:var(--line);background:var(--surface2);color:var(--ink)} .hand .btn.quiet.drop{color:var(--crit)}
+.hand .btn.quiet[aria-expanded="true"]{border-color:var(--accent);color:var(--accent)}
+.hand.busy{opacity:.5;pointer-events:none}
+.dk-f .hand{margin-top:0;gap:6px} .dk-f .hand .btn.quiet{padding:4px 9px;border-color:var(--line);background:var(--surface)}
+/* the picker: one pattern for attach to… and add to bolt… (S233) · a panel inside the capture under its verbs, the capture growing to hold it; above the drawer's footer at its width; a bottom sheet on a phone */
+.picker{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px;text-align:left;cursor:default;font-style:normal;font-weight:400}
+.cap .picker{margin-top:6px;max-width:320px}
+.dk-f{position:relative} .dk-f .picker{position:absolute;left:16px;right:16px;bottom:calc(100% + 4px);box-shadow:var(--shadow);z-index:20}
+.pk-h{font:700 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);padding:3px 6px 5px;display:flex;gap:8px;align-items:baseline} .pk-h .r{letter-spacing:0;text-transform:none;font-weight:400;font-size:10.5px;font-family:var(--sans)}
+.pk-q{width:100%;box-sizing:border-box;margin:0 0 4px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);font:12.5px var(--sans);color:var(--ink)}
+.pk-list{max-height:240px;overflow:auto}
+.pk-row{display:flex;align-items:center;gap:6px;width:100%;padding:6px 8px;border-radius:6px;text-align:left;font-size:12.5px;color:var(--ink);line-height:1.3} .pk-row:hover,.pk-row.sel{background:var(--surface2)} .pk-row .pre{font:11px var(--mono);color:var(--ink3);flex:none} .pk-row .lb{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0} .pk-row .n{margin-left:auto;font:10.5px var(--mono);color:var(--ink3);flex:none}
+.pk-empty{padding:6px 8px 4px;font-size:12.5px;color:var(--ink3);display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+/* the signals tray in the dock (S225): run now at its head, each row a capture with its verbs on hover */
+.tray-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 10px;font-size:12px;color:var(--ink2)}
+.tray-h .trig{font:11px var(--mono);color:var(--ink3)}
+.curation .cnt{display:inline-flex;gap:6px;align-items:baseline;border-bottom:1px dashed var(--ink3)} .curation .cnt:hover{color:var(--accent);border-bottom-color:var(--accent)}
 .marks{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
 .thread .marks{padding-left:24px}
 .mark{display:inline-flex;align-items:center;gap:4px;font:600 11px var(--mono);border:1px solid var(--line);border-radius:4px;padding:1px 6px;background:var(--surface2)}
@@ -973,6 +1005,11 @@ body.docked .dock{transform:none}
   .tabs button .bd{font:600 10px var(--mono);color:var(--ink3)}
   .tl li{grid-template-columns:70px 1fr;grid-auto-flow:row}
   .tl li .what{grid-column:1/-1}
+  /* no hover on a phone: a capture shows no verb in the lane or the tray; a tap opens its drawer, whose footer has them (S233) */
+  .cap .hand{display:none!important}
+  .dk-f .hand{display:flex!important}
+  .cap .picker,.dk-f .picker{position:fixed;left:8px;right:8px;bottom:58px;top:auto;max-width:none;max-height:70vh;border-radius:12px;box-shadow:var(--shadow);z-index:25}
+  .pk-list{max-height:50vh}
 }
 @media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
 </style>
@@ -1161,6 +1198,13 @@ const SEED_WILLDAN = () => ({
   review:{on:false, mark:'09-03 18:05',
     nodes:{'atlas':['+ claim providers/rate-envelope @v1 · curation 09-04 07:12','claim sessions/one-writer v3 → v4 · writeback 09-03 17:20'], 'new-repo':['+ repository joined 09-03 23:00 · 11 claims in scope'], 'books':['+ chapter 7 loops rewritten · loop-granularity writeback 09-03 17:55','+ claim plan/tail-cursor @v1 · host-liveness writeback']},
     edges:{'atlas→provider-b':'removed 09-03 · key handling moved behind the portal', 'new-repo→switchboard':'added 09-03 · planned rows contract'}},
+  /* captures not yet moved: notes on the board with the operator's hand on them (19a, S224, S233) */
+  captures: [
+    {id:'c1', text:'can the prod status page say which bolt each row landed from?', src:'from the console · by you', age:'1m'},
+    {id:'c2', text:'provider B rotates keys on the 1st; atlas must reload without a restart', src:'meeting · ops sync', age:'1d'},
+    {id:'c3', text:'the retry handler counts a 429 twice when the poller is mid-tick', src:'folder · ~/Drop', age:'2d'},
+    {id:'c4', text:'the landing stamp should link the PR, not just number it', src:'#ops chat · rhea', age:'3d'},
+  ],
   bolts: [
     {id:'plan-decisions', name:'plan-decisions', repo:'atlas', line:'plan-decisions @ 9e21c4', note:'4 merged · 1 open · cites one-writer v3', claims:['sessions/one-writer @v3','sinks/one-mark @v2','plan/sink-marks @v2'],
      units:[{name:'plan-derivation',state:'merged'},{name:'decision-numbers',state:'merged'},{name:'response-apply',state:'merged'},{name:'decision-grouping',state:'merged',t:'07:21'},
@@ -1234,7 +1278,7 @@ function allSessions(){
   out.push({...S.curation.session, id:'curation', owner:{key:'c:curation', name:'curation', phase:'inception'}});
   return out.filter(s => s.state!=='done' && s.state!=='queued');
 }
-const objOf = key => { const [t,id] = key.split(':'); return t==='d' ? dec(+id) : t==='b' ? bolt(id) : t==='i' ? intent(id) : t==='l' ? S.landed.find(l => l.id===id) : t==='h' ? host(id) : t==='a' ? S.attention.find(a => a.id===id) : t==='r' ? repo(id) : t==='e' ? mapNode(id) : t==='x' ? S.explorations.find(x => x.id===id) : t==='p' ? S.planning : t==='f' ? S.deferred.find(x => x.key===id) : t==='v' ? elabOf(id) : t==='o' ? artOf(id) : t==='rv' ? artReview(id) : null; };
+const objOf = key => { const [t,id] = key.split(':'); return t==='d' ? dec(+id) : t==='b' ? bolt(id) : t==='i' ? intent(id) : t==='c' ? S.captures.find(c => c.id===id) : t==='t' ? {id:'tray'} : t==='l' ? S.landed.find(l => l.id===id) : t==='h' ? host(id) : t==='a' ? S.attention.find(a => a.id===id) : t==='r' ? repo(id) : t==='e' ? mapNode(id) : t==='x' ? S.explorations.find(x => x.id===id) : t==='p' ? S.planning : t==='f' ? S.deferred.find(x => x.key===id) : t==='v' ? elabOf(id) : t==='o' ? artOf(id) : t==='rv' ? artReview(id) : null; };
 /* an artifact view (213): 'o:intent/<id>' · 'o:unit/<bolt>/<unit>' · 'o:claim/<name>' · 'o:bolt/<id>' · 'o:wi/<id>'; 'rv:<same>' is the review binding */
 function artOf(id){ const [kind, ...rest] = id.split('/'); const r = rest.join('/');
   if(kind==='intent') return {art:'intent', ...artIntent(r)}; if(kind==='unit'){ const [b, ...u] = rest; return {art:'unit', ...artUnit(b, u.join('/'))}; }
@@ -1771,7 +1815,7 @@ function palList(){
 function palOpen(q){ return palOpenAt((S.open && objOf(S.open)) ? S.open : (S.focus && objOf(S.focus) ? S.focus : null), q); }
 /* a typed field on the page is a command with its object already in hand: the dock's buttons
    open the palette scoped to that object with the command pre-filled, and hold no field. */
-function palOpenAt(scope, q, on){ S.pal.open = true; S.pal.q = q || ''; S.pal.sel = 0; S.pal.mode = null;
+function palOpenAt(scope, q, on){ S.pal.open = true; S.picker = null; S.pal.q = q || ''; S.pal.sel = 0; S.pal.mode = null;
   S.pal.scope = (scope && objOf(scope)) ? scope : null; S.pal.on = on || null;
   palShell(); renderPalette(); const f = $('#pal-q'); if(f){ f.focus(); f.setSelectionRange(f.value.length, f.value.length); } }
 function palClose(){ S.pal.open = false; S.pal.mode = null; S.pal.q = ''; S.pal.on = null; S.picked.clear();
@@ -2196,11 +2240,76 @@ function marksFor(objKey, sessId){
 }
 function laneHead(title, sub, extra=''){ return `<div class="lane-h"><h2>${title}</h2><span class="sub">${sub}</span>${extra}</div>`; }
 function renderInception(){
-  const cap = `<div class="curation">unmoved signals <b>${S.curation.unmoved}</b><span>${esc(S.curation.by)}</span><span>oldest ${S.curation.oldest}</span>${sessChip(S.curation.session)}</div>`;
-  const foot = '';
+  const cap = `<div class="curation"><button class="cnt" data-tray title="open the signals tray">unmoved signals <b>${S.curation.unmoved}</b></button><span>${esc(S.curation.by)}</span><span>oldest ${S.curation.oldest}</span>${sessChip(S.curation.session)}</div>`;
+  const notes = S.captures.filter(c => !c.move).map(c => capHtml(c, 'lane')).join('');
+  const foot = notes ? `<div class="sec-h">notes<span class="r">curation reads them · your hand shows on hover</span></div>${notes}` : '';
   const xs = S.explorations.map(x => `<div class="${objCls('x:'+x.id)} explore ${x.state==='done'?'done':''}" data-obj="x:${x.id}" tabindex="0"><div class="oh"><span class="ok">${x.kind==='standing'?'explore · standing':'explore · with-operator'}</span><span class="on">${x.names.map(esc).join(' + ')}</span><span class="os">${x.state==='done' ? `<span class="leave">done · leaves in ${esc(x.leaves)}</span>` : 'since '+esc(x.since)}</span></div><div class="ot">${esc(x.last)}</div>${x.state==='done' ? '' : `<div class="el">${sessChip(x.session)}</div>`}</div>`).join('');
   const list = S.intents.map(i => threadHtml(i)).join('');
-  $('#lane-inception').innerHTML = laneHead('Inception','intents and their elaborations') + cap + (xs ? `<div class="sec-h">explorations<span class="r">opened by you · over several intents</span></div>${xs}` : '') + `<div class="sec-h">intents<span class="r">lines off the books · a bead is an elaboration · click one</span></div>` + (list || '<div class="empty">nothing open</div>') + foot;
+  $('#lane-inception').innerHTML = laneHead('Inception','intents and their elaborations') + cap + foot + (xs ? `<div class="sec-h">explorations<span class="r">opened by you · over several intents</span></div>${xs}` : '') + `<div class="sec-h">intents<span class="r">lines off the books · a bead is an elaboration · click one</span></div>` + (list || '<div class="empty">nothing open</div>');
+}
+/* ---- a capture and the operator's hand on it (19a, S224, S224a, S233) ---- */
+const CAP_VERBS = [['build','build now','b','a chore on a new bolt named from its words, started now'],['bolt','add to bolt…','a','a chore on an open bolt you pick'],['intent','make an intent','m','an intent named from its words, with this note on it'],['attach','attach to…','t','put it on an intent that is open'],['drop','drop','d','set it aside; revive brings it back']];
+const capWords = c => c.text.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').split('-').slice(0,4).join('-');
+const capLine = () => `curation reads it next · ${S.curation.unmoved} waiting · runs at ${esc(S.curation.next.split(' ')[0])}, or when you run it`;
+const capMoved = c => c.move.v==='built' ? `built · <b>${esc(c.move.w)}</b>` : c.move.v==='added' ? `added to <b>${esc(c.move.w)}</b>` : c.move.v==='intent' ? `an intent · <b>${esc(c.move.w)}</b>` : c.move.v==='attached' ? `attached · <b>${esc(c.move.w)}</b>` : 'dropped · revive brings it back';
+function capHtml(c, where){
+  const picking = S.picker && S.picker.cap===c.id && S.picker.where===where;
+  return `<div class="${objCls('c:'+c.id,'cap')} ${where} ${picking?'picking':''} ${c.move?'moved':''}" data-obj="c:${c.id}" data-cap="${c.id}" tabindex="0"><q>${esc(c.text)}</q><span class="qm">${esc(c.src)} · ${esc(c.age)}</span><span class="qn ${c.move?'moved':''}">${c.move ? capMoved(c) : capLine()}</span>${c.move ? '' : handHtml(c, where)}${picking ? pickerHtml(c, S.picker.kind) : ''}</div>`;
+}
+function handHtml(c, where){
+  const busy = S.inflightCap===c.id, P = S.picker;
+  return `<div class="hand ${busy?'busy':''}" data-hand="${c.id}" data-where="${where}">${CAP_VERBS.map(([k,l,key,tip]) => { const open = !!(P && P.cap===c.id && P.kind===k && P.where===where);
+    return `<button class="btn sm quiet ${k==='drop'?'drop':''}" data-cv="${k}" data-cap="${c.id}" title="${tip}"${(k==='bolt'||k==='attach') ? ` aria-haspopup="listbox" aria-expanded="${open}"` : ''}${busy?' disabled':''}>${l}<span class="k">${key}</span></button>`; }).join('')}</div>`;
+}
+/* the picker's rows: the open intents in Inception's order, or the open bolts in Construction's order, the repository greyed when there are several (S224a) */
+function pickerRows(kind){
+  if(kind==='attach') return S.intents.filter(i => i.state==='open').map(i => ({id:i.id, label:(i.subject||i.name).replace(/-/g,' '), n:''}));
+  const many = new Set(S.bolts.map(b => b.repo)).size > 1;
+  return S.bolts.filter(b => !b.landing).map(b => ({id:b.id, label:b.name, pre:many ? b.repo : '', n:`${b.units.length} units`}));
+}
+function pickerShown(){ const P = S.picker; if(!P) return []; const q = P.q.trim().toLowerCase(); const all = pickerRows(P.kind); return q ? all.filter(r => ((r.pre||'')+' '+r.label).toLowerCase().includes(q)) : all; }
+function pickerHtml(c, kind){
+  const P = S.picker, all = pickerRows(kind), rows = pickerShown(), filt = all.length > 8;
+  const head = `<div class="pk-h">${kind==='attach' ? 'open intents' : 'open bolts'} · ${all.length}${filt ? '<span class="r">type to narrow</span>' : ''}</div>`;
+  const field = filt ? `<input class="pk-q" id="pk-q" value="${esc(P.q)}" placeholder="narrow…" aria-label="narrow the list" autocomplete="off">` : '';
+  const empty = !all.length ? `<div class="pk-empty">${kind==='attach' ? 'no intent is open yet' : 'no bolt is open yet'}<button class="btn sm" data-cv="${kind==='attach' ? 'intent' : 'build'}" data-cap="${c.id}">${kind==='attach' ? 'make an intent' : 'build now'}</button></div>`
+    : !rows.length ? `<div class="pk-empty">nothing here says “${esc(P.q)}”</div>` : '';
+  const list = rows.map((r,i) => `<button class="pk-row ${i===P.sel?'sel':''}" role="option" aria-selected="${i===P.sel}" data-pick="${r.id}" data-cap="${c.id}" data-kind="${kind}">${r.pre ? `<span class="pre">${esc(r.pre)}</span>` : ''}<span class="lb">${esc(r.label)}</span>${r.n ? `<span class="n">${esc(r.n)}</span>` : ''}</button>`).join('');
+  return `<div class="picker" data-picker role="listbox" aria-label="${kind==='attach' ? 'open intents' : 'open bolts'}">${head}${field}${empty}<div class="pk-list">${list}</div></div>`;
+}
+/* one picker open on the page at a time; opening another, the palette or a dock page closes it (S233) */
+function pickerOpen(cap, kind, where, btn){
+  const P = S.picker; if(P && P.cap===cap && P.kind===kind && P.where===where){ pickerClose(true); return; }
+  S.picker = {cap, kind, where, q:'', sel:0}; render(); pickerFocus();
+}
+function pickerFocus(){ const f = $('#pk-q'); if(f){ f.focus(); f.setSelectionRange(f.value.length, f.value.length); return; } const r = $('.picker .pk-row.sel'); if(r) r.focus(); }
+function pickerClose(back){ const P = S.picker; S.picker = null; render(); if(back && P){ const b = $(`[data-hand="${P.cap}"][data-where="${P.where}"] [data-cv="${P.kind}"]`); if(b) b.focus(); } }
+function renderPicker(){ const el = $('[data-picker]'); if(!el || !S.picker) return; const c = S.captures.find(x => x.id===S.picker.cap); el.outerHTML = pickerHtml(c, S.picker.kind); pickerFocus(); }
+/* the verbs: each a catalogue tool, the call as the signal's move; a pick is the whole gesture and the row dims while it sends (S224a, S32) */
+function capAct(id, verb, target){
+  const c = S.captures.find(x => x.id===id); if(!c || c.move) return;
+  const words = capWords(c); S.picker = null; S.inflightCap = id; render();
+  setTimeout(() => {
+    S.inflightCap = null; S.curation.unmoved = Math.max(0, S.curation.unmoved - 1);
+    if(verb==='build'){ const repo = S.repos.find(r => r.id!=='books')?.id || 'atlas'; S.bolts.unshift({id:words, name:words, repo, line:`${words} @ new`, note:'1 approved · from your note', claims:[], units:[{name:words, state:'queued', type:'chore'}], services:[], endpoints:[]});
+      c.move = {v:'built', w:`${repo}/${words}`}; since('built', `${repo} · ${words}`, 'from your note · a chore on a new bolt'); logLine(`propose-unit · ${words} · new bolt ${words} · ${repo}`, {say:true}); toast(`built · ${words} · a chore on a new bolt`); }
+    if(verb==='bolt'){ const b = bolt(target); if(!b) return; b.units.push({name:words, state:'queued', type:'chore'}); c.move = {v:'added', w:`${b.repo}/${b.name}`}; since('added', `${b.repo} · ${b.name}`, `from your note · unit ${words}`); logLine(`propose-unit · ${words} · bolt ${b.name}`, {say:true}); toast(`added to ${b.name} · unit ${words}`); }
+    if(verb==='intent'){ S.intents.unshift({id:words, name:words, state:'open', chapters:[], note:'opened by you from a note · its first elaboration is proposed from it', sessions:[]}); c.move = {v:'intent', w:words}; since('intent', words, 'opened by you from a note'); logLine(`open-intent · ${words}`, {say:true}); toast(`intent ${words} · open · the note is on it`); }
+    if(verb==='attach'){ const i = intent(target); if(!i) return; c.move = {v:'attached', w:i.name}; since('attached', i.name, 'your note · the intent proposes from it'); logLine(`attach-signal · ${i.name}`, {say:true}); toast(`attached to ${i.name}`); }
+    if(verb==='drop'){ c.move = {v:'dropped', w:''}; since('dropped', `note · ${c.text.slice(0,32)}…`, 'your response · revive brings it back'); logLine('drop-signal', {say:true}); toast('dropped · revive brings it back'); }
+    render();
+  }, 480);
+}
+function dockCapture(c){
+  return sec('the note', `<div class="quote"><q>${esc(c.text)}</q><span class="qm">${esc(c.src)} · ${esc(c.age)}</span></div>`)
+    + sec('what becomes of it', `<div class="dtext">${c.move ? capMoved(c) : capLine()}</div>`)
+    + sec('in the tray', `<div class="dtext"><button class="btn sm" data-tray>open the signals tray</button></div>`);
+}
+function dockTray(){
+  const rows = S.captures.filter(c => !c.move);
+  const head = `<div class="tray-h"><button class="btn sm pri" data-curate>run curation now</button><span class="trig">runs on its own at ${esc(S.curation.next.split(' ')[0])}, or at 8 unmoved</span>${sessChip(S.curation.session)}</div>`;
+  const list = rows.length ? rows.map(c => capHtml(c, 'tray')).join('') : '<div class="empty">nothing is waiting on curation</div>';
+  return head + sec('unmoved', list, 'by source and age · the verbs show on the row under your hand');
 }
 function renderPlan(){
   const P = S.proposal; const pd = dec(P.n);
@@ -2685,7 +2794,7 @@ function renderLoad(){ const L = $('#load'); L.hidden = !S.load; if(!S.load) ret
     <div class="load-foot">every count is derived from the same state the engine reads; the 7-day series and the streaks are history read the same way · a unit is ~${SLOT_DAYS} slot-days, from the last week · esc closes · ${SM}</div></div>`; }
 document.addEventListener('toggle', e => { if(e.target.classList && e.target.classList.contains('adv')) S.adv = e.target.open; }, true);
 /* --- organizations and the account item: the page belongs to one organization at a time; the account item in the top bar switches it (the whole seed swaps: rail, board, hosts strip) and opens settings, hosts, the organization store and sign-out · who you are is name and sign-in kind --- */
-const baseSeed = () => ({minutes:7*60+40, decisions:[], attention:[], railMine:false, pools:[], marks:{page:'07:40'}, since:[], hosts:[], intents:[], gatherings:[], explorations:[], planning:null, deferred:[], picked:new Set(), exploreKind:'with', pal:{open:false, q:'', sel:0, scope:null, mode:null, on:null},
+const baseSeed = () => ({minutes:7*60+40, decisions:[], attention:[], railMine:false, pools:[], marks:{page:'07:40'}, since:[], hosts:[], intents:[], gatherings:[], explorations:[], planning:null, deferred:[], captures:[], picker:null, inflightCap:null, picked:new Set(), exploreKind:'with', pal:{open:false, q:'', sel:0, scope:null, mode:null, on:null},
   repos:[{id:'books', kinds:['books'], caps:[], manifest:'books/flywheel.yaml · the books repository · claims live here', claims:[]}], view:'phases', load:false, scopeSel:null, scopeSet:new Set(), addRepo:null,
   map:{nodes:[{id:'books', x:60, y:200}], edges:[]}, review:{on:false, mark:'never', nodes:{}, edges:{}}, bolts:[], landed:[], opsignals:[], curation:{unmoved:0, by:'nothing yet', oldest:'0d', next:'when a signal arrives', session:{label:'curation', state:'scheduled', act:'idle', host:'', agent:'claude', model:'haiku', pane:''}},
   proposal:{session:'', reads:'', bolts:[], units:[], edits:0, refusal:null, n:0}, log:[], inflight:{}, focus:null, open:null, hostlit:null, nextWi:1, acct:false, signedOut:false});
@@ -2812,6 +2921,8 @@ function assignOwner(n){ const d = dec(n); if(!d) return; const v = ($(`[data-as
 
 function dockFooter(key){
   const [t,id] = key.split(':');
+  if(t==='c'){ const c = S.captures.find(x => x.id===id), picking = S.picker && S.picker.cap===c.id && S.picker.where==='drawer'; return c.move ? `<div class="fl">nothing to answer<span class="r">${capMoved(c).replace(/<[^>]+>/g,'')}</span></div>` : `<div class="fl">your hand<span class="r">or leave it to curation</span></div>${handHtml(c, 'drawer')}${picking ? pickerHtml(c, S.picker.kind) : ''}`; }
+  if(t==='t') return `<div class="fl">nothing to answer here<span class="r">each row carries the note's verbs · run now is at the head</span></div>`;
   if(t==='o'){ const [kind] = id.split('/'); const r = artReview(id); const o = artOf(id); const p = o ? (o.dir||o.file||o.place) : id; return `<div class="fl">nothing to answer here<span class="r">${kind==='claim' ? 'a verdict is an agent\'s judgment · scope moves by re-attach' : 'edits only through the review surface'}</span></div><div class="acts"><button class="btn sm" data-oreview="${esc(id)}">review${r.pending ? ` · decision ${r.pending.n}` : ''}</button><button class="btn sm quiet" data-osrc="${esc(p)}">open source ↗</button></div>`; }
   if(t==='rv'){ const r = artReview(id); return r.pending ? dockFooter('d:'+r.pending.n) : `<div class="fl">no decision pending<span class="r">an annotation here has no decision to answer</span></div>`; }
   if(t==='d'){ const d = dec(+id); const f = S.inflight[d.n];
@@ -2838,6 +2949,8 @@ function renderDock(){
   else if(t==='b'){ form = 'dk-ledger'; head = `<div class="row"><span class="kind">bolt</span><span class="ph">construction</span>${nav}</div><h2 id="dk-title">${esc(o.repo)}/${esc(o.name)}</h2><div class="tail">${esc(o.note)}</div>`; body = dockBolt(o); }
   else if(t==='i'){ form = 'dk-thread'; head = `<div class="row"><span class="kind">intent</span><span class="ph">inception</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.state)}${threadBeads(o).length ? ` · ${threadBeads(o).length} bead${threadBeads(o).length===1?'':'s'} · <kbd>]</kbd> opens the first` : ''}</div>`; body = dockIntent(o); }
   else if(t==='v'){ form = 'dk-bead'; head = `<div class="row"><span class="kind">elaboration · ${esc(o.kind)}</span><span class="ph">inception</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.etype)} · on intent ${esc(o.intent.name)} · <button data-gotoobj="i:${o.intent.id}">‹ back to the thread</button> · <kbd>]</kbd><kbd>[</kbd> beads</div>`; body = dockElab(o); }
+  else if(t==='c'){ head = `<div class="row"><span class="kind">capture</span><span class="ph">inception</span>${nav}</div><h2 id="dk-title">${esc(o.text.length > 64 ? o.text.slice(0,64)+'…' : o.text)}</h2><div class="tail">${esc(o.src)} · ${esc(o.age)}</div>`; body = dockCapture(o); }
+  else if(t==='t'){ head = `<div class="row"><span class="kind">signals tray</span><span class="ph">inception</span>${nav}</div><h2 id="dk-title">unmoved signals · ${S.curation.unmoved}</h2><div class="tail">${esc(S.curation.by)} · oldest ${esc(S.curation.oldest)}</div>`; body = dockTray(); }
   else if(t==='l'){ form = 'dk-record'; head = `<div class="row"><span class="kind">landed</span><span class="ph">operation</span>${nav}</div><h2 id="dk-title">${esc(o.repo)}/${esc(o.name)}</h2><div class="tail">landed ${esc(o.at)} · PR #${o.pr.n}</div>`; body = dockLanded(o); }
   else if(t==='h'){ head = `<div class="row"><span class="kind">host</span>${nav}</div><h2 id="dk-title">${esc(o.id)}</h2><div class="tail">${o.alive?'alive':'gone '+o.gone} · ${o.bound ? o.bound+' sessions at once' : 'no build sessions'}</div>`; body = dockHost(o); }
   else if(t==='e'){ head = `<div class="row"><span class="kind">external system</span><span class="ph">map</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.what)}</div>`; body = sec('on the map', `<div class="dtext">An external system the fleet meets. It carries no claims of its own; a claim about the contract with it is in scope for every repository that meets it.</div>`) + sec('met by', `<div class="rows">${S.map.edges.filter(e => e[1]===o.id || e[0]===o.id).map(e => `<div class="row"><span class="st">${esc(e[0]===o.id ? e[1] : e[0])}</span><span class="grow">${esc(e[2])}</span></div>`).join('')}</div>`); }
@@ -2854,7 +2967,7 @@ function renderDock(){
   $('#dk-h').className = 'dk-h ' + form; $('#dk-h').innerHTML = head; $('#dk-b').innerHTML = body; $('#dk-f').innerHTML = t==='a' ? `<div class="acts">${o.acts.map(([k,l]) => `<button class="btn sm ${k==='takeover'?'yes':''}" data-att="${o.id}" data-ak="${k}">${esc(l)}</button>`).join('')}</div>` : dockFooter(key);
   $('#dk-b').scrollTop = keep;
 }
-function openDock(key){ const was = S.open===key; S.open = key; if(key[0]==='d' || key[0]==='a'){ S.focus = key; } document.body.classList.add('docked'); render(); if(!was) $('#dk-b').scrollTop = 0; }
+function openDock(key){ const was = S.open===key; S.open = key; S.picker = null; if(key[0]==='d' || key[0]==='a'){ S.focus = key; } document.body.classList.add('docked'); render(); if(!was) $('#dk-b').scrollTop = 0; }
 function closeDock(){ S.open = null; document.body.classList.remove('docked'); render(); }
 function setFocus(key){ S.focus = key; if(S.open && (S.open[0]==='d'||S.open[0]==='a')) S.open = key; render(); const el = document.querySelector(`.rail [data-nav="${key}"]`); if(el){ el.scrollIntoView({block:'nearest'}); el.focus({preventScroll:true}); } const lit = $('[data-obj].lit'); if(lit) lit.scrollIntoView({block:'nearest'}); }
 function step(dir){ const list = railKeys(); if(!list.length) return; const i = list.indexOf(S.focus); const j = i<0 ? 0 : Math.min(list.length-1, Math.max(0, i+dir)); setFocus(list[j]); }
@@ -2868,6 +2981,13 @@ document.addEventListener('click', e => {
   if(b && b.id==='acct'){ S.acct = !S.acct; renderAcct(); return; }
   if(b && b.dataset.org){ switchOrg(b.dataset.org); return; }
   if(b && b.dataset.acct){ const k = b.dataset.acct; S.acct = false; if(k==='console'){ window.location.href = `management-console.html?org=${encodeURIComponent(S.org)}`; return; } if(k==='signout'){ S.signedOut = true; render(); return; } renderAcct(); return; }
+  /* a capture's verbs and its picker (S233) · a click outside an open picker closes it */
+  if(t.closest('[data-picker]') && !b) return;
+  if(b && b.dataset.pick){ capAct(b.dataset.cap, b.dataset.kind, b.dataset.pick); return; }
+  if(b && b.dataset.cv){ const v = b.dataset.cv, cap = b.dataset.cap; if(v==='bolt' || v==='attach'){ pickerOpen(cap, v, b.closest('.hand')?.dataset.where || 'lane', b); } else capAct(cap, v); return; }
+  if(S.picker){ S.picker = null; render(); }
+  if(b && b.dataset.tray !== undefined){ openDock('t:tray'); return; }
+  if(b && b.dataset.curate !== undefined){ S.curation.session = {...S.curation.session, state:'working', act:'reading 5 signals'}; logLine('curate · run now', {say:true}); toast('curation charged · the count falls as moves are written'); render(); return; }
   if(b && b.dataset.mine !== undefined){ S.railMine = b.dataset.mine==='1'; if(S.focus && S.focus[0]==='d' && !railKeys().includes(S.focus)) S.focus = railKeys()[0] || null; render(); return; }
   if(b && b.dataset.assign){ assignOwner(+b.dataset.assign); return; }
   if(b && b.id==='signin'){ S.signedOut = false; logLine(`sign in · ${ME().kind==='okta' ? 'Okta SSO' : 'GitHub'}`, {}); toast(`signed in · ${ME().name} · ${ME().handle}${ME().subject ? ' · via Okta' : ''}`); render(); return; }
@@ -2966,6 +3086,7 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('input', e => { const t = e.target;
   if(t.id==='pal-q'){ S.pal.q = t.value; S.pal.sel = 0; renderPalette(); return; }
+  if(t.id==='pk-q' && S.picker){ S.picker.q = t.value; S.picker.sel = 0; renderPicker(); return; }
   });
 document.addEventListener('change', e => {
   const t = e.target;
@@ -2984,6 +3105,18 @@ document.addEventListener('change', e => {
 document.addEventListener('keydown', e => {
   const typing = e.target.matches('input,textarea,select');
   if((e.metaKey||e.ctrlKey) && (e.key==='k'||e.key==='K')){ e.preventDefault(); S.pal.open ? palClose() : palOpen(''); return; }
+  /* a picker holds the keys while it is open: ↓ ↑ walk, Enter picks, Esc closes back to its verb; the rail does not move (S233, S57) */
+  if(S.picker){
+    if(e.key==='Escape'){ e.preventDefault(); pickerClose(true); return; }
+    if(e.key==='ArrowDown' || e.key==='ArrowUp'){ e.preventDefault(); const n = pickerShown().length; if(n){ S.picker.sel = (S.picker.sel + (e.key==='ArrowDown' ? 1 : -1) + n) % n; renderPicker(); } return; }
+    if(e.key==='Enter'){ e.preventDefault(); const r = pickerShown()[S.picker.sel]; if(r) capAct(S.picker.cap, S.picker.kind, r.id); return; }
+    if(typing) return; if(e.key==='Tab') return; e.preventDefault(); return; }
+  /* a focused capture answers b a m t d with its verbs and Enter with its drawer; the page's b and m wait (S233) */
+  const capEl = !typing && document.activeElement && document.activeElement.closest ? document.activeElement.closest('.cap,[data-hand]') : null;
+  if(capEl && !S.pal.open){ const cap = capEl.dataset.cap || capEl.dataset.hand, where = capEl.dataset.where || 'lane';
+    const map = {b:'build', a:'bolt', m:'intent', t:'attach', d:'drop'}; const v = map[e.key];
+    if(v && !(e.metaKey||e.ctrlKey||e.altKey)){ e.preventDefault(); if(v==='bolt' || v==='attach'){ pickerOpen(cap, v, where, capEl.querySelector(`[data-cv="${v}"]`)); } else capAct(cap, v); return; }
+    if(e.key==='Enter' && capEl.classList.contains('cap') && document.activeElement===capEl){ e.preventDefault(); openDock('c:'+cap); return; } }
   if(S.pal.open){
     if(e.key==='Escape'){ e.preventDefault(); if(S.pal.mode==='pick'){ S.pal.mode = null; S.picked.clear(); renderPalette(); return; } palClose(); return; }
     if(typing && e.target.id!=='pal-q') return;
