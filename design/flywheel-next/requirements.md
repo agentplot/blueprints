@@ -2668,9 +2668,15 @@ requirements, iterated against the running rail rather than on paper.
     top, the rail, the board, and the dock page a link named (308) —
     first paints within 1.0 s and answers within 1.5 s on a mid-range
     phone over an ordinary mobile connection, and a load with nothing
-    cached is at most 200 KB on the wire, 60 KB once the fonts are
-    cached, the first view's body at most 100 KB before compression.
-    The page ships what is on screen: a dock page, the signals tray's
+    cached is at most 200 KB on the wire, 60 KB once the bundle's
+    fonts, style and script are cached, and the first view's HTML —
+    what the host renders for that load, the bundle's style and script
+    out of it — at most 100 KB before compression. The bundle's style,
+    script and fonts are the same bytes for every load and every
+    instance, so they are served once under the binary's version and
+    cached; the copy a member's client renders carries them inline,
+    since it fetches nothing (293a). The page ships what is on screen:
+    a dock page, the signals tray's
     rows, and every list longer than 50 rows are fetched when opened
     and paged past 50, the count stated. An update carries only the
     regions that changed, at most 8 KB for one move, one answer or one

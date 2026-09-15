@@ -1348,6 +1348,34 @@ the operator may reverse by a response on the file; an entry with
   (gaps 110). The mirror's definitions/profiles/surfaces.yaml needs
   recopying.
 
+  The 100 KB against the bundle's style and script, ruled 2026-09-15.
+  The page's stylesheet, copied whole from the mockup (D16), is 67 KB
+  and its script 29 KB, about 96 KB with comments and indentation
+  stripped, so a first view carrying them inline is 123 KB on the
+  round's instance and 156 KB at ten times, over the 100 KB with the
+  rendered state alone under it. Two readings were offered: the 100 KB
+  is the `<body>` element and the stylesheet in the head is outside it,
+  or the style and script leave the document and are served as the
+  fonts are. **Decision**: the second. The style, the script and the
+  fonts are the bundle's, the same bytes for every load and every
+  instance, and the budget's rule is that what a load costs grows with
+  what is on screen and nothing already held is sent twice; the fonts
+  went out of the document on that rule (24.2) and the style and script
+  follow it, each a response of its own at the host's address under the
+  binary's version, cached for a year, and the 100 KB is the HTML the
+  host renders for the load. A `<body>` reading would let the number
+  turn on where a tag sits. 310's "nothing fetched from anywhere else"
+  is about the host's address and not one response: a fetch from the
+  host's own address under the version is the page fetching itself.
+  The member's client is the exception and the reason the bundle is
+  still one thing: its frame fetches nothing and reaches the host
+  through the client alone (S230, 293a), so the resource the tool names
+  carries the same style and script inline, and the test that held the
+  page to one inline stylesheet now holds the client's inline text to
+  the served files' bytes. Not ruled here: the stylesheet's size, which
+  is the mockup's whole and carries rules the page never writes; that
+  is the change's to take up, since the budget is met without it.
+
 - **306–314 the phone.** Ruled: parity is a requirement of the first
   build and not a surface ruling, the phone being the same served bundle
   under 760px with two tabs and a full-screen dock; deep links from every
@@ -1377,7 +1405,8 @@ the operator may reverse by a response on the file; an entry with
   there today, so what the header drops at that width, and whether the
   "yes all" numbers and the key hints of S38 are the whole of it, is
   unstated; the served dock's id chip runs off the right edge at 390px
-  as well (2026-09-15). **Open**. 313 names the Claude mobile app a client of the
+  as well, and the drawer's pages run off it on long text (2026-09-15).
+  **Open**. 313 names the Claude mobile app a client of the
   tool server, but which authority that client signs in against on a
   self-managed host, whose address is a localhost port with no name
   (245, 293), is unbound: the device flow issues what a client on the
