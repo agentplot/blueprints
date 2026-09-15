@@ -2104,11 +2104,18 @@ whatever else it does.
   shows the repository and the words (S28), and SINCE gains "asked"
   (S9).
 - **S230.** Ruled 2026-09-15: how a member's client gets a view (293a,
-  322). A tool whose result is one of the page's views names that view's
-  resource on its declaration in the catalogue, under the user-interface
-  extension of the model context protocol (`_meta.ui.resourceUri`), so a
-  client that renders such resources fetches the view as it calls the
-  tool; the result names no resource. The address is under the `ui://`
+  322). Each of the page's views is the result of a read-only tool of
+  its name — `rail`, `board`, `status`, `object <id>` — that writes and
+  records nothing, and a tool whose result is one of the page's views
+  names that view's resource on its declaration in the catalogue, under
+  the user-interface extension of the model context protocol
+  (`_meta.ui.resourceUri`), so a client that renders such resources
+  fetches the view as it calls the tool; the result names no resource.
+  The result is the view's regions keyed by the id each has on the page
+  — the rail; the board's header and lanes; for `status` the hosts strip
+  with them (141); for `object` that object's dock surface, opened — and
+  the same in words, so a client that renders nothing reads the rail's
+  numbers and answers and makes the same call (311). The address is under the `ui://`
   scheme and carries the binary's version and the view's name —
   `ui://flywheel/<version>/rail`, `.../board`, `.../status`,
   `.../object` — and is read under the caller's token like any call
@@ -2119,15 +2126,25 @@ whatever else it does.
   between renders (310). Every result carries the version it was
   rendered under: a newer binary names newer addresses, which is how a
   client holding an older copy fetches again, and a view whose bundle is
-  of another version than its result shows "this view is out of date ·
-  fetch it again" and nothing of the state (326). The bundle declares no
+  of another version than its result empties every region and shows
+  "this view is out of date · fetch it again" and nothing of the state
+  (326); an address under another version is refused naming the ones
+  served. Inside a client only the view's own regions show — no header,
+  tabs, log or palette — at the frame's width, and the view tells the
+  client the height it needs. The bundle declares no
   external origin and asks no permission of the client's sandbox (307,
   310, 204). The four views are listed among the server's resources, so
   a client can ask for the rail without a tool having been called. A tap
   inside a rendered view is the control the page has, sent as a
   `tools/call` through the client — the same tool on the same object the
-  page's form would post — checked, recorded once and idempotent as any
-  call (321, 323, 137).
+  page's form would post; `yes all` is one `answer` per number, in
+  order — checked, recorded once and idempotent as any call (321, 323,
+  137): the control goes busy at once, the view fetches itself again
+  through the client and redraws once the call is made, and a refusal
+  is a toast on the view with the reason (S30). Tapping an object's
+  link inside a view opens that object's view in the same frame, the
+  `object` tool through the client; a link out of the flywheel is
+  handed to the client to open as its own.
 - **S231.** Ruled 2026-09-15: a finding a session offers with no intent
   or bolt above it — a curation session's, a capture reader's — is a
   signal like any other on the page (58, 62). Under the capture the

@@ -1177,6 +1177,16 @@ the operator may reverse by a response on the file; an entry with
   host (230); its "offer" wording for a part added and awaiting
   install is being replaced by "add", matching 229's states.
 
+- **79 / 321 — a refusal the page's own form meets is not in the run
+  record.** `surfaces.yaml` tools.identity has every refused call
+  written to the run record with the identity, the tool and the object,
+  and the built member's client does this for a call the catalogue
+  refuses, a view refused and a caller refused at the door (2026-09-15,
+  the-loop group 18). The same refusal met by a form posted from the
+  served page is answered on the page and written nowhere. The rule
+  holds; the page is behind it. **Open** until the page's refusals are
+  carried to the run record the way a client's are.
+
 ## Part B
 
 - **129 annotations as the response.** A plannotator annotation set

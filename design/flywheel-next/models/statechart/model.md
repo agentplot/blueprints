@@ -3572,16 +3572,23 @@ rendered view is one of these calls and nothing else, so there is no
 second write path and nothing to reconcile.
 
 **The views are the page's own (322, 326, 293a).** The rail, the board,
-the status view and one object's detail are each a user-interface
-resource of the tool server carrying the same bundle the host serves
-(307): one implementation, rendered from what the tool returned, fetching
-nothing external and carrying no secret. The wire is the protocol's own
-user-interface extension (S230, `surfaces.yaml` `member_client.wire`): a
-tool whose result is a view names the view's resource on its declaration
-in the catalogue, never on its result; the address is under the `ui://`
-scheme, carrying the binary's version and the view's name, and reads
-under the caller's token as the one bundle, which draws the region and
-the state the tool returned. The resource is versioned with the binary
+the status view and one object's detail are each the result of a
+read-only tool of the view's name — `rail`, `board`, `status`, `object`,
+the first four of `surfaces.yaml` `tools.queries`, writing and recording
+nothing — and each a user-interface resource of the tool server carrying
+the same bundle the host serves (307): one implementation, rendered from
+what the tool returned, fetching nothing external and carrying no secret.
+A result is the view's regions by their ids on the page and the same view
+in words, so a client that draws nothing reads it (311). The wire is the
+protocol's own user-interface extension (S230, `surfaces.yaml`
+`member_client.wire`): a tool whose result is a view names the view's
+resource on its declaration in the catalogue, never on its result; the
+address is under the `ui://` scheme, carrying the binary's version and
+the view's name, and reads under the caller's token as the one bundle —
+the page's template with nothing drawn — which draws the region and the
+state the tool returned. The protocol is answered at the address the
+page is served at, with the instance in the path, one message a request
+and no stream held open (`member_client.address`). The resource is versioned with the binary
 that serves it (208, 224, 291): a newer binary names a newer address and
 every result carries the version it was rendered under, so a client
 holding an older copy fetches it again rather than rendering state it

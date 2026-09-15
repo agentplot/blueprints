@@ -2671,11 +2671,13 @@ requirements, iterated against the running rail rather than on paper.
     done on the page and in chat, and a refusal is written to the run
     record with the identity, the tool and the object (79).
 322. The views a client may render are the page's own — the rail, the
-    board, the status view, and one object's detail — each a
-    user-interface resource of the tool server carrying the same bundle
-    the host serves (293a, 307). A client that renders none of them
-    still holds every tool, and every decision stays answerable as a
-    call (311).
+    board, the status view, and one object's detail — each the result
+    of a read-only tool of the view's name that writes and records
+    nothing (193), and each a user-interface resource of the tool
+    server carrying the same bundle the host serves (293a, 307). A
+    result carries the view in words as well as drawn, so a client that
+    renders none of them reads it, still holds every tool, and every
+    decision stays answerable as a call (311).
 323. What the operator taps inside a rendered view is a tool call
     through their own client (293a): checked by the rules of 321,
     recorded once by its delivery identity, and taking effect once
