@@ -52,7 +52,7 @@ were settled, not their place on the page.
   2026-09-14), the count of
   responses sent with a control that opens the sent log, a theme
   control (light, dark, system), and the account item at its right
-  (S152).
+  (S152). What it keeps under 760px: S236.
 - **S3.** The rail is titled "Decisions". It is one rail delivery
   (model 5.5): the numbered decisions in the model's order, approve
   then decide then answer, each group sorted by number; then attention,
@@ -473,7 +473,8 @@ were settled, not their place on the page.
   of S90. The book is a link out (S91). A capture control on both tabs
   raises the palette as a bottom sheet (S30). The dock is full screen
   with a back control. The
-  header hides the key hints and the "yes all" numbers. The machinery
+  header hides the key hints and the "yes all" numbers (what else it
+  drops at that width, and where each goes: S236). The machinery
   strip stays one scrolling row; the flywheel panel is reached from the
   board header (S110). The account item stays in the header and its
   menu opens full screen with a back control. Promoted to 307: the
@@ -2381,7 +2382,32 @@ whatever else it does.
   the numbers are 310a's and the test fails a build over any of them.
   The rule that keeps it: what the page costs grows with what is on
   screen, so nothing about an object the operator has not opened is
-  rendered, and nothing already on screen is sent twice.
+  rendered, and nothing already on screen is sent twice. The
+  stylesheet and the script are the mockup's, taken whole (D16): a
+  rule the page does not write yet is a surface still to build, and
+  neither is trimmed by hand or by a build's pass over what the page
+  writes — a rule the design has no surface for leaves the mockup
+  first and the page follows. Their size is bound by the budget's
+  numbers alone: cached, they cost a load once per version, and the
+  first view's 100 KB does not count them.
+- **S236.** Ruled 2026-09-15: what the header keeps under 760px, one
+  row at 390px that nothing runs past (307, 314, S38). It keeps what
+  the operator acts on there: the instance with the as-of time of its
+  read (145), "yes all" as the word alone while an approve decision
+  waits (S2), the sent count that opens the log, and the account chip
+  at the right (S152). It drops the page's title, the key hints and
+  the "yes all" numbers (S38), the count of decisions, which the
+  Decisions tab's badge carries at the foot (S38), and the capture
+  box, since on a phone the capture control on both tabs raises the
+  palette as a bottom sheet and the box never opens under the header
+  there (S38, S211). The theme control moves into the account item's
+  menu, last before sign-out (S152), so every control of the desktop's
+  header is still reached on the phone (306). What holds for the
+  header holds for the dock's head and the tray's rows: nothing runs
+  past the right edge at 390px, and text is cut at its end (S215), the
+  id chip in the dock's head and a drawer page's long text among it.
+  The mockup is fixed the same way, since it is the page's source
+  (D16, 314).
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open

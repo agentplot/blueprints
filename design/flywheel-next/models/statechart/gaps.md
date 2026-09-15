@@ -1391,9 +1391,15 @@ the operator may reverse by a response on the file; an entry with
   through the client alone (S230, 293a), so the resource the tool names
   carries the same style and script inline, and the test that held the
   page to one inline stylesheet now holds the client's inline text to
-  the served files' bytes. Not ruled here: the stylesheet's size, which
-  is the mockup's whole and carries rules the page never writes; that
-  is the change's to take up, since the budget is met without it.
+  the served files' bytes. The stylesheet's size, ruled 2026-09-15: it
+  is the mockup's whole (67 KB, about 11 KB of it rules the page does
+  not write yet) and stays so (D16, S235). A rule the page does not
+  write yet is a surface still to build — the pane popover and the
+  picker among them — and neither the style nor the script is trimmed
+  by hand or by a pass over what the page writes; a rule the design
+  has no surface for leaves the mockup first and the page follows.
+  Cached under the version, the two cost a load once, so their size is
+  bound by the budget's numbers alone, and the budget is met.
 
 - **306–314 the phone.** Ruled: parity is a requirement of the first
   build and not a surface ruling, the phone being the same served bundle
@@ -1419,13 +1425,20 @@ the operator may reverse by a response on the file; an entry with
   thumbnail is a rendering and not a control, so 306 does not decide it.
   **Open**.
 
-  Two things are unbound rather than ruled. 314 asserts the mockups
-  render at 390px, and the rail-and-board mockup's header overflows
-  there today, so what the header drops at that width, and whether the
-  "yes all" numbers and the key hints of S38 are the whole of it, is
-  unstated; the served dock's id chip runs off the right edge at 390px
-  as well, and the drawer's pages run off it on long text (2026-09-15).
-  **Open**. 313 names the Claude mobile app a client of the
+  What the header drops at 390px, ruled 2026-09-15 (S236, surfaces.yaml
+  phone.header): the rail-and-board mockup's header overflowed there,
+  and the key hints and "yes all" numbers of S38 were not the whole of
+  it. The header keeps the instance with its as-of time, "yes all" as
+  the word alone, the sent count and the account chip; it drops the
+  title, the key hints, the numbers, the count (the Decisions tab's
+  badge carries it) and the capture box (the tabs' control raises the
+  palette sheet); the theme control moves into the account menu. The
+  same rule holds the dock's head, whose id chip ran off the right edge,
+  the drawer's pages on long text and the tray's rows: nothing runs
+  past the edge at 390px and text is cut at its end (S215). As built
+  2026-09-15: the served header still carries the title, the count and
+  the capture box at that width, and the mockup is not yet fixed
+  (306, 314). One thing is unbound rather than ruled. 313 names the Claude mobile app a client of the
   tool server, but which authority that client signs in against on a
   self-managed host, whose address is a localhost port with no name
   (245, 293), is unbound: the device flow issues what a client on the
