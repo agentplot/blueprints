@@ -2786,8 +2786,12 @@ through these operations, and depends only on these guarantees.
     and no two kinds share one: a decision is the only thing shaped as
     an answerable card, a proposal reads as a document with its unit
     proposals hanging off it, an intent as a thread with its
-    elaborations in order, a bolt as a ledger with its units in order,
-    a landed bolt as a record, a signal as a quote. The phase an object
+    elaborations in the order they were made, a bolt as a ledger with
+    its units in order and their work items under them, a landed bolt
+    as a record, a capture as a note with its signals as quotes, a
+    signal as a quote, a session as a row, and anything else as a
+    plain entry. A part is drawn inside its whole when both sit in one
+    group, and where it sits otherwise. The phase an object
     is in is shown by where it sits, never by its form. A rendering of
     the status view on any surface keeps these forms.
 210. An elaboration is a surface of its own, reached from its intent:

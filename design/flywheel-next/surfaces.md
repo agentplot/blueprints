@@ -274,8 +274,8 @@ were settled, not their place on the page.
 | unit | its decision or slip | its job as a quote; its type, bolt, repository, host and the capture it came from, each a link where it is an object; the unit document with a note control per section; items and stages; cited claims with "read in book", or "no claim cited" and, once landed, whether a claim was captured, declined or neither yet (34a, 317, S207); sessions running (none before yes); the commits on its bolt's branch; "change" opening its artifact view once approved, "no change yet" before (187) | yes · drop · redo · bolt · new bolt · rename · type · later |
 | bolt | a ledger | the ledger; the bolt's repository, branch, host and place (S222); decisions on it (in the rail, where you answer); its units with drop per unstarted unit and "change" per unit; rename; every session on it with its agent, pane, host, when it started, its exit and what it delivered; the commits on the branch (hash, subject, author, when), titled as main's latest once the bolt has landed; services with start and stop; served endpoints; the acceptance file (S99); history | no decision here that is not in the rail; drop, rename, start and stop are dictations |
 | landed bolt | a record | the record; the landing (when, through which gates, place removed); pull request and checks; environments; units landed; the acceptance file; signals from operation with their move | nothing to answer |
-| intent | a thread | the thread; the intent's state and line; decisions on it; sessions running; its change directory (S99) | its decision's answers when one is pending, else nothing to answer |
-| elaboration | a bead; ] and [ from the thread | kind, type and state; its pending decision with the answer controls; its document excerpt; the records it wrote into the intent's change directory (187), opening the change directory view; its session chip; "in gathering n" when covered (188); the countdown when finished (210); a knot in the header and a back link to the thread | the decision's answers; finish on a standing one; nothing else |
+| intent | a thread | the thread; the intent's state and line; its elaborations in the order they were made, each with its type, opening each (210); decisions on it; sessions running; its change directory (S99) | its decision's answers when one is pending, else nothing to answer |
+| elaboration | a bead; ] and [ from the thread | kind, type and where it stands; its intent, a link; its pending decision with the answer controls; its document and its host; the records it wrote into the intent's change directory (187), opening the change directory view; the intents it gathers, each a link, when it covers several (188); its sessions with their chips, or "no session yet: one starts when it is approved" before the yes; the countdown when finished (210); a knot in the header and a back link to the thread | the decision's answers; finish on a standing one; nothing else |
 | exploration | its row in Inception | the covered intents; where its records go (per intent) and where its conclusions go (the book, once); its session | finish (standing) or end (with-operator) |
 | planning in progress | its row in the gate | what planning reads; the operator's notes it carries; its session | nothing yet; the next proposal is the decision |
 | deferred | its greyed sheet | when later was answered; that it left the count, wrote no SINCE line, and is superseded silently by planning's next run (172, 35) | ask again |
@@ -324,6 +324,27 @@ were settled, not their place on the page.
   fundamentals part of the book (318, 190). A type the caller may not
   reach is not offered, as with every other command (S30). No new entry
   joins the command table for it; the types are the entry's arguments.
+- **S228.** The commands the palette lists, and how a command takes its
+  object. A leading `/` lists the commands the caller may invoke,
+  fuzzy-matched as typed, each with what it does and what it acts on,
+  under the line saying exactly what will be sent. The list is answer,
+  capture, drop, later, hold, release, rename, close, finish, end,
+  retire, revive, take and takeover. A command is the catalogue tool
+  of its own name; what is typed after the name is its argument, sent
+  as typed; a command that acts on an object takes the one in hand,
+  the object the dock has open, else the decision the rail holds, or
+  an id typed after the name. Left out is what the palette cannot seed
+  as one call: `curate` is the curator's surface, `propose-unit` and
+  `open-session` are their own controls with fields, `start` and
+  `stop` wait on a service the page shows, and removing the instance
+  is not one Enter away. A bare number lists that card's answers, each
+  with the line its control carries; `412 yes` presses the card's own
+  control, `412: <words>` sends the words as the answer, and an answer
+  that takes words fills in `412: redo: ` for the operator to finish.
+  A number naming nothing on the rail says so and says that `/capture`
+  keeps it as a note. On the desktop the list drops under the header's
+  box (S211); the phone keeps its sheet (S38). ↓ and ↑ walk the list
+  while the box is open and the rail does not move (S57).
 
 ### 1.6 The chat rendering
 
@@ -1545,6 +1566,7 @@ where a thing sits, never by its form.
 | b | anywhere | open the book viewer at the object in hand (S91) |
 | w | anywhere | open and close the flywheel panel |
 | ⌘K, Ctrl+K, / | anywhere | open the palette; / opens it with the command list already showing |
+| ↓, ↑ | palette | walk the command list, or the card's answers after a number, while the box is open; the rail does not move (S57) |
 | Esc | anywhere | in order: close the palette, leave a field, close the log, cancel explore selection, cancel re-attach, hide an edge's panel, close the dock, close the account menu, hosts, settings or the package store, back from a drill |
 | f | map | fit, the only camera command, at either level |
 | o | map | cycle the overlay: none, current → target, since last review |

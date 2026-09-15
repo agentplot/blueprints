@@ -112,11 +112,15 @@ of some object, or a file the machinery reads as evidence.
   approval, endpoints, held_at, citation choices** — record fields of the
   object they belong to; counters bump on transitions and never define a
   state.
-- **ask** — the operator's dictation naming a repository (the `ask`
-  tool, "do this in atlas"). A record in the state store (`asks/<id>`) with `repository`,
-  `text`, `by`, `at`, `consumed_by`. It has no machine: planning's
-  fingerprint includes every unconsumed ask, so it is planning's input,
-  and `propose_units` sets `consumed_by`.
+- **ask** — a dictation naming a repository (the `ask` tool, "do this
+  in atlas"), the operator's, or curation's when it routes a signal
+  that argues with no claim (116). A record in the state store
+  (`asks/<id>`) with `repository`, `text`, `by`, `at`, `consumed_by`,
+  written as the dictation's effect like every other dictation's
+  record; it is a dictation and not a document, so the record holds
+  its words, where 62 governs the documents a session writes. It has
+  no machine: planning's fingerprint includes every unconsumed ask, so
+  it is planning's input, and `propose_units` sets `consumed_by`.
 - **decision** — a state of its object (section 5), never a record of
   its own. What is recorded about it is one line in the rail's
   register: its id, its number, and when it was numbered.
@@ -929,8 +933,9 @@ own intent is never put back to them for a yes (19a); `attach-signal`
 the signal's attach move to an open intent the operator picked;
 `drop-signal` its drop move; `curate` the curation machine's run now
 (110); `propose-chore` a chore unit
-in `approved`; `revive` clears a signal's move; `ask` is an `asks/`
-record for planning; `open-session` the operator's own session (69);
+in `approved`; `revive` clears a signal's move; `ask` an `asks/`
+record for planning, written as the dictation's effect (section 1,
+git-only `layout.asks`); `open-session` the operator's own session (69);
 `explore` an elaboration in `approved` covering the selected intents
 as a with-operator or standing session (189). An undo-or-defer tool
 takes the same transition the decision would have taken, with the same
@@ -1454,9 +1459,11 @@ challenge, join, answered, route, drop, each with a reason) and one
 proposed intent per join cluster, with its proposed elaborations and
 typed by the material. The curation session is a session like any
 other (58–60): for a signal that argues with no claim it may offer a
-chore or an ask through `flywheel offer`, `record_offers` makes the
-proposed chore unit on the shared line or the ask record, and the
-signal's move is `route`, naming that offer (116). Where one run proposes elaborations of one type on
+chore through `flywheel offer`, which `record_offers` makes the
+proposed chore unit on the shared line, or an ask through the `ask`
+tool naming the repository and the words, which writes the ask record
+as any dictation does (28, 5.7); the signal's move is `route`, naming
+that offer (116). Where one run proposes elaborations of one type on
 several intents it may deliver them gathered, and `applying` writes
 one proposed elaboration on the first intent named, its `covers`
 naming all of them (`gather_elaborations`, 188); the other covered
