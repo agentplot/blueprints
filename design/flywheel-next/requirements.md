@@ -315,14 +315,19 @@ model.
     capture is a note, and nothing on the rail asks the operator to
     classify what they wrote. The capture carries the operator's hand
     as controls on the object, never on the rail: build now
-    (`propose-unit`, 34), make an intent (`open-intent`: the intent
+    (`propose-unit` naming no bolt, 34), add to an open bolt the
+    operator picks (`propose-unit` naming that bolt, 34), make an
+    intent (`open-intent`: the intent
     opens at once, the gesture being its approval, with the signal
     attached, so the intent proposes its first elaboration from it),
     attach to an open intent the operator picks (`attach-signal`), and
     drop (`drop-signal`). Each is a dictation of 193's catalogue that
     writes the record curation would have written (110) and is the
     signal's one move (107, 116); build names the bolt from the
-    capture's own words and the operator types no name. Under the
+    capture's own words and the operator types no name, and adding to
+    a bolt names the unit the same way. A capture goes to a bolt as it
+    goes to an intent: a new one from its words, or one already open
+    that the operator picks. Under the
     capture one line says who acts next and when, read from the
     curation record: how many signals wait, the threshold and cadence
     that charge curation, and that the operator may run it now (110,
@@ -416,10 +421,13 @@ requirements, iterated against the running rail rather than on paper.
     line that accumulates for weeks while the operator tests it. Nothing
     ages a bolt out.
 34. Work may reach a bolt without an intent. The operator's dictation
-    naming a bolt is applied directly; a planning judgment may route an
+    naming a bolt is applied directly — a capture's add to bolt…
+    control is that dictation, naming a bolt that is open (19a) — and a
+    planning judgment may route an
     ask, a finding or a signal to a unit on an open bolt, as a proposal
     on the rail. Either way the unit carries a type, a bolt and its
-    dependencies like any other.
+    dependencies like any other; a unit the operator's dictation put
+    on a bolt depends on nothing and starts at once (31).
 34a. A unit's proposal cites the standing claims in scope it serves,
     which are already among its inputs (89, 102), and cites none when
     none fits. A unit may therefore cite no claim: it carries a type, a

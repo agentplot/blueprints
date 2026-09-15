@@ -96,8 +96,9 @@ were settled, not their place on the page.
   delivery mark (14, model 5.5): merged, landed, closed, dropped,
   started, finished, accepted, answered, held. A line names the object,
   the reason and the time. "Later" writes no SINCE line (§5). A moved
-  signal reads by its move: built, intent, dropped, or asked when its
-  route names an ask (S229). Ruled
+  signal reads by its move: built, intent, dropped, asked when its
+  route names an ask (S229), or "added to <bolt>" when its route
+  names a unit put on a bolt that already stood (S224a). Ruled
   2026-09-14: the page titles it in plain words that say what it holds
   ("Recently done", never "since"), and it has a window: today's
   entries, or the last twenty when today holds fewer; what falls off
@@ -162,7 +163,7 @@ were settled, not their place on the page.
   the count; anything answered; a finished object past its window.
 - **S19.** Requirements served: 141–146, 186, 209–210, 47. Tools called
   from the lanes: `explore` (S43), `capture` (S30) and `propose-unit`
-  on a capture (34);
+  on a capture, naming no bolt or an open one (34, S224a);
   every other control on a lane opens the dock.
 
 ### 1.3 The board, map view
@@ -300,7 +301,7 @@ were settled, not their place on the page.
 | external system | a dashed card | what it is; who meets it; that a claim on the contract is in scope for every repository that meets it | nothing to answer |
 | artifact | "the artifacts behind it", "change", "evidence", a work-item chip, the acceptance link | one view per artifact kind (S99) under a source bar (S100) | open source · review; the pending decision's answers when one is pending on the artifact |
 | work item | a chip on a ledger or in a dock | its unit's job as a quote; its stage, type, host, place and branch; its commits in Conventional Commits form, the deliverables it recorded, its session's report, its session chip | nothing to answer; reply when the item is blocked (S49) |
-| capture | its line on the board, its row in the signals tray | the words as a quote, from its beginning (S215); "from the console · by <member> · when" (S223); the line saying who acts next and when (S224); what became of it — built, with the unit linked; an intent, linked; attached, with the intent linked; asked in <repository> "<words>", the ask's own words, with "asked" under the title (S229); dropped | build now · make an intent · attach to… · drop while its signal is unmoved (19a, S224); nothing to answer |
+| capture | its line on the board, its row in the signals tray | the words as a quote, from its beginning (S215); "from the console · by <member> · when" (S223); the line saying who acts next and when (S224); what became of it — built, with the unit linked; added to <bolt>, with the bolt linked (S224a); an intent, linked; attached, with the intent linked; asked in <repository> "<words>", the ask's own words, with "asked" under the title (S229); dropped | build now · add to bolt… · make an intent · attach to… · drop while its signal is unmoved (19a, S224, S224a); nothing to answer |
 | any other object | a link anywhere | what it cites, in the signals' own words; what it holds, each with its sentence; what it is part of | nothing to answer |
 
 - **S29.** Requirements served: 17, 47, 68, 141, 144, 146, 172, 184,
@@ -1171,14 +1172,20 @@ page shows after.
 - **S44.** 1. ⌘K opens the palette; text in its field; the preview
   line under it reads "will send: capture". 2. Enter → `capture(text,
   page)`. 3. The capture appears in the Inception lane as a quote with
-  its controls — build now · make an intent · attach to… · drop — and
+  its controls — build now · add to bolt… · make an intent · attach
+  to… · drop — and
   under it "curation reads it next · 4 waiting · runs at 12, or when
   you run it"; the curation counter moves by one; SINCE gains
   "captured · <first words>"; the rail gains nothing; the log gains
   the line; the palette closes (19a, S224). 4. build now on the quote
-  → `propose-unit(bolt, capture)`: a bolt named from the capture's
+  → `propose-unit(capture)`: a bolt named from the capture's
   first words on the tracked repository with the unit in approved on
-  it, note "proposed by you from the capture" (34, 12, S217). Or make
+  it, note "proposed by you from the capture" (34, 12, S217). Or add
+  to bolt… → the open bolts by name; a pick →
+  `propose-unit(bolt, capture)`: a unit named from the capture's
+  first words in approved on that bolt, the signal's move `route
+  <unit>`, the capture's page reading "added to <bolt>" with the bolt
+  linked, SINCE gaining the same line (S224a). Or make
   an intent → `open-intent(capture)`: an open intent named from the
   capture's first words appears as a thread in Inception with the
   signal attached, and its first elaboration is proposed on the rail
@@ -2036,8 +2043,9 @@ whatever else it does.
   next and when, in the operator's words ("curation reads it next · 4
   waiting · runs at 12, or when you run it"), read from the curation
   record's count, threshold and cadence. The quote, its drawer and its
-  row in the signals tray carry the same four controls, each a verb
-  (`build now`, `make an intent`, `attach to…`, `drop`), and no
+  row in the signals tray carry the same five controls, each a verb
+  (`build now`, `add to bolt…`, `make an intent`, `attach to…`,
+  `drop`), and no
   decision: nothing about a capture is on the rail, walked with j and
   k, or numbered (19a, S212). `make an intent` opens the intent at
   once, named from the capture's first words, with the signal attached
@@ -2048,12 +2056,38 @@ whatever else it does.
   capture was put and reading its words (S9). Nothing
   a capture typed on the page says is parsed: the controls are the
   only way it becomes anything (19).
+- **S224a.** Ruled 2026-09-15: a capture goes to a bolt as it goes to
+  an intent — a new one from its words, or one already open that the
+  operator picks (19a, 34). `add to bolt…` lists every bolt of the
+  instance's tracked repositories that is open: one whose close is
+  offered or held is open and listed, and adding to it takes the close
+  offer back, since new work arrived (bolt.yaml close); one that is
+  landing, that failed to land, that landed or that was dropped is not
+  listed. A bolt is listed by its name, and when the instance tracks
+  more than one repository its repository stands greyed before the
+  name, as slips and SINCE lines carry it (S14, S9); the list runs in
+  the order Construction shows the bolts. With no bolt open the list
+  says so in the operator's words and points at the control that
+  makes one ("no bolt is open yet · build now starts one"), as
+  `attach to…` does with no open intent (S214). A pick is the whole
+  gesture: `propose-unit` naming that bolt and the capture, no name
+  typed and no second pick, since the bolt names its repository. The
+  unit is named from the capture's first words as `build now` names
+  its bolt (S217), stands approved on that bolt with the call as its
+  approval, depends on nothing and starts at once (34, 31, 12); the
+  capture's signals move `route <unit>` as `build now` moves them
+  (116). The capture's page then reads "added to <bolt>" with the bolt
+  linked, and SINCE reads the same, where `build now` reads "built"
+  with the unit linked (S9, dock capture). The chat carries no
+  capture control, this one included: a capture is never a decision,
+  and its controls are the page's (S212, S32, S228). A finding's row
+  in the tray carries the control as a note's does (S231).
 - **S225.** Ruled 2026-09-14: the curation counter in Inception is a
   control that opens the signals tray in the dock: every unmoved
   signal, grouped by capture and ordered by source and age (the note
   typed a minute ago, the seventeen from Monday's transcript, the two
-  from the folder), each row a quote with the capture's four controls
-  (S224). At its head, `run curation now` with the automatic trigger
+  from the folder), each row a quote with the capture's five controls
+  (S224, S224a). At its head, `run curation now` with the automatic trigger
   stated beside it ("runs on its own at 12, or weekdays at 06:00");
   pressing it is the `curate` dictation the chat's `/curate` also
   sends, and it charges the curator session at once (110). While the
@@ -2164,8 +2198,10 @@ whatever else it does.
   dated when the offer was made, with one row. The row's quote is the
   document's path, since the record never holds the text (62), its
   source reads "offer" and its line names the session that offered it.
-  It carries the capture's four controls and no decision (S224, 19a),
-  and a `build now` on it names its chore from the path's words as it
+  It carries the capture's five controls and no decision (S224, S224a,
+  19a),
+  and a `build now` or an `add to bolt…` on it names its chore from
+  the path's words as it
   would from a note's. A chore offered off every bolt is not a signal:
   it lands on the rail as a proposed chore of the repository's shared
   line, one decision folded with that repository's other proposed

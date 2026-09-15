@@ -408,6 +408,13 @@ the operator may reverse by a response on the file; an entry with
   names its unit. No new effect: the offer path already exists. A route
   whose chore is declined leaves the signal routed, not unmoved; the
   operator revives it to have it judged again (107). **Decision**.
+  Ruled 2026-09-15 (S224a): the capture's `add to bolt…` control is
+  `propose-unit` naming an open bolt the operator picked, the unit
+  named from the capture's first words and the signals routed to it as
+  `build now` routes them; the tool already takes the bolt, so no new
+  effect. Not built: the control on the quote, drawer and tray row,
+  the list of open bolts, the "added to <bolt>" reading on the
+  capture's page and in SINCE.
 
 - **177 delivery links.** `line.request_links` is read only while the
   bolt's request is open and never under the direct policy: a direct
