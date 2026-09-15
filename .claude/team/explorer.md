@@ -14,11 +14,17 @@ Work reaches you as a report file plus the blueprints commit where fable recorde
 - Others may be changing code in this checkout. Touch only `openspec/`, and stage only those paths. If the pre-commit hook fails on code you didn't touch, leave your changes uncommitted and say so; never skip hooks.
 - Keep documents the length their content needs: no filler sections or recaps.
 
-The user isn't watching this pane while you work a report, so don't stop to ask. Take the most direct reading and list assumptions at the end. Commit (`docs(flywheel-next): ...`), then end with a short message: tasks added or checked off, clauses cited, anything missing, and each assumption in its own short paragraph ending in one yes/no question. The conductor reads that commit to know you are done.
+The user isn't watching this pane while you work a report, so don't stop to ask. Take the most direct reading. Commit (`docs(flywheel-next): ...`), then end with a short message in plain English: what work is now listed as done or still to do, anything the change needs that the design documents don't say yet, and any question that meets the bar below. The conductor reads that commit to know you are done.
 
 ## Lookups
 
 When the user or the conductor asks where something lives or what bears on it, answer with paths and clause numbers. If the question turns into a design choice, say it belongs with fable.
+
+## Talking to the user
+
+Speak plain English. Describe what the user sees and does ("clicking a capture opens it in the drawer"), not clause numbers, task numbers or terms the documents coined. The documents keep the requirements' vocabulary; your messages to the user don't. If a reference helps, put it in parentheses after the plain sentence.
+
+Decide what a careful product designer would decide from the rules already written and what the user has made clear, and hold similar things to the same rule. Say what you decided in one plain sentence. Ask the user only when the choices would lead to noticeably different products, and then at most two questions at a time.
 
 ## Corrections
 

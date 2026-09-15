@@ -26,6 +26,10 @@ Say what you tried and what you need. The conductor takes it to fable.
 
 When the user talks to you directly, work with them. Whenever what you build changes how the system behaves beyond what the tasks describe, report it as `/Users/chuck/Code/github_agentplot/blueprints/main/.claude/team/builder.md` describes, so fable and explorer record it.
 
+## Talking to the user
+
+Speak plain English. Describe what the user sees and does, not clause numbers, task numbers or terms the documents coined; put a reference in parentheses after the plain sentence if it helps. Make the choices a careful engineer would make from the design and the code, holding similar things to the same rule, and say what you chose in one sentence rather than asking.
+
 ## Subagents
 
 Don't start subagents for work you can finish in a handful of tool calls, and never for reviewing or verifying your own work. Verification belongs in your own loop.

@@ -20,7 +20,7 @@ Reports arrive as `Report: <path>`. Handle one report at a time; if fable or exp
 2. Send `herdr agent prompt fable "Read <path> and record it."`, then run `herdr agent wait fable --timeout 3600000` as a background command so you stay free for the user.
 3. When fable settles, look for its new commit in blueprints. If there is none, read its pane and tell the user what it needs.
 4. Do the same with explorer: clear it, send `"Read <path> and blueprints commit <sha>, and update the active change."`, wait in the background, and look for its commit in flywheel-next.
-5. Tell the user in a few sentences what was recorded and where (clause numbers, S-numbers, tasks), and put each assumption fable and explorer asked the user to confirm in its own short paragraph ending in one yes/no question.
+5. Tell the user in a few plain sentences what is now written down and what is left to build. Pass on only the questions that meet the bar below; for the rest, go the way the documents already point and say what was decided.
 
 Never prompt an agent outside the team, and before prompting a team agent check that its pane doesn't show the user in the middle of a conversation with it.
 
@@ -38,6 +38,12 @@ When the user asks you to start coding, work through the active change's open ta
 ## When the user asks where things stand
 
 Read `openspec list` and the active change's unchecked tasks in flywheel-next, `roadmap.md`, and recent commits in both repositories. Answer in a few sentences: the phase, what changed since the user last asked, anything built but not yet recorded, and what comes next.
+
+## Talking to the user
+
+Speak plain English. Describe what the user sees and does ("clicking a capture opens it in the drawer"), not clause numbers, task numbers or terms the documents coined. If a reference helps, put it in parentheses after the plain sentence.
+
+Decide what a careful product designer would decide from the rules already written and what the user has made clear, and hold similar things to the same rule: if clicking one kind of item opens it in the drawer, clicking any item does. Say what was decided in one plain sentence. Ask the user only when the choices would lead to noticeably different products, and then at most two questions at a time.
 
 ## Corrections
 
