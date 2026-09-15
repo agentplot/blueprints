@@ -290,6 +290,14 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
 .sc .pane{color:var(--accent);font:inherit;padding:2px 7px 2px 5px;border-left:1px solid var(--line2);border-radius:0 999px 999px 0}
 .sc .pane:hover{background:var(--accent-soft)}
 .sc.hostlit{border-color:var(--accent);background:var(--accent-soft)} .sc.hostdim{opacity:.4}
+/* the pane popover (S234): where the pane is and how to reach it; the page opens no pane */
+.panepop{position:fixed;z-index:26;width:min(380px,calc(100vw - 16px));background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:8px 10px 9px;font:12px var(--sans);color:var(--ink2);text-align:left}
+.panepop .pp-h{display:flex;gap:8px;align-items:baseline;font:700 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)} .panepop .pp-h .r{letter-spacing:0;text-transform:none;font-weight:600;font-size:12px;color:var(--ink)}
+.panepop .pp-where{margin-top:4px;font-size:12px} .panepop .pp-where b{font-family:var(--mono);font-weight:600;color:var(--ink)}
+.panepop .pp-line{display:flex;gap:6px;align-items:center;margin-top:7px} .panepop .pp-k{flex:none;width:44px;font:10.5px var(--mono);color:var(--ink3)}
+.panepop code{flex:1;min-width:0;font:11.5px var(--mono);color:var(--ink);background:var(--surface2);border:1px solid var(--line2);padding:4px 7px;border-radius:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.panepop .pp-gone{margin-top:7px;font-size:12px;color:var(--ink3);font-family:var(--mono)}
+.panepop .pp-note{margin-top:8px;font-size:11px;color:var(--ink3)}
 .el{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 0 0;font-size:12px}
 .el .en{font-weight:600;min-width:0}
 .leave{font:10.5px var(--mono);color:var(--ink3)} .leave.soon{color:var(--warn)}
@@ -1009,6 +1017,7 @@ body.docked .dock{transform:none}
   .cap .hand{display:none!important}
   .dk-f .hand{display:flex!important}
   .cap .picker,.dk-f .picker{position:fixed;left:8px;right:8px;bottom:58px;top:auto;max-width:none;max-height:70vh;border-radius:12px;box-shadow:var(--shadow);z-index:25}
+  .panepop{left:8px!important;right:8px;top:auto!important;bottom:58px;width:auto;border-radius:12px}
   .pk-list{max-height:50vh}
 }
 @media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
@@ -1053,6 +1062,7 @@ body.docked .dock{transform:none}
 </nav>
 <aside class="log" id="log" hidden><h3>Responses sent <span>each one on its own, the moment it was given</span></h3><ol id="loglist"></ol></aside>
 <div class="pal-scrim" id="pal-scrim" hidden><div class="pal" id="pal" role="dialog" aria-modal="true" aria-label="palette"></div></div>
+<div id="panepop"></div>
 <div class="toasts" id="toasts" aria-live="polite"></div>
 
 <script>
@@ -1815,7 +1825,7 @@ function palList(){
 function palOpen(q){ return palOpenAt((S.open && objOf(S.open)) ? S.open : (S.focus && objOf(S.focus) ? S.focus : null), q); }
 /* a typed field on the page is a command with its object already in hand: the dock's buttons
    open the palette scoped to that object with the command pre-filled, and hold no field. */
-function palOpenAt(scope, q, on){ S.pal.open = true; S.picker = null; S.pal.q = q || ''; S.pal.sel = 0; S.pal.mode = null;
+function palOpenAt(scope, q, on){ S.pal.open = true; S.picker = null; S.panePop = null; S.pal.q = q || ''; S.pal.sel = 0; S.pal.mode = null;
   S.pal.scope = (scope && objOf(scope)) ? scope : null; S.pal.on = on || null;
   palShell(); renderPalette(); const f = $('#pal-q'); if(f){ f.focus(); f.setSelectionRange(f.value.length, f.value.length); } }
 function palClose(){ S.pal.open = false; S.pal.mode = null; S.pal.q = ''; S.pal.on = null; S.picked.clear();
@@ -2222,7 +2232,46 @@ function sessChip(s){
   const st = s.state; const dot = st==='with' ? 'working' : st==='scheduled' ? 'idle' : st;
   const act = s.act || (st==='idle' ? `idle ${s.tag||''}`.trim() : st==='with' ? 'with you' : st);
   const hl = S.hostlit ? (s.host===S.hostlit ? 'hostlit' : 'hostdim') : '';
-  return `<span class="sc ${st} ${hl}" title="${esc(s.last||'')}"><span class="dot ${dot}"></span><span class="ag">${esc(s.agent||'claude')} · ${esc(s.model||'fable')}</span><span class="hs">@${esc(s.host||'studio')}</span><span class="ac">${esc(act)}</span><button class="pane" data-pane="${esc(s.pane||'')}" title="open the pane">pane ↗</button></span>`;
+  const role = s.role || (/^(curation|planning|conflict)/.test(s.label||s.id||'') ? 'machinery' : (/^wi/.test(s.id||'') || /^wi-/.test(s.label||'')) ? 'bolts' : 'intents');
+  const sid = s.sid || sessIdOf(s);
+  return `<span class="sc ${st} ${hl}" title="${esc(s.last||'')}"><span class="dot ${dot}"></span><span class="ag">${esc(s.agent||'claude')} · ${esc(s.model||'fable')}</span><span class="hs">@${esc(s.host||'studio')}</span><span class="ac">${esc(act)}</span><button class="pane" data-pane="${esc(s.pane||'')}" data-sess-id="${esc(sid)}" data-sess-host="${esc(s.host||'studio')}" data-sess-role="${role}" data-sess-state="${esc(st||'')}" title="where this pane is, and how to reach it">pane ↗</button></span>`;
+}
+/* the pane's name is the session id: <owner>/<stage or type>/<attempt> (196) */
+function sessIdOf(s){
+  const id = s.id||'', label = s.label||'';
+  if(id==='curation' || label==='curation') return 'curation/run-12';
+  if(/^planning/.test(label)) return `planning/${(S.planning&&S.planning.repo)||'atlas'}/run-4`;
+  if(/^wi/.test(id) || /^wi-/.test(label)){ const hit = S.bolts.flatMap(b => b.units.flatMap(u => (u.items||[]).map(i => ({b, u, i})))).find(x => x.i.id===id);
+    return hit ? `${hit.b.repo}/${hit.u.name}/${label.split(' ')[1]||'build'}/1` : `${label.split(' ')[0].replace('#','')}/${label.split(' ')[1]||'build'}/1`; }
+  const own = s.owner && s.owner.key ? s.owner.key.replace(/^[a-z]:/, '') : 'intent';
+  return `${own}/${(label||id||'session').toLowerCase().replace(/\(.*\)/,'').trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}/1`;
+}
+/* S234: the pane link opens a popover, never a pane. It names the herdr session, the host and the pane, and gives the attach and focus lines to copy; a gone pane says so */
+function panePopOpen(btn){
+  const d = btn.dataset; const r = btn.getBoundingClientRect();
+  const same = S.panePop && S.panePop.sid===d.sessId; if(same){ S.panePop = null; renderPanePop(); return; }
+  S.picker = null;
+  S.panePop = {sid:d.sessId, host:d.sessHost, role:d.sessRole, pane:d.pane, state:d.sessState, x:r.left, y:r.bottom + 4, top:r.top - 4};
+  renderPanePop();
+}
+function renderPanePop(){
+  const el = $('#panepop'); if(!el) return; const P = S.panePop; if(!P){ el.innerHTML = ''; return; }
+  const sessName = `flywheel-${S.org}-${P.role}`;
+  const h = S.hosts.find(x => x.id===P.host); const local = !h || h.kind==='laptop';
+  const gone = !P.pane || /^(gone|done|lost)$/.test(P.state);
+  const attach = local ? `herdr session attach ${sessName}` : `herdr --remote ${P.host} --session ${sessName}`;
+  const focus = `herdr agent focus ${P.sid}`;
+  const line = (k, cmd, hint) => `<div class="pp-line"><span class="pp-k">${k}</span><code>${esc(cmd)}</code><button class="btn sm" data-copy="${esc(cmd)}" title="${hint}">copy</button></div>`;
+  el.innerHTML = `<div class="panepop" role="dialog" aria-label="the session's pane">
+    <div class="pp-h">pane<span class="r">${esc(P.sid)}</span></div>
+    <div class="pp-where">in <b>${esc(sessName)}</b> · on <b>${esc(P.host)}</b>${local ? '' : ' · another computer'}</div>
+    ${gone ? `<div class="pp-gone">no pane · the session ${P.state==='lost' ? 'was lost without an exit' : 'exited'} · what it reported is on this page</div>`
+      : line('attach', attach, local ? 'a terminal not yet in that session' : 'through herdr\'s remote attach, naming the host\'s machine') + line('then', focus, 'once attached, focus this pane')}
+    <div class="pp-note">the page opens no pane itself · everything the session reported is here</div></div>`;
+  const box = el.firstElementChild; const w = box.offsetWidth, hgt = box.offsetHeight;
+  const left = Math.max(8, Math.min(P.x, window.innerWidth - w - 8));
+  const top = P.y + hgt > window.innerHeight - 8 ? Math.max(8, P.top - hgt) : P.y;
+  box.style.left = left + 'px'; box.style.top = top + 'px';
 }
 function wiHtml(s){ return `<span class="it"><span class="wi ${s.state}" data-wi="${esc(s.id)}" title="open the work item: commits, deliverables, report" style="cursor:pointer">${esc(s.label)}</span>${sessChip(s)}</span>`; }
 function elabRow(s){
@@ -2280,7 +2329,7 @@ function pickerHtml(c, kind){
 /* one picker open on the page at a time; opening another, the palette or a dock page closes it (S233) */
 function pickerOpen(cap, kind, where, btn){
   const P = S.picker; if(P && P.cap===cap && P.kind===kind && P.where===where){ pickerClose(true); return; }
-  S.picker = {cap, kind, where, q:'', sel:0}; render(); pickerFocus();
+  S.panePop = null; S.picker = {cap, kind, where, q:'', sel:0}; render(); pickerFocus();
 }
 function pickerFocus(){ const f = $('#pk-q'); if(f){ f.focus(); f.setSelectionRange(f.value.length, f.value.length); return; } const r = $('.picker .pk-row.sel'); if(r) r.focus(); }
 function pickerClose(back){ const P = S.picker; S.picker = null; render(); if(back && P){ const b = $(`[data-hand="${P.cap}"][data-where="${P.where}"] [data-cv="${P.kind}"]`); if(b) b.focus(); } }
@@ -2420,6 +2469,7 @@ function render(){
   renderTop(); renderAcct(); renderHosts(); renderBoardHead(); renderRail(); renderInception(); renderPlan(); renderConstruction(); renderOperation(); renderMap(); renderPalette(); renderLoad(); renderLog();
   keep.forEach(([el,t]) => el.scrollTop = t);
   if(S.open) renderDock();
+  renderPanePop();
 }
 
 /* =====================================================================
@@ -2967,7 +3017,7 @@ function renderDock(){
   $('#dk-h').className = 'dk-h ' + form; $('#dk-h').innerHTML = head; $('#dk-b').innerHTML = body; $('#dk-f').innerHTML = t==='a' ? `<div class="acts">${o.acts.map(([k,l]) => `<button class="btn sm ${k==='takeover'?'yes':''}" data-att="${o.id}" data-ak="${k}">${esc(l)}</button>`).join('')}</div>` : dockFooter(key);
   $('#dk-b').scrollTop = keep;
 }
-function openDock(key){ const was = S.open===key; S.open = key; S.picker = null; if(key[0]==='d' || key[0]==='a'){ S.focus = key; } document.body.classList.add('docked'); render(); if(!was) $('#dk-b').scrollTop = 0; }
+function openDock(key){ const was = S.open===key; S.open = key; S.picker = null; S.panePop = null; if(key[0]==='d' || key[0]==='a'){ S.focus = key; } document.body.classList.add('docked'); render(); if(!was) $('#dk-b').scrollTop = 0; }
 function closeDock(){ S.open = null; document.body.classList.remove('docked'); render(); }
 function setFocus(key){ S.focus = key; if(S.open && (S.open[0]==='d'||S.open[0]==='a')) S.open = key; render(); const el = document.querySelector(`.rail [data-nav="${key}"]`); if(el){ el.scrollIntoView({block:'nearest'}); el.focus({preventScroll:true}); } const lit = $('[data-obj].lit'); if(lit) lit.scrollIntoView({block:'nearest'}); }
 function step(dir){ const list = railKeys(); if(!list.length) return; const i = list.indexOf(S.focus); const j = i<0 ? 0 : Math.min(list.length-1, Math.max(0, i+dir)); setFocus(list[j]); }
@@ -2986,6 +3036,7 @@ document.addEventListener('click', e => {
   if(b && b.dataset.pick){ capAct(b.dataset.cap, b.dataset.kind, b.dataset.pick); return; }
   if(b && b.dataset.cv){ const v = b.dataset.cv, cap = b.dataset.cap; if(v==='bolt' || v==='attach'){ pickerOpen(cap, v, b.closest('.hand')?.dataset.where || 'lane', b); } else capAct(cap, v); return; }
   if(S.picker){ S.picker = null; render(); }
+  if(S.panePop && !t.closest('#panepop')){ S.panePop = null; renderPanePop(); }
   if(b && b.dataset.tray !== undefined){ openDock('t:tray'); return; }
   if(b && b.dataset.curate !== undefined){ S.curation.session = {...S.curation.session, state:'working', act:'reading 5 signals'}; logLine('curate · run now', {say:true}); toast('curation charged · the count falls as moves are written'); render(); return; }
   if(b && b.dataset.mine !== undefined){ S.railMine = b.dataset.mine==='1'; if(S.focus && S.focus[0]==='d' && !railKeys().includes(S.focus)) S.focus = railKeys()[0] || null; render(); return; }
@@ -3040,7 +3091,8 @@ document.addEventListener('click', e => {
   if(b && b.id==='load-close'){ S.load = false; render(); return; }
   if(t.id==='load'){ S.load = false; render(); return; }
   { const w = t.closest('[data-wi]'); if(w && !t.closest('.sc,button')){ openDock('o:wi/'+w.dataset.wi); return; } }
-  if(b && b.dataset.pane !== undefined){ toast(`pane ${b.dataset.pane} · would open in herdr`); return; }
+  if(b && b.dataset.pane !== undefined){ panePopOpen(b); return; }
+  if(b && b.dataset.copy !== undefined){ try{ navigator.clipboard && navigator.clipboard.writeText(b.dataset.copy); }catch(_){} toast(`copied · ${b.dataset.copy}`); return; }
   if(b && b.dataset.repo){ openDock('r:'+b.dataset.repo); return; }
   if(b && b.dataset.openrepo){ openDock('r:'+b.dataset.openrepo); return; }
   if(b && b.dataset.askagain){ askAgain(b.dataset.askagain); return; }
@@ -3105,6 +3157,7 @@ document.addEventListener('change', e => {
 document.addEventListener('keydown', e => {
   const typing = e.target.matches('input,textarea,select');
   if((e.metaKey||e.ctrlKey) && (e.key==='k'||e.key==='K')){ e.preventDefault(); S.pal.open ? palClose() : palOpen(''); return; }
+  if(S.panePop && e.key==='Escape'){ e.preventDefault(); S.panePop = null; renderPanePop(); return; }
   /* a picker holds the keys while it is open: ↓ ↑ walk, Enter picks, Esc closes back to its verb; the rail does not move (S233, S57) */
   if(S.picker){
     if(e.key==='Escape'){ e.preventDefault(); pickerClose(true); return; }
