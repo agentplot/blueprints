@@ -23,7 +23,7 @@ PLAN · willdan · 2026-09-04 07:40 · 10 decisions · "yes all" answers 412-417
 │  │      routed from ask "retries hammer the provider" · no intent · type fast
 │  │      → yes · drop · rename <name> · bolt rail-decisions
 │  ├─ 415 chores   atlas · 3                        a stale AGENTS.md · b citation fix · c rename ref
-│  │      → yes · pick a c · no
+│  │      → yes · drop        each row: drop
 │  ├─ 416 land     switchboard/plan-rows                 4 units merged · gates green
 │  │      → yes · hold
 │  └─ 417 baseline new-repo                         11 claims unmet · 8 chores · 3 units
@@ -59,7 +59,8 @@ PLAN · willdan · 2026-09-04 07:40 · 10 decisions · "yes all" answers 412-417
 yes all          approves every APPROVE decision, nothing else
 yes 412 416      approves 412 and 416
 no 415           rejects 415 (all three chores)
-415 pick a c     accepts chores 415a and 415c
+drop 415b        rejects chore 415b alone; 415 keeps a and c
+yes 415a 415c    accepts chores 415a and 415c; b stays on the rail
 413 redo: <notes>  sends the unit back to planning with the notes
 413 bolt other   routes the unit to open bolt "other"
 414 rename retry names the new bolt "retry"

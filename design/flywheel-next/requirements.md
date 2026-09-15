@@ -568,7 +568,10 @@ requirements, iterated against the running rail rather than on paper.
     chore and an ask name one (116), the blueprints among them (123),
     and an offer naming none, or one the instance does not track, is
     refused with the names, as an ask is. Accepting one is a response on
-    the rail and nothing more. A chore never creates a bolt.
+    the rail and nothing more. Chores offered on the same line are shown
+    together as one decision, and each is still a decision of its own,
+    accepted or declined without the others (11). A chore never creates
+    a bolt.
 61. Updating agent instructions, citations, references, and similar
     housekeeping are chores, not units.
 62. A finding and a chore are documents of the change they arose in,
@@ -578,7 +581,10 @@ requirements, iterated against the running rail rather than on paper.
     chore becomes a proposed chore unit, of the bolt it was raised
     under or else of the repository whose shared line it belongs on
     (60); a finding on the session's own thread a proposal on that
-    thread; anything else a signal. Every offer is recorded on the pass
+    thread; anything else a signal — a finding with no thread above the
+    session, or a signal the session offers as such because what it saw
+    is about neither its intent nor its bolt (58), wherever it stands,
+    which is never a proposal. Every offer is recorded on the pass
     that finds it, so no offer holds a session from its exit. A signal
     made of an offer belongs to the capture the session was reading
     when there is one; otherwise the offer is a capture of its own —

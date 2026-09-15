@@ -67,9 +67,9 @@ regions:
           - when: {response: drop}
             to: dropped
       proposed:
-        doc: a finding routed to a bolt or a chore offer, proposed on its own (58, 60); a chore under a repository is on its shared line and names no bolt, and such chores fold by repository as a bolt's fold by bolt (11, 60); the decision names the target bolt and what a yes starts, derived from the type's stages and the item count (13, 16); the document is reviewed on its own surface and an annotation on it is the response (17); a unit whose type the instance does not know stays here, its decision naming the type it lacks and asking the operator to set one with `type <name>` (85a)
+        doc: a finding routed to a bolt or a chore offer, proposed on its own (58, 60); a chore under a repository is on its shared line and names no bolt, and such chores fold by repository as a bolt's fold by bolt (11, 60); a fold is one card with lettered rows, each row this decision on its own chore — named by the fold's number and its letter in chat, carrying its own drop on the card, so some chores are accepted by dropping the others first or by answering rows by name, and no pick answer exists (S232); the decision names the target bolt and what a yes starts, derived from the type's stages and the item count (13, 16); the document is reviewed on its own surface and an annotation on it is the response (17); a unit whose type the instance does not know stays here, its decision naming the type it lacks and asking the operator to set one with `type <name>` (85a)
         decision: {kind: unit-proposed, group: approve, batch: batch, document: document,
-                   answers: ["yes", drop, "redo: <notes>", "bolt <name>", "new bolt <name>", "rename <name>", "type <name>", "pick <letters>", later],
+                   answers: ["yes", drop, "redo: <notes>", "bolt <name>", "new bolt <name>", "rename <name>", "type <name>", later],
                    shows: [unit.type, unit.type_defined, target, depends_on, claims, estimate], satisfies: [10, 11, 16, 17, 29, 85, 172]}
         transitions:
           - when: {ev: unit.claim_moved, is: true}

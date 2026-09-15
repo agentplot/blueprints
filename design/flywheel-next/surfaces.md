@@ -2176,7 +2176,25 @@ whatever else it does.
   An offer that
   names no repository, or one the instance does not track, is refused
   on the session's thread with the tracked names and lands nowhere,
-  as an ask is (60).
+  as an ask is (60). A signal a session offers as such, saying what it
+  saw is about neither its intent nor its bolt (58), is recorded by
+  this same path wherever the session stands, a bolt above it or
+  none: a row of the capture it was reading, or of a capture of its
+  own; never a proposal on its thread (62).
+- **S232.** Ruled 2026-09-15: picking some chores of a fold. The
+  chores card carries yes and drop for the whole fold (S231), and when
+  the fold holds more than one chore each row carries its own drop,
+  as a gathered elaboration's intents do (S5). The card's yes accepts
+  every row still standing and its drop declines them; a row dropped
+  first is out of the fold before the yes. In chat a row is named by
+  the fold's number and its letter, `415b`, and takes any answer the
+  fold takes: `drop 415b` declines one chore, `yes 415a 415c` accepts
+  two and leaves the third standing, `yes 415` accepts what stands
+  (11, 60). There is no `pick` answer on a chore: each chore is a unit
+  with a decision of its own, and the fold is how the rail shows them,
+  so the answers are the unit's and the letter says which. `pick`
+  stays on a gathered elaboration alone, whose covered intents are one
+  object (188, S226).
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open

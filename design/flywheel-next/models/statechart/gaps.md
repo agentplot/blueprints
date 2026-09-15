@@ -145,12 +145,21 @@ the operator may reverse by a response on the file; an entry with
   record); a chore off every bolt that reached the thread without the
   command's check is refused there by `record_offers` with
   `refuses: <entry>`, so nothing is made of it. **Decision**
-  (2026-09-15). `flywheel offer signal`,
-  listed in 10.2 and 56, and `--about` are not built; a session's own
-  signal reaches the record only as a finding nothing stands above.
-  **Open**. The chores fold's card draws yes and drop only; the
-  `pick <letters>` answer stands in `unit.yaml`'s decision and the
-  mockup's 415, and is not drawn or built. **Open**.
+  (2026-09-15). `flywheel offer signal`, listed in 10.2 and 56, is
+  what a session offers when what it saw is about neither its intent
+  nor its bolt (58); `record_offers` records it by the path a finding
+  with no thread above the session takes — the capture the session
+  was reading, or a capture of its own of source `offer` — wherever
+  the session stands, and never as a proposal (62, S231; sessions.yaml
+  `commands.offer`). The built `offers::record` sorts every non-chore
+  offer by what stands above the session alone, so a `signal` offered
+  under a bolt becomes a proposed fast unit there; that is to be
+  corrected, and `--about` stays unread. **Decision** (2026-09-15).
+  The chores fold's card draws yes and drop for the fold and a drop
+  on each row when it holds more than one; a row is the chore's own
+  decision, named `<number><letter>` in chat and taking any answer
+  the fold takes, so `pick <letters>` is gone from `unit.yaml` and
+  the mockup's 415 (11, 60, S232). **Decision** (2026-09-15).
 
 - **62 "the record never holds the text".** The record holds the
   document's path in the change directory and the offer entry's id.

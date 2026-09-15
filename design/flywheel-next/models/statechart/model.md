@@ -112,7 +112,11 @@ of some object, or a file the machinery reads as evidence.
   is refused on the thread with the names, as `commands.ask` refuses
   (sessions.yaml `commands.offer`); a finding on the session's own
   thread into an `elaboration` (design side) or a `fast` unit
-  (construction side) in `proposed`; anything else into a `signal`.
+  (construction side) in `proposed`; anything else into a `signal` — a
+  finding with no thread above the session, or an offer of kind
+  `signal`, which a session makes when what it saw is about neither
+  its intent nor its bolt (58) and which is a signal wherever the
+  session stands, never a proposal on its thread.
   That signal stands under the capture the session was reading when
   there is one; otherwise the offer is a capture of its own, source
   `offer`, keyed `offer/<session>/<entry>`, captured by the session at
@@ -813,7 +817,7 @@ the chat both read the register, so they show the same number (18).
 | `intent-proposed` | approve | `intent.proposed` (curation's join, or a session's finding that fits no intent) | yes → open; drop; split | yes · drop · split |
 | `elaboration-proposed` | approve | `elaboration.proposed` (a finding on the thread; new material on an open intent; curation's gathering over several intents; dictation never) — folded into the intent's decision while the intent is proposed; its document is reviewed on the review surface; shows every intent it covers (188) | yes → approved; drop; `type <name>`, `pick <intents>` and `<intent>: drop` keep it | yes · drop · type · pick · `<intent>: drop` |
 | `proposal` | approve | `proposal.proposed`: planning's one document per run, the bolts it proposes and the units in each (172); reviewed on the review surface and an annotation there is the response (17) | yes → approved, and every unit in `in-proposal` follows; redo → withdrawn; later → deferred; planning's next run → superseded, silently (35); a per-unit answer (`<unit>: bolt`, `new bolt`, `rename`, `type`, `drop`) is forwarded to the unit and keeps it | yes · redo: · later · `<unit>: bolt` · `<unit>: new bolt` · `<unit>: rename` · `<unit>: type` · `<unit>: drop` |
-| `unit-proposed` | approve | `unit.proposed` (a finding routed to a bolt, a chore offer); chores fold by bolt; its document is reviewed on the review surface and an annotation there is the response (17) | yes → approved (creates the bolt if new, then the items); drop; redo → withdrawn; later → deferred; a moved claim → superseded, silently (35); bolt/new bolt/rename/type/pick keep it | yes · drop · redo: · bolt · new bolt · rename · type · pick · later |
+| `unit-proposed` | approve | `unit.proposed` (a finding routed to a bolt, a chore offer); chores fold by bolt or by repository into one card whose rows are lettered, each row the chore's own decision, named `<number><letter>` in chat and carrying its own drop on the card (S232); its document is reviewed on the review surface and an annotation there is the response (17) | yes → approved (creates the bolt if new, then the items); drop; redo → withdrawn; later → deferred; a moved claim → superseded, silently (35); bolt/new bolt/rename/type keep it | yes · drop · redo: · bolt · new bolt · rename · type · later |
 | `unit-claim-moved` | decide | `unit.claim-moved`: an approved, unstarted unit whose cited claim moved (35) | redo → withdrawn; keep → approved with the version pinned | redo · keep |
 | `bolt-close` | approve | `bolt.open[close].offered` when every unit is merged, no chore outstanding, no hold since the last merge | yes → landing; hold → held; new work → not-offered | yes · hold |
 | `intent-close` | decide | `intent.open[close].offered` when every elaboration is done | close → archiving; keep open → declined; new work → not-offered | close · keep open |
