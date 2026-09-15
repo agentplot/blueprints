@@ -140,11 +140,17 @@ the operator may reverse by a response on the file; an entry with
   with the names, exits 1 and is never pending, as `commands.ask`
   refuses — nothing is derived from `--about`, which says what the
   chore concerns and not where its fix lands (sessions.yaml
-  `commands.offer`). The built `flywheel offer` records only the kind
-  and the document and takes neither flag; 19.12 builds `--scope`.
-  **Decision** (2026-09-15). `flywheel offer signal`,
-  listed in 10.2 and 56, is not built; a session's own signal reaches
-  the record only as a finding nothing stands above. **Open**.
+  `commands.offer`). Built 2026-09-15: `--scope` as stated; a chore
+  unit records its scope as `bolt-line` or `shared-line` (`unit.yaml`
+  record); a chore off every bolt that reached the thread without the
+  command's check is refused there by `record_offers` with
+  `refuses: <entry>`, so nothing is made of it. **Decision**
+  (2026-09-15). `flywheel offer signal`,
+  listed in 10.2 and 56, and `--about` are not built; a session's own
+  signal reaches the record only as a finding nothing stands above.
+  **Open**. The chores fold's card draws yes and drop only; the
+  `pick <letters>` answer stands in `unit.yaml`'s decision and the
+  mockup's 415, and is not drawn or built. **Open**.
 
 - **62 "the record never holds the text".** The record holds the
   document's path in the change directory and the offer entry's id.
@@ -341,8 +347,10 @@ the operator may reverse by a response on the file; an entry with
   session's exit makes the proposed chore unit on the shared line,
   under the repository whose line it is — the one the offer's
   `--scope` names, as the ask names its repository (62) — or
-  the ask record, and `record_moves` writes `route <offer entry id>`
-  on the signal. No new effect: the offer path already exists. A route
+  the ask record, and `record_moves` writes the route on the signal
+  naming what the offer became — the unit, resolved from the offer
+  entry the session's route named, or `ask/<id>` — as `propose-unit`
+  names its unit. No new effect: the offer path already exists. A route
   whose chore is declined leaves the signal routed, not unmoved; the
   operator revives it to have it judged again (107). **Decision**.
 

@@ -496,7 +496,7 @@ evidence:
   intent.change_open:  {read: "`openspec/changes/<intent-id>/` exists on the intent's line"}
   line.acceptance_written: {read: "for a bolt's line: `openspec/acceptance.yaml` at the line's head lists exactly the claims the bolt's units cite (claims field, name@version) with the scenarios the blueprints' standing requirements carry at those versions; for an intent's line: true (192)"}
   elaboration.records_fanned_out: {read: "for every intent in covers beyond the parent, the place holds nothing under `openspec/changes/<that intent id>/` and that intent's line holds the commit naming this elaboration, or the session left nothing for it"}
-  lease.coverable:     {read: "some host whose disk region is ready (205) in `flywheel.yaml` hosts declares this object's kind, its repository (for a bolt, unit or item) and its unit type (for a unit or item); a sink is coverable when some host or the dispatcher declares it in `presents`"}
+  lease.coverable:     {read: "some host whose disk region is ready (205) in `flywheel.yaml` hosts declares this object's kind, its repository (for a bolt, unit or item) and its unit type (for a unit or item) — every host's declaration covers `blueprints` whatever repositories it lists, since every host clones the blueprints (149, 123, host.repositories_cloned); a sink is coverable when some host or the dispatcher declares it in `presents`"}
 effects:
   create_line:     {do: "`git push <repo> <parent head>:refs/heads/<line>` with expected-old = zero; the ref exists afterwards"}
   take_parent:     {do: "in the owner's place (a bolt's operator place, an intent's own place): `git merge --no-ff <parent>`, never a rebase (179); on conflict `git merge --abort`; then push the line with expected-old = the head read"}

@@ -2865,7 +2865,10 @@ through these operations, and depends only on these guarantees.
 149. A host declares in the manifest what it takes: kinds of object,
     repositories, unit types, and whether it presents. It takes leases
     only within its declaration. An object that no host's declaration
-    covers is a decision under attention, not a silent wait.
+    covers is a decision under attention, not a silent wait. Every
+    host's declaration covers the blueprints, whatever repositories it
+    lists, since every host clones them (123): a chore of the
+    blueprints is never uncovered.
 150. Every object is owned by at most one host at a time, through a
     lease, and the owner is visible. Two hosts never work the same
     object. A host that goes away leaves its objects visibly stale;

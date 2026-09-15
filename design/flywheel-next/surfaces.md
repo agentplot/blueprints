@@ -121,7 +121,8 @@ were settled, not their place on the page.
 - **S13.** Inception shows: the curation counter (unmoved signals, by
   source, oldest) with curation's session chip, the counter opening
   the signals tray (S225); every capture not yet moved as a quote with
-  its controls (S224); explorations the
+  its controls (S224), and in the status grouping (141) such a capture
+  is queued — it waits on curation, never on the operator; explorations the
   operator opened (189) as rows; every open or proposed intent as a
   thread with its elaborations as beads; a closed intent greyed with
   its countdown (186). Capture and explore are palette commands (S30,
@@ -130,7 +131,9 @@ were settled, not their place on the page.
 - **S14.** Bolt plan shows: planning in progress as a session row when
   a redo charged it again; the current proposal as a sheet; single unit
   proposals as slips; a baseline as a sheet of its own; a deferred
-  proposal or baseline greyed as "deferred · ask again".
+  proposal or baseline greyed as "deferred · ask again". A slip on no
+  ledger — a proposed chore of a shared line — names its repository in
+  grey before its name, so two shared lines' `chore-1` read apart.
 - **S15.** Construction shows every open bolt as a ledger: units as a
   left-to-right chain (merged, building, queued), running work items
   with their session chips under the building unit, machinery sessions
@@ -2036,7 +2039,8 @@ whatever else it does.
   and its first elaboration proposed from it; the operator's own
   intent is never put back to them for a yes (12). `attach to…` lists
   the open intents by subject and a pick is the whole gesture. SINCE
-  gains "captured · <first words>" when a capture lands (S9). Nothing
+  gains "captured · <first words>" when a capture lands, dated when the
+  capture was put and reading its words (S9). Nothing
   a capture typed on the page says is parsed: the controls are the
   only way it becomes anything (19).
 - **S225.** Ruled 2026-09-14: the curation counter in Inception is a
@@ -2066,7 +2070,9 @@ whatever else it does.
   when the elaboration covers more than one intent (188). A proposal
   that names no type reads self-closing (27), and one naming a type
   the instance lacks asks for a type before its yes is taken (85a,
-  S6). A yes starts the session in the intent's place; the bead shows
+  S6): the card drops its type line and reads "<name> is not a type
+  here · set one with type…", or "no type named · set one with type…"
+  when none was named; a unit's card reads the same. A yes starts the session in the intent's place; the bead shows
   it working, then done; the close is offered when every bead is done
   (22).
 - **S227.** Ruled 2026-09-14: the instance's first real material is
@@ -2162,7 +2168,12 @@ whatever else it does.
   The offer says which repository, by the name the operator's
   `propose-chore` and `ask` tools take, `blueprints` among them (S229;
   surfaces.yaml tools); the folded decision is headed
-  by that name, and its rows read as a bolt's chores do. An offer that
+  by that name, and its rows read as a bolt's chores do. Any fold of
+  proposed chores, a bolt's too, is one card of kind "chores", headed
+  "<repository or bolt> · N chores", subtitled "offered by <session>",
+  with yes and drop; the unit's page lists every chore of the fold by
+  its document and shows a "bolt" row only when a bolt stands above it.
+  An offer that
   names no repository, or one the instance does not track, is refused
   on the session's thread with the tracked names and lands nowhere,
   as an ask is (60).
