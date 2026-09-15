@@ -2662,6 +2662,22 @@ requirements, iterated against the running rail rather than on paper.
     client state a reload loses, so a reload after an answer shows the
     answer recorded, with who gave it and when (153, 154). The bundle
     carries no dependency the phone must fetch from anywhere else.
+310a. The page has a budget and is built to it. The first view — the
+    top, the rail, the board, and the dock page a link named (308) —
+    first paints within 1.0 s and answers within 1.5 s on a mid-range
+    phone over an ordinary mobile connection, and a load with nothing
+    cached is at most 200 KB on the wire, 60 KB once the fonts are
+    cached, the first view's body at most 100 KB before compression.
+    The page ships what is on screen: a dock page, the signals tray's
+    rows, and every list longer than 50 rows are fetched when opened
+    and paged past 50, the count stated. An update carries only the
+    regions that changed, at most 8 KB for one move, one answer or one
+    capture, never the whole page. Every response is compressed. The
+    time and the bytes grow with what is on screen and not with the
+    instance: at ten times the signals, intents, captures and facts the
+    same first view paints and weighs within a tenth of what it did.
+    The numbers are held by a test, measured as the surfaces profile
+    states (S235); a build over budget has not met the page (306, 307).
 311. Every answer is one tap or one short reply. Nothing is reachable only
     by hover or by a keyboard, and anything a hover reveals on the desktop
     is reachable by tap on a phone (S61). A long-form answer, a proposal

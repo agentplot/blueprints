@@ -131,6 +131,21 @@ palette:
   commands: "the catalogue filtered by the caller's permissions, fuzzy-matched, each row naming the command, what it does in the operator's words and the object it will act on; a tool the caller may not invoke is not offered and a feature a plan hides takes its command with it, named by the plan's own name and never by a rung (293, 249, 250, 280); the commands offered are answer, capture, drop, later, hold, release, rename, close, finish, end, retire, revive, take, takeover and ask, each the catalogue tool of its own name, its typed words its argument sent as typed, and a command that acts on an object taking the one in hand — the object the dock has open, else the decision the rail holds — or an id typed after it; `ask` takes the repository as its first word and the rest as the words, the repository typed first because nothing in hand names one (28); curate, propose-unit, open-session, start, stop and remove-instance are reached by their own controls, since the palette cannot seed them as one call (S228)"
   accelerator: "the palette carries no operation that no control also carries: the rail's buttons and every dock control are unchanged, and the palette reaches them rather than replacing them (311, 306)"
   writes: "capture, propose-unit, open-intent, attach-signal, drop-signal and curate are under `fw.capture.write`, so a caller without it sees the field read-only with its send refused and the command list filtered (249, S30); every send is one call recorded once with who gave it and when (153)"
+budget:
+  doc: |
+    The page's budget (310a, S235): what a load ships, what an update
+    carries, and the numbers a test holds. The page renders the first view
+    and nothing more; every dock page and every list past its first page
+    is a fetch of its own; an update is the changed regions since a
+    generation; every response is compressed. What the page costs grows
+    with what is on screen, never with the instance.
+  first_paint: "1.0 s to first contentful paint and 1.5 s until the rail's first card takes a press, on a mid-range phone (a 4× CPU slowdown in the headless browser) over an ordinary mobile connection (5 Mbps down, 1 Mbps up, 150 ms round trip), measured from the request to `/<instance>/` with an empty cache"
+  load_bytes: "200 KB on the wire for a load with nothing cached and 60 KB with the fonts cached — the sum of every response the first view needs, as the browser received them, compressed; the first view's HTML at most 100 KB before compression"
+  update_bytes: "8 KB on the wire for the update one move, one answer or one capture causes: the page's fetch of what changed since its generation, never a second load of the page"
+  growth: "measured twice, on a scratch instance seeded with the round's counts (signals, intents, captures, facts) and at ten times each; first paint and load bytes at the larger size are within a tenth of the smaller, and an update's bytes are the same"
+  paging: "a list shows 50 rows, the count and a `more` that fetches the next 50 (S235); a dock page is fetched when opened; the rail is never paged"
+  compression: "every response is served compressed with the best encoding the request accepts (br, then gzip), the fonts excepted since woff2 is already; the fonts are cached for a year under a name carrying the binary's version (291)"
+  how_measured: "a headless browser (the Chromium the conformance tests already drive) with the throttling above records first contentful paint, the time to the first press taken, and every response's size from the resource timing of the page; the test seeds the two instance sizes with the scenario tool (95), loads `/<instance>/`, opens one dock page and the tray, answers one decision, and fails on any number over budget; it runs in the build's tests beside the client-view test"
 viewer:
   doc: |
     The instance's book, served beside the page as a standalone read-only

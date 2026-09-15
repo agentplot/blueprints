@@ -1230,6 +1230,28 @@ the operator may reverse by a response on the file; an entry with
   boundary and every parameter there is a proposal. **Open** until the
   willdan instance stands.
 
+- **310a the page's budget.** Ruled 2026-09-15: the design set no
+  weight or load time and the build grew to the instance. Measured on
+  the round's scratch instance (264 unmoved signals, mid-curation): one
+  load is 0.94–1.46 MB of HTML sent uncompressed, about 0.6 s to render
+  on the host before any network; 75 KB of it the embedded fonts, 31 KB
+  script, about 780 KB the body, because the page renders every dock
+  page inline on every load — 384 of them, hidden until opened — and
+  every host event refetches and swaps the whole page (template.html
+  `refresh()`, http.rs `/events`), so a batch of moves during curation
+  downloads the megabyte again. Now 310a states the budget — 1.0 s to
+  first paint and 1.5 s to the first press on a mid-range phone over an
+  ordinary mobile connection, 200 KB a load with nothing cached, 60 KB
+  with the fonts cached, 100 KB of first-view HTML, 8 KB an update —
+  and S235 and surfaces.yaml `budget` say how it is kept and measured:
+  the first view alone ships, dock pages and lists past 50 rows are
+  fetched when opened, an update carries the changed regions since the
+  page's generation, every response is compressed, and a test seeds two
+  instance sizes and fails a build over any number. **Decision**. As
+  built: none of it; the whole page, uncompressed, every dock page
+  inline, the whole page again on every event. The mirror's
+  definitions/profiles/surfaces.yaml needs recopying.
+
 - **306–314 the phone.** Ruled: parity is a requirement of the first
   build and not a surface ruling, the phone being the same served bundle
   under 760px with two tabs and a full-screen dock; deep links from every

@@ -2021,10 +2021,11 @@ whatever else it does.
   what next", "✓ 2 land?").
 - **S221.** Ruled 2026-09-14: the page keeps itself current. The host
   raises a generation when its store moved and tells every open page
-  over one event stream; the page fetches itself from the same host and
-  swaps the rail, the board, the drawer and the counts, keeping the
-  decision in hand, the drawer that is open and where each column was
-  scrolled. Every form on the page is sent the same way and what comes
+  over one event stream; the page fetches from the same host what
+  changed since the generation it holds — the regions that moved, and
+  the drawer's page only when it is open — and swaps those in,
+  keeping the decision in hand, the drawer that is open and where each
+  column was scrolled; it never fetches the whole page again (S235). Every form on the page is sent the same way and what comes
   back is swapped in, so an answer or a capture never navigates.
   Nothing is fetched from anywhere but the host (310). A session
   calls no address to wake the loop, and the machinery builds no wake
@@ -2319,6 +2320,30 @@ whatever else it does.
   to copy. The page never opens, focuses or reads a pane itself: the
   pane stays reachable for the operator who wants it, and everything
   the operator needs is on the page already (68).
+- **S235.** Ruled 2026-09-15: the page's budget (310a) and how it is
+  kept. What a load ships is the first view alone: the top, the rail's
+  cards, the board's lanes as they stand, the counts, and the dock page
+  a link named, with the bundle's script, style and the two fonts. It
+  ships no dock page that is not open: a dock page is fetched from the
+  host when its object is opened, and the drawer shows its head at
+  once and its body when it arrives, never a blank panel and never a
+  spinner longer than the fetch. The signals tray's rows, the recently
+  done list, a bolt's commits, a thread's beads and every other list
+  show their first 50 rows with the count and a "more" that fetches
+  the next 50; the rail is never paged, since every decision is in the
+  count (15). An update after the host's event carries only the
+  regions that changed, keyed by the generation the page holds, and
+  the page swaps those regions and nothing else; one move, answer or
+  capture is at most 8 KB. Every response is compressed with what the
+  browser offers, and the fonts are served once and cached for a year
+  under a name that changes with the binary (291). The budget is
+  measured as the surfaces profile states (surfaces.yaml budget), on a
+  scratch instance seeded at two sizes, with a headless browser
+  throttled to a mid-range phone and an ordinary mobile connection;
+  the numbers are 310a's and the test fails a build over any of them.
+  The rule that keeps it: what the page costs grows with what is on
+  screen, so nothing about an object the operator has not opened is
+  rendered, and nothing already on screen is sent twice.
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open
