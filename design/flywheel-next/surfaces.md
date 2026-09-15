@@ -47,7 +47,9 @@ were settled, not their place on the page.
 - **S2.** The header shows the instance, the as-of time of the
   read the page was built from (145), the count of decisions, the
   "yes all" control with the numbers it will answer, shown only while
-  an approve decision waits and absent otherwise, the count of
+  an approve decision waits and absent otherwise (it is the one such
+  control on the page; no approve group carries its own, ruled
+  2026-09-14), the count of
   responses sent with a control that opens the sent log, a theme
   control (light, dark, system), and the account item at its right
   (S152).
@@ -93,7 +95,11 @@ were settled, not their place on the page.
 - **S9.** SINCE lists what entered a tail state since this sink's
   delivery mark (14, model 5.5): merged, landed, closed, dropped,
   started, finished, accepted, answered, held. A line names the object,
-  the reason and the time. "Later" writes no SINCE line (§5).
+  the reason and the time. "Later" writes no SINCE line (§5). Ruled
+  2026-09-14: the page titles it in plain words that say what it holds
+  ("Recently done", never "since"), and it has a window: today's
+  entries, or the last twenty when today holds fewer; what falls off
+  the window stays on record and is not lost.
 - **S10.** The board is the status view (B.4) drawn by phase. It holds
   objects only, never the count. It has two views: phases and map,
   switched in the board's header or with the m key. The book is a
@@ -1901,9 +1907,8 @@ whatever else it does.
 - **S216.** A host is a chip in the hosts strip with a dot for whether
   it is heard from and what it runs; the board and the dock never say
   "held by". A capture is one bordered card on the board with its
-  words and its source, its whole face taking it in hand (S219) and
-  its words opening it in the dock, and its signal is not a second
-  line (141, D16).
+  words and its source, a click anywhere on it opening it in the dock
+  (S219), and its signal is not a second line (141, D16).
 - **S217.** The page asks for no name the operator did not think of. A
   bolt made from a capture is named from the capture's first words; a
   name can be changed later, on the object, never demanded first (19a,
@@ -1918,8 +1923,12 @@ whatever else it does.
   the board and scrolled into view; where the board does not draw that
   object it lights the nearest parent it does draw, so a signal's
   decision lights the capture the operator typed. `j` and `k` move the
-  hand; a mark on a board object takes its decision in hand; a board
-  object with no decision lights alone when picked. Enter and `o` open
+  hand; a mark on a board object takes its decision in hand. Ruled
+  2026-09-14: a click anywhere on a board object opens it in the dock
+  and makes it the selection, taking its decision in hand where it has
+  one and lighting it alone where it has none; this holds for every
+  object the board draws, and nothing on the board needs its words or
+  a link inside it clicked separately to open. Enter and `o` open
   the one in hand. Selection within a drawn object (the units of a
   bolt, the beads of an intent) is not yet bound.
 - **S220.** Ruled 2026-09-14: a decision reads as a question in a
