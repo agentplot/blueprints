@@ -1298,7 +1298,13 @@ requirements, iterated against the running rail rather than on paper.
     name (`<hostname>.local`) need not resolve on the operator's
     network (205a). A host registered at localhost serves this
     computer alone, and init says so: answering from the phone (306)
-    is met once the operator gives the host its hostname. Every step
+    is met once the operator gives the host its hostname. Init may
+    also name the instance's chat sink — the platform, its channel,
+    and the name of the variable the bot's token will be read from —
+    and has the first host present it (149); the channel's id and the
+    variable's name are checked before anything is written, and a
+    value that could not be a variable's name, which is what a pasted
+    token looks like, is refused without being repeated (207). Every step
     is an effect with a proof, so running it again changes
     nothing, and the reconciler that advances work advances a
     half-finished bootstrap.
@@ -1411,7 +1417,9 @@ requirements, iterated against the running rail rather than on paper.
 217f. When dispatch is down nothing is lost. Decisions are state and
     any host serves the page (148). Replies wait in the chat and are
     applied once by their delivery id when the presenter returns
-    (137). A caller of the endpoint retries; a repeat under the same
+    (137), and acknowledged once, when they are recorded: a reply read
+    again after a restart is the same delivery, writes nothing and is
+    not acknowledged a second time (154). A caller of the endpoint retries; a repeat under the same
     key writes nothing (111). A capture waits with its pointer; an
     unmoved signal is never discarded (118). The sink's lease expires
     by the stated rule and never by racing (150).
@@ -1475,7 +1483,15 @@ requirements, iterated against the running rail rather than on paper.
     state and the same thread window (217n). The model key that call spends is the operator's own,
     placed as 207m says, and where no key is placed the sink still
     carries decisions, answers by number and captures, and free text
-    is reported as needing a key rather than silently ignored.
+    is reported as needing a key rather than silently ignored. The
+    bot's token is read, by the name the manifest gives, from the store
+    the operator placed it in, and is written nowhere else: not the
+    manifest, not a record, not the page, and not an error, since an
+    error's address may carry it (204, 207). A token not yet placed, or
+    one the platform refuses, is a decision under attention that names
+    what to place; the host runs on presenting nothing to that sink,
+    and the sink sends nothing more until the operator places another
+    (81, 217k).
 217m. A model key is placed by the operator, per instance, in the store
     the placement names (217i) — a keychain or a sealed file on a
     self-managed host, the tier's own store on a hosted one. It is

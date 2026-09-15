@@ -335,8 +335,18 @@ were settled, not their place on the page.
   invented (155). The numbered reply grammar always works beside them:
   `yes 412`, `yes all`, `no 415`, `415 pick a c`, `413 redo: <notes>`,
   `413 bolt other`, `414 rename retry`, `418 close`, `419 keep`,
-  `421: <text>`, `takeover`. Every reply is the `answer` tool; the ✅
-  reaction is the operator's proof it was recorded (154).
+  `421: <text>`, `takeover`. Every reply is the `answer` tool. The
+  operator's proof it was recorded (154) is the sink's acknowledgement
+  of what they sent: a numbered reply is answered with a reply on it
+  naming the decision, the answer and the record made; a press on a
+  control is acknowledged at once, privately to the one who pressed,
+  and that acknowledgement is filled in with the same once the answer
+  is recorded, because the platform wants an acknowledgement sooner
+  than the record is written. Where the platform bounds a message, the
+  rendering goes on in as many messages as it takes, each decision's
+  controls in the message that carries its line, and the last message
+  is the delivery the sink's mark records. A rendering mentions nobody
+  and unfurls no link.
 - **S32a.** A sink declares its platform's capabilities and the
   rendering is written against those, never against a platform's name
   (155a): buttons, menus, threads, reactions, edits, notifications. What
@@ -2056,10 +2066,15 @@ What no mockup settled.
   bottom sheet sits when the rail is the first tab, and how the book
   viewer's tree is reached on a phone. A.38 settles that each is answerable on a phone
   (306, 307); how it is drawn there is this item.
-- **S79.** The chat's rich controls per platform: which Discord
-  components carry which answers, how a per-unit edit or a pick is
-  offered, and whether a threaded reply on a decision line is an answer
-  on that decision.
+- **S79.** The chat's rich controls per platform. Settled: where a sink
+  declares buttons, a decision line carries one button per answer that
+  takes no words of the operator's, up to the row the platform allows,
+  labelled with the number and the answer, the first answer in the
+  affirmative look and `drop` in the destructive one; an answer that
+  takes text (`redo: <notes>`) and any answer past the row stay in the
+  line for the numbered reply (155a, 194). Open: how a per-unit edit or
+  a pick is offered, and whether a threaded reply on a decision line is
+  an answer on that decision.
 - **S80.** The review surface's annotation-as-response: which
   plannotator annotation maps to which answer (a note is redo with the
   note; approval of the document is yes; which annotation is drop),

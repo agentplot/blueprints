@@ -581,7 +581,7 @@ operators:                   # membership, authored whole on a self-managed host
   - {github: chuck, discord: "440812…", slack: U04AB…}   # one chat sink per address, keyed by identity (236a)
   - {github: sam}                                        # no chat address: a page sink only
 sinks:                       # where decisions and the tail go (82); one presenter each (148)
-  chat: {discord: {guild: 118..., channel: instance}, routes: [approve, decide, answer, attention], cadence: "0 7,12,17 * * *", presenter: dispatcher}   # the shared channel: one sink, one mark, no member
+  chat: {kind: chat, channel: discord, surface: "118...", routes: [approve, decide, answer, attention], cadence: "0 7,12,17 * * *", token_from: FLYWHEEL_DISCORD_TOKEN, presenter: dispatcher}   # the shared channel: one sink, one mark, no member; the token's variable is named, never the token (207); presented by the hosts whose `presents:` names it (149), pinned only when `presenter:` is given
   page: {url: https://flywheel.tail1234.ts.net/willdan/rail, routes: [approve, decide, answer, attention]}   # the instance in the path (205a); each member's page sink has its own mark (236)
   bell: {surface: "herdr:operator-desk", routes: [answer, attention, land-failed]}
 curation: {threshold: 12, cadence: "0 6 * * 1-5"}
@@ -853,9 +853,23 @@ S31). A construction host is silent because it is no sink; nothing the
 machinery notices is visible only on the host that noticed it (82).
 
 Exactly one presenter delivers to each sink: the holder of the sink's
-lease, or the host the manifest pins (`presenter:`). A dispatcher
+lease, or the host the manifest pins (`presenter:`). The lease is
+taken only by a host whose declaration presents the sink and that has
+opened its channel (149); a host that covers every object kind but
+presents nothing never takes it. A dispatcher
 running outside every host — a process whose declaration takes no
-object kinds and presents the chat — may be that presenter (148).
+object kinds and presents the chat — may be that presenter (148). A
+delivery that fails is reported under attention with its reason, the
+mark stays where it was, and the next tick owes the delivery again;
+nothing passes silently as "not presented" (81, 127).
+
+Only the presenter hears a sink. A message arriving on a chat sink's
+wire is a notify to the host that holds the wire, page served or not,
+and is read before the next pass (217l). What arrives while no host
+holds the lease waits; what arrives while another host holds it is that
+host's to hear and is let go here, so a reply is answered once however
+many hosts listen (148, 217f). A message that could not be read, and
+whatever stopped the wire, is reported under attention (81).
 
 ### 5.6 Responses
 
@@ -863,8 +877,14 @@ A response is an op-response record: an answer names a decision number
 (`yes 413`, a button, a page choice, a plannotator annotation) and the
 register resolves it to the object and the decision state; a dictation
 names an object. The response is stored before anything follows (153);
-the ✅ reaction, or the page's acknowledgement, is the operator's proof
-(154). The reply grammar of the mockup is the union of the `answers`
+the sink's acknowledgement of the reply or the press (S32), or the
+page's acknowledgement, is the operator's proof (154). A press reaches
+the sink as the numbered reply it stands for (`412: yes`) and is
+recorded by that grammar, never as a command of its own. Who gave it is
+the sink's member where the sink has one; a shared channel, which
+belongs to nobody, records who wrote the message, which while the
+operators list holds one entry is that operator (153, 236, 253a). The
+reply grammar of the mockup is the union of the `answers`
 lists. `yes all` is expanded by the presenter into one response per
 approve decision it delivered, each with its own id (`<message
 id>/<number>`). A response that arrives after its decision is gone is
