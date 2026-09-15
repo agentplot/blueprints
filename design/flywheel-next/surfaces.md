@@ -2024,9 +2024,11 @@ whatever else it does.
   (22).
 - **S227.** Ruled 2026-09-14: the instance's first real material is
   the willdan signals — captures read from meeting transcripts with
-  their signals already written — imported by the signals-folder
-  adapter, so the tray fills with real quotes from real meetings and
-  curation is measured over them (114, 215). The second source is a
+  their signals already written as markdown files with a header block
+  — read as they are by the signals-folder adapter, so the tray fills
+  with real quotes from real meetings and curation is measured over
+  them (114, 215). Its first proposals from those signals are
+  self-closing elaborations, since a signal names no type (27). The second source is a
   folder drop holding one raw transcript, which shows triage: the
   capture appears with no signals and a reader's session chip, and its
   signals appear when the reader delivers (217e). A faked third source

@@ -379,8 +379,11 @@ requirements, iterated against the running rail rather than on paper.
 27. The type of an elaboration is chosen when it is proposed and can be
     corrected by the operator's response. A proposal that names no type
     is proposed as self-closing (25); a proposal naming a type the
-    instance does not define is 85a's case. The proposal shows its type
-    and offers only the answers that apply to it.
+    instance does not define is 85a's case. Material names no type of
+    its own — a signal or a note carries none — so an elaboration an
+    open intent proposes from its attached material is self-closing
+    until the operator's response names another. The proposal shows
+    its type and offers only the answers that apply to it.
 
 <!-- ANCHOR_END: a04 -->
 ### A.5 Planning and construction
@@ -853,10 +856,14 @@ requirements, iterated against the running rail rather than on paper.
     is immutable once written.
 114. The signal and move record formats are versioned and stable. Any
     tool that writes them is an adapter; captures made before the
-    instance existed are read without conversion: a directory of
-    captures whose signals are already written in the record format
-    is read as captures already read, each keeping its own source and
-    event date, and no reader is charged for them (215, 217e).
+    instance existed are read without a reader's judgment: an adapter
+    carries their form into the record format — a directory per
+    capture with a provenance header and one file per signal, as the
+    first such corpus was written — keeping each capture's source and
+    event date and each signal's kind, excerpt and assertion as they
+    were read, and no reader is charged for them (215, 217e). A move
+    whose word the shipped set lacks is not a move here: the signal
+    arrives unmoved and curation judges it (107, 118).
 115. An adapter splits arithmetic from judgment. Enumerating source
     events and writing captures runs unattended. Turning a capture into
     signals is a session's judgment and never runs unattended.
