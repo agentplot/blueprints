@@ -206,6 +206,13 @@
     control; the palette is a bottom sheet with the platform's own keyboard, raised by a
     capture control on both tabs, and / brings the command list as on the desktop. The header's
     palette affordance is hidden there, as the other key hints are.
+  - What the header keeps under 760px (S236): one row nothing runs past at 390px — the
+    instance with its as-of time, "yes all" as the word alone while an approve decision waits,
+    the sent count that opens the log, and the account chip. It drops the title, the key hints,
+    the "yes all" numbers, the count of decisions (the Decisions tab's badge carries it) and the
+    capture box (the tabs' capture control raises the sheet). The theme control moves into the
+    account menu, last before sign-out. The dock's head and the tray's rows are held to the
+    same edge: nothing runs past it, text is cut at its end (S215).
     The clock starts at 07:40 and advances a minute per response. Detail beyond the seed is
     invented and marked sample. Review switches: ?theme=dark|light, ?nodock, ?open=<key>,
     ?view=map, ?palette=rest|slash|typing, ?review=1, ?load=1, ?host=<id> (lights
@@ -251,6 +258,7 @@ kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;b
 /* ---------- top ---------- */
 .top{flex:none;height:var(--top);display:flex;align-items:center;gap:14px;padding:0 14px;background:var(--surface);border-bottom:1px solid var(--line)}
 .top h1{font-size:15px;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+.top .keys{display:flex;gap:10px;font-size:11px;color:var(--ink3)}
 @media (max-width:1400px){.top .keys{display:none}}
 .top .meta{color:var(--ink3);font-size:12px}
 .top .count{margin-left:auto;display:flex;align-items:baseline;gap:8px;font-size:12.5px;color:var(--ink2)}
@@ -961,7 +969,8 @@ body.docked .dock{transform:none}
 .acct-menu .am-t{display:flex;flex-direction:column;gap:1px;min-width:0} .acct-menu .am-t b{font-size:13px} .acct-menu .am-t small{font-size:11px;color:var(--ink3);line-height:1.35}
 .acct-menu .am-sep{border-top:1px solid var(--line2);margin:6px 4px} .am-sink{display:flex;align-items:center;gap:8px;padding:3px 8px;font-size:11.5px;color:var(--ink2);flex-wrap:wrap} .am-sink b{font-size:12px;color:var(--ink)} .am-sink .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none} .am-sink .dot.warn{background:var(--warn)} .am-sink .dot.off{background:var(--line);border:1px dashed var(--ink3);box-sizing:border-box} .am-sink .mono{font-size:11px;color:var(--ink3)} .am-sink>span:not(.dot):not(.mono){flex:1;min-width:0} .acct-menu .am-me{display:flex;flex-direction:column;gap:2px;padding:4px 8px;font-size:11.5px;color:var(--ink2)} .acct-menu .am-me b{font-size:13px;color:var(--ink)} .acct-menu .am-me .mono{font-size:11px;color:var(--ink3)}
 .so-panel{width:min(520px,100%);text-align:center;padding:28px 20px} .so-panel p{color:var(--ink2);font-size:13px;margin:8px 0 14px}
-@media (max-width:759px){.acct-menu{position:fixed;left:8px;right:8px;top:calc(var(--top) + 4px);width:auto} .acct-btn b{display:none}}
+.acct-menu .am-theme{display:none} .acct-menu .am-theme .mono{color:var(--accent)}
+@media (max-width:759px){.acct-menu{position:fixed;left:8px;right:8px;top:calc(var(--top) + 4px);width:auto} .acct-btn b{display:none} .acct-menu .am-theme{display:flex}}
 
 /* ---------- part chips: what a host runs, read-only in the dock ---------- */
 .su-chips{display:flex;flex-wrap:wrap;gap:3px 10px;align-items:center;opacity:.9} .su-kg{display:inline-flex;align-items:center;gap:3px;flex-wrap:wrap} .su-kk{font:10px var(--mono);letter-spacing:.04em;color:var(--ink3)}
@@ -990,6 +999,16 @@ body.docked .dock{transform:none}
   .hosts{flex-wrap:nowrap;overflow-x:auto;padding:0 12px} .hosts .gauges{flex-wrap:nowrap}
   .top .keys{display:none}
   .top .count span.hint{display:none}
+  /* S236: the header keeps what the operator acts on — the instance and its as-of, yes all as the word, the sent count, the account chip — one row nothing runs past; the title, the count (the Decisions tab's badge carries it) and the theme control (in the account menu) go */
+  .top{gap:8px;padding:0 10px;overflow:hidden}
+  .top h1,.top .count,.top .theme{display:none}
+  .top .meta{margin-right:auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .top .btn{padding:5px 8px;flex:none}
+  /* the dock's head and the tray's rows run past no edge: a row wraps, a chip is cut at its end, a long word breaks (S215, S236) */
+  .dk-h .row{flex-wrap:wrap;row-gap:4px;min-width:0} .dk-h .row>span{min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis} .dk-h .row .own{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+  .dk-h h2,.dk-h .tail,.dk-b{overflow-wrap:anywhere} .dk-h.dk-art h2{word-break:normal} .dk-b h3,.dk-b .sec-h,.dk-b .eyebrow{overflow-wrap:normal} .dk-b h3 .r,.dk-b .sec-h .r{flex:1 1 auto;min-width:0}
+  .cap{max-width:100%;overflow:hidden} .cap q,.cap .qm,.cap .qn{overflow-wrap:anywhere;white-space:normal}
+  .tray-h{max-width:100%} .tray-h .trig{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .wrap{grid-template-columns:1fr;margin-bottom:50px}
   body.docked .board{display:block}
   .rail{display:none;border-right:0}
@@ -1028,7 +1047,7 @@ body.docked .dock{transform:none}
   <span class="meta"><b id="orgname">willdan</b> · 2026-09-04 <span class="mono" id="clock">07:40</span></span>
   <button class="palbtn" id="pal-open" title="one input: type to capture, / for a command, a number to answer"><span class="t">Capture, or / for a command</span><kbd>⌘K</kbd></button>
   <div class="count"><b id="count">12</b><span>decisions</span><span class="hint" id="yesallhint">· "yes all" answers 412–417, 422, 424</span></div>
-  <span class="keys" style="display:flex;gap:10px;font-size:11px;color:var(--ink3)"><span><kbd>j</kbd><kbd>k</kbd> rail</span><span><kbd>↵</kbd> open</span><span><kbd>y</kbd><kbd>n</kbd><kbd>l</kbd> answer</span><span><kbd>]</kbd><kbd>[</kbd> beads</span><span><kbd>m</kbd> map</span><span><kbd>w</kbd> flywheel</span><span><kbd>⌘K</kbd><kbd>/</kbd> palette</span><span><kbd>b</kbd> book</span><span><kbd>esc</kbd> close</span></span>
+  <span class="keys"><span><kbd>j</kbd><kbd>k</kbd> rail</span><span><kbd>↵</kbd> open</span><span><kbd>y</kbd><kbd>n</kbd><kbd>l</kbd> answer</span><span><kbd>]</kbd><kbd>[</kbd> beads</span><span><kbd>m</kbd> map</span><span><kbd>w</kbd> flywheel</span><span><kbd>⌘K</kbd><kbd>/</kbd> palette</span><span><kbd>b</kbd> book</span><span><kbd>esc</kbd> close</span></span>
   <button class="btn quiet theme" id="theme" title="theme">system</button>
   <span class="acct-wrap" id="acct-wrap"></span>
   <button class="btn" id="logbtn" aria-expanded="false"><b id="sent">0</b> sent</button>
@@ -2931,6 +2950,7 @@ function acctHtml(){ const me = ME(); const kindName = me.kind==='okta' ? 'Okta'
       <div class="am-h">organization<small>the organizations <span class="mono">${esc(PAGE.served)}</span> has roots for and you are a member of</small></div>${orgs}
       <div class="am-sep"></div>
       <button role="menuitem" data-acct="console"><span class="am-t"><b>management console</b><small>hosts and what they run, pools, what you can add, and this organization's settings · a separate page, opened for this organization</small></span></button>
+      <button role="menuitem" class="am-theme" data-theme-cycle title="theme · light, dark or system · here on a phone, since the header keeps only what you act on (S236)"><span class="am-t"><b>theme · <span class="mono">${esc(document.documentElement.dataset.theme || 'system')}</span></b><small>light, dark or system · tap to change</small></span></button>
       <button role="menuitem" data-acct="signout"><span class="am-t"><b>sign out</b><small>ends the ${kindName} session in this browser · the hosts keep running</small></span></button>
       <div class="am-sep"></div>
       ${sinksLineHtml()}
@@ -2942,6 +2962,8 @@ function sinksLineHtml(){ const me = ME(); const addrs = ((ORGS[S.org].addresses
   const chats = Object.entries(addrs).map(([kind, addr]) => { const h = S.hosts.find(x => x.parts.some(p => p.pkg===kinds[kind] && /^installed/.test(p.state))); const part = h && h.parts.find(p => p.pkg===kinds[kind]); const ch = part && part.cfg && (part.cfg.values.channel || part.cfg.values.space);
     return h ? `<div class="am-sink"><span class="dot"></span><b>${esc(kind)}</b><span><span class="mono">${esc(addr)}</span> · ${ch ? esc(ch)+' on ' : 'on '}<span class="mono">${esc(h.id)}</span>${ch && /^#/.test(ch) ? ' · shared channel' : ' · yours'}</span><span class="mono">${ch && /^#/.test(ch) ? 'shared · last shown' : 'last shown'} ${esc(marks[kind]||'none')}</span></div>` : `<div class="am-sink"><span class="dot warn"></span><b>${esc(kind)}</b><span><span class="mono">${esc(addr)}</span> · not delivered · no host sends to ${esc(kind)} yet</span><a class="btn sm yes" href="management-console.html?org=${encodeURIComponent(S.org)}&host=${encodeURIComponent(PAGE.served)}" title="the management console, on the host that serves this page · set up chat delivery there">set up chat</a></div>`; }).join('');
   return `<div class="am-h">where the plan reaches you<small>this page, and each chat address on your entry · each remembers what it last showed you · SINCE is yours</small></div>${page}${chats || '<div class="am-sink"><span class="dot off"></span><span>no chat address on your entry · add one in the management console</span></div>'}`; }
+/* one theme control in two places: the header's button on the desktop, the account menu's row on a phone (S2, S236); system → light → dark → system, the header's button always saying the current one */
+function cycleTheme(){ const r = document.documentElement; const cur = r.dataset.theme || 'system'; const next = cur==='system' ? 'light' : cur==='light' ? 'dark' : 'system'; if(next==='system') delete r.dataset.theme; else r.dataset.theme = next; const t = $('#theme'); if(t) t.textContent = next; }
 function renderAcct(){ const el = $('#acct-wrap'); if(el) el.innerHTML = acctHtml(); $('#orgname').textContent = S.org;
   const so = $('#signedout'); so.hidden = !S.signedOut; if(S.signedOut){ const okta = ME().kind==='okta'; so.innerHTML = `<div class="lib-panel so-panel" role="dialog" aria-label="signed out"><h2>signed out of ${esc(PAGE.served)}</h2><p>The ${okta ? 'Okta SSO' : 'GitHub'} session in this browser is ended. The hosts keep running; the plan keeps deriving; nothing on the rail is answered until you sign in again.</p>${okta ? '' : '<p class="su-hint">sign in with GitHub: the page shows a code, you approve it at github.com/login/device · <span class="mono">ABCD-1234</span> · '+SM+'</p>'}<button class="btn pri" id="signin">sign in with ${okta ? 'Okta' : 'GitHub'}</button></div>`; } }
 /* --- 234–242: GitHub sign-in everywhere (device flow on the operator's own computer), owners on decisions with a mine|all filter and answered_by in SINCE, environments per host with a provider each, and the pool --- */
@@ -3029,6 +3051,8 @@ document.addEventListener('click', e => {
   const t = e.target, b = t.closest('button');
   /* the account item · organizations · the management console · sign-out */
   if(b && b.id==='acct'){ S.acct = !S.acct; renderAcct(); return; }
+  /* the theme control in the account menu (a phone's, S236): the menu stays open and says the theme it set */
+  if(b && b.dataset.themeCycle !== undefined){ cycleTheme(); renderAcct(); return; }
   if(b && b.dataset.org){ switchOrg(b.dataset.org); return; }
   if(b && b.dataset.acct){ const k = b.dataset.acct; S.acct = false; if(k==='console'){ window.location.href = `management-console.html?org=${encodeURIComponent(S.org)}`; return; } if(k==='signout'){ S.signedOut = true; render(); return; } renderAcct(); return; }
   /* a capture's verbs and its picker (S233) · a click outside an open picker closes it */
@@ -3121,7 +3145,7 @@ document.addEventListener('click', e => {
   if(b && b.id==='dk-x'){ closeDock(); return; }
   if(b && (b.id==='yesall'||b.id==='yesall2')){ yesAll(); return; }
   if(b && b.id==='logbtn'){ const l = $('#log'); l.hidden = !l.hidden; b.setAttribute('aria-expanded', String(!l.hidden)); return; }
-  if(b && b.id==='theme'){ const r = document.documentElement; const cur = r.dataset.theme || 'system'; const next = cur==='system' ? 'light' : cur==='light' ? 'dark' : 'system'; if(next==='system') delete r.dataset.theme; else r.dataset.theme = next; b.textContent = next; return; }
+  if(b && b.id==='theme'){ cycleTheme(); return; }
   if(b && b.dataset.tab){ document.body.dataset.tab = b.dataset.tab; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x===b))); return; }
   if(t.closest('label.chore')){ setTimeout(() => $$('label.chore').forEach(l => l.classList.toggle('on', l.querySelector('input').checked)), 0); return; }
   const nav = t.closest('[data-nav]');

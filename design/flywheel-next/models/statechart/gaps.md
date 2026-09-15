@@ -1435,10 +1435,12 @@ the operator may reverse by a response on the file; an entry with
   palette sheet); the theme control moves into the account menu. The
   same rule holds the dock's head, whose id chip ran off the right edge,
   the drawer's pages on long text and the tray's rows: nothing runs
-  past the edge at 390px and text is cut at its end (S215). As built
+  past the edge at 390px and text is cut at its end (S215). The mockup
+  is drawn to it (2026-09-15): its key hints had carried an inline
+  style that beat both width rules, which was the overflow. As built
   2026-09-15: the served header still carries the title, the count and
-  the capture box at that width, and the mockup is not yet fixed
-  (306, 314). One thing is unbound rather than ruled. 313 names the Claude mobile app a client of the
+  the capture box at that width (306, 314). One thing is unbound
+  rather than ruled. 313 names the Claude mobile app a client of the
   tool server, but which authority that client signs in against on a
   self-managed host, whose address is a localhost port with no name
   (245, 293), is unbound: the device flow issues what a client on the
