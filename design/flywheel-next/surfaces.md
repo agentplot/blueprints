@@ -46,7 +46,8 @@ were settled, not their place on the page.
   a machinery strip, a rail, and a board. A dock opens over the board.
 - **S2.** The header shows the instance, the as-of time of the
   read the page was built from (145), the count of decisions, the
-  "yes all" control with the numbers it will answer, the count of
+  "yes all" control with the numbers it will answer, shown only while
+  an approve decision waits and absent otherwise, the count of
   responses sent with a control that opens the sent log, a theme
   control (light, dark, system), and the account item at its right
   (S152).
@@ -250,9 +251,10 @@ were settled, not their place on the page.
 - **S27.** The dock is one panel over the right of the board. Esc, the
   × or a click outside closes it. The rail's move keys change what it
   shows while it stays open. Under 760px it is full screen with a back
-  control. Its header takes the form of the object (209); its footer
-  carries the object's answers or dictations, or says "nothing to
-  answer" and why. Every page that cites a chapter or a claim carries
+  control. Its header takes the form of the object (209) and carries
+  the object's answers or dictations under the title, beside the
+  number; the dock has no foot, and an object with nothing to answer
+  says nothing about it (S220, S214). Every page that cites a chapter or a claim carries
   "read in book" per citation (S94), and every page for an object with
   OpenSpec artifacts behind it carries "the artifacts behind it" (S99).
 - **S28.** Dock pages, one per kind:
@@ -261,8 +263,8 @@ were settled, not their place on the page.
 |---|---|---|---|
 | decision | a rail card, a marker on a lane, the map or a chapter margin | the decision's text; the evidence its kind shows (S5); its document when it has one, with a plannotator link (S33); its history with the operator's responses; its owner with "assign…" (S170); "read in book" per cited claim; "the artifacts behind it" | the answers, one response each; in-flight state while one is sending; "answered by <member> at hh:mm" with no controls when another member answered it (S167) |
 | proposal | its decision | the proposal read whole: every bolt (open or new, name editable) with its units; per unit: name, type, why, dependencies, covered claims with "read in book", lineage, controls bolt · new bolt · rename · type · drop; a refusal inline when an edit would break a dependency, with the offer to take dependents along; "what a yes starts"; the "that's all wrong" field; lineage intent → writeback → landing on the blueprints → planning run → proposal (184) | yes · redo · later |
-| unit | its decision or slip | the unit document with a note control per section; items and stages; cited claims with "read in book", or "no claim cited" and, once landed, whether a claim was captured, declined or neither yet (34a, 317, S207); sessions running (none before yes); "change" opening its artifact view once approved, "no change yet" before (187) | yes · drop · redo · bolt · new bolt · rename · type · later |
-| bolt | a ledger | the ledger; the bolt's repository, line and place; decisions on it (in the rail, where you answer); its units with drop per unstarted unit and "change" per unit; rename; sessions running with host and last activity; services with start and stop; served endpoints; the acceptance file (S99); history | no decision here that is not in the rail; drop, rename, start and stop are dictations |
+| unit | its decision or slip | its job as a quote; its type, bolt, repository, host and the capture it came from, each a link where it is an object; the unit document with a note control per section; items and stages; cited claims with "read in book", or "no claim cited" and, once landed, whether a claim was captured, declined or neither yet (34a, 317, S207); sessions running (none before yes); the commits on its bolt's branch; "change" opening its artifact view once approved, "no change yet" before (187) | yes · drop · redo · bolt · new bolt · rename · type · later |
+| bolt | a ledger | the ledger; the bolt's repository, branch, host and place (S222); decisions on it (in the rail, where you answer); its units with drop per unstarted unit and "change" per unit; rename; every session on it with its agent, pane, host, when it started, its exit and what it delivered; the commits on the branch (hash, subject, author, when), titled as main's latest once the bolt has landed; services with start and stop; served endpoints; the acceptance file (S99); history | no decision here that is not in the rail; drop, rename, start and stop are dictations |
 | landed bolt | a record | the record; the landing (when, through which gates, place removed); pull request and checks; environments; units landed; the acceptance file; signals from operation with their move | nothing to answer |
 | intent | a thread | the thread; the intent's state and line; decisions on it; sessions running; its change directory (S99) | its decision's answers when one is pending, else nothing to answer |
 | elaboration | a bead; ] and [ from the thread | kind, type and state; its pending decision with the answer controls; its document excerpt; the records it wrote into the intent's change directory (187), opening the change directory view; its session chip; "in gathering n" when covered (188); the countdown when finished (210); a knot in the header and a back link to the thread | the decision's answers; finish on a standing one; nothing else |
@@ -279,7 +281,9 @@ were settled, not their place on the page.
 | attention | an attention line | what it means and what each answer does | the one-word answers |
 | external system | a dashed card | what it is; who meets it; that a claim on the contract is in scope for every repository that meets it | nothing to answer |
 | artifact | "the artifacts behind it", "change", "evidence", a work-item chip, the acceptance link | one view per artifact kind (S99) under a source bar (S100) | open source · review; the pending decision's answers when one is pending on the artifact |
-| work item | a chip on a ledger or in a dock | its commits in Conventional Commits form, the deliverables it recorded, its session's report, its session chip | nothing to answer; reply when the item is blocked (S49) |
+| work item | a chip on a ledger or in a dock | its unit's job as a quote; its stage, type, host, place and branch; its commits in Conventional Commits form, the deliverables it recorded, its session's report, its session chip | nothing to answer; reply when the item is blocked (S49) |
+| capture | its line on the board, its signal's decision | the words as a quote, from its beginning (S215); "from the console · by <member> · when" (S223); what became of it — built, with the unit linked; an intent, linked; dropped — or that it waits on the operator | its signal's answers while it waits (19a) |
+| any other object | a link anywhere | what it cites, in the signals' own words; what it holds, each with its sentence; what it is part of | nothing to answer |
 
 - **S29.** Requirements served: 17, 47, 68, 141, 144, 146, 172, 184,
   187–188, 195, 209–210, 213, 317. Tools called: `answer`, `drop`, `rename`,
@@ -1896,15 +1900,17 @@ whatever else it does.
   operator wrote it.
 - **S216.** A host is a chip in the hosts strip with a dot for whether
   it is heard from and what it runs; the board and the dock never say
-  "held by". A capture is one line on the board with its words and its
-  source, and its signal is not a second line (141, D16).
+  "held by". A capture is one bordered card on the board with its
+  words and its source, its whole face opening it, and its signal is
+  not a second line (141, D16).
 - **S217.** The page asks for no name the operator did not think of. A
   bolt made from a capture is named from the capture's first words; a
   name can be changed later, on the object, never demanded first (19a,
   I1).
 - **S218.** A key the design binds (S56) is shown on the control it
-  reaches, as the mockup shows it, and a key a card does not offer is
-  refused with the card's answers listed (S57).
+  reaches, as the mockup shows it, the rail's head shows the walk keys
+  (`j k walk · ↵ open`), and a key a card does not offer is refused
+  with the card's answers listed (S57).
 - **S219.** Ruled 2026-09-14: the rail and the board are one
   selection. One decision is in hand — the first at load, or the one
   whose object the link opened — and the object it stands on is lit on
@@ -1923,15 +1929,21 @@ whatever else it does.
   has one line of what follows in its tooltip. The value posted is the
   model's own word, so the chat's grammar and the page share the write
   path (193, 194). The affirmative control is filled; the one that sets
-  aside is in the colour for it. The drawer's foot carries the same
-  sentence and the same controls.
+  aside is in the colour for it. The drawer carries the same sentence
+  and the same controls in its head, under the title where the number
+  is; it has no foot, so the number is said once (S27). A mark on a
+  board object says the question in a word beside the number ("? 3
+  what next", "✓ 2 land?").
 - **S221.** Ruled 2026-09-14: the page keeps itself current. The host
   raises a generation when its store moved and tells every open page
   over one event stream; the page fetches itself from the same host and
   swaps the rail, the board, the drawer and the counts, keeping the
   decision in hand, the drawer that is open and where each column was
-  scrolled. Nothing is fetched from anywhere but the host (310). A
-  session's report wakes the loop the moment it is written, and a host
+  scrolled. Every form on the page is sent the same way and what comes
+  back is swapped in, so an answer or a capture never navigates.
+  Nothing is fetched from anywhere but the host (310). A session's
+  report, note, offer or refusal wakes the loop the moment it is
+  written, through an address the work order carries, and a host
   bound to Herdr waits on each live agent's state through Herdr's own
   wait, so an agent going idle, blocked or done is a cause now and not
   at the next poll (130, D6). The poll stays the floor.

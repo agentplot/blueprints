@@ -591,7 +591,12 @@ requirements, iterated against the running rail rather than on paper.
 72. Starting a session on a slow host may take a long time. The
     machinery treats a slow start as slow, not as failed; it retries;
     and it judges success by evidence that the session exists, never by
-    the return of the command that started it.
+    the return of the command that started it. A start the multiplexer
+    reports as blocked while the agent comes up is a start, and a
+    prompt the agent puts to its own pane before it will work (a trust
+    dialog on its folder) is answered by the sessions binding from what
+    the pane shows, never by assumption; a pane showing nothing of the
+    kind is left alone.
 73. Every action the machinery takes on a session is safe to repeat: a
     repeat of a completed action changes nothing.
 74. A session that is not the operator's to keep is retired when the
@@ -1244,8 +1249,10 @@ requirements, iterated against the running rail rather than on paper.
     it: create or adopt the blueprints repository from the blueprints template,
     create the state repository with the profile's layout (C.2), record
     that the flywheel's GitHub App must be installed (a secret the
-    operator places, never an agent), and register the first host.
-    Every step is an effect with a proof, so running it again changes
+    operator places, never an agent), and register the first host, at
+    this computer's name on its own network (`http://<name>.local`)
+    when the operator gives no address, never at localhost or a port
+    (191, 205a). Every step is an effect with a proof, so running it again changes
     nothing, and the reconciler that advances work advances a
     half-finished bootstrap.
 205. A host joins by one command and never by hand. It clones the state,
