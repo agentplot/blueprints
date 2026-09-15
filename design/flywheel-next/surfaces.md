@@ -345,8 +345,12 @@ were settled, not their place on the page.
   than the record is written. Where the platform bounds a message, the
   rendering goes on in as many messages as it takes, each decision's
   controls in the message that carries its line, and the last message
-  is the delivery the sink's mark records. A rendering mentions nobody
-  and unfurls no link.
+  is the delivery the sink's mark records. A reply typed while no host
+  presented the sink waits in the channel and is heard when the
+  presenter returns, read from after that delivery, oldest first, and
+  acknowledged once when it is recorded; a reply the sink already
+  answered is not answered again, however many times the host restarts
+  (217f, 137). A rendering mentions nobody and unfurls no link.
 - **S32a.** A sink declares its platform's capabilities and the
   rendering is written against those, never against a platform's name
   (155a): buttons, menus, threads, reactions, edits, notifications. What

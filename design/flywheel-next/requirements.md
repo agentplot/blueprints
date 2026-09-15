@@ -1419,7 +1419,15 @@ requirements, iterated against the running rail rather than on paper.
     applied once by their delivery id when the presenter returns
     (137), and acknowledged once, when they are recorded: a reply read
     again after a restart is the same delivery, writes nothing and is
-    not acknowledged a second time (154). A caller of the endpoint retries; a repeat under the same
+    not acknowledged a second time (154). The platform replays nothing
+    of its own, so the presenter reads what waited: whenever it opens
+    the wire, at start and again after a loss it could not resume, it
+    reads the channel after the newest message it has accounted for,
+    the delivery the sink's mark records at first, oldest first, and
+    hears each message as if it had just arrived. A message the sink
+    already answered is not heard again, a message heard from the wire
+    is not heard again from the channel, and a sink that has never
+    delivered hears nothing written before its first delivery. A caller of the endpoint retries; a repeat under the same
     key writes nothing (111). A capture waits with its pointer; an
     unmoved signal is never discarded (118). The sink's lease expires
     by the stated rule and never by racing (150).

@@ -866,10 +866,20 @@ nothing passes silently as "not presented" (81, 127).
 Only the presenter hears a sink. A message arriving on a chat sink's
 wire is a notify to the host that holds the wire, page served or not,
 and is read before the next pass (217l). What arrives while no host
-holds the lease waits; what arrives while another host holds it is that
-host's to hear and is let go here, so a reply is answered once however
-many hosts listen (148, 217f). A message that could not be read, and
-whatever stopped the wire, is reported under attention (81).
+holds the lease waits in the channel, and the platform replays none of
+it: whenever the presenter opens the wire, at start and again after a
+loss it could not resume, it reads the channel after the newest message
+it has accounted for — the delivery the sink's mark records at first —
+oldest first, and hears each as if it had just arrived, in the order
+written with whatever the wire handed over meanwhile. A message the
+sink already answered is not heard again, one heard from the wire is
+not heard again from the channel, and a sink that has never delivered
+hears nothing written before its first delivery (217f, 137). What
+arrives while another host holds the lease is that host's to hear and
+is let go here, so a reply is answered once however many hosts listen
+(148, 217f). A message that could not be read, what waited that could
+not be read, and whatever stopped the wire, are reported under
+attention (81).
 
 ### 5.6 Responses
 
@@ -878,7 +888,10 @@ A response is an op-response record: an answer names a decision number
 register resolves it to the object and the decision state; a dictation
 names an object. The response is stored before anything follows (153);
 the sink's acknowledgement of the reply or the press (S32), or the
-page's acknowledgement, is the operator's proof (154). A press reaches
+page's acknowledgement, is the operator's proof (154), given once, when
+the response is recorded: the same delivery reaching the sink again
+writes nothing and is not acknowledged again, on every channel (137,
+217f). A press reaches
 the sink as the numbered reply it stands for (`412: yes`) and is
 recorded by that grammar, never as a command of its own. Who gave it is
 the sink's member where the sink has one; a shared channel, which
