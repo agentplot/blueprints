@@ -676,7 +676,24 @@ requirements, iterated against the running rail rather than on paper.
 73. Every action the machinery takes on a session is safe to repeat: a
     repeat of a completed action changes nothing.
 74. A session that is not the operator's to keep is retired when the
-    work it serves is retired, and its resources are released.
+    work it serves is retired, and its resources are released. A
+    session whose type does not keep it alive — every session the
+    machinery charges (curation, planning, capture reading, a stage's
+    sessions) and a self-closing elaboration's (25) — is ended once its
+    exit is recorded, done, stalled or invalid alike, on the pass that
+    records it and after its deliverables are read, so its pane closes
+    then: what went wrong is the exit's report on its thread and its
+    work in its place, both reachable from the page (67, 68), and the
+    pane's scrollback was never state. Blocked is not an exit; a
+    blocked session keeps its pane for the answer (70). A standing or
+    with-operator session keeps its pane until its owner ends it (25,
+    26, 69). A pane gone without an exit is lost, and there is nothing
+    to end (73). A host ends any pane still open for a session already
+    exited or retired on its own reconciliation, which covers a pass
+    that recorded an exit without ending the pane and every pane left
+    open before this rule; a run's tab goes once the run is final and
+    its pane is gone, and an object's tab and workspace when the object
+    leaves every view (186, 196).
 197. Sessions never message each other. A session speaks to the
     machinery only through the tools of 193, and each call carries the
     session's identity, issued when the machinery started it; the tool

@@ -226,6 +226,35 @@ the operator may reverse by a response on the file; an entry with
   cannot run an effect. Whether that is enough of "the machinery's
   tools" is the operator's to say after use. **Decision**.
 
+- **74 a session ended by its exit.** Ruled 2026-09-15: session.yaml's
+  keep_alive was documented and read by nothing, so a curation, planning,
+  capture-reading, stage or self-closing session that reported done sat
+  in its pane; end_session ran only from `ended`, which those owners
+  reach only by retire. Now the session record carries keep_alive
+  (`session.keep_alive`, written at start), and the alive → exited
+  transition of a session with keep_alive false runs end_session after
+  record_exit, so the pane closes on the pass that records the exit —
+  done, stalled and invalid alike, since the report is on the thread
+  and the pane's scrollback was never state (67, 68). Blocked is not an
+  exit and keeps its pane. A kept session (standing, with-operator, the
+  operator's own) stands until its owner ends it (25, 26, 69). A lost
+  pane has nothing to end. The host's reconciliation
+  (`end_exited_sessions` / `host.no_exited_panes`) ends any pane still
+  open for a session exited, ended or retired, which closes the panes
+  left open before this landed and covers a pass that recorded an exit
+  without ending the pane; a machinery run's tab goes with
+  `remove_stale_layout` once the run is final and its pane gone, and
+  the machinery workspaces stay. The registered elaboration types
+  (self-closing@2, fundamentals@1) are not touched: the rule reaches
+  them through the session template they compose, and a registered
+  file is never edited (model.md 10.7). **Decision**. As built: the herdr
+  binding's end closes the pane and is right; nothing calls it after an
+  exit; `remove_stale_layout` is not built either. Not built: the
+  keep_alive field on the record, the exit's end_session, the host
+  reconciliation, the run-tab removal. The mirror (definitions/
+  session.yaml, atoms.yaml, engine/host.yaml, the owners, profiles/
+  sessions.yaml) needs recopying.
+
 - **72 "evidence that the session exists".** The pane by name is the
   evidence; herdr's refusal of a duplicate name is what makes the
   retry safe. If herdr does not refuse duplicate names, the binding
