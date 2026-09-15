@@ -1049,7 +1049,7 @@ const SEED_WILLDAN = () => ({
      answers:[['yes','yes'],['drop','drop'],['rename','rename'],['bolt','bolt']]},
     {n:415, g:APPROVE, phase:'construction', kind:'chores', title:'atlas · 3 chores', obj:'b:plan-decisions', repo:'atlas', tail:'offered by wi-#420 review · 06:31',
      chores:[['a','stale AGENTS.md','atlas/AGENTS.md'],['b','citation fix','books/atlas/plan.md'],['c','rename ref','atlas/src/plan/refs.py']],
-     answers:[['yes','yes'],['pick','pick'],['no','no']]},
+     answers:[['yes','yes'],['drop','drop']]},
     {n:416, g:APPROVE, phase:'construction', kind:'land', title:'switchboard / plan-rows', obj:'b:plan-rows', repo:'switchboard', tail:'<b>4 units merged</b> · gates green · nothing in flight · yes lands through the pull request',
      answers:[['yes','yes'],['hold','hold']]},
     {n:417, g:APPROVE, phase:'plan', kind:'baseline', title:'new-repo', obj:'d:417', repo:'new-repo', tail:'<b>11 claims unmet</b> · 8 chores · 3 units · planning\'s first proposal for the repository',
@@ -1284,7 +1284,7 @@ const X = {
     items:[['wi-#440','spec','retry policy with jitter bounds','none'],['wi-#441','build','jittered backoff in the client','#440']],
     stages:['spec','build','merge'],
     hist:[['08-30 11:05','operator','instruction','ask: retries hammer the provider'],['09-03 21:20','planning','note','routed the ask to a unit · no open bolt fits · new bolt proposed'],['09-04 07:40','plan','decision','414 created · approve the unit']]},
-  415:{text:'A review session offered three chores outside its job. <b>Yes</b> accepts all three: each becomes a chore unit with its own session and place, on no bolt. <b>Pick</b> accepts the ones you mark. <b>No</b> drops all three with the reason recorded.',
+  415:{text:'A review session offered three chores outside its job. <b>Yes</b> accepts every row still standing: each becomes a chore unit with its own session and place, on no bolt. <b>Drop</b> declines them all. Each row carries its own drop — <span class="mono">drop 415b</span> in chat — and the card keeps its number and its letters while any row stands.',
     hist:[['09-04 06:31','wi-#420 review','note','offered 3 chores outside its job'],['09-04 07:40','plan','decision','415 created · accept or reject']]},
   416:{text:'Every unit of bolt <span class="mono">plan-rows</span> is finished: 4 units merged, gates green, nothing in flight. <b>Yes</b> lands it: the machinery opens the pull request switchboard\'s policy requires and merges when the gates pass; the bolt\'s place is removed with the landing. <b>Hold</b> keeps the bolt open with its place; the decision returns when something merges.',
     kv:[['rows-cursor','2 items · 09-03 22:40 · review passed first time'],['rows-window','3 items · 09-02'],['rows-sink','1 item · 09-01'],['rows-order','2 items · 08-30']], kvTitle:'merged units',
@@ -1986,7 +1986,7 @@ function effects(d, a, arg){
     case 414: if(a==='yes'||a==='rename'){ const nm = a==='rename' ? arg : d.bolt; startUnit(addBolt('b-retry', nm, 'atlas', 'new · type fast'),'retry-jitter','fast','spec'); }
       else if(a==='bolt'){ const b = S.bolts.find(x => x.name===arg); if(b) startUnit(b,'retry-jitter','fast','spec'); }
       else since('dropped','unit atlas · retry-jitter'); break;
-    case 415: if(a==='no') since('dropped','chores atlas a b c');
+    case 415: if(a==='drop') since('dropped','chores atlas a b c');
       else { const letters = a==='yes' ? 'a b c' : arg; const b = addBolt('chores-atlas','chores','atlas','no bolt · one session each'); letters.split(' ').forEach(l => { const c = d.chores.find(x => x[0]===l); if(c) startUnit(b,'chore '+l+' · '+c[1],'chore','chore'); }); since('accepted','chores atlas '+letters); } break;
     case 416: { const b = bolt('plan-rows'); if(a==='yes'){ b.landing = 219; b.note = 'landing · PR #219 · checks running';
         S.landed.unshift({id:'plan-rows', name:'plan-rows', repo:'switchboard', at:hhmm(S.minutes)+' today', pr:{n:219,state:'open'}, checks:[['lint','ok'],['tests','pend'],['map-check','pend'],['as-built','ok','4 statements']], envs:[['prod','https://switchboard.willdan.internal']], units:['rows-order','rows-sink','rows-window','rows-cursor'], signals:[], live:'PR open · checks running', leaves:'7d'});

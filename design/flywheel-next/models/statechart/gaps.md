@@ -47,7 +47,19 @@ the operator may reverse by a response on the file; an entry with
   read as the same question. **Decision**: a re-entered decision is a
   changed question; a reply meant for the old one must not land on it.
   The register keeps retracted entries thirty days so the old number
-  still resolves and is reported.
+  still resolves and is reported. A fold is the exception: its id is
+  `<kind>/<batch>/<since>` and the register's unretracted entry of that
+  kind and batch is the fold on every later tick, so the number and
+  the letters hold while any chore of the batch stands, whichever row
+  leaves first, and a fold emptied and refilled is a new decision
+  (model 5.1; S232). The built `rail::derive` names a fold by its
+  first standing chore, so dropping that row renumbers the rest; to be
+  corrected. **Decision** (2026-09-15). No object records a creation
+  time and none is needed: a fold's rows, and any order the engine
+  takes among a batch's objects, follow the ids as they count
+  (`chore-2` before `chore-10`), the order the page's letters already
+  use; the engine's sort by a `created` field the store never fills is
+  to go. **Decision** (2026-09-15).
 
 - **25 with-operator "present".** Present is a human keystroke in the
   pane within 30 minutes (`herdr agent status`). There is no better
@@ -183,10 +195,17 @@ the operator may reverse by a response on the file; an entry with
   unit of a dropped bolt does (`unit.yaml` proposed, deferred → retired
   on parent dropped; 74). **Decision** (2026-09-15). Built 2026-09-15:
   every work order gives the exact offer command under how to report
-  (67); `--about` is written on the entry and read by nothing. Not
-  built: the revision on the entry and the unit, the pin and its
-  removal, the document in the chore's order (a built order says only
-  to do what the document says and names none), and the retirement.
+  (67); `--about` is written on the entry and read by nothing; the
+  three kinds, a signal recorded as one wherever the session stands;
+  the revision on the entry and the unit, refused when the head does
+  not hold the document; the pin, pushed before any record points at
+  it and held in the host's clone, a failed push leaving the offer
+  pending; the document in a chore's order, read at the pin and
+  fetched into a clone that lacks it; the pin's removal once the
+  record it made has ended or the offer made nothing; the retirement
+  with a dropped bolt. A fast unit made from a finding is handed its
+  document the same way, since the finding's document lives in the
+  offering place too (host.yaml prepare_place); not built.
 
 - **62 "the record never holds the text".** The record holds the
   document's path in the change directory and the offer entry's id.

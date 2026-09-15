@@ -369,7 +369,7 @@ were settled, not their place on the page.
   not. Where the platform offers buttons, menus or threaded replies, the
   decisions carry them as the platform provides them; nothing is
   invented (155). The numbered reply grammar always works beside them:
-  `yes 412`, `yes all`, `no 415`, `415 pick a c`, `413 redo: <notes>`,
+  `yes 412`, `yes all`, `no 415`, `drop 415b`, `413 redo: <notes>`,
   `413 bolt other`, `414 rename retry`, `418 close`, `419 keep`,
   `421: <text>`, `takeover`. Every reply is the `answer` tool. The
   operator's proof it was recorded (154) is the sink's acknowledgement
@@ -2199,7 +2199,20 @@ whatever else it does.
   with a decision of its own, and the fold is how the rail shows them,
   so the answers are the unit's and the letter says which. `pick`
   stays on a gathered elaboration alone, whose covered intents are one
-  object (188, S226).
+  object (188, S226). A row is its letter, the document's name in
+  words and what the offer said it concerns; letters run over the
+  batch's chores standing in the fold or gone from it since the fold
+  was raised, in the order their ids count them, so a letter stays
+  with its chore when another row goes. The dock's page letters the
+  rows the same way, each row's drop reading `415b: drop`. The chat's
+  line for a fold lists its rows by letter and offers yes or drop; a
+  reply naming several rows or numbers records one response each,
+  and a letter the fold does not hold is answered in the channel with
+  the rows it has. The fold's number is the fold's, never its first
+  row's: it stays while any chore of the batch stands, so after
+  `drop 415a` the card keeps its number and `yes 415` accepts what
+  stands, and a fold whose every chore has gone and that later gains
+  one is a new decision with a new number (15, model 5.1, 5.2).
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open

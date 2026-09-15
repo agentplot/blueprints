@@ -788,7 +788,13 @@ decisions(objects, register) =
   for each object, for each active state with a `decision:`:
     one decision { id = object/kind/entered_at, kind, group, object, answers, shows, document }
   fold decisions whose `batch` field is equal into one (chores of a
-    bolt; a baseline)
+    bolt or of a repository's shared line; a baseline): its id is
+    kind/batch/since, `since` the earliest entered_at among them when
+    no register entry of that kind and batch stands unretracted, else
+    that entry's since — so the fold keeps its id and number while any
+    decision of the batch stands, whichever of them leaves first, and
+    a fold emptied and later refilled is a new decision; its rows are
+    the batch's objects in the order their ids count them (S232)
   drop decisions whose fold guard says they are shown with their parent
     (an elaboration proposed under a proposed intent)
   attach each decision's number from the register; a decision with no
@@ -808,7 +814,8 @@ machines.
 Every decision carries a short number, unique in the instance,
 given once and never reused (15). The `rail` machine (one per
 instance) holds the register: `next_number`, which only grows, and
-one entry per numbered decision (`decision id → number, since`). On a
+one entry per numbered decision (`decision id → number, since`, and
+`retracted_at` once the decision is gone, with who answered it). On a
 tick where a standing decision has no entry, `number_decisions` writes
 the entries and the bumped counter in one atomic write of the rail
 record; the rail's lease makes it single-writer. A decision's id
@@ -816,7 +823,9 @@ includes the `entered_at` of its state, so a decision state that is
 left and re-entered (a bolt's close offered, withdrawn by new work, and
 offered again; a deferred unit re-proposed after a week) is a new
 decision with a new number: the operator's earlier reply cannot land on
-a question that has changed. Entries are pruned thirty days after
+a question that has changed. A fold's id carries its batch and the
+`since` of its first raising instead, and the fold keeps that entry
+while any decision of the batch stands (5.1). Entries are pruned thirty days after
 their decision is retracted, so a late reply still resolves and is
 reported as unapplicable; the counter never goes back. The page and
 the chat both read the register, so they show the same number (18).
