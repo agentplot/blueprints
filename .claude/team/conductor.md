@@ -16,7 +16,7 @@ Those documents and the commit history are the whole record. Don't create tracki
 
 The builder sends `Report: <path>`. Handle one report at a time; if fable or explorer is still busy with the last one, tell the user the new one is queued.
 
-1. Check `herdr agent get fable` shows it idle. Unless its pane (`herdr agent read fable --source recent-unwrapped --lines 40`) shows the user in the middle of a conversation with it, send `herdr agent prompt fable "/clear"` so the report starts from a fresh context.
+1. Check `herdr agent get fable` shows it idle, and note its pane ID. Unless its pane (`herdr agent read fable --source recent-unwrapped --lines 40`) shows the user in the middle of a conversation with it, send `herdr agent prompt fable "/clear"` so the report starts from a fresh context. `/clear` starts a new session and herdr drops the agent's name, so give it back with `herdr agent rename <pane ID> fable` before sending anything else.
 2. Send `herdr agent prompt fable "Read <path> and record it."`, then run `herdr agent wait fable --timeout 3600000` as a background command so you stay free for the user.
 3. When fable settles, look for its new commit in blueprints. If there is none, read its pane and tell the user what it needs.
 4. Do the same with explorer: clear it, send `"Read <path> and blueprints commit <sha>, and update the active change."`, wait in the background, and look for its commit in flywheel-next.
