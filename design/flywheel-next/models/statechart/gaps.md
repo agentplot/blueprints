@@ -752,7 +752,20 @@ the operator may reverse by a response on the file; an entry with
   the chip's pane link a popover as S234 says. Standing against the
   rulings: the chip names what the session is for and the host it runs
   on ("curation @laptop reading") where S53 says agent · model, the
-  page carrying neither yet; and the popover is anchored under the
+  page carrying neither yet — and nothing could carry them, since the
+  built start hardcodes the kind and passes no model, so a session runs
+  at whatever its program defaults to, a bug against 173 and 183. Ruled
+  2026-09-16 (the-loop 27.9): the kind and the model are the
+  machinery's choice — the stage's or type's own, else the manifest's
+  default for the role that charged the session (sessions.yaml
+  models) — resolved when the session is requested, written on the
+  session record with the agent name (session.yaml v6 record agent,
+  kind, model; start_session args) and passed to the program after
+  `--` on herdr's start (sessions.yaml start_session, kinds); the chip
+  reads the record, kind · model by its short name ("claude · fable"),
+  the dock page the id in full, and a record naming no model reads its
+  kind alone (S53). **Decision**. The mirror's definitions need
+  recopying. And the popover is anchored under the
   chip at every width and is not a bottom sheet on a phone, and the
   palette's opening leaves it open, where S234 says it closes like a
   picker (S233). How the operator reaches a pane in a machinery
@@ -1477,7 +1490,17 @@ the operator may reverse by a response on the file; an entry with
   deliverable still wait for the host while a pass holds the store,
   where the page is answered whatever the host is doing and the
   client's view is the same page (310a, 293a) — a bug against the
-  rule; the signals tray's rows run past the right edge at 390px, in
+  rule. Ruled 2026-09-16 (the-loop 27.4): the client's read-only calls
+  answer from the last read as the page does; a deliverable cannot,
+  since it is a file and not the instance, and its read through the
+  host's world waits on the same turn a pass holds. It is opened from
+  its repository's shared line as the line stands, the page reading
+  the file for itself with no turn at the store or the host's world:
+  the file was found among what the last read says was delivered, and
+  the line holds it whole, so the page needs a reader of repository
+  files of its own, built from the root and each repository's shared
+  line, and nothing more (310a, S235, surfaces.yaml busy). **Decision**;
+  the signals tray's rows run past the right edge at 390px, in
   the mockup as on the page — a bug in both against 314; and a dock
   page's away line prints the moment raw
   (`2026-09-15T17:37:53.062165+00:00`) where 150a says since when and

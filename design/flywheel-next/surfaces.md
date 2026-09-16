@@ -1570,7 +1570,17 @@ where a thing sits, never by its form.
   click focuses the rail card and opens the dock with the card inline.
 - **S53.** Session chips are one style everywhere: agent · model, the
   host, the activity word, a pane link that opens the session's pane in
-  herdr (68, 196, S234). State is colour and dot only: working filled and
+  herdr (68, 196, S234). Ruled 2026-09-16: the agent is the program
+  the session runs as — its kind, claude, codex or opencode — and the
+  model is the one the machinery chose for it, both read from the
+  session's record, where they were written when it started (173,
+  session.yaml record). The model reads by its short name, the id the
+  manifest names with the kind's prefix and the trailing version
+  dropped, so `claude-fable-5-1` reads "fable" and "claude · fable" is
+  the chip; the session's dock page names the id in full. What the
+  session is for is not the chip's: the item beside it says that. A
+  session whose record names no model — one started before the model
+  was recorded — reads its kind alone. State is colour and dot only: working filled and
   pulsing, starting dashed, idle hollow, blocked an amber ring. A host
   pill lights its chips in every lane and dims the rest.
 - **S54.** The machinery strip sits above the lanes: hosts as pills
@@ -2391,7 +2401,12 @@ whatever else it does.
   while the host's pass holds the store — recording a curator's
   delivery, say — a page read, a dock page's fetch, an update and a
   member's client's view are answered from the instance as it was
-  last read, within the first-press bound, and a call that writes —
+  last read, within the first-press bound; a deliverable a session
+  left is opened from its repository's shared line as the line
+  stands, the page reading the file for itself and waiting on no turn
+  at the store or at the host's world, since the file was found among
+  what the last read says was delivered and the line holds it whole
+  (190, 213; ruled 2026-09-16); and a call that writes —
   an answer, a capture, yes all, curate, a write from a member's
   client — is kept beside the state and answered at once as "sent ·
   it shows here once the host is free", the control that sent it

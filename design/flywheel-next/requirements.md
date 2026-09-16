@@ -1144,7 +1144,11 @@ requirements, iterated against the running rail rather than on paper.
     sessions, one for sessions the machinery charges; a unit type, a
     stage or an elaboration type may name its own. The machinery starts
     every kind through the same command, in a prepared place, with the
-    same instruction data (119). Nothing in the machinery depends on
+    same instruction data (119). The kind and the model a session runs
+    are resolved when it starts and recorded with it, so the page names
+    them on its chip (S53); the program is told both on its command
+    line, and its own configuration on the host is never what chooses
+    them (183). Nothing in the machinery depends on
     one agent program's hooks, transcript or files; a session's exits
     are read from what it leaves in its place and from its report
     (A.7).
@@ -2694,9 +2698,11 @@ requirements, iterated against the running rail rather than on paper.
     capture, never the whole page. Every response is compressed. The
     page is answered whatever the host is doing: while the host's pass
     holds the store, a read is answered from the instance as it was
-    last read, and a call made then that writes — an answer, a capture,
-    a run of curation — is taken as sent, kept, and made at the start
-    of the host's next pass, recorded once (137, 153). The
+    last read, a deliverable a session left is opened from its
+    repository's shared line as the line stands, read by the page
+    itself (190, 213), and a call made then that writes — an answer, a
+    capture, a run of curation — is taken as sent, kept, and made at
+    the start of the host's next pass, recorded once (137, 153). The
     time and the bytes grow with what is on screen and not with the
     instance: at ten times the signals, intents, captures and facts the
     same first view paints and weighs within a tenth of what it did.
