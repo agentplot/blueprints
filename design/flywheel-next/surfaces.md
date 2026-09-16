@@ -289,7 +289,8 @@ were settled, not their place on the page.
 - **S27.** The dock is one panel over the right of the board. Esc, the
   × or a click outside closes it. The rail's move keys change what it
   shows while it stays open. Under 760px it is full screen with a back
-  control. Its header takes the form of the object (209) and carries
+  control. Ruled 2026-09-16: a page opened from a page keeps a trail
+  (S249). Its header takes the form of the object (209) and carries
   the object's answers or dictations under the title, beside the
   number; the dock has no foot, and an object with nothing to answer
   says nothing about it (S220, S214). Every page that cites a chapter or a claim carries
@@ -304,7 +305,7 @@ were settled, not their place on the page.
 | unit | its decision or slip | its job as a quote; its type, bolt, repository, host and the capture it came from, each a link where it is an object; the unit document with a note control per section; items and stages; cited claims with "read in book", or "no claim cited" and, once landed, whether a claim was captured, declined or neither yet (34a, 317, S207); sessions running (none before yes); the commits on its bolt's branch; "change" opening its artifact view once approved, "no change yet" before (187) | yes · drop · redo · bolt · new bolt · rename · type · later |
 | bolt | a ledger | the ledger; the bolt's repository, branch, host and place (S222); decisions on it (in the rail, where you answer); its units with drop per unstarted unit and "change" per unit; rename; every session on it with its agent, pane, host, when it started, its exit and what it delivered; the commits on the branch (hash, subject, author, when), titled as main's latest once the bolt has landed; services with start and stop; served endpoints; the acceptance file (S99); history | no decision here that is not in the rail; drop, rename, start and stop are dictations |
 | landed bolt | a record | the record; the landing (when, through which gates, place removed); pull request and checks; environments; units landed; the acceptance file; signals from operation with their move | nothing to answer |
-| intent | a thread | the thread; the intent's state and line; its elaborations in the order they were made, each with its type, opening each (210); decisions on it; sessions running; its change directory (S99) | its decision's answers when one is pending, else nothing to answer |
+| intent | a thread | the thread; where it came from and what it waits for (S247); its attached signals as quotes with their count (S226, S248); the intent's state and line; its elaborations in the order they were made, each with its type, opening each (210); decisions on it; sessions running; its change directory (S99) | its decision's answers when one is pending, else "explore" (S247) |
 | elaboration | a bead; ] and [ from the thread | kind, type and where it stands; its intent, a link; when a finding proposed it, the finding's document by its title, opened inline, and the parent bead as a link (S226, S241); its pending decision with the answer controls; its document and its host; the records it wrote into the intent's change directory (187), opening the change directory view; the intents it gathers, each a link, when it covers several (188); its session as a chip, or its attempts when it was retried (S53, S243), or "no session yet: one starts when it is approved" before the yes; its notes and questions (S242); the countdown when finished (210); a knot in the header and a back link to the thread | the decision's answers; finish on a standing one; nothing else |
 | exploration | its row in Inception | the covered intents; where its records go (per intent) and where its conclusions go (the book, once); its session | finish (standing) or end (with-operator) |
 | planning in progress | its row in the gate | what planning reads; the operator's notes it carries; its session | nothing yet; the next proposal is the decision |
@@ -2689,6 +2690,81 @@ whatever else it does.
   when (S244) — so a line the operator recognises in one is the same
   line in the other; the log is opened from the header, closed by Esc
   (S56), and is not walked with the rail's keys.
+- **S246.** Ruled 2026-09-16: an intent has one name and it is its
+  subject, wherever it is drawn — the thread's head on the board, the
+  row in `attach to…`, the rail card's title, the drawer's title, the
+  chat's line, a Recently done line, a bead's "intent" row — never its
+  id. The id shows in one place, the greyed id chip in the drawer's
+  head (S236), and is what the operator copies, not what they read.
+  Every surface names an intent through the same rule, so two
+  surfaces can never show two names for one intent: its subject where
+  the record holds one; where it holds none — an intent seeded with
+  the instance, or one written by hand — the id's last segment read as
+  words ("storefront mobile speed"), the same words everywhere. An
+  intent the operator makes from a signal (`make an intent`, S224) is
+  named by that signal's own sentence — the assertion, whole, cut at
+  its end where the room runs out (S215) — and its id is made from
+  the first words of that sentence (S217), never from the capture's
+  or the signal's id and never from a kind word: a note that says "the
+  catalogue is slow on mobile" opens the intent "the catalogue is slow
+  on mobile" with an id like `intent/the-catalogue-is-slow`, and its
+  first bead is "self-closing · the catalogue is slow on mobile"
+  (S226). No object on the page is ever named "capture" or "signal".
+- **S247.** Ruled 2026-09-16: an intent's page is never blank. Under
+  the title it says where the intent came from, in one line: "proposed
+  by curation from 3 signals · 09-02", "opened by chuck from a note ·
+  09-05", "seeded with the instance". With no elaboration, no attached
+  signal and no decision it says what it waits for and what to do, in
+  the operator's terms (S214): "Nothing on it yet. Its first
+  elaboration is proposed when a signal is attached to it — attach one
+  from the signals tray — or explore it now." and carries one control,
+  `explore`, which is `/elaborate` (S43) with this intent already
+  picked; the same control stands in the foot whenever no decision is
+  pending. The thread on the board carries the same emptiness in a
+  word: a knot with no bead reads "nothing yet" under its name.
+- **S248.** Ruled 2026-09-16: what attaching a signal to an intent
+  does, and what the operator sees. Attach lands the signal as evidence
+  on the intent (116) and the intent proposes one elaboration at a
+  time (21): the first signal to land while no proposal is awaiting
+  approval proposes a bead from it, and every signal that lands while
+  that bead is still proposed joins it; once the bead is approved the
+  next signal proposes a new one. That is right, and the page says it
+  rather than leaving it to be inferred. Every attach shows the same
+  four things at once, whatever it did to the beads: the picker
+  closes and the capture re-renders as moved with "attached to <the
+  intent>", the intent a link (S28, S233); the signal appears as a
+  quote on the intent's thread and the thread's head counts its
+  signals ("3 signals") wherever the thread is drawn, so the intent
+  visibly grew; the proposed bead's tail counts what it holds and says
+  what the count means — "proposed · 3 signals · new signals join this
+  until you approve it" — and its rail card's evidence line counts the
+  same (S5); and Recently done gains "attached · <the signal's words>
+  · to <the intent>" at once (S9). A quote on the thread opens its
+  capture's page (S249). A signal is never a bead: a bead is an
+  elaboration, and the thread's quotes are its evidence (S226), so an
+  operator who attaches three signals sees three quotes and one
+  proposed bead holding three, not three beads. The intent's own page
+  lists the quotes under "signals · n" with each one's source and
+  date, so "cites 3 signals" is a list the operator can read, not a
+  count.
+- **S249.** Ruled 2026-09-16: what a signal opens, and the drawer's
+  way back. A signal is a row of its capture (111, S225), not a page:
+  a signal's row in the tray, its quote on an intent's thread and its
+  name anywhere open the capture's page in the drawer, scrolled to
+  that signal's row with the row lit, and the capture's page lists
+  every signal it holds with each one's move. Nothing on the page
+  links to a signal by an address of its own. The drawer shows one
+  page at a time and keeps a trail: opening a thing from a thing — a
+  quote's capture from an intent, the intent from a bead, the bead's
+  parent — replaces the page and adds the one it replaced to the
+  trail, and the head's back control steps the trail one page at a
+  time, on the desktop as on the phone (S27); the elaboration page's
+  back link to its thread is this control. The trail is this opening's
+  alone: walking the rail with j or k, opening from a card, a marker
+  or a chip, and closing the drawer all start a fresh page with no
+  trail, and Esc closes the drawer, never steps back (S56). The head
+  says where back goes ("‹ storefront declines") so the operator
+  three pages in knows the way out without closing.
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open
