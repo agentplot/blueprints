@@ -168,8 +168,13 @@ the operator may reverse by a response on the file; an entry with
   `elaboration/storefront-declines/finding-1` stands nowhere when the
   answer naming it is played, and the scenario stops at its eleventh
   action. A defect of the build against this decision, not of the
-  decision. **Open** until an offered finding on an intent stands as
-  that intent's proposed elaboration and the storefront runs past it.
+  decision. Closed 2026-09-16 (the-loop 5332abbe): the finding stood
+  nowhere because the scripted session's place held no commit, and an
+  offer points at a document committed in the session's place (62), so
+  every scripted offer was refused there; a session's place now holds
+  its delivered and offered documents committed, and the storefront
+  runs through its authored actions with the finding standing as the
+  intent's proposed elaboration. The build now matches the decision.
 
 - **62 an offer nothing stands above.** A finding offered under
   neither an intent nor a bolt is a signal (58), and a signal needs a
@@ -328,7 +333,23 @@ the operator may reverse by a response on the file; an entry with
   and the exit, offer and ask lines carry what they read — the
   identity, the state repository, the manifest — as the command's own
   arguments, never as an environment prefix. What the machinery does
-  when a prompt still appears is 72's. **Decision**.
+  when a prompt still appears is 72's. **Decision**. Watched
+  2026-09-16 (the-loop 27, second watch): with the host answering, a
+  capture reader and a curator each stopped at the program's prompt on
+  their own deliverable write — `mkdir -p .flywheel/deliverables &&
+  cat > .flywheel/deliverables/signal.rec <<'EOF'` inside the place,
+  as the order told them — the host answered no, the refusal was
+  recorded naming the command, and both sessions ended without
+  delivering. The place admitted only the `flywheel` binary, so every
+  other command, edit and write the session made in its own tree was
+  a question for a person. Ruled 2026-09-16: 67 now says the place
+  admits outright every read, search, edit, write, command and commit
+  a session makes in its own tree and the paths the order hands in,
+  its deliverables among them, and refuses outright — never by asking
+  — what it keeps from the session. Bound in `host.yaml`
+  prepare_place: the kind's settings grant the program's tools whole
+  at the place, the deny list standing above the grant. 72's no is
+  then a no on something outside the session's reach. **Decision**.
 
 - **69 the operator's session "with the machinery's read tools".** The
   `operator-console` agent is given the read side of the `flywheel`
@@ -1625,13 +1646,20 @@ the operator may reverse by a response on the file; an entry with
   browser-driver timeout at its blank-page step — the driver never
   sees the page reach `about:blank` — not on any of 310a's numbers, and
   it was red before group 27's changes and after them, so the budget
-  is unmeasured by the test until the driver is fixed. **Open**. Also
-  observed: captures sent from a member's client sit unread in the
-  state repository's kept-calls directory — two accepted with no
-  refusal and never taken up — where S235 and surfaces.yaml `busy` say
-  the host makes every kept call first on its next pass and records
-  it once. A defect of the build against the ruling. **Open** until a
-  kept capture is recorded on the pass that follows it.
+  is unmeasured by the test until the driver is fixed. Closed
+  2026-09-16 (the-loop 8dcd4989): the timeout was the test's own — it
+  throttled the tab to the phone and left it throttled through its
+  reset to a blank page between loads, which is not a phone load — so
+  the reset now runs unthrottled and the budget is measured again; the
+  numbers stand as ruled. Also observed: captures sent from a member's
+  client sat unread in the state repository's kept-calls directory
+  where S235 and surfaces.yaml `busy` say the host makes every kept
+  call first on its next pass. Watched 2026-09-16 (the-loop 27, second
+  watch): six captures posted while the host was busy starting panes,
+  five kept, all five taken up on the host's next pass and every one
+  recorded, the kept directory empty after. Not a defect: the first
+  sighting was a pass held by the old two-minute agent-start timeout
+  and a host killed before its next pass. The ruling stands as built.
 
 - **306–314 the phone.** Ruled: parity is a requirement of the first
   build and not a surface ruling, the phone being the same served bundle

@@ -663,7 +663,17 @@ requirements, iterated against the running rail rather than on paper.
     every command its order gives, and the order gives each in a form
     the session's program runs unprompted, so the block a place puts on
     a session's reach (89) never falls on the machinery's own command
-    and no session stops at its own exit.
+    and no session stops at its own exit. The same holds for the
+    session's own work: inside its place a session is free (65), so
+    the place admits outright — never by asking a person — every read,
+    search, edit, write, command and commit the session makes in its
+    own tree and in the paths its order hands in, its deliverables
+    among them, since an unattended session has no one to ask (68) and
+    a session that cannot write in its place cannot deliver. What the
+    place keeps from a session — the tree outside it, the program's own
+    messaging (89, 173), a line operation (43) — it refuses outright,
+    never by asking, so a prompt the program still raises is on
+    something outside the session's reach and no is its answer (72).
 68. The operator need never open a pane. Everything a session asks of
     the operator is answerable on the page or in chat, and everything a
     session shows the operator is reachable from the page. The pane
@@ -697,9 +707,11 @@ requirements, iterated against the running rail rather than on paper.
     no to any other, the no recorded on the session's thread as a
     refusal with the command's text (43), so no session waits at a
     prompt no one is there to answer (68) and the session reads as
-    working through it. A prompt on one of the order's own commands is
-    a fault in how the place was prepared (67) and is reported (81)
-    beside the yes.
+    working through it. The no is safe because the place admits the
+    session's own work outright (67): a prompt is on something outside
+    the session's reach, never on its deliverable. A prompt on one of
+    the order's own commands is a fault in how the place was prepared
+    (67) and is reported (81) beside the yes.
 73. Every action the machinery takes on a session is safe to repeat: a
     repeat of a completed action changes nothing.
 74. A session that is not the operator's to keep is retired when the
