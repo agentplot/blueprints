@@ -1603,10 +1603,17 @@ the operator may reverse by a response on the file; an entry with
   Construction lane draws bolt ledgers only, with no "chores" head
   per repository: S15 puts a repository's accepted chores under such
   a head until each merges, and the built page draws it as of
-  2026-09-15 (the-loop 23.9, 28.3), so the mockup is behind the ruling
-  there and follows it; everything else in the lane, the ledgers, the
-  unit chains and the session lines, matches the mockup's shapes.
-  **Open** until the mockup draws the head.
+  2026-09-15 (the-loop 23.9, 28.3); everything else in the lane, the
+  ledgers, the unit chains and the session lines, matches the
+  mockup's shapes. Drawn 2026-09-15: the mockup's Construction lane
+  carries the heads under the ledgers, ordered by repository name,
+  each naming its repository and counting its chores, each item its
+  document's words, what it is doing and its session's chip, opening
+  a chore page in the dock; a merged chore is gone from the head and
+  is one merged line in Recently done with the repository greyed
+  before its name; and yes on the chores fold now puts the accepted
+  rows under the atlas head instead of raising a bolt for them, which
+  S15 never allowed.
 
 - **79 / 321 — a refusal the page's own form meets is not in the run
   record.** `surfaces.yaml` tools.identity has every refused call

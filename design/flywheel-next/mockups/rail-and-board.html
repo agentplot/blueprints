@@ -29,7 +29,11 @@
     slips and a baseline as a sheet of its own; an intent is a drawn thread (a vertical stroke,
     elaborations as beads, no box; closed is the same thread with an end cap); a bolt is a flat
     square-cornered ledger (units as a left-to-right chain merged · building · queued, sessions
-    under the building unit, machinery on its own row, services at the foot); a landed bolt is a
+    under the building unit, machinery on its own row, services at the foot); a repository's
+    accepted chores are items under a "chores" head naming the repository and counting them,
+    heads by repository name, each item its document's words with its session chip, never a
+    ledger, and a chore leaves the head when it merges, since on the shared line its merge is
+    its landing (S15, 60); a landed bolt is a
     borderless muted record with PR and checks as a stamp; a signal is a quote with a left rule.
     Sessions, hosts, repositories, deferred sheets, planning-in-progress and explorations keep
     their forms. The dock header takes the same form as the object.
@@ -491,6 +495,7 @@ label.chore .f{margin-left:auto;font:11px var(--mono);color:var(--ink3)}
 .rail-h .seg.mine{margin-left:auto;display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden} .rail-h .seg.mine button{font:600 11px var(--sans);padding:2px 8px;color:var(--ink2)} .rail-h .seg.mine button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
 .su-pool .su-hh .dot{background:var(--accent)} .su-phs{display:flex;flex-direction:column;gap:4px;margin-top:4px} .su-ph{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;padding:4px 0;border-top:1px solid var(--line2)} .su-ph .hm{font:11px var(--mono);color:var(--ink3)} .su-ph .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block} .su-ph .dot.gone{background:var(--warn)} .host.pool{border-style:dashed}
 .since .w{flex:1;min-width:0}
+.since .w .pre{color:var(--ink3)}
 .since .t{font:11px var(--mono);color:var(--ink3);white-space:nowrap}
 
 /* ---------- board objects ---------- */
@@ -592,6 +597,20 @@ label.chore .f{margin-left:auto;font:11px var(--mono);color:var(--ink3)}
 .ledger .lg-foot{display:flex;gap:10px;padding:5px 9px;border-top:1px solid var(--ink3);font:11px var(--mono);color:var(--ink3);overflow:hidden;background:var(--surface)}
 .ledger .lg-foot .ep{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ledger .marks{padding:0 9px 8px;margin-top:2px}
+/* chores: a repository's accepted chores are items on its shared line under a head of their own, never a ledger (S15, 60); a merged one has landed and is gone from here */
+.chores-lane{margin:0 0 12px}
+.chores-lane .ch-head{display:flex;align-items:baseline;gap:8px;padding:3px 2px 4px;border-bottom:1px solid var(--line);font:600 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.chores-lane .ch-head .ch-repo{text-transform:none;letter-spacing:0;font-weight:400;color:var(--ink3)}
+.chores-lane .ch-head .ch-n{margin-left:auto;font-weight:400;letter-spacing:0;text-transform:none;color:var(--ink3)}
+.chores-lane .ch-item{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;min-width:0;padding:4px 2px;border-bottom:1px solid var(--line2);font-size:12px;cursor:pointer}
+.chores-lane .ch-item:last-child{border-bottom:0}
+.chores-lane .ch-item.lit{background:var(--lit)}
+.chores-lane .ch-item.open-in-dock{outline:1px solid var(--accent);outline-offset:-1px}
+.chores-lane .ch-item .ch-nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;color:var(--ink)}
+.chores-lane .ch-item .ch-st{margin-left:auto;font:11px var(--mono);color:var(--ink3);white-space:nowrap}
+.chores-lane .ch-item .ch-sess{flex-basis:100%;display:flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0}
+.chores-lane .ch-item .ch-sess .sc{font-size:9.5px;max-width:100%}
+.chores-lane .ch-item .ch-sess .sc>*{padding:2px 4px}
 /* record: a landed bolt is history; no border, muted, PR and checks as a stamp */
 .record{padding:8px 4px 10px;margin-bottom:2px;border-bottom:1px solid var(--line2);color:var(--ink2);cursor:pointer;background:transparent}
 .record.lit{background:var(--lit);border-radius:4px}
@@ -1145,6 +1164,7 @@ const SEED_WILLDAN = () => ({
   /* the organization's packages · installed in the books, read by every host · state per organization, not per host */
   since: [
     {v:'merged', w:'plan-decisions · unit decision-grouping', t:'3 items · review passed first time', at:'07:21'},
+    {v:'merged', pre:'atlas', w:'dead link in the README', t:'chore · onto the shared line · landed with its merge', at:'07:05'},
     {v:'answered', w:'411 · land atlas/claim-index', t:'answered by lee · yes · who answered is recorded', at:'07:14'},
     {v:'landed', w:'switchboard/idle-timeout', t:'gates green', at:'06:52'},
     {v:'closed', w:'intent host-liveness', t:'by your response', at:'18:10'},
@@ -1256,6 +1276,15 @@ const SEED_WILLDAN = () => ({
      endpoints:['http://rows.plan-rows.localhost:41235'],
      services:[{n:'rows web',s:'running',ep:'http://rows.plan-rows.localhost:41235'},{n:'postgres',s:'running',ep:'postgres://localhost:41236'}]},
   ],
+  // accepted chores on a repository's shared line: past proposal, under no bolt, named by their documents' words (S15, 60).
+  // atlas's third, "dead link in the README", merged at 07:05 and so landed: it is gone from here and is one merged line in Recently done.
+  chores: [
+    {id:'atlas/stale-citation', repo:'atlas', name:'stale citation in plan.md', doc:'books/atlas/plan.md', by:'wi-#403 review · 09-02', state:'building',
+     session:{id:'wi427', label:'wi-#427 chore', state:'working', host:'studio', agent:'claude', model:'haiku', pane:'studio/9', last:'07:33 · citation moved to plan/sink-marks @v2 · committing'}},
+    {id:'atlas/flaky-stub', repo:'atlas', name:'flaky provider stub in tests', doc:'atlas/tests/providers/stub.py', by:'wi-#425 build · 09-04', state:'accepted', session:null},
+    {id:'switchboard/rename-ref', repo:'switchboard', name:'rename ref in rows', doc:'switchboard/src/rows/refs.py', by:'wi-#409 review · 09-01', state:'building',
+     session:{id:'wi428', label:'wi-#428 chore', state:'starting', host:'mac-mini', agent:'claude', model:'haiku', pane:'mac-mini/3', last:'07:39 · place prepared off switchboard main'}},
+  ],
   landed: [
     {id:'idle-timeout', name:'idle-timeout', repo:'switchboard', at:'06:52 today', claims:['sessions/idle-bound @v2'], pr:{n:212,state:'merged'}, checks:[['lint','ok'],['tests','ok','1,212 passed'],['map-check','ok'],['as-built','ok','2 statements']],
      envs:[['prod','https://switchboard.willdan.internal'],['staging','https://switchboard-staging.willdan.internal']], units:['idle-tail','session-idle-bound'], signals:[], live:null, leaves:'7d'},
@@ -1302,12 +1331,14 @@ function allSessions(){
   S.intents.forEach(i => i.sessions.forEach(s => out.push({...s, owner:{key:'i:'+i.id, name:'intent '+i.name, phase:'inception'}})));
   S.bolts.forEach(b => b.units.forEach(u => (u.items||[]).forEach(s => out.push({...s, owner:{key:'b:'+b.id, name:'bolt '+b.name, phase:'construction'}, unit:u.name}))));
   S.bolts.forEach(b => (b.machinery||[]).forEach(s => out.push({...s, owner:{key:'b:'+b.id, name:'bolt '+b.name, phase:'construction'}})));
+  (S.chores||[]).forEach(c => { if(c.session) out.push({...c.session, owner:{key:'u:'+c.id, name:'chore '+c.name, phase:'construction'}, unit:c.name}); });
   S.explorations.filter(x => x.state!=='done').forEach(x => out.push({...x.session, id:x.id, label:x.label, owner:{key:'x:'+x.id, name:x.label, phase:'inception'}}));
   if(S.planning) out.push({...S.planning.session, id:'planning', label:'planning · '+S.planning.repo, last:S.planning.last, owner:{key:'p:planning', name:'planning', phase:'plan'}});
   out.push({...S.curation.session, id:'curation', owner:{key:'c:curation', name:'curation', phase:'inception'}});
   return out.filter(s => s.state!=='done' && s.state!=='queued');
 }
-const objOf = key => { const [t,id] = key.split(':'); return t==='d' ? dec(+id) : t==='b' ? bolt(id) : t==='i' ? intent(id) : t==='c' ? S.captures.find(c => c.id===id) : t==='t' ? {id:'tray'} : t==='l' ? S.landed.find(l => l.id===id) : t==='h' ? host(id) : t==='a' ? S.attention.find(a => a.id===id) : t==='r' ? repo(id) : t==='e' ? mapNode(id) : t==='x' ? S.explorations.find(x => x.id===id) : t==='p' ? S.planning : t==='f' ? S.deferred.find(x => x.key===id) : t==='v' ? elabOf(id) : t==='o' ? artOf(id) : t==='rv' ? artReview(id) : null; };
+const chore = id => (S.chores||[]).find(c => c.id===id);
+const objOf = key => { const [t,id] = key.split(':'); return t==='d' ? dec(+id) : t==='b' ? bolt(id) : t==='u' ? chore(id) :t==='i' ? intent(id) : t==='c' ? S.captures.find(c => c.id===id) : t==='t' ? {id:'tray'} : t==='l' ? S.landed.find(l => l.id===id) : t==='h' ? host(id) : t==='a' ? S.attention.find(a => a.id===id) : t==='r' ? repo(id) : t==='e' ? mapNode(id) : t==='x' ? S.explorations.find(x => x.id===id) : t==='p' ? S.planning : t==='f' ? S.deferred.find(x => x.key===id) : t==='v' ? elabOf(id) : t==='o' ? artOf(id) : t==='rv' ? artReview(id) : null; };
 /* an artifact view (213): 'o:intent/<id>' · 'o:unit/<bolt>/<unit>' · 'o:claim/<name>' · 'o:bolt/<id>' · 'o:wi/<id>'; 'rv:<same>' is the review binding */
 function artOf(id){ const [kind, ...rest] = id.split('/'); const r = rest.join('/');
   if(kind==='intent') return {art:'intent', ...artIntent(r)}; if(kind==='unit'){ const [b, ...u] = rest; return {art:'unit', ...artUnit(b, u.join('/'))}; }
@@ -1817,6 +1848,7 @@ function palObjects(){ const out = [];
     threadBeads(i).forEach(sid => { const e = elabOf(i.id+'/'+sid); if(e) out.push({key:'v:'+i.id+'/'+sid, n:`${i.name} · ${e.kind}`, k:'elaboration'}); }); });
   S.explorations.forEach(x => out.push({key:'x:'+x.id, n:x.names.join(' + '), k:'exploration'}));
   S.bolts.forEach(b => out.push({key:'b:'+b.id, n:b.name, k:'bolt'}));
+  (S.chores||[]).forEach(c => out.push({key:'u:'+c.id, n:c.repo+' · '+c.name, k:'chore'}));
   S.landed.forEach(l => out.push({key:'l:'+l.id, n:l.name, k:'landed bolt'}));
   S.repos.forEach(r => out.push({key:'r:'+r.id, n:r.id, k:'repository'}));
   S.hosts.forEach(h => out.push({key:'h:'+h.id, n:h.id, k:'host'}));
@@ -2060,7 +2092,9 @@ function effects(d, a, arg){
       else if(a==='bolt'){ const b = S.bolts.find(x => x.name===arg); if(b) startUnit(b,'retry-jitter','fast','spec'); }
       else since('dropped','unit atlas · retry-jitter'); break;
     case 415: if(a==='drop') since('dropped','chores atlas a b c');
-      else { const letters = a==='yes' ? 'a b c' : arg; const b = addBolt('chores-atlas','chores','atlas','no bolt · one session each'); letters.split(' ').forEach(l => { const c = d.chores.find(x => x[0]===l); if(c) startUnit(b,'chore '+l+' · '+c[1],'chore','chore'); }); since('accepted','chores atlas '+letters); } break;
+      else { const letters = a==='yes' ? 'a b c' : arg; S.chores = S.chores||[]; letters.split(' ').forEach(l => { const c = d.chores.find(x => x[0]===l); if(!c || chore('atlas/'+l)) return;
+          const id = 'wi'+S.nextWi; S.chores.push({id:'atlas/'+l, repo:'atlas', name:c[1], doc:c[2], by:'wi-#420 review · '+hhmm(S.minutes), state:'building', session:{id, label:`wi-#${S.nextWi++} chore`, state:'starting', host:'studio', agent:'claude', model:'haiku', pane:newPane('studio'), last:`${hhmm(S.minutes)} · place prepared off atlas main`}}); });
+        since('accepted','chores atlas '+letters, 'under the atlas chores head · one session each · no bolt'); } break;
     case 416: { const b = bolt('plan-rows'); if(a==='yes'){ b.landing = 219; b.note = 'landing · PR #219 · checks running';
         S.landed.unshift({id:'plan-rows', name:'plan-rows', repo:'switchboard', at:hhmm(S.minutes)+' today', pr:{n:219,state:'open'}, checks:[['lint','ok'],['tests','pend'],['map-check','pend'],['as-built','ok','4 statements']], envs:[['prod','https://switchboard.willdan.internal']], units:['rows-order','rows-sink','rows-window','rows-cursor'], signals:[], live:'PR open · checks running', leaves:'7d'});
         since('landing','switchboard/plan-rows','PR #219 open · gates running');
@@ -2164,7 +2198,7 @@ function argHtml(d, a){
     return `<div class="field"><input type="text" placeholder="name for the new bolt" aria-label="${esc(a)}"><button class="btn pri sm" data-send="${esc(a)}" data-n="${d.n}">send</button><button class="btn quiet sm" data-cancel="1">cancel</button></div>`;
   }
   if(kind==='select'){
-    const opts = S.bolts.filter(b => b.name!==d.bolt && b.id!=='chores-atlas').map(b => `<option>${esc(b.name)}</option>`).join('');
+    const opts = S.bolts.filter(b => b.name!==d.bolt).map(b => `<option>${esc(b.name)}</option>`).join('');
     return `<div class="field"><select aria-label="bolt">${opts}</select><button class="btn pri sm" data-send="bolt" data-n="${d.n}">send</button><button class="btn quiet sm" data-cancel="1">cancel</button></div>`;
   }
   if(kind==='typesel'){
@@ -2200,7 +2234,7 @@ function renderRail(){
   if(!vis.length) html += `<div class="empty">${S.decisions.length ? `Nothing of yours waits · ${hidden} owned by others or by a role · <button class="btn sm quiet" data-mine="0">show all</button>` : 'Nothing waits on you. The board runs on its own until the next decision is yours.'}</div>`;
   else if(S.railMine && hidden) html += `<div class="empty" style="padding:4px 2px">${hidden} more owned by others or by a role · <button class="btn sm quiet" data-mine="0">show all</button></div>`;
   html += `<div class="grp attention"><span class="g">attention</span><span class="r">outside the count · one-word answers</span></div>` + (S.attention.map(attHtml).join('') || '<div class="empty">nothing</div>');
-  html += `<div class="grp since"><span class="g">since</span><span class="r">your last mark${S.marks && S.marks.page ? ' · '+esc(S.marks.page) : ''} · per member · outside the count</span></div><ul class="since">${S.since.map(s => `<li class="${s.fresh?'new':''}"><span class="v ${s.v}">${esc(s.v)}</span><span class="w">${esc(s.w)}<br><span style="color:var(--ink3);font-size:11.5px">${esc(s.t)}</span></span><span class="t">${esc(s.at)}</span></li>`).join('')}</ul>`;
+  html += `<div class="grp since"><span class="g">since</span><span class="r">your last mark${S.marks && S.marks.page ? ' · '+esc(S.marks.page) : ''} · per member · outside the count</span></div><ul class="since">${S.since.map(s => `<li class="${s.fresh?'new':''}"><span class="v ${s.v}">${esc(s.v)}</span><span class="w">${s.pre ? `<span class="pre">${esc(s.pre)} · </span>` : ''}${esc(s.w)}<br><span style="color:var(--ink3);font-size:11.5px">${esc(s.t)}</span></span><span class="t">${esc(s.at)}</span></li>`).join('')}</ul>`;
   S.since.forEach(s => delete s.fresh);
   $('#rail').innerHTML = html;
 }
@@ -2388,7 +2422,17 @@ function renderPlan(){
   const deferred = S.deferred.map(x => `<article class="${objCls('f:'+x.key,'sheet')} deferred" data-obj="f:${x.key}" tabindex="0"><span class="sh-k">${esc(x.kind)} · deferred</span><div class="sh-title">${x.title}</div><div class="sh-meta">was ${x.n} · answered later ${esc(x.at)}</div><div class="sh-sec"><div class="sh-body">not in the count · planning's next run supersedes it</div></div><div class="sh-foot">ask again raises it with a new number</div></article>`).join('');
   $('#lane-plan').innerHTML = laneHead('Bolt plan','the gate · a desk with paper on it','<span class="gate">transition</span>') + planning + (prop + slips + baselines + deferred || '<div class="empty">planning has nothing proposed · it runs when a backlog changes</div>');
 }
-function renderConstruction(){ $('#lane-construction').innerHTML = laneHead('Construction','open bolts · units in flight · merges · the close') + S.bolts.map(b => ledgerHtml(b)).join(''); }
+// Accepted chores of a shared line: a "chores" head per repository naming it and counting them, heads by repository name, each item its document's
+// words and what it is doing, its session's chip under it — never a ledger. A chore stands here until it merges, which on the shared line is its
+// landing; it then leaves as a landed bolt's units do and Recently done keeps its one merged line (S15, S9, 60).
+function choresHeadsHtml(){
+  const standing = (S.chores||[]).filter(c => c.state!=='merged' && c.state!=='landed');
+  const repos = [...new Set(standing.map(c => c.repo))].sort();
+  return repos.map(r => { const rows = standing.filter(c => c.repo===r);
+    return `<section class="chores-lane" data-repo="${esc(r)}"><div class="ch-head"><span class="ch-k">chores</span><span class="ch-repo">${esc(r)}</span><span class="ch-n">${rows.length} chore${rows.length===1?'':'s'}</span></div>${rows.map(c =>
+      `<div class="${objCls('u:'+c.id,'ch-item')}" data-obj="u:${esc(c.id)}" tabindex="0"><span class="ch-nm">${esc(c.name)}</span><span class="ch-st">${esc(c.state)}</span>${c.session ? `<span class="ch-sess">${wiHtml(c.session)}</span>` : ''}${marksFor('u:'+c.id)}</div>`).join('')}</section>`; }).join('');
+}
+function renderConstruction(){ $('#lane-construction').innerHTML = laneHead('Construction','open bolts · units in flight · merges · the close') + S.bolts.map(b => ledgerHtml(b)).join('') + choresHeadsHtml(); }
 function renderOperation(){
   $('#lane-operation').innerHTML = laneHead('Operation','landed bolts · here while live and 7 days after','<span class="ro">observed</span>') + S.landed.map(recordHtml).join('') +
     `<div class="sec-h">signals from operation<span class="r">to curation · with their move</span></div><ul class="sigs">${S.opsignals.map(sg => `<li>${quoteHtml(sg, /→/.test(sg.move))}</li>`).join('')}</ul>`;
@@ -2865,7 +2909,7 @@ document.addEventListener('toggle', e => { if(e.target.classList && e.target.cla
 /* --- organizations and the account item: the page belongs to one organization at a time; the account item in the top bar switches it (the whole seed swaps: rail, board, hosts strip) and opens settings, hosts, the organization store and sign-out · who you are is name and sign-in kind --- */
 const baseSeed = () => ({minutes:7*60+40, decisions:[], attention:[], railMine:false, pools:[], marks:{page:'07:40'}, since:[], hosts:[], intents:[], gatherings:[], explorations:[], planning:null, deferred:[], captures:[], picker:null, inflightCap:null, picked:new Set(), exploreKind:'with', pal:{open:false, q:'', sel:0, scope:null, mode:null, on:null},
   repos:[{id:'books', kinds:['books'], caps:[], manifest:'books/flywheel.yaml · the books repository · claims live here', claims:[]}], view:'phases', load:false, scopeSel:null, scopeSet:new Set(), addRepo:null,
-  map:{nodes:[{id:'books', x:60, y:200}], edges:[]}, review:{on:false, mark:'never', nodes:{}, edges:{}}, bolts:[], landed:[], opsignals:[], curation:{unmoved:0, by:'nothing yet', oldest:'0d', next:'when a signal arrives', session:{label:'curation', state:'scheduled', act:'idle', host:'', agent:'claude', model:'haiku', pane:''}},
+  map:{nodes:[{id:'books', x:60, y:200}], edges:[]}, review:{on:false, mark:'never', nodes:{}, edges:{}}, bolts:[], chores:[], landed:[], opsignals:[], curation:{unmoved:0, by:'nothing yet', oldest:'0d', next:'when a signal arrives', session:{label:'curation', state:'scheduled', act:'idle', host:'', agent:'claude', model:'haiku', pane:''}},
   proposal:{session:'', reads:'', bolts:[], units:[], edits:0, refusal:null, n:0}, log:[], inflight:{}, focus:null, open:null, hostlit:null, nextWi:1, acct:false, signedOut:false});
 /* authentication is the host's, authorization the organization's: one sign-in kind per serving host, regardless of the organization shown; each organization's operators list says who is allowed there */
 const ORGS = {
@@ -3019,6 +3063,10 @@ function renderDock(){
   let head, body, form = '';
   if(t==='d'){ form = o.kind==='proposal'||o.kind==='baseline' ? 'dk-sheet' : o.kind==='unit' ? 'dk-slip' : ''; head = `<div class="row"><span class="n">${o.n}</span><span class="kind">${esc(o.kind)}</span><span>${o.g}</span><span class="ph">${PH[o.phase]}</span>${ownerChip(o, 'head')}${nav}</div><h2 id="dk-title">${o.title}</h2><div class="tail">${o.tail}</div>`; body = dockDecision(o); }
   else if(t==='b'){ form = 'dk-ledger'; head = `<div class="row"><span class="kind">bolt</span><span class="ph">construction</span>${nav}</div><h2 id="dk-title">${esc(o.repo)}/${esc(o.name)}</h2><div class="tail">${esc(o.note)}</div>`; body = dockBolt(o); }
+  else if(t==='u'){ head = `<div class="row"><span class="kind">chore</span><span class="ph">construction</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.repo)} · on the shared line · ${esc(o.state)}</div>`;
+    body = sec('chore', kvHtml([['repository', esc(o.repo)], ['document', `<span class="mono">${esc(o.doc)}</span>`], ['offered by', esc(o.by)], ['line', `${esc(o.repo)} main · no bolt`]]))
+      + sec('session', o.session ? `<div class="rows"><div class="row">${wiHtml(o.session)}</div><div class="dtext" style="margin-top:6px">${esc(o.session.last)}</div></div>` : `<div class="dtext">accepted · a session is charged when a slot is free; its fix merges straight onto ${esc(o.repo)} main</div>`)
+      + sec('when it merges', `<div class="dtext">Its merge onto the shared line is its landing: it leaves this lane on that pass and Recently done keeps its one merged line, ${esc(o.repo)} greyed before the name.</div>`); }
   else if(t==='i'){ form = 'dk-thread'; head = `<div class="row"><span class="kind">intent</span><span class="ph">inception</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.state)}${threadBeads(o).length ? ` · ${threadBeads(o).length} bead${threadBeads(o).length===1?'':'s'} · <kbd>]</kbd> opens the first` : ''}</div>`; body = dockIntent(o); }
   else if(t==='v'){ form = 'dk-bead'; head = `<div class="row"><span class="kind">elaboration · ${esc(o.kind)}</span><span class="ph">inception</span>${nav}</div><h2 id="dk-title">${esc(o.name)}</h2><div class="tail">${esc(o.etype)} · on intent ${esc(o.intent.name)} · <button data-gotoobj="i:${o.intent.id}">‹ back to the thread</button> · <kbd>]</kbd><kbd>[</kbd> beads</div>`; body = dockElab(o); }
   else if(t==='c'){ head = `<div class="row"><span class="kind">capture</span><span class="ph">inception</span>${nav}</div><h2 id="dk-title">${esc(o.text.length > 64 ? o.text.slice(0,64)+'…' : o.text)}</h2><div class="tail">${esc(o.src)} · ${esc(o.age)}</div>`; body = dockCapture(o); }
