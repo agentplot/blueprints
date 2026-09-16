@@ -272,10 +272,23 @@ the operator may reverse by a response on the file; an entry with
   parent guard now names, since it reads the parent's own states and
   an intent's line lands in a region. `unit.yaml` v6 merged → landed
   on `unit.shared_line`, the atom read from the record's scope
-  (atoms.yaml, record-derived.yaml); the pin rule is unchanged. The
-  built page keeps a landed chore under the head
-  (`accepted_shared_line_chore`, page.rs); to be corrected with the
-  transition. **Decision**. The mirror needs recopying.
+  (atoms.yaml, record-derived.yaml); the pin rule is unchanged.
+  **Decision**. Built 2026-09-15 (the-loop 28.1–28.3, b3145be,
+  a0bd57d): the mirror recopied at 92e62eb; the atom is read from the
+  scope written on the record first and the parent's machine second,
+  so a chore whose parent record has gone is still read by what it was
+  made with, and the scenario stand-in answers it the same way; a
+  shared-line chore is final on the pass that merges it, its place
+  released as any merged place is, its pin stale, and the pin 23.6's
+  run left standing is taken by reconciliation, which closes 23.6; the
+  head holds the standing chores alone, a landed chore leaving on the
+  pass of its merge, and Recently done reads it as merged with the
+  repository greyed before the name, a bolt's units unchanged (S15,
+  S9). Its cited claim's cell due again (64) has nothing to land in
+  until the ledger, which the roadmap places in phase 2; the test
+  holds the chore final carrying the claim it cited. The rail-and-board
+  mockup draws no chores head, which is the mockup's to follow (see
+  "213, 214 and 229–230 on the mockup").
 
 - **62 "the record never holds the text".** The record holds the
   document's path in the change directory and the offer entry's id.
@@ -1586,7 +1599,14 @@ the operator may reverse by a response on the file; an entry with
   artifact views behind an object (213), the flywheel instrument
   (214), the setup surface with parts and index (229) and adding a
   host (230); its "offer" wording for a part added and awaiting
-  install is being replaced by "add", matching 229's states.
+  install is being replaced by "add", matching 229's states. Its
+  Construction lane draws bolt ledgers only, with no "chores" head
+  per repository: S15 puts a repository's accepted chores under such
+  a head until each merges, and the built page draws it as of
+  2026-09-15 (the-loop 23.9, 28.3), so the mockup is behind the ruling
+  there and follows it; everything else in the lane, the ledgers, the
+  unit chains and the session lines, matches the mockup's shapes.
+  **Open** until the mockup draws the head.
 
 - **79 / 321 — a refusal the page's own form meets is not in the run
   record.** `surfaces.yaml` tools.identity has every refused call
