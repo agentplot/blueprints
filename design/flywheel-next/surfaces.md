@@ -2362,7 +2362,10 @@ whatever else it does.
   agent focus curation/run-12` — the first prefixed with herdr's
   remote attach naming the host's machine when the host is not this
   computer (232). One copy control per line; the popover closes like a
-  picker (S233), and a second press on the same chip closes it. A pane
+  picker (S233) — on Esc, a click outside, another picker, the palette
+  or a dock page — a second press on the same chip closes it, and on a
+  phone it is a bottom sheet above the tabs, as a picker is (S233,
+  S30). A pane
   that is gone says so in the popover instead ("no pane · the session
   exited at 08:12", "no pane · the session was lost at 08:12") and
   offers nothing to copy; a session whose record names no herdr
@@ -2447,6 +2450,18 @@ whatever else it does.
   id chip in the dock's head and a drawer page's long text among it.
   The mockup is fixed the same way, since it is the page's source
   (D16, 314).
+- **S237.** Ruled 2026-09-16: the size of an answer control, which is
+  the input's rule and not the viewport's. On the phone a finger is
+  the input, so every control that gives a decision's answer — a
+  card's answers and the dock's — is at least 44px on a side, shown,
+  on screen and behind no hover (311, 306). At the desktop's viewport
+  a mouse is the input and the controls keep the mockup's size, 36px,
+  since the mockup is the page's source there (D16) and a finger's
+  target on every card would change the desktop for no one who uses
+  it. The page has one split, 760px (307, S38): a tablet wide enough
+  for the desktop's layout is a desktop. The phone pass (314) holds
+  every answer at both viewports to being shown, on screen, reached
+  and behind no hover, and asks the 44px at 390px alone.
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open

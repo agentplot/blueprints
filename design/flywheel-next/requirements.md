@@ -2710,7 +2710,9 @@ requirements, iterated against the running rail rather than on paper.
     states (S235); a build over budget has not met the page (306, 307).
 311. Every answer is one tap or one short reply. Nothing is reachable only
     by hover or by a keyboard, and anything a hover reveals on the desktop
-    is reachable by tap on a phone (S61). A long-form answer, a proposal
+    is reachable by tap on a phone (S61). On the phone an answer control
+    is sized for a finger; at the desktop's viewport a mouse is the
+    input and the controls keep the mockup's size (S237). A long-form answer, a proposal
     edit for one unit among several for instance, is given on the phone
     with the platform's own keyboard. An accelerator — the page's
     palette, a key, a short reply — never carries an operation that no

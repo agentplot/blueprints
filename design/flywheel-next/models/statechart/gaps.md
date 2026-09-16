@@ -90,8 +90,10 @@ the operator may reverse by a response on the file; an entry with
   use. **Decision** (2026-09-15). Built the same day: a fold keeps its
   number and letters whichever row leaves first, a fold emptied and
   refilled is a new number, and a batch's objects, the dock's and the
-  status view's lists order by their ids as they count. Not built: the
-  register's thirty-day prune of retracted entries, so entries stand.
+  status view's lists order by their ids as they count. Built
+  2026-09-16 (the-loop 27.5): an entry is marked when its decision
+  goes and pruned thirty days after, a reply to the old number
+  resolving and reported until then, so the register grows no further.
   Also as built, the dock's chore rows show the document's path where
   S232 says its name in words; corrected 2026-09-15 (the-loop 23.7):
   the dock's row reads the document's name in words with what the
@@ -248,9 +250,11 @@ the operator may reverse by a response on the file; an entry with
   items under a "chores" head naming their repository and counting
   them, never a bolt's ledger — accepted meaning past proposal and
   under no bolt, heads ordered by repository name, each item named by
-  its document's words (S15, S75). Standing against S14 as built:
-  proposed shared-line chores draw as slips in Construction where S14
-  puts every slip in Bolt plan; to be corrected. Run 2026-09-15
+  its document's words (S15, S75). Corrected 2026-09-16 (the-loop
+  27.10): a proposed chore of a shared line is a slip in Bolt plan,
+  its repository greyed before its name, and only a chore past
+  proposal and under no bolt stands under Construction's chores head
+  (S14, S15). Run 2026-09-15
   (the-loop 23.6): a real curator session wrote a chore document in
   its own place on the blueprints and offered it for storefront, the
   operator said yes on the page, and a second session on storefront's
@@ -764,11 +768,25 @@ the operator may reverse by a response on the file; an entry with
   `--` on herdr's start (sessions.yaml start_session, kinds); the chip
   reads the record, kind · model by its short name ("claude · fable"),
   the dock page the id in full, and a record naming no model reads its
-  kind alone (S53). **Decision**. The mirror's definitions need
-  recopying. And the popover is anchored under the
-  chip at every width and is not a bottom sheet on a phone, and the
-  palette's opening leaves it open, where S234 says it closes like a
-  picker (S233). How the operator reaches a pane in a machinery
+  kind alone (S53). **Decision**. Built 2026-09-16 (the-loop 27.9):
+  both are resolved when the session is requested — the stage's or
+  type's own entry, else the shipped profile's default for the role
+  that charged it — written on the record and handed to the program
+  after `--`; the chip reads "claude · fable" from the record, the
+  dock page the id in full, and a record naming no model reads its
+  kind alone. The record's `kind` now names the program, and the
+  build keeps the session's type in a field of its own that nothing
+  read; the model's record carries no such field, since the id names
+  the type. The mirror's session.yaml, profiles/sessions.yaml and
+  profiles/surfaces.yaml were recopied from blueprints 0590893 in that
+  commit (flywheel-next fe8c249f). Built the same day (the-loop 27.8):
+  the popover closes when the palette is raised by a key, as it
+  already did on Esc, a click outside, a second press of its chip and
+  a dock page opening, and under 760px it is a bottom sheet above the
+  tabs rather than a panel hung off the chip (S234, S233); its
+  template changes landed in 27.7's commit (flywheel-next 05342a99)
+  and its tests in a596d7da, a boundary the coder named and left
+  alone. How the operator reaches a pane in a machinery
   session from the page is S234. Tab and workspace removal is a host
   reconciliation (`remove_stale_layout`) rather than an effect of the
   object's own machine, because the object is final by then and runs
@@ -1499,13 +1517,22 @@ the operator may reverse by a response on the file; an entry with
   the file was found among what the last read says was delivered, and
   the line holds it whole, so the page needs a reader of repository
   files of its own, built from the root and each repository's shared
-  line, and nothing more (310a, S235, surfaces.yaml busy). **Decision**;
-  the signals tray's rows run past the right edge at 390px, in
-  the mockup as on the page — a bug in both against 314; and a dock
-  page's away line prints the moment raw
+  line, and nothing more (310a, S235, surfaces.yaml busy). **Decision**.
+  Built 2026-09-16 (the-loop 27.4): a client's rail, board, status,
+  object and views answer from the last read while a pass holds the
+  store, and a deliverable opens through the page's own reader from
+  its repository's shared line, waiting on neither the store nor the
+  host's world; the mirror's surfaces.yaml recopied (flywheel-next
+  fe8c249f). The signals tray's rows had run past the right edge at
+  390px, in the mockup as on the page, against 314, and a dock page's
+  away line printed the moment raw
   (`2026-09-15T17:37:53.062165+00:00`) where 150a says since when and
-  the page speaks in the operator's terms (S214) — a bug. The mirror's
-  definitions/profiles/surfaces.yaml needs recopying.
+  the page speaks in the operator's terms (S214); both fixed
+  2026-09-16 (the-loop 27.2, 27.3): the page follows the mockup as
+  drawn to 390px — the dock's head wraps and cuts its chips at their
+  end, a long word breaks, a section heading keeps its label whole and
+  a tray row wraps its quote and source lines — and the away line says
+  since when in words.
 
   The 100 KB against the bundle's style and script, ruled 2026-09-15.
   The page's stylesheet, copied whole from the mockup (D16), is 67 KB
@@ -1577,9 +1604,46 @@ the operator may reverse by a response on the file; an entry with
   the drawer's pages on long text and the tray's rows: nothing runs
   past the edge at 390px and text is cut at its end (S215). The mockup
   is drawn to it (2026-09-15): its key hints had carried an inline
-  style that beat both width rules, which was the overflow. As built
-  2026-09-15: the served header still carries the title, the count and
-  the capture box at that width (306, 314). One thing is unbound
+  style that beat both width rules, which was the overflow. Built
+  2026-09-16 (the-loop 27.7): the header is one row at 390px keeping
+  the instance with its as-of time, "yes all" as the word alone, the
+  sent count and the account chip, the count on the Decisions tab's
+  badge and the capture control raising the palette sheet. The theme
+  row in the account menu waits on the menu: this phase has no sign-in
+  and so no account menu, and what the header held at desktop width
+  is a readout saying the page follows the system's theme rather than
+  a control, so it is dropped at that width with nothing out of reach,
+  and the menu's theme row comes with the phase that builds sign-in
+  (S152, S236).
+
+  An answer control's size, ruled 2026-09-16 (S237, surfaces.yaml
+  phone.touch). The phone pass (314) measured a card's answers at 36px
+  at 1440px as at 390px and asked whether the finger's 44px is the
+  phone's alone or the mockup's buttons grow. The size is the input's
+  rule and not the viewport's: on the phone a finger is the input and
+  every answer control is at least 44px on a side; at the desktop's
+  viewport a mouse is the input and the controls keep the mockup's
+  size, since the mockup is the page's source there (D16) and a
+  finger's target on every card would change the desktop for no one
+  who uses it. The pass holds every answer at both viewports to being
+  shown, on screen, reached and behind no hover, and asks the 44px at
+  390px alone. **Decision**. As built 2026-09-16 (flywheel-next
+  0677fad4): a card's answers are 44px under 760px as the dock's
+  already were, and the hover sharpenings sit in the pointer-only
+  block, so nothing reads as hover-gated at either width. Two things
+  the pass still measures red, neither the page's nor a hover's: the
+  standing decision of S01 lists `pick <intents>` for an elaboration
+  of one intent, where the model offers pick and the per-intent drop
+  only when the elaboration covers more than one (elaboration.yaml
+  elaboration-proposed, 188, S226), so the pass asks for a control the
+  card rightly does not draw — the answer list the machinery raises is
+  to narrow to what applies, as the card's does, since the chat and
+  the reply grammar offer that list too; **open** until it does. And
+  S04's proposed finding stands nowhere once the pass has played the
+  two ticks before its response, where the conformance run finds it
+  standing after its second step — the driver's playing of the
+  scripted session's offer or the machinery's, to be found; **open**.
+  One thing is unbound
   rather than ruled. 313 names the Claude mobile app a client of the
   tool server, but which authority that client signs in against on a
   self-managed host, whose address is a localhost port with no name
