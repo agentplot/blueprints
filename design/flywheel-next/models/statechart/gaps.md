@@ -276,13 +276,16 @@ the operator may reverse by a response on the file; an entry with
   the machinery workspaces stay. The registered elaboration types
   (self-closing@2, fundamentals@1) are not touched: the rule reaches
   them through the session template they compose, and a registered
-  file is never edited (model.md 10.7). **Decision**. As built: the herdr
-  binding's end closes the pane and is right; nothing calls it after an
-  exit; `remove_stale_layout` is not built either. Not built: the
-  keep_alive field on the record, the exit's end_session, the host
-  reconciliation, the run-tab removal. The mirror (definitions/
-  session.yaml, atoms.yaml, engine/host.yaml, the owners, profiles/
-  sessions.yaml) needs recopying.
+  file is never edited (model.md 10.7). **Decision**. Built 2026-09-15
+  (the-loop 25.4, 25.5): the record carries keep_alive from its owner,
+  a session not kept has its pane ended on the pass that records its
+  exit, done, stalled and invalid alike, blocked keeps its pane, a kept
+  session stands, and ending a pane already gone is not an error; the
+  host's reconciliation ends a pane left open for an exited, ended or
+  retired session and closes a machinery run's tab once the run is
+  final and its pane gone, the machinery workspaces staying, reaching
+  only the herdr sessions the host made by name. The mirror was
+  recopied at blueprints ff90d05 in the same commit.
 
 - **72 "evidence that the session exists".** The pane by name is the
   evidence; herdr's refusal of a duplicate name is what makes the
@@ -319,7 +322,17 @@ the operator may reverse by a response on the file; an entry with
   format is the schema handed in, and nothing outside the place is to
   be read. The global instructions stay **open** as above; they are
   the operator's, and the machinery's correctness rests on nothing the
-  deny list does. **Decision**. Not built.
+  deny list does. **Decision**. Built 2026-09-15 (the-loop 25.7) for
+  Claude Code, the one kind with a deny list today: the place's
+  settings refuse every file read, search and language-server lookup
+  outside the place's tree and the paths the order hands in, which are
+  read as the state repository and the manifest, since those are what
+  the session's own `flywheel` commands read; the shell's own ways out
+  of the tree are denied beside them; a kind with no such settings is
+  trusted to its order. Still to be observed: a curator's and a
+  capture reader's run on a scratch instance whose tool logs, read by
+  a person, show nothing read outside the place and the order's
+  inputs.
 
 - **93 "only the session binding is faked".** The stand-in plays
   exits by running the same `flywheel exit|offer|refuse` path, so the
@@ -473,15 +486,21 @@ the operator may reverse by a response on the file; an entry with
   socket command against a stopped session is refused with
   `server_not_running`. The operator attaches with `herdr session
   attach <name>`. sessions.yaml multiplexer_sessions and layout carry
-  the real commands. **Decision**. As built (sessions-herdr `start`,
-  host.rs `placement_of`): no `--session` is passed, so every pane
-  opens in whatever herdr session the host's own process runs in — the
-  operator's, beside their team — and no machinery session exists; the
-  design holds and the build departs. Not built: the named session's
-  start, the `--session` on every call, the session's name on the
-  session record. What the build already opened in the operator's own
-  session is the operator's to close; the host's reconciliation reaches
-  only the sessions it created by name.
+  the real commands. **Decision**. Built 2026-09-15 (the-loop 25.1):
+  every herdr call the host makes names the session it is for, a
+  session herdr does not list running is started headless, the host
+  never stops one, and the session record keeps the herdr session's
+  name; a call with no session is refused rather than run against the
+  session the host's own process sits in. Two more facts of herdr 0.9
+  found in the build: `herdr session list --json` names each session
+  with a `running` flag, not a status word, and a tab's listing
+  carries no pane, so the panes of a tab already made are read from
+  `pane list`. What the build had opened in the operator's own
+  session before this is the operator's to close, and a session
+  recorded before panes were addressed by name names no herdr
+  session, so its chip's popover offers the focus line alone (S234);
+  the host's reconciliation reaches only the sessions it created by
+  name.
 
 - **176 checks as findings.** A failed check run is read as a review
   that asks for a change and becomes a proposed chore like a
@@ -659,9 +678,16 @@ the operator may reverse by a response on the file; an entry with
   intent, one tab per unit and per elaboration, one pane per session,
   and curation, planning and capture reading one workspace each in the
   machinery session with a tab per run; closing one pane then closes
-  that pane alone and the machine reads the session as lost. Not
-  built. How the operator reaches a pane in a machinery session from
-  the page is S234. Tab and workspace removal is a host
+  that pane alone and the machine reads the session as lost. Built
+  2026-09-15 (the-loop 25.1, 25.5, 25.6), the layout as designed and
+  the chip's pane link a popover as S234 says. Standing against the
+  rulings: the chip names what the session is for and the host it runs
+  on ("curation @laptop reading") where S53 says agent · model, the
+  page carrying neither yet; and the popover is anchored under the
+  chip at every width and is not a bottom sheet on a phone, and the
+  palette's opening leaves it open, where S234 says it closes like a
+  picker (S233). How the operator reaches a pane in a machinery
+  session from the page is S234. Tab and workspace removal is a host
   reconciliation (`remove_stale_layout`) rather than an effect of the
   object's own machine, because the object is final by then and runs
   no transition; a workspace may therefore outlive its object by one
@@ -912,7 +938,9 @@ the operator may reverse by a response on the file; an entry with
   label is the collision, and it declines naming that host, starting
   nothing; a running session with no host label is the operator's and
   is declined naming the session (sessions.yaml
-  multiplexer_sessions.own). **Decision**. Not built.
+  multiplexer_sessions.own). **Decision**. Built 2026-09-15 (the-loop
+  25.2): the refusal names the running host, and no herdr call beyond
+  the read is made.
 
 - **223–227 machines, types and context.** 223–225 are cited on
   `atoms.yaml` because the registry has no machine of its own.

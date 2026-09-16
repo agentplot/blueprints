@@ -2334,9 +2334,15 @@ whatever else it does.
   agent focus curation/run-12` — the first prefixed with herdr's
   remote attach naming the host's machine when the host is not this
   computer (232). One copy control per line; the popover closes like a
-  picker (S233). A pane that is gone says so in the popover instead
-  ("no pane: the session exited at 08:12", "lost") and offers nothing
-  to copy. The page never opens, focuses or reads a pane itself: the
+  picker (S233), and a second press on the same chip closes it. A pane
+  that is gone says so in the popover instead ("no pane · the session
+  exited at 08:12", "no pane · the session was lost at 08:12") and
+  offers nothing to copy; a session whose record names no herdr
+  session — one opened before panes were addressed by name, in the
+  operator's own session — gets the focus line alone, since the page
+  does not presume to name the operator's session. Everything the
+  popover says is on the chip already, so opening it fetches nothing
+  (310a). The page never opens, focuses or reads a pane itself: the
   pane stays reachable for the operator who wants it, and everything
   the operator needs is on the page already (68).
 - **S235.** Ruled 2026-09-15: the page's budget (310a) and how it is
