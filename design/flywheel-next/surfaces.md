@@ -305,7 +305,7 @@ were settled, not their place on the page.
 | bolt | a ledger | the ledger; the bolt's repository, branch, host and place (S222); decisions on it (in the rail, where you answer); its units with drop per unstarted unit and "change" per unit; rename; every session on it with its agent, pane, host, when it started, its exit and what it delivered; the commits on the branch (hash, subject, author, when), titled as main's latest once the bolt has landed; services with start and stop; served endpoints; the acceptance file (S99); history | no decision here that is not in the rail; drop, rename, start and stop are dictations |
 | landed bolt | a record | the record; the landing (when, through which gates, place removed); pull request and checks; environments; units landed; the acceptance file; signals from operation with their move | nothing to answer |
 | intent | a thread | the thread; the intent's state and line; its elaborations in the order they were made, each with its type, opening each (210); decisions on it; sessions running; its change directory (S99) | its decision's answers when one is pending, else nothing to answer |
-| elaboration | a bead; ] and [ from the thread | kind, type and where it stands; its intent, a link; where it came from when a finding proposed it — the finding's document by its title, opened inline, and the elaboration whose session offered it, a link (S226); its pending decision with the answer controls; its document and its host; the records it wrote into the intent's change directory (187), opening the change directory view; the intents it gathers, each a link, when it covers several (188); its sessions as chips (S53), or "no session yet: one starts when it is approved" before the yes; the countdown when finished (210); a knot in the header and a back link to the thread | the decision's answers; finish on a standing one; nothing else |
+| elaboration | a bead; ] and [ from the thread | kind, type and where it stands; its intent, a link; when a finding proposed it, the finding's document by its title, opened inline, and the parent bead as a link (S226, S241); its pending decision with the answer controls; its document and its host; the records it wrote into the intent's change directory (187), opening the change directory view; the intents it gathers, each a link, when it covers several (188); its sessions as chips (S53), or "no session yet: one starts when it is approved" before the yes; the countdown when finished (210); a knot in the header and a back link to the thread | the decision's answers; finish on a standing one; nothing else |
 | exploration | its row in Inception | the covered intents; where its records go (per intent) and where its conclusions go (the book, once); its session | finish (standing) or end (with-operator) |
 | planning in progress | its row in the gate | what planning reads; the operator's notes it carries; its session | nothing yet; the next proposal is the decision |
 | deferred | its greyed sheet | when later was answered; that it left the count, wrote no SINCE line, and is superseded silently by planning's next run (172, 35) | ask again |
@@ -1541,8 +1541,8 @@ where a thing sits, never by its form.
 | proposal | a sheet: title line, section rules per bolt, mono metadata, taller than wide | planning run, bolts with their units, counts, per-unit responses recorded | the sheet and its rail card | greyed "deferred · ask again" in the gate |
 | unit proposal | a slip hanging off the gate | name, target bolt (open or new), type | the slip and its rail card | as the proposal |
 | baseline | a sheet of its own, sections by scope | claims unmet, chores, units, "judged once" | as the proposal | as the proposal |
-| intent | a drawn thread: a vertical stroke with a head knot, no box | name, state, note, beads in order | the thread | the same thread with an end cap and "closed · leaves in Nd" |
-| elaboration | a bead on the thread with a leading kind word | kind, name, state or chip; "in gathering n" chip when covered | the bead | "done · leaves in Nd" on the bead |
+| intent | a drawn thread: a vertical stroke with a head knot, no box | name, state, note, beads in order, a bead born of another's finding hung off it on a short branch (S241) | the thread | the same thread with an end cap and "closed · leaves in Nd" |
+| elaboration | a bead on the thread with a leading kind word; a descended bead one step in, on a branch from its parent bead | kind, name, state or chip; "in gathering n" chip when covered | the bead, and its branch and parent when descended | "done · leaves in Nd" on the bead |
 | exploration | a row at the head of Inception | kind (with-operator or standing), covered intents, since, chip | the row | "done · leaves in Nd" |
 | bolt | a flat square-cornered ledger | name, repository, running count, unit chain, machinery row, services and endpoint foot, landing stamp | the ledger | leaves Construction at landing |
 | landed bolt | a borderless muted record | name, when, PR-and-checks stamp, environments, live signals, "stays · why" or "leaves in Nd" | the record | leaves Operation after the window |
@@ -2177,12 +2177,11 @@ whatever else it does.
   "standing · a retry schedule needs a prototype", never "standing ·
   openspec changes storefront declines"; only a file that cannot be
   read leaves the path standing, and then the page shows it as a
-  path, greyed, not as a name. Its card and its page say where it came
-  from, in one line under the question: "from the finding of <the
-  elaboration whose session offered it>" — the earlier bead named as
-  S226 names it, a link that opens it, and the finding's document
-  opening inline (S28) — so a proposal born of earlier work never
-  reads as one that arrived from nowhere. Its card
+  path, greyed, not as a name. Where it came from is drawn, not said:
+  its bead hangs off the bead whose finding proposed it (S241), and
+  its card lights both when focused; its page carries the finding's
+  document inline and the parent bead as a link (S28), and no card or
+  page adds a sentence about it. Its card
   proposes one elaboration at a time with the type named beside the
   question ("research · self-closing") and only the answers that
   apply: yes, drop and type; pick and the per-intent drop appear only
@@ -2575,6 +2574,35 @@ whatever else it does.
   session's chip, since it is already the decision in the head; the
   "notes and questions" section holds the thread's notes and is not
   where a blocked question lives.
+- **S241.** Ruled 2026-09-16: the thread draws descent. An elaboration
+  proposed from another elaboration's finding (58, 62; its record's
+  sources name the finding, whose session's object is the parent) is
+  a bead hung off its parent bead, not one more bead in the row: a
+  short branch leaves the parent bead to the right and the child sits
+  on it one step in from the stroke, directly under its parent and
+  before the parent's next sibling, its own children one step further
+  in, so the thread reads as a tree the way a commit graph does and
+  the lineage is the drawing. The stroke stays one stroke; a branch is
+  a hairline from the parent bead's centre to the child's, the same
+  weight as the stroke, and a proposed child is drawn as any proposed
+  bead is, with its decision's marker (S52). ] and [ walk the beads in
+  drawing order, parent then its descendants then the next sibling
+  (S133). A focused card lights its bead, its branch and its parent
+  bead together (S10), which is all the card says of where it came
+  from; the bead's page carries the finding's document inline and the
+  parent as a link (S28), and no sentence on any surface restates the
+  descent. A gathering proposed from a finding (188) descends on one
+  thread only, the one whose elaboration offered the finding, and
+  stands on each other covered intent as a bead at that thread's head
+  with its "in gathering n" chip, since the covered intent has no
+  parent bead to hang it from; the covered intents are listed on its
+  page as before. On the phone the thread is the stacked list of S38
+  and a descended bead is a row indented one step under its parent's
+  row with a short leading branch mark, its children one step further,
+  so the tree survives the stack. Order alone could not carry this: a
+  bead in the row after the one that proposed it looks the same as a
+  bead the intent's own material proposed next, and a sentence asks
+  the operator to read what the thread should show.
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open
