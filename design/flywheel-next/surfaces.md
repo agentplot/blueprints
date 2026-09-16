@@ -157,6 +157,10 @@ were settled, not their place on the page.
   repository name, and each item is named by its document's words as
   the chores card and chat name its rows (S232). A chore of a bolt
   stays on that bolt's ledger, and a proposed one stays a slip (S14).
+  Ruled 2026-09-15: an item stands under the head until it merges,
+  which on the shared line is its landing (60); it then leaves the
+  lane as a landed bolt's units do, and Recently done carries its one
+  line, merged, with its repository greyed before its name (S9).
 - **S16.** Operation shows every landed bolt as a record while
   something about it is live and for the bounded window after (186),
   with its pull request and checks as a stamp, its environments as
@@ -2101,7 +2105,13 @@ whatever else it does.
   with the unit linked (S9, dock capture). The chat carries no
   capture control, this one included: a capture is never a decision,
   and its controls are the page's (S212, S32, S228). A finding's row
-  in the tray carries the control as a note's does (S231).
+  in the tray carries the control as a note's does (S231). The capture
+  and Recently done read "added to <bolt>" or "built" on the pass the
+  verb is pressed, never a later one, since the move already names
+  what the capture became (S9). The picker never names a bolt that is
+  not open; the same tool called by name from a script with a bolt no
+  record has makes that bolt first, as a dictation naming a bolt does
+  (34).
 - **S225.** Ruled 2026-09-14: the curation counter in Inception is a
   control that opens the signals tray in the dock: every unmoved
   signal, grouped by capture and ordered by source and age (the note
@@ -2325,7 +2335,10 @@ whatever else it does.
   is still one gesture from done (S214, S224a). One picker is open on
   the page at a time: opening another, opening the palette or a dock
   page, or a render that moves the capture closes it, and Esc closes
-  a picker before anything else (S56).
+  a picker before anything else (S56). The picker opens and a row
+  picks with the page's script off, each row its own submit, so a
+  pick is one gesture either way; the filter, the arrow walk and the
+  letters are the script's.
 - **S234.** Ruled 2026-09-15: how the operator reaches a session's
   pane from the page when the pane lives in a herdr session of the
   machinery's, not the one their terminal is attached to (174, 196).

@@ -250,7 +250,32 @@ the operator may reverse by a response on the file; an entry with
   under no bolt, heads ordered by repository name, each item named by
   its document's words (S15, S75). Standing against S14 as built:
   proposed shared-line chores draw as slips in Construction where S14
-  puts every slip in Bolt plan; to be corrected.
+  puts every slip in Bolt plan; to be corrected. Run 2026-09-15
+  (the-loop 23.6): a real curator session wrote a chore document in
+  its own place on the blueprints and offered it for storefront, the
+  operator said yes on the page, and a second session on storefront's
+  shared line, in a place that never held the first, was handed the
+  document's text verbatim as its job, rewrote the file it named,
+  committed, and merged onto the shared line. What the run left
+  standing: the offer's pin was never removed, because a pin goes
+  stale once the record it made has ended, and merged is no end for a
+  unit — it left only when its parent bolt landed, and a shared-line
+  chore has no bolt. Ruled 2026-09-15: a shared-line chore's merge is
+  its landing (60). The shared line is where a landing puts work and
+  no bolt stands above such a chore to land with, so it is final on
+  the pass that merges it, with everything a landing brings — the pin
+  stale, its cited claim's cell due again (64), the review batch when
+  it cited none (317) — and it leaves Construction's chores head then,
+  Recently done keeping its one merged line (S15, S9). A bolt's unit
+  still lands with the bolt, and an intent's conflict chore with the
+  intent's line as the intent closes (52), which the merged state's
+  parent guard now names, since it reads the parent's own states and
+  an intent's line lands in a region. `unit.yaml` v6 merged → landed
+  on `unit.shared_line`, the atom read from the record's scope
+  (atoms.yaml, record-derived.yaml); the pin rule is unchanged. The
+  built page keeps a landed chore under the head
+  (`accepted_shared_line_chore`, page.rs); to be corrected with the
+  transition. **Decision**. The mirror needs recopying.
 
 - **62 "the record never holds the text".** The record holds the
   document's path in the change directory and the offer entry's id.
@@ -445,8 +470,10 @@ the operator may reverse by a response on the file; an entry with
   three-minute bar the design never set. The held host is fixed as of
   2026-09-15 (the-loop 24.6): the page is answered from its last read
   while a pass records, and a call made then is kept and made on the
-  pass after (310a busy, S235); recording the delivery itself still
-  takes about three minutes, the per-record commits standing.
+  pass after (310a busy, S235); recording the delivery itself is one
+  commit as of 2026-09-15 (the-loop 26.1), a delivery of sixty-three
+  moves written together and committed once, and a repeat of it
+  writing nothing (127, 73).
 
 - **115 / 217e the reader as built.** The capture-reader session runs
   through the herdr binding by the tick of the host declaring the
@@ -568,9 +595,22 @@ the operator may reverse by a response on the file; an entry with
   `propose-unit` naming an open bolt the operator picked, the unit
   named from the capture's first words and the signals routed to it as
   `build now` routes them; the tool already takes the bolt, so no new
-  effect. Not built: the control on the quote, drawer and tray row,
-  the list of open bolts, the "added to <bolt>" reading on the
-  capture's page and in SINCE.
+  effect. Built 2026-09-15 (the-loop 26.3–26.5): the control stands
+  with the capture's other four verbs everywhere a capture carries
+  them, lists the open bolts in Construction's order with the
+  repository greyed when more than one is tracked, and a bolt whose
+  close is offered is listed and its offer taken back by the pick;
+  the capture's page and Recently done read "added to <bolt>" on the
+  pass the verb is pressed. The verbs sit under the hand as S233 says
+  — none at rest, one row while the pointer or the focus is on the
+  capture, the drawer's footer at rest, none on a phone's board or
+  tray — with Tab, Enter and the letters `b a m t d`; and `attach
+  to…` and `add to bolt…` are one picker inside the capture, with the
+  filter above eight rows, the arrow walk, Esc back onto its verb and
+  the empty list carrying the verb that makes one, and it opens and
+  picks with the script off. Still standing: the test that holds the
+  page to the mockup's regions fails on the pane popover's and the
+  picker's ids (the-loop 27.1).
 
 - **177 delivery links.** `line.request_links` is read only while the
   bolt's request is open and never under the direct policy: a direct
@@ -972,8 +1012,10 @@ the operator may reverse by a response on the file; an entry with
   remove_stale_layout; 174, 196). **Decision**. The built
   `layout_to_close` (host.rs) gathers the tabs of every workspace,
   the mark's among them, and the domain rule skips `host/` at the
-  workspace level only; to be corrected under 25.1, after which 23.6's
-  run can finish.
+  workspace level only. Built 2026-09-15 (the-loop 25.1, 3f9759f): the
+  mark's tab carries the mark's own label, reconciliation skips that
+  label at the tab level as at the workspace level, and the host reads
+  no tab of the mark; 23.6's run then went through.
 
 - **223–227 machines, types and context.** 223–225 are cited on
   `atoms.yaml` because the registry has no machine of its own.
@@ -1414,10 +1456,11 @@ the operator may reverse by a response on the file; an entry with
   curator's delivery for about three minutes the page and the open
   tray answered 193 times, the slowest in 20 ms, and a capture sent
   meanwhile was answered at once, recorded once and shown when the
-  pass ended (310a busy, S235). Still standing: a proposed intent's
-  card carries a signal count and an age where 109 and S5 say how many,
-  from how many sources, over what span, with the elaborations folded
-  in; a member's client's read-only calls and opening a session's
+  pass ended (310a busy, S235). A proposed intent's card reads as S5
+  draws it as of 2026-09-15 (the-loop 26.2) — how many signals, from
+  how many sources, over what span by event date, and the elaborations
+  it proposes each with its type (109, 118). Still standing: a
+  member's client's read-only calls and opening a session's
   deliverable still wait for the host while a pass holds the store,
   where the page is answered whatever the host is doing and the
   client's view is the same page (310a, 293a) — a bug against the

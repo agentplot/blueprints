@@ -581,7 +581,14 @@ requirements, iterated against the running rail rather than on paper.
     the rail and nothing more. Chores offered on the same line are shown
     together as one decision, and each is still a decision of its own,
     accepted or declined without the others (11). A chore never creates
-    a bolt.
+    a bolt. A chore's merge onto the shared line is its landing: the
+    shared line is where a landing puts work and no bolt stands above
+    such a chore to land with, so it is done, and ended, on the pass
+    that merges it — its cited claim's cell due again as at any landing
+    (64), its place released (55), its offer's pin stale (62), and it
+    leaves the board as a landed unit does (S15). A chore on a bolt's
+    line lands with its bolt, and a chore on an intent's line with the
+    intent's line, at its close (52).
 61. Updating agent instructions, citations, references, and similar
     housekeeping are chores, not units.
 62. A finding and a chore are documents of the change they arose in,
@@ -613,7 +620,8 @@ requirements, iterated against the running rail rather than on paper.
     from the git host at the pinned revision; the pin outlives the
     place, its rebases and its squash, and is removed by
     reconciliation once the record the offer made — unit, proposal or
-    signal — has ended, an effect recorded like any other (42, 55). A
+    signal — has ended, an effect recorded like any other (42, 55); a
+    shared-line chore ends at its merge, which is its landing (60). A
     chore's session is handed the document as its job, in its work
     order: the machinery reads it at the pin when it prepares the
     chore's place and writes it into the order, since a chore has no
