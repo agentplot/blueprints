@@ -1581,7 +1581,11 @@ where a thing sits, never by its form.
   session is for is not the chip's: the item beside it says that. A
   session whose record names no model — one started before the model
   was recorded — reads its kind alone. State is colour and dot only: working filled and
-  pulsing, starting dashed, idle hollow, blocked an amber ring. A host
+  pulsing, starting dashed, idle hollow, blocked an amber ring. Ruled
+  2026-09-16: a session whose pane is at its program's own prompt — a
+  permission it asks before a command — reads working, not idle and not
+  blocked; the machinery answers the prompt on its next pass, and the
+  operator never answers it in the pane (68, 72). A host
   pill lights its chips in every lane and dims the rest.
 - **S54.** The machinery strip sits above the lanes: hosts as pills
   (alive or gone, sessions against the bound, last heartbeat, an

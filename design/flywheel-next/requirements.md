@@ -658,7 +658,12 @@ requirements, iterated against the running rail rather than on paper.
     dictation writes, given by the session. Every session's work order
     gives the exact command for each of its exits and for an offer,
     with everything the command reads filled in (89); the ask's command
-    is given only where the ask is granted (116).
+    is given only where the ask is granted (116). The command runs
+    without asking anyone: the place prepared for a session admits
+    every command its order gives, and the order gives each in a form
+    the session's program runs unprompted, so the block a place puts on
+    a session's reach (89) never falls on the machinery's own command
+    and no session stops at its own exit.
 68. The operator need never open a pane. Everything a session asks of
     the operator is answerable on the page or in chat, and everything a
     session shows the operator is reachable from the page. The pane
@@ -682,7 +687,19 @@ requirements, iterated against the running rail rather than on paper.
     prompt the agent puts to its own pane before it will work (a trust
     dialog on its folder) is answered by the sessions binding from what
     the pane shows, never by assumption; a pane showing nothing of the
-    kind is left alone.
+    kind is left alone. The same holds for a prompt the program puts to
+    its pane while it works, asking a person before it runs a command:
+    it is never the session's exit and is read as neither idle nor
+    blocked, since blocked is a question the operator answers on the
+    page (70) and idle is a session that stopped acting of its own
+    accord. The sessions binding answers it from what the pane shows,
+    on the pass that sees it: yes to a command the order itself gave,
+    no to any other, the no recorded on the session's thread as a
+    refusal with the command's text (43), so no session waits at a
+    prompt no one is there to answer (68) and the session reads as
+    working through it. A prompt on one of the order's own commands is
+    a fault in how the place was prepared (67) and is reported (81)
+    beside the yes.
 73. Every action the machinery takes on a session is safe to repeat: a
     repeat of a completed action changes nothing.
 74. A session that is not the operator's to keep is retired when the

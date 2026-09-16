@@ -162,7 +162,14 @@ the operator may reverse by a response on the file; an entry with
   bolt (S28's "routed to it as a proposal"). The requirement says "a
   proposal on the rail for that thread" without saying unit or
   elaboration. **Decision**: unit on the construction side,
-  elaboration on the design side.
+  elaboration on the design side. Observed 2026-09-16 (the-loop 27.6):
+  in the storefront scenario the finding the research session offers
+  on its own intent becomes no proposed elaboration — the record
+  `elaboration/storefront-declines/finding-1` stands nowhere when the
+  answer naming it is played, and the scenario stops at its eleventh
+  action. A defect of the build against this decision, not of the
+  decision. **Open** until an offered finding on an intent stands as
+  that intent's proposed elaboration and the storefront runs past it.
 
 - **62 an offer nothing stands above.** A finding offered under
   neither an intent nor a bolt is a signal (58), and a signal needs a
@@ -306,6 +313,22 @@ the operator may reverse by a response on the file; an entry with
   self-closing type stalls it after two hours and a stage's join never
   meets. Correct, but slow. The skills instruct every session to end
   with the command; a session that forgets costs two hours. Stated.
+  Observed 2026-09-16 (the-loop 27.11): the order's own exit line
+  needed a person. Under the read block the program asks before any
+  command its shell parser cannot analyse, and the reporting line the
+  order prints — `FLYWHEEL_SESSION=… FLYWHEEL_STATE=… flywheel exit
+  done …` — is one, so an unattended machinery session stopped at its
+  own exit and the machinery read it as idle; the coder answered both
+  prompts by hand to finish the watch. Ruled 2026-09-16: the deny list
+  and the reporting command never pull against each other. 67 now says
+  the command runs without asking anyone: the place admits every
+  command the order gives and the order gives each in a form the
+  program runs unprompted. Bound in `host.yaml` prepare_place: the
+  `flywheel` binary the order names is allowed beside the deny list,
+  and the exit, offer and ask lines carry what they read — the
+  identity, the state repository, the manifest — as the command's own
+  arguments, never as an environment prefix. What the machinery does
+  when a prompt still appears is 72's. **Decision**.
 
 - **69 the operator's session "with the machinery's read tools".** The
   `operator-console` agent is given the read side of the `flywheel`
@@ -349,7 +372,23 @@ the operator may reverse by a response on the file; an entry with
   evidence; herdr's refusal of a duplicate name is what makes the
   retry safe. If herdr does not refuse duplicate names, the binding
   must add the check (`herdr agent status` before start). **Open**
-  until verified against herdr.
+  until verified against herdr. Ruled 2026-09-16: a prompt the
+  program puts to its own pane while it works — a permission it asks a
+  person for before a command — is never the session's exit and is
+  read as neither idle nor blocked. Blocked is the session's own
+  question, answerable on the page (70); idle is a session that
+  stopped of its own accord; a program waiting on a person is neither,
+  and the operator never opens a pane (68). The sessions binding
+  answers it from what the pane shows on the pass that sees it: yes to
+  a command the order itself gave, matched whole; no to any other, the
+  no a refusal on the session's thread naming the command, so the
+  program carries on with the refusal and the session decides what to
+  do. A yes on one of the order's own lines is also reported as a
+  fault of the place's preparation (67, 81). The session reads working
+  through a prompt (S53). **Decision**. **Open** beside it: how herdr
+  surfaces a prompt — whether `agent status` names it, or the pane's
+  text alone does — is unverified, as the trust dialog's answer was;
+  a binding that cannot read the prompt cannot answer it.
 
 - **77 two stores that disagree.** Lines and places are proven by git
   while their retry counters, endpoints and hold are in the record. The
@@ -390,7 +429,22 @@ the operator may reverse by a response on the file; an entry with
   trusted to its order. Still to be observed: a curator's and a
   capture reader's run on a scratch instance whose tool logs, read by
   a person, show nothing read outside the place and the order's
-  inputs.
+  inputs. Watched 2026-09-16 (the-loop 27.11), Claude Code in herdr
+  panes on a scratch instance: a curator and a capture reader both ran
+  and exited done, and every call in their logs is in the place or a
+  path the order handed in — the transcript the capture cites, the
+  state repository the exit names. Getting there exposed four faults
+  in what was built and tested without being run, each fixed with the
+  test that would have caught it: the deny list was handed the
+  session's type where it matches the agent program, so no place ever
+  carried one; two of its rules (`grep:* /*`, `rg:* /*`) were no rules
+  the program accepts, so it skipped them and stopped at a warning no
+  session is there to answer; the agent a session starts as had no
+  definition where the program looks, so the name was refused; and a
+  curation session was started as its stage's name, `main`, rather
+  than the `curator` its machine names. The one thing the watch left
+  standing — the order's own exit line stopping at the program's
+  prompt — is ruled under 67 and 72.
 
 - **93 "only the session binding is faked".** The stand-in plays
   exits by running the same `flywheel exit|offer|refuse` path, so the
@@ -1567,6 +1621,17 @@ the operator may reverse by a response on the file; an entry with
   has no surface for leaves the mockup first and the page follows.
   Cached under the version, the two cost a load once, so their size is
   bound by the budget's numbers alone, and the budget is met.
+  Observed 2026-09-16 (the-loop 27): the page-budget test is red on a
+  browser-driver timeout at its blank-page step — the driver never
+  sees the page reach `about:blank` — not on any of 310a's numbers, and
+  it was red before group 27's changes and after them, so the budget
+  is unmeasured by the test until the driver is fixed. **Open**. Also
+  observed: captures sent from a member's client sit unread in the
+  state repository's kept-calls directory — two accepted with no
+  refusal and never taken up — where S235 and surfaces.yaml `busy` say
+  the host makes every kept call first on its next pass and records
+  it once. A defect of the build against the ruling. **Open** until a
+  kept capture is recorded on the pass that follows it.
 
 - **306–314 the phone.** Ruled: parity is a requirement of the first
   build and not a surface ruling, the phone being the same served bundle
