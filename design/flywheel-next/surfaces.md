@@ -1627,7 +1627,7 @@ where a thing sits, never by its form.
 
 | key | region | does |
 |---|---|---|
-| j, k, ↓, ↑ | rail | walk the decisions and attention lines; the dock follows when open |
+| j, k, ↓, ↑ | rail | walk the decisions, the attention lines and the recently done lines, one list; the dock follows when open (S245) |
 | Enter, o | rail | open the focused card in the dock |
 | y | rail | the focused card's yes |
 | n | rail | the focused card's drop or no |
@@ -2653,6 +2653,42 @@ whatever else it does.
   one. The line opens the object in the drawer, where the response is
   in the decision's history and, for an answered question, the
   question and answer are under notes and questions (S242).
+- **S245.** Ruled 2026-09-16: where "Recently done" belongs and how
+  it behaves. It stays at the foot of the rail, because it is the tail
+  of the delivery the rail is (14, S3): the chat prints one list —
+  the decisions, then what reached done since the sink last heard —
+  and the page is the same list, so moving the tail off the rail would
+  make the two deliveries differ. It is not a log of the machinery: it
+  is what finished, landed, closed, dropped, started, was accepted or
+  answered since the operator last looked (S9), and there is no debug
+  log on the page. Its head says so in the operator's words:
+  "Recently done · since 07:40", the time being this sink's delivery
+  mark, so "recently" means since you last looked. Ruled: a done line
+  is a rail item like every other. j, k, ↓ and ↑ walk into it after
+  the attention lines, one list, one axis (S56, S57); a focused line
+  lights its object on the board where the object still is — a landed
+  bolt's record in Operation, a closed intent greyed on its thread, a
+  merged unit in its bolt's chain, a moved capture's row — as a
+  focused card lights its object (S10); and Enter or o opens the
+  object in the drawer, as it does on a card (S28: the landed bolt's
+  record, the closed intent's thread, the dropped capture's page with
+  its move). An object no longer drawn on the board — dropped, or past
+  its window (186, S66) — lights nothing and the focused line says
+  "no longer on the board" after its time; Enter still opens it,
+  since the record stays (S9). A done line has no answers, so y, n
+  and l on it are refused with nothing listed (S57). The sent log in
+  the header is a different question with a different answer: it is
+  what *you* sent from this page — every answer, capture, assign,
+  save and dictation — and whether each was recorded (154, S2), so it
+  holds things that never reach the tail (a capture, a settings save)
+  and the tail holds things you never sent (a bolt landing, a session
+  finishing). They are two surfaces with a reason: the tail answers
+  "what happened while I was away", the log "did what I pressed
+  land". They meet on every answer the operator gives, and there the
+  two lines read the same — the object, the answer's verb, who and
+  when (S244) — so a line the operator recognises in one is the same
+  line in the other; the log is opened from the header, closed by Esc
+  (S56), and is not walked with the rail's keys.
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open
