@@ -305,7 +305,7 @@ were settled, not their place on the page.
 | bolt | a ledger | the ledger; the bolt's repository, branch, host and place (S222); decisions on it (in the rail, where you answer); its units with drop per unstarted unit and "change" per unit; rename; every session on it with its agent, pane, host, when it started, its exit and what it delivered; the commits on the branch (hash, subject, author, when), titled as main's latest once the bolt has landed; services with start and stop; served endpoints; the acceptance file (S99); history | no decision here that is not in the rail; drop, rename, start and stop are dictations |
 | landed bolt | a record | the record; the landing (when, through which gates, place removed); pull request and checks; environments; units landed; the acceptance file; signals from operation with their move | nothing to answer |
 | intent | a thread | the thread; the intent's state and line; its elaborations in the order they were made, each with its type, opening each (210); decisions on it; sessions running; its change directory (S99) | its decision's answers when one is pending, else nothing to answer |
-| elaboration | a bead; ] and [ from the thread | kind, type and where it stands; its intent, a link; when a finding proposed it, the finding's document by its title, opened inline, and the parent bead as a link (S226, S241); its pending decision with the answer controls; its document and its host; the records it wrote into the intent's change directory (187), opening the change directory view; the intents it gathers, each a link, when it covers several (188); its sessions as chips (S53), or "no session yet: one starts when it is approved" before the yes; the countdown when finished (210); a knot in the header and a back link to the thread | the decision's answers; finish on a standing one; nothing else |
+| elaboration | a bead; ] and [ from the thread | kind, type and where it stands; its intent, a link; when a finding proposed it, the finding's document by its title, opened inline, and the parent bead as a link (S226, S241); its pending decision with the answer controls; its document and its host; the records it wrote into the intent's change directory (187), opening the change directory view; the intents it gathers, each a link, when it covers several (188); its session as a chip, or its attempts when it was retried (S53, S243), or "no session yet: one starts when it is approved" before the yes; its notes and questions (S242); the countdown when finished (210); a knot in the header and a back link to the thread | the decision's answers; finish on a standing one; nothing else |
 | exploration | its row in Inception | the covered intents; where its records go (per intent) and where its conclusions go (the book, once); its session | finish (standing) or end (with-operator) |
 | planning in progress | its row in the gate | what planning reads; the operator's notes it carries; its session | nothing yet; the next proposal is the decision |
 | deferred | its greyed sheet | when later was answered; that it left the count, wrote no SINCE line, and is superseded silently by planning's next run (172, 35) | ask again |
@@ -319,7 +319,7 @@ were settled, not their place on the page.
 | attention | an attention line | what it means and what each answer does | the one-word answers |
 | external system | a dashed card | what it is; who meets it; that a claim on the contract is in scope for every repository that meets it | nothing to answer |
 | artifact | "the artifacts behind it", "change", "evidence", a work-item chip, the acceptance link | one view per artifact kind (S99) under a source bar (S100) | open source · review; the pending decision's answers when one is pending on the artifact |
-| work item | a chip on a ledger or in a dock | its unit's job as a quote; its stage, type, host, place and branch; its commits in Conventional Commits form, the deliverables it recorded, its session's report, its session chip | nothing to answer; reply when the item is blocked (S49) |
+| work item | a chip on a ledger or in a dock | its unit's job as a quote; its stage, type, host, place and branch; its commits in Conventional Commits form, the deliverables it recorded, its session's report, its session chip, its notes and questions (S242) | nothing to answer; reply when the item is blocked (S49) |
 | capture | its line on the board, its row in the signals tray | the words as a quote, from its beginning (S215); "from the console · by <member> · when" (S223); the line saying who acts next and when (S224); what became of it — built, with the unit linked; added to <bolt>, with the bolt linked (S224a); an intent, linked; attached, with the intent linked; asked in <repository> "<words>", the ask's own words, with "asked" under the title (S229); dropped | build now · add to bolt… · make an intent · attach to… · drop while its signal is unmoved (19a, S224, S224a); nothing to answer |
 | any other object | a link anywhere | what it cites, in the signals' own words; what it holds, each with its sentence; what it is part of | nothing to answer |
 
@@ -1278,7 +1278,8 @@ page shows after.
   3. The card leaves; the item's chip turns from blocked to working
   with "answered: …"; if the session is gone, the chip shows starting
   and "delivered when its place is reachable" (70); SINCE gains
-  "answered · wi-#418".
+  "answered · wi-#418"; the item's page shows the question and the
+  answer under "notes and questions", each with who and when (S242).
 
 ### 2.11 A host lost
 
@@ -1542,7 +1543,7 @@ where a thing sits, never by its form.
 | unit proposal | a slip hanging off the gate | name, target bolt (open or new), type | the slip and its rail card | as the proposal |
 | baseline | a sheet of its own, sections by scope | claims unmet, chores, units, "judged once" | as the proposal | as the proposal |
 | intent | a drawn thread: a vertical stroke with a head knot, no box | name, state, note, beads in order, a bead born of another's finding hung off it on a short branch (S241) | the thread | the same thread with an end cap and "closed · leaves in Nd" |
-| elaboration | a bead on the thread with a leading kind word; a descended bead one step in, on a branch from its parent bead | kind, name, state or chip; "in gathering n" chip when covered | the bead, and its branch and parent when descended | "done · leaves in Nd" on the bead |
+| elaboration | a bead on the thread with a leading kind word; a descended bead one step in, on a branch from its parent bead | kind, name, state; its session chip while one runs (S243); "in gathering n" chip when covered | the bead, and its branch and parent when descended | "done · leaves in Nd" on the bead |
 | exploration | a row at the head of Inception | kind (with-operator or standing), covered intents, since, chip | the row | "done · leaves in Nd" |
 | bolt | a flat square-cornered ledger | name, repository, running count, unit chain, machinery row, services and endpoint foot, landing stamp | the ledger | leaves Construction at landing |
 | landed bolt | a borderless muted record | name, when, PR-and-checks stamp, environments, live signals, "stays · why" or "leaves in Nd" | the record | leaves Operation after the window |
@@ -2603,6 +2604,55 @@ whatever else it does.
   bead in the row after the one that proposed it looks the same as a
   bead the intent's own material proposed next, and a sentence asks
   the operator to read what the thread should show.
+- **S242.** Ruled 2026-09-16: what a page keeps of its discussion
+  (144). An elaboration's, a unit's, a work item's and a curation
+  run's page carries "notes and questions": the entries on that
+  object's own thread — a question a session stopped on, the answer
+  the operator gave it, a note a session left — in the order they were
+  written, each one line of its words with who said it and when
+  ("question · claude · 10:02", "answer · chuck · 11:40", "note ·
+  claude · 12:15"), the question and its answer read together, the
+  answer indented under its question. The section is present whenever
+  the thread holds one such entry and absent otherwise (S214), and it
+  is where the operator finds that their answer was taken and what it
+  answered, long after the session that asked is gone (154). A
+  question not yet answered is not in the section: it is the decision
+  in the page's head with its reply (S220, S240). A decision's own
+  page keeps its history of responses as before (S28); this section
+  is the object's, so the same answer is read on the decision as a
+  response and on the object as discussion.
+- **S243.** Ruled 2026-09-16: an elaboration has one session at a
+  time. Its session id counts attempts — <elaboration>/<type>/<n> —
+  and a new attempt starts only when the last has ended: a
+  self-closing one retried after a stall, a standing one brought back
+  after its process vanished (25, 26). So the board shows a working
+  bead with its session chip on the bead, as a building unit carries
+  its item's chip (S15, S53), and the thread reads at a glance which
+  beads have a session and on what host; a bead with no live session
+  carries none. The drawer's page heads the section "session" and
+  shows the one chip when there has been one attempt, and "sessions ·
+  n" with the live or last attempt first and the earlier ones under
+  it, each with its exit and when, when there have been more — never
+  the plural for one. The rule is the same for a unit's work item,
+  whose attempts are counted by stage.
+- **S244.** Ruled 2026-09-16: what a "Recently done" line says of an
+  answered decision (S9). It names the object as the page names it
+  everywhere — the intent by its subject, the bead by its type and
+  words (S226), the unit or bolt by its name with the repository
+  greyed (S9) — then the answer as the control said it, in a verb
+  ("yes", "dropped", "type set to standing", "sent back", "answered"),
+  then who and the time of the response as it was recorded (153):
+  "storefront declines · yes · chuck · 07:41", "research · a retry
+  schedule… · type set to standing · chuck · 07:42", "prototype ·
+  retry report · answered · chuck · 07:58". It never carries the
+  decision's number, which is spent and which the operator does not
+  see again, and never an arrow. The time is the response's own
+  recorded time and is never blank: every response is recorded with
+  who and when before anything follows from it (153), so a line with
+  no time is a response recorded wrongly, not a line to draw without
+  one. The line opens the object in the drawer, where the response is
+  in the decision's history and, for an answered question, the
+  question and answer are under notes and questions (S242).
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open

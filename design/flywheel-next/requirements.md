@@ -2930,7 +2930,19 @@ through these operations, and depends only on these guarantees.
     reachable from the phone, however many hosts run machinery.
 144. Discussion about an object — a question asked, an answer given, a
     note a session left — is part of that object's state, and the status
-    view shows it.
+    view shows it. Ruled 2026-09-16: the object is the one the session
+    works, its owner — the work item of a stage session, the
+    elaboration of an elaboration session, the curation record of a
+    curation run — never the session itself, so the discussion outlives
+    every attempt that took part in it. Its thread holds the question
+    as the session's blocked exit entry, with the question's words, the
+    session and when; the answer as an entry of its own, written when
+    the response is recorded (153) and before it is delivered (70), with
+    the answer's words, the member who gave it, when, and the response
+    it came from; and a note a session leaves as a note entry with its
+    words, the session and when. The status view shows them under the
+    object in the order they were written, each with who and when, and
+    a question still unanswered shows as the decision it is.
 145. A status view read while nothing is running shows the state as of
     the last write that reached the central service, and says as of
     when.

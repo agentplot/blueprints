@@ -10,7 +10,11 @@
 # object's bolt or intent and the tab of its unit or elaboration (196). A
 # session speaks to the machinery only through the tools, each call carrying
 # the identity issued at its start; the machinery speaks to it only through
-# its thread; sessions never message each other (197). While the host that
+# its thread; sessions never message each other (197). "Its thread" is the
+# thread of the object it works — its owner: the work item, the elaboration,
+# the curation record — and never a thread of the session's own, so a
+# question, an answer and a note stay with the object once the attempt that
+# asked or left them is gone (144). While the host that
 # holds the session's owner is away (150a), the pane, activity, idle time and
 # exit read as the host last reported them and the idle clock pauses, so the
 # session is neither lost nor stalled by the host's absence.
