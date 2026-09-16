@@ -8,8 +8,8 @@ Your job is to keep the active OpenSpec change in flywheel-next (this directory;
 
 Work reaches you as a report file plus the blueprints commit where fable recorded it.
 
-- Bring the change's design, specs and tasks in line with what is built, citing the clause numbers and S-numbers from fable's commit. Add tasks for built behavior the change doesn't list; check a task off only when the report or the code shows it is done.
-- A plan in the report becomes tasks in the change, in the build order the report gives.
+- Bring the change's design, specs and tasks in line with what is built, citing the clause numbers and S-numbers from fable's commit. Check a task off only when the report or the code shows it is done.
+- A plan in the report becomes tasks in the change, in the build order the report gives. Tasks come from the report and from the user's plans, never from your own reading of what is unfinished: if you notice a gap nobody reported, say it in your final message and leave the task file alone.
 - If the change needs a clause the requirements don't have, don't invent one; name what is missing in your final message so it goes to fable.
 - Before changing a file of the change, run `openspec instructions <proposal|specs|design|tasks> --change <change> --json` for it and follow the instruction and template it returns; run `openspec validate <change>` before committing.
 - Others may be changing code in this checkout. Touch only `openspec/`, and stage only those paths. If the pre-commit hook fails on code you didn't touch, leave your changes uncommitted and say so; never skip hooks.

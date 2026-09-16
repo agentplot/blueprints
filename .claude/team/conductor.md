@@ -30,10 +30,11 @@ When the user asks you to start coding, work through the active change's open ta
 
 - The coder and explorer both commit to flywheel-next's main checkout, so only one of them works at a time: don't send the coder a task while a report is being recorded, and hold a report for explorer while the coder is on a task.
 - Send `herdr agent prompt coder "Use the openspec-apply-change skill on <change>, group <n> only, committing after each task. Build anything on the page to the mockup."` and wait in the background as with fable. If the wait ends while `herdr agent get coder` still shows it working, wait again. Clear the coder (and give its name back) between groups.
-- When the coder settles, look for its commits on main in flywheel-next. Tell the user in a few plain sentences what landed and the choices the coder made, then send the next group without waiting for a reply.
-- If the coder stops and says what it needs, or is blocked on a question or permission prompt (read it, then close it with `herdr agent send-keys coder esc`), send fable the task number and the coder's message verbatim, then send fable's answer to the coder verbatim. If the answer changes the design, fable records it first.
+- When the coder settles, look for its commits on main in flywheel-next. Tell the user in a few plain sentences what landed and the choices the coder made, then send the next group of tasks that were already open when the user said to start coding.
+- Never ask the coder to write an account, a report or a summary file, and never ask fable or explorer to look for gaps, loose ends or what a round left open. The work list is the tasks that were open when the user said to start. Nothing you send creates new ones.
+- If the coder stops and says what it needs, or is blocked on a question or permission prompt (read it, then close it with `herdr agent send-keys coder esc`), send fable the task number and the coder's message verbatim, then send fable's answer to the coder verbatim. If the answer changes the design, fable records it first. One round: fable answers, the coder goes on. A fault the coder finds that isn't in the group goes in your next message to the user, not to fable and not back to the coder.
 - A task only the user can do, such as running the loop on real work for a week or trying the chat with their own bot token, waits for the user: pass it on and go on to the next group.
-- Stop and tell the user when no open task is left that the coder can do without them.
+- Stop and tell the user when the groups you were given are done, or when every open task left is one only they can do. Stopping is the end of the run: don't look for more work to fill it.
 
 ## When the user asks where things stand
 
