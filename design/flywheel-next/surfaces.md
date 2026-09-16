@@ -2713,7 +2713,23 @@ whatever else it does.
 - **S247.** Ruled 2026-09-16: an intent's page is never blank. Under
   the title it says where the intent came from, in one line: "proposed
   by curation from 3 signals · 09-02", "opened by chuck from a note ·
-  09-05", "seeded with the instance". With no elaboration, no attached
+  09-05", "seeded with the instance". Ruled 2026-09-16: the line is
+  built from what the record holds and prints no hole. Each part is
+  said only where the record has it: the count of signals only when
+  it is one or more ("from 3 signals"; never "from 0 signals"), the
+  member only when the record names one, the date only when the
+  record holds the moment the intent was made — never a placeholder,
+  a zero date or the epoch. The source word is what remains when the
+  record says how the intent came to be: "proposed by curation"
+  (109), "opened by <member> from a note" (S224), "seeded with the
+  instance". An intent proposed by curation with no signal on it is
+  not a thing curation makes (109), so a record that says so is read
+  as holding no source, and a record naming no source at all gets no
+  line: the page says nothing rather than something untrue (S214).
+  The same rule holds for every "from", "by" and "when" the page
+  writes on a capture, a bead or a session (S223, S226, S53): a part
+  the record lacks is left out, and a line every part of which is
+  lacking is absent. With no elaboration, no attached
   signal and no decision it says what it waits for and what to do, in
   the operator's terms (S214): "Nothing on it yet. Its first
   elaboration is proposed when a signal is attached to it — attach one
