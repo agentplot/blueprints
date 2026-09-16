@@ -80,7 +80,12 @@ were settled, not their place on the page.
   decision number — for one row of a chores fold, the fold's number
   and the row's letter as one word, `415b` (S232) — and the answer,
   plus text where the answer takes it
-  (redo, reply, rename, new bolt, pick, type, bolt). One click is one
+  (redo, reply, rename, new bolt, pick, type, bolt). Ruled 2026-09-16:
+  an answer that names one of a set the instance already holds — type,
+  bolt — takes it from a picker, and one that takes the operator's own
+  words — redo, reply, rename, new bolt — from a field that opens
+  under the card's answers at the card's width (S238); a control never
+  carries a text box beside it. One click is one
   response. The card takes an in-flight state and refuses a second
   click until the response settles; then the card leaves the rail and
   focus moves to the next card.
@@ -300,7 +305,7 @@ were settled, not their place on the page.
 | bolt | a ledger | the ledger; the bolt's repository, branch, host and place (S222); decisions on it (in the rail, where you answer); its units with drop per unstarted unit and "change" per unit; rename; every session on it with its agent, pane, host, when it started, its exit and what it delivered; the commits on the branch (hash, subject, author, when), titled as main's latest once the bolt has landed; services with start and stop; served endpoints; the acceptance file (S99); history | no decision here that is not in the rail; drop, rename, start and stop are dictations |
 | landed bolt | a record | the record; the landing (when, through which gates, place removed); pull request and checks; environments; units landed; the acceptance file; signals from operation with their move | nothing to answer |
 | intent | a thread | the thread; the intent's state and line; its elaborations in the order they were made, each with its type, opening each (210); decisions on it; sessions running; its change directory (S99) | its decision's answers when one is pending, else nothing to answer |
-| elaboration | a bead; ] and [ from the thread | kind, type and where it stands; its intent, a link; its pending decision with the answer controls; its document and its host; the records it wrote into the intent's change directory (187), opening the change directory view; the intents it gathers, each a link, when it covers several (188); its sessions with their chips, or "no session yet: one starts when it is approved" before the yes; the countdown when finished (210); a knot in the header and a back link to the thread | the decision's answers; finish on a standing one; nothing else |
+| elaboration | a bead; ] and [ from the thread | kind, type and where it stands; its intent, a link; where it came from when a finding proposed it — the finding's document by its title, opened inline, and the elaboration whose session offered it, a link (S226); its pending decision with the answer controls; its document and its host; the records it wrote into the intent's change directory (187), opening the change directory view; the intents it gathers, each a link, when it covers several (188); its sessions as chips (S53), or "no session yet: one starts when it is approved" before the yes; the countdown when finished (210); a knot in the header and a back link to the thread | the decision's answers; finish on a standing one; nothing else |
 | exploration | its row in Inception | the covered intents; where its records go (per intent) and where its conclusions go (the book, once); its session | finish (standing) or end (with-operator) |
 | planning in progress | its row in the gate | what planning reads; the operator's notes it carries; its session | nothing yet; the next proposal is the decision |
 | deferred | its greyed sheet | when later was answered; that it left the count, wrote no SINCE line, and is superseded silently by planning's next run (172, 35) | ask again |
@@ -1586,7 +1591,20 @@ where a thing sits, never by its form.
   permission it asks before a command — reads working, not idle and not
   blocked; the machinery answers the prompt on its next pass, and the
   operator never answers it in the pane (68, 72). A host
-  pill lights its chips in every lane and dims the rest.
+  pill lights its chips in every lane and dims the rest. Ruled
+  2026-09-16: the drawer lists sessions as these chips and nothing
+  else — one chip per session, the same chip the board's lanes carry,
+  with beside it only what the chip does not say: when it started,
+  its exit and when, what it delivered. No page writes a session's
+  state as a word or a sentence ("working", "session is working"), as
+  a title or a subtitle, or as a row of its fields joined by dots: the
+  state is the chip's dot, and the words on any page are the object's
+  own (S214). The word *standing*, a type's name, is never a session's
+  label; a session's chip is named by its agent and model as
+  everywhere. A session blocked on a question shows the amber ring
+  and beside the chip "waiting on <number>", the number a link to the
+  card; the question itself is said once, on the card and in the
+  drawer's head, and never under the chip (S240).
 - **S54.** The machinery strip sits above the lanes: hosts as pills
   (alive or gone, sessions against the bound, last heartbeat, an
   uncovered count), each pool as one pill (S176), the setup control
@@ -1620,7 +1638,7 @@ where a thing sits, never by its form.
 | ⌘K, Ctrl+K, / | anywhere | open the palette; / opens it with the command list already showing |
 | ↓, ↑ | palette | walk the command list, or the card's answers after a number, while the box is open; the rail does not move (S57) |
 | b, a, m, t, d | a focused capture | its verbs: build now, add to bolt…, make an intent, attach to…, drop; the page's b and m wait until the focus leaves it (S233) |
-| ↓, ↑, Enter | picker | walk the open intents or bolts and pick one; the rail does not move (S233) |
+| ↓, ↑, Enter | picker | walk the open intents, bolts or types and pick one; the rail does not move (S233, S238) |
 | Esc | anywhere | in order: close a picker, close the palette, leave a field, close the log, cancel explore selection, cancel re-attach, hide an edge's panel, close the dock, close the account menu, hosts, settings or the package store, back from a drill |
 | f | map | fit, the only camera command, at either level |
 | o | map | cycle the overlay: none, current → target, since last review |
@@ -1646,7 +1664,8 @@ where a thing sits, never by its form.
 | drilled | Enter or a thumbnail click at rest, "drill into" on a dock or a neighbour dock | the context's inside at full size, neighbour docks, the breadcrumb | Esc, the org crumb |
 | edge panel | hover or focus on a relationship edge | the crossing links and claims of S85 | leaving the edge, Esc |
 | palette | ⌘K, Ctrl+K, `/`, the phone's capture control | the field with its preview line and its recents, and on `/` the commands the caller may invoke, fuzzy-matched | Esc, send, choose |
-| picker | `attach to…` or `add to bolt…` on a capture | the open intents or bolts as a panel in the capture under its verbs, a filter field above eight rows, the empty case with the verb that makes one; one open at a time (S233) | a pick, Esc, a click outside, the palette or another picker opening |
+| picker | `attach to…` or `add to bolt…` on a capture; `type…` or `bolt…` on a decision | the open intents, bolts or types as a panel in the capture or the card under its verbs or answers, a filter field above eight rows, the empty case with the verb that makes one; one open at a time (S233, S238) | a pick, Esc, a click outside, the palette or another picker opening |
+| field | `redo…`, `reply…`, `rename…` or `new bolt…` on a decision | one text field under the card's answers at the card's width, its send beside it (S238) | send, Esc, a click outside |
 | account menu | the account item | the switcher, settings, hosts, instance's package store, sign-out | a choice, Esc, a click outside |
 | hosts | the menu's hosts, the strip's setup control, a host page, "add a host", the pool control, an attention line about a host | host and pool rows on the left, the row's detail by headings and slots on the right; a slot's catalogue, the add and "+ host" flows in place | Esc, × |
 | settings | the menu's settings | the manifest as a form with one save | Esc, ×; an unsaved change asks first |
@@ -2149,7 +2168,21 @@ whatever else it does.
   generated stays the id (27). The words are the first words of the
   first signal or note the bead cites, as a capture names its intent
   (S224), read from the record where the bead is shown, so a corrected
-  type renames it and the words stay. Its card
+  type renames it and the words stay. Ruled 2026-09-16: an
+  elaboration proposed from a finding — one a session offered on its
+  own thread (58, 62), which the record names among its sources — is
+  named by its type and the finding document's title, the first
+  heading of the file read at the intent's line as the page reads any
+  deliverable (S235), and never by the words of the document's path:
+  "standing · a retry schedule needs a prototype", never "standing ·
+  openspec changes storefront declines"; only a file that cannot be
+  read leaves the path standing, and then the page shows it as a
+  path, greyed, not as a name. Its card and its page say where it came
+  from, in one line under the question: "from the finding of <the
+  elaboration whose session offered it>" — the earlier bead named as
+  S226 names it, a link that opens it, and the finding's document
+  opening inline (S28) — so a proposal born of earlier work never
+  reads as one that arrived from nowhere. Its card
   proposes one elaboration at a time with the type named beside the
   question ("research · self-closing") and only the answers that
   apply: yes, drop and type; pick and the per-intent drop appear only
@@ -2246,7 +2279,10 @@ whatever else it does.
   session was reading it is one more row of that capture in the signals
   tray; otherwise the offer is a capture of its own, from that session,
   dated when the offer was made, with one row. The row's quote is the
-  document's path, since the record never holds the text (62), its
+  document's title, read from the file at the line as the page reads
+  any deliverable (S235), with the path as the link under it, since
+  the record never holds the text (62); a file that cannot be read
+  leaves the path as the quote, greyed (ruled 2026-09-16, S226). Its
   source reads "offer" and its line names the session that offered it.
   It carries the capture's five controls and no decision (S224, S224a,
   19a),
@@ -2308,10 +2344,18 @@ whatever else it does.
   the line saying who acts next (S223, S224), and no verb: the lane
   and the tray read as notes. The five verbs appear as one row under
   that line — `build now · add to bolt… · make an intent · attach to…
-  · drop`, in that order, quiet buttons that wrap in a narrow column
-  and are never reordered or cut — while the pointer is over the
-  capture, while it holds the keyboard focus, and while it is open in
-  the dock; leaving it hides the row. This holds for the quote in
+  · drop`, in that order, quiet buttons at their words' width on one
+  line that never wraps and is never reordered or cut — while the
+  pointer is over the capture, while it holds the keyboard focus, and
+  while it is open in the dock; leaving it hides the row. Ruled
+  2026-09-16: showing the row moves nothing. The row's room is laid
+  out at rest and its verbs are invisible until the hand is on the
+  capture, so a capture is the same height at rest and under the
+  hand, nothing under it shifts as the pointer passes, and the verbs
+  are in the same place on every press; every column the desktop
+  gives a capture — the lane, the tray's row, the drawer's footer — is
+  wide enough for the row on one line, and the page keeps it so
+  (S236's check holds the row at 761px). This holds for the quote in
   Inception, for every row of the signals tray, where twenty rows read
   as twenty quotes and only the row under the hand shows its verbs,
   and for a finding's row (S231). The drawer is the exception: its
@@ -2327,7 +2371,10 @@ whatever else it does.
   are one picker: pressing either opens a panel inside the capture,
   under its row of verbs, the capture growing to hold it, so nothing
   in a scrolling lane or tray clips it and nothing beside it is
-  covered; the panel is the capture's width up to 320px. In the
+  covered; the panel is the capture's width up to 320px, inside the
+  capture's own border and directly under that capture's verbs — never
+  under another row's, never after the tray — so it reads as the
+  capture's own, and the verbs keep their places while it is open. In the
   drawer it opens above the footer at the footer's width; on a phone
   it is a bottom sheet like the palette (S30).
   Its head names what it lists and how many ("open intents · 3",
@@ -2466,6 +2513,68 @@ whatever else it does.
   for the desktop's layout is a desktop. The phone pass (314) holds
   every answer at both viewports to being shown, on screen, reached
   and behind no hover, and asks the 44px at 390px alone.
+- **S238.** Ruled 2026-09-16: how an answer that takes something is
+  given, on the rail and in the drawer alike (S6, 311). Two kinds.
+  An answer that names one of a set the instance already holds is a
+  pick, and its control opens the picker of S233 inside the card,
+  under its row of answers, the card growing to hold it and the rail
+  not moving: `type…` lists the types the instance defines for the
+  object's kind — an elaboration's types, a unit's — headed "types ·
+  n", each row the type's name and, where its definition carries a
+  `doc`, what it does in that phrase (85, 190; "self-closing · ends
+  itself when its deliverable is written", "standing · runs until you
+  finish it"), the name alone where it carries none — a registered
+  definition is not edited in place, so the shipped types gain their
+  phrase at their next version; `bolt…` on a unit lists the open bolts as `add to
+  bolt…` does (S224a). A pick is the whole gesture and posts `type
+  <name>` or `bolt <name>` as one response; the filter, the arrow
+  walk, Esc, one open at a time and the phone's bottom sheet are
+  S233's. An answer that takes the operator's own words — `redo…`,
+  `reply…`, `rename…`, `new bolt…` — opens one text field under the
+  row of answers at the card's width, its send beside it and the
+  cursor in it; Esc or a click outside closes it unsent. Neither ever
+  sits beside its button inside the row: a row of answers is words on
+  one line, and nothing on a card runs past the card's edge (S215,
+  S236). In the drawer the same panel or field opens under the head's
+  controls at the head's width (S220); on a phone a field is the
+  page's own keyboard under the answers and a picker is a sheet (S30).
+  A type the proposal names that the instance lacks (85a, S226) opens
+  this same picker from its "set one with type…", so the operator
+  picks and never types a name the page already knows.
+- **S239.** Ruled 2026-09-16: the tour says where to look
+  (scenarios/storefront.md, "How an action runs"). Each action the
+  tour plays names the one object it is about — a response its
+  decision, a session's delivery its object, a capture the capture —
+  and the page lights that object as a focused rail card lights its
+  object (S10, S87): the lit ring on the card, the bead, the slip or
+  the quote, scrolled into view in its column, held until the next
+  action, and the strip's copy carries the object's name in bold so
+  the words and the ring agree. A response the tour plays is shown as
+  the operator would give it: the card lights, the control that
+  answers goes in-flight for the beat, then the card leaves as after
+  any answer (S6), so the viewer sees what was pressed and not only
+  that something was. A session's delivery lights the object the
+  session works while the beat holds and, when the action raises a
+  decision, moves the ring to the new card as it arrives. The strip
+  itself stays where it is (S235); it never covers the lit object,
+  and on a phone the ring is on whichever tab the object is in and
+  the strip names the tab.
+- **S240.** Ruled 2026-09-16: an ask and a question are two things and
+  the page never uses one's word for the other. An *ask* is a request
+  filed into a repository for planning to take up — from curation
+  (116), the operator's `/ask` (S228) or the curator's route (S229) —
+  and "ask", "asked", "asked in <repository>" belong to it alone. A
+  session that stops on something it cannot settle has a *question*
+  (65, 70), which is a numbered decision on the rail with reply as its
+  answer (S49), and "question" is its only word: the card says it
+  verbatim (S5), the drawer's head says it once under the title with
+  the reply control (S220), a board mark says "? <number>", and the
+  session's chip reads blocked with "waiting on <number>" beside it
+  (S53). No row, label or heading on any page reads "asks" for a
+  session's question, and the question is not repeated under the
+  session's chip, since it is already the decision in the head; the
+  "notes and questions" section holds the thread's notes and is not
+  where a blocked question lives.
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open

@@ -61,6 +61,13 @@ The pause is theatre and should look like it: a deliberate beat so the
 viewer can see cause and effect, not a fake progress bar pretending to
 be work.
 
+Every action is about one object, and the page lights it — the lit ring
+the rail uses on a focused card's object, scrolled into view and held
+until the next action — with the object's name in bold in the strip's
+copy (surfaces S239). A response is played as the operator would give
+it: the card lights, its control goes in-flight for the beat, then the
+card leaves. The strip says what happened; the ring says where.
+
 The clock advances with the actions rather than with wall time, so
 things age, leases come due and "seen 07:40" means something, without
 anyone waiting.
