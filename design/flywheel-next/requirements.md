@@ -1147,7 +1147,9 @@ requirements, iterated against the running rail rather than on paper.
     `flywheel-<instance>-machinery` for sessions the machinery charges. A
     declaration may route any kind or repository elsewhere. The
     machinery creates the multiplexer session when it is absent,
-    headless, and addresses it by name on every call, so a host never
+    headless, marks it as the host's own so a host tells its sessions
+    from the operator's and from another host's by that name (218),
+    and addresses it by name on every call, so a host never
     opens a pane in the session its own process runs in, beside the
     operator's own panes; the operator attaches to a session by its
     name from any terminal, and the page tells them which (68, S234).
@@ -1160,8 +1162,9 @@ requirements, iterated against the running rail rather than on paper.
     per intent; one tab per unit and per elaboration; one pane per
     session, so sessions of one unit running side by side are split
     panes of one tab. The machinery creates a workspace, tab or pane
-    when absent and removes it when its object leaves every view (186).
-    An operator's own session (69) is a workspace of its own.
+    when absent and removes it when its object leaves every view (186);
+    the mark of its own multiplexer session (174) is no object's view
+    and stays. An operator's own session (69) is a workspace of its own.
 
 <!-- ANCHOR_END: a17 -->
 ### A.18 Landing, pull requests and merge-back

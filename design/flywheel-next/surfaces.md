@@ -151,7 +151,12 @@ were settled, not their place on the page.
   on their own row (a conflict fix), services and the first endpoint at
   the foot, a landing stamp when its request is open. Accepted chores
   show as items on the repository's shared line, in this lane, under a
-  "chores" head per repository and never as a bolt (60, §5).
+  "chores" head per repository and never as a bolt (60, §5). A chore is
+  accepted once it is past proposal and stands under no bolt; the head
+  names the repository and counts its chores, heads are ordered by
+  repository name, and each item is named by its document's words as
+  the chores card and chat name its rows (S232). A chore of a bolt
+  stays on that bolt's ledger, and a proposed one stays a slip (S14).
 - **S16.** Operation shows every landed bolt as a record while
   something about it is live and for the bounded window after (186),
   with its pull request and checks as a stamp, its environments as

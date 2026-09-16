@@ -49,7 +49,12 @@ the operator may reverse by a response on the file; an entry with
   runtime rule stands because 6 says never silently and 129 never
   dropped, and because a reply outside the decision's list can still
   reach the record. As built the build had the rule for dictations
-  alone; the answer's half is to build.
+  alone; the answer's half is to build. Built 2026-09-15 (the-loop
+  23.2): a drop on a proposed chore lands, on one row of a fold
+  dropping that chore and leaving the rest standing under the fold's
+  number, and on the card declining every row still standing, over the
+  fake store and over a served instance answered through the page's
+  own control.
 
 - **10 / S9 "offers two decisions".** S9 says the next planning
   "offers two decisions: amend the bolt, or land it and follow". The
@@ -88,7 +93,11 @@ the operator may reverse by a response on the file; an entry with
   status view's lists order by their ids as they count. Not built: the
   register's thirty-day prune of retracted entries, so entries stand.
   Also as built, the dock's chore rows show the document's path where
-  S232 says its name in words; to be corrected.
+  S232 says its name in words; corrected 2026-09-15 (the-loop 23.7):
+  the dock's row reads the document's name in words with what the
+  offer said it concerns beside it, the path kept as the row's title
+  and on the unit's own "from" line, and on the card the name takes
+  the room and the offer text clips.
 
 - **25 with-operator "present".** Present is a human keystroke in the
   pane within 30 minutes (`herdr agent status`). There is no better
@@ -234,7 +243,14 @@ the operator may reverse by a response on the file; an entry with
   record it made has ended or the offer made nothing; the retirement
   with a dropped bolt. A fast unit made from a finding is handed its
   document the same way, since the finding's document lives in the
-  offering place too (host.yaml prepare_place); not built.
+  offering place too (host.yaml prepare_place); not built. Built
+  2026-09-15 (the-loop 23.9): accepted chores stand in Construction as
+  items under a "chores" head naming their repository and counting
+  them, never a bolt's ledger — accepted meaning past proposal and
+  under no bolt, heads ordered by repository name, each item named by
+  its document's words (S15, S75). Standing against S14 as built:
+  proposed shared-line chores draw as slips in Construction where S14
+  puts every slip in Bolt plan; to be corrected.
 
 - **62 "the record never holds the text".** The record holds the
   document's path in the change directory and the offer entry's id.
@@ -940,7 +956,24 @@ the operator may reverse by a response on the file; an entry with
   is declined naming the session (sessions.yaml
   multiplexer_sessions.own). **Decision**. Built 2026-09-15 (the-loop
   25.2): the refusal names the running host, and no herdr call beyond
-  the read is made.
+  the read is made. The mark was lost within seconds of the first
+  session's start on a scratch run (the-loop 23.6, 2026-09-15), every
+  later start then refused as the operator's own session and the item
+  left at starting: not herdr's doing — herdr 0.9 keeps a labelled
+  workspace with no cwd and no agent indefinitely, verified the same
+  day — but the host's own `remove_stale_layout`, which closed the
+  mark's tab because herdr labels a new workspace's tab "1" and a tab
+  label naming nothing on record reads as work that has left (186); a
+  workspace goes when its last tab closes, and the mark went with it.
+  Ruled 2026-09-15: the mark stays a workspace label. The host renames
+  the mark's tab to the same `host/<host id>`, and reconciliation
+  reads no tab of the mark and closes neither it nor its tab, since the
+  mark is a view of nothing (sessions.yaml multiplexer_sessions.own,
+  remove_stale_layout; 174, 196). **Decision**. The built
+  `layout_to_close` (host.rs) gathers the tabs of every workspace,
+  the mark's among them, and the domain rule skips `host/` at the
+  workspace level only; to be corrected under 25.1, after which 23.6's
+  run can finish.
 
 - **223–227 machines, types and context.** 223–225 are cited on
   `atoms.yaml` because the registry has no machine of its own.
