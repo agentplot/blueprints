@@ -2788,7 +2788,10 @@ whatever else it does.
   agent in a pane, and the chip reads starting, working, idle or
   blocked as the pane reports (S53, 72). A session whose record stands
   and whose runner has started nothing is one of two things, and the
-  page says which. Under herdr it is *starting* until the pane exists
+  page says which. Under herdr, and under the stand-in that serves a
+  demonstration instance (93d), which the page draws exactly as herdr
+  but for the instance pill reading "demo", it is *starting* until
+  the pane exists
   — a slow start is slow, not failed (72) — and a start the binding
   reports as failed is an attention line naming the host and the
   reason (S8), never a chip state. Under the operator binding (93b) —
