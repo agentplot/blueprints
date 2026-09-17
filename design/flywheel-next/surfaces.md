@@ -1588,9 +1588,7 @@ where a thing sits, never by its form.
   session is for is not the chip's: the item beside it says that. A
   session whose record names no model — one started before the model
   was recorded — reads its kind alone. State is colour and dot only: working filled and
-  pulsing, starting dashed, idle hollow, blocked an amber ring, with
-  you a filled dot in the accent that does not pulse, with the words
-  "with you" on the chip (S250). Ruled
+  pulsing, starting dashed, idle hollow, blocked an amber ring. Ruled
   2026-09-16: a session whose pane is at its program's own prompt — a
   permission it asks before a command — reads working, not idle and not
   blocked; the machinery answers the prompt on its next pass, and the
@@ -2783,26 +2781,37 @@ whatever else it does.
   trail, and Esc closes the drawer, never steps back (S56). The head
   says where back goes ("‹ storefront declines") so the operator
   three pages in knows the way out without closing.
-- **S250.** Ruled 2026-09-17: a session the machinery recorded and no
-  runner started — a host bound to the operator (93b), where the
-  place is prepared, the work order written and the person does the
-  work — is shown as *with you*, never as running. Its chip reads
-  "with you" with the accent dot that does not pulse (S53); its
-  object says whose move it is in a sentence — the curation counter's
-  head "curation is yours to run · 4 waiting", a bead "with you", a
-  work item "with you" — and nothing on the page draws a progress
-  bar, a pulse or "working" for it, since the machine's `working` is
-  the state of the record and not of anyone's terminal, and the
-  operator's eye is what the page serves (S214). The session's page
-  is where the work is: the place's path with a copy control, the
-  work order opened inline as the file it is (S235), and the exact
-  lines the order gives for reporting — an exit, an offer, a note, a
-  refusal (67) — each with one copy control; the chip's pane link
-  opens the same, since there is no pane (S234). Once the operator
-  reports, the chip reads as any exit does. A host that runs agents
-  never shows "with you": a session there is starting, working, idle
-  or blocked, and a session whose runner is a person is the only one
-  that is with you.
+- **S250.** Ruled 2026-09-17: the machinery starts every session
+  itself. The normal case, and the only one the page's vocabulary is
+  built for, is a host bound to herdr (93, 173, 217c): an approved
+  elaboration or a due stage charges a session, the binding starts the
+  agent in a pane, and the chip reads starting, working, idle or
+  blocked as the pane reports (S53, 72). A session whose record stands
+  and whose runner has started nothing is one of two things, and the
+  page says which. Under herdr it is *starting* until the pane exists
+  — a slow start is slow, not failed (72) — and a start the binding
+  reports as failed is an attention line naming the host and the
+  reason (S8), never a chip state. Under the operator binding (93b) —
+  the exception, which `flywheel init` writes as its default and a
+  scenario apply inherits, and which no instance meant to run keeps —
+  the host starts no agent by configuration, and the page says that
+  once and plainly rather than dressing it as a way of working: the
+  host's pill reads "starts no agents", its page says "this host's
+  sessions binding is operator: it records sessions and starts none ·
+  bind sessions to herdr in flywheel.yaml to run them here" (S28
+  host), and a session recorded on it reads "not started" with the
+  starting dot, its page carrying the place and the work order as
+  every session's does. No chip carries a word for work handed to a
+  person, and no object says whose move it is. Curation's head is
+  never a chore: it reads what curation is waiting on and when it
+  runs on its own — "curation · 4 waiting · runs at 12, or on 20" —
+  with one control, `run now`, which is the `curate` dictation (110,
+  12, S225): the operator uses it to run curation ahead of its
+  threshold and cadence, nothing more; while it runs the head shows
+  the session's chip and progress (S225), and on a host that starts
+  no agents the head reads "curation · 4 waiting · this host starts
+  no agents" with `run now` still recording the run for the reason
+  above.
 - **S251.** Ruled 2026-09-17: a capture of any length has a title and
   a body, and the two are never the same thing. The body is the
   capture's raw material whole (111): a typed sentence, a forwarded
