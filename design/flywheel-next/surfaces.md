@@ -1588,7 +1588,9 @@ where a thing sits, never by its form.
   session is for is not the chip's: the item beside it says that. A
   session whose record names no model — one started before the model
   was recorded — reads its kind alone. State is colour and dot only: working filled and
-  pulsing, starting dashed, idle hollow, blocked an amber ring. Ruled
+  pulsing, starting dashed, idle hollow, blocked an amber ring, with
+  you a filled dot in the accent that does not pulse, with the words
+  "with you" on the chip (S250). Ruled
   2026-09-16: a session whose pane is at its program's own prompt — a
   permission it asks before a command — reads working, not idle and not
   blocked; the machinery answers the prompt on its next pass, and the
@@ -2736,7 +2738,7 @@ whatever else it does.
   from the signals tray — or explore it now." and carries one control,
   `explore`, which is `/elaborate` (S43) with this intent already
   picked; the same control stands in the foot whenever no decision is
-  pending. The thread on the board carries the same emptiness in a
+  pending, and the command itself is always open (S252). The thread on the board carries the same emptiness in a
   word: a knot with no bead reads "nothing yet" under its name.
 - **S248.** Ruled 2026-09-16: what attaching a signal to an intent
   does, and what the operator sees. Attach lands the signal as evidence
@@ -2781,6 +2783,68 @@ whatever else it does.
   trail, and Esc closes the drawer, never steps back (S56). The head
   says where back goes ("‹ storefront declines") so the operator
   three pages in knows the way out without closing.
+- **S250.** Ruled 2026-09-17: a session the machinery recorded and no
+  runner started — a host bound to the operator (93b), where the
+  place is prepared, the work order written and the person does the
+  work — is shown as *with you*, never as running. Its chip reads
+  "with you" with the accent dot that does not pulse (S53); its
+  object says whose move it is in a sentence — the curation counter's
+  head "curation is yours to run · 4 waiting", a bead "with you", a
+  work item "with you" — and nothing on the page draws a progress
+  bar, a pulse or "working" for it, since the machine's `working` is
+  the state of the record and not of anyone's terminal, and the
+  operator's eye is what the page serves (S214). The session's page
+  is where the work is: the place's path with a copy control, the
+  work order opened inline as the file it is (S235), and the exact
+  lines the order gives for reporting — an exit, an offer, a note, a
+  refusal (67) — each with one copy control; the chip's pane link
+  opens the same, since there is no pane (S234). Once the operator
+  reports, the chip reads as any exit does. A host that runs agents
+  never shows "with you": a session there is starting, working, idle
+  or blocked, and a session whose runner is a person is the only one
+  that is with you.
+- **S251.** Ruled 2026-09-17: a capture of any length has a title and
+  a body, and the two are never the same thing. The body is the
+  capture's raw material whole (111): a typed sentence, a forwarded
+  message, or a markdown document handed in by a tool. The title is
+  the first line of the body when that line is a heading or the body
+  is one line, otherwise the body's first sentence, cut at its end
+  (S215); it is what stands wherever a name is needed — the quote's
+  head on the board, the drawer's title, a Recently done line, the
+  picker's row, the intent or bolt named from it (S224, S246). The
+  board's quote is the title and at most three lines of the body,
+  then "…" and the count of what follows ("… 42 more lines"); the
+  whole body is read on the capture's page, rendered as its kind
+  (markdown as a document, text as text), under the title. Where the
+  line falls: the capture is the document and its title; its signals
+  are the sentences read out of it — each a kind, an assertion, and
+  the excerpt with its place in the body (113) — one when the operator
+  typed a sentence (19), many when a reader session or the tool that
+  handed the document in read them (115), and none yet while a
+  document waits for a reader, which the capture's page says
+  ("not read yet · curation reads it next"); the intent is the subject
+  the signals argue for, named by the capture's title when made from
+  the capture whole and by the signal's own sentence when made from
+  one signal (S246), with the signals attached as its evidence and its
+  first bead named from the same words (S226). A signal's row on the
+  capture's page shows its excerpt lit in the body when the pointer
+  is on it.
+- **S252.** Ruled 2026-09-17: `/elaborate` typed against an intent
+  whose proposal awaits approval is accepted, not refused and not
+  joined. An exploration is the operator's own dictation (12, 189): it
+  starts at once as a with-operator or standing session, is never a
+  proposal on the rail, and so is outside 21's bound, which counts
+  proposals awaiting approval and nothing else. The standing proposal
+  is untouched: the exploration's bead appears beside it on the
+  thread, the palette's preview says so before send ("starts an
+  exploration now · the proposal on it stays as it is"), and the
+  intent's page lists both. The one refusal is an intent that is not
+  open — proposed and unanswered, or closed — answered in the palette
+  with the reason ("not open yet · answer its decision first"). The
+  page's `explore` control (S247) is the same command and follows the
+  same rule; it leaves the foot only because the foot holds the
+  pending decision's answers there (S28), and the palette always has
+  it.
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open
