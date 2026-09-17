@@ -389,7 +389,11 @@ requirements, iterated against the running rail rather than on paper.
     instance does not define is 85a's case. Material names no type of
     its own — a signal or a note carries none — so an elaboration an
     open intent proposes from its attached material is self-closing
-    until the operator's response names another. The proposal shows
+    until the operator's response names another. A finding is a
+    session's judgment and may name the type of the elaboration it
+    proposes (58, 62): a proposal from a finding that names one is
+    proposed with that type, and one from a finding naming none is
+    self-closing like any other material's (S256). The proposal shows
     its type and offers only the answers that apply to it. An
     elaboration is named by its type and the material it was proposed
     from, in the operator's words, never by its ordinal or its id; the
@@ -3019,7 +3023,8 @@ through these operations, and depends only on these guarantees.
     is in is shown by where it sits, never by its form. A rendering of
     the status view on any surface keeps these forms.
 210. An elaboration is a surface of its own, reached from its intent:
-    its type and state, its decision when one is pending, its document
+    its type and state, its decision when one is pending, its document,
+    what its sessions delivered, read on the surface itself (S253),
     and the records it wrote into the intent's change directory (187),
     its session with last activity (65–68), and, when covered by a
     gathering, the gathering it is in (188). The intent's surface lists

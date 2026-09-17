@@ -94,6 +94,10 @@
     "doc": {
       "type": "string"
     },
+    "label": {
+      "type": "string",
+      "description": "the word the operator reads for this type wherever the page names it — a bead's leading word, a card's type line, a picker row, a page's type row — in the operator's language and never the machine name, which is the registry's and is what a response posts (S254). One or two words. A type file carrying none is read by its machine name."
+    },
     "regions": {
       "type": "object",
       "minProperties": 1,

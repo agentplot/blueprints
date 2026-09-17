@@ -15,18 +15,30 @@ types:
   fundamentals@1:
     file: elaboration-types/fundamentals@1.yaml
     sha256: 460c3af2fd4e30d53ebb2b7299f9660b228ace82395ce8e1b7488994b2fd7308
+  fundamentals@2:
+    file: elaboration-types/fundamentals@2.yaml
+    sha256: 1c9f7cb3edec5010db95acb7b83e5b4f051e20dc9fbf6c52125fa6d17d13acb5
   persona-test@3:
     file: unit-types/persona-test@3.yaml
     sha256: ecd47836b1e9b4eda8ec41a9e73327a925882318dcfe2a3e28438b59a566a931
   self-closing@2:
     file: elaboration-types/self-closing@2.yaml
     sha256: a515bcad7fa55b65ea00543b97c9d6fb7fb785ad5264e014f885d365060db36c
+  self-closing@3:
+    file: elaboration-types/self-closing@3.yaml
+    sha256: 22dc5fcb2c6a88d313049833effc7eac9943af7b28116f6dd64f55f3c6e7c7a2
   standing@2:
     file: elaboration-types/standing@2.yaml
     sha256: c57483069a41a9891248e229f39f24eaabe6532f2b3a567c0eb6333aa87f3758
+  standing@3:
+    file: elaboration-types/standing@3.yaml
+    sha256: 8436c5ad0aa5c802b65edced2ad36c8a755dd279154509462ffbe8e992536973
   with-operator@3:
     file: elaboration-types/with-operator@3.yaml
     sha256: 78a9bd99ccdc3fcc2c909100cd004b580ced0da3f98b2ca5a5bfaaff081839c9
+  with-operator@4:
+    file: elaboration-types/with-operator@4.yaml
+    sha256: c21f1414c2a0426504b1b8dc00ca4128ce2861beb21778c238860f48270684fb
 doc: the content hash of every extensible machine file at registration; check.py fails a file whose hash moved (model.md 10.7). Add a version with `check.py --register`; never edit an entry
 instructions:
   flywheel/agents/builder.md:

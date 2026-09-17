@@ -70,8 +70,11 @@ were settled, not their place on the page.
   of its object, its title, its tail (the evidence model 5.4 names:
   signal weight on an intent — how many, from how many sources, over
   what span, counted by event date — and the elaborations it proposes,
-  each with its type ("curation · 7 signals · 3 sources · 12d",
-  "elaborations: research (self-closing)"; 109, 118, 10); type, target bolt, dependencies and
+  each with its type by its label ("curation · 7 signals · 3 sources ·
+  12d", "elaborations: research"; 109, 118, 10, S254); on an
+  elaboration proposed from a finding, the bead it came from and what
+  that bead delivered, counted ("from research · storefront declines ·
+  2 documents", S253); type, target bolt, dependencies and
   cited claims on a unit; idle time on a session; what a yes starts),
   its owner when one is set (S169), and its answers as buttons. A card
   with a question shows the question verbatim. A card for a gathered elaboration lists the covered intents,
@@ -305,8 +308,8 @@ were settled, not their place on the page.
 | unit | its decision or slip | its job as a quote; its type, bolt, repository, host and the capture it came from, each a link where it is an object; the unit document with a note control per section; items and stages; cited claims with "read in book", or "no claim cited" and, once landed, whether a claim was captured, declined or neither yet (34a, 317, S207); sessions running (none before yes); the commits on its bolt's branch; "change" opening its artifact view once approved, "no change yet" before (187) | yes · drop · redo · bolt · new bolt · rename · type · later |
 | bolt | a ledger | the ledger; the bolt's repository, branch, host and place (S222); decisions on it (in the rail, where you answer); its units with drop per unstarted unit and "change" per unit; rename; every session on it with its agent, pane, host, when it started, its exit and what it delivered; the commits on the branch (hash, subject, author, when), titled as main's latest once the bolt has landed; services with start and stop; served endpoints; the acceptance file (S99); history | no decision here that is not in the rail; drop, rename, start and stop are dictations |
 | landed bolt | a record | the record; the landing (when, through which gates, place removed); pull request and checks; environments; units landed; the acceptance file; signals from operation with their move | nothing to answer |
-| intent | a thread | the thread; where it came from and what it waits for (S247); its attached signals as quotes with their count (S226, S248); the intent's state and line; its elaborations in the order they were made, each with its type, opening each (210); decisions on it; sessions running; its change directory (S99) | its decision's answers when one is pending, else "explore" (S247) |
-| elaboration | a bead; ] and [ from the thread | kind, type and where it stands; its intent, a link; when a finding proposed it, the finding's document by its title, opened inline, and the parent bead as a link (S226, S241); its pending decision with the answer controls; its document and its host; the records it wrote into the intent's change directory (187), opening the change directory view; the intents it gathers, each a link, when it covers several (188); its session as a chip, or its attempts when it was retried (S53, S243), or "no session yet: one starts when it is approved" before the yes; its notes and questions (S242); the countdown when finished (210); a knot in the header and a back link to the thread | the decision's answers; finish on a standing one; nothing else |
+| intent | a thread | the thread; where it came from and what it waits for (S247); its attached signals as quotes with their count (S226, S248); the intent's state and line; its elaborations in the order they were made, each with its type by its label and what it delivered, counted (S253, S254), opening each (210); decisions on it; sessions running; its change directory (S99) | its decision's answers when one is pending, else "explore" (S247) |
+| elaboration | a bead; ] and [ from the thread | what it delivered, first and read here, each a row opening in the drawer (S253); when a finding proposed it, the finding's document by its title opened inline and the rest of what the parent delivered under it, the parent bead a link (S226, S241, S253); its type by its label and where it stands (S254); its intent, a link; its pending decision with the answer controls; its document and its host; the records it wrote into the intent's change directory (187), opening the change directory view; the intents it gathers, each a link, when it covers several (188); its session as a chip, or its attempts when it was retried (S53, S243), or "no session yet: one starts when it is approved" before the yes; its notes and questions (S242); the countdown when finished (210); a knot in the header and a back link to the thread | the decision's answers; finish on a standing one; nothing else |
 | exploration | its row in Inception | the covered intents; where its records go (per intent) and where its conclusions go (the book, once); its session | finish (standing) or end (with-operator) |
 | planning in progress | its row in the gate | what planning reads; the operator's notes it carries; its session | nothing yet; the next proposal is the decision |
 | deferred | its greyed sheet | when later was answered; that it left the count, wrote no SINCE line, and is superseded silently by planning's next run (172, 35) | ask again |
@@ -349,7 +352,8 @@ were settled, not their place on the page.
   (19, 194a, 216a); a question is asked on a surface that holds a
   conversation, and the same views render there (293a, S34).
 - **S208.** `/elaborate` takes the elaboration type as a subcommand,
-  and every type the registry holds is one: `/elaborate fundamentals`
+  and every type the registry holds is one, by its label, the
+  registry's name accepted too (S254): `/elaborate fundamentals`
   opens the same multi-pick of intents and sends
   `explore(intents, fundamentals)`, the type that writes the
   fundamentals part of the book (318, 190). A type the caller may not
@@ -1179,11 +1183,14 @@ page shows after.
 - **S43.** 1. `/elaborate` opens a multi-pick of the open intents, or
   takes those already ticked on Inception; every open intent's head
   knot shows a tick target, and the palette's footer says what will
-  happen and offers with-operator or standing, start and cancel. 2. Two
+  happen and offers conversation or prototype — the two types by their
+  labels, each with its phrase (S254) — start and cancel. 2. Two
   intents picked; the footer counts them. 3. Start →
-  `explore([intents], standing)`. 4. The mode ends; an
+  `explore([intents], standing)`, the registry's name for prototype
+  posted as the model's word. 4. The mode ends; an
   exploration row appears at the head of Inception with its session
-  chip and "since hh:mm"; each covered intent gains an explore bead;
+  chip and "since hh:mm"; each covered intent gains its bead,
+  "prototype · <the intent's subject>" (S226);
   the dock opens on the exploration page. 5. Later, finish in the
   exploration's footer → `finish(elaboration)`; the row shows "done ·
   leaves in 7d"; SINCE gains "finished · explore …".
@@ -1544,7 +1551,7 @@ where a thing sits, never by its form.
 | unit proposal | a slip hanging off the gate | name, target bolt (open or new), type | the slip and its rail card | as the proposal |
 | baseline | a sheet of its own, sections by scope | claims unmet, chores, units, "judged once" | as the proposal | as the proposal |
 | intent | a drawn thread: a vertical stroke with a head knot, no box | name, state, note, beads in order, a bead born of another's finding hung off it on a short branch (S241) | the thread | the same thread with an end cap and "closed · leaves in Nd" |
-| elaboration | a bead on the thread with a leading kind word; a descended bead one step in, on a branch from its parent bead | kind, name, state; its session chip while one runs (S243); "in gathering n" chip when covered | the bead, and its branch and parent when descended | "done · leaves in Nd" on the bead |
+| elaboration | a bead on the thread led by its type's label (S254); a descended bead one step in, on a branch from its parent bead | type by its label, name, state; its session chip while one runs (S243); "in gathering n" chip when covered | the bead, and its branch and parent when descended | "done · leaves in Nd" on the bead |
 | exploration | a row at the head of Inception | kind (with-operator or standing), covered intents, since, chip | the row | "done · leaves in Nd" |
 | bolt | a flat square-cornered ledger | name, repository, running count, unit chain, machinery row, services and endpoint foot, landing stamp | the ledger | leaves Construction at landing |
 | landed bolt | a borderless muted record | name, when, PR-and-checks stamp, environments, live signals, "stays · why" or "leaves in Nd" | the record | leaves Operation after the window |
@@ -2176,19 +2183,21 @@ whatever else it does.
   named by its type and the finding document's title, the first
   heading of the file read at the intent's line as the page reads any
   deliverable (S235), and never by the words of the document's path:
-  "standing · a retry schedule needs a prototype", never "standing ·
+  "prototype · a retry schedule needs a prototype", never "prototype ·
   openspec changes storefront declines"; only a file that cannot be
   read leaves the path standing, and then the page shows it as a
   path, greyed, not as a name. Where it came from is drawn, not said:
   its bead hangs off the bead whose finding proposed it (S241), and
   its card lights both when focused; its page carries the finding's
-  document inline and the parent bead as a link (S28), and no card or
+  document inline with the rest of what the parent delivered, and the
+  parent bead as a link (S28, S253), and no card or
   page adds a sentence about it. Its card
   proposes one elaboration at a time with the type named beside the
-  question ("research · self-closing") and only the answers that
+  question by its label ("research · storefront declines", S254) and only the answers that
   apply: yes, drop and type; pick and the per-intent drop appear only
   when the elaboration covers more than one intent (188). A proposal
-  that names no type reads self-closing (27), and one naming a type
+  that names no type reads research, the self-closing type (27), one a
+  finding proposed carries the type the finding named (S256), and one naming a type
   the instance lacks asks for a type before its yes is taken (85a,
   S6): the card drops its type line and reads "<name> is not a type
   here · set one with type…", or "no type named · set one with type…"
@@ -2521,12 +2530,14 @@ whatever else it does.
   under its row of answers, the card growing to hold it and the rail
   not moving: `type…` lists the types the instance defines for the
   object's kind — an elaboration's types, a unit's — headed "types ·
-  n", each row the type's name and, where its definition carries a
-  `doc`, what it does in that phrase (85, 190; "self-closing · ends
-  itself when its deliverable is written", "standing · runs until you
-  finish it"), the name alone where it carries none — a registered
+  n", each row the type's label (S254) and, where its definition
+  carries a `doc`, what it does in that phrase (85, 190; "research ·
+  reads and writes what it finds, then finishes on its own",
+  "prototype · makes something you can open and try; runs until you
+  finish it"), the label alone where it carries none — a registered
   definition is not edited in place, so the shipped types gain their
-  phrase at their next version; `bolt…` on a unit lists the open bolts as `add to
+  label and phrase at their next version (self-closing@3, standing@3,
+  with-operator@4, fundamentals@2); `bolt…` on a unit lists the open bolts as `add to
   bolt…` does (S224a). A pick is the whole gesture and posts `type
   <name>` or `bolt <name>` as one response; the filter, the arrow
   walk, Esc, one open at a time and the phone's bottom sheet are
@@ -2591,8 +2602,9 @@ whatever else it does.
   drawing order, parent then its descendants then the next sibling
   (S133). A focused card lights its bead, its branch and its parent
   bead together (S10), which is all the card says of where it came
-  from; the bead's page carries the finding's document inline and the
-  parent as a link (S28), and no sentence on any surface restates the
+  from; the bead's page carries the finding's document inline, the
+  rest of what the parent delivered under it, and the
+  parent as a link (S28, S253), and no sentence on any surface restates the
   descent. A gathering proposed from a finding (188) descends on one
   thread only, the one whose elaboration offered the finding, and
   stands on each other covered intent as a bead at that thread's head
@@ -2641,10 +2653,10 @@ whatever else it does.
   everywhere — the intent by its subject, the bead by its type and
   words (S226), the unit or bolt by its name with the repository
   greyed (S9) — then the answer as the control said it, in a verb
-  ("yes", "dropped", "type set to standing", "sent back", "answered"),
+  ("yes", "dropped", "type set to prototype", "sent back", "answered"),
   then who and the time of the response as it was recorded (153):
   "storefront declines · yes · chuck · 07:41", "research · a retry
-  schedule… · type set to standing · chuck · 07:42", "prototype ·
+  schedule… · type set to prototype · chuck · 07:42", "prototype ·
   retry report · answered · chuck · 07:58". It never carries the
   decision's number, which is spent and which the operator does not
   see again, and never an arrow. The time is the response's own
@@ -2857,6 +2869,88 @@ whatever else it does.
   same rule; it leaves the foot only because the foot holds the
   pending decision's answers there (S28), and the palette always has
   it.
+- **S253.** Ruled 2026-09-17: what a session delivered is read in the
+  drawer, and it is the first thing on the page of anything that rests
+  on it. A deliverable — a note, a chapter, a page, a diagram a
+  session left (190) — is a row: its title, the first heading of the
+  file (S226), its path greyed after it, and the bead whose session
+  wrote it when the row is not on that bead's own page. The row opens
+  the deliverable in the drawer as a page of its own on the trail
+  (S249), the head saying where back goes; it never opens outside the
+  drawer and never in a new tab, since the operator is mid-decision
+  and a page with no way back loses them. One that is its own
+  document — an HTML page a prototype left — shows in the drawer in a
+  frame of its own, with one control beside it, "open in its own tab".
+  Where the rows stand: on an elaboration's page they are the first
+  section, "delivered", directly under the head — the decision and its
+  answers stay in the head (S220) and what the decision rests on is
+  the first thing under it; the facts, the sessions and the notes
+  follow. An elaboration proposed from a finding carries its parent's
+  work whole: the finding's document read inline first, as ruled
+  (S226), then the rest of what the parent delivered as rows under it,
+  headed by the parent's name ("from research · storefront declines"),
+  so the operator judging the child reads the research it came out of
+  without a click, and the parent's bead stays a link (S241). The
+  same count travels with the bead everywhere it is named: its card's
+  tail names the parent and what it delivered ("from research ·
+  storefront declines · 2 documents", S5); the intent's page lists
+  each bead with what it delivered ("done · 2 documents"); and
+  Recently done's finished line reads "<the bead's name> · finished ·
+  2 documents · hh:mm" and opens the bead's page at that section (S9,
+  S245). A finished elaboration leaves the rail because nothing on it
+  is asked (S4); what it made is asked for through the decision that
+  rests on it, and that is where it is shown.
+- **S254.** Ruled 2026-09-17: a type is named on the page in the
+  operator's words. Every type definition carries a `label`, the word
+  the operator reads, and a `doc`, one phrase saying what its session
+  makes and how it ends (machines/schema.json; S238). The page prints
+  the label wherever a type shows — a bead's leading word, a card's
+  type line, the picker's rows, a page's type row, a Recently done
+  verb ("type set to prototype"), the palette's `/elaborate` offers —
+  and the registry's name nowhere the operator reads: a response posts
+  the registry name as the model's word (S220), and the greyed id chip
+  may show it (S236). The shipped set's labels and phrases, from their
+  next versions: self-closing@3 reads **research** · "reads and writes
+  what it finds, then finishes on its own"; standing@3 reads
+  **prototype** · "makes something you can open and try; runs until
+  you finish it"; with-operator@4 reads **conversation** · "a session
+  you work in yourself; it ends when you end it"; fundamentals@2 reads
+  **fundamentals** · "writes what the system is and must always hold,
+  then finishes". A type file carrying no label is read by its machine
+  name — an instance's own added type before its author names it —
+  and the page invents no word for it. So "research · storefront
+  declines" is the bead, "prototype · a retry schedule needs a
+  prototype" its child, and "conversation or prototype" the
+  exploration's choice (S43). A label names the work the operator
+  gets and its phrase says how it ends; the registry's names say only
+  how a session ends (25), which is why the operator could not read
+  them.
+- **S255.** Ruled 2026-09-17: the picker lists the types the instance
+  defines, by label and phrase, and nothing else — no row greyed, no
+  "coming soon", no "alpha". A row the operator can pick starts a
+  session that does what the row says, and a row that cannot is a
+  promise the page has no way to keep (S214, S238). The sense of what
+  the system can and cannot do is carried by the labels themselves:
+  the shipped set read as research, prototype, conversation and
+  fundamentals, each with its phrase, is the whole of what an
+  elaboration can be here, and prototype is among them (S254). A type
+  a plan names for a later phase is on the roadmap and not on the
+  page. A proposal naming a type the instance lacks keeps 85a's
+  treatment: the card says the name is not a type here and opens this
+  same picker (S226, S238).
+- **S256.** Ruled 2026-09-17: a finding that names a type fixes it. A
+  session's finding may name the type of the elaboration it proposes,
+  and the offer carries it (27; 58, 62); the elaboration is proposed
+  with that type and its card reads it as any proposal does —
+  "prototype · a retry schedule needs a prototype" with yes · drop ·
+  type… — so a finding that argued for a prototype arrives as one and
+  the operator confirms rather than chooses. A finding naming none is
+  proposed as research, the self-closing type, like every proposal
+  that names no type (27). Either way nothing is chosen blind: the
+  card's line names the type and the page's first section holds the
+  finding's document and what its parent delivered (S253), so a
+  choice, when there is one, is made over the finding's own argument.
+  A type the operator's response sets stands over the finding's (27).
 
 <!-- ANCHOR_END: rulings -->
 ## 6. Open
