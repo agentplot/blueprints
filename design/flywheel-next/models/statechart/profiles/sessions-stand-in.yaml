@@ -8,7 +8,11 @@
 # and the page run for real with no agent anywhere. A scenario may also set
 # these evidence names directly with an `evidence` step; the script is the
 # way to say what a session would have done. `flywheel scenario run` swaps
-# this file in for sessions.yaml; `flywheel host` never loads it.
+# this file in for sessions.yaml, and a host may be bound to it — an
+# instance a scenario was applied into is served this way, playing the
+# scenario's script and its bundle as the machinery running sessions (93c,
+# 93d); the binding is one of three of the same contract, beside herdr and
+# the operator, declared per host as hosts.<host>.sessions.
 format: flywheel-profile/1
 name: sessions-stand-in
 complete: false

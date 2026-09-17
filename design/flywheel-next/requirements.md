@@ -859,7 +859,61 @@ requirements, iterated against the running rail rather than on paper.
     session charged this way is a with-operator session for every rule
     that turns on the type (25). The machinery's own sessions (171) are
     the operator's under the same rule, as 110 already says of
-    curation, and a host so bound starts no agent (69).
+    curation, and a host so bound starts no agent (69). It is the
+    exception: the machinery starting the session is the normal case
+    (93c), and `flywheel init` binds a host to herdr.
+93c. The sessions binding is one contract, and every binding of it is
+    an implementation of that contract and nothing more. The machinery
+    asks of a binding exactly the effects and evidence the sessions
+    profile names (139): start a session — a named agent of a kind, in
+    a prepared place, with a work order, under the session id
+    (`start_session`); say whether it is alive and what it is doing
+    (`session.pane`, `session.activity`, `session.idle_since`,
+    `session.operator_present`, `session.pane_absent`); carry the
+    machinery's two messages to it (`deliver_answer`, `tell_moved`);
+    end it (`end_session`); and let the session's own words reach the
+    machinery through the command of 67 alone (`session.exit`, its
+    offers, refusals and deliverables), never by another path. What
+    the machinery may assume back: a second start of a name already
+    running is refused; a start is reported by evidence that the
+    session exists and never by the return of the command that started
+    it (72); a pane that is gone reads absent and is never guessed
+    (73); an answer is delivered to the living session or reported
+    undeliverable so that a fresh attempt starts with it (70). What a
+    binding must never do: read or write state, decide what an exit
+    means (66), message another session (197), start anything the
+    machinery did not charge, or let a session's identity be forged.
+    What the machinery observes without knowing which binding is
+    underneath: the evidence names and nothing else — no field of a
+    binding's own reaches a machine, a proof, the rail or the page,
+    and the page's chip and pane link are drawn from the evidence and
+    the record alone (S53, S234), a binding with no pane answering the
+    pane link with what it has. herdr, the stand-in of 93 and the
+    operator of 93b are three bindings of this one contract, declared
+    per host in `flywheel.yaml` (hosts.<host>.sessions: herdr |
+    stand-in | operator), and a fourth — another multiplexer, an agent
+    platform (217c) — is a binding written and declared, never an edit
+    to the machinery: the machinery holds no comparison on a binding's
+    name. How the herdr binding reaches herdr, by its socket or its
+    command line, is inside that binding and invisible to everything
+    else; it is decided on herdr's own documentation and recorded in
+    the change, not here.
+93d. A host may be bound to the stand-in. An instance a scenario was
+    applied into is served by a host bound to it, and the scenario's
+    apply binds the host so; the stand-in plays the scenario's script
+    — its exits, offers, refusals and the deliverables of its bundle —
+    through the same command path and clock the tour steps, so the
+    page shows sessions as the machinery running them, starting,
+    working, idle, blocked and done, with real chips, real deliverables
+    and nothing recorded that nobody starts. The page says once that
+    the instance is a demonstration — the instance pill reads "demo"
+    and the instance's page names the scenario — and nothing else on
+    it differs from a herdr host's. Moving the instance to herdr is a
+    change of the host's binding in `flywheel.yaml` and a restart, and
+    loses nothing it holds: the state, the records and the
+    deliverables the stand-in wrote are real and stay; a session the
+    script was still playing is a pane gone without an exit (73), and
+    its owner starts it again under herdr.
 94. A scenario is data: given this evidence, when this tick or event,
     then these transitions, these effects, and these decisions. Scenarios
     live beside the definitions they check.
