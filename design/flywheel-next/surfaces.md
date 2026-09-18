@@ -83,7 +83,8 @@ were settled, not their place on the page.
   decision number — for one row of a chores fold, the fold's number
   and the row's letter as one word, `415b` (S232) — and the answer,
   plus text where the answer takes it
-  (redo, reply, rename, new bolt, pick, type, bolt). Ruled 2026-09-16:
+  (redo, reply, rename, new bolt, pick, type, bolt, and split, which
+  takes the signals the operator marks, S257). Ruled 2026-09-16:
   an answer that names one of a set the instance already holds — type,
   bolt — takes it from a picker, and one that takes the operator's own
   words — redo, reply, rename, new bolt — from a field that opens
@@ -2117,7 +2118,8 @@ whatever else it does.
   once, named from the capture's first words, with the signal attached
   and its first elaboration proposed from it; the operator's own
   intent is never put back to them for a yes (12). `attach to…` lists
-  the open intents by subject and a pick is the whole gesture. SINCE
+  the open intents by subject, then the proposed ones (S229), and a
+  pick is the whole gesture. SINCE
   gains "captured · <first words>" when a capture lands, dated when the
   capture was put and reading its words (S9). Nothing
   a capture typed on the page says is parsed: the controls are the
@@ -2168,7 +2170,15 @@ whatever else it does.
   and each proposed intent and chore lands on the rail as one decision
   (109, 116); the tray asks nothing itself. With nothing unmoved the
   tray says so in the operator's terms (S214). On a phone the tray is
-  the same list under the counter (306).
+  the same list under the counter (306). Ruled 2026-09-18: the tray
+  holds one thing — its head, then those rows, each a quote with its
+  verbs under the hand (S233) — and never the same signals twice: no
+  list of moves picked per row and sent together stands above the
+  rows or below them, on any host and under any binding (S229). Each
+  group of rows is headed by its capture's title with the source and
+  date greyed after it (S251, S223), so the operator scrolling twenty
+  rows reads which meeting or note each came from and never wonders
+  whether a second list has begun.
 - **S226.** Ruled 2026-09-14: an open intent's thread shows its
   attached signals as quotes and its elaborations as beads. A bead is
   named by its type and the material it was proposed from, in the
@@ -2224,23 +2234,48 @@ whatever else it does.
   the tray, run curation, watch the proposals land, open the one about
   the flywheel as an intent, approve its first elaboration, read what
   the session wrote.
-- **S229.** Ruled 2026-09-15: on the curator's surface — the page's
-  curation section, where the operator judges each signal when a host
-  runs curation as the operator's (93b) — picking `route` for a signal
-  swaps its target field for "ask in <repository> <words>": the
-  repository is a chip when the instance tracks one and a picker when
-  it tracks several, and the words start as the signal's own, for the
-  operator to change. Submitting files the ask through the `ask` tool,
-  by the operator, and writes the signal's move as `route ask/<id>`
-  (116). Every ask is checked before anything is written, so a refused
-  one leaves no move and no exit; a route that names nothing and asks
-  for nothing is refused, since a route names what was offered. With
-  no repository tracked the field says "no repository to ask in yet ·
-  add one to flywheel.yaml". For every other move the target field
-  reads "the intent or claim it names". A signal routed to an ask reads
-  "asked" under its capture's title, its "what became of it" line
-  shows the repository and the words (S28), and SINCE gains "asked"
-  (S9).
+- **S229.** Ruled 2026-09-15, amended 2026-09-18: the operator never
+  picks a move by the record's word for it. The page has no curator's
+  console — no row that pairs a move picked from attach · challenge ·
+  join · answered · route · drop with a target field, no default of
+  "leave unmoved", and no submit over such rows: that surface is
+  withdrawn, on every host and under every binding, since it put two
+  controls on one signal that could contradict each other and asked
+  the operator to know six words that are curation's and the record's
+  (107, 116). What the operator has on a signal is the capture's five
+  verbs (S224, S224a, S233), and each verb is one move written whole:
+  `make an intent` is the operator's join — the intent opens at once
+  with the signal attached, and no proposed intent waits for a yes
+  (S224, 12); `attach to…` is attach when the intent picked is open
+  and join when it is one curation proposed that the rail still holds,
+  so its picker lists the open intents by subject and, after them, the
+  proposed ones with "proposed" greyed after the subject, and a pick on
+  a proposed one grows that card's count of signals (109, 116, S248);
+  `build now` and `add to bolt…` are the operator's route, each naming
+  the unit it made (19a, S224a); `drop` is drop, the press its reason.
+  Join and attach are therefore never two choices: the operator picks
+  the intent, and which word the record gets follows from where the
+  intent stands. Challenge and answered are not the operator's to
+  choose: each is a reading of a signal against the standing claims
+  (108), which is the reading curation is charged to make, and a signal
+  that argues with a claim or settles one waits unmoved for curation as
+  any signal does; an operator who wants a claim changed makes an
+  intent from the signal. Route to an ask is not the operator's from a
+  signal either: the operator asks a repository through the palette's
+  `/ask <repository> <words>` (S228, 28), which is its own capture and
+  its own record, and the signal they were reading stays in the tray to
+  be attached or dropped; the "ask in <repository>" field goes with the
+  console. A verb takes at most one thing, and takes it after the verb
+  is pressed, in the picker of S233, so there is nothing to choose
+  before a verb and nothing to unchoose after one: Esc or a click
+  outside the open picker closes it with nothing written, and a pick is
+  the whole gesture. A signal a curation session routed to an ask —
+  through its own `flywheel ask` (116, curation.yaml applying) — reads
+  "asked" under its capture's title, its "what became of it" line shows
+  the repository and the words (S28), and SINCE gains "asked" (S9).
+  Under the operator binding (93b) nothing here differs: the verbs are
+  the operator's hand on every host (110, 19a), and a curation session
+  charged on such a host reads not started with its head as S250 says.
 - **S230.** Ruled 2026-09-15: how a member's client gets a view (293a,
   322). Each of the page's views is the result of a read-only tool of
   its name — `rail`, `board`, `status`, `object <id>` — that writes and
@@ -2388,8 +2423,9 @@ whatever else it does.
   drawer it opens above the footer at the footer's width; on a phone
   it is a bottom sheet like the palette (S30).
   Its head names what it lists and how many ("open intents · 3",
-  "open bolts · 3"); its rows are the intents by subject in
-  Inception's order, or the bolts by name in Construction's order with
+  "open bolts · 3"); its rows are the open intents by subject in
+  Inception's order, then the proposed ones with "proposed" greyed
+  after the subject (S229), or the bolts by name in Construction's order with
   the repository greyed before the name when the instance tracks more
   than one (S224a), each one line clipped at its end (S215). Eight
   rows show and more scroll; above eight a filter field at the head
@@ -2953,6 +2989,70 @@ whatever else it does.
   A type the operator's response sets stands over the finding's (27).
 
 <!-- ANCHOR_END: rulings -->
+- **S257.** Ruled 2026-09-18: a split is the operator's division,
+  never the machinery's. `split` on a proposed intent's card is an
+  answer that takes something (S6, S238): pressing `split…` opens,
+  under the card's answers at the card's width, the card's signals as
+  rows — each the signal's sentence cut at its end with its source
+  greyed (S215) — each with a mark, headed "mark the ones that go to a
+  second intent"; ↓ and ↑ walk the rows, space marks, Enter sends, Esc
+  or a click outside closes it unsent, and in the drawer the same rows
+  open under the head's controls (S238). With none marked or all marked
+  the send is refused in the panel's own words, "mark at least one and
+  leave at least one", since a split that moves nothing or everything
+  is a yes or nothing. The response carries the marked signals as the
+  partition (intent.yaml split, atoms `split_intent`), and the
+  machinery writes two proposed intents from it and decides nothing
+  else: the unmarked signals go to the first, the marked to the
+  second, and each is named as an intent from a note is named — the
+  assertion of its first signal by event date, whole, cut at its end
+  (S246) — never the parent's subject with a number; "storefront
+  declines 1" is no name. Each new intent is a proposed card on the
+  rail with its own number and a tail counting its own signals (S5),
+  and its page's source line reads "split by <member> from <the
+  parent's subject> · <date>" with the parent a link (S247). The parent
+  leaves the rail with the answer and reads *split* wherever an intent
+  that left proposed is drawn — never done and never dropped: its
+  page's head says "split into <a> and <b>", each a link; its thread
+  on the board is greyed as a closed intent's with those words under
+  its name (S66); and Recently done reads "<subject> · split into <a>
+  and <b> · chuck · 07:41" (S244). Its signals were not dropped: each
+  holds a join move naming the intent it went to (107, 116), so no
+  line on the page says "dropped" of a split. A page that reads "done
+  · 5 dropped" is reading the machine's state name (intent.yaml: split
+  → dropped) and not the record; the record — two intents naming this
+  one as `split_from` (record-derived `split_done`) — is what the page
+  reads, and the state name reaches no surface (S214). In chat the
+  decision's line letters the signals as a fold letters its rows
+  (S232), and `split 418 b d` is the same answer (S32).
+- **S258.** Ruled 2026-09-18: a tour is a script over a live instance,
+  and the instance is the operator's before it is the script's. Every
+  action names the object it is about (S239), and before an action
+  plays the runner checks that the object stands where the script left
+  it — the decision still pending, the session still charged, the
+  capture still unmoved; an action whose object is not there does not
+  play, and the tour stops at that step, once: it tries nothing again
+  on a later tick, moves nothing on the page, and writes one line to
+  the host's log, not one per tick. The strip says so in the
+  operator's words, in place of the step's copy — "you took your own
+  turn at step 6, so the tour can't play step 7 from here" — and
+  carries two controls: `keep going on your own`, which closes the
+  strip and leaves the instance as it stands, since everything the
+  operator did is real and nothing is undone (93d); and `pick up at
+  step 6`, which applies the scenario again into a fresh instance up to
+  the step before the one the operator changed, opens that instance
+  and plays from there, because a tour never steps backwards within
+  an instance (scenarios/storefront.md). A stopped tour is neither an
+  attention line nor a decision, and nothing is on the rail for it
+  (S4). The page's generation moves only when the instance's records
+  move (S221), so a stopped tour, like an action that cannot play,
+  re-renders nothing and loses nobody's selection. Off the script the
+  stand-in (93, 93d) plays what it has and no more: a session the
+  operator's own turn charged that the script has no entry for reads
+  starting as S250 says, and the strip's stop copy adds why in one
+  line — "this demo's sessions deliver only what its script wrote ·
+  <name> runs when this instance is on a host of yours" (93d).
+
 ## 6. Open
 <!-- ANCHOR: open -->
 

@@ -198,10 +198,12 @@ ends on a board that looks like a real morning.
   delivery shows a held beat first.
 - No stepping backwards; apply to an action number instead.
 - One YAML mechanism shared with the acceptance set.
+- Answering off-script stops the tour at that step, once; the strip
+  says so and offers to keep going alone or to pick up at that step in
+  a fresh instance (surfaces S258).
 
 ## Open for the next pass
 
-- Whether answering off-script continues, returns, or is refused.
 - How the tour overlay is written — one voice throughout, or per stage.
 - Whether a scenario names its repositories' starting content, or starts
   them empty and lets the bundle fill them.
