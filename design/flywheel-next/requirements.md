@@ -839,6 +839,18 @@ requirements, iterated against the running rail rather than on paper.
     state-store profile there is; the tracker profile (C.1) joins as a
     second binding of the same operations when construction lands on
     the owners' repositories.
+92a. A test of what the machinery decides — what a machine does with an
+    event, what a response writes, what the rail then says — may run
+    over a stand-in for the store that holds objects in memory, answers
+    the operations of B.1 as the contract says and claims no guarantee
+    of B.2. It is bound by no profile, named nowhere the machinery
+    reads, and proves nothing about a store; every component the
+    machinery owns binds the store by its contract and never by a
+    binding's name, so the same code runs over the stand-in and over
+    the git-only profile (139, 140). What only a store can prove — the
+    guarantees of B.2 and the cost a profile states (169) — is proven
+    against the git-only profile alone, and the conformance suite of
+    section 12 runs there and nowhere else.
 93. The whole machinery runs with sessions replaced by a stand-in that
     plays a scenario's scripted exits, so that seeding a scenario
     exercises the stores, the engine, the git effects, the rail and the
