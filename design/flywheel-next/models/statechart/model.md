@@ -251,9 +251,11 @@ therefore expects two ticks.
 `effects`, then the target's `entry` effects, each **only when its
 proof evidence is absent**; then write one atomic record: new state,
 `entered_at`, bumped counters, any `enter:` commands to child regions,
-and the id of the response the guard consumed appended to
-`applied_responses`. The write carries the effect ids, the transition's
-`note`, and the evidence values the guard read (79). A guard that holds
+the ids of the effects it performed appended to `effects` (emptied
+when the state changes, 329), and the id of the response the guard
+consumed appended to `applied_responses`. The write carries the effect
+ids, the transition's `note`, and the evidence values the guard read
+(79). A guard that holds
 but whose target equals the source and whose effects are all proven is
 not written: reading twice with nothing changed writes nothing (78).
 
@@ -415,6 +417,7 @@ state: life=proposed
 entered_at: 2026-09-04T07:12:04Z
 seq: 3
 applied_responses:
+effects: unit/atlas/status-writer/propose/unit.document/3e1a
 type: default
 type_version: 5
 document: openspec/changes/status-writer/proposal.md
@@ -698,7 +701,8 @@ what 92 and 93 ask for together.
 - **Write** = one commit per effect, message = effect id, reason,
   evidence; push with expected-old; rejection → fetch, rebase, retry
   (no content conflict while the lease holds), three rejections →
-  report and re-read. A session's `flywheel exit|offer|note|refuse`
+  report and re-read. A repeat is found in the record's `effects` and
+  the host's own pending commits, never by walking history (329). A session's `flywheel exit|offer|note|refuse`
   appends to its own thread by the same path, and its `flywheel
   service` and `flywheel ask` write their records by it too.
 - **Lease** = the push is the compare-and-swap on the lease branch.
@@ -1814,7 +1818,10 @@ work waits on it or at the 24h bound (150a). A host that is not
 intermittent goes `gone` at 30 minutes, which is the `host-gone`
 attention decision either way. `released` follows the operator's
 `takeover` or 24 hours. While `alive` it reconciles its own disk: a stray place is
-removed and recorded (7.6). The `lease` machine on each object reads
+removed and recorded (7.6), and its repositories are kept — configured
+at creation so git never collects them on its own, packed between
+ticks when a repository's loose objects pass the binding's bound, and
+none of it shown (327, 328, S259). The `lease` machine on each object reads
 the holder and renewal: `held`, `stale` at 5 minutes (shown on the
 status view; the holder may still renew and continue, S13), `expired`
 at 24 hours or on the host's release, `free` when released, and
@@ -2103,14 +2110,42 @@ when, before any work follows from it (153).
 
 ### 12.15 How is history kept from growing without bound?
 
-Leases and heartbeats never touch `main` (single-commit branches,
-unreachable old commits collected by the git host). The register is
+It is not; what is bounded is the cost of carrying it (329). Leases
+and heartbeats never touch `main` (single-commit branches, unreachable
+old commits collected by whoever keeps the git host). The register is
 pruned thirty days after a decision is retracted; the counter alone
 grows. Verdicts are rewritten only when a claim's version moves. `main`
-grows by one small commit per state change, on the order of a few
-hundred a day, which git carries for years; history is the audit record
-and is never rewritten (167). In the tracker profile the lease comment
-is edited, not re-posted, and a decision issue is closed, not deleted.
+grows by one small commit per write — a state change, and the status
+projection's own commit when its body moved (4.3) — on the order of a
+few hundred a day, which git carries for years; history is the audit
+record and is never rewritten (167). The rate is per write, never per
+operator act: one act of the operator's fans out over the objects it
+touches across several ticks, so a scenario of nineteen actions leaves
+some four hundred and sixty commits, and a person measuring the
+repository counts writes, not actions (S238; the storefront
+measurement of 2026-09-18). Each write is its own push because each
+commit is its own fact once it lands (161) and a rejected push rebases
+one one-file commit (162); a tick's writes are never batched into one
+push, and the cost contract counts them one by one
+(`conformance/contract/cost.yaml`).
+
+What a long-running instance costs is bounded on three sides. The
+repositories the machinery creates are its own to keep (327): git's
+own collection is switched off in each at creation and asserted on
+open, and the host packs a repository between ticks once its loose
+objects pass the binding's bound, those objects and no more, so a
+pack's memory is bounded by the bound and nothing runs inside a tick
+that the profile's cost statement does not count (328,
+`packs_per_tick`). A tick reads the tree at a point, never the history
+(126): a repeat of an effect is found in the object's record, whose
+`effects` field carries the ids written since it entered its current
+state (3.4), and in the host's own pending commits, so a write on the
+thousandth day scans what a write on the first did (329). And the
+loose form is the expensive one: a status page committed whole per
+write cannot delta against its predecessor until it is packed, so an
+unpacked repository grows by a page per write and a packed one by the
+few lines that changed. In the tracker profile the lease comment is
+edited, not re-posted, and a decision issue is closed, not deleted.
 
 ### 12.16 What replaces the tracker's comment thread in git-only?
 

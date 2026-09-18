@@ -4,7 +4,7 @@
 # terms of them and is therefore the same in every profile. Not a profile on
 # its own.
 #
-#   get(id)                      -> the record (state, entered_at, seq, fields, applied_responses)
+#   get(id)                      -> the record (state, entered_at, seq, fields, applied_responses, effects — the ids written since the current state was entered, 329)
 #   put(id, record, base_seq)    -> the record replaced, or REJECTED when seq moved
 #   append(id, thread entry)     -> an entry added to the object's thread
 #   list(scope)                  -> ids and records of the objects in scope

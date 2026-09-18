@@ -3248,6 +3248,38 @@ reads or writes them.
 167. Every write the machinery makes is a commit, and the commit
      carries its reason and the evidence it was based on. History is the
      audit record; nothing else is kept for that purpose.
+327. A repository the machinery creates it also keeps: the bare clones
+     and checkouts under a host's root (205), and a git host it stands
+     up itself — the bare repository behind a scenario run or a
+     demonstration instance (93d). It configures each at creation so
+     that git never packs, prunes or collects it of its own accord,
+     asserts that configuration whenever it opens one, and touches no
+     git configuration outside them; a repository it did not create,
+     the git host's own among them, is kept by whoever owns it. The
+     state store's operations stay the seven of 125: keeping a
+     repository is the host's housekeeping, beside the disk it
+     reconciles (222), and never a write of state.
+328. A host packs its repositories itself, between ticks and never
+     inside one: when a repository's loose objects exceed the bound
+     its profile states, the host packs those objects and no more, so
+     what a pack costs is bounded by that bound and a tick costs what
+     the profile states (169) whatever the history holds. Packing
+     changes no state, no evidence and no history (136, 167); the
+     operator is shown nothing for it (S259); a pack that fails
+     leaves the repository as it was and is tried again at the next
+     occasion.
+329. The state repository's history grows by one commit per write and
+     is never rewritten or dropped (167); what stays bounded is the
+     cost of carrying it. Nothing a tick does reads the history in
+     proportion to its length: a read is the tree at a point (126),
+     and a repeat of an effect is found in the object's own record,
+     which carries the ids of the effects written since it entered its
+     current state as it carries the responses it applied (127, 137),
+     never by walking the commits behind it. So a tick on the
+     thousandth day costs what a tick on the first did, and a repeat
+     is a repeat only within the state it was written in: an effect
+     due again after the object has left that state and returned is
+     performed again.
 
 ### C.3 A custom profile
 

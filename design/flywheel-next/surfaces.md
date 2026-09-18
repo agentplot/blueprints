@@ -3052,6 +3052,17 @@ whatever else it does.
   starting as S250 says, and the strip's stop copy adds why in one
   line — "this demo's sessions deliver only what its script wrote ·
   <name> runs when this instance is on a host of yours" (93d).
+- **S259.** Ruled 2026-09-18: keeping a repository is invisible. A
+  host packs its clones between ticks (328) and the page shows nothing
+  for it — no attention line, no line on the host page, nothing on the
+  rail — because packing moves no state and no evidence, and the page
+  draws state (S221). A pack that fails is nothing to answer: the
+  repository stands as it was and the host tries again at its next
+  occasion, so there is no decision and no line. The host page keeps
+  showing what it runs, its leases and when they expire (S50), and
+  nothing about the store's size or its last pack. A git process the
+  operator finds holding gigabytes with the state repository's files
+  open is the thing 327 forbids, never something the page reports.
 
 ## 6. Open
 <!-- ANCHOR: open -->

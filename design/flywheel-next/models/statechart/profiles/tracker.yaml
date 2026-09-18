@@ -61,3 +61,4 @@ observations:
   lease_renewals_per_tick: "the lease comment edits among them; the holder edits its own comment on the renewal's cadence, never once per pass over the object (128, 150)"
   read_processes_per_tick: "zero, always: every read is an `octocrab` call in the host's own process; `gh` is not used"
   subprocesses_per_tick:   "zero, always, for the same reason, so this store meets any process bound; its cost is `fetches_per_tick` and `pushes_per_tick`, the HTTP calls it counts"
+  packs_per_tick:          "zero, always: this store's storage is the tracker service's own to keep, and the host keeps only the clones under its root, between ticks, as host.yaml disk.kept states (327, 328)"

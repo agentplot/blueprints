@@ -1,7 +1,7 @@
 scenario: B.3.169-cost
 title: a binding spends what its profile's mechanism says it spends; the edges of a tick are the promise, not a tuning
 profiles: [all]
-satisfies: [128, 150, 165, 167, 168, 169]
+satisfies: [128, 150, 165, 167, 168, 169, 327, 328]
 machines: ./contract/lamp
 given:
   # Three objects, every one covered by the acting host's declaration, and the
@@ -39,3 +39,4 @@ then:
     lease_renewals_per_tick: 0
     read_processes_per_tick: 0
     subprocesses_per_tick: [0, 1, 0]
+    packs_per_tick: 0                       # a host keeps its repositories between ticks, never inside one (328)
