@@ -7,7 +7,7 @@
 <marker id="mI" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1a1a1a"/></marker>
 </defs>
 <rect width="2332" height="542" fill="#fff"/>
-<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">unit — object v5, core · object unit · parent bolt, intent, repository, instance · owns work-item</text>
+<text x="40" y="36" font-size="19" font-weight="700" fill="#1a1a1a">unit — object v6, core · object unit · parent bolt, intent, repository, instance · owns work-item</text>
 <text x="40" y="57" font-size="12" fill="#666">One approved piece of construction work (36, 37).</text>
 <text x="40" y="75" font-size="9.5" font-family="monospace" fill="#999">satisfies 4, 5, 13, 16, 17, 31, 35, 36, 37, 57, 60, 74, 172 · unit.yaml · record type, type_version, document, revision, target, depends_on, claims, claim_answer, estimate, owner, actual, batch, scope, proposal, approval, redo_notes, needs_amend, citation_choices</text>
 <text x="40" y="107" font-size="11.5" font-weight="700" fill="#8a8a86">life</text>
@@ -52,7 +52,8 @@
 <path d="M1572.4,377.0 V324.0 H2132.4 V377.0" fill="none" stroke="#c9962e" stroke-width="1.3" marker-end="url(#mA)"><title>dictation (4); the items end their sessions and release their places</title></path>
 <path d="M1553.4,377.0 V354.0 H1992.4 V377.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
 <path d="M1534.4,377.0 V369.0 H1636.4 V377.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
-<path d="M1712.4,377.0 V369.0 H2234.4 V377.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"></path>
+<path d="M1674.4,377.0 V369.0 H2196.4 V377.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"><title>a bolt&#x27;s unit lands with the bolt; an intent&#x27;s conflict chore lands with the intent&#x27;s line, which lands as the intent closes (52)</title></path>
+<path d="M1712.4,377.0 V309.0 H2272.4 V377.0" fill="none" stroke="#4a7fb5" stroke-width="1.3" marker-end="url(#mB)"><title>a chore under a repository or the instance merged straight onto the shared line, and no bolt stands above it to land with, so its merge is its landing — final on the same pass, its pin stale, its cited claim&#x27;s cell due again (60, 62, 64)</title></path>
 <rect x="70.0" y="377.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"><title>named by a proposal in proposed; no decision here — the proposal&#x27;s is the one the operator answers, and a per-unit answer arrives as a response forwarded from it (172); nothing is a bolt or a unit&#x27;s items until the proposal&#x27;s yes</title></rect>
 <text x="118.0" y="399.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">in-proposal</text>
 <rect x="210.0" y="377.0" width="512.9" height="64.0" rx="7" fill="#fffdf6" stroke="#c9962e" stroke-width="1.6"><title>a finding routed to a bolt or a chore offer, proposed on its own (58, 60); its document is read at the pinned revision, so the offering place&#x27;s removal changes nothing here, and a proposed chore of a bolt that is dropped retires with the bolt (62, 74); a chore under a repository is on its shared line and names no bolt, and such chores fold by repository as a bolt&#x27;s fold by bolt (11, 60); a fold is one card with lettered rows, each row this decision on its own chore — named by the fold&#x27;s number and its letter in chat, carrying its own drop on the card, so some chores are accepted by dropping the others first or by answering rows by name, and no pick answer exists (S232); the decision names the target bolt and what a yes starts, derived from the type&#x27;s stages and the item count (13, 16); the document is reviewed on its own surface and an annotation on it is the response (17); a unit whose type the instance does not know stays here, its decision naming the type it lacks and asking the operator to set one with `type &lt;name&gt;` (85a)</title></rect>
@@ -91,7 +92,7 @@
 <rect x="2049.4" y="380.0" width="90.0" height="34.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
 <text x="2094.4" y="399.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">dropped</text>
 <text x="2094.4" y="411.0" font-size="8.5" fill="#2e9e5b" text-anchor="middle">✓ tail: dropped</text>
-<rect x="2186.4" y="377.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"><title>a unit that landed with an empty claims list joins the review surface&#x27;s batch — the units landed since the operator&#x27;s mark citing no claim, read in one sitting under one question (317, model.md 8.5). The answer is recorded by record_claim_answer against the unit; the unit is not reopened for it and nothing waits on it. A chore that did cite a claim makes that claim&#x27;s cell due again at its landing (64)</title></rect>
+<rect x="2186.4" y="377.0" width="96.0" height="28.0" rx="7" fill="#fff" stroke="#4a7fb5" stroke-width="2"><title>a unit that landed with an empty claims list joins the review surface&#x27;s batch — the units landed since the operator&#x27;s mark citing no claim, read in one sitting under one question (317, model.md 8.5). The answer is recorded by record_claim_answer against the unit; the unit is not reopened for it and nothing waits on it. A chore that did cite a claim makes that claim&#x27;s cell due again at its landing (64). A shared-line chore comes here from merged on the same pass (60)</title></rect>
 <rect x="2189.4" y="380.0" width="90.0" height="22.0" rx="5" fill="none" stroke="#4a7fb5" stroke-width="1.2"/>
 <text x="2234.4" y="399.0" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">landed</text>
 <rect x="66.1" y="297.5" width="218.4" height="11" fill="#fff" opacity="0.92"/>
@@ -170,8 +171,10 @@
 <text x="1772.9" y="351.0" font-size="8.5" fill="#333" text-anchor="middle">parent ∈ {dropped}</text>
 <rect x="1532.3" y="357.5" width="106.2" height="11" fill="#fff" opacity="0.92"/>
 <text x="1585.4" y="366.0" font-size="8.5" fill="#333" text-anchor="middle">∀work-item ∈ {merged}</text>
-<rect x="1929.6" y="357.5" width="87.5" height="11" fill="#fff" opacity="0.92"/>
-<text x="1973.4" y="366.0" font-size="8.5" fill="#333" text-anchor="middle">parent ∈ {landed}</text>
+<rect x="1872.9" y="357.5" width="124.9" height="11" fill="#fff" opacity="0.92"/>
+<text x="1935.4" y="366.0" font-size="8.5" fill="#333" text-anchor="middle">parent ∈ {landed, closed}<title>a bolt&#x27;s unit lands with the bolt; an intent&#x27;s conflict chore lands with the intent&#x27;s line, which lands as the intent closes (52)</title></text>
+<rect x="1951.0" y="297.5" width="82.8" height="11" fill="#fff" opacity="0.92"/>
+<text x="1992.4" y="306.0" font-size="8.5" fill="#333" text-anchor="middle">unit.shared_line<title>a chore under a repository or the instance merged straight onto the shared line, and no bolt stands above it to land with, so its merge is its landing — final on the same pass, its pin stale, its cited claim&#x27;s cell due again (60, 62, 64)</title></text>
 <rect x="40" y="498" width="2252" height="30" rx="8" fill="#fafafa" stroke="#e5e5e5"/>
 <rect x="56" y="508" width="10" height="10" rx="2" fill="#fff" stroke="#4a7fb5" stroke-width="1.6"/>
 <text x="71" y="517" font-size="9" fill="#666">state</text>

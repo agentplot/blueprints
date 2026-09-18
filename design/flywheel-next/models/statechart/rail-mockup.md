@@ -14,7 +14,7 @@ PLAN · willdan · 2026-09-04 07:40 · 10 decisions · "yes all" answers 412-417
 │  ├─ 412 intent   atlas-provider-limits           curation · 7 signals · 3 sources · 12d
 │  │      elaborations: research (self-closing) · prototype (standing)
 │  │      challenges claim providers/one-writer @v3
-│  │      → yes · drop · split
+│  │      → yes · drop · split <signals>
 │  ├─ 413 unit     atlas · status-writer            → bolt rail-decisions (open) · after: none
 │  │      covers one-writer sc.1,2 · completes it · type default
 │  │      yes starts: spec → build ×2 → review → merge · no further response until the close

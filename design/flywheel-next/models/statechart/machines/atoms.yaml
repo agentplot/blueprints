@@ -310,7 +310,7 @@ effects:
   # ---- design objects
   open_intent:     {of: intent, args: [], proof: intent.change_open, satisfies: [23, 49, 203], doc: create the intent's change directory on its line — the one thing the machinery writes in the blueprints outside its prefix}
   drop_signals:    {of: intent, args: [reason], proof: intent.signals_dropped, satisfies: [117], doc: give every cited signal a drop move naming this intent}
-  split_intent:    {of: intent, args: [partition], proof: intent.split_done, satisfies: [107]}
+  split_intent:    {of: intent, args: [partition], proof: intent.split_done, satisfies: [107, 116], doc: "partition is the response's marked signals — the ones that go to the second intent; write two proposed intents with split_from = this id, the unmarked signals cited by the first and the marked by the second, each named by the assertion of its own first signal by event date (S246); give every signal a join move naming the intent it went to — the operator's response replacing the move that joined it here (107); the parent reads split on every surface, never dropped (S257)"}
   archive_intent:  {of: intent, args: [], proof: intent.archived, satisfies: [23, 49, 54], doc: archive the change directory so its claims stand}
   propose_elaboration: {of: intent, args: [material, type], proof: intent.material_held, satisfies: [21], doc: create the intent's one proposed elaboration, or join the material to it}
   set_type:        {of: elaboration, args: [type], proof: elaboration.type_set, satisfies: [27, 37]}

@@ -12,7 +12,7 @@
 # one elaboration, so no other is proposed here meanwhile (21, 189), and its
 # finish counts toward this intent's close (188).
 machine: intent
-version: 5
+version: 6
 kind: object
 tier: core
 object: intent
@@ -24,13 +24,14 @@ record:
   signals: list          # cited signal ids; weight is derived from them by event date
   challenges: list       # standing claims its signals argue with
   close_declined_at: time   # written by keep open on the offered close, and by hold on a failed archive, so the close is not offered again until another elaboration reaches done
+  split_from: string     # the proposed intent this one was split from, when it was; the parent's split_done is derived from the two that name it (S257)
 regions:
   life:
     initial: proposed
     states:
       proposed:
         doc: "a decision with its proposed elaborations folded in (10); dictation skips this state. The card shows its signals as their weight — how many, from how many sources, over what span by event date (109, 118) — and its elaborations as the proposed ones with their types (S5)"
-        decision: {kind: intent-proposed, group: approve, answers: ["yes", drop, split], shows: [signals, challenges, elaborations], satisfies: [10, 109]}
+        decision: {kind: intent-proposed, group: approve, answers: ["yes", drop, "split <signals>"], shows: [signals, challenges, elaborations], satisfies: [10, 109]}
         transitions:
           - when: {response: "yes"}
             to: open
@@ -38,9 +39,9 @@ regions:
           - when: {response: drop}
             to: dropped
             effects: [{do: drop_signals, args: {reason: intent dropped}, note: each signal keeps a move naming the drop (117)}]
-          - when: {response: split}
+          - when: {response: "split <signals>"}
             to: dropped
-            effects: [{do: split_intent, args: {partition: $response}, note: two proposed intents replace this one; signals re-moved to each}]
+            effects: [{do: split_intent, args: {partition: $response}, note: "an answer that takes something (S238): the response is the signals the operator marked for the second intent, at least one and not all; two proposed intents replace this one, the unmarked signals in the first and the marked in the second, each named from its own first signal and naming this one as split_from; every signal gets a join move to the intent it went to, so nothing here is dropped though the state is (107, S257)"}]
       open:
         doc: elaborations run here; the line region keeps the intent's line current
         regions:

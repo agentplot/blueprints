@@ -4,7 +4,7 @@ One statechart per machine file, drawn by `machines/render.py` from the definiti
 itself, so the picture cannot drift from the runtime (83). Regenerate with
 `uv run --with pyyaml python3 machines/render.py` from `models/statechart`.
 
-35 machines: 18 object, 12 template, 5 engine.
+39 machines: 18 object, 16 template, 5 engine.
 
 ## Core objects and structural templates (`machines/`)
 
@@ -16,7 +16,7 @@ itself, so the picture cannot drift from the runtime (83). Regenerate with
 | `curation` | object | core | 5 | curation | 4, 12, 20, 58, 60, 74, 108, 110, 116, 118, 171, 182, 188 | [curation.svg](curation.svg) |
 | `elaboration` | object | core | 2 | elaboration | 4, 5, 24, 27, 54, 89, 187, 188, 189, 193, 210 | [elaboration.svg](elaboration.svg) |
 | `instance` | object | core | 2 | instance | 15, 204, 207, 208, 218, 219, 220, 221, 241, 247, 255, 261, 265, 266, 267, 276, 279, 281, 282, 294, 302, 304, 312 | [instance.svg](instance.svg) |
-| `intent` | object | core | 5 | intent | 20, 21, 22, 23, 49, 54, 109, 117, 187, 189 | [intent.svg](intent.svg) |
+| `intent` | object | core | 6 | intent | 20, 21, 22, 23, 49, 54, 109, 117, 187, 189 | [intent.svg](intent.svg) |
 | `ledger-cell` | object | core | 4 | ledger-cell | 100, 101, 102, 104, 116, 195, 198, 200, 202 | [ledger-cell.svg](ledger-cell.svg) |
 | `line` | template | core | 4 | template | 42, 49, 50, 52, 53, 54, 183, 185, 175, 176, 177, 179, 180, 192 | [line.svg](line.svg) |
 | `operator-session` | object | core | 2 | operator-session | 68, 69, 196 | [operator-session.svg](operator-session.svg) |
@@ -27,10 +27,10 @@ itself, so the picture cannot drift from the runtime (83). Regenerate with
 | `proposal` | object | core | 2 | proposal | 184, 17, 35, 36, 171, 172, 187 | [proposal.svg](proposal.svg) |
 | `repository` | object | core | 1 | repository | 5, 60, 104, 149, 199, 202, 203, 206, 207, 208 | [repository.svg](repository.svg) |
 | `service` | object | core | 2 | service | 4, 12, 45, 46, 47, 48, 55, 191, 203 | [service.svg](service.svg) |
-| `session` | template | core | 5 | template | 4, 24, 65, 66, 67, 70, 71, 72, 73, 80, 93, 150, 171, 173, 174, 190, 196, 197, 226, 251 | [session.svg](session.svg) |
+| `session` | template | core | 6 | template | 4, 24, 65, 66, 67, 70, 71, 72, 73, 80, 93, 150, 171, 173, 174, 183, 190, 196, 197, 226, 251 | [session.svg](session.svg) |
 | `signal` | object | core | 3 | signal | 19, 58, 60, 106, 107, 113, 114, 116, 118 | [signal.svg](signal.svg) |
 | `stage` | template | core | 4 | template | 4, 41, 56, 70, 74, 150, 173, 190, 285 | [stage.svg](stage.svg) |
-| `unit` | object | core | 5 | unit | 4, 5, 13, 16, 17, 31, 35, 36, 37, 57, 60, 74, 172 | [unit.svg](unit.svg) |
+| `unit` | object | core | 6 | unit | 4, 5, 13, 16, 17, 31, 35, 36, 37, 57, 60, 74, 172 | [unit.svg](unit.svg) |
 | `work-item` | object | core | 2 | work-item | 4, 32, 38, 41, 42, 43, 57, 74 | [work-item.svg](work-item.svg) |
 
 ## Engine machines (`machines/engine/`)
@@ -57,6 +57,10 @@ itself, so the picture cannot drift from the runtime (83). Regenerate with
 | machine | kind | tier | version | object | satisfies | diagram |
 |---|---|---|---|---|---|---|
 | `fundamentals@1` | template | extensible | 1 | template | 24, 25, 54, 190, 318 | [fundamentals@1.svg](fundamentals@1.svg) |
+| `fundamentals@2` | template | extensible | 2 | template | 24, 25, 54, 190, 318 | [fundamentals@2.svg](fundamentals@2.svg) |
 | `self-closing@2` | template | extensible | 2 | template | 24, 25, 54, 190 | [self-closing@2.svg](self-closing@2.svg) |
+| `self-closing@3` | template | extensible | 3 | template | 24, 25, 54, 190 | [self-closing@3.svg](self-closing@3.svg) |
 | `standing@2` | template | extensible | 2 | template | 4, 25, 26, 54, 190, 212 | [standing@2.svg](standing@2.svg) |
+| `standing@3` | template | extensible | 3 | template | 4, 25, 26, 54, 190, 212 | [standing@3.svg](standing@3.svg) |
 | `with-operator@3` | template | extensible | 3 | template | 4, 25, 26, 69, 190 | [with-operator@3.svg](with-operator@3.svg) |
+| `with-operator@4` | template | extensible | 4 | template | 4, 25, 26, 69, 190 | [with-operator@4.svg](with-operator@4.svg) |
