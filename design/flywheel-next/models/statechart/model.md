@@ -1820,9 +1820,10 @@ attention decision either way. `released` follows the operator's
 `takeover` or 24 hours. While `alive` it reconciles its own disk: a stray place is
 removed and recorded (7.6), and its repositories are kept — configured
 at creation so git never collects them on its own and keeps no
-reflog, packed between ticks when a repository's loose objects pass
-the binding's bound, what nothing references dropped once older than
-the binding's cutoff, and none of it shown (327, 328, S259). The `lease` machine on each object reads
+reflog, packed between ticks when the objects written since the last
+occasion pass the binding's bound, what nothing references dropped
+once older than the binding's cutoff, the packs consolidated below
+what the reader can open, and none of it shown (327, 328, S259). The `lease` machine on each object reads
 the holder and renewal: `held`, `stale` at 5 minutes (shown on the
 status view; the holder may still renew and continue, S13), `expired`
 at 24 hours or on the host's release, `free` when released, and
@@ -2138,13 +2139,21 @@ clones under a host's root and the bare repository a scenario run or
 a demonstration instance stands up as its git host alike, each kept
 by the host that created it: git's own collection is switched off in
 each at creation and asserted on open, no reflog is written, and the
-host, between ticks, packs a repository once its loose objects pass
-the binding's bound, those objects and no more, and drops the objects
-nothing references — the lease and heartbeat commits a renewal
-replaced, in the git host and, once the fetch has moved the ref, in
-the clone — once they are older than the binding's cutoff, so a
-pack's memory is bounded by the bound, a replaced lease commit costs
-a bounded wait and then nothing, and nothing runs inside a tick that
+host, between ticks, keeps a repository at an occasion that comes
+when the objects written since the last one pass the binding's bound
+— arrivals, never residents, since what is resident after an occasion
+is the replaced commits waiting out their cutoff, which no occasion
+can take. At the occasion it packs the loose objects the history
+reaches — every ref but the lease and heartbeat families, whose
+commits are never packed — those objects and no more; drops the
+objects nothing references — the lease and heartbeat commits a
+renewal replaced, in the git host and, once the fetch has moved the
+ref, in the clone — once they are older than the binding's cutoff;
+and, once per threshold's worth of occasions, consolidates the packs
+into one, the threshold sitting below what the binding's reader can
+open. So a pack's memory is bounded by the bound, a replaced lease
+commit costs a bounded wait and then nothing, consolidation alone
+costs what the history holds, and nothing runs inside a tick that
 the profile's cost statement does not count (328, `packs_per_tick`).
 A drop is safe beside a push landing at the same moment because the
 compare-and-swap is on the ref's value and not on any object, and

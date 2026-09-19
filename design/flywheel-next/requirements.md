@@ -3279,15 +3279,35 @@ reads or writes them.
      disk it reconciles (222), and never a write of state.
 328. A host keeps its repositories itself — every one 327 gives it,
      under its root or stood up by it — between ticks and never
-     inside one, and no other host keeps them. Keeping is two acts of
-     one shape. When a repository's loose objects exceed the bound
-     its profile states, the host packs those objects and no more, so
-     what a pack costs is bounded by that bound and a tick costs what
-     the profile states (169) whatever the history holds. And the
-     objects nothing references — the lease and heartbeat commits a
-     renewal replaced, which no ref reaches once the ref has moved —
-     the host drops, but only once they are older than the cutoff its
-     profile states, never by reachability alone. The cutoff is what
+     inside one, and no other host keeps them. An occasion of keeping
+     comes when the objects written to a repository since its last
+     occasion pass the bound its profile states — the bound counts
+     what arrived, never what is resident, because what is resident
+     after an occasion is what the occasion could not take, the
+     replaced commits waiting out their cutoff, and a bound on those
+     would fire again on a quantity keeping cannot change. The
+     occasion's mark is the keeper's own, kept in the repository it
+     keeps (169). An occasion is three acts of one shape. The host
+     packs the loose objects the repository's history reaches — every
+     ref but the lease and heartbeat families, whose commits are
+     replaced within a minute and belong loose until they age — into
+     one new pack, those objects and no more, and no pack when there
+     is nothing to take, so what a pack costs is bounded by the bound.
+     It drops the objects nothing references — the lease and heartbeat
+     commits a renewal replaced, which no ref reaches once the ref
+     has moved — but only once they are older than the cutoff its
+     profile states, never by reachability alone. And when the packs
+     pass the threshold its profile states, it consolidates them into
+     one, what every ref reaches, a replaced commit loosened rather
+     than dropped so it too goes only by age; consolidation costs
+     what the history holds and comes once per threshold's worth of
+     occasions, and it is the one act of keeping whose cost grows with
+     the history. The threshold sits below the number of packs the
+     binding's reader can open, which is a fact of the tool the
+     profile names beside the threshold, so a repository the host
+     keeps is one its reader can always read; a tick costs what the
+     profile states (169) whatever the history holds, because none of
+     this runs inside one. The cutoff is what
      makes a drop safe beside a push landing at the same moment: the
      compare-and-swap is on a ref's value, never on an object's
      presence (162), so a drop moves no ref and turns no push's
