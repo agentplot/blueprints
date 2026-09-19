@@ -1819,9 +1819,10 @@ intermittent goes `gone` at 30 minutes, which is the `host-gone`
 attention decision either way. `released` follows the operator's
 `takeover` or 24 hours. While `alive` it reconciles its own disk: a stray place is
 removed and recorded (7.6), and its repositories are kept — configured
-at creation so git never collects them on its own, packed between
-ticks when a repository's loose objects pass the binding's bound, and
-none of it shown (327, 328, S259). The `lease` machine on each object reads
+at creation so git never collects them on its own and keeps no
+reflog, packed between ticks when a repository's loose objects pass
+the binding's bound, what nothing references dropped once older than
+the binding's cutoff, and none of it shown (327, 328, S259). The `lease` machine on each object reads
 the holder and renewal: `held`, `stale` at 5 minutes (shown on the
 status view; the holder may still renew and continue, S13), `expired`
 at 24 hours or on the host's release, `free` when released, and
@@ -2111,8 +2112,10 @@ when, before any work follows from it (153).
 ### 12.15 How is history kept from growing without bound?
 
 It is not; what is bounded is the cost of carrying it (329). Leases
-and heartbeats never touch `main` (single-commit branches, unreachable
-old commits collected by whoever keeps the git host). The register is
+and heartbeats never touch `main` (single-commit branches; a replaced
+commit is referenced by nothing and dropped by whoever keeps the git
+host — the host that stood it up when the machinery did, 327, 328;
+the git host's own keeping otherwise). The register is
 pruned thirty days after a decision is retracted; the counter alone
 grows. Verdicts are rewritten only when a claim's version moves. `main`
 grows by one small commit per write — a state change, and the status
@@ -2130,13 +2133,23 @@ push, and the cost contract counts them one by one
 (`conformance/contract/cost.yaml`).
 
 What a long-running instance costs is bounded on three sides. The
-repositories the machinery creates are its own to keep (327): git's
-own collection is switched off in each at creation and asserted on
-open, and the host packs a repository between ticks once its loose
-objects pass the binding's bound, those objects and no more, so a
-pack's memory is bounded by the bound and nothing runs inside a tick
-that the profile's cost statement does not count (328,
-`packs_per_tick`). A tick reads the tree at a point, never the history
+repositories the machinery creates are its own to keep (327) — the
+clones under a host's root and the bare repository a scenario run or
+a demonstration instance stands up as its git host alike, each kept
+by the host that created it: git's own collection is switched off in
+each at creation and asserted on open, no reflog is written, and the
+host, between ticks, packs a repository once its loose objects pass
+the binding's bound, those objects and no more, and drops the objects
+nothing references — the lease and heartbeat commits a renewal
+replaced, in the git host and, once the fetch has moved the ref, in
+the clone — once they are older than the binding's cutoff, so a
+pack's memory is bounded by the bound, a replaced lease commit costs
+a bounded wait and then nothing, and nothing runs inside a tick that
+the profile's cost statement does not count (328, `packs_per_tick`).
+A drop is safe beside a push landing at the same moment because the
+compare-and-swap is on the ref's value and not on any object, and
+because what a push has written and not yet referenced is younger
+than the cutoff (328). A tick reads the tree at a point, never the history
 (126): a repeat of an effect is found in the object's record, whose
 `effects` field carries the ids written since it entered its current
 state (3.4), and in the host's own pending commits, so a write on the

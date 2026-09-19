@@ -62,7 +62,7 @@ observations:
   lease_renewals_per_tick:     {profiles: [all], doc: "the renewals among those writes; a lease is renewed on its own cadence while its holder works, so a tick with none due renews none (128, 150)"}
   read_processes_per_tick:     {profiles: [all], doc: "external processes the read path spawned in a tick; zero, because a read is the state as of the point the tick fetched, not a call per object (126, 165)"}
   subprocesses_per_tick:       {profiles: [all], doc: "the most external processes any one tick spawned, which is the bound the profile's mechanism sets and the profile states in its own binding (169)"}
-  packs_per_tick:              {profiles: [all], doc: "packs, prunes or collections of the store's own storage that ran inside a tick, by the store or by git deciding on its own; zero, always, since a host keeps its repositories between ticks and git's own collection is off in every repository the machinery creates (327, 328)"}
+  packs_per_tick:              {profiles: [all], doc: "packs, drops, prunes or collections of the store's own storage that ran inside a tick, by the store or by git deciding on its own; zero, always, since a host keeps its repositories — packs them, drops what nothing references — between ticks and git's own collection is off in every repository the machinery creates (327, 328)"}
 
   # ---- the rail, its register and its delivery
   page_numbers:                 {profiles: [all], doc: "the decision numbers the page showed (15)"}

@@ -3264,22 +3264,40 @@ reads or writes them.
      and checkouts under a host's root (205), and a git host it stands
      up itself — the bare repository behind a scenario run or a
      demonstration instance (93d). It configures each at creation so
-     that git never packs, prunes or collects it of its own accord,
-     asserts that configuration whenever it opens one, and touches no
-     git configuration outside them; a repository it did not create,
-     the git host's own among them, is kept by whoever owns it. The
-     state store's operations stay the seven of 125: keeping a
-     repository is the host's housekeeping, beside the disk it
-     reconciles (222), and never a write of state.
-328. A host packs its repositories itself, between ticks and never
-     inside one: when a repository's loose objects exceed the bound
+     that git never packs, prunes or collects it of its own accord
+     and writes no reflog, asserts that configuration whenever it
+     opens one, and touches no git configuration outside them; a
+     repository it did not create, the git host's own among them, is
+     kept by whoever owns it. A clone under the root holds what the
+     git host holds and no past of its own: a ref the git host has
+     dropped the next fetch drops, and no reflog is kept, because
+     nothing the machinery does reads one — a lease is its ref's
+     current value, a repeat is found in the record (329), a place is
+     re-made from its line (49) — and history alone is the audit
+     record (167). The state store's operations stay the seven of
+     125: keeping a repository is the host's housekeeping, beside the
+     disk it reconciles (222), and never a write of state.
+328. A host keeps its repositories itself — every one 327 gives it,
+     under its root or stood up by it — between ticks and never
+     inside one, and no other host keeps them. Keeping is two acts of
+     one shape. When a repository's loose objects exceed the bound
      its profile states, the host packs those objects and no more, so
      what a pack costs is bounded by that bound and a tick costs what
-     the profile states (169) whatever the history holds. Packing
-     changes no state, no evidence and no history (136, 167); the
-     operator is shown nothing for it (S259); a pack that fails
-     leaves the repository as it was and is tried again at the next
-     occasion.
+     the profile states (169) whatever the history holds. And the
+     objects nothing references — the lease and heartbeat commits a
+     renewal replaced, which no ref reaches once the ref has moved —
+     the host drops, but only once they are older than the cutoff its
+     profile states, never by reachability alone. The cutoff is what
+     makes a drop safe beside a push landing at the same moment: the
+     compare-and-swap is on a ref's value, never on an object's
+     presence (162), so a drop moves no ref and turns no push's
+     outcome, and what a push has written but not yet referenced is
+     younger than the cutoff, so nothing a push is about to reference
+     is ever old and unreferenced at once. Packing and dropping change
+     no state, no evidence and no history — a replaced lease commit
+     was never history (136, 167); the operator is shown nothing for
+     either (S259); one that fails leaves the repository as it was
+     and is tried again at the next occasion.
 329. The state repository's history grows by one commit per write and
      is never rewritten or dropped (167); what stays bounded is the
      cost of carrying it. Nothing a tick does reads the history in
