@@ -1,7 +1,7 @@
 [book]
 title = "Flywheel design"
 description = "The design book for the flywheel: the work-loop machinery that turns an operator's intent into built software. Part I includes the numbered requirements from their source; Part II explains the loop, design and construction, the book and the context map, the page, instances and hosts, the state store contract and the control plane; Part III includes the surfaces; Part IV points at the roadmap, the models and the proposals."
-authors = ["Chuck Swanberg <cswanberg@willdan.com>"]
+authors = ["Chuck Swanberg <cswanberg@mad-swan.com>"]
 language = "en"
 src = "src"
 
