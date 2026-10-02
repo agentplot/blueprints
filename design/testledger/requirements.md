@@ -22,9 +22,10 @@ to design from Parts A and B and git alone.
 testledger records whether a check passed on exactly the inputs it
 read, so that a pass proven once is never proven again for the same
 inputs, wherever it was proven: in one of a hundred agent worktrees, on
-a developer's machine, or on a build server. A gate, the point at which
-work may merge or become a version, asks testledger whether what it
-requires has already passed, and runs only what has not. testledger
+a developer's machine, or on a build server. A gate, any named point at
+which work may proceed, a merge, a version, a deploy or another a policy
+names, asks testledger whether what it requires has already passed, and
+runs only what has not. testledger
 records verdicts and their evidence. It never builds, never stores what
 a check produced, and never decides on its own what may be trusted.
 
@@ -54,7 +55,9 @@ redefine these.
 - **inputs digest**: the fingerprint of everything a check reads in the
   repository, with its assurance, as the workspace description gives
   it.
-- **toolchain**: the tools and their versions a check runs with.
+- **toolchain**: what the repository declares a check's tools to be: its
+  environment, the system tools and what a confined run starts from, and
+  its language tools.
 - **envelope**: everything outside the repository and the toolchain that
   a check runs against, such as an emulator, a deployed artifact or a
   stand-in for a vendor. A check with none has an empty envelope.
@@ -111,6 +114,11 @@ redefine these.
    words.
 9. A record's outcome is what the executor observed, never inferred
    from elapsed time or from the absence of a report.
+
+9a. An executor reports a pass only for a check it executed. A result a
+   tool answered from an earlier run is not a run, and is never recorded
+   as one.
+
 10. A record states its executor's confinement, and a run is recorded as
     confined only when its executor established that it could read
     nothing but its inputs.
@@ -139,6 +147,11 @@ redefine these.
 
 17. A verdict is a function of the gate's policy and the ledger the gate
     can read, and reading one runs nothing.
+
+17a. A policy names any number of gates, and testledger gives none a
+    meaning of its own: a gate is its name, the checks it requires and
+    the executors it trusts.
+
 18. A verdict states, for every check the policy requires, exactly one
     of passed, failed, missing or flaky, and is satisfied only when
     every required check passed.
@@ -155,6 +168,20 @@ redefine these.
 22. For any two keys of one check, testledger can say which of the four
     parts differ, and for the inputs digest, which inputs.
 
+### A.6 Toolchain
+
+41. The toolchain of a key is the set of declarations the repository
+    state holds for the tools the check runs with, each by the
+    fingerprint of its content, and of two kinds at least: the
+    environment and the language tools. Two runs on the same declarations
+    have one toolchain, whatever machine, image or shell each ran in, and
+    a check whose toolchain is unknown has no key (4).
+42. A record states whether its run used the declared toolchain, and a
+    run is recorded as having used it only when its executor established
+    that. No run establishes a kind the repository does not declare, and
+    a policy says, for each gate, whether a run that did not establish
+    its toolchain counts.
+
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
 ## Part B. Contracts across the seams
@@ -168,7 +195,13 @@ redefine these.
 24a. **name-inputs**: given a check, the inputs its digest covers, each
     with the fingerprint of its content.
 
-25. **invocation**: given a check, what runs it.
+24b. **declare-toolchain**: given a check, the declarations of the tools
+    it runs with, each with its kind and the fingerprint of its content,
+    a kind the repository does not declare said to be undeclared, or
+    unknown.
+
+25. **invocation**: given a check, what runs it, in a form that executes
+    it and answers nothing from an earlier run (9a).
 26. Every answer is the same for the same repository state, and
     distinguishes unknown from refused (4).
 
@@ -222,7 +255,8 @@ Parts A and B do not change to admit a profile.
 | list-checks | pinout's tasks; which tasks are checks is the policy's to say |
 | digest-inputs | pinout's digest and assurance, unknown passed through unchanged |
 | name-inputs | the inputs pinout names for its digest, with the digest of each |
-| invocation | pinout's invocation |
+| declare-toolchain | the inputs pinout marks as toolchain declarations, with the kind and digest of each |
+| invocation | pinout's invocation, made to execute the task as pinout's profile for the workspace tool says; a run that writes no record is none of testledger's and keeps the tool's cache |
 
 ### C.2 Records: OCI artifacts
 
@@ -235,7 +269,9 @@ Every record is made of OCI blobs and manifests, whichever store holds it
   repository-relative POSIX paths in Unicode NFC with the digest of each.
   The inputs group is the list pinout names for its digest (24a), and
   testledger hashes no file of the repository itself.
-  The toolchain group names the environment image's digest. The config
+  The toolchain group holds the declarations pinout reports (24b), each
+  by path, kind and digest, and never an image's digest: the image a run
+  used is named on its result, beside the executor. The config
   descriptor is the fixed empty descriptor, and every media type is
   versioned. Nothing about a run is in it: no timestamp, host or worktree
   path. An inputs manifest whose envelope names an artifact the check runs
@@ -252,16 +288,19 @@ Every record is made of OCI blobs and manifests, whichever store holds it
 - **A result with no key** (4, 5) has no subject. It is filed by the
   repository state it ran on and under no key.
 - **Evidence** (a log, a test report) is a blob of the result, by digest.
+- **Names.** Every media type and the predicate type is a reverse-DNS
+  name under the project's domain. That domain is not yet chosen, so no
+  name is fixed here and any written elsewhere is a placeholder.
 - **Signing** is sigstore's keyless signing where the executor has a
   workload identity, and a local key otherwise; an unsigned result is read
   as vouched for by nobody (11).
 
 ### C.3 Executors
 
-| executor | confinement |
-|---|---|
-| **shell**: the check run in the asker's own environment | open |
-| **container engine**, such as Dagger: a container given only the inputs pinout names | confined |
+| executor | confinement | toolchain |
+|---|---|---|
+| **shell**: the check run in the asker's own environment | open | established only where the shell is entered from the declarations and says so |
+| **container engine**, such as Dagger: a container given only the inputs pinout names | confined | established: the container starts from the image built from the environment declaration, with the language tools installed from theirs |
 
 ### C.4 Result stores
 
@@ -342,8 +381,6 @@ These are not requirements.
   by the asker?
 - Does a policy name checks by identity, by pattern, or by what pinout
   reports as affected, and which of those may a later layer use?
-- What states the toolchain of a run made in no image, an agent's shell
-  or a developer's, and who establishes that the run used it (1, 10)?
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->
@@ -375,6 +412,15 @@ These are not requirements.
   runs reports it missing, a confined run passes, and the gate is
   satisfied. Where two confined runs disagree, no gate is satisfied at
   that key.
+- **S10.** An agent's shell and a build server's container run one check
+  on the same inputs and the same toolchain declarations, and their
+  records stand under one key.
+- **S11.** A check's tool would answer from its own cache of an earlier
+  pass. Run through testledger, the check executes, and the record is of
+  that execution.
+- **S12.** One repository's policy names five gates and another's names
+  two. Each gate is read the same way, from its own requirements and
+  trust.
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

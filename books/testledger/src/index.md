@@ -1,9 +1,9 @@
 # testledger
 
 testledger records whether a check passed on exactly the inputs it read.
-A gate, the point where work may merge or become a version, asks it
-whether what the gate requires has already passed, and runs only what
-has not. It records verdicts and their evidence, and nothing a check
+A gate, any named point where work may proceed, a merge, a version or a
+deploy, asks it whether what the gate requires has already passed, and
+runs only what has not. It records verdicts and their evidence, and nothing a check
 produced (12).
 
 ## Why it exists
@@ -20,15 +20,18 @@ that to the verdict instead of the output, and to every tool instead of
 one. A key is the check's definition, a digest of its inputs, its
 toolchain and its envelope, and nothing else (1). The executor, the
 branch and the commit stay out of the key, so a pass proven in one
-place is the same fact everywhere it is read (13).
+place is the same fact everywhere it is read (13). The toolchain is what
+the repository declares, never the machine or image a run happened to
+use, so an agent's shell and a build server's container share a key
+(41).
 
 ## What makes it safe to reuse a pass
 
 Three things. The key changes when anything the check reads changes (2),
 so a pass never covers inputs it did not see; a check whose inputs
 cannot be stated has no key and is always run (4). Every run is
-recorded, a fail as faithfully as a pass, and nothing written is ever
-altered (6, 7), so a flaky check shows up as flaky rather than as
+recorded, a fail as faithfully as a pass, a replay from a tool's own
+cache never as a run (9a), and nothing written is ever altered (6, 7), so a flaky check shows up as flaky rather than as
 whichever result came last (16), and only confined runs settle it (16a,
 16b). And trust belongs to the reader:
 whether a record from an agent's open shell counts at a gate is the

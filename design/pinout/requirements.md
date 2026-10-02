@@ -60,6 +60,10 @@ redefine these.
 - **inputs**: every fact a task's result may depend on: the content of
   files, and any other fact the repository declares, such as a tool's
   version or a setting of the environment.
+- **toolchain declaration**: an input that declares the tools a task
+  runs with. It is one of two kinds: the **environment**, the system
+  tools and what a run confined to its inputs starts from, or the
+  **language tools**.
 - **assurance**: what a statement that a set of inputs is complete rests
   on. **Declared**: the repository lists them. **Convention**: a stated
   rule of the profile infers them. Nothing else is an assurance pinout
@@ -89,7 +93,7 @@ redefine these.
 2. The same question about the same repository state, through the same
    binding, gets the same answer, identical in every byte.
 3. Every answer is exactly one of a description, unknown or refused. A
-   description that lists nothing, a repository with no projects, is a
+   description that lists nothing, a project with no tasks, is a
    description, and is never given in place of unknown or refused.
 4. A refused answer names what was missing, and where a workspace tool
    refused, carries that tool's own words unaltered.
@@ -98,8 +102,9 @@ redefine these.
    cannot say.
 6. An answer never depends on who asks, or on which surface the
    question came through.
-7. Every answer names the version of this statement it satisfies and
-   the binding that produced it.
+7. Every answer names the version of the published vocabulary and digest
+   derivation it is written in, and the binding that produced it. A
+   change to either is a new version.
 
 ### A.2 Projects and tasks
 
@@ -111,7 +116,8 @@ redefine these.
     project and its own name.
 11. pinout invents nothing: every project, task and dependency it
     reports has a declaration the repository state holds, read through
-    its binding.
+    its binding, or is the repository taken whole under its profile's
+    stated convention.
 
 ### A.3 Changes
 
@@ -144,11 +150,22 @@ redefine these.
     repository's own tooling uses, and depends on nothing but the
     repository state and the binding to give it.
 
+20a. Where the repository's tooling may answer a task from an earlier
+    run of it, pinout says with the invocation how the tooling is made to
+    execute the task instead, and unknown where its binding cannot say.
+
 ### A.6 Vocabulary of the answers
 
 21. Every answer uses only this statement's vocabulary and the
     repository's own names. No term in an answer belongs to any one
     asker.
+
+### A.7 Toolchain
+
+34. Among a task's inputs pinout marks the toolchain declarations, each
+    with its kind, and gives the digest of each. A kind the repository
+    does not declare is answered as undeclared, never as unknown and
+    never left out.
 
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
@@ -164,8 +181,10 @@ way of satisfying it for one workspace tool.
 23. **relate**: given a repository state, the dependencies between its
     projects.
 24. **declare-inputs**: given a task, its inputs and the assurance
-    under which they are complete.
-25. **invoke**: given a task, its invocation.
+    under which they are complete, and which of them are toolchain
+    declarations, each with its kind.
+25. **invoke**: given a task, its invocation, and how it is made to
+    execute the task where the tool may answer from an earlier run.
 
 ### B.2 Guarantees
 
@@ -180,7 +199,8 @@ way of satisfying it for one workspace tool.
 29. A binding implements all four operations. Where its tool cannot
     answer one, the binding answers unknown and still implements it.
 30. A binding states, once and in its profile, the rule by which it
-    infers any input under convention, and applies no other.
+    infers under convention any input, any toolchain declaration, or the
+    one project of a repository that declares none, and applies no other.
 31. Which binding reads a repository is decided by the repository state
     alone, and an asker can name a different one.
 32. One conformance suite holds every binding to Parts A and B; a binding
@@ -191,7 +211,8 @@ way of satisfying it for one workspace tool.
 ## Part C. Profiles
 
 Parts A and B do not change to admit a profile. Each profile maps the
-four operations of B.1 onto one workspace tool.
+four operations of B.1 onto one workspace tool, and every profile applies
+C.6.
 
 ### C.1 moon
 
@@ -199,8 +220,8 @@ four operations of B.1 onto one workspace tool.
 |---|---|
 | enumerate | moon's project and task graph, as `moon query projects` and `moon query tasks` report it |
 | relate | the project graph's declared dependencies |
-| declare-inputs | each task's declared `inputs`, assurance declared; the files moon hashes for the task's own cache key |
-| invoke | `moon run <project>:<task>` |
+| declare-inputs | each task's declared `inputs`, assurance declared; the files moon hashes for the task's own cache key; moon's toolchain settings as a language-tools declaration, declared |
+| invoke | `moon run <project>:<task>`; executed afresh with `--cache off` |
 
 ### C.2 Turborepo
 
@@ -209,7 +230,7 @@ four operations of B.1 onto one workspace tool.
 | enumerate | the workspace packages, and the tasks `turbo.json` declares for each |
 | relate | the packages' declared dependencies |
 | declare-inputs | the task's `inputs` where declared, assurance declared; otherwise Turborepo's default of the package's files, assurance convention |
-| invoke | `turbo run <task> --filter=<package>` |
+| invoke | `turbo run <task> --filter=<package>`; executed afresh with `--force` |
 
 ### C.3 Nx
 
@@ -218,7 +239,7 @@ four operations of B.1 onto one workspace tool.
 | enumerate | the project graph and each project's targets |
 | relate | the project graph's edges, declared or inferred by Nx |
 | declare-inputs | the target's resolved `inputs` and named inputs, assurance declared |
-| invoke | `nx run <project>:<target>` |
+| invoke | `nx run <project>:<target>`; executed afresh with `--skip-nx-cache` |
 
 ### C.4 Package-manager workspaces
 
@@ -227,7 +248,7 @@ four operations of B.1 onto one workspace tool.
 | enumerate | each workspace package is a project; each of its scripts is a task |
 | relate | the packages' dependencies on one another |
 | declare-inputs | the package's own files, every package it depends on, the lockfile and the root configuration, assurance convention |
-| invoke | the package manager running the script in the package |
+| invoke | the package manager running the script in the package, which answers nothing from an earlier run |
 
 ### C.5 Declared paths
 
@@ -239,8 +260,19 @@ reads.
 |---|---|
 | enumerate | the file's projects and tasks; with no file, the whole repository is one project |
 | relate | the dependencies the file lists; with none listed, unknown |
-| declare-inputs | the task's globs, assurance declared; with none, the whole repository, assurance convention |
-| invoke | the command the file gives |
+| declare-inputs | the task's globs, assurance declared; with none, the whole repository, assurance convention; the toolchain declarations the file lists, declared |
+| invoke | the command the file gives, which answers nothing from an earlier run unless the file says how it is made not to |
+
+### C.6 Toolchain declarations
+
+Every profile reports these files as toolchain declarations wherever the
+repository state holds them, under convention, beside any its own tool
+declares.
+
+| kind | files |
+|---|---|
+| environment | `devenv.lock`; `flake.lock`; the Dockerfile, or the image reference, of the image the repository names for its tasks |
+| language tools | `.prototools`; `mise.toml`; `.tool-versions`; `.nvmrc`; the workspace tool's own toolchain settings |
 
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
@@ -305,8 +337,6 @@ These are not requirements.
   does an answer name them (7, 31)?
 - How does a digest cover what a task reads that another task produced,
   or that a checkout holds and its commit does not (15, 17)?
-- Does a task's invocation always execute the task, or may the
-  repository's tooling answer it from a cache of its own (20)?
 - What keeps a digest cheap to give in the hundredth checkout of one
   repository, where almost every input is unchanged (16)?
 
@@ -332,6 +362,12 @@ These are not requirements.
   agent surface gives the same answer.
 - **S7.** An asker holding two digests of one task asks why they differ
   and is told which inputs changed.
+- **S8.** An asker that must see a task execute asks how, and runs the
+  repository's own invocation in the form that answers nothing from an
+  earlier run.
+- **S9.** An asker reads which files declare a task's environment and
+  which its language tools, with the digest of each, and is told plainly
+  where the repository declares none.
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

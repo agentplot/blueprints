@@ -2,8 +2,8 @@
 
 A gate trusts executors. For that to mean anything, a record has to
 count as an executor's only when someone the gate's policy names vouches
-that the executor wrote it. Two smaller rulings travel with it: a replay
-is not a run, and an error is not a verdict.
+that the executor wrote it. One smaller ruling travels with it: an error
+is not a verdict.
 
 ## A record is an executor's only when vouched for
 
@@ -39,30 +39,6 @@ The policy entry in the glossary gains "and who must vouch for each".
 testledger's rule ledger.15 then reads without "a gate that must be
 sure": a gate reads a result's outcome, executor and confinement from
 its verified signed layer unless its policy admits unvouched records.
-
-## A replay is not a run
-
-### The problem
-
-A record's outcome is what the executor observed (9). The invocation a
-workspace description gives is the one the repository's own tooling
-uses, and that tooling answers from a cache of its own when it has one.
-An executor that sees a zero exit from a replay has observed a zero
-exit. The record then says this executor ran the check and it passed,
-when the pass was proven earlier, by some other executor, under the
-tool's own idea of what the inputs are.
-
-That launders trust. A pass an open shell left in a tool's cache is
-replayed, recorded again, and filed under whichever executor asked.
-
-### The ruling
-
-> 9a. An executor reports a pass only for a check it executed. A result
->     a tool answered from an earlier run is not a run, and is never
->     recorded as one.
-
-How an executor ensures it, by turning a tool's output cache off or by
-giving the run nothing to replay from, is the profile's.
 
 ## An error is not a verdict
 
