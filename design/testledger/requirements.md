@@ -191,6 +191,10 @@ redefine these.
     of stores may be read at once while one is written.
 38. A record written through one profile reads the same through any
     other profile of the same seam.
+39. A record has one format whatever store holds it; stores differ only in
+    how they carry it.
+40. A result is always kept where its key is kept, so a store that holds a
+    key holds every result filed under it.
 
 <!-- ANCHOR_END: part-b -->
 <!-- ANCHOR: part-c -->
@@ -206,14 +210,31 @@ Parts A and B do not change to admit a profile.
 | digest-inputs | pinout's digest and assurance, unknown passed through unchanged |
 | invocation | pinout's invocation |
 
-### C.2 Result stores
+### C.2 Records: OCI artifacts
 
-| store | put / get / find | evidence | retention |
-|---|---|---|---|
-| **shared local**: in the repository's common git directory, read by every checkout on the machine | one file per record under its key; an index by commit | files addressed by digest | the operator's, by age |
-| **git**: records as git objects under references of their own | a reference per key, pushed and fetched with the repository | blobs | none; history keeps them |
-| **object storage**: an HTTP or S3-compatible bucket, with an index | one object per record; the index answers find | objects addressed by digest | the bucket's lifecycle, stated |
-| **Archivista** | its attestation store, queried by subject | its own | its own |
+Every record is made of OCI blobs and manifests, whichever store holds it
+(39).
+
+- **The inputs manifest.** One OCI manifest whose layers are group blobs,
+  one per part of the key: definition, inputs, toolchain and envelope,
+  sorted by group. A group blob holds paths and hashes, never source:
+  repository-relative POSIX paths in Unicode NFC with the digest of each.
+  The toolchain group names the environment image's digest. The config
+  descriptor is the fixed empty descriptor, and every media type is
+  versioned. Nothing about a run is in it: no timestamp, host or worktree
+  path.
+- **The key** is the sha256 of the inputs manifest's canonical bytes, its
+  JSON canonicalized by RFC 8785 (JCS) (1, 2, 3).
+- **A result** is an OCI manifest whose subject is the inputs manifest. Its
+  signed layer is a DSSE envelope holding an in-toto Statement whose
+  subject is the key and whose predicate carries the rest of the record
+  under a published predicate type. Its annotations (outcome, executor)
+  are unsigned and serve only to filter; a gate that must be sure, such as
+  a version or a deploy, verifies the DSSE layer (11, 36).
+- **Evidence** (a log, a test report) is a blob of the result, by digest.
+- **Signing** is sigstore's keyless signing where the executor has a
+  workload identity, and a local key otherwise; an unsigned result is read
+  as vouched for by nobody (11).
 
 ### C.3 Executors
 
@@ -222,13 +243,23 @@ Parts A and B do not change to admit a profile.
 | **shell**: the check run in the asker's own environment | open |
 | **container engine**, such as Dagger: a container given only the inputs pinout names | confined |
 
-### C.4 Records and signatures
+### C.4 Result stores
 
-A record is an in-toto Statement whose subject is the key and whose
-predicate carries the rest of the record under a published predicate
-type. Signing is sigstore's keyless signing where the executor has a
-workload identity, and a local key otherwise; an unsigned record is
-allowed and is read as vouched for by nobody (11).
+A referrer lives in the same repository as its subject, so a result sits
+beside its inputs manifest, and an integration result beside the artifact
+it ran against (40).
+
+| store | layout | put / get / find | retention |
+|---|---|---|---|
+| **OCI image layout on a filesystem**: the repository's common git directory, read by every checkout on the machine | blobs by digest; each result under `keys/<key>/results/<digest>`, a referrers convention | files; an index by commit | the operator's, by age, a key with its results |
+| **OCI image layout in object storage**: an HTTP or S3-compatible bucket | the same layout under a prefix per repository | objects; an indexer fed by the bucket's object events answers find | stated per prefix; no rule expires an untagged manifest |
+| **OCI registry service**: ECR, GHCR, Harbor | a repository per source repository | push and pull; the referrers API, or the specification's fallback `sha256-<hex>` tag per key where a registry lacks it | a rule that expires untagged manifests would orphan keys, so each key carries a tag or the repository is exempt |
+| **Archivista** | its attestation store, holding the DSSE envelopes | queried by subject | its own |
+
+The registry-service profile is the general one, for deployers that admit
+by OCI referrers. A deployer that is its own deploy engine reads proofs
+from its own rows and needs neither a registry service nor the referrers
+API.
 
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
@@ -265,7 +296,8 @@ Constraints already fixed:
 
 The rest of the stack, which a model builds on unless it says why not:
 
-- Records as in-toto Statements, signed with sigstore.
+- Records as OCI artifacts whose signed layer is an in-toto Statement in
+  a DSSE envelope, signed with sigstore.
 - SHA-256 for keys and digests.
 - A command-line program, and an action for GitHub Actions that wraps
   it.
