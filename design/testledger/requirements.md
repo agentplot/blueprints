@@ -309,8 +309,9 @@ The rest of the stack, which a model builds on unless it says why not:
 - Records as OCI artifacts whose signed layer is an in-toto Statement in
   a DSSE envelope, signed with sigstore.
 - SHA-256 for keys and digests.
-- A command-line program, and an action for GitHub Actions that wraps
-  it.
+- Three surfaces answering from one core: a command-line program, a
+  Model Context Protocol server through which an agent asks what its gate
+  still needs, and an action for GitHub Actions.
 
 <!-- ANCHOR_END: givens -->
 <!-- ANCHOR: questions -->
