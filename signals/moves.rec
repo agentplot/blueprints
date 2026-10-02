@@ -1,0 +1,14 @@
+# One move per signal: curation's, and the route that turns a signal into work.
+# Written only through crew (crew signal move, crew unit add --signal), never
+# by hand. See README.md.
+#
+#   recsel -t Move -e "Move = 'route'" signals/moves.rec
+#   recfix --check signals/moves.rec
+
+%rec: Move
+%doc: A signal's one standing move: what it names, why, when and by whom.
+%key: Signal
+%mandatory: Signal Move Date By
+%allowed: Signal Move Target Reason Date By
+%type: Move enum attach challenge new-territory answered drop route
+%type: Date date
