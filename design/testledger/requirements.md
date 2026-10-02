@@ -77,6 +77,8 @@ redefine these.
 - **verdict**: a gate's reading of the ledger under its policy.
 - **flaky**: a key holding both a pass and a fail from executors the
   reader trusts.
+- **profile**: one way a contract of Part B is satisfied, as Part C
+  describes.
 
 <!-- ANCHOR_END: glossary -->
 <!-- ANCHOR: part-a -->
@@ -155,6 +157,10 @@ redefine these.
 23. **list-checks**: given a repository state, the checks it offers.
 24. **digest-inputs**: given a check, its inputs digest with its
     assurance, or unknown.
+
+24a. **name-inputs**: given a check, the inputs its digest covers, each
+    with the fingerprint of its content.
+
 25. **invocation**: given a check, what runs it.
 26. Every answer is the same for the same repository state, and
     distinguishes unknown from refused (4).
@@ -193,8 +199,8 @@ redefine these.
     other profile of the same seam.
 39. A record has one format whatever store holds it; stores differ only in
     how they carry it.
-40. A result is always kept where its key is kept, so a store that holds a
-    key holds every result filed under it.
+40. A result is always kept where its key is kept: a store that holds a
+    result holds the key it is filed under.
 
 <!-- ANCHOR_END: part-b -->
 <!-- ANCHOR: part-c -->
@@ -208,6 +214,7 @@ Parts A and B do not change to admit a profile.
 |---|---|
 | list-checks | pinout's tasks; which tasks are checks is the policy's to say |
 | digest-inputs | pinout's digest and assurance, unknown passed through unchanged |
+| name-inputs | the inputs pinout names for its digest, with the digest of each |
 | invocation | pinout's invocation |
 
 ### C.2 Records: OCI artifacts
@@ -219,6 +226,8 @@ Every record is made of OCI blobs and manifests, whichever store holds it
   one per part of the key: definition, inputs, toolchain and envelope,
   sorted by group. A group blob holds paths and hashes, never source:
   repository-relative POSIX paths in Unicode NFC with the digest of each.
+  The inputs group is the list pinout names for its digest (24a), and
+  testledger hashes no file of the repository itself.
   The toolchain group names the environment image's digest. The config
   descriptor is the fixed empty descriptor, and every media type is
   versioned. Nothing about a run is in it: no timestamp, host or worktree
@@ -231,6 +240,8 @@ Every record is made of OCI blobs and manifests, whichever store holds it
   under a published predicate type. Its annotations (outcome, executor)
   are unsigned and serve only to filter; a gate that must be sure, such as
   a version or a deploy, verifies the DSSE layer (11, 36).
+- **A result with no key** (4, 5) has no subject. It is filed by the
+  repository state it ran on and under no key.
 - **Evidence** (a log, a test report) is a blob of the result, by digest.
 - **Signing** is sigstore's keyless signing where the executor has a
   workload identity, and a local key otherwise; an unsigned result is read
@@ -252,14 +263,13 @@ it ran against (40).
 | store | layout | put / get / find | retention |
 |---|---|---|---|
 | **OCI image layout on a filesystem**: the repository's common git directory, read by every checkout on the machine | blobs by digest; each result under `keys/<key>/results/<digest>`, a referrers convention | files; an index by commit | the operator's, by age, a key with its results |
-| **OCI image layout in object storage**: an HTTP or S3-compatible bucket | the same layout under a prefix per repository | objects; an indexer fed by the bucket's object events answers find | stated per prefix; no rule expires an untagged manifest |
+| **OCI image layout in object storage**: an HTTP or S3-compatible bucket | the same layout under a prefix per repository | objects; an index by commit under the same prefix answers find, and a reader that keeps its own index of the bucket's object events may answer from that instead | stated per prefix; no rule expires an untagged manifest |
 | **OCI registry service**: ECR, GHCR, Harbor | a repository per source repository | push and pull; the referrers API, or the specification's fallback `sha256-<hex>` tag per key where a registry lacks it | a rule that expires untagged manifests would orphan keys, so each key carries a tag or the repository is exempt |
 | **Archivista** | its attestation store, holding the DSSE envelopes | queried by subject | its own |
 
 The registry-service profile is the general one, for deployers that admit
-by OCI referrers. A deployer that is its own deploy engine reads proofs
-from its own rows and needs neither a registry service nor the referrers
-API.
+by OCI referrers. A reader that keeps its own index of a store needs
+neither a registry service nor the referrers API.
 
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
@@ -315,6 +325,11 @@ These are not requirements.
   by the asker?
 - Does a policy name checks by identity, by pattern, or by what pinout
   reports as affected, and which of those may a later layer use?
+- What states the toolchain of a run made in no image, an agent's shell
+  or a developer's, and who establishes that the run used it (1, 10)?
+- How does a key stop being flaky for a reader (16): only when one of
+  its four parts changes, or also by something a policy or the operator
+  may do?
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->

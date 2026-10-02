@@ -1,7 +1,7 @@
 [book]
 title = "pinout design"
 description = "The design book for pinout: one way to ask any repository what is in it, what a change affects, how a part is run and what it reads, whichever monorepo tool it uses. Part I includes the statement of invariants from design/pinout/requirements.md."
-authors = ["Chuck Swanberg <cswanberg@willdan.com>"]
+authors = ["Chuck Swanberg <cswanberg@mad-swan.com>"]
 language = "en"
 src = "src"
 

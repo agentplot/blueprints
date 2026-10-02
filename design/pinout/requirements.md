@@ -73,6 +73,8 @@ redefine these.
   **refused** (pinout cannot ask, and says why).
 - **binding**: one way of reading a workspace tool, as Part C
   describes.
+- **profile**: the description, in Part C, of how one binding satisfies
+  the workspace contract.
 - **surface**: one way an asker reaches pinout.
 
 <!-- ANCHOR_END: glossary -->
@@ -298,6 +300,15 @@ These are not requirements.
   owner (9)?
 - Which implementation language: one that ships a single binary, or one
   that the first consumers can embed as a library?
+- May one repository state be read through more than one binding at
+  once, each answering for tasks the other does not, and if it may, how
+  does an answer name them (7, 31)?
+- How does a digest cover what a task reads that another task produced,
+  or that a checkout holds and its commit does not (15, 17)?
+- Does a task's invocation always execute the task, or may the
+  repository's tooling answer it from a cache of its own (20)?
+- What keeps a digest cheap to give in the hundredth checkout of one
+  repository, where almost every input is unchanged (16)?
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->

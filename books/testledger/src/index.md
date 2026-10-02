@@ -50,6 +50,23 @@ That gap is the same for every team running agents against a trunk.
 testledger depends on pinout for what a repository is and what a check
 reads (Part C, C.1), and on nothing else of ours.
 
+## Where it stops
+
+testledger keeps a ledger for whoever reads it and stops there. It
+schedules nothing, hosts no runner, approves nothing, and looks no
+further across time than whether one key is flaky (section 8). A team
+with a repository, pinout and a store it already has, a directory or a
+registry, has a whole ledger and whole gates, and its policy composes in
+layers like anyone's (20).
+
+What one team cannot do for itself begins where those non-goals do:
+vouching for an executor from outside the team that ran it, answering
+verdicts for a fleet faster than a store can, and reading and governing
+every repository of an organization at once. That is a control plane's
+work. It reaches the ledger as any profile does, through the contracts
+of Part B (37, 38), and reads the one record format every store carries
+(39).
+
 ## How to read this book
 
 Part I is the statement of invariants, included from

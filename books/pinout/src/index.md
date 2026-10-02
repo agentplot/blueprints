@@ -52,6 +52,19 @@ convention. Published, it is something a monorepo tool can implement
 directly, an agent framework can rely on, and a build platform can
 depend on without owning.
 
+## Where it stops
+
+pinout describes one repository and stops. It runs no task, caches no
+output, records no result, chooses nothing for an asker and versions
+nothing (section 8). A team needs nothing beside it to ask its
+questions: no account, no service and no other project of ours.
+
+Whatever is built on its answers, a ledger of results or a platform that
+builds and releases, asks through the same surfaces as anyone and gets
+the same answer (6), in words that belong to no one asker (21). That is
+the line between pinout and anything sold above it: a control plane is
+an asker, never a privileged one.
+
 ## How to read this book
 
 Part I is the statement of invariants, included from
