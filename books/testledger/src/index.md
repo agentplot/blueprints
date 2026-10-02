@@ -64,13 +64,9 @@ with a repository, pinout and a store it already has, a directory or a
 registry, has a whole ledger and whole gates, and its policy composes in
 layers like anyone's (20).
 
-What one team cannot do for itself begins where those non-goals do:
-vouching for an executor from outside the team that ran it, answering
-verdicts for a fleet faster than a store can, and reading and governing
-every repository of an organization at once. That is a control plane's
-work. It reaches the ledger as any profile does, through the contracts
-of Part B (37, 38), and reads the one record format every store carries
-(39).
+Anything built on the ledger, a dashboard or a platform that builds and
+releases, reaches it as any profile does, through the contracts of Part B
+(37, 38), and reads the one record format every store carries (39).
 
 ## How to read this book
 
