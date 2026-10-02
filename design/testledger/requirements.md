@@ -128,6 +128,13 @@ redefine these.
 16. A key that is flaky for a reader is never read by that reader as a
     pass.
 
+16a. A policy may state, for a gate, that a key flaky only among open
+    runs is read by that gate from confined runs alone: passed where a
+    confined run passed and none failed, missing where none ran.
+
+16b. A key on which confined runs disagree is read as a pass by no gate
+    under any policy, for as long as those records stand.
+
 ### A.4 Gates
 
 17. A verdict is a function of the gate's policy and the ledger the gate
@@ -231,7 +238,9 @@ Every record is made of OCI blobs and manifests, whichever store holds it
   The toolchain group names the environment image's digest. The config
   descriptor is the fixed empty descriptor, and every media type is
   versioned. Nothing about a run is in it: no timestamp, host or worktree
-  path.
+  path. An inputs manifest whose envelope names an artifact the check runs
+  against carries that artifact as its own subject, so a reader of the
+  artifact's referrers reaches each result through the inputs manifest.
 - **The key** is the sha256 of the inputs manifest's canonical bytes, its
   JSON canonicalized by RFC 8785 (JCS) (1, 2, 3).
 - **A result** is an OCI manifest whose subject is the inputs manifest. Its
@@ -257,15 +266,22 @@ Every record is made of OCI blobs and manifests, whichever store holds it
 ### C.4 Result stores
 
 A referrer lives in the same repository as its subject, so a result sits
-beside its inputs manifest, and an integration result beside the artifact
-it ran against (40).
+beside its inputs manifest, and an inputs manifest that names an artifact
+as its subject sits, with every result under it, beside that artifact
+(40).
 
 | store | layout | put / get / find | retention |
 |---|---|---|---|
 | **OCI image layout on a filesystem**: the repository's common git directory, read by every checkout on the machine | blobs by digest; each result under `keys/<key>/results/<digest>`, a referrers convention | files; an index by commit | the operator's, by age, a key with its results |
+| **git**: the repository's own remote | the filesystem profile's layout as git objects under a ref namespace of its own, one ref per writer, so no writer updates another's ref | put writes the local layout and a push carries it; get and find read the refs a fetch brought | a writer's ref is dropped once a longer-lived store holds its records, or by age |
 | **OCI image layout in object storage**: an HTTP or S3-compatible bucket | the same layout under a prefix per repository | objects; an index by commit under the same prefix answers find, and a reader that keeps its own index of the bucket's object events may answer from that instead | stated per prefix; no rule expires an untagged manifest |
 | **OCI registry service**: ECR, GHCR, Harbor | a repository per source repository | push and pull; the referrers API, or the specification's fallback `sha256-<hex>` tag per key where a registry lacks it | a rule that expires untagged manifests would orphan keys, so each key carries a tag or the repository is exempt |
 | **Archivista** | its attestation store, holding the DSSE envelopes | queried by subject | its own |
+
+The git profile is what carries a checkout's records to a server: they
+travel with the push that carries the work. A gate counts them only where
+its policy trusts their executors (19), so a gate that trusts confined
+executors alone reads none of an open shell's (S4).
 
 The registry-service profile is the general one, for deployers that admit
 by OCI referrers. A reader that keeps its own index of a store needs
@@ -319,8 +335,8 @@ The rest of the stack, which a model builds on unless it says why not:
 
 These are not requirements.
 
-- When a gate on a server should read records written in an agent's
-  checkout, what carries them there, and what must vouch for them?
+- What must vouch for a record a checkout wrote and a push carried,
+  before a gate that does not trust every executor counts it?
 - How long does each store keep records and evidence by default?
 - Is an error (no verdict reached) ever retried by testledger, or only
   by the asker?
@@ -328,9 +344,6 @@ These are not requirements.
   reports as affected, and which of those may a later layer use?
 - What states the toolchain of a run made in no image, an agent's shell
   or a developer's, and who establishes that the run used it (1, 10)?
-- How does a key stop being flaky for a reader (16): only when one of
-  its four parts changes, or also by something a policy or the operator
-  may do?
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->
@@ -353,6 +366,15 @@ These are not requirements.
   and is never reused.
 - **S7.** Asked why a check ran again, testledger says the toolchain
   changed and nothing else.
+- **S8.** An agent proves its change in a checkout and pushes. The
+  server's merge gate reads the records the push carried and runs
+  nothing. The version gate lists them and reports each check missing
+  until a confined run passes.
+- **S9.** A check passes in one agent's shell and fails in another's at
+  the same key. A merge gate whose policy sends such a key to confined
+  runs reports it missing, a confined run passes, and the gate is
+  satisfied. Where two confined runs disagree, no gate is satisfied at
+  that key.
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

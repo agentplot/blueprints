@@ -29,11 +29,13 @@ so a pass never covers inputs it did not see; a check whose inputs
 cannot be stated has no key and is always run (4). Every run is
 recorded, a fail as faithfully as a pass, and nothing written is ever
 altered (6, 7), so a flaky check shows up as flaky rather than as
-whichever result came last (16). And trust belongs to the reader:
+whichever result came last (16), and only confined runs settle it (16a,
+16b). And trust belongs to the reader:
 whether a record from an agent's open shell counts at a gate is the
 gate's policy, decided when it reads (14, 19). A merge gate can take an
 agent's pass to save time while a version gate requires a confined run
-on a server (S4), from one ledger.
+on a server (S4), from one ledger. The agent's records reach the server
+with the push that carries its work (S8).
 
 The envelope is what lets integration tests join in. A test against an
 emulator or a deployed artifact is keyed by that artifact's digest and
