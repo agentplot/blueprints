@@ -1,0 +1,14 @@
+[book]
+title = "testledger design"
+description = "The design book for testledger: a record of whether each check passed on exactly the inputs it read, so a gate reuses a pass proven anywhere and runs only what is missing. Part I includes the statement of invariants from design/testledger/requirements.md."
+authors = ["Chuck Swanberg <cswanberg@willdan.com>"]
+language = "en"
+src = "src"
+
+[output.html]
+site-url = "/blueprints/testledger/"
+default-theme = "ayu"
+preferred-dark-theme = "ayu"
+no-section-label = false
+fold.enable = true
+fold.level = 1
