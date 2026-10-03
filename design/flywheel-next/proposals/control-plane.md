@@ -7,13 +7,12 @@ when the binary is invoked rather than launched. The line is the **invocation
 contract**, documented in the open-source repository, and a self-managed host
 and a hosted host run the same binary bytes.
 
-The control plane is installable. It ships as a Switchboard composition of cfn
-apps and stacks with the tenancy choices as parameters, an identity environment
-of the installer's own, billing optional, and the shared chat applications
+The control plane is installable. It ships as one composition of applications
+and stacks with the tenancy choices as parameters, an identity environment of
+the installer's own, billing optional, and the shared chat applications
 replaced by the installer's own. A self-hosted control plane is the third shape
 of tier 3 and the fourth flavour of Enterprise. It is not marketed and not
-offered in the management console; it is sold and installed by us. The first
-instance is a willdan-owned control plane deployed in Switchboard.
+offered in the management console; it is sold and installed by us.
 
 ## 1. The two products
 
@@ -102,13 +101,12 @@ run the same binary bytes**. Nothing is compiled differently, no feature is
 gated at build time, and a hosted host differs from a laptop only in what its
 manifest binds: a tier, an identity kind, and a router (217j, 243, 191).
 
-## 3. The control plane as a Switchboard composition
+## 3. The control plane as a composition
 
-The control plane is a **composition**: one cfn app whose members are the cfn
-apps below, each one stack, deployed into an environment through the changeset
-executor and parameterized per environment by its app settings row. Installing
-it is bringing the composition into an environment; customizing it is the
-parameters.
+The control plane is a **composition**: one application whose members are the
+stacks below, each deployed into an environment and parameterized per
+environment. Installing it is bringing the composition into an environment;
+customizing it is the parameters.
 
 | stack | what it holds | tenancy parameters |
 |---|---|---|
@@ -137,40 +135,31 @@ installer actually decides:
 - **store homes** — whether the queue, the cache, the projection and the pool
   image live in the control plane's account or the instance's (276).
 
-Switchboard deploys this the way it deploys anything: the composition is an app
-in the catalog with `MEMBER#` rows for each stack, a channel per member, one
-subscription row per environment, and the app settings row carrying the
-parameters above. A version move on a member runs the rebuild executor, the
-composition's own `beta` advances, and the environments that follow it update
-themselves. The identity block in the manifest is what `frontegg-sync`
-reconciles — which is Switchboard's mechanism for exactly the sync `fw-identity-sync`
-performs for the instance's own definitions.
-
 Two things the composition is deliberately not: it is not a second machinery,
 and it is not a second catalogue of the instance's objects. Every state the
 control plane holds is either a store the contract names or the registry, and
 the registry holds names, tiers, health and counters and nothing else.
 
-## 4. The willdan instance, worked
+## 4. An installed instance, worked
 
-Willdan installs the control plane and runs their own flywheel service for
-their own business units.
+An enterprise installs the control plane and runs its own flywheel service for
+its own business units.
 
-| what | willdan's | ours |
+| what | the installer's | ours |
 |---|---|---|
-| AWS account | the composition deploys into willdan's Switchboard-connected accounts, through `SwitchboardAccess` like every other app; the control plane's stacks stand in the platform account beside Switchboard's own | none. No account of ours is in the path |
-| Identity environment | willdan's Frontegg environment, one per environment class, with the flywheel Application in it beside `platform-nonprod` and Switchboard's own. `fw-identity-sync` writes the instance's permissions, roles, features and flags there at release, by difference | none. Our environment holds nothing of willdan's, and their instances are not accounts under ours |
+| Cloud account | the composition deploys into the installer's own accounts, through a role they grant; the control plane's stacks stand in an account of theirs | none. No account of ours is in the path |
+| Identity environment | the installer's own Frontegg environment, one per environment class, with the flywheel Application in it. `fw-identity-sync` writes the instance's permissions, roles, features and flags there at release, by difference | none. Our environment holds nothing of theirs, and their instances are not accounts under ours |
 | Billing | absent. `fw-billing` is not in the member set. The ladder's plans exist as entitlement targets on the Frontegg account — a plan is still a named set of `fw.ff.*` features plus limits, and it still hides and meters — but nothing is charged and no payment provider is bound | none |
-| Chat | willdan's own Slack application, installed in willdan's workspace, carrying rail text and interactions and nothing else. Their bot, their tokens, their signing secret | none. The agentplot Slack and Discord applications are not installed anywhere in willdan's workspace |
-| Git host connection | willdan's own GitHub App on their instances (207) | none |
-| Instances served | willdan's business units, each an account in willdan's Frontegg tree, each with its own queue, key, cache, projection and scheduler entry | none. They are not in our registry, and no counter of theirs reaches us |
+| Chat | the installer's own Slack application, installed in its workspace, carrying rail text and interactions and nothing else. Their bot, their tokens, their signing secret | none. The agentplot Slack and Discord applications are not installed anywhere in their workspace |
+| Git host connection | the installer's own GitHub App on their instances (207) | none |
+| Instances served | the installer's business units, each an account in its Frontegg tree, each with its own queue, key, cache, projection and scheduler entry | none. They are not in our registry, and no counter of theirs reaches us |
 | The binary | the same released bytes we ship, stamped by their deployer with the version it applied | ours to release; theirs to run |
 
-The willdan instance is the third shape of tier 3 read from the other side.
-Under the first two shapes, willdan's stores or willdan's stores and compute sit
-in willdan's account while our control plane invokes the binary. Under the
-third, the control plane is willdan's too, and there is nothing left of ours in
-the running system at all.
+An installed instance is the third shape of tier 3 read from the other side.
+Under the first two shapes, the installer's stores or its stores and compute sit
+in the installer's account while our control plane invokes the binary. Under the
+third, the control plane is the installer's too, and there is nothing left of
+ours in the running system at all.
 
 ## 5. What stays ours
 
@@ -213,8 +202,8 @@ our management console does not know they exist.
    instance package (228) and the shipped one is only the default index's
    entry; or the ladder is a stated default the sync writes only where a
    payment provider is bound, leaving the environment's plans empty otherwise.
-   The choice decides what `fw-identity-sync` writes on a willdan-shaped
-   install and what the rail surface shows there.
+   The choice decides what `fw-identity-sync` writes on an install that sells
+   nothing and what the rail surface shows there.
 
 3. **The update path when the binary moves ahead of an installed control
    plane.** 252 gives the failure mode — a binary naming a permission the
