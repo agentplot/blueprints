@@ -15,7 +15,6 @@ still one capture.
 ```
 signals/
   README.md
-  moves.rec                   # one move per signal, written only through crew
   2026-10-02-some-event/      # one folder per capture
     capture.md                # where the event came from
     01-a-short-slug.md        # one file per signal, numbered in reading order
@@ -88,14 +87,17 @@ Each move is a record in `moves.rec`:
 | `drop` | curation | it is noise or a duplicate | the reason |
 | `route` | the planner | it becomes work, a unit queued in the plan | the unit |
 
-Every move is written through crew: curation's with
-`crew signal move <id> <move> --target <what it names> --reason "<why>"`,
-and the route by the planner's `crew unit add <unit> ... --signal <id>`. crew
-appends the record on main and pushes it, and applies it again to the new tip
-when main has moved, so `moves.rec` is never merged, and it refuses a second
-move for a signal that has one. Don't edit `moves.rec` by hand: two moves
-appended in two checkouts merge into one broken record. The `merge=union` line
-in `.gitattributes` is only a fallback for when that happens anyway.
+`moves.rec` lives in the flywheel's state repository, on the branch
+`madswan/main` of `afterthought/crew-state`, beside the plan, `plan.rec`.
+Nothing in this repo holds either.
+
+Both are written only through crew, never by hand: curation's moves with
+`crew signal move <id> <move> --target <what it names> --reason "<why>"`, the
+route by the planner's `crew unit add <unit> ... --signal <id>`, which queues
+the unit and records its move in one commit, and the plan with `crew bolt` and
+`crew unit`. crew applies each write to the tip of `madswan/main` and pushes
+it, and applies it again to the new tip when the branch has moved, so nothing
+is merged, and it refuses a second move for a signal that has one.
 
 An agent records a finding with `crew signal <slug> "<what it asserts>" --kind
 <kind>`, which writes the signal under a capture of that agent's own for the
