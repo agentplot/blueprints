@@ -128,8 +128,8 @@ regions:
             to: hours_asked
             note: >-
               no automated timesheet source. The machine asks the operator for
-              the datum rather than blocking; the answer arrives as a capture
-              (19) and the check re-runs on the next tick.
+              the datum rather than blocking; the answer is a response to that
+              decision (10, 153) and the check re-runs on the next tick.
             needs: growth-8
           - when: {ev: cycle.reconciliation_class, is: ok}
             to: reconciled
@@ -143,15 +143,15 @@ regions:
       hours_asked:
         doc: >-
           the ask-the-operator decision (growth-8). It names the vendor and the
-          month and nothing else; the answer is a capture from the capture box
-          (19) that writes the hours record, and the next tick re-checks.
+          month and nothing else; the answer carries the hours (10, 153) and
+          its effect writes the hours record, and the next tick re-checks.
         needs: growth-8
         decision:
           kind: timesheet-hours-wanted
           group: answer
           answers: ["hours <number>", "no hours", "suppress: <reason>"]
           shows: [cycle.vendor, cycle.month, cycle.invoice_hours]
-          satisfies: [15, 19, 153]
+          satisfies: [10, 15, 153]
         transitions:
           - when: {response: "hours <number>"}
             to: timesheet_pending

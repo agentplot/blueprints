@@ -73,8 +73,15 @@ ledger has no gaps is the state repository with numbers never reused (15).
    Zoho Books, WorkDrive, OnPay, mail. Each is a per-host package with a
    secret placed under 207 and a platform it runs on.
 8. **The operator as a data source.** The capture box already admits a
-   capture from a person; the model needs the machine to *ask* for a datum
-   (the timesheet hours) as a decision whose answer is that capture.
+   capture from a person, but a capture is a note that answers nothing
+   (19, 19a). What the machine needs is to *ask* for a datum (the
+   timesheet hours) as a decision of its own kind, in the `answer` group,
+   whose answer carries the value — `hours <number>`, the reply grammar's
+   `421: <text>` path (2, 194) — recorded once as the response (153) and
+   written by the type's own effect as the record the next tick reads.
+   Clause 10's list names the kind, and the core as built in phase 1 takes
+   such a decision from any type's definition (85): nothing grows here;
+   the type declares it (models/statechart/gaps.md, 10).
 
 ## The brief's open questions, answered by the model
 

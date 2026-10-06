@@ -64,6 +64,22 @@ the operator may reverse by a response on the file; an entry with
   follows the answer. A decision per answer would double-count the same
   choice in the rail's count.
 
+- **10 the operator as a data source (generic track, growth point 8).**
+  The roadmap lands it in phase 1, and the generic README and the
+  roadmap's row read "a decision whose answer is a capture"; but 19 and
+  19a make a capture a note that answers nothing, read by a reader and
+  judged by curation, which a datum the machine asked for never needs.
+  **Decision** (2026-10-06): the datum is an answer, never a capture. The
+  type's own definition declares the decision in the state that waits
+  for the datum (85), in the `answer` group with an answer pattern that
+  carries the value (`hours <number>`), the reply grammar's `421: <text>`
+  path (2, 194); the response is recorded once (153), the object's own
+  transition takes it and its effect writes the record the next tick
+  reads as evidence. Nothing in the engine grows: `session.question`
+  already takes `<text>` this way and the engine's answer matcher takes
+  `word <arg>`, so a type declares the decision and the core as built in
+  phase 1 runs it. Clause 10's list names the kind.
+
 - **11 "yes all".** The presenter expands `yes all` into one response
   per approve decision it delivered, each with its own id. If a
   decision was retracted between delivery and reply, that response is

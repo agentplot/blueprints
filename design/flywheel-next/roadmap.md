@@ -50,7 +50,7 @@ phase that needs it opens:
 | aggregate units | 3 |
 | elaboration on a unit; a proposal whose yes sends mail | 3 (the A.20 amendment) |
 | adapters as packages: Paperless, Zoho Books, WorkDrive, OnPay, mail | 4 |
-| the operator as a data source: a decision whose answer is a capture | 1 |
+| the operator as a data source: a decision of the type's own kind whose answer carries the datum, recorded as the response and never as a capture (10, 153, 19) | 1 — in clause 10's list; the core as built takes such a decision from any type's definition (85), so nothing grows and the type declares it (gaps.md, 10) |
 
 The four kinds stay core through phase 5. Whether the vocabulary itself
 becomes a package is decided at the end of phase 5 with the billing run as

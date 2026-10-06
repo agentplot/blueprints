@@ -273,6 +273,10 @@ model.
      unit), or drop it
    - a chore offered by a session: accept or reject
    - a question a session cannot answer itself
+   - a datum the machinery needs that no source it declares supplies:
+     the operator gives it in the answer, which is recorded once as the
+     response (153) and never as a capture (19); what the object's own
+     transition writes from it is the evidence the next tick reads
 11. Decisions are grouped so that "yes to all" is a meaningful answer for a
     simple rail, and any single decision can be answered on its own.
 12. The operator's own dictation ("add this idea", "do this chore")
