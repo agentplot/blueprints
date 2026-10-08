@@ -1,0 +1,14 @@
+[book]
+title = "sluice design"
+description = "The design book for sluice: a merge queue for agents in worktrees, which admits work onto a line only after the line, extended by that work and everything ahead of it, has passed the line's gate. Part I includes the statement of invariants from design/sluice/requirements.md."
+authors = ["Chuck Swanberg <cswanberg@mad-swan.com>"]
+language = "en"
+src = "src"
+
+[output.html]
+site-url = "/blueprints/sluice/"
+default-theme = "ayu"
+preferred-dark-theme = "ayu"
+no-section-label = false
+fold.enable = true
+fold.level = 1
