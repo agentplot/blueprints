@@ -26,15 +26,17 @@ rulings in its change `concurrent-units`.
 31 starts a unit only when its dependencies are merged. A dependent
 needs the contract it builds on, which exists as soon as the
 dependency's change is written; it does not need the dependency merged.
-Holding it back costs the whole of the dependency's build.
+Holding it back costs the whole of the dependency's build. Changes are
+therefore written in waves, each against the changes it depends on, and
+building fans out as soon as a unit's own change is written.
 
 ### The rulings
 
 > 31. Within a bolt a unit may depend on other units of the same bolt.
->     A unit's change is written as soon as the unit is approved,
->     whatever it depends on. A unit builds once every unit it depends
->     on has its change written, from their work as it stands, and never
->     merges before any of them. Units build side by side up to the
+>     A unit's change is written once every unit it depends on has its
+>     change written, and never waits on a merge. A unit builds once its
+>     own change is written, from the work of the units it depends on as
+>     it stands, and never merges before any of them. Units build side by side up to the
 >     bound of 32 and no other. The proposal states the dependencies and
 >     the operator's response may change them.
 
@@ -61,12 +63,17 @@ are built, and the session that settles it sees only its own change.
 > 330. Before an item merges, its work is formed against its line and
 >      against the work of every item ahead of it, as it stands, and a
 >      conflict so found is told to the item's session when it is idle
->      (I5), with the content contested and the other item's change. A
->      forecast changes no order and merges nothing.
+>      (I5), with the content contested and the other item's change; an
+>      item with no session running is told in its next stage, and one
+>      that has finished and waits to merge is given a stage to settle
+>      it. A forecast moves no line.
 
 > 331. A conflict, forecast or met at merging, is settled by the session
 >      of the item behind, which is handed the other item's change and
->      the content contested; never by the item ahead.
+>      the content contested; never by the item ahead. A conflict
+>      forecast between two items not yet merged makes the one behind
+>      depend on the one ahead: it builds from that item's work and
+>      merges after it (31).
 
 ## Review in batches, amending work in flight
 
@@ -90,9 +97,9 @@ change is wrong.
 >      since the last batch, or a time has passed with at least one,
 >      whichever comes first, both set per instance. It is one decision
 >      on the rail that summarizes each change, what it does, the choices
->      it made, its risks and what it touches, and is answered per unit,
->      as fine or with notes; each whole change is reachable from it.
->      Nothing waits on the answer.
+>      it made, its risks and what it touches, and is answered by naming
+>      the units that need notes and giving the notes; each whole change
+>      is reachable from it. Nothing waits on the answer.
 
 > 334. Notes on a unit that has not merged amend it in flight: its
 >      change is revised with the notes, its work continues from the
@@ -169,8 +176,10 @@ Added under the rest of the stack:
 > - Merges into a bolt's line and landings onto the shared line go
 >   through sluice: the machinery's merge effect is a submission to it,
 >   and the verdicts it reads are evidence on the item or the bolt.
-> - A review batch is a Pending You card: one summary per change and
->   each change attached, so the operator drills in and answers there.
+> - A review batch is a Pending You card: one summary per change in its
+>   body and each change linked, a choice of the units that need notes
+>   and a field for the notes, so the operator drills in and answers
+>   there.
 
 ## What it changes elsewhere
 
@@ -185,8 +194,12 @@ Added under the rest of the stack:
 - The shipped types (`default`, `fast`, `chore`, `persona-test`) are
   checked against 335. A chore has no change to write (60) and is
   exempt from the first two terms.
-- Scenarios: a dependent builds while its dependency builds, finishes
-  first and merges after it; two items that touch the same file build
+- An amendment to a unit whose dependents are building is told to
+  them in their next stage; they are not held.
+- Scenarios: a dependent's change is written once its dependency's is,
+  it builds while its dependency builds, finishes first and merges
+  after it; a forecast conflict between two building items makes the
+  later one depend on the earlier; two items that touch the same file build
   at once, the forecast tells the later one while it is small, and both
   merge; a batch of five changes is answered with notes on one, which
   is amended in flight without a second approval; a close is proposed
