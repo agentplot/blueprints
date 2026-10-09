@@ -51,11 +51,11 @@ and sluice gives no gate a meaning of its own (27, 28, 29).
 
 A queue for agents in worktrees is a thing every team running a fleet
 against a trunk needs, and none of the queues that exist is shaped for
-it. The core knows git and five seams (Part B): a place, a check, a
-service, a line and a driver. Each is bound by a profile (Part C), so a
-team with worktrees, a task runner that declares inputs, and a
-convention for naming lines has a whole queue, and binds its own tools
-where ours differ.
+it. The core knows git and six seams (Part B): a place, a check, a
+service, a line, a driver and the records. Each is bound by a profile
+(Part C), so a team with worktrees, a task runner that declares inputs,
+and a convention for naming lines has a whole queue, and binds its own
+tools where ours differ.
 
 ## Where it stops
 
@@ -73,5 +73,5 @@ any other (B.5).
 
 Part I is the statement of invariants, included from
 `design/sluice/requirements.md`. Part A is what must hold of sluice,
-Part B its five contracts, and Part C the profiles that bind them.
+Part B its six contracts, and Part C the profiles that bind them.
 Clause numbers in parentheses here point into it.

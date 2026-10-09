@@ -7,9 +7,9 @@ admit any model that satisfies it.
 The statement is in three parts. Part A is what must hold of sluice on
 its own: how work is submitted to a line, ordered, tested in the
 combination it will land in, attributed when it fails, and landed. Part
-B is its contracts: the operations it needs across its five seams, a
-place, a check, a service, a line and a driver, and the guarantee each
-must give. Part C is the profiles: the ways each contract is satisfied.
+B is its contracts: the operations it needs across its six seams, a
+place, a check, a service, a line, a driver and the records, and the
+guarantee each must give. Part C is the profiles: the ways each contract is satisfied.
 
 Parts A and B name no mechanism: no command, file, format, field,
 service or tool. One thing of the world they name freely, because
@@ -78,9 +78,12 @@ redefine these.
   exactly one of passed, failed, missing or flaky.
 - **culprit**: the one entry a failed candidate is attributed to.
 - **landing**: the line moving to a candidate that passed.
-- **executor**: what ran a check, with its identity; **open** when it
-  could read beyond its declared inputs, **confined** when it could
-  not.
+- **executor**: what ran a check, with its identity and its host;
+  **confined** when it ran in a place holding exactly the candidate and
+  what the repository declares, which nothing of any session could
+  reach, and when nothing but it could have written its records;
+  **open** otherwise.
+- **host**: a machine on which sessions, sluice or executors run.
 - **word**: the operator's approval that admits a submission to a line
   requiring one.
 - **profile**: one way a contract of Part B is satisfied, as Part C
@@ -182,8 +185,8 @@ redefine these.
     A session learns its entry landed (50), and releasing its place is
     its driver's.
 26. Every state an entry is in, and every verdict read for it, is
-    readable by its session, its planner and the operator whether or
-    not sluice is running.
+    readable by its session, its planner and the operator, from every
+    host that submits to its line, whether or not sluice is running.
 
 ### A.6 Gates and trust
 
@@ -211,6 +214,20 @@ redefine these.
     the candidate's place, with what it serves derived from that place.
 32. A candidate's place belongs to the candidate: nothing started in it
     outlives it, and two places on one host never collide.
+
+### A.8 Hosts
+
+57. Every entry of one line is ordered with every other entry of that
+    line, whichever host submitted it.
+58. At most one instance of sluice advances a line at any moment,
+    whichever host it runs on, and one that has stopped advancing a
+    line writes nothing more for it.
+59. An instance that stops advancing a line loses nothing: every entry
+    submitted meanwhile is held, and whatever next advances the line
+    resumes from the records as last written.
+60. A candidate's checks may run on any host. A run whose executor
+    stopped before reporting has no outcome: it is never read as a pass
+    or a fail, and the check is run again.
 
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
@@ -276,6 +293,17 @@ redefine these.
     profile wrote them, so a reader of one profile's records reads
     another's.
 
+### B.7 The records
+
+61. **read**: given a line, its records as last written, and the
+    version they were read at.
+62. **write**: given a line, the version its records were read at and
+    the records to write, the write, or a refusal because they have
+    been written since (58).
+63. The guarantee: a write is all or nothing, two writes from one
+    version never both succeed, and every host reads what the last
+    write left (26, 59).
+
 <!-- ANCHOR_END: part-b -->
 <!-- ANCHOR: part-c -->
 ## Part C. Profiles
@@ -288,6 +316,7 @@ Parts A and B do not change to admit a profile.
 |---|---|---|
 | **archive**: the revision exported into a scratch directory, the environment from the worktree environment cache | `git archive` of the candidate into a directory under the host's scratch, entered through wtenv | the directory removed; processes tethered to it end |
 | **worktree**: a detached worktree of the repository | `git worktree add --detach`, the repository's start hooks run by worktrunk | `git worktree remove`; worktrunk's pre-remove hooks end what the place started |
+| **container**: a clean checkout of the candidate in a container on the executing host | the candidate fetched and checked out into a new container's filesystem, with the environment the repository declares | the container and everything started in it removed |
 
 ### C.2 The check
 
@@ -307,7 +336,7 @@ Parts A and B do not change to admit a profile.
 | profile | read / form / commit / move |
 |---|---|
 | **local refs**: one host's repository | `git rev-parse`; `git merge-tree --write-tree`; `git commit-tree` with the line and the head as parents and the verdict as `Sluice-*` trailers; `git update-ref` with the expected old value |
-| **pushed refs**: several hosts over the repository's remote | entries as refs under a namespace of sluice's own, leased by compare-and-swap on a ref; the landing is a push the remote accepts only from the expected revision |
+| **pushed refs**: a line on a remote every host reaches | `git fetch` then `git rev-parse` of the remote's line; forming and committing as local refs, on the host advancing the line; the landing a push with `--force-with-lease=<line>:<expected>` |
 
 ### C.5 The driver
 
@@ -316,20 +345,40 @@ Parts A and B do not change to admit a profile.
 | **worktrunk**: a custom subcommand on the path | `wt submit`, running the repository's submit gate hooks first and waiting for the entry's outcome, which it reports as its exit, or with `--no-wait` returning the entry at once; `wt submit --withdraw`; `wt submit --status`; the outcome of a waiting submit is its exit, of any other the session's pane prompted through the multiplexer; on landing, worktrunk removes the session's place |
 | **crew**: a bolt team's stages | the unit's merge stage submits; the conductor reads the entry's state as the stage; a red or a conflict re-charges the unit's slot |
 | **flywheel**: the machinery's effects | a session's done exit is the submission; the entry's state is evidence; the word is the rail's response |
+| **remote submit**: a session on any host | the head pushed to the remote and the submission written through the records (peers) or sent to the server (central server); withdrawal the same; state read through the records or from the server; a waiting `wt submit` polls it until the outcome |
 
-### C.6 Records
+### C.6 The records
 
-Entries and verdicts are files under the repository's common git
-directory, one directory per line, readable by every place on the host
-with no process running (26): one JSON document per entry, and one
-JSON Lines log of check runs and verdicts per line. They are local to
-the host, never tracked and never pushed; what outlives them is the
-trailers each landing commit carries (23).
+Whatever binds them, the records are one JSON document per entry and
+one JSON Lines log of check runs and verdicts per line (53), and what
+outlives them is the trailers each landing commit carries (23).
+
+| profile | read / write |
+|---|---|
+| **local files**: one host | the documents under the repository's common git directory, one directory per line, readable by every place on the host with no process running, never tracked and never pushed, a version kept beside them; a write under the line's lock, refused when the version moved |
+| **remote refs**: peers | the records as one tree committed under `refs/sluice/<line>/records` on the shared remote; a write is a push with `--force-with-lease` from the commit read |
+| **server**: a central server | the server's local files; other hosts read and write only by asking the server |
 
 ### C.7 Policy
 
 A line's policy is a TOML file checked into the repository, one table
 per pattern of line names, read from the line's revision (56).
+
+### C.8 Deployments across hosts
+
+Two ways of running sluice on many hosts, each a choice of profiles
+and neither a change to Parts A and B.
+
+| | peers | a central server |
+|---|---|---|
+| profiles | container places on any host; pushed refs; remote submit; remote refs records | container places on the server; pushed refs; remote submit; server records |
+| who advances a line | whichever host's sluice wins the write (58, 62); another takes over when it stops | the server, always |
+| where candidates run | any host with room; an executor claims a candidate by a write to the records | the server's executors |
+| a host stops | its claims and its lead pass to others (59, 60) | a session's host: nothing changes; the server: every line stalls and loses nothing (59) |
+| confinement | a container on a host that runs sessions is confined only if no session there can reach it | the server runs no sessions, so its executors are confined |
+| what is new to run | nothing but sluice on each host | a server process the operator starts, whose listener belongs to its driver profile, never to the core |
+
+The task runner's cache makes either cheaper and neither depends on it.
 
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
@@ -379,8 +428,8 @@ The rest of the stack, which a model builds on unless it says why not:
 - Places are managed by worktrunk, which runs a repository's hooks and
   tethers processes to a place.
 - The drivers are crew and flywheel; the forge is GitHub.
-- Records are plain JSON files under the repository's common git
-  directory, local to the host.
+- Records are plain JSON, kept on one host under the repository's
+  common git directory until several hosts submit to one line.
 - A line's policy is a file checked into the repository.
 
 <!-- ANCHOR_END: givens -->
@@ -389,8 +438,11 @@ The rest of the stack, which a model builds on unless it says why not:
 
 These are not requirements.
 
-- Where do entries live when several hosts submit to one line, and who
-  leases a chain?
+- When a line's stepper stops, how long before another may advance it,
+  and what tells a peer the stepper has stopped rather than gone quiet?
+- How does a peer decide which candidates to run, and how many?
+- Does the shared line's gate trust a container on a host that also
+  runs sessions, or only hosts that run none?
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->
@@ -431,6 +483,16 @@ These are not requirements.
   candidate fails. The candidate is judged by the policy on the line,
   fails, and the change to the policy lands only with a candidate that
   passes the gate as it stood.
+- **S13.** Sessions on two hosts submit to one bolt's line. Their
+  entries are tested in one order, and each session reads its entry's
+  state and is told its outcome on its own host.
+- **S14.** The host advancing a line stops mid-chain. Under peers
+  another host continues from the records; under a central server
+  nothing lands until it is back. In both, no entry is lost and no
+  check that has a verdict is run again.
+- **S15.** An executor stops while running a candidate's checks. The
+  run has no outcome; the checks run again on another executor, and the
+  candidate's verdict is read from that run.
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
