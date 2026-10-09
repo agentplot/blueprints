@@ -8,6 +8,8 @@ candidate exactly as it would land, tests candidates ahead of need,
 names the one submission at fault when a candidate fails, and moves the
 line only to a revision that passed.
 
+![sluice in one loop: agents submit and never merge; each candidate is tested as it would land; a failure names one culprit and tells only its agent; the line moves only to what passed](images/sluice.svg)
+
 ## Why it exists
 
 A merge queue enforces the rule that a repository's line always passes
