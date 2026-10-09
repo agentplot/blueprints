@@ -138,6 +138,14 @@ redefine these.
 12. A conflict is found when the candidate is formed, before any check
     runs. It removes the entry from the chain and nothing else: the
     chain continues without it.
+64. sluice forms, for a head not yet submitted, the candidate it would
+    form were the head submitted now, against the line and the entries
+    ahead of it, and reports a conflict so found to the head's
+    session. A forecast creates no entry, changes no order and moves
+    no line, and its result is never read as a verdict.
+65. A conflict reported to a session, forecast or found at forming,
+    names the content contested and every entry it is contested with,
+    with what each of those entries submitted.
 13. A chain is tested up to its window. The window never falls below
     one, grows while candidates pass and shrinks when one fails, within
     bounds the line's policy states.
@@ -276,6 +284,9 @@ redefine these.
 
 47. **submit**: given a head, a line, the after-entries, a priority, a
     submitter and, where required, the word, an entry (1, 3, 4).
+47a. **forecast**: given a head, a line and its after-entries, the
+     conflicts the head would meet if submitted now, each with the
+     entries it meets (64, 65).
 48. **withdraw**: given an entry and who asks, its removal where 5
     allows it.
 49. **state**: given an entry, its state and the verdicts read for it
@@ -340,12 +351,12 @@ Parts A and B do not change to admit a profile.
 
 ### C.5 The driver
 
-| profile | submit / withdraw / state / notify |
+| profile | submit / withdraw / state / notify / forecast |
 |---|---|
-| **worktrunk**: a custom subcommand on the path | `wt submit`, running the repository's submit gate hooks first and waiting for the entry's outcome, which it reports as its exit, or with `--no-wait` returning the entry at once; `wt submit --withdraw`; `wt submit --status`; the outcome of a waiting submit is its exit, of any other the session's pane prompted through the multiplexer; on landing, worktrunk removes the session's place |
-| **crew**: a bolt team's stages | the unit's merge stage submits; the conductor reads the entry's state as the stage; a red or a conflict re-charges the unit's slot |
-| **flywheel**: the machinery's effects | a session's done exit is the submission; the entry's state is evidence; the word is the rail's response |
-| **remote submit**: a session on any host | the head pushed to the remote and the submission written through the records (peers) or sent to the server (central server); withdrawal the same; state read through the records or from the server; a waiting `wt submit` polls it until the outcome |
+| **worktrunk**: a custom subcommand on the path | `wt submit`, running the repository's submit gate hooks first and waiting for the entry's outcome, which it reports as its exit, or with `--no-wait` returning the entry at once; `wt submit --withdraw`; `wt submit --status`; the outcome of a waiting submit is its exit, of any other the session's pane prompted through the multiplexer; on landing, worktrunk removes the session's place; `wt submit --forecast`, the same forming as a submission with no entry written |
+| **crew**: a bolt team's stages | the unit's merge stage submits; the conductor reads the entry's state as the stage; a red or a conflict re-charges the unit's slot; the conductor's wait runs a forecast for each unit in code and tells the unit's agent of a conflict when it is idle |
+| **flywheel**: the machinery's effects | a session's done exit is the submission; the entry's state is evidence; the word is the rail's response; a forecast is evidence on the item, read each tick |
+| **remote submit**: a session on any host | the head pushed to the remote and the submission written through the records (peers) or sent to the server (central server); withdrawal the same; state read through the records or from the server; a waiting `wt submit` polls it until the outcome; a forecast through the records or from the server |
 
 ### C.6 The records
 
@@ -493,6 +504,10 @@ These are not requirements.
 - **S15.** An executor stops while running a candidate's checks. The
   run has no outcome; the checks run again on another executor, and the
   candidate's verdict is read from that run.
+- **S16.** Two sessions build heads that edit one file. The second asks
+  for a forecast before it has finished; it is told the file and the
+  first entry's work, settles it, and both candidates form without
+  conflict.
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

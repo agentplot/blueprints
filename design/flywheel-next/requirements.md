@@ -420,10 +420,13 @@ requirements, iterated against the running rail rather than on paper.
 30. A bolt targets one built repository and is a deliverable. No order
     among bolts is stored or enforced; the bolts of one repository
     proceed independently of each other.
-31. Within a bolt a unit may depend on other units of the same bolt. A
-    unit starts when its dependencies are merged; units with no unmet
-    dependency run at once, side by side. The proposal states the
-    dependencies and the operator's response may change them.
+31. Within a bolt a unit may depend on other units of the same bolt.
+    A unit's change is written once every unit it depends on has its
+    change written, and never waits on a merge. A unit builds once its
+    own change is written, from the work of the units it depends on as
+    it stands, and never merges before any of them. Units build side by side up to the
+    bound of 32 and no other. The proposal states the dependencies and
+    the operator's response may change them.
 32. The number of sessions running at once on a host is bounded by a
     setting of that host. At the bound, ready work waits in a stated
     order, and nothing is lost or started twice.
@@ -456,15 +459,60 @@ requirements, iterated against the running rail rather than on paper.
 36. A unit is proposed as one document the operator reads whole.
     Approval turns it into work items; nothing before approval creates
     work items.
+332. Nothing waits on the operator between a unit's change being
+     written and its building, except where the unit's type declares a
+     review gate there (335).
+333. The operator reviews written changes in batches. A batch is
+     offered when a number of changes have been written or amended
+     since the last batch, or a time has passed with at least one,
+     whichever comes first, both set per instance. It is one decision
+     on the rail that summarizes each change, what it does, the choices
+     it made, its risks and what it touches, and is answered by naming
+     the units that need notes and giving the notes; each whole change
+     is reachable from it. Nothing waits on the answer.
+334. Notes on a unit that has not merged amend it in flight: its
+     change is revised with the notes, its work continues from the
+     revision, and no second approval is asked. A merged unit is never
+     amended; notes on it become a fix or a new unit.
 37. Every unit has a **type**, chosen when it is proposed and
     correctable by the operator's response. The type is the machine that
     takes the unit from approved to landed: its stages in order, and for
     each stage the sessions that work it. A bolt may hold units of
     different types.
-38. Several work items may be in flight at once. Merges into the bolt
-    happen one at a time in a fixed order.
-39. A bolt lands once, when the operator closes it, and only if every
-    unit is finished. The close is proposed on the rail when that holds.
+38. Several work items may be in flight at once. A finished item is
+    offered to its bolt's line and merges only after the line,
+    extended by every item offered ahead of it and by it, passes the
+    line's gate. A failure of that combination is told to the one item
+    at fault and to no other, and the items behind it are judged again
+    without it. Overlap between what items touch orders their merging
+    and never their building.
+330. Before an item merges, its work is formed against its line and
+     against the work of every item ahead of it, as it stands, and a
+     conflict so found is told to the item's session when it is idle
+     (I5), with the content contested and the other item's change; an
+     item with no session running is told in its next stage, and one
+     that has finished and waits to merge is given a stage to settle
+     it. A forecast moves no line.
+331. A conflict, forecast or met at merging, is settled by the session
+     of the item behind, which is handed the other item's change and
+     the content contested; never by the item ahead. A conflict
+     forecast between two items not yet merged makes the one behind
+     depend on the one ahead: it builds from that item's work and
+     merges after it (31).
+336. What a unit's change says it touches is read by the machinery
+     before the unit builds, and a unit whose stated touches overlap
+     an item in flight is told of it then (330). At verifying, what
+     the unit's work actually changed is compared with what it said;
+     content changed and not stated is a finding on the unit, and the
+     stated touches are corrected to match.
+39. A bolt is offered to the shared line once, when the operator
+    closes it, and only if every unit is finished and every unit's
+    change, as last amended, has been in a batch (333); the close is
+    proposed on the rail when that holds, and names any change not yet
+    in one. The bolt lands when the shared line, extended by it and by
+    everything offered ahead of it, passes the shared line's gate, with
+    no second word, and a fix after a failed landing is offered again
+    with no new word.
 40. A landing that fails is reported and leaves the bolt open.
 41. A stage may send an item back to an earlier stage. The unit's type names, for each stage, the agent that works it, the stage an item
     returns to when the stage judges it not done, and how many times
@@ -1306,12 +1354,12 @@ requirements, iterated against the running rail rather than on paper.
     (111–115). Nothing in a request changes an intent except through
     curation (20).
 179. The history of an open line is never rewritten. Every take is a
-    merge (50), and an item's merge into its bolt line is a squash to
-    one commit that names the item, unless the manifest says otherwise
-    for that repository. A place is rebased onto its line only while no
-    session is working in it (51, 52). The landing's shape is the
-    repository's: a merge commit when direct, the repository's merge
-    setting when pull-request.
+     merge (50), and an item's merge into its bolt line is one commit
+     that names the item and the verdict it merged on and keeps the
+     item's commits. A place is rebased onto its line only while no
+     session is working in it (51, 52). The landing's shape is the
+     repository's: a merge commit when direct, the repository's merge
+     setting when pull-request.
 180. A take or a merge that conflicts is a chore on the line (52). On a
     busy line the resolution repeats: after each chore merges the take
     is retried, up to a bound, and at the bound it is a decision: retry
@@ -1861,6 +1909,14 @@ requirements, iterated against the running rail rather than on paper.
     live object records is present; a version is retired only when no
     live object records it, and a change that would move an object in
     flight is refused and reported (57, 79).
+335. Every unit type keeps a contract, and the registry refuses a type
+     that breaks it (224): a stage that writes the unit's change comes
+     before any stage that builds; that stage states what the unit
+     touches, in a form the machinery reads; no stage merges, lands or
+     orders merging (38, 43); the type names the stage an amendment
+     re-enters (334); and a stage
+     that waits on the operator is declared as a review gate (332),
+     never implied by a stage's instruction.
 225. Every machine is rendered as a statechart by the build, from its
     definition and nothing else: regions, states, decision kinds,
     finals, submachines, transitions with guard, effects and enter
@@ -3374,6 +3430,7 @@ These hold at every moment, not just at the end of an operation.
   place to work in is performed by the machinery, never by a session.
 - I16. No place off a line is rebased or merged while its session is
   working, and no session starts in a place that is behind its line.
+- I17. No unit's building waits on another unit's merging.
 - I13. No machine definition names a store, a service, a path, or a
   field. Storage detail exists only in a profile's binding.
 - I14. No state exists outside git. A host's memory and disk hold only
@@ -3451,6 +3508,13 @@ Constraints of the world, not design choices.
   through portless, and `wt tether` binds a process to the worktree's
   life. A repository's own instructions say how its servers start under
   that rule.
+- Merges into a bolt's line and landings onto the shared line go
+  through sluice: the machinery's merge effect is a submission to it,
+  and the verdicts it reads are evidence on the item or the bolt.
+- A review batch is a Pending You card: one summary per change in its
+  body and each change linked, a choice of the units that need notes
+  and a field for the notes, so the operator drills in and answers
+  there.
 
 <!-- ANCHOR_END: givens -->
 ## 10. Questions the model must answer
@@ -3649,6 +3713,18 @@ by walking each one. Each is tagged with the profiles it applies to.
   place is rebased onto the line while idle and kept. The archive lands
   the intent's line on the blueprints' shared line, and the two claims it
   carried are now standing.
+- **S35.** *(all profiles)* A unit depends on another. Its change is
+  written as soon as the other's is; it builds while the other builds,
+  finishes first, and merges only after it.
+- **S36.** *(all profiles)* Two units that touch one file build at
+  once. The forecast tells the later one while it is small, it comes to
+  depend on the earlier one, builds from its work, and both merge.
+- **S37.** *(all profiles)* Five changes are written by mid-morning and
+  offered as one batch. The operator names one as needing notes; it is
+  amended in flight, and nothing was held while the batch waited.
+- **S38.** *(all profiles)* A bolt's close is proposed naming one change
+  not yet in a batch. The batch follows; the close is answered, and the
+  bolt lands on green with no second word.
 
 <!-- ANCHOR_END: scenarios -->
 ## 12. What to deliver
