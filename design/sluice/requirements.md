@@ -38,7 +38,7 @@ A session that built the work submits it and does nothing more.
 | **a planner** (a plan, or a person) | what a submission lands after, and its priority | override a gate; move a line |
 | **a policy's author** (a repository's owners, a platform) | which checks gate each line, which executors each line trusts, how a flaky result reads, how deep a chain is tested, whether a line requires a word | make a line land untested; widen trust a layer above set |
 | **the operator** | the word that admits a submission to a line requiring one; everything a policy does not settle | make a landing that skipped the gate count as one |
-| **sluice** | the order among submissions within what the planner and the policy fixed; which candidates to test and how many at once; when a line moves | run a check of its own, start a service, choose a port, resolve a conflict, decide trust, or move a line to a revision that has not passed its gate |
+| **sluice** | the order among submissions within what the planner and the policy fixed; which candidates to test and how many at once; when a line moves | run a check of its own, start a service, choose a port, resolve a conflict, decide trust, release a session's place, or move a line to a revision that has not passed its gate |
 | **an executor** (a session's shell, a confined run) | nothing; it runs checks and reports what it observed | report an outcome it did not observe |
 
 <!-- ANCHOR_END: actors -->
@@ -61,7 +61,7 @@ redefine these.
   transitively; entries in different lanes never share a candidate.
 - **affected parts**: the parts of the repository whose checks a head
   can change the result of, as the repository's description gives
-  them.
+  them, every part that depends on one of them included.
 - **candidate**: a revision equal to the line's current revision
   extended, in order, by an entry and every entry ahead of it in its
   lane: the revision that entry would land as.
@@ -106,6 +106,10 @@ redefine these.
 5. An entry leaves sluice only by landing, by withdrawal by its
    submitter, its planner or the operator, or by a bound the line's
    policy states in advance. sluice never drops an entry on its own.
+54. sluice never bounds how often a session submits again after its
+    entry was removed as culprit or conflict. An entry's state shows
+    how many times its place's work was submitted before it, and acting
+    on that count is the driver's or the planner's.
 
 ### A.2 Order
 
@@ -165,14 +169,18 @@ redefine these.
 22. A line moves only to a candidate whose verdict is satisfied, only
     in chain order, never past an entry without a verdict, and never to
     a candidate containing a culprit or a conflict.
-23. A landing writes one commit per entry, naming the entry's work,
-    with the revision before it as its parent. The history of a line is
-    never rewritten.
+23. A landing writes one commit per entry, with the revision before it
+    as its first parent and the entry's head as its second, naming the
+    entry's work and the verdict it landed on. The history of a line is
+    never rewritten, and a session's commits stay reachable from the
+    line they landed on.
 24. A landing moves the line from exactly the revision its candidate
     was formed on. A landing that finds the line elsewhere is refused,
     and the chain is formed again on the revision found.
-25. An entry that landed releases its place. A place holding more than
-    its commits is kept and named rather than removed.
+25. sluice releases every place it made for a candidate once that
+    candidate's verdict is read, and never releases a session's place.
+    A session learns its entry landed (50), and releasing its place is
+    its driver's.
 26. Every state an entry is in, and every verdict read for it, is
     readable by its session, its planner and the operator whether or
     not sluice is running.
@@ -189,6 +197,12 @@ redefine these.
     run.
 30. sluice never runs a check of its own and never changes what a gate
     requires.
+55. A check's cost never changes how it gates: every check a line's gate
+    requires has a verdict before the line moves, and none is deferred
+    past a landing.
+56. A line's gate is read from the line's current revision, never from a
+    candidate or a place. No submission changes the gate it is judged
+    by.
 
 ### A.7 Places and services
 
@@ -206,8 +220,8 @@ redefine these.
 
 33. **materialize**: given a revision, a place holding exactly that
     revision, with the environment the repository declares.
-34. **release**: given a place, its removal, with everything started in
-    it ended (32).
+34. **release**: given a place sluice made, its removal, with everything
+    started in it ended (25, 32).
 35. The guarantee: a place holds what it was given and nothing of any
     other place.
 
@@ -233,8 +247,8 @@ redefine these.
 42. **read**: given a line, its current revision.
 43. **form**: given a revision and a head, the candidate revision, or
     the conflict with the content it is on (12).
-44. **commit**: given a candidate, its parent and the entry's work, one
-    commit (23).
+44. **commit**: given a candidate, its parent, the entry's head, the
+    entry's work and the verdict read for it, one commit (23).
 45. **move**: given a line, the revision it is expected at and the
     revision to move to, the move or a refusal because the line was
     elsewhere (24).
@@ -292,14 +306,14 @@ Parts A and B do not change to admit a profile.
 
 | profile | read / form / commit / move |
 |---|---|
-| **local refs**: one host's repository | `git rev-parse`; `git merge-tree --write-tree`; `git commit-tree`; `git update-ref` with the expected old value |
+| **local refs**: one host's repository | `git rev-parse`; `git merge-tree --write-tree`; `git commit-tree` with the line and the head as parents and the verdict as `Sluice-*` trailers; `git update-ref` with the expected old value |
 | **pushed refs**: several hosts over the repository's remote | entries as refs under a namespace of sluice's own, leased by compare-and-swap on a ref; the landing is a push the remote accepts only from the expected revision |
 
 ### C.5 The driver
 
 | profile | submit / withdraw / state / notify |
 |---|---|
-| **worktrunk**: a custom subcommand on the path | `wt submit`, running the repository's submit gate hooks first; `wt submit --withdraw`; `wt submit --status`; the session's pane prompted through the multiplexer |
+| **worktrunk**: a custom subcommand on the path | `wt submit`, running the repository's submit gate hooks first and waiting for the entry's outcome, which it reports as its exit, or with `--no-wait` returning the entry at once; `wt submit --withdraw`; `wt submit --status`; the outcome of a waiting submit is its exit, of any other the session's pane prompted through the multiplexer; on landing, worktrunk removes the session's place |
 | **crew**: a bolt team's stages | the unit's merge stage submits; the conductor reads the entry's state as the stage; a red or a conflict re-charges the unit's slot |
 | **flywheel**: the machinery's effects | a session's done exit is the submission; the entry's state is evidence; the word is the rail's response |
 
@@ -307,8 +321,15 @@ Parts A and B do not change to admit a profile.
 
 Entries and verdicts are files under the repository's common git
 directory, one directory per line, readable by every place on the host
-with no process running (26), in the record form the host's other
-verifications already use.
+with no process running (26): one JSON document per entry, and one
+JSON Lines log of check runs and verdicts per line. They are local to
+the host, never tracked and never pushed; what outlives them is the
+trailers each landing commit carries (23).
+
+### C.7 Policy
+
+A line's policy is a TOML file checked into the repository, one table
+per pattern of line names, read from the line's revision (56).
 
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
@@ -349,6 +370,7 @@ Constraints already fixed:
 - Lines are named by convention, so a target is known from its name:
   the shared line, a bolt's line, a unit's line, a fix's line.
 - sluice is free and open source.
+- sluice is written in Rust.
 
 The rest of the stack, which a model builds on unless it says why not:
 
@@ -357,8 +379,9 @@ The rest of the stack, which a model builds on unless it says why not:
 - Places are managed by worktrunk, which runs a repository's hooks and
   tethers processes to a place.
 - The drivers are crew and flywheel; the forge is GitHub.
-- Records are plain files under the repository's common git directory,
-  in the form the host's other verifications already write.
+- Records are plain JSON files under the repository's common git
+  directory, local to the host.
+- A line's policy is a file checked into the repository.
 
 <!-- ANCHOR_END: givens -->
 <!-- ANCHOR: questions -->
@@ -366,14 +389,6 @@ The rest of the stack, which a model builds on unless it says why not:
 
 These are not requirements.
 
-- Within a lane, is order by submission time enough, or should an
-  entry's expected pass likelihood move it?
-- What bounds the retries of an entry that conflicts again after a
-  rebase, and who is told at the bound?
-- Does a line's most expensive verification gate the line, or the
-  channel promoted from it?
-- Does a lane's affected set always include downstream dependents, or
-  does the policy say?
 - Where do entries live when several hosts submit to one line, and who
   leases a chain?
 
@@ -409,6 +424,13 @@ These are not requirements.
 - **S10.** sluice is stopped. Every entry's state is still readable.
   Started again, it continues without running a check for any candidate
   that already has a verdict.
+- **S11.** An entry lands. The line holds a commit whose second parent
+  is the session's head and which names the verdict; sluice leaves the
+  session's place alone, and the session's driver releases it.
+- **S12.** A submission changes the line's policy to drop a check its
+  candidate fails. The candidate is judged by the policy on the line,
+  fails, and the change to the policy lands only with a candidate that
+  passes the gate as it stood.
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
