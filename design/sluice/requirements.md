@@ -59,9 +59,12 @@ redefine these.
   it.
 - **lane**: the entries of one line whose affected parts overlap,
   transitively; entries in different lanes never share a candidate.
-- **affected parts**: the parts of the repository whose checks a head
-  can change the result of, as the repository's description gives
-  them, every part that depends on one of them included.
+- **affected parts**: the parts of the repository whose checks an
+  entry's work can change the result of, as the repository's
+  description gives them, every part that depends on one of them
+  included.
+- **work**: an entry's commits, from where its head left the line to
+  the head.
 - **candidate**: a revision equal to the line's current revision
   extended, in order, by an entry and every entry ahead of it in its
   lane: the revision that entry would land as.
@@ -97,13 +100,15 @@ redefine these.
    merges, never lands and never moves a line, and an attempt to is
    refused and reported.
 2. A head is submitted only from a place whose tree is exactly its
-   commits. A place holding anything more is refused, and what it holds
-   is named.
+   commits. The driver refuses a place holding anything more, and names
+   what it holds; sluice is only ever given a head.
 3. A submission names what it lands after, its priority and who
    submitted it. It never names a position.
 5. An entry leaves sluice only by landing, by withdrawal by its
    submitter, its planner or the operator, or by a bound the line's
    policy states in advance. sluice never drops an entry on its own.
+67. A submission from a place that has an entry on the same line
+    withdraws that entry, which stays readable as withdrawn.
 54. sluice never bounds how often a session submits again after its
     entry was removed as culprit or conflict. An entry's state shows
     how many times its place's work was submitted before it, and acting
@@ -111,15 +116,17 @@ redefine these.
 
 ### A.2 Order
 
-6. Entries of one lane are ordered by priority, then by the time of
-   submission. An entry never lands before an entry it names as after.
+6. Entries of one lane are ordered by priority, then by the order of
+   submission. Priority orders only entries in no candidate under test:
+   an entry under test is never displaced by one submitted after it. An
+   entry never lands before an entry it names as after.
 7. An entry whose after-entries are neither landed nor ahead of it in
    its own chain waits, and its waiting holds no other entry.
 8. Entries whose affected parts overlap are in one lane. Entries in
    different lanes never share a candidate and land in any order
    relative to each other.
 9. An entry whose affected parts are unknown is in every lane of its
-   line.
+   line while it is there, and the lanes divide again once it leaves.
 
 ### A.3 Candidates and chains
 
@@ -140,10 +147,14 @@ redefine these.
     no line, and its result is never read as a verdict.
 65. A conflict reported to a session, forecast or found at forming,
     names the content contested and every entry it is contested with,
-    with what each of those entries submitted.
-13. A chain is tested up to its window. The window never falls below
-    one, grows while candidates pass and shrinks when one fails, within
-    bounds the line's policy states.
+    with what each of those entries submitted: each entry ahead the head
+    conflicts with alone, or, when none does, every entry ahead up to
+    the one at which the conflict appeared.
+13. A line is tested up to its window, counted across all its lanes.
+    The window never falls below one, grows while candidates pass and
+    shrinks when one fails, within bounds the line's policy states.
+71. No host runs more checks at once than its own bound, whatever the
+    windows of the lines it serves.
 14. A line's policy says whether every candidate of a chain is tested or
     the deepest first. Under deepest first, a failure is attributed only
     after the candidates that were skipped have verdicts.
@@ -160,8 +171,14 @@ redefine these.
     and is never recorded as one.
 17. A failed candidate is attributed to exactly one entry: the newest
     entry of the first failed candidate in its chain.
-18. No entry is attributed, landed or removed before every candidate
-    ahead of it in its chain has a verdict.
+18. No entry is attributed or landed before every candidate ahead of it
+    in its chain has a verdict. A conflict removes its entry when it is
+    found (12).
+69. A check's result belongs to its key, not to a line: a pass recorded
+    under a key satisfies every line whose gate trusts the executor
+    that recorded it.
+70. When the line's revision is covered by no verdict, every check its
+    gate requires is affected by the next candidate.
 19. A key holding both a pass and a fail from executors the gate trusts
     reads as the line's policy says, passed or not passed, and never
     differently for two candidates of one line.
@@ -177,7 +194,9 @@ redefine these.
     a candidate containing a culprit or a conflict.
 23. A landing writes one commit per entry, with the revision before it
     as its first parent and the entry's head as its second, naming the
-    entry's work and the verdict it landed on. The history of a line is
+    entry's work and the verdict it landed on; entries landed together
+    on the deepest candidate's verdict each name that verdict. The
+    history of a line is
     never rewritten, and a session's commits stay reachable from the
     line they landed on.
 24. A landing moves the line from exactly the revision its candidate
@@ -278,16 +297,19 @@ redefine these.
 47. **submit**: given a head, a line, the after-entries, a priority, a
     submitter, an entry (1, 3).
 47a. **forecast**: given a head, a line and its after-entries, the
-     conflicts the head would meet if submitted now, each with the
-     entries it meets (64, 65).
+     conflicts the head would meet if submitted now, placed after every
+     entry already submitted, each with the entries it meets (64, 65).
+47b. **amend**: given a queued entry and who asks, its after-entries or
+     priority changed (3, 6).
 48. **withdraw**: given an entry and who asks, its removal where 5
     allows it.
 49. **state**: given an entry, its state and the verdicts read for it
     (26).
 50. **notify**: given an entry's session and an outcome, the outcome
     delivered to that session and no other (20).
-51. The guarantee: a notification reaches the submitter, and a state
-    read with sluice stopped is the state sluice last wrote.
+51. The guarantee: a notification reaches the submitter at least once
+    and names its entry and outcome, so a repeat is known as one, and a
+    state read with sluice stopped is the state sluice last wrote.
 
 ### B.6 Binding the contracts
 
@@ -334,15 +356,15 @@ Parts A and B do not change to admit a profile.
 
 | profile | read / form / commit / move |
 |---|---|
-| **local refs**: one host's repository | `git rev-parse`; `git merge-tree --write-tree`; `git commit-tree` with the line and the head as parents and the verdict as `Sluice-*` trailers; `git update-ref` with the expected old value |
-| **pushed refs**: a line on a remote every host reaches | `git fetch` then `git rev-parse` of the remote's line; forming and committing as local refs, on the host advancing the line; the landing a push with `--force-with-lease=<line>:<expected>` |
+| **local refs**: one host's repository | `git rev-parse`; `git merge-tree --write-tree`; `git commit-tree` with the line and the head as parents and the verdict as `Sluice-*` trailers; `git update-ref` with the expected old value; branch protection by a `reference-transaction` hook that refuses any update to a line in the policy not made by sluice, and logs it (1) |
+| **pushed refs**: a line on a remote every host reaches | `git fetch` then `git rev-parse` of the remote's line; forming and committing as local refs, on the host advancing the line; the landing a push with `--force-with-lease=<line>:<expected>`; branch protection by the forge's rules, which only sluice's identity bypasses (1) |
 
 ### C.5 The driver
 
 | profile | submit / withdraw / state / notify / forecast |
 |---|---|
 | **worktrunk**: a custom subcommand on the path | `wt submit`, the executable `wt-submit` on the path, waiting for the entry's outcome, which it reports as its exit, or with `--no-wait` returning the entry at once; `wt submit --withdraw`; `wt submit --status`; the outcome of a waiting submit is its exit, of any other the session's pane prompted through the multiplexer; on landing, worktrunk removes the session's place; `wt submit --check`, the same forming as a submission with no entry written |
-| **crew**: a bolt team's stages | the unit's merge stage submits; the conductor reads the entry's state as the stage; a red or a conflict re-charges the unit's slot; the conductor's wait runs a forecast for each unit in code and tells the unit's agent of a conflict when it is idle |
+| **crew**: a bolt team's stages | the unit's merge stage submits, and a bolt is submitted from its own place by its conductor; `sluice amend` sets an After the conductor adds; the conductor reads the entry's state as the stage; a red or a conflict re-charges the unit's slot; the conductor's wait runs a forecast for each unit in code and tells the unit's agent of a conflict when it is idle |
 | **flywheel**: the machinery's effects | a session's done exit, once approved, is the submission; the entry's state is evidence; a forecast is evidence on the item, read each tick |
 | **remote submit**: a session on any host | the head pushed to the remote and the submission written through the records (peers) or sent to the server (central server); withdrawal the same; state read through the records or from the server; a waiting `wt submit` polls it until the outcome; a forecast through the records or from the server |
 
@@ -354,7 +376,7 @@ outlives them is the trailers each landing commit carries (23).
 
 | profile | read / write |
 |---|---|
-| **local files**: one host | the documents under the repository's common git directory, one directory per line, readable by every place on the host with no process running, never tracked and never pushed, a version kept beside them; a write under the line's lock, refused when the version moved |
+| **local files**: one host | the documents under the repository's common git directory, one directory per line and one log of check results per repository (69), readable by every place on the host with no process running, never tracked and never pushed, a version kept beside them; a write under the line's lock, refused when the version moved |
 | **remote refs**: peers | the records as one tree committed under `refs/sluice/<line>/records` on the shared remote; a write is a push with `--force-with-lease` from the commit read |
 | **server**: a central server | the server's local files; other hosts read and write only by asking the server |
 
@@ -442,6 +464,15 @@ These are not requirements.
 - How does a peer decide which candidates to run, and how many?
 - Does the shared line's gate trust a container on a host that also
   runs sessions, or only hosts that run none?
+- How does a line's policy name the executors it trusts, and how does
+  a run prove which executor made it, when under peers every host
+  writes the records?
+- Under a central server, is a state readable only on the server
+  readable "whether or not sluice is running"?
+- Who releases the candidate places of a host that has stopped for
+  good?
+- Who sets how long a host may hold a line, or a claim on a
+  candidate's checks: the policy, the deployment or the operator?
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->
