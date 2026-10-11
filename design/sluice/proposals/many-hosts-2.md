@@ -232,7 +232,7 @@ objects reach those hosts; under one host it was never in question.
 
 | profile | materialize | release |
 |---|---|---|
-| **container**: a clean checkout of the candidate in a container on the executing host | the candidate fetched into the host's mirror of the repository; a detached worktree of it under the sluice user's scratch; a container from the image the repository's policy names, read from the line's revision (56), with the worktree as its checkout, the mirror read-only, a scratch directory, `SLUICE_PLACE`, `SLUICE_CHECKOUT` and `SLUICE_TMP`, and nothing of any session mounted; the run as the container's one process under the line's time limit (66) | the run's records and the failing checks' output written to the records first (16), then the container stopped and removed with everything started in it, and the worktree removed |
+| **container**: a clean checkout of the candidate in a container on the executing host | the candidate fetched into the host's mirror of the repository; a detached worktree of it under the sluice user's scratch; a container from the image the repository's policy names, read from the line's revision (56), with the worktree as its checkout, the mirror read-only, a scratch directory, `SLUICE_CHECKOUT` and `SLUICE_TMP`, and nothing of any session mounted; the run as the container's one process under the line's time limit (66) | the run's records and the failing checks' output written to the records first (16), then the container stopped and removed with everything started in it, and the worktree removed |
 
 **C.4 the line**, the pushed refs row, last cell: "branch protection by
 the forge's rules, which only sluice's identity bypasses, an identity no
@@ -248,8 +248,8 @@ session on any host can use (1)".
 
 | profile | read / write |
 |---|---|
-| **remote refs**: peers | one root commit under `refs/sluice/lines/<line>/records` on the shared remote, its tree the line's documents (53), its id the version; a write a push with `--force-with-lease` from the commit read; beside it `refs/sluice/heads/<oid>` for every submitted head, `refs/sluice/candidates/<line>/<id>` for every candidate open to claims, `refs/sluice/logs/<line>/<run>` for a run's output, and `refs/sluice/hosts/<host>` rewritten by each host alone on a fixed cadence as its sign of life (77) |
-| **server**: a central server | the server's local files, reached by other hosts only over SSH; after every write the same tree pushed to `refs/sluice/lines/<line>/records` as a projection, so a reader that cannot reach the server reads the state last written (80) and says it did |
+| **remote refs**: peers | one root commit under `refs/sluice/state/<branch>` on the shared remote, its tree the line's documents (53), its id the version; a write a push with `--force-with-lease` from the commit read; beside it `refs/sluice/heads/<oid>` for every submitted head, `refs/sluice/combinations/<branch>/<id>` for every candidate open to claims, `refs/sluice/logs/<branch>/<run>` for a run's output, and `refs/sluice/hosts/<host>` rewritten by each host alone on a fixed cadence as its sign of life (77) |
+| **server**: a central server | the server's local files, reached by other hosts only over SSH; after every write the same tree pushed to `refs/sluice/state/<branch>` as a projection, so a reader that cannot reach the server reads the state last written (80) and says it did |
 
 **C.7 policy** gains: "a line's policy names the executors it trusts by
 the identity that vouches for their runs, and says which of them it

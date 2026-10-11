@@ -54,10 +54,10 @@ commit id.
 
 | ref | holds | written by | how |
 |---|---|---|---|
-| `refs/sluice/lines/<line>/records` | one commit whose tree is the line's records: `line.json`, `entries/<id>.json`, `log.jsonl`, the same documents as the local files profile (53) | the lead, executors reporting, drivers submitting and withdrawing | push with lease from the commit read |
+| `refs/sluice/state/<branch>` | one commit whose tree is the line's records: `version`, `submissions/<id>.json`, `log.jsonl`, the same documents as the local files profile (53) | the lead, executors reporting, drivers submitting and withdrawing | push with lease from the commit read |
 | `refs/sluice/heads/<oid>` | a submitted head, so the remote keeps it and every host can fetch it | the submitting host, before it writes the entry | plain push; idempotent, since the name is the content |
-| `refs/sluice/candidates/<line>/<candidate-id>` | the candidate revision as a commit, so an executor can fetch exactly what to test (10, 33) | the lead, when it forms the candidate and before it opens a claim on it | plain push |
-| `refs/sluice/logs/<line>/<run-id>` | a run's full output, one blob per check, for a session to read after a failure (20) | the executor, before it writes the run (16) | plain push |
+| `refs/sluice/combinations/<branch>/<id>` | the candidate revision as a commit, so an executor can fetch exactly what to test (10, 33) | the lead, when it forms the candidate and before it opens a claim on it | plain push |
+| `refs/sluice/logs/<branch>/<run>` | a run's full output, one blob per check, for a session to read after a failure (20) | the executor, before it writes the run (16) | plain push |
 | `refs/sluice/hosts/<host>` | the host's sign of life: `{at, instance, bound, claims[]}`, rewritten on a fixed cadence | that host only | plain push to its own ref; nothing else writes it |
 
 The records commit has no parent. Each write is a fresh root commit whose
@@ -75,7 +75,7 @@ one. Section 5.2 says why that is worth doing.
 ### 1.2 A write, what it costs, and how many a line sustains
 
 A write by any host is: fetch the records ref (one round trip, with
-protocol v2's prefix filter so only `refs/sluice/lines/<line>/*` is
+protocol v2's prefix filter so only `refs/sluice/state/<branch>` is
 advertised), apply the change to the tree in memory, write the tree and
 commit objects locally, push with the lease. A refused push means the
 version moved: fetch again, apply again, push again. The step function
@@ -138,7 +138,7 @@ delivered; a landed entry's head stays reachable from the line regardless
 Candidates are formed by the lead on its own host with `git merge-tree
 --write-tree` over fetched heads (43, ADR 0009), which needs no checkout.
 The lead pushes each candidate it will open a claim on as a commit under
-`refs/sluice/candidates/<line>/<id>` before it writes the claim open, and
+`refs/sluice/combinations/<branch>/<id>` before it writes the claim open, and
 deletes the ref when the candidate is judged or obsolete (25). A candidate
 whose verdict is already read from the log (15) is never pushed.
 
@@ -151,7 +151,7 @@ rules let only sluice's identity push them (1).
 
 | operation | satisfied by |
 |---|---|
-| read (61) | fetch `refs/sluice/lines/<line>/records`; the version is its commit id; the documents are read from its tree |
+| read (61) | fetch `refs/sluice/state/<branch>`; the version is its commit id; the documents are read from its tree |
 | write (62) | a new root commit holding the records to write, pushed with `--force-with-lease=<ref>:<version read>`; a refusal is the refusal 62 names |
 | guarantee (63) | the remote updates a ref atomically and compares its old value under its own lock; two pushes from one expected value never both succeed |
 
@@ -184,13 +184,13 @@ needs, nothing of any session.
 repository, owned by the sluice user (section 3.3), fetched from the
 remote. To materialize a candidate (33):
 
-1. fetch `refs/sluice/candidates/<line>/<id>` into the mirror;
+1. fetch `refs/sluice/combinations/<branch>/<id>` into the mirror;
 2. make a detached worktree of the mirror at that commit, under the
    sluice user's scratch, mode 0700;
 3. start a container from the image with that worktree bind-mounted as
    the checkout and the mirror bind-mounted read-only at its own path, so
    the worktree's git metadata resolves; a scratch directory of its own;
-   no other mounts; `SLUICE_PLACE`, `SLUICE_CHECKOUT` and `SLUICE_TMP` in
+   no other mounts; `SLUICE_CHECKOUT` and `SLUICE_TMP` in
    the environment; a label naming the place.
 
 Network inside the container is the deployment's choice: none, or the
@@ -211,7 +211,7 @@ writes inside the checkout (ADR 0004); the host side reads them from the
 worktree once the container has exited. The executor then, in this order:
 
 1. pushes each failed check's full output as a blob under
-   `refs/sluice/logs/<line>/<run-id>`;
+   `refs/sluice/logs/<branch>/<run>`;
 2. builds one Run record per check with its key, outcome, executor, the
    claim it ran under, the tail of its output inline (the last few
    kilobytes) and the log blob's id, signs the records (section 3), and
@@ -516,7 +516,7 @@ that prefixes a command with `ssh` and a repository with a push.
 
 The authoritative records are the server's local files. After every
 successful write, the server pushes the same tree to
-`refs/sluice/lines/<line>/records` on the shared remote, in the layout of
+`refs/sluice/state/<branch>` on the shared remote, in the layout of
 1.1, as a projection: one writer, no contention, one push per write.
 
 This costs one push per write and buys three things:
@@ -678,3 +678,10 @@ so that neither changes a record's form or a clause of Parts A and B.
    multiplexer or the host's service manager; sluice starts nothing (31).
    The deployment's documentation must say so, since peers depends on it
    being up everywhere.
+9. **Plain words for what a user sees.** The walkthrough fixed branch,
+   submission, checkout, combination, blame and result for everything a
+   user sees, and this design adds three things a user will see in
+   `sluice status` and the state files with no plain word yet: the lead
+   (proposed: "the host running the queue"), a claim (proposed: "a test
+   run taken by a host"), and an executor (proposed: "the host that ran
+   it", with "trusted hosts" as the policy key). The operator picks.
