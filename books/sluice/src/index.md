@@ -51,8 +51,8 @@ and sluice gives no gate a meaning of its own (27, 28, 29).
 
 A queue for agents in worktrees is a thing every team running a fleet
 against a trunk needs, and none of the queues that exist is shaped for
-it. The core knows git and six seams (Part B): a place, a check, a
-service, a line, a driver and the records. Each is bound by a profile
+it. The core knows git and five seams (Part B): a place, a check, a
+line, a driver and the records. Each is bound by a profile
 (Part C), so a team with worktrees, a task runner that declares inputs,
 and a convention for naming lines has a whole queue, and binds its own
 tools where ours differ.

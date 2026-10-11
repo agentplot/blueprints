@@ -7,9 +7,9 @@ admit any model that satisfies it.
 The statement is in three parts. Part A is what must hold of sluice on
 its own: how work is submitted to a line, ordered, tested in the
 combination it will land in, attributed when it fails, and landed. Part
-B is its contracts: the operations it needs across its six seams, a
-place, a check, a service, a line, a driver and the records, and the
-guarantee each must give. Part C is the profiles: the ways each contract is satisfied.
+B is its contracts: the operations it needs across its five seams, a
+place, a check, a line, a driver and the records, and the guarantee
+each must give. Part C is the profiles: the ways each contract is satisfied.
 
 Parts A and B name no mechanism: no command, file, format, field,
 service or tool. One thing of the world they name freely, because
@@ -36,8 +36,8 @@ A session that built the work submits it and does nothing more.
 |---|---|---|
 | **a session** (an agent or a person building in a place) | when its work is ready, and to submit it; how to resolve a conflict or a failure in its own place | merge, land, or move a line; change another submission's order; withdraw another's submission |
 | **a planner** (a plan, or a person) | what a submission lands after, and its priority | override a gate; move a line |
-| **a policy's author** (a repository's owners, a platform) | which checks gate each line, which executors each line trusts, how a flaky result reads, how deep a chain is tested, whether a line requires a word | make a line land untested; widen trust a layer above set |
-| **the operator** | the word that admits a submission to a line requiring one; everything a policy does not settle | make a landing that skipped the gate count as one |
+| **a policy's author** (a repository's owners, a platform) | which checks gate each line, which executors each line trusts, how a flaky result reads, how deep a chain is tested, how long a candidate's checks may run | make a line land untested; widen trust a layer above set |
+| **the operator** | everything a policy does not settle | make a landing that skipped the gate count as one |
 | **sluice** | the order among submissions within what the planner and the policy fixed; which candidates to test and how many at once; when a line moves | run a check of its own, start a service, choose a port, resolve a conflict, decide trust, release a session's place, or move a line to a revision that has not passed its gate |
 | **an executor** (a session's shell, a confined run) | nothing; it runs checks and reports what it observed | report an outcome it did not observe |
 
@@ -84,8 +84,6 @@ redefine these.
   reach, and when nothing but it could have written its records;
   **open** otherwise.
 - **host**: a machine on which sessions, sluice or executors run.
-- **word**: the operator's approval that admits a submission to a line
-  requiring one.
 - **profile**: one way a contract of Part B is satisfied, as Part C
   describes.
 
@@ -103,9 +101,6 @@ redefine these.
    is named.
 3. A submission names what it lands after, its priority and who
    submitted it. It never names a position.
-4. A line that requires a word admits a submission only with the word,
-   and the word is given once: a resubmission after a failed landing's
-   fix needs no new word.
 5. An entry leaves sluice only by landing, by withdrawal by its
    submitter, its planner or the operator, or by a bound the line's
    policy states in advance. sluice never drops an entry on its own.
@@ -200,8 +195,10 @@ redefine these.
 
 27. A line's gate is its policy's: the checks it requires, the
     executors it trusts, how a flaky key reads, whether every candidate
-    or the deepest first is tested, the window's bounds, and whether a
-    word is required. sluice gives no gate a meaning of its own.
+    or the deepest first is tested, the window's bounds, and how long a
+    candidate's checks may run. sluice gives no gate a meaning of its
+    own, and admits every submission a driver makes: whether work may be
+    submitted at all is decided before it reaches sluice.
 28. A result from an executor the line's gate does not trust never
     satisfies that gate, whatever its outcome.
 29. A gate that trusts only confined executors is satisfied by no open
@@ -215,13 +212,16 @@ redefine these.
     candidate or a place. No submission changes the gate it is judged
     by.
 
-### A.7 Places and services
+### A.7 Places
 
 31. sluice starts no service and chooses no port. What a candidate's
-    checks need is brought up by the repository's own declaration, in
-    the candidate's place, with what it serves derived from that place.
+    checks need, the checks bring up themselves, in the candidate's
+    place.
 32. A candidate's place belongs to the candidate: nothing started in it
     outlives it, and two places on one host never collide.
+66. A candidate's checks run under the time limit its line's policy
+    states. A run that exceeds it is ended with everything it started,
+    recorded as timed out, and read as failed.
 
 ### A.8 Hosts
 
@@ -260,13 +260,6 @@ redefine these.
 38. The guarantee: an outcome is what the executor observed, never
     inferred; a replay says it is a replay.
 
-### B.3 The service
-
-39. **up**: given a place, everything its checks need brought up in it,
-    reachable at endpoints derived from the place (31).
-40. **down**: given a place, everything up started, ended.
-41. The guarantee: two places on one host never share an endpoint (32).
-
 ### B.4 The line
 
 42. **read**: given a line, its current revision.
@@ -283,7 +276,7 @@ redefine these.
 ### B.5 The driver
 
 47. **submit**: given a head, a line, the after-entries, a priority, a
-    submitter and, where required, the word, an entry (1, 3, 4).
+    submitter, an entry (1, 3).
 47a. **forecast**: given a head, a line and its after-entries, the
      conflicts the head would meet if submitted now, each with the
      entries it meets (64, 65).
@@ -325,8 +318,9 @@ Parts A and B do not change to admit a profile.
 
 | profile | materialize | release |
 |---|---|---|
-| **archive**: the revision exported into a scratch directory, the environment from the worktree environment cache | `git archive` of the candidate into a directory under the host's scratch, entered through wtenv | the directory removed; processes tethered to it end |
-| **worktree**: a detached worktree of the repository | `git worktree add --detach`, the repository's start hooks run by worktrunk | `git worktree remove`; worktrunk's pre-remove hooks end what the place started |
+| **worktrunk**: a worktree made by worktrunk, with the repository's worktrunk hooks | `wt switch --create sluice/try/<n> --base <candidate> --no-cd` | `wt remove`, its hooks run; the checks' process group ended |
+| **git worktree**: a detached worktree, nothing run in it | `git worktree add --detach` at the candidate | `git worktree remove`; the checks' process group ended |
+| **archive**: the revision exported into a scratch directory, no git metadata | `git archive` of the candidate into a directory under the host's scratch | the directory removed; the checks' process group ended |
 | **container**: a clean checkout of the candidate in a container on the executing host | the candidate fetched and checked out into a new container's filesystem, with the environment the repository declares | the container and everything started in it removed |
 
 ### C.2 The check
@@ -335,12 +329,6 @@ Parts A and B do not change to admit a profile.
 |---|---|---|
 | **moon**: the repository's task runner with declared inputs and a content-keyed cache | moon's affected projects between the line's revision and the candidate, downstream dependents included | moon's run of the affected check tasks in the place; the run report gives each task's outcome and whether it was replayed, the run record gives its hash as the key and its exit code |
 | **script**: one command with an exit code | every check, always | the command's exit code, never a replay |
-
-### C.3 The service
-
-| profile | up | down |
-|---|---|---|
-| **declared services**: the repository's own declaration of what listens, how it starts in a place and what it serves (flywheel-next 47) | the declaration's start command run in the place; the repository derives ports from the place's path | the declaration's stop command; what worktrunk tethers ends with the place |
 
 ### C.4 The line
 
@@ -353,9 +341,9 @@ Parts A and B do not change to admit a profile.
 
 | profile | submit / withdraw / state / notify / forecast |
 |---|---|
-| **worktrunk**: a custom subcommand on the path | `wt submit`, running the repository's submit gate hooks first and waiting for the entry's outcome, which it reports as its exit, or with `--no-wait` returning the entry at once; `wt submit --withdraw`; `wt submit --status`; the outcome of a waiting submit is its exit, of any other the session's pane prompted through the multiplexer; on landing, worktrunk removes the session's place; `wt submit --forecast`, the same forming as a submission with no entry written |
+| **worktrunk**: a custom subcommand on the path | `wt submit`, the executable `wt-submit` on the path, waiting for the entry's outcome, which it reports as its exit, or with `--no-wait` returning the entry at once; `wt submit --withdraw`; `wt submit --status`; the outcome of a waiting submit is its exit, of any other the session's pane prompted through the multiplexer; on landing, worktrunk removes the session's place; `wt submit --check`, the same forming as a submission with no entry written |
 | **crew**: a bolt team's stages | the unit's merge stage submits; the conductor reads the entry's state as the stage; a red or a conflict re-charges the unit's slot; the conductor's wait runs a forecast for each unit in code and tells the unit's agent of a conflict when it is idle |
-| **flywheel**: the machinery's effects | a session's done exit is the submission; the entry's state is evidence; the word is the rail's response; a forecast is evidence on the item, read each tick |
+| **flywheel**: the machinery's effects | a session's done exit, once approved, is the submission; the entry's state is evidence; a forecast is evidence on the item, read each tick |
 | **remote submit**: a session on any host | the head pushed to the remote and the submission written through the records (peers) or sent to the server (central server); withdrawal the same; state read through the records or from the server; a waiting `wt submit` polls it until the outcome; a forecast through the records or from the server |
 
 ### C.6 The records
@@ -469,9 +457,6 @@ These are not requirements.
 - **S4.** The first candidate fails. Its session is told; the second
   head is formed again on the line without it, passes, and lands
   first.
-- **S5.** A shared line requires a word. A submission waits for it,
-  lands on green with no second word, and after a failed landing its
-  fix resubmits with no new word.
 - **S6.** Two bolts with disjoint affected parts are submitted to the
   shared line. Neither is tested with the other, and they land in
   either order.
