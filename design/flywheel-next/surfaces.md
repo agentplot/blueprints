@@ -615,10 +615,18 @@ were settled, not their place on the page.
   building units, as their estimates less the slot-days already
   occupied, 172) divided by drain, where drain is the alive hosts'
   summed bound at the calibrated rate (S145), pool hosts included
-  (S177). A gone host drains nothing. It is drawn as a wheel on a
-  week's scale, a band naming its state ("primed for 5 days", "running
-  dry", "primed for a week or more"), and is opened from the machinery
-  strip's pill or with w (214).
+  (S177). A gone host drains nothing. It is drawn as a dial open at
+  the bottom, a 270-degree horseshoe from bottom left over the top to
+  bottom right on a week's scale, its zones shaded (dry under a day,
+  thin under two, primed to the week), filled solid to the runway and
+  outlined on from there to what approving the decisions waiting on the
+  operator would add (the feed's days, S104), a pointer at the reading,
+  and the reading inside: "runway", the number in days, and a line
+  naming its state ("primed for 5 days", "running dry", "primed for a
+  week or more"). Flywheel's Home draws its journey gauge on the same
+  dial, zones, solid and outline, so the product's gauge and the site's
+  read as one instrument (agentplot/flywheel-web `docs/site-design.md`).
+  It is opened from the machinery strip's pill or with w (214).
 - **S145.** The calibrated rate is derived, never a constant: the
   ratio of actual to estimate over the landed units of the repository
   and type, read from the acceptance files, and 1 while none has
@@ -658,8 +666,9 @@ were settled, not their place on the page.
   sit under an "advanced" disclosure whose open state persists across
   renders. They are never the first thing shown.
 - **S109.** The compact form in the machinery strip is one pill: a
-  small wheel, the runway number and the streak, "at risk" when
-  something threatens it. It opens the panel like w.
+  16px horseshoe filled to the runway, the runway number and the
+  streak, "at risk" when something threatens it. It opens the panel
+  like w.
 - **S110.** The key is w. l stays the focused card's later (S56); a key
   a card does not offer is refused, never remapped (S57). Under 760px
   the panel is reached from the board header and the columns stack

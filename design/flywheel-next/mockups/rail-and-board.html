@@ -167,8 +167,10 @@
     host, and hosts are added to drain faster. RUNWAY in days = approved construction work
     not yet merged (queued and building units) ÷ drain, where drain = the alive hosts'
     summed bound ÷ ~3 slot-days per unit (invented from the last week's merges, marked
-    sample; a gone host drains nothing). The wheel is a dial on a 0–7 day scale, a week at
-    the rim, with a band ("primed for 5 days", "running dry", "primed for a week or more").
+    sample; a gone host drains nothing). The wheel is a dial open at the bottom, a 270-degree
+    horseshoe on a 0–7 day scale with its zones shaded, solid to the runway, outlined on to what
+    approving the waiting decisions would add, a pointer at the reading, and the reading inside
+    with its band ("primed for 5 days", "running dry", "primed for a week or more").
     Three columns under it: FEED → (proposals to approve with the units they carry,
     elaborations waiting on you, intents to approve; "feed: 4 decisions add ~7.5 days"),
     PRESSURE → (approved and waiting, items running on alive hosts against the alive slots,
@@ -956,9 +958,12 @@ body.docked .dock{transform:none}
 .wheel .wdial{position:relative;width:196px;height:196px}
 .wheel .wdial svg{width:100%;height:100%;display:block}
 .wheel .cap{font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
-.wheel .rim{fill:none;stroke:var(--line);stroke-width:7} .wheel .track{fill:none;stroke:var(--line2);stroke-width:14}
-.wheel .arc{fill:none;stroke:var(--accent);stroke-width:14;stroke-linecap:butt;transition:stroke-dasharray .6s ease} .wheel .arc.warn{stroke:var(--warn)} .wheel .arc.crit{stroke:var(--crit)}
-.wheel .spoke{stroke:var(--line);stroke-width:1.5} .wheel .hub{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+.wheel .track{fill:none;stroke:var(--line);stroke-width:1}
+.wheel .zone{fill:var(--line2)} .wheel .zone.zr{fill:var(--crit);opacity:.16} .wheel .zone.zw{fill:var(--warn);opacity:.16} .wheel .zone.zp{fill:var(--ok);opacity:.12}
+.wheel .arc{fill:var(--accent)} .wheel .arc.warn{fill:var(--warn)} .wheel .arc.crit{fill:var(--crit)}
+.wheel .outline{fill:none;stroke:var(--accent);stroke-width:1.2;stroke-dasharray:3 2} .wheel .outline.warn{stroke:var(--warn)} .wheel .outline.crit{stroke:var(--crit)}
+.wheel .pointer{fill:var(--accent)} .wheel .pointer.warn{fill:var(--warn)} .wheel .pointer.crit{fill:var(--crit)}
+.wheel .step{stroke:var(--line);stroke-width:1}
 .wheel .tick{font:9px var(--mono);fill:var(--ink3)}
 .wheel .wdial .in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none}
 .wheel .in .num{font:800 34px/1 var(--mono);color:var(--ink);letter-spacing:-.02em} .wheel .in .num small{font-size:16px;font-weight:600;color:var(--ink3)}
@@ -2854,11 +2859,23 @@ function flywheelModel(){
   return {m, aliveBound, bound, alive:alive.length, hosts:S.hosts.length, drain, queued, building, charge, runway, band, feedDs, feedUnits, feedDays, best, unitsOf, elabWait, intentWait, running, onAlive, over, util, pressure, old, merges7, read,
     streak:{now, from:STREAK_NOW_FROM, risks, longest:STREAKS.slice().sort((a,b) => b.min-a.min)[0], last:STREAKS[STREAKS.length-1]}};
 }
-function wheelSvg(f, cls, size){ const r = 78, c = 2*Math.PI*r, s = size||196;
-  const spokes = [...Array(8)].map((_,i) => { const a = i*Math.PI/4; return `<line class="spoke" x1="${(100+Math.cos(a)*22).toFixed(1)}" y1="${(100+Math.sin(a)*22).toFixed(1)}" x2="${(100+Math.cos(a)*64).toFixed(1)}" y2="${(100+Math.sin(a)*64).toFixed(1)}"/>`; }).join('');
-  const ticks = [0,1,2,3,4,5,6].map(d => { const a = -Math.PI/2 + d/7*2*Math.PI; return `<text class="tick" x="${(100+Math.cos(a)*95).toFixed(1)}" y="${(100+Math.sin(a)*95+3).toFixed(1)}" text-anchor="middle">${d}</text>`; }).join('');
-  return `<svg viewBox="0 0 200 200" width="${s}" height="${s}" aria-hidden="true"><circle class="track" cx="100" cy="100" r="${r}"/><circle class="arc ${cls}" cx="100" cy="100" r="${r}" stroke-dasharray="${(c*Math.min(1,f)).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 100 100)"/><circle class="rim" cx="100" cy="100" r="66"/>${spokes}<circle class="hub" cx="100" cy="100" r="22"/>${ticks}</svg>`; }
-function miniWheelSvg(f, cls){ const r = 6, c = 2*Math.PI*r; return `<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle class="rim" cx="8" cy="8" r="${r}"/><circle class="arc ${cls}" cx="8" cy="8" r="${r}" stroke-dasharray="${(c*Math.min(1,f)).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 8 8)"/><circle class="hub" cx="8" cy="8" r="1.6"/></svg>`; }
+/* The dial (S103): a 270-degree horseshoe open at the bottom, zones shaded, solid to the runway, outlined on to what approving the waiting decisions would add, a pointer at the reading. The same geometry draws Flywheel's journey on Home. */
+function wheelSvg(f, cls, size, fo){ const c = {x:100, y:100}, r0 = 62, r1 = 82, a0 = Math.PI*0.75, sw = Math.PI*1.5, s = size||196;
+  const A = v => a0 + Math.min(1, Math.max(0, v))*sw, P = (r, a) => [(c.x + r*Math.cos(a)).toFixed(1), (c.y + r*Math.sin(a)).toFixed(1)];
+  const sector = (ra, rb, x, y) => { if(y - x <= 1e-4) return ''; const L = y - x > Math.PI ? 1 : 0; const [x0,y0] = P(rb,x), [x1,y1] = P(rb,y), [x2,y2] = P(ra,y), [x3,y3] = P(ra,x); return `M${x0},${y0}A${rb},${rb} 0 ${L} 1 ${x1},${y1}L${x2},${y2}A${ra},${ra} 0 ${L} 0 ${x3},${y3}Z`; };
+  const zones = [[0, 1/7, 'zr'], [1/7, 2/7, 'zw'], [2/7, 1, 'zp']].map(([a, b, z]) => `<path class="zone ${z}" d="${sector(r0, r1, A(a), A(b))}"/>`).join('');
+  const steps = [1/7, 2/7].map(v => { const [x1,y1] = P(r0-4, A(v)), [x2,y2] = P(r1+4, A(v)); return `<line class="step" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`; }).join('');
+  const ticks = [0,1,2,3,4,5,6,7].map(d => { const a = A(d/7), [x,y] = P(r1+14, a), cos = Math.cos(a), anchor = cos > 0.35 ? 'start' : cos < -0.35 ? 'end' : 'middle'; return `<text class="tick" x="${x}" y="${(+y+3).toFixed(1)}" text-anchor="${anchor}">${d}</text>`; }).join('');
+  const fs = Math.min(1, f), fO = Math.min(1, fo == null ? f : fo);
+  const outline = fO > fs ? `<path class="outline ${cls}" d="${sector(r0+5.5, r1-5.5, A(fs), A(fO))}"/>` : '';
+  const solid = fs > 0 ? `<path class="arc ${cls}" d="${sector(r0+5, r1-5, A(0), A(fs))}"/>` : '';
+  const a = A(fs), [tx,ty] = P(r1+3, a), [bx,by] = P(r1+13, a), nx = -Math.sin(a)*6, ny = Math.cos(a)*6;
+  const pointer = `<path class="pointer ${cls}" d="M${tx},${ty}L${(+bx+nx).toFixed(1)},${(+by+ny).toFixed(1)}L${(+bx-nx).toFixed(1)},${(+by-ny).toFixed(1)}Z"/>`;
+  return `<svg viewBox="0 0 200 200" width="${s}" height="${s}" aria-hidden="true">${zones}<path class="track" d="${sector(r0, r1, A(0), A(1))}"/>${steps}${outline}${solid}${pointer}${ticks}</svg>`; }
+function miniWheelSvg(f, cls){ const a0 = Math.PI*0.75, sw = Math.PI*1.5, P = (a) => [(8 + 6*Math.cos(a)).toFixed(2), (8 + 6*Math.sin(a)).toFixed(2)];
+  const arc = (x, y) => { const L = y - x > Math.PI ? 1 : 0; const [x0,y0] = P(x), [x1,y1] = P(y); return `M${x0},${y0}A6,6 0 ${L} 1 ${x1},${y1}`; };
+  const fs = Math.min(f, 0.999);
+  return `<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path class="rim" d="${arc(a0, a0 + sw)}"/>${fs > 0 ? `<path class="arc ${cls}" d="${arc(a0, a0 + fs*sw)}"/>` : ''}</svg>`; }
 function miniWheel(){ const w = flywheelModel(); const on = S.load ? 'open' : ''; const cls = w.band.cls==='ok' ? '' : w.band.cls;
   return `<span class="sep"></span><span class="lab">flywheel</span><span class="gauges"><button class="mini fwpill ${on}" data-load title="${esc(w.read.text)}">${miniWheelSvg(w.runway/7, cls)}<b class="${cls}">${fmtDays(w.runway)}d</b> runway · <b>${fmtD(w.streak.now)}</b> streak${w.streak.risks.length ? ` · <span class="warn">at risk</span>` : ''}</button></span>`; }
 function pipeSvg(w){
@@ -2896,7 +2913,7 @@ function renderLoad(){ const L = $('#load'); L.hidden = !S.load; if(!S.load) ret
     <div class="ln"><b>${w.merges7}</b><span class="gl">merged in 7 days ${spark(series('merges', 0), 64, 16)}<small>bolts landed per week · ${landedWk.join(' · ')} ${spark(landedWk, 40, 12)}</small></span></div>
     <div class="hist">velocity · history, not a target</div>
     <div class="say">${(S.pools||[]).length && /^your hosts are the limit/.test(w.read.text) ? `adding a host · the pool mints an enrolment token while approved work waits and your hosts are the limit` : (S.pools||[]).length ? `the pool adds a host when your hosts are the limit${w.alive<w.hosts ? ` · ${w.hosts-w.alive} of yours is gone` : ''}` : w.alive<w.hosts ? `add a host to drain faster · ${w.hosts-w.alive} of yours is gone` : 'add a host to drain faster'}</div></div>`;
-  const wheel = `<div class="wheel"><div class="wdial">${wheelSvg(w.runway/7, cls)}<div class="in"><div class="k">runway</div><div class="num">${fmtDays(w.runway)}<small>d</small></div><div class="band ${cls}">${esc(w.band.text)}</div><div class="k">${w.charge} units ÷ ${fmtDays(w.drain)}/day</div></div></div><div class="cap">days · a full rim is a week</div></div>`;
+  const wheel = `<div class="wheel"><div class="wdial">${wheelSvg(w.runway/7, cls, 196, (w.runway + w.feedDays)/7)}<div class="in"><div class="k">runway</div><div class="num">${fmtDays(w.runway)}<small>d</small></div><div class="band ${cls}">${esc(w.band.text)}</div><div class="k">${w.charge} units ÷ ${fmtDays(w.drain)}/day</div></div></div><div class="cap">days · the end of the dial is a week · outline: if you approve what waits</div></div>`;
   const streak = `<div class="streak"><span class="big">${fmtD(w.streak.now)}</span><span class="l1">agents have run ${fmtD(w.streak.now)} without you</span><span class="l2">since ${esc(w.streak.from)} · a streak counts while approved work runs and nothing stops it${w.streak.risks.length ? ` · <span class="risk">at risk: ${esc(w.streak.risks.join(' · '))}</span>` : ''}</span>
     <div class="row2"><span>longest <b>${w.streak.longest.len}</b> · ${esc(w.streak.longest.from)} → ${esc(w.streak.longest.to)} · ended: ${esc(w.streak.longest.end)}</span><span>last <b>${w.streak.last.len}</b> · ended: ${esc(w.streak.last.end)}</span><span>a reading, never a target · ${SM}</span></div></div>`;
   L.innerHTML = `<div class="load-panel" role="dialog" aria-label="the flywheel"><div class="lib-h"><h2>Flywheel</h2><span class="sub">prime it and walk away · runway is approved work ÷ how fast your hosts finish it · what feeds it and what waits go in, finished work comes out · the streak is the score</span><button class="x" id="load-close" aria-label="close">×</button></div>
