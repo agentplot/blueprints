@@ -685,3 +685,15 @@ so that neither changes a record's form or a clause of Parts A and B.
    (proposed: "the host running the queue"), a claim (proposed: "a test
    run taken by a host"), and an executor (proposed: "the host that ran
    it", with "trusted hosts" as the policy key). The operator picks.
+10. **Where the per-repository results log lives under peers.** Clause 69
+    makes a check's result belong to its key, not to a branch, so one
+    passing run can satisfy several branches. The peers layout in section
+    2 keeps every record under one branch's ref, written by that branch's
+    lead, and a log shared across branches fits under none of them. Two
+    ways out: its own ref, `refs/sluice/results`, with its own lease and
+    its own writer, which adds a second lease to hold; or each branch's
+    log kept under its own ref, with a lead reading the other branches'
+    refs before it forms a candidate, which keeps one lease per branch but
+    makes a cross-branch hit depend on how fresh the last fetch was. The
+    second is cheaper and never wrong, only sometimes late, so this model
+    leans to it; the operator rules.
