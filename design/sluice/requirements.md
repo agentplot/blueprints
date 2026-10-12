@@ -57,19 +57,15 @@ redefine these.
 - **entry**: a submission as sluice holds it, with its state.
 - **after**: the entries a submission names as having to land before
   it.
-- **lane**: the entries of one branch whose affected parts overlap,
-  transitively; entries in different lanes never share a candidate.
-- **affected parts**: the parts of the repository whose checks an
-  entry's work can change the result of, as the repository's
-  description gives them, every part that depends on one of them
-  included.
 - **work**: an entry's commits, from where its head left the branch to
   the head.
 - **candidate**: a revision equal to the branch's current revision
-  extended, in order, by an entry and every entry ahead of it in its
-  lane: the revision that entry would land as.
-- **chain**: the candidates of one lane, each extending the one before.
-- **window**: how many candidates of one chain are under test at once.
+  extended, in order, by an entry and every entry ahead of it: the
+  revision that entry would land as.
+- **chain**: the candidates of one branch, each extending the one
+  before.
+- **window**: how many candidates of a branch's chain are under test
+  at once.
 - **conflict**: a candidate that cannot be formed because its entry and
   the candidate before it change the same content incompatibly.
 - **check**: a task run to judge a revision, ending in a pass or a
@@ -116,24 +112,21 @@ redefine these.
 
 ### A.2 Order
 
-6. Entries of one lane are ordered by priority, then by the order of
+6. Entries of one branch are ordered by priority, then by the order of
    submission. Priority orders only entries in no candidate under test:
    an entry under test is never displaced by one submitted after it. An
    entry never lands before an entry it names as after.
 7. An entry whose after-entries are neither landed nor ahead of it in
-   its own chain waits, and its waiting holds no other entry.
-8. Entries whose affected parts overlap are in one lane. Entries in
-   different lanes never share a candidate and land in any order
-   relative to each other.
-9. An entry whose affected parts are unknown is in every lane of its
-   branch while it is there, and the lanes divide again once it leaves.
+   its branch's chain waits, and its waiting holds no other entry.
+8. Every entry of a branch is in its one chain. No entry is tested
+   apart from the entries ahead of it, and entries land in chain order.
 
 ### A.3 Candidates and chains
 
 10. Every candidate equals the branch's current revision extended, in
-    order, by exactly the entries ahead of it in its lane and itself.
-    A candidate never contains an entry behind it, an entry of another
-    lane, or an entry removed from the chain.
+    order, by exactly the entries ahead of it and itself. A candidate
+    never contains an entry behind it or an entry removed from the
+    chain.
 11. An entry is judged only as a candidate: never alone against a
     revision the branch has left, and never in a combination it would not
     land in.
@@ -150,9 +143,9 @@ redefine these.
     with what each of those entries submitted: each entry ahead the head
     conflicts with alone, or, when none does, every entry ahead up to
     the one at which the conflict appeared.
-13. A branch is tested up to its window, counted across all its lanes.
-    The window never falls below one, grows while candidates pass and
-    shrinks when one fails, within bounds the branch's policy states.
+13. A branch is tested up to its window. The window never falls below
+    one, grows while candidates pass and shrinks when one fails, within
+    bounds the branch's policy states.
 71. No host runs more checks at once than its own bound, whatever the
     windows of the branches it serves.
 14. A branch's policy says whether every candidate of a chain is tested or
@@ -272,7 +265,7 @@ redefine these.
 ### B.2 The check
 
 36. **affected**: given the branch's revision and a candidate, the checks
-    the candidate can change the result of (8, 15).
+    the candidate can change the result of (15, 70).
 37. **run**: given a place and checks, for each check its key, its
     outcome, its executor and whether the outcome was observed in this
     run or read from an earlier one (16).
@@ -488,9 +481,9 @@ These are not requirements.
 - **S4.** The first candidate fails. Its session is told; the second
   head is formed again on the branch without it, passes, and lands
   first.
-- **S6.** Two bolts with disjoint affected parts are submitted to the
-  shared branch. Neither is tested with the other, and they land in
-  either order.
+- **S6.** Two bolts whose work touches unrelated parts are submitted to
+  the shared branch. The second is tested on top of the first and lands
+  after it, and is not tested again when the first lands.
 - **S7.** One key holds a pass and a fail from trusted executors. The
   bolt branch's policy reads it passed; the shared branch's reads it
   missing until a confined run settles it.
