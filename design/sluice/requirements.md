@@ -36,7 +36,7 @@ A session that built the work submits it and does nothing more.
 |---|---|---|
 | **a session** (an agent or a person building in a place) | when its work is ready, and to submit it; how to resolve a conflict or a failure in its own place | merge, land, or move a branch; change another submission's order; withdraw another's submission |
 | **a planner** (a plan, or a person) | what a submission lands after, and its priority | override a gate; move a branch |
-| **a policy's author** (a repository's owners, a platform) | which checks gate each branch, which executors each branch trusts, how a flaky result reads, how deep a chain is tested, how long a candidate's checks may run | make a branch land untested; widen trust a layer above set |
+| **a policy's author** (a repository's owners, a platform) | which checks gate each branch, which executors each branch trusts, how a flaky result reads, how deep a chain is tested, how long a candidate's checks may run, what a run may use and reach | make a branch land untested; widen trust a layer above set |
 | **the operator** | everything a policy does not settle | make a landing that skipped the gate count as one |
 | **sluice** | the order among submissions within what the planner and the policy fixed; which candidates to test and how many at once; when a branch moves | run a check of its own, start a service, choose a port, resolve a conflict, decide trust, release a session's place, or move a branch to a revision that has not passed its gate |
 | **an executor** (a session's shell, a confined run) | nothing; it runs checks and reports what it observed | report an outcome it did not observe |
@@ -146,8 +146,10 @@ redefine these.
 13. A branch is tested up to its window. The window never falls below
     one, grows while candidates pass and shrinks when one fails, within
     bounds the branch's policy states.
-71. No host runs more checks at once than its own bound, whatever the
-    windows of the branches it serves.
+71. An instance of sluice starts no more checks at once than its own
+    bound, whatever the windows of the branches it serves. A host whose
+    checks are all started by one instance runs no more than that
+    instance's bound.
 14. A branch's policy says whether every candidate of a chain is tested or
     the deepest first. Under deepest first, a failure is attributed only
     after the candidates that were skipped have verdicts.
@@ -271,6 +273,16 @@ redefine these.
     run or read from an earlier one (16).
 38. The guarantee: an outcome is what the executor observed, never
     inferred; a replay says it is a replay.
+83. **execute**: given a place, a command, and the limits a run is held
+    to (the processors its instance gives each run; the memory, the
+    network and the paths it may write that the branch's policy
+    states), the command run within them, and what the executor
+    enforced: whether the run was confined, and each limit it held.
+84. The guarantee: an executor that cannot enforce a limit the branch's
+    policy states refuses the run rather than run it without the limit,
+    and every run is recorded with what its executor enforced (16), so
+    a run is never read as confined, or as held to a limit, unless its
+    executor enforced it (28, 29).
 
 ### B.4 The branch
 
@@ -344,6 +356,12 @@ Parts A and B do not change to admit a profile.
 |---|---|---|
 | **moon**: the repository's task runner with declared inputs and a content-keyed cache | moon's affected projects between the branch's revision and the candidate, downstream dependents included | moon's run of the affected check tasks in the place; the run report gives each task's outcome and whether it was replayed, the run record gives its hash as the key and its exit code |
 | **script**: one command with an exit code | every check, always | the command's exit code, never a replay |
+
+| executor profile | execute | enforces |
+|---|---|---|
+| **open**: a process group on the instance's host | the command in the place, as one process group ended with its run | the processors given, by the runner's own threads; nothing else; never confined |
+| **sandbox**: the host's kernel sandbox, Seatbelt on macOS, bubblewrap and Landlock on Linux | the command in the place under a profile that allows writes only to the place and its scratch and the network only as the policy says | paths and network everywhere; processors and memory only on Linux, by a cgroup the run is started in; confined when no session on the host can write the place |
+| **container**: a container engine on the executing host | the place mounted into a new container from the repository's image | processors, memory, paths and network; confined as C.8 says |
 
 ### C.4 The branch
 
