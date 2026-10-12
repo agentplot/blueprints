@@ -181,7 +181,7 @@ This is §10's question. Three shapes, from no coordination to full:
 
 **b0. Each host runs its own sluice and lands by push.** With a
 pushed-refs `move` (C.4: a push the remote accepts only from the expected
-revision, `git push --force-with-lease=<line>:<expected>` or a
+revision, `git push --force-with-lease=<branch>:<expected>` or a
 non-force fast-forward), **I1 and I4 still hold**: a candidate formed on a
 stale revision is refused at the remote and re-formed (24). But clause 6
 and 7 break across hosts: neither host sees the other's entries, so a
@@ -205,8 +205,8 @@ nothing, S10).
 
 **b2. No fixed coordinator: entries and lease as refs.** C.4's pushed-refs
 sketch taken whole. Entries are JSON blobs under a namespace such as
-`refs/sluice/<line>/entries/<id>`; the chain is leased by compare-and-swap
-on `refs/sluice/<line>/lease`; any host's stepper that wins the lease
+`refs/sluice/<branch>/entries/<id>`; the chain is leased by compare-and-swap
+on `refs/sluice/<branch>/lease`; any host's stepper that wins the lease
 steps the branch. This requires changing C.6 (records are no longer local
 and never pushed), so the statement changes first (core.12); clause 53's
 "one form whatever profile wrote them" means the JSON stays identical and
