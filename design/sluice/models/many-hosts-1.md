@@ -697,3 +697,15 @@ so that neither changes a record's form or a clause of Parts A and B.
     makes a cross-branch hit depend on how fresh the last fetch was. The
     second is cheaper and never wrong, only sometimes late, so this model
     leans to it; the operator rules.
+11. **Whether a waiting `wt submit` steps across hosts.** On one machine
+    the waiting submit runs the rounds itself and nothing else need be
+    running. Section 4.1 gives that work to `sluice run` under peers and
+    keeps the stepping submit only for a fleet with no `sluice run`
+    anywhere. The argument for the change is clause 1: under pushed refs
+    the stepper holds the credential that bypasses branch protection, and
+    a session's own process must not hold it, so the stepper runs as the
+    `sluice` OS user with its own key, which also vouches for the runs
+    (29). Against it: the operator must start `sluice run` on every host,
+    and a host with no `sluice run` submits but never lands. The one-
+    machine case is unchanged either way, since a hook on local refs can
+    tell sluice's rounds from the session's git. The operator rules.
