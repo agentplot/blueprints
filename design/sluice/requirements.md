@@ -5,10 +5,10 @@ A statement of what sluice must always do and never do, written to
 admit any model that satisfies it.
 
 The statement is in three parts. Part A is what must hold of sluice on
-its own: how work is submitted to a line, ordered, tested in the
+its own: how work is submitted to a branch, ordered, tested in the
 combination it will land in, attributed when it fails, and landed. Part
 B is its contracts: the operations it needs across its five seams, a
-place, a check, a line, a driver and the records, and the guarantee
+place, a check, a branch, a driver and the records, and the guarantee
 each must give. Part C is the profiles: the ways each contract is satisfied.
 
 Parts A and B name no mechanism: no command, file, format, field,
@@ -19,11 +19,11 @@ able to design from Parts A and B and git alone.
 
 ## 1. Purpose
 
-sluice admits finished work onto a line only after the line, extended by
-that work and by everything ahead of it, has passed the line's gate. It
+sluice admits finished work onto a branch only after the branch, extended by
+that work and by everything ahead of it, has passed the branch's gate. It
 orders what is submitted, forms each candidate revision exactly as it
 would land, tests candidates ahead of need, names the one submission at
-fault when a candidate fails, and moves the line only to a revision that
+fault when a candidate fails, and moves the branch only to a revision that
 passed. It never runs a check of its own invention, never starts a
 service, never chooses a port, and never decides what a gate requires.
 A session that built the work submits it and does nothing more.
@@ -34,11 +34,11 @@ A session that built the work submits it and does nothing more.
 
 | actor | may decide | may not |
 |---|---|---|
-| **a session** (an agent or a person building in a place) | when its work is ready, and to submit it; how to resolve a conflict or a failure in its own place | merge, land, or move a line; change another submission's order; withdraw another's submission |
-| **a planner** (a plan, or a person) | what a submission lands after, and its priority | override a gate; move a line |
-| **a policy's author** (a repository's owners, a platform) | which checks gate each line, which executors each line trusts, how a flaky result reads, how deep a chain is tested, how long a candidate's checks may run | make a line land untested; widen trust a layer above set |
+| **a session** (an agent or a person building in a place) | when its work is ready, and to submit it; how to resolve a conflict or a failure in its own place | merge, land, or move a branch; change another submission's order; withdraw another's submission |
+| **a planner** (a plan, or a person) | what a submission lands after, and its priority | override a gate; move a branch |
+| **a policy's author** (a repository's owners, a platform) | which checks gate each branch, which executors each branch trusts, how a flaky result reads, how deep a chain is tested, how long a candidate's checks may run | make a branch land untested; widen trust a layer above set |
 | **the operator** | everything a policy does not settle | make a landing that skipped the gate count as one |
-| **sluice** | the order among submissions within what the planner and the policy fixed; which candidates to test and how many at once; when a line moves | run a check of its own, start a service, choose a port, resolve a conflict, decide trust, release a session's place, or move a line to a revision that has not passed its gate |
+| **sluice** | the order among submissions within what the planner and the policy fixed; which candidates to test and how many at once; when a branch moves | run a check of its own, start a service, choose a port, resolve a conflict, decide trust, release a session's place, or move a branch to a revision that has not passed its gate |
 | **an executor** (a session's shell, a confined run) | nothing; it runs checks and reports what it observed | report an outcome it did not observe |
 
 <!-- ANCHOR_END: actors -->
@@ -48,24 +48,24 @@ A session that built the work submits it and does nothing more.
 Terms are defined by meaning. A model may add terms; it may not
 redefine these.
 
-- **line**: a branch that lands work: a repository's shared line, or a
-  bolt's line off it.
-- **place**: a working copy prepared for one session off one line.
+- **branch**: a git branch that lands work: a repository's shared branch, or a
+  bolt's branch off it.
+- **place**: a working copy prepared for one session off one branch.
 - **head**: the revision a place holds when its session submits.
-- **submission**: one head offered to one line, with what it must land
+- **submission**: one head offered to one branch, with what it must land
   after, its priority and who submitted it.
 - **entry**: a submission as sluice holds it, with its state.
 - **after**: the entries a submission names as having to land before
   it.
-- **lane**: the entries of one line whose affected parts overlap,
+- **lane**: the entries of one branch whose affected parts overlap,
   transitively; entries in different lanes never share a candidate.
 - **affected parts**: the parts of the repository whose checks an
   entry's work can change the result of, as the repository's
   description gives them, every part that depends on one of them
   included.
-- **work**: an entry's commits, from where its head left the line to
+- **work**: an entry's commits, from where its head left the branch to
   the head.
-- **candidate**: a revision equal to the line's current revision
+- **candidate**: a revision equal to the branch's current revision
   extended, in order, by an entry and every entry ahead of it in its
   lane: the revision that entry would land as.
 - **chain**: the candidates of one lane, each extending the one before.
@@ -74,13 +74,13 @@ redefine these.
   the candidate before it change the same content incompatibly.
 - **check**: a task run to judge a revision, ending in a pass or a
   fail.
-- **gate**: for a line, the checks it requires, the executors it
+- **gate**: for a branch, the checks it requires, the executors it
   trusts, and how a flaky key reads.
 - **key**: the identity of one check over the inputs it reads.
 - **verdict**: a gate's reading of a candidate: for each required check
   exactly one of passed, failed, missing or flaky.
 - **culprit**: the one entry a failed candidate is attributed to.
-- **landing**: the line moving to a candidate that passed.
+- **landing**: the branch moving to a candidate that passed.
 - **executor**: what ran a check, with its identity and its host;
   **confined** when it ran in a place holding exactly the candidate and
   what the repository declares, which nothing of any session could
@@ -96,8 +96,8 @@ redefine these.
 
 ### A.1 Submission
 
-1. A session submits a head to a line and does nothing more: it never
-   merges, never lands and never moves a line, and an attempt to is
+1. A session submits a head to a branch and does nothing more: it never
+   merges, never lands and never moves a branch, and an attempt to is
    refused and reported.
 2. A head is submitted only from a place whose tree is exactly its
    commits. The driver refuses a place holding anything more, and names
@@ -105,9 +105,9 @@ redefine these.
 3. A submission names what it lands after, its priority and who
    submitted it. It never names a position.
 5. An entry leaves sluice only by landing, by withdrawal by its
-   submitter, its planner or the operator, or by a bound the line's
+   submitter, its planner or the operator, or by a bound the branch's
    policy states in advance. sluice never drops an entry on its own.
-67. A submission from a place that has an entry on the same line
+67. A submission from a place that has an entry on the same branch
     withdraws that entry, which stays readable as withdrawn.
 54. sluice never bounds how often a session submits again after its
     entry was removed as culprit or conflict. An entry's state shows
@@ -126,42 +126,42 @@ redefine these.
    different lanes never share a candidate and land in any order
    relative to each other.
 9. An entry whose affected parts are unknown is in every lane of its
-   line while it is there, and the lanes divide again once it leaves.
+   branch while it is there, and the lanes divide again once it leaves.
 
 ### A.3 Candidates and chains
 
-10. Every candidate equals the line's current revision extended, in
+10. Every candidate equals the branch's current revision extended, in
     order, by exactly the entries ahead of it in its lane and itself.
     A candidate never contains an entry behind it, an entry of another
     lane, or an entry removed from the chain.
 11. An entry is judged only as a candidate: never alone against a
-    revision the line has left, and never in a combination it would not
+    revision the branch has left, and never in a combination it would not
     land in.
 12. A conflict is found when the candidate is formed, before any check
     runs. It removes the entry from the chain and nothing else: the
     chain continues without it.
 64. sluice forms, for a head not yet submitted, the candidate it would
-    form were the head submitted now, against the line and the entries
+    form were the head submitted now, against the branch and the entries
     ahead of it, and reports a conflict so found to the head's
     session. A forecast creates no entry, changes no order and moves
-    no line, and its result is never read as a verdict.
+    no branch, and its result is never read as a verdict.
 65. A conflict reported to a session, forecast or found at forming,
     names the content contested and every entry it is contested with,
     with what each of those entries submitted: each entry ahead the head
     conflicts with alone, or, when none does, every entry ahead up to
     the one at which the conflict appeared.
-13. A line is tested up to its window, counted across all its lanes.
+13. A branch is tested up to its window, counted across all its lanes.
     The window never falls below one, grows while candidates pass and
-    shrinks when one fails, within bounds the line's policy states.
+    shrinks when one fails, within bounds the branch's policy states.
 71. No host runs more checks at once than its own bound, whatever the
-    windows of the lines it serves.
-14. A line's policy says whether every candidate of a chain is tested or
+    windows of the branches it serves.
+14. A branch's policy says whether every candidate of a chain is tested or
     the deepest first. Under deepest first, a failure is attributed only
     after the candidates that were skipped have verdicts.
 
 ### A.4 Verdicts and attribution
 
-15. A candidate's verdict is its line's gate read over the checks the
+15. A candidate's verdict is its branch's gate read over the checks the
     candidate affects. A required check whose key already holds a pass
     from an executor the gate trusts is read from that pass and not run
     again.
@@ -174,14 +174,14 @@ redefine these.
 18. No entry is attributed or landed before every candidate ahead of it
     in its chain has a verdict. A conflict removes its entry when it is
     found (12).
-69. A check's result belongs to its key, not to a line: a pass recorded
-    under a key satisfies every line whose gate trusts the executor
+69. A check's result belongs to its key, not to a branch: a pass recorded
+    under a key satisfies every branch whose gate trusts the executor
     that recorded it.
-70. When the line's revision is covered by no verdict, every check its
+70. When the branch's revision is covered by no verdict, every check its
     gate requires is affected by the next candidate.
 19. A key holding both a pass and a fail from executors the gate trusts
-    reads as the line's policy says, passed or not passed, and never
-    differently for two candidates of one line.
+    reads as the branch's policy says, passed or not passed, and never
+    differently for two candidates of one branch.
 20. The culprit's session is told the failing checks and the candidate
     they failed on. No other session is told of that failure.
 21. An entry removed as culprit or as conflict leaves the chain, and
@@ -189,18 +189,18 @@ redefine these.
 
 ### A.5 Landing
 
-22. A line moves only to a candidate whose verdict is satisfied, only
+22. A branch moves only to a candidate whose verdict is satisfied, only
     in chain order, never past an entry without a verdict, and never to
     a candidate containing a culprit or a conflict.
 23. A landing writes one commit per entry, with the revision before it
     as its first parent and the entry's head as its second, naming the
     entry's work and the verdict it landed on; entries landed together
     on the deepest candidate's verdict each name that verdict. The
-    history of a line is
+    history of a branch is
     never rewritten, and a session's commits stay reachable from the
-    line they landed on.
-24. A landing moves the line from exactly the revision its candidate
-    was formed on. A landing that finds the line elsewhere is refused,
+    branch they landed on.
+24. A landing moves the branch from exactly the revision its candidate
+    was formed on. A landing that finds the branch elsewhere is refused,
     and the chain is formed again on the revision found.
 25. sluice releases every place it made for a candidate once that
     candidate's verdict is read, and never releases a session's place.
@@ -208,26 +208,26 @@ redefine these.
     its driver's.
 26. Every state an entry is in, and every verdict read for it, is
     readable by its session, its planner and the operator, from every
-    host that submits to its line, whether or not sluice is running.
+    host that submits to its branch, whether or not sluice is running.
 
 ### A.6 Gates and trust
 
-27. A line's gate is its policy's: the checks it requires, the
+27. A branch's gate is its policy's: the checks it requires, the
     executors it trusts, how a flaky key reads, whether every candidate
     or the deepest first is tested, the window's bounds, and how long a
     candidate's checks may run. sluice gives no gate a meaning of its
     own, and admits every submission a driver makes: whether work may be
     submitted at all is decided before it reaches sluice.
-28. A result from an executor the line's gate does not trust never
+28. A result from an executor the branch's gate does not trust never
     satisfies that gate, whatever its outcome.
 29. A gate that trusts only confined executors is satisfied by no open
     run.
 30. sluice never runs a check of its own and never changes what a gate
     requires.
-55. A check's cost never changes how it gates: every check a line's gate
-    requires has a verdict before the line moves, and none is deferred
+55. A check's cost never changes how it gates: every check a branch's gate
+    requires has a verdict before the branch moves, and none is deferred
     past a landing.
-56. A line's gate is read from the line's current revision, never from a
+56. A branch's gate is read from the branch's current revision, never from a
     candidate or a place. No submission changes the gate it is judged
     by.
 
@@ -238,19 +238,19 @@ redefine these.
     place.
 32. A candidate's place belongs to the candidate: nothing started in it
     outlives it, and two places on one host never collide.
-66. A candidate's checks run under the time limit its line's policy
+66. A candidate's checks run under the time limit its branch's policy
     states. A run that exceeds it is ended with everything it started,
     recorded as timed out, and read as failed.
 
 ### A.8 Hosts
 
-57. Every entry of one line is ordered with every other entry of that
-    line, whichever host submitted it.
-58. At most one instance of sluice advances a line at any moment,
+57. Every entry of one branch is ordered with every other entry of that
+    branch, whichever host submitted it.
+58. At most one instance of sluice advances a branch at any moment,
     whichever host it runs on, and one that has stopped advancing a
-    line writes nothing more for it.
-59. An instance that stops advancing a line loses nothing: every entry
-    submitted meanwhile is held, and whatever next advances the line
+    branch writes nothing more for it.
+59. An instance that stops advancing a branch loses nothing: every entry
+    submitted meanwhile is held, and whatever next advances the branch
     resumes from the records as last written.
 60. A candidate's checks may run on any host. A run whose executor
     stopped before reporting has no outcome: it is never read as a pass
@@ -271,7 +271,7 @@ redefine these.
 
 ### B.2 The check
 
-36. **affected**: given the line's revision and a candidate, the checks
+36. **affected**: given the branch's revision and a candidate, the checks
     the candidate can change the result of (8, 15).
 37. **run**: given a place and checks, for each check its key, its
     outcome, its executor and whether the outcome was observed in this
@@ -279,24 +279,24 @@ redefine these.
 38. The guarantee: an outcome is what the executor observed, never
     inferred; a replay says it is a replay.
 
-### B.4 The line
+### B.4 The branch
 
-42. **read**: given a line, its current revision.
+42. **read**: given a branch, its current revision.
 43. **form**: given a revision and a head, the candidate revision, or
     the conflict with the content it is on (12).
 44. **commit**: given a candidate, its parent, the entry's head, the
     entry's work and the verdict read for it, one commit (23).
-45. **move**: given a line, the revision it is expected at and the
-    revision to move to, the move or a refusal because the line was
+45. **move**: given a branch, the revision it is expected at and the
+    revision to move to, the move or a refusal because the branch was
     elsewhere (24).
-46. The guarantee: a move is all or nothing, and two moves of one line
+46. The guarantee: a move is all or nothing, and two moves of one branch
     from one expected revision never both succeed.
 
 ### B.5 The driver
 
-47. **submit**: given a head, a line, the after-entries, a priority, a
+47. **submit**: given a head, a branch, the after-entries, a priority, a
     submitter, an entry (1, 3).
-47a. **forecast**: given a head, a line and its after-entries, the
+47a. **forecast**: given a head, a branch and its after-entries, the
      conflicts the head would meet if submitted now, placed after every
      entry already submitted, each with the entries it meets (64, 65).
 47b. **amend**: given a queued entry and who asks, its after-entries or
@@ -321,9 +321,9 @@ redefine these.
 
 ### B.7 The records
 
-61. **read**: given a line, its records as last written, and the
+61. **read**: given a branch, its records as last written, and the
     version they were read at.
-62. **write**: given a line, the version its records were read at and
+62. **write**: given a branch, the version its records were read at and
     the records to write, the write, or a refusal because they have
     been written since (58).
 63. The guarantee: a write is all or nothing, two writes from one
@@ -349,15 +349,15 @@ Parts A and B do not change to admit a profile.
 
 | profile | affected | run |
 |---|---|---|
-| **moon**: the repository's task runner with declared inputs and a content-keyed cache | moon's affected projects between the line's revision and the candidate, downstream dependents included | moon's run of the affected check tasks in the place; the run report gives each task's outcome and whether it was replayed, the run record gives its hash as the key and its exit code |
+| **moon**: the repository's task runner with declared inputs and a content-keyed cache | moon's affected projects between the branch's revision and the candidate, downstream dependents included | moon's run of the affected check tasks in the place; the run report gives each task's outcome and whether it was replayed, the run record gives its hash as the key and its exit code |
 | **script**: one command with an exit code | every check, always | the command's exit code, never a replay |
 
-### C.4 The line
+### C.4 The branch
 
 | profile | read / form / commit / move |
 |---|---|
-| **local refs**: one host's repository | `git rev-parse`; `git merge-tree --write-tree`; `git commit-tree` with the line and the head as parents and the verdict as `Sluice-*` trailers; `git update-ref` with the expected old value; branch protection by a `reference-transaction` hook that refuses any update to a line in the policy not made by sluice, and logs it (1) |
-| **pushed refs**: a line on a remote every host reaches | `git fetch` then `git rev-parse` of the remote's line; forming and committing as local refs, on the host advancing the line; the landing a push with `--force-with-lease=<line>:<expected>`; branch protection by the forge's rules, which only sluice's identity bypasses (1) |
+| **local refs**: one host's repository | `git rev-parse`; `git merge-tree --write-tree`; `git commit-tree` with the branch and the head as parents and the verdict as `Sluice-*` trailers; `git update-ref` with the expected old value; branch protection by a `reference-transaction` hook that refuses any update to a branch in the policy not made by sluice, and logs it (1) |
+| **pushed refs**: a branch on a remote every host reaches | `git fetch` then `git rev-parse` of the remote's branch; forming and committing as local refs, on the host advancing the branch; the landing a push with `--force-with-lease=<branch>:<expected>`; branch protection by the forge's rules, which only sluice's identity bypasses (1) |
 
 ### C.5 The driver
 
@@ -371,19 +371,19 @@ Parts A and B do not change to admit a profile.
 ### C.6 The records
 
 Whatever binds them, the records are one JSON document per entry and
-one JSON Lines log of check runs and verdicts per line (53), and what
+one JSON Lines log of check runs and verdicts per branch (53), and what
 outlives them is the trailers each landing commit carries (23).
 
 | profile | read / write |
 |---|---|
-| **local files**: one host | the documents under the repository's common git directory, one directory per line and one log of check results per repository (69), readable by every place on the host with no process running, never tracked and never pushed, a version kept beside them; a write under the line's lock, refused when the version moved |
-| **remote refs**: peers | the records as one tree committed under `refs/sluice/<line>/records` on the shared remote; a write is a push with `--force-with-lease` from the commit read |
+| **local files**: one host | the documents under the repository's common git directory, one directory per branch and one log of check results per repository (69), readable by every place on the host with no process running, never tracked and never pushed, a version kept beside them; a write under the branch's lock, refused when the version moved |
+| **remote refs**: peers | the records as one tree committed under `refs/sluice/<branch>/records` on the shared remote; a write is a push with `--force-with-lease` from the commit read |
 | **server**: a central server | the server's local files; other hosts read and write only by asking the server |
 
 ### C.7 Policy
 
-A line's policy is a TOML file checked into the repository, one table
-per pattern of line names, read from the line's revision (56).
+A branch's policy is a TOML file checked into the repository, one table
+per pattern of branch names, read from the branch's revision (56).
 
 ### C.8 Deployments across hosts
 
@@ -393,9 +393,9 @@ and neither a change to Parts A and B.
 | | peers | a central server |
 |---|---|---|
 | profiles | container places on any host; pushed refs; remote submit; remote refs records | container places on the server; pushed refs; remote submit; server records |
-| who advances a line | whichever host's sluice wins the write (58, 62); another takes over when it stops | the server, always |
+| who advances a branch | whichever host's sluice wins the write (58, 62); another takes over when it stops | the server, always |
 | where candidates run | any host with room; an executor claims a candidate by a write to the records | the server's executors |
-| a host stops | its claims and its lead pass to others (59, 60) | a session's host: nothing changes; the server: every line stalls and loses nothing (59) |
+| a host stops | its claims and its lead pass to others (59, 60) | a session's host: nothing changes; the server: every branch stalls and loses nothing (59) |
 | confinement | a container on a host that runs sessions is confined only if no session there can reach it | the server runs no sessions, so its executors are confined |
 | what is new to run | nothing but sluice on each host | a server process the operator starts, whose listener belongs to its driver profile, never to the core |
 
@@ -407,10 +407,10 @@ The task runner's cache makes either cheaper and neither depends on it.
 
 - **I1.** Nothing lands untested in the combination it lands in (10,
   11, 22).
-- **I2.** A session never moves a line (1).
+- **I2.** A session never moves a branch (1).
 - **I3.** Every failure has exactly one culprit, named only once
   everything ahead of it is known (17, 18).
-- **I4.** A line never moves past what passed, and never from a revision
+- **I4.** A branch never moves past what passed, and never from a revision
   other than the one its candidate was formed on (22, 24).
 - **I5.** sluice runs no check, starts no service and chooses no port
   (30, 31).
@@ -423,7 +423,7 @@ The task runner's cache makes either cheaper and neither depends on it.
 - Describing a repository: its parts, what a change affects, what a
   check reads. That is the repository's description, read through
   B.2.
-- Deciding policy: which checks gate a line, whom to trust, how flaky
+- Deciding policy: which checks gate a branch, whom to trust, how flaky
   reads.
 - Approving or reviewing work. A verdict is evidence for a person or a
   platform, never an approval.
@@ -437,8 +437,8 @@ The task runner's cache makes either cheaper and neither depends on it.
 Constraints already fixed:
 
 - Repositories are git repositories, and places are git worktrees.
-- Lines are named by convention, so a target is known from its name:
-  the shared line, a bolt's line, a unit's line, a fix's line.
+- Branches are named by convention, so a target is known from its name:
+  the shared branch, a bolt's branch, a unit's branch, a fix's branch.
 - sluice is free and open source.
 - sluice is written in Rust.
 
@@ -450,8 +450,8 @@ The rest of the stack, which a model builds on unless it says why not:
   tethers processes to a place.
 - The drivers are crew and flywheel; the forge is GitHub.
 - Records are plain JSON, kept on one host under the repository's
-  common git directory until several hosts submit to one line.
-- A line's policy is a file checked into the repository.
+  common git directory until several hosts submit to one branch.
+- A branch's policy is a file checked into the repository.
 
 <!-- ANCHOR_END: givens -->
 <!-- ANCHOR: questions -->
@@ -459,26 +459,26 @@ The rest of the stack, which a model builds on unless it says why not:
 
 These are not requirements.
 
-- When a line's stepper stops, how long before another may advance it,
+- When a branch's stepper stops, how long before another may advance it,
   and what tells a peer the stepper has stopped rather than gone quiet?
 - How does a peer decide which candidates to run, and how many?
-- Does the shared line's gate trust a container on a host that also
+- Does the shared branch's gate trust a container on a host that also
   runs sessions, or only hosts that run none?
-- How does a line's policy name the executors it trusts, and how does
+- How does a branch's policy name the executors it trusts, and how does
   a run prove which executor made it, when under peers every host
   writes the records?
 - Under a central server, is a state readable only on the server
   readable "whether or not sluice is running"?
 - Who releases the candidate places of a host that has stopped for
   good?
-- Who sets how long a host may hold a line, or a claim on a
+- Who sets how long a host may hold a branch, or a claim on a
   candidate's checks: the policy, the deployment or the operator?
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->
 ## 11. Scenarios the model must satisfy
 
-- **S1.** Two sessions submit heads to one bolt line. Both candidates
+- **S1.** Two sessions submit heads to one bolt branch. Both candidates
   pass. Both land, in order, and neither session ran a merge.
 - **S2.** The second head conflicts with the first. Its session is told
   the paths before any check runs; the first lands.
@@ -486,34 +486,34 @@ These are not requirements.
   session is told the failing checks; the first has landed; no other
   session hears of it.
 - **S4.** The first candidate fails. Its session is told; the second
-  head is formed again on the line without it, passes, and lands
+  head is formed again on the branch without it, passes, and lands
   first.
 - **S6.** Two bolts with disjoint affected parts are submitted to the
-  shared line. Neither is tested with the other, and they land in
+  shared branch. Neither is tested with the other, and they land in
   either order.
 - **S7.** One key holds a pass and a fail from trusted executors. The
-  bolt line's policy reads it passed; the shared line's reads it
+  bolt branch's policy reads it passed; the shared branch's reads it
   missing until a confined run settles it.
-- **S8.** The line is moved by hand between a candidate's verdict and
+- **S8.** The branch is moved by hand between a candidate's verdict and
   its landing. The landing is refused and the chain is formed again on
   the new revision.
-- **S9.** The shared line tests deepest first. Three bolts are tested as
+- **S9.** The shared branch tests deepest first. Three bolts are tested as
   one candidate, which fails; the two skipped candidates are tested,
   and the culprit is the one entry the rule names.
 - **S10.** sluice is stopped. Every entry's state is still readable.
   Started again, it continues without running a check for any candidate
   that already has a verdict.
-- **S11.** An entry lands. The line holds a commit whose second parent
+- **S11.** An entry lands. The branch holds a commit whose second parent
   is the session's head and which names the verdict; sluice leaves the
   session's place alone, and the session's driver releases it.
-- **S12.** A submission changes the line's policy to drop a check its
-  candidate fails. The candidate is judged by the policy on the line,
+- **S12.** A submission changes the branch's policy to drop a check its
+  candidate fails. The candidate is judged by the policy on the branch,
   fails, and the change to the policy lands only with a candidate that
   passes the gate as it stood.
-- **S13.** Sessions on two hosts submit to one bolt's line. Their
+- **S13.** Sessions on two hosts submit to one bolt's branch. Their
   entries are tested in one order, and each session reads its entry's
   state and is told its outcome on its own host.
-- **S14.** The host advancing a line stops mid-chain. Under peers
+- **S14.** The host advancing a branch stops mid-chain. Under peers
   another host continues from the records; under a central server
   nothing lands until it is back. In both, no entry is lost and no
   check that has a verdict is run again.
