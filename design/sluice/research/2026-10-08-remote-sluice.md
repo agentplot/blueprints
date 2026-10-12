@@ -12,7 +12,7 @@ blends them:
 | | idea | what is remote | industry analogue | seams touched |
 |---|---|---|---|---|
 | **(a)** | remote, confined execution of candidate checks | the place and the executor | Bazel RBE (BuildBuddy, EngFlow, NativeLink, Buildbarn); Nx Agents; a merge queue's CI | place, check (service follows the place) |
-| **(b)** | a centralized queue: one coordinator per line that several hosts submit to | the entries, the lease, the landing | GitHub merge queue, Mergify, Trunk, Aviator, Zuul | line, driver; the records' location (C.6) |
+| **(b)** | a centralized queue: one coordinator per branch that several hosts submit to | the entries, the lease, the landing | GitHub merge queue, Mergify, Trunk, Aviator, Zuul | branch, driver; the records' location (C.6) |
 | **(c)** | a hosted service offering both | everything but the sessions | Nx Cloud, BuildBuddy cloud, Trunk/Aviator/Mergify | none in the core; it is a deployment |
 
 The Bazel analogy is apt for (a) and only for (a). In Bazel's model the
@@ -27,10 +27,10 @@ the same split: **the queue is central, the checks are delegated to the
 customer's CI**. None of them runs tests itself.
 
 Recommendation: build **(a)** next, as a confined-runner profile, because
-the shared line cannot land anything without it (ADR 0007: until a
-confined executor exists the shared line's gate reads missing). Answer
+the shared branch cannot land anything without it (ADR 0007: until a
+confined executor exists the shared branch's gate reads missing). Answer
 **(b)** in the statement now (it is §10's open question) but build it only
-when a second host submits to one line. Treat **(c)** as a deployment of
+when a second host submits to one branch. Treat **(c)** as a deployment of
 (a) and (b), not a design input, and keep it out of the sluice repository
 (core.13).
 
@@ -97,7 +97,7 @@ Two consequences for sluice:
 Every one of these is a central service, because the forge is central and
 the queue's state has to be where every contributor can reach it. sluice's
 situation differs in one way that matters: its submitters are agents on
-the operator's own hosts, and its line moves are plain git with
+the operator's own hosts, and its branch moves are plain git with
 compare-and-swap. A central coordinator is not required for correctness
 (section 4b), only for global order.
 
@@ -112,7 +112,7 @@ compare-and-swap. A central coordinator is not required for correctness
   place on it; release (34) deletes the ref and ends the runner. The
   guarantee (35) is met by a clean checkout of exactly that revision.
 - **Check profile, "moon on a runner"**: affected (36) stays local (moon's
-  affected projects between the line and the candidate need only git);
+  affected projects between the branch and the candidate need only git);
   run (37) is moon's run in the remote place, returning per task its hash
   as key, exit code, whether it was replayed, and the runner's identity as
   executor.
@@ -120,7 +120,7 @@ compare-and-swap. A central coordinator is not required for correctness
   runner's place; clause 41 is trivially met, one runner per place.
 - **Trust**: the runner is the only holder of the remote cache's write
   credential; agent hosts set `cache.localReadOnly` (ADR 0004). The shared
-  line's policy names the runner as a trusted executor (27, 28, 29).
+  branch's policy names the runner as a trusted executor (27, 28, 29).
 
 The candidates for the runner, cheapest first:
 
@@ -161,7 +161,7 @@ The candidates for the runner, cheapest first:
   (a revision and an opaque location) for any check profile to run there.
   Worth an ADR before the first remote profile.
 
-**What it buys**: the shared line can land at all; agent hosts stop
+**What it buys**: the shared branch can land at all; agent hosts stop
 spending CPU on candidate checks; a candidate's checks no longer contend
 with agents' own builds; executors scale independently of agent hosts.
 
@@ -171,11 +171,11 @@ runners); a remote cache service to run; a credential to manage; and the
 records channel above.
 
 **When it is worth it**: immediately for trust, at one host, because the
-shared line is blocked without it. For speed, once checks on candidates
+shared branch is blocked without it. For speed, once checks on candidates
 measurably slow the agents on the same host, roughly when the window times
-the number of active lines exceeds what the host's spare cores absorb.
+the number of active branches exceeds what the host's spare cores absorb.
 
-### (b) A centralized queue for one line across several hosts
+### (b) A centralized queue for one branch across several hosts
 
 This is §10's question. Three shapes, from no coordination to full:
 
@@ -191,23 +191,23 @@ Conflicts and failures are discovered late and work is thrown away, which
 is the race ADR 0002 set out to end. Non-conforming; useful only as a
 fallback.
 
-**b1. One coordinator host per line.** Records stay local to the
-coordinator exactly as C.6 and ADR 0007 say; the line lock (ADR 0005)
+**b1. One coordinator host per branch.** Records stay local to the
+coordinator exactly as C.6 and ADR 0007 say; the branch lock (ADR 0005)
 still serializes steppers. Other hosts submit through a driver profile
 that pushes the head to a ref and writes a submission the coordinator
 ingests (an entry ref, or a call over SSH). State (49) is served to other
 hosts by the coordinator publishing each entry's state, for instance as a
 ref per entry rewritten at every step, which also meets clause 51 for
 remote readers. No new process type: the coordinator is just the host
-where `sluice run` or the driver's loop runs for that line. Lowest cost,
-one point of failure (a stopped coordinator stalls the line but loses
+where `sluice run` or the driver's loop runs for that branch. Lowest cost,
+one point of failure (a stopped coordinator stalls the branch but loses
 nothing, S10).
 
 **b2. No fixed coordinator: entries and lease as refs.** C.4's pushed-refs
 sketch taken whole. Entries are JSON blobs under a namespace such as
 `refs/sluice/<line>/entries/<id>`; the chain is leased by compare-and-swap
 on `refs/sluice/<line>/lease`; any host's stepper that wins the lease
-steps the line. This requires changing C.6 (records are no longer local
+steps the branch. This requires changing C.6 (records are no longer local
 and never pushed), so the statement changes first (core.12); clause 53's
 "one form whatever profile wrote them" means the JSON stays identical and
 only its storage moves.
@@ -220,18 +220,18 @@ per run (core.7), and no duplicate check work. A lease needs an expiry for
 a coordinator that dies; using the lease ref's revision as a fencing token
 on every record write keeps a stale holder from writing after expiry.
 
-**Seams and rules**: line (`move` by push), driver (remote submit, state,
+**Seams and rules**: branch (`move` by push), driver (remote submit, state,
 notify), and the records' location. core.4 holds (a session's submit
-pushes a head to an entry ref, never the line). core.10 holds (no port,
+pushes a head to an entry ref, never the branch). core.10 holds (no port,
 no daemon the core starts). core.11 holds for b1 and b2 (records are files
 or git objects readable without sluice).
 
-**One forge caveat**: if the line is protected on GitHub, sluice's push
+**One forge caveat**: if the branch is protected on GitHub, sluice's push
 identity needs a ruleset bypass, and GitHub's own merge queue must be off
 for that branch, or the two queues contend.
 
 **When it is worth it**: from the second host that submits to the same
-line. Bolt lines that live on one host never need it. The shared line
+branch. Bolt branches that live on one host never need it. The shared branch
 needs it as soon as bolts land from more than one machine. With one
 operator and one large machine, not yet.
 
@@ -248,7 +248,7 @@ executor's identity in every record, and should not assume it.
 ## 5. Recommended direction and smallest next step
 
 1. **Do (a) first, as a CI runner, not REAPI.** It unblocks the shared
-   line and needs no change to Parts A and B. Smallest step: a spike in
+   branch and needs no change to Parts A and B. Smallest step: a spike in
    one repository with (i) a REAPI cache (bazel-remote or NativeLink's
    CAS) whose write credential only CI holds, (ii) agent hosts on
    `cache.localReadOnly`, (iii) a workflow that checks out a pushed
@@ -260,21 +260,21 @@ executor's identity in every record, and should not assume it.
    "confined" in the statement's vocabulary, and an ADR on how the place
    and check profiles share a place handle (core.2).
 3. **Answer §10 in the statement with b1** (one coordinator host per
-   line, other hosts submit by pushed refs, state published as refs), and
+   branch, other hosts submit by pushed refs, state published as refs), and
    name b2 as the profile to grow into. Build it when a second host first
-   submits to the shared line.
+   submits to the shared branch.
 4. **Leave REAPI execution of individual tasks** until moon offers an
    execution client or a policy demands per-action confinement.
 
 ## 6. Questions for the operator
 
 1. How many hosts run agents today, and do any two of them submit to the
-   same line? Is the shared line the only multi-host line?
+   same branch? Is the shared branch the only multi-host branch?
 2. Does "confined" mean a clean runner that holds the write credential
    (CI-level), or a per-task sandbox that sees only declared inputs
    (REAPI-level)? The statement's wording says the second; ADR 0004 builds
    the first.
-3. Is GitHub Actions acceptable as the shared line's confined executor,
+3. Is GitHub Actions acceptable as the shared branch's confined executor,
    or must executors run on hardware you control?
 4. Do any checks need services (emulators, servers)? If so, REAPI
    per-action execution is ruled out for them, which settles question 2's
@@ -282,9 +282,9 @@ executor's identity in every record, and should not assume it.
 5. Which remote cache: self-hosted bazel-remote or NativeLink, or a hosted
    one? Who holds its write credential?
 6. Is a single coordinator host (b1) acceptable, with a stopped
-   coordinator stalling but not losing the line, or is coordinator
+   coordinator stalling but not losing the branch, or is coordinator
    failover a requirement now?
-7. Is GitHub's own merge queue on for any line sluice will land?
+7. Is GitHub's own merge queue on for any branch sluice will land?
 
 ## Sources
 
