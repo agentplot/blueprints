@@ -377,17 +377,20 @@ that instant the former may push a candidate ref or call `move`, both
 covered above. It cannot open a claim, attribute, land or notify without
 writing first.
 
-**What takes the lead.** Under peers each host runs one `sluice run`
-started by the operator (C.8: "nothing new to run but sluice on each
-host"), which takes the lead of any branch it serves when the branch is
-vacant or lapsed, claims and runs checks (4.2), and delivers notifications
-for entries submitted from its host (4.3). A waiting `wt submit` never
-steps across hosts: it has no way to tell an empty fleet from a quiet one,
-since "vacant or lapsed" is the same observation `sluice run` takes a
-branch on, and taking a branch needs the landing credential, which only
-the `sluice` user holds (3.4). On a fleet with no `sluice run`, submissions
-are accepted and held and nothing lands until one starts (59). Question 11
-is whether to choose the other way.
+**What takes the lead.** There is no hybrid. A deployment is one machine,
+where the waiting `wt submit` runs the rounds itself and nothing else need
+be running, or it is a fleet, where every round is run by a `sluice run`
+the operator started (C.8) and a `wt submit` only submits and waits.
+`wt submit` assumes one machine unless passed `--remote`, which is what a
+fleet's hosts pass (C.5). A submit on a fleet never takes a branch because
+it could not tell an empty fleet from a quiet one, "vacant or lapsed"
+being the same observation `sluice run` takes a branch on, and taking a
+branch needs the landing credential, which only the `sluice` user holds
+(3.4). On a fleet with no `sluice run`, submissions are accepted and held
+and nothing lands until one starts (59). Each host's `sluice run` takes the
+lead of any branch it serves when the branch is vacant or lapsed, claims
+and runs checks (4.2), and delivers notifications for entries submitted
+from its host (4.3).
 
 ### 4.2 Who runs which checks: claims
 
@@ -700,16 +703,3 @@ so that neither changes a record's form or a clause of Parts A and B.
     makes a cross-branch hit depend on how fresh the last fetch was. The
     second is cheaper and never wrong, only sometimes late, so this model
     leans to it; the operator rules.
-11. **Whether a waiting `wt submit` steps across hosts.** On one machine
-    the waiting submit runs the rounds itself and nothing else need be
-    running. Section 4.1 gives that work to `sluice run` under peers and
-    has the submit only wait. There is no middle: a submit cannot tell an
-    empty fleet from a quiet one, so it either may take a branch, on every
-    fleet, or never may. The argument for never is clause 1: under pushed refs
-    the stepper holds the credential that bypasses branch protection, and
-    a session's own process must not hold it, so the stepper runs as the
-    `sluice` OS user with its own key, which also vouches for the runs
-    (29). Against it: the operator must start `sluice run` on every host,
-    and a host with no `sluice run` submits but never lands. The one-
-    machine case is unchanged either way, since a hook on local refs can
-    tell sluice's rounds from the session's git. The operator rules.

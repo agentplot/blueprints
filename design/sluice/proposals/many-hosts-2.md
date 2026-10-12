@@ -244,6 +244,13 @@ session on any host can use (1)".
 |---|---|
 | **remote submit**: a session on any host | under peers, the head pushed to `refs/sluice/heads/<oid>` on the shared remote and the entry written to the branch's records (C.6 remote refs); under a central server, the head pushed to the server's repository over SSH and `sluice submit` run on the server over SSH; withdrawal, amend, state and the forecast the same way; a waiting `wt submit` reads its entry's state at a backing-off cadence until the outcome, and that read is the delivery (51); a `--no-wait` submission is prompted by the instance on the submitter's host under peers and read by `wt submit --status` under the server |
 
+**C.5 the driver**, the worktrunk row gains: "on one machine `wt submit`
+runs the rounds itself while it waits; passed `--remote`, it submits
+through the remote submit profile and only waits, every round run by a
+`sluice run` (C.8). There is no third mode: a submit on a fleet never
+takes a branch, since it cannot tell an empty fleet from a quiet one, and
+only the `sluice` user holds the branch's credential (C.4)."
+
 **C.6 the records**:
 
 | profile | read / write |
