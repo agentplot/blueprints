@@ -381,10 +381,13 @@ writing first.
 started by the operator (C.8: "nothing new to run but sluice on each
 host"), which takes the lead of any branch it serves when the branch is
 vacant or lapsed, claims and runs checks (4.2), and delivers notifications
-for entries submitted from its host (4.3). A waiting `wt submit` does not
-step across hosts; on a fleet with no `sluice run` anywhere, it may take
-a vacant or lapsed branch exactly as `sluice run` would, which is phase 1's
-behaviour generalized, and it yields the branch when its entry is decided.
+for entries submitted from its host (4.3). A waiting `wt submit` never
+steps across hosts: it has no way to tell an empty fleet from a quiet one,
+since "vacant or lapsed" is the same observation `sluice run` takes a
+branch on, and taking a branch needs the landing credential, which only
+the `sluice` user holds (3.4). On a fleet with no `sluice run`, submissions
+are accepted and held and nothing lands until one starts (59). Question 11
+is whether to choose the other way.
 
 ### 4.2 Who runs which checks: claims
 
@@ -700,8 +703,9 @@ so that neither changes a record's form or a clause of Parts A and B.
 11. **Whether a waiting `wt submit` steps across hosts.** On one machine
     the waiting submit runs the rounds itself and nothing else need be
     running. Section 4.1 gives that work to `sluice run` under peers and
-    keeps the stepping submit only for a fleet with no `sluice run`
-    anywhere. The argument for the change is clause 1: under pushed refs
+    has the submit only wait. There is no middle: a submit cannot tell an
+    empty fleet from a quiet one, so it either may take a branch, on every
+    fleet, or never may. The argument for never is clause 1: under pushed refs
     the stepper holds the credential that bypasses branch protection, and
     a session's own process must not hold it, so the stepper runs as the
     `sluice` OS user with its own key, which also vouches for the runs
