@@ -11,3 +11,10 @@ not just the easy part of it - only report completion when it's fully done. If
 you genuinely can't complete something, do the rest and state plainly what's
 missing and why. Stop short of actions or changes that are clearly beyond what
 the user's ask implies.
+
+## Writing in books/ and design/
+
+A chapter is written in the voice `books/VOICE.md` describes and checked
+by Vale with `prose` from the devenv shell. Run it on what you wrote
+before you commit, and clear every warning; a suggestion is yours to
+weigh.

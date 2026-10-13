@@ -1,0 +1,6 @@
+extends: existence
+message: "Cite a clause by its bare number in parentheses, as '(46)', not '%s'."
+level: suggestion
+ignorecase: true
+raw:
+  - '\bclauses? \d+'

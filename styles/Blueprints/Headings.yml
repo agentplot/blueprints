@@ -1,0 +1,18 @@
+extends: capitalization
+message: "Headings use sentence case: '%s'."
+level: suggestion
+scope: heading
+match: $sentence
+exceptions:
+  - Part
+  - JSON
+  - TOML
+  - SSH
+  - OTLP
+  - GitHub
+  - Nix
+  - moon
+  - sluice
+  - pinout
+  - testledger
+  - flywheel
