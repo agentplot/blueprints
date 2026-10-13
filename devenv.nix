@@ -26,15 +26,21 @@ in
   # The tools the books and the design documents are checked and built with,
   # declared here so a session, a hook and a check take the same ones.
   packages = [
+    pkgs.jq
     pkgs.mdbook
     pkgs.mdbook-mermaid
+    pkgs.python3
     vale
   ];
 
   scripts = {
+    # The voice page, rendered from the rules (styles/Blueprints).
+    voice.exec = ''
+      python3 scripts/voice.py
+    '';
     # The voice, checked: every design document and every chapter.
     prose.exec = ''
-      vale design books
+      voice && vale design books
     '';
     # One book, served with reload: `book-serve sluice`.
     book-serve.exec = ''

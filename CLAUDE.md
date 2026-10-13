@@ -14,7 +14,9 @@ the user's ask implies.
 
 ## Writing in books/ and design/
 
-A chapter is written in the voice `books/VOICE.md` describes and checked
-by Vale with `prose` from the devenv shell. Run it on what you wrote
-before you commit, and clear every warning; a suggestion is yours to
-weigh.
+Read `books/VOICE.md` before writing a chapter or a design document. It
+is rendered from the Vale rules under `styles/Blueprints` and their
+README, which are the source: change the voice there, then run `voice`.
+A hook runs Vale on every Markdown file written under `books/` or
+`design/` and shows the warnings; clear each before you commit. A
+suggestion is yours to weigh.
