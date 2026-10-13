@@ -262,7 +262,10 @@ redefine these.
 34. **release**: given a place sluice made, its removal, with everything
     started in it ended (25, 32).
 35. The guarantee: a place holds what it was given and nothing of any
-    other place.
+    other place, except the caches its branch's policy declares, each
+    keyed by the content of the files it is built from and saved only
+    from a run that passed. A cache changes how fast a check runs, never
+    what it reports.
 
 ### B.2 The check
 
