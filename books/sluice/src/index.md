@@ -40,8 +40,8 @@ as a pass (16). A failure has exactly one culprit, the newest entry of
 the first failed candidate, named only once everything ahead of it is
 known (17, 18), and only that entry's session hears of it (20). A branch
 moves only in order, only to what passed, and only from the revision
-the candidate was formed on (22, 24). Entries whose affected parts do
-not overlap never wait on each other (8).
+the candidate was formed on (22, 24). Every entry of a branch is in its one chain, tested with the
+entries ahead of it and landed in chain order (8).
 
 Trust is the branch's. A bolt's branch may take a session's own open run at
 its word; the shared branch may require a confined one; the policy says,
@@ -71,7 +71,9 @@ any other (B.5).
 
 ## How to read this book
 
-Part I is the statement of invariants, included from
-`design/sluice/requirements.md`. Part A is what must hold of sluice,
-Part B its six contracts, and Part C the profiles that bind them.
-Clause numbers in parentheses here point into it.
+The chapters are the design: the queue, the gate, places and runs, the
+records, the core and its seams, and many hosts, with a glossary and
+the open questions. The appendix is the statement of invariants,
+included from `design/sluice/requirements.md`: Part A is what must
+hold of sluice, Part B its contracts, and Part C the profiles that
+bind them. A number in parentheses points into it.
