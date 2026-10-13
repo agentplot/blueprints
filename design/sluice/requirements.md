@@ -228,11 +228,14 @@ redefine these.
 
 ### A.7 Places
 
-31. sluice starts no service and chooses no port. What a candidate's
-    checks need, the checks bring up themselves, in the candidate's
-    place.
+31. sluice starts no service. What a candidate's checks need, the
+    checks bring up themselves, in the candidate's place. sluice gives
+    the place a port for each name its branch's policy lists. Each stays
+    the same for the place's whole life, belongs to no other place alive
+    on the host, and is free when the checks receive it.
 32. A candidate's place belongs to the candidate: nothing started in it
-    outlives it, and two places on one host never collide.
+    outlives it, what its checks hand to another process to keep
+    included, and two places on one host never collide.
 66. A candidate's checks run under the time limit its branch's policy
     states. A run that exceeds it is ended with everything it started,
     recorded as timed out, and read as failed.
@@ -258,9 +261,11 @@ redefine these.
 ### B.1 The place
 
 33. **materialize**: given a revision, a place holding exactly that
-    revision, with the environment the repository declares.
+    revision, with the environment the repository declares and the
+    ports its policy names (31).
 34. **release**: given a place sluice made, its removal, with everything
-    started in it ended (25, 32).
+    started in it ended, what its checks handed to another process to
+    keep included (25, 32).
 35. The guarantee: a place holds what it was given and nothing of any
     other place, except the caches its branch's policy declares, each
     keyed by the content of the files it is built from and saved only
@@ -348,7 +353,7 @@ Parts A and B do not change to admit a profile.
 
 | profile | materialize | release |
 |---|---|---|
-| **git worktree**: a detached worktree, nothing run in it | `git worktree add --detach` at the candidate | `git worktree remove`; the checks' process group ended |
+| **git worktree**: a detached worktree, nothing run in it | `git worktree add --detach` at the candidate; a block of ports held for the place on the host, each checked free | the checks' process group ended; the policy's release command run in the place under the checks' executor, removing what the checks handed to another process, a container engine's containers above all; `git worktree remove`; the ports let go |
 | **container**: a clean checkout of the candidate in a container on the executing host | the candidate fetched and checked out into a new container's filesystem, with the environment the repository declares | the container and everything started in it removed |
 
 ### C.2 The check
@@ -361,7 +366,7 @@ Parts A and B do not change to admit a profile.
 | executor profile | execute | enforces |
 |---|---|---|
 | **open**: a process group on the instance's host | the command in the place, as one process group ended with its run | the processors given, by the runner's own threads; nothing else; never confined |
-| **sandbox**: the host's kernel sandbox, Seatbelt on macOS, bubblewrap and Landlock on Linux | the command in the place under a profile that allows writes only to the place and its scratch and the network only as the policy says | paths and network everywhere; processors and memory only on Linux, by a cgroup the run is started in; confined when no session on the host can write the place |
+| **sandbox**: the host's kernel sandbox, Seatbelt on macOS, bubblewrap and Landlock on Linux | the command in the place under a profile that allows writes only to the place and its scratch, the network only as the policy says, and a container engine's socket only when the policy allows it | paths and network everywhere; processors and memory only on Linux, by a cgroup the run is started in; confined when no session on the host can write the place and the run cannot reach a container engine, whose containers may mount any path |
 | **container**: a container engine on the executing host | the place mounted into a new container from the repository's image | processors, memory, paths and network; confined as C.8 says |
 
 ### C.4 The branch
