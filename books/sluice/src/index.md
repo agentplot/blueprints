@@ -67,9 +67,9 @@ describes no repository and decides no policy (section 8). A verdict is
 evidence for a person or a platform, never an approval.
 
 What is built above it reaches it through the driver seam like any
-other (B.5): a planner that supplies what an entry lands after, an
-operator's word that admits a submission, a platform that holds the
-confined executor.
+other (B.5). That includes a planner that supplies what an entry lands
+after, an operator's word that admits a submission, and a platform that
+holds the confined executor.
 
 ## How to read this book
 
