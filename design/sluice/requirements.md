@@ -348,7 +348,6 @@ Parts A and B do not change to admit a profile.
 
 | profile | materialize | release |
 |---|---|---|
-| **worktrunk**: a worktree made by worktrunk, with the repository's worktrunk hooks | `wt switch --create sluice/try/<n> --base <candidate> --no-cd` | `wt remove`, its hooks run; the checks' process group ended |
 | **git worktree**: a detached worktree, nothing run in it | `git worktree add --detach` at the candidate | `git worktree remove`; the checks' process group ended |
 | **archive**: the revision exported into a scratch directory, no git metadata | `git archive` of the candidate into a directory under the host's scratch | the directory removed; the checks' process group ended |
 | **container**: a clean checkout of the candidate in a container on the executing host | the candidate fetched and checked out into a new container's filesystem, with the environment the repository declares | the container and everything started in it removed |
