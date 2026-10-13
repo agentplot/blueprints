@@ -1,8 +1,8 @@
 # Glossary
 
 The words of the design, each defined once. The statement's vocabulary
-section is the binding copy; this page adds the words the many hosts
-design brings and, beside each, the word a user sees in `sluice`'s own
+section is the binding copy. This page adds the words the many hosts
+design brings. Beside each is the word a user sees in `sluice`'s own
 output and pages, where the two differ.
 
 | design word | meaning | what a user sees |

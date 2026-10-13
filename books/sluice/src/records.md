@@ -25,9 +25,8 @@ Every decision an instance makes is written to the records before it is
 performed. A landing is written as intended before the branch moves and
 as done after. An instance that stops at any point loses nothing: every
 entry submitted meanwhile is held, and whatever next advances the branch
-resumes from the records as last written (59). A round that stopped
-between the two writes of a landing is finished by the next round, from
-the records.
+resumes from the records as last written (59). The next round finishes, from
+the records, a landing whose round stopped between its two writes.
 
 ## What outlives the records
 
@@ -100,8 +99,8 @@ rebuilt from the projection.
 ## Telemetry
 
 With telemetry turned on, each sluice process pushes traces and metrics
-over OTLP to a collector the host runs. There is one trace per round,
-and counters and histograms for queue depth, verdicts, replays,
+over OTLP to a collector the host runs. Each round is one trace, with
+counters and histograms for queue depth, verdicts, replays,
 culprits, landings and time to land. Nothing reads them back. The records are the
 only truth, and an exporter that cannot reach its collector loses what
 it held and says nothing.

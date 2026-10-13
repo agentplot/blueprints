@@ -28,7 +28,7 @@ the fleet design leaves open, with the model's lean on each:
 
 ## Awaiting a ruling
 
-`design/sluice/proposals/many-hosts-2.md` drafts clauses 72 to 82 and
+`design/sluice/proposals/many-hosts-2.md` drafts 72 to 82 and
 85 to 88 with the glossary entries and Part C rows they need. Until
 they are ratified, the many hosts chapter describes a proposal, and
 the statement stands as written.

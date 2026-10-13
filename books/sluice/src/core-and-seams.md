@@ -56,7 +56,7 @@ branch the policy names that sluice did not make, and logs the attempt.
 Under pushed refs, the forge's rule protects the branch and only
 sluice's identity bypasses it, an identity no session on any host can
 use (C.4). The hook calls the installed sluice, never one built from a
-submission, so no submission changes the guard it is judged by.
+submission, so no submission changes the guard that judges it.
 
 ## Drivers
 
@@ -98,11 +98,11 @@ one machine a waiting `wt submit` runs the rounds itself while it waits,
 under the branch's lock, checking each round whether its own entry is
 decided. Any number of waiting sessions do this at once, and the lock
 lets one round run at a time. A round is sluice's code whichever
-process runs it: what it lands is decided by the queue, the runs and
-the gate, never by who called it.
+process runs it: the queue, the runs and the gate decide what it lands,
+never who called it.
 
-On a fleet, every round is run by a `sluice run` the operator started,
-and a waiting submit only submits and waits. The repository's policy
+On a fleet, a `sluice run` the operator started runs every round, and
+a waiting submit only submits and waits. The repository's policy
 says a branch is on a fleet with `[submit] remote = true`, or one
 submission says so with `--remote`; the flag only turns remote on. A
 submit on a fleet never takes a branch: it cannot tell an empty fleet

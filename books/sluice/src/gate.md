@@ -15,7 +15,7 @@ sluice (27).
 A branch's gate is read from the branch's current revision, never from
 a candidate or a place (56). A submission that changes the policy is
 judged by the policy it would replace, so no submission loosens the
-gate it is judged by.
+gate that judges it.
 
 The policy is a TOML file checked into the repository, one table per
 pattern of branch names (C.7). A shared branch and a bolt's branch
@@ -64,8 +64,8 @@ affects (15). The check seam answers which checks a candidate can
 change the result of, given the branch's revision and the candidate
 (36), and only those run. A required check whose key already holds a
 pass from a trusted executor is read from that pass and not run again
-(15). When the branch's revision is covered by no verdict, every check
-the gate requires is affected by the next candidate (70).
+(15). When no verdict covers the branch's revision, the next candidate
+affects every check the gate requires (70).
 
 A check's cost never changes how it gates: every check the gate
 requires has a verdict before the branch moves, and none is deferred
@@ -97,8 +97,8 @@ could reach that place. And nothing but the executor could have
 written its records. It is open otherwise.
 
 A result from an executor the gate does not trust never satisfies that
-gate, whatever its outcome (28). A gate that trusts only confined
-executors is satisfied by no open run (29). A run is read as confined,
+gate, whatever its outcome (28). No open run satisfies a gate that
+trusts only confined executors (29). A run is read as confined,
 or as held to a limit, only when its executor enforced it (84).
 
 A branch that names no `trust` accepts every run sluice starts, open,

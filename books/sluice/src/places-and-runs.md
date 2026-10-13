@@ -22,9 +22,9 @@ place is its driver's to release.
 
 ### Caches
 
-A place starts with the caches its branch's policy declares (35). Each
-cache is keyed by the content of the files it is built from and saved
-only from a run that passed. A place takes the cache of its candidate's
+A place starts with the caches its branch's policy declares (35). The
+content of the files a cache is built from keys it, and only a run that
+passed saves it. A place takes the cache of its candidate's
 key, or else the one saved last. A cache changes how fast a check runs,
 never what it reports: a test build that takes minutes cold takes
 seconds warm, and the result is the same either way.

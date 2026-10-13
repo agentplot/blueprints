@@ -12,8 +12,8 @@ candidate is the next chapter.
 A submission is one head offered to one branch, with the entries it
 must land after, its priority and who submitted it (3). It never names a
 position: where it lands is the queue's to decide. The head comes from a
-place whose tree is exactly its commits; a place holding anything more
-is refused by the driver, which names what it holds (2).
+place whose tree is exactly its commits; the driver refuses a place
+holding anything more, and names what it holds (2).
 
 Once submitted, the head is an entry. An entry leaves the queue in
 three ways only (5): it lands; its submitter, its planner or the
@@ -24,7 +24,7 @@ as withdrawn (67).
 
 ## Order
 
-Entries are ordered by priority, then by the order of submission (6).
+Priority orders the entries, then the order of submission (6).
 Priority moves only entries that are not under test: an entry whose
 candidate is being tested is never displaced by one submitted after it.
 An entry never lands before an entry it names as after, and while its
