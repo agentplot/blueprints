@@ -1,10 +1,12 @@
 # Many hosts: the lead, the claims, the vouching and the readable state
 
 Drafted clauses answering the multi-host questions of section 10, from
-the design in `../models/many-hosts-1.md`. Parts A and B gain eleven
-clauses, 72 to 82, three glossary entries and four scenarios; Part C's
-rows for the container place, remote submit, the records and the
-deployments are rewritten to match. Nothing here edits
+the design in `../models/many-hosts-1.md`. Parts A and B gain fifteen
+clauses, 72 to 82 and 85 to 88, four glossary entries and four
+scenarios; Part C's rows for the container place, remote submit, the
+records and the deployments are rewritten to match, and it gains a
+launched executor, a pull request driver and a fourth deployment, a
+forge as the pool. Nothing here edits
 `../requirements.md`; the operator rules on it.
 
 The questions, in the order section 10 asks them, and where each is
@@ -226,6 +228,55 @@ objects reach those hosts; under one host it was never in question.
 >     branch; and a candidate is open to claims only while its revision is
 >     fetchable by every host that may claim it.
 
+## The system a run needs, and how a run reaches an executor
+
+### The problem
+
+A repository that ships for several systems tests on several, and the
+statement has no word for which system a run was on: a key is a check
+over its inputs, and the machine is not named among them. Under one host
+there was one system. Under many, a gate must say which systems count,
+and a run must reach an executor that is one. Separately, every executor
+in Parts A and B so far takes its runs by its own claim (75); a pool the
+lead starts jobs on has no standing instance to claim with.
+
+### The ruling
+
+> 85. A check's key names the system its run executes on: one check on
+>     two systems is two keys (69).
+>
+> 86. A branch's gate names, for each check it requires, the systems a
+>     pass must come from. A candidate's verdict is read over every
+>     required check on every system named (15), and a pass on one system
+>     never stands for another. A gate that names no system names the
+>     system of the instance advancing the branch.
+>
+> 87. A run is taken only by an executor that is the system the run
+>     requires. A run whose system no live executor is stays open, and the
+>     candidate's time limit (66) reads the candidate as not passed.
+>
+> 88. An executor is standing, taking runs by its own claims (75), or
+>     launched by the instance that opened the run, in which case its
+>     start is its claim and its end its report, and an executor its pool
+>     loses is a lapsed claim (77). Which executor a launched run goes to
+>     is the pool's, never the instance's (75).
+
+85 and 86 make the matrix the gate's: the lead expands required checks
+over required systems and opens one run each. 87 keeps a run off a
+machine that is not its system. 88 admits a job service as an executor
+without a second way of claiming.
+
+### What the model says
+
+`many-hosts-1.md` section 9: the matrix is sluice's under every
+deployment; standing and launched are two rows of C.2; a fleet may mix
+them. Section 10 is the launched shape with a forge as the pool.
+
+### Vocabulary
+
+- **system**: the processor architecture and operating system a run
+  executes on, named as the toolchain names it.
+
 ## Part C, rewritten rows
 
 **C.1 the place**, the container row:
@@ -277,6 +328,38 @@ default for a bolt's branch counts runs nobody vouches for (78)."
 | who holds the branch's credential | every host's sluice user | the server | the server |
 | what is new to run | `sluice run` on each host | `sluice run` on the server and each executor host | `sluice run` on the server; nothing on any other host |
 
+**C.2 the check**, the executor table gains a row:
+
+| executor profile | execute | enforces |
+|---|---|---|
+| **launched**: a job service the instance starts jobs on, a forge's runners or a self-hosted job runner | one job per run, labelled with the run's system, that fetches the candidate's ref (82), runs the checks and writes its report under the run's id; the job's start is the claim and its end the report (88) | whatever the job service's machines enforce, as the service's own record of the job states; confined when the service gives each job a fresh machine (79); its vouching is the service's record of the job, read before the report is counted (78) |
+
+**C.5 the driver** gains a row:
+
+| profile | submit / withdraw / state / notify / forecast |
+|---|---|
+| **pull request**: a forge's request to merge a head into a branch | opening the request submits its head, through the records; closing it withdraws; its checks panel shows the entry's state, posted by sluice's identity on the head; the landing is sluice's push of the branch (C.4 pushed refs), after which the forge marks the request merged; a forecast is a comment on the request; review is the approval 27 leaves before submission; the forge's own merge button, merge queue and squash or rebase merges are not used on a branch sluice leads |
+
+**C.7 policy** gains: "a branch's gate names the systems each check it
+requires must pass on (86), by `systems` under the branch's table or
+beside a check; a policy that names none means the advancing instance's
+system. `[submit] remote = true` says the branch's rounds are run by
+`sluice run` on a fleet, so a waiting submit only waits; the `--remote`
+flag says the same for one submission and nothing turns it off."
+
+**C.8 deployments** gains a fourth column, an adoption path and not the
+direction:
+
+| | a forge as the pool |
+|---|---|
+| profiles | launched executors on the forge's runners; pushed refs; the pull request driver; remote refs records on the forge |
+| who advances a branch | a launched stepper: one `sluice step` per job, started by a submit, a finished check or a schedule, one at a time |
+| where candidates run | the forge's runners, one job per run, labelled by system (87, 88) |
+| a host stops | there is none of the operator's; a lost job is a lapsed claim (77) |
+| confinement | by construction: a fresh machine per job, vouched for by the forge's record of it |
+| who holds the branch's credential | an app installed on the repository, holding no state |
+| what is new to run | nothing: two workflows the repository carries, written by `sluice init` |
+
 ## Scenarios
 
 > **S17.** The lead of a branch goes quiet while alive, with a landing
@@ -304,7 +387,7 @@ default for a bolt's branch counts runs nobody vouches for (78)."
 - 58 and 59 stand as written; 72 and 73 say when and how "next" happens.
 - 60 stands; 77 says what "stopped" is.
 - 26 stands; 80 adds the multi-host case it left open.
-- The glossary gains instance, lease and claim.
+- The glossary gains instance, lease, claim and system.
 - Section 10 loses its seven multi-host questions.
 - sluice's rules gain one under "Verdicts and attribution": a run is
   read as an executor's only through the vouching the policy names (78),

@@ -381,11 +381,14 @@ writing first.
 where the waiting `wt submit` runs the rounds itself and nothing else need
 be running, or it is a fleet, where every round is run by a `sluice run`
 the operator started (C.8) and a `wt submit` only submits and waits.
-`wt submit` assumes one machine unless passed `--remote`, which is what a
-fleet's hosts pass (C.5). A submit on a fleet never takes a branch because
-it could not tell an empty fleet from a quiet one, "vacant or lapsed"
-being the same observation `sluice run` takes a branch on, and taking a
-branch needs the landing credential, which only the `sluice` user holds
+`wt submit` assumes one machine unless the repository's policy says the
+branch is on a fleet (`[submit] remote = true`, C.7) or it is passed
+`--remote`. The flag only turns remote on: there is no `--local`, since
+forcing one-machine rounds on a fleet would have the session's process
+try to land with a credential it does not hold and fail after the work.
+A submit on a fleet never takes a branch because it could not tell an
+empty fleet from a quiet one, "vacant or lapsed" being the same
+observation `sluice run` takes a branch on, and taking a branch needs the landing credential, which only the `sluice` user holds
 (3.4). On a fleet with no `sluice run`, submissions are accepted and held
 and nothing lands until one starts (59). Each host's `sluice run` takes the
 lead of any branch it serves when the branch is vacant or lapsed, claims
@@ -646,7 +649,177 @@ so that neither changes a record's form or a clause of Parts A and B.
 
 ---
 
-## 9. Questions not settled here
+## 9. The system a run needs: standing hosts and launched jobs
+
+A repository that ships for several systems tests on several systems.
+sluice's own build today runs its fast tier on macOS and Linux, its
+tools and e2e tiers on Linux, and its sandbox tests only on the Mac it
+lands from; its gate on one machine is the Mac's, and the Linux results
+are a public build that gates nothing. On a fleet the gate must say which
+systems count, and a run must reach a machine that is one.
+
+### 9.1 The system is part of the key
+
+A key is "the identity of one check over the inputs it reads", and the
+system a check runs on, nix's `aarch64-darwin`, `x86_64-linux`,
+`aarch64-linux`, is one of those inputs: the same task on two systems is
+two keys (85). Clause 69 then does the rest: a pass belongs to its key,
+so a Linux pass never satisfies a Darwin requirement. The policy names
+what it wants, in the form the flake already uses:
+
+```toml
+[branches.main]
+required = ["#check-fast", "#check-tools", "#check-e2e"]
+systems  = ["aarch64-darwin", "x86_64-linux", "aarch64-linux"]
+```
+
+or per check, when a tier exists on one system only (86). A candidate's
+verdict is read over every required check on every required system. On
+one machine the policy can only require the system the machine is, which
+is what a policy with no `systems` means.
+
+### 9.2 The lead forms the matrix; executors are a system
+
+The lead expands the gate into runs, one per required check per required
+system per candidate, and opens them (75). That expansion is the matrix,
+and it is sluice's under every deployment: nothing behind an executor
+re-derives it. An executor takes only runs for a system it is (87). A
+required system with no live executor leaves its runs open until the
+candidate's time limit (66) reads the candidate as not passed; a gate
+that names a system the fleet lacks is a gate nothing satisfies, which
+is the policy author's to see (27). Containers do not change the CPU: a
+Linux container on a Mac is `aarch64-linux`, and `x86_64-linux` needs an
+x86 machine or emulation too slow to gate on.
+
+### 9.3 Two shapes of executor
+
+How a run reaches a machine is a choice of executor profile (C.2), and
+the two shapes differ only there.
+
+```
+policy (in the repository)      lead (one per branch)
+  main requires                   forms candidate 7, then opens
+    #check-fast on                its runs:
+      aarch64-darwin                7 · fast · aarch64-darwin
+      x86_64-linux                  7 · fast · x86_64-linux
+      aarch64-linux                 7 · fast · aarch64-linux
+    #check-e2e on                   7 · e2e  · aarch64-darwin
+      aarch64-darwin              and waits for every one
+
+STANDING: runs are pulled                 LAUNCHED: runs are pushed
+
+ lead writes "7·fast·x86_64-linux          lead starts one job per run
+ is open" to the records                   on a pool, with the system
+          │                                as the job's label
+          ▼                                        │
+ ┌───────────────┐ ┌───────────────┐       ┌───────┴───────────────┐
+ │ host mac-1    │ │ host build-7  │       │ pool                  │
+ │ aarch64-darwin│ │ x86_64-linux  │       │ job: 7·fast·x86_64…   │
+ │ sluice run    │ │ sluice run    │       │ job: 7·fast·aarch64…  │
+ │ claims only   │ │ claims only   │       │ job: 7·e2e·aarch64-d… │
+ │ darwin runs   │ │ linux runs    │       │ each: checkout, run,  │
+ └───────┬───────┘ └───────┬───────┘       │ write result, exit    │
+         │                 │               └───────────┬───────────┘
+         └── result written to the records ◄───────────┘
+                              │
+            candidate 7 has every run's outcome → verdict → land
+```
+
+**Standing.** A run sits open in the records until an instance whose
+system matches claims it (75). The fleet must hold an instance of every
+system the policy names. Peers and the server differ only in who leads:
+under peers whichever instance holds the branch, under a server the
+server, with executor hosts claiming behind it either way (5.3).
+
+**Launched.** The lead holds a pool it can start jobs on and starts one
+job per run, with the run's system as the job's label. The job is the
+claimant: its start is written as the claim, its end as the report, and
+a job the pool loses is a lapsed claim (77), so nothing in Part A
+changes (88). The pool is a binding of the executor seam; a CI service
+with labelled runners is one such binding, a self-hosted job runner
+another. Clause 75's "assigns to no one" holds one level down: the lead
+starts a job, and which machine in the pool takes it is the pool's.
+
+**The wait is the same.** A waiting submit returns when its candidate
+has a verdict, which needs every run on every system. Neither shape is
+faster by construction: standing costs idle hosts, launched costs a job's
+start-up and a pool to drive. A fleet may mix them, Darwin runs claimed
+by a standing Mac and Linux runs launched on a pool.
+
+---
+
+## 10. A forge as the pool: the queue inside the repository
+
+Not the direction, but an adoption path: a repository already on a forge
+with a job service, GitHub with Actions, runs sluice with nothing of its
+own to host. It is the launched shape with the forge as the pool, and it
+is how bors, Mergify, Trunk and Aviator are used today, so a developer
+meets nothing unfamiliar. What is different is where the state lives.
+
+### 10.1 The pieces
+
+- **The records are the remote refs profile (C.6)**, on the forge: the
+  queue, every claim, every result and the log under `refs/sluice/`,
+  and the landing commit carrying its verdict (23). `git log
+  refs/sluice/state/main` is the queue's history. Nothing is held behind
+  a vendor's server; uninstalling everything leaves the history in the
+  repository, and moving the repository moves the queue.
+- **The stepper is a launched job too.** A workflow whose one step is
+  `sluice step main`, started by a submit, by a check's completion and
+  by a schedule as a sweeper, under a concurrency group so one round
+  runs at a time. A round needs no memory between jobs because all state
+  is in the records, which is what `sluice step` is for (ADR 0005). Push
+  events do not fire for refs outside heads and tags, so the stepper is
+  never driven by a push to the state ref.
+- **The checks are launched jobs** (9.3): one dispatch per candidate
+  carrying its ref under `refs/sluice/combinations/` (82) and the
+  policy's systems as the matrix; each job checks out the candidate's
+  ref, runs the tasks and pushes its result as a small tree under
+  `refs/sluice/results/<run>/<system>`; the log stays with the job,
+  reachable by its id. The executor identity is the job service's, `gha`,
+  and the vouching (78) is the service's own record of the run, read by
+  the lead before it counts the result; a result ref no run of the
+  service's vouches for is ignored. The job is a fresh machine per run,
+  so it is confined by construction (79).
+- **The submission is a pull request (C.5).** Opening it submits the
+  head; closing it withdraws; its checks panel is the state; merging is
+  the landing, which sluice performs by pushing the branch with an
+  identity the forge's rules let bypass protection (1), after which the
+  forge marks the request merged because its head is reachable. Review
+  is the approval clause 27 leaves before submission. The merge button
+  is not used, and a hand merge is refused as a landing by 24.
+- **An app holds the identity.** It is installed once, holds the bypass,
+  posts the status on each head and the queue position as a comment,
+  and keeps no state: the moment it cached the queue the state would
+  have two homes. Whether a forge's rules can grant bypass to the job
+  service's own token or only to an app's decides whether the app is
+  required or merely the better package; it is the better package
+  either way.
+- **`sluice init github`** writes the two workflows and a fetch refspec
+  for `refs/sluice/*`, since clones do not fetch it and the forge's
+  pages do not show it.
+
+### 10.2 What it costs, said plainly
+
+A round costs a job's start, so the queue moves in half-minute steps,
+and a landing is minutes behind its last green check once the toolchain
+is installed per job. That is acceptable for a shared branch on a large
+project and wrong for a bolt branch, which stays on the agents' machines
+under phase 1. The two queues never meet on one branch: a forge's own
+merge queue, and squash or rebase merges, are incompatible with sluice
+on the same branch, since sluice is the queue and a landing is a merge
+commit carrying its verdict (ADR 0006).
+
+### 10.3 Where it sits beside the other deployments
+
+It is a fourth column of C.8: remote refs records on the forge, pushed
+refs, the pull request driver, launched executors and a launched
+stepper. Parts A and B are untouched; 85 to 88 are what 9 and 10 need
+and they bind every deployment alike.
+
+---
+
+## 11. Questions not settled here
 
 1. **The forge's tolerance.** Whether a shared forge sustains the fetch
    cadence of 1.2 over SSH without rate limiting is undocumented. Measure
