@@ -210,6 +210,37 @@ does is the policy's trust (27). The session's own place is untouched
 by it: no port is taken, nothing counted on the session's host, and nothing to
 release there.
 
+## The abandoned place: what sluice can see, and what it cannot
+
+### The problem
+
+A session's place holds its ports and what its runs started until it is
+released (94, 95), and a session between two runs looks the same from
+outside as a session that is gone. A session killed with its stack up,
+or a worktree removed without `sluice release`, leaves the record, the
+ports and the containers held with nothing to release them.
+
+### What the statement already settles
+
+Sluice never releases a session's place (25). A place is a working copy
+prepared for one session (glossary).
+
+### The ruling
+
+> 97. A session's place whose working copy no longer exists is no
+>     session's: the next session run or round on the host releases it
+>     (95). A session's place whose working copy exists is held until
+>     its session or driver releases it, however long its last run is
+>     past, and sluice lists every session place it holds, with the time
+>     of its last run, to the operator and to any session on the host.
+
+97 keeps 25 whole: a place with no working copy has no session to own
+it. A place with a working copy and no sign of its session is left
+alone, because a session thinking for an hour between two runs and a
+session that died look alike, and ending the first's stack costs more
+than the second's leak. The list is what makes the leak visible to a
+person or a crew, which release it.
+
 ## Part C, rows
 
 **C.1 the place** gains a row:
@@ -276,8 +307,3 @@ sessions' runs may hold at once (91), by default all of it.
   `post-remove` paragraph, and a sentence in the walkthrough's services
   section pointing a crew at `sluice exec`.
 
-## What it leaves open
-
-- A session's place whose session is gone holds its ports and what its
-  runs started until something releases it. Whether the release lapses
-  with a sign of life, as a claim does (77), or is the operator's.
