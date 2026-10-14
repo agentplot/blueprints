@@ -5,8 +5,8 @@ the design in `../models/many-hosts-1.md`. Parts A and B gain fifteen
 clauses, 72 to 82 and 85 to 88, four glossary entries and four
 scenarios; Part C's rows for the container place, remote submit, the
 records and the deployments are rewritten to match, and it gains a
-launched executor, a pull request driver and a fourth deployment, a
-forge as the pool. Nothing here edits
+launched executor and a fourth deployment, a forge as the pool, which
+uses the pull request driver of `pull-requests-1.md`. Nothing here edits
 `../requirements.md`; the operator rules on it.
 
 The questions, in the order section 10 asks them, and where each is
@@ -334,11 +334,9 @@ default for a bolt's branch counts runs nobody vouches for (78)."
 |---|---|---|
 | **launched**: a job service the instance starts jobs on, a forge's runners or a self-hosted job runner | one job per run, labelled with the run's system, that fetches the candidate's ref (82), runs the checks and writes its report under the run's id; the job's start is the claim and its end the report (88) | whatever the job service's machines enforce, as the service's own record of the job states; confined when the service gives each job a fresh machine (79); its vouching is the service's record of the job, read before the report is counted (78) |
 
-**C.5 the driver** gains a row:
-
-| profile | submit / withdraw / state / notify / forecast |
-|---|---|
-| **pull request**: a forge's request to merge a head into a branch | opening the request submits its head, through the records; closing it withdraws; its checks panel shows the entry's state, posted by sluice's identity on the head; the landing is sluice's push of the branch (C.4 pushed refs), after which the forge marks the request merged; a forecast is a comment on the request; review is the approval 27 leaves before submission; the forge's own merge button, merge queue and squash or rebase merges are not used on a branch sluice leads |
+**C.5 the driver**: the pull request row is `pull-requests-1.md`'s,
+which holds on every deployment; the forge as the pool uses it as it
+stands, with the requests found through the records the stepper reads.
 
 **C.7 policy** gains: "a branch's gate names the systems each check it
 requires must pass on (86), by `systems` under the branch's table or
