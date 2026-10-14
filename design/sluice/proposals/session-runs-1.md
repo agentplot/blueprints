@@ -167,7 +167,9 @@ landing and runs `post-remove` (C.5).
 >     A driver that removes a session's place releases it first.
 
 94 is the iterating session's rule: a stack brought up by one run is
-there for the next, and sluice does not tear it down between them. 95
+there for the next, and sluice does not tear it down between them. What
+a place keeps between runs counts against nothing: the bound counts
+runs. 95
 says who ends it and when. The release is the same command for every
 place on the host, so a check's cleanup is written once in the policy
 and runs for a candidate's place when its verdict is read (25) and for
@@ -279,5 +281,3 @@ sessions' runs may hold at once (91), by default all of it.
 - A session's place whose session is gone holds its ports and what its
   runs started until something releases it. Whether the release lapses
   with a sign of life, as a claim does (77), or is the operator's.
-- Whether what a session's place keeps between runs counts against
-  anything: the bound counts runs, and an idle stack counts nothing.
