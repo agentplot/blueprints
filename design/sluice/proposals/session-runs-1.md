@@ -222,7 +222,7 @@ ports and the containers held with nothing to release them.
 
 ### What the statement already settles
 
-Sluice never releases a session's place (25). A place is a working copy
+sluice never releases a session's place (25). A place is a working copy
 prepared for one session (glossary).
 
 ### The ruling
