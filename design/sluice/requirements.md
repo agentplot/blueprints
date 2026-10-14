@@ -174,9 +174,11 @@ redefine these.
     that recorded it.
 70. When the branch's revision is covered by no verdict, every check its
     gate requires is affected by the next candidate.
-19. A key holding both a pass and a fail from executors the gate trusts
-    reads as the branch's policy says, passed or not passed, and never
-    differently for two candidates of one branch.
+19. A key holding both a pass and a fail from executors the gate trusts,
+    each held to the same limits, reads as the branch's policy says,
+    passed or not passed, and never differently for two candidates of
+    one branch. A result under other limits says nothing of a run under
+    these (83).
 20. The culprit's session is told the failing checks and the candidate
     they failed on. No other session is told of that failure.
 21. An entry removed as culprit or as conflict leaves the chain, and
