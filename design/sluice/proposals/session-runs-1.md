@@ -128,7 +128,8 @@ The script profile keys by revision and never replays (C.2).
 >
 > 93. A candidate whose required checks are covered under their keys by
 >     recorded runs the gate trusts replays them (37); a session's
->     recorded run is one such run.
+>     recorded run is one such run, and it saves the caches its branch's
+>     policy declares as a passed candidate does (35).
 
 92 holds the key honest under both check profiles: moon's key is over
 content and would be sound on a dirty tree, the script profile's is over
@@ -216,15 +217,16 @@ release there.
 | **session worktree**: a session's own place, worktrunk's or a plain `git worktree` | nothing: the place is the session's, and a session run takes it as found; on the place's first run, a block of ports held for it on the host, each checked free, kept until the release (90); `SLUICE_CHECKOUT` the place and `SLUICE_TMP` a scratch directory kept across its runs | by `sluice release` in the place (95): the policy's release command run under the host's executor, every session run's process group ended, the scratch directory removed, the ports let go; the worktree left standing for its driver to remove |
 
 **C.3 the executor**, the open row's execute cell gains: "the host's
-bound kept as a count under the records' lock (C.6 local files), so runs
-an instance starts and runs `sluice exec` starts count together, with or
-without a standing instance".
+session runs recorded in the host's own state beside its port slots, each
+live while its supervisor holds its run's lock, so runs an instance
+starts and runs `sluice exec` starts count together, with or without a
+standing instance, and nothing of them reaches the records".
 
 **C.5 the driver** gains a row:
 
 | profile | submit / withdraw / state / notify / forecast |
 |---|---|
-| **session run**: `sluice exec` in a session's place | `sluice exec [<branch>]` runs the checks the head affects against the branch (36) and `sluice exec -- <command>` runs the command, each a session run (89); the run's output is the session's terminal's and its exit the command's; `--remote` sends the run to the fleet (96) and reads its outcome as a remote submission reads its state (C.5 remote submit); `--release` releases the place when the run ends (95); `sluice release` releases it on its own |
+| **session run**: `sluice exec` in a session's place | `sluice exec <branch>` runs the checks the head affects against the branch (36) and `sluice exec <branch> -- <command>` runs the command, each a session run (89); the run's output is the session's terminal's and its exit the command's; `--remote` sends the run to the fleet (96) and reads its outcome as a remote submission reads its state (C.5 remote submit); `--release` releases the place when the run ends (95); `sluice release` releases it on its own |
 
 **C.5 the driver**, the worktrunk row gains: "before worktrunk removes
 the session's place, `wt submit` runs `sluice release` in it (95), so a
