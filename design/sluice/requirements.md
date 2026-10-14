@@ -284,7 +284,7 @@ redefine these.
 38. The guarantee: an outcome is what the executor observed, never
     inferred; a replay says it is a replay.
 83. **execute**: given a place, a command, and the limits a run is held
-    to (the processors its instance gives each run; the memory, the
+    to (the cores its instance gives each run; the memory, the
     network and the paths it may write that the branch's policy
     states), the command run within them, and what the executor
     enforced: whether the run was confined, and each limit it held.
@@ -367,9 +367,9 @@ Parts A and B do not change to admit a profile.
 
 | executor profile | execute | enforces |
 |---|---|---|
-| **open**: a process group on the instance's host | the command in the place, as one process group ended with its run | the processors given, by the runner's own threads; nothing else; never confined |
-| **sandbox**: the host's kernel sandbox, Seatbelt on macOS, bubblewrap and Landlock on Linux | the command in the place under a profile that allows writes only to the place and its scratch, the network only as the policy says, and a container engine's socket only when the policy allows it | paths and network everywhere; processors and memory only on Linux, by a cgroup the run is started in; confined when no session on the host can write the place and the run cannot reach a container engine, whose containers may mount any path |
-| **container**: a container engine on the executing host | the place mounted into a new container from the repository's image | processors, memory, paths and network; confined as C.8 says |
+| **open**: a process group on the instance's host | the command in the place, as one process group ended with its run | the cores given, by the runner's own threads; nothing else; never confined |
+| **sandbox**: the host's kernel sandbox, Seatbelt on macOS, bubblewrap and Landlock on Linux | the command in the place under a profile that allows writes only to the place and its scratch, the network only as the policy says, and a container engine's socket only when the policy allows it | paths and network everywhere; cores and memory only on Linux, by a cgroup the run is started in; confined when no session on the host can write the place and the run cannot reach a container engine, whose containers may mount any path |
+| **container**: a container engine on the executing host | the place mounted into a new container from the repository's image | cores, memory, paths and network; confined as C.8 says |
 
 ### C.4 The branch
 

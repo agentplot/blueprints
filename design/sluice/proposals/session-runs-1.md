@@ -4,8 +4,8 @@ Drafted clauses letting a session run its checks, before it submits,
 under the same contract sluice gives a candidate's place: room under
 the host's bound, the ports the policy names, the executor's limits, a
 release that ends what the checks started, and a record under the key
-when the place holds exactly its head. Parts A and B gain eight clauses,
-89 to 96; Part C gains a command, `sluice exec`, in the driver row, a
+when the place holds exactly its head. Parts A and B gain nine clauses,
+89 to 97; Part C gains a command, `sluice exec`, in the driver row, a
 clause for the session's place in C.1, and the worktrunk row's removal
 runs a release first. Nothing here edits `../requirements.md`; the
 operator rules on it.

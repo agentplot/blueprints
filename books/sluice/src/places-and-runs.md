@@ -56,7 +56,7 @@ stop.
 ## The executor
 
 An executor runs a command in a place within the limits a run is held
-to (83). The processors are what its instance gives each run. The
+to (83). The cores are what its instance gives each run. The
 memory, the network and the paths a run may write are what the
 branch's policy states. It reports what it enforced: whether the run was confined, and
 each limit it held.
@@ -70,9 +70,9 @@ The policy names one executor profile (C.2):
 
 | executor | what it enforces |
 |---|---|
-| **open** | a process group on the instance's host; the processors given, by the runner's own threads; nothing else; never confined |
+| **open** | a process group on the instance's host; the cores given, by the runner's own threads; nothing else; never confined |
 | **sandbox** | the host's kernel sandbox: Seatbelt on macOS, bubblewrap and Landlock on Linux. Writes only to the place and its scratch. The network as the policy says. Processors and memory on Linux, by a cgroup. Confined when no session on the host can write the place |
-| **container** | a container engine on the executing host; the place mounted into a new container from the repository's image; processors, memory, paths and network; confined as the deployment says |
+| **container** | a container engine on the executing host; the place mounted into a new container from the repository's image; cores, memory, paths and network; confined as the deployment says |
 
 A run is confined only when its executor established that nothing of
 any session could reach the place and nothing but the executor could
@@ -85,7 +85,7 @@ An instance of sluice starts no more checks at once than its own bound,
 whatever the windows of the branches it serves (71). A host whose
 checks are all started by one instance runs no more than that
 instance's bound. The bound is the host's own setting, not the
-repository's: a quarter of the processors by default, shared equally
+repository's: a quarter of the cores by default, shared equally
 between runs, or the number the host's configuration names.
 
 Where each session runs its own rounds, the branches' windows are the
