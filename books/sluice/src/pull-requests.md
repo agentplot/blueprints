@@ -97,7 +97,7 @@ sequenceDiagram
     A->>G: push the branch, open the pull request
     S->>G: fetch main, list open requests
     S->>G: post "waiting: 1 review, qa/approved" and the forecast
-    Q->>G: deploy, test, post qa/approved; approve the review
+    Q->>G: deploy, test, post qa/approved, approve the review
     S->>G: fetch main, list open requests
     Note over S: every condition holds: submit the head
     S->>S: form main + entries ahead + this head, run the gate
