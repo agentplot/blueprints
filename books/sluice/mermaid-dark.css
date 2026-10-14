@@ -1,0 +1,119 @@
+/* Mermaid's dark theme draws arrows and their labels in a dim gray;
+   lift them to near white under the book's dark themes. */
+html.ayu .mermaid svg .flowchart-link,
+html.ayu .mermaid svg .messageLine0,
+html.ayu .mermaid svg .messageLine1,
+html.ayu .mermaid svg .relation {
+  stroke: #d8dce4 !important;
+}
+html.ayu .mermaid svg .marker,
+html.ayu .mermaid svg marker path,
+html.ayu .mermaid svg #arrowhead path,
+html.ayu .mermaid svg .arrowheadPath {
+  fill: #d8dce4 !important;
+  stroke: #d8dce4 !important;
+}
+html.ayu .mermaid svg .messageText,
+html.ayu .mermaid svg .edgeLabel,
+html.ayu .mermaid svg .edgeLabel p,
+html.ayu .mermaid svg .edgeLabel span,
+html.ayu .mermaid svg .labelText,
+html.ayu .mermaid svg .loopText {
+  fill: #f2f3f5 !important;
+  color: #f2f3f5 !important;
+}
+html.ayu .mermaid svg .edgeLabel,
+html.ayu .mermaid svg .edgeLabel p,
+html.ayu .mermaid svg .labelBkg {
+  background-color: #2a2f38 !important;
+}
+html.ayu .mermaid svg .actor-line {
+  stroke: #8a93a3 !important;
+}
+html.navy .mermaid svg .flowchart-link,
+html.navy .mermaid svg .messageLine0,
+html.navy .mermaid svg .messageLine1,
+html.navy .mermaid svg .relation {
+  stroke: #d8dce4 !important;
+}
+html.navy .mermaid svg .marker,
+html.navy .mermaid svg marker path,
+html.navy .mermaid svg #arrowhead path,
+html.navy .mermaid svg .arrowheadPath {
+  fill: #d8dce4 !important;
+  stroke: #d8dce4 !important;
+}
+html.navy .mermaid svg .messageText,
+html.navy .mermaid svg .edgeLabel,
+html.navy .mermaid svg .edgeLabel p,
+html.navy .mermaid svg .edgeLabel span,
+html.navy .mermaid svg .labelText,
+html.navy .mermaid svg .loopText {
+  fill: #f2f3f5 !important;
+  color: #f2f3f5 !important;
+}
+html.navy .mermaid svg .edgeLabel,
+html.navy .mermaid svg .edgeLabel p,
+html.navy .mermaid svg .labelBkg {
+  background-color: #2a2f38 !important;
+}
+html.navy .mermaid svg .actor-line {
+  stroke: #8a93a3 !important;
+}
+html.coal .mermaid svg .flowchart-link,
+html.coal .mermaid svg .messageLine0,
+html.coal .mermaid svg .messageLine1,
+html.coal .mermaid svg .relation {
+  stroke: #d8dce4 !important;
+}
+html.coal .mermaid svg .marker,
+html.coal .mermaid svg marker path,
+html.coal .mermaid svg #arrowhead path,
+html.coal .mermaid svg .arrowheadPath {
+  fill: #d8dce4 !important;
+  stroke: #d8dce4 !important;
+}
+html.coal .mermaid svg .messageText,
+html.coal .mermaid svg .edgeLabel,
+html.coal .mermaid svg .edgeLabel p,
+html.coal .mermaid svg .edgeLabel span,
+html.coal .mermaid svg .labelText,
+html.coal .mermaid svg .loopText {
+  fill: #f2f3f5 !important;
+  color: #f2f3f5 !important;
+}
+html.coal .mermaid svg .edgeLabel,
+html.coal .mermaid svg .edgeLabel p,
+html.coal .mermaid svg .labelBkg {
+  background-color: #2a2f38 !important;
+}
+html.coal .mermaid svg .actor-line {
+  stroke: #8a93a3 !important;
+}
+html.ayu .mermaid svg .cluster-label,
+html.ayu .mermaid svg .cluster-label span,
+html.ayu .mermaid svg .cluster-label p,
+html.ayu .mermaid svg .noteText,
+html.ayu .mermaid svg .nodeLabel,
+html.ayu .mermaid svg .nodeLabel p {
+  fill: #f2f3f5 !important;
+  color: #f2f3f5 !important;
+}
+html.coal .mermaid svg .cluster-label,
+html.coal .mermaid svg .cluster-label span,
+html.coal .mermaid svg .cluster-label p,
+html.coal .mermaid svg .noteText,
+html.coal .mermaid svg .nodeLabel,
+html.coal .mermaid svg .nodeLabel p {
+  fill: #f2f3f5 !important;
+  color: #f2f3f5 !important;
+}
+html.navy .mermaid svg .cluster-label,
+html.navy .mermaid svg .cluster-label span,
+html.navy .mermaid svg .cluster-label p,
+html.navy .mermaid svg .noteText,
+html.navy .mermaid svg .nodeLabel,
+html.navy .mermaid svg .nodeLabel p {
+  fill: #f2f3f5 !important;
+  color: #f2f3f5 !important;
+}

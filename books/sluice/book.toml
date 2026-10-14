@@ -13,6 +13,7 @@ no-section-label = false
 fold.enable = true
 fold.level = 1
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
+additional-css = ["mermaid-dark.css"]
 
 [preprocessor]
 
