@@ -89,7 +89,6 @@ fork is never submitted.
 
 ```mermaid
 sequenceDiagram
-    autonumber
     participant A as agent (wt submit)
     participant S as sluice (a round)
     participant G as the forge
@@ -100,11 +99,11 @@ sequenceDiagram
     Q->>G: deploy, test, post qa/approved, approve the review
     S->>G: fetch main, list open requests
     Note over S: every condition holds: submit the head
-    S->>S: form main + entries ahead + this head, run the gate
+    Note over S: form main + entries ahead + this head, run the gate
     S->>G: post "testing behind 2 entries"
     Note over S: the candidate passed
     S->>G: push main --force-with-lease=main:(formed on)
-    G-->>G: head is in main: mark the request merged
+    Note over G: head is in main: request merged
     S->>G: post "landed"
     S-->>A: landed
 ```
