@@ -1,7 +1,7 @@
 # Session runs: a session's checks under sluice's bound, ports and release
 
 Drafted clauses letting a session run its checks, before it submits,
-under the same contract sluice gives a candidate's place: a slot under
+under the same contract sluice gives a candidate's place: room under
 the host's bound, the ports the policy names, the executor's limits, a
 release that ends what the checks started, and a record under the key
 when the place holds exactly its head. Parts A and B gain eight clauses,
@@ -35,7 +35,7 @@ today runs only in sluice's places.
 `sluice exec`, run in a session's place, is the execute contract (83)
 opened to a place sluice did not make. With no command it runs the
 checks the place's head affects against its branch (36); with a command
-after `--` it runs that command. Either way the run takes a slot under
+after `--` it runs that command. Either way the run counts against
 the host's bound, receives the place's ports, runs under the host's
 executor with the policy's limits, and ends with its process group.
 What the run handed to another process stays with the place, so a
@@ -78,7 +78,7 @@ bound is the instance's own (71).
 ### The ruling
 
 > 89. A session may ask the instance on its host to run its checks, or a
->     command, in its own place. Such a run takes a slot under the
+>     command, in its own place. Such a run counts against the
 >     instance's bound (71) for exactly as long as it runs, is executed
 >     by the host's executor under the limits the branch's policy states
 >     (83), and ends with its process group (66). sluice runs no check
@@ -88,7 +88,7 @@ bound is the instance's own (71).
 >     policy lists on its first run, and keeps each for the place's whole
 >     life (31). A session's run is never confined (glossary, executor).
 >
-> 91. When a candidate's run and a session's run both wait for a slot on
+> 91. When a candidate's run and a session's run both wait for room on
 >     one host, the candidate's is started first. The host's own setting
 >     may reserve part of its bound for candidates' runs; by default
 >     sessions' runs may hold all of it.
@@ -205,7 +205,7 @@ a warm host a replay of what its inputs did not change (35).
 A remote session run can be confined, where the executor is (glossary),
 so its record may satisfy the shared branch's gate too (29); whether it
 does is the policy's trust (27). The session's own place is untouched
-by it: no port is taken, no slot on the session's host, and nothing to
+by it: no port is taken, nothing counted on the session's host, and nothing to
 release there.
 
 ## Part C, rows
@@ -217,7 +217,7 @@ release there.
 | **session worktree**: a session's own place, worktrunk's or a plain `git worktree` | nothing: the place is the session's, and a session run takes it as found; on the place's first run, a block of ports held for it on the host, each checked free, kept until the release (90); `SLUICE_CHECKOUT` the place and `SLUICE_TMP` a scratch directory kept across its runs | by `sluice release` in the place (95): the policy's release command run under the host's executor, every session run's process group ended, the scratch directory removed, the ports let go; the worktree left standing for its driver to remove |
 
 **C.3 the executor**, the open row's execute cell gains: "the host's
-session runs recorded in the host's own state beside its port slots, each
+session runs recorded in the host's own state beside its port blocks, each
 live while its supervisor holds its run's lock, so runs an instance
 starts and runs `sluice exec` starts count together, with or without a
 standing instance, and nothing of them reaches the records".
@@ -243,7 +243,7 @@ sessions' runs may hold at once (91), by default all of it.
 
 - **S25.** Four sessions on one host each run the suite, and the host's
   bound is two. Two runs start; two wait; a candidate's run that
-  arrives waits only for the next free slot and starts before the third
+  arrives waits only for the next run to end and starts before the third
   session's.
 - **S26.** A session runs the suite in a clean place, edits nothing, and
   submits. The candidate's required checks are covered under their keys
@@ -258,7 +258,7 @@ sessions' runs may hold at once (91), by default all of it.
   its outcome and records nothing; the candidate formed later runs the
   suite.
 - **S29.** A session on a fleet pushes its head and runs `sluice exec
-  --remote`. No slot on its host is taken and no port; a standing
+  --remote`. Nothing is counted on its host and no port taken; a standing
   executor on a host that runs no sessions claims the run, replays what
   the caches cover, and its record is confined. The candidate on the
   shared branch replays it.
