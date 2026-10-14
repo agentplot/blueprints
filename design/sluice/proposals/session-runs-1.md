@@ -279,5 +279,3 @@ sessions' runs may hold at once (91), by default all of it.
   with a sign of life, as a claim does (77), or is the operator's.
 - Whether what a session's place keeps between runs counts against
   anything: the bound counts runs, and an idle stack counts nothing.
-- Whether a session's run of a command, not of the checks, may name a
-  check's key itself, so a suite run by hand records as the suite.
