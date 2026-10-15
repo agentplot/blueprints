@@ -18,8 +18,9 @@ Nothing here edits `../requirements.md`; the operator rules on it.
 | what runs in it, and who starts it | 98, C.7: the policy's preview command, under the executor; the repository's tools keep what it starts |
 | what a person opens | 99, C.7: a name per port, given by sluice; addresses from the policy's templates |
 | what asking twice does | 100: the same preview |
-| who ends it | 101: whoever asks; sluice only when its place is gone |
+| who ends it | 101: whoever asks; sluice only when its place is gone or its command failed |
 | what it counts against, and what it decides | 102, 103: its command's run, then nothing; it decides nothing |
+| which policy it is held to | 98: what it brings up, from the previewed revision; what it may use and reach, from the branch now |
 | deploying to a real environment | not sluice's: non-goals, and "For the caller" below |
 
 ## The shape
@@ -48,7 +49,7 @@ Nothing here edits `../requirements.md`; the operator rules on it.
  ports and names let go (34)
 ```
 
-A preview is the third kind of place. A candidate's place is made by
+A preview is the third place sluice knows. A candidate's place is made by
 sluice and released by sluice once its verdict is read (25). A session's
 place is made by its driver and released at the session's or driver's
 asking (95). A preview's place is made by sluice and released at its
@@ -86,8 +87,9 @@ history holds only what passed its gate (22).
 >     preview of a revision its branch has landed: a place sluice makes
 >     holding exactly that revision (33), given its ports (31) and its
 >     caches (35), in which the preview command of the revision's own
->     policy is run once, under the host's executor and the policy's
->     limits, and ended with its process group (66). What the command
+>     policy is run once, under the host's executor and the limits and
+>     time limit of the branch's current policy, and ended with its
+>     process group (66). What the command
 >     hands to another process to keep stays with the place until it
 >     is released. sluice starts no service by it (31). A revision the
 >     branch has not landed has no preview.
@@ -95,9 +97,14 @@ history holds only what passed its gate (22).
 98 previews only what landed, so a person never looks at a combination
 the gate has not passed, and the caller names the revision so a preview
 asked for just as the branch moves again is still of the revision it
-meant. The command is read from the previewed revision, not the
-branch's current one: it brings up that revision's stack, and nothing
-it reads gates anything (56 is about gates).
+meant. What the preview brings up and takes down, its command, its
+ports, its caches and its release command, is read from the previewed
+revision, since it describes that revision's stack. What the command
+may use and reach, the executor, the limits and the time limit, is read
+from the branch's current revision, since trust is the branch's now
+(27, 56); `[preview] timeout`, when the previewed revision's policy
+sets it, takes the time limit's place. Nothing a preview reads gates
+anything.
 
 ## The names: what a person opens
 
@@ -129,7 +136,12 @@ listens on it.
 >     filled in, and never contacts them.
 
 99 gives the name as 31 gives the port: sluice owns uniqueness, the
-repository owns what serves it. The repository's command routes the
+repository owns what serves it. A name is `<port>-<rev7>--<branch>--
+<repository>`, lower-case letters, digits and hyphens; one longer than
+63 characters is cut after the revision and ends in six characters of a
+hash of the whole, so two long names that share a beginning stay apart.
+A name another preview holds takes the revision's first twelve
+characters instead of seven. The repository's command routes the
 name to the port with whatever proxy it uses, and its release command
 removes the route. Because the addresses come from a template, they are
 known as soon as the preview is asked for, before the stack is up.
@@ -151,8 +163,9 @@ is ended with everything it started (66).
 
 ### The ruling
 
-> 100. A revision has at most one preview on a host. Asking for a
->      preview of a revision that has one gives that one, unchanged.
+> 100. A revision has at most one preview on a host, whichever branch
+>      it was asked for through. Asking for a preview of a revision that
+>      has one gives that one, unchanged.
 >
 > 101. A preview is released only at the asking of a session, a driver,
 >      a planner or the operator: the release command its revision's
@@ -160,9 +173,11 @@ is ended with everything it started (66).
 >      everything started in it ended, the place removed, and its ports
 >      and names let go (34). sluice releases a preview on its own only
 >      when its place no longer exists, or when its command failed or
->      exceeded its time limit. sluice lists every preview it holds on
->      the host, with its branch, revision, addresses, state and the
->      time it was made.
+>      exceeded its time limit; such a preview stays listed, holding
+>      nothing, with the end of what its command printed, until it is
+>      released again. sluice lists every preview it holds on the host,
+>      with its branch, revision, addresses, state and the time it was
+>      made.
 >
 > 102. A preview's command counts against the instance's bound (71) for
 >      exactly as long as it runs. A preview held after its command
@@ -170,14 +185,19 @@ is ended with everything it started (66).
 >
 > 103. A preview decides nothing. Its command is not a check: nothing
 >      of it is recorded as a run (16), no gate reads it (30), and no
->      entry waits on it. Its state is its own: starting, up, or failed
->      with its command's output.
+>      entry waits on it. Its state is its own: waiting for room in the
+>      bound, starting, up, or failed with its command's output.
 
 100 makes asking safe to repeat: a caller that crashed asks again and
 gets what it asked for the first time. 101 leaves the end to whoever
 knows the person is done, and the list is how a caller finds what it
 forgot. 102 counts what loads the host while it is being started; a
-held stack is the repository's, as a session's idle stack is (94). 103
+held stack is the repository's, as a session's idle stack is (94). A
+caller asking for a preview while the host is at its bound waits for
+room, as a session run does, and never takes the share the host keeps
+for candidates (91); stopped while it waits, it leaves the preview
+waiting, and the next asking takes it up with the same names and
+ports. 103
 keeps a preview out of the queue entirely: a preview that fails to come
 up says so and is released, and nothing lands or waits differently.
 
@@ -187,20 +207,21 @@ up says so and is released, and nothing lands or waits differently.
 
 | profile | materialize | release |
 |---|---|---|
-| **preview**: a detached worktree at a landed revision, held until asked | `git worktree add --detach` at the revision, as a candidate's; a block of ports held on the host, each checked free; a name per port (99); `SLUICE_PLACE`, `SLUICE_PORT_<NAME>`, `SLUICE_NAME_<NAME>`, `SLUICE_BRANCH` and `SLUICE_REVISION` given to the preview command | by `sluice release <preview>` (101): the revision's release command run in the place under the executor, the command's process group ended, `git worktree remove`, the ports and names let go |
+| **preview**: a detached worktree at a landed revision, held until asked, its record kept in `.previews/` apart from every other place's | `git worktree add --detach` at the revision, as a candidate's; a block of ports held on the host, each checked free; a name per port (99); `SLUICE_PLACE`, `SLUICE_PORT_<NAME>`, `SLUICE_NAME_<NAME>`, `SLUICE_BRANCH` and `SLUICE_REVISION` given to the preview command | by `sluice release <preview>` (101): the revision's release command run in the place under the executor, the command's process group ended, `git worktree remove`, the ports and names let go; after a failed command, the record kept with the command's output and nothing else |
 
 **C.5 the driver** gains a row:
 
 | profile | submit / withdraw / state / notify / forecast |
 |---|---|
-| **preview**: `sluice preview` | `sluice preview <branch> <revision>` makes or returns the revision's preview (98, 100) and prints its name, state and addresses, as JSON with `--json`; `--wait` returns once its command has ended; `sluice previews` lists the host's (101); `sluice release <preview>` releases one |
+| **preview**: `sluice preview` | `sluice preview <branch> <revision>` makes or returns the revision's preview (98, 100), waits for room in the bound (102), and prints its name, state and addresses once its command has started, as JSON with `--json`; `--wait` returns once its command has ended, exiting 1 if it failed; `sluice previews` lists the host's (101); `sluice release <preview>` releases one, named by its name or its revision |
 
 **C.7 policy** gains a table, read from the previewed revision (98):
 
 ```toml
 [preview]
-command   = "moon run app:preview"   # brings the stack up, hands it off, exits
+command   = "moon run app:preview"   # a string run by sh -c, or a list; brings the stack up, hands it off, exits
 addresses = { web = "https://{name.web}.localhost", api = "https://{name.api}.localhost/docs" }
+timeout   = "10m"                    # optional; the branch's time limit otherwise
 # the ports are [checkout] ports; the release command is [tests] release
 ```
 
