@@ -7,6 +7,7 @@
 - [The queue](queue.md)
 - [The gate](gate.md)
 - [Places and runs](places-and-runs.md)
+- [Previews](previews.md)
 - [The records](records.md)
 - [The core and its seams](core-and-seams.md)
 - [A branch on a forge, and pull requests](pull-requests.md)

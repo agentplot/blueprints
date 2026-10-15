@@ -28,6 +28,7 @@ output and pages, where the two differ.
 | **landing** | the branch moving to a candidate that passed | landing |
 | **executor** | what ran a check, with its identity and its host; **confined** when nothing of any session could reach the run or its records, **open** otherwise | executor |
 | **host** | a machine on which sessions, sluice or executors run | host |
+| **preview** | a place sluice makes at a revision a branch has landed, in which the policy's preview command has brought up what a person opens, held until its caller asks for its release | preview |
 | **instance** | one running sluice on one host | sluice |
 | **lead** | the instance advancing a branch | the host running the queue |
 | **lease** | how long an instance keeps a branch without writing its records | lease |
