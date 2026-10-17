@@ -1,8 +1,9 @@
 /* The figures are inline SVG drawn with these classes. The tokens follow
    mdBook's theme class on <html>: light and rust, or coal, navy and ayu.
    The neutrals and fonts are the family's (site-theme's tokens.css: page,
-   panel, rule, ink and muted); the accent is sounding's; millpond's blue
-   marks what millpond does. */
+   panel, rule, ink and muted); the accent is sounding's magenta from the
+   family list (site-theme's family.ts); millpond's blue marks what millpond
+   does. */
 :root {
   --sd-font-display: 'Space Grotesk', 'IBM Plex Sans', system-ui, sans-serif;
   --sd-font-sans: 'IBM Plex Sans', system-ui, sans-serif;
@@ -12,8 +13,8 @@
   --sd-fg: #0e1116;
   --sd-muted: #5d6370;
   --sd-line: #c9c7bf;
-  --sd-accent: #0b7285;
-  --sd-accent-soft: #d5ecef;
+  --sd-accent: #a3358f;
+  --sd-accent-soft: #ecdde5;
   --sd-mp: #2160b0;
   --sd-mp-soft: #dde7f4;
 }
@@ -23,8 +24,8 @@ html.coal, html.navy, html.ayu {
   --sd-fg: #f2f1ec;
   --sd-muted: #8c92a0;
   --sd-line: #2a2f38;
-  --sd-accent: #4fc3d6;
-  --sd-accent-soft: #12303a;
+  --sd-accent: #e486d2;
+  --sd-accent-soft: #2e2332;
   --sd-mp: #6ea8fe;
   --sd-mp-soft: #172438;
 }
