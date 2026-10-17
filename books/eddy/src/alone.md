@@ -101,6 +101,6 @@ anywhere.
 A host that runs millpond names a meeting part in an inbox's settings,
 and the part's listings become captures. The inbox then works in any of
 its three setups: on its own, with crew, or with Flywheel
-([millpond's book](../millpond/)). Moving from one setup to the next
+([millpond's three setups](../millpond/setups.html)). Moving from one setup to the next
 changes the host and the curator. eddy's parts stay as they were, so
 no meeting is captured twice.

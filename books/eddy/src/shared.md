@@ -82,7 +82,7 @@ each, and two captures.
 A meeting recorded twice is the reader's to join, because only a
 reading tells that two transcripts hold one conversation. The reader
 reads the two captures together and writes the second's signals once
-([millpond's book](../millpond/)).
+([millpond's reading](../millpond/reading.html)).
 
 ## The meeting's details
 

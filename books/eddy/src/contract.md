@@ -4,7 +4,8 @@ A part is a command that prints the capture contract. millpond starts
 it, reads the lines it prints and banks the files it writes, and
 Flywheel's tick later starts it the same way (215, 231). The contract
 is the one way captures reach an inbox, and millpond's book describes
-it whole ([millpond's book](../millpond/)).
+it whole ([the capture contract](../millpond/contract.html), and
+[running adapters](../millpond/running.html)).
 
 ## How a host starts a part
 
@@ -136,5 +137,5 @@ field or an empty excerpt, naming it in the run. It looks the key up in
 every capture the inbox holds and passes over a key it already holds.
 It banks the raw files, writes the capture with its pointer, marks the
 capture unread, and records the run, which a fleet's doctor reads from
-`millpond status --json`. [millpond's book](../millpond/) holds each of
-those steps.
+`millpond status --json`. millpond's book holds each of those steps
+([landing a capture](../millpond/landing.html)).

@@ -3,13 +3,13 @@
 The words of the design, each defined once. eddy has no statement yet,
 so the capture design (`design/capture/design.md`) is the binding copy.
 millpond's book owns the words of the inbox, readers and curation
-([millpond's book](../millpond/)); the entries marked *millpond* repeat
+([millpond's glossary](../millpond/glossary.html)); the entries marked *millpond* repeat
 its meaning in one line for a reader of this book.
 
 | word | meaning |
 |---|---|
 | **adapter** | a program that lists one source's events, keys each one, fetches the raw material, and prints capture lines; it writes no record and keeps no list of what it reported |
-| **part** | one adapter inside a plugin, run as a command; eddy holds one part per meeting service |
+| **part** | one thing of one kind in a plugin; eddy's are adapter parts, one per meeting service, each run as a command |
 | **meeting part** | a part that passes the meeting checks, eddy's or anyone's |
 | **the core** | eddy's code that lists and fetches meetings for each service it has a part for, with the code every part shares; every plugin calls it |
 | **plugin** | the installable unit in every host, holding parts of the kinds the host takes; Flywheel's statement calls it a package (228) |

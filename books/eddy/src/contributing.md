@@ -115,7 +115,10 @@ saved as `.eml`, a PDF.
 
 The folder drop is no meeting part and passes no meeting checks. A
 service that sends many files of one kind earns a part of its own, and
-until it has one the folder takes its files.
+until it has one the folder takes its files. millpond also carries
+Flywheel's meeting transcript adapter, `millpond capture meeting`,
+from the same crate (215). Its captures carry no excerpt either, and a
+reader reads them ([millpond's sources](../millpond/sources.html)).
 
 A meeting that arrives by two routes, a transcript dropped in the
 folder and the same meeting listed by a part, carries two keys and so

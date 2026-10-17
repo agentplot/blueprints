@@ -82,7 +82,8 @@ long meeting's transcript runs to megabytes.
 <figcaption>A part's line becomes the capture in git, and its two files go to the host's raw bank, which the capture points at. A meeting's words never reach GitHub: only a reader, millpond's verbatim check and a person following the pointer read them.</figcaption>
 </figure>
 
-Only millpond reads the line. It writes the capture into the inbox, in
+Only millpond reads the line ([landing a capture](../millpond/landing.html)).
+It writes the capture into the inbox, in
 git, banks the raw files in the host's raw bank under the capture's
 name, and gives the capture a pointer of the form `<host>:<path>`
 (217h). Raw transcripts stay outside version control, and the capture
