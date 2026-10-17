@@ -2,14 +2,16 @@
 
 The order of work for `design.md`. Each phase ends with something
 running on real work before the next phase depends on it. Steps that
-share no dependency run side by side: once phase 0 is done, crew's
-contract, headwater's core and eddy can all move at once.
+share no dependency run side by side: once millpond's core exists,
+headwater, eddy, millpond's plugins and crew's move onto millpond all
+proceed at once.
 
 Each step is done in its repository's own process:
 
-- a statement amendment in this repository;
+- a statement or amendment in this repository;
 - an OpenSpec change in crew, flywheel-next or swancloud;
-- headwater's repository, scaffolded from kit-standard.
+- millpond's, headwater's and eddy's repositories, scaffolded from
+  kit-standard.
 
 A step's change name is suggested where one helps. **Done when** names
 a check or an observation, never a list to tick by hand.
@@ -21,32 +23,36 @@ a check or an observation, never a list to tick by hand.
 | D1 | Rule headwater's 33 questions | none | waiting on the operator |
 | D2 | Rule this design's decisions | none | waiting on the operator |
 | D3 | Decide the old meeting sweep's fate | none | waiting on the operator |
+| P1 | Write millpond's statement | D2 | to do |
 | H1 | Amend headwater's statement | D1, D2 | to do |
-| F1 | Write the contract into Flywheel's statement | D2 | to do |
+| F1 | Write the contract and the inbox into Flywheel's statement | D2 | to do |
 | C1 | Amend crew's record | D2 | to do |
-| F2 | Build the contract crate and its conformance pack | F1 | to do |
-| F6 | Flywheel's built-in adapters print the contract | F2 | to do |
-| C2 | `crew capture land` | F1, F2's pack | to do |
-| C3 | `crew capture run` and run status | C2 | to do |
-| S1 | Move the release adapter onto the contract | C2 | to do |
+| F2 | The capture and signals crates, and the conformance pack | F1 | to do |
+| F3 | The adapters crate | F2 | to do |
+| P2 | Scaffold millpond's repository | P1 | to do |
+| P3 | millpond's core | P2, F2, F3 | to do |
+| S1 | The release adapter lands through millpond on trial | P3 | to do |
 | H2 | Scaffold headwater's repository | H1 | to do |
 | H3 | headwater's walkthrough and phase-1 brief | H2 | to do |
 | H4 | headwater's core | H3 | to do |
 | H5 | headwater's lookups | H4 | to do |
 | H6 | headwater's Flywheel plugin | H4, F2 | to do |
 | H7 | headwater's Claude Code and herdr plugins | H4 | to do |
+| E1 | eddy | F2 | to do |
+| P4 | millpond's tools and Claude Code plugin | P3 | to do |
+| P5 | millpond's herdr plugin | P3 | to do |
+| P6 | Send an item to a worktree | P4 | to do |
+| C2 | crew calls millpond | C1, P3 | to do |
 | S2 | Generate swancloud's watch list | H1 | to do |
-| S3 | The list of adapters, their runs and doctor rows | C3 | to do |
+| S3 | The list of parts, their ticks and doctor rows | C2 | to do |
 | S4 | Cut swancloud's releases over to headwater | S1, S2, S3, H5, H6 | to do |
-| M1 | eddy | F2 | to do |
-| C4 | crew's reader | C2 | to do |
-| S5 | Run eddy and the folder drop | M1, F6, S3 | to do |
-| M2 | Retire the old meeting pipeline | S5, C4 | to do |
-| C5 | Curation into plan items | C1 | to do |
-| C6 | A release reaches a landed bump | C5, S4 | to do |
-| F3 | Flywheel's host side of the contract | F2 | to do |
-| F4 | Flywheel's import keeps keys | F1 | to do |
-| F5 | crew becomes Flywheel | F3, F4 | crew's roadmap |
+| C3 | crew's reader | C2, P4 | to do |
+| S5 | Run eddy and the folder drop | E1, S3 | to do |
+| E2 | Retire the old meeting pipeline | S5, C3 | to do |
+| C4 | crew's curator moves through millpond | C2, P4 | to do |
+| C5 | A release reaches a landed bump | C4, S4 | to do |
+| F4 | Flywheel's host on the same crates | F2, F3 | to do |
+| F5 | crew becomes Flywheel | F4, C2 | crew's roadmap |
 
 ## Phase 0: rule and write down
 
@@ -62,20 +68,34 @@ a check or an observation, never a list to tick by hand.
 
 The operator accepts or changes each of these:
 
-1. headwater is a tool for dependencies. The host does the work every
-   source shares, through the contract.
-2. Flywheel's statement owns the contract, and crew implements it first.
-3. crew keeps its folders. JSON exists only in flight, and Flywheel's
-   import keys by crew's key.
-4. Meeting signals move to the flywheel branch.
-5. A program lists meetings and a session reads them. The Wispr part
-   is an MCP client and starts no Claude session.
-6. "Plugin" replaces Flywheel's "package" and "bundle".
-7. The release adapter moves onto the contract (S1) before headwater
-   exists, so the contract runs on live work first.
-8. eddy, the meetings tool, holds a part per meeting service. Any other
-   file goes through the folder drop, Flywheel's own folder adapter
-   printing the contract.
+1. headwater is for dependencies and eddy for meetings. The work every
+   source shares is millpond's, through the contract.
+2. millpond is a standalone tool, the inbox. It runs adapters, keeps
+   captures and signals, serves the tools curation works through, and
+   sends an item to a worktree. crew calls its command line as it calls
+   sluice's.
+3. Flywheel's statement owns the contract and the record formats.
+   flywheel-next's crates implement them once, millpond is built on
+   them, and Flywheel's host is later built on the same crates.
+4. An inbox is a git repository, or a branch in one, in Flywheel's
+   formats. crew's partition branches become inboxes, crew's folders
+   and the meeting corpus are imported once, and Flywheel reads the
+   same inboxes with no import.
+5. The unit of work is an item, the signals curation joined, one or
+   many. millpond sends one item to one worktree. Planning across items
+   is crew's planner today and Flywheel's later.
+6. A Claude session works a backlog through millpond's tools,
+   proposing moves in batches the operator accepts or changes. herdr
+   shows the counts, reviews a batch and sends an item.
+7. A program lists meetings and a session reads them. eddy holds a
+   part per meeting service, its Wispr part an MCP client that starts
+   no Claude session. Others publish meeting plugins of their own.
+8. An adapter whose source needs no other tool ships inside millpond.
+   One that wraps another tool's domain ships with that tool, so
+   headwater's and eddy's parts stay theirs.
+9. "Plugin" replaces Flywheel's "package" and "bundle".
+10. The release adapter lands through millpond on trial (S1) before
+    headwater exists, so the contract carries live captures first.
 
 - **Done when:** each decision is accepted or changed, and `design.md`
   says what was ruled.
@@ -86,6 +106,19 @@ The operator accepts or changes each of these:
 - **Does:** the operator stops or repairs the existing daily sweep
   while eddy is built.
 - **Done when:** the sweep either runs green or is unloaded.
+
+### P1 Write millpond's statement
+
+- **Where:** this repository, `design/millpond/`.
+- **Does:** writes millpond's statement from `design.md`, as
+  headwater's was written: the inbox, the contract's intake, the seven
+  steps, the reader and curation tools, moves, items and sends, the
+  three setups, and what millpond never does. A fresh model then
+  reconstructs millpond from the statement alone, and the operator
+  rules the questions it asks.
+- **Done when:** the reconstruction's questions are ruled and folded
+  into the statement, Vale is clean, and the operator agrees to land it
+  on `main`.
 
 ### H1 Amend headwater's statement
 
@@ -99,7 +132,7 @@ The operator accepts or changes each of these:
 - **Done when:** Vale is clean, and the operator agrees to land it on
   `main`.
 
-### F1 Write the contract into Flywheel's statement
+### F1 Write the contract and the inbox into Flywheel's statement
 
 - **Where:** this repository, `design/flywheel-next/requirements.md`.
 - **Does:** adds clauses and scenarios for:
@@ -109,90 +142,93 @@ The operator accepts or changes each of these:
   - raw banking;
   - a source's configuration and cursor;
   - an import that keeps keys;
+  - the item record, a proposed intent's brief and sends;
   - "plugin" in place of "package" and "bundle".
 
-  These amend 112, 114, 215, 217e, 217g, 217h, 228, 231 and 284.
+  These amend 109, 112, 114, 215, 217e, 217g, 217h, 228, 231 and 284.
 - **Done when:** a fresh model, given the amended clauses alone,
-  reconstructs the contract's lines and the host's seven steps without
-  a question this design leaves open.
+  reconstructs the contract's lines and the seven steps without a
+  question this design leaves open.
 
 ### C1 Amend crew's record
 
 - **Where:** crew, `docs/architecture/` and `docs/adr/`.
 - **Does:**
-  - amends `signals.1` (meeting signals on the flywheel branch);
-  - amends `signals.6` (the host writes the own-excerpt signal from the
-    contract);
-  - adds a rule that the host dedupes by key;
-  - adds an ADR, "captures arrive by the contract";
+  - amends `signals.1`: a partition's signals live in its inbox,
+    written through millpond;
+  - amends `signals.6`: millpond writes and cuts the own-excerpt
+    signal;
+  - adds an ADR, "crew calls millpond as it calls sluice";
   - rewrites the open change `daily-pass-through-crew` as the reader
-    (C4).
+    (C3), and `curation-and-agenda` as the curator (C4).
 - **Done when:** the record lands through sluice, and `_open.md` no
   longer asks where meeting signals live.
 
-## Phase 1: the contract, built once
+## Phase 1: the contract and millpond's core
 
-### F2 Build the contract crate and its conformance pack
+### F2 The capture and signals crates, and the conformance pack
 
 - **Where:** flywheel-next. Change: `the-capture-contract`.
 - **Does:**
-  - splits the plain record types and key rules out of `signals.rs`
-    into a small crate, with JSON in flight, rec at rest, a sha256
-    content hash and the excerpt cut;
-  - publishes a conformance pack of contract lines and the records each
-    host must write from them.
-- **Done when:** Flywheel's own tests pass the pack. headwater and eddy
-  can depend on the crate at a tag.
+  - splits the contract's types and key rules out of `signals.rs` into
+    a capture crate, with JSON in flight, rec at rest, a sha256 content
+    hash and the excerpt cut;
+  - splits the signal, move and item records and the inbox's layout
+    into a signals crate;
+  - publishes a conformance pack of contract lines and the records a
+    host must write from them, with the meeting checks a meeting part
+    passes.
+- **Done when:** Flywheel's own tests pass the pack, and millpond,
+  headwater and eddy can depend on the crates at a tag.
 
-### F6 Flywheel's built-in adapters print the contract
+### F3 The adapters crate
 
 - **Where:** flywheel-next, in F2's change or the next.
-- **Does:** gives `flywheel capture folder`, `meeting` and `signals` a
-  `--print` that writes contract lines in place of records. The folder
-  key takes the crate's sha256.
-- **Done when:** `crew capture run -- flywheel capture folder <dir>
-  --print` lands a dropped file once, and a second drop of the same
-  file lands nothing.
+- **Does:** moves the folder drop, the meeting file and the
+  signals-folder import into a crate whose adapters print contract
+  lines. The folder key takes the capture crate's sha256, and the
+  import keys each capture by its own key.
+- **Done when:** each adapter's output passes the pack, and importing
+  one folder twice writes nothing the second time.
 
-### C2 `crew capture land`
+### P2 Scaffold millpond's repository
 
-- **Where:** crew. Change: `captures-arrive-by-the-contract`.
-- **Does:** takes contract lines on standard input and does the host's
-  seven steps:
-  - dedupes by key across both homes;
-  - banks the raw files;
-  - names the folder from the event date and the key (`code.4`);
-  - writes the own-excerpt signal, cut at a line;
-  - records the run.
+- **Where:** `agentplot/millpond`, new, in Rust on kit-standard's code
+  profile. It follows sluice's seed commit.
+- **Does:** writes `CLAUDE.md` pointing at the statement, a README, a
+  license, `adrs.toml`, the founding ADRs (built on flywheel-next's
+  crates, plugins outside the core, the inbox in Flywheel's formats),
+  `docs/architecture/core.md` and `_open.md`, and the kit's devenv,
+  moon, sluice gate, `cliff.toml` and OpenSpec configuration.
+- **Done when:** sluice protects `main`, and the first change lands
+  through it.
+
+### P3 millpond's core
+
+- **Where:** millpond.
+- **Does:**
+  - `millpond land`, `run`, `tick` and `status --json`, with the seven
+    steps, the raw bank, cursors and the write lock;
+  - `millpond import` and `millpond capture folder|meeting`, from F3;
+  - `millpond.toml` and the inbox's layout from the signals crate.
 - **Done when:**
-  - crew's tests pass the conformance pack;
+  - millpond passes the conformance pack;
   - a capture landed twice writes nothing the second time;
-  - a refused line leaves the rest of the run landed.
-
-### C3 `crew capture run` and run status
-
-- **Where:** crew, in the same change or the next.
-- **Does:** `crew capture run <command>` runs an adapter with its raw
-  directory and last cursor and lands what it prints. It keeps the
-  cursor on the host, and `crew capture status --json` reports each
-  adapter's last run.
-- **Done when:**
+  - a refused line leaves the rest of the run landed;
   - a run that exits without `done` keeps its cursor where it was;
   - the status names each failed item.
 
-### S1 Move the release adapter onto the contract
+### S1 The release adapter lands through millpond on trial
 
 - **Where:** swancloud, `packages/release-signals`. Change:
   `release-signals-speak-the-contract`.
-- **Does:** the adapter prints contract lines and runs under
-  `crew capture run`. It drops its `landed` list, its `work/` folder,
-  its cut and its landing loop.
-- **Done when:**
-  - a day's 04:30 run lands through crew with its existing keys;
-  - nothing lands twice;
-  - the doctor's `releases` row reads crew's status.
+- **Does:** the adapter prints contract lines. Its 04:30 run lands
+  them through crew as it does now, and also runs under `millpond run`
+  into a trial inbox on mac-studio.
+- **Done when:** a week of runs lands in the trial inbox exactly the
+  keys crew landed, none twice.
 
-## Phase 2: headwater
+## Phase 2: the tools
 
 ### H2 Scaffold headwater's repository
 
@@ -226,8 +262,8 @@ The operator accepts or changes each of these:
   - the store in the git directory;
   - `scan`, `notes`, `brief`, `ack` and `overview`, with JSON output;
   - a conformance suite whose cases cite clauses.
-- **Done when:** the suite passes against the fakes, and at least one case
-  cites every Part A clause.
+- **Done when:** the suite passes against the fakes, and at least one
+  case cites every Part A clause.
 
 ### H5 headwater's lookups
 
@@ -243,10 +279,10 @@ The operator accepts or changes each of these:
 
 - **Where:** headwater, `plugins/flywheel`.
 - **Does:** `headwater capture` prints a capture per newly reported
-  release, built with the contract crate. The key, raw, excerpt and
+  release, built with the capture crate. The key, raw, excerpt and
   claims are as `design.md` sets them.
-- **Done when:** its output passes the conformance pack's checks, and
-  `crew capture run` lands it.
+- **Done when:** its output passes the conformance pack, and
+  `millpond run` lands it.
 
 ### H7 headwater's Claude Code and herdr plugins
 
@@ -255,11 +291,76 @@ The operator accepts or changes each of these:
   - a skill and a command that read `overview` and `brief`;
   - a herdr sidebar of unread releases;
   - a fix key that starts an agent in a worktree and submits to sluice,
-    or hands the release to crew in a repository crew runs.
+    or hands the release to millpond in a repository crew runs.
 - **Done when:** both plugins install from headwater's tag and show a
   real repository's releases.
 
-## Phase 3: swancloud on headwater
+### E1 eddy
+
+- **Where:** `agentplot/eddy`, new, in Rust like headwater, on
+  kit-standard's code profile.
+- **Does:**
+  - the code every part shares: the key, the meeting's details, the raw
+    layout and skipping short meetings;
+  - the `wispr` part: an MCP client with its own sign-in and a cursor,
+    tested by replaying recorded responses;
+  - `plugins/claude`, which pulls a transcript into a session, and
+    `plugins/herdr`, which shows the day's meetings.
+
+  It prints the contract with the capture crate and carries no excerpt.
+  `webex` and `teams` parts follow when a partition needs them.
+- **Done when:**
+  - the conformance pack's meeting checks pass;
+  - a listing of last week's meetings matches the service's own list;
+  - no model runs during a listing.
+
+### P4 millpond's tools and Claude Code plugin
+
+- **Where:** millpond, `plugins/claude` and `millpond mcp`.
+- **Does:** serves `signals`, `capture`, `read`, `moves`, `items` and
+  `brief` over MCP, with the verbatim check on `read`, and ships the
+  curate and read skills.
+- **Done when:** in a session on a trial inbox of real captures, the
+  curate skill proposes a batch of fifty, the operator changes a row,
+  and one `moves` call writes the batch as changed; and a reader's
+  excerpt that is not in the raw material is refused.
+
+### P5 millpond's herdr plugin
+
+- **Where:** millpond, `plugins/herdr`.
+- **Does:** shows the count and age of unmoved signals by source, opens
+  a proposed batch for review row by row, and sends an item with one
+  key once P6 lands.
+- **Done when:** the plugin installs from millpond's tag and its counts
+  match `millpond status --json` on the trial inbox.
+
+### P6 Send an item to a worktree
+
+- **Where:** millpond.
+- **Does:** `send` makes a worktree on a branch named for the item,
+  writes the brief there, starts an agent in a herdr pane or prints the
+  command, and writes the landing against the item from sluice's
+  record. An inbox whose settings hand items to crew refuses a send.
+- **Done when:** an item of two bumps sent from herdr lands through
+  sluice, the item shows its landing, and a send from crew's inbox is
+  refused.
+
+## Phase 3: crew and swancloud on millpond
+
+### C2 crew calls millpond
+
+- **Where:** crew. Change: `crew-calls-millpond`.
+- **Does:**
+  - each partition's flywheel branch becomes an inbox, its folders
+    imported once with `millpond import`;
+  - `crew signal` writes through `millpond land`, and the board, the
+    page and the planner read signals through millpond's command line;
+  - swancloud's deployer pipes its failures to `millpond land`.
+- **Done when:**
+  - importing a partition's branch twice writes nothing the second
+    time;
+  - crew's page shows the same signals before and after the import;
+  - no crew code writes a signal file itself.
 
 ### S2 Generate swancloud's watch list
 
@@ -271,14 +372,16 @@ The operator accepts or changes each of these:
 - **Done when:** the check fails on a hand edit and passes after
   regeneration.
 
-### S3 The list of adapters, their runs and doctor rows
+### S3 The list of parts, their ticks and doctor rows
 
-- **Where:** swancloud. Change: `adapters-run-from-one-list`.
-- **Does:** one list in `lib/` names each adapter part, its partition,
-  host and schedule. A launchd agent per entry runs `crew capture run`,
-  and the doctor shows a row per entry from crew's status.
+- **Where:** swancloud. Change: `parts-run-from-one-list`.
+- **Does:** one list in `lib/` names each part, its partition's inbox,
+  host and schedule, and generates each inbox's `millpond.toml`. A
+  launchd agent per inbox on its host runs `millpond tick`, and the
+  doctor shows a row per part from `millpond status --json`. The
+  release adapter moves from its trial inbox into the partition's.
 - **Done when:**
-  - the release adapter runs from the list;
+  - the release adapter runs from the list into the partition's inbox;
   - its row reads ok;
   - a deliberately failed run turns the row red, naming the item.
 
@@ -296,31 +399,13 @@ The operator accepts or changes each of these:
   - the doctor row stays ok;
   - nothing names the old adapter.
 
-## Phase 4: meetings
-
-### M1 eddy
-
-- **Where:** `agentplot/eddy`, new, in Rust like headwater, on
-  kit-standard's code profile.
-- **Does:**
-  - the code every part shares: the key, the meeting's details, the raw
-    layout and skipping short meetings;
-  - the `wispr` part: an MCP client with its own sign-in and a cursor.
-
-  It prints the contract with the crate and carries no excerpt. `webex`
-  and `teams` parts follow when a partition needs them.
-- **Done when:**
-  - the conformance pack's checks pass;
-  - a listing of last week's meetings matches the service's own list;
-  - no model runs during a listing.
-
-### C4 crew's reader
+### C3 crew's reader
 
 - **Where:** crew. Change: `daily-pass-through-crew`, rewritten.
-- **Does:** `crew read <label>` charges a reader session over unread
-  captures, oldest first, on a cadence and on the user's word. Its
-  instructions are the instance's data. Its signals land through crew,
-  with an excerpt each.
+- **Does:** crew charges a reader session over a partition's unread
+  captures, oldest first, on a cadence and on the operator's word. The
+  reader writes signals with millpond's `read` tool. Its instructions
+  are the inbox's data.
 - **Done when:** a week of meetings becomes signals with a verified
   excerpt each, and no capture is read twice.
 
@@ -335,61 +420,54 @@ The operator accepts or changes each of these:
   - the doctor row reads ok;
   - the row warns when the sign-in nears its end.
 
-### M2 Retire the old meeting pipeline
+### E2 Retire the old meeting pipeline
 
 - **Where:** the instance repository that runs it.
-- **Does:** removes the old sweep and its scheduled job once S5 and C4
-  have run for a week. Its corpus stays where it is.
-- **Done when:** no scheduled job runs the old sweep, and crew's lookup
-  still finds the old corpus.
+- **Does:** imports the meeting corpus once into the partition's inbox
+  with `millpond import`, then removes the old sweep and its scheduled
+  job once S5 and C3 have run for a week.
+- **Done when:** no scheduled job runs the old sweep, and a capture of
+  the old corpus is found in the inbox by its key.
 
-## Phase 5: curation to work
+## Phase 4: curation to work
 
-### C5 Curation into plan items
+### C4 crew's curator moves through millpond
 
 - **Where:** crew. Change: `curation-and-agenda`, already open.
-- **Does:** a curator on a cadence gives signals Flywheel's six moves,
-  and `route` makes plan items.
+- **Does:** a curator on a cadence works a partition's inbox through
+  millpond's tools, joining signals into items, and the operator
+  decides each item on crew's rail. The planner turns an accepted item
+  into a chore or a unit.
 - **Done when:** a batch of release and meeting signals is curated in
-  one delivery, and every signal has one move.
+  one delivery, every signal has one move, and each item reaches the
+  plan.
 
-### C6 A release reaches a landed bump
+### C5 A release reaches a landed bump
 
 - **Where:** crew and swancloud.
 - **Does:** proves the whole path on one real release. The capture
-  lands, curation routes it, and the planner proposes the chore, which
-  the operator accepts row by row. A team bumps the tool with
+  lands, curation routes it into an item, and the planner proposes the
+  chore, which the operator accepts. A team bumps the tool with
   `headwater brief` in hand, and sluice lands it.
 - **Done when:** the next scan no longer reports that release, because
   the pin moved, with no acknowledgement written.
 
-## Phase 6: Flywheel as host
+## Phase 5: Flywheel hosts
 
-### F3 Flywheel's host side of the contract
+### F4 Flywheel's host on the same crates
 
 - **Where:** flywheel-next.
 - **Does:**
   - runs plugin adapter parts on the tick;
   - takes `flywheel capture land`;
-  - writes the own-excerpt signal from each capture's flag;
-  - banks raw material behind a host-qualified pointer.
+  - reads and writes an inbox millpond wrote, with no import.
 - **Done when:** Flywheel passes the conformance pack, and headwater's
-  and eddy's parts run on a Flywheel host unchanged.
-
-### F4 Flywheel's import keeps keys
-
-- **Where:** flywheel-next.
-- **Does:** the signals-folder adapter keys each import by the
-  capture's own key. The meeting adapter's `event_at` becomes the
-  meeting's date.
-- **Done when:** importing a crew branch twice writes nothing the
-  second time, and a capture already in Flywheel under its key is not
-  imported again.
+  and eddy's parts run on a Flywheel host unchanged against an inbox
+  millpond kept.
 
 ### F5 crew becomes Flywheel
 
 - **Where:** crew's and Flywheel's roadmaps.
-- **Does:** the hosts change and the adapters do not. Flywheel imports
-  each partition's flywheel branch once, and every adapter part keeps
-  running unchanged.
+- **Does:** the host changes and the adapters and inboxes do not.
+  Flywheel takes each partition's inbox as it stands.
 - **Done when:** both roadmaps say so.
