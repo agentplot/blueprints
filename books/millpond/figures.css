@@ -1,29 +1,35 @@
 /* The figures are inline SVG drawn with these classes. The tokens follow
-   mdBook's theme class on <html>: light and rust, or coal, navy and ayu. */
+   mdBook's theme class on <html>: light and rust, or coal, navy and ayu.
+   The neutrals and fonts are the family's (site-theme's tokens.css: page,
+   panel, rule, ink and muted); the accent is millpond's blue; ochre marks
+   what ships inside millpond. */
 :root {
-  --mp-panel: #f3f6f5;
-  --mp-surface: #ffffff;
-  --mp-fg: #16232a;
-  --mp-muted: #55666d;
-  --mp-line: #b9c8c5;
-  --mp-accent: #0e6f68;
-  --mp-accent-soft: #dcefeb;
+  --mp-font-display: 'Space Grotesk', 'IBM Plex Sans', system-ui, sans-serif;
+  --mp-font-sans: 'IBM Plex Sans', system-ui, sans-serif;
+  --mp-font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --mp-panel: #f7f6f2;
+  --mp-surface: #e9e7e0;
+  --mp-fg: #0e1116;
+  --mp-muted: #5d6370;
+  --mp-line: #c9c7bf;
+  --mp-accent: #2160b0;
+  --mp-accent-soft: #dde7f4;
   --mp-ochre: #9a5b06;
-  --mp-ochre-soft: #f6ead4;
+  --mp-ochre-soft: #f8eedd;
 }
 html.coal, html.navy, html.ayu {
-  --mp-panel: #10191c;
-  --mp-surface: #162327;
-  --mp-fg: #dbe6e4;
-  --mp-muted: #93a7ab;
-  --mp-line: #34484d;
-  --mp-accent: #5fc5b7;
-  --mp-accent-soft: #173a37;
+  --mp-panel: #0e1116;
+  --mp-surface: #161a21;
+  --mp-fg: #f2f1ec;
+  --mp-muted: #8c92a0;
+  --mp-line: #2a2f38;
+  --mp-accent: #6ea8fe;
+  --mp-accent-soft: #172438;
   --mp-ochre: #e3aa5c;
   --mp-ochre-soft: #3a2b14;
 }
 
-.mp-fig { margin: 1.75em 0; }
+.mp-fig { margin: 1.75em 0; font-family: var(--mp-font-sans); }
 .mp-fig .mp-scroll {
   overflow-x: auto;
   border: 1px solid var(--mp-line);
@@ -38,14 +44,14 @@ html.coal, html.navy, html.ayu {
   margin-top: 0.6em;
 }
 
-.mp-fig text { fill: var(--mp-fg); font-size: 13px; }
+.mp-fig text { fill: var(--mp-fg); font-family: var(--mp-font-sans); font-size: 13px; }
 .mp-fig .mp-t { font-weight: 600; font-size: 14px; }
-.mp-fig .mp-tb { font-weight: 700; font-size: 16px; }
+.mp-fig .mp-tb { font-family: var(--mp-font-display); font-weight: 700; font-size: 16px; letter-spacing: -0.015em; }
 .mp-fig .mp-ts { fill: var(--mp-muted); font-size: 12.5px; }
-.mp-fig .mp-tm { font-family: var(--mono-font); font-size: 12px; }
+.mp-fig .mp-tm { font-family: var(--mp-font-mono); font-size: 12px; }
 .mp-fig .mp-tl { fill: var(--mp-accent); font-weight: 600; font-size: 12px; }
-.mp-fig .mp-th { fill: var(--mp-muted); font-family: var(--mono-font); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; }
-.mp-fig .mp-ct-o { fill: var(--mp-ochre); font-family: var(--mono-font); font-size: 10.5px; }
+.mp-fig .mp-th { fill: var(--mp-muted); font-family: var(--mp-font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; }
+.mp-fig .mp-ct-o { fill: var(--mp-ochre); font-family: var(--mp-font-mono); font-size: 10.5px; }
 
 .mp-fig .mp-bx { fill: var(--mp-surface); stroke: var(--mp-line); stroke-width: 1.2; }
 .mp-fig .mp-bx-mp { fill: var(--mp-accent-soft); stroke: var(--mp-accent); stroke-width: 1.5; }
