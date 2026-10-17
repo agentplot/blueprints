@@ -12,6 +12,7 @@
 sluice
 pinout
 testledger
+sounding
 worktrunk
 moon
 devenv
