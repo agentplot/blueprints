@@ -20,6 +20,7 @@ Flywheel's statement, whose record formats and moves millpond keeps.
 | **chore** | in crew, a piece of work that needs no design of its own, such as a tool's bump; a `route` move offers one |
 | **claim** | in Flywheel, a standing statement of what a repository must satisfy; `answered` and `challenge` name one |
 | **conformance pack** | contract lines and the records a host must write from them, with the meeting checks; every host and every adapter part passes it |
+| **curation** | a Claude session that proposes one move per signal, in batches, through millpond's tools; the operator accepts or changes each batch (116) |
 | **cursor** | a value only its adapter understands, kept from the part's last run that ended in `done` and handed back on the next |
 | **cut** | where millpond ends an own-excerpt signal's text: at a line under the inbox's limit, 8 KiB unless its settings say otherwise. A closing line says how much the raw record holds beyond it |
 | **dedupe** | millpond's lookup of each capture's key in every capture the inbox holds, so a key lands once |
