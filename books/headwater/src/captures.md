@@ -61,7 +61,7 @@ lands it once (S6).
 <text x="703" y="24" text-anchor="middle" class="hw-ms">day 4</text>
 <text x="16" y="68" class="hw-th">HEADWATER</text>
 <text x="16" y="133" class="hw-th">CAPTURE</text>
-<text x="16" y="200" class="hw-th">MILLPOND</text>
+<text x="16" y="200" class="hw-th-mp">MILLPOND</text>
 <rect x="110" y="38" width="166" height="50" rx="8" class="hw-bx"/>
 <text x="122" y="58" class="hw-s">pin 2026.9.18</text>
 <text x="122" y="78" class="hw-m">reports 2026.10.10</text>
@@ -84,7 +84,7 @@ lands it once (S6).
 <line x1="193" y1="142" x2="193" y2="165" class="hw-ar" marker-end="url(#hw-c-m)"/>
 <line x1="363" y1="142" x2="363" y2="165" class="hw-ar" marker-end="url(#hw-c-m)"/>
 <line x1="533" y1="142" x2="533" y2="165" class="hw-ar" marker-end="url(#hw-c-m)"/>
-<rect x="110" y="170" width="166" height="50" rx="8" class="hw-bx-a"/>
+<rect x="110" y="170" width="166" height="50" rx="8" class="hw-bx-mp"/>
 <text x="122" y="191" class="hw-t">lands the capture</text>
 <text x="122" y="209" class="hw-s">once, by its key</text>
 <rect x="280" y="170" width="166" height="50" rx="8" class="hw-bx"/>
