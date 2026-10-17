@@ -22,7 +22,7 @@ meaning in the book it belongs to.
 | **ask** | `sounding ask`: the exit that puts a question only the operator can answer on a card; the session waits for the answer |
 | **card** | a question or a decision put to the operator outside the session's pane, and answered once |
 | **conclude** | `sounding conclude`: the exit that writes `conclusion.md` and ends the round |
-| **conclusion** | `conclusion.md`: the answer, its evidence, what it would change, the work it proposes, and what stays open; the operator decides it |
+| **conclusion** | what a sounding ends on: the answer, its evidence, what it would change, the work it proposes and what stays open; the operator accepts it, sends it back for another round, or drops it |
 | **drop** | the operator's answer that records the reason and removes the sounding's worktree |
 | **exit** | one of the three commands through which a session reaches beyond its place: conclude, offer and ask (65) |
 | **finding** | something a session learns beyond its question; an offer hands it to millpond as a capture (58) |

@@ -84,7 +84,8 @@ A session finds things beyond its question as it works: a defect in a
 tool it read, a record gone stale, a second question. A finding about
 the question belongs in the conclusion. A finding beyond it belongs in
 the inbox, and `sounding offer` hands it to `millpond land` as a
-capture of its own (62).
+capture of its own (62), as millpond's book has it
+([Findings, from a sounding](../millpond/sources.html#findings-from-a-sounding)).
 
 The capture:
 

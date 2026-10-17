@@ -11,7 +11,7 @@ any work the answer implies begins. An item in millpond sometimes asks
 one: whether to take a major release, or how to settle what a meeting
 left open. An item that needs no judgment goes to
 a worktree and becomes a change. An item that asks a question goes to a
-sounding ([millpond's items](../millpond/items.html)).
+sounding ([millpond's items](../millpond/items.html#a-question-sent-to-a-sounding)).
 
 ## Ways in
 
