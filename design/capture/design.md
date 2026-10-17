@@ -350,7 +350,8 @@ works the same with millpond, with crew or alone.
 
 - **The question** comes from an item millpond sends, from the
   operator's `/sound` in any session, or from a key in another tool's
-  herdr plugin. `sounding open` writes `question.md` with the question
+  herdr plugin. Each of them calls `sounding open`, which writes
+  `question.md` with the question
   and its sources: the item's signals, the captures they came from, and
   any earlier conclusion on the subject.
 - **The place** is a worktree of the repository the question is about,
@@ -358,13 +359,14 @@ works the same with millpond, with crew or alone.
   there to test an answer. That code never lands from the sounding's
   branch: the work the operator accepts reaches main through an item's
   worktree or crew's plan, and through sluice.
-- **The session** leaves by one of three commands:
+- **The session** ends a round with `sounding conclude`, and may offer
+  and ask along the way:
 
   | Exit | What follows |
   |---|---|
   | `sounding conclude` | Writes `conclusion.md`: the answer, its evidence, what it would change, the work it proposes, and what stays open. The operator decides it. |
-  | `sounding offer` | Hands a finding beyond the question to `millpond land` as a capture of its own (62). The finding is its own excerpt, of kind `ask`, asserted by the sounding, under the key `sounding/<name>/<n>`. |
-  | `sounding ask` | Puts a question only the operator can answer on a card. The session waits for the answer. |
+  | `sounding offer` | Hands a finding beyond the question to `millpond land` as a capture of its own (62), and the session goes on (58). The finding is its own excerpt, of kind `ask`, asserted by the sounding, under the key `sounding/<name>/<n>`, one key per offer. |
+  | `sounding ask` | Puts a question only the operator can answer on a card. The session waits for the answer, then goes on. |
 
 - **A stop check** keeps the session from ending without a conclusion,
   or a note saying where the next round would start.
@@ -674,6 +676,11 @@ only through sluice's, and links no crate.
   cursor costs one wider listing, which the dedupe absorbs.
 - **Attestation**, sluice signing the verdict it lands, is outside this
   design.
+- **sounding's own details:** the timebox's length and who sets it, how
+  a sounding is named, where its files sit and whether they are
+  committed, what parks a sounding and resumes it, what accept and drop
+  do to its branch, and the fields an offer's capture carries. Its
+  statement rules them (Q1).
 - **A standing sounding**, which stays open and starts a round when a
   signal on its subject lands, as Flywheel's standing elaborations do.
 - **Where else an accepted conclusion lives.** A repository may keep it
