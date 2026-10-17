@@ -19,7 +19,8 @@ meeting/<service>/<meeting id>
 the id the service gives the meeting. The key is the meeting's identity:
 every host and every run gives one meeting one key, and millpond holds
 one capture per key (111). Every meeting key starts with `meeting`, so
-none starts with `/`, `captures` or `moves`, which the contract refuses.
+none starts with `/`, `captures` or `moves`, which the contract refuses
+([the key](../millpond/contract.html#the-key)).
 
 The key is what lets a part forget. millpond looks every key up in the
 inbox before it writes, so a part keeps no list of what it reported and
@@ -82,7 +83,7 @@ each, and two captures.
 A meeting recorded twice is the reader's to join, because only a
 reading tells that two transcripts hold one conversation. The reader
 reads the two captures together and writes the second's signals once
-([millpond's reading](../millpond/reading.html)).
+([millpond's reader](../millpond/reading.html#a-reader)).
 
 ## The meeting's details
 

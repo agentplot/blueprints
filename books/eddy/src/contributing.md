@@ -104,7 +104,8 @@ saved as `.eml`, a PDF.
 
 - **Its adapter** is Flywheel's folder adapter, built into millpond
   from flywheel-next's adapters crate: `millpond capture folder <dir>`
-  prints contract lines.
+  prints contract lines
+  ([the folder drop](../millpond/sources.html#the-folder-drop)).
 - **Its key** is `folder/<folder name>/<sha256 of the file>`, so a
   file dropped twice, or under another name, is one capture (111).
 - **Its `event_at`** is the date the file's name begins with, or else
@@ -118,7 +119,7 @@ service that sends many files of one kind earns a part of its own, and
 until it has one the folder takes its files. millpond also carries
 Flywheel's meeting transcript adapter, `millpond capture meeting`,
 from the same crate (215). Its captures carry no excerpt either, and a
-reader reads them ([millpond's sources](../millpond/sources.html)).
+reader reads them ([the meeting file](../millpond/sources.html#the-meeting-file)).
 
 A meeting that arrives by two routes, a transcript dropped in the
 folder and the same meeting listed by a part, carries two keys and so

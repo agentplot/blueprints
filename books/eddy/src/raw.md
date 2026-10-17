@@ -83,10 +83,10 @@ long meeting's transcript runs to megabytes.
 </figure>
 
 Only millpond reads the line ([landing a capture](../millpond/landing.html)).
-It writes the capture into the inbox, in
-git, banks the raw files in the host's raw bank under the capture's
-name, and gives the capture a pointer of the form `<host>:<path>`
-(217h). Raw transcripts stay outside version control, and the capture
+It writes the capture into the inbox, in git, banks the raw files in
+the host's raw bank under the capture's name, and gives the capture a
+pointer of the form `<host>:<path>` (217h). The raw bank is millpond's
+([what stays on the host](../millpond/inbox.html#what-stays-on-the-host)). Raw transcripts stay outside version control, and the capture
 cites them (111), so a meeting's words never reach GitHub with the
 record.
 
@@ -105,9 +105,10 @@ Three readers use a meeting's raw files once millpond banks them:
   signal, how to name a speaker a transcript leaves unnamed, and how
   the operator draws signals from a meeting.
 - **millpond's verbatim check.** millpond refuses a signal whose
-  excerpt does not appear verbatim in its capture's raw material, so
-  every excerpt a reader takes from a meeting is a quote from one of
-  these two files.
+  excerpt does not appear verbatim in its capture's raw material
+  ([the verbatim check](../millpond/reading.html#the-verbatim-check)).
+  Every excerpt a reader takes from a meeting is therefore a quote from
+  one of these two files.
 - **A person** following the capture's pointer to the transcript
   itself.
 

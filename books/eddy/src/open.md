@@ -88,7 +88,8 @@ hosts. A lost cursor costs one wider listing, which the dedupe absorbs.
 ## Held for the first run
 
 The meeting corpus already read is imported once into its inbox, keyed
-by its folders' names (plan step E2). A meeting in that corpus that a
+by its folders' names (plan step E2,
+[what comes in once](../millpond/inbox.html#what-comes-in-once)). A meeting in that corpus that a
 part lists again gets a second capture under eddy's key. The part's
 first cursor can start where the corpus ends, or a reader can join the
 two as a meeting recorded twice. Which of those holds is for the step
