@@ -87,7 +87,7 @@ the repository and the kind, a fix or an OpenSpec change. millpond
 records the send and hands flume the item's brief, and flume makes the
 place and starts the agent. The work submits through sluice, and
 millpond writes the landing against the item from sluice's record of
-that branch ([millpond's items](../millpond/items.html)).
+that branch ([millpond's items](../millpond/items.html#a-send)).
 
 - **An item that asks a question** goes to a sounding, which launches
   its own place through flume.

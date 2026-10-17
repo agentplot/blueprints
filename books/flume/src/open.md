@@ -46,14 +46,15 @@ round, a settle stage and a merge stage (`teams.14`, `teams.17`), so
 the form decides how crew's work runs on flume
 ([Kinds and stages](kinds.md#a-repositorys-own-kinds)).
 
-### A question's branch
+## A question's branch
 
-flume names a place's branch `<kind>/<name>`, which gives a question's
-place the branch `question/<name>`. The capture design also names a
-sounding's branch `sounding/<name>`, "which flume makes and runs as the
-kind `question`", and sounding's guard refuses a submission from
-`sounding/*` ([sounding's place](../sounding/place.html)). One name
-stands, or a kind names its branch's prefix.
+The capture design gives a question's place two branch names. flume
+names a place's branch `<kind>/<name>`, which makes a question's
+`question/<name>`. The section on sounding names it `sounding/<name>`,
+"which flume makes and runs as the kind `question`", and sounding's
+guard refuses a submission from `sounding/*`
+([sounding's place](../sounding/place.html)). One name stands, or a
+kind names its branch's prefix.
 
 ## Left to the statement
 
