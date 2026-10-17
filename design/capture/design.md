@@ -103,6 +103,29 @@ The other two lines:
   already taken, since captures are idempotent. Its cursor does not
   advance, and the host records the run as failed.
 
+### Lines and raw files
+
+The lines describe each event, and the raw files hold it:
+
+- **A line is small.** It holds what the host checks and what enters
+  git as the capture and its signal.
+- **A raw file is the material** as the source served it, whole: a
+  transcript, the full notes, a log. It can run to megabytes. It stays
+  on the host and never enters git, so a meeting's words never reach
+  GitHub with the record.
+
+Only the host reads the lines. Once the host banks the raw files,
+three readers use them:
+
+- a reader session, for which a meeting's transcript is the whole
+  input;
+- crew's grading, which checks that a signal's excerpt appears
+  verbatim in its source;
+- a person following the capture's pointer past the cut.
+
+A release's notes appear in both places: whole in the raw files, and
+cut in the excerpt, which is the quote that enters git.
+
 ### Running an adapter
 
 A plugin's adapter part names a command. The host runs it on its tick
@@ -123,9 +146,19 @@ A program that runs on its own pipes the same lines to the host:
 - `flywheel capture land` on Flywheel, and later its capture endpoint
   (216, 217g).
 
-`crew capture run <part>` is the run form built on the same command: it
-runs the adapter and lands what it prints. Both forms take the same
-contract, so an adapter never knows which one ran it.
+The two commands split the work:
+
+- **`crew capture land`** is the host's intake. It takes lines from
+  whoever pipes them and knows nothing of who made them.
+- **`crew capture run <part>`** is the scheduled form. It makes a fresh
+  raw directory, starts the adapter with that directory and its last
+  cursor, and lands what the adapter prints. It then keeps the new
+  cursor and the adapter's run status: its exit, its failures and the
+  tail of its standard error. Only the run knows which adapter ran, so
+  only the run keeps a cursor or a status per adapter.
+
+Both commands take the same contract, so an adapter never knows which
+one ran it.
 
 ### What the host does with each capture
 
@@ -210,24 +243,52 @@ newer than each pin, with its notes and advisories.
 Listing meetings is arithmetic and reading them is judgment, so a
 program lists them and a session reads them (115).
 
-The meetings plugin's adapter parts list recorded meetings since their
-cursor. Each part keys a meeting by its service and the meeting's own
-id, writes the transcript as raw, and carries no excerpt.
+The meetings plugin holds one adapter part per meeting service. Each
+part lists recorded meetings since its cursor, keys a meeting by its
+service and the meeting's own id, writes the transcript as raw, and
+carries no excerpt.
 
-| Part | Source | Key |
-|---|---|---|
-| `wispr` | Wispr Flow's MCP endpoint over HTTP. The part is an MCP client with its own sign-in, and no Claude session runs to list meetings. | `meeting/wispr/<meeting id>` |
-| `teams-folder` | Teams transcripts downloaded into a folder | `meeting/teams/<date>/<name>` |
+The parts share everything but the service:
+
+- the key's shape;
+- the meeting's title, start, length and attendees;
+- the raw layout: the transcript as served, plus a plain copy with one
+  line per turn;
+- skipping a meeting too short to hold anything.
+
+A part's own code is listing and fetching from its service.
+
+| Part | Source | Key | When |
+|---|---|---|---|
+| `wispr` | Wispr Flow's MCP endpoint over HTTP. The part is an MCP client with its own sign-in, and no Claude session runs to list meetings. | `meeting/wispr/<meeting id>` | first |
+| `webex` | Webex's transcripts API | `meeting/webex/<meeting id>` | when a partition records on Webex |
+| `teams` | Microsoft Graph's meeting transcripts | `meeting/teams/<meeting id>` | when a tenant's administrator consents |
 
 - **`event_at`** is when the meeting started, never when it was
-  downloaded or captured (118).
+  captured (118).
 - **A meeting recorded twice** gives two captures. Its reader reads
   them together and writes the second's signals once.
 - **The reader's instructions** are the instance's data (119): what
   makes a signal, how to name a speaker a transcript leaves unnamed,
   and the extraction rules the existing meeting pipeline wrote down.
-- **A tenant that allows it** later gets a part that reads Teams
-  directly; until then a downloaded transcript is the source.
+### Any other file: the folder drop
+
+A file dropped in a watched folder is one capture. That covers a Teams
+transcript downloaded by hand, an email saved as `.eml`, or a PDF.
+
+- **The adapter is Flywheel's own folder adapter**, run as a program:
+  `flywheel capture folder <dir> --print` prints contract lines in
+  place of writing records. crew therefore runs Flywheel's code before
+  crew becomes Flywheel.
+- **The key** is `folder/<folder name>/<sha256 of the file>`, so a file
+  dropped twice, or under another name, is one capture (111).
+- **`event_at`** is the date the file's name begins with, or else its
+  last write.
+- **`source`** is `folder`. No capture carries an excerpt, so a reader
+  reads each one and tells a transcript from an email by what it holds.
+
+A service that sends many files of one kind earns a part of its own.
+Until then the folder takes them.
 
 ### Sources already built
 
@@ -255,7 +316,10 @@ Flywheel's "package" and "bundle" become "plugin" (228, 284).
 - **headwater** keeps one plugin per host under `plugins/` beside its
   core (sluice ADR 0023): `plugins/claude`, `plugins/herdr` and
   `plugins/flywheel`.
-- **The meetings plugin** is one plugin holding two adapter parts.
+- **The meetings plugin** is one plugin holding a part per meeting
+  service.
+- **Flywheel's built-in adapters** (folder, meeting file, signals
+  folder) print the contract when asked, so any host runs them.
 
 ## On a fleet
 
@@ -283,6 +347,7 @@ swancloud runs every adapter on the host its list names:
 | The contract's types and key rules, JSON in flight and rec at rest, a sha256 content hash, and the excerpt cut | a small crate in flywheel-next, split from `signals.rs` | Flywheel's host, headwater's Flywheel plugin, the meetings plugin |
 | The contract's conformance pack: lines in, records expected | flywheel-next | crew and Flywheel, which both pass it |
 | Raw banking with a host-qualified pointer, the checks on a program's capture, and grading an excerpt against its transcript | crew today | Flywheel, for 217h and 217e |
+| The folder drop and Flywheel's other built-in adapters, printing the contract with `--print` | flywheel-next `adapters.rs` | crew, before it becomes Flywheel |
 | Cadence: five-field cron, caught up once | flywheel-next `cadence.rs` | Flywheel's adapter schedules |
 | Finding releases and reading their notes | swancloud's release adapter today | headwater's lookups and its Flywheel plugin |
 
@@ -305,6 +370,8 @@ the crate. The pack keeps the two hosts equal.
   - **A source** has configuration and a cursor, not a bare command
     string.
   - **An import keeps** each capture's own key (114).
+  - **The built-in adapters** print the contract on request, so
+    another host runs them (215).
   - **"Plugin"** replaces "package" and "bundle" (228, 284).
 - **crew's record:**
   - meeting signals live on the flywheel branch (`signals.1`);

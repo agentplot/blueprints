@@ -25,6 +25,7 @@ a check or an observation, never a list to tick by hand.
 | F1 | Write the contract into Flywheel's statement | D2 | to do |
 | C1 | Amend crew's record | D2 | to do |
 | F2 | Build the contract crate and its conformance pack | F1 | to do |
+| F6 | Flywheel's built-in adapters print the contract | F2 | to do |
 | C2 | `crew capture land` | F1, F2's pack | to do |
 | C3 | `crew capture run` and run status | C2 | to do |
 | S1 | Move the release adapter onto the contract | C2 | to do |
@@ -39,7 +40,7 @@ a check or an observation, never a list to tick by hand.
 | S4 | Cut swancloud's releases over to headwater | S1, S2, S3, H5, H6 | to do |
 | M1 | The meetings plugin | F2 | to do |
 | C4 | crew's reader | C2 | to do |
-| S5 | Run the meetings adapter | M1, S3 | to do |
+| S5 | Run the meetings adapter and the folder drop | M1, F6, S3 | to do |
 | M2 | Retire the old meeting pipeline | S5, C4 | to do |
 | C5 | Curation into plan items | C1 | to do |
 | C6 | A release reaches a landed bump | C5, S4 | to do |
@@ -72,6 +73,9 @@ The operator accepts or changes each of these:
 6. "Plugin" replaces Flywheel's "package" and "bundle".
 7. The release adapter moves onto the contract (S1) before headwater
    exists, so the contract runs on live work first.
+8. The meetings plugin holds a part per meeting service. Any other
+   file goes through the folder drop, Flywheel's own folder adapter
+   printing the contract.
 
 - **Done when:** each decision is accepted or changed, and `design.md`
   says what was ruled.
@@ -139,6 +143,16 @@ The operator accepts or changes each of these:
     host must write from them.
 - **Done when:** Flywheel's own tests pass the pack. headwater and the
   meetings plugin can depend on the crate at a tag.
+
+### F6 Flywheel's built-in adapters print the contract
+
+- **Where:** flywheel-next, in F2's change or the next.
+- **Does:** gives `flywheel capture folder`, `meeting` and `signals` a
+  `--print` that writes contract lines in place of records. The folder
+  key takes the crate's sha256.
+- **Done when:** `crew capture run -- flywheel capture folder <dir>
+  --print` lands a dropped file once, and a second drop of the same
+  file lands nothing.
 
 ### C2 `crew capture land`
 
@@ -289,10 +303,12 @@ The operator accepts or changes each of these:
 - **Where:** a new agentplot repository (name to choose), in Rust like
   headwater.
 - **Does:**
-  - the `wispr` part: an MCP client with its own sign-in and a cursor;
-  - the `teams-folder` part: transcripts in a folder.
+  - the code every part shares: the key, the meeting's details, the raw
+    layout and skipping short meetings;
+  - the `wispr` part: an MCP client with its own sign-in and a cursor.
 
-  Both print the contract with the crate and carry no excerpt.
+  It prints the contract with the crate and carries no excerpt. `webex`
+  and `teams` parts follow when a partition needs them.
 - **Done when:**
   - the conformance pack's checks pass;
   - a listing of last week's meetings matches the service's own list;
@@ -308,11 +324,12 @@ The operator accepts or changes each of these:
 - **Done when:** a week of meetings becomes signals with a verified
   excerpt each, and no capture is read twice.
 
-### S5 Run the meetings adapter
+### S5 Run the meetings adapter and the folder drop
 
 - **Where:** swancloud.
-- **Does:** adds the meetings parts to S3's list for the partition that
-  uses them, on its host, plus the user's sign-in step.
+- **Does:** adds the `wispr` part and a folder drop to S3's list for
+  the partition that uses them, on its host, plus the user's sign-in
+  step.
 - **Done when:**
   - a day's meetings land as unread captures;
   - the doctor row reads ok;
