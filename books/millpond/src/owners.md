@@ -14,7 +14,8 @@ it.
 | millpond | Runs adapters and takes the capture contract. Dedupes by key, banks raw material, and writes each capture, plus the one signal of a capture that is its own excerpt. Keeps the inbox, checks a reader's excerpts, writes moves and items, sends an item to a worktree, and records each run. | Judges what a capture says, or plans across items. |
 | A reader, a session | Reads a capture that is not its own excerpt into signals, through millpond (113, 217e). | Lists a source. |
 | Curation, a session | Proposes one move per signal, in batches, through millpond's tools (116). | Writes captures or signals. |
-| The operator | Accepts or changes each batch of moves, and sends an item. | Picks through signals one at a time. |
+| sounding | One question in one session, in a worktree of its own, ending on a conclusion. It offers each finding beyond its question to millpond as a capture. | Lands code, writes the inbox except through millpond, or plans across items. |
+| The operator | Accepts or changes each batch of moves, sends an item, and decides each conclusion. | Picks through signals one at a time. |
 | crew | Teams, plans and bolts. Its planner turns items into chores and units across teams. | Writes an inbox's records except through millpond. |
 | sluice | Tests a change as merged and lands it. | Knows where the change came from. |
 | The fleet | Says which adapter part runs for which inbox, on which host, and when. Hands headwater the pins that only Nix can read. Watches every run from the doctor. | Runs an adapter's logic itself. |
@@ -91,6 +92,7 @@ it.
 | The conformance pack: lines in, records expected | flywheel-next | millpond and Flywheel as hosts, every adapter part |
 | Raw banking with a host-qualified pointer, the checks on a capture, and the verbatim check on a reader's excerpt | millpond, from crew's checks | Flywheel, for 217h and 217e |
 | Finding releases and reading their notes | swancloud's release adapter | headwater's lookups and its Flywheel plugin |
+| One question, one session, one conclusion: the question, its rounds and the conclusion's shape | sounding, from crew ADR 0019 | crew, Flywheel's elaborations |
 
 The conformance pack is how a part proves it keeps the contract: a set
 of contract lines and the records a host must write from them, with

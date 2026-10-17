@@ -21,7 +21,7 @@ which the contract and the inbox are to enter as clauses of their own.
 
 ## Decisions awaiting a ruling
 
-The capture design's ten decisions await the operator's ruling
+The capture design's eleven decisions await the operator's ruling
 (`design/capture/plan.md`, step D2). Each chapter states them as the
 design has them.
 
@@ -60,10 +60,16 @@ design has them.
    ([Running adapters](running.md)).
 10. The release adapter lands through millpond on trial before
     headwater exists, so the contract carries live captures first.
+11. sounding is a standalone tool that works one question in one
+    session, in a worktree of its own, and ends on a conclusion the
+    operator accepts, sends back or drops. millpond sends it an item
+    that asks a question, an accepted conclusion is the item's record,
+    and only a finding beyond the question comes back as a capture
+    ([Items and sends](items.md#a-question-sent-to-a-sounding)).
 
 ## Held by the design
 
-The capture design's own Open section holds three questions:
+The capture design's own Open section holds these questions:
 
 - **Acknowledging a dropped release.** A curation drop of a release
   signal could acknowledge the release in headwater, so its plugins
@@ -73,6 +79,14 @@ The capture design's own Open section holds three questions:
   cursor costs one wider listing, which the dedupe absorbs.
 - **Attestation**, sluice signing the verdict it lands, is outside the
   capture design.
+- **A standing sounding**, which stays open and starts a round when a
+  signal on its subject lands, as Flywheel's standing elaborations do.
+- **Where else an accepted conclusion lives.** A repository may keep it
+  in its own record, as crew's kits keep `openspec/explorations/`.
+- **crew's two open records disagree.** ADR 0019 rests an elaboration
+  on an intent and the `new-territory` move, and `curation-and-agenda`
+  leaves intents out and replaces that move with `join`. A sounding
+  sent from an item settles both, once crew's record says so.
 
 ## Left to the statement
 

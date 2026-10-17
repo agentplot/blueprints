@@ -21,6 +21,7 @@ Flywheel's statement, whose record formats and moves millpond keeps.
 | **claim** | in Flywheel, a standing statement of what a repository must satisfy; `answered` and `challenge` name one |
 | **conformance pack** | contract lines and the records a host must write from them, with the meeting checks; every host and every adapter part passes it |
 | **curation** | a Claude session that proposes one move per signal, in batches, through millpond's tools; the operator accepts or changes each batch (116) |
+| **conclusion** | what a sounding ends on: the answer, its evidence, what it would change, the work it proposes and what stays open; the operator accepts it, sends it back for another round, or drops it |
 | **cursor** | a value only its adapter understands, kept from the part's last run that ended in `done` and handed back on the next |
 | **cut** | where millpond ends an own-excerpt signal's text: at a line under the inbox's limit, 8 KiB unless its settings say otherwise. A closing line says how much the raw record holds beyond it |
 | **dedupe** | millpond's lookup of each capture's key in every capture the inbox holds, so a key lands once |
@@ -36,7 +37,7 @@ Flywheel's statement, whose record formats and moves millpond keeps.
 | **kind** | a signal's type, one of constraint, ask, question, commitment and reaction (113) |
 | **meeting file** | the built-in adapter for a meeting's transcript file |
 | **move** | the one standing decision on a signal: drop, answered, challenge, join, attach or route, each with a stated consequence (107, 116) |
-| **operator** | the person who accepts or changes each batch of moves and sends items; on its own, the user |
+| **operator** | the person who accepts or changes each batch of moves, sends items, and decides each conclusion; on its own, the user |
 | **own excerpt** | a capture is its own excerpt when its line carries the signal's fields, so millpond writes its one signal as it lands; a release is one |
 | **part** | one thing of one kind in a plugin; an inbox's settings name the adapter parts it runs |
 | **partition** | in crew, one domain of work with its own teams and its own flywheel branch |
@@ -50,10 +51,11 @@ Flywheel's statement, whose record formats and moves millpond keeps.
 | **route** | the move that offers a chore, which becomes an item of one, or an ask, which millpond records |
 | **run** | one start of an adapter part by `millpond run`, complete when it ends in `done` |
 | **schedule** | when a part runs: five-field cron, a missed run caught up once |
-| **send** | millpond giving one item to one worktree, with its brief and an agent |
+| **send** | millpond giving one item to one worktree, with its brief and an agent, or an item that asks a question to a sounding |
 | **settings** | `millpond.toml` at the inbox's root: its parts, its cut, its reader command, and where items go |
 | **setup** | one of the three ways millpond runs: on its own, with crew, or with Flywheel |
 | **signal** | one assertion from a capture: its kind, who asserted it, its subjects, the assertion in a sentence, the verbatim excerpt with its position, and the claims it argues with; never changed once written (113) |
+| **sounding** | one question, worked by one session in one place, ending on one conclusion; also the tool that runs them ([its book](../sounding/)) |
 | **source** | where events come from, named in each capture: `release`, `meeting`, `folder`, `deploy` |
 | **tick** | `millpond tick`, which runs every part of an inbox whose schedule is due |
 | **unit** | in crew, one designed piece of a team's work, landed on its bolt |

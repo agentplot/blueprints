@@ -3,7 +3,8 @@
 An item is the unit of work: the signals curation joined, one or many.
 It may be five of a meeting's ten signals, or two bumps that move
 together. An item is Flywheel's proposed intent (109). millpond keeps
-its signals, its brief and every place it was sent.
+its signals, its brief, every place it was sent, and the conclusion
+that settled it when a sounding answered it.
 
 ## How an item forms
 
@@ -12,7 +13,7 @@ settle a signal:
 
 <figure class="mp-fig">
 <div class="mp-scroll">
-<svg viewBox="0 0 720 300" role="img" aria-label="Each signal takes one move. Drop, answered and challenge settle it. Join, attach and route put it on an item of one signal or many. The inbox's settings send an item to one worktree, where an agent works from its brief on a branch named for it, or hand it to crew's planner, which turns items into chores and units across teams. sluice lands the work either way, and millpond writes a worktree's landing against the item from sluice's record.">
+<svg viewBox="0 0 720 360" role="img" aria-label="Each signal takes one move. Drop, answered and challenge settle it. Join, attach and route put it on an item of one signal or many. The inbox's settings send an item to one worktree, where an agent works from its brief on a branch named for it, or hand it to crew's planner, which turns items into chores and units across teams. sluice lands the work either way, and millpond writes a worktree's landing against the item from sluice's record. An item that asks a question goes to a sounding, and the work its accepted conclusion proposes comes back as new items.">
 <defs>
 <marker id="mp-it-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="mp-hd"/></marker>
 <marker id="mp-it-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="mp-hd-a"/></marker>
@@ -45,11 +46,20 @@ settle a signal:
 <rect x="596" y="118" width="116" height="72" rx="9" class="mp-bx-hl"/>
 <text x="610" y="146" class="mp-t">sluice</text>
 <text x="610" y="166" class="mp-ts">lands the work</text>
-<path d="M654,190 L654,276 L270,276 L270,234" class="mp-ar-d" marker-end="url(#mp-it-m)"/>
-<text x="288" y="270" class="mp-ts">a worktree's landing, written against the item</text>
+<path d="M654,190 L654,262 L372,262 L372,222 L364,222" class="mp-ar-d" marker-end="url(#mp-it-m)"/>
+<text x="384" y="282" class="mp-ts">a worktree's landing, written against the item</text>
+<line x1="270" y1="230" x2="270" y2="266" class="mp-ar" marker-end="url(#mp-it-m)"/>
+<text x="278" y="252" class="mp-ts">a question</text>
+<rect x="180" y="270" width="180" height="72" rx="9" class="mp-bx"/>
+<text x="194" y="294" class="mp-t">A sounding</text>
+<text x="194" y="314" class="mp-ts">one question, worked</text>
+<text x="194" y="330" class="mp-ts">to a conclusion</text>
+<path d="M180,306 L164,306 L164,214 L176,214" class="mp-ar" marker-end="url(#mp-it-m)"/>
+<text x="36" y="300" class="mp-ts">accepted: its</text>
+<text x="36" y="316" class="mp-ts">work, new items</text>
 </svg>
 </div>
-<figcaption>Drop, answered and challenge settle a signal. Join and attach put it on an item, and a route's chore becomes an item of one. The inbox's settings send an item to one worktree or hand it to crew's planner, and sluice lands the work either way.</figcaption>
+<figcaption>Drop, answered and challenge settle a signal. Join and attach put it on an item, and a route's chore becomes an item of one. The inbox's settings send an item to one worktree or hand it to crew's planner, and sluice lands the work either way. An item that asks a question goes to a sounding, and the work its accepted conclusion proposes comes back as new items.</figcaption>
 </figure>
 
 - **`join`** makes an item from any number of signals, or grows one
@@ -84,6 +94,27 @@ millpond sends one item to one worktree:
    of that branch.
 
 The item then shows where it went and that it landed.
+
+## A question, sent to a sounding
+
+millpond sends an item that asks a question to a sounding: one
+question, worked by one session in a worktree of its own, ending on one
+conclusion. The item's work ends in an answer, such as whether to take
+a major release, or how to settle what a meeting left open.
+[sounding's book](../sounding/) holds how a sounding works.
+
+The operator decides the conclusion. Accepting it settles the item:
+millpond keeps the conclusion as the item's record, and each piece of
+work the conclusion proposes becomes an item of its own, or an entry in
+crew's plan. The operator may instead send the sounding back for
+another round, or drop it with a reason.
+
+A conclusion never becomes a signal. Curation never judges a moved
+signal again (107), and the operator is never asked the same approval
+twice (6). An accepted conclusion is the record curation names when it
+answers a later signal on the same subject (116). Only a finding beyond
+the question comes back, as a capture the sounding offers (see
+[Sources](sources.md#findings-from-a-sounding)).
 
 ## An inbox crew keeps
 

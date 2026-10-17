@@ -53,7 +53,7 @@ headwater reports every release newer than each pin a repository
 declares, with its notes and advisories. Its book,
 [../headwater/](../headwater/), holds the design. millpond sees it
 through its Flywheel plugin's adapter part, `headwater capture`, which
-prints one capture per newly reported release:
+prints a capture for every release newer than its pin on each run:
 
 - `source` is `release`, and `event_at` is when the release was
   published;
@@ -68,8 +68,9 @@ by its Package URL identity,
 `release/<type>/<namespace>/<name>/<version>`.
 
 The pin decides what is new, and headwater keeps no list of what it
-reported (headwater 9). millpond's dedupe by key lands each release
-once. In a repository crew runs, headwater's fix key in herdr hands the
+reported (headwater 9). A release stays newer than the pin until a bump
+moves the pin, so every run prints it again, and millpond's dedupe by
+key lands it once. In a repository crew runs, headwater's fix key in herdr hands the
 release to millpond as a capture, and no agent starts outside crew's
 plan.
 
@@ -96,6 +97,15 @@ the conformance pack ([../eddy/contributing.html](../eddy/contributing.html)). A
 listed in the plugin index beside eddy's (228). A generic part lists
 meetings from any MCP endpoint that serves transcripts, and the folder
 drop takes the rest.
+
+## Findings, from a sounding
+
+A sounding works one question, and a finding beyond that question is
+not its to answer. `sounding offer` hands the finding to
+`millpond land` as a capture of its own (62). The finding is its own
+excerpt, of kind `ask`, asserted by the sounding, under the key
+`sounding/<name>/<n>`. From there it takes the same path as any other
+capture. [sounding's book](../sounding/) holds the rest.
 
 ## Sources already built
 
