@@ -436,7 +436,9 @@ each pin, with its notes and advisories.
   declares (`^1.4`, `>=1.4,<2`). Inside, the package manager takes it by
   changing only the lockfile. Outside, the manifest changes, as a major
   release needs. headwater reports both, so a major release is never
-  hidden.
+  hidden. Each declaration's range marks the release on its own, so a
+  release declared in two places can be inside one range and outside
+  the other, and the brief names both (headwater 4, 26).
 - **A brief names the ecosystem's own command** for the move: `npm
   update` or `npm install <name>@<version>`, `uv lock --upgrade-package`,
   `cargo update -p`, `go get`, `mise use`. Whoever makes the change runs
@@ -664,6 +666,10 @@ only through sluice's, and links no crate.
   signal could acknowledge the release in headwater, so its plugins
   stop showing it. headwater's ruling 24 says a recorder never
   acknowledges.
+- **A package manager in the repository's shell** and headwater 5,
+  which says reading a repository changes nothing in it. The commands
+  headwater runs only read, but entering a repository's shell can
+  write, as devenv writes its lock.
 - **Where a cursor lives** when a single-host role moves hosts. A lost
   cursor costs one wider listing, which the dedupe absorbs.
 - **Attestation**, sluice signing the verdict it lands, is outside this

@@ -335,7 +335,9 @@ The operator accepts or changes each of these:
   - a skill and a command that read `overview` and `brief`;
   - a herdr sidebar of unread releases;
   - a fix key that starts an agent in a worktree and submits to sluice,
-    or hands the release to millpond in a repository crew runs.
+    or hands the release to millpond in a repository crew runs;
+  - where sounding is installed, a key that opens a sounding on a
+    release that needs judgment, with its brief as the source.
 - **Done when:** both plugins install from headwater's tag and show a
   real repository's releases.
 
