@@ -3,7 +3,7 @@
 The order of work for `design.md`. Each phase ends with something
 running on real work before the next phase depends on it. Steps that
 share no dependency run side by side: once phase 0 is done, crew's
-contract, headwater's core and the meetings plugin can all move at once.
+contract, headwater's core and eddy can all move at once.
 
 Each step is done in its repository's own process:
 
@@ -38,9 +38,9 @@ a check or an observation, never a list to tick by hand.
 | S2 | Generate swancloud's watch list | H1 | to do |
 | S3 | The list of adapters, their runs and doctor rows | C3 | to do |
 | S4 | Cut swancloud's releases over to headwater | S1, S2, S3, H5, H6 | to do |
-| M1 | The meetings plugin | F2 | to do |
+| M1 | eddy | F2 | to do |
 | C4 | crew's reader | C2 | to do |
-| S5 | Run the meetings adapter and the folder drop | M1, F6, S3 | to do |
+| S5 | Run eddy and the folder drop | M1, F6, S3 | to do |
 | M2 | Retire the old meeting pipeline | S5, C4 | to do |
 | C5 | Curation into plan items | C1 | to do |
 | C6 | A release reaches a landed bump | C5, S4 | to do |
@@ -73,7 +73,7 @@ The operator accepts or changes each of these:
 6. "Plugin" replaces Flywheel's "package" and "bundle".
 7. The release adapter moves onto the contract (S1) before headwater
    exists, so the contract runs on live work first.
-8. The meetings plugin holds a part per meeting service. Any other
+8. eddy, the meetings tool, holds a part per meeting service. Any other
    file goes through the folder drop, Flywheel's own folder adapter
    printing the contract.
 
@@ -84,7 +84,7 @@ The operator accepts or changes each of these:
 
 - **Where:** the instance repository that runs it.
 - **Does:** the operator stops or repairs the existing daily sweep
-  while the meetings plugin is built.
+  while eddy is built.
 - **Done when:** the sweep either runs green or is unloaded.
 
 ### H1 Amend headwater's statement
@@ -141,8 +141,8 @@ The operator accepts or changes each of these:
     content hash and the excerpt cut;
   - publishes a conformance pack of contract lines and the records each
     host must write from them.
-- **Done when:** Flywheel's own tests pass the pack. headwater and the
-  meetings plugin can depend on the crate at a tag.
+- **Done when:** Flywheel's own tests pass the pack. headwater and eddy
+  can depend on the crate at a tag.
 
 ### F6 Flywheel's built-in adapters print the contract
 
@@ -298,10 +298,10 @@ The operator accepts or changes each of these:
 
 ## Phase 4: meetings
 
-### M1 The meetings plugin
+### M1 eddy
 
-- **Where:** a new agentplot repository (name to choose), in Rust like
-  headwater.
+- **Where:** `agentplot/eddy`, new, in Rust like headwater, on
+  kit-standard's code profile.
 - **Does:**
   - the code every part shares: the key, the meeting's details, the raw
     layout and skipping short meetings;
@@ -324,7 +324,7 @@ The operator accepts or changes each of these:
 - **Done when:** a week of meetings becomes signals with a verified
   excerpt each, and no capture is read twice.
 
-### S5 Run the meetings adapter and the folder drop
+### S5 Run eddy and the folder drop
 
 - **Where:** swancloud.
 - **Does:** adds the `wispr` part and a folder drop to S3's list for
@@ -374,7 +374,7 @@ The operator accepts or changes each of these:
   - writes the own-excerpt signal from each capture's flag;
   - banks raw material behind a host-qualified pointer.
 - **Done when:** Flywheel passes the conformance pack, and headwater's
-  and the meetings plugin's parts run on a Flywheel host unchanged.
+  and eddy's parts run on a Flywheel host unchanged.
 
 ### F4 Flywheel's import keeps keys
 

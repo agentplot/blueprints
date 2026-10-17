@@ -12,7 +12,7 @@ This design covers every part that does this:
 
 - **headwater** reports releases and advisories for what a repository
   declares (`design/headwater/requirements.md`).
-- **The meeting adapters** list recorded meetings.
+- **eddy** lists recorded meetings from each meeting service.
 - **crew** is the host today and keeps every partition's signals.
 - **Flywheel** is the host crew becomes (crew ADR 0026: "crew becomes
   flywheel").
@@ -238,13 +238,15 @@ newer than each pin, with its notes and advisories.
   plugin's fix key hands the release to crew as a capture, and no agent
   starts outside crew's plan.
 
-### Meetings
+### Meetings: eddy
 
 Listing meetings is arithmetic and reading them is judgment, so a
 program lists them and a session reads them (115).
 
-The meetings plugin holds one adapter part per meeting service. Each
-part lists recorded meetings since its cursor, keys a meeting by its
+eddy stands alone as headwater does. It lists and fetches meetings
+across services, with a Claude Code plugin that pulls a transcript into
+a session and a herdr plugin that shows the day's meetings. Its Flywheel
+plugin holds one adapter part per meeting service. Each part lists recorded meetings since its cursor, keys a meeting by its
 service and the meeting's own id, writes the transcript as raw, and
 carries no excerpt.
 
@@ -316,8 +318,8 @@ Flywheel's "package" and "bundle" become "plugin" (228, 284).
 - **headwater** keeps one plugin per host under `plugins/` beside its
   core (sluice ADR 0023): `plugins/claude`, `plugins/herdr` and
   `plugins/flywheel`.
-- **The meetings plugin** is one plugin holding a part per meeting
-  service.
+- **eddy** keeps the same layout. Its Flywheel plugin holds a part per
+  meeting service.
 - **Flywheel's built-in adapters** (folder, meeting file, signals
   folder) print the contract when asked, so any host runs them.
 
@@ -344,7 +346,7 @@ swancloud runs every adapter on the host its list names:
 
 | Part | Built in | Used by |
 |---|---|---|
-| The contract's types and key rules, JSON in flight and rec at rest, a sha256 content hash, and the excerpt cut | a small crate in flywheel-next, split from `signals.rs` | Flywheel's host, headwater's Flywheel plugin, the meetings plugin |
+| The contract's types and key rules, JSON in flight and rec at rest, a sha256 content hash, and the excerpt cut | a small crate in flywheel-next, split from `signals.rs` | Flywheel's host, headwater's Flywheel plugin, eddy's Flywheel plugin |
 | The contract's conformance pack: lines in, records expected | flywheel-next | crew and Flywheel, which both pass it |
 | Raw banking with a host-qualified pointer, the checks on a program's capture, and grading an excerpt against its transcript | crew today | Flywheel, for 217h and 217e |
 | The folder drop and Flywheel's other built-in adapters, printing the contract with `--print` | flywheel-next `adapters.rs` | crew, before it becomes Flywheel |
