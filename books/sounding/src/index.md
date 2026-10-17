@@ -142,6 +142,9 @@ the work.
 - **eddy** lists recorded meetings. A decision a meeting left open
   becomes a question with the meeting's transcript as a source. Its
   book is at [../eddy/](../eddy/).
+- **flume** launches and tracks one agent in one worktree through a
+  kind's stages. It makes a sounding's place and runs it as the kind
+  `question`. Its book is at [../flume/](../flume/).
 - **sluice** tests a change as merged and lands it, and never lands a
   sounding's branch. Its book is at [../sluice/](../sluice/).
 - **crew** runs teams, plans and bolts. Its planner and design agent

@@ -9,7 +9,7 @@ plugin per host under `plugins/` beside its core, `plugins/claude` and
 
 | Command | Run by | Does |
 |---|---|---|
-| `sounding open` | whoever asks: `/sound`, millpond's `send`, a herdr key, crew | Opens a sounding: its worktree on `sounding/<name>` and its `question.md`. |
+| `sounding open` | whoever asks: `/sound`, millpond's `send`, a herdr key, crew | Opens a sounding: its place on `sounding/<name>`, which flume makes, and its `question.md`. |
 | `sounding list` | anyone | Lists the open soundings. |
 | `sounding conclude` | the session | Writes `conclusion.md` and ends the round. |
 | `sounding offer` | the session | Hands a finding beyond the question to `millpond land` as a capture of its own (62). |
@@ -35,7 +35,10 @@ plugin per host under `plugins/` beside its core, `plugins/claude` and
 ## The herdr plugin
 
 - **The sidebar** lists the open soundings, each with its round and its
-  state: working, waiting on the operator, or parked.
+  state: working, waiting on the operator, or parked. They share
+  flume's sidebar, where a sounding waiting on the operator shows as a
+  row beside every other place in flight
+  ([flume's surfaces](../flume/surfaces.html#the-herdr-plugin)).
 - **A workspace per sounding** holds the session's pane with its
   conclusion beside it.
 - **Keys** start, open, accept, send back and drop a sounding, and open
@@ -43,8 +46,8 @@ plugin per host under `plugins/` beside its core, `plugins/claude` and
 
 <figure class="sd-fig">
 <div class="sd-scroll">
-<svg viewBox="0 0 720 320" role="img" aria-label="sounding's herdr plugin. A sidebar lists three open soundings, each with its round and state: one on round 1 waiting on the operator, one on round 2 working, one on round 1 parked. The selected sounding's workspace shows the session's pane on the left and its conclusion on the right: the answer, its evidence, what it would change, the work it proposes and what stays open. Keys along the bottom start, open, accept, send back and drop, and open the conclusion in plannotator for notes.">
-<text x="10" y="22" class="sd-th">sidebar</text>
+<svg viewBox="0 0 720 320" role="img" aria-label="sounding's herdr plugin. flume's sidebar lists three open soundings, each with its round and state: one on round 1 waiting on the operator, one on round 2 working, one on round 1 parked. The selected sounding's workspace shows the session's pane on the left and its conclusion on the right: the answer, its evidence, what it would change, the work it proposes and what stays open. Keys along the bottom start, open, accept, send back and drop, and open the conclusion in plannotator for notes.">
+<text x="10" y="22" class="sd-th">flume's sidebar</text>
 <text x="230" y="22" class="sd-th">the sounding's workspace</text>
 <rect x="10" y="32" width="200" height="270" rx="10" class="sd-bx"/>
 <text x="24" y="54" class="sd-th">open soundings</text>
@@ -87,7 +90,7 @@ plugin per host under `plugins/` beside its core, `plugins/claude` and
 <text x="590" y="274" class="sd-tm">plannotator</text>
 </svg>
 </div>
-<figcaption>The sidebar shows every open sounding's round and state. The selected sounding's workspace puts the session beside its conclusion, and the keys decide it there or open it in plannotator for notes.</figcaption>
+<figcaption>flume's sidebar shows every open sounding's round and state. The selected sounding's workspace puts the session beside its conclusion, and the keys decide it there or open it in plannotator for notes.</figcaption>
 </figure>
 
 Send back is go on: it starts the next round, and the operator's notes

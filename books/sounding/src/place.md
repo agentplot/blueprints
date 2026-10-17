@@ -5,6 +5,12 @@ on the branch `sounding/<name>`. That worktree is the sounding's place.
 The session reads the repository there as it stands, and writes
 whatever helps it answer the question, prototype code included.
 
+flume makes the place and runs it as the kind `question`, whose one
+stage is a sounding's session ending on `sounding conclude`
+([flume's kinds](../flume/kinds.html#a-question)). sounding owns the
+question, the exits and the decision; flume owns the worktree and the
+agent in it.
+
 ## A worktree of its own
 
 - **The session that asked keeps its thread.** `/sound` opens a

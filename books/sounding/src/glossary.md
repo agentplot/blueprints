@@ -6,13 +6,15 @@ copy. The words of millpond and of crew are
 [millpond's book](../millpond/glossary.html)'s, word for word. A
 number in parentheses cites Flywheel's statement.
 
-Three words mean one thing in millpond's book and another here. A
+Four words mean one thing in another book and another here. A
 capture's **source** names where its event came from, such as
 `release`, while a question's **sources** are the material it starts
 from. millpond's **drop** is a move on a signal, while sounding's is
 the operator's answer to a conclusion. The signal kind **ask** is one
-of five kinds, while `sounding ask` is an exit. Each word keeps its
-meaning in the book it belongs to.
+of five kinds, while `sounding ask` is an exit. A signal's **kind** is
+its type, while flume's is a list of stages, and flume's kind
+`question` is the one that runs a sounding's session. Each word keeps
+its meaning in the book it belongs to.
 
 ## sounding's words
 
@@ -29,7 +31,7 @@ meaning in the book it belongs to.
 | **go on** | the operator's answer that starts the next round in the same worktree: the conclusion moves to `rounds/<n>.md` and the operator's notes join the question; the herdr plugin's send back |
 | **offer** | `sounding offer`: the exit that hands a finding beyond the question to `millpond land` as a capture of its own, its own excerpt, of kind `ask`, asserted by the sounding, under the key `sounding/<name>/<n>` (62); the session goes on |
 | **parked** | the state of a sounding whose session is neither working nor waiting on the operator |
-| **place** | a sounding's worktree of the repository its question is about, on the branch `sounding/<name>` |
+| **place** | a sounding's worktree of the repository its question is about, on the branch `sounding/<name>`, which flume makes and runs as the kind `question` |
 | **question** | what a sounding works: one question whose answer the operator decides before the work it implies begins; `sounding open` writes it with its sources into `question.md` |
 | **record** | an accepted conclusion as millpond keeps it on its item; curation names it when it answers a later signal on the subject (116) |
 | **round** | one session's run at the question, from its start hook to its conclusion; go on starts the next |
@@ -50,6 +52,16 @@ meaning in the book it belongs to.
 | **elaboration** | in Flywheel, one unit of design work on an intent, worked by one free-flowing session; each one is a sounding (24) |
 | **elaboration type** | in Flywheel, what decides how an elaboration ends; it writes what the elaboration concludes to the design book and its claims (25, 187) |
 | **intent** | in Flywheel, one thread of design work about one subject, pursued until the operator closes it |
+
+## Words from flume's book
+
+flume's book defines these, and this page gives its definitions word
+for word.
+
+| word | meaning |
+|---|---|
+| **flume** | the tool that launches and tracks one agent in one worktree through a kind's stages, on the host it runs on, and tidies the place when the work lands or is dropped ([its book](../flume/)) |
+| **kind** (flume's) | a list of stages, each naming its prompt and its deliverable: fix, change, question, or one a repository declares |
 
 ## Words from millpond's book
 

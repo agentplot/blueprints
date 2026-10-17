@@ -7,10 +7,11 @@ the design, and the chapter that rests on it is rewritten whole.
 ## sounding's statement
 
 sounding's statement of invariants, `design/sounding/requirements.md`,
-is to come (`design/capture/plan.md`, step Q1). It is written from the
-capture design once decision 11 below is ruled. It states the question
-and its sources, the place, the three exits, the stop check, the
-timebox, rounds, the operator's decision, and what sounding never does.
+is being written from the capture design (`design/capture/plan.md`,
+step Q1), while the operator rules decision 11 below. It states the
+question and its sources, the place, the three exits, the stop check,
+the timebox, rounds, the operator's decision, and what sounding never
+does.
 A fresh model then reconstructs sounding from the statement alone, and
 the operator rules the questions it asks.
 
@@ -49,6 +50,16 @@ sounding, beside the details it leaves to sounding's statement:
   `curation-and-agenda` change leaves intents out and replaces that
   move with `join`. A sounding sent from an item settles both, once
   crew's record says so (plan steps C1 and C6).
+
+## A question's branch
+
+The design names a sounding's branch twice over. flume names a place's
+branch `<kind>/<name>`, which for the kind `question` gives
+`question/<name>`. The design also names a sounding's branch
+`sounding/<name>`, and the Claude Code plugin's guard refuses a sluice
+submission from `sounding/*`. The chapters use `sounding/<name>`, as
+the design's section on sounding does; flume's book holds the same
+question ([flume's open questions](../flume/open.html#a-questions-branch)).
 
 ## Left to the statement
 
