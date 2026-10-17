@@ -1,28 +1,30 @@
 /* Figures: inline SVG drawn with these classes, coloured per mdBook theme.
    light and rust are the light themes; coal, navy and ayu the dark ones. */
+/* eddy's accent and the family's neutrals, as the sites' theme sets them;
+   ochre marks the reader, who comes later. */
 :root,
 html.light,
 html.rust {
-  --fig-surface: #ffffff;
-  --fig-soft: #f1f4f5;
-  --fig-fg: #1d2329;
-  --fig-muted: #56636c;
-  --fig-line: #c3cdd3;
-  --fig-accent: #136a74;
-  --fig-accent-soft: #dcefee;
+  --fig-surface: #f2f1ec;
+  --fig-soft: #e9e7e0;
+  --fig-fg: #0e1116;
+  --fig-muted: #5d6370;
+  --fig-line: #c9c7bf;
+  --fig-accent: #6b4fd8;
+  --fig-accent-soft: #ebe6fb;
   --fig-ochre: #915509;
   --fig-ochre-soft: #f6ead4;
 }
 html.coal,
 html.navy,
 html.ayu {
-  --fig-surface: #1b2329;
-  --fig-soft: #151b20;
-  --fig-fg: #e3e9ed;
-  --fig-muted: #9eabb5;
-  --fig-line: #3a4852;
-  --fig-accent: #63c3b8;
-  --fig-accent-soft: #163634;
+  --fig-surface: #1b2029;
+  --fig-soft: #161a21;
+  --fig-fg: #f2f1ec;
+  --fig-muted: #8c92a0;
+  --fig-line: #2a2f38;
+  --fig-accent: #a68cff;
+  --fig-accent-soft: #241e3e;
   --fig-ochre: #e3aa5c;
   --fig-ochre-soft: #3a2b14;
 }
@@ -32,7 +34,7 @@ html.ayu {
 .fig svg { display: block; width: 100%; height: auto; min-width: 620px; }
 .fig figcaption { color: var(--fig-muted); font-size: 0.9em; margin-top: 0.7em; }
 
-.fig text { font-family: "Open Sans", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: var(--fig-fg); }
+.fig text { font-family: "IBM Plex Sans", "Open Sans", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: var(--fig-fg); }
 .fig .bx { fill: var(--fig-surface); stroke: var(--fig-line); stroke-width: 1.2; }
 .fig .bx-soft { fill: var(--fig-soft); stroke: var(--fig-line); stroke-width: 1; }
 .fig .bx-acc { fill: var(--fig-accent-soft); stroke: var(--fig-accent); stroke-width: 1.5; }
@@ -42,12 +44,12 @@ html.ayu {
 .fig .life { stroke: var(--fig-line); stroke-width: 1.2; stroke-dasharray: 4 4; }
 
 .fig .t { font-size: 14px; font-weight: 600; }
-.fig .tb { font-size: 16px; font-weight: 700; }
+.fig .tb { font-family: "Space Grotesk", "IBM Plex Sans", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; }
 .fig .ts { font-size: 12.5px; fill: var(--fig-muted); }
-.fig .tm { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+.fig .tm { font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
 .fig .tl { font-size: 12.5px; font-weight: 600; fill: var(--fig-accent); }
 .fig .tlo { font-size: 12.5px; font-weight: 600; fill: var(--fig-ochre); }
-.fig .th { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; letter-spacing: 0.08em; fill: var(--fig-muted); }
+.fig .th { font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; letter-spacing: 0.08em; fill: var(--fig-muted); }
 
 .fig .ar { stroke: var(--fig-muted); stroke-width: 1.4; fill: none; }
 .fig .ar-a { stroke: var(--fig-accent); stroke-width: 1.8; fill: none; }
