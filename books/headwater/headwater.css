@@ -1,0 +1,82 @@
+/* Figures: inline SVG drawn in the page's own colours. The light
+   palette serves mdBook's light and rust themes and a page without
+   JavaScript; the dark one serves coal, navy and ayu. Text takes the
+   theme's own --fg and --mono-font. */
+:root {
+  --hw-surface: #ffffff;
+  --hw-soft: #f1f5f4;
+  --hw-line: #c4d0ce;
+  --hw-muted: #55666d;
+  --hw-accent: #0e6f68;
+  --hw-accent-soft: #d9eeea;
+  --hw-ochre: #9a5b06;
+  --hw-ochre-soft: #f6ead4;
+}
+html.coal,
+html.navy,
+html.ayu {
+  --hw-surface: #142024;
+  --hw-soft: #0f1a1d;
+  --hw-line: #34484d;
+  --hw-muted: #a0b2b6;
+  --hw-accent: #5fc5b7;
+  --hw-accent-soft: #173a37;
+  --hw-ochre: #e3aa5c;
+  --hw-ochre-soft: #3a2b14;
+}
+
+figure.hw {
+  margin: 1.8em 0;
+}
+figure.hw .hw-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--hw-line);
+  border-radius: 8px;
+  background: var(--hw-soft);
+}
+figure.hw svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-width: 640px;
+  font-family: inherit;
+}
+figure.hw figcaption {
+  margin-top: 0.6em;
+  font-size: 0.9em;
+  color: var(--hw-muted);
+}
+
+.hw-bx { fill: var(--hw-surface); stroke: var(--hw-line); stroke-width: 1.2; }
+.hw-bx-a { fill: var(--hw-accent-soft); stroke: var(--hw-accent); stroke-width: 1.5; }
+.hw-bx-o { fill: var(--hw-ochre-soft); stroke: var(--hw-ochre); stroke-width: 1.2; }
+.hw-bx-d { fill: none; stroke: var(--hw-muted); stroke-width: 1.2; stroke-dasharray: 6 5; }
+.hw-chip { fill: var(--hw-accent-soft); stroke: none; }
+.hw-chip-p { fill: var(--hw-soft); stroke: var(--hw-line); stroke-width: 1; }
+
+.hw-h { fill: var(--fg); font-size: 16px; font-weight: 700; }
+.hw-t { fill: var(--fg); font-size: 14px; font-weight: 600; }
+.hw-s { fill: var(--hw-muted); font-size: 12.5px; }
+.hw-m { fill: var(--fg); font-family: var(--mono-font); font-size: 12px; }
+.hw-ms { fill: var(--hw-muted); font-family: var(--mono-font); font-size: 11.5px; }
+.hw-ma { fill: var(--hw-accent); font-family: var(--mono-font); font-size: 11.5px; font-weight: 600; }
+.hw-th { fill: var(--hw-muted); font-family: var(--mono-font); font-size: 11px; letter-spacing: 0.08em; }
+.hw-la { fill: var(--hw-accent); font-size: 12.5px; font-weight: 600; }
+.hw-lo { fill: var(--hw-ochre); font-size: 12.5px; font-weight: 600; }
+
+.hw-ar { stroke: var(--hw-muted); stroke-width: 1.4; fill: none; }
+.hw-ar-a { stroke: var(--hw-accent); stroke-width: 1.8; fill: none; }
+.hw-ar-o { stroke: var(--hw-ochre); stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+.hw-lead { stroke: var(--hw-muted); stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+.hw-hd { fill: var(--hw-muted); }
+.hw-hd-a { fill: var(--hw-accent); }
+.hw-hd-o { fill: var(--hw-ochre); }
+
+.hw-axis { stroke: var(--hw-muted); stroke-width: 1.4; }
+.hw-tick { stroke: var(--hw-line); stroke-width: 1; }
+.hw-dot { fill: var(--hw-surface); stroke: var(--hw-muted); stroke-width: 1.5; }
+.hw-dot-a { fill: var(--hw-accent); stroke: var(--hw-accent); stroke-width: 1.5; }
+.hw-dot-x { fill: var(--hw-surface); stroke: var(--hw-ochre); stroke-width: 2; }
+.hw-pin { fill: var(--hw-ochre); }
+.hw-band-a { fill: var(--hw-accent-soft); }
+.hw-band-o { fill: var(--hw-ochre-soft); }
