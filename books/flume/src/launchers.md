@@ -96,9 +96,11 @@ that branch ([millpond's items](../millpond/items.html#a-send)).
 
 ## From headwater
 
-headwater's fix key hands a release's brief to flume as a fix. An agent
-starts in a place to make the bump, and submits it to sluice
-([headwater's book](../headwater/)).
+headwater's fix key hands a release's brief to flume as a fix
+([headwater's surfaces](../headwater/surfaces.html#handing-a-release-on)).
+An agent starts in a place to make the bump, and submits it to sluice.
+The brief holds what the agent needs to move the pin
+([headwater's briefs](../headwater/briefs.html#what-a-brief-holds)).
 
 In a repository crew runs, a bump comes only as a chore crew's planner
 makes from an item. There the fix key hands the release to millpond as
