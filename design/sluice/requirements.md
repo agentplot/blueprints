@@ -35,10 +35,10 @@ A session that built the work submits it and does nothing more.
 | actor | may decide | may not |
 |---|---|---|
 | **a session** (an agent or a person building in a place) | when its work is ready, and to submit it; how to resolve a conflict or a failure in its own place | merge, land, or move a branch; change another submission's order; withdraw another's submission |
-| **a planner** (a plan, or a person) | what a submission lands after, and its priority | override a gate; move a branch |
+| **a planner** (a plan, or a person) | what a submission lands after, and its priority; to ask sluice to make or remove a branch it lands on (104, 105) | override a gate; move a branch |
 | **a policy's author** (a repository's owners, a platform) | which checks gate each branch, which executors each branch trusts, how a flaky result reads, how deep a chain is tested, how long a candidate's checks may run, what a run may use and reach | make a branch land untested; widen trust a layer above set |
 | **the operator** | everything a policy does not settle | make a landing that skipped the gate count as one |
-| **sluice** | the order among submissions within what the planner and the policy fixed; which candidates to test and how many at once; when a branch moves | run a check of its own, start a service, choose a port, resolve a conflict, decide trust, release a session's place, or move a branch to a revision that has not passed its gate |
+| **sluice** | the order among submissions within what the planner and the policy fixed; which candidates to test and how many at once; when a branch moves | run a check of its own, start a service, choose a port, resolve a conflict, decide trust, release a session's place, move a branch to a revision that has not passed its gate, or remove a branch whose work has not landed into another (105) |
 | **an executor** (a session's shell, a confined run) | nothing; it runs checks and reports what it observed | report an outcome it did not observe |
 
 <!-- ANCHOR_END: actors -->
@@ -256,6 +256,28 @@ redefine these.
     stopped before reporting has no outcome: it is never read as a pass
     or a fail, and the check is run again.
 
+### A.9 Branches
+
+104. The operator or a planner may ask sluice to make a branch it
+     will land on, from another branch it lands on. sluice makes it at
+     the other branch's current revision, by a move from absent (45),
+     when the policy at that revision gives the new branch a gate (56)
+     and the new branch's records hold no entry still waiting, under
+     test or landing. A branch already present is refused, and so is
+     one that policy does not name.
+105. The operator or a planner may ask sluice to remove a branch it
+     lands on, naming the branch the removed branch's work landed
+     into. sluice removes it by a move to absent (45) from the revision
+     it read, only when no entry on it is waiting, under test or
+     landing, no landing on it is left unrecorded (S9), and that
+     revision is contained in the named branch's current revision. Its
+     records stay.
+106. Making and removing a branch is not landing: neither writes a
+     commit, records a verdict or reads a gate's checks, and 22 to 24
+     bind neither. A refused one is reported, never retried blind. A
+     branch sluice lands on is made and removed only as 104 and 105
+     say, and the branch's protection (1) refuses anyone else's.
+
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
 ## Part B. Contracts across the seams
@@ -301,9 +323,9 @@ redefine these.
     the conflict with the content it is on (12).
 44. **commit**: given a candidate, its parent, the entry's head, the
     entry's work and the verdict read for it, one commit (23).
-45. **move**: given a branch, the revision it is expected at and the
-    revision to move to, the move or a refusal because the branch was
-    elsewhere (24).
+45. **move**: given a branch, the revision it is expected at or that
+    it is absent, and the revision to move to or its removal, the move
+    or a refusal because the branch was elsewhere (24, 104, 105).
 46. The guarantee: a move is all or nothing, and two moves of one branch
     from one expected revision never both succeed.
 
@@ -375,8 +397,8 @@ Parts A and B do not change to admit a profile.
 
 | profile | read / form / commit / move |
 |---|---|
-| **local refs**: one host's repository | `git rev-parse`; `git merge-tree --write-tree`; `git commit-tree` with the branch and the head as parents and the verdict as `Sluice-*` trailers; `git update-ref` with the expected old value; branch protection by a `reference-transaction` hook that refuses any update to a branch in the policy not made by sluice, and logs it (1) |
-| **pushed refs**: a branch on a remote every host reaches | `git fetch` then `git rev-parse` of the remote's branch; forming and committing as local refs, on the host advancing the branch; the landing a push with `--force-with-lease=<branch>:<expected>`; branch protection by the forge's rules, which only sluice's identity bypasses (1) |
+| **local refs**: one host's repository | `git rev-parse`; `git merge-tree --write-tree`; `git commit-tree` with the branch and the head as parents and the verdict as `Sluice-*` trailers; `git update-ref` with the expected old value; making a branch `git update-ref <branch> <rev> ""`, removing one `git update-ref -d <branch> <expected>` (104, 105); branch protection by a `reference-transaction` hook that refuses any update to a branch in the policy not made by sluice, and logs it (1) |
+| **pushed refs**: a branch on a remote every host reaches | `git fetch` then `git rev-parse` of the remote's branch; forming and committing as local refs, on the host advancing the branch; the landing a push with `--force-with-lease=<branch>:<expected>`; making a branch a push leased on its absence, `--force-with-lease=<branch>:`, removing one a `--delete` leased on its revision (104, 105); branch protection by the forge's rules, restricting creating, updating and deleting the branch, which only sluice's identity bypasses (1) |
 
 ### C.5 The driver
 
@@ -385,6 +407,7 @@ Parts A and B do not change to admit a profile.
 | **worktrunk**: a custom subcommand on the path | `wt submit`, the executable `wt-submit` on the path, waiting for the entry's outcome, which it reports as its exit, or with `--no-wait` returning the entry at once; `wt submit --withdraw`; `wt submit --status`; the outcome of a waiting submit is its exit, of any other the session's pane prompted through the multiplexer; on landing, worktrunk removes the session's place; `wt submit --check`, the same forming as a submission with no entry written |
 | **crew**: a bolt team's stages | the unit's merge stage submits, and a bolt is submitted from its own place by its conductor; `sluice amend` sets an After the conductor adds; the conductor reads the entry's state as the stage; a red or a conflict re-charges the unit's slot; the conductor's wait runs a forecast for each unit in code and tells the unit's agent of a conflict when it is idle |
 | **flywheel**: the machinery's effects | a session's done exit, once approved, is the submission; the entry's state is evidence; a forecast is evidence on the item, read each tick |
+| **branch**: `sluice branch` | not a session's: `sluice branch create <branch> --from <branch>` makes a branch at the other's current revision and prints it (104); `sluice branch delete <branch> --into <branch>` removes it, `main` when `--into` is omitted (105); each exits 0 when done, 1 when a branch it names does not exist, and 2 on a refusal, naming it |
 | **remote submit**: a session on any host | the head pushed to the remote and the submission written through the records (peers) or sent to the server (central server); withdrawal the same; state read through the records or from the server; a waiting `wt submit` polls it until the outcome; a forecast through the records or from the server |
 
 ### C.6 The records
@@ -543,6 +566,19 @@ These are not requirements.
   for a forecast before it has finished; it is told the file and the
   first entry's work, settles it, and both candidates form without
   conflict.
+- **S36.** A planner asks for `bolt/x` from `main` at M. sluice makes
+  `bolt/x` at M. A second ask is refused because `bolt/x` is present. On
+  another host, an ask made at the same time finds the remote's branch present and is
+  refused (46).
+- **S37.** A planner asks to remove `bolt/x` into `main` while an entry
+  is under test on it. The removal is refused, naming the entry. Once the
+  bolt's revision is landed on `main`, the removal succeeds and the
+  branch's records still read.
+- **S38.** A removal reads `bolt/x` at R. Another host lands on `bolt/x`
+  before the removal reaches the remote. The removal is refused because
+  the branch is elsewhere, and the landing stands.
+- **S39.** A planner asks to remove `bolt/x` into `main`, but `bolt/x`'s
+  revision was never landed on `main`. The removal is refused, saying so.
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

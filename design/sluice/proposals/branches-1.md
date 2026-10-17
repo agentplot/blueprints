@@ -8,8 +8,8 @@ branches only sluice's identity should move, using credentials that may
 need a person present. On one host it means a ref the protection hook
 has to let through. Parts A and B gain three clauses, 104 to 106, and
 45 changes. Part C gains a command in C.5, and the C.4 rows say
-how each profile makes and removes a branch. Nothing here edits
-`../requirements.md`; the operator rules on it.
+how each profile makes and removes a branch. The operator ratified it on 2026-10-16: its clauses, rows and
+scenarios are in `../requirements.md`, which wins where they differ.
 
 ## What it answers
 
