@@ -150,7 +150,14 @@ The operator accepts or changes each of these:
 - **Does:** writes D1's rulings and these into the statement:
   - claims on a watch-list entry;
   - the key a watch-list entry gets;
-  - the Flywheel plugin prints the contract.
+  - the Flywheel plugin prints the contract;
+  - each release is marked inside or outside the range its declaration
+    gives, which the dependency description now carries;
+  - each ecosystem's package manager, run read-only in the repository's
+    shell, is a lookup, with deps.dev where none runs;
+  - a brief names the ecosystem's own command for the move, amending
+    27, and can carry the published package's diff between the pin and
+    the release.
 
   New clauses take the next free numbers from 53.
 - **Done when:** Vale is clean, and the operator agrees to land it on
@@ -295,12 +302,22 @@ The operator accepts or changes each of these:
 ### H5 headwater's lookups
 
 - **Where:** headwater.
-- **Does:** deps.dev by Package URL in batches, GitHub GraphQL through
-  the user's `gh` sign-in, ecosyste.ms, each registry's own API where
-  those fall short, and OSV in batches.
-- **Done when:** recorded requests replay in the suite (headwater 37),
-  and a scan of swancloud's watch list matches today's release adapter
-  release for release.
+- **Does:**
+  - each ecosystem's package manager, read-only in the repository's
+    shell: npm, Go and mise by their own commands, and the configured
+    registry's index for Python and Cargo;
+  - deps.dev by Package URL in batches where no package manager runs;
+  - GitHub GraphQL through the user's `gh` sign-in, ecosyste.ms, and
+    OSV in batches;
+  - the range each declaration gives, and the published package's diff
+    for a brief.
+- **Done when:**
+  - recorded requests and recorded package-manager output replay in the
+    suite (headwater 37);
+  - a scan of swancloud's watch list matches today's release adapter
+    release for release;
+  - a package on a private registry is found through its package
+    manager, and a release outside its declared range is marked so.
 
 ### H6 headwater's Flywheel plugin
 

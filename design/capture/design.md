@@ -421,9 +421,29 @@ signals, and only offers come back as signals.
 ### Releases: headwater
 
 headwater is a tool for dependencies, never a capture framework. It
-reads what a repository declares and asks its lookups (deps.dev,
-GitHub, ecosyste.ms, each registry's own API, OSV). It reports every
-release newer than each pin, with its notes and advisories.
+reads what a repository declares and reports every release newer than
+each pin, with its notes and advisories.
+
+- **Each ecosystem's own package manager is the first lookup.**
+  headwater runs it read-only in the repository's own shell, so it sees
+  the registries the repository is configured for, private ones among
+  them. It asks `npm view` and `npm outdated`, `go list -m -versions`,
+  `mise ls-remote`, and the configured registry's index for Python and
+  Cargo.
+  deps.dev, GitHub and ecosyste.ms answer where no package manager runs
+  or none exists, and OSV answers for advisories.
+- **Each release is marked inside or outside the range** the repository
+  declares (`^1.4`, `>=1.4,<2`). Inside, the package manager takes it by
+  changing only the lockfile. Outside, the manifest changes, as a major
+  release needs. headwater reports both, so a major release is never
+  hidden.
+- **A brief names the ecosystem's own command** for the move: `npm
+  update` or `npm install <name>@<version>`, `uv lock --upgrade-package`,
+  `cargo update -p`, `go get`, `mise use`. Whoever makes the change runs
+  it, and headwater never does. Beside the release's notes, a brief can
+  carry the published package's own diff between the pin and the
+  release (`npm diff`), so a README or CHANGELOG change shows as
+  upstream shipped it.
 
 - **The pin decides what is new** (headwater 9). headwater keeps no
   list of what it reported. millpond's dedupe by key lands each release
@@ -625,6 +645,11 @@ only through sluice's, and links no crate.
 - **headwater's statement:**
   - its 33 rulings, among them "lookup" for what the statement calls a
     source;
+  - each release marked inside or outside the declared range;
+  - each ecosystem's package manager as a lookup, with deps.dev where
+    none runs;
+  - a brief naming the ecosystem's command for the move, amending
+    headwater 27, and carrying the published package's diff;
   - claims on a watch-list entry;
   - the key a watch-list entry gets;
   - its Flywheel plugin prints the contract.
