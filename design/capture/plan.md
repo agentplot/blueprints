@@ -24,8 +24,10 @@ a check or an observation, never a list to tick by hand.
 | D1 | Rule headwater's 33 questions | none | waiting on the operator |
 | D2 | Rule this design's decisions | none | waiting on the operator |
 | D3 | Decide the old meeting sweep's fate | none | waiting on the operator |
-| P1 | Write millpond's statement | D2 | to do |
-| Q1 | Write sounding's statement | D2 | to do |
+| D4 | Rule the family's storage | none | analysis under way |
+| P1 | Write millpond's statement | none | under way |
+| E0 | Write eddy's statement | none | under way |
+| Q1 | Write sounding's statement | none | under way |
 | H1 | Amend headwater's statement | D1, D2 | to do |
 | F1 | Write the contract and the inbox into Flywheel's statement | D2 | to do |
 | C1 | Amend crew's record | D2 | to do |
@@ -40,7 +42,7 @@ a check or an observation, never a list to tick by hand.
 | H5 | headwater's lookups | H4 | to do |
 | H6 | headwater's Flywheel plugin | H4, F2 | to do |
 | H7 | headwater's Claude Code and herdr plugins | H4 | to do |
-| E1 | eddy | F2 | to do |
+| E1 | eddy | E0, F2 | to do |
 | P4 | millpond's tools and Claude Code plugin | P3 | to do |
 | P5 | millpond's herdr plugin | P3 | to do |
 | P6 | Send an item to a worktree | P4 | to do |
@@ -110,7 +112,7 @@ The operator accepts or changes each of these:
     and only a finding beyond the question comes back as a capture.
 
 - **Done when:** each decision is accepted or changed, and `design.md`
-  says what was ruled.
+  and the statements say what was ruled.
 
 ### D3 Decide the old meeting sweep's fate
 
@@ -118,6 +120,17 @@ The operator accepts or changes each of these:
 - **Does:** the operator stops or repairs the existing daily sweep
   while eddy is built.
 - **Done when:** the sweep either runs green or is unloaded.
+
+### D4 Rule the family's storage
+
+- **Where:** this repository, `design/capture/models/storage.md`.
+- **Does:** inventories every piece of state each tool keeps (sluice,
+  headwater, eddy, millpond, sounding and crew) against Flywheel's
+  state repository, and proposes one convention, so that moving from a
+  tool on its own to crew and then to Flywheel moves no data. The
+  operator rules its numbered decisions.
+- **Done when:** the decisions are ruled, and each statement's Part C
+  names the storage profile they set.
 
 ### P1 Write millpond's statement
 
@@ -128,6 +141,18 @@ The operator accepts or changes each of these:
   three setups, and what millpond never does. A fresh model then
   reconstructs millpond from the statement alone, and the operator
   rules the questions it asks.
+- **Done when:** the reconstruction's questions are ruled and folded
+  into the statement, Vale is clean, and the operator agrees to land it
+  on `main`.
+
+### E0 Write eddy's statement
+
+- **Where:** this repository, `design/eddy/`.
+- **Does:** writes eddy's statement from `design.md` and eddy's book:
+  listing and fetching recorded meetings across services, keys, raw
+  transcripts, cursors and sign-ins, a part per service, its plugins,
+  and what eddy never does. A fresh model reconstructs eddy from the
+  statement alone, and the operator rules the questions it asks.
 - **Done when:** the reconstruction's questions are ruled and folded
   into the statement, Vale is clean, and the operator agrees to land it
   on `main`.
