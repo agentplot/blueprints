@@ -278,8 +278,8 @@ The operator accepts or changes each of these:
 ### H6 headwater's Flywheel plugin
 
 - **Where:** headwater, `plugins/flywheel`.
-- **Does:** `headwater capture` prints a capture per newly reported
-  release, built with the capture crate. The key, raw, excerpt and
+- **Does:** `headwater capture` prints a capture for every release
+  newer than its pin, built with the capture crate. The key, raw, excerpt and
   claims are as `design.md` sets them.
 - **Done when:** its output passes the conformance pack, and
   `millpond run` lands it.

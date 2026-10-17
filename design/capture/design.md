@@ -343,8 +343,9 @@ release newer than each pin, with its notes and advisories.
   - a brief a fixer reads;
   - a key that starts an agent in a worktree to make the bump and
     submit it to sluice.
-- **The Flywheel plugin's adapter part**, `headwater capture`, prints
-  one capture per newly reported release:
+- **The Flywheel plugin's adapter part**, `headwater capture`, prints a
+  capture for every release newer than its pin on each run, and
+  millpond's dedupe lands each one once:
   - `source` is `release` and `event_at` is when the release was
     published;
   - `raw` holds the notes whole, plus what the lookup answered;
