@@ -21,11 +21,11 @@ sounding ([millpond's items](../millpond/items.html#a-question-sent-to-a-soundin
 - **`/sound <question>`** in any Claude Code session. The sounding
   opens while that session goes on with its own work.
 - **A key in another tool's herdr plugin**, such as headwater's on a
-  release that needs judgment.
+  release that needs judgment, with the release's brief as the source.
 - **crew's planner and design agent**, which call `sounding open` for
   an item that asks a question, as crew calls millpond.
 
-Each way in ends in `sounding open`, so a sounding is the same whichever
+Each of them calls `sounding open`, so a sounding is the same whichever
 way it began. [Where questions come from](setups.md) sets out which
 ways in each setup has.
 

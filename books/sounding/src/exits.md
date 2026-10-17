@@ -2,13 +2,14 @@
 
 A sounding's session is free inside its place. It reaches beyond the
 place through three commands, its exits: fixed outputs the session
-gives and sounding acts on (65).
+gives and sounding acts on (65). The session ends a round with
+`sounding conclude`, and may offer and ask along the way.
 
 | Exit | What follows |
 |---|---|
 | `sounding conclude` | Writes `conclusion.md`: the answer, its evidence, what it would change, the work it proposes, and what stays open. The round ends, and the operator decides the conclusion. |
-| `sounding offer` | Hands a finding beyond the question to `millpond land` as a capture of its own (62). The session goes on. |
-| `sounding ask` | Puts a question only the operator can answer on a card. The session waits for the answer. |
+| `sounding offer` | Hands a finding beyond the question to `millpond land` as a capture of its own (62), one key per offer. The session goes on (58). |
+| `sounding ask` | Puts a question only the operator can answer on a card. The session waits for the answer, then goes on. |
 
 <figure class="sd-fig">
 <div class="sd-scroll">

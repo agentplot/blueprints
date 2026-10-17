@@ -34,8 +34,8 @@ design has it.
 
 ## Held by the design
 
-The capture design's own Open section holds three questions about
-sounding:
+The capture design's own Open section holds these questions about
+sounding, beside the details it leaves to sounding's statement:
 
 - **A standing sounding**, which stays open and starts a round when a
   signal on its subject lands, as Flywheel's standing elaborations do
@@ -52,8 +52,8 @@ sounding:
 
 ## Left to the statement
 
-The capture design names these and leaves their form to sounding's
-statement:
+The capture design's Open section leaves sounding's own details to its
+statement (plan step Q1). In full:
 
 - the timebox's length, and who sets it;
 - how a sounding is named, the `<name>` in its branch and its keys;

@@ -34,7 +34,9 @@ millpond adds two ways in and a home for every conclusion.
   as its target, and opens it with the item's signals and the captures
   they came from as its sources ([millpond's items](../millpond/items.html#a-question-sent-to-a-sounding)).
 - **A key on a headwater release that needs judgment**, such as a major
-  release outside the range the repository declares.
+  release outside the range the repository declares, with the release's
+  brief as the source. headwater's herdr plugin offers the key where
+  sounding is installed.
 - **`/sound` on a decision a meeting left open**, with the meeting's
   transcript as a source. eddy lists the meeting, and millpond keeps
   its capture ([eddy's book](../eddy/)).
