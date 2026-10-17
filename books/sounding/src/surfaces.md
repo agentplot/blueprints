@@ -27,8 +27,8 @@ plugin per host under `plugins/` beside its core, `plugins/claude` and
 - **The stop check** runs at the session's end
   ([The stop check and the timebox](bounds.md)).
 - **MCP tools**, `soundings`, `conclusion`, `accept`, `go_on` and
-  `drop`, let any session list soundings, read a conclusion and decide
-  it.
+  `drop`, let the operator list soundings, read a conclusion and decide
+  it from any session.
 - **A guard** refuses a sluice submission from a `sounding/*` branch
   ([The place](place.md)).
 
