@@ -13,14 +13,14 @@
   --fl-fg: #0e1116;
   --fl-muted: #5d6370;
   --fl-line: #c9c7bf;
-  --fl-accent: #0f7a8a;
-  --fl-accent-soft: #dfebe9;
+  --fl-accent: #2f6e7a;
+  --fl-accent-soft: #dfe6e4;
   --fl-mp: #2160b0;
   --fl-mp-soft: #dde7f4;
   --fl-sd: #a3358f;
   --fl-sd-soft: #ecdde5;
   --fl-sl: #1f8a4c;
-  --fl-sl-soft: #dde9df;
+  --fl-sl-soft: #dbe8dc;
 }
 html.coal, html.navy, html.ayu {
   --fl-panel: #0e1116;
@@ -28,14 +28,14 @@ html.coal, html.navy, html.ayu {
   --fl-fg: #f2f1ec;
   --fl-muted: #8c92a0;
   --fl-line: #2a2f38;
-  --fl-accent: #4fc3d4;
-  --fl-accent-soft: #15292e;
+  --fl-accent: #7fb8c4;
+  --fl-accent-soft: #1f2a30;
   --fl-mp: #6ea8fe;
   --fl-mp-soft: #172438;
   --fl-sd: #e486d2;
   --fl-sd-soft: #2e2332;
   --fl-sl: #45c27a;
-  --fl-sl-soft: #152a20;
+  --fl-sl-soft: #162c25;
 }
 
 .fl-fig { margin: 1.75em 0; font-family: var(--fl-font-sans); }
