@@ -90,8 +90,9 @@ as raw, and carries no excerpt. `event_at` is when the meeting started
 | `webex` | Webex's transcripts API | `meeting/webex/<meeting id>` |
 | `teams` | Microsoft Graph's meeting transcripts | `meeting/teams/<meeting id>` |
 
+eddy's [parts](../eddy/parts.html) chapter holds each service's part.
 A part counts as a meeting part when it passes the meeting checks in
-the conformance pack. Anyone can publish a meeting plugin of their own,
+the conformance pack ([../eddy/contributing.html](../eddy/contributing.html)). Anyone can publish a meeting plugin of their own,
 listed in the plugin index beside eddy's (228). A generic part lists
 meetings from any MCP endpoint that serves transcripts, and the folder
 drop takes the rest.
