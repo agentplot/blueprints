@@ -112,6 +112,10 @@ Three readers use a meeting's raw files once millpond banks them:
 - **A person** following the capture's pointer to the transcript
   itself.
 
+A sounding opened on a decision a meeting left open takes the
+meeting's transcript as one of its sources
+([sounding's book](../sounding/)).
+
 eddy writes the files and nothing about what they mean. A transcript
 that leaves a speaker unnamed reaches the raw bank unnamed, and the
 reader names the speaker by the inbox's instructions.

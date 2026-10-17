@@ -126,14 +126,38 @@ host the part runs and how often are the host's to say, in millpond's
 settings or a fleet's list. eddy never learns which inbox records its
 meetings.
 
+## What becomes of a meeting
+
+A reader reads an unread meeting capture into signals, and curation
+gives each signal one move, joining some into items
+([curation and moves](../millpond/curation.html)). An item goes to one
+worktree or into crew's plan, and the work it becomes lands through
+sluice.
+
+An item that asks a question, such as how to settle what a meeting
+left open, goes to a sounding
+([a question, sent to a sounding](../millpond/items.html#a-question-sent-to-a-sounding)).
+One session works the question in a worktree of its own and ends on a
+conclusion, which the operator accepts, sends back for another round,
+or drops ([sounding's book](../sounding/)). The operator can also open
+a sounding with `/sound` on a decision a meeting left open, the
+meeting's transcript among its sources. Once a conclusion is accepted,
+millpond keeps it as the item's record, and curation answers a later
+signal on the same subject by naming it (116).
+
+eddy takes part in none of this. Its work ends when millpond holds the
+capture.
+
 ## Where it sits
 
 headwater does for releases what eddy does for meetings
 ([headwater's book](../headwater/)). Each stands alone with its own
 Claude Code and herdr plugins, and each carries a Flywheel plugin whose
 adapter parts feed millpond. millpond is the inbox both of them print
-into. Flywheel later runs the same parts on its tick and takes the
-same lines (215, 231), and a part never knows which host ran it.
+into. sounding takes the questions a meeting leaves open
+([sounding's book](../sounding/)). Flywheel later runs the same parts
+on its tick and takes the same lines (215, 231), and a part never knows
+which host ran it.
 
 ## How to read this book
 

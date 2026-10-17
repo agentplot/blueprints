@@ -40,9 +40,10 @@ word for word ([millpond's glossary](../millpond/glossary.html)).
 | **flywheel branch** | the branch of crew's state repository that holds a partition's signals; it becomes the partition's inbox |
 | **folder drop** | the built-in adapter that makes one capture of each file dropped in a watched folder |
 | **inbox** | a git repository, or a branch in one, holding captures, signals, moves and items in Flywheel's record formats |
+| **item** | the unit of work: the signals curation joined, one or many, with its brief and its sends; Flywheel's proposed intent (109) |
 | **key** | a source event's identity, the same from every host and every run (111) |
 | **meeting file** | the built-in adapter for a meeting's transcript file |
-| **operator** | the person who accepts or changes each batch of moves and sends items; on its own, the user |
+| **operator** | the person who accepts or changes each batch of moves, sends items, and decides each conclusion; on its own, the user |
 | **part** | one thing of one kind in a plugin; an inbox's settings name the adapter parts it runs |
 | **partition** | in crew, one domain of work with its own teams and its own flywheel branch |
 | **plugin** | the installable unit in every host, holding parts; Flywheel's statement calls it a package, and a named set of parts a bundle (228, 284) |
@@ -52,8 +53,19 @@ word for word ([millpond's glossary](../millpond/glossary.html)).
 | **reader** | a Claude session that turns an unread capture into signals with millpond's `read` tool |
 | **run** | one start of an adapter part by `millpond run`, complete when it ends in `done` |
 | **schedule** | when a part runs: five-field cron, a missed run caught up once |
+| **send** | millpond giving one item to one worktree, with its brief and an agent, or an item that asks a question to a sounding |
 | **settings** | `millpond.toml` at the inbox's root: its parts, its cut, its reader command, and where items go |
 | **signal** | one assertion from a capture: its kind, who asserted it, its subjects, the assertion in a sentence, the verbatim excerpt with its position, and the claims it argues with; never changed once written (113) |
 | **source** | where events come from, named in each capture: `release`, `meeting`, `folder`, `deploy` |
 | **tick** | `millpond tick`, which runs every part of an inbox whose schedule is due |
 | **unread** | a capture with no excerpt, waiting for a reader |
+
+## sounding's words
+
+sounding's book defines these, and this page gives its definitions
+word for word ([sounding's glossary](../sounding/glossary.html)).
+
+| word | meaning |
+|---|---|
+| **conclusion** | `conclusion.md`: the answer, its evidence, what it would change, the work it proposes, and what stays open; the operator decides it |
+| **sounding** | one question, worked by one session in one place, ending on one conclusion; also the tool that runs them |

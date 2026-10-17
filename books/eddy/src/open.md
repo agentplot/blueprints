@@ -13,7 +13,9 @@ meetings and a session reads them: eddy holds a part per meeting
 service, its Wispr part an MCP client that starts no Claude session,
 and others publish meeting plugins of their own. An adapter that wraps
 another tool's domain ships with that tool, so eddy's parts stay
-eddy's. Until they are ruled, every chapter describes a design, and no
+eddy's. A third reaches a meeting's signals downstream: an item that
+asks a question goes to a sounding, whose accepted conclusion is the
+item's record. Until they are ruled, every chapter describes a design, and no
 statement stands behind it.
 
 ## Held for eddy's statement

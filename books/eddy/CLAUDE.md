@@ -13,7 +13,10 @@ clauses in place of the design's prose.
   on a clause. Never restate a clause.
 - Use the design's words exactly. millpond's book owns the capture
   contract, the inbox, readers and curation; link it at `../millpond/`
-  rather than describing them again.
+  rather than describing them again. sounding's book owns the question
+  a meeting leaves open and its conclusion; link it at `../sounding/`.
+  The glossary gives each of their words as their glossaries define
+  them, word for word.
 - A figure is inline SVG inside `<figure class="fig">`, with a
   `<title>`, a `<desc>`, a `<figcaption>` and no blank line anywhere
   between `<figure>` and `</figure>`, since a blank line ends an HTML
