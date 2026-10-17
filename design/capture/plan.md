@@ -4,14 +4,15 @@ The order of work for `design.md`. Each phase ends with something
 running on real work before the next phase depends on it. Steps that
 share no dependency run side by side: once millpond's core exists,
 headwater, eddy, millpond's plugins and crew's move onto millpond all
-proceed at once.
+proceed at once. sounding needs nothing of millpond's until millpond
+sends it questions (Q5).
 
 Each step is done in its repository's own process:
 
 - a statement or amendment in this repository;
 - an OpenSpec change in crew, flywheel-next or swancloud;
-- millpond's, headwater's and eddy's repositories, scaffolded from
-  kit-standard.
+- millpond's, headwater's, eddy's and sounding's repositories,
+  scaffolded from kit-standard.
 
 A step's change name is suggested where one helps. **Done when** names
 a check or an observation, never a list to tick by hand.
@@ -24,6 +25,7 @@ a check or an observation, never a list to tick by hand.
 | D2 | Rule this design's decisions | none | waiting on the operator |
 | D3 | Decide the old meeting sweep's fate | none | waiting on the operator |
 | P1 | Write millpond's statement | D2 | to do |
+| Q1 | Write sounding's statement | D2 | to do |
 | H1 | Amend headwater's statement | D1, D2 | to do |
 | F1 | Write the contract and the inbox into Flywheel's statement | D2 | to do |
 | C1 | Amend crew's record | D2 | to do |
@@ -42,6 +44,9 @@ a check or an observation, never a list to tick by hand.
 | P4 | millpond's tools and Claude Code plugin | P3 | to do |
 | P5 | millpond's herdr plugin | P3 | to do |
 | P6 | Send an item to a worktree | P4 | to do |
+| Q2 | Scaffold sounding's repository | Q1 | to do |
+| Q3 | sounding's core and Claude Code plugin | Q2 | to do |
+| Q4 | sounding's herdr plugin | Q3 | to do |
 | C2 | crew calls millpond | C1, P3 | to do |
 | S2 | Generate swancloud's watch list | H1 | to do |
 | S3 | The list of parts, their ticks and doctor rows | C2 | to do |
@@ -51,6 +56,8 @@ a check or an observation, never a list to tick by hand.
 | E2 | Retire the old meeting pipeline | S5, C3 | to do |
 | C4 | crew's curator moves through millpond | C2, P4 | to do |
 | C5 | A release reaches a landed bump | C4, S4 | to do |
+| Q5 | millpond sends a question to a sounding | P6, Q3 | to do |
+| C6 | crew calls sounding | C1, C4, Q3 | to do |
 | F4 | Flywheel's host on the same crates | F2, F3 | to do |
 | F5 | crew becomes Flywheel | F4, C2 | crew's roadmap |
 
@@ -96,6 +103,11 @@ The operator accepts or changes each of these:
 9. "Plugin" replaces Flywheel's "package" and "bundle".
 10. The release adapter lands through millpond on trial (S1) before
     headwater exists, so the contract carries live captures first.
+11. sounding is a standalone tool that works one question in one
+    session, in a worktree of its own, and ends on a conclusion the
+    operator accepts, sends back or drops. millpond sends it an item
+    that asks a question, an accepted conclusion is the item's record,
+    and only a finding beyond the question comes back as a capture.
 
 - **Done when:** each decision is accepted or changed, and `design.md`
   says what was ruled.
@@ -116,6 +128,18 @@ The operator accepts or changes each of these:
   three setups, and what millpond never does. A fresh model then
   reconstructs millpond from the statement alone, and the operator
   rules the questions it asks.
+- **Done when:** the reconstruction's questions are ruled and folded
+  into the statement, Vale is clean, and the operator agrees to land it
+  on `main`.
+
+### Q1 Write sounding's statement
+
+- **Where:** this repository, `design/sounding/`.
+- **Does:** writes sounding's statement from `design.md`: the question
+  and its sources, the place, the three exits, the stop check, the
+  timebox, rounds, the operator's decision, and what sounding never
+  does. A fresh model reconstructs sounding from the statement alone,
+  and the operator rules the questions it asks.
 - **Done when:** the reconstruction's questions are ruled and folded
   into the statement, Vale is clean, and the operator agrees to land it
   on `main`.
@@ -160,7 +184,10 @@ The operator accepts or changes each of these:
     signal;
   - adds an ADR, "crew calls millpond as it calls sluice";
   - rewrites the open change `daily-pass-through-crew` as the reader
-    (C3), and `curation-and-agenda` as the curator (C4).
+    (C3), and `curation-and-agenda` as the curator (C4);
+  - turns ADR 0019 into "crew calls sounding as it calls millpond",
+    with an item in place of its intent, so it and
+    `curation-and-agenda` agree (C6).
 - **Done when:** the record lands through sluice, and `_open.md` no
   longer asks where meeting signals live.
 
@@ -345,6 +372,49 @@ The operator accepts or changes each of these:
   sluice, the item shows its landing, and a send from crew's inbox is
   refused.
 
+### Q2 Scaffold sounding's repository
+
+- **Where:** `agentplot/sounding`, new, in Rust on kit-standard's code
+  profile. It follows sluice's seed commit.
+- **Does:** writes:
+  - `CLAUDE.md` pointing at the statement, a README, a license and
+    `adrs.toml`;
+  - the founding ADRs: one question, one session, one conclusion;
+    plugins outside the core; a conclusion is never a signal;
+  - `docs/architecture/core.md` and `_open.md`;
+  - the kit's devenv, moon, sluice gate, `cliff.toml` and OpenSpec
+    configuration.
+- **Done when:** sluice protects `main`, and the first change lands
+  through it.
+
+### Q3 sounding's core and Claude Code plugin
+
+- **Where:** sounding, its core and `plugins/claude`.
+- **Does:**
+  - `sounding open`, `list`, `conclude`, `offer`, `ask`, `accept`,
+    `go-on` and `drop`, with the worktree, `question.md`,
+    `conclusion.md` and `rounds/`;
+  - `offer` prints contract lines with the capture crate and pipes them
+    to `millpond land` where millpond is installed;
+  - `/sound`, the start hook, the stop check, the timebox, the MCP
+    tools, and the guard on `sounding/*` branches.
+- **Done when:**
+  - a question opened with `/sound` in one session ends on a conclusion
+    in another, and the first session's work goes on undisturbed;
+  - a session that tries to stop with no conclusion is sent back;
+  - an offer's lines pass the conformance pack;
+  - a sluice submission from a sounding's branch is refused.
+
+### Q4 sounding's herdr plugin
+
+- **Where:** sounding, `plugins/herdr`.
+- **Does:** the sidebar of open soundings with their rounds and states,
+  a workspace per sounding, and keys to start, open, accept, send back
+  and drop one and to open its conclusion in plannotator.
+- **Done when:** the plugin installs from sounding's tag, and a
+  sounding started, sent back once and accepted from herdr shows each
+  state in the sidebar.
+
 ## Phase 3: crew and swancloud on millpond
 
 ### C2 crew calls millpond
@@ -451,6 +521,30 @@ The operator accepts or changes each of these:
   `headwater brief` in hand, and sluice lands it.
 - **Done when:** the next scan no longer reports that release, because
   the pin moved, with no acknowledgement written.
+
+### Q5 millpond sends a question to a sounding
+
+- **Where:** millpond.
+- **Does:** `send` takes a sounding as its target. millpond opens the
+  sounding with the item's signals and captures as its sources, keeps
+  the accepted conclusion as the item's record, and makes an item of
+  each piece of work the conclusion proposes.
+- **Done when:**
+  - an item asking whether to take a major release goes to a sounding,
+    and its accepted conclusion shows on the item;
+  - the bump the conclusion proposes arrives as a new item;
+  - curation answers the release's next signal by naming the
+    conclusion.
+
+### C6 crew calls sounding
+
+- **Where:** crew. Change: `crew-calls-sounding`.
+- **Does:** crew's planner and design agent open a sounding for an
+  item that asks a question, show each conclusion on crew's rail, and
+  turn the work an accepted one proposes into plan entries.
+- **Done when:** one real question goes from an item through a
+  sounding to accepted plan entries on crew's rail, with no
+  `<kit>/elaborations/` worktree made.
 
 ## Phase 5: Flywheel hosts
 

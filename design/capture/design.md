@@ -7,7 +7,9 @@ hands it to millpond, which records it once as a capture in an inbox.
 The capture becomes signals, either mechanically when it is its own
 excerpt or through a reader session. Curation gives each signal one
 move and joins signals into items. An item goes to one worktree, or
-into crew's plan, and the work it becomes lands through sluice.
+into crew's plan, and the work it becomes lands through sluice. An item
+that asks a question goes to a sounding, which ends on a conclusion the
+operator accepts.
 
 This design covers every part that does this:
 
@@ -17,6 +19,9 @@ This design covers every part that does this:
 - **millpond** is the inbox. It runs adapters, keeps captures and
   signals, serves the tools a curation session works through, and sends
   an item to a worktree.
+- **sounding** works one question in one session, in a worktree of its
+  own, and ends on a conclusion the operator accepts, sends back for
+  another round, or drops.
 - **sluice** tests a change as merged and lands it.
 - **crew** runs teams, plans and bolts. It calls millpond's command
   line as it calls sluice's.
@@ -44,7 +49,8 @@ cites headwater's statement. A rule id such as `signals.6` cites crew's
 | millpond | Runs adapters and takes the capture contract. Dedupes by key, banks raw material, and writes each capture, plus the one signal of a capture that is its own excerpt. Keeps the inbox, checks a reader's excerpts, writes moves and items, sends an item to a worktree, and records each run. | Judges what a capture says, or plans across items. |
 | A reader, a session | Reads a capture that is not its own excerpt into signals, through millpond (113, 217e). | Lists a source. |
 | Curation, a session | Proposes one move per signal, in batches, through millpond's tools (116). | Writes captures or signals. |
-| The operator | Accepts or changes each batch of moves, and sends an item. | Picks through signals one at a time. |
+| sounding | One question in one session, in a worktree of its own, ending on a conclusion. It offers each finding beyond its question to millpond as a capture. | Lands code, writes the inbox except through millpond, or plans across items. |
+| The operator | Accepts or changes each batch of moves, sends an item, and decides each conclusion. | Picks through signals one at a time. |
 | crew | Teams, plans and bolts. Its planner turns items into chores and units across teams. | Writes an inbox's records except through millpond. |
 | sluice | Tests a change as merged and lands it. | Knows where the change came from. |
 | The fleet (swancloud) | Says which adapter part runs for which inbox, on which host, and when. Hands headwater the pins that only Nix can read. Watches every run from the doctor. | Runs an adapter's logic itself. |
@@ -68,12 +74,15 @@ source ─▶ adapter ──capture lines──▶ millpond ─▶ capture, raw 
                │
                ├─ drop, answered, challenge ─▶ settled
                └─ join, attach, route ─▶ item ─┬─ send ─▶ one worktree ─▶ sluice lands
+                                               ├─ send ─▶ a sounding ─▶ conclusion ─▶ new items
                                                └─ crew's plan ─▶ team ──▶ sluice lands
 ```
 
 A release is its own excerpt. Its notes are the excerpt and its signal
 asks for a bump. A meeting is not, so a reader turns its transcript
-into signals. Both captures take the same path from then on.
+into signals. Both captures take the same path from then on. A finding
+a sounding makes beyond its question comes back to millpond as a
+capture of its own and takes the same path.
 
 ## The capture contract
 
@@ -260,7 +269,7 @@ serves over MCP as `millpond mcp`:
 | `moves` | Writes a batch of moves in one commit. |
 | `items` | Lists items with their signals, briefs and sends. |
 | `brief` | Writes an item's brief. |
-| `send` | Sends an item to a worktree. |
+| `send` | Sends an item to a worktree, or an item that asks a question to a sounding. |
 
 ### A reader
 
@@ -312,6 +321,11 @@ session writes with `brief`, and every place it was sent.
   through its herdr plugin, or as a command it prints. The agent
   submits through sluice, and millpond writes the landing against the
   item from sluice's record of that branch.
+- **millpond sends an item that asks a question to a sounding.** Its
+  work ends in an answer: whether to take a major release, or how to
+  settle what a meeting left open. millpond keeps the accepted
+  conclusion as the item's record, and curation answers a later signal
+  on the same subject by naming it (116).
 - **An inbox crew keeps sends no item to a worktree.** Its settings
   hand items to crew's planner, which orders them across teams and
   turns each into a chore or a unit. Planning across items is crew's
@@ -325,6 +339,82 @@ session writes with `brief`, and every place it was sent.
   source (118), lets the operator review a proposed batch row by row,
   and sends an item with one key.
 - **crew's rail** shows an inbox crew keeps, one decision per item.
+
+## Questions: sounding
+
+A sounding is one question, worked by one session in one place, ending
+on one conclusion. sounding is a standalone tool, as millpond is, and
+works the same with millpond, with crew or alone.
+
+### A sounding
+
+- **The question** comes from an item millpond sends, from the
+  operator's `/sound` in any session, or from a key in another tool's
+  herdr plugin. `sounding open` writes `question.md` with the question
+  and its sources: the item's signals, the captures they came from, and
+  any earlier conclusion on the subject.
+- **The place** is a worktree of the repository the question is about,
+  on the branch `sounding/<name>`. The session may write prototype code
+  there to test an answer. That code never lands from the sounding's
+  branch: the work the operator accepts reaches main through an item's
+  worktree or crew's plan, and through sluice.
+- **The session** leaves by one of three commands:
+
+  | Exit | What follows |
+  |---|---|
+  | `sounding conclude` | Writes `conclusion.md`: the answer, its evidence, what it would change, the work it proposes, and what stays open. The operator decides it. |
+  | `sounding offer` | Hands a finding beyond the question to `millpond land` as a capture of its own (62). The finding is its own excerpt, of kind `ask`, asserted by the sounding, under the key `sounding/<name>/<n>`. |
+  | `sounding ask` | Puts a question only the operator can answer on a card. The session waits for the answer. |
+
+- **A stop check** keeps the session from ending without a conclusion,
+  or a note saying where the next round would start.
+- **A timebox** limits each round. When it runs out, the session
+  concludes with what it knows.
+
+### Deciding a conclusion
+
+The operator decides each conclusion on a card, in sounding's herdr
+plugin, or on crew's rail:
+
+- **Accept** settles the item. millpond keeps the conclusion as the
+  item's record, and each piece of work the conclusion proposes becomes
+  an item of its own, or an entry in crew's plan.
+- **Go on** starts the next round in the same worktree. The conclusion
+  moves to `rounds/<n>.md`, and the operator's notes join the next
+  session's question.
+- **Drop** records the reason and removes the worktree.
+
+A conclusion never becomes a signal. Curation never judges a moved
+signal again (107), and an approval is never asked twice (6). An
+accepted conclusion enters the inbox as the record that settles
+signals, and only offers come back as signals.
+
+### Where questions come from
+
+| Setup | Questions from | Conclusions decided on |
+|---|---|---|
+| On its own | the operator's `/sound` | a card, or sounding's herdr plugin |
+| With millpond | items millpond sends; a key on a headwater release that needs judgment; `/sound` on a decision a meeting left open, its transcript a source | the same, recorded against the item |
+| With crew | crew's planner and design agent, calling `sounding open` as crew calls millpond | crew's rail |
+| With Flywheel | an intent's elaborations, each one a sounding | Flywheel's elaboration types, which write the conclusion into the design book and claims |
+
+### The operator's surfaces
+
+- **The command line:** `sounding open`, `list`, `conclude`, `offer`,
+  `ask`, `accept`, `go-on` and `drop`.
+- **The Claude Code plugin** gives every session `/sound <question>`,
+  which opens a sounding while the session goes on with its own work. A
+  sounding's session gets its question, sources and earlier rounds from
+  a hook at its start, and the stop check at its end. The plugin serves
+  `soundings`, `conclusion`, `accept`, `go_on` and `drop` over MCP, and
+  refuses a sluice submission from a `sounding/*` branch.
+- **The herdr plugin** lists open soundings in the sidebar, each with
+  its round and its state: working, waiting on the operator, or parked.
+  Each sounding has a workspace, with the session's pane and its
+  conclusion beside it. Keys start, open, accept, send back and drop a
+  sounding, and open its conclusion in plannotator for notes.
+- **Two ways to run:** unattended, ending on a card, or with the
+  operator, in a pane beside them as a conversation (`--with-me`).
 
 ## Sources
 
@@ -457,6 +547,7 @@ runs a Flywheel plugin's adapter parts and nothing else of it.
   meeting service.
 - **millpond** keeps `plugins/claude` and `plugins/herdr`. Its built-in
   adapters are commands of its own.
+- **sounding** keeps `plugins/claude` and `plugins/herdr`.
 
 ## On a fleet
 
@@ -489,6 +580,7 @@ swancloud runs every part on the host its list names:
 | The conformance pack: lines in, records expected | flywheel-next | millpond and Flywheel as hosts, every adapter part |
 | Raw banking with a host-qualified pointer, the checks on a capture, and the verbatim check on a reader's excerpt | millpond, from crew's checks | Flywheel, for 217h and 217e |
 | Finding releases and reading their notes | swancloud's release adapter | headwater's lookups and its Flywheel plugin |
+| One question, one session, one conclusion: the question, its rounds and the conclusion's shape | sounding, from crew ADR 0019 | crew, Flywheel's elaborations |
 
 crew's Python uses only the standard library (`code.1`). crew reaches
 signals only through millpond's command line, as it reaches landings
@@ -512,8 +604,13 @@ only through sluice's, and links no crate.
   - **The item record** holds a proposed intent's brief and sends.
   - **The built-in adapters** print the contract (215).
   - **"Plugin"** replaces "package" and "bundle" (228, 284).
+  - **An elaboration runs on sounding:** finishing with deliverables is
+    `conclude`, blocking on a question is `ask`, and an offer is
+    `offer` (58, 62).
 - **millpond's statement**, new: the inbox, the contract's intake, the
   tools, sends, and the three setups.
+- **sounding's statement**, new: the question, the place, the three
+  exits, rounds, and the operator's decision.
 - **crew's record:**
   - each partition's signals live in its inbox, written through
     millpond (`signals.1`);
@@ -522,7 +619,9 @@ only through sluice's, and links no crate.
   - an ADR, "crew calls millpond as it calls sluice";
   - `daily-pass-through-crew` becomes the reader;
   - `curation-and-agenda` writes moves through millpond and turns items
-    into plan entries.
+    into plan entries;
+  - ADR 0019's elaboration becomes "crew calls sounding as it calls
+    millpond".
 - **headwater's statement:**
   - its 33 rulings, among them "lookup" for what the statement calls a
     source;
@@ -544,3 +643,11 @@ only through sluice's, and links no crate.
   cursor costs one wider listing, which the dedupe absorbs.
 - **Attestation**, sluice signing the verdict it lands, is outside this
   design.
+- **A standing sounding**, which stays open and starts a round when a
+  signal on its subject lands, as Flywheel's standing elaborations do.
+- **Where else an accepted conclusion lives.** A repository may keep it
+  in its own record, as crew's kits keep `openspec/explorations/`.
+- **crew's two open records disagree.** ADR 0019 rests an elaboration
+  on an intent and the `new-territory` move, and `curation-and-agenda`
+  leaves intents out and replaces that move with `join`. A sounding
+  sent from an item settles both, once crew's record says so (C6).
