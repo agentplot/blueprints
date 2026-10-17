@@ -17,6 +17,7 @@ exceptions:
   - GitHub
   - Nix
   - moon
+  - flume
   - sluice
   - pinout
   - testledger

@@ -16,6 +16,7 @@ worktrunk
 moon
 devenv
 crew
+flume
 mdBook
 nixpkgs
 gix
