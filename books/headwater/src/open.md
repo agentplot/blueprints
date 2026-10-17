@@ -88,10 +88,8 @@ the questions they belong with; the model answers each in its section
   withdrawn (section 10); the model gives the same mark on the pin.
 - **Into the statement: the range.** Plan step H1 writes in each
   release's mark, inside or outside the range its declaration gives,
-  with the range carried by the dependency description. Where one
-  dependency has several declarations at several ranges (4), a release
-  can be inside one and outside another, and the capture design does
-  not say how the report shows it.
+  with the range carried by the dependency description. Each
+  declaration's range marks the release on its own (4, 26).
 - **Into the statement: the package managers.** Plan step H1 writes in
   each ecosystem's package manager, run read-only in the repository's
   shell, as a source, with deps.dev where none runs.
@@ -222,12 +220,11 @@ the questions they belong with; the model answers each in its section
 - **33. Source or lookup.** The capture design calls what the statement
   calls a source a lookup. Until the ruling lands in the statement, the
   book keeps the statement's word.
-- **A package manager, read-only.** A package manager run in the
-  repository's own shell reads the repository's files and asks the
-  registries it is configured for. The H1 clauses decide how it changes
-  nothing in the repository (5) and sends a registry nothing but
-  identities and versions (37); plan step H5 proves it on recorded
-  package-manager output.
+- **A package manager in the repository's shell** (5). The commands
+  headwater runs only read, but entering a repository's shell can
+  write, as devenv writes its lock. The capture design holds this open
+  too. Plan step H5's suite replays recorded package-manager output,
+  which covers what a registry learns (37).
 
 ## Askers and surfaces
 
@@ -241,11 +238,6 @@ the questions they belong with; the model answers each in its section
   names come with the rulings. The model names `held`, `scan`, `brief`,
   `acknowledge`, `acknowledgements` and `forget`; plan step H4 names
   `scan`, `notes`, `brief`, `ack` and `overview`.
-- **The sounding key.** The capture design lets a release that needs
-  judgment go from headwater's herdr plugin to a sounding. The
-  statement's herdr plugin has one key, which hands a release to a new
-  agent (section 9). Neither plan step H1 nor H7 names the sounding key,
-  so where the statement takes it is open.
 
 ## Releases as captures
 

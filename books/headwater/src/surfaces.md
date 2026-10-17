@@ -76,8 +76,8 @@ the core, as sluice keeps its plugins (section 9), one per host under
 - **The herdr plugin** gives a sidebar row, a popup, and a key that
   hands a release to a new agent in a worktree. A sidebar that asks
   what headwater holds reaches no source however often it redraws
-  (17). A release that needs judgment can go from the plugin to a
-  sounding (`design/capture/design.md`).
+  (17). Where sounding is installed, another key opens a sounding on a
+  release that needs judgment (`design/capture/design.md`).
 - **The Flywheel plugin** holds one part, an adapter that turns each
   release into a capture ([Releases as captures](captures.md)).
 
@@ -97,15 +97,16 @@ In a repository crew runs, the herdr plugin's key hands the release to
 millpond as a capture and starts no agent outside crew's plan
 ([Releases as captures](captures.md#in-a-repository-crew-runs)).
 
-A release that needs judgment, such as a major version or notes that
-announce breaking changes, can go from the herdr plugin to a
-[sounding](../sounding/setups.html) instead. The sounding works it as
-one question in a worktree of its own and ends on a conclusion the
-operator decides ([Deciding a conclusion](../sounding/deciding.html)).
+Where sounding is installed, a release that needs judgment can go from
+the herdr plugin's key to a [sounding](../sounding/setups.html) instead,
+such as a major version or notes that announce breaking changes. The
+release's brief is the sounding's source. The plugin hands a brief on,
+as any surface may (36). The sounding works the release as one
+question in a worktree of its own and ends on a conclusion the operator
+decides ([Deciding a conclusion](../sounding/deciding.html)).
 The person at the key decides which release needs judgment: headwater
 judges no release (11) and acts on none (36)
 (`design/capture/design.md`).
 
-Still to rule: question 3, the names of the questions a surface asks,
-and where the statement takes the sounding key, in
-[Open questions](open.md#askers-and-surfaces).
+Still to rule: question 3 and the names of the questions a surface
+asks, in [Open questions](open.md#askers-and-surfaces).

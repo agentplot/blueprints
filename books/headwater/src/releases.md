@@ -37,10 +37,14 @@ The capture design settles one more mark on each release, and the
 statement takes it at plan step H1 (`design/capture/design.md`).
 headwater marks each release inside or outside the range its
 declaration gives, such as `^1.4` or `>=1.4,<2`, which the dependency
-description carries. The package manager takes a
-release inside the range by changing only the lockfile. A release
-outside it changes the manifest, as a major release does. headwater
-reports both, so a major release is never hidden (8).
+description carries. The package manager takes a release inside the
+range by changing only the lockfile. A release outside it changes the
+manifest, as a major release does. headwater reports both, so a major
+release is never hidden (8).
+
+Each declaration's range marks the release on its own. A release of a
+dependency declared in two places can be inside one range and outside
+the other, and the brief names both declarations (4, 26).
 
 ## The pin alone decides
 

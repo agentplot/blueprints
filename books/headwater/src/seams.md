@@ -129,5 +129,5 @@ headwater is one static binary, written in Rust as sluice is, and gives
 every answer as JSON on request (section 9).
 
 Still to rule: questions 4, 11, 32 and 33, and how a package manager
-keeps (5) and (37), in
+in the repository's shell keeps (5), in
 [Open questions](open.md#the-core-and-its-seams).
