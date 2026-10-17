@@ -219,8 +219,8 @@ the questions they belong with; the model answers each in its section
 ## Releases as captures
 
 - **Into the statement.** Plan step H1 writes three things in after D1
-  and D2: the key a watch-list entry gets, the claims on a watch-list
-  entry, and that the Flywheel plugin prints the capture contract. Until
+  and D2. They are the key a watch-list entry gets, the files a bump of
+  it moves, and the Flywheel plugin printing the capture contract. Until
   then the chapter describes `design/capture/design.md`.
 - **The capture design's decisions.** Plan step D2 has the operator
   accept or change the design's decisions. Two of them place headwater:
@@ -233,9 +233,10 @@ the questions they belong with; the model answers each in its section
   orders tags by the watch list's tag pattern, and compares calendar
   versions where a watch list says so (C.3). Yet the order takes only an
   identity and two versions, and the listing only an identity (6, 43,
-  44). A change to the watch list at another commit would
-  change the order, against (45), and the authors never decide that a
+  44). A change to the watch list at another commit would change the
+  order, against (45), and the authors never decide that a
   release is older than it is.
-- **Claims.** A watch-list entry's claims, the files a bump moves,
-  enter the statement in step H1 with its key. Questions 7, 8 and 14
-  bear on the watch list too.
+- **The files a bump moves.** Plan step H1 writes them into the
+  statement with a watch-list entry's key; the plan calls them claims,
+  a word Flywheel uses for something else. Questions 7, 8 and 14 bear
+  on the watch list too.

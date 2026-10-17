@@ -2,8 +2,15 @@
 
 The words of the design, each defined once. The statement's vocabulary
 (section 3) is the binding copy of the words it defines, and its actors
-table (section 2) of the actors. The capture words come from
-`design/capture/design.md`, and millpond's book defines them in full.
+table (section 2) of the actors. The words of the capture design and of
+crew are [millpond's book](../millpond/glossary.html)'s, word for word;
+a number after "Flywheel's" in them cites Flywheel's statement.
+
+millpond's book uses three of the statement's words for other things.
+A capture's **source** names where its event came from, such as
+`release`. An item's **brief** is the text its work starts from. An
+**unread** capture waits for a reader. In this book each keeps the
+statement's meaning.
 
 ## The statement's words
 
@@ -53,17 +60,29 @@ table (section 2) of the actors. The capture words come from
 | **binding** | the profiles named for each seam: any number of descriptions and sources, and exactly one store (51) |
 | **conformance suite** | the one set of scenarios that holds every profile to Parts A and B, each citing the clauses it exercises (52) |
 | **Package URL** | the standard name of a package across ecosystems (ECMA-427), such as `pkg:npm/react`; with a version, a release's identity (C.1) |
-| **watch list** | a dependency description that names each dependency's upstream repository, tag pattern, pin, tier, name and claims (C.2) |
-| **claims** | the files a bump of a watch-list entry moves |
-| **plugin** | the installable unit of a host: Claude Code, herdr or Flywheel; headwater keeps one per host under `plugins/` |
+| **watch list** | a dependency description that names each dependency's upstream repository, tag pattern, pin, tier, name and the files a bump moves (C.2) |
+| **millpond** | the inbox: it runs adapters, keeps captures and signals, serves the tools curation works through, and sends an item to a worktree ([its book](../millpond/)) |
 
-## Capture words
+## Words from millpond's book
 
 | word | meaning |
 |---|---|
-| **capture** | the record of one event outside a repository, kept once in an inbox under its key |
-| **adapter part** | the part of a Flywheel plugin that lists one source's events and prints each as a capture line; headwater's is `headwater capture` |
-| **key** | a capture's identity: the same event gets the same key from every host and every run |
-| **excerpt** | the quote a capture carries when it is its own excerpt, as a release's notes are |
-| **inbox** | where millpond keeps captures, signals, moves and items: a git repository, or a branch in one |
-| **millpond** | the inbox's tool: it runs adapters, keeps captures and signals, and serves curation ([its book](../millpond/)) |
+| **adapter** | a program that knows one source: it lists the source's events, keys each one, fetches the raw material, marks a capture that is its own excerpt, and prints contract lines (Flywheel's 115) |
+| **adapter part** | a plugin's part of the adapter kind: a command, the shape of its configuration, and the secrets it needs (Flywheel's 228) |
+| **bolt** | in crew, a team's branch of work: its units and chores land on it, and it lands on the shared branch |
+| **capture** | the record of one source event: its key, its source, its event date and a pointer to its raw material; the same event captured twice is one capture (Flywheel's 111) |
+| **chore** | in crew, a piece of work that needs no design of its own, such as a tool's bump; a `route` move offers one |
+| **curation** | a Claude session that proposes one move per signal, in batches, through millpond's tools; the operator accepts or changes each batch (Flywheel's 116) |
+| **dedupe** | millpond's lookup of each capture's key in every capture the inbox holds, so a key lands once |
+| **excerpt** | the verbatim text a signal quotes from its source, with its position (Flywheel's 113) |
+| **inbox** | a git repository, or a branch in one, holding captures, signals, moves and items in Flywheel's record formats |
+| **item** | the unit of work: the signals curation joined, one or many, with its brief and its sends; Flywheel's proposed intent (Flywheel's 109) |
+| **key** | a source event's identity, the same from every host and every run (Flywheel's 111) |
+| **move** | the one standing decision on a signal: drop, answered, challenge, join, attach or route, each with a stated consequence (Flywheel's 107, 116) |
+| **own excerpt** | a capture is its own excerpt when its line carries the signal's fields, so millpond writes its one signal as it lands; a release is one |
+| **planner** | crew's agent that orders items across teams and turns each into a chore or a unit |
+| **plugin** | the installable unit in every host, holding parts; Flywheel's statement calls it a package, and a named set of parts a bundle (Flywheel's 228, 284) |
+| **reader** | a Claude session that turns an unread capture into signals with millpond's `read` tool |
+| **route** | the move that offers a chore, which becomes an item of one, or an ask, which millpond records |
+| **signal** | one assertion from a capture: its kind, who asserted it, its subjects, the assertion in a sentence, the verbatim excerpt with its position, and the claims it argues with; never changed once written (Flywheel's 113) |
+| **unit** | in crew, one designed piece of a team's work, landed on its bolt |

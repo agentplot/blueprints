@@ -3,9 +3,11 @@
 Some repositories keep what they hear as work to curate. headwater feeds
 them through its Flywheel plugin, whose one part is an adapter that
 turns each release into a capture (section 9). millpond keeps captures
-in an inbox, and its book defines the capture contract, the inbox and
-curation: [millpond](../millpond/). What follows is what headwater puts
-into each capture.
+in an inbox, and [millpond's book](../millpond/) defines
+[the capture contract](../millpond/contract.html),
+[the inbox](../millpond/inbox.html) and
+[curation](../millpond/curation.html). What follows is what headwater
+puts into each capture.
 
 ## A recorder like any other
 
@@ -32,8 +34,8 @@ reader session reads it into signals.
 
 ## The key
 
-A capture's key is the identity of the event it records: every host and
-every run give the same event the same key. headwater keys a release in
+A capture's [key](../millpond/contract.html#the-key) is a source
+event's identity, the same from every host and every run. headwater keys a release in
 one of two ways:
 
 - an entry of a watch list keys as `release/<name>/<version>`, under the
@@ -43,7 +45,8 @@ one of two ways:
   `release/<type>/<namespace>/<name>/<version>`, from its Package URL.
 
 Because the pin alone decides what is new (9), the adapter prints a
-release at every run until the pin moves, and millpond's dedupe by key
+release at every run until the pin moves, and
+[millpond's dedupe](../millpond/landing.html#a-capture-landed-twice)
 lands it once (S6).
 
 <figure class="hw">
@@ -105,11 +108,12 @@ In a repository crew runs, a bump comes only as a chore crew's planner
 makes from an item. There the herdr plugin's fix key hands the release
 to millpond as a capture, and no agent starts outside crew's plan
 (`design/capture/design.md`). The release then reaches a landed bump by
-the path every capture takes. Curation joins its signal into an item,
-and the planner turns the item into a chore. A team bumps the
+the path every capture takes. Curation routes its signal into an item,
+and the planner proposes the chore. A team bumps the
 dependency with headwater's brief in hand, and sluice lands the
 change. The next scan no longer reports the release, because the pin
-moved, and nobody wrote an acknowledgement.
+moved, and nobody wrote an acknowledgement
+([millpond's account](../millpond/items.html#a-release-from-capture-to-landed-bump)).
 
 ## Where the adapter lives
 
@@ -118,6 +122,6 @@ lives in `plugins/flywheel` beside headwater's core. millpond runs it
 like any other adapter part, on the schedule its inbox's settings give
 it (`design/capture/design.md`).
 
-Not yet in the statement: the key, a watch-list entry's claims and the
-capture lines, which plan step H1 writes in. See
+Not yet in the statement: the key, the files a bump of a watch-list
+entry moves, and the capture lines, which plan step H1 writes in. See
 [Open questions](open.md#releases-as-captures).

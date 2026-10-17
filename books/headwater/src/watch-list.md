@@ -10,8 +10,8 @@ them.
 The watch list is a dependency description (C.2): a file naming each
 dependency's upstream repository, its tag pattern, its pin and its
 tier. headwater reads it as it reads any other declaration, and the pin
-is what the file gives. Each entry also carries a name and its claims,
-the files a bump of it moves (`design/capture/design.md`).
+is what the file gives. Each entry also carries a name and the files a
+bump moves (`design/capture/design.md`).
 
 | an entry holds | for example |
 |---|---|
@@ -20,7 +20,7 @@ the files a bump of it moves (`design/capture/design.md`).
 | its tag pattern | the shape of the tool's release tags |
 | its pin | `2026.9.18` |
 | its tier | the tier it belongs to |
-| its claims | `packages/mise/default.nix` |
+| the files a bump moves | `packages/mise/default.nix` |
 
 A watch-list entry's identity is the Package URL of its upstream
 repository, `pkg:github/jdx/mise` (C.1). GitHub releases lists its
@@ -88,5 +88,5 @@ adapter retires. Its captures' keys carry on unchanged, because a
 watch-list entry keys as that adapter always has.
 
 Still to rule: question 10, with 7, 8 and 14 from other chapters; the
-claims and the key enter the statement in plan step H1. See
+files a bump moves and the key enter the statement in plan step H1. See
 [Open questions](open.md#the-watch-list).
