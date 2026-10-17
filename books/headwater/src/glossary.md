@@ -4,7 +4,8 @@ The words of the design, each defined once. The statement's vocabulary
 (section 3) is the binding copy of the words it defines, and its actors
 table (section 2) of the actors. The words of the capture design and of
 crew are [millpond's book](../millpond/glossary.html)'s, word for word,
-and a sounding's words are [sounding's book](../sounding/glossary.html)'s.
+and the words for a sounding and for flume are
+[sounding's book](../sounding/glossary.html)'s.
 A number after "Flywheel's" in them cites Flywheel's statement.
 
 millpond's book uses three of the statement's words for other things.
@@ -63,7 +64,7 @@ statement's meaning.
 | **Package URL** | the standard name of a package across ecosystems (ECMA-427), such as `pkg:npm/react`; with a version, a release's identity (C.1) |
 | **range** | what a declaration says of the versions it takes, such as `^1.4` or `>=1.4,<2`; a release inside it needs only the lockfile changed, one outside it a change to the manifest (`design/capture/design.md`) |
 | **watch list** | a dependency description that names each dependency's upstream repository, tag pattern, pin, tier, name and the files a bump moves (C.2) |
-| **millpond** | the inbox: it runs adapters, keeps captures and signals, serves the tools curation works through, and sends an item to a worktree ([its book](../millpond/)) |
+| **millpond** | the inbox: it runs adapters, keeps captures and signals, serves the tools curation works through, and sends an item on ([its book](../millpond/)) |
 
 ## Words from millpond's book
 
@@ -94,4 +95,5 @@ statement's meaning.
 | word | meaning |
 |---|---|
 | **conclusion** | `conclusion.md`: the answer, its evidence, what it would change, the work it proposes, and what stays open; the operator decides it |
+| **flume** | the tool that launches and tracks one agent in one worktree through a kind's stages, on the host it runs on, and tidies the place when the work lands or is dropped ([its book](../flume/)) |
 | **sounding** | one question, worked by one session in one place, ending on one conclusion; also the tool that runs them ([its book](../sounding/)) |

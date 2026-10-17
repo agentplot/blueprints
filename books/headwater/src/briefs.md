@@ -58,8 +58,9 @@ and the releases it reaches leave every report with no acknowledgement
 written (9, S4).
 
 A surface hands a brief on. The Claude Code plugin hands it to a
-background agent in a worktree of its own, and the herdr plugin's key
-starts a new agent in a worktree with it (section 9). In a repository
+background agent in a worktree of its own (section 9). The herdr
+plugin's key hands it to [flume](../flume/), which starts a new agent in
+a worktree with it (section 9, `design/capture/design.md`). In a repository
 crew runs, a bump comes only through crew's plan, and the herdr key
 hands the release to millpond instead; [Releases as
 captures](captures.md) follows that path.

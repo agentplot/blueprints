@@ -74,7 +74,10 @@ the core, as sluice keeps its plugins (section 9), one per host under
   releases in its favorites tier, with their notes, and nothing in the
   repository changes (S1).
 - **The herdr plugin** gives a sidebar row, a popup, and a key that
-  hands a release to a new agent in a worktree. A sidebar that asks
+  hands a release to a new agent in a worktree. The key hands the
+  release's brief to [flume](../flume/) as a fix, and flume starts the
+  agent that makes the bump and submits it to sluice
+  (`design/capture/design.md`). A sidebar that asks
   what headwater holds reaches no source however often it redraws
   (17). Where sounding is installed, another key opens a sounding on a
   release that needs judgment (`design/capture/design.md`).
