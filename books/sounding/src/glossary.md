@@ -83,14 +83,14 @@ word for word.
 | **item** | the unit of work: the signals curation joined, one or many, with its brief and its sends; Flywheel's proposed intent (109) |
 | **join** | the move that makes an item from signals, or grows one still proposed |
 | **key** | a source event's identity, the same from every host and every run (111) |
-| **kind** | a signal's type, one of constraint, ask, question, commitment and reaction (113) |
+| **kind** | a signal's type, one of constraint, ask, question, commitment and reaction (113); the kind a send names, a fix or a change, is flume's word for a list of stages |
 | **move** | the one standing decision on a signal: drop, answered, challenge, join, attach or route, each with a stated consequence (107, 116) |
 | **operator** | the person who accepts or changes each batch of moves, sends items, and decides each conclusion; on its own, the user |
 | **own excerpt** | a capture is its own excerpt when its line carries the signal's fields, so millpond writes its one signal as it lands; a release is one |
 | **planner** | crew's agent that orders items across teams and turns each into a chore or a unit |
 | **plugin** | the installable unit in every host, holding parts; Flywheel's statement calls it a package, and a named set of parts a bundle (228, 284) |
 | **raw material** | the event as its source served it, whole: notes, a transcript, a log; the adapter writes it as raw files |
-| **send** | millpond giving one item to one worktree, with its brief and an agent, or an item that asks a question to a sounding |
+| **send** | millpond giving one item to flume, as a fix or a change with its brief, or an item that asks a question to a sounding |
 | **signal** | one assertion from a capture: its kind, who asserted it, its subjects, the assertion in a sentence, the verbatim excerpt with its position, and the claims it argues with; never changed once written (113) |
 | **unit** | in crew, one designed piece of a team's work, landed on its bolt |
 | **unmoved** | a signal with no move yet |
