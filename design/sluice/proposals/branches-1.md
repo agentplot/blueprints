@@ -134,7 +134,7 @@ same expectation, and everything above holds on one host.
 
 | profile | make / remove |
 |---|---|
-| **branch**: `sluice branch` | `sluice branch create <branch> --from <branch>` makes it at the other branch's current revision and prints that revision (104); `sluice branch delete <branch> --into <branch>` removes it (105), `--into` naming `main` when omitted; each prints JSON with `--json`, exits 0 when done and 1 with the refusal named |
+| **branch**: `sluice branch` | `sluice branch create <branch> --from <branch>` makes it at the other branch's current revision and prints that revision (104); `sluice branch delete <branch> --into <branch>` removes it (105), `--into` naming `main` when omitted; each prints JSON with `--json`, exits 0 when done, 1 when a branch it names does not exist and 2 on a refusal, naming it |
 
 ## For the caller
 
