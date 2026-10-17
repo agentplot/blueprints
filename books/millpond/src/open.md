@@ -7,8 +7,8 @@ the design, and the chapter that rests on it is rewritten whole.
 ## millpond's statement
 
 millpond's statement of invariants, `design/millpond/requirements.md`,
-is to come. It is written from the capture design once the decisions
-below are ruled. It states the inbox, the contract's intake, the
+is being written from the capture design (plan step P1). It states the
+inbox, the contract's intake, the
 seven steps, the reader and curation tools, moves, items and sends, the
 three setups, and what millpond never does. A fresh model then
 reconstructs millpond from the statement alone, and the operator rules
@@ -21,7 +21,7 @@ which the contract and the inbox are to enter as clauses of their own.
 
 ## Decisions awaiting a ruling
 
-The capture design's eleven decisions await the operator's ruling
+The capture design's twelve decisions await the operator's ruling
 (`design/capture/plan.md`, step D2). Each chapter states them as the
 design has them.
 
@@ -66,6 +66,12 @@ design has them.
     that asks a question, an accepted conclusion is the item's record,
     and only a finding beyond the question comes back as a capture
     ([Items and sends](items.md#a-question-sent-to-a-sounding)).
+12. flume is a standalone tool that launches and tracks one agent in
+    one worktree through a kind's stages on the host it runs on, taken
+    from crew's places and stages. millpond's send, headwater's fix
+    key, sounding and crew call it; millpond keeps the item's record
+    and flume the live state of each place
+    ([Items and sends](items.md#a-send)).
 
 ## Held by the design
 
@@ -75,10 +81,21 @@ The capture design's own Open section holds these questions:
   signal could acknowledge the release in headwater, so its plugins
   stop showing it. headwater's ruling 24 says a recorder never
   acknowledges.
+- **A package manager in the repository's shell** and headwater 5,
+  which says reading a repository changes nothing in it. The commands
+  headwater runs only read, but entering a repository's shell can
+  write, as devenv writes its lock.
 - **Where a cursor lives** when a single-host role moves hosts. A lost
   cursor costs one wider listing, which the dedupe absorbs.
-- **Attestation**, sluice signing the verdict it lands, is outside the
-  capture design.
+- **Attestation in sluice:** sluice signing the verdict it lands, with
+  an executor vouched for from outside the team that ran it.
+- **How a repository declares its kinds** and their prompts, and how
+  crew's stage prompts move into that form.
+- **sounding's own details:** the timebox's length and who sets it, how
+  a sounding is named, where its files sit and whether they are
+  committed, what parks a sounding and resumes it, what accept and drop
+  do to its branch, and the fields an offer's capture carries.
+  sounding's statement rules them.
 - **A standing sounding**, which stays open and starts a round when a
   signal on its subject lands, as Flywheel's standing elaborations do.
 - **Where else an accepted conclusion lives.** A repository may keep it
@@ -87,6 +104,14 @@ The capture design's own Open section holds these questions:
   on an intent and the `new-territory` move, and `curation-and-agenda`
   leaves intents out and replaces that move with `join`. A sounding
   sent from an item settles both, once crew's record says so.
+
+## The family's storage
+
+Plan step D4 sets every piece of state each tool keeps against
+Flywheel's state repository. The aim is that moving from a tool on its
+own to crew, and then to Flywheel, moves no data. Its ruling sets the storage
+profile millpond's statement names, which covers what
+[The inbox](inbox.md) keeps in git and on the host.
 
 ## Left to the statement
 
@@ -97,4 +122,5 @@ statement or to flywheel-next's crates:
 - the item record's format and fields, beyond its signals, brief and
   sends (114);
 - the key the meeting file gives a transcript;
-- how a send names the branch it makes for an item.
+- the name a send hands flume for an item, from which flume names the
+  branch.

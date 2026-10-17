@@ -18,7 +18,7 @@ millpond serves its tools over MCP as `millpond mcp`:
 | `moves` | Writes a batch of moves in one commit. |
 | `items` | Lists items with their signals, briefs and sends. |
 | `brief` | Writes an item's brief. |
-| `send` | Sends an item to a worktree, or an item that asks a question to a sounding. |
+| `send` | Sends an item to flume as a fix or a change, or an item that asks a question to a sounding. |
 
 A session reaches the inbox through these tools and nothing else. It
 never edits a record file, so every write passes millpond's checks and

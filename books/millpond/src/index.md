@@ -6,13 +6,14 @@ millpond is the inbox those events reach. A program notices each event
 and hands it to millpond as a capture. millpond records the capture
 once, turns it into signals, and serves the tools a curation session
 gives each signal its move through. Curation joins signals into items,
-and millpond passes each item on, to one worktree or into crew's plan.
-sluice lands the work an item becomes. An item that asks a question
+and millpond passes each item on: flume launches its work in one
+worktree, or crew's plan takes it. sluice lands the work an item
+becomes. An item that asks a question
 goes to a sounding, which ends on a conclusion the operator accepts.
 
 <figure class="mp-fig">
 <div class="mp-scroll">
-<svg viewBox="0 0 720 404" role="img" aria-label="headwater, eddy and the folder drop print capture lines into millpond, the inbox. millpond sends an item to one worktree, sends an item that asks a question to a sounding, or hands an item to crew's plan; sluice lands the work of a worktree or of crew's teams. Flywheel is later built on the same crates as millpond and reads the same inboxes.">
+<svg viewBox="0 0 720 404" role="img" aria-label="headwater, eddy and the folder drop print capture lines into millpond, the inbox. millpond sends an item through flume to one worktree, sends an item that asks a question to a sounding, or hands an item to crew's plan; sluice lands the work of a worktree or of crew's teams. Flywheel is later built on the same crates as millpond and reads the same inboxes.">
 <defs>
 <marker id="mp-i-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="mp-hd"/></marker>
 <marker id="mp-i-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="mp-hd-a"/></marker>
@@ -51,8 +52,8 @@ goes to a sounding, which ends on a conclusion the operator accepts.
 <text x="220" y="294" class="mp-ts">or a branch in one</text>
 <rect x="430" y="36" width="140" height="84" rx="9" class="mp-bx"/>
 <text x="444" y="60" class="mp-t">One worktree</text>
-<text x="444" y="80" class="mp-ts">an agent and</text>
-<text x="444" y="98" class="mp-ts">the item's brief</text>
+<text x="444" y="80" class="mp-ts">flume starts an</text>
+<text x="444" y="98" class="mp-ts">agent on the brief</text>
 <rect x="430" y="136" width="140" height="84" rx="9" class="mp-bx"/>
 <text x="444" y="160" class="mp-t">A sounding</text>
 <text x="444" y="180" class="mp-ts">one question,</text>
@@ -79,7 +80,7 @@ goes to a sounding, which ends on a conclusion the operator accepts.
 <text x="220" y="380" class="mp-ts">built on millpond's crates; reads the same inboxes</text>
 </svg>
 </div>
-<figcaption>headwater and eddy each stand alone, and each carries an adapter part that prints capture lines into millpond. The folder drop needs no tool of its own, so it ships inside millpond. millpond sends an item to one worktree, or to a sounding when it asks a question, or hands it to crew's plan. sluice lands the work of a worktree and of crew's teams.</figcaption>
+<figcaption>headwater and eddy each stand alone, and each carries an adapter part that prints capture lines into millpond. The folder drop needs no tool of its own, so it ships inside millpond. millpond sends an item through flume to one worktree, or to a sounding when it asks a question, or hands it to crew's plan. sluice lands the work of a worktree and of crew's teams.</figcaption>
 </figure>
 
 ## Why it exists
@@ -123,8 +124,9 @@ items. A model runs in two places only, a reader and a curation
 session, and each is a Claude session working through millpond's tools.
 Ordering items across teams is crew's planner today and Flywheel's
 later. millpond reads a source only through an adapter, its own
-built-in ones included. It works no question itself, since a sounding
-does, and it tests and lands nothing, since sluice does.
+built-in ones included. It starts no agent, since flume does; it works
+no question, since a sounding does; and it tests and lands nothing,
+since sluice does.
 
 ## The tools beside it
 
@@ -132,13 +134,16 @@ does, and it tests and lands nothing, since sluice does.
   declares. Its book is at [../headwater/](../headwater/).
 - **eddy** lists recorded meetings from each meeting service. Its book
   is at [../eddy/](../eddy/).
+- **flume** launches and tracks one agent in one worktree through a
+  kind's stages, and tidies the place when the work lands or is
+  dropped. Its book is at [../flume/](../flume/).
 - **sounding** works one question in one session, in a worktree of its
   own, and ends on a conclusion the operator accepts, sends back for
   another round, or drops. Its book is at [../sounding/](../sounding/).
 - **sluice** tests a change as merged and lands it. Its book is at
   [../sluice/](../sluice/).
-- **crew** runs teams, plans and bolts. It calls millpond's command
-  line as it calls sluice's.
+- **crew** runs teams, plans and bolts. It calls millpond's, flume's
+  and sluice's command lines.
 - **Flywheel** is built later on the same crates as millpond and reads
   the same inboxes. crew becomes it (crew ADR 0026).
 

@@ -29,12 +29,13 @@ Flywheel's statement, whose record formats and moves millpond keeps.
 | **event date** | `event_at`: when the event happened, never when it was captured (118) |
 | **excerpt** | the verbatim text a signal quotes from its source, with its position (113) |
 | **flywheel branch** | the branch of crew's state repository that holds a partition's signals; it becomes the partition's inbox |
+| **flume** | the tool that launches and tracks one agent in one worktree through a kind's stages, on the host it runs on, and tidies the place when the work lands or is dropped ([its book](../flume/)) |
 | **folder drop** | the built-in adapter that makes one capture of each file dropped in a watched folder |
 | **inbox** | a git repository, or a branch in one, holding captures, signals, moves and items in Flywheel's record formats |
 | **item** | the unit of work: the signals curation joined, one or many, with its brief and its sends; Flywheel's proposed intent (109) |
 | **join** | the move that makes an item from signals, or grows one still proposed |
 | **key** | a source event's identity, the same from every host and every run (111) |
-| **kind** | a signal's type, one of constraint, ask, question, commitment and reaction (113) |
+| **kind** | a signal's type, one of constraint, ask, question, commitment and reaction (113); the kind a send names, a fix or a change, is flume's word for a list of stages |
 | **meeting file** | the built-in adapter for a meeting's transcript file |
 | **move** | the one standing decision on a signal: drop, answered, challenge, join, attach or route, each with a stated consequence (107, 116) |
 | **operator** | the person who accepts or changes each batch of moves, sends items, and decides each conclusion; on its own, the user |
@@ -51,7 +52,7 @@ Flywheel's statement, whose record formats and moves millpond keeps.
 | **route** | the move that offers a chore, which becomes an item of one, or an ask, which millpond records |
 | **run** | one start of an adapter part by `millpond run`, complete when it ends in `done` |
 | **schedule** | when a part runs: five-field cron, a missed run caught up once |
-| **send** | millpond giving one item to one worktree, with its brief and an agent, or an item that asks a question to a sounding |
+| **send** | millpond giving one item to flume, as a fix or a change with its brief, or an item that asks a question to a sounding |
 | **settings** | `millpond.toml` at the inbox's root: its parts, its cut, its reader command, and where items go |
 | **setup** | one of the three ways millpond runs: on its own, with crew, or with Flywheel |
 | **signal** | one assertion from a capture: its kind, who asserted it, its subjects, the assertion in a sentence, the verbatim excerpt with its position, and the claims it argues with; never changed once written (113) |

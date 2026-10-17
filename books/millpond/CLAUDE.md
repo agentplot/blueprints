@@ -11,8 +11,8 @@ cite its clauses as the statement's.
 - Use the design's terms exactly as `design.md` defines them, so this
   glossary agrees with headwater's and eddy's books. This book owns the
   capture contract, the inbox, curation and items; it links to
-  `../headwater/` for releases, `../eddy/` for meetings and
-  `../sounding/` for questions.
+  `../headwater/` for releases, `../eddy/` for meetings,
+  `../sounding/` for questions and `../flume/` for launching.
 - Write to `books/VOICE.md`. Plain prose, no em dashes.
 - A figure is inline SVG inside one `<figure class="mp-fig">` block
   with no blank line in it, since a blank line ends the HTML block.

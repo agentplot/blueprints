@@ -11,7 +11,8 @@ it.
 | An adapter | One source. It lists the source's events, keys each one, fetches the raw material, and marks a capture that is its own excerpt. | Writes records, keeps a list of what it reported, cuts an excerpt, or reads a capture into signals (115). |
 | headwater | Releases and advisories for what a repository declares. It stands alone with its Claude Code and herdr plugins, and its Flywheel plugin holds an adapter part. | Knows which inbox records its releases. |
 | eddy | Recorded meetings across meeting services, with a part per service. It stands alone as headwater does. | Reads a meeting into signals. |
-| millpond | Runs adapters and takes the capture contract. Dedupes by key, banks raw material, and writes each capture, plus the one signal of a capture that is its own excerpt. Keeps the inbox, checks a reader's excerpts, writes moves and items, sends an item to a worktree, and records each run. | Judges what a capture says, or plans across items. |
+| millpond | Runs adapters and takes the capture contract. Dedupes by key, banks raw material, and writes each capture, plus the one signal of a capture that is its own excerpt. Keeps the inbox, checks a reader's excerpts, writes moves and items, records each send and its outcome, and records each run. | Judges what a capture says, starts an agent, or plans across items. |
+| flume | Places on the host it runs on: makes a worktree ready, starts each stage's agent in it with its prompt confirmed, moves on when the stage's deliverable exists, and tidies the place. Reports each place's state. | Decides what to launch, plans across items, or lands anything itself. |
 | A reader, a session | Reads a capture that is not its own excerpt into signals, through millpond (113, 217e). | Lists a source. |
 | Curation, a session | Proposes one move per signal, in batches, through millpond's tools (116). | Writes captures or signals. |
 | sounding | One question in one session, in a worktree of its own, ending on a conclusion. It offers each finding beyond its question to millpond as a capture. | Lands code, writes the inbox except through millpond, or plans across items. |
@@ -93,6 +94,7 @@ it.
 | Raw banking with a host-qualified pointer, the checks on a capture, and the verbatim check on a reader's excerpt | millpond, from crew's checks | Flywheel, for 217h and 217e |
 | Finding releases and reading their notes | swancloud's release adapter | headwater's lookups and its Flywheel plugin |
 | One question, one session, one conclusion: the question, its rounds and the conclusion's shape | sounding, from crew ADR 0019 | crew, Flywheel's elaborations |
+| Places, a fresh agent per stage, prompt delivery, stages that end on their deliverable, and tidying | flume, from crew's `teams.2`–`4`, `teams.11`, `teams.15` and `plan.9`, `10`, `12`, `17` | millpond, headwater, sounding, crew |
 
 The conformance pack is how a part proves it keeps the contract: a set
 of contract lines and the records a host must write from them, with

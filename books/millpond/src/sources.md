@@ -102,9 +102,9 @@ drop takes the rest.
 
 A sounding works one question, and a finding beyond that question is
 not its to answer. `sounding offer` hands the finding to
-`millpond land` as a capture of its own (62). The finding is its own
-excerpt, of kind `ask`, asserted by the sounding, under the key
-`sounding/<name>/<n>`. From there it takes the same path as any other
+`millpond land` as a capture of its own (62), and the session goes on
+(58). The finding is its own excerpt, of kind `ask`, asserted by the
+sounding, under the key `sounding/<name>/<n>`, one key per offer. From there it takes the same path as any other
 capture. [sounding's book](../sounding/) holds the rest.
 
 ## Sources already built

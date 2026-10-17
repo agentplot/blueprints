@@ -8,7 +8,7 @@ millpond runs in three setups, and all three use the same inbox files.
 | **Host** | `millpond tick` on a timer | millpond, called by crew and the fleet's timers | Flywheel's host, on the same crates |
 | **Inbox** | a git repository of the user's own | the partition's flywheel branch in crew's state repository | the instance's state repository, the same files |
 | **Curation** | a Claude session through millpond's tools; the user accepts | crew's curator through the same tools; the operator decides per item on crew's rail (109) | Flywheel's curation session |
-| **Work** | an item sent to one worktree, landed by sluice | the planner's chores and units, built by a team, landed by sluice | Flywheel's units and bolts, landed by sluice |
+| **Work** | an item sent through flume to one worktree, landed by sluice | the planner's chores and units, each stage launched through flume, landed by sluice | Flywheel's units and bolts, landed by sluice |
 
 Going from one setup to the next changes the host and the curator. The
 adapters and the inbox stay put, so nothing is captured twice and
@@ -19,14 +19,14 @@ Flywheel imports nothing when it takes over.
 The inbox is a git repository of the user's own, and one timer on the
 host runs `millpond tick`. The user curates in a Claude Code session
 with millpond's plugin, accepts or changes each batch, and sends items
-to worktrees from the session or from herdr. Each send's agent submits
-through sluice.
+from the session or from herdr. flume starts each send's agent in a
+worktree, and the work submits through sluice.
 
 ## With crew
 
 The inbox is a partition's flywheel branch in crew's state repository.
-crew calls millpond's command line as it calls sluice's, and links no
-crate: crew's Python uses only the standard library (`code.1`).
+crew calls millpond's, flume's and sluice's command lines, and links
+no crate: crew's Python uses only the standard library (`code.1`).
 
 - `crew signal` writes the findings of crew's agents and the operator
   through millpond.

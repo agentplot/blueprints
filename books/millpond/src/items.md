@@ -13,7 +13,7 @@ settle a signal:
 
 <figure class="mp-fig">
 <div class="mp-scroll">
-<svg viewBox="0 0 720 360" role="img" aria-label="Each signal takes one move. Drop, answered and challenge settle it. Join, attach and route put it on an item of one signal or many. The inbox's settings send an item to one worktree, where an agent works from its brief on a branch named for it, or hand it to crew's planner, which turns items into chores and units across teams. sluice lands the work either way, and millpond writes a worktree's landing against the item from sluice's record. An item that asks a question goes to a sounding, and the work its accepted conclusion proposes comes back as new items.">
+<svg viewBox="0 0 720 360" role="img" aria-label="Each signal takes one move. Drop, answered and challenge settle it. Join, attach and route put it on an item of one signal or many. The inbox's settings send an item through flume to one worktree, where an agent works from its brief, or hand it to crew's planner, which turns items into chores and units across teams. sluice lands the work either way, and millpond writes a worktree's landing against the item from sluice's record. An item that asks a question goes to a sounding, and the work its accepted conclusion proposes comes back as new items.">
 <defs>
 <marker id="mp-it-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="mp-hd"/></marker>
 <marker id="mp-it-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="mp-hd-a"/></marker>
@@ -35,7 +35,7 @@ settle a signal:
 <path d="M360,204 L380,204 L380,212 L396,212" class="mp-ar" marker-end="url(#mp-it-m)"/>
 <rect x="400" y="60" width="160" height="72" rx="9" class="mp-bx"/>
 <text x="414" y="84" class="mp-t">One worktree</text>
-<text x="414" y="104" class="mp-ts">a branch, the brief,</text>
+<text x="414" y="104" class="mp-ts">flume: the brief</text>
 <text x="414" y="120" class="mp-ts">and an agent</text>
 <rect x="400" y="176" width="160" height="72" rx="9" class="mp-bx"/>
 <text x="414" y="200" class="mp-t">crew's planner</text>
@@ -59,7 +59,7 @@ settle a signal:
 <text x="36" y="316" class="mp-ts">work, new items</text>
 </svg>
 </div>
-<figcaption>Drop, answered and challenge settle a signal. Join and attach put it on an item, and a route's chore becomes an item of one. The inbox's settings send an item to one worktree or hand it to crew's planner, and sluice lands the work either way. An item that asks a question goes to a sounding, and the work its accepted conclusion proposes comes back as new items.</figcaption>
+<figcaption>Drop, answered and challenge settle a signal. Join and attach put it on an item, and a route's chore becomes an item of one. The inbox's settings send an item through flume to one worktree or hand it to crew's planner, and sluice lands the work either way. An item that asks a question goes to a sounding, and the work its accepted conclusion proposes comes back as new items.</figcaption>
 </figure>
 
 - **`join`** makes an item from any number of signals, or grows one
@@ -76,31 +76,34 @@ the drop, and they are not joined again unless new signals join them
 ## The brief
 
 The brief is the text an item's work starts from. The curation session
-writes it with the `brief` tool, and millpond keeps it on the item. An
-agent sent the item finds the brief in its worktree, and the item's
-signals point it to the source's own words.
+writes it with the `brief` tool, and millpond keeps it on the item. A
+send hands the brief to flume, the agent starts from it, and the item's
+signals point the agent to the source's own words.
 
 ## A send
 
-millpond sends one item to one worktree:
+millpond sends one item to one worktree through flume:
 
-1. It makes a worktree of the repository the send names, on a branch
-   named for the item.
-2. It writes the brief there.
-3. It starts an agent on it: in a herdr pane through its herdr plugin,
-   or as a command it prints for the operator to run.
-4. The agent submits its work through sluice.
+1. The send names the repository and the kind, a fix or an OpenSpec
+   change.
+2. millpond records the send and hands flume the brief.
+3. flume makes the worktree and starts the agent.
+4. The work submits through sluice.
 5. millpond writes the landing against the item, from sluice's record
    of that branch.
 
-The item then shows where it went and that it landed.
+millpond keeps the item's record, and flume keeps only the live state
+of the worktrees it runs. The item shows where it went and that it
+landed. [flume's book](../flume/) holds the worktree, the kind's stages
+and how flume tidies up after the work lands or is dropped.
 
 ## A question, sent to a sounding
 
 millpond sends an item that asks a question to a sounding: one
 question, worked by one session in a worktree of its own, ending on one
 conclusion. The item's work ends in an answer, such as whether to take
-a major release, or how to settle what a meeting left open.
+a major release, or how to settle what a meeting left open. flume makes
+the sounding's worktree and runs it as the kind `question`.
 [sounding's book](../sounding/) holds how a sounding works.
 
 The operator decides the conclusion. Accepting it settles the item:
@@ -118,9 +121,10 @@ the question comes back, as a capture the sounding offers (see
 
 ## An inbox crew keeps
 
-An inbox crew keeps sends no item to a worktree, and millpond refuses a
-send from it. Its settings hand items to crew's planner, which orders
-them across teams and turns each into a chore or a unit. Planning
+An inbox crew keeps sends no item to flume itself, and millpond refuses
+a send from it. Its settings hand items to crew's planner, which orders
+them across teams and turns each into a chore or a unit. crew then asks
+flume for each stage of the work, in a slot of the team's. Planning
 across items is crew's today and Flywheel's later, never millpond's.
 
 ## A release, from capture to landed bump
