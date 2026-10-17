@@ -129,6 +129,11 @@ release once and lets curation turn it into work. Whatever bump comes
 of it lands through [sluice](../sluice/). headwater never knows which
 inbox records its releases (`design/capture/design.md`).
 
+A release that needs judgment, such as a major version or notes that
+announce breaking changes, can go from headwater's herdr plugin to a
+[sounding](../sounding/). A sounding is one question, worked by one
+session in one place, ending on a conclusion the operator decides.
+
 ## How to read this book
 
 The chapters follow a release from the declaration that names its

@@ -31,6 +31,17 @@ A report holds every release newer than the pin that the source
 publishes, and none that is not newer (8). A fixer moving a dependency
 three releases forward reads what upstream wrote of each of the three.
 
+## Inside or outside the declared range
+
+The capture design settles one more mark on each release, and the
+statement takes it at plan step H1 (`design/capture/design.md`).
+headwater marks each release inside or outside the range its
+declaration gives, such as `^1.4` or `>=1.4,<2`, which the dependency
+description carries. The package manager takes a
+release inside the range by changing only the lockfile. A release
+outside it changes the manifest, as a major release does. headwater
+reports both, so a major release is never hidden (8).
+
 ## The pin alone decides
 
 The pin alone decides what is new (9). headwater reads no record of
@@ -119,7 +130,7 @@ the part the session asked for, with the way to the rest, and not one
 word of what arrives is changed (S7). headwater keeps no part of notes
 it cannot give whole.
 
-## When sources disagree
+## Where headwater asks
 
 A source's answer is reported as that source gave it. Where two
 sources disagree about one release, the report names both and chooses
@@ -128,6 +139,17 @@ batches by Package URL with no key, and GitHub releases, read through
 the asker's own sign-in (C.3, section 9). What a source learns of the
 repository is in [The core and its seams](seams.md).
 
+The capture design settles where headwater asks first, and the
+statement takes it at plan step H1 (`design/capture/design.md`).
+headwater asks each ecosystem's own package manager first, read-only in
+the repository's own shell, so it sees the registries the repository is
+configured for, private ones among them. It asks `npm view` and
+`npm outdated`, `go list -m -versions`, `mise ls-remote`, and the
+configured registry's index for Python and Cargo. deps.dev, GitHub and
+ecosyste.ms answer where no package manager runs or none exists, and
+OSV answers for advisories.
+
 Still to rule: questions 9, 12, 13, 22 and 23, and the statement's own
-questions on prereleases and withdrawn releases, in
+questions on prereleases and withdrawn releases; the range and the
+package managers enter the statement at plan step H1. See
 [Open questions](open.md#releases-and-what-is-new).

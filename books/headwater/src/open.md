@@ -14,6 +14,13 @@ step D1 has the operator rule all 33, into
 `design/headwater/models/reconstruction-1-answers.md`, and step H1
 writes the rulings into the statement as clauses numbered from 53.
 
+Step H1 also writes in what the capture design settles for headwater
+beyond the statement. For releases, that is the range a release falls
+inside or outside and each ecosystem's package manager as a source; for
+a brief, its command and diff. For captures and the watch list, it is
+the key, the files a bump moves and the capture lines. Each appears
+below under the chapter that describes it.
+
 Each question below names the clauses it touches and, where it has one,
 the model's lean. The statement's own questions (section 10) sit beside
 the questions they belong with; the model answers each in its section
@@ -79,6 +86,15 @@ the questions they belong with; the model answers each in its section
   publishes" (8, 43)? The model reports it with the source's mark. The
   statement also asks what a report says of a pin whose own release was
   withdrawn (section 10); the model gives the same mark on the pin.
+- **Into the statement: the range.** Plan step H1 writes in each
+  release's mark, inside or outside the range its declaration gives,
+  with the range carried by the dependency description. Where one
+  dependency has several declarations at several ranges (4), a release
+  can be inside one and outside another, and the capture design does
+  not say how the report shows it.
+- **Into the statement: the package managers.** Plan step H1 writes in
+  each ecosystem's package manager, run read-only in the repository's
+  shell, as a source, with deps.dev where none runs.
 
 ## Tiers and scans
 
@@ -162,6 +178,10 @@ the questions they belong with; the model answers each in its section
   asker ask for, and what is the way to read the whole once the held
   notes are discarded, when asking what headwater holds may reach no
   source (12, 17, 25)? The model: the way is a brief.
+- **Into the statement: the command and the diff.** Plan step H1 writes
+  in a brief that names the ecosystem's own command for the move,
+  amending (27), and that can carry the published package's diff
+  between the pin and the release.
 
 ## The held state
 
@@ -202,6 +222,12 @@ the questions they belong with; the model answers each in its section
 - **33. Source or lookup.** The capture design calls what the statement
   calls a source a lookup. Until the ruling lands in the statement, the
   book keeps the statement's word.
+- **A package manager, read-only.** A package manager run in the
+  repository's own shell reads the repository's files and asks the
+  registries it is configured for. The H1 clauses decide how it changes
+  nothing in the repository (5) and sends a registry nothing but
+  identities and versions (37); plan step H5 proves it on recorded
+  package-manager output.
 
 ## Askers and surfaces
 
@@ -215,6 +241,11 @@ the questions they belong with; the model answers each in its section
   names come with the rulings. The model names `held`, `scan`, `brief`,
   `acknowledge`, `acknowledgements` and `forget`; plan step H4 names
   `scan`, `notes`, `brief`, `ack` and `overview`.
+- **The sounding key.** The capture design lets a release that needs
+  judgment go from headwater's herdr plugin to a sounding. The
+  statement's herdr plugin has one key, which hands a release to a new
+  agent (section 9). Neither plan step H1 nor H7 names the sounding key,
+  so where the statement takes it is open.
 
 ## Releases as captures
 

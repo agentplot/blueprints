@@ -100,6 +100,12 @@ that holds npm packages, Python requirements and a watch list binds all
 three descriptions, and deps.dev and GitHub releases each answer for
 the identities they know.
 
+The capture design puts each ecosystem's own package manager first
+among the release sources, run read-only in the repository's own shell,
+with deps.dev, GitHub and ecosyste.ms answering where none runs. The
+statement takes it at plan step H1
+([Where headwater asks](releases.md#where-headwater-asks)).
+
 ## What a source learns
 
 headwater sends a source nothing of the repository but the identities
@@ -122,5 +128,6 @@ passes the suite, and nothing else in headwater changes.
 headwater is one static binary, written in Rust as sluice is, and gives
 every answer as JSON on request (section 9).
 
-Still to rule: questions 4, 11, 32 and 33, in
+Still to rule: questions 4, 11, 32 and 33, and how a package manager
+keeps (5) and (37), in
 [Open questions](open.md#the-core-and-its-seams).

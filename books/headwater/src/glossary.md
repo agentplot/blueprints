@@ -3,8 +3,9 @@
 The words of the design, each defined once. The statement's vocabulary
 (section 3) is the binding copy of the words it defines, and its actors
 table (section 2) of the actors. The words of the capture design and of
-crew are [millpond's book](../millpond/glossary.html)'s, word for word;
-a number after "Flywheel's" in them cites Flywheel's statement.
+crew are [millpond's book](../millpond/glossary.html)'s, word for word,
+and a sounding's words are [sounding's book](../sounding/glossary.html)'s.
+A number after "Flywheel's" in them cites Flywheel's statement.
 
 millpond's book uses three of the statement's words for other things.
 A capture's **source** names where its event came from, such as
@@ -60,6 +61,7 @@ statement's meaning.
 | **binding** | the profiles named for each seam: any number of descriptions and sources, and exactly one store (51) |
 | **conformance suite** | the one set of scenarios that holds every profile to Parts A and B, each citing the clauses it exercises (52) |
 | **Package URL** | the standard name of a package across ecosystems (ECMA-427), such as `pkg:npm/react`; with a version, a release's identity (C.1) |
+| **range** | what a declaration says of the versions it takes, such as `^1.4` or `>=1.4,<2`; a release inside it needs only the lockfile changed, one outside it a change to the manifest (`design/capture/design.md`) |
 | **watch list** | a dependency description that names each dependency's upstream repository, tag pattern, pin, tier, name and the files a bump moves (C.2) |
 | **millpond** | the inbox: it runs adapters, keeps captures and signals, serves the tools curation works through, and sends an item to a worktree ([its book](../millpond/)) |
 
@@ -86,3 +88,10 @@ statement's meaning.
 | **route** | the move that offers a chore, which becomes an item of one, or an ask, which millpond records |
 | **signal** | one assertion from a capture: its kind, who asserted it, its subjects, the assertion in a sentence, the verbatim excerpt with its position, and the claims it argues with; never changed once written (Flywheel's 113) |
 | **unit** | in crew, one designed piece of a team's work, landed on its bolt |
+
+## Words from sounding's book
+
+| word | meaning |
+|---|---|
+| **conclusion** | `conclusion.md`: the answer, its evidence, what it would change, the work it proposes, and what stays open; the operator decides it |
+| **sounding** | one question, worked by one session in one place, ending on one conclusion; also the tool that runs them ([its book](../sounding/)) |

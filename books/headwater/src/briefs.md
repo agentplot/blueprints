@@ -36,6 +36,18 @@ change the notes call for, or no change at all. headwater judges none
 of these, and a brief reads the same whichever fixer will act on it
 (34).
 
+## The command and the diff
+
+The capture design settles two more things a brief carries, and the
+statement takes them at plan step H1, where they amend (27)
+(`design/capture/design.md`). A brief names the ecosystem's own
+command for the move: `npm update` or `npm install <name>@<version>`,
+`uv lock --upgrade-package`, `cargo update -p`, `go get`, `mise use`.
+Whoever makes the change runs it, and headwater never does. Beside the
+release's notes, a brief can carry the published package's own diff
+between the pin and the release (`npm diff`), so a change to a README
+or a CHANGELOG shows as upstream shipped it.
+
 ## After the brief
 
 The fixer makes the change in a place of its own, and the repository's
@@ -52,5 +64,6 @@ crew runs, a bump comes only through crew's plan, and the herdr key
 hands the release to millpond instead; [Releases as
 captures](captures.md) follows that path.
 
-Still to rule: questions 26 and 27, in
+Still to rule: questions 26 and 27; the command and the diff enter the
+statement at plan step H1. See
 [Open questions](open.md#briefs-and-fixers).

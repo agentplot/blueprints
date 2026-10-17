@@ -18,6 +18,13 @@ restates it. Write to `books/VOICE.md`.
   lookup, until the ruling on question 33 lands in the statement.
 - millpond's book owns the capture contract, the inbox and curation.
   Link to it at `../millpond/`; never restate it.
+- sounding's book owns a sounding, its question and its conclusion.
+  Link to it at `../sounding/`; never restate it.
+- Some of what the capture design settles for headwater is not in the
+  statement yet: the range, the package managers, a brief's command and
+  diff. A chapter writes each as the capture design's, which the
+  statement takes at plan step H1, and `src/open.md` lists it under its
+  chapter.
 - Figures are inline SVG inside one `<figure class="hw">` with no blank
   line in it, drawn with the classes in `headwater.css`, which follow
   mdBook's light and dark themes. One figure per claim, each with a
