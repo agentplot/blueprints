@@ -231,15 +231,20 @@ prepared for one session (glossary).
 >     session's: the next session run or round on the host releases it
 >     (95). A session's place whose working copy exists is held until
 >     its session or driver releases it, however long its last run is
->     past, and sluice lists every session place it holds, with the time
->     of its last run, to the operator and to any session on the host.
+>     past, and sluice lists every session place it holds, with the
+>     time, head and outcome of its last run, to the operator and to any
+>     session on the host.
 
 97 keeps 25 whole: a place with no working copy has no session to own
 it. A place with a working copy and no sign of its session is left
 alone, because a session thinking for an hour between two runs and a
 session that died look alike, and ending the first's stack costs more
 than the second's leak. The list is what makes the leak visible to a
-person or a crew, which release it.
+person or a crew, which release it. The head and outcome let the
+operator and a session tell a head that passed from one that failed
+without running it again; a command's run and a run in a place holding
+more than its head are listed with their outcome and never recorded
+under keys, which is all 92's "records nothing" governs.
 
 ## Part C, rows
 
