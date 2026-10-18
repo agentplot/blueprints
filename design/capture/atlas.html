@@ -1,0 +1,586 @@
+<title>Capture Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,650&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* A gallery of seven figures, one claim each, in reading order; each figure scrolls inside itself on a phone. */
+:root {
+  --bg: #f3f6f5;
+  --surface: #ffffff;
+  --fg: #16232a;
+  --muted: #55666d;
+  --line: #cfdad8;
+  --accent: #0e6f68;
+  --accent-soft: #dcefeb;
+  --ochre: #9a5b06;
+  --ochre-soft: #f6ead4;
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1619; --surface: #142024; --fg: #dbe6e4; --muted: #93a7ab; --line: #2a3b40;
+    --accent: #5fc5b7; --accent-soft: #173a37; --ochre: #e3aa5c; --ochre-soft: #3a2b14;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1619; --surface: #142024; --fg: #dbe6e4; --muted: #93a7ab; --line: #2a3b40;
+  --accent: #5fc5b7; --accent-soft: #173a37; --ochre: #e3aa5c; --ochre-soft: #3a2b14;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 17px/1.6 var(--body); }
+main { max-width: 1160px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 72px; display: grid; gap: 56px; }
+header { display: grid; gap: 12px; }
+.eyebrow { font: 500 12px/1.4 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 650 clamp(34px, 5vw, 52px)/1.05 var(--display); margin: 0; letter-spacing: -.01em; }
+h2 { font: 650 24px/1.25 var(--display); margin: 0; text-wrap: balance; display: flex; gap: 12px; align-items: baseline; }
+h2 .n { font: 500 13px var(--mono); color: var(--accent); }
+.lede { font-size: 19px; max-width: 66ch; margin: 0; }
+section { display: grid; gap: 12px; }
+figure { margin: 0; display: grid; gap: 10px; }
+.scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.scroll svg { display: block; width: 100%; height: auto; min-width: 980px; }
+figcaption { color: var(--muted); font-size: 15.5px; max-width: 80ch; }
+code, .mono { font-family: var(--mono); font-size: .86em; }
+/* SVG parts */
+.bx { fill: var(--surface); stroke: var(--line); stroke-width: 1.2; }
+.bx-soft { fill: var(--bg); stroke: var(--line); stroke-width: 1; }
+.bx-host { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.bx-hw { fill: var(--surface); stroke: var(--accent); stroke-width: 1.5; }
+.bx-dash { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 6 5; }
+.chip { fill: var(--accent-soft); stroke: none; }
+.chip-o { fill: var(--ochre-soft); stroke: none; }
+.ct { fill: var(--accent); font: 500 10.5px var(--mono); }
+.cto { fill: var(--ochre); font: 500 10.5px var(--mono); }
+.t { fill: var(--fg); font: 600 14px var(--body); }
+.tb { fill: var(--fg); font: 650 17px var(--display); }
+.ts { fill: var(--muted); font: 12.5px var(--body); }
+.tm { fill: var(--fg); font: 12px var(--mono); }
+.tl { fill: var(--accent); font: 600 12px var(--body); }
+.tlo { fill: var(--ochre); font: 600 12.5px var(--body); }
+.th { fill: var(--muted); font: 500 11px var(--mono); letter-spacing: .08em; }
+.ar { stroke: var(--muted); stroke-width: 1.4; fill: none; }
+.ar-a { stroke: var(--accent); stroke-width: 1.8; fill: none; }
+.ar-d { stroke: var(--muted); stroke-width: 1.3; fill: none; stroke-dasharray: 5 4; }
+.ar-o { stroke: var(--ochre); stroke-width: 1.5; fill: none; stroke-dasharray: 5 4; }
+.hd { fill: var(--muted); } .hd-a { fill: var(--accent); } .hd-o { fill: var(--ochre); }
+/* setups table */
+.tw { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 860px; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+thead th { font: 650 16px/1.3 var(--display); color: var(--fg); border-bottom: 1px solid var(--fg); }
+tbody th { font: 600 12px/1.4 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); width: 140px; }
+tr.same td { background: var(--accent-soft); }
+tr.same th { color: var(--accent); }
+.tag { display: inline-block; font: 500 11px var(--mono); color: var(--accent); margin-left: 6px; }
+/* road */
+.lanes { min-width: 1000px; display: grid; grid-template-columns: 110px repeat(6, 1fr); background: var(--surface); }
+.lanes > div { padding: 8px; border-bottom: 1px solid var(--line); border-right: 1px dashed var(--line); min-height: 50px; display: flex; flex-direction: column; gap: 6px; }
+.lanes > div:nth-child(7n) { border-right: 0; }
+.lanes .ph { font: 600 11.5px/1.3 var(--mono); color: var(--muted); border-bottom: 1px solid var(--fg); min-height: 0; }
+.lanes .lane { font: 650 14px/1.2 var(--display); justify-content: center; }
+.c { display: block; font-size: 13px; line-height: 1.3; padding: 5px 7px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); }
+.c.w { border-color: var(--ochre); background: var(--ochre-soft); }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13.5px; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 6px; border: 1px solid var(--line); background: var(--bg); }
+.legend i.w { border-color: var(--ochre); background: var(--ochre-soft); }
+footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
+</style>
+
+<main>
+  <header>
+    <div class="eyebrow">headwater · eddy · millpond · sluice · crew · Flywheel</div>
+    <h1>Capture Atlas</h1>
+    <p class="lede">Eight pictures of one system. Tools that notice things print captures, and millpond keeps them as an inbox of signals. Curation groups signals into items, and the work an item becomes lands through sluice. crew uses millpond the way it uses sluice, and Flywheel is later built from the same code.</p>
+  </header>
+
+  <!-- 1 the family -->
+  <section>
+    <h2><span class="n">1</span>The tools and how they stack</h2>
+    <figure>
+      <div class="scroll">
+        <svg viewBox="0 0 1120 500" role="img" aria-label="headwater, eddy and the folder drop print capture lines into millpond, the inbox. millpond sends one item to a worktree or routes it into crew's plan, and both submit through sluice. Flywheel is later built on the same crates as millpond, and on sluice's SDK.">
+          <defs>
+            <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hd"/></marker>
+            <marker id="a1a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hd-a"/></marker>
+          </defs>
+          <text x="30" y="30" class="th">WHAT HAPPENED · ADAPTERS</text>
+          <text x="350" y="30" class="th">THE INBOX</text>
+          <text x="620" y="30" class="th">THE WORK</text>
+          <text x="890" y="30" class="th">LANDING</text>
+
+          <rect x="30" y="48" width="240" height="100" rx="9" class="bx"/>
+          <text x="46" y="74" class="tb">headwater</text>
+          <text x="46" y="94" class="ts">releases and advisories of</text>
+          <text x="46" y="110" class="ts">what a repository declares</text>
+          <rect x="46" y="122" width="80" height="18" rx="4" class="chip"/><text x="52" y="135" class="ct">Claude Code</text>
+          <rect x="132" y="122" width="44" height="18" rx="4" class="chip"/><text x="138" y="135" class="ct">herdr</text>
+          <rect x="182" y="122" width="58" height="18" rx="4" class="chip"/><text x="188" y="135" class="ct">adapter</text>
+
+          <rect x="30" y="164" width="240" height="100" rx="9" class="bx"/>
+          <text x="46" y="190" class="tb">eddy</text>
+          <text x="46" y="210" class="ts">recorded meetings: Wispr,</text>
+          <text x="46" y="226" class="ts">Webex, Teams and more</text>
+          <rect x="46" y="238" width="80" height="18" rx="4" class="chip"/><text x="52" y="251" class="ct">Claude Code</text>
+          <rect x="132" y="238" width="44" height="18" rx="4" class="chip"/><text x="138" y="251" class="ct">herdr</text>
+          <rect x="182" y="238" width="58" height="18" rx="4" class="chip"/><text x="188" y="251" class="ct">adapter</text>
+
+          <rect x="30" y="280" width="240" height="100" rx="9" class="bx"/>
+          <text x="46" y="306" class="tb">folder drop</text>
+          <text x="46" y="326" class="ts">any file dropped in a folder:</text>
+          <text x="46" y="342" class="ts">a transcript, an email, a PDF</text>
+          <rect x="46" y="354" width="122" height="18" rx="4" class="chip-o"/><text x="52" y="367" class="cto">built into millpond</text>
+
+          <line x1="270" y1="98" x2="346" y2="150" class="ar-a" marker-end="url(#a1a)"/>
+          <line x1="270" y1="214" x2="346" y2="214" class="ar-a" marker-end="url(#a1a)"/>
+          <line x1="270" y1="330" x2="346" y2="278" class="ar-a" marker-end="url(#a1a)"/>
+          <text x="282" y="204" class="tl">capture</text>
+          <text x="282" y="234" class="tl">lines</text>
+
+          <rect x="350" y="48" width="220" height="332" rx="10" class="bx-host"/>
+          <text x="366" y="76" class="tb">millpond</text>
+          <text x="366" y="94" class="tl">the inbox</text>
+          <text x="366" y="128" class="ts">runs adapters on a schedule</text>
+          <text x="366" y="152" class="ts">lands each capture once, by key</text>
+          <text x="366" y="176" class="ts">banks raw material off git</text>
+          <text x="366" y="200" class="ts">signal: own excerpt, or a reader</text>
+          <text x="366" y="224" class="ts">curation joins signals into items</text>
+          <text x="366" y="248" class="ts">sends an item to a worktree</text>
+          <text x="366" y="290" class="ts">an inbox is a git repository,</text>
+          <text x="366" y="306" class="ts">or a branch in one</text>
+          <rect x="366" y="350" width="80" height="18" rx="4" class="chip"/><text x="372" y="363" class="ct">Claude Code</text>
+          <rect x="452" y="350" width="44" height="18" rx="4" class="chip"/><text x="458" y="363" class="ct">herdr</text>
+          <rect x="502" y="350" width="34" height="18" rx="4" class="chip"/><text x="508" y="363" class="ct">MCP</text>
+
+          <rect x="620" y="48" width="220" height="140" rx="9" class="bx"/>
+          <text x="636" y="76" class="tb">One worktree</text>
+          <text x="636" y="98" class="ts">an item, one signal or many,</text>
+          <text x="636" y="114" class="ts">briefed to an agent that</text>
+          <text x="636" y="130" class="ts">millpond starts</text>
+          <rect x="620" y="240" width="220" height="140" rx="9" class="bx"/>
+          <text x="636" y="268" class="tb">crew</text>
+          <text x="636" y="290" class="ts">teams, plans and bolts across</text>
+          <text x="636" y="306" class="ts">many items; it uses millpond</text>
+          <text x="636" y="322" class="ts">as it uses sluice</text>
+
+          <line x1="570" y1="118" x2="616" y2="118" class="ar" marker-end="url(#a1)"/>
+          <text x="576" y="110" class="ts">send</text>
+          <line x1="570" y1="310" x2="616" y2="310" class="ar" marker-end="url(#a1)"/>
+          <text x="576" y="302" class="ts">route</text>
+
+          <rect x="890" y="150" width="210" height="130" rx="9" class="bx-hw"/>
+          <text x="906" y="178" class="tb">sluice</text>
+          <text x="906" y="200" class="ts">tests a change as merged,</text>
+          <text x="906" y="216" class="ts">then lands it</text>
+          <rect x="906" y="250" width="80" height="18" rx="4" class="chip"/><text x="912" y="263" class="ct">Claude Code</text>
+          <rect x="992" y="250" width="44" height="18" rx="4" class="chip"/><text x="998" y="263" class="ct">herdr</text>
+          <path d="M840,118 L864,118 L864,195 L886,195" class="ar" marker-end="url(#a1)"/>
+          <path d="M840,310 L864,310 L864,235 L886,235" class="ar" marker-end="url(#a1)"/>
+          <text x="906" y="302" class="ts">both submit through sluice</text>
+
+          <rect x="350" y="410" width="750" height="72" rx="10" class="bx-dash"/>
+          <text x="370" y="440" class="tb">Flywheel, later</text>
+          <text x="370" y="462" class="ts">built on the same crates as millpond, and sluice's SDK. crew becomes it, keeping the same inboxes and adapters.</text>
+        </svg>
+      </div>
+      <figcaption>Every tool stands alone with its own Claude Code and herdr plugins. headwater and eddy also carry an adapter part, which is how they feed millpond. The folder drop needs no tool of its own, so it ships inside millpond.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 2 one adapter shape -->
+  <section>
+    <h2><span class="n">2</span>Every adapter has the same shape</h2>
+    <figure>
+      <div class="scroll">
+        <svg viewBox="0 0 1120 410" role="img" aria-label="A scheduler starts millpond run, which spawns one adapter process with a fresh raw directory and its last cursor. The adapter prints JSON lines on standard output and writes raw files; millpond land checks the lines and banks the raw files. A program running on its own pipes the same lines into millpond land.">
+          <defs>
+            <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hd"/></marker>
+            <marker id="a2a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hd-a"/></marker>
+          </defs>
+          <path d="M975,70 L975,22 L330,22 L330,66" class="ar-d" marker-end="url(#a2)"/>
+          <text x="560" y="16" class="ts">the new cursor and the run's status, kept by millpond run</text>
+
+          <rect x="20" y="70" width="170" height="72" rx="9" class="bx"/>
+          <text x="36" y="98" class="t">Scheduler</text>
+          <text x="36" y="118" class="ts">launchd or systemd;</text>
+          <text x="36" y="134" class="ts">Flywheel's tick later</text>
+          <line x1="190" y1="106" x2="226" y2="106" class="ar" marker-end="url(#a2)"/>
+
+          <rect x="230" y="70" width="200" height="72" rx="9" class="bx"/>
+          <text x="246" y="98" class="tm">millpond run &lt;part&gt;</text>
+          <text x="246" y="118" class="ts">a fresh raw directory</text>
+          <text x="246" y="134" class="ts">and the last cursor</text>
+          <line x1="430" y1="106" x2="476" y2="106" class="ar" marker-end="url(#a2)"/>
+          <text x="436" y="98" class="ts">spawns</text>
+
+          <rect x="480" y="40" width="300" height="240" rx="10" class="bx-hw"/>
+          <text x="496" y="66" class="t">Adapter process</text>
+          <text x="496" y="84" class="ts">any language; reads its source and nothing else</text>
+          <rect x="496" y="100" width="268" height="34" rx="6" class="bx-soft"/><text x="508" y="122" class="tm">headwater capture</text>
+          <rect x="496" y="144" width="268" height="34" rx="6" class="bx-soft"/><text x="508" y="166" class="tm">eddy capture wispr</text>
+          <rect x="496" y="188" width="268" height="34" rx="6" class="bx-soft"/><text x="508" y="210" class="tm">millpond capture folder ~/Drop</text>
+          <text x="496" y="256" class="ts">any one of them; each prints the same lines</text>
+
+          <line x1="780" y1="110" x2="846" y2="110" class="ar-a" marker-end="url(#a2a)"/>
+          <text x="788" y="102" class="tl">stdout</text>
+          <text x="788" y="128" class="ts">JSON lines</text>
+          <line x1="780" y1="235" x2="846" y2="235" class="ar" marker-end="url(#a2)"/>
+          <text x="788" y="227" class="tl">raw files</text>
+
+          <rect x="850" y="70" width="250" height="80" rx="9" class="bx-host"/>
+          <text x="866" y="98" class="tm">millpond land</text>
+          <text x="866" y="118" class="ts">check · dedupe · bank ·</text>
+          <text x="866" y="134" class="ts">write · signal · record</text>
+
+          <rect x="850" y="200" width="250" height="70" rx="9" class="bx"/>
+          <text x="866" y="228" class="tm">--raw-dir/</text>
+          <text x="866" y="248" class="ts">notes.md · transcript.txt · step.log</text>
+          <line x1="975" y1="200" x2="975" y2="154" class="ar" marker-end="url(#a2)"/>
+          <text x="982" y="182" class="ts">banked</text>
+
+          <rect x="480" y="320" width="300" height="70" rx="9" class="bx"/>
+          <text x="496" y="348" class="t">Runs on its own</text>
+          <text x="496" y="368" class="ts">the deployer, a script, a person</text>
+          <path d="M780,355 L1112,355 L1112,110 L1104,110" class="ar" marker-end="url(#a2)"/>
+          <text x="796" y="347" class="tm">… | millpond land</text>
+        </svg>
+      </div>
+      <figcaption>millpond run is for adapters on a schedule: it starts one and keeps its cursor. millpond land is the intake for anything that pipes lines in. Every box in the middle is interchangeable, and none of them knows where captures are stored.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 3 lines vs raw -->
+  <section>
+    <h2><span class="n">3</span>Lines go into git, raw files stay on the host</h2>
+    <figure>
+      <div class="scroll">
+        <svg viewBox="0 0 1120 350" role="img" aria-label="An adapter's lines become captures and signals in the inbox, in git, read by curation, the herdr inbox, crew and the planner. Its raw files go to the raw bank on the host, never git, read by a reader session, excerpt grading and a person. The capture points at its raw files.">
+          <defs>
+            <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hd"/></marker>
+          </defs>
+          <rect x="20" y="135" width="150" height="90" rx="9" class="bx"/>
+          <text x="36" y="165" class="t">Adapter</text>
+          <text x="36" y="185" class="ts">prints lines,</text>
+          <text x="36" y="201" class="ts">writes raw files</text>
+          <path d="M170,165 L216,92" class="ar" marker-end="url(#a3)"/>
+          <path d="M170,195 L216,268" class="ar" marker-end="url(#a3)"/>
+
+          <rect x="220" y="45" width="180" height="64" rx="9" class="bx"/>
+          <text x="236" y="71" class="t">Lines (stdout)</text>
+          <text x="236" y="91" class="ts">small: one per event</text>
+          <rect x="220" y="245" width="180" height="64" rx="9" class="bx"/>
+          <text x="236" y="271" class="t">Raw files</text>
+          <text x="236" y="291" class="ts">the material, whole</text>
+          <line x1="400" y1="77" x2="446" y2="77" class="ar" marker-end="url(#a3)"/>
+          <line x1="400" y1="277" x2="446" y2="277" class="ar" marker-end="url(#a3)"/>
+
+          <rect x="450" y="35" width="260" height="84" rx="9" class="bx-host"/>
+          <text x="466" y="61" class="t">The inbox, in git</text>
+          <text x="466" y="81" class="ts">captures and signals as records,</text>
+          <text x="466" y="97" class="ts">in Flywheel's formats, one copy</text>
+          <rect x="450" y="235" width="260" height="84" rx="9" class="bx"/>
+          <text x="466" y="261" class="t">The raw bank, on the host</text>
+          <text x="466" y="281" class="ts">never in git; fetched again</text>
+          <text x="466" y="297" class="ts">from upstream if lost</text>
+          <path d="M580,119 L580,231" class="ar-d" marker-end="url(#a3)"/>
+          <text x="590" y="172" class="ts">the capture points here:</text>
+          <text x="590" y="188" class="tm">&lt;host&gt;:&lt;path&gt;</text>
+
+          <line x1="710" y1="77" x2="756" y2="77" class="ar" marker-end="url(#a3)"/>
+          <line x1="710" y1="277" x2="756" y2="277" class="ar" marker-end="url(#a3)"/>
+          <rect x="760" y="25" width="340" height="104" rx="9" class="bx"/>
+          <text x="776" y="47" class="th">READ BY</text>
+          <text x="776" y="71" class="ts">curation</text>
+          <text x="776" y="91" class="ts">the herdr inbox pane</text>
+          <text x="776" y="111" class="ts">crew's board and page, the planner</text>
+          <rect x="760" y="225" width="340" height="104" rx="9" class="bx"/>
+          <text x="776" y="247" class="th">READ BY</text>
+          <text x="776" y="271" class="ts">a reader session: a meeting's whole input</text>
+          <text x="776" y="291" class="ts">crew's grading of each excerpt</text>
+          <text x="776" y="311" class="ts">a person following the pointer past the cut</text>
+        </svg>
+      </div>
+      <figcaption>Only millpond reads the lines. Everything downstream reads the records in git. A meeting's words never reach GitHub. A release's notes are in both places: whole in the raw bank, and cut in the excerpt, which is the quote git keeps.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 4 a capture's life -->
+  <section>
+    <h2><span class="n">4</span>A capture's life in millpond</h2>
+    <figure>
+      <div class="scroll">
+        <svg viewBox="0 0 1120 450" role="img" aria-label="A capture lands once. A release is its own excerpt and gets one signal at once; a meeting is unread until a reader session writes its signals. Curation, a Claude session working in batches, proposes moves you accept: drop or answered, attach or challenge, or join, which makes an item of several signals. An item goes to one worktree or into crew's plan, and both land through sluice.">
+          <defs>
+            <marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hd"/></marker>
+            <marker id="a4a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hd-a"/></marker>
+          </defs>
+          <rect x="20" y="170" width="120" height="60" rx="9" class="bx"/>
+          <text x="36" y="196" class="t">Captured</text>
+          <text x="36" y="214" class="ts">once, by key</text>
+          <line x1="140" y1="200" x2="166" y2="200" class="ar" marker-end="url(#a4)"/>
+
+          <rect x="170" y="170" width="150" height="60" rx="30" class="bx-hw"/>
+          <text x="188" y="196" class="t">Its own excerpt?</text>
+          <text x="188" y="214" class="ts">the line says so</text>
+          <path d="M245,170 L245,90 L356,90" class="ar-a" marker-end="url(#a4a)"/>
+          <text x="252" y="128" class="tl">yes · a release</text>
+          <path d="M245,230 L245,320 L356,320" class="ar" marker-end="url(#a4)"/>
+          <text x="252" y="290" class="tl">no · a meeting</text>
+
+          <rect x="360" y="60" width="170" height="60" rx="9" class="bx"/>
+          <text x="376" y="86" class="t">One signal</text>
+          <text x="376" y="104" class="ts">at once, cut at a line</text>
+          <rect x="360" y="290" width="170" height="60" rx="9" class="bx"/>
+          <text x="376" y="316" class="t">Unread</text>
+          <text x="376" y="334" class="ts">charges a reader</text>
+          <line x1="530" y1="320" x2="566" y2="320" class="ar" marker-end="url(#a4)"/>
+          <rect x="570" y="290" width="180" height="60" rx="9" class="bx"/>
+          <text x="586" y="316" class="t">Reader session</text>
+          <text x="586" y="334" class="ts">a Claude session reads it</text>
+          <line x1="530" y1="90" x2="566" y2="90" class="ar" marker-end="url(#a4)"/>
+          <rect x="570" y="60" width="180" height="60" rx="9" class="bx"/>
+          <text x="586" y="86" class="t">Unmoved signals</text>
+          <text x="586" y="104" class="ts">the inbox, oldest first</text>
+          <line x1="660" y1="290" x2="660" y2="124" class="ar" marker-end="url(#a4)"/>
+          <text x="668" y="200" class="ts">signals with</text>
+          <text x="668" y="216" class="ts">verbatim excerpts</text>
+
+          <line x1="750" y1="90" x2="796" y2="90" class="ar-a" marker-end="url(#a4a)"/>
+          <rect x="800" y="36" width="300" height="104" rx="10" class="bx-host"/>
+          <text x="816" y="62" class="t">Curation, in batches</text>
+          <text x="816" y="82" class="ts">a Claude session reads the inbox through</text>
+          <text x="816" y="98" class="ts">millpond's MCP tools and proposes a move</text>
+          <text x="816" y="114" class="ts">for each signal; you accept the batch</text>
+          <text x="816" y="130" class="ts">or change rows</text>
+
+          <line x1="872" y1="140" x2="872" y2="166" class="ar" marker-end="url(#a4)"/>
+          <line x1="1027" y1="140" x2="1027" y2="166" class="ar" marker-end="url(#a4)"/>
+          <line x1="950" y1="140" x2="950" y2="232" class="ar-a" marker-end="url(#a4a)"/>
+          <rect x="800" y="170" width="145" height="52" rx="9" class="bx"/>
+          <text x="812" y="192" class="t">drop · answered</text>
+          <text x="812" y="210" class="ts">closed, with a reason</text>
+          <rect x="955" y="170" width="145" height="52" rx="9" class="bx"/>
+          <text x="967" y="192" class="t">attach · challenge</text>
+          <text x="967" y="210" class="ts">weighs a claim</text>
+          <rect x="800" y="236" width="300" height="60" rx="9" class="bx-hw"/>
+          <text x="816" y="260" class="t">join: signals become an item</text>
+          <text x="816" y="280" class="ts">five of a meeting's ten, or two bumps together</text>
+
+          <line x1="872" y1="296" x2="872" y2="326" class="ar" marker-end="url(#a4)"/>
+          <line x1="1027" y1="296" x2="1027" y2="326" class="ar" marker-end="url(#a4)"/>
+          <rect x="800" y="330" width="145" height="78" rx="9" class="bx"/>
+          <text x="812" y="352" class="t">One worktree</text>
+          <text x="812" y="370" class="ts">an agent gets the</text>
+          <text x="812" y="386" class="ts">item's brief; sluice</text>
+          <text x="812" y="402" class="ts">lands its work</text>
+          <rect x="955" y="330" width="145" height="78" rx="9" class="bx"/>
+          <text x="967" y="352" class="t">crew's plan</text>
+          <text x="967" y="370" class="ts">the planner orders</text>
+          <text x="967" y="386" class="ts">items across teams;</text>
+          <text x="967" y="402" class="ts">sluice lands</text>
+
+          <text x="20" y="436" class="tlo">A release that lands moves the pin, so headwater's next scan stops reporting it. No acknowledgement is written.</text>
+        </svg>
+      </div>
+      <figcaption>The unit of work is an item: the signals curation joined, one or many. millpond sends one item to one worktree. Planning across items, ordering them, splitting them over teams, is crew's planner today and Flywheel's later. A model runs in two places only: the reader and the curation session.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 5 working a backlog -->
+  <section>
+    <h2><span class="n">5</span>Working through a backlog of hundreds</h2>
+    <figure>
+      <div class="scroll">
+        <svg viewBox="0 0 1120 520" role="img" aria-label="You ask Claude Code to curate the oldest fifty signals. Claude reads them through millpond's MCP tools, reads raw material where a signal is unclear, and proposes drops, answers and five items. You accept with one change, Claude applies the batch as one write, and you send an item, which herdr starts as an agent in a worktree that submits through sluice.">
+          <defs>
+            <marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hd"/></marker>
+            <marker id="a5a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hd-a"/></marker>
+          </defs>
+          <rect x="30" y="20" width="110" height="44" rx="8" class="bx"/><text x="85" y="47" class="t" text-anchor="middle">You</text>
+          <rect x="210" y="20" width="150" height="44" rx="8" class="bx"/><text x="285" y="40" class="t" text-anchor="middle">Claude Code</text><text x="285" y="56" class="ts" text-anchor="middle">curate skill</text>
+          <rect x="430" y="20" width="150" height="44" rx="8" class="bx-host"/><text x="505" y="40" class="t" text-anchor="middle">millpond</text><text x="505" y="56" class="ts" text-anchor="middle">MCP tools</text>
+          <rect x="650" y="20" width="120" height="44" rx="8" class="bx"/><text x="710" y="47" class="t" text-anchor="middle">herdr</text>
+          <rect x="830" y="20" width="130" height="44" rx="8" class="bx"/><text x="895" y="40" class="t" text-anchor="middle">agent</text><text x="895" y="56" class="ts" text-anchor="middle">in a worktree</text>
+          <rect x="1000" y="20" width="100" height="44" rx="8" class="bx-hw"/><text x="1050" y="47" class="t" text-anchor="middle">sluice</text>
+          <line x1="85" y1="64" x2="85" y2="500" class="ar-d"/>
+          <line x1="285" y1="64" x2="285" y2="500" class="ar-d"/>
+          <line x1="505" y1="64" x2="505" y2="500" class="ar-d"/>
+          <line x1="710" y1="64" x2="710" y2="500" class="ar-d"/>
+          <line x1="895" y1="64" x2="895" y2="500" class="ar-d"/>
+          <line x1="1050" y1="64" x2="1050" y2="500" class="ar-d"/>
+
+          <line x1="85" y1="100" x2="281" y2="100" class="ar-a" marker-end="url(#a5a)"/>
+          <text x="96" y="92" class="tm">/millpond:curate oldest 50</text>
+          <line x1="285" y1="140" x2="501" y2="140" class="ar" marker-end="url(#a5)"/>
+          <text x="296" y="132" class="tm">signals(unmoved, oldest, 50)</text>
+          <line x1="505" y1="176" x2="289" y2="176" class="ar-d" marker-end="url(#a5)"/>
+          <text x="316" y="168" class="ts">50 signals with excerpts and sources</text>
+          <line x1="285" y1="214" x2="501" y2="214" class="ar" marker-end="url(#a5)"/>
+          <text x="296" y="206" class="tm">capture(raw), unclear ones</text>
+          <line x1="285" y1="256" x2="89" y2="256" class="ar-a" marker-end="url(#a5a)"/>
+          <text x="96" y="236" class="ts">proposal: drop 18, answered 6,</text>
+          <text x="96" y="250" class="ts">join 26 into 5 items</text>
+          <line x1="85" y1="296" x2="281" y2="296" class="ar-a" marker-end="url(#a5a)"/>
+          <text x="96" y="288" class="ts">accept, but split item 4</text>
+          <line x1="285" y1="334" x2="501" y2="334" class="ar" marker-end="url(#a5)"/>
+          <text x="296" y="326" class="tm">moves(batch): one write</text>
+          <line x1="85" y1="380" x2="706" y2="380" class="ar-a" marker-end="url(#a5a)"/>
+          <text x="96" y="372" class="ts">send item 2, from herdr's millpond pane or by asking Claude</text>
+          <line x1="710" y1="420" x2="891" y2="420" class="ar" marker-end="url(#a5)"/>
+          <text x="718" y="412" class="ts">worktree, agent, brief</text>
+          <line x1="895" y1="460" x2="1046" y2="460" class="ar" marker-end="url(#a5)"/>
+          <text x="906" y="452" class="tm">wt submit</text>
+          <line x1="1050" y1="492" x2="509" y2="492" class="ar-d" marker-end="url(#a5)"/>
+          <text x="560" y="486" class="ts">the landing is recorded against item 2</text>
+        </svg>
+      </div>
+      <figcaption>Nobody picks through hundreds of signals by hand. A Claude session does the first pass through millpond's MCP tools: list and filter signals, read a capture's raw material, apply a batch of moves, list items, write an item's brief, send an item. You judge its proposal. herdr's pane shows the counts, lets you review a batch row by row, and sends an item with one key.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 5 three setups -->
+  <section>
+    <h2><span class="n">6</span>Three setups, the same parts</h2>
+    <figure>
+      <div class="tw">
+        <table>
+          <thead><tr><th></th><th>On its own</th><th>With crew</th><th>With Flywheel, later</th></tr></thead>
+          <tbody>
+            <tr class="same"><th>Adapters <span class="tag">same</span></th><td>headwater, eddy, the folder drop</td><td>headwater, eddy, the folder drop</td><td>headwater, eddy, the folder drop</td></tr>
+            <tr><th>Host</th><td><code>millpond run</code> on launchd or systemd</td><td>millpond, called by crew and the fleet's timers</td><td>Flywheel's host, on the same crates</td></tr>
+            <tr class="same"><th>Inbox <span class="tag">same files</span></th><td>a git repository of your own</td><td>crew's state repository, the partition's branch</td><td>the instance's state repository, the same files</td></tr>
+            <tr><th>Reading, moves</th><td>a Claude session curates through millpond's MCP tools; you accept</td><td>crew's curator, writing through millpond</td><td>Flywheel's capture-reader and curation</td></tr>
+            <tr><th>Work</th><td>send an item to a worktree, then sluice</td><td>the planner proposes, a team builds, then sluice</td><td>units and bolts, then sluice</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figcaption>Going from one setup to the next changes only the rows that aren't shaded. The adapters and the inbox's files stay put, so nothing is captured twice and nothing is imported when Flywheel takes over.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 6 where code lives -->
+  <section>
+    <h2><span class="n">7</span>Where the code lives</h2>
+    <figure>
+      <div class="scroll">
+        <svg viewBox="0 0 1120 420" role="img" aria-label="flywheel-next holds the shared crates: capture, signals, the built-in adapters, cadence, the conformance pack and the Flywheel host. millpond, headwater, eddy and others' meeting plugins depend on those crates. crew calls millpond's command line.">
+          <defs>
+            <marker id="a6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hd"/></marker>
+            <marker id="a6a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hd-a"/></marker>
+          </defs>
+          <rect x="300" y="30" width="520" height="170" rx="10" class="bx-host"/>
+          <text x="316" y="56" class="tb">flywheel-next</text>
+          <text x="316" y="76" class="ts">Flywheel's code; its statement owns the formats</text>
+          <rect x="316" y="92" width="150" height="42" rx="6" class="bx"/><text x="326" y="110" class="tm">capture</text><text x="326" y="125" class="ts">contract, keys, cut</text>
+          <rect x="476" y="92" width="160" height="42" rx="6" class="bx"/><text x="486" y="110" class="tm">signals</text><text x="486" y="125" class="ts">records, moves, inbox</text>
+          <rect x="646" y="92" width="158" height="42" rx="6" class="bx"/><text x="656" y="110" class="tm">adapters</text><text x="656" y="125" class="ts">folder, file, import</text>
+          <rect x="316" y="144" width="150" height="42" rx="6" class="bx"/><text x="326" y="162" class="tm">cadence</text><text x="326" y="177" class="ts">schedules</text>
+          <rect x="476" y="144" width="160" height="42" rx="6" class="bx"/><text x="486" y="162" class="tm">conformance pack</text><text x="486" y="177" class="ts">lines in, records out</text>
+          <rect x="646" y="144" width="158" height="42" rx="6" class="bx"/><text x="656" y="162" class="tm">flywheel host</text><text x="656" y="177" class="ts">later: machines, hosts</text>
+
+          <rect x="30" y="60" width="220" height="100" rx="9" class="bx"/>
+          <text x="46" y="86" class="tb">crew</text>
+          <text x="46" y="106" class="ts">Python; calls millpond's</text>
+          <text x="46" y="122" class="ts">command line, as it calls sluice</text>
+          <line x1="120" y1="160" x2="120" y2="266" class="ar" marker-end="url(#a6)"/>
+          <text x="128" y="218" class="ts">calls</text>
+
+          <rect x="30" y="270" width="240" height="130" rx="9" class="bx-host"/>
+          <text x="46" y="296" class="tb">millpond</text>
+          <text x="46" y="316" class="ts">the inbox binary</text>
+          <text x="46" y="336" class="ts">built-in adapters, an MCP server</text>
+          <text x="46" y="368" class="tm">plugins/claude</text>
+          <text x="46" y="384" class="tm">plugins/herdr</text>
+
+          <rect x="300" y="270" width="240" height="130" rx="9" class="bx"/>
+          <text x="316" y="296" class="tb">headwater</text>
+          <text x="316" y="316" class="ts">the dependency core</text>
+          <text x="316" y="352" class="tm">plugins/claude</text>
+          <text x="316" y="368" class="tm">plugins/herdr</text>
+          <text x="316" y="384" class="tm">plugins/flywheel</text>
+
+          <rect x="570" y="270" width="240" height="130" rx="9" class="bx"/>
+          <text x="586" y="296" class="tb">eddy</text>
+          <text x="586" y="316" class="ts">meeting core: wispr, webex, teams</text>
+          <text x="586" y="352" class="tm">plugins/claude</text>
+          <text x="586" y="368" class="tm">plugins/herdr</text>
+          <text x="586" y="384" class="tm">plugins/flywheel</text>
+
+          <rect x="840" y="270" width="250" height="130" rx="9" class="bx-dash"/>
+          <text x="856" y="296" class="tb">others' meeting plugins</text>
+          <text x="856" y="316" class="ts">in their own repositories</text>
+          <text x="856" y="336" class="ts">equal to eddy's parts when they</text>
+          <text x="856" y="352" class="ts">pass the meeting checks</text>
+          <path d="M840,376 L814,376" class="ar-d" marker-end="url(#a6)"/>
+
+          <path d="M230,270 L230,238 L360,238 L360,204" class="ar-a" marker-end="url(#a6a)"/>
+          <line x1="420" y1="270" x2="420" y2="204" class="ar-a" marker-end="url(#a6a)"/>
+          <line x1="690" y1="270" x2="690" y2="204" class="ar-a" marker-end="url(#a6a)"/>
+          <path d="M965,270 L965,238 L760,238 L760,204" class="ar-a" marker-end="url(#a6a)"/>
+          <text x="430" y="248" class="tl">depend on the crates</text>
+        </svg>
+      </div>
+      <figcaption>Each format and rule is written once, in flywheel-next. millpond, headwater and eddy each prove themselves against its conformance pack. crew stays standard-library Python and reaches signals only through millpond's command line.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 7 the road -->
+  <section>
+    <h2><span class="n">8</span>The road</h2>
+    <figure>
+      <div class="scroll">
+        <div class="lanes">
+          <div class="ph"></div><div class="ph">0 · rule, write down</div><div class="ph">1 · contract, inbox core</div><div class="ph">2 · the tools</div><div class="ph">3 · crew, swancloud on it</div><div class="ph">4 · curation to work</div><div class="ph">5 · Flywheel hosts</div>
+
+          <div class="lane">Decide</div>
+          <div><span class="c w">headwater's 33 rulings</span><span class="c w">the design's decisions</span><span class="c w">the old meeting sweep</span></div>
+          <div></div><div></div><div></div><div></div><div></div>
+
+          <div class="lane">Flywheel</div>
+          <div><span class="c">contract clauses in its statement</span></div>
+          <div><span class="c">capture and signals crates</span><span class="c">built-ins print lines</span><span class="c">conformance pack</span></div>
+          <div></div><div></div><div></div>
+          <div><span class="c">host on the same crates</span><span class="c">crew becomes Flywheel</span></div>
+
+          <div class="lane">millpond</div>
+          <div><span class="c">its statement</span></div>
+          <div><span class="c">scaffold the repository</span><span class="c">land, run, inbox, status</span></div>
+          <div><span class="c">MCP tools, curate and read skills</span><span class="c">herdr: counts, batch review</span><span class="c">send an item to a worktree</span></div>
+          <div></div><div></div><div></div>
+
+          <div class="lane">headwater</div>
+          <div><span class="c">amend its statement</span></div>
+          <div></div>
+          <div><span class="c">scaffold, core, lookups</span><span class="c">plugins, adapter part</span></div>
+          <div></div><div></div><div></div>
+
+          <div class="lane">eddy</div>
+          <div></div><div></div>
+          <div><span class="c">scaffold, meeting core</span><span class="c">wispr part, plugins</span></div>
+          <div></div><div></div><div></div>
+
+          <div class="lane">crew</div>
+          <div><span class="c">amend its record</span></div>
+          <div></div><div></div>
+          <div><span class="c">signal commands call millpond</span><span class="c">Markdown imported once</span></div>
+          <div><span class="c">curator moves through millpond</span><span class="c">one release to a landed bump</span></div>
+          <div></div>
+
+          <div class="lane">swancloud</div>
+          <div></div>
+          <div><span class="c">release adapter on trial through millpond</span></div>
+          <div></div>
+          <div><span class="c">watch list, adapters from one list</span><span class="c">cut over to headwater</span><span class="c">run eddy and a folder drop</span><span class="c">retire the old sweep</span></div>
+          <div></div><div></div>
+        </div>
+      </div>
+      <div class="legend"><span><i class="w"></i>waiting on you</span><span><i></i>to do</span></div>
+      <figcaption>Each phase ends with something running on real work. The release adapter lands through millpond on trial in phase 1, so the contract carries live captures before headwater exists. headwater, eddy and millpond's plugins then move side by side.</figcaption>
+    </figure>
+  </section>
+
+  <footer>Design and plan: <span class="mono">design/capture/</span> on the <span class="mono">capture-design</span> branch of agentplot/blueprints. headwater's statement: <span class="mono">design/headwater/requirements.md</span>.</footer>
+</main>

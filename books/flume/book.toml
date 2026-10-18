@@ -1,0 +1,15 @@
+[book]
+title = "flume design"
+description = "The design book for flume: one launch, one worktree of one repository, and a fresh agent for each of a kind's stages, its prompt confirmed and its end read from its deliverable, until sluice lands the work and flume tidies the place. millpond, headwater, sounding, crew and the operator launch through it."
+authors = ["Chuck Swanberg <cswanberg@mad-swan.com>"]
+language = "en"
+src = "src"
+
+[output.html]
+site-url = "/blueprints/flume/"
+default-theme = "ayu"
+preferred-dark-theme = "ayu"
+no-section-label = false
+fold.enable = true
+fold.level = 1
+additional-css = ["figures.css"]
