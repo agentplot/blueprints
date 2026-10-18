@@ -1,0 +1,160 @@
+<title>headwater Rulings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Layout: one reading column; each question is a row with its number, the gap, the recommendation and what changes in the statement. */
+:root {
+  --bg: #f2f5f6;
+  --surface: #ffffff;
+  --fg: #172126;
+  --muted: #56656d;
+  --line: #d2dadd;
+  --accent: #1d6a86;
+  --rec: #26744f;
+  --change: #8a5a12;
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1518; --surface: #172025; --fg: #e1e8eb; --muted: #9aa9b0; --line: #2f3c42;
+    --accent: #7cc3dc; --rec: #6fcf9d; --change: #e2b061;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1518; --surface: #172025; --fg: #e1e8eb; --muted: #9aa9b0; --line: #2f3c42;
+  --accent: #7cc3dc; --rec: #6fcf9d; --change: #e2b061;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 400 16.5px/1.55 var(--font-body); padding-inline: 18px; padding-block: 36px 64px; }
+main { max-width: 980px; margin: 0 auto; display: grid; gap: 44px; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(32px, 5vw, 46px); font-weight: 800; font-stretch: 80%; line-height: 1.05; }
+h2 { font-size: 23px; font-weight: 700; font-stretch: 85%; }
+p { margin: 0; max-width: 70ch; }
+code { font-family: var(--font-mono); font-size: 0.85em; }
+header { display: grid; gap: 14px; }
+.eyebrow { font: 600 12.5px var(--font-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.lede { font-size: 18px; }
+.howto { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 8px; max-width: 760px; }
+.howto ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; color: var(--muted); }
+.legend b { font-weight: 700; }
+.legend .r { color: var(--rec); } .legend .c { color: var(--change); }
+section { display: grid; gap: 12px; }
+.qs { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.q { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px 14px; display: grid; grid-template-columns: 44px 1fr; gap: 4px 12px; min-width: 0; }
+.num { grid-row: span 4; font: 700 22px/1 var(--font-display); font-stretch: 80%; color: var(--accent); font-variant-numeric: tabular-nums; padding-top: 2px; }
+.gap { font-weight: 600; min-width: 0; }
+.cl { font: 400 12.5px var(--font-mono); color: var(--muted); }
+.rec, .chg { min-width: 0; font-size: 15.5px; }
+.rec::before { content: "Recommend  "; font: 700 11.5px var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--rec); }
+.chg::before { content: "Statement  "; font: 700 11.5px var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--change); }
+.chg { color: var(--muted); }
+.flag { font: 600 11.5px var(--font-body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--change); border: 1px solid var(--change); border-radius: 999px; padding: 0 7px; margin-left: 6px; white-space: nowrap; }
+footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 14px; max-width: 980px; margin: 0 auto; }
+@media (max-width: 520px) { .q { grid-template-columns: 1fr; } .num { grid-row: auto; } }
+</style>
+
+<main>
+  <header>
+    <div class="eyebrow">agentplot/blueprints · design/headwater · 17 October 2026</div>
+    <h1>headwater Rulings</h1>
+    <p class="lede">A fresh model, given only the statement, designed headwater and asked 32 questions where the statement was silent or contradicted itself. Each has a recommended ruling below, with one more on a word the statement shares with Flywheel. Once you rule, the rulings go into <code>models/reconstruction-1-answers.md</code> and into the statement as clauses, as sluice's did.</p>
+    <div class="howto">
+      <strong>How to rule</strong>
+      <ul>
+        <li>Accept them all on the Pending You card, or accept with changes and name the numbers you would rule differently.</li>
+        <li>The model is at <code>design/headwater/models/reconstruction-1.md</code> on the branch <code>headwater-statement</code>. Its design: one pure derivation over one reading of the repository and what the sources last said.</li>
+      </ul>
+    </div>
+    <div class="legend"><span><b class="r">Recommend</b> the ruling</span><span><b class="c">Statement</b> what changes in it</span><span><span class="flag">contradiction</span> two clauses disagree today</span></div>
+  </header>
+
+  <section>
+    <h2>Repository, held state and answers</h2>
+    <ol class="qs">
+      <li class="q"><span class="num">1</span><span class="gap">What is "a repository": one clone, or every clone on every host?<span class="flag">contradiction</span></span><span class="cl">28 · 48 · 50 · C.6</span><span class="rec">The checkouts that share one held state. Under the git-directory store that is one clone; sharing across hosts is a later store profile, as sluice's state refs are.</span><span class="chg">Add <em>repository</em> to the vocabulary.</span></li>
+      <li class="q"><span class="num">2</span><span class="gap">Whose repository state does "what headwater holds" answer for, when checkouts sit at different commits?</span><span class="cl">17 · 31 · 32</span><span class="rec">The asker's own, applied to what the sources last said (the model's design). A dependency no scan has looked for yet is reported as not yet looked for.</span><span class="chg">Rewrite 17; add the status to <em>report</em>.</span></li>
+      <li class="q"><span class="num">3</span><span class="gap">An answer also depends on the binding, the asker's credentials, the clock and headwater's version.</span><span class="cl">32 · 38 · 45 · 51</span><span class="rec">An answer depends on the repository state, the held state, the binding, the time and headwater's version, never on who asks. A failed lookup never erases what a source said before: the answer keeps the last listing and its time beside the failure.</span><span class="chg">Rewrite 32; a new clause on failed lookups.</span></li>
+      <li class="q"><span class="num">4</span><span class="gap">Who binds the profiles, and where is the binding read from?</span><span class="cl">51 · actors</span><span class="rec">The repository's authors, in the repository beside the tiers, defaulting to every profile that recognises a declaration. Credentials stay the asker's.</span><span class="chg">The authors' row gains "which sources to ask"; 51 says where.</span></li>
+      <li class="q"><span class="num">28</span><span class="gap">Do 29 and S9 assume the sources did not change between scans?</span><span class="cl">11 · 29 · S9</span><span class="rec">Yes: S9 compares against the same source answers. Notes are read again at each scan of a tier, so upstream's edits arrive.</span><span class="chg">Rewrite 29 and S9 to hold for the same source answers.</span></li>
+      <li class="q"><span class="num">29</span><span class="gap">How are uncommitted changes named, and may a scan of a changed checkout write?</span><span class="cl">31 · vocabulary</span><span class="rec">A repository state is the checkout as it stands, committed or not, reported with its commit and whether it holds changes. It may write, since what it keeps is per dependency, never per state.</span><span class="chg">Rewrite <em>repository state</em>.</span></li>
+      <li class="q"><span class="num">31</span><span class="gap">What does "as one or the other would have left it" mean for two scans at once?</span><span class="cl">30 · 49</span><span class="rec">As if one ran after the other: each lookup kept by its key, the later one winning, and acknowledgements untouched.</span><span class="chg">Rewrite 30.</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Pins and identity</h2>
+    <ol class="qs">
+      <li class="q"><span class="num">5</span><span class="gap">The vocabulary's <em>pin</em> is unknown without a single version, but 4 gives a dependency several pins.<span class="flag">contradiction</span></span><span class="cl">3 · 4 · 7</span><span class="rec">A pin belongs to a declaration. A dependency's pin is the oldest of its declarations' pins, and unknown when any is unknown or two cannot be ordered.</span><span class="chg">Rewrite <em>pin</em>; 4 cites it.</span></li>
+      <li class="q"><span class="num">6</span><span class="gap">Which pin does an advisory have to name, and are advisories on newer releases given?</span><span class="cl">18 · 4</span><span class="rec">Affected when an advisory names any declared pin. A brief also gives the advisories naming its target release, so a fixer never moves onto a known bad version.</span><span class="chg">18 says "any of its pins"; 26 gains the target's advisories.</span></li>
+      <li class="q"><span class="num">7</span><span class="gap">One identity per dependency, yet one tool can be <code>pkg:cargo/x</code> and <code>pkg:github/o/x</code>.<span class="flag">contradiction</span></span><span class="cl">2 · C.1 · S11</span><span class="rec">The identity is the name the declaration's own ecosystem gives. The same software through two ecosystems is two dependencies with two version lines. A profile maps an identity to whatever its source calls it.</span><span class="chg">Rewrite 2.</span></li>
+      <li class="q"><span class="num">8</span><span class="gap">How do mise tools and Actions become Package URLs?</span><span class="cl">C.2 · S11</span><span class="rec">A mise tool on a GitHub backend, and every Action, is <code>pkg:github/owner/repo</code>; a mise core tool maps to its upstream's GitHub repository; a watch list entry names its Package URL outright.</span><span class="chg">A mapping table in C.2.</span></li>
+      <li class="q"><span class="num">9</span><span class="gap">How is a release's version spelled: <code>v1.2.3</code> or <code>1.2.3</code>, PEP 440's <code>1.0</code> or <code>1.0.0</code>?</span><span class="cl">10 · 44 · C.3</span><span class="rec">The ecosystem's normal form: PEP 440 normalised, SemVer without a <code>v</code>. A tag's prefix comes off by the declared tag scheme, and the tag stays as the link.</span><span class="chg">10 and C.1.</span></li>
+      <li class="q"><span class="num">10</span><span class="gap">C.3 orders tags by the watch list's pattern, but order takes no repository input and authors may not decide order.<span class="flag">contradiction</span></span><span class="cl">6 · 43–45 · actors</span><span class="rec">Authors may declare how a dependency's tags spell its versions, never which of two versions is newer. Listing and order take the identity with its declared scheme, and 45 holds per scheme.</span><span class="chg">The authors' row; 43 to 45.</span></li>
+      <li class="q"><span class="num">11</span><span class="gap">Part B never carries a dependency's source repository, yet GitHub releases and both notes profiles need one.</span><span class="cl">43 · 46 · C.3 · C.4</span><span class="rec">Add <strong>locate</strong> to the release source: given an identity, where upstream keeps its releases and notes, or unknown. A declaration may also state it.</span><span class="chg">A new clause in B.2; 46 takes its answer.</span></li>
+      <li class="q"><span class="num">30</span><span class="gap">What do the declarations cover: dev, peer, optional, indirect? Is a broken lockfile unread or unknown?</span><span class="cl">1 · 3 · C.2</span><span class="rec">Direct dependencies only: npm's dependencies, dev and optional (not peer); Python's project dependencies and groups; Cargo's normal, dev and build dependencies of every member; Go requirements not marked indirect. A lockfile that will not parse makes its dependencies unread.</span><span class="chg">C.2.</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Sources and what they say</h2>
+    <ol class="qs">
+      <li class="q"><span class="num">12</span><span class="gap">What counts as two sources disagreeing, and whose order wins?</span><span class="cl">8 · 39 · 44 · 51</span><span class="rec">A release one source lists and another does not yet is no disagreement: sources lag. Releases merge by identity, each carrying every source's account. Where two orders differ, the release is undecided with both.</span><span class="chg">39 defines disagreeing.</span></li>
+      <li class="q"><span class="num">13</span><span class="gap">Does C.4's changelog-only-without-a-release-body choose between sources?</span><span class="cl">39 · C.4</span><span class="rec">No: the changelog declines where a release body exists, so only one source answers. A repository that binds both to answer always gets both, each named.</span><span class="chg">39 says headwater never chooses between answers it received.</span></li>
+      <li class="q"><span class="num">20</span><span class="gap">Do the notes and advisory sources count toward a complete scan?</span><span class="cl">15 · 16 · vocabulary</span><span class="rec">Release and advisory sources count; notes do not. A release with unread notes is still reported, and its notes are read again at the next scan or by a brief.</span><span class="chg">Rewrite <em>complete</em>.</span></li>
+      <li class="q"><span class="num">21</span><span class="gap">The notes and advisory reads have no "could not be reached".</span><span class="cl">46 · 47 · 18</span><span class="rec">Add it to both. An unreached advisory source makes the advisory status unread, never "not affected".</span><span class="chg">46, 47 and 18.</span></li>
+      <li class="q"><span class="num">22</span><span class="gap">Clause 8 leaves no room to hold back a prerelease, so both §10 options break it.<span class="flag">contradiction</span></span><span class="cl">8 · 43 · §10</span><span class="rec">A report holds a newer prerelease only where the pin is a prerelease or the dependency's tier asks for them. Listings carry the source's own prerelease mark, else the version grammar's.</span><span class="chg">Rewrite 8; 43 gains the mark.</span></li>
+      <li class="q"><span class="num">23</span><span class="gap">Is a withdrawn release one "the source publishes"?</span><span class="cl">8 · 43</span><span class="rec">Yes, with the source's withdrawn mark, on a newer release and on the pin alike. A withdrawn pin is a reason to move, so it shows.</span><span class="chg">8 counts withdrawn releases, marked.</span></li>
+      <li class="q"><span class="num">32</span><span class="gap">Can "a source learns nothing but identities and versions" be checked, given batching and credentials?</span><span class="cl">37 · actors</span><span class="rec">Checked on recorded requests in the conformance suite. Batching is allowed. The asker's own credentials identify the asker by the asker's choice, which is not something of the repository.</span><span class="chg">37's details; a non-goal: hiding the asker from a source.</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Tiers and cadence</h2>
+    <ol class="qs">
+      <li class="q"><span class="num">14</span><span class="gap">Every dependency description reads tiers, yet C.2 has one tiers file and the watch list a tier column.</span><span class="cl">41 · 51 · B.1 · C.2</span><span class="rec">Tiers come from one place only, the tiers declaration. The watch list loses its tier column and stays a dependency description.</span><span class="chg">read-tiers moves to a seam of its own, bound once.</span></li>
+      <li class="q"><span class="num">15</span><span class="gap">What happens when two tiers name one identity?</span><span class="cl">13 · 14 · 1</span><span class="rec">That dependency is reported unread, "named by two tiers", and both tiers stay due. Every other dependency is reported as usual. headwater never picks.</span><span class="chg">A new clause beside 13.</span></li>
+      <li class="q"><span class="num">16</span><span class="gap">The default tier's cadence when a tiers file exists; can a tier name identities by pattern?</span><span class="cl">41 · C.2</span><span class="rec">The tiers declaration may set the default's cadence, seven days when it does not. A tier may name identities by prefix; an exact name beats a pattern, and two overlapping patterns are question 15.</span><span class="chg">41 and C.2.</span></li>
+      <li class="q"><span class="num">17</span><span class="gap">Where does a declaration go whose identity cannot be read?</span><span class="cl">1 · 13 · 16</span><span class="rec">At the top of every answer. It makes no tier due: scanning again cannot fix it, and changing the repository can.</span><span class="chg">1 says where.</span></li>
+      <li class="q"><span class="num">18</span><span class="gap">The vocabulary's <em>due</em> and clause 16 disagree after an incomplete scan of a named tier.<span class="flag">contradiction</span></span><span class="cl">15 · 16</span><span class="rec">A tier is due when its cadence has passed since its last complete scan, when its newest scan was incomplete, or when it was never scanned.</span><span class="chg">Rewrite <em>due</em>.</span></li>
+      <li class="q"><span class="num">19</span><span class="gap">A dependency no source can ever read keeps its tier due for ever.</span><span class="cl">15 · 16 · 51</span><span class="rec">One no bound source knows is reported "no source knows it" and does not count against completeness. A source that fails does, until it answers.</span><span class="chg">Rewrite <em>complete</em>; a new status.</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Acknowledgements, briefs and notes</h2>
+    <ol class="qs">
+      <li class="q"><span class="num">24</span><span class="gap">Who may acknowledge, and how does headwater know who?</span><span class="cl">20 · 24 · actors</span><span class="rec">Only by an explicit request that names who gives it, the git identity by default. headwater records the name and does not authenticate it. A recorder never acknowledges.</span><span class="chg">Rewrite 20; the operator's row.</span></li>
+      <li class="q"><span class="num">25</span><span class="gap">Can an acknowledgement be undone, or conflict with another?</span><span class="cl">20 · 21 · 24</span><span class="rec">A later acknowledgement may withdraw an earlier one, and all stay readable. The latest for a release wins. A skip comes back only when a newer release that is not withdrawn is listed.</span><span class="chg">A new clause beside 21.</span></li>
+      <li class="q"><span class="num">26</span><span class="gap">What does a brief cover, and what of a release no report holds?</span><span class="cl">25 · vocabulary</span><span class="rec">The target's notes and the notes of every release between the pin and the target, since a fixer crossing several releases needs each breaking change. A release no report holds, acknowledgements set aside, is refused.</span><span class="chg">Rewrite <em>brief</em> and 25.</span></li>
+      <li class="q"><span class="num">27</span><span class="gap">What "part" of notes may an asker take, and what is the way to read the whole?</span><span class="cl">12 · 17 · 25</span><span class="rec">The first N bytes, cut back to a line's end. The way to the whole is a brief, which may reach the notes source.</span><span class="chg">12.</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>A word shared with Flywheel</h2>
+    <ol class="qs">
+      <li class="q"><span class="num">33</span><span class="gap">The statement calls deps.dev, GitHub, ecosyste.ms and OSV <em>sources</em>, and Flywheel calls what an adapter captures from a source. One word would name two layers.</span><span class="cl">37–39 · 40–52 · C.3–C.5 · vocabulary</span><span class="rec">Call headwater's a <em>lookup</em>: a service headwater asks for an identity's releases, notes or advisories. <em>Source</em> stays Flywheel's, and headwater as a whole is one source among many to it.</span><span class="chg">Rename throughout; Part B's operations keep their names.</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>The statement's own seven questions</h2>
+    <ol class="qs">
+      <li class="q"><span class="num">§1</span><span class="gap">Prereleases</span><span class="cl">8</span><span class="rec">As question 22.</span><span class="chg">Removed from §10.</span></li>
+      <li class="q"><span class="num">§2</span><span class="gap">Withdrawn releases and pins</span><span class="cl">43</span><span class="rec">As question 23.</span><span class="chg">Removed from §10.</span></li>
+      <li class="q"><span class="num">§3</span><span class="gap">Do advisories wait on a tier's cadence?</span><span class="cl">15 · 18</span><span class="rec">No: every scan reads advisories for every known pin, whatever tier is due. It is one batched query, and an advisory on what runs matters more than a release.</span><span class="chg">15 limits release sources only; a new clause.</span></li>
+      <li class="q"><span class="num">§4</span><span class="gap">Whose is an acknowledgement?</span><span class="cl">20 · 28</span><span class="rec">The repository's. Each person's would make an answer depend on who asks. It travels as far as the store reaches.</span><span class="chg">Removed from §10.</span></li>
+      <li class="q"><span class="num">§5</span><span class="gap">Held state across hosts</span><span class="cl">28 · 50</span><span class="rec">As question 1: a later store profile, kept open in §10 for it.</span><span class="chg">Stays in §10, narrowed.</span></li>
+      <li class="q"><span class="num">§6</span><span class="gap">Several projects in one repository</span><span class="cl">2 · 13</span><span class="rec">One identity in two projects is one dependency, with every declaration and its pin. A tier names it once for all of them.</span><span class="chg">Removed from §10.</span></li>
+      <li class="q"><span class="num">§7</span><span class="gap">Cadence from a scan's start or end?</span><span class="cl">15</span><span class="rec">From its start: a report knows no more than its earliest lookup.</span><span class="chg">In <em>due</em>.</span></li>
+    </ol>
+  </section>
+</main>
+<footer>Questions from <code>design/headwater/models/reconstruction-1.md</code>, written by a model given only <code>design/headwater/requirements.md</code> (commit fc3646b). The recommendations are the author's, for the operator to rule on.</footer>
