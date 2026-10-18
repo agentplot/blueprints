@@ -3,3 +3,4 @@
 devenv.local.nix
 .pre-commit-config.yaml
 /books/*/book/
+/_site/
