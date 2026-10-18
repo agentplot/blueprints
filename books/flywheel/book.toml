@@ -6,7 +6,7 @@ language = "en"
 src = "src"
 
 [output.html]
-site-url = "/willdan-blueprints/flywheel/"
+site-url = "/blueprints/flywheel/"
 default-theme = "ayu"
 preferred-dark-theme = "ayu"
 no-section-label = false
