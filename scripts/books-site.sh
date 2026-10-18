@@ -2,8 +2,7 @@
 # The published design books as one site, for GitHub Pages at
 # https://agentplot.github.io/blueprints/: each book at /blueprints/<book>/,
 # its address the site-url in its book.toml, and an index page naming them.
-# pinout and testledger are retiring, so they stay unpublished, and
-# Flywheel's waits on a cleanup of the design it includes.
+# pinout and testledger are retiring, so they stay unpublished.
 #   scripts/books-site.sh [out]    (default: _site)
 set -euo pipefail
 cd "$(dirname "$0")/.."
