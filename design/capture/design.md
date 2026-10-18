@@ -6,10 +6,10 @@ Each one reaches the work the same way. A program notices the event and
 hands it to millpond, which records it once as a capture in an inbox.
 The capture becomes signals, either mechanically when it is its own
 excerpt or through a reader session. Curation gives each signal one
-move and joins signals into items. An item goes to one worktree, or
-into crew's plan, and the work it becomes lands through sluice. An item
-that asks a question goes to a sounding, which ends on a conclusion the
-operator accepts.
+move and joins signals into items. flume launches an item's work in
+one worktree, or crew's plan takes it, and the work lands through
+sluice. An item that asks a question goes to a sounding, which ends on
+a conclusion the operator accepts.
 
 This design covers every part that does this:
 
@@ -18,13 +18,16 @@ This design covers every part that does this:
 - **eddy** lists recorded meetings from each meeting service.
 - **millpond** is the inbox. It runs adapters, keeps captures and
   signals, serves the tools a curation session works through, and sends
-  an item to a worktree.
+  an item on.
+- **flume** launches and tracks one agent in one worktree through a
+  kind's stages, and tidies the place when the work lands or is
+  dropped. millpond, headwater, sounding and crew call it.
 - **sounding** works one question in one session, in a worktree of its
   own, and ends on a conclusion the operator accepts, sends back for
   another round, or drops.
 - **sluice** tests a change as merged and lands it.
-- **crew** runs teams, plans and bolts. It calls millpond's command
-  line as it calls sluice's.
+- **crew** runs teams, plans and bolts. It calls millpond's, flume's
+  and sluice's command lines.
 - **Flywheel** is built later on the same crates as millpond and reads
   the same inboxes. crew becomes it (crew ADR 0026: "crew becomes
   flywheel").
@@ -46,7 +49,8 @@ cites headwater's statement. A rule id such as `signals.6` cites crew's
 | An adapter | One source. It lists the source's events, keys each one, fetches the raw material, and marks a capture that is its own excerpt. | Writes records, keeps a list of what it reported, cuts an excerpt, or reads a capture into signals (115). |
 | headwater | Releases and advisories for what a repository declares. It stands alone with its Claude Code and herdr plugins, and its Flywheel plugin holds an adapter part. | Knows which inbox records its releases. |
 | eddy | Recorded meetings across meeting services, with a part per service. It stands alone as headwater does. | Reads a meeting into signals. |
-| millpond | Runs adapters and takes the capture contract. Dedupes by key, banks raw material, and writes each capture, plus the one signal of a capture that is its own excerpt. Keeps the inbox, checks a reader's excerpts, writes moves and items, sends an item to a worktree, and records each run. | Judges what a capture says, or plans across items. |
+| millpond | Runs adapters and takes the capture contract. Dedupes by key, banks raw material, and writes each capture, plus the one signal of a capture that is its own excerpt. Keeps the inbox, checks a reader's excerpts, writes moves and items, records each send and its outcome, and records each run. | Judges what a capture says, starts an agent, or plans across items. |
+| flume | Places on the host it runs on: makes a worktree ready, starts each stage's agent in it with its prompt confirmed, moves on when the stage's deliverable exists, and tidies the place. Reports each place's state. | Decides what to launch, plans across items, or lands anything itself. |
 | A reader, a session | Reads a capture that is not its own excerpt into signals, through millpond (113, 217e). | Lists a source. |
 | Curation, a session | Proposes one move per signal, in batches, through millpond's tools (116). | Writes captures or signals. |
 | sounding | One question in one session, in a worktree of its own, ending on a conclusion. It offers each finding beyond its question to millpond as a capture. | Lands code, writes the inbox except through millpond, or plans across items. |
@@ -73,9 +77,9 @@ source ─▶ adapter ──capture lines──▶ millpond ─▶ capture, raw 
             curation ─▶ one move per signal ◀─────────────────┘
                │
                ├─ drop, answered, challenge ─▶ settled
-               └─ join, attach, route ─▶ item ─┬─ send ─▶ one worktree ─▶ sluice lands
-                                               ├─ send ─▶ a sounding ─▶ conclusion ─▶ new items
-                                               └─ crew's plan ─▶ team ──▶ sluice lands
+               └─ join, attach, route ─▶ item ─┬─ send ─▶ flume ─┬─ fix, change ─▶ one worktree ─▶ sluice lands
+                                               │                 └─ question ─▶ a sounding ─▶ conclusion ─▶ new items
+                                               └─ crew's plan ─▶ team, its stages through flume ─▶ sluice lands
 ```
 
 A release is its own excerpt. Its notes are the excerpt and its signal
@@ -269,7 +273,7 @@ serves over MCP as `millpond mcp`:
 | `moves` | Writes a batch of moves in one commit. |
 | `items` | Lists items with their signals, briefs and sends. |
 | `brief` | Writes an item's brief. |
-| `send` | Sends an item to a worktree, or an item that asks a question to a sounding. |
+| `send` | Sends an item to flume as a fix or a change, or an item that asks a question to a sounding. |
 
 ### A reader
 
@@ -315,18 +319,18 @@ as five of a meeting's ten, or two bumps that move together. It is
 Flywheel's proposed intent (109). millpond keeps its brief, which the
 session writes with `brief`, and every place it was sent.
 
-- **millpond sends one item to one worktree.** It makes a worktree of
-  the repository the send names, on a branch named for the item,
-  writes the brief there, and starts an agent on it: in a herdr pane
-  through its herdr plugin, or as a command it prints. The agent
-  submits through sluice, and millpond writes the landing against the
-  item from sluice's record of that branch.
+- **millpond sends one item to one worktree through flume.** The send
+  names the repository and the kind, a fix or an OpenSpec change.
+  millpond records the send and hands flume the brief, and flume makes
+  the place and starts the agent. The work submits through sluice, and
+  millpond writes the landing against the item from sluice's record of
+  that branch.
 - **millpond sends an item that asks a question to a sounding.** Its
   work ends in an answer: whether to take a major release, or how to
   settle what a meeting left open. millpond keeps the accepted
   conclusion as the item's record, and curation answers a later signal
   on the same subject by naming it (116).
-- **An inbox crew keeps sends no item to a worktree.** Its settings
+- **An inbox crew keeps sends no item to flume itself.** Its settings
   hand items to crew's planner, which orders them across teams and
   turns each into a chore or a unit. Planning across items is crew's
   today and Flywheel's later, never millpond's.
@@ -339,6 +343,73 @@ session writes with `brief`, and every place it was sent.
   source (118), lets the operator review a proposed batch row by row,
   and sends an item with one key.
 - **crew's rail** shows an inbox crew keeps, one decision per item.
+
+## Launching: flume
+
+flume starts the work an item becomes and follows it until it lands. A
+launch names a repository, a kind, a brief and a name. flume runs on
+one host and launches there.
+
+### A place
+
+- **flume makes the place:** a worktree of the repository at
+  `<repository>/places/<kind>--<name>`, on the branch `<kind>/<name>`,
+  made ready by the repository's own declaration of what a worktree
+  needs.
+- **A kind is a list of stages.** Each stage names its prompt and its
+  deliverable:
+
+  | Kind | Stages |
+  |---|---|
+  | fix | code, then a submission to sluice |
+  | change | construct, which writes the OpenSpec change; code, which ticks its tasks; verify; then a submission to sluice |
+  | question | sounding's session, which ends on `sounding conclude` |
+
+  A repository may declare kinds of its own in the same form.
+- **Each stage starts a fresh agent** in a herdr pane, or as a command
+  flume prints. flume sends the stage's prompt only once the agent
+  accepts input, and sends it again when the agent's transcript lacks
+  it.
+- **A stage ends when its deliverable exists**, or when its agent stops
+  short and says what it needs, never when the pane goes quiet. Then
+  flume starts the next stage.
+- **flume tidies a place** once its work lands or is dropped. It
+  removes only places it made, and keeps a branch that holds commits
+  its target lacks.
+
+### What flume reports
+
+`flume status --json` gives each place's kind, its stage, whether its
+agent is working, waiting or stopped, whether the stage's deliverable
+exists, and its submission. For a change, flume reads the OpenSpec
+change's own files, so the status shows its tasks ticked. millpond
+keeps an item's record. flume keeps only the live state of the places
+it runs.
+
+### Who launches
+
+| Caller | Launches |
+|---|---|
+| The operator | `/launch <brief>` in any session, or the herdr plugin's key |
+| millpond | an item's send, as a fix or a change |
+| headwater | the fix key, as a fix with the release's brief |
+| sounding | a question, as the place and session of a sounding |
+| crew | each stage of a unit, chore or fix, in a slot of its team |
+
+crew keeps what spans many places: plans, bolts, slots, the dispatcher,
+conductors, approvals, and conflicts between units. It asks flume for
+each place and each stage's agent, as it asks sluice for each landing.
+
+### The operator's surfaces
+
+- **The command line:** `flume launch`, `status`, `tell`, `stop`,
+  `retry` and `tidy`.
+- **The Claude Code plugin** gives every session `/launch` and serves
+  `status` over MCP.
+- **The herdr plugin** shows every place in flight in the sidebar, with
+  its kind, its stage and its agent's state, and a change's tasks
+  ticked. Keys open a place's pane, tell its agent, stop it and retry
+  its stage. A sounding waiting on the operator shows as a row there.
 
 ## Questions: sounding
 
@@ -355,7 +426,8 @@ works the same with millpond, with crew or alone.
   and its sources: the item's signals, the captures they came from, and
   any earlier conclusion on the subject.
 - **The place** is a worktree of the repository the question is about,
-  on the branch `sounding/<name>`. The session may write prototype code
+  on the branch `sounding/<name>`, which flume makes and runs as the
+  kind `question`. The session may write prototype code
   there to test an answer. That code never lands from the sounding's
   branch: the work the operator accepts reaches main through an item's
   worktree or crew's plan, and through sluice.
@@ -410,10 +482,10 @@ signals, and only offers come back as signals.
   a hook at its start, and the stop check at its end. The plugin serves
   `soundings`, `conclusion`, `accept`, `go_on` and `drop` over MCP, and
   refuses a sluice submission from a `sounding/*` branch.
-- **The herdr plugin** lists open soundings in the sidebar, each with
-  its round and its state: working, waiting on the operator, or parked.
-  Each sounding has a workspace, with the session's pane and its
-  conclusion beside it. Keys start, open, accept, send back and drop a
+- **The herdr plugin** lists open soundings, each with its round and its
+  state: working, waiting on the operator, or parked. They share flume's
+  sidebar. Each sounding has a workspace, with the session's pane and
+  its conclusion beside it. Keys start, open, accept, send back and drop a
   sounding, and open its conclusion in plannotator for notes.
 - **Two ways to run:** unattended, ending on a card, or with the
   operator, in a pane beside them as a conversation (`--with-me`).
@@ -455,8 +527,8 @@ each pin, with its notes and advisories.
 - **Alone**, headwater runs with its Claude Code and herdr plugins:
   - a sidebar of unread releases;
   - a brief a fixer reads;
-  - a key that starts an agent in a worktree to make the bump and
-    submit it to sluice.
+  - a key that hands the release's brief to flume, which starts an
+    agent in a worktree to make the bump and submit it to sluice.
 - **The Flywheel plugin's adapter part**, `headwater capture`, prints a
   capture for every release newer than its pin on each run, and
   millpond's dedupe lands each one once:
@@ -572,6 +644,7 @@ runs a Flywheel plugin's adapter parts and nothing else of it.
 - **millpond** keeps `plugins/claude` and `plugins/herdr`. Its built-in
   adapters are commands of its own.
 - **sounding** keeps `plugins/claude` and `plugins/herdr`.
+- **flume** keeps `plugins/claude` and `plugins/herdr`.
 
 ## On a fleet
 
@@ -605,6 +678,7 @@ swancloud runs every part on the host its list names:
 | Raw banking with a host-qualified pointer, the checks on a capture, and the verbatim check on a reader's excerpt | millpond, from crew's checks | Flywheel, for 217h and 217e |
 | Finding releases and reading their notes | swancloud's release adapter | headwater's lookups and its Flywheel plugin |
 | One question, one session, one conclusion: the question, its rounds and the conclusion's shape | sounding, from crew ADR 0019 | crew, Flywheel's elaborations |
+| Places, a fresh agent per stage, prompt delivery, stages that end on their deliverable, and tidying | flume, from crew's `teams.2`–`4`, `teams.11`, `teams.15` and `plan.9`, `10`, `12`, `17` | millpond, headwater, sounding, crew |
 
 crew's Python uses only the standard library (`code.1`). crew reaches
 signals only through millpond's command line, as it reaches landings
@@ -635,6 +709,8 @@ only through sluice's, and links no crate.
   tools, sends, and the three setups.
 - **sounding's statement**, new: the question, the place, the three
   exits, rounds, and the operator's decision.
+- **flume's statement**, new: a launch, places, kinds and stages,
+  prompt delivery, stage ends, status and tidying.
 - **crew's record:**
   - each partition's signals live in its inbox, written through
     millpond (`signals.1`);
@@ -645,7 +721,9 @@ only through sluice's, and links no crate.
   - `curation-and-agenda` writes moves through millpond and turns items
     into plan entries;
   - ADR 0019's elaboration becomes "crew calls sounding as it calls
-    millpond".
+    millpond";
+  - an ADR, "crew calls flume for each place and stage", with the
+    `teams` and `plan` rules flume takes over amended to name it.
 - **headwater's statement:**
   - its 33 rulings, among them "lookup" for what the statement calls a
     source;
@@ -674,8 +752,10 @@ only through sluice's, and links no crate.
   write, as devenv writes its lock.
 - **Where a cursor lives** when a single-host role moves hosts. A lost
   cursor costs one wider listing, which the dedupe absorbs.
-- **Attestation**, sluice signing the verdict it lands, is outside this
-  design.
+- **Attestation in sluice:** sluice signing the verdict it lands, with
+  an executor vouched for from outside the team that ran it.
+- **How a repository declares its kinds** and their prompts, and how
+  crew's stage prompts move into that form.
 - **sounding's own details:** the timebox's length and who sets it, how
   a sounding is named, where its files sit and whether they are
   committed, what parks a sounding and resumes it, what accept and drop

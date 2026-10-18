@@ -1,0 +1,15 @@
+[book]
+title = "sounding design"
+description = "The design book for sounding: one question, worked by one session in a worktree of its own, ending on a conclusion the operator accepts, sends back for another round, or drops. A finding beyond the question goes to millpond as a capture; a conclusion never becomes a signal."
+authors = ["Chuck Swanberg <cswanberg@mad-swan.com>"]
+language = "en"
+src = "src"
+
+[output.html]
+site-url = "/blueprints/sounding/"
+default-theme = "ayu"
+preferred-dark-theme = "ayu"
+no-section-label = false
+fold.enable = true
+fold.level = 1
+additional-css = ["figures.css"]
