@@ -5,14 +5,15 @@ running on real work before the next phase depends on it. Steps that
 share no dependency run side by side: once millpond's core exists,
 headwater, eddy, millpond's plugins and crew's move onto millpond all
 proceed at once. sounding needs nothing of millpond's until millpond
-sends it questions (Q5).
+sends it questions (Q5), and flume needs only crew's rules to extract
+from.
 
 Each step is done in its repository's own process:
 
 - a statement or amendment in this repository;
 - an OpenSpec change in crew, flywheel-next or swancloud;
-- millpond's, headwater's, eddy's and sounding's repositories,
-  scaffolded from kit-standard.
+- millpond's, headwater's, eddy's, sounding's and flume's
+  repositories, scaffolded from kit-standard.
 
 A step's change name is suggested where one helps. **Done when** names
 a check or an observation, never a list to tick by hand.
@@ -28,6 +29,7 @@ a check or an observation, never a list to tick by hand.
 | P1 | Write millpond's statement | none | under way |
 | E0 | Write eddy's statement | none | under way |
 | Q1 | Write sounding's statement | none | under way |
+| L1 | Write flume's statement | none | to do |
 | H1 | Amend headwater's statement | D1, D2 | to do |
 | F1 | Write the contract and the inbox into Flywheel's statement | D2 | to do |
 | C1 | Amend crew's record | D2 | to do |
@@ -41,14 +43,17 @@ a check or an observation, never a list to tick by hand.
 | H4 | headwater's core | H3 | to do |
 | H5 | headwater's lookups | H4 | to do |
 | H6 | headwater's Flywheel plugin | H4, F2 | to do |
-| H7 | headwater's Claude Code and herdr plugins | H4 | to do |
+| H7 | headwater's Claude Code and herdr plugins | H4, L3 | to do |
 | E1 | eddy | E0, F2 | to do |
 | P4 | millpond's tools and Claude Code plugin | P3 | to do |
 | P5 | millpond's herdr plugin | P3 | to do |
-| P6 | Send an item to a worktree | P4 | to do |
+| L2 | Scaffold flume's repository | L1 | to do |
+| L3 | flume's core and Claude Code plugin | L2 | to do |
+| L4 | flume's herdr plugin | L3 | to do |
+| P6 | Send an item through flume | P4, L3 | to do |
 | Q2 | Scaffold sounding's repository | Q1 | to do |
-| Q3 | sounding's core and Claude Code plugin | Q2 | to do |
-| Q4 | sounding's herdr plugin | Q3 | to do |
+| Q3 | sounding's core and Claude Code plugin | Q2, L3 | to do |
+| Q4 | sounding's herdr plugin | Q3, L4 | to do |
 | C2 | crew calls millpond | C1, P3 | to do |
 | S2 | Generate swancloud's watch list | H1 | to do |
 | S3 | The list of parts, their ticks and doctor rows | C2 | to do |
@@ -60,6 +65,7 @@ a check or an observation, never a list to tick by hand.
 | C5 | A release reaches a landed bump | C4, S4 | to do |
 | Q5 | millpond sends a question to a sounding | P6, Q3 | to do |
 | C6 | crew calls sounding | C1, C4, Q3 | to do |
+| C7 | crew calls flume | C1, L3 | to do |
 | F4 | Flywheel's host on the same crates | F2, F3 | to do |
 | F5 | crew becomes Flywheel | F4, C2 | crew's roadmap |
 
@@ -110,6 +116,11 @@ The operator accepts or changes each of these:
     operator accepts, sends back or drops. millpond sends it an item
     that asks a question, an accepted conclusion is the item's record,
     and only a finding beyond the question comes back as a capture.
+12. flume is a standalone tool that launches and tracks one agent in
+    one worktree through a kind's stages on the host it runs on, taken
+    from crew's places and stages. millpond's send, headwater's fix
+    key, sounding and crew call it; millpond keeps the item's record and
+    flume the live state of each place.
 
 - **Done when:** each decision is accepted or changed, and `design.md`
   and the statements say what was ruled.
@@ -169,6 +180,18 @@ The operator accepts or changes each of these:
   into the statement, Vale is clean, and the operator agrees to land it
   on `main`.
 
+### L1 Write flume's statement
+
+- **Where:** this repository, `design/flume/`.
+- **Does:** writes flume's statement from `design.md` and crew's
+  `teams` and `plan` rules it takes over: a launch, places, kinds and
+  stages, prompt delivery, stage ends, status, tidying, and what flume
+  never does. A fresh model reconstructs flume from the statement
+  alone, and the operator rules the questions it asks.
+- **Done when:** the reconstruction's questions are ruled and folded
+  into the statement, Vale is clean, and the operator agrees to land it
+  on `main`.
+
 ### H1 Amend headwater's statement
 
 - **Where:** this repository, `design/headwater/requirements.md`.
@@ -219,7 +242,10 @@ The operator accepts or changes each of these:
     (C3), and `curation-and-agenda` as the curator (C4);
   - turns ADR 0019 into "crew calls sounding as it calls millpond",
     with an item in place of its intent, so it and
-    `curation-and-agenda` agree (C6).
+    `curation-and-agenda` agree (C6);
+  - adds an ADR, "crew calls flume for each place and stage", and
+    amends `teams.2`–`4`, `teams.11`, `teams.15` and `plan.9`, `10`,
+    `12`, `17` to name flume (C7).
 - **Done when:** the record lands through sluice, and `_open.md` no
   longer asks where meeting signals live.
 
@@ -359,8 +385,8 @@ The operator accepts or changes each of these:
 - **Does:**
   - a skill and a command that read `overview` and `brief`;
   - a herdr sidebar of unread releases;
-  - a fix key that starts an agent in a worktree and submits to sluice,
-    or hands the release to millpond in a repository crew runs;
+  - a fix key that hands the release's brief to flume as a fix, or
+    hands the release to millpond in a repository crew runs;
   - where sounding is installed, a key that opens a sounding on a
     release that needs judgment, with its brief as the source.
 - **Done when:** both plugins install from headwater's tag and show a
@@ -405,13 +431,54 @@ The operator accepts or changes each of these:
 - **Done when:** the plugin installs from millpond's tag and its counts
   match `millpond status --json` on the trial inbox.
 
-### P6 Send an item to a worktree
+### L2 Scaffold flume's repository
+
+- **Where:** `agentplot/flume`, new, in Rust on kit-standard's code
+  profile. It follows sluice's seed commit.
+- **Does:** writes:
+  - `CLAUDE.md` pointing at the statement, a README, a license and
+    `adrs.toml`;
+  - the founding ADRs: one place, one agent per stage; a stage ends on
+    its deliverable; plugins outside the core;
+  - `docs/architecture/core.md` and `_open.md`;
+  - the kit's devenv, moon, sluice gate, `cliff.toml` and OpenSpec
+    configuration.
+- **Done when:** sluice protects `main`, and the first change lands
+  through it.
+
+### L3 flume's core and Claude Code plugin
+
+- **Where:** flume, its core and `plugins/claude`.
+- **Does:**
+  - `flume launch`, `status --json`, `tell`, `stop`, `retry` and
+    `tidy`, with places, the three kinds and a repository's own;
+  - prompt delivery checked against the agent's transcript, and stage
+    ends read from deliverables, a change's from its OpenSpec files;
+  - `/launch` and `status` over MCP.
+- **Done when:**
+  - a fix launched from a session lands through sluice, and its place is
+    tidied;
+  - a change runs construct, code and verify, and its status shows its
+    tasks ticked;
+  - a stage whose pane goes quiet with no deliverable is not ended;
+  - tidying keeps a branch that holds commits its target lacks.
+
+### L4 flume's herdr plugin
+
+- **Where:** flume, `plugins/herdr`.
+- **Does:** the sidebar of places in flight, with kind, stage, agent
+  state and a change's tasks, and keys to open, tell, stop and retry.
+- **Done when:** the plugin installs from flume's tag, and a fix and a
+  change launched from herdr show each stage in the sidebar until they
+  land.
+
+### P6 Send an item through flume
 
 - **Where:** millpond.
-- **Does:** `send` makes a worktree on a branch named for the item,
-  writes the brief there, starts an agent in a herdr pane or prints the
-  command, and writes the landing against the item from sluice's
-  record. An inbox whose settings hand items to crew refuses a send.
+- **Does:** `send` names a repository and a kind, records the send,
+  hands flume the brief, and writes the landing against the item from
+  sluice's record. An inbox whose settings hand items to crew refuses a
+  send.
 - **Done when:** an item of two bumps sent from herdr lands through
   sluice, the item shows its landing, and a send from crew's inbox is
   refused.
@@ -589,6 +656,16 @@ The operator accepts or changes each of these:
 - **Done when:** one real question goes from an item through a
   sounding to accepted plan entries on crew's rail, with no
   `<kit>/elaborations/` worktree made.
+
+### C7 crew calls flume
+
+- **Where:** crew. Change: `crew-calls-flume`.
+- **Does:** crew starts each stage's agent in a place through flume and
+  reads stage ends from `flume status`, keeping its plans, bolts,
+  slots, dispatcher, conductors and approvals.
+- **Done when:** a bolt of one unit and one chore lands with every
+  place and stage started through flume, and no crew code makes a
+  worktree itself.
 
 ## Phase 5: Flywheel hosts
 

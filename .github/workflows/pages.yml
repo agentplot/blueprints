@@ -1,0 +1,49 @@
+# The design books, built by scripts/books-site.sh and published to GitHub
+# Pages at https://agentplot.github.io/blueprints/. Every push to main that
+# touches a book or the design it includes deploys.
+name: pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - books/**
+      - design/**
+      - scripts/books-site.sh
+      - devenv.nix
+      - .github/workflows/pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: cachix/install-nix-action@v31
+      - uses: cachix/cachix-action@v16
+        with:
+          name: devenv
+      - run: nix profile add nixpkgs#devenv
+      - run: devenv shell -- scripts/books-site.sh _site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

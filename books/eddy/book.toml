@@ -1,0 +1,15 @@
+[book]
+title = "eddy design"
+description = "The design book for eddy: one tool that lists recorded meetings across meeting services, with a part per service that prints the capture contract millpond takes. A program lists the meetings and fetches their transcripts; no model runs until a reader takes a capture later."
+authors = ["Chuck Swanberg <cswanberg@mad-swan.com>"]
+language = "en"
+src = "src"
+
+[output.html]
+site-url = "/blueprints/eddy/"
+default-theme = "ayu"
+preferred-dark-theme = "ayu"
+no-section-label = false
+fold.enable = true
+fold.level = 1
+additional-css = ["figures.css"]
