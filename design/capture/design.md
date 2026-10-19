@@ -385,17 +385,21 @@ a brief and a name. flume runs on one host and launches there.
   | change | construct, which writes the OpenSpec change; code, which ticks its tasks; verify, which checks the work, commits its report in the change's directory and archives the change; then flume submits to sluice |
 
   A repository declares kinds of its own in `.config/flume.toml`, and
-  sounding hands flume the stages of each elaboration's kind with the
-  launch, in the same format. A stage's deliverable can be a report the agent committed,
-  which the branch keeps after the place is gone. A deliverable counts
-  only once made since its stage started.
+  sounding hands flume each elaboration kind with the launch. A
+  deliverable counts only once made since its stage started.
+- **A stage's report** is a file the agent committed, which the branch
+  keeps after the place is gone. A report in the place's flume state
+  folder, `{{state}}`, is allowed only where the caller keeps it
+  lasting, as sounding copies a round's conclusion into its record.
 - **Every kind is written in the family's one kind format,** which the
   shared crates define: stages in order, with the field names `agents`,
   `on_fail`, `max_send_backs` and `deliverables`, and a version per
   kind (`name@n`). flume runs a subset of it, stages in order with one
   agent each and send-backs. Flywheel reads the same declarations
   later, so a repository's kinds move from flume to Flywheel as they
-  stand.
+  stand. An elaboration kind is a kind in the same format with an
+  elaboration section, which sounding reads. flume reads its place and
+  its stages.
 - **Each stage starts a fresh agent** through flume's multiplexer seam:
   in a herdr pane, or as a command flume prints for the operator to
   run. A launch may say where the pane goes, such as beside the
@@ -516,8 +520,9 @@ them.
   one's branch, which the session can read. A kind may hand over their
   sessions' transcripts too. An earlier sounding may have been dropped
   or still be open, and nothing in it changes.
-- **Its kind** says what a round is handed, what its conclusion holds,
-  how a round ends, and what lands. sounding ships kinds of its own, a
+- **Its kind** is an elaboration kind, in the shared kind format. Its
+  elaboration section says what a round is handed, what its conclusion
+  holds, how a round ends, and what lands. sounding ships kinds of its own, a
   repository declares its own, and a launch may carry one. A round ends
   in one of three ways:
 
@@ -556,7 +561,7 @@ them.
 
   | Exit | What follows |
   |---|---|
-  | `sounding conclude` | Writes the conclusion into the record: the answer, its evidence, what it would change, the work it proposes, and what stays open. It is the round's report to flume, and the operator decides it. |
+  | `sounding conclude` | Writes the conclusion: the answer, its evidence, what it would change, the work it proposes, and what stays open. It is the round's report, `{{state}}/conclusion.md` in the place's flume state folder. flume ends the stage on it, sounding copies it into the record when it settles the round, and the operator decides it. |
   | `sounding note` | Keeps a note of what the round did and where the next round would start, and stops the round short. |
   | `sounding offer` | Hands a finding beyond the sounding's inputs to `millpond land` as a capture of its own, and the session goes on. The finding is its own excerpt, of kind `ask`, asserted by `sounding/<repository>/<name>`, under the key `sounding/<repository>/<name>/<n>`, one key per offer. |
   | `sounding ask` | Puts a question only the operator can answer on a card. The session waits for the answer, then goes on. |
@@ -857,6 +862,9 @@ The rules:
   JSON stays.
 - **A repository declares itself to a tool** in `.config/<tool>.toml`,
   read from the branch's revision.
+- **Every deliverable a later reader needs is committed** with the
+  work. A stage's report in the place's flume state folder is allowed
+  only where the caller keeps it lasting.
 - **Cursors stay on the host and never move.** Raw material stays on
   the host that banked it, in its data directory and under its backup.
 
@@ -912,7 +920,7 @@ whole path.
 | The contract's types and key rules, JSON in flight and recutils at rest, a sha256 content hash, and the excerpt cut | the shared crates' capture crate | millpond, headwater's and eddy's adapters, sounding's offers, and Flywheel later |
 | The signal, move and item records and the inbox's layout | the shared crates' signals crate | millpond, and Flywheel later |
 | The shared-branch write protocol | the shared crates | millpond, and Flywheel later; crew keeps a Python twin |
-| The kind format | the shared crates | flume, and Flywheel later |
+| The kind format, an elaboration kind's section among it | the shared crates | flume, sounding, and Flywheel later |
 | The folder drop, the meeting file and the signals-folder import | the shared crates' adapters crate | millpond, and Flywheel later |
 | Cadence: five-field cron, caught up once | the shared crates | `millpond tick`, and Flywheel's tick later |
 | The conformance pack: lines in, records expected | the shared crates | millpond and Flywheel as hosts, every adapter |
@@ -935,8 +943,8 @@ only through sluice's, and links no crate.
   - an import that keeps each capture's key;
   - the records of captures, signals, moves and items, the item holding
     a proposed intent's brief and sends, and the inbox's layout;
-  - the shared-branch write protocol, the kind format, cadence and the
-    conformance pack.
+  - the shared-branch write protocol, the kind format with an
+    elaboration kind's section, cadence and the conformance pack.
 - **millpond's statement**, new: the inbox, the contract's intake, the
   tools, sends, the three setups, and its storage profile in Part C.
 - **eddy's statement**, new: listing and fetching meetings across
@@ -1000,9 +1008,6 @@ only through sluice's, and links no crate.
   an executor vouched for from outside the team that ran it.
 - **How crew's stage prompts move into the kind format,** in each kit's
   `.config/flume.toml` (C7).
-- **Where an elaboration kind's own format is defined:** in sounding,
-  or beside the kind format in the shared crates. Its place-and-stage
-  half reaches flume in the shared kind format either way.
 - **Keeping a prototype off the branch that lands.** The branch that
   lands carries only what an elaboration's kind names, and the record
   is kept off it. Where a round's prototype code is kept apart from

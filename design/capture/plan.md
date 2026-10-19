@@ -231,9 +231,14 @@ The operator's rulings:
     conversation as a round's third ending;
   - its decisions on names, parking and `resume`, offers, notes,
     plannotator's notes, surfaces, work from a conclusion and words;
-  - its record off the branch that lands: on the host, and under
-    `refs/sounding/` on the repository's own remote when hosts share
-    it;
+  - its record off the branch that lands: in
+    `<common>/sounding/<name>/`, and under `refs/sounding/<name>` on the
+    repository's own remote when hosts share it;
+  - a round's report at `{{state}}/conclusion.md` in the place's flume
+    state folder, copied into the record when sounding settles the
+    round;
+  - an elaboration kind as a kind in the shared format with an
+    elaboration section;
   - flume running and settling each round and reporting its liveness,
     and no clock of sounding's own;
   - `[bindings]` in the operator's configuration with a per-repository
@@ -256,9 +261,13 @@ The operator's rulings:
   what flume never does. A fresh model reconstructs flume from the
   statement alone, and the operator rules the questions it asks. The
   fold carries:
-  - its decisions: flume submits; a failed submission returns to the
-    kind's named stage; the caller's ending; a conversation stage; a
-    committed report; the shared kind format;
+  - its decisions:
+    - flume submits, and a failed submission returns to the kind's
+      named stage;
+    - the caller's ending, and a conversation stage;
+    - a committed report, and a `{{state}}` report only where the
+      caller keeps it lasting;
+    - the shared kind format;
   - what moves stages on: flume's Claude Code plugin in every agent it
     starts, its herdr plugin catching what a hook cannot, herdr
     required for unattended use, and no daemon;
@@ -322,7 +331,8 @@ The operator's rulings:
     under `inbox/`;
   - the shared-branch write protocol;
   - the kind format: stages in order, `agents`, `on_fail`,
-    `max_send_backs` and `deliverables`, and a version per kind;
+    `max_send_backs` and `deliverables`, a version per kind, and the
+    elaboration section of an elaboration kind;
   - cadence, and the conformance pack.
 
   A fresh model reconstructs the crates from the statement alone, and
@@ -392,7 +402,7 @@ The operator's rulings:
     without force. A refused push has the write applied again to the
     new tip, a bounded number of times;
   - the kind format, read and checked: stages in order, their fields,
-    and a version per kind.
+    a version per kind, and an elaboration kind's section.
 - **Done when:**
   - two writes pushed to one branch at once both land, the second
     applied again on the first's tip;
@@ -597,9 +607,10 @@ The operator's rulings:
     a repository's own and a launch's own, all in the kind format;
   - the `[profiles]` table read from `.config/flume.toml` at the base
     revision, with flume's defaults where it is absent;
-  - prompt delivery checked against the agent's transcript, and stage
-    ends read from deliverables, a change's from its OpenSpec files and
-    a committed report from the branch;
+  - prompt delivery checked against the agent's transcript;
+  - stage ends read from deliverables: a change's from its OpenSpec
+    files, a committed report from the branch, and a `{{state}}` report
+    from the place's flume state folder;
   - flume's Claude Code plugin loaded into every agent it starts, whose
     stop hook settles the place when the agent goes quiet;
   - flume's submission through sluice after a kind's last stage,
@@ -675,8 +686,11 @@ The operator's rulings:
     repository's own remote when hosts share it;
   - a sounding based on earlier ones, carrying their records and their
     branches;
-  - elaboration kinds, sounding's own and a repository's, with their
-    three endings and what each lands;
+  - elaboration kinds, sounding's own and a repository's, read from
+    their elaboration section, with their three endings and what each
+    lands;
+  - each round's conclusion written to `{{state}}/conclusion.md`, and
+    copied into the record when sounding settles the round;
   - liveness read from flume's status, and offers handed again and
     cards read whenever a sounding command runs;
   - `offer` prints contract lines with the shared capture crate, under
