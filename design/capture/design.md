@@ -232,8 +232,8 @@ F2).
   in turn: a tick, a reader, a curation session and crew's agents. A
   write that another host's push got ahead of is applied again to the
   new tip.
-- **The settings** are one file at the inbox's root, `millpond.toml`.
-  It holds the adapters, each with its schedule, its configuration and
+- **The settings** are one file, `.config/millpond.toml`, at the root
+  of the branch that holds `inbox/`. It holds the adapters, each with its schedule, its configuration and
   the host whose tick runs it; the cut; the command that starts a
   reader; and whether items go to worktrees or to crew. An adapter
   names one host, so an inbox written from two hosts runs each adapter
@@ -386,7 +386,7 @@ a brief and a name. flume runs on one host and launches there.
 
   A repository declares kinds of its own in `.config/flume.toml`, and
   sounding hands flume the stages of each elaboration's kind with the
-  launch. A stage's deliverable can be a report the agent committed,
+  launch, in the same format. A stage's deliverable can be a report the agent committed,
   which the branch keeps after the place is gone. A deliverable counts
   only once made since its stage started.
 - **Every kind is written in the family's one kind format,** which the
@@ -529,8 +529,9 @@ them.
 
   The default kind, a question, ends itself and lands nothing.
 - **The place** is a worktree of the repository the sounding is about,
-  on the branch `sounding/<name>`, the prefix the elaboration kind
-  gives flume. flume makes the place and runs it with the kind's
+  on the branch `sounding/<name>`. Every elaboration kind names its
+  places' branches so and hands flume that naming with the kind. flume
+  makes the place and runs it with the kind's
   stages. The session commits its work there, and may write prototype
   code to test an answer. Only what the kind names lands, such as a
   design-book chapter, claims or a context map, and flume submits it
@@ -539,22 +540,24 @@ them.
   crew's plan.
 - **Its record** holds its inputs, the soundings it is based on, its
   rounds, the operator's notes and decisions, its offers and asks, and
-  its conclusion. sounding keeps it off the branch that lands: on the
-  host, and under `refs/sounding/` on the repository's own remote when
-  hosts share it. The branch that lands carries only what the kind says
-  lands.
+  its conclusion. sounding keeps it off the branch that lands: in the
+  repository's clone on the host, `<common>/sounding/<name>/`, and as
+  the same tree under `refs/sounding/<name>` on the repository's own
+  remote when hosts share it. The branch that lands carries only what
+  the kind says lands.
 - **flume runs and settles each round** and reports whether its session
-  is alive. sounding has no clock of its own: it hands an offer again
-  and reads its cards whenever a sounding command runs and whenever its
-  herdr plugin refreshes.
+  is alive. sounding has no clock of its own: it hands an offer again,
+  tells an item's keeper again and reads its cards whenever a sounding
+  command runs and whenever its herdr plugin refreshes.
 - **A parked sounding**, with no round running and nothing waiting on
   the operator, resumes only on the operator's word.
-- **The session** ends a round with `sounding conclude`, and may offer
-  and ask along the way:
+- **The session** ends a round with `sounding conclude` or `sounding
+  note`, and may offer and ask along the way:
 
   | Exit | What follows |
   |---|---|
-  | `sounding conclude` | Writes the conclusion: the answer, its evidence, what it would change, the work it proposes, and what stays open. The operator decides it. |
+  | `sounding conclude` | Writes the conclusion into the record: the answer, its evidence, what it would change, the work it proposes, and what stays open. It is the round's report to flume, and the operator decides it. |
+  | `sounding note` | Keeps a note of what the round did and where the next round would start, and stops the round short. |
   | `sounding offer` | Hands a finding beyond the sounding's inputs to `millpond land` as a capture of its own, and the session goes on. The finding is its own excerpt, of kind `ask`, asserted by `sounding/<repository>/<name>`, under the key `sounding/<repository>/<name>/<n>`, one key per offer. |
   | `sounding ask` | Puts a question only the operator can answer on a card. The session waits for the answer, then goes on. |
 
@@ -595,18 +598,19 @@ only offers come back as signals.
 ### The operator's surfaces
 
 - **The command line:** `sounding open`, `list`, `conclude`, `offer`,
-  `ask`, `accept`, `go-on`, `finish`, `drop` and `resume`.
+  `note`, `ask`, `accept`, `go-on`, `finish`, `drop` and `resume`.
 - **The Claude Code plugin** gives every session `/sound`, which opens a
   sounding on the inputs it names while the session goes on with its
   own work. A sounding's session gets its inputs, the records it is
   based on and its earlier rounds from a hook at its start. The plugin
   serves `soundings`, `conclusion`, `accept`, `go_on` and `drop` over
   MCP.
-- **The herdr plugin** only displays, and drives no pane and no agent.
-  It lists open soundings in flume's sidebar, each with its round and
-  its state: working, waiting on the operator, or parked. Its keys are
-  shortcuts to sounding's command line for accept, go on, finish and
-  drop, and open a conclusion in plannotator for notes.
+- **The herdr plugin** only displays. It lists open soundings in
+  flume's sidebar, each with its round and its state: working, waiting
+  on the operator, or parked. Its keys pass only the operator's
+  responses, accept, go on, finish, drop and resume, to sounding's
+  core. It opens no pane, starts no agent and sends nothing to a
+  session.
 - **Where a round's pane goes** is a launch setting sounding hands
   flume. A round with the operator opens beside their pane
   (`--with-me`). flume alone drives herdr.
@@ -727,9 +731,9 @@ An adapter counts as a meeting adapter when it passes the meeting
 checks in the conformance pack. The services most partitions record on
 live in eddy, each tested by replaying recorded responses. Anyone can
 publish a meeting plugin of their own, listed in the plugin index
-beside eddy's. For the long tail, a generic adapter lists meetings from
-any MCP endpoint that serves transcripts, and the folder drop takes the
-rest.
+beside eddy's. For the long tail, a generic adapter, shipped in eddy
+under a name the operator gives it, lists meetings from any MCP
+endpoint that serves transcripts, and the folder drop takes the rest.
 
 ### Any other file: the folder drop
 
@@ -796,7 +800,7 @@ swancloud runs every adapter on the host its list names:
 
 - **One list** in `lib/` says which adapter runs for which partition's
   inbox, on which host, and when. It grows out of
-  `lib/release-sources.nix`, and each inbox's `millpond.toml` is
+  `lib/release-sources.nix`, and each inbox's `.config/millpond.toml` is
   generated from it. A launchd agent per inbox on its host runs
   `millpond tick`, and the doctor shows a row per adapter from
   `millpond status --json` (`lists.1`, `doctor.1`).
@@ -890,8 +894,8 @@ and logs on its host.
 | sluice | run count and ports in state; its forge identity in config | none | records, results log, runs, logs and caches in `<common>/sluice/`; `refs/sluice/state/<branch>` when hosts share them | none | `.config/sluice.toml`; each landing's trailers |
 | headwater | none | none | held state and notes in `<common>/headwater/`, acknowledgements among them | none | `.config/headwater.toml`; a watch list |
 | eddy | sign-ins in state | none | none | none | none |
-| millpond | the raw bank in data; cursors and run status in state; its bare cache in cache | none | a lock for one host's writers | the inbox under `inbox/`, with `millpond.toml` | none |
-| sounding | none | the place flume makes | its record, on the host; `refs/sounding/` when hosts share it | offers, through millpond | what its kind lands |
+| millpond | the raw bank in data; cursors and run status in state; its bare cache in cache | none | a lock for one host's writers | the inbox under `inbox/`, with `.config/millpond.toml` | none |
+| sounding | none | the place flume makes | its record in `<common>/sounding/<name>/`; `refs/sounding/<name>` when hosts share it | offers, through millpond | what its kind lands |
 | flume | each place's live state in state | the place; the readied toolchain in `<wtgit>/flume/` | none | none | deliverables as commits, a verify report in its change's directory |
 | crew | team state in state; bare caches in cache | places, through flume | none | the plan, proposals and run record on `<label>/main`, and the inbox under `inbox/` on the same branch | none |
 
@@ -996,6 +1000,9 @@ only through sluice's, and links no crate.
   an executor vouched for from outside the team that ran it.
 - **How crew's stage prompts move into the kind format,** in each kit's
   `.config/flume.toml` (C7).
+- **Where an elaboration kind's own format is defined:** in sounding,
+  or beside the kind format in the shared crates. Its place-and-stage
+  half reaches flume in the shared kind format either way.
 - **Keeping a prototype off the branch that lands.** The branch that
   lands carries only what an elaboration's kind names, and the record
   is kept off it. Where a round's prototype code is kept apart from

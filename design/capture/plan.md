@@ -422,7 +422,8 @@ The operator's rulings:
   - the raw bank in `$XDG_DATA_HOME/millpond/`, and cursors and run
     status in `$XDG_STATE_HOME/millpond/`;
   - `millpond import` and `millpond capture folder|meeting`, from F3;
-  - `millpond.toml` and the inbox's layout from the signals crate.
+  - `.config/millpond.toml` and the inbox's layout from the signals
+    crate.
 - **Done when:**
   - millpond passes the conformance pack;
   - a capture landed twice writes nothing the second time;
@@ -666,12 +667,12 @@ The operator's rulings:
 
 - **Where:** sounding, its core and `plugins/claude`.
 - **Does:**
-  - `sounding open`, `list`, `conclude`, `offer`, `ask`, `accept`,
-    `go-on`, `finish`, `drop` and `resume`, over a closed set of
-    inputs, with each round's place through flume;
-  - the record, kept off the branch that lands: on the host, and under
-    `refs/sounding/` on the repository's own remote when hosts share
-    it;
+  - `sounding open`, `list`, `conclude`, `note`, `offer`, `ask`,
+    `accept`, `go-on`, `finish`, `drop` and `resume`, over a closed set
+    of inputs, with each round's place through flume;
+  - the record, kept off the branch that lands: in
+    `<common>/sounding/<name>/`, and under `refs/sounding/<name>` on the
+    repository's own remote when hosts share it;
   - a sounding based on earlier ones, carrying their records and their
     branches;
   - elaboration kinds, sounding's own and a repository's, with their
@@ -697,9 +698,9 @@ The operator's rulings:
 - **Where:** sounding, `plugins/herdr`.
 - **Does:** rows in flume's sidebar for open soundings with their
   rounds and states, refreshed with sounding's offers handed again and
-  its cards read. Its keys are shortcuts to sounding's command line to
-  accept, go on, finish and drop one, and open its conclusion in
-  plannotator. It drives no pane and no agent.
+  its cards read. Its keys pass only the operator's responses, accept,
+  go on, finish, drop and resume, to sounding's core. It opens no pane,
+  starts no agent and sends nothing to a session.
 - **Done when:** the plugin installs from sounding's tag, and a
   sounding started, sent back once and accepted from herdr shows each
   state in the sidebar.
@@ -738,7 +739,7 @@ The operator's rulings:
 - **Where:** swancloud. Change: `adapters-run-from-one-list`.
 - **Does:** one list in `lib/` names each adapter, its partition's
   inbox, host and schedule, and generates each inbox's
-  `millpond.toml`. A launchd agent per inbox on its host runs
+  `.config/millpond.toml`. A launchd agent per inbox on its host runs
   `millpond tick`, and the doctor shows a row per adapter from
   `millpond status --json`. The release adapter moves from its trial
   inbox into the partition's.
