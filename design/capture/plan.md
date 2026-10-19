@@ -111,16 +111,21 @@ The operator accepts or changes each of these:
 9. "Plugin" replaces Flywheel's "package" and "bundle".
 10. The release adapter lands through millpond on trial (S1) before
     headwater exists, so the contract carries live captures first.
-11. sounding is a standalone tool that works one question in one
-    session, in a worktree of its own, and ends on a conclusion the
-    operator accepts, sends back or drops. millpond sends it an item
-    that asks a question, an accepted conclusion is the item's record,
-    and only a finding beyond the question comes back as a capture.
-12. flume is a standalone tool that launches and tracks one agent in
-    one worktree through a kind's stages on the host it runs on, taken
-    from crew's places and stages. millpond's send, headwater's fix
-    key, sounding and crew call it; millpond keeps the item's record and
-    flume the live state of each place.
+11. sounding is a standalone tool that runs elaborations over a closed
+    set of inputs its opener names. Each works in rounds, in places
+    flume runs, and ends on a conclusion the operator accepts, sends
+    back or drops. Its elaboration kinds say how a round ends and what lands,
+    and flume submits what lands straight onto the target. millpond
+    sends it one or more items, the accepted conclusion is each item's
+    record, and only a finding beyond its inputs comes back as a
+    capture.
+12. flume is a standalone tool that launches and tracks one agent per
+    stage in one worktree through a kind's stages on the host it runs
+    on, taken from crew's places and stages. It submits the work of a
+    kind that lands, and no session submits. millpond's send,
+    headwater's fix key, sounding and crew call it; millpond keeps the
+    item's record, sounding the elaboration's, and flume the live state
+    of each place.
 
 - **Done when:** each decision is accepted or changed, and `design.md`
   and the statements say what was ruled.
@@ -171,11 +176,12 @@ The operator accepts or changes each of these:
 ### Q1 Write sounding's statement
 
 - **Where:** this repository, `design/sounding/`.
-- **Does:** writes sounding's statement from `design.md`: the question
-  and its sources, the place, the three exits, the stop check, the
-  timebox, rounds, the operator's decision, and what sounding never
-  does. A fresh model reconstructs sounding from the statement alone,
-  and the operator rules the questions it asks.
+- **Does:** writes sounding's statement from `design.md`: the inputs,
+  the soundings one is based on, elaboration kinds and what they land,
+  and the place through flume. It covers the three exits, the stop
+  check, rounds, the operator's decision, and what sounding never does.
+  A fresh model reconstructs sounding from the statement alone, and the
+  operator rules the questions it asks.
 - **Done when:** the reconstruction's questions are ruled and folded
   into the statement, Vale is clean, and the operator agrees to land it
   on `main`.
@@ -185,8 +191,8 @@ The operator accepts or changes each of these:
 - **Where:** this repository, `design/flume/`.
 - **Does:** writes flume's statement from `design.md` and crew's
   `teams` and `plan` rules it takes over: a launch, places, kinds and
-  stages, prompt delivery, stage ends, status, tidying, and what flume
-  never does. A fresh model reconstructs flume from the statement
+  stages, prompt delivery, stage ends, submission, status, tidying, and
+  what flume never does. A fresh model reconstructs flume from the statement
   alone, and the operator rules the questions it asks.
 - **Done when:** the reconstruction's questions are ruled and folded
   into the statement, Vale is clean, and the operator agrees to land it
@@ -388,7 +394,7 @@ The operator accepts or changes each of these:
   - a fix key that hands the release's brief to flume as a fix, or
     hands the release to millpond in a repository crew runs;
   - where sounding is installed, a key that opens a sounding on a
-    release that needs judgment, with its brief as the source.
+    release that needs judgment, with its brief as an input.
 - **Done when:** both plugins install from headwater's tag and show a
   real repository's releases.
 
@@ -451,13 +457,22 @@ The operator accepts or changes each of these:
 - **Where:** flume, its core and `plugins/claude`.
 - **Does:**
   - `flume launch`, `status --json`, `tell`, `stop`, `retry` and
-    `tidy`, with places, the three kinds and a repository's own;
+    `tidy`, with places, the fix and change kinds, a repository's own
+    and a launch's own;
   - prompt delivery checked against the agent's transcript, and stage
-    ends read from deliverables, a change's from its OpenSpec files;
+    ends read from deliverables, a change's from its OpenSpec files and
+    a committed report from the branch;
+  - flume's submission through sluice after a kind's last stage, and a
+    failed submission's return to the stage the kind names;
+  - the caller's word as a third way for a place's work to end;
+  - a conversation stage with no stop check, and the stop check for
+    every other stage;
   - `/launch` and `status` over MCP.
 - **Done when:**
-  - a fix launched from a session lands through sluice, and its place is
-    tidied;
+  - a fix launched from a session lands through flume's own submission,
+    with no agent submitting, and its place is tidied;
+  - a submission that fails sends its place back to the stage its kind
+    names;
   - a change runs construct, code and verify, and its status shows its
     tasks ticked;
   - a stage whose pane goes quiet with no deliverable is not ended;
@@ -477,8 +492,8 @@ The operator accepts or changes each of these:
 - **Where:** millpond.
 - **Does:** `send` names a repository and a kind, records the send,
   hands flume the brief, and writes the landing against the item from
-  sluice's record. An inbox whose settings hand items to crew refuses a
-  send.
+  sluice's record of flume's submission. An inbox whose settings hand
+  items to crew refuses a send.
 - **Done when:** an item of two bumps sent from herdr lands through
   sluice, the item shows its landing, and a send from crew's inbox is
   refused.
@@ -490,8 +505,9 @@ The operator accepts or changes each of these:
 - **Does:** writes:
   - `CLAUDE.md` pointing at the statement, a README, a license and
     `adrs.toml`;
-  - the founding ADRs: one question, one session, one conclusion;
-    plugins outside the core; a conclusion is never a signal;
+  - the founding ADRs: an elaboration over a closed set of inputs,
+    ended by the operator; places run through flume; plugins outside
+    the core; a conclusion is never a signal;
   - `docs/architecture/core.md` and `_open.md`;
   - the kit's devenv, moon, sluice gate, `cliff.toml` and OpenSpec
     configuration.
@@ -503,18 +519,23 @@ The operator accepts or changes each of these:
 - **Where:** sounding, its core and `plugins/claude`.
 - **Does:**
   - `sounding open`, `list`, `conclude`, `offer`, `ask`, `accept`,
-    `go-on` and `drop`, with the worktree, `question.md`,
-    `conclusion.md` and `rounds/`;
+    `go-on` and `drop`, over a closed set of inputs, with the record,
+    `conclusion.md` and `rounds/`, and each round's place through
+    flume;
+  - a sounding based on earlier ones, carrying their records and their
+    branches;
+  - elaboration kinds, sounding's own and a repository's, with their
+    three endings and what each lands;
   - `offer` prints contract lines with the capture crate and pipes them
     to `millpond land` where millpond is installed;
-  - `/sound`, the start hook, the stop check, the timebox, the MCP
-    tools, and the guard on `sounding/*` branches.
+  - `/sound`, the start hook and the MCP tools.
 - **Done when:**
   - a question opened with `/sound` in one session ends on a conclusion
     in another, and the first session's work goes on undisturbed;
   - a session that tries to stop with no conclusion is sent back;
-  - an offer's lines pass the conformance pack;
-  - a sluice submission from a sounding's branch is refused.
+  - a sounding based on two earlier ones lands a design writeback on
+    `main` through flume, and its prototype code stays on its branch;
+  - an offer's lines pass the conformance pack.
 
 ### Q4 sounding's herdr plugin
 
@@ -636,10 +657,11 @@ The operator accepts or changes each of these:
 ### Q5 millpond sends a question to a sounding
 
 - **Where:** millpond.
-- **Does:** `send` takes a sounding as its target. millpond opens the
-  sounding with the item's signals and captures as its sources, keeps
-  the accepted conclusion as the item's record, and makes an item of
-  each piece of work the conclusion proposes.
+- **Does:** `send` takes a sounding as its target, with one item or
+  several. millpond opens the sounding with the items' signals and
+  captures as its inputs, keeps the accepted conclusion as each item's
+  record, and makes an item of each piece of work the conclusion
+  proposes.
 - **Done when:**
   - an item asking whether to take a major release goes to a sounding,
     and its accepted conclusion shows on the item;
