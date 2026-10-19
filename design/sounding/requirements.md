@@ -619,7 +619,7 @@ set and from the local default branch otherwise.
 
 | profile | launch, start, state, tell, stop | submit, end |
 |---|---|---|
-| **flume** | `flume launch` with the sounding's kind carried by the launch as a flume kind with one stage, `round`, whose branches are `sounding/<name>`. A self-closing or standing round's stage delivers a report: the conclusion `sounding conclude` writes into the sounding's record (C.7). Its stopping short is the note `sounding note` gives. A round with the operator is a conversation, which sounding ends with `flume finish` once its session concludes or leaves a note, or the operator ends it. Start is a retry of that stage with the round's hand-off as its words, a go on's notes among them; state from `flume status --json`; `flume tell` and `flume stop`. Where the session runs is the launch's agent settings: a herdr pane, beside the operator's own for a round with the operator | the launch holds the submission on sounding's word. Accept releases it by a retry that names the submission, and flume submits what lands through its merge queue, sluice, and reports the landing or the failure. Accept of a kind that lands nothing is `flume done`, and drop is `flume drop`. flume's tidying removes the place and keeps the branch |
+| **flume** | `flume launch` with the sounding's kind carried by the launch, its place-and-stage part one stage, `round`, on branches named `sounding/<name>`. A self-closing or standing round's stage delivers `report:{{state}}/conclusion.md` in the place's flume state folder, which `sounding conclude` writes. flume ends the stage on it, and sounding copies it into the sounding's record (C.7) when it settles the round. Its stopping short is the note `sounding note` gives. A round with the operator is a conversation, which sounding ends with `flume finish` once its session concludes or leaves a note, or the operator ends it. Start is a retry of that stage with the round's hand-off as its words, a go on's notes among them; state from `flume status --json`; `flume tell` and `flume stop`. Where the session runs is the launch's agent settings: a herdr pane, beside the operator's own for a round with the operator | the launch holds the submission on sounding's word. Accept releases it by a retry that names the submission, and flume submits what lands through its merge queue, sluice, and reports the landing or the failure. Accept of a kind that lands nothing is `flume done`, and drop is `flume drop`. flume's tidying removes the place and keeps the branch |
 | **Flywheel** | Flywheel, which runs each of its elaborations as a sounding | Flywheel's own landing, onto the intent's line |
 
 flume runs and settles each round. The stop hook of flume's Claude Code
@@ -628,7 +628,8 @@ holds a self-closing round's session, and a standing one after its
 finish, to the conclusion or the note. flume's herdr plugin catches
 a session that crashed, hung or was killed. Without herdr, flume
 settles a round only when a flume command runs, so a sounding's rounds
-run unattended only under herdr with flume's plugin.
+run unattended only under herdr with flume's plugin. `{{state}}` goes
+with the place, and the record is the conclusion's lasting home.
 
 A start hook in sounding's Claude Code plugin hands the session the
 rest of its round's hand-off: the brief, the inputs, the records of
@@ -645,17 +646,18 @@ command line and MCP tools refuse `accept`, `go-on`, `drop` and
 | **a repository's** | `.config/sounding.toml` at the base's revision |
 | **an opening's** | a file the opening names |
 
-An elaboration kind's format is defined once in the family's shared
-crates, beside the format of flume's kinds. A kind declares `inputs`,
-the files of the place a round is handed beyond the opener's inputs;
-`conclusion`, the sections a conclusion adds to its five; `ending`, one
-of `self-closing`, `standing` and `with-operator`; `transcripts`,
-whether earlier soundings' session transcripts are handed; and `lands`,
-the paths of the place that land, or none. Its place-and-stage half is
-a flume kind, which sounding hands flume with each launch (C.2). A
-repository writing its design book might declare `writeback`:
-self-closing, handed the book's outline, landing `books/` and
-`design/`.
+Every kind is of the one kind format the family's shared crates
+define, and sounding has no format of its own. An elaboration kind is
+one in that format with an elaboration section, which sounding reads.
+flume reads its place-and-stage part, which sounding hands it with each
+launch (C.2). The elaboration section declares `inputs`, the files of
+the place a round is handed beyond the opener's inputs; `conclusion`,
+the sections a conclusion adds to its five; `ending`, one of
+`self-closing`, `standing` and `with-operator`; `transcripts`, whether
+earlier soundings' session transcripts are handed; and `lands`, the
+paths of the place that land, or none. A repository writing its design
+book might declare `writeback`: self-closing, handed the book's
+outline, landing `books/` and `design/`.
 
 ### C.4 The operator
 
@@ -711,8 +713,8 @@ An offer's capture:
 A sounding's record is a folder of files, each naming its format and
 its version. `brief.md` holds the brief, the inputs, and the operator's
 notes and replies. `conclusion.md` holds the conclusion of a round
-awaiting its decision, and is the report flume's round stage delivers
-(C.2). `rounds/<n>.md` holds each ended round, with how it ended and the
+awaiting its decision, copied from the report flume's round stage
+delivers when sounding settles the round (C.2). `rounds/<n>.md` holds each ended round, with how it ended and the
 decision on it, and `offers/<n>.md` and `asks/<n>.md` each offer and
 ask. `requests.rec` holds each request with its surface's handle and
 whether it was withdrawn, and `responses.rec` every response, applied
@@ -798,8 +800,9 @@ Constraints already fixed:
 - A finding reaches an inbox as a capture in the capture contract,
   which the family's shared crates define and implement once, and in
   which a capture may be its own excerpt.
-- An elaboration kind's format is defined once in the family's shared
-  crates, beside the format of flume's kinds.
+- Every kind, flume's and sounding's, is of one kind format, defined
+  once in the family's shared crates. An elaboration kind adds an
+  elaboration section, which sounding reads.
 - A tool's records about one repository stay with that repository: in
   its clone, and under `refs/<tool>/` on its own remote when hosts
   share them, never in a repository of their own.
