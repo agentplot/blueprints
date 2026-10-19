@@ -456,17 +456,17 @@ The operator accepts or changes each of these:
 
 - **Where:** flume, its core and `plugins/claude`.
 - **Does:**
-  - `flume launch`, `status --json`, `tell`, `stop`, `retry` and
-    `tidy`, with places, the fix and change kinds, a repository's own
-    and a launch's own;
+  - `flume launch`, `status --json`, `tell`, `stop`, `retry`,
+    `finish`, `done` and `tidy`, with places, the fix and change kinds,
+    a repository's own and a launch's own;
   - prompt delivery checked against the agent's transcript, and stage
     ends read from deliverables, a change's from its OpenSpec files and
     a committed report from the branch;
   - flume's submission through sluice after a kind's last stage, and a
     failed submission's return to the stage the kind names;
   - the caller's word as a third way for a place's work to end;
-  - a conversation stage with no stop check, and the stop check for
-    every other stage;
+  - a conversation stage with no stop check, the stop check for every
+    other stage, and the guard that refuses an agent's own submission;
   - `/launch` and `status` over MCP.
 - **Done when:**
   - a fix launched from a session lands through flume's own submission,
@@ -519,7 +519,7 @@ The operator accepts or changes each of these:
 - **Where:** sounding, its core and `plugins/claude`.
 - **Does:**
   - `sounding open`, `list`, `conclude`, `offer`, `ask`, `accept`,
-    `go-on` and `drop`, over a closed set of inputs, with the record,
+    `go-on`, `finish` and `drop`, over a closed set of inputs, with the record,
     `conclusion.md` and `rounds/`, and each round's place through
     flume;
   - a sounding based on earlier ones, carrying their records and their

@@ -368,7 +368,7 @@ a brief and a name. flume runs on one host and launches there.
   | Kind | Stages |
   |---|---|
   | fix | code, then flume submits to sluice |
-  | change | construct, which writes the OpenSpec change; code, which ticks its tasks; verify; then flume submits to sluice |
+  | change | construct, which writes the OpenSpec change; code, which ticks its tasks; verify, which checks the work and archives the change; then flume submits to sluice |
 
   A repository may declare kinds of its own in the same form, and
   sounding hands flume the stages of each elaboration's kind with the
@@ -422,9 +422,10 @@ each place and each stage's agent, as it asks sluice for each landing.
 ### The operator's surfaces
 
 - **The command line:** `flume launch`, `status`, `tell`, `stop`,
-  `retry` and `tidy`.
-- **The Claude Code plugin** gives every session `/launch`, serves
-  `status` over MCP, and holds the stop check.
+  `retry`, `finish`, `done` and `tidy`.
+- **The Claude Code plugin** gives every session `/launch` and serves
+  `status` over MCP. In a place, it holds the stop check and refuses an
+  agent's own submission or push.
 - **The herdr plugin** shows every place in flight in the sidebar, with
   its kind, its stage and its agent's state, and a change's tasks
   ticked. Keys open a place's pane, tell its agent, stop it and retry
@@ -516,7 +517,7 @@ signals, and only offers come back as signals.
 ### The operator's surfaces
 
 - **The command line:** `sounding open`, `list`, `conclude`, `offer`,
-  `ask`, `accept`, `go-on` and `drop`.
+  `ask`, `accept`, `go-on`, `finish` and `drop`.
 - **The Claude Code plugin** gives every session `/sound`, which opens a
   sounding on the inputs it names while the session goes on with its
   own work. A sounding's session gets its inputs, the records it is
