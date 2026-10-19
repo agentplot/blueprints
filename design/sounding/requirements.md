@@ -38,12 +38,15 @@ else it needs, in its place and beyond it. The operator accepts the
 conclusion, sends it back for another round, or drops it. A sounding's
 kind says how its rounds end and what, if anything, lands: a chapter or
 a claim its session wrote reaches the repository's shared branch
-through the launcher, and a prototype never does. A finding beyond the
-brief goes to an inbox as a capture of its own. sounding works the same
-for a person alone, for an inbox that sends it items and for a planner,
-and needs none of them. It never submits, never decides a conclusion
-and never makes work of one: the operator decides, whoever keeps the
-items makes the work, and the launcher submits what lands through the
+through the launcher, and a prototype never does. sounding keeps each
+sounding's record beside the repository and on no branch, so what lands
+never carries it. A finding beyond the brief goes to an inbox as a
+capture of its own. sounding works the same for a person alone, for an
+inbox that sends it items and for a planner, and needs none of them. It
+keeps no clock and drives no terminal: the launcher runs each round and
+reports how it ended. It never submits, never decides a conclusion and
+never makes work of one: the operator decides, whoever keeps the items
+makes the work, and the launcher submits what lands through the
 repository's own gate.
 
 <!-- ANCHOR_END: preamble -->
@@ -52,13 +55,13 @@ repository's own gate.
 
 | actor | may decide | may not |
 |---|---|---|
-| **the operator** | every decision on a conclusion: accept, go on or drop; every reply to an ask; when a standing round finishes; when a parked sounding resumes; the ending of every round after the first; what they tell a round's session; when a sounding's branch and held state are removed | they never have a sounding land more than its kind names |
+| **the operator** | every decision on a conclusion: accept, go on or drop; every reply to an ask; when a standing round finishes; when a parked sounding resumes; the ending of every round after the first; what they tell a round's session; which profile binds each seam; when a sounding's branch and held state are removed | they never have a sounding land more than its kind names |
 | **an opener** (a person in a session, an inbox, a planner, another tool's surface) | which brief to open, in which repository and on which base, with which inputs and which earlier soundings, under which name, for which items, of which kind, and the first round's ending | it never decides a conclusion, and never changes a brief or its inputs once the sounding is open |
-| **the repository's authors** | the kinds the repository declares, and what each lands | they never make a sounding land what its operator did not accept |
+| **the repository's authors** | the kinds the repository declares, and what each lands; the profiles its soundings bind in place of the operator's | they never make a sounding land what its operator did not accept |
 | **a round's session** (an agent working one round) | everything inside its place: what to read, try, build and run; what to read beyond its place; when to conclude; what to offer; what to ask | it never moves sounding's state but through its exits and its note, never acts on another sounding or changes one it is based on, never decides a conclusion, and never submits, merges or lands its place's work |
-| **the launcher** (a separate tool that makes places and runs agents in them) | how a place is made and removed, and how a session is started, followed and ended, as Part B fixes them | it never starts a round sounding did not ask for, and never submits what sounding did not ask it to |
-| **sounding** | when a round starts and ends, as this statement fixes them; when to ask the launcher to submit what an accepted conclusion lands; and what it keeps | it never judges a brief, an input, a finding or a conclusion, never writes a conclusion or a note of its own, never decides a conclusion, never submits, merges or lands a branch itself, and never makes work from a conclusion |
-| **a surface** (where the operator reads a sounding and responds to it) | how a sounding is shown | it never gives a response of its own; it carries the operator's |
+| **the launcher** (a separate tool that makes places and runs agents in them) | how a place is made and removed, and how a session is started, followed and ended, as Part B fixes them. It runs a session where sounding's setting names, and reports when one has stopped or is gone | it never starts a round sounding did not ask for, and never submits what sounding did not ask it to |
+| **sounding** | when to ask the launcher for a round, as this statement fixes it; when to ask the launcher to submit what an accepted conclusion lands; and what it keeps | it never judges a brief, an input, a finding or a conclusion, never writes a conclusion or a note of its own, never decides a conclusion, never submits, merges or lands a branch itself, never makes work from a conclusion, and keeps no clock and drives no terminal or agent |
+| **a surface** (where the operator reads a sounding and responds to it) | how a sounding is shown | it never gives a response of its own, carrying only the operator's, and never drives a terminal or an agent |
 | **an item's keeper** (an inbox, a planner) | what the item holds of a decision, and how the work an accepted conclusion proposes becomes work | it never decides a conclusion, and never writes sounding's held state |
 | **an inbox** | what becomes of an offer once it takes it | it never changes an offer sounding keeps |
 
@@ -71,15 +74,14 @@ redefine these.
 
 - **repository**: a git repository a sounding's place is made of.
 - **brief**: what a sounding is opened to settle or to write, in its
-  opener's words: one question or several, or the writing it is to
-  make.
+  opener's words: what it asks, or the writing it is to make.
 - **input**: material a sounding is worked from, as its opener names
   it: an item, a signal with its excerpts, a capture, a meeting's
   transcript, what another tool says of a release, a file, or an
   earlier sounding.
 - **opener**: whoever opens a sounding.
-- **item**: a unit of work another tool keeps; an opener may name one or
-  more as a sounding's inputs.
+- **item**: a unit of work another tool keeps. A sounding's items are
+  those its opener opens it for, each among its inputs.
 - **item's keeper**: the tool that keeps an item.
 - **sounding**: one brief, worked over its inputs in one place one
   round at a time, until the operator accepts or drops it; also the tool
@@ -101,8 +103,9 @@ redefine these.
 - **name**: the words that tell one sounding from the other soundings of
   its repository.
 - **launcher**: the tool that makes a sounding's place, starts and
-  follows each round's session in it, submits what lands, and removes
-  the place.
+  follows each round's session in it, settles each round's end, submits
+  what lands, and removes the place. It alone drives the terminal a
+  session runs in.
 - **base**: the branch a sounding's place is cut from, and the only
   branch what it lands reaches; the repository's shared branch unless
   the opener names another.
@@ -129,8 +132,9 @@ redefine these.
 - **submission**: what lands, offered by the launcher to its base
   through the repository's gate, and what the gate records of it.
 - **landed**: of what lands, that its submission reached the base.
-- **note**: what a round's session leaves when it stops without
-  concluding: what the round did, and where the next round would start.
+- **note**: what a round's session leaves, by an act of its own, when it
+  stops without concluding: what the round did, and where the next round
+  would start.
 - **finding**: something a session learns beyond its brief.
 - **offer**: one finding handed to an inbox as a capture of its own.
 - **ask**: one thing only the operator can tell or choose, put to them
@@ -145,8 +149,8 @@ redefine these.
   operator's notes; or **drop**, which ends the sounding with a reason.
 - **notes**: what the operator writes on a conclusion to shape the next
   round.
-- **stop check**: sounding's say, each time a round's session would stop
-  before its round may end, on whether it may.
+- **stop check**: the launcher sending back a round's session that would
+  stop before its round may end.
 - **state**: of a sounding, exactly one of **working**, a round runs
   and no request of it waits; **waiting on the operator**, a request of
   it has no response yet; **parked**, no round runs and no request waits;
@@ -197,9 +201,9 @@ redefine these.
 8. Any number of soundings run at once, in one repository or in many.
    None waits on another, and nothing one does reaches another's place
    or held state.
-9. A sounding answers for none, one or several items, named when it
-   opens and all kept by one keeper, and never for another. Every item
-   it answers for is among its inputs.
+9. A sounding has none, one or several items, named when it opens and
+   all kept by one keeper, and gains no item later, whether or not an
+   inbox is bound. Each of its items is among its inputs.
 
 ### A.2 Kinds
 
@@ -262,13 +266,16 @@ redefine these.
     copy of its repository but the sounding's own. Only a landing
     reaches another branch: the sounding's base, with what lands and
     nothing else (24).
+102. sounding never pushes a sounding's branch. A reader on another host
+     reads the revisions a conclusion names once the operator has pushed
+     it.
 
 ### A.5 What lands
 
 24. Only what lands ever reaches the base from a sounding, as the
     sounding's branch holds it at the accepted conclusion's revision. A
-    prototype, the held state and everything else in the place never
-    land.
+    prototype and everything else in the place never land, and no
+    branch holds the held state (109).
 25. Only the launcher submits what lands, and only when sounding asks it
     to after the operator accepts (62). sounding never submits, merges
     or lands a branch itself, and no round's session submits its place's
@@ -297,18 +304,28 @@ redefine these.
     round ended.
 32. A session gone without an exit is never read as a conclusion, a
     note, a reply or a decision.
+103. A round is kept only once the launcher shows evidence that its
+     session exists. A sounding whose first round never started is
+     parked, and the operator's word resuming it starts its first round.
+104. A session a host brings back after a restart is its round's session
+     exactly when the launcher reports it as the session of the round's
+     place. Otherwise the round ended with its session gone.
 
 ### A.7 Exits
 
 33. A round's session acts on sounding, an inbox or the operator only
-    through its three exits, and through its note when it stops without
-    concluding. Nothing it writes in its place by other means is a
-    conclusion, an offer, an ask or a note.
-34. A session never decides a conclusion, its own or another's.
+    through its three exits and its note, each given by an act of its
+    own. Nothing it writes by other means, in its place or anywhere else,
+    is a conclusion, an offer, an ask or a note.
+34. A session never decides a conclusion, its own or another's. sounding
+    refuses accept, go on and drop given from within a round's session,
+    on every sounding.
 35. An exit acts only on the round it serves. An exit naming another
     sounding, an ended sounding, or a round that has ended is refused.
 36. Every exit and every decision is safe to repeat: a repeat of one
-    already kept changes nothing.
+    already kept changes nothing. An exit its session gives a key
+    repeats the one its round keeps under that key. One given without a
+    key repeats a kept exit of the same act with the same content.
 
 ### A.8 Conclude
 
@@ -325,9 +342,11 @@ redefine these.
 
 ### A.9 Offer
 
-41. An offer carries one finding, whole as its session wrote it, the
-    sounding it came from, and when it was offered. Its time is when the
-    session offered it, never when an inbox took it.
+41. An offer carries one finding as text, whole as its session wrote it,
+    the sounding it came from, and when it was offered. Material beyond
+    the text, such as what a prototype printed, the finding names by a
+    pointer. Its time is when the session offered it, never when an
+    inbox took it.
 42. Every offer has one identity for ever: its sounding's repository and
     name, and its number among that sounding's offers. No two offers
     share an identity, and an inbox given one offer twice holds one
@@ -347,6 +366,10 @@ redefine these.
 47. A reply goes to the session that asked if it still lives, and
     otherwise starts the sounding's next round with the ask and its
     reply (28).
+105. A conclusion or a note closes every ask of its round still open,
+     with no reply, and has every request for it withdrawn. A round whose
+     session is gone leaves its asks open, and a reply to one starts the
+     next round (47).
 
 ### A.11 How a round ends
 
@@ -365,18 +388,28 @@ redefine these.
 52. sounding never interrupts a working session and never bounds how
     long a round runs. More work on a brief is another round or another
     sounding.
+106. sounding keeps no clock and watches nothing. The launcher runs each
+     round, settles its end, and reports whether its session lives (85).
+     Every call on sounding first does what waits. It keeps the end of
+     each round the launcher reports ended, and reads each open request
+     for a response (58). It hands again each offer no inbox was reached
+     for (44), and tells again each items' keeper not yet told (64).
+107. A conclusion of a round with the operator goes before the operator
+     as any other does, and nothing said in the conversation is a
+     decision.
 
 ### A.12 States
 
 53. Every sounding is in exactly one state at any moment, and an ended
     sounding never leaves its state.
 54. A sounding's state is derived from its held state, from whether its
-    round's session lives, and from what the launcher reports of its
-    submission, and from nothing else. No surface keeps a state of its
-    own.
+    round's session lives as the launcher reports it, and from what the
+    launcher reports of its submission, and from nothing else. No
+    surface keeps a state of its own.
 55. A sounding that has not ended is parked exactly when no round runs,
-    no request of it waits and it is not landing. Its last round ended
-    on a note, or with its session gone or ended without an exit.
+    no request of it waits and it is not landing. It has no round yet,
+    or its last round ended on a note, or with its session gone or ended
+    without an exit.
 56. A parked sounding resumes only on the operator's word, which starts
     its next round in the same place from what the last round left.
 
@@ -397,9 +430,8 @@ redefine these.
     notes kept beside the brief whole and unchanged. Notes given apart
     from a decision change nothing.
 61. Accept settles the sounding. sounding keeps the conclusion, and
-    hands it to the keeper of the items the sounding answers for, once
-    for each item (9). Where nothing of its kind lands, accept ends the
-    sounding.
+    hands it to the keeper of the sounding's items, once for each item
+    (9). Where nothing of its kind lands, accept ends the sounding.
 62. Where its kind lands something, accept has sounding ask the launcher
     to submit what lands, and the sounding is landing until the launcher
     reports it landed, which ends the sounding. A submission that fails
@@ -415,27 +447,37 @@ redefine these.
     keeps a decision whether or not the keeper has been told, and tells
     it again until it has.
 65. Every response names who gave it, through which surface and when,
-    and is kept with its notes or reason.
+    and is kept with its notes or reason, whether or not it applied
+    (58).
 66. An ended sounding takes no further round, exit or decision. Its held
     state stays readable until the operator removes the sounding, and
     sounding never removes one itself.
+108. Drop on a working sounding has the launcher stop its round's
+     session, and the round ends with its session ended. No word of the
+     operator's parks a working sounding.
 
 ### A.14 What sounding keeps
 
 67. The held state outlives the place: removing a sounding's place loses
     nothing of it.
 68. Only sounding writes the held state, and only on an opening, a
-    round's start or end, an exit, a note, a response or a landing. Two
-    writes at once leave it as one or the other would have, never half
-    written, and lose no exit or response.
-69. Every checkout of a repository reads the same held state for each of
-    its soundings.
+    round's start or end, an exit, a note, a response, a landing, or
+    what waits (106). Two writes at once leave it as one or the other
+    would have, never half written, and lose no exit or response.
+69. Every worktree of one clone of a repository reads the same held
+    state for each of its soundings. Where several hosts share a
+    repository's soundings, each reads every sounding's held state
+    through the repository's own remote, and the held state is never
+    kept in a repository of its own.
 70. A conclusion, a note, an offer and a response never change once
     kept.
 71. sounding never judges a brief, an input, a finding or a conclusion,
     and no model runs inside sounding.
 72. sounding reaches every seam with the operator's own sign-ins or with
     none, and never keeps a credential in its held state.
+109. No branch holds any of a sounding's held state, its own branch and
+     its base among them, and no place's tree holds it. What lands never
+     carries it, and a session's work in its place never touches it.
 
 ### A.15 Openers and surfaces
 
@@ -446,11 +488,13 @@ redefine these.
 74. Reading one held state gives the same result whoever reads it and
     through whichever surface.
 75. Every surface reads and acts through one core. No surface computes a
-    state, starts a round or applies a response of its own.
+    state, starts a round, applies a response of its own, or drives a
+    terminal or an agent.
 76. Everything sounding gives a reader has one form a program reads, the
     same through every surface, and that form only ever gains fields.
 77. Listing soundings, or reading one, reaches no session, place, inbox
-    or item's keeper, and writes nothing.
+    or item's keeper, and writes nothing, beyond what waits, which every
+    call does first (106).
 
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
@@ -460,7 +504,8 @@ redefine these.
 
 sounding drives no terminal and makes no place of its own. Where a
 round's session runs, such as beside the operator's own for a round
-with the operator, is a setting sounding hands the launcher.
+with the operator, is a setting sounding hands the launcher, and the
+launcher alone drives the terminal.
 
 78. **launch**: given a repository, its base, a sounding's name, its
     kind, and everything the first round's session is handed (29) with
@@ -487,10 +532,13 @@ with the operator, is a setting sounding hands the launcher.
     lacks (22).
 85. The guarantee: a place holds its base's revision and its own
     sessions' work, and nothing of any other place (20). The launcher
-    asks sounding each time a self-closing round's session, or a
-    standing one after its finish, would stop, and keeps it working when
-    sounding sends it back (48, 49). It submits only what sounding asks
-    it to, and nothing a session does submits (25).
+    runs and settles each round. It holds a self-closing round's
+    session, and a standing one after its finish, until sounding keeps
+    its conclusion or its note, sending it back when it would stop
+    before (48, 49). It notices a session that stops, hangs or goes with
+    no one watching, and reports it at the next state (106). It alone
+    drives the terminal. It submits only what sounding asks it to, and
+    nothing a session does submits (25).
 
 ### B.2 The kinds
 
@@ -535,12 +583,16 @@ with the operator, is a setting sounding hands the launcher.
 98. **write**: given a sounding, the version read and the next held
     state. The write is all or nothing, and succeeds only if the held
     state is still at the version read (68).
-99. The guarantee: what the store holds outlives every place (67), and
-    every checkout of one repository reaches the same store (69).
+99. The guarantee: what the store holds outlives every place (67) and
+    sits on no branch (109). Every worktree of one clone reaches the
+    same store, and every host that shares a repository's soundings
+    reaches it through the repository's own remote (69).
 
 ### B.7 Binding the contracts
 
-100. Each seam is bound by naming a profile of Part C. The item's keeper
+100. Each seam is bound by naming a profile of Part C. The operator's
+     settings bind every seam, and a repository's own declaration may
+     bind any seam for its soundings in their place. The item's keeper
      and the inbox may each be bound to none, and any number of surfaces
      bind the operator at once (58).
 101. One conformance suite holds every profile to Parts A and B; a
@@ -555,22 +607,35 @@ Parts A and B do not change to admit a profile.
 ### C.1 Names
 
 A name is a short phrase of the brief's words in lower case, joined by
-hyphens, as the opener gives it or as sounding makes it from the brief:
-`take-react-19`. The sounding's branch is `sounding/<name>`, and its
-base is the repository's default branch when the opener names none.
+hyphens: `take-react-19`. The opener gives it, or sounding makes it from
+the brief's first six words, and refuses one that comes out empty or a
+number. Every elaboration kind names its places' branches
+`sounding/<name>`: the prefix is the kind's, and flume takes it with the
+kind sounding hands it (C.2). The base is the repository's default
+branch when the opener names none, read from `origin/HEAD` where it is
+set and from the local default branch otherwise.
 
 ### C.2 The launcher
 
 | profile | launch, start, state, tell, stop | submit, end |
 |---|---|---|
-| **flume** | `flume launch` with the sounding's kind carried by the launch as a flume kind with one stage, `round`, whose deliverable is a committed report, `.sounding/conclusion.md`, and whose stopping short is the note; start is a retry of that stage with the round's hand-off as its words; state from `flume status --json`; `flume tell` and `flume stop`; where the session runs is the launch's agent settings, a herdr pane, beside the operator's own for a round with the operator | flume submits what lands through its merge queue, sluice, and reports the landing or the failure; the end is the caller's word that the place's work is done, or `flume drop`, and flume's tidying removes the place and keeps the branch |
-| **Flywheel** | Flywheel's engine, each elaboration a sounding, on Flywheel's templates for a place, a session and a stage | Flywheel's own landing, onto the intent's line |
+| **flume** | `flume launch` with the sounding's kind carried by the launch as a flume kind with one stage, `round`, whose branches are `sounding/<name>`. A self-closing or standing round's stage delivers a report: the conclusion `sounding conclude` writes into the sounding's record (C.7). Its stopping short is the note `sounding note` gives. A round with the operator is a conversation, which sounding ends with `flume finish` once its session concludes or leaves a note, or the operator ends it. Start is a retry of that stage with the round's hand-off as its words, a go on's notes among them; state from `flume status --json`; `flume tell` and `flume stop`. Where the session runs is the launch's agent settings: a herdr pane, beside the operator's own for a round with the operator | the launch holds the submission on sounding's word. Accept releases it by a retry that names the submission, and flume submits what lands through its merge queue, sluice, and reports the landing or the failure. Accept of a kind that lands nothing is `flume done`, and drop is `flume drop`. flume's tidying removes the place and keeps the branch |
+| **Flywheel** | Flywheel, which runs each of its elaborations as a sounding | Flywheel's own landing, onto the intent's line |
 
-flume's stop check is the stop check: it holds a self-closing round's
-session, and a standing one after its finish, to the conclusion or the
-note. A start hook in sounding's Claude Code plugin hands the session
-the rest of its round's hand-off: the brief, the inputs, the records of
-earlier soundings, and the earlier rounds.
+flume runs and settles each round. The stop hook of flume's Claude Code
+plugin settles a round the moment its agent goes quiet. Its stop check
+holds a self-closing round's session, and a standing one after its
+finish, to the conclusion or the note. flume's herdr plugin catches
+a session that crashed, hung or was killed. Without herdr, flume
+settles a round only when a flume command runs, so a sounding's rounds
+run unattended only under herdr with flume's plugin.
+
+A start hook in sounding's Claude Code plugin hands the session the
+rest of its round's hand-off: the brief, the inputs, the records of
+earlier soundings, and the earlier rounds. The launch's agent settings
+put `SOUNDING_ROUND` in the session's environment, and sounding's
+command line and MCP tools refuse `accept`, `go-on` and `drop` wherever
+it is set, on every sounding (34).
 
 ### C.3 Kinds
 
@@ -580,29 +645,37 @@ earlier soundings, and the earlier rounds.
 | **a repository's** | `.config/sounding.toml` at the base's revision |
 | **an opening's** | a file the opening names |
 
-A kind declares `inputs`, the files of the place a round is handed
-beyond the opener's inputs; `conclusion`, the sections a conclusion
-adds to its five; `ending`, one of `self-closing`, `standing` and
-`with-operator`; `transcripts`, whether earlier soundings' session
-transcripts are handed; and `lands`, the paths of the place that land,
-or none. A repository writing its design book might declare `writeback`:
+An elaboration kind's format is defined once in the family's shared
+crates, beside the format of flume's kinds. A kind declares `inputs`,
+the files of the place a round is handed beyond the opener's inputs;
+`conclusion`, the sections a conclusion adds to its five; `ending`, one
+of `self-closing`, `standing` and `with-operator`; `transcripts`,
+whether earlier soundings' session transcripts are handed; and `lands`,
+the paths of the place that land, or none. Its place-and-stage half is
+a flume kind, which sounding hands flume with each launch (C.2). A
+repository writing its design book might declare `writeback`:
 self-closing, handed the book's outline, landing `books/` and
-`design/`. `lands` never names `.sounding/`.
+`design/`.
 
 ### C.4 The operator
 
 | profile | put, read, withdraw |
 |---|---|
-| **Pending You** | a card: a conclusion's five parts inline with a link to the whole, and the choices accept, go on with notes, and drop with a reason; an ask's words with a free reply; the card cancelled on withdraw |
-| **sounding's herdr plugin** | rows in flume's sidebar for the soundings that have not ended, each with its round and state; keys start, open, accept, send back, finish and drop a sounding through sounding's core, send back being go on, and open the round's pane, which is flume's; a key opens the conclusion in plannotator, and the annotations given there are the notes of the go on that follows. The plugin drives no agent. |
+| **Pending You** | a card: a conclusion's five parts inline with a link to the whole, and the choices accept, go on with notes, and drop with a reason; an ask's words with a free reply; the card cancelled on withdraw; who gave a response is the person Pending You names |
+| **sounding's herdr plugin** | rows in flume's sidebar for the soundings that have not ended, each with its round and state. Its keys hand the operator's accept, send back, finish, drop and resume to sounding's core, send back being go on. It opens no pane, starts no agent and sends nothing to a session: a round's pane is flume's, opened from flume's row. Who gave a response is the host's user |
 | **crew's rail** | one decision per sounding on the rail; crew calls sounding's command line with the operator's response |
 | **Flywheel's rail** | the elaboration's decision on the page or in chat |
+
+The command line names who gave a response as `local user`.
+Annotations the operator makes on a conclusion in plannotator are the
+notes of the go on that follows, and count for nothing apart from one
+(60).
 
 ### C.5 Item's keepers
 
 | profile | settle |
 |---|---|
-| **millpond** | the accepted conclusion kept on the record of each item the sounding answers for, which curation names when it answers a later signal on the subject; an item made of each piece of proposed work; go on, drop and what landed recorded against each item |
+| **millpond** | the accepted conclusion kept on the record of each of the sounding's items, which curation cites when it gives a later signal on the subject the move `answered`; an item made of each piece of proposed work; go on, drop and what landed recorded against each item |
 | **crew** | the conclusion shown on the rail, and each piece of proposed work turned by crew's planner into a plan entry |
 | **Flywheel** | the intent keeps the conclusion, and what the elaboration's type lands reaches the intent's line |
 | **none** | the conclusion and its proposed work stay in the held state for the operator |
@@ -611,7 +684,7 @@ self-closing, handed the book's outline, landing `books/` and
 
 | profile | land |
 |---|---|
-| **millpond** | `sounding offer` prints capture contract lines with flywheel-next's capture crate and pipes them to `millpond land`; millpond's verdict on each line is the outcome |
+| **millpond** | `sounding offer` prints capture contract lines with the family's shared capture crate and pipes them to `millpond land`, waiting at most 5 s. millpond's verdict on each line is the outcome. An inbox not reached in that time is handed the offer again by the next call (106) |
 | **Flywheel** | the same lines through Flywheel's capture intake |
 | **none** | the lines printed and kept in the held state, marked as not taken |
 
@@ -619,25 +692,45 @@ An offer's capture:
 
 | field | value |
 |---|---|
-| `key` | `sounding/<name>/<n>`, `<n>` the offer's number among the sounding's offers, from 1 |
+| `key` | `sounding/<repository>/<name>/<n>`, `<repository>` the repository's name and `<n>` the offer's number among the sounding's offers, from 1 |
 | `source` | `sounding` |
 | `event_at` | when the session offered it (41) |
 | `title` | the finding's first line |
 | `raw` | the finding whole, as `offer-<n>.md` |
-| `excerpt` | the finding: `text` whole; `kind` `ask`; `asserted_by` `sounding/<name>`; `assertion` the finding in one sentence, as the session gives it; `subjects` and `argues_with` as the session gives them; `position` `offer <n>` |
+| `excerpt` | the finding: `text` whole; `kind` `ask`; `asserted_by` `sounding/<repository>/<name>`; `assertion` the finding in one sentence, as the session gives it; `subjects` and `argues_with` as the session gives them; `position` `offer <n>` |
 
-### C.7 Store: the sounding's branch
+`sounding offer` takes `--key` for a key of the session's own (36).
 
-| operation | how the sounding's branch satisfies it |
-|---|---|
-| read | the files under `.sounding/` at the tip of `sounding/<name>`: `brief.md` with the inputs and the operator's notes; `conclusion.md` for a round awaiting its decision; `rounds/<n>.md` for each ended round, with how it ended and the decision on it; `offers/<n>.md` and `asks/<n>.md`; and `sounding.rec`, holding the name, the base and its revision, the kind and its declaration, the items, the soundings it is based on, each round's ending, start and end, and the landing |
-| list | the repository's `sounding/*` branches |
-| write | a commit of `.sounding/` alone, made in the place while it exists and on the branch after, refused when the branch has moved since the read (68) |
+### C.7 Store: the record beside the clone
 
-The held state outlives the place because the branch does: its commits
-never land, so the branch always holds a commit its base lacks and the
-launcher keeps it (22, 67). Every worktree of the
-repository reads it (69).
+| profile | read | list | write |
+|---|---|---|---|
+| **the clone** | the files under `<common>/sounding/<name>/`, `<common>` the clone's common git directory, which every worktree of the clone shares, with their `version` as the version read | the folders under `<common>/sounding/` | the next files written whole and moved into place under sounding's lock in `<common>/sounding/`, refused when `version` has moved since the read (68) |
+| **the clone and its remote** | the clone's read, once the tree at `refs/sounding/<name>` on the repository's own remote is fetched into the clone's files | the folders under `<common>/sounding/` and the refs under `refs/sounding/` on the remote | the next tree committed onto `refs/sounding/<name>` and pushed with lease on the commit read, then the clone's write; a refused push refuses the write (98) |
+
+A sounding's record is a folder of files, each naming its format and
+its version. `brief.md` holds the brief, the inputs, and the operator's
+notes and replies. `conclusion.md` holds the conclusion of a round
+awaiting its decision, and is the report flume's round stage delivers
+(C.2). `rounds/<n>.md` holds each ended round, with how it ended and the
+decision on it, and `offers/<n>.md` and `asks/<n>.md` each offer and
+ask. `requests.rec` holds each request with its surface's handle and
+whether it was withdrawn, and `responses.rec` every response, applied
+or not (65). `sounding.rec` holds the name, the base and its revision,
+the kind and its declaration, the items and the soundings it is based
+on. It also holds each round's ending, start and end, and the landing.
+
+The record outlives the place because it sits in the clone, beside
+every worktree and on no branch (67, 109). A sounding's branch holds
+only its sessions' commits, and its kind's `lands` decides which paths
+of them reach the base.
+
+### C.8 Bindings
+
+The operator's settings, `$XDG_CONFIG_HOME/sounding/config.toml`, name
+each seam's profile under `[bindings]`. A repository's `[bindings]` in
+`.config/sounding.toml`, read at the base's revision, bind any seam for
+its own soundings in their place (100).
 
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
@@ -660,13 +753,20 @@ repository reads it (69).
   71).
 - **I7.** A sounding never changes a sounding it is based on
   (17).
+- **I8.** No branch holds a sounding's held state, so what lands never
+  carries it (24, 109).
+- **I9.** sounding keeps no clock and drives no terminal: the launcher
+  runs and settles every round (75, 85, 106).
 
 <!-- ANCHOR_END: invariants -->
 <!-- ANCHOR: non-goals -->
 ## 8. Non-goals
 
-- Making places, running agents, or submitting work. The launcher does
-  that.
+- Making places, running agents, driving a terminal, or submitting
+  work. The launcher does that, and sounding names only where a round's
+  session runs.
+- Keeping a clock or a watch. The launcher settles each round, and
+  sounding acts when it is called (106).
 - Testing work, or deciding what a gate requires. The repository's own
   gate does that, for what a sounding lands and for the work an
   accepted conclusion proposes.
@@ -674,6 +774,9 @@ repository reads it (69).
   that.
 - Curation: reading signals, giving them moves, or making items.
 - Keeping an inbox.
+- Keeping a conclusion in the repository's own files. A conclusion
+  lives in the held state and with its items' keeper, and reaches the
+  repository only as what its kind lands.
 - A place in several repositories. A sounding works in one repository's
   place, and its session reads any other.
 
@@ -686,40 +789,51 @@ Constraints already fixed:
 - Repositories are git repositories, and a place is a working copy of
   one on a branch of its own.
 - flume is the launcher. It makes places, starts each stage's agent,
-  submits through the repository's merge queue and tidies, and it keeps
-  only the live state of the places it runs.
+  settles each stage's end, submits through the repository's merge
+  queue and tidies, and it keeps only the live state of the places it
+  runs. It alone drives the terminal.
 - A round's session is an agent session in a terminal, which can be
   handed what it needs at its start and asked before it stops.
 - Work lands only through its repository's own gate.
-- A finding reaches an inbox as a capture in the capture contract that
-  Flywheel's statement (`design/flywheel-next/requirements.md`)
-  defines, in which a capture may be its own excerpt.
+- A finding reaches an inbox as a capture in the capture contract,
+  which the family's shared crates define and implement once, and in
+  which a capture may be its own excerpt.
+- An elaboration kind's format is defined once in the family's shared
+  crates, beside the format of flume's kinds.
+- A tool's records about one repository stay with that repository: in
+  its clone, and under `refs/<tool>/` on its own remote when hosts
+  share them, never in a repository of their own.
 - Flywheel's elaborations run on sounding once Flywheel hosts. sounding
-  keeps the shape of Flywheel's elaboration (its clauses 24, 25, 58, 62
-  and 65): the three endings are Flywheel's elaboration types, conclude
-  is an elaboration finishing with its deliverables, ask is one blocked
-  on a question, and offer is one offering a finding.
+  keeps the shape of Flywheel's elaboration: the three endings are
+  Flywheel's elaboration types, conclude is an elaboration finishing
+  with its deliverables, ask is one waiting on the operator, and offer
+  is one offering a finding.
 - sounding is free and open source.
 
 The rest of the stack, which a model builds on unless it says why not:
 
-- One static binary, written in Rust, as sluice is.
+- One static binary, written in Rust, as sluice is, built on the
+  family's shared crates.
 - Everything sounding gives a reader as JSON on request, the form of
   (76).
-- A command line: `sounding open`, `list`, `conclude`, `offer`, `ask`,
-  `accept`, `go-on`, `finish`, `drop` and `resume`.
+- A command line: `sounding open`, `list`, `conclude`, `note`, `offer`,
+  `ask`, `accept`, `go-on`, `finish`, `drop` and `resume`. Accept, go-on
+  and drop take the sounding alone, since at most one conclusion of a
+  sounding waits at a time.
 - Two plugins kept outside the core, as sluice keeps its plugins: a
   Claude Code plugin that gives every session `/sound <brief>`, the
   start hook, and the MCP tools `soundings`, `conclusion`, `accept`,
-  `go_on`, `finish` and `drop`; and a herdr plugin with rows in flume's
-  sidebar and its keys.
+  `go_on`, `finish` and `drop`; and a herdr plugin that shows rows in
+  flume's sidebar, hands the operator's responses to the core, and
+  drives nothing in herdr. Every `sounding` command, and each refresh of
+  the herdr plugin, first does what waits (106).
 - The launcher is flume, sessions are Claude Code in herdr panes,
   requests are Pending You cards and the herdr plugin's rows,
   conclusions are annotated in plannotator, the inbox and the item's
   keeper are millpond, and the gate is sluice.
 - The profiles of Part C first: flume; sounding's own and a
   repository's kinds; Pending You and sounding's herdr plugin; millpond
-  and none, as keeper and as inbox; and the sounding's branch.
+  and none, as keeper and as inbox; and both stores.
 
 <!-- ANCHOR_END: givens -->
 <!-- ANCHOR: questions -->
@@ -732,11 +846,14 @@ These are not requirements.
   those paths, those paths applied as one commit, or another way, and
   does the launcher make it (24, 26)? flume's
   statement asks the same of the launcher.
-- Where is the held state stored: on the sounding's branch, as C.7 has
-  it, or in a store the family shares? It is ruled with the family's
-  storage (plan step D4) (67, 69).
-- Do sounding's kinds and flume's kinds share one declaration in a
-  repository, or does each tool read its own (11)?
+- How does a reader on another host than a place's learn whether its
+  round's session lives, when the launcher reports only the places on
+  its own host (54, 69, 74)?
+- How does flume hold a standing round: what keeps its quiet session
+  from being sent back before the operator's finish, and what holds it
+  to a conclusion or a note after (49, 85)?
+- How is a repository named in an offer's key, so that two repositories
+  whose soundings offer into one inbox never share a name (42, C.6)?
 - May a sounding be based on a sounding of another repository, and how
   does it read that one's held state when the store lists by
   repository (15, 97)?
@@ -747,31 +864,6 @@ These are not requirements.
 - May the operator drop a landing sounding while its submission waits
   in the gate, and what becomes of the submission (59,
   62)?
-- Does an offer's identity carry its repository into what an inbox
-  keys it by, or is a name unique across every repository whose
-  soundings offer into one inbox, as a planner's inbox holding several
-  repositories needs (3, 42)?
-- Is a sounding's branch pushed to its repository's remote, so work
-  built on another host can read the revision a conclusion names, and
-  does the held state travel with it (21, 69)?
-- With an inbox bound, does a sounding opened by a person or by another
-  tool's surface, with no item, get an item of its own (9,
-  61)?
-- Where else does an accepted conclusion live: does its repository keep
-  it in its own record, as a repository keeps its explorations
-  (61, 66)?
-- Is a note given through an act of its own, as an exit is, or taken
-  from what the session leaves in its place when it stops (33,
-  51)?
-- May the operator park a working sounding by their word, ending its
-  session with the round's work committed (28, 55)?
-- Is a session a host brings back after a restart the same session, or
-  a gone one whose sounding is parked (31, 55)?
-- Is a conclusion of a round with the operator decided in the
-  conversation, or put before the operator on the same surfaces as any
-  other (50, 58)?
-- May an offer carry material beyond its text, such as what a prototype
-  printed, as its capture's raw material (41)?
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->
@@ -840,6 +932,19 @@ These are not requirements.
 - **S17.** A person reads a sounding through the command line, an agent
   through its session's tools and the operator through the herdr
   sidebar. All three see the same state and the same conclusion.
+- **S18.** A session asks the operator something, then concludes before
+  any reply. The ask closes with no reply, its card is withdrawn, and
+  the conclusion goes before the operator.
+- **S19.** A round's session tries to accept its own sounding's
+  conclusion, then another sounding's. Both are refused, and both
+  conclusions still wait on the operator.
+- **S20.** A session offers a finding while the inbox cannot be reached.
+  The offer is kept as not taken, and the session goes on. Later the
+  operator lists soundings, the inbox answers, and the offer is taken,
+  with nothing of sounding's running in between.
+- **S21.** Two hosts share a repository's soundings. A sounding opened
+  on one is read on the other with the same brief, rounds and
+  conclusion, and the chapters it lands carry none of its record.
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
