@@ -289,11 +289,14 @@ redefine these.
     caller. A stage's declaration holds its name, its prompt, and its
     deliverable or that it is a conversation, and may hold its agent's
     settings, whether it waits on its caller's word, and how long its
-    agent may be quiet before the stage is stuck. flume runs that much
-    of a kind and no more: stages in order, one agent to each, and the
-    place sent back when its submission fails. A kind that asks for
-    more, such as a stage worked by several agents, is refused (4).
-    Nothing else a declaration holds changes what flume does.
+    agent may be quiet before the stage is stuck. flume reads only a
+    kind's places and stages, and runs that much of them: stages in
+    order, one agent to each, and the place sent back when its
+    submission fails. A kind whose places and stages ask for more, such
+    as a stage worked by several agents, is refused (4). flume ignores a
+    section of a kind it does not know, such as the elaboration section
+    sounding reads, and nothing else a declaration holds changes what
+    flume does.
 24. Every deliverable is one of six forms, each read where it lives:
     - **commits**: the place's branch holds a commit made since the
       stage started;
@@ -319,6 +322,10 @@ redefine these.
     start. flume reads every fact of one deliverable at one head of the
     place's branch, and never pairs a fact read at one head with a fact
     read at another.
+123. A report kept beside a place's held state goes when the place is
+     tidied (62). A stage delivers one only where its caller keeps what
+     the report holds once the place is gone. Every other report a
+     reader needs after the place is gone is a committed report (24).
 26. A place has at most one change, named by the place's name, and a
     stage that reads a change reads only that one.
 27. A stage's prompt is filled before it is sent. Every part it asks
@@ -828,7 +835,9 @@ max_send_backs = 3        # how many times a place may go back before it waits o
 format's own names. flume reads `on_fail` and `max_send_backs` on a
 kind's last stage only, since under flume a stage fails only by its
 place's failed submission. A kind whose stage names more than one agent
-or more than one deliverable is refused (4, 23).
+or more than one deliverable is refused (4, 23). flume ignores a
+section of a kind it does not know, such as an elaboration kind's
+elaboration section (23).
 
 | deliverable (24) | spelled in `deliverables` |
 |---|---|
@@ -836,8 +845,8 @@ or more than one deliverable is refused (4, 23).
 | change written | `change` |
 | tasks ticked | `tasks` |
 | change archived | `archived` |
-| report | `report:<path>`, the path relative to the place, or under `{{state}}`, the place's own folder beside the held state, which goes with the place (C.7) |
-| committed report | `committed:<path>`, the path relative to the place; the form for any report a reader needs after the place is gone |
+| report | `report:<path>`, the path relative to the place, or under `{{state}}`, the place's own folder beside the held state, which goes with the place (C.7). A report under `{{state}}` only where the caller keeps it lasting (123) |
+| committed report | `committed:<path>`, the path relative to the place; the form for every other report a reader needs after the place is gone (123) |
 
 A prompt's parts are `{{brief}}`, `{{name}}`, `{{kind}}`, `{{stage}}`,
 `{{branch}}`, `{{base}}`, `{{place}}`, `{{change}}`, `{{report}}`,
@@ -857,10 +866,15 @@ flume's own kinds, their prompts shipped with flume:
 | **fix@1** | `fix/<name>` | yes | yes; `code` | `code`: `commits` |
 | **change@1** | `change/<name>` | no | yes; `verify` | `construct`: `change`; `code`: `tasks`; `verify`: `archived`. The verify prompt checks the work against the change and commits its report as `verify.md` in the change's directory. It then archives the change on the place's branch, the report with it, or stops short with what fails |
 
-sounding carries the place-and-stage half of each of its elaboration
-kinds in the launch, as `flume launch --kinds <file>`: a kind on the
-branch prefix `sounding`, its rounds' stages each delivering a
-`committed:` report or each a conversation, and whether it lands.
+sounding hands flume each elaboration kind in the launch, as `flume
+launch --kinds <file>`. An elaboration kind is written in the same
+format, with an elaboration section that sounding reads and flume
+ignores (23). flume reads its places and stages: the branch prefix
+`sounding`, whether it lands, and its rounds' stages. A round's stage
+delivers `report:{{state}}/conclusion.md`, or is a conversation.
+sounding copies the conclusion into its own record when it settles the
+round, so the conclusion is never committed on `sounding/<name>`
+(123).
 
 ### C.3 The change: OpenSpec
 
@@ -926,7 +940,9 @@ lives:
 - A deliverable a later reader needs is committed with the work on the
   place's branch, never kept only on the host. The change kind's verify
   report is in the change's directory (22), and any other such report
-  is a committed report (24).
+  is a committed report (24). A report under `{{state}}` is the one
+  exception, and only where its caller keeps it lasting, as sounding
+  copies a round's `conclusion.md` into its own record (123).
 
 | operation | how the state directory satisfies it |
 |---|---|
@@ -1009,7 +1025,9 @@ Constraints already fixed:
   defined once in the family's shared crates, in a public repository of
   the family's own, and the family's other tools build on it. flume
   runs the part of it that 23 names, so a repository's kinds keep their
-  meaning in any tool that runs more of the format.
+  meaning in any tool that runs more of the format. An elaboration kind
+  is written in the same format, with an elaboration section that
+  sounding reads and flume ignores.
 - The family's storage rule places each piece of state in the lowest of
   five layers that holds every reader it has. The layers are the host,
   the worktree, the clone, a shared branch and the repository's
@@ -1050,7 +1068,7 @@ The rest of the stack, which a model builds on unless it says why not:
   | the operator | `/launch <brief>` in any session, or the herdr plugin's key | nothing; the sidebar shows each place |
   | millpond | an item's send, as a fix or a change, the item's brief as the launch's | the item's record and its sends, and the landing, written from the merge queue's record of the place's branch |
   | headwater | its fix key, as a fix with the release's brief | nothing |
-  | sounding | each round of an elaboration, as a place of the kind the elaboration kind carries in the launch, a conversation's agent beside the operator's pane | the inputs, the soundings each was based on, the rounds, the operator's notes and decisions, and the record; its go-on is a retry with the operator's notes as words, its accept a done or a retry that releases a held submission, and its drop a drop |
+  | sounding | each round of an elaboration, as a place of the elaboration kind it hands in the launch, a conversation's agent beside the operator's pane | the inputs, the soundings each was based on, the rounds, the operator's notes and decisions, and the record, with each round's conclusion copied from its report; its go-on is a retry with the operator's notes as words, its accept a done or a retry that releases a held submission, and its drop a drop |
   | crew | each unit, chore or fix of a team, as a place of a kind crew carries in the launch, every stage after the first and the submission on hold, each agent's settings from crew's roles, marked with the team and the slot | plans, bolts, slots and the cap on them, the dispatcher, conductors, approvals and conflicts between units; it starts each stage and each submission on hold with a retry and reads each end from status |
 
 <!-- ANCHOR_END: givens -->
@@ -1165,13 +1183,16 @@ These are not requirements.
   the agent, and flume does not end it. A tell wakes the agent, it
   ticks the last task, and the stage ends at its deliverable.
 - **S18.** sounding opens an elaboration and launches its first round,
-  carrying its kind in the launch: one stage on a `sounding/<name>`
-  branch that delivers a committed report, in a kind that does not land.
-  The agent commits its conclusion, and the stage ends. sounding's go-on
-  retries the stage with the operator's notes as its words, and a fresh
-  agent commits a second conclusion. sounding's accept is a done: flume
-  tidies the place and keeps its branch, which holds the conclusions
-  and prototype commits the base lacks. No submission is ever made.
+  handing its elaboration kind in the launch: one stage on a
+  `sounding/<name>` branch that delivers a report beside the place's
+  held state, in a kind that does not land. The agent writes its
+  conclusion there, the stage ends, and sounding copies the conclusion
+  into its record. sounding's go-on retries the stage with the
+  operator's notes as its words, and a fresh agent writes a second
+  conclusion, which counts by its write time. sounding's accept is a
+  done: flume tidies the place, the report going with it, and keeps its
+  branch, which holds the prototype commits the base lacks. No
+  submission is ever made, and no conclusion is committed.
 - **S19.** The merge queue fails a change's submission as the cause of
   a failure. flume sends the place back to verify, whose fresh agent
   has the failing checks as its words, fixes them in its place and
