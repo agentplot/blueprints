@@ -369,6 +369,8 @@ redefine these.
 113. Curation or the operator names each item a join or a route makes,
      and millpond refuses a name any item of the inbox has had. An item
      made from a conclusion's proposed work takes the name 58 gives it.
+     No item's name nests under another's, and neither do its sends'
+     branches.
 47. An item's brief is written by curation or the operator, never by
     millpond.
 48. An item is sent only with a brief. Each send keeps the brief it
@@ -392,8 +394,8 @@ redefine these.
     one or more.
 52. A send to a place makes a new place of the named repository,
     holding the item's brief. Its branch is new, named for the item and
-    the send's number among its sends to a place, and cut from the head
-    of the repository's default branch when the place is made.
+    the send's number among the item's sends, and cut from the head of
+    the repository's default branch when the place is made.
     A place never holds two items' work, and a send never takes a branch
     that exists.
 115. An item has at most one open send to a place, and a send of it to
@@ -432,7 +434,8 @@ redefine these.
 58. Each piece of work an accepted conclusion proposes becomes exactly
     one new proposed item that names the conclusion, however often the
     acceptance is read. The item's name is made from the first item the
-    send named and the work's number in the conclusion's order.
+    send named and the work's number in the conclusion's order, and
+    nests under neither (113).
 59. A conclusion never becomes a signal. A finding beyond an inquiry's
     inputs reaches the inbox only as an offer at the intake (27).
 
@@ -698,7 +701,8 @@ landing and conclusion, in the record formats and the layout the
 family's shared crates fix (5). Records are recutils at rest, each
 naming its format and major version, and JSON exists only in flight.
 Each capture exists once at rest, its key's segments as nested
-folders. A signal is named `<key>#<n>` (110).
+folders. A signal is named `<key>#<n>` (110). An item's name holds no
+`/`, so neither it nor its sends' branches nest under another (113).
 
 The settings are `.config/millpond.toml` at the root of the same
 branch, read at the version the inbox was read at, and millpond never
@@ -756,7 +760,7 @@ The limit is 8 KiB unless the inbox's settings say otherwise (18).
 
 | operation | how flume satisfies it |
 |---|---|
-| make | `flume launch` with the repository, the kind, `fix` or `change`, the item's brief as the launch's, a name, and a mark naming the inbox, the item and the send's number. The name is the item's for its first send to a place, and `<item>/<n>` for its n-th. flume makes a worktree at `<repository>/places/<kind>--<name>` on the branch `<prefix>/<name>`, the prefix the kind's, cut from the base's head, and refuses a launch whose branch or place stands (52, 89) |
+| make | `flume launch` with the repository, the kind, `fix` or `change`, the item's brief as the launch's, a name, and a mark naming the inbox, the item and the send's number. The name is `<item>--<n>`, n the send's number among the item's sends, from 1. flume makes a worktree at `<repository>/places/<kind>--<name>` on the branch `<prefix>/<name>`, the prefix the kind's, cut from the base's head. It refuses a launch whose branch or place stands (52, 89) |
 | find | `flume status --json`: the live place of the repository under the send's name, its mark naming the item and the send, its brief the launch's (116, 122) |
 
 ### C.6 Starters
@@ -784,7 +788,7 @@ millpond's tools.
 | conclusion | the sounding's state and the conclusion the operator accepted, read from sounding's record through its command line. The conclusion holds the answer, its evidence, what it would change, the work it proposes in order, and what stays open (57, 58, 118) |
 
 Each piece of work an accepted conclusion proposes, the k-th in its
-order, becomes the item `<item>/<k>`, `<item>` the first item the send
+order, becomes the item `<item>.<k>`, `<item>` the first item the send
 named (58).
 
 A sounding hands a finding beyond its inputs to `millpond land` with
@@ -964,9 +968,6 @@ These are not requirements.
 
 - Who finds the earlier conclusions on an item's subjects for an
   inquiry's inputs, millpond or the inquiry (56)?
-- How do sends' branches stay apart in git when an item's later sends,
-  and the items its conclusions propose, take names under the item's
-  own? git refuses a branch named under one that stands (52, 58, 115).
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->
