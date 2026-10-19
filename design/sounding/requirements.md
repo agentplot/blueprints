@@ -664,14 +664,16 @@ outline, landing `books/` and `design/`.
 | profile | put, read, withdraw |
 |---|---|
 | **Pending You** | a card: a conclusion's five parts inline with a link to the whole, and the choices accept, go on with notes, and drop with a reason; an ask's words with a free reply; the card cancelled on withdraw; who gave a response is the person Pending You names |
-| **sounding's herdr plugin** | rows in flume's sidebar for the soundings that have not ended, each with its round and state. Its keys hand the operator's accept, send back, finish, drop and resume to sounding's core, send back being go on. It opens no pane, starts no agent and sends nothing to a session: a round's pane is flume's, opened from flume's row. Who gave a response is the host's user |
+| **sounding's herdr plugin** | rows in flume's sidebar for the soundings that have not ended, each with its round and state. Its keys hand the operator's accept, send back, finish, drop and resume to sounding's core, send back being go on, and a review key runs `sounding review`. It opens no pane of its own, starts no agent and sends nothing to a session: a round's pane is flume's, opened from flume's row. Who gave a response is the host's user |
 | **crew's rail** | one decision per sounding on the rail; crew calls sounding's command line with the operator's response |
 | **Flywheel's rail** | the elaboration's decision on the page or in chat |
 
 The command line names who gave a response as `local user`.
-Annotations the operator makes on a conclusion in plannotator are the
-notes of the go on that follows, and count for nothing apart from one
-(60).
+`sounding review` opens a conclusion in plannotator-tui, which opens a
+pane of its own; sounding starts no agent, so the launcher still drives
+every session's terminal. The annotations the operator makes there are
+the notes of the go on that follows, and count for nothing apart from
+one (60).
 
 ### C.5 Item's keepers
 
@@ -820,15 +822,15 @@ The rest of the stack, which a model builds on unless it says why not:
 - Everything sounding gives a reader as JSON on request, the form of
   (76).
 - A command line: `sounding open`, `list`, `conclude`, `note`, `offer`,
-  `ask`, `accept`, `go-on`, `finish`, `drop` and `resume`. Accept, go-on
-  and drop take the sounding alone, since at most one conclusion of a
-  sounding waits at a time.
+  `ask`, `review`, `accept`, `go-on`, `finish`, `drop` and `resume`.
+  Accept, go-on and drop take the sounding alone, since at most one
+  conclusion of a sounding waits at a time.
 - Two plugins kept outside the core, as sluice keeps its plugins: a
   Claude Code plugin that gives every session `/sound <brief>`, the
   start hook, and the MCP tools `soundings`, `conclusion`, `accept`,
   `go_on`, `finish` and `drop`; and a herdr plugin that shows rows in
-  flume's sidebar, hands the operator's responses to the core, and
-  drives nothing in herdr. Every `sounding` command, and each refresh of
+  flume's sidebar, hands the operator's responses to the core, has a
+  key for `review`, and drives no session in herdr. Every `sounding` command, and each refresh of
   the herdr plugin, first does what waits (106).
 - The launcher is flume, sessions are Claude Code in herdr panes,
   requests are Pending You cards and the herdr plugin's rows,
