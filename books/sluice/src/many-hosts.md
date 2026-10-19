@@ -1,7 +1,7 @@
 # Many hosts
 
 The design below is under review in `design/sluice/proposals/
-many-hosts-2.md` as proposed 72 to 88, and is not yet built.
+many-hosts-3.md` as proposed 72 to 88 and 107 to 113, and is not yet built.
 
 A deployment is one machine or a fleet, with no hybrid. On one machine
 a waiting submit runs the rounds itself. On a fleet every round is run

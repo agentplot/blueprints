@@ -53,7 +53,7 @@ The system a run executes on is part of its key, so one check on two
 systems is two keys (85). A gate names, for each check it requires, the
 systems a pass must come from, and a pass on one system never stands
 for another (86). The system dimension is proposed in
-`design/sluice/proposals/many-hosts-2.md` and awaits the operator's
+`design/sluice/proposals/many-hosts-3.md` and awaits the operator's
 ruling; until then a gate names the system of the instance advancing
 the branch.
 
