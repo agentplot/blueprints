@@ -205,9 +205,10 @@ redefine these.
    or a change it did not make for the launch.
 4. A launch whose kind resolves to no declaration (19), asks for more
    than flume runs of a kind (23), or names a deliverable flume cannot
-   read (24) is refused naming the kind, and makes nothing. A launch
-   that gives no brief while a stage of its kind asks for one is refused
-   naming the stage, and makes nothing (27).
+   read (24) is refused naming the kind, and makes nothing. So is a
+   launch of a kind that lands where the repository binds no merge
+   queue (105). A launch that gives no brief while a stage of its kind
+   asks for one is refused naming the stage, and makes nothing (27).
 5. Every stage whose prompt asks for the brief gets it whole and as the
    caller wrote it. flume never rewrites, shortens, summarises or
    judges a brief.
@@ -265,9 +266,11 @@ redefine these.
     launch, a kind's name resolves to exactly one declaration: the
     launch's over the repository's over flume's own. Status names the
     declaration each place runs and the version of its kind.
-20. A repository's kinds, its readiness and its binding (105) are read
-    from its base's revision at the launch, never from a place's tree or
-    from a change not committed.
+20. A repository's kinds and its readiness are read from its base's
+    revision at the launch. Its binding (105) is read from its default
+    branch's current revision: the remote's, after one fetch, where the
+    repository has a remote, and its own otherwise. None is read from a
+    place's tree or from a change not committed.
 21. A place runs its kind, and keeps its repository's binding, as each
     resolved at its launch. A later change to any declaration never
     changes a place already launched.
@@ -471,7 +474,7 @@ redefine these.
 120. flume runs no process of its own between its commands. Every settle
      runs inside a command of flume's, started by an agent going quiet,
      by the terminal's watch or by a caller. The command that submits a
-     place waits on the merge queue's verdict itself (111).
+     place waits on the merge queue's verdict itself (111, 124).
 47. A stage or a submission that waits on its caller's word starts only
     on a retry that names it (49).
 
@@ -498,6 +501,10 @@ redefine these.
      the merge queue removes the landed place, it does so only after the
      landing and only through the repository's teardown, and flume
      records the place gone (66).
+124. A settle that finds the place's submission open, with no command of
+     flume's waiting on it, waits on that same submission again through
+     the merge queue and settles the place when it decides. flume never
+     submits the place anew for it (111).
 
 ### A.8 Retries, stops, drops and dones
 
@@ -740,6 +747,9 @@ redefine these.
      that the merge queue itself landed, never inferred from what the
      base holds (63). Submit removes a place only after its landing and
      only through its repository's teardown (66, 113).
+125. **wait**: given a submission still open, a wait on the merge queue
+     until it decides, which keeps the queue moving where it moves only
+     while something waits; then the outcome, as submit gives it (124).
 
 ### B.7 The store
 
@@ -757,12 +767,13 @@ redefine these.
 105. Each seam is bound by naming one profile of Part C: the terminal
      and the store once for the host; the place, the change and the
      merge queue once for each repository, by the binding the repository
-     declares beside its kinds (20), flume's default binding each seam
-     it names none for, and none guessed from another tool's files; the
+     declares (20), and none guessed from another tool's files; the
      kinds by the one form every declaration takes (19); the agent for
-     each stage, by its settings (32). Only a kind that lands reaches
-     the merge queue (111). Parts A and B do not change to admit a
-     profile.
+     each stage, by its settings (32). A repository that names no place
+     profile is bound to the one that needs nothing beyond git. One that
+     names no change or merge queue leaves that seam unbound, so flume
+     assumes no tool (11). Only a kind that lands reaches the merge
+     queue (4, 111). Parts A and B do not change to admit a profile.
 106. One conformance suite holds every profile to Parts A and B; a
      profile that fails it is not one.
 
@@ -779,34 +790,38 @@ core needs none of them.
 
 | profile | make | ready | read | remove / remove-branch |
 |---|---|---|---|---|
-| **worktrunk**: a repository with worktrunk set up | `wt switch --create <branch> --base <revision> --no-cd`, its worktree path `<repository>/places/<kind>--<name>`, the repository's create hooks run | the toolchain, then the runner's setup, that the repository declares in `.config/sluice.toml`, run in the place in sluice's cleaned environment, as sluice readies its own places | `git status --porcelain=v2`; `git worktree list --porcelain` for a lock | `wt remove --no-delete-branch`, so the repository's pre-remove and post-remove hooks run; the branch by `git cherry <base> <branch>`, deleted with `git branch -D` when no line starts with `+` |
-| **git worktree**: a repository with no worktree tool | `git worktree add -b <branch> <location> <revision>`, at the same path `<repository>/places/<kind>--<name>` | as above | as above | `git worktree remove`, with no teardown; the branch as above |
+| **worktrunk**: a repository that binds `worktrunk` | `wt switch --create <branch> --base <revision> --no-cd`, its worktree path `<repository>/places/<kind>--<name>`, the repository's create hooks run | the toolchain, then the runner's setup, that the repository declares in `.config/sluice.toml`, run in the place in sluice's cleaned environment, as sluice readies its own places | `git status --porcelain=v2`; `git worktree list --porcelain` for a lock | `wt remove --no-delete-branch`, so the repository's pre-remove and post-remove hooks run; the branch by `git cherry <base> <branch>`, deleted with `git branch -D` when no line starts with `+` |
+| **git worktree**: a repository that binds `git-worktree`, or names no place profile | `git worktree add -b <branch> <location> <revision>`, at the same path `<repository>/places/<kind>--<name>` | as above | as above | `git worktree remove`, with no teardown; the branch as above |
 
 Under either, what the toolchain step makes is kept in the place's own
 git directory (C.7). A place's branch is `<prefix>/<name>`, the prefix
 its kind's. The base's current revision (9) is where the merge queue's
 profile says the base lives: under sluice, `origin/<base>` after one
 fetch when `.config/sluice.toml` lands the base on a remote, and the
-local `<base>` otherwise. A fetch that fails refuses the launch (9). A
-name is refused when `git check-ref-format` refuses the branch it
-gives.
+local `<base>` otherwise. With no merge queue bound, it is the local
+`<base>`. A fetch that fails refuses the launch (9). A name is refused
+when `git check-ref-format` refuses the branch it gives.
 
 ### C.2 The kinds and the binding
 
-A declaration is TOML in the family's kind format (section 9), and
-flume reads the fields below of it. A repository's is
-`.config/flume.toml` at the base's revision (20); a launch's is the
-file `flume launch --kinds <file>` names; flume's own is built in.
-Prompt paths are relative to the declaration's file. A repository's
-binding (105) is the `[profiles]` table of the same file at the same
-revision, with the stack's profile (section 9) for each seam it leaves
-out. flume reads no other tool's files to choose one.
+A declaration is TOML in the family's kind format (section 9), and flume
+reads the fields below of it. A repository's is `.config/flume.toml` at
+the base's revision (20); a launch's is the file `flume launch --kinds
+<file>` names; flume's own is built in. Prompt paths are relative to the
+declaration's file. A repository's binding (105) is the `[profiles]`
+table of the same file, read at its default branch (20). That is
+`origin/HEAD`'s revision after one fetch when the repository has a
+remote, and the local default branch's otherwise. The place is then cut
+from the base where the merge-queue profile says it lives (C.1). With no
+table, or a seam left out of it, flume uses the profiles that need no
+tool: plain `git worktree`, no change profile and no merge-queue
+profile. flume reads no other tool's files to choose one.
 
 ```toml
 [profiles]
-place = "worktrunk"       # or "git-worktree" (C.1); worktrunk when omitted
-merge_queue = "sluice"    # which reads .config/sluice.toml for where the base lives (C.1); sluice when omitted
-change = "openspec"       # (C.3); openspec when omitted
+place = "worktrunk"       # or "git-worktree" (C.1); git-worktree when omitted
+merge_queue = "sluice"    # reads .config/sluice.toml for where the base lives (C.1); none when omitted, and a kind that lands is refused (4)
+change = "openspec"       # (C.3); none when omitted, and a kind that reads a change is refused (4)
 
 [kinds.bump]
 version = 2               # status names the kind bump@2 (19); 1 when omitted
@@ -911,6 +926,7 @@ never the warning about bypassing permissions (34).
 |---|---|
 | submit | flume runs `wt submit <base>` in the place under the worktrunk place profile, and `sluice submit <base>` under the git worktree profile, and waits on it: exit 0 is landed, 1 failed or withdrawn, 2 a conflict or a refusal, told apart by read-submission. flume never passes `--no-wait`, `--check` or `--no-remove`. The settle that submits is the command that waits, and it settles the place again when sluice decides (111). |
 | read-submission | `sluice status <base> --json`, read once for each repository at each ask; the newest entry submitted from the place's branch, whoever submitted it; landed is that entry landed, its landing commit's `Sluice-*` trailers naming it |
+| wait | `sluice step <base>`, one round of the base's queue, run again until read-submission gives the entry landed, failed or withdrawn, so the queue moves with no `sluice run` going (124) |
 
 On landing, `wt submit` releases the place with `sluice release`, then
 removes it with `wt -C <place> remove --foreground`, so the
@@ -1060,7 +1076,8 @@ The rest of the stack, which a model builds on unless it says why not:
   attended.
 - The profiles of Part C: worktrunk, the kind format in
   `.config/flume.toml`, OpenSpec, Claude Code, herdr, sluice and the
-  host's state directory.
+  host's state directory. A repository with no `[profiles]` table gets
+  plain git worktrees and no change or merge-queue profile (C.2).
 - How each caller uses flume:
 
   | caller | launches | keeps |
@@ -1092,18 +1109,12 @@ These are not requirements.
   statement asks the same.
 - How many times does the stop check send an agent back before its
   stage is left to the stuck limit (44, 110)?
-- The merge queue moves only while something waits on it or runs it.
-  What keeps it moving for a submission whose waiting command ended
-  before the verdict, as when flume or its host stopped (77, 111)?
 - When the operator ends a conversation's agent in its terminal, is the
   conversation finished or lost (45, 109)?
 - When the stage a failed submission sends a place back to waits on its
   caller's word, does the return wait on that word too (47, 112)?
 - What is a kind's limit on going back when its declaration sets none
   (23, 112)?
-- A repository's binding is read at its base's revision, yet where the
-  base lives is the merge queue profile's to say. Which revision is
-  read first to learn it (9, 20, 105)?
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->
@@ -1243,6 +1254,14 @@ These are not requirements.
 - **S32.** A review stage's prompt asks for a retry's words, and the
   stage is reached with none. It stands refused, naming the part, and
   starts no agent. A retry with words starts it.
+- **S33.** A repository declares no binding. A launch of flume's fix
+  kind in it is refused, naming the kind and the merge queue it needs. A
+  launch of the repository's own kind that does not land makes its
+  place with plain git worktrees.
+- **S34.** flume's host restarts while a change's submission is under
+  test, and the command waiting on it is gone. The next settle finds the
+  submission open with nothing waiting on it and waits on it again,
+  never submitting anew. It lands, and flume tidies the place.
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
