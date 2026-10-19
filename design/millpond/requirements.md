@@ -39,8 +39,8 @@ at once. Any other waits for a reader, a model session that writes its
 signals through millpond, and millpond takes only the words that stand
 in the capture's material. Curation, another session, gives each signal
 one move, in batches the operator accepts, and joins signals into items.
-millpond sends an item to a place of its own in a repository, sends an
-item that asks a question to an inquiry, or hands items to a planner,
+millpond sends an item to a place of its own in a repository, sends
+items that ask a question to an inquiry, or hands items to a planner,
 and records what became of each. millpond never judges what a capture
 says, never plans across items, and never lands work.
 
@@ -57,8 +57,8 @@ says, never plans across items, and never lands work.
 | **the operator** | each batch of moves, accepted or changed, or each item instead where the inbox's setup says so; replacing a move; sending an item; accepting, sending back or dropping each conclusion | |
 | **the keeper** (the operator, or a fleet on the operator's behalf) | an inbox's settings: its parts, each part's host, schedule and configuration, the limit, how a reader starts, and where items go | run a part's own logic in place of the part |
 | **a planner** | how items are ordered across teams, and what work each becomes | write an inbox's records except through the tool that keeps it |
-| **a worker** (an agent or a person in a place) | how to do an item's work, and when to submit it to the merge queue | record its own landing |
-| **an inquiry** | its conclusion, and the findings beyond its question it hands in | write an inbox except as a caller at the intake |
+| **a worker** (an agent or a person in a place) | how to do an item's work, and when its work goes to the merge queue | record its own landing |
+| **an inquiry** | its conclusion, and the findings beyond its inputs it hands in | write an inbox except as a caller at the intake |
 | **millpond** | which offers it takes and how it keeps what it took, as this statement fixes them | judge what a capture says, plan across items, land work, list a source, or change an inbox's settings |
 
 <!-- ANCHOR_END: actors -->
@@ -142,7 +142,8 @@ redefine these.
   sources, over what span of event times.
 - **brief**: what whoever does an item's work needs, written for the
   item.
-- **send**: one handing of one item to one target.
+- **send**: one handing of items to one target: one item to a place or
+  a planner, one or more to an inquiry.
 - **place**: a working copy of one repository on a branch of its own.
 - **worker**: an agent or a person doing an item's work in a place.
 - **starter**: whatever starts work: a worker on a send, or a reader on
@@ -151,8 +152,8 @@ redefine these.
   keeps a record of each branch.
 - **landing**: a branch's work reaching the branch it was submitted to,
   as the merge queue records it.
-- **inquiry**: one question worked by one session in a place of its
-  own, ending on a conclusion.
+- **inquiry**: work on a closed set of inputs, in rounds of one session
+  each in a place of its own, ending on a conclusion.
 - **conclusion**: an inquiry's answer, with its evidence, what it would
   change, the work it proposes and what stays open, which the operator
   accepts, sends back for another round, or drops.
@@ -328,9 +329,10 @@ redefine these.
     makes, or to a planner. An inbox whose items go to a planner hands
     each item to the planner, records the handing as the item's send,
     and sends no item to a place or an inquiry.
-51. A send names exactly one item, exactly one target (a place in a
-    named repository, an inquiry, or the planner), and who asked for
-    it.
+51. A send names exactly one target (a place in a named repository, an
+    inquiry, or the planner) and who asked for it. A send to a place or
+    the planner names exactly one item, and a send to an inquiry names
+    one or more.
 52. A send to a place makes a new place of the named repository, on a
     new branch named for the item, holding the item's brief. A place
     never holds two items' work, and a send never takes a branch that
@@ -348,15 +350,16 @@ redefine these.
 
 ### A.10 Inquiries and conclusions
 
-56. A send to an inquiry opens one, with the item's brief as its
-    question and the item's signals and their captures as its sources.
-57. millpond keeps an inquiry's conclusion as its item's record only
-    once the operator has accepted it, and keeps it unchanged.
+56. A send to an inquiry opens one, with each item's brief, its
+    signals and their captures among its inputs.
+57. millpond keeps an inquiry's conclusion as the record of each item
+    its send named, only once the operator has accepted it, and keeps
+    it unchanged.
 58. Each piece of work an accepted conclusion proposes becomes exactly
     one new proposed item that names the conclusion, however often the
     acceptance is read.
 59. A conclusion never becomes a signal. A finding beyond an inquiry's
-    question reaches the inbox only as an offer at the intake (27).
+    inputs reaches the inbox only as an offer at the intake (27).
 
 ### A.11 What comes in once
 
@@ -487,8 +490,7 @@ redefine these.
 
 ### B.8 The inquiry
 
-95. **open**: given a question and its sources, an inquiry, by name
-    (56).
+95. **open**: given its inputs, an inquiry, by name (56).
 96. **conclusion**: given an inquiry, its state, and, once the operator
     has accepted it, its conclusion and each piece of work the
     conclusion proposes (57, 58).
@@ -646,10 +648,10 @@ millpond's tools.
 
 | operation | how sounding satisfies it |
 |---|---|
-| open | `sounding open`, which writes `question.md` with the question and its sources, in a worktree of the repository on the branch `sounding/<name>` (56) |
+| open | `sounding open`, naming each item's brief, signals and captures as inputs; flume makes its place, a worktree of the repository on the branch `sounding/<name>` (56) |
 | conclusion | the conclusion the operator accepted, its `conclusion.md`: the answer, its evidence, what it would change, the work it proposes, and what stays open (57, 58) |
 
-A sounding hands a finding beyond its question to `millpond land` with
+A sounding hands a finding beyond its inputs to `millpond land` with
 `sounding offer` (59): an own excerpt of kind `ask`, asserted by the
 sounding, under the key `sounding/<name>/<n>`, one key per offer.
 
@@ -789,7 +791,7 @@ The rest of the stack, which a model builds on unless it says why not:
   | `moves` | writes a batch of moves in one commit |
   | `items` | lists items with their signals, briefs and sends |
   | `brief` | writes an item's brief |
-  | `send` | sends an item to a worktree, or an item that asks a question to a sounding |
+  | `send` | sends an item to a worktree, or items that ask a question to a sounding |
 
 - crew calls millpond's command line as it calls sluice's, and links
   no crate.
@@ -822,7 +824,7 @@ These are not requirements.
   at each tick, at each listing of items, or when the queue says (55)?
 - What becomes of an item whose inquiry is sent back or dropped (57)?
 - Who finds the earlier conclusions on an item's subjects for an
-  inquiry's sources, millpond or the inquiry (56)?
+  inquiry's inputs, millpond or the inquiry (56)?
 - Does a drop of a release's signal acknowledge the release in the
   tool that reported it (36)?
 - Where does a part's cursor go when the part moves to another host (3,
@@ -872,9 +874,9 @@ These are not requirements.
   written.
 - **S9.** Two release signals join one item. The operator sends it to a
   place in the repository. A new branch named for the item holds the
-  brief, the send is recorded, and a starter starts an agent there. The
-  agent submits, the merge queue lands the work, and the item shows the
-  landing with its revision.
+  brief, the send is recorded, and a starter starts an agent there and
+  submits its work. The merge queue lands the work, and the item shows
+  the landing with its revision.
 - **S10.** In an inbox whose items go to a planner, someone asks to send
   an item to a place. The send is refused, and the planner holds the
   item once.
@@ -883,7 +885,7 @@ These are not requirements.
   accepts. The item's record is the accepted conclusion, the bump it
   proposes arrives as one new proposed item, and curation answers the
   next release's signal by naming the conclusion.
-- **S12.** An inquiry hands in a finding beyond its question at the
+- **S12.** An inquiry hands in a finding beyond its inputs at the
   intake. The finding becomes a capture with its own signal, and the
   inquiry's conclusion becomes no signal.
 - **S13.** A body of folders read before the inbox existed is imported
@@ -907,6 +909,9 @@ These are not requirements.
 - **S20.** An inbox kept on its own is taken over by a planner's setup,
   and later by a hosted tool that keeps the same records. No record is
   rewritten and no event is captured twice.
+- **S21.** One send names two items, a major release and a decision a
+  meeting left open on the same library, to one inquiry. The operator
+  accepts its conclusion, and both items show it as their record.
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
