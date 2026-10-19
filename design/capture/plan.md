@@ -679,8 +679,10 @@ The operator's rulings:
 - **Where:** sounding, its core and `plugins/claude`.
 - **Does:**
   - `sounding open`, `list`, `conclude`, `note`, `offer`, `ask`,
-    `accept`, `go-on`, `finish`, `drop` and `resume`, over a closed set
-    of inputs, with each round's place through flume;
+    `accept`, `go-on`, `finish`, `drop`, `resume` and `review`, over a
+    closed set of inputs, with each round's place through flume;
+  - `review`, which opens the conclusion in plannotator-tui, its notes
+    counting only as part of a go on;
   - the record, kept off the branch that lands: in
     `<common>/sounding/<name>/`, and under `refs/sounding/<name>` on the
     repository's own remote when hosts share it;
@@ -712,8 +714,9 @@ The operator's rulings:
 - **Where:** sounding, `plugins/herdr`.
 - **Does:** rows in flume's sidebar for open soundings with their
   rounds and states, refreshed with sounding's offers handed again and
-  its cards read. Its keys pass only the operator's responses, accept,
-  go on, finish, drop and resume, to sounding's core. It opens no pane,
+  its cards read. Its keys pass the operator's responses, accept, go
+  on, finish, drop and resume, to sounding's core, and one key runs
+  `sounding review`. plannotator opens its own pane, and the plugin
   starts no agent and sends nothing to a session.
 - **Done when:** the plugin installs from sounding's tag, and a
   sounding started, sent back once and accepted from herdr shows each

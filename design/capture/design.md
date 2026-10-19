@@ -582,7 +582,8 @@ on and drop, for every sounding.
   item of its own, or an entry in crew's plan.
 - **Go on** starts the next round in the same worktree. The conclusion
   joins the record as an ended round, and the operator's notes join the
-  next session's inputs.
+  next session's inputs. Notes made on the conclusion in plannotator
+  count only as part of a go on.
 - **Drop** records the reason. flume removes the worktree and keeps its
   branch, and the record stays.
 
@@ -603,7 +604,8 @@ only offers come back as signals.
 ### The operator's surfaces
 
 - **The command line:** `sounding open`, `list`, `conclude`, `offer`,
-  `note`, `ask`, `accept`, `go-on`, `finish`, `drop` and `resume`.
+  `note`, `ask`, `accept`, `go-on`, `finish`, `drop`, `resume` and
+  `review`, which opens the conclusion in plannotator-tui.
 - **The Claude Code plugin** gives every session `/sound`, which opens a
   sounding on the inputs it names while the session goes on with its
   own work. A sounding's session gets its inputs, the records it is
@@ -612,10 +614,10 @@ only offers come back as signals.
   MCP.
 - **The herdr plugin** only displays. It lists open soundings in
   flume's sidebar, each with its round and its state: working, waiting
-  on the operator, or parked. Its keys pass only the operator's
-  responses, accept, go on, finish, drop and resume, to sounding's
-  core. It opens no pane, starts no agent and sends nothing to a
-  session.
+  on the operator, or parked. Its keys pass the operator's responses,
+  accept, go on, finish, drop and resume, to sounding's core, and one
+  key runs `sounding review`. plannotator opens its own pane, and the
+  plugin starts no agent and sends nothing to a session.
 - **Where a round's pane goes** is a launch setting sounding hands
   flume. A round with the operator opens beside their pane
   (`--with-me`). flume alone drives herdr.
