@@ -2,7 +2,8 @@
 
 A gate is what a branch requires of a candidate before the branch moves
 to it. Every branch has one, and it is the branch's policy's (27). The policy
-names the checks the gate requires, the executors it trusts and how a
+names the checks the gate requires, the signers it trusts and the
+claims each may make, the systems each check must pass on, and how a
 flaky key reads. It says whether every candidate or the deepest first
 is tested, bounds the window, and sets how long a candidate's checks
 may run. sluice gives no
@@ -25,37 +26,45 @@ branch lands whole bolts and demands more.
 
 ```toml
 [branches."bolt/*"]
+remote = "origin"
 required = ["#check-fast"]
+trust = ["sessions", "box", "forge"]   # no systems named: any one system
 
 [branches.main]
-required = ["#check-fast", "#check-tools", "#check-e2e"]
+remote = "origin"
+required = ["#check-fast", "#integration", "cli:build"]
+trust = ["box", "forge"]
+confined = true
+systems = ["linux-x64"]
 batch = true
-trust = ["confined"]
-systems = ["aarch64-darwin", "x86_64-linux"]
+
+[branches.main.systems_for]
+"cli:build" = ["linux-x64", "linux-arm64", "macos-arm64"]
 ```
 
 `required` names the checks. `batch` tests the deepest candidate first
-(14). `trust` names whose runs count (28). `systems` names where each
-required check must pass (86).
+(14). `trust` names the signers whose runs count (28), and `confined`
+admits only runs whose signer may claim confinement (29). `systems`
+names where each required check must pass, and `systems_for` names it
+for one check (86). The signers, the systems and the pools are tables of
+their own in the same file (C.7).
 
 ## Keys
 
 A key is the identity of one check over the inputs it reads. The same
 check over different inputs is a different key, and the same inputs
-anywhere give the same key. A check's result belongs to its key, not to
-a branch: a pass recorded under a key satisfies every branch whose gate
-trusts the executor that recorded it (69). A pass a session proved on
-its own branch serves the shared branch the moment the shared branch's
-candidate reads the same inputs, if the shared branch trusts that
-executor.
+anywhere give the same key. A check's result belongs to its key and
+its system, not to a branch: a pass recorded under a key on a system
+satisfies every branch whose gate trusts the signer that signed it and
+requires that system (69). A pass a session proved on its own branch
+serves the shared branch the moment the shared branch's candidate reads
+the same inputs, if the shared branch trusts that session's signer.
 
-The system a run executes on is part of its key, so one check on two
-systems is two keys (85). A gate names, for each check it requires, the
-systems a pass must come from, and a pass on one system never stands
-for another (86). The system dimension is proposed in
-`design/sluice/proposals/many-hosts-3.md` and awaits the operator's
-ruling; until then a gate names the system of the instance advancing
-the branch.
+A run record names the system its run executed on, so one check on two
+systems is two results (85). A gate names, for each check it requires,
+the systems a pass must come from, and a pass on one system never
+stands for another. A check for which the gate names no system takes a
+pass from any one system (86).
 
 ## Which checks a candidate runs
 
@@ -63,8 +72,9 @@ A candidate's verdict is the gate read over the checks the candidate
 affects (15). The check seam answers which checks a candidate can
 change the result of, given the branch's revision and the candidate
 (36), and only those run. A required check whose key already holds a
-pass from a trusted executor is read from that pass and not run again
-(15). When no verdict covers the branch's revision, the next candidate
+pass from a signer the gate trusts is read from that pass and not run
+again (15). A run on a pull request's head is such a pass when its
+signer is trusted (113). When no verdict covers the branch's revision, the next candidate
 affects every check the gate requires (70).
 
 A check's cost never changes how it gates: every check the gate
@@ -88,7 +98,7 @@ never differently for two candidates of one branch (19). A bolt's
 branch reads a flaky key as passed so that work keeps moving; the
 shared branch reads it as not passed until a confined run settles it.
 
-## Executors and trust
+## Signers and trust
 
 An executor is what ran a check, with its identity and its host. It is
 confined when two things hold. It ran in a place holding exactly the
@@ -96,16 +106,26 @@ candidate and what the repository declares, and nothing of any session
 could reach that place. And nothing but the executor could have
 written its records. It is open otherwise.
 
-A result from an executor the gate does not trust never satisfies that
-gate, whatever its outcome (28). No open run satisfies a gate that
-trusts only confined executors (29). A run is read as confined,
-or as held to a limit, only when its executor enforced it (84).
+A gate trusts signers, not executors. A run counts for a gate only when
+a signer the branch's policy names has signed its record, in a way
+every host verifies from the records alone (78), and a run no signer
+the gate trusts has signed never satisfies it, whatever its outcome
+(28). The executor's kind, whether its run was confined, and its system
+are claims in the signed record, and each counts only when the policy
+lets that signer make it (79). A gate that trusts only confined runs is
+satisfied by no run whose signer may not claim confinement (29). A run
+is read as confined, or as held to a limit, only when its executor
+enforced it (84) and its signer may claim it (79).
 
-A branch that names no `trust` accepts every run sluice starts, open,
-sandboxed or in a container, and no replay from a cache. A run sluice
-starts is in a place sluice made from the candidate, so its result is
-the candidate's. A cache's replay may hold whatever any shell ran, so
-it stays out until the author lists `cache`.
+On one host, whose records are its own files, there is nothing to sign:
+the runs that host's sluice starts count unsigned, as that host's (78).
+A branch with no `remote` trusts those runs and nothing else, and a
+branch with a `remote` and no `trust` trusts no signer, so its policy's
+author names them (C.7).
+
+A replay from the task runner's cache counts only when a signer the
+gate trusts has signed a pass for the same key on the same system. The
+cache supplies outputs and decides nothing (108).
 
 sluice never runs a check of its own and never changes what a gate
 requires (30). It reads the gate, runs what the gate names, records

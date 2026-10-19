@@ -21,8 +21,9 @@ the outcome was observed or replayed (37, 38). It executes a command
 within the limits a run is held to and reports what it enforced (83,
 84). The profiles are moon and a script (C.2). moon runs only the tasks a
 change affects and reads each task's hash as its key; a script is one
-command with an exit code, and never a replay. The executor profiles are open, sandbox
-and container.
+command with an exit code, and never a replay. The executor profiles
+are open, sandbox, container and launched, the last a job on a pool
+that signs its own run records.
 
 **The branch** (B.4) reads a branch's current revision, forms a
 candidate from a revision and a head or reports the conflict, commits a
@@ -40,7 +41,8 @@ and outcome (51).
 
 **The records** (B.7) read a branch's records with their version and
 write them conditionally on it (61 to 63). The profiles are local files,
-remote refs and a server (C.6).
+one host's, and remote refs, the peers' records on the shared remote
+(C.6).
 
 Policy is not a seam. It is a TOML file checked into the repository,
 one table per pattern of branch names, read from the branch's current
@@ -73,9 +75,10 @@ driver decides nothing about the queue (C.5).
 - **flywheel**: a session's approved done exit is the submission, and
   the entry's state is evidence on the item.
 - **remote submit**: a session on any host pushes its head to the
-  remote and writes the entry through the records, or sends both to
-  the server over SSH. A waiting submit reads its entry's state until
-  the outcome.
+  remote, writes the entry to the branch's records there and wakes a
+  peer or a pool. A waiting submit reads its entry's state until the
+  outcome and runs no rounds, since its host holds no credential for
+  the branch; its host stopping loses nothing (111).
 - **pull request**, proposed: a forge's request to merge a head is the
   submission, and closing it withdraws. Its checks panel shows the
   entry's state. The landing is sluice's push of the branch, after which
@@ -101,11 +104,13 @@ lets one round run at a time. A round is sluice's code whichever
 process runs it: the queue, the runs and the gate decide what it lands,
 never who called it.
 
-On a fleet, a `sluice run` the operator started runs every round, and
-a waiting submit only submits and waits. The repository's policy
-says a branch is on a fleet with `[submit] remote = true`, or one
-submission says so with `--remote`; the flag only turns remote on. A
-submit on a fleet never takes a branch: it cannot tell an empty fleet
-from a quiet one, and only the `sluice` user holds the branch's
-credential. A fleet with no `sluice run` accepts submissions, holds
-them, and lands nothing until one starts (59).
+On many hosts, sluice runs as peers (C.8). A branch whose policy names
+a `remote` lives on the shared remote, and when the policy names
+signers its records do too (C.6, C.7). A `sluice run` the operator
+starts on each standing executor's host runs rounds and takes runs, and
+a pool's job may run a round when woken. A waiting submit on a
+session's host only reads its entry's state: once written, a submission
+reaches its outcome with no host of its submitter running (111). Only an identity no session can use holds the branch's
+credential: the standing executors' `sluice` user and the pool's jobs.
+A deployment with no instance able to advance the branch accepts
+submissions, holds them, and lands nothing until one starts (59).

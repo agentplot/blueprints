@@ -48,16 +48,19 @@ Sluice-Result: passed (2 run, 31 replayed)
 
 ## The results log
 
-A check's result belongs to its key, not to a branch: a pass recorded
-under a key satisfies every branch whose gate trusts the executor that
-recorded it (69). So beside the per-branch records sits one log of check
-results per repository, with each result's key, outcome and executor.
-A bolt's branch and the shared branch read the same log and apply their
-own trust to it.
+A check's result belongs to its key and its system, not to a branch: a
+pass recorded under a key on a system satisfies every branch whose gate
+trusts the signer that signed it and requires that system (69). So the
+results sit beside the per-branch records, never inside one branch's.
+Under local files that is one log of check results per repository, with
+each result's key, system, outcome and executor. Under remote refs it is
+each signer's own ref of signed run records (109). A bolt's branch and
+the shared branch read the same results and apply their own trust to
+them.
 
 ## Profiles
 
-The records seam has three profiles (C.6). A deployment names one.
+The records seam has two profiles (C.6). A deployment names one.
 
 **Local files**, one host. The documents live under the repository's
 common git directory, one directory per branch and one results log per
@@ -77,24 +80,38 @@ a write takes the branch's lock and is refused when the version moved.
                        every check result of the repository, with its executor
 ```
 
-**Remote refs**, peers. A branch's records are one commit under
+**Remote refs**, peers, for a branch with a `remote` whose policy names
+signers. A branch's records are one root commit under
 `refs/sluice/state/<branch>` on the shared remote, its tree the branch's
-documents and its id the version. A write is a push with
-`--force-with-lease` from the commit read: the push succeeds only if the
-ref still holds that commit, which is the conditional write of (62) as
-git provides it. Beside it the remote holds `refs/sluice/heads/<oid>`
-for every submitted head, `refs/sluice/combinations/<branch>/<id>` for
-every candidate open to claims, `refs/sluice/logs/<branch>/<run>` for a
-run's output, and `refs/sluice/hosts/<host>`, rewritten by each host
-alone on a fixed cadence as its sign of life. The queue's history is
-`git log` of the state ref.
+documents and its id the version. Any instance that submits to or
+advances the branch writes it, by a push with `--force-with-lease` from
+the commit read: the push succeeds only if the ref still holds that
+commit, which is the conditional write of (62) as git provides it. The
+queue's history is `git log` of the state ref.
 
-**Server**, a central server. The records are the server's local files,
-and other hosts reach them only over SSH. After every write the server
-pushes the same tree to `refs/sluice/state/<branch>` on the remote as a
-projection, so a reader that cannot reach the server reads the state
-last written and says that it did (80). A server that is lost is
-rebuilt from the projection.
+Beside it the remote holds:
+
+```
+refs/sluice/state/<branch>              the branch's documents; any instance writes it
+refs/sluice/runs/<signer>               one signer's signed run records, added to only by it
+refs/sluice/heads/<oid>                 every submitted head
+refs/sluice/combinations/<branch>/<id>  every candidate open to claims
+refs/sluice/logs/<branch>/<run>         a run's output
+refs/sluice/hosts/<host>                each host's sign of life and free room
+```
+
+Each signer's run records are written only by that signer and only
+added to, so one signer's write never refuses another's and never waits
+on the branch's records (109). A run record there is an in-toto
+statement in a DSSE envelope, its subject the check's key and system,
+its predicate the outcome, the claims of (79), the candidate, the claim
+and the time. Each signer computes the keys it signs from the candidate
+itself. A forge's job signs keylessly with its workload identity; any
+other signer signs with an SSH key whose public half the policy lists.
+Each host rewrites its own `hosts` ref alone, on a fixed cadence, as its
+sign of life and its free room (77, 107). Since any instance may write
+the state ref, a landing reads its verdict again from the signed run
+records before it moves the branch (C.6).
 
 ## Telemetry
 

@@ -1,9 +1,9 @@
 # Glossary
 
 The words of the design, each defined once. The statement's vocabulary
-section is the binding copy. This page adds the words the many hosts
-design brings. Beside each is the word a user sees in `sluice`'s own
-output and pages, where the two differ.
+section is the binding copy. This page adds the words the chapters use
+beside it. Beside each is the word a user sees in `sluice`'s own output
+and pages, where the two differ.
 
 | design word | meaning | what a user sees |
 |---|---|---|
@@ -20,8 +20,8 @@ output and pages, where the two differ.
 | **deepest first** | testing only the longest candidate of a chain, and the shorter ones only when it fails | batch |
 | **conflict** | a candidate that cannot be formed because its entry and the candidate before it change the same content incompatibly | conflict |
 | **check** | a task run to judge a revision, ending in a pass or a fail | test, task |
-| **gate** | for a branch, the checks it requires, the executors it trusts, and how a flaky key reads | the branch's rules |
-| **key** | the identity of one check over the inputs it reads, the system it ran on among them | hash |
+| **gate** | for a branch, the checks it requires, the signers it trusts, the systems each check needs, and how a flaky key reads | the branch's rules |
+| **key** | the identity of one check over the inputs it reads; a result belongs to its key and its system | hash |
 | **system** | the processor architecture and operating system a run executes on, named as the toolchain names it | system |
 | **verdict** | a gate's reading of a candidate: for each required check exactly one of passed, failed, missing or flaky | result |
 | **culprit** | the one entry a failed candidate is attributed to | the blamed submission |
@@ -32,7 +32,11 @@ output and pages, where the two differ.
 | **instance** | one running sluice on one host | sluice |
 | **lead** | the instance advancing a branch | the host running the queue |
 | **lease** | how long an instance keeps a branch without writing its records | lease |
-| **claim** | an instance's recorded hold on a candidate's checks, from taking them to reporting them | a test run taken by a host |
+| **claim** | an instance's recorded hold on a run, from taking it to reporting it | a test run taken by a host |
+| **signer** | an identity a branch's policy names, which signs run records, with the claims it may make: the executor's kind, whether the run was confined, and the systems it runs on | signer |
+| **standing executor** | an executor on one of the operator's own hosts, running `sluice run` and taking runs by its own claims | host |
+| **pool** | a job service that starts a machine for each run it is given, a forge's runners or a self-hosted job runner | pool |
+| **launched executor** | a job on a pool, started by the instance that opened the run; its start is its claim and its end its report | job |
 | **records** | everything sluice holds about a branch: its entries, its log of runs and verdicts, and a version | state |
 | **round** | one pass of sluice's work on a branch: read the records, start runs with room, read finished runs, blame, land, write | round |
 | **driver** | what submits work to sluice and carries the outcome back: worktrunk, crew, flywheel, a remote submit, a pull request | `wt submit` |

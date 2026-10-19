@@ -44,10 +44,10 @@ moves only in order, only to what passed, and only from the revision
 the candidate was formed on (22, 24). Every entry of a branch is in its one chain, tested with the
 entries ahead of it and landed in chain order (8).
 
-Trust is the branch's. A bolt's branch may take a session's own open run
-at its word, and the shared branch may require a confined one. The
-policy says which, and sluice gives no gate a meaning of its own (27,
-28, 29).
+Trust is the branch's. A bolt's branch may count a session's own open
+run, and the shared branch may require a confined one. On many hosts
+the policy names the signers whose runs count and the claims each may
+make, and sluice gives no gate a meaning of its own (27, 28, 29, 78).
 
 ## Why it is open source
 

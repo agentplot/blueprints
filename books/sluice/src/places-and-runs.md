@@ -73,11 +73,13 @@ The policy names one executor profile (C.2):
 | **open** | a process group on the instance's host; the cores given, by the runner's own threads; nothing else; never confined |
 | **sandbox** | the host's kernel sandbox: Seatbelt on macOS, bubblewrap and Landlock on Linux. Writes only to the place and its scratch. The network as the policy says. Processors and memory on Linux, by a cgroup. Confined when no session on the host can write the place |
 | **container** | a container engine on the executing host; the place mounted into a new container from the repository's image; cores, memory, paths and network; confined as the deployment says |
+| **launched** | a job on a pool, one per run, on a machine of the run's system (87); it fetches the candidate, runs the checks, signs its run records and adds them to its signer's ref (109); it enforces what the pool's machines enforce, and is confined when the pool gives each job a fresh machine and the policy lets its signer claim it (79) |
 
 A run is confined only when its executor established that nothing of
 any session could reach the place and nothing but the executor could
 have written its records. Confinement is never inferred from the
-executor's kind.
+executor's kind. On many hosts it is a claim in the run's signed
+record, and counts only when the policy lets that signer claim it (79).
 
 ## How many runs at once
 

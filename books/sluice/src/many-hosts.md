@@ -1,13 +1,16 @@
 # Many hosts
 
-The design below is under review in `design/sluice/proposals/
-many-hosts-3.md` as proposed 72 to 88 and 107 to 113, and is not yet built.
+sluice on many hosts is in the statement, as 72 to 82, 85 to 88, 107
+to 113 and Part C, and is not yet built in sluice.
 
-A deployment is one machine or a fleet, with no hybrid. On one machine
-a waiting submit runs the rounds itself. On a fleet every round is run
-by a `sluice run` and a waiting submit only waits. What follows says
-which instance advances a branch, which runs a candidate's checks, and
-how a result proves who made it.
+A deployment is one machine or many peers, with no central server
+(C.8). On one machine the records are the host's own files, a waiting
+submit runs the rounds itself, and the runs that host's sluice starts
+count unsigned, as that host's (78). On many hosts every host runs the
+same sluice: the records live on the shared remote, and any instance
+with room advances a branch or takes a run. What follows says which
+instance advances a branch, which executor runs a candidate's checks,
+and how a result proves who made it.
 
 ## What every deployment shares
 
@@ -43,13 +46,13 @@ its run alone (74).
 
 ## Claims
 
-A candidate's checks are taken only by a claim written to the branch's
-records, by any instance with room under its own bound (71). The lead
-opens candidates within the window and assigns them to no one (75). An
-instance claims the earliest open run first. It never claims a later
-open candidate of a chain while an earlier open candidate of that chain
-is unclaimed (76), since the front of the chain is what blocks landing
-(22).
+A run is taken only by a claim written to the branch's records, by an
+instance with room under its own bound (71), or by a pool's job whose
+start is its claim (75). The lead opens candidates within the window
+and assigns them to no one. An instance claims the earliest open run
+first. It never claims a later open candidate of a chain while an
+earlier open candidate of that chain is unclaimed (76), since the front
+of the chain is what blocks landing (22).
 
 A claim lapses when its holder has shown no sign of life for the
 deployment's bound. A lapsed claim's run has no outcome, and a report
@@ -60,137 +63,205 @@ longer holds (81). A place on a host that never returns is the
 operator's to remove, and no verdict is ever read from it.
 
 From the moment an entry is written until it leaves sluice, its head is
-fetchable by every host that may run its checks or advance its branch
-(82). A candidate is open to claims only while its revision is fetchable
-by every host that may claim it. When more than one host submits
-to a branch, every state an entry has been in is readable from each of
-those hosts while the host that last wrote the records is unreachable
+fetchable by every host that may run its checks or advance its branch.
+A candidate is open to claims only while its revision is fetchable by
+every host that may claim it (82). When more than one host submits to a
+branch, every state an entry has been in and every verdict read for it
+is readable from each of those hosts while any other is unreachable
 (80).
 
-## Vouching
+## Standing executors first, then a pool
+
+An executor is standing or launched (88). A standing executor is one of
+the operator's own warm hosts running `sluice run`, taking runs by its
+own claims. A launched executor is a job on a pool, a forge's runners
+or a self-hosted job runner, started by the instance that opened the
+run. The job's start is its claim and its end its report, and a job the
+pool loses is a lapsed claim. Which machine a launched run goes to is
+the pool's.
+
+Standing executors go first. The lead starts a run on a pool only when
+no live instance able to take it has room by its last sign of life
+(107). An instance is able to take a run when it is the run's system
+and a signer the gate trusts signs its runs. A free
+warm host takes the run, and a pool is started only for what the hosts
+cannot take, a system they lack or a burst beyond their room. Among
+pools, the policy's order decides. Each host rewrites its sign of life
+and its free room on its own ref, which is what the lead reads to make
+that choice (C.6).
+
+## Signers
 
 When every host can write the records, a record's executor field proves
-nothing. A run counts as an executor's only when an identity the
-branch's policy names vouches for it, in a way every host verifies from
-the records alone (78). A run vouched for by nobody the policy names is
-from an executor the gate does not trust (28). A policy that counts runs
-nobody vouches for says so for that branch, by name. Confinement is
-never inferred: a run is read as confined only when the identity
-vouching for it is one the policy names as confined (79). That the
-identity is reachable by no session is the policy author's to assert. The shared branch's default names only executors on hosts that
-run no sessions; a bolt's branch by default counts runs nobody vouches
-for (C.7).
+nothing. A run counts for a gate only when a signer the branch's policy
+names has signed its record, in a way every host verifies from the
+records alone (78). A run no signer the gate trusts has signed never
+satisfies it, whatever its outcome (28). On a branch whose records are
+one host's own files there is one writer and nothing to sign, so the
+runs that host's sluice starts count unsigned (78).
 
-Under the remote refs profile, each host's `sluice` user holds an SSH
-signing key, a run's report is signed with it, and the policy names the
-key beside the executor it trusts.
+What a record says about its executor is a claim the signer makes: the
+executor's kind, whether the run was confined, and its system (79). A
+claim counts only when the policy allows that signer to make it. A run
+is read as confined only when its record claims it and its signer may.
+No run whose signer may not claim confinement satisfies a gate that
+trusts only confined runs (29). Confinement is never inferred:
+that a signer's runs are reachable by no session is the policy author's
+to assert.
+
+A run record is an in-toto statement in a DSSE envelope. Its subject is
+the check's key and system, and its predicate the outcome, the claims,
+the candidate, the claim and the time. A job on a forge signs keylessly
+with the job's workload identity; any other signer signs with an SSH
+key whose public half the policy lists (C.6). Each signer computes the
+keys it signs from the candidate itself, so a signature never covers a
+key another host computed (C.6).
+
+Say a host writes a record claiming a confined executor, signed by a
+key the shared branch does not name. The shared branch reads the key as
+missing until a run its signers signed settles it. A bolt's branch that
+trusts the sessions' signer reads the same run as it says, unconfined
+(S18). By default a branch with no `remote` trusts its own host's
+unsigned runs and nothing else, and a branch with a `remote` and no
+`trust` trusts no signer, so its policy's author names them (C.7).
+
+## Replays
+
+A result the task runner answered from its cache counts for a gate only
+when a signer the gate trusts has signed a pass for the same key on the
+same system (108). The cache supplies outputs and makes runs cheaper; it
+decides nothing (C.8). A replay with no such signed pass counts for
+nothing, and the check runs (S42).
 
 ## The system a run needs
 
-A check's key names the system its run executes on, so one check on two
-systems is two keys (85). A branch's gate names, for each check it
-requires, the systems a pass must come from (86). A candidate's verdict
-is read over every required check on every system named, and a pass on
-one system never stands for another. A gate that names no system names
-the system of the instance advancing the branch. A run is taken only by
-an executor that is the system the run requires (87). A run whose system
-no live executor is stays open until the candidate's time limit reads
-the candidate as not passed (66).
+A run record names the system its run executed on, so one check on two
+systems is two results (85). A branch's gate names, for each check it
+requires, the systems a pass must come from. A candidate's verdict is
+read over every required check on every system named, and a pass on one
+system never stands for another. A check for which the gate names no
+system takes a pass from any one system (86). A run is taken only by an
+executor that is the system the run requires. A run whose system no
+live executor or pool is stays open until the candidate's time limit
+reads the candidate as not passed (87, 66).
 
 The lead expands the gate into runs, one per required check per
 required system per candidate. That expansion is the matrix, and it is
-sluice's under every deployment. An executor is standing, taking runs
-by its own claims, or launched by the instance that opened the run (88).
-A launched executor's start is its claim and its end its report, and an
-executor its pool loses is a lapsed claim. Which machine in a pool takes a
-launched run is the pool's.
+sluice's on one host and on many.
 
 ```
-policy (in the repository)      lead (one per branch)
-  main requires                   forms candidate 7, then opens
-    #check-fast on                its runs:
-      aarch64-darwin                7 · fast · aarch64-darwin
-      x86_64-linux                  7 · fast · x86_64-linux
-      aarch64-linux                 7 · fast · aarch64-linux
-    #check-e2e on                   7 · e2e  · aarch64-darwin
-      aarch64-darwin              and waits for every one
+policy (in the repository)          lead (one per branch)
+  main requires                       forms candidate 7, then opens
+    #check-fast   on linux-x64        its runs:
+    #integration  on linux-x64          7 · check-fast  · linux-x64
+    cli:build     on linux-x64,         7 · integration · linux-x64
+                     linux-arm64,       7 · cli:build   · linux-x64
+                     macos-arm64        7 · cli:build   · linux-arm64
+                                        7 · cli:build   · macos-arm64
+                                      and waits for every one
 
-STANDING: runs are pulled                 LAUNCHED: runs are pushed
+STANDING FIRST: runs are pulled       THEN A POOL: runs are pushed
 
- lead writes "7·fast·x86_64-linux          lead starts one job per run
- is open" to the records                   on a pool, with the system
-          │                                as the job's label
-          ▼                                        │
- ┌───────────────┐ ┌───────────────┐       ┌───────┴───────────────┐
- │ host mac-1    │ │ host build-7  │       │ pool                  │
- │ aarch64-darwin│ │ x86_64-linux  │       │ job: 7·fast·x86_64…   │
- │ sluice run    │ │ sluice run    │       │ job: 7·fast·aarch64…  │
- │ claims only   │ │ claims only   │       │ job: 7·e2e·aarch64-d… │
- │ darwin runs   │ │ linux runs    │       │ each: checkout, run,  │
- └───────┬───────┘ └───────┬───────┘       │ write result, exit    │
-         │                 │               └───────────┬───────────┘
-         └── result written to the records ◄───────────┘
-                              │
-            candidate 7 has every run's outcome → verdict → land
+ lead writes "7 · check-fast ·        for each run no standing
+ linux-x64 is open" to the records    executor of its system has
+          │                           room for, the lead starts
+          ▼                           one job (107)
+ ┌──────────────────────┐                      │
+ │ host box             │           ┌──────────┴───────────┐
+ │ linux-x64            │           │ pool: forge          │
+ │ sluice run           │           │ job: 7·cli:build·arm │
+ │ claims the open      │           │ job: 7·cli:build·mac │
+ │ linux-x64 runs it    │           │ each: fetch, run,    │
+ │ has room for         │           │ sign, add records,   │
+ │ signs as "box"       │           │ exit                 │
+ └──────────┬───────────┘           └──────────┬───────────┘
+            ▼                                  ▼
+  refs/sluice/runs/box              refs/sluice/runs/forge
+            └────────────────┬─────────────────┘
+                             ▼
+       the lead reads the runs signed by a signer main trusts
+                             │
+         candidate 7 has every run's outcome → verdict → land
 ```
 
 A waiting submit returns when its candidate has a verdict, which needs
-every run on every system. Standing costs idle hosts; launched costs a
-job's start and a pool to drive. A fleet may mix them, with the Darwin
-runs claimed by a standing Mac and the Linux runs launched on a pool.
-Containers do not change the CPU: a Linux container on a Mac is
-`aarch64-linux`.
+every run on every system named. A standing executor costs an idle
+host; a pool costs a job's start. Containers do not change the CPU: a
+Linux container on a Mac is `linux-arm64`.
 
-## The deployments
+## Runs on a pull request's head
 
-Each deployment is a choice of profiles and no change to Parts A and B
-(C.8).
+A run on a pull request's head, by an executor the branch's gate
+trusts, is recorded under its keys and systems as any run is. A
+candidate whose key it shares reads it without running it again (113).
+A request whose head passed `cli:build` on three systems before it was
+ready, submitted behind one entry that changes no input of `cli:build`,
+reads those three passes and runs only the checks the entry ahead
+changes (S40).
 
-| | peers | a server with executor hosts | a central server | a forge as the pool |
-|---|---|---|---|---|
-| who advances a branch | whichever instance holds it (72); another takes it after a lease (73) | the server, always | the server, always | a launched stepper, one round per job, one at a time |
-| where candidates run | any instance with room, by a claim (75, 76) | the server and the executor hosts, by a claim through the projection | the server's executors | the forge's runners, one job per run, labelled by system (87, 88) |
-| a host stops | its lead and claims pass to others (72, 77) | an executor host: its claims pass; the server: every branch stalls and loses nothing (59) | a session's host: nothing changes; the server: every branch stalls and loses nothing (59) | a lost job is a lapsed claim (77) |
-| confinement | by vouching (78, 79) | by vouching; the executor hosts run no sessions | by construction: one writer, no sessions | a fresh machine per job, vouched for by the forge's record of it |
-| who holds the branch's credential | every host's `sluice` user | the server | the server | an app installed on the repository, holding no state |
-| what is new to run | `sluice run` on each host | `sluice run` on the server and each executor host | `sluice run` on the server; nothing elsewhere | nothing: two workflows the repository carries |
+## Closing the laptop
 
-**Peers.** The records are refs on the shared remote, and every host
-runs `sluice run` as a `sluice` user holding a deploy key that bypasses
-branch protection and a signing key that vouches for its runs. A submit
-from any host pushes the head and adds the entry to the state ref with a
-conditional push, retrying from the new state when refused. On a hosted
-forge a branch sustains about 45 submissions an hour before retries
-hurt, and several hundred on a local git server. The remote unreachable
-stalls everything, submission included.
+A session does its work on its own host. Once its submission is written
+to the branch's records, it reaches its outcome with no host of its
+submitter running (111). That holds whenever the deployment has an
+instance able to advance the branch and an executor or pool for every
+run its gate requires. An instance that writes work no live instance will
+take wakes a pool or a peer; a wake that is lost delays the work and
+loses nothing.
 
-**The central server.** One host runs `sluice run` and leads every
-branch. A session's host runs nothing of sluice but `wt submit
---remote`. It pushes the head to the server's repository over SSH, runs
-the submission there over SSH, and reads the entry's state the same way
-until the outcome. The records are the server's files, projected to
-the remote after every write, so state stays readable with the server
-down and a lost server is rebuilt from the remote. Executor hosts that
-run no sessions stand behind the server and claim through the
-projection; the server's own runs need no signature, since it is the
-only writer.
+Where a submission's checks run is the gate's, never the submission's
+(112). A submission chooses no executor. A session's own runs count
+only on a branch whose gate trusts the signer of the session's host, so
+a bolt's branch may land on them while the shared branch, trusting only
+confined signers, needs a standing executor or a pool. Say a session
+submits to the shared branch and its host then stops. A standing
+executor's instance takes the branch, and the pool runs the check on
+the one system no standing executor is. The submission lands, and the
+session learns the outcome when its host returns (S19).
 
-**A forge as the pool.** The launched shape, with a forge's job service
-as the pool. The stepper is a launched job too: one `sluice step` per
-job, started by a submit, by a check's completion and by a schedule,
-under a concurrency group so one round runs at a time. The pull request
-is the driver. An app installed on the repository holds the bypass and
-posts the status on each head. The queue's whole state lives under
-`refs/sluice/` in the repository, with nothing behind a vendor's server.
-A round costs a job's start, so the queue moves in half-minute steps.
-That suits a shared branch on a large project and not a bolt's branch,
-which stays on the agents' machines.
+## The records on the remote
 
-## The order of building
+A branch with a `remote` whose policy names signers keeps its records
+as refs on the shared remote (C.6). Its decisions are one ref,
+`refs/sluice/state/<branch>`, which any instance that submits to or
+advances the branch writes conditionally on the commit it read (62).
+Each signer's run records are their own ref, `refs/sluice/runs/<signer>`,
+written only by that signer and only added to. One signer's write never
+refuses another's and never waits on the branch's records (109), so many
+executors never contend on one ref. Since any instance may write the
+state ref, a landing reads its verdict again from the signed run
+records before it moves the branch (C.6). The layout is in
+[the records](records.md).
 
-The server comes first, in the peers' form: its records projected in the
-peers' layout, so a lost server is rebuilt from the remote and the
-server is already a peer. Executor hosts come next, claiming through
-the projection behind the lead. A lead anywhere, which is peers in full,
-comes only if a stalled server hurts more than the second credential on
-every host costs.
+## The deployment
+
+sluice runs on many hosts only as peers, a choice of profiles and no
+change to Parts A and B (C.8).
+
+| | peers |
+|---|---|
+| profiles | container places on any host; pushed refs; remote submit; remote refs records; launched executors on any pool the policy lists |
+| who advances a branch | whichever instance holds it (72); another takes it after a lease (73); a pool's job may run a round, started by a wake, a finished run or a schedule, one per branch at a time |
+| where runs go | a standing executor with room, by a claim (75, 76); a pool only for the runs no standing executor can take (107) |
+| a host stops | its lead and claims pass to others (72, 77); a lost job is a lapsed claim |
+| confinement | by signers (78, 79): one the policy lets claim it, on hosts that run no sessions or a pool's fresh machines |
+| who holds the branch's credential | an identity no session can use: an app installed on the repository, held by the standing executors' `sluice` user and by the pool's jobs |
+| what is new to run | `sluice run` on each standing executor's host; for a forge, one workflow the repository carries, written by `sluice init` |
+
+A submit from any host pushes the head to `refs/sluice/heads/<oid>`.
+It adds the entry to the state ref with a conditional push, retrying
+from the new state when refused, and wakes a peer or a pool (C.5). On a
+hosted forge a branch sustains about 45 submissions an hour before
+retries hurt, and several hundred on a local git server. The remote
+unreachable stalls everything, submission included.
+
+**A forge as the pool.** A forge's job service, GitHub Actions for one,
+is a pool like any other. It runs the runs no standing executor can
+take, one job per run on a machine of the run's system, and its jobs
+sign as the signer the pool names (C.7). A job may also run a round,
+started by a wake, a finished run or a schedule, one per branch at a
+time (C.8). The app installed on the repository holds the branch's
+bypass, and the queue's whole state lives under `refs/sluice/` in the
+repository. A round on a pool costs a job's start, so a branch led by
+the pool alone moves in half-minute steps. A standing executor that is
+up moves the queue at the speed of its own rounds.

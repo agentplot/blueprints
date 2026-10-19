@@ -4,7 +4,7 @@ Drafted rows and scenarios for a branch whose shared copy lives on a
 forge and whose work arrives as pull requests, on any deployment and
 with any executor. The checks run where sluice runs them: on one
 machine, that machine. A forge's job service as the executor and the
-stepper is a pool in `many-hosts-3.md` (88, C.8), which
+stepper is a pool in `../requirements.md` (88, C.8), which
 uses these rows and adds nothing to them. Nothing here edits
 `../requirements.md`; the operator rules on it.
 

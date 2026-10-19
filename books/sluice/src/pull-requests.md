@@ -164,10 +164,14 @@ no `remote` stays a local branch, as a bolt's branch does.
 
 ## Beside a forge's job service
 
-A forge's job service, GitHub Actions for one, can also be the place
-sluice's checks and rounds run: the forge as the pool ([Many
-hosts](many-hosts.md)). That deployment uses the driver and the branch
-above as they stand and changes only where the work happens.
+A forge's job service, GitHub Actions for one, can also run sluice's
+checks and rounds: the forge as a pool ([Many hosts](many-hosts.md)).
+It takes the runs no standing executor can, and a job may run a round
+when woken (107, C.8). A run on a request's head by an executor the
+gate trusts counts toward the candidate that holds it, so a request
+that sat ready while the branch did not move lands on its own head's
+runs (113). That deployment uses the driver and the branch above as
+they stand and changes only where the work happens.
 
 ```mermaid
 flowchart TB
@@ -180,7 +184,7 @@ flowchart TB
     subgraph pool ["the forge as the pool"]
         direction LR
         p1["the forge holds main, the requests,<br/>and the records under refs/sluice/"]
-        p2["the forge's jobs run<br/>each round and each check"]
+        p2["standing executors run what they have room for;<br/>the forge's jobs run the rest"]
         p1 <--> p2
     end
     general -.-|same driver, same branch rows| pool

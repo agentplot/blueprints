@@ -7,8 +7,9 @@ sluice, the records live on the shared remote, and any instance with
 room advances a branch or takes a run. A forge's runners are one
 executor among others. Parts A and B gain 72 to 82, 85 to 88 and 107 to
 113. The proposal amends 27, 28, 29 and 69, adds six glossary entries
-and rewrites Part C for peers alone. Nothing here edits
-`../requirements.md`; the operator rules on it.
+and rewrites Part C for peers alone. The operator ratified it on
+2026-10-19: its clauses, rows and scenarios are in `../requirements.md`,
+which wins where they differ.
 
 ## The operator's rulings
 
