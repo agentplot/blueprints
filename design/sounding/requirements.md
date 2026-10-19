@@ -58,7 +58,7 @@ repository's own gate.
 | **the operator** | every decision on a conclusion: accept, go on or drop; every reply to an ask; when a standing round finishes; when a parked sounding resumes; the ending of every round after the first; what they tell a round's session; which profile binds each seam; when a sounding's branch and held state are removed | they never have a sounding land more than its kind names |
 | **an opener** (a person in a session, an inbox, a planner, another tool's surface) | which brief to open, in which repository and on which base, with which inputs and which earlier soundings, under which name, for which items, of which kind, and the first round's ending | it never decides a conclusion, and never changes a brief or its inputs once the sounding is open |
 | **the repository's authors** | the kinds the repository declares, and what each lands; the profiles its soundings bind in place of the operator's | they never make a sounding land what its operator did not accept |
-| **a round's session** (an agent working one round) | everything inside its place: what to read, try, build and run; what to read beyond its place; when to conclude; what to offer; what to ask | it never moves sounding's state but through its exits and its note, never acts on another sounding or changes one it is based on, never decides a conclusion, and never submits, merges or lands its place's work |
+| **a round's session** (an agent working one round) | everything inside its place: what to read, try, build and run; what to read beyond its place; when to conclude; what to offer; what to ask | it never moves sounding's state but through its exits and its note, never acts on another sounding or changes one it is based on, never decides a conclusion or finishes a round, and never submits, merges or lands its place's work |
 | **the launcher** (a separate tool that makes places and runs agents in them) | how a place is made and removed, and how a session is started, followed and ended, as Part B fixes them. It runs a session where sounding's setting names, and reports when one has stopped or is gone | it never starts a round sounding did not ask for, and never submits what sounding did not ask it to |
 | **sounding** | when to ask the launcher for a round, as this statement fixes it; when to ask the launcher to submit what an accepted conclusion lands; and what it keeps | it never judges a brief, an input, a finding or a conclusion, never writes a conclusion or a note of its own, never decides a conclusion, never submits, merges or lands a branch itself, never makes work from a conclusion, and keeps no clock and drives no terminal or agent |
 | **a surface** (where the operator reads a sounding and responds to it) | how a sounding is shown | it never gives a response of its own, carrying only the operator's, and never drives a terminal or an agent |
@@ -317,9 +317,9 @@ redefine these.
     through its three exits and its note, each given by an act of its
     own. Nothing it writes by other means, in its place or anywhere else,
     is a conclusion, an offer, an ask or a note.
-34. A session never decides a conclusion, its own or another's. sounding
-    refuses accept, go on and drop given from within a round's session,
-    on every sounding.
+34. A session never decides a conclusion, its own or another's, and
+    never finishes a round. sounding refuses accept, go on, drop and
+    finish given from within a round's session, on every sounding.
 35. An exit acts only on the round it serves. An exit naming another
     sounding, an ended sounding, or a round that has ended is refused.
 36. Every exit and every decision is safe to repeat: a repeat of one
@@ -634,8 +634,8 @@ A start hook in sounding's Claude Code plugin hands the session the
 rest of its round's hand-off: the brief, the inputs, the records of
 earlier soundings, and the earlier rounds. The launch's agent settings
 put `SOUNDING_ROUND` in the session's environment, and sounding's
-command line and MCP tools refuse `accept`, `go-on` and `drop` wherever
-it is set, on every sounding (34).
+command line and MCP tools refuse `accept`, `go-on`, `drop` and
+`finish` wherever it is set, on every sounding (34).
 
 ### C.3 Kinds
 
