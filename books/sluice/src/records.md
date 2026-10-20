@@ -58,6 +58,11 @@ each signer's own ref of signed run records (109). A bolt's branch and
 the shared branch read the same results and apply their own trust to
 them.
 
+An operator's set-aside (116) goes in a log of its own beside the
+results, naming the run it sets aside and why. The run's line stays in
+the results log, so a reader of that log alone reads what it always
+did.
+
 ## Profiles
 
 The records seam has two profiles (C.6). A deployment names one.

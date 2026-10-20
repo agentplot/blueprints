@@ -90,6 +90,16 @@ from an earlier run is a replay, not a run, and is never recorded as one
 (16); a replay says it is a replay (38). An outcome is what the executor
 observed, never inferred (38).
 
+A run that did not judge its check has no outcome (114). Its program
+could not be started, or it exited with a code the policy's `not_run`
+names, or the host failed the readiness the repository declares after
+the run, for a check that did not pass. sluice names neither what a
+repository's checks need nor what their exits mean; the policy's author
+does. Such a run is recorded with why but never under its key, blames
+no entry, and runs again. A candidate whose checks could not run in as
+many runs in a row as the deployment states reads not passed, as a run
+its time limit ended does (115).
+
 ## Flaky keys
 
 A key holding both a pass and a fail from executors the gate trusts is
@@ -97,6 +107,12 @@ flaky. It reads as the branch's policy says, passed or not passed, and
 never differently for two candidates of one branch (19). A bolt's
 branch reads a flaky key as passed so that work keeps moving; the
 shared branch reads it as not passed until a confined run settles it.
+
+A fault nobody declared, such as a launch that stalled on the host,
+still records a fail. The operator who finds the cause sets that run
+aside, with the reason (116). Its record stays, and from then on no gate
+reads it, so the key reads from its other runs. No session sets aside a
+run: one that could set aside its own fails could land past any check.
 
 ## Signers and trust
 

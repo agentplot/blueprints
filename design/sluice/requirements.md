@@ -68,14 +68,16 @@ redefine these.
   at once.
 - **conflict**: a candidate that cannot be formed because its entry and
   the candidate before it change the same content incompatibly.
-- **check**: a task run to judge a revision, ending in a pass or a
-  fail.
+- **check**: a task run to judge a revision, ending in a pass, a
+  fail, or no outcome when the run did not judge it (60, 114).
 - **gate**: for a branch, the checks it requires, the signers it
   trusts, the systems each check needs, and how a flaky key reads.
 - **key**: the identity of one check over the inputs it reads.
 - **verdict**: a gate's reading of a candidate: for each required check
   exactly one of passed, failed, missing or flaky.
 - **culprit**: the one entry a failed candidate is attributed to.
+- **set aside**: an operator's record that a recorded run did not judge
+  its check, with the reason (116).
 - **landing**: the branch moving to a candidate that passed.
 - **executor**: what ran a check, with its identity and its host;
   **confined** when it ran in a place holding exactly the candidate and
@@ -180,6 +182,16 @@ redefine these.
      when a signer the gate trusts has signed a pass for the same key on
      the same system (15, 16). What the tool's cache holds supplies
      outputs and decides nothing.
+114. A run of a check has no outcome (60) when the check could not be
+     started; when it ended with an exit its branch's policy names as not
+     run; or, for a check that did not pass, when the host failed after
+     the run the readiness the repository declares. Its record says why
+     (16). It is never recorded or read under its key, no entry is
+     attributed for it (18), and the check is run again.
+115. A candidate whose checks could not run (114) in as many of its runs
+     in a row as the deployment states is read as not passed, as one
+     whose run its time limit ended is (66), and the culprit's session is
+     told each check that could not run, and why (20).
 17. A failed candidate is attributed to exactly one entry: the newest
     entry of the first failed candidate in its chain.
 18. No entry is attributed or landed before every candidate ahead of it
@@ -197,6 +209,11 @@ redefine these.
     passed or not passed. It never reads differently for two candidates
     of one branch. A result under other limits says nothing of a run under
     these (83).
+116. An operator may set aside a recorded run, naming it and the
+     reason, by a record of its own. The run's record is kept. A run set
+     aside has no outcome (60) and is read under no key, from the
+     set-aside on. No session sets aside a run, and a set-aside counts
+     for a gate only when the gate trusts its signer (28).
 20. The culprit's session is told the failing checks and the candidate
     they failed on. No other session is told of that failure.
 21. An entry removed as culprit or as conflict leaves the chain, and
@@ -414,10 +431,11 @@ redefine these.
     states), the command run within them, and what the executor
     enforced: whether the run was confined, and each limit it held.
 84. The guarantee: an executor that cannot enforce a limit the branch's
-    policy states refuses the run rather than run it without the limit,
-    and every run is recorded with what its executor enforced (16), so
-    a run is never read as confined, or as held to a limit, unless its
-    executor enforced it (28, 29).
+    policy states, or whose host fails the readiness the repository
+    declares, refuses the run rather than run it without them, and every
+    run is recorded with what its executor enforced (16), so a run is
+    never read as confined, or as held to a limit, unless its executor
+    enforced it (28, 29).
 
 ### B.4 The branch
 
@@ -487,8 +505,8 @@ Parts A and B do not change to admit a profile.
 
 | profile | affected | run |
 |---|---|---|
-| **moon**: the repository's task runner with declared inputs and a content-keyed cache | moon's affected projects between the branch's revision and the candidate, downstream dependents included | moon's run of the affected check tasks in the place; the run report gives each task's outcome and whether it was replayed, the run record gives its hash as the key and its exit code |
-| **script**: one command with an exit code | every check, always | the command's exit code, never a replay |
+| **moon**: the repository's task runner with declared inputs and a content-keyed cache | moon's affected projects between the branch's revision and the candidate, downstream dependents included | moon's run of the affected check tasks in the place; the run report gives each task's outcome and whether it was replayed, the run record gives its hash as the key and its exit code; a task whose exit the policy's `not_run` names has no outcome (114) |
+| **script**: one command with an exit code | every check, always | the command's exit code, never a replay; an exit `not_run` names has no outcome (114) |
 
 | executor profile | execute | enforces |
 |---|---|---|
@@ -534,6 +552,12 @@ signer signs it with an SSH key whose public half the policy lists.
 Since any instance may write the branch's state, a landing reads its
 verdict again from the signed run records before it moves the branch.
 
+A set-aside (116) is one JSON document per line in a log of its own
+beside the results log. It names the run by its key, its system and the
+time it was recorded, and gives the reason, who set it aside, and when.
+A reader of the results log alone is unchanged. On a signer's ref, a
+set-aside is a statement signed as a run record is.
+
 ### C.7 Policy
 
 A branch's policy is a TOML file checked into the repository, one table
@@ -544,6 +568,11 @@ repository's policy:
 ```toml
 [tests]
 runner = "moon"
+# The host can run these checks: run before and after each run of them,
+# under the run's executor (84, 114).
+ready = ["docker", "info"]
+# Exits by which a check says it could not run here (114).
+not_run = [77]
 
 [checkout]
 ports = ["api", "web"]
@@ -770,6 +799,14 @@ section asked is answered by a clause.
 - **S42.** The task runner replays a check from its cache, and no signer
   the gate trusts has signed a pass for that key on that system. The
   replay counts for nothing and the check runs (108).
+- **S43.** The repository's readiness command fails partway through a
+  session's run of its checks. The run's fails are not recorded and its
+  passes are. A later run of the same head passes, and its keys read
+  passed (114).
+- **S44.** A shared branch's key holds a fail a stalled host produced
+  and a later pass. The operator sets the fail aside, with the reason.
+  The key reads passed from its passes, and the fail's record is still
+  there to read (116).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

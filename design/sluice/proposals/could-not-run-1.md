@@ -7,8 +7,9 @@ repository declares its checks need. Such a run has no outcome (60). It
 is recorded with its reason and never under its key, and the check runs
 again. Part A gains three clauses, 114 to 116, and the glossary's
 *check* and clause 84 are amended. Part C gains two policy settings and
-a set-aside record. Nothing here edits `../requirements.md`; the
-operator rules on it.
+a set-aside record. The operator ratified it on 2026-10-20: its
+clauses, rows and scenarios are in `../requirements.md`, which wins
+where they differ.
 
 ## What it answers
 

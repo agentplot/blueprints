@@ -62,7 +62,10 @@ branch's policy states. It reports what it enforced: whether the run was confine
 each limit it held.
 
 An executor that cannot enforce a limit the policy states refuses the
-run rather than run it without the limit (84). Every run is recorded
+run rather than run it without the limit (84). So does one whose host
+fails the readiness the repository declares, a command the policy names
+and the executor runs before each run of checks, as the checks will see
+the host (84, 114). Every run is recorded
 with what its executor enforced, so a run is never read as confined, or
 as held to a limit, unless its executor enforced it (84, 16).
 

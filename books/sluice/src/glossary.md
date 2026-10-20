@@ -19,12 +19,13 @@ and pages, where the two differ.
 | **window** | how many candidates of a branch's chain are under test at once | parallel |
 | **deepest first** | testing only the longest candidate of a chain, and the shorter ones only when it fails | batch |
 | **conflict** | a candidate that cannot be formed because its entry and the candidate before it change the same content incompatibly | conflict |
-| **check** | a task run to judge a revision, ending in a pass or a fail | test, task |
+| **check** | a task run to judge a revision, ending in a pass, a fail, or no outcome when the run did not judge it | test, task |
 | **gate** | for a branch, the checks it requires, the signers it trusts, the systems each check needs, and how a flaky key reads | the branch's rules |
 | **key** | the identity of one check over the inputs it reads; a result belongs to its key and its system | hash |
 | **system** | the processor architecture and operating system a run executes on, named as the toolchain names it | system |
 | **verdict** | a gate's reading of a candidate: for each required check exactly one of passed, failed, missing or flaky | result |
 | **culprit** | the one entry a failed candidate is attributed to | the blamed submission |
+| **set aside** | an operator's record that a recorded run did not judge its check, with the reason | set aside |
 | **landing** | the branch moving to a candidate that passed | landing |
 | **executor** | what ran a check, with its identity and its host; **confined** when nothing of any session could reach the run or its records, **open** otherwise | executor |
 | **host** | a machine on which sessions, sluice or executors run | host |
