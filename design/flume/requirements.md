@@ -791,7 +791,7 @@ core needs none of them.
 | profile | make | ready | read | remove / remove-branch |
 |---|---|---|---|---|
 | **worktrunk**: a repository that binds `worktrunk` | `wt switch --create <branch> --base <revision> --no-cd`, its worktree path `<repository>/places/<kind>--<name>`, the repository's create hooks run | the toolchain, then the runner's setup, that the repository declares in `.config/sluice.toml`, run in the place in sluice's cleaned environment, as sluice readies its own places | `git status --porcelain=v2`; `git worktree list --porcelain` for a lock | `wt remove --no-delete-branch`, so the repository's pre-remove and post-remove hooks run; the branch by `git cherry <base> <branch>`, deleted with `git branch -D` when no line starts with `+` |
-| **git worktree**: a repository that binds `git-worktree`, or names no place profile | `git worktree add -b <branch> <location> <revision>`, at the same path `<repository>/places/<kind>--<name>` | as above | as above | `git worktree remove`, with no teardown; the branch as above |
+| **git worktree**: a repository that binds `git-worktree`, or names no place profile | `git worktree add -b <branch> <location> <revision>`, at the same path `<repository>/places/<kind>--<name>` | as above | as above | `git worktree remove`, with no teardown but sluice's release where sluice is the merge queue (C.6); the branch as above |
 
 Under either, what the toolchain step makes is kept in the place's own
 git directory (C.7). A place's branch is `<prefix>/<name>`, the prefix
@@ -937,7 +937,13 @@ reports a removal that fails while still exiting as landed. flume then
 reads the place: one the driver removed it records gone, one the driver
 kept it tidies itself, and a branch the driver left, as on a base other
 than the default branch, it removes as 67 says. `sluice submit` removes
-nothing, and under it flume tidies every landed place itself. A
+nothing, and under it flume tidies every landed place itself. Whenever
+flume removes a place itself, landed, dropped or done, it first runs
+`sluice release` in it as part of the place's teardown (66). sluice runs
+the repository's `[tests] release`, which ends what the place's runs
+left up, and frees the ports it holds for the place; it says `nothing to
+release` when it holds none. A release that fails keeps the place, named
+with that step (66). A
 waiting submit also runs sluice's rounds, so it moves the queue on a
 host with no `sluice run` going. Readiness and where the base lives
 (C.1) are read from the same `.config/sluice.toml`.
