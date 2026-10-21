@@ -4,7 +4,8 @@ Drafted wording for 66 that tells the checks a run's time limit
 ended apart from the checks that ended before it. A check that ended
 keeps its outcome. A check the limit ended has none, and sluice records
 nothing under its key. Part A amends 66 and gains no clause; the
-scenarios gain S55.
+scenarios gain S55. The operator ratified it on 2026-10-21: its clause
+and scenario are in `../requirements.md`, which wins where they differ.
 
 ## What it answers
 

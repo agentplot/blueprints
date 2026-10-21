@@ -316,7 +316,11 @@ redefine these.
     included, and two places on one host never collide.
 66. A candidate's checks run under the time limit its branch's policy
     states. A run that exceeds it is ended with everything it started,
-    recorded as timed out, and read as failed.
+    recorded as timed out, and read as failed. A check that ended
+    before the limit keeps its outcome. A check the limit ended has
+    none: it is recorded and read under no key (69), and the
+    culprit's session is told it was running when the limit ended the
+    run (20).
 81. An instance takes no claim while a place it made on its host
     belongs to a candidate that has a verdict or is obsolete, or to a
     claim it no longer holds (25, 34). A place on a host that never
@@ -837,6 +841,14 @@ section asked is answered by a clause.
 - **S49.** sluice stops at 21m with A held and A+B+C under test, and
   starts again at 30m. The first round finds the hold run out and lands
   A alone, without running a check again (117, S10).
+- **S55.** A host under load runs a candidate's checks past its
+  branch's time limit. One check passed before the limit; another was
+  running when the limit ended the run. The run is recorded as timed
+  out, its entry is the culprit, and its session is told the second
+  check was running when the limit came. The first check's pass is
+  recorded under its key; the second check has no outcome. Once the
+  host keeps up, the same head is submitted again, the second check
+  passes, and the entry lands (66, 69, 19).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

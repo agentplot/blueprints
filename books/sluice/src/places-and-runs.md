@@ -49,9 +49,13 @@ A run gets from sluice exactly four things:
   out, or the place is released.
 
 A run that exceeds its time limit is ended with everything it started,
-recorded as timed out, and read as failed (66). A process that escapes
-the group, a container or a detached daemon, is the repository's to
-stop.
+recorded as timed out, and read as failed (66). A check that ended
+before the limit keeps its outcome. A check the limit ended has none:
+sluice records nothing under its key, whatever the task runner reported
+of it, and tells the culprit's session it was running when the limit
+came. A slow host's run leaves no fail for a later run of the same head
+to contradict. A process that escapes the group, a container or a
+detached daemon, is the repository's to stop.
 
 ## The executor
 
