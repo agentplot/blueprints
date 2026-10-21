@@ -6,8 +6,9 @@ the policy states. Entries submitted seconds apart then land in one
 move of the branch. A
 branch whose pushes start a deployment then starts one deployment for
 them, not one per entry. Part A gains one clause, 117; 27 gains the
-hold among what a gate states; Part C gains a key in C.7. Nothing here
-edits `../requirements.md`; the operator rules on it.
+hold among what a gate states; Part C gains a key in C.7. The operator
+ratified it on 2026-10-20: its clauses, key and scenarios are in
+`../requirements.md`, which wins where they differ.
 
 ## What it answers
 

@@ -36,7 +36,7 @@ A session that built the work submits it and does nothing more.
 |---|---|---|
 | **a session** (an agent or a person building in a place) | when its work is ready, and to submit it; how to resolve a conflict or a failure in its own place | merge, land, or move a branch; change another submission's order; withdraw another's submission |
 | **a planner** (a plan, or a person) | what a submission lands after, and its priority; to ask sluice to make or remove a branch it lands on (104, 105) | override a gate; move a branch |
-| **a policy's author** (a repository's owners, a platform) | which checks gate each branch, which signers each branch trusts and what each may claim, the systems each check must pass on, how a flaky result reads, how deep a chain is tested, how long a candidate's checks may run, what a run may use and reach | make a branch land untested; widen trust a layer above set |
+| **a policy's author** (a repository's owners, a platform) | which checks gate each branch, which signers each branch trusts and what each may claim, the systems each check must pass on, how a flaky result reads, how deep a chain is tested, how long a passed candidate may wait for a deeper one, how long a candidate's checks may run, what a run may use and reach | make a branch land untested; widen trust a layer above set |
 | **the operator** | everything a policy does not settle | make a landing that skipped the gate count as one |
 | **sluice** | the order among submissions within what the planner and the policy fixed; which candidates to test and how many at once; when a branch moves | run a check of its own, start a service, choose a port, resolve a conflict, decide trust, release a session's place, move a branch to a revision that has not passed its gate, or remove a branch whose work has not landed into another (105) |
 | **an executor** (a session's shell, a confined run) | nothing; it runs checks and reports what it observed | report an outcome it did not observe |
@@ -224,6 +224,17 @@ redefine these.
 22. A branch moves only to a candidate whose verdict is satisfied, only
     in chain order, never past an entry without a verdict, and never to
     a candidate containing a culprit or a conflict.
+117. A branch's policy may state a hold: how long a candidate that
+     passed may wait to land while a deeper candidate of its chain,
+     holding it, is under test. sluice lands a held candidate on the
+     first round after the deeper candidate's verdict, or after the
+     hold has run from the held candidate's own verdict, whichever is
+     first; it lands with the deeper candidate when that one passed,
+     and otherwise with the passed candidates ahead of the failure
+     (22). Under deepest first, a branch with a hold tests the deepest
+     candidate of its chain beside one already under test when the
+     window has room. A branch with no hold lands every passed
+     candidate at once.
 23. A landing writes one commit per entry, with the revision before it
     as its first parent and the entry's head as its second, naming the
     entry's work and the verdict it landed on; entries landed together
@@ -247,7 +258,8 @@ redefine these.
 27. A branch's gate is its policy's: the checks it requires, the
     signers it trusts and the claims each may make, the systems each
     check must pass on, how a flaky key reads, whether every candidate
-    or the deepest first is tested, the window's bounds, and how long a
+    or the deepest first is tested, the window's bounds, how long a
+    passed candidate may wait for a deeper one (117), and how long a
     candidate's checks may run. sluice gives no gate a meaning of its
     own, and admits every submission a driver makes: whether work may be
     submitted at all is decided before it reaches sluice.
@@ -616,6 +628,7 @@ trust = ["box", "forge"]
 confined = true
 systems = ["linux-x64"]
 batch = true
+hold = "5m"                # a passed candidate waits this long for a deeper one (117)
 timeout = "45m"
 
 [branches.main.systems_for]
@@ -631,6 +644,7 @@ the repository's: its signing key, its systems, its places and its
 bound (71). The defaults: a branch with no `remote` trusts its own
 host's unsigned runs (78) and nothing else; a branch with a `remote`
 and no `trust` trusts no signer, so its policy's author names them.
+A branch with no `hold` holds no passed candidate (117).
 
 ### C.8 Deployments across hosts
 
@@ -807,6 +821,22 @@ section asked is answered by a clause.
   and a later pass. The operator sets the fail aside, with the reason.
   The key reads passed from its passes, and the fail's record is still
   there to read (116).
+- **S45.** `main` holds for five minutes and tests every candidate. A
+  is submitted; ten seconds later B and C are. A passes at 20m while
+  A+B+C is under test, and waits. A+B+C passes at 20m10s, and `main`
+  moves once, writing three landing commits, A's naming its own
+  verdict and B's and C's naming theirs (117, 23).
+- **S46.** As S45, but A+B+C fails at 20m10s and A+B passed. A and B
+  land in one move on the next round; C is the culprit (117, 17).
+- **S47.** As S45, but A+B+C is still under test at 25m. A lands alone
+  on the first round after 25m; B and C land when A+B+C passes (117).
+- **S48.** `main` holds for five minutes and tests deepest first, with a
+  window of two. A is under test when B and C are submitted. sluice
+  starts A+B+C beside A. Both pass, and A, B and C land in one move
+  (117, 14).
+- **S49.** sluice stops at 21m with A held and A+B+C under test, and
+  starts again at 30m. The first round finds the hold run out and lands
+  A alone, without running a check again (117, S10).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
