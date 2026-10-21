@@ -142,7 +142,7 @@ landings deploy nothing.
 - **S47.** As S45, but A+B+C is still under test at 25m. A lands alone
   on the first round after 25m; B and C land when A+B+C passes.
 - **S48.** `main` holds for five minutes and tests deepest first, with a
-  window of two. A is under test when B and C are submitted. sluice
+  window of three. A is under test when B and C are submitted. sluice
   starts A+B+C beside A. Both pass, and A, B and C land in one move.
 - **S49.** sluice stops at 21m with A held and A+B+C under test, and
   starts again at 30m. The first round finds the hold run out and lands
