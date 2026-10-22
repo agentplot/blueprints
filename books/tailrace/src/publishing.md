@@ -11,14 +11,14 @@ tree are never published.
 
 ## The build left it; tailrace reads it
 
-A publish never builds (15). It asks the build for the outputs the
-repository's authors declared, through the build's own seam: with moon,
-one run of the declared tasks, which replays what is cached and runs
-what is not (C.3). The build answers, for each output, the build
+A publish offers only bytes a build left (15). It asks the build for the
+outputs the repository's authors declared, through the build's own seam:
+with moon, one run of the declared tasks, which replays what is cached
+and runs what is not (C.3), and where the landing carries verdicts, an
+output whose build identity no verdict names is refused (15). The build answers, for each output, the build
 identity it came from, the build's outcome and where the files are
-(75). Every output is read and every outcome read before anything is
-offered, and a build whose outcome is not a pass leaves nothing offered,
-naming the output (16).
+(75). Nothing of a version is offered while an output is unread or its build
+did not pass; such a version is refused whole, naming the output (16).
 
 The build identity is the join. sluice's verdict for the landing names
 the task hash each check passed on; the provenance tailrace attaches
@@ -36,9 +36,9 @@ one. The rule the family builds on is git-cliff over conventional
 commits: a feature or a fix since the last tag makes a release,
 anything else a prerelease (section 9).
 
-A version is claimed before it is used (22): the publish records it
-against the revision where every other publisher of the repository can
-see it, as a tag pushed first, and a version already recorded against
+A version's name is claimed before anything is packed under it (22):
+the publish records it against the revision in the repository's shared
+history, as a tag pushed first, and a name already recorded against
 another revision refuses the publish naming both. Two publishers racing
 on one landing both end at the same index (18); two landings racing on
 one version leave one of them to derive the next.

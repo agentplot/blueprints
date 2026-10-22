@@ -8,8 +8,8 @@ environment is told a version directly.
 ## Converging
 
 An environment that moves on its own converges whenever its channel's
-head moves; one that waits converges only after an approver says so,
-and the approval is recorded with the promotion it answers (41).
+head moves; one that waits converges only after an approver says so (41),
+and the approval is recorded with the promotion it answers (97).
 Converging changes nothing in the store and nothing about the version:
 the reconciler reads the version's bytes by digest and verifies the
 claims it is told to require before it applies anything (42).
@@ -30,9 +30,9 @@ reaches a target (64).
 
 A reconciler reports what the environment runs, by digest, and when it
 last converged (43, 91). An asker learns of every environment what it
-should run, what it runs, and that the two differ where they do. An
+should run, what it runs, and that the two differ where they do; an
 environment whose state cannot be read is reported unread with the
-reason, never as converged.
+reason, never as converged (98).
 
 <figure class="tr">
 <svg viewBox="0 0 800 230" role="img" aria-label="Channel stable at 1.4.0. Three environments follow it: a site that moves on its own and runs 1.4.0; a stack that waits and still runs 1.3.0 with an approval pending; a cluster that pulls the tag itself. Each reports what it runs.">

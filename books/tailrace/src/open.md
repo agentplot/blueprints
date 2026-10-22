@@ -12,19 +12,22 @@ exploration of the command line that preceded it. Its own questions
 (section 10) wait on a reconstruction: a fresh model handed the
 statement alone proposes the system and asks what the statement did not
 say, and the operator rules on each, into the statement as clauses
-numbered from 94. The questions below are the statement's and the
+numbered from 105. A clean-room review on the same day moved thirteen
+clauses and added 94 to 104; its three gaps that are rulings are the
+first three questions below. The questions below are the statement's and the
 pack's, each with the clauses it touches.
 
 ## Versions and the ledger
 
-- Where the store is a layout on disk with no remote, how is a version
-  claimed so that two publishers never both succeed (22)? The lean: the
-  tag in git, which every publisher of the repository shares, claims
-  it; a layout with no git is one publisher's.
-- Where the ledger lives when the store has no append-only primitive:
-  in git, as a chain of signed claims in the store, or both (33, 61).
-  The lean: the record in git, and each promotion also a referrer on
-  the version's index (39), so either alone reconstructs the other.
+- Which record is a channel's source of truth and which the projection
+  (101), when the store has no append-only primitive (33, 39, 61). The
+  lean: the record in git, and each promotion also a referrer on the
+  version's index, so either alone reconstructs the other.
+- Whether a solo user may hold the offering and the accepting
+  credentials on one host under a policy that says so (27, 96); the
+  statement forbids it as written.
+- Under which repository's policy a consumer layout is rendered for a
+  repository that consumes another's versions (47, 65).
 - Whether every landing that carries a feature or a fix is a release,
   or a person cuts releases, is the authors' rule (21); the family's
   default is the former.
@@ -66,9 +69,6 @@ pack's, each with the clauses it touches.
   as sluice's, or keyless against the public instance (C.7 to C.9); and
   whether tailrace's envelopes must verify under cosign's tooling as
   well as its own.
-- Whether the gate's acceptance and the publish may run on one host for
-  a solo user, with the two credentials being one person's, and what
-  the policy must then say (27).
 - The policy language: the file's own tables, or a policy engine's
   language (C.10).
 

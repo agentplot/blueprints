@@ -15,11 +15,14 @@ A publish offers (20). Any host that builds can offer, and a stolen
 build credential can offer too; what it offers sits unaccepted and
 attributable, and reaches no channel and no environment (S9). The
 credential that offers and the credential that accepts are never the
-same, and no host that builds holds the latter (27).
+same (27), and no host that builds holds the latter (96).
 
 ## The gate accepts
 
-Only the gate accepts (25). It reads the claims attached to the offered
+Only the gate accepts (25). It judges an offered version when a publish's
+answer tells it of one or an approver or a rule the policy names asks,
+under the accepting credential, in a place no offering credential
+reaches (95). It reads the claims attached to the offered
 index and the policy for acceptance at the landed revision (65), and
 counts each claim only through a signer the policy names (9). A version
 one of whose artifacts is refused is refused whole, naming the artifact
@@ -28,7 +31,8 @@ it was offered with, and the acceptance is itself a claim attached to it
 (26).
 
 The gate never rebuilds, never looks inside bytes beyond their digest,
-and never asks anyone outside the store whether to accept (29). It
+and asks nothing but the store, the landing and the policy whether to
+accept (29). It
 judges claims against a policy, nothing else, so it is small, runs in
 the owner's trusted place, and holds the one credential that can accept
 and promote.
@@ -46,7 +50,7 @@ sound, and review happens before the landing (section 8).
 
 ## What withdraws
 
-Nothing accepted is ever un-accepted (25). A version found wanting after
+Nothing accepted is ever un-accepted (94). A version found wanting after
 acceptance is left by a promotion that moves the channel away from it
 (38); the version stays accepted and readable by digest, and the ledger
 holds why the channel left.

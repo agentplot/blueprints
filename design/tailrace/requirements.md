@@ -46,7 +46,7 @@ twice to make them so.
 | **the repository's authors** | what the repository publishes and in which ecosystem's form, how a version is derived from history, which claims a version must carry and from which signers, which channels exist and which environments follow each, and whether an environment moves on its own or waits for a person | they never decide what a build left, what a digest is, or that a claim was made by a signer that did not make it |
 | **a publisher** (a person, an agent or a host that runs a publish) | when to publish a landed revision | it never publishes a revision that has not landed, never moves a channel, and never makes a claim in another signer's name |
 | **a signer** (an identity that makes claims: a build host, a gate, a reviewer, a verifier, a person's agent) | what it claims of a digest | it never claims beyond what the policy lets that signer claim, and never alters a claim it made |
-| **the gate** (the one party that accepts and releases) | whether an offered artifact is accepted, as the policy fixes it; when a channel moves, within what the policy and a person allow | it never builds, never changes bytes, never accepts what the policy refuses, and never deploys |
+| **the gate** (the one party that accepts and promotes, not the landing gate) | whether an offered artifact is accepted, as the policy fixes it; when a channel moves, within what the policy and a person allow | it never builds, never changes bytes, never accepts what the policy refuses, and never deploys |
 | **an approver** (a person the policy names) | whether a promotion or a deploy the policy holds for a person proceeds | it never approves a version that is not accepted |
 | **a consumer** (a person, an agent, a build, a surface or a target that reads) | which artifact and version to ask for | it never reads a version the policy it reads under refuses, and never changes what the store holds |
 | **a target** (where an environment runs) | how it is converged, by its own reconciler | it never decides which version it should run |
@@ -63,8 +63,9 @@ redefine these.
 - **repository**: the checkouts that share one git history.
 - **revision**: one commit of a repository.
 - **landing**: the event by which a revision reaches a branch through
-  the repository's own gate. A revision is **landed** on a branch once
-  that branch holds it.
+  the repository's own landing gate, sluice or its like, which is not
+  tailrace's gate. A revision is **landed** on a branch once that branch
+  holds it.
 - **build**: a run of the repository's own commands over one revision
   that leaves outputs. Its **build identity** is the name the build
   gives the inputs it ran over, by which two parties name the same
@@ -106,6 +107,7 @@ redefine these.
   store and no gate has judged.
 - **accepted**: the state of an artifact the gate has judged to satisfy
   the policy for acceptance.
+- **released**: the state of a version a channel names.
 - **channel**: a named pointer to one accepted version, which only a
   promotion moves.
 - **promotion**: the act that moves a channel to a version, and the
@@ -180,20 +182,21 @@ redefine these.
 14. Only a landed revision is published. A publish of a revision the
     branch has not landed is refused naming the branch, and nothing is
     offered.
-15. A publish reads what the build left and never builds: where the
-    build's outputs for the revision do not exist, the publish asks the
-    build for them through the build's own seam, and refuses when the
-    build cannot answer, naming the output.
-16. Every output named for a version is read, and its build's outcome
-    read, before anything of the version is offered. A build whose
-    outcome is not a pass leaves nothing offered, naming the output.
+15. A publish offers only bytes a build left, and where the landing
+    carries verdicts, only outputs whose build identity those verdicts
+    name; an output whose identity no verdict names is refused, naming
+    the output and the identities the verdicts carry. tailrace itself
+    builds nothing.
+16. Nothing of a version is offered while any output the version names
+    is unread or comes from a build whose outcome is not a pass; such a
+    version is refused whole, naming the output.
 17. A version exists only once its index is in the store. Artifacts
     offered before the index are not a version, and a publish that
     stops before its index has published nothing.
 18. A publish of the same landed revision again offers the same
-    digests and ends at the same index, provided each ecosystem's
-    packaging of the same outputs gives the same bytes; where it does
-    not, the publish says which artifact differed.
+    digests and ends at the same index where its projections pack the
+    same (87); where one does not, the publish names the artifact that
+    differed.
 19. A publish ends with an answer a program can read: the index's
     digest, the version, each artifact's digest and ecosystem name, and
     where each claim is attached.
@@ -207,41 +210,47 @@ redefine these.
     rule, read at a landed revision, and from nothing a publisher
     supplies. The same revision under the same rule always derives the
     same version.
-22. A version is claimed before it is used: a publish records the
-    version against the revision where every other publisher of the
-    repository can see it, and a version already recorded against
-    another revision refuses the publish, naming both revisions.
+22. A version's name is claimed before any artifact is packed under
+    it: a publish records the name against the revision in the
+    repository's history, which every publisher of the repository
+    shares, and a name already recorded against another revision
+    refuses the publish, naming both revisions. A repository whose
+    history no other publisher shares has exactly one publisher.
 23. Two versions of one artifact name are ordered by the ecosystem's
     own version rules, and tailrace never orders them by time, by
     spelling or by the order a store lists them.
-24. A version's bytes carry the version only where the ecosystem's form
-    requires it, written at packaging from the derived version; the
-    build that left the outputs never knows the version, so a build is
-    the same build whatever version it later becomes.
+24. The build that left the outputs never knows the version, so a
+    build is the same build whatever version it later becomes; a
+    version is in the bytes only where the ecosystem's form requires
+    it.
 
 ### A.5 Acceptance
 
 25. An offered artifact is accepted only by the gate, and only when the
-    claims attached to it satisfy the policy for acceptance. Nothing
-    but the gate accepts, and nothing accepted is ever un-accepted; a
-    version withdrawn is withdrawn by a promotion that moves away from
-    it (38).
+    claims attached to it satisfy the policy for acceptance.
+94. Nothing accepted is ever un-accepted; a version a channel leaves
+    stays accepted (38).
+95. The gate judges an offered version on being told of it by a
+    publish's answer or asked by an approver or a rule the policy
+    names, under the accepting credential, in a place no offering
+    credential reaches.
 26. Acceptance changes no bytes: the accepted artifact has the digest
     it was offered with, and the gate's acceptance is itself a claim
     attached to it.
-27. A party that can offer can never accept, release or promote; the
+27. A party that can offer never accepts, releases or promotes: the
     credential that offers and the credential that accepts are never
-    the same, and no host that builds holds the latter.
+    the same.
+96. No host that builds holds the accepting credential.
 28. Acceptance of a version is acceptance of its index and every
     digest it names; a version one of whose artifacts is refused is
     refused whole, naming the artifact.
-29. The gate judges only by the claims attached and the policy it reads;
-    it never rebuilds, never inspects bytes beyond their digest, and
-    never asks a party outside the store whether to accept.
+29. The gate judges only by the claims attached, the landing and the
+    policy; it never rebuilds, never inspects bytes beyond their
+    digest, and asks nothing else whether to accept.
 30. Where the policy for a channel asks for an independent rebuild, the
     rebuild is made by a signer other than the one that made the
-    offered build, from the same revision with no shared cache, and its
-    claim says the digests matched or did not. The gate counts the
+    offered build, from the same revision (55), and its claim says the
+    digests matched or did not. The gate counts the
     claim; it never makes the rebuild.
 
 ### A.6 Channels and promotion
@@ -262,9 +271,9 @@ redefine these.
 35. A channel moves only from the version it is at: a promotion that
     names a different starting version is refused and reported, never
     retried blind.
-36. Every follower of a channel reads one head: no two consumers,
-    targets or surfaces read the same channel at the same moment and
-    get two versions.
+36. A channel resolves to exactly one version for every reader (71):
+    no resolution of a channel ever answers two versions, and a reader
+    that holds an older answer holds it as of when it read.
 37. The policy may bind a channel to another: a version reaches such a
     channel only from the channel it is bound to, and never from a
     publish directly.
@@ -274,6 +283,21 @@ redefine these.
 39. Every promotion is a claim about the version it moves to, signed by
     the gate and attached to its index, so a store that holds the
     version holds the proof of each channel it was ever on.
+101. For every state a channel can be in, exactly one record is its
+    source of truth; every other place that reflects it, a tag, a
+    claim, a layout, is a projection written from the source and never
+    read as truth.
+102. A repository may declare no channel and no environment: its
+    versions are offered or accepted, a consumer reads them by version
+    under the policy, and nothing of a publish changes when channels
+    are declared.
+103. A version copied to another store carries every attestation
+    attached to its digests, acceptance and promotions among them (8);
+    a channel is the repository's, never a store's, and resolves to one
+    version whichever store answers.
+104. A signer is one identity under the landing's policy and under
+    tailrace's: a verdict's signer is named in tailrace's policy by the
+    identity the landing names it by, and never by a second name.
 
 ### A.7 Environments
 
@@ -282,17 +306,19 @@ redefine these.
     version directly.
 41. An environment that moves on its own converges on the channel's
     head whenever the head moves; one that waits converges only after
-    an approver says so, and the approval is recorded with the
-    promotion it answers.
+    an approver says so.
+97. An approval is recorded with the promotion it answers, and an
+    environment that waits never converges on an unrecorded approval.
 42. Converging an environment changes nothing in the store and nothing
     about the version: a reconciler reads the version's bytes by digest
     and verifies the claims it is told to require before it applies
     anything.
 43. A reconciler reports what the environment runs, by digest, and
-    when it last converged, and an asker learns of every environment
-    what it should run, what it runs, and that the two differ where
-    they do. An environment whose state cannot be read is reported
-    unread with the reason, never as converged.
+    when it last converged.
+98. An asker learns of every environment what it should run, what it
+    runs, and that the two differ where they do; an environment whose
+    state cannot be read is reported unread with the reason, never as
+    converged.
 44. Whether an environment is pushed to or pulls is the environment's
     own, and the ledger, the channel and the policy are the same either
     way.
@@ -306,10 +332,9 @@ redefine these.
     ecosystem's clients read it, and never needs tailrace's vocabulary
     to do so.
 47. A consumer layout holds only versions whose claims satisfy the
-    policy the layout was rendered under. A version the policy refuses
-    is absent from the layout, and the refusal is answered to whoever
-    asked for the layout, naming the version and the claim found
-    wanting.
+    policy the layout was rendered under.
+99. A version a layout's policy refuses is answered to whoever asked
+    for the layout, naming the version and the claim found wanting.
 48. A layout is rendered from the store and the policy alone, and
     rendering it again from the same store under the same policy gives
     the same layout. A layout is never a source of truth.
@@ -325,10 +350,12 @@ redefine these.
 
 ### A.9 The cache
 
-52. A cache entry is named by its digest and its build identity, is
-    written by any host that built it, and is read by any host whose
-    build identity matches. Nothing a cache entry carries counts as a
-    claim beyond the writing host's own.
+52. A cache entry is written by any host that built it and read by any
+    host whose build identity matches, and carries no claim beyond the
+    writing host's own.
+100. The same bytes are one store object whether a cache entry or an
+    artifact names them (1); writing bytes is never an offer, and only
+    an artifact's metadata (4) makes one.
 53. A cache entry is never an artifact: reading one offers nothing,
     accepts nothing, and no channel, index or policy names one. The
     same bytes become an artifact only through a publish.
@@ -344,10 +371,10 @@ redefine these.
 57. Every answer is readable by a program on request, in a form that
     names digests, versions, channels and verdicts as this statement
     names them.
-58. A verdict says which: satisfied; refused, naming the first claim
-    found wanting and why; or unreadable, naming what could not be
-    read. tailrace never answers a refusal as an absence, an absence as
-    a refusal, or either as unknown.
+58. tailrace never answers a refusal as an absence, an absence as a
+    refusal, or either as unknown; a refusal names the first claim
+    found wanting and why, and an unreadable answer names what could
+    not be read.
 59. A refusal carries the underlying store's, signer's or ecosystem's
     own words where one refused, verbatim, beside tailrace's.
 60. Asking what tailrace holds reaches no store, no signer and no
@@ -360,7 +387,8 @@ redefine these.
     layouts it rendered under which policy, and nothing that the store,
     the ledger or git holds already.
 62. Everything tailrace keeps is readable with no tailrace process
-    running, from every checkout of the repository, by plain tools.
+    running, from every checkout of the repository, with git and a
+    file reader.
 63. What tailrace keeps can be deleted, apart from the record of
     versions claimed (22), and rebuilt from the store and git to the
     same state.
@@ -411,9 +439,9 @@ redefine these.
 
 77. **landed**: given a branch and a revision, whether the branch has
     landed it.
-78. **verdicts-of**: given a revision, every signed verdict the
-    repository's gate recorded for it, each naming its check, its build
-    identity, its outcome and its signer, as the gate recorded them.
+78. **verdicts-of**: given a revision, every signed verdict the landing
+    recorded for it, each naming its check, its build identity, its
+    outcome and its signer, as the landing recorded them.
 
 ### B.4 The signer
 
@@ -590,7 +618,8 @@ and whether each waits.
 - **I2.** Offering is never trusting: a publish offers, only the gate
   accepts, and only a promotion moves a channel (20, 25, 32).
 - **I3.** The bytes that passed the checks are the bytes that run:
-  nothing between a landing and an environment builds (15, 26, 42).
+  what is offered is what the landing's verdicts name, and nothing
+  after the offer builds (15, 26, 42).
 - **I4.** A claim counts only through a signer the policy names, for
   what that signer may claim (9).
 - **I5.** Every move of a channel is in the ledger before anyone reads
@@ -606,10 +635,10 @@ and whether each waits.
 
 - Building. The repository's own tools build; tailrace reads what they
   left.
-- Landing. sluice, or the repository's own gate, lands; tailrace reads
-  whether a revision landed.
-- Deciding what a build may do or reach. That is the gate's policy
-  under sluice.
+- Landing. sluice, or the repository's own landing gate, lands;
+  tailrace reads whether a revision landed.
+- Deciding what a build may do or reach. That is the landing gate's
+  policy under sluice.
 - Judging source. A rebuild proves bytes match a revision, never that
   the revision is sound; review happens before the landing.
 - Caching third-party packages from public registries. A consumer
@@ -629,8 +658,6 @@ Constraints already fixed:
   reaching a branch.
 - The store is content-addressed and the owner's own; tailrace is
   never locked to one registry.
-- Attestations are in-toto statements in DSSE envelopes, the form
-  sluice already signs its verdicts in.
 - The askers include coding agents working in many checkouts of one
   repository at once, on hosts the developer controls.
 - tailrace is free and open source. Nothing commercial, no hosted plan,
@@ -639,6 +666,8 @@ Constraints already fixed:
 The rest of the stack, which a model builds on unless it says why not:
 
 - One static binary, written in Rust, as sluice is.
+- An attestation is an in-toto statement in a DSSE envelope, the form
+  sluice signs its verdicts in, so one verifier reads both.
 - The build is moon, the landing is sluice, and the join between a
   verdict and a provenance is moon's task hash.
 - The version rule is git-cliff over conventional commits: a feature or
@@ -665,12 +694,15 @@ The rest of the stack, which a model builds on unless it says why not:
 
 These are not requirements.
 
-- How is the version claimed (22) so that two publishers on two hosts
-  never both succeed, when the store is a layout on disk with no
-  remote?
-- Where does the ledger live when the store is a registry with no
-  append-only primitive: in git, in the registry as a chain of claims,
-  or both (33, 61)?
+- Which record is a channel's source of truth (101), git or the
+  store, when the store has no append-only primitive, and which is the
+  projection (33, 39, 61)?
+- May a solo user hold the offering and the accepting credentials on
+  one host under a policy that says so, and what must the policy then
+  say (27, 96)? The statement forbids it as written.
+- Under which repository's policy, at which landed revision, is a
+  consumer layout rendered for a repository that consumes another's
+  versions (47, 65)?
 - Which consumer layouts can hold a refusal's reason where the client
   shows only absence (47, 58)?
 - What does a reconciler report for a target that cannot say what it
@@ -727,12 +759,14 @@ These are not requirements.
 - **S12.** Everything tailrace keeps but the record of claimed versions
   is deleted. The next question answers the same from the store and
   git.
-- **S13.** A repository runs no sluice. A revision on its branch is
-  published with no verdicts attached; a policy that requires verdicts
+- **S13.** A repository runs no landing gate. A revision on its branch
+  is published with no verdicts attached; a policy that requires verdicts
   refuses it, naming the claim; one that requires provenance alone
   accepts it.
-- **S14.** A build's cache entry is removed. The next publish of a new
-  landing builds again, and nothing accepted or released changed.
+- **S14.** A build's cache entry is removed. The next landing's checks
+  build again under the landing gate, its verdicts name the new build
+  identity, the publish offers those outputs, and nothing accepted or
+  released changed.
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

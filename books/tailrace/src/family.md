@@ -21,7 +21,8 @@ person, runs the same publish (20).
 sluice's signers and tailrace's are one thing: an identity
 that signs an in-toto statement in a DSSE envelope, named in a policy
 with what it may claim (9; sluice's core.22). A host that is a trusted
-signer for sluice's verdicts is the same signer in tailrace's policy.
+signer for sluice's verdicts is the same signer, under the same name, in
+tailrace's policy (104).
 
 ## Switchboard
 

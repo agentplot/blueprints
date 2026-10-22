@@ -11,7 +11,7 @@ store: a consumer layout (glossary).
 A consumer layout holds only versions whose claims satisfy the policy
 the layout was rendered under (47). A version the policy refuses is
 absent from the layout, and the refusal is answered to whoever asked for
-the layout, naming the version and the claim found wanting. The client
+the layout, naming the version and the claim found wanting (99). The client
 sees only what it may install; the person who ran the sync sees why
 something is missing. The layout is never a source of truth (48):
 rendering it again from the same store under the same policy gives the

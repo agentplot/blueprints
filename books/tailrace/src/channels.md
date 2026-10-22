@@ -32,9 +32,11 @@ the gate and attached to the version's index (39). A store that holds
 the version holds the proof of each channel it was ever on, and a copy
 of the version carries that proof with it (8).
 
-Every follower of a channel reads one head (36): no two consumers,
-targets or surfaces read the same channel at the same moment and get two
-versions.
+A channel resolves to exactly one version for every reader (36), and
+for every state a channel can be in exactly one record is its source of
+truth; a tag, a claim and a layout are projections written from it,
+never read as truth (101). A repository may declare no channel at all,
+and nothing of a publish changes when it does (102).
 
 <figure class="tr">
 <svg viewBox="0 0 800 220" role="img" aria-label="Versions 1.3.0, 1.4.0 and 1.5.0 accepted in the store. beta points at 1.5.0 after each publish; stable points at 1.4.0, moved there by an approver, and may take a version only from beta. The ledger below lists each move in order.">

@@ -1,8 +1,10 @@
 # The cache
 
 A cache entry is bytes a build left on any host, named by their digest
-and the build identity, written by any host that built them and read by
-any host whose build identity matches (52). It is the lowest of the
+and the build identity; any host that built them writes it, and any
+host whose build identity matches reads it (52). The same bytes are one
+store object whether a cache entry or an artifact names them, and
+writing bytes is never an offer (100). It is the lowest of the
 three levels of trust: "someone built this", covered by no claim beyond
 the writing host's own.
 
