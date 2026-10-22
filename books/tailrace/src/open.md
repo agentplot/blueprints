@@ -8,11 +8,12 @@ chapter that rests on it is rewritten whole.
 ## How the questions are ruled
 
 The statement was written on 2026-10-22 from the inception pack and the
-exploration of the command line that preceded it. Its own questions
-(section 10) wait on a reconstruction: a fresh model handed the
-statement alone proposes the system and asks what the statement did not
-say, and the operator rules on each, into the statement as clauses
-numbered from 105. A clean-room review on the same day moved thirteen
+exploration of the command line that preceded it. A fresh model
+handed the statement alone reconstructed tailrace the same day,
+`design/tailrace/models/reconstruction-1.md`, and asked twenty questions
+of it; with the review's three rulings they are the interview,
+`design/tailrace/models/interview-1.md`, and the operator rules on each
+into the statement as clauses numbered from 105. A clean-room review on the same day moved thirteen
 clauses and added 94 to 104; its three gaps that are rulings are the
 first three questions below. The questions below are the statement's and the
 pack's, each with the clauses it touches.
