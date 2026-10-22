@@ -1,0 +1,97 @@
+/* Figures: inline SVG in the family's palette (site-theme's tokens.css,
+   --ap-*). The page is --ap-bg, a box the panel --ap-bg-2, a rule
+   --ap-line, text the ink --ap-fg and the muted --ap-fg-3. The accent is
+   tailrace's blue, for what the gate accepted and released; the second
+   colour, teal, marks a claim; millpond's blue marks what millpond does. The
+   light palette serves mdBook's light and rust themes and a page without
+   JavaScript; the dark one serves coal, navy and ayu. */
+:root {
+  --tr-page: #f7f6f2;
+  --tr-surface: #e9e7e0;
+  --tr-line: #c9c7bf;
+  --tr-ink: #0e1116;
+  --tr-muted: #5d6370;
+  --tr-accent: #1d6f8a;
+  --tr-accent-soft: #d5e8ef;
+  --tr-mark: #1d7368;
+  --tr-mark-soft: #d6eae6;
+  --tr-mp: #2160b0;
+  --tr-mp-soft: #dae5f4;
+  --tr-font: "IBM Plex Sans", system-ui, sans-serif;
+  --tr-font-display: "Space Grotesk", "IBM Plex Sans", system-ui, sans-serif;
+  --tr-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+html.coal,
+html.navy,
+html.ayu {
+  --tr-page: #0e1116;
+  --tr-surface: #161a21;
+  --tr-line: #2a2f38;
+  --tr-ink: #f2f1ec;
+  --tr-muted: #8c92a0;
+  --tr-accent: #ef8a6a;
+  --tr-accent-soft: #3b2219;
+  --tr-mark: #5cc2b2;
+  --tr-mark-soft: #15332f;
+  --tr-mp: #6ea8fe;
+  --tr-mp-soft: #172a45;
+}
+
+figure.hw {
+  margin: 1.8em 0;
+}
+figure.hw .tr-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--tr-line);
+  border-radius: 8px;
+  background: var(--tr-page);
+}
+figure.hw svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-width: 640px;
+  font-family: var(--tr-font);
+}
+figure.hw figcaption {
+  margin-top: 0.6em;
+  font-size: 0.9em;
+  font-family: var(--tr-font);
+  color: var(--tr-muted);
+}
+
+.tr-bx { fill: var(--tr-surface); stroke: var(--tr-line); stroke-width: 1.2; }
+.tr-bx-a { fill: var(--tr-accent-soft); stroke: var(--tr-accent); stroke-width: 1.5; }
+.tr-bx-o { fill: var(--tr-mark-soft); stroke: var(--tr-mark); stroke-width: 1.2; }
+.tr-bx-d { fill: none; stroke: var(--tr-muted); stroke-width: 1.2; stroke-dasharray: 6 5; }
+.tr-bx-mp { fill: var(--tr-mp-soft); stroke: var(--tr-mp); stroke-width: 1.5; }
+.tr-chip { fill: var(--tr-accent-soft); stroke: none; }
+.tr-chip-p { fill: var(--tr-page); stroke: var(--tr-line); stroke-width: 1; }
+
+.tr-h { fill: var(--tr-ink); font-family: var(--tr-font-display); font-size: 16px; font-weight: 700; }
+.tr-t { fill: var(--tr-ink); font-size: 14px; font-weight: 600; }
+.tr-s { fill: var(--tr-muted); font-size: 12.5px; }
+.tr-m { fill: var(--tr-ink); font-family: var(--tr-font-mono); font-size: 12px; }
+.tr-ms { fill: var(--tr-muted); font-family: var(--tr-font-mono); font-size: 11.5px; }
+.tr-ma { fill: var(--tr-accent); font-family: var(--tr-font-mono); font-size: 11.5px; font-weight: 600; }
+.tr-th { fill: var(--tr-muted); font-family: var(--tr-font-mono); font-size: 11px; letter-spacing: 0.08em; }
+.tr-la { fill: var(--tr-accent); font-size: 12.5px; font-weight: 600; }
+.tr-lo { fill: var(--tr-mark); font-size: 12.5px; font-weight: 600; }
+.tr-th-mp { fill: var(--tr-mp); font-family: var(--tr-font-mono); font-size: 11px; letter-spacing: 0.08em; }
+
+.tr-ar { stroke: var(--tr-muted); stroke-width: 1.4; fill: none; }
+.tr-ar-a { stroke: var(--tr-accent); stroke-width: 1.8; fill: none; }
+.tr-ar-o { stroke: var(--tr-mark); stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+.tr-lead { stroke: var(--tr-muted); stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+.tr-hd { fill: var(--tr-muted); }
+.tr-hd-a { fill: var(--tr-accent); }
+.tr-hd-o { fill: var(--tr-mark); }
+
+.tr-axis { stroke: var(--tr-muted); stroke-width: 1.4; }
+.tr-tick { stroke: var(--tr-line); stroke-width: 1; }
+.tr-dot { fill: var(--tr-surface); stroke: var(--tr-muted); stroke-width: 1.5; }
+.tr-dot-a { fill: var(--tr-accent); stroke: var(--tr-accent); stroke-width: 1.5; }
+.tr-dot-x { fill: var(--tr-surface); stroke: var(--tr-mark); stroke-width: 2; }
+.tr-pin { fill: var(--tr-mark); }
+.tr-band-a { fill: var(--tr-accent-soft); }
+.tr-band-o { fill: var(--tr-mark-soft); }

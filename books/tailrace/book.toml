@@ -1,0 +1,15 @@
+[book]
+title = "tailrace design"
+description = "The design book for tailrace: it carries what a build left into a store the owner controls, names every artifact by its content, attaches the claims made about it, and moves channels only by signed promotions that environments follow. The appendix includes the statement of invariants from design/tailrace/requirements.md."
+authors = ["Chuck Swanberg <cswanberg@mad-swan.com>"]
+language = "en"
+src = "src"
+
+[output.html]
+site-url = "/blueprints/tailrace/"
+default-theme = "ayu"
+preferred-dark-theme = "ayu"
+no-section-label = false
+fold.enable = true
+fold.level = 1
+additional-css = ["tailrace.css"]

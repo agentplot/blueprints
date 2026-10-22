@@ -8,7 +8,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 out=$(mkdir -p "${1:-_site}" && cd "${1:-_site}" && pwd)
 find "$out" -mindepth 1 -delete
-books=(sluice headwater eddy millpond flume sounding)
+books=(sluice headwater eddy millpond flume sounding tailrace)
 items=""
 for b in "${books[@]}"; do
   mdbook build "books/$b" --dest-dir "$out/$b"
