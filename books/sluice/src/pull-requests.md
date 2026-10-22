@@ -113,6 +113,18 @@ returns when its entry lands or is removed. An agent that should not
 wait through a day of review submits with `--no-wait` and reads the
 state later.
 
+## What a request shows
+
+The request shows its entry's verdict as its session reads it, from the
+records, the same whichever task runner the branch uses (118). One
+comment in its conversation, edited as the verdict changes, and a check
+per required check: the candidate and the entries tested in it, and each
+check's outcome, where it ran, and whether it was run or replayed. A
+request tested beside a culprit shows only that its candidate is formed
+again, never the failure (20). What the task runner adds, such as each
+task's time and tries or the time it estimates it saved, is shown and
+decides nothing (119). Nothing on the request is read back by a gate.
+
 ## When the branch moves outside the queue
 
 Only sluice's identity may move the branch on the forge, by the forge's

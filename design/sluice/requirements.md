@@ -209,6 +209,10 @@ redefine these.
     passed or not passed. It never reads differently for two candidates
     of one branch. A result under other limits says nothing of a run under
     these (83).
+119. What a check's tool reports of a run beyond its key, outcome and
+     executor, such as how long it took, how often it was tried, or the
+     time it saved, may be recorded with the run and shown with it. It
+     is never read as an outcome, a replay or a flake (16, 19, 38).
 116. An operator may set aside a recorded run, naming it and the
      reason, by a record of its own. The run's record is kept. A run set
      aside has no outcome (60) and is read under no key, from the
@@ -216,6 +220,15 @@ redefine these.
      for a gate only when the gate trusts its signer (28).
 20. The culprit's session is told the failing checks and the candidate
     they failed on. No other session is told of that failure.
+118. What a request shows of its entry, on its checks or in its
+     conversation, is read from the records and decides nothing: no
+     gate, round or submission reads it back (27, 30). It shows what the
+     entry's session reads (49): the candidate, the entries tested in
+     it, and each required check's key, outcome, executor or signer, and
+     whether it was run or replayed (16, 38), or why it has no outcome
+     (114, 116). A request whose entry was tested with a culprit shows
+     that its candidate is formed again, and no outcome of that
+     candidate (20).
 21. An entry removed as culprit or as conflict leaves the chain, and
     every candidate behind it is formed again without it.
 
@@ -521,7 +534,7 @@ Parts A and B do not change to admit a profile.
 
 | profile | affected | run |
 |---|---|---|
-| **moon**: the repository's task runner with declared inputs and a content-keyed cache | moon's affected projects between the branch's revision and the candidate, downstream dependents included | moon's run of the affected check tasks in the place; the run report gives each task's outcome and whether it was replayed, the run record gives its hash as the key and its exit code; a task whose exit the policy's `not_run` names has no outcome (114) |
+| **moon**: the repository's task runner with declared inputs and a content-keyed cache | moon's affected projects between the branch's revision and the candidate, downstream dependents included | moon's run of the affected check tasks in the place; the run report gives each task's outcome and whether it was replayed, the run record gives its hash as the key and its exit code; a task whose exit the policy's `not_run` names has no outcome (114); run in moon's CI mode, so a task the repository keeps out of CI is not run and its check is missing; each task's duration and attempts, and the run's duration and moon's estimate of the time it saved, recorded with the run (119) |
 | **script**: one command with an exit code | every check, always | the command's exit code, never a replay; an exit `not_run` names has no outcome (114) |
 
 | executor profile | execute | enforces |
@@ -841,6 +854,13 @@ section asked is answered by a clause.
 - **S49.** sluice stops at 21m with A held and A+B+C under test, and
   starts again at 30m. The first round finds the hold run out and lands
   A alone, without running a check again (117, S10).
+- **S50.** #10 and #12 are pull requests, #12 behind #10. Their
+  candidate fails and #10 is the culprit. #12's checks go back to
+  queued, and its report says its candidate is formed again; none of
+  them names #10 or a failed check (118, 20).
+- **S51.** moon reports a passing task tried twice. Its outcome is a
+  pass and the key is not flaky (19); the request's report notes the two
+  attempts (119).
 - **S55.** A host under load runs a candidate's checks past its
   branch's time limit. One check passed before the limit; another was
   running when the limit ended the run. The run is recorded as timed

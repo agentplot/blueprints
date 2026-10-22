@@ -114,7 +114,7 @@ Two profiles bind it (C.2):
 
 | profile | affected | run |
 |---|---|---|
-| **moon** | moon's affected projects between the branch's revision and the candidate, downstream dependents included | moon's run of the affected check tasks; the run report gives each task's outcome and whether it was replayed; the run record gives its hash as the key and its exit code |
+| **moon** | moon's affected projects between the branch's revision and the candidate, downstream dependents included | moon's run of the affected check tasks; the run report gives each task's outcome and whether it was replayed; the run record gives its hash as the key and its exit code; run in moon's CI mode, so a task kept out of CI is not run; each task's time and attempts, and the time moon estimates it saved, kept with the run and shown, never read as an outcome (119) |
 | **script** | every check, always | one command's exit code, never a replay |
 
 With moon, a candidate runs only the tasks it affects, and a task whose
