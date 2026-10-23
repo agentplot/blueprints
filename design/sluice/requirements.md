@@ -133,10 +133,12 @@ redefine these.
      the person withdraws it (3, 5, 54, 67).
 128. What sluice reads of one request, or cannot, decides that request
      alone. A request whose head it cannot read, or whose conditions it
-     cannot tell, is reported by name with what failed, and every other
-     request of the branch is taken, forecast and posted as it would
-     have been; the request so reported is read again each round until
-     it can be, or it closes (7, 120).
+     cannot tell, draft or ready, is reported by name with what failed,
+     and every other request of the branch is taken, forecast and posted
+     as it would have been; the request so reported is read again each
+     round until it can be, or it closes (7, 64, 120). A draft's head is
+     read for its forecast alone (64), and a draft whose head cannot be
+     read is only a draft with no forecast, holding nothing.
 
 ### A.2 Order
 
