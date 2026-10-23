@@ -6,10 +6,10 @@ is and used the same day on the family's own repositories. Each unit
 names the clauses it builds and what proves it, as sluice's changes do.
 The planner turns these into proposals; nothing here is the plan.
 
-Before the first bolt can be given, the kit needs what `crew bolt give`
-reads: a `.config/sluice.toml` on `origin/main` naming checks and a
-remote for `bolt/*`. That is the first unit of bolt 1, landed by hand
-or as a local bolt.
+The scaffold unit of bolt 1 landed by hand on 2026-10-23 as
+agentplot/tailrace 3da8131 (ADR 0011): the crates, the gate on `main`
+and `bolt/*` with the GitHub rulesets, the flake and the release
+workflow. `crew bolt give` can give the repository a bolt from there.
 
 ## Bolt 1 · publish, on one laptop
 
