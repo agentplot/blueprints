@@ -690,6 +690,19 @@ and whether each waits.
 
 ### C.11 Projections
 
+A projection packs with the ecosystem's own packager, run against the
+outputs the build left, with the version supplied the way that
+packager takes it: `npm pkg set` before `npm pack`, Maven's `revision`
+property with the flatten plugin, `dotnet pack --no-build`, `helm
+package --version`, setuptools-scm's pretend version, a Cargo manifest
+edit before `cargo package --no-verify`. A projection never opens the
+packager's archive to edit it; a wheel with compiled extensions, whose
+build is its packaging, is repacked with the `wheel` tool's own
+unpack and pack around its metadata and is the one exception. A
+compiled binary carries the revision and the build identity, never
+the version (24). Determinism is the packager's, and a projection
+whose packager cannot promise it says so (87).
+
 | ecosystem | pack | render | serve |
 |---|---|---|---|
 | npm | the tarball `npm pack` writes, with `package.json` as metadata | a packument and tarballs under a registry read layout | a localhost registry, since npm reads no files |

@@ -68,6 +68,14 @@ the ecosystem's form requires it. npm's tarball carries it; a Go module
 does not; a jar carries it in its name. So a build is the same build
 whatever version it later becomes, and a release never has to rebuild.
 
+pack is the ecosystem's own packager, run against the outputs the
+build left, with the version handed over the way that packager already
+takes it (C.11): `npm pkg set version` before `npm pack`, Maven's
+`revision` property, `dotnet pack --no-build`, a Cargo manifest edit
+before `cargo package --no-verify`. tailrace never opens an archive to
+edit it. A compiled binary prints the revision and the build identity,
+and `tailrace status` says which version that revision became.
+
 <figure class="tr">
 <svg viewBox="0 0 800 260" role="img" aria-label="sluice lands revision C; the version is derived from history and tagged; the publish reads the build's cached outputs, packs each with the version, offers the artifacts, then the index, and attaches provenance and sluice's verdicts. The build never knew the version.">
 <rect x="16" y="40" width="150" height="70" rx="8" class="tr-bx"/>
