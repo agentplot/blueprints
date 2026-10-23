@@ -6,21 +6,14 @@ the design, and the chapter that rests on it is rewritten whole.
 
 ## flume's statement
 
-flume's statement of invariants, `design/flume/requirements.md`, is to
-come (`design/capture/plan.md`, step L1). It is written from the
-capture design and from the crew rules flume takes over, `teams.1`–`4`,
-`teams.11`, `teams.15` and `plan.9`, `10`, `12`, `17`. It states a
-launch, places, kinds and stages, prompt delivery, stage ends, status,
-tidying, and what flume never does. A fresh model then reconstructs
-flume from the statement alone, and the operator rules the questions
-it asks.
-
-The statement becomes this book's appendix, and the chapters cite its
-clauses by number. Until it lands, the chapters rest on the capture
-design, `design/capture/design.md`, and cite crew's rules by id. crew's
-record gains an ADR, "crew calls flume for each place and stage", and
-the rules flume takes over are amended to name it (plan steps C1 and
-C7).
+flume's statement of invariants, `design/flume/requirements.md`, is
+written (`design/capture/plan.md`, step L1) and amended as the operator
+rules. The book does not yet carry it: the statement becomes this
+book's appendix, and the chapters cite its clauses by number. Until
+that fold, the chapters rest on the capture design,
+`design/capture/design.md`, and cite crew's rules by id. crew's record
+gains an ADR, "crew calls flume for each place and stage", and the
+rules flume takes over are amended to name it (plan steps C1 and C7).
 
 ## The decision awaiting a ruling
 

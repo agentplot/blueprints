@@ -145,5 +145,5 @@ through.
 
 A rule id in backticks, such as `teams.15`, cites crew's
 `docs/architecture/`, whose rules about places and stages flume takes
-over. flume's own statement is not written yet;
-[Open questions](open.md) says what it will hold.
+over. flume's own statement is `design/flume/requirements.md`;
+[Open questions](open.md) says what folding it into the book still holds.

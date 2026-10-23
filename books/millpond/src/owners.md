@@ -25,13 +25,13 @@ it.
 
 <figure class="mp-fig">
 <div class="mp-scroll">
-<svg viewBox="0 0 720 330" role="img" aria-label="flywheel-next holds the shared crates: capture, signals, the built-in adapters, cadence and the conformance pack, and later Flywheel's host on the same crates. millpond, headwater, eddy and anyone's meeting plugins depend on those crates at a tag. crew, in standard-library Python, calls millpond's command line.">
+<svg viewBox="0 0 720 330" role="img" aria-label="weir holds the shared crates: capture, signals, the built-in adapters, cadence and the conformance pack, and later Flywheel's host on the same crates. millpond, headwater, eddy and anyone's meeting plugins depend on those crates at a tag. crew, in standard-library Python, calls millpond's command line.">
 <defs>
 <marker id="mp-ow-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="mp-hd"/></marker>
 <marker id="mp-ow-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="mp-hd-a"/></marker>
 </defs>
 <rect x="196" y="16" width="516" height="152" rx="10" class="mp-bx-mp"/>
-<text x="212" y="44" class="mp-tb">flywheel-next</text>
+<text x="212" y="44" class="mp-tb">weir</text>
 <text x="350" y="44" class="mp-ts">the formats and rules, written once</text>
 <rect x="212" y="62" width="156" height="44" rx="6" class="mp-bx"/>
 <text x="222" y="80" class="mp-tm">capture</text>
@@ -81,16 +81,16 @@ it.
 <text x="292" y="198" class="mp-tl">depend on the crates</text>
 </svg>
 </div>
-<figcaption>Each format and rule is written once, in flywheel-next. millpond, headwater and eddy depend on its crates at a tag and prove themselves against its conformance pack. crew stays standard-library Python and reaches signals only through millpond's command line.</figcaption>
+<figcaption>Each format and rule is written once, in weir. millpond, headwater and eddy depend on its crates at a tag and prove themselves against its conformance pack. crew stays standard-library Python and reaches signals only through millpond's command line.</figcaption>
 </figure>
 
 | Part | Built in | Used by |
 |---|---|---|
-| The contract's types and key rules, JSON in flight and rec at rest, a sha256 content hash, and the excerpt cut | flywheel-next's capture crate | millpond, Flywheel, headwater's and eddy's adapter parts |
-| The signal, move and item records and the inbox's layout | flywheel-next's signals crate | millpond, Flywheel |
-| The folder drop, the meeting file and the signals-folder import | flywheel-next's adapters crate | millpond, Flywheel |
-| Cadence: five-field cron, caught up once | flywheel-next's cadence | `millpond tick`, Flywheel's tick |
-| The conformance pack: lines in, records expected | flywheel-next | millpond and Flywheel as hosts, every adapter part |
+| The contract's types and key rules, JSON in flight and rec at rest, a sha256 content hash, and the excerpt cut | weir's capture crate | millpond, Flywheel, headwater's and eddy's adapter parts |
+| The signal, move and item records and the inbox's layout | weir's signals crate | millpond, Flywheel |
+| The folder drop, the meeting file and the signals-folder import | weir's adapters crate | millpond, Flywheel |
+| Cadence: five-field cron, caught up once | weir's cadence | `millpond tick`, Flywheel's tick |
+| The conformance pack: lines in, records expected | weir | millpond and Flywheel as hosts, every adapter part |
 | Raw banking with a host-qualified pointer, the checks on a capture, and the verbatim check on a reader's excerpt | millpond, from crew's checks | Flywheel, for 217h and 217e |
 | Finding releases and reading their notes | swancloud's release adapter | headwater's lookups and its Flywheel plugin |
 | One question, one session, one conclusion: the question, its rounds and the conclusion's shape | sounding, from crew ADR 0019 | crew, Flywheel's elaborations |
