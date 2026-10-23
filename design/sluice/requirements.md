@@ -504,6 +504,17 @@ redefine these.
      editor has open, carries the sessions' history to the new path, and
      goes on in the plain copy only on the operator's word, which the
      setup's record says.
+127. A team that lands through pull requests keeps that whole: a request
+     opened as always, by a submit or by hand, a draft that waits, the
+     reviews and the other systems' checks its policy names, and sluice
+     landing it once they hold and its candidate passes (113, 120, C.5).
+     What changes is only who lands it: never the host's merge button, a
+     merge queue of the host's or a merge by hand on a branch sluice
+     keeps. sluice offers no other way, in which the host's button lands
+     and sluice only tests, since what the button lands was never tested
+     with what landed just before it (I1). The setup asks whether the
+     team lands by pull request today and, where it does, writes that
+     branch's conditions (C.7), so the way is kept from the first day.
 
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
@@ -985,6 +996,13 @@ section asked is answered by a clause.
   across, and only then writes the policy. Asked to keep the plain
   clone instead, it goes on there and its record says the operator
   chose so (126).
+- **S62.** A team's main takes its work as pull requests with one
+  approving review. Setup asks and writes the condition. The next
+  request a developer opens is found by the round, waits as a draft,
+  waits for its review once ready, and is then tested with what is
+  ahead of it and landed by sluice's push; GitHub marks it merged. The
+  developer never pressed merge, and nothing else about their day
+  changed (127).
 - **S59.** Ops submits three approved bolts as one act. The next round
   forms one candidate of all three and tests it once; it passes, and the
   three land in one move, in the order given. On another day the middle
