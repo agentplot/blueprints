@@ -14,8 +14,8 @@ version it is at (35): a promotion that names a different starting
 version is refused naming the version the channel is at, and nothing is
 retried blind.
 
-A channel belongs to one unit and names only its versions (125), so a
-repository of several units has `stable` for each.
+A channel belongs to one component and names only its versions (125), so
+a repository of several components has `stable` for each.
 
 The policy may bind a channel to another (37): `stable` takes a version
 only from among those the ledger shows `beta` has held, never from a

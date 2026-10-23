@@ -28,8 +28,8 @@ is the source; a term here that the statement lacks is the book's own.
   moves on its own or waits (40, 41).
 - **gate**: the one party that accepts and promotes (25, 32); not
   sluice's gate, which lands.
-- **index**: the artifact that names every artifact of one unit at one
-  version by digest (6).
+- **index**: the artifact that names every artifact of one component
+  at one version by digest (6).
 - **landing**: a revision reaching a branch through the repository's
   own gate (14).
 - **keeper**: where the ledger is held; it appends a promotion only
@@ -44,9 +44,9 @@ is the source; a term here that the statement lacks is the book's own.
   which signers a version must carry (9, 82).
 - **projection**: an artifact in one ecosystem's own form (46, 84).
 - **promotion**: the act that moves a channel, and its record (32, 33).
-- **publish**: the act that turns one landed revision into an index for
-  each unit it publishes and the artifacts each names, offered to the
-  store (17).
+- **publish**: the act that turns one landed revision into an index
+  for each component it publishes and the artifacts each names, offered
+  to the store (17).
 - **reconciler**: what converges an environment on its channel's
   version, by push or by pull (42, 44).
 - **signer**: an identity that signs claims, and the means to tell that
@@ -54,8 +54,8 @@ is the source; a term here that the statement lacks is the book's own.
 - **store**: what holds bytes by digest and never alters them (73).
 - **verdict**: tailrace's answer whether a digest satisfies a policy:
   satisfied, refused, or unreadable (58).
-- **unit**: the outputs that take one version together, with the paths
-  that version them and their tag prefix; a repository that declares
-  none is one unit (123).
-- **version**: the name a publish gives a unit's artifacts, derived
-  from history by the authors' rule (21).
+- **component**: the outputs that take one version together, with the
+  paths that version them and their tag prefix; a repository that
+  declares none is one component (123).
+- **version**: the name a publish gives a component's artifacts,
+  derived from history by the authors' rule (21).

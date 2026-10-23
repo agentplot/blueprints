@@ -43,7 +43,7 @@ twice to make them so.
 
 | actor | may decide | may not |
 |---|---|---|
-| **the repository's authors** | which units the repository publishes, what each holds and in which ecosystem's form, how a version is derived from history, which claims a version must carry and from which signers, which channels exist and which environments follow each, and whether an environment moves on its own or waits for a person | they never decide what a build left, what a digest is, or that a claim was made by a signer that did not make it |
+| **the repository's authors** | which components the repository publishes, what each holds and in which ecosystem's form, how a version is derived from history, which claims a version must carry and from which signers, which channels exist and which environments follow each, and whether an environment moves on its own or waits for a person | they never decide what a build left, what a digest is, or that a claim was made by a signer that did not make it |
 | **a publisher** (a person, an agent or a host that runs a publish) | when to publish a landed revision | it never publishes a revision that has not landed, never moves a channel, and never makes a claim in another signer's name |
 | **a signer** (an identity that makes claims: a build host, a gate, a reviewer, a verifier, a person's agent) | what it claims of a digest | it never claims beyond what the policy lets that signer claim, and never alters a claim it made |
 | **the gate** (the one party that accepts and promotes, not the landing gate) | whether an offered artifact is accepted, as the policy fixes it; when a channel moves, within what the policy and a person allow | it never builds, never changes bytes, never accepts what the policy refuses, and never deploys |
@@ -72,10 +72,10 @@ redefine these.
   build without seeing each other.
 - **outputs**: the files a build leaves that the repository's authors
   declare for publishing.
-- **unit**: the outputs the authors declare to take one version
+- **component**: the outputs the authors declare to take one version
   together, with the paths of the repository whose changes version it
-  and the prefix its tags carry; a repository that declares no unit is
-  one unit.
+  and the prefix its tags carry; a repository that declares no component
+  is one component.
 - **bytes**: the content of one artifact, as a sequence of octets.
 - **digest**: the name bytes have by their content alone, the same on
   every host and in every store.
@@ -87,13 +87,14 @@ redefine these.
   read.
 - **projection**: an artifact in one ecosystem's own form, as that
   ecosystem's clients read it.
-- **version**: the name a publish gives a unit's artifacts, in the
-  ecosystem's own version rules, derived from the repository's history.
-- **index**: the artifact that names every artifact of one unit at
-  one version, by digest, and is itself an artifact.
+- **version**: the name a publish gives a component's artifacts, in
+  the ecosystem's own version rules, derived from the repository's
+  history.
+- **index**: the artifact that names every artifact of one component
+  at one version, by digest, and is itself an artifact.
 - **publish**: the act that turns one landed revision into an index
-  for each unit it publishes and the artifacts each names, offered to
-  the store.
+  for each component it publishes and the artifacts each names, offered
+  to the store.
 - **claim**: a statement about one digest by one signer: that a build
   produced it from a revision, that checks passed on a build, that a
   test ran, that a reviewer approved, that a verifier rebuilt it and
@@ -225,9 +226,9 @@ redefine these.
     rule, read at a landed revision, and from nothing a publisher
     supplies. The same revision under the same rule always derives the
     same version.
-22. A version's name is its unit's, and is claimed before any artifact
-    is packed under it: a publish records the name against the revision
-    in the repository's history, which every publisher of the
+22. A version's name is its component's, and is claimed before any
+    artifact is packed under it: a publish records the name against the
+    revision in the repository's history, which every publisher of the
     repository shares, and a name already recorded against another
     revision refuses the publish, naming both revisions. A repository
     whose history no other publisher shares has exactly one publisher.
@@ -238,20 +239,20 @@ redefine these.
     build is the same build whatever version it later becomes; a
     version is in the bytes only where the ecosystem's form requires
     it.
-110. One publish gives every artifact of a unit one version, and the
-    unit's index names one version; a projection whose ecosystem
-    versions an artifact name by that name's own history does so as a
-    profile of the version rule, under the one version.
-123. The repository's authors declare units: each names its outputs,
-    the paths whose changes version it, and the prefix its tags carry;
-    the version rule (21) runs per unit over the commits that touch its
-    paths, against the tags that carry its prefix. A repository that
-    declares no unit is one unit, whose paths are the whole repository
-    and whose prefix is the rule's default.
-124. A publish names one unit, or every unit whose paths a commit since
-    its last tag touched; one unit's publish never gives another unit a
-    version, an index or a move. Two units may name one path, and a
-    commit under it versions both.
+110. One publish gives every artifact of a component one version,
+    and the component's index names one version; a projection whose
+    ecosystem versions an artifact name by that name's own history does
+    so as a profile of the version rule, under the one version.
+123. The repository's authors declare components: each names its
+    outputs, the paths whose changes version it, and the prefix its tags
+    carry; the version rule (21) runs per component over the commits
+    that touch its paths, against the tags that carry its prefix. A
+    repository that declares no component is one component, whose paths
+    are the whole repository and whose prefix is the rule's default.
+124. A publish names one component, or every component whose paths a
+    commit since its last tag touched; one component's publish never
+    gives another component a version, an index or a move. Two
+    components may name one path, and a commit under it versions both.
 
 ### A.5 Acceptance
 
@@ -303,8 +304,8 @@ redefine these.
 31. A channel names exactly one version at a time, and that version is
     accepted. A channel that names nothing is empty, and empty is an
     answer, never an error.
-125. A channel belongs to one unit and names only its versions; a
-    channel bound to another (37) is bound within its unit.
+125. A channel belongs to one component and names only its versions;
+    a channel bound to another (37) is bound within its component.
 32. A channel moves only by a promotion, and a promotion is made only
     by the gate, at the asking of a party the policy lets ask: a rule
     that follows each publish, or an approver.
@@ -682,11 +683,11 @@ cosign uses, public or private.
 
 ### C.10 The policy: a file in the repository
 
-`.config/tailrace.toml` at the landed revision: the units, each with
-its outputs, the paths that version it, its tag prefix and its
-projections, the version rule, the signers and what each may claim, the claims each audience requires, the
-channels and their bindings, and the environments with their targets
-and whether each waits.
+`.config/tailrace.toml` at the landed revision: the components, each
+with its outputs, the paths that version it, its tag prefix and its
+projections, the version rule, the signers and what each may claim, the
+claims each audience requires, the channels and their bindings, and the
+environments with their targets and whether each waits.
 
 ### C.11 Projections
 
@@ -804,10 +805,10 @@ The rest of the stack, which a model builds on unless it says why not:
 - The build is moon, the landing is sluice, and the join between a
   verdict and a provenance is moon's task hash.
 - The version rule is git-cliff over conventional commits, run once
-  per unit over the commits that touch its paths: a feature or a fix
-  since the unit's last tag makes a release, anything else a
-  prerelease, and the tag, carrying the unit's prefix, is pushed before
-  anything is offered.
+  per component over the commits that touch its paths: a feature or a
+  fix since the component's last tag makes a release, anything else a
+  prerelease, and the tag, carrying the component's prefix, is pushed
+  before anything is offered.
 - The store is an OCI registry; on a developer's host, an OCI layout on
   disk synced to one.
 - The ledger's keeper is a git ref the gate pushes, and the same claims
@@ -896,11 +897,11 @@ These are not requirements.
   build again under the landing gate, its verdicts name the new build
   identity, the publish offers those outputs, and nothing accepted or
   released changed.
-- **S15.** A repository declares two units. A landing touches one
-  unit's paths alone; the publish derives that unit's next version from
-  its own tags, claims it under its prefix and offers its index, while
-  the other unit gets no version and none of its channels move (123,
-  124, 125).
+- **S15.** A repository declares two components. A landing touches one
+  component's paths alone; the publish derives that component's next
+  version from its own tags, claims it under its prefix and offers its
+  index, while the other component gets no version and none of its
+  channels move (123, 124, 125).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
