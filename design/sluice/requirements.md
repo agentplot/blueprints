@@ -261,6 +261,15 @@ redefine these.
      after the landing is reported beside the outcome, named apart from
      it, and the submission is never reported as not landed for it (22,
      23, 50).
+124. On a branch whose policy names a remote, the remote's revision is
+     the branch, and a host's own ref of that name is sluice's copy of
+     it: sluice levels the copy to each landing it reads, writes it at no
+     other time, and reads nothing from it. A submission is its
+     worktree's head, pushed to the remote and submitted there; nothing a
+     submit does writes the host's copy, and a copy behind or ahead of
+     the remote refuses no submission. A write to the copy by any other
+     hand is refused, and the refusal names the command that tried and
+     the revisions, in the records and to whoever ran it (1, 121, C.4).
 117. A branch's policy may state a hold: how long a candidate that
      passed may wait to land while a deeper candidate of its chain,
      holding it, is under test. sluice lands a held candidate on the
@@ -581,7 +590,7 @@ Parts A and B do not change to admit a profile.
 | profile | read / form / commit / move |
 |---|---|
 | **local refs**: one host's repository | `git rev-parse`; `git merge-tree --write-tree`; `git commit-tree` with the branch and the head as parents and the verdict as `Sluice-*` trailers; `git update-ref` with the expected old value; making a branch `git update-ref <branch> <rev> ""`, removing one `git update-ref -d <branch> <expected>` (104, 105); branch protection by a `reference-transaction` hook that refuses any update to a branch in the policy not made by sluice, and logs it (1) |
-| **pushed refs**: a branch on a remote every host reaches | `git fetch` then `git rev-parse` of the remote's branch; forming and committing as local refs, on the host advancing the branch; the landing a push with `--force-with-lease=<branch>:<expected>`; making a branch a push leased on its absence, `--force-with-lease=<branch>:`, removing one a `--delete` leased on its revision (104, 105); branch protection by the forge's rules, restricting creating, updating and deleting the branch, which only sluice's identity bypasses, an identity no session on any host can use (1); each read compares the revision fetched with the landing the branch's log last recorded, and a revision that does not contain it, as when a branch landed on in local refs gains `remote` and the remote holds an older copy, is logged and reported with both revisions, nothing formed or landed, until the revision read contains that landing or the operator's acceptance of the revision read is recorded (121) |
+| **pushed refs**: a branch on a remote every host reaches | `git fetch` then `git rev-parse` of the remote's branch; forming and committing as local refs, on the host advancing the branch; the landing a push with `--force-with-lease=<branch>:<expected>`; making a branch a push leased on its absence, `--force-with-lease=<branch>:`, removing one a `--delete` leased on its revision (104, 105); branch protection by the forge's rules, restricting creating, updating and deleting the branch, which only sluice's identity bypasses, an identity no session on any host can use (1); each read compares the revision fetched with the landing the branch's log last recorded, and a revision that does not contain it, as when a branch landed on in local refs gains `remote` and the remote holds an older copy, is logged and reported with both revisions, nothing formed or landed, until the revision read contains that landing or the operator's acceptance of the revision read is recorded (121); the host's `refs/heads/<branch>` is sluice's copy, set to each landing after the push and otherwise untouched, the hook refusing any other write and logging its caller and revisions (124); a submit from a worktree on that branch pushes the worktree's head to the remote's branch for its request and writes no local ref |
 
 ### C.5 The driver
 
@@ -917,6 +926,13 @@ section asked is answered by a clause.
   branch with both revisions. The operator restores the branch on the
   remote, or accepts the revision read; the chain is then formed on it
   (121).
+- **S58.** A landing's worktree has a bolt's branch checked out on a host
+  whose copy of it stands at the remote's older revision, the worktree's
+  head two landings ahead. Its submit pushes the head to the remote's
+  branch, opens the request and submits it; the host's copy is left
+  where it was and levelled when the landing is read. A tool that tries
+  to move the copy to the head is refused, and the refusal names the
+  tool's command and both revisions (124).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
