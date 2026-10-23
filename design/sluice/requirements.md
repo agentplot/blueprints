@@ -306,6 +306,13 @@ redefine these.
      the remote refuses no submission. A write to the copy by any other
      hand is refused, and the refusal names the command that tried and
      the revisions, in the records and to whoever ran it (1, 121, C.4).
+     What is refused is a change of the copy's value: a transaction that
+     leaves every protected ref at the value it had, git's own packing
+     of its refs among them, moves nothing and passes; sluice's
+     levelling of the copy is tried again, each round and on each read
+     of the branch, until the copy holds the landing; a copy still
+     behind is shown in the branch's state with why, and is never left
+     behind until the next landing.
 117. A branch's policy may state a hold: how long a candidate that
      passed may wait to land while a deeper candidate of its chain,
      holding it, is under test. sluice lands a held candidate on the
@@ -1003,6 +1010,13 @@ section asked is answered by a clause.
   where it was and levelled when the landing is read. A tool that tries
   to move the copy to the head is refused, and the refusal names the
   tool's command and both revisions (124).
+- **S64.** Every fetch on the host starts git's own packing of its refs.
+  The protection lets it through, since it leaves every protected ref's
+  value as it was. One packing holds git's lock at the moment sluice
+  levels the host's copy after a landing: the levelling fails on the
+  lock, is tried again on the next round, and lands the copy there; in
+  between, the branch's state shows the copy behind and the lock as
+  why (124).
 - **S60.** Three repositories' queues run on one host of eighteen cores
   whose keeper set a bound of three. Candidates of all three fall due at
   once. Three runs start, one per repository, each handed six cores; the
