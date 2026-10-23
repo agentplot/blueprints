@@ -322,10 +322,10 @@ redefine these.
      asking releases a held place, by its name, running the release once
      more or, where the operator says so, accepting its failure and
      freeing what sluice itself holds for the place (25, 34). A place
-     whose working copy is already gone has nothing to release by
-     command: sluice frees what it itself holds for the place at once,
-     records the place gone, runs nothing in its name, and never retries
-     it.
+     whose working copy is already gone is no one's: sluice runs its
+     release once, from what it itself holds for the place and with the
+     place's ports, records how that went, frees what it holds at once
+     whatever the outcome, records the place gone, and never retries it.
 26. Every state an entry is in, and every verdict read for it, is
     readable by its session, its planner and the operator, from every
     host that submits to its branch, whether or not sluice is running.
@@ -400,9 +400,10 @@ redefine these.
     run (20).
 81. An instance takes no claim while a place it made on its host
     belongs to a candidate that has a verdict or is obsolete, or to a
-    claim it no longer holds (25, 34). A place on a host that never
-    returns is the operator's to remove, and no verdict is ever read
-    from it (32).
+    claim it no longer holds (25, 34), until each such place is released
+    or held (123): a held place, named with what failed, bars no claim.
+    A place on a host that never returns is the operator's to remove,
+    and no verdict is ever read from it (32).
 
 ### A.8 Hosts
 
@@ -712,6 +713,7 @@ systems = ["linux-x64"]
 batch = true
 hold = "5m"                # a passed candidate waits this long for a deeper one (117)
 timeout = "45m"
+release_retries = 3        # a failing release is tried this often, then its place is held (123)
 
 [branches.main.systems_for]
 "cli:build" = ["linux-x64", "linux-arm64", "macos-arm64"]
@@ -726,7 +728,8 @@ the repository's: its signing key, its systems, its places and its
 bound (71). The defaults: a branch with no `remote` trusts its own
 host's unsigned runs (78) and nothing else; a branch with a `remote`
 and no `trust` trusts no signer, so its policy's author names them.
-A branch with no `hold` holds no passed candidate (117).
+A branch with no `hold` holds no passed candidate (117), and one with
+no `release_retries` tries a failing release three times (123).
 
 ### C.8 Deployments across hosts
 
