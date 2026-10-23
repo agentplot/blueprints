@@ -255,6 +255,12 @@ redefine these.
      read contains that landing, or the operator accepts the revision
      read as the branch's. A branch carried forward by a hand it allows
      is formed on again as it stands (22, 45, S8).
+122. A submission's outcome is landed once its branch has moved to a
+     revision containing its work, and nothing that follows the move
+     changes it. A release, a notification or anything else that fails
+     after the landing is reported beside the outcome, named apart from
+     it, and the submission is never reported as not landed for it (22,
+     23, 50).
 117. A branch's policy may state a hold: how long a candidate that
      passed may wait to land while a deeper candidate of its chain,
      holding it, is under test. sluice lands a held candidate on the
@@ -280,6 +286,14 @@ redefine these.
     candidate's verdict is read, and never releases a session's place.
     A session learns its entry landed (50), and releasing its place is
     its driver's.
+123. A release that fails leaves its place held, named with what failed.
+     sluice tries the release again each round, as many times as the
+     branch's policy allows, a few where it states none, then stops and
+     reports the place as held. A held place never holds its branch:
+     candidates form and are tested in other places. The operator's
+     asking releases a held place, by its name, running the release once
+     more or, where the operator says so, accepting its failure and
+     freeing what sluice itself holds for the place (25, 34).
 26. Every state an entry is in, and every verdict read for it, is
     readable by its session, its planner and the operator, from every
     host that submits to its branch, whether or not sluice is running.
