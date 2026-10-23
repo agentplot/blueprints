@@ -41,11 +41,21 @@ one. The rule the family builds on is git-cliff over conventional
 commits: a feature or a fix since the last tag makes a release,
 anything else a prerelease (section 9).
 
-A version's name is claimed before anything is packed under it (22):
-the publish records it against the revision in the repository's shared
-history, as a tag pushed first, and a name already recorded against
-another revision refuses the publish naming both. One publish gives
-every artifact of the revision that one version (110). Two publishers
+The rule runs per unit (123). The authors declare each unit by its
+outputs, the paths whose changes version it and the prefix its tags
+carry, and a repository that declares none is one unit over the whole
+tree. A landing that touches one unit's paths alone gives that unit a
+version and the others none (124): an SDK package, a service image and
+an infrastructure template in one repository each keep their own tag
+series, and a publish names the unit it is for, or every unit a commit
+since its last tag touched. A unit's channels name only its versions
+(125).
+
+A version's name is its unit's, claimed before anything is packed under
+it (22): the publish records it against the revision in the
+repository's shared history, as a tag pushed first, and a name already
+recorded against another revision refuses the publish naming both. One
+publish gives every artifact of the unit that one version (110). Two publishers
 racing on one landing both end at the same index (18); a repeat whose
 projection packs different bytes is refused naming the artifact, and
 the name stays with the first index; two landings racing on one version

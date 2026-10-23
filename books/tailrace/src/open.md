@@ -39,6 +39,11 @@ it touches.
 
 - The reconciler contract for a Kubernetes target that pulls: only a
   watcher, and which status it writes back (44, 91).
+- How an environment is admitted beyond the policy file, for a host
+  that adds instances of one declared kind while running, as managed
+  hosting of many instances does, and whether such an instance may
+  follow a channel of its own (C.10, 125). The lean: the policy
+  declares kinds, a roster seam supplies instances.
 
 ## The cache and Nix
 
