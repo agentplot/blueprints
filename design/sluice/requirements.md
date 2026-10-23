@@ -492,6 +492,19 @@ redefine these.
      branch sluice lands on is made and removed only as 104 and 105
      say, and the branch's protection (1) refuses anyone else's.
 
+### A.10 Setting up
+
+126. sluice is set up in a repository whose working copies stand apart
+     from its git directory, one per branch, so that every session works
+     and submits from a working copy of its own (C.1). Asked to set up
+     in a repository's one and only working copy, the setup does not go
+     on there as it stands: it offers that layout first, says what the
+     change costs, the processes running in the folder and a session's
+     history tied to the folder's path, moves nothing an agent or an
+     editor has open, carries the sessions' history to the new path, and
+     goes on in the plain copy only on the operator's word, which the
+     setup's record says.
+
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
 ## Part B. Contracts across the seams
@@ -964,6 +977,14 @@ section asked is answered by a clause.
   once. Three runs start, one per repository, each handed six cores; the
   fourth waits for one to end, whichever repository it belongs to. No
   run reads the host's load (71).
+- **S61.** A newcomer asks for sluice in a clone whose git directory
+  sits inside its one working copy. The setup proposes the layout and
+  names what it costs: a dev server running in the folder, and the
+  session's history kept under the old path. It waits until the editor
+  has let the folder go, lays the repository out, carries the history
+  across, and only then writes the policy. Asked to keep the plain
+  clone instead, it goes on there and its record says the operator
+  chose so (126).
 - **S59.** Ops submits three approved bolts as one act. The next round
   forms one candidate of all three and tests it once; it passes, and the
   three land in one move, in the order given. On another day the middle
