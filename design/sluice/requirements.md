@@ -245,6 +245,16 @@ redefine these.
 22. A branch moves only to a candidate whose verdict is satisfied, only
     in chain order, never past an entry without a verdict, and never to
     a candidate containing a culprit or a conflict.
+121. The revision sluice reads a branch at, wherever it reads it from,
+     contains the last revision sluice recorded landing on that branch.
+     A revision that does not is a branch whose reading and whose
+     records disagree, whether a hand moved it or sluice's reading moved
+     to another copy: sluice forms no candidate on it and lands nothing
+     there, reports the branch so, naming the revision read and the
+     landing it does not contain, and forms again only once the revision
+     read contains that landing, or the operator accepts the revision
+     read as the branch's. A branch carried forward by a hand it allows
+     is formed on again as it stands (22, 45, S8).
 117. A branch's policy may state a hold: how long a candidate that
      passed may wait to land while a deeper candidate of its chain,
      holding it, is under test. sluice lands a held candidate on the
@@ -557,7 +567,7 @@ Parts A and B do not change to admit a profile.
 | profile | read / form / commit / move |
 |---|---|
 | **local refs**: one host's repository | `git rev-parse`; `git merge-tree --write-tree`; `git commit-tree` with the branch and the head as parents and the verdict as `Sluice-*` trailers; `git update-ref` with the expected old value; making a branch `git update-ref <branch> <rev> ""`, removing one `git update-ref -d <branch> <expected>` (104, 105); branch protection by a `reference-transaction` hook that refuses any update to a branch in the policy not made by sluice, and logs it (1) |
-| **pushed refs**: a branch on a remote every host reaches | `git fetch` then `git rev-parse` of the remote's branch; forming and committing as local refs, on the host advancing the branch; the landing a push with `--force-with-lease=<branch>:<expected>`; making a branch a push leased on its absence, `--force-with-lease=<branch>:`, removing one a `--delete` leased on its revision (104, 105); branch protection by the forge's rules, restricting creating, updating and deleting the branch, which only sluice's identity bypasses, an identity no session on any host can use (1) |
+| **pushed refs**: a branch on a remote every host reaches | `git fetch` then `git rev-parse` of the remote's branch; forming and committing as local refs, on the host advancing the branch; the landing a push with `--force-with-lease=<branch>:<expected>`; making a branch a push leased on its absence, `--force-with-lease=<branch>:`, removing one a `--delete` leased on its revision (104, 105); branch protection by the forge's rules, restricting creating, updating and deleting the branch, which only sluice's identity bypasses, an identity no session on any host can use (1); each read compares the revision fetched with the landing the branch's log last recorded, and a revision that does not contain it, as when a branch landed on in local refs gains `remote` and the remote holds an older copy, is logged and reported with both revisions, nothing formed or landed, until the revision read contains that landing or the operator's acceptance of the revision read is recorded (121) |
 
 ### C.5 The driver
 
@@ -885,6 +895,14 @@ section asked is answered by a clause.
   operator's word, marks it ready at the new head and submits it. A
   request a person opened by hand whose head moves the same way is
   submitted again once its conditions hold (120).
+- **S57.** Two entries land on a bolt's branch in the host's own refs,
+  and the second brings the policy that names the branch's remote. The
+  next round reads the branch from the remote, which holds an older
+  copy a refused landing pushed. The revision read does not contain the
+  last landing: sluice forms nothing, lands nothing, and reports the
+  branch with both revisions. The operator restores the branch on the
+  remote, or accepts the revision read; the chain is then formed on it
+  (121).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
