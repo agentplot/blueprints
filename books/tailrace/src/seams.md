@@ -1,7 +1,7 @@
 # The core and its seams
 
 tailrace is one core that knows git and reaches everything else through
-seven seams. Each seam is a contract of Part B, and each is bound by
+eight seams. Each seam is a contract of Part B, and each is bound by
 naming one or more profiles of Part C (92). Parts A and B do not change
 to admit a profile.
 
@@ -35,7 +35,13 @@ an audience, the claims required and the signers that may make each
 
 **A projection** (B.6) packs an output into an ecosystem's own bytes,
 renders a consumer layout, and serves it where the ecosystem's clients
-read no files (84 to 86). Eight projections are listed (C.11).
+read no files (84 to 86). Nine projections are listed (C.11).
+
+**The keeper** (B.8) holds the ledger: it appends a promotion only
+after the one that promotion names, answers a channel's chain in order,
+and never removes or reorders a claim (120 to 122). A git ref the gate
+pushes is the first profile; the store itself, where it retains the
+claims, the second (C.13, C.14).
 
 **A target** (B.7) says what an environment should run and what it
 runs, converges it, and reports (88 to 91). Seven targets are listed
@@ -44,8 +50,9 @@ runs, converges it, and reports (88 to 91). Seven targets are listed
 ## Who binds what
 
 The repository's authors bind the build, the projections and the
-targets in the repository; the operator binds the store, the signers and
-the landing for a host (92). Any number of projections and targets are
-bound at once; exactly one store is written by a publish, and exactly
-one landing is read. One conformance suite holds every profile to Parts
+targets in the repository; the operator binds the store, the signers,
+the landing and the keeper for a host, in one file beside the landing's
+own, in the same form (92, 118). Any number of projections and targets
+are bound at once; exactly one store is written by a publish, exactly
+one landing is read, and exactly one keeper is appended to. One conformance suite holds every profile to Parts
 A and B (93).

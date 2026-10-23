@@ -10,9 +10,9 @@ one is and who may make it, how a landing becomes a publish and a
 publish a version, how an offered artifact is accepted and released,
 how a channel moves and an environment follows it, how a consumer
 reads, and what tailrace keeps. Part B is its contracts: the operations
-it needs across its seven seams, and the guarantee each must give. The
-seams are the store, the build, the landing, the signer, the policy, a
-projection and a target. Part C is the profiles: the ways each contract
+it needs across its eight seams, and the guarantee each must give. The
+seams are the store, the build, the landing, the signer, the policy, the
+keeper of the ledger, a projection and a target. Part C is the profiles: the ways each contract
 is satisfied.
 
 Parts A and B name no mechanism: no command, file, format, field,
@@ -47,7 +47,7 @@ twice to make them so.
 | **a publisher** (a person, an agent or a host that runs a publish) | when to publish a landed revision | it never publishes a revision that has not landed, never moves a channel, and never makes a claim in another signer's name |
 | **a signer** (an identity that makes claims: a build host, a gate, a reviewer, a verifier, a person's agent) | what it claims of a digest | it never claims beyond what the policy lets that signer claim, and never alters a claim it made |
 | **the gate** (the one party that accepts and promotes, not the landing gate) | whether an offered artifact is accepted, as the policy fixes it; when a channel moves, within what the policy and a person allow | it never builds, never changes bytes, never accepts what the policy refuses, and never deploys |
-| **an approver** (a person the policy names) | whether a promotion or a deploy the policy holds for a person proceeds | it never approves a version that is not accepted |
+| **an approver** (a person the policy names) | whether a promotion the policy holds for a person proceeds, which is also how an environment that waits is let move (97) | it never approves a version that is not accepted |
 | **a consumer** (a person, an agent, a build, a surface or a target that reads) | which artifact and version to ask for | it never reads a version the policy it reads under refuses, and never changes what the store holds |
 | **a target** (where an environment runs) | how it is converged, by its own reconciler | it never decides which version it should run |
 | **the operator** | everything the repository's authors and the policy do not settle; which signers a host trusts | it never makes a landing that skipped the gate count as accepted |
@@ -112,8 +112,11 @@ redefine these.
   promotion moves.
 - **promotion**: the act that moves a channel to a version, and the
   record of that move.
-- **ledger**: every promotion of a repository, in order, each signed by
-  the gate, which nothing removes.
+- **ledger**: the chain of a channel's promotions, each a claim the
+  gate signs that names the promotion it follows, which nothing
+  removes.
+- **keeper**: where the ledger is held: it appends a promotion only
+  after the one that promotion names, and answers the chain.
 - **environment**: one target, the channel it follows, and whether it
   moves on its own or waits for an approver.
 - **reconciler**: what converges an environment on the version its
@@ -163,6 +166,9 @@ redefine these.
 9. A claim counts only through a signer the policy names and only for
    what the policy lets that signer claim. A claim from any other
    signer, or beyond that signer's reach, is kept and never counted.
+116. A policy binds a signer to the kinds of claim it may make, and for
+    a verdict to the checks it may claim, by the names the landing gives
+    them; it binds no signer by output or by ecosystem.
 10. A claim is never altered. A signer that would change its mind makes
     a new claim; the old one stays attached and stays readable.
 11. tailrace signs only in the identity of the host or the party that
@@ -190,13 +196,17 @@ redefine these.
 16. Nothing of a version is offered while any output the version names
     is unread or comes from a build whose outcome is not a pass; such a
     version is refused whole, naming the output.
+111. An output's outcome is a pass only when the build reports a pass
+    and, where the landing carries verdicts, a verdict with a pass names
+    its build identity (15); either alone is not a pass.
 17. A version exists only once its index is in the store. Artifacts
     offered before the index are not a version, and a publish that
     stops before its index has published nothing.
 18. A publish of the same landed revision again offers the same
     digests and ends at the same index where its projections pack the
-    same (87); where one does not, the publish names the artifact that
-    differed.
+    same (87); where one does not, the publish is refused naming the
+    artifact that differed, and the version's name stays with the first
+    index.
 19. A publish ends with an answer a program can read: the index's
     digest, the version, each artifact's digest and ecosystem name, and
     where each claim is attached.
@@ -223,6 +233,10 @@ redefine these.
     build is the same build whatever version it later becomes; a
     version is in the bytes only where the ecosystem's form requires
     it.
+110. One publish gives every artifact of the revision one version, and
+    the index names one version; a projection whose ecosystem versions
+    an artifact name by that name's own history does so as a profile of
+    the version rule, under the one version.
 
 ### A.5 Acceptance
 
@@ -230,6 +244,10 @@ redefine these.
     claims attached to it satisfy the policy for acceptance.
 94. Nothing accepted is ever un-accepted; a version a channel leaves
     stays accepted (38).
+117. A claim that counted at acceptance keeps counting after its
+    signer's identity expires (81, 94); a policy for a layout that
+    requires a signature still valid when the layout renders says so,
+    and refuses naming the claim.
 95. The gate judges an offered version on being told of it by a
     publish's answer or asked by an approver or a rule the policy
     names, under the accepting credential, in a place no offering
@@ -239,19 +257,31 @@ redefine these.
     attached to it.
 27. A party that can offer never accepts, releases or promotes: the
     credential that offers and the credential that accepts are never
-    the same.
-96. No host that builds holds the accepting credential.
+    the same, apart from the one host 108 admits.
+96. No host that builds holds the accepting credential, apart from the
+    one host 108 admits.
+108. A policy may name one host as both the offerer and the gate of a
+    repository with one publisher; the acceptance claim then says the
+    host accepted what it offered, so a reader tells a one-host
+    acceptance from a separated one, and a policy for a channel may
+    require a separated one.
 28. Acceptance of a version is acceptance of its index and every
     digest it names; a version one of whose artifacts is refused is
     refused whole, naming the artifact.
 29. The gate judges only by the claims attached, the landing and the
     policy; it never rebuilds, never inspects bytes beyond their
     digest, and asks nothing else whether to accept.
+107. The gate reads the policy for acceptance and for a channel at the
+    governed branch's landed head at the moment it judges, so a landed
+    change of policy binds every judgment after it and none before.
 30. Where the policy for a channel asks for an independent rebuild, the
     rebuild is made by a signer other than the one that made the
     offered build, from the same revision (55), and its claim says the
     digests matched or did not. The gate counts the
     claim; it never makes the rebuild.
+112. A verifier compares the digests of outputs, since packing need not
+    be reproducible (87); it compares packed artifacts as well only
+    where the projection promises the same bytes.
 
 ### A.6 Channels and promotion
 
@@ -271,12 +301,20 @@ redefine these.
 35. A channel moves only from the version it is at: a promotion that
     names a different starting version is refused and reported, never
     retried blind.
+105. The ledger is a chain per channel: every promotion claim names the
+    digest of the promotion it follows, a promotion whose predecessor is
+    not the chain's head is refused (35), and two promotions naming one
+    predecessor are a fork, reported and never resolved by choosing.
+109. Where a store cannot move a name against the digest it is expected
+    to be at, the gate moves the name, reads it back, and reports a name
+    found elsewhere as a lost race it repairs from the ledger, never
+    retried blind.
 36. A channel resolves to exactly one version for every reader (71):
     no resolution of a channel ever answers two versions, and a reader
     that holds an older answer holds it as of when it read.
 37. The policy may bind a channel to another: a version reaches such a
-    channel only from the channel it is bound to, and never from a
-    publish directly.
+    channel only from among the versions the ledger shows the bound
+    channel has held, and never from a publish directly.
 38. Moving a channel away from a version withdraws nothing from the
     store: the version stays accepted and readable by digest, and only
     the channel's name has left it.
@@ -287,6 +325,10 @@ redefine these.
     source of truth; every other place that reflects it, a tag, a
     claim, a layout, is a projection written from the source and never
     read as truth.
+106. The keeper's chain is the record 101 names for every channel; the
+    same claims are attached in the store to the versions they move to
+    (39), and where the store disagrees with the keeper, the store is
+    rewritten from the keeper.
 102. A repository may declare no channel and no environment: its
     versions are offered or accepted, a consumer reads them by version
     under the policy, and nothing of a publish changes when channels
@@ -305,16 +347,23 @@ redefine these.
     is that channel's head and nothing else. No environment is told a
     version directly.
 41. An environment that moves on its own converges on the channel's
-    head whenever the head moves; one that waits converges only after
-    an approver says so.
-97. An approval is recorded with the promotion it answers, and an
-    environment that waits never converges on an unrecorded approval.
+    head whenever the head moves; one that waits follows a channel bound
+    to the one it waits on (37), and converges when an approver promotes
+    it.
+97. An approval is a promotion (32): an approver's yes to an environment
+    moves the channel that environment follows, the ledger records it
+    like every promotion, and an environment never converges on a yes
+    the ledger does not hold.
 42. Converging an environment changes nothing in the store and nothing
     about the version: a reconciler reads the version's bytes by digest
     and verifies the claims it is told to require before it applies
     anything.
 43. A reconciler reports what the environment runs, by digest, and
     when it last converged.
+119. A reconciler leaves a marker of the digest it applied where the
+    target can hold one, and reports what runs from the marker; where
+    the target can hold none, it reports unread with the reason, never a
+    guess.
 98. An asker learns of every environment what it should run, what it
     runs, and that the two differ where they do; an environment whose
     state cannot be read is reported unread with the reason, never as
@@ -333,17 +382,31 @@ redefine these.
     to do so.
 47. A consumer layout holds only versions whose claims satisfy the
     policy the layout was rendered under.
+113. A layout for a repository that consumes another's versions is
+    rendered under the consuming repository's own policy at its landed
+    revision (65); a consuming repository with no policy renders under
+    the publishing repository's policy for layouts.
 99. A version a layout's policy refuses is answered to whoever asked
-    for the layout, naming the version and the claim found wanting.
+    for the layout, naming the version and the claim found wanting; a
+    served layout answers the refusal in its response to the client's
+    own request.
 48. A layout is rendered from the store and the policy alone, and
     rendering it again from the same store under the same policy gives
     the same layout. A layout is never a source of truth.
 49. The address a consumer's client records for an artifact is the
     same on every host, so a record the client keeps of where it read
     from names no host and no store of one owner.
+114. A served layout is reached by one fixed name and port on every
+    host, with the repository in the path, and one process on a host
+    serves every checkout; an address whose port differs from host to
+    host names a host.
 50. A consumer reads only what it asked for: a layout rendered for a
     set of versions holds those versions, and asking for a version
     reaches the store only when the layout lacks it.
+115. The host runs a served layout for as long as a client needs it; a
+    request for a version the layout lacks is a render from the store
+    under the policy (50), and 60 covers asking what tailrace holds,
+    never serving.
 51. A consumer layout that cannot be refreshed answers what it holds,
     says when it was last rendered, and never answers an absent version
     as refused or a refused one as absent.
@@ -386,9 +449,11 @@ redefine these.
     answer: which versions it published from which revisions, which
     layouts it rendered under which policy, and nothing that the store,
     the ledger or git holds already.
-62. Everything tailrace keeps is readable with no tailrace process
-    running, from every checkout of the repository, with git and a
-    file reader.
+62. The record of claimed versions (22) is the repository's and is
+    readable from every checkout with git; everything else tailrace
+    keeps is the host's and is readable on that host with a file
+    reader; nothing tailrace keeps needs a tailrace process running to
+    be read.
 63. What tailrace keeps can be deleted, apart from the record of
     versions claimed (22), and rebuilt from the store and git to the
     same state.
@@ -426,9 +491,10 @@ redefine these.
 
 ### B.2 The build
 
-74. **ensure**: given a revision and the outputs the authors declare,
-    those outputs present for that revision, or that the build could
-    not make them, naming which.
+74. **ensure**: given a revision and every output the authors declare,
+    in one asking, those outputs present for that revision, or that the
+    build could not make them, naming which; an answer that leaves any
+    output unmade refuses the version whole (16).
 75. **report**: given a revision and an output, the build identity the
     output came from, the build's outcome, and where the output's files
     are.
@@ -484,14 +550,28 @@ redefine these.
 91. **report**: given an environment, what it runs and when it last
     converged, recorded where every asker reads it (43).
 
-### B.8 Binding the contracts
+### B.8 The keeper
+
+120. **append**: given a promotion claim and the digest of the
+    promotion it names as its predecessor, the claim held at the head
+    of its channel's chain; or refused, naming the claim at the head.
+121. **chain**: given a channel, every promotion claim of it in order
+    from the first, or that none is held.
+122. A keeper never removes or reorders a claim, and answers the same
+    chain to every reader for as long as it holds it.
+
+### B.9 Binding the contracts
 
 92. Each seam is bound by naming one or more profiles of Part C. The
     repository's authors bind the build, the projections and the
     targets in the repository; the operator binds the store, the
-    signers and the landing for a host. Any number of projections and
-    targets are bound at once; exactly one store is written by a
-    publish, and exactly one landing is read.
+    signers, the landing and the keeper for a host. Any number of
+    projections and targets are bound at once; exactly one store is
+    written by a publish, exactly one landing is read, and exactly one
+    keeper is appended to.
+118. The operator's bindings for a host are kept in one file on the
+    host, beside the landing's own, in the same form, readable with a
+    file reader.
 93. One conformance suite holds every profile to Parts A and B; a
     profile that fails it is not one.
 
@@ -537,7 +617,14 @@ entries of the index with a subject annotation.
 moon runs the repository's tasks. An output is a task's declared
 outputs; the build identity is moon's task hash, which sluice's verdict
 also carries; `ensure` is one run of the named tasks, which replays
-what is cached; `report` reads moon's own state of each task.
+what is cached; `report` reads moon's own state of each task. The cache
+is moon's outputs directory, one archive per task hash, which moon reads
+before any remote and which every checkout on a host shares: `sync`
+renders into it the entries whose task hashes the landing's verdicts
+name for the revisions the checkout descends from, and a step after a
+landing pushes the archives that landing's build left. Where moon keeps
+outputs as a digest directory instead, the layout is the same digests
+linked.
 
 ### C.4 The build: a declared command
 
@@ -596,6 +683,7 @@ and whether each waits.
 | NuGet | the package file | a folder feed in the v3 layout | not needed |
 | a file | any file, with a declared media type | a directory | not needed |
 | an image | an image as pushed | the OCI layout itself | the layout served as a registry |
+| moon's cache | a task's output archive, by task hash | moon's outputs directory, one archive per hash, shared by every checkout on the host | not needed: moon reads the directory before any remote |
 
 ### C.12 Targets
 
@@ -608,6 +696,21 @@ and whether each waits.
 | Kubernetes | pull: the channel's tag, verified by Flux or Argo against the gate's signature; current reported by a watcher |
 | a Nix fleet | pull: each machine verifies and applies the release assigned to it, realising store paths from the cache |
 | a Nix binary cache | push: the version's store paths pushed to the cache |
+
+### C.13 The keeper: a git ref
+
+One ref per channel in the repository, `refs/tailrace/ledger/<channel>`,
+each commit holding one promotion claim; `append` is a push that fast-
+forwards, and a push the remote refuses is a predecessor that is not the
+head. The gate's own identity pushes, and no device that asks for a
+promotion commits anything.
+
+### C.14 The keeper: the store
+
+The chain as the promotion claims attached to the versions they move
+to, walked by predecessor from the channel's tag, for a store the
+operator can trust to retain them: a registry whose retention rules
+expire untagged artifacts by age is not one.
 
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
@@ -675,6 +778,9 @@ The rest of the stack, which a model builds on unless it says why not:
   and the tag is pushed before anything is offered.
 - The store is an OCI registry; on a developer's host, an OCI layout on
   disk synced to one.
+- The ledger's keeper is a git ref the gate pushes, and the same claims
+  are attached in the store; the store alone keeps the ledger only where
+  it retains referrers.
 - Signing is a key in a key service or a host key first, keyless once a
   private issuer stands.
 - Four surfaces answer from one core, each a plugin kept outside the
@@ -685,8 +791,9 @@ The rest of the stack, which a model builds on unless it says why not:
   each publish and each refusal, for millpond.
 - The profiles of Part C: an OCI registry and an OCI layout, moon and a
   declared command, sluice and a git branch, a key service, a host key
-  and keyless, the policy file, the eight projections and the seven
-  targets, in that order of building.
+  and keyless, the policy file, the git ref and the store as keepers,
+  the nine projections and the seven targets, in that order of
+  building.
 
 <!-- ANCHOR_END: givens -->
 <!-- ANCHOR: questions -->
@@ -694,19 +801,6 @@ The rest of the stack, which a model builds on unless it says why not:
 
 These are not requirements.
 
-- Which record is a channel's source of truth (101), git or the
-  store, when the store has no append-only primitive, and which is the
-  projection (33, 39, 61)?
-- May a solo user hold the offering and the accepting credentials on
-  one host under a policy that says so, and what must the policy then
-  say (27, 96)? The statement forbids it as written.
-- Under which repository's policy, at which landed revision, is a
-  consumer layout rendered for a repository that consumes another's
-  versions (47, 65)?
-- Which consumer layouts can hold a refusal's reason where the client
-  shows only absence (47, 58)?
-- What does a reconciler report for a target that cannot say what it
-  runs (43, 89)?
 - How does a Nix closure, thousands of digests with references among
   them, map onto artifacts and the cache without a reference-aware
   removal (52, 54)?
@@ -738,8 +832,8 @@ These are not requirements.
   a rebuild by a second signer; a peer host rebuilt it with no shared
   cache and attached a claim that the digests matched. The move is
   recorded, stable moves, and every environment that follows stable and
-  moves on its own converges; one that waits shows the promotion and
-  waits.
+  moves on its own converges; one that waits follows its own channel
+  bound to stable, shows the promotion, and waits for its own.
 - **S7.** A promotion names stable at a version stable has already
   left. It is refused naming the version stable is at, and nothing is
   retried.

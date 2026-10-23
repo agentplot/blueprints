@@ -5,8 +5,8 @@ is the source; a term here that the statement lacks is the book's own.
 
 - **accepted**: the state of an artifact the gate has judged to satisfy
   the policy for acceptance (25).
-- **approver**: a person the policy names to let a promotion or a deploy
-  proceed (41).
+- **approver**: a person the policy names to let a promotion proceed,
+  which is also how an environment that waits is let move (41, 97).
 - **artifact**: bytes, their digest, and the metadata that says what
   the bytes are (4).
 - **attestation**: a claim signed by its signer and attached to the
@@ -32,8 +32,12 @@ is the source; a term here that the statement lacks is the book's own.
   digest (6).
 - **landing**: a revision reaching a branch through the repository's
   own gate (14).
-- **ledger**: every promotion, in order, signed by the gate, which
-  nothing removes (33, 34).
+- **keeper**: where the ledger is held; it appends a promotion only
+  after the one that promotion names, and answers the chain (120 to
+  122).
+- **ledger**: the chain of a channel's promotions, each a claim the gate
+  signs that names the one it follows, which nothing removes (33, 34,
+  105).
 - **offered**: the state of an artifact a publisher put in the store
   and no gate has judged (20).
 - **policy**: the authors' rule for one audience: which claims from

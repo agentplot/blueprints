@@ -15,8 +15,10 @@ version is refused naming the version the channel is at, and nothing is
 retried blind.
 
 The policy may bind a channel to another (37): `stable` takes a version
-only from `beta`, never from a publish directly, so a version has stood
-on `beta` before anyone's `stable` environment sees it.
+only from among those the ledger shows `beta` has held, never from a
+publish directly, so a version has stood on `beta` before anyone's
+`stable` environment sees it, and `stable` can go back to a version
+`beta` has since left.
 
 ## The ledger
 
@@ -27,16 +29,42 @@ A wrong move is undone by a further promotion back, which the ledger
 records like any other; the version left stays accepted and readable
 (38).
 
-Every promotion is also a claim about the version it moves to, signed by
-the gate and attached to the version's index (39). A store that holds
+The ledger is a chain per channel (105). Every promotion is a claim the
+gate signs about the version it moves to, and it names the digest of
+the promotion it follows, so the chain is ordered and tamper-evident
+wherever it is held. A promotion whose predecessor is not the chain's
+head is refused (35), and two promotions that name one predecessor are
+a fork, which the gate reports and never resolves by choosing. The same
+claim is attached to the version's index (39), so a store that holds
 the version holds the proof of each channel it was ever on, and a copy
 of the version carries that proof with it (8).
 
-A channel resolves to exactly one version for every reader (36), and
-for every state a channel can be in exactly one record is its source of
-truth; a tag, a claim and a layout are projections written from it,
-never read as truth (101). A repository may declare no channel at all,
-and nothing of a publish changes when it does (102).
+## The keeper
+
+The chain is held by the keeper, a seam of its own (B.8): it appends a
+promotion only after the one that promotion names, and answers the
+chain (120 to 122). The keeper's chain is the one record every channel
+state rests on; the tag in the store, the claim on the index and a
+layout are written from it and never read as truth (101, 106), and
+where the store disagrees with the keeper, the gate rewrites the store
+from the keeper.
+
+The gate alone appends, so a person who asks for a promotion, from a
+terminal or a phone, asks the gate and the gate writes wherever the
+keeper profile says. For the standalone tool the keeper is a git ref
+per channel that the gate's own identity pushes, since a repository
+already has one and a fast-forward push refuses a stale predecessor
+for every store alike (C.13). A store keeps the chain alone only where
+the operator can trust it to retain untagged claims; a registry whose
+retention rules expire them by age cannot (C.14).
+
+Where a store cannot move a tag against the digest it is expected to be
+at, the gate moves it, reads it back, and reports a tag found elsewhere
+as a lost race it repairs from the ledger (109).
+
+A channel resolves to exactly one version for every reader (36). A
+repository may declare no channel at all, and nothing of a publish
+changes when it does (102).
 
 <figure class="tr">
 <svg viewBox="0 0 800 220" role="img" aria-label="Versions 1.3.0, 1.4.0 and 1.5.0 accepted in the store. beta points at 1.5.0 after each publish; stable points at 1.4.0, moved there by an approver, and may take a version only from beta. The ledger below lists each move in order.">

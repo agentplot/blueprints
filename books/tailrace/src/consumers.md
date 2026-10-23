@@ -9,11 +9,15 @@ store: a consumer layout (glossary).
 ## The policy is applied at the render
 
 A consumer layout holds only versions whose claims satisfy the policy
-the layout was rendered under (47). A version the policy refuses is
-absent from the layout, and the refusal is answered to whoever asked for
-the layout, naming the version and the claim found wanting (99). The client
+the layout was rendered under (47). For a repository that consumes
+another's versions, that is the consuming repository's own policy at
+its landed revision; one with no policy renders under the publisher's
+policy for layouts (113). A version the policy refuses is absent from
+the layout, and the refusal is answered to whoever asked for the
+layout, naming the version and the claim found wanting (99). The client
 sees only what it may install; the person who ran the sync sees why
-something is missing. The layout is never a source of truth (48):
+something is missing, and a served layout puts the reason in its
+response to the client's own request. The layout is never a source of truth (48):
 rendering it again from the same store under the same policy gives the
 same layout, and deleting it costs nothing but the next render.
 
@@ -21,18 +25,28 @@ same layout, and deleting it costs nothing but the next render.
 
 Most ecosystems read a local registry from disk: Maven and Gradle a
 `file://` repository, Go a proxy directory, Cargo a local registry per
-lockfile, NuGet a folder feed, Python a `file://` index or `find-links`
-(C.11). For those, `sync` is the whole consumer side: it reads what the
-repository's lockfiles pin, fills each layout with exactly those
-versions (50), and the client's own configuration points at the layout.
-npm reads no files, so `serve` is a localhost server over the same
-layout, speaking the registry protocol, and a request for a version the
-layout lacks runs the same render on demand.
+lockfile, NuGet a folder feed, Python a `file://` index or `find-links`,
+moon its outputs directory (C.11). For those, `sync` is the whole
+consumer side: it reads what the repository's lockfiles pin, fills each
+layout with exactly those versions (50), and the client's own
+configuration points at the layout. npm reads no files, so `serve` is a
+local server over the same layout, speaking the registry protocol, and
+a request for a version the layout lacks is a render from the store
+under the policy, on demand (115).
+
+One process serves a host (114). The host runs it for as long as a
+client needs it, every checkout on the host reads from it, and it
+answers at one fixed name and port with the repository in the path, so
+the address is the same on every machine. Worktrees never run one of
+their own: the policy is read at the landed revision, so every checkout
+of one repository sees the same view, and a port chosen per host would
+put that host into every lockfile.
 
 The address a client records is the same on every host (49): a fixed
-name for the served registry, a fixed path for a layout. A lockfile
-written on one machine names no host and no store of one owner, so the
-same lockfile installs on every machine and in every account.
+name and port for the served registry, a fixed path for a layout. A
+lockfile written on one machine names no host and no store of one
+owner, so the same lockfile installs on every machine and in every
+account.
 
 A layout that cannot be refreshed answers what it holds and says when it
 was last rendered (51). It never answers an absent version as refused,

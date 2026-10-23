@@ -17,8 +17,13 @@ with moon, one run of the declared tasks, which replays what is cached
 and runs what is not (C.3), and where the landing carries verdicts, an
 output whose build identity no verdict names is refused (15). The build answers, for each output, the build
 identity it came from, the build's outcome and where the files are
-(75). Nothing of a version is offered while an output is unread or its build
-did not pass; such a version is refused whole, naming the output (16).
+(75). The asking is one call for every declared output, and an answer
+that leaves one unmade refuses the version whole (74). An output passes
+only when the build reports a pass and, where the landing carries
+verdicts, a verdict with a pass names its identity; either alone is not
+a pass (111). Nothing of a version is offered while an output is unread
+or its build did not pass; such a version is refused whole, naming the
+output (16).
 
 The build identity is the join. sluice's verdict for the landing names
 the task hash each check passed on; the provenance tailrace attaches
@@ -39,9 +44,12 @@ anything else a prerelease (section 9).
 A version's name is claimed before anything is packed under it (22):
 the publish records it against the revision in the repository's shared
 history, as a tag pushed first, and a name already recorded against
-another revision refuses the publish naming both. Two publishers racing
-on one landing both end at the same index (18); two landings racing on
-one version leave one of them to derive the next.
+another revision refuses the publish naming both. One publish gives
+every artifact of the revision that one version (110). Two publishers
+racing on one landing both end at the same index (18); a repeat whose
+projection packs different bytes is refused naming the artifact, and
+the name stays with the first index; two landings racing on one version
+leave one of them to derive the next.
 
 The build never knows the version (24). Outputs are version-free and
 expensive, cached and verified under the gate; packaging is cheap and

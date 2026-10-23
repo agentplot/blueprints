@@ -12,33 +12,22 @@ exploration of the command line that preceded it. A fresh model
 handed the statement alone reconstructed tailrace the same day,
 `design/tailrace/models/reconstruction-1.md`, and asked twenty questions
 of it; with the review's three rulings they are the interview,
-`design/tailrace/models/interview-1.md`, and the operator rules on each
-into the statement as clauses numbered from 105. A clean-room review on the same day moved thirteen
-clauses and added 94 to 104; its three gaps that are rulings are the
-first three questions below. The questions below are the statement's and the
-pack's, each with the clauses it touches.
+`design/tailrace/models/interview-1.md`. The operator ruled on every
+question of it the same day, in a session; the rulings are clauses 105
+to 122 and the rewrites `design/tailrace/models/interview-1-answers.md`
+lists. A clean-room review the same day moved thirteen clauses and
+added 94 to 104. The questions below are what the interview left open
+and what the statement and the pack still hold, each with the clauses
+it touches.
 
 ## Versions and the ledger
 
-- Which record is a channel's source of truth and which the projection
-  (101), when the store has no append-only primitive (33, 39, 61). The
-  lean: the record in git, and each promotion also a referrer on the
-  version's index, so either alone reconstructs the other.
-- Whether a solo user may hold the offering and the accepting
-  credentials on one host under a policy that says so (27, 96); the
-  statement forbids it as written.
-- Under which repository's policy a consumer layout is rendered for a
-  repository that consumes another's versions (47, 65).
 - Whether every landing that carries a feature or a fix is a release,
   or a person cuts releases, is the authors' rule (21); the family's
   default is the former.
 
 ## Consumers
 
-- Which consumer layouts can hold a refusal's reason where the client
-  shows only absence (47, 58). The lean: serve answers the tarball
-  request itself with the reason; a file layout cannot, and the sync
-  that rendered it reported it.
 - Whether serve accepts a client's own publish (`npm publish` against
   it) and turns it into an offer in the host's identity, or stays
   read-only with the hook naming tailrace's publish. The lean:
@@ -48,9 +37,6 @@ pack's, each with the clauses it touches.
 
 ## Environments
 
-- What a reconciler reports for a target that cannot say what it runs
-  (43, 89); the statement says unread with the reason, and the form of
-  "the reason" is the model's.
 - The reconciler contract for a Kubernetes target that pulls: only a
   watcher, and which status it writes back (44, 91).
 
@@ -61,8 +47,10 @@ pack's, each with the clauses it touches.
   (52, 54), and whether the store serves the binary-cache protocol as a
   projection or layers under Attic. A prototype against one machine's
   closure and a measurement against Attic answer it.
-- Whether moon's remote cache protocol maps onto the store's put and
-  read alone, to be verified against moon's own cache API.
+- Whether the landed task hashes alone give the cache hit rate a fleet
+  needs, or moon's remote protocol must be served over the store as
+  well (C.3, C.11); a measurement on one host with many worktrees
+  answers it.
 
 ## Trust
 
