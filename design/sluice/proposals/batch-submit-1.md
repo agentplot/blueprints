@@ -48,6 +48,8 @@ minute after the set still lands with it. C is declined.
 
 ## The clause
 
+Ratified 2026-10-23 on the operator's yes ("I approve your recommendation"): 125, S59 and the C.5 form stand in `../requirements.md`; this section is the pointer.
+
 > 125. Several heads may be submitted as one act, in an order the
 >      submitter gives. sluice takes all of them or none, each as its
 >      own entry after the one before (6), and forms no candidate on
