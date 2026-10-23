@@ -300,12 +300,21 @@ redefine these.
 124. On a branch whose policy names a remote, the remote's revision is
      the branch, and a host's own ref of that name is sluice's copy of
      it: sluice levels the copy to each landing it reads, writes it at no
-     other time, and reads nothing from it. A submission is its
-     worktree's head, pushed to the remote and submitted there; nothing a
-     submit does writes the host's copy, and a copy behind or ahead of
-     the remote refuses no submission. A write to the copy by any other
-     hand is refused, and the refusal names the command that tried and
-     the revisions, in the records and to whoever ran it (1, 121, C.4).
+     other time, and reads nothing from it. A submission from a worktree
+     on a branch of its own is that worktree's head, pushed to the remote
+     as that branch and submitted there. A submission from a worktree
+     that has checked out a branch sluice lands on is of that branch as
+     the remote holds it: the submit pushes nothing to that branch, opens
+     or updates the request from it, and submits the remote's revision;
+     the worktree's head there is the host's copy, and where it differs
+     from the remote the submit says so, with both revisions. A submit
+     pushes only a branch sluice does not land on (1). Nothing a submit
+     does writes the host's copy, and a copy behind or ahead of the
+     remote refuses no submission. A write to the copy by any other hand
+     is refused, judged by the ref's own value on the host before and
+     after, never by the remote's revision, and the refusal names the
+     command that tried and the revisions, in the records and to whoever
+     ran it (1, 121, C.4).
      What is refused is a change of the copy's value: a transaction that
      leaves every protected ref at the value it had, git's own packing
      of its refs among them, moves nothing and passes; sluice's
@@ -1004,12 +1013,14 @@ section asked is answered by a clause.
   remote, or accepts the revision read, naming it; the chain is then
   formed on it (121).
 - **S58.** A landing's worktree has a bolt's branch checked out on a host
-  whose copy of it stands at the remote's older revision, the worktree's
-  head two landings ahead. Its submit pushes the head to the remote's
-  branch, opens the request and submits it; the host's copy is left
-  where it was and levelled when the landing is read. A tool that tries
-  to move the copy to the head is refused, and the refusal names the
-  tool's command and both revisions (124).
+  whose copy of that branch, and so the worktree's head, stands at a
+  revision two landings behind the remote's. Its submit to the shared
+  line pushes nothing to the bolt's branch: it opens the request from
+  the branch as the remote holds it, submits the remote's revision, and
+  reports the copy behind with both revisions. The copy is levelled on
+  the next read of the branch. A tool that tries to move the copy to the
+  remote's revision by hand is refused, and the refusal names the tool's
+  command and both revisions (124).
 - **S64.** Every fetch on the host starts git's own packing of its refs.
   The protection lets it through, since it leaves every protected ref's
   value as it was. One packing holds git's lock at the moment sluice
