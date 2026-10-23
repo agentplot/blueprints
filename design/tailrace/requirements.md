@@ -963,7 +963,10 @@ verdict is reached from attached claims and a policy, how a channel
 moves and an environment follows, how a consumer layout is rendered,
 with fixed examples, and how a store, a build, a signer, a projection
 and a target are added. A conformance suite whose scenarios each cite
-the clauses they exercise, failing when a clause is cited by nothing.
-The profiles of Part C, each passing the suite.
+the clauses they exercise, failing when a clause is cited by nothing
+and named by no unit of the plan that will cite it: a clause a later
+unit builds is named in the suite's register with that unit, reported
+as waiting on every run, and leaves the register with the commit that
+cites it. The profiles of Part C, each passing the suite.
 
 <!-- ANCHOR_END: deliver -->
