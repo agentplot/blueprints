@@ -42,19 +42,19 @@ claim is attached to the version's index (39), so a store that holds
 the version holds the proof of each channel it was ever on, and a copy
 of the version carries that proof with it (8).
 
-## The keeper
+## The ledger as a seam
 
-The chain is held by the keeper, a seam of its own (B.8): it appends a
-promotion only after the one that promotion names, and answers the
-chain (120 to 122). The keeper's chain is the one record every channel
-state rests on; the tag in the store, the claim on the index and a
+Where the chain is held is a seam of its own, the ledger (B.8): it
+appends a promotion only after the one that promotion names, and
+answers the chain (120 to 122). The ledger is the one record every
+channel state rests on; the tag in the store, the claim on the index and a
 layout are written from it and never read as truth (101, 106), and
-where the store disagrees with the keeper, the gate rewrites the store
-from the keeper.
+where the store disagrees with the ledger, the gate rewrites the store
+from the ledger.
 
 The gate alone appends, so a person who asks for a promotion, from a
 terminal or a phone, asks the gate and the gate writes wherever the
-keeper profile says. For the standalone tool the keeper is a git ref
+ledger's profile says. For the standalone tool the ledger is a git ref
 per channel that the gate's own identity pushes, since a repository
 already has one and a fast-forward push refuses a stale predecessor
 for every store alike (C.13). A store keeps the chain alone only where

@@ -12,7 +12,7 @@ The short answer. tailrace owns what a version is, which claims it
 carries, which channel names it and why. Switchboard owns which installs
 follow a channel, how a cascade of compositions reaches them, and the
 deploy that converges each one. The join is three bindings: the class's
-ECR is tailrace's store, the class's table is tailrace's keeper, and
+ECR is tailrace's store, the class's table is tailrace's ledger, and
 Switchboard's dispatch is the reconciler of one tailrace target.
 
 ## 1. The two systems in one page
@@ -26,7 +26,7 @@ channel and the ledger records the move (33); an environment follows a
 channel and a reconciler converges it (40). It reaches everything outside
 itself through eight seams, each bound by a profile (92): the store
 (B.1), the build (B.2), the landing (B.3), the signer (B.4), the policy
-(B.5), a projection (B.6), a target (B.7) and the keeper (B.8). Four
+(B.5), a projection (B.6), a target (B.7) and the ledger (B.8). Four
 surfaces answer from one core (A.10).
 
 **Switchboard** is one console and one control plane over everything
@@ -53,7 +53,7 @@ Side by side, by what each owns:
 | what builds | the repository's own tool under its landing gate; tailrace never builds (15) | the platform module on the class's fleet, three jobs (ADR 0058) |
 | what lands | sluice, which tailrace reads (C.5) | sluice on switchboard-kit's own branches; the fleet builds the pushed head (gates.6) |
 | a channel | a pointer to one accepted version, moved only by the gate (31, 32) | a `CH#` row moved by a conditional write; `stable` only by a release (lifecycle.2) |
-| the record of moves | the ledger, a signed chain the keeper holds (105, 120) | the channel row's `prev` and the app timeline |
+| the record of moves | the ledger, a signed chain (105, 120) | the channel row's `prev` and the app timeline |
 | who follows a channel | an environment, declared by the authors (C.10) | a subscription row, authored or derived (`spec/state.md`) |
 | waiting for a person | a channel of the environment's own, bound to the one it waits on; a yes is a promotion (41, 97) | `policy: manual`, an `update-available` row an operator deploys |
 | converging | a reconciler, push or pull, with the environment's own credential (42 to 45) | an executor working a deploy row under the tenant's role (deploy.8) |
@@ -113,7 +113,7 @@ gives another a version, an index or a move (124), and that a channel
 belongs to one component (125). A cascade is the opposite: one
 component's move causing another component's new version. tailrace gives
 the cascade two things and nothing more: a channel per component that a
-consumer can follow, and a keeper whose append is the one event that says
+consumer can follow, and a ledger whose append is the one event that says
 a channel moved. Which consumers follow which member's channel, and what
 a consumer does when it moves, is Switchboard's `MEMBER#` row and its
 `rebuild`, `stream` and `bind` mechanics (`spec/compositions.md`,
@@ -173,7 +173,7 @@ touch nothing in tailrace.
 | a projection (B.6) | npm, a file, an image, and one to add: a CloudFormation template set | C.11 |
 | a target, StackSet (B.7) | a StackSet install, its instances the tenants | C.12 |
 | a target, pool (B.7) | Switchboard's dispatch and executors over the subscription roster | a new profile, section 3.4 |
-| the keeper (B.8) | the class's DynamoDB table, a partition per chain, conditional appends | a new profile, section 4.3 |
+| the ledger (B.8) | the class's DynamoDB table, a partition per chain, conditional appends | a new profile, section 4.3 |
 | what turns the wheel | the class's GitHub App brokering the publish job on push; the store's event telling the gate | no seam; section 6 proposes a Part C list |
 
 **Assumption A1.** ECR's referrers API and its event for a manifest push
@@ -185,7 +185,7 @@ open.
 
 ### 3.2 The thin hosted layer
 
-The thin layer is three things and nothing else: the gate, the keeper,
+The thin layer is three things and nothing else: the gate, the ledger,
 and the read of the policy. It verifies claims, appends promotions and
 reads a file. It builds nothing (29), rebuilds nothing (30), holds no
 artifact (section 9 of the statement) and deploys nothing (49 of the
@@ -196,7 +196,7 @@ doing the work, the design has been pulled back to the forge
 **Built into Switchboard, as one service of the control plane.** The
 recommendation is a function in the compute stack, `tailrace-gate`,
 which links tailrace's core as a library and binds four profiles: the ECR
-store, the KMS accepting signer, the DynamoDB keeper and the policy file
+store, the KMS accepting signer, the DynamoDB ledger and the policy file
 read through the App. The reasons:
 
 - The gate holds the one accepting credential, in a place no offering
@@ -204,10 +204,10 @@ read through the App. The reasons:
   account under the tenant's roles; that is where reconcilers run (45),
   and where a build's credential can reach. The control plane is the
   owner's trusted place.
-- The gate alone appends to the keeper (ADR 0009), and the keeper is the
+- The gate alone appends to the ledger (ADR 0009), and the ledger is the
   class's table. A service in the same stack appends in the same
   transaction that writes the projected channel row, so the stream event
-  dispatch reacts to is the keeper's own append.
+  dispatch reacts to is the ledger's own append.
 - The gate reads every connected repository's policy at the landed head
   (65, 107). The class's App already holds that read.
 - Switchboard's rule for a managed capability (process.3) and its rule
@@ -232,7 +232,7 @@ pool target, run for every environment of the roster that follows the
 channel that moved. It is neither a promotion nor a thing above tailrace:
 
 - It is not a promotion, because it moves no channel. The channel moved
-  when the keeper appended (33); dispatch reads committed state, as
+  when the ledger's append committed (33); dispatch reads committed state, as
   Switchboard already requires of itself (`spec/dispatch-and-deploy.md`,
   Events derive from committed state).
 - It is one environment converging, many times. The statement has an
@@ -265,7 +265,7 @@ Three Switchboard concepts land on the ledger instead of on rows:
   bound channel's history (37).
 - **A release is several promotions in one act.** Switchboard's release
   approval writes all of its moves in one transaction (releases.2). The
-  keeper profile on one table can append to several chains in one
+  ledger profile on one table can append to several chains in one
   `TransactWriteItems`, each conditioned on its predecessor. Section 6
   proposes the clause that admits it.
 
@@ -318,10 +318,10 @@ Each step names who acts and what it reads.
    App (107), verifies each claim against the signers the policy names
    (80), and attaches the acceptance claim signed with the class's KMS key
    (26). For each channel whose rule follows each publish, `beta`, it
-   appends a promotion claim to the keeper, conditioned on the
+   appends a promotion claim to the ledger, conditioned on the
    predecessor (120), in the same transaction as the projected `CH#` row
    (101, 106), and moves the ECR tag `beta` with the expected digest
-   (109). Reads: ECR, the policy, the keeper's head. Switchboard acts as
+   (109). Reads: ECR, the policy, the ledger's head. Switchboard acts as
    the bus; tailrace's gate acts.
 5. **The same event writes Switchboard's rows.** A second rule invokes
    `tailrace-index`, which writes the `VER#` row with the ECR digest as
@@ -331,7 +331,7 @@ Each step names who acts and what it reads.
    pushes and update the proof rows. Switchboard's `deploy.18`, which
    reads a version's proof rows before a change set executes, is met by
    tailrace's acceptance claim.
-6. **The keeper's append is the event.** The table's stream reaches the
+6. **The ledger's append is the event.** The table's stream reaches the
    forwarder, which emits `Channel Head Advanced`; dispatch queries GSI1
    for every subscription on `<component>#beta` and, for each install
    that moves on its own, writes a `DEP#` row `queued` (deploy.4). That
@@ -361,7 +361,7 @@ Each step names who acts and what it reads.
    the claims required, a rebuild claim among them where the policy says
    so (30). It appends one promotion per move in one transaction (section
    6, the proposed clause), and the ECR tag `stable` follows. Reads: the
-   policy, the keeper, the index's claims.
+   policy, the ledger, the index's claims.
 9. **A production install waits, then moves.** The production install
    follows `<component>/prod052021`, bound to `stable`. Dispatch reports
    `update-available`. The release manager's "Deploy" asks the gate to
@@ -373,7 +373,7 @@ Each step names who acts and what it reads.
    tenant runs the version whose bytes passed the landing gate, which no
    step after the landing rebuilt (I3).
 
-Steps 1 and 3 run where sluice runs; steps 4, 8 and the keeper's append
+Steps 1 and 3 run where sluice runs; steps 4, 8 and the ledger's append
 are the thin layer; steps 5 to 7 and 9 are Switchboard's. Nothing in
 steps 4 to 9 builds.
 
@@ -434,11 +434,11 @@ require = [
 ]
 
 [channels."closer/beta"]
-asker = "after-publish"                 # the gate's rule follows each publish (32)
+rule = "after-publish"                 # the gate's rule follows each publish (32)
 require = [{ claim = "accepted", from = ["gate"] }]
 
 [channels."closer/stable"]
-asker = { approver = "release-manager" }
+approver = "release-manager"
 bound_to = "closer/beta"                # only versions beta has held (37)
 require = [
   { claim = "accepted", from = ["gate"] },
@@ -446,12 +446,12 @@ require = [
 ]
 
 [channels."closer/lts-2026"]
-asker = { approver = "release-manager" }
+approver = "release-manager"
 bound_to = "closer/stable"
 
 # A channel pattern for branch builds (section 6 proposes the clause).
 [channels."closer/alpha/*"]
-asker = "after-publish"
+rule = "after-publish"
 branch = "*"                            # the branch whose prerelease it follows
 require = [{ claim = "accepted", from = ["gate"] }]
 
@@ -514,10 +514,10 @@ jobs:
       - run: tailrace gate accept ${{ github.event.client_payload.digest }}
       - run: tailrace gate promote --follow-publish ${{ github.event.client_payload.digest }}
       - if: inputs.promote != ''
-        run: tailrace gate promote ${{ inputs.promote }} --asker "${{ github.actor }}"
+        run: tailrace gate promote ${{ inputs.promote }} --approver "${{ github.actor }}"
 ```
 
-### 4.3 The DynamoDB keeper profile
+### 4.3 The DynamoDB ledger profile
 
 One partition per chain in the one business table (state.14). An append
 is one transaction: put the claim, move the head conditioned on the
@@ -525,21 +525,21 @@ predecessor, and write Switchboard's projected channel row. The chain is
 one Query.
 
 ```
-PK = LEDGER#<component>#<channel>   SK = SEQ#<zero-padded n>   claim (DSSE envelope), digest, predecessor, asker, at
+PK = LEDGER#<component>#<channel>   SK = SEQ#<zero-padded n>   claim (DSSE envelope), digest, predecessor, by, at
 PK = LEDGER#<component>#<channel>   SK = HEAD                   digest, seq
 PK = APP#<app>                      SK = CH#<channel>           version, movedAt, movedBy, prev   (projection, written here and read as truth by nothing of tailrace's)
 ```
 
 ```rust
 // Against B.8 (120 to 122). Illustrative.
-pub trait Keeper {
+pub trait Ledger {
     fn append(&self, claim: &PromotionClaim, predecessor: Option<Digest>) -> Result<Head, Refused>;
     fn chain(&self, channel: &ChannelId) -> Result<Vec<PromotionClaim>, Unreadable>;
 }
 
-pub struct DynamoKeeper { table: String, client: dynamodb::Client }
+pub struct DynamoLedger { table: String, client: dynamodb::Client }
 
-impl Keeper for DynamoKeeper {
+impl Ledger for DynamoLedger {
     fn append(&self, claim: &PromotionClaim, predecessor: Option<Digest>) -> Result<Head, Refused> {
         let pk = format!("LEDGER#{}#{}", claim.component, claim.channel);
         let head = self.read_head(&pk)?;                       // (120): the head first
@@ -552,7 +552,7 @@ impl Keeper for DynamoKeeper {
             .update(pk.clone(), "HEAD", set!(digest = claim.digest, seq = seq),
                     cond!("digest = :pred", pred = predecessor))   // the conditional append
             .put(format!("APP#{}", claim.component), format!("CH#{}", claim.channel),
-                 projection!(version = claim.to_version, prev = predecessor, movedBy = claim.asker))
+                 projection!(version = claim.to_version, prev = predecessor, movedBy = claim.by))
             .send()?;                                             // a lost race is a refusal (122)
         Ok(Head { digest: claim.digest, seq })
     }
@@ -570,7 +570,7 @@ whole when any condition fails (section 6, the proposed clause).
 
 ### 4.4 The Switchboard pool target
 
-Against B.7 (88 to 91), with a roster. `desired` is the keeper's head;
+Against B.7 (88 to 91), with a roster. `desired` is the ledger's head;
 `current` is the install row's recorded digest; `apply` writes the deploy
 row; `report` reads the row's terminal evidence back.
 
@@ -583,7 +583,7 @@ pub trait Target {
     fn report(&self, env: &Environment) -> Result<Report, Unread>;                // (91)
 }
 
-pub struct SwitchboardPool { table: String, keeper: DynamoKeeper }
+pub struct SwitchboardPool { table: String, ledger: DynamoLedger }
 
 impl Target for SwitchboardPool {
     fn roster(&self) -> Result<Vec<Environment>, Unreadable> {
@@ -591,7 +591,7 @@ impl Target for SwitchboardPool {
         // and whether it waits. A waiting install's channel is <component>/<install>, bound to the row's channel.
     }
     fn desired(&self, env: &Environment) -> Result<Option<Digest>, Unreadable> {
-        self.keeper.head(&env.channel).map(|h| h.map(|h| h.digest))    // the chain, never the tag (101)
+        self.ledger.head(&env.channel).map(|h| h.map(|h| h.digest))    // the chain, never the tag (101)
     }
     fn current(&self, env: &Environment) -> Result<Digest, Unread> {
         // ENV#<env> APP#<app> row: the digest the last terminal deploy recorded (119); absent is Unread with the reason
@@ -675,7 +675,7 @@ key = "arn:aws:kms:us-west-2:937485902695:key/<fleet-key>"   # offering only (27
 profile = "sluice"
 remote = "origin"
 
-[keeper]
+[ledger]
 profile = "none"                          # a publisher never appends (20)
 ```
 
@@ -695,7 +695,7 @@ key = "arn:aws:kms:us-west-2:937485902695:key/<gate-key>"    # accepting; held n
 profile = "sluice"
 remote = "github-app"                     # refs read through the class's App installation token
 
-[keeper]
+[ledger]
 profile = "dynamodb"
 table = "switchboard"
 partition = "LEDGER#"
@@ -747,10 +747,10 @@ Four rules this design follows to stay off that path:
    of it.** A version is an index in ECR with its claims attached (6, 8);
    Switchboard's `VER#`, proof and catalog rows are written from the
    store and can be deleted and rebuilt from it (63). The one thing true
-   only in the table is the keeper's chain, which is tailrace's by
+   only in the table is the ledger, which is tailrace's by
    profile (ADR 0009) and copies out as bytes.
 3. **The center verifies and never does the work.** The thin layer is
-   the gate, the keeper and the policy read. No build-scoped credential
+   the gate, the ledger and the policy read. No build-scoped credential
    is issued, no destination is handed out, no check is run and no
    artifact is packaged there (29, 30; actors table).
 4. **The repository carries its own policy, and the platform reads it at
@@ -785,10 +785,10 @@ Proposed wordings, numbered past 125.
   Switchboard's `alpha/<branch>` (`spec/state.md`, Channel semantics)
   without a channel per branch in the file.
 - **128, a promotion of several channels.** "An act may ask for several
-  promotions at once, each of one channel; the keeper appends each after
-  its own predecessor, and where the keeper can hold the appends as one,
+  promotions at once, each of one channel; the ledger appends each after
+  its own predecessor, and where the ledger can hold the appends as one,
   it refuses them whole when any one is refused, naming the chain. A
-  keeper that cannot appends them in order and reports the first
+  ledger that cannot appends them in order and reports the first
   refused, and the moves before it stand." This admits Switchboard's
   release (releases.2) and keeps 35 and 105 per chain.
 - **129, the asker's identity.** "The ledger names an asker by an
@@ -808,11 +808,11 @@ Proposed wordings, numbered past 125.
   store's own event delivered to the gate; a person at a surface. This
   answers the operator's "trigger seam" question with a profile list and
   no ninth seam, since the core never calls it (ADR 0005).
-- **C.15, the keeper: a database table.** "One partition per chain in a
+- **C.15, the ledger: a database table.** "One partition per chain in a
   table with conditional writes: `append` puts the claim and moves the
   head in one transaction conditioned on the predecessor, and `chain` is
   one ordered read; a table whose writes are not conditional is not a
-  keeper. A control plane that holds its own rows beside the chain writes
+  ledger. A control plane that holds its own rows beside the chain writes
   them in the same transaction and reads them as projections (101)."
   Generic; names no vendor (core.24).
 - **C.12, a new target row.** "A pool: a control plane's roster of
@@ -832,12 +832,12 @@ Proposed wordings, numbered past 125.
 - **The book, family.md.** The Switchboard section states that
   tailrace's channels are off in that deployment and the publish's answer
   is what Switchboard consumes. Rewrite it whole to this model: the
-  channels are tailrace's, held in a keeper Switchboard binds, and
+  channels are tailrace's, held in a ledger Switchboard binds, and
   Switchboard's dispatch is a pool target. ADR 0002's consequence that
   names "the Switchboard hybrid" stays true in the narrow sense that
   publish stands alone; the family page is where the stance lives.
-- **The roadmap.** The hosted keeper and the pool target sit in phase 3.
-  Section 8 proposes pulling the database keeper and the roster into
+- **The roadmap.** The hosted ledger and the pool target sit in phase 3.
+  Section 8 proposes pulling the database ledger and the roster into
   phase 2, after the StackSet target, without touching phase 1.
 
 ### 6.2 Switchboard: what moves
@@ -849,7 +849,7 @@ ADRs to revisit:
   argument (24, C.11). The module's three-job workflow becomes the
   landing on sluice and one publish job. What survives of 0058 is its
   first outcome, the repository declares how and the platform owns what
-  follows, with "what follows" now the gate, the keeper and dispatch.
+  follows, with "what follows" now the gate, the ledger and dispatch.
 - **0003, 0070, 0071, 0073, the fleet and the runner broker.** Stand.
   The fleet is sluice's pool and the publish job's runner; the App
   brokers both. 0073's connect-time dispatch starts the publish job for
@@ -884,8 +884,8 @@ Spec sections to rewrite:
   §3.3's module and runner become sluice's pool and the publish job;
   §3.4's version gate becomes the landing's verdicts; §3.5's handshake
   goes, since a job holds an offering credential and nothing else (27).
-- `spec/state.md`: `CH#` is a projection the keeper's transaction writes;
-  `LEDGER#` partitions are the keeper; `VER#` is written from the index;
+- `spec/state.md`: `CH#` is a projection the ledger's transaction writes;
+  `LEDGER#` partitions are the ledger; `VER#` is written from the index;
   proof rows are claims. The write discipline stands.
 - `spec/dispatch-and-deploy.md`: `policy: manual` becomes the install's
   own channel; a held version is a promotion; "a row for every match" is
@@ -894,7 +894,7 @@ Spec sections to rewrite:
   `stable`'s release-only guard is the channel's policy naming an
   approver (32); "came through beta" is 37.
 - `architecture/registry.md`: lifecycle.4 is amended to admit an OCI tag
-  written from the keeper and read as truth by nothing; registry.2's
+  written from the ledger and read as truth by nothing; registry.2's
   "one path" becomes the store's event; ECR gains the artifact
   repositories.
 - `spec/compositions.md`: the rebuild executor lands a lock commit
@@ -917,8 +917,8 @@ moon remote cache, the open item "channel heads copied to registry tags"
 
 Each with options and a recommendation, for cards.
 
-1. **The keeper in a Switchboard deployment.** (a) the class's DynamoDB
-   table, a hosted keeper profile; (b) a git ref the gate pushes, with
+1. **The ledger in a Switchboard deployment.** (a) the class's DynamoDB
+   table, a hosted ledger profile; (b) a git ref the gate pushes, with
    the table synced from the store's events. Recommend (a): the append is
    the stream event dispatch already reacts to, and no sync hop sits
    between the ledger and the deploy.
@@ -962,7 +962,7 @@ Each with options and a recommendation, for cards.
     Recommend (a) now, (b) when phase 2 delivers keyless; sluice's pool
     jobs already sign keylessly, and 104 wants one name for one signer,
     so (b) is the destination.
-13. **Where the new profiles live.** (a) the database keeper, the pool
+13. **Where the new profiles live.** (a) the database ledger, the pool
     target and the template projection as generic profiles in the
     tailrace repository, bound by name in switchboard-kit; (b) in
     switchboard-kit alone. Recommend (a); core.24 admits a generic
@@ -970,18 +970,19 @@ Each with options and a recommendation, for cards.
 14. **Switchboard's first step.** (a) switchboard-kit publishes itself
     through tailrace into dev's ECR beside its current path, a second
     writer of a new fact and no fact's second writer (migration.1); (b)
-    wait for phase 3 and cut over. Recommend (a), at tailrace's bolt 2.
+    wait for phase 3 and cut over. Recommend (a), at tailrace's bolt 3.
 
 ## 8. A phase plan
 
-tailrace's phase 1 does not wait on Switchboard. Its three bolts stand as
+tailrace's phase 1 does not wait on Switchboard. Its five bolts stand as
 `phase-1-bolts.md` draws them, on the family's own repositories.
 
-**tailrace phase 1, unchanged.** Bolt 1, publish on a laptop into a
-layout; bolt 2, the ECR store, the KMS signer, the gate, the git-ref
-keeper and promotion; bolt 3, sync, serve and moon's cache. One reading
-belongs to bolt 2 that Switchboard needs early: whether ECR's referrers
-and its push event for a manifest with a subject work as A1 assumes.
+**tailrace phase 1, unchanged.** Bolt 1, the core; bolt 2, publish on a
+laptop into a layout; bolt 3, the ECR store and moon's cache; bolt 4,
+the KMS signer, the gate, the git-ref ledger and promotion; bolt 5,
+sync and serve. One reading belongs to bolt 3 that Switchboard needs
+early: whether ECR's referrers and its push event for a manifest with a
+subject work as A1 assumes.
 
 **Switchboard S0, now, with no tailrace code.** Stop widening the forge
 path: no new packager, stamper or handshake call lands; the fleet's
@@ -991,16 +992,16 @@ ADRs once ruled. Move switchboard-kit's own main to publish from a
 sluice landing's cache rather than a rebuild where it can, which 0080
 began.
 
-**Switchboard S1, with tailrace bolt 2.** switchboard-kit carries
+**Switchboard S1, with tailrace bolt 3.** switchboard-kit carries
 `.config/tailrace.toml` and the publish workflow of section 4.2, and
 publishes its own versions into dev's ECR beside the current bucket path.
-The gate runs in its bridge form (decision 2c) with the git-ref keeper.
-`tailrace status` on the box shows switchboard-kit's `beta` and `stable`
-from the ledger. Nothing deploys from it yet.
+The gate runs in its bridge form (decision 2c) with the git-ref ledger
+once bolt 4 lands; until then the publish stands alone and `tailrace
+status` reads the index. Nothing deploys from it yet.
 
 **tailrace phase 2, with the Switchboard profiles pulled forward.** The
 StackSet, package registry and static site targets as the roadmap has
-them, then the database keeper (C.15), the roster (126) and the pool
+them, then the database ledger (C.15), the roster (126) and the pool
 target (C.12 row) as generic profiles with their conformance scenarios,
 and the CloudFormation template projection (C.11 row). Keyless signing
 follows.
@@ -1014,13 +1015,13 @@ with the deploy approval in place. The rebuild executor lands a lock
 commit. The platform module stops packaging for any app on tailrace.
 
 **Switchboard S3, with tailrace phase 3.** The gate becomes the control
-plane's function with the class's KMS key and the table as keeper;
-`CH#` becomes a projection the keeper's transaction writes; `manual`
+plane's function with the class's KMS key and the table as ledger;
+`CH#` becomes a projection the ledger's transaction writes; `manual`
 installs move to channels of their own; releases are several promotions
 in one act; the deploy row is the pool target's `apply`. The handshake,
 the build row's outcomes and the version gate retire. The herdr pane and
 the Flywheel plugin from phase 3 read Switchboard's ledger as they read
-any keeper's.
+any ledger's.
 
 **Done when.** A landing on a Willdan repository through sluice on the
 fleet is published by tailrace into the class's ECR, accepted by the gate

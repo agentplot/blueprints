@@ -8,7 +8,7 @@ statement: a clause from 105, or the clause rewritten.
 | question | ruling | landed |
 |---|---|---|
 | Q1 (22) | confirmed as the review reworded it | 22 |
-| A, Q2 (101, 33, 39) | the ledger is a chain of gate-signed promotion claims, each naming its predecessor; the chain is the truth, and where it is kept is a seam, the keeper. The standalone tool keeps it in a git ref the gate pushes, and the same claims are attached in the store; a hosted backend would name its own append-only log; the store alone keeps it only where it retains referrers | 105, 106, 120 to 122, C.13, C.14, glossary, givens |
+| A, Q2 (101, 33, 39) | the ledger is a chain of gate-signed promotion claims, each naming its predecessor; the chain is the truth, and where it is kept is a seam, the ledger (B.8). The standalone tool keeps it in a git ref the gate pushes, and the same claims are attached in the store; a hosted backend would name its own append-only log; the store alone keeps it only where it retains referrers | 105, 106, 120 to 122, C.13, C.14, glossary, givens |
 | Q3 (29, 65) | the gate reads the policy at the governed branch's landed head when it judges | 107 |
 | Q4 (37) | a bound channel takes any version the ledger shows the bound channel held, so a rollback to a version beta has left is allowed | 37 |
 | B (27, 96) | a solo host may offer and accept under a policy that names it as the gate, and the acceptance claim says so | 27, 96, 108 |
@@ -34,7 +34,7 @@ statement: a clause from 105, or the clause rewritten.
 ## What the operator said beyond the leans
 
 - On A: the family's habit of keeping records in git is not a reason.
-  The ruling rests on the chain being the truth and the keeper a seam,
+  The ruling rests on the chain being the truth and the ledger a seam,
   so a button on a phone asks the gate and the gate writes wherever the
   profile says; nobody's device commits.
 - On Q8: one daemon per host, never one per worktree, because the

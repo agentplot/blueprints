@@ -74,7 +74,7 @@ of the gate, so it comes before it.
 |---|---|---|---|
 | the registry store | `profiles/store/registry/` | the OCI registry profile (C.1): blobs, manifests, referrers with the tag-schema fallback, tag put by expected digest and read back where absent (109); a layout synced to a registry; ECR's open issues answered by a push against a real repository | the store scenarios pass against ECR and zot, in the tools layer; the lost race reported and repaired from the ledger (S7) |
 | moon's cache | `profiles/projection/moon_cache/`, `crates/tailrace-core/src/cache.rs` | the cache namespace: a cache entry is never an artifact (52 to 55, 100, core.30); `sync` filling moon's outputs directory with the archives the landing's verdicts name, shared by every checkout on the host (C.3, C.11) | S14; a task that passed on one host replays from the store on another |
-| the push after a landing | `crates/tailrace/src/commands/` for the one command, `crates/tailrace-core/src/record.rs` | the step after a landing that pushes the archives the landing's build left, run by the landing host as a sluice hook or by hand; what tailrace keeps of it, the host's (61, 62); the record rebuilt from the store and git (63) | a landing on one host followed by `tailrace sync` on another replays every task the landing ran |
+| the push after a landing | `crates/tailrace/src/commands/` for the one command, `crates/tailrace-core/src/record.rs` | the step after a landing that pushes the archives the landing's build left, run on the landing host as its next step after sluice's push, or by hand; what tailrace keeps of it, the host's (61, 62); the record rebuilt from the store and git (63) | a landing on one host followed by `tailrace sync` on another replays every task the landing ran |
 
 ## Bolt 4 · the gate and the channels
 
@@ -87,7 +87,7 @@ status` on any machine shows both channels and why each is where it is.
 |---|---|---|---|
 | the key service signer | `profiles/signer/kms/` | B.4 with a key in AWS KMS through the host's role (C.7) | the signer scenarios pass against a key in a test account, in the tools layer |
 | the gate | `crates/tailrace-core/src/gate.rs` | acceptance under the policy, the first claim found wanting named (26, 28, 58); the acceptance claim attached; `beta` following each publish as the gate's act, never the publisher's (95, core.10); the solo host under a policy naming it, its claim saying so (108) | S3, S5; a publish from a host with no accepting credential cannot move a channel (S9) |
-| the keeper and promotion | `profiles/keeper/git_ref/`, `profiles/keeper/store/`, `crates/tailrace-core/src/ledger.rs` | B.8 with the git ref profile (C.13) and the store profile (C.14); the chain of gate-signed promotion claims naming predecessors (105); append refused naming the head, a fork reported (120 to 122, core.34); the store rewritten from the keeper on disagreement (106); `tailrace promote`, a rollback a promotion back (34); a bound channel taking any version the bound channel held (37) | S6, S7, S8; a promotion on one machine read on another from the ledger alone |
+| the ledger and promotion | `profiles/ledger/git_ref/`, `profiles/ledger/store/`, `crates/tailrace-core/src/ledger.rs` | B.8 with the git ref profile (C.13) and the store profile (C.14); the chain of gate-signed promotion claims naming predecessors (105); append refused naming the head, a fork reported (120 to 122, core.34); the store rewritten from the ledger on disagreement (106); `tailrace promote`, a rollback a promotion back (34); a bound channel taking any version the bound channel held (37) | S6, S7, S8; a promotion on one machine read on another from the ledger alone |
 | status across machines | `crates/tailrace/src/commands/` for `status` | channels and the chain read on a machine that never published; refusal, absence and unreadable kept apart, the source's words carried verbatim (58, 59) | S10, S11, S12 |
 
 ## Bolt 5 · sync and serve
@@ -108,4 +108,4 @@ publish` in a tailrace repository naming `tailrace publish`.
 
 The remaining projections and every target; keyless signing and the
 verifier's rebuild; the Nix spike; the herdr and Flywheel plugins; the
-hosted keeper and pool target a control plane would bind.
+hosted ledger and pool target a control plane would bind.

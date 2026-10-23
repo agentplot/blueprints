@@ -32,12 +32,10 @@ is the source; a term here that the statement lacks is the book's own.
   at one version by digest (6).
 - **landing**: a revision reaching a branch through the repository's
   own gate (14).
-- **keeper**: where the ledger is held; it appends a promotion only
-  after the one that promotion names, and answers the chain (120 to
-  122).
 - **ledger**: the chain of a channel's promotions, each a claim the gate
   signs that names the one it follows, which nothing removes (33, 34,
-  105).
+  105); and the seam that holds it, appending a promotion only after
+  the one it names and answering the chain (120 to 122).
 - **offered**: the state of an artifact a publisher put in the store
   and no gate has judged (20).
 - **policy**: the authors' rule for one audience: which claims from

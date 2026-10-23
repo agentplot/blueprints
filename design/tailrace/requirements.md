@@ -12,7 +12,7 @@ how a channel moves and an environment follows it, how a consumer
 reads, and what tailrace keeps. Part B is its contracts: the operations
 it needs across its eight seams, and the guarantee each must give. The
 seams are the store, the build, the landing, the signer, the policy, the
-keeper of the ledger, a projection and a target. Part C is the profiles: the ways each contract
+ledger, a projection and a target. Part C is the profiles: the ways each contract
 is satisfied.
 
 Parts A and B name no mechanism: no command, file, format, field,
@@ -120,9 +120,8 @@ redefine these.
   record of that move.
 - **ledger**: the chain of a channel's promotions, each a claim the
   gate signs that names the promotion it follows, which nothing
-  removes.
-- **keeper**: where the ledger is held: it appends a promotion only
-  after the one that promotion names, and answers the chain.
+  removes; and the seam that holds it, appending a promotion only
+  after the one that promotion names and answering the chain.
 - **environment**: one target, the channel it follows, and whether it
   moves on its own or waits for an approver.
 - **reconciler**: what converges an environment on the version its
@@ -343,10 +342,10 @@ redefine these.
     source of truth; every other place that reflects it, a tag, a
     claim, a layout, is a projection written from the source and never
     read as truth.
-106. The keeper's chain is the record 101 names for every channel; the
-    same claims are attached in the store to the versions they move to
-    (39), and where the store disagrees with the keeper, the store is
-    rewritten from the keeper.
+106. The ledger is the record 101 names for every channel; the same
+    claims are attached in the store to the versions they move to (39),
+    and where the store disagrees with the ledger, the store is
+    rewritten from the ledger.
 102. A repository may declare no channel and no environment: its
     versions are offered or accepted, a consumer reads them by version
     under the policy, and nothing of a publish changes when channels
@@ -568,25 +567,25 @@ redefine these.
 91. **report**: given an environment, what it runs and when it last
     converged, recorded where every asker reads it (43).
 
-### B.8 The keeper
+### B.8 The ledger
 
 120. **append**: given a promotion claim and the digest of the
     promotion it names as its predecessor, the claim held at the head
     of its channel's chain; or refused, naming the claim at the head.
 121. **chain**: given a channel, every promotion claim of it in order
     from the first, or that none is held.
-122. A keeper never removes or reorders a claim, and answers the same
-    chain to every reader for as long as it holds it.
+122. The ledger never removes or reorders a claim, and answers the
+    same chain to every reader for as long as it holds it.
 
 ### B.9 Binding the contracts
 
 92. Each seam is bound by naming one or more profiles of Part C. The
     repository's authors bind the build, the projections and the
     targets in the repository; the operator binds the store, the
-    signers, the landing and the keeper for a host. Any number of
+    signers, the landing and the ledger for a host. Any number of
     projections and targets are bound at once; exactly one store is
     written by a publish, exactly one landing is read, and exactly one
-    keeper is appended to.
+    ledger is appended to.
 118. The operator's bindings for a host are kept in one file on the
     host, beside the landing's own, in the same form, readable with a
     file reader.
@@ -728,7 +727,7 @@ whose packager cannot promise it says so (87).
 | a Nix fleet | pull: each machine verifies and applies the release assigned to it, realising store paths from the cache |
 | a Nix binary cache | push: the version's store paths pushed to the cache |
 
-### C.13 The keeper: a git ref
+### C.13 The ledger: a git ref
 
 One ref per channel in the repository, `refs/tailrace/ledger/<channel>`,
 each commit holding one promotion claim; `append` is a push that fast-
@@ -736,7 +735,7 @@ forwards, and a push the remote refuses is a predecessor that is not the
 head. The gate's own identity pushes, and no device that asks for a
 promotion commits anything.
 
-### C.14 The keeper: the store
+### C.14 The ledger: the store
 
 The chain as the promotion claims attached to the versions they move
 to, walked by predecessor from the channel's tag, for a store the
@@ -811,9 +810,9 @@ The rest of the stack, which a model builds on unless it says why not:
   before anything is offered.
 - The store is an OCI registry; on a developer's host, an OCI layout on
   disk synced to one.
-- The ledger's keeper is a git ref the gate pushes, and the same claims
-  are attached in the store; the store alone keeps the ledger only where
-  it retains referrers.
+- The ledger is a git ref the gate pushes, and the same claims are
+  attached in the store; the store alone holds the ledger only where it
+  retains referrers.
 - Signing is a key in a key service or a host key first, keyless once a
   private issuer stands.
 - Four surfaces answer from one core, each a plugin kept outside the
@@ -824,7 +823,7 @@ The rest of the stack, which a model builds on unless it says why not:
   each publish and each refusal, for millpond.
 - The profiles of Part C: an OCI registry and an OCI layout, moon and a
   declared command, sluice and a git branch, a key service, a host key
-  and keyless, the policy file, the git ref and the store as keepers,
+  and keyless, the policy file, the git ref and the store as ledgers,
   the nine projections and the seven targets, in that order of
   building.
 

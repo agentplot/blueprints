@@ -37,8 +37,8 @@ an audience, the claims required and the signers that may make each
 renders a consumer layout, and serves it where the ecosystem's clients
 read no files (84 to 86). Nine projections are listed (C.11).
 
-**The keeper** (B.8) holds the ledger: it appends a promotion only
-after the one that promotion names, answers a channel's chain in order,
+**The ledger** (B.8) holds a channel's chain: it appends a promotion
+only after the one that promotion names, answers the chain in order,
 and never removes or reorders a claim (120 to 122). A git ref the gate
 pushes is the first profile; the store itself, where it retains the
 claims, the second (C.13, C.14).
@@ -51,8 +51,8 @@ runs, converges it, and reports (88 to 91). Seven targets are listed
 
 The repository's authors bind the build, the projections and the
 targets in the repository; the operator binds the store, the signers,
-the landing and the keeper for a host, in one file beside the landing's
+the landing and the ledger for a host, in one file beside the landing's
 own, in the same form (92, 118). Any number of projections and targets
 are bound at once; exactly one store is written by a publish, exactly
-one landing is read, and exactly one keeper is appended to. One conformance suite holds every profile to Parts
+one landing is read, and exactly one ledger is appended to. One conformance suite holds every profile to Parts
 A and B (93).
