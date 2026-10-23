@@ -168,10 +168,17 @@ redefine these.
 13. A branch is tested up to its window. The window never falls below
     one, grows while candidates pass and shrinks when one fails, within
     bounds the branch's policy states.
-71. An instance of sluice starts no more checks at once than its own
-    bound, whatever the windows of the branches it serves. A host whose
-    checks are all started by one instance runs no more than that
-    instance's bound.
+71. A host's bound on checks under test at once is one for the host,
+    set by the host's keeper and shared by every instance of sluice on
+    it, whatever repositories and branches they serve and whatever
+    their windows: an instance starts a run only while the host's count
+    of running checks is under the bound, and the count is kept where
+    every instance on the host reads it. Each run is given the host's
+    cores divided by the bound, and its runner hands that share to the
+    tools it runs, so the bound's runs together use what sluice may use
+    and no more. sluice reads no load to decide: the bound is set in
+    advance, and what the host runs beside sluice is the keeper's to
+    leave room for (83).
 14. A branch's policy says whether every candidate of a chain is tested or
     the deepest first. Under deepest first, a failure is attributed only
     after the candidates that were skipped have verdicts.
@@ -937,6 +944,11 @@ section asked is answered by a clause.
   where it was and levelled when the landing is read. A tool that tries
   to move the copy to the head is refused, and the refusal names the
   tool's command and both revisions (124).
+- **S60.** Three repositories' queues run on one host of eighteen cores
+  whose keeper set a bound of three. Candidates of all three fall due at
+  once. Three runs start, one per repository, each handed six cores; the
+  fourth waits for one to end, whichever repository it belongs to. No
+  run reads the host's load (71).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
