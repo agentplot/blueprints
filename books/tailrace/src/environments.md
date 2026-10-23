@@ -25,6 +25,14 @@ watches and verifies against the gate's signature, and tailrace adds
 only the watcher that reports what runs. A Nix fleet pulls the same way.
 The ledger, the channel and the policy are the same either way.
 
+An environment may be many machines or many stacks that move as one. A
+CloudFormation StackSet holds a stack per tenant, and the list of
+tenants is the StackSet's, kept outside tailrace; the environment is
+the StackSet, one apply carries the version to every stack it holds,
+and current is what the StackSet records (C.12). tailrace never learns
+the list, only the version, so adding a tenant is the StackSet's
+operator's act and nothing in the repository changes.
+
 A reconciler acts with the environment's own credentials in the
 environment's own place (45). tailrace never holds a credential that
 reaches a target (64).

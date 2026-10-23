@@ -708,7 +708,7 @@ and whether each waits.
 |---|---|
 | a package registry (CodeArtifact, npmjs, PyPI, Maven Central) | push: publish the version's projection with the target's own credential; current is what the registry lists |
 | a static site (a bucket behind a distribution) | push: sync the version's bundle; current is a marker the sync writes |
-| a CloudFormation stack | push: one stack operation on the version's template with the environment's parameters; current is the stack's recorded version |
+| a CloudFormation stack or StackSet | push: one stack operation on the version's template with the environment's parameters, which a StackSet carries to every stack instance it holds, a list kept outside tailrace; current is the stack's or the StackSet's recorded version |
 | a function | push: point the function at the version's image by digest |
 | Kubernetes | pull: the channel's tag, verified by Flux or Argo against the gate's signature; current reported by a watcher |
 | a Nix fleet | pull: each machine verifies and applies the release assigned to it, realising store paths from the cache |
