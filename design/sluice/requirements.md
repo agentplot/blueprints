@@ -197,12 +197,16 @@ redefine these.
     it, whatever repositories and branches they serve and whatever
     their windows: an instance starts a run only while the host's count
     of running checks is under the bound, and the count is kept where
-    every instance on the host reads it. Each run is given the host's
-    cores divided by the bound, and its runner hands that share to the
-    tools it runs, so the bound's runs together use what sluice may use
-    and no more. sluice reads no load to decide: the bound is set in
-    advance, and what the host runs beside sluice is the keeper's to
-    leave room for (83).
+    every instance on the host reads it. Each run is given the cores
+    sluice may use divided by the bound, and its runner hands that share
+    to the tools it runs, so the bound's runs together use what sluice
+    may use and no more. What sluice may use is what the host gives it,
+    its affinity or its quota; where the host gives it no such limit,
+    the keeper states it in the host's own settings beside the bound,
+    and where the keeper states nothing it is all the host's cores.
+    sluice reads no load to decide: the bound is set in advance, and
+    what the host runs beside sluice is the keeper's to leave room for
+    (83).
 14. A branch's policy says whether every candidate of a chain is tested or
     the deepest first. Under deepest first, a failure is attributed only
     after the candidates that were skipped have verdicts.
@@ -786,8 +790,8 @@ checks = ["codeql"]        # other systems' checks; sluice's own are its runs (1
 ```
 
 A standing executor names itself in its host's own settings, never in
-the repository's: its signing key, its systems, its places and its
-bound (71). The defaults: a branch with no `remote` trusts its own
+the repository's: its signing key, its systems, its places, its bound
+and the cores sluice may use (71). The defaults: a branch with no `remote` trusts its own
 host's unsigned runs (78) and nothing else; a branch with a `remote`
 and no `trust` trusts no signer, so its policy's author names them.
 A branch with no `hold` holds no passed candidate (117), and one with
