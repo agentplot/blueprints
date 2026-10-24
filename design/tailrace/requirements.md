@@ -648,20 +648,29 @@ artifact is an OCI manifest whose `artifactType` names the ecosystem,
 whose layer is the ecosystem's own bytes and whose config is the
 ecosystem's own metadata; an index is an OCI image index; an
 attestation is a DSSE envelope holding an in-toto statement, attached as
-a referrer with the predicate type as its artifact type; a name is a
-tag, moved with the expected digest where the registry supports it and
-checked after the move where it does not. A registry that creates
-repositories on push gives each ecosystem name a repository of its
-own; one that does not takes one declared repository with the name
-escaped into the tag, and the digest is the address either way.
+a referrer whose artifact type is tailrace's envelope type, with the
+statement's predicate type in the referrer's `in-toto.io/predicate-type`
+annotation, since a predicate type is a URI and a registry takes only a
+media type as an artifact type; a name is a tag, moved with the expected
+digest where the registry supports it and checked after the move where
+it does not. The binding declares one repository, and every blob,
+manifest, referrer and tag lives in it, the ecosystem name escaped into
+the tag: the seam addresses by digest alone, which a registry resolves
+only within a repository. A tag names a manifest, never a blob, so a
+cache entry (52) is named through a manifest of tailrace's cache-entry
+type, whose one layer is the entry's bytes and whose config is the empty
+descriptor, which the profile writes when asked to name a digest held as
+a blob; resolving the name answers the layer's digest, so the name is at
+the digest the caller gave, as on every profile. That manifest names no
+ecosystem and carries no metadata, so it is no artifact (53, 100).
 
 | operation | how |
 |---|---|
 | put-bytes | blob upload; the registry answers whether the blob existed |
 | put-artifact | manifest put; the digest is the manifest's |
 | attach | referrer push, with the tag-schema fallback where the referrers API is absent |
-| claims-of | the referrers list, filtered by artifact type |
-| name, resolve | tag put with the expected digest, tag get |
+| claims-of | the referrers list, filtered by the envelope type |
+| name, resolve | tag put with the expected digest, tag get; a digest held as a blob is named through its cache manifest, and a tag at a cache manifest resolves to its layer's digest |
 | read | blob get by digest |
 
 ### C.2 The store: an OCI image layout on disk
