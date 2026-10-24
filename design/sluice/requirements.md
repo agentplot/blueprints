@@ -575,11 +575,17 @@ redefine these.
     checkout cache, keyed by the content of the files it is built from
     and saved only from a run that passed; and a compilation cache,
     keyed by the whole inputs of one compilation and saved from any
-    compilation that produced its outputs, served to the run by a
-    server inside the run's own executor and process group (34), never
-    by one another process started, its directory the one path outside
-    the place the run may write (record 0049). A cache changes how fast
-    a check runs, never what it reports.
+    compilation that produced its outputs (record 0049). A run its
+    executor confines is served by a server inside its own process
+    group (34) over the cache's directory, which bears one server at a
+    time: the run holds the directory's lock for its life, a run that
+    finds it held compiles without the cache, and the directory is the
+    one path outside the place the run may write; a run its executor
+    does not confine sends its compiles to the host's one compile
+    server, the keeper's, started outside any run as the host's
+    container engine is. (Proposed 2026-10-24, amendment to record
+    0049, on the user's card; accepted only on their yes.) A cache
+    changes how fast a check runs, never what it reports.
 
 ### B.2 The check
 
@@ -676,7 +682,7 @@ Parts A and B do not change to admit a profile.
 | executor profile | execute | enforces |
 |---|---|---|
 | **open**: a process group on the instance's host | the command in the place, as one process group ended with its run | the cores given, by the runner's own threads; nothing else; never confined |
-| **sandbox**: the host's kernel sandbox, Seatbelt on macOS, bubblewrap and Landlock on Linux | the command in the place under a profile that allows writes only to the place, its scratch and a declared compilation cache's directory (35), the network only as the policy says, and a container engine's socket only when the policy allows it | paths and network everywhere; cores and memory only on Linux, by a cgroup the run is started in; confined when no session on the host can write the place and the run cannot reach a container engine, whose containers may mount any path |
+| **sandbox**: the host's kernel sandbox, Seatbelt on macOS, bubblewrap and Landlock on Linux | the command in the place under a profile that allows writes only to the place, its scratch and a declared compilation cache's directory, its lock included (35; proposed, amendment to record 0049), the network only as the policy says, and a container engine's socket only when the policy allows it | paths and network everywhere; cores and memory only on Linux, by a cgroup the run is started in; confined when no session on the host can write the place and the run cannot reach a container engine, whose containers may mount any path |
 | **container**: a container engine on the executing host | the place mounted into a new container from the repository's image | cores, memory, paths and network; confined as C.8 says |
 | **launched**: a job on a pool | one job per run, on a machine of the run's system (87), that fetches the candidate's ref (82), runs the checks, signs its run records with the job's identity and adds them to its signer's ref (109); the job's start is the claim and its end the report (88) | what the pool's machines enforce, as the job's signed record claims; confined when the pool gives each job a fresh machine and the policy lets its signer claim it (79) |
 
