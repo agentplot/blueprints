@@ -571,15 +571,20 @@ redefine these.
 
 ### B.6 A projection
 
-84. **pack**: given an output and the version, the ecosystem's own
-    bytes for it and the metadata (4) the ecosystem gives them.
-85. **render**: given a set of artifacts and their metadata, a consumer
-    layout in the ecosystem's own form, and which versions it holds.
+84. **pack**: given an output at a build identity, and the version
+    where the bytes are an artifact's, the ecosystem's own bytes for it
+    and the metadata (4) the ecosystem gives them. A cache entry (52)
+    packs with no version, and the bytes it packs to carry no metadata
+    that makes an offer (100).
+85. **render**: given a set of artifacts and their metadata, or of cache
+    entries by build identity, a consumer layout in the ecosystem's own
+    form, and which versions, or which build identities, it holds.
 86. **serve**: given a consumer layout, answers to the ecosystem's own
     clients over the protocol they read, for an ecosystem whose clients
     read no files.
-87. The same outputs and the same version pack to the same bytes, or
-    the projection says it cannot promise so (18).
+87. The same outputs and the same version, or the same build identity,
+    pack to the same bytes, or the projection says it cannot promise so
+    (18).
 
 ### B.7 A target
 
