@@ -562,6 +562,10 @@ redefine these.
 82. **policy-for**: given a repository at a landed revision and an
     audience (acceptance, a channel, a layout), the claims required,
     each with the signers that may make it and what each may claim.
+    Where the repository declares no policy for the audience at that
+    revision, the answer is absent naming the audience (58); verify,
+    which chose the revision from the version's tag, names the revision
+    beside it.
 83. The policy for a channel bound to another (37) names the channel it
     is bound to, and the policy for acceptance never names a channel.
 
@@ -965,7 +969,8 @@ with fixed examples, and how a store, a build, a signer, a projection
 and a target are added. A conformance suite whose scenarios each cite
 the clauses they exercise, failing when a clause is cited by nothing
 and named by no unit of the plan that will cite it: a clause a later
-unit builds is named in the suite's register with that unit, reported
+unit builds is named in the suite's register with that unit, or with
+the phase of the plan while that phase has no units carved, reported
 as waiting on every run, and leaves the register with the commit that
 cites it. The profiles of Part C, each passing the suite.
 
