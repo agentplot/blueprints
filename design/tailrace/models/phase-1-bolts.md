@@ -108,4 +108,6 @@ publish` in a tailrace repository naming `tailrace publish`.
 
 The remaining projections and every target; keyless signing and the
 verifier's rebuild; the Nix spike; the herdr and Flywheel plugins; the
-hosted ledger and pool target a control plane would bind.
+table ledger (C.15), the roster (126), the pool target and the template
+set projection a control plane would bind, as generic profiles with
+their conformance scenarios.

@@ -26,21 +26,26 @@ tailrace's policy (104).
 
 ## Switchboard
 
-Switchboard, a client's delivery platform, keeps its own channels,
-promotion, gate and deploy rows, in its own control plane. The model is
-shared and the code is not: a version, a channel moved only by a
-promotion, an environment subscribed to a channel with an automatic or a
-gated move, are the same concepts on both sides, and a client's
-production never depends on a personal project.
+Switchboard, a client's delivery platform, keeps which installs follow a
+channel, how a cascade of compositions reaches them, and the deploy that
+converges each one, in its own control plane. tailrace owns what a
+version is, which claims it carries, which channel names it and why.
+The model is shared and the code is not, and a client's production
+never depends on a personal project.
 
-Where the two meet is the store and the claims. Switchboard's registry
-is an OCI registry in each of its classes; a tailrace publish into it
-offers the same artifacts with the same attestations (C.1), and
-Switchboard's own indexer reads the push and writes the proof rows its
-gate reads. tailrace's channels are off in that deployment, and the
-publish's answer (19) is what Switchboard consumes. The one rule both
-keep is that a channel is a row of its own system, never a tag read to
-decide a version (3; Switchboard's lifecycle.4).
+The join is three bindings. The class's registry is tailrace's store
+(C.1): a publish into it offers the same artifacts with the same
+attestations, and Switchboard's indexer reads the push and writes its
+own rows from the claims. The class's table is tailrace's ledger
+(C.15): the gate appends each promotion in one conditional write, and
+the rows Switchboard keeps beside the chain are written in the same
+transaction and read as projections (101). Switchboard's dispatch is
+the reconciler of one tailrace target, a pool (C.12): its roster says
+which installs of a declared kind follow which channel and whether each
+waits (126), and `apply` is its request to converge one of them. The
+channels are tailrace's, held in the ledger Switchboard binds, and the
+one rule both keep is that a channel is a row of its own system, never
+a tag read to decide a version (3).
 
 ## Nix, Attic and a fleet
 

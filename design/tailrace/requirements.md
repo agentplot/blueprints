@@ -124,6 +124,9 @@ redefine these.
   after the one that promotion names and answering the chain.
 - **environment**: one target, the channel it follows, and whether it
   moves on its own or waits for an approver.
+- **roster**: the environments of one declared kind a target holds,
+  each with the channel it follows and whether it waits, answered by
+  the target and declared nowhere in the repository (126).
 - **reconciler**: what converges an environment on the version its
   channel names: by pushing to the target, or by the target pulling.
 - **cache entry**: bytes a build left on any host, named by their
@@ -332,6 +335,18 @@ redefine these.
 37. The policy may bind a channel to another: a version reaches such a
     channel only from among the versions the ledger shows the bound
     channel has held, and never from a publish directly.
+127. The policy may declare a channel by a pattern over branch names: a
+    prerelease published from a branch the pattern matches is offered
+    to the channel the pattern names for that branch, which exists from
+    its first promotion and is retired with the branch by the authors'
+    rule. A pattern's channel belongs to the component of the publish
+    and binds to no other channel.
+128. An act may ask for several promotions at once, each of one
+    channel. The ledger appends each after its own predecessor, and
+    where it can hold the appends as one it refuses them whole when any
+    one is refused, naming the chain; a ledger that cannot appends them
+    in order and reports the first refused, and the moves before it
+    stand.
 38. Moving a channel away from a version withdraws nothing from the
     store: the version stays accepted and readable by digest, and only
     the channel's name has left it.
@@ -459,6 +474,12 @@ redefine these.
     own words where one refused, verbatim, beside tailrace's.
 60. Asking what tailrace holds reaches no store, no signer and no
     target, and writes nothing.
+129. The ledger names an asker by an identity the gate verified at the
+    moment of asking, issued by the owner's identity provider, never by
+    the asker's own word; a surface that asks on a person's behalf
+    carries the person's own token, and the gate records the person.
+    The gate refuses an asking it cannot verify and names what it could
+    not read.
 
 ### A.11 What tailrace keeps
 
@@ -566,6 +587,13 @@ redefine these.
     verified (42), the environment converged, or what stopped it.
 91. **report**: given an environment, what it runs and when it last
     converged, recorded where every asker reads it (43).
+126. **roster**: given an environment kind the policy declares, the
+    environments of that kind the target holds, each naming the channel
+    it follows and whether it waits; an entry that waits follows a
+    channel of its own, named by the entry within its component and
+    bound to the channel the entry names (37, 41). The policy declares
+    the kind, the roster declares the instances, and nothing in the
+    repository changes when an instance is added.
 
 ### B.8 The ledger
 
@@ -589,6 +617,11 @@ redefine these.
 118. The operator's bindings for a host are kept in one file on the
     host, beside the landing's own, in the same form, readable with a
     file reader.
+130. The core starts nothing after a landing and nothing after an
+    offer: a publish is run by whatever the host binds to run it, the
+    gate is told by whatever the host binds to tell it, and both are
+    named in the host's bindings file (118) and nowhere in the core
+    (C.16).
 93. One conformance suite holds every profile to Parts A and B; a
     profile that fails it is not one.
 
@@ -639,7 +672,8 @@ is moon's outputs directory, one archive per task hash, which moon reads
 before any remote and which every checkout on a host shares: `sync`
 renders into it the entries whose task hashes the landing's verdicts
 name for the revisions the checkout descends from, and a step after a
-landing pushes the archives that landing's build left. Where moon keeps
+landing, on the host that ran the landing's checks, pushes the archives
+that landing's build left. Where moon keeps
 outputs as a digest directory instead, the layout is the same digests
 linked.
 
@@ -686,7 +720,8 @@ cosign uses, public or private.
 with its outputs, the paths that version it, its tag prefix and its
 projections, the version rule, the signers and what each may claim, the
 claims each audience requires, the channels and their bindings, and the
-environments with their targets and whether each waits.
+environments with their targets and whether each waits, or the
+environment kinds a target admits by its roster (126).
 
 ### C.11 Projections
 
@@ -714,6 +749,7 @@ whose packager cannot promise it says so (87).
 | a file | any file, with a declared media type | a directory | not needed |
 | an image | an image as pushed | the OCI layout itself | the layout served as a registry |
 | moon's cache | a task's output archive, by task hash | moon's outputs directory, one archive per hash, shared by every checkout on the host | not needed: moon reads the directory before any remote |
+| a CloudFormation template set | the packager's own (`sam package`, the asset publisher) against a bucket address that is a parameter, so the packed templates name no bucket | the set written under a version prefix in a bucket the deploy reads, the same bytes a skip | not needed |
 
 ### C.12 Targets
 
@@ -726,6 +762,7 @@ whose packager cannot promise it says so (87).
 | Kubernetes | pull: the channel's tag, verified by Flux or Argo against the gate's signature; current reported by a watcher |
 | a Nix fleet | pull: each machine verifies and applies the release assigned to it, realising store paths from the cache |
 | a Nix binary cache | push: the version's store paths pushed to the cache |
+| a pool: a control plane's roster of environments (126) | push: apply is the control plane's request to converge one environment, run by its own executors with credentials that are the control plane's, reached at the moment of use; current and report are read from what it records |
 
 ### C.13 The ledger: a git ref
 
@@ -741,6 +778,23 @@ The chain as the promotion claims attached to the versions they move
 to, walked by predecessor from the channel's tag, for a store the
 operator can trust to retain them: a registry whose retention rules
 expire untagged artifacts by age is not one.
+
+### C.15 The ledger: a database table
+
+One partition per chain in a table with conditional writes: `append`
+puts the claim and moves the head in one transaction conditioned on the
+predecessor, and `chain` is one ordered read; a table whose writes are
+not conditional is not a ledger. A control plane that holds its own rows
+beside the chain writes them in the same transaction and reads them as
+projections (101).
+
+### C.16 What turns the wheel
+
+Not a seam: the core calls none of these, and each is named in the
+host's bindings file (130). A step the landing's host runs after its
+push; a push event a forge delivers to a job; a store's own event
+delivered to the gate; a person at a surface, or a program that asks as
+one.
 
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
@@ -836,9 +890,6 @@ These are not requirements.
 - How does a Nix closure, thousands of digests with references among
   them, map onto artifacts and the cache without a reference-aware
   removal (52, 54)?
-- How is an environment admitted beyond the policy file, for a host
-  that adds instances of one declared kind while running, and may such
-  an instance follow a channel of its own (C.10, 125)?
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->

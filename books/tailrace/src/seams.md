@@ -35,17 +35,18 @@ an audience, the claims required and the signers that may make each
 
 **A projection** (B.6) packs an output into an ecosystem's own bytes,
 renders a consumer layout, and serves it where the ecosystem's clients
-read no files (84 to 86). Nine projections are listed (C.11).
+read no files (84 to 86). Ten projections are listed (C.11).
 
 **The ledger** (B.8) holds a channel's chain: it appends a promotion
 only after the one that promotion names, answers the chain in order,
 and never removes or reorders a claim (120 to 122). A git ref the gate
 pushes is the first profile; the store itself, where it retains the
-claims, the second (C.13, C.14).
+claims, the second; a table with conditional writes, which a control
+plane holds beside its own rows, the third (C.13 to C.15).
 
 **A target** (B.7) says what an environment should run and what it
-runs, converges it, and reports (88 to 91). Seven targets are listed
-(C.12).
+runs, converges it, answers the roster of a declared kind, and reports
+(88 to 91, 126). Eight targets are listed (C.12).
 
 ## Who binds what
 

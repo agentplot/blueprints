@@ -59,7 +59,9 @@ per channel that the gate's own identity pushes, since a repository
 already has one and a fast-forward push refuses a stale predecessor
 for every store alike (C.13). A store keeps the chain alone only where
 the operator can trust it to retain untagged claims; a registry whose
-retention rules expire them by age cannot (C.14).
+retention rules expire them by age cannot (C.14). A control plane holds
+the chain in a table with conditional writes, its own rows written in
+the same transaction and read as projections (C.15).
 
 Where a store cannot move a tag against the digest it is expected to be
 at, the gate moves it, reads it back, and reports a tag found elsewhere
