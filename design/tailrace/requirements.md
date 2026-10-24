@@ -694,12 +694,20 @@ sluice's records: a revision is landed when sluice's log for the branch
 holds its landing, and `verdicts-of` reads the signed results under
 `refs/sluice/runs/<signer>` for the combination that landed it, each an
 in-toto statement in a DSSE envelope with the test's key and system as
-its subject and moon's hash as its digest.
+its subject and moon's hash as its digest. A result that record marks
+replayed has its pass in an earlier record, since sluice signs only
+what ran: `verdicts-of` carries the signed pass sluice counted for it
+(sluice 108), the record for the same key and system by a signer
+tailrace's policy names (104), from the combination that ran it, as
+made and naming where it was found (12). Every envelope is carried
+whole, its signatures and their key ids as sluice wrote them.
 
 ### C.6 The landing: a git branch
 
 Where sluice does not run a branch, a revision is landed when the
-branch's history contains it, and there are no verdicts.
+branch's history contains it, and there are no verdicts: `verdicts-of`
+answers an empty set for every landed revision, which is neither absent
+nor unreadable (78).
 
 ### C.7 The signer: a key in a key service
 
