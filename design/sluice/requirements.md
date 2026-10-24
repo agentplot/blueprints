@@ -314,7 +314,11 @@ redefine these.
      is refused, judged by the ref's own value on the host before and
      after, never by the remote's revision, and the refusal names the
      command that tried and the revisions, in the records and to whoever
-     ran it (1, 121, C.4).
+     ran it (1, 121, C.4). The protection judges the repository the
+     transaction is of, as git names it, wherever the command was run
+     from; it refuses nothing of a ref it does not guard, and a
+     transaction it cannot read for a reason of its own passes, said
+     once, rather than aborting git's write.
      What is refused is a change of the copy's value: a transaction that
      leaves every protected ref at the value it had, git's own packing
      of its refs among them, moves nothing and passes; sluice's
