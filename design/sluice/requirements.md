@@ -583,8 +583,11 @@ redefine these.
     one path outside the place the run may write; a run its executor
     does not confine sends its compiles to the host's one compile
     server, the keeper's, started outside any run as the host's
-    container engine is (record 0049). A cache changes how fast a
-    check runs, never what it reports.
+    container engine is, and found as the engine is found: through the
+    client's own variables, which the policy's declaration names and
+    the run takes from the host's environment, so a session and a run
+    on the host reach the same server (record 0049). A cache changes
+    how fast a check runs, never what it reports.
 
 ### B.2 The check
 
