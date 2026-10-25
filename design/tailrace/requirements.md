@@ -479,6 +479,11 @@ redefine these.
     own words where one refused, verbatim, beside tailrace's.
 60. Asking what tailrace holds reaches no store, no signer and no
     target, and writes nothing.
+132. A web page is a surface (56), answered by the host's one serving
+    process (114) at a path of its own: it renders the status answer, what
+    every environment should run, runs and waits on, with each version's
+    notes, on each request, and writes nothing (60); no timer renders a
+    page, and no checkout starts a server of its own.
 129. The ledger names an asker by an identity the gate verified at the
     moment of asking, issued by the owner's identity provider, never by
     the asker's own word; a surface that asks on a person's behalf
@@ -822,7 +827,7 @@ whose packager cannot promise it says so (87).
 | a CloudFormation stack or StackSet | push: one stack operation on the version's template with the environment's parameters, which a StackSet carries to every stack instance it holds, a list kept outside tailrace; current is the stack's or the StackSet's recorded version |
 | a function | push: point the function at the version's image by digest |
 | Kubernetes | pull: the channel's tag, verified by Flux or Argo against the gate's signature; current reported by a watcher |
-| a Nix fleet | pull: each machine verifies and applies the release assigned to it, realising store paths from the cache |
+| a Nix fleet | two profiles, bound by the environment (44). Push: apply runs the fleet's own deploy tool against one machine from a host that holds that machine's key, and report is what the machine answers after; current is the closure the machine runs. Pull: each machine, on its own timer, reads its channel's tag in the store with its own credential, verifies the gate's claim, realises the version's store paths from the cache and switches; the system profile is its marker (119) and its report a claim it signs. The push profile comes first and the pull profile replaces it machine by machine |
 | a Nix binary cache | push: the version's store paths pushed to the cache |
 | a pool: a control plane's roster of environments (126) | push: apply is the control plane's request to converge one environment, run by its own executors with credentials that are the control plane's, reached at the moment of use; current and report are read from what it records |
 
@@ -936,12 +941,14 @@ The rest of the stack, which a model builds on unless it says why not:
   retains referrers.
 - Signing is a key in a key service or a host key first, keyless once a
   private issuer stands.
-- Four surfaces answer from one core, each a plugin kept outside the
-  core as sluice keeps its plugins: a command line; a Claude Code
-  plugin, whose hook refuses an ecosystem's own publish command and
-  names tailrace's; a herdr plugin with a pane of channels and
-  environments; a Flywheel plugin whose adapter prints a capture for
-  each publish and each refusal, for millpond.
+- Five surfaces answer from one core: a command line; a web page the
+  host's one serving process answers (132), which is the page a hosted
+  tailrace shows signed in; and three plugins kept outside the core as
+  sluice keeps its plugins: a Claude Code plugin, whose hook refuses an
+  ecosystem's own publish command and names tailrace's; a herdr plugin
+  with a pane of channels and environments, read from the served page's
+  own answer; a Flywheel plugin whose adapter prints a capture for each
+  publish and each refusal, for millpond.
 - The profiles of Part C: an OCI registry and an OCI layout, moon and a
   declared command, sluice and a git branch, a key service, a host key
   and keyless, the policy file, the git ref and the store as ledgers,
