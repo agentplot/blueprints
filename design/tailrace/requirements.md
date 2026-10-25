@@ -666,7 +666,19 @@ on the new digest within the bound and never a digest the name was never
 at; nothing of tailrace acts on a resolve where the ledger holds the
 answer (33), and the conformance suite reads a moved name until it
 settles or the profile's bound passes, which a profile with no lag
-passes at once. The binding declares one repository, and every blob,
+passes at once. A registry whose tag put takes no condition, Amazon ECR
+among them, cannot refuse a move from a place the name has left: the
+check before the put is a read a lagging replica defeats, so a name's
+refusal there is best effort and never the thing a move's safety rests
+on. It rests where the statement already puts it: the ledger is written
+before the name moves (33), the chain admits one successor to a head
+(105), so one party moves a channel's name at a time, and a cache name
+is made once from nothing at bytes every writer of its build identity
+agrees on (87). A name found elsewhere is repaired from the ledger
+(109). The profile declares whether its names are conditional; the
+suite's refusal of a move from a stale place runs on a profile that
+says yes, and on one that says no the suite runs the repair in its
+stead. The binding declares one repository, and every blob,
 manifest, referrer and tag lives in it, the ecosystem name escaped into
 the tag: the seam addresses by digest alone, which a registry resolves
 only within a repository. A tag names a manifest, never a blob, so a
