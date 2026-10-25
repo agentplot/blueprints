@@ -458,6 +458,11 @@ redefine these.
     gone builds again and is no worse for it. Nothing accepted or
     released is ever removed because of what the cache does.
 55. A verifier's rebuild (30) reads no cache entry it did not write.
+124. A compilation's cache, a toolchain's reuse of one compilation's
+    outputs inside a task that runs, is the toolchain's and the host's,
+    below the task: tailrace carries none of it between hosts and names
+    none, and a verifier's rebuild (30, 55) reads no such cache another
+    party wrote, the party on one host being the host.
 
 ### A.10 Askers and surfaces
 
