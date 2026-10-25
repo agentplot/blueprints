@@ -491,7 +491,9 @@ redefine these.
 61. tailrace keeps, apart from the store, only what the store cannot
     answer: which versions it published from which revisions, which
     layouts it rendered under which policy, and nothing that the store,
-    the ledger or git holds already.
+    the ledger or git holds already, but for the chain as the host last
+    read it from a ledger the store holds (C.14), kept so that asking
+    answers when the store does not (60).
 62. The record of claimed versions (22) is the repository's and is
     readable from every checkout with git; everything else tailrace
     keeps is the host's and is readable on that host with a file
@@ -573,6 +575,10 @@ redefine these.
     beside it.
 83. The policy for a channel bound to another (37) names the channel it
     is bound to, and the policy for acceptance never names a channel.
+131. **channels**: given a repository at a landed revision, the channels
+    its policy declares, each with the component it belongs to (125) and
+    the channel it is bound to where it is one (37, 83); a repository
+    that declares one component has every channel in it.
 
 ### B.6 A projection
 
@@ -826,14 +832,19 @@ One ref per channel in the repository, `refs/tailrace/ledger/<channel>`,
 each commit holding one promotion claim; `append` is a push that fast-
 forwards, and a push the remote refuses is a predecessor that is not the
 head. The gate's own identity pushes, and no device that asks for a
-promotion commits anything.
+promotion commits anything. Asking reads the refs the repository holds,
+fetched where the remote answers, a fetch being a read of the remote
+into the repository's own copy, and answers from the refs as last
+fetched where it does not, saying when (60).
 
 ### C.14 The ledger: the store
 
 The chain as the promotion claims attached to the versions they move
 to, walked by predecessor from the channel's tag, for a store the
 operator can trust to retain them: a registry whose retention rules
-expire untagged artifacts by age is not one.
+expire untagged artifacts by age is not one. Asking reads the chain
+from the store where it answers and from the chain the host last read
+where it does not, saying when (60, 61).
 
 ### C.15 The ledger: a database table
 
