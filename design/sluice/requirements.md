@@ -553,7 +553,12 @@ redefine these.
      history tied to the folder's path, moves nothing an agent or an
      editor has open, carries the sessions' history to the new path, and
      goes on in the plain copy only on the operator's word, which the
-     setup's record says. The session that runs the move is no such
+     setup's record says. Where the git directory lives inside one of
+     several working copies, every session can already work from a copy
+     of its own: the setup offers the same move, with its cost, and goes
+     on as the repository stands. Once set up, sluice runs in whatever
+     layout the setup's record says, and warns of it on no later command.
+     The session that runs the move is no such
      holder, nor is anything it started: a holder is a process outside
      that session, its ancestors and its descendants, and the session is
      the process the caller names or, named none, the caller's parent.
