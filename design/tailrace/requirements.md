@@ -431,7 +431,10 @@ redefine these.
 114. A served layout is reached by one fixed name and port on every
     host, with the repository in the path, and one process on a host
     serves every checkout; an address whose port differs from host to
-    host names a host.
+    host names a host. The name and port are the core's and no setting
+    moves them, and the repository in the path is the owner and name its
+    landing's remote gives it (49), never a directory or a name an
+    operator chose.
 50. A consumer reads only what it asked for: a layout rendered for a
     set of versions holds those versions, and asking for a version
     reaches the store only when the layout lacks it.
@@ -482,8 +485,12 @@ redefine these.
 132. A web page is a surface (56), answered by the host's one serving
     process (114) at a path of its own: it renders the status answer, what
     every environment should run, runs and waits on, with each version's
-    notes, on each request, and writes nothing (60); no timer renders a
-    page, and no checkout starts a server of its own.
+    notes where the version carries them, on each request, and writes
+    nothing (60); no timer renders a page, and no checkout starts a
+    server of its own. The process answers a repository once a command
+    run in a checkout of it on that host has named it, and answers absent
+    for one none has (58); a checkout whose host runs no process says so
+    and starts none.
 129. The ledger names an asker by an identity the gate verified at the
     moment of asking, issued by the owner's identity provider, never by
     the asker's own word; a surface that asks on a person's behalf
