@@ -658,7 +658,15 @@ seconds after the put, the check reads again at growing intervals while
 it answers the former place, for at most a bound the profile names, 30
 seconds on Amazon ECR: the new digest is the move made, any third digest
 a lost race (109), and the bound passing a refusal naming the former
-place, with the put never repeated. The binding declares one repository, and every blob,
+place, with the put never repeated. The registry's tag reads are not
+monotonic either: after one read has answered the new digest, another
+may still answer a place the name was at, for the same bound, so a
+resolve on this profile is the answer as of when it read (36), settling
+on the new digest within the bound and never a digest the name was never
+at; nothing of tailrace acts on a resolve where the ledger holds the
+answer (33), and the conformance suite reads a moved name until it
+settles or the profile's bound passes, which a profile with no lag
+passes at once. The binding declares one repository, and every blob,
 manifest, referrer and tag lives in it, the ecosystem name escaped into
 the tag: the seam addresses by digest alone, which a registry resolves
 only within a repository. A tag names a manifest, never a blob, so a
