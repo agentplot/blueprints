@@ -434,7 +434,11 @@ redefine these.
     host names a host. The name and port are the core's and no setting
     moves them, and the repository in the path is the owner and name its
     landing's remote gives it (49), never a directory or a name an
-    operator chose.
+    operator chose. The process is started by the first asker on the host
+    that finds none, holds the host's one lock for it, and ends when
+    nothing has asked for a while; a host may also run it as a service
+    of its own. No asker starts a second, and no person is told to
+    start one.
 50. A consumer reads only what it asked for: a layout rendered for a
     set of versions holds those versions, and asking for a version
     reaches the store only when the layout lacks it.
@@ -487,10 +491,9 @@ redefine these.
     every environment should run, runs and waits on, with each version's
     notes where the version carries them, on each request, and writes
     nothing (60); no timer renders a page, and no checkout starts a
-    server of its own. The process answers a repository once a command
-    run in a checkout of it on that host has named it, and answers absent
-    for one none has (58); a checkout whose host runs no process says so
-    and starts none.
+    server of its own beside it. The process answers a repository once
+    a command run in a checkout of it on that host has named it, and
+    answers absent for one none has (58).
 129. The ledger names an asker by an identity the gate verified at the
     moment of asking, issued by the owner's identity provider, never by
     the asker's own word; a surface that asks on a person's behalf
@@ -656,7 +659,13 @@ redefine these.
     ledger is appended to.
 118. The operator's bindings for a host are kept in one file on the
     host, beside the landing's own, in the same form, readable with a
-    file reader.
+    file reader. A host with no such file is bound: its store is a
+    layout on disk under the user's own data directory (C.2), its signer
+    a host key made on first use (C.8), its landing the branch (C.6) or
+    sluice where the repository is set up for it (C.5), and its ledger
+    the git ref (C.13); so a person on a laptop, and every plugin, works
+    with nothing written, and the file is for pointing a host at a
+    registry, a key service or a shared ledger.
 130. The core starts nothing after a landing and nothing after an
     offer: a publish is run by whatever the host binds to run it, the
     gate is told by whatever the host binds to tell it, and both are
@@ -808,7 +817,20 @@ with its outputs, the paths that version it, its tag prefix and its
 projections, the version rule, the signers and what each may claim, the
 claims each audience requires, the channels and their bindings, and the
 environments with their targets and whether each waits, or the
-environment kinds a target admits by its roster (126).
+environment kinds a target admits by its roster (126). Most of it is
+given: a repository that declares no component is one (123); every
+component has `beta`, moved by the gate on each accepted publish (95),
+and `stable`, moved by promotion from among what `beta` has held (37),
+with no line written; the version rule is the conventional-commit rule
+unless another is named. An environment names its channel, and two
+words make the rest: `manual` gives it a channel of its own bound to the
+one it names, moved only by a person's yes (41, 97); `after` names the
+environments it must never be ahead of, and gives it a channel bound to
+theirs that moves once every environment named reports it runs the
+version (37, 43, 91). The channels these two words make are the
+statement's channels and are read as such (131), and a reader may
+declare one by hand instead. A target's own settings, a cache's address
+among them, sit in the target's table and nowhere else.
 
 ### C.11 Projections
 
