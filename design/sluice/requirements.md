@@ -511,6 +511,13 @@ redefine these.
      writes work no live instance will take wakes a pool or a peer by
      the means its deployment names; a wake that is lost delays the work
      and loses nothing (59).
+129. On one host, one process reads a repository's records, policy and
+     places for everyone watching its queues: a watch or a wait that
+     finds a live reader follows the document the reader last wrote and
+     reads nothing itself, and one that finds none becomes the reader.
+     A reader that stops is replaced by the next watch or wait within a
+     tick, its followers reading what it last wrote until then; a reader
+     serves its own host alone (26, 80).
 
 ### A.9 Branches
 
