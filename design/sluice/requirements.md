@@ -553,7 +553,10 @@ redefine these.
      history tied to the folder's path, moves nothing an agent or an
      editor has open, carries the sessions' history to the new path, and
      goes on in the plain copy only on the operator's word, which the
-     setup's record says.
+     setup's record says. The session that runs the move is no such
+     holder, nor is anything it started: a holder is a process outside
+     that session, its ancestors and its descendants, and the session is
+     the process the caller names or, named none, the caller's parent.
 127. A team that lands through pull requests keeps that whole: a request
      opened as always, by a submit or by hand, a draft that waits, the
      reviews and the other systems' checks its policy names, and sluice
