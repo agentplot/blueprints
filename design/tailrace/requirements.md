@@ -653,7 +653,12 @@ statement's predicate type in the referrer's `in-toto.io/predicate-type`
 annotation, since a predicate type is a URI and a registry takes only a
 media type as an artifact type; a name is a tag, moved with the expected
 digest where the registry supports it and checked after the move where
-it does not. The binding declares one repository, and every blob,
+it does not, and since a registry may answer a tag's former digest for
+seconds after the put, the check reads again at growing intervals while
+it answers the former place, for at most a bound the profile names, 30
+seconds on Amazon ECR: the new digest is the move made, any third digest
+a lost race (109), and the bound passing a refusal naming the former
+place, with the put never repeated. The binding declares one repository, and every blob,
 manifest, referrer and tag lives in it, the ecosystem name escaped into
 the tag: the seam addresses by digest alone, which a registry resolves
 only within a repository. A tag names a manifest, never a blob, so a
@@ -670,7 +675,7 @@ ecosystem and carries no metadata, so it is no artifact (53, 100).
 | put-artifact | manifest put; the digest is the manifest's |
 | attach | referrer push, with the tag-schema fallback where the referrers API is absent |
 | claims-of | the referrers list, filtered by the envelope type |
-| name, resolve | tag put with the expected digest, tag get; a digest held as a blob is named through its cache manifest, and a tag at a cache manifest resolves to its layer's digest |
+| name, resolve | tag put with the expected digest, tag get read again while it answers the former place, up to the profile's bound; a digest held as a blob is named through its cache manifest, and a tag at a cache manifest resolves to its layer's digest |
 | read | blob get by digest |
 
 ### C.2 The store: an OCI image layout on disk
