@@ -489,7 +489,12 @@ redefine these.
     the asker's own word; a surface that asks on a person's behalf
     carries the person's own token, and the gate records the person.
     The gate refuses an asking it cannot verify and names what it could
-    not read.
+    not read. Where no identity provider stands, the asker recorded is
+    the signer of the host that asked, and the record says it names a
+    host and no person, so a reader tells the two apart as 108 lets a
+    reader tell a one-host acceptance. A promotion the gate makes on a
+    publish (95) records the gate's own signer as the asker and the
+    publish as its cause; an asker is always a signer, never a phrase.
 
 ### A.11 What tailrace keeps
 
@@ -581,9 +586,12 @@ redefine these.
 83. The policy for a channel bound to another (37) names the channel it
     is bound to, and the policy for acceptance never names a channel.
 131. **channels**: given a repository at a landed revision, the channels
-    its policy declares, each with the component it belongs to (125) and
-    the channel it is bound to where it is one (37, 83); a repository
-    that declares one component has every channel in it.
+    its policy declares, each with the component it belongs to (125),
+    how it moves, on each accepted publish as the gate's act (95), by a
+    promotion alone, or bound, and the channel it is bound to where it
+    is one (37, 83); a repository that declares one component has every
+    channel in it. The gate and the ledger learn a channel through this
+    answer and read no key of the policy's file themselves.
 
 ### B.6 A projection
 
@@ -768,7 +776,12 @@ nor unreadable (78).
 
 A key the host's cloud identity may use and never export, such as a key
 in AWS KMS used through the host's role; the signer's name is the key's,
-and verification uses its public half.
+and verification uses its public half. The policy that names the signer
+carries the public half beside the key's name, and a verifier reads it
+there, from the policy at the revision that counted the claim (107), so
+a claim stays checkable after the key is disabled or deleted (117); the
+key service is asked for the public half only where the policy carries
+none.
 
 ### C.8 The signer: a host key
 
