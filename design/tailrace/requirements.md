@@ -159,6 +159,15 @@ redefine these.
 4. An artifact carries the metadata that says what its bytes are: the
    ecosystem whose form it takes, its name in that ecosystem, and its
    version. An artifact that says none of these is refused.
+138. A publish names each artifact in the store by its ecosystem, its
+    name in that ecosystem and its version, a pointer to the artifact's
+    digest (3), beside the component's tag for the version's index, so a
+    consumer resolves what its lockfile pins (137) by name and version
+    alone, knowing nothing of the publisher's components, prefixes or
+    repository; the pointer is moved only with the digest it is expected
+    at (109), names no store of one owner (49), and the index it points
+    into names the publishing repository by its remote's owner and name
+    and the revision (13).
 5. The same bytes offered again are the same artifact: a second offer
    writes nothing, answers the same digest, and is not an error.
 6. A version names a set of digests through its index, and nothing
@@ -434,7 +443,11 @@ redefine these.
 113. A layout for a repository that consumes another's versions is
     rendered under the consuming repository's own policy at its landed
     revision (65); a consuming repository with no policy renders under
-    the publishing repository's policy for layouts.
+    the publishing repository's policy for layouts, which the publish
+    attached to the version's index as a claim of the publisher's, the
+    claims a layout must require as that repository declared them at the
+    revision, so a consumer reads it from the store and reaches no
+    repository but its own (49, 60).
 99. A version a layout's policy refuses is answered to whoever asked
     for the layout, naming the version and the claim found wanting; a
     served layout answers the refusal in its response to the client's
@@ -676,6 +689,11 @@ redefine these.
 87. The same outputs and the same version, or the same build identity,
     pack to the same bytes, or the projection says it cannot promise so
     (18).
+137. **pinned**: given a checkout, the ecosystem names and versions its
+    lockfile pins, as the ecosystem's own lockfile spells them, or
+    absent where the checkout holds no lockfile of that ecosystem; a
+    projection whose ecosystem has no lockfile, a file, an image, a
+    cache, answers absent.
 
 ### B.7 A target
 
