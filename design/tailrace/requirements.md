@@ -255,6 +255,14 @@ redefine these.
     commit since its last tag touched; one component's publish never
     gives another component a version, an index or a move. Two
     components may name one path, and a commit under it versions both.
+134. A version carries its notes: the run that derives the version
+    (21) renders them from the same history, by the rule's own tool, and
+    they are an artifact of the version named in its index (6), content-
+    addressed and claimed with the rest; nothing writes a version's
+    notes after it is offered. A surface shows a version's notes beside
+    it and, between what an environment runs and what it should, the
+    notes of every version between (98, 132); a channel's changelog is
+    its chain read with each promotion's notes and asker.
 
 ### A.5 Acceptance
 
@@ -471,7 +479,7 @@ redefine these.
     gone builds again and is no worse for it. Nothing accepted or
     released is ever removed because of what the cache does.
 55. A verifier's rebuild (30) reads no cache entry it did not write.
-124. A compilation's cache, a toolchain's reuse of one compilation's
+133. A compilation's cache, a toolchain's reuse of one compilation's
     outputs inside a task that runs, is the toolchain's and the host's,
     below the task: tailrace carries none of it between hosts and names
     none, and a verifier's rebuild (30, 55) reads no such cache another
@@ -491,7 +499,11 @@ redefine these.
 59. A refusal carries the underlying store's, signer's or ecosystem's
     own words where one refused, verbatim, beside tailrace's.
 60. Asking what tailrace holds reaches no store, no signer and no
-    target, and writes nothing.
+    target, and writes nothing. Asking a channel's chain is a read of
+    the ledger (61): it fetches the ledger into the host's copy where the
+    ledger answers, a store's or a remote's, and answers from the copy
+    saying when where it does not; the fetch writes the copy and nothing
+    else, and never a store's name or bytes.
 132. A web page is a surface (56), answered by the host's one serving
     process (114) at a path of its own: it renders the status answer, what
     every environment should run, runs and waits on, with each version's
@@ -499,8 +511,11 @@ redefine these.
     nothing (60); no timer renders a page, and no checkout starts a
     server of its own beside it. The process answers a repository once
     a command run in a checkout of it on that host has named it, and
-    answers absent for one none has (58). It answers every repository it
-    knows together at its root path, one row each with every channel's
+    answers that no checkout on this host has named one none has, in
+    those words (58). What it knows of the host's checkouts is the host's
+    own and nothing the store or git holds (63): it is kept beside the
+    bindings and made again by the next command run in each checkout. It
+    answers every repository it knows together at its root path, one row each with every channel's
     head and, for the environments, how many run what they should, how
     many are behind, how many wait on a person and how many cannot be
     read, and each repository alone at its own path with the whole; a
@@ -676,7 +691,15 @@ redefine these.
     sluice where the repository is set up for it (C.5), and its ledger
     the git ref (C.13); so a person on a laptop, and every plugin, works
     with nothing written, and the file is for pointing a host at a
-    registry, a key service or a shared ledger.
+    registry, a key service or a shared ledger. The same host's landing
+    remote is the checkout's `origin`, or its one remote where it has no
+    `origin`, and unreadable naming them where it has several and the
+    file names none. On such a host the publish's own host tells the
+    gate as its next step, and where the policy names no gate the host
+    is the one 108 admits, its acceptance claim saying so; so `beta`
+    moves on a laptop with nothing written. What runs a publish after a
+    landing is the landing's step after its push where the landing is
+    sluice (C.5, C.16), and a person where it is a branch.
 130. The core starts nothing after a landing and nothing after an
     offer: a publish is run by whatever the host binds to run it, the
     gate is told by whatever the host binds to tell it, and both are
