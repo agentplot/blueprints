@@ -452,7 +452,10 @@ redefine these.
     one body twice writes nothing the second time, and a later offer
     under an imported key writes nothing.
 63. An imported move whose word is not one of the six (36) is not
-    taken. Its signal arrives unmoved, for curation to judge.
+    taken. Its signal arrives unmoved, for curation to judge, but for
+    crew's `new-territory`, which is read as a join into a proposed item
+    named for the move's target (C.11), so a curation already made is
+    not judged again.
 119. An imported capture keeps the pointer it was held under, where it
      had one, and holds none otherwise. An import copies no raw
      material (14).
@@ -646,7 +649,7 @@ A `capture` object is an offer:
 
 | field | required | meaning |
 |---|---|---|
-| `key` | yes | the key (9). A `/` separates its segments. A key never starts with `/`, never has a `..` segment, and never has `captures` or `moves` as its first segment, so it names nothing in the inbox but its own capture (7) |
+| `key` | yes | the key (9). A `/` separates its segments. A key never starts with `/`, never has a `..` segment, and never has `captures`, `moves` or `items` as its first segment, so it names nothing in the inbox but its own capture (7) |
 | `source` | yes | the source's name: `release`, `meeting`, `folder`, `deploy` |
 | `event_at` | yes | the event time, in RFC 3339 (12) |
 | `title` | no | one line a person reads in a list |
@@ -815,7 +818,7 @@ A sounding hands a finding beyond its inputs to `millpond land` with
 
 | body | how it is read |
 |---|---|
-| **crew's folders** | each partition's flywheel branch: a `capture.md` and one `NN-<slug>.md` per signal. A release capture keeps the key it landed under, `release/<name>/<version>`; every other capture takes its folder's name (61). A capture keeps the pointer crew gave its raw record (119) |
+| **crew's folders** | each partition's flywheel branch: a `capture.md` and one `NN-<slug>.md` per signal; a `new-territory` move is a join into a proposed item named for its target (63). A release capture keeps the key it landed under, `release/<name>/<version>`; every other capture takes its folder's name (61). A capture keeps the pointer crew gave its raw record (119) |
 | **a meeting corpus** | the meetings already read in a partition's blueprints repository |
 
 ### C.12 Adapters and callers

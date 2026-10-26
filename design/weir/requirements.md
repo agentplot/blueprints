@@ -239,7 +239,8 @@ redefine these.
     under its key changes nothing, whatever it carries.
 17. Raw material never enters an inbox's records. A capture holds a
     pointer only where a machine banked raw material for it, and the
-    pointer names that machine.
+    pointer names that machine by the hostname the machine reports for
+    itself, its short name, as `<hostname>:<path>`.
 18. No capture is written before the raw material its offer names is
     banked, whole and unchanged, on the machine that took it. Only
     what a taken capture names is banked; nothing else an adapter
@@ -352,7 +353,9 @@ redefine these.
     lands only when the branch still stands at that tip. A branch that
     has moved refuses it, and the write is applied again to the new
     tip, with every check made again there, a bounded number of times,
-    and then reported refused, naming why.
+    and then reported refused, naming why. The writer sets the bound,
+    five unless it says otherwise, and a write refused that many times
+    is reported and never tried again on its own.
 45. A write is all or nothing. The branch moves from one tip to the next
     by exactly one write, and no two writes both move it from one tip.
 46. Every check a write rests on is made against the tip it lands on,
@@ -541,7 +544,7 @@ A `capture` object is an offer (2):
 
 | field | required | meaning |
 |---|---|---|
-| `key` | yes | the key (3, 4). `/` separates its segments. A key never starts with `/`, never has a `..` segment, and never has `captures` or `moves` as its first segment, so it names nothing in the inbox but its own capture |
+| `key` | yes | the key (3, 4). `/` separates its segments. A key never starts with `/`, never has a `..` segment, and never has `captures`, `moves` or `items` as its first segment, so it names nothing in the inbox but its own capture |
 | `source` | yes | the source's name: `release`, `meeting`, `folder`, `deploy` |
 | `event_at` | yes | the event time, in RFC 3339 with its offset (5) |
 | `title` | no | one line a person reads in a list |
@@ -604,8 +607,8 @@ inbox/
 ```
 
 A key's segments become folders under `captures/`, so each capture lies
-in one place (42), and a key's first segment is never `captures` or
-`moves` (C.1), so no key reaches the other roots. A signal's identity
+in one place (42), and a key's first segment is never `captures`,
+`moves` or `items` (C.1), so no key reaches the other roots. A signal's identity
 is `<key>#<n>` (27). An item's name holds no `/` (35). The records'
 fields:
 
@@ -805,28 +808,36 @@ The rest of the stack, which a model builds on unless it says why not:
 ## 10. Questions the model must answer
 
 These are not requirements. The model answers them and the operator
-rules.
+rules; each ruling below is the user's, on their card of 2026-10-26.
 
 1. The inbox's roots. C.2 fixes `captures/`, `moves/` and `items/`
    under `inbox/`. Is a third reserved first segment, `items`, wanted
    in the key rule, or do items lie under `moves/` so the design's two
    reserved segments stay the whole rule?
+   Ruled 2026-10-26: three roots, and `items` is a third reserved first segment beside `captures` and `moves` (C.1, C.2); millpond's C.1 and the capture design say the same.
 2. The word *kind*. A signal's `kind` field (C.1, C.2) is what this
    statement calls its nature, because *kind* is the kind format's
    word. Does millpond's statement take *nature* too, or does the field
    change its name in `weir-signal/1`?
+   Ruled 2026-10-26: the field stays spelled `kind`, as crew's and millpond's records write it, and this statement's word for it is nature; Part C says the field is `kind` (C.1, C.2). millpond keeps its glossary.
 3. crew's `new-territory` move is not one of the six (30). Does the
    import leave its signals unmoved (39), or map it to a join into a
    proposed item named for its target?
+   Ruled 2026-10-26: a join into a proposed item named for the move's target, so the curation stands and nothing is judged again; millpond's 63 and C.11 carry the mapping.
 4. The meeting file's key, `meeting/file/<sha256>` (C.6), and where a
    meeting file states its start.
+   Ruled 2026-10-26: the key is `meeting/file/<sha256 of the file>`; its event time is the meeting's start where the file says it, else the date its name begins with, else its last write, as the folder drop's (C.6).
 5. How many times a write is replayed before it is reported refused
    (44), and whether the keeper or the writer sets it.
+   Ruled 2026-10-26: the writer sets the bound, five unless it says otherwise; a write refused that many times is reported and never retried on its own (44).
 6. The machine's name in a pointer: its hostname, or the name the
    fleet gives it.
+   Ruled 2026-10-26: the hostname the machine reports for itself, its short name, as crew writes today (17).
 7. Whether cadence reads the machine's local time or UTC (C.5).
+   Ruled 2026-10-26: the machine's local time, as cron and launchd read it (C.5).
 8. The shape language of an adapter's configuration (C.1): JSON Schema,
    or TOML with a schema of weir's own.
+   Ruled 2026-10-26: a JSON Schema, draft 2020-12, beside the declaration (C.1).
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->

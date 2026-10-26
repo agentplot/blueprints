@@ -117,7 +117,7 @@ A capture carries these fields:
 
 | Field | Required | Meaning |
 |---|---|---|
-| `key` | yes | The source event's identity. The same event gets the same key from every host and every run. A `/` separates its segments. A key never starts with `/`, never has a `..` segment, and never starts with `captures` or `moves`. |
+| `key` | yes | The source event's identity. The same event gets the same key from every host and every run. A `/` separates its segments. A key never starts with `/`, never has a `..` segment, and never starts with `captures`, `moves` or `items`. |
 | `source` | yes | The source's name: `release`, `meeting`, `folder`, `deploy`. |
 | `event_at` | yes | When the event happened, in RFC 3339. Never when it was captured, since weight counts by event date. |
 | `title` | no | One line a person reads in a list. |
