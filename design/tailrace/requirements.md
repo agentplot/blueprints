@@ -823,11 +823,13 @@ component has `beta`, moved by the gate on each accepted publish (95),
 and `stable`, moved by promotion from among what `beta` has held (37),
 with no line written; the version rule is the conventional-commit rule
 unless another is named. An environment names its channel, and two
-words make the rest: `manual` gives it a channel of its own bound to the
-one it names, moved only by a person's yes (41, 97); `after` names the
-environments it must never be ahead of, and gives it a channel bound to
-theirs that moves once every environment named reports it runs the
-version (37, 43, 91). The channels these two words make are the
+words make the rest: `policy`, `auto` unless written, where `manual`
+gives it a channel of its own bound to the one it names, moved only by
+a person's yes (41, 97), and a later word names who may say yes, the
+approval a hosted gate asks for; `after` names the environments it must
+never be ahead of, and gives it a channel bound to theirs that moves
+once every environment named reports it runs the version (37, 43,
+91). The channels these two words make are the
 statement's channels and are read as such (131), and a reader may
 declare one by hand instead. A target's own settings, a cache's address
 among them, sit in the target's table and nowhere else.
