@@ -302,11 +302,18 @@ redefine these.
      after the landing is reported beside the outcome, named apart from
      it, and the submission is never reported as not landed for it (22,
      23, 50).
-     so.
 124. On a branch whose policy names a remote, the remote's revision is
      the branch, and a host's own ref of that name is sluice's copy of
      it: sluice levels the copy to each landing it reads, writes it at no
-     other time, and reads nothing from it. A submission from a worktree
+     other time, and reads nothing from it. Which remote a branch is on
+     is read from the policy at every revision of the branch the host
+     holds, its own ref and each remote's tracking ref as last fetched:
+     the branch is on the remote any of them names, and a revision that
+     lags, or holds no policy, decides nothing against one that names a
+     remote; revisions naming different remotes are refused, naming
+     them; and no fetch is made to decide it. The branch's revision, and
+     the policy its gate and every move of it are read under (56, 104),
+     is then the remote's, fetched. A submission from a worktree
      on a branch of its own is that worktree's head, pushed to the remote
      as that branch and submitted there. A submission from a worktree
      that has checked out a branch sluice lands on is of that branch as
@@ -738,7 +745,7 @@ Parts A and B do not change to admit a profile.
 | profile | read / form / commit / move |
 |---|---|
 | **local refs**: one host's repository | `git rev-parse`; `git merge-tree --write-tree`; `git commit-tree` with the branch and the head as parents and the verdict as `Sluice-*` trailers; `git update-ref` with the expected old value; making a branch `git update-ref <branch> <rev> ""`, removing one `git update-ref -d <branch> <expected>` (104, 105); branch protection by a `reference-transaction` hook that refuses any update to a branch in the policy not made by sluice, and logs it (1) |
-| **pushed refs**: a branch on a remote every host reaches | `git fetch` then `git rev-parse` of the remote's branch; forming and committing as local refs, on the host advancing the branch; the landing a push with `--force-with-lease=<branch>:<expected>`; making a branch a push leased on its absence, `--force-with-lease=<branch>:`, removing one a `--delete` leased on its revision (104, 105); branch protection by the forge's rules, restricting creating, updating and deleting the branch, which only sluice's identity bypasses, an identity no session on any host can use (1); each read compares the revision fetched with the landing the branch's log last recorded, and a revision that does not contain it, as when a branch landed on in local refs gains `remote` and the remote holds an older copy, is logged and reported with both revisions, nothing formed or landed, until the revision read contains that landing or the operator's acceptance of the revision read is recorded (121); the host's `refs/heads/<branch>` is sluice's copy, set to each landing after the push and otherwise untouched, the hook refusing any other write and logging its caller and revisions (124); a submit from a worktree on that branch pushes the worktree's head to the remote's branch for its request and writes no local ref |
+| **pushed refs**: a branch on a remote every host reaches | the remote read from the policy at every revision of the branch the host holds (124); `git fetch` then `git rev-parse` of the remote's branch; forming and committing as local refs, on the host advancing the branch; the landing a push with `--force-with-lease=<branch>:<expected>`; making a branch a push leased on its absence, `--force-with-lease=<branch>:`, removing one a `--delete` leased on its revision (104, 105); branch protection by the forge's rules, restricting creating, updating and deleting the branch, which only sluice's identity bypasses, an identity no session on any host can use (1); each read compares the revision fetched with the landing the branch's log last recorded, and a revision that does not contain it, as when a branch landed on in local refs gains `remote` and the remote holds an older copy, is logged and reported with both revisions, nothing formed or landed, until the revision read contains that landing or the operator's acceptance of the revision read is recorded (121); the host's `refs/heads/<branch>` is sluice's copy, levelled to the branch's last landing by the rounds and otherwise untouched, the hook refusing any other write and logging its caller and revisions (124); a submit from a worktree on that branch pushes nothing to it and submits the remote's revision, saying where the copy differs (124) |
 
 ### C.5 The driver
 
