@@ -459,8 +459,11 @@ redefine these.
     excerpt, and when it leaves out a meeting too short to hold
     anything and counts it in the completion.
 67. Every case cites the clauses it exercises, and the pack's check
-    fails when a cited number names no clause, or a clause of Part A
-    is cited by no case.
+    fails when a cited number names no clause, or a clause of A.1 to
+    A.10 or 71 is cited by no case. The pack's own clauses, 65, 67 and
+    68, are proved by the check's own tests (S15, S16), and what weir
+    never does, 69 and 70, by weir's rules, which no case can exercise;
+    the check counts neither.
 68. The pack runs with no source, no network and no machine but the one
     it runs on, from fixed inputs, and gives the same verdict
     everywhere.
@@ -758,10 +761,18 @@ The sha256 is the capture crate's. The folder drop and the meeting file print co
 ### C.7 The pack
 
 The pack is files in weir's repository, one folder per case under
-`pack/<shape>/<case>/`, the shapes `host`, `adapter` and `cadence`: for
-a host's case, the lines in (`lines.jsonl`) and a raw place, and the
-records expected out, or the refusal expected, with a `satisfies:` list
-naming the clauses (67). A
+`pack/<shape>/<case>/`, and C.7 names every shape the pack holds, so
+every profile is held (87): `host`, `adapter`, `cadence`, `branch` (C.3:
+a branch's tip and content, a write and the tip it was read at, and the
+tip moved or the refusal; 44 to 50), `inbox` (C.2: an inbox's starting
+records and one operation of the records, a reading, a move or a
+replacement, a batch proposed or decided, an item, a brief, a send or
+import lines, and the records or the refusal expected; 25 to 43, 63)
+and `kinds` (C.4: a declaration, and the kinds read or each field
+refused; 51 to 58); a case of the last four runs against weir's own
+crate in its tests, as cadence's do. For a host's case, the lines in
+(`lines.jsonl`) and a raw place, and the records expected out, or the
+refusal expected, with a `satisfies:` list naming the clauses (67). A
 host is run against every host case through its intake; an adapter's
 output is run against the adapter checks and, for a meeting adapter,
 the meeting checks (66). The pack's check reads every case and the
@@ -786,7 +797,10 @@ input, as a host's intake reads them. For a run (8, 9, 23), it runs
 script in the case's folder that prints the case's lines and exits as
 the case says, with or without a completion; the host runs it as it
 runs any adapter (11), and the case holds the cursor kept and the run's
-status (23). After either, the host prints one JSON object on standard
+status (23). For an import (37 to 39, 63, 75a), it runs
+`<host command> --inbox <repository path> --branch inbox --limit <bytes>
+--import` with the case's import lines on standard input, and the case
+holds the captures, signals and moves written as read. After either, the host prints one JSON object on standard
 output after everything else, `weir-report/1`: the keys taken, the
 count held, each refusal with its line, its key and its reason, the
 listing's count and failures, the cursor kept where there was a run,

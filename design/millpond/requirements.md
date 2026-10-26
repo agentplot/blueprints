@@ -675,9 +675,10 @@ Three commands of millpond's take the lines:
   (106). `--inbox <repository path> --branch <branch> --limit <bytes>`
   name the inbox and the limit in place of the host's configuration and
   the inbox's settings, for weir's pack and for a person testing by
-  hand, and `millpond land` and `millpond run --run <declaration>` under
-  those flags print `weir-report/1` last on standard output (27; weir
-  C.7).
+  hand, and `millpond land`, `millpond run --run <declaration>` and
+  `millpond import --import`, which reads weir's import lines on
+  standard input (weir 63, 75a), under those flags print `weir-report/1`
+  last on standard output (27; weir C.7).
 - `millpond run <adapter>` makes a fresh raw directory, starts the
   adapter with it and the adapter's last cursor, lands what the adapter
   prints, and keeps the new cursor and the run's status: its exit, its
