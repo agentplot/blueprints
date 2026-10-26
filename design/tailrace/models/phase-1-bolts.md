@@ -92,7 +92,7 @@ status` on any machine shows both channels and why each is where it is.
 
 ## Bolt 5 · sync and serve
 
-Four units side by side. Usable when a family repository's `npm
+Five units side by side. Usable when a family repository's `npm
 install` and `cargo build` resolve the family's own packages from a
 layout tailrace rendered under the policy, and Claude Code refuses `npm
 publish` in a tailrace repository naming `tailrace publish`.
@@ -103,6 +103,7 @@ publish` in a tailrace repository naming `tailrace publish`.
 | npm, rendered and served | `profiles/projection/npm/` | the npm projection's pack, render and serve (C.11); one serving process per host at a fixed name and port with the repository in the path (114, 115, core.36); the address a lockfile records naming no host (49, core.18) | `npm install` resolves only from the layout; two checkouts on one host share one server |
 | Cargo's registry | `profiles/projection/cargo/` | the Cargo projection: pack through a manifest edit and `cargo package --no-verify`, render as a local registry per lockfile (C.11) | `cargo build` resolves a family crate from the layout |
 | the Claude Code plugin | `plugins/claude-code/` | the plugin as sluice keeps its plugins, outside the core (section 9); the hook refusing an ecosystem's own publish command and naming tailrace's; every answer from the one core (56, core.31) | the hook refuses `npm publish` and `cargo publish` in a tailrace repository |
+| the herdr plugin | `plugins/herdr/` | the pane of channels and environments the statement names (section 9): every environment, what it should run, what it runs and since when or why that cannot be read, who it waits on, whether the two differ, read from `/status.json` on the host's one process (132, 114), which the pane starts when it finds none as any asker does; kept outside the core as sluice keeps its herdr plugin; the user's word on 2026-10-26: the status page is for this pane | the pane shows the same answer `tailrace status --json` prints on a machine that never published; two panes on one host find one process |
 
 ## Bolt 6 · the Nix fleet, pushed
 
@@ -122,7 +123,7 @@ first, the machines pulling later.
 The remaining projections and every other target; the Nix fleet's pull
 profile, the binary on a timer on each machine reading its channel's
 tag in the store, with the NixOS and nix-darwin module that installs
-it (C.12); keyless signing and the verifier's rebuild; the herdr and
-Flywheel plugins; the table ledger (C.15), the roster (126), the pool
+it (C.12); keyless signing and the verifier's rebuild; the Flywheel
+plugin; the table ledger (C.15), the roster (126), the pool
 target and the template set projection a control plane would bind, as
 generic profiles with their conformance scenarios.
