@@ -74,10 +74,12 @@ and the repository's checks are the record.
 
 **The preview** is the place's own site, served in the place with the
 place's ports through the merge queue's exec, as a dev server a session
-keeps up in its worktree today, and opened beside the operator. The
-preview stage asks one thing, whether what the page shows now says what
-the task asked, and a no sends the place back to change with the
-operator's words. Where the operator would rather see it after the
+keeps up in its worktree today, and opened beside the operator. The preview stage's agent prints the preview's address as its first
+line, the place's own name and port, so the operator reaches it from the
+pane that opened beside them, and the address is in the place's status
+for anyone who looks later. The stage asks one thing, whether what the
+page shows now says what the task asked, and a no sends the place back
+to change with the operator's words. Where the operator would rather see it after the
 landing, sluice's preview at the landed revision serves the same site
 and the stage is skipped (sluice record 0045).
 
