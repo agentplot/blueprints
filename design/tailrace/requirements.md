@@ -915,7 +915,11 @@ Not a seam: the core calls none of these, and each is named in the
 host's bindings file (130). A step the landing's host runs after its
 push; a push event a forge delivers to a job; a store's own event
 delivered to the gate; a person at a surface, or a program that asks as
-one.
+one. An approval is the last of these: the core never asks a person
+anything, it answers which environments wait on one (98); a program
+that watches that answer puts the question where the person is, a
+queue of theirs, a hosted tailrace, Flywheel, and on their yes promotes
+as them (97, 129). Which program is the operator's choice and no seam.
 
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
