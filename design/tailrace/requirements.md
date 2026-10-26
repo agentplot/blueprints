@@ -307,7 +307,13 @@ redefine these.
     accepted. A channel that names nothing is empty, and empty is an
     answer, never an error.
 125. A channel belongs to one component and names only its versions;
-    a channel bound to another (37) is bound within its component.
+    a channel bound to another (37) is bound within its component. A
+    channel's identity is its component and its name together: two
+    components' channels of one name are two channels, with two chains,
+    two store names and two policies, and every seam that takes a
+    channel takes its component with it. A repository that declares no
+    component names a channel by its name alone, and every form below
+    keeps that spelling, so nothing changes for it.
 32. A channel moves only by a promotion, and a promotion is made only
     by the gate, at the asking of a party the policy lets ask: a rule
     that follows each publish, or an approver.
@@ -836,7 +842,13 @@ never be ahead of, and gives it a channel bound to theirs that moves
 once every environment named reports it runs the version (37, 43,
 91). The channels these two words make are the
 statement's channels and are read as such (131), and a reader may
-declare one by hand instead. A target's own settings, a cache's address
+declare one by hand instead, as `[channels.<name>]` in a repository that
+declares no component and `[channels.<component>.<name>]` in one that
+does (125). A given channel, `beta` or `stable` with no line written, is
+promoted by the gate's own signer, the one the acceptance policy names
+(32), at the asking of an approver or the rule; a line under the channel
+narrows who may ask or adds a claim its versions must carry, and never
+widens who signs. A target's own settings, a cache's address
 among them, sit in the target's table and nowhere else.
 
 ### C.11 Projections
@@ -883,7 +895,8 @@ whose packager cannot promise it says so (87).
 ### C.13 The ledger: a git ref
 
 One ref per channel in the repository, `refs/tailrace/ledger/<channel>`,
-each commit holding one promotion claim; `append` is a push that fast-
+or `refs/tailrace/ledger/<component>/<channel>` where the repository
+declares components (125), each commit holding one promotion claim; `append` is a push that fast-
 forwards, and a push the remote refuses is a predecessor that is not the
 head. The gate's own identity pushes, and no device that asks for a
 promotion commits anything. Asking reads the refs the repository holds,
@@ -894,7 +907,9 @@ fetched where it does not, saying when (60).
 ### C.14 The ledger: the store
 
 The chain as the promotion claims attached to the versions they move
-to, walked by predecessor from the channel's tag, for a store the
+to, walked by predecessor from the channel's tag, `channel/<channel>`,
+or `channel/<component>/<channel>` where the repository declares
+components (125), for a store the
 operator can trust to retain them: a registry whose retention rules
 expire untagged artifacts by age is not one. Asking reads the chain
 from the store where it answers and from the chain the host last read
