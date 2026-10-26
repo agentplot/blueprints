@@ -160,14 +160,18 @@ redefine these.
    ecosystem whose form it takes, its name in that ecosystem, and its
    version. An artifact that says none of these is refused.
 138. A publish names each artifact in the store by its ecosystem, its
-    name in that ecosystem and its version, a pointer to the artifact's
-    digest (3), beside the component's tag for the version's index, so a
-    consumer resolves what its lockfile pins (137) by name and version
-    alone, knowing nothing of the publisher's components, prefixes or
-    repository; the pointer is moved only with the digest it is expected
-    at (109), names no store of one owner (49), and the index it points
-    into names the publishing repository by its remote's owner and name
-    and the revision (13).
+    name in that ecosystem and its version, a pointer to the digest of
+    the version's index (3, 6), in which the artifact of that ecosystem
+    and name is found by its metadata (4) and beside which the claims
+    about the version are read (28, 113); it stands beside the
+    component's tag for the same index, so a consumer resolves what its
+    lockfile pins (137) by name and version alone, knowing nothing of
+    the publisher's components, prefixes or repository. The pointer is
+    moved only with the digest it is expected at (109), names no store
+    of one owner (49), and the index names the publishing repository by
+    its remote's owner and name and the revision (13). Its store name is
+    `artifact/<ecosystem>/<name>@<version>`, a reserved space beside
+    `cache/` and `channel/`, which no component's tag may enter.
 5. The same bytes offered again are the same artifact: a second offer
    writes nothing, answers the same digest, and is not an error.
 6. A version names a set of digests through its index, and nothing
