@@ -687,6 +687,9 @@ redefine these.
     whether it is ticked, and whether it is archived (3, 24, 26).
 87. The same revision always gives the same answer, and reading writes
     nothing (59).
+127. **locate**: given a place and a change's name, where the change
+    lies in the place, for a prompt's change part (27, C.3); or that the
+    profile keeps no change there.
 
 ### B.4 The agent
 
@@ -750,6 +753,11 @@ redefine these.
 125. **wait**: given a submission still open, a wait on the merge queue
      until it decides, which keeps the queue moving where it moves only
      while something waits; then the outcome, as submit gives it (124).
+126. **base**: given a repository and a base branch, the revision the
+     base stands at where the merge queue's profile says the base lives,
+     after the fetch that profile asks (9, C.1), or why it cannot be
+     read; a repository with no merge queue bound answers the local
+     branch.
 
 ### B.7 The store
 
@@ -761,6 +769,9 @@ redefine these.
      succeeds only if it has no held state yet.
 104. The guarantee: the store holds nothing in a repository's content
      (73), and every flume process on the host reaches the same store.
+128. **folder**: given a place, its own folder beside its held state,
+     where its stages write for flume what a declaration puts under
+     `{{state}}` (123, C.7), which goes when the place is tidied (62).
 
 ### B.8 Binding the contracts
 
@@ -843,7 +854,7 @@ conversation = true       # works with the operator and ends on its caller's fin
 wait = true               # waits on its caller's word (47)
 agents = [{ beside = "operator" }]   # opened beside the pane the launch's settings name as `operator` (107)
 on_fail = "code"          # the stage a failed submission sends the place back to (112); this stage when omitted
-max_send_backs = 3        # how many times a place may go back before it waits on its caller (112); flume's default when omitted
+max_send_backs = 3        # how many times a place may go back before it waits on its caller (112); three when omitted
 ```
 
 `agents`, `deliverables`, `on_fail` and `max_send_backs` are the kind
@@ -1119,8 +1130,21 @@ These are not requirements.
   conversation finished or lost (45, 109)?
 - When the stage a failed submission sends a place back to waits on its
   caller's word, does the return wait on that word too (47, 112)?
+  Ruled 2026-10-26: no. The return starts the stage at once with the
+  merge queue's words, since the word was given for the work the fix
+  continues; the stages after it that wait still wait (47).
 - What is a kind's limit on going back when its declaration sets none
-  (23, 112)?
+  (23, 112)? Ruled 2026-10-26: three, as C.2's example reads; the core
+  takes it as a default the binary gives.
+- How many times may the stop check send an agent back (110)? Ruled
+  2026-10-26: as often as it is asked while the deliverable is missing;
+  the stage's quiet limit (44) is the bound, never a count.
+- A conversation's agent that stops with no finish (109, 45)? Ruled
+  2026-10-26: the stage is reported lost as 45 says, and waits on a
+  retry or a finish; nothing ends it but the finish.
+- Is a stage or a submission that holds for its caller's word reported
+  as waiting too long (47)? Ruled 2026-10-26: no; a hold is a state
+  status names, never a wait status warns of.
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->

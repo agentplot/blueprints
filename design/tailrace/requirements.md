@@ -872,9 +872,12 @@ the digest the caller gave, as on every profile. That manifest names no
 ecosystem and carries no metadata, so it is no artifact (53, 100).
 
 The store's names map onto the registry's in three spaces a credential
-can be scoped to apart. A component's indexes and its channels live
-under the component's own repository, the channel's name as a tag of
-it. Cache entries live apart from every component, under `cache/<build>`
+can be scoped to apart. A component's indexes, its version tags
+(`<prefix><version>`) and its channels live under the component's own
+repository, each a tag of it, so a credential scoped to one component
+makes that component's versions and moves its channels and nothing of
+another's; the declared repository (C.1 above) is the root the three
+spaces hang under. Cache entries live apart from every component, under `cache/<build>`
 repositories, one per build profile (`cache/moon`), with the build
 identity as the tag, so a credential that writes `cache/` and nothing
 else can push entries and never offer, accept or move a name (135). An
