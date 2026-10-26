@@ -38,7 +38,7 @@ be verified it is marked as such.
 | snix-castore | content-addressed storage/sync engine: Merkle tree of directories, chunked blobs; "not Nix-specific" |
 | snix-store | Nix store on castore: keeps only metadata (store path, NAR hash, references, signatures); gRPC daemon; FUSE/virtiofs mount |
 | nix-compat | Nix formats and protocols (store paths, NAR, narinfo + ed25519 signatures, nixbase32, derivations/ATerm, daemon wire protocol); no dependency on other snix crates |
-| snix-build | build protocol; OCI (runc) and Bubblewrap builders, gRPC client/server adapters |
+| snix-build | build protocol; OCI (runc) and bubblewrap builders, gRPC client/server adapters |
 | snix-eval, snix-glue, snix-cli | bytecode evaluator; store/builder builtins; REPL that evaluates nixpkgs, "not a replacement for nix-build" |
 | nar-bridge | read-write Nix HTTP binary cache server over snix-[ca]store |
 | snix-boot | boots cloud-hypervisor VMs with /nix/store served by `snix-store virtiofs` [13] |
@@ -130,7 +130,7 @@ be verified it is marked as such.
   Author is "somewhat confident" about BuildRequest; the RPC "will change to
   a stream of events" [37]. Reference scanning (`refscan_needles`) is a
   proposal [38]. OCI builder builds an OCI runtime spec/bundle and invokes
-  runc, Linux only [39][40]; rustdoc also lists `bwrap` (Bubblewrap), `dummy`
+  runc, Linux only [39][40]; rustdoc also lists `bwrap` (bubblewrap), `dummy`
   and `grpc` [41]. Overview says the builder "currently has only an OCI
   implementation" [12].
 
