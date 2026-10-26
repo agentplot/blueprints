@@ -858,7 +858,16 @@ given: a repository that declares no component is one (123); every
 component has `beta`, moved by the gate on each accepted publish (95),
 and `stable`, moved by promotion from among what `beta` has held (37),
 with no line written; the version rule is the conventional-commit rule
-unless another is named. An environment names its channel, and two
+unless another is named. The givens are a policy fragment in this same
+form, shipped with the core and laid beneath the repository's own file,
+which the policy command shows as the one table in force; the core knows
+the three ways a channel moves, on each accepted publish, by promotion
+from another channel, or bound to other environments' reports (131), and
+no channel's name. A channel the givens hold and the repository does not
+switch on, `alpha` following every accepted version including
+prereleases, `lts` promoted from `stable` by a person alone, is one line
+to switch on, since it is already written; a repository overrides a given
+by writing the same line. An environment names its channel, and two
 words make the rest: `policy`, `auto` unless written, where `manual`
 gives it a channel of its own bound to the one it names, moved only by
 a person's yes (41, 97), and a later word names who may say yes, the
