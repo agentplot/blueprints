@@ -510,12 +510,14 @@ redefine these.
 59. A refusal carries the underlying store's, signer's or ecosystem's
     own words where one refused, verbatim, beside tailrace's.
 60. Asking what tailrace holds reaches no store, no signer and no
-    target, and writes nothing. Asking a channel's chain is a read of
-    the ledger (61): it fetches the ledger into the host's copy where the
-    ledger answers, a store's or a remote's, and answers from the copy
-    saying when where it does not, an empty channel as any other answer,
-    with the time the copy was read; the fetch writes the copy and
-    nothing else, and never a store's name or bytes.
+    target, and writes nothing. Asking a channel's chain, or whether a
+    revision landed, is a read of the ledger or the landing (61, 77): it
+    fetches the ledger, or the landing's branch, into the host's copy
+    where the remote answers, a store's or a git remote's, and answers
+    from the copy saying when where it does not, an empty channel as any
+    other answer, with the time the copy was read; the fetch writes the
+    host's copy and nothing else, never a store's name or bytes, never a
+    branch, and a fetch is not a write in this clause's sense.
 132. A web page is a surface (56), answered by the host's one serving
     process (114) at a path of its own: it renders the status answer, what
     every environment should run, runs and waits on, with each version's
@@ -892,7 +894,10 @@ prereleases, `lts` promoted from `stable` by a person alone, is one line
 to switch on, since it is already written: writing its table,
 `[channels.alpha]`, empty or with lines, is the switch, and there is no
 other key for it and no switch that turns `beta` or `stable` off; a
-repository overrides a given by writing the same line. A channel that
+repository overrides a given by writing the same line. The policy
+command shows the table in force and, beneath it, each given held off
+with the line that would switch it on, read from the fragment, so a
+reader sees what one line would give them. A channel that
 follows each accepted publish follows the releases the version rule
 makes, and follows prereleases too only where its line says
 `prereleases = true`, which `alpha`'s given does. Who may ask: an
