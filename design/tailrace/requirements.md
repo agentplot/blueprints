@@ -479,6 +479,17 @@ redefine these.
     gone builds again and is no worse for it. Nothing accepted or
     released is ever removed because of what the cache does.
 55. A verifier's rebuild (30) reads no cache entry it did not write.
+135. A host pushes the cache entries of the tasks it ran with the
+    credential it has, as a cache entry and nothing more (52, 53), before
+    or after the landing is decided: on a host, as the step its driver
+    runs; in a pool whose runners keep nothing, in the job that ran the
+    task. A publish on a host that holds none of the outputs reads them
+    from the store as the cache entries whose build identities the
+    landing's verdicts name, and offers those bytes; it never builds to
+    offer where the landing has verdicts (15, I3), and an identity whose
+    entry no store holds refuses the publish naming the output (16, 58).
+    Where the landing has no verdicts (C.6), the publish's host builds
+    through the build seam and offers what it left as its own.
 133. A compilation's cache, a toolchain's reuse of one compilation's
     outputs inside a task that runs, is the toolchain's and the host's,
     below the task: tailrace carries none of it between hosts and names
