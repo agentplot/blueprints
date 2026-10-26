@@ -698,8 +698,10 @@ redefine these.
     gate as its next step, and where the policy names no gate the host
     is the one 108 admits, its acceptance claim saying so; so `beta`
     moves on a laptop with nothing written. What runs a publish after a
-    landing is the landing's step after its push where the landing is
-    sluice (C.5, C.16), and a person where it is a branch.
+    landing is named in the file (130, C.16); where the file names none,
+    a publish runs when asked for: by a person, or by the driver that
+    submitted the work and learned it landed (sluice 50, 51). The landing
+    tool itself runs nothing after it lands and is never asked to.
 130. The core starts nothing after a landing and nothing after an
     offer: a publish is run by whatever the host binds to run it, the
     gate is told by whatever the host binds to tell it, and both are
@@ -950,10 +952,15 @@ projections (101).
 ### C.16 What turns the wheel
 
 Not a seam: the core calls none of these, and each is named in the
-host's bindings file (130). A step the landing's host runs after its
-push; a push event a forge delivers to a job; a store's own event
-delivered to the gate; a person at a surface, or a program that asks as
-one. An approval is the last of these: the core never asks a person
+host's bindings file (130). A push event a forge delivers to a job,
+which runs the publish confined with the job's own identity as its
+signer; the driver that submitted the work and waited on its landing,
+running the publish as its next step (sluice 50, 51); a watcher of the
+landing's records on a host; a store's own event delivered to the gate;
+a person at a surface, or a program that asks as one. Never a hook in
+the landing tool: the merge queue lands and decides nothing more, and
+nothing it runs after a landing publishes, so a landing's tool never
+knows tailrace (sluice 1, 10, 122; tailrace record 0005). An approval is the last of these: the core never asks a person
 anything, it answers which environments wait on one (98); a program
 that watches that answer puts the question where the person is, a
 queue of theirs, a hosted tailrace, Flywheel, and on their yes promotes

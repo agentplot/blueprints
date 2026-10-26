@@ -302,14 +302,6 @@ redefine these.
      after the landing is reported beside the outcome, named apart from
      it, and the submission is never reported as not landed for it (22,
      23, 50).
-130. The policy may name commands the landing's host runs after its
-     push of a landing, in the landing's place at the landed revision
-     with the place's own environment, one after another in the order
-     named; each is reported beside the outcome as 122 reads it, with its
-     own exit and output, and gates nothing: a landing whose step failed
-     is landed, and the failure is a signal. Whoever waits on the
-     submission learns the steps' outcomes with the landing's, and a
-     step that outlives a bound the policy names is ended and reported
      so.
 124. On a branch whose policy names a remote, the remote's revision is
      the branch, and a host's own ref of that name is sluice's copy of
