@@ -647,8 +647,12 @@ redefine these.
     how it moves, on each accepted publish as the gate's act (95), by a
     promotion alone, or bound, and the channel it is bound to where it
     is one (37, 83); a repository that declares one component has every
-    channel in it. The gate and the ledger learn a channel through this
-    answer and read no key of the policy's file themselves.
+    channel in it. The same answer carries each given the repository has
+    not switched on, marked held and naming the line that switches it on
+    (C.10), apart from the channels in force, so a surface shows both
+    from one answer and no further operation exists for it. The gate and
+    the ledger learn a channel through this answer and read no key of
+    the policy's file themselves.
 
 136. **environments**: given a repository at a landed revision, the
     environments its policy declares, each with its target, the channel
