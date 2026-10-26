@@ -692,8 +692,10 @@ redefine these.
 
 ### B.6 A projection
 
-84. **pack**: given an output at a build identity, and the version
-    where the bytes are an artifact's, the ecosystem's own bytes for it
+84. **pack**: given an output at a build identity, the version where
+    the bytes are an artifact's, and the component the output belongs
+    to with its declared outputs (123), so a projection knows which
+    outputs are the component's own, the ecosystem's own bytes for it
     and the metadata (4) the ecosystem gives them. A cache entry (52)
     packs with no version, and the bytes it packs to carry no metadata
     that makes an offer (100).
@@ -838,6 +840,15 @@ a blob; resolving the name answers the layer's digest, so the name is at
 the digest the caller gave, as on every profile. That manifest names no
 ecosystem and carries no metadata, so it is no artifact (53, 100).
 
+The store's names map onto the registry's: `channel/<name>` and
+`cache/<identity>` as repositories and tags of the store's repository,
+and an artifact's pointer (138), `artifact/<ecosystem>/<name>@<version>`,
+as the repository `artifact/<ecosystem>/<name>`, lowercased and escaped
+as the distribution protocol allows, with `<version>` as its tag, so a
+name's versions are the repository's tag list and no tag carries a
+package name; a tag's characters the protocol refuses, `+` among them,
+are escaped one way and read back.
+
 | operation | how |
 |---|---|
 | put-bytes | blob upload; the registry answers whether the blob existed |
@@ -939,7 +950,11 @@ unless another is named; and the given policy for a layout admits a
 version the gate accepted and no other, so a repository with no layout
 line renders accepted versions. The givens name no signer: who may
 claim what is the repository's file's alone (116), and a file naming
-none makes the host the one-host gate as above. A consuming repository with no policy
+none makes the host the one-host gate as above. For reading, a host
+with no file trusts its own signer and the signers its bindings name
+(118), so a laptop consumes what it published; a repository whose file
+names signers reads under its file alone, and the host's trusted list is
+read only for a claim its file names no signer for. A consuming repository with no policy
 of its own counts a publisher's layout-policy claim (113), and every
 claim it reads, through the signers its host's bindings trust (118),
 and refuses a layout whose claims count through none, naming the claim
