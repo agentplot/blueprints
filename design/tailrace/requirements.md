@@ -606,7 +606,11 @@ redefine these.
 ### B.3 The landing
 
 77. **landed**: given a branch and a revision, whether the branch has
-    landed it.
+    landed it. Where the landing's remote does not answer, the answer is
+    read from the host's copy of the branch as last fetched, saying when
+    it was fetched and carrying the remote's words (59, 61), never a
+    refusal and never a guess; a publish that reads not landed from such
+    a copy refuses naming the copy's time, and asks again later.
 78. **verdicts-of**: given a revision, every signed verdict the landing
     recorded for it, each naming its check, its build identity, its
     outcome and its signer, as the landing recorded them.
@@ -826,14 +830,18 @@ what ran: `verdicts-of` carries the signed pass sluice counted for it
 (sluice 108), the record for the same key and system by a signer
 tailrace's policy names (104), from the combination that ran it, as
 made and naming where it was found (12). Every envelope is carried
-whole, its signatures and their key ids as sluice wrote them.
+whole, its signatures and their key ids as sluice wrote them. sluice's
+log and refs are read on the remote where it answers, and from the
+host's copy as last fetched where it does not, saying when (77).
 
 ### C.6 The landing: a git branch
 
 Where sluice does not run a branch, a revision is landed when the
 branch's history contains it, and there are no verdicts: `verdicts-of`
 answers an empty set for every landed revision, which is neither absent
-nor unreadable (78).
+nor unreadable (78). The branch is read on the remote where it answers,
+and from the host's copy of it as last fetched where it does not, saying
+when (77).
 
 ### C.7 The signer: a key in a key service
 
@@ -893,7 +901,12 @@ does (125). A given channel, `beta` or `stable` with no line written, is
 promoted by the gate's own signer, the one the acceptance policy names
 (32), at the asking of an approver or the rule; a line under the channel
 narrows who may ask or adds a claim its versions must carry, and never
-widens who signs. A target's own settings, a cache's address
+widens who signs. Where the file names no signer that may claim
+acceptance, the policy answers that the host's own signer, the one it
+names for provenance, is the gate of the repository for acceptance and
+for the given channels' promotion, as the one host 108 admits, and its
+acceptance claim says so; the gate reads this from the policy's answer
+and decides nothing of it (core.7). A target's own settings, a cache's address
 among them, sit in the target's table and nowhere else.
 
 ### C.11 Projections
