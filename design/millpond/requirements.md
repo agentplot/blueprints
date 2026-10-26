@@ -284,7 +284,9 @@ redefine these.
     reported when it failed, with every secret's value taken out (75).
 27. Offers handed in at the intake are taken as a run's offers are (7
     to 19). The intake keeps no cursor and no adapter's status, and
-    tells its caller what it took, held and refused.
+    tells its caller what it took, held and refused, as the one report
+    weir's pack reads (weir C.7, `weir-report/1`), so the pack holds
+    millpond as a host.
 106. A caller at the intake names the raw place its offers' raw
      material is in, or names none. An offer that names raw material,
      from a caller that named no raw place, is refused (15).
@@ -670,7 +672,12 @@ Three commands of millpond's take the lines:
 - `millpond land [--raw-dir <dir>]` is the intake. It reads lines on
   standard input from whoever pipes them, and knows nothing of who made
   them (27). With no `--raw-dir`, a line naming raw files is refused
-  (106).
+  (106). `--inbox <repository path> --branch <branch> --limit <bytes>`
+  name the inbox and the limit in place of the host's configuration and
+  the inbox's settings, for weir's pack and for a person testing by
+  hand, and `millpond land` and `millpond run --run <declaration>` under
+  those flags print `weir-report/1` last on standard output (27; weir
+  C.7).
 - `millpond run <adapter>` makes a fresh raw directory, starts the
   adapter with it and the adapter's last cursor, lands what the adapter
   prints, and keeps the new cursor and the run's status: its exit, its

@@ -772,6 +772,31 @@ is due, with the zone the now is read in; the pack holds the three
 shapes, a host's, an adapter's and cadence's, and 67's check counts a
 cadence case as it counts the others.
 
+`weir conform <host command>` runs a host against the host cases through
+one seam the pack fixes, and the pack holds a host to it (65, 87). For
+each case the pack makes a bare git repository with no remote in a
+temporary folder, its branch `inbox` seeded with the case's starting
+records, so a case of a held key begins with the capture there, and
+runs the host twice as the case asks. For the intake, it runs
+`<host command> --inbox <repository path> --branch inbox --limit <bytes>
+[--raw-dir <the case's raw place>]` with the case's lines on standard
+input, as a host's intake reads them. For a run (8, 9, 23), it runs
+`<host command> --inbox <repository path> --branch inbox --limit <bytes>
+--run <declaration>`, the declaration naming the case's own adapter, a
+script in the case's folder that prints the case's lines and exits as
+the case says, with or without a completion; the host runs it as it
+runs any adapter (11), and the case holds the cursor kept and the run's
+status (23). After either, the host prints one JSON object on standard
+output after everything else, `weir-report/1`: the keys taken, the
+count held, each refusal with its line, its key and its reason, the
+listing's count and failures, the cursor kept where there was a run,
+and whether the run was complete; the pack then reads the records from
+the branch's tip. A refusal is compared by its line and key, and its
+reason holds the phrase the case names (15); records are compared as
+written. A host whose command takes these flags and prints this report
+is a host the pack can hold; millpond's intake and run do (millpond
+C.1).
+
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
 ## 7. Global invariants
