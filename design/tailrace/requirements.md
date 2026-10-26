@@ -375,10 +375,13 @@ redefine these.
     claims are attached in the store to the versions they move to (39),
     and where the store disagrees with the ledger, the store is
     rewritten from the ledger.
-102. A repository may declare no channel and no environment: its
+102. A repository may write no channel line and no environment: its
     versions are offered or accepted, a consumer reads them by version
     under the policy, and nothing of a publish changes when channels
-    are declared.
+    are written. The given channels (C.10) are declared all the same,
+    by the core's fragment, so such a repository's `beta` moves on each
+    accepted publish and its `stable` waits for a promotion, and
+    neither is read as undeclared.
 103. A version copied to another store carries every attestation
     attached to its digests, acceptance and promotions among them (8);
     a channel is the repository's, never a store's, and resolves to one
@@ -905,7 +908,12 @@ environment with `policy = "manual"`, or a channel moved by promotion
 alone, is moved at the asking of any asker the gate verifies (129),
 unless `approvers` under it names who may, signers today and persons
 once an identity provider stands; `lts`'s given names no rule, so no
-publish and no report moves it, and only an asking does. An environment names its channel, and two
+publish and no report moves it, and only an asking does. A repository
+writes `approvers` on the environment or on the channel it means, never
+on a channel the core made for an environment; the made channel takes
+its environment's. The fragment marks the givens it holds off with a
+mark of its own, which a repository's file never carries and the file
+profile refuses. An environment names its channel, and two
 words make the rest: `policy`, `auto` unless written, where `manual`
 gives it a channel of its own bound to the one it names, moved only by
 a person's yes (41, 97), and a later word names who may say yes, the

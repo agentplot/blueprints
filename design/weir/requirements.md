@@ -724,9 +724,11 @@ and a host lands them as any adapter's.
 
 ### C.7 The pack
 
-The pack is files in weir's repository: for each case, the lines in
-(`lines.jsonl`) and a raw place, and the records expected out, or the
-refusal expected, with a `satisfies:` list naming the clauses (67). A
+The pack is files in weir's repository, one folder per case under
+`pack/<shape>/<case>/`, the shapes `host`, `adapter` and `cadence`: for
+a host's case, the lines in (`lines.jsonl`) and a raw place, and the
+records expected out, or the refusal expected, with a `satisfies:` list
+naming the clauses (67). A
 host is run against every host case through its intake; an adapter's
 output is run against the adapter checks and, for a meeting adapter,
 the meeting checks (66). The pack's check reads every case and the
