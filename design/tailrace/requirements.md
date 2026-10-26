@@ -513,8 +513,9 @@ redefine these.
     target, and writes nothing. Asking a channel's chain is a read of
     the ledger (61): it fetches the ledger into the host's copy where the
     ledger answers, a store's or a remote's, and answers from the copy
-    saying when where it does not; the fetch writes the copy and nothing
-    else, and never a store's name or bytes.
+    saying when where it does not, an empty channel as any other answer,
+    with the time the copy was read; the fetch writes the copy and
+    nothing else, and never a store's name or bytes.
 132. A web page is a surface (56), answered by the host's one serving
     process (114) at a path of its own: it renders the status answer, what
     every environment should run, runs and waits on, with each version's
@@ -704,7 +705,10 @@ redefine these.
     layout on disk under the user's own data directory (C.2), its signer
     a host key made on first use (C.8), its landing the branch (C.6) or
     sluice where the repository is set up for it (C.5), and its ledger
-    the git ref (C.13); so a person on a laptop, and every plugin, works
+    the git ref (C.13) on the landing's own remote, pushed to and fetched
+    from it as the branch is, so two machines of one repository read one
+    ledger with nothing written, and a repository with no remote keeps
+    its ledger where it keeps its branch; so a person on a laptop, and every plugin, works
     with nothing written, and the file is for pointing a host at a
     registry, a key service or a shared ledger. The same host's landing
     remote is the checkout's `origin`, or its one remote where it has no
