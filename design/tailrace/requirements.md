@@ -516,7 +516,12 @@ redefine these.
     credential it has, as a cache entry and nothing more (52, 53), before
     or after the landing is decided: on a host, as the step its driver
     runs; in a pool whose runners keep nothing, in the job that ran the
-    task. A publish on a host that holds none of the outputs reads them
+    task, as a step of the repository's own workflow after the queue's
+    run step, which the queue's template leaves room for and never
+    names, with a credential of the job's own that writes cache entries
+    and nothing else in the store, so no job that builds can offer,
+    accept or move a name (96, core.14); which entries, the build seam
+    answers (139). A publish on a host that holds none of the outputs reads them
     from the store as the cache entries whose build identities the
     landing's verdicts name, and offers those bytes; it never builds to
     offer where the landing has verdicts (15, I3), and an identity whose
@@ -638,6 +643,12 @@ redefine these.
     are.
 76. The same revision and the same inputs give the same build identity
     on every host.
+139. **left**: given a checkout, the build identities whose outputs the
+    checkout's own build state holds, each with its tasks, its outcome
+    and where its files are, read from the build's own records (C.3) and
+    from nothing of tailrace's; so a push before a landing (135) pushes
+    what this checkout's run left and nothing more, and a host that
+    keeps nothing between runs pushes what the run made.
 
 ### B.3 The landing
 
