@@ -332,7 +332,16 @@ redefine these.
      transaction is of, as git names it, wherever the command was run
      from; it refuses nothing of a ref it does not guard, and a
      transaction it cannot read for a reason of its own passes, said
-     once, rather than aborting git's write.
+     once, rather than aborting git's write. The protection reads of the
+     host's settings and the policy only what guarding needs, the
+     branches guarded and where their records are, and passes over every
+     other field, known to it or not, so a host whose settings a newer
+     sluice wrote is guarded by an older hook as before; settings or a
+     policy it cannot read at all are a reason of its own, and the
+     transaction passes, said once. The hook runs the sluice that
+     installed it, by its own path and never the caller's, since what a
+     hook refuses may not turn on who ran git; sluice re-installs the
+     hook at its next run in the repository.
      What is refused is a change of the copy's value: a transaction that
      leaves every protected ref at the value it had, git's own packing
      of its refs among them, moves nothing and passes; sluice's
