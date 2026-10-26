@@ -278,10 +278,10 @@ redefine these.
     addressed and claimed with the rest; nothing writes a version's
     notes after it is offered. An artifact the version rule renders has
     no build, so no build verdict is asked of it: the acceptance policy
-    names what each kind of artifact requires, a build's outputs their
-    verdicts and the publisher's provenance, a rendered artifact the
+    names what a built artifact requires, its verdicts and the
+    publisher's provenance, and what a rendered artifact requires, the
     publisher's provenance alone, and the gate judges each artifact
-    against the claims required of its kind (25, 28). A surface shows a version's notes beside
+    against the claims required of artifacts made its way (25, 28). A surface shows a version's notes beside
     it and, between what an environment runs and what it should, the
     notes of every version between (98, 132); a channel's changelog is
     its chain read with each promotion's notes and asker.
