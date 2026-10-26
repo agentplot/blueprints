@@ -779,9 +779,8 @@ the meeting checks (66). The pack's check reads every case and the
 statement, and fails when a number names no clause or a clause of Part
 A is cited by nothing. It needs no network (68). A case for cadence
 (59, 60) is a schedule, a last run or none, a now, and whether the thing
-is due, with the zone the now is read in; the pack holds the three
-shapes, a host's, an adapter's and cadence's, and 67's check counts a
-cadence case as it counts the others.
+is due, with the zone the now is read in; a cadence case is one of the pack's
+six shapes above, and 67's check counts it as it counts the others.
 
 `weir conform <host command>` runs a host against the host cases through
 one seam the pack fixes, and the pack holds a host to it (65, 87). For
