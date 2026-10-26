@@ -427,11 +427,19 @@ redefine these.
     carries no own excerpt.
 62. The meeting file offers one capture per meeting file, with the
     transcript as its raw material and no own excerpt.
-63. The signals-folder import offers each capture of a body read before
-    its inbox existed, with its signals and moves as they stand there
-    (37 to 39).
-64. A built-in adapter speaks the contract as any adapter does (1 to
-    12), and a host runs it as it runs any other.
+63. The signals-folder import is no adapter: an offer carries one own
+    excerpt and nothing a host must read beyond the contract (2), while
+    an imported capture carries its pointer, several signals and their
+    moves as they stand in the body (37 to 39). The import reads a body
+    into import lines, one per capture, each holding the capture as an
+    offer would, the pointer it was held under, its signals as read and
+    its moves as read, and a host's import operation (75a) writes them
+    as 37 to 39 say, holding each by key like any other, writing no
+    pointer of its own, checking no excerpt and banking nothing.
+64. The folder drop and the meeting file speak the contract as any
+    adapter does (1 to 12), and a host runs them as it runs any other;
+    the import speaks its own shape (63), read by the import operation
+    alone, and never through take (75).
 
 ### A.11 The conformance pack
 
@@ -482,6 +490,11 @@ redefine these.
 75. **take**: given lines and the raw place they name, the captures
     taken, held and refused, each refusal with its reason, and the
     records written (13 to 23).
+75a. **import**: given import lines (63), the captures written with
+    their pointers, signals and moves as read, those held by key passed
+    over and counted, and each refusal with its reason (37 to 39); a
+    line whose capture names no key, or a move of another word, is
+    refused or arrives unmoved as 39 says.
 76. **report**: given a run, what it took, held and refused, its
     completion and its cursor (23).
 77. The guarantee: the host writes what Part A says of every line, and
@@ -572,6 +585,19 @@ secrets = ["WISPR_TOKEN"]                # placed in the run's environment under
 |---|---|
 | describe | the declaration above (72) |
 | run | `<command> --raw-dir <dir> [--cursor <c>]`, `<dir>` fresh for the run, the adapter's configuration in the file the `CAPTURE_CONFIG` environment variable names, and each declared secret in the environment under its declared name (73) |
+
+An import line is a fourth kind, written only by `weir import` and read
+only by a host's import operation (63, 75a), never by `take`:
+
+```json
+{"import": {"capture": {"key": "release/mise/2026.10.10", "source": "release", "event_at": "2026-10-10T14:02:11Z", "title": "mise 2026.10.10", "url": "…"}, "pointer": "mac-studio:~/.local/state/crew/…", "came_in": "import:crew-folders", "signals": [{"n": 1, "kind": "ask", "asserted_by": "…", "assertion": "…", "subjects": [], "argues_with": [], "excerpt": "…", "position": "…"}], "moves": [{"signal": 1, "move": "join", "target": "…", "by": "…", "at": "…"}]}}
+```
+
+`capture` is an offer's object without `raw` and `excerpt`; `pointer`
+is kept as the body gave it or left out; `signals` are the body's, in
+its order, numbered from 1; `moves` name a signal by number and carry
+the six words' consequences, and one of another word is carried as it
+stands for 39 to leave unmoved.
 
 A host takes each line in seven steps, which the pack checks (75):
 
@@ -717,10 +743,9 @@ once (60). The clock is the machine's (83).
 |---|---|
 | the folder drop, `weir capture folder <dir>` | one capture per file; key `folder/<folder name>/<sha256 of the file>`; event time the date the file's name begins with, or else its last write; source `folder`; the file as raw; no excerpt (61) |
 | the meeting file, `weir capture meeting <file>` | one capture per meeting file; key `meeting/file/<sha256 of the file>`; event time the meeting's start where the file says it, or else as the folder drop; source `meeting`; the file as raw; no excerpt (62) |
-| the signals-folder import, `weir import signals <dir>` | each capture of crew's folders on a partition's flywheel branch, a `capture.md` and one `NN-<slug>.md` per signal, with `moves.rec`: a release capture keeps `release/<name>/<version>`, every other takes its folder's name (38); the capture's pointer as crew gave it; its signals and moves as read, a move whose word is not one of the six arriving unmoved (39). A meeting corpus already read in a blueprints repository comes the same way (63) |
+| the signals-folder import, `weir import signals <dir>` | one import line (C.1) per capture of crew's folders on a partition's flywheel branch, a `capture.md` and one `NN-<slug>.md` per signal, with `moves.rec`: a release capture keeps `release/<name>/<version>`, every other takes its folder's name (38); the capture's pointer as crew gave it; its signals and moves as read, a move whose word is not one of the six carried for 39 to leave unmoved. A meeting corpus already read in a blueprints repository comes the same way. The host's import operation writes them (63, 75a) |
 
-The sha256 is the capture crate's. Each prints contract lines (64),
-and a host lands them as any adapter's.
+The sha256 is the capture crate's. The folder drop and the meeting file print contract lines a host takes as any adapter's (64); the import prints import lines a host's import operation writes (63, 75a).
 
 ### C.7 The pack
 
