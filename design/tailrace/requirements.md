@@ -470,9 +470,11 @@ redefine these.
     landing's remote gives it (49), never a directory or a name an
     operator chose. The process is started by the first asker on the host
     that finds none, holds the host's one lock for it, and ends when
-    nothing has asked for a while; a host may also run it as a service
-    of its own. No asker starts a second, and no person is told to
-    start one.
+    nothing has asked for a while and it serves no layout: while a
+    rendered layout on the host is served (115), the process stays, since
+    the ecosystem's client cannot start it, and ends only once the
+    layout is removed; a host may also run it as a service of its own.
+    No asker starts a second, and no person is told to start one.
 50. A consumer reads only what it asked for: a layout rendered for a
     set of versions holds those versions, and asking for a version
     reaches the store only when the layout lacks it.
@@ -697,7 +699,11 @@ redefine these.
     lockfile pins, as the ecosystem's own lockfile spells them, or
     absent where the checkout holds no lockfile of that ecosystem; a
     projection whose ecosystem has no lockfile, a file, an image, a
-    cache, answers absent.
+    cache, answers absent. For a name the checkout's manifest declares
+    and no lockfile pins yet, pinned answers the manifest's range, and
+    render holds the newest version the layout's policy admits within
+    it, so a first install resolves and the ecosystem's client writes
+    the pin.
 
 ### B.7 A target
 
@@ -918,7 +924,13 @@ given: a repository that declares no component is one (123); every
 component has `beta`, moved by the gate on each accepted publish (95),
 and `stable`, moved by promotion from among what `beta` has held (37),
 with no line written; the version rule is the conventional-commit rule
-unless another is named. The givens are a policy fragment in this same
+unless another is named; and the given policy for a layout admits a
+version the gate accepted and no other, so a repository with no layout
+line renders accepted versions. A consuming repository with no policy
+of its own counts a publisher's layout-policy claim (113), and every
+claim it reads, through the signers its host's bindings trust (118),
+and refuses a layout whose claims count through none, naming the claim
+(9, 58). The givens are a policy fragment in this same
 form, shipped with the core and laid beneath the repository's own file,
 which the policy command shows as the one table in force; the core knows
 the three ways a channel moves, on each accepted publish, by promotion
@@ -994,7 +1006,7 @@ whose packager cannot promise it says so (87).
 | Maven | the jar and its POM | a `maven2` layout with checksums and `maven-metadata.xml` | not needed: a `file://` repository |
 | Python | the wheel and sdist, with their metadata | a simple index per PEP 503 | not needed: `find-links` or a `file://` index |
 | Go | the module zip | the module proxy layout | not needed: `GOPROXY=file://` |
-| Cargo | the crate file | a local registry per lockfile | not needed: source replacement |
+| Cargo | the crate file, `cargo package --no-verify` after the component's version is set on every crate of the component, so a path dependency on a sibling crate is rewritten to that version's requirement as cargo does (110) | a sparse registry under the served address, `sparse+http://127.0.0.1:7420/<owner>/<name>/cargo/`, the same on every host (49, 114), named `tailrace` in the checkout's cargo configuration | the host's one process, since a sparse index is read over the protocol |
 | NuGet | the package file | a folder feed in the v3 layout | not needed |
 | a file | any file, with a declared media type | a directory | not needed |
 | an image | an image as pushed | the OCI layout itself | the layout served as a registry |
