@@ -743,11 +743,16 @@ redefine these.
     store's, the ranges and their order the projection's.
 
 140. **requires**: given a held version's artifact of the ecosystem, the
-    family's names and ranges its manifest requires of that ecosystem,
-    as the manifest spells them, and whether one version satisfies a
-    range by the ecosystem's own ordering (23); a projection whose
-    ecosystem has no manifest answers none. The core closes a layout
-    with it (137) and never reads a manifest itself (core.1).
+    names and ranges its manifest requires that the layout serves, as
+    the manifest spells them, and whether one version satisfies a range
+    by the ecosystem's own ordering (23); a projection whose ecosystem
+    has no manifest answers none. A name the layout serves is one the
+    consuming checkout's own ecosystem configuration routes to the
+    served address (49, 114), as each ecosystem spells that routing: a
+    scope in npm's configuration, a registry name in Cargo's; every
+    other name is the public registry's and no concern of the layout's
+    (section 8). The core closes a layout with it (137) and never reads
+    a manifest itself (core.1).
 
 ### B.7 A target
 
