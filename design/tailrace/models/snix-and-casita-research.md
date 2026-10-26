@@ -1,6 +1,6 @@
 # snix and casita: the research report
 
-The report a research agent wrote for madswan-design on 2026-10-27, as written, with its sources; the design reading is in `snix-and-casita.md` beside it. Facts here are the report's, checked against primary sources by the agent, not restated by the design.
+The report a research agent wrote for madswan-design on 2026-10-26, as written, with its sources; the design reading is in `snix-and-casita.md` beside it. Facts here are the report's, checked against primary sources by the agent, not restated by the design.
 
 
 Facts gathered 2026-10-26 from project sites, repositories, rustdoc and

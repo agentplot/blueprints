@@ -1,6 +1,6 @@
 # snix and casita, read against tailrace
 
-A design note for the user, 2026-10-27, on their ask in the operator's
+A design note for the user, 2026-10-26, on their ask in the operator's
 pane: research snix, Nix rewritten in Rust, and cachix's casita, and
 see whether anything there influences tailrace's design. The facts are
 in `snix-and-casita-research.md` beside this note, with their sources;

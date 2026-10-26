@@ -1,6 +1,6 @@
 # flume — phase 1, the bolts
 
-A draft for the madswan planner, 2026-10-27, on the capture plan's L3:
+A draft for the madswan planner, 2026-10-26, on the capture plan's L3:
 flume's core and its Claude Code plugin, after L2's records and rules.
 Three bolts. The first is the core, one agent in sequence, because the
 seam traits and the types every profile codes against must exist before
