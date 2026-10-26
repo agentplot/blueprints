@@ -493,7 +493,12 @@ redefine these.
     nothing (60); no timer renders a page, and no checkout starts a
     server of its own beside it. The process answers a repository once
     a command run in a checkout of it on that host has named it, and
-    answers absent for one none has (58).
+    answers absent for one none has (58). It answers every repository it
+    knows together at its root path, one row each with every channel's
+    head and, for the environments, how many run what they should, how
+    many are behind, how many wait on a person and how many cannot be
+    read, and each repository alone at its own path with the whole; a
+    pane shows the two the same way.
 129. The ledger names an asker by an identity the gate verified at the
     moment of asking, issued by the owner's identity provider, never by
     the asker's own word; a surface that asks on a person's behalf
