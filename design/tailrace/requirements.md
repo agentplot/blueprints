@@ -171,7 +171,11 @@ redefine these.
     of one owner (49), and the index names the publishing repository by
     its remote's owner and name and the revision (13). Its store name is
     `artifact/<ecosystem>/<name>@<version>`, a reserved space beside
-    `cache/` and `channel/`, which no component's tag may enter.
+    `cache/` and `channel/`, which no component's tag may enter; the
+    store lists the versions a name holds, as a registry lists the tags
+    of `artifact/<ecosystem>/<name>` and a layout its index's names, so
+    a range with no pin (137) resolves by that listing under the layout's
+    policy.
 5. The same bytes offered again are the same artifact: a second offer
    writes nothing, answers the same digest, and is not an error.
 6. A version names a set of digests through its index, and nothing
@@ -445,17 +449,24 @@ redefine these.
 47. A consumer layout holds only versions whose claims satisfy the
     policy the layout was rendered under.
 113. A layout for a repository that consumes another's versions is
-    rendered under the consuming repository's own policy at its landed
-    revision (65); a consuming repository with no policy renders under
-    the publishing repository's policy for layouts, which the publish
-    attached to the version's index as a claim of the publisher's, the
-    claims a layout must require as that repository declared them at the
-    revision, so a consumer reads it from the store and reaches no
-    repository but its own (49, 60).
+    rendered under the consuming repository's own layout policy where its
+    file writes one, at its landed revision (65); where it writes none,
+    with no file or a file with no layout line alike, under the
+    publishing repository's policy for layouts where the version's index
+    carries one, which the publish attached as a claim of the
+    publisher's, the claims a layout must require as that repository
+    declared them at the revision; and where the index carries none,
+    under the given layout policy (C.10). A consumer reads all of it
+    from the store and reaches no repository but its own (49, 60).
 99. A version a layout's policy refuses is answered to whoever asked
     for the layout, naming the version and the claim found wanting; a
     served layout answers the refusal in its response to the client's
-    own request.
+    own request. Where the client's protocol carries no words at the
+    listing, a sparse index among them, the layout leaves the refused
+    version out of what it lists, answers a request for that version's
+    bytes with the refusal, and the sync that rendered the layout prints
+    the refusal, so the client's own words, no matching version, are
+    never the only ones.
 48. A layout is rendered from the store and the policy alone, and
     rendering it again from the same store under the same policy gives
     the same layout. A layout is never a source of truth.
@@ -926,7 +937,9 @@ and `stable`, moved by promotion from among what `beta` has held (37),
 with no line written; the version rule is the conventional-commit rule
 unless another is named; and the given policy for a layout admits a
 version the gate accepted and no other, so a repository with no layout
-line renders accepted versions. A consuming repository with no policy
+line renders accepted versions. The givens name no signer: who may
+claim what is the repository's file's alone (116), and a file naming
+none makes the host the one-host gate as above. A consuming repository with no policy
 of its own counts a publisher's layout-policy claim (113), and every
 claim it reads, through the signers its host's bindings trust (118),
 and refuses a layout whose claims count through none, naming the claim
@@ -1006,7 +1019,7 @@ whose packager cannot promise it says so (87).
 | Maven | the jar and its POM | a `maven2` layout with checksums and `maven-metadata.xml` | not needed: a `file://` repository |
 | Python | the wheel and sdist, with their metadata | a simple index per PEP 503 | not needed: `find-links` or a `file://` index |
 | Go | the module zip | the module proxy layout | not needed: `GOPROXY=file://` |
-| Cargo | the crate file, `cargo package --no-verify` after the component's version is set on every crate of the component, so a path dependency on a sibling crate is rewritten to that version's requirement as cargo does (110) | a sparse registry under the served address, `sparse+http://127.0.0.1:7420/<owner>/<name>/cargo/`, the same on every host (49, 114), named `tailrace` in the checkout's cargo configuration | the host's one process, since a sparse index is read over the protocol |
+| Cargo | the crate file, `cargo package --no-verify` after the component's version is set on every crate of the component, so a path dependency on a sibling crate is rewritten to that version's requirement as cargo does (110); a crate belongs to the component whose paths hold its manifest (123), and a path dependency on a crate of another component is packed as a dependency on the version requirement the manifest writes for it, refused naming the crate where the store holds no such version (138) | a sparse registry under the served address, `sparse+http://127.0.0.1:7420/<owner>/<name>/cargo/`, the same on every host (49, 114), named `tailrace` in the checkout's cargo configuration | the host's one process, since a sparse index is read over the protocol |
 | NuGet | the package file | a folder feed in the v3 layout | not needed |
 | a file | any file, with a declared media type | a directory | not needed |
 | an image | an image as pushed | the OCI layout itself | the layout served as a registry |
