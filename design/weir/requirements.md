@@ -601,14 +601,14 @@ An import line is a fourth kind, written only by `weir import` and read
 only by a host's import operation (63, 75a), never by `take`:
 
 ```json
-{"import": {"capture": {"key": "release/mise/2026.10.10", "source": "release", "event_at": "2026-10-10T14:02:11Z", "title": "mise 2026.10.10", "url": "…"}, "pointer": "mac-studio:~/.local/state/crew/…", "came_in": "import:crew-folders", "signals": [{"n": 1, "kind": "ask", "asserted_by": "…", "assertion": "…", "subjects": [], "argues_with": [], "excerpt": "…", "position": "…"}], "moves": [{"signal": 1, "move": "join", "target": "…", "by": "…", "at": "…"}]}}
+{"import": {"capture": {"key": "release/mise/2026.10.10", "source": "release", "event_at": "2026-10-10T14:02:11Z", "title": "mise 2026.10.10", "url": "…"}, "pointer": "mac-studio:~/.local/state/crew/…", "came_in": "import:crew-folders", "signals": [{"n": 1, "kind": "ask", "asserted_by": "…", "assertion": "…", "subjects": [], "argues_with": [], "excerpt": "…", "position": "…"}], "moves": [{"signal": 1, "move": "join", "target": "…", "note": "…", "by": "…", "at": "…"}]}}
 ```
 
 `capture` is an offer's object without `raw` and `excerpt`; `pointer`
 is kept as the body gave it or left out; `signals` are the body's, in
 its order, numbered from 1; `moves` name a signal by number and carry
-the six words' consequences, and one of another word is carried as it
-stands for 39 to leave unmoved.
+the six words' consequences and, where the body gave one, a `note` (39);
+one of another word is carried as it stands for 39 to leave unmoved.
 
 A host takes each line in seven steps, which the pack checks (75):
 
@@ -956,8 +956,11 @@ rules; each ruling below is the user's, on their card of 2026-10-26.
   moves. Every capture keeps its key or takes its folder's name, every
   signal and move stands as read, and no raw material is copied.
   Importing it again writes nothing.
-- **S9.** An imported move's word is `new-territory`. The move is not
-  taken, its signal arrives unmoved, and the import reports it.
+- **S9.** An imported move's word is `new-territory` with a target. It
+  is read as a join into a proposed item named for the target, with no
+  brief (39), and the move's note is kept. A second imported move's word
+  is one of no vocabulary; that move is not taken, its signal arrives
+  unmoved, and the import reports it.
 - **S10.** flume reads its own declaration: `fix@1` with one stage
   delivering commits, and `change@1` with construct, code and verify
   delivering a change written, tasks ticked and a change archived.

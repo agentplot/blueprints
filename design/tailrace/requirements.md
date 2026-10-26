@@ -921,7 +921,9 @@ once an identity provider stands; `lts`'s given names no rule, so no
 publish and no report moves it, and only an asking does. A repository
 writes `approvers` on the environment or on the channel it means, never
 on a channel the core made for an environment; the made channel takes
-its environment's. The fragment marks the givens it holds off with a
+its environment's. `approvers` on an environment whose policy is `auto`
+names no one who could be asked, and the file refuses it naming the
+field. The fragment marks the givens it holds off with a
 mark of its own, which a repository's file never carries and the file
 profile refuses. An environment names its channel, and two
 words make the rest: `policy`, `auto` unless written, where `manual`
