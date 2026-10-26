@@ -889,8 +889,18 @@ from another channel, or bound to other environments' reports (131), and
 no channel's name. A channel the givens hold and the repository does not
 switch on, `alpha` following every accepted version including
 prereleases, `lts` promoted from `stable` by a person alone, is one line
-to switch on, since it is already written; a repository overrides a given
-by writing the same line. An environment names its channel, and two
+to switch on, since it is already written: writing its table,
+`[channels.alpha]`, empty or with lines, is the switch, and there is no
+other key for it and no switch that turns `beta` or `stable` off; a
+repository overrides a given by writing the same line. A channel that
+follows each accepted publish follows the releases the version rule
+makes, and follows prereleases too only where its line says
+`prereleases = true`, which `alpha`'s given does. Who may ask: an
+environment with `policy = "manual"`, or a channel moved by promotion
+alone, is moved at the asking of any asker the gate verifies (129),
+unless `approvers` under it names who may, signers today and persons
+once an identity provider stands; `lts`'s given names no rule, so no
+publish and no report moves it, and only an asking does. An environment names its channel, and two
 words make the rest: `policy`, `auto` unless written, where `manual`
 gives it a channel of its own bound to the one it names, moved only by
 a person's yes (41, 97), and a later word names who may say yes, the
@@ -910,7 +920,10 @@ acceptance, the policy answers that the host's own signer, the one it
 names for provenance, is the gate of the repository for acceptance and
 for the given channels' promotion, as the one host 108 admits, and its
 acceptance claim says so; the gate reads this from the policy's answer
-and decides nothing of it (core.7). A target's own settings, a cache's address
+and decides nothing of it (core.7). Where the file names several
+signers for provenance and none for acceptance, 108 admits no host,
+nothing is accepted, and the refusal says so in those words: several
+publishers and no gate, name an accepting signer (58). A target's own settings, a cache's address
 among them, sit in the target's table and nowhere else.
 
 ### C.11 Projections

@@ -671,11 +671,34 @@ redefine these.
 53. An entry's records and a candidate's verdicts have one form whatever
     profile wrote them, so a reader of one profile's records reads
     another's.
+130. A submission that has landed or been withdrawn is finished, and
+     moves out of the live records, unchanged in form, in the first write
+     that changes something once no combination, landing or outbox item
+     names it; one blamed or conflicting stays live, since a withdrawal or
+     a resubmission still changes it. An index of the finished keeps each
+     one's id, state and worktree among the live records, for ordering an
+     `after` and counting attempts, and nothing else of them.
+131. Every read a round, the overview, a status of a branch or a wait
+     makes takes the live records and the index, never a finished
+     record; a status of one submission reads the live records and at
+     most that submission's own finished record; and only a reader that
+     asks for history reads the finished records. A finished submission
+     is past amending and past withdrawing, refused from its own record.
+132. The log is kept in parts: a write that would take the current part
+     past a bound of a thousand lines closes it, under the branch's lock
+     as every write is, and starts the next; a line never changes once
+     written, the live records carry the current part and the newest
+     closed one, and the whole is read in order by whoever asks for it.
 
 ### B.7 The records
 
-61. **read**: given a branch, its records as last written, and the
-    version they were read at.
+61. **read**: given a branch, its live records as last written, the
+    branch's document, every submission not finished, the index of the
+    finished ones and the current log, and the version they were read
+    at; **read-finished**: given a branch and a finished submission, its
+    record as the last write to the live records left it; **read-log**:
+    given a branch, its whole log in order, every closed part and the
+    current one (130 to 132).
 62. **write**: given a branch, the version its records were read at and
     the records to write, the write, or a refusal because they have
     been written since (58).
@@ -736,7 +759,7 @@ outlives them is the trailers each landing commit carries (23).
 
 | profile | read / write |
 |---|---|
-| **local files**: one host | the documents under the repository's common git directory, one directory per branch and one log of check results per repository (69), readable by every place on the host with no process running, never tracked and never pushed, a version kept beside them; a write under the branch's lock, refused when the version moved |
+| **local files**: one host | the documents under the repository's common git directory, one directory per branch and one log of check results per repository (69), readable by every place on the host with no process running, never tracked and never pushed, a version kept beside them; the live submissions under `submissions/`, the finished under `.finished/`, whose dot no branch name carries, their index in `finished.jsonl`, the current log in `log.jsonl` and the closed parts under `log/<n>.jsonl` (130 to 132); a write under the branch's lock, refused when the version moved, a move of a submission one write with its put, its removal and its index line |
 | **remote refs**: peers, for a branch with a `remote` whose policy names signers | one root commit under `refs/sluice/state/<branch>` on the shared remote, its tree the branch's documents (53), its id the version; a write a push with `--force-with-lease` from the commit read, by any instance that submits to or advances the branch; beside it `refs/sluice/runs/<signer>`, each signer's signed run records, added to only by that signer (109); `refs/sluice/heads/<oid>` for every submitted head; `refs/sluice/combinations/<branch>/<id>` for every candidate open to claims; `refs/sluice/logs/<branch>/<run>` for a run's output; and `refs/sluice/hosts/<host>`, rewritten by each host alone on a fixed cadence as its sign of life and its free room (77, 107) |
 
 A run record on a signer's ref is an in-toto statement in a DSSE

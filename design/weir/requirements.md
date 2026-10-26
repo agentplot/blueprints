@@ -544,7 +544,7 @@ A `capture` object is an offer (2):
 
 | field | required | meaning |
 |---|---|---|
-| `key` | yes | the key (3, 4). `/` separates its segments. A key never starts with `/`, never has a `..` segment, and never has `captures`, `moves` or `items` as its first segment, so it names nothing in the inbox but its own capture |
+| `key` | yes | the key (3, 4). `/` separates its segments. A key never starts with `/`; a segment is never empty, `.` or `..`, and never the name of a file the layout places (`capture.rec`, `signals.rec` and the rest of C.2), since each segment is a folder; and the first segment is never `captures`, `moves` or `items`, so a key names nothing in the inbox but its own capture |
 | `source` | yes | the source's name: `release`, `meeting`, `folder`, `deploy` |
 | `event_at` | yes | the event time, in RFC 3339 with its offset (5) |
 | `title` | no | one line a person reads in a list |
@@ -581,7 +581,7 @@ A host takes each line in seven steps, which the pack checks (75):
 | 2. look up the key | passes over a key the inbox holds, and counts it | 14 |
 | 3. bank the raw files | on the machine, under the capture's name, byte for byte | 17, 18 |
 | 4. write the capture | with a pointer `<machine>:<path>` when anything was banked | 16, 17, 22 |
-| 5. write the own signal | cut at a line so the text and its closing line fit the limit; the whole text banked when cut | 19, 20, 21 |
+| 5. write the own signal | cut at a line so the text and its closing line fit the limit; the closing line is `[cut: <n> lines and <b> bytes left out, banked whole with the capture]`, the one spelling every host writes (24); the whole text banked when cut; a limit too short to hold the closing line alone is refused | 19, 20, 21 |
 | 6. mark the capture unread | when it carries no excerpt | 19 |
 | 7. record the run | what it took, held and refused, the failures, the cursor, complete or not | 23 |
 
@@ -667,7 +667,7 @@ name = "code"
 prompt = "prompts/bump-code.md"                   # relative to the declaration's file
 deliverables = ["commits"]                        # exactly one, spelled as below (54)
 agents = [{ program = "claude", model = "opus" }] # with their settings (53)
-quiet = "45m"                                     # how long the agent may be quiet
+quiet = "45m"                                     # how long the agent may be quiet: a whole number of s, m or h (57)
 
 [[kinds.bump.stages]]
 name = "review"
@@ -697,7 +697,12 @@ lands = ["books/", "design/"]
 
 `read-kinds` (81) returns every kind with its stages and every section
 as read; a reader keeps the sections it knows. A table or field the
-format does not name is a section the reader ignores (56).
+format does not name is a section the reader ignores (56). The format
+refuses two stages of one kind sharing a name, and an `on_fail` naming
+no stage of its kind, naming the field (57). The format gives no default
+for `quiet`, `on_fail`, `max_send_backs` or an elaboration's `ending`:
+a field left out is returned left out, and what it means is the
+reader's rule (58), since readers differ.
 
 ### C.5 Cadence: five-field cron
 
@@ -726,7 +731,11 @@ host is run against every host case through its intake; an adapter's
 output is run against the adapter checks and, for a meeting adapter,
 the meeting checks (66). The pack's check reads every case and the
 statement, and fails when a number names no clause or a clause of Part
-A is cited by nothing. It needs no network (68).
+A is cited by nothing. It needs no network (68). A case for cadence
+(59, 60) is a schedule, a last run or none, a now, and whether the thing
+is due, with the zone the now is read in; the pack holds the three
+shapes, a host's, an adapter's and cadence's, and 67's check counts a
+cadence case as it counts the others.
 
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
