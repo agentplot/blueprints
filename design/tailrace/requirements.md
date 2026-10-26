@@ -732,12 +732,22 @@ redefine these.
     projection whose ecosystem has no lockfile, a file, an image, a
     cache, answers absent. For a name the checkout's manifest declares
     and no lockfile pins yet, pinned answers the manifest's range, and
-    render holds the newest version the layout's policy admits within
-    it, so a first install resolves and the ecosystem's client writes
-    the pin; and for every version it holds, render holds the family's
-    own dependencies that version's manifest requires, resolved by the
-    same rule, through every level, so the client's resolution closes
-    within the layout and no lockfile is written by hand.
+    the core holds the newest version the layout's policy admits within
+    it, by the store's listing of the name's versions (138), so a first
+    install resolves and the ecosystem's client writes the pin; and for
+    every version it holds, the core asks the projection what that
+    version requires of the family (140), lists, judges and holds again,
+    through every level until nothing held requires a name the layout
+    lacks, so the client's resolution closes within the layout and no
+    lockfile is written by hand. The loop is the core's, the listing the
+    store's, the ranges and their order the projection's.
+
+140. **requires**: given a held version's artifact of the ecosystem, the
+    family's names and ranges its manifest requires of that ecosystem,
+    as the manifest spells them, and whether one version satisfies a
+    range by the ecosystem's own ordering (23); a projection whose
+    ecosystem has no manifest answers none. The core closes a layout
+    with it (137) and never reads a manifest itself (core.1).
 
 ### B.7 A target
 
