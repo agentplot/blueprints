@@ -273,10 +273,12 @@ redefine these.
     gives another component a version, an index or a move. Two
     components may name one path, and a commit under it versions both.
 134. A version carries its notes: the run that derives the version
-    (21) renders them from the same history, by the rule's own tool, and
-    they are an artifact of the version named in its index (6), content-
-    addressed and claimed with the rest; nothing writes a version's
-    notes after it is offered. An artifact the version rule renders has
+    (21) renders them from the same history, by the rule's own tool
+    under the repository's own template for that tool, its `cliff.toml`
+    where the rule is git-cliff, and tailrace imposes no template of its
+    own; they are an artifact of the version named in its index (6),
+    content-addressed and claimed with the rest; nothing writes a
+    version's notes after it is offered. An artifact the version rule renders has
     no build, so no build verdict is asked of it: the acceptance policy
     names what a built artifact requires, its verdicts and the
     publisher's provenance, and what a rendered artifact requires, the
@@ -732,7 +734,10 @@ redefine these.
     and no lockfile pins yet, pinned answers the manifest's range, and
     render holds the newest version the layout's policy admits within
     it, so a first install resolves and the ecosystem's client writes
-    the pin.
+    the pin; and for every version it holds, render holds the family's
+    own dependencies that version's manifest requires, resolved by the
+    same rule, through every level, so the client's resolution closes
+    within the layout and no lockfile is written by hand.
 
 ### B.7 A target
 
