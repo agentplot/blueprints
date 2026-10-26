@@ -276,7 +276,12 @@ redefine these.
     (21) renders them from the same history, by the rule's own tool, and
     they are an artifact of the version named in its index (6), content-
     addressed and claimed with the rest; nothing writes a version's
-    notes after it is offered. A surface shows a version's notes beside
+    notes after it is offered. An artifact the version rule renders has
+    no build, so no build verdict is asked of it: the acceptance policy
+    names what each kind of artifact requires, a build's outputs their
+    verdicts and the publisher's provenance, a rendered artifact the
+    publisher's provenance alone, and the gate judges each artifact
+    against the claims required of its kind (25, 28). A surface shows a version's notes beside
     it and, between what an environment runs and what it should, the
     notes of every version between (98, 132); a channel's changelog is
     its chain read with each promotion's notes and asker.
@@ -851,14 +856,25 @@ a blob; resolving the name answers the layer's digest, so the name is at
 the digest the caller gave, as on every profile. That manifest names no
 ecosystem and carries no metadata, so it is no artifact (53, 100).
 
-The store's names map onto the registry's: `channel/<name>` and
-`cache/<identity>` as repositories and tags of the store's repository,
-and an artifact's pointer (138), `artifact/<ecosystem>/<name>@<version>`,
-as the repository `artifact/<ecosystem>/<name>`, lowercased and escaped
-as the distribution protocol allows, with `<version>` as its tag, so a
-name's versions are the repository's tag list and no tag carries a
-package name; a tag's characters the protocol refuses, `+` among them,
-are escaped one way and read back.
+The store's names map onto the registry's in three spaces a credential
+can be scoped to apart. A component's indexes and its channels live
+under the component's own repository, the channel's name as a tag of
+it. Cache entries live apart from every component, under `cache/<build>`
+repositories, one per build profile (`cache/moon`), with the build
+identity as the tag, so a credential that writes `cache/` and nothing
+else can push entries and never offer, accept or move a name (135). An
+artifact's pointer (138), `artifact/<ecosystem>/<name>@<version>`, is the
+repository `artifact/<ecosystem>/<name>`, lowercased and escaped as the
+distribution protocol allows, with `<version>` as its tag, so a name's
+versions are the repository's tag list and no tag carries a package
+name; a tag's characters the protocol refuses, `+` among them, are
+escaped one way and read back. On a registry that makes a repository on
+push only by a creation template, Amazon ECR among them, the operator's
+setup makes the repositories, or a creation template covering `cache/`,
+`artifact/` and the components' names, before the first publish, and a
+push refused for a missing repository is reported in the registry's
+words naming the repository (58); the self-hosting guide says so, and a
+fleet that adopts tailrace makes the templates in its own configuration.
 
 | operation | how |
 |---|---|
@@ -1045,7 +1061,7 @@ whose packager cannot promise it says so (87).
 | Maven | the jar and its POM | a `maven2` layout with checksums and `maven-metadata.xml` | not needed: a `file://` repository |
 | Python | the wheel and sdist, with their metadata | a simple index per PEP 503 | not needed: `find-links` or a `file://` index |
 | Go | the module zip | the module proxy layout | not needed: `GOPROXY=file://` |
-| Cargo | the crate file, `cargo package --no-verify` after the component's version is set on every crate of the component, so a path dependency on a sibling crate is rewritten to that version's requirement as cargo does (110); a crate belongs to the component whose paths hold its manifest (123), and a path dependency on a crate of another component is packed as a dependency on the version requirement the manifest writes for it, refused naming the crate where the store holds no such version (138) | a sparse registry under the served address, `sparse+http://127.0.0.1:7420/<owner>/<name>/cargo/`, the same on every host (49, 114), named `tailrace` in the checkout's cargo configuration | the host's one process, since a sparse index is read over the protocol |
+| Cargo | the crate file, `cargo package --no-verify` after the component's version is set on every crate of the component, so a path dependency on a sibling crate is rewritten to that version's requirement as cargo does (110); a crate belongs to the component whose paths hold its manifest (123); a path dependency on a sibling crate the component does not declare as an output is refused naming the crate, since a consumer could resolve nothing for it; and a path dependency on a crate of another component is packed as a dependency on the version requirement the manifest writes for it, refused naming the crate where the store holds no such version (138) | a sparse registry under the served address, `sparse+http://127.0.0.1:7420/<owner>/<name>/cargo/`, the same on every host (49, 114), named `tailrace` in the checkout's cargo configuration | the host's one process, since a sparse index is read over the protocol |
 | NuGet | the package file | a folder feed in the v3 layout | not needed |
 | a file | any file, with a declared media type | a directory | not needed |
 | an image | an image as pushed | the OCI layout itself | the layout served as a registry |
