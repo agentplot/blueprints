@@ -330,8 +330,13 @@ redefine these.
     time, and a later offer under an imported key writes nothing.
 39. An imported move whose word is not one of the six (30), or that
     lacks its consequence, is not taken, and its signal arrives
-    unmoved. An imported join makes the item it names, or grows it, as
-    a proposed item with no brief.
+    unmoved, but for crew's `new-territory`, which is read as a join
+    into a proposed item named for the move's target (millpond 63). An
+    imported join makes the item it names, or grows it, as a proposed
+    item with no brief. A reason or note the body gave with any move is
+    kept with the move as its note, as read, so nothing a curator wrote
+    is lost; a drop's reason is its consequence (30) and its note at
+    once.
 40. Every record names its format and the format's major, and a reader
     of a later major reads every earlier one as it stands. A reader
     never writes a record in a format it did not read.
@@ -464,7 +469,10 @@ redefine these.
 
 69. weir keeps no state, runs no process of its own, and knows no
     machine, host, tool or inbox. Everything it does is a function of
-    its inputs, or a write it was asked to make.
+    its inputs, or a write it was asked to make. A child it runs and
+    waits on for that write, git for a branch's write (C.3), is no
+    process of its own: it ends with the call, and nothing of weir
+    outlives a call.
 70. weir never lists a source, never judges what a capture says, never
     chooses a move, never starts an agent, never submits and never
     lands work.
@@ -642,7 +650,7 @@ fields:
 |---|---|
 | `weir-capture/1` | `key`, `source`, `event_at`, `title`, `url`, `pointer` (`<machine>:<path>`), `came_in` (`run:<adapter>`, `intake`, or `import:<body>`), `machine`, `taken_at`, `unread` |
 | `weir-signal/1` | `signal` (`<key>#<n>`), `kind` (the nature), `asserted_by`, `assertion`, `subjects`, `argues_with`, `excerpt`, `position`, `cut` (the lines and bytes left out, where cut) |
-| `weir-move/1` | `signal`, `move` (one of the six), `target` (the consequence: a reason, a claim or record, an item, a chore or an ask), `by`, `at`, `batch`, `replaces` |
+| `weir-move/1` | `signal`, `move` (one of the six), `target` (the consequence: a reason, a claim or record, an item, a chore or an ask), `note` (a reason or note given with the move, as read; a drop's reason again), `by`, `at`, `batch`, `replaces` |
 | `weir-batch/1` | `batch`, `proposed_by`, `proposed_at`, `stands` (and who accepted it, when) |
 | `weir-item/1` | `item`, `made_by` (a join, or a conclusion), `conclusion`, `named_by`, `named_at` |
 | `weir-send/1` | `item`, `target` (a repository and kind, a planner, or an inquiry), `brief` (as handed), `sent_at`, `outcome` (a landing, a conclusion, abandoned, or open) |
@@ -742,8 +750,8 @@ once (60). The clock is the machine's (83).
 | adapter | what it offers |
 |---|---|
 | the folder drop, `weir capture folder <dir>` | one capture per file; key `folder/<folder name>/<sha256 of the file>`; event time the date the file's name begins with, or else its last write; source `folder`; the file as raw; no excerpt (61) |
-| the meeting file, `weir capture meeting <file>` | one capture per meeting file; key `meeting/file/<sha256 of the file>`; event time the meeting's start where the file says it, or else as the folder drop; source `meeting`; the file as raw; no excerpt (62) |
-| the signals-folder import, `weir import signals <dir>` | one import line (C.1) per capture of crew's folders on a partition's flywheel branch, a `capture.md` and one `NN-<slug>.md` per signal, with `moves.rec`: a release capture keeps `release/<name>/<version>`, every other takes its folder's name (38); the capture's pointer as crew gave it; its signals and moves as read, a move whose word is not one of the six carried for 39 to leave unmoved. A meeting corpus already read in a blueprints repository comes the same way. The host's import operation writes them (63, 75a) |
+| the meeting file, `weir capture meeting <file>` | one capture per meeting file; key `meeting/file/<sha256 of the file>`; event time the meeting's start where the file says it, in a `start` or `date` field of its front matter, or else a date that opens its first line, or else as the folder drop; source `meeting`; the file as raw; no excerpt (62) |
+| the signals-folder import, `weir import signals <dir>` | one import line (C.1) per capture of crew's folders on a partition's flywheel branch, a `capture.md` and one `NN-<slug>.md` per signal, with `moves.rec`: a release capture keeps `release/<name>/<version>`, every other takes its folder's name (38); the capture's pointer as crew gave it; its signals and moves as read, a move whose word is not one of the six carried for 39 to leave unmoved. A meeting corpus already read in a blueprints repository comes the same way: its captures and signals from the repository's own reading, its moves from the partition's flywheel branch's `moves.rec` where a move names the signal by its key and number, and a signal no move names arrives unmoved. The host's import operation writes them (63, 75a) |
 
 The sha256 is the capture crate's. The folder drop and the meeting file print contract lines a host takes as any adapter's (64); the import prints import lines a host's import operation writes (63, 75a).
 

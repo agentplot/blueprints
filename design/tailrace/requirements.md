@@ -650,6 +650,12 @@ redefine these.
     channel in it. The gate and the ledger learn a channel through this
     answer and read no key of the policy's file themselves.
 
+136. **environments**: given a repository at a landed revision, the
+    environments its policy declares, each with its target, the channel
+    it follows, whether it moves on its own or waits, and whom it waits
+    on where it does (41, 97, C.10); the policy seam has these three
+    operations, policy-for, channels and environments, and no other.
+
 ### B.6 A projection
 
 84. **pack**: given an output at a build identity, and the version
