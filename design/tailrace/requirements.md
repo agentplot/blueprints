@@ -338,14 +338,16 @@ redefine these.
 31. A channel names exactly one version at a time, and that version is
     accepted. A channel that names nothing is empty, and empty is an
     answer, never an error.
-125. A channel belongs to one component and names only its versions;
-    a channel bound to another (37) is bound within its component. A
+125. A channel belongs to one component and names only its versions; a
+    channel bound to another (37) is bound within its component. A
     channel's identity is its component and its name together: two
     components' channels of one name are two channels, with two chains,
     two store names and two policies, and every seam that takes a
     channel takes its component with it. A repository that declares no
     component names a channel by its name alone, and every form below
-    keeps that spelling, so nothing changes for it.
+    keeps that spelling, so nothing changes for it. A component's name
+    holds no slash, so a pattern's channel, whose name holds one (127),
+    reads after its component without doubt in every form below.
 32. A channel moves only by a promotion, and a promotion is made only
     by the gate, at the asking of a party the policy lets ask: a rule
     that follows each publish, or an approver.
@@ -373,12 +375,19 @@ redefine these.
 37. The policy may bind a channel to another: a version reaches such a
     channel only from among the versions the ledger shows the bound
     channel has held, and never from a publish directly.
-127. The policy may declare a channel by a pattern over branch names: a
-    prerelease published from a branch the pattern matches is offered
-    to the channel the pattern names for that branch, which exists from
-    its first promotion and is retired with the branch by the authors'
-    rule. A pattern's channel belongs to the component of the publish
-    and binds to no other channel.
+127. The policy may declare a channel by a pattern, over branch names or
+    over the lines a person names at a promotion. A prerelease published
+    from a branch the pattern matches is offered to the channel the
+    pattern names for that branch, which exists from its first promotion
+    and is retired with the branch by the authors' rule; a line's
+    channel exists from the promotion that first names it, is moved by a
+    person alone from among what the channel it is bound to has held,
+    and is retired by the authors' word in the policy, its chain
+    readable after. A pattern's channel belongs to the component of the
+    publish or the promotion, and a branch's channel binds to no other
+    channel. A pattern's channel is spelled by the pattern's prefix and
+    the branch or line, `alpha/<branch>`, `lts/<line>`, in every form
+    (125).
 128. An act may ask for several promotions at once, each of one
     channel. The ledger appends each after its own predecessor, and
     where it can hold the appends as one it refuses them whole when any
@@ -1013,24 +1022,30 @@ form, shipped with the core and laid beneath the repository's own file,
 which the policy command shows as the one table in force; the core knows
 the three ways a channel moves, on each accepted publish, by promotion
 from another channel, or bound to other environments' reports (131), and
-no channel's name. A channel the givens hold and the repository does not
-switch on, `alpha` following every accepted version including
-prereleases, `lts` promoted from `stable` by a person alone, is one line
-to switch on, since it is already written: writing its table,
-`[channels.alpha]`, empty or with lines, is the switch, and there is no
-other key for it and no switch that turns `beta` or `stable` off; a
-repository overrides a given by writing the same line. The policy
+no channel's name. A channel the givens hold and the repository does not switch on is one
+line to switch on, since it is already written. Neither held given is
+one channel; each is a family (125, 127): `alpha/*`, a pattern over
+branch names, whose channel for a branch, `alpha/<branch>`, follows
+every accepted version that branch publishes, prereleases included, and
+is retired with the branch; and `lts/*`, a pattern over the lines a
+person names, whose channel for a line, `lts/<line>`, is made at the
+line's first promotion from among what `stable` has held, moved by a
+person alone, and retired by the authors' word in the file, its chain
+readable after. Writing the pattern's table, `[channels."alpha/*"]`,
+empty or with lines, is the switch, and there is no other key for it and
+no switch that turns `beta` or `stable` off; a repository overrides a
+given by writing the same line. The policy
 command shows the table in force and, beneath it, each given held off
 with the line that would switch it on, read from the fragment, so a
 reader sees what one line would give them. A channel that
 follows each accepted publish follows the releases the version rule
-makes, and follows prereleases too only where its line says
-`prereleases = true`, which `alpha`'s given does. Who may ask: an
+makes, and follows prereleases too only where its line says `prereleases = true`,
+which `alpha/*`'s given does. Who may ask: an
 environment with `policy = "manual"`, or a channel moved by promotion
 alone, is moved at the asking of any asker the gate verifies (129),
 unless `approvers` under it names who may, signers today and persons
-once an identity provider stands; `lts`'s given names no rule, so no
-publish and no report moves it, and only an asking does. A repository
+once an identity provider stands; `lts/*`'s given names no rule, so no publish and no report moves a line
+of it, and only an asking does, which names the line. A repository
 writes `approvers` on the environment or on the channel it means, never
 on a channel the core made for an environment; the made channel takes
 its environment's. `approvers` on an environment whose policy is `auto`
