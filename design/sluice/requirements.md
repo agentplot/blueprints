@@ -413,7 +413,11 @@ redefine these.
     as its first parent and the entry's head as its second, naming the
     entry's work, by the subject its submit gave or its branch where it
     gave none, so a subject on a branch that takes no pull requests is
-    neither refused nor lost, and the verdict it landed on; entries landed together
+    neither refused nor lost, and the verdict it landed on; where the
+    branch's policy gives that first line a form of its own, the subject
+    fills the slot that names the work, and a form with no such slot
+    names none, by the authors' choice, the subject staying on the
+    entry's record and wherever the entry is shown (26); entries landed together
     on the deepest candidate's verdict each name that verdict. The
     history of a branch is
     never rewritten, and a session's commits stay reachable from the
@@ -442,7 +446,9 @@ redefine these.
      whatever the outcome, records the place gone, and never retries it.
 26. Every state an entry is in, and every verdict read for it, is
     readable by its session, its planner and the operator, from every
-    host that submits to its branch, whether or not sluice is running.
+    host that submits to its branch, whether or not sluice is running;
+    and wherever sluice shows an entry to a person, its number and its
+    subject stand together, the branch where it gave none.
 
 ### A.6 Gates and trust
 
