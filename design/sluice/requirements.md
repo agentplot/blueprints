@@ -484,7 +484,11 @@ redefine these.
     checks bring up themselves, in the candidate's place. sluice gives
     the place a port for each name its branch's policy lists. Each stays
     the same for the place's whole life, belongs to no other place alive
-    on the host, and is free when the checks receive it.
+    on the host, and is free when the checks receive it. A port a check
+    picks for itself, port 0 or a free one found at its start, is the
+    kernel's to hand any process on the host next, so the checks of two
+    places may collide there as they never do on the ports sluice gives;
+    a stack that may run beside another names its ports.
 32. A candidate's place belongs to the candidate: nothing started in it
     outlives it, what its checks hand to another process to keep
     included, and two places on one host never collide.
@@ -659,7 +663,9 @@ redefine these.
     under it and a key a tool derives from a path under it fit the
     tightest limit a check meets; the place's record names it, its
     release removes it (34), and scratch no record names is an abandoned
-    place's (123).
+    place's (123); a record that exists and cannot be read names its
+    scratch still: nothing of that place is removed, and the record is
+    reported with the reader's words (26).
 
 ### B.2 The check
 
