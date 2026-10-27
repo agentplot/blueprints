@@ -411,7 +411,9 @@ redefine these.
      asking releases a held place, by its name, running the release once
      more or, where the operator says so, accepting its failure and
      freeing what sluice itself holds for the place (25, 34). A place
-     whose working copy is already gone is no one's: sluice runs its
+     whose working copy is already gone is no one's, found so by the
+     next round or run on its host before either does its own work, since
+     nothing of the place's can ask (C.4): sluice runs its
      release once, from what it itself holds for the place and with the
      place's ports, records how that went, frees what it holds at once
      whatever the outcome, records the place gone, and never retries it.
