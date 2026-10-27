@@ -291,8 +291,9 @@ redefine these.
     to, and how many times a place may go back before it waits on its
     caller. A stage's declaration holds its name, its prompt, and its
     deliverable or that it is a conversation, and may hold its agent's
-    settings, whether it waits on its caller's word, and how long its
-    agent may be quiet before the stage is stuck. flume reads only a
+    settings, what it makes besides its deliverable (129), whether it
+    waits on its caller's word, and how long its agent may be quiet
+    before the stage is stuck. flume reads only a
     kind's places and stages, and runs that much of them: stages in
     order, one agent to each, and the place sent back when its
     submission fails. A kind whose places and stages ask for more, such
@@ -329,6 +330,24 @@ redefine these.
      tidied (62). A stage delivers one only where its caller keeps what
      the report holds once the place is gone. Every other report a
      reader needs after the place is gone is a committed report (24).
+129. A stage's declaration may name what the stage makes besides its
+     deliverable, each by a name a caller will want to open: a preview,
+     a spike, a page, a report kept elsewhere. The stage's run records
+     each made thing's address, as the run knows it, at `made.jsonl` in
+     the place's own folder (128), which `{{made}}` renders, one line
+     per thing with its name, what it is and its address, and may
+     record a thing it did not declare. flume reads the lines when the
+     stage ends and hands them to whoever waits on the stage and to
+     status (43) as the run wrote them, making, checking or rewriting
+     no address of its own. A declared thing with no line when the
+     agent goes quiet is the deliverable not yet made: the stop check
+     sends the agent back naming it (44, 110). The lines go with the
+     folder when the place is tidied (62, 123), so a caller that wants
+     them after keeps them, as it keeps a report under `{{state}}`. A
+     kind that lands makes nothing by landing: the commit it landed as
+     is what whoever waits on the submission learns (43), and a preview
+     of a landed revision is the merge queue's, asked of it at that
+     commit by whoever wants one, recorded by no stage.
 26. A place has at most one change, named by the place's name, and a
     stage that reads a change reads only that one.
 27. A stage's prompt is filled before it is sent. Every part it asks
@@ -431,7 +450,8 @@ redefine these.
     reach whoever waits on the stage, and status, whole and as the agent
     wrote them.
 43. Whoever waits on a stage learns its end together with what was
-    delivered, the head or the report, or with the agent's words.
+    delivered, the head or the report, and the addresses of what it
+    made (129), or with the agent's words.
     Whoever waits on a submission learns its outcome together with the
     commit it landed as, or with the merge queue's words. No caller
     needs to read a terminal to learn how a stage or a submission ended.
@@ -844,6 +864,7 @@ lands = true              # flume submits each place after its last stage (111);
 name = "code"
 prompt = "prompts/bump-code.md"
 deliverables = ["commits"]                         # exactly one, spelled as below (18, 24)
+makes = ["preview"]       # what the stage makes besides its deliverable, each recorded with its address at {{made}} (129); none when omitted
 agents = [{ program = "claude", model = "opus" }]  # exactly one, with its settings (23, 32)
 quiet = "45m"             # the stage's limit (44, 118); 30m when omitted
 
@@ -857,8 +878,8 @@ on_fail = "code"          # the stage a failed submission sends the place back t
 max_send_backs = 3        # how many times a place may go back before it waits on its caller (112); three when omitted
 ```
 
-`agents`, `deliverables`, `on_fail` and `max_send_backs` are the kind
-format's own names. flume reads `on_fail` and `max_send_backs` on a
+`agents`, `deliverables`, `makes`, `on_fail` and `max_send_backs` are
+the kind format's own names. flume reads `on_fail` and `max_send_backs` on a
 kind's last stage only, since under flume a stage fails only by its
 place's failed submission. A kind whose stage names more than one agent
 or more than one deliverable is refused (4, 23). flume ignores a
@@ -876,13 +897,14 @@ elaboration section (23).
 
 A prompt's parts are `{{brief}}`, `{{name}}`, `{{kind}}`, `{{stage}}`,
 `{{branch}}`, `{{base}}`, `{{place}}`, `{{change}}`, `{{report}}`,
-`{{words}}`, `{{unready}}` and `{{needs}}` (the way to stop short,
+`{{made}}`, `{{words}}`, `{{unready}}` and `{{needs}}` (the way to stop short,
 C.4). `{{#words}}…{{/words}}` renders its body only when there are
 words, as a retry's or a failed submission's. A launch is refused when
 a stage asks for `{{brief}}` and it gives none (4). Any other bare part
 with nothing to fill it leaves the stage refused (27), and
 `{{report}}` fills only for a stage whose deliverable is a report or a
-committed report. `flume prompt <place> <stage>` renders a stage's
+committed report, and `{{made}}` only for a stage that declares what it
+makes, with the path it records the addresses at (129). `flume prompt <place> <stage>` renders a stage's
 prompt and starts nothing (29).
 
 flume's own kinds, their prompts shipped with flume:
@@ -890,6 +912,7 @@ flume's own kinds, their prompts shipped with flume:
 | kind | branch | first stage starts unready | lands; its last stage's `on_fail` | stages, each with its deliverable |
 |---|---|---|---|---|
 | **fix@1** | `fix/<name>` | yes | yes; `code` | `code`: `commits` |
+| **chore@1** | `chore/<name>` | yes | yes; `code` | `code`: `commits`; fix@1's stage under a prefix of its own, so a branch's name says which it was |
 | **change@1** | `change/<name>` | no | yes; `verify` | `construct`: `change`; `code`: `tasks`; `verify`: `archived`. The verify prompt checks the work against the change and commits its report as `verify.md` in the change's directory. It then archives the change on the place's branch, the report with it, or stops short with what fails |
 
 sounding hands flume each elaboration kind in the launch, as `flume
