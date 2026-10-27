@@ -333,12 +333,16 @@ redefine these.
      the report holds once the place is gone. Every other report a
      reader needs after the place is gone is a committed report (24).
 129. A stage's declaration may name what the stage makes besides its
-     deliverable, each by a name a caller will want to open: a preview,
-     a spike, a page, a report kept elsewhere. The stage's run records
-     each made thing's address, as the run knows it, at `made.jsonl` in
-     the place's own folder (128), which `{{made}}` renders, one line
-     per thing with its name, what it is and its address, and may
-     record a thing it did not declare. flume reads the lines when the
+     deliverable, each by a name a caller will want to open: a spike, a
+     page, a report kept elsewhere, or a thing that must run. The
+     stage's run records each made thing as the run knows it, at
+     `made.jsonl` in the place's own folder (128), which `{{made}}`
+     renders, one line per thing with its name and what it is: a durable
+     thing by its address, a thing that must run by the branch and
+     revision that bring it up, since a stage starts no server that
+     outlives its place and a running copy of a revision is the merge
+     queue's to make and release (C.6); the run may record a thing it
+     did not declare. flume reads the lines when the
      stage ends and hands them to whoever waits on the stage and to
      status (43) as the run wrote them, making, checking or rewriting
      no address of its own. A declared thing with no line when the
@@ -348,8 +352,8 @@ redefine these.
      them after keeps them, as it keeps a report under `{{state}}`. A
      kind that lands makes nothing by landing: the commit it landed as
      is what whoever waits on the submission learns (43), and a preview
-     of a landed revision is the merge queue's, asked of it at that
-     commit by whoever wants one, recorded by no stage.
+     of a revision is the merge queue's, brought up at that revision by
+     whoever shows the card and released by them, recorded by no stage.
 26. A place has at most one change, named by the place's name, and a
     stage that reads a change reads only that one.
 27. A stage's prompt is filled before it is sent. Every part it asks
@@ -866,7 +870,7 @@ lands = true              # flume submits each place after its last stage (111);
 name = "code"
 prompt = "prompts/bump-code.md"
 deliverables = ["commits"]                         # exactly one, spelled as below (18, 24)
-makes = ["preview"]       # what the stage makes besides its deliverable, each recorded with its address at {{made}} (129); none when omitted
+makes = ["preview"]       # what the stage makes besides its deliverable, each recorded at {{made}} by its address or, for a thing that must run, by the branch and revision that bring it up (129); none when omitted
 agents = [{ program = "claude", model = "opus" }]  # exactly one, with its settings (23, 32)
 quiet = "45m"             # the stage's limit (44, 118); 30m when omitted
 
