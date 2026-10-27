@@ -705,17 +705,14 @@ redefine these.
     states), the command run within them, and what the executor
     enforced: whether the run was confined, and each limit it held.
 84. The guarantee: an executor that cannot enforce a limit the branch's
-    policy states, or whose host fails the readiness the repository
-    declares, refuses the run rather than run it without them, and every
+    policy states refuses the run rather than run it without them, and every
     run is recorded with what its executor enforced (16), so a run is
     never read as confined, or as held to a limit, unless its executor
     enforced it (28, 29). The readiness the repository declares is asked
-    under a time the policy states beside it, a minute where it states
-    none; a probe that runs out of time has answered nothing, so it is
-    asked again, as many times as the policy states and three where it
-    states none, before the run is refused; a refusal that stands names
-    the probe, how long each ask ran and the host's load, and the run
-    has no outcome (114), the entry unblamed.
+    only after a run that did not pass, to tell the host's fault from
+    the code's (114), and never before one: a check brings up what it
+    needs and waits for it within its own limit (66), so no run is
+    refused for a host slow to answer a probe.
 
 ### B.4 The branch
 
