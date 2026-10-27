@@ -274,10 +274,12 @@ redefine these.
 21. A place runs its kind, and keeps its repository's binding, as each
     resolved at its launch. A later change to any declaration never
     changes a place already launched.
-22. flume's own declaration holds exactly two kinds, and both land.
+22. flume's own declaration holds three kinds, and all three land.
     **fix** is a code stage, which delivers commits. Its first stage
     starts in a place that could not be made ready, and a failed
-    submission sends it back to code. **change** is a construct stage,
+    submission sends it back to code. **chore** is fix's one code stage
+    under a prefix of its own, so a branch's name says which it was
+    (C.2). **change** is a construct stage,
     which delivers the place's change written; a code stage, which
     delivers its tasks ticked; and a verify stage, which checks the work
     against the change, commits its report in the change, and delivers
