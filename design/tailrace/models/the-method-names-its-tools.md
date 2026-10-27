@@ -35,7 +35,11 @@ own, names each piece by its content, keeps channels and the environments
 that follow them, and serves consumers in their ecosystem's own form." Its
 "The Method joins them" paragraph gains one sentence: the work lands
 through sluice, and tailrace carries the landing to a channel and to
-every environment that follows it.
+every environment that follows it. tailrace's card carries Never prove
+twice, the principle its own line states, build once and promote with
+proof, and whose strip it heads; Two loops, one gate keeps tailrace in
+its strip, where the word that moves a channel belongs, and no card need
+carry every principle (ruled 2026-10-27, batch 36).
 
 ## The two diagrams, grounded
 
