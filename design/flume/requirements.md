@@ -140,6 +140,8 @@ redefine these.
   caller's word before it starts.
 - **stuck**: of a stage, that its agent has been quiet past the stage's
   limit with nothing delivered and nothing said.
+- **left**: of a place, that its next move has been its caller's for
+  five minutes, or the launch's bound, under no hold's words (130).
 - **refused**: of a stage, that a part its prompt asks for had nothing
   to fill it (27).
 - **lost**: of a stage, that its agent stopped with nothing delivered
@@ -219,10 +221,10 @@ redefine these.
    stages it puts on hold, whether its submission waits on its word,
    and a mark. flume keeps the mark with the place and reports it, and
    decides nothing by it.
-8. A place's kind, brief, base, settings, stages on hold and
-   submission's hold are fixed by its launch. Nothing after the launch
-   changes them, and the words of a retry are the only thing a caller
-   adds to a place (49).
+8. A place's kind, brief, base and settings are fixed by its launch,
+   and nothing after the launch changes them. The launch names the
+   stages and the submission on hold, and a caller adds to a place after
+   it only the words of a retry (49) and a hold with its words (130).
 
 ### A.2 Places
 
@@ -501,8 +503,9 @@ redefine these.
      runs inside a command of flume's, started by an agent going quiet,
      by the terminal's watch or by a caller. The command that submits a
      place waits on the merge queue's verdict itself (111, 124).
-47. A stage or a submission that waits on its caller's word starts only
-    on a retry that names it (49).
+47. A stage or a submission that waits on its caller's word, by the
+    launch or by a hold the caller put after it (130), starts only on a
+    retry that names it (49).
 
 ### A.7 Submissions
 
@@ -585,8 +588,24 @@ redefine these.
     deliverable exists; the place's submission as the merge queue holds
     it, and how many times flume submitted the place; its change's
     tasks and which are ticked; each act of an agent's that flume
-    refused (108); the part a refused stage could not fill (27); and
-    the words of a stop-short or of a failed submission.
+    refused (108); the part a refused stage could not fill (27); the
+    words of a stop-short or of a failed submission; and, of a place
+    waiting on its caller, the move it waits on, since when, a hold's
+    words and whether it is left (130).
+130. A place whose next move is its caller's, a stage or a submission on
+     hold (47), a stage ended short (42), a readiness that failed (12),
+     or a kind's last stage delivered where the kind does not land
+     (114), waits on that move from the moment flume read it so, and
+     status says which move and since when. A caller may put a place's
+     next stage or its submission on hold after the launch, with its
+     words saying what for, which status gives with the hold's since
+     when; a retry naming the stage or the submission ends the hold (47,
+     49). A place waiting on its caller under no hold's words for five
+     minutes, or for the launch's bound where it sets one, is left:
+     status says so, and whoever waits on the place is told once that
+     it is left and which move is theirs (43). A hold's words are the
+     caller's to make good: the event they wait for is the caller's to
+     see, and flume watches none and ends no hold itself (70, 72).
 57. Asking status starts no agent, sends nothing to one, and writes
     nothing.
 58. Every fact status gives of a place's deliverable, change or
@@ -1147,8 +1166,6 @@ These are not requirements.
   does flume tell it, and through what (43, 46)?
 - May a repository declare deliverable forms of its own, such as a
   command that must pass (24)?
-- How long may a stage or a submission wait on its caller's word before
-  flume reports it, if ever (47)?
 - How does a kind that lands only some of its place's work, an
   elaboration's writebacks and never its prototype, have only that work
   reach its base without the rest of its branch (67, 111)? sounding's
