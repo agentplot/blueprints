@@ -160,9 +160,12 @@ redefine these.
      them until every one is taken; the act's answer names each entry
      and any conflict found forming them (12, 65). Each is thereafter
      its own entry: blamed alone (17, 18), withdrawn alone (5), told its
-     own outcome (50). On a branch that takes pull requests, the act
+     own outcome (50). A subject is each head's own: the act takes one
+     per head, in the heads' order, or none, and a single subject for
+     several heads is refused, since a title names what each lands
+     (118). On a branch that takes pull requests, the act
      marks each head's request ready at that head as one submit does
-     (C.5), and a head whose request cannot be taken, from a fork or
+     (C.5), each titled by its own subject or its branch (118), and a head whose request cannot be taken, from a fork or
      short of its conditions, refuses the whole act, naming it; once
      taken, a new head on one request withdraws that entry alone and
      holds that request as a draft, the others untouched.
@@ -408,7 +411,9 @@ redefine these.
      candidate at once.
 23. A landing writes one commit per entry, with the revision before it
     as its first parent and the entry's head as its second, naming the
-    entry's work and the verdict it landed on; entries landed together
+    entry's work, by the subject its submit gave or its branch where it
+    gave none, so a subject on a branch that takes no pull requests is
+    neither refused nor lost, and the verdict it landed on; entries landed together
     on the deepest candidate's verdict each name that verdict. The
     history of a branch is
     never rewritten, and a session's commits stay reachable from the
