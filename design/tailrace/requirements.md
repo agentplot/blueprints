@@ -286,7 +286,13 @@ redefine these.
     against the claims required of artifacts made its way (25, 28). A surface shows a version's notes beside
     it and, between what an environment runs and what it should, the
     notes of every version between (98, 132); a channel's changelog is
-    its chain read with each promotion's notes and asker.
+    its chain read with each promotion's notes and asker. A surface
+    derives a version's notes from the landed history at the version's
+    revision as the run does (21, 60), asking no store whether the
+    version's index names them: a version published before its notes
+    were derived shows the notes its revision derives today, and what
+    the version carries is the store's answer to a consumer, not
+    status's.
 
 ### A.5 Acceptance
 
@@ -579,7 +585,8 @@ redefine these.
 132. A web page is a surface (56), answered by the host's one serving
     process (114) at a path of its own: it renders the status answer,
     what every environment should run, runs and waits on, with each
-    version's notes where the version carries them, on each request, and
+    version's notes derived from the landing at the version's revision
+    as the run derives them (134), never fetched, on each request, and
     writes nothing (60); no timer renders a page, and no checkout starts
     a server of its own beside it. The process answers a repository once
     a command run in a checkout of it on that host has named it, and
@@ -1021,7 +1028,7 @@ and `stable`, moved by promotion from among what `beta` has held (37),
 with no line written; the version rule is the conventional-commit rule
 unless another is named; and the given policy for a layout admits a
 version the gate accepted and no other, so a repository with no layout
-line renders accepted versions. The givens name no signer: who may claim what is the repository's file's alone (116); a file naming one signer for provenance and none for acceptance makes that signer's host the one-host gate (108, 118), and a file naming no signer names no gate. For reading, a host
+line renders accepted versions. The givens name no signer: who may claim what is the repository's file's alone (116); a file naming one signer for provenance and none for acceptance makes that signer's host the one-host gate (108, 118), and a file naming no signer names no gate. Which artifacts a claim is asked of is no author's choice, and the file carries no key for it: a verdict, a test, a review, a rebuild and a carried claim are asked of built artifacts, and the publisher's provenance, acceptance, a promotion and a layout's claims of every artifact (134). For reading, a host
 with no file trusts its own signer and the signers its bindings name
 (118), so a laptop consumes what it published; a repository whose file
 names signers reads under its file alone, and the host's trusted list is
