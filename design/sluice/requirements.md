@@ -653,7 +653,13 @@ redefine these.
     tool, starts and ends no server of one and holds no lock of one: the
     keeper runs a cache's server as it runs the host's container engine
     (record 0049, amended). A cache changes how fast a check runs, never
-    what it reports.
+    what it reports. A place's scratch is sluice's, under the
+    repository's own state, at a path that does not grow with the
+    place's name or its checkout's location, so a socket a check binds
+    under it and a key a tool derives from a path under it fit the
+    tightest limit a check meets; the place's record names it, its
+    release removes it (34), and scratch no record names is an abandoned
+    place's (123).
 
 ### B.2 The check
 
