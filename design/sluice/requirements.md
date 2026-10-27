@@ -362,21 +362,27 @@ redefine these.
      word to whoever ran it stands beside the log, never in its place,
      so whoever reads the queue after reads its stalls from the log
      (61, 124, 128, C.7).
-134. A read of the remote, or a push to it, that the remote refused on
-     sluice's credential before any ref was negotiated, saying not
-     found, permission denied or unauthenticated, left the remote as it
-     was and is made once more, on a credential bought afresh and
-     settled, a push with the lease and the expectation of the first
-     (45, 46): a landing's (122), a branch made or removed (104, 105),
-     a session's branch or head pushed for a submit (C.5) and the
-     records' refs (C.6) alike. A push the remote refused at the ref,
-     the lease stale or the branch protected, is the move refused (24,
-     45), and one whose answer was not read is never made again blind:
-     the branch is read, and what the remote holds decides (122). A
-     refusal that stands after the second try is reported in the
-     remote's own words, with what each refused credential was: the
-     app, the repository, the installation, its repositories and
-     permissions, and its age.
+134. Every call sluice makes to a remote, by git or to the forge, runs
+     under one retry policy, a maintained crate's backoff with jitter,
+     bounded by what called it: a wait gives it the minutes it reads
+     through a forge's outage, a round or a command seconds. The policy
+     tries again what the remote never judged, a connection not made, a
+     server unable to answer, a credential refused before any ref was
+     negotiated, saying not found, permission denied or unauthenticated,
+     on a credential bought afresh and settled, never the one refused;
+     a read is tried again whatever happened, since it changes nothing;
+     a push is tried again only so, with the lease and the expectation
+     of the first (45, 46): a landing's (122), a branch made or removed
+     (104, 105), a session's branch or head pushed for a submit (C.5)
+     and the records' refs (C.6) alike. A push the remote refused at the
+     ref, the lease stale or the branch protected, is the move refused
+     (24, 45), and one whose answer was not read is never made again
+     blind: the branch is read, and what the remote holds decides (122).
+     A refusal that stands when the policy's time is spent is reported
+     in the remote's own words, with what each refused credential was:
+     the app, the repository, the installation, its repositories and
+     permissions, and its age; a round's is its event in the branch's
+     log (133), once per cause, never per try.
 117. A branch's policy may state a hold: how long a candidate that
      passed may wait to land while a deeper candidate of its chain,
      holding it, is under test. sluice lands a held candidate on the
@@ -776,7 +782,7 @@ Parts A and B do not change to admit a profile.
 | profile | read / form / commit / move |
 |---|---|
 | **local refs**: one host's repository | `git rev-parse`; `git merge-tree --write-tree`; `git commit-tree` with the branch and the head as parents and the verdict as `Sluice-*` trailers; `git update-ref` with the expected old value; making a branch `git update-ref <branch> <rev> ""`, removing one `git update-ref -d <branch> <expected>` (104, 105); branch protection by a `reference-transaction` hook that refuses any update to a branch in the policy not made by sluice, and logs it (1) |
-| **pushed refs**: a branch on a remote every host reaches | the remote read from the policy at every revision of the branch the host holds (124); `git fetch` then `git rev-parse` of the remote's branch; forming and committing as local refs, on the host advancing the branch; the landing a push with `--force-with-lease=<branch>:<expected>`; making a branch a push leased on its absence, `--force-with-lease=<branch>:`, removing one a `--delete` leased on its revision (104, 105); a read or a push the remote refused on the credential before any ref was negotiated made once more on a credential bought afresh, the lease unchanged (134); branch protection by the forge's rules, restricting creating, updating and deleting the branch, which only sluice's identity bypasses, an identity no session on any host can use (1); each read compares the revision fetched with the landing the branch's log last recorded, and a revision that does not contain it, as when a branch landed on in local refs gains `remote` and the remote holds an older copy, is logged and reported with both revisions, nothing formed or landed, until the revision read contains that landing or the operator's acceptance of the revision read is recorded (121); a fetch the round could not make is logged on the branch with the remote's words, once per cause and host, and its end with it (133); the host's `refs/heads/<branch>` is sluice's copy, levelled to the branch's last landing by the rounds and otherwise untouched, the hook refusing any other write and logging its caller and revisions (124); a submit from a worktree on that branch pushes nothing to it and submits the remote's revision, saying where the copy differs (124) |
+| **pushed refs**: a branch on a remote every host reaches | the remote read from the policy at every revision of the branch the host holds (124); `git fetch` then `git rev-parse` of the remote's branch; forming and committing as local refs, on the host advancing the branch; the landing a push with `--force-with-lease=<branch>:<expected>`; making a branch a push leased on its absence, `--force-with-lease=<branch>:`, removing one a `--delete` leased on its revision (104, 105); every read and push under sluice's one retry policy, a credential the remote refused bought afresh for the next try, a leased push tried again with its lease unchanged and never after an answer not read (134); branch protection by the forge's rules, restricting creating, updating and deleting the branch, which only sluice's identity bypasses, an identity no session on any host can use (1); each read compares the revision fetched with the landing the branch's log last recorded, and a revision that does not contain it, as when a branch landed on in local refs gains `remote` and the remote holds an older copy, is logged and reported with both revisions, nothing formed or landed, until the revision read contains that landing or the operator's acceptance of the revision read is recorded (121); a fetch the round could not make is logged on the branch with the remote's words, once per cause and host, and its end with it (133); the host's `refs/heads/<branch>` is sluice's copy, levelled to the branch's last landing by the rounds and otherwise untouched, the hook refusing any other write and logging its caller and revisions (124); a submit from a worktree on that branch pushes nothing to it and submits the remote's revision, saying where the copy differs (124) |
 
 ### C.5 The driver
 
