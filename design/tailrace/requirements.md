@@ -299,9 +299,11 @@ redefine these.
     requires a signature still valid when the layout renders says so,
     and refuses naming the claim.
 95. The gate judges an offered version on being told of it by a
-    publish's answer or asked by an approver or a rule the policy
-    names, under the accepting credential, in a place no offering
-    credential reaches.
+    publish's answer or asked by an approver or a rule the policy names,
+    under the accepting credential, in a place no offering credential
+    reaches. A publish's telling carries the digest its answer named,
+    and a name that resolves to another digest when the gate reads it is
+    unreadable naming both, before anything else is read or written.
 26. Acceptance changes no bytes: the accepted artifact has the digest
     it was offered with, and the gate's acceptance is itself a claim
     attached to it.
@@ -573,21 +575,23 @@ redefine these.
     host's copy and nothing else, never a store's name or bytes, never a
     branch, and a fetch is not a write in this clause's sense.
 132. A web page is a surface (56), answered by the host's one serving
-    process (114) at a path of its own: it renders the status answer, what
-    every environment should run, runs and waits on, with each version's
-    notes where the version carries them, on each request, and writes
-    nothing (60); no timer renders a page, and no checkout starts a
-    server of its own beside it. The process answers a repository once
+    process (114) at a path of its own: it renders the status answer,
+    what every environment should run, runs and waits on, with each
+    version's notes where the version carries them, on each request, and
+    writes nothing (60); no timer renders a page, and no checkout starts
+    a server of its own beside it. The process answers a repository once
     a command run in a checkout of it on that host has named it, and
     answers that no checkout on this host has named one none has, in
-    those words (58). What it knows of the host's checkouts is the host's
-    own and nothing the store or git holds (63): it is kept beside the
-    bindings and made again by the next command run in each checkout. It
-    answers every repository it knows together at its root path, one row each with every channel's
-    head and, for the environments, how many run what they should, how
-    many are behind, how many wait on a person and how many cannot be
-    read, and each repository alone at its own path with the whole; a
-    pane shows the two the same way.
+    those words (58). What it knows of the host's checkouts is the
+    host's own and nothing the store or git holds (63): it is kept in
+    the host's own state, apart from the bindings, and made again by the
+    next command run in a checkout that asks for the page; a command
+    that asks for nothing of the page writes nothing (60). It answers
+    every repository it knows together at its root path, one row each
+    with every channel's head and, for the environments, how many run
+    what they should, how many are behind, how many wait on a person and
+    how many cannot be read, and each repository alone at its own path
+    with the whole; a pane shows the two the same way.
 129. The ledger names an asker by an identity the gate verified at the
     moment of asking, issued by the owner's identity provider, never by
     the asker's own word; a surface that asks on a person's behalf
@@ -614,11 +618,12 @@ redefine these.
     reader; nothing tailrace keeps needs a tailrace process running to
     be read.
 63. What tailrace keeps can be deleted, apart from the record of
-    versions claimed (22), and rebuilt from the store and git to the
-    same state.
+    versions claimed (22) and what it knows of the host's checkouts
+    (132), and rebuilt from the store and git to the same state.
 64. tailrace keeps no credential. A credential the store, a signer or a
     target needs is the asker's, the host's or the environment's own,
-    reached at the moment of use.
+    reached at the moment of use and held, if at all, in the process's
+    own memory for its life, written nowhere.
 65. The policy is read from the repository at a landed revision of the
     branch it governs, never from a publisher's checkout, so a publish
     cannot carry a policy that admits itself.
@@ -802,26 +807,35 @@ redefine these.
     ledger is appended to.
 118. The operator's bindings for a host are kept in one file on the
     host, beside the landing's own, in the same form, readable with a
-    file reader. A host with no such file is bound: its store is a
+    file reader. A host with no such file is bound, and a table the file
+    leaves out is bound as it would be with no file: its store is a
     layout on disk under the user's own data directory (C.2), its signer
     a host key made on first use (C.8), its landing the branch (C.6) or
-    sluice where the repository is set up for it (C.5), and its ledger
-    the git ref (C.13) on the landing's own remote, pushed to and fetched
-    from it as the branch is, so two machines of one repository read one
-    ledger with nothing written, and a repository with no remote keeps
-    its ledger where it keeps its branch; so a person on a laptop, and every plugin, works
-    with nothing written, and the file is for pointing a host at a
-    registry, a key service or a shared ledger. The same host's landing
-    remote is the checkout's `origin`, or its one remote where it has no
-    `origin`, and unreadable naming them where it has several and the
-    file names none. On such a host the publish's own host tells the
-    gate as its next step, and where the policy names no gate the host
-    is the one 108 admits, its acceptance claim saying so; so `beta`
-    moves on a laptop with nothing written. What runs a publish after a
-    landing is named in the file (130, C.16); where the file names none,
-    a publish runs when asked for: by a person, or by the driver that
-    submitted the work and learned it landed (sluice 50, 51). The landing
-    tool itself runs nothing after it lands and is never asked to.
+    sluice where the repository's `HEAD` commit holds sluice's policy
+    file (C.5), and its ledger the git ref (C.13) on the landing's own
+    remote, pushed to and fetched from it as the branch is, so two
+    machines of one repository read one ledger with nothing written, and
+    a repository with no remote keeps its ledger where it keeps its
+    branch; so a person on a laptop, and every plugin, works with
+    nothing written, and the file is for pointing a host at a registry,
+    a key service or a shared ledger. The same host's landing remote is
+    the checkout's `origin`, or its one remote where it has no `origin`,
+    and unreadable naming them where it has several and the file names
+    none. On such a host, and where the file names nothing that tells
+    the gate, the publish's own host tells the gate as its next step.
+    Where the policy names one signer for provenance and none for
+    acceptance, that signer's host is the one 108 admits, its acceptance
+    claim saying so, and `beta` moves on a laptop whose policy lists its
+    key and nothing else is written; a policy naming no signer names no
+    gate, and the publish's answer says the version is not accepted
+    until it lists one. The given signer is bound to sign only for a
+    publish or a promotion, every other command verifying alone, and a
+    given binding names itself as given in every answer about it. What
+    runs a publish after a landing is named in the file (130, C.16);
+    where the file names none, a publish runs when asked for: by a
+    person, or by the driver that submitted the work and learned it
+    landed (sluice 50, 51). The landing tool itself runs nothing after
+    it lands and is never asked to.
 130. The core starts nothing after a landing and nothing after an
     offer: a publish is run by whatever the host binds to run it, the
     gate is told by whatever the host binds to tell it, and both are
@@ -851,8 +865,7 @@ media type as an artifact type; a name is a tag, moved with the expected
 digest where the registry supports it and checked after the move where
 it does not, and since a registry may answer a tag's former digest for
 seconds after the put, the check reads again at growing intervals while
-it answers the former place, for at most a bound the profile names, 30
-seconds on Amazon ECR: the new digest is the move made, any third digest
+it answers the former place, for at most a bound the profile names for every registry it binds, 30 seconds today: the new digest is the move made, any third digest
 a lost race (109), and the bound passing a refusal naming the former
 place, with the put never repeated. The registry's tag reads are not
 monotonic either: after one read has answered the new digest, another
@@ -984,8 +997,7 @@ none.
 
 ### C.8 The signer: a host key
 
-A key file on the host, as sluice's signers hold theirs; verification
-uses the public key the policy lists.
+A key file on the host, as sluice's signers hold theirs; verification uses the public key the policy lists. The given key (118) is an Ed25519 key in OpenSSH's form under the user's own data directory, made by the first sign that needs it and never replaced, its public half beside it; it signs as the name its public half's comment gives, else as the host's own short name.
 
 ### C.9 The signer: keyless
 
@@ -1007,9 +1019,7 @@ and `stable`, moved by promotion from among what `beta` has held (37),
 with no line written; the version rule is the conventional-commit rule
 unless another is named; and the given policy for a layout admits a
 version the gate accepted and no other, so a repository with no layout
-line renders accepted versions. The givens name no signer: who may
-claim what is the repository's file's alone (116), and a file naming
-none makes the host the one-host gate as above. For reading, a host
+line renders accepted versions. The givens name no signer: who may claim what is the repository's file's alone (116); a file naming one signer for provenance and none for acceptance makes that signer's host the one-host gate (108, 118), and a file naming no signer names no gate. For reading, a host
 with no file trusts its own signer and the signers its bindings name
 (118), so a laptop consumes what it published; a repository whose file
 names signers reads under its file alone, and the host's trusted list is
@@ -1019,10 +1029,7 @@ claim it reads, through the signers its host's bindings trust (118),
 and refuses a layout whose claims count through none, naming the claim
 (9, 58). The givens are a policy fragment in this same
 form, shipped with the core and laid beneath the repository's own file,
-which the policy command shows as the one table in force; the core knows
-the three ways a channel moves, on each accepted publish, by promotion
-from another channel, or bound to other environments' reports (131), and
-no channel's name. A channel the givens hold and the repository does not switch on is one
+which the policy command shows as the one table in force; the core knows the three ways a channel moves, on each accepted publish, by promotion alone, or bound to another channel of its component (37, 131), the channel an environment's `after` makes moving once every environment named reports the version (43, 91), and no channel's name. A channel the givens hold and the repository does not switch on is one
 line to switch on, since it is already written. Neither held given is
 one channel; each is a family (125, 127): `alpha/*`, a pattern over
 branch names, whose channel for a branch, `alpha/<branch>`, follows
@@ -1063,9 +1070,7 @@ once every environment named reports it runs the version (37, 43,
 statement's channels and are read as such (131), and a reader may
 declare one by hand instead, as `[channels.<name>]` in a repository that
 declares no component and `[channels.<component>.<name>]` in one that
-does (125). A given channel, `beta` or `stable` with no line written, is
-promoted by the gate's own signer, the one the acceptance policy names
-(32), at the asking of an approver or the rule; a line under the channel
+does (125). A given channel, `beta` or `stable` with no line written, is promoted by the gate's signers, every one the acceptance policy lets claim acceptance (32), at the asking of an approver or the rule; a line under the channel
 narrows who may ask or adds a claim its versions must carry, and never
 widens who signs. Where the file names no signer that may claim
 acceptance, the policy answers that the host's own signer, the one it
@@ -1124,8 +1129,7 @@ whose packager cannot promise it says so (87).
 One ref per channel in the repository, `refs/tailrace/ledger/<channel>`,
 or `refs/tailrace/ledger/<component>/<channel>` where the repository
 declares components (125), each commit holding one promotion claim; `append` is a push that fast-
-forwards, and a push the remote refuses is a predecessor that is not the
-head. The gate's own identity pushes, and no device that asks for a
+forwards, and a push the remote refuses is a predecessor that is not the head, read again and answered naming the head where it moved, or the remote's own refusal in its words where it did not (59). The gate's own identity pushes, and no device that asks for a
 promotion commits anything. Asking reads the refs the repository holds,
 fetched where the remote answers, a fetch being a read of the remote
 into the repository's own copy, and answers from the refs as last
@@ -1136,9 +1140,7 @@ fetched where it does not, saying when (60).
 The chain as the promotion claims attached to the versions they move
 to, walked by predecessor from the channel's tag, `channel/<channel>`,
 or `channel/<component>/<channel>` where the repository declares
-components (125), for a store the
-operator can trust to retain them: a registry whose retention rules
-expire untagged artifacts by age is not one. Asking reads the chain
+components (125), for a store the operator can trust to retain them: a registry whose retention rules expire untagged artifacts by age is not one. A move the store refuses leaves the claim attached before it, which a later walk reports as the fork it is (105), so a store whose names take no condition serves one gate, and two gates share a chain through the git ref (C.13). Asking reads the chain
 from the store where it answers and from the chain the host last read
 where it does not, saying when (60, 61).
 
@@ -1154,7 +1156,7 @@ projections (101).
 ### C.16 What turns the wheel
 
 Not a seam: the core calls none of these, and each is named in the
-host's bindings file (130). A push event a forge delivers to a job,
+host's bindings file (130), as a `[gate]` table naming the host's own publish step or a job outside tailrace, in the operator's words, which tailrace carries as written and runs nothing for; a file with no such table names the publish step (118). A push event a forge delivers to a job,
 which runs the publish confined with the job's own identity as its
 signer; the driver that submitted the work and waited on its landing,
 running the publish as its next step (sluice 50, 51); a watcher of the
