@@ -709,7 +709,13 @@ redefine these.
     declares, refuses the run rather than run it without them, and every
     run is recorded with what its executor enforced (16), so a run is
     never read as confined, or as held to a limit, unless its executor
-    enforced it (28, 29).
+    enforced it (28, 29). The readiness the repository declares is asked
+    under a time the policy states beside it, a minute where it states
+    none; a probe that runs out of time has answered nothing, so it is
+    asked again, as many times as the policy states and three where it
+    states none, before the run is refused; a refusal that stands names
+    the probe, how long each ask ran and the host's load, and the run
+    has no outcome (114), the entry unblamed.
 
 ### B.4 The branch
 
