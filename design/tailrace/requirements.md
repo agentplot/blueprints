@@ -350,9 +350,11 @@ redefine these.
     keeps that spelling, so nothing changes for it. A component's name
     holds no slash, so a pattern's channel, whose name holds one (127),
     reads after its component without doubt in every form below.
-32. A channel moves only by a promotion, and a promotion is made only
-    by the gate, at the asking of a party the policy lets ask: a rule
-    that follows each publish, or an approver.
+32. A channel moves only by a promotion, and a promotion is made only by
+    the gate, at the asking of a party the policy lets ask: a rule that
+    follows each publish, or an approver. A channel declared by hand is
+    promoted by the signers its line names as able to claim a promotion
+    (C.10), the gate of that channel.
 33. Every promotion is recorded in the ledger before the channel is
     read as moved: the channel, the version it moves from and to, who
     asked, which policy was satisfied by which claims, and when. A
@@ -1070,9 +1072,7 @@ once every environment named reports it runs the version (37, 43,
 statement's channels and are read as such (131), and a reader may
 declare one by hand instead, as `[channels.<name>]` in a repository that
 declares no component and `[channels.<component>.<name>]` in one that
-does (125). A given channel, `beta` or `stable` with no line written, is promoted by the gate's signers, every one the acceptance policy lets claim acceptance (32), at the asking of an approver or the rule; a line under the channel
-narrows who may ask or adds a claim its versions must carry, and never
-widens who signs. Where the file names no signer that may claim
+does (125). A given channel, `beta` or `stable` with no line written, is promoted by the gate's signers, every one the acceptance policy lets claim acceptance (32), at the asking of an approver or the rule; a line under the channel narrows who may ask or adds a claim its versions must carry, and never widens who signs; a channel declared by hand is promoted by the signers its `require` names that may claim a promotion (32). Where the file names no signer that may claim
 acceptance, the policy answers that the host's own signer, the one it
 names for provenance, is the gate of the repository for acceptance and
 for the given channels' promotion, as the one host 108 admits, and its
