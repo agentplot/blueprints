@@ -382,6 +382,14 @@ redefine these.
      ref, the lease stale or the branch protected, is the move refused
      (24, 45), and one whose answer was not read is never made again
      blind: the branch is read, and what the remote holds decides (122).
+     A write to the forge is tried again the same way: one that sets a
+     state, a request's draft mark, is tried again, since the state read
+     decides; one that makes or starts something, a check run, a
+     comment, a workflow's run, is tried again blind only while the
+     connection was never made, and after an answer not read the forge
+     is read first, a check run or a comment it already holds carried on
+     and not made again, and a workflow's run, which nothing reads back,
+     never sent again but reported unanswered in its event (133).
      A refusal that stands when the policy's time is spent is reported
      in the remote's own words, with what each refused credential was:
      the app, the repository, the installation, its repositories and
