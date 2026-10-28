@@ -259,7 +259,17 @@ redefine these.
 119. What a check's tool reports of a run beyond its key, outcome and
      executor, such as how long it took, how often it was tried, or the
      time it saved, may be recorded with the run and shown with it. It
-     is never read as an outcome, a replay or a flake (16, 19, 38).
+     is never read as an outcome, a replay or a flake (16, 19, 38). The
+     run's record also carries the time of each step sluice itself took
+     around the tool, cutting the place, asking readiness, running the
+     tool and releasing the place, so where a run's minutes went is read
+     from the record alone, passed or failed (26); and what each task
+     printed is kept whole beside the record, which names where, for as
+     many of the branch's latest runs as the policy states, twenty where
+     it states none, passed and failed counted together, the oldest
+     removed as the newest arrives, while the tail the record and a
+     request's report carry inline stays bounded. (Proposed 2026-10-27,
+     record 0067, on the user's card; accepted only on their yes.)
 116. An operator may set aside a recorded run, naming it and the
      reason, by a record of its own. The run's record is kept. A run set
      aside has no outcome (60) and is read under no key, from the
