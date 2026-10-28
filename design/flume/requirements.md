@@ -463,6 +463,20 @@ redefine these.
     Whoever waits on a submission learns its outcome together with the
     commit it landed as, or with the merge queue's words. No caller
     needs to read a terminal to learn how a stage or a submission ended.
+    It learns by being told: the settle that reads the end (46) tells
+    each waiter on the place once, through the terminal into the
+    waiter's own pane (95), and records on the place that it was told,
+    to whom and when; where the terminal has no pane to tell, the end
+    is read from status (56). A wait is by place, naming its stage or
+    its submission: it answers at once with an end that stands untold
+    to this waiter, and otherwise follows the host's state under a
+    timeout, exiting by the outcome or still waiting, driving no settle
+    where the terminal keeps watch (119, 122); so a caller whose
+    session restarted waits again and loses nothing. A caller that
+    starts may ask for every end untold to it, of the places it
+    launched or waits on, which marks nothing told. (Proposed
+    2026-10-27, record 0009, on the user's card; accepted only on their
+    yes.)
 44. A stage whose agent has been quiet past the stage's limit, with
     nothing delivered and nothing said, is reported stuck, naming the
     stage and the agent. The limit is 30 minutes where the stage's
