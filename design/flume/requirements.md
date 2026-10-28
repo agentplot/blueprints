@@ -472,9 +472,10 @@ redefine these.
     to this waiter, and otherwise follows the host's state under a
     timeout, exiting by the outcome or still waiting, driving no settle
     where the terminal keeps watch (119, 122); so a caller whose
-    session restarted waits again and loses nothing. A caller that
-    starts may ask for every end untold to it, of the places it
-    launched or waits on, which marks nothing told. (Proposed
+    session restarted waits again and loses nothing; an end already
+    told to this waiter it answers as a read, telling nobody again. A
+    caller that starts may ask for every end untold to it, of the
+    places it launched or waits on, which marks nothing told. (Proposed
     2026-10-27, record 0009, on the user's card; accepted only on their
     yes.)
 44. A stage whose agent has been quiet past the stage's limit, with

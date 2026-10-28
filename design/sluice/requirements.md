@@ -784,8 +784,12 @@ redefine these.
     a restart or on another host, is told every untold outcome of the
     entries it submitted, found by the submitter the entry recorded,
     before it asks for anything, so no wait need stand for an outcome
-    to arrive (135). (Proposed 2026-10-27, record 0068, on the user's
-    card; accepted only on their yes.)
+    to arrive (135). An outcome is delivered once: whichever of the push
+    and a reporting wait comes first marks it told, a push is not made
+    to a session already told, and a wait that reads an outcome already
+    told reports it as a read and delivers nothing again. (Proposed
+    2026-10-27, record 0068, on the user's card; accepted only on their
+    yes.)
 
 ### B.6 Binding the contracts
 
