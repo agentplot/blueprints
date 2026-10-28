@@ -489,7 +489,13 @@ redefine these.
     the refused branch by, said once while the refusal stands (121);
     and an entry asked for by its number and found on no branch that
     could be read is said to be unfound among those, naming the
-    branches that could not be read, never said to be no entry.
+    branches that could not be read, never said to be no entry. Any
+    other failure of one branch's round is that branch's the same way:
+    the run goes on to the other branches and says it once while it
+    stands; and a run bounded to a number of rounds that passed a
+    branch by in its last round ends as a step of that branch would,
+    naming the branch, so whatever started it learns from its exit, not
+    from its output alone.
 
 ### A.6 Gates and trust
 
