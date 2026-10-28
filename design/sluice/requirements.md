@@ -606,7 +606,12 @@ redefine these.
      make ends no watch: the reader writes the failure as its document,
      in the words it was refused with, and reads again at its next tick
      (133), so a watch ends only when asked or when its repository is
-     gone.
+     gone. A watch of a newer sluice than the live reader's takes the
+     reader's lease at its next tick, and the older reader, finding the
+     lease no longer its own, follows it; so a host whose sluice was
+     replaced reads with the new one as soon as any session watches
+     with it, and no reader outlives the sluice its host installs for
+     longer than its sessions keep watching.
 
 ### A.9 Branches
 
