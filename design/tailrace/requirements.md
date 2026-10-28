@@ -1256,7 +1256,8 @@ The rest of the stack, which a model builds on unless it says why not:
   sluice keeps its plugins: a Claude Code plugin, whose hook refuses an
   ecosystem's own publish command and names tailrace's; a herdr plugin
   with a pane of channels and environments, read from the served page's
-  own answer; a Flywheel plugin whose adapter prints a capture for each
+  own answer, showing one repository or every repository on the host as
+  sluice's board does, at the viewer's choice; a Flywheel plugin whose adapter prints a capture for each
   publish and each refusal, for millpond.
 - The profiles of Part C: an OCI registry and an OCI layout, moon and a
   declared command, sluice and a git branch, a key service, a host key
