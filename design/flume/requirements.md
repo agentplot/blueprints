@@ -899,9 +899,11 @@ redefine these.
      (113).
 133. **inbox**: given a place, every decided outcome of the place's
      submissions pending for it: landed, with the commit it landed as;
-     failed, with the merge queue's words; or withdrawn; each then
-     recorded by the merge queue as delivered to the place; or that the
-     merge queue could not be read (43, 111, 112).
+     failed, with the merge queue's words; or in conflict, with the
+     files contested; each then recorded by the merge queue as delivered
+     to the place; or that the merge queue could not be read (43, 111,
+     112). A withdrawal is delivered by nothing, and read from
+     read-submission (99).
 99. **read-submission**: given a repository and a branch, the newest
     submission of that branch, whoever made it, with its target and its
     state: waiting, under test, landed with the commit it landed as,
@@ -1106,7 +1108,7 @@ never the warning about bypassing permissions (34).
 | operation | how sluice satisfies it |
 |---|---|
 | submit | flume runs `sluice submit <base> --no-wait --json` in the place, with no multiplexer's session in its environment, so sluice records the place's worktree as the entry's submitter and no session, pushes nothing into any pane, and answers with the entry at once; a refusal is its exit and words. flume never passes `--check`, and never runs `wt submit`, whose waiting half removes the place (111, 113). |
-| inbox | `sluice inbox --json` (sluice clause 51), run in the place, which delivers the place's decided entries pending for it once and marks each delivered; sluice answers nothing again for an outcome already told (133) |
+| inbox | `sluice inbox --json` (sluice clause 51), run in the place, which delivers the place's decided entries pending for it once and marks each delivered; sluice answers nothing again for an outcome already delivered; a withdrawal is read from read-submission (133) |
 | read-submission | `sluice status <base> --json`, read once for each repository at each ask; the newest entry submitted from the place's branch, whoever submitted it; landed is that entry landed, its landing commit's `Sluice-*` trailers naming it |
 | step | `sluice step <base>`, one round of the base's queue, run by a settle only where no `sluice run` is live on the host (sluice clause 135), so the queue moves with nothing standing (124) |
 
