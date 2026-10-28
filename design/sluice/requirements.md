@@ -618,18 +618,20 @@ redefine these.
      replaced reads with the new one as soon as any session watches
      with it, and no reader outlives the sluice its host installs for
      longer than its sessions keep watching.
-135. A host's queues move on their own. On a host that holds a
-     repository's records, one standing process runs the rounds the
-     host's policies let it run, and it is the host's reader (129), so
-     one process per repository reads and drives there; it is started
-     and kept by what the host binds to run it, a service on a managed
-     host or a plugin's lease where nothing is bound, and ends when
-     nothing on the host needs it. A wait or a watch that finds it live
-     follows its document and runs no round; one that finds none runs
-     rounds as a waiting submit does, so a host with nothing bound is as
-     it was (core.4). The host's bound on runs (71) is that one
-     process's to keep. (Proposed 2026-10-27, record 0068, on the user's
-     card; accepted only on their yes.)
+135. sluice is a plain command line. Nothing of sluice's need run
+     between its commands for any guarantee here to hold, and no policy,
+     configuration or document of sluice's tells a host to run a
+     daemon: a host with nothing running moves its queues by its waiting
+     submits and waits, as a command does (core.4). A host may run one
+     driver, `sluice run`, by hand, from cron, by a fleet's service or by
+     a plugin's lease, the host's choice and never sluice's ask; where
+     one runs it is the host's reader (129), so one process per
+     repository reads and drives there, a wait or a watch that finds it
+     live follows its document and runs no round, and the host's bound
+     on runs (71) is that one process's to keep. A wait that finds none
+     runs rounds as before. (Proposed 2026-10-27, revised 2026-10-28 on
+     the user's note, record 0068, on the user's card; accepted only on
+     their yes.)
 
 ### A.9 Branches
 
