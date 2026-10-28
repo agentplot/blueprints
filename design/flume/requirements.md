@@ -483,9 +483,7 @@ redefine these.
     session restarted waits again and loses nothing; an end already
     told to this waiter it answers as a read, telling nobody again. A
     caller that starts may ask for every end untold to it, of the
-    places it launched or waits on, which marks nothing told. (Proposed
-    2026-10-27, record 0009, on the user's card; accepted only on their
-    yes.)
+    places it launched or waits on, which marks nothing told.
 44. A stage whose agent has been quiet past the stage's limit, with
     nothing delivered and nothing said, is reported stuck, naming the
     stage and the agent. The limit is 30 minutes where the stage's
