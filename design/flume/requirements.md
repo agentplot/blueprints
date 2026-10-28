@@ -485,7 +485,9 @@ redefine these.
     It learns by being told: the settle that reads the end (46) tells
     each waiter on the place once, through the terminal into the
     waiter's own pane (95), and records on the place that it was told,
-    to whom and when; where the terminal has no pane to tell, the end
+    to whom and when; a waiter named by a role's address is told in the
+    pane of that role's live run, and where none is live the end stands
+    untold and wakes the role (132); where the terminal has no pane to tell, the end
     is read from status (56). A wait is by place, naming its stage or
     its submission: it answers at once with an end that stands untold
     to this waiter, and otherwise follows the host's state under a
@@ -518,9 +520,9 @@ redefine these.
     as the host has room for and in priority order (70), and submits a
     place whose last stage delivered. It sends a place back when its
     submission fails, and tidies a place whose work is over (63). flume
-    settles a place whenever its agent goes quiet (121), whenever the
-    merge queue gives the verdict on its submission (111), and whenever
-    the host's terminal watches (122). Under a terminal that keeps no
+    settles a place whenever its agent goes quiet (121) and whenever
+    the host's terminal watches (122), and each settle reads the outcome
+    of the place's open submission (111). Under a terminal that keeps no
     watch, it also settles whenever a command of flume's acts (119).
     Where the terminal keeps watch, a place moves on within the watch's
     bound whether or not a caller asks, and asking only shortens the
@@ -534,8 +536,9 @@ redefine these.
      unattended only under a terminal that keeps watch.
 120. flume runs no process of its own between its commands. Every settle
      runs inside a command of flume's, started by an agent going quiet,
-     by the terminal's watch or by a caller. The command that submits a
-     place waits on the merge queue's verdict itself (111, 124).
+     by the terminal's watch or by a caller. No command of flume's waits
+     on the merge queue: a submission's outcome is read at the settles
+     that follow it (111, 124).
 47. A stage or a submission that waits on its caller's word, by the
     launch or by a hold the caller put after it (130), starts only on a
     retry that names it (49).
@@ -546,9 +549,11 @@ redefine these.
      delivered and its agent has ended. It does not while the launch
      holds the submission (47), or once the place's work is over (63).
      It submits the place's own branch at its head, to its base and to
-     no other branch (15), through the repository's merge queue. It then
-     waits on the merge queue's verdict, and settles the place when it
-     comes. A place whose kind does not land never reaches the merge
+     no other branch (15), through the repository's merge queue, the
+     place recorded as the submission's submitter. It holds no wait on
+     the verdict: every settle that follows asks the merge queue for the
+     outcomes of the place's submissions that stand untold to the place
+     (133), and settles the place by the one it is told. A place whose kind does not land never reaches the merge
      queue.
 112. A failed submission, one the merge queue blamed or found in
      conflict alike, sends the place back to the stage its kind
@@ -562,13 +567,13 @@ redefine these.
      merge queue refuses or withdraws leaves the place waiting for a
      retry or a drop, and status names why.
 113. A submission of the place's own branch that lands makes the place's
-     work over (63), and flume starts nothing more in the place. Where
-     the merge queue removes the landed place, it does so only after the
-     landing and only through the repository's teardown, and flume
-     records the place gone (66).
-124. A settle that finds the place's submission open, with no command of
-     flume's waiting on it, waits on that same submission again through
-     the merge queue and settles the place when it decides. flume never
+     work over (63), and flume starts nothing more in the place. The
+     merge queue removes nothing of the place: flume tidies it (66).
+124. A settle that finds the place's submission open and undecided asks
+     again at the next settle, and where the merge queue moves only while
+     something drives it, drives it one round (125). A host that
+     restarted loses nothing, since the outcome stands untold in the
+     merge queue's records until a settle asks for it. flume never
      submits the place anew for it (111).
 131. A kind runs through on its own. A stage's delivery starts the next
      stage as the host's room allows (70), and the last stage's delivery
@@ -706,11 +711,9 @@ redefine these.
     what it holds.
 66. flume removes a place through its repository's teardown, so what
     the repository stood up for the place goes with it. A teardown that
-    fails keeps the place, named with the step that failed. A merge
-    queue that removes a landed place does so through the same teardown
-    (113). flume then records the place gone and removes only what the
-    merge queue left: the place itself when it was kept, and its branch
-    as 67 says.
+    fails keeps the place, named with the step that failed. No merge
+    queue removes a place: flume removes every landed place itself, and
+    its branch as 67 says (113).
 67. When a place goes, its branch goes only if it holds no commit whose
     change its base lacks, judged by the change each commit makes and
     never by ancestry alone. A branch holding such a commit is kept and
@@ -755,6 +758,22 @@ redefine these.
     merge queue, never from an agent's words or its terminal.
 72. flume tells no person anything by itself. A surface shows what
     flume reports when it is asked.
+132. A waiter may be named by a role's address, `<partition>/<role>`,
+     rather than by a session. A run of the role is a place of the kind
+     the host's configuration names for the address (C.7), named by the
+     role, so at most one run of an address is live at once (3), and its
+     agent takes the address as its session's name. Where a settle finds
+     an end standing untold to an address with no run live or waiting
+     for room, or a caller or another tool's carrier asks flume to wake
+     the address, flume launches the address's kind at the priority the
+     configuration gives it; a wake of an address whose run is live or
+     waiting does nothing. The run's start asks for every end untold to
+     the address (43), so whatever came while no run was live is one
+     run's. flume decides nothing in this: which address waits on a
+     place, what the role's kind does and what its run decides are the
+     caller's (69, 70, 72). An address the configuration names no kind
+     for is woken by nothing, and status says the ends that stand untold
+     to it.
 
 ### A.13 Held state and hosts
 
@@ -865,10 +884,15 @@ redefine these.
 ### B.6 The merge queue
 
 117. **submit**: given a place, its branch at its head submitted to its
-     base, and a wait on the merge queue until it decides; then the
-     outcome: landed, with the commit it landed as and whether the place
-     and its branch were removed; failed, with the merge queue's words;
-     withdrawn; or refused, naming why (111, 112, 113).
+     base with the place as its submitter, answered once the merge queue
+     holds it and before it decides, with the submission it made; or
+     refused, naming why (111). Submit holds no wait and removes nothing
+     (113).
+133. **untold**: given a place, every decided outcome of the place's
+     submissions that stands untold to it: landed, with the commit it
+     landed as; failed, with the merge queue's words; or withdrawn; each
+     then recorded by the merge queue as told to the place; or that the
+     merge queue could not be read (43, 111, 112).
 99. **read-submission**: given a repository and a branch, the newest
     submission of that branch, whoever made it, with its target and its
     state: waiting, under test, landed with the commit it landed as,
@@ -876,11 +900,11 @@ redefine these.
     queue could not be read (63, 68, 71).
 101. The guarantee: landed is said only of a submission of that branch
      that the merge queue itself landed, never inferred from what the
-     base holds (63). Submit removes a place only after its landing and
-     only through its repository's teardown (66, 113).
-125. **wait**: given a submission still open, a wait on the merge queue
-     until it decides, which keeps the queue moving where it moves only
-     while something waits; then the outcome, as submit gives it (124).
+     base holds (63). Submit removes no place (66, 113), and an outcome
+     untold answers once to the place and never again.
+125. **step**: given a base whose queue moves only while something
+     drives it, one round of that queue, returning when the round does;
+     nothing where the queue moves on its own (124).
 126. **base**: given a repository and a base branch, the revision the
      base stands at where the merge queue's profile says the base lives,
      after the fetch that profile asks (9, C.1), or why it cannot be
@@ -1068,28 +1092,21 @@ never the warning about bypassing permissions (34).
 
 | operation | how sluice satisfies it |
 |---|---|
-| submit | flume runs `wt submit <base>` in the place under the worktrunk place profile, and `sluice submit <base>` under the git worktree profile, and waits on it: exit 0 is landed, 1 failed or withdrawn, 2 a conflict or a refusal, told apart by read-submission. flume never passes `--no-wait`, `--check` or `--no-remove`. The settle that submits is the command that waits, and it settles the place again when sluice decides (111). |
+| submit | flume runs `sluice submit <base> --no-wait --json` in the place under every place profile, with no multiplexer's session in its environment, so sluice records the place's worktree as the entry's submitter and no session, pushes nothing into any pane, and answers with the entry at once; a refusal is its exit and words. flume never passes `--check`, and never runs `wt submit`, whose waiting half removes the place (111, 113). |
+| untold | sluice's one command for a submitter's untold outcomes (sluice clause 51), run in the place, which tells the place's decided entries once and marks each told to it; sluice answers nothing again for an outcome already told (133) |
 | read-submission | `sluice status <base> --json`, read once for each repository at each ask; the newest entry submitted from the place's branch, whoever submitted it; landed is that entry landed, its landing commit's `Sluice-*` trailers naming it |
-| wait | `sluice step <base>`, one round of the base's queue, run again until read-submission gives the entry landed, failed or withdrawn, so the queue moves with no `sluice run` going (124) |
+| step | `sluice step <base>`, one round of the base's queue, run by a settle only where no `sluice run` is live on the host (sluice clause 135), so the queue moves with nothing standing (124) |
 
-On landing, `wt submit` releases the place with `sluice release`, then
-removes it with `wt -C <place> remove --foreground`, so the
-repository's pre-remove and post-remove hooks run as the teardown (66),
-and deletes the branch once it is merged into the default branch. It
-does so as worktrunk's `[merge] remove` sets, true when unset, and
-reports a removal that fails while still exiting as landed. flume then
-reads the place: one the driver removed it records gone, one the driver
-kept it tidies itself, and a branch the driver left, as on a base other
-than the default branch, it removes as 67 says. `sluice submit` removes
-nothing, and under it flume tidies every landed place itself. Whenever
+On landing sluice removes nothing, and flume tidies every landed place
+itself, through the place profile's teardown (C.1), so under worktrunk
+the repository's pre-remove and post-remove hooks run as they would for
+`wt merge` (66), and its branch as 67 says. Whenever
 flume removes a place itself, landed, dropped or done, it first runs
 `sluice release` in it as part of the place's teardown (66). sluice runs
 the repository's `[tests] release`, which ends what the place's runs
 left up, and frees the ports it holds for the place; it says `nothing to
 release` when it holds none. A release that fails keeps the place, named
-with that step (66). A
-waiting submit also runs sluice's rounds, so it moves the queue on a
-host with no `sluice run` going. Readiness and where the base lives
+with that step (66). Readiness and where the base lives
 (C.1) are read from the same `.config/sluice.toml`.
 
 ### C.7 The store: the host's state directory
@@ -1105,6 +1122,11 @@ lives:
   `[host] agents = <n>`, how many agents of flume's places the host
   runs at once (70), stated by whoever administers the host. A host
   with no such word states no bound and has no queue.
+- The roles a host wakes are a table of the same configuration:
+  `[roles."<partition>/<role>"]` with `repository`, `kind` and
+  `priority`, the place a woken run is launched as (132), stated by
+  whoever administers the host. An address the table names nothing for
+  is woken by nothing.
 - What readiness makes for a place, its toolchain among it, is kept in
   the place's own git directory, `git rev-parse --git-dir` in the
   place, and goes with the worktree.
@@ -1148,8 +1170,8 @@ the place is tidied (62).
   queue, and a failed submission sends a place back only to the stage
   its kind names (111, 112).
 - **I8.** flume runs no process of its own between its commands. An
-  agent going quiet, a submission's verdict and the terminal's watch
-  settle a place. Under a terminal that keeps no watch, every command
+  agent going quiet and the terminal's watch settle a place, and every
+  settle reads the outcome of its open submission. Under a terminal that keeps no watch, every command
   of flume's that acts settles every place first (46, 119, 120).
 
 <!-- ANCHOR_END: invariants -->
@@ -1245,7 +1267,7 @@ The rest of the stack, which a model builds on unless it says why not:
   | millpond | an item's send, as a fix or a change, the item's brief as the launch's | the item's record and its sends, and the landing, written from the merge queue's record of the place's branch |
   | headwater | its fix key, as a fix with the release's brief | nothing |
   | sounding | each round of an elaboration, as a place of the elaboration kind it hands in the launch, a conversation's agent beside the operator's pane | the inputs, the soundings each was based on, the rounds, the operator's notes and decisions, and the record, with each round's conclusion copied from its report; its go-on is a retry with the operator's notes as words, its accept a done or a retry that releases a held submission, and its drop a drop |
-  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, or a retry or drop of a place past its kind's bound, and it is told each end (43) and reads the rest from status; it decides no step between a unit's stages, and runs no agent of its own in the place (records 0010 and 0011) |
+  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, or a retry or drop of a place past its kind's bound; it names each place's waiter by a role's address, so a role with no live run is woken to hear an end (132), and it is told each end (43) and reads the rest from status; a role's own work that lands is a place of its own, so no session of crew's submits; it decides no step between a unit's stages, and runs no agent of its own in the place (records 0010 and 0011) |
 
 <!-- ANCHOR_END: givens -->
 <!-- ANCHOR: questions -->
@@ -1434,9 +1456,11 @@ These are not requirements.
   launch of the repository's own kind that does not land makes its
   place with plain git worktrees.
 - **S34.** flume's host restarts while a change's submission is under
-  test, and the command waiting on it is gone. The next settle finds the
-  submission open with nothing waiting on it and waits on it again,
-  never submitting anew. It lands, and flume tidies the place.
+  test. Nothing of flume's was waiting on it. The submission lands while
+  the host is down, and its outcome stands untold in sluice's records.
+  The first settle after the restart asks for the place's untold
+  outcomes, is told the landing, never submits anew, and tidies the
+  place (124, 133).
 - **S35.** crew launches a unit as a change place on its bolt's branch
   with nothing on hold. Construct, code and verify deliver in turn,
   flume submits, and the merge queue blames a test. flume sends the
@@ -1458,6 +1482,14 @@ These are not requirements.
   by priority. The user raises one waiting unit's priority on the rail;
   crew passes it to flume, and that unit's construct starts at the next
   room (70, 130).
+- **S38.** A unit's place names `madswan/planner` as its waiter. Its
+  verify stage stops short asking while no planner run is live. The
+  settle that reads the stop-short finds the end untold to an address
+  with no live run and launches the planner's kind as the host's
+  configuration names it. Two more ends come before the run's agent
+  starts; the run's start asks for everything untold to the address and
+  reads all three. A wake that crew's card carrier sends meanwhile does
+  nothing, since the run is waiting for room (132).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
