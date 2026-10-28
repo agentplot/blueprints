@@ -346,9 +346,8 @@ redefine these.
      protection reads it (ADR 0059): a revision this sluice refuses
      elsewhere in its policy decides the remote all the same, and that
      refusal is the branch's own, read at the branch's revision on its
-     remote (56), where a push clears it, never at a copy that lags.
-     (Proposed 2026-10-28, record 0069, on the user's card; accepted
-     only on their yes.) The branch's revision, and
+     remote (56), where a push clears it, never at a copy that lags
+     (record 0069). The branch's revision, and
      the policy its gate and every move of it are read under (56, 104),
      is then the remote's, fetched. A submission from a worktree
      on a branch of its own is that worktree's head, pushed to the remote
@@ -1321,7 +1320,7 @@ section asked is answered by a clause.
   the bolt with the refusal and every other branch whole (26). The
   bolt's own round reads it at the remote's revision and runs, and the
   host's copy is levelled by the landing it next reads (124; record
-  0069, proposed 2026-10-28).
+  0069, accepted 2026-10-28).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
