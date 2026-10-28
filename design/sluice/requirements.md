@@ -210,7 +210,13 @@ redefine these.
     keeper states nothing it is all the host's cores.
     sluice reads no load to decide: the bound is set in advance, and
     what the host runs beside sluice is the keeper's to leave room for
-    (83).
+    (83). A run's share reaches the tools its runner starts and nothing
+    outside the run: work a check hands to a service the host runs, a
+    container or build engine reached by its socket, takes that
+    service's cores, which the keeper bounds in the service's own
+    settings and leaves room for; a run that reaches one is never
+    confined (C.8), and its record says the share it was handed and
+    that it was not confined, never a limit nothing enforced (84).
 14. A branch's policy says whether every candidate of a chain is tested or
     the deepest first. Under deepest first, a failure is attributed only
     after the candidates that were skipped have verdicts.
