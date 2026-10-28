@@ -285,7 +285,8 @@ redefine these.
     which delivers the place's change written; a code stage, which
     delivers its tasks ticked; and a verify stage, which checks the work
     against the change, commits its report in the change, and delivers
-    the change archived. A failed submission sends it back to verify.
+    the change archived. A failed submission, and a verify finding
+    (131), send it back to code, which is the kind's fix round.
     Every other kind, each of sounding's among them, is a repository's
     or a launch's (19).
 23. A kind's declaration holds its version, its stages in order, how its
@@ -442,7 +443,10 @@ redefine these.
      check, never reports it stuck, and never ends it on its own. A
      finish ends the agent once it is quiet, one that is not quiet only
      when forced (31), and the stage then counts as delivered (40).
-41. An agent stops short by saying so to flume, with its words. flume
+41. An agent stops short by saying so to flume, with its words, and
+    saying which it does: it asks, needing an answer before its stage
+    can deliver, or it finds, naming work a stage before its own must
+    do again (131). flume
     takes a stop-short only from the agent of the place's current stage,
     or from a process that agent started. The stop-short carries a
     secret flume gave that start alone, accepted only while the agent is
@@ -453,10 +457,14 @@ redefine these.
      (28). Waiting on own work or on a person's answer is not going
      quiet. Where the agent program gives flume no way to send an agent
      back, the stage is left to 44.
-42. A stage that ended short starts no next stage, whatever else
-    exists. Its place waits for a retry or a drop, and the agent's words
-    reach whoever waits on the stage, and status, whole and as the agent
-    wrote them.
+42. A stage that ended short asking starts no next stage, whatever
+    else exists. Its place waits for a retry or a drop, and the agent's
+    words reach whoever waits on the stage, and status, whole and as the
+    agent wrote them. The answer, whoever gives it and however it
+    reached the caller, is a retry naming the stage with the answer as
+    its words (49), and the fresh agent's prompt carries the question
+    with the answer. A stage that ended short finding is sent back as
+    131 says.
 43. Whoever waits on a stage learns its end together with what was
     delivered, the head or the report, and the addresses of what it
     made (129), or with the agent's words.
@@ -532,11 +540,14 @@ redefine these.
      waits on the merge queue's verdict, and settles the place when it
      comes. A place whose kind does not land never reaches the merge
      queue.
-112. A failed submission sends the place back to the stage its kind
+112. A failed submission, one the merge queue blamed or found in
+     conflict alike, sends the place back to the stage its kind
      names. flume starts that stage with a fresh agent and the merge
-     queue's words as its words. The stages after it run again in order
+     queue's words as its words, the checks blamed and their logs or
+     the files contested. The stages after it run again in order
      as 40 and 47 allow, and flume submits again once the last delivers.
-     A place that has gone back as many times as its kind allows (23)
+     A place that has gone back as many times as its kind allows (23),
+     by failed submission and by finding together (131),
      waits for its caller's retry or drop instead. A submission the
      merge queue refuses or withdraws leaves the place waiting for a
      retry or a drop, and status names why.
@@ -549,6 +560,24 @@ redefine these.
      flume's waiting on it, waits on that same submission again through
      the merge queue and settles the place when it decides. flume never
      submits the place anew for it (111).
+131. A kind runs through on its own. A stage's delivery starts the next
+     stage, and the last stage's delivery submits a place whose kind
+     lands (40, 111), with no word from any caller, unless the launch
+     or a hold put after it asks for one (47). The fix round is the
+     stage the kind names for a failed submission (23): a failed or
+     conflicting submission starts it with the merge queue's words
+     (112), and a stop-short that finds, from the kind's last stage,
+     starts it with the findings as its words, as a failed submission
+     does; from any other stage a finding is taken as an ask (42). The
+     stages after the fix round run again in order and the place is
+     submitted again. A place's goings-back, by submission and by
+     finding together, count toward the kind's bound (23), past which
+     the place waits on its caller, said and told (130, 43). A stop-short
+     that asks waits on its answer, which is a retry (42, 49). So a unit's
+     whole course, from its first stage to its landing, with its fixes
+     on the way, runs with no agent of a caller's deciding between the
+     steps; what a caller decides is what to launch, what to answer, and
+     what to do with a place past its bound (70). (Proposed 2026-10-28, record 0011, on the user's card; accepted only on their yes.)
 
 ### A.8 Retries, stops, drops and dones
 
@@ -557,7 +586,9 @@ redefine these.
     retries. Status gives how many times each stage has started and how
     many times flume submitted the place.
 49. A retry starts the stage it names with a fresh agent and the
-    retry's words in its prompt, and the stages after it then run again
+    retry's words in its prompt, the words of a stop-short the stage
+    ended with standing before them, so the agent reads the question
+    with its answer (42), and the stages after it then run again
     in order, as 40 and 47 allow. A retry that names the submission
     submits the place's head again and starts no agent. A retry names
     any stage of the place's kind, one after the current stage among
@@ -604,11 +635,12 @@ redefine these.
     it, and how many times flume submitted the place; its change's
     tasks and which are ticked; each act of an agent's that flume
     refused (108); the part a refused stage could not fill (27); the
-    words of a stop-short or of a failed submission; and, of a place
+    words of a stop-short, and whether it asked or found, or of a failed
+    submission; and, of a place
     waiting on its caller, the move it waits on, since when, a hold's
     words and whether it is left (130).
 130. A place whose next move is its caller's, a stage or a submission on
-     hold (47), a stage ended short (42), a readiness that failed (12),
+     hold (47), a stage ended short asking (42), a readiness that failed (12),
      or a kind's last stage delivered where the kind does not land
      (114), waits on that move from the moment flume read it so, and
      status says which move and since when. A caller may put a place's
@@ -948,7 +980,9 @@ A prompt's parts are `{{brief}}`, `{{name}}`, `{{kind}}`, `{{stage}}`,
 `{{branch}}`, `{{base}}`, `{{place}}`, `{{change}}`, `{{report}}`,
 `{{made}}`, `{{words}}`, `{{unready}}` and `{{needs}}` (the way to stop short,
 C.4). `{{#words}}…{{/words}}` renders its body only when there are
-words, as a retry's or a failed submission's. A launch is refused when
+words: a retry's, with the question of the stop-short it answers before
+them (49), a failed submission's, the checks blamed and their logs or
+the files contested (112), or a finding's (131). A launch is refused when
 a stage asks for `{{brief}}` and it gives none (4). Any other bare part
 with nothing to fill it leaves the stage refused (27), and
 `{{report}}` fills only for a stage whose deliverable is a report or a
@@ -962,7 +996,7 @@ flume's own kinds, their prompts shipped with flume:
 |---|---|---|---|---|
 | **fix@1** | `fix/<name>` | yes | yes; `code` | `code`: `commits` |
 | **chore@1** | `chore/<name>` | yes | yes; `code` | `code`: `commits`; fix@1's stage under a prefix of its own, so a branch's name says which it was |
-| **change@1** | `change/<name>` | no | yes; `verify` | `construct`: `change`; `code`: `tasks`; `verify`: `archived`. The verify prompt checks the work against the change and commits its report as `verify.md` in the change's directory. It then archives the change on the place's branch, the report with it, or stops short with what fails |
+| **change@1** | `change/<name>` | no | yes; `code` | `construct`: `change`; `code`: `tasks`; `verify`: `archived`. The verify prompt checks the work against the change and commits its report as `verify.md` in the change's directory. It then archives the change on the place's branch, the report with it, or stops short finding, with what fails, which sends the place back to code (131). The code prompt, sent again with a failed submission's or a finding's words, fixes what they name and records the fix as a task of the change, ticked |
 
 sounding hands flume each elaboration kind in the launch, as `flume
 launch --kinds <file>`. An elaboration kind is written in the same
@@ -988,7 +1022,7 @@ round, so the conclusion is never committed on `sounding/<name>`
 | received | the session's transcript holds the prompt as a user turn |
 | asking | a mark the plugin's hook leaves when the agent opens a question or a plan for a person, open until the transcript holds the answer; the terminal's reading alone never decides it |
 | own-work | background tasks the transcript shows started and not finished |
-| stop-short | `flume needs "<words>"`, run by the agent or a process it started, refused unless `FLUME_AGENT` names the agent of the place's current stage and `FLUME_SECRET` is that start's, while the agent is live |
+| stop-short | `flume needs "<words>"` asks, and `flume needs --found "<words>"` finds (41, 131); run by the agent or a process it started, refused unless `FLUME_AGENT` names the agent of the place's current stage and `FLUME_SECRET` is that start's, while the agent is live |
 | send-back | the plugin's Stop hook blocks the stop, its reason naming the deliverable and `flume needs`, while the stage's deliverable does not exist, the agent has not stopped short, and no background task runs and no question is open; it never blocks a conversation's agent |
 | guard | the plugin's PreToolUse hook refuses a command that runs `sluice submit`, `wt submit`, `wt merge` or `git push`, its reason saying that flume submits the place, and leaves the mark status reads (56) |
 | on-quiet | the plugin's Stop hook, each time it lets the agent stop, starts `flume settle <place>` in the background, so the place settles the moment its agent goes quiet (46) |
@@ -1092,8 +1126,8 @@ the place is tidied (62).
   between hosts, or one status across hosts. A caller that spans hosts
   calls each host's flume.
 - Deciding what to launch, ordering work, planning across places, or
-  bounding how many run. A team's bolts, its conductors, its approvals
-  and the conflicts between its units are crew's; how many agents a
+  bounding how many run. A team's bolts, its approvals, its review
+  batches and the conflicts between its units are crew's; how many agents a
   host has room for is the host's fact, which flume reports and nobody
   counts in slots (70; proposed 2026-10-28, record 0010).
 - Testing or landing work. flume submits a landing kind's place, and
@@ -1176,7 +1210,7 @@ The rest of the stack, which a model builds on unless it says why not:
   | millpond | an item's send, as a fix or a change, the item's brief as the launch's | the item's record and its sends, and the landing, written from the merge queue's record of the place's branch |
   | headwater | its fix key, as a fix with the release's brief | nothing |
   | sounding | each round of an elaboration, as a place of the elaboration kind it hands in the launch, a conversation's agent beside the operator's pane | the inputs, the soundings each was based on, the rounds, the operator's notes and decisions, and the record, with each round's conclusion copied from its report; its go-on is a retry with the operator's notes as words, its accept a done or a retry that releases a held submission, and its drop a drop |
-  | crew | each unit, chore or fix of a team, as a place of a kind crew carries in the launch, every stage after the first and the submission on hold, each agent's settings from crew's roles, marked with the team | plans, bolts, the dispatcher, conductors, approvals and conflicts between units; it launches a piece whenever flume says its host has room and keeps no slots (70); it starts each stage and each submission on hold with a retry and reads each end from status (proposed 2026-10-28, record 0010) |
+  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief | plans, bolts, proposals, review batches, the rail and its cards; it launches a piece whenever flume says its host has room and keeps no slots (70); its word to a place is a retry answering a stop-short that asked, or a retry or drop of a place past its kind's bound, and it is told each end (43) and reads the rest from status; it decides no step between a unit's stages, and runs no agent of its own in the place (proposed 2026-10-28, records 0010 and 0011) |
 
 <!-- ANCHOR_END: givens -->
 <!-- ANCHOR: questions -->
@@ -1186,7 +1220,11 @@ These are not requirements.
 
 - When a verify stage finds work to fix, does its agent stop short with
   the findings for a caller's retry, or does its finding send the place
-  back to code by itself, as a failed submission does (42, 112)?
+  back to code by itself, as a failed submission does (42, 112)? Ruled
+  2026-10-28: by itself. A stop-short that finds, from the kind's last
+  stage, sends the place back to the kind's fix round with the findings
+  as its words, counting toward the kind's bound; one that asks waits on
+  its answer (131; proposed, record 0011).
 - Does a caller learn a stage's or a submission's end by asking, or
   does flume tell it, and through what (43, 46)?
 - May a repository declare deliverable forms of its own, such as a
@@ -1242,10 +1280,12 @@ These are not requirements.
   not reported stuck while the suite runs. It ends when the last task is
   ticked and the agent is quiet.
 - **S4.** A construct agent cannot tell which of two designs the brief
-  means, and stops short, saying so. The stage ends short, no code stage
-  starts, and crew's conductor reads the words whole from status. The
-  conductor retries construct with the design agent's answer as its
-  words, and a fresh agent starts with the words in its prompt.
+  means, and stops short asking, saying so. The stage ends short, no
+  code stage starts, status shows the place waiting on an answer with
+  the question, and crew is told the words whole. The design agent's
+  answer comes back as a retry of construct with the answer as its
+  words, and a fresh agent starts with the question and the answer in
+  its prompt (42, 49).
 - **S5.** On a loaded host a code stage's agent takes four minutes to
   come up. flume reports the start unknown, not failed, and sends the
   prompt once the agent waits for input. It finds the prompt not
@@ -1255,11 +1295,11 @@ These are not requirements.
   question, and the tell is refused with nothing typed. They tell it
   again while it works. The words reach it once it waits for input, and
   its stage is unchanged.
-- **S7.** crew launches two places for one team, every stage after
-  construct and each submission on hold. Each construct delivers, and
-  flume starts nothing more. crew's word starts one place's code stage,
-  and later its submission. flume launches no third place of its own;
-  which work crew launches next stays crew's, on the room flume
+- **S7.** A caller launches two places, every stage after construct and
+  each submission on hold. Each construct delivers, and flume starts
+  nothing more. The caller's word starts one place's code stage, and
+  later its submission. flume launches no third place of its own; which
+  work the caller launches next stays the caller's, on the room flume
   reports (70).
 - **S8.** One unit's work reaches the base inside another place's
   landing. flume does not read it as the first place's landing: the
@@ -1363,6 +1403,19 @@ These are not requirements.
   test, and the command waiting on it is gone. The next settle finds the
   submission open with nothing waiting on it and waits on it again,
   never submitting anew. It lands, and flume tidies the place.
+- **S35.** crew launches a unit as a change place on its bolt's branch
+  with nothing on hold. Construct, code and verify deliver in turn,
+  flume submits, and the merge queue blames a test. flume sends the
+  place back to code with the blame and the log, code and verify deliver
+  again, flume submits again and the place lands; nobody spoke between
+  the steps. A second place's verify agent finds the work short of its
+  change and stops short finding; flume sends that place back to code
+  with the findings, and the going-back counts with the first toward
+  the kind's three (131).
+- **S36.** The user marks two notes of a review batch fix on its card.
+  crew launches a fix place for each on the bolt's branch with the note
+  as its brief; each code stage delivers, flume submits each, and each
+  lands with no further word (131, C.2).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
