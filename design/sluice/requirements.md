@@ -617,7 +617,12 @@ redefine these.
      lease no longer its own, follows it; so a host whose sluice was
      replaced reads with the new one as soon as any session watches
      with it, and no reader outlives the sluice its host installs for
-     longer than its sessions keep watching.
+     longer than its sessions keep watching. A follower whose watch ends
+     short of that, its stream broken or its process gone, opens the
+     watch again, waiting longer after each failure in a row and at once
+     after a watch that lived, and reads the records once in its place
+     only where the host's sluice has no watch, no oftener than a reader
+     reads: a session is never a poller of the records.
 135. sluice is a plain command line. Nothing of sluice's need run
      between its commands for any guarantee here to hold, and no policy,
      configuration or document of sluice's tells a host to run a
@@ -784,12 +789,25 @@ redefine these.
     a restart or on another host, is told every untold outcome of the
     entries it submitted, found by the submitter the entry recorded,
     before it asks for anything, so no wait need stand for an outcome
-    to arrive (135). An outcome is delivered once: whichever of the push
-    and a reporting wait comes first marks it told, a push is not made
-    to a session already told, and a wait that reads an outcome already
-    told reports it as a read and delivers nothing again. (Proposed
-    2026-10-27, record 0068, on the user's card; accepted only on their
-    yes.)
+    to arrive (135). An entry records the session that submitted it as
+    the host's multiplexer names it, where the submit ran in one, and
+    no session where it ran in none. sluice alone marks an entry told,
+    on the word of the carrier that delivered its outcome and never on
+    a notify that delivered nothing, and no carrier keeps a list of its
+    own of what was told. The round's push through the multiplexer is
+    the delivery where the entry recorded a session there; where it
+    recorded none, the submitter's own harness is the carrier, the
+    Claude Code board among them, which asks sluice by the same one
+    command a session's start uses to tell this session its untold
+    outcomes, and starts the turn with sluice's words. An outcome is
+    delivered once: whichever of the push, a harness's ask and a
+    reporting wait comes first marks it told, a push is not made to a
+    session already told, sluice answers an ask with nothing for an
+    outcome already told, and a wait that reads an outcome already told
+    reports it as a read and delivers nothing again. A toast or a row
+    the host shows its user is no delivery and marks nothing. (Proposed
+    2026-10-27, amended 2026-10-28, record 0068, on the user's card;
+    accepted only on their yes.)
 
 ### B.6 Binding the contracts
 
