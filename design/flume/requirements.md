@@ -41,9 +41,12 @@ runs no process of its own. flume reports where every place stands. It
 removes each place once its work has landed, been dropped, or, for a
 kind that never lands, been declared done by its caller, and keeps any
 branch that holds work its base lacks. It launches on the host it runs
-on, and only when asked. What to launch, how much at once and what comes
-next are its callers' to decide, and whether submitted work lands is the
-merge queue's.
+on, and only when asked, and starts an agent only while the host has
+room for one, by the priorities its callers give, so a host's launched
+work is one queue flume keeps. What to launch, what matters most and
+what comes next are its callers' to decide, how many agents run at once
+is the host's fact, and whether submitted work lands is the merge
+queue's.
 
 <!-- ANCHOR_END: preamble -->
 <!-- ANCHOR: actors -->
@@ -51,11 +54,11 @@ merge queue's.
 
 | actor | may decide | may not |
 |---|---|---|
-| **a caller** (the operator, millpond, headwater, sounding, crew) | what to launch and when: the repository, kind, brief, name and base, which stages wait on its word and whether the submission does, and its agents' settings, where in the terminal each runs among them; when to tell, stop, retry, finish, drop or declare done any place; how many places it runs at once | it never changes a place's kind, brief or base after the launch, never ends an agent that is not quiet without forcing it, never opens, sends to or closes an agent's terminal itself, and never makes flume run anything in a place but its readiness, its teardown and its stages' agents |
+| **a caller** (the operator, millpond, headwater, sounding, crew) | what to launch and when: the repository, kind, brief, name and base, which stages wait on its word and whether the submission does, and its agents' settings, where in the terminal each runs among them; when to tell, stop, retry, finish, drop or declare done any place; each place's priority, at the launch and after it | it never changes a place's kind, brief or base after the launch, never ends an agent that is not quiet without forcing it, never opens, sends to or closes an agent's terminal itself, and never makes flume run anything in a place but its readiness, its teardown and its stages' agents |
 | **the repository's authors** | the repository's kinds, with whether each lands and where a failed submission sends a place back; what a worktree needs to be ready, and what removing one must undo; each seam's profile (105) | they never decide who launches or when, and never make flume remove a commit a branch holds that its base lacks |
 | **an agent** (a coding agent program working one stage) | how to do its stage, and what it commits in its place; whether to stop short, and what to say | it never ends, starts or moves a stage but by stopping its own short, never goes quiet with its deliverable missing and nothing said (110), never submits, merges or lands, and never acts in another place |
 | **the merge queue** | whether and when a submitted branch lands on its base, and, where its profile does so, removing a landed place through its repository's teardown | it never receives a place's work from the place's agent (71), and removes a place only once its submission landed (113) |
-| **flume** | when a stage has ended; starting each next stage that waits on no word; submitting a landing kind's place after its last stage, and sending it back when the submission fails; sending prompts and tells; when a place whose work is over is removed | it never decides what to launch, holds no cap on places, never commits, merges or lands, never removes what it did not make or a commit its base lacks, never ends an agent that is not quiet unless forced, never answers an agent's question to a person, and runs no process of its own between its commands (120) |
+| **flume** | when a stage has ended; starting each next stage that waits on no word, when the host has room for it and in its callers' priority order; submitting a landing kind's place after its last stage, and sending it back when the submission fails; sending prompts and tells; when a place whose work is over is removed | it never decides what to launch, sets no bound of its own on agents and holds no cap on places, orders places by nothing but the priorities its callers gave, never commits, merges or lands, never removes what it did not make or a commit its base lacks, never ends an agent that is not quiet unless forced, never answers an agent's question to a person, and runs no process of its own between its commands (120) |
 | **the operator** | everything no caller and no repository's author settles | |
 
 <!-- ANCHOR_END: actors -->
@@ -138,6 +141,14 @@ redefine these.
   or, of a conversation, that it was **finished**.
 - **on hold**: of a stage or a submission, that it waits on its
   caller's word before it starts.
+- **room**: of a host, how many more agents of flume's places it may
+  run at once: the bound its administrator states, less the agents
+  running (70).
+- **priority**: a place's rank among the places waiting for room on its
+  host, given at the launch and changed by its caller after; higher
+  starts first, equals in the order they came to wait (70).
+- **waiting for room**: of a stage, that it may start and waits only
+  for its host to have room (70).
 - **stuck**: of a stage, that its agent has been quiet past the stage's
   limit with nothing delivered and nothing said.
 - **left**: of a place, that its next move has been its caller's for
@@ -147,7 +158,7 @@ redefine these.
 - **lost**: of a stage, that its agent stopped with nothing delivered
   and nothing said.
 - **stage state**: where a stage stands: not reached, on hold, waiting
-  on its place's readiness, refused, started, begun, never begun, stuck,
+  on its place's readiness, waiting for room, refused, started, begun, never begun, stuck,
   lost, stopped by its caller, delivered, ended short, or finished.
 - **retry**: a caller's ask that a place start one stage of its kind
   afresh, the current stage unless the retry names another, with words
@@ -219,7 +230,7 @@ redefine these.
    and whoever needs a stage's start or end learns it from status (43).
 7. A launch may carry settings for any of its stages' agents, the
    stages it puts on hold, whether its submission waits on its word,
-   and a mark. flume keeps the mark with the place and reports it, and
+   the place's priority (70), and a mark. flume keeps the mark with the place and reports it, and
    decides nothing by it.
 8. A place's kind, brief, base and settings are fixed by its launch,
    and nothing after the launch changes them. The launch names the
@@ -434,8 +445,8 @@ redefine these.
     and be answered any number of times, and no quiet terminal, ended
     turn or closed terminal ends the stage.
 40. A stage that has delivered ends once its agent is quiet. flume then
-    ends the agent and starts the next stage, unless that stage waits on
-    its caller's word (47). After the kind's last stage, flume submits a
+    ends the agent and starts the next stage when the host has room for
+    its agent (70), unless that stage waits on its caller's word (47). After the kind's last stage, flume submits a
     place whose kind lands (111), and any other place waits for its
     caller's done or drop (52, 114).
 109. A conversation ends only on its caller's finish. Its agent works
@@ -503,8 +514,9 @@ redefine these.
     is reported lost. flume starts no agent for a lost stage on its own
     (48).
 46. A place moves on as soon as a settle reads that it may. A settle
-    reads each stage's end, starts the next stage and submits a place
-    whose last stage delivered. It sends a place back when its
+    reads each stage's end, starts the stages waiting for room, as many
+    as the host has room for and in priority order (70), and submits a
+    place whose last stage delivered. It sends a place back when its
     submission fails, and tidies a place whose work is over (63). flume
     settles a place whenever its agent goes quiet (121), whenever the
     merge queue gives the verdict on its submission (111), and whenever
@@ -559,8 +571,8 @@ redefine these.
      the merge queue and settles the place when it decides. flume never
      submits the place anew for it (111).
 131. A kind runs through on its own. A stage's delivery starts the next
-     stage, and the last stage's delivery submits a place whose kind
-     lands (40, 111), with no word from any caller, unless the launch
+     stage as the host's room allows (70), and the last stage's delivery
+     submits a place whose kind lands (40, 111), with no word from any caller, unless the launch
      or a hold put after it asks for one (47). The fix round is the
      stage the kind names for a failed submission (23): a failed or
      conflicting submission starts it with the merge queue's words
@@ -634,9 +646,12 @@ redefine these.
     tasks and which are ticked; each act of an agent's that flume
     refused (108); the part a refused stage could not fill (27); the
     words of a stop-short, and whether it asked or found, or of a failed
-    submission; and, of a place
+    submission; of a place
     waiting on its caller, the move it waits on, since when, a hold's
-    words and whether it is left (130).
+    words and whether it is left (130); and, for the host, its agents
+    running, the bound it states, its room, and the places waiting for
+    room in the order they would start, each with its priority and
+    since when (70).
 130. A place whose next move is its caller's, a stage or a submission on
      hold (47), a stage ended short asking (42), a readiness that failed (12),
      or a kind's last stage delivered where the kind does not land
@@ -650,7 +665,10 @@ redefine these.
      status says so, and whoever waits on the place is told once that
      it is left and which move is theirs (43). A hold's words are the
      caller's to make good: the event they wait for is the caller's to
-     see, and flume watches none and ends no hold itself (70, 72).
+     see, and flume watches none and ends no hold itself (70, 72). A
+     stage waiting for room (70) waits on the host and not on its
+     caller: status says so, with its priority and its place in the
+     queue, and such a place is never left.
 57. Asking status starts no agent, sends nothing to one, and writes
     nothing.
 58. Every fact status gives of a place's deliverable, change or
@@ -708,19 +726,30 @@ redefine these.
     host, never on which caller asked or through which surface. flume
     records no owner of a place: any caller may act on any place, and a
     mark only finds places (7).
-70. flume holds no count or cap of its own on places or agents, plans
-    nothing across places, and orders none. How many places a caller
-    runs at once, which work each holds, and when each stage or
-    submission on hold starts are the caller's. Status says, for the
-    host, how many agents of flume's places are running there, every
-    caller's counted together, and, where the host's own configuration
-    states how many agents it runs at once, how many more it has room
-    for (56, C.7); a place whose stage waits with no agent counts
-    nothing, the bound is the host's fact, stated by whoever
-    administers the host and never counted by flume or a caller, and
-    flume refuses no launch for want of room: a caller that launches
-    past it is told so once and the launch runs. (Proposed 2026-10-28,
-    record 0010, on the user's card; accepted only on their yes.)
+70. How many agents run at once on a host is the host's fact, stated by
+    whoever administers it in the host's own configuration (C.7), never
+    counted by flume or a caller, and flume keeps to it. A stage that
+    may start, a launch's first or a place's next, starts only while
+    the host's agents running, every caller's counted together, are
+    under the bound; otherwise it waits for room, a wait that is the
+    host's and never its caller's (130). When a settle finds room it
+    starts the stages waiting for it in priority order, the highest
+    first and equals in the order they came to wait, as many as there
+    is room for (46), and an agent running is never ended for a place
+    of higher priority (31). A place's priority is given at its launch,
+    equal for all where none is given, and its caller may change it
+    after, which reorders only what has not started. flume refuses no
+    launch for want of room: every launch is taken and waits its turn,
+    so a host's launched work is one queue flume keeps, across every
+    caller. Status says, for the host, the agents running, the bound,
+    the room and the queue (56). Beyond that flume holds no count or
+    cap of its own on places, plans nothing across places and orders
+    them by nothing but the priorities its callers gave: what to
+    launch, what each place holds, what matters most and when a stage
+    or a submission on hold starts are the caller's. A host whose
+    configuration states no bound has no queue: every stage that may
+    start starts, and status gives the agents running and judges no
+    room. (Proposed 2026-10-28, revised the same day on the user's note, record 0010, on the user's card; accepted only on their yes.)
 71. flume submits a place's work, and an agent never does. flume submits
     only places whose kind lands (111), and reads each outcome from the
     merge queue, never from an agent's words or its terminal.
@@ -1071,6 +1100,11 @@ lives:
 - Each place's live state is host state, one document per place under
   `$XDG_STATE_HOME/flume/` (`~/.local/state/flume/`), and goes when the
   place is tidied (62).
+- The host's bound is one word of the host's own configuration,
+  `$XDG_CONFIG_HOME/flume/config.toml` (`~/.config/flume/config.toml`):
+  `[host] agents = <n>`, how many agents of flume's places the host
+  runs at once (70), stated by whoever administers the host. A host
+  with no such word states no bound and has no queue.
 - What readiness makes for a place, its toolchain among it, is kept in
   the place's own git directory, `git rev-parse --git-dir` in the
   place, and goes with the worktree.
@@ -1106,8 +1140,10 @@ the place is tidied (62).
   lacks (64, 67).
 - **I5.** A prompt or a tell is received or reported, never left typed
   (38, 53).
-- **I6.** flume decides nothing its callers decide: what to launch, how
-  much at once, or when a stage or a submission on hold starts (1, 70).
+- **I6.** flume decides nothing its callers decide: what to launch, each
+  place's priority, or when a stage or a submission on hold starts; how
+  many agents run at once is the host's fact, which flume keeps to (1,
+  70).
 - **I7.** A place whose kind does not land never reaches the merge
   queue, and a failed submission sends a place back only to the stage
   its kind names (111, 112).
@@ -1123,11 +1159,13 @@ the place is tidied (62).
 - Coordinating many hosts: launching on another host, moving a place
   between hosts, or one status across hosts. A caller that spans hosts
   calls each host's flume.
-- Deciding what to launch, ordering work, planning across places, or
-  bounding how many run. A team's bolts, its approvals, its review
-  batches and the conflicts between its units are crew's; how many agents a
-  host has room for is the host's fact, which flume reports and nobody
-  counts in slots (70; proposed 2026-10-28, record 0010).
+- Deciding what to launch, what matters most or what comes next, or
+  planning across places: flume orders a host's waiting work by nothing
+  but the priorities its callers gave. A team's bolts, its approvals,
+  its review batches and the conflicts between its units are crew's;
+  how many agents a host runs at once is the host's fact, stated by its
+  administrator, which flume keeps to and nobody counts in slots (70;
+  proposed 2026-10-28, revised the same day, record 0010).
 - Testing or landing work. flume submits a landing kind's place, and
   the merge queue tests it under the repository's gate and lands it.
 - Keeping the record of the work a place served: millpond's item,
@@ -1208,7 +1246,7 @@ The rest of the stack, which a model builds on unless it says why not:
   | millpond | an item's send, as a fix or a change, the item's brief as the launch's | the item's record and its sends, and the landing, written from the merge queue's record of the place's branch |
   | headwater | its fix key, as a fix with the release's brief | nothing |
   | sounding | each round of an elaboration, as a place of the elaboration kind it hands in the launch, a conversation's agent beside the operator's pane | the inputs, the soundings each was based on, the rounds, the operator's notes and decisions, and the record, with each round's conclusion copied from its report; its go-on is a retry with the operator's notes as words, its accept a done or a retry that releases a held submission, and its drop a drop |
-  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief | plans, bolts, proposals, review batches, the rail and its cards; it launches a piece whenever flume says its host has room and keeps no slots (70); its word to a place is a retry answering a stop-short that asked, or a retry or drop of a place past its kind's bound, and it is told each end (43) and reads the rest from status; it decides no step between a unit's stages, and runs no agent of its own in the place (proposed 2026-10-28, records 0010 and 0011) |
+  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, or a retry or drop of a place past its kind's bound, and it is told each end (43) and reads the rest from status; it decides no step between a unit's stages, and runs no agent of its own in the place (proposed 2026-10-28, records 0010 and 0011) |
 
 <!-- ANCHOR_END: givens -->
 <!-- ANCHOR: questions -->
@@ -1297,8 +1335,7 @@ These are not requirements.
   each submission on hold. Each construct delivers, and flume starts
   nothing more. The caller's word starts one place's code stage, and
   later its submission. flume launches no third place of its own; which
-  work the caller launches next stays the caller's, on the room flume
-  reports (70).
+  work the caller launches next stays the caller's (70).
 - **S8.** One unit's work reaches the base inside another place's
   landing. flume does not read it as the first place's landing: the
   place stays, and its next stage waits on crew's word.
@@ -1414,6 +1451,14 @@ These are not requirements.
   crew launches a fix place for each on the bolt's branch with the note
   as its brief; each code stage delivers, flume submits each, and each
   lands with no further word (131, C.2).
+- **S37.** A host states a bound of four agents. crew launches a bolt's
+  nine units at once as change places. Four construct agents start and
+  five places wait for room, status naming each with its priority and
+  its place in the queue. As each agent ends, the settle starts the next
+  stage waiting, a waiting place's construct or a running place's code,
+  by priority. The user raises one waiting unit's priority on the rail;
+  crew passes it to flume, and that unit's construct starts at the next
+  room (70, 130).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
