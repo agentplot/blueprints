@@ -131,8 +131,10 @@ redefine these.
   a test run it waits on.
 - **quiet**: of an agent, neither working, asking, nor waiting on own
   work.
-- **start**: of a stage, the moment flume starts its agent. A stage has
-  **begun** once its agent has received its prompt.
+- **start**: of a stage, the moment flume starts its agent. A start is
+  **starting** until its agent says it started under the start's
+  identity (35), and a stage has **begun** once its agent has received
+  its prompt.
 - **stop short**: an agent's word to flume that its stage cannot deliver
   without something, saying what in its own words.
 - **stop check**: flume sending back an agent that would go quiet with
@@ -166,7 +168,7 @@ redefine these.
 - **lost**: of a stage, that its agent stopped with nothing delivered
   and nothing said.
 - **stage state**: where a stage stands: not reached, on hold, waiting
-  on its place's readiness, waiting for room, refused, started, begun, never begun, stuck,
+  on its place's readiness, waiting for room, refused, starting, started, begun, never begun, stuck,
   lost, stopped by its caller, delivered, ended short, or finished.
 - **retry**: a caller's ask that a place start one stage of its kind
   afresh, the current stage unless the retry names another, with words
@@ -420,9 +422,15 @@ redefine these.
     shows it. It never answers a question that widens what an agent may
     do.
 35. flume judges an agent's start by evidence that the agent exists,
-    never by the return of what started it. A start flume cannot read
-    either way is reported unknown and watched, never reported as
-    failed.
+    never by the return of what started it. The evidence is the agent's
+    own word that it started under its start's identity, with flume's
+    guard and stop check in force (116, 115); until that word the start
+    is starting, and status gives with it what the terminal shows of
+    the agent. A start whose program ended with no such word is never
+    begun at once; one still starting is reported never begun at the
+    stage's limit (44), or on its caller's stop or retry. A start flume
+    cannot read either way is reported unknown and watched, never
+    reported as failed.
 36. An agent changes what flume holds in one way only, by stopping its
     own stage short. Everything else flume learns of a stage it reads
     from the deliverable and from the agent's state.
@@ -438,16 +446,20 @@ redefine these.
 
 ### A.5 Prompts
 
-37. flume sends a stage's prompt only once its agent is waiting, and
-    never into a question the agent has put to a person.
+37. flume sends a stage's prompt only once its agent has said it
+    started (35) and is waiting, and never into a question the agent
+    has put to a person.
 38. A prompt is received or sent again. flume reads, within 60 seconds
-    of each sending, whether the agent received it. Where the terminal
+    of each sending, whether the agent received it, from the agent's
+    own word that it received that prompt where its program gives one,
+    and otherwise from its own record. Where the terminal
     can send to a running agent, flume sends the prompt once more when
     it was not received, and reports the stage never begun when the
     second sending is not received either. Where it cannot, the start
     carries the one sending, and a prompt not received is reported never
     begun. flume never sends a prompt the agent already received, and
-    text left typed for a hand to submit is never a stage's state.
+    text left typed for a hand to submit is never a stage's state: no
+    sending, received or not, leaves text typed (95).
 
 ### A.6 Stage ends
 
@@ -490,7 +502,9 @@ redefine these.
     131 says.
 43. A stage reported lost (45), a prompt never begun (38) and a stage
     reported stuck (44) are ends as a stage's end is, delivered so,
-    with what flume read. A notice of an end is sent into a recipient's
+    with what flume read: the agent's last words as its own record
+    holds them, the commits on the place's branch since the start, and,
+    for a prompt never begun, what the terminal shows of the agent. A notice of an end is sent into a recipient's
     pane only while it asks no question (37), and otherwise stays
     pending; it counts delivered on the terminal's answer, with no
     reading back.
@@ -821,6 +835,10 @@ redefine these.
     that did not survive as lost (45). An agent the terminal resumed is
     the stage's agent, and its stage goes on, only when both its
     identity and its own record are those its stage started with (35).
+    An agent the terminal brought back with no word that it started
+    under that start's identity (35) is never the stage's agent,
+    whatever its own record: the stage is reported lost, and flume ends
+    that agent once it is quiet (31).
 
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
@@ -871,10 +889,15 @@ redefine these.
 88. **command**: given resolved settings, a place, an identity and a
     prompt, how to start that agent so it works in the place under that
     identity (29, 32, 33).
+135. **started**: given an agent, whether the agent has said it started
+     under its start's identity with flume's guard and stop check in
+     force, or unknown (35, 77).
 89. **received**: given an agent and a text, whether the agent received
-    the text as a prompt, or unknown (38).
+    the text as a prompt, by its own word where the program gives one,
+    or unknown (38).
 90. **asking**: given an agent, whether it waits on a question it put to
-    a person (37, 53).
+    a person, the program's own ask for a person's permission among
+    them (37, 53).
 91. **own-work**: given an agent, whether own work it started still
     runs, or unknown (31, 44).
 92. **stop-short**: the one way an agent tells flume it stops short,
@@ -901,9 +924,15 @@ redefine these.
     settings put the agent, an agent running the command in the place
     under that identity, there; or a refusal (30, 107).
 95. **send**: given an agent and a text, the text delivered as input
-    the agent receives, or a refusal; never text typed and left for a
-    hand (38, 53).
-96. **state**: given an agent, its agent state (56).
+    the agent receives, any text the agent holds typed cleared first,
+    or a refusal; no answer, delivered or refused, leaves text typed for
+    a hand (38, 53).
+96. **state**: given an agent, its agent state (56): stopped only when
+    the agent's program no longer runs, and unknown for anything the
+    terminal cannot classify.
+136. **screen**: given an agent, what the terminal shows of it, for
+     status and a prompt never begun (35, 43); or that the terminal
+     shows nothing.
 97. **close**: given an agent, its end, or a refusal because it did
     not end (31).
 122. **watch**: the terminal settling each place with an agent in it, on
@@ -911,6 +940,9 @@ redefine these.
      runs nothing; or no watch (46, 119).
 98. The guarantee: open never runs a second agent under an identity
     already live, and close never reports an end that did not happen.
+    Every operation answers within a bound the profile states, and one
+    the terminal does not answer within it is unknown or a refusal in
+    the terminal's words, never waited on.
 
 ### B.6 The merge queue
 
@@ -1106,24 +1138,47 @@ round, so the conclusion is never committed on `sounding/<name>`
 
 | operation | how Claude Code satisfies it |
 |---|---|
-| command | `claude` in the place, with flume's own Claude Code plugin loaded by `--plugin-dir`, which holds every hook below, and `--model` and `--append-system-prompt` from the settings. Its environment is the host user's login environment with the settings' own over it, and `FLUME_AGENT`, `FLUME_SECRET`, `FLUME_PLACE` and `FLUME_STAGE`. `FLUME_AGENT` is the identity, `flume:<repository>:<kind>--<name>:<stage>:<n>`, the repository named by an id taken from its common git directory and `<n>` the stage's start. `FLUME_SECRET` is that start's secret. The prompt is sent once the agent waits, or carried as the command's argument under the printed command (C.5) |
-| received | the session's transcript holds the prompt as a user turn |
-| asking | a mark the plugin's hook leaves when the agent opens a question or a plan for a person, open until the transcript holds the answer; the terminal's reading alone never decides it |
+| command | `claude` in the place, with flume's own Claude Code plugin loaded by `--plugin-dir`, which holds every hook below, and `--model` and `--append-system-prompt` from the settings. Its environment is the host user's login environment with the settings' own over it, and `FLUME_AGENT`, `FLUME_SECRET`, `FLUME_PLACE` and `FLUME_STAGE`. `FLUME_AGENT` is the identity, `flume:<repository>:<kind>--<name>:<stage>:<n>`, the repository named by an id taken from its common git directory and `<n>` the stage's start. `FLUME_SECRET` is that start's secret. The prompt is sent once the started ack has come and the agent waits, or carried as the command's argument under the printed command (C.5) |
+| started | the plugin's SessionStart hook runs `flume ack started` with `FLUME_AGENT`, `FLUME_SECRET`, the plugin's version, the session's id, its transcript's path and the start's source; the ack is taken only while the secret is that start's, and a plugin version other than the binary's is reported. A start with no ack is starting. A session the terminal brought back with a bare `claude --resume`, which loads no `--plugin-dir` and carries no `FLUME_*`, acks nothing, so it is never the stage's agent (77) |
+| received | the plugin's UserPromptSubmit hook runs `flume ack received` with the submitted prompt's digest and the start's secret, which Claude Code fires only when it submits the prompt, a prompt queued while the agent worked among them; text typed and never submitted acks nothing. With no ack, the session's transcript holding the prompt as a user turn, or as a queued `enqueue` record, answers received, and a transcript that cannot be read answers unknown |
+| asking | a mark the plugin's hook leaves when the agent opens a question or a plan for a person (PreToolUse on `AskUserQuestion` and `ExitPlanMode`), or Claude Code asks a person's permission (its permission-request or permission-prompt notification hook, where the pinned Claude Code has one), open until the transcript holds the answer, and cleared too at UserPromptSubmit and at SessionStart; the terminal's reading alone never decides it |
 | own-work | background tasks the transcript shows started and not finished |
 | stop-short | `flume needs "<words>"` needs an answer, and `flume needs --found "<words>"` found work (41, 131); run by the agent or a process it started, refused unless `FLUME_AGENT` names the agent of the place's current stage and `FLUME_SECRET` is that start's, while the agent is live |
 | send-back | the plugin's Stop hook blocks the stop, its reason naming the deliverable and `flume needs`, while the stage's deliverable does not exist, the agent has not stopped short, and no background task runs and no question is open; it never blocks a conversation's agent |
 | guard | the plugin's PreToolUse hook refuses a command that runs `sluice submit`, `wt submit`, `wt merge` or `git push`, its reason saying that flume submits the place, and leaves the mark status reads (56) |
 | on-quiet | the plugin's Stop hook, each time it lets the agent stop, starts `flume settle <place>` in the background, so the place settles the moment its agent goes quiet (46) |
+| ended | the plugin's SessionEnd hook marks the start's session ended; a session killed with no hook reads unknown here, and the terminal's state decides (96, 134) |
+| last words | the agent's last message in the session's transcript; where the pinned Claude Code has a StopFailure hook, the plugin records the failure's reason there, a refused sign-in or a usage limit among them, as the agent's last words, which status gives with the agent (43) |
 
 flume answers the folder-trust question when the terminal shows it, and
-never the warning about bypassing permissions (34).
+never the warning about bypassing permissions, a sign-in, a first run's
+setup or a repository's MCP servers' approval (34). Each of those shows
+before any hook runs, so a start held at one stays starting, status
+giving the screen, until the operator answers it in the pane and the
+started ack comes, or it is reported never begun (35). Every hook skips
+a subagent's input for the acks, and the guard refuses a subagent's
+command as its agent's. Each hook calls the binary that started the
+agent by its absolute path, written into the plugin with its version,
+and never fails or holds up the agent's start or turn.
 
 ### C.5 The terminal
 
 | profile | open | send | state | close | watch |
 |---|---|---|---|---|---|
-| **herdr** | a pane in the herdr session the launch's settings name, flume's own otherwise, one tab per place named `<kind>--<name>`; where the settings name a pane, a split beside that pane instead, as for a conversation; the pane and its agent named by the identity | herdr's prompt to the pane, then received read through the agent (89) | herdr's reading of the agent: working as working, idle as waiting, done as stopped, blocked as asking only with the agent profile's mark (90) | herdr ends the pane and its process group, then reads that it is gone | kept by flume's herdr plugin on herdr's server, which runs between flume's commands. It runs `flume settle` for the session's places on a bound it states and at each change of an agent's state |
+| **herdr** | a pane in the herdr session the launch's settings name, flume's own otherwise, one tab per place named `<kind>--<name>`; where the settings name a pane, a split beside that pane instead, as for a conversation. The pane is held by its id and its server's socket, and the agent given a herdr name of at most 32 of herdr's legal characters made from the identity, for display only, since herdr drops a name whenever the pane's session changes. What is typed into the pane's shell is one line running a launcher file in the place's state folder, never the agent's command and arguments, which pass the terminal's line limit | the pane's held input cleared with one ctrl+c while the agent waits, then herdr's prompt to the pane, then received read through the agent (89); a send never leaves text typed: one not received is cleared again before the next | herdr's reading of the agent: working as working; idle and done as waiting, since herdr's done is a finished turn nobody has looked at; blocked as asking only with the agent profile's mark (90), and as unknown without it; herdr's unknown as unknown; stopped only when the pane is gone, or herdr lists no agent in it and its foreground is the shell, or herdr lists it unrestored after its server's restart | herdr ends the pane and its process group, then reads that it is gone | kept by flume's herdr plugin on herdr's server, which runs between flume's commands. It runs `flume settle` for the session's places on a bound it states and at each change of an agent's state, reading every agent's state in one listing per tick |
 | **printed command** | the command printed, the prompt carried in it, for a person to run in the place | refused, so every tell is refused and a prompt not received is reported never begun (38) | from the agent profile alone; stopped when its record says the session ended | refused unless the agent's record says the session ended | none, so flume runs attended (119) |
+
+Under herdr a session is named `herdr:<pane>@<socket>`, the pane's id
+and its server's socket, wherever a recipient or a launching session is
+named (7, 43); a role's run is reached in the pane its live start holds,
+and never by a herdr agent name (132). Every herdr call is bounded, ten
+seconds where the call states none, one that does not answer within it
+read as unknown or refused in herdr's words; each is made with the
+caller's own `HERDR_*` variables stripped and the recorded server's
+socket passed, so a command run from another pane reaches the right
+server. screen (136) is herdr's read of the pane's visible lines. Each
+command and field the profile reads is checked against the herdr the
+profile pins, 0.9.5 or later.
 
 ### C.6 The merge queue: sluice
 
@@ -1533,6 +1588,30 @@ These are not requirements.
   starts; the run's start collects everything pending for the address
   and reads all three. A wake that crew's card carrier sends meanwhile does
   nothing, since the run is waiting for room (132).
+
+- **S39.** Under herdr, a code stage's agent shows the program's
+  folder-trust question. flume answers it; the agent says it started
+  under its start's identity, waits, and only then is sent its prompt,
+  which it says it received: the stage has begun (34, 35, 37, 38).
+- **S40.** Under herdr, a code stage's agent stops at the warning about
+  bypassing permissions. flume answers nothing and sends no prompt;
+  status gives the start as starting with the warning's lines from the
+  pane. Nobody answers it, and at the stage's limit the start is
+  reported never begun, delivered with the screen (34, 35, 43, 44).
+- **S41.** herdr's server restarts while a code stage's agent works.
+  herdr brings the session back bare, with flume's plugin and the
+  start's identity gone, so no word that it started comes. flume reads
+  the stage lost, delivers it with the agent's last words and the
+  commits since the start, and ends the resumed agent once it is quiet
+  (31, 43, 45, 77).
+- **S42.** Under herdr, a code stage's agent commits, ends its turn
+  with nobody looking at the pane, and herdr reads it done. flume reads
+  it waiting, not stopped: the stage delivered, the agent is ended and
+  the next stage starts (40, 96).
+- **S43.** A stage's prompt is typed into its agent's pane and never
+  submitted. Within 60 seconds no word that it was received comes;
+  flume clears the input and sends once more, and the second sending is
+  received. Nothing is left typed (38, 95).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
