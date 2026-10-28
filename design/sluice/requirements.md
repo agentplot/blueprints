@@ -268,8 +268,7 @@ redefine these.
      many of the branch's latest runs as the policy states, twenty where
      it states none, passed and failed counted together, the oldest
      removed as the newest arrives, while the tail the record and a
-     request's report carry inline stays bounded. (Proposed 2026-10-27,
-     record 0067, on the user's card; accepted only on their yes.)
+     request's report carry inline stays bounded.
 116. An operator may set aside a recorded run, naming it and the
      reason, by a record of its own. The run's record is kept. A run set
      aside has no outcome (60) and is read under no key, from the
