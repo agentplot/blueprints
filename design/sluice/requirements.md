@@ -463,7 +463,12 @@ redefine these.
     readable by its session, its planner and the operator, from every
     host that submits to its branch, whether or not sluice is running;
     and wherever sluice shows an entry to a person, its number and its
-    subject stand together, the branch where it gave none.
+    subject stand together, the branch where it gave none. A view of a
+    repository's branches reads every branch it can: a branch whose
+    policy, revision or records the reader could not read is shown
+    with the refusal, in the words it was refused with, and hides no
+    other branch; a view fails whole only when the records themselves
+    cannot be read (129, 133).
 
 ### A.6 Gates and trust
 
