@@ -587,7 +587,7 @@ redefine these.
      whole course, from its first stage to its landing, with its fixes
      on the way, runs with no agent of a caller's deciding between the
      steps; what a caller decides is what to launch, what to answer, and
-     what to do with a place past its bound (70). (Proposed 2026-10-28, record 0011, on the user's card; accepted only on their yes.)
+     what to do with a place past its bound (70).
 
 ### A.8 Retries, stops, drops and dones
 
@@ -1246,7 +1246,7 @@ The rest of the stack, which a model builds on unless it says why not:
   | millpond | an item's send, as a fix or a change, the item's brief as the launch's | the item's record and its sends, and the landing, written from the merge queue's record of the place's branch |
   | headwater | its fix key, as a fix with the release's brief | nothing |
   | sounding | each round of an elaboration, as a place of the elaboration kind it hands in the launch, a conversation's agent beside the operator's pane | the inputs, the soundings each was based on, the rounds, the operator's notes and decisions, and the record, with each round's conclusion copied from its report; its go-on is a retry with the operator's notes as words, its accept a done or a retry that releases a held submission, and its drop a drop |
-  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, or a retry or drop of a place past its kind's bound, and it is told each end (43) and reads the rest from status; it decides no step between a unit's stages, and runs no agent of its own in the place (proposed 2026-10-28, records 0010 and 0011) |
+  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, or a retry or drop of a place past its kind's bound, and it is told each end (43) and reads the rest from status; it decides no step between a unit's stages, and runs no agent of its own in the place (proposed 2026-10-28, revised the same day, record 0010; record 0011) |
 
 <!-- ANCHOR_END: givens -->
 <!-- ANCHOR: questions -->
@@ -1260,7 +1260,7 @@ These are not requirements.
   2026-10-28: by itself. A stop-short that finds, from the kind's last
   stage, sends the place back to the kind's fix round with the findings
   as its words, counting toward the kind's bound; one that asks waits on
-  its answer (131; proposed, record 0011).
+  its answer (131; record 0011, accepted 2026-10-28).
 - Does a caller learn a stage's or a submission's end by asking, or
   does flume tell it, and through what (43, 46)?
 - May a repository declare deliverable forms of its own, such as a
