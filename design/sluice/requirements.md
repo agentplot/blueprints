@@ -622,8 +622,14 @@ redefine these.
      serves its own host alone (26, 80). A read the reader could not
      make ends no watch: the reader writes the failure as its document,
      in the words it was refused with, and reads again at its next tick
-     (133), so a watch ends only when asked or when its repository is
-     gone. A watch of a newer sluice than the live reader's takes the
+     (133), so a watch ends only when asked, when its repository is
+     gone, or when its repository has no sluice: no policy at any
+     revision the host holds and no records. That is no read refused:
+     the reader's last document says the repository has no sluice and
+     the watch ends, so no process of sluice's stands in a repository
+     sluice is not set up in, a session there shows nothing of
+     sluice's, neither a queue nor a refusal, and a watch is opened
+     there again only when asked. A watch of a newer sluice than the live reader's takes the
      reader's lease at its next tick, and the older reader, finding the
      lease no longer its own, follows it; so a host whose sluice was
      replaced reads with the new one as soon as any session watches
