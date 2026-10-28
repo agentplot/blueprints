@@ -151,8 +151,16 @@ redefine these.
   for its host to have room (70).
 - **stuck**: of a stage, that its agent has been quiet past the stage's
   limit with nothing delivered and nothing said.
-- **left**: of a place, that its next move has been its caller's for
+- **stalled**: of a place, that its next move has been its caller's for
   five minutes, or the launch's bound, under no hold's words (130).
+- **recipient**: whoever an end of a place goes to: a caller's session,
+  or a role's address (43, 132).
+- **delivered**: of an end, that it reached its recipient, recorded on
+  the place with to whom and when; **pending** until then (43).
+- **collect**: a recipient's taking of every end pending for it, by
+  `flume inbox`, which delivers each (43).
+- **notice**: what a delivery carries into a pane: the end and the place
+  to read, never a fact to act on blindly.
 - **refused**: of a stage, that a part its prompt asks for had nothing
   to fill it (27).
 - **lost**: of a stage, that its agent stopped with nothing delivered
@@ -455,9 +463,9 @@ redefine these.
      finish ends the agent once it is quiet, one that is not quiet only
      when forced (31), and the stage then counts as delivered (40).
 41. An agent stops short by saying so to flume, with its words, and
-    saying which it does: it asks, needing an answer before its stage
-    can deliver, or it finds, naming work a stage before its own must
-    do again (131). flume
+    saying which it does: it needs an answer before its stage can
+    deliver, or it found work a stage before its own must do again
+    (131). flume
     takes a stop-short only from the agent of the place's current stage,
     or from a process that agent started. The stop-short carries a
     secret flume gave that start alone, accepted only while the agent is
@@ -468,35 +476,36 @@ redefine these.
      (28). Waiting on own work or on a person's answer is not going
      quiet. Where the agent program gives flume no way to send an agent
      back, the stage is left to 44.
-42. A stage that ended short asking starts no next stage, whatever
+42. A stage that ended short needing an answer starts no next stage, whatever
     else exists. Its place waits for a retry or a drop, and the agent's
-    words reach whoever waits on the stage, and status, whole and as the
+    words reach the place's recipients, and status, whole and as the
     agent wrote them. The answer, whoever gives it and however it
     reached the caller, is a retry naming the stage with the answer as
     its words (49), and the fresh agent's prompt carries the question
-    with the answer. A stage that ended short finding is sent back as
+    with the answer. A stage that ended short having found work is sent back as
     131 says.
-43. Whoever waits on a stage learns its end together with what was
+43. A place's recipient learns a stage's end together with what was
     delivered, the head or the report, and the addresses of what it
-    made (129), or with the agent's words.
-    Whoever waits on a submission learns its outcome together with the
-    commit it landed as, or with the merge queue's words. No caller
-    needs to read a terminal to learn how a stage or a submission ended.
-    It learns by being told: the settle that reads the end (46) tells
-    each waiter on the place once, through the terminal into the
-    waiter's own pane (95), and records on the place that it was told,
-    to whom and when; a waiter named by a role's address is told in the
-    pane of that role's live run, and where none is live the end stands
-    untold and wakes the role (132); where the terminal has no pane to tell, the end
-    is read from status (56). A wait is by place, naming its stage or
-    its submission: it answers at once with an end that stands untold
-    to this waiter, and otherwise follows the host's state under a
-    timeout, exiting by the outcome or still waiting, driving no settle
-    where the terminal keeps watch (119, 122); so a caller whose
-    session restarted waits again and loses nothing; an end already
-    told to this waiter it answers as a read, telling nobody again. A
-    caller that starts may ask for every end untold to it, of the
-    places it launched or waits on, which marks nothing told.
+    made (129), or with the agent's words, and a submission's outcome
+    together with the commit it landed as, or with the merge queue's
+    words. No caller needs to read a terminal to learn how a stage or a
+    submission ended. The end is delivered: the settle that reads it
+    (46) puts it before each recipient of the place once, as a notice
+    through the terminal into the recipient's own pane (95), and records
+    on the place that it was delivered, to whom and when; a recipient
+    named by a role's address is delivered to in the pane of that role's
+    live run, and where none is live the end stays pending and wakes the
+    role (132); where the terminal has no pane to deliver to, the end is
+    read from status (56). A wait is by place, naming its stage or its
+    submission: it answers at once with an end pending for this
+    recipient, and otherwise follows the host's state under a timeout,
+    exiting by the outcome or still waiting, driving no settle where the
+    terminal keeps watch (119, 122); so a caller whose session restarted
+    waits again and loses nothing; an end already delivered to this
+    recipient it answers as a read, delivering nothing again. A caller
+    that starts collects every end pending for it, of the places it
+    launched or is recipient of, by `flume inbox`, which delivers each
+    and marks it delivered; status and a read mark nothing.
 44. A stage whose agent has been quiet past the stage's limit, with
     nothing delivered and nothing said, is reported stuck, naming the
     stage and the agent. The limit is 30 minutes where the stage's
@@ -551,9 +560,9 @@ redefine these.
      It submits the place's own branch at its head, to its base and to
      no other branch (15), through the repository's merge queue, the
      place recorded as the submission's submitter. It holds no wait on
-     the verdict: every settle that follows asks the merge queue for the
-     outcomes of the place's submissions that stand untold to the place
-     (133), and settles the place by the one it is told. A place whose kind does not land never reaches the merge
+     the verdict: every settle that follows collects from the merge
+     queue the outcomes of the place's submissions pending for the place
+     (133), and settles the place by the one delivered. A place whose kind does not land never reaches the merge
      queue.
 112. A failed submission, one the merge queue blamed or found in
      conflict alike, sends the place back to the stage its kind
@@ -572,8 +581,8 @@ redefine these.
 124. A settle that finds the place's submission open and undecided asks
      again at the next settle, and where the merge queue moves only while
      something drives it, drives it one round (125). A host that
-     restarted loses nothing, since the outcome stands untold in the
-     merge queue's records until a settle asks for it. flume never
+     restarted loses nothing, since the outcome stays pending in the
+     merge queue's records until a settle collects it. flume never
      submits the place anew for it (111).
 131. A kind runs through on its own. A stage's delivery starts the next
      stage as the host's room allows (70), and the last stage's delivery
@@ -581,14 +590,15 @@ redefine these.
      or a hold put after it asks for one (47). The fix round is the
      stage the kind names for a failed submission (23): a failed or
      conflicting submission starts it with the merge queue's words
-     (112), and a stop-short that finds, from the kind's last stage,
-     starts it with the findings as its words, as a failed submission
-     does; from any other stage a finding is taken as an ask (42). The
+     (112), and a stop-short that found work, from the kind's last
+     stage, starts it with the findings as its words, as a failed
+     submission does; from any other stage found work is taken as
+     needing an answer (42). The
      stages after the fix round run again in order and the place is
      submitted again. A place's goings-back, by submission and by
      finding together, count toward the kind's bound (23), past which
-     the place waits on its caller, said and told (130, 43). A stop-short
-     that asks waits on its answer, which is a retry (42, 49). So a unit's
+     the place waits on its caller, said and delivered (130, 43). A
+     stop-short that needs an answer waits on it, which is a retry (42, 49). So a unit's
      whole course, from its first stage to its landing, with its fixes
      on the way, runs with no agent of a caller's deciding between the
      steps; what a caller decides is what to launch, what to answer, and
@@ -650,15 +660,15 @@ redefine these.
     it, and how many times flume submitted the place; its change's
     tasks and which are ticked; each act of an agent's that flume
     refused (108); the part a refused stage could not fill (27); the
-    words of a stop-short, and whether it asked or found, or of a failed
+    words of a stop-short, and whether it needs an answer or found work, or of a failed
     submission; of a place
     waiting on its caller, the move it waits on, since when, a hold's
-    words and whether it is left (130); and, for the host, its agents
+    words and whether it is stalled (130); and, for the host, its agents
     running, the bound it states, its room, and the places waiting for
     room in the order they would start, each with its priority and
     since when (70).
 130. A place whose next move is its caller's, a stage or a submission on
-     hold (47), a stage ended short asking (42), a readiness that failed (12),
+     hold (47), a stage ended short needing an answer (42), a readiness that failed (12),
      or a kind's last stage delivered where the kind does not land
      (114), waits on that move from the moment flume read it so, and
      status says which move and since when. A caller may put a place's
@@ -666,14 +676,14 @@ redefine these.
      words saying what for, which status gives with the hold's since
      when; a retry naming the stage or the submission ends the hold (47,
      49). A place waiting on its caller under no hold's words for five
-     minutes, or for the launch's bound where it sets one, is left:
-     status says so, and whoever waits on the place is told once that
-     it is left and which move is theirs (43). A hold's words are the
+     minutes, or for the launch's bound where it sets one, is stalled:
+     status says so, and each recipient of the place is delivered once
+     that it is stalled and which move is theirs (43). A hold's words are the
      caller's to make good: the event they wait for is the caller's to
      see, and flume watches none and ends no hold itself (70, 72). A
      stage waiting for room (70) waits on the host and not on its
      caller: status says so, with its priority and its place in the
-     queue, and such a place is never left.
+     queue, and such a place is never stalled.
 57. Asking status starts no agent, sends nothing to one, and writes
     nothing.
 58. Every fact status gives of a place's deliverable, change or
@@ -758,22 +768,21 @@ redefine these.
     merge queue, never from an agent's words or its terminal.
 72. flume tells no person anything by itself. A surface shows what
     flume reports when it is asked.
-132. A waiter may be named by a role's address, `<partition>/<role>`,
+132. A recipient may be named by a role's address, `<partition>/<role>`,
      rather than by a session. A run of the role is a place of the kind
      the host's configuration names for the address (C.7), named by the
      role, so at most one run of an address is live at once (3), and its
      agent takes the address as its session's name. Where a settle finds
-     an end standing untold to an address with no run live or waiting
+     an end pending for an address with no run live or waiting
      for room, or a caller or another tool's carrier asks flume to wake
      the address, flume launches the address's kind at the priority the
      configuration gives it; a wake of an address whose run is live or
-     waiting does nothing. The run's start asks for every end untold to
-     the address (43), so whatever came while no run was live is one
-     run's. flume decides nothing in this: which address waits on a
-     place, what the role's kind does and what its run decides are the
+     waiting does nothing. The run's start collects every end pending
+     for the address (43), so whatever came while no run was live is one
+     run's. flume decides nothing in this: which address is a
+     place's recipient, what the role's kind does and what its run decides are the
      caller's (69, 70, 72). An address the configuration names no kind
-     for is woken by nothing, and status says the ends that stand untold
-     to it.
+     for is woken by nothing, and status says the ends pending for it.
 
 ### A.13 Held state and hosts
 
@@ -888,10 +897,10 @@ redefine these.
      holds it and before it decides, with the submission it made; or
      refused, naming why (111). Submit holds no wait and removes nothing
      (113).
-133. **untold**: given a place, every decided outcome of the place's
-     submissions that stands untold to it: landed, with the commit it
-     landed as; failed, with the merge queue's words; or withdrawn; each
-     then recorded by the merge queue as told to the place; or that the
+133. **inbox**: given a place, every decided outcome of the place's
+     submissions pending for it: landed, with the commit it landed as;
+     failed, with the merge queue's words; or withdrawn; each then
+     recorded by the merge queue as delivered to the place; or that the
      merge queue could not be read (43, 111, 112).
 99. **read-submission**: given a repository and a branch, the newest
     submission of that branch, whoever made it, with its target and its
@@ -900,8 +909,8 @@ redefine these.
     queue could not be read (63, 68, 71).
 101. The guarantee: landed is said only of a submission of that branch
      that the merge queue itself landed, never inferred from what the
-     base holds (63). Submit removes no place (66, 113), and an outcome
-     untold answers once to the place and never again.
+     base holds (63). Submit removes no place (66, 113), and a pending
+     outcome is delivered once to the place and never again.
 125. **step**: given a base whose queue moves only while something
      drives it, one round of that queue, returning when the round does;
      nothing where the queue moves on its own (124).
@@ -953,10 +962,14 @@ core needs none of them.
 
 | profile | make | ready | read | remove / remove-branch |
 |---|---|---|---|---|
-| **worktrunk**: a repository that binds `worktrunk` | `wt switch --create <branch> --base <revision> --no-cd`, its worktree path `<repository>/places/<kind>--<name>`, the repository's create hooks run | the toolchain, then the runner's setup, that the repository declares in `.config/sluice.toml`, run in the place in sluice's cleaned environment, as sluice readies its own places | `git status --porcelain=v2`; `git worktree list --porcelain` for a lock | `wt remove --no-delete-branch`, so the repository's pre-remove and post-remove hooks run; the branch by `git cherry <base> <branch>`, deleted with `git branch -D` when no line starts with `+` |
-| **git worktree**: a repository that binds `git-worktree`, or names no place profile | `git worktree add -b <branch> <location> <revision>`, at the same path `<repository>/places/<kind>--<name>` | as above | as above | `git worktree remove`, with no teardown but sluice's release where sluice is the merge queue (C.6); the branch as above |
+| **git worktree**: every repository; the one place profile | `git worktree add -b <branch> <location> <revision>`, at `<repository>/places/<kind>--<name>`, with no hook run | the toolchain, then the runner's setup, that the repository declares in `.config/sluice.toml`, run in the place in sluice's cleaned environment, as sluice readies its own places | `git status --porcelain=v2`; `git worktree list --porcelain` for a lock | `git worktree remove`, with no teardown but sluice's release where sluice is the merge queue (C.6); the branch by `git cherry <base> <branch>`, deleted with `git branch -D` when no line starts with `+` |
 
-Under either, what the toolchain step makes is kept in the place's own
+There is no worktrunk place profile: a worktree tool's create hooks run
+a place's code with the host user's full permissions, outside any
+executor, and flume runs no `wt submit` (record 0012), so nothing of a
+place needs one (record 0014; sluice record 0013 for its own places). A
+repository whose `[profiles]` names `place = "worktrunk"` is refused at
+the launch, naming the one profile. What the toolchain step makes is kept in the place's own
 git directory (C.7). A place's branch is `<prefix>/<name>`, the prefix
 its kind's. The base's current revision (9) is where the merge queue's
 profile says the base lives: under sluice, `origin/<base>` after one
@@ -982,7 +995,7 @@ profile. flume reads no other tool's files to choose one.
 
 ```toml
 [profiles]
-place = "worktrunk"       # or "git-worktree" (C.1); git-worktree when omitted
+place = "git-worktree"    # the one place profile (C.1); git-worktree when omitted
 merge_queue = "sluice"    # reads .config/sluice.toml for where the base lives (C.1); none when omitted, and a kind that lands is refused (4)
 change = "openspec"       # (C.3); none when omitted, and a kind that reads a change is refused (4)
 
@@ -1073,7 +1086,7 @@ round, so the conclusion is never committed on `sounding/<name>`
 | received | the session's transcript holds the prompt as a user turn |
 | asking | a mark the plugin's hook leaves when the agent opens a question or a plan for a person, open until the transcript holds the answer; the terminal's reading alone never decides it |
 | own-work | background tasks the transcript shows started and not finished |
-| stop-short | `flume needs "<words>"` asks, and `flume needs --found "<words>"` finds (41, 131); run by the agent or a process it started, refused unless `FLUME_AGENT` names the agent of the place's current stage and `FLUME_SECRET` is that start's, while the agent is live |
+| stop-short | `flume needs "<words>"` needs an answer, and `flume needs --found "<words>"` found work (41, 131); run by the agent or a process it started, refused unless `FLUME_AGENT` names the agent of the place's current stage and `FLUME_SECRET` is that start's, while the agent is live |
 | send-back | the plugin's Stop hook blocks the stop, its reason naming the deliverable and `flume needs`, while the stage's deliverable does not exist, the agent has not stopped short, and no background task runs and no question is open; it never blocks a conversation's agent |
 | guard | the plugin's PreToolUse hook refuses a command that runs `sluice submit`, `wt submit`, `wt merge` or `git push`, its reason saying that flume submits the place, and leaves the mark status reads (56) |
 | on-quiet | the plugin's Stop hook, each time it lets the agent stop, starts `flume settle <place>` in the background, so the place settles the moment its agent goes quiet (46) |
@@ -1092,15 +1105,14 @@ never the warning about bypassing permissions (34).
 
 | operation | how sluice satisfies it |
 |---|---|
-| submit | flume runs `sluice submit <base> --no-wait --json` in the place under every place profile, with no multiplexer's session in its environment, so sluice records the place's worktree as the entry's submitter and no session, pushes nothing into any pane, and answers with the entry at once; a refusal is its exit and words. flume never passes `--check`, and never runs `wt submit`, whose waiting half removes the place (111, 113). |
-| untold | sluice's one command for a submitter's untold outcomes (sluice clause 51), run in the place, which tells the place's decided entries once and marks each told to it; sluice answers nothing again for an outcome already told (133) |
+| submit | flume runs `sluice submit <base> --no-wait --json` in the place, with no multiplexer's session in its environment, so sluice records the place's worktree as the entry's submitter and no session, pushes nothing into any pane, and answers with the entry at once; a refusal is its exit and words. flume never passes `--check`, and never runs `wt submit`, whose waiting half removes the place (111, 113). |
+| inbox | `sluice inbox --json` (sluice clause 51), run in the place, which delivers the place's decided entries pending for it once and marks each delivered; sluice answers nothing again for an outcome already told (133) |
 | read-submission | `sluice status <base> --json`, read once for each repository at each ask; the newest entry submitted from the place's branch, whoever submitted it; landed is that entry landed, its landing commit's `Sluice-*` trailers naming it |
 | step | `sluice step <base>`, one round of the base's queue, run by a settle only where no `sluice run` is live on the host (sluice clause 135), so the queue moves with nothing standing (124) |
 
 On landing sluice removes nothing, and flume tidies every landed place
-itself, through the place profile's teardown (C.1), so under worktrunk
-the repository's pre-remove and post-remove hooks run as they would for
-`wt merge` (66), and its branch as 67 says. Whenever
+itself, through the place profile's teardown (C.1), and its branch as
+67 says. Whenever
 flume removes a place itself, landed, dropped or done, it first runs
 `sluice release` in it as part of the place's teardown (66). sluice runs
 the repository's `[tests] release`, which ends what the place's runs
@@ -1255,7 +1267,7 @@ The rest of the stack, which a model builds on unless it says why not:
 - herdr with flume's plugin as the terminal that keeps watch, which
   unattended use needs (119). Under the printed command flume runs
   attended.
-- The profiles of Part C: worktrunk, the kind format in
+- The profiles of Part C: plain git worktrees, the kind format in
   `.config/flume.toml`, OpenSpec, Claude Code, herdr, sluice and the
   host's state directory. A repository with no `[profiles]` table gets
   plain git worktrees and no change or merge-queue profile (C.2).
@@ -1267,7 +1279,7 @@ The rest of the stack, which a model builds on unless it says why not:
   | millpond | an item's send, as a fix or a change, the item's brief as the launch's | the item's record and its sends, and the landing, written from the merge queue's record of the place's branch |
   | headwater | its fix key, as a fix with the release's brief | nothing |
   | sounding | each round of an elaboration, as a place of the elaboration kind it hands in the launch, a conversation's agent beside the operator's pane | the inputs, the soundings each was based on, the rounds, the operator's notes and decisions, and the record, with each round's conclusion copied from its report; its go-on is a retry with the operator's notes as words, its accept a done or a retry that releases a held submission, and its drop a drop |
-  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, or a retry or drop of a place past its kind's bound; it names each place's waiter by a role's address, so a role with no live run is woken to hear an end (132), and it is told each end (43) and reads the rest from status; a role's own work that lands is a place of its own, so no session of crew's submits; it decides no step between a unit's stages, and runs no agent of its own in the place (records 0010 and 0011) |
+  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, or a retry or drop of a place past its kind's bound; it names each place's recipient by a role's address, so a role with no live run is woken to collect an end (132), and each end is delivered to it (43) and reads the rest from status; a role's own work that lands is a place of its own, so no session of crew's submits; it decides no step between a unit's stages, and runs no agent of its own in the place (records 0010 and 0011) |
 
 <!-- ANCHOR_END: givens -->
 <!-- ANCHOR: questions -->
@@ -1278,10 +1290,10 @@ These are not requirements.
 - When a verify stage finds work to fix, does its agent stop short with
   the findings for a caller's retry, or does its finding send the place
   back to code by itself, as a failed submission does (42, 112)? Ruled
-  2026-10-28: by itself. A stop-short that finds, from the kind's last
-  stage, sends the place back to the kind's fix round with the findings
-  as its words, counting toward the kind's bound; one that asks waits on
-  its answer (131; record 0011, accepted 2026-10-28).
+  2026-10-28: by itself. A stop-short that found work, from the kind's
+  last stage, sends the place back to the kind's fix round with the
+  findings as its words, counting toward the kind's bound; one that
+  needs an answer waits on it (131; record 0011, accepted 2026-10-28).
 - Does a caller learn a stage's or a submission's end by asking, or
   does flume tell it, and through what (43, 46)?
 - May a repository declare deliverable forms of its own, such as a
@@ -1337,7 +1349,7 @@ These are not requirements.
   not reported stuck while the suite runs. It ends when the last task is
   ticked and the agent is quiet.
 - **S4.** A construct agent cannot tell which of two designs the brief
-  means, and stops short asking, saying so. The stage ends short, no
+  means, and stops short needing an answer, saying so. The stage ends short, no
   code stage starts, status shows the place waiting on an answer with
   the question, and crew is told the words whole. The design agent's
   answer comes back as a retry of construct with the answer as its
@@ -1457,9 +1469,9 @@ These are not requirements.
   place with plain git worktrees.
 - **S34.** flume's host restarts while a change's submission is under
   test. Nothing of flume's was waiting on it. The submission lands while
-  the host is down, and its outcome stands untold in sluice's records.
-  The first settle after the restart asks for the place's untold
-  outcomes, is told the landing, never submits anew, and tidies the
+  the host is down, and its outcome stays pending in sluice's records.
+  The first settle after the restart collects the place's pending
+  outcomes, is delivered the landing, never submits anew, and tidies the
   place (124, 133).
 - **S35.** crew launches a unit as a change place on its bolt's branch
   with nothing on hold. Construct, code and verify deliver in turn,
@@ -1467,7 +1479,7 @@ These are not requirements.
   place back to code with the blame and the log, code and verify deliver
   again, flume submits again and the place lands; nobody spoke between
   the steps. A second place's verify agent finds the work short of its
-  change and stops short finding; flume sends that place back to code
+  change and stops short having found work; flume sends that place back to code
   with the findings, and the going-back counts with the first toward
   the kind's three (131).
 - **S36.** The user marks two notes of a review batch fix on its card.
@@ -1482,13 +1494,13 @@ These are not requirements.
   by priority. The user raises one waiting unit's priority on the rail;
   crew passes it to flume, and that unit's construct starts at the next
   room (70, 130).
-- **S38.** A unit's place names `madswan/planner` as its waiter. Its
-  verify stage stops short asking while no planner run is live. The
-  settle that reads the stop-short finds the end untold to an address
+- **S38.** A unit's place names `madswan/planner` as its recipient. Its
+  verify stage stops short needing an answer while no planner run is
+  live. The settle that reads the stop-short finds the end pending for an address
   with no live run and launches the planner's kind as the host's
   configuration names it. Two more ends come before the run's agent
-  starts; the run's start asks for everything untold to the address and
-  reads all three. A wake that crew's card carrier sends meanwhile does
+  starts; the run's start collects everything pending for the address
+  and reads all three. A wake that crew's card carrier sends meanwhile does
   nothing, since the run is waiting for room (132).
 
 <!-- ANCHOR_END: scenarios -->
