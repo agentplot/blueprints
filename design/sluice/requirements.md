@@ -193,7 +193,13 @@ redefine these.
     form were the head submitted now, against the branch and the entries
     ahead of it, and reports a conflict so found to the head's
     session. A forecast creates no entry, changes no order and moves
-    no branch, and its result is never read as a verdict.
+    no branch, and its result is never read as a verdict. Where the
+    host's reader is live and has read the branch within its tick
+    (129), a forecast takes the branch's revision and the entries ahead
+    from the reader's document and fetches nothing itself, so a check
+    costs the remote nothing and takes no longer than the merge it
+    forms; where no live reader has read the branch within a tick, it
+    fetches as a round would (124).
 65. A conflict reported to a session, forecast or found at forming,
     names the content contested and every entry it is contested with,
     with what each of those entries submitted: each entry ahead the head
