@@ -749,7 +749,7 @@ redefine these.
     or a submission on hold starts are the caller's. A host whose
     configuration states no bound has no queue: every stage that may
     start starts, and status gives the agents running and judges no
-    room. (Proposed 2026-10-28, revised the same day on the user's note, record 0010, on the user's card; accepted only on their yes.)
+    room.
 71. flume submits a place's work, and an agent never does. flume submits
     only places whose kind lands (111), and reads each outcome from the
     merge queue, never from an agent's words or its terminal.
@@ -1164,8 +1164,7 @@ the place is tidied (62).
   but the priorities its callers gave. A team's bolts, its approvals,
   its review batches and the conflicts between its units are crew's;
   how many agents a host runs at once is the host's fact, stated by its
-  administrator, which flume keeps to and nobody counts in slots (70;
-  proposed 2026-10-28, revised the same day, record 0010).
+  administrator, which flume keeps to and nobody counts in slots (70; record 0010).
 - Testing or landing work. flume submits a landing kind's place, and
   the merge queue tests it under the repository's gate and lands it.
 - Keeping the record of the work a place served: millpond's item,
@@ -1246,7 +1245,7 @@ The rest of the stack, which a model builds on unless it says why not:
   | millpond | an item's send, as a fix or a change, the item's brief as the launch's | the item's record and its sends, and the landing, written from the merge queue's record of the place's branch |
   | headwater | its fix key, as a fix with the release's brief | nothing |
   | sounding | each round of an elaboration, as a place of the elaboration kind it hands in the launch, a conversation's agent beside the operator's pane | the inputs, the soundings each was based on, the rounds, the operator's notes and decisions, and the record, with each round's conclusion copied from its report; its go-on is a retry with the operator's notes as words, its accept a done or a retry that releases a held submission, and its drop a drop |
-  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, or a retry or drop of a place past its kind's bound, and it is told each end (43) and reads the rest from status; it decides no step between a unit's stages, and runs no agent of its own in the place (proposed 2026-10-28, revised the same day, record 0010; record 0011) |
+  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, or a retry or drop of a place past its kind's bound, and it is told each end (43) and reads the rest from status; it decides no step between a unit's stages, and runs no agent of its own in the place (records 0010 and 0011) |
 
 <!-- ANCHOR_END: givens -->
 <!-- ANCHOR: questions -->
