@@ -599,7 +599,11 @@ redefine these.
      reads nothing itself, and one that finds none becomes the reader.
      A reader that stops is replaced by the next watch or wait within a
      tick, its followers reading what it last wrote until then; a reader
-     serves its own host alone (26, 80).
+     serves its own host alone (26, 80). A read the reader could not
+     make ends no watch: the reader writes the failure as its document,
+     in the words it was refused with, and reads again at its next tick
+     (133), so a watch ends only when asked or when its repository is
+     gone.
 
 ### A.9 Branches
 
