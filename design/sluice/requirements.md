@@ -340,7 +340,15 @@ redefine these.
      the branch is on the remote any of them names, and a revision that
      lags, or holds no policy, decides nothing against one that names a
      remote; revisions naming different remotes are refused, naming
-     them; and no fetch is made to decide it. The branch's revision, and
+     them; and no fetch is made to decide it. Each revision's policy is
+     read, to decide this, only as far as the deciding needs, the remote
+     it names for the branch and whether it names signers, as the
+     protection reads it (ADR 0059): a revision this sluice refuses
+     elsewhere in its policy decides the remote all the same, and that
+     refusal is the branch's own, read at the branch's revision on its
+     remote (56), where a push clears it, never at a copy that lags.
+     (Proposed 2026-10-28, record 0069, on the user's card; accepted
+     only on their yes.) The branch's revision, and
      the policy its gate and every move of it are read under (56, 104),
      is then the remote's, fetched. A submission from a worktree
      on a branch of its own is that worktree's head, pushed to the remote
@@ -475,7 +483,14 @@ redefine these.
     policy, revision or records the reader could not read is shown
     with the refusal, in the words it was refused with, and hides no
     other branch; a view fails whole only when the records themselves
-    cannot be read (129, 133).
+    cannot be read (129, 133). A branch whose policy, revision or
+    records cannot be read is refused alone: the refusal stops no
+    lookup of an entry by its number, no wait, no status read and no
+    round of any other branch; a run of every branch's rounds passes
+    the refused branch by, said once while the refusal stands (121);
+    and an entry asked for by its number and found on no branch that
+    could be read is said to be unfound among those, naming the
+    branches that could not be read, never said to be no entry.
 
 ### A.6 Gates and trust
 
@@ -1298,6 +1313,15 @@ section asked is answered by a clause.
   three land in one move, in the order given. On another day the middle
   one conflicts with the first as the candidates form: the act's answer
   names it, it alone is set aside, and the other two land (125).
+- **S64.** The host's own ref of a bolt branch holds a policy this
+  sluice refuses, a table it no longer keeps; the remote's copy is
+  clean. `sluice wait` on a submission to another branch finds it by
+  its number and follows it to its verdict; `sluice run` passes the
+  bolt by, saying so once while the refusal stands; the overview shows
+  the bolt with the refusal and every other branch whole (26). The
+  bolt's own round reads it at the remote's revision and runs, and the
+  host's copy is levelled by the landing it next reads (124; record
+  0069, proposed 2026-10-28).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
