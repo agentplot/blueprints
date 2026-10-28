@@ -662,7 +662,16 @@ redefine these.
      was last read: a tick that finds both as they were asks nothing of
      the policy, and the question costs the tick no process of its own,
      so a watch of a repository set up with nothing submitted costs its
-     host no more than one with queues. A watch of a newer sluice than the live reader's takes the
+     host no more than one with queues. The same holds of every reader's
+     tick, a watch's or `sluice run`'s (51): in a repository where
+     nothing is in play, no entry queued or under test, no place to
+     release and no preview to drop, a tick starts no process and reads
+     nothing but what tells it whether anything changed, the records'
+     list and each branch's records and revision as the host's own files
+     hold them; a branch's policy is read again only once its revision
+     has changed, and a remote's records are asked for once a tick for
+     every branch on that remote, never once a branch. An idle reader
+     costs its host nothing a person can measure. A watch of a newer sluice than the live reader's takes the
      reader's lease at its next tick, and the older reader, finding the
      lease no longer its own, follows it; so a host whose sluice was
      replaced reads with the new one as soon as any session watches
