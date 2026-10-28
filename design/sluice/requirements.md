@@ -260,7 +260,14 @@ redefine these.
 19. A key holding both a pass and a fail from executors the gate trusts,
     each held to the same limits, reads as the branch's policy says:
     passed or not passed. It never reads differently for two candidates
-    of one branch. A result under other limits says nothing of a run under
+    of one branch, and which result came first decides nothing: a later
+    pass under the same limits does not undo an earlier fail, nor a
+    later fail an earlier pass, since a check that passes and fails on
+    one input proves nothing by its order. A fail that was the host's
+    and not the code's leaves the key only by 114, never recorded
+    because the host failed its readiness after the run or the check
+    said it could not run, or by 116, set aside by the operator with the
+    reason (S44). A result under other limits says nothing of a run under
     these (83).
 119. What a check's tool reports of a run beyond its key, outcome and
      executor, such as how long it took, how often it was tried, or the
