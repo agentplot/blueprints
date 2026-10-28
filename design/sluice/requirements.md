@@ -509,10 +509,7 @@ redefine these.
     past a landing.
 56. A branch's gate is read from the branch's current revision, never from a
     candidate or a place. No submission changes the gate it is judged
-    by. A word of the policy that sluice no longer keeps is read as
-    absent, with a warning saying what replaced it, never as a refusal
-    of the branch's gate: a refusal there would hold the branch shut,
-    since its policy changes only by a landing the gate judges.
+    by.
 
 ### A.7 Places
 
