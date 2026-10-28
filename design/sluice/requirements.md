@@ -893,7 +893,13 @@ redefine these.
      makes takes the live records and the index, never a finished
      record; a status of one submission reads the live records and at
      most that submission's own finished record; and only a reader that
-     asks for history reads the finished records. A finished submission
+     asks for history reads the finished records. The index names, for
+     each finished entry, when it was submitted, when its decisive run's
+     checks began and ended, and when it was decided, and the overview's
+     recent rows carry those times with the entry, so a reader splits
+     an entry's time between its wait, its checks and its landing from
+     the one document the host's reader writes (26, 119, 129), without a
+     status read of each finished entry. A finished submission
      is past amending and past withdrawing, refused from its own record.
 132. The log is kept in parts: a write that would take the current part
      past a bound of a thousand lines closes it, under the branch's lock
