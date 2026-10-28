@@ -51,9 +51,9 @@ a check or an observation, never a list to tick by hand.
 | E1 | eddy | E0, F2 | scaffolded with its site |
 | P4 | millpond's tools and Claude Code plugin | P3 | to do |
 | P5 | millpond's herdr plugin | P3 | to do |
-| L2 | flume's founding ADRs, rules and gate | L1 | scaffolded with its site |
-| L3 | flume's core and Claude Code plugin | L2, F4 | to do |
-| L4 | flume's herdr plugin | L3 | to do |
+| L2 | flume's founding ADRs, rules and gate | L1 | done: records 0001 to 0015, core on main (4e8bb15) |
+| L3 | flume's core and Claude Code plugin | L2, F4 | in progress: OpenSpec change `flume-runs-a-kind-through`, after sluice's `outcomes-are-delivered` |
+| L4 | flume's herdr plugin | L3 | to do: OpenSpec change `flume-runs-unattended-and-wakes-roles` |
 | P6 | Send an item through flume | P4, L3 | to do |
 | Q2 | sounding's founding ADRs, rules and gate | Q1 | scaffolded with its site |
 | Q3 | sounding's core and Claude Code plugin | Q2, L3, F2 | to do |
@@ -600,6 +600,8 @@ The operator's rulings:
 
 ### L3 flume's core and Claude Code plugin
 
+Built as the OpenSpec change `flume-runs-a-kind-through` in agentplot/flume (2026-10-28), outside crew; flume's records 0007 to 0015 and the statement at e5f92f6 supersede this section where they differ.
+
 - **Where:** flume, its core and `plugins/claude`.
 - **Does:**
   - `flume launch`, `status --json`, `tell`, `stop`, `retry`,
@@ -614,8 +616,9 @@ The operator's rulings:
   - flume's Claude Code plugin loaded into every agent it starts, whose
     stop hook settles the place when the agent goes quiet;
   - flume's submission through sluice after a kind's last stage,
-    waiting on sluice's verdict, and a failed submission's return to
-    the stage the kind names;
+    with no wait held, its outcome collected by `sluice inbox` at the
+    settles after it (flume record 0012), and a failed submission's
+    return to the stage the kind names;
   - the caller's word as a third way for a place's work to end;
   - a conversation stage with no stop check, the stop check for every
     other stage, and the guard that refuses an agent's own submission;
@@ -634,6 +637,8 @@ The operator's rulings:
   - tidying keeps a branch that holds commits its target lacks.
 
 ### L4 flume's herdr plugin
+
+Built as the OpenSpec change `flume-runs-unattended-and-wakes-roles`, with the delivery of ends, holds, made things and role wakes (records 0007 to 0009, 0013, 0015).
 
 - **Where:** flume, `plugins/herdr`.
 - **Does:**
