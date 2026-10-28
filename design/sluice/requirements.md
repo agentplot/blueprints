@@ -636,7 +636,13 @@ redefine these.
      the watch ends, so no process of sluice's stands in a repository
      sluice is not set up in, a session there shows nothing of
      sluice's, neither a queue nor a refusal, and a watch is opened
-     there again only when asked. A watch of a newer sluice than the live reader's takes the
+     there again only when asked. Whether a repository has sluice is
+     read when the watch opens, and again only after a revision the
+     host holds, or the records' list of branches, has changed since it
+     was last read: a tick that finds both as they were asks nothing of
+     the policy, and the question costs the tick no process of its own,
+     so a watch of a repository set up with nothing submitted costs its
+     host no more than one with queues. A watch of a newer sluice than the live reader's takes the
      reader's lease at its next tick, and the older reader, finding the
      lease no longer its own, follows it; so a host whose sluice was
      replaced reads with the new one as soon as any session watches
