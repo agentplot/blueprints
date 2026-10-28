@@ -680,7 +680,16 @@ redefine these.
 70. flume holds no count or cap of its own on places or agents, plans
     nothing across places, and orders none. How many places a caller
     runs at once, which work each holds, and when each stage or
-    submission on hold starts are the caller's.
+    submission on hold starts are the caller's. Status says, for the
+    host, how many agents of flume's places are running there, every
+    caller's counted together, and, where the host's own configuration
+    states how many agents it runs at once, how many more it has room
+    for (56, C.7); a place whose stage waits with no agent counts
+    nothing, the bound is the host's fact, stated by whoever
+    administers the host and never counted by flume or a caller, and
+    flume refuses no launch for want of room: a caller that launches
+    past it is told so once and the launch runs. (Proposed 2026-10-28,
+    record 0010, on the user's card; accepted only on their yes.)
 71. flume submits a place's work, and an agent never does. flume submits
     only places whose kind lands (111), and reads each outcome from the
     merge queue, never from an agent's words or its terminal.
@@ -1082,9 +1091,10 @@ the place is tidied (62).
   between hosts, or one status across hosts. A caller that spans hosts
   calls each host's flume.
 - Deciding what to launch, ordering work, planning across places, or
-  bounding how many run. A team's slots, its cap, its bolts, its
-  conductors, its approvals and the conflicts between its units are
-  crew's.
+  bounding how many run. A team's bolts, its conductors, its approvals
+  and the conflicts between its units are crew's; how many agents a
+  host has room for is the host's fact, which flume reports and nobody
+  counts in slots (70; proposed 2026-10-28, record 0010).
 - Testing or landing work. flume submits a landing kind's place, and
   the merge queue tests it under the repository's gate and lands it.
 - Keeping the record of the work a place served: millpond's item,
@@ -1165,7 +1175,7 @@ The rest of the stack, which a model builds on unless it says why not:
   | millpond | an item's send, as a fix or a change, the item's brief as the launch's | the item's record and its sends, and the landing, written from the merge queue's record of the place's branch |
   | headwater | its fix key, as a fix with the release's brief | nothing |
   | sounding | each round of an elaboration, as a place of the elaboration kind it hands in the launch, a conversation's agent beside the operator's pane | the inputs, the soundings each was based on, the rounds, the operator's notes and decisions, and the record, with each round's conclusion copied from its report; its go-on is a retry with the operator's notes as words, its accept a done or a retry that releases a held submission, and its drop a drop |
-  | crew | each unit, chore or fix of a team, as a place of a kind crew carries in the launch, every stage after the first and the submission on hold, each agent's settings from crew's roles, marked with the team and the slot | plans, bolts, slots and the cap on them, the dispatcher, conductors, approvals and conflicts between units; it starts each stage and each submission on hold with a retry and reads each end from status |
+  | crew | each unit, chore or fix of a team, as a place of a kind crew carries in the launch, every stage after the first and the submission on hold, each agent's settings from crew's roles, marked with the team | plans, bolts, the dispatcher, conductors, approvals and conflicts between units; it launches a piece whenever flume says its host has room and keeps no slots (70); it starts each stage and each submission on hold with a retry and reads each end from status (proposed 2026-10-28, record 0010) |
 
 <!-- ANCHOR_END: givens -->
 <!-- ANCHOR: questions -->
@@ -1247,9 +1257,9 @@ These are not requirements.
 - **S7.** crew launches two places for one team, every stage after
   construct and each submission on hold. Each construct delivers, and
   flume starts nothing more. crew's word starts one place's code stage,
-  and later its submission. flume launches no third place of its own,
-  and the team's slots, its cap and the work each slot holds stay
-  crew's.
+  and later its submission. flume launches no third place of its own;
+  which work crew launches next stays crew's, on the room flume
+  reports (70).
 - **S8.** One unit's work reaches the base inside another place's
   landing. flume does not read it as the first place's landing: the
   place stays, and its next stage waits on crew's word.
