@@ -631,9 +631,11 @@ redefine these.
      longer than its sessions keep watching. A follower whose watch ends
      short of that, its stream broken or its process gone, opens the
      watch again, waiting longer after each failure in a row and at once
-     after a watch that lived, and reads the records once in its place
-     only where the host's sluice has no watch, no oftener than a reader
-     reads: a session is never a poller of the records.
+     after a watch that lived, and never reads the records in the
+     watch's place: where the host's sluice has no watch, the follower
+     shows that it cannot follow this sluice, naming the version it has
+     and the one it needs, in place of a queue it cannot keep current. A
+     session is never a poller of the records.
 135. sluice is a plain command line. Nothing of sluice's need run
      between its commands for any guarantee here to hold, and no policy,
      configuration or document of sluice's tells a host to run a
