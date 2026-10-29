@@ -388,7 +388,8 @@ redefine these.
     place that could not be made ready, and whether it lands. A kind
     that lands names the stage a failed submission sends a place back
     to, and how many times a place may go back before it waits on its
-    caller.
+    caller. It may hold settings for every stage's agents, which a
+    stage's own settings come before.
 53. A stage's declaration holds its name, its prompt, and its
     deliverable or that it is a conversation. It may hold its agents
     with their settings, whether it waits on its caller's word, and how
@@ -408,11 +409,15 @@ redefine these.
 57. A declaration is checked whole: a kind with no stage, a stage with
     no name or prompt, a field of the wrong shape, or a deliverable
     not of the six, is refused naming the field. A version left out
-    reads as the first.
+    reads as the first. A kind's table that holds settings for its
+    agents and no stages declares no kind: it is read as settings given
+    to a kind of that name declared elsewhere, for every stage or for
+    stages it names, and is never refused as a kind with no stage.
 58. The same declaration always reads the same, and reading it changes
     nothing. Which declaration a name resolves to, among a tool's own,
-    a repository's and a launch's, is the reader's rule, never the
-    format's.
+    a repository's and a launch's, and how settings given to a kind
+    declared elsewhere join that kind's own, are the reader's rule,
+    never the format's.
 
 ### A.9 Cadence
 
@@ -699,6 +704,15 @@ branch = "bump"           # the prefix of its places' branches; the kind's name 
 starts_unready = false    # whether its first stage starts in a place that could not be made ready
 lands = true              # whether the work is submitted after the last stage
 
+[kinds.bump.agents]       # settings for every stage's agents; a stage's own come first (52)
+model = "sonnet"
+
+[kinds.fix.agents]        # settings for a kind of that name declared elsewhere, a tool's own fix among them (57)
+model = "opus"
+
+[kinds.fix.agents.stages.code]   # settings for one of its stages
+instructions = "Keep each commit to one fix."
+
 [[kinds.bump.stages]]
 name = "code"
 prompt = "prompts/bump-code.md"                   # relative to the declaration's file
@@ -740,6 +754,14 @@ no stage of its kind, naming the field (57). The format gives no default
 for `quiet`, `on_fail`, `max_send_backs` or an elaboration's `ending`:
 a field left out is returned left out, and what it means is the
 reader's rule (58), since readers differ.
+
+A kind's `agents` table holds settings as written, and each
+`agents.stages.<stage>` table settings for that stage, as written; `read-kinds` returns
+them with the kind (52). A `[kinds.<kind>]` table holding `agents` and
+nothing the format names besides is returned apart from the kinds, as
+settings given to that name, and a declaration holding one is never
+refused for it (57). Whether a stage it names exists, and which
+declaration it joins, are the reader's to say (58).
 
 ### C.5 Cadence: five-field cron
 

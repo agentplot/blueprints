@@ -232,22 +232,26 @@ redefine these.
    launch of a kind that lands where the repository binds no merge
    queue (105). A launch that gives no brief while a stage of its kind
    asks for one is refused naming the stage, and makes nothing (27).
+   So is a launch where a stage's agent resolves to a program no agent
+   profile binds, or one the host's terminal cannot run, naming the
+   program, the stage and where the program came from (32).
 5. Every stage whose prompt asks for the brief gets it whole and as the
    caller wrote it. flume never rewrites, shortens, summarises or
    judges a brief.
 6. A launch answers once its place is made and its first stage is
    started, on hold or waiting. It never waits on an agent coming up,
    and whoever needs a stage's start or end learns it from status (43).
-7. A launch may carry settings for any of its stages' agents, the
-   stages it puts on hold, each with its words (130), whether its
+7. A launch may carry settings for its agents, for every stage of its
+   kind or for any one of them, the stages it puts on hold, each with its words (130), whether its
    submission waits on its word, the place's priority (70), the
    recipients of its ends (43), and a mark. A recipient the launch
    names none of is the session that launched it, as the terminal names
    it, or none where it names none. flume keeps the mark with the place and reports it, and
    decides nothing by it.
-8. A place's kind, brief, base and settings are fixed by its launch,
-   and nothing after the launch changes them. The launch names the
-   stages and the submission on hold, and a caller adds to a place after
+8. A place's kind, brief, base and the settings its launch carries are
+   fixed by its launch, and nothing after the launch changes them; the
+   host's configuration of its agents' settings is read at each start
+   (32). The launch names the stages and the submission on hold, and a caller adds to a place after
    it only the words of a retry (49), a hold with its words (130) and
    a change of priority (70). Its recipients are fixed at its launch.
 
@@ -319,11 +323,12 @@ redefine these.
     place that could not be made ready, and whether it lands. A kind
     that lands names the stage a failed submission sends a place back
     to, and how many times a place may go back before it waits on its
-    caller. A stage's declaration holds its name, its prompt, and its
-    deliverable or that it is a conversation, and may hold its agent's
-    settings, what it makes besides its deliverable (129), whether it
-    waits on its caller's word, and how long its agent may be quiet
-    before the stage is stuck. flume reads only a
+    caller. A kind's declaration may hold settings for the agent of
+    every one of its stages. A stage's declaration holds its name, its
+    prompt, and its deliverable or that it is a conversation, and may
+    hold its agent's settings, what it makes besides its deliverable
+    (129), whether it waits on its caller's word, and how long its
+    agent may be quiet before the stage is stuck. flume reads only a
     kind's places and stages, and runs that much of them: stages in
     order, one agent to each, and the place sent back when its
     submission fails. A kind whose places and stages ask for more, such
@@ -395,8 +400,13 @@ redefine these.
     submit, merge or push its work (71).
 29. A stage's agent is started with its prompt, its settings, its
     identity and its place, and nothing else of flume's. Its environment
-    is the host user's own login environment with the settings' over it,
-    and carries nothing of the caller's session. The exact prompt a
+    is the host user's own login environment with the settings' over it
+    (32), and carries nothing of the caller's session: a caller that
+    wants an agent to run under an environment of its own says so in
+    the launch's settings or the host's configuration, never by its own
+    session's environment. A value the host's configuration gives may
+    name the host user's home and the variables of that login
+    environment, and is read against them. The exact prompt a
     stage would be sent can be rendered without starting an agent.
 
 ### A.4 Agents
@@ -409,11 +419,37 @@ redefine these.
     it. An agent whose state or own work flume cannot read is not quiet,
     and status names what flume cannot read. An end flume asked for that
     the agent did not take is reported as a failure, never as done.
-32. An agent's program, model and instructions are resolved when it
-    starts: from the launch's settings for its stage, else the stage's
-    declaration, else flume's own default. Status reports them with the
-    agent, and the host's own configuration of the agent program never
-    chooses them.
+32. An agent's program, model, instructions and environment are
+    resolved when it starts, each from the first of these that gives
+    it:
+    1. the launch's settings (7);
+    2. the host's configuration, for the place's repository and kind;
+    3. the host's configuration, for the kind;
+    4. the repository's settings for a kind it does not declare, given
+       to whichever declaration the kind's name resolves to (19),
+       flume's own among them;
+    5. the kind's declaration, the repository's own where it is the one
+       the name resolves to (23);
+    6. flume's own default.
+
+    Within each, a stage's own setting comes before one given for every
+    stage of the kind. The environment is merged variable by variable,
+    each variable from the first that gives it; the program, the model
+    and the instructions are each taken whole from the first that gives
+    it. The launch's settings, the repository's and the kind's are
+    those the launch read (8, 20, 21); the host's configuration is read
+    as it stands at the start, so a start after a change to it takes
+    the change, and an agent already started keeps what it started
+    with. The repository's settings and its kinds' carry nothing of one
+    host: no environment. Where in the terminal an agent runs (107) is
+    read from the launch's settings and the stage's declaration alone.
+    A program resolved at a later start that no agent profile binds, or
+    that the host's terminal cannot run, or a value of the host's
+    configuration naming a variable the login environment lacks (29),
+    leaves the stage refused, naming the program or the variable and
+    where it came from, and starts no agent, until a retry (27). Status
+    reports each setting with the agent and where it came from, and the
+    agent program's own configuration on the host never chooses one.
 33. Every agent carries an identity flume gives it, which names its
     repository, its place, its stage and which start of the stage it is,
     and which no other live agent on the host carries.
@@ -683,7 +719,8 @@ redefine these.
     kind with its version and the declaration it came from, its name,
     branch, base and mark, and whether its kind lands; each stage's
     state, how it ended, and how many times it started; the current
-    stage's agent, with its identity, settings and agent state, and
+    stage's agent, with its identity, its settings each with where it
+    came from (32), and its agent state, and
     whether it works past its limit (118); whether the current stage's
     deliverable exists; the place's submission as the merge queue holds
     it, and how many times flume submitted the place; its change's
@@ -1061,6 +1098,17 @@ branch = "bump"           # the prefix of its places' branches; the kind's name 
 starts_unready = false    # whether its first stage starts in a place that could not be made ready (12)
 lands = true              # flume submits each place after its last stage (111); false when omitted
 
+[kinds.bump.agents]       # settings for every stage's agent; a stage's own come first (23, 32)
+program = "claude"
+model = "sonnet"
+
+[kinds.change.agents]     # settings for flume's own change@1, which the repository does not redeclare (32)
+model = "opus"
+instructions = "Work in British English."
+
+[kinds.change.agents.stages.verify]   # settings for one stage of it
+model = "sonnet"
+
 [[kinds.bump.stages]]
 name = "code"
 prompt = "prompts/bump-code.md"
@@ -1080,7 +1128,20 @@ max_send_backs = 3        # how many times a place may go back before it waits o
 ```
 
 `agents`, `deliverables`, `makes`, `on_fail` and `max_send_backs` are
-the kind format's own names. flume reads `on_fail` and `max_send_backs` on a
+the kind format's own names. A kind's `[kinds.<kind>.agents]` table
+gives settings to every stage's agent, and a stage's own `agents` come
+before it (32). A `[kinds.<kind>]` table holding `agents` and no
+stages declares no kind: it gives settings to the kind of that name,
+whichever declaration the name resolves to (19), flume's own fix@1,
+chore@1 and change@1 among them, and names one stage's by
+`[kinds.<kind>.agents.stages.<stage>]`; settings for a stage the kind
+does not hold refuse the launch naming the stage (4). A repository's
+declaration resolved over by a launch's gives the place nothing of its
+own kind's settings. A repository's agents tables give a program, a
+model and instructions, and carry nothing of one host: an `env` in a
+repository's `.config/flume.toml` refuses the launch naming the field
+(4), since an environment is the host's configuration's to give
+(C.7). flume reads `on_fail` and `max_send_backs` on a
 kind's last stage only, since under flume a stage fails only by its
 place's failed submission. A kind whose stage names more than one agent
 or more than one deliverable is refused (4, 23). flume ignores a
@@ -1138,7 +1199,7 @@ round, so the conclusion is never committed on `sounding/<name>`
 
 | operation | how Claude Code satisfies it |
 |---|---|
-| command | `claude` in the place, with flume's own Claude Code plugin loaded by `--plugin-dir`, which holds every hook below, and `--model` and `--append-system-prompt` from the settings. Its environment is the host user's login environment with the settings' own over it, and `FLUME_AGENT`, `FLUME_SECRET`, `FLUME_PLACE` and `FLUME_STAGE`. `FLUME_AGENT` is the identity, `flume:<repository>:<kind>--<name>:<stage>:<n>`, the repository named by an id taken from its common git directory and `<n>` the stage's start. `FLUME_SECRET` is that start's secret. The prompt is sent once the started ack has come and the agent waits, or carried as the command's argument under the printed command (C.5) |
+| command | `claude` in the place, with flume's own Claude Code plugin loaded by `--plugin-dir`, which holds every hook below, and `--model` and `--append-system-prompt` from the settings resolved for it (32). Its environment is the host user's login environment with the resolved environment over it, and `FLUME_AGENT`, `FLUME_SECRET`, `FLUME_PLACE` and `FLUME_STAGE`. `FLUME_AGENT` is the identity, `flume:<repository>:<kind>--<name>:<stage>:<n>`, the repository named by an id taken from its common git directory and `<n>` the stage's start. `FLUME_SECRET` is that start's secret. The prompt is sent once the started ack has come and the agent waits, or carried as the command's argument under the printed command (C.5) |
 | started | the plugin's SessionStart hook runs `flume ack started` with `FLUME_AGENT`, `FLUME_SECRET`, the plugin's version, the session's id, its transcript's path and the start's source; the ack is taken only while the secret is that start's, and a plugin version other than the binary's is reported. A start with no ack is starting. A session the terminal brought back with a bare `claude --resume`, which loads no `--plugin-dir` and carries no `FLUME_*`, acks nothing, so it is never the stage's agent (77) |
 | received | the plugin's UserPromptSubmit hook runs `flume ack received` with the submitted prompt's digest and the start's secret, which Claude Code fires only when it submits the prompt, a prompt queued while the agent worked among them; text typed and never submitted acks nothing. With no ack, the session's transcript holding the prompt as a user turn, or as a queued `enqueue` record, answers received, and a transcript that cannot be read answers unknown |
 | asking | a mark the plugin's hook leaves when the agent opens a question or a plan for a person (PreToolUse on `AskUserQuestion` and `ExitPlanMode`), or Claude Code asks a person's permission (its permission-request or permission-prompt notification hook, where the pinned Claude Code has one), open until the transcript holds the answer, and cleared too at UserPromptSubmit and at SessionStart; the terminal's reading alone never decides it |
@@ -1217,6 +1278,21 @@ lives:
   `[host] terminal = "<profile>"`, naming a terminal profile of C.5,
   `herdr` or `printed`, and the printed command where it names none
   (105).
+- The settings a host gives its agents are tables of the same
+  configuration, by kind, `[kinds.<kind>.agents]`, and by repository
+  and kind, `[repos."<repository>".kinds.<kind>.agents]`, the
+  repository named by its location on the host as a launch names it;
+  each gives `program`, `model`, `instructions` and `env`, and names
+  one stage's by a further `.stages.<stage>` table (32). They are read
+  at each agent's start. In an `env` value, a leading `~` is the host
+  user's home and `$VAR` or `${VAR}` that variable of the host user's
+  login environment, never of the caller's session (29); a variable it
+  names that the environment lacks refuses the start naming it. So
+  `[kinds.change.agents] env = { CLAUDE_CONFIG_DIR = "~/.claude-work" }`
+  runs every change@1 agent of the host under one Claude Code
+  configuration home, and the account signed in there, whichever
+  session launched it. Settings for a kind or a stage the place does not
+  run are ignored.
 - The roles a host wakes are a table of the same configuration:
   `[roles."<partition>/<role>"]` with `repository`, `kind`,
   `priority`, `base`, the repository's default branch where it names
@@ -1612,6 +1688,16 @@ These are not requirements.
   submitted. Within 60 seconds no word that it was received comes;
   flume clears the input and sends once more, and the second sending is
   received. Nothing is left typed (38, 95).
+- **S44.** The host's configuration gives change@1's agents an
+  environment variable naming the host user's home, the repository's
+  declaration gives change@1's code stage a model without declaring the
+  kind, and a launch of a change gives its verify stage instructions.
+  Construct's agent starts with the variable read against the host
+  user's home, code's with the repository's model as well, and verify's
+  with the launch's instructions; status gives each setting with where
+  it came from. The host's configuration changes the variable while
+  code works: code's agent keeps the value it started with, and
+  verify's starts with the new one (8, 29, 32, 56).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
