@@ -392,8 +392,9 @@ redefine these.
     stage's own settings come before.
 53. A stage's declaration holds its name, its prompt, and its
     deliverable or that it is a conversation. It may hold its agents
-    with their settings, whether it waits on its caller's word, and how
-    long its agent may be quiet before the stage is stuck.
+    with their settings, whether it waits on its caller's word, how
+    long its agent may be quiet before the stage is stuck, and what it
+    makes besides its deliverable, each a non-empty name.
 54. A deliverable is one of six forms: commits; a change written; tasks
     ticked; a change archived; a report at a path; a committed report
     at a path. The format spells each one way.
@@ -719,6 +720,7 @@ prompt = "prompts/bump-code.md"                   # relative to the declaration'
 deliverables = ["commits"]                        # exactly one, spelled as below (54)
 agents = [{ program = "claude", model = "opus" }] # with their settings (53)
 quiet = "45m"                                     # how long the agent may be quiet: a whole number of s, m or h (57)
+makes = ["preview"]                               # what the stage makes besides its deliverable, non-empty names; none when omitted (53)
 
 [[kinds.bump.stages]]
 name = "review"
