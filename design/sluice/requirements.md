@@ -756,21 +756,25 @@ redefine these.
      naming the host and whether its holder is the host's driver or a
      wait, renewed by a leased push from the value read (45) whenever a
      third of the deployment's lease has passed since it was last
-     renewed. A host takes the mark where it is absent; a driver takes
-     it from a wait at once; any host takes it once it has stood
-     unchanged for the deployment's lease by the taker's own
-     observation (73), never by the hosts' clocks agreeing; and a wait
-     that holds it lets it go when it ends. There, a request's entry is
-     advanced only on the host that holds the mark: a round on any
-     other host withdraws its own entries of the branch's requests,
-     none landing (122), naming the host that holds it, which takes
-     each in again as its conditions hold. A wait whose
-     request another host takes in takes nothing in and runs no round
-     for it: it follows the request by what the forge shows of it,
-     open, merged or closed, and sluice's check on its head (C.5), each
-     read as 136 has every read made and no more often than once in a
-     quarter of 136's interval, and reports the outcome they show as it
-     reports an entry's (50).
+     renewed. No mark on the remote means that no other host has shown
+     itself, so the host there alone pays no push: a driver that finds
+     none takes the requests in and pushes none, and a wait on a host
+     where no driver lives, finding none, pushes the mark leased on its
+     absence and takes them in. A driver takes the mark from a wait at
+     once, read in the fetch of the branch its next round makes; any
+     host takes it once it has stood unchanged for the deployment's
+     lease by the taker's own observation (73), never by the hosts'
+     clocks agreeing; and a wait that holds it lets it go when it ends.
+     There, a request's entry is advanced only on the host that takes
+     the branch's requests in: a round on a host that finds the mark
+     another's withdraws its own entries of the branch's requests, none
+     landing (122), naming the host that holds it, which takes each in
+     again as its conditions hold. A wait whose request another host
+     takes in takes nothing in and runs no round for it: it follows the
+     request by what the forge shows of it, open, merged or closed, and
+     sluice's check on its head (C.5), each read as 136 has every read
+     made and no more often than once in a quarter of 136's interval,
+     and reports the outcome they show as it reports an entry's (50).
      Holding the mark decides nothing but intake: a host's own entries
      submitted from its own places are its own to advance (C.6 local
      files).
