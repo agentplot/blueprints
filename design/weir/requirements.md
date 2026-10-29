@@ -393,8 +393,10 @@ redefine these.
 53. A stage's declaration holds its name, its prompt, and its
     deliverable or that it is a conversation. It may hold its agents
     with their settings, whether it waits on its caller's word, how
-    long its agent may be quiet before the stage is stuck, and what it
-    makes besides its deliverable, each a non-empty name.
+    long its agent may be quiet before the stage is stuck, what it
+    makes besides its deliverable, each a non-empty name, and whether
+    it repeats per task group, worked one group of its change's tasks
+    at a time.
 54. A deliverable is one of six forms: commits; a change written; tasks
     ticked; a change archived; a report at a path; a committed report
     at a path. The format spells each one way.
@@ -408,8 +410,9 @@ redefine these.
     reader ignores it. A reader never fails on a section it does not
     know, and never changes a declaration.
 57. A declaration is checked whole: a kind with no stage, a stage with
-    no name or prompt, a field of the wrong shape, or a deliverable
-    not of the six, is refused naming the field. A version left out
+    no name or prompt, a field of the wrong shape, a deliverable not
+    of the six, or a stage that repeats per task group and does not
+    deliver tasks ticked, is refused naming the field. A version left out
     reads as the first. A kind's table that holds settings for its
     agents and no stages declares no kind: it is read as settings given
     to a kind of that name declared elsewhere, for every stage or for
@@ -723,6 +726,12 @@ quiet = "45m"                                     # how long the agent may be qu
 makes = ["preview"]                               # what the stage makes besides its deliverable, non-empty names; none when omitted (53)
 
 [[kinds.bump.stages]]
+name = "build"
+prompt = "prompts/bump-build.md"
+deliverables = ["tasks"]
+repeat = "per-task-group"                         # worked one task group at a time; only on a stage delivering tasks; none when omitted (53, 57)
+
+[[kinds.bump.stages]]
 name = "review"
 prompt = "prompts/bump-review.md"
 conversation = true       # no deliverable (51)
@@ -756,6 +765,10 @@ no stage of its kind, naming the field (57). The format gives no default
 for `quiet`, `on_fail`, `max_send_backs` or an elaboration's `ending`:
 a field left out is returned left out, and what it means is the
 reader's rule (58), since readers differ.
+`repeat` takes the one value `per-task-group`, and the format refuses
+any other, or the field on a stage whose deliverable is not `tasks`,
+naming the field (57); how a reader works a repetition is its own rule
+(58).
 
 A kind's `agents` table holds settings as written, and each
 `agents.stages.<stage>` table settings for that stage, as written; `read-kinds` returns
@@ -985,8 +998,9 @@ rules; each ruling below is the user's, on their card of 2026-10-26.
   is one of no vocabulary; that move is not taken, its signal arrives
   unmoved, and the import reports it.
 - **S10.** flume reads its own declaration: `fix@1` with one stage
-  delivering commits, and `change@1` with construct, code and verify
-  delivering a change written, tasks ticked and a change archived.
+  delivering commits, and `change@2` with construct, code and verify
+  delivering a change written, tasks ticked and a change archived, its
+  code stage repeating per task group.
   Each reads the same twice, and reading changes nothing.
 - **S11.** sounding hands flume an elaboration kind. flume reads its
   stages and ignores the elaboration section; sounding reads both.

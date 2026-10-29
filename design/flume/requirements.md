@@ -97,6 +97,10 @@ redefine these.
   launch carries.
 - **stage**: one step of a kind: its name, its prompt, its deliverable
   or that it is a conversation, and its agent's settings.
+- **task group**: a numbered and titled run of a change's tasks, in the
+  change's order.
+- **repetition**: one start of a stage that repeats per task group,
+  given one task group of the place's change (140).
 - **conversation**: a stage whose agent works with the operator, which
   has no deliverable and ends only on its caller's finish.
 - **deliverable**: what must exist for a stage that is not a
@@ -113,7 +117,8 @@ redefine these.
 - **teardown**: the steps a repository declares removing a worktree
   must run, to take away what was stood up for it.
 - **change**: a written plan of one piece of work in a repository: what
-  it changes and why, and its tasks, each ticked when done. Its
+  it changes and why, and its tasks, each ticked when done, in task
+  groups. Its
   **planning is complete** when every part the plan needs before its
   tasks start is written, and it is **archived** when it is filed as
   done.
@@ -312,7 +317,8 @@ redefine these.
     under a prefix of its own, so a branch's name says which it was
     (C.2). **change** is a construct stage,
     which delivers the place's change written; a code stage, which
-    delivers its tasks ticked; and a verify stage, which checks the work
+    delivers its tasks ticked and repeats per task group (140); and a
+    verify stage, which checks the work
     against the change, commits its report in the change, and delivers
     the change archived. A failed submission, and a verify finding
     (131), send it back to code, which is the kind's fix round.
@@ -327,10 +333,12 @@ redefine these.
     every one of its stages. A stage's declaration holds its name, its
     prompt, and its deliverable or that it is a conversation, and may
     hold its agent's settings, what it makes besides its deliverable
-    (129), whether it waits on its caller's word, and how long its
-    agent may be quiet before the stage is stuck. flume reads only a
+    (129), whether it waits on its caller's word, how long its
+    agent may be quiet before the stage is stuck, and whether it repeats
+    per task group (140). flume reads only a
     kind's places and stages, and runs that much of them: stages in
-    order, one agent to each, and the place sent back when its
+    order, one agent to each start, a repeating stage's repetitions in
+    turn, and the place sent back when its
     submission fails. A kind whose places and stages ask for more, such
     as a stage worked by several agents, is refused (4). flume ignores a
     section of a kind it does not know, such as the elaboration section
@@ -361,6 +369,21 @@ redefine these.
     start. flume reads every fact of one deliverable at one head of the
     place's branch, and never pairs a fact read at one head with a fact
     read at another.
+140. A stage whose declaration says it repeats per task group delivers
+     tasks ticked (24), and is worked one task group at a time. Each
+     repetition is a start of the stage (33, 48): one fresh agent in
+     the place, given the first group of the place's change that holds
+     a task unticked at the head the repetition starts at. A repetition
+     delivers once every task of its group is ticked at the branch's
+     head and the newest commit that touches the change was made since
+     the repetition started (25). Once it has delivered and its agent
+     is quiet, flume ends the agent and, while a task stays unticked,
+     starts the next repetition as it starts a next stage (40, 47, 70);
+     the stage delivers once every task is ticked. A start with every
+     task already ticked, a failed submission's, a finding's or a
+     retry's, is one repetition with no group, which delivers as the
+     stage does. A repetition's delivery is no end of its stage, and
+     nothing of it is delivered to a recipient (43).
 123. A report kept beside a place's held state goes when the place is
      tidied (62). A stage delivers one only where its caller keeps what
      the report holds once the place is gone. Every other report a
@@ -411,7 +434,8 @@ redefine these.
 
 ### A.4 Agents
 
-30. Each stage starts exactly one fresh agent, working in the place. A
+30. Each start of a stage, each repetition of a repeating stage among
+    them (140), starts exactly one fresh agent, working in the place. A
     place has at most one agent at any moment: flume never starts an
     agent while another of the place's is live, and never hands a stage
     an agent another stage or place started.
@@ -501,6 +525,13 @@ redefine these.
     begun. flume never sends a prompt the agent already received, and
     text left typed for a hand to submit is never a stage's state: no
     sending, received or not, leaves text typed (95).
+141. A repetition's prompt carries its task group, the group's number,
+     title and tasks as the change gives them, and the path of its
+     stage's notes: a file in the place's own folder (C.7) that the
+     stage's repetitions write for the ones after them. flume names the
+     notes' path, never reads, writes or carries what they hold, and
+     they go with the place (62). A repeating stage's prompts differ
+     from one repetition to the next only in their last parts.
 
 ### A.6 Stage ends
 
@@ -616,6 +647,17 @@ redefine these.
 47. A stage or a submission that waits on its caller's word, by the
     launch or by a hold the caller put after it (130), starts only on a
     retry that names it (49).
+142. flume settles between a stage's repetitions as between stages
+     (46). Status gives a repeating stage with its group's place among
+     the change's groups at the head and how many there are, such as
+     `code 3/7`. The quiet limit (44), working past it (118) and a
+     stall (130) run from each repetition's own start or end, never
+     the stage's. A repetition ends short, stuck, lost or never begun
+     as a stage does (38, 41 to 45, 110), and that end, a stop (51) and
+     a hold (130) name its group; a hold put on a repeating stage while
+     it runs holds its next repetition. A retry naming the stage starts
+     the first group with a task unticked again, never the stage's
+     first group.
 
 ### A.7 Submissions
 
@@ -924,7 +966,8 @@ redefine these.
 
 86. **read-change**: given a revision and a name, whether the change
     exists there, whether its planning is complete, its tasks each with
-    whether it is ticked, and whether it is archived (3, 24, 26).
+    whether it is ticked and the task group it is in, and whether it is
+    archived (3, 24, 26, 140).
 87. The same revision always gives the same answer, and reading writes
     nothing (59).
 127. **locate**: given a place and a change's name, where the change
@@ -1126,7 +1169,7 @@ lands = true              # flume submits each place after its last stage (111);
 program = "claude"
 model = "sonnet"
 
-[kinds.change.agents]     # settings for flume's own change@1, which the repository does not redeclare (32)
+[kinds.change.agents]     # settings for flume's own change@2, which the repository does not redeclare (32)
 model = "opus"
 instructions = "Work in British English."
 
@@ -1157,7 +1200,7 @@ gives settings to every stage's agent, and a stage's own `agents` come
 before it (32). A `[kinds.<kind>]` table holding `agents` and no
 stages declares no kind: it gives settings to the kind of that name,
 whichever declaration the name resolves to (19), flume's own fix@1,
-chore@1 and change@1 among them, and names one stage's by
+chore@1 and change@2 among them, and names one stage's by
 `[kinds.<kind>.agents.stages.<stage>]`; settings for a stage the kind
 does not hold refuse the launch naming the stage (4). A repository's
 declaration resolved over by a launch's gives the place nothing of its
@@ -1170,7 +1213,9 @@ kind's last stage only, since under flume a stage fails only by its
 place's failed submission. A kind whose stage names more than one agent
 or more than one deliverable is refused (4, 23). flume ignores a
 section of a kind it does not know, such as an elaboration kind's
-elaboration section (23).
+elaboration section (23). `repeat = "per-task-group"` on a stage that
+delivers `tasks` makes it repeat per task group (140); the format
+refuses any other value, and the field on any other stage.
 
 | deliverable (24) | spelled in `deliverables` |
 |---|---|
@@ -1183,8 +1228,8 @@ elaboration section (23).
 
 A prompt's parts are `{{brief}}`, `{{name}}`, `{{kind}}`, `{{stage}}`,
 `{{branch}}`, `{{base}}`, `{{place}}`, `{{change}}`, `{{report}}`,
-`{{made}}`, `{{words}}`, `{{unready}}` and `{{needs}}` (the way to stop short,
-C.4). `{{#words}}…{{/words}}` renders its body only when there are
+`{{made}}`, `{{group}}`, `{{notes}}`, `{{words}}`, `{{unready}}` and
+`{{needs}}` (the way to stop short, C.4). `{{#words}}…{{/words}}` renders its body only when there are
 words: a retry's, with the question of the stop-short it answers before
 them (49), a failed submission's, the checks blamed and their logs or
 the files contested (112), or a finding's (131). A launch is refused when
@@ -1192,7 +1237,10 @@ a stage asks for `{{brief}}` and it gives none (4). Any other bare part
 with nothing to fill it leaves the stage refused (27), and
 `{{report}}` fills only for a stage whose deliverable is a report or a
 committed report, and `{{made}}` only for a stage that declares what it
-makes, with the path it records the addresses at (129). `flume prompt <place> <stage>` renders a stage's
+makes, with the path it records the addresses at (129). `{{group}}`
+and `{{notes}}` fill only for a stage that repeats: the repetition's
+task group, its number, title and tasks, or that it has none, and the
+path of the stage's notes (141). `flume prompt <place> <stage>` renders a stage's
 prompt and starts nothing (29).
 
 flume's own kinds, their prompts shipped with flume:
@@ -1201,7 +1249,7 @@ flume's own kinds, their prompts shipped with flume:
 |---|---|---|---|---|
 | **fix@1** | `fix/<name>` | yes | yes; `code` | `code`: `commits` |
 | **chore@1** | `chore/<name>` | yes | yes; `code` | `code`: `commits`; fix@1's stage under a prefix of its own, so a branch's name says which it was |
-| **change@1** | `change/<name>` | no | yes; `code` | `construct`: `change`; `code`: `tasks`; `verify`: `archived`. The verify prompt checks the work against the change and commits its report as `verify.md` in the change's directory. It then archives the change on the place's branch, the report with it, or stops short finding, with what fails, which sends the place back to code (131). The code prompt, sent again with a failed submission's or a finding's words, fixes what they name and records the fix as a task of the change, ticked |
+| **change@2** | `change/<name>` | no | yes; `code` | `construct`: `change`; `code`: `tasks`, repeating per task group (140); `verify`: `archived`. The verify prompt checks the work against the change and commits its report as `verify.md` in the change's directory. It then archives the change on the place's branch, the report with it, or stops short finding, with what fails, which sends the place back to code (131). The code prompt, sent again with a failed submission's or a finding's words, fixes what they name and records the fix as a task of the change, ticked. The code prompt holds every part that stays the same between repetitions, the place's and the change's paths among them, before its group, the notes' path and its words, which come last (141). A place launched at change@1, whose code stage did not repeat, keeps it (21), and a repository that wants it still declares it |
 
 sounding hands flume each elaboration kind in the launch, as `flume
 launch --kinds <file>`. An elaboration kind is written in the same
@@ -1217,7 +1265,7 @@ round, so the conclusion is never committed on `sounding/<name>`
 
 | operation | how OpenSpec satisfies it |
 |---|---|
-| read-change | `openspec/changes/<name>/` at the revision: present when the folder exists; planning complete as `openspec status --change <name> --json` gives `isPlanningComplete`; its tasks the `- [ ]` and `- [x]` lines of `tasks.md`; archived when `openspec/changes/archive/<date>-<name>/` exists. A change of OpenSpec's spec-driven schema is read from its files with no `openspec` process, and a change of any other schema through `openspec` (59). |
+| read-change | `openspec/changes/<name>/` at the revision: present when the folder exists; planning complete as `openspec status --change <name> --json` gives `isPlanningComplete`; its tasks the `- [ ]` and `- [x]` lines of `tasks.md`, each in the task group of the `## <n>. <title>` heading above it, a task above every heading in a group of its own with no number or title; archived when `openspec/changes/archive/<date>-<name>/` exists. A change of OpenSpec's spec-driven schema is read from its files with no `openspec` process, and a change of any other schema through `openspec` (59). |
 
 ### C.4 The agent: Claude Code
 
@@ -1424,7 +1472,7 @@ lives:
   login environment, never of the caller's session (29); a variable it
   names that the environment lacks refuses the start naming it. So
   `[kinds.change.agents] env = { CLAUDE_CONFIG_DIR = "~/.claude-work" }`
-  runs every change@1 agent of the host under one Claude Code
+  runs every change@2 agent of the host under one Claude Code
   configuration home, and the account signed in there, whichever
   session launched it. Settings for a kind or a stage the place does not
   run are ignored.
@@ -1451,8 +1499,9 @@ lives:
 | write | a new document written beside the old and renamed over it, under a lock held for the write, and refused when the place's version has moved. flume makes a new place's document by an atomic create that fails when one exists (75, 103) |
 
 A place's own folder there holds what its stages write for flume, such
-as a report a stage's declaration puts under `{{state}}`, and goes when
-the place is tidied (62).
+as a report a stage's declaration puts under `{{state}}`, and a
+repeating stage's notes, `notes/<stage>.md`, which `{{notes}}` names
+and flume never reads (141); it goes when the place is tidied (62).
 
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
@@ -1827,9 +1876,9 @@ These are not requirements.
   submitted. Within 60 seconds no word that it was received comes;
   flume clears the input and sends once more, and the second sending is
   received. Nothing is left typed (38, 95).
-- **S44.** The host's configuration gives change@1's agents an
+- **S44.** The host's configuration gives change@2's agents an
   environment variable naming the host user's home, the repository's
-  declaration gives change@1's code stage a model without declaring the
+  declaration gives change@2's code stage a model without declaring the
   kind, and a launch of a change gives its verify stage instructions.
   Construct's agent starts with the variable read against the host
   user's home, code's with the repository's model as well, and verify's
@@ -1864,6 +1913,21 @@ These are not requirements.
   waiting on their caller and stalled. One clue fails to show; the
   failure is logged and the settle goes on, and nothing flume decides
   reads a clue (139).
+- **S50.** A change@2 place's change holds three task groups. Its code
+  stage starts one agent, given group 1 and the notes' path, which
+  ticks the group's tasks, commits and goes quiet. flume ends it and
+  starts a fresh agent whose prompt differs only in its group, while
+  status gives `code 2/3`. Once group 3's agent ticks the last task
+  the stage delivers, and verify starts (40, 140 to 142).
+- **S51.** A repetition's agent goes quiet with a task of its group 2
+  unticked, and the stop check sends it back naming the group's tasks.
+  It stops short needing an answer; status and the end delivered name
+  group 2, and the caller's retry starts a fresh agent for group 2,
+  never group 1 (41, 42, 49, 110, 142).
+- **S52.** A failed submission sends a change@2 place back to code with
+  every task ticked. One repetition with no group starts with the merge
+  queue's words, records the fix as a task of the change, ticked, and
+  the stage delivers (112, 140).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
