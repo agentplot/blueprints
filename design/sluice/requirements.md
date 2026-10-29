@@ -72,7 +72,8 @@ redefine these.
   fail, or no outcome when the run did not judge it (60, 114).
 - **gate**: for a branch, the checks it requires, the signers it
   trusts, the systems each check needs, and how a flaky key reads.
-- **key**: the identity of one check over the inputs it reads.
+- **key**: the identity of one check over the inputs it reads and the
+  grant it ran under (138).
 - **verdict**: a gate's reading of a candidate: for each required check
   exactly one of passed, failed, missing or flaky.
 - **culprit**: the one entry a failed candidate is attributed to.
@@ -84,6 +85,10 @@ redefine these.
   what the repository declares, which nothing of any session could
   reach, and when nothing but it could have written its records;
   **open** otherwise.
+- **grant**: what an executor let a run reach: the paths it could
+  write, the devices it could open, the network and the sockets it
+  could use, named the same wherever the same executor gives the same,
+  whatever the place, the host or the version of sluice (138).
 - **host**: a machine on which sessions, sluice or executors run.
 - **instance**: one running sluice on one host.
 - **lease**: how long an instance keeps a branch without writing its
@@ -251,13 +256,23 @@ redefine these.
 114. A run of a check has no outcome (60) when the check could not be
      started; when it ended with an exit its branch's policy names as not
      run; or, for a check that did not pass, when the host failed after
-     the run the readiness the repository declares. Its record says why
+     the run the readiness the repository declares, or when its executor
+     refused the run something the run tried (139). Its record says why
      (16). It is never recorded or read under its key, no entry is
      attributed for it (18), and the check is run again.
 115. A candidate whose checks could not run (114) in as many of its runs
      in a row as the deployment states is read as not passed, as one
      whose run its time limit ended is (66), and the culprit's session is
      told each check that could not run, and why (20).
+139. A check that did not pass, in a run whose executor reports that it
+     refused the run something the run tried, has no outcome (114): its
+     record names what was refused, and it is never recorded or read
+     under its key. The refusal is the executor's own report of what it
+     refused, observed (38), never inferred from what the check printed
+     or from how it failed, and a check that passed in the run keeps its
+     pass. A run with no refusal reported is read as before; an executor
+     that could not read its own report says so with the run, which is
+     then read as one with no refusal.
 17. A failed candidate is attributed to exactly one entry: the newest
     entry of the first failed candidate in its chain.
 18. No entry is attributed or landed before every candidate ahead of it
@@ -279,9 +294,17 @@ redefine these.
     one input proves nothing by its order. A fail that was the host's
     and not the code's leaves the key only by 114, never recorded
     because the host failed its readiness after the run or the check
-    said it could not run, or by 116, set aside by the operator with the
-    reason (S44). A result under other limits says nothing of a run under
-    these (83).
+    said it could not run or its executor refused the run something
+    (139), or by 116, set aside by the operator with the reason (S44). A
+    result under other limits says nothing of a run under these (83),
+    and a result under another grant is under another key (138).
+138. A check's key holds the grant of the executor that ran it. Results
+     under two grants are two keys: they are never weighed together for
+     a flake (19), and a pass under one grant never proves a result a
+     tool answered from an earlier run under another (108). What a tool's
+     own cache keys by is the tool's and decides nothing. A result
+     recorded with no grant was run under a grant unknown, and is weighed
+     only with other results recorded with none.
 119. What a check's tool reports of a run beyond its key, outcome and
      executor, such as how long it took, how often it was tried, or the
      time it saved, may be recorded with the run and shown with it. It
@@ -881,7 +904,8 @@ redefine these.
     to (the cores its instance gives each run; the memory, the
     network and the paths it may write that the branch's policy
     states), the command run within them, and what the executor
-    enforced: whether the run was confined, and each limit it held.
+    enforced: whether the run was confined, each limit it held, the
+    grant it gave (138), and each thing it refused the run (139).
 84. The guarantee: an executor that cannot enforce a limit the branch's
     policy states refuses the run rather than run it without them, and every
     run is recorded with what its executor enforced (16), so a run is
@@ -1015,15 +1039,15 @@ Parts A and B do not change to admit a profile.
 
 | profile | affected | run |
 |---|---|---|
-| **moon**: the repository's task runner with declared inputs and a content-keyed cache | moon's affected projects between the branch's revision and the candidate, downstream dependents included | moon's run of the affected check tasks in the place; the run report gives each task's outcome and whether it was replayed, the run record gives its hash as the key and its exit code; a task whose exit the policy's `not_run` names has no outcome (114); run in moon's CI mode, so a task the repository keeps out of CI is not run and its check is missing; each task's duration and attempts, and the run's duration and moon's estimate of the time it saved, recorded with the run (119); a key is proven to have run by moon's own manifest of it, read where moon keeps it, in the checkout or in the shared store moon's own settings place it, as moon resolves them from the run's environment, never from where the host's cache table says (35) |
+| **moon**: the repository's task runner with declared inputs and a content-keyed cache | moon's affected projects between the branch's revision and the candidate, downstream dependents included | moon's run of the affected check tasks in the place; the run report gives each task's outcome and whether it was replayed, the run record gives its hash and its exit code, the hash with the executor's grant being the key (138); a task whose exit the policy's `not_run` names has no outcome (114); run in moon's CI mode, so a task the repository keeps out of CI is not run and its check is missing; each task's duration and attempts, and the run's duration and moon's estimate of the time it saved, recorded with the run (119); a key is proven to have run by moon's own manifest of it, read where moon keeps it, in the checkout or in the shared store moon's own settings place it, as moon resolves them from the run's environment, never from where the host's cache table says (35) |
 | **script**: one command with an exit code | every check, always | the command's exit code, never a replay; an exit `not_run` names has no outcome (114) |
 
 | executor profile | execute | enforces |
 |---|---|---|
-| **open**: a process group on the instance's host | the command in the place, as one process group ended with its run | the cores given, by the runner's own threads; nothing else; never confined |
-| **sandbox**: the host's kernel sandbox, Seatbelt on macOS, bubblewrap and Landlock on Linux | the command in the place under a profile that allows writes only to the place, its scratch, the host's declared cache directories and the null and terminal devices, a pseudo-terminal the command opens included, connections to their sockets (35), the network only as the policy says, and a container engine's socket only when the policy allows it | paths and network everywhere; cores and memory only on Linux, by a cgroup the run is started in; confined when no session on the host can write the place and the run cannot reach a container engine, whose containers may mount any path |
-| **container**: a container engine on the executing host | the place mounted into a new container from the repository's image | cores, memory, paths and network; confined as C.8 says |
-| **launched**: a job on a pool | one job per run, on a machine of the run's system (87), that fetches the candidate's ref (82), runs the checks, signs its run records with the job's identity and adds them to its signer's ref (109); the job's start is the claim and its end the report (88) | what the pool's machines enforce, as the job's signed record claims; confined when the pool gives each job a fresh machine and the policy lets its signer claim it (79) |
+| **open**: a process group on the instance's host | the command in the place, as one process group ended with its run | the cores given, by the runner's own threads; nothing else; never confined; one grant for every open run (138), and nothing refused |
+| **sandbox**: the host's kernel sandbox, Seatbelt on macOS, bubblewrap and Landlock on Linux | the command in the place under a profile that allows writes only to the place, its scratch, the host's declared cache directories and the null and terminal devices, a pseudo-terminal the command opens included, connections to their sockets (35), the network only as the policy says, and a container engine's socket only when the policy allows it | paths and network everywhere; cores and memory only on Linux, by a cgroup the run is started in; confined when no session on the host can write the place and the run cannot reach a container engine, whose containers may mount any path; its grant is its profile as sluice writes it with every path named by its role, the place, its scratch, a cache, a socket, the user's temporary directory, digested, so two places or hosts given the same profile give one grant (138); what it refused a run is read, after a run in which a check did not pass, from the kernel's own report of the sandbox's refusals, the unified log on macOS, by the mark the run's profile gives them (139) |
+| **container**: a container engine on the executing host | the place mounted into a new container from the repository's image | cores, memory, paths and network; confined as C.8 says; its grant is its image's digest with the mounts, devices and network it gives, each mount named by its role (138) |
+| **launched**: a job on a pool | one job per run, on a machine of the run's system (87), that fetches the candidate's ref (82), runs the checks, signs its run records with the job's identity and adds them to its signer's ref (109); the job's start is the claim and its end the report (88) | what the pool's machines enforce, as the job's signed record claims; confined when the pool gives each job a fresh machine and the policy lets its signer claim it (79); its grant and what it refused, as the job's signed record says (138, 139) |
 
 ### C.4 The branch
 
@@ -1443,6 +1467,16 @@ section asked is answered by a clause.
   on the other host takes nothing in, follows its request by sluice's
   check on its head, and reports its landing when the forge shows it
   merged (134, 136, 137).
+
+- **S66.** A session runs its branch's checks on its host with the
+  sandbox executor, whose grant lets no command open a pseudo-terminal;
+  every test that needs one fails. The executor reports the refusal, so
+  each check that failed has no outcome, nothing is recorded under its
+  key, and the session is told what the sandbox refused. The queue's
+  run of the same head, under a grant that allows it, passes. Had a fail
+  been recorded under the narrower grant, it would be under another key
+  than the queue's pass, and the branch would read no flake (19, 114,
+  138, 139).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
