@@ -443,9 +443,11 @@ redefine these.
      pause kept in the host's own state so that every process on the
      host honours it from the first word, and never by calling to find
      out. A command waits the pause out within its own limit, saying
-     once until when, and fails on it only when its limit ends first; a
-     round passes by the forge's part of its work, says so once, and
-     goes on with the rest (133).
+     once until when, and fails on it only when its limit ends first,
+     but a submit that does not wait, which fails on it at once naming
+     when the pause ends (the user, 2026-10-28); a round passes by the
+     forge's part of its work, says so once, and goes on with the rest
+     (133).
      A refusal that stands when the policy's time is spent is reported
      in the remote's own words, with what each refused credential was:
      the app, the repository, the installation, its repositories and
