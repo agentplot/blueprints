@@ -799,6 +799,11 @@ redefine these.
     fails keeps the place, named with the step that failed. No merge
     queue removes a place: flume removes every landed place itself, and
     its branch as 67 says (113).
+137. When a place goes, what the terminal made to hold its agents goes
+     with it, and what the terminal made for its repository goes once
+     it holds nothing of a live place. flume never closes in the
+     terminal anything it did not make: what a person put there keeps
+     it open, and status names it with what holds it (138).
 67. When a place goes, its branch goes only if it holds no commit whose
     change its base lacks, judged by the change each commit makes and
     never by ancestry alone. A branch holding such a commit is kept and
@@ -980,6 +985,16 @@ redefine these.
      shows nothing.
 97. **close**: given an agent, its end, or a refusal because it did
     not end (31).
+138. **tidy**: given a place gone, what the terminal made to hold its
+     agents closed, and what it made for the place's repository closed
+     once it holds nothing of a live place; or each kept, named with
+     what the terminal did not make that holds it (137).
+139. **show**: given a place, its stages' states and a one-line count
+     of its repository's places, clues the terminal shows a person
+     beside the place's agents, or that it shows none; called at each
+     settle that changes a stage's state. A clue is display only:
+     nothing flume decides reads it back, and one that fails to show is
+     logged and fails nothing (46, 56).
 122. **watch**: the terminal settling each place with an agent in it, on
      a bound it states and when an agent's state changes, while flume
      runs nothing; or no watch (46, 119).
@@ -1233,18 +1248,18 @@ command as its agent's. Each hook calls the binary that started the
 agent by its absolute path, written into the plugin with its version,
 and never fails or holds up the agent's start or turn.
 
-A terminal that starts the program by its kind runs whatever `claude`
-the pane's shell finds, so the host's `claude` must leave the
-environment flume resolved (32) as it is: a wrapper that sets
-`CLAUDE_CONFIG_DIR` keeps a value already set, or the configuration
-home, and the account signed in there, would be the wrapper's and not
-the one the host's configuration names for the agent.
+The program that runs is the one the agent's settings name (32), by
+name or by path, and never another a shell finds first. A terminal that
+starts a known program by its kind, as herdr does, types the kind's own
+name into the pane's shell; such a terminal sets the pane's environment
+so that name runs the program the settings name, and checks that it did
+before the start counts, as C.5 says.
 
 ### C.5 The terminal
 
 | profile | open | send | state | close | watch |
 |---|---|---|---|---|---|
-| **herdr** | a pane in the herdr session the launch's settings name, flume's own otherwise, one tab per place named `<kind>--<name>`; where the settings name a pane, a split beside that pane instead, as for a conversation. The pane is made in the place with the agent's environment (C.4) set on it, and herdr's agent start runs the program there by the kind its agent profile names, its arguments passed whole, under the agent's herdr name; nothing is typed into the pane's shell, and a program herdr knows no kind for cannot run under herdr (32). The pane is held by its id and its server's socket, and found again by the agent's herdr name where the id no longer answers, as after the pane moves to another workspace: a name of at most 32 of herdr's legal characters made from the identity and unique on the server, a pane found by it taken as the agent's only once herdr lists it under that name. herdr's word that the program is ready is a second signal, never the start (35). A start herdr reads blocked is held at the program's question before it starts: the folder-trust question is answered and herdr waited on until the agent is idle (34), and any other leaves the start never begun with the screen; a start herdr does not see ready within its bound is never begun with the screen (35) | the pane's held input cleared with one ctrl+c while the agent waits, then herdr's prompt to the pane, then received read through the agent (89); a send never leaves text typed: one not received is cleared again before the next | herdr's reading of the agent: working as working; idle and done as waiting, since herdr's done is a finished turn nobody has looked at; blocked as asking only with the agent profile's mark (90), and as unknown without it; herdr's unknown as unknown; stopped only when the pane is gone, or herdr lists no agent in it and its foreground is the shell, or herdr lists it unrestored after its server's restart | herdr ends the pane and its process group, then reads that it is gone | kept by flume's herdr plugin on herdr's server, which runs between flume's commands. It runs `flume settle` for the session's places on a bound it states and at each change of an agent's state, reading every agent's state in one listing per tick |
+| **herdr** | a pane in the herdr session the launch's settings name, flume's own otherwise: one workspace per repository, labelled with the repository's name, made when its first place opens, and in it one tab per place named `<kind>--<name>`, whose panes are the place's agents; where the settings name a pane, a split beside that pane instead, as for a conversation, left where its caller put it. The pane is made in the place with the agent's environment (C.4) set on it, its `PATH` led by a folder of the start's own holding the kind's name linked to the program the settings name, and herdr's agent start runs the program there by the kind its agent profile names, its arguments passed whole, under the agent's herdr name; nothing is typed into the pane's shell. A start whose pane runs anything but the program the settings name is closed and refused, naming what ran, and a program herdr knows no kind for cannot run under herdr (32). The pane is held by its id and its server's socket, and found again by the agent's herdr name where the id no longer answers, as after the pane moves to another workspace: a name of at most 32 of herdr's legal characters made from the identity and unique on the server, a pane found by it taken as the agent's only once herdr lists it under that name. herdr's word that the program is ready is a second signal, never the start (35). A start herdr reads blocked is held at the program's question before it starts: the folder-trust question is answered and herdr waited on until the agent is idle (34), and any other leaves the start never begun with the screen; a start herdr does not see ready within its bound is never begun with the screen (35) | the pane's held input cleared with one ctrl+c while the agent waits, then herdr's prompt to the pane, then received read through the agent (89); a send never leaves text typed: one not received is cleared again before the next | herdr's reading of the agent: working as working; idle and done as waiting, since herdr's done is a finished turn nobody has looked at; blocked as asking only with the agent profile's mark (90), and as unknown without it; herdr's unknown as unknown; stopped only when the pane is gone, or herdr lists no agent in it and its foreground is the shell, or herdr lists it unrestored after its server's restart | herdr ends the pane and its process group, then reads that it is gone | kept by flume's herdr plugin on herdr's server, which runs between flume's commands. It runs `flume settle` for the session's places on a bound it states and at each change of an agent's state, reading every agent's state in one listing per tick |
 | **printed command** | the command printed, the prompt carried in it, for a person to run in the place | refused, so every tell is refused and a prompt not received is reported never begun (38) | from the agent profile alone; stopped when its record says the session ended | refused unless the agent's record says the session ended | none, so flume runs attended (119) |
 
 Under herdr a session is named `herdr:<pane>@<socket>`, the pane's id
@@ -1252,7 +1267,20 @@ and its server's socket, wherever a recipient or a launching session is
 named (7, 43); a role's run is reached in the pane its live start holds,
 found again by that start's herdr name as an agent's pane is (132).
 Nothing is sent to a pane found by a name until herdr lists it under
-that name, and its id is recorded before anything is sent to it. Every herdr call is bounded, ten
+that name, and its id is recorded before anything is sent to it.
+
+The herdr profile records in the host's state, by id and server, each
+workspace and tab it made. It closes a place's tab when the place goes,
+its panes and their process groups with it (137); and a workspace it
+made once that workspace holds no tab of a live place and nothing it
+did not make. It never closes a workspace, a tab or a pane it did not
+make: a workspace of its own where a person opened a pane is left open,
+and status names it with what holds it. At each settle that changes a
+stage's state the profile shows display clues, which nothing flume
+decides reads back (139): the agent's pane titled with its stage and
+state, and the repository's workspace given a one-line count of its
+places running, asking, waiting on their caller and stalled. A clue
+that fails to show is logged and fails nothing. Every herdr call is bounded, ten
 seconds where the call states none, one that does not answer within it
 read as unknown or refused in herdr's words; each is made with the
 caller's own `HERDR_*` variables stripped and the recorded server's
@@ -1269,12 +1297,14 @@ herdr's refusal and its words:
 | operation | herdr's commands and fields |
 |---|---|
 | server | flume's own session is `flume`: `herdr session list --json`, its `sessions[]` read by `name`, `socket_path` and `running`; where it does not run, `herdr --session flume server` is started headless in a process group of its own and the listing read again until it runs, within the bound |
-| open | the place's tab in the workspace labelled `flume`: `workspace list` (`workspaces[]`, `label`, `workspace_id`); with none, `workspace create --cwd <place> --env <K=V>… --label flume --no-focus`, its `tab.tab_id` renamed `<kind>--<name>` by `tab rename` and its `root_pane.pane_id` the pane; else `tab list --workspace <w>` (`tabs[]`, `label`, `tab_id`) and `pane list --workspace <w>` (`panes[]`, `tab_id`, `pane_id`), a split in the place's tab where one stands, `tab create --workspace <w> --cwd <place> --env <K=V>… --label <kind>--<name> --no-focus` (`root_pane.pane_id`) where none does. Beside a named pane, `herdr:<pane>@<socket>` or a `pane list` entry by `pane_id` or `label`: `pane split <pane> --direction right --cwd <place> --env <K=V>… --no-focus` (`pane.pane_id`). Each `--env` is one variable of the agent's environment, the resolved environment (32) and flume's own. Then `agent start <name> --kind <kind> --pane <pane> --timeout 120000 -- <arguments>`, the call bounded at its timeout and ten seconds more: `agent_started` with `interactive_ready` true is herdr's ready; `agent_not_ready` is the start held at a question, read by `pane read <pane> --source visible --format text`, the folder-trust question answered by `agent send-keys <pane> <keys>`, herdr's key names as the agent profile states them, then `agent wait <pane> --until idle --timeout 30000`, and any other question the start never begun with those lines; `timeout` the start never begun with the pane's visible lines; `agent_name_taken` refused, an agent live under the identity (98); `agent_pane_busy`, `agent_pane_not_found` and `invalid_agent_timeout` refused in herdr's words |
+| open | the place's tab in the repository's workspace, the one the host's state records as made for the repository where `workspace list` (`workspaces[]`, `workspace_id`) still lists it; with none, `workspace create --cwd <place> --env <K=V>… --label <repository> --no-focus`, recorded, its `tab.tab_id` renamed `<kind>--<name>` by `tab rename` and its `root_pane.pane_id` the pane; else `tab list --workspace <w>` (`tabs[]`, `label`, `tab_id`) and `pane list --workspace <w>` (`panes[]`, `tab_id`, `pane_id`), a split in the place's tab where one stands, `tab create --workspace <w> --cwd <place> --env <K=V>… --label <kind>--<name> --no-focus` (`tab.tab_id`, `root_pane.pane_id`) where none does, the tab recorded. Beside a named pane, `herdr:<pane>@<socket>` or a `pane list` entry by `pane_id` or `label`: `pane split <pane> --direction right --cwd <place> --env <K=V>… --no-focus` (`pane.pane_id`). Each `--env` is one variable of the agent's environment, the resolved environment (32) and flume's own, with `PATH` led by the start's folder holding `<kind>` linked to the program. Then `agent start <name> --kind <kind> --pane <pane> --timeout 120000 -- <arguments>`, the call bounded at its timeout and ten seconds more: `agent_started` with `interactive_ready` true is herdr's ready; `agent_not_ready` is the start held at a question, read by `pane read <pane> --source visible --format text`, the folder-trust question answered by `agent send-keys <pane> <keys>`, herdr's key names as the agent profile states them, then `agent wait <pane> --until idle --timeout 30000`, and any other question the start never begun with those lines; `timeout` the start never begun with the pane's visible lines; `agent_name_taken` refused, an agent live under the identity (98); `agent_pane_busy`, `agent_pane_not_found` and `invalid_agent_timeout` refused in herdr's words. Once started, `pane process-info --pane <pane>` and the host's process table read the program in the pane's foreground, which must be the one the settings name, by its path or, for a program a script starts, the script's path among its arguments |
 | found again | where `pane get <pane>` answers `pane_not_found`, `agent get <name>` and the pane its answer names, taken only where herdr lists that pane's agent under the name, its id then recorded in place of the old; `agent_not_found` leaves the pane gone |
 | send | `agent send-keys <pane> ctrl+c`, then `agent prompt <pane> <text>` |
 | state | `pane get <pane>`: `pane_not_found` or `server_not_running` read stopped; `pane.restore_error` set reads stopped; with `pane.agent` set, `pane.agent_status` `working` as working, `idle` and `done` as waiting, `blocked` as asking, `unknown` or anything else as unknown; with no agent, `pane process-info --pane <pane>`, stopped when `process_info.shell_pid` is `process_info.foreground_process_group_id`, unknown otherwise |
 | screen | `pane read <pane> --source visible --format text` |
 | close | `pane close <pane>`, `pane_not_found` read as already closed; then `pane get <pane>`, gone only on `pane_not_found` |
+| tidy | the place's recorded tab: `pane list --workspace <w>` read for panes in it, and a pane flume did not open there keeps it, named; else `tab close <tab>`, a tab already gone read as closed. Then the repository's recorded workspace: where `tab list --workspace <w>` holds no tab but those of live places it made and `pane list` no pane it did not open, `workspace close <w>`; otherwise kept, and what holds it named |
+| show | `pane report-metadata <pane> --source flume --title "<stage> · <state>" --display-agent <kind>--<name>`; `workspace report-metadata <w> --source flume --token flume=<summary>`, the summary such as `3 running · 1 asking · 1 waiting on caller · 0 stalled`, shown where the host's herdr sidebar rows name `$flume` |
 
 What herdr 0.9.5 was seen to do, which the readings above allow for:
 `agent start` types the program's name into the pane's shell, so the
@@ -1315,7 +1345,8 @@ its server restarts. The refusals met are `pane_not_found`,
 those the readings above name is read unknown, or refused in herdr's
 words.
 
-The printed command reads no tool: open prints the line `cd <place> &&`
+The printed command tidies nothing and shows no clue, since it made
+nothing in a terminal. It reads no tool: open prints the line `cd <place> &&`
 the command's environment, program, arguments and prompt, and marks it
 printed for the identity in the place's folder, refusing to print it
 again; its state is unknown, and the core reads its agent stopped once
@@ -1811,6 +1842,22 @@ These are not requirements.
   lists it under that name, records its new id, and the stage goes on:
   its state is read and its next prompt sent there, never into another
   pane (30, 95, 96).
+- **S47.** Under herdr, a repository's last place lands and is tidied.
+  flume closes the place's tab with its panes, finds the repository's
+  workspace holding no tab of a live place and nothing it did not make,
+  and closes the workspace (64, 137, 138).
+- **S48.** Under herdr, a person opens a pane of their own in a
+  repository's workspace flume made, and the repository's last place is
+  dropped. flume closes the place's tab and leaves the workspace open;
+  status names the workspace and the person's pane that holds it, and
+  flume closes nothing it did not make (137, 138).
+- **S49.** Under herdr, a code stage's agent starts, waits, works and
+  asks a question. At each settle that changes its state the pane's
+  title follows it, starting, waiting, working, asking, and the
+  repository's workspace shows its count of places running, asking,
+  waiting on their caller and stalled. One clue fails to show; the
+  failure is logged and the settle goes on, and nothing flume decides
+  reads a clue (139).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
