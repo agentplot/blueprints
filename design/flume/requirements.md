@@ -1241,6 +1241,40 @@ server. screen (136) is herdr's read of the pane's visible lines. Each
 command and field the profile reads is checked against the herdr the
 profile pins, 0.9.5 or later.
 
+What the herdr profile reads of herdr 0.9.5, each call
+`herdr <words>` with `HERDR_SOCKET_PATH` set to the pane's server, its
+answer the JSON `result`, or an `error` whose `code` and `message` are
+herdr's refusal and its words:
+
+| operation | herdr's commands and fields |
+|---|---|
+| server | flume's own session is `flume`: `herdr session list --json`, its `sessions[]` read by `name`, `socket_path` and `running`; where it does not run, `herdr --session flume server` is started headless in a process group of its own and the listing read again until it runs, within the bound |
+| open | the place's tab in the workspace labelled `flume`: `workspace list` (`workspaces[]`, `label`, `workspace_id`); with none, `workspace create --cwd <place> --label flume --no-focus`, its `tab.tab_id` renamed `<kind>--<name>` by `tab rename` and its `root_pane.pane_id` the pane; else `tab list --workspace <w>` (`tabs[]`, `label`, `tab_id`) and `pane list --workspace <w>` (`panes[]`, `tab_id`, `pane_id`), a split in the place's tab where one stands, `tab create --workspace <w> --cwd <place> --label <kind>--<name> --no-focus` (`root_pane.pane_id`) where none does. Beside a named pane, `herdr:<pane>@<socket>` or a `pane list` entry by `pane_id` or `label`: `pane split <pane> --direction right --cwd <place> --no-focus` (`pane.pane_id`). Then `pane run <pane> "sh <launcher>"`, and `pane get <pane>` read every 200 ms for up to 30 seconds: once `pane.agent` is set, `agent rename <pane> <name>`; the folder-trust question looked for in the pane's visible text and answered by `pane send-keys <pane> <keys>`, herdr's key names as the agent profile states them; the open done once `pane.agent_status` reads `idle` or `done` |
+| send | `agent send-keys <pane> ctrl+c`, then `agent prompt <pane> <text>` |
+| state | `pane get <pane>`: `pane_not_found` or `server_not_running` read stopped; `pane.restore_error` set reads stopped; with `pane.agent` set, `pane.agent_status` `working` as working, `idle` and `done` as waiting, `blocked` as asking, `unknown` or anything else as unknown; with no agent, `pane process-info --pane <pane>`, stopped when `process_info.shell_pid` is `process_info.foreground_process_group_id`, unknown otherwise |
+| screen | `pane read <pane> --source visible --format text` |
+| close | `pane close <pane>`, `pane_not_found` read as already closed; then `pane get <pane>`, gone only on `pane_not_found` |
+
+What herdr 0.9.5 was seen to do, which the readings above allow for:
+`done` comes only after a turn a prompt began, and only on a pane
+without focus, a focused pane reading `idle` at the same point; herdr
+knows Claude Code by its program's name, `claude`; an agent that
+reports its own state from inside its pane, as herdr's own Claude Code
+integration does, can stay listed with status `unknown` after its
+process has exited, which the profile reads unknown, never stopped, so
+the core's reading of the agent's ended decides (134); a pane whose
+working directory was removed is listed with a `restore_error` after
+its server restarts. The refusals met are `pane_not_found`,
+`agent_not_found`, `agent_blocked`, `agent_not_ready` and
+`server_not_running`; any but those the state names above is read
+unknown, or refused in herdr's words.
+
+The printed command reads no tool: open prints the line `cd <place> &&`
+the command's environment, program, arguments and prompt, and marks it
+printed for the identity in the place's folder, refusing to print it
+again; its state is unknown, and the core reads its agent stopped once
+the agent profile's ended reads yes (134).
+
 ### C.6 The merge queue: sluice
 
 | operation | how sluice satisfies it |
@@ -1260,6 +1294,24 @@ left up, and frees the ports it holds for the place; it says `nothing to
 release` when it holds none. A release that fails keeps the place, named
 with that step (66). Readiness and where the base lives
 (C.1) are read from the same `.config/sluice.toml`.
+
+What the profile reads of sluice 0.55.0, each command run with every
+multiplexer's session (`HERDR_*`, `ZELLIJ*`, `TMUX`, `TMUX_PANE`)
+stripped and `GIT_TERMINAL_PROMPT=0`, a refusal read as its JSON
+`error.message` where it gives one and its errors otherwise:
+
+| operation | sluice's commands and fields |
+|---|---|
+| submit | `sluice submit <base> --no-wait --json` answers `{ahead, branch, id}` and nothing more; the entry is `id` |
+| inbox | `sluice inbox --json` answers `outcomes[]`, each with `state`: `landed` with its commit in `landed_as`; `failed`; `conflict` with the files contested in `conflict.paths`. Each one's words are its `notice`, or where it holds none its `state`, `branch` and the `task` of each of its `failed[]`. A failure's notice names the check that failed, not its log. A conflict's base revision is `tested.on` (`tested: {combination, on, submissions}`), never parsed from the notice; a conflict found while the candidate was formed, before any test, carries no `tested`, and its base is then the base's revision where the profile holds it, `<remote>/<base>` or the local base, read with no fetch |
+| read-submission | `sluice overview --json`, each of its `branches[].branch`, then `sluice status <branch> --all --json`, its `submissions[]`: the one with the highest `id` whose `from.worktree` is the place's branch, its `state` `queued` as waiting, `testing` as under test, `landed` (with `landed_as`), `failed`, `conflict` or `withdrawn`; any other state is read as not understood |
+| step | `sluice step <base> --json`, run in the repository |
+| base | the remote is the `remote` of the base's table under `[branches]` in `.config/sluice.toml`, the base's own or the first pattern with one `*` that names it, read at the local base and else at each remote's tracking copy; where it names one, `git fetch <remote> +refs/heads/<base>:refs/remotes/<remote>/<base>` once, the base at `refs/remotes/<remote>/<base>` |
+| place | from the same policy, `[tests] toolchain` as the place's toolchain, `moon setup` where `[tests] runner` is `moon`, and `sluice release` as its teardown, handed to the place profile through the binding |
+
+sluice keeps its host state under `$XDG_STATE_HOME/sluice`, and once a
+branch has had a submission its protect hook refuses a commit made to
+it directly.
 
 ### C.7 The store: the host's state directory
 
