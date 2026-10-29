@@ -92,14 +92,24 @@ redefine these.
   how its places' branches are named, whether its first stage starts in
   a place that could not be made ready, and whether it lands.
 - **version**: of a kind, the number its declaration gives it, with
-  which the kind is named.
+  which, beside its source and its name, the kind is named.
+- **source**: a name for where kinds come from: flume's own kinds are
+  one source, a repository's own declaration another, a launch's
+  declaration a third, and every other source names kinds from outside,
+  shared from elsewhere (154).
+- **identity**: of a kind, its source, its name and its version (154).
+- **package**: a kind from outside as it travels: the declaration of
+  that one kind at one version, with every part it names (157).
+- **lock**: a list of kinds by identity, each with the hash of its
+  content, by which a repository or a host says which kinds from
+  outside it runs, and at which version (155).
 - **lands**: of a kind, that flume submits each of its places to the
   merge queue after the last stage, and sends a place back to a stage
   the kind names when its submission fails. A kind that does not land
   never reaches the merge queue.
 - **declaration**: a written set of kinds, in the one form every tool
-  of the family reads (section 9): flume's own, a repository's, or one a
-  launch carries.
+  of the family reads (section 9): flume's own, a repository's, one a
+  launch carries, or a package's.
 - **stage**: one step of a kind: its name, its prompt, its deliverable
   or that it is a conversation, and its agent's settings.
 - **task group**: a numbered and titled run of a change's tasks, in the
@@ -280,7 +290,15 @@ redefine these.
    program, the stage and where the program came from (32). So is a
    launch naming a stream the host's configuration does not declare,
    naming it (143), and one where a stage's standing instructions ask
-   for a part, naming the stage (148).
+   for a part, naming the stage (148). So is a launch whose kind's name
+   two sources hold where it names no source, naming each, and one
+   naming a version its kind's source does not hold, naming it (154); a
+   launch of a kind from outside that no lock records, or that the host
+   does not hold, naming its identity (155, 159); one whose kind's
+   content does not match its lock's hash, naming the kind and both
+   hashes (156); one whose package refers outside itself or names
+   another identity than the one it is held at (157); and one whose kind
+   names something a host owns, naming the field (158).
 5. Every stage whose prompt asks for the brief gets it whole and as the
    caller wrote it. flume never rewrites, shortens, summarises or
    judges a brief.
@@ -342,32 +360,39 @@ redefine these.
 18. A kind is an ordered list of one or more stages. Every stage but a
     conversation has exactly one deliverable, and a conversation has
     none (109).
-19. flume itself, a repository or a launch declares a kind. For a
-    launch, a kind's name resolves to exactly one declaration: the
-    launch's over the repository's over flume's own. Status names the
-    declaration each place runs and the version of its kind.
-20. A repository's kinds and its readiness are read from its base's
-    revision at the launch. Its binding (105) is read from its default
-    branch's current revision: the remote's, after one fetch, where the
-    repository has a remote, and its own otherwise. None is read from a
-    place's tree or from a change not committed.
+19. flume itself, a repository, a launch or a package declares a kind,
+    and every kind is named by its identity: its source, its name and its
+    version (154). For a launch, a kind's name resolves to exactly one
+    kind: the launch's over the repository's own over every other
+    source's, and among a source's versions to the one 154 gives. Status
+    names the identity of the kind each place runs, and for a kind a lock
+    records, the hash of its content (155).
+20. A repository's kinds, its lock (155) and its readiness are read
+    from its base's revision at the launch. Its binding (105) is read
+    from its default branch's current revision: the remote's, after one
+    fetch, where the repository has a remote, and its own otherwise.
+    None is read from a place's tree or from a change not committed.
 21. A place runs its kind, and keeps its repository's binding, as each
-    resolved at its launch. A later change to any declaration never
-    changes a place already launched.
-22. flume's own declaration holds three kinds, and all three land.
-    **fix** is a code stage, which delivers commits. Its first stage
-    starts in a place that could not be made ready, and a failed
-    submission sends it back to code. **chore** is fix's one code stage
-    under a prefix of its own, so a branch's name says which it was
-    (C.2). **change** is a construct stage,
+    resolved at its launch: the kind's identity and its content as read
+    then. A later change to any declaration, lock or package the host
+    holds never changes a place already launched.
+22. flume's own kinds are fix@1, chore@1, change@1 and change@2, and
+    all four land. **fix** is a code stage, which delivers commits. Its
+    first stage starts in a place that could not be made ready, and a
+    failed submission sends it back to code. **chore** is fix's one code
+    stage under a prefix of its own, so a branch's name says which it was
+    (C.2). **change** at version 2 is a construct stage,
     which delivers the place's change written; a code stage, which
     delivers its tasks ticked and repeats per task group (140); and a
     verify stage, which checks the work
     against the change, commits its report in the change, and delivers
-    the change archived. A failed submission, and a verify finding
-    (131), send it back to code, which is the kind's fix round.
-    Every other kind, each of sounding's among them, is a repository's
-    or a launch's (19).
+    the change archived. **change** at version 1 is the same, but its
+    code stage does not repeat. A failed submission, and a verify
+    finding (131), send a change back to code, which is the kind's fix
+    round. Both versions of change are flume's own side by side: a
+    repository picks one by its lock (155) and a launch by naming it
+    (154). Every other kind, each of sounding's among them, is a
+    repository's, a launch's or a package's (19).
 23. A kind's declaration holds its version, its stages in order, how its
     places' branches are named, whether its first stage starts in a
     place that could not be made ready, and whether it lands. A kind
@@ -428,6 +453,74 @@ redefine these.
      retry's, is one repetition with no group, which delivers as the
      stage does. A repetition's delivery is no end of its stage, and
      nothing of it is delivered to a recipient (43).
+154. A kind's identity is its source, its name and its version. flume's
+     own kinds are one source, the repository's own declaration another
+     and a launch's declaration a third, and no source from outside
+     takes their names. Within a source a name and a version name one
+     kind, and a source may hold several versions of one name side by
+     side, as flume's own holds change@1 and change@2; the repository's
+     and a launch's declarations hold one version of each name. A launch
+     names its kind by its name, by its name and version, or by its
+     whole identity. Naming no source, it takes the kind of that name
+     from the launch's declaration, else the repository's own, else the
+     one other source that holds the name, flume's own or one a lock
+     records (155); where two such sources hold it the launch is refused
+     naming each (4). Naming no version, it takes the version the
+     repository's lock records for that kind, the newest where it records
+     several, else the host's lock's likewise, else the newest its source
+     holds. So a repository that records change@1 keeps launching
+     change@1 when a later flume adds change@3, and one that records
+     nothing takes flume's newest.
+155. A repository and a host each may keep a lock: the kinds from
+     sources other than the repository's own and a launch's that it runs,
+     each by its identity with the hash of its content (156). The
+     repository's is read at the base's revision with its kinds (20), the
+     host's from its configuration as it stands at the launch. A kind
+     from outside, of any source but flume's own, the repository's and a
+     launch's, is run only where one of the two locks records it, at the
+     version and the hash recorded: nothing from outside runs unlocked.
+     Locking is the act of trust, since a kind's prompts drive agents
+     with the host's accounts and tools, and the lock fixes to the byte
+     the content that was trusted. flume's own kinds are trusted with
+     flume, the repository's own with the repository's revision, and a
+     launch's with its caller, so none of them needs a lock to run; a
+     lock records flume's own to pick their version. Where the two locks
+     record one identity with two hashes, the launch is refused naming
+     both (4). flume writes a lock only at its caller's asking, by its
+     own command, into the working copy or the host's configuration where
+     the caller runs it, never at a launch or a settle; a repository's
+     lock reaches its places once its caller commits it on the base.
+156. A kind's content is its declaration and every part it names, and
+     its hash is the family's content hash over them (weir 90). At
+     each launch of a kind a lock records, flume reads its content as
+     the host holds it, or as flume carries it for its own, and refuses
+     the launch where its hash is not the lock's, naming the kind and both
+     hashes (4). From the first release of flume that reads locks, a
+     version of flume's own kinds keeps its content in every later
+     release: a change to what it holds is a new version.
+157. A kind from outside travels as a package: the declaration of that
+     one kind at one version, with every part it names, its prompts and
+     standing instructions, inside the package. A package refers to
+     nothing outside itself: no part by a path outside it, and no other
+     kind, so no stage of it extends, includes or hands over to another
+     kind's. A package whose name or version is not the identity it is
+     held at, or that refers outside itself, refuses the launch naming
+     it (4). flume's own kinds are packages too, one per version, so
+     change@1 and change@2 each carry their own construct and verify.
+158. A kind names nothing a host owns, whichever source declares it: no
+     environment, account, pool, stream or location on a host (32, 144).
+     It may name the agent program it supports, by name, and a model, by
+     the name its program gives a class of models, and the host binds
+     both through its own layers of 32. A kind's declaration that names
+     an environment, or a program by a location, refuses the launch
+     naming the field (4). Settings are given to a kind by its name, in
+     a repository's or a host's configuration, and join whichever source
+     and version the launch's name resolves to (32).
+159. The host holds the packages of the kinds from outside it may run,
+     each at its identity, several versions of one name side by side.
+     How a package reaches the host, copied by a person or taken from a
+     shared catalogue, is outside this statement. Holding a package runs
+     nothing: only a lock does (155).
 123. A report kept beside a place's held state goes when the place is
      tidied (62). A stage delivers one only where its caller keeps what
      the report holds once the place is gone. Every other report a
@@ -1138,6 +1231,11 @@ redefine these.
 85. The same revision always gives the same kinds, reading changes
     nothing, and a declaration a launch carries is read the same way
     (19).
+160. **read-locked**: given a lock and the packages the host holds, each
+     kind the lock records with its content, and whether its content's
+     hash is the one recorded; or that the lock or a package could not be
+     read, with the reason (155 to 157). The same lock and packages
+     always give the same answer, and reading changes nothing.
 
 ### B.3 The change
 
@@ -1330,8 +1428,9 @@ when `git check-ref-format` refuses the branch it gives.
 A declaration is TOML in the family's kind format (section 9), and flume
 reads the fields below of it. A repository's is `.config/flume.toml` at
 the base's revision (20); a launch's is the file `flume launch --kinds
-<file>` names; flume's own is built in. Prompt paths are relative to the
-declaration's file. A repository's binding (105) is the `[profiles]`
+<file>` names; a package's is the `kind.toml` at its root (weir C.4);
+flume's own are built in, one package per version. Prompt paths are
+relative to the declaration's file. A repository's binding (105) is the `[profiles]`
 table of the same file, read at its default branch (20). That is
 `origin/HEAD`'s revision after one fetch when the repository has a
 remote, and the local default branch's otherwise. The place is then cut
@@ -1390,8 +1489,9 @@ the kind format's own names. A kind's `[kinds.<kind>.agents]` table
 gives settings to every stage's agent, and a stage's own `agents` come
 before it (32). A `[kinds.<kind>]` table holding `agents` and no
 stages declares no kind: it gives settings to the kind of that name,
-whichever declaration the name resolves to (19), flume's own fix@1,
-chore@1 and change@2 among them, and names one stage's by
+whichever kind the name resolves to (19), at whichever source and
+version (154, 158), flume's own fix@1, chore@1, change@1 and change@2
+among them, and names one stage's by
 `[kinds.<kind>.agents.stages.<stage>]`; settings for a stage the kind
 does not hold refuse the launch naming the stage (4). A repository's
 declaration resolved over by a launch's gives the place nothing of its
@@ -1414,6 +1514,35 @@ naming the stage (4). The `[prompt]` table is flume's, beside
 `[profiles]`, the repository's and no part of any kind, and names the
 goals' file alone; a goals file the
 revision does not hold refuses the launch naming it (4).
+
+A kind's identity is written `<source>/<name>@<version>`, as
+`flume/change@2` or `acme/review@1` (weir C.4). flume's own source is
+`flume`, the repository's own `repo` and a launch's `launch`. `flume
+launch --kind` takes `change`, `change@1` or `flume/change@1` (154),
+and so does a role's `kind` (C.7). A repository's lock is
+`.config/flume.lock` at the base's revision (20), and the host's
+`$XDG_CONFIG_HOME/flume/flume.lock`, both in the kind format's lock form
+(weir C.4):
+
+```toml
+[[kinds]]
+kind = "flume/change@1"
+hash = "sha256:9c1f…"     # the content's hash (156)
+
+[[kinds]]
+kind = "acme/review@1"
+hash = "sha256:4e07…"
+```
+
+`flume kinds lock <identity>…` records each kind it names, at the hash
+of its content as the host holds it or as flume carries it, in
+`.config/flume.lock` of the working copy it runs in, beside any other
+version of the same kind it records; `--host` writes the host's lock
+instead, and `--remove` takes an entry out. It reads
+only what the host already holds, fetches nothing, and commits nothing:
+its caller commits a repository's lock (155). A package's agents tables
+and a kind's declaration from any source carry no `env`, and name a
+program by its name alone (158).
 
 | deliverable (24) | spelled in `deliverables` |
 |---|---|
@@ -1442,7 +1571,8 @@ path of the stage's notes (141). No part fills in a stage's standing
 instructions (148). `flume prompt <place> <stage>` renders a stage's
 standing prompt and prompt and starts nothing (29).
 
-flume's own kinds, their prompts shipped with flume. Each stage's text
+flume's own kinds, their prompts shipped with flume, each version a
+package of its own with its prompts inside it (157). Each stage's text
 that is the same for every place, what the stage is for, how it works
 and what it delivers, is its standing instructions, and its prompt
 holds the rest, the place's facts and then its run's:
@@ -1451,7 +1581,8 @@ holds the rest, the place's facts and then its run's:
 |---|---|---|---|---|
 | **fix@1** | `fix/<name>` | yes | yes; `code` | `code`: `commits` |
 | **chore@1** | `chore/<name>` | yes | yes; `code` | `code`: `commits`; fix@1's stage under a prefix of its own, so a branch's name says which it was |
-| **change@2** | `change/<name>` | no | yes; `code` | `construct`: `change`; `code`: `tasks`, repeating per task group (140); `verify`: `archived`. The verify prompt checks the work against the change and commits its report as `verify.md` in the change's directory. It then archives the change on the place's branch, the report with it, or stops short finding, with what fails, which sends the place back to code (131). The code prompt, sent again with a failed submission's or a finding's words, fixes what they name and records the fix as a task of the change, ticked. The code stage's standing instructions hold what every repetition is told alike; its prompt holds the place's and the change's paths, then its group, the notes' path and its words, which come last (141, 148). A place launched at change@1, whose code stage did not repeat, keeps it (21), and a repository that wants it still declares it |
+| **change@2** | `change/<name>` | no | yes; `code` | `construct`: `change`; `code`: `tasks`, repeating per task group (140); `verify`: `archived`. The verify prompt checks the work against the change and commits its report as `verify.md` in the change's directory. It then archives the change on the place's branch, the report with it, or stops short finding, with what fails, which sends the place back to code (131). The code prompt, sent again with a failed submission's or a finding's words, fixes what they name and records the fix as a task of the change, ticked. The code stage's standing instructions hold what every repetition is told alike; its prompt holds the place's and the change's paths, then its group, the notes' path and its words, which come last (141, 148). The newest of flume's change, taken by a launch that names no version where no lock records one (154) |
+| **change@1** | `change/<name>` | no | yes; `code` | `construct`: `change`; `code`: `tasks`, not repeating, one agent for the whole change; `verify`: `archived`, as change@2's. Kept beside change@2 (22): a repository picks it by recording `flume/change@1` in its lock, a launch by naming `change@1`, and a place launched at it keeps it (21) |
 
 sounding hands flume each elaboration kind in the launch, as `flume
 launch --kinds <file>`. An elaboration kind is written in the same
@@ -1747,6 +1878,14 @@ lives:
   (132), stated by
   whoever administers the host. An address the table names nothing for
   is woken by nothing.
+- The packages of kinds from outside the host holds are host data,
+  each a directory under `$XDG_DATA_HOME/flume/kinds/`
+  (`~/.local/share/flume/kinds/`), `<source>/<name>@<version>/`, holding
+  the package as it travels, its `kind.toml` at its root (157, 159).
+  Several versions of one kind lie side by side, and flume reads them
+  and never writes them. The host's lock is
+  `$XDG_CONFIG_HOME/flume/flume.lock`, of the host's configuration
+  (155, C.2).
 - What readiness makes for a place, its toolchain among it, is kept in
   the place's own git directory, `git rev-parse --git-dir` in the
   place, and goes with the worktree.
@@ -1861,8 +2000,9 @@ The rest of the stack, which a model builds on unless it says why not:
 - Three surfaces answering from one core, each a plugin kept outside the
   core as sluice keeps its plugins:
   - a command line: `flume launch`, `status`, `tell`, `stop`, `retry`,
-    `finish`, `drop`, `done`, `tidy` and `prompt`; `needs` for an
-    agent; and `settle`, which the two plugins run;
+    `finish`, `drop`, `done`, `tidy` and `prompt`; `kinds lock`, which
+    writes a lock (155); `needs` for an agent; and `settle`, which the
+    two plugins run;
   - a Claude Code plugin that gives every session `/launch` and serves
     `status` over MCP. flume loads it into every agent it starts, and
     its hooks hold the asking mark, the stop check and the guard, and
@@ -2231,6 +2371,28 @@ These are not requirements.
 - **S58.** A repository's kind gives a stage standing instructions
   that ask for `{{place}}`. Its launch is refused naming the stage, and
   makes nothing (4, 148).
+- **S59.** A repository's lock records `flume/change@1`. A launch of
+  `change` naming no version runs change@1, its code stage one agent for
+  the whole change; a launch of `change@2` in the same repository runs
+  change@2, repeating its code stage. Status names `flume/change@1` and
+  `flume/change@2`, each with its hash (19, 22, 154, 155).
+- **S60.** The host holds acme/review@1, and a repository declares no
+  `review` and locks nothing. A launch of `review` is refused naming
+  acme/review@1 as recorded in no lock, and makes nothing. Once
+  `flume kinds lock acme/review@1` is run in the repository and its lock
+  committed on the base, the same launch runs it, and status names
+  `acme/review@1` with its hash (4, 155, 159).
+- **S61.** A prompt of the host's acme/review@1 is edited after the
+  repository locked it. The next launch of `review` is refused naming
+  the kind and both hashes; a place of it launched before the edit runs
+  on with the content it launched with (4, 21, 156).
+- **S62.** The host holds acme/review@1 and beta/review@3, both locked.
+  A launch of `review` is refused naming both; a launch of
+  `beta/review` runs beta/review@3 (4, 154).
+- **S63.** A package names its standing instructions at
+  `../shared/standing.md`, and another gives its agents an `env`. Each
+  launch is refused, the first naming the path outside its package, the
+  second the field, and makes nothing (4, 157, 158).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

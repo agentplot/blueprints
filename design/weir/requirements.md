@@ -153,7 +153,14 @@ redefine these.
   no used item name.
 - **lock**: what keeps one machine's writers in turn.
 - **kind** (of work): a versioned, ordered list of stages, declared by
-  a tool, a repository or a launch.
+  a tool, a repository, a launch or a package, and named by its source,
+  its name and its version.
+- **source** (of kinds): a name for where kinds come from: a tool's own,
+  a repository's own declaration, a launch's, or one from outside.
+- **package** (of a kind): one kind at one version as it travels from
+  one place to another, its declaration with every part it names.
+- **lock** (of kinds): a list of kinds by source, name and version, each
+  with the hash of its content.
 - **stage**: one step of a kind, worked by one agent, ending on its
   deliverable or, for a conversation, on its caller's word.
 - **deliverable**: what a stage must produce for the stage to end, in
@@ -420,9 +427,32 @@ redefine these.
     stages it names, and is never refused as a kind with no stage.
 58. The same declaration always reads the same, and reading it changes
     nothing. Which declaration a name resolves to, among a tool's own,
-    a repository's and a launch's, and how settings given to a kind
-    declared elsewhere join that kind's own, are the reader's rule,
-    never the format's.
+    a repository's, a launch's and the packages a reader holds, and how
+    settings given to a kind declared elsewhere join that kind's own,
+    are the reader's rule, never the format's.
+88. A kind is named by its identity: its source, its name and its
+    version. Within one source a name and a version name one kind, and
+    one source may hold several versions of a name. A declaration holds
+    one version of each name it declares; versions side by side are in
+    packages, one each.
+89. A package holds the declaration of exactly one kind and every part
+    that declaration names, its prompts and standing instructions, and
+    nothing it names lies outside the package: no part outside it, and
+    no other kind, so no stage extends, includes or hands over to
+    another kind's. A package that declares no kind or more than one, or
+    names a part outside itself, is refused naming the field. A package held under an identity whose
+    name or version is not its declaration's is refused naming both.
+90. A package's content hash is the family's content hash over every
+    part of the package, each with where it lies within the package, so
+    the same package hashes the same on every machine, wherever the
+    package lies and whenever its parts were written.
+91. A lock records kinds by identity, each with its content hash. It
+    holds an identity at most once. A reader runs a kind from outside,
+    of any source but its own tool's, a repository's own and a launch's,
+    only where a lock records it, and refuses one whose content hash is
+    not the lock's, naming the kind and both hashes. Reading a lock
+    changes nothing, and which locks a reader reads, and how it chooses
+    among versions, are the reader's rule.
 
 ### A.9 Cadence
 
@@ -539,6 +569,13 @@ redefine these.
 82. The guarantee: the same declaration gives the same kinds, reading
     changes nothing (58), and a section the reader does not know is
     returned unread and unrefused (56).
+92. **read-package**: given a package and the identity it is held at,
+    its one kind and its content hash; or that it could not be read,
+    with the field named (89, 90).
+93. **read-lock**: given a lock, every identity it records with its
+    hash; or that it could not be read, with the field named (91). The
+    guarantee of both: the same input gives the same answer, and reading
+    changes nothing.
 
 ### B.5 The clock
 
@@ -775,6 +812,28 @@ naming the field (57); how a reader works a repetition is its own rule
 written; how a reader sends the text, and whether it fills anything in
 it, are the reader's (58).
 
+An identity is written `<source>/<name>@<version>`, as `flume/change@2`
+or `acme/review@1`: the source and the name each a key the format
+allows under `kinds`, the version a whole number of at least 1 (88). A
+tool's own source is the tool's name, a repository's own `repo` and a
+launch's `launch`, and no source from outside takes one of these. A
+package is a directory whose `kind.toml` at its root is a declaration
+of one kind, every `prompt` and `standing` path in it relative to that
+file and inside the directory, with no `..` segment, no absolute path
+and no link leading out (89). Its content hash is `sha256:` and the
+lowercase hex sha256 of the concatenation, in byte order of the paths,
+of each regular file's path relative to the root, a NUL byte, its length
+in decimal, a NUL byte and its bytes (90). A lock is TOML, an array of
+`kinds` tables, each with `kind`, an identity, and `hash`, a content
+hash; a repository's is `.config/<tool>.lock` beside its declaration
+(91):
+
+```toml
+[[kinds]]
+kind = "acme/review@1"
+hash = "sha256:4e07…"
+```
+
 A kind's `agents` table holds settings as written, and each
 `agents.stages.<stage>` table settings for that stage, as written; `read-kinds` returns
 them with the kind (52). A `[kinds.<kind>]` table holding `agents` and
@@ -917,7 +976,8 @@ The rest of the stack, which a model builds on unless it says why not:
   brief and send records and the inbox's layout), `weir-adapters` (the
   folder drop, the meeting file and the signals-folder import),
   `weir-branch` (the write protocol), `weir-kinds` (the kind format,
-  read and checked) and `weir-cadence` (five-field cron, caught up
+  read and checked, with its packages, their content hash and locks)
+  and `weir-cadence` (five-field cron, caught up
   once), with the conformance pack beside them.
 - JSON Lines in flight, GNU recutils at rest (`recfix`), TOML for
   declarations, RFC 3339 times, sha256 for content hashes, five-field
@@ -1002,10 +1062,11 @@ rules; each ruling below is the user's, on their card of 2026-10-26.
   brief (39), and the move's note is kept. A second imported move's word
   is one of no vocabulary; that move is not taken, its signal arrives
   unmoved, and the import reports it.
-- **S10.** flume reads its own declaration: `fix@1` with one stage
-  delivering commits, and `change@2` with construct, code and verify
-  delivering a change written, tasks ticked and a change archived, its
-  code stage repeating per task group.
+- **S10.** flume reads its own kinds, one package per version:
+  `fix@1` with one stage delivering commits, and `change@1` and
+  `change@2` side by side, each with construct, code and verify
+  delivering a change written, tasks ticked and a change archived,
+  change@2's code stage repeating per task group.
   Each reads the same twice, and reading changes nothing.
 - **S11.** sounding hands flume an elaboration kind. flume reads its
   stages and ignores the elaboration section; sounding reads both.
@@ -1024,6 +1085,13 @@ rules; each ruling below is the user's, on their card of 2026-10-26.
 - **S16.** A case in the pack cites a clause number that names nothing,
   or a clause of Part A is cited by no case. The pack's check fails
   naming the number.
+- **S17.** A package's `kind.toml` names its prompt `../prompts/code.md`.
+  It is refused naming the stage's `prompt`. The same package with the
+  prompt moved inside it reads, and its content hash is the same on two
+  machines where it lies at different paths.
+- **S18.** A lock records `acme/review@1` at one hash, and the package
+  held at that identity has one prompt changed by a byte. Its content
+  hash differs, and a reader refuses the kind naming it and both hashes.
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
