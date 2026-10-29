@@ -391,8 +391,9 @@ redefine these.
     caller. It may hold settings for every stage's agents, which a
     stage's own settings come before.
 53. A stage's declaration holds its name, its prompt, and its
-    deliverable or that it is a conversation. It may hold its agents
-    with their settings, whether it waits on its caller's word, how
+    deliverable or that it is a conversation. It may hold its standing
+    instructions, text every agent of the stage starts with alike, its
+    agents with their settings, whether it waits on its caller's word, how
     long its agent may be quiet before the stage is stuck, what it
     makes besides its deliverable, each a non-empty name, and whether
     it repeats per task group, worked one group of its change's tasks
@@ -720,6 +721,7 @@ instructions = "Keep each commit to one fix."
 [[kinds.bump.stages]]
 name = "code"
 prompt = "prompts/bump-code.md"                   # relative to the declaration's file
+standing = "prompts/bump-code-standing.md"        # its standing instructions, relative to the declaration's file; none when omitted (53)
 deliverables = ["commits"]                        # exactly one, spelled as below (54)
 agents = [{ program = "claude", model = "opus" }] # with their settings (53)
 quiet = "45m"                                     # how long the agent may be quiet: a whole number of s, m or h (57)
@@ -769,6 +771,9 @@ reader's rule (58), since readers differ.
 any other, or the field on a stage whose deliverable is not `tasks`,
 naming the field (57); how a reader works a repetition is its own rule
 (58).
+`standing` is a path as `prompt` is, and `read-kinds` returns it as
+written; how a reader sends the text, and whether it fills anything in
+it, are the reader's (58).
 
 A kind's `agents` table holds settings as written, and each
 `agents.stages.<stage>` table settings for that stage, as written; `read-kinds` returns
