@@ -779,15 +779,18 @@ redefine these.
      naming the host and whether its holder is the host's driver or a
      wait, renewed by a leased push from the value read (45) whenever a
      third of the deployment's lease has passed since it was last
-     renewed. No mark on the remote means that no other host has shown
-     itself, so the host there alone pays no push: a driver that finds
-     none takes the requests in and pushes none, and a wait on a host
-     where no driver lives, finding none, pushes the mark leased on its
-     absence and takes them in. A driver takes the mark from a wait at
-     once, read in the fetch of the branch its next round makes; any
-     host takes it once it has stood unchanged for the deployment's
-     lease by the taker's own observation (73), never by the hosts'
-     clocks agreeing; and a wait that holds it lets it go when it ends.
+     renewed, never at each pass of a driver's loop. A driver pushes
+     the mark when it starts, leased on its absence, so that two
+     drivers on one branch see each other; a wait on a host where no
+     driver lives, finding none, pushes it the same way and takes the
+     requests in; and a step pushes none, taking them in where the mark
+     is its host's or none stands. A branch one host reaches
+     with no driver, by waits and steps alone, keeps no mark between
+     them. A driver takes the mark from a wait at once, read in the
+     fetch of the branch its next round makes; any host takes it once
+     it has stood unchanged for the deployment's lease by the taker's
+     own observation (73), never by the hosts' clocks agreeing; and a
+     wait that holds it lets it go when it ends.
      There, a request's entry is advanced only on the host that takes
      the branch's requests in: a round on a host that finds the mark
      another's withdraws its own entries of the branch's requests, none
