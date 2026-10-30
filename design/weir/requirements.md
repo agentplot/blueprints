@@ -164,7 +164,7 @@ redefine these.
 - **stage**: one step of a kind, worked by one agent, ending on its
   deliverable or, for a conversation, on its caller's word.
 - **deliverable**: what a stage must produce for the stage to end, in
-  one of six forms.
+  one of seven forms.
 - **conversation**: a stage with no deliverable, which ends on its
   caller's word.
 - **elaboration kind**: a kind with an elaboration section, read by
@@ -405,9 +405,10 @@ redefine these.
     makes besides its deliverable, each a non-empty name, and whether
     it repeats per task group, worked one group of its change's tasks
     at a time.
-54. A deliverable is one of six forms: commits; a change written; tasks
-    ticked; a change archived; a report at a path; a committed report
-    at a path. The format spells each one way.
+54. A deliverable is one of seven forms: commits; a change written;
+    tasks ticked; a change archived; a report at a path; a committed
+    report at a path; a plan, which an agent puts for review from its
+    program's planning mode. The format spells each one way.
 55. An elaboration kind is a kind with an elaboration section, which
     declares the inputs a round is handed beyond its opener's, the
     sections a conclusion adds, how a round ends, whether earlier
@@ -419,7 +420,7 @@ redefine these.
     know, and never changes a declaration.
 57. A declaration is checked whole: a kind with no stage, a stage with
     no name or prompt, a field of the wrong shape, a deliverable not
-    of the six, or a stage that repeats per task group and does not
+    of the seven, or a stage that repeats per task group and does not
     deliver tasks ticked, is refused naming the field. A version left out
     reads as the first. A kind's table that holds settings for its
     agents and no stages declares no kind: it is read as settings given
@@ -748,6 +749,7 @@ lands = true              # whether the work is submitted after the last stage
 
 [kinds.bump.agents]       # settings for every stage's agents; a stage's own come first (52)
 model = "sonnet"
+mode = "acceptEdits"      # how far the agent may act without asking, as its program names it; the reader's to check
 
 [kinds.fix.agents]        # settings for a kind of that name declared elsewhere, a tool's own fix among them (57)
 model = "opus"
@@ -795,6 +797,7 @@ lands = ["books/", "design/"]
 | a change archived | `archived` |
 | a report | `report:<path>` |
 | a committed report | `committed:<path>` |
+| a plan | `plan` |
 
 `read-kinds` (81) returns every kind with its stages and every section
 as read; a reader keeps the sections it knows. A table or field the

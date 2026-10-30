@@ -32,7 +32,8 @@ for each and handing it the stage's prompt. Each agent commits its work
 in the place. A stage ends when what it was to deliver exists, or when
 its agent says what it needs to go on, and never because the agent went
 quiet. A stage that is a conversation with the operator ends when its
-caller says so. Where the kind lands its work, flume submits the place's
+caller says so, and so does a stage whose agent plans, once its caller
+accepts the plan it put for review. Where the kind lands its work, flume submits the place's
 branch to the repository's merge queue after the last stage. A
 submission the merge queue fails sends the place back to a stage the
 kind names. A place moves on when its agent goes quiet, when the merge
@@ -84,7 +85,8 @@ redefine these.
 - **launch**: one ask to start a piece of work: a repository, a kind, a
   name, a base, and the caller's brief, settings, stages on hold,
   submission's hold and mark, and, where it gives them, the stream it
-  runs in, the intent it serves with the intent's brief, and the goals.
+  runs in, the intent it serves with the intent's brief, the goals and
+  the work's points.
 - **brief**: what the work is, as the caller wrote it.
 - **mark**: words of a caller's own that a launch carries, by which
   callers find places.
@@ -120,6 +122,9 @@ redefine these.
   has no deliverable and ends only on its caller's finish.
 - **deliverable**: what must exist for a stage that is not a
   conversation to end, in one of the forms of 24.
+- **plan**: what an agent working in its program's planning mode puts
+  for review when it would leave that mode: the work it would do, as
+  its program writes it (24, 163).
 - **prompt**: the text a stage's agent is sent to begin the stage,
   filled from the launch, the place and a retry's words. It follows the
   agent's standing prompt (148).
@@ -156,8 +161,17 @@ redefine these.
 - **agent**: one process of a coding agent program, started by flume to
   work one stage in one place.
 - **settings**: what an agent starts with beyond its prompt: its
-  program, its model, its instructions, its environment, and where in
-  the terminal it runs, such as beside a pane its caller names.
+  program, its model, its mode, its instructions, its environment, and
+  where in the terminal it runs, such as beside a pane its caller names.
+- **mode**: how far an agent may act in its place without asking a
+  person, one of the modes its program names, such as only reading and
+  planning, or editing files without asking (162).
+- **points**: a caller's measure of how much agent work a place's work
+  is, a number of the Fibonacci scale, 1, 2, 3, 5, 8, 13, 21 and on,
+  given at the launch; flume never estimates one (165).
+- **pace**: of a stream, how many points its places may start in any
+  span of a length the host's configuration names, such as 13 a day
+  (167).
 - **stream**: a named share of a host's work, which the host's
   configuration declares with its own bound on agents running, its
   priority and its pool; every place runs in one (143).
@@ -195,15 +209,23 @@ redefine these.
   caller's word before it starts.
 - **room**: of a host or a stream, how many more agents of flume's
   places it may run at once: the bound its administrator states for it,
-  less its agents running (70, 143).
+  less its agents running (70, 143); of a stream, for a place's first
+  start, also its points bound less its points in flight, and its pace
+  less what it started in the span (166, 167).
+- **in flight**: of a place's points, counted while its work is with
+  its agents: from its first stage's start until its last stage
+  delivers, and again from a fix round's start until it delivers; a
+  place launched whose first stage has not started holds its points
+  **queued** (165).
 - **priority**: a place's rank among the places waiting for room in its
   stream, given at the launch and changed by its caller after; higher
   starts first, equals in the order they came to wait. A stream's
   priority, which the host's configuration states, ranks the streams
   themselves (70, 143).
 - **waiting for room**: of a stage, that it may start and waits only
-  for its host or its stream to have room, or for an account of its
-  pool to be usable (70, 145).
+  for its host or its stream to have room, its stream's points bound or
+  pace among it for a place's first start, or for an account of its
+  pool to be usable (70, 145, 166, 167).
 - **stuck**: of a stage, that its agent has been quiet past the stage's
   limit with nothing delivered and nothing said.
 - **stalled**: of a place, that its next move has been its caller's for
@@ -222,14 +244,19 @@ redefine these.
   and nothing said.
 - **stage state**: where a stage stands: not reached, on hold, waiting
   on its place's readiness, waiting for room, refused, starting, started, begun, never begun, stuck,
-  lost, stopped by its caller, delivered, ended short, or finished.
+  lost, stopped by its caller, for review, delivered, ended short, or
+  finished.
 - **retry**: a caller's ask that a place start one stage of its kind
   afresh, the current stage unless the retry names another, with words
   of the caller's for its prompt; or, naming the submission, that flume
   submit the place again.
 - **tell**: words a caller hands the agent of a place's current stage.
 - **stop**: a caller's ask that a place's agent end.
-- **finish**: a caller's word that a conversation is done.
+- **finish**: a caller's word that a conversation is done, or that the
+  plan a stage put for review is accepted (163).
+- **for review**: of a stage that delivers a plan, that its agent put a
+  plan for review and is quiet, and the stage waits on its caller's
+  finish, tell or retry (163).
 - **drop**: a caller's word that a place's work is given up.
 - **done**: a caller's word that the work of a place whose kind does
   not land is complete.
@@ -297,8 +324,13 @@ redefine these.
    does not hold, naming its identity (155, 159); one whose kind's
    content does not match its lock's hash, naming the kind and both
    hashes (156); one whose package refers outside itself or names
-   another identity than the one it is held at (157); and one whose kind
-   names something a host owns, naming the field (158).
+   another identity than the one it is held at (157); one whose kind
+   names something a host owns, naming the field (158); one where a
+   stage's agent resolves to a mode its program does not name, naming
+   the mode, the stage and where it came from (162); one whose points
+   are not a number of the Fibonacci scale, naming them, and one that
+   gives no points where its place's stream states a points bound or a
+   pace, naming the stream (165).
 5. Every stage whose prompt asks for the brief gets it whole and as the
    caller wrote it. flume never rewrites, shortens, summarises or
    judges a brief.
@@ -309,13 +341,13 @@ redefine these.
    kind or for any one of them, the stages it puts on hold, each with its words (130), whether its
    submission waits on its word, the place's priority (70), the stream
    it runs in (143), the intent it serves with the intent's brief (147),
-   the goals (149), the
+   the goals (149), the work's points (165), the
    recipients of its ends (43), and a mark. A recipient the launch
    names none of is the session that launched it, as the terminal names
    it, or none where it names none. flume keeps the mark with the place and reports it, and
    decides nothing by it.
 8. A place's kind, brief, base, stream, intent with its brief and goals,
-   and the settings its launch carries, are fixed by its launch, and
+   points, and the settings its launch carries, are fixed by its launch, and
    nothing after the launch changes them; the host's configuration of
    its agents' settings is read at each start (32), and the account each
    agent runs under is chosen at its start (145). The launch names the stages and the submission on hold, and a caller adds to a place after
@@ -376,8 +408,11 @@ redefine these.
     resolved at its launch: the kind's identity and its content as read
     then. A later change to any declaration, lock or package the host
     holds never changes a place already launched.
-22. flume's own kinds are fix@1, chore@1, change@1 and change@2, and
-    all four land. **fix** is a code stage, which delivers commits. Its
+22. flume's own kinds are fix@1, chore@1, change@1, change@2 and
+    plan@1, and all five land. **plan** is a plan stage, which delivers
+    a plan its caller accepts (163), and then fix's code stage, which
+    works to the plan accepted; a failed submission sends it back to
+    code. **fix** is a code stage, which delivers commits. Its
     first stage starts in a place that could not be made ready, and a
     failed submission sends it back to code. **chore** is fix's one code
     stage under a prefix of its own, so a branch's name says which it was
@@ -413,7 +448,7 @@ redefine these.
     section of a kind it does not know, such as the elaboration section
     sounding reads, and nothing else a declaration holds changes what
     flume does.
-24. Every deliverable is one of six forms, each read where it lives:
+24. Every deliverable is one of seven forms, each read where it lives:
     - **commits**: the place's branch holds a commit made since the
       stage started;
     - **change written**: the place's branch holds the place's change
@@ -430,7 +465,10 @@ redefine these.
     - **committed report**: a file inside the place, at the path the
       stage's declaration names, in a commit made since the stage
       started. It stays on the place's branch after the place is tidied
-      (67).
+      (67);
+    - **plan**: the agent's own record says it put a plan for review
+      since the stage started, and the plan it names was written since
+      then; the newest such plan is the stage's (163).
 25. A deliverable counts only when made since its stage started. A
     commit was made since then when the branch's head reaches it and the
     head the stage started at does not. A report was written since then
@@ -582,13 +620,13 @@ redefine these.
     it. An agent whose state or own work flume cannot read is not quiet,
     and status names what flume cannot read. An end flume asked for that
     the agent did not take is reported as a failure, never as done.
-32. An agent's program, model and instructions are resolved when it
-    starts, each from the first of these that gives it:
+32. An agent's program, model, mode and instructions are resolved when
+    it starts, each from the first of these that gives it:
     1. the launch's settings (7);
     2. the host's configuration, for the place's repository and kind,
-       for the model and the instructions alone;
-    3. the host's configuration, for the kind, for the model and the
-       instructions alone;
+       for the model, the mode and the instructions alone;
+    3. the host's configuration, for the kind, for the model, the mode
+       and the instructions alone;
     4. the repository's settings for a kind it does not declare, given
        to whichever declaration the kind's name resolves to (19),
        flume's own among them;
@@ -615,16 +653,20 @@ redefine these.
     that the host's terminal cannot run, or an account's value naming a
     variable the login environment lacks (29), leaves the stage
     refused, naming the program or the variable and where it came from,
-    and starts no agent, until a retry (27). Status reports each setting
+    and starts no agent, until a retry (27); so does a mode its program
+    does not name (162). Status reports each setting
     and each variable with the agent and where it came from, and the
-    agent program's own configuration on the host never chooses one.
+    agent program's own configuration on the host never chooses one,
+    but the mode where no layer gives one (162).
 33. Every agent carries an identity flume gives it, which names its
     repository, its place, its stage and which start of the stage it is,
     and which no other live agent on the host carries.
 34. flume answers on an agent's behalf only the agent program's
     question whether it may work in the place, and only when the agent
-    shows it. It never answers a question that widens what an agent may
-    do.
+    shows it; and, in a stage that delivers a plan, it declines the
+    agent's own ask to leave its planning mode, which keeps the agent
+    planning and widens nothing (163). It never answers a question that
+    widens what an agent may do, and never accepts a plan.
 35. flume judges an agent's start by evidence that the agent exists,
     never by the return of what started it. The evidence is the agent's
     own word that it started under its start's identity and the settings
@@ -713,19 +755,39 @@ redefine these.
      affinity goes an hour after the last place serving its intent is
      gone.
 161. At each start flume records what its agent is to run under: its
-     program, its account, and, for each variable its settings and flume
+     program, its mode where its settings give one (162), its account,
+     and, for each variable its settings and flume
      give its environment (32, C.4), a digest of the variable's name and
      value keyed by the start's secret, never the value. The agent's
      word that it started (35) is taken only where what it runs under
-     matches that record. An agent whose word shows another program, or
+     matches that record. An agent whose word shows another program,
+     another mode, or
      a variable missing or with another value, as when a terminal brings
      a pane back without its environment or a person starts the program
      again by hand, is not the stage's agent: flume ends it once quiet
      (31) and starts the stage afresh under the settings resolved then,
      with no caller's word and counting toward no bound of the kind's
-     (112), and status says so, naming each variable that differed by
+     (112), and status says so, naming the mode it started in and each
+     variable that differed by
      its name alone (56). A fresh start that differs again is never
      begun (35), naming the same.
+162. An agent's mode is one of its settings (32): how far it may act in
+     its place without asking a person, named as its program names its
+     modes. Every layer of 32 may give it, the launch's, the host's, the
+     repository's and the kind's, for every stage or for one; a mode
+     names nothing a host owns (158), and a host that wants no
+     repository or kind to set its agents' reach states the mode in its
+     own layers, which come before theirs. Where no layer gives a mode,
+     flume gives the agent none, and the account's own configuration of
+     its program decides, as it decides everything else flume does not
+     give (144). A stage that delivers a plan starts its agent in its
+     program's planning mode whatever the layers give, and status names
+     the stage's deliverable as where that mode came from (163). The
+     mode is read at the agent's start, as the rest of its settings are,
+     and is what its start records (161), so an agent whose program
+     began in another mode, as when the account's configuration refuses
+     the one asked, is not the stage's agent. What the agent's mode lets
+     it do never widens what flume answers for it (34).
 
 ### A.5 Prompts
 
@@ -792,7 +854,8 @@ redefine these.
     agent may end turns, start own work and wait on it, be woken, ask
     and be answered any number of times, and no quiet terminal, ended
     turn or closed terminal ends the stage.
-40. A stage that has delivered ends once its agent is quiet. flume then
+40. A stage that has delivered ends once its agent is quiet, but for a
+    stage that delivers a plan, which ends on its caller's finish (163). flume then
     ends the agent and starts the next stage when the host has room for
     its agent (70), unless that stage waits on its caller's word (47). After the kind's last stage, flume submits a
     place whose kind lands (111), and any other place waits for its
@@ -801,7 +864,46 @@ redefine these.
      with the operator, and flume holds it to no quiet limit and no stop
      check, never reports it stuck, and never ends it on its own. A
      finish ends the agent once it is quiet, one that is not quiet only
-     when forced (31), and the stage then counts as delivered (40).
+     when forced (31), and the stage then counts as delivered (40). A
+     finish of a stage that delivers a plan accepts its plan, and ends
+     it the same way (163); a finish of any other stage is refused,
+     naming the place.
+163. A stage that delivers a plan starts its agent in its program's
+     planning mode (162), in which it reads the place and changes
+     nothing in it. Its deliverable exists once the agent puts a plan for
+     review (24). When the agent asks to leave its planning mode, flume
+     declines on its behalf, with flume's own words saying that its plan
+     is put for review and that notes or an acceptance will come, so the
+     agent stays in that mode (34). Once its plan exists and its agent is
+     quiet, the stage is for review: it does not end and flume does not
+     end its agent (40); the plan, with where it lives, is delivered to
+     each recipient of the place as an end is (43), once for each plan
+     put; and the place waits on its caller (130). Its caller answers by
+     a command it already has:
+     - a **tell** of its notes (53), which reaches the live agent, still
+       in its planning mode, so it revises the plan in its own session
+       and puts it again, delivered again;
+     - a **retry** naming the stage with its notes as words (49), which
+       starts a fresh agent in its planning mode, its prompt carrying
+       the plan last put for review before the notes, as a stop-short's
+       question stands before its answer;
+     - a **finish** (109), which accepts the newest plan put for review:
+       flume keeps a copy of that plan as it stands in the place's own
+       folder, ends the agent once it is quiet, one that is not quiet
+       only when forced (31), and the stage counts as delivered, so the
+       next stage starts as 40 and 47 allow, its prompt able to name the
+       plan accepted. A finish before any plan was put is refused,
+       naming the place.
+
+     A drop, and a done of a kind that does not land, end the stage as
+     they end any (52, 114). The stop check sends back an agent that
+     would go quiet before it put a plan (110). A stage for review is
+     never stuck (44) and waits on its caller, stalled as 130 says. Its
+     agent is live while it waits, so it counts toward the host's and
+     its stream's room (70); a caller that would free the room retries
+     with its notes rather than telling them. flume never accepts a plan
+     on its own and never judges one: whether a plan is good, and who
+     reads it, are the caller's.
 41. An agent stops short by saying so to flume, with its words, and
     saying which it does: it needs an answer before its stage can
     deliver, or it found work a stage before its own must do again
@@ -860,7 +962,8 @@ redefine these.
     declaration sets none. It runs from flume's first reading of the
     agent quiet with nothing delivered, and starts again whenever flume
     reads the agent not quiet or the place's head moves. An agent that
-    is asking, and a conversation's agent, are never stuck. flume never
+    is asking, a conversation's agent and a stage for review (163) are
+    never stuck. flume never
     ends a stuck stage, and a deliverable that appears afterward ends it
     as any other.
 118. An agent that has worked longer than its stage's limit with nothing
@@ -1032,14 +1135,22 @@ redefine these.
     words of a stop-short, and whether it needs an answer or found work, or of a failed
     submission; of a place
     waiting on its caller, the move it waits on, since when, a hold's
-    words and whether it is stalled (130); for the host and for each of
-    its streams, its agents running, the bound it states, its room, and
+    words and whether it is stalled (130); the place's points, and
+    beside them the time its newest submission spent in the merge queue
+    and the time its checks ran (165, 168); a stage for review's plan
+    with where it lives (163); for the host and for each of
+    its streams, its agents running, the bound it states, its room, its
+    points queued and in flight, and
     the places waiting for room in the order they would start, each with
-    its stream, its priority and since when (70, 143); and for each
+    its stream, its priority, its points and since when (70, 143); for
+    each stream, its points bound, its pace with the points started in
+    its span and when the next of them leaves it, and the tokens its
+    agents' own records gave (166 to 168); and for each
     pool, its accounts, each with its agents running and, while spent,
     until when (146).
 130. A place whose next move is its caller's, a stage or a submission on
-     hold (47), a stage ended short needing an answer (42), a stage
+     hold (47), a stage ended short needing an answer (42), a stage for
+     review (163), a stage
      reported lost (45), a prompt never begun (38), a readiness that failed (12),
      or a kind's last stage delivered where the kind does not land
      (114), waits on that move from the moment flume read it so, and
@@ -1126,7 +1237,9 @@ redefine these.
     place's next, starts only while the host's agents running, every
     caller's and every stream's counted together, are under the host's
     bound, its stream's agents running are under the stream's, and an
-    account of its pool is usable (145); otherwise it waits for room, a
+    account of its pool is usable (145), and, for a place's first start,
+    its stream's points bound and pace leave room for its points (166,
+    167); otherwise it waits for room, a
     wait that is the host's and never its caller's (130). When a settle
     finds room it starts the stages waiting for it, streams of higher
     priority first and, within a stream, places of higher priority
@@ -1153,7 +1266,8 @@ redefine these.
 143. A host's configuration may declare streams, each by a name, with
      its own bound on agents running, its priority among streams and the
      pool its agents' accounts come from (144); every place runs in
-     exactly one. A place's stream is the one its launch names, else the
+     exactly one. A stream may also state a bound on its points in
+     flight (166) and a pace (167). A place's stream is the one its launch names, else the
      stream of the intent it serves (147), else the one the host's
      configuration names for its repository and kind, for its
      repository, or for its kind, in that order, else the host's default
@@ -1167,6 +1281,63 @@ redefine these.
      (132) are the host's alone. A caller names a stream by
      its name, and the name is all a caller needs of a stream. Status
      gives each place's stream and where it came from (56).
+165. A launch may give its work's points: one number of the Fibonacci
+     scale, 1, 2, 3, 5, 8, 13, 21 and on, which its caller sets and
+     flume never estimates, changes or judges. Points belong to the
+     place, the unit of work its caller estimated, and never to a stage:
+     a caller estimates the work, not the kind's steps, which are the
+     kind's. They measure its agents' work alone; the time the merge
+     queue spends testing and landing it is the machine's, which the
+     merge queue measures and flume reports beside the points, never in
+     them (168). A place's points are queued from its launch until its
+     first stage starts, and in flight from then until its last stage
+     delivers, and again from a fix round's start, by failed submission
+     or finding (131), until the last stage delivers again; between
+     stages, and while its place waits on its caller, they stay in
+     flight, since the work is not done. Once its work is over they are
+     neither. A launch that gives no points while its place's stream
+     states a points bound or a pace is refused, naming the stream (4):
+     flume counts no guess against either. On a stream that states
+     neither, points are only reported.
+166. A stream's points bound caps its places' points in flight together,
+     beside its bound on agents running, which stays, since accounts and
+     their usage limits count the sessions that run at once. A place's
+     first start waits for room while its stream's points in flight and
+     its own would pass the bound, unless none are in flight, so a place
+     larger than the bound runs alone; within a stream such a place
+     holds the first starts behind it, so smaller places never pass it
+     by for ever, and it holds no other stream's starts and no later
+     stage of a place already started. A fix round's start puts its
+     place's points in flight again whatever the bound, since work begun
+     is finished before more is started, and waits only as 70 says for
+     agents.
+167. A stream's pace is a number of points and a span, an hour, a day or
+     a week. A place's first start charges its points to its stream at
+     that moment, and a start waits for room while the points its stream
+     started in the span just past and its own would pass the pace,
+     unless none were started in it, so a place larger than the pace
+     starts alone once the span is clear. The span is rolling, the one
+     that ends at each start, never a calendar's, so a stream keeps its
+     rate over every such span and never spends twice its pace across a
+     boundary. Pace is no priority: priority orders what starts (70), and
+     pace caps how fast a stream spends; a place within a stream's pace
+     still waits its turn by priority. A charge stands once made, the
+     place's work dropped among it, and no later stage or fix round
+     charges again. A stream that has spent its pace starts no first
+     start until the span frees, and status says when the next charge
+     leaves the span (56). The charges are kept in the host's own
+     documents (153), so every flume process honours them and a place
+     tidied leaves its charge behind.
+168. flume reports beside a place's points what the machine spent on it:
+     the time its newest submission spent in the merge queue, from
+     submission to outcome or so far, and the time its checks ran, as
+     the merge queue's records give them, read where they live when
+     status is asked (58, 99), or that they are unknown. It
+     reports each stream's tokens as its agents' own records give them
+     (152), counted at each agent's end into the stream's document (153)
+     and given over the last day and the last week. flume limits nothing
+     on tokens, since they are known only once spent, and on machine
+     time, which is the merge queue's.
 71. flume submits a place's work, and an agent never does. flume submits
     only places whose kind lands (111), and reads each outcome from the
     merge queue, never from an agent's words or its terminal.
@@ -1270,7 +1441,8 @@ redefine these.
      under its start's identity and the settings its start recorded,
      with flume's guard and stop check in force; or that it started
      without them, naming each variable that differs by its name and
-     whether its program did; or unknown (35, 77, 161).
+     whether its program or its mode did, with the mode it began in; or
+     unknown (35, 77, 161, 162).
 89. **received**: given an agent and a text, whether the agent received
     the text as a prompt, by its own word where the program gives one,
     or unknown (38).
@@ -1298,7 +1470,14 @@ redefine these.
      for the limit to reset, or unknown (146).
 152. **usage**: given an agent, how much of its input its own record
      says was read from the prompt cache, written to it, and neither, on
-     its first request and over its session, or unknown (56, 148).
+     its first request and over its session, and how much it wrote out
+     over its session, or unknown (56, 148, 168).
+164. **plan**: given an agent working in its program's planning mode,
+     the newest plan its own record says it put for review, with where
+     the plan lives and when it was written, or none, or unknown; and
+     each ask of the agent's to leave that mode declined with flume's
+     words, so it stays in it, or that the program gives no way to
+     (24, 34, 163).
 93. The guarantee: each answer is what the agent's own record shows,
     and an answer the record does not give is unknown, never guessed
     from the terminal.
@@ -1360,8 +1539,10 @@ redefine these.
 99. **read-submission**: given a repository and a branch, the newest
     submission of that branch, whoever made it, with its target and its
     state: waiting, under test, landed with the commit it landed as,
-    failed with what it named, or withdrawn; or none; or that the merge
-    queue could not be read (63, 68, 71).
+    failed with what it named, or withdrawn; when it was submitted and,
+    once decided, when, and how long its checks ran, where the merge
+    queue records them; or none; or that the merge
+    queue could not be read (63, 68, 71, 168).
 101. The guarantee: landed is said only of a submission of that branch
      that the merge queue itself landed, never inferred from what the
      base holds (63). Submit removes no place (66, 113), and a pending
@@ -1389,7 +1570,9 @@ redefine these.
      where its stages write for flume what a declaration puts under
      `{{state}}` (123, C.7), which goes when the place is tidied (62).
 153. **host**: the host's own documents beside the places', each
-     account's spent time and each intent's affinity (146, 147), read
+     account's spent time, each intent's affinity, and each stream's
+     charges against its pace and its agents' tokens (146, 147, 167,
+     168), read
      and written as a place's held state is (102, 103), and reached by
      every flume process on the host (104).
 
@@ -1474,6 +1657,7 @@ model = "sonnet"
 
 [kinds.change.agents]     # settings for flume's own change@2, which the repository does not redeclare (32)
 model = "opus"
+mode = "acceptEdits"      # the agent's mode, one its program names (162); the account's own where no layer gives one
 instructions = "Work in British English."
 
 [kinds.change.agents.stages.verify]   # settings for one stage of it
@@ -1504,15 +1688,22 @@ gives settings to every stage's agent, and a stage's own `agents` come
 before it (32). A `[kinds.<kind>]` table holding `agents` and no
 stages declares no kind: it gives settings to the kind of that name,
 whichever kind the name resolves to (19), at whichever source and
-version (154, 158), flume's own fix@1, chore@1, change@1 and change@2
+version (154, 158), flume's own fix@1, chore@1, change@1, change@2 and plan@1
 among them, and names one stage's by
 `[kinds.<kind>.agents.stages.<stage>]`; settings for a stage the kind
 does not hold refuse the launch naming the stage (4). A repository's
 declaration resolved over by a launch's gives the place nothing of its
 own kind's settings. A repository's agents tables give a program, a
-model and instructions, and carry nothing of one host: an `env` in a
+model, a mode and instructions, and carry nothing of one host: an `env` in a
 repository's `.config/flume.toml` refuses the launch naming the field
-(4), since an environment is an account's alone (144, C.7). flume reads `on_fail` and `max_send_backs` on a
+(4), since an environment is an account's alone (144, C.7). `mode`
+is a field of every agents table, the kind's, a stage's, the
+repository's and the host's (C.7), and of a launch's settings, `flume
+launch --agent [<stage>.]mode=<mode>`; its values are the agent
+profile's (C.4), and one the profile does not name refuses the launch
+naming it, the stage and its layer (4, 162). A stage that delivers
+`plan` starts in the profile's planning mode whatever the layers give
+(163). flume reads `on_fail` and `max_send_backs` on a
 kind's last stage only, since under flume a stage fails only by its
 place's failed submission. A kind whose stage names more than one agent
 or more than one deliverable is refused (4, 23). flume ignores a
@@ -1565,14 +1756,19 @@ program by its name alone (158).
 | change archived | `archived` |
 | report | `report:<path>`, the path relative to the place, or under `{{state}}`, the place's own folder beside the held state, which goes with the place (C.7). A report under `{{state}}` only where the caller keeps it lasting (123) |
 | committed report | `committed:<path>`, the path relative to the place; the form for every other report a reader needs after the place is gone (123) |
+| plan | `plan`, the plan the agent puts for review where its program writes it (164, C.4); once accepted, flume's copy is `plan.md` in the place's own folder (163, C.7) |
 
 A prompt's parts are `{{brief}}`, `{{name}}`, `{{kind}}`, `{{stage}}`,
 `{{branch}}`, `{{base}}`, `{{place}}`, `{{change}}`, `{{report}}`,
-`{{made}}`, `{{group}}`, `{{notes}}`, `{{words}}`, `{{unready}}` and
+`{{made}}`, `{{group}}`, `{{notes}}`, `{{plan}}`, `{{words}}`, `{{unready}}` and
 `{{needs}}` (the way to stop short, C.4). `{{#words}}…{{/words}}` renders its body only when there are
 words: a retry's, with the question of the stop-short it answers before
-them (49), a failed submission's, the checks blamed and their logs or
-the files contested (112), or a finding's (131). A launch is refused when
+them (49), or, for a stage that delivers a plan, with the path of the
+plan last put for review before them (163), a failed submission's, the checks blamed and their logs or
+the files contested (112), or a finding's (131). `{{plan}}` is the
+path of the plan the place's last plan stage had accepted, flume's
+copy in the place's own folder, and fills only once one was (27,
+163). A launch is refused when
 a stage asks for `{{brief}}` and it gives none (4). Any other bare part
 with nothing to fill it leaves the stage refused (27), and
 `{{report}}` fills only for a stage whose deliverable is a report or a
@@ -1595,6 +1791,7 @@ holds the rest, the place's facts and then its run's:
 | **fix@1** | `fix/<name>` | yes | yes; `code` | `code`: `commits` |
 | **chore@1** | `chore/<name>` | yes | yes; `code` | `code`: `commits`; fix@1's stage under a prefix of its own, so a branch's name says which it was |
 | **change@2** | `change/<name>` | no | yes; `code` | `construct`: `change`; `code`: `tasks`, repeating per task group (140); `verify`: `archived`. The verify prompt checks the work against the change and commits its report as `verify.md` in the change's directory. It then archives the change on the place's branch, the report with it, or stops short finding, with what fails, which sends the place back to code (131). The code prompt, sent again with a failed submission's or a finding's words, fixes what they name and records the fix as a task of the change, ticked. The code stage's standing instructions hold what every repetition is told alike; its prompt holds the place's and the change's paths, then its group, the notes' path and its words, which come last (141, 148). The newest of flume's change, taken by a launch that names no version where no lock records one (154) |
+| **plan@1** | `plan/<name>` | no | yes; `code` | `plan`: `plan`, in the agent profile's planning mode, ended by its caller's finish (163); `code`: `commits`, fix@1's code stage with the plan accepted, `{{plan}}`, in its prompt, sent again with a failed submission's words |
 | **change@1** | `change/<name>` | no | yes; `code` | `construct`: `change`; `code`: `tasks`, not repeating, one agent for the whole change; `verify`: `archived`, as change@2's. Kept beside change@2 (22): a repository picks it by recording `flume/change@1` in its lock, a launch by naming `change@1`, and a place launched at it keeps it (21) |
 
 sounding hands flume each elaboration kind in the launch, as `flume
@@ -1617,19 +1814,20 @@ round, so the conclusion is never committed on `sounding/<name>`
 
 | operation | how Claude Code satisfies it |
 |---|---|
-| command | `claude` in the place, with flume's own Claude Code plugin loaded by `--plugin-dir`, which holds every hook below, `--model` from the settings resolved for it (32), the standing prompt as `--append-system-prompt` (148), and `--exclude-dynamic-system-prompt-sections`, which moves what Claude Code's own system prompt holds of one place and host, its working directory, its environment, its memory's paths and the repository's git status, into the first message, so the system prompt ahead of the standing prompt is the same for every agent of one release. Its environment is the host user's login environment with the resolved environment over it, and `FLUME_AGENT`, `FLUME_SECRET`, `FLUME_PLACE` and `FLUME_STAGE`. `FLUME_AGENT` is the identity, `flume:<repository>:<kind>--<name>:<stage>:<n>`, the repository named by an id taken from its common git directory and `<n>` the stage's start. `FLUME_SECRET` is that start's secret. The program's kind, by which a terminal that starts a known agent program names it, is `claude`. The prompt is sent once the started ack has come and the agent waits, or carried as the command's argument under the printed command (C.5) |
-| started | the plugin's SessionStart hook runs `flume ack started` with `FLUME_AGENT`, `FLUME_SECRET`, the plugin's version, the session's id, its transcript's path and the start's source; the ack is taken only while the secret is that start's, and a plugin version other than the binary's is reported. A start with no ack is starting. A session the terminal brought back with a bare `claude --resume`, which loads no `--plugin-dir` and carries no `FLUME_*`, acks nothing, so it is never the stage's agent (77). Before it acks, the hook compares what the agent runs under with the start's record (161): the program, read as C.5's check of a pane's foreground reads it, and, for each variable the record names, the digest of that variable in the hook's own environment, keyed by `FLUME_SECRET`. Where any differs it acks nothing, records that the start began without its settings, naming each variable that differs and whether the program did, and starts `flume settle <place>` in the background, so flume ends that agent and starts the stage afresh. The variables a terminal sets for itself, `PATH` and `SHELL` among them, and the login environment beneath the settings are not in the record |
+| command | `claude` in the place, with flume's own Claude Code plugin loaded by `--plugin-dir`, which holds every hook below, `--model` from the settings resolved for it (32), `--permission-mode` with the mode they resolve where they give one and nothing where they give none (162), the standing prompt as `--append-system-prompt` (148), and `--exclude-dynamic-system-prompt-sections`, which moves what Claude Code's own system prompt holds of one place and host, its working directory, its environment, its memory's paths and the repository's git status, into the first message, so the system prompt ahead of the standing prompt is the same for every agent of one release. Its environment is the host user's login environment with the resolved environment over it, and `FLUME_AGENT`, `FLUME_SECRET`, `FLUME_PLACE` and `FLUME_STAGE`. `FLUME_AGENT` is the identity, `flume:<repository>:<kind>--<name>:<stage>:<n>`, the repository named by an id taken from its common git directory and `<n>` the stage's start. `FLUME_SECRET` is that start's secret. The program's kind, by which a terminal that starts a known agent program names it, is `claude`. The prompt is sent once the started ack has come and the agent waits, or carried as the command's argument under the printed command (C.5) |
+| started | the plugin's SessionStart hook runs `flume ack started` with `FLUME_AGENT`, `FLUME_SECRET`, the plugin's version, the session's id, its transcript's path and the start's source; the ack is taken only while the secret is that start's, and a plugin version other than the binary's is reported. A start with no ack is starting. A session the terminal brought back with a bare `claude --resume`, which loads no `--plugin-dir` and carries no `FLUME_*`, acks nothing, so it is never the stage's agent (77). Before it acks, the hook compares what the agent runs under with the start's record (161): the program, read as C.5's check of a pane's foreground reads it, and, for each variable the record names, the digest of that variable in the hook's own environment, keyed by `FLUME_SECRET`; and, where the record names a mode, the hook input's `permission_mode`, which every hook's input carries in 2.1.296. Where any differs it acks nothing, records that the start began without its settings, naming each variable that differs and whether the program or the mode did, with the mode it began in, and starts `flume settle <place>` in the background, so flume ends that agent and starts the stage afresh. The variables a terminal sets for itself, `PATH` and `SHELL` among them, and the login environment beneath the settings are not in the record |
 | received | the plugin's UserPromptSubmit hook runs `flume ack received` with the submitted prompt's digest and the start's secret, which Claude Code fires only when it submits the prompt, a prompt queued while the agent worked among them; text typed and never submitted acks nothing. With no ack, the session's transcript holding the prompt as a user turn, or as a queued `enqueue` record, answers received, and a transcript that cannot be read answers unknown |
-| asking | a mark the plugin's hook leaves when the agent opens a question or a plan for a person (PreToolUse on `AskUserQuestion` and `ExitPlanMode`), or Claude Code asks a person's permission (its permission-request or permission-prompt notification hook, where the pinned Claude Code has one), open until the transcript holds the answer, and cleared too at UserPromptSubmit and at SessionStart; the terminal's reading alone never decides it |
+| asking | a mark the plugin's hook leaves when the agent opens a question or a plan for a person (PreToolUse on `AskUserQuestion` and `ExitPlanMode`, but never on `ExitPlanMode` in a stage that delivers a plan, which the plan row declines), or Claude Code asks a person's permission (its permission-request or permission-prompt notification hook, where the pinned Claude Code has one), open until the transcript holds the answer, and cleared too at UserPromptSubmit and at SessionStart; the terminal's reading alone never decides it |
 | own-work | background tasks the transcript shows started and not finished |
+| plan | in a stage that delivers a plan, the plugin's PreToolUse hook on `ExitPlanMode` records the plan the tool's input names, its `planFilePath`, or its `plan` text where it names no file, written by the hook beside the start's record, with the time the hook ran, as the pinned 2.1.296 writes them; it then denies the tool with flume's words, that the plan is put for review and that its notes or an acceptance will come as the next message, so the agent stays in plan mode and ends its turn (163). The newest plan so recorded is the stage's, read at the path recorded |
 | stop-short | `flume needs "<words>"` needs an answer, and `flume needs --found "<words>"` found work (41, 131); run by the agent or a process it started, refused unless `FLUME_AGENT` names the agent of the place's current stage and `FLUME_SECRET` is that start's, while the agent is live |
-| send-back | the plugin's Stop hook blocks the stop, its reason naming the deliverable and `flume needs`, while the stage's deliverable does not exist, the agent has not stopped short, and no background task runs and no question is open; it never blocks a conversation's agent |
+| send-back | the plugin's Stop hook blocks the stop, its reason naming the deliverable and `flume needs`, while the stage's deliverable does not exist, the agent has not stopped short, and no background task runs and no question is open; it never blocks a conversation's agent, and in a stage that delivers a plan it names `ExitPlanMode` as the way to put the plan |
 | guard | the plugin's PreToolUse hook refuses a command that runs `sluice submit`, `wt submit`, `wt merge` or `git push`, its reason saying that flume submits the place, and leaves the mark status reads (56) |
 | on-quiet | the plugin's Stop hook, each time it lets the agent stop, starts `flume settle <place>` in the background, so the place settles the moment its agent goes quiet (46) |
 | ended | the plugin's SessionEnd hook marks the start's session ended; a session killed with no hook reads unknown here, and the terminal's state decides (96, 134) |
 | last words | the agent's last message in the session's transcript; where the pinned Claude Code has a StopFailure hook, the plugin records the failure's reason there, a refused sign-in or a usage limit among them, as the agent's last words, which status gives with the agent (43) |
 | spent | the StopFailure hook's `error` of `rate_limit` with words that open as the pinned Claude Code's own usage-limit messages do, "You've hit your limit · resets …" and "You've hit your session limit · resets …" among them, recorded by the plugin with the time it ran; a `rate_limit` with other words, a model under high load or the server limiting requests, is no usage limit. The time the limit resets is the words' `resets <when> (<zone>)` part, `<when>` a time of day, `3pm` or `3:30pm`, the first such time in the zone after the hook ran, or a date and time, `Nov 2, 3pm` or `Jan 3, 2027, 3:30pm`, and `<zone>` the zone's IANA name; none where the words have no such part (146) |
-| usage | the session's transcript: each assistant record's `message.usage`, its `cache_read_input_tokens`, `cache_creation_input_tokens` and `input_tokens`, the first such record's for the first request and their sum for the session (152) |
+| usage | the session's transcript: each assistant record's `message.usage`, its `cache_read_input_tokens`, `cache_creation_input_tokens` and `input_tokens`, the first such record's for the first request and their sum for the session, and the sum of its `output_tokens` (152, 168) |
 
 flume answers the folder-trust question when the terminal shows it, and
 never the warning about bypassing permissions, a sign-in, a first run's
@@ -1646,7 +1844,19 @@ agent by its absolute path, written into the plugin with its version,
 and never fails or holds up the agent's start or turn.
 
 An account of a pool is `claude` and the `CLAUDE_CONFIG_DIR` of its
-configuration home, where the account is signed in (144). The prompt
+configuration home, where the account is signed in (144).
+
+A mode is one of the `--permission-mode` choices of the pinned 2.1.296:
+`acceptEdits`, `auto`, `bypassPermissions`, `manual`, `dontAsk` and
+`plan`, the planning mode a stage that delivers a plan starts in (162,
+163). Where the settings give none, flume passes no `--permission-mode`
+and the account's own `settings.json` in its configuration home
+decides. A mode the account's configuration does not allow, as
+`bypassPermissions` where it disables that mode, starts Claude Code in
+another, which the started ack's comparison finds (161); and the
+warning Claude Code shows before a session in `bypassPermissions`
+where the account has not yet accepted it is one flume never answers
+(34). The prompt
 cache lives five minutes from its last read by default, and an hour
 where the account or the environment enables it, as the pinned Claude
 Code decides; so a standing prompt pays wherever agents sharing it start
@@ -1790,7 +2000,7 @@ stripped and `GIT_TERMINAL_PROMPT=0`, a refusal read as its JSON
 |---|---|
 | submit | `sluice submit <base> --no-wait --json` answers `{ahead, branch, id}` and nothing more; the entry is `id` |
 | inbox | `sluice inbox --json` answers `outcomes[]`, each with `state`: `landed` with its commit in `landed_as`; `failed`; `conflict` with the files contested in `conflict.paths`. Each one's words are its `notice`, or where it holds none its `state`, `branch` and the `task` of each of its `failed[]`. A failure's notice names the check that failed, not its log. A conflict's base revision is `tested.on` (`tested: {combination, on, submissions}`), never parsed from the notice; a conflict found while the candidate was formed, before any test, carries no `tested`, and its base is then the base's revision where the profile holds it, `<remote>/<base>` or the local base, read with no fetch |
-| read-submission | `sluice overview --json`, each of its `branches[].branch`, then `sluice status <branch> --all --json`, its `submissions[]`: the one with the highest `id` whose `from.worktree` is the place's branch, its `state` `queued` as waiting, `testing` as under test, `landed` (with `landed_as`), `failed`, `conflict` or `withdrawn`; any other state is read as not understood |
+| read-submission | `sluice overview --json`, each of its `branches[].branch`, then `sluice status <branch> --all --json`, its `submissions[]`: the one with the highest `id` whose `from.worktree` is the place's branch, its `state` `queued` as waiting, `testing` as under test, `landed` (with `landed_as`), `failed`, `conflict` or `withdrawn`; any other state is read as not understood. Its `submitted` is when it was submitted; when it was decided and how long its checks ran are read from sluice's records of the entry and its runs where the pinned sluice gives them, checked against it at the build, and unknown where it does not (168) |
 | step | `sluice step <base> --json`, run in the repository |
 | base | the remote is the `remote` of the base's table under `[branches]` in `.config/sluice.toml`, the base's own or the first pattern with one `*` that names it, read at the local base and else at each remote's tracking copy; where it names one, `git fetch <remote> +refs/heads/<base>:refs/remotes/<remote>/<base>` once, the base at `refs/remotes/<remote>/<base>` |
 | place | from the same policy, `[tests] toolchain` as the place's toolchain, `moon setup` where `[tests] runner` is `moon`, and `sluice release` as its teardown, handed to the place profile through the binding |
@@ -1818,6 +2028,10 @@ lives:
   `fill-first` or `least-busy`, and `accounts`, in order, each with a
   `name`, a `program`, an `env` read as an agents table's is, and an
   optional `agents`, the bound on agents running under it (143 to 145).
+  A stream may also state `points`, the bound on its points in flight
+  (166), and `pace`, `{ points = <n>, per = "hour" | "day" | "week" }`
+  (167); a stream that states either refuses a launch that gives no
+  points (165), which a launch gives by `flume launch --points <n>`.
   `[host] pool` is the pool of a place whose stream names none. An
   account's `env` is its agents' environment over the login
   environment (32): a leading `~` in a value is the host user's home
@@ -1842,6 +2056,8 @@ lives:
   [streams.personal]
   agents = 3
   pool = "personal"
+  points = 8
+  pace = { points = 13, per = "day" }
 
   [pools.work]
   strategy = "fill-first"
@@ -1860,12 +2076,16 @@ lives:
 
   runs acme's places in `work`, up to five of the host's eight agents,
   ahead of `personal`'s, on work-1 until it runs four or is spent and
-  then on work-2.
+  then on work-2, while `personal` holds at most 8 points in flight
+  and starts at most 13 points in any day.
 - Each account's spent time and each intent's affinity is host state,
   one document each beside the places' under `$XDG_STATE_HOME/flume/`,
   `accounts/<pool>/<account>.json` and `intents/<digest>.json`, the
   digest the intent's name's or its repository's and base's, written as
-  a place's is (146, 147, 153).
+  a place's is (146, 147, 153). So is each stream's,
+  `streams/<stream>.json`: each charge against its pace, its place,
+  points and time, and each agent's tokens at its end, kept a week,
+  the longest span a pace names (167, 168).
 - The host's terminal is one word of the same configuration,
   `[host] terminal = "<profile>"`, naming a terminal profile of C.5,
   `herdr` or `printed`, and the printed command where it names none
@@ -1874,7 +2094,7 @@ lives:
   configuration, by kind, `[kinds.<kind>.agents]`, and by repository
   and kind, `[repos."<repository>".kinds.<kind>.agents]`, the
   repository named by its location on the host as a launch names it;
-  each gives `model` and `instructions`, and names one stage's by a
+  each gives `model`, `mode` and `instructions`, and names one stage's by a
   further `.stages.<stage>` table (32). They are read at each agent's
   start. So `[kinds.change.agents] model = "opus"` and
   `[kinds.fix.agents] model = "sonnet"` run change@2 on opus and fix@1
@@ -1883,7 +2103,7 @@ lives:
 - The roles a host wakes are a table of the same configuration:
   `[roles."<partition>/<role>"]` with `repository`, `kind`,
   `priority`, `base`, the repository's default branch where it names
-  none, and an optional `brief` and `stream`, the place a woken run is launched as
+  none, and an optional `brief`, `stream` and `points`, the place a woken run is launched as
   (132), stated by
   whoever administers the host. An address the table names nothing for
   is woken by nothing.
@@ -1911,9 +2131,11 @@ lives:
 | write | a new document written beside the old and renamed over it, under a lock held for the write, and refused when the place's version has moved. flume makes a new place's document by an atomic create that fails when one exists (75, 103) |
 
 A place's own folder there holds what its stages write for flume, such
-as a report a stage's declaration puts under `{{state}}`, and a
+as a report a stage's declaration puts under `{{state}}`, a
 repeating stage's notes, `notes/<stage>.md`, which `{{notes}}` names
-and flume never reads (141); it goes when the place is tidied (62).
+and flume never reads (141), and the plan its caller accepted,
+`plan.md`, which `{{plan}}` names (163); it goes when the place is
+tidied (62).
 
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
@@ -2411,6 +2633,45 @@ These are not requirements.
   quiet and starts code afresh under work-1 with its environment,
   status naming `CLAUDE_CONFIG_DIR` as missing with no value, and the
   kind's bound is not counted (35, 112, 161).
+- **S66.** The host's `[kinds.fix.agents]` gives `mode = "acceptEdits"`
+  and the repository's gives `mode = "bypassPermissions"`. A fix@1
+  agent starts in acceptEdits, status naming the host's table as where
+  its mode came from. Another host gives no mode in any layer, and its
+  agent starts with no mode passed, in whatever its account's own
+  configuration sets; its start records no mode and compares none
+  (32, 161, 162).
+- **S67.** A stage's settings give `bypassPermissions`, and the
+  account's configuration disables that mode, so the program begins in
+  another. Its start's word shows the other mode: the agent is not the
+  stage's, flume ends it once quiet and starts the stage afresh, and
+  that start, beginning in the other mode again, is never begun, status
+  naming the mode asked and the mode it began in (35, 161, 162).
+- **S68.** A caller launches plan@1. The plan stage's agent starts in
+  its program's planning mode, reads the place and puts a plan for
+  review; flume declines its ask to leave planning, and once it is
+  quiet the plan is delivered to the caller, the stage for review. The
+  caller shows it to the operator and tells the agent their notes; the
+  agent revises the plan in its own session and puts it again, which is
+  delivered again. The caller finishes the stage: flume copies the plan
+  into the place's folder, ends the agent, and starts code, whose
+  prompt names the plan accepted. Had the caller retried the stage with
+  the notes instead, a fresh agent would have planned again with the
+  last plan and the notes in its prompt (49, 109, 163).
+- **S69.** A stream states `points = 13`. Places of 8, 8 and 3 points
+  are launched in that order at one priority. The first starts; the
+  second waits, since 8 and 8 would pass 13, and the third waits behind
+  it rather than passing it. The first's last stage delivers and its
+  place is submitted, so its points leave flight, and the second and
+  third start. The first's submission fails and its code stage starts
+  again, its 8 points in flight once more though the stream then holds
+  19 (165, 166).
+- **S70.** A side project's stream states `pace = { points = 13, per =
+  "day" }` and no bound beyond the host's. Places of 5, 5 and 5 points
+  are launched at 09:00. Two start at once and the third waits, since
+  15 would pass 13 in the day just past; status says the stream's pace
+  frees at 09:00 the next day, when the first charge leaves the span,
+  and the third starts then. A launch to the stream that gives no
+  points is refused, naming the stream (4, 165, 167).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
