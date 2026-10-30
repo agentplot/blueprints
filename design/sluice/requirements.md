@@ -166,6 +166,9 @@ redefine these.
    its branch's chain waits, and its waiting holds no other entry.
 8. Every entry of a branch is in its one chain. No entry is tested
    apart from the entries ahead of it, and entries land in chain order.
+   An entry that lands beside the chain (140) stands ahead of every
+   entry of it. (Proposed 2026-10-30, record 0075, on the user's card;
+   accepted only on their yes.)
 125. Several heads may be submitted as one act, in an order the
      submitter gives. sluice takes all of them or none, each as its own
      entry after the one before (6), and forms no candidate on any of
@@ -181,13 +184,54 @@ redefine these.
      short of its conditions, refuses the whole act, naming it; once
      taken, a new head on one request withdraws that entry alone and
      holds that request as a draft, the others untouched.
+140. A submission whose work no check the branch's gate requires reads
+     lands beside the chain: at the first round that reads it, with
+     nothing run (15), never waiting on a candidate under test or held
+     to land. No required check reads the work when the check's
+     affected reading (36), asked under the gate at the branch's
+     current revision (56), names none between that revision and the
+     revision extended by the work, nor between each candidate formed
+     and not landed, as it would land now, and that candidate extended
+     by the work; and the work merges cleanly onto the branch's
+     revision, onto each such candidate and onto the work of every
+     entry ahead of it, changes neither the branch's policy nor what
+     the check's or the place's profile names as its own setting, and
+     the branch's revision is covered by a verdict (70). An entry whose
+     after-entries have not landed (6, 7), or that is in a candidate
+     already, lands with its chain. Its candidate is the branch's
+     revision extended by it alone, and it stands ahead of every entry
+     of the chain (8, 10, 11). It takes no place, no run and no room in
+     the window or the host's bound (13, 71), and holds and displaces
+     no entry: a candidate formed before it keeps its runs, its keys
+     and its verdict, since what that candidate's tree lacks no
+     required check reads, and lands from the revision the landing
+     beside made, carrying that work (23, 24), as the same candidate on
+     that revision (10). Work that a formed candidate's checks would
+     read, or that does not merge cleanly with an entry ahead of it,
+     takes its place in the chain as any submission does, and the
+     entry says which entry it waits behind and why; work some required
+     check reads at the branch's revision takes the chain whole,
+     whatever else it changes. Of several heads submitted as one act
+     (125), the leading heads that each qualify land beside the chain
+     in the act's order, and from the first that does not, every head
+     takes the chain. Where the branch's records are on its remote, the
+     instance advancing the branch (58) lands it, and a request's entry
+     only the host that takes the branch's requests in (137), each with
+     the expectation every landing has (24, 124); no signer is asked,
+     since no run is read (78). Its outcome is landed, pushed to its
+     submitter as any (50, 122), and said as landed beside the queue
+     with no check run. (Proposed 2026-10-30, record 0075, on the user's
+     card; accepted only on their yes.)
 
 ### A.3 Candidates and chains
 
 10. Every candidate equals the branch's current revision extended, in
     order, by exactly the entries ahead of it and itself. A candidate
     never contains an entry behind it or an entry removed from the
-    chain.
+    chain. A candidate formed before work landed beside the chain (140)
+    is the same candidate on the revision that landing made. (Proposed
+    2026-10-30, record 0075, on the user's card; accepted only on their
+    yes.)
 11. An entry is judged only as a candidate: never alone against a
     revision the branch has left, and never in a combination it would not
     land in.
@@ -522,13 +566,20 @@ redefine these.
     fills the slot that names the work, and a form with no such slot
     names none, by the authors' choice, the subject staying on the
     entry's record and wherever the entry is shown (26); entries landed together
-    on the deepest candidate's verdict each name that verdict. The
+    on the deepest candidate's verdict each name that verdict. An entry
+    whose candidate was formed before work landed beside the chain
+    (140) lands as its candidate's tree with that work. (Proposed
+    2026-10-30, record 0075, on the user's card; accepted only on their
+    yes.) The
     history of a branch is
     never rewritten, and a session's commits stay reachable from the
     branch they landed on.
 24. A landing moves the branch from exactly the revision its candidate
-    was formed on. A landing that finds the branch elsewhere is refused,
-    and the chain is formed again on the revision found.
+    was formed on, or from the revision that landings beside the chain
+    (140) alone have made of it since. A landing that finds the branch
+    elsewhere is refused, and the chain is formed again on the revision
+    found. (Proposed 2026-10-30, record 0075, on the user's card;
+    accepted only on their yes.)
 25. sluice releases every place it made for a candidate once that
     candidate's verdict is read, and never releases a session's place.
     A session learns its entry landed (50), and releasing its place is
@@ -1480,6 +1531,16 @@ section asked is answered by a clause.
   been recorded under the narrower grant, it would be under another key
   than the queue's pass, and the branch would read no flake (19, 114,
   138, 139).
+- **S68.** Two code submissions are under test together on main when a
+  session submits a change to the repository's guides, which no check
+  main requires reads. The next round lands it beside the queue with
+  nothing run, and its session is told it landed with no check run.
+  The combination passes and lands from the revision the guides made,
+  carrying them, its runs and verdict standing and nothing tested
+  again. On another day the guides change touches a file the second
+  submission under test also edits: it waits behind that submission,
+  saying so, and lands after it (140). (Proposed 2026-10-30, record
+  0075, on the user's card; accepted only on their yes.)
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
