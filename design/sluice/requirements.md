@@ -300,7 +300,8 @@ redefine these.
 114. A run of a check has no outcome (60) when the check could not be
      started; when it ended with an exit its branch's policy names as not
      run; or, for a check that did not pass, when the host failed after
-     the run the readiness the repository declares, or when its executor
+     the run the readiness the repository declares, asked at the
+     branch's revision (84), or when its executor
      refused the run something the run tried (139). Its record says why
      (16). It is never recorded or read under its key, no entry is
      attributed for it (18), and the check is run again.
@@ -968,7 +969,17 @@ redefine these.
     only after a run that did not pass, to tell the host's fault from
     the code's (114), and never before one: a check brings up what it
     needs and waits for it within its own limit (66), so no run is
-    refused for a host slow to answer a probe.
+    refused for a host slow to answer a probe. The probe asks about the
+    host, so it is the branch's and never the candidate's: its command
+    is read with the policy at the branch's current revision (56), and
+    it runs in a tree of that revision, the run's place brought to the
+    branch's revision once the run is over and before the probe, the
+    toolchain the place entered kept; so a candidate that changes or
+    removes what the probe runs changes no run's attribution before it
+    lands. A session's run asks the probe in the session's own tree,
+    which sluice never moves (124), since a session's run decides no
+    verdict. (Proposed 2026-10-30, record 0073, on the user's card;
+    accepted only on their yes.)
 
 ### B.4 The branch
 
@@ -1157,8 +1168,8 @@ repository's policy:
 ```toml
 [tests]
 runner = "moon"
-# The host can run these checks: run before and after each run of them,
-# under the run's executor (84, 114).
+# The host can run these checks: asked after a run that did not pass, at
+# the branch's revision, under the run's executor (84, 114).
 ready = ["docker", "info"]
 # Exits by which a check says it could not run here (114).
 not_run = [77]
@@ -1541,6 +1552,14 @@ section asked is answered by a clause.
   submission under test also edits: it waits behind that submission,
   saying so, and lands after it (140). (Proposed 2026-10-30, record
   0075, on the user's card; accepted only on their yes.)
+
+- **S67.** A submission removes the file the branch's `[tests] ready`
+  command runs and names a new probe in its own policy change. Its
+  candidate's run fails a check; the probe runs at the branch's current
+  revision, where the file still is, and answers that the host is
+  ready, so the fail is recorded under its key and the submission is
+  attributed (17, 56, 84, 114). Once it lands, the branch's policy names
+  the new probe, and the next run that did not pass asks that one.
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
