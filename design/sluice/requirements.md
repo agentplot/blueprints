@@ -299,10 +299,9 @@ redefine these.
      outputs and decides nothing.
 114. A run of a check has no outcome (60) when the check could not be
      started; when it ended with an exit its branch's policy names as not
-     run; or, for a check that did not pass, when the host failed after
-     the run the readiness the repository declares, asked at the
-     branch's revision (84), or when its executor
-     refused the run something the run tried (139). Its record says why
+     run; or when its executor refused the run something the run tried
+     (139). Nothing sluice asks of the host, before or after a run,
+     makes a run one with no outcome (84). Its record says why
      (16). It is never recorded or read under its key, no entry is
      attributed for it (18), and the check is run again.
 115. A candidate whose checks could not run (114) in as many of its runs
@@ -338,9 +337,9 @@ redefine these.
     later fail an earlier pass, since a check that passes and fails on
     one input proves nothing by its order. A fail that was the host's
     and not the code's leaves the key only by 114, never recorded
-    because the host failed its readiness after the run or the check
-    said it could not run or its executor refused the run something
-    (139), or by 116, set aside by the operator with the reason (S44). A
+    because the check said it could not run or its executor refused the
+    run something (139), or by 116, set aside by the operator with the
+    reason (S44). A
     result under other limits says nothing of a run under these (83),
     and a result under another grant is under another key (138).
 138. A check's key holds the grant of the executor that ran it. Results
@@ -355,8 +354,8 @@ redefine these.
      time it saved, may be recorded with the run and shown with it. It
      is never read as an outcome, a replay or a flake (16, 19, 38). The
      run's record also carries the time of each step sluice itself took
-     around the tool, cutting the place, asking readiness, running the
-     tool and releasing the place, so where a run's minutes went is read
+     around the tool, cutting the place, running the tool and releasing
+     the place, so where a run's minutes went is read
      from the record alone, passed or failed (26); and what each task
      printed is kept whole beside the record, which names where, for as
      many of the branch's latest runs as the policy states, twenty where
@@ -965,21 +964,15 @@ redefine these.
     policy states refuses the run rather than run it without them, and every
     run is recorded with what its executor enforced (16), so a run is
     never read as confined, or as held to a limit, unless its executor
-    enforced it (28, 29). The readiness the repository declares is asked
-    only after a run that did not pass, to tell the host's fault from
-    the code's (114), and never before one: a check brings up what it
-    needs and waits for it within its own limit (66), so no run is
-    refused for a host slow to answer a probe. The probe asks about the
-    host, so it is the branch's and never the candidate's: its command
-    is read with the policy at the branch's current revision (56), and
-    it runs in a tree of that revision, the run's place brought to the
-    branch's revision once the run is over and before the probe, the
-    toolchain the place entered kept; so a candidate that changes or
-    removes what the probe runs changes no run's attribution before it
-    lands. A session's run asks the probe in the session's own tree,
-    which sluice never moves (124), since a session's run decides no
-    verdict. (Proposed 2026-10-30, record 0073, on the user's card;
-    accepted only on their yes.)
+    enforced it (28, 29). sluice asks the host no readiness command,
+    before a run or after one: a check brings up what it needs and waits
+    for it within its own limit (66), and a host's fault is told from
+    the code's only by the executor's own report of what it refused
+    (139) and the check's own word that it could not run (114), never by
+    a probe of sluice's or the repository's, whose answer would be read
+    as the host's or the candidate's only by inference. (Proposed
+    2026-10-30, record 0066 as amended, on the user's card; accepted only
+    on their yes.)
 
 ### B.4 The branch
 
@@ -1168,9 +1161,6 @@ repository's policy:
 ```toml
 [tests]
 runner = "moon"
-# The host can run these checks: asked after a run that did not pass, at
-# the branch's revision, under the run's executor (84, 114).
-ready = ["docker", "info"]
 # Exits by which a check says it could not run here (114).
 not_run = [77]
 
@@ -1407,10 +1397,13 @@ section asked is answered by a clause.
 - **S42.** The task runner replays a check from its cache, and no signer
   the gate trusts has signed a pass for that key on that system. The
   replay counts for nothing and the check runs (108).
-- **S43.** The repository's readiness command fails partway through a
-  session's run of its checks. The run's fails are not recorded and its
-  passes are. A later run of the same head passes, and its keys read
-  passed (114).
+- **S43.** The host loses what a session's checks need partway through
+  a session's run of them, and a check fails. Nothing sluice asks of the
+  host sets the fail aside: it is recorded under its key as any fail is,
+  unless the check said it could not run or the executor reports it
+  refused the run something (114, 139), and the operator may set it
+  aside with the reason (116, S44). A later run of the same head passes,
+  and the key holds both results (19).
 - **S44.** A shared branch's key holds a fail a stalled host produced
   and a later pass. The operator sets the fail aside, with the reason.
   The key reads passed from its passes, and the fail's record is still
@@ -1552,14 +1545,6 @@ section asked is answered by a clause.
   submission under test also edits: it waits behind that submission,
   saying so, and lands after it (140). (Proposed 2026-10-30, record
   0075, on the user's card; accepted only on their yes.)
-
-- **S67.** A submission removes the file the branch's `[tests] ready`
-  command runs and names a new probe in its own policy change. Its
-  candidate's run fails a check; the probe runs at the branch's current
-  revision, where the file still is, and answers that the host is
-  ready, so the fail is recorded under its key and the submission is
-  attributed (17, 56, 84, 114). Once it lands, the branch's policy names
-  the new probe, and the next run that did not pass asks that one.
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
