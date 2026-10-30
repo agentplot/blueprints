@@ -749,7 +749,7 @@ lands = true              # whether the work is submitted after the last stage
 
 [kinds.bump.agents]       # settings for every stage's agents; a stage's own come first (52)
 model = "sonnet"
-mode = "acceptEdits"      # how far the agent may act without asking, as its program names it; the reader's to check
+mode = "edits"            # how far the agent may act without asking, one word or a table of programs, as `{ claude = "auto" }`; the reader's to check
 
 [kinds.fix.agents]        # settings for a kind of that name declared elsewhere, a tool's own fix among them (57)
 model = "opus"

@@ -164,8 +164,9 @@ redefine these.
   program, its model, its mode, its instructions, its environment, and
   where in the terminal it runs, such as beside a pane its caller names.
 - **mode**: how far an agent may act in its place without asking a
-  person, one of the modes its program names, such as only reading and
-  planning, or editing files without asking (162).
+  person: one of flume's four, plan, ask, edits and full, the same for
+  every program, or a value of one program's own given under that
+  program's name (162, 169).
 - **points**: a caller's measure of how much agent work a place's work
   is, a number of the Fibonacci scale, 1, 2, 3, 5, 8, 13, 21 and on,
   given at the launch; flume never estimates one (165).
@@ -284,6 +285,12 @@ redefine these.
 - **surface**: one way a caller reaches flume.
 - **profile**: one way a contract of Part B is satisfied, as Part C
   describes.
+- **common profile**: the agent profile that binds every program flume
+  carries no profile of its own for, reading of the program only what
+  every program gives (170, 171).
+- **degraded**: of a part of the agent seam for one program, answered
+  not from the program's own record but as its profile declares: not
+  offered, unknown, or read from the terminal (170, 171).
 
 <!-- ANCHOR_END: glossary -->
 <!-- ANCHOR: part-a -->
@@ -326,8 +333,15 @@ redefine these.
    hashes (156); one whose package refers outside itself or names
    another identity than the one it is held at (157); one whose kind
    names something a host owns, naming the field (158); one where a
-   stage's agent resolves to a mode its program does not name, naming
-   the mode, the stage and where it came from (162); one whose points
+   stage's agent resolves to a mode its program's profile has no
+   setting for, or to a table of programs that names no entry for its
+   program, naming the mode, the program, the stage and where it came
+   from, and one that gives `plan` to a stage that delivers neither a
+   plan nor a conversation, naming the stage (162, 169); one where a
+   stage's agent resolves to a model its program's profile names no way
+   to give, naming the program and the stage (172); one where a stage
+   that delivers a plan resolves to a program whose profile offers no
+   plan, naming the program and the stage (164); one whose points
    are not a number of the Fibonacci scale, naming them, and one that
    gives no points where its place's stream states a points bound or a
    pace, naming the stream (165).
@@ -618,7 +632,8 @@ redefine these.
     an agent another stage or place started.
 31. flume never ends an agent that is not quiet, unless a caller forced
     it. An agent whose state or own work flume cannot read is not quiet,
-    and status names what flume cannot read. An end flume asked for that
+    and status names what flume cannot read; an agent whose profile
+    reads no own work of its program's is read as 171 says. An end flume asked for that
     the agent did not take is reported as a failure, never as done.
 32. An agent's program, model, mode and instructions are resolved when
     it starts, each from the first of these that gives it:
@@ -632,7 +647,8 @@ redefine these.
        flume's own among them;
     5. the kind's declaration, the repository's own where it is the one
        the name resolves to (23);
-    6. flume's own default.
+    6. flume's own default, which names a program only for an agent
+       with no pool (173).
 
     Within each, a stage's own setting comes before one given for every
     stage of the kind, and each setting is taken whole from the first
@@ -653,8 +669,10 @@ redefine these.
     that the host's terminal cannot run, or an account's value naming a
     variable the login environment lacks (29), leaves the stage
     refused, naming the program or the variable and where it came from,
-    and starts no agent, until a retry (27); so does a mode its program
-    does not name (162). Status reports each setting
+    and starts no agent, until a retry (27); so does a mode its
+    program's profile has no setting for, a model it names no way to
+    give, or a stage that delivers a plan on a program whose profile
+    offers no plan (162, 164, 169, 172). Status reports each setting
     and each variable with the agent and where it came from, and the
     agent program's own configuration on the host never chooses one,
     but the mode where no layer gives one (162).
@@ -671,7 +689,10 @@ redefine these.
     never by the return of what started it. The evidence is the agent's
     own word that it started under its start's identity and the settings
     its start recorded (161), with flume's guard and stop check in force
-    (116, 115); until that word the start
+    where its program offers them (116, 115), or, where its profile
+    reads no such word of its program's, its launcher's word and the
+    terminal's reading of the process the launcher became (171); until
+    that word the start
     is starting, and status gives with it what the terminal shows of
     the agent. A start with no such word is never begun at once, with
     what the terminal shows, when its program ended, when the terminal
@@ -711,7 +732,8 @@ redefine these.
      supports and the model its settings name, and the host's
      configuration binds its kinds to its own pools and streams (143).
      An account whose program is not the one the stage's layers of 32
-     resolve is not usable for that stage (145).
+     resolve, or, where they resolve none, that cannot run the stage
+     (173), is not usable for that stage (145).
 145. At each start of a stage whose agent has a pool, flume chooses the
      account. An account is usable while it is not spent (146) and has
      room under the bound it states. The account of the intent's
@@ -772,8 +794,8 @@ redefine these.
      its name alone (56). A fresh start that differs again is never
      begun (35), naming the same.
 162. An agent's mode is one of its settings (32): how far it may act in
-     its place without asking a person, named as its program names its
-     modes. Every layer of 32 may give it, the launch's, the host's, the
+     its place without asking a person, one of flume's four or a value
+     of one program's own under that program's name (169). Every layer of 32 may give it, the launch's, the host's, the
      repository's and the kind's, for every stage or for one; a mode
      names nothing a host owns (158), and a host that wants no
      repository or kind to set its agents' reach states the mode in its
@@ -788,6 +810,87 @@ redefine these.
      began in another mode, as when the account's configuration refuses
      the one asked, is not the stage's agent. What the agent's mode lets
      it do never widens what flume answers for it (34).
+169. A mode is one of flume's four, which mean the same for every
+     program: **plan**, which reads the place and changes nothing in it,
+     putting its plan for review where its program can (164); **ask**,
+     which reads without asking and asks a person before each change to
+     a file and each command that is not a read; **edits**, which
+     changes files in its place without asking and asks before any
+     command that reaches beyond them; and **full**, which acts without
+     asking. Each agent profile maps each mode to the setting of its
+     program that means it, no wider and no narrower (C.4); where its
+     program has none, the profile refuses the mode, naming it and the
+     program, so the launch is refused (4), or, at a later start, the
+     stage (32). No profile gives its program a wider or a narrower
+     setting than the mode. A layer may give, in place of one mode, a
+     table of programs, each entry one of the four or a value of that
+     program's own that its profile names, as Claude Code's `auto`; the
+     table is taken whole from its layer, an agent's entry is its
+     program's, and a program the table names no entry for is refused
+     as an unmapped mode is, never passing to a later layer. A start
+     records the mode as its profile passes it (161), and compares it
+     only where the profile reads back the mode its program began in;
+     status says where it was not read back. flume answers no question
+     an agent in ask or edits puts (34): such an agent waits asking
+     until a person answers it (90). `plan` given to a stage that
+     delivers neither a plan nor a conversation refuses the launch,
+     since its deliverable could not be written (4).
+170. flume runs every agent program the host's terminal can start. Each
+     is bound by an agent profile (105): its own, where flume carries
+     one, and otherwise the common profile. Each profile's entry for its
+     program, its name, the terminal's kind for it, how it is given a
+     model and its map of modes, is flume's own and checked against the
+     release the profile pins (106); an entry may hold only the
+     program's name and kind, and then refuses a model and a mode. Each
+     part of the agent seam is built for the program, answered from its
+     own record, or degraded as its profile declares (174); status names
+     each degraded part with the agent and how it is read, no degraded
+     part is read as a built one, and none is read from the terminal
+     where the program's profile builds it.
+171. Where a program's profile answers a part from no record of the
+     program's own, flume reads it so:
+     1. started: the start's launcher, flume's own command, run in the
+        place under the start's identity and secret before the program,
+        compares the start's record with its own environment and the
+        program it is to run, as an agent's word would (161), records
+        its word with its process, and becomes the program in that
+        process; the agent has said it started once the launcher
+        recorded that nothing differed and the terminal reads that
+        process running the program and ready for input (35). A program
+        in the place's pane in any other process is not that start's
+        agent;
+     2. received: the terminal's word that it saw the turn the sending
+        began, working or asking, within the 60 seconds of 38, and not
+        received without it (89);
+     3. asking: the terminal's reading that the agent waits on a
+        question (90);
+     4. own work: none once the terminal has read the agent waiting at
+        two settles a minute or more apart, and running until then (31,
+        91);
+     5. ended and last words: the terminal's stopped, and what it shows
+        (134, 43, 136);
+     6. spent and usage: unknown (146, 151, 152);
+     7. send-back, guard and on-quiet: not offered (115, 116, 121), the
+        terminal's watch settling the place (122);
+     8. plan: not offered (164);
+     9. the mode: recorded and not compared (169).
+
+     Stop-short is the same for every program (92); a program that
+     keeps its start's identity and secret from the commands it runs
+     cannot stop short, which status says.
+172. An agent's model is its program's own name for a model, passed to
+     its program as written; flume maps no model's name from one
+     program to another. A layer may give, in place of one name, a table
+     of programs, taken whole as a mode's is (169). A program whose
+     profile names no way to give it a model at its start refuses a
+     model given, naming the program: the launch is refused (4), or, at
+     a later start, the stage (32).
+173. Where no layer of 32 names a stage's program and its agent has a
+     pool, the account chosen names it (145): the pool's accounts usable
+     for the stage are those whose program can run it, its mode mapped
+     (169), its model given or none needed (172), and, for a stage that
+     delivers a plan, the plan offered (164). Where there is no pool,
+     flume's own default names the program.
 
 ### A.5 Prompts
 
@@ -797,7 +900,9 @@ redefine these.
 38. A prompt is received or sent again. flume reads, within 60 seconds
     of each sending, whether the agent received it, from the agent's
     own word that it received that prompt where its program gives one,
-    and otherwise from its own record. Where the terminal
+    and otherwise from its own record, or, where its profile reads no
+    record of its program's, from the terminal as 171 says. Where the
+    terminal
     can send to a running agent, flume sends the prompt once more when
     it was not received, and reports the stage never begun when the
     second sending is not received either. Where it cannot, the start
@@ -1436,16 +1541,19 @@ redefine these.
 
 88. **command**: given resolved settings, a place, an identity and a
     prompt, how to start that agent so it works in the place under that
-    identity (29, 32, 33).
+    identity, its mode passed as the setting its profile maps it to and
+    its model as written (29, 32, 33, 169, 172).
 135. **started**: given an agent, whether the agent has said it started
      under its start's identity and the settings its start recorded,
-     with flume's guard and stop check in force; or that it started
-     without them, naming each variable that differs by its name and
-     whether its program or its mode did, with the mode it began in; or
-     unknown (35, 77, 161, 162).
+     with flume's guard and stop check in force where its program
+     offers them; or that it started without them, naming each variable
+     that differs by its name and whether its program or, where the
+     profile reads it back, its mode did, with the mode it began in; or
+     unknown (35, 77, 161, 162, 171).
 89. **received**: given an agent and a text, whether the agent received
     the text as a prompt, by its own word where the program gives one,
-    or unknown (38).
+    or as 171 reads it where its profile reads no record, or unknown
+    (38).
 90. **asking**: given an agent, whether it waits on a question it put to
     a person, the program's own ask for a person's permission among
     them (37, 53).
@@ -1477,10 +1585,15 @@ redefine these.
      the plan lives and when it was written, or none, or unknown; and
      each ask of the agent's to leave that mode declined with flume's
      words, so it stays in it, or that the program gives no way to
-     (24, 34, 163).
+     (24, 34, 163). A stage that delivers a plan runs only on a program
+     whose profile offers this part (169).
+174. **parts**: given a program, which parts of this seam its profile
+     answers from the program's own record, and, for each other, that
+     it is degraded and how (170, 171).
 93. The guarantee: each answer is what the agent's own record shows,
     and an answer the record does not give is unknown, never guessed
-    from the terminal.
+    from the terminal; but a part the profile declares degraded is
+    answered as 171 says, and said so (170).
 
 ### B.5 The terminal
 
@@ -1583,7 +1696,9 @@ redefine these.
      merge queue once for each repository, by the binding the repository
      declares (20), and none guessed from another tool's files; the
      kinds by the one form every declaration takes (19); the agent for
-     each stage, by its settings (32). A repository that names no place
+     each stage, by its settings' program: the program's own profile
+     where flume carries one, and otherwise the common profile, for
+     every program the host's terminal starts (170). A repository that names no place
      profile is bound to the one that needs nothing beyond git. One that
      names no change or merge queue leaves that seam unbound, so flume
      assumes no tool (11). Only a kind that lands reaches the merge
@@ -1657,7 +1772,7 @@ model = "sonnet"
 
 [kinds.change.agents]     # settings for flume's own change@2, which the repository does not redeclare (32)
 model = "opus"
-mode = "acceptEdits"      # the agent's mode, one its program names (162); the account's own where no layer gives one
+mode = "edits"            # the agent's mode: plan, ask, edits or full, or a table of programs (162, 169); the account's own where no layer gives one
 instructions = "Work in British English."
 
 [kinds.change.agents.stages.verify]   # settings for one stage of it
@@ -1699,11 +1814,16 @@ repository's `.config/flume.toml` refuses the launch naming the field
 (4), since an environment is an account's alone (144, C.7). `mode`
 is a field of every agents table, the kind's, a stage's, the
 repository's and the host's (C.7), and of a launch's settings, `flume
-launch --agent [<stage>.]mode=<mode>`; its values are the agent
-profile's (C.4), and one the profile does not name refuses the launch
-naming it, the stage and its layer (4, 162). A stage that delivers
-`plan` starts in the profile's planning mode whatever the layers give
-(163). flume reads `on_fail` and `max_send_backs` on a
+launch --agent [<stage>.]mode=<mode>`; its values are flume's four
+modes, `plan`, `ask`, `edits` and `full`, or a table of programs,
+`mode = { claude = "auto", codex = "edits" }` and `flume launch --agent
+[<stage>.]mode.<program>=<value>`, each entry one of the four or a value
+of that program's own that its profile names (C.4). One the agent's
+profile cannot honour refuses the launch naming it, the program, the
+stage and its layer (4, 169). `model` is the program's own name for a
+model, or a table of programs in the same form (172). A stage that
+delivers `plan` starts in `plan` whatever the layers give, and only on
+a program whose profile offers the plan (163, 164). flume reads `on_fail` and `max_send_backs` on a
 kind's last stage only, since under flume a stage fails only by its
 place's failed submission. A kind whose stage names more than one agent
 or more than one deliverable is refused (4, 23). flume ignores a
@@ -1810,11 +1930,11 @@ round, so the conclusion is never committed on `sounding/<name>`
 |---|---|
 | read-change | `openspec/changes/<name>/` at the revision: present when the folder exists; planning complete as `openspec status --change <name> --json` gives `isPlanningComplete`; its tasks the `- [ ]` and `- [x]` lines of `tasks.md`, each in the task group of the `## <n>. <title>` heading above it, a task above every heading in a group of its own with no number or title; archived when `openspec/changes/archive/<date>-<name>/` exists. A change of OpenSpec's spec-driven schema is read from its files with no `openspec` process, and a change of any other schema through `openspec` (59). |
 
-### C.4 The agent: Claude Code
+### C.4 The agent: Claude Code and the common profile
 
 | operation | how Claude Code satisfies it |
 |---|---|
-| command | `claude` in the place, with flume's own Claude Code plugin loaded by `--plugin-dir`, which holds every hook below, `--model` from the settings resolved for it (32), `--permission-mode` with the mode they resolve where they give one and nothing where they give none (162), the standing prompt as `--append-system-prompt` (148), and `--exclude-dynamic-system-prompt-sections`, which moves what Claude Code's own system prompt holds of one place and host, its working directory, its environment, its memory's paths and the repository's git status, into the first message, so the system prompt ahead of the standing prompt is the same for every agent of one release. Its environment is the host user's login environment with the resolved environment over it, and `FLUME_AGENT`, `FLUME_SECRET`, `FLUME_PLACE` and `FLUME_STAGE`. `FLUME_AGENT` is the identity, `flume:<repository>:<kind>--<name>:<stage>:<n>`, the repository named by an id taken from its common git directory and `<n>` the stage's start. `FLUME_SECRET` is that start's secret. The program's kind, by which a terminal that starts a known agent program names it, is `claude`. The prompt is sent once the started ack has come and the agent waits, or carried as the command's argument under the printed command (C.5) |
+| command | `claude` in the place, with flume's own Claude Code plugin loaded by `--plugin-dir`, which holds every hook below, `--model` from the settings resolved for it (32), `--permission-mode` with the value the mode they resolve maps to where they give one and nothing where they give none (162, 169), the standing prompt as `--append-system-prompt` (148), and `--exclude-dynamic-system-prompt-sections`, which moves what Claude Code's own system prompt holds of one place and host, its working directory, its environment, its memory's paths and the repository's git status, into the first message, so the system prompt ahead of the standing prompt is the same for every agent of one release. Its environment is the host user's login environment with the resolved environment over it, and `FLUME_AGENT`, `FLUME_SECRET`, `FLUME_PLACE` and `FLUME_STAGE`. `FLUME_AGENT` is the identity, `flume:<repository>:<kind>--<name>:<stage>:<n>`, the repository named by an id taken from its common git directory and `<n>` the stage's start. `FLUME_SECRET` is that start's secret. The program's kind, by which a terminal that starts a known agent program names it, is `claude`. The prompt is sent once the started ack has come and the agent waits, or carried as the command's argument under the printed command (C.5) |
 | started | the plugin's SessionStart hook runs `flume ack started` with `FLUME_AGENT`, `FLUME_SECRET`, the plugin's version, the session's id, its transcript's path and the start's source; the ack is taken only while the secret is that start's, and a plugin version other than the binary's is reported. A start with no ack is starting. A session the terminal brought back with a bare `claude --resume`, which loads no `--plugin-dir` and carries no `FLUME_*`, acks nothing, so it is never the stage's agent (77). Before it acks, the hook compares what the agent runs under with the start's record (161): the program, read as C.5's check of a pane's foreground reads it, and, for each variable the record names, the digest of that variable in the hook's own environment, keyed by `FLUME_SECRET`; and, where the record names a mode, the hook input's `permission_mode`, which every hook's input carries in 2.1.296. Where any differs it acks nothing, records that the start began without its settings, naming each variable that differs and whether the program or the mode did, with the mode it began in, and starts `flume settle <place>` in the background, so flume ends that agent and starts the stage afresh. The variables a terminal sets for itself, `PATH` and `SHELL` among them, and the login environment beneath the settings are not in the record |
 | received | the plugin's UserPromptSubmit hook runs `flume ack received` with the submitted prompt's digest and the start's secret, which Claude Code fires only when it submits the prompt, a prompt queued while the agent worked among them; text typed and never submitted acks nothing. With no ack, the session's transcript holding the prompt as a user turn, or as a queued `enqueue` record, answers received, and a transcript that cannot be read answers unknown |
 | asking | a mark the plugin's hook leaves when the agent opens a question or a plan for a person (PreToolUse on `AskUserQuestion` and `ExitPlanMode`, but never on `ExitPlanMode` in a stage that delivers a plan, which the plan row declines), or Claude Code asks a person's permission (its permission-request or permission-prompt notification hook, where the pinned Claude Code has one), open until the transcript holds the answer, and cleared too at UserPromptSubmit and at SessionStart; the terminal's reading alone never decides it |
@@ -1846,10 +1966,15 @@ and never fails or holds up the agent's start or turn.
 An account of a pool is `claude` and the `CLAUDE_CONFIG_DIR` of its
 configuration home, where the account is signed in (144).
 
-A mode is one of the `--permission-mode` choices of the pinned 2.1.296:
-`acceptEdits`, `auto`, `bypassPermissions`, `manual`, `dontAsk` and
-`plan`, the planning mode a stage that delivers a plan starts in (162,
-163). Where the settings give none, flume passes no `--permission-mode`
+Claude Code maps flume's modes (169) to the `--permission-mode` choices
+of the pinned 2.1.296: plan to `plan`, the planning mode a stage that
+delivers a plan starts in (163), ask to `manual`, edits to
+`acceptEdits` and full to `bypassPermissions`. Its own values, given
+under `claude` in a table of programs, are those choices, `acceptEdits`,
+`auto`, `bypassPermissions`, `manual`, `dontAsk` and `plan`. It reads
+the mode back by the hook input's `permission_mode`, compared with the
+value passed (161), and it offers the plan (164). Where the settings
+give none, flume passes no `--permission-mode`
 and the account's own `settings.json` in its configuration home
 decides. A mode the account's configuration does not allow, as
 `bypassPermissions` where it disables that mode, starts Claude Code in
@@ -1869,11 +1994,41 @@ name into the pane's shell; such a terminal sets the pane's environment
 so that name runs the program the settings name, and checks that it did
 before the start counts, as C.5 says.
 
+**The common profile** binds every program flume carries no profile of
+its own for (170), each by its entry: its name; the terminal's kind for
+it, its name where herdr's kinds hold it; the flag that gives it a
+model, where its release has one; its map of flume's modes; and the
+flag that trusts the place, or its folder-trust question and keys,
+where it asks one. Each entry's flags are written here once they are
+checked against the release the entry pins; until then an entry holds
+the name and the kind, refuses a model and a mode, and starts the
+program with neither. Its entries are the 24 kinds herdr 0.9.5's agent
+start takes: pi, claude, codex, gemini, cursor, devin, agy, cline, omp,
+mastracode, opencode, copilot, kimi, kiro, droid, amp, grok, hermes,
+kilo, qodercli, qwen, letta, maki and muse; Claude Code's own profile,
+above, takes its entry's place, and a profile of a program's own built
+later takes its entry's place for the parts it builds.
+
+| operation | how the common profile satisfies it |
+|---|---|
+| command | the program in the place, with its entry's model flag and the setting its entry maps the mode to where the settings give them, and `FLUME_AGENT`, `FLUME_SECRET`, `FLUME_PLACE` and `FLUME_STAGE` as for Claude Code, started through the launcher: `flume ack launched`, which the terminal runs in place of the program, reads the start's record in the place's own folder, compares the digest of each variable it names, keyed by `FLUME_SECRET`, and the program it is to run, records its word with its process id beside the start's record, and execs the program with the command's arguments in its own process; where anything differs it records that, execs nothing and starts `flume settle <place>` in the background (161, 171). The program's kind is its entry's. The terminal sends the prompt once the agent has started and waits; under the printed command it is carried as the argument the entry names, and a program whose entry names none cannot run under the printed command |
+| started | the launcher's word that nothing differed, with the terminal's reading that the launcher's process runs the program and is ready for input (171) |
+| received, asking, own-work, ended, last words | the terminal, as 171 reads it |
+| spent, usage | unknown |
+| plan, send-back, guard, on-quiet | not offered; the terminal's watch settles the place (122) |
+| stop-short | `flume needs "<words>"` and `flume needs --found "<words>"`, as for Claude Code (41, 131) |
+| parts | each part above but command, started and stop-short degraded, named in status with the agent (174) |
+
+A program that asks a question before it starts is held at it and
+never begun with the screen (34, 35), unless its entry names the flag
+that trusts the place, or the folder-trust question and its keys,
+checked against its release.
+
 ### C.5 The terminal
 
 | profile | open | send | state | close | watch |
 |---|---|---|---|---|---|
-| **herdr** | a pane in the herdr session the launch's settings name, flume's own otherwise: one workspace per repository and base, labelled `<repository> <base>` (`flume bolt/the-surfaces`, `sluice main`), made when the first place on that base opens, and in it one tab per place named `<kind>--<name>`, whose panes are the place's agents, so a stage that runs several agents at once splits its place's tab; where the settings name a pane, a split beside that pane instead, as for a conversation, left where its caller put it. The pane is made in the place with the host user's login environment and the agent's environment (C.4) over it set on it, its `PATH` led by a folder of the start's own holding the kind's name linked to the program the settings name, and its shell one that reads no startup file, so no login shell or rc file of the host's reorders that `PATH`; herdr's agent start runs the program there by the kind its agent profile names, its arguments passed whole, under the agent's herdr name; nothing is typed into the pane's shell. A start whose pane runs anything but the program the settings name is closed and refused, naming what ran, and a program herdr knows no kind for cannot run under herdr (32). The pane is held by its id and its server's socket, and found again by the agent's herdr name where the id no longer answers, as after the pane moves to another workspace: a name of at most 32 of herdr's legal characters made from the identity and unique on the server, a pane found by it taken as the agent's only once herdr lists it under that name. herdr's word that the program is ready is a second signal, never the start (35). A start herdr reads blocked is held at the program's question before it starts: the folder-trust question is answered and herdr waited on until the agent is idle (34), and any other leaves the start never begun with the screen; a start herdr does not see ready within its bound is never begun with the screen (35) | the pane's held input cleared with one ctrl+c while the agent waits, then herdr's prompt to the pane, then received read through the agent (89); a send never leaves text typed: one not received is cleared again before the next | herdr's reading of the agent: working as working; idle and done as waiting, since herdr's done is a finished turn nobody has looked at; blocked as asking only with the agent profile's mark (90), and as unknown without it; herdr's unknown as unknown; stopped only when the pane is gone, or herdr lists no agent in it and its foreground is the shell, or herdr lists it unrestored after its server's restart | herdr ends the pane and its process group, then reads that it is gone | kept by flume's herdr plugin on herdr's server, which runs between flume's commands. It runs `flume settle` for the session's places on a bound it states and at each change of an agent's state, reading every agent's state in one listing per tick |
+| **herdr** | a pane in the herdr session the launch's settings name, flume's own otherwise: one workspace per repository and base, labelled `<repository> <base>` (`flume bolt/the-surfaces`, `sluice main`), made when the first place on that base opens, and in it one tab per place named `<kind>--<name>`, whose panes are the place's agents, so a stage that runs several agents at once splits its place's tab; where the settings name a pane, a split beside that pane instead, as for a conversation, left where its caller put it. The pane is made in the place with the host user's login environment and the agent's environment (C.4) over it set on it, its `PATH` led by a folder of the start's own holding the kind's name linked to the program the settings name, or, for a program the common profile binds, to flume's launcher, which becomes that program (C.4, 171), and its shell one that reads no startup file, so no login shell or rc file of the host's reorders that `PATH`; herdr's agent start runs the program there by the kind its agent profile names, its arguments passed whole, under the agent's herdr name; nothing is typed into the pane's shell. A start whose pane runs anything but the program the settings name is closed and refused, naming what ran, and a program herdr knows no kind for cannot run under herdr (32); nor can a program whose state herdr reads only through its own integration, OMP and MastraCode in 0.9.5, while `herdr integration status` reports that integration not installed, which refuses the launch naming `herdr integration install <name>` (4). The pane is held by its id and its server's socket, and found again by the agent's herdr name where the id no longer answers, as after the pane moves to another workspace: a name of at most 32 of herdr's legal characters made from the identity and unique on the server, a pane found by it taken as the agent's only once herdr lists it under that name. herdr's word that the program is ready is a second signal, never the start (35). A start herdr reads blocked is held at the program's question before it starts: the folder-trust question is answered and herdr waited on until the agent is idle (34), and any other leaves the start never begun with the screen; a start herdr does not see ready within its bound is never begun with the screen (35) | the pane's held input cleared with one ctrl+c while the agent waits, then herdr's prompt to the pane, then received read through the agent (89); a send never leaves text typed: one not received is cleared again before the next | herdr's reading of the agent: working as working; idle and done as waiting, since herdr's done is a finished turn nobody has looked at; blocked as asking only with the agent profile's mark (90), or where the agent's profile reads asking from the terminal (171), and as unknown otherwise; herdr's unknown as unknown; stopped only when the pane is gone, or herdr lists no agent in it and its foreground is the shell, or herdr lists it unrestored after its server's restart | herdr ends the pane and its process group, then reads that it is gone | kept by flume's herdr plugin on herdr's server, which runs between flume's commands. It runs `flume settle` for the session's places on a bound it states and at each change of an agent's state, reading every agent's state in one listing per tick |
 | **printed command** | the command printed, the prompt carried in it, for a person to run in the place | refused, so every tell is refused and a prompt not received is reported never begun (38) | from the agent profile alone; stopped when its record says the session ended | refused unless the agent's record says the session ended | none, so flume runs attended (119) |
 
 Under herdr a session is named `herdr:<pane>@<socket>`, the pane's id
@@ -1913,7 +2068,7 @@ herdr's refusal and its words:
 | server | flume's own session is `flume`: `herdr session list --json`, its `sessions[]` read by `name`, `socket_path` and `running`; where it does not run, `herdr --session flume server` is started headless in a process group of its own and the listing read again until it runs, within the bound |
 | open | the place's tab in the base's workspace, the one the host's state records as made for the repository and the place's base where `workspace list` (`workspaces[]`, `workspace_id`) still lists it; with none, `workspace create --cwd <place> --env <K=V>… --label "<repository> <base>" --no-focus`, the label whole, since herdr 0.9.5 states no limit on one,, recorded, its `tab.tab_id` renamed `<kind>--<name>` by `tab rename` and its `root_pane.pane_id` the pane; else `tab list --workspace <w>` (`tabs[]`, `label`, `tab_id`) and `pane list --workspace <w>` (`panes[]`, `tab_id`, `pane_id`), a split in the place's tab where one stands, `tab create --workspace <w> --cwd <place> --env <K=V>… --label <kind>--<name> --no-focus` (`tab.tab_id`, `root_pane.pane_id`) where none does, the tab recorded. Beside a named pane, `herdr:<pane>@<socket>` or a `pane list` entry by `pane_id` or `label`: `pane split <pane> --direction right --cwd <place> --env <K=V>… --no-focus` (`pane.pane_id`). Each `--env` is one variable of the host user's login environment (29), read once, with the agent's environment over it, the resolved environment (32) and flume's own, `PATH` led by the start's folder holding `<kind>` linked to the program, and `SHELL` a script in the start's folder, which herdr runs as the pane's shell, setting `SHELL` back to the user's and execing `zsh -f`, `bash --noprofile --norc`, or else `/bin/sh -i`, with `ENV` and `BASH_ENV` unset. Then `agent start <name> --kind <kind> --pane <pane> --timeout 120000 -- <arguments>`, the call bounded at its timeout and ten seconds more: `agent_started` with `interactive_ready` true is herdr's ready; `agent_not_ready` is the start held at a question, read by `pane read <pane> --source visible --format text`, the folder-trust question answered by `agent send-keys <pane> <keys>`, herdr's key names as the agent profile states them, then `agent wait <pane> --until idle --timeout 30000`, and any other question the start never begun with those lines; `timeout` the start never begun with the pane's visible lines; `agent_name_taken` refused, an agent live under the identity (98); `agent_pane_busy`, `agent_pane_not_found` and `invalid_agent_timeout` refused in herdr's words. Once started, `pane process-info --pane <pane>` and the host's process table read the program in the pane's foreground, which must be the one the settings name, by its path or, for a program a script starts, the script's path among its arguments |
 | found again | where `pane get <pane>` answers `pane_not_found`, `agent get <name>` and the pane its answer names, taken only where herdr lists that pane's agent under the name, its id then recorded in place of the old; `agent_not_found` leaves the pane gone |
-| send | `agent send-keys <pane> ctrl+c`, then `agent prompt <pane> <text>` |
+| send | `agent send-keys <pane> ctrl+c`, then `agent prompt <pane> <text>`, with `--wait --until working --until blocked --timeout 60000` where the agent's profile reads no received ack of its program's (171), `agent_prompt_stalled` and `timeout` read as not received |
 | state | `pane get <pane>`: `pane_not_found` or `server_not_running` read stopped; `pane.restore_error` set reads stopped; with `pane.agent` set, `pane.agent_status` `working` as working, `idle` and `done` as waiting, `blocked` as asking, `unknown` or anything else as unknown; with no agent, `pane process-info --pane <pane>`, stopped when `process_info.shell_pid` is `process_info.foreground_process_group_id`, unknown otherwise |
 | screen | `pane read <pane> --source visible --format text` |
 | close | `pane close <pane>`, `pane_not_found` read as already closed; then `pane get <pane>`, gone only on `pane_not_found` |
@@ -2633,15 +2788,16 @@ These are not requirements.
   quiet and starts code afresh under work-1 with its environment,
   status naming `CLAUDE_CONFIG_DIR` as missing with no value, and the
   kind's bound is not counted (35, 112, 161).
-- **S66.** The host's `[kinds.fix.agents]` gives `mode = "acceptEdits"`
-  and the repository's gives `mode = "bypassPermissions"`. A fix@1
-  agent starts in acceptEdits, status naming the host's table as where
-  its mode came from. Another host gives no mode in any layer, and its
+- **S66.** The host's `[kinds.fix.agents]` gives `mode = "edits"` and
+  the repository's gives `mode = "full"`. A fix@1 agent on Claude Code
+  starts in edits, passed as `--permission-mode acceptEdits`, status
+  naming the host's table as where its mode came from. Another host gives no mode in any layer, and its
   agent starts with no mode passed, in whatever its account's own
   configuration sets; its start records no mode and compares none
   (32, 161, 162).
-- **S67.** A stage's settings give `bypassPermissions`, and the
-  account's configuration disables that mode, so the program begins in
+- **S67.** A stage's settings give `full`, which Claude Code maps to
+  `bypassPermissions`, and the account's configuration disables that
+  mode, so the program begins in
   another. Its start's word shows the other mode: the agent is not the
   stage's, flume ends it once quiet and starts the stage afresh, and
   that start, beginning in the other mode again, is never begun, status
@@ -2672,6 +2828,47 @@ These are not requirements.
   frees at 09:00 the next day, when the first charge leaves the span,
   and the third starts then. A launch to the stream that gives no
   points is refused, naming the stream (4, 165, 167).
+- **S71.** A kind's `[kinds.review.agents]` gives `mode = "edits"` and
+  names no program. Its stream's pool holds a Claude Code account and a
+  Codex account. An agent that starts on the Claude Code account is
+  passed `--permission-mode acceptEdits`, one on the Codex account the
+  setting Codex's entry maps edits to, and status names `edits` from
+  the kind's table for both. The host's `[kinds.review.agents]` then
+  gives `mode = { claude = "auto" }`: the next start on the Claude Code
+  account is passed `auto`, status naming the host's table and its
+  `claude` entry, and the Codex account is not usable for the stage,
+  since the host's table is taken whole and names no entry for codex
+  (32, 144, 169, 173).
+- **S72.** A caller launches plan@1 with `--agent plan.program=codex`.
+  Codex's profile offers no plan, so the launch is refused, naming
+  codex, the plan stage, and that codex cannot put a plan for review.
+  Launched with no program on a stream whose pool holds a Codex account
+  and a Claude Code account, the plan stage starts on the Claude Code
+  account, and its code stage after it on the same account, by its
+  intent's affinity (4, 147, 164, 173).
+- **S73.** A stage's settings name the program `amp` and give no model
+  and no mode. flume binds it to the common profile. herdr's agent
+  start runs amp through flume's launcher, which finds the start's
+  record matched and becomes amp in its own process; once herdr reads
+  that process ready the agent has started, and the prompt is received
+  once herdr sees the turn it began. Status names the agent's
+  received, asking, own work, usage limit, plan, send-back, guard and
+  on-quiet as degraded, each with how it is read. The agent commits and
+  is read waiting at two settles a minute apart: its own work is read
+  as none, it is quiet, and the stage delivers. Launched again with a
+  model for the stage, it is refused, naming amp, whose entry names no
+  way to give a model (35, 38, 170, 171, 172).
+- **S74.** A pane's amp is ended and started again by hand in the same
+  pane, with no launcher. herdr reads an amp running and ready, but in
+  a process other than the one the start's launcher became, so it is
+  not the stage's agent: flume ends it once quiet and starts the stage
+  afresh, as 161 does for any start that began otherwise (35, 161,
+  171).
+- **S75.** A stage's settings name the program `omp`, whose state herdr
+  0.9.5 reads only through its integration, and `herdr integration
+  status` reports it not installed. The launch is refused, naming
+  `herdr integration install omp`. Once it is installed, the launch is
+  taken (4, 170, C.5).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
