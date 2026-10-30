@@ -561,13 +561,13 @@ redefine these.
 29. A stage's agent is started with its standing prompt (148), its
     prompt, its settings, its identity and its place, and nothing else
     of flume's. Its environment
-    is the host user's own login environment with the settings' over it
-    (32), and carries nothing of the caller's session: a caller that
-    wants an agent to run under an environment of its own says so in
-    the launch's settings or the host's configuration, never by its own
-    session's environment. A value the host's configuration gives may
-    name the host user's home and the variables of that login
-    environment, and is read against them. The exact standing prompt
+    is the host user's own login environment with its account's
+    variables over it (32, 144), and carries nothing of the caller's
+    session: a caller that wants an agent to run under an account names
+    a stream whose pool holds it, never by its own session's
+    environment. A value an account gives may name the host user's home
+    and the variables of that login environment, and is read against
+    them. The exact standing prompt
     and prompt a stage would be sent can be rendered without starting an
     agent.
 
@@ -582,41 +582,41 @@ redefine these.
     it. An agent whose state or own work flume cannot read is not quiet,
     and status names what flume cannot read. An end flume asked for that
     the agent did not take is reported as a failure, never as done.
-32. An agent's program, model, instructions and environment are
-    resolved when it starts, each from the first of these that gives
-    it:
-    1. the account chosen for it from its pool (145), for its program
-       and each variable the account names, and for nothing else;
-    2. the launch's settings (7);
-    3. the host's configuration, for the place's repository and kind;
-    4. the host's configuration, for the place's stream and kind (143);
-    5. the host's configuration, for the kind;
-    6. the repository's settings for a kind it does not declare, given
+32. An agent's program, model and instructions are resolved when it
+    starts, each from the first of these that gives it:
+    1. the launch's settings (7);
+    2. the host's configuration, for the place's repository and kind,
+       for the model and the instructions alone;
+    3. the host's configuration, for the kind, for the model and the
+       instructions alone;
+    4. the repository's settings for a kind it does not declare, given
        to whichever declaration the kind's name resolves to (19),
        flume's own among them;
-    7. the kind's declaration, the repository's own where it is the one
+    5. the kind's declaration, the repository's own where it is the one
        the name resolves to (23);
-    8. flume's own default.
+    6. flume's own default.
 
     Within each, a stage's own setting comes before one given for every
-    stage of the kind. The environment is merged variable by variable,
-    each variable from the first that gives it; the program, the model
-    and the instructions are each taken whole from the first that gives
-    it. The launch's settings, the repository's and the kind's are
-    those the launch read (8, 20, 21); the host's configuration is read
-    as it stands at the start, so a start after a change to it takes
-    the change, and an agent already started keeps what it started
-    with. The repository's settings and its kinds' carry nothing of one
-    host: no environment, no stream, no pool and no account, and a
-    kind's declaration names a program by its name alone, never by a
-    location on a host (144). Where in the terminal an agent runs (107) is
-    read from the launch's settings and the stage's declaration alone.
-    A program resolved at a later start that no agent profile binds, or
-    that the host's terminal cannot run, or a value of the host's
-    configuration naming a variable the login environment lacks (29),
-    leaves the stage refused, naming the program or the variable and
-    where it came from, and starts no agent, until a retry (27). Status
-    reports each setting with the agent and where it came from, and the
+    stage of the kind, and each setting is taken whole from the first
+    that gives it. Its environment is the account's chosen for it from
+    its pool (145), and nothing else gives one: no layer above names a
+    variable, and an agent with no pool runs under the login
+    environment alone (29, 144). The launch's settings, the
+    repository's and the kind's are those the launch read (8, 20, 21);
+    the host's configuration, its accounts among it, is read as it
+    stands at the start, so a start after a change to it takes the
+    change, and an agent already started keeps what it started with.
+    The repository's settings and its kinds' carry nothing of one host:
+    no environment, no stream, no pool and no account, and a kind's
+    declaration names a program by its name alone, never by a location
+    on a host (144). Where in the terminal an agent runs (107) is read
+    from the launch's settings and the stage's declaration alone. A
+    program resolved at a later start that no agent profile binds, or
+    that the host's terminal cannot run, or an account's value naming a
+    variable the login environment lacks (29), leaves the stage
+    refused, naming the program or the variable and where it came from,
+    and starts no agent, until a retry (27). Status reports each setting
+    and each variable with the agent and where it came from, and the
     agent program's own configuration on the host never chooses one.
 33. Every agent carries an identity flume gives it, which names its
     repository, its place, its stage and which start of the stage it is,
@@ -656,21 +656,19 @@ redefine these.
 144. A pool names accounts in order, and a strategy, fill-first or
      least-busy (145). An account is an agent program and the
      environment it runs under, which signs it in to an allowance of its
-     own, and may state how many agents run on it at once. A stage's
-     agent runs under an account of the pool the host's configuration
-     names for the place's stream and kind, else for its stream, else
-     for its kind, else the host's own pool; where none is named it runs
-     under no account, as the other layers of 32 give it. The account's
-     program and the variables it names come before every other layer
-     (32), since what an account has spent is counted against the
-     account the agent ran under, and status gives each with the account
-     as where it came from. Accounts, pools and streams are the host's,
+     own, and may state how many agents run on it at once. Accounts
+     exist only in pools. A stage's agent runs under an account of its
+     stream's pool, else of the host's own pool; where neither names one
+     it runs under no account, in the login environment alone (29). The
+     account's variables are the agent's whole environment beyond that
+     login environment (32), and status gives each with the account as
+     where it came from. Accounts, pools and streams are the host's,
      and nothing of a repository's or a kind's names one, so a kind
      shared from host to host carries none: what a kind needs of an
      account it says in terms no host owns, the agent program it
      supports and the model its settings name, and the host's
      configuration binds its kinds to its own pools and streams (143).
-     An account whose program is not the one the stage's other layers
+     An account whose program is not the one the stage's layers of 32
      resolve is not usable for that stage (145).
 145. At each start of a stage whose agent has a pool, flume chooses the
      account. An account is usable while it is not spent (146) and has
@@ -1163,11 +1161,10 @@ redefine these.
      launch naming a stream the host's configuration does not declare
      is refused naming it (4). The host's bound caps every stream's
      agents together, and a stream that states no bound of its own is
-     held by the host's alone (70). Where the host's configuration gives
-     a setting for the whole host and a stream gives its own, the
-     stream's comes first: its agents' settings for a kind (32) and its
-     pool (144); the host's bound, its terminal and the runs it wakes
-     for roles (132) are the host's alone. A caller names a stream by
+     held by the host's alone (70). A stream's pool comes before the
+     host's own (144), and a stream gives its agents no settings (32);
+     the host's bound, its terminal and the runs it wakes for roles
+     (132) are the host's alone. A caller names a stream by
      its name, and the name is all a caller needs of a stream. Status
      gives each place's stream and where it came from (56).
 71. flume submits a place's work, and an agent never does. flume submits
@@ -1515,8 +1512,7 @@ declaration resolved over by a launch's gives the place nothing of its
 own kind's settings. A repository's agents tables give a program, a
 model and instructions, and carry nothing of one host: an `env` in a
 repository's `.config/flume.toml` refuses the launch naming the field
-(4), since an environment is the host's configuration's to give
-(C.7). flume reads `on_fail` and `max_send_backs` on a
+(4), since an environment is an account's alone (144, C.7). flume reads `on_fail` and `max_send_backs` on a
 kind's last stage only, since under flume a stage fails only by its
 place's failed submission. A kind whose stage names more than one agent
 or more than one deliverable is refused (4, 23). flume ignores a
@@ -1822,16 +1818,17 @@ lives:
   `fill-first` or `least-busy`, and `accounts`, in order, each with a
   `name`, a `program`, an `env` read as an agents table's is, and an
   optional `agents`, the bound on agents running under it (143 to 145).
-  `[host] pool` is the pool of a place whose stream and kind name none;
-  a stream's kind names its own by `[streams.<stream>.kinds.<kind>]
-  pool`, and a kind's for every stream by `[kinds.<kind>] pool`. A
+  `[host] pool` is the pool of a place whose stream names none. An
+  account's `env` is its agents' environment over the login
+  environment (32): a leading `~` in a value is the host user's home
+  and `$VAR` or `${VAR}` that variable of the host user's login
+  environment, never of the caller's session (29), and a variable it
+  names that the environment lacks refuses the start naming it. A
   repository, a repository's kind and a kind are given a stream by
   `stream` in `[repos."<repository>"]`, `[repos."<repository>".kinds.<kind>]`
   and `[kinds.<kind>]`. The stream `default` holds every place nothing
   names a stream for, bounded by the host's bound alone unless a
-  `[streams.default]` table states its own. A stream's agents' settings
-  for a kind are `[streams.<stream>.kinds.<kind>.agents]`, read as the
-  host's for a kind are and coming before them (32). So
+  `[streams.default]` table states its own. So
 
   ```toml
   [host]
@@ -1877,17 +1874,12 @@ lives:
   configuration, by kind, `[kinds.<kind>.agents]`, and by repository
   and kind, `[repos."<repository>".kinds.<kind>.agents]`, the
   repository named by its location on the host as a launch names it;
-  each gives `program`, `model`, `instructions` and `env`, and names
-  one stage's by a further `.stages.<stage>` table (32). They are read
-  at each agent's start. In an `env` value, a leading `~` is the host
-  user's home and `$VAR` or `${VAR}` that variable of the host user's
-  login environment, never of the caller's session (29); a variable it
-  names that the environment lacks refuses the start naming it. So
-  `[kinds.change.agents] env = { CLAUDE_CONFIG_DIR = "~/.claude-work" }`
-  runs every change@2 agent of the host under one Claude Code
-  configuration home, and the account signed in there, whichever
-  session launched it. Settings for a kind or a stage the place does not
-  run are ignored.
+  each gives `model` and `instructions`, and names one stage's by a
+  further `.stages.<stage>` table (32). They are read at each agent's
+  start. So `[kinds.change.agents] model = "opus"` and
+  `[kinds.fix.agents] model = "sonnet"` run change@2 on opus and fix@1
+  on sonnet, under whichever account each stage's pool gives. Settings
+  for a kind or a stage the place does not run are ignored.
 - The roles a host wakes are a table of the same configuration:
   `[roles."<partition>/<role>"]` with `repository`, `kind`,
   `priority`, `base`, the repository's default branch where it names
@@ -2302,16 +2294,17 @@ These are not requirements.
   submitted. Within 60 seconds no word that it was received comes;
   flume clears the input and sends once more, and the second sending is
   received. Nothing is left typed (38, 95).
-- **S44.** The host's configuration gives change@2's agents an
-  environment variable naming the host user's home, the repository's
-  declaration gives change@2's code stage a model without declaring the
-  kind, and a launch of a change gives its verify stage instructions.
-  Construct's agent starts with the variable read against the host
-  user's home, code's with the repository's model as well, and verify's
-  with the launch's instructions; status gives each setting with where
-  it came from. The host's configuration changes the variable while
-  code works: code's agent keeps the value it started with, and
-  verify's starts with the new one (8, 29, 32, 56).
+- **S44.** The one account of the host's pool gives an environment
+  variable naming the host user's home, the repository's declaration
+  gives change@2's code stage a model without declaring the kind, and a
+  launch of a change gives its verify stage instructions. Construct's
+  agent starts with the variable read against the host user's home,
+  code's with the repository's model as well, and verify's with the
+  launch's instructions; status gives each setting with where it came
+  from, the variable from the account. The host's configuration
+  changes the account's variable while code works: code's agent keeps
+  the value it started with, and verify's starts with the new one (8,
+  29, 32, 56, 144).
 - **S45.** Under herdr, the program a code stage's agent names is not
   on the pane's `PATH`. herdr does not see it ready within its bound and
   says so; no word that it started has come, so the start is reported
