@@ -984,7 +984,15 @@ redefine these.
     a probe of sluice's or the repository's, whose answer would be read
     as the host's or the candidate's only by inference. (Proposed
     2026-10-30, record 0066 as amended, on the user's card; accepted only
-    on their yes.)
+    on their yes.) A container engine the policy asks for is such a
+    requirement: an executor that finds no engine the run could reach,
+    at the sockets it would open for it (C.3), refuses the run before
+    claiming it, and the run stays open for an executor that can, as a
+    run whose system no live executor is does (87), the candidate read
+    as not passed at its time limit where none can (66); the host's
+    having an engine is read from the host at each run, never from a
+    check's words, and is never a system (85, 86). (Proposed 2026-10-30,
+    record 0074, on the user's card; accepted only on their yes.)
 
 ### B.4 The branch
 
@@ -1115,7 +1123,7 @@ Parts A and B do not change to admit a profile.
 | executor profile | execute | enforces |
 |---|---|---|
 | **open**: a process group on the instance's host | the command in the place, as one process group ended with its run | the cores given, by the runner's own threads; nothing else; never confined; one grant for every open run (138), and nothing refused |
-| **sandbox**: the host's kernel sandbox, Seatbelt on macOS, bubblewrap and Landlock on Linux | the command in the place under a profile that allows writes only to the place, its scratch, the host's declared cache directories and the null and terminal devices, a pseudo-terminal the command opens included, connections to their sockets (35), the network only as the policy says, and a container engine's socket only when the policy allows it | paths and network everywhere; cores and memory only on Linux, by a cgroup the run is started in; confined when no session on the host can write the place and the run cannot reach a container engine, whose containers may mount any path; its grant is its profile as sluice writes it with every path named by its role, the place, its scratch, a cache, a socket, the user's temporary directory, digested, so two places or hosts given the same profile give one grant (138); what it refused a run is read, after a run in which a check did not pass, from the kernel's own report of the sandbox's refusals, the unified log on macOS, by the mark the run's profile gives them (139) |
+| **sandbox**: the host's kernel sandbox, Seatbelt on macOS, bubblewrap and Landlock on Linux | the command in the place under a profile that allows writes only to the place, its scratch, the host's declared cache directories and the null and terminal devices, a pseudo-terminal the command opens included, connections to their sockets (35), the network only as the policy says, and a container engine's socket only when the policy allows it, the run refused before it is claimed where the policy asks an engine and none answers at those sockets (84) | paths and network everywhere; cores and memory only on Linux, by a cgroup the run is started in; confined when no session on the host can write the place and the run cannot reach a container engine, whose containers may mount any path; its grant is its profile as sluice writes it with every path named by its role, the place, its scratch, a cache, a socket, the user's temporary directory, digested, so two places or hosts given the same profile give one grant (138); what it refused a run is read, after a run in which a check did not pass, from the kernel's own report of the sandbox's refusals, the unified log on macOS, by the mark the run's profile gives them (139) |
 | **container**: a container engine on the executing host | the place mounted into a new container from the repository's image | cores, memory, paths and network; confined as C.8 says; its grant is its image's digest with the mounts, devices and network it gives, each mount named by its role (138) |
 | **launched**: a job on a pool | one job per run, on a machine of the run's system (87), that fetches the candidate's ref (82), runs the checks, signs its run records with the job's identity and adds them to its signer's ref (109); the job's start is the claim and its end the report (88) | what the pool's machines enforce, as the job's signed record claims; confined when the pool gives each job a fresh machine and the policy lets its signer claim it (79); its grant and what it refused, as the job's signed record says (138, 139) |
 
