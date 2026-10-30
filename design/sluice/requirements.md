@@ -982,9 +982,8 @@ redefine these.
     the code's only by the executor's own report of what it refused
     (139) and the check's own word that it could not run (114), never by
     a probe of sluice's or the repository's, whose answer would be read
-    as the host's or the candidate's only by inference. (Proposed
-    2026-10-30, record 0066 as amended, on the user's card; accepted only
-    on their yes.) A container engine the policy asks for is such a
+    as the host's or the candidate's only by inference (record 0066 as
+    amended 2026-10-30 on the user's words). A container engine the policy asks for is such a
     requirement: an executor that finds no engine the run could reach,
     at the sockets it would open for it (C.3), refuses the run before
     claiming it, and the run stays open for an executor that can, as a
