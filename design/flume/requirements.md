@@ -2153,7 +2153,7 @@ stripped and `GIT_TERMINAL_PROMPT=0`, a refusal read as its JSON
 
 | operation | sluice's commands and fields |
 |---|---|
-| submit | `sluice submit <base> --no-wait --json` answers `{ahead, branch, id}` and nothing more; the entry is `id` |
+| submit | `sluice submit <base> --no-wait --json` answers `{ahead, branch, id}` and nothing more where intake takes the entry at once; the entry is `id`. On a base whose policy takes pull requests, sluice's statement says the submit pushes the place's branch, opens or updates its request and marks it ready, and where the request's conditions do not yet hold, a review among them, answers with the request and what it waits for and no entry (sluice C.5); the place's submission is then open and undecided until intake takes the request (124), and status names what it waits for |
 | inbox | `sluice inbox --json` answers `outcomes[]`, each with `state`: `landed` with its commit in `landed_as`; `failed`; `conflict` with the files contested in `conflict.paths`. Each one's words are its `notice`, or where it holds none its `state`, `branch` and the `task` of each of its `failed[]`. A failure's notice names the check that failed, not its log. A conflict's base revision is `tested.on` (`tested: {combination, on, submissions}`), never parsed from the notice; a conflict found while the candidate was formed, before any test, carries no `tested`, and its base is then the base's revision where the profile holds it, `<remote>/<base>` or the local base, read with no fetch |
 | read-submission | `sluice overview --json`, each of its `branches[].branch`, then `sluice status <branch> --all --json`, its `submissions[]`: the one with the highest `id` whose `from.worktree` is the place's branch, its `state` `queued` as waiting, `testing` as under test, `landed` (with `landed_as`), `failed`, `conflict` or `withdrawn`; any other state is read as not understood. Its `submitted` is when it was submitted; when it was decided and how long its checks ran are read from sluice's records of the entry and its runs where the pinned sluice gives them, checked against it at the build, and unknown where it does not (168) |
 | step | `sluice step <base> --json`, run in the repository |
@@ -2415,7 +2415,7 @@ The rest of the stack, which a model builds on unless it says why not:
   | millpond | an item's send, as a fix or a change, the item's brief as the launch's | the item's record and its sends, and the landing, written from the merge queue's record of the place's branch |
   | headwater | its fix key, as a fix with the release's brief | nothing |
   | sounding | each round of an elaboration, as a place of the elaboration kind it hands in the launch, a conversation's agent beside the operator's pane | the inputs, the soundings each was based on, the rounds, the operator's notes and decisions, and the record, with each round's conclusion copied from its report; its go-on is a retry with the operator's notes as words, its accept a done or a retry that releases a held submission, and its drop a drop |
-  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, or a retry or drop of a place past its kind's bound; it names each place's recipient by a role's address, so a role with no live run is woken to collect an end (132), and each end is delivered to it (43) and reads the rest from status; a role's own work that lands is a place of its own, so no session of crew's submits; it decides no step between a unit's stages, and runs no agent of its own in the place (records 0010 and 0011) |
+  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief; a fix of a base whose own checks failed after a landing, as a fix launched on that base with the failure's words as its brief, the merge queue's where it blamed and the check's own otherwise, its submission on hold where the base's landings wait on the user's word outside the merge queue's policy (7, 47) and free where the policy asks the word itself or none, with no bolt's branch between and no other place moved (record 0023) | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, or a retry or drop of a place past its kind's bound; it names each place's recipient by a role's address, so a role with no live run is woken to collect an end (132), and each end is delivered to it (43) and reads the rest from status; a role's own work that lands is a place of its own, so no session of crew's submits; it decides no step between a unit's stages, and runs no agent of its own in the place (records 0010 and 0011) |
 
 <!-- ANCHOR_END: givens -->
 <!-- ANCHOR: questions -->
@@ -2780,6 +2780,17 @@ These are not requirements.
   `../shared/standing.md`, and another gives its agents an `env`. Each
   launch is refused, the first naming the path outside its package, the
   second the field, and makes nothing (4, 157, 158).
+- **S64.** A bolt lands on main, and main's own checks fail at the
+  landed revision. Main-level ops launches flume's fix kind on main
+  with the failure's words as its brief and the submission on hold,
+  since main's landings wait on the user's word that main's policy does
+  not ask itself; no bolt is cut and no unit is moved. The code stage
+  delivers, the place waits on the hold and status says so; the user's
+  send reaches flume as a retry naming the submission, flume submits
+  the place to main through the merge queue, and it lands as tested
+  (7, 22, 47, 49, 111, 131; record 0023). On a base whose policy asks
+  the word itself, as a request's review, the launch holds nothing and
+  the request waits for the review (C.6).
 - **S65.** A code stage starts under the account work-1, and its program
   comes up in a pane whose environment lacks work-1's
   `CLAUDE_CONFIG_DIR`, as a terminal that brought the pane back without
