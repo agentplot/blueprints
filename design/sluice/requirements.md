@@ -333,7 +333,14 @@ redefine these.
     found (12).
 69. A check's result belongs to its key and its system, not to a branch:
     a pass recorded under a key on a system satisfies every branch whose
-    gate trusts the signer that signed it and requires that system.
+    gate trusts the signer that signed it and requires that system. A
+    branch's gate reads results from the records that hold its own state
+    and from nowhere else: the signed run records on its own remote where
+    its records are there (C.6), the host's own results log where its
+    records are the host's files; a result recorded on another remote
+    satisfies it never, whoever signed it, since every host that submits
+    to the branch must read the same verdict from the branch's records
+    alone (26, 78, 80).
 85. A run record names the system its run executed on: one check on two
     systems is two results (69).
 70. When the branch's revision is covered by no verdict, every check its
@@ -651,7 +658,9 @@ redefine these.
     alone. A run no signer the policy names has signed is from an
     executor the gate does not trust (28). On a branch whose records are
     one host's own files, the runs that host's sluice starts count
-    unsigned, as that host's.
+    unsigned, as that host's, and nothing else counts: such a branch
+    names no signer, so no signed run, from any remote or any other
+    host, satisfies its gate, whatever its executor's kind (69).
 79. An executor's kind, whether its run was confined, and its system are
     claims in the signed record. A claim counts only when the signer is
     one the policy allows to make it; a run is read as confined only
