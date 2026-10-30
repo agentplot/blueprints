@@ -990,8 +990,8 @@ redefine these.
     run whose system no live executor is does (87), the candidate read
     as not passed at its time limit where none can (66); the host's
     having an engine is read from the host at each run, never from a
-    check's words, and is never a system (85, 86). (Proposed 2026-10-30,
-    record 0074, on the user's card; accepted only on their yes.)
+    check's words, and is never a system (85, 86; record 0074, accepted
+    2026-10-30).
 
 ### B.4 The branch
 
