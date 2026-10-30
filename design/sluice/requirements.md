@@ -749,9 +749,15 @@ redefine these.
      system (87), signed by a signer the gate trusts (78). Among pools,
      the policy's order decides.
 87. A run is taken only by an executor that is the system the run
-    requires. A run whose system no live executor or pool is stays open,
-    and the candidate's time limit (66) reads the candidate as not
-    passed.
+    requires, and, on a branch whose records are on its remote, only by
+    a host whose signature the branch's gate would count: one that signs
+    as a signer the branch's policy names, with a key that policy lists
+    for it at the branch's revision (78); the signer's name alone, which
+    another branch may give another key, takes nothing. A run whose
+    system no live executor or pool is, or that no such host is live to
+    take, stays open, and the candidate's time limit (66) reads the
+    candidate as not passed. A result signed with a key the branch does
+    not list is missing for its gate, never a fail (28, S18).
 88. An executor is standing, taking runs by its own claims (75), or
     launched on a pool by the instance that opened the run, in which
     case its job's start is its claim and its end its report, and a job
