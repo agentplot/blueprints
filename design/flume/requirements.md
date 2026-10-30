@@ -627,8 +627,9 @@ redefine these.
     do.
 35. flume judges an agent's start by evidence that the agent exists,
     never by the return of what started it. The evidence is the agent's
-    own word that it started under its start's identity, with flume's
-    guard and stop check in force (116, 115); until that word the start
+    own word that it started under its start's identity and the settings
+    its start recorded (161), with flume's guard and stop check in force
+    (116, 115); until that word the start
     is starting, and status gives with it what the terminal shows of
     the agent. A start with no such word is never begun at once, with
     what the terminal shows, when its program ended, when the terminal
@@ -713,6 +714,20 @@ redefine these.
      with nothing the earlier account's prompt cache held (56). An
      affinity goes an hour after the last place serving its intent is
      gone.
+161. At each start flume records what its agent is to run under: its
+     program, its account, and, for each variable its settings and flume
+     give its environment (32, C.4), a digest of the variable's name and
+     value keyed by the start's secret, never the value. The agent's
+     word that it started (35) is taken only where what it runs under
+     matches that record. An agent whose word shows another program, or
+     a variable missing or with another value, as when a terminal brings
+     a pane back without its environment or a person starts the program
+     again by hand, is not the stage's agent: flume ends it once quiet
+     (31) and starts the stage afresh under the settings resolved then,
+     with no caller's word and counting toward no bound of the kind's
+     (112), and status says so, naming each variable that differed by
+     its name alone (56). A fresh start that differs again is never
+     begun (35), naming the same.
 
 ### A.5 Prompts
 
@@ -1255,8 +1270,10 @@ redefine these.
     prompt, how to start that agent so it works in the place under that
     identity (29, 32, 33).
 135. **started**: given an agent, whether the agent has said it started
-     under its start's identity with flume's guard and stop check in
-     force, or unknown (35, 77).
+     under its start's identity and the settings its start recorded,
+     with flume's guard and stop check in force; or that it started
+     without them, naming each variable that differs by its name and
+     whether its program did; or unknown (35, 77, 161).
 89. **received**: given an agent and a text, whether the agent received
     the text as a prompt, by its own word where the program gives one,
     or unknown (38).
@@ -1605,7 +1622,7 @@ round, so the conclusion is never committed on `sounding/<name>`
 | operation | how Claude Code satisfies it |
 |---|---|
 | command | `claude` in the place, with flume's own Claude Code plugin loaded by `--plugin-dir`, which holds every hook below, `--model` from the settings resolved for it (32), the standing prompt as `--append-system-prompt` (148), and `--exclude-dynamic-system-prompt-sections`, which moves what Claude Code's own system prompt holds of one place and host, its working directory, its environment, its memory's paths and the repository's git status, into the first message, so the system prompt ahead of the standing prompt is the same for every agent of one release. Its environment is the host user's login environment with the resolved environment over it, and `FLUME_AGENT`, `FLUME_SECRET`, `FLUME_PLACE` and `FLUME_STAGE`. `FLUME_AGENT` is the identity, `flume:<repository>:<kind>--<name>:<stage>:<n>`, the repository named by an id taken from its common git directory and `<n>` the stage's start. `FLUME_SECRET` is that start's secret. The program's kind, by which a terminal that starts a known agent program names it, is `claude`. The prompt is sent once the started ack has come and the agent waits, or carried as the command's argument under the printed command (C.5) |
-| started | the plugin's SessionStart hook runs `flume ack started` with `FLUME_AGENT`, `FLUME_SECRET`, the plugin's version, the session's id, its transcript's path and the start's source; the ack is taken only while the secret is that start's, and a plugin version other than the binary's is reported. A start with no ack is starting. A session the terminal brought back with a bare `claude --resume`, which loads no `--plugin-dir` and carries no `FLUME_*`, acks nothing, so it is never the stage's agent (77) |
+| started | the plugin's SessionStart hook runs `flume ack started` with `FLUME_AGENT`, `FLUME_SECRET`, the plugin's version, the session's id, its transcript's path and the start's source; the ack is taken only while the secret is that start's, and a plugin version other than the binary's is reported. A start with no ack is starting. A session the terminal brought back with a bare `claude --resume`, which loads no `--plugin-dir` and carries no `FLUME_*`, acks nothing, so it is never the stage's agent (77). Before it acks, the hook compares what the agent runs under with the start's record (161): the program, read as C.5's check of a pane's foreground reads it, and, for each variable the record names, the digest of that variable in the hook's own environment, keyed by `FLUME_SECRET`. Where any differs it acks nothing, records that the start began without its settings, naming each variable that differs and whether the program did, and starts `flume settle <place>` in the background, so flume ends that agent and starts the stage afresh. The variables a terminal sets for itself, `PATH` and `SHELL` among them, and the login environment beneath the settings are not in the record |
 | received | the plugin's UserPromptSubmit hook runs `flume ack received` with the submitted prompt's digest and the start's secret, which Claude Code fires only when it submits the prompt, a prompt queued while the agent worked among them; text typed and never submitted acks nothing. With no ack, the session's transcript holding the prompt as a user turn, or as a queued `enqueue` record, answers received, and a transcript that cannot be read answers unknown |
 | asking | a mark the plugin's hook leaves when the agent opens a question or a plan for a person (PreToolUse on `AskUserQuestion` and `ExitPlanMode`), or Claude Code asks a person's permission (its permission-request or permission-prompt notification hook, where the pinned Claude Code has one), open until the transcript holds the answer, and cleared too at UserPromptSubmit and at SessionStart; the terminal's reading alone never decides it |
 | own-work | background tasks the transcript shows started and not finished |
@@ -1615,7 +1632,7 @@ round, so the conclusion is never committed on `sounding/<name>`
 | on-quiet | the plugin's Stop hook, each time it lets the agent stop, starts `flume settle <place>` in the background, so the place settles the moment its agent goes quiet (46) |
 | ended | the plugin's SessionEnd hook marks the start's session ended; a session killed with no hook reads unknown here, and the terminal's state decides (96, 134) |
 | last words | the agent's last message in the session's transcript; where the pinned Claude Code has a StopFailure hook, the plugin records the failure's reason there, a refused sign-in or a usage limit among them, as the agent's last words, which status gives with the agent (43) |
-| spent | the StopFailure hook's `error` of `rate_limit`, recorded by the plugin with its words; the time the limit resets is read from the words Claude Code gives with it ("You've hit your limit · resets …"), in the zone they name, and none where they name none (146) |
+| spent | the StopFailure hook's `error` of `rate_limit` with words that open as the pinned Claude Code's own usage-limit messages do, "You've hit your limit · resets …" and "You've hit your session limit · resets …" among them, recorded by the plugin with the time it ran; a `rate_limit` with other words, a model under high load or the server limiting requests, is no usage limit. The time the limit resets is the words' `resets <when> (<zone>)` part, `<when>` a time of day, `3pm` or `3:30pm`, the first such time in the zone after the hook ran, or a date and time, `Nov 2, 3pm` or `Jan 3, 2027, 3:30pm`, and `<zone>` the zone's IANA name; none where the words have no such part (146) |
 | usage | the session's transcript: each assistant record's `message.usage`, its `cache_read_input_tokens`, `cache_creation_input_tokens` and `input_tokens`, the first such record's for the first request and their sum for the session (152) |
 
 flume answers the folder-trust question when the terminal shows it, and
@@ -2393,6 +2410,14 @@ These are not requirements.
   `../shared/standing.md`, and another gives its agents an `env`. Each
   launch is refused, the first naming the path outside its package, the
   second the field, and makes nothing (4, 157, 158).
+- **S65.** A code stage starts under the account work-1, and its program
+  comes up in a pane whose environment lacks work-1's
+  `CLAUDE_CONFIG_DIR`, as a terminal that brought the pane back without
+  its environment leaves it. The SessionStart hook acks nothing and says
+  the start began without its settings; flume ends that agent once
+  quiet and starts code afresh under work-1 with its environment,
+  status naming `CLAUDE_CONFIG_DIR` as missing with no value, and the
+  kind's bound is not counted (35, 112, 161).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
