@@ -167,8 +167,7 @@ redefine these.
 8. Every entry of a branch is in its one chain. No entry is tested
    apart from the entries ahead of it, and entries land in chain order.
    An entry that lands beside the chain (140) stands ahead of every
-   entry of it. (Proposed 2026-10-30, record 0075, on the user's card;
-   accepted only on their yes.)
+   entry of it. (record 0075, accepted 2026-10-30)
 125. Several heads may be submitted as one act, in an order the
      submitter gives. sluice takes all of them or none, each as its own
      entry after the one before (6), and forms no candidate on any of
@@ -220,8 +219,7 @@ redefine these.
      the expectation every landing has (24, 124); no signer is asked,
      since no run is read (78). Its outcome is landed, pushed to its
      submitter as any (50, 122), and said as landed beside the queue
-     with no check run. (Proposed 2026-10-30, record 0075, on the user's
-     card; accepted only on their yes.)
+     with no check run. (record 0075, accepted 2026-10-30)
 
 ### A.3 Candidates and chains
 
@@ -229,9 +227,7 @@ redefine these.
     order, by exactly the entries ahead of it and itself. A candidate
     never contains an entry behind it or an entry removed from the
     chain. A candidate formed before work landed beside the chain (140)
-    is the same candidate on the revision that landing made. (Proposed
-    2026-10-30, record 0075, on the user's card; accepted only on their
-    yes.)
+    is the same candidate on the revision that landing made. (record 0075, accepted 2026-10-30)
 11. An entry is judged only as a candidate: never alone against a
     revision the branch has left, and never in a combination it would not
     land in.
@@ -584,9 +580,7 @@ redefine these.
     entry's record and wherever the entry is shown (26); entries landed together
     on the deepest candidate's verdict each name that verdict. An entry
     whose candidate was formed before work landed beside the chain
-    (140) lands as its candidate's tree with that work. (Proposed
-    2026-10-30, record 0075, on the user's card; accepted only on their
-    yes.) The
+    (140) lands as its candidate's tree with that work. (record 0075, accepted 2026-10-30) The
     history of a branch is
     never rewritten, and a session's commits stay reachable from the
     branch they landed on.
@@ -594,8 +588,7 @@ redefine these.
     was formed on, or from the revision that landings beside the chain
     (140) alone have made of it since. A landing that finds the branch
     elsewhere is refused, and the chain is formed again on the revision
-    found. (Proposed 2026-10-30, record 0075, on the user's card;
-    accepted only on their yes.)
+    found. (record 0075, accepted 2026-10-30)
 25. sluice releases every place it made for a candidate once that
     candidate's verdict is read, and never releases a session's place.
     A session learns its entry landed (50), and releasing its place is
