@@ -305,9 +305,12 @@ redefine these.
      outputs and decides nothing.
 114. A run of a check has no outcome (60) when the check could not be
      started; when it ended with an exit its branch's policy names as not
-     run; or when its executor refused the run something the run tried
-     (139). Nothing sluice asks of the host, before or after a run,
-     makes a run one with no outcome (84). Its record says why
+     run; when its executor refused the run something the run tried
+     (139); or, for a check that did not pass, when the executor finds
+     after the run that a requirement the policy asks has left the host,
+     its engine no longer answering (84). Nothing a repository writes is
+     run to ask the host, before a run or after one (84). Its record
+     says why
      (16). It is never recorded or read under its key, no entry is
      attributed for it (18), and the check is run again.
 115. A candidate whose checks could not run (114) in as many of its runs
@@ -982,22 +985,30 @@ redefine these.
     policy states refuses the run rather than run it without them, and every
     run is recorded with what its executor enforced (16), so a run is
     never read as confined, or as held to a limit, unless its executor
-    enforced it (28, 29). sluice asks the host no readiness command,
-    before a run or after one: a check brings up what it needs and waits
-    for it within its own limit (66), and a host's fault is told from
-    the code's only by the executor's own report of what it refused
-    (139) and the check's own word that it could not run (114), never by
-    a probe of sluice's or the repository's, whose answer would be read
-    as the host's or the candidate's only by inference (record 0066 as
-    amended 2026-10-30 on the user's words). A container engine the policy asks for is such a
-    requirement: an executor that finds no engine the run could reach,
-    at the sockets it would open for it (C.3), refuses the run before
-    claiming it, and the run stays open for an executor that can, as a
-    run whose system no live executor is does (87), the candidate read
-    as not passed at its time limit where none can (66); the host's
-    having an engine is read from the host at each run, never from a
-    check's words, and is never a system (85, 86; record 0074, accepted
-    2026-10-30).
+    enforced it (28, 29). sluice runs no readiness command the
+    repository writes, before a run or after one: a check brings up
+    what it needs and waits for it within its own limit (66), says by
+    the policy's not-run exit when it could not set up (114), and a
+    host's fault is told from the code's only by the executor's own
+    reading of the host, never by a probe of sluice's or the
+    repository's, whose answer would be read as the host's or the
+    candidate's only by inference (record 0066 as amended 2026-10-30 on
+    the user's words). What a run needs from the host, its system, its
+    limits, a container engine the policy asks for, is a requirement the
+    executor reads from the host itself: an executor that finds no
+    engine the run could reach, at the sockets it would open for it
+    (C.3), refuses the run before claiming it, and the run stays open
+    for an executor that can, as a run whose system no live executor is
+    does (87), the candidate read as not passed at its time limit where
+    none can (66); after a run in which a check did not pass the
+    executor reads the engine again, and where it has gone the run has
+    no outcome and nobody is blamed (114, 139), a pass standing as
+    every pass does; the host's having an engine is read from the host
+    at each run, never from a check's words, and is never a system (85,
+    86). A requirement is added only where the executor can see it on
+    the host for itself and a check cannot bring it up on its own (66)
+    (record 0074, accepted 2026-10-30 and amended the same day on the
+    user's words).
 
 ### B.4 The branch
 
