@@ -248,7 +248,13 @@ redefine these.
     from the reader's document and fetches nothing itself, so a check
     costs the remote nothing and takes no longer than the merge it
     forms; where no live reader has read the branch within a tick, it
-    fetches as a round would (124).
+    fetches as a round would (124). A reader has read within its tick
+    while its process holds the reader's lock and either its last read
+    ended within a tick or the read it is inside began within a tick of
+    that end, since a read the remote answers slowly is the reader at
+    its work and a read it refuses ends in a document (133); so a
+    forecast is never formed on a document older than a tick and one
+    bounded read, and says the revision and the document it formed on.
 65. A conflict reported to a session, forecast or found at forming,
     names the content contested and every entry it is contested with,
     with what each of those entries submitted: each entry ahead the head
@@ -796,8 +802,14 @@ redefine these.
      list and each branch's records and revision as the host's own files
      hold them; a branch's policy is read again only once its revision
      has changed, and a remote's records are asked for once a tick for
-     every branch on that remote, never once a branch. An idle reader
-     costs its host nothing a person can measure. A watch of a newer sluice than the live reader's takes the
+     every branch on that remote, never once a branch: that one asking
+     brings, in one call, every ref the host reads from that remote, the
+     records, each branch there at its revision, the heads submitted to
+     it and its combinations, so a branch on a remote is read as the
+     tick's fetch last brought it, never older than a tick while the
+     remote answers, and no branch is fetched on its own until a round
+     forms on it (121) or its intake is due (136). An idle reader costs
+     its host nothing a person can measure. A watch of a newer sluice than the live reader's takes the
      reader's lease at its next tick, and the older reader, finding the
      lease no longer its own, follows it; so a host whose sluice was
      replaced reads with the new one as soon as any session watches
