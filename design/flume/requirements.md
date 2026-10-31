@@ -1719,7 +1719,7 @@ core needs none of them.
 
 | profile | make | ready | read | remove / remove-branch |
 |---|---|---|---|---|
-| **git worktree**: every repository; the one place profile | `git worktree add -b <branch> <location> <revision>`, at `<repository>/places/<kind>--<name>`, with no hook run | the toolchain, then the runner's setup, that the repository declares in `.config/sluice.toml`, run in the place in sluice's cleaned environment, as sluice readies its own places | `git status --porcelain=v2`; `git worktree list --porcelain` for a lock | `git worktree remove`, with no teardown but sluice's release where sluice is the merge queue (C.6); the branch by `git cherry <base> <branch>`, deleted with `git branch -D` when no line starts with `+` |
+| **git worktree**: every repository; the one place profile | `git worktree add -b <branch> <location> <revision>`, at `$XDG_DATA_HOME/flume/places/<id>/<kind>--<name>`, under flume's own data directory and inside no working tree, `<id>` the repository's (record 0027); a place made before at `<repository>/places/<kind>--<name>` read and tidied where it stands; with no hook run | the toolchain, then the runner's setup, that the repository declares in `.config/sluice.toml`, run in the place in sluice's cleaned environment, as sluice readies its own places | `git status --porcelain=v2`; `git worktree list --porcelain` for a lock | `git worktree remove`, with no teardown but sluice's release where sluice is the merge queue (C.6); the branch by `git cherry <base> <branch>`, deleted with `git branch -D` when no line starts with `+` |
 
 There is no worktrunk place profile: a worktree tool's create hooks run
 a place's code with the host user's full permissions, outside any
