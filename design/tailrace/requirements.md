@@ -211,14 +211,17 @@ redefine these.
 13. Every claim names the revision and the build identity it was made
     for where it has one, so a verdict joins the claims of one build
     without a second reading of any source.
-141. A verdict tailrace signs (11) is of the kind a public catalogue of
-    claim kinds defines for a verifier's decision, which says that a
-    verifier checked a digest against a policy and what it decided;
-    tailrace defines its own claim kind only for a claim no catalogued
-    kind carries.
+141. Every claim tailrace signs (11) is of the kind a public catalogue
+    of claim kinds defines for what it says, wherever one does; tailrace
+    defines its own claim kind only for a claim no catalogued kind
+    carries.
 142. tailrace verifies a bundle of claims under a trusted root it is
     given, its certificates, its inclusion proofs and its passkey
     assertions, with no call to any service.
+143. A policy may name another system's trusted root as a signer, and
+    the kinds of claim its signers may make; a claim under that root
+    counts as any named signer's, checked against the root as it stood
+    when the claim was made.
 
 ### A.3 Publishing a landing
 
@@ -1248,8 +1251,10 @@ The rest of the stack, which a model builds on unless it says why not:
 - One static binary, written in Rust, as sluice is.
 - An attestation is an in-toto statement in a DSSE envelope, the form
   sluice signs its verdicts in, so one verifier reads both. The
-  catalogue of claim kinds (141) is in-toto's catalogue of predicates,
-  in which a verdict is SLSA's Verification Summary Attestation.
+  catalogue of claim kinds (141) is in-toto's catalogue of predicates:
+  a provenance is SLSA's Provenance, an acceptance and a rebuild are
+  SLSA's Verification Summary Attestation, and a test is in-toto's Test
+  Result; a review, a promotion and a carried claim are tailrace's own.
 - The build is moon, the landing is sluice, and the join between a
   verdict and a provenance is moon's task hash.
 - The version rule is git-cliff over conventional commits, run once
