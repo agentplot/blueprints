@@ -781,17 +781,21 @@ redefine these.
      and, for each variable its settings and flume
      give its environment (32, C.4), a digest of the variable's name and
      value keyed by the start's secret, never the value. The agent's
-     word that it started (35) is taken only where what it runs under
-     matches that record. An agent whose word shows another program,
-     another mode, or
-     a variable missing or with another value, as when a terminal brings
-     a pane back without its environment or a person starts the program
-     again by hand, is not the stage's agent: flume ends it once quiet
-     (31) and starts the stage afresh under the settings resolved then,
-     with no caller's word and counting toward no bound of the kind's
-     (112), and status says so, naming the mode it started in and each
-     variable that differed by
-     its name alone (56). A fresh start that differs again is never
+     word that it started (35) is taken only where its program and its
+     variables match that record. Its mode is compared where its
+     profile reads it back: at that word, or at the start's first prompt
+     where the program gives its mode only with a prompt it takes. That
+     prompt is then taken only where the mode matches, so the agent
+     takes no turn in another (169, C.4). An agent whose word shows
+     another program, or a variable missing or with another value, is
+     not the stage's agent, nor is one whose first prompt shows another
+     mode. A terminal that brings a pane back without its environment,
+     or a person who starts the program again by hand, leaves such an
+     agent. flume sends it nothing more, ends it once quiet (31) and
+     starts the stage afresh under the settings resolved then, with no
+     caller's word and counting toward no bound of the kind's (112).
+     Status says so, naming the mode it started in and each variable
+     that differed by its name alone (56). A fresh start that differs again is never
      begun (35), naming the same.
 162. An agent's mode is one of its settings (32): how far it may act in
      its place without asking a person, one of flume's four or a value
@@ -829,8 +833,9 @@ redefine these.
      program's, and a program the table names no entry for is refused
      as an unmapped mode is, never passing to a later layer. A start
      records the mode as its profile passes it (161), and compares it
-     only where the profile reads back the mode its program began in;
-     status says where it was not read back. flume answers no question
+     only where the profile reads back the mode its program began in, at
+     the start's word or its first prompt (161); status says where it was
+     not read back. flume answers no question
      an agent in ask or edits puts (34): such an agent waits asking
      until a person answers it (90). `plan` given to a stage that
      delivers neither a plan nor a conversation refuses the launch,
@@ -1548,7 +1553,9 @@ redefine these.
      with flume's guard and stop check in force where its program
      offers them; or that it started without them, naming each variable
      that differs by its name and whether its program or, where the
-     profile reads it back, its mode did, with the mode it began in; or
+     profile reads it back, its mode did, with the mode it began in, the
+     mode read at the start's word or, where the profile reads it only
+     with a prompt the program takes, at the start's first prompt; or
      unknown (35, 77, 161, 162, 171).
 89. **received**: given an agent and a text, whether the agent received
     the text as a prompt, by its own word where the program gives one,
@@ -1935,8 +1942,8 @@ round, so the conclusion is never committed on `sounding/<name>`
 | operation | how Claude Code satisfies it |
 |---|---|
 | command | `claude` in the place, with flume's own Claude Code plugin loaded by `--plugin-dir`, which holds every hook below, `--model` from the settings resolved for it (32), `--permission-mode` with the value the mode they resolve maps to where they give one and nothing where they give none (162, 169), the standing prompt as `--append-system-prompt` (148), and `--exclude-dynamic-system-prompt-sections`, which moves what Claude Code's own system prompt holds of one place and host, its working directory, its environment, its memory's paths and the repository's git status, into the first message, so the system prompt ahead of the standing prompt is the same for every agent of one release. Its environment is the host user's login environment with the resolved environment over it, and `FLUME_AGENT`, `FLUME_SECRET`, `FLUME_PLACE` and `FLUME_STAGE`. `FLUME_AGENT` is the identity, `flume:<repository>:<kind>--<name>:<stage>:<n>`, the repository named by an id taken from its common git directory and `<n>` the stage's start. `FLUME_SECRET` is that start's secret. The program's kind, by which a terminal that starts a known agent program names it, is `claude`. The prompt is sent once the started ack has come and the agent waits, or carried as the command's argument under the printed command (C.5) |
-| started | the plugin's SessionStart hook runs `flume ack started` with `FLUME_AGENT`, `FLUME_SECRET`, the plugin's version, the session's id, its transcript's path and the start's source; the ack is taken only while the secret is that start's, and a plugin version other than the binary's is reported. A start with no ack is starting. A session the terminal brought back with a bare `claude --resume`, which loads no `--plugin-dir` and carries no `FLUME_*`, acks nothing, so it is never the stage's agent (77). Before it acks, the hook compares what the agent runs under with the start's record (161): the program, read as C.5's check of a pane's foreground reads it, and, for each variable the record names, the digest of that variable in the hook's own environment, keyed by `FLUME_SECRET`; and, where the record names a mode, the hook input's `permission_mode`, which every hook's input carries in 2.1.296. Where any differs it acks nothing, records that the start began without its settings, naming each variable that differs and whether the program or the mode did, with the mode it began in, and starts `flume settle <place>` in the background, so flume ends that agent and starts the stage afresh. The variables a terminal sets for itself, `PATH` and `SHELL` among them, and the login environment beneath the settings are not in the record |
-| received | the plugin's UserPromptSubmit hook runs `flume ack received` with the submitted prompt's digest and the start's secret, which Claude Code fires only when it submits the prompt, a prompt queued while the agent worked among them; text typed and never submitted acks nothing. With no ack, the session's transcript holding the prompt as a user turn, or as a queued `enqueue` record, answers received, and a transcript that cannot be read answers unknown |
+| started | the plugin's SessionStart hook runs `flume ack started` with `FLUME_AGENT`, `FLUME_SECRET`, the plugin's version, the session's id, its transcript's path and the start's source; the ack is taken only while the secret is that start's, and a plugin version other than the binary's is reported. A start with no ack is starting. A session the terminal brought back with a bare `claude --resume`, which loads no `--plugin-dir` and carries no `FLUME_*`, acks nothing, so it is never the stage's agent (77). Before it acks, the hook compares what the agent runs under with the start's record (161): the program, read as C.5's check of a pane's foreground reads it, and, for each variable the record names, the digest of that variable in the hook's own environment, keyed by `FLUME_SECRET`. Where any differs it acks nothing and records that the start began without its settings, naming each variable that differs and whether the program did. It then starts `flume settle <place>` in the background, so flume ends that agent and starts the stage afresh. It compares no mode. The pinned 2.1.296 gives a SessionStart hook's input no `permission_mode`, so the received row compares the mode at the start's first prompt. The variables a terminal sets for itself, `PATH` and `SHELL` among them, and the login environment beneath the settings are not in the record |
+| received | the plugin's UserPromptSubmit hook runs `flume ack received` with the submitted prompt's digest, the start's secret and the input's `permission_mode`, which Claude Code fires only when it submits the prompt, a prompt queued while the agent worked among them; text typed and never submitted acks nothing. At the start's first prompt, where the start's record names a mode, the ack first compares it with the input's `permission_mode`, which the pinned 2.1.296 gives a UserPromptSubmit hook's input. Where it differs or is missing, the hook answers a block, which 2.1.296 reads as a blocking error, so the prompt takes no turn. It then acks nothing, records that the start began without its settings, with the mode asked and the mode it began in, and starts `flume settle <place>` in the background. flume sends that agent nothing more, ends it once quiet and starts the stage afresh (161). With no ack, the session's transcript holding the prompt as a user turn, or as a queued `enqueue` record, answers received, and a transcript that cannot be read answers unknown |
 | asking | a mark the plugin's hook leaves when the agent opens a question or a plan for a person (PreToolUse on `AskUserQuestion` and `ExitPlanMode`, but never on `ExitPlanMode` in a stage that delivers a plan, which the plan row declines), or Claude Code asks a person's permission (its permission-request or permission-prompt notification hook, where the pinned Claude Code has one), open until the transcript holds the answer, and cleared too at UserPromptSubmit and at SessionStart; the terminal's reading alone never decides it |
 | own-work | background tasks the transcript shows started and not finished |
 | plan | in a stage that delivers a plan, the plugin's PreToolUse hook on `ExitPlanMode` records the plan the tool's input names, its `planFilePath`, or its `plan` text where it names no file, written by the hook beside the start's record, with the time the hook ran, as the pinned 2.1.296 writes them; it then denies the tool with flume's words, that the plan is put for review and that its notes or an acceptance will come as the next message, so the agent stays in plan mode and ends its turn (163). The newest plan so recorded is the stage's, read at the path recorded |
@@ -1972,13 +1979,15 @@ delivers a plan starts in (163), ask to `manual`, edits to
 `acceptEdits` and full to `bypassPermissions`. Its own values, given
 under `claude` in a table of programs, are those choices, `acceptEdits`,
 `auto`, `bypassPermissions`, `manual`, `dontAsk` and `plan`. It reads
-the mode back by the hook input's `permission_mode`, compared with the
-value passed (161), and it offers the plan (164). Where the settings
+the mode back at the start's first prompt, by the UserPromptSubmit
+hook input's `permission_mode`, compared with the value passed (161),
+and it offers the plan (164). Where the settings
 give none, flume passes no `--permission-mode`
 and the account's own `settings.json` in its configuration home
 decides. A mode the account's configuration does not allow, as
 `bypassPermissions` where it disables that mode, starts Claude Code in
-another, which the started ack's comparison finds (161); and the
+another, which the first prompt's comparison finds, blocking that
+prompt so the agent takes no turn in it (161); and the
 warning Claude Code shows before a session in `bypassPermissions`
 where the account has not yet accepted it is one flume never answers
 (34). The prompt
@@ -2809,10 +2818,13 @@ These are not requirements.
 - **S67.** A stage's settings give `full`, which Claude Code maps to
   `bypassPermissions`, and the account's configuration disables that
   mode, so the program begins in
-  another. Its start's word shows the other mode: the agent is not the
-  stage's, flume ends it once quiet and starts the stage afresh, and
-  that start, beginning in the other mode again, is never begun, status
-  naming the mode asked and the mode it began in (35, 161, 162).
+  another. Its start's word is taken, since its program and variables
+  match. Its first prompt shows the other mode: Claude Code's
+  UserPromptSubmit hook blocks that prompt, so the agent takes no turn
+  in it, and the agent is not the stage's. flume sends it nothing
+  more, ends it once quiet and starts the stage afresh. That start
+  begins in the other mode again and is never begun, status naming
+  the mode asked and the mode it began in (35, 161, 162, C.4).
 - **S68.** A caller launches plan@1. The plan stage's agent starts in
   its program's planning mode, reads the place and puts a plan for
   review; flume declines its ask to leave planning, and once it is
