@@ -370,7 +370,13 @@ redefine these.
     component names a channel by its name alone, and every form below
     keeps that spelling, so nothing changes for it. A component's name
     holds no slash, so a pattern's channel, whose name holds one (127),
-    reads after its component without doubt in every form below.
+    reads after its component without doubt in every form below. A
+    channel's name never reads as a version's tag of its component, the
+    component's prefix followed by what the version rule derives a
+    version from (21, 123): a policy that names one is unreadable naming
+    the channel and the tag it would share, so a component's versions
+    and its channels never meet in one name wherever a store keeps both
+    as tags of one repository (138, C.14).
 32. A channel moves only by a promotion, and a promotion is made only by
     the gate, at the asking of a party the policy lets ask: a rule that
     follows each publish, or an approver. A channel declared by hand is
