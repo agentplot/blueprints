@@ -13,7 +13,8 @@ what must hold of the things weir defines: the capture contract, by
 which an adapter hands a host its events and a host takes them; the
 records an inbox holds and how they lie; the protocol that writes a
 shared branch; the kind format, by which a tool declares the stages
-work goes through; cadence; the built-in adapters; and the conformance
+work goes through, as a list or as a statechart; the engine, which
+ticks a statechart; cadence; the built-in adapters; and the conformance
 pack that holds every host and every adapter to the rest. Part B is
 its contracts: the operations weir needs across its five seams, an
 adapter, a host, a shared branch's keeper, a kind's reader and a
@@ -55,7 +56,7 @@ tools'. weir fixes the forms they meet in.
 | **a host** (a program that takes offers and keeps an inbox: millpond, Flywheel) | which adapters to run and when, where its inbox lies, its limit, and what becomes of an item | change what an offer carries, write a record outside the forms weir fixes, or take a key the inbox holds |
 | **a writer** (a host, a session or a tool writing a shared branch) | what to write, and when | apply a write to a tip it was not checked against, or stand in for that check with a lock |
 | **a kind's declarer** (a tool, a repository or a launch) | the stages work goes through, each stage's prompt, agents and deliverable, and any section of its own | make a reader run what the format does not say |
-| **a kind's reader** (flume, sounding, Flywheel) | which sections of a declaration it reads, and what it refuses | change a declaration, or fail on a section it does not know |
+| **a kind's reader** (flume, sounding, Flywheel) | which sections of a declaration it reads, which templates and atoms it binds, and what it refuses | change a declaration, fail on a section it does not know, or decide a transition of a statechart kind the engine does not give (96) |
 | **the operator** | everything a tool's statement leaves to them | |
 
 <!-- ANCHOR_END: actors -->
@@ -152,17 +153,38 @@ redefine these.
   held key written again, no second reading, no second standing move,
   no used item name.
 - **lock**: what keeps one machine's writers in turn.
-- **kind** (of work): a versioned, ordered list of stages, declared by
-  a tool, a repository, a launch or a package, and named by its source,
-  its name and its version.
+- **kind** (of work): a versioned simple kind or statechart kind,
+  declared by a tool, a repository, a launch or a package, and named by
+  its source, its name and its version.
+- **simple kind**: a kind that is an ordered list of stages (51).
+- **statechart kind**: a kind that is a statechart, built from the
+  templates its reader runs (94).
+- **statechart**: regions side by side, each in one of its states at a
+  time, with transitions out of each state in priority order, each
+  under a guard over evidence and with the effects it names (94).
+- **template**: a statechart with parameters, which a state of a
+  statechart kind runs inside it (94).
+- **atom**: a name a guard reads as evidence, or a transition names as
+  an effect; a kind's reader binds each, and weir interprets none (98).
+- **proof**: of an effect, the evidence that shows it done, which the
+  reader names for the atom (96).
+- **decision**: a state of a statechart that waits on a person's answer
+  while it is active (94, 97).
+- **snapshot**: the values of a statechart's evidence, read at one
+  moment and given to a tick (96).
+- **tick**: one pass of the engine over one object's state of a
+  statechart and one snapshot (96).
+- **engine**: the code that ticks a statechart, defined once in weir
+  (96 to 98).
 - **source** (of kinds): a name for where kinds come from: a tool's own,
   a repository's own declaration, a launch's, or one from outside.
 - **package** (of a kind): one kind at one version as it travels from
   one place to another, its declaration with every part it names.
 - **lock** (of kinds): a list of kinds by source, name and version, each
   with the hash of its content.
-- **stage**: one step of a kind, worked by one agent, ending on its
-  deliverable or, for a conversation, on its caller's word.
+- **stage**: one step of a simple kind, worked by one agent, ending on
+  its deliverable or, for a conversation, on its caller's word; of a
+  statechart kind, a state that runs the stage template (94).
 - **deliverable**: what a stage must produce for the stage to end, in
   one of seven forms.
 - **conversation**: a stage with no deliverable, which ends on its
@@ -387,24 +409,25 @@ redefine these.
 
 ### A.8 Kinds
 
-51. A kind is an ordered list of one or more stages, with a version.
-    Every stage but a conversation has exactly one deliverable, and a
-    conversation has none.
-52. A kind's declaration holds its version, its stages in order, how
-    its places' branches are named, whether its first stage starts in a
-    place that could not be made ready, and whether it lands. A kind
-    that lands names the stage a failed submission sends a place back
-    to, and how many times a place may go back before it waits on its
-    caller. It may hold settings for every stage's agents, which a
+51. A kind is a simple kind or a statechart kind, with a version. A
+    simple kind is an ordered list of one or more stages: every stage
+    but a conversation has exactly one deliverable, and a conversation
+    has none. A statechart kind is a statechart (94).
+52. A simple kind's declaration holds its version, its stages in order,
+    how its places' branches are named, whether its first stage starts
+    in a place that could not be made ready, and whether it lands. A
+    kind that lands names the stage a failed submission sends a place
+    back to, and how many times a place may go back before it waits on
+    its caller. It may hold settings for every stage's agents, which a
     stage's own settings come before.
-53. A stage's declaration holds its name, its prompt, and its
-    deliverable or that it is a conversation. It may hold its standing
-    instructions, text every agent of the stage starts with alike, its
-    agents with their settings, whether it waits on its caller's word, how
-    long its agent may be quiet before the stage is stuck, what it
-    makes besides its deliverable, each a non-empty name, and whether
-    it repeats per task group, worked one group of its change's tasks
-    at a time.
+53. The declaration of a simple kind's stage holds its name, its prompt,
+    and its deliverable or that it is a conversation. It may hold its
+    standing instructions, text every agent of the stage starts with
+    alike, its agents with their settings, whether it waits on its
+    caller's word, how long its agent may be quiet before the stage is
+    stuck, what it makes besides its deliverable, each a non-empty name,
+    and whether it repeats per task group, worked one group of its
+    change's tasks at a time.
 54. A deliverable is one of seven forms: commits; a change written;
     tasks ticked; a change archived; a report at a path; a committed
     report at a path; a plan, which an agent puts for review from its
@@ -418,10 +441,11 @@ redefine these.
 56. A declaration may hold a section its reader does not know, and the
     reader ignores it. A reader never fails on a section it does not
     know, and never changes a declaration.
-57. A declaration is checked whole: a kind with no stage, a stage with
-    no name or prompt, a field of the wrong shape, a deliverable not
-    of the seven, or a stage that repeats per task group and does not
-    deliver tasks ticked, is refused naming the field. A version left out
+57. A declaration is checked whole: a simple kind with no stage, a
+    stage with no name or prompt, a field of the wrong shape, a
+    deliverable not of the seven, or a stage that repeats per task group
+    and does not deliver tasks ticked, is refused naming the field. A
+    statechart kind is checked as 95 says. A version left out
     reads as the first. A kind's table that holds settings for its
     agents and no stages declares no kind: it is read as settings given
     to a kind of that name declared elsewhere, for every stage or for
@@ -454,6 +478,38 @@ redefine these.
     not the lock's, naming the kind and both hashes. Reading a lock
     changes nothing, and which locks a reader reads, and how it chooses
     among versions, are the reader's rule.
+94. A statechart kind's declaration holds its version, its label, the
+    words a person reads for it, and its statechart: one or more
+    regions side by side, each with its initial state and its states.
+    It may hold how its places' branches are named, as a simple kind's
+    does (52). A state may be final. It may carry a decision, with the
+    answers it takes and what it shows a person. It may hold regions of
+    its own, or run a template or another statechart inside it with
+    the parameters it gives, and name the state its enter moves that
+    statechart to. It may name the effects performed on entering it and
+    on leaving it. Its transitions out are in priority order, each with
+    its guard, the state it goes to, the effects it performs, a counter
+    it bumps and the states its enter moves. A guard combines, by all,
+    any and not: an evidence compared with a value, with a list, with
+    its existence, by order, by age or with another evidence; a response
+    that answers a decision; a final state of a statechart its state
+    runs; a sibling region's state; its owner's state or its children's;
+    and always. An effect is an atom with its arguments. A state that
+    runs the stage template gives the stage's parameters. Its agents are
+    a list of entries each with its settings, or a rule its reader
+    resolves against the place, and its join is all, any or a count. It
+    names the stage a send-back returns to, and how many times before
+    the work waits on its caller. Its deliverables are each one of the
+    seven (54). A kind's table says its format by what it holds: stages for a
+    simple kind, regions for a statechart kind.
+95. A statechart kind is checked whole: a table that holds both stages
+    and regions, a region with no states or whose initial state it does
+    not hold, a transition to a state its region does not hold, a guard
+    of a form 94 does not name, a join that is not all, any or a count,
+    a deliverable not of the seven, or a field of the wrong shape, is
+    refused naming the field (57). Which templates and atoms there are,
+    and whether a kind names only those its reader binds, are the
+    reader's to say (58).
 
 ### A.9 Cadence
 
@@ -501,7 +557,7 @@ redefine these.
     anything and counts it in the completion.
 67. Every case cites the clauses it exercises, and the pack's check
     fails when a cited number names no clause, or a clause of A.1 to
-    A.10 or 71 is cited by no case. The pack's own clauses, 65, 67 and
+    A.10, of A.13 or 71 is cited by no case. The pack's own clauses, 65, 67 and
     68, are proved by the check's own tests (S15, S16), and what weir
     never does, 69 and 70, by weir's rules, which no case can exercise;
     the check counts neither.
@@ -522,6 +578,37 @@ redefine these.
     lands work.
 71. No record weir defines holds a secret, and nothing weir writes
     includes one.
+
+### A.13 The engine
+
+96. The engine ticks a statechart. Given a statechart kind's statechart,
+    the templates it runs, one object's state of it and one snapshot of
+    its evidence, a tick gives the transitions that fire, the effects to
+    perform and the object's next state. Every guard of one tick reads
+    that one snapshot. In each region, innermost first, the first
+    transition out of its state whose guard holds fires, at most one per
+    region. Its siblings, and the statecharts that run it or that it
+    runs, see a region's move at the next tick, never within the same
+    one. Firing runs the left state's exit effects, the transition's
+    effects and the entered state's entry effects, each only while its
+    proof is absent. It bumps the counter the transition names, records
+    when each region entered its state, and moves a statechart the
+    target runs to the state its enter names.
+97. A state that runs a template or another statechart starts it afresh
+    each time the state is entered, and sets the earlier one aside
+    under its attempt, where it stays readable. The statechart that runs
+    it reads it only by its final states and moves it only by an enter.
+    A response is applied once: the object records the response a guard
+    consumed, and a guard on a response never holds for one it already
+    applied. A decision is derived from the state that carries it while
+    that state is active, and from nothing else.
+98. The engine names no reader's object or atom. An evidence and an
+    effect are names its reader binds and the engine never interprets,
+    and its own tests run a toy statechart that shares no atom with any
+    reader's. It holds no store and performs nothing: the snapshot is
+    its caller's reading, and an effect is a name with arguments its
+    caller performs. The same statechart, state and snapshot always give
+    the same tick, and ticking changes nothing (69).
 
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
@@ -564,9 +651,10 @@ redefine these.
 
 ### B.4 The kind's reader
 
-81. **read-kinds**: given a declaration, every kind it declares, each
-    with its stages and its sections; or that it could not be read,
-    with the field named (57).
+81. **read-kinds**: given a declaration, every kind it declares, a
+    simple kind with its stages and a statechart kind with its
+    statechart, each with its sections; or that it could not be read,
+    with the field named (57, 95).
 82. The guarantee: the same declaration gives the same kinds, reading
     changes nothing (58), and a section the reader does not know is
     returned unread and unrefused (56).
@@ -577,6 +665,11 @@ redefine these.
     hash; or that it could not be read, with the field named (91). The
     guarantee of both: the same input gives the same answer, and reading
     changes nothing.
+99. **tick**: given a statechart kind's statechart with the templates
+    it runs, an object's state of it and a snapshot of its evidence, the
+    transitions that fire, the effects to perform and the object's next
+    state (96, 97). The guarantee: the same input always gives the same
+    answer, and ticking changes nothing (98).
 
 ### B.5 The clock
 
@@ -845,6 +938,85 @@ settings given to that name, and a declaration holding one is never
 refused for it (57). Whether a stage it names exists, and which
 declaration it joins, are the reader's to say (58).
 
+A statechart kind is a `[kinds.<kind>]` table that holds `regions` and
+no `stages`; one that holds both is refused naming the field (94, 95).
+Its fields are the engine's own names. So the engine's types define a
+statechart's fields once, and `read-kinds` reads the table into them,
+the kind's name and `version` as the statechart's own (81):
+
+```toml
+[kinds.persona]
+version = 1
+label = "Persona test"    # the words a person reads for the kind (94)
+branch = "persona"        # as a simple kind's (52)
+
+[kinds.persona.regions.stages]
+initial = "build"         # one of the region's states (95)
+
+[kinds.persona.regions.stages.states.build]
+machine = "stage"         # the template or statechart the state runs, by name (94)
+params = { agents = [{ model = "opus" }], join = "all", on_fail = "build", max_send_backs = 2, deliverables = ["commits"] }
+transitions = [           # in priority order (96)
+  { when = { final = "passed" }, to = "test" },
+  { when = { final = "stopped" }, to = "stopped" },
+]
+
+[kinds.persona.regions.stages.states.test]
+machine = "stage"
+params = { agents = { rule = "every-persona-definition", pattern = "personas/*.md" }, join = "all", on_fail = "build", max_send_backs = 2, deliverables = ["committed:tests/personas.md"] }
+transitions = [
+  { when = { final = "passed" }, to = "passed" },
+  { when = { final = "sent-back" }, to = "build" },
+  { when = { final = "stopped" }, to = "stopped" },
+]
+
+[kinds.persona.regions.stages.states.passed]
+final = true
+
+[kinds.persona.regions.stages.states.stopped]
+decision = { kind = "stalled", answers = ["retry", "drop"] }   # a decision while the state is active (97)
+transitions = [
+  { when = { response = "retry" }, to = "build" },
+  { when = { response = "drop" }, to = "dropped" },
+]
+
+[kinds.persona.regions.stages.states.dropped]
+final = true
+```
+
+A region is `regions.<region>`, with `initial` and its
+`states.<state>`. A state may hold `final`, `decision`, `entry` and
+`exit`, `machine` with its `params` and `enter`, `regions` of its own,
+and `transitions`, each with `when`, `to`, `effects`, `bump` and
+`enter` (94). `when` is a guard, one of:
+
+- `{ all = [...] }`, `{ any = [...] }` and `{ not = ... }`;
+- `{ ev = "<atom>", is = <value> }`, or with `in`, `exists`, `gt`,
+  `gte`, `lt`, `lte` or `older`, a duration, in place of `is`, or
+  with `eq_ev`, `ne_ev`, `gt_ev`, `gte_ev` or `lt_ev`, naming another
+  evidence;
+- `{ response = "<answer>" }`;
+- `{ final = "<state>" }`, `<region>.<state>` where the state runs more
+  than one statechart;
+- `{ region = { name = "<region>", in = [...] } }`, the name a dotted
+  path where the region lies in a statechart a sibling runs;
+- `{ parent = { in = [...] } }` and `{ children = { kind = "<kind>",
+  all = [...] } }`, or with `any`, `none` or `count_gte`;
+- `{ always = true }`.
+
+An effect is `{ do = "<atom>", args = { ... } }`, in a state's `entry`
+or `exit` or a transition's `effects`. A decision is `{ kind, answers,
+shows }`, its answers the words a response gives. The stage template's
+`params` are these. `agents` is a list of entries with their settings,
+as a simple stage's `agents` are, or `{ rule, pattern }`, a rule the
+reader resolves against the place. `join` is `all`, `any` or
+`count:<n>`. `on_fail` and `max_send_backs` are as on a simple kind's
+last stage (52), and each of `deliverables` is spelled as the table
+above spells it (54).
+`doc` and `note` are words for a person, and change nothing. Which
+names `machine`, `ev` and `do` may give, and what each means, are the
+reader's (95, 98).
+
 ### C.5 Cadence: five-field cron
 
 A schedule is five-field cron, read in the machine's local time, and
@@ -872,9 +1044,12 @@ tip moved or the refusal; 44 to 50), `inbox` (C.2: an inbox's starting
 records and one operation of the records, a reading, a move or a
 replacement, a batch proposed or decided, an item, a brief, a send or
 import lines, and the records or the refusal expected; 25 to 43, 63)
-and `kinds` (C.4: a declaration, and the kinds read or each field
-refused; 51 to 58); a case of the last four runs against weir's own
-crate in its tests, as cadence's do. For a host's case, the lines in
+`kinds` (C.4: a declaration, and the kinds read or each field
+refused; 51 to 58, 94, 95) and `tick` (A.13: a statechart, an object's
+state of it and a snapshot, and the transitions, effects and next
+state expected; 96 to 99), the engine's toy statechart among them, a
+lamp off and on that names no reader's atom; a case of the last five
+runs against weir's own crates in their tests, as cadence's do. For a host's case, the lines in
 (`lines.jsonl`) and a raw place, and the records expected out, or the
 refusal expected, with a `satisfies:` list naming the clauses (67). A
 host is run against every host case through its intake; an adapter's
@@ -884,7 +1059,7 @@ statement, and fails when a number names no clause or a clause of Part
 A is cited by nothing. It needs no network (68). A case for cadence
 (59, 60) is a schedule, a last run or none, a now, and whether the thing
 is due, with the zone the now is read in; a cadence case is one of the pack's
-six shapes above, and 67's check counts it as it counts the others.
+seven shapes above, and 67's check counts it as it counts the others.
 
 `weir conform <host command>` runs a host against the host cases through
 one seam the pack fixes, and the pack holds a host to it (65, 87). For
@@ -927,8 +1102,8 @@ C.1).
 - I5. Every record names its format and major, and a later reader reads
   every earlier one (40).
 - I6. A signal has at most one standing move (29).
-- I7. Reading changes nothing: a declaration, an inbox or a tip read is
-  as it was (58, 78).
+- I7. Reading and ticking change nothing: a declaration, an inbox, a
+  tip or a statechart read or ticked is as it was (58, 78, 98).
 - I8. Two hosts given the same lines write the same records (24).
 
 <!-- ANCHOR_END: invariants -->
@@ -959,10 +1134,10 @@ Constraints already fixed:
   JSON exists only in flight (D4).
 - The hosts are millpond today and Flywheel later, and an adapter runs
   unchanged under either. The kind's readers are flume, which reads a
-  kind's places and stages, and sounding, which reads an elaboration
-  kind's section too. crew calls millpond's, flume's and sounding's
-  command lines and links no crate, keeping a Python twin of the
-  write protocol.
+  simple kind's places and stages and ticks a statechart kind on the
+  engine, and sounding, which reads an elaboration kind's section too.
+  crew calls millpond's, flume's and sounding's command lines and links
+  no crate, keeping a Python twin of the write protocol.
 - The sources already built speak the contract: headwater's adapter
   for releases, eddy's adapters for meetings, swancloud's deployer
   through the intake, and crew's findings through `crew signal`.
@@ -981,7 +1156,11 @@ The rest of the stack, which a model builds on unless it says why not:
   `weir-branch` (the write protocol), `weir-kinds` (the kind format,
   read and checked, with its packages, their content hash and locks)
   and `weir-cadence` (five-field cron, caught up
-  once), with the conformance pack beside them.
+  once), with the engine's crate beside `weir-kinds`, moved from the
+  original Flywheel's flywheel-engine with its tests and its toy
+  statechart, and the conformance pack beside them all. A reader takes
+  `weir-kinds` and the engine at one revision of weir, so the format a
+  kind is read in and the tick that runs it never come from two.
 - JSON Lines in flight, GNU recutils at rest (`recfix`), TOML for
   declarations, RFC 3339 times, sha256 for content hashes, five-field
   cron for schedules, and XDG directories on a machine.
@@ -1095,6 +1274,20 @@ rules; each ruling below is the user's, on their card of 2026-10-26.
 - **S18.** A lock records `acme/review@1` at one hash, and the package
   held at that identity has one prompt changed by a byte. Its content
   hash differs, and a reader refuses the kind naming it and both hashes.
+- **S19.** A declaration holds a simple kind, bump, and a statechart
+  kind, persona, whose test state runs the stage template with a rule
+  for its agents and joins all. `read-kinds` gives bump with its stages
+  and persona with its statechart, each as written, and reads both the
+  same twice. A third kind's table holds both `stages` and `regions`,
+  and is refused naming the field (51, 57, 81, 94, 95).
+- **S20.** A statechart's transition names a state its region does not
+  hold. The declaration is refused naming the transition's `to` (95).
+- **S21.** The engine's toy statechart, a lamp in one region with off
+  and on, is ticked with the lamp off and a snapshot whose switch is
+  up. The tick gives the transition to on, with its effect, whose proof
+  is absent. Ticked again with the lamp on and the proof present, it
+  gives nothing. Each tick, given twice, gives the same answer, and
+  neither changes the statechart or the snapshot (96, 98, 99).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
@@ -1103,8 +1296,9 @@ rules; each ruling below is the user's, on their card of 2026-10-26.
 A model of weir that satisfies Parts A and B: the contract's lines and
 the seven steps a host takes; the records of a capture, a signal, a
 move, a batch, an item, a brief and a send, with the layout; the write
-protocol; the kind format, read and checked; cadence; the built-in
-adapters; and the pack, with fixed examples of each. A conformance
+protocol; the kind format, read and checked, and the engine's tick;
+cadence; the built-in adapters; and the pack, with fixed examples of
+each. A conformance
 pack whose cases each cite the clauses they exercise, failing when no
 case cites a clause. The profiles of Part C, each passing the pack,
 and millpond passing it as a host.

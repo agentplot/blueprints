@@ -90,9 +90,27 @@ redefine these.
 - **brief**: what the work is, as the caller wrote it.
 - **mark**: words of a caller's own that a launch carries, by which
   callers find places.
-- **kind**: a named list of stages in order, at a version. It also says
-  how its places' branches are named, whether its first stage starts in
-  a place that could not be made ready, and whether it lands.
+- **kind**: a named simple kind or statechart kind, at a version (18).
+- **simple kind**: a kind that is a list of stages in order. It also
+  says how its places' branches are named, whether its first stage
+  starts in a place that could not be made ready, and whether it lands
+  (23).
+- **statechart kind**: a kind that is a statechart built from the
+  templates, run by the engine (175, 176).
+- **statechart**: regions side by side, each in one of its states at a
+  time, and transitions out of each state in priority order, each with
+  a guard over evidence and the effects it performs (175).
+- **template**: a statechart a state of a statechart kind runs inside
+  it. A statechart kind is built from three: the stage template, which
+  runs its sessions and joins them; the session template, one agent's
+  life; and the place template, the worktree its sessions work in
+  (175).
+- **atom**: a name a statechart's guard reads as evidence, or its
+  transition performs as an effect, each effect with the evidence that
+  proves it done; flume binds each to one seam (178).
+- **engine**: the family's code that ticks a statechart: given its
+  states and one reading of its evidence, it gives the transitions that
+  fire and the effects to perform, and decides nothing else (176).
 - **version**: of a kind, the number its declaration gives it, with
   which, beside its source and its name, the kind is named.
 - **source**: a name for where kinds come from: flume's own kinds are
@@ -112,8 +130,10 @@ redefine these.
 - **declaration**: a written set of kinds, in the one form every tool
   of the family reads (section 9): flume's own, a repository's, one a
   launch carries, or a package's.
-- **stage**: one step of a kind: its name, its prompt, its deliverable
-  or that it is a conversation, and its agent's settings.
+- **stage**: one step of a kind: of a simple kind, its name, its
+  prompt, its deliverable or that it is a conversation, and its agent's
+  settings; of a statechart kind, a state that runs the stage template
+  (175).
 - **task group**: a numbered and titled run of a change's tasks, in the
   change's order.
 - **repetition**: one start of a stage that repeats per task group,
@@ -188,7 +208,8 @@ redefine these.
 - **affinity**: the stream and the account an intent's places start on,
   kept while that account is usable (147).
 - **identity**: the one name flume gives an agent, naming its
-  repository, its place, its stage and which start of the stage it is.
+  repository, its place, its stage and which start of the stage it is,
+  and which session where its stage runs several (33).
 - **agent state**: what an agent is doing: **working**; **waiting**,
   ready for input; **asking**, waiting on a question it put to a person;
   **stopped**; or **unknown**, when flume cannot read it.
@@ -315,7 +336,11 @@ redefine these.
    or a change it did not make for the launch.
 4. A launch whose kind resolves to no declaration (19), asks for more
    than flume runs of a kind (23), or names a deliverable flume cannot
-   read (24) is refused naming the kind, and makes nothing. So is a
+   read (24) is refused naming the kind, and makes nothing. While flume
+   runs no statechart kind, a launch of one is refused so, naming the
+   kind and its format. Once flume runs them, a launch is refused only
+   for what neither format holds, or for an atom or a template flume
+   does not bind (175, 178). So is a
    launch of a kind that lands where the repository binds no merge
    queue (105). A launch that gives no brief while a stage of its kind
    asks for one is refused naming the stage, and makes nothing (27).
@@ -403,9 +428,10 @@ redefine these.
 
 ### A.3 Kinds and stages
 
-18. A kind is an ordered list of one or more stages. Every stage but a
-    conversation has exactly one deliverable, and a conversation has
-    none (109).
+18. A kind is a simple kind or a statechart kind (175, 177). A simple
+    kind is an ordered list of one or more stages. Every stage of a
+    simple kind but a conversation has exactly one deliverable, and a
+    conversation has none (109).
 19. flume itself, a repository, a launch or a package declares a kind,
     and every kind is named by its identity: its source, its name and its
     version (154). For a launch, a kind's name resolves to exactly one
@@ -423,7 +449,7 @@ redefine these.
     then. A later change to any declaration, lock or package the host
     holds never changes a place already launched.
 22. flume's own kinds are fix@1, chore@1, change@1, change@2 and
-    plan@1, and all five land. **plan** is a plan stage, which delivers
+    plan@1, all five simple kinds (18), and all five land. **plan** is a plan stage, which delivers
     a plan its caller accepts (163), and then fix's code stage, which
     works to the plan accepted; a failed submission sends it back to
     code. **fix** is a code stage, which delivers commits. Its
@@ -442,26 +468,26 @@ redefine these.
     repository picks one by its lock (155) and a launch by naming it
     (154). Every other kind, each of sounding's among them, is a
     repository's, a launch's or a package's (19).
-23. A kind's declaration holds its version, its stages in order, how its
-    places' branches are named, whether its first stage starts in a
-    place that could not be made ready, and whether it lands. A kind
-    that lands names the stage a failed submission sends a place back
-    to, and how many times a place may go back before it waits on its
-    caller. A kind's declaration may hold settings for the agent of
-    every one of its stages. A stage's declaration holds its name, its
-    prompt, and its deliverable or that it is a conversation, and may
-    hold its standing instructions (148), its agent's settings, what it makes besides its deliverable
-    (129), whether it waits on its caller's word, how long its
-    agent may be quiet before the stage is stuck, and whether it repeats
-    per task group (140). flume reads only a
+23. A simple kind's declaration holds its version, its stages in
+    order, how its places' branches are named, whether its first stage
+    starts in a place that could not be made ready, and whether it
+    lands. One that lands names the stage a failed submission sends a
+    place back to, and how many times a place may go back before it
+    waits on its caller. It may hold settings for the agent of every one
+    of its stages. A stage's declaration holds its name, its prompt, and
+    its deliverable or that it is a conversation, and may hold its
+    standing instructions (148), its agent's settings, what it makes
+    besides its deliverable (129), whether it waits on its caller's
+    word, how long its agent may be quiet before the stage is stuck, and
+    whether it repeats per task group (140). flume reads only a simple
     kind's places and stages, and runs that much of them: stages in
     order, one agent to each start, a repeating stage's repetitions in
-    turn, and the place sent back when its
-    submission fails. A kind whose places and stages ask for more, such
-    as a stage worked by several agents, is refused (4). flume ignores a
-    section of a kind it does not know, such as the elaboration section
-    sounding reads, and nothing else a declaration holds changes what
-    flume does.
+    turn, and the place sent back when its submission fails. A simple
+    kind whose places and stages ask for more, such as a stage worked by
+    several agents or with several deliverables, is refused (4); a
+    statechart kind holds them (175). flume ignores a section of a kind
+    it does not know, such as the elaboration section sounding reads,
+    and nothing else a declaration holds changes what flume does.
 24. Every deliverable is one of seven forms, each read where it lives:
     - **commits**: the place's branch holds a commit made since the
       stage started;
@@ -573,6 +599,60 @@ redefine these.
      How a package reaches the host, copied by a person or taken from a
      shared catalogue, is outside this statement. Holding a package runs
      nothing: only a lock does (155).
+175. A statechart kind is a statechart in the family's kind format
+     (weir 94), built from the stage, session and place templates. Its
+     regions run side by side, each in one of its states at a time. A
+     state may be final, may carry a decision a person answers, may hold
+     regions of its own, and may run a template or another statechart
+     inside it with the parameters it gives. A state's transitions out
+     are in priority order, each with a named guard over evidence, the
+     state it goes to and its named effects. A state that runs the stage
+     template is a stage of the kind. It runs its sessions side by side,
+     one to each of its agents, which it lists or names by a rule read
+     against the place, and joins them by all, any or a count. It names
+     its deliverables, each one of the forms of 24, and sends the place
+     back to a stage it names up to a bound, past which the place waits
+     on its caller (112). A session is one agent's life, from its start
+     through working, waiting and asking to its end or its loss, and the
+     place is the worktree its sessions work in (9). A statechart kind
+     composes the templates and the atoms by their names, so a kind
+     added changes no code of flume's, and one naming a template or an
+     atom flume does not bind is refused naming it (4, 178). It carries
+     a label, the words a person reads for it. Like every kind it is
+     named by its identity, resolved, packaged and locked as 19 and 154
+     to 160 say. Its version names one content: a change to what it
+     holds is a new version beside the earlier one (154, 156), and a
+     place keeps the version and the content it launched with (21).
+176. flume runs a statechart kind on the family's engine (weir 96 to
+     99), and decides no transition of its own. Each settle of a place
+     under a statechart kind reads its evidence once, at one head of the
+     place's branch (25), and ticks its statechart once over it. In each
+     region the first transition out of its state whose guard holds
+     fires. An effect is performed only while the evidence that proves it
+     is absent, so a settle repeated performs nothing twice (74). flume
+     serves each evidence and performs each effect through the seam its
+     atom is bound to (178). It keeps what the engine holds of a place
+     in the place's held state, written as every held state is (75,
+     103): each region's state and when it was entered, its record and
+     counters, and the answers it applied. A decision stands while its
+     state is active, and an answer to it is applied once and never
+     again (74). Nothing ticks between flume's commands (120): an agent
+     going quiet, the terminal's watch and a caller's command settle a
+     place under a statechart kind as under a simple kind (46).
+177. flume reads and runs both formats side by side. Every release from
+     the first that runs statechart kinds runs both, none drops simple
+     kinds, and no build or setting of flume runs one format and not the
+     other. A simple kind is declared, resolved, locked and run as 18 to
+     25 and 140 say whatever statechart kinds come to do, by flume's own
+     rules and never on the engine. No simple kind is refused, rewritten
+     or run otherwise because statechart kinds exist, and status reports
+     its stages' states as 56 says. Neither format is translated into
+     the other. A kind declared again in the other format is a new
+     version of it beside the earlier one (154, 156), and a place runs
+     its kind in the format it launched with (21). A repository, a
+     launch and a host may hold kinds of both formats, and flume reads
+     each kind's format as the family's format spells it (weir 94),
+     never guessing it.
 123. A report kept beside a place's held state goes when the place is
      tidied (62). A stage delivers one only where its caller keeps what
      the report holds once the place is gone. Every other report a
@@ -625,11 +705,14 @@ redefine these.
 
 ### A.4 Agents
 
-30. Each start of a stage, each repetition of a repeating stage among
-    them (140), starts exactly one fresh agent, working in the place. A
-    place has at most one agent at any moment: flume never starts an
-    agent while another of the place's is live, and never hands a stage
-    an agent another stage or place started.
+30. Each start of a stage of a simple kind, each repetition of a
+    repeating stage among them (140), starts exactly one fresh agent,
+    working in the place. A place of a simple kind has at most one agent
+    at any moment. flume never starts an agent while another of the
+    place's is live, and never hands a stage an agent another stage or
+    place started. A statechart kind's stage runs its sessions as its
+    join says (175), each session one fresh agent of its own, and no
+    agent is handed from one session, stage or place to another.
 31. flume never ends an agent that is not quiet, unless a caller forced
     it. An agent whose state or own work flume cannot read is not quiet,
     and status names what flume cannot read; an agent whose profile
@@ -678,7 +761,8 @@ redefine these.
     but the mode where no layer gives one (162).
 33. Every agent carries an identity flume gives it, which names its
     repository, its place, its stage and which start of the stage it is,
-    and which no other live agent on the host carries.
+    and, for a session of a statechart kind's stage, which session
+    (175), and which no other live agent on the host carries.
 34. flume answers on an agent's behalf only the agent program's
     question whether it may work in the place, and only when the agent
     shows it; and, in a stage that delivers a plan, it declines the
@@ -1519,11 +1603,13 @@ redefine these.
 ### B.2 The kinds
 
 84. **read-kinds**: given a repository and a revision, every kind the
-    repository declares there, each with its stages; or that its
-    declaration could not be read, with the reason (19, 20).
+    repository declares there, a simple kind with its stages and a
+    statechart kind with its statechart; or that its declaration could
+    not be read, with the reason (19, 20, 175).
 85. The same revision always gives the same kinds, reading changes
     nothing, and a declaration a launch carries is read the same way
-    (19).
+    (19). A statechart kind's statechart is given whole, as the family's
+    format reads it (weir 81).
 160. **read-locked**: given a lock and the packages the host holds, each
      kind the lock records with its content, and whether its content's
      hash is the one recorded; or that the lock or a package could not be
@@ -1712,6 +1798,13 @@ redefine these.
      queue (4, 111). Parts A and B do not change to admit a profile.
 106. One conformance suite holds every profile to Parts A and B; a
      profile that fails it is not one.
+178. Each atom the stage, session and place templates name is bound to
+     one operation of one seam above, and served or performed through it
+     alone (105): an evidence a guard reads, or an effect a transition
+     performs with the evidence that proves it. An atom no operation
+     serves is not one flume runs, and a statechart kind that names it is
+     refused (4). The conformance suite holds each binding as it holds
+     its operation (106).
 
 <!-- ANCHOR_END: part-b -->
 <!-- ANCHOR: part-c -->
@@ -1831,9 +1924,10 @@ stage and its layer (4, 169). `model` is the program's own name for a
 model, or a table of programs in the same form (172). A stage that
 delivers `plan` starts in `plan` whatever the layers give, and only on
 a program whose profile offers the plan (163, 164). flume reads `on_fail` and `max_send_backs` on a
-kind's last stage only, since under flume a stage fails only by its
-place's failed submission. A kind whose stage names more than one agent
-or more than one deliverable is refused (4, 23). flume ignores a
+simple kind's last stage only, since under flume a stage of a simple
+kind fails only by its place's failed submission. A simple kind whose
+stage names more than one agent or more than one deliverable is refused
+(4, 23). flume ignores a
 section of a kind it does not know, such as an elaboration kind's
 elaboration section (23). `repeat = "per-task-group"` on a stage that
 delivers `tasks` makes it repeat per task group (140); the format
@@ -1845,6 +1939,17 @@ naming the stage (4). The `[prompt]` table is flume's, beside
 `[profiles]`, the repository's and no part of any kind, and names the
 goals' file alone; a goals file the
 revision does not hold refuses the launch naming it (4).
+
+A statechart kind is a `[kinds.<kind>]` table that holds `regions` in
+place of `stages`, spelled as weir's C.4 spells it (175). The kind
+format's crate in agentplot/weir reads it, at the one revision of weir
+the workspace pins. It runs on the engine, the original Flywheel's
+flywheel-engine moved into agentplot/weir beside that crate and taken at
+the same revision (176). So the format a kind is read in and the tick
+that runs it never come from two revisions. A table that holds both
+`regions` and `stages` is refused naming the field (weir 95). While
+flume runs no statechart kind, a declaration of one refuses the launch
+naming the kind and its format (4).
 
 A kind's identity is written `<source>/<name>@<version>`, as
 `flume/change@2` or `acme/review@1` (weir C.4). flume's own source is
@@ -2308,8 +2413,9 @@ tidied (62).
 - **I1.** A stage ends only at its deliverable, its agent's stop-short,
   or, for a conversation, its caller's finish; never at a quiet terminal
   (39, 41, 109).
-- **I2.** A place has at most one agent, and no agent that is not quiet
-  is ended unless a caller forced it (30, 31).
+- **I2.** A place of a simple kind has at most one agent, and a
+  statechart kind's stage runs its sessions as its join says. No agent
+  that is not quiet is ended unless a caller forced it (30, 31, 175).
 - **I3.** flume submits the places of a kind that lands, and an agent
   never submits. flume never commits, merges or lands, and moves no
   branch but its places' own (14, 71, 108).
@@ -2377,10 +2483,12 @@ Constraints already fixed:
 - A kind is written in the family's one kind format. The format is
   defined once in the family's shared crates, in a public repository of
   the family's own, and the family's other tools build on it. flume
-  runs the part of it that 23 names, so a repository's kinds keep their
-  meaning in any tool that runs more of the format. An elaboration kind
-  is written in the same format, with an elaboration section that
-  sounding reads and flume ignores.
+  runs the part of a simple kind that 23 names, so a repository's kinds
+  keep their meaning in any tool that runs more of the format. It runs
+  a statechart kind on the family's engine, which the same shared
+  crates carry (175, 176). An elaboration kind is written in the same
+  format, with an elaboration section that sounding reads and flume
+  ignores.
 - The family's storage rule places each piece of state in the lowest of
   five layers that holds every reader it has. The layers are the host,
   the worktree, the clone, a shared branch and the repository's
@@ -2892,6 +3000,23 @@ These are not requirements.
   status` reports it not installed. The launch is refused, naming
   `herdr integration install omp`. Once it is installed, the launch is
   taken (4, 170, C.5).
+- **S76.** A repository declares two kinds. review@1 is a simple kind, a
+  list of a code stage and a review stage. persona@1 is a statechart
+  kind, whose test stage runs one session per persona the place holds
+  and joins all. A launch of review@1 runs its stages in order by
+  flume's own rules, one agent at a time. A launch of persona@1 runs on
+  the engine, each settle ticking it once over evidence read at one
+  head: its test stage starts a session for each persona side by side,
+  and passes once every one has delivered. On a flume that runs no
+  statechart kind, the launch of persona@1 is refused naming it and its
+  format, and the launch of review@1 is taken (4, 18, 23, 30, 175 to
+  177).
+- **S77.** A place is launched under flume's own change@2 on a release
+  that runs simple kinds alone. While its code stage repeats, the host
+  takes a release that runs statechart kinds too. The place finishes
+  under change@2 as it launched, by flume's own rules. Its next
+  repetition, its verify stage and its submission run as before, and
+  nothing of it runs on the engine (21, 140, 177).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
