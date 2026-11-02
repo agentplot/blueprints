@@ -1183,9 +1183,10 @@ outlives them is the trailers each landing commit carries (23).
 | **remote refs**: peers, for a branch with a `remote` whose policy names signers | one root commit under `refs/sluice/state/<branch>` on the shared remote, its tree the branch's documents (53), its id the version; a write a push with `--force-with-lease` from the commit read, by any instance that submits to or advances the branch; beside it `refs/sluice/runs/<signer>`, each signer's signed run records, added to only by that signer (109); `refs/sluice/heads/<oid>` for every submitted head; `refs/sluice/combinations/<branch>/<id>` for every candidate open to claims; `refs/sluice/logs/<branch>/<run>` for a run's output; and `refs/sluice/hosts/<host>`, rewritten by each host alone on a fixed cadence as its sign of life and its free room (77, 107) |
 
 A run record on a signer's ref is an in-toto statement in a DSSE
-envelope: its subject the check's key and system, its predicate the
-outcome, the claims of 79, the candidate, the claim and the time. The
-catalogue of signed records (141) is in-toto's catalogue of predicates.
+envelope, of in-toto's Test Result kind: its subject the check's key and
+system, its predicate the outcome, the claims of 79, the candidate, the
+claim and the time. The catalogue of signed records (141) is in-toto's
+catalogue of predicates (record 0077).
 Each signer computes the keys it signs from the candidate itself. A job
 on a forge signs it keylessly with the job's workload identity; any
 other signer signs it with an SSH key whose public half the policy
@@ -1197,7 +1198,9 @@ A set-aside (116) is one JSON document per line in a log of its own
 beside the results log. It names the run by its key, its system and the
 time it was recorded, and gives the reason, who set it aside, and when.
 A reader of the results log alone is unchanged. On a signer's ref, a
-set-aside is a statement signed as a run record is.
+set-aside is a statement signed as a run record is, of sluice's own
+kind, since no catalogued kind says that a recorded run did not judge
+its check (141).
 
 ### C.7 Policy
 
