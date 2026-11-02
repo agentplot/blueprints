@@ -1007,7 +1007,7 @@ redefine these.
     limits, a container engine the policy asks for, is a requirement the
     executor reads from the host itself: an executor that finds no
     engine the run could reach, at the sockets it would open for it
-    (C.3), refuses the run before claiming it, and the run stays open
+    (C.2), refuses the run before claiming it, and the run stays open
     for an executor that can, as a run whose system no live executor is
     does (87), the candidate read as not passed at its time limit where
     none can (66); after a run in which a check did not pass the
@@ -1595,8 +1595,8 @@ section asked is answered by a clause.
   carrying them, its runs and verdict standing and nothing tested
   again. On another day the guides change touches a file the second
   submission under test also edits: it waits behind that submission,
-  saying so, and lands after it (140). (Proposed 2026-10-30, record
-  0075, on the user's card; accepted only on their yes.)
+  saying so, and lands after it (140; record 0075, accepted
+  2026-10-30).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
