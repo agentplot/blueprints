@@ -687,7 +687,11 @@ redefine these.
     past a landing.
 56. A branch's gate is read from the branch's current revision, never from a
     candidate or a place. No submission changes the gate it is judged
-    by.
+    by. A readiness command a policy still names, which sluice no longer
+    runs (84), refuses nothing: sluice passes it over, runs nothing for
+    it and reads the policy as if it named none, so a branch whose
+    policy still names one is not stopped while its policy is edited
+    (the user, 2026-10-30, on batch 48).
 
 ### A.7 Places
 
@@ -1555,7 +1559,11 @@ section asked is answered by a clause.
   the bolt with the refusal and every other branch whole (26). The
   bolt's own round reads it at the remote's revision and runs, and the
   host's copy is levelled by the landing it next reads (124; record
-  0069, accepted 2026-10-28).
+  0069, accepted 2026-10-28). Had the host's ref named instead a
+  readiness command, `[tests] ready`, which this sluice no longer runs,
+  nothing would be refused, there or at the remote's revision. The key
+  is passed over and nothing is run for it (56, 84; the user,
+  2026-10-30, on batch 48).
 - **S65.** Ten repositories on one host share sluice's app on the
   forge, each with a main that takes requests; sessions on this host
   and another wait on their requests, and the host runs `sluice run`.
