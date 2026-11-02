@@ -660,6 +660,10 @@ redefine these.
     when its record claims it and its signer may (29). Confinement is
     never inferred: that a signer's runs are reachable by no session is
     the policy author's to assert, never sluice's to decide.
+141. Every record a signer signs is of a kind a public catalogue of
+     signed records defines, wherever a catalogued kind carries what the
+     record says; sluice defines its own kind only for a record no
+     catalogued kind carries.
 109. A signer's run records are written only by that signer and only
      added to. One signer's write never refuses another's, and never
      waits on the branch's records (62).
@@ -1176,10 +1180,12 @@ outlives them is the trailers each landing commit carries (23).
 
 A run record on a signer's ref is an in-toto statement in a DSSE
 envelope: its subject the check's key and system, its predicate the
-outcome, the claims of 79, the candidate, the claim and the time. Each
-signer computes the keys it signs from the candidate itself. A job on a
-forge signs it keylessly with the job's workload identity; any other
-signer signs it with an SSH key whose public half the policy lists.
+outcome, the claims of 79, the candidate, the claim and the time. The
+catalogue of signed records (141) is in-toto's catalogue of predicates.
+Each signer computes the keys it signs from the candidate itself. A job
+on a forge signs it keylessly with the job's workload identity; any
+other signer signs it with an SSH key whose public half the policy
+lists.
 Since any instance may write the branch's state, a landing reads its
 verdict again from the signed run records before it moves the branch.
 

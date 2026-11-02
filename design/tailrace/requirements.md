@@ -103,6 +103,10 @@ redefine these.
   digest it is about.
 - **signer**: an identity that signs claims, and the means to tell that
   a claim is its.
+- **trusted root**: the identities a verifier is given to trust, of the
+  parties that issue certificates and of the logs that hold what was
+  signed, against which it checks every certificate and inclusion proof
+  it verifies.
 - **policy**: the repository's authors' rule for one audience: which
   claims a version must carry, from which signers, before the gate
   accepts it, a channel takes it, or a consumer reads it.
@@ -207,6 +211,14 @@ redefine these.
 13. Every claim names the revision and the build identity it was made
     for where it has one, so a verdict joins the claims of one build
     without a second reading of any source.
+141. A verdict tailrace signs (11) is of the kind a public catalogue of
+    claim kinds defines for a verifier's decision, which says that a
+    verifier checked a digest against a policy and what it decided;
+    tailrace defines its own claim kind only for a claim no catalogued
+    kind carries.
+142. tailrace verifies a bundle of claims under a trusted root it is
+    given, its certificates, its inclusion proofs and its passkey
+    assertions, with no call to any service.
 
 ### A.3 Publishing a landing
 
@@ -1235,7 +1247,9 @@ The rest of the stack, which a model builds on unless it says why not:
 
 - One static binary, written in Rust, as sluice is.
 - An attestation is an in-toto statement in a DSSE envelope, the form
-  sluice signs its verdicts in, so one verifier reads both.
+  sluice signs its verdicts in, so one verifier reads both. The
+  catalogue of claim kinds (141) is in-toto's catalogue of predicates,
+  in which a verdict is SLSA's Verification Summary Attestation.
 - The build is moon, the landing is sluice, and the join between a
   verdict and a provenance is moon's task hash.
 - The version rule is git-cliff over conventional commits, run once
