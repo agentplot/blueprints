@@ -754,7 +754,8 @@ redefine these.
     no environment, no stream, no pool and no account, and a kind's
     declaration names a program by its name alone, never by a location
     on a host (144). Where in the terminal an agent runs (107) is read
-    from the launch's settings and the stage's declaration alone. A
+    from the launch's settings and the stage's declaration, else from
+    its place's stream (143). A
     program resolved at a later start that no agent profile binds, or
     that the host's terminal cannot run, or an account's value naming a
     variable the login environment lacks (29), leaves the stage
@@ -802,9 +803,14 @@ redefine these.
     from the deliverable and from the agent's state.
 107. Where in the terminal a stage's agent runs is one of its settings
      (32). A caller may put it beside a pane the caller names, as a
-     conversation with the operator wants. flume opens, sends to and
-     closes every agent's terminal, and no caller does any of them
-     itself.
+     conversation with the operator wants. Where the settings name no
+     place in the terminal, the agent runs in its place's stream's own:
+     the one the host's configuration names for the stream, else one
+     named by the stream's name, so every agent of a stream is found
+     together and a person opens them by the stream's name. A place in
+     the host's default stream runs in flume's own (143). flume opens,
+     sends to and closes every agent's terminal, and no caller does any
+     of them itself.
 108. An agent never submits, merges or pushes its place's branch. flume
      refuses each such act wherever the agent program lets it, and
      status reports the refusal. A submission that gets past the refusal
@@ -1499,7 +1505,8 @@ redefine these.
      its own bound on agents running, its priority among streams and the
      pool its agents' accounts come from (144); every place runs in
      exactly one. A stream may also state a bound on its points in
-     flight (166) and a pace (167). A place's stream is the one its launch names, else the
+     flight (166), a pace (167), and where in the terminal its agents
+     run, its own name where it states none (107). A place's stream is the one its launch names, else the
      stream of the intent it serves (147), else the one the host's
      configuration names for its repository and kind, for its
      repository, or for its kind, in that order, else the host's default
@@ -2199,7 +2206,7 @@ checked against its release.
 
 | profile | open | send | state | close | watch |
 |---|---|---|---|---|---|
-| **herdr** | a pane in the herdr session the launch's settings name, flume's own otherwise: one workspace per repository and base, labelled `<repository> <base>` (`flume bolt/the-surfaces`, `sluice main`), made when the first place on that base opens, and in it one tab per place named `<kind>--<name>`, whose panes are the place's agents, so a stage that runs several agents at once splits its place's tab; where the settings name a pane, a split beside that pane instead, as for a conversation, left where its caller put it. The pane is made in the place with the host user's login environment and the agent's environment (C.4) over it set on it, its `PATH` led by a folder of the start's own holding the kind's name linked to the program the settings name, or, for a program the common profile binds, to flume's launcher, which becomes that program (C.4, 171), and its shell one that reads no startup file, so no login shell or rc file of the host's reorders that `PATH`; herdr's agent start runs the program there by the kind its agent profile names, its arguments passed whole, under the agent's herdr name; nothing is typed into the pane's shell. A start whose pane runs anything but the program the settings name is closed and refused, naming what ran, and a program herdr knows no kind for cannot run under herdr (32); nor can a program whose state herdr reads only through its own integration, OMP and MastraCode in 0.9.5, while `herdr integration status` reports that integration not installed, which refuses the launch naming `herdr integration install <name>` (4). The pane is held by its id and its server's socket, and found again by the agent's herdr name where the id no longer answers, as after the pane moves to another workspace: a name of at most 32 of herdr's legal characters made from the identity and unique on the server, a pane found by it taken as the agent's only once herdr lists it under that name. herdr's word that the program is ready is a second signal, never the start (35). A start herdr reads blocked is held at the program's question before it starts: the folder-trust question is answered and herdr waited on until the agent is idle (34), and any other leaves the start never begun with the screen; a start herdr does not see ready within its bound is never begun with the screen (35) | the pane's held input cleared with one ctrl+c while the agent waits, then herdr's prompt to the pane, then received read through the agent (89); a send never leaves text typed: one not received is cleared again before the next | herdr's reading of the agent: working as working; idle and done as waiting, since herdr's done is a finished turn nobody has looked at; blocked as asking only with the agent profile's mark (90), or where the agent's profile reads asking from the terminal (171), and as unknown otherwise; herdr's unknown as unknown; stopped only when the pane is gone, or herdr lists no agent in it and its foreground is the shell, or herdr lists it unrestored after its server's restart | herdr ends the pane and its process group, then reads that it is gone | kept by flume's herdr plugin on herdr's server, which runs between flume's commands. It runs `flume settle` for the session's places on a bound it states and at each change of an agent's state, reading every agent's state in one listing per tick |
+| **herdr** | a pane in the herdr session the launch's settings name, else the one its place's stream names, by default the stream's name, and flume's own for a place in the host's default stream (107, 143): one workspace per repository and base, labelled `<repository> <base>` (`flume bolt/the-surfaces`, `sluice main`), made when the first place on that base opens, and in it one tab per place named `<kind>--<name>`, whose panes are the place's agents, so a stage that runs several agents at once splits its place's tab; where the settings name a pane, a split beside that pane instead, as for a conversation, left where its caller put it. The pane is made in the place with the host user's login environment and the agent's environment (C.4) over it set on it, its `PATH` led by a folder of the start's own holding the kind's name linked to the program the settings name, or, for a program the common profile binds, to flume's launcher, which becomes that program (C.4, 171), and its shell one that reads no startup file, so no login shell or rc file of the host's reorders that `PATH`; herdr's agent start runs the program there by the kind its agent profile names, its arguments passed whole, under the agent's herdr name; nothing is typed into the pane's shell. A start whose pane runs anything but the program the settings name is closed and refused, naming what ran, and a program herdr knows no kind for cannot run under herdr (32); nor can a program whose state herdr reads only through its own integration, OMP and MastraCode in 0.9.5, while `herdr integration status` reports that integration not installed, which refuses the launch naming `herdr integration install <name>` (4). The pane is held by its id and its server's socket, and found again by the agent's herdr name where the id no longer answers, as after the pane moves to another workspace: a name of at most 32 of herdr's legal characters made from the identity and unique on the server, a pane found by it taken as the agent's only once herdr lists it under that name. herdr's word that the program is ready is a second signal, never the start (35). A start herdr reads blocked is held at the program's question before it starts: the folder-trust question is answered and herdr waited on until the agent is idle (34), and any other leaves the start never begun with the screen; a start herdr does not see ready within its bound is never begun with the screen (35) | the pane's held input cleared with one ctrl+c while the agent waits, then herdr's prompt to the pane, then received read through the agent (89); a send never leaves text typed: one not received is cleared again before the next | herdr's reading of the agent: working as working; idle and done as waiting, since herdr's done is a finished turn nobody has looked at; blocked as asking only with the agent profile's mark (90), or where the agent's profile reads asking from the terminal (171), and as unknown otherwise; herdr's unknown as unknown; stopped only when the pane is gone, or herdr lists no agent in it and its foreground is the shell, or herdr lists it unrestored after its server's restart | herdr ends the pane and its process group, then reads that it is gone | kept by flume's herdr plugin on herdr's server, which runs between flume's commands. It runs `flume settle` for the session's places on a bound it states and at each change of an agent's state, reading every agent's state in one listing per tick |
 | **printed command** | the command printed, the prompt carried in it, for a person to run in the place | refused, so every tell is refused and a prompt not received is reported never begun (38) | from the agent profile alone; stopped when its record says the session ended | refused unless the agent's record says the session ended | none, so flume runs attended (119) |
 
 Under herdr a session is named `herdr:<pane>@<socket>`, the pane's id
@@ -2358,6 +2365,8 @@ lives:
   (166), and `pace`, `{ points = <n>, per = "hour" | "day" | "week" }`
   (167); a stream that states either refuses a launch that gives no
   points (165), which a launch gives by `flume launch --points <n>`.
+  A stream may state `session`, where in the terminal its agents run,
+  its own name where it states none (107).
   `[host] pool` is the pool of a place whose stream names none. An
   account's `env` is its agents' environment over the login
   environment (32): a leading `~` in a value is the host user's home
@@ -3112,6 +3121,14 @@ These are not requirements.
   the review is refused, naming the pool and codex, and starts no
   agent, where it would otherwise wait for room no account of the pool
   could ever give (4, 32, 145).
+- **S82.** A host declares the streams `work` and `personal`, naming no
+  session for either. A place launched on `work` opens its agents in
+  herdr's session `work`, in its repository and base's workspace, and
+  one on `personal` in the session `personal`; `herdr --session work`
+  shows every agent of the work stream. A launch whose settings name
+  the session `review` puts its place there whatever its stream, and a
+  place on the host's default stream opens in flume's own session (32,
+  107, 143).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
