@@ -196,6 +196,16 @@ redefine these.
 - **stream**: a named share of a host's work, which the host's
   configuration declares with its own bound on agents running, its
   priority and its pool; every place runs in one (143).
+- **label**: of a kind, which part of a stream's work its places are,
+  one word such as `inception`, `construction` or `operation`, which
+  the kind declares and the host's configuration may give otherwise;
+  flume gives a label no meaning but its share of its stream's agents
+  (180, 181).
+- **reserve**: of a label in a stream, how many of the stream's agents
+  its places are owed, lent to the stream's other labels while it has
+  nothing waiting and its own again at the next agent to end; of those,
+  the ones it **keeps free**, which it never lends and which stay empty
+  while its places run fewer (181).
 - **account**: an agent program and the environment it runs under,
   which signs it in to an allowance of its own, as the host's
   configuration names it (144).
@@ -234,7 +244,9 @@ redefine these.
   places it may run at once: the bound its administrator states for it,
   less its agents running (70, 143); of a stream, for a place's first
   start, also its points bound less its points in flight, and its pace
-  less what it started in the span (166, 167).
+  less what it started in the span (166, 167); of a stream, for a stage
+  of one label, also less what its other labels keep free and do not
+  use (181).
 - **in flight**: of a place's points, counted while its work is with
   its agents: from its first stage's start until its last stage
   delivers, and again from a fix round's start until it delivers; a
@@ -1475,13 +1487,15 @@ redefine these.
     and flume keeps to it. A stage that may start, a launch's first or a
     place's next, starts only while the host's agents running, every
     caller's and every stream's counted together, are under the host's
-    bound, its stream's agents running are under the stream's, and an
+    bound, its stream's agents running are under the stream's less what
+    the stream's other labels keep free and do not use (181), and an
     account of its pool is usable (145), and, for a place's first start,
     its stream's points bound and pace leave room for its points (166,
     167); otherwise it waits for room, a
     wait that is the host's and never its caller's (130). When a settle
     finds room it starts the stages waiting for it, streams of higher
-    priority first and, within a stream, places of higher priority
+    priority first and, within a stream, the places of a label below
+    its reserve first (181), then places of higher priority
     first and equals in the order they came to wait, as many as there
     is room for (46). A stage whose stream has no room, or whose pool
     has no usable account, is passed over for the next that may start,
@@ -1520,7 +1534,55 @@ redefine these.
      the host's bound, its terminal and the runs it wakes for roles
      (132) are the host's alone. A caller names a stream by
      its name, and the name is all a caller needs of a stream. Status
-     gives each place's stream and where it came from (56).
+     gives each place's stream and where it came from (56). A stream
+     shares its agents among its places' labels (180, 181), and its
+     pool, its points bound and its pace are the one budget its labels
+     draw on (182).
+180. A kind may declare its label, one word, and a host's configuration
+     may give a kind another, for its repository and kind or for its
+     kind, in that order, as it gives a stream (143). A place's label is
+     the one the host's configuration gives its kind, else its kind's
+     own, else none, read at each start from the configuration as it
+     stands (32), so a change to it takes the next start and an agent
+     already started keeps its share. A label is the kind's word and
+     the host's, never flume's: flume gives it no meaning but its share
+     of its stream's agents (181), its own kinds declare none, so a host
+     gives them theirs, and a label names nothing a host owns (158). A
+     place of no label shares the agents no reserve holds. Status gives
+     each place's label and where it came from (56).
+181. A stream may state, for each label, a reserve, how many of the
+     stream's agents its places are owed, and how many of those it
+     keeps free. Within the stream, a stage of a label running fewer
+     agents than its reserve starts before every stage of a label that
+     runs its reserve or more, whatever their places' priorities, so a
+     reserve lent while its label had nothing waiting is its own again
+     at the next agent to end, and no agent running is ended for it
+     (70). A stage starts only while its stream's room passes what the
+     stream's other labels keep free and do not use, so a slot kept
+     free stays empty for its own label's next stage and is never lent.
+     A label's reserve is at least what it keeps free. A stream's
+     reserves together must not pass its bound: a stream whose reserves
+     pass it starts no stage, each refused naming the stream and its
+     reserves, until the configuration is mended (4). A stream that
+     states no bound has no reserves, and status names them passed over.
+     A reserve is of its stream's agents alone: where the host's bound
+     leaves no room, a stage of any label waits as 70 says. Status gives
+     each stream's labels, each with its reserve, what it keeps free,
+     its agents running and its stages waiting (56).
+182. A label has no pool, account, points bound or pace of its own: its
+     stream's pool, points bound and pace are the budget every label of
+     the stream draws on (143, 145, 166, 167), and a label shares only
+     the stream's agents running (181). A label's table in the host's
+     configuration holds its reserve and what it keeps free alone, and
+     a start that reads any other key in it is refused naming the key
+     (4).
+183. An MCP server the host's configuration gives its agents may name
+     the labels whose places may have it; one that names none is open
+     to every label, and a place of a label it does not name, or of no
+     label where it names any, is never given it, whatever its kind
+     asks for. The list is the server's, kept with its declaration in
+     the managed layer (C.7), never a label's or a kind's. How a host's
+     servers reach an agent is not decided (section 10).
 165. A launch may give its work's points: one number of the Fibonacci
      scale, 1, 2, 3, 5, 8, 13, 21 and on, which its caller sets and
      flume never estimates, changes or judges. Points belong to the
@@ -1921,6 +1983,7 @@ version = 2               # status names the kind bump@2 (19); 1 when omitted
 branch = "bump"           # the prefix of its places' branches; the kind's name when omitted
 starts_unready = false    # whether its first stage starts in a place that could not be made ready (12)
 lands = true              # flume submits each place after its last stage (111); false when omitted
+label = "construction"    # the kind's label, its share of its stream's agents (180, 181); none when omitted
 
 [kinds.bump.agents]       # settings for every stage's agent; a stage's own come first (23, 32)
 program = "claude"
@@ -2363,8 +2426,9 @@ lives:
   the managed one key by key, a key it sets replacing the managed
   one's. The local layer may set only what runs the host's work from
   hour to hour: a stream's `agents`, `priority`, `points`, `pace` and
-  `session` (107, 143, 166, 167), the `stream` a repository or a kind
-  is given, and a kind's agents table (32). The accounts, the pools,
+  `session` (107, 143, 166, 167), a label's `reserve` and `keep_free`
+  (181), the `stream` a repository or a kind is given and the `label` a
+  kind is given (143, 180), and a kind's agents table (32). The accounts, the pools,
   `[host]` and every other table are the managed layer's alone: a local
   layer that sets one is not taken, the start reading the managed
   layer alone and status naming the key, until the local file is
@@ -2384,7 +2448,9 @@ lives:
   (167); a stream that states either refuses a launch that gives no
   points (165), which a launch gives by `flume launch --points <n>`.
   A stream may state `session`, where in the terminal its agents run,
-  its own name where it states none (107).
+  its own name where it states none (107), and, in
+  `[streams.<stream>.labels.<label>]`, a label's `reserve` and
+  `keep_free`, zero where it gives none (181).
   `[host] pool` is the pool of a place whose stream names none. An
   account's `env` is its agents' environment over the login
   environment (32): a leading `~` in a value is the host user's home
@@ -2393,7 +2459,9 @@ lives:
   names that the environment lacks refuses the start naming it. A
   repository, a repository's kind and a kind are given a stream by
   `stream` in `[repos."<repository>"]`, `[repos."<repository>".kinds.<kind>]`
-  and `[kinds.<kind>]`. The stream `default` holds every place nothing
+  and `[kinds.<kind>]`, and a repository's kind and a kind are given a
+  label by `label` in the same two kinds' tables (180). The stream
+  `default` holds every place nothing
   names a stream for, bounded by the host's bound alone unless a
   `[streams.default]` table states its own. So
 
@@ -2405,6 +2473,13 @@ lives:
   agents = 5
   priority = 10
   pool = "work"
+
+  [streams.work.labels.operation]
+  reserve = 2
+  keep_free = 1
+
+  [streams.work.labels.construction]
+  reserve = 2
 
   [streams.personal]
   agents = 3
@@ -2425,11 +2500,16 @@ lives:
 
   [repos."~/Code/acme"]
   stream = "work"
+
+  [kinds.research]
+  label = "inception"
   ```
 
   runs acme's places in `work`, up to five of the host's eight agents,
   ahead of `personal`'s, on work-1 until it runs four or is spent and
-  then on work-2, while `personal` holds at most 8 points in flight
+  then on work-2, two of work's five owed to operation, one of them
+  kept free for it, and two to construction, research's places
+  inception's, while `personal` holds at most 8 points in flight
   and starts at most 13 points in any day.
 - Each account's spent time and each intent's affinity is host state,
   one document each beside the places' under `$XDG_STATE_HOME/flume/`,
@@ -2667,6 +2747,11 @@ These are not requirements.
   weekly limit overall, rather than one usage limit at a time (144 to
   146)? Not decided (record 0020): until it is, an account is spent
   only when its agent's own record says so.
+- How does an MCP server the host gives its agents reach the agents
+  flume starts, and which of them does an agent get (183)? Not
+  decided: until it is, an agent takes what its program finds in its
+  account's folder and its repository, and no server's `labels` is
+  read.
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->
@@ -3159,6 +3244,24 @@ These are not requirements.
   with the managed layer pinning `"streams.work.agents"`, the local
   layer's priority is taken and its agents are passed over, status
   naming the pin (32, 143, C.7).
+- **S84.** A host's stream `work` has five agents, and owes the label
+  `operation` two of them, keeping one free, and `construction` two.
+  With no operation place waiting, four construction places run and a
+  research place of no label waits, since the one slot left is kept
+  free for operation. An operation place launched then starts at once
+  in it. A second operation place waits until the next agent ends, then
+  starts before the research place and every construction place,
+  whatever their priorities, and no agent running is ended for it (70,
+  180, 181).
+- **S85.** A host gives flume's own `research` the label `inception`
+  by `[kinds.research] label`, and a repository's kind `deploy`
+  declares `operation`; the host's `[repos."<repository>".kinds.deploy]`
+  gives it `construction` in that repository alone. Status gives each
+  place's label and where it came from. A local layer setting
+  `streams.work.labels.operation.reserve` to three is taken at the next
+  start; a managed `[streams.work.labels.operation]` naming a `pool`
+  refuses the start naming the key, since seats are the stream's (180
+  to 182, C.7).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
