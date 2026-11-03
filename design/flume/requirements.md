@@ -748,8 +748,9 @@ redefine these.
     environment alone (29, 144). The launch's settings, the
     repository's and the kind's are those the launch read (8, 20, 21);
     the host's configuration, its accounts among it, is read as it
-    stands at the start, so a start after a change to it takes the
-    change, and an agent already started keeps what it started with.
+    stands at the start, its local layer over its managed one (C.7), so
+    a start after a change to either takes the change, and an agent
+    already started keeps what it started with.
     The repository's settings and its kinds' carry nothing of one host:
     no environment, no stream, no pool and no account, and a kind's
     declaration names a program by its name alone, never by a location
@@ -2355,6 +2356,23 @@ lives:
   `[host] agents = <n>`, how many agents of flume's places the host
   runs at once (70), stated by whoever administers the host. A host
   with no such word states no bound and has no queue.
+- The host's configuration has two layers (section 9). `config.toml`
+  is the managed one, written by whoever manages the host and never by
+  flume. `config.local.toml` beside it is the local one, written by the
+  host's operator or by a control plane acting for them, and read over
+  the managed one key by key, a key it sets replacing the managed
+  one's. The local layer may set only what runs the host's work from
+  hour to hour: a stream's `agents`, `priority`, `points`, `pace` and
+  `session` (107, 143, 166, 167), the `stream` a repository or a kind
+  is given, and a kind's agents table (32). The accounts, the pools,
+  `[host]` and every other table are the managed layer's alone: a local
+  layer that sets one is not taken, the start reading the managed
+  layer alone and status naming the key, until the local file is
+  mended. The managed layer may pin a key the local one could set, by
+  `pin` under `[host]`, a list of dotted keys such as
+  `"streams.work.agents"`, and a pinned key the local layer sets is
+  passed over, status naming it. Status gives every value of the
+  host's configuration with the layer it came from (56).
 - The host's streams and pools are tables of the same configuration:
   `[streams.<stream>]` with `agents`, its bound, `priority`, zero where
   it gives none, and `pool`; `[pools.<pool>]` with `strategy`,
@@ -2559,7 +2577,10 @@ Constraints already fixed:
   five layers that holds every reader it has. The layers are the host,
   the worktree, the clone, a shared branch and the repository's
   content. Host state goes under the host's own directories for config,
-  state, data and cache, by its kind.
+  state, data and cache, by its kind. Config comes in two layers: the
+  managed one the host's manager writes, and a local one written over
+  it by the host's operator or a control plane acting for them; each
+  tool names the keys its local layer may set.
 
 The rest of the stack, which a model builds on unless it says why not:
 
@@ -3129,6 +3150,15 @@ These are not requirements.
   the session `review` puts its place there whatever its stream, and a
   place on the host's default stream opens in flume's own session (32,
   107, 143).
+- **S83.** A host's managed `config.toml` gives the stream `work` six
+  agents. A control plane writes `config.local.toml` giving it three
+  and a priority of 30; the next start finds room for three, and status
+  gives both values from the local layer. The local file then sets
+  `[pools.work]` too: no key of it is taken, the start reading the
+  managed layer alone, and status names `pools.work`. Once mended, and
+  with the managed layer pinning `"streams.work.agents"`, the local
+  layer's priority is taken and its agents are passed over, status
+  naming the pin (32, 143, C.7).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

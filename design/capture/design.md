@@ -845,7 +845,12 @@ The rules:
   Every worktree of one clone: the clone. Several hosts or several
   tools: a shared branch. A repository's owners: content.
 - **Host state goes by kind.** Config is what the operator or the fleet
-  writes. State is what a tool can lose at the cost of a restart or a
+  writes, in two layers under `$XDG_CONFIG_HOME/<tool>/`: the managed
+  `config.toml` the fleet writes and the tool never does, and the local
+  `config.local.toml` the operator or a control plane acting for them
+  writes over it. Each tool names the keys its local layer may set, the
+  managed layer may pin any of them, and the tool reports each value
+  with the layer it came from. State is what a tool can lose at the cost of a restart or a
   wider listing: cursors, run status, host bounds, a place's live state.
   Data is what cannot be fetched again, such as raw material. Cache is
   what can be built again, such as bare clones. Only data is backed up.
