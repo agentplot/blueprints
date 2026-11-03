@@ -205,8 +205,9 @@ redefine these.
   a usage limit, until the time the limit resets (146).
 - **usable**: of an account, that it is not spent and has room under
   the bound it states (145).
-- **affinity**: the stream and the account an intent's places start on,
-  kept while that account is usable (147).
+- **affinity**: the stream an intent's places start in, and, for each
+  agent program its agents run, the account they start on, each kept
+  while that account is usable (147).
 - **identity**: the one name flume gives an agent, naming its
   repository, its place, its stage and which start of the stage it is,
   and which session where its stage runs several (33).
@@ -364,7 +365,10 @@ redefine these.
    from, and one that gives `plan` to a stage that delivers neither a
    plan nor a conversation, naming the stage (162, 169); one where a
    stage's agent resolves to a model its program's profile names no way
-   to give, naming the program and the stage (172); one where a stage
+   to give, naming the program and the stage (172); one where a stage's
+   agent has a pool that holds no account that can run the stage,
+   naming the stage, the pool and the stage's program where its layers
+   resolve one (145); one where a stage
    that delivers a plan resolves to a program whose profile offers no
    plan, naming the program and the stage (164); one whose points
    are not a number of the Fibonacci scale, naming them, and one that
@@ -757,8 +761,10 @@ redefine these.
     refused, naming the program or the variable and where it came from,
     and starts no agent, until a retry (27); so does a mode its
     program's profile has no setting for, a model it names no way to
-    give, or a stage that delivers a plan on a program whose profile
-    offers no plan (162, 164, 169, 172). Status reports each setting
+    give, a stage that delivers a plan on a program whose profile
+    offers no plan, or a pool that holds no account that can run the
+    stage, naming the pool and the stage's program where its layers
+    resolve one (145, 162, 164, 169, 172). Status reports each setting
     and each variable with the agent and where it came from, and the
     agent program's own configuration on the host never chooses one,
     but the mode where no layer gives one (162).
@@ -824,12 +830,17 @@ redefine these.
 145. At each start of a stage whose agent has a pool, flume chooses the
      account. An account is usable while it is not spent (146) and has
      room under the bound it states. The account of the intent's
-     affinity (147) is taken while it is usable. Otherwise, under
-     fill-first, the first usable account in the pool's order; under
-     least-busy, the usable account with the fewest of flume's agents
-     running, equals in the pool's order. With none usable the stage
-     waits for room (70) until one is, and status gives the soonest time
-     an account of the pool stops being spent. The account is chosen
+     affinity for the stage's program (147) is taken while it is usable.
+     Otherwise, under fill-first, the first usable account in the pool's
+     order; under least-busy, the usable account with the fewest of
+     flume's agents running, equals in the pool's order. With none usable
+     the stage waits for room (70) until one is, and status gives the
+     soonest time an account of the pool stops being spent. A stage waits
+     so only while its pool holds an account that can run it, spent or
+     without room: one of the program its layers resolve, or, where they
+     resolve none, one whose program can run it (144, 173). Where the
+     pool holds none, no wait would end, and the stage is refused as 32
+     says, naming the pool and the stage's program. The account is chosen
      under the same lock as the room, so two starts never take an
      account's last room between them. Status gives the account with the
      agent, and whether it came from the affinity or the strategy (56).
@@ -865,13 +876,20 @@ redefine these.
 147. A place serves the intent its launch names, or, where it names
      none, the intent of its repository and base. flume keeps each
      intent's affinity in the host's own documents (153): the stream
-     and the account the intent's first agent started on. Every later
-     start of an agent of a place serving the intent is on that account
-     while it is usable, and a later place launched for the intent runs
-     in its stream unless its launch names another (143). When the
-     account is spent or has no room, the start goes where 145 chooses
-     and the affinity moves with it, and status says the intent moved,
-     from which account to which and why, and that its agents start
+     the intent's first agent started in, and, for each agent program
+     its agents run, the account the first of them on that program
+     started on. Every later start of an agent of a place serving the
+     intent is on the account of its affinity for the stage's program
+     while that account is usable, or, where no layer of 32 names the
+     stage's program (173), on the account of its affinity for the
+     program its last agent ran, while that account can run the stage;
+     and a later place launched for the intent runs in its stream unless
+     its launch names another (143). A start on one program leaves the
+     intent's account for every other program as it was, and is no move
+     of the intent. When the account is spent or has no room, the start
+     goes where 145 chooses and the affinity for its program moves with
+     it, and status says the intent moved, for which program, from which
+     account to which and why, and that its agents on that program start
      with nothing the earlier account's prompt cache held (56). An
      affinity goes an hour after the last place serving its intent is
      gone.
@@ -3076,6 +3094,24 @@ These are not requirements.
   with words saying the earlier agent stopped at its account's limit.
   Status says the conversation could not be carried and why, and the
   kind's bound is not counted (35, 112, 146, 179).
+- **S80.** A kind's code stage runs Claude Code and its review stage
+  Codex, and three places of one intent each run code and then review.
+  Their stream's fill-first pool holds claude-1, claude-2, codex-1 and
+  codex-2. The first code starts on claude-1 and the first review on
+  codex-1, and every later code and review of the intent returns to
+  them. Status names each start's account as the intent's affinity for
+  its program and says the intent never moved. Once claude-1 is spent
+  the next code starts on claude-2, and status says the intent moved
+  for Claude Code alone; the next review still starts on codex-1 (145,
+  147).
+- **S81.** A kind names Codex for its review stage, and the stream a
+  launch names has a pool of two Claude Code accounts. The launch is
+  refused, naming the review stage, codex and the pool. Launched on a
+  stream whose pool holds a Codex account, the place runs; the host's
+  configuration then drops that account before the review starts, and
+  the review is refused, naming the pool and codex, and starts no
+  agent, where it would otherwise wait for room no account of the pool
+  could ever give (4, 32, 145).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
