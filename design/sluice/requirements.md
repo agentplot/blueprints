@@ -966,13 +966,16 @@ redefine these.
     tool, starts and ends no server of one and holds no lock of one: the
     keeper runs a cache's server as it runs the host's container engine
     (record 0049, amended). A cache changes how fast a check runs, never
-    what it reports. A place's scratch is sluice's, under the
-    repository's own state, at a path that does not grow with the
-    place's name or its checkout's location, so a socket a check binds
-    under it and a key a tool derives from a path under it fit the
-    tightest limit a check meets; the place's record names it, its
-    release removes it (34), and scratch no record names is an abandoned
-    place's (123); a record that exists and cannot be read names its
+    what it reports. A place's scratch is sluice's, under a short
+    directory of the host user's own, apart from every repository,
+    at a path that grows with neither the place's name, its checkout's
+    location nor the repository's, so a socket a check binds under it,
+    a tool's own sockets in a folder under it, and a key a tool derives
+    from a path under it fit the tightest limit a check meets, macOS's
+    104 bytes for a socket's path among them; the place's record names
+    it, its release removes it (34), and scratch under that directory
+    that no record of the repository names, among the scratch the
+    repository's places made there, is an abandoned place's (123); a record that exists and cannot be read names its
     scratch still: nothing of that place is removed, and the record is
     reported with the reader's words (26).
 
