@@ -909,20 +909,36 @@ written; how a reader sends the text, and whether it fills anything in
 it, are the reader's (58).
 
 An identity is written `<source>/<name>@<version>`, as `flume/change@2`
-or `acme/review@1`: the source and the name each a key the format
-allows under `kinds`, the version a whole number of at least 1 (88). A
-tool's own source is the tool's name, a repository's own `repo` and a
-launch's `launch`, and no source from outside takes one of these. A
-package is a directory whose `kind.toml` at its root is a declaration
-of one kind, every `prompt` and `standing` path in it relative to that
-file and inside the directory, with no `..` segment, no absolute path
-and no link leading out (89). Its content hash is `sha256:` and the
-lowercase hex sha256 of the concatenation, in byte order of the paths,
-of each regular file's path relative to the root, a NUL byte, its length
-in decimal, a NUL byte and its bytes (90). A lock is TOML, an array of
+or `acme/review@1`: the source and the name each one or more ASCII
+letters, digits, `_` and `-`, so TOML writes each as a bare key, and
+the version a whole number of at least 1, in decimal digits with no
+leading zero (88). `read-kinds` refuses a kind's table, or a table of
+settings, under any other key, naming it (57), so every kind it reads
+has an identity. A kind may be named with its source or its version
+left out, as `review`, `review@2` or `acme/review`: weir-kinds reads
+such a name into its parts and spells an identity back, and what a
+name with a part left out names is the reader's rule (58). A tool's own
+source is the tool's name, a repository's own `repo` and a launch's
+`launch`, and no source from outside takes one of these. A package is a
+directory whose `kind.toml` at its root is a declaration of one kind,
+every `prompt` and `standing` path in it relative to that file, with no
+`..` segment and no absolute path, and naming a regular file of the
+package (89). A `kind.toml` that gives settings to a kind it does not
+declare names another kind, and is refused naming the table (89). A
+package holds no symbolic link, to a file inside it or out, and one
+that does is refused naming the link's file (89); the path to the
+package is its reader's, and may pass through links. A part may name
+another by a relative path, as a Markdown link does: weir parses no
+part but `kind.toml`, and every part lies inside the package and its
+hash. A package's content hash is `sha256:` and the lowercase hex
+sha256 of the concatenation, in byte order of the paths, of each
+regular file's path relative to the root, a NUL byte, its length in
+decimal, a NUL byte and its bytes (90). A lock is TOML, an array of
 `kinds` tables, each with `kind`, an identity, and `hash`, a content
 hash; a repository's is `.config/<tool>.lock` beside its declaration
-(91):
+(91). weir-kinds spells a lock in this form, its entries in order of
+source, name and version, and `read-lock` reads the spelling back as it
+was; the reader writes the file (91):
 
 ```toml
 [[kinds]]
@@ -1045,7 +1061,10 @@ records and one operation of the records, a reading, a move or a
 replacement, a batch proposed or decided, an item, a brief, a send or
 import lines, and the records or the refusal expected; 25 to 43, 63)
 `kinds` (C.4: a declaration, and the kinds read or each field
-refused; 51 to 58, 94, 95) and `tick` (A.13: a statechart, an object's
+refused; a package and the identity it is held at, with a lock where
+the case checks one, and its kind and content hash read or each field
+refused; or a lock, and its identities and hashes read or each field
+refused; 51 to 58, 88 to 95) and `tick` (A.13: a statechart, an object's
 state of it and a snapshot, and the transitions, effects and next
 state expected; 96 to 99), the engine's toy statechart among them, a
 lamp off and on that names no reader's atom; a case of the last five
@@ -1270,7 +1289,9 @@ rules; each ruling below is the user's, on their card of 2026-10-26.
 - **S17.** A package's `kind.toml` names its prompt `../prompts/code.md`.
   It is refused naming the stage's `prompt`. The same package with the
   prompt moved inside it reads, and its content hash is the same on two
-  machines where it lies at different paths.
+  machines where it lies at different paths. With its prompt made a
+  symbolic link to another file inside it, the package is refused
+  naming the link's file.
 - **S18.** A lock records `acme/review@1` at one hash, and the package
   held at that identity has one prompt changed by a byte. Its content
   hash differs, and a reader refuses the kind naming it and both hashes.
