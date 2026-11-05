@@ -37,7 +37,7 @@ accepts the plan it put for review. Where the kind lands its work, flume submits
 branch to the repository's merge queue after the last stage. A
 submission the merge queue fails sends the place back to a stage the
 kind names. A place moves on when its agent goes quiet, when the merge
-queue decides, and on the watch the host's terminal keeps, for flume
+queue decides, and on the watch its terminal keeps, for flume
 runs no process of its own. flume reports where every place stands. It
 removes each place once its work has landed, been dropped, or, for a
 kind that never lands, been declared done by its caller, and keeps any
@@ -73,7 +73,7 @@ and whether submitted work lands is the merge queue's.
 Terms are defined by meaning. A model may add terms; it may not
 redefine these.
 
-- **host**: the machine flume runs on, with its terminal and its held
+- **host**: the machine flume runs on, with its terminals and its held
   state.
 - **repository**: a git repository on the host, with every worktree of
   it: one common git directory.
@@ -311,13 +311,16 @@ redefine these.
   allows.
 - **settle**: of a place, flume reading every fact of it again and
   taking each step Part A then allows.
-- **watch**: the host's terminal settling, on a bound it states, the
-  places whose agents run in it, while flume itself runs nothing.
-- **attended**: of flume on a host, that the host's terminal keeps no
-  watch (119).
+- **watch**: a terminal settling, on a bound it states, the places
+  whose agents run in it, while flume itself runs nothing.
+- **attended**: of flume on a host, that a terminal the host binds, its
+  own or a stream's, keeps no watch (119, 190).
 - **window**: a window of the host's display, which a person looks at
-  and closes, showing a part of the host's terminal; flume opens one
-  only at a person's asking and keeps nothing of it (186).
+  and closes, showing a part of a terminal; flume opens one only at a
+  person's asking and keeps nothing of it (186).
+- **view**: how a person is shown a stream's part of its terminal:
+  a window the host's window program opens under the stream's title,
+  or the terminal's own app (186).
 - **held state**: everything flume keeps of its own for the places on
   its host.
 - **surface**: one way a caller reaches flume.
@@ -402,8 +405,8 @@ redefine these.
    it runs in (143), the intent it serves with the intent's brief (147),
    the goals (149), the work's points (165), the
    recipients of its ends (43), and a mark. A recipient the launch
-   names none of is the session that launched it, as the terminal names
-   it, or none where it names none. flume keeps the mark with the place and reports it, and
+   names none of is the session that launched it, as the terminal it
+   runs in names it, or none where no terminal names one (190). flume keeps the mark with the place and reports it, and
    decides nothing by it.
 8. A place's kind, brief, base, stream, intent with its brief and goals,
    points, and the settings its launch carries, are fixed by its launch, and
@@ -834,20 +837,41 @@ redefine these.
      sends to and closes every agent's terminal, and no caller does any
      of them itself.
 186. A person may ask flume to show them a stream's agents. flume
-     opens a window on the stream's own part of the terminal (107), the
+     shows them the stream's own part of its terminal (107, 190), the
      part started first where it does not run, so the agents its places
-     open later appear there too. The window carries the title the
-     host's configuration declares for the stream, else the stream's
-     name, so a person's window manager can file it, and runs nothing
-     but the terminal's own view of that part. A host that names no
-     window is given the view's command, for the person to run where
-     they like. The window is the person's: flume keeps, reads, finds
+     open later appear there too. It is shown in the view the host's
+     configuration names for the stream, else the host's, else a
+     window. In a window, the window program named for the stream, else
+     the host's, runs nothing but the terminal's own view of that part.
+     Its title is the one the host's configuration declares for the
+     stream, else the stream's name, so a window manager can file it.
+     Where no window program is named, the person is given the view's
+     command to run where they like. In the terminal's own
+     app, the app is told to show that part, and titles its own window.
+     The view and the window program are each the stream's where it
+     names one and the host's otherwise, so a person tries a view on one
+     stream while the others open as they did. The window is the
+     person's: flume keeps, reads, finds
      again and closes nothing of it, opens one only at a person's
      asking, never at a launch, a settle or a start, and opens a second
      at a second asking; neither the window nor the view in it is a
      process of flume's (120). A stream the host does not declare is
      refused naming it, and a terminal that holds no part a person can
-     be shown refuses in its own words (4).
+     be shown, or offers no such view, refuses in its own words (4).
+190. Each stream's agents run in a terminal of the stream's own: the one
+     the host's configuration names for the stream, else the host's. It
+     is read at each start, as where in it the agent runs is (107). So a
+     host runs streams under different terminals side by side, and a
+     person tries a terminal on one stream while the others run as they
+     did. An agent stays in the terminal it opened in: flume sends to
+     it, reads it and closes it there for as long as it lives. A place
+     is tidied in every terminal its agents opened in, whatever the
+     configuration names by then (137). A recipient is reached in the
+     terminal that names its session (7, 43). A stream whose terminal
+     is one flume carries no profile for refuses its launches, its
+     starts and its views, naming it, and nothing else (4). Status gives
+     each stream's terminal and each agent's, with where it came from
+     (56).
 108. An agent never submits, merges or pushes its place's branch. flume
      refuses each such act wherever the agent program lets it, and
      status reports the refusal. A submission that gets past the refusal
@@ -1255,19 +1279,20 @@ redefine these.
     place whose last stage delivered. It sends a place back when its
     submission fails, and tidies a place whose work is over (63). flume
     settles a place whenever its agent goes quiet (121) and whenever
-    the host's terminal watches (122), and each settle reads the outcome
-    of the place's open submission (111). Under a terminal that keeps no
-    watch, it also settles whenever a command of flume's acts (119).
-    Where the terminal keeps watch, a place moves on within the watch's
-    bound whether or not a caller asks, and asking only shortens the
-    wait.
-119. Where the host's terminal keeps no watch, flume runs attended:
+    its terminal watches (122). Each settle reads the outcome of the
+    place's open submission (111). Where a terminal the host binds keeps
+    no watch, flume also settles whenever a command of flume's acts
+    (119). Where its terminal keeps watch, a place moves on within the
+    watch's bound whether or not a caller asks, and asking only
+    shortens the wait.
+119. Where a terminal the host binds, its own or a stream's (190),
+     keeps no watch, flume runs attended:
      every command of flume's that acts on places settles every place on
      its host before it acts. An agent that ended with no word from its
      program, a prompt never received and an agent working past its
      limit are then read only at such a command (38, 45, 118). Status
      and a prompt's rendering settle nothing (29, 57). flume runs
-     unattended only under a terminal that keeps watch.
+     unattended only where every terminal the host binds keeps watch.
 120. flume runs no process of its own between its commands. Every settle
      runs inside a command of flume's, started by an agent going quiet,
      by the terminal's watch or by a caller. No command of flume's waits
@@ -1544,9 +1569,12 @@ redefine these.
      its own bound on agents running, its priority among streams and the
      pool its agents' accounts come from (144); every place runs in
      exactly one. A stream may also state a bound on its points in
-     flight (166), a pace (167), where in the terminal its agents
-     run, its own name where it states none (107), and the title of a
-     window that shows them, its own name where it states none (186). A place's stream is the one its launch names, else the
+     flight (166), a pace (167), the terminal its agents run in, the
+     host's where it states none (190), where in that terminal they
+     run, its own name where it states none (107), the view a person is
+     shown them in and the window program that opens it, each the
+     host's where it states none, and the title of a window that shows
+     them, its own name where it states none (186). A place's stream is the one its launch names, else the
      stream of the intent it serves (147), else the one the host's
      configuration names for its repository and kind, for its
      repository, or for its kind, in that order, else the host's default
@@ -1556,8 +1584,9 @@ redefine these.
      agents together, and a stream that states no bound of its own is
      held by the host's alone (70). A stream's pool comes before the
      host's own (144), and a stream gives its agents no settings (32);
-     the host's bound, its terminal and the runs it wakes for roles
-     (132) are the host's alone. A caller names a stream by
+     the host's bound and the runs it wakes for roles (132) are the
+     host's alone, and its terminal, view and window program stand for
+     each stream that names none (186, 190). A caller names a stream by
      its name, and the name is all a caller needs of a stream. Status
      gives each place's stream and where it came from (56). A stream
      shares its agents among its places' labels (180, 181), and its
@@ -1867,13 +1896,13 @@ redefine these.
      a bound it states and when an agent's state changes, while flume
      runs nothing; or no watch (46, 119).
 187. **attach**: given a part of the terminal, one by its name or the
-     terminal's own, and a title, the view a person sees that part in:
-     the command that shows it, with what the command needs of its
-     environment, the part started first where it does not run, so the
-     view shows the part the terminal's agents open in; or, for a
-     terminal that draws its own windows, that part shown in one under
-     the title; or a refusal where the terminal holds no part a person
-     can be shown (186).
+     terminal's own, and a view, the part shown to a person in it, the
+     part started first where it does not run, so the view shows the
+     part the terminal's agents open in: for a window, the command that
+     shows it, with what the command needs of its environment; for the
+     terminal's own app, the running app told to show that part, the
+     app titling its own window; or a refusal where the terminal holds
+     no part a person can be shown or offers no such view (186).
 98. The guarantee: open never runs a second agent under an identity
     already live, and close never reports an end that did not happen.
     Every operation answers within a bound the profile states, and one
@@ -1939,9 +1968,9 @@ redefine these.
 188. **show**: given a command, what it needs of its environment and a
      title, a window of the host's display running the command under
      that title, whatever title the command sets, handed to the display
-     so that it is the person's and no process of flume's (120); or that
-     the host shows no window, with the command for a person to run; or
-     a refusal in the window program's words (186).
+     so that it is the person's and no process of flume's (120); or,
+     where no window program is named, the command for a person to run;
+     or a refusal in the window program's words (186).
 189. The guarantee: show opens at most one window at each asking and
      runs nothing in it but the command it is given, and answers within
      a bound the profile states, one the display does not answer within
@@ -1950,18 +1979,21 @@ redefine these.
 
 ### B.9 Binding the contracts
 
-105. Each seam is bound by naming one profile of Part C: the terminal,
-     the window and the store once for the host; the place, the change and the
+105. Each seam is bound by naming one profile of Part C. The terminal
+     and the window are bound for each stream, the stream's where it
+     names one and the host's otherwise (186, 190), and the store once
+     for the host. The place, the change and the
      merge queue once for each repository, by the binding the repository
      declares (20), and none guessed from another tool's files; the
      kinds by the one form every declaration takes (19); the agent for
      each stage, by its settings' program: the program's own profile
      where flume carries one, and otherwise the common profile, for
-     every program the host's terminal starts (170). A repository that names no place
+     every program a terminal starts (170). A repository that names no place
      profile is bound to the one that needs nothing beyond git. One that
      names no change or merge queue leaves that seam unbound, so flume
-     assumes no tool (11). A host that names no window shows none, and
-     gives the view's command for a person to run (186). Only a kind that lands reaches the merge
+     assumes no tool (11). A stream and a host that name no window
+     program show no window, and give the view's command for a person
+     to run (186). Only a kind that lands reaches the merge
      queue (4, 111). Parts A and B do not change to admit a profile.
 106. One conformance suite holds every profile to Parts A and B; a
      profile that fails it is not one.
@@ -2363,7 +2395,7 @@ herdr's refusal and its words:
 | screen | `pane read <pane> --source visible --format text` |
 | close | `pane close <pane>`, `pane_not_found` read as already closed; then `pane get <pane>`, gone only on `pane_not_found` |
 | tidy | the place's recorded tab: `pane list --workspace <w>` read for panes in it, and a pane flume did not open there keeps it, named; else `tab close <tab>`, a tab already gone read as closed. Then the base's recorded workspace: where `tab list --workspace <w>` holds no tab but those of live places it made and `pane list` no pane it did not open, `workspace close <w>`; otherwise kept, and what holds it named |
-| attach | `<herdr> session attach <name>`, `<herdr>` the full path of the herdr the profile runs, so the window runs the same release whatever its `PATH`; the session's server first found or started headless as the server row says, flume's own session being `flume`; the command's environment is `XDG_CONFIG_HOME` where the profile's calls run under one, which herdr 0.9.5 reads its sessions' home from, and nothing otherwise (187) |
+| attach | for a window, `<herdr> session attach <name>`, `<herdr>` the full path of the herdr the profile runs, so the window runs the same release whatever its `PATH`; the session's server first found or started headless as the server row says, flume's own session being `flume`; the command's environment is `XDG_CONFIG_HOME` where the profile's calls run under one, which herdr 0.9.5 reads its sessions' home from, and nothing otherwise. For the app, refused: herdr 0.9.5 has no app of its own, and the Herdr app runs on herdr-core, a backend apart with sessions of its own (187) |
 | show | `pane report-metadata <pane> --source flume --title "<stage> · <state>" --display-agent <kind>--<name>`; `workspace report-metadata <w> --source flume --token flume=<summary>`, the summary such as `3 running · 1 asking · 1 waiting on caller · 0 stalled`, shown where the host's herdr sidebar rows name `$flume` |
 
 What herdr 0.9.5 was seen to do, which the readings above allow for:
@@ -2411,12 +2443,23 @@ those the readings above name is read unknown, or refused in herdr's
 words.
 
 The printed command tidies nothing and shows no clue, since it made
-nothing in a terminal, and refuses attach, since it holds no part of a
-terminal a person can be shown (187). It reads no tool: open prints the line `cd <place> &&`
+nothing in a terminal. It refuses attach for either view, since it
+holds no part of a terminal a person can be shown (187). It reads no tool: open prints the line `cd <place> &&`
 the command's environment, program, arguments and prompt, and marks it
 printed for the identity in the place's folder, refusing to print it
 again; its state is unknown, and the core reads its agent stopped once
 the agent profile's ended reads yes (134).
+
+herdr-core, which the Herdr app runs on, Rex, cmux and TUIOS are
+multiplexers a terminal profile may be written for, each checked
+against its release. None is written, and a stream or a host naming
+one is refused as 190 says. As read on 2026-11-05, cmux's server and
+TUIOS's daemon each have a terminal client that attaches to a
+session. A profile for either answers attach for a window with that
+client's command. Rex, and herdr-core through the Herdr app, are
+shown only by their own apps. A profile for either answers attach for
+the app by telling the running app to show the session, and refuses a
+window.
 
 ### C.6 The merge queue: sluice
 
@@ -2478,7 +2521,8 @@ lives:
   the managed one key by key, a key it sets replacing the managed
   one's. The local layer may set only what runs the host's work from
   hour to hour: a stream's `agents`, `priority`, `points`, `pace` and
-  `session` (107, 143, 166, 167), a label's `reserve` and `keep_free`
+  `session` and `multiplexer` (107, 143, 166, 167, 190), a label's
+  `reserve` and `keep_free`
   (181), the `stream` a repository or a kind is given and the `label` a
   kind is given (143, 180), and a kind's agents table (32). The accounts, the pools,
   `[host]` and every other table are the managed layer's alone: a local
@@ -2499,15 +2543,23 @@ lives:
   (166), and `pace`, `{ points = <n>, per = "hour" | "day" | "week" }`
   (167); a stream that states either refuses a launch that gives no
   points (165), which a launch gives by `flume launch --points <n>`.
-  A stream may state `session`, where in the terminal its agents run,
-  its own name where it states none (107), `title`, the title of a
-  window that shows them, its own name where it states none (186), and, in
-  `[streams.<stream>.labels.<label>]`, a label's `reserve` and
-  `keep_free`, zero where it gives none (181).
+  A stream may state `multiplexer`, the terminal profile of C.5 its
+  agents run in, the host's where it states none (190); `session`,
+  where in that terminal they run, its own name where it states none
+  (107); `view`, `terminal` for a window that runs the terminal's
+  command or `app` for the terminal's own app, and `terminal_app`, the
+  window's profile of C.8, each the host's where it states none (186);
+  `title`, the title of a window that shows them, its own name where
+  it states none (186); and, in `[streams.<stream>.labels.<label>]`, a
+  label's `reserve` and `keep_free`, zero where it gives none (181).
   `[host] pool` is the pool of a place whose stream names none.
-  `[host] window` names the window's profile (C.8), and a host that
-  names none gets the printed command. A stream's `title` and `[host]
-  window` are the managed layer's alone. An
+  `[host] view` is the view of a stream that names none, `terminal`
+  where the host names none either. `[host] terminal_app` is the
+  window's profile of a stream that names none, the printed command
+  where neither names one. A stream's `view`, `terminal_app` and
+  `title` are the managed layer's alone, as `[host]` is. A `view` but
+  `terminal` or `app` refuses the configuration, and a `multiplexer` or
+  a `terminal_app` naming no profile refuses as 190 and C.8 say. An
   account's `env` is its agents' environment over the login
   environment (32): a leading `~` in a value is the host user's home
   and `$VAR` or `${VAR}` that variable of the host user's login
@@ -2576,9 +2628,13 @@ lives:
   points and time, and each agent's tokens at its end, kept a week,
   the longest span a pace names (167, 168).
 - The host's terminal is one word of the same configuration,
-  `[host] terminal = "<profile>"`, naming a terminal profile of C.5,
-  `herdr` or `printed`, and the printed command where it names none
-  (105).
+  `[host] multiplexer = "<profile>"`, naming a terminal profile of C.5,
+  `herdr` or `printed`, the terminal of each stream that names none,
+  and the printed command where it names none (105, 190). `[host]
+  terminal`, the word a host wrote before, is read as `[host]
+  multiplexer`, and a host that gives both is refused naming both. A
+  host whose own names no profile refuses every command, naming it, as
+  it did before.
 - The settings a host gives its agents are tables of the same
   configuration, by kind, `[kinds.<kind>.agents]`, and by repository
   and kind, `[repos."<repository>".kinds.<kind>.agents]`, the
@@ -2631,15 +2687,22 @@ tidied (62).
 | profile | show |
 |---|---|
 | **ghostty** | on macOS, `open -na Ghostty.app`, `--env <variable>=<value>` for each variable the command needs, then `--args --title=<title> -e <program> <arguments>`, the display starting Ghostty as a process of its own under the display's environment; `open`'s refusal, a Ghostty not installed among them, refuses in its words, and `open` is bounded at ten seconds. Elsewhere, `ghostty --title=<title> -e <program> <arguments>`, started in a process group of its own with its input and output closed, as a session's server is (C.5), under the host user's login environment with the command's over it and nothing of the calling command's environment, and not waited on; a `ghostty` that cannot be run refuses. Ghostty's `title` holds the window's title whatever the program in it sets |
+| **terminal** | on macOS, Terminal.app told by `osascript`, the command's line and the title passed as its arguments, to `do script` the line in a new window, the line being `exec env <variable>=<value> … <program> <arguments>`, each word quoted for a POSIX shell, then to set that tab's `custom title` to the title and its `title displays custom title` true; `osascript` is bounded at ten seconds, and its refusal, Terminal's automation not allowed among them, refuses in its words. Elsewhere refused, Terminal.app being macOS's |
 | **printed command** | no window: the command given for the person to run, each variable it needs named before it, as `<variable>=<set>` (32) |
 
 The ghostty profile is checked against Ghostty 1.4.0, whose `title`
 forces the window's title and ignores the titles a program inside sets,
 whose `-e` runs the command given in place of the shell, and which on
 macOS is started by `open -na Ghostty.app --args`, since its command
-line starts no window there. A name `[host] window` gives that no
-profile carries refuses the asking, naming the profiles, and nothing
-else (C.7).
+line starts no window there. The terminal profile is checked against
+Terminal 2.15 on macOS 27. Its scripting dictionary answers `do
+script` with the new window's tab and gives the tab a `custom title`.
+The window's title shows it beside what the person's Terminal profile
+shows there. macOS has no setting for a default terminal, and a
+`.command` file it opens in Terminal carries no title, so neither
+stands for a named window program. A name `terminal_app` gives, a
+stream's or the host's, that no profile carries refuses that stream's
+view, naming the profiles, and nothing else (C.7).
 
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
@@ -2742,8 +2805,8 @@ The rest of the stack, which a model builds on unless it says why not:
   core as sluice keeps its plugins:
   - a command line: `flume launch`, `status`, `tell`, `stop`, `retry`,
     `finish`, `drop`, `done`, `tidy` and `prompt`; `kinds lock`, which
-    writes a lock (155); `open`, which opens a window on a stream's
-    agents (186); `needs` for an agent; and `settle`, which the two
+    writes a lock (155); `open`, which shows a person a stream's
+    agents in its view (186); `needs` for an agent; and `settle`, which the two
     plugins run;
   - a Claude Code plugin that gives every session `/launch` and serves
     `status` over MCP. flume loads it into every agent it starts, and
@@ -2757,12 +2820,12 @@ The rest of the stack, which a model builds on unless it says why not:
     crashed, hung or was killed, a prompt never received, and an agent
     stuck working.
 - herdr with flume's plugin as the terminal that keeps watch, which
-  unattended use needs (119). Under the printed command flume runs
-  attended.
+  unattended use needs (119). Where the host or any stream runs under
+  the printed command flume runs attended (190).
 - The profiles of Part C: plain git worktrees, the kind format in
   `.config/flume.toml`, OpenSpec, Claude Code, herdr, sluice, the
-  host's state directory and Ghostty as the window where the host names
-  it. A repository with no `[profiles]` table gets
+  host's state directory, and Ghostty or Terminal.app as the window
+  program where the host or a stream names one. A repository with no `[profiles]` table gets
   plain git worktrees and no change or merge-queue profile (C.2).
 - How each caller uses flume:
 
@@ -3342,17 +3405,34 @@ These are not requirements.
   installs what the place pins, checks moon's version and runs moon's
   setup, each step named in status as it passes, and construct starts
   (11, 12, 20, 79, C.1, C.6; record 0036, accepted 2026-11-05).
-- **S90.** A host whose terminal is herdr names Ghostty as its window
-  and declares the stream `work` with the title `Work Herdr`. A person
-  asks flume to open `work` before any of its places has opened an
-  agent: herdr's session `work` is started headless, and a Ghostty
-  window titled `Work Herdr` opens attached to it, in which the agents
-  of the next place launched on `work` appear. Asked again, flume opens
-  a second window; asked for the default stream, it opens flume's own
-  session in a window titled `default`. On a host that names no window
-  the same asking gives the command that attaches to the session
-  `work`, and on a host whose terminal is the printed command it is
-  refused, that terminal holding no session (107, 143, 186 to 189).
+- **S90.** A host whose terminal is herdr names Ghostty as its
+  terminal app and declares the stream `work` with the title `Work
+  Herdr`. It declares the stream `office` with Terminal.app as its own
+  terminal app and the title `Office Herdr`. A person asks flume to
+  open `work` before any of its places has opened an agent. herdr's
+  session `work` is started headless, and a Ghostty window titled
+  `Work Herdr` opens attached to it, in which the agents of the next
+  place launched on `work` appear. Asked again, flume opens a second
+  window. Asked for `office`, it opens a Terminal.app window titled
+  `Office Herdr` attached to herdr's session `office`, and asked for
+  the default stream, flume's own session in a Ghostty window titled
+  `default`. A stream whose view is
+  the app is refused in herdr's words, herdr having no app of its own.
+  On a host that names no terminal app the same asking for `work`
+  gives the command that attaches to the session `work` (107, 143, 186
+  to 189).
+- **S91.** A host whose terminal is herdr declares the stream `trial`
+  with the printed command as its terminal. A place launched on `work`
+  opens its agent in herdr's session `work`, and one launched on
+  `trial` prints its agent's command, flume running attended while a
+  stream runs under a terminal that keeps no watch. Asked to open
+  `trial`, flume refuses, the printed command holding no session. The
+  host's local layer then names herdr for `trial`. The trial place's
+  printed agent stays as it was, and its next stage opens in herdr's
+  session `trial`; status gives each agent's terminal with where it
+  came from. A stream naming `rex`, for which flume carries no profile,
+  refuses its launches and its views naming `rex`, while every other
+  stream runs (4, 119, 143, 186, 190).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
