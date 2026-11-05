@@ -219,7 +219,12 @@ redefine these.
      the expectation every landing has (24, 124); no signer is asked,
      since no run is read (78). Its outcome is landed, pushed to its
      submitter as any (50, 122), and said as landed beside the queue
-     with no check run. (record 0075, accepted 2026-10-30)
+     with no check run. (record 0075, accepted 2026-10-30) Its landing
+     commit names its verdict, passed with nothing run, and the verdict
+     that covers the branch's revision, as 23 says; a request's state on
+     the forge names the same (118). Where the branch's records hold no
+     such verdict by its words and revision, work lands with its chain.
+     (record 0083, proposed 2026-11-05)
 
 ### A.3 Candidates and chains
 
@@ -600,7 +605,13 @@ redefine these.
     entry's record and wherever the entry is shown (26); entries landed together
     on the deepest candidate's verdict each name that verdict. An entry
     whose candidate was formed before work landed beside the chain
-    (140) lands as its candidate's tree with that work. (record 0075, accepted 2026-10-30) The
+    (140) lands as its candidate's tree with that work. (record 0075, accepted 2026-10-30) An
+    entry landed beside the chain names as the verdict it landed on its
+    own candidate's, passed with nothing run (15), and with it the
+    verdict that covers the revision it landed on (70), by that
+    verdict's words and the revision of the branch it landed as, so a
+    reader of a landing's verdict reads it as passed and never as run.
+    (record 0083, proposed 2026-11-05) The
     history of a branch is
     never rewritten, and a session's commits stay reachable from the
     branch they landed on.
@@ -1641,6 +1652,11 @@ section asked is answered by a clause.
   session submits a change to the repository's guides, which no check
   main requires reads. The next round lands it beside the queue with
   nothing run, and its session is told it landed with no check run.
+  Its landing commit reads passed with nothing run, naming the verdict
+  main's revision landed on and that revision, so a job that releases
+  each head of main sluice passed releases this one, and its request's
+  check on the forge says the same (23; record 0083, proposed
+  2026-11-05).
   The combination passes and lands from the revision the guides made,
   carrying them, its runs and verdict standing and nothing tested
   again. On another day the guides change touches a file the second
