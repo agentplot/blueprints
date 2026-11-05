@@ -183,8 +183,9 @@ redefine these.
   work one stage in one place.
 - **settings**: what an agent starts with beyond its prompt: its
   program, its model, its effort, its mode, its instructions, its own settings, its
-  environment, and where in the terminal it runs, such as beside a pane
-  its caller names.
+  environment, where in the terminal it runs, such as beside a pane
+  its caller names, and how long it is kept open for an answer once it
+  stops short (198).
 - **own settings**: of an agent, its program's own settings, as that
   program spells them, such as its status line, its renderer, its hooks
   or what its commits say about who made them; given for each program
@@ -253,6 +254,9 @@ redefine these.
   its prompt.
 - **stop short**: an agent's word to flume that its stage cannot deliver
   without something, saying what in its own words.
+- **kept open**: of an agent that stopped short needing an answer, live
+  and waiting for it in its own session until its time passes, it
+  stops or its account is spent (198).
 - **stop check**: flume sending back an agent that would go quiet with
   its stage's deliverable missing and nothing said (110).
 - **end**: of a stage, that it **delivered**, that it **ended short**,
@@ -396,7 +400,9 @@ redefine these.
    content does not match its lock's hash, naming the kind and both
    hashes (156); one whose package refers outside itself or names
    another identity than the one it is held at (157); one whose kind
-   names something a host owns, naming the field (158); one where a
+   names something a host owns, naming the field (158), and one whose
+   repository's settings give how long an agent is kept open, naming
+   the field (198); one where a
    stage's agent resolves to a mode its program's profile has no
    setting for, or to a table of programs that names no entry for its
    program, naming the mode, the program, the stage and where it came
@@ -645,13 +651,14 @@ redefine these.
      it (4). flume's own kinds are packages too, one per version, so
      change@1 and change@2 each carry their own construct and verify.
 158. A kind names nothing a host owns, whichever source declares it: no
-     environment, account, pool, stream or location on a host (32, 144).
+     environment, account, pool, stream, location on a host or time an
+     agent is kept open (32, 144, 198).
      It may name the agent program it supports, by name, a model, by
      the name its program gives a class of models, and an effort, by its
      program's word (197), and the host binds each through its own
      layers of 32. A kind's declaration that names
-     an environment, or a program by a location, refuses the launch
-     naming the field (4). Settings are given to a kind by its name, in
+     an environment, a time an agent is kept open, or a program by a
+     location, refuses the launch naming the field (4). Settings are given to a kind by its name, in
      a repository's or a host's configuration, and join whichever source
      and version the launch's name resolves to (32). A kind's own
      settings, and the file it names for them, are parts of its package
@@ -799,13 +806,14 @@ redefine these.
     and status names what flume cannot read; an agent whose profile
     reads no own work of its program's is read as 171 says. An end flume asked for that
     the agent did not take is reported as a failure, never as done.
-32. An agent's program, model, effort (197), mode, instructions and own
-    settings (195) are resolved when it starts, each from the first of these that
-    gives it:
+32. An agent's program, model, effort (197), mode, instructions, own
+    settings (195) and time kept open (198) are resolved when it starts,
+    each from the first of these that gives it:
     1. the launch's settings (7);
     2. the host's configuration, for the place's repository, for its
        kind and then for every kind, for the model, the effort, the
-       mode, the instructions and own settings alone;
+       mode, the instructions, own settings and the time kept open
+       alone;
     3. the host's configuration, for the kind, for the same alone;
     4. the host's configuration, for the place's stream (143), for the
        same alone;
@@ -818,7 +826,7 @@ redefine these.
     7. the kind's declaration, the repository's own where it is the one
        the name resolves to (23);
     8. flume's own default, which names a program only for an agent
-       with no pool (173).
+       with no pool (173), and keeps an agent open one hour (198).
 
     Within each, a stage's own setting comes before one given for every
     stage of the kind, and that before one a repository's layer gives
@@ -837,7 +845,8 @@ redefine these.
     a start after a change to either takes the change, and an agent
     already started keeps what it started with.
     The repository's settings and its kinds' carry nothing of one host:
-    no environment, no stream, no pool and no account, and a kind's
+    no environment, no stream, no pool, no account and no time an agent
+    is kept open, and a kind's
     declaration names a program by its name alone, never by a location
     on a host (144). Where in the terminal an agent runs (107) is read
     from the launch's settings and the stage's declaration, else from
@@ -1038,7 +1047,9 @@ redefine these.
      account's usage limit and that it goes on under an account of its
      pool. Otherwise the stage starts afresh, its prompt with flume's
      own words: that the stage's earlier agent stopped at its account's
-     usage limit, and that what it committed and left is in the place.
+     usage limit, and that what it committed and left is in the place;
+     then the words the earlier start was given and each answer it took
+     in its session (42), so none is lost.
      A start that carries a conversation is not delivered where it is
      never begun (35) or its agent is not the stage's (161): flume ends
      its agent once quiet and starts the stage afresh at once. flume
@@ -1120,7 +1131,8 @@ redefine these.
      or a person who starts the program again by hand, leaves such an
      agent. flume sends it nothing more, ends it once quiet (31) and
      starts the stage afresh under the settings resolved then, with no
-     caller's word and counting toward no bound of the kind's (112).
+     caller's word and counting toward no bound of the kind's (112). Its
+     prompt carries the earlier start's words and answers as 146 says.
      Status says so, naming the mode it started in and each variable
      that differed by its name alone (56). A fresh start that differs again is never
      begun (35), naming the same.
@@ -1412,13 +1424,40 @@ redefine these.
      quiet. Where the agent program gives flume no way to send an agent
      back, the stage is left to 44.
 42. A stage that ended short needing an answer starts no next stage, whatever
-    else exists. Its place waits for a retry or a drop, and the agent's
-    words reach the place's recipients, and status, whole and as the
-    agent wrote them. The answer, whoever gives it and however it
+    else exists. Its place waits for its answer or a drop, and the
+    agent's words reach the place's recipients, and status, whole and as
+    the agent wrote them. The answer, whoever gives it and however it
     reached the caller, is a retry naming the stage with the answer as
-    its words (49), and the fresh agent's prompt carries the question
-    with the answer. A stage that ended short having found work is sent back as
-    131 says.
+    its words (49), or a tell (53). While the stage's agent is kept open
+    (198), flume hands it the question and the answer as a tell is
+    handed (54) and records them on the stop-short they answer. The
+    stage then carries on in that session under the same start, begun
+    again, starting and ending no agent and counting no start (48).
+    Otherwise
+    the answer is a retry, and the fresh agent's prompt carries the
+    question with the answer. A stage that ended short having found work
+    is sent back as 131 says.
+198. An agent that stops short needing an answer is kept open for it
+     where its terminal delivers text to a running agent (95), and
+     otherwise is not. It is kept open from its stop-short for the time
+     its settings give (32), one hour where none gives one, the life of
+     its program's prompt cache. That time is flume's own, the same for
+     every program and passed to none. It is written `<n>`, `<n>s`,
+     `<n>m` or `<n>h`, and `0` keeps no agent open. The launch's settings
+     and the host's configuration give it. An agent kept open stays
+     live, holding its room and its account (70, 145), and an answer
+     that comes then reaches its session (42). It is let go once its
+     time has passed. It is let go sooner once it is read stopped or its
+     own record says its session ended (96, 134), as a restart of the
+     host or its terminal leaves it. So it is once its account is spent
+     (146). A settle reads it let go and records when and why.
+     No process of flume's waits for the time (120). Once it is quiet,
+     flume ends it (31), freeing its room and its account. The stage
+     keeps waiting on its answer (42, 130). A
+     stage carried on after its answer is a running stage: its stop
+     check, its quiet limit and working past it hold from the answer's
+     receipt (44, 110, 118), and its next stop-short is an end of its
+     own (43), its agent kept open again.
 43. A stage reported lost (45), a prompt never begun (38) and a stage
     reported stuck (44) are ends as a stage's end is, delivered so,
     with what flume read: the agent's last words as its own record
@@ -1461,8 +1500,9 @@ redefine these.
     as any other.
 118. An agent that has worked longer than its stage's limit with nothing
      delivered is reported as working past its limit, naming the stage
-     and the agent. The limit runs from the stage's beginning or the
-     place's last head move, whichever is later. flume never ends the
+     and the agent. The limit runs from the stage's beginning, the
+     last answer its agent took in its session (42), or the place's last
+     head move, whichever is later. flume never ends the
      agent on that account (31), and a conversation's agent is never so
      reported.
 45. A stage whose agent stopped with nothing delivered and nothing said
@@ -1575,7 +1615,10 @@ redefine these.
     retry's words in its prompt, the words of a stop-short the stage
     ended with standing before them, so the agent reads the question
     with its answer (42), and the stages after it then run again
-    in order, as 40 and 47 allow. A retry that names the submission
+    in order, as 40 and 47 allow; but a retry with words naming a stage
+    whose agent is kept open for its answer (198) is that answer, which
+    reaches that session as 42 says and starts no agent. A retry that
+    names the submission
     submits the place's head again and starts no agent. A retry names
     any stage of the place's kind, one after the current stage among
     them, or the submission of a kind that lands. It never changes the
@@ -1583,7 +1626,8 @@ redefine these.
     but its own starts (40).
 50. A retry ends the place's agent first, one that is not quiet only
     when forced (31), and is refused, naming the place, when the
-    place's work is over.
+    place's work is over. A retry that answers an agent kept open (42)
+    ends no agent.
 51. A stop ends the place's agent and nothing else: the stage neither
     ends nor moves on, and waits for a retry or a drop. An agent that is
     not quiet is stopped only when forced (31).
@@ -1600,14 +1644,20 @@ redefine these.
 
 53. A tell hands the agent of a place's current stage its words as a
     prompt, or nothing at all. A tell to a place with no live agent, or
-    whose agent is asking, is refused with nothing typed.
+    whose agent is asking, is refused with nothing typed. So is a tell
+    to a place whose stage ended short needing an answer while its
+    agent is not kept open (198), naming the retry that answers it.
 54. A tell never interrupts a working agent: its words reach the agent
     only once it is waiting. A tell not delivered within the bound its
     caller gives, or within ten minutes where it gives none, is refused
     with nothing typed. A tell delivered is received or sent again as a
-    prompt is (38).
+    prompt is (38). An answer handed to an agent kept open (42) is
+    delivered as a tell is, within the same bound; one not delivered
+    leaves the stage waiting on its answer, with nothing recorded.
 55. A tell never starts, ends, holds or moves a stage, never counts as a
-    retry or a finish, and never stands for a deliverable.
+    retry or a finish, and never stands for a deliverable. The one
+    exception is a tell that answers an agent kept open (198), which
+    carries the stage on in that session (42).
 
 ### A.10 Status
 
@@ -1630,7 +1680,11 @@ redefine these.
     it, and how many times flume submitted the place; its change's
     tasks and which are ticked; each act of an agent's that flume
     refused (108); the part a refused stage could not fill (27); the
-    words of a stop-short, and whether it needs an answer or found work, or of a failed
+    words of a stop-short, and whether it needs an answer or found work,
+    and, for one needing an answer, whether its agent is kept open and
+    until when, or when and why it was let go and whether it is ended
+    (198), and each answer the stage's current start took in its
+    session, with its question (42), or of a failed
     submission; of a place
     waiting on its caller, the move it waits on, since when, a hold's
     words and whether it is stalled (130); the place's points, and
@@ -1654,7 +1708,9 @@ redefine these.
      reported lost (45), a prompt never begun (38), a readiness that failed (12),
      or a kind's last stage delivered where the kind does not land
      (114), waits on that move from the moment flume read it so, and
-     status says which move and since when. A caller may put a place's
+     status says which move and since when, and, for an answer, whether
+     the stage's agent is kept open for it and until when (198); an
+     agent let go leaves the move and its since as they were. A caller may put a place's
      next stage or its submission on hold after the launch, with its
      words saying what for, which status gives with the hold's since
      when; a retry naming the stage or the submission ends the hold (47,
@@ -2110,7 +2166,8 @@ redefine these.
 95. **send**: given an agent and a text, the text delivered as input
     the agent receives, any text the agent holds typed cleared first,
     or a refusal; no answer, delivered or refused, leaves text typed for
-    a hand (38, 53).
+    a hand (38, 53); and, given nothing, whether the terminal delivers
+    text to a running agent at all (198).
 96. **state**: given an agent, its agent state (56): stopped only when
     the agent's program no longer runs, and unknown for anything the
     terminal cannot classify.
@@ -2374,7 +2431,10 @@ declaration resolved over by a launch's gives the place nothing of its
 own kind's settings. A repository's agents tables give a program, a
 model, an effort, a mode and instructions, and carry nothing of one host: an `env` in a
 repository's `.config/flume.toml` refuses the launch naming the field
-(4), since an environment is an account's alone (144, C.7). `mode`
+(4), since an environment is an account's alone (144, C.7); so does a
+`keep_open` there or in a kind's declaration, since how long an agent
+is kept open is the host's or the launch's (198), and a launch gives it
+by `flume launch --agent [<stage>.]keep_open=<time>`. `mode`
 is a field of every agents table, the kind's, a stage's, the
 repository's and the host's (C.7), and of a launch's settings, `flume
 launch --agent [<stage>.]mode=<mode>`; its values are flume's four
@@ -2471,8 +2531,8 @@ one kind, records it only where its content hashes so, and otherwise
 refuses naming both hashes and leaves the lock as it was. It reads
 only what the host already holds, fetches nothing, and commits nothing:
 its caller commits a repository's lock (155). A package's agents tables
-and a kind's declaration from any source carry no `env`, and name a
-program by its name alone (158); a package's own settings' file is a
+and a kind's declaration from any source carry no `env` and no
+`keep_open`, and name a program by its name alone (158); a package's own settings' file is a
 part of the package (157).
 
 | deliverable (24) | spelled in `deliverables` |
@@ -2548,7 +2608,7 @@ round, so the conclusion is never committed on `sounding/<name>`
 | own-work | background tasks the transcript shows started and not finished |
 | plan | in a stage that delivers a plan, the plugin's PreToolUse hook on `ExitPlanMode` records the plan the tool's input names, its `planFilePath`, or its `plan` text where it names no file, written by the hook beside the start's record, with the time the hook ran, as the pinned 2.1.296 writes them; it then denies the tool with flume's words, that the plan is put for review and that its notes or an acceptance will come as the next message, so the agent stays in plan mode and ends its turn (163). The newest plan so recorded is the stage's, read at the path recorded |
 | stop-short | `flume needs "<words>"` needs an answer, and `flume needs --found "<words>"` found work (41, 131); run by the agent or a process it started, refused unless `FLUME_AGENT` names the agent of the place's current stage and `FLUME_SECRET` is that start's, while the agent is live |
-| send-back | the plugin's Stop hook blocks the stop, its reason naming the deliverable and `flume needs`, while the stage's deliverable does not exist, the agent has not stopped short, and no background task runs and no question is open; it never blocks a conversation's agent, and in a stage that delivers a plan it names `ExitPlanMode` as the way to put the plan |
+| send-back | the plugin's Stop hook blocks the stop, its reason naming the deliverable and `flume needs`, while the stage's deliverable does not exist, the agent has not stopped short since its stage last began, and no background task runs and no question is open; it never blocks a conversation's agent, and in a stage that delivers a plan it names `ExitPlanMode` as the way to put the plan |
 | guard | the plugin's PreToolUse hook refuses a command that runs `sluice submit`, `wt submit`, `wt merge` or `git push`, its reason saying that flume submits the place, and leaves the mark status reads (56) |
 | on-quiet | the plugin's Stop hook, each time it lets the agent stop, starts `flume settle <place>` in the background, so the place settles the moment its agent goes quiet (46) |
 | ended | the plugin's SessionEnd hook marks the start's session ended; a session killed with no hook reads unknown here, and the terminal's state decides (96, 134) |
@@ -2674,7 +2734,7 @@ checked against its release.
 | profile | open | send | state | close | watch |
 |---|---|---|---|---|---|
 | **herdr** | a pane in the herdr session the launch's settings name, else the one its place's stream names for the place's kind (199), else the one its place's stream names, by default the stream's name, and flume's own for a place in the host's default stream naming none (107, 143): in each session, one workspace per repository and base, labelled `<repository> <base>` (`flume bolt/the-surfaces`, `sluice main`), made when the first place on that base opens there, and in it one tab per place named `<kind>--<name>`, whose panes are the place's agents that open in that session, so a stage that runs several agents at once splits its place's tab; where the settings name a pane, a split beside that pane instead, as for a conversation, left where its caller put it. The pane is made in the place with the host user's login environment and the agent's environment (C.4) over it set on it, its `PATH` led by a folder of the start's own holding the kind's name linked to the program the settings name, or, for a program the common profile binds, to flume's launcher, which becomes that program (C.4, 171), and its shell one that reads no startup file, so no login shell or rc file of the host's reorders that `PATH`; herdr's agent start runs the program there by the kind its agent profile names, its arguments passed whole, under the agent's herdr name; nothing is typed into the pane's shell. A start whose pane runs anything but the program the settings name is closed and refused, naming what ran, and a program herdr knows no kind for cannot run under herdr (32); nor can a program whose state herdr reads only through its own integration, OMP and MastraCode in 0.9.5, while `herdr integration status` reports that integration not installed, which refuses the launch naming `herdr integration install <name>` (4). The pane is held by its id and its server's socket, and found again by the agent's herdr name where the id no longer answers, as after the pane moves to another workspace: a name of at most 32 of herdr's legal characters made from the identity and unique on the server, a pane found by it taken as the agent's only once herdr lists it under that name. herdr's word that the program is ready is a second signal, never the start (35). A start herdr reads blocked is held at the program's question before it starts: the folder-trust question is answered and herdr waited on until the agent is idle (34), and any other leaves the start never begun with the screen; a start herdr does not see ready within its bound is never begun with the screen (35) | the pane's held input cleared with one ctrl+c while the agent waits, then herdr's prompt to the pane, then received read through the agent (89); a send never leaves text typed: one not received is cleared again before the next | herdr's reading of the agent: working as working; idle and done as waiting, since herdr's done is a finished turn nobody has looked at; blocked as asking only with the agent profile's mark (90), or where the agent's profile reads asking from the terminal (171), and as unknown otherwise; herdr's unknown as unknown; stopped only when the pane is gone, or herdr lists no agent in it and its foreground is the shell, or herdr lists it unrestored after its server's restart | herdr ends the pane and its process group, then reads that it is gone | kept by flume's herdr plugin on herdr's server, which runs between flume's commands. It runs `flume settle` for the session's places on a bound it states and at each change of an agent's state, reading every agent's state in one listing per tick |
-| **printed command** | the command printed, the prompt carried in it, for a person to run in the place | refused, so every tell is refused and a prompt not received is reported never begun (38) | from the agent profile alone; stopped when its record says the session ended | refused unless the agent's record says the session ended | none, so flume runs attended (119) |
+| **printed command** | the command printed, the prompt carried in it, for a person to run in the place | refused, so every tell is refused, no agent is kept open for an answer (198), and a prompt not received is reported never begun (38) | from the agent profile alone; stopped when its record says the session ended | refused unless the agent's record says the session ended | none, so flume runs attended (119) |
 
 Under herdr a session is named `herdr:<pane>@<socket>`, the pane's id
 and its server's socket, wherever a recipient or a launching session is
@@ -3006,7 +3066,9 @@ lives:
   configuration, by kind, `[kinds.<kind>.agents]`, and by repository
   and kind, `[repos."<repository>".kinds.<kind>.agents]`, the
   repository named by its location on the host as a launch names it;
-  each gives `model`, `effort`, `mode`, `instructions` and `programs` (C.2), and
+  each gives `model`, `effort`, `mode`, `instructions`, `programs` and
+  `keep_open` (C.2, 198), `keep_open` one time, `<n>`, `<n>s`, `<n>m`
+  or `<n>h`, and never a table of programs, and
   names one stage's by a further `.stages.<stage>` table (32). So do
   three tables that name no stage: `[repos."<repository>".agents]`, for
   every kind run in the repository, `[agents.streams.<stream>]`, for
@@ -3323,9 +3385,10 @@ These are not requirements.
   means, and stops short needing an answer, saying so. The stage ends short, no
   code stage starts, status shows the place waiting on an answer with
   the question, and crew is told the words whole. The design agent's
-  answer comes back as a retry of construct with the answer as its
-  words, and a fresh agent starts with the question and the answer in
-  its prompt (42, 49).
+  answer comes back within the hour, a retry of construct with the
+  answer as its words. Construct's agent takes the question and the
+  answer in its session, and carries on there under its first start
+  and delivers (42, 49, 198).
 - **S5.** On a loaded host a code stage's agent takes four minutes to
   come up. flume reports the start unknown, not failed, and sends the
   prompt once the agent waits for input. It finds the prompt not
@@ -3938,6 +4001,26 @@ These are not requirements.
   stage and the launch, before anything is made. A host with no effort
   in any layer starts its agents with none, at what each account's own
   configuration gives (4, 32, 197, C.4).
+- **S104.** A code agent stops short needing an answer on a host whose
+  `[agents.streams.<stream>]` gives `keep_open = "10m"`, the host at its
+  bound with a second place waiting for room. Status says the place
+  waits on an answer, its agent kept open until ten minutes after the
+  stop-short. No answer comes. The first settle after that time reads
+  the agent let go by its time and, the agent being quiet, ends it, and
+  the second place's stage starts in the room it freed. Status says the
+  place still waits on an answer, its agent ended, since the
+  stop-short. A tell of the answer is refused, naming the retry; the
+  retry starts a fresh agent whose prompt carries the question and the
+  answer (42, 49, 53, 70, 198).
+- **S105.** A construct agent stops short needing an answer, and within
+  its hour another agent of its account reaches the account's usage
+  limit. The next settle reads the account spent and the agent let go,
+  and ends it once it is quiet. A second place's construct agent stops
+  short, and its pane is gone after its host restarts; the next settle
+  reads it let go, ended. Each place waits on its answer with its agent
+  ended. Each answer, a retry, starts a fresh agent with the question
+  and the answer, the first on another account of its pool (42, 96,
+  146, 198).
 - **S106.** A host whose terminal is herdr declares the stream `work`,
   naming no session of its own, and names the session `work-design`
   for the kind `research`. A research place launched on `work` opens
