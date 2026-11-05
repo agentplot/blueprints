@@ -986,13 +986,15 @@ redefine these.
 146. Where an agent's own record says the account it runs under reached
      a usage limit (151), flume records the account spent until the time
      the record names for the limit to reset, or for an hour where it
-     names none, in the host's own documents (153), so every flume
-     process on the host honours it; flume never asks an agent program
-     or its maker whether a limit has reset. A spent account is skipped
-     by every start until that time. An agent so stopped is ended once
-     quiet (31), and its stage starts again under a usable account of
-     the pool, or waits for one (145): a start of the stage (33) that
-     counts toward no bound of the kind's (112) and waits on no
+     names none its profile reads, in the host's own documents (153), so
+     every flume process on the host honours it; flume never asks an
+     agent program or its maker whether a limit has reset. A spent
+     account is skipped by every start until that time. While it is
+     spent for that hour, status gives the words the record gave, so a
+     reset the profile could not read is seen (56). An agent so stopped
+     is ended once quiet (31), and its stage starts again under a usable
+     account of the pool, or waits for one (145): a start of the stage
+     (33) that counts toward no bound of the kind's (112) and waits on no
      caller's word. Where the agent's program can carry the stopped
      agent's conversation to the account chosen (179), that start
      carries it, and its agent goes on with the conversation where it
@@ -2487,7 +2489,7 @@ round, so the conclusion is never committed on `sounding/<name>`
 | on-quiet | the plugin's Stop hook, each time it lets the agent stop, starts `flume settle <place>` in the background, so the place settles the moment its agent goes quiet (46) |
 | ended | the plugin's SessionEnd hook marks the start's session ended; a session killed with no hook reads unknown here, and the terminal's state decides (96, 134) |
 | last words | the agent's last message in the session's transcript; where the pinned Claude Code has a StopFailure hook, the plugin records the failure's reason there, a refused sign-in or a usage limit among them, as the agent's last words, which status gives with the agent (43) |
-| spent | the StopFailure hook's `error` of `rate_limit` with words that open as the pinned Claude Code's own usage-limit messages do, "You've hit your limit · resets …" and "You've hit your session limit · resets …" among them, recorded by the plugin with the time it ran; a `rate_limit` with other words, a model under high load or the server limiting requests, is no usage limit. The time the limit resets is the words' `resets <when> (<zone>)` part, `<when>` a time of day, `3pm` or `3:30pm`, the first such time in the zone after the hook ran, or a date and time, `Nov 2, 3pm` or `Jan 3, 2027, 3:30pm`, and `<zone>` the zone's IANA name; none where the words have no such part (146) |
+| spent | the StopFailure hook's `error` of `rate_limit` with words that open as the pinned Claude Code's own usage-limit messages do, "You've hit your limit · resets …" and "You've hit your session limit · resets …" among them, recorded by the plugin with the time it ran; a `rate_limit` with other words, a model under high load or the server limiting requests, is no usage limit. The time the limit resets is the words' `resets <when> (<zone>)` part, or, where the limit hit is a budget, their `your <limit> resets <when> (<zone>)` part, its plan limit's reset. `<when>` is as the release's reset formatter writes it in en-US: within a day, a time of day, `3pm` or `3:30pm`, the first such time in the zone after the hook ran; past a day, a date and a time joined by `at`, `Nov 8 at 12am`, the year after the day where it is not the hook's, `Jan 3, 2027 at 3:30pm`. `<zone>` is the zone's IANA name. Where the words have no such part, or one in another form, the record names none (146) |
 | usage | the session's transcript: each assistant record's `message.usage`, its `cache_read_input_tokens`, `cache_creation_input_tokens` and `input_tokens`, the first such record's for the first request and their sum for the session, and the sum of its `output_tokens` (152, 168) |
 | carry | yes where the start that stopped at its limit has a started ack, and its transcript, as that ack named it, is the same file, by device and inode, as `<home>/projects/<the transcript's folder>/<the transcript's file>`. `<home>` is the chosen account's `CLAUDE_CONFIG_DIR`, else `~/.claude` of the login environment. The next start then resumes the ack's session by `--resume <session>`. 2.1.296 looks for that session under its own configuration home's `projects` alone, and goes on with it in the same transcript, under the same session. Otherwise it cannot, its words naming `CLAUDE_CONFIG_DIR` and never its value (146, 179) |
 | own settings | the keys below reserved, each with its owner; the rest taken by `--settings`, as the command row says, which the pinned 2.1.296 loads as its flag settings, laid over the user's, the project's and the local settings by its own merge (195, 196) |
