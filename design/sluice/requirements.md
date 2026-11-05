@@ -454,8 +454,9 @@ redefine these.
      remote refuses no submission. A write to the copy by any other hand
      is refused, judged by the ref's own value on the host before and
      after, never by the remote's revision, and the refusal names the
-     command that tried and the revisions, in the records and to whoever
-     ran it (1, 121, C.4). The protection judges the repository the
+     command that tried and the revisions to whoever ran it, and in the
+     records once per cause as 148 keeps them (1, 121, 148, C.4). The
+     protection judges the repository the
      transaction is of, as git names it, wherever the command was run
      from; it refuses nothing of a ref it does not guard, and a
      transaction it cannot read for a reason of its own passes, said
@@ -490,6 +491,25 @@ redefine these.
      word to whoever ran it stands beside the log, never in its place,
      so whoever reads the queue after reads its stalls from the log
      (61, 124, 128, C.7).
+148. A write the protection refused (124) is an event in the branch's
+     log once per distinct cause and host, never once per refusal. Its
+     cause is the command that tried, one command whatever full
+     revisions it names, on the host whose ref it tried, and its first
+     refusal is logged as 124 has it, naming the host, the command as it
+     ran and both revisions. While a cause stands, the branch's live
+     records keep how many of its writes were refused, when the first
+     and the last were, and the revisions of the last, so the overview
+     and a branch's status show each standing cause with its count, its
+     first and its last from the live records alone (131), and no part
+     of the log closing changes the count (132). A cause stands until a
+     day passes with no write of it refused: it is then shown no more,
+     and its end, with its count and its first and last refusals, is
+     logged at the time it ended by the branch's first write after; a
+     write of it refused later stands anew. A host keeps at most twenty
+     causes standing, and a twenty-first ends at once the one whose last
+     refusal is oldest. A tool that watches a host reads the writes
+     refused there from sluice's status or overview, never from the log
+     (the user, 2026-11-05).
 134. Every call sluice makes to a remote, by git or to the forge, runs
      under one retry policy, a maintained crate's backoff with jitter,
      bounded by what called it: a wait gives it the minutes it reads
@@ -1184,8 +1204,8 @@ Parts A and B do not change to admit a profile.
 
 | profile | read / form / commit / move |
 |---|---|
-| **local refs**: one host's repository | `git rev-parse`; `git merge-tree --write-tree`; `git commit-tree` with the branch and the head as parents and the verdict as `Sluice-*` trailers; `git update-ref` with the expected old value; making a branch `git update-ref <branch> <rev> ""`, removing one `git update-ref -d <branch> <expected>` (104, 105); branch protection by a `reference-transaction` hook that refuses any update to a branch in the policy not made by sluice, and logs it (1) |
-| **pushed refs**: a branch on a remote every host reaches | the remote read from the policy at every revision of the branch the host holds (124); `git fetch` then `git rev-parse` of the remote's branch; forming and committing as local refs, on the host advancing the branch; the landing a push with `--force-with-lease=<branch>:<expected>`; making a branch a push leased on its absence, `--force-with-lease=<branch>:`, removing one a `--delete` leased on its revision (104, 105); every read and push under sluice's one retry policy, a credential the remote refused bought afresh for the next try, a leased push tried again with its lease unchanged and never after an answer not read (134); branch protection by the forge's rules, restricting creating, updating and deleting the branch, which only sluice's identity bypasses, an identity no session on any host can use (1); each read compares the revision fetched with the landing the branch's log last recorded, and a revision that does not contain it, as when a branch landed on in local refs gains `remote` and the remote holds an older copy, is logged and reported with both revisions, nothing formed or landed, until the revision read contains that landing or the operator's acceptance of the revision read is recorded (121); a fetch the round could not make is logged on the branch with the remote's words, once per cause and host, and its end with it (133); the host's `refs/heads/<branch>` is sluice's copy, levelled to the branch's last landing by the rounds and otherwise untouched, the hook refusing any other write and logging its caller and revisions (124); a submit from a worktree on that branch pushes nothing to it and submits the remote's revision, saying where the copy differs (124) |
+| **local refs**: one host's repository | `git rev-parse`; `git merge-tree --write-tree`; `git commit-tree` with the branch and the head as parents and the verdict as `Sluice-*` trailers; `git update-ref` with the expected old value; making a branch `git update-ref <branch> <rev> ""`, removing one `git update-ref -d <branch> <expected>` (104, 105); branch protection by a `reference-transaction` hook that refuses any update to a branch in the policy not made by sluice, and logs it once per cause, counting the rest (1, 148) |
+| **pushed refs**: a branch on a remote every host reaches | the remote read from the policy at every revision of the branch the host holds (124); `git fetch` then `git rev-parse` of the remote's branch; forming and committing as local refs, on the host advancing the branch; the landing a push with `--force-with-lease=<branch>:<expected>`; making a branch a push leased on its absence, `--force-with-lease=<branch>:`, removing one a `--delete` leased on its revision (104, 105); every read and push under sluice's one retry policy, a credential the remote refused bought afresh for the next try, a leased push tried again with its lease unchanged and never after an answer not read (134); branch protection by the forge's rules, restricting creating, updating and deleting the branch, which only sluice's identity bypasses, an identity no session on any host can use (1); each read compares the revision fetched with the landing the branch's log last recorded, and a revision that does not contain it, as when a branch landed on in local refs gains `remote` and the remote holds an older copy, is logged and reported with both revisions, nothing formed or landed, until the revision read contains that landing or the operator's acceptance of the revision read is recorded (121); a fetch the round could not make is logged on the branch with the remote's words, once per cause and host, and its end with it (133); the host's `refs/heads/<branch>` is sluice's copy, levelled to the branch's last landing by the rounds and otherwise untouched, the hook refusing any other write and logging its caller and revisions once per cause (124, 148); a submit from a worktree on that branch pushes nothing to it and submits the remote's revision, saying where the copy differs (124) |
 
 ### C.5 The driver
 
@@ -1635,6 +1655,16 @@ section asked is answered by a clause.
   equip main` in a worktree sluice did not make does the same and
   adopts nothing, each as a candidate's run is equipped (147; flume
   record 0036, accepted 2026-11-05).
+- **S73.** A timer on a host runs `git update-ref refs/heads/main <new>
+  <old>` every few minutes, levelling the host's copy of a main kept on
+  its remote itself. sluice's protection refuses each write, and main's
+  log gains one line for them. The overview and `sluice status main`
+  show the command, with how many of its writes were refused, the first
+  and the last, and the host's doctor reads them from `sluice overview
+  --json`. The log closes a part, and the count goes on. The timer is
+  fixed: a day after its last refused write the command is shown no
+  more, and the log gains its end with its count (124, 132, 148; record
+  0082, proposed).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
