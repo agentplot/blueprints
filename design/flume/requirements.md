@@ -211,11 +211,19 @@ redefine these.
   which signs it in to an allowance of its own, as the host's
   configuration names it (144).
 - **pool**: a named list of accounts in order, with the strategy by
-  which flume chooses one at each start (144, 145).
+  which flume chooses one at each start and the threshold past which
+  one takes no new start (144, 145, 185).
 - **spent**: of an account, that an agent's own record said it reached
   a usage limit, until the time the limit resets (146).
-- **usable**: of an account, that it is not spent and has room under
-  the bound it states (145).
+- **usable**: of an account, that it is not spent, not past its
+  threshold, and has room under the bound it states (145, 185).
+- **reading**: of an account, what the host last read of its
+  allowance: for each of its usage windows, how much is used and when
+  it resets, written by the host in the file its configuration names,
+  and never by flume (184).
+- **past its threshold**: of an account, that its reading gives a
+  window used to its pool's threshold or past it, until that window
+  resets (185).
 - **affinity**: the stream an intent's places start in, and, for each
   agent program its agents run, the account they start on, each kept
   while that account is usable (147).
@@ -876,11 +884,12 @@ redefine these.
      refuses each such act wherever the agent program lets it, and
      status reports the refusal. A submission that gets past the refusal
      is read as any other of the place's own branch (63).
-144. A pool names accounts in order, and a strategy, fill-first or
-     least-busy (145). An account is an agent program and the
-     environment it runs under, which signs it in to an allowance of its
-     own, and may state how many agents run on it at once. Accounts
-     exist only in pools. A stage's agent runs under an account of its
+144. A pool names accounts in order, a strategy, fill-first, least-busy
+     or most-left (145), and a threshold (185). An account is an agent
+     program and the environment it runs under, which signs it in to an
+     allowance of its own, and may state how many agents run on it at
+     once. An account may name its reading (184). Accounts exist only in
+     pools. A stage's agent runs under an account of its
      stream's pool, else of the host's own pool; where neither names one
      it runs under no account, in the login environment alone (29). The
      account's variables are the agent's whole environment beyond that
@@ -895,16 +904,21 @@ redefine these.
      resolve, or, where they resolve none, that cannot run the stage
      (173), is not usable for that stage (145).
 145. At each start of a stage whose agent has a pool, flume chooses the
-     account. An account is usable while it is not spent (146) and has
-     room under the bound it states. The account of the intent's
-     affinity for the stage's program (147) is taken while it is usable.
-     Otherwise, under fill-first, the first usable account in the pool's
-     order; under least-busy, the usable account with the fewest of
-     flume's agents running, equals in the pool's order. With none usable
-     the stage waits for room (70) until one is, and status gives the
-     soonest time an account of the pool stops being spent. A stage waits
-     so only while its pool holds an account that can run it, spent or
-     without room: one of the program its layers resolve, or, where they
+     account. An account is usable while it is not spent (146), is not
+     past its threshold (185), and has room under the bound it states.
+     The account of the intent's affinity for the stage's program (147)
+     is taken while it is usable. Otherwise, under fill-first, the first
+     usable account in the pool's order; under least-busy, the usable
+     account with the fewest of flume's agents running, equals in the
+     pool's order; under most-left, the usable account with the most
+     left by a fresh reading (184), what an account has left being the
+     least that any of its windows leaves, then each usable account with
+     no fresh reading, equals in either by the fewest of flume's agents
+     running and then in the pool's order. With none usable the stage
+     waits for room (70) until one is, and status gives the soonest time
+     an account of the pool is neither spent nor past its threshold. A
+     stage waits so only while its pool holds an account that can run
+     it, spent or without room: one of the program its layers resolve, or, where they
      resolve none, one whose program can run it (144, 173). Where the
      pool holds none, no wait would end, and the stage is refused as 32
      says, naming the pool and the stage's program. The account is chosen
@@ -953,13 +967,45 @@ redefine these.
      and a later place launched for the intent runs in its stream unless
      its launch names another (143). A start on one program leaves the
      intent's account for every other program as it was, and is no move
-     of the intent. When the account is spent or has no room, the start
-     goes where 145 chooses and the affinity for its program moves with
-     it, and status says the intent moved, for which program, from which
-     account to which and why, and that its agents on that program start
-     with nothing the earlier account's prompt cache held (56). An
-     affinity goes an hour after the last place serving its intent is
-     gone.
+     of the intent. When the account is spent, is past its threshold
+     (185) or has no room, the start goes where 145 chooses and the
+     affinity for its program moves with it, and status says the intent
+     moved, for which program, from which account to which and why, and
+     that its agents on that program start with nothing the earlier
+     account's prompt cache held (56). An affinity goes an hour after
+     the last place serving its intent is gone.
+184. An account may name its reading: a file of the host's, written
+     by something of the host's other than flume, saying when the
+     host last read the account's allowance and, for each of its
+     usage windows, how much of the window is used and when it resets
+     (C.7). flume reads it as it stands at each choice of an account
+     (145) and when status is asked (56), and never writes it, keeps
+     it or renews anything to make it: flume asks no agent program or
+     its maker how much of an allowance is left, reads no account's
+     sign-in, and fetches nothing (146). A reading is fresh for
+     fifteen minutes from when the host read it, by the host's clock.
+     A window whose reset has passed reads as nothing used. A file
+     that is missing, or that holds no reading in C.7's form, is no
+     reading: status says why, and it refuses no start and fails no
+     settle. An account that names no reading has none.
+185. A pool's threshold is a share of a window, ninety percent where
+     the pool states none (C.7). An account whose reading gives any of
+     its windows used to the threshold or past it is past its
+     threshold until that window resets, however old the reading,
+     since a window's use only grows until it resets; where the window
+     names no reset, only while the reading is fresh (184). An account
+     past its threshold takes no new start under any strategy, the
+     intent's affinity's among them (145, 147). Its agents running go
+     on where they are, and none is ended or moved for it (31): one
+     whose turn stops at the account's usage limit moves as 146 says.
+     flume changes nothing of the account's sign-in, and copies, links
+     and writes nothing of its environment's (146). A reading never
+     shortens or lengthens a spent account's pause, which the agent's
+     own record set (146), and flume records nothing of a reading in
+     its own documents (153). Status gives each account's reading,
+     each window with its use and its reset, when it was read and
+     whether it is fresh, or why there is none, and, while the account
+     is past its threshold, which window holds it and until when (56).
 161. At each start flume records what its agent is to run under: its
      program, its mode where its settings give one (162), its account,
      the conversation it carries where it carries one (146, 179),
@@ -1446,8 +1492,9 @@ redefine these.
     each stream, its points bound, its pace with the points started in
     its span and when the next of them leaves it, and the tokens its
     agents' own records gave (166 to 168); and for each
-    pool, its accounts, each with its agents running and, while spent,
-    until when (146).
+    pool, its strategy and its threshold, and its accounts, each with
+    its agents running, while spent, until when (146), and its reading
+    as 185 says.
 130. A place whose next move is its caller's, a stage or a submission on
      hold (47), a stage ended short needing an answer (42), a stage for
      review (163), a stage
@@ -2536,9 +2583,12 @@ lives:
 - The host's streams and pools are tables of the same configuration:
   `[streams.<stream>]` with `agents`, its bound, `priority`, zero where
   it gives none, and `pool`; `[pools.<pool>]` with `strategy`,
-  `fill-first` or `least-busy`, and `accounts`, in order, each with a
-  `name`, a `program`, an `env` read as an agents table's is, and an
-  optional `agents`, the bound on agents running under it (143 to 145).
+  `fill-first`, `least-busy` or `most-left`, an optional `threshold`, a
+  whole percentage from 1 to 100, 90 where it gives none (185), and
+  `accounts`, in order, each with a `name`, a `program`, an `env` read
+  as an agents table's is, an optional `agents`, the bound on agents
+  running under it, and an optional `usage`, the path of its reading,
+  its `~` and `$VAR` read as an `env` value's are (143 to 145, 184).
   A stream may also state `points`, the bound on its points in flight
   (166), and `pace`, `{ points = <n>, per = "hour" | "day" | "week" }`
   (167); a stream that states either refuses a launch that gives no
@@ -2598,8 +2648,8 @@ lives:
   [pools.work]
   strategy = "fill-first"
   accounts = [
-    { name = "work-1", program = "claude", env = { CLAUDE_CONFIG_DIR = "~/.claude-work-1" }, agents = 4 },
-    { name = "work-2", program = "claude", env = { CLAUDE_CONFIG_DIR = "~/.claude-work-2" } },
+    { name = "work-1", program = "claude", env = { CLAUDE_CONFIG_DIR = "~/.claude-work-1" }, agents = 4, usage = "~/.local/state/usage/work-1.json" },
+    { name = "work-2", program = "claude", env = { CLAUDE_CONFIG_DIR = "~/.claude-work-2" }, usage = "~/.local/state/usage/work-2.json" },
   ]
 
   [pools.personal]
@@ -2614,8 +2664,9 @@ lives:
   ```
 
   runs acme's places in `work`, up to five of the host's eight agents,
-  ahead of `personal`'s, on work-1 until it runs four or is spent and
-  then on work-2, two of work's five owed to operation, one of them
+  ahead of `personal`'s, on work-1 until it runs four, is spent or is
+  past ninety percent of a window its reading gives, and then on
+  work-2, two of work's five owed to operation, one of them
   kept free for it, and two to construction, research's places
   inception's, while `personal` holds at most 8 points in flight
   and starts at most 13 points in any day.
@@ -2627,6 +2678,28 @@ lives:
   `streams/<stream>.json`: each charge against its pace, its place,
   points and time, and each agent's tokens at its end, kept a week,
   the longest span a pace names (167, 168).
+- An account's reading is one JSON document in the file its `usage`
+  names, which the host writes whole, a new file renamed over the
+  old, and flume reads and never writes:
+
+  ```json
+  {
+    "read_at": "2026-11-05T14:02:11Z",
+    "windows": [
+      { "name": "5-hour", "used": 42, "resets_at": "2026-11-05T17:00:00Z" },
+      { "name": "7-day", "used": 71.5, "resets_at": "2026-11-09T08:00:00Z" }
+    ]
+  }
+  ```
+
+  `read_at` is when the host read the allowance. Each window's `used`
+  is the percentage of it used, from 0 to 100, and `resets_at`, which
+  a window may leave out, when it resets; each time is RFC 3339's with
+  its offset. A window's `name` is the host's, which status gives and
+  flume reads no meaning into. flume ignores every key it does not
+  know, so a host keeps its own beside them, and the file holds no
+  credential. A file that is not this form is no reading, status
+  saying why (184).
 - The host's terminal is one word of the same configuration,
   `[host] multiplexer = "<profile>"`, naming a terminal profile of C.5,
   `herdr` or `printed`, the terminal of each stream that names none,
@@ -2881,8 +2954,12 @@ These are not requirements.
   status names, never a wait status warns of.
 - How is the most capable model's allowance spent against an account's
   weekly limit overall, rather than one usage limit at a time (144 to
-  146)? Not decided (record 0020): until it is, an account is spent
-  only when its agent's own record says so.
+  146)? Not decided (record 0020). Where an account names its reading,
+  its pool starts nothing on it past its threshold in any window the
+  reading gives, its weekly one among them (184, 185; record 0035);
+  how one model's share of an account's allowance is spent is still
+  not decided, and an account is spent only when its agent's own
+  record says so.
 - How does an MCP server the host gives its agents reach the agents
   flume starts, and which of them does an agent get (183)? Not
   decided: until it is, an agent takes what its program finds in its
@@ -3398,6 +3475,34 @@ These are not requirements.
   start; a managed `[streams.work.labels.operation]` naming a `pool`
   refuses the start naming the key, since seats are the stream's (180
   to 182, C.7).
+- **S86.** A stream's pool is most-left over work-1, work-2 and
+  work-3. work-1's reading, two minutes old, gives its 5-hour window
+  40% used and its 7-day window 80%; work-2's gives 60% and 30%;
+  work-3 names no reading. Four places start, each of an intent of
+  its own. The first starts on work-2, which has 40 left to work-1's
+  20, and the second on work-2 too, its reading unchanged. Once
+  work-2's reading is twenty minutes old with none newer, the third
+  starts on work-1, the one account with a fresh reading; and once
+  work-1 is spent, the fourth starts on work-3, which runs fewer of
+  flume's agents than work-2 (145, 147, 184).
+- **S87.** A fill-first pool's work-1 runs two of flume's agents when
+  its reading gives its 5-hour window 92% used, resetting at 17:00,
+  and its pool states no threshold. Both agents work on, and the one
+  whose turn stops at work-1's usage limit moves as S55 says. The next
+  stage of an intent whose affinity is work-1 starts on work-2, and
+  status says the intent moved because work-1 was past its threshold
+  in its 5-hour window until 17:00. After 17:00, no newer reading
+  written, a place of another intent starts on work-1, while the
+  intent that moved stays on work-2; nothing of work-1's sign-in or
+  its folders was changed (31, 145, 147, 185).
+- **S88.** Every account of a stage's most-left pool is past its
+  threshold or spent: work-1's 7-day window 95% used until Monday at
+  08:00, and work-2 spent until 15:00 though its reading gives it 50%
+  used. The stage waits for room, on the host and not on its caller,
+  and status gives 15:00 as the pool's soonest time; at the first
+  settle after 15:00 it starts on work-2. A reading of work-2 written
+  at 14:00 saying 10% used leaves the pause standing until 15:00 (70,
+  130, 145, 146, 185).
 - **S89.** A repository is cloned on a host for the first time, its
   `.prototools` pinning a moon nothing on the host has installed, and
   its toolchain activating the pins and installing none. A change is
