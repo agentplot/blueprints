@@ -978,22 +978,6 @@ redefine these.
     repository's places made there, is an abandoned place's (123); a record that exists and cannot be read names its
     scratch still: nothing of that place is removed, and the record is
     reported with the reader's words (26).
-147. **equip**: given a working copy and a revision of a branch, the
-     working copy made ready for the branch's runner as every place
-     sluice runs in is made ready. First the toolchain the branch's
-     policy at that revision names is run in the working copy, and its
-     environment is kept for the steps after it. Then come the runner's
-     install of the tools the working copy pins, its check of its own
-     version, and its setup. Each step runs outside the executor, with
-     an environment cleared as a run's is. Each step's outcome and words
-     are given, stopping at the first that fails. Every working copy
-     sluice runs anything in is equipped this way: a candidate's, a
-     session's, a preview's, and a submitter's, which last is read
-     before any setup. So is a working copy sluice did not make, at its
-     caller's asking, which sluice adopts no further: it holds no ports,
-     writes no record and counts against no bound. What a check needs
-     beyond its tools, it brings up itself (31, 84; flume record 0036,
-     accepted 2026-11-05).
 
 ### B.2 The check
 
@@ -1022,10 +1006,11 @@ redefine these.
     reading of the host, never by a probe of sluice's or the
     repository's, whose answer would be read as the host's or the
     candidate's only by inference (record 0066 as amended 2026-10-30 on
-    the user's words). What equips a place is the runner's own (147):
-    the toolchain the policy names, then the runner's install and
-    setup. It is never a command the repository writes, and never a
-    probe (flume record 0036, accepted 2026-11-05). What a run needs
+    the user's words). Beyond the toolchain the policy names, which
+    prints the environment and decides nothing, what equips a place is
+    the runner's own (147): its install, its check of its own version,
+    and its setup. None of these is a command the repository writes, or
+    a probe (flume record 0036, accepted 2026-11-05). What a run needs
     from the host, its system, its
     limits, a container engine the policy asks for, is a requirement the
     executor reads from the host itself: an executor that finds no
@@ -1042,6 +1027,25 @@ redefine these.
     the host for itself and a check cannot bring it up on its own (66)
     (record 0074, accepted 2026-10-30 and amended the same day on the
     user's words).
+147. **equip**: given a working copy and a revision of a branch, the
+     working copy made ready for the branch's runner as every place
+     sluice runs in is made ready. First the toolchain the branch's
+     policy at that revision names is run in the working copy, and its
+     environment is kept for the steps after it. Then come the runner's
+     install of the tools the working copy pins, its check of its own
+     version, and its setup. Each step runs outside the executor, with
+     an environment cleared as a run's is. Each step's outcome and words
+     are given, stopping at the first that fails. Every working copy
+     sluice runs anything in is equipped this way: a candidate's, a
+     session's, a preview's, a submitter's, and the tree the affected
+     reading is asked in (140). So is a working copy sluice did not
+     make, at its caller's asking, which sluice adopts no further: it
+     holds no ports, writes no record and counts against no bound. A
+     submitter's, the affected reading's tree, and a candidate's that
+     affects no required check are only read. Each is equipped no
+     further than the runner's check of its version, before any setup.
+     What a check needs beyond its tools, it brings up itself (31, 84;
+     flume record 0036, accepted 2026-11-05).
 
 ### B.4 The branch
 
