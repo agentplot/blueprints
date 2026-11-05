@@ -182,7 +182,7 @@ redefine these.
 - **agent**: one process of a coding agent program, started by flume to
   work one stage in one place.
 - **settings**: what an agent starts with beyond its prompt: its
-  program, its model, its mode, its instructions, its own settings, its
+  program, its model, its effort, its mode, its instructions, its own settings, its
   environment, and where in the terminal it runs, such as beside a pane
   its caller names.
 - **own settings**: of an agent, its program's own settings, as that
@@ -196,6 +196,8 @@ redefine these.
   person: one of flume's four, plan, ask, edits and full, the same for
   every program, or a value of one program's own given under that
   program's name (162, 169).
+- **effort**: of an agent, how hard its program's model works on each
+  turn, in its program's own word, such as Claude Code's `xhigh` (197).
 - **points**: a caller's measure of how much agent work a place's work
   is, a number of the Fibonacci scale, 1, 2, 3, 5, 8, 13, 21 and on,
   given at the launch; flume never estimates one (165).
@@ -402,6 +404,9 @@ redefine these.
    plan nor a conversation, naming the stage (162, 169); one where a
    stage's agent resolves to a model its program's profile names no way
    to give, naming the program and the stage (172); one where a stage's
+   agent resolves to an effort its program's profile does not take,
+   naming the effort, the program, the stage and where it came from
+   (197); one where a stage's
    agent has a pool that holds no account that can run the stage,
    naming the stage, the pool and the stage's program where its layers
    resolve one (145); one where a stage
@@ -641,9 +646,10 @@ redefine these.
      change@1 and change@2 each carry their own construct and verify.
 158. A kind names nothing a host owns, whichever source declares it: no
      environment, account, pool, stream or location on a host (32, 144).
-     It may name the agent program it supports, by name, and a model, by
-     the name its program gives a class of models, and the host binds
-     both through its own layers of 32. A kind's declaration that names
+     It may name the agent program it supports, by name, a model, by
+     the name its program gives a class of models, and an effort, by its
+     program's word (197), and the host binds each through its own
+     layers of 32. A kind's declaration that names
      an environment, or a program by a location, refuses the launch
      naming the field (4). Settings are given to a kind by its name, in
      a repository's or a host's configuration, and join whichever source
@@ -793,13 +799,13 @@ redefine these.
     and status names what flume cannot read; an agent whose profile
     reads no own work of its program's is read as 171 says. An end flume asked for that
     the agent did not take is reported as a failure, never as done.
-32. An agent's program, model, mode, instructions and own settings
-    (195) are resolved when it starts, each from the first of these that
+32. An agent's program, model, effort (197), mode, instructions and own
+    settings (195) are resolved when it starts, each from the first of these that
     gives it:
     1. the launch's settings (7);
     2. the host's configuration, for the place's repository, for its
-       kind and then for every kind, for the model, the mode, the
-       instructions and own settings alone;
+       kind and then for every kind, for the model, the effort, the
+       mode, the instructions and own settings alone;
     3. the host's configuration, for the kind, for the same alone;
     4. the host's configuration, for the place's stream (143), for the
        same alone;
@@ -842,10 +848,11 @@ redefine these.
     refused, naming the program or the variable and where it came from,
     and starts no agent, until a retry (27); so does a mode its
     program's profile has no setting for, a model it names no way to
-    give, a stage that delivers a plan on a program whose profile
-    offers no plan, or a pool that holds no account that can run the
-    stage, naming the pool and the stage's program where its layers
-    resolve one (145, 162, 164, 169, 172); and so does a host's own
+    give, an effort it does not take, a stage that delivers a plan on a
+    program whose profile offers no plan, or a pool that holds no
+    account that can run the stage, naming the pool and the stage's
+    program where its layers resolve one (145, 162, 164, 169, 172,
+    197); and so does a host's own
     setting changed since the launch that its program's profile reserves,
     shaped as a credential, in a file that cannot be read, or that its
     program cannot take, in the words 4 gives (195). Status reports each
@@ -1127,9 +1134,10 @@ redefine these.
      is bound by an agent profile (105): its own, where flume carries
      one, and otherwise the common profile. Each profile's entry for its
      program, its name, the terminal's kind for it, how it is given a
-     model and its map of modes, is flume's own and checked against the
-     release the profile pins (106); an entry may hold only the
-     program's name and kind, and then refuses a model and a mode. Each
+     model, how it is given an effort and the words it takes, and its
+     map of modes, is flume's own and checked against the release the
+     profile pins (106); an entry may hold only the program's name and
+     kind, and then refuses a model, an effort and a mode. Each
      part of the agent seam is built for the program, answered from its
      own record, or degraded as its profile declares (174); status names
      each degraded part with the agent and how it is read, no degraded
@@ -1179,10 +1187,29 @@ redefine these.
      profile names no way to give it a model at its start refuses a
      model given, naming the program: the launch is refused (4), or, at
      a later start, the stage (32).
+197. An agent's effort is one of its settings (32): how hard its
+     program's model works on each turn, in its program's own word,
+     passed to its program at its start as its profile takes it (88);
+     flume maps no effort from one program to another and has no scale
+     of its own. A layer may give, in place of one word, a table of
+     programs, taken whole as a model's is (172). Each profile takes the
+     words its program takes, read from the release it pins (170); a
+     word its program's profile does not take, or an effort for a
+     program whose profile names no way to give one, is refused, naming
+     the effort, the program, the stage and where it came from: the
+     launch is refused (4), or, at a later start, the stage (32). Where
+     no layer gives an effort, flume gives the agent none, and the
+     account's own configuration of its program decides (144). Status
+     gives the effort with the agent, where it came from and as it was
+     passed, never read back, since the program may lower it to what
+     the model offers; and where the account's environment names a
+     variable its program reads over the effort, status says so,
+     naming the variable and never its value (29, 56).
 173. Where no layer of 32 names a stage's program and its agent has a
      pool, the account chosen names it (145): the pool's accounts usable
      for the stage are those whose program can run it, its mode mapped
-     (169), its model given or none needed (172), the own settings given
+     (169), its model given or none needed (172), its effort taken or
+     none given (197), the own settings given
      for that program taken or none given (196), and, for a stage that
      delivers a plan, the plan offered (164). Where there is no pool,
      flume's own default names the program.
@@ -1206,7 +1233,7 @@ redefine these.
      gives the agent's program a key, flume passes none and the
      account's configuration decides (144). A key the profile names as
      another setting's or the account's, the environment, the model, the
-     mode, a sign-in, the hooks flume's start rests on or a person's
+     effort, the mode, a sign-in, the hooks flume's start rests on or a person's
      acceptance of a warning (34), is refused where a layer writes it
      and left out of a named file, naming the key and what owns it. A
      value shaped as a credential is refused before anything holds it,
@@ -1938,9 +1965,9 @@ redefine these.
     prompt, and the conversation it carries where it carries one (179),
     how to start that agent so it works in the place under that
     identity, its mode passed as the setting its profile maps it to,
-    its model as written, and its own settings as the layers resolved
-    them, the way its own settings part says (29, 32, 33, 169, 172,
-    195, 196).
+    its model as written, its effort as its profile takes it, and its
+    own settings as the layers resolved them, the way its own settings
+    part says (29, 32, 33, 169, 172, 195, 196, 197).
 135. **started**: given an agent, whether the agent has said it started
      under its start's identity and the settings its start recorded,
      with flume's guard and stop check in force where its program
@@ -2242,6 +2269,7 @@ settings = { tui = "fullscreen" }   # keys as the program spells them, each take
 [kinds.change.agents]     # settings for flume's own change@2, which the repository does not redeclare (32)
 model = "opus"
 mode = "edits"            # the agent's mode: plan, ask, edits or full, or a table of programs (162, 169); the account's own where no layer gives one
+effort = "high"           # how hard the agent's model works on each turn, its program's own word or a table of programs (197); the account's own where no layer gives one
 instructions = "Work in British English."
 
 [kinds.change.agents.stages.verify]   # settings for one stage of it
@@ -2278,7 +2306,7 @@ among them, and names one stage's by
 does not hold refuse the launch naming the stage (4). A repository's
 declaration resolved over by a launch's gives the place nothing of its
 own kind's settings. A repository's agents tables give a program, a
-model, a mode and instructions, and carry nothing of one host: an `env` in a
+model, an effort, a mode and instructions, and carry nothing of one host: an `env` in a
 repository's `.config/flume.toml` refuses the launch naming the field
 (4), since an environment is an account's alone (144, C.7). `mode`
 is a field of every agents table, the kind's, a stage's, the
@@ -2290,7 +2318,12 @@ modes, `plan`, `ask`, `edits` and `full`, or a table of programs,
 of that program's own that its profile names (C.4). One the agent's
 profile cannot honour refuses the launch naming it, the program, the
 stage and its layer (4, 169). `model` is the program's own name for a
-model, or a table of programs in the same form (172). A stage that
+model, or a table of programs in the same form (172). `effort` is a
+field of every agents table and of a launch's settings, `flume launch
+--agent [<stage>.]effort=<word>`: its program's own word, one its
+profile takes, or a table of programs in the same form; one the
+agent's profile does not take refuses the launch naming it, the
+program, the stage and its layer (4, 197). A stage that
 delivers `plan` starts in `plan` whatever the layers give, and only on
 a program whose profile offers the plan (163, 164). flume reads `on_fail` and `max_send_backs` on a
 simple kind's last stage only, since under flume a stage of a simple
@@ -2442,7 +2475,7 @@ round, so the conclusion is never committed on `sounding/<name>`
 
 | operation | how Claude Code satisfies it |
 |---|---|
-| command | `claude` in the place, with flume's own Claude Code plugin loaded by `--plugin-dir`, which holds every hook below, `--model` from the settings resolved for it (32), `--permission-mode` with the value the mode they resolve maps to where they give one and nothing where they give none (162, 169), `--settings <file>` where its own settings resolve to any key, the file `own-settings.json` beside the start's record holding them as one JSON object and never a named file as it stands, and nothing where they resolve to none (195), the standing prompt as `--append-system-prompt-file`, naming a file of the start's own beside its record in the place's own folder that holds it as written, which 2.1.296 reads as it reads `--append-system-prompt`'s text though its help does not list it, so no argument holds the newlines a standing prompt holds, which herdr will not type (148, C.5), and `--exclude-dynamic-system-prompt-sections`, which moves what Claude Code's own system prompt holds of one place and host, its working directory, its environment, its memory's paths and the repository's git status, into the first message, so the system prompt ahead of the standing prompt is the same for every agent of one release. Its environment is the host user's login environment with the resolved environment over it, and `FLUME_AGENT`, `FLUME_SECRET`, `FLUME_PLACE` and `FLUME_STAGE`. `FLUME_AGENT` is the identity, `flume:<repository>:<kind>--<name>:<stage>:<n>`, the repository named by an id taken from its common git directory and `<n>` the stage's start. `FLUME_SECRET` is that start's secret. The program's kind, by which a terminal that starts a known agent program names it, is `claude`. A start that carries a conversation adds `--resume <session>`, the session the carry row names (179). The prompt is sent once the started ack has come and the agent waits, or carried as the command's argument under the printed command (C.5) |
+| command | `claude` in the place, with flume's own Claude Code plugin loaded by `--plugin-dir`, which holds every hook below, `--model` from the settings resolved for it (32), `--effort` with the effort they resolve where they give one and nothing where they give none, one of the pinned release's own `low`, `medium`, `high`, `xhigh` and `max`, which the release reads beneath `CLAUDE_CODE_EFFORT_LEVEL` where the agent's environment sets it (197), `--permission-mode` with the value the mode they resolve maps to where they give one and nothing where they give none (162, 169), `--settings <file>` where its own settings resolve to any key, the file `own-settings.json` beside the start's record holding them as one JSON object and never a named file as it stands, and nothing where they resolve to none (195), the standing prompt as `--append-system-prompt-file`, naming a file of the start's own beside its record in the place's own folder that holds it as written, which 2.1.296 reads as it reads `--append-system-prompt`'s text though its help does not list it, so no argument holds the newlines a standing prompt holds, which herdr will not type (148, C.5), and `--exclude-dynamic-system-prompt-sections`, which moves what Claude Code's own system prompt holds of one place and host, its working directory, its environment, its memory's paths and the repository's git status, into the first message, so the system prompt ahead of the standing prompt is the same for every agent of one release. Its environment is the host user's login environment with the resolved environment over it, and `FLUME_AGENT`, `FLUME_SECRET`, `FLUME_PLACE` and `FLUME_STAGE`. `FLUME_AGENT` is the identity, `flume:<repository>:<kind>--<name>:<stage>:<n>`, the repository named by an id taken from its common git directory and `<n>` the stage's start. `FLUME_SECRET` is that start's secret. The program's kind, by which a terminal that starts a known agent program names it, is `claude`. A start that carries a conversation adds `--resume <session>`, the session the carry row names (179). The prompt is sent once the started ack has come and the agent waits, or carried as the command's argument under the printed command (C.5) |
 | started | the plugin's SessionStart hook runs `flume ack started` with `FLUME_AGENT`, `FLUME_SECRET`, the plugin's version, the session's id, its transcript's path and the start's source; the ack is taken only while the secret is that start's, and a plugin version other than the binary's is reported. A start with no ack is starting. A session the terminal brought back with a bare `claude --resume`, which loads no `--plugin-dir` and carries no `FLUME_*`, acks nothing, so it is never the stage's agent (77). Before it acks, the hook compares what the agent runs under with the start's record (161): the program, read as C.5's check of a pane's foreground reads it, and, for each variable the record names, the digest of that variable in the hook's own environment, keyed by `FLUME_SECRET`; and, where the record names the session the start resumes, the hook input's `session_id`. Where any differs it acks nothing and records that the start began without its settings, naming each variable that differs and whether the program or the session did. It then starts `flume settle <place>` in the background, so flume ends that agent and starts the stage afresh. It compares no mode. The pinned 2.1.296 gives a SessionStart hook's input no `permission_mode`, so the received row compares the mode at the start's first prompt. The variables a terminal sets for itself, `PATH` and `SHELL` among them, and the login environment beneath the settings are not in the record. The ack records the transcript's length when it first came, and keeps it at every later SessionStart of the start, a compaction's among them. Every reading of the start's transcript reads only what follows that length. So a start that carries a conversation takes none of its earlier agent's turns, background tasks or last words as its own (179) |
 | received | the plugin's UserPromptSubmit hook runs `flume ack received` with the submitted prompt's digest, the start's secret and the input's `permission_mode`, which Claude Code fires only when it submits the prompt, a prompt queued while the agent worked among them; text typed and never submitted acks nothing. At the start's first prompt, where the start's record names a mode, the ack first compares it with the input's `permission_mode`, which the pinned 2.1.296 gives a UserPromptSubmit hook's input. Where it differs or is missing, the hook answers a block, which 2.1.296 reads as a blocking error, so the prompt takes no turn. It then acks nothing, records that the start began without its settings, with the mode asked and the mode it began in, and starts `flume settle <place>` in the background. flume sends that agent nothing more, ends it once quiet and starts the stage afresh (161). With no ack, the session's transcript holding the prompt as a user turn, or as a queued `enqueue` record, answers received, and a transcript that cannot be read answers unknown |
 | asking | a mark the plugin's hook leaves when the agent opens a question or a plan for a person (PreToolUse on `AskUserQuestion` and `ExitPlanMode`, but never on `ExitPlanMode` in a stage that delivers a plan, which the plan row declines), or Claude Code asks a person's permission (its permission-request or permission-prompt notification hook, where the pinned Claude Code has one), open until the transcript holds the answer, and cleared too at UserPromptSubmit and at SessionStart; the terminal's reading alone never decides it |
@@ -2510,6 +2543,7 @@ on one account within that lifetime of each other (147, 148).
 Claude Code's own settings are the keys of the pinned 2.1.296's
 settings schema (195). Its profile reserves, each with its owner:
 `env`, the account's (144); `model`, flume's model (172);
+`effortLevel`, flume's effort (197);
 `permissions.defaultMode`, flume's mode (162); `apiKeyHelper`,
 `awsAuthRefresh`, `awsCredentialExport`, `gcpAuthRefresh`,
 `otelHeadersHelper`, `forceLoginMethod` and `forceLoginOrgUUID`, the
@@ -2539,11 +2573,13 @@ before the start counts, as C.5 says.
 **The common profile** binds every program flume carries no profile of
 its own for (170), each by its entry: its name; the terminal's kind for
 it, its name where herdr's kinds hold it; the flag that gives it a
-model, where its release has one; its map of flume's modes; and the
+model, where its release has one; the flag that gives it an effort and
+the words it takes, where its release has one; its map of flume's
+modes; and the
 flag that trusts the place, or its folder-trust question and keys,
 where it asks one. Each entry's flags are written here once they are
 checked against the release the entry pins; until then an entry holds
-the name and the kind, refuses a model and a mode, and starts the
+the name and the kind, refuses a model, an effort and a mode, and starts the
 program with neither. Its entries are the 24 kinds herdr 0.9.5's agent
 start takes: pi, claude, codex, gemini, cursor, devin, agy, cline, omp,
 mastracode, opencode, copilot, kimi, kiro, droid, amp, grok, hermes,
@@ -2553,7 +2589,7 @@ later takes its entry's place for the parts it builds.
 
 | operation | how the common profile satisfies it |
 |---|---|
-| command | the program in the place, with its entry's model flag and the setting its entry maps the mode to where the settings give them, and `FLUME_AGENT`, `FLUME_SECRET`, `FLUME_PLACE` and `FLUME_STAGE` as for Claude Code, started through the launcher: `flume ack launched`, which the terminal runs in place of the program, reads the start's record in the place's own folder, compares the digest of each variable it names, keyed by `FLUME_SECRET`, and the program it is to run, records its word with its process id beside the start's record, and execs the program with the command's arguments in its own process; where anything differs it records that, execs nothing and starts `flume settle <place>` in the background (161, 171). The program's kind is its entry's. The terminal sends the prompt once the agent has started and waits; under the printed command it is carried as the argument the entry names, and a program whose entry names none cannot run under the printed command |
+| command | the program in the place, with its entry's model flag, its effort flag and the setting its entry maps the mode to where the settings give them, and `FLUME_AGENT`, `FLUME_SECRET`, `FLUME_PLACE` and `FLUME_STAGE` as for Claude Code, started through the launcher: `flume ack launched`, which the terminal runs in place of the program, reads the start's record in the place's own folder, compares the digest of each variable it names, keyed by `FLUME_SECRET`, and the program it is to run, records its word with its process id beside the start's record, and execs the program with the command's arguments in its own process; where anything differs it records that, execs nothing and starts `flume settle <place>` in the background (161, 171). The program's kind is its entry's. The terminal sends the prompt once the agent has started and waits; under the printed command it is carried as the argument the entry names, and a program whose entry names none cannot run under the printed command |
 | started | the launcher's word that nothing differed, with the terminal's reading that the launcher's process runs the program and is ready for input (171) |
 | received, asking, own-work, ended, last words | the terminal, as 171 reads it |
 | spent, usage | unknown |
@@ -2892,7 +2928,7 @@ lives:
   configuration, by kind, `[kinds.<kind>.agents]`, and by repository
   and kind, `[repos."<repository>".kinds.<kind>.agents]`, the
   repository named by its location on the host as a launch names it;
-  each gives `model`, `mode`, `instructions` and `programs` (C.2), and
+  each gives `model`, `effort`, `mode`, `instructions` and `programs` (C.2), and
   names one stage's by a further `.stages.<stage>` table (32). So do
   three tables that name no stage: `[repos."<repository>".agents]`, for
   every kind run in the repository, `[agents.streams.<stream>]`, for
@@ -3812,6 +3848,16 @@ These are not requirements.
   layer for the repository; every agent in the repository with its
   words, from the repository's layer; and an agent in a repository
   neither names with its account's own (32, 195, C.2, C.7).
+- **S103.** A role's kind declares one stage whose agent runs on a pool
+  of Claude Code accounts, its `[kinds.<kind>.agents]` giving
+  `effort = "xhigh"`. One launch gives no effort, and its agent starts
+  with `--effort xhigh`, status naming it from the kind. Another gives
+  `--agent effort=max`, and its agent starts with `--effort max` from
+  the launch. A third gives `--agent effort=med`, which Claude Code's
+  profile does not take, and is refused naming `med`, `claude`, the
+  stage and the launch, before anything is made. A host with no effort
+  in any layer starts its agents with none, at what each account's own
+  configuration gives (4, 32, 197, C.4).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

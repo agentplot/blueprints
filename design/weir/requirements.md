@@ -843,6 +843,7 @@ lands = true              # whether the work is submitted after the last stage
 [kinds.bump.agents]       # settings for every stage's agents; a stage's own come first (52)
 model = "sonnet"
 mode = "edits"            # how far the agent may act without asking, one word or a table of programs, as `{ claude = "auto" }`; the reader's to check
+effort = "high"           # how hard the agent's model works on each turn, its program's own word or a table of programs; the reader's to check
 programs = { claude = { file = "claude-bump.json", settings = { tui = "fullscreen" } } }   # each program's own settings, a file beside the declaration and keys in the program's own words; the reader's to check
 
 [kinds.fix.agents]        # settings for a kind of that name declared elsewhere, a tool's own fix among them (57)
