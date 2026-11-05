@@ -69,7 +69,9 @@ redefine these.
 - **conflict**: a candidate that cannot be formed because its entry and
   the candidate before it change the same content incompatibly.
 - **check**: a task run to judge a revision, ending in a pass, a
-  fail, or no outcome when the run did not judge it (60, 114).
+  fail, or no outcome when the run did not judge it (60, 114). A check
+  its runner skipped for a task it depends on that failed ends in that
+  task's fail (149).
 - **gate**: for a branch, the checks it requires, the signers it
   trusts, the systems each check needs, and how a flaky key reads.
 - **key**: the identity of one check over the inputs it reads and the
@@ -328,7 +330,8 @@ redefine these.
     again.
 16. Every check run on a candidate is recorded with its key, its
     outcome, pass and fail alike, and its executor, before the verdict
-    is read. A result a tool answered from an earlier run is not a run
+    is read. So is the run of a task that failed a required check
+    (149). A result a tool answered from an earlier run is not a run
     and is never recorded as one.
 108. A result a tool answered from an earlier run counts for a gate only
      when a signer the gate trusts has signed a pass for the same key on
@@ -357,6 +360,29 @@ redefine these.
      pass. A run with no refusal reported is read as before; an executor
      that could not read its own report says so with the run, which is
      then read as one with no refusal.
+149. Where a task a required check depends on, at any depth of the
+     runner's own graph, ran and failed, and the runner skipped the
+     check for it, that task fails the check. The check is never read
+     as left without a result. The task's run is recorded under the
+     task's own key, with its outcome and its executor, before the
+     verdict is read (16). The check's failure is read under that key
+     alone: for a flake with the task's other results under the same
+     limits and grant (19, 138), and through the signer that signed it
+     (78). It is never read under the check's own key, which no run
+     gave it. The culprit's session is told the task, its key and what
+     it printed, and the check it failed (20). Where every task that
+     failed the check reads passed under its key, as a flaky key may
+     (19), nothing judged the check, and it is run again (114). A task
+     the runner allows to fail, or runs after the check to clean up,
+     fails no check. A task the check depends on that could not run
+     leaves the check with no outcome, for the task's cause (114). In a
+     run whose executor refused it something (139), or after which a
+     requirement the policy asks has left the host (84), neither the
+     task nor the check has an outcome. A required check its runner
+     skipped for any other reason is left without a result, and is no
+     pass (15). A task is recorded so only where it failed a check: its
+     passes are recorded only where it is itself a required check
+     (sluice record 0084, proposed).
 17. A failed candidate is attributed to exactly one entry: the newest
     entry of the first failed candidate in its chain.
 18. No entry is attributed or landed before every candidate ahead of it
@@ -1272,7 +1298,7 @@ Parts A and B do not change to admit a profile.
 
 | profile | affected | run |
 |---|---|---|
-| **moon**: the repository's task runner with declared inputs and a content-keyed cache | moon's affected projects between the branch's revision and the candidate, downstream dependents included | equipped first (147), by `proto install --config-mode upwards` where the working copy holds a `.prototools`, `moon --version`, refused below 2.6, and `moon setup`, under the toolchain's environment and outside the executor; then moon's run of the affected check tasks in the place; the run report gives each task's outcome and whether it was replayed, the run record gives its hash and its exit code, the hash with the executor's grant being the key (138); a task whose exit the policy's `not_run` names has no outcome (114); run in moon's CI mode, so a task the repository keeps out of CI is not run and its check is missing; each task's duration and attempts, and the run's duration and moon's estimate of the time it saved, recorded with the run (119); a key is proven to have run by moon's own manifest of it, read where moon keeps it, in the checkout or in the shared store moon's own settings place it, as moon resolves them from the run's environment, never from where the host's cache table says (35) |
+| **moon**: the repository's task runner with declared inputs and a content-keyed cache | moon's affected projects between the branch's revision and the candidate, downstream dependents included | equipped first (147), by `proto install --config-mode upwards` where the working copy holds a `.prototools`, `moon --version`, refused below 2.6, and `moon setup`, under the toolchain's environment and outside the executor; then moon's run of the affected check tasks in the place; the run report gives each task's outcome and whether it was replayed, the run record gives its hash and its exit code, the hash with the executor's grant being the key (138); a task whose exit the policy's `not_run` names has no outcome (114); each required task's dependencies at any depth, its `cleanup` ones left out, read from `moon query tasks` as the run is planned, since the run report names no edge, and a required task moon skipped read through them: failed by each that failed, not allowed to, with an exit `not_run` does not name, whose result the same report gives and which is recorded under its own hash (149), with no outcome where one could not run (114), missing otherwise; run in moon's CI mode, so a task the repository keeps out of CI is not run and its check is missing; each task's duration and attempts, and the run's duration and moon's estimate of the time it saved, recorded with the run (119); a key is proven to have run by moon's own manifest of it, read where moon keeps it, in the checkout or in the shared store moon's own settings place it, as moon resolves them from the run's environment, never from where the host's cache table says (35) |
 | **script**: one command with an exit code | every check, always | the command's exit code, never a replay; an exit `not_run` names has no outcome (114) |
 
 | executor profile | execute | enforces |
@@ -1752,6 +1778,18 @@ section asked is answered by a clause.
   fixed: a day after its last refused write the command is shown no
   more, and the log gains its end with its count (124, 132, 148; record
   0082, proposed).
+- **S74.** `main` requires `root:integration`, a task that runs nothing
+  of its own and depends on `api:integration`. A candidate's run fails
+  two of `api:integration`'s tests, and moon skips `root:integration`.
+  The candidate fails and its newest entry is blamed. Its session is
+  told that `api:integration` failed, with its key and what it printed,
+  and that `root:integration` failed by it. The results hold
+  `api:integration`'s fail under its key and nothing under
+  `root:integration`'s, and a tool that reads the entry's record finds a
+  check that ran and failed. On another candidate `api:integration`
+  exits with a code the policy's `not_run` names: `root:integration`
+  has no outcome, nobody is blamed, and the candidate is tested again
+  (15, 16, 20, 114, 149; record 0084, proposed).
 - **S75.** A host's bound is two, none kept for candidates. Two agents'
   checks hold both runs and a third agent's waits for one. A
   combination falls due on main, and its round finds no room. The
