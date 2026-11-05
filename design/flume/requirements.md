@@ -1483,7 +1483,8 @@ redefine these.
 
 56. For every place on its host, status gives the place's repository,
     kind with its version and the declaration it came from, its name,
-    branch, base and mark, and whether its kind lands; each stage's
+    branch, base with where its revision was read (C.1) and mark, and
+    whether its kind lands; each stage's
     state, how it ended, and how many times it started; the current
     stage's agent, with its identity, its stream and its account each
     with where it came from (143, 145), its settings each with where it
@@ -2011,8 +2012,10 @@ redefine these.
 126. **base**: given a repository and a base branch, the revision the
      base stands at where the merge queue's profile says the base lives,
      after the fetch that profile asks (9, C.1), or why it cannot be
-     read; a repository with no merge queue bound answers the local
-     branch.
+     read, or that the merge queue lands no such base. A base no merge
+     queue lands, as in a repository with no merge queue bound, is read
+     at origin as C.1 says, and at the local branch only where origin
+     holds none.
 
 ### B.7 The store
 
@@ -2097,12 +2100,23 @@ executor, and flume runs no `wt submit` (record 0012), so nothing of a
 place needs one (record 0014; sluice record 0013 for its own places). A
 repository whose `[profiles]` names `place = "worktrunk"` is refused at
 the launch, naming the one profile. A place's branch is `<prefix>/<name>`, the prefix
-its kind's. The base's current revision (9) is where the merge queue's
-profile says the base lives: under sluice, `origin/<base>` after one
-fetch when `.config/sluice.toml` lands the base on a remote, and the
-local `<base>` otherwise. With no merge queue bound, it is the local
-`<base>`. A fetch that fails refuses the launch (9). A name is refused
-when `git check-ref-format` refuses the branch it gives.
+its kind's. Where a merge queue lands the base, the base's current
+revision (9) is where the merge queue's profile says the base lives.
+Under sluice, that is `<remote>/<base>` after one fetch when
+`.config/sluice.toml` lands the base on a remote, and the local
+`<base>` when it lands the base there (C.6). Where no merge queue is
+bound, or its profile lands no such base, it is `origin/<base>` after
+flume's own fetch, `git fetch origin
++refs/heads/<base>:refs/remotes/origin/<base>`, read at
+`refs/remotes/origin/<base>`. The local `<base>` is read only where the
+repository has no remote `origin`, or where origin holds no such
+branch: that fetch fails, and `git ls-remote --exit-code origin
+refs/heads/<base>` exits 2. Status says which (56). Where origin holds the
+base, the host's own `<base>` is a copy that may lag it: sluice levels
+it only where it lands the branch on a remote (sluice 124), and nothing
+else on the host moves it (the runner's record 0019). Any other fetch
+that fails refuses the launch (9). A name is refused when `git
+check-ref-format` refuses the branch it gives.
 
 ### C.2 The kinds and the binding
 
@@ -2572,7 +2586,7 @@ stripped and `GIT_TERMINAL_PROMPT=0`, a refusal read as its JSON
 | inbox | `sluice inbox --json` answers `outcomes[]`, each with `state`: `landed` with its commit in `landed_as`; `failed`; `conflict` with the files contested in `conflict.paths`. Each one's words are its `notice`, or where it holds none its `state`, `branch` and the `task` of each of its `failed[]`. A failure's notice names the check that failed, not its log. A conflict's base revision is `tested.on` (`tested: {combination, on, submissions}`), never parsed from the notice; a conflict found while the candidate was formed, before any test, carries no `tested`, and its base is then the base's revision where the profile holds it, `<remote>/<base>` or the local base, read with no fetch |
 | read-submission | `sluice overview --json`, each of its `branches[].branch`, then `sluice status <branch> --all --json`, its `submissions[]`: the one with the highest `id` whose `from.worktree` is the place's branch, its `state` `queued` as waiting, `testing` as under test, `landed` (with `landed_as`), `failed`, `conflict` or `withdrawn`; any other state is read as not understood. Its `submitted` is when it was submitted; when it was decided and how long its checks ran are read from sluice's records of the entry and its runs where the pinned sluice gives them, checked against it at the build, and unknown where it does not (168) |
 | step | `sluice step <base> --json`, run in the repository |
-| base | the remote is the `remote` of the base's table under `[branches]` in `.config/sluice.toml`, the base's own or the first pattern with one `*` that names it, read at the local base and else at each remote's tracking copy; where it names one, `git fetch <remote> +refs/heads/<base>:refs/remotes/<remote>/<base>` once, the base at `refs/remotes/<remote>/<base>` |
+| base | the remote is the `remote` of the base's table under `[branches]` in `.config/sluice.toml`, the base's own or the first pattern with one `*` that names it, read at the local base and else at each remote's tracking copy; where it names one, `git fetch <remote> +refs/heads/<base>:refs/remotes/<remote>/<base>` once, the base at `refs/remotes/<remote>/<base>`; where the base's table names none, the local base; and where the policy names no table for the base, or no revision of it holds a policy, sluice lands no such base, and base says so (126) |
 | place | `sluice equip <base> --at <revision> --json` in the place as its readiness, its `steps[]` each `{step, passed, words}`, exiting 1 where one failed; an answer with no `steps` read as one failed step, `sluice equip`, with its `error.message`; and `sluice release` as its teardown, handed to the place profile through the binding |
 
 sluice keeps its host state under `$XDG_STATE_HOME/sluice`, and once a
@@ -3574,6 +3588,17 @@ These are not requirements.
   came from. A stream naming `rex`, for which flume carries no profile,
   refuses its launches and its views naming `rex`, while every other
   stream runs (4, 119, 143, 186, 190).
+- **S92.** A repository on a host binds no merge queue, and its remote
+  `origin` holds `main` two commits past the host's own `main`, which
+  nothing on the host moves. A fix is launched on `main`. flume fetches
+  `main` from origin and cuts the place at origin's, and status says
+  the base was read at origin. A second fix is launched on `trial`, a
+  branch the host holds and origin does not: its place is cut at the
+  host's own `trial`, and status says origin holds no `trial`. With
+  origin out of reach, a third launch on `main` is refused naming the
+  fetch, and nothing is made. In a repository whose sluice lands `main`
+  on origin, the place is cut where sluice's profile says, as before
+  (9, 56, 126, C.1, C.6).
 - **S95.** The host's source acme holds review@1 and review@2, both in
   the host's lock. A launch of `acme/review` runs review@2. A program
   renames over `acme.toml` a file naming a directory that holds
