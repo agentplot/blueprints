@@ -948,8 +948,8 @@ redefine these.
 ### B.1 The place
 
 33. **materialize**: given a revision, a place holding exactly that
-    revision, with the environment the repository declares and the
-    ports its policy names (31).
+    revision, equipped (147; flume record 0036, accepted 2026-11-05)
+    and the ports its policy names (31).
 34. **release**: given a place sluice made, its removal, with everything
     started in it ended, what its checks handed to another process to
     keep included (25, 32).
@@ -978,6 +978,22 @@ redefine these.
     repository's places made there, is an abandoned place's (123); a record that exists and cannot be read names its
     scratch still: nothing of that place is removed, and the record is
     reported with the reader's words (26).
+147. **equip**: given a working copy and a revision of a branch, the
+     working copy made ready for the branch's runner as every place
+     sluice runs in is made ready. First the toolchain the branch's
+     policy at that revision names is run in the working copy, and its
+     environment is kept for the steps after it. Then come the runner's
+     install of the tools the working copy pins, its check of its own
+     version, and its setup. Each step runs outside the executor, with
+     an environment cleared as a run's is. Each step's outcome and words
+     are given, stopping at the first that fails. Every working copy
+     sluice runs anything in is equipped this way: a candidate's, a
+     session's, a preview's, and a submitter's, which last is read
+     before any setup. So is a working copy sluice did not make, at its
+     caller's asking, which sluice adopts no further: it holds no ports,
+     writes no record and counts against no bound. What a check needs
+     beyond its tools, it brings up itself (31, 84; flume record 0036,
+     accepted 2026-11-05).
 
 ### B.2 The check
 
@@ -1006,7 +1022,11 @@ redefine these.
     reading of the host, never by a probe of sluice's or the
     repository's, whose answer would be read as the host's or the
     candidate's only by inference (record 0066 as amended 2026-10-30 on
-    the user's words). What a run needs from the host, its system, its
+    the user's words). What equips a place is the runner's own (147):
+    the toolchain the policy names, then the runner's install and
+    setup. It is never a command the repository writes, and never a
+    probe (flume record 0036, accepted 2026-11-05). What a run needs
+    from the host, its system, its
     limits, a container engine the policy asks for, is a requirement the
     executor reads from the host itself: an executor that finds no
     engine the run could reach, at the sockets it would open for it
@@ -1139,14 +1159,14 @@ Parts A and B do not change to admit a profile.
 
 | profile | materialize | release |
 |---|---|---|
-| **git worktree**: a detached worktree, nothing run in it | `git worktree add --detach` at the candidate; a block of ports held for the place on the host, each checked free | the checks' process group ended; the policy's release command run in the place under the checks' executor, removing what the checks handed to another process, a container engine's containers above all; `git worktree remove`; the ports let go |
+| **git worktree**: a detached worktree, no hook run in it, equipped before its checks (147) | `git worktree add --detach` at the candidate; a block of ports held for the place on the host, each checked free | the checks' process group ended; the policy's release command run in the place under the checks' executor, removing what the checks handed to another process, a container engine's containers above all; `git worktree remove`; the ports let go |
 | **container**: a clean checkout of the candidate in a container on the executing host | the candidate fetched into the host's mirror of the repository; a detached worktree of it under the sluice user's scratch; a container from the image the repository's policy names, read from the branch's revision (56), with the worktree as its checkout, the mirror read-only, a scratch directory, `SLUICE_CHECKOUT` and `SLUICE_TMP`, and nothing of any session mounted; the run as the container's one process under the branch's time limit (66) | the run's records and the failing checks' output written first (16), then the container stopped and removed with everything started in it, and the worktree removed |
 
 ### C.2 The check
 
 | profile | affected | run |
 |---|---|---|
-| **moon**: the repository's task runner with declared inputs and a content-keyed cache | moon's affected projects between the branch's revision and the candidate, downstream dependents included | moon's run of the affected check tasks in the place; the run report gives each task's outcome and whether it was replayed, the run record gives its hash and its exit code, the hash with the executor's grant being the key (138); a task whose exit the policy's `not_run` names has no outcome (114); run in moon's CI mode, so a task the repository keeps out of CI is not run and its check is missing; each task's duration and attempts, and the run's duration and moon's estimate of the time it saved, recorded with the run (119); a key is proven to have run by moon's own manifest of it, read where moon keeps it, in the checkout or in the shared store moon's own settings place it, as moon resolves them from the run's environment, never from where the host's cache table says (35) |
+| **moon**: the repository's task runner with declared inputs and a content-keyed cache | moon's affected projects between the branch's revision and the candidate, downstream dependents included | equipped first (147), by `proto install --config-mode upwards` where the working copy holds a `.prototools`, `moon --version`, refused below 2.6, and `moon setup`, under the toolchain's environment and outside the executor; then moon's run of the affected check tasks in the place; the run report gives each task's outcome and whether it was replayed, the run record gives its hash and its exit code, the hash with the executor's grant being the key (138); a task whose exit the policy's `not_run` names has no outcome (114); run in moon's CI mode, so a task the repository keeps out of CI is not run and its check is missing; each task's duration and attempts, and the run's duration and moon's estimate of the time it saved, recorded with the run (119); a key is proven to have run by moon's own manifest of it, read where moon keeps it, in the checkout or in the shared store moon's own settings place it, as moon resolves them from the run's environment, never from where the host's cache table says (35) |
 | **script**: one command with an exit code | every check, always | the command's exit code, never a replay; an exit `not_run` names has no outcome (114) |
 
 | executor profile | execute | enforces |
@@ -1346,8 +1366,8 @@ The rest of the stack, which a model builds on unless it says why not:
 
 - The task runner that declares inputs and caches by content is moon,
   with its cache shared by every place on a host.
-- Places are managed by worktrunk, which runs a repository's hooks and
-  tethers processes to a place.
+- Places are plain git worktrees with no hook run (record 0013);
+  worktrunk drives sessions alone (C.5).
 - The drivers are crew and Boomdrive; the forge is GitHub.
 - Records are plain JSON, kept on one host under the repository's
   common git directory until several hosts submit to one branch.
@@ -1603,6 +1623,14 @@ section asked is answered by a clause.
   submission under test also edits: it waits behind that submission,
   saying so, and lands after it (140; record 0075, accepted
   2026-10-30).
+- **S72.** A repository is cloned on a host for the first time, its
+  `.prototools` pinning a moon nothing has installed. In a session's
+  worktree, `sluice exec main -- moon run app:test` installs the pins
+  and runs moon's setup before the command. `sluice preview main
+  <revision>` does the same before its command, and a caller's `sluice
+  equip main` in a worktree sluice did not make does the same and
+  adopts nothing, each as a candidate's run is equipped (147; flume
+  record 0036, accepted 2026-11-05).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

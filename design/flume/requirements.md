@@ -168,8 +168,9 @@ redefine these.
 - **live**: of a place, made and not yet removed; of an agent, started
   and not yet stopped.
 - **current stage**: of a place, the stage it most recently started.
-- **readiness**: the steps a repository declares a worktree needs
-  before work starts in it.
+- **readiness**: the steps that equip a worktree for work before work
+  starts in it: the tools its repository declares, installed and set up
+  as its merge queue equips the working copies of its own runs.
 - **teardown**: the steps a repository declares removing a worktree
   must run, to take away what was stood up for it.
 - **change**: a written plan of one piece of work in a repository: what
@@ -421,12 +422,14 @@ redefine these.
    launch that cannot read that revision is refused, naming why.
 10. No place checks out its base or any branch the merge queue lands
     on, and no two live places share a branch.
-11. flume makes a place ready only by its repository's readiness, read
-    from the base's revision (20) and run in the place with an
-    environment that carries nothing of the caller's session. A
-    repository that declares no readiness has nothing run. flume names
-    no repository's script, assumes no tool, and requires no version of
-    any.
+11. flume makes a place ready only by its merge queue's equipping of
+    it, the steps the merge queue runs to equip the working copies of
+    its own runs, asked at the revision the launch read (20) and run in
+    the place with an environment that carries nothing of the caller's
+    session. A repository that binds no merge queue has nothing run.
+    flume names no repository's script, runs no readiness step of its
+    own, assumes no tool, and requires no version of any (record 0036,
+    accepted 2026-11-05).
 12. When a place's readiness fails, its first stage waits and status
     names the step that failed and its words, unless the kind starts its
     first stage in a place that could not be made ready. Then the stage
@@ -458,11 +461,14 @@ redefine these.
     source's, and among a source's versions to the one 154 gives. Status
     names the identity of the kind each place runs, and for a kind a lock
     records, the hash of its content (155).
-20. A repository's kinds, its lock (155) and its readiness are read
-    from its base's revision at the launch. Its binding (105) is read
-    from its default branch's current revision: the remote's, after one
-    fetch, where the repository has a remote, and its own otherwise.
-    None is read from a place's tree or from a change not committed.
+20. A repository's kinds, its lock (155) and the revision its readiness
+    is asked at are read from its base's revision at the launch. Its
+    binding (105) is read from its default branch's current revision:
+    the remote's, after one fetch, where the repository has a remote,
+    and its own otherwise. None is read from a place's tree or from a
+    change not committed; what a readiness step installs is what the
+    place it runs in holds, which at the launch is that revision (record
+    0036, accepted 2026-11-05).
 21. A place runs its kind, and keeps its repository's binding, as each
     resolved at its launch: the kind's identity and its content as read
     then. A later change to any declaration, lock or package the host
@@ -1712,10 +1718,11 @@ redefine these.
 78. **make**: given a repository, a revision, a branch name and a
     location, a worktree there on a new branch at that revision; or a
     refusal because the branch or the location already exists (3, 9).
-79. **ready**: given a place, each step its repository's readiness
-    declares, run in the place in order with an environment that carries
-    nothing of the caller's, each with its outcome and its words,
-    stopping at the first that fails (11, 12).
+79. **ready**: given a place and the revision its launch read, each
+    step its merge queue equips it with at that revision, run in the
+    place in order with an environment that carries nothing of the
+    caller's, each with its outcome and its words, stopping at the first
+    that fails (11, 12; record 0036, accepted 2026-11-05).
 80. **read**: given a place, its branch, its head, and whether it holds
     a change not committed, a file neither committed nor ignored, or a
     lock (65).
@@ -1979,15 +1986,14 @@ core needs none of them.
 
 | profile | make | ready | read | remove / remove-branch |
 |---|---|---|---|---|
-| **git worktree**: every repository; the one place profile | `git worktree add -b <branch> <location> <revision>`, at `$XDG_DATA_HOME/flume/places/<id>/<kind>--<name>`, under flume's own data directory and inside no working tree, `<id>` the repository's (record 0027); a place made before at `<repository>/places/<kind>--<name>` read and tidied where it stands; with no hook run | the toolchain, then the runner's setup, that the repository declares in `.config/sluice.toml`, run in the place in sluice's cleaned environment, as sluice readies its own places | `git status --porcelain=v2`; `git worktree list --porcelain` for a lock | `git worktree remove`, with no teardown but sluice's release where sluice is the merge queue (C.6); the branch by `git cherry <base> <branch>`, deleted with `git branch -D` when no line starts with `+` |
+| **git worktree**: every repository; the one place profile | `git worktree add -b <branch> <location> <revision>`, at `$XDG_DATA_HOME/flume/places/<id>/<kind>--<name>`, under flume's own data directory and inside no working tree, `<id>` the repository's (record 0027); a place made before at `<repository>/places/<kind>--<name>` read and tidied where it stands; with no hook run | where sluice is the merge queue, `sluice equip <base> --at <revision> --json` run in the place in the host user's login environment, the revision the launch read, each of its `steps[]` one step of the readiness with its outcome and words (C.6); nothing where no merge queue is bound | `git status --porcelain=v2`; `git worktree list --porcelain` for a lock | `git worktree remove`, with no teardown but sluice's release where sluice is the merge queue (C.6); the branch by `git cherry <base> <branch>`, deleted with `git branch -D` when no line starts with `+` |
 
 There is no worktrunk place profile: a worktree tool's create hooks run
 a place's code with the host user's full permissions, outside any
 executor, and flume runs no `wt submit` (record 0012), so nothing of a
 place needs one (record 0014; sluice record 0013 for its own places). A
 repository whose `[profiles]` names `place = "worktrunk"` is refused at
-the launch, naming the one profile. What the toolchain step makes is kept in the place's own
-git directory (C.7). A place's branch is `<prefix>/<name>`, the prefix
+the launch, naming the one profile. A place's branch is `<prefix>/<name>`, the prefix
 its kind's. The base's current revision (9) is where the merge queue's
 profile says the base lives: under sluice, `origin/<base>` after one
 fetch when `.config/sluice.toml` lands the base on a remote, and the
@@ -2014,7 +2020,7 @@ profile. flume reads no other tool's files to choose one.
 ```toml
 [profiles]
 place = "git-worktree"    # the one place profile (C.1); git-worktree when omitted
-merge_queue = "sluice"    # reads .config/sluice.toml for where the base lives (C.1); none when omitted, and a kind that lands is refused (4)
+merge_queue = "sluice"    # reads .config/sluice.toml for where the base lives, and has sluice equip and release each place (C.1, C.6); none when omitted, and a kind that lands is refused (4)
 change = "openspec"       # (C.3); none when omitted, and a kind that reads a change is refused (4)
 
 [prompt]
@@ -2429,8 +2435,10 @@ flume removes a place itself, landed, dropped or done, it first runs
 the repository's `[tests] release`, which ends what the place's runs
 left up, and frees the ports it holds for the place; it says `nothing to
 release` when it holds none. A release that fails keeps the place, named
-with that step (66). Readiness and where the base lives
-(C.1) are read from the same `.config/sluice.toml`.
+with that step (66). Where the base lives (C.1) is read from the same
+`.config/sluice.toml`. A place's readiness is sluice's equipping of it,
+`sluice equip`, which reads that policy at the revision flume names and
+runs in the place what sluice runs before its own runs (sluice 147).
 
 What the profile reads of sluice 0.55.0, each command run with every
 multiplexer's session (`HERDR_*`, `ZELLIJ*`, `TMUX`, `TMUX_PANE`)
@@ -2444,7 +2452,7 @@ stripped and `GIT_TERMINAL_PROMPT=0`, a refusal read as its JSON
 | read-submission | `sluice overview --json`, each of its `branches[].branch`, then `sluice status <branch> --all --json`, its `submissions[]`: the one with the highest `id` whose `from.worktree` is the place's branch, its `state` `queued` as waiting, `testing` as under test, `landed` (with `landed_as`), `failed`, `conflict` or `withdrawn`; any other state is read as not understood. Its `submitted` is when it was submitted; when it was decided and how long its checks ran are read from sluice's records of the entry and its runs where the pinned sluice gives them, checked against it at the build, and unknown where it does not (168) |
 | step | `sluice step <base> --json`, run in the repository |
 | base | the remote is the `remote` of the base's table under `[branches]` in `.config/sluice.toml`, the base's own or the first pattern with one `*` that names it, read at the local base and else at each remote's tracking copy; where it names one, `git fetch <remote> +refs/heads/<base>:refs/remotes/<remote>/<base>` once, the base at `refs/remotes/<remote>/<base>` |
-| place | from the same policy, `[tests] toolchain` as the place's toolchain, `moon setup` where `[tests] runner` is `moon`, and `sluice release` as its teardown, handed to the place profile through the binding |
+| place | `sluice equip <base> --at <revision> --json` in the place as its readiness, its `steps[]` each `{step, passed, words}`, exiting 1 where one failed; an answer with no `steps` read as one failed step, `sluice equip`, with its `error.message`; and `sluice release` as its teardown, handed to the place profile through the binding |
 
 sluice keeps its host state under `$XDG_STATE_HOME/sluice`, and once a
 branch has had a submission its protect hook refuses a commit made to
@@ -2596,9 +2604,9 @@ lives:
   and never writes them. The host's lock is
   `$XDG_CONFIG_HOME/flume/flume.lock`, of the host's configuration
   (155, C.2).
-- What readiness makes for a place, its toolchain among it, is kept in
-  the place's own git directory, `git rev-parse --git-dir` in the
-  place, and goes with the worktree.
+- flume keeps nothing that a place's readiness makes: what sluice's
+  equipping installs goes where the repository's own tools put it,
+  under homes the repository sets.
 - A deliverable a later reader needs is committed with the work on the
   place's branch, never kept only on the host. The change kind's verify
   report is in the change's directory (22), and any other such report
@@ -3327,6 +3335,13 @@ These are not requirements.
   start; a managed `[streams.work.labels.operation]` naming a `pool`
   refuses the start naming the key, since seats are the stream's (180
   to 182, C.7).
+- **S89.** A repository is cloned on a host for the first time, its
+  `.prototools` pinning a moon nothing on the host has installed, and
+  its toolchain activating the pins and installing none. A change is
+  launched there. Its place's readiness, sluice's equipping of it,
+  installs what the place pins, checks moon's version and runs moon's
+  setup, each step named in status as it passes, and construct starts
+  (11, 12, 20, 79, C.1, C.6; record 0036, accepted 2026-11-05).
 - **S90.** A host whose terminal is herdr names Ghostty as its window
   and declares the stream `work` with the title `Work Herdr`. A person
   asks flume to open `work` before any of its places has opened an
