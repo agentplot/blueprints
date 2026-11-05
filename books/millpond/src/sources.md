@@ -22,7 +22,7 @@ A file dropped in a watched folder is one capture. That covers a
 meeting transcript downloaded by hand, an email saved as `.eml`, or a
 PDF.
 
-- **The adapter** is Flywheel's folder adapter (215):
+- **The adapter** is Boomdrive's folder adapter (215):
   `millpond capture folder <dir>` prints contract lines.
 - **The key** is `folder/<folder name>/<sha256 of the file>`, so a file
   dropped twice, or under another name, is one capture (111).
@@ -36,7 +36,7 @@ Until then the folder takes them.
 
 ## The meeting file
 
-`millpond capture meeting` is Flywheel's meeting transcript adapter
+`millpond capture meeting` is Boomdrive's meeting transcript adapter
 (215), built into millpond from the same crate. It carries no excerpt,
 so a reader reads what it captures, as for any meeting.
 
@@ -52,7 +52,7 @@ what it imports.
 headwater reports every release newer than each pin a repository
 declares, with its notes and advisories. Its book,
 [../headwater/](../headwater/), holds the design. millpond sees it
-through its Flywheel plugin's adapter part, `headwater capture`, which
+through its Boomdrive plugin's adapter part, `headwater capture`, which
 prints a capture for every release newer than its pin on each run:
 
 - `source` is `release`, and `event_at` is when the release was
@@ -79,7 +79,7 @@ plan.
 Listing meetings is arithmetic and reading them is judgment, so a
 program lists them and a session reads them (115). eddy lists and
 fetches meetings across services. Its book, [../eddy/](../eddy/), holds
-the design. Its Flywheel plugin holds one adapter part per meeting
+the design. Its Boomdrive plugin holds one adapter part per meeting
 service. Each part lists recorded meetings since its cursor, keys a
 meeting by its service and the meeting's own id, writes the transcript
 as raw, and carries no excerpt. `event_at` is when the meeting started
@@ -113,5 +113,5 @@ capture. [sounding's book](../sounding/) holds the rest.
   through `crew signal`, which writes through millpond.
 - **swancloud's deployer** pipes a failed step's capture to
   `millpond land`, with the step's last lines as its excerpt.
-- **Flywheel's** page capture box and chat forwards arrive when
-  Flywheel hosts the inbox.
+- **Boomdrive's** page capture box and chat forwards arrive when
+  Boomdrive hosts the inbox.

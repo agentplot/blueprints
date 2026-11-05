@@ -45,7 +45,7 @@ chapter describes it.
 <line x1="380" y1="216" x2="380" y2="232" class="ar" marker-end="url(#fp-h)"/>
 <rect x="12" y="236" width="736" height="50" rx="9" class="bx-soft"/>
 <text x="26" y="257" class="tm">flywheel-next's capture crate</text>
-<text x="26" y="275" class="ts">the contract's types and key rules, JSON in flight, used by millpond, Flywheel, headwater and eddy</text>
+<text x="26" y="275" class="ts">the contract's types and key rules, JSON in flight, used by millpond, Boomdrive, headwater and eddy</text>
 </svg>
 </div>
 <figcaption>A part's own code is listing and fetching from its service. What every meeting part shares is written once in eddy, and the contract's types and key rules once in flywheel-next's capture crate. Adding a service adds one box to the top row.</figcaption>
@@ -79,7 +79,7 @@ host's only job is to hand the part what the plugin declared:
 
 - **On millpond** the user signs in once per host, and the part keeps
   the sign-in from then on.
-- **On Flywheel** the host places the secrets the plugin declares
+- **On Boomdrive** the host places the secrets the plugin declares
   (228).
 
 Either host starts the part with each declared secret in its

@@ -818,7 +818,7 @@ A sounding hands a finding beyond its inputs to `millpond land` with
 | setup | standing |
 |---|---|
 | on its own, or with crew | no claims: every challenge is refused (39) |
-| with Flywheel | Flywheel's claims |
+| with Boomdrive | Boomdrive's claims |
 
 ### C.11 Imports
 
@@ -826,7 +826,7 @@ A sounding hands a finding beyond its inputs to `millpond land` with
 
 | body | how it is read |
 |---|---|
-| **crew's folders** | each partition's flywheel branch: a `capture.md` and one `NN-<slug>.md` per signal; a `new-territory` move is a join into a proposed item named for its target (63). A release capture keeps the key it landed under, `release/<name>/<version>`; every other capture takes its folder's name (61). A capture keeps the pointer crew gave its raw record (119) |
+| **crew's folders** | each partition's drive branch: a `capture.md` and one `NN-<slug>.md` per signal; a `new-territory` move is a join into a proposed item named for its target (63). A release capture keeps the key it landed under, `release/<name>/<version>`; every other capture takes its folder's name (61). A capture keeps the pointer crew gave its raw record (119) |
 | **a meeting corpus** | the meetings already read in a partition's blueprints repository |
 
 ### C.12 Adapters and callers
@@ -835,8 +835,8 @@ A sounding hands a finding beyond its inputs to `millpond land` with
 |---|---|
 | **the folder drop**, built in: `millpond capture folder <dir>` | one capture per file; key `folder/<folder name>/<sha256 of the file>`; event time the date the file's name begins with, or else its last write; source `folder`; no excerpt |
 | **the meeting file**, built in: `millpond capture meeting` | one capture per meeting file; no excerpt |
-| **headwater**: `headwater capture`, the adapter in its Flywheel plugin | one capture per release newer than its pin; source `release`; key `release/<name>/<version>` for a watch-list entry, else `release/<type>/<namespace>/<name>/<version>` from its Package URL; raw the notes whole and what the lookup answered; an own excerpt of the notes, kind `ask`, asserted by the upstream |
-| **eddy**: an adapter per meeting service, in its Flywheel plugin | one capture per recorded meeting; key `meeting/<service>/<meeting id>`; event time the meeting's start; raw the transcript as served and a plain copy; no excerpt |
+| **headwater**: `headwater capture`, the adapter in its Boomdrive plugin | one capture per release newer than its pin; source `release`; key `release/<name>/<version>` for a watch-list entry, else `release/<type>/<namespace>/<name>/<version>` from its Package URL; raw the notes whole and what the lookup answered; an own excerpt of the notes, kind `ask`, asserted by the upstream |
+| **eddy**: an adapter per meeting service, in its Boomdrive plugin | one capture per recorded meeting; key `meeting/<service>/<meeting id>`; event time the meeting's start; raw the transcript as served and a plain copy; no excerpt |
 | **crew**: `crew signal`, through `millpond land` | agents' and the operator's findings |
 | **a deployer**, through `millpond land` | a failed step, its last lines the own excerpt |
 
@@ -849,13 +849,13 @@ formats:
 |---|---|---|---|---|
 | on its own | a branch of the user's own repository | a Claude session through millpond's tools | each batch of moves | flume and sounding, by millpond's sends |
 | with crew | the partition's branch in crew's state repository, beside crew's plan | crew's curator, through the same tools | each item, on crew's rail | crew's planner |
-| with Flywheel | the branch Flywheel keeps it on | Flywheel's curation session | each proposed intent | Flywheel |
+| with Boomdrive | the branch Boomdrive keeps it on | Boomdrive's curation session | each proposed intent | Boomdrive |
 
 Going from one setup to the next changes the curator and where items
 go. When the next setup keeps the inbox on another branch, the inbox's
 history moves to it by a push, and no record is rewritten. The
 adapters' hosts change only in the settings, so nothing is captured
-twice and Flywheel imports nothing when it takes over (6).
+twice and Boomdrive imports nothing when it takes over (6).
 
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
@@ -913,7 +913,7 @@ Constraints already fixed:
   live in a public repository of the family's own, and are an external
   standard to millpond. millpond takes the contract, writes the formats and the protocol as
   the crates give them, and passes their conformance pack (C.1, C.2).
-  Flywheel builds on the same crates.
+  Boomdrive builds on the same crates.
 - The family keeps each piece of state in the lowest of five layers
   that holds every reader it has: the host, a worktree, a clone, a
   shared branch, or a repository's content. An inbox is on a shared
@@ -929,7 +929,7 @@ Constraints already fixed:
 - Several hosts may keep one inbox.
 - Places and their agents are flume's, and flume submits a place's
   work. The merge queue is sluice, inquiries are sounding's, and the
-  planner is crew's today and Flywheel's later.
+  planner is crew's today and Boomdrive's later.
 - millpond is free and open source.
 
 The rest of the stack, which a model builds on unless it says why not:

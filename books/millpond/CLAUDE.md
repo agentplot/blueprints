@@ -1,6 +1,6 @@
 # books/millpond: authoring rules
 
-The design is `design/capture/design.md`. Flywheel's statement,
+The design is `design/capture/design.md`. Boomdrive's statement,
 `design/flywheel-next/requirements.md`, owns the capture contract and
 the record formats millpond keeps, and a bare number in parentheses
 cites it. millpond's own statement, `design/millpond/requirements.md`,

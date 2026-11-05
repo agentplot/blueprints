@@ -37,7 +37,7 @@ of its releases is one release.
 ## The key it gives
 
 A watch-list entry's release keys as `release/<name>/<version>`, under
-the name the list gives it, when the Flywheel plugin turns it into a
+the name the list gives it, when the Boomdrive plugin turns it into a
 capture ([Releases as captures](captures.md)).
 
 ## The first fleet

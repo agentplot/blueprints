@@ -5,7 +5,7 @@ yet, so the capture design (`design/capture/design.md`) is the binding
 copy. The words of millpond and of crew that millpond's book defines
 are [millpond's book](../millpond/glossary.html)'s, word for word, and
 a sounding's words are [sounding's book](../sounding/glossary.html)'s.
-A number in parentheses cites Flywheel's statement, and a rule id in
+A number in parentheses cites Boomdrive's statement, and a rule id in
 backticks cites crew's `docs/architecture/`.
 
 Three words mean one thing elsewhere and another here. millpond's
@@ -87,8 +87,8 @@ word for word.
 | **bolt** | in crew, a team's branch of work: its units and chores land on it, and it lands on the shared branch |
 | **capture** | the record of one source event: its key, its source, its event date and a pointer to its raw material; the same event captured twice is one capture (111) |
 | **chore** | in crew, a piece of work that needs no design of its own, such as a tool's bump; a `route` move offers one |
-| **inbox** | a git repository, or a branch in one, holding captures, signals, moves and items in Flywheel's record formats |
-| **item** | the unit of work: the signals curation joined, one or many, with its brief and its sends; Flywheel's proposed intent (109) |
+| **inbox** | a git repository, or a branch in one, holding captures, signals, moves and items in Boomdrive's record formats |
+| **item** | the unit of work: the signals curation joined, one or many, with its brief and its sends; Boomdrive's proposed intent (109) |
 | **operator** | the person who accepts or changes each batch of moves, sends items, and decides each conclusion; on its own, the user |
 | **planner** | crew's agent that orders items across teams and turns each into a chore or a unit |
 | **send** | millpond giving one item to flume, as a fix or a change with its brief, or an item that asks a question to a sounding |

@@ -112,7 +112,7 @@ does at once, so several busy branches cannot swamp it.
 **25. When a whole bolt is submitted to `main`, what are its "worktree" and
 its "agent"?**
 The bolt's own worktree, and whatever closed the bolt: crew's conductor or
-flywheel. Not needed in phase 1, which queues only bolt branches.
+Boomdrive. Not needed in phase 1, which queues only bolt branches.
 
 ## Left for several machines
 

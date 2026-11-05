@@ -67,9 +67,9 @@ Considered and rejected:
    remove        tell/end       withdraw                                    (CAS on version)
       |              |             |               |              |             |
    worktrunk     Claude Code    Pending You     millpond        millpond     sounding/<name>
-   git worktree  in herdr pane  herdr plugin    crew           Flywheel      branch, .sounding/
-   a launcher    printed cmd    crew rail       Flywheel       none
-                 Flywheel       Flywheel rail   none
+   git worktree  in herdr pane  herdr plugin    crew           Boomdrive      branch, .sounding/
+   a launcher    printed cmd    crew rail       Boomdrive       none
+                 Boomdrive       Boomdrive rail   none
 ```
 
 The one invariant at the centre, the derivation every reader and every
@@ -645,7 +645,7 @@ guarantee: asks sounding's stop check each time an unattended session would stop
 |---|---|---|---|
 | Claude Code in a herdr pane | sounding's herdr plugin makes a workspace named for the sounding, a pane with the conclusion beside it, runs `claude` in the place with the round in its environment (`SOUNDING_NAME`, `SOUNDING_ROUND`, `SOUNDING_WAY`); the Claude Code plugin's start hook calls `sounding handout` and injects it verbatim (7, 19). Evidence: herdr's agent commands list the pane's agent | herdr's agent commands: agent working / idle / absent; `waits-on-reply` = idle with an open ask of the round; tell = herdr's send-to-agent; end = herdr closes the pane | Stop hook → `sounding stop-check`; exit non-zero with the reason sends the session back. PreToolUse hook on shell commands → `sounding guard` |
 | a printed command | the CLI prints the `claude` invocation with the same environment; the operator runs it. Evidence: the next act from that session (its first exit or stop check) [Q7] | state: `gone` unless a hook of it spoke within the binding's heartbeat; tell: none while working (the timebox's end is delivered by the next hook call); end: none | the same hooks |
-| Flywheel | Flywheel's sessions binding | Flywheel's | Flywheel's |
+| Boomdrive | Boomdrive's sessions binding | Boomdrive's | Boomdrive's |
 
 `--with-me` (C.3): the pane opens beside the operator's own; guard on, no
 stop check, no clock (46).
@@ -668,7 +668,7 @@ guarantee: a response names its request (83)
 | Pending You | a card: the conclusion's five parts inline, a link to the whole (`sounding show`), options accept / go on (notes) / drop (reason); an ask: its words with a free reply or its choices | the card's answer, with who and when | the card cancelled |
 | sounding's herdr plugin | the sidebar lists not-ended soundings with round and state; the request is the sounding's row offering its keys | the key pressed: accept, send back (= go on, notes = plannotator's annotations on the conclusion), drop; the plugin calls the CLI | the row's keys stop offering a decision once state changes; nothing to cancel |
 | crew's rail | one decision per sounding on the rail | crew calls the CLI with the response | crew's |
-| Flywheel's rail | the elaboration's decision | Flywheel's | Flywheel's |
+| Boomdrive's rail | the elaboration's decision | Boomdrive's | Boomdrive's |
 | CLI | none (no put) | `sounding accept|go-on|drop|reply` given directly; `request = none` | none |
 
 Pending You is a black box here: I needed from it a card with a stable
@@ -687,7 +687,7 @@ guarantee: twice records once (85)
 |---|---|
 | millpond | accept: the conclusion as the item's record, an item per piece of proposed work; go on, drop: recorded against the item |
 | crew | conclusion on the rail; planner makes a plan entry per piece |
-| Flywheel | the elaboration's type writes the design book |
+| Boomdrive | the elaboration's type writes the design book |
 | none | nothing called; held state is the record (56, S12) |
 
 ### 5.5 Inbox (86, 87)
@@ -701,7 +701,7 @@ guarantee: one capture per offer identity (87)
 | profile | land |
 |---|---|
 | millpond | `sounding offer` prints the capture lines (C.6) and pipes them to `millpond land`; millpond's verdict per line |
-| Flywheel | the same lines through Flywheel's capture intake |
+| Boomdrive | the same lines through Boomdrive's capture intake |
 | none | lines printed, offer kept `not-bound` (C.6 "not taken") |
 
 The capture (C.6), fields verbatim: `key = sounding/<name>/<n>`,
@@ -922,7 +922,7 @@ from held state, re-reads at each wake (an ask moves `T_out`), and runs
 | Claude Code plugin | MCP `soundings` (= list), `conclusion` (= show's conclusion) | `/sound <question>` (= open from the person's session; the session goes on, 2, S1); MCP `accept`, `go_on`, `drop` for a person's agent, refused inside a round's session (24, Q16) | the CLI |
 | herdr plugin | sidebar of not-ended soundings: round, state, what waits | keys: start (open), open (the workspace), accept, send back (go on, notes from plannotator), drop; resume [Q25] | the CLI |
 | Pending You | the card | its options and reply | `tick`'s `read` |
-| crew's rail, Flywheel's rail | theirs | theirs → the CLI | the CLI |
+| crew's rail, Boomdrive's rail | theirs | theirs → the CLI | the CLI |
 
 The one program-readable form (69, section 9): JSON of the held state
 plus the derived state, identical on every surface; fields are only ever

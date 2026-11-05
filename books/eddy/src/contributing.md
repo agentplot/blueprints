@@ -56,7 +56,7 @@ part, the equal of eddy's own.
 
 The conformance pack is flywheel-next's: contract lines in, and the
 records a host must write from them expected. It proves millpond and
-Flywheel as hosts and every adapter part, and its meeting checks decide
+Boomdrive as hosts and every adapter part, and its meeting checks decide
 which parts count as meeting parts. eddy's parts pass the same checks as anyone
 else's, so a part in eddy carries no standing a published part lacks.
 
@@ -75,7 +75,7 @@ meeting's details, the raw layout and the skip
 
 ## A plugin of one's own
 
-Anyone can publish a meeting plugin of their own. It is a Flywheel
+Anyone can publish a meeting plugin of their own. It is a Boomdrive
 plugin holding a meeting part, kept in its author's repository at a
 tag, and listed in the plugin index beside eddy's (228). The index is a
 file, and the shipped set is the default index. A plugin declares the
@@ -83,7 +83,7 @@ set version it needs, the shape of its configuration and
 the secrets it needs, and a host registers it by its content hash
 (224, 228).
 
-millpond and Flywheel run a published part as they run eddy's:
+millpond and Boomdrive run a published part as they run eddy's:
 the same command line, the same raw directory, the same lines. Nothing
 in a host tells eddy's parts from anyone else's.
 
@@ -102,7 +102,7 @@ The folder drop takes the rest. A file dropped in a watched folder is
 one capture: a meeting transcript someone downloaded by hand, an email
 saved as `.eml`, a PDF.
 
-- **Its adapter** is Flywheel's folder adapter, built into millpond
+- **Its adapter** is Boomdrive's folder adapter, built into millpond
   from flywheel-next's adapters crate: `millpond capture folder <dir>`
   prints contract lines
   ([the folder drop](../millpond/sources.html#the-folder-drop)).
@@ -117,7 +117,7 @@ saved as `.eml`, a PDF.
 The folder drop is no meeting part and passes no meeting checks. A
 service that sends many files of one kind earns a part of its own, and
 until it has one the folder takes its files. millpond also carries
-Flywheel's meeting transcript adapter, `millpond capture meeting`,
+Boomdrive's meeting transcript adapter, `millpond capture meeting`,
 from the same crate (215). Its captures carry no excerpt either, and a
 reader reads them ([the meeting file](../millpond/sources.html#the-meeting-file)).
 

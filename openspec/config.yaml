@@ -1,7 +1,7 @@
 schema: spec-driven
 
 context: |
-  This repo tracks flywheel changes: design intents (schema
+  This repo tracks Boomdrive changes: design intents (schema
   flywheel-intent) and construction bolts (a bolt-* schema member —
   bolt-default, bolt-quick, bolt-deep; older bolts bind flywheel-bolt) on
   main,
@@ -30,7 +30,7 @@ context: |
     tree-wide — `git stash`, `git reset --hard`, `git checkout .` —
     reaches a sibling's uncommitted work the same way.
 
-  The flywheel's private vocabulary is these six terms and no others.
+  Boomdrive's private vocabulary is these six terms and no others.
   Each names a thing with a schema, a directory and a lifecycle:
 
   - intent — one design thread, tracked as a flywheel-intent change.

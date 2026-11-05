@@ -90,8 +90,8 @@ pointer of the form `<host>:<path>` (217h). The raw bank is millpond's
 cites them (111), so a meeting's words never reach GitHub with the
 record.
 
-A hosted Flywheel adds one rule: raw material a capture points at is
-never read on a host serving more than one flywheel. A reading that
+A hosted Boomdrive adds one rule: raw material a capture points at is
+never read on a host serving more than one drive. A reading that
 must follow the pointer runs on the operator's own machine or a pool
 host (263).
 

@@ -2,17 +2,17 @@
 
 millpond runs in three setups, and all three use the same inbox files.
 
-| | On its own | With crew | With Flywheel |
+| | On its own | With crew | With Boomdrive |
 |---|---|---|---|
 | **Adapters** | headwater, eddy, the folder drop | the same | the same |
-| **Host** | `millpond tick` on a timer | millpond, called by crew and the fleet's timers | Flywheel's host, on the same crates |
-| **Inbox** | a git repository of the user's own | the partition's flywheel branch in crew's state repository | the instance's state repository, the same files |
-| **Curation** | a Claude session through millpond's tools; the user accepts | crew's curator through the same tools; the operator decides per item on crew's rail (109) | Flywheel's curation session |
-| **Work** | an item sent through flume to one worktree, landed by sluice | the planner's chores and units, each stage launched through flume, landed by sluice | Flywheel's units and bolts, landed by sluice |
+| **Host** | `millpond tick` on a timer | millpond, called by crew and the fleet's timers | Boomdrive's host, on the same crates |
+| **Inbox** | a git repository of the user's own | the partition's drive branch in crew's state repository | the instance's state repository, the same files |
+| **Curation** | a Claude session through millpond's tools; the user accepts | crew's curator through the same tools; the operator decides per item on crew's rail (109) | Boomdrive's curation session |
+| **Work** | an item sent through flume to one worktree, landed by sluice | the planner's chores and units, each stage launched through flume, landed by sluice | Boomdrive's units and bolts, landed by sluice |
 
 Going from one setup to the next changes the host and the curator. The
 adapters and the inbox stay put, so nothing is captured twice and
-Flywheel imports nothing when it takes over.
+Boomdrive imports nothing when it takes over.
 
 ## On its own
 
@@ -24,7 +24,7 @@ worktree, and the work submits through sluice.
 
 ## With crew
 
-The inbox is a partition's flywheel branch in crew's state repository.
+The inbox is a partition's drive branch in crew's state repository.
 crew calls millpond's, flume's and sluice's command lines, and links
 no crate: crew's Python uses only the standard library (`code.1`).
 
@@ -43,13 +43,13 @@ no crate: crew's Python uses only the standard library (`code.1`).
 Each partition's signals live in its inbox, written through millpond
 (`signals.1`). No crew code writes a signal file itself.
 
-## With Flywheel
+## With Boomdrive
 
 The inbox is the instance's state repository, holding the same files.
-Flywheel's tick runs the same adapter parts on the same schedules
+Boomdrive's tick runs the same adapter parts on the same schedules
 (231), its capture endpoint takes the same lines (216, 217g), and its
-curation session gives the same moves. crew becomes Flywheel (crew ADR
-0026), and Flywheel takes each partition's inbox as it stands.
+curation session gives the same moves. crew becomes Boomdrive (crew ADR
+0026), and Boomdrive takes each partition's inbox as it stands.
 
 ## On a fleet
 

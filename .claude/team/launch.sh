@@ -15,7 +15,7 @@ for role in conductor fable explorer coder; do
   fi
 done
 
-mkdir -p "$HOME/.local/state/flywheel-team/reports"
+mkdir -p "$HOME/.local/state/boomdrive-team/reports"
 
 tab=$(herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd "$bp" --label team --no-focus)
 conductor_pane=$(jq -r '.result.root_pane.pane_id' <<<"$tab")

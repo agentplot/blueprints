@@ -34,7 +34,7 @@ This design covers every tool that does this:
   capture contract, the record formats, the shared-branch write
   protocol and the kind format, in a public repository of the family's
   own. The open tools build on them.
-- **Flywheel** is built later on the same shared crates and reads the
+- **Boomdrive** is built later on the same shared crates and reads the
   same inboxes. crew becomes it (crew ADR 0026: "crew becomes
   flywheel").
 - **swancloud** is the first fleet that runs all of it.
@@ -53,7 +53,7 @@ plan step F1.
 |---|---|---|
 | An adapter | One source. It lists the source's events, keys each one, fetches the raw material, and marks a capture that is its own excerpt. | Writes records, keeps a list of what it reported, cuts an excerpt, or reads a capture into signals. |
 | The family's shared crates | The capture contract, the record formats, the shared-branch write protocol, the kind format, cadence, the built-in adapters and the conformance pack, each defined once in their statement and implemented once. | Know which tool or host uses them. |
-| headwater | Releases and advisories for what a repository declares. It stands alone with its Claude Code and herdr plugins, and its Flywheel plugin holds an adapter millpond runs. | Knows which inbox records its releases. |
+| headwater | Releases and advisories for what a repository declares. It stands alone with its Claude Code and herdr plugins, and its Boomdrive plugin holds an adapter millpond runs. | Knows which inbox records its releases. |
 | eddy | Recorded meetings across meeting services, with an adapter per service. It stands alone as headwater does. | Reads a meeting into signals. |
 | millpond | Runs adapters and takes the capture contract. Dedupes by key, banks raw material, and writes each capture, plus the one signal of a capture that is its own excerpt. Keeps the inbox, checks a reader's excerpts, writes moves and items, records each send and its outcome, and records each run. | Judges what a capture says, starts an agent, or plans across items. |
 | flume | Places on the host it runs on: makes a worktree ready, starts each stage's agent in it with its prompt confirmed, and moves on when the stage's deliverable exists. Submits the work of a kind that lands, and tidies the place. Reports each place's state. | Decides what to launch, plans across items, or lets a session submit. |
@@ -99,7 +99,7 @@ of its own and takes the same path.
 The contract is the one way captures reach an inbox. The family's
 shared crates define it in their own statement and implement it once,
 in a public repository of the family's own. millpond and the other open
-tools build on those crates, and Flywheel builds on the same crates
+tools build on those crates, and Boomdrive builds on the same crates
 later. One conformance pack proves every host and every adapter.
 
 ### The lines
@@ -164,7 +164,7 @@ cut in the excerpt, which is the quote that enters git.
 
 An adapter's plugin declares its command, the shape of its
 configuration and the secrets it needs, in the declaration the shared
-crates define. millpond reads that declaration, and Flywheel later
+crates define. millpond reads that declaration, and Boomdrive later
 reads the same one. millpond runs the command as
 `<command> --raw-dir <dir> [--cursor <c>]`, with the adapter's
 configuration in the file the `CAPTURE_CONFIG` environment variable
@@ -174,7 +174,7 @@ directory the host's binding names, one file per secret, and never
 writes it to state or status.
 
 An adapter that signs in to its source keeps that sign-in itself. On
-millpond the user signs in once per host. On Flywheel the host places
+millpond the user signs in once per host. On Boomdrive the host places
 the secrets the plugin declares.
 
 ### Handing captures in
@@ -195,7 +195,7 @@ Two commands take the same lines:
 `millpond tick` runs every adapter of an inbox whose schedule is due,
 so one timer on a host serves every adapter there. A schedule is
 five-field cron, and a run missed while the host slept is caught up
-once. Flywheel's host later takes the same schedules and the same
+once. Boomdrive's host later takes the same schedules and the same
 lines. An adapter never knows which host ran it.
 
 ### What millpond does with each capture
@@ -250,11 +250,11 @@ Three setups use the same inbox files:
 |---|---|---|
 | On its own | `inbox/` on a branch of the user's own repository | a Claude session through millpond's tools; the user accepts |
 | With crew | `inbox/` on the partition's branch in crew's state repository | crew's curator through the same tools; the operator decides per item on crew's rail |
-| With Flywheel | `inbox/` on the branch Flywheel reads, the same files | Flywheel's curation session |
+| With Boomdrive | `inbox/` on the branch Boomdrive reads, the same files | Boomdrive's curation session |
 
 Going from one setup to the next pushes the inbox's history to the next
 setup's branch, rewriting no record. It changes the curator and, in the
-settings, the adapters' hosts. Nothing is captured twice, and Flywheel
+settings, the adapters' hosts. Nothing is captured twice, and Boomdrive
 imports nothing when it takes over.
 
 ### What comes in once
@@ -263,7 +263,7 @@ Two bodies of work predate their inbox, and millpond's signals-folder
 import carries each in once, keeping each capture's source, event date,
 signals and moves as they were read:
 
-- **crew's folders** on each partition's flywheel branch, a
+- **crew's folders** on each partition's drive branch, a
   `capture.md` and one `NN-<slug>.md` per signal, with `moves.rec`. A
   release capture keeps the key it landed under,
   `release/<name>/<version>`. The import keys every other capture by
@@ -311,7 +311,7 @@ Curation gives each signal one of six moves:
 |---|---|
 | `drop` | Records the reason. |
 | `answered` | Names the claim or record that settled it. |
-| `challenge` | Weighs against a claim. Only an inbox beside Flywheel's claims has one. |
+| `challenge` | Weighs against a claim. Only an inbox beside Boomdrive's claims has one. |
 | `join` | Makes an item, or grows a proposed one, from any number of signals. |
 | `attach` | Puts the signal on an item already sent. |
 | `route` | Offers a chore, which millpond makes an item of one, or an ask, which it records. |
@@ -332,7 +332,7 @@ The next batch starts where that one ended.
 
 An item is the unit of work: the signals curation joined, one or many,
 as five of a meeting's ten, or two bumps that move together. It is
-Flywheel's proposed intent. millpond keeps its brief, which the session
+Boomdrive's proposed intent. millpond keeps its brief, which the session
 writes with `brief`, and every place it was sent.
 
 - **millpond sends one item to one worktree through flume.** The send
@@ -353,7 +353,7 @@ writes with `brief`, and every place it was sent.
   hand items to crew's planner, which takes each with `millpond hand`,
   recorded as the item's send, and orders them across teams, turning
   each into a chore or a unit. Planning across items is crew's today
-  and Flywheel's later, never millpond's.
+  and Boomdrive's later, never millpond's.
 
 ### The operator's surfaces
 
@@ -395,8 +395,8 @@ a brief and a name. flume runs on one host and launches there.
   shared crates define: stages in order, with the field names `agents`,
   `on_fail`, `max_send_backs` and `deliverables`, and a version per
   kind (`name@n`). flume runs a subset of it, stages in order with one
-  agent each and send-backs. Flywheel reads the same declarations
-  later, so a repository's kinds move from flume to Flywheel as they
+  agent each and send-backs. Boomdrive reads the same declarations
+  later, so a repository's kinds move from flume to Boomdrive as they
   stand. An elaboration kind is a kind in the same format with an
   elaboration section, which sounding reads. flume reads its place and
   its stages.
@@ -599,7 +599,7 @@ only offers come back as signals.
 | On its own | the operator's `/sound`, naming its inputs and any earlier soundings | a card, or sounding's herdr plugin |
 | With millpond | items millpond sends; a key on a headwater release that needs judgment; `/sound` on a decision a meeting left open, its transcript an input | the same, recorded against each item |
 | With crew | crew's planner and design agent, calling `sounding open` as crew calls millpond | crew's rail |
-| With Flywheel | an intent's elaborations, each one a sounding cut from the intent's line | Flywheel's elaboration types, which write the conclusion into the design book and claims on the intent's line, which lands when the intent is archived |
+| With Boomdrive | an intent's elaborations, each one a sounding cut from the intent's line | Boomdrive's elaboration types, which write the conclusion into the design book and claims on the intent's line, which lands when the intent is archived |
 
 ### The operator's surfaces
 
@@ -670,7 +670,7 @@ lookup.
   - a brief a fixer reads;
   - a key that hands the release's brief to flume, which starts an
     agent in a worktree to make the bump and submits it to sluice.
-- **The Flywheel plugin's adapter**, `headwater capture`, prints a
+- **The Boomdrive plugin's adapter**, `headwater capture`, prints a
   capture for every release newer than its pin on each run, and
   millpond's dedupe lands each one once:
   - `source` is `release` and `event_at` is when the release was
@@ -697,7 +697,7 @@ program lists them and a session reads them.
 eddy stands alone as headwater does. It lists and fetches meetings
 across services, with a Claude Code plugin that pulls a transcript into
 a session and a herdr plugin that shows the day's meetings. Its
-Flywheel plugin holds one adapter per meeting service. Each adapter
+Boomdrive plugin holds one adapter per meeting service. Each adapter
 lists recorded meetings since its cursor, keys a meeting by its service
 and the meeting's own id, writes the transcript as raw, and carries no
 excerpt.
@@ -774,8 +774,8 @@ theirs and millpond runs them like anyone else's.
   through `crew signal`, which writes through millpond.
 - **swancloud's deployer** pipes a failed step's capture to
   `millpond land`, the step's last lines its excerpt.
-- **Flywheel's** page capture box and chat forwards arrive when
-  Flywheel hosts.
+- **Boomdrive's** page capture box and chat forwards arrive when
+  Boomdrive hosts.
 
 ## Plugins
 
@@ -786,15 +786,15 @@ own kinds of content:
 |---|---|
 | Claude Code | skills, hooks, commands, MCP servers |
 | herdr | actions, panes, events |
-| Flywheel | adapter, chat sink, runner, router, sign-in, unit type, elaboration type, deliverable producer, map vocabulary, template, scenario pack |
+| Boomdrive | adapter, chat sink, runner, router, sign-in, unit type, elaboration type, deliverable producer, map vocabulary, template, scenario pack |
 
-Flywheel's "package" and "bundle" become "plugin". millpond runs a
-Flywheel plugin's adapters and nothing else of it.
+Boomdrive's "package" and "bundle" become "plugin". millpond runs a
+Boomdrive plugin's adapters and nothing else of it.
 
 - **headwater** keeps one plugin per host under `plugins/` beside its
   core (sluice ADR 0023): `plugins/claude`, `plugins/herdr` and
-  `plugins/flywheel`.
-- **eddy** keeps the same layout. Its Flywheel plugin holds an adapter
+  `plugins/boomdrive`.
+- **eddy** keeps the same layout. Its Boomdrive plugin holds an adapter
   per meeting service.
 - **millpond** keeps `plugins/claude` and `plugins/herdr`. Its built-in
   adapters are commands of its own.
@@ -827,7 +827,7 @@ swancloud runs every adapter on the host its list names:
 
 One convention places every piece of state the open tools and crew
 keep, so a repository goes from one tool alone to crew, and then to
-Flywheel, without its state being copied. Each piece lives in one of
+Boomdrive, without its state being copied. Each piece lives in one of
 five layers:
 
 | Layer | Where | Read by | Shared across hosts |
@@ -859,7 +859,7 @@ The rules:
 - **A tool's records about one repository stay with that repository**,
   in `<common>/<tool>/`, and under `refs/<tool>/` on its own remote when
   hosts share them, written by a push with lease. They never go into a
-  state repository. crew and Flywheel read them as evidence.
+  state repository. crew and Boomdrive read them as evidence.
 - **No layer holds a secret in the clear.** A sign-in is the tool's on
   its host.
 - **Every record names its format and its major version,** and a reader
@@ -916,7 +916,7 @@ and logs on its host.
 
 From a tool alone to crew nothing moves: records stay with their
 repositories, cursors and raw material stay on their hosts, and the
-inbox keeps its files. From crew to Flywheel, crew's plan and proposals
+inbox keeps its files. From crew to Boomdrive, crew's plan and proposals
 are imported once, keeping every id. That import is the one copy on the
 whole path.
 
@@ -924,16 +924,16 @@ whole path.
 
 | What | Built in | Used by |
 |---|---|---|
-| The contract's types and key rules, JSON in flight and recutils at rest, a sha256 content hash, and the excerpt cut | the shared crates' capture crate | millpond, headwater's and eddy's adapters, sounding's offers, and Flywheel later |
-| The signal, move and item records and the inbox's layout | the shared crates' signals crate | millpond, and Flywheel later |
-| The shared-branch write protocol | the shared crates | millpond, and Flywheel later; crew keeps a Python twin |
-| The kind format, an elaboration kind's section among it | the shared crates | flume, sounding, and Flywheel later |
-| The folder drop, the meeting file and the signals-folder import | the shared crates' adapters crate | millpond, and Flywheel later |
-| Cadence: five-field cron, caught up once | the shared crates | `millpond tick`, and Flywheel's tick later |
-| The conformance pack: lines in, records expected | the shared crates | millpond and Flywheel as hosts, every adapter |
-| Raw banking with a host-qualified pointer, the checks on a capture, and the verbatim check on a reader's excerpt | millpond, from crew's checks | Flywheel later |
-| Finding releases and reading their notes | swancloud's release adapter | headwater's lookups and its Flywheel plugin |
-| Elaborations: the inputs, the soundings one is based on, the kinds, the rounds and the conclusion's shape | sounding, from crew ADR 0019 | crew, Flywheel's elaborations |
+| The contract's types and key rules, JSON in flight and recutils at rest, a sha256 content hash, and the excerpt cut | the shared crates' capture crate | millpond, headwater's and eddy's adapters, sounding's offers, and Boomdrive later |
+| The signal, move and item records and the inbox's layout | the shared crates' signals crate | millpond, and Boomdrive later |
+| The shared-branch write protocol | the shared crates | millpond, and Boomdrive later; crew keeps a Python twin |
+| The kind format, an elaboration kind's section among it | the shared crates | flume, sounding, and Boomdrive later |
+| The folder drop, the meeting file and the signals-folder import | the shared crates' adapters crate | millpond, and Boomdrive later |
+| Cadence: five-field cron, caught up once | the shared crates | `millpond tick`, and Boomdrive's tick later |
+| The conformance pack: lines in, records expected | the shared crates | millpond and Boomdrive as hosts, every adapter |
+| Raw banking with a host-qualified pointer, the checks on a capture, and the verbatim check on a reader's excerpt | millpond, from crew's checks | Boomdrive later |
+| Finding releases and reading their notes | swancloud's release adapter | headwater's lookups and its Boomdrive plugin |
+| Elaborations: the inputs, the soundings one is based on, the kinds, the rounds and the conclusion's shape | sounding, from crew ADR 0019 | crew, Boomdrive's elaborations |
 | Places, a fresh agent per stage, prompt delivery, stages that end on their deliverable, submission, and tidying | flume, from crew's `teams.2`–`4`, `teams.11`, `teams.15` and `plan.9`, `10`, `12`, `17` | millpond, headwater, sounding, crew |
 
 crew's Python uses only the standard library (`code.1`). crew reaches
@@ -991,7 +991,7 @@ only through sluice's, and links no crate.
     headwater 27, and carrying the published package's diff;
   - claims on a watch-list entry;
   - the key a watch-list entry gets;
-  - its Flywheel plugin prints the contract;
+  - its Boomdrive plugin prints the contract;
   - a repository is one clone, whose held state a curation drop never
     writes.
 - **sluice's statement:** its shared records are spelled
@@ -1020,7 +1020,7 @@ only through sluice's, and links no crate.
   is kept off it. Where a round's prototype code is kept apart from
   that branch is for sounding's and flume's statements to rule.
 - **A standing sounding that wakes on a signal**, starting a round when
-  a signal on its subject lands, as Flywheel's standing elaborations
+  a signal on its subject lands, as Boomdrive's standing elaborations
   do.
 - **How long raw material is kept:** for good, or until every signal of
   its capture has a move and the inbox's retention has passed, with the

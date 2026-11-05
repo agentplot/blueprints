@@ -109,7 +109,7 @@ and the same holds for the herdr plugin's launch key
   input with no herdr pane to read.
 - **Agents other than Claude Code.** flume confirms a prompt, and reads
   what an agent that stopped short needs, from the agent's transcript.
-  Flywheel's statement makes nothing in its machinery depend on one
+  Boomdrive's statement makes nothing in its machinery depend on one
   agent program's transcript (173). Which agents flume starts, and how
   it reads another program's record.
 - **What accept and drop do to a question's place.** sounding's

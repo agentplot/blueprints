@@ -1,15 +1,15 @@
 # The inbox
 
 An inbox is a git repository, or a branch in one, holding captures,
-signals, moves and items in Flywheel's record formats:
+signals, moves and items in Boomdrive's record formats:
 `flywheel-capture/1`, `flywheel-signal/1`, `flywheel-move/1`, and the
 item record (114). Each capture exists once at rest, as a folder named
 from its event date and its key. JSON exists only in flight, on an
 adapter's standard output and between millpond and its tools. At rest
 each record is a rec file, the plain-text format of GNU recutils.
 
-Keeping Flywheel's formats is what lets the inbox outlive its host.
-crew reads it through millpond today, and Flywheel reads the same files
+Keeping Boomdrive's formats is what lets the inbox outlive its host.
+crew reads it through millpond today, and Boomdrive reads the same files
 later with no import (114).
 
 ## Writes
@@ -56,7 +56,7 @@ tick runs a part, so they live beside that tick.
 Two bodies of work predate their inbox, and millpond's signals-folder
 import carries each in once:
 
-- **crew's folders** on each partition's flywheel branch: a
+- **crew's folders** on each partition's drive branch: a
   `capture.md` and one `NN-<slug>.md` per signal. A release capture
   keeps the key it landed under, `release/<name>/<version>`. The import
   keys every other capture by its folder's name.

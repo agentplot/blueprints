@@ -23,7 +23,7 @@ JSON, given on request (section 9).
 
 <figure class="hw">
 <div class="hw-scroll">
-<svg viewBox="0 0 800 284" role="img" aria-label="Four surfaces, the command line, the Claude Code plugin, the herdr plugin and the Flywheel plugin, each ask one core, which alone computes reports, briefs, due tiers and acknowledgements. The core gives one answer form, JSON that only gains fields, and the same question about the same repository state gets the same answer through every surface.">
+<svg viewBox="0 0 800 284" role="img" aria-label="Four surfaces, the command line, the Claude Code plugin, the herdr plugin and the Boomdrive plugin, each ask one core, which alone computes reports, briefs, due tiers and acknowledgements. The core gives one answer form, JSON that only gains fields, and the same question about the same repository state gets the same answer through every surface.">
 <defs>
 <marker id="hw-u-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hw-hd"/></marker>
 <marker id="hw-u-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hw-hd-a"/></marker>
@@ -39,7 +39,7 @@ JSON, given on request (section 9).
 <text x="424" y="60" class="hw-t">herdr plugin</text>
 <text x="424" y="80" class="hw-s">sidebar, popup and key</text>
 <rect x="610" y="36" width="174" height="60" rx="8" class="hw-bx"/>
-<text x="622" y="60" class="hw-t">Flywheel plugin</text>
+<text x="622" y="60" class="hw-t">Boomdrive plugin</text>
 <text x="622" y="80" class="hw-s">an adapter part</text>
 <line x1="106" y1="96" x2="296" y2="136" class="hw-ar" marker-end="url(#hw-u-m)"/>
 <line x1="304" y1="96" x2="362" y2="136" class="hw-ar" marker-end="url(#hw-u-m)"/>
@@ -61,10 +61,10 @@ JSON, given on request (section 9).
 
 ## The four surfaces
 
-The Claude Code, herdr and Flywheel surfaces are plugins kept outside
+The Claude Code, herdr and Boomdrive surfaces are plugins kept outside
 the core, as sluice keeps its plugins (section 9), one per host under
 `plugins/` beside the core, `plugins/claude`, `plugins/herdr` and
-`plugins/flywheel` (`design/capture/design.md`).
+`plugins/boomdrive` (`design/capture/design.md`).
 
 - **The command line** answers any question a person or a script asks,
   rendered for reading or as JSON.
@@ -81,14 +81,14 @@ the core, as sluice keeps its plugins (section 9), one per host under
   what headwater holds reaches no source however often it redraws
   (17). Where sounding is installed, another key opens a sounding on a
   release that needs judgment (`design/capture/design.md`).
-- **The Flywheel plugin** holds one part, an adapter that turns each
+- **The Boomdrive plugin** holds one part, an adapter that turns each
   release into a capture ([Releases as captures](captures.md)).
 
 ## Telling
 
 headwater tells nobody on its own (section 8). A surface tells, when its
 asker asks: the Claude Code plugin at a session's start, the herdr
-plugin when its pane is drawn, the Flywheel plugin's adapter when
+plugin when its pane is drawn, the Boomdrive plugin's adapter when
 millpond runs it. A scheduler is an asker like any other.
 
 ## Handing a release on

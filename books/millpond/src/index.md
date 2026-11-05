@@ -13,7 +13,7 @@ goes to a sounding, which ends on a conclusion the operator accepts.
 
 <figure class="mp-fig">
 <div class="mp-scroll">
-<svg viewBox="0 0 720 404" role="img" aria-label="headwater, eddy and the folder drop print capture lines into millpond, the inbox. millpond sends an item through flume to one worktree, sends an item that asks a question to a sounding, or hands an item to crew's plan; sluice lands the work of a worktree or of crew's teams. Flywheel is later built on the same crates as millpond and reads the same inboxes.">
+<svg viewBox="0 0 720 404" role="img" aria-label="headwater, eddy and the folder drop print capture lines into millpond, the inbox. millpond sends an item through flume to one worktree, sends an item that asks a question to a sounding, or hands an item to crew's plan; sluice lands the work of a worktree or of crew's teams. Boomdrive is later built on the same crates as millpond and reads the same inboxes.">
 <defs>
 <marker id="mp-i-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="mp-hd"/></marker>
 <marker id="mp-i-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="mp-hd-a"/></marker>
@@ -76,7 +76,7 @@ goes to a sounding, which ends on a conclusion the operator accepts.
 <text x="618" y="204" class="mp-ts">merged, then</text>
 <text x="618" y="222" class="mp-ts">lands it</text>
 <rect x="204" y="338" width="508" height="54" rx="10" class="mp-bx-dash"/>
-<text x="220" y="362" class="mp-t">Flywheel, later</text>
+<text x="220" y="362" class="mp-t">Boomdrive, later</text>
 <text x="220" y="380" class="mp-ts">built on millpond's crates; reads the same inboxes</text>
 </svg>
 </div>
@@ -122,7 +122,7 @@ the run's status are millpond's.
 millpond never judges what a capture says and never plans across
 items. A model runs in two places only, a reader and a curation
 session, and each is a Claude session working through millpond's tools.
-Ordering items across teams is crew's planner today and Flywheel's
+Ordering items across teams is crew's planner today and Boomdrive's
 later. millpond reads a source only through an adapter, its own
 built-in ones included. It starts no agent, since flume does; it works
 no question, since a sounding does; and it tests and lands nothing,
@@ -144,7 +144,7 @@ since sluice does.
   [../sluice/](../sluice/).
 - **crew** runs teams, plans and bolts. It calls millpond's, flume's
   and sluice's command lines.
-- **Flywheel** is built later on the same crates as millpond and reads
+- **Boomdrive** is built later on the same crates as millpond and reads
   the same inboxes. crew becomes it (crew ADR 0026).
 
 ## How to read this book
@@ -156,7 +156,7 @@ moves them, and the items and sends that turn signals into work. Then
 come the sources millpond runs, the three setups it runs in, and who
 owns what.
 
-A bare number in parentheses cites Flywheel's statement,
+A bare number in parentheses cites Boomdrive's statement,
 `design/flywheel-next/requirements.md`, whose record formats and moves
 millpond keeps. A number after `headwater` cites headwater's statement.
 A rule id such as `signals.6` or `code.1` cites crew's

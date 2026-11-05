@@ -8,12 +8,12 @@ draft of this note: the task was updating diagrams on a website, not
 drawing in the abstract; a preview would be good; and not every small
 task can be broken down this way, so how is this done in a generic way
 that is still tailored to what they are after. Signal
-2026-10-26-madswan-operator-f16c114b/01. This is flywheel-web's side
+2026-10-26-madswan-operator-f16c114b/01. This is boomdrive-web's side
 and every family site's; what a bolt may carry is crew's.
 
 ## What the sessions did
 
-The unit `capture-at-the-source-diagram` on flywheel-web landed 127
+The unit `capture-at-the-source-diagram` on boomdrive-web landed 127
 lines of SVG and three lines of front matter inside 460 lines of
 proposal, design, spec and tasks. The design's Context section was the
 useful part: it gathered the three drawn diagrams' conventions, the
@@ -34,7 +34,7 @@ file the repository writes once. flume lets a repository declare it
 shape is a crew chore.
 
 ```toml
-# .config/flume.toml in flywheel-web, sluice's site, tailrace's site, the books
+# .config/flume.toml in boomdrive-web, sluice's site, timber's site, the books
 [kinds.content]
 branch = "content"
 lands = true
@@ -61,12 +61,12 @@ sort follows (a diagram: one SVG, the palette by token, motion and the
 reduced-motion rule, alt text, drawn inline; a page; a figure; a tools
 strip), two finished examples of each sort, and what proves a change
 (the site builds, `site-check` and Vale pass, the gate is green). For
-flywheel-web it is the design's Context section promoted to a standing
+boomdrive-web it is the design's Context section promoted to a standing
 file, plus the Diagram lines of the outline as the briefs they already
 are.
 
 **The task**, one line: "update the diagrams for `<slugs>`" or "add
-tailrace to the Tools page", with the brief named. The change prompt
+timber to the Tools page", with the brief named. The change prompt
 hands the agent the brief whole (5, 27), the task line, and the page or
 pages the task names at the base's revision. Nothing is proposed, no
 spec is written, no verify report is filed: the change's own commits
@@ -95,7 +95,7 @@ The kind, its two stages and its two prompts are the same in every
 site repository: a site's content changes the same way wherever it is.
 What tailors it is the one brief file and the one task line. A new
 site adopts the kind by writing its brief; nothing in the prompts names
-flywheel-web. The same brief serves a crew chore today, whose whole
+boomdrive-web. The same brief serves a crew chore today, whose whole
 text is the task line and the brief's path.
 
 ## For crew
@@ -108,9 +108,9 @@ declare.
 
 ## The unit
 
-One flywheel-web unit: `docs/content-brief.md` from the capture
+One boomdrive-web unit: `docs/content-brief.md` from the capture
 diagram's design Context, the two prompts under `docs/prompts/`, the
 `[kinds.content]` declaration in `.config/flume.toml`, and the outline's
 Diagram lines read as the briefs they are. The five remaining diagrams
-are then one chore with one preview. The sluice and tailrace sites and
+are then one chore with one preview. The sluice and timber sites and
 the books take the kind by writing their briefs when they next change.

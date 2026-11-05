@@ -3,7 +3,7 @@
 A fresh model, given only the statement, designed headwater
 (`reconstruction-1.md`) and asked 32 questions where the statement was
 silent or contradicted itself. A 33rd asks what to call the services
-headwater asks, since Flywheel and millpond use "source" for what an
+headwater asks, since Boomdrive and millpond use "source" for what an
 adapter reads. Below, the answer to each and to the statement's own seven
 questions, in plain words, as the operator ruled them on 2026-10-19:
 every one as `rulings.html` recommends. Each is a clause, a vocabulary
@@ -216,12 +216,12 @@ A leading portion of the size the asker asks for, cut back to the end of
 a line. The way to the whole is a brief, which may reach the notes
 lookup (12).
 
-## A word shared with Flywheel
+## A word shared with Boomdrive
 
 **33. The statement calls deps.dev, GitHub, ecosyste.ms and OSV
-sources, and Flywheel calls a source what an adapter captures from.**
+sources, and Boomdrive calls a source what an adapter captures from.**
 headwater's are lookups: a lookup is anything headwater asks for an
-identity's releases, notes or advisories. "Source" stays Flywheel's and
+identity's releases, notes or advisories. "Source" stays Boomdrive's and
 millpond's, and to them headwater as a whole is one source among many.
 The statement says lookup throughout, and Part B's operations keep their
 names.
@@ -263,7 +263,7 @@ clauses after 52:
   brief (26, 40);
 - a declaration's label, which every answer gives beside the identity
   (53), and the key a watch-list entry's capture gets (§9);
-- the Flywheel plugin as the adapter millpond runs, built with the
+- the Boomdrive plugin as the adapter millpond runs, built with the
   family's shared crates, printing the capture contract (§9);
 - each ecosystem's package manager as a lookup, run read-only in the
   repository's own shell, with deps.dev where none runs (65, and C.3);

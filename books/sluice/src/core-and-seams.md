@@ -72,7 +72,7 @@ driver decides nothing about the queue (C.5).
 - **crew**: the unit's merge stage submits, a bolt is submitted from its
   own place by its conductor, and the conductor reads the entry's state
   as the stage.
-- **flywheel**: a session's approved done exit is the submission, and
+- **Boomdrive**: a session's approved done exit is the submission, and
   the entry's state is evidence on the item.
 - **remote submit**: a session on any host pushes its head to the
   remote, writes the entry to the branch's records there and wakes a

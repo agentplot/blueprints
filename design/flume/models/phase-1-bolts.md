@@ -4,7 +4,7 @@ A draft for the madswan planner, 2026-10-26, on the capture plan's L3:
 flume's core and its Claude Code plugin, after L2's records and rules.
 Three bolts. The first is the core, one agent in sequence, because the
 seam traits and the types every profile codes against must exist before
-units can work apart, as tailrace's Bolt 1 did. Each unit names what it
+units can work apart, as timber's Bolt 1 did. Each unit names what it
 owns, the clauses it builds and what proves it. The planner turns these
 into proposals; nothing here is the plan.
 
@@ -33,8 +33,8 @@ flume reads kinds through weir's `weir-kinds` crate and no reader of
 its own (core.4; weir 51 to 58), so Bolt 2's kinds unit depends on it.
 weir's bolt is landing and nothing is tagged or published yet; flume
 takes `weir-kinds` as a git dependency pinned to a revision of weir's
-main, moved by a chore when weir changes, until tailrace renders the
-family's Cargo registry (tailrace Bolt 5), when the pin becomes a
+main, moved by a chore when weir changes, until timber renders the
+family's Cargo registry (timber Bolt 5), when the pin becomes a
 version. flume does not wait on a tag. A pinned revision is the
 statement's rule for every cross-kit read (flume 20; weir 58).
 

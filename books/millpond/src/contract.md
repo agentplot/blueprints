@@ -1,8 +1,8 @@
 # The capture contract
 
-The contract is the one way captures reach an inbox. Flywheel's
+The contract is the one way captures reach an inbox. Boomdrive's
 statement defines it, a crate in flywheel-next implements it, and
-millpond and Flywheel both take it. One conformance pack proves every
+millpond and Boomdrive both take it. One conformance pack proves every
 host and every adapter part against it: lines in, records expected.
 
 ## The lines
@@ -119,7 +119,7 @@ The lines describe each event, and the raw files hold it.
 <rect x="348" y="28" width="176" height="80" rx="9" class="mp-bx-mp"/>
 <text x="362" y="54" class="mp-t">The inbox, in git</text>
 <text x="362" y="74" class="mp-ts">captures and signals,</text>
-<text x="362" y="92" class="mp-ts">Flywheel's formats</text>
+<text x="362" y="92" class="mp-ts">Boomdrive's formats</text>
 <rect x="348" y="176" width="176" height="80" rx="9" class="mp-bx"/>
 <text x="362" y="202" class="mp-t">The raw bank</text>
 <text x="362" y="222" class="mp-ts">on the host,</text>

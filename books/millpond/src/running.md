@@ -15,15 +15,15 @@ one kind:
 |---|---|
 | Claude Code | skills, hooks, commands, MCP servers |
 | herdr | actions, panes, events |
-| Flywheel | adapter, chat sink, runner, router, sign-in, unit type, elaboration type, deliverable producer, map vocabulary, template, scenario pack |
+| Boomdrive | adapter, chat sink, runner, router, sign-in, unit type, elaboration type, deliverable producer, map vocabulary, template, scenario pack |
 
-Flywheel's statement names the same unit a package, and a named set of
-parts a bundle (228, 284). millpond runs a Flywheel plugin's adapter
+Boomdrive's statement names the same unit a package, and a named set of
+parts a bundle (228, 284). millpond runs a Boomdrive plugin's adapter
 parts and nothing else of it.
 
 An adapter part declares a command, the shape of its configuration and
 the secrets it needs (228). millpond reads the same declaration
-Flywheel reads, so a part written for one host runs on the other
+Boomdrive reads, so a part written for one host runs on the other
 unchanged.
 
 ## How millpond starts a part
@@ -40,7 +40,7 @@ environment under its declared name. The adapter writes its raw files
 under the raw directory, prints its lines on standard output, and exits.
 
 An adapter that signs in to its source keeps that sign-in itself. On
-millpond the user signs in once per host. On Flywheel the host places
+millpond the user signs in once per host. On Boomdrive the host places
 the secrets the plugin declares.
 
 ## Two ways in
@@ -111,6 +111,6 @@ one timer on a host serves every part there. A schedule is five-field
 cron. A run missed while the host slept is caught up once, and the key
 makes the catch-up write nothing twice (111, 231).
 
-Flywheel's tick takes the same schedules (231), and its capture
+Boomdrive's tick takes the same schedules (231), and its capture
 endpoint takes the same lines (216, 217g). An adapter never knows which
 host ran it.

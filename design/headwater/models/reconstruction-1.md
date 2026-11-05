@@ -17,7 +17,7 @@ I chose a **data model with one pure derivation at its centre**, set inside a **
  askers: person · coding agent · pane · recorder · scheduler
            │
  surfaces (plugins, outside the core; 33)
-   CLI │ Claude Code plugin │ herdr plugin │ Flywheel adapter
+   CLI │ Claude Code plugin │ herdr plugin │ Boomdrive adapter
            │   every surface asks:  headwater <question> --json
            ▼
  ┌──────────────────────────── core (one binary; §9) ────────────────────────────┐
@@ -359,7 +359,7 @@ Every surface calls the one binary with `--json`. A single binary means a single
 | **command line** | any question. `headwater scan [--due \| --tier T…]`, `held`, `brief <release>`, `ack dismiss\|skip <release> --by <who>`, `acks`, `forget` | a rendering of the JSON, or the JSON itself with `--json` | nothing |
 | **Claude Code plugin** | at session start, `scan --due` for the tiers its configuration names (an asker's choice; default `favorites`), with a notes part | each newer and undecided release: its id, date, link, the notes part and the way to read the whole; the affected advisories; unread dependencies with reasons; each tier's `made_at` and `due` (S1–S3) | `brief <release>` to a background agent in a worktree of its own. That agent is the fixer, and the change is its own (36) |
 | **herdr plugin** | `held` for the sidebar row and popup, which never reaches a source on refresh (17). `scan --due` only when its key or its owner's schedule asks | a row with counts of newer releases and affected advisories per tier and a due mark; a popup with the held answer | its key asks `brief` and starts a new agent in a worktree with it (36) |
-| **Flywheel adapter** (a recorder) | daily `scan --due --tier favorites`, with acknowledgements applied or disregarded as its owner chooses (23) | nothing; it turns each release into one capture keyed by the release id, so it keeps each release once (10, S6) | nothing. It never calls `acknowledge` or `forget`, so it never writes the held state itself (actors: recorder) |
+| **Boomdrive adapter** (a recorder) | daily `scan --due --tier favorites`, with acknowledgements applied or disregarded as its owner chooses (23) | nothing; it turns each release into one capture keyed by the release id, so it keeps each release once (10, S6) | nothing. It never calls `acknowledge` or `forget`, so it never writes the held state itself (actors: recorder) |
 
 No surface filters, ranks, counts on its own, or works out "new since last time" (33, 34). A surface that folds prereleases out of its view folds rows out of a display. It does not change the answer.
 

@@ -6,8 +6,8 @@ admit any model that satisfies it.
 
 weir is the code the agentplot family shares. It has no process, no
 state and no machine of its own: it defines, once, what every open
-tool and Flywheel agree on, and implements each definition once, so
-that millpond, headwater, eddy, sounding, flume and later Flywheel
+tool and Boomdrive agree on, and implements each definition once, so
+that millpond, headwater, eddy, sounding, flume and later Boomdrive
 build on one copy of each. The statement is in three parts. Part A is
 what must hold of the things weir defines: the capture contract, by
 which an adapter hands a host its events and a host takes them; the
@@ -53,10 +53,10 @@ tools'. weir fixes the forms they meet in.
 | actor | may decide | may not |
 |---|---|---|
 | **an adapter** (a program that knows one source) | how to list its source, how to key each event, what raw material to write, and whether an offer carries an own excerpt | write a record, keep a list of what it offered, cut an excerpt, read a capture into signals, or learn which host or machine ran it |
-| **a host** (a program that takes offers and keeps an inbox: millpond, Flywheel) | which adapters to run and when, where its inbox lies, its limit, and what becomes of an item | change what an offer carries, write a record outside the forms weir fixes, or take a key the inbox holds |
+| **a host** (a program that takes offers and keeps an inbox: millpond, Boomdrive) | which adapters to run and when, where its inbox lies, its limit, and what becomes of an item | change what an offer carries, write a record outside the forms weir fixes, or take a key the inbox holds |
 | **a writer** (a host, a session or a tool writing a shared branch) | what to write, and when | apply a write to a tip it was not checked against, or stand in for that check with a lock |
 | **a kind's declarer** (a tool, a repository or a launch) | the stages work goes through, each stage's prompt, agents and deliverable, and any section of its own | make a reader run what the format does not say |
-| **a kind's reader** (flume, sounding, Flywheel) | which sections of a declaration it reads, which templates and atoms it binds, and what it refuses | change a declaration, fail on a section it does not know, or decide a transition of a statechart kind the engine does not give (96) |
+| **a kind's reader** (flume, sounding, Boomdrive) | which sections of a declaration it reads, which templates and atoms it binds, and what it refuses | change a declaration, fail on a section it does not know, or decide a transition of a statechart kind the engine does not give (96) |
 | **the operator** | everything a tool's statement leaves to them | |
 
 <!-- ANCHOR_END: actors -->
@@ -67,7 +67,7 @@ Terms are defined by meaning. A model may add terms; it may not
 redefine these.
 
 - **host**: a program that takes offers under the capture contract and
-  keeps an inbox: millpond today, Flywheel later.
+  keeps an inbox: millpond today, Boomdrive later.
 - **machine**: a computer a host or an adapter runs on.
 - **source**: where events happen, by name: releases, meetings, a
   folder, deploys.
@@ -1030,7 +1030,7 @@ once (60). The clock is the machine's (83).
 |---|---|
 | the folder drop, `weir capture folder <dir>` | one capture per file; key `folder/<folder name>/<sha256 of the file>`; event time the date the file's name begins with, or else its last write; source `folder`; the file as raw; no excerpt (61) |
 | the meeting file, `weir capture meeting <file>` | one capture per meeting file; key `meeting/file/<sha256 of the file>`; event time the meeting's start where the file says it, in a `start` or `date` field of its front matter, or else a date that opens its first line, or else as the folder drop; source `meeting`; the file as raw; no excerpt (62) |
-| the signals-folder import, `weir import signals <dir>` | one import line (C.1) per capture of crew's folders on a partition's flywheel branch, a `capture.md` and one `NN-<slug>.md` per signal, with `moves.rec`: a release capture keeps `release/<name>/<version>`, every other takes its folder's name (38); the capture's pointer as crew gave it; its signals and moves as read, a move whose word is not one of the six carried for 39 to leave unmoved. A meeting corpus already read in a blueprints repository comes the same way: its captures and signals from the repository's own reading, its moves from the partition's flywheel branch's `moves.rec` where a move names the signal by its key and number, and a signal no move names arrives unmoved. The host's import operation writes them (63, 75a) |
+| the signals-folder import, `weir import signals <dir>` | one import line (C.1) per capture of crew's folders on a partition's drive branch, a `capture.md` and one `NN-<slug>.md` per signal, with `moves.rec`: a release capture keeps `release/<name>/<version>`, every other takes its folder's name (38); the capture's pointer as crew gave it; its signals and moves as read, a move whose word is not one of the six carried for 39 to leave unmoved. A meeting corpus already read in a blueprints repository comes the same way: its captures and signals from the repository's own reading, its moves from the partition's drive branch's `moves.rec` where a move names the signal by its key and number, and a signal no move names arrives unmoved. The host's import operation writes them (63, 75a) |
 
 The sha256 is the capture crate's. The folder drop and the meeting file print contract lines a host takes as any adapter's (64); the import prints import lines a host's import operation writes (63, 75a).
 
@@ -1111,11 +1111,11 @@ C.1).
 ## 8. Non-goals
 
 - Who curates, and how: a reader's and curation's instructions are the
-  inbox's data and millpond's or Flywheel's concern.
+  inbox's data and millpond's or Boomdrive's concern.
 - A host's settings: which adapters run, where, on what schedule, and
   what becomes of an item.
 - Planning across items, the inquiry, the place and the agent: crew's,
-  Flywheel's, sounding's and flume's.
+  Boomdrive's, sounding's and flume's.
 - Who may write a shared branch: the repository's own access rules.
 - Encryption at rest, and backup: the machine's and the fleet's.
 
@@ -1132,7 +1132,7 @@ Constraints already fixed:
   shared branch, or a repository's content. On a shared branch a
   record is recutils, each naming `format: <tool>-<record>/<n>`, and
   JSON exists only in flight (D4).
-- The hosts are millpond today and Flywheel later, and an adapter runs
+- The hosts are millpond today and Boomdrive later, and an adapter runs
   unchanged under either. The kind's readers are flume, which reads a
   simple kind's places and stages and ticks a statechart kind on the
   engine, and sounding, which reads an elaboration kind's section too.

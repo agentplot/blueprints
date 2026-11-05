@@ -120,7 +120,7 @@ run, read by a gate, or waited on by an entry (103).
 
 ## The caller's side
 
-sluice knows no bolt and no card. A caller such as crew or flywheel
+sluice knows no bolt and no card. A caller such as crew or Boomdrive
 holds both, and owns each preview's life.
 
 ```mermaid

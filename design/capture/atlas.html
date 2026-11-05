@@ -92,9 +92,9 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
 <main>
   <header>
-    <div class="eyebrow">headwater · eddy · millpond · sluice · crew · Flywheel</div>
+    <div class="eyebrow">headwater · eddy · millpond · sluice · crew · Boomdrive</div>
     <h1>Capture Atlas</h1>
-    <p class="lede">Eight pictures of one system. Tools that notice things print captures, and millpond keeps them as an inbox of signals. Curation groups signals into items, and the work an item becomes lands through sluice. crew uses millpond the way it uses sluice, and Flywheel is later built from the same code.</p>
+    <p class="lede">Eight pictures of one system. Tools that notice things print captures, and millpond keeps them as an inbox of signals. Curation groups signals into items, and the work an item becomes lands through sluice. crew uses millpond the way it uses sluice, and Boomdrive is later built from the same code.</p>
   </header>
 
   <!-- 1 the family -->
@@ -102,7 +102,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
     <h2><span class="n">1</span>The tools and how they stack</h2>
     <figure>
       <div class="scroll">
-        <svg viewBox="0 0 1120 500" role="img" aria-label="headwater, eddy and the folder drop print capture lines into millpond, the inbox. millpond sends one item to a worktree or routes it into crew's plan, and both submit through sluice. Flywheel is later built on the same crates as millpond, and on sluice's SDK.">
+        <svg viewBox="0 0 1120 500" role="img" aria-label="headwater, eddy and the folder drop print capture lines into millpond, the inbox. millpond sends one item to a worktree or routes it into crew's plan, and both submit through sluice. Boomdrive is later built on the same crates as millpond, and on sluice's SDK.">
           <defs>
             <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hd"/></marker>
             <marker id="a1a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hd-a"/></marker>
@@ -182,7 +182,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
           <text x="906" y="302" class="ts">both submit through sluice</text>
 
           <rect x="350" y="410" width="750" height="72" rx="10" class="bx-dash"/>
-          <text x="370" y="440" class="tb">Flywheel, later</text>
+          <text x="370" y="440" class="tb">Boomdrive, later</text>
           <text x="370" y="462" class="ts">built on the same crates as millpond, and sluice's SDK. crew becomes it, keeping the same inboxes and adapters.</text>
         </svg>
       </div>
@@ -206,7 +206,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
           <rect x="20" y="70" width="170" height="72" rx="9" class="bx"/>
           <text x="36" y="98" class="t">Scheduler</text>
           <text x="36" y="118" class="ts">launchd or systemd;</text>
-          <text x="36" y="134" class="ts">Flywheel's tick later</text>
+          <text x="36" y="134" class="ts">Boomdrive's tick later</text>
           <line x1="190" y1="106" x2="226" y2="106" class="ar" marker-end="url(#a2)"/>
 
           <rect x="230" y="70" width="200" height="72" rx="9" class="bx"/>
@@ -280,7 +280,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
           <rect x="450" y="35" width="260" height="84" rx="9" class="bx-host"/>
           <text x="466" y="61" class="t">The inbox, in git</text>
           <text x="466" y="81" class="ts">captures and signals as records,</text>
-          <text x="466" y="97" class="ts">in Flywheel's formats, one copy</text>
+          <text x="466" y="97" class="ts">in Boomdrive's formats, one copy</text>
           <rect x="450" y="235" width="260" height="84" rx="9" class="bx"/>
           <text x="466" y="261" class="t">The raw bank, on the host</text>
           <text x="466" y="281" class="ts">never in git; fetched again</text>
@@ -385,7 +385,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
           <text x="20" y="436" class="tlo">A release that lands moves the pin, so headwater's next scan stops reporting it. No acknowledgement is written.</text>
         </svg>
       </div>
-      <figcaption>The unit of work is an item: the signals curation joined, one or many. millpond sends one item to one worktree. Planning across items, ordering them, splitting them over teams, is crew's planner today and Flywheel's later. A model runs in two places only: the reader and the curation session.</figcaption>
+      <figcaption>The unit of work is an item: the signals curation joined, one or many. millpond sends one item to one worktree. Planning across items, ordering them, splitting them over teams, is crew's planner today and Boomdrive's later. A model runs in two places only: the reader and the curation session.</figcaption>
     </figure>
   </section>
 
@@ -447,17 +447,17 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
     <figure>
       <div class="tw">
         <table>
-          <thead><tr><th></th><th>On its own</th><th>With crew</th><th>With Flywheel, later</th></tr></thead>
+          <thead><tr><th></th><th>On its own</th><th>With crew</th><th>With Boomdrive, later</th></tr></thead>
           <tbody>
             <tr class="same"><th>Adapters <span class="tag">same</span></th><td>headwater, eddy, the folder drop</td><td>headwater, eddy, the folder drop</td><td>headwater, eddy, the folder drop</td></tr>
-            <tr><th>Host</th><td><code>millpond run</code> on launchd or systemd</td><td>millpond, called by crew and the fleet's timers</td><td>Flywheel's host, on the same crates</td></tr>
+            <tr><th>Host</th><td><code>millpond run</code> on launchd or systemd</td><td>millpond, called by crew and the fleet's timers</td><td>Boomdrive's host, on the same crates</td></tr>
             <tr class="same"><th>Inbox <span class="tag">same files</span></th><td>a git repository of your own</td><td>crew's state repository, the partition's branch</td><td>the instance's state repository, the same files</td></tr>
-            <tr><th>Reading, moves</th><td>a Claude session curates through millpond's MCP tools; you accept</td><td>crew's curator, writing through millpond</td><td>Flywheel's capture-reader and curation</td></tr>
+            <tr><th>Reading, moves</th><td>a Claude session curates through millpond's MCP tools; you accept</td><td>crew's curator, writing through millpond</td><td>Boomdrive's capture-reader and curation</td></tr>
             <tr><th>Work</th><td>send an item to a worktree, then sluice</td><td>the planner proposes, a team builds, then sluice</td><td>units and bolts, then sluice</td></tr>
           </tbody>
         </table>
       </div>
-      <figcaption>Going from one setup to the next changes only the rows that aren't shaded. The adapters and the inbox's files stay put, so nothing is captured twice and nothing is imported when Flywheel takes over.</figcaption>
+      <figcaption>Going from one setup to the next changes only the rows that aren't shaded. The adapters and the inbox's files stay put, so nothing is captured twice and nothing is imported when Boomdrive takes over.</figcaption>
     </figure>
   </section>
 
@@ -466,20 +466,20 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
     <h2><span class="n">7</span>Where the code lives</h2>
     <figure>
       <div class="scroll">
-        <svg viewBox="0 0 1120 420" role="img" aria-label="weir holds the shared crates: capture, signals, the built-in adapters, cadence, the conformance pack and the Flywheel host. millpond, headwater, eddy and others' meeting plugins depend on those crates. crew calls millpond's command line.">
+        <svg viewBox="0 0 1120 420" role="img" aria-label="weir holds the shared crates: capture, signals, the built-in adapters, cadence, the conformance pack and the Boomdrive host. millpond, headwater, eddy and others' meeting plugins depend on those crates. crew calls millpond's command line.">
           <defs>
             <marker id="a6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hd"/></marker>
             <marker id="a6a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hd-a"/></marker>
           </defs>
           <rect x="300" y="30" width="520" height="170" rx="10" class="bx-host"/>
           <text x="316" y="56" class="tb">weir</text>
-          <text x="316" y="76" class="ts">Flywheel's code; its statement owns the formats</text>
+          <text x="316" y="76" class="ts">Boomdrive's code; its statement owns the formats</text>
           <rect x="316" y="92" width="150" height="42" rx="6" class="bx"/><text x="326" y="110" class="tm">capture</text><text x="326" y="125" class="ts">contract, keys, cut</text>
           <rect x="476" y="92" width="160" height="42" rx="6" class="bx"/><text x="486" y="110" class="tm">signals</text><text x="486" y="125" class="ts">records, moves, inbox</text>
           <rect x="646" y="92" width="158" height="42" rx="6" class="bx"/><text x="656" y="110" class="tm">adapters</text><text x="656" y="125" class="ts">folder, file, import</text>
           <rect x="316" y="144" width="150" height="42" rx="6" class="bx"/><text x="326" y="162" class="tm">cadence</text><text x="326" y="177" class="ts">schedules</text>
           <rect x="476" y="144" width="160" height="42" rx="6" class="bx"/><text x="486" y="162" class="tm">conformance pack</text><text x="486" y="177" class="ts">lines in, records out</text>
-          <rect x="646" y="144" width="158" height="42" rx="6" class="bx"/><text x="656" y="162" class="tm">flywheel host</text><text x="656" y="177" class="ts">later: machines, hosts</text>
+          <rect x="646" y="144" width="158" height="42" rx="6" class="bx"/><text x="656" y="162" class="tm">boomdrive host</text><text x="656" y="177" class="ts">later: machines, hosts</text>
 
           <rect x="30" y="60" width="220" height="100" rx="9" class="bx"/>
           <text x="46" y="86" class="tb">crew</text>
@@ -500,14 +500,14 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
           <text x="316" y="316" class="ts">the dependency core</text>
           <text x="316" y="352" class="tm">plugins/claude</text>
           <text x="316" y="368" class="tm">plugins/herdr</text>
-          <text x="316" y="384" class="tm">plugins/flywheel</text>
+          <text x="316" y="384" class="tm">plugins/boomdrive</text>
 
           <rect x="570" y="270" width="240" height="130" rx="9" class="bx"/>
           <text x="586" y="296" class="tb">eddy</text>
           <text x="586" y="316" class="ts">meeting core: wispr, webex, teams</text>
           <text x="586" y="352" class="tm">plugins/claude</text>
           <text x="586" y="368" class="tm">plugins/herdr</text>
-          <text x="586" y="384" class="tm">plugins/flywheel</text>
+          <text x="586" y="384" class="tm">plugins/boomdrive</text>
 
           <rect x="840" y="270" width="250" height="130" rx="9" class="bx-dash"/>
           <text x="856" y="296" class="tb">others' meeting plugins</text>
@@ -533,17 +533,17 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
     <figure>
       <div class="scroll">
         <div class="lanes">
-          <div class="ph"></div><div class="ph">0 · rule, write down</div><div class="ph">1 · contract, inbox core</div><div class="ph">2 · the tools</div><div class="ph">3 · crew, swancloud on it</div><div class="ph">4 · curation to work</div><div class="ph">5 · Flywheel hosts</div>
+          <div class="ph"></div><div class="ph">0 · rule, write down</div><div class="ph">1 · contract, inbox core</div><div class="ph">2 · the tools</div><div class="ph">3 · crew, swancloud on it</div><div class="ph">4 · curation to work</div><div class="ph">5 · Boomdrive hosts</div>
 
           <div class="lane">Decide</div>
           <div><span class="c w">headwater's 33 rulings</span><span class="c w">the design's decisions</span><span class="c w">the old meeting sweep</span></div>
           <div></div><div></div><div></div><div></div><div></div>
 
-          <div class="lane">Flywheel</div>
+          <div class="lane">Boomdrive</div>
           <div><span class="c">contract clauses in its statement</span></div>
           <div><span class="c">capture and signals crates</span><span class="c">built-ins print lines</span><span class="c">conformance pack</span></div>
           <div></div><div></div><div></div>
-          <div><span class="c">host on the same crates</span><span class="c">crew becomes Flywheel</span></div>
+          <div><span class="c">host on the same crates</span><span class="c">crew becomes Boomdrive</span></div>
 
           <div class="lane">millpond</div>
           <div><span class="c">its statement</span></div>

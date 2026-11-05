@@ -123,7 +123,7 @@ asks. Licences and bills of materials are outside it (section 8).
 ## Where it sits
 
 headwater stands alone, with plugins for Claude Code and herdr. Its
-Flywheel plugin holds an adapter part that prints each release as a
+Boomdrive plugin holds an adapter part that prints each release as a
 capture for [millpond](../millpond/), the inbox, which lands each
 release once and lets curation turn it into work. Whatever bump comes
 of it lands through [sluice](../sluice/). headwater never knows which

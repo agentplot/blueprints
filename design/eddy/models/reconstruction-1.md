@@ -1,6 +1,6 @@
 # eddy: a model from the statement
 
-Built from `requirements.md` alone. Clauses are cited by bare number in parentheses; section-10 questions as (q1)…(q12); scenarios as S1…S16. Where the statement names a thing it does not define (RFC 3339, RFC 3986, MCP, TOML, JSON, XDG, Flywheel's capture crate, Wispr Flow, Webex, Graph), it is a black box here, and what the model needed of it is a question at the end.
+Built from `requirements.md` alone. Clauses are cited by bare number in parentheses; section-10 questions as (q1)…(q12); scenarios as S1…S16. Where the statement names a thing it does not define (RFC 3339, RFC 3986, MCP, TOML, JSON, XDG, Boomdrive's capture crate, Wispr Flow, Webex, Graph), it is a black box here, and what the model needed of it is a question at the end.
 
 ## The form
 
@@ -26,7 +26,7 @@ Considered and rejected:
      │           │              │             │                     │ settings (eddy.toml / CAPTURE_CONFIG)
      ▼           ▼              ▼             ▼                     ▼
  ┌─────────┐ ┌───────────┐ ┌───────────┐ ┌───────────────┐   ┌────────────────────┐
- │  CLI    │ │ Claude    │ │  herdr    │ │ Flywheel      │   │ capture host       │
+ │  CLI    │ │ Claude    │ │  herdr    │ │ Boomdrive      │   │ capture host       │
  │ surface │ │ Code plug │ │  plugin   │ │ plugin:       │◄──┤ (millpond / tick)  │ start · hand · mark · end (51–54)
  └────┬────┘ └─────┬─────┘ └─────┬─────┘ │ adapter parts │   │ keeps captures,    │
       │            │             │       └──────┬────────┘   │ cursor, raw bank   │
@@ -296,7 +296,7 @@ Guarantee (50): one meeting, one id, every call. Where a service's ids are uniqu
 
 Each profile is tested by replaying recorded responses: the adapter takes a transport it can be given a recording of, so no test needs an account, a sign-in or the network (C.3).
 
-### 5.2 The capture host (B.2) — bound by Flywheel's capture contract (C.1)
+### 5.2 The capture host (B.2) — bound by Boomdrive's capture contract (C.1)
 
 | port op | contract |
 |---|---|
@@ -307,7 +307,7 @@ Each profile is tested by replaying recorded responses: the adapter takes a tran
 
 Guarantee the model relies on and never reimplements (55, C.1): the host refuses a bad line and takes the rest; passes over a key it holds; banks raw files under the capture's name behind `<host>:<path>`; keeps every capture of an incomplete run, drops its cursor, records it failed; marks a capture with no excerpt unread.
 
-The part declares itself to the host through eddy's Flywheel plugin: command, configuration shape, secrets needed (C.1 start row). A part never learns the inbox (27) and nothing in its environment but `CAPTURE_CONFIG`, `--raw-dir`, `--cursor` and the secrets reaches it from the host.
+The part declares itself to the host through eddy's Boomdrive plugin: command, configuration shape, secrets needed (C.1 start row). A part never learns the inbox (27) and nothing in its environment but `CAPTURE_CONFIG`, `--raw-dir`, `--cursor` and the secrets reaches it from the host.
 
 ### 5.3 The stores (B.3)
 
@@ -317,8 +317,8 @@ The part declares itself to the host through eddy's Flywheel plugin: command, co
 | keep-cursor (58) | the capture host | the last `cursor` line of a run that ends in `done` |
 | read-sign-in (60) | eddy's own, alone and under millpond | the file `$XDG_STATE_HOME/eddy/sign-in/<service>/<enc(account)>` |
 | write-sign-in (61) | eddy's own | write `…/<enc(account)>.tmp.<pid>` beside the old, `fsync`, rename over the old, under a lock on `…/<service>/.lock` held for the write |
-| read-sign-in (60) | the host's secrets, under Flywheel | the environment variable the part declared for the secret |
-| write-sign-in (61) | the host's secrets, under Flywheel | **not given by the statement** (q7, question 17) |
+| read-sign-in (60) | the host's secrets, under Boomdrive | the environment variable the part declared for the secret |
+| write-sign-in (61) | the host's secrets, under Boomdrive | **not given by the statement** (q7, question 17) |
 | place-raw (63) | the raw bank | eddy writes C.4's three files under `<dir>/<enc>/`; the host banks them |
 | (transcripts alone) | none | the transcript goes to the asker and is written nowhere (29) |
 
@@ -344,7 +344,7 @@ $XDG_STATE_HOME/eddy/sign-in/<service>/.lock            the write lock (61)
 <dir>/<enc(id)>/{transcript.<form>, turns.txt, meeting.json}   a run's raw material, the host's to bank (C.4, C.5)
 ```
 
-Not eddy's: the cursor (the host's state directory under millpond, the tick's own state under Flywheel: C.5); the inbox; the raw bank; any list of what was handed (I4). The settings file holds no sign-in (33); for the generic part it holds the endpoint's description and the name the service goes by (45). The shape above is the model's; the statement fixes the path and the fields, not the layout (question 25).
+Not eddy's: the cursor (the host's state directory under millpond, the tick's own state under Boomdrive: C.5); the inbox; the raw bank; any list of what was handed (I4). The settings file holds no sign-in (33); for the generic part it holds the endpoint's description and the name the service goes by (45). The shape above is the model's; the statement fixes the path and the fields, not the layout (question 25).
 
 ## 7. Lifecycles
 
@@ -416,7 +416,7 @@ Four, each a plugin outside the core, each calling the core's operations and pri
 | command line `eddy` | `list <part> --from --to [--json]`, `day [--date] [--zone] [--json]`, `transcript <key> [--range] [--json]`, `turns <key> [--json]`, `status [--json]`, `sign-in <part>`, `capture <part> --raw-dir <dir> [--cursor <c>]` | the core's JSON with `--json`, a text rendering otherwise; the same fields through every surface |
 | Claude Code plugin | pulls a meeting's transcript or plain copy into a session, by identity or by the day's listing; a skill that runs `eddy day --json` then `eddy turns <key>` | the core's answers, unchanged (S8); it tells the session nothing of what to make of a meeting (42) |
 | herdr plugin | a pane showing the day's meetings of every account, each by its identity, with "not ready" where so, and each account whose listing is not complete named with its reason beside the rest (S9) | `eddy day --json` at each refresh |
-| Flywheel plugin | declares each of eddy's parts as an adapter part: its command `eddy capture <part>`, its configuration shape, its secrets | the part speaks C.1 on stdout |
+| Boomdrive plugin | declares each of eddy's parts as an adapter part: its command `eddy capture <part>`, its configuration shape, its secrets | the part speaks C.1 on stdout |
 
 The identity an asker passes is the key; a surface may also accept `<part> <raw id>` and encode it, since the key is a pure function (3). The day's zone and date default to the surface's process, and the answer states the zone, date and the resolved `from`/`to` instants, so two askers in two zones can see why their "today" differs (38, 83).
 
@@ -517,7 +517,7 @@ The quick call is absent (S7). The pane shows three rows, one marked not ready, 
 | q4 default earliest start | **Carried** (question 3): the model refuses to run a part with no earliest start and no cursor, since any default invents a bound the operator did not set. |
 | q5 ids unique only per account or tenant | Carried to each service (question 24). The identity carries no account, so if a service reuses an id across accounts, 4 fails unless the profile folds a tenant into the id. |
 | q6 the generic name unique across machines | **Carried** (question 19). 45 is checked on one machine's settings; the statement gives eddy no view of other machines (27, 33). |
-| q7 a sign-in renewed on use under Flywheel's env secrets | **Carried, blocking** (question 17). The host places it; no clause gives a way to write it back. |
+| q7 a sign-in renewed on use under Boomdrive's env secrets | **Carried, blocking** (question 17). The host places it; no clause gives a way to write it back. |
 | q8 a cursor when runs move machines | Default: discarded; the next run lists from the earliest start and loses nothing (30, 59). Cost: a refetch of everything since the earliest start, every capture passed over. |
 | q9 does the herdr plugin hand on; does the Claude Code plugin find by anything but identity and window | Default: the herdr plugin hands nothing on; a pane row offers the key for a session's `eddy turns`. The Claude Code plugin finds a meeting only by its key or by the day's listing (38). Question 21. |
 | q10 shared code published | Default yes: a library the parts and other authors use for identity, skip, plain copy, `meeting.json` and the lines (43). Question 22. |
@@ -567,7 +567,7 @@ Each is a decision the statement does not make. **blocking** means a builder can
 14. **Attendees' shape** (6, 8, q11). Strings? Objects with name and address? Verbatim JSON? **can default**: the service's own value carried verbatim into `meeting.json`; the listing gives the same.
 15. **What a turn is when a transcript gives consecutive segments by one speaker, or no speakers at all** (14, 78, C.4). Folding changes the line count; not folding breaks "one line per turn". A `txt` transcript with no speakers and no times is one turn or one per line. **can default**: fold consecutive segments of one named speaker; a segment with no speaker is a turn; a transcript with no structure is one turn per line as served. Conformance should fix this, since another author's part must match (43).
 16. **Offsets: absolute vs relative times, sub-seconds, beyond 24 h, and a start without an offset** (14, C.4, 7). `HH:MM:SS` needs the meeting's start for absolute times; a service that gives wall time with no offset cannot give an instant, and 6 forbids inventing one. **can default**: truncate to whole seconds, hours unbounded; a start with no offset is "not given" and the meeting fails (23) unless the part's settings name the account's zone.
-17. **Writing a renewed sign-in under Flywheel** (32, 60, 61, q7). The host places the secret in the environment; a service that renews on use and invalidates the old leaves the next run with nothing. Options: eddy's own store is authoritative on every host and the environment only seeds it; the host offers a write; services that renew on use are not run under Flywheel. **blocking** for any service that renews on use.
+17. **Writing a renewed sign-in under Boomdrive** (32, 60, 61, q7). The host places the secret in the environment; a service that renews on use and invalidates the old leaves the next run with nothing. Options: eddy's own store is authoritative on every host and the environment only seeds it; the host offers a write; services that renew on use are not run under Boomdrive. **blocking** for any service that renews on use.
 18. **Where a cursor lives when a part's runs move to another machine** (57, 58, q8). **can default**: it does not move; the next run lists from the earliest start (30).
 19. **The generic part's name across machines** (45, q6). eddy sees one machine's settings; two machines can give two services one name and collide in one inbox, or one service two names and double it. Options: the operator's responsibility; a registry the host provides; names carry the machine. **can default**: the operator's, and 45 is checked per machine against built-in and configured names only.
 20. **Teams's and Webex's ids against clause 1** (1, 2, 50, C.3, q1). Teams: the transcript's id, so two transcripts of one occurrence are two meetings (against 1). Webex: the instance id, so two transcripts of one instance are one key and the second is never captured. Options: fold the transcript id into the key for both; keep as C.3 says and accept; make the second transcript "more raw material of the first", which 55 does not allow after a hand. **blocking** for `teams` and `webex`; `wispr` needs the same answer (does the endpoint ever give two transcripts for one id?).

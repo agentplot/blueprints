@@ -1,6 +1,6 @@
 # Curation and moves
 
-Curation gives each signal one of Flywheel's six moves (116). A
+Curation gives each signal one of Boomdrive's six moves (116). A
 curation session is a Claude session working through millpond's tools.
 It proposes moves in batches, the operator accepts or changes each
 batch, and the session writes it. Curation writes no captures and no
@@ -12,7 +12,7 @@ signals.
 |---|---|
 | `drop` | Records the reason. |
 | `answered` | Names the claim or record that settled it. |
-| `challenge` | Weighs against a claim. Only an inbox beside Flywheel's claims has one. |
+| `challenge` | Weighs against a claim. Only an inbox beside Boomdrive's claims has one. |
 | `join` | Makes an item, or grows a proposed one, from any number of signals. |
 | `attach` | Puts the signal on an item already sent. |
 | `route` | Offers a chore, which millpond makes an item of one, or an ask, which it records. |

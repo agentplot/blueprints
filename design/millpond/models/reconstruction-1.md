@@ -47,7 +47,7 @@ Forms considered and rejected:
   │  place   │  starter  │ merge q.  │   inquiry    │   planner   │  claims   │
   │ 89–90    │  91–92    │ record    │   95–97      │   98–99     │  100      │
   │ worktree │ pane/cmd/ │ 93–94     │   sounding   │   crew      │ none /    │
-  │          │ launcher  │ sluice    │              │             │ Flywheel  │
+  │          │ launcher  │ sluice    │              │             │ Boomdrive  │
   └──────────┴───────────┴───────────┴──────────────┴─────────────┴───────────┘
 ```
 
@@ -514,7 +514,7 @@ Every surface answers from these, in one machine-readable form that only gains f
 | merge queue's record | landed (93) | what the queue recorded, never inferred (94) | sluice's entry: state and landing commit on the branch landed on (C.7) | — |
 | inquiry | open (95), conclusion (96) | accepted only once the operator accepted; never changes after (97) | sounding: `sounding open` → `question.md` on `sounding/<name>`; `conclusion.md`; findings back via `sounding offer` → `millpond land` under `sounding/<name>/<n>` (C.8) | — |
 | planner | hand (98) | holds once; plans alone (99) | crew: reads items through millpond's command line; operator decides on the rail (C.9) | at most one per inbox |
-| claims | standing (100) | — | none (every challenge refused) on its own or with crew; Flywheel's with Flywheel (C.10) | at most one per inbox |
+| claims | standing (100) | — | none (every challenge refused) on its own or with crew; Boomdrive's with Boomdrive (C.10) | at most one per inbox |
 
 Missing from Part B and needed by the model: a **secrets** port (where a declared secret's value comes from on a host, 20, 75, C.1) — Q2.
 
@@ -532,7 +532,7 @@ inbox store (git repository or a branch; C.2)
   <event date>/<key…>/                   — one folder per capture (C.2 "named from its event date and its key")
      capture      flywheel-capture/1
      <n>.signal   flywheel-signal/1      — n = 1 is the own signal when there is one
-     reading mark — part of the capture record or beside it (Q: format is Flywheel's)
+     reading mark — part of the capture record or beside it (Q: format is Boomdrive's)
   moves/                                 — flywheel-move/1; batch records beside them (Q13)
   items/<name>/                          — the item record: brief, sends, landing, conclusion record
   (keys never start with "captures" or "moves", so a key cannot collide with these folders: 7, C.1)
@@ -658,7 +658,7 @@ one commit. Exit 0 after `done`: complete. State h1/releases: `cursor = "2026-10
 
 **E11 — S18, the deploy.** `millpond land` on h1 with `{"capture":{"key":"deploy/swancloud-srv/2026-10-17T05:10Z","source":"deploy","event_at":"2026-10-17T05:10:41Z","excerpt":{"text":"<last 30 lines>","kind":"reaction",…}}}`: within the limit, no raw → capture with `pointer = none`, `origin = intake`, own signal; answer to the caller `took=1 held=0 refused=[]`; no per-host state touched.
 
-**E12 — S13, an import twice.** `import crew-folders ./flywheel`: a release folder keeps `release/mise/2026.9.18`; a meeting folder `2026-09-30-standup` takes that name as key. Second import: every key held → nothing. Later `releases` run offers `release/mise/2026.9.18` → held.
+**E12 — S13, an import twice.** `import crew-folders ./drive`: a release folder keeps `release/mise/2026.9.18`; a meeting folder `2026-09-30-standup` takes that name as key. Second import: every key held → nothing. Later `releases` run offers `release/mise/2026.9.18` → held.
 
 **E13 — S15/S16.** h1's state directory deleted: next tick, `releases` is due (no status), runs with no cursor, lists its whole window, every key held. h1 asleep through 04:30 on three days: at wake one tick, `due` true once, one run.
 
@@ -723,7 +723,7 @@ Each is a decision the statement does not make. Clauses in parentheses.
 8. **Which excerpt fields are required present** (7, 34). `argues_with` "when it argues with anything": is an absent list a missing field? **Can default:** present, possibly empty; `subjects` likewise.
 9. **A capture with neither raw nor excerpt: which host charges a reader, and can a reading hold signals** (15, 32, 33). Guessed wrong, such captures are never read anywhere, or signals are written with excerpts that stand nowhere. **Can default:** charged on `taken_on`; only an empty reading stands.
 10. **What "stands unchanged" means** (32, 117). Bytes in one file, or words with whitespace evened; whether position is checked. Guessed wrong, every reader's quote across a wrapped transcript line is refused, or an excerpt from no file is taken. **Blocking** for reader conformance. Default: §3.10.
-11. **Signal identity in a move** (34, 36, C.2). Flywheel's format is a black box here; a move must name a signal across hosts and imports. **Blocking**, needed from the external standard. Default: `<key>#<n>`.
+11. **Signal identity in a move** (34, 36, C.2). Boomdrive's format is a black box here; a move must name a signal across hosts and imports. **Blocking**, needed from the external standard. Default: `<key>#<n>`.
 12. **Who names an item** (36, 46). Curation's join "names the item it makes"; whether millpond or curation picks the never-used name. **Can default:** curation proposes, millpond refuses a name ever used.
 13. **Whether a proposed batch is a record** (40, 43, 64, section 9's herdr plugin). 64 says a surface shows only records, bank and state, and the plugin shows a proposed batch row by row. **Blocking** for the plugin and for "with crew" where no operator accepts batches (57). Default: a `Batch{proposed}` record whose moves are not standing.
 14. **The operator's identity and the surface for replacing a move** (35, 51, 57). Section 9's command line lacks a replace; `asked_by` and `decided_by` are strings nothing verifies. **Can default:** a command-line `move replace --by`; trust the caller.

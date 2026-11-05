@@ -227,7 +227,7 @@ timeout   = "10m"                    # optional; the branch's time limit otherwi
 
 ## For the caller
 
-This section is for crew, flywheel and anything else that asks for
+This section is for crew, Boomdrive and anything else that asks for
 previews. sluice knows no bolt, no card and no proxy; the caller does.
 
 ### What a preview is for
@@ -248,7 +248,7 @@ credentials, which sluice never holds. sluice is the integration half of
 CI/CD: it decides what lands and shows what landed running. The delivery
 half, putting a revision into a real environment, is another provider's.
 
-### How crew and flywheel use it
+### How crew and Boomdrive use it
 
 ```
  unit lands on bolt at R1   --> sluice preview <bolt> R1

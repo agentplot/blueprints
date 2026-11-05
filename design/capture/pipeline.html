@@ -171,7 +171,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
           <rect x="570" y="50" width="220" height="120" rx="10" class="bx-hw"/>
           <text x="586" y="76" class="t" style="font-size:15px">inbox</text>
           <text x="586" y="98" class="ts">captures · signals · moves · items</text>
-          <text x="586" y="120" class="ts">in Flywheel's record formats</text>
+          <text x="586" y="120" class="ts">in Boomdrive's record formats</text>
           <text x="586" y="142" class="ts">a repository, or a branch in one</text>
           <line x1="500" y1="110" x2="568" y2="110" class="ar" marker-end="url(#pa)"/>
           <text x="534" y="100" class="tl" text-anchor="middle">writes</text>
@@ -232,7 +232,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
         <thead><tr><th>Part</th><th>Owns</th><th>Never</th></tr></thead>
         <tbody>
           <tr><td>An adapter</td><td>One source. It lists the source's events, keys each one, fetches the raw material, and marks a capture that is its own excerpt.</td><td>Writes records, keeps a list of what it reported, cuts an excerpt, or reads a capture into signals.</td></tr>
-          <tr><td>headwater</td><td>Releases and advisories for what a repository declares. Stands alone with its Claude Code and herdr plugins; its Flywheel plugin holds an adapter part.</td><td>Knows which inbox records its releases.</td></tr>
+          <tr><td>headwater</td><td>Releases and advisories for what a repository declares. Stands alone with its Claude Code and herdr plugins; its Boomdrive plugin holds an adapter part.</td><td>Knows which inbox records its releases.</td></tr>
           <tr><td>eddy</td><td>Recorded meetings across services, a part per service. Stands alone as headwater does.</td><td>Reads a meeting into signals.</td></tr>
           <tr><td>millpond</td><td>The contract's intake, dedupe by key, the raw bank, captures and own-excerpt signals, the inbox, the verbatim check on a reader's excerpts, moves, items, sends, and the run record.</td><td>Judges what a capture says, or plans across items.</td></tr>
           <tr><td>A reader</td><td>Reads a capture that is not its own excerpt into signals, through millpond.</td><td>Lists a source.</td></tr>
@@ -247,7 +247,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
 
   <section class="col">
     <h2>The contract</h2>
-    <p>An adapter writes JSON Lines to standard output. Each line holds one <code>capture</code>, the <code>cursor</code> to hand back next run, or <code>done</code> with the run's counts and failures. millpond runs it as <code>&lt;command&gt; --raw-dir &lt;dir&gt; [--cursor &lt;c&gt;]</code>, and Flywheel later runs it the same way.</p>
+    <p>An adapter writes JSON Lines to standard output. Each line holds one <code>capture</code>, the <code>cursor</code> to hand back next run, or <code>done</code> with the run's counts and failures. millpond runs it as <code>&lt;command&gt; --raw-dir &lt;dir&gt; [--cursor &lt;c&gt;]</code>, and Boomdrive later runs it the same way.</p>
     <pre>{"capture": {"key": "release/mise/2026.10.10", "source": "release",
   "event_at": "2026-10-10T14:02:11Z", "title": "mise 2026.10.10",
   "raw": ["mise-2026.10.10/notes.md", "mise-2026.10.10/release.json"],
@@ -271,9 +271,9 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
       <div>
         <h3>The inbox</h3>
         <ul>
-          <li>A git repository, or a branch in one, holding captures, signals, moves and items in Flywheel's record formats.</li>
+          <li>A git repository, or a branch in one, holding captures, signals, moves and items in Boomdrive's record formats.</li>
           <li><code>millpond.toml</code> at its root names its parts, each with a schedule and the one host whose tick runs it, its cut, its reader and where items go.</li>
-          <li>On its own: a repository of yours. With crew: the partition's flywheel branch. With Flywheel: the same files, no import.</li>
+          <li>On its own: a repository of yours. With crew: the partition's drive branch. With Boomdrive: the same files, no import.</li>
           <li>crew's folders and the meeting corpus come in once through millpond's import, keeping their keys.</li>
         </ul>
       </div>
@@ -294,7 +294,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
         <tbody>
           <tr><td>drop</td><td>Records the reason.</td></tr>
           <tr><td>answered</td><td>Names the claim or record that settled it.</td></tr>
-          <tr><td>challenge</td><td>Weighs against a claim; only an inbox beside Flywheel's claims has one.</td></tr>
+          <tr><td>challenge</td><td>Weighs against a claim; only an inbox beside Boomdrive's claims has one.</td></tr>
           <tr><td>join</td><td>Makes an item, or grows a proposed one, from any number of signals.</td></tr>
           <tr><td>attach</td><td>Puts the signal on an item already sent.</td></tr>
           <tr><td>route</td><td>Offers a chore, which millpond makes an item of one, or an ask, which it records.</td></tr>
@@ -327,7 +327,7 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
       <div>
         <h3>Any other file: the folder drop</h3>
         <ul>
-          <li>Flywheel's folder adapter, built into millpond: <code>millpond capture folder &lt;dir&gt;</code>.</li>
+          <li>Boomdrive's folder adapter, built into millpond: <code>millpond capture folder &lt;dir&gt;</code>.</li>
           <li>Keyed by the file's sha256, so a file dropped twice is one capture.</li>
           <li>No excerpt: a reader tells a transcript from an email by what it holds.</li>
           <li>An adapter with a generic source ships in millpond; one wrapping another tool's domain ships with that tool.</li>
@@ -342,13 +342,13 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
       <table>
         <thead><tr><th>Part</th><th>Built in</th><th>Used by</th></tr></thead>
         <tbody>
-          <tr><td>Contract types and key rules</td><td>flywheel-next's capture crate, split from <code>signals.rs</code>: JSON in flight, rec at rest, sha256, the cut</td><td>millpond, Flywheel, headwater's and eddy's adapter parts</td></tr>
-          <tr><td>Signal, move and item records</td><td>flywheel-next's signals crate, with the inbox's layout</td><td>millpond, Flywheel</td></tr>
-          <tr><td>Built-in adapters</td><td>flywheel-next's adapters crate: folder drop, meeting file, signals-folder import</td><td>millpond, Flywheel</td></tr>
-          <tr><td>Cadence</td><td>flywheel-next's <code>cadence.rs</code>: five-field cron, caught up once</td><td><code>millpond tick</code>, Flywheel's tick</td></tr>
-          <tr><td>Conformance pack</td><td>flywheel-next: lines in, records expected</td><td>millpond and Flywheel as hosts, every adapter part</td></tr>
-          <tr><td>Raw bank, capture checks, verbatim check</td><td>millpond, from crew's checks</td><td>Flywheel (217h, 217e)</td></tr>
-          <tr><td>Finding releases</td><td>swancloud's release adapter today</td><td>headwater's lookups and Flywheel plugin</td></tr>
+          <tr><td>Contract types and key rules</td><td>flywheel-next's capture crate, split from <code>signals.rs</code>: JSON in flight, rec at rest, sha256, the cut</td><td>millpond, Boomdrive, headwater's and eddy's adapter parts</td></tr>
+          <tr><td>Signal, move and item records</td><td>flywheel-next's signals crate, with the inbox's layout</td><td>millpond, Boomdrive</td></tr>
+          <tr><td>Built-in adapters</td><td>flywheel-next's adapters crate: folder drop, meeting file, signals-folder import</td><td>millpond, Boomdrive</td></tr>
+          <tr><td>Cadence</td><td>flywheel-next's <code>cadence.rs</code>: five-field cron, caught up once</td><td><code>millpond tick</code>, Boomdrive's tick</td></tr>
+          <tr><td>Conformance pack</td><td>flywheel-next: lines in, records expected</td><td>millpond and Boomdrive as hosts, every adapter part</td></tr>
+          <tr><td>Raw bank, capture checks, verbatim check</td><td>millpond, from crew's checks</td><td>Boomdrive (217h, 217e)</td></tr>
+          <tr><td>Finding releases</td><td>swancloud's release adapter today</td><td>headwater's lookups and Boomdrive plugin</td></tr>
         </tbody>
       </table>
     </div>
@@ -360,13 +360,13 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
     <ol class="dec">
       <li><span>headwater is for dependencies and eddy for meetings. The work every source shares is millpond's, through the contract.</span></li>
       <li><span>millpond is a standalone tool, the inbox: it runs adapters, keeps captures and signals, serves the tools curation works through, and sends an item to a worktree. crew calls its command line as it calls sluice's.</span></li>
-      <li><span>Flywheel's statement owns the contract and the record formats. flywheel-next's crates implement them once; millpond is built on them, and Flywheel's host later on the same crates.</span></li>
-      <li><span>An inbox is a git repository, or a branch in one, in Flywheel's formats. crew's partition branches become inboxes, crew's folders and the meeting corpus are imported once, and Flywheel reads the same inboxes with no import.</span></li>
-      <li><span>The unit of work is an item, the signals curation joined, one or many. millpond sends one item to one worktree; planning across items is crew's planner today and Flywheel's later.</span></li>
+      <li><span>Boomdrive's statement owns the contract and the record formats. flywheel-next's crates implement them once; millpond is built on them, and Boomdrive's host later on the same crates.</span></li>
+      <li><span>An inbox is a git repository, or a branch in one, in Boomdrive's formats. crew's partition branches become inboxes, crew's folders and the meeting corpus are imported once, and Boomdrive reads the same inboxes with no import.</span></li>
+      <li><span>The unit of work is an item, the signals curation joined, one or many. millpond sends one item to one worktree; planning across items is crew's planner today and Boomdrive's later.</span></li>
       <li><span>A Claude session works a backlog through millpond's tools, proposing moves in batches you accept or change. herdr shows the counts, reviews a batch and sends an item.</span></li>
       <li><span>A program lists meetings and a session reads them. eddy holds a part per meeting service, its Wispr part an MCP client that starts no Claude session. Others publish meeting plugins of their own.</span></li>
       <li><span>An adapter whose source needs no other tool ships inside millpond. One that wraps another tool's domain ships with that tool, so headwater's and eddy's parts stay theirs.</span></li>
-      <li><span>"Plugin" replaces Flywheel's "package" and "bundle".</span></li>
+      <li><span>"Plugin" replaces Boomdrive's "package" and "bundle".</span></li>
       <li><span>The release adapter lands through millpond on trial before headwater exists, so the contract carries live captures first.</span></li>
     </ol>
     <p class="note">On the Pending You card: accept them all, or accept with changes named by number.</p>
@@ -377,17 +377,17 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
     <p class="col">Each phase ends with something running on real work. Once millpond's core exists, headwater, eddy, millpond's plugins and crew's move onto millpond proceed side by side.</p>
     <div class="scroll" style="margin-top:8px">
       <div class="lanes">
-        <div class="ph"></div><div class="ph">0 · rule, write down</div><div class="ph">1 · contract, millpond's core</div><div class="ph">2 · the tools</div><div class="ph">3 · crew, swancloud on millpond</div><div class="ph">4 · curation to work</div><div class="ph">5 · Flywheel hosts</div>
+        <div class="ph"></div><div class="ph">0 · rule, write down</div><div class="ph">1 · contract, millpond's core</div><div class="ph">2 · the tools</div><div class="ph">3 · crew, swancloud on millpond</div><div class="ph">4 · curation to work</div><div class="ph">5 · Boomdrive hosts</div>
 
         <div class="lane">Decide</div>
         <div><span class="chip wait"><b>D1</b>headwater's 33 rulings</span><span class="chip wait"><b>D2</b>these 10 decisions</span><span class="chip wait"><b>D3</b>the old meeting sweep</span></div>
         <div></div><div></div><div></div><div></div><div></div>
 
-        <div class="lane">Flywheel</div>
+        <div class="lane">Boomdrive</div>
         <div><span class="chip"><b>F1</b>contract, inbox in the statement</span></div>
         <div><span class="chip"><b>F2</b>capture, signals crates, pack</span><span class="chip"><b>F3</b>adapters crate</span></div>
         <div></div><div></div><div></div>
-        <div><span class="chip"><b>F4</b>host on the same crates</span><span class="chip"><b>F5</b>crew becomes Flywheel</span></div>
+        <div><span class="chip"><b>F4</b>host on the same crates</span><span class="chip"><b>F5</b>crew becomes Boomdrive</span></div>
 
         <div class="lane">millpond</div>
         <div><span class="chip"><b>P1</b>its statement</span></div>
@@ -436,9 +436,9 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
           <tr><td>D3</td><td>Stop or repair the old meeting sweep</td><td>none</td><td>It runs green or is unloaded</td></tr>
           <tr><td>P1</td><td>Write millpond's statement; a fresh model reconstructs it and you rule its questions</td><td>D2</td><td>The questions are ruled and folded in, and you agree to land it</td></tr>
           <tr><td>H1</td><td>Amend headwater's statement: the rulings, watch-list claims and key, the contract</td><td>D1, D2</td><td>Vale is clean, and you agree to land it</td></tr>
-          <tr><td>F1</td><td>Write the contract and the item record into Flywheel's statement (109, 112, 114, 215, 217e, 217g, 217h, 228, 231, 284)</td><td>D2</td><td>A fresh model reconstructs the lines and the seven steps from the clauses alone</td></tr>
+          <tr><td>F1</td><td>Write the contract and the item record into Boomdrive's statement (109, 112, 114, 215, 217e, 217g, 217h, 228, 231, 284)</td><td>D2</td><td>A fresh model reconstructs the lines and the seven steps from the clauses alone</td></tr>
           <tr><td>C1</td><td>Amend crew's record: <span class="mono">signals.1</span>, <span class="mono">signals.6</span>, an ADR, the reader and curator changes</td><td>D2</td><td>It lands through sluice, and <span class="mono">_open.md</span> stops asking where meeting signals live</td></tr>
-          <tr><td>F2</td><td>The capture and signals crates, and the conformance pack with meeting checks</td><td>F1</td><td>Flywheel passes the pack; the crates are usable at a tag</td></tr>
+          <tr><td>F2</td><td>The capture and signals crates, and the conformance pack with meeting checks</td><td>F1</td><td>Boomdrive passes the pack; the crates are usable at a tag</td></tr>
           <tr><td>F3</td><td>The adapters crate: folder drop, meeting file, signals-folder import</td><td>F2</td><td>Each passes the pack; importing a folder twice writes nothing</td></tr>
           <tr><td>P2</td><td>Scaffold <span class="mono">agentplot/millpond</span> on kit-standard's code profile</td><td>P1</td><td>sluice protects main, and the first change lands through it</td></tr>
           <tr><td>P3</td><td>millpond's core: <span class="mono">land</span>, <span class="mono">run</span>, <span class="mono">tick</span>, <span class="mono">status</span>, <span class="mono">import</span>, the raw bank, the lock</td><td>P2, F2, F3</td><td>millpond passes the pack; a repeat landing writes nothing; a run without <span class="mono">done</span> keeps its cursor</td></tr>
@@ -462,8 +462,8 @@ footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line)
           <tr><td>E2</td><td>Import the old corpus once, then retire the old meeting pipeline</td><td>S5, C3</td><td>No job runs the old sweep; its captures are in the inbox by key</td></tr>
           <tr><td>C4</td><td>crew's curator works the inbox through millpond (<span class="mono">curation-and-agenda</span>)</td><td>C2, P4</td><td>A batch is curated in one delivery, one move each, and each item reaches the plan</td></tr>
           <tr><td>C5</td><td>One release goes all the way to a landed bump</td><td>C4, S4</td><td>The next scan no longer reports it, with no acknowledgement</td></tr>
-          <tr><td>F4</td><td>Flywheel's host on the same crates, reading millpond's inboxes</td><td>F2, F3</td><td>Flywheel passes the pack; headwater's and eddy's parts run on it unchanged</td></tr>
-          <tr><td>F5</td><td>crew becomes Flywheel</td><td>F4, C2</td><td>Both roadmaps say so</td></tr>
+          <tr><td>F4</td><td>Boomdrive's host on the same crates, reading millpond's inboxes</td><td>F2, F3</td><td>Boomdrive passes the pack; headwater's and eddy's parts run on it unchanged</td></tr>
+          <tr><td>F5</td><td>crew becomes Boomdrive</td><td>F4, C2</td><td>Both roadmaps say so</td></tr>
         </tbody>
       </table>
     </div>

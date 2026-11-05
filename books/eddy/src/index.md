@@ -92,7 +92,7 @@ Two jobs stand between a recorded meeting and the work it should
 change. Listing is arithmetic: which recordings exist, which are new
 since the last listing, and when each meeting began. Reading is
 judgment: which sentences commit someone to something, and who said
-them. Flywheel's statement keeps the two apart. Enumerating source
+them. Boomdrive's statement keeps the two apart. Enumerating source
 events and writing captures runs unattended, and turning a capture into
 signals is a session's judgment that never runs unattended (115).
 
@@ -152,10 +152,10 @@ capture.
 
 headwater does for releases what eddy does for meetings
 ([headwater's book](../headwater/)). Each stands alone with its own
-Claude Code and herdr plugins, and each carries a Flywheel plugin whose
+Claude Code and herdr plugins, and each carries a Boomdrive plugin whose
 adapter parts feed millpond. millpond is the inbox both of them print
 into. sounding takes the questions a meeting leaves open
-([sounding's book](../sounding/)). Flywheel later runs the same parts
+([sounding's book](../sounding/)). Boomdrive later runs the same parts
 on its tick and takes the same lines (215, 231), and a part never knows
 which host ran it.
 
@@ -166,5 +166,5 @@ every part shares, a meeting's raw files, running a part, and how
 others add a service. A glossary and the open questions follow. Their
 source is the capture design, `design/capture/design.md`. eddy has no
 statement of invariants yet, so the book has no appendix. A number in
-parentheses points into Flywheel's statement,
+parentheses points into Boomdrive's statement,
 `design/flywheel-next/requirements.md`.

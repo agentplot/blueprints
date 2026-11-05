@@ -618,7 +618,7 @@ The rest of the stack, which a model builds on unless it says why not:
   - A herdr plugin with a sidebar row, a popup and a key that hands a
     release's brief to flume. flume starts an agent in a worktree of its
     own to make the change, and submits it.
-  - A Flywheel plugin holding the adapter millpond runs, built with the
+  - A Boomdrive plugin holding the adapter millpond runs, built with the
     family's shared crates. On each run the adapter prints, in the
     capture contract, one capture for each release newer than its pin,
     and millpond lands each one once.

@@ -15,7 +15,7 @@ Each step is done in its repository's own process:
   repository;
 - millpond's, headwater's, eddy's, sounding's and flume's
   repositories, each scaffolded from kit-standard with its site;
-- Flywheel's own steps in its own repository.
+- Boomdrive's own steps in its own repository.
 
 A step's change name is suggested where one helps. **Done when** names
 a check or an observation, never a list to tick by hand.
@@ -46,7 +46,7 @@ a check or an observation, never a list to tick by hand.
 | H3 | headwater's walkthrough and phase-1 brief | H2 | to do |
 | H4 | headwater's core | H3 | to do |
 | H5 | headwater's lookups | H4 | to do |
-| H6 | headwater's Flywheel plugin | H4, F2 | to do |
+| H6 | headwater's Boomdrive plugin | H4, F2 | to do |
 | H7 | headwater's Claude Code and herdr plugins | H4, L3 | to do |
 | E1 | eddy | E0, F2 | scaffolded with its site |
 | P4 | millpond's tools and Claude Code plugin | P3 | to do |
@@ -70,8 +70,8 @@ a check or an observation, never a list to tick by hand.
 | Q5 | millpond sends a question to a sounding | P6, Q3 | to do |
 | C6 | crew calls sounding | C1, C4, Q3 | to do |
 | C7 | crew calls flume | C1, L3 | to do |
-| F5 | Flywheel's host on the same crates | F2, F3, F4 | to do |
-| F6 | crew becomes Flywheel | F5, C2 | crew's roadmap |
+| F5 | Boomdrive's host on the same crates | F2, F3, F4 | to do |
+| F6 | crew becomes Boomdrive | F5, C2 | crew's roadmap |
 
 ## Phase 0: rule and write down
 
@@ -98,15 +98,15 @@ The operator's rulings:
 3. The capture contract, the record formats, the shared-branch write
    protocol and the kind format are defined and implemented once, in
    shared crates in a public repository of the family's own. millpond
-   and the other open tools build on them, and Flywheel builds on the
+   and the other open tools build on them, and Boomdrive builds on the
    same crates later.
 4. An inbox is an `inbox/` tree on a branch of a git repository, in the
    shared crates' formats. crew's partition branches carry inboxes,
    crew's folders and the meeting corpus are imported once, and
-   Flywheel reads the same inboxes with no import.
+   Boomdrive reads the same inboxes with no import.
 5. The unit of work is an item, the signals curation joined, one or
    many. millpond sends one item to one worktree. Planning across items
-   is crew's planner today and Flywheel's later.
+   is crew's planner today and Boomdrive's later.
 6. A Claude session works a backlog through millpond's tools,
    proposing moves in batches the operator accepts or changes. The
    herdr plugin shows the inbox and gives shortcuts for actions; Claude
@@ -118,7 +118,7 @@ The operator's rulings:
 8. An adapter whose source needs no other tool ships inside millpond.
    One that wraps another tool's domain ships with that tool, so
    headwater's and eddy's adapters stay theirs.
-9. "Plugin" replaces Flywheel's "package" and "bundle".
+9. "Plugin" replaces Boomdrive's "package" and "bundle".
 10. The release adapter lands through millpond on trial (S1) before
     headwater exists, so the contract carries live captures first.
 11. sounding is a standalone tool that runs elaborations over a closed
@@ -288,7 +288,7 @@ The operator's rulings:
 - **Does:** writes D1's rulings and these into the statement:
   - claims on a watch-list entry;
   - the key a watch-list entry gets;
-  - the Flywheel plugin prints the contract;
+  - the Boomdrive plugin prints the contract;
   - each release is marked inside or outside the range its declaration
     gives, which the dependency description carries;
   - each ecosystem's package manager, run read-only in the repository's
@@ -511,9 +511,9 @@ The operator's rulings:
   - a package on a private registry is found through its package
     manager, and a release outside its declared range is marked so.
 
-### H6 headwater's Flywheel plugin
+### H6 headwater's Boomdrive plugin
 
-- **Where:** headwater, `plugins/flywheel`.
+- **Where:** headwater, `plugins/boomdrive`.
 - **Does:** `headwater capture` prints a capture for every release
   newer than its pin, built with the shared capture crate. The key,
   raw, excerpt and claims are as `design.md` sets them.
@@ -733,7 +733,7 @@ Built as the OpenSpec change `flume-runs-unattended-and-wakes-roles`, with the d
 
 - **Where:** crew. Change: `crew-calls-millpond`.
 - **Does:**
-  - each partition's flywheel branch carries an inbox under `inbox/`,
+  - each partition's drive branch carries an inbox under `inbox/`,
     its folders and `moves.rec` imported once with `millpond import`;
   - `crew signal` writes through `millpond land`, and new captures bank
     their raw material in millpond's bank;
@@ -873,25 +873,25 @@ Built as the OpenSpec change `flume-runs-unattended-and-wakes-roles`, with the d
   place and stage started through flume, and no crew code makes a
   worktree itself.
 
-## Phase 5: Flywheel hosts
+## Phase 5: Boomdrive hosts
 
-### F5 Flywheel's host on the same crates
+### F5 Boomdrive's host on the same crates
 
-- **Where:** Flywheel's own repository.
-- **Does:** Flywheel's host builds on the shared crates:
+- **Where:** Boomdrive's own repository.
+- **Does:** Boomdrive's host builds on the shared crates:
   - runs plugin adapters on the tick;
-  - takes `flywheel capture land`;
+  - takes `boomdrive capture land`;
   - reads and writes an inbox millpond wrote, with no import;
   - reads the kinds a repository declares for flume.
-- **Done when:** Flywheel passes the conformance pack, and headwater's
-  and eddy's adapters run on a Flywheel host unchanged against an inbox
+- **Done when:** Boomdrive passes the conformance pack, and headwater's
+  and eddy's adapters run on a Boomdrive host unchanged against an inbox
   millpond kept.
 
-### F6 crew becomes Flywheel
+### F6 crew becomes Boomdrive
 
-- **Where:** crew's and Flywheel's roadmaps.
+- **Where:** crew's and Boomdrive's roadmaps.
 - **Does:** the host changes and the adapters and inboxes do not.
-  Flywheel takes each partition's inbox as it stands, and imports
+  Boomdrive takes each partition's inbox as it stands, and imports
   crew's plan and proposals once, keeping every id. That import is the
   one data move on the path.
 - **Done when:** both roadmaps say so.

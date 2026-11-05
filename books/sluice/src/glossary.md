@@ -40,6 +40,6 @@ and pages, where the two differ.
 | **launched executor** | a job on a pool, started by the instance that opened the run; its start is its claim and its end its report | job |
 | **records** | everything sluice holds about a branch: its entries, its log of runs and verdicts, and a version | state |
 | **round** | one pass of sluice's work on a branch: read the records, start runs with room, read finished runs, blame, land, write | round |
-| **driver** | what submits work to sluice and carries the outcome back: worktrunk, crew, flywheel, a remote submit, a pull request | `wt submit` |
+| **driver** | what submits work to sluice and carries the outcome back: worktrunk, crew, Boomdrive, a remote submit, a pull request | `wt submit` |
 | **profile** | one way a contract of Part B is satisfied, as Part C describes | profile |
 | **seam** | one of the five contracts of Part B through which the core reaches everything that is not git | seam |

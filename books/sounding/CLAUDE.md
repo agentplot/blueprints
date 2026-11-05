@@ -3,7 +3,7 @@
 The design is `design/capture/design.md`: the section "Questions:
 sounding", the rows of its tables that name sounding, and the plan's
 decision 11 and steps Q1 to Q5 and C6 (`design/capture/plan.md`).
-Flywheel's statement, `design/flywheel-next/requirements.md`, holds
+Boomdrive's statement, `design/flywheel-next/requirements.md`, holds
 the elaboration sounding keeps the shape of, and a bare number in
 parentheses cites it. sounding's own statement,
 `design/sounding/requirements.md`, is written later (plan step Q1);

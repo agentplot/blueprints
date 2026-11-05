@@ -506,13 +506,13 @@ The capture contract is the one way an adapter hands captures to a
 capture host. It is defined and implemented once in the family's
 shared crates, in a public repository of the family's own, together
 with the conformance pack that proves every capture host and every
-adapter. millpond takes the contract today and Flywheel later, both
+adapter. millpond takes the contract today and Boomdrive later, both
 built on those crates, and an adapter runs unchanged under either (56).
 What eddy must do under it is this.
 
 | operation | how the capture contract satisfies it |
 |---|---|
-| start | eddy's Flywheel plugin declares each adapter: its command, the shape of its configuration and the secrets it needs, and every capture host reads that declaration. The capture host runs `eddy capture <adapter> --raw-dir <dir> [--cursor <c>]`, `<dir>` fresh for the run, with the adapter's settings in the file the `CAPTURE_CONFIG` environment variable names and each declared secret in the environment under its declared name. |
+| start | eddy's Boomdrive plugin declares each adapter: its command, the shape of its configuration and the secrets it needs, and every capture host reads that declaration. The capture host runs `eddy capture <adapter> --raw-dir <dir> [--cursor <c>]`, `<dir>` fresh for the run, with the adapter's settings in the file the `CAPTURE_CONFIG` environment variable names and each declared secret in the environment under its declared name. |
 | hand | one line of JSON on standard output, `{"capture": {…}}`, with the fields below |
 | mark | `{"cursor": "<c>"}`; the capture host keeps the last cursor line of a run that ends in `done`, and passes it back as `--cursor` on the next |
 | end | `{"done": {"listed": <n>, "failed": [{"what": "<key>", "why": "<reason>"}]}}`, then exit status 0. `listed` counts every meeting the service's answer held for the run's listing, skipped and unready ones among them (54). A run that is not complete (24) prints no `done` and exits with a status other than 0. It says why on standard error in one line of eddy's own, with the service's status where it gave one and never a body the service answered with (37). |
@@ -636,7 +636,7 @@ data.
 |---|---|---|
 | cursor | **the capture host's**, on the machine that runs the adapter | millpond keeps it in its state directory on that machine, keyed by inbox and adapter. read-cursor is the `--cursor` a run starts with; keep-cursor is the last `cursor` line of a run that ends in `done` (C.1). The cursor stays on that machine, and an adapter whose runs move to another machine starts there with no `--cursor` (77). |
 | sign-in | **eddy's own**, on the machine that runs the adapter | one file per service and account under `$XDG_STATE_HOME/eddy/sign-in/`, readable by the operator's user alone; write-sign-in writes a new file beside the old and renames it over the old, under a lock held for the write (61). It serves eddy alone and under millpond, and under any capture host for a service that renews a sign-in on use (78). |
-| sign-in | **the capture host's secrets**, under a capture host that places them, as Flywheel does | read-sign-in is each secret the adapter declared, placed in its environment by the host, for a service whose sign-in stays the same on use. For a service that renews it on use, the secret seeds eddy's own store while that holds none, and eddy reads its own store from then on (78). |
+| sign-in | **the capture host's secrets**, under a capture host that places them, as Boomdrive does | read-sign-in is each secret the adapter declared, placed in its environment by the host, for a service whose sign-in stays the same on use. For a service that renews it on use, the secret seeds eddy's own store while that holds none, and eddy reads its own store from then on (78). |
 | transcripts | **the raw bank** | place-raw writes C.4's files under the run's `--raw-dir`. The capture host banks them in its raw bank under the capture's name, and never in git. The raw bank is in its data directory on the machine, which the machine's backup covers, and the capture points into it by `<host>:<path>` (64). |
 | transcripts | **none**, alone | eddy gives a transcript to its asker and writes it nowhere (29) |
 
@@ -693,7 +693,7 @@ Constraints already fixed:
 - A capture is handed to a capture host by the capture contract, which
   the family's shared crates define and implement once. C.1 gives what
   eddy must do under it.
-- The capture hosts are millpond today and Flywheel later, both built
+- The capture hosts are millpond today and Boomdrive later, both built
   on the family's shared crates, and an adapter runs unchanged under
   either.
 - Meeting services serve the transcripts they made, over the network,
@@ -713,7 +713,7 @@ The rest of the stack, which a model builds on unless it says why not:
   core as headwater keeps its plugins: a command line; a Claude Code
   plugin that pulls a meeting's transcript into a session; a herdr
   plugin that shows the day's meetings in a pane and hands nothing on;
-  and a Flywheel plugin that declares one adapter per meeting service,
+  and a Boomdrive plugin that declares one adapter per meeting service,
   the generic adapter among them, which every capture host reads.
 - The capture contract's types and key rules from the family's shared
   crates, as every adapter takes them.
@@ -778,7 +778,7 @@ These are not requirements.
   length.
 - **S11.** A weekly meeting recurs four times. Each occurrence is a
   meeting of its own, with its own identity and its own capture.
-- **S12.** An adapter runs under millpond, and later under Flywheel.
+- **S12.** An adapter runs under millpond, and later under Boomdrive.
   Given the same answers from the service, it hands the same captures.
 - **S13.** A service's meeting id holds a `/`. The identity keeps the
   id in one segment, and no other meeting's identity matches it.

@@ -1,6 +1,6 @@
 # agentplot blueprints
 
-The home of the agentplot design books and the flywheel loops' records.
+The home of the agentplot design books and the Boomdrive loops' records.
 
 - `books/flywheel/` — the flywheel design book, an mdBook. Build it with
   `mdbook serve` from the book directory; the mermaid renderer is
@@ -10,10 +10,10 @@ The home of the agentplot design books and the flywheel loops' records.
   and testledger (a record of which checks passed on exactly which
   inputs). Each includes its statement of invariants from
   `design/<name>/requirements.md`.
-- `books/tailrace/` — the design book for tailrace, the family's
+- `books/timber/` — the design book for timber, the family's
   delivery tool: what a build left, named by content, with its claims
   attached, offered, accepted and released through channels that
-  environments follow. Its statement is `design/tailrace/requirements.md`.
+  environments follow. Its statement is `design/timber/requirements.md`.
 - `openspec/changes/` — the intent and bolt records, one directory per
   change: `intent-<slug>` for a design thread, `bolt-<slug>` for a
   construction iteration. Record directories mirror their tracker

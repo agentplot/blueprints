@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Run one flywheel team role in the current pane: role.sh conductor|fable|explorer|coder
+# Run one Boomdrive team role in the current pane: role.sh conductor|fable|explorer|coder
 set -euo pipefail
 
 root=/Users/chuck/Code/github_agentplot
 bp=$root/blueprints/main
 fn=$root/flywheel-next/main
-fc=$root/flywheel-cloud/main
+fc=$root/boomdrive-cloud/main
 team=$bp/.claude/team
 role=${1:?usage: role.sh conductor|fable|explorer}
 

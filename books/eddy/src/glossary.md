@@ -2,7 +2,7 @@
 
 The words of the design, each defined once. eddy has no statement yet,
 so the capture design (`design/capture/design.md`) is the binding copy.
-A number in parentheses cites Flywheel's statement.
+A number in parentheses cites Boomdrive's statement.
 
 ## eddy's words
 
@@ -35,18 +35,18 @@ word for word ([millpond's glossary](../millpond/glossary.html)).
 | **curation** | a Claude session that proposes one move per signal, in batches, through millpond's tools; the operator accepts or changes each batch (116) |
 | **cursor** | a value only its adapter understands, kept from the part's last run that ended in `done` and handed back on the next |
 | **dedupe** | millpond's lookup of each capture's key in every capture the inbox holds, so a key lands once |
+| **drive branch** | the branch of crew's state repository that holds a partition's signals; it becomes the partition's inbox |
 | **event date** | `event_at`: when the event happened, never when it was captured (118) |
 | **excerpt** | the verbatim text a signal quotes from its source, with its position (113) |
-| **flywheel branch** | the branch of crew's state repository that holds a partition's signals; it becomes the partition's inbox |
 | **folder drop** | the built-in adapter that makes one capture of each file dropped in a watched folder |
-| **inbox** | a git repository, or a branch in one, holding captures, signals, moves and items in Flywheel's record formats |
-| **item** | the unit of work: the signals curation joined, one or many, with its brief and its sends; Flywheel's proposed intent (109) |
+| **inbox** | a git repository, or a branch in one, holding captures, signals, moves and items in Boomdrive's record formats |
+| **item** | the unit of work: the signals curation joined, one or many, with its brief and its sends; Boomdrive's proposed intent (109) |
 | **key** | a source event's identity, the same from every host and every run (111) |
 | **meeting file** | the built-in adapter for a meeting's transcript file |
 | **operator** | the person who accepts or changes each batch of moves, sends items, and decides each conclusion; on its own, the user |
 | **part** | one thing of one kind in a plugin; an inbox's settings name the adapter parts it runs |
-| **partition** | in crew, one domain of work with its own teams and its own flywheel branch |
-| **plugin** | the installable unit in every host, holding parts; Flywheel's statement calls it a package, and a named set of parts a bundle (228, 284) |
+| **partition** | in crew, one domain of work with its own teams and its own drive branch |
+| **plugin** | the installable unit in every host, holding parts; Boomdrive's statement calls it a package, and a named set of parts a bundle (228, 284) |
 | **pointer** | `<host>:<path>`, where a capture's raw material is banked (217h) |
 | **raw bank** | a host's store of raw material, under millpond's data directory, keyed by inbox and capture; never in git |
 | **raw material** | the event as its source served it, whole: notes, a transcript, a log; the adapter writes it as raw files |

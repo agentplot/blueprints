@@ -87,7 +87,7 @@ Each move is a record in `moves.rec`:
 | `drop` | curation | it is noise or a duplicate | the reason |
 | `route` | the planner | it becomes work, a unit queued in the plan | the unit |
 
-`moves.rec` lives in the flywheel's state repository, on the branch
+`moves.rec` lives in the drive's state repository, on the branch
 `madswan/main` of `afterthought/crew-state`, beside the plan, `plan.rec`.
 Nothing in this repo holds either.
 

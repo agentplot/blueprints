@@ -66,10 +66,10 @@ with no external contexts, a calculation, a format, a protocol, has
 only the first part, and inventing the other two for it produces
 ceremony with nothing in it.
 
-Flywheel's statement is the worked instance. Its one seam is durable
+Boomdrive's statement is the worked instance. Its one seam is durable
 shared storage, so its second part is named for that:
 
-| the part | Flywheel calls it | what it holds |
+| the part | Boomdrive calls it | what it holds |
 |---|---|---|
 | what must hold of the system | Part A, the data plane | the objects, their machines, the claims and the ledger, the signals, the rail, the engine |
 | what it requires across its seams | Part B, the state store contract | seven operations, five guarantees, and the rules binding evidence and effect names to a profile |
@@ -227,7 +227,7 @@ stated twice will one day be stated two ways.
 wanted for two things, rename one and rewrite every occurrence, leaving
 no alias. If a surface must still show the displaced word, that is a
 clause about rendering, not a second glossary entry. So **instance** is
-the word every clause uses, while a clause fixes *flywheel* as the
+the word every clause uses, while a clause fixes *drive* as the
 customer's word for the same thing on every surface.
 
 ## 6. Givens and the third part: where the technology goes
@@ -273,8 +273,8 @@ The first use is to hand the statement to a strong model with no other
 context at all and ask it for the model of the system. That is both the
 point of having written one and the test of whether it is any good.
 
-Nothing about the modelling form is presumed by the statement. Flywheel
-came back with statecharts because Flywheel is objects moving through
+Nothing about the modelling form is presumed by the statement. Boomdrive
+came back with statecharts because Boomdrive is objects moving through
 states over time and its invariants are about transitions, ownership
 and derivability. A composition or a service would come back with a
 component and deployment model, an inventory of resources per seam, and

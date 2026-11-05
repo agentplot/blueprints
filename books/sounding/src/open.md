@@ -17,7 +17,7 @@ the operator rules the questions it asks.
 
 The statement becomes this book's appendix, and the chapters cite its
 clauses by number. Until it lands, the chapters rest on the capture
-design, `design/capture/design.md`, and cite Flywheel's statement,
+design, `design/capture/design.md`, and cite Boomdrive's statement,
 whose elaboration gains a clause saying it runs on sounding (58, 62).
 
 ## The decision awaiting a ruling
@@ -39,7 +39,7 @@ The capture design's own Open section holds these questions about
 sounding, beside the details it leaves to sounding's statement:
 
 - **A standing sounding**, which stays open and starts a round when a
-  signal on its subject lands, as Flywheel's standing elaborations do
+  signal on its subject lands, as Boomdrive's standing elaborations do
   (25, 26).
 - **Where else an accepted conclusion lives.** A repository may keep it
   in its own record, as crew's kits keep `openspec/explorations/`. With

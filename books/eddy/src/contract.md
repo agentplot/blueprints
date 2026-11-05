@@ -2,16 +2,16 @@
 
 A part is a command that prints the capture contract. millpond starts
 it, reads the lines it prints and banks the files it writes, and
-Flywheel's tick later starts it the same way (215, 231). The contract
+Boomdrive's tick later starts it the same way (215, 231). The contract
 is the one way captures reach an inbox, and millpond's book describes
 it whole ([the capture contract](../millpond/contract.html), and
 [running adapters](../millpond/running.html)).
 
 ## How a host starts a part
 
-eddy's Flywheel plugin declares each adapter part: its command, the
+eddy's Boomdrive plugin declares each adapter part: its command, the
 shape of its configuration and the secrets it needs (228). millpond
-reads the same declaration Flywheel reads, and runs the part as
+reads the same declaration Boomdrive reads, and runs the part as
 
 ```
 eddy capture wispr --raw-dir <dir> [--cursor <c>]

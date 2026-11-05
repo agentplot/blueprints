@@ -8,7 +8,7 @@ it by anchor, as `books/sluice/` does, and the chapters cite its
 clauses in place of the design's prose.
 
 - `books/VOICE.md` binds every chapter. Plain prose, no em dashes.
-- Cite Flywheel's statement (`design/flywheel-next/requirements.md`)
+- Cite Boomdrive's statement (`design/flywheel-next/requirements.md`)
   by bare clause number in parentheses, (115), where a sentence rests
   on a clause. Never restate a clause.
 - Use the design's words exactly. millpond's book owns the capture

@@ -8,7 +8,7 @@ question and where the operator decides the conclusion.
 | **On its own** | the operator's `/sound` | a card, or sounding's herdr plugin |
 | **With millpond** | items millpond sends; a key on a headwater release that needs judgment; `/sound` on a decision a meeting left open, its transcript a source | the same, recorded against the item |
 | **With crew** | crew's planner and design agent, calling `sounding open` as crew calls millpond | crew's rail |
-| **With Flywheel** | an intent's elaborations, each one a sounding | Flywheel's elaboration types, which write the conclusion into the design book and claims |
+| **With Boomdrive** | an intent's elaborations, each one a sounding | Boomdrive's elaboration types, which write the conclusion into the design book and claims |
 
 Moving from one setup to the next changes who asks and where the
 operator decides. The question, the place, the exits and the shape of
@@ -60,21 +60,21 @@ item where crew's elaboration rested on an intent (crew ADR 0019), so
 the question comes from curation's `join` like any other piece of
 work.
 
-## With Flywheel
+## With Boomdrive
 
 Each of an intent's elaborations is a sounding. An elaboration is one
 session, one conversation, one place (24), and a sounding is one
 question in one worktree, one session per round. The session's exits
 are the same three:
 
-| Flywheel's elaboration | sounding |
+| Boomdrive's elaboration | sounding |
 |---|---|
 | finishing with deliverables (65) | `sounding conclude` |
 | blocked on a question (65) | `sounding ask` |
 | offering a finding (58, 62) | `sounding offer` |
 | approval given once, never asked again (6) | one decision on each conclusion |
 
-Flywheel's elaboration types stay Flywheel's. An elaboration's type
+Boomdrive's elaboration types stay Boomdrive's. An elaboration's type
 decides how it ends (25), and what it concludes is written to the
 design book and its claims (187). sounding works the question, and the
-type writes the conclusion where Flywheel keeps it.
+type writes the conclusion where Boomdrive keeps it.

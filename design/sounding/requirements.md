@@ -620,7 +620,7 @@ set and from the local default branch otherwise.
 | profile | launch, start, state, tell, stop | submit, end |
 |---|---|---|
 | **flume** | `flume launch` with the sounding's kind carried by the launch, its place-and-stage part one stage, `round`, on branches named `sounding/<name>`. A self-closing or standing round's stage delivers `report:{{state}}/conclusion.md` in the place's flume state folder, which `sounding conclude` writes. flume ends the stage on it, and sounding copies it into the sounding's record (C.7) when it settles the round. Its stopping short is the note `sounding note` gives. A round with the operator is a conversation, which sounding ends with `flume finish` once its session concludes or leaves a note, or the operator ends it. Start is a retry of that stage with the round's hand-off as its words, a go on's notes among them; state from `flume status --json`; `flume tell` and `flume stop`. Where the session runs is the launch's agent settings: a herdr pane, beside the operator's own for a round with the operator | the launch holds the submission on sounding's word. Accept releases it by a retry that names the submission, and flume submits what lands through its merge queue, sluice, and reports the landing or the failure. Accept of a kind that lands nothing is `flume done`, and drop is `flume drop`. flume's tidying removes the place and keeps the branch |
-| **Flywheel** | Flywheel, which runs each of its elaborations as a sounding | Flywheel's own landing, onto the intent's line |
+| **Boomdrive** | Boomdrive, which runs each of its elaborations as a sounding | Boomdrive's own landing, onto the intent's line |
 
 flume runs and settles each round. The stop hook of flume's Claude Code
 plugin settles a round the moment its agent goes quiet. Its stop check
@@ -666,7 +666,7 @@ outline, landing `books/` and `design/`.
 | **Pending You** | a card: a conclusion's five parts inline with a link to the whole, and the choices accept, go on with notes, and drop with a reason; an ask's words with a free reply; the card cancelled on withdraw; who gave a response is the person Pending You names |
 | **sounding's herdr plugin** | rows in flume's sidebar for the soundings that have not ended, each with its round and state. Its keys hand the operator's accept, send back, finish, drop and resume to sounding's core, send back being go on, and a review key runs `sounding review`. It opens no pane of its own, starts no agent and sends nothing to a session: a round's pane is flume's, opened from flume's row. Who gave a response is the host's user |
 | **crew's rail** | one decision per sounding on the rail; crew calls sounding's command line with the operator's response |
-| **Flywheel's rail** | the elaboration's decision on the page or in chat |
+| **Boomdrive's rail** | the elaboration's decision on the page or in chat |
 
 The command line names who gave a response as `local user`.
 `sounding review` opens a conclusion in plannotator-tui, which opens a
@@ -681,7 +681,7 @@ one (60).
 |---|---|
 | **millpond** | the accepted conclusion kept on the record of each of the sounding's items, which curation cites when it gives a later signal on the subject the move `answered`; an item made of each piece of proposed work; go on, drop and what landed recorded against each item |
 | **crew** | the conclusion shown on the rail, and each piece of proposed work turned by crew's planner into a plan entry |
-| **Flywheel** | the intent keeps the conclusion, and what the elaboration's type lands reaches the intent's line |
+| **Boomdrive** | the intent keeps the conclusion, and what the elaboration's type lands reaches the intent's line |
 | **none** | the conclusion and its proposed work stay in the held state for the operator |
 
 ### C.6 Inboxes
@@ -689,7 +689,7 @@ one (60).
 | profile | land |
 |---|---|
 | **millpond** | `sounding offer` prints capture contract lines with the family's shared capture crate and pipes them to `millpond land`, waiting at most 5 s. millpond's verdict on each line is the outcome. An inbox not reached in that time is handed the offer again by the next call (106) |
-| **Flywheel** | the same lines through Flywheel's capture intake |
+| **Boomdrive** | the same lines through Boomdrive's capture intake |
 | **none** | the lines printed and kept in the held state, marked as not taken |
 
 An offer's capture:
@@ -808,9 +808,9 @@ Constraints already fixed:
 - A tool's records about one repository stay with that repository: in
   its clone, and under `refs/<tool>/` on its own remote when hosts
   share them, never in a repository of their own.
-- Flywheel's elaborations run on sounding once Flywheel hosts. sounding
-  keeps the shape of Flywheel's elaboration: the three endings are
-  Flywheel's elaboration types, conclude is an elaboration finishing
+- Boomdrive's elaborations run on sounding once Boomdrive hosts. sounding
+  keeps the shape of Boomdrive's elaboration: the three endings are
+  Boomdrive's elaboration types, conclude is an elaboration finishing
   with its deliverables, ask is one waiting on the operator, and offer
   is one offering a finding.
 - sounding is free and open source.

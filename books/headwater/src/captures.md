@@ -1,7 +1,7 @@
 # Releases as captures
 
 Some repositories keep what they hear as work to curate. headwater feeds
-them through its Flywheel plugin, whose one part is an adapter that
+them through its Boomdrive plugin, whose one part is an adapter that
 turns each release into a capture (section 9). millpond keeps captures
 in an inbox, and [millpond's book](../millpond/) defines
 [the capture contract](../millpond/contract.html),
@@ -118,7 +118,7 @@ moved, and nobody wrote an acknowledgement
 ## Where the adapter lives
 
 The adapter is headwater's because it wraps headwater's domain, and it
-lives in `plugins/flywheel` beside headwater's core. millpond runs it
+lives in `plugins/boomdrive` beside headwater's core. millpond runs it
 like any other adapter part, on the schedule its inbox's settings give
 it (`design/capture/design.md`).
 

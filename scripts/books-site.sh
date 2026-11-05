@@ -8,7 +8,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 out=$(mkdir -p "${1:-_site}" && cd "${1:-_site}" && pwd)
 find "$out" -mindepth 1 -delete
-books=(sluice headwater eddy millpond flume sounding tailrace)
+books=(sluice headwater eddy millpond flume sounding timber)
 items=""
 for b in "${books[@]}"; do
   mdbook build "books/$b" --dest-dir "$out/$b"
@@ -39,7 +39,7 @@ span{color:var(--mu);font-size:.95rem}
 </head>
 <body><main>
 <h1>Design books</h1>
-<p>The settled design of each tool in the Flywheel family, from <a href="https://github.com/agentplot/blueprints">agentplot/blueprints</a>.</p>
+<p>The settled design of each tool in the Boomdrive family, from <a href="https://github.com/agentplot/blueprints">agentplot/blueprints</a>.</p>
 <ul>$items</ul>
 </main></body>
 </html>

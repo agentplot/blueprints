@@ -4,7 +4,7 @@ The words of the design, each defined once. sounding has no statement
 yet, so the capture design (`design/capture/design.md`) is the binding
 copy. The words of millpond and of crew are
 [millpond's book](../millpond/glossary.html)'s, word for word. A
-number in parentheses cites Flywheel's statement.
+number in parentheses cites Boomdrive's statement.
 
 Four words mean one thing in another book and another here. A
 capture's **source** names where its event came from, such as
@@ -45,13 +45,13 @@ its meaning in the book it belongs to.
 | **with the operator** | `--with-me`: the way of running in which the session works in a pane beside the operator as a conversation |
 | **working** | the state of a sounding whose session is working its round |
 
-## Flywheel's words
+## Boomdrive's words
 
 | word | meaning |
 |---|---|
-| **elaboration** | in Flywheel, one unit of design work on an intent, worked by one free-flowing session; each one is a sounding (24) |
-| **elaboration type** | in Flywheel, what decides how an elaboration ends; it writes what the elaboration concludes to the design book and its claims (25, 187) |
-| **intent** | in Flywheel, one thread of design work about one subject, pursued until the operator closes it |
+| **elaboration** | in Boomdrive, one unit of design work on an intent, worked by one free-flowing session; each one is a sounding (24) |
+| **elaboration type** | in Boomdrive, what decides how an elaboration ends; it writes what the elaboration concludes to the design book and its claims (25, 187) |
+| **intent** | in Boomdrive, one thread of design work about one subject, pursued until the operator closes it |
 
 ## Words from flume's book
 
@@ -75,12 +75,12 @@ word for word.
 | **capture** | the record of one source event: its key, its source, its event date and a pointer to its raw material; the same event captured twice is one capture (111) |
 | **capture contract** | the JSON Lines an adapter prints and every host takes, each line holding exactly one of `capture`, `cursor` or `done` |
 | **chore** | in crew, a piece of work that needs no design of its own, such as a tool's bump; a `route` move offers one |
-| **claim** | in Flywheel, a standing statement of what a repository must satisfy; `answered` and `challenge` name one |
+| **claim** | in Boomdrive, a standing statement of what a repository must satisfy; `answered` and `challenge` name one |
 | **conformance pack** | contract lines and the records a host must write from them, with the meeting checks; every host and every adapter part passes it |
 | **curation** | a Claude session that proposes one move per signal, in batches, through millpond's tools; the operator accepts or changes each batch (116) |
 | **excerpt** | the verbatim text a signal quotes from its source, with its position (113) |
-| **inbox** | a git repository, or a branch in one, holding captures, signals, moves and items in Flywheel's record formats |
-| **item** | the unit of work: the signals curation joined, one or many, with its brief and its sends; Flywheel's proposed intent (109) |
+| **inbox** | a git repository, or a branch in one, holding captures, signals, moves and items in Boomdrive's record formats |
+| **item** | the unit of work: the signals curation joined, one or many, with its brief and its sends; Boomdrive's proposed intent (109) |
 | **join** | the move that makes an item from signals, or grows one still proposed |
 | **key** | a source event's identity, the same from every host and every run (111) |
 | **kind** | a signal's type, one of constraint, ask, question, commitment and reaction (113); the kind a send names, a fix or a change, is flume's word for a list of stages |
@@ -88,7 +88,7 @@ word for word.
 | **operator** | the person who accepts or changes each batch of moves, sends items, and decides each conclusion; on its own, the user |
 | **own excerpt** | a capture is its own excerpt when its line carries the signal's fields, so millpond writes its one signal as it lands; a release is one |
 | **planner** | crew's agent that orders items across teams and turns each into a chore or a unit |
-| **plugin** | the installable unit in every host, holding parts; Flywheel's statement calls it a package, and a named set of parts a bundle (228, 284) |
+| **plugin** | the installable unit in every host, holding parts; Boomdrive's statement calls it a package, and a named set of parts a bundle (228, 284) |
 | **raw material** | the event as its source served it, whole: notes, a transcript, a log; the adapter writes it as raw files |
 | **send** | millpond giving one item to flume, as a fix or a change with its brief, or an item that asks a question to a sounding |
 | **signal** | one assertion from a capture: its kind, who asserted it, its subjects, the assertion in a sentence, the verbatim excerpt with its position, and the claims it argues with; never changed once written (113) |

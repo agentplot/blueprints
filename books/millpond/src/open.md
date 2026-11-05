@@ -16,7 +16,7 @@ the questions it asks.
 
 The statement becomes this book's appendix, and the chapters cite its
 clauses by number. Until it lands, the chapters rest on the capture
-design, `design/capture/design.md`, and cite Flywheel's statement,
+design, `design/capture/design.md`, and cite Boomdrive's statement,
 which the contract and the inbox are to enter as clauses of their own.
 
 ## Decisions awaiting a ruling
@@ -32,17 +32,17 @@ design has them.
    captures and signals, serves the tools curation works through, and
    sends an item to a worktree. crew calls its command line as it calls
    sluice's ([Three setups](setups.md)).
-3. Flywheel's statement owns the contract and the record formats.
+3. Boomdrive's statement owns the contract and the record formats.
    flywheel-next's crates implement them once, millpond is built on
-   them, and Flywheel's host is later built on the same crates
+   them, and Boomdrive's host is later built on the same crates
    ([Who owns what](owners.md)).
-4. An inbox is a git repository, or a branch in one, in Flywheel's
+4. An inbox is a git repository, or a branch in one, in Boomdrive's
    formats. crew's partition branches become inboxes, crew's folders
-   and the meeting corpus are imported once, and Flywheel reads the
+   and the meeting corpus are imported once, and Boomdrive reads the
    same inboxes with no import ([The inbox](inbox.md)).
 5. The unit of work is an item, the signals curation joined, one or
    many. millpond sends one item to one worktree. Planning across items
-   is crew's planner today and Flywheel's later
+   is crew's planner today and Boomdrive's later
    ([Items and sends](items.md)).
 6. A Claude session works a backlog through millpond's tools,
    proposing moves in batches the operator accepts or changes. herdr
@@ -56,7 +56,7 @@ design has them.
    One that wraps another tool's domain ships with that tool, so
    headwater's and eddy's parts stay theirs ([Sources](sources.md)).
 9. "Plugin" names the installable unit in every host, for what
-   Flywheel's statement calls a package and a bundle
+   Boomdrive's statement calls a package and a bundle
    ([Running adapters](running.md)).
 10. The release adapter lands through millpond on trial before
     headwater exists, so the contract carries live captures first.
@@ -97,7 +97,7 @@ The capture design's own Open section holds these questions:
   do to its branch, and the fields an offer's capture carries.
   sounding's statement rules them.
 - **A standing sounding**, which stays open and starts a round when a
-  signal on its subject lands, as Flywheel's standing elaborations do.
+  signal on its subject lands, as Boomdrive's standing elaborations do.
 - **Where else an accepted conclusion lives.** A repository may keep it
   in its own record, as crew's kits keep `openspec/explorations/`.
 - **crew's two open records disagree.** ADR 0019 rests an elaboration
@@ -108,8 +108,8 @@ The capture design's own Open section holds these questions:
 ## The family's storage
 
 Plan step D4 sets every piece of state each tool keeps against
-Flywheel's state repository. The aim is that moving from a tool on its
-own to crew, and then to Flywheel, moves no data. Its ruling sets the storage
+Boomdrive's state repository. The aim is that moving from a tool on its
+own to crew, and then to Boomdrive, moves no data. Its ruling sets the storage
 profile millpond's statement names, which covers what
 [The inbox](inbox.md) keeps in git and on the host.
 

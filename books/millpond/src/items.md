@@ -2,7 +2,7 @@
 
 An item is the unit of work: the signals curation joined, one or many.
 It may be five of a meeting's ten signals, or two bumps that move
-together. An item is Flywheel's proposed intent (109). millpond keeps
+together. An item is Boomdrive's proposed intent (109). millpond keeps
 its signals, its brief, every place it was sent, and the conclusion
 that settled it when a sounding answered it.
 
@@ -125,7 +125,7 @@ An inbox crew keeps sends no item to flume itself, and millpond refuses
 a send from it. Its settings hand items to crew's planner, which orders
 them across teams and turns each into a chore or a unit. crew then asks
 flume for each stage of the work, in a slot of the team's. Planning
-across items is crew's today and Flywheel's later, never millpond's.
+across items is crew's today and Boomdrive's later, never millpond's.
 
 ## A release, from capture to landed bump
 

@@ -42,7 +42,7 @@ is the statement's to settle.
   of the key.
 - **Where length and attendees travel.** The contract gives them no
   field. They travel in the raw files, as a header of the plain copy
-  or a file of their own, or in a field Flywheel's statement adds to
+  or a file of their own, or in a field Boomdrive's statement adds to
   the capture.
 - **How short is too short.** The length below which a part skips a
   meeting, whether it is part configuration, and whether a skipped
@@ -73,7 +73,7 @@ layout.
 ## Held for the contribution model
 
 - **Where the generic MCP part ships, and how it keys.** eddy's
-  Flywheel plugin is the home that fits the rule that a part wrapping a
+  Boomdrive plugin is the home that fits the rule that a part wrapping a
   tool's domain ships with that tool. Its key's service segment comes
   from the endpoint its configuration names.
 - **Whether eddy publishes its shared code.** A published part depends

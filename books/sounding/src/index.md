@@ -12,7 +12,7 @@ plan, and sluice lands it.
 
 <figure class="sd-fig">
 <div class="sd-scroll">
-<svg viewBox="0 0 720 420" role="img" aria-label="A question reaches sounding from an item millpond sends, from /sound in any session, from a key in another tool's herdr plugin, or from crew's planner and design agent; later, each of a Flywheel intent's elaborations is a sounding. sounding writes the question and its sources, works it in a worktree of its own, one session per round, and ends each round on a conclusion. The operator decides it: accept, go on or drop. Accepted work becomes items or plan entries that sluice lands, go on starts another round, and millpond keeps the accepted conclusion as the item's record. Only an offer returns to millpond, as a capture of its own.">
+<svg viewBox="0 0 720 420" role="img" aria-label="A question reaches sounding from an item millpond sends, from /sound in any session, from a key in another tool's herdr plugin, or from crew's planner and design agent; later, each of a Boomdrive intent's elaborations is a sounding. sounding writes the question and its sources, works it in a worktree of its own, one session per round, and ends each round on a conclusion. The operator decides it: accept, go on or drop. Accepted work becomes items or plan entries that sluice lands, go on starts another round, and millpond keeps the accepted conclusion as the item's record. Only an offer returns to millpond, as a capture of its own.">
 <defs>
 <marker id="sd-i-m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="sd-hd"/></marker>
 <marker id="sd-i-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="sd-hd-a"/></marker>
@@ -35,7 +35,7 @@ plan, and sluice lands it.
 <text x="24" y="244" class="sd-t">crew</text>
 <text x="24" y="262" class="sd-ts">planner, design agent</text>
 <rect x="10" y="284" width="160" height="52" rx="9" class="sd-bx-dash"/>
-<text x="24" y="306" class="sd-t">Flywheel, later</text>
+<text x="24" y="306" class="sd-t">Boomdrive, later</text>
 <text x="24" y="324" class="sd-ts">each elaboration</text>
 <line x1="170" y1="62" x2="196" y2="62" class="sd-ar-a" marker-end="url(#sd-i-a)"/>
 <line x1="170" y1="124" x2="196" y2="124" class="sd-ar-a" marker-end="url(#sd-i-a)"/>
@@ -98,10 +98,10 @@ own and a session that starts from everything already known about it.
 It needs an end the operator can decide, and a way for what it found on
 the side to reach the inbox.
 
-crew's elaborations (crew ADR 0019) and Flywheel's (24, 25) give a
+crew's elaborations (crew ADR 0019) and Boomdrive's (24, 25) give a
 question that shape: one session, one place, one document the operator
 decides. sounding holds the shape once, as a tool of its own, so a
-person alone, millpond, crew and later Flywheel all work questions the
+person alone, millpond, crew and later Boomdrive all work questions the
 same way.
 
 ## What it promises
@@ -127,7 +127,7 @@ same way.
 sounding lands no code, writes an inbox only through millpond, and
 plans across no items. It never decides a conclusion: the operator
 does. Ordering items across teams is crew's planner today and
-Flywheel's later. millpond keeps the inbox, and sluice tests and lands
+Boomdrive's later. millpond keeps the inbox, and sluice tests and lands
 the work.
 
 ## The tools beside it
@@ -149,7 +149,7 @@ the work.
   sounding's branch. Its book is at [../sluice/](../sluice/).
 - **crew** runs teams, plans and bolts. Its planner and design agent
   call `sounding open` as crew calls millpond.
-- **Flywheel** is built later. Each of an intent's elaborations is a
+- **Boomdrive** is built later. Each of an intent's elaborations is a
   sounding.
 
 ## How to read this book
@@ -160,7 +160,7 @@ the stop check and the timebox that bound a round, and the operator's
 decision on its conclusion. Last come the setups questions arrive from
 and the surfaces the operator works a sounding through.
 
-A bare number in parentheses cites Flywheel's statement,
+A bare number in parentheses cites Boomdrive's statement,
 `design/flywheel-next/requirements.md`, whose elaboration sounding
 keeps the shape of. A rule id such as `code.1` cites crew's
 `docs/architecture/`. sounding's own statement is not written yet;

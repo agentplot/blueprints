@@ -1,10 +1,10 @@
 # Landing handoff: what a tool after the landing reads of sluice
 
-These are drafted clauses that let a tool downstream of sluice, tailrace
+These are drafted clauses that let a tool downstream of sluice, timber
 first, learn of a landing and carry the landing's verdicts onward, with
-sluice unchanged in what it decides. tailrace publishes only a landed
-revision (tailrace 14) and attaches sluice's signed verdicts to what it
-publishes as sluice made them (tailrace 12, 13); it needs to read, from
+sluice unchanged in what it decides. timber publishes only a landed
+revision (timber 14) and attaches sluice's signed verdicts to what it
+publishes as sluice made them (timber 12, 13); it needs to read, from
 any host that may run a publish, which revisions a branch landed, when,
 and the signed run records that landed each. Parts A and B gain three
 clauses, 120 to 122. Part C gains a reader in C.5 and a row in C.6. No
@@ -31,12 +31,12 @@ read, and whoever runs the tool after it turns the wheel.
  the landing record for R: candidate, entries, time, runs (120)
         |
         v
- tailrace, or any tool, asks: landed main R?  -> yes, the record
+ timber, or any tool, asks: landed main R?  -> yes, the record
                               verdicts R?     -> the signed run records, as signed (121)
         |
         v
- tailrace publishes R, carrying each record inside its own claim
- (tailrace 12); sluice has done nothing further
+ timber publishes R, carrying each record inside its own claim
+ (timber 12); sluice has done nothing further
 ```
 
 ## The clauses
@@ -59,7 +59,7 @@ read, and whoever runs the tool after it turns the wheel.
      identity signs its own run records as it would on a signer's ref,
      so a landing on such a branch carries verdicts a downstream reader
      can count; an instance with none records unsigned runs as today,
-     and a reader finds no signed verdict and says so (tailrace S13).
+     and a reader finds no signed verdict and says so (timber S13).
 
 ### Part C
 
@@ -82,6 +82,6 @@ needs no process running (26).
   drives it: a watcher of the log, a plan's step, a person. A hook
   would make sluice the thing that publishes, and 1 and 23 say what
   sluice does: it lands.
-- A change to what a run record says. tailrace joins sluice's subject,
+- A change to what a run record says. timber joins sluice's subject,
   the task's key with moon's hash as its digest, to the provenance it
   writes for the same hash; nothing in the record changes for that.

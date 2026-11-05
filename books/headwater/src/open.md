@@ -243,7 +243,7 @@ the questions they belong with; the model answers each in its section
 
 - **Into the statement.** Plan step H1 writes three things in after D1
   and D2. They are the key a watch-list entry gets, the files a bump of
-  it moves, and the Flywheel plugin printing the capture contract. Until
+  it moves, and the Boomdrive plugin printing the capture contract. Until
   then the chapter describes `design/capture/design.md`.
 - **The capture design's decisions.** Plan step D2 has the operator
   accept or change the design's decisions. Two of them place headwater:
@@ -261,5 +261,5 @@ the questions they belong with; the model answers each in its section
   release is older than it is.
 - **The files a bump moves.** Plan step H1 writes them into the
   statement with a watch-list entry's key; the plan calls them claims,
-  a word Flywheel uses for something else. Questions 7, 8 and 14 bear
+  a word Boomdrive uses for something else. Questions 7, 8 and 14 bear
   on the watch list too.
