@@ -963,7 +963,12 @@ redefine these.
      it read, only when no entry on it is waiting, under test or
      landing, no landing on it is left unrecorded (S9), and that
      revision is contained in the named branch's current revision. Its
-     records stay.
+     records stay, and are read as any branch's (26, 61): a status of
+     the branch answers from them, its queue and, asked, its history,
+     and says the branch is gone, and a view of the repository's
+     branches reads it as it reads any other and names it as gone. Only
+     a branch that has neither records nor a revision is no branch to a
+     status. (record 0091, proposed 2026-11-06)
 106. Making and removing a branch is not landing: neither writes a
      commit, records a verdict or reads a gate's checks, and 22 to 24
      bind neither. A refused one is reported, never retried blind. A
