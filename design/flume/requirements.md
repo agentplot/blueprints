@@ -1741,8 +1741,11 @@ redefine these.
     place, and reads places side by side.
 200. A caller may ask flume for its list, which says at a glance what
      flume holds and what a person can open. It gives a line for each
-     place on the host, under the place's repository, a place tidied
-     whose document stays among them (62). The line gives the place's
+     place on the host that has not landed and was not dropped (63),
+     under the place's repository. A place that landed or was dropped
+     has nothing left to open, so its line is given only when the
+     caller asks for every place, a place tidied whose document stays
+     among them then (62). The line gives the place's
      kind and name, the stage it stands at, and its state in the words
      status gives it (56, 139). It names whom a waiting place waits on,
      its caller (130), the host (70) or the merge queue (111). A place
@@ -4075,16 +4078,18 @@ These are not requirements.
   teardown failed at `sluice release`, with forty lines of words. The
   host's terminal is herdr, and it declares the streams `work` and
   `office`, herdr's session `work` running and `office` not. A caller
-  asks for the list. Within a second flume gives each place's line
-  under its repository, with its stage and its state. The held place
-  waits on its caller, the one waiting for room on the host, and the
-  submitted one on the merge queue. The place whose teardown failed is
-  kept by `sluice release`, with none of the teardown's words. The list
+  asks for the list. Within a second flume gives the line of each place
+  but the two that landed, under its repository, with its stage and its
+  state. The held place waits on its caller, the one waiting for room on
+  the host, and the submitted one on the merge queue. Asked for every
+  place, flume gives the two landed places' lines too: the tidied one
+  reads tidied, and the one whose teardown failed is kept by `sluice
+  release`, with none of the teardown's words. The list
   gives a line each for `default`, `work` and `office` with its
   session: `work` runs, and `office` and flume's own do not. No place's
   worktree, change or submission is read, and no agent's state is
   asked of herdr. herdr's session `office` is not started, and nothing
-  flume holds changes (57, 62, 66, 70, 130, 200, 201).
+  flume holds changes (57, 62, 63, 66, 70, 130, 200, 201).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
