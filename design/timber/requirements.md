@@ -478,9 +478,11 @@ redefine these.
     the target can hold none, it reports unread with the reason, never a
     guess.
 98. An asker learns of every environment what it should run, what it
-    runs, and that the two differ where they do; an environment whose
-    state cannot be read is reported unread with the reason, never as
-    converged.
+    runs, and that the two differ where they do. What it runs is what
+    its newest counted report names, with when it converged (43, 91),
+    read from the store and never asked of its target (60). An
+    environment whose state cannot be read, or that no counted report
+    names, is reported unread with the reason, never as converged.
 44. Whether an environment is pushed to or pulls is the environment's
     own, and the ledger, the channel and the policy are the same either
     way.
@@ -600,9 +602,15 @@ redefine these.
     fetches the ledger, or the landing's branch, into the host's copy
     where the remote answers, a store's or a git remote's, and answers
     from the copy saying when where it does not, an empty channel as any
-    other answer, with the time the copy was read; the fetch writes the
+    other answer, with the time the copy was read. Asking what an
+    environment runs is a read of its reports the same way (43, 91, 98).
+    It fetches the reports attached to the versions its channel's chain
+    moved to into the host's copy where the store answers, and answers
+    from the copy saying when where it does not. The answer is the
+    newest report the policy counts (116, C.10). A fetch writes the
     host's copy and nothing else, never a store's name or bytes, never a
-    branch, and a fetch is not a write in this clause's sense.
+    branch, and a fetch is not a write in this clause's sense. No asking
+    reaches a signer or a target.
 132. A web page is a surface (56), answered by the host's one serving
     process (114) at a path of its own: it renders the status answer,
     what every environment should run, runs and waits on, with each
@@ -640,8 +648,9 @@ redefine these.
     answer: which versions it published from which revisions, which
     layouts it rendered under which policy, and nothing that the store,
     the ledger or git holds already, but for the chain as the host last
-    read it from a ledger the store holds (C.14), kept so that asking
-    answers when the store does not (60).
+    read it from a ledger the store holds (C.14) and each environment's
+    reports as the host last read them, kept so that asking answers
+    when the store does not (60).
 62. The record of claimed versions (22) is the repository's and is
     readable from every checkout with git; everything else timber
     keeps is the host's and is readable on that host with a file
