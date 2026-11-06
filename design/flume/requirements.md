@@ -344,8 +344,6 @@ redefine these.
 - **watch**: a caller settling every place on the host, on a bound it
   states to flume, whether or not an agent is in a place, while flume
   itself runs nothing (208).
-- **nudge**: a terminal settling when an agent's state changes, which
-  quickens a settle and is no watch (122).
 - **attended**: of flume on a host, that no caller keeps watch over it
   (119, 208).
 - **window**: a window of the host's display, which a person looks at
@@ -739,8 +737,8 @@ redefine these.
      counters, and the answers it applied. A decision stands while its
      state is active, and an answer to it is applied once and never
      again (74). Nothing ticks between flume's commands (120): an agent
-     going quiet, the host's watch, a terminal's nudge and a caller's
-     command settle a place under a statechart kind as under a simple
+     going quiet, the host's watch and a caller's command settle a
+     place under a statechart kind as under a simple
      kind (46).
 177. flume reads and runs both formats side by side. Every release from
      the first that runs statechart kinds runs both, none drops simple
@@ -1250,9 +1248,9 @@ redefine these.
      5. ended and last words: the terminal's stopped, and what it shows
         (134, 43, 136);
      6. spent and usage: unknown (146, 151, 152);
-     7. send-back, guard and on-quiet: not offered (115, 116, 121), a
-        terminal's nudge or the host's watch settling the place (122,
-        208);
+     7. send-back, guard and on-quiet: not offered (115, 116, 121), the
+        host's watch settling the place, or a command that acts where
+        none is kept (119, 208);
      8. plan: not offered (164);
      9. the mode: recorded and not compared (169);
      10. carry: not offered, so a stage whose agent stopped at its
@@ -1554,8 +1552,8 @@ redefine these.
     place whose last stage delivered. It sends a place back when its
     submission fails, and tidies a place whose work is over (63). flume
     settles a place whenever its agent goes quiet (121), and every place
-    on the host whenever a caller keeping watch settles (208) and at a
-    terminal's nudge (122). Each settle reads the outcome of the place's
+    on the host whenever a caller keeping watch settles (208). No
+    terminal settles a place (122). Each settle reads the outcome of the place's
     open submission (111). Where the merge queue moves only while
     something drives it, the settle drives the place's base one round
     (124). Where no caller keeps watch, flume also settles whenever a
@@ -1568,14 +1566,14 @@ redefine these.
      attended: every command of flume's that acts on places settles
      every place on its host before it acts. An agent that ended with no
      word from its program, a prompt never received and an agent working
-     past its limit are then read only at such a command or at a
-     terminal's nudge (38, 45, 118, 122). Status and a prompt's rendering
+     past its limit are then read only at such a command, since no
+     terminal settles (38, 45, 118, 122). Status and a prompt's rendering
      settle nothing (29, 57). flume runs unattended only while a caller
      keeps watch, whatever terminals the host binds (190).
 120. flume runs no process of its own between its commands. Every settle
      runs inside a command of flume's, started by an agent going quiet,
-     by a caller keeping watch, by a terminal's nudge or by any other
-     caller. No command of flume's waits on the merge queue: a
+     by a caller keeping watch or by any other caller, and never by a
+     terminal (122). No command of flume's waits on the merge queue: a
      submission's outcome is read at the settles that follow it (111,
      124).
 208. A caller keeps watch over the host by settling every place on it
@@ -2360,17 +2358,21 @@ redefine these.
      on its base closed
      once it holds nothing of a live place; or each kept, named with
      what the terminal did not make that holds it (137).
-139. **show**: given a place, its stages' states and a one-line count
-     of the places of its repository on its base, clues the terminal shows a person
-     beside the place's agents, or that it shows none; called at each
-     settle that changes a stage's state. A clue is display only:
-     nothing flume decides reads it back, and one that fails to show is
+139. **show**: given a place, the clues the terminal shows a person
+     beside its agents, or that it shows none. The clues are its current
+     stage and that stage's state, its line's short form as status gives
+     it (56, 142), and a one-line count of its repository's places on
+     its base. A settle calls it whenever it changes one of them. A clue
+     is display only: nothing flume decides reads it back, and one that fails to show is
      logged and fails nothing (46, 56).
-122. **nudge**: the terminal settling when an agent's state changes,
-     while flume runs nothing; or none (46). A nudge only quickens a
-     settle a caller's watch or command would make: it keeps no bound,
-     nothing waits on it, and flume runs attended or not by the host's
-     watch alone (119, 208).
+122. The terminal settles nothing. No operation of it starts a
+     settle, keeps watch over the host or says whether flume runs
+     attended. Nothing a plugin of it runs does either: flume reads
+     attended from the host's watch alone (119, 208). Between flume's commands a place moves at
+     its agent's quiet (121) and at the settles of a caller keeping
+     watch (46). A plugin of the terminal's may show a person what
+     status gives and act through flume's commands at a person's asking
+     (60).
 187. **attach**: given a part of the terminal, one by its name or the
      terminal's own, and a view, the part shown to a person in it, the
      part started first where it does not run, so the view shows the
@@ -2921,7 +2923,7 @@ later takes its entry's place for the parts it builds.
 | started | the launcher's word that nothing differed, with the terminal's reading that the launcher's process runs the program and is ready for input (171) |
 | received, asking, own-work, ended, last words | the terminal, as 171 reads it |
 | spent, usage | unknown |
-| plan, send-back, guard, on-quiet, carry | not offered; a terminal's nudge or the host's watch settles the place (122, 208), and a stage whose agent stopped at its account's limit starts afresh (146, 179) |
+| plan, send-back, guard, on-quiet, carry | not offered; the host's watch settles the place, or a command that acts where none is kept (119, 208), and a stage whose agent stopped at its account's limit starts afresh (146, 179) |
 | own settings | none reserved and none taken: own settings given for a program of the common profile refuse the launch, or the stage at a later start, until its entry names its release's way, checked against that release (171, 195, 196) |
 | stop-short | `flume needs "<words>"` and `flume needs --found "<words>"`, as for Claude Code (41, 131) |
 | parts | each part above but command, started and stop-short degraded, named in status with the agent (174) |
@@ -2933,10 +2935,10 @@ checked against its release.
 
 ### C.5 The terminal
 
-| profile | open | send | state | close | nudge |
-|---|---|---|---|---|---|
-| **herdr** | a pane in the herdr session the launch's settings name, else the one its place's stream names for the place's kind's stage or its kind (199), else the one its place's stream names, by default the stream's name, and flume's own for a place in the host's default stream naming none (107, 143): in each session, one workspace per repository and base, labelled `<repository> <base>` (`flume bolt/the-surfaces`, `sluice main`), made when the first place on that base opens there, and in it one tab per place named `<kind>--<name>`, whose panes are the place's agents that open in that session, so a stage that runs several agents at once splits its place's tab; where the settings name a pane, a split beside that pane instead, as for a conversation, left where its caller put it. The pane is made in the place with the host user's login environment and the agent's environment (C.4) over it set on it, its `PATH` led by a folder of the start's own holding the kind's name linked to the program the settings name, or, for a program the common profile binds, to flume's launcher, which becomes that program (C.4, 171), and its shell one that reads no startup file, so no login shell or rc file of the host's reorders that `PATH`; herdr's agent start runs the program there by the kind its agent profile names, its arguments passed whole, under the agent's herdr name; nothing is typed into the pane's shell. A start whose pane runs anything but the program the settings name is closed and refused, naming what ran, and a program herdr knows no kind for cannot run under herdr (32); nor can a program whose state herdr reads only through its own integration, OMP and MastraCode in 0.9.5, while `herdr integration status` reports that integration not installed, which refuses the launch naming `herdr integration install <name>` (4). The pane is held by its id and its server's socket, and found again by the agent's herdr name where the id no longer answers, as after the pane moves to another workspace: a name of at most 32 of herdr's legal characters made from the identity and unique on the server, a pane found by it taken as the agent's only once herdr lists it under that name. herdr's word that the program is ready is a second signal, never the start (35). A start herdr reads blocked is held at the program's question before it starts: the folder-trust question is answered and herdr waited on until the agent is idle (34), and any other leaves the start never begun with the screen; a start herdr does not see ready within its bound is never begun with the screen (35) | the pane's held input cleared with one ctrl+c while the agent waits, then herdr's prompt to the pane, then received read through the agent (89); a send never leaves text typed: one not received is cleared again before the next | herdr's reading of the agent: working as working; idle and done as waiting, since herdr's done is a finished turn nobody has looked at; blocked as asking only with the agent profile's mark (90), or where the agent's profile reads asking from the terminal (171), and as unknown otherwise; herdr's unknown as unknown; stopped only when the pane is gone, or herdr lists no agent in it and its foreground is the shell, or herdr lists it unrestored after its server's restart | herdr ends the pane and its process group, then reads that it is gone | kept by flume's herdr plugin on herdr's server, which runs between flume's commands. It runs `flume settle` at each change of an agent's state, reading every agent's state in one listing per tick. It keeps no bound and is no watch: the host's watch is a caller's (208) |
-| **printed command** | the command printed, the prompt carried in it, for a person to run in the place | refused, so every tell is refused, no agent is kept open for an answer (198), and a prompt not received is reported never begun (38) | from the agent profile alone; stopped when its record says the session ended | refused unless the agent's record says the session ended | none |
+| profile | open | send | state | close |
+|---|---|---|---|---|
+| **herdr** | a pane in the herdr session the launch's settings name, else the one its place's stream names for the place's kind's stage or its kind (199), else the one its place's stream names, by default the stream's name, and flume's own for a place in the host's default stream naming none (107, 143): in each session, one workspace per repository and base, labelled `<repository> <base>` (`flume bolt/the-surfaces`, `sluice main`), made when the first place on that base opens there, and in it one tab per place named `<kind>--<name>`, whose panes are the place's agents that open in that session, so a stage that runs several agents at once splits its place's tab; where the settings name a pane, a split beside that pane instead, as for a conversation, left where its caller put it. The pane is made in the place with the host user's login environment and the agent's environment (C.4) over it set on it, its `PATH` led by a folder of the start's own holding the kind's name linked to the program the settings name, or, for a program the common profile binds, to flume's launcher, which becomes that program (C.4, 171), and its shell one that reads no startup file, so no login shell or rc file of the host's reorders that `PATH`; herdr's agent start runs the program there by the kind its agent profile names, its arguments passed whole, under the agent's herdr name; nothing is typed into the pane's shell. A start whose pane runs anything but the program the settings name is closed and refused, naming what ran, and a program herdr knows no kind for cannot run under herdr (32); nor can a program whose state herdr reads only through its own integration, OMP and MastraCode in 0.9.5, while `herdr integration status` reports that integration not installed, which refuses the launch naming `herdr integration install <name>` (4). The pane is held by its id and its server's socket, and found again by the agent's herdr name where the id no longer answers, as after the pane moves to another workspace: a name of at most 32 of herdr's legal characters made from the identity and unique on the server, a pane found by it taken as the agent's only once herdr lists it under that name. herdr's word that the program is ready is a second signal, never the start (35). A start herdr reads blocked is held at the program's question before it starts: the folder-trust question is answered and herdr waited on until the agent is idle (34), and any other leaves the start never begun with the screen; a start herdr does not see ready within its bound is never begun with the screen (35) | the pane's held input cleared with one ctrl+c while the agent waits, then herdr's prompt to the pane, then received read through the agent (89); a send never leaves text typed: one not received is cleared again before the next | herdr's reading of the agent: working as working; idle and done as waiting, since herdr's done is a finished turn nobody has looked at; blocked as asking only with the agent profile's mark (90), or where the agent's profile reads asking from the terminal (171), and as unknown otherwise; herdr's unknown as unknown; stopped only when the pane is gone, or herdr lists no agent in it and its foreground is the shell, or herdr lists it unrestored after its server's restart | herdr ends the pane and its process group, then reads that it is gone |
+| **printed command** | the command printed, the prompt carried in it, for a person to run in the place | refused, so every tell is refused, no agent is kept open for an answer (198), and a prompt not received is reported never begun (38) | from the agent profile alone; stopped when its record says the session ended | refused unless the agent's record says the session ended |
 
 Under herdr a session is named `herdr:<pane>@<socket>`, the pane's id
 and its server's socket, wherever a recipient or a launching session is
@@ -2954,11 +2956,18 @@ made one in when the place goes, its panes and their process groups
 with it (137); and a workspace it made once that workspace holds no
 tab of a live place and nothing it did not make. It never closes a workspace, a tab or a pane it did not
 make: a workspace of its own where a person opened a pane is left open,
-and status names it with what holds it. At each settle that changes a
-stage's state the profile shows display clues, which nothing flume
-decides reads back (139): the agent's pane titled with its stage and
-state, and the base's workspace given a one-line count of the places
-on that base running, asking, waiting on their caller and stalled. A clue
+and status names it with what holds it. At each settle that changes one
+of a place's clues the profile shows them, and nothing flume decides
+reads one back (139). It titles the agent's pane with its stage and
+state. It gives the pane the short form of its place's line as its
+`flume` token, the row herdr's sidebar shows where the host's rows name
+`$flume`. It gives the base's workspace a one-line count of the places
+on that base running, asking, waiting on their caller and stalled. flume's herdr
+plugin runs no settle and keeps no process that reads flume (122). Its
+popup reads status once when a person opens it and again after each
+key that acts, and its keys act through flume's commands. At herdr's
+startup it writes what herdr's configuration lacks for the popup's key
+and the sidebar's rows, which status gives (56). A clue
 that fails to show is logged and fails nothing. Every herdr call is bounded, ten
 seconds where the call states none, one that does not answer within it
 read as unknown or refused in herdr's words; each is made with the
@@ -2986,7 +2995,7 @@ herdr's refusal and its words:
 | attach | for a window, `<herdr> session attach <name>`, `<herdr>` the full path of the herdr the profile runs, so the window runs the same release whatever its `PATH`; the session's server first found or started headless as the server row says, flume's own session being `flume`; the command's environment is `XDG_CONFIG_HOME` where the profile's calls run under one, which herdr 0.9.5 reads its sessions' home from, and nothing otherwise. For the app, refused: herdr 0.9.5 has no app of its own, and the Herdr app runs on herdr-core, a backend apart with sessions of its own (187) |
 | runs | one `herdr session list --json` for every part asked, its `sessions[]` read by `name` and `running` for each, flume's own session being `flume`. A session listed running runs. One listed not running, or not listed, does not, and nothing is started. The call is bounded at one second, so the list answers within its second. A listing not read within it, or refused, is read as not read for every part asked, in herdr's words (201) |
 | standing | the agents of a session by name, for an address the host's configuration gives a standing agent (132, C.7). It is read at each delivery and each status, and nothing keeps it. One `herdr session list --json` finds the session by `name` and `running`, flume's own being `flume`. A session not listed running holds no agent, and nothing is started. Then `agent list` on its socket, its `agents[]` read by `name`, `pane_id` and `agent_status`, the status read as the state row reads it. An agent of the name is reached at `herdr:<pane_id>@<socket>`, by the send and state rows, as any recipient's session is. None of the name is said so, and so is more than one. herdr 0.9.5 refuses a second agent of one name on a server, as `agent_name_taken`. A listing refused, or not read within the bound, is not read, in herdr's words |
-| show | `pane report-metadata <pane> --source flume --title "<stage> · <state>" --display-agent <kind>--<name>`; `workspace report-metadata <w> --source flume --token flume=<summary>`, the summary such as `3 running · 1 asking · 1 waiting on caller · 0 stalled`, shown where the host's herdr sidebar rows name `$flume` |
+| show | `pane report-metadata <pane> --source flume --title "<stage> · <state>" --display-agent <kind>--<name> --token flume=<line>`, the line's short form such as `code 1/2 · run 1 · tasks 2/5 · working`; `workspace report-metadata <w> --source flume --token flume=<summary>`, the summary such as `3 running · 1 asking · 1 waiting on caller · 0 stalled`, shown where the host's herdr sidebar rows name `$flume` |
 
 What herdr 0.9.5 was seen to do, which the readings above allow for:
 `agent start` types the program's name into the pane's shell, so the
@@ -3422,8 +3431,8 @@ view, naming the profiles, and nothing else (C.7).
   queue, and a failed submission sends a place back only to the stage
   its kind names (111, 112).
 - **I8.** flume runs no process of its own between its commands. An
-  agent going quiet settles its place, and a caller keeping watch and a
-  terminal's nudge every place, and every settle reads the outcome of
+  agent going quiet settles its place, and a caller keeping watch every
+  place, and every settle reads the outcome of
   its open submission and drives its base where the merge queue moves
   only so (124). While no caller keeps watch, every command of flume's
   that acts settles every place first (46, 119, 120, 208).
@@ -3503,25 +3512,25 @@ The rest of the stack, which a model builds on unless it says why not:
     writes a lock (155); `open`, which shows a person a stream's
     agents in its view (186); `list`, which says at a glance what flume
     holds and what a person can open (200); `needs` for an agent; and
-    `settle`, which the plugins run and a caller keeping watch runs
-    with its bound (208);
+    `settle`, which the Claude Code plugin's hooks run at an agent's
+    quiet and a caller keeping watch runs with its bound (121, 208);
   - a Claude Code plugin that gives every session `/launch` and serves
     `status` over MCP. flume loads it into every agent it starts, and
     its hooks hold the asking mark, the stop check and the guard, and
     settle the place the moment its agent goes quiet;
-  - a herdr plugin whose sidebar shows every place in flight with its
-    kind, its stage, its agent's state, a change's tasks ticked and its
-    submission. Its keys open a place's pane, tell its agent, stop it
-    and retry its stage. On herdr's server, which runs between
-    flume's commands, it nudges at each change of an agent's state, so
-    an agent that crashed or was killed is read before the host's
-    watch next settles (122, 208).
-- herdr with flume's plugin as the terminal, which nudges (122).
+  - a herdr plugin whose popup gives every place in flight with its
+    line, read from status when a person opens it. Its keys open a
+    place's pane, tell its agent, stop it and retry its stage. The
+    sidebar's row on each agent's pane is its place's line, which
+    flume's settles show there (139). The plugin runs no settle and
+    reads nothing of flume's but at a person's asking (122).
+- herdr as the terminal, with flume's plugin for its popup and keys
+  (C.5).
 - The runner, on a host that keeps one, as the caller that keeps watch,
   which unattended use needs (119, 208): each of its passes runs
   `flume settle --every <bound>` once and awaits it. A host where no
   caller keeps watch runs attended. Its places move at its agents'
-  quiet, a terminal's nudge and its callers' commands, each command
+  quiet and its callers' commands, each command
   settling every place first, and its queues by those settles' steps,
   or by `sluice run` where the host runs it (124; sluice 135).
 - The profiles of Part C: plain git worktrees, the kind format in
@@ -3533,7 +3542,7 @@ The rest of the stack, which a model builds on unless it says why not:
 
   | caller | launches | keeps |
   |---|---|---|
-  | the operator | `/launch <brief>` in any session, or the herdr plugin's key | nothing; the sidebar shows each place |
+  | the operator | `/launch <brief>` in any session, or the herdr plugin's key | nothing; the sidebar shows each agent's place, and the popup every place |
   | millpond | an item's send, as a fix or a change, the item's brief as the launch's | the item's record and its sends, and the landing, written from the merge queue's record of the place's branch |
   | headwater | its fix key, as a fix with the release's brief | nothing |
   | sounding | each round of an elaboration, as a place of the elaboration kind it hands in the launch, a conversation's agent beside the operator's pane | the inputs, the soundings each was based on, the rounds, the operator's notes and decisions, and the record, with each round's conclusion copied from its report; its go-on is a retry with the operator's notes as words, its accept a done or a retry that releases a held submission, and its drop a drop |
@@ -3715,16 +3724,16 @@ These are not requirements.
   refusal, nothing reaches the merge queue, and the stage goes on.
 - **S26.** A caller declares a fix place done. It is refused, naming
   the place, and the caller drops it instead.
-- **S27.** No caller keeps watch over the host, and flume runs under
-  the printed command, so nothing nudges. A code stage's agent is killed with nothing delivered. Nothing
+- **S27.** No caller keeps watch over the host. A code stage's agent
+  is killed with nothing delivered. Nothing
   reads it until the operator next acts through flume, dropping another
   place: that command settles every place first, and status then
   reports the stage lost.
 - **S28.** On a host whose runner keeps watch, under herdr with flume's
   plugin, a code stage's agent crashes with nothing delivered, and its
-  stop hook never runs. At herdr's nudge, and at the latest within the
-  watch's bound, with no caller asking, flume reads the stage lost and
-  starts no agent.
+  stop hook never runs. Within the watch's bound, at the runner's next
+  pass, with no caller asking, flume reads the stage lost and starts no
+  agent. Nothing of herdr's or its plugin's settles it (122).
 - **S29.** A code stage's agent commits and goes quiet. Its stop hook
   settles the place at once: flume ends the agent and starts the next
   stage before the watch next runs.
@@ -4317,8 +4326,7 @@ These are not requirements.
 - **S109.** On a host whose runner keeps watch, each of its passes
   running `flume settle --every 2m`, a chore's code stage delivers, its
   agent ends, and flume submits the place. No `sluice run` drives the
-  repository, no terminal nudges, and no caller asks anything else of
-  flume. At each pass flume settles every place, the chore's among them
+  repository, and no caller asks anything else of flume. At each pass flume settles every place, the chore's among them
   with no agent in it, and that settle runs one round of its base's
   queue. The submission lands, and the next settle delivers the landing
   to the chore's recipient and tidies the place. On another host whose
@@ -4397,11 +4405,11 @@ These are not requirements.
   49, 56, 64, 145, 179, 207).
 - **S118.** A host keeps no runner, and its terminal is herdr with
   flume's plugin. Status says no caller keeps watch. A chore's code
-  stage delivers, its agent ends, and flume submits it. herdr's nudge
-  at the agent's end settles every place, stepping the chore's base
-  once; nothing settles after it until the operator drops another
-  place, and that command settles every place first, stepping the base
-  again. The runner then starts on the host, its passes running `flume
+  stage delivers, and the settle its agent's quiet runs ends the agent
+  and submits the place (121). Nothing settles after it, herdr and its
+  plugin settling nothing, until the operator drops another place, and
+  that command settles every place first, stepping the chore's base.
+  The runner then starts on the host, its passes running `flume
   settle --every 2m`. Status gives the watch's bound and when it last
   settled, and the chore lands at a later pass with no command of the
   operator's. The runner stops, and four minutes after its last pass
