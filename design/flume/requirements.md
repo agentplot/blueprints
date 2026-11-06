@@ -2207,11 +2207,12 @@ redefine these.
      terminal's own app, the running app told to show that part, the
      app titling its own window; or a refusal where the terminal holds
      no part a person can be shown or offers no such view (186).
-201. **runs**: given a part of the terminal, one by its name or the
-     terminal's own, whether it runs now, with the name the terminal
-     knows it by. Or that the terminal holds no part a person can be
-     shown, or that it cannot read the part. runs starts nothing, so a
-     part that does not run stays so (200).
+201. **runs**: given one or more parts of the terminal, each one by its
+     name or the terminal's own, whether each runs now, with the name
+     the terminal knows it by. Or that the terminal holds no part a
+     person can be shown, or that it cannot read a part. The parts are
+     read together, in one reading of the terminal. runs starts nothing,
+     so a part that does not run stays so (200).
 98. The guarantee: open never runs a second agent under an identity
     already live, and close never reports an end that did not happen.
     Every operation answers within a bound the profile states, and one
@@ -2788,7 +2789,7 @@ herdr's refusal and its words:
 | close | `pane close <pane>`, `pane_not_found` read as already closed; then `pane get <pane>`, gone only on `pane_not_found` |
 | tidy | the place's recorded tab: `pane list --workspace <w>` read for panes in it, and a pane flume did not open there keeps it, named; else `tab close <tab>`, a tab already gone read as closed. Then the base's recorded workspace: where `tab list --workspace <w>` holds no tab but those of live places it made and `pane list` no pane it did not open, `workspace close <w>`; otherwise kept, and what holds it named |
 | attach | for a window, `<herdr> session attach <name>`, `<herdr>` the full path of the herdr the profile runs, so the window runs the same release whatever its `PATH`; the session's server first found or started headless as the server row says, flume's own session being `flume`; the command's environment is `XDG_CONFIG_HOME` where the profile's calls run under one, which herdr 0.9.5 reads its sessions' home from, and nothing otherwise. For the app, refused: herdr 0.9.5 has no app of its own, and the Herdr app runs on herdr-core, a backend apart with sessions of its own (187) |
-| runs | `herdr session list --json`, its `sessions[]` read by `name` and `running`, flume's own session being `flume`. A session listed running runs. One listed not running, or not listed, does not, and nothing is started. The call is bounded at one second, so the list answers within its second. A listing not read within it, or refused, is read as not read, in herdr's words (201) |
+| runs | one `herdr session list --json` for every part asked, its `sessions[]` read by `name` and `running` for each, flume's own session being `flume`. A session listed running runs. One listed not running, or not listed, does not, and nothing is started. The call is bounded at one second, so the list answers within its second. A listing not read within it, or refused, is read as not read for every part asked, in herdr's words (201) |
 | show | `pane report-metadata <pane> --source flume --title "<stage> · <state>" --display-agent <kind>--<name>`; `workspace report-metadata <w> --source flume --token flume=<summary>`, the summary such as `3 running · 1 asking · 1 waiting on caller · 0 stalled`, shown where the host's herdr sidebar rows name `$flume` |
 
 What herdr 0.9.5 was seen to do, which the readings above allow for:
@@ -2841,7 +2842,7 @@ words.
 The printed command tidies nothing and shows no clue, since it made
 nothing in a terminal. It refuses attach for either view, since it
 holds no part of a terminal a person can be shown (187). Its runs
-answers that it holds no part (201). It reads no tool: open prints the line `cd <place> &&`
+answers that it holds no part, for every part asked (201). It reads no tool: open prints the line `cd <place> &&`
 the command's environment, program, arguments and prompt, and marks it
 printed for the identity in the place's folder, refusing to print it
 again; its state is unknown, and the core reads its agent stopped once
