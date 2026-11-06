@@ -37,8 +37,8 @@ accepts the plan it put for review. Where the kind lands its work, flume submits
 branch to the repository's merge queue after the last stage. A
 submission the merge queue fails sends the place back to a stage the
 kind names. A place moves on when its agent goes quiet, when the merge
-queue decides, and on the watch its terminal keeps, for flume
-runs no process of its own. flume reports where every place stands. It
+queue decides, and on the watch a caller keeps over the host, for
+flume runs no process of its own. flume reports where every place stands. It
 removes each place once its work has landed, been dropped, or, for a
 kind that never lands, been declared done by its caller, and keeps any
 branch that holds work its base lacks. It launches on the host it runs
@@ -80,6 +80,12 @@ redefine these.
 - **base**: the branch a place is cut from and the only branch its work
   lands on; the repository's shared branch unless the launch names
   another.
+- **base place**: a place whose kind lands and has no stages. It has
+  no worktree: it is a branch the merge queue makes and closes at
+  flume's asking, and the state flume holds of it. Other places name its
+  branch as their base and land on it through the merge queue, and it
+  lands on its own base once its caller says so. Of a place, its base
+  place is the live place whose branch is its base (202).
 - **caller**: whoever asks flume to launch, or to act on a place it
   launched.
 - **launch**: one ask to start a piece of work: a repository, a kind, a
@@ -164,7 +170,8 @@ redefine these.
   later request that begins with the same text reads it rather than
   taking it in again.
 - **place**: a worktree of one repository, on a branch of its own, that
-  flume made for one launch.
+  flume made for one launch; or a base place, which is its branch and
+  the state flume holds of it, with no worktree (202).
 - **live**: of a place, made and not yet removed; of an agent, started
   and not yet stopped.
 - **current stage**: of a place, the stage it most recently started.
@@ -334,10 +341,13 @@ redefine these.
   allows.
 - **settle**: of a place, flume reading every fact of it again and
   taking each step Part A then allows.
-- **watch**: a terminal settling, on a bound it states, the places
-  whose agents run in it, while flume itself runs nothing.
-- **attended**: of flume on a host, that a terminal the host binds, its
-  own or a stream's, keeps no watch (119, 190).
+- **watch**: a caller settling every place on the host, on a bound it
+  states to flume, whether or not an agent is in a place, while flume
+  itself runs nothing (208).
+- **nudge**: a terminal settling when an agent's state changes, which
+  quickens a settle and is no watch (122).
+- **attended**: of flume on a host, that no caller keeps watch over it
+  (119, 208).
 - **window**: a window of the host's display, which a person looks at
   and closes, showing a part of a terminal; flume opens one only at a
   person's asking and keeps nothing of it (186).
@@ -456,9 +466,12 @@ redefine these.
    named from its kind and its name the same way for every place of
    that kind. It is cut from its base's current revision where work
    lands on the base, never from a copy of the base that may lag it. A
-   launch that cannot read that revision is refused, naming why.
+   launch that cannot read that revision is refused, naming why. A base
+   place has no worktree: it is its branch, which the merge queue makes
+   (205), and the state flume holds of it (202).
 10. No place checks out its base or any branch the merge queue lands
-    on, and no two live places share a branch.
+    on, and no two live places share a branch. A base place checks out
+    nothing, since it has no worktree (202).
 11. flume makes a place ready only by its merge queue's equipping of
     it, the steps the merge queue runs to equip the working copies of
     its own runs, asked at the revision the launch read (20) and run in
@@ -478,7 +491,9 @@ redefine these.
 14. flume never commits, merges, rebases or lands: a stage's agent
     commits its work in its place, and the merge queue lands what flume
     submits. flume moves no branch, except to make a place's branch at
-    its launch and to remove it at its tidy (67).
+    its launch and to remove it at its tidy (67). A base place's branch
+    is the merge queue's to make and remove, at flume's asking (202,
+    204).
 15. A place's work lands only on its base, and its base is the only
     branch flume submits it to or reads its landing against (63).
 16. Removing a place ends every agent flume started in it.
@@ -488,7 +503,8 @@ redefine these.
 ### A.3 Kinds and stages
 
 18. A kind is a simple kind or a statechart kind (175, 177). A simple
-    kind is an ordered list of one or more stages. Every stage of a
+    kind is an ordered list of one or more stages, or, where it lands,
+    of none: its places are base places (202). Every stage of a
     simple kind but a conversation has exactly one deliverable, and a
     conversation has none (109).
 19. flume itself, a repository, a launch or a package declares a kind,
@@ -723,8 +739,9 @@ redefine these.
      counters, and the answers it applied. A decision stands while its
      state is active, and an answer to it is applied once and never
      again (74). Nothing ticks between flume's commands (120): an agent
-     going quiet, the terminal's watch and a caller's command settle a
-     place under a statechart kind as under a simple kind (46).
+     going quiet, the host's watch, a terminal's nudge and a caller's
+     command settle a place under a statechart kind as under a simple
+     kind (46).
 177. flume reads and runs both formats side by side. Every release from
      the first that runs statechart kinds runs both, none drops simple
      kinds, and no build or setting of flume runs one format and not the
@@ -1233,8 +1250,9 @@ redefine these.
      5. ended and last words: the terminal's stopped, and what it shows
         (134, 43, 136);
      6. spent and usage: unknown (146, 151, 152);
-     7. send-back, guard and on-quiet: not offered (115, 116, 121), the
-        terminal's watch settling the place (122);
+     7. send-back, guard and on-quiet: not offered (115, 116, 121), a
+        terminal's nudge or the host's watch settling the place (122,
+        208);
      8. plan: not offered (164);
      9. the mode: recorded and not compared (169);
      10. carry: not offered, so a stage whose agent stopped at its
@@ -1502,8 +1520,8 @@ redefine these.
     pane to deliver to, the end is read from status (56). A wait is by place, naming its stage or its
     submission: it answers at once with an end pending for this
     recipient, and otherwise follows the host's state under a timeout,
-    exiting by the outcome or still waiting, driving no settle where the
-    terminal keeps watch (119, 122); so a caller whose session restarted
+    exiting by the outcome or still waiting, driving no settle where a
+    caller keeps watch (119, 208); so a caller whose session restarted
     waits again and loses nothing; an end already delivered to this
     recipient it answers as a read, delivering nothing again. A caller
     that starts collects every end pending for it, of the places it
@@ -1535,29 +1553,47 @@ redefine these.
     as the host has room for and in priority order (70), and submits a
     place whose last stage delivered. It sends a place back when its
     submission fails, and tidies a place whose work is over (63). flume
-    settles a place whenever its agent goes quiet (121) and whenever
-    its terminal watches (122). Each settle reads the outcome of the
-    place's open submission (111). Where a terminal the host binds keeps
-    no watch, flume also settles whenever a command of flume's acts
-    (119). Where its terminal keeps watch, a place moves on within the
-    watch's bound whether or not a caller asks, and asking only
-    shortens the wait.
-119. Where a terminal the host binds, its own or a stream's (190),
-     keeps no watch, flume runs attended:
-     every command of flume's that acts on places settles every place on
-     its host before it acts. An agent that ended with no word from its
-     program, a prompt never received and an agent working past its
-     limit are then read only at such a command (38, 45, 118). Status
-     and a prompt's rendering settle nothing (29, 57). flume runs
-     unattended only where every terminal the host binds keeps watch.
+    settles a place whenever its agent goes quiet (121), and every place
+    on the host whenever a caller keeping watch settles (208) and at a
+    terminal's nudge (122). Each settle reads the outcome of the place's
+    open submission (111). Where the merge queue moves only while
+    something drives it, the settle drives the place's base one round
+    (124). Where no caller keeps watch, flume also settles whenever a
+    command of flume's acts (119). Where a caller keeps watch, a place
+    moves on within the watch's bound whether or not a caller asks and
+    whether or not an agent is in it, and asking only shortens the wait.
+    A submitted place's base is driven so at every depth of base places
+    alike (202).
+119. Where no caller keeps watch over the host (208), flume runs
+     attended: every command of flume's that acts on places settles
+     every place on its host before it acts. An agent that ended with no
+     word from its program, a prompt never received and an agent working
+     past its limit are then read only at such a command or at a
+     terminal's nudge (38, 45, 118, 122). Status and a prompt's rendering
+     settle nothing (29, 57). flume runs unattended only while a caller
+     keeps watch, whatever terminals the host binds (190).
 120. flume runs no process of its own between its commands. Every settle
      runs inside a command of flume's, started by an agent going quiet,
-     by the terminal's watch or by a caller. No command of flume's waits
-     on the merge queue: a submission's outcome is read at the settles
-     that follow it (111, 124).
+     by a caller keeping watch, by a terminal's nudge or by any other
+     caller. No command of flume's waits on the merge queue: a
+     submission's outcome is read at the settles that follow it (111,
+     124).
+208. A caller keeps watch over the host by settling every place on it
+     on a bound it states to flume, as `flume settle --every <bound>`
+     asks. flume keeps in the host's state when the newest such settle
+     began and the bound it stated. A caller keeps watch while that
+     settle began less than twice its bound ago, so a settle that runs
+     as long as its bound keeps it still. The watch is the host's, never
+     a terminal's or a place's: on a host that keeps the runner its
+     passes keep it (section 9), and any caller of the host's own may,
+     a timer among them. A caller keeping watch decides nothing of what
+     a settle does (46). Status gives the host's watch, its bound and
+     when it last settled, or that no caller keeps it and since when
+     (56, 119).
 47. A stage or a submission that waits on its caller's word, by the
-    launch or by a hold the caller put after it (130), starts only on a
-    retry that names it (49).
+    launch, by a hold the caller put after it (130), or, for a base
+    place's submission, by its kind having no stages (203), starts only
+    on a retry that names it (49).
 142. flume settles between a stage's repetitions as between stages
      (46). Status gives a repeating stage with its group's place among
      the change's groups at the head and how many there are, such as
@@ -1581,7 +1617,8 @@ redefine these.
      the verdict: every settle that follows collects from the merge
      queue the outcomes of the place's submissions pending for the place
      (133), and settles the place by the one delivered. A place whose kind does not land never reaches the merge
-     queue.
+     queue. A base place, which has no last stage, is submitted only
+     as 203 says.
 112. A failed submission, one the merge queue blamed or found in
      conflict alike, sends the place back to the stage its kind
      names. flume starts that stage with a fresh agent and the merge
@@ -1597,7 +1634,9 @@ redefine these.
      by failed submission and by finding together (131),
      waits for its caller's retry or drop instead. A submission the
      merge queue refuses or withdraws leaves the place waiting for a
-     retry or a drop, and status names why.
+     retry or a drop, and status names why. A base place, whose kind
+     names no stage to send it back to, waits on its caller after a
+     failed submission as 203 says.
 113. A submission of the place's own branch that lands makes the place's
      work over (63), and flume starts nothing more in the place. The
      merge queue removes nothing of the place: flume tidies it (66).
@@ -1626,6 +1665,49 @@ redefine these.
      on the way, runs with no agent of a caller's deciding between the
      steps; what a caller decides is what to launch, what to answer, and
      what to do with a place past its bound (70).
+202. A branch that work lands on, and that itself lands on another, is
+     a base place's: a place whose kind lands and has no stages (18). A
+     base place has no worktree. It is its branch and the state flume
+     holds of it. Its launch names its base as any launch does. flume
+     asks the merge queue to make its branch at the base's current
+     revision, as a branch the merge queue lands on (205), and makes
+     nothing else. So it checks out nothing (10), and nothing the merge
+     queue lands moves under it. Its head is its branch's revision where
+     the merge queue's profile says the branch lives (126). A base place runs no agent and has nothing made ready
+     (11). It takes no room and no points (70, 165), and is never stuck
+     or lost. A launch whose base is a base place's branch makes a place
+     cut there (9) that lands there (15), as on any base. A base place's
+     own base may be a base place's branch too, at any depth. flume
+     names no depth and no use of one: a base place is a kind's shape,
+     never a kind flume knows by name.
+203. A base place is submitted only on its caller's retry naming the
+     submission (47, 49). The retry submits its branch from the
+     repository, named by the branch, as the merge queue holds it (117).
+     While a place whose base is its branch is live, the retry is
+     refused, naming those places. Having no worktree, a base place has
+     no inbox to deliver to (133): its submission's outcome is read from
+     the merge queue's record of its branch (99), acted on once, and
+     delivered to its recipients as any end is (43). A base place waits on the places on its branch while any is live.
+     Once none is and it is not submitted, it waits on its caller, and
+     may stall (130). A failed or conflicting submission of it starts
+     nothing: it waits on its caller with the merge queue's words (112).
+     Its caller lands the fix on its branch by a place whose base it is,
+     with those words as its brief, then retries the submission. For a
+     conflict, that fix takes in the revision the words name (112). The
+     base place's landing makes its work over (63), and flume tidies it
+     as 204 says.
+204. A launch on a live place's branch is refused where that place is
+     no base place, naming it (10). It is refused
+     too where the base place's submission is open or its work is over
+     (111, 63). A drop of a base
+     place is refused while a place whose base is its branch is live,
+     naming those places (52). A base place is tidied with no worktree
+     to remove and no teardown to run (64 to 66): its branch goes by the
+     merge queue's close into its base (206), never by flume's own
+     removal, and its held state goes as any place's (62). A branch the merge queue
+     keeps is named once, in the answer to the act that removed the
+     place, as 67 names one, and a launch that would make it again is
+     refused while it stands (3).
 
 ### A.8 Retries, stops, drops and dones
 
@@ -1857,7 +1939,8 @@ redefine these.
     change its base lacks, judged by the change each commit makes and
     never by ancestry alone. A branch holding such a commit is kept and
     named once, in the answer to the act that removed its place, and a
-    launch that would make it again is refused while it stands (3).
+    launch that would make it again is refused while it stands (3). A
+    base place's branch goes as 204 says.
 68. flume removes nothing while it cannot read whether a place's work
     is over.
 
@@ -1995,7 +2078,9 @@ redefine these.
      flight, since the work is not done. Once its work is over they are
      neither. A launch that gives no points while its place's stream
      states a points bound or a pace is refused, naming the stream (4):
-     flume counts no guess against either. On a stream that states
+     flume counts no guess against either. A base place has no agents'
+     work: its launch gives no points, one that gives them is refused,
+     and it is counted against no bound or pace (202). On a stream that states
      neither, points are only reported.
 166. A stream's points bound caps its places' points in flight together,
      beside its bound on agents running, which stays, since accounts and
@@ -2110,6 +2195,8 @@ redefine these.
 78. **make**: given a repository, a revision, a branch name and a
     location, a worktree there on a new branch at that revision; or a
     refusal because the branch or the location already exists (3, 9).
+    No operation of the place seam is asked of a base place, which has
+    no worktree: its branch is the merge queue's (202, 205, 206).
 79. **ready**: given a place and the revision its launch read, each
     step its merge queue equips it with at that revision, run in the
     place in order with an environment that carries nothing of the
@@ -2122,7 +2209,8 @@ redefine these.
     teardown run, or a refusal naming the step that failed (66).
 82. **remove-branch**: given a branch and its base, the branch removed
     when it holds no commit whose change the base lacks, or a refusal
-    naming the commits it holds (67).
+    naming the commits it holds (67); never a base place's branch,
+    which the merge queue closes (204).
 83. The guarantee: make never touches a branch or a location that
     already exists, and each operation is all or nothing.
 
@@ -2278,9 +2366,11 @@ redefine these.
      settle that changes a stage's state. A clue is display only:
      nothing flume decides reads it back, and one that fails to show is
      logged and fails nothing (46, 56).
-122. **watch**: the terminal settling each place with an agent in it, on
-     a bound it states and when an agent's state changes, while flume
-     runs nothing; or no watch (46, 119).
+122. **nudge**: the terminal settling when an agent's state changes,
+     while flume runs nothing; or none (46). A nudge only quickens a
+     settle a caller's watch or command would make: it keeps no bound,
+     nothing waits on it, and flume runs attended or not by the host's
+     watch alone (119, 208).
 187. **attach**: given a part of the terminal, one by its name or the
      terminal's own, and a view, the part shown to a person in it, the
      part started first where it does not run, so the view shows the
@@ -2303,10 +2393,13 @@ redefine these.
 
 ### B.6 The merge queue
 
-117. **submit**: given a place, its branch at its head submitted to its
-     base with the place as its submitter, answered once the merge queue
-     holds it and before it decides, with the submission it made; or
-     refused, naming why (111). Submit holds no wait and removes nothing
+117. **submit**: given a place, its branch submitted to its base with
+     the place as its submitter, answered once the merge queue holds it
+     and before it decides, with the submission it made; or refused,
+     naming why (111). A place's branch goes at the place's head, from
+     the place. A base place's, which has no worktree, goes from the
+     repository as the merge queue holds it, named by the branch, with
+     no worktree as its submitter (203). Submit holds no wait and removes nothing
      (113).
 133. **inbox**: given a place, every decided outcome of the place's
      submissions pending for it: landed, with the commit it landed as;
@@ -2314,7 +2407,8 @@ redefine these.
      files contested; each then recorded by the merge queue as delivered
      to the place; or that the merge queue could not be read (43, 111,
      112). A withdrawal is delivered by nothing, and read from
-     read-submission (99).
+     read-submission (99). A base place has no inbox: its outcomes are
+     read from read-submission (203).
 99. **read-submission**: given a repository and a branch, the newest
     submission of that branch, whoever made it, with its target and its
     state: waiting, under test, landed with the commit it landed as,
@@ -2336,6 +2430,15 @@ redefine these.
      queue lands, as in a repository with no merge queue bound, is read
      at origin as C.1 says, and at the local branch only where origin
      holds none.
+205. **open**: given a repository, a branch and its base, the branch
+     made at the base's current revision as one the merge queue lands
+     on, with that revision; or a refusal naming why (202). A branch
+     already present, or one the merge queue would not land on, is
+     refused.
+206. **close**: given a repository, a branch the merge queue lands on
+     and the branch its work landed into, the branch removed; or kept,
+     naming why; or that it is gone (204). A branch with a submission
+     still open on it, or with work the other branch lacks, is kept.
 
 ### B.7 The store
 
@@ -2436,7 +2539,13 @@ base, the host's own `<base>` is a copy that may lag it: sluice levels
 it only where it lands the branch on a remote (sluice 124), and nothing
 else on the host moves it (the runner's record 0019). Any other fetch
 that fails refuses the launch (9). A name is refused when `git
-check-ref-format` refuses the branch it gives.
+check-ref-format` refuses the branch it gives. A base place (202) has
+no worktree. The profile gives it the location a place of its kind and
+name would have, which names it and where nothing is made, so its launch
+is refused where anything stands there (3). No `git worktree` command,
+readiness or teardown runs for it. Its head is its branch's revision as
+the merge queue's base reads it (126), and the merge queue makes and
+closes its branch (205, 206), never `git branch -D`.
 
 ### C.2 The kinds and the binding
 
@@ -2812,7 +2921,7 @@ later takes its entry's place for the parts it builds.
 | started | the launcher's word that nothing differed, with the terminal's reading that the launcher's process runs the program and is ready for input (171) |
 | received, asking, own-work, ended, last words | the terminal, as 171 reads it |
 | spent, usage | unknown |
-| plan, send-back, guard, on-quiet, carry | not offered; the terminal's watch settles the place (122), and a stage whose agent stopped at its account's limit starts afresh (146, 179) |
+| plan, send-back, guard, on-quiet, carry | not offered; a terminal's nudge or the host's watch settles the place (122, 208), and a stage whose agent stopped at its account's limit starts afresh (146, 179) |
 | own settings | none reserved and none taken: own settings given for a program of the common profile refuse the launch, or the stage at a later start, until its entry names its release's way, checked against that release (171, 195, 196) |
 | stop-short | `flume needs "<words>"` and `flume needs --found "<words>"`, as for Claude Code (41, 131) |
 | parts | each part above but command, started and stop-short degraded, named in status with the agent (174) |
@@ -2824,10 +2933,10 @@ checked against its release.
 
 ### C.5 The terminal
 
-| profile | open | send | state | close | watch |
+| profile | open | send | state | close | nudge |
 |---|---|---|---|---|---|
-| **herdr** | a pane in the herdr session the launch's settings name, else the one its place's stream names for the place's kind's stage or its kind (199), else the one its place's stream names, by default the stream's name, and flume's own for a place in the host's default stream naming none (107, 143): in each session, one workspace per repository and base, labelled `<repository> <base>` (`flume bolt/the-surfaces`, `sluice main`), made when the first place on that base opens there, and in it one tab per place named `<kind>--<name>`, whose panes are the place's agents that open in that session, so a stage that runs several agents at once splits its place's tab; where the settings name a pane, a split beside that pane instead, as for a conversation, left where its caller put it. The pane is made in the place with the host user's login environment and the agent's environment (C.4) over it set on it, its `PATH` led by a folder of the start's own holding the kind's name linked to the program the settings name, or, for a program the common profile binds, to flume's launcher, which becomes that program (C.4, 171), and its shell one that reads no startup file, so no login shell or rc file of the host's reorders that `PATH`; herdr's agent start runs the program there by the kind its agent profile names, its arguments passed whole, under the agent's herdr name; nothing is typed into the pane's shell. A start whose pane runs anything but the program the settings name is closed and refused, naming what ran, and a program herdr knows no kind for cannot run under herdr (32); nor can a program whose state herdr reads only through its own integration, OMP and MastraCode in 0.9.5, while `herdr integration status` reports that integration not installed, which refuses the launch naming `herdr integration install <name>` (4). The pane is held by its id and its server's socket, and found again by the agent's herdr name where the id no longer answers, as after the pane moves to another workspace: a name of at most 32 of herdr's legal characters made from the identity and unique on the server, a pane found by it taken as the agent's only once herdr lists it under that name. herdr's word that the program is ready is a second signal, never the start (35). A start herdr reads blocked is held at the program's question before it starts: the folder-trust question is answered and herdr waited on until the agent is idle (34), and any other leaves the start never begun with the screen; a start herdr does not see ready within its bound is never begun with the screen (35) | the pane's held input cleared with one ctrl+c while the agent waits, then herdr's prompt to the pane, then received read through the agent (89); a send never leaves text typed: one not received is cleared again before the next | herdr's reading of the agent: working as working; idle and done as waiting, since herdr's done is a finished turn nobody has looked at; blocked as asking only with the agent profile's mark (90), or where the agent's profile reads asking from the terminal (171), and as unknown otherwise; herdr's unknown as unknown; stopped only when the pane is gone, or herdr lists no agent in it and its foreground is the shell, or herdr lists it unrestored after its server's restart | herdr ends the pane and its process group, then reads that it is gone | kept by flume's herdr plugin on herdr's server, which runs between flume's commands. It runs `flume settle` for the session's places on a bound it states and at each change of an agent's state, reading every agent's state in one listing per tick |
-| **printed command** | the command printed, the prompt carried in it, for a person to run in the place | refused, so every tell is refused, no agent is kept open for an answer (198), and a prompt not received is reported never begun (38) | from the agent profile alone; stopped when its record says the session ended | refused unless the agent's record says the session ended | none, so flume runs attended (119) |
+| **herdr** | a pane in the herdr session the launch's settings name, else the one its place's stream names for the place's kind's stage or its kind (199), else the one its place's stream names, by default the stream's name, and flume's own for a place in the host's default stream naming none (107, 143): in each session, one workspace per repository and base, labelled `<repository> <base>` (`flume bolt/the-surfaces`, `sluice main`), made when the first place on that base opens there, and in it one tab per place named `<kind>--<name>`, whose panes are the place's agents that open in that session, so a stage that runs several agents at once splits its place's tab; where the settings name a pane, a split beside that pane instead, as for a conversation, left where its caller put it. The pane is made in the place with the host user's login environment and the agent's environment (C.4) over it set on it, its `PATH` led by a folder of the start's own holding the kind's name linked to the program the settings name, or, for a program the common profile binds, to flume's launcher, which becomes that program (C.4, 171), and its shell one that reads no startup file, so no login shell or rc file of the host's reorders that `PATH`; herdr's agent start runs the program there by the kind its agent profile names, its arguments passed whole, under the agent's herdr name; nothing is typed into the pane's shell. A start whose pane runs anything but the program the settings name is closed and refused, naming what ran, and a program herdr knows no kind for cannot run under herdr (32); nor can a program whose state herdr reads only through its own integration, OMP and MastraCode in 0.9.5, while `herdr integration status` reports that integration not installed, which refuses the launch naming `herdr integration install <name>` (4). The pane is held by its id and its server's socket, and found again by the agent's herdr name where the id no longer answers, as after the pane moves to another workspace: a name of at most 32 of herdr's legal characters made from the identity and unique on the server, a pane found by it taken as the agent's only once herdr lists it under that name. herdr's word that the program is ready is a second signal, never the start (35). A start herdr reads blocked is held at the program's question before it starts: the folder-trust question is answered and herdr waited on until the agent is idle (34), and any other leaves the start never begun with the screen; a start herdr does not see ready within its bound is never begun with the screen (35) | the pane's held input cleared with one ctrl+c while the agent waits, then herdr's prompt to the pane, then received read through the agent (89); a send never leaves text typed: one not received is cleared again before the next | herdr's reading of the agent: working as working; idle and done as waiting, since herdr's done is a finished turn nobody has looked at; blocked as asking only with the agent profile's mark (90), or where the agent's profile reads asking from the terminal (171), and as unknown otherwise; herdr's unknown as unknown; stopped only when the pane is gone, or herdr lists no agent in it and its foreground is the shell, or herdr lists it unrestored after its server's restart | herdr ends the pane and its process group, then reads that it is gone | kept by flume's herdr plugin on herdr's server, which runs between flume's commands. It runs `flume settle` at each change of an agent's state, reading every agent's state in one listing per tick. It keeps no bound and is no watch: the host's watch is a caller's (208) |
+| **printed command** | the command printed, the prompt carried in it, for a person to run in the place | refused, so every tell is refused, no agent is kept open for an answer (198), and a prompt not received is reported never begun (38) | from the agent profile alone; stopped when its record says the session ended | refused unless the agent's record says the session ended | none |
 
 Under herdr a session is named `herdr:<pane>@<socket>`, the pane's id
 and its server's socket, wherever a recipient or a launching session is
@@ -2951,10 +3060,12 @@ window.
 
 | operation | how sluice satisfies it |
 |---|---|
-| submit | flume runs `sluice submit <base> --no-wait --json` in the place, with no multiplexer's session in its environment, so sluice records the place's worktree as the entry's submitter and no session, pushes nothing into any pane, and answers with the entry at once; a refusal is its exit and words. flume never passes `--check`, and never runs `wt submit`, whose waiting half removes the place (111, 113). |
-| inbox | `sluice inbox --json` (sluice clause 51), run in the place, which delivers the place's decided entries pending for it once and marks each delivered; sluice answers nothing again for an outcome already delivered; a withdrawal is read from read-submission (133) |
+| submit | flume runs `sluice submit <base> --no-wait --json` in the place, with no multiplexer's session in its environment, so sluice records the place's worktree as the entry's submitter and no session, pushes nothing into any pane, and answers with the entry at once; a refusal is its exit and words. flume never passes `--check`, and never runs `wt submit`, whose waiting half removes the place (111, 113). A base place's submit runs in the repository, naming its branch as its head (203). |
+| inbox | `sluice inbox --json` (sluice clause 51), run in the place, which delivers the place's decided entries pending for it once and marks each delivered; sluice answers nothing again for an outcome already delivered; a withdrawal is read from read-submission (133). None runs for a base place, whose outcomes read-submission gives (203) |
 | read-submission | `sluice status <base> --json`, read once for each repository at each ask; the newest entry submitted from the place's branch, whoever submitted it; landed is that entry landed, its landing commit's `Sluice-*` trailers naming it |
-| step | `sluice step <base>`, one round of the base's queue, run by each settle that finds the place's submission undecided; beside a live `sluice run` the step finds the branch's lock held and does nothing, so the queue moves with nothing standing and never twice (124; sluice clause 135) |
+| step | `sluice step <base>`, one round of the base's queue, run by each settle that finds the place's submission undecided. A base place's queue onto its own base and its places' queue onto its branch are stepped alike. Beside a live `sluice run` the step finds the branch's lock held and does nothing, so the queue moves with nothing standing and never twice (124; sluice 135) |
+| open | `sluice branch create <branch> --from <base>`, run in the repository, which makes the branch at the base's current revision where the policy gives it a gate (sluice 104). flume makes no branch sluice lands on itself, since sluice's protection refuses any other making (sluice 106) |
+| close | `sluice branch delete <branch> --into <base>`, run in the repository once the base place is removed, which removes the branch only when nothing on it is open and its revision is contained in the base's (sluice 105). A refusal keeps the branch, named (67, 204) |
 
 On landing sluice removes nothing, and flume tidies every landed place
 itself, through the place profile's teardown (C.1), and its branch as
@@ -2980,6 +3091,8 @@ stripped and `GIT_TERMINAL_PROMPT=0`, a refusal read as its JSON
 | inbox | `sluice inbox --json` answers `outcomes[]`, each with `state`: `landed` with its commit in `landed_as`; `failed`; `conflict` with the files contested in `conflict.paths`. Each one's words are its `notice`, or where it holds none its `state`, `branch` and the `task` of each of its `failed[]`. A failure's notice names the check that failed, not its log. A conflict's base revision is `tested.on` (`tested: {combination, on, submissions}`), never parsed from the notice; a conflict found while the candidate was formed, before any test, carries no `tested`, and its base is then the base's revision where the profile holds it, `<remote>/<base>` or the local base, read with no fetch |
 | read-submission | `sluice overview --json`, each of its `branches[].branch`, then `sluice status <branch> --all --json`, its `submissions[]`: the one with the highest `id` whose `from.worktree` is the place's branch, its `state` `queued` as waiting, `testing` as under test, `landed` (with `landed_as`), `failed`, `conflict` or `withdrawn`; any other state is read as not understood. Its `submitted` is when it was submitted; when it was decided and how long its checks ran are read from sluice's records of the entry and its runs where the pinned sluice gives them, checked against it at the build, and unknown where it does not (168) |
 | step | `sluice step <base> --json`, run in the repository |
+| submit, a base place | `sluice submit <base> --head <branch> --no-wait --json`, run in the repository, since a base place has no worktree. It submits the branch as sluice holds it, the remote's revision where its policy names one, recording no worktree and no session as the entry's submitter, and answers as any submit. No `sluice inbox` runs for it: its outcome is read-submission's entry whose `from.head` is the branch, failed and conflict with the record's words, files and `tested.on`. The profile reads it of the first pinned sluice whose submit takes a head without `--check` (sluice 124 as amended) |
+| open, close | `sluice branch create <branch> --from <base> --json` answers the revision the branch was made at. `sluice branch delete <branch> --into <base> --json` answers it removed. Each exits 1 where a branch it names does not exist, which close reads as gone, and 2 on a refusal, its `error.message` the words (sluice C.5's branch row) |
 | base | the remote is the `remote` of the base's table under `[branches]` in `.config/sluice.toml`, the base's own or the first pattern with one `*` that names it, read at the local base and else at each remote's tracking copy; where it names one, `git fetch <remote> +refs/heads/<base>:refs/remotes/<remote>/<base>` once, the base at `refs/remotes/<remote>/<base>`; where the base's table names none, the local base; and where the policy names no table for the base, or no revision of it holds a policy, sluice lands no such base, and base says so (126) |
 | place | `sluice equip <base> --at <revision> --json` in the place as its readiness, its `steps[]` each `{step, passed, words}`, exiting 1 where one failed; an answer with no `steps` read as one failed step, `sluice equip`, with its `error.message`; and `sluice release` as its teardown, handed to the place profile through the binding |
 
@@ -2995,6 +3108,10 @@ lives:
 - Each place's live state is host state, one document per place under
   `$XDG_STATE_HOME/flume/` (`~/.local/state/flume/`), and goes when the
   place is tidied (62).
+- The host's watch is host state too, one document beside the places',
+  holding when the newest settle a caller asked as its watch began and
+  the bound it stated, written by compare-and-set and by nothing but
+  such a settle (208).
 - The host's bound is one word of the host's own configuration,
   `$XDG_CONFIG_HOME/flume/config.toml` (`~/.config/flume/config.toml`):
   `[host] agents = <n>`, how many agents of flume's places the host
@@ -3299,9 +3416,11 @@ view, naming the profiles, and nothing else (C.7).
   queue, and a failed submission sends a place back only to the stage
   its kind names (111, 112).
 - **I8.** flume runs no process of its own between its commands. An
-  agent going quiet and the terminal's watch settle a place, and every
-  settle reads the outcome of its open submission. Under a terminal that keeps no watch, every command
-  of flume's that acts settles every place first (46, 119, 120).
+  agent going quiet settles its place, and a caller keeping watch and a
+  terminal's nudge every place, and every settle reads the outcome of
+  its open submission and drives its base where the merge queue moves
+  only so (124). While no caller keeps watch, every command of flume's
+  that acts settles every place first (46, 119, 120, 208).
 
 <!-- ANCHOR_END: invariants -->
 <!-- ANCHOR: non-goals -->
@@ -3344,8 +3463,9 @@ Constraints already fixed:
   in its place or with the operator.
 - Work lands through a merge queue, which tests a branch's work as it
   would land and records each submission.
-- The callers are the operator, millpond, headwater, sounding and crew,
-  each through flume's command line or a plugin of flume's.
+- The callers are the operator, millpond, headwater, sounding, crew
+  and the runner, each through flume's command line or a plugin of
+  flume's.
 - flume is free and open source.
 - A kind is written in the family's one kind format. The format is
   defined once in the family's shared crates, in a public repository of
@@ -3377,8 +3497,8 @@ The rest of the stack, which a model builds on unless it says why not:
     writes a lock (155); `open`, which shows a person a stream's
     agents in its view (186); `list`, which says at a glance what flume
     holds and what a person can open (200); `needs` for an agent; and
-    `settle`, which the two
-    plugins run;
+    `settle`, which the plugins run and a caller keeping watch runs
+    with its bound (208);
   - a Claude Code plugin that gives every session `/launch` and serves
     `status` over MCP. flume loads it into every agent it starts, and
     its hooks hold the asking mark, the stop check and the guard, and
@@ -3387,12 +3507,17 @@ The rest of the stack, which a model builds on unless it says why not:
     kind, its stage, its agent's state, a change's tasks ticked and its
     submission. Its keys open a place's pane, tell its agent, stop it
     and retry its stage. On herdr's server, which runs between
-    flume's commands, it keeps the watch, and so catches an agent that
-    crashed, hung or was killed, a prompt never received, and an agent
-    stuck working.
-- herdr with flume's plugin as the terminal that keeps watch, which
-  unattended use needs (119). Where the host or any stream runs under
-  the printed command flume runs attended (190).
+    flume's commands, it nudges at each change of an agent's state, so
+    an agent that crashed or was killed is read before the host's
+    watch next settles (122, 208).
+- herdr with flume's plugin as the terminal, which nudges (122).
+- The runner, on a host that keeps one, as the caller that keeps watch,
+  which unattended use needs (119, 208): each of its passes runs
+  `flume settle --every <bound>` once and awaits it. A host where no
+  caller keeps watch runs attended. Its places move at its agents'
+  quiet, a terminal's nudge and its callers' commands, each command
+  settling every place first, and its queues by those settles' steps,
+  or by `sluice run` where the host runs it (124; sluice 135).
 - The profiles of Part C: plain git worktrees, the kind format in
   `.config/flume.toml`, OpenSpec, Claude Code, herdr, sluice, the
   host's state directory, and Ghostty or Terminal.app as the window
@@ -3406,7 +3531,8 @@ The rest of the stack, which a model builds on unless it says why not:
   | millpond | an item's send, as a fix or a change, the item's brief as the launch's | the item's record and its sends, and the landing, written from the merge queue's record of the place's branch |
   | headwater | its fix key, as a fix with the release's brief | nothing |
   | sounding | each round of an elaboration, as a place of the elaboration kind it hands in the launch, a conversation's agent beside the operator's pane | the inputs, the soundings each was based on, the rounds, the operator's notes and decisions, and the record, with each round's conclusion copied from its report; its go-on is a retry with the operator's notes as words, its accept a done or a retry that releases a held submission, and its drop a drop |
-  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief; a fix of a base whose own checks failed after a landing, as a fix launched on that base with the failure's words as its brief, the merge queue's where it blamed and the check's own otherwise, its submission on hold where the base's landings wait on the user's word outside the merge queue's policy (7, 47) and free where the policy asks the word itself or none, with no bolt's branch between and no other place moved (record 0023) | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, or a retry or drop of a place past its kind's bound; it names each place's recipient by a role's address, so a role with no live run is woken to collect an end (132), and each end is delivered to it (43) and reads the rest from status; a role's own work that lands is a place of its own, so no session of crew's submits; it decides no step between a unit's stages, and runs no agent of its own in the place (records 0010 and 0011) |
+  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each bolt as a base place of a kind crew declares with no stages, on the branch the bolt lands on, its units' places on its branch (202); the bolt submitted by crew's retry once the user sends it and its units are over (203); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief; a fix of a base whose own checks failed after a landing, as a fix launched on that base with the failure's words as its brief, the merge queue's where it blamed and the check's own otherwise, its submission on hold where the base's landings wait on the user's word outside the merge queue's policy (7, 47) and free where the policy asks the word itself or none, with no bolt's branch between and no other place moved (record 0023) | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, or a retry or drop of a place past its kind's bound; it names each place's recipient by a role's address, so a role with no live run is woken to collect an end (132), and each end is delivered to it (43) and reads the rest from status; a role's own work that lands is a place of its own, so no session of crew's submits; it decides no step between a unit's stages, and runs no agent of its own in the place (records 0010 and 0011) |
+  | the runner | each launch its control plane asks, passed as given, a bolt's base place and its units' places among them; a retry of a base place's submission its control plane asks (203) | the watch over its host: each pass, keeping or control, runs `flume settle --every <bound>` once and awaits it (208); nothing else of a place's, and no queue of its own: sluice's rounds are moved by those settles' steps or the host's `sluice run` |
 
 <!-- ANCHOR_END: givens -->
 <!-- ANCHOR: questions -->
@@ -3583,15 +3709,16 @@ These are not requirements.
   refusal, nothing reaches the merge queue, and the stage goes on.
 - **S26.** A caller declares a fix place done. It is refused, naming
   the place, and the caller drops it instead.
-- **S27.** flume runs under the printed command, so nothing keeps
-  watch. A code stage's agent is killed with nothing delivered. Nothing
+- **S27.** No caller keeps watch over the host, and flume runs under
+  the printed command, so nothing nudges. A code stage's agent is killed with nothing delivered. Nothing
   reads it until the operator next acts through flume, dropping another
   place: that command settles every place first, and status then
   reports the stage lost.
-- **S28.** Under herdr with flume's plugin, a code stage's agent
-  crashes with nothing delivered, and its stop hook never runs. Within
-  the watch's bound, with no caller asking, flume reads the stage lost
-  and starts no agent.
+- **S28.** On a host whose runner keeps watch, under herdr with flume's
+  plugin, a code stage's agent crashes with nothing delivered, and its
+  stop hook never runs. At herdr's nudge, and at the latest within the
+  watch's bound, with no caller asking, flume reads the stage lost and
+  starts no agent.
 - **S29.** A code stage's agent commits and goes quiet. Its stop hook
   settles the place at once: flume ends the agent and starts the next
   stage before the watch next runs.
@@ -4029,15 +4156,14 @@ These are not requirements.
 - **S91.** A host whose terminal is herdr declares the stream `trial`
   with the printed command as its terminal. A place launched on `work`
   opens its agent in herdr's session `work`, and one launched on
-  `trial` prints its agent's command, flume running attended while a
-  stream runs under a terminal that keeps no watch. Asked to open
+  `trial` prints its agent's command. Asked to open
   `trial`, flume refuses, the printed command holding no session. The
   host's local layer then names herdr for `trial`. The trial place's
   printed agent stays as it was, and its next stage opens in herdr's
   session `trial`; status gives each agent's terminal with where it
   came from. A stream naming `rex`, for which flume carries no profile,
   refuses its launches and its views naming `rex`, while every other
-  stream runs (4, 119, 143, 186, 190).
+  stream runs (4, 143, 186, 190).
 - **S92.** A repository on a host binds no merge queue, and its remote
   `origin` holds `main` two commits past the host's own `main`, which
   nothing on the host moves. A fix is launched on `main`. flume fetches
@@ -4182,6 +4308,43 @@ These are not requirements.
   worktree, change or submission is read, and no agent's state is
   asked of herdr. herdr's session `office` is not started, and nothing
   flume holds changes (57, 62, 63, 66, 70, 130, 200, 201).
+- **S109.** On a host whose runner keeps watch, each of its passes
+  running `flume settle --every 2m`, a chore's code stage delivers, its
+  agent ends, and flume submits the place. No `sluice run` drives the
+  repository, no terminal nudges, and no caller asks anything else of
+  flume. At each pass flume settles every place, the chore's among them
+  with no agent in it, and that settle runs one round of its base's
+  queue. The submission lands, and the next settle delivers the landing
+  to the chore's recipient and tidies the place. On another host whose
+  `sluice run` drives the repository, the same settles' steps do nothing
+  and the driver lands it (46, 124, 125, 208; sluice 135).
+- **S110.** A caller launches a base place of its own kind with no
+  stages on `main`. flume asks sluice to make its branch, makes no
+  worktree, and starts no agent. The caller launches two changes on
+  that branch: each is cut there, runs through, and is submitted to it,
+  and the host's watch steps the branch's queue until both land. The
+  base place waits on its caller. The caller retries its submission:
+  flume submits its branch by name from the repository, the watch steps
+  `main`'s queue until it lands, and flume reads the landing from
+  sluice's record of the branch and delivers it to the base place's
+  recipient. flume tidies the base place, removing no worktree, and
+  sluice removes its branch into `main`. The two changes' places,
+  tidied once they landed, took their branches with them. No command
+  of the caller's drove any queue (63, 67, 202 to 206).
+- **S111.** A caller retries a base place's submission while one change
+  on its branch still works. The retry is refused, naming the change.
+  The change lands, and the retry submits the base place. While that
+  submission is open, a launch of a fix on the base place's branch is
+  refused, naming the base place. A launch of any place on a live
+  change's branch is refused, naming the change (10, 203, 204).
+- **S112.** A base place's submission to `main` fails: a check of
+  `main`'s fails on it. flume starts nothing; the base place waits on
+  its caller with sluice's words, delivered to its recipient. The
+  caller launches a fix on the base place's branch with those words as
+  its brief. The fix lands on the branch, and the caller retries the
+  base place's submission, which lands. Had the submission conflicted,
+  the fix's agent would have merged the revision of `main` sluice
+  tested against into the fix's branch first (112, 203).
 - **S113.** A host restarts while a research place's talk, a
   conversation, waits on its person under work-1. herdr brings the
   agent back bare in its pane, resuming its session. flume reads talk
@@ -4226,6 +4389,19 @@ These are not requirements.
   its conversation on the account its lost start ran under, with every
   turn the person took by hand, and the other four keep waiting (30,
   49, 56, 64, 145, 179, 207).
+- **S118.** A host keeps no runner, and its terminal is herdr with
+  flume's plugin. Status says no caller keeps watch. A chore's code
+  stage delivers, its agent ends, and flume submits it. herdr's nudge
+  at the agent's end settles every place, stepping the chore's base
+  once; nothing settles after it until the operator drops another
+  place, and that command settles every place first, stepping the base
+  again. The runner then starts on the host, its passes running `flume
+  settle --every 2m`. Status gives the watch's bound and when it last
+  settled, and the chore lands at a later pass with no command of the
+  operator's. The runner stops, and four minutes after its last pass
+  began status says no caller keeps watch and since when, and the
+  operator's next drop settles every place first again (46, 119, 122,
+  208).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
@@ -4236,7 +4412,7 @@ record and its states, how a stage's end is read for each form of
 deliverable and for a conversation, how a prompt and a tell are
 delivered, how the stop check and the guard hold an agent, how a place
 is submitted and sent back after a failed submission, how a place
-settles under a terminal that keeps watch and under one that does not,
+settles while a caller keeps watch over the host and while none does,
 and how a place is tidied, with fixed examples, and how a kind, an agent
 program and a terminal are added. A conformance suite whose scenarios
 each cite the clauses they exercise, failing when a clause is cited by

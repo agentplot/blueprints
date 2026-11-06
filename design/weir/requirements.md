@@ -410,16 +410,18 @@ redefine these.
 ### A.8 Kinds
 
 51. A kind is a simple kind or a statechart kind, with a version. A
-    simple kind is an ordered list of one or more stages: every stage
-    but a conversation has exactly one deliverable, and a conversation
-    has none. A statechart kind is a statechart (94).
+    simple kind is an ordered list of one or more stages, or, where it
+    lands, of none: every stage but a conversation has exactly one
+    deliverable, and a conversation has none. A kind that lands with no
+    stages runs no agent: what its places do is its reader's rule (58).
+    A statechart kind is a statechart (94).
 52. A simple kind's declaration holds its version, its stages in order,
     how its places' branches are named, whether its first stage starts
     in a place that could not be made ready, and whether it lands. A
-    kind that lands names the stage a failed submission sends a place
-    back to, and how many times a place may go back before it waits on
-    its caller. It may hold settings for every stage's agents, which a
-    stage's own settings come before.
+    kind that lands with stages names the stage a failed submission
+    sends a place back to, and how many times a place may go back before
+    it waits on its caller. It may hold settings for every stage's
+    agents, which a stage's own settings come before.
 53. The declaration of a simple kind's stage holds its name, its prompt,
     and its deliverable or that it is a conversation. It may hold its
     standing instructions, text every agent of the stage starts with
@@ -441,15 +443,17 @@ redefine these.
 56. A declaration may hold a section its reader does not know, and the
     reader ignores it. A reader never fails on a section it does not
     know, and never changes a declaration.
-57. A declaration is checked whole: a simple kind with no stage, a
-    stage with no name or prompt, a field of the wrong shape, a
-    deliverable not of the seven, or a stage that repeats per task group
-    and does not deliver tasks ticked, is refused naming the field. A
-    statechart kind is checked as 95 says. A version left out
-    reads as the first. A kind's table that holds settings for its
-    agents and no stages declares no kind: it is read as settings given
-    to a kind of that name declared elsewhere, for every stage or for
-    stages it names, and is never refused as a kind with no stage.
+57. A declaration is checked whole: a simple kind with no stage that
+    does not land, a stage with no name or prompt, a field of the wrong
+    shape, a deliverable not of the seven, or a stage that repeats per
+    task group and does not deliver tasks ticked, is refused naming the
+    field. A statechart kind is checked as 95 says. A version left out
+    reads as the first. A kind that lands with no stages declares them
+    as none, `stages = []`, and names no stage a failed submission sends
+    a place back to. A kind's table that holds settings for its agents
+    and leaves its stages out declares no kind: it is read as settings
+    given to a kind of that name declared elsewhere, for every stage or
+    for stages it names, and is never refused as a kind with no stage.
 58. The same declaration always reads the same, and reading it changes
     nothing. Which declaration a name resolves to, among a tool's own,
     a repository's, a launch's and the packages a reader holds, and how
@@ -848,6 +852,11 @@ programs = { claude = { file = "claude-bump.json", settings = { tui = "fullscree
 
 [kinds.fix.agents]        # settings for a kind of that name declared elsewhere, a tool's own fix among them (57)
 model = "opus"
+
+[kinds.train]             # a kind that lands with no stages: its places run no agent (51)
+branch = "train"
+lands = true
+stages = []               # none, declared so; a table that leaves stages out gives settings (57)
 
 [kinds.fix.agents.stages.code]   # settings for one of its stages
 instructions = "Keep each commit to one fix."

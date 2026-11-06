@@ -474,8 +474,16 @@ redefine these.
      the remote holds it: the submit pushes nothing to that branch, opens
      or updates the request from it, and submits the remote's revision;
      the worktree's head there is the host's copy, and where it differs
-     from the remote the submit says so, with both revisions. A submit
-     pushes only a branch sluice does not land on (1). Nothing a submit
+     from the remote the submit says so, with both revisions. A
+     submission that names as its head a branch sluice lands on, run
+     anywhere in the repository, from a worktree or from none, is of
+     that branch the same way, and records no worktree and no session as
+     its submitter. Its outcome is pending in no inbox: it is read from
+     the branch's records, with the words an inbox would give, the
+     checks that failed, the files contested and the revision it was
+     tested on (51). So a branch with no worktree on it submits, as
+     flume's base place does (flume 202, 203). A submit pushes only a branch sluice does
+     not land on (1). Nothing a submit
      does writes the host's copy, and a copy behind or ahead of the
      remote refuses no submission. A write to the copy by any other hand
      is refused, judged by the ref's own value on the host before and
