@@ -269,7 +269,8 @@ redefine these.
 - **end**: of a stage, that it **delivered**, that it **ended short**,
   or, of a conversation, that it was **finished**.
 - **on hold**: of a stage or a submission, that it waits on its
-  caller's word before it starts.
+  caller's word before it starts; of the move a place waits on, that a
+  caller said in its words that it is making it (130).
 - **room**: of a host or a stream, how many more agents of flume's
   places it may run at once: the bound its administrator states for it,
   less its agents running (70, 143); of a stream, for a place's first
@@ -297,13 +298,23 @@ redefine these.
   five minutes, or the launch's bound, under no hold's words (130).
 - **recipient**: whoever an end of a place goes to: a caller's session,
   or a role's address, held by a run of its kind or by a standing
-  agent (43, 132).
+  agent, the answerer behind its stream among them (43, 132, 193).
+- **address**: of a role, `<stream>/<role>`: the role a source of the
+  host declares for a stream (193). A launch, a stop-short or a carrier
+  names it in place of a session, and a stop-short names its own
+  stream's role by the role alone (41, 132).
+- **answerer**: of a stream, the role a source of the host declares to
+  stand behind the places that run there (193). It is the recipient of
+  a launch that names none and runs in no session, and a recipient of
+  every stall of a place that is not its own.
 - **delivered**: of an end, that it reached its recipient, recorded on
   the place with to whom and when; **pending** until then (43).
 - **collect**: a recipient's taking of every end pending for it, by
   `flume inbox`, which delivers each (43).
 - **notice**: what a delivery carries into a pane: the end and the place
   to read, never a fact to act on blindly.
+- **key**: of an end, the name flume gives it, which no other end of
+  the place has, by which a recipient and an answer name it (42, 43).
 - **refused**: of a stage, that a part its prompt asks for had nothing
   to fill it (27).
 - **lost**: of a stage, that its agent stopped with nothing delivered
@@ -434,7 +445,12 @@ redefine these.
    never the value (195); one whose points
    are not a number of the Fibonacci scale, naming them, and one that
    gives no points where its place's stream states a points bound or a
-   pace, naming the stream (165).
+   pace, naming the stream (165). So is a launch that names no
+   recipient and runs in no session where no answerer stands behind its
+   stream, saying how to name one (7, 193), or where two roles stand
+   behind it, naming both (193); and one that names a role's address no
+   source of the host declares, or two declare, where no answerer
+   stands behind its stream, naming the address (132).
 5. Every stage whose prompt asks for the brief gets it whole and as the
    caller wrote it. flume never rewrites, shortens, summarises or
    judges a brief.
@@ -446,17 +462,21 @@ redefine these.
    submission waits on its word, the place's priority (70), the stream
    it runs in (143), the intent it serves with the intent's brief (147),
    the goals (149), the work's points (165), the
-   recipients of its ends (43), and a mark. A recipient the launch
-   names none of is the session that launched it, as the terminal it
-   runs in names it, or none where no terminal names one (190). flume keeps the mark with the place and reports it, and
-   decides nothing by it.
+   recipients of its ends (43), and a mark. A launch that names no
+   recipient has the session that launched it, as the terminal it runs
+   in names it (190), else the answerer behind the place's stream
+   (193). A recipient a launch names is a session's name, or a role's
+   address written whole (132). flume keeps the mark with the place and
+   reports it, and decides nothing by it.
 8. A place's kind, brief, base, stream, intent with its brief and goals,
    points, and the settings its launch carries, are fixed by its launch, and
    nothing after the launch changes them; the host's configuration of
    its agents' settings is read at each start (32), and the account each
    agent runs under is chosen at its start (145). The launch names the stages and the submission on hold, and a caller adds to a place after
    it only the words of a retry (49), a hold with its words (130) and
-   a change of priority (70). Its recipients are fixed at its launch.
+   a change of priority (70). Its recipients are fixed at its launch;
+   the answerer behind its stream, as the sources declare it when a
+   stall is read, is delivered its stalls besides (130, 193).
 
 ### A.2 Places
 
@@ -689,13 +709,15 @@ redefine these.
 191. The host's configuration declares each source of the kinds from
      outside it holds, in its managed layer (C.7). Each source has a
      declaration of its own, named by the source, which names where the
-     source's packages lie. A person, or a program that manages the
+     source's packages lie and may name where the source declares the
+     roles it answers (193). A person, or a program that manages the
      host, writes a source's declaration whole, replaces it whole and
      removes it. None of these touches another source's declaration or
      anything else of the configuration. flume reads the sources as they
-     stand at each launch, each wake of a role, each lock its caller asks
-     for and each status. It writes nothing in them or where a source's
-     packages lie. A source's declaration may be unreadable, or take the
+     stand at each launch, each wake of a role, each start, each stall,
+     each lock its caller asks for and each status. It writes nothing in
+     them or where a source's packages or roles lie. A source's
+     declaration may be unreadable, or take the
      name of flume's own source, the repository's or a launch's. Such a
      declaration refuses each launch that names its source, naming the
      declaration and why, and no other launch (4); status names it (56).
@@ -789,8 +811,13 @@ redefine these.
     a retry whose words fill it, and starts no agent. flume never sends
     a blank where a part was asked for.
 28. Every stage's prompt gives its agent the one way to stop short,
-    filled in for the place and the stage. No prompt asks an agent to
-    submit, merge or push its work (71).
+    filled in for the place and the stage, with each role's address its
+    words may be for, its own stream's by the role alone and every other
+    stream's whole, and the words its source gives for what that role
+    answers (41, 193). It is the agent's one way to ask for what its
+    stage needs: whoever answers the question decides whether it is a
+    person's, and how it reaches them (69, 72). No prompt asks an agent
+    to submit, merge or push its work (71).
 29. A stage's agent is started with its standing prompt (148), its
     prompt, its settings, its identity and its place, and nothing else
     of flume's. Its environment
@@ -1446,7 +1473,12 @@ redefine these.
 41. An agent stops short by saying so to flume, with its words, and
     saying which it does: it needs an answer before its stage can
     deliver, or it found work a stage before its own must do again
-    (131). flume
+    (131). It may name the role its words are for, of any stream, by the
+    role's address, and a role of the place's own stream by the role
+    alone (132, 193). Either is a role a source of the host declares
+    with words of what it answers. The stop-short's end then goes to
+    that address and not to the place's recipients. A name that is none
+    of those is refused, naming them. flume
     takes a stop-short only from the agent of the place's current stage,
     or from a process that agent started. The stop-short carries a
     secret flume gave that start alone, accepted only while the agent is
@@ -1469,8 +1501,14 @@ redefine these.
     again, starting and ending no agent and counting no start (48).
     Otherwise
     the answer is a retry, and the fresh agent's prompt carries the
-    question with the answer. A stage that ended short having found work
-    is sent back as 131 says.
+    question with the answer. Every answer is recorded on the stop-short
+    it answers, with who gave it and when. An answer, a retry's or a
+    tell's, may name the stop-short's key. flume then takes it only
+    while the place waits on that stop-short, so a question is answered
+    once, whether its answer reaches the agent kept open or a fresh one.
+    A second answer, or one that comes after the place moved on, is
+    refused naming the answer taken, who gave it and when (49, 53). A
+    stage that ended short having found work is sent back as 131 says.
 198. An agent that stops short needing an answer is kept open for it
      where its terminal delivers text to a running agent (95), and
      otherwise is not. It is kept open from its stop-short for the time
@@ -1501,7 +1539,8 @@ redefine these.
     terminal brought back (77). A notice of an end is sent into a recipient's
     pane only while it asks no question (37), and otherwise stays
     pending; it counts delivered on the terminal's answer, with no
-    reading back.
+    reading back. A notice names the place, the first line of its brief,
+    the end and its key, and where to read the end whole.
     A place's recipient learns a stage's end together with what was
     delivered, the head or the report, and the addresses of what it
     made (129), or with the agent's words, and a submission's outcome
@@ -1512,8 +1551,8 @@ redefine these.
     through the terminal into the recipient's own pane (95), and records
     on the place that it was delivered, to whom and when. A recipient
     named by a role's address is delivered to in the pane of that role's
-    live run, or of the standing agent the host's configuration names
-    for it. Where neither is there, the end stays pending, and wakes the
+    live run, or of the standing agent its source declares for it (193).
+    Where neither is there, the end stays pending, and wakes the
     role where the address has a kind (132). Where the terminal has no
     pane to deliver to, the end is read from status (56). A wait is by place, naming its stage or its
     submission: it answers at once with an end pending for this
@@ -1524,7 +1563,13 @@ redefine these.
     recipient it answers as a read, delivering nothing again. A caller
     that starts collects every end pending for it, of the places it
     launched or is recipient of, by `flume inbox`, which delivers each
-    and marks it delivered; status and a read mark nothing.
+    and marks it delivered. With them it gives every place that waits on
+    its caller for which the caller is a recipient, the role its
+    stop-short named, or the answerer its stall went to, delivered or
+    not. For each it gives the move and since when, the words, key and
+    addressee of a stop-short it waits on, and a hold's words. So a
+    caller that restarted sees each question still its own. That list,
+    status and a read mark nothing.
 44. A stage whose agent has been quiet past the stage's limit, with
     nothing delivered and nothing said, is reported stuck, naming the
     stage and the agent. The limit is 30 minutes where the stage's
@@ -1727,7 +1772,10 @@ redefine these.
     any stage of the place's kind, one after the current stage among
     them, or the submission of a kind that lands. It never changes the
     place's kind, brief or base (8), and flume judges no order of stages
-    but its own starts (40).
+    but its own starts (40). A retry that names a stop-short's key is
+    refused, naming the place, the answer the stop-short already took,
+    who gave it and when, or the move the place waits on now, unless the
+    place waits on that stop-short (42).
     A retry of a conversation's stage (109) reported lost (45) goes on
     with the lost agent's conversation where its program can carry it
     (179). A process may still run that conversation: the lost agent
@@ -1780,7 +1828,10 @@ redefine these.
     prompt, or nothing at all. A tell to a place with no live agent, or
     whose agent is asking, is refused with nothing typed. So is a tell
     to a place whose stage ended short needing an answer while its
-    agent is not kept open (198), naming the retry that answers it.
+    agent is not kept open (198), naming the retry that answers it. A
+    tell that answers an agent kept open may name the stop-short's key,
+    and is then refused as 49 says unless the place waits on that
+    stop-short (42, 198).
 54. A tell never interrupts a working agent: its words reach the agent
     only once it is waiting. A tell not delivered within the bound its
     caller gives, or within ten minutes where it gives none, is refused
@@ -1822,9 +1873,12 @@ redefine these.
     until when, or when and why it was let go and whether it is ended
     (198), and each answer the stage's current start took in its
     session, with its question (42), or of a failed
-    submission; of a place
+    submission; each end's key; for a stop-short, the role's address it
+    named and each answer it took, with who gave it and when (42); the
+    place's recipients, each with where it came from; of a place
     waiting on its caller, the move it waits on, since when, a hold's
-    words and whether it is stalled (130); the place's points, and
+    words, a hold on the waiting move with its bound or that it lapsed,
+    and whether it is stalled (130); the place's points, and
     beside them the time its newest submission spent in the merge queue
     and the time its checks ran (165, 168); a stage for review's plan
     with where it lives (163); for the host and for each of
@@ -1834,13 +1888,18 @@ redefine these.
     its stream, its priority, its points and since when (70, 143), and,
     for one waiting for its conversation to end elsewhere, each process
     that runs it (49, 207); for
-    each stream, its points bound, its pace with the points started in
-    its span and when the next of them leaves it, and the tokens its
+    each stream, its answerer with the source that declares it, or that
+    it has none (193), its points bound, its pace with the points
+    started in its span and when the next of them leaves it, and the
+    tokens its
     agents' own records gave (166 to 168); and for each
     pool, its strategy and its threshold, and its accounts, each with
     its agents running, while spent, until when (146), and its reading
-    as 185 says; and each source the host declares, the kinds it
-    holds by identity, or why it cannot be read (191).
+    as 185 says; each source the host declares, the kinds it holds by
+    identity and the roles it declares, or why they cannot be read (191,
+    193); and for each role's address an end stands pending for, its
+    run, its standing agent, or that it is carried or wakes nothing and
+    why (132).
 130. A place whose next move is its caller's, a stage or a submission on
      hold (47), a stage ended short needing an answer (42), a stage for
      review (163), a stage
@@ -1853,12 +1912,23 @@ redefine these.
      next stage or its submission on hold after the launch, with its
      words saying what for, which status gives with the hold's since
      when; a retry naming the stage or the submission ends the hold (47,
-     49). A place waiting on its caller under no hold's words for five
+     49). A caller may also hold the move the place waits on it for,
+     with words saying who makes it and how, such as a role that took
+     the question or an answer asked of a person, and a bound after
+     which the hold lapses; a later hold on that move replaces it, and a
+     retry naming the stage or the submission ends it as the move made.
+     A place waiting on its caller under no hold's words for five
      minutes, or for the launch's bound where it sets one, is stalled:
-     status says so, and each recipient of the place is delivered once
-     that it is stalled and which move is theirs (43). A hold's words are the
+     status says so, and each recipient of the place, the role a
+     stop-short it waits on named (41), and the answerer behind the
+     place's own stream where it is none of them, is delivered once that
+     it is stalled, which move is theirs, and the words, key and
+     addressee of the stop-short it waits on (43, 193). A hold on the
+     waiting move whose bound passed is no hold from then, and the place
+     stalls again. A hold's words are the
      caller's to make good: the event they wait for is the caller's to
-     see, and flume watches none and ends no hold itself (70, 72). A
+     see, and flume watches none and ends no hold itself, but lapses a
+     hold on the waiting move once its bound passes (70, 72). A
      stage waiting for room (70) waits on the host and not on its
      caller: status says so, with its priority and its place in the
      queue, and such a place is never stalled.
@@ -2009,9 +2079,11 @@ redefine these.
      held by the host's alone (70). A stream's pool comes before the
      host's own (144), and a stream's agents take the settings the host's
      configuration gives for the stream (32);
-     the host's bound and the runs it wakes for roles (132) are the
-     host's alone, and its terminal, view and window program stand for
-     each stream that names none (186, 190). A caller names a stream by
+     the host's bound is the host's alone, and its terminal, view and
+     window program stand for each stream that names none (186, 190);
+     the runs it wakes for roles are its sources', each in the stream its
+     address names, with that stream's room, pool and settings (132,
+     193). A caller names a stream by
      its name, and the name is all a caller needs of a stream. Status
      gives each place's stream and where it came from (56). A stream
      shares its agents among its places' labels (180, 181), and its
@@ -2126,35 +2198,87 @@ redefine these.
     merge queue, never from an agent's words or its terminal.
 72. flume tells no person anything by itself. A surface shows what
     flume reports when it is asked.
-132. A recipient may be named by a role's address, `<partition>/<role>`,
-     rather than by a session. A run of the role is a place of the kind
-     the host's configuration names for the address (C.7), named by the
-     role, so at most one run of an address is live at once (3), and its
-     agent takes the address as its session's name. Where a settle finds
-     an end pending for an address with no run live or waiting
-     for room, or a caller or another tool's carrier asks flume to wake
-     the address, flume launches the address's kind at the priority the
-     configuration gives it; a wake of an address whose run is live or
-     waiting does nothing. The run's start collects every end pending
-     for the address (43), so whatever came while no run was live is one
-     run's. flume decides nothing in this: which address is a
-     place's recipient, what the role's kind does and what its run decides are the
-     caller's (69, 70, 72). An address the configuration names no kind
-     for is woken by nothing, and status says the ends pending for it.
-     The host's configuration may instead name a standing agent for an
-     address: an agent flume did not open, named by the name the
-     host's terminal knows it by, in the terminal session it lives in
-     (C.7). An end for that address goes into the standing agent's pane
-     as a notice, as any end does (43), and wakes no run. flume opens
-     nothing for the address and keeps no watch over it: it delivers at
-     the settles that read the end. Where the terminal finds no agent
-     of that name in that session, or more than one, the end stays
-     pending, and status says where the address lives and why nothing
-     went. The address stays the recipient a caller names, so which
-     agent holds it is the host's configuration's alone, and `flume
-     inbox` collects for it as for any recipient. An address given both
-     a standing agent and a kind is refused, naming it, since the two
-     are two agents of one role (3).
+132. A caller may name a recipient by a role's address,
+     `<stream>/<role>`, rather than by a session: the role a source of
+     the host declares for a stream the host declares (143, 193). A
+     place of any stream may name an address of any other. A run of the
+     role is a place of the kind its source names for the address, in
+     the address's stream. Its name is the one its source gives it, else
+     its stream and its role joined. So at most one run of an address is
+     live at once (3), and two streams' runs of one role are two places.
+     Its agent takes the address as its session's name. Its repository,
+     base, priority, intent, points, brief and settings are those its
+     source declares for the address, as a launch's are (7, 32). A run
+     is over once its last stage delivers. flume declares it done at the
+     settle that reads the delivery, with no caller's word, and tidies
+     it (114), so an end that comes later wakes another run. A run's own
+     stall goes to the answerer behind its stream and never to its own
+     address (130, 193). Where a settle finds an end pending for an
+     address with no run live or waiting for room, or a caller or
+     another tool's carrier asks flume to wake the address, flume
+     launches the address's kind at the priority its source declares. A
+     wake of an address whose run is live or waiting does nothing. The
+     run's start collects every end pending for the address (43), so
+     whatever came while no run was live is one run's. flume decides
+     nothing in this: which address is a place's recipient, what the
+     role's kind does and what its run decides are the caller's (69, 70,
+     72). Nothing wakes an address no source declares, or two declare,
+     or one whose stream the host does not declare.
+     Where its source declares it carried, its run is on another host,
+     its stream that host's, and its ends stay pending for the tool that
+     carries them there. A launch naming an address that wakes nothing
+     and is not carried is taken only where an answerer stands behind
+     the place's stream (4, 193). Status says the ends pending for each
+     address, and whether it is woken, held by a standing agent, carried
+     or wakes nothing.
+     Its source may instead declare a standing agent for an address: an
+     agent flume did not open, in the terminal session it lives in
+     (C.7). The source names it by the name the host's terminal knows it
+     by. An end for
+     that address goes into the standing agent's pane as a notice, as
+     any end does (43), and wakes no run. flume opens nothing for the
+     address and keeps no watch over it: it delivers at the settles that
+     read the end. Where the terminal finds no agent of that name in
+     that session, or more than one, the end stays pending, and status
+     says where the address lives and why nothing went. The address
+     stays the recipient a caller names, so which agent holds it is its
+     source's alone, and `flume inbox` collects for it as for any
+     recipient; a role that moves from a standing agent to a run changes
+     its source's entry for the address and nothing of the host's. An
+     entry giving an address both a standing agent and a kind declares
+     nothing for it, and status names it, since the two are two agents
+     of one role (3, 193).
+
+193. A source the host declares (191) may declare the roles it answers,
+     each at its address on a stream the host declares (143). Each role
+     runs as one of the source's own kinds, launched with what the
+     source declares; or a standing agent holds it (132); or its run is
+     on another host, its stream that host's. The source also declares
+     the words of what the role answers, which a stage's prompt gives
+     (28). The host declares the source and its streams and locks its
+     kinds, and declares nothing of its roles. The source whose kinds
+     run a role declares it once, at an address for each stream it
+     answers in. A role a source declares, run or standing, may stand
+     behind its address's stream: it is that stream's answerer. A launch
+     that names no recipient and runs in no session has the answerer
+     behind its stream as its recipient (7). flume delivers every stall
+     of a place to that answerer besides the place's recipients and the
+     role its stop-short named (130). So a question that no one collects
+     or answers within the place's stall bound reaches a run woken, or a
+     standing agent told, to answer it. An address two sources declare
+     belongs to neither, and so does a stream two roles stand behind: a
+     launch that would take either is refused naming both (4). A
+     declaration that cannot be read declares nothing, and so does an
+     address whose stream the host does not declare where its run is not
+     on another host; status names each and why (56). flume decides
+     nothing in this (69, 72). Which roles a source declares, which
+     stands behind a stream and what its kind or its standing agent does
+     are the source's. Which questions a run answers itself, passes to
+     another role of any stream or carries to a person, and how, are the
+     run's. A stream no role stands behind has no answerer: a launch
+     there names its recipient or runs in a session and names no address
+     that wakes nothing (4), and its stalls go to the place's recipients
+     and the role a stop-short named.
 
 ### A.13 Held state and hosts
 
@@ -2230,8 +2354,11 @@ redefine these.
      with the reason (155 to 157). The same lock and sources always give
      the same answer, and reading changes nothing.
 192. **read-source**: given where a source's packages lie, the identity
-     of every package it holds; or that it could not be read, with the
-     reason (159, 191). The same place always gives the same answer, and
+     of every package it holds, and given where it declares its roles,
+     each address it declares with the run it names, the standing agent
+     that holds it or that it is carried; or that either could not be
+     read, with the reason (159, 191, 193). The same place always gives
+     the same answer, and
      reading changes nothing.
 
 ### B.3 The change
@@ -2836,7 +2963,12 @@ is reported never begun at the stage's limit (35). Every hook skips
 a subagent's input for the acks, and the guard refuses a subagent's
 command as its agent's. Each hook calls the binary that started the
 agent by its absolute path, written into the plugin with its version,
-and never fails or holds up the agent's start or turn.
+and never fails or holds up the agent's start or turn. In a session
+flume did not start, the plugin's SessionStart hook runs `flume inbox`
+as the session the terminal names. It gives the agent what the inbox
+answers as the session's context, and nothing where nothing is pending
+or waiting or the terminal names no session. It never holds up the
+start (43).
 
 An account of a pool is `claude` and the `CLAUDE_CONFIG_DIR` of its
 configuration home, where the account is signed in (144). Two accounts
@@ -2996,7 +3128,7 @@ herdr's refusal and its words:
 | tidy | the place's recorded tab: `pane list --workspace <w>` read for panes in it, and a pane flume did not open there keeps it, named; else `tab close <tab>`, a tab already gone read as closed. Then the base's recorded workspace: where `tab list --workspace <w>` holds no tab but those of live places it made and `pane list` no pane it did not open, `workspace close <w>`; otherwise kept, and what holds it named |
 | attach | for a window, `<herdr> session attach <name>`, `<herdr>` the full path of the herdr the profile runs, so the window runs the same release whatever its `PATH`; the session's server first found or started headless as the server row says, flume's own session being `flume`; the command's environment is `XDG_CONFIG_HOME` where the profile's calls run under one, which herdr 0.9.5 reads its sessions' home from, and nothing otherwise. For the app, refused: herdr 0.9.5 has no app of its own, and the Herdr app runs on herdr-core, a backend apart with sessions of its own (187) |
 | runs | one `herdr session list --json` for every part asked, its `sessions[]` read by `name` and `running` for each, flume's own session being `flume`. A session listed running runs. One listed not running, or not listed, does not, and nothing is started. The call is bounded at one second, so the list answers within its second. A listing not read within it, or refused, is read as not read for every part asked, in herdr's words (201) |
-| standing | the agents of a session by name, for an address the host's configuration gives a standing agent (132, C.7). It is read at each delivery and each status, and nothing keeps it. One `herdr session list --json` finds the session by `name` and `running`, flume's own being `flume`. A session not listed running holds no agent, and nothing is started. Then `agent list` on its socket, its `agents[]` read by `name`, `pane_id` and `agent_status`, the status read as the state row reads it. An agent of the name is reached at `herdr:<pane_id>@<socket>`, by the send and state rows, as any recipient's session is. None of the name is said so, and so is more than one. herdr 0.9.5 refuses a second agent of one name on a server, as `agent_name_taken`. A listing refused, or not read within the bound, is not read, in herdr's words |
+| standing | the agents of a session by name, for an address its source declares a standing agent for (132, 193, C.7). It is read at each delivery and each status, and nothing keeps it. One `herdr session list --json` finds the session by `name` and `running`, flume's own being `flume`. A session not listed running holds no agent, and nothing is started. Then `agent list` on its socket, its `agents[]` read by `name`, `pane_id` and `agent_status`, the status read as the state row reads it. An agent of the name is reached at `herdr:<pane_id>@<socket>`, by the send and state rows, as any recipient's session is. None of the name is said so, and so is more than one. herdr 0.9.5 refuses a second agent of one name on a server, as `agent_name_taken`. A listing refused, or not read within the bound, is not read, in herdr's words |
 | show | `pane report-metadata <pane> --source flume --title "<stage> · <state>" --display-agent <kind>--<name> --token flume=<line>`, the line's short form such as `code 1/2 · run 1 · tasks 2/5 · working`; `workspace report-metadata <w> --source flume --token flume=<summary>`, the summary such as `3 running · 1 asking · 1 waiting on caller · 0 stalled`, shown where the host's herdr sidebar rows name `$flume` |
 
 What herdr 0.9.5 was seen to do, which the readings above allow for:
@@ -3334,26 +3466,45 @@ lives:
   default renderer over the file's, and every agent in the fork no
   attribution whatever its kind. Settings for a kind or a stage the
   place does not run are ignored.
-- The roles a host wakes are a table of the same configuration:
-  `[roles."<partition>/<role>"]` with `repository`, `kind`,
-  `priority`, `base`, the repository's default branch where it names
-  none, and an optional `brief`, `stream` and `points`, the place a woken run is launched as
-  (132), stated by
-  whoever administers the host. An address the table names nothing for
-  is woken by nothing. An entry may instead give `agent`, the name the
-  host's terminal knows a standing agent by, and an optional `session`,
-  the terminal session it lives in. An entry naming no session finds
-  its agent in the one the host names for the entry's `stream`, else
-  in its default stream's (143). The agent is found in the terminal of
-  that stream (190). The address's ends go into that agent
-  and wake no run (132). An entry giving
-  `agent` beside `kind` is refused, naming the address. The table is
-  the managed layer's.
+- A host's sources declare the roles it wakes, and no table of its
+  configuration does (193). A source's file may give `roles`, an
+  absolute path or one under `~`. That file is the source's own tool's,
+  written whole beside it and renamed over it; flume reads it as it
+  stands and never writes it. Each entry is a
+  `[roles."<stream>/<role>"]` table. It gives `kind`, a name of the
+  source's own kinds, its version the locks' (154, 155), and
+  `repository`, by its location on the host as a launch names it. It
+  gives `priority`, and `base`, the repository's default branch where it
+  names none. It may also give `brief`, `points` and `intent`. Its
+  `name` names the run's place, else `<stream>-<role>` does. It may give
+  `answers`, the words of what the role answers that a stage's prompt
+  gives (28), and `answerer = true`, where the role stands behind its
+  address's stream. Under `[roles."<stream>/<role>".agents]` it gives
+  the run's settings as a launch's (7). flume launches the run in its
+  address's stream. An entry may instead give `agent`, the name the
+  host's terminal knows a standing agent by. Beside it, it may give
+  `session`, the terminal session the agent lives in, and `answers` and
+  `answerer`. An entry naming no session finds its agent in the one the
+  host names for its address's stream (143), in that stream's terminal
+  (190), and the address's ends go into that agent and wake no run
+  (132). Or an entry may give `carried = true`, with an optional
+  `answers` and nothing else, for an address whose run is on another
+  host. A configuration that gives a `[roles]` table is unreadable,
+  naming it and that a source declares a role. An entry declares nothing
+  for its address, and status names it, where it
+  - names a kind not its source's, an `env`, a pool, an account or a
+    `stream`;
+  - names in its address a stream the host does not declare, and is
+    not carried;
+  - gives `agent` beside `kind` or a run's other keys; or
+  - mixes `carried` with a run's keys, `agent` or `answerer`.
 - The sources the host declares are files of its managed layer,
   `$XDG_CONFIG_HOME/flume/sources/<source>.toml`. Each gives
   `kinds_dir`, an absolute path or one under `~`: the directory holding
   the source's packages, each at `<name>@<version>/` with its
-  `kind.toml` at its root (157, 159, 191). flume reads each such file
+  `kind.toml` at its root (157, 159, 191); and may give `roles`, the
+  file in which the source declares its roles (193). flume reads each
+  such file
   whose name begins with no `.`, ignores every other entry, and writes
   none; the local layer declares no source.
   `$XDG_DATA_HOME/flume/kinds/<source>/` is host data where a program
@@ -3513,7 +3664,8 @@ The rest of the stack, which a model builds on unless it says why not:
     `finish`, `drop`, `done`, `tidy` and `prompt`; `kinds lock`, which
     writes a lock (155); `open`, which shows a person a stream's
     agents in its view (186); `list`, which says at a glance what flume
-    holds and what a person can open (200); `needs` for an agent; and
+    holds and what a person can open (200); `needs` for an agent;
+    `hold`, `wait`, `inbox` and `wake` for its callers; and
     `settle`, which the Claude Code plugin's hooks run at an agent's
     quiet and a caller keeping watch runs with its bound (121, 208);
   - a Claude Code plugin that gives every session `/launch` and serves
@@ -3548,7 +3700,7 @@ The rest of the stack, which a model builds on unless it says why not:
   | millpond | an item's send, as a fix or a change, the item's brief as the launch's | the item's record and its sends, and the landing, written from the merge queue's record of the place's branch |
   | headwater | its fix key, as a fix with the release's brief | nothing |
   | sounding | each round of an elaboration, as a place of the elaboration kind it hands in the launch, a conversation's agent beside the operator's pane | the inputs, the soundings each was based on, the rounds, the operator's notes and decisions, and the record, with each round's conclusion copied from its report; its go-on is a retry with the operator's notes as words, its accept a done or a retry that releases a held submission, and its drop a drop |
-  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each bolt as a base place of a kind crew declares with no stages, on the branch the bolt lands on, its units' places on its branch (202); the bolt submitted by crew's retry once the user sends it and its units are over (203); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief; a fix of a base whose own checks failed after a landing, as a fix launched on that base with the failure's words as its brief, the merge queue's where it blamed and the check's own otherwise, its submission on hold where the base's landings wait on the user's word outside the merge queue's policy (7, 47) and free where the policy asks the word itself or none, with no bolt's branch between and no other place moved (record 0023) | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, or a retry or drop of a place past its kind's bound; it names each place's recipient by a role's address, so a role with no live run is woken to collect an end (132), and each end is delivered to it (43) and reads the rest from status; a role's own work that lands is a place of its own, so no session of crew's submits; it decides no step between a unit's stages, and runs no agent of its own in the place (records 0010 and 0011) |
+  | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each bolt as a base place of a kind crew declares with no stages, on the branch the bolt lands on, its units' places on its branch (202); the bolt submitted by crew's retry once the user sends it and its units are over (203); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief; a fix of a base whose own checks failed after a landing, as a fix launched on that base with the failure's words as its brief, the merge queue's where it blamed and the check's own otherwise, its submission on hold where the base's landings wait on the user's word outside the merge queue's policy (7, 47) and free where the policy asks the word itself or none, with no bolt's branch between and no other place moved (record 0023) | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, naming its key (42), with the user's own words where its role put the question to the user on a card its own code raised, or a retry or drop of a place past its kind's bound; it is a source of the host's that declares its roles once, each of a partition's roles at its address in the partition's stream, running crew's one kind for it or held by its standing agent until it moves, and names each place's recipient by the address of the role the work is for, so a role with no live run is woken to collect an end, and each partition's operator stands behind its stream (132, 193); each end is delivered to it (43), and it reads the rest from status; a role's own work that lands is a place of its own, so no session of crew's submits; it decides no step between a unit's stages, and runs no agent of its own in the place (records 0010 and 0011) |
   | the runner | each launch its control plane asks, passed as given, a bolt's base place and its units' places among them; a retry of a base place's submission its control plane asks (203) | the watch over its host: each pass, keeping or control, runs `flume settle --every <bound>` once and awaits it (208); nothing else of a place's, and no queue of its own: sluice's rounds are moved by those settles' steps or the host's `sluice run` |
 
 <!-- ANCHOR_END: givens -->
@@ -3783,8 +3935,8 @@ These are not requirements.
 - **S38.** A unit's place names `madswan/planner` as its recipient. Its
   verify stage stops short needing an answer while no planner run is
   live. The settle that reads the stop-short finds the end pending for an address
-  with no live run and launches the planner's kind as the host's
-  configuration names it. Two more ends come before the run's agent
+  with no live run and launches the planner's kind as its source
+  declares it (193). Two more ends come before the run's agent
   starts; the run's start collects everything pending for the address
   and reads all three. A wake that crew's card carrier sends meanwhile does
   nothing, since the run is waiting for room (132).
@@ -4192,6 +4344,32 @@ These are not requirements.
   fetch, and nothing is made. In a repository whose sluice lands `main`
   on origin, the place is cut where sluice's profile says, as before
   (9, 56, 126, C.1, C.6).
+- **S93.** A script with no terminal session launches a change in the
+  stream `east`, naming no recipient, on a host whose source `acme`
+  declares runs for `east/operator`, standing behind `east`,
+  `east/planner` and `east/ops`, each with its words. The place's
+  recipient is `east/operator`. Its construct needs a reading of a
+  deployed queue's settings, and stops short naming `ops`, which its
+  prompt listed among its own stream's roles. The settle wakes
+  `east/ops`. Its run collects the question with its key and the place's
+  brief, holds the waiting move, reads the settings, and retries
+  construct naming the key within the hour construct's agent is kept
+  open. That agent takes the question with the answer in its session and
+  carries on under its first start, and status gives the answer on the
+  stop-short, from `east/ops`. A retry naming the same key from a
+  person's pane a minute later is refused, naming ops's answer and when.
+  `east/operator` was woken for none of it (7, 28, 41, 42, 43, 49, 130,
+  132, 193, 198).
+- **S94.** The operator launches a change in `east` from a herdr pane
+  on that host. Its construct stops short needing an answer, naming no
+  role. The notice is delivered into the pane, naming the place, its
+  brief's first line and the end's key. The pane's agent is restarted
+  before it acts. At its start, flume's plugin gives the new agent the
+  place waiting on it, with the question and the key. The agent does
+  nothing with it. Five minutes after the stop-short the place is
+  stalled. The stall, with the question and its key, is delivered to
+  the pane and to `east/operator`, whose run is woken (43, 130, 193,
+  C.4).
 - **S95.** The host's source acme holds review@1 and review@2, both in
   the host's lock. A launch of `acme/review` runs review@2. A program
   renames over `acme.toml` a file naming a directory that holds
@@ -4207,6 +4385,36 @@ These are not requirements.
 - **S97.** A host's source holds `fix@1`, locked. A launch of `fix` runs
   flume's own fix@1, and a launch of `<source>/fix` runs the source's
   (154, 191).
+- **S98.** A place in `east`, whose recipient is `east/planner`, stops
+  short naming `west/design`, a role of another stream, which its
+  prompt listed by its address. The run of `west/design`, in `west`,
+  takes it, holds the waiting move "on the user's card" for a day, and
+  puts it to the user once, keyed by the place and the end. A second run
+  of `west/design`, woken by another end, reads the same question, sees
+  the hold, and asks the user nothing. The day passes with no answer.
+  The hold lapses, and the place's stall is delivered to its owner
+  `east/planner`, to `west/design` and to `east/operator`, the door of
+  the place's own stream, naming the lapsed hold's words. The
+  operator's run holds again naming the question already asked, and
+  asks nothing (41, 130, 132, 193).
+- **S99.** A host declares the streams `east` and `west` and one
+  source, `acme`, holding the package `acme/turn@1`, which the host's
+  lock records, and naming the file where acme declares its roles.
+  acme's file declares `east/planner` and `west/planner`, each running
+  `turn` in one repository, named `east` and `west`; gives
+  `east/design` to the standing agent `east-design`; and carries
+  `north/planner`, whose stream the host does not declare. The host's
+  configuration names no role. Ends come at once for `east/planner` and
+  `west/planner`. Two places are launched, `turn--east` in the stream
+  `east` and `turn--west` in `west`, and each run collects its own
+  address's ends. Each run's turn delivers, and flume declares it done
+  and tidies it with no caller's word. The next end for `east/planner`
+  launches a new run. An end for `east/design` goes into
+  `east-design`'s pane as a notice and launches nothing. acme's file
+  then gives `east/design` the kind `turn` in place of the agent, and
+  the next end for it launches a run, nothing of the host's changed. A
+  launch naming `north/planner` is taken, and its end stays pending,
+  status naming the address carried (3, 114, 132, 143, 155, 191, 193).
 - **S100.** A host's `[agents.programs.claude]` names the settings file
   its people's sessions get, which gives `tui = "fullscreen"`, a status
   line, an `env`, `permissions` with an `allow` list and a
