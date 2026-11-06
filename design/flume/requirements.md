@@ -618,11 +618,11 @@ redefine these.
      side, as flume's own holds change@1 and change@2; the repository's
      and a launch's declarations hold one version of each name. A launch
      names its kind by its name, by its name and version, or by its
-     whole identity. Naming no source, it takes the kind of that name
+     whole identity. Naming no source, it takes the kind by that name
      from the launch's declaration, else the repository's own, else
-     flume's own, and never a kind of a source the host declares, which a
+     flume's own, and never a kind from a source the host declares, which a
      launch names by its source; where none of the three holds the name,
-     the launch is refused naming each kind of that name the host's
+     the launch is refused naming each kind by that name the host's
      sources hold (4). Naming no version, it takes the version the
      repository's lock records for that kind, the newest where it records
      several, else the host's lock's likewise, else the newest its source
@@ -1652,8 +1652,10 @@ redefine these.
      conflicting submission starts it with the merge queue's words
      (112), and a stop-short that found work, from the kind's last
      stage, starts it with the findings as its words, as a failed
-     submission does; from any other stage found work is taken as
-     needing an answer (42). The
+     submission does, where the fix round is a stage before the one
+     that found; from any other stage, and from a last stage that is
+     its kind's fix round, found work is taken as needing an answer
+     (42), since no stage before it can do that work again. The
      stages after the fix round run again in order and the place is
      submitted again. A place's goings-back, by submission and by
      finding together, count toward the kind's bound (23), past which
@@ -1710,7 +1712,7 @@ redefine these.
 ### A.8 Retries, stops, drops and dones
 
 48. flume starts a stage again on its own only when a failed submission
-    sends the place back (112), and never bounds how often a caller
+    or a found sends the place back (112, 131), and never bounds how often a caller
     retries. Status gives how many times each stage has started and how
     many times flume submitted the place.
 49. A retry starts the stage it names with a fresh agent and the
@@ -2624,7 +2626,7 @@ max_send_backs = 3        # how many times a place may go back before it waits o
 the kind format's own names. A kind's `[kinds.<kind>.agents]` table
 gives settings to every stage's agent, and a stage's own `agents` come
 before it (32). A `[kinds.<kind>]` table holding `agents` and no
-stages declares no kind: it gives settings to the kind of that name,
+stages declares no kind: it gives settings to the kind by that name,
 whichever kind the name resolves to (19), at whichever source and
 version (154, 158), flume's own fix@1, chore@1, change@1, change@2 and plan@1
 among them, and names one stage's by
@@ -2708,7 +2710,7 @@ A kind's identity is written `<source>/<name>@<version>`, as
 `flume/change@2` or `acme/review@1` (weir C.4). flume's own source is
 `flume`, the repository's own `repo` and a launch's `launch`. `flume
 launch --kind` takes `change`, `change@1` or `flume/change@1`, and a
-kind of a source the host declares by its source, `acme/review` or
+kind from a source the host declares by its source, `acme/review` or
 `acme/review@1` (154), and so does a role's `kind` (C.7). A
 repository's lock is
 `.config/flume.lock` at the base's revision (20), and the host's
