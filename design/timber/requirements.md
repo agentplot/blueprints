@@ -1304,11 +1304,10 @@ The rest of the stack, which a model builds on unless it says why not:
 <!-- ANCHOR: questions -->
 ## 10. Questions the model must answer
 
-These are not requirements.
-
-- How does a Nix closure, thousands of digests with references among
-  them, map onto artifacts and the cache without a reference-aware
-  removal (52, 54)?
+These are not requirements. None is open: the last, how a Nix closure
+maps onto artifacts and the cache (52, 54), is answered by timber's
+record that a Nix closure is one artifact naming its roots and the
+fleet's cache holds its paths (rule core.70).
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->
