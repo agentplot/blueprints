@@ -26,9 +26,29 @@ Asked on the question tool, 2026-11-06:
   an ID": the mark names the copy by an id kept in its records, so a
   copy moved to another folder, as deneb's runner data move does, still
   reads the mark as its own; built after the host driver.
-- **Who starts the host driver on a host.** Not settled. The user's
-  words: "I don't think I understand this. I want you to go into an
-  exploratory mode using the OpenSpecs explore skill on this".
+<!-- vale Vale.Terms = NO -->
+<!-- vale Blueprints.SoftSales = NO -->
+- **Whether a host needs a standing process to move its queues at
+  all.** Open, and the question of the talk. The user's words,
+  2026-11-06: "I don't know that we want to take it as a given that we
+  have a gatebox. This isn't about this one [...] point solution. It's
+  about the need to think about building an ecosystem of tools designed
+  for agentic engineering."; "We remember we have a backlog item to
+  have sluice run as GitHub Actions, so it's possible we should be
+  doing this with GitHub Actions, not with a [...] runner. What I want
+  is an elegantly designed CLI, and I think it started out that way:
+  you do `submit`, and if you wanted to wait, you could."; "is it a
+  punt where you just say, 'Look, run a [...] system service and just
+  have it be there so it's always running things'? Or is there a design
+  where these tools are meant to fit together like a glove? Remember
+  Flume and Boom Drive act like the disposable pattern in code with
+  `using` and `finalize`."; "Is it necessary to have a separate running
+  process?"; "I'm building it for 100 million people to use and I want
+  to make sure it's designed right. Now's the time: it's okay to break
+  things and make drastic changes." They asked that one outcome be
+  better instructions for every agent working on Boomdrive.
+<!-- vale Blueprints.SoftSales = YES -->
+<!-- vale Vale.Terms = YES -->
 
 ## What the statement says now
 
