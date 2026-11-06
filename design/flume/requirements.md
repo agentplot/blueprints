@@ -2309,6 +2309,25 @@ redefine these.
     the terminal resumed the lost agent's own session, as herdr does
     (C.5), what a person said to it is in the conversation the retry
     carries.
+209. A repository whose clone was moved or renamed on its host is
+     renamed in flume by one act of the host's, given the folder the
+     clone was and the folder it is: flume renames every record it
+     keeps that names the former folder, each live place's repository,
+     the intents and base places of the repository's bases, and the
+     links between the clone and each place's worktree, through the
+     place profile (C.1), so every place reads, readies, submits and is
+     removed against the clone where it is now, and nothing is read
+     under the former folder again. No place moves: each stays at the
+     location it was made at, which is its id (record 0027), and a
+     place made after the rename is made under the repository's id as
+     it is now. An agent started before the rename keeps its identity
+     and its stage. The act changes nothing and is refused, saying why,
+     where the folder given holds no clone whose worktrees the places
+     are, or where the former folder still holds one; done again it
+     changes nothing; and its answer and status name each place it
+     renamed. flume moves no clone and changes no configuration of the
+     host's that names the folder: both are the host's. (record 0053,
+     proposed 2026-11-06)
 
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
