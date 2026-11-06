@@ -1639,6 +1639,27 @@ redefine these.
     (25). flume never answers one of them from a record of its own, nor
     keeps one between asks. Status may be asked of one place or of every
     place, and reads places side by side.
+200. A caller may ask flume for its list, which says at a glance what
+     flume holds and what a person can open. It gives a line for each
+     place on the host, under the place's repository, a place tidied
+     whose document stays among them (62). The line gives the place's
+     kind and name, the stage it stands at, and its state in the words
+     status gives it (56, 139). It names whom a waiting place waits on,
+     its caller (130), the host (70) or the merge queue (111). A place
+     whose work is over may still stand, and its line then names in a
+     word what keeps it: the step its teardown failed at,
+     what it holds, its live agent, or that flume cannot read it (64
+     to 66, 68). The list gives a line for each stream the host
+     declares, with the session its agents run in (107) and whether
+     that session runs now (201). The streams are what a person opens
+     by name (186). The list is read from flume's held state, each live
+     agent's own record, and each stream's terminal once, so it answers
+     at once however many places stand. It reads no place's worktree,
+     branch, deliverable, change or submission, and no agent's state
+     in its terminal. It gives none of a place's long words, a
+     stop-short's, a hold's, a failure's or a teardown's, which status
+     gives of the place. Asking for it settles nothing, starts nothing,
+     sends nothing and writes nothing (57).
 59. A fact of a change that flume reads without the change's own reader
     agrees with what that reader gives at the same revision.
 60. The same question about the same places gets the same answer,
@@ -2082,6 +2103,11 @@ redefine these.
      terminal's own app, the running app told to show that part, the
      app titling its own window; or a refusal where the terminal holds
      no part a person can be shown or offers no such view (186).
+201. **runs**: given a part of the terminal, one by its name or the
+     terminal's own, whether it runs now, with the name the terminal
+     knows it by. Or that the terminal holds no part a person can be
+     shown, or that it cannot read the part. runs starts nothing, so a
+     part that does not run stays so (200).
 98. The guarantee: open never runs a second agent under an identity
     already live, and close never reports an end that did not happen.
     Every operation answers within a bound the profile states, and one
@@ -2655,6 +2681,7 @@ herdr's refusal and its words:
 | close | `pane close <pane>`, `pane_not_found` read as already closed; then `pane get <pane>`, gone only on `pane_not_found` |
 | tidy | the place's recorded tab: `pane list --workspace <w>` read for panes in it, and a pane flume did not open there keeps it, named; else `tab close <tab>`, a tab already gone read as closed. Then the base's recorded workspace: where `tab list --workspace <w>` holds no tab but those of live places it made and `pane list` no pane it did not open, `workspace close <w>`; otherwise kept, and what holds it named |
 | attach | for a window, `<herdr> session attach <name>`, `<herdr>` the full path of the herdr the profile runs, so the window runs the same release whatever its `PATH`; the session's server first found or started headless as the server row says, flume's own session being `flume`; the command's environment is `XDG_CONFIG_HOME` where the profile's calls run under one, which herdr 0.9.5 reads its sessions' home from, and nothing otherwise. For the app, refused: herdr 0.9.5 has no app of its own, and the Herdr app runs on herdr-core, a backend apart with sessions of its own (187) |
+| runs | `herdr session list --json`, its `sessions[]` read by `name` and `running`, flume's own session being `flume`. A session listed running runs. One listed not running, or not listed, does not, and nothing is started. The call is bounded at one second, so the list answers within its second. A listing not read within it, or refused, is read as not read, in herdr's words (201) |
 | show | `pane report-metadata <pane> --source flume --title "<stage> · <state>" --display-agent <kind>--<name>`; `workspace report-metadata <w> --source flume --token flume=<summary>`, the summary such as `3 running · 1 asking · 1 waiting on caller · 0 stalled`, shown where the host's herdr sidebar rows name `$flume` |
 
 What herdr 0.9.5 was seen to do, which the readings above allow for:
@@ -2706,7 +2733,8 @@ words.
 
 The printed command tidies nothing and shows no clue, since it made
 nothing in a terminal. It refuses attach for either view, since it
-holds no part of a terminal a person can be shown (187). It reads no tool: open prints the line `cd <place> &&`
+holds no part of a terminal a person can be shown (187). Its runs
+answers that it holds no part (201). It reads no tool: open prints the line `cd <place> &&`
 the command's environment, program, arguments and prompt, and marks it
 printed for the identity in the place's folder, refusing to print it
 again; its state is unknown, and the core reads its agent stopped once
@@ -3129,7 +3157,9 @@ The rest of the stack, which a model builds on unless it says why not:
   - a command line: `flume launch`, `status`, `tell`, `stop`, `retry`,
     `finish`, `drop`, `done`, `tidy` and `prompt`; `kinds lock`, which
     writes a lock (155); `open`, which shows a person a stream's
-    agents in its view (186); `needs` for an agent; and `settle`, which the two
+    agents in its view (186); `list`, which says at a glance what flume
+    holds and what a person can open (200); `needs` for an agent; and
+    `settle`, which the two
     plugins run;
   - a Claude Code plugin that gives every session `/launch` and serves
     `status` over MCP. flume loads it into every agent it starts, and
@@ -3860,6 +3890,23 @@ These are not requirements.
   stage and the launch, before anything is made. A host with no effort
   in any layer starts its agents with none, at what each account's own
   configuration gives (4, 32, 197, C.4).
+- **S108.** A host holds fifty places in three repositories. Some
+  places' agents work, and one's agent asks a person. One place is held
+  by its caller, one waits for room and one is submitted. One landed and
+  was tidied, its document kept for an end pending. One landed and its
+  teardown failed at `sluice release`, with forty lines of words. The
+  host's terminal is herdr, and it declares the streams `work` and
+  `office`, herdr's session `work` running and `office` not. A caller
+  asks for the list. Within a second flume gives each place's line
+  under its repository, with its stage and its state. The held place
+  waits on its caller, the one waiting for room on the host, and the
+  submitted one on the merge queue. The place whose teardown failed is
+  kept by `sluice release`, with none of the teardown's words. The list
+  gives a line each for `default`, `work` and `office` with its
+  session: `work` runs, and `office` and flume's own do not. No place's
+  worktree, change or submission is read, and no agent's state is
+  asked of herdr. herdr's session `office` is not started, and nothing
+  flume holds changes (57, 62, 66, 70, 130, 200, 201).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
