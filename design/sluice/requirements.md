@@ -948,24 +948,29 @@ redefine these.
      live follows its document and runs no round, and the host's bound
      on runs (71) is that one process's to keep. A wait that finds none
      runs rounds as before. The host's one driver may serve every
-     repository on the host that holds sluice's records, found by an
-     index sluice writes in the host's state at a repository's first
-     records and reads at each tick, a repository gone or holding no
-     sluice leaving it and one newly set up driven from its first
-     submission with no list to keep: for each it is that repository's
+     repository on the host that has sluice, found by an index sluice
+     writes in the host's state whenever a command of sluice's finds a
+     repository has sluice, as 129 reads it, a policy at a revision the
+     host holds or records, and reads at each tick, a repository gone or
+     holding no sluice leaving it and one newly set up driven from the
+     first command of sluice's run in it with no list to keep, a
+     repository whose only work is the forge's requests among them: for each it is that repository's
      reader as a `sluice run` there would be, a refusal or a slow fetch
      in one holding no other's round (26), and it passes over a
      repository whose driver another process is. Nothing of sluice's
      tells a host to run it, and the host's bound on runs is its alone
-     to keep. (record 0092, proposed 2026-11-06)
+     to keep. (record 0092, proposed 2026-11-06; the index's entry at
+     any command of sluice's on the user's word of 2026-11-06)
 137. A branch's requests are taken in by one host at a time, whichever
      hosts reach the branch. Where its records are on its remote, the
      instance that keeps the branch takes them in (72), and no other.
      Where each host keeps its own records, the host that holds the
      branch's intake mark takes them in: a ref on the branch's remote
-     naming the host, the copy of the repository there that holds it,
-     so a second copy on the host never reads it as its own (record
-     0092, proposed 2026-11-06), and whether its holder is the host's
+     naming the host and the copy of the repository there that holds
+     it, the copy by an id kept in its records, so a second copy on the
+     host never reads it as its own and a copy moved to another folder
+     still does (record 0092, proposed 2026-11-06; the copy's id on the
+     user's word of 2026-11-06), and whether its holder is the host's
      driver or a wait, renewed by a leased push from the value read (45) whenever a
      third of the deployment's lease has passed since it was last
      renewed, never at each pass of a driver's loop. A driver pushes
