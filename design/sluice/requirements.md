@@ -143,7 +143,11 @@ redefine these.
      act. A session's submit stands for the head it named and for no
      other. An entry withdrawn or removed, blamed or conflicting, is
      submitted again only by a new submit or by the operator, never
-     because its head moved. A new submit is a session's, or one that
+     because its head moved. A withdrawal for a hand-over of intake
+     (137) is none of these and holds no request. Whichever host holds
+     the mark takes the request in again as its conditions hold, at the
+     head it holds, the host that withdrew it included, and nothing marks
+     it a draft for it. A new submit is a session's, or one that
      names as its head the branch the entry came from (124). A request a person opened
      and marked ready is that person's standing offer: it is submitted on
      each head it holds once the branch's conditions hold there, until
@@ -943,7 +947,8 @@ redefine these.
      the branch's requests in: a round on a host that finds the mark
      another's withdraws its own entries of the branch's requests, none
      landing (122), naming the host that holds it, which takes each in
-     again as its conditions hold. A wait whose request another host
+     again as its conditions hold, as the host itself does when the mark
+     comes back to it (120). A wait whose request another host
      takes in takes nothing in and runs no round for it: it follows the
      request by what the forge shows of it, open, merged or closed, and
      sluice's check on its head (C.5), each read as 136 has every read
