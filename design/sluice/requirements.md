@@ -130,16 +130,21 @@ redefine these.
    submitter, its planner or the operator, or by a bound the branch's
    policy states in advance. sluice never drops an entry on its own.
 67. A submission from a place that has an entry on the same branch
-    withdraws that entry, which stays readable as withdrawn.
+    withdraws that entry, which stays readable as withdrawn. A
+    submission that names a branch as its head (124) is that branch's
+    work, as one from a worktree on that branch is. Each withdraws the
+    other's entry on the same branch, and the count 54 shows is the
+    branch's.
 54. sluice never bounds how often a session submits again after its
     entry was removed as culprit or conflict. An entry's state shows
     how many times its place's work was submitted before it, and acting
     on that count is the driver's or the planner's.
 120. sluice submits in a submitter's name only on that submitter's own
      act. A session's submit stands for the head it named and for no
-     other: an entry withdrawn or removed, blamed or conflicting, is
-     submitted again only by a new submit from a session, or by the
-     operator, never because its head moved. A request a person opened
+     other. An entry withdrawn or removed, blamed or conflicting, is
+     submitted again only by a new submit or by the operator, never
+     because its head moved. A new submit is a session's, or one that
+     names as its head the branch the entry came from (124). A request a person opened
      and marked ready is that person's standing offer: it is submitted on
      each head it holds once the branch's conditions hold there, until
      the person withdraws it (3, 5, 54, 67). The operator's withdrawal
