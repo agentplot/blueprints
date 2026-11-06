@@ -798,7 +798,7 @@ redefine these.
     place started. A statechart kind's stage runs its sessions as its
     join says (175), each session one fresh agent of its own, and no
     agent is handed from one session, stage or place to another. A start
-    that carries the conversation of its stage's earlier agent (146)
+    that carries the conversation of its stage's earlier agent (49, 146)
     still starts one fresh agent, under its own identity, and carries
     nothing of another stage's or place's.
 31. flume never ends an agent that is not quiet, unless a caller forced
@@ -1034,8 +1034,13 @@ redefine these.
      pool holds none, no wait would end, and the stage is refused as 32
      says, naming the pool and the stage's program. The account is chosen
      under the same lock as the room, so two starts never take an
-     account's last room between them. Status gives the account with the
-     agent, and whether it came from the affinity or the strategy (56).
+     account's last room between them. A start that carries a lost
+     conversation (49) takes the account its lost start ran under first,
+     while that account is usable and of the stage's program. That
+     account's configuration holds the conversation, and taking it moves
+     no intent's affinity (147). Status gives the account with the agent,
+     and whether it came from the affinity, the strategy or the
+     conversation it carries (56).
 146. Where an agent's own record says the account it runs under reached
      a usage limit (151), flume records the account spent until the time
      the record names for the limit to reset, or for an hour where it
@@ -1075,7 +1080,8 @@ redefine these.
      the intent's first agent started in, and, for each agent program
      its agents run, the account the first of them on that program
      started on. Every later start of an agent of a place serving the
-     intent is on the account of its affinity for the stage's program
+     intent, but one that carries a lost conversation (145), is on the
+     account of its affinity for the stage's program
      while that account is usable, or, where no layer of 32 names the
      stage's program (173), on the account of its affinity for the
      program its last agent ran, while that account can run the stage;
@@ -1123,7 +1129,7 @@ redefine these.
      is past its threshold, which window holds it and until when (56).
 161. At each start flume records what its agent is to run under: its
      program, its mode where its settings give one (162), its account,
-     the conversation it carries where it carries one (146, 179),
+     the conversation it carries where it carries one (49, 146, 179),
      and, for each variable its settings and flume
      give its environment (32, C.4), a digest of the variable's name and
      value keyed by the start's secret, never the value. The agent's
@@ -1470,8 +1476,10 @@ redefine these.
 43. A stage reported lost (45), a prompt never begun (38) and a stage
     reported stuck (44) are ends as a stage's end is, delivered so,
     with what flume read: the agent's last words as its own record
-    holds them, the commits on the place's branch since the start, and,
-    for a prompt never begun, what the terminal shows of the agent. A notice of an end is sent into a recipient's
+    holds them, the commits on the place's branch since the start,
+    for a prompt never begun, what the terminal shows of the agent, and,
+    for a conversation lost, whether flume left in its pane an agent the
+    terminal brought back (77). A notice of an end is sent into a recipient's
     pane only while it asks no question (37), and otherwise stays
     pending; it counts delivered on the terminal's answer, with no
     reading back.
@@ -1516,7 +1524,8 @@ redefine these.
      reported.
 45. A stage whose agent stopped with nothing delivered and nothing said
     is reported lost. flume starts no agent for a lost stage on its own
-    (48).
+    (48). A caller's retry of a conversation reported lost goes on with
+    its agent's conversation (49).
 46. A place moves on as soon as a settle reads that it may. A settle
     reads each stage's end, starts the stages waiting for room, as many
     as the host has room for and in priority order (70), and submits a
@@ -1633,6 +1642,29 @@ redefine these.
     them, or the submission of a kind that lands. It never changes the
     place's kind, brief or base (8), and flume judges no order of stages
     but its own starts (40).
+    A retry of a conversation's stage (109) reported lost (45) goes on
+    with the lost agent's conversation where its program can carry it
+    (179). Its start is one fresh agent under its own identity (30),
+    resuming the lost agent's session. Its prompt is flume's words,
+    then the retry's words, then the way to stop short (28). flume's
+    words say that its session was lost and goes on here, and that what
+    it had running then has stopped.
+    The start takes the account the lost start ran under while that
+    account is usable, and otherwise the account 145 chooses, waiting
+    for one as 145 says, where that account reaches the conversation.
+    Where no account it takes reaches the conversation, or its
+    transcript is gone, the stage starts afresh with its prompt as for
+    any retry. flume's words stand before the retry's there: its earlier
+    agent was lost and its conversation could not be carried, and what
+    it committed and left is in the place. A carried start
+    never begun (35), or whose agent is not the stage's (161), is read
+    as 146 reads one: flume ends its agent once it is quiet and starts
+    the stage afresh at once. Status says which, and why (56). A
+    retry of a stage that is not a conversation carries no conversation,
+    and its agent starts from what the place holds. Such a stage's work
+    is what its agents committed and left in the place. A lost agent
+    stopped at no turn's end, so its conversation tells of work the
+    place may no longer hold.
 50. A retry ends the place's agent first, one that is not quiet only
     when forced (31), and is refused, naming the place, when the
     place's work is over. A retry that answers an agent kept open (42)
@@ -1682,7 +1714,10 @@ redefine these.
     its agent state, how much of its input its own
     record says was read from the prompt cache on its first request and
     over its session (152), whether it carries the conversation of
-    the stage's agent before it or why not (146, 179), and
+    the stage's agent before it, stopped at its account's usage limit
+    or a conversation's reported lost, or why not (49, 146, 179),
+    whether the terminal brought it back and flume left it in a lost
+    conversation's pane (77), and
     whether it works past its limit (118); each move of a stage or an
     intent from one account to another, with why (146, 147); whether the current stage's
     deliverable exists; the place's submission as the merge queue holds
@@ -2029,7 +2064,13 @@ redefine these.
     An agent the terminal brought back with no word that it started
     under that start's identity (35) is never the stage's agent,
     whatever its own record: the stage is reported lost, and flume ends
-    that agent once it is quiet (31).
+    that agent once it is quiet (31). But for a conversation's stage
+    (109), flume leaves that agent in its pane, since a person may be
+    talking in it, and status and the stage's end say so (43, 56). A
+    caller's retry, stop, drop or done ends it as each ends the place's
+    agent (50 to 52, 114). Where the terminal resumed the lost agent's
+    own session, as herdr does (C.5), what a person said to it is in
+    the conversation the retry carries (49).
 
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
@@ -2147,11 +2188,12 @@ redefine these.
      answers from the program's own record, and, for each other, that
      it is degraded and how (170, 171).
 179. **carry**: given a start whose agent stopped at its account's
-     usage limit and the environment of the account the next start of
-     its stage runs under, whether the program can carry that agent's
-     conversation to an agent under that account, with what the next
-     start resumes; or why it cannot; or that the program gives no way
-     to (146). It is read from what the host provides, and flume never
+     usage limit, or a conversation's start reported lost, and the
+     environment of the account the next start of its stage runs under,
+     whether the program can carry that agent's conversation to an
+     agent under that account, with what the next start resumes; or why
+     it cannot; or that the program gives no way to (49, 146). It is
+     read from what the host provides, and flume never
      makes it so. Where it can, the next start's command resumes that
      conversation (88), and its agent's word that it started names the
      conversation it goes on with (161).
@@ -2628,7 +2670,7 @@ round, so the conclusion is never committed on `sounding/<name>`
 | last words | the agent's last message in the session's transcript; where the pinned Claude Code has a StopFailure hook, the plugin records the failure's reason there, a refused sign-in or a usage limit among them, as the agent's last words, which status gives with the agent (43) |
 | spent | the StopFailure hook's `error` of `rate_limit` with words that open as the pinned Claude Code's own usage-limit messages do, "You've hit your limit · resets …" and "You've hit your session limit · resets …" among them, recorded by the plugin with the time it ran; a `rate_limit` with other words, a model under high load or the server limiting requests, is no usage limit. The time the limit resets is the words' `resets <when> (<zone>)` part, or, where the limit hit is a budget, their `your <limit> resets <when> (<zone>)` part, its plan limit's reset. `<when>` is as the release's reset formatter writes it in en-US: within a day, a time of day, `3pm` or `3:30pm`, the first such time in the zone after the hook ran; past a day, a date and a time joined by `at`, `Nov 8 at 12am`, the year after the day where it is not the hook's, `Jan 3, 2027 at 3:30pm`. `<zone>` is the zone's IANA name. Where the words have no such part, or one in another form, the record names none (146) |
 | usage | the session's transcript: each assistant record's `message.usage`, its `cache_read_input_tokens`, `cache_creation_input_tokens` and `input_tokens`, the first such record's for the first request and their sum for the session, and the sum of its `output_tokens` (152, 168) |
-| carry | yes where the start that stopped at its limit has a started ack, and its transcript, as that ack named it, is the same file, by device and inode, as `<home>/projects/<the transcript's folder>/<the transcript's file>`. `<home>` is the chosen account's `CLAUDE_CONFIG_DIR`, else `~/.claude` of the login environment. The next start then resumes the ack's session by `--resume <session>`. 2.1.296 looks for that session under its own configuration home's `projects` alone, and goes on with it in the same transcript, under the same session. Otherwise it cannot, its words naming `CLAUDE_CONFIG_DIR` and never its value (146, 179) |
+| carry | yes where the start whose conversation it carries has a started ack, and its transcript, as that ack named it, is the same file, by device and inode, as `<home>/projects/<the transcript's folder>/<the transcript's file>`. That start is one that stopped at its limit, or a conversation's start reported lost. `<home>` is the chosen account's `CLAUDE_CONFIG_DIR`, else `~/.claude` of the login environment. The next start then resumes the ack's session by `--resume <session>`. 2.1.296 looks for that session under its own configuration home's `projects` alone, and goes on with it in the same transcript, under the same session. Otherwise it cannot, its words naming `CLAUDE_CONFIG_DIR` and never its value. A lost conversation's start first takes the lost start's own account. That account's configuration home holds the transcript, so its carry needs no shared `projects` (49, 145, 146, 179) |
 | own settings | the keys below reserved, each with its owner; the rest taken by `--settings`, as the command row says, which the pinned 2.1.296 loads as its flag settings, laid over the user's, the project's and the local settings by its own merge (195, 196) |
 
 flume answers the folder-trust question when the terminal shows it, and
@@ -2823,7 +2865,12 @@ agent's name goes with it, and a name is gone from `agent list` once
 its program exits. A pane's environment is not kept across a restart of
 herdr's server, so an agent herdr brings back runs without it and has
 no started ack for its start (77); the operator drains flume's places
-before restarting herdr's server on purpose. The agent commands take an
+before restarting herdr's server on purpose. Where the host's herdr
+configuration resumes agents on its restore, herdr brings a Claude Code
+agent back by the session its own integration reported, and the agent
+goes on in that session's transcript where the login environment's
+configuration home reaches it. What a person says to it there is then
+in the conversation a retry carries (49, 77). The agent commands take an
 agent's name or its pane's id, never `<pane>@<socket>` or a terminal's
 id. `agent wait` with no `--timeout` waits for ever, so the profile
 always passes one.
@@ -4090,6 +4137,37 @@ These are not requirements.
   worktree, change or submission is read, and no agent's state is
   asked of herdr. herdr's session `office` is not started, and nothing
   flume holds changes (57, 62, 63, 66, 70, 130, 200, 201).
+- **S113.** A host restarts while a research place's talk, a
+  conversation, waits on its person under work-1. herdr brings the
+  agent back bare in its pane, resuming its session. flume reads talk
+  lost, delivers it saying it left the agent in its pane, and leaves
+  it. The person asks it two more questions there. The caller retries
+  talk. flume ends the bare agent once it is quiet and starts talk
+  under work-1, resuming the session. The new agent says it started in
+  the session its start's record names, and its prompt is flume's
+  words. Its conversation holds the person's two questions and their
+  answers. Status gives work-1 as the conversation's and says the start
+  carries the conversation of start 1, lost (43, 45, 49, 56, 77, 145,
+  161, 179).
+- **S114.** A research talk is lost with its terminal under work-1, and
+  work-1 is spent until 15:00 when the caller retries it. The pool's
+  other account, work-2, reaches the conversation, as the host made it,
+  and talk starts under work-2 carrying it. Status says the stage moved
+  from work-1 to work-2 with its conversation. On a host whose accounts
+  share nothing, talk starts afresh under work-2 with its prompt,
+  flume's words and the retry's words. Status then says the
+  conversation stayed and why, naming `CLAUDE_CONFIG_DIR` (49, 145,
+  146, 179).
+- **S115.** A research talk is lost, and its transcript is gone from its
+  account's configuration home before the caller retries it. talk
+  starts afresh under the same account with its prompt and flume's
+  words, and status says its conversation's transcript cannot be read
+  (49, 179).
+- **S116.** The host restarts while a code stage's agent works, and
+  herdr brings the agent back bare. flume reads code lost and ends the
+  bare agent once it is quiet. The caller retries code. Its fresh agent
+  resumes no conversation, and its prompt is code's with the retry's
+  words (39, 45, 49, 77).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
