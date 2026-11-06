@@ -932,7 +932,8 @@ redefine these.
      fetch of the branch its next round makes; any host takes it once
      it has stood unchanged for the deployment's lease by the taker's
      own observation (73), never by the hosts' clocks agreeing; and a
-     wait that holds it lets it go when it ends.
+     host's waits hold it together, the last of them to end letting it
+     go.
      There, a request's entry is advanced only on the host that takes
      the branch's requests in: a round on a host that finds the mark
      another's withdraws its own entries of the branch's requests, none
