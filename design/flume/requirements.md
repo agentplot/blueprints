@@ -289,7 +289,8 @@ redefine these.
 - **stalled**: of a place, that its next move has been its caller's for
   five minutes, or the launch's bound, under no hold's words (130).
 - **recipient**: whoever an end of a place goes to: a caller's session,
-  or a role's address (43, 132).
+  or a role's address, held by a run of its kind or by a standing
+  agent (43, 132).
 - **delivered**: of an end, that it reached its recipient, recorded on
   the place with to whom and when; **pending** until then (43).
 - **collect**: a recipient's taking of every end pending for it, by
@@ -1493,11 +1494,12 @@ redefine these.
     submission ended. The end is delivered: the settle that reads it
     (46) puts it before each recipient of the place once, as a notice
     through the terminal into the recipient's own pane (95), and records
-    on the place that it was delivered, to whom and when; a recipient
+    on the place that it was delivered, to whom and when. A recipient
     named by a role's address is delivered to in the pane of that role's
-    live run, and where none is live the end stays pending and wakes the
-    role (132); where the terminal has no pane to deliver to, the end is
-    read from status (56). A wait is by place, naming its stage or its
+    live run, or of the standing agent the host's configuration names
+    for it. Where neither is there, the end stays pending, and wakes the
+    role where the address has a kind (132). Where the terminal has no
+    pane to deliver to, the end is read from status (56). A wait is by place, naming its stage or its
     submission: it answers at once with an end pending for this
     recipient, and otherwise follows the host's state under a timeout,
     exiting by the outcome or still waiting, driving no settle where the
@@ -2054,6 +2056,20 @@ redefine these.
      place's recipient, what the role's kind does and what its run decides are the
      caller's (69, 70, 72). An address the configuration names no kind
      for is woken by nothing, and status says the ends pending for it.
+     The host's configuration may instead name a standing agent for an
+     address: an agent flume did not open, named by the name the
+     host's terminal knows it by, in the terminal session it lives in
+     (C.7). An end for that address goes into the standing agent's pane
+     as a notice, as any end does (43), and wakes no run. flume opens
+     nothing for the address and keeps no watch over it: it delivers at
+     the settles that read the end. Where the terminal finds no agent
+     of that name in that session, or more than one, the end stays
+     pending, and status says where the address lives and why nothing
+     went. The address stays the recipient a caller names, so which
+     agent holds it is the host's configuration's alone, and `flume
+     inbox` collects for it as for any recipient. An address given both
+     a standing agent and a kind is refused, naming it, since the two
+     are two agents of one role (3).
 
 ### A.13 Held state and hosts
 
@@ -3191,7 +3207,14 @@ lives:
   none, and an optional `brief`, `stream` and `points`, the place a woken run is launched as
   (132), stated by
   whoever administers the host. An address the table names nothing for
-  is woken by nothing.
+  is woken by nothing. An entry may instead give `agent`, the name the
+  host's terminal knows a standing agent by, and an optional `session`,
+  the terminal session it lives in. An entry naming no session finds
+  its agent in the one the host names for the entry's `stream`, else
+  in its default stream's (143). The address's ends go into that agent
+  and wake no run (132). An entry giving
+  `agent` beside `kind` is refused, naming the address. The table is
+  the managed layer's.
 - The sources the host declares are files of its managed layer,
   `$XDG_CONFIG_HOME/flume/sources/<source>.toml`. Each gives
   `kinds_dir`, an absolute path or one under `~`: the directory holding
