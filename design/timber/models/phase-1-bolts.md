@@ -109,14 +109,17 @@ publish` in a timber repository naming `timber publish`.
 
 Two units. Usable when swancloud's machines are deployed by `timber
 apply` from the deployer's host, each on a channel moved by the gate or
-by the user's yes, the Macs' channel bound to srv's, and swancloud's
-deployer retires. The user chose this order on 2026-10-26: clan pushed
-first, the machines pulling later.
+by the user's yes, and swancloud's deployer retires. A Mac waits on no
+release of srv's (swancloud record 0043, the user's words of
+2026-10-30: "I don't think we need to have the Max go after the
+server"), so swancloud's policy names no `after` for the Macs, and S16
+proves `after` on a fixture. The user chose this order on 2026-10-26:
+clan pushed first, the machines pulling later.
 
 | unit | owns | builds | proves it |
 |---|---|---|---|
 | the Nix cache target | `profiles/target/nix_cache/` | the version's store paths pushed to the fleet's cache (C.12), the closure named as the version's artifact for its machine | a closure built on one host is realised on another from the cache alone |
-| the clan push profile | `profiles/target/nix_fleet/push/` | B.7 for one machine through the fleet's own deploy tool, run on a host that holds the machine's key: desired from the channel, current from the closure the machine runs, apply as one `clan machines update`, report what the machine answers (88 to 91, 45, C.12); a bound channel moving by the rule its policy names (37, 83) | the target scenarios against one machine in the tools layer; S16: srv's channel moves on a yes and the Macs' channel never ahead of it |
+| the clan push profile | `profiles/target/nix_fleet/push/` | B.7 for one machine through the fleet's own deploy tool, run on a host that holds the machine's key: desired from the channel, current from the closure the machine runs, apply as one `clan machines update`, report what the machine answers (88 to 91, 45, C.12); a bound channel moving by the rule its policy names (37, 83) | the target scenarios against a scripted fleet in the gate, and against one machine by hand under a tag of its own, since the machine's key is a key file no gate task reads (core.38); S16: a channel moved on a yes, and an environment after it never ahead of it |
 
 ## Left for phase 2 on purpose
 

@@ -1148,7 +1148,7 @@ whose packager cannot promise it says so (87).
 | a CloudFormation stack or StackSet | push: one stack operation on the version's template with the environment's parameters, which a StackSet carries to every stack instance it holds, a list kept outside timber; current is the stack's or the StackSet's recorded version |
 | a function | push: point the function at the version's image by digest |
 | Kubernetes | pull: the channel's tag, verified by Flux or Argo against the gate's signature; current reported by a watcher |
-| a Nix fleet | two profiles, bound by the environment (44). Push: apply runs the fleet's own deploy tool against one machine from a host that holds that machine's key, and report is what the machine answers after; current is the closure the machine runs. Pull: each machine, on its own timer, reads its channel's tag in the store with its own credential, verifies the gate's claim, realises the version's store paths from the cache and switches; the system profile is its marker (119) and its report a claim it signs. The push profile comes first and the pull profile replaces it machine by machine |
+| a Nix fleet | two profiles, bound by the environment (44). Push: apply runs the fleet's own deploy tool against one machine from a host that holds that machine's key, and report is what the machine answers after, a claim the host that ran the apply signs as what it observed (11); current is the closure the machine runs. Pull: each machine, on its own timer, reads its channel's tag in the store with its own credential, verifies the gate's claim, realises the version's store paths from the cache and switches; the system profile is its marker (119) and its report a claim it signs. The push profile comes first and the pull profile replaces it machine by machine |
 | a Nix binary cache | push: the version's store paths pushed to the cache |
 | a pool: a control plane's roster of environments (126) | push: apply is the control plane's request to converge one environment, run by its own executors with credentials that are the control plane's, reached at the moment of use; current and report are read from what it records |
 
@@ -1260,7 +1260,8 @@ The rest of the stack, which a model builds on unless it says why not:
   catalogue of claim kinds (141) is in-toto's catalogue of predicates:
   a provenance is SLSA's Provenance, an acceptance and a rebuild are
   SLSA's Verification Summary Attestation, and a test is in-toto's Test
-  Result; a review, a promotion and a carried claim are timber's own.
+  Result; a review, a promotion, a report and a carried claim are
+  timber's own.
 - The build is moon, the landing is sluice, and the join between a
   verdict and a provenance is moon's task hash.
 - The version rule is git-cliff over conventional commits, run once
@@ -1361,6 +1362,15 @@ These are not requirements.
   version from its own tags, claims it under its prefix and offers its
   index, while the other component gets no version and none of its
   channels move (123, 124, 125).
+- **S16.** One environment waits on an approver, and a second comes
+  after it. An approver's yes moves the first environment's channel,
+  and the second's channel does not move. The first converges and its
+  report names the version; the gate then moves the second's channel to
+  that version, and the second converges. The first's channel is moved
+  back, and the first converges back and reports it; the second's
+  channel follows it back. The second's channel is never moved to a
+  version the first did not last report it runs (37, 41, 43, 91, 97,
+  C.10).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
