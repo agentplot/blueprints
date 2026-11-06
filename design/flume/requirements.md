@@ -2941,7 +2941,10 @@ checked against its release.
 Under herdr a session is named `herdr:<pane>@<socket>`, the pane's id
 and its server's socket, wherever a recipient or a launching session is
 named (7, 43); a role's run is reached in the pane its live start holds,
-found again by that start's herdr name as an agent's pane is (132).
+found again by that start's herdr name as an agent's pane is (132). A
+standing agent is reached in the pane herdr lists under its name in its
+session. That pane is found again at each delivery, so an agent revived
+under the name is found where it is (132).
 Nothing is sent to a pane found by a name until herdr lists it under
 that name, and its id is recorded before anything is sent to it.
 
@@ -2982,6 +2985,7 @@ herdr's refusal and its words:
 | tidy | the place's recorded tab: `pane list --workspace <w>` read for panes in it, and a pane flume did not open there keeps it, named; else `tab close <tab>`, a tab already gone read as closed. Then the base's recorded workspace: where `tab list --workspace <w>` holds no tab but those of live places it made and `pane list` no pane it did not open, `workspace close <w>`; otherwise kept, and what holds it named |
 | attach | for a window, `<herdr> session attach <name>`, `<herdr>` the full path of the herdr the profile runs, so the window runs the same release whatever its `PATH`; the session's server first found or started headless as the server row says, flume's own session being `flume`; the command's environment is `XDG_CONFIG_HOME` where the profile's calls run under one, which herdr 0.9.5 reads its sessions' home from, and nothing otherwise. For the app, refused: herdr 0.9.5 has no app of its own, and the Herdr app runs on herdr-core, a backend apart with sessions of its own (187) |
 | runs | one `herdr session list --json` for every part asked, its `sessions[]` read by `name` and `running` for each, flume's own session being `flume`. A session listed running runs. One listed not running, or not listed, does not, and nothing is started. The call is bounded at one second, so the list answers within its second. A listing not read within it, or refused, is read as not read for every part asked, in herdr's words (201) |
+| standing | the agents of a session by name, for an address the host's configuration gives a standing agent (132, C.7). It is read at each delivery and each status, and nothing keeps it. One `herdr session list --json` finds the session by `name` and `running`, flume's own being `flume`. A session not listed running holds no agent, and nothing is started. Then `agent list` on its socket, its `agents[]` read by `name`, `pane_id` and `agent_status`, the status read as the state row reads it. An agent of the name is reached at `herdr:<pane_id>@<socket>`, by the send and state rows, as any recipient's session is. None of the name is said so, and so is more than one. herdr 0.9.5 refuses a second agent of one name on a server, as `agent_name_taken`. A listing refused, or not read within the bound, is not read, in herdr's words |
 | show | `pane report-metadata <pane> --source flume --title "<stage> · <state>" --display-agent <kind>--<name>`; `workspace report-metadata <w> --source flume --token flume=<summary>`, the summary such as `3 running · 1 asking · 1 waiting on caller · 0 stalled`, shown where the host's herdr sidebar rows name `$flume` |
 
 What herdr 0.9.5 was seen to do, which the readings above allow for:
@@ -3039,7 +3043,8 @@ words.
 The printed command tidies nothing and shows no clue, since it made
 nothing in a terminal. It refuses attach for either view, since it
 holds no part of a terminal a person can be shown (187). Its runs
-answers that it holds no part, for every part asked (201). It reads no tool: open prints the line `cd <place> &&`
+answers that it holds no part, for every part asked (201), and it finds
+no standing agent, since it holds no agent a name finds (132). It reads no tool: open prints the line `cd <place> &&`
 the command's environment, program, arguments and prompt, and marks it
 printed for the identity in the place's folder, refusing to print it
 again; its state is unknown, and the core reads its agent stopped once
@@ -3328,7 +3333,8 @@ lives:
   host's terminal knows a standing agent by, and an optional `session`,
   the terminal session it lives in. An entry naming no session finds
   its agent in the one the host names for the entry's `stream`, else
-  in its default stream's (143). The address's ends go into that agent
+  in its default stream's (143). The agent is found in the terminal of
+  that stream (190). The address's ends go into that agent
   and wake no run (132). An entry giving
   `agent` beside `kind` is refused, naming the address. The table is
   the managed layer's.
