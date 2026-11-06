@@ -269,7 +269,12 @@ redefine these.
     it, whatever repositories and branches they serve and whatever
     their windows: an instance starts a run only while the host's count
     of running checks is under the bound, and the count is kept where
-    every instance on the host reads it. Each run is given the cores
+    every instance on the host reads it. A run counts from the count
+    that chose it, before its place is made, through its start, so no
+    run of any instance takes its part of the bound between; a start
+    that fails gives that part back at once, and an instance that stops
+    before the run starts gives it back as it stops (record 0087,
+    proposed 2026-11-06). Each run is given the cores
     sluice may use divided by the bound, and its runner hands that share
     to the tools it runs, so the bound's runs together use what sluice
     may use and no more. What sluice may use is what the host gives it,
@@ -286,6 +291,22 @@ redefine these.
     settings and leaves room for; a run that reaches one is never
     confined (C.8), and its record says the share it was handed and
     that it was not confined, never a limit nothing enforced (84).
+150. Where a candidate's run and a run a session or a preview asks for
+     wait for room on one host at once, the candidate's starts first:
+     it stands between every session of its queue and its landing, and
+     a session's stands between one session and its next edit. Once a
+     candidate's run has started in room a waiting session's or
+     preview's run could have taken, the next such room goes to that
+     run, so a queue never holds them off for ever, nor they a queue;
+     and the runs sessions and previews ask for start in the order they
+     came to wait. A run waits from the moment the host's count refused
+     it, and the host keeps its waiting runs beside the count, where
+     every instance reads them: a session's or a preview's while the
+     command that asked for it waits, a candidate's while rounds of its
+     branch ask for it, each only within half a minute of its last ask.
+     The part of the bound the host's keeper keeps for candidates' runs
+     is never a session's or a preview's, and where the keeper keeps
+     none they may hold all of it (record 0087, proposed 2026-11-06).
 14. A branch's policy says whether every candidate of a chain is tested or
     the deepest first. Under deepest first, a failure is attributed only
     after the candidates that were skipped have verdicts.
@@ -1681,6 +1702,17 @@ section asked is answered by a clause.
   fixed: a day after its last refused write the command is shown no
   more, and the log gains its end with its count (124, 132, 148; record
   0082, proposed).
+- **S75.** A host's bound is two, none kept for candidates. Two agents'
+  checks hold both runs and a third agent's waits for one. A
+  combination falls due on main, and its round finds no room. The
+  first agent's run ends: the third agent's check, asking a second
+  later, still waits, and main's next round takes the run, makes the
+  combination's checkout and starts its checks, no other run taking
+  its part between the count and the start. The second agent's run
+  ends while main's next combination waits: the third agent's check
+  starts. When the first combination's run ends, the next starts ahead
+  of a fourth agent's check that waits (71, 150; record 0087,
+  proposed).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
