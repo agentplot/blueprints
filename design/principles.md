@@ -55,6 +55,6 @@ right." Each repository's CLAUDE.md points here.
     such as a host's repositories adds the two. A tool's file is written
     by its own module, by hand or by a control plane's local layer, and
     never by another tool. (From the user's talk of 2026-11-06 on the
-    Boomdrive flake's configuration: "Flume's: managed + local", "Flume's
+    Boomdrive flake's configuration: "flume's: managed + local", "flume's
     rule for all", "Add to Nix's"; agentplot/boomdrive
     `design/research/the-flakes-configuration-holds-streams-and-repositories.md`.)
