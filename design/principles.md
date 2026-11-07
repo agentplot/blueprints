@@ -58,3 +58,21 @@ right." Each repository's CLAUDE.md points here.
     Boomdrive flake's configuration: "flume's: managed + local", "flume's
     rule for all", "Add to Nix's"; agentplot/boomdrive
     `design/research/the-flakes-configuration-holds-streams-and-repositories.md`.)
+
+## Changing the work
+
+11. **A step made automatic leaves no instruction doing it by hand.** A
+    change that makes a step happen on its own also changes every
+    instruction that has an agent or a person do that step. Those are
+    the agents' briefs, each repository's CLAUDE.md and skills, and the
+    cards and runbooks that walk it. Where those instructions live in the
+    changed repository, the change carries them. Where they live in
+    another, such as crew's briefs or a host's configuration, the
+    change names them. Their own change lands when the host moves to
+    the release that automates the step, not before. A unit that
+    automates a step names, in its source, the instructions it retires.
+    (Proposed 2026-11-07, from the user's words that day, relayed by
+    agentplot-operator, "Boom driver" being Boomdrive: "We need to make
+    sure that once the Boom driver flume sluice workflow is automatic,
+    the instructions for the agents are updated in lockstep". Accepted
+    only on their yes.)
