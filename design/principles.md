@@ -47,3 +47,14 @@ right." Each repository's CLAUDE.md points here.
 9. **Work runs where its subject lives.** A local branch's queue runs on
    the host; a branch on a forge that takes pull requests is queued on
    the forge.
+10. **Every tool's configuration has two layers, by one pair of words.**
+    Its managed layer, `config.toml`, is written by Nix, a fleet or a
+    person; its local layer, `config.local.toml` beside it, by the
+    operator or a control plane, read over it. Each tool lists the keys
+    its local layer may set, the managed layer may pin them, and a list
+    such as a host's repositories adds the two. A tool's file is written
+    by its own module, by hand or by a control plane's local layer, and
+    never by another tool. (From the user's talk of 2026-11-06 on the
+    Boomdrive flake's configuration: "Flume's: managed + local", "Flume's
+    rule for all", "Add to Nix's"; agentplot/boomdrive
+    `design/research/the-flakes-configuration-holds-streams-and-repositories.md`.)
