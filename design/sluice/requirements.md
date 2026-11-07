@@ -275,8 +275,8 @@ redefine these.
     set by the host's keeper and shared by every instance of sluice on
     it, whatever repositories and branches they serve and whatever
     their windows: an instance starts a run only while the host's count
-    of running checks is under the bound, and the count is kept where
-    every instance on the host reads it. A run counts from the count
+    of running checks is under the bound, and the count is kept in the
+    one host process that holds the host's bound (135). A run counts from the count
     that chose it, before its place is made, through its start, so no
     run of any instance takes its part of the bound between; a start
     that fails gives that part back at once, and an instance that stops
@@ -906,7 +906,7 @@ redefine these.
      the policy, and the question costs the tick no process of its own,
      so a watch of a repository set up with nothing submitted costs its
      host no more than one with queues. The same holds of every reader's
-     tick, a watch's or `sluice run`'s (51): in a repository where
+     tick, a watch's or the host process's (51, 135): in a repository where
      nothing is in play, no entry queued or under test, no place to
      release and no preview to drop, a tick starts no process and reads
      nothing but what tells it whether anything changed, the records'
@@ -954,9 +954,9 @@ redefine these.
      environment of the command that started the process. A command of
      a newer sluice has an older host process hand its repositories
      over and end. No policy, configuration or document of sluice's
-     tells a host to install or keep a service for it. (the user's
-     approval of 2026-11-06, `proposals/host-process-1.md`; proposed
-     until sluice's record)
+     tells a host to install or keep a service for it. (sluice record
+     0093, proposed 2026-11-06, on the user's approval of that day,
+     `proposals/host-process-1.md`)
 137. A branch's requests are taken in only where its records are on
      its remote, by the instance that keeps the branch there (72): on a
      forge, the forge's jobs, as a pool (C.8), take them in and run the
@@ -972,9 +972,8 @@ redefine these.
      submitted or reaches with the request's entry there, taken in or
      waiting and on what, its state, its number and the entries ahead
      of it, each a field of the JSON form as well as words, read from
-     sluice's check on the request's head (26, 80). (the user's approval
-     of 2026-11-06, `proposals/host-process-1.md`; proposed until
-     sluice's record)
+     sluice's check on the request's head (26, 80). (sluice record 0093, proposed 2026-11-06, on the user's approval of
+     that day, `proposals/host-process-1.md`)
 
 ### A.9 Branches
 
@@ -1286,7 +1285,7 @@ Parts A and B do not change to admit a profile.
 | profile | submit / withdraw / state / notify / forecast |
 |---|---|
 | **worktrunk**: a custom subcommand on the path | `wt submit`, the executable `wt-submit` on the path, waiting for the entry's outcome, which it reports as its exit, or with `--no-wait` returning the entry at once; `wt submit --withdraw`; `wt submit --status`; `sluice submit <branch> --worktree <a> --worktree <b> …` submits the worktrees' heads as one act in that order, and under pull requests pushes each branch and opens or updates each request in one act for intake to take in one pass, the answer naming every entry, or every request with what it waits for (125); the outcome of a waiting submit is its exit, of any other the session's pane prompted through the multiplexer; on landing, worktrunk removes the session's place; `wt submit --check`, the same forming as a submission with no entry written; a submission never need hold its session: with `--no-wait` the session goes on with its work and its messages, and `sluice wait`, run beside that work in whatever background its harness has, follows the host's driver, running rounds itself only where none lives (135), and reports the outcome when it comes (26, 50), the outcome also pushed into the session's pane as a notice and collected at a session's start by `sluice inbox` where it stood pending (51); a session waits in the foreground only where it has no background; a `wt submit` run again in a place whose submission stands, queued or landed and not yet removed, follows it as its waiting submit would, with the timeout and exit `sluice wait` has, and on landing releases and removes the place, so a session that submitted with `--no-wait` waits and tidies through the driver and removes nothing by hand, while `sluice wait`, the core's, removes no worktree (25); a standing submission is one at the revision a submit from that place would send, the remote's on a branch sluice lands on (124); run again with `--no-wait`, it answers with the standing entry at once and withdraws nothing, a new head alone submitting again; and `--timeout` is `wt submit`'s wherever it waits, a first submit included, which submits and then waits as `sluice wait` does under that limit, exiting 5 while the entry is undecided, so one command run in rounds serves a session from its submit to its landing |
-| **pull request**: a forge's request to merge a branch of the repository into a branch whose policy turns pull requests on | `submit` pushes the session's branch and opens a request, or updates the open one, and marks it ready at that head; a request sluice opens is titled by what lands, the subject the submit gives or the submitted branch's name where it gives none, never a commit's message, and a new head with a subject retitles a request sluice opened, while one a person opened keeps the title they gave it (118, 120); a submit that does not wait answers with the entry intake took for the request, taking it then where its conditions hold, and otherwise with the request and what it waits for, and `sluice wait` follows a request as it follows an entry; a request a person opened by hand is found by the branch's intake when it next asks for the open requests (136), on the host that takes the branch's requests in (137); either is submitted when it is out of draft and every condition its branch's policy names holds on its head, and a request from a fork is never submitted; a request whose head the round cannot fetch, or whose state it cannot read, is named in the round's report with the failure, and the round goes on to the branch's other requests (128). A new head on a request the driver opened withdraws the entry, and the driver marks the request a draft, so it waits for the next `submit`, which marks it ready at the new head, or for a hand marking it ready (120); a new head on a request opened by hand withdraws the entry and the request waits for its conditions on the new head; a request opened by hand that the operator withdraws waits for a new head or for draft and ready again, as one removed as culprit does, its check naming the operator (120). A request moved to draft or closed is withdrawn; one removed as culprit or conflict is, when the driver opened it, marked a draft the same way, and otherwise waits for a new head or for draft and ready again (54, 120). The request's description carries sluice's marks and the commits' messages, each whole and in order, as many as the forge's limit holds; where it holds not all, the subjects of the rest with their count and the forge's compare view of the head against the branch, and no message is cut within itself. Its state is a check sluice's identity posts on its head, carrying the entry's state, what it waits for, the host that took it in, its number there and the entries ahead of it, each a field a program reads as well as the check's words (137), and the culprit or conflict with a comment when it is removed; the instance that reads the branch's records posts, on the request's head, one check per required check per system with its outcome and signer, and one for the entry's state, and in the conversation one report of the verdict, edited as it changes (118); a forecast is run for every waiting request whenever the branch or the request has moved, and posted when it changed (64, 136); the landing is sluice's push of the branch (C.4), after which the forge marks the request merged; the forge's merge button, merge queue and squash or rebase merges are not used on such a branch |
+| **pull request**: a forge's request to merge a branch of the repository into a branch whose policy turns pull requests on | `submit` pushes the session's branch and opens a request, or updates the open one, and marks it ready at that head; a request sluice opens is titled by what lands, the subject the submit gives or the submitted branch's name where it gives none, never a commit's message, and a new head with a subject retitles a request sluice opened, while one a person opened keeps the title they gave it (118, 120); a submit that does not wait answers with the entry intake took for the request, taking it then where its conditions hold, and otherwise with the request and what it waits for, and `sluice wait` follows a request as it follows an entry; a request a person opened by hand is found by the branch's intake when it next asks for the open requests (136), by the instance that keeps the branch on its remote, on a forge its jobs (137); either is submitted when it is out of draft and every condition its branch's policy names holds on its head, and a request from a fork is never submitted; a request whose head the round cannot fetch, or whose state it cannot read, is named in the round's report with the failure, and the round goes on to the branch's other requests (128). A new head on a request the driver opened withdraws the entry, and the driver marks the request a draft, so it waits for the next `submit`, which marks it ready at the new head, or for a hand marking it ready (120); a new head on a request opened by hand withdraws the entry and the request waits for its conditions on the new head; a request opened by hand that the operator withdraws waits for a new head or for draft and ready again, as one removed as culprit does, its check naming the operator (120). A request moved to draft or closed is withdrawn; one removed as culprit or conflict is, when the driver opened it, marked a draft the same way, and otherwise waits for a new head or for draft and ready again (54, 120). The request's description carries sluice's marks and the commits' messages, each whole and in order, as many as the forge's limit holds; where it holds not all, the subjects of the rest with their count and the forge's compare view of the head against the branch, and no message is cut within itself. Its state is a check sluice's identity posts on its head, carrying the entry's state, what it waits for, the host that took it in, its number there and the entries ahead of it, each a field a program reads as well as the check's words (137), and the culprit or conflict with a comment when it is removed; the instance that reads the branch's records posts, on the request's head, one check per required check per system with its outcome and signer, and one for the entry's state, and in the conversation one report of the verdict, edited as it changes (118); a forecast is run for every waiting request whenever the branch or the request has moved, and posted when it changed (64, 136); the landing is sluice's push of the branch (C.4), after which the forge marks the request merged; the forge's merge button, merge queue and squash or rebase merges are not used on such a branch |
 | **crew**: a bolt team's stages | the unit's merge stage submits, and a bolt is submitted from its own place by its conductor; `sluice amend` sets an After the conductor adds; the conductor reads the entry's state as the stage; a red or a conflict re-charges the unit's slot; the conductor's wait runs a forecast for each unit in code and tells the unit's agent of a conflict when it is idle, and one for the bolt against the branch it lands on, whose conflict with what that branch has landed the team takes into the bolt by a fix it submits to the bolt, before the bolt is submitted |
 | **Boomdrive**: the machinery's effects | a session's done exit, once approved, is the submission; the entry's state is evidence; a forecast is evidence on the item, read each tick |
 | **branch**: `sluice branch` | not a session's: `sluice branch create <branch> --from <branch>` makes a branch at the other's current revision and prints it (104); `sluice branch delete <branch> --into <branch>` removes it, `main` when `--into` is omitted (105); `sluice branch accept <branch> <revision>` records the revision as the one the branch stands on when its reading and its records disagree (121), the operator's act and no session's; each exits 0 when done, 1 when a branch it names does not exist, and 2 on a refusal, naming it |
@@ -1415,7 +1414,7 @@ change to Parts A and B.
 | who takes in requests | the instance that keeps the branch (72, 137) |
 | confinement | by signers (78, 79): a signer the policy lets claim it, on hosts that run no sessions or a pool's fresh machines |
 | who holds the branch's credential | an identity no session can use: an app installed on the repository, held by the standing executors' sluice user and by the pool's jobs |
-| what is new to run | `sluice run` on each standing executor's host; for a forge, one workflow the repository carries, written by `sluice init` |
+| what is new to run | nothing on a host, whose sluice starts its own host process (135); for a forge, one workflow the repository carries, written by `sluice init`, whose jobs take the branch's requests in (137) |
 
 The task runner's cache makes runs cheaper and decides nothing (108).
 
@@ -1678,7 +1677,7 @@ section asked is answered by a clause.
 - **S64.** The host's own ref of a bolt branch holds a policy this
   sluice refuses, a table it no longer keeps; the remote's copy is
   clean. `sluice wait` on a submission to another branch finds it by
-  its number and follows it to its verdict; `sluice run` passes the
+  its number and follows it to its verdict; the host process passes the
   bolt by, saying so once while the refusal stands; the overview shows
   the bolt with the refusal and every other branch whole (26). The
   bolt's own round reads it at the remote's revision and runs, and the
@@ -1689,16 +1688,16 @@ section asked is answered by a clause.
   is passed over and nothing is run for it (56, 84; the user,
   2026-10-30, on batch 48).
 - **S65.** Ten repositories on one host share sluice's app on the
-  forge, each with a main that takes requests; sessions on this host
-  and another wait on their requests, and the host runs `sluice run`.
-  With nothing moving, the driver asks for each main's open requests
+  forge, each with a main that takes requests, which the forge's jobs
+  take in (137); sessions on this host and another wait on their
+  requests. With nothing moving, each main's job asks for its open requests
   once a minute and the forge answers each unchanged, at no cost to
   the allowance. A reviewer approves one request: the next asking
   finds it moved, that request alone is read again, and it is taken.
   The forge says the allowance is spent: no process on the host calls
   it until the time it named, a waiting submit says until when and
-  waits, and the driver's rounds go on landing what has passed. A wait
-  on the other host takes nothing in, follows its request by sluice's
+  waits, and the forge's rounds go on landing what has passed. A wait
+  on either host takes nothing in, follows its request by sluice's
   check on its head, and reports its landing when the forge shows it
   merged (134, 136, 137).
 
