@@ -561,7 +561,7 @@ redefine these.
     whole checks or a task group's; a code stage, one agent for the whole
     change, which delivers its tasks ticked; and a verify stage, which
     runs the repository's whole checks once and then checks the work as
-    version 2's does. (Proposed 2026-11-06, flume record 0054, on the user's word that day; accepted only on their yes.) **change** at version 2 is a construct stage,
+    version 2's does. (flume record 0054, accepted by the user 2026-11-06) **change** at version 2 is a construct stage,
     which delivers the place's change written; a code stage, which
     delivers its tasks ticked and repeats per task group (140); and a
     verify stage, which checks the work
@@ -2935,7 +2935,7 @@ holds the rest, the place's facts and then its run's:
 |---|---|---|---|---|
 | **fix@1** | `fix/<name>` | yes | yes; `code` | `code`: `commits` |
 | **chore@1** | `chore/<name>` | yes | yes; `code` | `code`: `commits`; fix@1's stage under a prefix of its own, so a branch's name says which it was |
-| **change@3** | `change/<name>` | no | yes; `code` | `construct`: `change`, each task naming the narrowest check that shows it done, a test by name, a package's tests or a lint of the files it touched, and none running the repository's whole checks or a task group's; `code`: `tasks`, not repeating, one agent for the whole change; `verify`: `archived`, its prompt running the repository's whole checks once before it checks the work as change@2's does. The newest, so a launch naming no version in a repository whose lock records none runs it (154, 155). (Proposed 2026-11-06, flume record 0054, on the user's word that day; accepted only on their yes.) |
+| **change@3** | `change/<name>` | no | yes; `code` | `construct`: `change`, each task naming the narrowest check that shows it done, a test by name, a package's tests or a lint of the files it touched, and none running the repository's whole checks or a task group's; `code`: `tasks`, not repeating, one agent for the whole change; `verify`: `archived`, its prompt running the repository's whole checks once before it checks the work as change@2's does. The newest, so a launch naming no version in a repository whose lock records none runs it (154, 155). (flume record 0054, accepted by the user 2026-11-06) |
 | **change@2** | `change/<name>` | no | yes; `code` | `construct`: `change`; `code`: `tasks`, repeating per task group (140); `verify`: `archived`. The verify prompt checks the work against the change and commits its report as `verify.md` in the change's directory. It then archives the change on the place's branch, the report with it, or stops short finding, with what fails, which sends the place back to code (131). The code prompt, sent again with a failed submission's or a finding's words, fixes what they name and records the fix as a task of the change, ticked. The code stage's standing instructions hold what every repetition is told alike; its prompt holds the place's and the change's paths, then its group, the notes' path and its words, which come last (141, 148). The newest of flume's change, taken by a launch that names no version where no lock records one (154) |
 | **plan@1** | `plan/<name>` | no | yes; `code` | `plan`: `plan`, in the agent profile's planning mode, ended by its caller's finish (163); `code`: `commits`, fix@1's code stage with the plan accepted, `{{plan}}`, in its prompt, sent again with a failed submission's words |
 | **change@1** | `change/<name>` | no | yes; `code` | `construct`: `change`; `code`: `tasks`, not repeating, one agent for the whole change; `verify`: `archived`, as change@2's. Kept beside change@2 (22): a repository picks it by recording `flume/change@1` in its lock, a launch by naming `change@1`, and a place launched at it keeps it (21) |
@@ -4660,7 +4660,7 @@ These are not requirements.
   as it goes, and status gives its stage as `code` with no group count.
   Its verify stage runs the repository's whole checks once, finds them
   passing and the specs met, and archives the change (22, 154; flume
-  record 0054, proposed 2026-11-06).
+  record 0054).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
