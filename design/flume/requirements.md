@@ -580,8 +580,10 @@ redefine these.
     starts in a place that could not be made ready, and whether it
     lands. One that lands names the stage a failed submission sends a
     place back to, and how many times a place may go back before it
-    waits on its caller. It may hold settings for the agent of every one
-    of its stages. A stage's declaration holds its name, its prompt, and
+    waits on its caller. One that lands with no stages may name the
+    kind its fixes run as, by its name or its identity, and how many
+    fixes it runs before its place waits on its caller (203). It may
+    hold settings for the agent of every one of its stages. A stage's declaration holds its name, its prompt, and
     its deliverable or that it is a conversation, and may hold its
     standing instructions (148), its agent's settings, what it makes
     besides its deliverable (129), whether it waits on its caller's
@@ -594,7 +596,9 @@ redefine these.
     several agents or with several deliverables, is refused (4); a
     statechart kind holds them (175). flume ignores a section of a kind
     it does not know, such as the elaboration section sounding reads,
-    and nothing else a declaration holds changes what flume does.
+    and nothing else a declaration holds changes what flume does. (Its
+    sentence on a kind with no stages proposed 2026-11-07, flume record
+    0056's amendment; accepted only on the user's yes.)
 24. Every deliverable is one of seven forms, each read where it lives:
     - **commits**: the place's branch holds a commit made since the
       stage started;
@@ -693,7 +697,10 @@ redefine these.
      held at, or that refers outside itself, refuses the launch naming
      it (4). flume's own kinds are packages too, one per version, so
      change@1, change@2 and change@3 each carry their own construct and
-     verify.
+     verify. A kind that lands with no stages may name the kind its
+     fixes run as (23). That is a name its reader resolves as a launch's
+     name resolves (154), and no part of the package, whose hash covers
+     the name and not the kind it names. (Proposed 2026-11-07, flume record 0056's amendment; accepted only on the user's yes.)
 158. A kind names nothing a host owns, whichever source declares it: no
      environment, account, pool, stream, location on a host or time an
      agent is kept open (32, 144, 198).
@@ -1748,17 +1755,27 @@ redefine these.
      the merge queue's record of its branch (99), acted on once, and
      delivered to its recipients as any end is (43). A base place waits on the places on its branch while any is live.
      Once none is and it is not submitted, it waits on its caller, and
-     may stall (130). While it so waits, unsubmitted, each settle
+     may stall (130). While it so waits, unsubmitted or its submission
+     failed, with no place on its branch being made or live, each settle
      forecasts its branch's head against its base through the merge
-     queue (sluice 64). A conflict so forecast, or a failed or
-     conflicting submission of it, launches on its branch a place of the
-     kind its kind names for its fixes, with the merge queue's words as
-     its brief; for a conflict, that fix takes in the revision the words
-     name (112). While the fix is live no second is launched, each fix
-     counts toward its kind's bound (23), past which it waits on its
-     caller, and a kind that names no fix leaves it waiting on its caller
+     queue (210; sluice 64). A conflict so forecast with the base
+     itself, or a failed or conflicting submission of it, launches on its
+     branch a place of the kind its kind names for its fixes, resolved at
+     the base place's launch (23), named by the base place's name and the
+     fix's number joined by `-`, in its stream, at its priority, serving
+     the intent its launch named, delivering to its recipients, and with
+     the merge queue's words as its brief; for a conflict, that fix takes
+     in the revision the words name (112). A forecast that conflicts only
+     with entries queued ahead of it launches nothing and is forecast
+     again at the next settle. flume acts on each forecast, by its head
+     and its base's revision, and on each submission once. While the fix
+     is live no second is launched; each fix counts toward its kind's
+     bound (23), one whose launch was refused among them, past which the
+     base place waits on its caller, said and delivered (130, 43); a
+     refused launch leaves it waiting on its caller with the refusal's
+     words; and a kind that names no fix leaves it waiting on its caller
      with the merge queue's words. Its submission stays its caller's
-     retry. (Flume record 0056, accepted 2026-11-07.) The
+     retry. (Flume record 0056, accepted 2026-11-07; amended by its amendment, proposed 2026-11-07 and accepted only on the user's yes.) The
      base place's landing makes its work over (63), and flume tidies it
      as 204 says.
 204. A launch on a live place's branch is refused where that place is
@@ -1900,7 +1917,11 @@ redefine these.
     words, a hold on the waiting move with its bound or that it lapsed,
     and whether it is stalled (130); the place's points, and
     beside them the time its newest submission spent in the merge queue
-    and the time its checks ran (165, 168); a stage for review's plan
+    and the time its checks ran (165, 168); for a base place, the kind
+    its fixes run as with where it came from, the newest forecast a
+    settle read of its branch, when and what it found, and each fix
+    flume launched for it, why and how it ended; for a place flume
+    launched as a base place's fix, that base place (203) (Proposed 2026-11-07, flume record 0056's amendment; accepted only on the user's yes.); a stage for review's plan
     with where it lives (163); for the host and for each of
     its streams, its agents running, the bound it states, its room, its
     points queued and in flight, and
@@ -2176,7 +2197,10 @@ redefine these.
      states a points bound or a pace is refused, naming the stream (4):
      flume counts no guess against either. A base place has no agents'
      work: its launch gives no points, one that gives them is refused,
-     and it is counted against no bound or pace (202). On a stream that states
+     and it is counted against no bound or pace (202). A base place's
+     fix, which flume launches (203), gives no points and is counted
+     against no bound or pace, as a fix round's start puts no new points
+     in flight (166, 167). (Proposed 2026-11-07, flume record 0056's amendment; accepted only on the user's yes.) On a stream that states
      neither, points are only reported.
 166. A stream's points bound caps its places' points in flight together,
      beside its bound on agents running, which stays, since accounts and
@@ -2594,6 +2618,15 @@ redefine these.
      and the branch its work landed into, the branch removed; or kept,
      naming why; or that it is gone (204). A branch with a submission
      still open on it, or with work the other branch lacks, is kept.
+210. **forecast**: given a repository, a branch the merge queue lands
+     on and its base, the conflicts the branch's head would meet were it
+     submitted to the base now, placed after every entry already
+     submitted. A clear forecast gives the head and the base's revision
+     it was formed on. One in conflict gives those, the files contested,
+     each entry ahead it meets, none where it meets the base itself, and
+     the merge queue's words. Otherwise it says the merge queue could not
+     form it, and why (203; sluice 64, 65). A forecast creates no entry, moves no
+     branch, and is never read as a verdict. (Proposed 2026-11-07, flume record 0056's amendment; accepted only on the user's yes.)
 
 ### B.7 The store
 
@@ -3233,12 +3266,13 @@ window.
 
 | operation | how sluice satisfies it |
 |---|---|
-| submit | flume runs `sluice submit <base> --no-wait --json` in the place, with no multiplexer's session in its environment, so sluice records the place's worktree as the entry's submitter and no session, pushes nothing into any pane, and answers with the entry at once; a refusal is its exit and words. flume never passes `--check`, and never runs `wt submit`, whose waiting half removes the place (111, 113). A base place's submit runs in the repository, naming its branch as its head (203). |
+| submit | flume runs `sluice submit <base> --no-wait --json` in the place, with no multiplexer's session in its environment, so sluice records the place's worktree as the entry's submitter and no session, pushes nothing into any pane, and answers with the entry at once; a refusal is its exit and words. flume never passes `--check` to a submit, and never runs `wt submit`, whose waiting half removes the place (111, 113). (Proposed 2026-11-07, flume record 0056's amendment, for `--check`; accepted only on the user's yes.) A base place's submit runs in the repository, naming its branch as its head (203). |
 | inbox | `sluice inbox --json` (sluice clause 51), run in the place, which delivers the place's decided entries pending for it once and marks each delivered; sluice answers nothing again for an outcome already delivered; a withdrawal is read from read-submission (133). None runs for a base place, whose outcomes read-submission gives (203) |
 | read-submission | `sluice status <base> --json`, read once for each repository at each ask; the newest entry submitted from the place's branch, whoever submitted it; landed is that entry landed, its landing commit's `Sluice-*` trailers naming it |
 | step | nothing: sluice's queue moves on its own once submitted, run by sluice's host process, which the submit starts, and the settle's read of the submission starts it again where work waits and none runs, so the queue moves with nothing installed and never twice (124, 125; sluice 135). A base place's queue onto its own base and its places' queue onto its branch move alike. (sluice record 0093, accepted by the user 2026-11-06, sluice `proposals/host-process-1.md`) |
 | open | `sluice branch create <branch> --from <base>`, run in the repository, which makes the branch at the base's current revision where the policy gives it a gate (sluice 104). flume makes no branch sluice lands on itself, since sluice's protection refuses any other making (sluice 106) |
 | close | `sluice branch delete <branch> --into <base>`, run in the repository once the base place is removed, which removes the branch only when nothing on it is open and its revision is contained in the base's (sluice 105). A refusal keeps the branch, named (67, 204) |
+| forecast | `sluice submit <base> --check --head <branch>`, run in the repository, which forms the candidate sluice 64 forms for a head not yet submitted and submits nothing (203, 210). (Proposed 2026-11-07, flume record 0056's amendment; accepted only on the user's yes.) |
 
 On landing sluice removes nothing, and flume tidies every landed place
 itself, through the place profile's teardown (C.1), and its branch as
@@ -3266,6 +3300,7 @@ stripped and `GIT_TERMINAL_PROMPT=0`, a refusal read as its JSON
 | submit, a base place | `sluice submit <base> --head <branch> --no-wait --json`, run in the repository, since a base place has no worktree. It submits the branch as sluice holds it, the remote's revision where its policy names one, recording no worktree and no session as the entry's submitter, and answers as any submit. No `sluice inbox` runs for it: its outcome is read-submission's entry whose `from.head` is the branch, failed and conflict with the record's words, files and `tested.on`. The profile reads it of the first pinned sluice whose submit takes a head without `--check` (sluice 124 as amended) |
 | open, close | `sluice branch create <branch> --from <base> --json` answers the revision the branch was made at. `sluice branch delete <branch> --into <base> --json` answers it removed. Each exits 1 where a branch it names does not exist, which close reads as gone, and 2 on a refusal, its `error.message` the words (sluice C.5's branch row) |
 | base | the remote is the `remote` of the base's table under `[branches]` in `.config/sluice.toml`, the base's own or the first pattern with one `*` that names it, read at the local base and else at each remote's tracking copy; where it names one, `git fetch <remote> +refs/heads/<base>:refs/remotes/<remote>/<base>` once, the base at `refs/remotes/<remote>/<base>`; where the base's table names none, the local base; and where the policy names no table for the base, or no revision of it holds a policy, sluice lands no such base, and base says so (126) |
+| forecast | `sluice submit <base> --check --head <branch> --json` answers `{conflict, head, onto, ahead}`: `conflict` null and exit 0 where clear; exit 2 with `conflict.paths`, the files contested, and `conflict.with[]`, the entries ahead it meets, each with its `id` and `from`, where it conflicts; a refusal exits 2 with its `error.message`. The profile reads it of sluice 0.71.0 (Proposed 2026-11-07, flume record 0056's amendment; accepted only on the user's yes.) |
 | place | `sluice equip <base> --at <revision> --json` in the place as its readiness, its `steps[]` each `{step, passed, words}`, exiting 1 where one failed; an answer with no `steps` read as one failed step, `sluice equip`, with its `error.message`; and `sluice release` as its teardown, handed to the place profile through the binding |
 
 sluice keeps its host state under `$XDG_STATE_HOME/sluice`, and once a
@@ -4590,8 +4625,10 @@ These are not requirements.
   submission is open, a launch of a fix on the base place's branch is
   refused, naming the base place. A launch of any place on a live
   change's branch is refused, naming the change (10, 203, 204).
-- **S112.** A base place's submission to `main` fails: a check of
-  `main`'s fails on it. flume starts nothing; the base place waits on
+- **S112.** A base place's kind names no fix, and its submission to
+  `main` fails: a check of `main`'s fails on it. (Proposed 2026-11-07,
+  flume record 0056's amendment; accepted only on the user's yes.)
+  flume starts nothing; the base place waits on
   its caller with sluice's words, delivered to its recipient. The
   caller launches a fix on the base place's branch with those words as
   its brief. The fix lands on the branch, and the caller retries the
@@ -4664,6 +4701,23 @@ These are not requirements.
   Its verify stage runs the repository's whole checks once, finds them
   passing and the specs met, and archives the change (22, 154; flume
   record 0054).
+- **S120.** A base place's kind names flume's own fix for its fixes,
+  and both changes on its branch have landed; no caller
+  retries its submission. Another place lands on `main` a change to
+  `README.md`, which the base place's branch changed too. At the host's
+  next watch, flume forecasts the branch against `main` through sluice
+  and finds it in conflict on `README.md` at `main`'s new revision. It
+  launches a fix on the branch, named for the base place and its first
+  fix, with sluice's words as its brief, in the base place's stream and
+  delivering to its recipient. The fix's agent merges that revision in,
+  resolves `README.md`, and the fix lands on the branch. The next
+  forecast is clear, and the base place waits on its caller, who
+  retries its submission, which lands. Status gave the fix as launched
+  by flume for the base place. Had `main` moved twice more under it,
+  each move conflicting, its kind's bound of two fixes would have been
+  spent. The base place would then have waited on its caller, said and
+  delivered (23, 43, 130, 203, 210). (Proposed 2026-11-07, flume record
+  0056's amendment; accepted only on the user's yes.)
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

@@ -420,7 +420,9 @@ redefine these.
     in a place that could not be made ready, and whether it lands. A
     kind that lands with stages names the stage a failed submission
     sends a place back to, and how many times a place may go back before
-    it waits on its caller. It may hold settings for every stage's
+    it waits on its caller. A kind that lands with no stages may name
+    the kind its fixes run as, by a name its reader resolves, and how
+    many fixes it runs before its place waits on its caller. (Proposed 2026-11-07 with weir's follow-up W2, flume record 0056's amendment; accepted only on the user's yes.) It may hold settings for every stage's
     agents, which a stage's own settings come before.
 53. The declaration of a simple kind's stage holds its name, its prompt,
     and its deliverable or that it is a conversation. It may hold its
@@ -450,7 +452,10 @@ redefine these.
     field. A statechart kind is checked as 95 says. A version left out
     reads as the first. A kind that lands with no stages declares them
     as none, `stages = []`, and names no stage a failed submission sends
-    a place back to. A kind's table that holds settings for its agents
+    a place back to. A kind with stages that names the kind its fixes
+    run as, or how many fixes it runs, is refused naming the field.
+    (Proposed 2026-11-07 with weir's follow-up W2, flume record 0056's
+    amendment; accepted only on the user's yes.) A kind's table that holds settings for its agents
     and leaves its stages out declares no kind: it is read as settings
     given to a kind of that name declared elsewhere, for every stage or
     for stages it names, and is never refused as a kind with no stage.
@@ -467,10 +472,14 @@ redefine these.
 89. A package holds the declaration of exactly one kind and every part
     that declaration names, its prompts and standing instructions, and
     nothing it names lies outside the package: no part outside it, and
-    no other kind, so no stage extends, includes or hands over to
-    another kind's. A package that declares no kind or more than one, or
+    no other kind but the kind a kind with no stages names for its
+    fixes, a name its reader resolves and no part of the package, so no
+    stage extends, includes or hands over to another kind's. A package that declares no kind or more than one, or
     names a part outside itself, is refused naming the field. A package held under an identity whose
     name or version is not its declaration's is refused naming both.
+    (The kind named for a kind's fixes proposed 2026-11-07 with weir's
+    follow-up W2, flume record 0056's amendment; accepted only on the
+    user's yes.)
 90. A package's content hash is the family's content hash over every
     part of the package, each with where it lies within the package, so
     the same package hashes the same on every machine, wherever the
@@ -857,6 +866,8 @@ model = "opus"
 branch = "train"
 lands = true
 stages = []               # none, declared so; a table that leaves stages out gives settings (57)
+fix = "fix"               # the kind its fixes run as, a name its reader resolves; refused on a kind with stages (52, 57, 89)
+max_fixes = 2             # how many fixes before its place waits on its caller; refused on a kind with stages (52, 57)
 
 [kinds.fix.agents.stages.code]   # settings for one of its stages
 instructions = "Keep each commit to one fix."
@@ -908,9 +919,13 @@ as read; a reader keeps the sections it knows. A table or field the
 format does not name is a section the reader ignores (56). The format
 refuses two stages of one kind sharing a name, and an `on_fail` naming
 no stage of its kind, naming the field (57). The format gives no default
-for `quiet`, `on_fail`, `max_send_backs` or an elaboration's `ending`:
-a field left out is returned left out, and what it means is the
-reader's rule (58), since readers differ.
+for `quiet`, `on_fail`, `max_send_backs`, `fix`, `max_fixes` or an
+elaboration's `ending`: a field left out is returned left out, and what
+it means is the reader's rule (58), since readers differ. `fix` is
+returned as written, a name and no part of the package, which the
+reader resolves (89). (`fix` and `max_fixes` proposed 2026-11-07 with
+weir's follow-up W2, flume record 0056's amendment; accepted only on the
+user's yes.)
 `repeat` takes the one value `per-task-group`, and the format refuses
 any other, or the field on a stage whose deliverable is not `tasks`,
 naming the field (57); how a reader works a repetition is its own rule
