@@ -1160,7 +1160,12 @@ redefine these.
      A window whose reset has passed reads as nothing used. A file
      that is missing, or that holds no reading in C.7's form, is no
      reading: status says why, and it refuses no start and fails no
-     settle. An account that names no reading has none.
+     settle. An account that names no reading has none. flume is to
+     read each account's allowance itself, from its agent program's own
+     source, with no host writing a reading for it; how it reads one,
+     weighed against 146's rule that it reads no sign-in and fetches
+     nothing, and what of the file stays, is flume's design still to
+     make, and until it is made the reading is the file above. (Proposed 2026-11-06, flume record 0055, on the user's word that day; accepted only on their yes.)
 185. A pool's threshold is a share of a window, ninety percent where
      the pool states none (C.7). An account whose reading gives any of
      its windows used to the threshold or past it is past its
@@ -2075,7 +2080,11 @@ redefine these.
      the view a person is
      shown them in and the window program that opens it, each the
      host's where it states none, and the title of a window that shows
-     them, its own name where it states none (186). A place's stream is the one its launch names, else the
+     them, its own name where it states none (186). The configuration
+     names a repository by its address, `<owner>/<name>` as its clone's
+     `origin` remote gives it on its forge, matched exactly, and a
+     repository whose clone has no forge origin by its folder; flume
+     asks no other tool where a repository is (C.7). (Proposed 2026-11-06, flume record 0055, on the user's word that day; accepted only on their yes.) A place's stream is the one its launch names, else the
      stream of the intent it serves (147), else the one the host's
      configuration names for its repository and kind, for its
      repository, or for its kind, in that order, else the host's default
@@ -3357,7 +3366,9 @@ lives:
   names that the environment lacks refuses the start naming it. A
   repository, a repository's kind and a kind are given a stream by
   `stream` in `[repos."<repository>"]`, `[repos."<repository>".kinds.<kind>]`
-  and `[kinds.<kind>]`, and a repository's kind and a kind are given a
+  and `[kinds.<kind>]`, `<repository>` being the repository's address,
+  `<owner>/<name>` as its clone's `origin` gives it, or its folder where
+  its clone has no forge origin (143) (Proposed 2026-11-06, flume record 0055, on the user's word that day; accepted only on their yes.), and a repository's kind and a kind are given a
   label by `label` in the same two kinds' tables (180). The stream
   `default` holds every place nothing
   names a stream for, bounded by the host's bound alone unless a
@@ -3399,7 +3410,7 @@ lives:
   strategy = "least-busy"
   accounts = [{ name = "personal", program = "claude", env = { CLAUDE_CONFIG_DIR = "~/.claude-personal" } }]
 
-  [repos."~/Code/acme"]
+  [repos."acme/acme"]
   stream = "work"
 
   [kinds.research]
@@ -3426,7 +3437,9 @@ lives:
   the longest span a pace names (167, 168).
 - An account's reading is one JSON document in the file its `usage`
   names, which the host writes whole, a new file renamed over the
-  old, and flume reads and never writes:
+  old, and flume reads and never writes, until flume reads each
+  account's allowance itself, as 184 says, which leaves what of this
+  file stays to that design (Proposed 2026-11-06, flume record 0055, on the user's word that day; accepted only on their yes.):
 
   ```json
   {
