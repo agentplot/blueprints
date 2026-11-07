@@ -1121,24 +1121,20 @@ redefine these.
     (record 0074, accepted 2026-10-30 and amended the same day on the
     user's words). The host may also change under a run: a deploy may
     switch the host's system while a run is going, restarting its
-    engine or the services the system brings, as a package manager's
-    upgrade may quit a Mac's engine. The executor reads, as the run
-    begins, the system the host's service manager records as active
-    and the process that serves each requirement the run's policy asks,
-    and reads them again after a run in which a check did not pass.
-    Where the system was switched, or a requirement is served by
-    another process, between the two readings, the host changed under
-    the run: the run has no outcome and nobody is blamed (114, 139), a
-    pass standing as every pass does. Such a run is run again only in a
-    place made afresh once its own was released (34), so nothing the
-    broken run started or handed to another process to keep, a
-    container, a network or a route, stands under the run again, and
-    the deployment's count of runs in a row with no outcome still
-    bounds it (115). How a host records its active system and a
-    requirement's process is the executor profile's to read (C.2); on a
-    host whose service manager records no active system, the
-    requirements alone are read (record 0097, proposed 2026-11-07 on
-    the user's words; accepted only on their yes).
+    engine or the services the system brings. On a host whose system
+    Nix manages, the executor reads the revision of the host's active
+    system as the run begins, and reads it again after a run in which
+    a check did not pass. Where the revision moved, the host changed
+    under the run: the run has no outcome and nobody is blamed (114,
+    139), a pass standing as every pass does. Such a run is run again
+    only in a place made afresh once its own was released (34), so
+    nothing the broken run started or handed to another process to
+    keep, a container, a network or a route, stands under the run
+    again, and the deployment's count of runs in a row with no outcome
+    still bounds it (115). On a host whose system Nix doesn't manage,
+    nothing is read and every run is read as before. How the revision
+    is read is the executor profile's (C.2) (record 0097, accepted
+    2026-11-07 by the user on their card).
 147. **equip**: given a working copy and a revision of a branch, the
      working copy made ready for the branch's runner as every place
      sluice runs in is made ready. First the toolchain the branch's
