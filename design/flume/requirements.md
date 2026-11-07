@@ -385,7 +385,7 @@ redefine these.
    on. It never decides what to launch, and never makes a place or
    starts an agent on another host. A base place's fix, which its kind
    names, is launched by flume at a settle (203), since its caller asked
-   for it in launching the base place. (Proposed 2026-11-07, flume record 0056, on the user's words; accepted only on their yes.)
+   for it in launching the base place. (Flume record 0056, accepted 2026-11-07.)
 2. A launch names a repository on the host, a kind, a name and a base,
    and a brief wherever a stage of its kind asks for one (4). Either it
    makes one place, records it, and starts its first stage, puts it on
@@ -1758,7 +1758,7 @@ redefine these.
      counts toward its kind's bound (23), past which it waits on its
      caller, and a kind that names no fix leaves it waiting on its caller
      with the merge queue's words. Its submission stays its caller's
-     retry. (Proposed 2026-11-07, flume record 0056, on the user's words; accepted only on their yes.) The
+     retry. (Flume record 0056, accepted 2026-11-07.) The
      base place's landing makes its work over (63), and flume tidies it
      as 204 says.
 204. A launch on a live place's branch is refused where that place is
@@ -3604,7 +3604,7 @@ view, naming the profiles, and nothing else (C.7).
 - **I5.** A prompt or a tell is received or reported, never left typed
   (38, 53).
 - **I6.** flume decides nothing its callers decide: what to launch, save
-  the fix a base place's kind names (203) (Proposed 2026-11-07, flume record 0056, on the user's words; accepted only on their yes.), each
+  the fix a base place's kind names (203) (Flume record 0056, accepted 2026-11-07.), each
   place's priority, or when a stage or a submission on hold starts; how
   many agents run at once, on the host and in each of its streams, the
   streams' priorities and the accounts its agents run under are the
