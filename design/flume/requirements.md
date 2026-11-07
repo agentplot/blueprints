@@ -547,15 +547,21 @@ redefine these.
     resolved at its launch: the kind's identity and its content as read
     then. A later change to any declaration, lock or package the host
     holds never changes a place already launched.
-22. flume's own kinds are fix@1, chore@1, change@1, change@2 and
-    plan@1, all five simple kinds (18), and all five land. **plan** is a plan stage, which delivers
+22. flume's own kinds are fix@1, chore@1, change@1, change@2, change@3
+    and plan@1, all six simple kinds (18), and all six land. **plan** is a plan stage, which delivers
     a plan its caller accepts (163), and then fix's code stage, which
     works to the plan accepted; a failed submission sends it back to
     code. **fix** is a code stage, which delivers commits. Its
     first stage starts in a place that could not be made ready, and a
     failed submission sends it back to code. **chore** is fix's one code
     stage under a prefix of its own, so a branch's name says which it was
-    (C.2). **change** at version 2 is a construct stage,
+    (C.2). **change** at version 3 is a construct stage, which delivers
+    the place's change written, each of its tasks naming the narrowest
+    check that shows that task done and none running the repository's
+    whole checks or a task group's; a code stage, one agent for the whole
+    change, which delivers its tasks ticked; and a verify stage, which
+    runs the repository's whole checks once and then checks the work as
+    version 2's does. (Proposed 2026-11-06, flume record 0054, on the user's word that day; accepted only on their yes.) **change** at version 2 is a construct stage,
     which delivers the place's change written; a code stage, which
     delivers its tasks ticked and repeats per task group (140); and a
     verify stage, which checks the work
@@ -563,7 +569,7 @@ redefine these.
     the change archived. **change** at version 1 is the same, but its
     code stage does not repeat. A failed submission, and a verify
     finding (131), send a change back to code, which is the kind's fix
-    round. Both versions of change are flume's own side by side: a
+    round. Every version of change is flume's own side by side: a
     repository picks one by its lock (155) and a launch by naming it
     (154). Every other kind, each of sounding's among them, is a
     repository's, a launch's or a package's (19).
@@ -635,7 +641,7 @@ redefine these.
      and a launch's declaration a third, and no source from outside
      takes their names. Within a source a name and a version name one
      kind, and a source may hold several versions of one name side by
-     side, as flume's own holds change@1 and change@2; the repository's
+     side, as flume's own holds change@1, change@2 and change@3; the repository's
      and a launch's declarations hold one version of each name. A launch
      names its kind by its name, by its name and version, or by its
      whole identity. Naming no source, it takes the kind by that name
@@ -684,7 +690,8 @@ redefine these.
      kind's. A package whose name or version is not the identity it is
      held at, or that refers outside itself, refuses the launch naming
      it (4). flume's own kinds are packages too, one per version, so
-     change@1 and change@2 each carry their own construct and verify.
+     change@1, change@2 and change@3 each carry their own construct and
+     verify.
 158. A kind names nothing a host owns, whichever source declares it: no
      environment, account, pool, stream, location on a host or time an
      agent is kept open (32, 144, 198).
@@ -2774,7 +2781,7 @@ gives settings to every stage's agent, and a stage's own `agents` come
 before it (32). A `[kinds.<kind>]` table holding `agents` and no
 stages declares no kind: it gives settings to the kind by that name,
 whichever kind the name resolves to (19), at whichever source and
-version (154, 158), flume's own fix@1, chore@1, change@1, change@2 and plan@1
+version (154, 158), flume's own fix@1, chore@1, change@1, change@2, change@3 and plan@1
 among them, and names one stage's by
 `[kinds.<kind>.agents.stages.<stage>]`; settings for a stage the kind
 does not hold refuse the launch naming the stage (4). A repository's
@@ -2928,6 +2935,7 @@ holds the rest, the place's facts and then its run's:
 |---|---|---|---|---|
 | **fix@1** | `fix/<name>` | yes | yes; `code` | `code`: `commits` |
 | **chore@1** | `chore/<name>` | yes | yes; `code` | `code`: `commits`; fix@1's stage under a prefix of its own, so a branch's name says which it was |
+| **change@3** | `change/<name>` | no | yes; `code` | `construct`: `change`, each task naming the narrowest check that shows it done, a test by name, a package's tests or a lint of the files it touched, and none running the repository's whole checks or a task group's; `code`: `tasks`, not repeating, one agent for the whole change; `verify`: `archived`, its prompt running the repository's whole checks once before it checks the work as change@2's does. The newest, so a launch naming no version in a repository whose lock records none runs it (154, 155). (Proposed 2026-11-06, flume record 0054, on the user's word that day; accepted only on their yes.) |
 | **change@2** | `change/<name>` | no | yes; `code` | `construct`: `change`; `code`: `tasks`, repeating per task group (140); `verify`: `archived`. The verify prompt checks the work against the change and commits its report as `verify.md` in the change's directory. It then archives the change on the place's branch, the report with it, or stops short finding, with what fails, which sends the place back to code (131). The code prompt, sent again with a failed submission's or a finding's words, fixes what they name and records the fix as a task of the change, ticked. The code stage's standing instructions hold what every repetition is told alike; its prompt holds the place's and the change's paths, then its group, the notes' path and its words, which come last (141, 148). The newest of flume's change, taken by a launch that names no version where no lock records one (154) |
 | **plan@1** | `plan/<name>` | no | yes; `code` | `plan`: `plan`, in the agent profile's planning mode, ended by its caller's finish (163); `code`: `commits`, fix@1's code stage with the plan accepted, `{{plan}}`, in its prompt, sent again with a failed submission's words |
 | **change@1** | `change/<name>` | no | yes; `code` | `construct`: `change`; `code`: `tasks`, not repeating, one agent for the whole change; `verify`: `archived`, as change@2's. Kept beside change@2 (22): a repository picks it by recording `flume/change@1` in its lock, a launch by naming `change@1`, and a place launched at it keeps it (21) |
@@ -4644,6 +4652,15 @@ These are not requirements.
   began status says no caller keeps watch and since when, and the
   operator's next drop settles every place first again (46, 119, 122,
   208).
+- **S119.** A change is launched naming no version in a repository
+  whose lock records none, and runs change@3. Its construct writes four
+  task groups, each task naming its own check, such as one test by name
+  or one package's tests, and no task running the repository's whole
+  checks. One agent codes the whole change, running each task's check
+  as it goes, and status gives its stage as `code` with no group count.
+  Its verify stage runs the repository's whole checks once, finds them
+  passing and the specs met, and archives the change (22, 154; flume
+  record 0054, proposed 2026-11-06).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
