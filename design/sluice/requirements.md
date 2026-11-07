@@ -961,7 +961,13 @@ redefine these.
      its remote, by the instance that keeps the branch there (72): on a
      forge, the forge's jobs, as a pool (C.8), take them in and run the
      branch's rounds, one at a time. A branch whose records each host
-     keeps in its own files takes no requests in. A host's submit to a
+     keeps in its own files takes no requests in, and a policy that gives
+     such a branch a pull request table is refused for that branch
+     alone, naming `[signers]` and the forge's workflow that would take
+     its requests in, as a word sluice no longer keeps is (56, S64), so
+     no request is opened where nothing would take it in. (Amended
+     2026-11-07 by agentplot-design, on the question of the change
+     `pull-requests-are-queued-on-the-forge`.) A host's submit to a
      branch that takes requests opens or updates its request and marks
      it ready (C.5), and the instance that keeps the branch takes it in
      as its conditions hold. The host follows the request by what the
