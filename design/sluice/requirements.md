@@ -145,11 +145,7 @@ redefine these.
      act. A session's submit stands for the head it named and for no
      other. An entry withdrawn or removed, blamed or conflicting, is
      submitted again only by a new submit or by the operator, never
-     because its head moved. A withdrawal for a hand-over of intake
-     (137) is none of these and holds no request. Whichever host holds
-     the mark takes the request in again as its conditions hold, at the
-     head it holds, the host that withdrew it included, and nothing marks
-     it a draft for it. A new submit is a session's, or one that
+     because its head moved. A new submit is a session's, or one that
      names as its head the branch the entry came from (124). A request a person opened
      and marked ready is that person's standing offer: it is submitted on
      each head it holds once the branch's conditions hold there, until
@@ -226,7 +222,7 @@ redefine these.
      in the act's order, and from the first that does not, every head
      takes the chain. Where the branch's records are on its remote, the
      instance advancing the branch (58) lands it, and a request's entry
-     only the host that takes the branch's requests in (137), each with
+     only the instance that takes the branch's requests in (137), each with
      the expectation every landing has (24, 124); no signer is asked,
      since no run is read (78). Its outcome is landed, pushed to its
      submitter as any (50, 122), and said as landed beside the queue
@@ -889,9 +885,10 @@ redefine these.
 129. On one host, one process reads a repository's records, policy and
      places for everyone watching its queues: a watch or a wait that
      finds a live reader follows the document the reader last wrote and
-     reads nothing itself, and one that finds none becomes the reader.
-     A reader that stops is replaced by the next watch or wait within a
-     tick, its followers reading what it last wrote until then; a reader
+     reads nothing itself, and one that finds none starts sluice's host
+     process, which reads (135). A host process that stops is started
+     again by the next watch or wait within a tick, its followers
+     reading what it last wrote until then; a reader
      serves its own host alone (26, 80). A read the reader could not
      make ends no watch: the reader writes the failure as its document,
      in the words it was refused with, and reads again at its next tick
@@ -936,84 +933,48 @@ redefine these.
      shows that it cannot follow this sluice, naming the version it has
      and the one it needs, in place of a queue it cannot keep current. A
      session is never a poller of the records.
-135. sluice is a plain command line. Nothing of sluice's need run
-     between its commands for any guarantee here to hold, and no policy,
-     configuration or document of sluice's tells a host to run a
-     daemon: a host with nothing running moves its queues by its waiting
-     submits and waits, as a command does (core.4). A host may run one
-     driver, `sluice run`, by hand, from cron, by a fleet's service or by
-     a plugin's lease, the host's choice and never sluice's ask; where
-     one runs it is the host's reader (129), so one process per
-     repository reads and drives there, a wait or a watch that finds it
-     live follows its document and runs no round, and the host's bound
-     on runs (71) is that one process's to keep. A wait that finds none
-     runs rounds as before. The host's one driver may serve every
-     repository on the host that has sluice, found by an index sluice
-     writes in the host's state whenever a command of sluice's finds a
-     repository has sluice, as 129 reads it, a policy at a revision the
-     host holds or records, and reads at each tick, a repository gone or
-     holding no sluice leaving it and one newly set up driven from the
-     first command of sluice's run in it with no list to keep, a
-     repository whose only work is the forge's requests among them: for each it is that repository's
-     reader as a `sluice run` there would be, a refusal or a slow fetch
-     in one holding no other's round (26), and it passes over a
-     repository whose driver another process is. Nothing of sluice's
-     tells a host to run it, and the host's bound on runs is its alone
-     to keep. (record 0092, proposed 2026-11-06; the index's entry at
-     any command of sluice's on the user's word of 2026-11-06)
-137. A branch's requests are taken in by one host at a time, whichever
-     hosts reach the branch. Where its records are on its remote, the
-     instance that keeps the branch takes them in (72), and no other.
-     Where each host keeps its own records, the host that holds the
-     branch's intake mark takes them in: a ref on the branch's remote
-     naming the host and the copy of the repository there that holds
-     it, the copy by an id kept in its records, so a second copy on the
-     host never reads it as its own and a copy moved to another folder
-     still does (record 0092, proposed 2026-11-06; the copy's id on the
-     user's word of 2026-11-06), and whether its holder is the host's
-     driver or a wait, renewed by a leased push from the value read (45) whenever a
-     third of the deployment's lease has passed since it was last
-     renewed, never at each pass of a driver's loop. A driver pushes
-     the mark when it starts, leased on its absence, so that two
-     drivers on one branch see each other; a wait on a host where no
-     driver lives, finding none, pushes it the same way and takes the
-     requests in; and a step pushes none, taking them in where the mark
-     is its host's or none stands. A branch one host reaches
-     with no driver, by waits and steps alone, keeps no mark between
-     them. A driver takes the mark from a wait at once, read in the
-     fetch of the branch its next round makes; any host takes it once
-     it has stood unchanged for the deployment's lease by the taker's
-     own observation (73), never by the hosts' clocks agreeing; and a
-     host's waits hold it together, the last of them to end letting it
-     go.
-     There, a request's entry is advanced only on the host that takes
-     the branch's requests in: a round on a host that finds the mark
-     another's withdraws its own entries of the branch's requests, none
-     landing (122), naming the host that holds it, which takes each in
-     again as its conditions hold, as the host itself does when the mark
-     comes back to it (120). A wait whose request another host
-     takes in takes nothing in and runs no round for it: it follows the
-     request by what the forge shows of it, open, merged or closed, and
-     sluice's check on its head (C.5), each read as 136 has every read
-     made and no more often than once in a quarter of 136's interval,
-     and reports the outcome they show as it reports an entry's (50).
-     The same reads answer a status, an overview or a wait of the
-     branch on a host that does not take its requests in, for every
-     open request that host submitted or reaches (26, 80): each is shown
-     as the taking host's, naming the host the mark names and whether
-     its holder is that host's driver or a wait, and the request's
-     entry there, taken in or waiting and on what, its state, its
-     number on that host and the entries ahead of it, each a field of
-     the JSON form as well as words, and a withdrawal for the hand-over
-     names the taking host as a field (record 0088). sluice's check on
-     the request's head carries those fields for any host to read
-     (C.5), and the mark's host is read from the mark as the tick's
-     fetch brings it (129); neither is read from the other host's
-     records, and a request whose check names no entry yet is shown as
-     waiting to be taken in by the mark's host.
-     Holding the mark decides nothing but intake: a host's own entries
-     submitted from its own places are its own to advance (C.6 local
-     files).
+135. sluice is a plain command line, and nothing is installed for it to
+     run. A command that needs the host's queues moved, a submit among
+     them, reaches sluice's host process or starts it when none answers:
+     one process on the host for each user that runs sluice there,
+     holding every repository on the host that has sluice, each
+     repository's queues apart, so a refusal or a slow fetch in one
+     holds no other's round (26), and the host's bound on runs in one
+     place (71, 150). Every other command reaches it and returns: a
+     submit adds its entry and returns at once, and a wait or a watch
+     follows it and runs no round (129). It ends once no queue it holds
+     has work in play and nothing follows it. It keeps nothing the
+     records do not hold, so one that stops loses nothing: the next
+     command of sluice's that finds work in play and no host process
+     starts one, which finds its repositories in an index sluice writes
+     in the host's state whenever a command of sluice's finds a
+     repository has sluice, a policy at a revision the host holds or
+     records (129). A run outlives the host process that started it,
+     and is equipped from its repository's policy (147), never from the
+     environment of the command that started the process. A command of
+     a newer sluice has an older host process hand its repositories
+     over and end. No policy, configuration or document of sluice's
+     tells a host to install or keep a service for it. (the user's
+     approval of 2026-11-06, `proposals/host-process-1.md`; proposed
+     until sluice's record)
+137. A branch's requests are taken in only where its records are on
+     its remote, by the instance that keeps the branch there (72): on a
+     forge, the forge's jobs, as a pool (C.8), take them in and run the
+     branch's rounds, one at a time. A branch whose records each host
+     keeps in its own files takes no requests in. A host's submit to a
+     branch that takes requests opens or updates its request and marks
+     it ready (C.5), and the instance that keeps the branch takes it in
+     as its conditions hold. The host follows the request by what the
+     forge shows of it, open, merged or closed, and sluice's check on
+     its head (C.5), each read as 136 has every read made, and reports
+     the outcome they show as it reports an entry's (50). A status, an
+     overview or a wait of the branch on a host shows each request it
+     submitted or reaches with the request's entry there, taken in or
+     waiting and on what, its state, its number and the entries ahead
+     of it, each a field of the JSON form as well as words, read from
+     sluice's check on the request's head (26, 80). (the user's approval
+     of 2026-11-06, `proposals/host-process-1.md`; proposed until
+     sluice's record)
 
 ### A.9 Branches
 
