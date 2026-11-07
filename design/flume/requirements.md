@@ -1165,7 +1165,7 @@ redefine these.
      source, with no host writing a reading for it; how it reads one,
      weighed against 146's rule that it reads no sign-in and fetches
      nothing, and what of the file stays, is flume's design still to
-     make, and until it is made the reading is the file above. (Proposed 2026-11-06, flume record 0055, on the user's word that day; accepted only on their yes.)
+     make, and until it is made the reading is the file above. (flume record 0055, accepted by the user 2026-11-06)
 185. A pool's threshold is a share of a window, ninety percent where
      the pool states none (C.7). An account whose reading gives any of
      its windows used to the threshold or past it is past its
@@ -2084,7 +2084,7 @@ redefine these.
      names a repository by its address, `<owner>/<name>` as its clone's
      `origin` remote gives it on its forge, matched exactly, and a
      repository whose clone has no forge origin by its folder; flume
-     asks no other tool where a repository is (C.7). (Proposed 2026-11-06, flume record 0055, on the user's word that day; accepted only on their yes.) A place's stream is the one its launch names, else the
+     asks no other tool where a repository is (C.7). (flume record 0055, accepted by the user 2026-11-06) A place's stream is the one its launch names, else the
      stream of the intent it serves (147), else the one the host's
      configuration names for its repository and kind, for its
      repository, or for its kind, in that order, else the host's default
@@ -3368,7 +3368,7 @@ lives:
   `stream` in `[repos."<repository>"]`, `[repos."<repository>".kinds.<kind>]`
   and `[kinds.<kind>]`, `<repository>` being the repository's address,
   `<owner>/<name>` as its clone's `origin` gives it, or its folder where
-  its clone has no forge origin (143) (Proposed 2026-11-06, flume record 0055, on the user's word that day; accepted only on their yes.), and a repository's kind and a kind are given a
+  its clone has no forge origin (143) (flume record 0055, accepted by the user 2026-11-06), and a repository's kind and a kind are given a
   label by `label` in the same two kinds' tables (180). The stream
   `default` holds every place nothing
   names a stream for, bounded by the host's bound alone unless a
@@ -3439,7 +3439,7 @@ lives:
   names, which the host writes whole, a new file renamed over the
   old, and flume reads and never writes, until flume reads each
   account's allowance itself, as 184 says, which leaves what of this
-  file stays to that design (Proposed 2026-11-06, flume record 0055, on the user's word that day; accepted only on their yes.):
+  file stays to that design (flume record 0055, accepted by the user 2026-11-06):
 
   ```json
   {
