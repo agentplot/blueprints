@@ -955,8 +955,7 @@ redefine these.
      a newer sluice has an older host process hand its repositories
      over and end. No policy, configuration or document of sluice's
      tells a host to install or keep a service for it. (sluice record
-     0093, proposed 2026-11-06, on the user's approval of that day,
-     `proposals/host-process-1.md`)
+     0093, accepted by the user 2026-11-06, `proposals/host-process-1.md`)
 137. A branch's requests are taken in only where its records are on
      its remote, by the instance that keeps the branch there (72): on a
      forge, the forge's jobs, as a pool (C.8), take them in and run the
@@ -972,8 +971,8 @@ redefine these.
      submitted or reaches with the request's entry there, taken in or
      waiting and on what, its state, its number and the entries ahead
      of it, each a field of the JSON form as well as words, read from
-     sluice's check on the request's head (26, 80). (sluice record 0093, proposed 2026-11-06, on the user's approval of
-     that day, `proposals/host-process-1.md`)
+     sluice's check on the request's head (26, 80). (sluice record 0093, accepted by the user 2026-11-06,
+     `proposals/host-process-1.md`)
 
 ### A.9 Branches
 

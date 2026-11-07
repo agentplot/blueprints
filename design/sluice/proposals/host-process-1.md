@@ -7,9 +7,9 @@ requests is queued on its forge, so no host takes requests in. The user
 approved the design on 2026-11-06 ("Okay I approve this."), as drawn on
 the page `Boomdrive Work Lifecycle`
 (https://claude.ai/artifact/671w5zreD9aMqstSLpMQSm, kept beside this file as `host-process-1.html`). Clauses 135, 137
-and 129 are rewritten in `../requirements.md`, and 120 and 140 follow,
-each marked proposed until sluice's record. That record replaces record
-0092's host driver.
+and 129 are rewritten in `../requirements.md`, and 120 and 140 follow.
+sluice record 0093 holds the design, accepted by the user on
+2026-11-06, and replaces record 0092.s host driver.
 
 ## What it answers
 
