@@ -957,7 +957,7 @@ redefine these.
      over and end. No policy, configuration or document of sluice's
      tells a host to install or keep a service for it, unless a branch's
      policy chooses a daemon to execute its queue (137), which sluice
-     never needs. (Amended 2026-11-08, proposed: sluice record 0093 as amended; accepted only on the user's yes.) (sluice record
+     never needs. (Amended 2026-11-08: sluice record 0093 as amended, accepted by the user that day.) (sluice record
      0093, accepted by the user 2026-11-06, `proposals/host-process-1.md`)
 137. A branch's requests are taken in only where its records are on
      its remote, by the instance that keeps the branch there (72):
@@ -967,7 +967,7 @@ redefine these.
      jobs of a GitHub Action, which takes the requests in, runs the
      branch's checks and lands them, one round at a time. Nothing does
      one part of that while another does the rest, and no request is
-     taken in twice. (Amended 2026-11-08, proposed: sluice record 0093 as amended; accepted only on the user's yes.) A branch whose records each host
+     taken in twice. (Amended 2026-11-08: sluice record 0093 as amended, accepted by the user that day.) A branch whose records each host
      keeps in its own files takes no requests in, and a policy that gives
      such a branch a pull request table is refused for that branch
      alone, naming `[signers]` and the forge's workflow that would take
