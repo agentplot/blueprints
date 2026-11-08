@@ -958,21 +958,14 @@ redefine these.
      tells a host to install or keep a service for it. (sluice record
      0093, accepted by the user 2026-11-06, `proposals/host-process-1.md`)
 137. A branch's requests are taken in only where its records are on
-     its remote, by the instance that keeps the branch there (72): a
-     host's sluice process, which takes them in and runs the branch's
-     rounds while it holds the branch, one round at a time, another
-     host's taking the branch only after the lease (73), so no two hosts
-     and no two copies of one repository take one request in. Nothing of
-     sluice's runs on the forge: no job of the forge's takes a request
-     in, runs a round or runs a check, and no mark on the forge says who
-     takes requests in. A request opened while no host's sluice process
-     holds the branch is taken in at the next round a host runs for it.
-     (Amended 2026-11-08, proposed: sluice record 0093 as amended on the user's diagram; accepted only on their yes.) A branch whose records each host
+     its remote, by the instance that keeps the branch there (72): on a
+     forge, the forge's jobs, as a pool (C.8), take them in and run the
+     branch's rounds, one at a time. A branch whose records each host
      keeps in its own files takes no requests in, and a policy that gives
      such a branch a pull request table is refused for that branch
-     alone, naming `[signers]`, which keeps its records on its remote, as
-     a word sluice no longer keeps is (56, S64), since every copy that
-     kept its own records would take every request in. (Amended
+     alone, naming `[signers]` and the forge's workflow that would take
+     its requests in, as a word sluice no longer keeps is (56, S64), so
+     no request is opened where nothing would take it in. (Amended
      2026-11-07 by agentplot-design, on the question of the change
      `pull-requests-are-queued-on-the-forge`.) A host's submit to a
      branch that takes requests opens or updates its request and marks
@@ -1378,14 +1371,25 @@ ssh = "exec@build-1 ssh-ed25519 AAAAC3Nza..."
 confined = true            # container places; no session reaches its engine
 systems = ["linux-x64"]
 
+[signers.forge]
+github = { workflow = ".github/workflows/sluice.yml", ref = "refs/heads/main" }
+confined = true            # a fresh machine per job
+systems = ["linux-x64", "linux-arm64", "macos-arm64"]
+
 [signers.sessions]
 ssh = ".config/sluice.sessions"   # one line per session host's key
 confined = false
 
+# Pools the lead may start runs on, in order, after the standing executors (107).
+[pools.forge]
+github = { workflow = ".github/workflows/sluice.yml" }
+signer = "forge"
+runners = { linux-x64 = "ubuntu-24.04", linux-arm64 = "ubuntu-24.04-arm", macos-arm64 = "macos-15" }
+
 [branches."bolt/*"]
 remote = "origin"
 required = ["#check-fast"]
-trust = ["sessions", "box"]   # no systems named: any one system (86)
+trust = ["sessions", "box", "forge"]   # no systems named: any one system (86)
 
 [branches.main]
 remote = "origin"
@@ -1425,13 +1429,13 @@ change to Parts A and B.
 | | peers |
 |---|---|
 | profiles | container places on any host; pushed refs; remote submit; remote refs records; launched executors on any pool the policy lists |
-| who advances a branch | whichever instance holds the branch (72), a host's sluice process; another takes it after a lease (73); nothing on the forge runs a round (137) |
+| who advances a branch | whichever instance holds the branch (72); another takes it after a lease (73); a pool's job may run a round, started by a wake, a finished run or a schedule, one per branch at a time |
 | where runs go | a standing executor with room, by a claim (75, 76); a pool only for the runs no standing executor can take (107) |
 | a host stops | its lead and claims pass to others (72, 77); a lost job is a lapsed claim |
-| who takes in requests | the instance that keeps the branch, a host's sluice process (72, 137) |
+| who takes in requests | the instance that keeps the branch (72, 137) |
 | confinement | by signers (78, 79): a signer the policy lets claim it, on hosts that run no sessions or a pool's fresh machines |
 | who holds the branch's credential | an identity no session can use: an app installed on the repository, held by the standing executors' sluice user and by the pool's jobs |
-| what is new to run | nothing: a host's sluice starts its own host process (135), and the repository carries no workflow of sluice's, since nothing of sluice's runs on the forge (137) |
+| what is new to run | nothing on a host, whose sluice starts its own host process (135); for a forge, one workflow the repository carries, written by `sluice init`, whose jobs take the branch's requests in (137) |
 
 The task runner's cache makes runs cheaper and decides nothing (108).
 
@@ -1555,9 +1559,9 @@ section asked is answered by a clause.
   it; a bolt's branch that trusts the sessions' signer reads the run as
   it says, unconfined.
 - **S19.** A session submits to the shared branch and its host stops.
-  A standing executor's instance takes the branch, the check on the one
-  system no standing executor is waits until a host of that system is
-  live (87), and the submission lands once it has passed. (Amended 2026-11-08, proposed: sluice record 0093 as amended on the user's diagram; accepted only on their yes.) Its session learns the outcome when its host returns.
+  A standing executor's instance takes the branch, the forge's pool runs
+  the check on the one system no standing executor is, and the
+  submission lands. Its session learns the outcome when its host returns.
 - **S20.** A host stops mid-run and returns after its claim lapsed and
   the checks were run elsewhere. It releases the places it left before it
   claims again, and writes no outcome for the lapsed run.
@@ -1575,14 +1579,13 @@ section asked is answered by a clause.
 - **S39.** A planner asks to remove `bolt/x` into `main`, but `bolt/x`'s
   revision was never landed on `main`. The removal is refused, saying so.
 - **S40.** A pull request's head passes `cli:build` on three systems on
-  the hosts' standing executors before it is ready. It is submitted with one entry
+  the forge's pool before it is ready. It is submitted with one entry
   ahead that changes no input of `cli:build`. The candidate reads the
   three passes by key (113) and runs only the checks the entry ahead
   changes.
 - **S41.** A run needs `linux-x64` and the box has room: the box claims
-  it. The box is full: the run waits for room on the box or on a peer
-  of that system (75), since nothing of sluice's runs on the forge
-  (137). (Amended 2026-11-08, proposed: sluice record 0093 as amended on the user's diagram; accepted only on their yes.)
+  it and no job starts. The box is full: the lead starts the run on the
+  forge's pool (107).
 - **S42.** The task runner replays a check from its cache, and no signer
   the gate trusts has signed a pass for that key on that system. The
   replay counts for nothing and the check runs (108).
@@ -1706,19 +1709,18 @@ section asked is answered by a clause.
   is passed over and nothing is run for it (56, 84; the user,
   2026-10-30, on batch 48).
 - **S65.** Ten repositories on one host share sluice's app on the
-  forge, each with a main that takes requests, which the host's sluice
-  process takes in while it holds each main (137); sessions on this
-  host and another wait on their requests. With nothing moving, the
-  host process asks for each main's open requests at the deployment's
-  interval and the forge answers each unchanged, at no cost to the
-  allowance. A reviewer approves one request: the next asking finds it
-  moved, that request alone is read again, and it is taken. The forge
-  says the allowance is spent: no process on the host calls it until
-  the time it named, a waiting submit says until when and waits, and
-  the host process goes on landing what has passed. A wait on the
-  other host takes nothing in, since this host holds the branch,
-  follows its request by sluice's check on its head, and reports its
-  landing when the branch holds it (134, 136, 137). (Amended 2026-11-08, proposed: sluice record 0093 as amended on the user's diagram; accepted only on their yes.)
+  forge, each with a main that takes requests, which the forge's jobs
+  take in (137); sessions on this host and another wait on their
+  requests. With nothing moving, each main's job asks for its open requests
+  once a minute and the forge answers each unchanged, at no cost to
+  the allowance. A reviewer approves one request: the next asking
+  finds it moved, that request alone is read again, and it is taken.
+  The forge says the allowance is spent: no process on the host calls
+  it until the time it named, a waiting submit says until when and
+  waits, and the forge's rounds go on landing what has passed. A wait
+  on either host takes nothing in, follows its request by sluice's
+  check on its head, and reports its landing when the forge shows it
+  merged (134, 136, 137).
 
 - **S66.** A session runs its branch's checks on its host with the
   sandbox executor, whose grant lets no command open a pseudo-terminal;
