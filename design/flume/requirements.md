@@ -464,20 +464,23 @@ redefine these.
    submission waits on its word, the place's priority (70), the stream
    it runs in (143), the intent it serves with the intent's brief (147),
    the goals (149), the work's points (165), the
-   recipients of its ends (43), and a mark. A launch that names no
+   recipients of its ends (43), its caller, and a mark. A launch that names no
    recipient has the session that launched it, as the terminal it runs
    in names it (190), else the answerer behind the place's stream
    (193). A recipient a launch names is a session's name, or a role's
-   address written whole (132). flume keeps the mark with the place and
-   reports it, and decides nothing by it.
+   address written whole (132). A caller a launch names is a name of
+   the launching caller's own, for which the end of the place's work
+   waits until it collects it (43). It is no owner: it acts on the
+   place as any caller does (69). flume keeps the mark with the place
+   and reports it, and decides nothing by it.
 8. A place's kind, brief, base, stream, intent with its brief and goals,
    points, and the settings its launch carries, are fixed by its launch, and
    nothing after the launch changes them; the host's configuration of
    its agents' settings is read at each start (32), and the account each
    agent runs under is chosen at its start (145). The launch names the stages and the submission on hold, and a caller adds to a place after
    it only the words of a retry (49), a hold with its words (130) and
-   a change of priority (70). Its recipients are fixed at its launch;
-   the answerer behind its stream, as the sources declare it when a
+   a change of priority (70). Its recipients and its caller are fixed
+   at its launch. The answerer behind its stream, as the sources declare it when a
    stall is read, is delivered its stalls besides (130, 193).
 
 ### A.2 Places
@@ -1587,7 +1590,14 @@ redefine these.
     recipient it answers as a read, delivering nothing again. A caller
     that starts collects every end pending for it, of the places it
     launched or is recipient of, by `flume inbox`, which delivers each
-    and marks it delivered. With them it gives every place that waits on
+    and marks it delivered. The end of a place's work, its landing or
+    its caller's drop or done (52, 114), is also the end of the caller
+    its launch named (7). It stays pending for that caller until the
+    caller collects it, by `flume inbox` or a wait as itself, so the
+    place's document stays for the caller to read (62). No notice
+    delivers it to the caller, and it wakes no role. A drop or a done is
+    an end for that caller alone. An inbox that names a place collects
+    that place's ends alone. With them it gives every place that waits on
     its caller for which the caller is a recipient, the role its
     stop-short named, or the answerer its stall went to, delivered or
     not. For each it gives the move and since when, the words, key and
@@ -1915,7 +1925,8 @@ redefine these.
     session, with its question (42), or of a failed
     submission; each end's key; for a stop-short, the role's address it
     named and each answer it took, with who gave it and when (42); the
-    place's recipients, each with where it came from; of a place
+    place's recipients, each with where it came from, and its caller
+    (7); of a place
     waiting on its caller, the move it waits on, since when, a hold's
     words, a hold on the waiting move with its bound or that it lapsed,
     and whether it is stalled (130); the place's points, and
@@ -2017,7 +2028,8 @@ redefine these.
     surface, and that form only ever gains fields.
 62. flume keeps only the live state of the places on its host. Once a
     place is tidied flume keeps nothing of it but, while an end of it
-    stands pending for a recipient, the place's document, with no
+    stands pending for a recipient or for the caller its launch named
+    (43), the place's document, with no
     worktree and no branch, which goes once every end is delivered or
     its caller drops it; whatever else outlives a place is its caller's
     to keep, from what flume reported.
@@ -3768,7 +3780,7 @@ The rest of the stack, which a model builds on unless it says why not:
   | headwater | its fix key, as a fix with the release's brief | nothing |
   | sounding | each round of an elaboration, as a place of the elaboration kind it hands in the launch, a conversation's agent beside the operator's pane | the inputs, the soundings each was based on, the rounds, the operator's notes and decisions, and the record, with each round's conclusion copied from its report; its go-on is a retry with the operator's notes as words, its accept a done or a retry that releases a held submission, and its drop a drop |
   | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each bolt as a base place of a kind crew declares with no stages, on the branch the bolt lands on, its units' places on its branch (202); the bolt submitted by crew's retry once the user sends it and its units are over (203); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief; a fix of a base whose own checks failed after a landing, as a fix launched on that base with the failure's words as its brief, the merge queue's where it blamed and the check's own otherwise, its submission on hold where the base's landings wait on the user's word outside the merge queue's policy (7, 47) and free where the policy asks the word itself or none, with no bolt's branch between and no other place moved (record 0023) | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, naming its key (42), with the user's own words where its role put the question to the user on a card its own code raised, or a retry or drop of a place past its kind's bound; it is a source of the host's that declares its roles once, each of a partition's roles at its address in the partition's stream, running crew's one kind for it or held by its standing agent until it moves, and names each place's recipient by the address of the role the work is for, so a role with no live run is woken to collect an end, and each partition's operator stands behind its stream (132, 193); each end is delivered to it (43), and it reads the rest from status; a role's own work that lands is a place of its own, so no session of crew's submits; it decides no step between a unit's stages, and runs no agent of its own in the place (records 0010 and 0011) |
-  | the runner | each launch its control plane asks, passed as given, a bolt's base place and its units' places among them; a retry of a base place's submission its control plane asks (203) | the watch over its host: each pass, keeping or control, runs `flume settle --every <bound>` once and awaits it (208); nothing else of a place's, and no queue of its own: sluice's rounds are moved by those settles' steps or the host's `sluice run` |
+  | the runner | each launch its control plane asks, passed as given, a bolt's base place and its units' places among them, each naming the runner its caller (7). A retry of a base place's submission its control plane asks (203) | the watch over its host: each pass, keeping or control, runs `flume settle --every <bound>` once and awaits it (208); each place's status, carried to its control plane, a tidied place's from the document kept for its end, which the runner collects by `flume inbox` naming the place once its report holds it (43, 62); nothing else of a place's, and no queue of its own: sluice's rounds are moved by those settles' steps or the host's `sluice run` |
 
 <!-- ANCHOR_END: givens -->
 <!-- ANCHOR: questions -->
@@ -4719,6 +4731,18 @@ These are not requirements.
   each move conflicting, its kind's bound of two fixes would have been
   spent. The base place would then have waited on its caller, said and
   delivered (23, 43, 130, 203, 210). (Flume record 0056's amendment of 2026-11-07.)
+- **S121.** The runner launches a fix naming the planner's address its
+  recipient and itself its caller. The fix lands, and the watch's
+  settle that reads the landing tidies it at once: its worktree and
+  branch go, and the landing is delivered into the planner's run.
+  The place's document stays, pending for the runner alone. The
+  runner's next pass reads it from status, landed with its commit,
+  carries it to its control plane and saves its report, and only then
+  runs `flume inbox` naming the place as itself. The settle after that
+  removes the document. A person who drops another of the runner's
+  places by hand leaves its document likewise, its drop pending for the
+  runner. No notice of the drop reaches the planner (7, 43, 52, 62;
+  record 0060, proposed 2026-11-08).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
