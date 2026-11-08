@@ -580,9 +580,7 @@ redefine these.
     starts in a place that could not be made ready, and whether it
     lands. One that lands names the stage a failed submission sends a
     place back to, and how many times a place may go back before it
-    waits on its caller. One that lands with no stages may name the
-    kind its fixes run as, by its name or its identity, and how many
-    fixes it runs before its place waits on its caller (203). It may
+    waits on its caller. One that lands with no stages may name its landing fix, the kind its fixes run as when the merge queue sends its branch back, by that kind's identity with its version, and how many it runs before its place waits on its caller (203; weir record 0005, the user's, 2026-11-07). It may
     hold settings for the agent of every one of its stages. A stage's declaration holds its name, its prompt, and
     its deliverable or that it is a conversation, and may hold its
     standing instructions (148), its agent's settings, what it makes
@@ -748,7 +746,14 @@ redefine these.
      against the place, and joins them by all, any or a count. It names
      its deliverables, each one of the forms of 24, and sends the place
      back to a stage it names up to a bound, past which the place waits
-     on its caller (112). A session is one agent's life, from its start
+     on its caller (112). A statechart kind that lands may name its landing fix and how
+     many it runs (weir 94): when the merge queue sends its place's
+     branch back, a conflict with its base or a check of the base
+     failing on it, the fix runs as a place of that kind, as a base
+     place's does (203), and the statechart never runs again for it;
+     how that fix lands beside the statechart's own place is designed
+     when flume runs statechart kinds (177). (Weir record 0005, the
+     user's, 2026-11-07.) A session is one agent's life, from its start
      through working, waiting and asking to its end or its loss, and the
      place is the worktree its sessions work in (9). A statechart kind
      composes the templates and the atoms by their names, so a kind

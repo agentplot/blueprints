@@ -420,9 +420,7 @@ redefine these.
     in a place that could not be made ready, and whether it lands. A
     kind that lands with stages names the stage a failed submission
     sends a place back to, and how many times a place may go back before
-    it waits on its caller. A kind that lands with no stages may name
-    the kind its fixes run as, by a name its reader resolves, and how
-    many fixes it runs before its place waits on its caller. (Added 2026-11-07 for flume record 0056's amendment.) It may hold settings for every stage's
+    it waits on its caller. A kind that lands with no stages may name its landing fix, the kind a place runs when the merge queue sends its branch back, by that kind's identity with its version, and how many landing fixes it runs before its place waits on its caller. (weir record 0005, the user's, 2026-11-07.) It may hold settings for every stage's
     agents, which a stage's own settings come before.
 53. The declaration of a simple kind's stage holds its name, its prompt,
     and its deliverable or that it is a conversation. It may hold its
@@ -452,9 +450,7 @@ redefine these.
     field. A statechart kind is checked as 95 says. A version left out
     reads as the first. A kind that lands with no stages declares them
     as none, `stages = []`, and names no stage a failed submission sends
-    a place back to. A kind with stages that names the kind its fixes
-    run as, or how many fixes it runs, is refused naming the field.
-    (Added 2026-11-07 for flume record 0056's amendment.) A kind's table that holds settings for its agents
+    a place back to. A kind with stages that names a landing fix, or how many it runs, is refused naming the field, and so is a landing fix named by anything but an identity with its version. (weir record 0005, the user's, 2026-11-07.) A kind's table that holds settings for its agents
     and leaves its stages out declares no kind: it is read as settings
     given to a kind of that name declared elsewhere, for every stage or
     for stages it names, and is never refused as a kind with no stage.
@@ -471,12 +467,11 @@ redefine these.
 89. A package holds the declaration of exactly one kind and every part
     that declaration names, its prompts and standing instructions, and
     nothing it names lies outside the package: no part outside it, and
-    no other kind but the kind a kind with no stages names for its
-    fixes, a name its reader resolves and no part of the package, so no
+    no other kind but the landing fix a kind names, an identity and no part of the package, so no
     stage extends, includes or hands over to another kind's. A package that declares no kind or more than one, or
     names a part outside itself, is refused naming the field. A package held under an identity whose
     name or version is not its declaration's is refused naming both.
-    (The kind named for a kind's fixes added 2026-11-07 for flume record 0056's amendment.)
+    (The landing fix by weir record 0005, the user's, 2026-11-07.)
 90. A package's content hash is the family's content hash over every
     part of the package, each with where it lies within the package, so
     the same package hashes the same on every machine, wherever the
@@ -507,9 +502,7 @@ redefine these.
     and always. An effect is an atom with its arguments. A state that
     runs the stage template gives the stage's parameters. Its agents are
     a list of entries each with its settings, or a rule its reader
-    resolves against the place, and its join is all, any or a count. It
-    names the stage a send-back returns to, and how many times before
-    the work waits on its caller. Its deliverables are each one of the
+    resolves against the place, and its join is all, any or a count. It names the stage a send-back returns to, and how many times before the work waits on its caller. A statechart kind that lands may name its landing fix and how many it runs, as a simple kind with no stages may (52): when the merge queue sends its branch back, its conflict with its base or a check of the base failing on it, the fix runs as a place of that kind, and the statechart itself never runs again for it. Its own states, a verify and what follows it among them, keep their own transitions, which the landing fix touches nothing of. (weir record 0005, the user's, 2026-11-07.) Its deliverables are each one of the
     seven (54). A kind's table says its format by what it holds: stages for a
     simple kind, regions for a statechart kind.
 95. A statechart kind is checked whole: a table that holds both stages
@@ -863,8 +856,8 @@ model = "opus"
 branch = "train"
 lands = true
 stages = []               # none, declared so; a table that leaves stages out gives settings (57)
-fix = "fix"               # the kind its fixes run as, a name its reader resolves; refused on a kind with stages (52, 57, 89)
-max_fixes = 2             # how many fixes before its place waits on its caller; refused on a kind with stages (52, 57)
+landing_fix = "flume/fix@1"   # the kind run when the merge queue sends the branch back, an identity with its version; refused on a simple kind with stages (52, 57, 89, 94)
+max_landing_fixes = 2         # how many landing fixes before its place waits on its caller; refused on a simple kind with stages (52, 57, 94)
 
 [kinds.fix.agents.stages.code]   # settings for one of its stages
 instructions = "Keep each commit to one fix."
@@ -916,11 +909,8 @@ as read; a reader keeps the sections it knows. A table or field the
 format does not name is a section the reader ignores (56). The format
 refuses two stages of one kind sharing a name, and an `on_fail` naming
 no stage of its kind, naming the field (57). The format gives no default
-for `quiet`, `on_fail`, `max_send_backs`, `fix`, `max_fixes` or an
-elaboration's `ending`: a field left out is returned left out, and what
-it means is the reader's rule (58), since readers differ. `fix` is
-returned as written, a name and no part of the package, which the
-reader resolves (89). (`fix` and `max_fixes` added 2026-11-07 for flume record 0056's amendment.)
+for `quiet`, `on_fail`, `max_send_backs`, `landing_fix`, `max_landing_fixes` or an elaboration's `ending`: a field left out is returned left out, and what
+it means is the reader's rule (58), since readers differ. `landing_fix` is returned as written, an identity and no part of the package, which the reader resolves (89), and one that is no identity with its version is refused naming the field (57). (`landing_fix` and `max_landing_fixes` by weir record 0005, the user's, 2026-11-07.)
 `repeat` takes the one value `per-task-group`, and the format refuses
 any other, or the field on a stage whose deliverable is not `tasks`,
 naming the field (57); how a reader works a repetition is its own rule
