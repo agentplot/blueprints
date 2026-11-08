@@ -955,17 +955,20 @@ redefine these.
      environment of the command that started the process. A command of
      a newer sluice has an older host process hand its repositories
      over and end. No policy, configuration or document of sluice's
-     tells a host to install or keep a service for it, unless a branch's
-     policy chooses a daemon to execute its queue (137), which sluice
+     tells a host to install or keep a service for it, unless the host's
+     operator chooses to keep `sluice daemon` running (137), which sluice
      never needs. (Amended 2026-11-08: sluice record 0093 as amended, accepted by the user that day.) (sluice record
      0093, accepted by the user 2026-11-06, `proposals/host-process-1.md`)
 137. A branch's requests are taken in only where its records are on
      its remote, by the instance that keeps the branch there (72):
-     whatever executes the branch's queue, in the one of four ways its
-     policy names, the submitting machine's own sluice process with no
-     daemon (135), a sluice daemon on that machine or on another, or the
-     jobs of a GitHub Action, which takes the requests in, runs the
-     branch's checks and lands them, one round at a time. Nothing does
+     whatever executes the branch's queue, in one of four ways the
+     machines choose and no policy names: the submitting machine's own
+     sluice process with no daemon (135), a sluice daemon a machine keeps
+     running, on that machine or on another, or the jobs of a GitHub
+     Action, which takes the requests in, runs the branch's checks and
+     lands them, one round at a time, and only an executor whose
+     signature the branch accepts (78), so a machine whose results do
+     not count leaves the queue to one whose results do. Nothing does
      one part of that while another does the rest, and no request is
      taken in twice. (Amended 2026-11-08: sluice record 0093 as amended, accepted by the user that day.) A branch whose records each host
      keeps in its own files takes no requests in, and a policy that gives
@@ -1442,7 +1445,7 @@ change to Parts A and B.
 | who takes in requests | whatever executes the branch's queue, one of four ways (137) |
 | confinement | by signers (78, 79): a signer the policy lets claim it, on hosts that run no sessions or a pool's fresh machines |
 | who holds the branch's credential | an identity no session can use: an app installed on the repository, held by the standing executors' sluice user and by the pool's jobs |
-| what is new to run | with no daemon, nothing: a host's sluice starts its own host process (135); for a daemon way, sluice's daemon on the machine the policy names; for a GitHub Action, one workflow the repository carries, written by `sluice init`, whose jobs take the branch's requests in, run its checks and land them (137) |
+| what is new to run | with no daemon, nothing: a host's sluice starts its own host process (135); for a daemon way, `sluice daemon` kept running on the machine that chose it; for a GitHub Action, one workflow the repository carries, written by `sluice init`, whose jobs take the branch's requests in, run its checks and land them (137) |
 
 The task runner's cache makes runs cheaper and decides nothing (108).
 
