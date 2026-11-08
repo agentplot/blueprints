@@ -310,10 +310,17 @@ redefine these.
      it, and the host keeps its waiting runs beside the count, where
      every instance reads them: a session's or a preview's while the
      command that asked for it waits, a candidate's while rounds of its
-     branch ask for it, each only within half a minute of its last ask.
+     branch ask for it, each only within half a minute of its last ask;
+     and a preview asked for with no wait, which sluice's host process
+     holds (135) until it starts or is released, so a caller that keeps
+     no process of its own standing keeps its place in the order.
      The part of the bound the host's keeper keeps for candidates' runs
      is never a session's or a preview's, and where the keeper keeps
-     none they may hold all of it (record 0087, proposed 2026-11-06).
+     none they may hold all of it (record 0087, accepted 2026-11-06; the
+     preview asked for with no wait, agentplot-design, 2026-11-08: a
+     caller that asks a while each minute lost its place between asks,
+     and holding every waiting preview's place longer would leave a
+     crashed caller's ask holding off every run behind it).
 14. A branch's policy says whether every candidate of a chain is tested or
     the deepest first. Under deepest first, a failure is attributed only
     after the candidates that were skipped have verdicts.
