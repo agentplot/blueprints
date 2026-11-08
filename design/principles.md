@@ -76,3 +76,14 @@ right." Each repository's CLAUDE.md points here.
     sure that once the Boom driver flume sluice workflow is automatic,
     the instructions for the agents are updated in lockstep". Accepted
     only on their yes.)
+
+12. **No code carries a transition.** Each change builds the design as
+    it should stand. Where hosts or records must move from one shape to
+    the next, an agent moves the data by hand, in a step the change
+    names, and no fallback, guard or bridging unit is written for the
+    move. A stopgap the user chooses is named in its record with the
+    change that retires it. (Proposed 2026-11-08, from the user's words
+    that day in agentplot-design's pane, on a unit that read a kit's
+    folder only to carry a stopgap: "I want the system to be built the
+    way it should be and then have agents fucking fix the data
+    transition as necessary". Accepted only on their yes.)
