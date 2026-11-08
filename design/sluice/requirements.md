@@ -955,12 +955,19 @@ redefine these.
      environment of the command that started the process. A command of
      a newer sluice has an older host process hand its repositories
      over and end. No policy, configuration or document of sluice's
-     tells a host to install or keep a service for it. (sluice record
+     tells a host to install or keep a service for it, unless a branch's
+     policy chooses a daemon to execute its queue (137), which sluice
+     never needs. (Amended 2026-11-08, proposed: sluice record 0093 as amended; accepted only on the user's yes.) (sluice record
      0093, accepted by the user 2026-11-06, `proposals/host-process-1.md`)
 137. A branch's requests are taken in only where its records are on
-     its remote, by the instance that keeps the branch there (72): on a
-     forge, the forge's jobs, as a pool (C.8), take them in and run the
-     branch's rounds, one at a time. A branch whose records each host
+     its remote, by the instance that keeps the branch there (72):
+     whatever executes the branch's queue, in the one of four ways its
+     policy names, the submitting machine's own sluice process with no
+     daemon (135), a sluice daemon on that machine or on another, or the
+     jobs of a GitHub Action, which takes the requests in, runs the
+     branch's checks and lands them, one round at a time. Nothing does
+     one part of that while another does the rest, and no request is
+     taken in twice. (Amended 2026-11-08, proposed: sluice record 0093 as amended; accepted only on the user's yes.) A branch whose records each host
      keeps in its own files takes no requests in, and a policy that gives
      such a branch a pull request table is refused for that branch
      alone, naming `[signers]` and the forge's workflow that would take
@@ -1432,10 +1439,10 @@ change to Parts A and B.
 | who advances a branch | whichever instance holds the branch (72); another takes it after a lease (73); a pool's job may run a round, started by a wake, a finished run or a schedule, one per branch at a time |
 | where runs go | a standing executor with room, by a claim (75, 76); a pool only for the runs no standing executor can take (107) |
 | a host stops | its lead and claims pass to others (72, 77); a lost job is a lapsed claim |
-| who takes in requests | the instance that keeps the branch (72, 137) |
+| who takes in requests | whatever executes the branch's queue, one of four ways (137) |
 | confinement | by signers (78, 79): a signer the policy lets claim it, on hosts that run no sessions or a pool's fresh machines |
 | who holds the branch's credential | an identity no session can use: an app installed on the repository, held by the standing executors' sluice user and by the pool's jobs |
-| what is new to run | nothing on a host, whose sluice starts its own host process (135); for a forge, one workflow the repository carries, written by `sluice init`, whose jobs take the branch's requests in (137) |
+| what is new to run | with no daemon, nothing: a host's sluice starts its own host process (135); for a daemon way, sluice's daemon on the machine the policy names; for a GitHub Action, one workflow the repository carries, written by `sluice init`, whose jobs take the branch's requests in, run its checks and land them (137) |
 
 The task runner's cache makes runs cheaper and decides nothing (108).
 
