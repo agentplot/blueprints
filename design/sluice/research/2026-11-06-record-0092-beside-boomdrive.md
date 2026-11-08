@@ -68,5 +68,10 @@ Asked on the question tool, 2026-11-06:
   records (135).
 - **The person's own checkouts beside the runner's one clone.** The
   user chose "Worktrees of the one clone": on a runner host the person
-  works in worktrees of the runner's clone, as swancloud record 0057
-  (accepted 2026-11-06) carries out, so sluice sees one repository.
+  works in worktrees of the runner's clone, so sluice sees one
+  repository. swancloud's views change was to carry it out; it is held,
+  and swancloud record 0059 (proposed 2026-11-07, decision 6) keeps
+  deneb's checkouts and their sluice drivers until the Boomdrive flake
+  is ready. (Amended 2026-11-08 by agentplot-design: this line had
+  named swancloud record 0057, which on swancloud's main names the
+  contexts and moves no checkout.)
