@@ -4790,7 +4790,7 @@ These are not requirements.
   The settle after that removes the document. A person who drops another of the runner's places by hand
   leaves its document likewise, its drop pending for the runner. No
   notice of the drop is sent, and no run of the planner is woken for it
-  (7, 43, 52, 62, 132; record 0060, accepted 2026-11-08).
+  (7, 43, 52, 62, 132; record 0060, proposed 2026-11-08).
 - **S122.** A unit's construct stops short naming the planner's
   address, and the settle that reads it wakes a planner run. The run's
   start runs `flume inbox` and is handed the stop-short, and the run is
