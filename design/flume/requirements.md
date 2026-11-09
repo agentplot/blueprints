@@ -307,12 +307,18 @@ redefine these.
   stand behind the places that run there (193). It is the recipient of
   a launch that names none and runs in no session, and a recipient of
   every stall of a place that is not its own.
-- **delivered**: of an end, that it reached its recipient, recorded on
-  the place with to whom and when; **pending** until then (43).
+- **delivered**: of an end and one of its recipients, that the
+  recipient confirmed it, naming its key, as weir's delivery is done
+  for a reader (weir 102, 107); **pending** for that recipient until
+  then, and **expired** once pending past its expiry (43; weir 104).
+- **handed over**: of an end, put before a recipient by a notice, a
+  wait, the inbox or a session's start, recorded with to whom, when
+  and by what; it delivers nothing by itself (43; weir 103).
 - **collect**: a recipient's taking of every end pending for it, by
-  `flume inbox`, which delivers each (43).
-- **notice**: what a delivery carries into a pane: the end and the place
-  to read, never a fact to act on blindly.
+  `flume inbox`, which hands each over, and delivers each where its
+  recipient confirms on receipt (43).
+- **notice**: what a hand-over carries into a pane: the end, the place
+  to read and how to confirm it, never a fact to act on blindly.
 - **key**: of an end, the name flume gives it, which no other end of
   the place has, by which a recipient and an answer name it (42, 43).
 - **refused**: of a stage, that a part its prompt asks for had nothing
@@ -1561,33 +1567,50 @@ redefine these.
     for a prompt never begun, what the terminal shows of the agent, and,
     for a conversation lost, whether flume left in its pane an agent the
     terminal brought back (77). A notice of an end is sent into a recipient's
-    pane only while it asks no question (37), and otherwise stays
-    pending; it counts delivered on the terminal's answer, with no
-    reading back. A notice names the place, the first line of its brief,
-    the end and its key, and where to read the end whole.
+    pane only while it asks no question (37), and otherwise is not sent;
+    it is a hand-over, recorded on the terminal's answer with no reading
+    back, and the end stays pending for that recipient until it
+    confirms it. A notice names the place, the first line of its brief,
+    the end and its key, where to read the end whole, and the
+    delivery's key by which to confirm it.
     A place's recipient learns a stage's end together with what was
     delivered, the head or the report, and the addresses of what it
     made (129), or with the agent's words, and a submission's outcome
     together with the commit it landed as, or with the merge queue's
     words. No caller needs to read a terminal to learn how a stage or a
-    submission ended. The end is delivered: the settle that reads it
-    (46) puts it before each recipient of the place once, as a notice
-    through the terminal into the recipient's own pane (95), and records
-    on the place that it was delivered, to whom and when. A recipient
-    named by a role's address is delivered to in the pane of that role's
+    submission ended. Each end is one of weir's deliveries, owed to each
+    of its recipients until that recipient confirms it (weir 100 to
+    107): the settle that reads it (46) records it once, under its key,
+    each of its recipients its readers and its notice its message, and
+    hands it to each recipient once, as a notice through the terminal
+    into the recipient's own pane (95), where it was handed to that
+    recipient by nothing before. A recipient
+    named by a role's address is handed it in the pane of that role's
     live run, or of the standing agent its source declares for it (193).
     Where neither is there, the end stays pending, and wakes the
-    role where the address has a kind (132). Where the terminal has no
+    role where the address has a kind and the end was never handed to
+    it (132). Where the terminal has no
     pane to deliver to, the end is read from status (56). A wait is by place, naming its stage or its
     submission: it answers at once with an end pending for this
-    recipient, and otherwise follows the host's state under a timeout,
+    recipient, handing it over, and otherwise follows the host's state under a timeout,
     exiting by the outcome or still waiting, driving no settle where a
     caller keeps watch (119, 208); so a caller whose session restarted
-    waits again and loses nothing; an end already delivered to this
-    recipient it answers as a read, delivering nothing again. A caller
+    waits again and loses nothing; an end this recipient has confirmed
+    it answers as a read, handing nothing over. A caller
     that starts collects every end pending for it, of the places it
-    launched or is recipient of, by `flume inbox`, which delivers each
-    and marks it delivered. A recipient no pane holds is sent no
+    launched or is recipient of, by `flume inbox`, which hands each
+    over, and gives it again at every inbox until the recipient
+    confirms it. A recipient confirms an end by `flume confirm`, naming
+    the delivery's key, or in the wait or the inbox that hands it over,
+    saying there that it confirms on receipt (weir 102, 103); flume
+    takes a recipient's confirmation from the caller that names it, as
+    it takes its inbox, and never confirms for one itself. An end still
+    pending once the span the host's configuration sets has passed
+    since it was read, a week where it sets none, is expired for that
+    recipient: it stays pending, and status, the inbox and a wait show
+    it expired, with its recipient, until it confirms it (weir 104). A
+    recipient's name under which nothing was ever confirmed is shown as
+    such wherever its ends are (weir 106). A recipient no pane holds is sent no
     notice: its ends stay pending until it collects them, by `flume
     inbox` or a wait as itself, so a tidied place's document stays for
     it to read (62). A caller that reads a place's ends from flume names
@@ -1603,7 +1626,8 @@ redefine these.
     not. For each it gives the move and since when, the words, key and
     addressee of a stop-short it waits on, and a hold's words. So a
     caller that restarted sees each question still its own. That list,
-    status and a read mark nothing.
+    status and a read confirm nothing, and neither does a hand-over,
+    a timeout or an expiry (weir I9).
 44. A stage whose agent has been quiet past the stage's limit, with
     nothing delivered and nothing said, is reported stuck, naming the
     stage and the agent. The limit is 30 minutes where the stage's
@@ -1923,7 +1947,10 @@ redefine these.
     until when, or when and why it was let go and whether it is ended
     (198), and each answer the stage's current start took in its
     session, with its question (42), or of a failed
-    submission; each end's key; for a stop-short, the role's address it
+    submission; each end's key, with its delivery's key, its expiry
+    and, for each of its recipients, each hand-over of it, whether it is
+    pending, expired or delivered and when, and whether the
+    recipient's name is known (43; weir 104 to 106); for a stop-short, the role's address it
     named and each answer it took, with who gave it and when (42); the
     place's recipients, each with where it came from; of a place
     waiting on its caller, the move it waits on, since when, a hold's
@@ -1951,9 +1978,11 @@ redefine these.
     its agents running, while spent, until when (146), and its reading
     as 185 says; each source the host declares, the kinds it holds by
     identity and the roles it declares, or why they cannot be read (191,
-    193); and for each role's address an end stands pending for, its
+    193); for each role's address an end stands pending for, its
     run, its standing agent, or that it is carried or wakes nothing and
-    why (132).
+    why (132); and each end expired for a recipient, of every place,
+    with the recipient and whether its name is known (43; weir 104,
+    106).
 130. A place whose next move is its caller's, a stage or a submission on
      hold (47), a stage ended short needing an answer (42), a stage for
      review (163), a stage
@@ -2028,8 +2057,12 @@ redefine these.
 62. flume keeps only the live state of the places on its host. Once a
     place is tidied flume keeps nothing of it but, while an end of it
     stands pending for a recipient, the place's document, with no
-    worktree and no branch, which goes once every end is delivered or
-    its caller drops it; whatever else outlives a place is its caller's
+    worktree and no branch, which goes once every end is delivered to
+    each of its recipients (weir 107). A drop of it while an end stands
+    pending is refused, naming each recipient the end waits on, since
+    nothing a recipient has not confirmed is let go of (weir I9). Once
+    the document goes flume lets go of its ends' deliveries, and keeps
+    each recipient's name known (weir 106, 107); whatever else outlives a place is its caller's
     to keep, from what flume reported.
 
 ### A.11 Tidying
@@ -2275,12 +2308,15 @@ redefine these.
      it (114), so an end that comes later wakes another run. A run's own
      stall goes to the answerer behind its stream and never to its own
      address (130, 193). Where a settle finds an end pending for an
-     address with no run live or waiting for room, or a caller or
+     address that was never handed to it, with no run live or waiting for room, or a caller or
      another tool's carrier asks flume to wake the address, flume
      launches the address's kind at the priority its source declares. A
      wake of an address whose run is live or waiting does nothing. The
      run's start collects every end pending for the address (43), so
-     whatever came while no run was live is one run's. flume decides
+     whatever came while no run was live is one run's. An end a run was
+     handed and did not confirm stays pending for the address, wakes no
+     run again, and is handed to the next run the address's other ends
+     wake (43). flume decides
      nothing in this: which address is a place's recipient, what the
      role's kind does and what its run decides are the caller's (69, 70,
      72). Nothing wakes an address no source declares, or two declare,
@@ -3036,7 +3072,8 @@ command as its agent's. Each hook calls the binary that started the
 agent by its absolute path, written into the plugin with its version,
 and never fails or holds up the agent's start or turn. In a session
 flume did not start, the plugin's SessionStart hook runs `flume inbox`
-as the session the terminal names. It gives the agent what the inbox
+as the session the terminal names, confirming on receipt each end it
+is handed, since the hook gives it to the agent whole (weir 103). It gives the agent what the inbox
 answers as the session's context, and nothing where nothing is pending
 or waiting or the terminal names no session. It never holds up the
 start (43).
@@ -3332,6 +3369,17 @@ lives:
   holding when the newest settle a caller asked as its watch began and
   the bound it stated, written by compare-and-set and by nothing but
   such a settle (208).
+- The host's deliveries are host state too, flume's store of weir's
+  deliveries (weir 112): one document beside the places', holding
+  every record of weir's C.8 for the ends of the host's places in the
+  order added, each one object as weir's JSON spells it, written whole
+  by compare-and-set, every record or none. It passes weir's pack as a
+  deliverer's store (weir 113). A delivery's key is the place as its
+  agents name it, the token its launch took, and its end's key, joined
+  by `/`, so no two launches of one place share a key. `[host]
+  ends_expire`, one time written as `keep_open` is, is the span after
+  which an end pending for a recipient is expired, fixed when the end
+  is read; a week, `168h`, where it is not given (43; weir 104).
 - The host's bound is one word of the host's own configuration,
   `$XDG_CONFIG_HOME/flume/config.toml` (`~/.config/flume/config.toml`):
   `[host] agents = <n>`, how many agents of flume's places the host
@@ -3778,7 +3826,7 @@ The rest of the stack, which a model builds on unless it says why not:
   | headwater | its fix key, as a fix with the release's brief | nothing |
   | sounding | each round of an elaboration, as a place of the elaboration kind it hands in the launch, a conversation's agent beside the operator's pane | the inputs, the soundings each was based on, the rounds, the operator's notes and decisions, and the record, with each round's conclusion copied from its report; its go-on is a retry with the operator's notes as words, its accept a done or a retry that releases a held submission, and its drop a drop |
   | crew | each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each bolt as a base place of a kind crew declares with no stages, on the branch the bolt lands on, its units' places on its branch (202); the bolt submitted by crew's retry once the user sends it and its units are over (203); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief; a fix of a base whose own checks failed after a landing, as a fix launched on that base with the failure's words as its brief, the merge queue's where it blamed and the check's own otherwise, its submission on hold where the base's landings wait on the user's word outside the merge queue's policy (7, 47) and free where the policy asks the word itself or none, with no bolt's branch between and no other place moved (record 0023) | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place is a retry answering a stop-short that asked, naming its key (42), with the user's own words where its role put the question to the user on a card its own code raised, or a retry or drop of a place past its kind's bound; it is a source of the host's that declares its roles once, each of a partition's roles at its address in the partition's stream, running crew's one kind for it or held by its standing agent until it moves, and names each place's recipient by the address of the role the work is for, so a role with no live run is woken to collect an end, and each partition's operator stands behind its stream (132, 193); each end is delivered to it (43), and it reads the rest from status; a role's own work that lands is a place of its own, so no session of crew's submits; it decides no step between a unit's stages, and runs no agent of its own in the place (records 0010 and 0011) |
-  | the runner | each launch its control plane asks, passed as given, a bolt's base place and its units' places among them, each naming the runner itself a recipient beside the role's address its control plane names, which drops no default recipient the address had not dropped already (7). A retry of a base place's submission its control plane asks (203) | the watch over its host: each pass, keeping or control, runs `flume settle --every <bound>` once and awaits it (208); each place's status, carried to its control plane, a tidied place's from the document kept for its end, which the runner collects by `flume inbox` naming the place once its report holds it (43, 62); nothing else of a place's, and no queue of its own: sluice's rounds are moved by those settles' steps or the host's `sluice run` |
+  | the runner | each launch its control plane asks, passed as given, a bolt's base place and its units' places among them, each naming the runner itself a recipient beside the role's address its control plane names, which drops no default recipient the address had not dropped already (7). A retry of a base place's submission its control plane asks (203) | the watch over its host: each pass, keeping or control, runs `flume settle --every <bound>` once and awaits it (208); each place's status, carried to its control plane, a tidied place's from the document kept for its end, which the runner collects by `flume inbox --confirm` naming the place once its report holds it, confirming each end on receipt (43, 62); nothing else of a place's, and no queue of its own: sluice's rounds are moved by those settles' steps or the host's `sluice run` |
 
 <!-- ANCHOR_END: givens -->
 <!-- ANCHOR: questions -->
@@ -4737,12 +4785,31 @@ These are not requirements.
   the planner's run. The place's document stays, pending for the runner
   alone. The runner's next pass reads it from status, landed with its
   commit, carries it to its control plane and saves its report, and
-  only then runs `flume inbox` naming the place as itself, which
-  collects every end of the fix. The settle after that removes the
-  document. A person who drops another of the runner's places by hand
+  only then runs `flume inbox --confirm` naming the place as itself,
+  which hands it every end of the fix and confirms each on receipt.
+  The settle after that removes the document. A person who drops another of the runner's places by hand
   leaves its document likewise, its drop pending for the runner. No
   notice of the drop is sent, and no run of the planner is woken for it
   (7, 43, 52, 62, 132; record 0060, proposed 2026-11-08).
+- **S122.** A unit's construct stops short naming the planner's
+  address, and the settle that reads it wakes a planner run. The run's
+  start runs `flume inbox` and is handed the stop-short, and the run is
+  ended before it answers or confirms it. The stop-short stays pending
+  for the address, status giving its hand-over by the inbox, and no
+  run is woken for it again. The unit's next end wakes a run, whose
+  inbox is handed both; it answers the question, runs `flume confirm`
+  naming both keys, and both are delivered (42, 43, 132; weir 102, 103;
+  flume record 0061, proposed 2026-11-08).
+- **S123.** A fix is launched naming a recipient misspelt, and lands.
+  No pane holds the name and nothing collects it, so the tidied
+  document stays. A week after the landing was read, status gives the
+  fix's ends expired for that recipient, a name under which nothing
+  was ever confirmed, and the host's status lists them; a drop of the
+  document is refused naming the recipient. The operator runs `flume
+  confirm` as that name with the ends' keys; they are delivered, the
+  name is known, and the next settle removes the document and lets go
+  of its deliveries (43, 56, 62; weir 104 to 107; flume record 0061,
+  proposed 2026-11-08).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
