@@ -1232,7 +1232,9 @@ redefine these.
     by `sluice confirm` with the key, or says in the call that hands
     the outcome over that it confirms on receipt: a pull request does on
     its post, which the request keeps for whoever reads it, and a
-    caller that keeps the outcome for readers of its own may. No carrier
+    caller that keeps the outcome for readers of its own may; a submit
+    from the entry's work that withdraws it blamed or in conflict
+    confirms its outcome, the reader having acted on it (67). No carrier
     keeps a list of its own of what it handed over. A session that
     starts, after a restart or on another host, collects every outcome
     owed to its readers, found by the submitter the entry recorded, by
