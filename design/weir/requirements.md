@@ -14,11 +14,13 @@ which an adapter hands a host its events and a host takes them; the
 records an inbox holds and how they lie; the protocol that writes a
 shared branch; the kind format, by which a tool declares the stages
 work goes through, as a list or as a statechart; the engine, which
-ticks a statechart; cadence; the built-in adapters; and the conformance
-pack that holds every host and every adapter to the rest. Part B is
-its contracts: the operations weir needs across its five seams, an
-adapter, a host, a shared branch's keeper, a kind's reader and a
-clock, and the guarantee each must give. Part C is the profiles: the
+ticks a statechart; cadence; the built-in adapters; the delivery, a message
+a tool owes a reader until the reader confirms it; and the conformance
+pack that holds every host, every adapter and every deliverer's store
+to the rest. Part B is its contracts: the operations weir needs across
+its six seams, an adapter, a host, a shared branch's keeper, a kind's
+reader, a clock and a deliverer's store, and the guarantee each must
+give. Part C is the profiles: the
 ways each contract is satisfied.
 
 Parts A and B name no mechanism: no command, file, directory, format,
@@ -41,10 +43,12 @@ adapter written for one host runs unchanged under another. An inbox
 written by one tool is read by the next with no import. Two hosts
 writing one record to one branch at once meet one rule, and the second
 is refused. A kind declared for flume is read by sounding without a
-format of its own. And a conformance pack says, of any host or
-adapter, whether it keeps the contract. weir judges nothing a capture
-says, moves no signal, starts no agent and lands no work: those are the
-tools'. weir fixes the forms they meet in.
+format of its own. A message one tool owes a reader is done when that
+reader confirms it, whichever tool owes it. And a conformance pack
+says, of any host, adapter or deliverer's store, whether it keeps the
+contract. weir judges nothing a capture says, moves no signal, hands no
+message over, starts no agent and lands no work: those are the tools'.
+weir fixes the forms they meet in.
 
 <!-- ANCHOR_END: preamble -->
 <!-- ANCHOR: actors -->
@@ -57,6 +61,8 @@ tools'. weir fixes the forms they meet in.
 | **a writer** (a host, a session or a tool writing a shared branch) | what to write, and when | apply a write to a tip it was not checked against, or stand in for that check with a lock |
 | **a kind's declarer** (a tool, a repository or a launch) | the stages work goes through, each stage's prompt, agents and deliverable, and any section of its own | make a reader run what the format does not say |
 | **a kind's reader** (flume, sounding, Boomdrive) | which sections of a declaration it reads, which templates and atoms it binds, and what it refuses | change a declaration, fail on a section it does not know, or decide a transition of a statechart kind the engine does not give (96) |
+| **a deliverer** (a tool that owes a reader a message: flume, sluice) | what it owes and to which readers, how and when it hands a message over, the span before one expires, and where it keeps its records | count a message done that a reader has not confirmed, let go of one a reader has not confirmed, or change one once recorded |
+| **a reader** (of a delivery: a session, an agent, a role) | when it confirms what it was handed | confirm a message under another reader's name |
 | **the operator** | everything a tool's statement leaves to them | |
 
 <!-- ANCHOR_END: actors -->
@@ -134,7 +140,8 @@ redefine these.
   should change it: captures, signals, moves, batches and items, with
   each item's brief and sends.
 - **record**: one capture, signal, move, batch, item, brief or send, as
-  an inbox holds it.
+  an inbox holds it; or one delivery, hand-over, confirmation or known
+  name, as a deliverer's store holds it.
 - **format**: the named shape of a record, with a major: readers of a
   later major read every earlier one as it stands.
 - **major**: of a format, the number that changes when a reader of the
@@ -204,6 +211,30 @@ redefine these.
   cites what it exercises.
 - **profile**: one way a contract of Part B is satisfied, as Part C
   describes.
+- **deliverer**: a tool that owes a reader a message, and keeps the
+  records of what it owes in a store of its own.
+- **delivery**: one message a deliverer owes its readers, recorded once
+  under its key (100).
+- **reader** (of a delivery): whoever a delivery is owed to, named as
+  its deliverer names it: a session, an agent, a role.
+- **hand-over**: one handing of a delivery to one of its readers, by a
+  way its deliverer names, such as a notice into a session, a wait that
+  answers with it, or a listing the reader asks for; it confirms nothing
+  (103).
+- **confirmation**: a reader's word that it has a delivery, naming the
+  delivery's key (102).
+- **expiry**: of a delivery, the time it stops being owed to a reader
+  that has not confirmed it, fixed when it is recorded (104).
+- **owed**: of a delivery and one of its readers, that the reader has
+  not confirmed it and its expiry has not come.
+- **expired**: of a delivery and one of its readers, that the reader has
+  not confirmed it and its expiry has come.
+- **done**: of a delivery, that every one of its readers has confirmed
+  it (107).
+- **known** (of a reader's name): that a reader has confirmed under it
+  (106).
+- **store** (of deliveries): where a deliverer keeps its deliveries'
+  records, on a machine or on a shared branch.
 
 <!-- ANCHOR_END: glossary -->
 <!-- ANCHOR: part-a -->
@@ -548,10 +579,12 @@ redefine these.
 
 ### A.11 The conformance pack
 
-65. The pack holds cases of two kinds: for a host, lines in and the
+65. The pack holds cases of three kinds: for a host, lines in and the
     records, refusals, held counts and run status the host must write
-    from them; for an adapter, the checks its lines must pass. A host
-    or adapter that fails one case does not keep the contract.
+    from them; for an adapter, the checks its lines must pass; for a
+    deliverer's store, its starting records, one call of B.7, and the
+    records, the answer or the refusal that must come of it. A host,
+    adapter or store that fails one case does not keep the contract.
 66. The pack holds the meeting checks: an adapter is a meeting adapter
     when every capture it offers carries a key by its service and the
     meeting's own identity, the meeting's start as its event time, the
@@ -560,7 +593,7 @@ redefine these.
     anything and counts it in the completion.
 67. Every case cites the clauses it exercises, and the pack's check
     fails when a cited number names no clause, or a clause of A.1 to
-    A.10, of A.13 or 71 is cited by no case. The pack's own clauses, 65, 67 and
+    A.10, of A.13, of A.14 or 71 is cited by no case. The pack's own clauses, 65, 67 and
     68, are proved by the check's own tests (S15, S16), and what weir
     never does, 69 and 70, by weir's rules, which no case can exercise;
     the check counts neither.
@@ -576,9 +609,10 @@ redefine these.
     waits on for that write, git for a branch's write (C.3), is no
     process of its own: it ends with the call, and nothing of weir
     outlives a call.
-70. weir never lists a source, never judges what a capture says, never
-    chooses a move, never starts an agent, never submits and never
-    lands work.
+70. weir never lists a source, never judges what a capture or a
+    delivery's message says, never chooses a move, never hands a
+    delivery over or confirms one, never starts an agent, never submits
+    and never lands work.
 71. No record weir defines holds a secret, and nothing weir writes
     includes one.
 
@@ -612,6 +646,50 @@ redefine these.
     its caller's reading, and an effect is a name with arguments its
     caller performs. The same statechart, state and snapshot always give
     the same tick, and ticking changes nothing (69).
+
+### A.14 Deliveries
+
+100. A delivery is one message a deliverer owes one or more readers. It
+     is recorded once, under a key its deliverer gives, with the
+     message, each of its readers, when it was recorded and its expiry,
+     and each of its records names its format, as every record does
+     (40). A delivery is recorded only with a key, a message and at
+     least one reader, no reader named twice; any other is refused,
+     naming what it lacks. A delivery never changes once recorded.
+101. A store holds at most one delivery per key. Recording under a key
+     the store holds writes nothing, and the delivery first recorded
+     stands, whatever the later one carries.
+102. A delivery stands owed to each of its readers until that reader
+     confirms it, naming its key. A confirmation names the delivery's
+     key, the reader and when, and is refused when the store holds no
+     delivery under the key, or the reader is not one of the delivery's
+     readers, naming which. A reader that confirms a delivery it has
+     confirmed writes nothing, and is told when it first did.
+103. A hand-over of a delivery to one of its readers names the reader,
+     the way, as its deliverer names it, and when, and confirms nothing.
+     A reader that confirms on receipt says so in the call that hands
+     the delivery over, and the hand-over and the confirmation are
+     written together. A delivery is never handed to a reader that has
+     confirmed it, or to one that is not among its readers.
+104. A delivery's expiry is the time it was recorded and the span its
+     deliverer sets, fixed when it is recorded. At its expiry, a
+     delivery a reader has not confirmed is expired for that reader: it
+     is shown, with its reader, wherever its deliverer shows what that
+     reader is owed, and stays shown until the reader confirms it.
+     Nothing expires out of a store, and a reader confirms an expired
+     delivery as it confirms an owed one.
+105. What a reader is owed is read from a store's records and a time:
+     every delivery naming the reader that it has not confirmed, each
+     owed or expired, in the order recorded, with each hand-over of it
+     to that reader. Nothing a reader has not confirmed is left out.
+106. A reader is named as its deliverer names it, and a name is known
+     once a reader has confirmed under it. What a reader is owed says
+     whether its name is known, so a name no reader has ever confirmed
+     under is shown as such. A name stays known after the deliveries
+     confirmed under it are let go of.
+107. A delivery is done once every one of its readers has confirmed it.
+     A deliverer may let go of a done delivery, with its hand-overs and
+     its confirmations, and lets go of no other.
 
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
@@ -686,10 +764,38 @@ redefine these.
 
 86. Each seam is bound by naming one or more profiles of Part C. A
     host binds one branch keeper per inbox and any number of adapters;
-    a kind's reader binds the one format; cadence binds one clock.
-87. The pack holds every profile to Parts A and B, every host as a host
-    and every adapter as an adapter (65). A profile, host or adapter
-    that fails it is not one.
+    a kind's reader binds the one format; cadence binds one clock; a
+    deliverer binds a store of its own and the records' one profile.
+87. The pack holds every profile to Parts A and B, every host as a
+    host, every adapter as an adapter and every deliverer's store as a
+    store (65). A profile, host, adapter or store that fails it is not
+    one.
+
+### B.7 Deliveries
+
+108. **record**: given a store's records, a key, a message, its readers,
+     when, and the span its deliverer sets, the delivery's record to
+     add; or that the key is held, with the delivery that stands; or a
+     refusal naming the field (100, 101, 104).
+109. **hand**: given a store's records, a key, a reader, the way, when,
+     and whether the reader confirms on receipt, the records to add; or
+     that the reader has confirmed it, and when; or a refusal naming the
+     key, the reader or the way (102, 103).
+110. **confirm**: given a store's records, a key, a reader and when, the
+     records to add, the reader's name made known where it was not; or
+     that the reader has confirmed it, and when; or a refusal naming the
+     key or the reader (102, 106).
+111. **owed**: given a store's records and a time, each reader with
+     every delivery owed or expired to it, with its hand-overs, and
+     whether its name is known; and every delivery done (104 to 107).
+112. **read** and **add**, a deliverer's store's: read gives every record
+     the store holds, in the order added; add holds the records it is
+     given after the others, every one or none.
+113. The guarantee: the same records, call and time always give the
+     same answer, and answering changes nothing; a store reads back
+     every record it added as it was given, and drops none but those of
+     a done delivery let go of whole (107); every deliverer's store
+     passes the pack (65, 87).
 
 <!-- ANCHOR_END: part-b -->
 <!-- ANCHOR: part-c -->
@@ -1078,7 +1184,9 @@ refused; or a lock, and its identities and hashes read or each field
 refused; 51 to 58, 88 to 95) and `tick` (A.13: a statechart, an object's
 state of it and a snapshot, and the transitions, effects and next
 state expected; 96 to 99), the engine's toy statechart among them, a
-lamp off and on that names no reader's atom; a case of the last five
+lamp off and on that names no reader's atom, and `delivery` (C.8: a
+store's starting records and one call of B.7, and the records added,
+the answer or the refusal expected; 100 to 113); a case of the last six
 runs against weir's own crates in their tests, as cadence's do. For a host's case, the lines in
 (`lines.jsonl`) and a raw place, and the records expected out, or the
 refusal expected, with a `satisfies:` list naming the clauses (67). A
@@ -1089,7 +1197,7 @@ statement, and fails when a number names no clause or a clause of Part
 A is cited by nothing. It needs no network (68). A case for cadence
 (59, 60) is a schedule, a last run or none, a now, and whether the thing
 is due, with the zone the now is read in; a cadence case is one of the pack's
-seven shapes above, and 67's check counts it as it counts the others.
+eight shapes above, and 67's check counts it as it counts the others.
 
 `weir conform <host command>` runs a host against the host cases through
 one seam the pack fixes, and the pack holds a host to it (65, 87). For
@@ -1119,6 +1227,49 @@ written. A host whose command takes these flags and prints this report
 is a host the pack can hold; millpond's intake and run do (millpond
 C.1).
 
+A deliverer's store is held to the delivery cases through its two calls
+(112). For each case the pack hands the case's starting records to an
+empty store's add, reads them back, makes the case's call with weir's
+crate over what it read, adds what the call gives, and reads back the
+records the case expects, in order and as written; or it holds the
+answer or the refusal the case names, a refusal by the field it names
+and a phrase of its reason. A deliverer runs this in its own tests over
+its own store, and weir runs it over a store of each spelling of C.8
+(65, 87, 113).
+
+### C.8 Deliveries: records in a deliverer's store
+
+A delivery's records are four, each naming its format as
+`format: weir-<record>/<major>` (40):
+
+| record | fields |
+|---|---|
+| `weir-delivery/1` | `key`; `reader`, once for each reader, in the order given; `message`; `recorded_at`; `expires_at` (100, 104) |
+| `weir-handover/1` | `key`, `reader`, `by` (the way, as the deliverer names it), `at` (103) |
+| `weir-confirmation/1` | `key`, `reader`, `at` (102) |
+| `weir-known/1` | `reader`, `known_at` (when a reader first confirmed under the name) (106) |
+
+A key, a reader and a way are each one line of text, never empty and
+never beginning or ending with a space. A message is text of one or
+more lines, never empty. A time is RFC 3339 with its offset;
+`expires_at` is `recorded_at` and the span, in `recorded_at`'s offset,
+and a span is a whole number of seconds, at least one.
+
+On a shared branch the records are recutils at rest, written as C.2
+writes records, in the order added. In flight, and in a store on a
+machine, each is one JSON object, its fields as above, a delivery's
+readers a list, `readers`:
+
+```json
+{"format": "weir-delivery/1", "key": "place/7f3a/end/2", "readers": ["planner"], "message": "construct ended: the change is written.", "recorded_at": "2026-11-08T10:02:00-05:00", "expires_at": "2026-11-15T10:02:00-05:00"}
+{"format": "weir-handover/1", "key": "place/7f3a/end/2", "reader": "planner", "by": "notice", "at": "2026-11-08T10:02:05-05:00"}
+{"format": "weir-confirmation/1", "key": "place/7f3a/end/2", "reader": "planner", "at": "2026-11-08T10:40:12-05:00"}
+{"format": "weir-known/1", "reader": "planner", "known_at": "2026-11-08T10:40:12-05:00"}
+```
+
+The crate `weir-delivery` holds the records, both spellings and B.7's
+calls; a deliverer keeps its records where its own statement says.
+
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
 ## 7. Global invariants
@@ -1135,6 +1286,9 @@ C.1).
 - I7. Reading and ticking change nothing: a declaration, an inbox, a
   tip or a statechart read or ticked is as it was (58, 78, 98).
 - I8. Two hosts given the same lines write the same records (24).
+- I9. A delivery is done only on its readers' confirmations: no
+  hand-over and no expiry confirms one, and nothing a reader has not
+  confirmed leaves its store (102 to 104, 107).
 
 <!-- ANCHOR_END: invariants -->
 <!-- ANCHOR: non-goals -->
@@ -1148,6 +1302,9 @@ C.1).
   Boomdrive's, sounding's and flume's.
 - Who may write a shared branch: the repository's own access rules.
 - Encryption at rest, and backup: the machine's and the fleet's.
+- How a deliverer hands a delivery over, by a notice, a wait or a
+  listing, when it hands one again, the span before one expires, and
+  who may confirm for a reader: the deliverer's.
 
 <!-- ANCHOR_END: non-goals -->
 <!-- ANCHOR: givens -->
@@ -1171,6 +1328,10 @@ Constraints already fixed:
 - The sources already built speak the contract: headwater's adapter
   for releases, eddy's adapters for meetings, swancloud's deployer
   through the intake, and crew's findings through `crew signal`.
+- The deliverers are flume and sluice. Each keeps its deliveries in a
+  store of its own, flume's on its host and sluice's on its branch, and
+  moves onto `weir-delivery` in a change of its own, sluice taking its
+  first dependency on weir for it (weir record 0006).
 - weir is free and open source, under MIT, in a public repository of
   the family's own, `agentplot/weir`, scaffolded from kit-standard's
   code profile, with `main` under sluice's gate.
@@ -1184,9 +1345,10 @@ The rest of the stack, which a model builds on unless it says why not:
   brief and send records and the inbox's layout), `weir-adapters` (the
   folder drop, the meeting file and the signals-folder import),
   `weir-branch` (the write protocol), `weir-kinds` (the kind format,
-  read and checked, with its packages, their content hash and locks)
-  and `weir-cadence` (five-field cron, caught up
-  once), with the engine's crate beside `weir-kinds`, moved from the
+  read and checked, with its packages, their content hash and locks),
+  `weir-cadence` (five-field cron, caught up once) and `weir-delivery`
+  (the delivery records, both their spellings and B.7's calls), with
+  the engine's crate beside `weir-kinds`, moved from the
   original Flywheel's flywheel-engine with its tests and its toy
   statechart, and the conformance pack beside them all. A reader takes
   `weir-kinds` and the engine at one revision of weir, so the format a
@@ -1320,6 +1482,24 @@ rules; each ruling below is the user's, on their card of 2026-10-26.
   is absent. Ticked again with the lamp on and the proof present, it
   gives nothing. Each tick, given twice, gives the same answer, and
   neither changes the statechart or the snapshot (96, 98, 99).
+- **S22.** A deliverer records a delivery for two readers and hands it
+  to the first by a notice. The first is still owed it: what it is owed
+  shows the delivery with its hand-over, and the delivery is not done.
+  The first confirms, naming its key. The second's session starts, and
+  the call that hands it the delivery confirms on receipt. The delivery
+  is done, and its deliverer may let go of it (102, 103, 107).
+- **S23.** A delivery names a reader misspelt, and nothing confirms it.
+  Past its expiry, what that reader is owed shows it expired, and the
+  name as one no reader has confirmed under. Nothing drops it.
+  Confirmed later under that name, it is done, and the name is known
+  (104 to 106).
+- **S24.** A deliverer records one key twice, the second time with
+  another message. The second writes nothing, and the first stands. A
+  reader confirms twice; the second writes nothing and says when the
+  first was (101, 102).
+- **S25.** A deliverer's store drops the expired deliveries it reads.
+  The pack fails it, naming the case and the record it did not read
+  back (104, 113).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
@@ -1329,8 +1509,8 @@ A model of weir that satisfies Parts A and B: the contract's lines and
 the seven steps a host takes; the records of a capture, a signal, a
 move, a batch, an item, a brief and a send, with the layout; the write
 protocol; the kind format, read and checked, and the engine's tick;
-cadence; the built-in adapters; and the pack, with fixed examples of
-each. A conformance
+cadence; the built-in adapters; the delivery records and B.7's calls;
+and the pack, with fixed examples of each. A conformance
 pack whose cases each cite the clauses they exercise, failing when no
 case cites a clause. The profiles of Part C, each passing the pack,
 and millpond passing it as a host.
