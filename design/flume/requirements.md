@@ -4790,7 +4790,7 @@ These are not requirements.
   The settle after that removes the document. A person who drops another of the runner's places by hand
   leaves its document likewise, its drop pending for the runner. No
   notice of the drop is sent, and no run of the planner is woken for it
-  (7, 43, 52, 62, 132; record 0060, proposed 2026-11-08).
+  (7, 43, 52, 62, 132; record 0060, accepted 2026-11-08).
 - **S122.** A unit's construct stops short naming the planner's
   address, and the settle that reads it wakes a planner run. The run's
   start runs `flume inbox` and is handed the stop-short, and the run is
@@ -4799,7 +4799,7 @@ These are not requirements.
   run is woken for it again. The unit's next end wakes a run, whose
   inbox is handed both; it answers the question, runs `flume confirm`
   naming both keys, and both are delivered (42, 43, 132; weir 102, 103;
-  flume record 0061, proposed 2026-11-08).
+  flume record 0061, accepted 2026-11-09).
 - **S123.** A fix is launched naming a recipient misspelt, and lands.
   No pane holds the name and nothing collects it, so the tidied
   document stays. A week after the landing was read, status gives the
@@ -4809,7 +4809,7 @@ These are not requirements.
   confirm` as that name with the ends' keys; they are delivered, the
   name is known, and the next settle removes the document and lets go
   of its deliveries (43, 56, 62; weir 104 to 107; flume record 0061,
-  proposed 2026-11-08).
+  accepted 2026-11-09).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
