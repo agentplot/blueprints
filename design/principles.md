@@ -119,3 +119,13 @@ right." Each repository's CLAUDE.md points here.
     out Claude Code usage on its own. This coupling cannot exist"; "why
     is this in swancloud configs? the idea is that the are part of the
     recipe from crew/boomdrive".)
+
+15. **A tool's CI runs only what its merge gate cannot.** The merge
+    gate, sluice on the hosts that land the tool's work, decides what
+    lands. A forge's workflow runs what that gate can't: the checks on
+    a system none of the gate's hosts runs, the package build the
+    gate's sandbox can't run, the binary cache and the releases. It
+    never runs again, on the same system, the checks the gate already
+    ran for the same commit. (Written 2026-11-10 by agentplot-design
+    on the user's question, relayed that day by afterthought-design,
+    whether GitHub's runs duplicate sluice's local gate.)
