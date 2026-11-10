@@ -1558,7 +1558,9 @@ redefine these.
      that comes then reaches its session (42). It is let go once its
      time has passed. It is let go sooner once it is read stopped or its
      own record says its session ended (96, 134), as a restart of the
-     host or its terminal leaves it. So it is once its account is spent
+     host or its terminal leaves it. A conversation's agent so let go
+     is carried at its answer's retry (49), and one its terminal brought
+     back bare is left in its pane (77). So it is once its account is spent
      (146). A settle reads it let go and records when and why.
      No process of flume's waits for the time (120). Once it is quiet,
      flume ends it (31), freeing its room and its account. The stage
@@ -1857,9 +1859,10 @@ redefine these.
     refused, naming the place, the answer the stop-short already took,
     who gave it and when, or the move the place waits on now, unless the
     place waits on that stop-short (42).
-    A retry of a conversation's stage (109) reported lost (45) goes on
-    with the lost agent's conversation where its program can carry it
-    (179). A process may still run that conversation: the lost agent
+    A retry of a conversation's stage (109) reported lost (45), or
+    whose agent kept open for its answer (198) was lost with its
+    terminal or its host (77), goes on with the lost agent's
+    conversation where its program can carry it (179). A process may still run that conversation: the lost agent
     its terminal brought back, or one a person started by hand. While
     one does, or while flume cannot read whether one does (207), the
     stage waits for it to end as a stage waits for room (70). flume takes no such process as
@@ -2547,7 +2550,8 @@ redefine these.
      answers from the program's own record, and, for each other, that
      it is degraded and how (170, 171).
 179. **carry**: given a start whose agent stopped at its account's
-     usage limit, or a conversation's start reported lost, and the
+     usage limit, or a conversation's start reported lost, or lost
+     while kept open (49), and the
      environment of the account the next start of its stage runs under,
      whether the program can carry that agent's conversation to an
      agent under that account, with what the next start resumes; or why
