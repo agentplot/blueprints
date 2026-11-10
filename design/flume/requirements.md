@@ -4810,7 +4810,8 @@ These are not requirements.
   them again. A person who drops another of the runner's places by hand
   leaves its document likewise, its drop pending for the runner. No
   notice of the drop is sent, and no run of the planner is woken for it
-  (7, 43, 52, 62, 132; record 0060, accepted by the user 2026-11-08; agentplot/boomdrive record 0030 as amended on 2026-11-09, proposed).
+  (7, 43, 52, 62, 132; record 0060, accepted by the user 2026-11-08; agentplot/boomdrive record 0030 as amended on 2026-11-09,
+  accepted by the user that day).
 - **S122.** A unit's construct stops short naming the planner's
   address, and the settle that reads it wakes a planner run. The run's
   start runs `flume inbox` and is handed the stop-short, and the run is
