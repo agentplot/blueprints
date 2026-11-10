@@ -625,7 +625,8 @@ redefine these.
      A refusal that stands when the policy's time is spent is reported
      in the remote's own words, with what each refused credential was:
      the app, the repository, the installation, its repositories and
-     permissions, and its age; a round's is its event in the branch's
+     permissions, and its age, or, for a token a credential command
+     gave, the command and what the forge says of the token; a round's is its event in the branch's
      log (133), once per cause, never per try.
 136. sluice asks the forge only what could have moved since it last
      asked. Which requests are open into a branch is asked at an
@@ -1476,7 +1477,7 @@ change to Parts A and B.
 | a host stops | its lead and claims pass to others (72, 77); a lost job is a lapsed claim |
 | who takes in requests | whatever executes the branch's queue, one of four ways (137) |
 | confinement | by signers (78, 79): a signer the policy lets claim it, on hosts that run no sessions or a pool's fresh machines |
-| who holds the branch's credential | an identity no session can use: an app installed on the repository, held by the standing executors' sluice user and by the pool's jobs |
+| who holds the branch's credential | an identity no session can use: an app installed on the repository, its token minted from the app's key the standing executors' sluice user holds, or given by a credential command the host names, as git's credential helpers give one (agentplot/sluice record 0108), and the pool's jobs' |
 | what is new to run | with no daemon, nothing: a host's sluice starts its own host process (135); for a daemon way, `sluice daemon` kept running on the machine that chose it; for a GitHub Action, one workflow the repository carries, written by `sluice init`, whose jobs take the branch's requests in, run its checks and land them (137) |
 
 The task runner's cache makes runs cheaper and decides nothing (108).
