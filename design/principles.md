@@ -120,12 +120,14 @@ right." Each repository's CLAUDE.md points here.
     is this in swancloud configs? the idea is that the are part of the
     recipe from crew/boomdrive".)
 
-15. **A tool's CI runs only what its merge gate cannot.** The merge
-    gate, sluice on the hosts that land the tool's work, decides what
-    lands. A forge's workflow runs what that gate can't: the checks on
-    a system none of the gate's hosts runs, the package build the
-    gate's sandbox can't run, the binary cache and the releases. It
-    never runs again, on the same system, the checks the gate already
-    ran for the same commit. (Written 2026-11-10 by agentplot-design
-    on the user's question, relayed that day by afterthought-design,
-    whether GitHub's runs duplicate sluice's local gate.)
+15. **A tool's checks are made faster from Timber's measurements.** A
+    tool's CI and its merge gate are tuned as the work goes, by what
+    Timber measures of their runs, never by a rule written ahead of the
+    numbers. A public repository's runs cost time, not money, so
+    running a check in two places is no reason alone to drop one.
+    (Written 2026-11-10 by agentplot-design from the user's words that
+    day, declining a chore that dropped CI's macOS checks beside
+    sluice's gate: "I don't think we need to do this. We only ran out of
+    minutes because the repo was private. The repo will be public and it
+    won't matter. We will want to optimize as we go but we want to make
+    sure to optimize with Timber.")
