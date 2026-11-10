@@ -968,6 +968,29 @@ redefine these.
      operator chooses to keep `sluice daemon` running (137), which sluice
      never needs. (Amended 2026-11-08: sluice record 0093 as amended, accepted by the user that day.) (sluice record
      0093, accepted by the user 2026-11-06, `proposals/host-process-1.md`)
+     A sluice process that outlives a command, the host process, `sluice
+     run` or a daemon, takes up the host's own settings afresh once their
+     file changes, between rounds and never within one, so a change takes
+     effect from its next round and nothing on the host restarts sluice
+     for it; a change it cannot take up in place it takes by handing its
+     repositories to a process of its own started afresh, as to a newer
+     sluice's, and a run keeps the settings it started under. (Amended
+     2026-11-09: sluice record 0107, the user's direction that day in
+     agentplot-design's pane; principle 5.)
+151. Where sluice's telemetry goes is the host's own setting (C.7):
+     whether it sends, the collector it sends to, the service and host it
+     names itself as, which of its traces, metrics and logs go, and how
+     much of a failure's output its logs carry. A command's own flag, or
+     sluice's own variable, chooses for that command alone.
+     OpenTelemetry's own variables in its environment may turn telemetry
+     or a signal off, and name the collector only where the host's
+     settings name none, so a caller's settings for its own tools never
+     send sluice's elsewhere. A run's checks are handed the collector and
+     the signals sluice sends. No host wraps sluice or sets its
+     environment for its telemetry (principle 14), and nothing sluice
+     decides reads its telemetry back. (Added 2026-11-09: sluice record
+     0106, the user's direction that day in agentplot-design's pane;
+     records 0014 and 0022.)
 137. A branch's requests are taken in only where its records are on
      its remote, by the instance that keeps the branch there (72):
      whatever executes the branch's queue, in one of four ways the
@@ -1431,7 +1454,7 @@ checks = ["codeql"]        # other systems' checks; sluice's own are its runs (1
 
 A standing executor names itself in its host's own settings, never in
 the repository's: its signing key, its systems, its places, its bound
-and the cores sluice may use (71). The defaults: a branch with no `remote` trusts its own
+and the cores sluice may use (71), and where its telemetry goes (151). The defaults: a branch with no `remote` trusts its own
 host's unsigned runs (78) and nothing else; a branch with a `remote`
 and no `trust` trusts no signer, so its policy's author names them.
 A branch with no `hold` holds no passed candidate (117), and one with
