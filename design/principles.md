@@ -87,3 +87,35 @@ right." Each repository's CLAUDE.md points here.
     folder only to carry a stopgap: "I want the system to be built the
     way it should be and then have agents fucking fix the data
     transition as necessary". Accepted only on their yes.)
+
+## Settings
+
+13. **A setting says what it is.** A key is named in its reader's
+    words. A number's unit and range are in its name or in its
+    description, in the module's option and the tool's configuration
+    reference. A key whose value the reader must decode, such as a
+    `false` that reads as turning something off, is renamed. (Written
+    2026-11-09 by agentplot-design from the user's words that day in its
+    pane, reading deneb's Boomdrive configuration: "when settings are a
+    number liek this one: threshold = 90; a comment should explain the
+    units/options"; "\"keep_free\" - blurgh. don't love this config key.
+    there are better ways to name config keys"; and, of crew's per-role
+    `flume` map, "I don't understand what this section is about and why
+    we're turning these things off".)
+
+14. **The set sets what the family knows, and a host says only its
+    own, through a tool's settings.** The Boomdrive set derives or
+    defaults every value the recipe knows: a tool's kinds and their
+    words, its folders, the map of a drive's repositories. A host writes
+    only what is its own, and only through a tool's own settings, never
+    by a file, wrapper or script beside the set. A tool that needs what
+    another program knows reads that program's own source, never a file
+    a host makes for it. (Written 2026-11-09 by agentplot-design from
+    the user's words that day in its pane: "If you can't set telemetry,
+    that's the perfect thing to externalize. Yet you didn't make that an
+    externalized config. Jeezum, we need to externalize the things that
+    can be and make sense to be externalized"; "We should not be passing
+    Flume some custom SwanCloud JSON. Flume is supposed to be figuring
+    out Claude Code usage on its own. This coupling cannot exist"; "why
+    is this in swancloud configs? the idea is that the are part of the
+    recipe from crew/boomdrive".)
