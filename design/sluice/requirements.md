@@ -1482,6 +1482,24 @@ change to Parts A and B.
 
 The task runner's cache makes runs cheaper and decides nothing (108).
 
+### C.9 The three setups
+
+Three setups land a branch's work through the same gate, with the same
+records:
+
+| setup | who submits | an entry's outcome goes to |
+|---|---|---|
+| on its own | the session that built the work, a person's or their agent's, once it judges the work ready, through worktrunk or a pull request; or flume, after the last stage of a place whose kind lands (flume C.6) | the session that submitted it, as a notice and by `sluice inbox` (51), or flume, which collects it in the place |
+| with crew | crew, through its driver (C.5) | crew, whose conductor reads the entry's state as the stage's (C.5) |
+| with Boomdrive | Boomdrive, through its driver: a session's done exit, once approved, is the submission (C.5) | Boomdrive, which reads the entry's state and a forecast as evidence on the item each tick |
+
+In every setup the branch's policy decides what lands (56), a session
+never moves the branch (1), and the records lie where C.6 and C.8 put
+them. Going from one setup to the next changes only the driver a host
+binds (52). No record is rewritten, a driver reads the records another
+driver wrote (53), and Boomdrive imports nothing when it takes over
+(agentplot/strategy decision #46, accepted by the user on 2026-11-11).
+
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
 ## 7. Global invariants
