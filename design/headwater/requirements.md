@@ -559,6 +559,24 @@ A repository with no such file has the default tier alone, with a
 cadence of seven days, and binds every profile that recognises one of
 its declarations (51).
 
+### C.8 The three setups
+
+Three setups read one held state per clone (C.6):
+
+| setup | who weighs a release | a release goes to |
+|---|---|---|
+| on its own | the person, in their own session, which the Claude Code plugin tells of new releases at its start; the operator dismisses or skips one (20) | the asker, as a report and a brief; flume, when a plugin hands it a brief; and millpond's inbox on a branch of the user's own repository, as the adapter's capture (section 9) |
+| with crew | crew's curator, and the operator on crew's rail (millpond C.13) | millpond's inbox on its branch in crew's state repository, as the same capture |
+| with Boomdrive | Boomdrive's curation session, and the operator on each proposed intent (millpond C.13) | the inbox Boomdrive keeps, as the same capture |
+
+In every setup the pins alone decide what is new (9), and a release an
+inbox keeps is dismissed there by a curation drop, which never writes
+the held state (C.6). Going from one setup to the next changes only the
+inbox's settings, which say where the adapter's captures land. headwater
+answers the same whoever records its answers (34), and Boomdrive
+imports nothing when it takes over (agentplot/strategy decision #46,
+accepted by the user on 2026-11-11).
+
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
 ## 7. Global invariants
