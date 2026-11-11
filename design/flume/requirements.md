@@ -394,7 +394,7 @@ redefine these.
    on. It never decides what to launch, and never makes a place or
    starts an agent on another host. A base place's fix, which its kind
    names, is launched by flume at a settle (203), since its caller asked
-   for it in launching the base place. (Flume record 0056, accepted 2026-11-07.)
+   for it in launching the base place. (flume record 0056, accepted 2026-11-07.)
 2. A launch names a repository on the host, a kind, a name and a base,
    and a brief wherever a stage of its kind asks for one (4). Either it
    makes one place, records it, and starts its first stage, puts it on
@@ -705,7 +705,7 @@ redefine these.
      verify. A kind that lands with no stages may name the kind its
      fixes run as (23). That is a name its reader resolves as a launch's
      name resolves (154), and no part of the package, whose hash covers
-     the name and not the kind it names. (Flume record 0056's amendment of 2026-11-07.)
+     the name and not the kind it names. (flume record 0056's amendment of 2026-11-07.)
 158. A kind names nothing a host owns, whichever source declares it: no
      environment, account, pool, stream, location on a host or time an
      agent is kept open (32, 144, 198).
@@ -1821,7 +1821,7 @@ redefine these.
      refused launch leaves it waiting on its caller with the refusal's
      words; and a kind that names no fix leaves it waiting on its caller
      with the merge queue's words. Its submission stays its caller's
-     retry. (Flume record 0056, accepted 2026-11-07, and its amendment of the same day.) The
+     retry. (flume record 0056, accepted 2026-11-07, and its amendment of the same day.) The
      base place's landing makes its work over (63), and flume tidies it
      as 204 says.
 204. A launch on a live place's branch is refused where that place is
@@ -1971,7 +1971,7 @@ redefine these.
     its fixes run as with where it came from, the newest forecast a
     settle read of its branch, when and what it found, and each fix
     flume launched for it, why and how it ended; for a place flume
-    launched as a base place's fix, that base place (203) (Flume record 0056's amendment of 2026-11-07.); a stage for review's plan
+    launched as a base place's fix, that base place (203) (flume record 0056's amendment of 2026-11-07.); a stage for review's plan
     with where it lives (163); for the host and for each of
     its streams, its agents running, the bound it states, its room, its
     points queued and in flight, and
@@ -2259,7 +2259,7 @@ redefine these.
      and it is counted against no bound or pace (202). A base place's
      fix, which flume launches (203), gives no points and is counted
      against no bound or pace, as a fix round's start puts no new points
-     in flight (166, 167). (Flume record 0056's amendment of 2026-11-07.) On a stream that states
+     in flight (166, 167). (flume record 0056's amendment of 2026-11-07.) On a stream that states
      neither, points are only reported.
 166. A stream's points bound caps its places' points in flight together,
      beside its bound on agents running, which stays, since accounts and
@@ -2697,7 +2697,7 @@ redefine these.
      each entry ahead it meets, none where it meets the base itself, and
      the merge queue's words. Otherwise it says the merge queue could not
      form it, and why (203; sluice 64, 65). A forecast creates no entry, moves no
-     branch, and is never read as a verdict. (Flume record 0056's amendment of 2026-11-07.)
+     branch, and is never read as a verdict. (flume record 0056's amendment of 2026-11-07.)
 
 ### B.7 The store
 
@@ -3357,7 +3357,7 @@ window.
 | step | nothing: sluice's queue moves on its own once submitted, run by sluice's host process, which the submit starts, and the settle's read of the submission starts it again where work waits and none runs, so the queue moves with nothing installed and never twice (124, 125; sluice 135). A base place's queue onto its own base and its places' queue onto its branch move alike. (sluice record 0093, accepted by the user 2026-11-06, sluice `proposals/host-process-1.md`) |
 | open | `sluice branch create <branch> --from <base>`, run in the repository, which makes the branch at the base's current revision where the policy gives it a gate (sluice 104). flume makes no branch sluice lands on itself, since sluice's protection refuses any other making (sluice 106) |
 | close | `sluice branch delete <branch> --into <base>`, run in the repository once the base place is removed, which removes the branch only when nothing on it is open and its revision is contained in the base's (sluice 105). A refusal keeps the branch, named (67, 204) |
-| forecast | `sluice submit <base> --check --head <branch>`, run in the repository, which forms the candidate sluice 64 forms for a head not yet submitted and submits nothing (203, 210). (Flume record 0056's amendment of 2026-11-07.) |
+| forecast | `sluice submit <base> --check --head <branch>`, run in the repository, which forms the candidate sluice 64 forms for a head not yet submitted and submits nothing (203, 210). (flume record 0056's amendment of 2026-11-07.) |
 
 On landing sluice removes nothing, and flume tidies every landed place
 itself, through the place profile's teardown (C.1), and its branch as
@@ -3385,7 +3385,7 @@ stripped and `GIT_TERMINAL_PROMPT=0`, a refusal read as its JSON
 | submit, a base place | `sluice submit <base> --head <branch> --no-wait --json`, run in the repository, since a base place has no worktree. It submits the branch as sluice holds it, the remote's revision where its policy names one, recording no worktree and no session as the entry's submitter, and answers as any submit. No `sluice inbox` runs for it: its outcome is read-submission's entry whose `from.head` is the branch, failed and conflict with the record's words, files and `tested.on`. The profile reads it of the first pinned sluice whose submit takes a head without `--check` (sluice 124 as amended) |
 | open, close | `sluice branch create <branch> --from <base> --json` answers the revision the branch was made at. `sluice branch delete <branch> --into <base> --json` answers it removed. Each exits 1 where a branch it names does not exist, which close reads as gone, and 2 on a refusal, its `error.message` the words (sluice C.5's branch row) |
 | base | the remote is the `remote` of the base's table under `[branches]` in `.config/sluice.toml`, the base's own or the first pattern with one `*` that names it, read at the local base and else at each remote's tracking copy; where it names one, `git fetch <remote> +refs/heads/<base>:refs/remotes/<remote>/<base>` once, the base at `refs/remotes/<remote>/<base>`; where the base's table names none, the local base; and where the policy names no table for the base, or no revision of it holds a policy, sluice lands no such base, and base says so (126) |
-| forecast | `sluice submit <base> --check --head <branch> --json` answers `{conflict, head, onto, ahead}`: `conflict` null and exit 0 where clear; exit 2 with `conflict.paths`, the files contested, and `conflict.with[]`, the entries ahead it meets, each with its `id` and `from`, where it conflicts; a refusal exits 2 with its `error.message`. The profile reads it of sluice 0.71.0 (Flume record 0056's amendment of 2026-11-07.) |
+| forecast | `sluice submit <base> --check --head <branch> --json` answers `{conflict, head, onto, ahead}`: `conflict` null and exit 0 where clear; exit 2 with `conflict.paths`, the files contested, and `conflict.with[]`, the entries ahead it meets, each with its `id` and `from`, where it conflicts; a refusal exits 2 with its `error.message`. The profile reads it of sluice 0.71.0 (flume record 0056's amendment of 2026-11-07.) |
 | place | `sluice equip <base> --at <revision> --json` in the place as its readiness, its `steps[]` each `{step, passed, words}`, exiting 1 where one failed; an answer with no `steps` read as one failed step, `sluice equip`, with its `error.message`; and `sluice release` as its teardown, handed to the place profile through the binding |
 
 sluice keeps its host state under `$XDG_STATE_HOME/sluice`, and once a
@@ -3703,6 +3703,25 @@ stands for a named window program. A name `terminal_app` gives, a
 stream's or the host's, that no profile carries refuses that stream's
 view, naming the profiles, and nothing else (C.7).
 
+### C.9 The three setups
+
+Three setups run a host's places with the same state, kept where C.7
+keeps it:
+
+| setup | who asks flume | who decides what to launch and what matters most | each place's status and ends go to |
+|---|---|---|---|
+| on its own | the person, by `/launch` in any session or the herdr plugin's key, and the tools they run: millpond's sends, headwater's fix key and sounding's rounds (section 9) | the person, in their own session | the person, by status, the sidebar and the popup, and the caller that launched the place |
+| with crew | the runner, at the asking of crew, its control plane (section 9) | crew's plans, and the user's priorities set on crew's rail, which reach flume as each place's priority (70) | crew, through the runner, which carries each place's status and each end (43) |
+| with Boomdrive | the runner, at the asking of Boomdrive's hosted control plane | Boomdrive's planning, and the person on its rail | Boomdrive, through the runner, as with crew |
+
+In every setup flume decides nothing its callers decide (I6), and
+submits a landing kind's place through sluice (C.6). Going from one
+setup to the next changes only who asks flume and what the local layer
+of the host's configuration says, a layer a control plane may write
+(C.7). The state flume keeps stays where it is, in the same form, and
+Boomdrive imports nothing when it takes over (agentplot/strategy
+decision #46, accepted by the user on 2026-11-11).
+
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
 ## 7. Global invariants
@@ -3721,7 +3740,7 @@ view, naming the profiles, and nothing else (C.7).
 - **I5.** A prompt or a tell is received or reported, never left typed
   (38, 53).
 - **I6.** flume decides nothing its callers decide: what to launch, save
-  the fix a base place's kind names (203) (Flume record 0056, accepted 2026-11-07.), each
+  the fix a base place's kind names (203) (flume record 0056, accepted 2026-11-07.), each
   place's priority, or when a stage or a submission on hold starts; how
   many agents run at once, on the host and in each of its streams, the
   streams' priorities and the accounts its agents run under are the
@@ -4708,7 +4727,7 @@ These are not requirements.
   refused, naming the base place. A launch of any place on a live
   change's branch is refused, naming the change (10, 203, 204).
 - **S112.** A base place's kind names no fix, and its submission to
-  `main` fails: a check of `main`'s fails on it. (Flume record 0056's amendment of 2026-11-07.)
+  `main` fails: a check of `main`'s fails on it. (flume record 0056's amendment of 2026-11-07.)
   flume starts nothing; the base place waits on
   its caller with sluice's words, delivered to its recipient. The
   caller launches a fix on the base place's branch with those words as
@@ -4797,7 +4816,7 @@ These are not requirements.
   by flume for the base place. Had `main` moved twice more under it,
   each move conflicting, its kind's bound of two fixes would have been
   spent. The base place would then have waited on its caller, said and
-  delivered (23, 43, 130, 203, 210). (Flume record 0056's amendment of 2026-11-07.)
+  delivered (23, 43, 130, 203, 210). (flume record 0056's amendment of 2026-11-07.)
 - **S121.** The runner launches a fix naming the planner's address and
   itself its recipients. No pane holds the runner's name, so no notice
   of the fix's ends goes to it, and each stays pending for it. The
