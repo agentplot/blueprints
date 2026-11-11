@@ -15,10 +15,11 @@ records an inbox holds and how they lie; the protocol that writes a
 shared branch; the kind format, by which a tool declares the stages
 work goes through, as a list or as a statechart; the engine, which
 ticks a statechart; cadence; the built-in adapters; the delivery, a message
-a tool owes a reader until the reader confirms it; and the conformance
-pack that holds every host, every adapter and every deliverer's store
-to the rest. Part B is its contracts: the operations weir needs across
-its six seams, an adapter, a host, a shared branch's keeper, a kind's
+a tool owes a reader until the reader confirms it; the link, by which
+each step that carries a signal to a published version names the step
+before it; and the conformance pack that holds every host, every
+adapter and every deliverer's store to the rest. Part B is its
+contracts: the operations weir needs across its six seams, an adapter, a host, a shared branch's keeper, a kind's
 reader, a clock and a deliverer's store, and the guarantee each must
 give. Part C is the profiles: the
 ways each contract is satisfied.
@@ -44,9 +45,10 @@ written by one tool is read by the next with no import. Two hosts
 writing one record to one branch at once meet one rule, and the second
 is refused. A kind declared for flume is read by sounding without a
 format of its own. A message one tool owes a reader is done when that
-reader confirms it, whichever tool owes it. And a conformance pack
-says, of any host, adapter or deliverer's store, whether it keeps the
-contract. weir judges nothing a capture says, moves no signal, hands no
+reader confirms it, whichever tool owes it. A published version traces
+back, one step at a time, to the signal behind it, whichever tools
+took the steps. And a conformance pack says, of any host, adapter or
+deliverer's store, whether it keeps the contract. weir judges nothing a capture says, moves no signal, hands no
 message over, starts no agent and lands no work: those are the tools'.
 weir fixes the forms they meet in.
 
@@ -235,6 +237,14 @@ redefine these.
   (106).
 - **store** (of deliveries): where a deliverer keeps its deliveries'
   records, on a machine or on a shared branch.
+- **chain**: the steps that carry a signal to a published version: the
+  item made of it, the item's work, that work's landing, and the
+  version published from the landing.
+- **step**: one of a chain's acts, taken by one tool, which makes
+  something from what the step before it made; the signal stands before
+  the first.
+- **link**: the record of one step: what the step made, and the step
+  before it.
 
 <!-- ANCHOR_END: glossary -->
 <!-- ANCHOR: part-a -->
@@ -483,7 +493,7 @@ redefine these.
     as none, `stages = []`, and names no stage a failed submission sends
     a place back to. A kind with stages that names a landing fix, or how many it runs, is refused naming the field, and so is a landing fix named by anything but an identity with its version. (weir record 0005, the user's, 2026-11-07.) A kind's table that holds settings for its agents
     and leaves its stages out declares no kind: it is read as settings
-    given to a kind of that name declared elsewhere, for every stage or
+    given to a kind declared elsewhere under that name, for every stage or
     for stages it names, and is never refused as a kind with no stage.
 58. The same declaration always reads the same, and reading it changes
     nothing. Which declaration a name resolves to, among a tool's own,
@@ -694,6 +704,24 @@ redefine these.
 107. A delivery is done once every one of its readers has confirmed it.
      A deliverer may let go of a done delivery, with its hand-overs and
      its confirmations, and lets go of no other.
+
+### A.15 Links
+
+114. Every step of a chain has a link, which the tool that took the step
+     signs in its own identity. A link names what its step made and the
+     step before it, each by content hash. Read link by link, a
+     published version traces back to the signal behind it
+     (agentplot/strategy decision #46, accepted by the user on
+     2026-11-11).
+115. A verifier checks a chain from its links and the records they name,
+     and calls no service: each link's signature against the signers it
+     is given, and each content hash against what it names
+     (agentplot/strategy decision #46, accepted by the user on
+     2026-11-11).
+116. The tool that took a step makes its link, and the link is the same
+     whoever decided the step: the person in their own session, or
+     another deciding for them (agentplot/strategy decision #46,
+     accepted by the user on 2026-11-11).
 
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
@@ -1537,7 +1565,7 @@ the seven steps a host takes; the records of a capture, a signal, a
 move, a batch, an item, a brief and a send, with the layout; the write
 protocol; the kind format, read and checked, and the engine's tick;
 cadence; the built-in adapters; the delivery records and B.7's calls;
-and the pack, with fixed examples of each. A conformance
+the link; and the pack, with fixed examples of each. A conformance
 pack whose cases each cite the clauses they exercise, failing when no
 case cites a clause. The profiles of Part C, each passing the pack,
 and millpond passing it as a host.
