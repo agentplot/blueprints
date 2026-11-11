@@ -608,7 +608,11 @@ redefine these.
     its inputs, or a write it was asked to make. A child it runs and
     waits on for that write, git for a branch's write (C.3), is no
     process of its own: it ends with the call, and nothing of weir
-    outlives a call.
+    outlives a call. A try of a call weir makes to a remote waits on
+    the remote no longer than the family's limit for a try, and is
+    then ended with everything it started, the call failing and naming
+    the call, the remote and the limit, so a remote that never answers
+    holds no writer longer than that (C.3).
 70. weir never lists a source, never judges what a capture or a
     delivery's message says, never chooses a move, never hands a
     delivery over or confirms one, never starts an agent, never submits
@@ -934,6 +938,21 @@ nothing more, never standing in for step 4 (49). It names its holder
 and when it was taken; the operator breaks a stale one, or a writer
 does once it is older than the keeper allows. crew keeps a twin of
 these steps in Python, and the pack's cases for the protocol hold both.
+
+Each git call of these steps that reaches the remote is one try: the
+fetch of step 1, the listing that says whether a branch not fetched
+exists, and the push of step 4. A try runs in a process group of its
+own and ends at thirty seconds, the family's limit for a try of a call
+to a remote (agentplot/sluice record 0109). At the limit its group is
+asked to end, given two seconds, then killed, so git's remote helper
+ends with it (69). A stopped try fails as `git <fetch|ls-remote|push>
+with <remote> was still going after 30s, the most a try may take, and
+was stopped`, after git's last line on standard error where it wrote
+one. A stopped fetch or listing fails the read. A stopped push fails
+the write and is no refusal, so it is not replayed (step 5). Whether
+it landed is read at the next write's fetch, where every check is made
+again (46). No setting of a writer's changes the limit. `weir-bounded`
+holds it, the group's ending and the words.
 
 ### C.4 Kinds: TOML
 
@@ -1332,6 +1351,12 @@ Constraints already fixed:
   store of its own, flume's on its host and sluice's on its branch, and
   moves onto `weir-delivery` in a change of its own, sluice taking its
   first dependency on weir for it (weir record 0006).
+- The family's limit for a try of a call to a remote is agentplot/sluice
+  record 0109's, thirty seconds, its group asked to end, given two
+  seconds, then killed. weir holds its code, `weir-bounded`, since
+  sluice, flume and Boomdrive already take weir's crates. Each of them
+  takes it in place of a copy of its own, in a change of its own
+  (agentplot-design's ruling of 2026-11-10; weir record 0008).
 - weir is free and open source, under MIT, in a public repository of
   the family's own, `agentplot/weir`, scaffolded from kit-standard's
   code profile, with `main` under sluice's gate.
@@ -1344,7 +1369,9 @@ The rest of the stack, which a model builds on unless it says why not:
   hash and the cut), `weir-signals` (the signal, move, batch, item,
   brief and send records and the inbox's layout), `weir-adapters` (the
   folder drop, the meeting file and the signals-folder import),
-  `weir-branch` (the write protocol), `weir-kinds` (the kind format,
+  `weir-branch` (the write protocol), `weir-bounded` (a call to a
+  remote run to the family's limit for a try, ended with everything it
+  started), `weir-kinds` (the kind format,
   read and checked, with its packages, their content hash and locks),
   `weir-cadence` (five-field cron, caught up once) and `weir-delivery`
   (the delivery records, both their spellings and B.7's calls), with
