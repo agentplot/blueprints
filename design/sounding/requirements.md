@@ -736,6 +736,25 @@ each seam's profile under `[bindings]`. A repository's `[bindings]` in
 `.config/sounding.toml`, read at the base's revision, bind any seam for
 its own soundings in their place (100).
 
+### C.9 The three setups
+
+Three setups keep each sounding's record beside the clone, in one form
+(C.7):
+
+| setup | the launcher | where the operator decides | a conclusion and its proposed work go to | an offer goes to |
+|---|---|---|---|---|
+| on its own | flume (C.2) | a Pending You card, sounding's herdr plugin or the command line (C.4) | millpond, which makes an item of each piece of proposed work, or no keeper, the held state keeping both for the operator (C.5) | millpond's inbox on a branch of the user's own repository, or no inbox, the held state keeping it marked as not taken (C.6) |
+| with crew | flume (C.2) | crew's rail (C.4) | crew, whose planner turns each piece of proposed work into a plan entry (C.5) | millpond's inbox on its branch in crew's state repository (C.6; millpond C.13) |
+| with Boomdrive | Boomdrive, which runs each of its elaborations as a sounding (C.2) | Boomdrive's rail (C.4) | the intent, and what lands reaches the intent's line (C.5) | Boomdrive's capture intake (C.6) |
+
+In every setup the operator alone decides each conclusion (57), and a
+sounding works the same whoever opened it and whoever keeps its items
+(73). Going from one setup to the next changes only the bindings the
+operator's settings name (100, C.8). The held state stays beside the
+clone in one form (69), and Boomdrive imports nothing when it takes
+over (agentplot/strategy decision #46, accepted by the user on
+2026-11-11).
+
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
 ## 7. Global invariants
