@@ -103,6 +103,10 @@ redefine these.
   digest it is about.
 - **signer**: an identity that signs claims, and the means to tell that
   a claim is its.
+- **link**: a claim that records one step from a signal to a published
+  version: what the step made, and the step before it, each by digest.
+  Its form is the one the family's tools share (weir 114). A signal is
+  one assertion read from an event outside the repository.
 - **trusted root**: the identities a verifier is given to trust, of the
   parties that issue certificates and of the logs that hold what was
   signed, against which it checks every certificate and inclusion proof
@@ -253,6 +257,14 @@ redefine these.
 20. A publish offers; it never accepts, releases, promotes or deploys.
     Nothing a publisher can do moves a channel or reaches an
     environment.
+144. Every publish has a link, a claim timber signs about the version's
+     index (7, 11). The link names the index and the step before it, the
+     landing. It names the landing by the landed revision and the digest
+     of each signed verdict the landing recorded for that revision (78),
+     or by the revision alone where the landing records none. Read link
+     by link, the version traces back through its landing to the signal
+     behind it (weir 114; agentplot/strategy decision #46, accepted by
+     the user on 2026-11-11).
 
 ### A.4 Versions
 
@@ -1206,6 +1218,24 @@ anything, it answers which environments wait on one (98); a program
 that watches that answer puts the question where the person is, a
 queue of theirs, a hosted timber, Boomdrive, and on their yes promotes
 as them (97, 129). Which program is the operator's choice and no seam.
+
+### C.17 The setups
+
+Two setups keep one store, one ledger and one policy, each the owner's:
+
+| setup | what accepts a version and moves a channel | who says yes to a promotion the policy holds for a person | where that promotion's question is put |
+|---|---|---|---|
+| on its own | the gate, by the repository's policy (25, 32) | the person, as an approver (97) | nowhere: the person, or their own agent's session, reads which environments wait on them and asks for the promotion as them (98, 129) |
+| with Boomdrive | the gate, by the same policy | the same person | on Boomdrive's rail, from which Boomdrive asks for the promotion as the person on their yes, carrying their own token (129, C.16) |
+
+In both setups a publish offers to the store the host binds, the gate
+appends each promotion to the ledger the host binds (118), and each
+environment converges on what its channel names (40). Going from one
+setup to the next changes only which program puts a promotion's
+question to the person, the operator's choice and no seam (C.16). The
+store, the ledger and the policy stay where they are, in one form, and
+Boomdrive imports nothing when it takes over (agentplot/strategy
+decision #46, accepted by the user on 2026-11-11).
 
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
