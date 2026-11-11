@@ -640,6 +640,27 @@ data.
 | transcripts | **the raw bank** | place-raw writes C.4's files under the run's `--raw-dir`. The capture host banks them in its raw bank under the capture's name, and never in git. The raw bank is in its data directory on the machine, which the machine's backup covers, and the capture points into it by `<host>:<path>` (64). |
 | transcripts | **none**, alone | eddy gives a transcript to its asker and writes it nowhere (29) |
 
+### C.6 The three setups
+
+Three setups run the same adapters, each unchanged under every capture
+host (56):
+
+| setup | eddy's settings, sign-ins and cursors | who reads and weighs a meeting | a meeting goes to |
+|---|---|---|---|
+| on its own | its own file, or the file millpond names; its own sign-ins; millpond's cursor on the machine (C.3, C.5) | the person, in their own session, which the Claude Code plugin pulls a transcript into, and a Claude session reading and curating through millpond's tools (millpond C.13) | the asker, and millpond's inbox on a branch of the user's own repository, its raw material in millpond's raw bank on the machine (C.5) |
+| with crew | as on its own, under millpond | crew's reader and curator, and the operator on crew's rail (millpond C.6, C.13) | millpond's inbox on its branch in crew's state repository |
+| with Boomdrive | the file Boomdrive names; the secrets Boomdrive places, which only seed eddy's own sign-in store for a service that renews one on use (78); Boomdrive's cursor (C.5) | Boomdrive's curation session, and the operator on each proposed intent (millpond C.13) | the inbox Boomdrive keeps |
+
+In every setup eddy decides which meetings a listing holds and gives
+each its identity (3, 10), and a reader, never eddy, reads a meeting
+into signals (42). Going from one setup to the next changes only the
+capture host's settings: when each adapter runs, on which machine, and
+for which inbox. An adapter is never told which capture host started
+it (56), and the capture host holds each meeting once (55). A run that
+starts with no cursor costs a listing and no meeting (30), and
+Boomdrive imports nothing when it takes over (agentplot/strategy
+decision #46, accepted by the user on 2026-11-11).
+
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
 ## 7. Global invariants
