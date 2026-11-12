@@ -102,32 +102,22 @@ What these change:
   flume, sluice and timber. What the hosted control plane shows, and
   where, is agentplot/boomdrive-cloud's to rule.
 
-## Use cases the user named
+## Use cases
 
-"I want these captured because there are some key ideas for Boom Drive.
-There's always been this idea of connecting Boom drives in a graph and
-this is the start of it."
+The user asked for these to be kept as the start of linking drives in
+a graph.
 
 | use case | what is published | who watches it | the watcher's rule |
 |---|---|---|---|
 | the family's flake | a version of flume, sluice, timber or Boomdrive | Boomdrive's flake | one group for the family, Boomdrive's own kind, a 10-minute window in heavy development and a day otherwise |
 | registry upstreams | a release on npm or any registry headwater reads | any repository that pins it | patch and minor: `update`, low priority, scanned every 5 minutes, sent every 30 |
-| a company's web app | the web app's version, with its notes | an executive | no launch; one item a week, across teams |
-| quarterly strategy | the executive's quarterly strategy documents | each team's drive | an intent, medium-high |
+| a company's web app | the web app's version, with its notes | an executive | `digest`: one page a week, across teams |
+| quarterly strategy | the executive's quarterly strategy documents | each team's drive | an intent, elevated |
 | a client's request | the executive's demand for a client request or a demo | the team's drive | urgent |
 
-Of the web app: "Now imagine a company building a web app with similar
-internal dependencies. The web app itself gets released, has versions,
-and has release notes. You might have an executive upstream from that
-who has the headwater dependency on that website and could have the
-same interval and batching rules." They want "every time there's a new
-release, let me be able to look at the release notes and drill in to
-check out the new functionality", or, batched, "I just want to know
-once a week, and I want this rolled up across these different teams
-that are building different products." Of the strategy: "the executive
-might be building their own product: quarterly strategy guidance for
-the teams. Those would be feeding as intents into the teams' boom
-drives."
+The executive's rule over the teams' releases names a `digest` kind:
+an agent reads the week's notes from every team and writes one page.
+Patches are dropped there, as the teams' own business.
 
 One seam links two drives: a publish in one is an offer in the other.
 A team's versions reach the executive as progress, and the executive's
@@ -147,7 +137,7 @@ work, as the pack's context map has it.
             v                                |
    +--- team A's drive ----------------------+----+     team B's drive
    |  millpond: the policy                        |     the same
-   |    the quarterly strategy -> medium-high      |
+   |    the quarterly strategy -> elevated         |
    |    a client's request     -> urgent           |
    |    a patch release        -> update, low      |
    |    a meeting              -> no rule: curation|
@@ -212,10 +202,10 @@ stand.
 | advisory | an advisory names the pin | `update` | high | none: the next tick |
 | family | a release of the family's own tools, in Boomdrive's flake | Boomdrive's own kind | normal | 10 minutes in heavy development, a day otherwise |
 | point releases | a patch or minor release | `update` | low | 30 minutes |
-| majors | a major release | `fix` | normal | the keeper's |
-| team releases, in the executive's drive | a version of a team's web app | none | low | a week |
+| majors | a major release | `fix` | normal | a week |
+| team releases, in the executive's drive | a minor or major of a team's web app | `digest` | normal | a week |
 | a client's request, in a team's drive | the executive's demand | none | urgent | none |
-| quarterly strategy, in a team's drive | the executive's quarterly strategy | none | medium-high | none |
+| quarterly strategy, in a team's drive | the executive's quarterly strategy | none | elevated | none |
 | no rule | a meeting's signals, and anything else | curation's | curation's | curation's |
 
 A meeting's signals and the executive's strategy differ by source: the
@@ -256,9 +246,25 @@ sends.
 flume already orders waiting places by the priority a launch gives
 (70). A rule's priority is its launch's. For an item no kind launches,
 it is the order in which a person meets it. millpond carries the
-priority a rule gave, and orders nothing itself (73). A rule names a
-level, and the inbox's settings give each level its number in flume's
-order, so the setting says what it is (principles, 13).
+priority a rule gave, and orders nothing itself (73). A rule names one
+of five levels, low, normal, elevated, high and urgent, and the inbox's
+settings give each its number in flume's order, so the setting says
+what it is (principles, 13).
+
+### The calls this design makes
+
+Each is the research agent's, cheap to change, with the path not
+taken:
+
+| call | the path not taken |
+|---|---|
+| The policy lives in the inbox's settings, `.config/millpond.toml`, one file per drive in every setup; a rule reaches one repository by `repository` | a policy in each depending repository: one drive's rules would then be spread over its repositories, and a cloud-only drive has none |
+| A rule ends in one of three outcomes: a kind to launch, `kind = false` for a person's turn, or `drop` with a reason, millpond's drop move (36) | a rule that only launches, leaving every other release to curation |
+| Five named levels of priority, each mapped to a number in flume's order | numbers in the rules, which say nothing to their reader |
+| The `update` kind declares the label `operation` (flume 180), so a stream's agents owed to operation (181) take an update's agent stage before construction's, and the hosted control plane shows updates under Operation, outside the construction gauge (agentplot/boomdrive-cloud core.84) | updates sharing construction's agents and gauge |
+| A watching drive always gives its own priority; a publisher's tag is a fact its rules match | the publisher's stated priority taken as the watcher's |
+| A drive kept only in the cloud runs the same policy there, weir's evaluator under the control plane's clock | such a drive having no policy until it has a runner |
+| A launch carries its parameters in one file, `--params-file`, a list of each dependency's from, to, level and move | one `--param` for each value, which cannot carry a window's several dependencies |
 
 ### What a launch carries
 
@@ -366,20 +372,12 @@ elaboration, a planning run, a curation run or a member's own ask"
 
 ## Open
 
-- Where the policy is kept: in the inbox's settings, which are the
-  keeper's (2), or in each depending repository, beside its pins.
-- The levels of priority, and the number each takes in flume's order.
+- The user's word on each call above.
 - How a planner, crew's or Boomdrive's, carries out a rule's item
   without judging it.
-- Whether a launch carries parameters, or a brief whose form the
-  kind's command reads.
 - What carries a drive's publish to another drive: timber's channel and
   headwater's lookup, or the control plane's subscriptions, which the
   context pack has push-based and paid.
-- Whether a watching drive's rule may take a priority its publisher
-  states, or always gives its own.
-- Where a drive kept only in the cloud, as the executive's, runs its
-  policy, with no runner to run millpond's tick.
 - Two loose ends from the brief: millpond's adapter table (C.12) lacks
   the adapter timber's section 9 promises, and timber's book
   (`books/timber/src/family.md`, `open.md`) still lists Attic and the
