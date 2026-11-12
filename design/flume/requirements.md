@@ -919,10 +919,13 @@ redefine these.
     its own, a layer's named file beneath that layer's own keys (195).
     Its environment is the account's chosen for it from
     its pool (145), with the variables the entry of the role it runs
-    for names over it (193), and nothing else gives one: no other layer
-    names a variable, and an agent with no pool runs under the login
-    environment alone, its role's variables over it (29, 144). A
-    variable a role's entry names by a reference is resolved at the
+    for names over it (193) and the variables its launch names over
+    those (7), and nothing else gives one: no other layer names a
+    variable, and an agent with no pool runs under the login
+    environment alone, its role's and its launch's variables over it
+    (29, 144). So whoever launches a place decides what of its own
+    credentials the place's agents need, and passes it. A variable a
+    role's entry or a launch names by a reference is resolved at the
     start, and its value is written in no record of flume's (flume record 0065, proposed). The launch's settings, the
     repository's and the kind's are those the launch read (8, 20, 21);
     the host's configuration, its accounts among it, is read as it
@@ -2410,8 +2413,10 @@ redefine these.
      account's (32, 196), a secret by a reference the host resolves and
      never by its value (flume record 0065, proposed). The source also declares
      the words of what the role answers, and may name the kinds its
-     session launches its projects as, which a stage's prompt gives
-     (28, 214). The host declares the source and its streams and locks its
+     session launches its projects as with the words of when each
+     serves, which a stage's prompt gives (28, 214), since a role finds
+     no kind it is not told of. flume refuses no kind a role launches
+     for its entry not naming it. The host declares the source and its streams and locks its
      kinds, and declares nothing of its roles. The source whose kinds
      run a role declares it once, at an address for each stream it
      answers in. A role a source declares, run or standing, may stand
@@ -3009,8 +3014,13 @@ declaration resolved over by a launch's gives the place nothing of its
 own kind's settings. A repository's agents tables give a program, a
 model, an effort, a mode and instructions, and carry nothing of one host: an `env` in a
 repository's `.config/flume.toml` refuses the launch naming the field
-(4), since an environment is an account's alone (144, C.7); so does a
-`keep_open` there or in a kind's declaration, since how long an agent
+(4), since an environment is an account's, a role's and a launch's
+alone (32, 144, 193, C.7). A launch gives a variable by `flume launch
+--agent [<stage>.]env.<name>=<value>`, and a secret by a reference the
+host resolves at the start, as a role's entry names one, never by its
+value, since flume keeps a launch's settings with its place (8). A
+`keep_open` in a repository's `.config/flume.toml` or in a kind's
+declaration refuses the launch the same way, since how long an agent
 is kept open is the host's or the launch's (198), and a launch gives it
 by `flume launch --agent [<stage>.]keep_open=<time>`. `mode`
 is a field of every agents table, the kind's, a stage's, the
@@ -3959,7 +3969,8 @@ The rest of the stack, which a model builds on unless it says why not:
     `settle`, which the Claude Code plugin's hooks run at an agent's
     quiet and a caller keeping watch runs with its bound (121, 208);
   - a Claude Code plugin that gives every session `/launch` and serves
-    `status`, `message`, `wake`, `hibernate` and `resume` over MCP, each
+    `launch`, `status`, `message`, `wake`, `hibernate` and `resume`
+    over MCP, each
     the same act as the command line's (60; flume record 0065, proposed). flume loads it into every agent it starts, and
     its hooks hold the asking mark, the stop check and the guard, and
     settle the place the moment its agent goes quiet;
@@ -5023,7 +5034,9 @@ These are not requirements.
   C.4; flume record 0065, proposed).
 - **S128.** A standing ops role is asked to roll a fix out to staging
   and to look into a failing nightly job. It launches each as a place of
-  a kind its entry names, naming no recipient, and hibernates. Both
+  a kind its entry names by flume's MCP `launch`, naming no recipient,
+  the rollout's launch passing the staging deploy key by its reference,
+  and hibernates. Both
   places run in their own panes, beside every other place in the
   multiplexer. The job's place stops short with a question, which
   reaches the role's address and resumes it; the role answers and
