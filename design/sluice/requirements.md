@@ -726,7 +726,12 @@ redefine these.
     the refused branch by, said once while the refusal stands (121);
     and an entry asked for by its number and found on no branch that
     could be read is said to be unfound among those, naming the
-    branches that could not be read, never said to be no entry. Any
+    branches that could not be read, never said to be no entry. A
+    number that entries on more than one branch hold names none of
+    them alone: a lookup by it is refused, naming each branch that
+    holds it, and the act that asked takes the branch to name one,
+    since a branch whose records are on its remote numbers its entries
+    apart from the host's own (agentplot/sluice record 0114). Any
     other failure of one branch's round is that branch's the same way:
     the run goes on to the other branches and says it once while it
     stands; and a run bounded to a number of rounds that passed a
