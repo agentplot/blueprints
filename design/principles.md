@@ -115,7 +115,7 @@ right." Each repository's CLAUDE.md points here.
     that's the perfect thing to externalize. Yet you didn't make that an
     externalized config. Jeezum, we need to externalize the things that
     can be and make sense to be externalized"; "We should not be passing
-    Flume some custom SwanCloud JSON. Flume is supposed to be figuring
+    flume some custom SwanCloud JSON. flume is supposed to be figuring
     out Claude Code usage on its own. This coupling cannot exist"; "why
     is this in swancloud configs? the idea is that the are part of the
     recipe from crew/boomdrive".)
@@ -131,3 +131,16 @@ right." Each repository's CLAUDE.md points here.
     minutes because the repo was private. The repo will be public and it
     won't matter. We will want to optimize as we go but we want to make
     sure to optimize with Timber.")
+
+16. **No check reads Markdown.** No check, test or gate task in any
+    kit reads a Markdown file: a doc, a README, a skill, a site page,
+    an instruction, a spec or a record. What a page says is kept by the
+    people and agents who write and review it, never by code that greps
+    it. A rule about what a page must say stays a rule its writers
+    keep, and no task enforces it. (Written 2026-11-11 by
+    agentplot-design from the user's words that day, on sluice's
+    `root:installs`, a check that greps the READMEs, skills and site
+    pages for install commands: "I don't want fucking checks on
+    instructions. That has got to fucking stop. That is my biggest pet
+    peeve. We do not fucking write code tests against Markdown
+    files.")
