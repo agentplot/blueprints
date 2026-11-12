@@ -185,6 +185,28 @@ stand in herdr panes. Its page is kept unchanged, from crew's branch at
     agents' settings (flume record 0044). A role run per wake keeps a kind
     whose stage delivers, as crew's `turn` does. A pane started outside
     flume no longer holds a role once crew's roles move into the package.
+21. **A standing role hands its projects to flume places of related
+    kinds.** On 2026-11-12 the operator returned to decision 13's
+    delegation: "I feel like that will fit a lot better if those
+    sub-agents are launched through flume." A planner "often does two or
+    three different types of tasks", and "we might want those to be
+    launched as related flume kinds, similar to ops." The role's
+    instructions have it "look for and identify the current projects they
+    might be managing", and an ops role doing several things at once can
+    "treat those as projects and launch two or three flume places. That
+    would be nice because the user would be able to see everything in the
+    multiplexer the same way they always would." The written design
+    already carries the return path: a launch that names no recipient
+    reports to the session that launched it (7), and a role's agent takes
+    the role's address as its session's name (132), so a project's ends
+    wait at the address as deliveries with the role's other work (214) and
+    resume it where it hibernates (213). The role's own conversation then
+    holds its projects' names and ends, never their work, and a resumed
+    role reads its projects from status. The role's entry names its
+    related kinds, which its prompt gives with what it answers (193).
+    Claude Code's own subagents stay the role's for a lookup answered
+    within one turn: that much is this page's choice, since a project
+    runs past a turn and a subagent ends with it.
 
 ## What the written design already settles
 
@@ -330,6 +352,12 @@ the move stays open.
   caller's word; a run's entry gives its kind, repository, name, intent
   and agents' settings, model and effort among them (flume records 0039,
   0044).
+- **A place a role's run launches reports to the role.** A launch that
+  names no recipient has the session that launched it as its recipient,
+  as the terminal it runs in names it (7), and a run's agent takes its
+  address as its session's name (132). A place launched from a role's
+  session, with no recipient named, so sends its ends to the role's
+  address and wakes the role where no run is live.
 - **Ends already queue; tells do not.** A place's ends are weir deliveries,
   pending for each recipient until it confirms them, collected by
   `flume inbox`, and a notice of one goes into a pane only while the agent
@@ -385,8 +413,9 @@ the move stays open.
 ## What the talk proposes
 
 flume's statement carries the talk's rulings as amendments proposed on this
-branch at `101cc2b` (32, 42, 43, 49, 53 to 56, 109, 179, 180, 193, 198, 212
-to 215, C.2, C.4, C.5, sections 9 and 10, I5, S6, S17, S124 to S127). A
+branch at `101cc2b` and `5529cf6` (32, 42, 43, 49, 53 to 56, 109, 179,
+180, 193, 198, 212 to 215, C.2, C.4, C.5, sections 9 and 10, I5, S6, S17,
+S124 to S128). A
 draft of flume's record 0065 for them is at
 `design/research/2026-11-11-flume-record-0065-draft.md`. This place goes to
 agentplot-design, its recipient, which writes each record in its own
@@ -397,18 +426,24 @@ then turns the accepted records into work.
   core.30 and core.32 amended for a resume and a role's environment. The
   work: `flume hibernate` and `flume resume`; hibernating on idle at a
   settle; `message` in place of `tell`; a role's deliveries batched at its
-  session's next wait; the plugin's deliver mod; the MCP tools; the pin
-  moved to a Claude Code release that runs hooks modules.
+  session's next wait; the plugin's deliver mod; the MCP tools; a role
+  entry's related kinds in its prompt, and a standing role's live places
+  in status (56, 193); the pin moved to a Claude Code release that runs
+  hooks modules.
 - **agentplot/boomdrive**: the host's setup sets `cleanupPeriodDays` in
   every account home, once, longer than any hibernation (C.4).
 - **agentplot/crew**: `crew tell` and crew's notices become deliveries to
   the role's address (214); crew's five roles move into a roles package
   of kinds and role entries, the standing ones as kinds whose stage is a
-  hibernating conversation (193); the briefs stop calling them crew's
-  roles, since they are Boomdrive's.
+  hibernating conversation (193); each role's entry names its related
+  kinds, the planner's and ops' among them, and its standing instructions
+  have it find its current projects and launch each as a place of one of
+  them (21); the briefs stop calling them crew's roles, since they are
+  Boomdrive's.
 - **agentplot/boomdrive-cloud**: each role shown under the column its
-  label names (core.76), with its state and a resume; MCP tools that wake
-  a role on a host through the runner and answer later.
+  label names (core.76), with its state, its live places and a resume;
+  MCP tools that wake a role on a host through the runner and answer
+  later.
 
 ## Still open
 
@@ -426,3 +461,10 @@ then turns the accepted records into work.
   on one host (73).
 - Account health as a signal that moves sessions (the notes' millpond
   signal).
+- What environment a role's projects run with. An ops role's credentials
+  are its entry's (16), and a place it launches runs with its own kind's
+  settings and its account's environment (32), so a project that deploys
+  needs those credentials by some other way: the role's layer carried to
+  its places, the kind's own, or a role entry for the kind.
+- Whether flume refuses a role's launch of a kind its entry does not name,
+  or the entry only tells the role what it may launch.

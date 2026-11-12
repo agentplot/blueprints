@@ -12,7 +12,7 @@ decision-makers:
 This is a draft for agentplot/flume's `docs/adr/`, written in the research
 place `research--a-session-sleeps-and-wakes` on agentplot/blueprints for
 agentplot-design to carry there. Its statement is the amendment on that
-branch at `101cc2b`.
+branch at `101cc2b` and `5529cf6`.
 
 Status: proposed, on the operator's words and choices of 2026-11-11 in that
 talk, each quoted in `design/research/2026-11-11-a-session-sleeps-and-wakes.md`
@@ -26,7 +26,11 @@ and once you can't benefit from the cache anymore, you might as well
 hibernate it." "if it's stuck waiting for an answer, it should be allowed to
 hibernate and then be woken up when the answer comes". "flume can launch
 these on demand but can also be configured with predefined standing
-agents." Their choices: the host keeps transcripts by `cleanupPeriodDays`
+agents." On 2026-11-12, of a role's work: "I feel like that will fit a lot
+better if those sub-agents are launched through flume", "launched as
+related flume kinds, similar to ops", so that "the user would be able to
+see everything in the multiplexer the same way they always would." Their
+choices: the host keeps transcripts by `cleanupPeriodDays`
 and flume keeps no copy; a message to a hibernating session resumes it;
 every message to a role waits as a delivery at its address; a delivery
 reaches a live session by its program's own channel, a Claude Code mod
@@ -35,9 +39,9 @@ wakes and reads a role; a role's entry names its own environment; a role's
 label is its room and its column; a standing role is a session flume keeps,
 defined by a kind.
 
-Sources: `agentplot/blueprints:design/flume/requirements.md` at `101cc2b`,
-clauses 32, 42, 43, 49, 53 to 56, 109, 179, 180, 193, 198, 212 to 215, C.2,
-C.4, C.5, sections 9 and 10, I5, S6, S17, S124 to S127; records 0003, 0016,
+Sources: `agentplot/blueprints:design/flume/requirements.md` at `5529cf6`,
+clauses 7, 32, 42, 43, 49, 53 to 56, 109, 132, 179, 180, 193, 198, 212 to
+215, C.2, C.4, C.5, sections 9 and 10, I5, S6, S17, S124 to S128; records 0003, 0016,
 0020 with its amendments, 0039, 0044, 0052 and 0061; rules core.10, core.13,
 core.30 and core.32; on deneb on 2026-11-11, every account home's
 `projects` a link to `~/.claude/projects`, no home setting
@@ -73,7 +77,9 @@ For transcripts: the host sets `cleanupPeriodDays` once; flume keeps its own
 copy and restores it before a resume; flume owns a configuration home per
 account. For a message to a busy session: typed by the terminal as today;
 a delivery at the address taken at the session's next wait, by its
-program's own channel; the control plane's queue.
+program's own channel; the control plane's queue. For a role's own
+projects: its program's subagents, as its prompting asks; places it
+launches of kinds its entry names.
 
 ## Decision outcome
 
@@ -88,7 +94,11 @@ a delivery at its address, handed as one prompt at the session's next wait
 by its agent profile's deliver part, a mod for Claude Code, the terminal
 the fallback (43, 54, 214, 215). A standing role is a role whose kind's
 stage is a hibernating conversation (193). A role's entry names its own
-environment (32, 193). `tell` is `message` (53 to 55).
+environment (32, 193) and the kinds its session launches its projects as,
+which its prompt gives. A place a role launches naming no recipient
+reports to the role's address (7, 132), so its ends join the role's
+deliveries and resume it, and status gives a standing role's live places
+(56, 214). `tell` is `message` (53 to 55).
 
 ### Why not the others
 
@@ -100,7 +110,9 @@ does not own and two copies that differ (record 0020, option 3), and a
 configuration home of flume's writes where core.32 forbids it. Typing into
 a busy session interleaves tasks and clears what a person typed; the
 control plane's queue would put a second queue beside flume's deliveries
-(record 0061).
+(record 0061). A program's subagents end with the turn that started them,
+hold the role's account, and show in no pane, where a project runs past a
+turn; they stay the role's for a lookup answered within one.
 
 ### Consequences
 
@@ -111,9 +123,13 @@ control plane's queue would put a second queue beside flume's deliveries
 - The deliver row needs a Claude Code release that runs hooks modules: read
   on 2.1.322, and flume pins 2.1.296.
 - Open: a resume's identity, and how a resumed Claude Code agent passes
-  the "Resume this conversation?" dialog (section 10).
+  the "Resume this conversation?" dialog (section 10); what environment a
+  role's projects run with, an ops role's credentials being its entry's;
+  whether flume refuses a role's launch of a kind its entry does not name.
 - Elsewhere: the host's setup sets `cleanupPeriodDays` in every home
-  (agentplot/boomdrive); crew's tells become deliveries and its roles move
-  into a roles package (agentplot/crew); the control plane shows each role
-  under its label's column and its MCP tools answer later when they wake a
-  role (agentplot/boomdrive-cloud).
+  (agentplot/boomdrive); crew's tells become deliveries, its roles move
+  into a roles package, each entry naming its related kinds, and their
+  instructions launch their projects as places (agentplot/crew); the
+  control plane shows each role under its label's column with its live
+  places, and its MCP tools answer later when they wake a role
+  (agentplot/boomdrive-cloud).
