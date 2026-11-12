@@ -3348,8 +3348,9 @@ socket, without the sessions it saved, since a block Rex restores runs a
 login shell and never its agent (77). It never stops a server, and never
 uses the one the Rex app runs for its user. A person sees a session's
 server in the Rex app once they add its socket under the app's Remote
-Hosts, which attach's refusal names; `rex hosts add` writes only Rex's
-own list of hosts, which the app does not read.
+Hosts, which attach's refusal names. Only a person adds one: the app
+shows no host that `rex hosts add` writes into Rex's list of hosts, and
+writes its own back into that list when `rex hosts remove` takes one out.
 
 The Rex profile records in the host's state, by id and server, each Rex
 session and window it made. It closes a place's window in each server it
@@ -3421,10 +3422,13 @@ no record, its program not started again, under a new `instance_id`.
 `server start` on a socket of the caller's starts a server detached, and
 answers the running one when asked again. The Rex app showed a second
 server once a person added its socket under Remote Hosts, and
-`session.view` listed a block the person opened there; `rex hosts add`
-put the host in Rex's own list, which the app did not show. The app
-refused `session.select` as not accepting actions while its Remote
-Control setting was off. `capture` gives the scrollback with the screen,
+`session.view` listed a block the person opened there. The app showed no
+host `rex hosts add` put in Rex's list of hosts, and wrote the hosts a
+person added back into that list within a second of `rex hosts remove`.
+The app refused `session.select` as not accepting actions while its
+Remote Control setting was off. With it on, `session.select` on the
+second server brought the session to the front at the window named,
+answering `null`, and no call read back what the app showed. `capture` gives the scrollback with the screen,
 and no option limits it to the screen. A socket path longer than 104
 bytes failed to bind.
 
