@@ -7,9 +7,10 @@ admit any model that satisfies it.
 The statement is in three parts. Part A is what must hold of millpond
 on its own: how an inbox takes each event once as a capture, keeps the
 event's raw material, runs the programs that list sources, holds the
-signals read from captures and the moves curation gives them, and sends
-the items curation makes. Part B is its contracts: the operations it
-needs across its eleven seams, an adapter, the inbox store, the raw
+signals read from captures and the moves the keeper's rules and
+curation give them, and sends the items they make. Part B is its
+contracts: the operations it needs across its eleven seams, an
+adapter, the inbox store, the raw
 bank, the per-host state, the host's secrets, a place, a starter, the
 merge queue's record, an inquiry, a planner and the claims, and the
 guarantee each must give. Part C is the profiles: the ways each
@@ -38,12 +39,14 @@ millpond records each event once, as a capture, and keeps the source's
 material beside it on the host that took it. A capture that quotes
 itself becomes one signal at once. Any other waits for a reader, a
 model session that writes its signals through millpond, and millpond
-takes only the words that stand in the capture's material. Curation,
-another session, gives each signal one move, in batches the operator
-accepts, and joins signals into items. millpond sends an item to a
-place of its own in a repository, sends items that ask a question to an
-inquiry, or lets a planner take items, and records what became of
-each. millpond never judges what a capture says, never plans across
+takes only the words that stand in the capture's material. The
+keeper's policy moves a signal first, by its facts and with no model:
+a rule gathers what it matches over its window into one item, which it
+launches or leaves for a person. Curation, another session, gives each
+signal no rule moved one move, in batches the operator accepts, and
+joins signals into items. millpond sends an item to a place of its
+own in a repository, sends items that ask a question to an inquiry, or
+lets a planner take items, and records what became of each. millpond never judges what a capture says, never plans across
 items, and never submits or lands work.
 
 <!-- ANCHOR_END: preamble -->
@@ -54,15 +57,15 @@ items, and never submits or lands work.
 |---|---|---|
 | **an adapter** (a program that knows one source) | how to list its source, how to key each event, what raw material to write, and whether a capture is its own excerpt | write a record, keep a list of what it offered, cut an excerpt, or read a capture into signals |
 | **a caller** (a deploy, a script, a person, an inquiry handing in a finding) | what to hand in at the intake, and when | keep a cursor or an adapter's status, or have an offer taken that a run's offer would have had refused |
-| **a reader** (a session) | which signals a capture holds, and what each asserts | list a source, change a capture, write a move, or write a signal whose excerpt does not stand in its capture's raw material |
-| **curation** (a session) | which move it proposes for each signal, which signals join into which items, and each item's name and brief | write a capture or a signal, judge a moved signal again, or send an item the operator has not chosen |
+| **a reader** (a session) | which signals a capture holds, what each asserts, and the facts it reads for each, from their lists | list a source, change a capture, write a move, or write a signal whose excerpt does not stand in its capture's raw material |
+| **curation** (a session) | which move it proposes for each signal, which signals join into which items, and each item's name and brief | write a capture or a signal, judge a moved signal again, a rule's move among them, or send an item the operator has not chosen |
 | **the operator** | each batch of moves, accepted or changed, or each item where the setup says so; replacing a move; sending an item, and closing its send as abandoned; each conclusion, accepted, sent back or dropped | |
-| **the keeper** (the operator, or a fleet on the operator's behalf) | an inbox's settings: its adapters, each adapter's host, schedule and configuration, the limit, how a reader starts, and where items go; and the secrets each host holds for its adapters | run an adapter's own logic in place of the adapter |
+| **the keeper** (the operator, or a fleet on the operator's behalf) | an inbox's settings: its adapters, each adapter's host, schedule and configuration, the limit, how a reader starts, where items go, the policy and the people list; and the secrets each host holds for its adapters | run an adapter's own logic in place of the adapter, or write a rule that reads anything but facts (125) |
 | **a planner** | which items it takes, how items are ordered across teams, and what work each becomes | write an inbox's records except through the tool that keeps it |
 | **a starter** (a tool that starts a send's work, or what starts a reader) | how and where the work starts, and submitting a send's work to the merge queue once its worker is done | write anything of the inbox |
 | **a worker** (an agent or a person in a place) | how to do an item's work, and what it commits in its place | submit its work to the merge queue, or record its own landing |
 | **an inquiry** | its conclusion, and the findings beyond its inputs it hands in | write an inbox except as a caller at the intake |
-| **millpond** | which offers it takes and how it keeps what it took, as this statement fixes them | judge what a capture says, plan across items, submit or land work, list a source, or change an inbox's settings |
+| **millpond** | which offers it takes and how it keeps what it took, and each move the policy gives, as this statement fixes them | judge what a capture says, plan across items, submit or land work, list a source, change an inbox's settings, or move a signal by a rule but as the policy gives it (128) |
 
 <!-- ANCHOR_END: actors -->
 <!-- ANCHOR: glossary -->
@@ -76,8 +79,9 @@ redefine these.
 - **record**: a capture, a signal, a move, a batch or an item, with an
   item's brief, sends, landing and conclusion.
 - **settings**: of an inbox, its adapters, each with its host, schedule
-  and configuration; its limit; how a reader starts; and where its
-  items go.
+  and configuration; its limit; how a reader starts; where its items
+  go; its policy and its people list; and the number each priority
+  launches at.
 - **keeper**: whoever decides an inbox's settings.
 - **host**: a machine that keeps an inbox or runs its adapters.
 - **setup**: which tool keeps an inbox, and which session curates it.
@@ -126,7 +130,10 @@ redefine these.
 - **own excerpt**: the excerpt an offer carries when the capture says
   one thing and that thing is its signal, as a release's notes are.
 - **own signal**: the one signal of a capture whose offer carried an own
-  excerpt.
+  excerpt, or that a rule matched as it landed (127).
+- **fact**: a name with one value or several, which a rule may match:
+  **stated** by a capture's source, **joined** by millpond from the
+  people list, or **read** by a reader and checked by millpond.
 - **limit**: the most bytes an excerpt may hold in an inbox's records.
 - **cut**: an own excerpt shortened at a line, with a closing line of
   millpond's, to keep within the limit.
@@ -137,15 +144,30 @@ redefine these.
 - **reader**: a session that turns unread captures into readings.
 - **curation**: a session that gives signals moves, joins them into
   items and writes briefs.
-- **move**: curation's standing judgment on one signal.
+- **move**: curation's standing judgment on one signal, or a rule's
+  standing outcome for it.
 - **batch**: the moves curation proposes together, which stand together
   or not at all.
+- **people list**: the persons and orgs of an inbox's settings that
+  millpond joins facts from, with the teams and repositories a read
+  fact picks from.
+- **policy**: the keeper's rules for an inbox, in order.
+- **rule**: a match on facts with its outcome, a place kind to launch, a
+  person's turn or a drop, and, but for a drop, a priority and a window
+  or none.
+- **place kind**: the stages a place's work goes through, named as its
+  starter names them.
+- **priority**: of a rule, one of five levels, low, normal, elevated,
+  high and urgent: the order its place starts in among the places
+  waiting to start, or the order in which a person meets its item.
+- **window**: of a rule, the schedule whose times close the item the
+  rule gathers.
 - **claim**: a statement of what is true at the destination, kept
   beside an inbox by another tool.
 - **chore**: a small piece of work a route offers.
 - **ask**: something only the operator can give, which a route offers.
-- **item**: a unit of work, made of the signals curation joined into
-  it, or of a piece of work an accepted conclusion proposed;
+- **item**: a unit of work, made of the signals curation or a rule
+  joined into it, or of a piece of work an accepted conclusion proposed;
   **proposed** until it is first sent, **sent** after.
 - **weight**: of an item, how many signals it holds, from which
   sources, over what span of event times.
@@ -239,9 +261,10 @@ redefine these.
 
 ### A.4 Own excerpts and the cut
 
-17. A capture whose offer carries an own excerpt has exactly one
-    signal, its own signal, written in the same write as the capture,
-    and is never unread. Every other capture is unread when written.
+17. A capture whose offer carries an own excerpt, or that a rule
+    matches as it lands (127), has exactly one signal, its own signal,
+    written in the same write as the capture, and is never unread.
+    Every other capture is unread when written.
 18. An own signal's excerpt is the offered text, unchanged, from its
     start to the end of the last line that keeps it within the inbox's
     limit together with one line millpond adds. That line says how
@@ -319,9 +342,11 @@ redefine these.
      capture. A capture a reader left unread is charged again at a later
      tick on its host, once no reader of the inbox runs there.
 34. Every signal carries its capture, a kind, who asserted it, its
-    subjects, its assertion, its excerpt with where it stands, and what
-    it argues with. Its subjects and what it argues with may each be
-    none. A signal never changes once written.
+    subjects, its assertion, its excerpt with where it stands, what it
+    argues with, and the read facts millpond took for it (126). Its
+    subjects, what it argues with and its read facts may each be none,
+    and an own signal a rule made has no kind (127). A signal never
+    changes once written.
 110. A signal's name is its capture's key and its number among that
      capture's signals, counted from one in the order they were
      written. The name is the same on every host and through every
@@ -330,8 +355,8 @@ redefine these.
 ### A.7 Moves
 
 35. Every signal has at most one standing move. Curation proposes moves
-    only for unmoved signals and never judges a moved signal again.
-    Only the operator replaces a move.
+    only for unmoved signals and never judges a moved signal again, one
+    a rule moved among them (129). Only the operator replaces a move.
 111. A move's replacement names who replaced it, as the replacing
      caller names them. millpond takes every name a caller gives for who
      asked, accepted, replaced or decided, and checks no identity.
@@ -353,7 +378,8 @@ redefine these.
      is kept in the inbox as proposed. Its moves do not stand, and
      their signals stay unmoved, until the operator accepts it, whole
      or changed. Where the operator decides each item instead, a
-     batch's moves stand once it is written.
+     batch's moves stand once it is written. A rule's move is in no
+     batch, and stands once written (129).
 41. An unmoved signal is never discarded, however old.
 42. A signal's age is its capture's event time. Every listing, count
     and weight by age reads the event time, never when the capture was
@@ -369,12 +395,14 @@ redefine these.
 45. Every item shows its weight.
 46. Every item has a name no other item of its inbox has ever had.
 113. Curation or the operator names each item a join or a route makes,
-     and millpond refuses a name any item of the inbox has had. An item
-     made from a conclusion's proposed work takes the name 58 gives it.
-     No item's name nests under another's, and neither do its sends'
-     branches.
+     and a rule each item it makes, for itself and its window's close
+     (130). millpond refuses a name any item of the inbox has had. An
+     item made from a conclusion's proposed work takes the name 58
+     gives it. No item's name nests under another's, and neither do its
+     sends' branches.
 47. An item's brief is written by curation or the operator, never by
-    millpond.
+    millpond, but for a rule's item, whose brief millpond writes of its
+    signals' excerpts as they stand (131).
 48. An item is sent only with a brief. Each send keeps the brief it
     handed over as it was handed, whatever the item's brief becomes
     later.
@@ -391,9 +419,9 @@ redefine these.
     the planner took, once however often the planner takes the item.
     Such an inbox sends no item to a place or an inquiry.
 51. A send names exactly one target (a place in a named repository, an
-    inquiry, or the planner) and who asked for it. A send to a place or
-    the planner names exactly one item, and a send to an inquiry names
-    one or more.
+    inquiry, or the planner) and who asked for it, a rule by its name
+    for a rule's send (131). A send to a place or the planner names
+    exactly one item, and a send to an inquiry names one or more.
 52. A send to a place makes a new place of the named repository,
     holding the item's brief. Its branch is new, named for the item and
     the send's number among the item's sends, and cut from the head of
@@ -489,13 +517,16 @@ redefine these.
 
 70. millpond never judges what a capture says. No model reads a
     capture, a signal or raw material inside millpond; only a reader
-    and curation, sessions outside it, judge.
+    and curation, sessions outside it, judge. A rule reads a signal's
+    facts alone, never its words (125).
 71. millpond never lists a source, and keeps no list of what any source
     offered. Its record of what came in is the captures it holds (9).
 121. A move writes nothing outside the inbox. A drop of a release's
      signal acknowledges nothing in the tool that reported the release.
-72. millpond writes no signal but a capture's own (17), and no reading,
-    move or brief of its own judgment.
+72. millpond writes no signal but a capture's own (17, 127), and no
+    reading, move or brief of its own judgment: a rule's move and its
+    item's brief are the keeper's policy, written as it names them
+    (129, 131).
 73. millpond never plans across items. It never orders one item against
     another, and never turns an item into work beyond its one send.
 74. millpond never tests, submits or lands work, and never moves a
@@ -504,6 +535,66 @@ redefine these.
     bank, the per-host state or a status.
 76. Of whatever an adapter comes packaged with, millpond runs only the
     adapter.
+
+### A.14 The policy
+
+125. An inbox's policy and its people list are its keeper's, in its
+     settings, in the forms the family's shared crates give them (weir
+     A.16, A.17). A rule reads facts alone, never a signal's words or
+     raw material. millpond reads a policy as the crates read it, and
+     runs no rule of a policy they refuse: its status says why, and
+     every signal stays unmoved for curation (41) (the update-ladder
+     talk, 2026-11-12).
+126. A signal carries facts of three sorts: those its capture's source
+     stated in the offer (7), those millpond joins from the people list,
+     and those its reader read. millpond takes a read fact only where
+     its value is on the list the crates give it, leaves off every
+     other, naming each to the reader, and takes the signal with the
+     rest; a fact left off never refuses a reading (32; weir 119, 120)
+     (the update-ladder talk, 2026-11-12).
+127. A rule that names no read fact reads a capture with no own excerpt
+     as the capture lands, before any reader is charged with it. A
+     capture such a rule matches is its own signal, written with the
+     capture and moved by the rule in the same write, and no reader is
+     charged with it (17, 33; weir 125, 127) (the update-ladder talk,
+     2026-11-12).
+128. millpond reads the policy for the own signal of every offer that
+     carried an own excerpt, and for every signal of a reading, in the
+     write that brings it, and writes the move of the first rule that
+     matches in that same write. A signal no rule matches stays
+     unmoved, for curation, and no rule reads an imported signal (60;
+     weir 126) (the update-ladder talk, 2026-11-12).
+129. A rule's move is the keeper's word, never millpond's judgment (72):
+     a join into the rule's item, for a rule that names a place kind or
+     a person's turn, or a drop with the rule's reason (36). It stands
+     once written, in no batch and on no one's acceptance (112), and
+     curation never judges it again (35). Only the operator replaces it
+     (the update-ladder talk, 2026-11-12).
+130. A rule gathers what it matches into its current item, a proposed
+     item it made whose window has not closed. Where it has none, it
+     makes one, named for the rule and the window's close, or for its
+     making where the rule has no window (46, 113). Only the ticks of
+     the one host the settings name for the policy close a rule's
+     items, so none is sent twice (3), and a tick closes each item
+     that is due (weir 129). A closed item of a rule that names a place
+     kind is sent to a place of that kind in the repository the rule
+     names (52). One for a person's turn stays proposed, for a person
+     to send. A closed item takes no more of its rule's joins, so the
+     rule's next match makes its next item (37, 115) (the update-ladder
+     talk, 2026-11-12).
+131. A rule's item's brief is its signals' excerpts as they stand, in
+     the order of their event times, which millpond writes as the item
+     closes and adds no word to (47). Its send names the rule as who
+     asked for it (51), and carries the rule's priority as the number
+     the settings give its level, by which the starter orders the
+     place among those waiting to start. millpond lists a rule's item
+     with its priority, and orders nothing by it (73) (the update-ladder
+     talk, 2026-11-12).
+132. In an inbox whose items go to a planner, a rule's item that has
+     closed waits for the planner's take, which hands the planner the
+     item's place kind or its person's turn, its repository and its
+     priority, with its brief (50, 98) (the update-ladder talk,
+     2026-11-12).
 
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
@@ -658,6 +749,7 @@ A `capture` object is an offer:
 | `url` | no | where the event lives upstream |
 | `raw` | no | the raw material, as paths relative to the raw directory: the run's, or the one `millpond land --raw-dir` names (15, 106) |
 | `excerpt` | no | present only for an own excerpt: `text`, verbatim and whole; `kind`; `asserted_by`; `assertion`; `subjects`; `argues_with`; `position`. Each is present, and `subjects` and `argues_with` may be empty lists (17, 34) |
+| `facts` | no | the facts its source states, each name with its value or a list of values, as weir C.9 spells them (126) |
 
 A `cursor` object is a cursor (25). A `done` object is the completion,
 `listed` its count and `failed` each item that failed (23, 26).
@@ -686,18 +778,20 @@ Three commands of millpond's take the lines:
   taken out (23 to 26).
 - `millpond tick` runs every adapter of an inbox whose schedule is due
   on this host (28), reads sluice's record of each open send's branch
-  (117), and starts a reader as C.6 says (33).
+  (117), starts a reader as C.6 says (33), and, on the host the
+  settings name for the policy, closes each rule's item whose window is
+  due and sends it (130).
 
 millpond takes each line in seven steps:
 
 | step | what millpond does | clauses |
 |---|---|---|
-| 1. check it | refuses a bad line, a bad key, a missing field or an excerpt with no text, and names it in the run | 7, 8, 15 |
+| 1. check it | refuses a bad line, a bad key, a missing field, an excerpt with no text or a fact weir C.9 does not spell, and names it in the run | 7, 8, 15 |
 | 2. look up the key | passes over a key the inbox holds, and counts it | 9, 10 |
 | 3. bank the raw files | in the host's raw bank, under the capture's name | 14, 15, 16 |
 | 4. write the capture | with a pointer of the form `<host>:<path>` when anything was banked, in one commit per taken offer | 11, 12, 13, 14, 104 |
-| 5. write the own signal | cut at a line so the text and its closing line fit the limit, the closing line naming what the raw record holds beyond the cut | 17, 18, 19 |
-| 6. mark the capture unread | when it carries no excerpt | 17 |
+| 5. write the own signal | cut at a line so the text and its closing line fit the limit, the closing line naming what the raw record holds beyond the cut; for a capture with no excerpt that a rule matches as it lands, the own signal of weir 127; and the move of the rule the policy gives, in the same commit | 17, 18, 19, 127, 128 |
+| 6. mark the capture unread | when it carries no excerpt and no rule matched it as it landed | 17 |
 | 7. record the run | its counts, failures, cursor and status | 23 to 26 |
 
 One conformance pack in the family's shared crates, lines in and
@@ -722,6 +816,28 @@ schedule, its configuration and the host whose tick runs it; its limit;
 the command that starts a reader; and where its items go (50). They
 also say how old a host's lock may grow before it is stale. A fleet may
 generate the file from a list of its own.
+
+The same file holds the policy, `[[rules]]`, and the people list,
+`[[person]]`, `[[org]]` and `[about]`, in the forms weir C.9 gives them
+(125, 126); the one host whose tick closes and sends the rules' items
+(130); and the number each priority level launches at in flume's
+order (131):
+
+```toml
+[policy]
+host = "deneb"     # the host whose tick closes and sends every rule's item (130)
+
+[priorities]       # each level's number in flume's order, the higher starting first (flume 70)
+low = 10
+normal = 20
+elevated = 30
+high = 40
+urgent = 50
+```
+
+millpond refuses a policy as weir refuses one, naming the field, where
+a rule names a level `[priorities]` gives no number, or where a rule
+gathers items and `[policy]` names no host (125).
 
 | operation | how a shared branch satisfies it |
 |---|---|
@@ -767,13 +883,23 @@ up once (29). On a host that keeps the runner, the runner's pass runs
 runs flume's settle. A host with no runner runs it on a timer of its
 own, one per inbox (agentplot/boomdrive record 0033).
 
+A rule's window is five-field cron as well, read with the same
+cadence, the time its current item was made standing for the last run
+(weir 129). The first tick on the policy's host after a time the window
+names closes the item, so a window is never shorter than the pace of
+the runner's pass or the timer that runs the tick (130). Three clocks
+stand apart: an adapter's schedule says how soon an event is captured,
+a rule's window how often what the rule matched is sent as one item,
+and flume's room, by the launch's priority, when its place starts
+(flume 70) (the update-ladder talk, 2026-11-12).
+
 The limit is 8 KiB unless the inbox's settings say otherwise (18).
 
 ### C.5 Places: flume
 
 | operation | how flume satisfies it |
 |---|---|
-| make | `flume launch` with the repository, the kind, `fix` or `change`, the item's brief as the launch's, a name, and a mark naming the inbox, the item and the send's number. The name is `<item>--<n>`, n the send's number among the item's sends, from 1. flume makes a worktree at `<repository>/places/<kind>--<name>` on the branch `<prefix>/<name>`, the prefix the kind's, cut from the base's head. It refuses a launch whose branch or place stands (52, 89) |
+| make | `flume launch` with the repository; the kind, any kind flume reads, by its name as a launch names it (flume 19), `fix` or `change` for an operator's send and the rule's for a rule's send; the item's brief as the launch's; a name; and a mark naming the inbox, the item and the send's number. A rule's send also gives the launch's priority, the number `[priorities]` gives the rule's level (flume 70), and its parameters, in the one file `--params-file` names: the stated facts of each of the item's signals, one entry per signal in the order of their event times, for the kind's stages to read (131; the update-ladder talk, 2026-11-12). The name is `<item>--<n>`, n the send's number among the item's sends, from 1. flume makes a worktree at `<repository>/places/<kind>--<name>` on the branch `<prefix>/<name>`, the prefix the kind's, cut from the base's head. It refuses a launch whose branch or place stands (52, 89) |
 | find | `flume status --json`: the live place of the repository under the send's name, its mark naming the item and the send, its brief the launch's (116, 122) |
 
 ### C.6 Starters
@@ -838,7 +964,8 @@ A sounding hands a finding beyond its inputs to `millpond land` with
 | **the folder drop**, built in: `millpond capture folder <dir>` | one capture per file; key `folder/<folder name>/<sha256 of the file>`; event time the date the file's name begins with, or else its last write; source `folder`; no excerpt |
 | **the meeting file**, built in: `millpond capture meeting` | one capture per meeting file; no excerpt |
 | **headwater**: `headwater capture`, the adapter in its Boomdrive plugin | one capture per release newer than its pin; source `release`; key `release/<name>/<version>` for a watch-list entry, else `release/<type>/<namespace>/<name>/<version>` from its Package URL; raw the notes whole and what the lookup answered; an own excerpt of the notes, kind `ask`, asserted by the upstream |
-| **eddy**: an adapter per meeting service, in its Boomdrive plugin | one capture per recorded meeting; key `meeting/<service>/<meeting id>`; event time the meeting's start; raw the transcript as served and a plain copy; no excerpt |
+| **eddy**: an adapter per meeting service, in its Boomdrive plugin | one capture per recorded meeting; key `meeting/<service>/<meeting id>`; event time the meeting's start; raw the transcript as served and a plain copy; no excerpt; the meeting's length and attendees as the facts it states (eddy 22; weir C.9) |
+| **timber**: the adapter in its Boomdrive plugin | one capture for each publish and each refusal, as timber's statement promises (timber section 9) |
 | **crew**: `crew signal`, through `millpond land` | agents' and the operator's findings |
 | **a deployer**, through `millpond land` | a failed step, its last lines the own excerpt |
 
@@ -858,6 +985,11 @@ go. When the next setup keeps the inbox on another branch, the inbox's
 history moves to it by a push, and no record is rewritten. The
 adapters' hosts change only in the settings, so nothing is captured
 twice and Boomdrive imports nothing when it takes over (6).
+
+The same policy runs in every setup, and only where a rule's item goes
+differs: on its own, millpond's send launches its place (C.5); with
+crew or Boomdrive, the planner takes it (132) (the update-ladder talk,
+2026-11-12).
 
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
@@ -880,6 +1012,8 @@ twice and Boomdrive imports nothing when it takes over (6).
   cursor costs one wider listing (25, 88).
 - **I9.** Writes from every host keep one history of an inbox: none
   interleave, and none is lost (4, 82).
+- **I10.** A rule moves a signal by its facts alone, with no model, and
+  curation never judges its move again (35, 125, 129).
 
 <!-- ANCHOR_END: invariants -->
 <!-- ANCHOR: non-goals -->
@@ -909,9 +1043,11 @@ Constraints already fixed:
 
 - The repositories items are sent to are git repositories, and work in
   them is done on branches.
-- The family's shared crates define and implement three things once:
+- The family's shared crates define and implement four things once:
   the capture contract; the record formats of captures, signals, moves,
-  batches and items; and the protocol that writes a shared branch. They
+  batches and items; the protocol that writes a shared branch; and the
+  facts a signal carries, with the people list's join and the policy's
+  form and reading (weir A.16, A.17). They
   live in a public repository of the family's own, and are an external
   standard to millpond. millpond takes the contract, writes the formats and the protocol as
   the crates give them, and passes their conformance pack (C.1, C.2).
@@ -941,7 +1077,7 @@ The rest of the stack, which a model builds on unless it says why not:
   rec at rest, a sha256 content hash and the cut; the signal, move,
   batch and item records and the inbox's layout; the shared-branch
   write protocol; the folder drop, the meeting file and the
-  signals-folder import; and the cadence.
+  signals-folder import; the cadence; and the policy's reading.
 - Surfaces answering from one core, each plugin kept outside the core
   as sluice keeps its plugins:
   - a command line: `land`, `run`, `tick`, `status --json`, `import`,
@@ -981,6 +1117,8 @@ These are not requirements.
 
 - Who finds the earlier conclusions on an item's subjects for an
   inquiry's inputs, millpond or the inquiry (56)?
+- How does a planner, crew's or Boomdrive's, carry out a rule's item
+  without judging it (132)?
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->
@@ -1066,6 +1204,28 @@ These are not requirements.
   A second send of it to a place is refused. The operator closes the
   first as abandoned, and the next send takes a new branch of its own
   while the first branch stands.
+- **S24.** A rule joins patch and minor releases over a thirty-minute
+  window and names the `update` kind at low priority. Two patch
+  releases land ten minutes apart, and the rule moves each own signal
+  in its capture's write, into one item named for the rule and the
+  window's close. At the first tick after the close, millpond writes the
+  item's brief of the two notes as they stand and sends it, naming the
+  rule as who asked, at the number the settings give low. A third patch
+  twenty minutes later joins the rule's next item.
+- **S25.** A meeting titled "Daily stand-up" lands, and a rule on its
+  title drops it as it lands. No reader is charged with it, and no
+  curation batch ever holds it.
+- **S26.** A meeting with an attendee from a client's org matches no
+  rule as it lands, and is read. The reader gives one signal a request,
+  its speaker a person the people list names an executive, and its
+  `about` a repository the settings do not list. millpond leaves
+  `about` off and names it, and a rule joins the signal into an item
+  for a person's turn at urgent, which waits, proposed, for the
+  operator's send. A second signal of the meeting matches no rule and
+  stays unmoved for curation.
+- **S27.** A rule names the level elevated, and the settings give it no
+  number. millpond refuses the policy naming the level, its status says
+  why, and every signal that lands stays unmoved for curation.
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
@@ -1074,7 +1234,8 @@ These are not requirements.
 A model of millpond that satisfies Parts A and B: its components; the
 records of a capture, a signal, a move, a batch, an item and a send,
 and an adapter's status; how an offer is taken, a reading checked, a
-batch written and an item sent, with fixed examples; and how an
+batch written, a signal moved by a rule, a rule's item closed and an
+item sent, with fixed examples; and how an
 adapter, an inbox store, a starter and a planner are added. A
 conformance suite whose scenarios each cite the clauses they exercise,
 failing when no scenario cites a clause. The profiles of Part C, each
