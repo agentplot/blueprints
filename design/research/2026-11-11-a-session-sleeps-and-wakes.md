@@ -147,11 +147,14 @@ stand in herdr panes. Its page is kept unchanged, from crew's branch at
     tools that tell a role, wake or resume it and read where it stands,
     each the same act as the command line's (60): "I don't love the verb
     'tell' but I can't think of something better".
-16. **A role carries its own environment.** The operator chose that a
-    role's declaration names its environment variables and MCP servers,
-    laid over its account's, its secrets named by reference and never
-    written there. It loosens core.30, under which an agent's environment
-    is its account's "and nothing else gives one".
+16. **An agent's credentials are the environment the operator sets up.**
+    On 2026-11-12 the operator deferred how credentials reach an agent:
+    "we need to kick the can on this and assume that the agents are
+    running in environments I'm setting up ahead of time. Those
+    environments have the necessary credentials. That's what we've been
+    doing so far." An agent's environment stays its account's, "and
+    nothing else gives one" (32, core.30), and a kind's MCP servers stay
+    the host's configuration's, by its own settings (195, 196).
 17. **A delivery reaches a live session by its program's own channel, one
     path for every message.** The operator chose that every message to a
     role, crew's tells among them, is a delivery, and that flume's agent
@@ -181,8 +184,7 @@ stand in herdr panes. Its page is kept unchanged, from crew's branch at
     hibernates (2), its standing instructions are the role's persona
     (148), and its label places it (19); the role's entry in the package's
     roles file names that kind with its address, the words of what it
-    answers (193), its own environment and MCP servers (16) and its
-    agents' settings (flume record 0044). A role run per wake keeps a kind
+    answers (193) and its agents' settings (flume record 0044). A role run per wake keeps a kind
     whose stage delivers, as crew's `turn` does. A pane started outside
     flume no longer holds a role once crew's roles move into the package.
 21. **A standing role hands its projects to flume places of related
@@ -207,18 +209,9 @@ stand in herdr panes. Its page is kept unchanged, from crew's branch at
     Claude Code's own subagents stay the role's for a lookup answered
     within one turn: that much is this page's choice, since a project
     runs past a turn and a subagent ends with it.
-22. **Whoever launches a place passes the credentials it needs, and a
-    role's kinds are told, never enforced.** An ops role's credentials
-    are its entry's (16), and a place it launches runs under its own
-    account. The operator: "it might be nice if there is a way for the
-    agent launching the flume place to decide what is necessary to pass
-    and pass it through either the CLI or MCP." So a launch names
-    environment variables for its agents, over the account's and a
-    role's (32), by `flume launch --agent env.<name>=<value>` and by a
-    `launch` tool flume's MCP server gains; a secret goes by a reference
-    the host resolves at the start, since flume keeps a launch's
-    settings with its place (8) and a value would be written there. Of
-    kinds a role's entry does not name: "I don't think we care to
+22. **A role's related kinds are told, never enforced.** An agent
+    launches a project by the command line or by a `launch` tool flume's
+    MCP server gains. Of kinds a role's entry does not name: "I don't think we care to
     enforce them but I also don't know if we have to build it into the
     prompt. I don't see the agent really discovering and knowing that it
     can call other kinds." flume refuses none. The prompt carries them,
@@ -432,7 +425,7 @@ the move stays open.
 ## What the talk proposes
 
 flume's statement carries the talk's rulings as amendments proposed on this
-branch at `101cc2b`, `5529cf6` and `5198749` (32, 42, 43, 49, 53 to 56,
+branch at `101cc2b`, `5529cf6`, `5198749` and `3cb6f3f` (32, 42, 43, 49, 53 to 56,
 109, 179, 180, 193, 198, 212 to 215, C.2, C.4, C.5, sections 9 and 10, I5,
 S6, S17, S124 to S128). A
 draft of flume's record 0065 for them is at
@@ -441,13 +434,12 @@ agentplot-design, its recipient, which writes each record in its own
 repository, puts it to the operator, and lands the amendment; the planner
 then turns the accepted records into work.
 
-- **agentplot/flume**: record 0065 from the draft, and rules core.10,
-  core.30 and core.32 amended for a resume and a role's environment. The
+- **agentplot/flume**: record 0065 from the draft, and rules core.10 and
+  core.32 amended for a resume. The
   work: `flume hibernate` and `flume resume`; hibernating on idle at a
   settle; `message` in place of `tell`; a role's deliveries batched at its
   session's next wait; the plugin's deliver mod; the MCP tools, `launch`
-  among them; a launch's environment variables, secrets by reference
-  (32, C.2); a role entry's related kinds in its prompt, and a standing
+  among them; a role entry's related kinds in its prompt, and a standing
   role's live places in status (56, 193); the pin moved to a Claude Code release that runs
   hooks modules.
 - **agentplot/boomdrive**: the host's setup sets `cleanupPeriodDays` in
@@ -481,7 +473,6 @@ then turns the accepted records into work.
   on one host (73).
 - Account health as a signal that moves sessions (the notes' millpond
   signal).
-- Which references a launch may name. The host resolves whatever
-  reference a launch names (32), so any caller on the host reaches any
-  secret the host's resolver holds; whether a launch from a role is held
-  to its entry's references is unsettled.
+- How credentials reach an agent on a machine the operator does not set
+  up, such as a managed fleet: what holds them, what resolves them, and
+  how a launching agent passes a project only what it needs (16).
