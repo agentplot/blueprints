@@ -171,3 +171,168 @@ carried end to end through the runner (boomdrive-cloud record 0016), so
 Superlogical's own web client is out of it. The relay Boomdrive's record 0004
 asks of flume is not yet in flume's statement; this brief does not take it
 up.
+
+## The talk with the operator
+
+<!-- The operator's words are quoted as they wrote them. -->
+<!-- vale Blueprints.Hedges = NO -->
+The operator asked for a prototype: "i want to make a small prototype that
+can approximate what we want to do. and i want you to be able to show it to
+me. if you can make windows/blocks in rex, start claude. send simple
+commands, read status, that kind of thing". Then they asked that the
+handoff be complete: "Can we look at the existing herder seam and make sure
+we can implement it so that, as part of this handoff, we have precisely
+what's needed for construction?"
+<!-- vale Blueprints.Hedges = YES -->
+
+### The prototype
+
+`rexflume`, a Python script of about 350 lines kept in the session's
+scratchpad and committed nowhere, since a part of a repository with its
+own language is a project of the repository's task runner. Each of its
+commands, open, send, state, watch, screen, show, close and runs, is one
+short process that calls `rex` and exits. On the operator's own Rex
+server, with the app showing it:
+
+- open made a Rex session, a window and a block, and Claude Code 2.1.322
+  reported `idle` about a second later. A second open split the window.
+- send pressed ctrl+c, typed the text with `rex send` and pressed Enter.
+  It listened to the session's events from before the text was typed, and
+  read `working` a tenth of a second after Enter. A text of two lines
+  arrived as one prompt.
+- watch followed the same events while the operator answered Claude Code's
+  question in the app: `working`, `blocked` with `kind=question` read as
+  asking, `working`, then `done` read as waiting.
+- show was refused by the app, which accepts no action until its Remote
+  Control setting is turned on.
+- A block given only the start script's variables saw them, with Rex's
+  `TERM`, `COLORTERM`, `TERM_PROGRAM`, `REX_SERVER`, `REX_SESSION` and
+  `REX_BLOCK`, and no variable's value stood in any process's arguments.
+- close ended a block's program and every process under it.
+
+The operator then added a second Rex server, started on a socket of the
+test's, to the app by hand: "i just connected. saw your window. added a new
+terminal and typed ls". The app is a client of each server it shows, and
+`client.list` on that server listed it with `info.kind` `app`.
+
+### What the talk settled
+
+The operator's own choices:
+
+1. **Every operation is a bounded `rex` call, and no process of flume's
+   runs between commands.** The operator asked: "Given this exploration and
+   prototype, we don't need to have a server running. We can do it all
+   through the CLI, right?" The prototype did all of it that way (120;
+   core.13).
+2. **send types the text with `rex send` and presses Enter.** The operator
+   asked: "why paste/enter? why not `block send`?" A text with a newline in
+   it arrived in Claude Code as one prompt, so a paste buys nothing.
+3. **Rex's events serve within one call, and a state read asks.** The
+   operator asked: "why not use terminal.program_status_changed?" 120 rules
+   out a process kept between commands, and a send that listens for its
+   own call's length keeps none. A send whose agent profile reads no
+   received ack of its program's listens for `working` or `blocked`; every
+   other read is one `program_status` call.
+4. **Each stream's session is a Rex server, each base a Rex session, each
+   place a window and each agent a block.** In the operator's words: "can
+   we start multiple servers. right now we're running the embedded mac
+   server. but we can probably run a linux server or separate serer on
+   mac. then we'd have an afterthought, agentplot, madswan, and wldn server
+   (the streams). each base is a session". Rex's levels then match herdr's
+   one for one: a herdr session is a server, as a Rex server is.
+5. **flume starts a session's Rex server where none runs.** In the
+   operator's words: "how do we manage herdr sessions? i think we want
+   stream->sessionn/server so the answer is probably yes." herdr's profile
+   starts a session's herdr server headless, and Rex's starts its server by
+   `rex server start`.
+
+Choices the written rules decide or that cost little to change, each mine,
+with the path not taken:
+
+- Rex's `error` reads as waiting while the program runs and as stopped
+  once it exits, and never ends a stage (96; core.9). Not taken: unknown,
+  which would hide an agent sitting at its prompt after a failed turn.
+- The environment reaches the program through a start script, mode 0700,
+  that removes itself and execs `/usr/bin/env -i`. Not taken: the variables
+  as the block's arguments, which stay in the arguments of the block's
+  `/usr/bin/login`, a process every user of the host can list.
+- A server flume starts restores nothing (`--restore=false`). Not taken:
+  restoring, which brings each block back as a login shell under its
+  agent's label and never the agent (77).
+- open claims the identity by writing the agent's record only where none
+  stands (98). Not taken: reading the session's labels alone, which two
+  opens at once both pass, since Rex refuses no label twice.
+- The program check reads the child of the block's `/usr/bin/login` in the
+  host's process table, since Rex's `process` names only `login`.
+- show labels the place's window and the base's Rex session, both found by
+  their recorded ids. Not taken: a base count shown nowhere.
+- A server's socket is `<state>/terminal/rex/<session>.sock`, and a name
+  that makes it longer than 104 bytes is refused. Not taken: sockets named
+  by a digest, which a person adding one to the app cannot tell apart.
+- flume never uses the server the Rex app runs for its user. Not taken: the
+  app's server as flume's own session, which mixes flume's blocks with the
+  person's.
+- Rex's own skill and hook are never installed by flume (core.32).
+- The profile pins Rex from Rex's flake, which packages Rex for
+  aarch64-darwin; its preview channel served 0.1.0-preview.16 on 2026-11-11,
+  so construction checks each reading here against the release it pins.
+
+These are written as the Rex rows of C.5, with S91's uncarried example
+moved to `cmux` and `REX_*` added to the variables C.6 strips.
+
+### What construction touches beyond the statement
+
+Read from agentplot/flume's main at `e2973d57`:
+
+- **Registration.** The profile is `crates/flume/src/profiles/terminal/rex`,
+  named in the module list, `terminal_profiles()` and `terminal()` of
+  `crates/flume/src/profiles.rs`, its records under `state/terminal/rex`.
+  Every declared stream's terminal is built on ordinary commands and asked
+  `session()`, `session_state()` and `kept()`, so building it contacts no
+  server.
+- **Views.** Rex offers the app view alone, so a stream naming Rex names
+  `view = "app"`.
+- **Session names.** The core takes the first terminal whose
+  `session_state` answers (`crates/flume-core/src/terminals.rs`), so the
+  Rex profile answers none for a name in herdr's form.
+- **Tests that hold `rex` uncarried.** `crates/flume/tests/profiles/built_in.rs:192`
+  and `crates/flume/tests/commands.rs:3999-4035`, and the openspec specs
+  stream-terminals, launching, seam-contracts and the-list. The scenarios
+  over the fake terminal keep passing, since the fake resolver carries no
+  `rex`.
+- **Multiplexer variables.** sluice's profile reads a submission from a
+  multiplexer's pane as a session's by `HERDR_`, `ZELLIJ`, `TMUX` and
+  `TMUX_PANE` (`crates/flume/src/profiles/merge_queue/sluice/mod.rs:95-103`);
+  `REX_` joins them, and joins the tests' lists of variables to strip.
+- **The stand-in agent.** The stand-in Claude Code reports its state to
+  herdr alone (`crates/flume/tests/profiles/stand-in/claude.rs`); under Rex
+  it writes OSC 7501.
+- **Conformance.** herdr's seam run drives the pinned herdr on a scratch
+  socket (`crates/flume/tests/profiles/tools/terminal_herdr.rs`). Rex's
+  drives a private `rex server run` on a socket path under 104 bytes with a
+  state folder of its own, as these tests did, an agent held from ending
+  by stopping that server's process, and no app view where no app runs.
+- **No plugin.** flume's herdr plugin reports what herdr's configuration
+  lacks; Rex needs none, and `setup()` keeps the seam's default.
+- **Folder trust.** The agent profile's keys, `down` and `enter`, are names
+  Rex reads as herdr does.
+
+### Not read yet
+
+- the folder-trust question under Rex, which this account's settings skip;
+- a `blocked` record with `kind=permission`;
+- whether Codex, OpenCode or another program reports OSC 7501;
+- `session.select` for a session on a server the app reaches as a remote
+  host, which waits on the app's Remote Control;
+- which app macOS holds responsible for a server flume starts, and so
+  which privacy permissions its programs get;
+- an app of one Rex release showing a server of another.
+
+### Found outside this brief
+
+- herdr's profile presses ctrl+c before every send whatever the agent's
+  state (`crates/flume/src/profiles/terminal/herdr/mod.rs:1959-1978`),
+  while C.5 clears held input only while the agent waits; a working agent
+  is interrupted. Its `send_to` reads the state first.
+- The research kind's launch prompt carried no brief; the brief was found
+  in the launcher's scratchpad.
