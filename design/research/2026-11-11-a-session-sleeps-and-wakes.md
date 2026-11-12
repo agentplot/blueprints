@@ -219,6 +219,33 @@ stand in herdr panes. Its page is kept unchanged, from crew's branch at
     source's kinds (56) but says nothing of when one serves, so the
     entry names each related kind with the words of when it serves, and
     the prompt gives them (193).
+23. **An agent defined in configuration reads many repositories and
+    commits through places, one way for all.** The operator: "the
+    standing agents need to work across repos. In an ideal world we're
+    not linking a repo to a standing agent. They should be able to work
+    against more than one." An operational agent "that's never going to
+    write any data that becomes commits [...] could point at multiple
+    repos in disconnected places in flume. I think that's a one-to-many
+    relationship." Asked whether the designer, which writes design books
+    in repositories, works the same way: "why not just have it work one
+    way for all of them with no special consideration?" So such an
+    agent's place holds a checkout of each repository its entry names,
+    detached at its base's tip on no branch and moved to the tip at each
+    resume, and nothing it holds is committed. Work that must commit,
+    a design book's among it, it launches as a place of one of its kinds
+    in that repository, which reports back to it (21). This place is
+    such a place for agentplot's designer.
+24. **They are agents, neither standing nor roles.** The operator: "moving
+    to flume, we need to maybe not bring over the term 'role.' To me
+    these are agents that we're defining", and "Do we have to qualify it
+    as a standing agent? The difference is that the other ones you
+    launch run and might stay open for a while, but these ones are
+    defined in the config as just agents." Role stays Boomdrive's word.
+    flume's statement already gives "agent" to one process started for
+    one stage, the `[agents]` tables of every configuration layer to
+    agents' settings, and "standing agent" to a pane flume did not start
+    (132), so the amendment on this branch keeps "standing role" until
+    agentplot-design names it with the operator in record 0065.
 
 ## What the written design already settles
 
@@ -425,7 +452,7 @@ the move stays open.
 ## What the talk proposes
 
 flume's statement carries the talk's rulings as amendments proposed on this
-branch at `101cc2b`, `5529cf6`, `5198749` and `3cb6f3f` (32, 42, 43, 49, 53 to 56,
+branch at `101cc2b`, `5529cf6`, `5198749`, `3cb6f3f` and `9c0427e` (32, 42, 43, 49, 53 to 56,
 109, 179, 180, 193, 198, 212 to 215, C.2, C.4, C.5, sections 9 and 10, I5,
 S6, S17, S124 to S128). A
 draft of flume's record 0065 for them is at
@@ -440,7 +467,9 @@ then turns the accepted records into work.
   settle; `message` in place of `tell`; a role's deliveries batched at its
   session's next wait; the plugin's deliver mod; the MCP tools, `launch`
   among them; a role entry's related kinds in its prompt, and a standing
-  role's live places in status (56, 193); the pin moved to a Claude Code release that runs
+  role's live places in status (56, 193); a configured agent's place of
+  detached checkouts (193, C.7); the word for that agent, which the
+  operator wants to be "agent", in place of "standing role" (24); the pin moved to a Claude Code release that runs
   hooks modules.
 - **agentplot/boomdrive**: the host's setup sets `cleanupPeriodDays` in
   every account home, once, longer than any hibernation (C.4).
@@ -473,6 +502,11 @@ then turns the accepted records into work.
   on one host (73).
 - Account health as a signal that moves sessions (the notes' millpond
   signal).
+- What becomes of a file a configured agent changes in a checkout it
+  only reads, when a resume moves the checkout to its base's tip.
+- Where configured agents are defined: the roles package a source
+  declares (14), or the host's own configuration, which today declares
+  no role (193, C.7).
 - How credentials reach an agent on a machine the operator does not set
   up, such as a managed fleet: what holds them, what resolves them, and
   how a launching agent passes a project only what it needs (16).

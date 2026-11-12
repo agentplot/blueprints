@@ -12,7 +12,7 @@ decision-makers:
 This is a draft for agentplot/flume's `docs/adr/`, written in the research
 place `research--a-session-sleeps-and-wakes` on agentplot/blueprints for
 agentplot-design to carry there. Its statement is the amendment on that
-branch at `101cc2b`, `5529cf6`, `5198749` and `3cb6f3f`.
+branch at `101cc2b`, `5529cf6`, `5198749`, `3cb6f3f` and `9c0427e`.
 
 Status: proposed, on the operator's words and choices of 2026-11-11 in that
 talk, each quoted in `design/research/2026-11-11-a-session-sleeps-and-wakes.md`
@@ -32,8 +32,12 @@ related flume kinds, similar to ops", so that "the user would be able to
 see everything in the multiplexer the same way they always would." Of
 kinds a role's entry does not name: "I don't think we care to enforce
 them". Of credentials: "we need to kick the can on this and assume that
-the agents are running in environments I'm setting up ahead of time."
-Their
+the agents are running in environments I'm setting up ahead of time." Of
+repositories: "In an ideal world we're not linking a repo to a standing
+agent. They should be able to work against more than one", and "why not
+just have it work one way for all of them with no special
+consideration?" Of the word: "these are agents that we're defining", and
+"I don't think we have to call them standing agents." Their
 choices: the host keeps transcripts by `cleanupPeriodDays`
 and flume keeps no copy; a message to a hibernating session resumes it;
 every message to a role waits as a delivery at its address; a delivery
@@ -43,7 +47,7 @@ wakes and reads a role; a role's
 label is its room and its column; a standing role is a session flume keeps,
 defined by a kind.
 
-Sources: `agentplot/blueprints:design/flume/requirements.md` at `3cb6f3f`,
+Sources: `agentplot/blueprints:design/flume/requirements.md` at `9c0427e`,
 clauses 7, 32, 42, 43, 49, 53 to 56, 109, 132, 179, 180, 193, 198, 212 to
 215, C.2, C.4, C.5, sections 9 and 10, I5, S6, S17, S124 to S128; records 0003, 0016,
 0020 with its amendments, 0039, 0044, 0052 and 0061; rules core.10, core.13,
@@ -104,7 +108,10 @@ kinds its session launches its projects as, which its prompt gives. A place a ro
 reports to the role's address (7, 132), so its ends join the role's
 deliveries and resume it, and status gives a standing role's live places
 (56, 214). An agent launches one by the command line or flume's MCP
-`launch`. An agent's environment stays its account's, which the operator
+`launch`. A standing role's place holds a detached checkout of each
+repository its entry names, moved to its base's tip at each resume, and
+commits nothing; work that must commit goes to a place it launches
+(193, C.7). An agent's environment stays its account's, which the operator
 sets up with the credentials its work needs (32, core.30). flume refuses no
 kind a role's entry does not name; the entry names each with when it
 serves, since a role finds no kind it is not told of (193). `tell` is
@@ -137,7 +144,11 @@ for which an agent may pass on, which no host has yet.
   on 2.1.322, and flume pins 2.1.296.
 - Open: a resume's identity, and how a resumed Claude Code agent passes
   the "Resume this conversation?" dialog (section 10); how credentials
-  reach an agent on a machine the operator does not set up.
+  reach an agent on a machine the operator does not set up; what a
+  resume does with a file changed in a checkout; whether the agents are
+  defined in a source's roles package or the host's configuration; the
+  word for a standing role, which the operator wants to be "agent",
+  where the statement gives that word to one process of one stage.
 - Elsewhere: the host's setup sets `cleanupPeriodDays` in every home
   (agentplot/boomdrive); crew's tells become deliveries, its roles move
   into a roles package, each entry naming its related kinds, and their
