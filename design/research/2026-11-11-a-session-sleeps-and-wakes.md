@@ -128,8 +128,30 @@ stand in herdr panes. Its page is kept unchanged, from crew's branch at
     kinds of stuff at them", and turned down two answers: Claude Code's own
     messaging, since "that then gets us too coupled to Claude Code and makes
     it harder to support other agent types", and several planners load
-    balanced, "I don't think that's the right move." The queue itself is
-    open.
+    balanced, "I don't think that's the right move."
+13. **Every message to a role waits as a delivery at its address.** The
+    operator agreed that a person's, another role's and a control plane's
+    messages to a role are each a delivery pending at the role's address,
+    which its session takes at a turn's end, nothing typed into it mid-task.
+    They added that an agent "can handle a batch if it comes as one", that
+    interleaving a new item into a task under way goes badly ("It's hard to
+    start interleaving two different tasks"), and that standing agents
+    might delegate better to subagents, which nothing in their prompting
+    asks of them today.
+14. **Boomdrive's roles are declared in a roles package.** The operator
+    chose a package of kinds and role declarations that any control plane
+    declares as a source and the host locks, each person configuring their
+    own list; crew carries it while it is the control plane, and 193 stands
+    as written.
+15. **flume's MCP server tells, wakes and reads a role.** The operator chose
+    tools that tell a role, wake or resume it and read where it stands,
+    each the same act as the command line's (60): "I don't love the verb
+    'tell' but I can't think of something better".
+16. **A role carries its own environment.** The operator chose that a
+    role's declaration names its environment variables and MCP servers,
+    laid over its account's, its secrets named by reference and never
+    written there. It loosens core.30, under which an agent's environment
+    is its account's "and nothing else gives one".
 
 ## What the written design already settles
 
@@ -280,6 +302,21 @@ the move stays open.
   `flume inbox`, and a notice of one goes into a pane only while the agent
   there asks no question (43; flume record 0061). A tell is typed into the
   agent's pane once it waits, within a bound (53, 54).
+- **Both go in through the terminal, clearing what a person typed.** A
+  notice is handed "as a notice through the terminal into the recipient's
+  own pane (95)" (43), and herdr's send is `agent send-keys <pane> ctrl+c`,
+  then `agent prompt <pane> <text>` (C.5), so the person's half-typed text
+  in the input box is cleared first. A session flume did not start takes
+  its pending ends at its start from the plugin's SessionStart hook, as
+  context (C.4).
+- **A Claude Code mod submits a prompt without touching the input box.**
+  Plannotator's mod (its `hooks/mod/register.ts`, 0.27.22 on deneb) hands
+  its Inbox replies to a session by Claude Code's `$.prompt.submit`, which
+  enters the text as a turn queued behind the one running, and reads the
+  input box by `$.prompt.read` without changing it. Claude Code runs such
+  modules in interactive sessions, which flume's agents in herdr panes
+  are. A channel of one program belongs behind flume's agent seam, as
+  every other part of Claude Code does (B.4, C.4).
 - **flume's MCP server reads and acts on nothing.** `flume mcp` serves one
   tool, `status`, which settles nothing (57, 60).
 - **An agent's environment is its account's.** "its environment is the
@@ -305,15 +342,12 @@ the move stays open.
 
 ## Still open
 
-- How a role's work is queued so a standing role is not overloaded,
-  agent-neutrally (12).
-- Where Boomdrive's roles are declared: a package of their own that any
-  control plane declares as a source the host locks (193, and the crew
-  talk's recommendation for where the recipes live), or flume's own host
-  configuration, which 193 keeps out of roles.
-- Whether flume's MCP server gains tools that tell or wake a role, so a
-  person's own session reaches a role through it (10, 11).
-- A role's own credentials and MCP servers, which core.30 gives no layer.
+- How a delivery reaches a live session: by the program's own channel
+  behind the agent seam, Claude Code's mod submitting it as a turn, or by
+  the terminal's send, which clears the input box; and whether a tell from
+  crew and an end from flume go in by one path (13).
+- The verb for a message to a role, which the operator would rather were
+  not "tell" (15).
 - What a hibernating session is in flume's status, and how Boomdrive's
   cloud shows a role in its columns and hibernates or resumes it.
 - How a resumed agent's first prompt passes Claude Code's "Resume this
