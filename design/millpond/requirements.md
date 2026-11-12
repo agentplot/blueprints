@@ -762,8 +762,10 @@ cache is `$XDG_CACHE_HOME/millpond/git/`.
 
 A schedule is five-field cron in `.config/millpond.toml`, read with the
 shared crates' cadence, and a run missed while the host slept is caught
-up once (29). One timer on a host runs `millpond tick` for each inbox
-there; on swancloud, a launchd agent per inbox.
+up once (29). On a host that keeps the runner, the runner's pass runs
+`millpond tick` for each inbox there, once a pass and awaited, as it
+runs flume's settle. A host with no runner runs it on a timer of its
+own, one per inbox (agentplot/boomdrive record 0033).
 
 The limit is 8 KiB unless the inbox's settings say otherwise (18).
 
