@@ -59,11 +59,11 @@ and whether submitted work lands is the merge queue's.
 
 | actor | may decide | may not |
 |---|---|---|
-| **a caller** (the operator, millpond, headwater, sounding, crew) | what to launch and when: the repository, kind, brief, name and base, the stream it runs in, the intent it serves with the intent's brief, and the goals, which stages wait on its word and whether the submission does, and its agents' settings, where in the terminal each runs among them; when to tell, stop, retry, finish, drop or declare done any place; each place's priority, at the launch and after it | it never changes a place's kind, brief or base after the launch, never ends an agent that is not quiet without forcing it, never opens, sends to or closes an agent's terminal itself, and never makes flume run anything in a place but its readiness, its teardown and its stages' agents |
+| **a caller** (the operator, millpond, headwater, sounding, crew) | what to launch and when: the repository, kind, brief, name and base, the stream it runs in, the intent it serves with the intent's brief, and the goals, which stages wait on its word and whether the submission does, and its agents' settings, where in the terminal each runs among them; when to message, hibernate, resume, stop, retry, finish, drop or declare done any place; each place's priority, at the launch and after it | it never changes a place's kind, brief or base after the launch, never ends an agent that is not quiet without forcing it, never opens, sends to or closes an agent's terminal itself, and never makes flume run anything in a place but its readiness, its teardown and its stages' agents |
 | **the repository's authors** | the repository's kinds, with whether each lands and where a failed submission sends a place back; what a worktree needs to be ready, and what removing one must undo; each seam's profile (105) | they never decide who launches or when, and never make flume remove a commit a branch holds that its base lacks |
 | **an agent** (a coding agent program working one stage) | how to do its stage, and what it commits in its place; whether to stop short, and what to say | it never ends, starts or moves a stage but by stopping its own short, never goes quiet with its deliverable missing and nothing said (110), never submits, merges or lands, and never acts in another place |
 | **the merge queue** | whether and when a submitted branch lands on its base, and, where its profile does so, removing a landed place through its repository's teardown | it never receives a place's work from the place's agent (71), and removes a place only once its submission landed (113) |
-| **flume** | when a stage has ended; starting each next stage that waits on no word, when the host and its stream have room for it, in its streams' and its callers' priority order, under the account its pool makes usable; submitting a landing kind's place after its last stage, and sending it back when the submission fails; sending prompts and tells; when a place whose work is over is removed | it never decides what to launch, sets no bound of its own on agents and holds no cap on places, orders places by nothing but the priorities its callers gave and the host's streams', never commits, merges or lands, never removes what it did not make or a commit its base lacks, never ends an agent that is not quiet unless forced, never answers an agent's question to a person, and runs no process of its own between its commands (120) |
+| **flume** | when a stage has ended; starting each next stage that waits on no word, when the host and its stream have room for it, in its streams' and its callers' priority order, under the account its pool makes usable; submitting a landing kind's place after its last stage, and sending it back when the submission fails; sending prompts and messages; hibernating a stage whose kind hibernates once its agent is idle past its hibernate time (212); when a place whose work is over is removed | it never decides what to launch, sets no bound of its own on agents and holds no cap on places, orders places by nothing but the priorities its callers gave and the host's streams', never commits, merges or lands, never removes what it did not make or a commit its base lacks, never ends an agent that is not quiet unless forced, never answers an agent's question to a person, and runs no process of its own between its commands (120) |
 | **the operator** | everything no caller and no repository's author settles | |
 
 <!-- ANCHOR_END: actors -->
@@ -267,6 +267,14 @@ redefine these.
 - **kept open**: of an agent that stopped short needing an answer, live
   and waiting for it in its own session until its time passes, it
   stops or its account is spent (198).
+- **hibernating**: of a stage whose kind hibernates it, that its agent
+  was ended once quiet and its session kept for a resume, the stage
+  neither ended nor moved on, holding no room and no account (212).
+- **resume**: a start that goes on with a hibernating stage's own
+  session, at a caller's word, a message or an answer (213).
+- **standing role**: a role whose kind's stage is a conversation that
+  hibernates: one place flume keeps at the role's address, which takes
+  its work in batches and hibernates between them (193, 214).
 - **stop check**: flume sending back an agent that would go quiet with
   its stage's deliverable missing and nothing said (110).
 - **end**: of a stage, that it **delivered**, that it **ended short**,
@@ -330,19 +338,20 @@ redefine these.
   and nothing said.
 - **stage state**: where a stage stands: not reached, on hold, waiting
   on its place's readiness, waiting for room, refused, starting, started, begun, never begun, stuck,
-  lost, stopped by its caller, for review, delivered, ended short, or
+  lost, stopped by its caller, hibernating, for review, delivered, ended short, or
   finished.
 - **retry**: a caller's ask that a place start one stage of its kind
   afresh, the current stage unless the retry names another, with words
   of the caller's for its prompt; or, naming the submission, that flume
   submit the place again.
-- **tell**: words a caller hands the agent of a place's current stage.
+- **message**: words a caller hands the agent of a place's current
+  stage, or puts to a role at its address (53, 214).
 - **stop**: a caller's ask that a place's agent end.
 - **finish**: a caller's word that a conversation is done, or that the
   plan a stage put for review is accepted (163).
 - **for review**: of a stage that delivers a plan, that its agent put a
   plan for review and is quiet, and the stage waits on its caller's
-  finish, tell or retry (163).
+  finish, message or retry (163).
 - **drop**: a caller's word that a place's work is given up.
 - **done**: a caller's word that the work of a place whose kind does
   not land is complete.
@@ -909,9 +918,12 @@ redefine these.
     and each top-level key of a program's own settings is a setting of
     its own, a layer's named file beneath that layer's own keys (195).
     Its environment is the account's chosen for it from
-    its pool (145), and nothing else gives one: no layer above names a
-    variable, and an agent with no pool runs under the login
-    environment alone (29, 144). The launch's settings, the
+    its pool (145), with the variables the entry of the role it runs
+    for names over it (193), and nothing else gives one: no other layer
+    names a variable, and an agent with no pool runs under the login
+    environment alone, its role's variables over it (29, 144). A
+    variable a role's entry names by a reference is resolved at the
+    start, and its value is written in no record of flume's (flume record 0065, proposed). The launch's settings, the
     repository's and the kind's are those the launch read (8, 20, 21);
     the host's configuration, its accounts among it, is read as it
     stands at the start, its local layer over its managed one (C.7), so
@@ -1465,7 +1477,9 @@ redefine these.
     caller's done or drop (52, 114).
 109. A conversation ends only on its caller's finish. Its agent works
      with the operator, and flume holds it to no quiet limit and no stop
-     check, never reports it stuck, and never ends it on its own. A
+     check, never reports it stuck, and never ends it on its own;
+     hibernating one whose kind hibernates it ends its agent and keeps
+     the conversation (212). A
      finish ends the agent once it is quiet, one that is not quiet only
      when forced (31), and the stage then counts as delivered (40). A
      finish of a stage that delivers a plan accepts its plan, and ends
@@ -1483,7 +1497,7 @@ redefine these.
      each recipient of the place as an end is (43), once for each plan
      put; and the place waits on its caller (130). Its caller answers by
      a command it already has:
-     - a **tell** of its notes (53), which reaches the live agent, still
+     - a **message** of its notes (53), which reaches the live agent, still
        in its planning mode, so it revises the plan in its own session
        and puts it again, delivered again;
      - a **retry** naming the stage with its notes as words (49), which
@@ -1504,7 +1518,7 @@ redefine these.
      never stuck (44) and waits on its caller, stalled as 130 says. Its
      agent is live while it waits, so it counts toward the host's and
      its stream's room (70); a caller that would free the room retries
-     with its notes rather than telling them. flume never accepts a plan
+     with its notes rather than messaging them. flume never accepts a plan
      on its own and never judges one: whether a plan is good, and who
      reads it, are the caller's.
 41. An agent stops short by saying so to flume, with its words, and
@@ -1531,8 +1545,8 @@ redefine these.
     agent's words reach the place's recipients, and status, whole and as
     the agent wrote them. The answer, whoever gives it and however it
     reached the caller, is a retry naming the stage with the answer as
-    its words (49), or a tell (53). While the stage's agent is kept open
-    (198), flume hands it the question and the answer as a tell is
+    its words (49), or a message (53). While the stage's agent is kept open
+    (198), flume hands it the question and the answer as a message is
     handed (54) and records them on the stop-short they answer. The
     stage then carries on in that session under the same start, begun
     again, starting and ending no agent and counting no start (48).
@@ -1540,9 +1554,11 @@ redefine these.
     the answer is a retry, and the fresh agent's prompt carries the
     question with the answer. Every answer is recorded on the stop-short
     it answers, with who gave it and when. An answer, a retry's or a
-    tell's, may name the stop-short's key. flume then takes it only
+    message's, may name the stop-short's key. flume then takes it only
     while the place waits on that stop-short, so a question is answered
     once, whether its answer reaches the agent kept open or a fresh one.
+    Where the stage's agent hibernates (212), the answer resumes its
+    session as 213 says.
     A second answer, or one that comes after the place moved on, is
     refused naming the answer taken, who gave it and when (49, 53). A
     stage that ended short having found work is sent back as 131 says.
@@ -1556,8 +1572,10 @@ redefine these.
      and the host's configuration give it. An agent kept open stays
      live, holding its room and its account (70, 145), and an answer
      that comes then reaches its session (42). It is let go once its
-     time has passed. It is let go sooner once it is read stopped or its
-     own record says its session ended (96, 134), as a restart of the
+     time has passed, but where its stage hibernates (212) it is
+     hibernated then instead, and its answer resumes its session (213).
+     It is let go sooner once it is read stopped or its own record says
+     its session ended (96, 134), as a restart of the
      host or its terminal leaves it. A conversation's agent so let go
      is carried at its answer's retry (49), and one its terminal brought
      back bare is left in its pane (77). So it is once its account is spent
@@ -1591,8 +1609,11 @@ redefine these.
     of its recipients until that recipient confirms it (weir 100 to
     107): the settle that reads it (46) records it once, under its key,
     each of its recipients its readers and its notice its message, and
-    hands it to each recipient once, as a notice through the terminal
-    into the recipient's own pane (95), where it was handed to that
+    hands it to each recipient once, as a notice into the recipient's
+    own session at its next wait, by its agent profile's deliver part
+    where its program offers one, which leaves what a person typed in
+    its input untouched, and otherwise through the terminal into its
+    pane (95, 215), where it was handed to that
     recipient by nothing before. A recipient
     named by a role's address is handed it in the pane of that role's
     live run, or of the standing agent its source declares for it (193).
@@ -1848,8 +1869,9 @@ redefine these.
     ended with standing before them, so the agent reads the question
     with its answer (42), and the stages after it then run again
     in order, as 40 and 47 allow; but a retry with words naming a stage
-    whose agent is kept open for its answer (198) is that answer, which
-    reaches that session as 42 says and starts no agent. A retry that
+    whose agent is kept open for its answer (198), or hibernates waiting
+    on it (212), is that answer, which reaches that session as 42 says,
+    or resumes it as 213 says, and restarts no stage. A retry that
     names the submission
     submits the place's head again and starts no agent. A retry names
     any stage of the place's kind, one after the current stage among
@@ -1906,27 +1928,34 @@ redefine these.
      place whose kind lands is refused, naming the place, and its caller
      drops it instead.
 
-### A.9 Tells
+### A.9 Messages
 
-53. A tell hands the agent of a place's current stage its words as a
-    prompt, or nothing at all. A tell to a place with no live agent, or
-    whose agent is asking, is refused with nothing typed. So is a tell
-    to a place whose stage ended short needing an answer while its
-    agent is not kept open (198), naming the retry that answers it. A
-    tell that answers an agent kept open may name the stop-short's key,
-    and is then refused as 49 says unless the place waits on that
-    stop-short (42, 198).
-54. A tell never interrupts a working agent: its words reach the agent
-    only once it is waiting. A tell not delivered within the bound its
-    caller gives, or within ten minutes where it gives none, is refused
-    with nothing typed. A tell delivered is received or sent again as a
-    prompt is (38). An answer handed to an agent kept open (42) is
-    delivered as a tell is, within the same bound; one not delivered
-    leaves the stage waiting on its answer, with nothing recorded.
-55. A tell never starts, ends, holds or moves a stage, never counts as a
-    retry or a finish, and never stands for a deliverable. The one
-    exception is a tell that answers an agent kept open (198), which
-    carries the stage on in that session (42).
+53. A message hands the agent of a place's current stage its words as
+    a prompt, or nothing at all; a message naming a role's address is a
+    delivery to that role (214). A message to a place whose stage
+    hibernates resumes it, its words the resumed agent's first prompt
+    (213). A message to a place with no live agent and no hibernating
+    stage, or whose agent is asking, is refused with nothing typed. So
+    is a message to a place whose stage ended short needing an answer
+    while its agent is neither kept open (198) nor hibernating (212),
+    naming the retry that answers it. A message that answers an agent
+    kept open or hibernating may name the stop-short's key, and is then
+    refused as 49 says unless the place waits on that stop-short (42,
+    198).
+54. A message never interrupts a working agent: its words reach the
+    agent only once it is waiting, by its agent profile's deliver part
+    where its program offers one, and otherwise by the terminal (95,
+    215). A message not delivered within the bound its caller gives, or
+    within ten minutes where it gives none, is refused with nothing
+    typed. A message delivered is received or sent again as a prompt is
+    (38). An answer handed to an agent kept open (42) is delivered as a
+    message is, within the same bound; one not delivered leaves the
+    stage waiting on its answer, with nothing recorded.
+55. A message never starts, ends, holds or moves a stage, never counts
+    as a retry or a finish, and never stands for a deliverable. The
+    exceptions are a message that answers an agent kept open (198),
+    which carries the stage on in that session (42), and a message to a
+    hibernating stage, which resumes it (213).
 
 ### A.10 Status
 
@@ -1946,7 +1975,11 @@ redefine these.
     or a conversation's reported lost, or why not (49, 146, 179),
     whether the terminal brought it back and flume left it in a lost
     conversation's pane (77), and
-    whether it works past its limit (118); each move of a stage or an
+    whether it works past its limit (118); whether the current stage
+    hibernates, and, of one hibernating, since when and why, its
+    hibernate time with where it came from, and each resume, with what
+    started it and whether it carried its conversation or why not (212,
+    213); each move of a stage or an
     intent from one account to another, with why (146, 147); whether the current stage's
     deliverable exists; the place's submission as the merge queue holds
     it, and how many times flume submitted the place; its change's
@@ -1990,7 +2023,8 @@ redefine these.
     identity and the roles it declares, or why they cannot be read (191,
     193); for each role's address an end stands pending for, its
     run, its standing agent, or that it is carried or wakes nothing and
-    why (132); and each end expired for a recipient, of every place,
+    why (132), and, for a standing role, its place, whether it
+    hibernates, and the deliveries pending at its address (214); and each end expired for a recipient, of every place,
     with the recipient and whether its name is known (43; weir 104,
     106).
 130. A place whose next move is its caller's, a stage or a submission on
@@ -2201,7 +2235,10 @@ redefine these.
      of its stream's agents (181), its own kinds declare none, so a host
      gives them theirs, and a label names nothing a host owns (158). A
      place of no label shares the agents no label is owed. Status gives
-     each place's label and where it came from (56).
+     each place's label and where it came from (56), and a caller may
+     read it for its own use, as a control plane shows a role under the
+     column its label names; flume gives it no meaning of its own
+     (flume record 0065, proposed).
 181. A stream may state, for each label, how many of the stream's
      agents its places are owed, `owed`, and how many of those are held
      for it alone, `reserved`, each a whole number of agents from zero.
@@ -2363,7 +2400,14 @@ redefine these.
      each at its address on a stream the host declares (143). Each role
      runs as one of the source's own kinds, launched with what the
      source declares; or a standing agent holds it (132); or its run is
-     on another host, its stream that host's. The source also declares
+     on another host, its stream that host's. A role whose kind's stage
+     is a conversation that hibernates (212) is a standing role: flume
+     keeps one place for it at its address, which takes its work in
+     batches (214), hibernates between them, and ends only on its
+     caller's finish (109). A role's entry may name the environment
+     variables and the MCP servers its agent runs with, over its
+     account's (32, 196), a secret by a reference the host resolves and
+     never by its value (flume record 0065, proposed). The source also declares
      the words of what the role answers, which a stage's prompt gives
      (28). The host declares the source and its streams and locks its
      kinds, and declares nothing of its roles. The source whose kinds
@@ -2419,6 +2463,67 @@ redefine these.
     the terminal resumed the lost agent's own session, as herdr does
     (C.5), what a person said to it is in the conversation the retry
     carries.
+
+### A.14 Hibernate and resume
+
+212. A kind may declare that a stage of it hibernates, a conversation's
+     or one that is not; flume's own kinds declare none. A stage that
+     hibernates is hibernated: a conversation's, once its agent has
+     been quiet for its hibernate time with no question open (90), no
+     own work running (91) and nothing waiting to be handed to it, or
+     at its caller's `flume hibernate`; and any such stage's, once its
+     agent kept open for an answer reaches the end of its time (198),
+     in place of being let go. Hibernating ends the agent once it is
+     quiet (31), keeps the session it ran for a resume (213), and frees
+     its room and its account (70, 145). The stage neither ends nor
+     moves on, counts no start and no retry (48), and while it
+     hibernates it is never stuck, lost or working past its limit (44,
+     45, 118). A conversation still ends only on its caller's finish
+     (109), and a hibernating stage's place takes a finish, a stop, a
+     drop or a done as any place does, with no agent to end. Its
+     hibernate time is the time its settings give, in the forms 198
+     takes, and otherwise the life of its program's prompt cache, one
+     hour, as 198's is, so an agent is kept while its cache still pays
+     and let go once it no longer does; `0` never hibernates it on its
+     idling. No process of flume's waits for the time (120): a settle
+     reads it. A caller's hibernate is refused, naming the place, for a
+     stage whose kind does not hibernate it and for a place with no live
+     agent, and an agent that is not quiet is hibernated only when
+     forced (31). Hibernating is the agent's and never the stage's
+     state machine: a retry, a stop, a drop and a done mean what they
+     mean of any stage (49 to 52, 114). (flume record 0065, proposed)
+213. A resume goes on with a hibernating stage's own session. A caller's
+     `flume resume`, a message to the place (53), a delivery to a role
+     whose place hibernates (214), and the answer to the stop-short a
+     hibernated agent waits on (42) each resume it. A resume starts one
+     fresh agent under an identity of its own (30), carrying the
+     hibernated agent's conversation where its program can carry it
+     (179), on the account the hibernated agent ran under while that
+     account is usable and otherwise on the one 145 chooses where it
+     reaches the conversation, waiting for room as any start does (70).
+     Its prompt is the message's words or the batch's (214), or the
+     question with its answer, or, at a bare resume, flume's words
+     saying the session resumes; then the way to stop short (28). Where
+     no account it takes reaches the conversation, or its transcript is
+     gone, the stage starts afresh with that prompt as 49 says of a lost
+     conversation, flume's words standing before it: its conversation
+     could not be carried, and what it committed and left is in the
+     place. A resumed stage is a running stage: its stop check, its
+     quiet limit and working past it hold from the resume (44, 110,
+     118). A resume never begun, or whose agent is not the stage's, is
+     read as 146 reads a carried start. A resume is no retry: it
+     restarts no stage, carries no retry's words, and runs no later
+     stage again (49). (flume record 0065, proposed)
+214. A message or an end for a role (132, 193) is a delivery pending at
+     the role's address until the role's session takes it (43; weir 100
+     to 107). The session takes every delivery pending for it at once,
+     as one prompt, when it next waits, and nothing reaches it while it
+     works (54, 215): where the role's place has a live agent, flume
+     hands the batch when the agent goes quiet (121); where its stage
+     hibernates, the batch resumes it (213); where the role has no
+     place, it is woken as 132 says, and its run's first prompt carries
+     the batch. Which of a batch's items a role takes first, and which
+     it hands to its own subagents, are the role's (193). (flume record 0065, proposed)
 
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
@@ -2551,7 +2656,7 @@ redefine these.
      it is degraded and how (170, 171).
 179. **carry**: given a start whose agent stopped at its account's
      usage limit, or a conversation's start reported lost, or lost
-     while kept open (49), and the
+     while kept open (49), or a hibernated start (213), and the
      environment of the account the next start of its stage runs under,
      whether the program can carry that agent's conversation to an
      agent under that account, with what the next start resumes; or why
@@ -2575,6 +2680,12 @@ redefine these.
      folder, by arguments or by a variable of the program's, or that the
      program gives no way to take them (195). No release reads its own
      settings back, so a start's record names none and compares none.
+215. **deliver**: given an agent and the words of one or more
+     messages and notices, those words handed to the agent as one
+     prompt the next time it waits, by its program's own channel,
+     leaving whatever a person typed in its input untouched; or that
+     the program gives no way to, where the terminal hands them (43,
+     54, 95, 214; flume record 0065, proposed).
 93. The guarantee: each answer is what the agent's own record shows,
     and an answer the record does not give is unknown, never guessed
     from the terminal; but a part the profile declares degraded is
@@ -2871,6 +2982,7 @@ quiet = "45m"             # the stage's limit (44, 118); 30m when omitted
 name = "review"
 prompt = "prompts/bump-review.md"
 conversation = true       # works with the operator and ends on its caller's finish (109); no deliverables
+hibernate = true          # hibernates once idle past its hibernate time, and resumes at a message (212, 213); never when omitted
 wait = true               # waits on its caller's word (47)
 agents = [{ beside = "operator" }]   # opened beside the pane the launch's settings name as `operator` (107)
 on_fail = "code"          # the stage a failed submission sends the place back to (112); this stage when omitted
@@ -3089,7 +3201,8 @@ round, so the conclusion is never committed on `sounding/<name>`
 | last words | the agent's last message in the session's transcript; where the pinned Claude Code has a StopFailure hook, the plugin records the failure's reason there, a refused sign-in or a usage limit among them, as the agent's last words, which status gives with the agent (43) |
 | spent | the StopFailure hook's `error` of `rate_limit` with words that open as the pinned Claude Code's own usage-limit messages do, "You've hit your limit · resets …" and "You've hit your session limit · resets …" among them, recorded by the plugin with the time it ran; a `rate_limit` with other words, a model under high load or the server limiting requests, is no usage limit. The time the limit resets is the words' `resets <when> (<zone>)` part, or, where the limit hit is a budget, their `your <limit> resets <when> (<zone>)` part, its plan limit's reset. `<when>` is as the release's reset formatter writes it in en-US: within a day, a time of day, `3pm` or `3:30pm`, the first such time in the zone after the hook ran; past a day, a date and a time joined by `at`, `Nov 8 at 12am`, the year after the day where it is not the hook's, `Jan 3, 2027 at 3:30pm`. `<zone>` is the zone's IANA name. Where the words have no such part, or one in another form, the record names none (146) |
 | usage | the session's transcript: each assistant record's `message.usage`, its `cache_read_input_tokens`, `cache_creation_input_tokens` and `input_tokens`, the first such record's for the first request and their sum for the session, and the sum of its `output_tokens` (152, 168) |
-| carry | yes where the start whose conversation it carries has a started ack, and its transcript, as that ack named it, is the same file, by device and inode, as `<home>/projects/<the transcript's folder>/<the transcript's file>`. That start is one that stopped at its limit, or a conversation's start reported lost. `<home>` is the chosen account's `CLAUDE_CONFIG_DIR`, else `~/.claude` of the login environment. The next start then resumes the ack's session by `--resume <session>`. 2.1.296 looks for that session under its own configuration home's `projects` alone, and goes on with it in the same transcript, under the same session. Otherwise it cannot, its words naming `CLAUDE_CONFIG_DIR` and never its value. A lost conversation's start first takes the lost start's own account. That account's configuration home holds the transcript, so its carry needs no shared `projects` (49, 145, 146, 179) |
+| carry | yes where the start whose conversation it carries has a started ack, and its transcript, as that ack named it, is the same file, by device and inode, as `<home>/projects/<the transcript's folder>/<the transcript's file>`. That start is one that stopped at its limit, a conversation's start reported lost, or a hibernated start (213). `<home>` is the chosen account's `CLAUDE_CONFIG_DIR`, else `~/.claude` of the login environment. The next start then resumes the ack's session by `--resume <session>`. 2.1.296 looks for that session under its own configuration home's `projects` alone, and goes on with it in the same transcript, under the same session. Otherwise it cannot, its words naming `CLAUDE_CONFIG_DIR` and never its value. A lost conversation's start first takes the lost start's own account. That account's configuration home holds the transcript, so its carry needs no shared `projects` (49, 145, 146, 179) |
+| deliver | a mod in flume's plugin, a hooks module, hands the words by Claude Code's `$.prompt.submit`, which enters them as a turn queued behind the one running and leaves the input box as the person left it, where the pinned Claude Code runs hooks modules in an interactive session, as 2.1.322 does; otherwise not offered, and the terminal's send hands them (95, 215) |
 | live | the started ack's session runs where a `sessions/<pid>.json` under a configuration home gives that `sessionId`, and a process of the host runs with its `pid` and its `procStart`. `<home>` is each account's `CLAUDE_CONFIG_DIR` the host's configuration declares for `claude`, and the login environment's `~/.claude`. It runs too where a process of the host runs `claude` with the session after `--resume` or `-r`, under whatever home. 2.1.296 writes `sessions/<pid>.json` for each session it runs, with its `pid`, `sessionId`, `cwd` and `procStart`. A record whose process no longer runs, or runs from another start, names no live session, as a crash leaves one. Unknown where a home's `sessions` folder cannot be read or the host's processes cannot be listed. Its words give a process's id and start and never a home's path (30, 49, 207; core.30) |
 | own settings | the keys below reserved, each with its owner; the rest taken by `--settings`, as the command row says, which the pinned 2.1.296 loads as its flag settings, laid over the user's, the project's and the local settings by its own merge (195, 196) |
 
@@ -3122,7 +3235,12 @@ share it. That is the host's choice, made once: flume reads it at
 each start that could carry a conversation and never makes it. It
 shares everything Claude Code keeps of a project there, what its agents
 remember of the project among it. Each home keeps its own credentials,
-and flume copies, links and writes nothing in either (179).
+and flume copies, links and writes nothing in either (179). Every
+Claude Code start under any home cleans the shared folder of
+transcripts older than its home's `cleanupPeriodDays`, thirty days
+where it sets none, so a host whose sessions hibernate sets it in every
+home, once, longer than any hibernation lasts; that too is the host's
+choice, and a resume whose transcript was cleaned starts afresh (213).
 
 Claude Code maps flume's modes (169) to the `--permission-mode` choices
 of the pinned 2.1.296: plan to `plan`, the planning mode a stage that
@@ -3215,7 +3333,7 @@ checked against its release.
 | profile | open | send | state | close |
 |---|---|---|---|---|
 | **herdr** | a pane in the herdr session the launch's settings name, else the one its place's stream names for the place's kind's stage or its kind (199), else the one its place's stream names, by default the stream's name, and flume's own for a place in the host's default stream naming none (107, 143): in each session, one workspace per repository and base, labelled `<repository> <base>` (`flume bolt/the-surfaces`, `sluice main`), made when the first place on that base opens there, and in it one tab per place named `<kind>--<name>`, whose panes are the place's agents that open in that session, so a stage that runs several agents at once splits its place's tab; where the settings name a pane, a split beside that pane instead, as for a conversation, left where its caller put it. The pane is made in the place with the host user's login environment and the agent's environment (C.4) over it set on it, its `PATH` led by a folder of the start's own holding the kind's name linked to the program the settings name, or, for a program the common profile binds, to flume's launcher, which becomes that program (C.4, 171), and its shell one that reads no startup file, so no login shell or rc file of the host's reorders that `PATH`; herdr's agent start runs the program there by the kind its agent profile names, its arguments passed whole, under the agent's herdr name; nothing is typed into the pane's shell. A start whose pane runs anything but the program the settings name is closed and refused, naming what ran, and a program herdr knows no kind for cannot run under herdr (32); nor can a program whose state herdr reads only through its own integration, OMP and MastraCode in 0.9.5, while `herdr integration status` reports that integration not installed, which refuses the launch naming `herdr integration install <name>` (4). The pane is held by its id and its server's socket, and found again by the agent's herdr name where the id no longer answers, as after the pane moves to another workspace: a name of at most 32 of herdr's legal characters made from the identity and unique on the server, a pane found by it taken as the agent's only once herdr lists it under that name. herdr's word that the program is ready is a second signal, never the start (35). A start herdr reads blocked is held at the program's question before it starts: the folder-trust question is answered and herdr waited on until the agent is idle (34), and any other leaves the start never begun with the screen; a start herdr does not see ready within its bound is never begun with the screen (35) | the pane's held input cleared with one ctrl+c while the agent waits, then herdr's prompt to the pane, then received read through the agent (89); a send never leaves text typed: one not received is cleared again before the next | herdr's reading of the agent: working as working; idle and done as waiting, since herdr's done is a finished turn nobody has looked at; blocked as asking only with the agent profile's mark (90), or where the agent's profile reads asking from the terminal (171), and as unknown otherwise; herdr's unknown as unknown; stopped only when the pane is gone, or herdr lists no agent in it and its foreground is the shell, or herdr lists it unrestored after its server's restart | herdr ends the pane and its process group, then reads that it is gone |
-| **printed command** | the command printed, the prompt carried in it, for a person to run in the place | refused, so every tell is refused, no agent is kept open for an answer (198), and a prompt not received is reported never begun (38) | from the agent profile alone; stopped when its record says the session ended | refused unless the agent's record says the session ended |
+| **printed command** | the command printed, the prompt carried in it, for a person to run in the place | refused, so every message is refused, no agent is kept open for an answer (198), and a prompt not received is reported never begun (38) | from the agent profile alone; stopped when its record says the session ended | refused unless the agent's record says the session ended |
 
 Under herdr a session is named `herdr:<pane>@<socket>`, the pane's id
 and its server's socket, wherever a recipient or a launching session is
@@ -3737,7 +3855,7 @@ decision #46, accepted by the user on 2026-11-11).
   branch but its places' own (14, 71, 108).
 - **I4.** flume removes only what it made, and never a commit its base
   lacks (64, 67).
-- **I5.** A prompt or a tell is received or reported, never left typed
+- **I5.** A prompt or a message is received or reported, never left typed
   (38, 53).
 - **I6.** flume decides nothing its callers decide: what to launch, save
   the fix a base place's kind names (203) (flume record 0056, accepted 2026-11-07.), each
@@ -3825,7 +3943,8 @@ The rest of the stack, which a model builds on unless it says why not:
 - Every answer as JSON on request, the form of (61).
 - Three surfaces answering from one core, each a plugin kept outside the
   core as sluice keeps its plugins:
-  - a command line: `flume launch`, `status`, `tell`, `stop`, `retry`,
+  - a command line: `flume launch`, `status`, `message`, `hibernate`,
+    `resume`, `stop`, `retry`,
     `finish`, `drop`, `done`, `tidy` and `prompt`; `kinds lock`, which
     writes a lock (155); `open`, which shows a person a stream's
     agents in its view (186); `list`, which says at a glance what flume
@@ -3834,12 +3953,13 @@ The rest of the stack, which a model builds on unless it says why not:
     `settle`, which the Claude Code plugin's hooks run at an agent's
     quiet and a caller keeping watch runs with its bound (121, 208);
   - a Claude Code plugin that gives every session `/launch` and serves
-    `status` over MCP. flume loads it into every agent it starts, and
+    `status`, `message`, `wake`, `hibernate` and `resume` over MCP, each
+    the same act as the command line's (60; flume record 0065, proposed). flume loads it into every agent it starts, and
     its hooks hold the asking mark, the stop check and the guard, and
     settle the place the moment its agent goes quiet;
   - a herdr plugin whose popup gives every place in flight with its
     line, read from status when a person opens it. Its keys open a
-    place's pane, tell its agent, stop it and retry its stage. The
+    place's pane, message its agent, stop it and retry its stage. The
     sidebar's row on each agent's pane is its place's line, which
     flume's settles show there (139). The plugin runs no settle and
     reads nothing of flume's but at a person's asking (122).
@@ -3923,6 +4043,14 @@ These are not requirements.
   decided: until it is, an agent takes what its program finds in its
   account's folder and its repository, and no server's `labels` is
   read.
+- How does a resumed Claude Code agent's first prompt pass the
+  "Resume this conversation?" dialog 2.1.322 opens for a conversation
+  idle past its cache, which flume never answers for a person (34, 213)?
+  Not decided: by a setting of the program's that keeps it shut, or by
+  a resume that sends its prompt only once the agent waits.
+- What identity does a resume's agent carry, when a resume counts no
+  start of its stage and an identity names the stage's start (30, 48,
+  213)? Not decided.
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->
@@ -3962,9 +4090,9 @@ These are not requirements.
   prompt once the agent waits for input. It finds the prompt not
   received, sends it once more, and the agent receives it. Nothing is
   left typed in its terminal.
-- **S6.** The operator tells a place's agent while it asks a person a
-  question, and the tell is refused with nothing typed. They tell it
-  again while it works. The words reach it once it waits for input, and
+- **S6.** The operator messages a place's agent while it asks a person
+  a question, and the message is refused with nothing typed. They
+  message it again while it works. The words reach it once it waits for input, and
   its stage is unchanged.
 - **S7.** A caller launches two places, every stage after construct and
   each submission on hold. Each construct delivers, and flume starts
@@ -3993,7 +4121,7 @@ These are not requirements.
   version 1 and the second's at version 2.
 - **S14.** The operator asks status from the command line, a session
   through its plugin, and herdr's sidebar on its own, about one place.
-  All three get the same answer, and none starts or tells an agent.
+  All three get the same answer, and none starts or messages an agent.
 - **S15.** A launch names a kind no declaration holds. It is refused,
   naming the kind, and no worktree, branch or record is made.
 - **S16.** A repository's readiness fails at its toolchain. A change's
@@ -4002,7 +4130,7 @@ These are not requirements.
 - **S17.** A code stage's agent is quiet past its limit with nothing
   delivered and nothing said, under an agent program that gives flume
   no way to send it back. Status reports the stage stuck, naming it and
-  the agent, and flume does not end it. A tell wakes the agent, it
+  the agent, and flume does not end it. A message wakes the agent, it
   ticks the last task, and the stage ends at its deliverable.
 - **S18.** sounding opens an elaboration and launches its first round,
   handing its elaboration kind in the launch: one stage on a
@@ -4285,7 +4413,7 @@ These are not requirements.
   its program's planning mode, reads the place and puts a plan for
   review; flume declines its ask to leave planning, and once it is
   quiet the plan is delivered to the caller, the stage for review. The
-  caller shows it to the operator and tells the agent their notes; the
+  caller shows it to the operator and messages the agent their notes; the
   agent revises the plan in its own session and puts it again, which is
   delivered again. The caller finishes the stage: flume copies the plan
   into the place's folder, ends the agent, and starts code, whose
@@ -4633,7 +4761,7 @@ These are not requirements.
   the agent let go by its time and, the agent being quiet, ends it, and
   the second place's stage starts in the room it freed. Status says the
   place still waits on an answer, its agent ended, since the
-  stop-short. A tell of the answer is refused, naming the retry; the
+  stop-short. A message of the answer is refused, naming the retry; the
   retry starts a fresh agent whose prompt carries the question and the
   answer (42, 49, 53, 70, 198).
 - **S105.** A construct agent stops short needing an answer, and within
@@ -4857,13 +4985,44 @@ These are not requirements.
   of its deliveries (43, 56, 62; weir 104 to 107; flume record 0061,
   accepted 2026-11-09).
 
+- **S124.** The operator talks with a research place's conversation,
+  whose kind hibernates it, and leaves it for the evening. An hour after
+  the agent's last turn, with no question open and no own work, the
+  host's watch settles and flume hibernates the stage: it ends the
+  agent, its room and its account are freed, and status gives the stage
+  hibernating since then, idle. Next morning the operator messages the
+  place. flume resumes it: a fresh agent under an identity of its own
+  goes on with the session on the account it ran under, the message as
+  its first prompt, and the conversation carries on until the operator
+  finishes it (109, 212, 213, 53; flume record 0065, proposed).
+- **S125.** A code stage's agent, of a kind that hibernates, stops short
+  needing a person's answer. Kept open its hour (198), it is then
+  hibernated in place of being let go, and the place still waits on its
+  answer. Three hours later the answer comes as a message naming the
+  stop-short's key; flume resumes the agent's session with the question
+  and the answer as its prompt, and the stage delivers (42, 198, 212,
+  213; flume record 0065, proposed).
+- **S126.** A standing ops role is working a failed landing when two
+  messages and an end arrive for its address. Nothing is typed into its
+  session while it works, and the operator's half-typed words stay in
+  its input box. When it goes quiet, flume hands the three as one
+  prompt through the Claude Code plugin's deliver mod, and the role
+  takes them in its next turn (214, 215, 54, 121; flume record 0065,
+  proposed).
+- **S127.** A conversation hibernated forty days is resumed on a host
+  whose account homes set no `cleanupPeriodDays`. Claude Code cleaned
+  its transcript at thirty days, so carry answers that it is gone, and
+  the stage starts afresh with flume's words that its conversation could
+  not be carried and that what it committed is in the place (179, 213,
+  C.4; flume record 0065, proposed).
+
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
 ## 12. What to deliver
 
 A model of flume that satisfies Parts A and B: its components, a place's
 record and its states, how a stage's end is read for each form of
-deliverable and for a conversation, how a prompt and a tell are
+deliverable and for a conversation, how a prompt and a message are
 delivered, how the stop check and the guard hold an agent, how a place
 is submitted and sent back after a failed submission, how a place
 settles while a caller keeps watch over the host and while none does,
