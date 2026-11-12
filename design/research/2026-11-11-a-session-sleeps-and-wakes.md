@@ -160,8 +160,31 @@ stand in herdr panes. Its page is kept unchanged, from crew's branch at
     turn, never typing into the input box; the terminal's send is the
     fallback for a program with no such channel. It changes how 43 hands a
     notice, today "through the terminal into the recipient's own pane".
-18. **The verb is "message".** The operator chose `message` for putting a
-    message to a role, on the command line and as flume's MCP tool.
+18. **The verb is "message", for a place and a role alike.** The operator
+    chose `message` for putting words to a running session, on the command
+    line and as flume's MCP tool, and chose that it replaces `tell` for a
+    place's agent too, so one verb serves both; what 53 to 55 say of a tell
+    holds of a message.
+19. **A role's label is the one word for its room and its column.** The
+    operator chose that a role runs as a kind, the kind's label gives its
+    share of its stream's agents as today (180, 181), and the control plane
+    shows the role under the column its label names, prod-ops and dev-ops
+    under Operation. Labels take the board's words: `inception`, `plan`,
+    `construction` and `operation` (boomdrive-cloud core.76). flume still
+    gives a label no meaning but its share (180), and a label's table still
+    holds `owed` and `reserved` alone (182).
+20. **A standing role is a session flume keeps, defined by a kind.** The
+    operator chose that a standing role is one conversation flume starts,
+    hibernates and resumes, and asked whether such roles are defined with
+    kinds. They are, as 193 has every role run as one of its source's
+    kinds: a standing role's kind has one conversation stage that
+    hibernates (2), its standing instructions are the role's persona
+    (148), and its label places it (19); the role's entry in the package's
+    roles file names that kind with its address, the words of what it
+    answers (193), its own environment and MCP servers (16) and its
+    agents' settings (flume record 0044). A role run per wake keeps a kind
+    whose stage delivers, as crew's `turn` does. A pane started outside
+    flume no longer holds a role once crew's roles move into the package.
 
 ## What the written design already settles
 
@@ -361,17 +384,13 @@ the move stays open.
 
 ## Still open
 
-- How a role's place in the host's room and in the control plane's view is
-  stated: by its kind's label (180), which the control plane also reads
-  as the column it shows the role under, or by a word of its own.
-- Whether `message` replaces `tell` (53) for a place as well as a role.
 - What a hibernating session is in flume's status, and how Boomdrive's
   cloud shows a role in its columns and hibernates or resumes it.
 - How a resumed agent's first prompt passes Claude Code's "Resume this
   conversation?" dialog, which flume never answers for a person (34): a
   setting of the program's that keeps it shut, or a resume that sends no
   prompt until the agent waits.
-- The crew talk's four questions, above.
+- Whether cost is part of the reason for the move, the crew talk's third question.
 - Moving a hibernating session to another host. flume keeps a place's state
   on one host (73).
 - Account health as a signal that moves sessions (the notes' millpond
