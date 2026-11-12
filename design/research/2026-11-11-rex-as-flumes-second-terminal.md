@@ -203,8 +203,8 @@ server, with the app showing it:
 - watch followed the same events while the operator answered Claude Code's
   question in the app: `working`, `blocked` with `kind=question` read as
   asking, `working`, then `done` read as waiting.
-- show was refused by the app, which accepts no action until its Remote
-  Control setting is turned on.
+- show was refused by the app while its Remote Control setting was off,
+  as it is by default.
 - A block given only the start script's variables saw them, with Rex's
   `TERM`, `COLORTERM`, `TERM_PROGRAM`, `REX_SERVER`, `REX_SESSION` and
   `REX_BLOCK`, and no variable's value stood in any process's arguments.
@@ -214,6 +214,18 @@ The operator then added a second Rex server, started on a socket of the
 test's, to the app by hand: "i just connected. saw your window. added a new
 terminal and typed ls". The app is a client of each server it shows, and
 `client.list` on that server listed it with `info.kind` `app`.
+
+With Remote Control turned on, `-C <client> do session.select
+session_id=<id> window_id=<id>` on that second server brought its session
+to the front of the app at the window named: "it did". Each call answered
+`null` and exit 0, and no call reads back which session or window the app
+shows, so a show that returns is as far as the profile can see.
+
+The app writes the hosts a person adds under Remote Hosts into Rex's list
+of hosts, each with an icon and no `added_from`, and wrote both back
+within a second when `rex hosts remove` took them out. It showed none of
+the hosts `rex hosts add` wrote there, so only a person adds a server to
+the app.
 
 ### What the talk settled
 
@@ -322,8 +334,6 @@ Read from agentplot/flume's main at `e2973d57`:
 - the folder-trust question under Rex, which this account's settings skip;
 - a `blocked` record with `kind=permission`;
 - whether Codex, OpenCode or another program reports OSC 7501;
-- `session.select` for a session on a server the app reaches as a remote
-  host, which waits on the app's Remote Control;
 - which app macOS holds responsible for a server flume starts, and so
   which privacy permissions its programs get;
 - an app of one Rex release showing a server of another.
