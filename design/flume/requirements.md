@@ -802,7 +802,8 @@ redefine these.
      composes the templates and the atoms by their names, so a kind
      added changes no code of flume's, and one naming a template or an
      atom flume does not bind is refused naming it (4, 178). It carries
-     a label, the words a person reads for it. Like every kind it is
+     a title, the words a person reads for it, and may declare its
+     label as any kind does (180). Like every kind it is
      named by its identity, resolved, packaged and locked as 19 and 154
      to 160 say. Its version names one content: a change to what it
      holds is a new version beside the earlier one (154, 156), and a
@@ -3075,6 +3076,10 @@ stages, a repository's or a source's, read so (the update-ladder talk,
 2026-11-12):
 
 ```toml
+[kinds.update]
+title = "Take a new version of a dependency"   # the words a person reads (175)
+label = "operation"       # its share of its stream's agents (180, 181)
+
 [kinds.update.regions.stages.states.move]
 machine = "command"       # the command template: the kind's command, no agent (212)
 params = { command = ["bin/move", "{{params}}"], deliverables = ["commits"], on_fail = "fix", max_send_backs = 3 }
