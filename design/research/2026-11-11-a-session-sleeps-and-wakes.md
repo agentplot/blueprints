@@ -382,15 +382,46 @@ the move stays open.
   and which questions a role's run answers or passes on is the run's
   (193).
 
+## What the talk proposes
+
+flume's statement carries the talk's rulings as amendments proposed on this
+branch at `101cc2b` (32, 42, 43, 49, 53 to 56, 109, 179, 180, 193, 198, 212
+to 215, C.2, C.4, C.5, sections 9 and 10, I5, S6, S17, S124 to S127). A
+draft of flume's record 0065 for them is at
+`design/research/2026-11-11-flume-record-0065-draft.md`. This place goes to
+agentplot-design, its recipient, which writes each record in its own
+repository, puts it to the operator, and lands the amendment; the planner
+then turns the accepted records into work.
+
+- **agentplot/flume**: record 0065 from the draft, and rules core.10,
+  core.30 and core.32 amended for a resume and a role's environment. The
+  work: `flume hibernate` and `flume resume`; hibernating on idle at a
+  settle; `message` in place of `tell`; a role's deliveries batched at its
+  session's next wait; the plugin's deliver mod; the MCP tools; the pin
+  moved to a Claude Code release that runs hooks modules.
+- **agentplot/boomdrive**: the host's setup sets `cleanupPeriodDays` in
+  every account home, once, longer than any hibernation (C.4).
+- **agentplot/crew**: `crew tell` and crew's notices become deliveries to
+  the role's address (214); crew's five roles move into a roles package
+  of kinds and role entries, the standing ones as kinds whose stage is a
+  hibernating conversation (193); the briefs stop calling them crew's
+  roles, since they are Boomdrive's.
+- **agentplot/boomdrive-cloud**: each role shown under the column its
+  label names (core.76), with its state and a resume; MCP tools that wake
+  a role on a host through the runner and answer later.
+
 ## Still open
 
+- What identity a resume's agent carries, when a resume counts no start
+  of its stage (30, 48, 213).
 - What a hibernating session is in flume's status, and how Boomdrive's
   cloud shows a role in its columns and hibernates or resumes it.
 - How a resumed agent's first prompt passes Claude Code's "Resume this
   conversation?" dialog, which flume never answers for a person (34): a
   setting of the program's that keeps it shut, or a resume that sends no
   prompt until the agent waits.
-- Whether cost is part of the reason for the move, the crew talk's third question.
+- Whether cost is part of the reason for the move, the crew talk's third
+  question.
 - Moving a hibernating session to another host. flume keeps a place's state
   on one host (73).
 - Account health as a signal that moves sessions (the notes' millpond
