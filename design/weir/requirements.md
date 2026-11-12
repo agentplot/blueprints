@@ -1528,7 +1528,7 @@ window = "*/30 * * * *"        # five-field cron (C.5); none when omitted, due a
 [[rules]]
 name = "a-clients-ask"
 when = { all = [{ fact = "says", is = "request" }, { fact = "attendee.client", is = true }, { any = [{ fact = "speaker.role", is = "executive" }, { fact = "speaker.client", is = true }] }] }
-kind = false                   # a person's turn
+person = "a client's ask"       # a person's turn, and what it waits on them for
 priority = "urgent"
 ```
 
@@ -1541,9 +1541,10 @@ A rule's `when` is a match, one of:
 - `{ older = "<span>" }`, the capture's age past a span, a whole number
   of `m`, `h` or `d`.
 
-A rule holds exactly one of `kind`, a kind's name or `false` for a
-person's turn, and `drop`, a reason. `repository` goes with a kind's
-name, and `priority` with `kind`; `window` may go with `kind`. A
+A rule holds exactly one of `kind`, a kind's name; `person`, a
+person's turn and what it waits on them for; and `drop`, a reason.
+`repository` goes with `kind`, `priority` with `kind` or `person`, and
+`window` may go with either (principle 13). A
 rule's `name` is lowercase letters, digits and `-`. A policy that
 breaks any of these, names a rule twice, or holds a rule with a field
 this profile does not name, is refused naming the field (122). A
