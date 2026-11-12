@@ -49,9 +49,16 @@ a tag read to decide a version (3).
 
 ## Nix, Attic and a fleet
 
-A Nix fleet is a target that pulls (C.12): each machine verifies the
-release assigned to it and realises store paths from a cache. Whether
-the cache is Attic, layered under timber with a small signed artifact
-naming the closure's root, or the store itself serving the binary-cache
-protocol as one more projection, is an [open question](open.md) that a
-measurement answers, not a ruling.
+A Nix fleet is two of timber's targets (C.12). A machine's closure is
+one small artifact, named by its digest, whose file names the closure's
+roots as store paths. The fleet's cache, Attic, holds the paths
+themselves, so the store keeps nothing that a removal of untagged
+objects could leave half held (52, 54). The cache target checks every
+root valid in the host's own Nix store and uploads through Attic's own
+client what the cache lacks.
+
+The clan target switches one machine from a host that holds its key and
+writes a marker of the index applied. The host signs a report beside
+the version, and a channel that comes after the machines follows their
+newest reports (119, 43). A pull profile, each machine switching on its
+own timer, replaces the push machine by machine.

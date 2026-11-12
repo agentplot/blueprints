@@ -47,11 +47,6 @@ it touches.
 
 ## The cache and Nix
 
-- How a Nix closure, thousands of digests with references among them,
-  maps onto artifacts and the cache without a reference-aware removal
-  (52, 54), and whether the store serves the binary-cache protocol as a
-  projection or layers under Attic. A prototype against one machine's
-  closure and a measurement against Attic answer it.
 - Whether the landed task hashes alone give the cache hit rate a fleet
   needs, or moon's remote protocol must be served over the store as
   well (C.3, C.11); a measurement on one host with many worktrees
