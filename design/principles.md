@@ -144,3 +144,18 @@ right." Each repository's CLAUDE.md points here.
     instructions. That has got to fucking stop. That is my biggest pet
     peeve. We do not fucking write code tests against Markdown
     files.")
+
+17. **A tool's plugins come with its CLI from one flake.** Wherever a
+    flake installs a tool's CLI, that flake gives the tool's plugins,
+    its herdr plugin and its Claude Code plugin, built from the same
+    revision. So a plugin's version is its CLI's by construction, and
+    the person matches nothing by hand. The tool's own flake exports
+    its plugins, for the tool on its own. Boomdrive's set takes them
+    from the tool's flake input, so its one pin of the tool moves the
+    CLI and the plugins together. An install line at a release branch
+    or tag stays the way in without Nix. (Written 2026-11-12 by
+    agentplot-design. The user's words that day, on the proposal
+    `timbers-plugins-install-from-its-release`: "This is only
+    acceptable if it means the flake is pinning the plugin to the same
+    version of the CLI that's being installed." Which flakes, and that
+    the Claude Code plugin comes the same way, are agentplot-design's.)
