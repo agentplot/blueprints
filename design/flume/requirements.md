@@ -274,7 +274,8 @@ redefine these.
   session, at a caller's word, a message or an answer (213).
 - **standing role**: a role whose kind's stage is a conversation that
   hibernates: one place flume keeps at the role's address, which takes
-  its work in batches and hibernates between them (193, 214).
+  its work in batches and hibernates between them, reads the
+  repositories its entry names and commits to none (193, 214).
 - **stop check**: flume sending back an agent that would go quiet with
   its stage's deliverable missing and nothing said (110).
 - **end**: of a stage, that it **delivered**, that it **ended short**,
@@ -2402,7 +2403,12 @@ redefine these.
      is a conversation that hibernates (212) is a standing role: flume
      keeps one place for it at its address, which takes its work in
      batches (214), hibernates between them, and ends only on its
-     caller's finish (109). The source also declares
+     caller's finish (109). Its place is a folder of flume's holding a
+     checkout of each repository its entry names, detached at its base's
+     tip on no branch and moved to the tip at each resume (213), so
+     nothing it holds is committed or lands; work that must commit, it
+     launches as a place of a kind its entry names, in the repository
+     the work is in (214). (flume record 0065, proposed) The source also declares
      the words of what the role answers, and may name the kinds its
      session launches its projects as with the words of when each
      serves, which a stage's prompt gives (28, 214), since a role finds
@@ -3738,7 +3744,10 @@ lives:
   stands and never writes it. Each entry is a
   `[roles."<stream>/<role>"]` table. It gives `kind`, a name of the
   source's own kinds, its version the locks' (154, 155), and
-  `repository`, by its location on the host as a launch names it. It
+  `repository`, by its location on the host as a launch names it; an
+  entry whose kind's stage is a conversation that hibernates gives
+  `repositories` in its place, each so named, and `kinds`, the kinds it
+  launches its work as (193). It
   gives `priority`, and `base`, the repository's default branch where it
   names none. It may also give `brief`, `points` and `intent`. Its
   `name` names the run's place, else `<stream>-<role>` does. It may give
