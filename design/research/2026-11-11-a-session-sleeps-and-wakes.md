@@ -67,6 +67,69 @@ stand in herdr panes. Its page is kept unchanged, from crew's branch at
 5. **A tell to a hibernating session resumes it.** The operator chose that a
    tell to a hibernating session resumes it, its words the resumed agent's
    first prompt. Today a tell to a place with no live agent is refused (53).
+6. **A headless stage waiting on an answer hibernates, and its answer
+   resumes it.** The operator: "if it's stuck waiting for an answer, it
+   should be allowed to hibernate and then be woken up when the answer
+   comes, right? The question is how likely it is that, if a system is
+   functioning, it would not respond for an hour. That shouldn't really
+   happen unless it went to a human and the human couldn't answer right
+   away." Today such an agent is let go at the end of its keep-open time
+   (198) and its answer starts a fresh agent with the question and the
+   answer in its prompt (49); under this the answer resumes the agent's own
+   session.
+7. **The roles are Boomdrive's.** The operator: "we need to stop referring
+   to these as crew roles. These are conceptually Boom Drive roles. Right
+   now we're at an interim baby step to get to Boom Drive, where we're
+   using crew as a stand-in control plane."
+8. **Both the control plane and flume wake a role.** Asked whether the
+   control plane alone decides when a role's session runs, or flume's own
+   wake on an end pending for the role's address stands too (flume record
+   0039), the operator: "I think the answer to the question, though, is
+   both".
+9. **A role may take tens of seconds or minutes to answer.** The operator:
+   "I think for most usage, tens of seconds or minutes is fine."
+10. **A person reaches a role through MCP, and the answer comes back
+    later.** The operator: "the use case of a human talking to an actual
+    agent probably involves them being in their own Claude Code with the
+    flume MCP or in Boom Drive with an agent. There would be cloud-based MCP
+    tools from Boom Drive [...] I don't think we were going to have agents
+    in our cloud, just the MCP tools. Part of calling the MCP tool could
+    involve it interacting with all of the data in the control plane. If it
+    needed to find something out about actual code, it might ask an agent.
+    If that were to happen, it would be asynchronous and the tool would
+    need to report back: 'We've started the research agent or the planning
+    agent. We're going to get an answer for you on that and we'll let you
+    know.'"
+11. **Standing roles are a generic pattern of flume's, configured per
+    person.** The operator: "my list of standing agents may or may not be
+    the right list for everybody. I'm wondering if it's a more generic
+    pattern where flume can launch these on demand but can also be
+    configured with predefined standing agents. That way flume knows when
+    it's launching different kinds. It can tell the agents that are being
+    launched about the personas of the standing agents, what their jobs
+    are, and when to communicate with them. The nice thing about a standing
+    agent is that it builds up some context, has an opinion, and knows how
+    to answer certain questions." Their example is ops split by
+    environment: "a dedicated agent tailored to work only with my
+    production environment, and it has [...] specific prompting and
+    rules. It has access to specific credentials and MCP servers. I also
+    might have a dev and a QA ops agent with a different set of tools and
+    credentials." The roles show in Boomdrive's columns, inception,
+    construction and operation, and planning becomes "a standard standing
+    planning agent and/or the design and review agent that we have now,
+    configured in that generic setup in flume". A role that hibernates
+    leaves the multiplexer: "I think that's fine, except it makes it hard to
+    use without the cloud. [...] I think it's a generic flume design,
+    especially if flume has an MCP server. You could be in your own
+    standing agent talking to flume and telling it what your ideas are. It
+    then wakes the design agent or the ops agent."
+12. **A role's load is queued agent-neutrally, by one session per role.**
+    The operator found standing agents "get overloaded. You're firing all
+    kinds of stuff at them", and turned down two answers: Claude Code's own
+    messaging, since "that then gets us too coupled to Claude Code and makes
+    it harder to support other agent types", and several planners load
+    balanced, "I don't think that's the right move." The queue itself is
+    open.
 
 ## What the written design already settles
 
@@ -190,18 +253,69 @@ rewrites its whole context too, and idle compaction has shrunk that
 context to a summary by then. It keeps B's drift and compaction, which A
 and C shed by starting fresh.
 
-The crew talk's four questions stand open here: how long a role may take
-to answer, which shape the roles the operator talks to take, whether cost
-is part of the reason for the move, and who decides when a session runs,
-the control plane alone or flume on its own as well.
+Of the crew talk's four questions, the talk settled two, how long a role
+may take to answer (9) and who decides when a session runs (8), and
+turned the shape of the roles the operator talks to into Boomdrive's
+roles as a pattern of flume's (11). Whether cost is part of the reason for
+the move stays open.
+
+## Roles in the written design
+
+- **A source declares roles, and the host declares none.** A source the
+  host declares may declare roles, each at an address on a declared
+  stream, each run as one of the source's kinds or held by a standing
+  agent; the source declares the words of what each role answers, which a
+  stage's prompt gives, and the host locks the source's kinds and
+  "declares nothing of its roles" (193). This talk's own prompt lists
+  `design`, `ops` and `planner` with their words, from crew's roles file.
+  A role may stand behind its stream as the answerer every stall reaches
+  (193, 130).
+- **flume wakes a role's run.** A settle that finds an end pending for an
+  address with no run launches one, and `flume wake` does the same on a
+  caller's word; a run's entry gives its kind, repository, name, intent
+  and agents' settings, model and effort among them (flume records 0039,
+  0044).
+- **Ends already queue; tells do not.** A place's ends are weir deliveries,
+  pending for each recipient until it confirms them, collected by
+  `flume inbox`, and a notice of one goes into a pane only while the agent
+  there asks no question (43; flume record 0061). A tell is typed into the
+  agent's pane once it waits, within a bound (53, 54).
+- **flume's MCP server reads and acts on nothing.** `flume mcp` serves one
+  tool, `status`, which settles nothing (57, 60).
+- **An agent's environment is its account's.** "its environment is the
+  login environment with its account's variables over it, and nothing else
+  gives one" (core.30). A role's own credentials have no layer today. Its
+  own settings, MCP servers among them where the program takes them so,
+  reach it by a file in the place's own folder (196).
+- **Boomdrive's board has four fixed columns.** Inception, Bolt plan,
+  Construction and Operation, for every customer, which a member may
+  filter, colour or group and never add to or rename (boomdrive-cloud
+  core.76, record 0034).
+- **The cloud keeps no code, and its dispatch agent is its own
+  principal.** A member's MCP client and the dispatch agent speak to drives
+  for a person, each acting as its own principal, and every write either
+  proposes is made once its member confirms it (boomdrive-cloud record
+  0011, core.24, core.113). The cloud keeps no code (core.4). An agent that
+  reads code runs on a host, which the cloud reaches only through the
+  runner.
+- **Deciding what to launch is no part of flume's work.** Deciding what to
+  launch, what matters most or what comes next is its callers' (section 8),
+  and which questions a role's run answers or passes on is the run's
+  (193).
 
 ## Still open
 
-- Whether a session meant to run headless ever hibernates, or only a
-  conversation with a person. The operator: "I don't know if that applies
-  to sessions that are meant to be autonomous though."
+- How a role's work is queued so a standing role is not overloaded,
+  agent-neutrally (12).
+- Where Boomdrive's roles are declared: a package of their own that any
+  control plane declares as a source the host locks (193, and the crew
+  talk's recommendation for where the recipes live), or flume's own host
+  configuration, which 193 keeps out of roles.
+- Whether flume's MCP server gains tools that tell or wake a role, so a
+  person's own session reaches a role through it (10, 11).
+- A role's own credentials and MCP servers, which core.30 gives no layer.
 - What a hibernating session is in flume's status, and how Boomdrive's
-  cloud lists it and hibernates or resumes it.
+  cloud shows a role in its columns and hibernates or resumes it.
 - How a resumed agent's first prompt passes Claude Code's "Resume this
   conversation?" dialog, which flume never answers for a person (34): a
   setting of the program's that keeps it shut, or a resume that sends no
