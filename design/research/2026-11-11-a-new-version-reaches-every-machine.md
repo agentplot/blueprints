@@ -81,6 +81,9 @@ able to pull stuff out of the meeting and make a schema from the signal
 that relates to meetings, including people attached to the signal, the
 person's name, and other metadata like that?"
 
+**The calls this design makes stand.** Of the page that draws them:
+"otherwise, it looks good", and at the talk's end: "ok. this is good."
+
 What these change:
 
 - A rule with no model behind it decides what happens to a new version.
@@ -411,7 +414,6 @@ elaboration, a planning run, a curation run or a member's own ask"
 
 ## Open
 
-- The user's word on each call above.
 - How a planner, crew's or Boomdrive's, carries out a rule's item
   without judging it.
 - What carries a drive's publish to another drive: timber's channel and
