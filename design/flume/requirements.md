@@ -1985,8 +1985,10 @@ redefine these.
     tokens its
     agents' own records gave (166 to 168); and for each
     pool, its strategy and its threshold, and its accounts, each with
-    its agents running, while spent, until when (146), and its reading
-    as 185 says; each source the host declares, the kinds it holds by
+    its agents running, while spent, until when (146), its reading
+    as 185 says, and its configuration home as its profile names it,
+    the one value of the account's variables status shows (C.4); each
+    source the host declares, the kinds it holds by
     identity and the roles it declares, or why they cannot be read (191,
     193); for each role's address an end stands pending for, its
     run, its standing agent, or that it is carried or wakes nothing and
@@ -3091,6 +3093,7 @@ round, so the conclusion is never committed on `sounding/<name>`
 | usage | the session's transcript: each assistant record's `message.usage`, its `cache_read_input_tokens`, `cache_creation_input_tokens` and `input_tokens`, the first such record's for the first request and their sum for the session, and the sum of its `output_tokens` (152, 168) |
 | carry | yes where the start whose conversation it carries has a started ack, and its transcript, as that ack named it, is the same file, by device and inode, as `<home>/projects/<the transcript's folder>/<the transcript's file>`. That start is one that stopped at its limit, or a conversation's start reported lost. `<home>` is the chosen account's `CLAUDE_CONFIG_DIR`, else `~/.claude` of the login environment. The next start then resumes the ack's session by `--resume <session>`. 2.1.296 looks for that session under its own configuration home's `projects` alone, and goes on with it in the same transcript, under the same session. Otherwise it cannot, its words naming `CLAUDE_CONFIG_DIR` and never its value. A lost conversation's start first takes the lost start's own account. That account's configuration home holds the transcript, so its carry needs no shared `projects` (49, 145, 146, 179) |
 | live | the started ack's session runs where a `sessions/<pid>.json` under a configuration home gives that `sessionId`, and a process of the host runs with its `pid` and its `procStart`. `<home>` is each account's `CLAUDE_CONFIG_DIR` the host's configuration declares for `claude`, and the login environment's `~/.claude`. It runs too where a process of the host runs `claude` with the session after `--resume` or `-r`, under whatever home. 2.1.296 writes `sessions/<pid>.json` for each session it runs, with its `pid`, `sessionId`, `cwd` and `procStart`. A record whose process no longer runs, or runs from another start, names no live session, as a crash leaves one. Unknown where a home's `sessions` folder cannot be read or the host's processes cannot be listed. Its words give a process's id and start and never a home's path (30, 49, 207; core.30) |
+| home | the account's configuration home, the folder Claude Code keeps its settings and sign-in in: the `CLAUDE_CONFIG_DIR` the account's variables give, and none where they give none. Status gives it with the account, the one value of its variables it shows (56). So a tool that installs into each account's home, a companion's plugin among them, reads the homes from status and never from the host's configuration |
 | own settings | the keys below reserved, each with its owner; the rest taken by `--settings`, as the command row says, which the pinned 2.1.296 loads as its flag settings, laid over the user's, the project's and the local settings by its own merge (195, 196) |
 
 flume answers the folder-trust question when the terminal shows it, and
