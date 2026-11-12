@@ -207,6 +207,25 @@ stand in herdr panes. Its page is kept unchanged, from crew's branch at
     Claude Code's own subagents stay the role's for a lookup answered
     within one turn: that much is this page's choice, since a project
     runs past a turn and a subagent ends with it.
+22. **Whoever launches a place passes the credentials it needs, and a
+    role's kinds are told, never enforced.** An ops role's credentials
+    are its entry's (16), and a place it launches runs under its own
+    account. The operator: "it might be nice if there is a way for the
+    agent launching the flume place to decide what is necessary to pass
+    and pass it through either the CLI or MCP." So a launch names
+    environment variables for its agents, over the account's and a
+    role's (32), by `flume launch --agent env.<name>=<value>` and by a
+    `launch` tool flume's MCP server gains; a secret goes by a reference
+    the host resolves at the start, since flume keeps a launch's
+    settings with its place (8) and a value would be written there. Of
+    kinds a role's entry does not name: "I don't think we care to
+    enforce them but I also don't know if we have to build it into the
+    prompt. I don't see the agent really discovering and knowing that it
+    can call other kinds." flume refuses none. The prompt carries them,
+    which is this page's reading of the operator's doubt: status lists a
+    source's kinds (56) but says nothing of when one serves, so the
+    entry names each related kind with the words of when it serves, and
+    the prompt gives them (193).
 
 ## What the written design already settles
 
@@ -413,9 +432,9 @@ the move stays open.
 ## What the talk proposes
 
 flume's statement carries the talk's rulings as amendments proposed on this
-branch at `101cc2b` and `5529cf6` (32, 42, 43, 49, 53 to 56, 109, 179,
-180, 193, 198, 212 to 215, C.2, C.4, C.5, sections 9 and 10, I5, S6, S17,
-S124 to S128). A
+branch at `101cc2b`, `5529cf6` and `5198749` (32, 42, 43, 49, 53 to 56,
+109, 179, 180, 193, 198, 212 to 215, C.2, C.4, C.5, sections 9 and 10, I5,
+S6, S17, S124 to S128). A
 draft of flume's record 0065 for them is at
 `design/research/2026-11-11-flume-record-0065-draft.md`. This place goes to
 agentplot-design, its recipient, which writes each record in its own
@@ -426,9 +445,10 @@ then turns the accepted records into work.
   core.30 and core.32 amended for a resume and a role's environment. The
   work: `flume hibernate` and `flume resume`; hibernating on idle at a
   settle; `message` in place of `tell`; a role's deliveries batched at its
-  session's next wait; the plugin's deliver mod; the MCP tools; a role
-  entry's related kinds in its prompt, and a standing role's live places
-  in status (56, 193); the pin moved to a Claude Code release that runs
+  session's next wait; the plugin's deliver mod; the MCP tools, `launch`
+  among them; a launch's environment variables, secrets by reference
+  (32, C.2); a role entry's related kinds in its prompt, and a standing
+  role's live places in status (56, 193); the pin moved to a Claude Code release that runs
   hooks modules.
 - **agentplot/boomdrive**: the host's setup sets `cleanupPeriodDays` in
   every account home, once, longer than any hibernation (C.4).
@@ -461,10 +481,7 @@ then turns the accepted records into work.
   on one host (73).
 - Account health as a signal that moves sessions (the notes' millpond
   signal).
-- What environment a role's projects run with. An ops role's credentials
-  are its entry's (16), and a place it launches runs with its own kind's
-  settings and its account's environment (32), so a project that deploys
-  needs those credentials by some other way: the role's layer carried to
-  its places, the kind's own, or a role entry for the kind.
-- Whether flume refuses a role's launch of a kind its entry does not name,
-  or the entry only tells the role what it may launch.
+- Which references a launch may name. The host resolves whatever
+  reference a launch names (32), so any caller on the host reaches any
+  secret the host's resolver holds; whether a launch from a role is held
+  to its entry's references is unsettled.
