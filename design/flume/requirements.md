@@ -3215,6 +3215,7 @@ checked against its release.
 | profile | open | send | state | close |
 |---|---|---|---|---|
 | **herdr** | a pane in the herdr session the launch's settings name, else the one its place's stream names for the place's kind's stage or its kind (199), else the one its place's stream names, by default the stream's name, and flume's own for a place in the host's default stream naming none (107, 143): in each session, one workspace per repository and base, labelled `<repository> <base>` (`flume bolt/the-surfaces`, `sluice main`), made when the first place on that base opens there, and in it one tab per place named `<kind>--<name>`, whose panes are the place's agents that open in that session, so a stage that runs several agents at once splits its place's tab; where the settings name a pane, a split beside that pane instead, as for a conversation, left where its caller put it. The pane is made in the place with the host user's login environment and the agent's environment (C.4) over it set on it, its `PATH` led by a folder of the start's own holding the kind's name linked to the program the settings name, or, for a program the common profile binds, to flume's launcher, which becomes that program (C.4, 171), and its shell one that reads no startup file, so no login shell or rc file of the host's reorders that `PATH`; herdr's agent start runs the program there by the kind its agent profile names, its arguments passed whole, under the agent's herdr name; nothing is typed into the pane's shell. A start whose pane runs anything but the program the settings name is closed and refused, naming what ran, and a program herdr knows no kind for cannot run under herdr (32); nor can a program whose state herdr reads only through its own integration, OMP and MastraCode in 0.9.5, while `herdr integration status` reports that integration not installed, which refuses the launch naming `herdr integration install <name>` (4). The pane is held by its id and its server's socket, and found again by the agent's herdr name where the id no longer answers, as after the pane moves to another workspace: a name of at most 32 of herdr's legal characters made from the identity and unique on the server, a pane found by it taken as the agent's only once herdr lists it under that name. herdr's word that the program is ready is a second signal, never the start (35). A start herdr reads blocked is held at the program's question before it starts: the folder-trust question is answered and herdr waited on until the agent is idle (34), and any other leaves the start never begun with the screen; a start herdr does not see ready within its bound is never begun with the screen (35) | the pane's held input cleared with one ctrl+c while the agent waits, then herdr's prompt to the pane, then received read through the agent (89); a send never leaves text typed: one not received is cleared again before the next | herdr's reading of the agent: working as working; idle and done as waiting, since herdr's done is a finished turn nobody has looked at; blocked as asking only with the agent profile's mark (90), or where the agent's profile reads asking from the terminal (171), and as unknown otherwise; herdr's unknown as unknown; stopped only when the pane is gone, or herdr lists no agent in it and its foreground is the shell, or herdr lists it unrestored after its server's restart | herdr ends the pane and its process group, then reads that it is gone |
+| **Rex** | a block in the Rex server of the session the launch's settings name, else the one its place's stream names for the place's kind's stage or its kind (199), else the one its place's stream names, by default the stream's name, and flume's own for a place in the host's default stream naming none (107, 143), each session a Rex server of flume's own: in each server, one Rex session per repository and base, labelled `<repository> <base>`, made when the first place on that base opens there, and in it one window per place labelled `<kind>--<name>`, whose blocks are the place's agents that open in that server, so a stage that runs several agents at once splits its place's window; where the settings name a block, a split beside that block instead, left where its caller put it. The block runs the program by a link of the start's own named for its kind, linked to the program the settings name or, for a program the common profile binds, to flume's launcher (C.4, 171), with no shell, its arguments passed whole, in the place, under the host user's login environment with the agent's environment over it, Rex's own terminal variables kept and nothing else of the Rex server's environment. A start whose block runs anything but the program the settings name is closed and refused, naming what ran, and a program that reports no Program Status (OSC 7501) cannot run under Rex (32). The block is held by its id, its Rex session's id and its server's socket, and Rex keeps a block's id when it moves. The program's first report is Rex's word that it is ready, a second signal, never the start (35). A start whose screen shows the folder-trust question has it answered as under herdr (34); a start whose program reports nothing within its bound, or exits, is never begun, with the screen (35) | the block's held input cleared with one ctrl+c while the agent waits, then the text typed and Enter pressed, then received read through the agent (89); a send never leaves text typed: one not received is cleared again before the next | the program's own report as Rex keeps it: working as working; idle and done as waiting; blocked as asking only with the agent profile's mark (90), or where the agent's profile reads asking from the terminal (171), and as unknown otherwise; error as waiting while the program runs, since a failed turn leaves the agent at its prompt; no report as unknown; stopped only when the block is gone, its program has exited, or its server no longer runs | Rex closes the block, ending its program and every process under it, then reads that it is gone |
 | **printed command** | the command printed, the prompt carried in it, for a person to run in the place | refused, so every tell is refused, no agent is kept open for an answer (198), and a prompt not received is reported never begun (38) | from the agent profile alone; stopped when its record says the session ended | refused unless the agent's record says the session ended |
 
 Under herdr a session is named `herdr:<pane>@<socket>`, the pane's id
@@ -3326,6 +3327,107 @@ its server restarts. The refusals met are `pane_not_found`,
 those the readings above name is read unknown, or refused in herdr's
 words.
 
+Under Rex a session is named `rex:<block>@<socket>`, the block's id and
+its server's socket, wherever a recipient or a launching session is
+named (7, 43); a command run in a block reads its own from `REX_BLOCK`
+and `REX_SERVER`, which Rex sets there. A name in another terminal's
+form names no session of Rex's. A role's run is reached in the block its
+live start holds (132). A standing agent is reached in the block its
+session's server lists under its name, a block's label, found again at
+each delivery (132). Rex refuses no label twice, so open claims the
+identity in the host's state before it makes a block: it writes the
+agent's record only where none stands, and a record whose agent does not
+read stopped refuses the open (98).
+
+Each of the host's terminal sessions under Rex is a Rex server of
+flume's own, listening at `<state>/terminal/rex/<session>.sock` and
+keeping its state in a folder beside that socket; a session's name that
+makes the path longer than the 104 bytes macOS allows a socket is
+refused. The profile starts a session's server where none answers at its
+socket, without the sessions it saved, since a block Rex restores runs a
+login shell and never its agent (77). It never stops a server, and never
+uses the one the Rex app runs for its user. A person sees a session's
+server in the Rex app once they add its socket under the app's Remote
+Hosts, which attach's refusal names; `rex hosts add` writes only Rex's
+own list of hosts, which the app does not read.
+
+The Rex profile records in the host's state, by id and server, each Rex
+session and window it made. It closes a place's window in each server it
+made one in when the place goes, its blocks and their processes with it
+(137), and a base's Rex session once that session holds no window of a
+live place and nothing it did not make. It never closes a Rex session, a
+window or a block it did not make, and status names what holds one it
+keeps. At each settle that changes one of a place's clues the profile
+labels the place's window `<kind>--<name> · <line>`, the short form of
+the place's line, and the base's Rex session `<repository> <base> ·
+<count>`, the count of the places on that base running, asking, waiting
+on their caller and stalled (139). It finds both by their recorded ids,
+so a label is display only, and a block keeps its agent's name as its
+label. Rex draws each program's own report on its window's tab. Every Rex
+call passes `--autostart=false` and the server's socket, so no call
+starts a server of Rex's choosing, and every call is bounded, ten seconds
+where the call states none, one that does not answer within it read as
+unknown or refused in Rex's words. screen (136) is as many of the block's
+last lines as it has rows. Each command and field the profile reads is
+checked against the Rex the profile pins from Rex's flake,
+0.1.0-preview.14 or later at API revision 12.
+
+What the Rex profile reads of Rex 0.1.0-preview.14, each call
+`rex --autostart=false -S unix://<socket> <words>`, its answer JSON on
+standard output and a refusal Rex's words on standard error with a
+nonzero exit:
+
+| operation | Rex's commands and fields |
+|---|---|
+| server | `api call server.status` (`instance_id`, `api_revision`); where it answers `no Rex server is running at <socket>`, `server start --state-dir <folder> --restore=false --json`, which starts the server detached in a process group of its own and answers its `pid` and `instance_id`, and answers the running server where another start came first. An `api_revision` below 12 refuses, in Rex's words |
+| open | the base's Rex session the host's state records for the server, the repository and the place's base, where `api call session.list` (`sessions[]`, `session_id`) still lists it; with none, `api call session.create` with `label` `<repository> <base>` and one window labelled `<kind>--<name>` holding the block (`session_id`, `initial_windows[0].window_id`, `initial_windows[0].block_ids[0]`), the session and the window recorded; else, where `api call -s <session> session.view` (`windows[]`, `window_id`, `layers[].blocks[].block_id`) lists the place's recorded window, `session.new_split` with `anchor_id` a block of that window, `direction` `horizontal` and `side` `after` (`block_ids[0]`), and where it lists none, `session.new_window` with `window_label` `<kind>--<name>` and `focus` false (`window_id`, `block_ids[0]`), the window recorded. Beside a named block, `rex:<block>@<socket>`, `session.new_split` beside it. The block is the flavor `com.superlogical.terminal.shell` with `label` the agent's Rex name, `f-<place>-<stage>-<start>` lowercased with each character outside `[a-z0-9_-]` made `-`, cut to 119 characters, then `-` and the first 8 hex digits of the identity's SHA-256; its options are `shell` `none`, `cwd` the place, `exit.on_completion` false, and `command` a script in the start's folder, mode 0700, which removes itself and execs `/usr/bin/env -i` with Rex's `TERM`, `COLORTERM`, `TERM_PROGRAM`, `TERM_PROGRAM_VERSION`, `REX_SERVER`, `REX_SESSION` and `REX_BLOCK` kept, each variable of the host user's login environment (29), read once, with the agent's environment over it, the resolved environment (32) and flume's own, `PATH` led by the start's folder holding `<kind>` linked to the program, then that link and the arguments, each quoted whole, so no variable stands in a process's arguments, which every user of the host can read. Then, until 120 seconds have passed, every 250 milliseconds, `block call -s <session> -b <block> process` (`last_exit`, `child.pid`) and `program_status` (`records[]`, `state`, `owner.pid`): a record whose owner is the child is Rex's ready; the folder-trust question on the screen is answered by `send-key` with the keys the agent profile states, which Rex reads by herdr's names, and the block read again until a record comes; `last_exit` set, or the bound passed with no record, is the start never begun, with the screen. Once ready, the host's process table reads the child of the block's `/usr/bin/login`, which must be the program the settings name, by its path or, for a program a script starts, the script's path among its arguments |
+| send | `send-key -s <session> -b <block> ctrl+c` where the state row reads waiting; then `send -s <session> -b <block> -- <text>`, in pieces of at most 60,000 bytes cut between characters, since Rex refuses a request over 64 KiB; then `send-key enter`. Where the agent's profile reads no received ack of its program's (171), `events -s <session> --json`, run from before the text is typed until the call ends, gives received as a `program_status_changed` for the block whose record is `working` or `blocked`, within 60 seconds; none within them is not received |
+| state | `process`: `block target "<block>" not found`, or no Rex server running at the socket, reads stopped, and `last_exit` set reads stopped; then `program_status`, its newest record by `updated_at` whose `owner.pid` is `child.pid`: `working` as working, `idle` and `done` as waiting, `blocked` as asking, `error` as waiting, none as unknown |
+| screen | `capture -s <session> -b <block> --trim` and `block call size` (`rows`), its last `rows` lines |
+| close | `block close -s <session> <block>`, a block not found read as already closed; then `process`, gone only on `block target "<block>" not found` or no Rex server running at the socket |
+| tidy | the place's recorded window: `session.view` read for blocks in it, and a block flume did not open there keeps it, named; else `session.close_window` with its `window_id`, a window already gone read as closed. Then the base's recorded Rex session: where `session.view` holds no window but those of live places it made and no block it did not open, `session.destroy`; otherwise kept, and what holds it named |
+| attach | for a window, refused: Rex 0.1.0-preview.14 has no terminal client, and only its app shows a session. For the app, the session's server found or started as the server row says, then `api call client.list` on it (`clients[]`, `info.kind` `app`, `client_id`), the app listed once a person has added the server's socket under its Remote Hosts, and `-C <client> do session.select session_id=<id>` for the newest Rex session the profile made there. Refused, naming the socket to add, where the app is no client of the server, and in Rex's words where the app refuses, as it does until a person turns on its Remote Control (187) |
+| runs | `server.status` at each part's socket, every part asked at once and each call bounded at one second. A server that answers runs. One with no server at its socket does not, and nothing is started. One not answered within its second, or refused otherwise, is not read, in Rex's words; Rex keeps no list of its servers, so each part is its own call (201) |
+| standing | the agents of a session by name (132, 193, C.7), read at each delivery and each status, and nothing keeps it. `server.status` at the session's socket: a server not running holds no agent, and nothing is started. Then `session.list` and `session.view` of each of its Rex sessions, every block read by `label` and `block_id`, its state read as the state row reads it. An agent of the name is reached at `rex:<block>@<socket>`, by the send and state rows, as any recipient's session is. None of the name is said so, and so is more than one, since Rex refuses no label twice. A listing refused, or not read within the bound, is not read, in Rex's words |
+| show | `api call -s <session> session.set_label` and `session.set_window_label`, on the recorded ids, each label at most 128 characters |
+| session | no call: `REX_BLOCK` and `REX_SERVER` of the calling command's environment, both set, read as `rex:<block>@<socket>` |
+
+What Rex 0.1.0-preview.14 was seen to do on macOS, which the readings
+above allow for: a terminal block takes no environment of its own, and
+its program gets the Rex server's, run under `/usr/bin/login` as root,
+which `process` names as the block's child and, where no shell keeps job
+control, as its foreground. A command with `shell` `none` runs at once,
+its arguments whole. Rex sets `REX_SERVER`, `REX_SESSION`, `REX_BLOCK`,
+`TERM_PROGRAM` and `TERM_PROGRAM_VERSION` in a block. `send` returns
+once the text is queued and types a newline as a line feed, which
+Claude Code 2.1.322 took into one prompt with the text around it; Rex
+refuses a request over 64 KiB, and two pieces of 32 KiB arrived whole
+and in order. `send-key` reads `down`, `enter`, `ctrl+c`, `escape` and
+`shift+tab` as herdr does. Claude Code 2.1.322 reports its own state as
+`app=claude-code`: `idle` once up, about a second after its block
+opened; `working` from a prompt's first moment, with its tool's activity
+as `msg`; `done` at its turn's end, kept until the next; `blocked` with
+`kind=question` and the question as `msg` while it asked one; and no
+record once it exited. A `blocked` with `kind=permission` was not seen,
+the account's settings letting its tools run unasked, and neither was
+the folder-trust question, which the account's settings skip. Rex drops
+`working` and `blocked` records when the program exits or a shell prompt
+begins, and keeps `done` and `error`. A record's owner is the block's
+`/usr/bin/login`. `block close` ended the block's program and every
+process under it, a child that had left its parent among them. A server
+restarted with its saved sessions brought each block back under its id,
+label and folder, running the user's login shell with no scrollback and
+no record, its program not started again, under a new `instance_id`.
+`server start` on a socket of the caller's starts a server detached, and
+answers the running one when asked again. The Rex app showed a second
+server once a person added its socket under Remote Hosts, and
+`session.view` listed a block the person opened there; `rex hosts add`
+put the host in Rex's own list, which the app did not show. The app
+refused `session.select` as not accepting actions while its Remote
+Control setting was off. `capture` gives the scrollback with the screen,
+and no option limits it to the screen. A socket path longer than 104
+bytes failed to bind.
+
 The printed command tidies nothing and shows no clue, since it made
 nothing in a terminal. It refuses attach for either view, since it
 holds no part of a terminal a person can be shown (187). Its runs
@@ -3336,16 +3438,15 @@ printed for the identity in the place's folder, refusing to print it
 again; its state is unknown, and the core reads its agent stopped once
 the agent profile's ended reads yes (134).
 
-herdr-core, which the Herdr app runs on, Rex, cmux and TUIOS are
+herdr-core, which the Herdr app runs on, cmux and TUIOS are
 multiplexers a terminal profile may be written for, each checked
 against its release. None is written, and a stream or a host naming
 one is refused as 190 says. As read on 2026-11-05, cmux's server and
 TUIOS's daemon each have a terminal client that attaches to a
 session. A profile for either answers attach for a window with that
-client's command. Rex, and herdr-core through the Herdr app, are
-shown only by their own apps. A profile for either answers attach for
-the app by telling the running app to show the session, and refuses a
-window.
+client's command. herdr-core is shown only by the Herdr app. A profile
+for it answers attach for the app by telling the running app to show
+the session, and refuses a window.
 
 ### C.6 The merge queue: sluice
 
@@ -3373,7 +3474,7 @@ with that step (66). Where the base lives (C.1) is read from the same
 runs in the place what sluice runs before its own runs (sluice 147).
 
 What the profile reads of sluice 0.55.0, each command run with every
-multiplexer's session (`HERDR_*`, `ZELLIJ*`, `TMUX`, `TMUX_PANE`)
+multiplexer's session (`HERDR_*`, `REX_*`, `ZELLIJ*`, `TMUX`, `TMUX_PANE`)
 stripped and `GIT_TERMINAL_PROMPT=0`, a refusal read as its JSON
 `error.message` where it gives one and its errors otherwise:
 
@@ -4495,8 +4596,8 @@ These are not requirements.
   host's local layer then names herdr for `trial`. The trial place's
   printed agent stays as it was, and its next stage opens in herdr's
   session `trial`; status gives each agent's terminal with where it
-  came from. A stream naming `rex`, for which flume carries no profile,
-  refuses its launches and its views naming `rex`, while every other
+  came from. A stream naming `cmux`, for which flume carries no profile,
+  refuses its launches and its views naming `cmux`, while every other
   stream runs (4, 143, 186, 190).
 - **S92.** A repository on a host binds no merge queue, and its remote
   `origin` holds `main` two commits past the host's own `main`, which
