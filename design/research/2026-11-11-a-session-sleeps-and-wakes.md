@@ -152,6 +152,16 @@ stand in herdr panes. Its page is kept unchanged, from crew's branch at
     laid over its account's, its secrets named by reference and never
     written there. It loosens core.30, under which an agent's environment
     is its account's "and nothing else gives one".
+17. **A delivery reaches a live session by its program's own channel, one
+    path for every message.** The operator chose that every message to a
+    role, crew's tells among them, is a delivery, and that flume's agent
+    profile hands the pending batch at a turn's end by the program's own
+    channel, for Claude Code a mod in flume's plugin submitting it as a
+    turn, never typing into the input box; the terminal's send is the
+    fallback for a program with no such channel. It changes how 43 hands a
+    notice, today "through the terminal into the recipient's own pane".
+18. **The verb is "message".** The operator chose `message` for putting a
+    message to a role, on the command line and as flume's MCP tool.
 
 ## What the written design already settles
 
@@ -317,6 +327,15 @@ the move stays open.
   modules in interactive sessions, which flume's agents in herdr panes
   are. A channel of one program belongs behind flume's agent seam, as
   every other part of Claude Code does (B.4, C.4).
+- **A label is a kind's share of its stream's agents, and nothing more.** A
+  kind declares its label, one word, and the host's configuration may give
+  it another; flume "gives it no meaning but its share of its stream's
+  agents", and status gives each place's label (180, 56). A stream states
+  what each label is owed and holds reserved (181), and a label's table
+  holds `owed` and `reserved` alone, any other key refusing the start
+  (182). The statement's own example labels are `inception`,
+  `construction` and `operation` (C.7); deneb's agentplot stream has
+  `operation` and `planning`.
 - **flume's MCP server reads and acts on nothing.** `flume mcp` serves one
   tool, `status`, which settles nothing (57, 60).
 - **An agent's environment is its account's.** "its environment is the
@@ -342,12 +361,10 @@ the move stays open.
 
 ## Still open
 
-- How a delivery reaches a live session: by the program's own channel
-  behind the agent seam, Claude Code's mod submitting it as a turn, or by
-  the terminal's send, which clears the input box; and whether a tell from
-  crew and an end from flume go in by one path (13).
-- The verb for a message to a role, which the operator would rather were
-  not "tell" (15).
+- How a role's place in the host's room and in the control plane's view is
+  stated: by its kind's label (180), which the control plane also reads
+  as the column it shows the role under, or by a word of its own.
+- Whether `message` replaces `tell` (53) for a place as well as a role.
 - What a hibernating session is in flume's status, and how Boomdrive's
   cloud shows a role in its columns and hibernates or resumes it.
 - How a resumed agent's first prompt passes Claude Code's "Resume this
