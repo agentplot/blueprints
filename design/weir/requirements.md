@@ -556,8 +556,9 @@ redefine these.
     not the lock's, naming the kind and both hashes. Reading a lock
     changes nothing, and which locks a reader reads, and how it chooses
     among versions, are the reader's rule.
-94. A statechart kind's declaration holds its version, its label, the
-    words a person reads for it, and its statechart: one or more
+94. A statechart kind's declaration holds its version, its title, the
+    words a person reads for it, its label, its share of its stream's
+    agents where it declares one (flume 180), and its statechart: one or more
     regions side by side, each with its initial state and its states.
     It may hold how its places' branches are named, as a simple kind's
     does (52). A state may be final. It may carry a decision, with the
@@ -1272,7 +1273,7 @@ the kind's name and `version` as the statechart's own (81):
 ```toml
 [kinds.persona]
 version = 1
-label = "Persona test"    # the words a person reads for the kind (94)
+title = "Persona test"    # the words a person reads for the kind (94)
 branch = "persona"        # as a simple kind's (52)
 
 [kinds.persona.regions.stages]
