@@ -348,7 +348,12 @@ redefine these.
      its engine no longer answering, or that the host changed under the
      run (84); or, for a check that passed, when the run kept nothing
      that proves it ran, the task runner's own record of it (108; agentplot/sluice
-     record 0105). Nothing a repository writes is
+     record 0105). A run whose task runner's report of it cannot be
+     found or read once the run has ended has no outcome for any of its
+     checks, since nothing then tells a pass from a fail: it is never
+     read as each check left without a result. Its record names where
+     the report was looked for (afterthought/swancloud's sluice #191
+     under 0.78.1, 2026-11-12). Nothing a repository writes is
      run to ask the host, before a run or after one (84). Its record
      says why
      (16). It is never recorded or read under its key, no entry is
