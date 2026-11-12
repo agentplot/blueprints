@@ -24,12 +24,15 @@ design from Parts A and B and git alone.
 ## 1. Purpose
 
 flume launches one piece of work in one place and follows it through its
-whole life. A caller names a repository, a kind and a name, and a brief
-for the stages that ask for one. flume makes a worktree of the
+whole life. A caller names a repository, a kind and a name, a brief
+for the stages that ask for one, and parameters for a command that asks
+for them. flume makes a worktree of the
 repository on a branch of its own, makes it ready as the repository
 declares, and takes it through the kind's stages, starting a fresh agent
 for each and handing it the stage's prompt. Each agent commits its work
-in the place. A stage ends when what it was to deliver exists, or when
+in the place. A command stage runs one command its kind declares in
+place of an agent, and that command commits as an agent does. A stage
+ends when what it was to deliver exists, or when
 its agent says what it needs to go on, and never because the agent went
 quiet. A stage that is a conversation with the operator ends when its
 caller says so, and so does a stage whose agent plans, once its caller
@@ -59,7 +62,7 @@ and whether submitted work lands is the merge queue's.
 
 | actor | may decide | may not |
 |---|---|---|
-| **a caller** (the operator, millpond, headwater, sounding, crew) | what to launch and when: the repository, kind, brief, name and base, the stream it runs in, the intent it serves with the intent's brief, and the goals, which stages wait on its word and whether the submission does, and its agents' settings, where in the terminal each runs among them; when to tell, stop, retry, finish, drop or declare done any place; each place's priority, at the launch and after it | it never changes a place's kind, brief or base after the launch, never ends an agent that is not quiet without forcing it, never opens, sends to or closes an agent's terminal itself, and never makes flume run anything in a place but its readiness, its teardown and its stages' agents |
+| **a caller** (the operator, millpond, headwater, sounding, crew) | what to launch and when: the repository, kind, brief, parameters, name and base, the stream it runs in, the intent it serves with the intent's brief, and the goals, which stages wait on its word and whether the submission does, and its agents' settings, where in the terminal each runs among them; when to tell, stop, retry, finish, drop or declare done any place; each place's priority, at the launch and after it | it never changes a place's kind, brief, parameters or base after the launch, never ends an agent that is not quiet without forcing it, never opens, sends to or closes an agent's terminal itself, and never makes flume run anything in a place but its readiness, its teardown, its stages' agents and its command stages' commands |
 | **the repository's authors** | the repository's kinds, with whether each lands and where a failed submission sends a place back; what a worktree needs to be ready, and what removing one must undo; each seam's profile (105) | they never decide who launches or when, and never make flume remove a commit a branch holds that its base lacks |
 | **an agent** (a coding agent program working one stage) | how to do its stage, and what it commits in its place; whether to stop short, and what to say | it never ends, starts or moves a stage but by stopping its own short, never goes quiet with its deliverable missing and nothing said (110), never submits, merges or lands, and never acts in another place |
 | **the merge queue** | whether and when a submitted branch lands on its base, and, where its profile does so, removing a landed place through its repository's teardown | it never receives a place's work from the place's agent (71), and removes a place only once its submission landed (113) |
@@ -90,10 +93,13 @@ redefine these.
   launched.
 - **launch**: one ask to start a piece of work: a repository, a kind, a
   name, a base, and the caller's brief, settings, stages on hold,
-  submission's hold and mark, and, where it gives them, the stream it
-  runs in, the intent it serves with the intent's brief, the goals and
-  the work's points.
+  submission's hold and mark, and, where it gives them, its parameters,
+  the stream it runs in, the intent it serves with the intent's brief,
+  the goals and the work's points.
 - **brief**: what the work is, as the caller wrote it.
+- **parameters**: data a launch carries beside its brief, as its caller
+  wrote it, which a command stage's command reads and flume never reads
+  (213).
 - **mark**: words of a caller's own that a launch carries, by which
   callers find places.
 - **kind**: a named simple kind or statechart kind, at a version (18).
@@ -110,7 +116,7 @@ redefine these.
   it. A statechart kind is built from three: the stage template, which
   runs its sessions and joins them; the session template, one agent's
   life; and the place template, the worktree its sessions work in
-  (175).
+  (175). A command stage runs a fourth, the command template (212).
 - **atom**: a name a statechart's guard reads as evidence, or its
   transition performs as an effect, each effect with the evidence that
   proves it done; flume binds each to one seam (178).
@@ -139,7 +145,10 @@ redefine these.
 - **stage**: one step of a kind: of a simple kind, its name, its
   prompt, its deliverable or that it is a conversation, and its agent's
   settings; of a statechart kind, a state that runs the stage template
-  (175).
+  or the command template (175, 212).
+- **command stage**: a stage of a statechart kind that runs, in place
+  of an agent, one command its kind declares, filled from the launch's
+  parameters, and delivers the commits that command makes (212).
 - **task group**: a numbered and titled run of a change's tasks, in the
   change's order.
 - **repetition**: one start of a stage that repeats per task group,
@@ -258,7 +267,8 @@ redefine these.
   a test run it waits on.
 - **quiet**: of an agent, neither working, asking, nor waiting on own
   work.
-- **start**: of a stage, the moment flume starts its agent. A start is
+- **start**: of a stage, the moment flume starts its agent, or, of a
+  command stage, its command (212). A start is
   **starting** until its agent says it started under the start's
   identity (35), and a stage has **begun** once its agent has received
   its prompt.
@@ -270,7 +280,8 @@ redefine these.
 - **stop check**: flume sending back an agent that would go quiet with
   its stage's deliverable missing and nothing said (110).
 - **end**: of a stage, that it **delivered**, that it **ended short**,
-  or, of a conversation, that it was **finished**.
+  of a conversation, that it was **finished**, or, of a command stage,
+  that it **failed** (212).
 - **on hold**: of a stage or a submission, that it waits on its
   caller's word before it starts; of the move a place waits on, that a
   caller said in its words that it is making it (130).
@@ -330,8 +341,8 @@ redefine these.
   and nothing said.
 - **stage state**: where a stage stands: not reached, on hold, waiting
   on its place's readiness, waiting for room, refused, starting, started, begun, never begun, stuck,
-  lost, stopped by its caller, for review, delivered, ended short, or
-  finished.
+  lost, stopped by its caller, for review, delivered, ended short,
+  finished, or failed.
 - **retry**: a caller's ask that a place start one stage of its kind
   afresh, the current stage unless the retry names another, with words
   of the caller's for its prompt; or, naming the submission, that flume
@@ -351,7 +362,9 @@ redefine these.
 - **submission**: a place's branch offered to the merge queue for its
   base, and what the merge queue records of it.
 - **failed**: of a submission, that the merge queue removed it as the
-  cause of a failure or for a conflict.
+  cause of a failure or for a conflict; of a command stage, that its
+  command exited other than with success, exited with nothing
+  committed, or stopped with no exit recorded (212).
 - **landed**: of a place's work, that the merge queue records a
   submission of the place's own branch landed on its base, flume's or
   one that landed before flume submitted (63).
@@ -396,7 +409,9 @@ redefine these.
    names, is launched by flume at a settle (203), since its caller asked
    for it in launching the base place. (flume record 0056, accepted 2026-11-07.)
 2. A launch names a repository on the host, a kind, a name and a base,
-   and a brief wherever a stage of its kind asks for one (4). Either it
+   a brief wherever a stage of its kind asks for one (4), and
+   parameters wherever a command stage's command asks for them (213).
+   Either it
    makes one place, records it, and starts its first stage, puts it on
    hold, or leaves it waiting on the place's readiness (12); or it is
    refused, naming why, and leaves nothing it made behind.
@@ -417,6 +432,9 @@ redefine these.
    launch of a kind that lands where the repository binds no merge
    queue (105). A launch that gives no brief while a stage of its kind
    asks for one is refused naming the stage, and makes nothing (27).
+   So is a launch that gives no parameters while a command stage's
+   command asks for them, and one whose kind sends a place back to a
+   command stage, each naming the stage (212, 213).
    So is a launch where a stage's agent resolves to a program no agent
    profile binds, or one the host's terminal cannot run, naming the
    program, the stage and where the program came from (32). So is a
@@ -465,6 +483,18 @@ redefine these.
 5. Every stage whose prompt asks for the brief gets it whole and as the
    caller wrote it. flume never rewrites, shortens, summarises or
    judges a brief.
+213. A launch may carry parameters beside its brief: data its caller
+     writes for a command stage's command to read. A release's
+     parameters name each dependency it moves, with the version it moves
+     from and the one it moves to, the release's level and its move.
+     flume keeps them with the place as the caller gave them, and hands
+     them whole to each command stage whose command asks for them
+     (212). They are data
+     and never instructions: flume never reads, rewrites or judges them,
+     puts none of them in an agent's prompt or standing prompt, and runs
+     no word of them. A launch that gives none while a command stage's
+     command asks for them is refused naming the stage (4). (The
+     update-ladder talk, 2026-11-12.)
 6. A launch answers once its place is made and its first stage is
    started, on hold or waiting. It never waits on an agent coming up,
    and whoever needs a stage's start or end learns it from status (43).
@@ -479,7 +509,7 @@ redefine these.
    (193). A recipient a launch names is a session's name, or a role's
    address written whole (132). flume keeps the mark with the place and
    reports it, and decides nothing by it.
-8. A place's kind, brief, base, stream, intent with its brief and goals,
+8. A place's kind, brief, parameters, base, stream, intent with its brief and goals,
    points, and the settings its launch carries, are fixed by its launch, and
    nothing after the launch changes them; the host's configuration of
    its agents' settings is read at each start (32), and the account each
@@ -515,10 +545,12 @@ redefine these.
     starts, and its prompt carries the step and its words. A retry of
     the first stage of a place whose readiness failed runs the readiness
     again, as its launch read it (20), and no other retry runs it.
-13. flume runs nothing in a place but its readiness, its teardown and
-    its stages' agents. It runs no check of a place's work.
-14. flume never commits, merges, rebases or lands: a stage's agent
-    commits its work in its place, and the merge queue lands what flume
+13. flume runs nothing in a place but its readiness, its teardown, its
+    stages' agents and the commands its command stages declare (212).
+    It runs no check of a place's work.
+14. flume never commits, merges, rebases or lands: a stage's agent, or
+    a command stage's command, commits its work in its place (212), and
+    the merge queue lands what flume
     submits. flume moves no branch, except to make a place's branch at
     its launch and to remove it at its tidy (67). A base place's branch
     is the merge queue's to make and remove, at flume's asking (202,
@@ -743,14 +775,16 @@ redefine these.
      declaration refuses each launch that names its source, naming the
      declaration and why, and no other launch (4); status names it (56).
 175. A statechart kind is a statechart in the family's kind format
-     (weir 94), built from the stage, session and place templates. Its
+     (weir 94), built from the stage, session and place templates, and,
+     for a command stage, the command template (212). Its
      regions run side by side, each in one of its states at a time. A
      state may be final, may carry a decision a person answers, may hold
      regions of its own, and may run a template or another statechart
      inside it with the parameters it gives. A state's transitions out
      are in priority order, each with a named guard over evidence, the
      state it goes to and its named effects. A state that runs the stage
-     template is a stage of the kind. It runs its sessions side by side,
+     template, or the command template (212), is a stage of the kind. A
+     stage that runs the stage template runs its sessions side by side,
      one to each of its agents, which it lists or names by a rule read
      against the place, and joins them by all, any or a count. It names
      its deliverables, each one of the forms of 24, and sends the place
@@ -804,6 +838,57 @@ redefine these.
      launch and a host may hold kinds of both formats, and flume reads
      each kind's format as the family's format spells it (weir 94),
      never guessing it.
+212. A statechart kind may hold a command stage: a state that runs the
+     command template in place of an agent. It runs one command the kind
+     declares, in the place, and delivers the commits that command makes
+     (24). The command is part of the kind's content, hashed and locked
+     with it (155, 156). It is filled from the launch's parameters (213)
+     and from nothing else of the launch. flume starts it through the
+     terminal as it starts an agent's program (94), in the place and
+     under the start's identity (33). Its environment is the host user's
+     login environment, with nothing of the caller's session (29). So a
+     person can watch it, and it runs with no process of flume's (120).
+     The start records how the command exited beside the start's record
+     in the place's own folder, with the command's output whole (128).
+     The exit settles the place, as an agent's quiet does (121). A
+     command stage has no prompt, no standing prompt, no account and no
+     agent's settings. It never stops short or meets the stop check (41,
+     110). It runs no agent, so it takes no room, no account and no
+     points: it starts once its kind reaches it, whatever the host's and
+     its stream's bounds (70, 145). A place's first start, for its
+     points, is the first start of a stage that runs an agent (165 to
+     167).
+
+     A command stage delivers once its command exits with success and
+     the place's branch holds a commit made since the stage started
+     (25). It fails where the command exits otherwise, exits with
+     nothing committed, or stops with no exit recorded. Its words are
+     then how the command exited and where its output lies. The kind's
+     transitions take a failure on as they take any stage's end. Where
+     they lead to a stage that runs an agent, that stage starts with the
+     brief and with the failure as its words, as a failed submission's
+     stage starts with the merge queue's (112). The failure counts
+     toward the kind's bound on going back (23, 175). Where they lead to no such stage, or the bound is spent,
+     the place waits on its caller. The failure then reaches the place's
+     recipients and status whole, as a stage ended short needing an
+     answer does (42, 43, 130). A command stage takes no words. A kind
+     that sends a place back to one, for a failed submission or a
+     finding, is refused naming the stage (4). A retry naming one runs
+     its command again from the place's head, and one with words is
+     refused naming the stage (49). A command that runs past its stage's
+     limit is reported working past it, as an agent is (118). flume
+     never ends it on that account, and a caller's stop ends it (51).
+     Status gives a command stage's state and, once it ended, its exit
+     and where its output lies (56).
+
+     flume's own kinds hold no command stage, and fix's code stage
+     starts with its agent (22). A source or a repository declares a
+     kind that holds one. update@1 is such a kind: it runs a release's
+     move as its command stage, and reaches an agent only where that
+     move or the merge queue's gate fails. It carries the label
+     `operation` (180), so a stream's agents owed to operation take its
+     agent stage before construction's (181). (The update-ladder talk,
+     2026-11-12.)
 123. A report kept beside a place's held state goes when the place is
      tidied (62). A stage delivers one only where its caller keeps what
      the report holds once the place is gone. Every other report a
@@ -834,7 +919,8 @@ redefine these.
     stage that reads a change reads only that one.
 27. A stage's prompt is filled before it is sent. Every part it asks
     for from the launch, the place or a retry is filled. The launch
-    checks the brief for every stage (4). Any other part asked for with
+    checks the brief for every stage, and the parameters for every
+    command stage (4, 213). Any other part asked for with
     nothing to fill it leaves the stage refused, naming the part, until
     a retry whose words fill it, and starts no agent. flume never sends
     a blank where a part was asked for.
@@ -1684,7 +1770,8 @@ redefine these.
      keeps watch, whatever terminals the host binds (190).
 120. flume runs no process of its own between its commands. Every settle
      runs inside a command of flume's, started by an agent going quiet,
-     by a caller keeping watch or by any other caller, and never by a
+     by a command stage's command exiting (212), by a caller keeping
+     watch or by any other caller, and never by a
      terminal (122). No command of flume's waits on the merge queue: a
      submission's outcome is read at the settles that follow it (111,
      124).
@@ -1994,7 +2081,9 @@ redefine these.
     with the recipient and whether its name is known (43; weir 104,
     106).
 130. A place whose next move is its caller's, a stage or a submission on
-     hold (47), a stage ended short needing an answer (42), a stage for
+     hold (47), a stage ended short needing an answer (42), a command
+     stage failed where its kind takes the failure to no stage that runs
+     an agent (212), a stage for
      review (163), a stage
      reported lost (45), a prompt never begun (38), a readiness that failed (12),
      or a kind's last stage delivered where the kind does not land
@@ -2129,7 +2218,8 @@ redefine these.
     account of its pool is usable (145), and, for a place's first start,
     its stream's points bound and pace leave room for its points (166,
     167); otherwise it waits for room, a
-    wait that is the host's and never its caller's (130). When a settle
+    wait that is the host's and never its caller's (130). A command
+    stage runs no agent and waits for none of this (212). When a settle
     finds room it starts the stages waiting for it, streams of higher
     priority first and, within a stream, the places of a label below
     what it is owed first (181), then places of higher priority
@@ -2587,7 +2677,9 @@ redefine these.
     under that identity, there; or that the start is held at a question
     the program asks before it starts, or that the program did not come
     up within the terminal's bound, each with what the terminal shows;
-    or a refusal (30, 35, 107, 136).
+    or a refusal (30, 35, 107, 136). A command stage's command is
+    opened the same way, under its start's identity, where its stream
+    puts its place's agents (212).
 95. **send**: given an agent and a text, the text delivered as input
     the agent receives, any text the agent holds typed cleared first,
     or a refusal; no answer, delivered or refused, leaves text typed for
@@ -2753,8 +2845,8 @@ redefine these.
      queue (4, 111). Parts A and B do not change to admit a profile.
 106. One conformance suite holds every profile to Parts A and B; a
      profile that fails it is not one.
-178. Each atom the stage, session and place templates name is bound to
-     one operation of one seam above, and served or performed through it
+178. Each atom the stage, session, place and command templates name is
+     bound to one operation of one seam above, and served or performed through it
      alone (105): an evidence a guard reads, or an effect a transition
      performs with the evidence that proves it. An atom no operation
      serves is not one flume runs, and a statechart kind that names it is
@@ -2961,6 +3053,45 @@ that runs it never come from two revisions. A table that holds both
 flume runs no statechart kind, a declaration of one refuses the launch
 naming the kind and its format (4).
 
+A command stage (212) is a state whose `machine` is `command`, flume's
+command template. Its `params` are `command`, the program and its
+arguments as a list of words, run with no shell; `deliverables`, which
+is `["commits"]`; and `on_fail` and `max_send_backs`, as the stage
+template's, `on_fail` naming a state that runs the stage template
+(4, 212). The program is a path relative to the declaration's file, a
+part of the package within its hash (156, 157), or a program's name, found
+on the host user's login `PATH` (29). A path outside the repository or
+the package, by `..`, an absolute path or a link, refuses the launch
+naming it (157, 158). A word that is `{{params}}` is the path of the
+place's copy of the launch's parameters (213), and no other part fills
+in a command. The template ends `passed` once it delivered, or
+`failed`, and the kind's transitions read each as they read the stage
+template's ends (weir C.4). The terminal opens the command as it opens
+a program the common profile binds, through flume's launcher (C.4,
+C.5). Here the launcher runs the command as its child in the place,
+writes its exit status beside the start's record with its output whole
+in `output.log`, and then runs `flume settle <place>`. update@1's two
+stages, a repository's or a source's, read so (the update-ladder talk,
+2026-11-12):
+
+```toml
+[kinds.update.regions.stages.states.move]
+machine = "command"       # the command template: the kind's command, no agent (212)
+params = { command = ["bin/move", "{{params}}"], deliverables = ["commits"], on_fail = "fix", max_send_backs = 3 }
+transitions = [
+  { when = { final = "passed" }, to = "passed" },
+  { when = { final = "failed" }, to = "fix" },    # the failure, with the brief, as the agent's words (212)
+]
+
+[kinds.update.regions.stages.states.fix]
+machine = "stage"         # reached only from a failure, the command's or the gate's
+params = { agents = [{ model = "sonnet" }], join = "all", on_fail = "fix", max_send_backs = 3, deliverables = ["commits"] }
+transitions = [
+  { when = { final = "passed" }, to = "passed" },
+  { when = { final = "stopped" }, to = "stopped" },
+]
+```
+
 A kind's identity is written `<source>/<name>@<version>`, as
 `flume/change@2` or `acme/review@1` (weir C.4). flume's own source is
 `flume`, the repository's own `repo` and a launch's `launch`. `flume
@@ -3026,6 +3157,15 @@ task group, its number, title and tasks, or that it has none, and the
 path of the stage's notes (141). No part fills in a stage's standing
 instructions (148). `flume prompt <place> <stage>` renders a stage's
 standing prompt and prompt and starts nothing (29).
+
+A launch gives its brief by `flume launch --brief <text>`, or by
+`--brief-file <file>`, the file's text the brief whole, and never by
+both. It gives its parameters by `--params-file <file>`, which flume
+copies byte for byte into the place's own folder as `params` and never
+reads (213). A caller that moves several dependencies in one launch
+gives them all in that one file. Each names the version it moves from
+and the one it moves to, the release's level and its move (the
+update-ladder talk, 2026-11-12).
 
 flume's own kinds, their prompts shipped with flume, each version a
 package of its own with its prompts inside it (157). Each stage's text
@@ -3781,9 +3921,12 @@ A place's own folder there holds what its stages write for flume, such
 as a report a stage's declaration puts under `{{state}}`, a
 repeating stage's notes, `notes/<stage>.md`, which `{{notes}}` names
 and flume never reads (141), the plan its caller accepted,
-`plan.md`, which `{{plan}}` names (163), and each file a start's
+`plan.md`, which `{{plan}}` names (163), the launch's parameters,
+`params`, which a command's `{{params}}` names and flume never reads
+(213), and each file a start's
 command writes for its program beside the start's record, own settings
-among them, readable by the host's user alone (196); it goes when the
+among them, and a command stage's exit status and `output.log` (212),
+readable by the host's user alone (196); it goes when the
 place is tidied (62).
 
 ### C.8 The window
@@ -3832,8 +3975,8 @@ decision #46, accepted by the user on 2026-11-11).
 ## 7. Global invariants
 
 - **I1.** A stage ends only at its deliverable, its agent's stop-short,
-  or, for a conversation, its caller's finish; never at a quiet terminal
-  (39, 41, 109).
+  or, for a conversation, its caller's finish, and a command stage at
+  its command's exit; never at a quiet terminal (39, 41, 109, 212).
 - **I2.** A place of a simple kind has at most one agent, and a
   statechart kind's stage runs its sessions as its join says. No agent
   that is not quiet is ended unless a caller forced it (30, 31, 175).
@@ -3854,7 +3997,8 @@ decision #46, accepted by the user on 2026-11-11).
   queue, and a failed submission sends a place back only to the stage
   its kind names (111, 112).
 - **I8.** flume runs no process of its own between its commands. An
-  agent going quiet settles its place, and a caller keeping watch every
+  agent going quiet, or a command stage's command exiting, settles its
+  place, and a caller keeping watch every
   place, and every settle reads the outcome of
   its open submission and drives its base where the merge queue moves
   only so (124). While no caller keeps watch, every command of flume's
@@ -3967,7 +4111,7 @@ The rest of the stack, which a model builds on unless it says why not:
   | caller | launches | keeps |
   |---|---|---|
   | the operator | `/launch <brief>` in any session, or the herdr plugin's key | nothing; the sidebar shows each agent's place, and the popup every place |
-  | millpond | an item's send, as a fix or a change, the item's brief as the launch's | the item's record and its sends, and the landing, written from the merge queue's record of the place's branch |
+  | millpond | an item's send, as a fix or a change, or as the kind its rule names at the rule's priority, the item's brief as the launch's and, for a rule's item, each dependency it moves in the launch's parameters (213; the update-ladder talk, 2026-11-12) | the item's record and its sends, and the landing, written from the merge queue's record of the place's branch |
   | headwater | its fix key, as a fix with the release's brief | nothing |
   | sounding | each round of an elaboration, as a place of the elaboration kind it hands in the launch, a conversation's agent beside the operator's pane | the inputs, the soundings each was based on, the rounds, the operator's notes and decisions, and the record, with each round's conclusion copied from its report; its go-on is a retry with the operator's notes as words, its accept a done or a retry that releases a held submission, and its drop a drop |
   | crew | nothing by a call of its own: it is the runner's control plane, and asks the runner each launch and each act on a place, which the runner carries (the runner's row; crew's record 0056): each unit, chore or fix of a bolt, as a place of flume's own kinds, change, chore or fix, with no stage and no submission on hold, so the kind runs through and its fix round runs on its own (131); each bolt as a base place of a kind crew declares with no stages, on the branch the bolt lands on, its units' places on its branch (202); the bolt submitted by its land once the user sends it and its units are over, which the runner carries as the retry of its base place's submission (203); each agent's settings from crew's roles, marked with the bolt; a review note the user marked fix as a fix launched on the bolt's branch with the note as its brief; a fix of a base whose own checks failed after a landing, as a fix launched on that base with the failure's words as its brief, the merge queue's where it blamed and the check's own otherwise, its submission on hold where the base's landings wait on the user's word outside the merge queue's policy (7, 47) and free where the policy asks the word itself or none, with no bolt's branch between and no other place moved (record 0023) | plans, bolts, proposals, review batches, the rail and its cards; it launches a bolt's work whole, each unit as the work it follows allows, and keeps no slots: the host's room and the queue are flume's, and the user's priorities, set on the rail, reach flume as each place's priority (70); its word to a place, asked of the runner, is a retry answering a stop-short that asked, naming its key (42), with the user's own words where its role put the question to the user on a card its own code raised, or a retry or drop of a place past its kind's bound; it is a source of the host's that declares its roles once, each of a partition's roles at its address in the partition's stream, running crew's one kind for it or held by its standing agent until it moves, and names each place's recipient by the address of the role the work is for, so a role with no live run is woken to collect an end, and each partition's operator stands behind its stream (132, 193); each end is handed to its role's run and delivered once that run's confirm, which the runner carries, names it (43), and it reads the rest from the status the runner carries; a role's own work that lands is a place of its own, so no session of crew's submits; it decides no step between a unit's stages, and runs no agent of its own in the place (records 0010 and 0011) |
@@ -4961,6 +5105,24 @@ These are not requirements.
   name is known, and the next settle removes the document and lets go
   of its deliveries (43, 56, 62; weir 104 to 107; flume record 0061,
   accepted 2026-11-09).
+- **S124.** A repository declares update@1, whose first stage is a
+  command stage running the release's move, with an agent stage it
+  reaches only from a failure. millpond launches it at a low priority,
+  with two patch releases' notes as its brief by `--brief-file` and both
+  dependencies in one `--params-file`. The host's bound is spent on
+  other places' agents, and the command stage starts at once. Its
+  command reads the parameters, moves both pins, commits and exits with
+  success. No agent starts and no points are charged, and flume submits
+  the place, which lands. A later launch's command exits with an error.
+  Status gives the stage failed, with its exit and where its output
+  lies. The kind's transition starts the agent stage once its stream
+  has room by its priority, its prompt carrying the brief and the
+  failure as its words. The agent mends the build and commits, and
+  the place lands. Had each of its submissions failed, the third would
+  have found the kind's bound of three goings-back spent, the command's
+  failure among them. The place would then have waited on its caller,
+  said and delivered (43, 70, 112, 130, 212, 213; the update-ladder
+  talk, 2026-11-12).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
