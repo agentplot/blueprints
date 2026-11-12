@@ -2024,7 +2024,8 @@ redefine these.
     193); for each role's address an end stands pending for, its
     run, its standing agent, or that it is carried or wakes nothing and
     why (132), and, for a standing role, its place, whether it
-    hibernates, and the deliveries pending at its address (214); and each end expired for a recipient, of every place,
+    hibernates, the deliveries pending at its address, and each place
+    whose work is not over that reports to its address (214); and each end expired for a recipient, of every place,
     with the recipient and whether its name is known (43; weir 104,
     106).
 130. A place whose next move is its caller's, a stage or a submission on
@@ -2408,8 +2409,9 @@ redefine these.
      variables and the MCP servers its agent runs with, over its
      account's (32, 196), a secret by a reference the host resolves and
      never by its value (flume record 0065, proposed). The source also declares
-     the words of what the role answers, which a stage's prompt gives
-     (28). The host declares the source and its streams and locks its
+     the words of what the role answers, and may name the kinds its
+     session launches its projects as, which a stage's prompt gives
+     (28, 214). The host declares the source and its streams and locks its
      kinds, and declares nothing of its roles. The source whose kinds
      run a role declares it once, at an address for each stream it
      answers in. A role a source declares, run or standing, may stand
@@ -2522,8 +2524,12 @@ redefine these.
      hands the batch when the agent goes quiet (121); where its stage
      hibernates, the batch resumes it (213); where the role has no
      place, it is woken as 132 says, and its run's first prompt carries
-     the batch. Which of a batch's items a role takes first, and which
-     it hands to its own subagents, are the role's (193). (flume record 0065, proposed)
+     the batch. A place a role's session launches naming no recipient
+     reports to the role's address, its session's name (7, 132), so the
+     place's ends wait there with the role's other deliveries and resume
+     the role where it hibernates. Which of a batch's items a role takes
+     first, which it hands to its own subagents and which it launches as
+     places of the kinds its entry names are the role's (193). (flume record 0065, proposed)
 
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
@@ -5015,6 +5021,15 @@ These are not requirements.
   the stage starts afresh with flume's words that its conversation could
   not be carried and that what it committed is in the place (179, 213,
   C.4; flume record 0065, proposed).
+- **S128.** A standing ops role is asked to roll a fix out to staging
+  and to look into a failing nightly job. It launches each as a place of
+  a kind its entry names, naming no recipient, and hibernates. Both
+  places run in their own panes, beside every other place in the
+  multiplexer. The job's place stops short with a question, which
+  reaches the role's address and resumes it; the role answers and
+  hibernates again. When both deliver, their ends reach the role as one
+  batch, and status gave the two places under the role while they ran
+  (7, 132, 193, 213, 214, 56; flume record 0065, proposed).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
