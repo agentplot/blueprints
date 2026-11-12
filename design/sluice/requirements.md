@@ -1366,6 +1366,17 @@ outlives them is the trailers each landing commit carries (23).
 | **local files**: one host | the documents under the repository's common git directory, one directory per branch and one log of check results per repository (69), readable by every place on the host with no process running, never tracked and never pushed, a version kept beside them; the live submissions under `submissions/`, the finished under `.finished/`, whose dot no branch name carries, their index in `finished.jsonl`, the current log in `log.jsonl` and the closed parts under `log/<n>.jsonl` (130 to 132); a write under the branch's lock, refused when the version moved, a move of a submission one write with its put, its removal and its index line |
 | **remote refs**: peers, for a branch with a `remote` whose policy names signers | one root commit under `refs/sluice/state/<branch>` on the shared remote, its tree the branch's documents (53), its id the version; a write a push with `--force-with-lease` from the commit read, by any instance that submits to or advances the branch; beside it `refs/sluice/runs/<signer>`, each signer's signed run records, added to only by that signer (109); `refs/sluice/heads/<oid>` for every submitted head; `refs/sluice/combinations/<branch>/<id>` for every candidate open to claims; `refs/sluice/logs/<branch>/<run>` for a run's output; and `refs/sluice/hosts/<host>`, rewritten by each host alone on a fixed cadence as its sign of life and its free room (77, 107) |
 
+Which profile holds a branch's records is read from the policy at the
+branch's head as its remote holds it, the revision its rounds read. So
+every process on a host reads one answer, and reads it again whenever
+the branch moves. A branch whose policy comes to name signers moves to
+the remote refs, its open entries carried by the first round that reads
+it so. One whose policy stops naming them comes back to the local files
+the same way. The first round that reads it so carries the remote
+state's open entries into the host's own files, each under a number of
+the host's. The remote state is left unread (agentplot/sluice record
+0116).
+
 A run record on a signer's ref is an in-toto statement in a DSSE
 envelope, of in-toto's Test Result kind: its subject the check's key and
 system, its predicate the outcome, the claims of 79, the candidate, the
