@@ -76,6 +76,11 @@ releases landed over the last week, and the majors, since "if there are
 a lot of major updates, a lot of agents have to handle that, and the
 system becomes a little riskier because of them."
 
+**A meeting's signals carry facts that rules match.** "Wouldn't we be
+able to pull stuff out of the meeting and make a schema from the signal
+that relates to meetings, including people attached to the signal, the
+person's name, and other metadata like that?"
+
 What these change:
 
 - A rule with no model behind it decides what happens to a new version.
@@ -140,7 +145,7 @@ work, as the pack's context map has it.
    |    the quarterly strategy -> elevated         |
    |    a client's request     -> urgent           |
    |    a patch release        -> update, low      |
-   |    a meeting              -> no rule: curation|
+   |    a client's ask, met    -> urgent           |
    |  flume -> sluice -> timber publishes v2.3 ----+
    +-----------------------------------------------+
 ```
@@ -189,11 +194,11 @@ runner launch it without judging it (agentplot/boomdrive core.1).
 
 ### The rules
 
-A rule keys only on facts a capture's source states or a reading
-wrote: the source, the dependency, its ecosystem, the release's level
-in its version order (major, minor, patch, prerelease), whether an
-advisory names the pin, the tier, the age, a signal's nature and who
-asserted it. No rule reads the notes or a signal's words, so millpond
+A rule keys only on facts, each stated by a capture's source, joined
+from the people list, or read by a reader and checked: the source, the
+dependency, its ecosystem, the release's level in its version order
+(major, minor, patch, prerelease), whether an advisory names the pin,
+the tier, the age, and a meeting's facts below. No rule reads the notes or a signal's words, so millpond
 still judges nothing a capture says (70), and headwater's 11 and I3
 stand.
 
@@ -206,12 +211,40 @@ stand.
 | team releases, in the executive's drive | a minor or major of a team's web app | `digest` | normal | a week |
 | a client's request, in a team's drive | the executive's demand | none | urgent | none |
 | quarterly strategy, in a team's drive | the executive's quarterly strategy | none | elevated | none |
-| no rule | a meeting's signals, and anything else | curation's | curation's | curation's |
+| stand-ups | a meeting whose title names a stand-up | `drop`, before any reading | | |
+| a client's ask in a meeting | a request an executive or a client makes, with a client present | none | urgent | none |
+| the web app's decisions | a decision about the web app, from any meeting | none | elevated | a working day |
+| no rule | anything else a meeting says, and anything else | curation's | curation's | curation's |
 
-A meeting's signals and the executive's strategy differ by source: the
-first are a reader's reading of a meeting, the second the published
-word of the executive's drive. A rule keys on the source, and the
-meeting's signals go to curation, as millpond does today.
+### A meeting's facts
+
+A meeting's signal carries facts from three places, and a rule matches
+any of them:
+
+| facts | given by | what they are | a model? |
+|---|---|---|---|
+| stated | eddy, from the meeting service | the title, start, length and attendees, eddy's details | no |
+| joined | millpond, from the people list | each attendee's and speaker's name, role and teams; the org an address belongs to, and `client` where that org is a client | no |
+| read | a reader, checked by millpond | the assertion (decision, request, action, risk, question), who said it, what it is about, an owner, a date due, and the excerpt with its time | yes, then checked |
+
+The people list is `[[person]]` and `[[org]]` entries in the inbox's
+settings, or the drive's members where the control plane keeps the
+drive. An attendee joins by address, and a speaker by the name the
+transcript gives; a name that matches two people joins neither. So who
+is an executive or a client is looked up, never read.
+
+A reader picks each read fact from a closed list: an assertion from the
+five, a speaker the transcript names, and `about` from the drive's
+teams and repositories. millpond checks each, as it checks today that
+an excerpt stands in the capture's raw material, and a fact that fails
+is left off; its words stay in the signal, for curation.
+
+A rule whose `when` names only stated or joined facts runs when the
+capture lands, before any reader: its capture is its own signal, as a
+release's is, so a drop there charges no reader. Curation keeps what no
+rule names, and the judgments no fact settles: one ask raised in two
+meetings, a decision that undoes an earlier one, a signal a claim
+already answers.
 
 ### Three clocks
 
@@ -236,7 +269,8 @@ sends.
 | | the policy | curation |
 |---|---|---|
 | who decides | the keeper's written rules, no model | a model session |
-| reads | facts a source states or a reading wrote | the signals' words |
+| reads | facts: stated by a source, joined from the people list, or read and checked | the signals' words, and claims |
+| takes | whatever a rule names | what no rule names, and the judgments that need more than one signal |
 | writes | a join into its rule's item, standing at once | moves, in batches a person accepts or changes (40, 112) |
 | groups by | rule and window | judgment |
 | sends | at the window's close: a launch of its kind, or a person's turn | when the person sends, or the planner takes |
@@ -264,6 +298,10 @@ taken:
 | The `update` kind declares the label `operation` (flume 180), so a stream's agents owed to operation (181) take an update's agent stage before construction's, and the hosted control plane shows updates under Operation, outside the construction gauge (agentplot/boomdrive-cloud core.84) | updates sharing construction's agents and gauge |
 | A watching drive always gives its own priority; a publisher's tag is a fact its rules match | the publisher's stated priority taken as the watcher's |
 | A drive kept only in the cloud runs the same policy there, weir's evaluator under the control plane's clock | such a drive having no policy until it has a runner |
+| A meeting's signal carries stated, joined and read facts, and rules match all three | meetings left whole to curation, so a client's ask waits for a batch and every stand-up spends a reading |
+| A reader picks its facts from closed lists, which millpond checks | tags the reader makes up, which no rule can rely on |
+| Who someone is comes from the people list or the drive's members | the reader judging who is an executive or a client |
+| A rule on stated or joined facts runs before any reading | every capture read before any rule, spending tokens on what a rule drops |
 | A launch carries its parameters in one file, `--params-file`, a list of each dependency's from, to, level and move | one `--param` for each value, which cannot carry a window's several dependencies |
 
 ### What a launch carries
@@ -363,8 +401,9 @@ elaboration, a planning run, a curation run or a member's own ask"
 
 | statement | what changes |
 |---|---|
-| millpond | the vocabulary gains policy, rule and window; a rule's move stands beside curation's, never judged again (35, 72, 112); a rule names its item (113); a rule's item's brief is its signals' own excerpts as they stand (47); a send names the rule as who asked (51); C.5 launches any kind, with a priority and parameters |
-| weir | an offer carries the facts its source states (2, 25); the policy's form and its reading; cadence reads a rule's window |
+| eddy | its details, attendees among them, go in the offer as facts (weir 2, 25); it still never reads a meeting |
+| millpond | the vocabulary gains policy, rule, window and the people list; a signal carries facts, stated, joined or read, and a reader's are checked against their lists; a rule on stated facts runs before any reading; a rule's move stands beside curation's, never judged again (35, 72, 112); a rule names its item (113); a rule's item's brief is its signals' own excerpts as they stand (47); a send names the rule as who asked (51); C.5 launches any kind, with a priority and parameters |
+| weir | an offer carries the facts its source states (2, 25); the policy's form and its reading; the names and lists of a meeting's facts; cadence reads a rule's window |
 | headwater | a release's level, a `flake.lock` reader, the timber lookup and another drive's publish as sources; it still never acts on a release (36, I1) |
 | flume | the command stage; a launch's parameters |
 | agentplot/strategy | #46: the keeper's written policy decides beside the person's session |
