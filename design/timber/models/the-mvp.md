@@ -46,9 +46,8 @@ Switchboard rules its build of record.
 
 ## Milestone 2: a new version reaches every machine
 
-The chain, as the research talk of 2026-11-11 draws it
-(`design/research/2026-11-11-a-new-version-reaches-every-machine.md`,
-on the branch `research/a-new-version-reaches-every-machine`):
+The chain, as the research talk of 2026-11-11 and 2026-11-12 draws it
+(`design/research/2026-11-11-a-new-version-reaches-every-machine.md`):
 
 ```
 flume lands ──> its CI tags vX.Y.Z ──> headwater reports it
@@ -84,9 +83,14 @@ The MVP is four steps:
    the gate fails.
 
 Steps 1 and 2 build on what exists. Steps 3 and 4 are the first builds
-of headwater and millpond and one change to flume, and their records
-come from the research talk once the user has given their word on its
-calls; until then nothing of 3 and 4 is queued.
+of headwater and millpond, weir's policy and facts, and flume's command
+stage and a launch's parameters, each as its statement says once the
+talk's amendments are on main (the branches
+`design/the-update-ladder-reaches-weir-millpond-and-eddy`,
+`design/the-update-ladder-reaches-headwater` and
+`design/the-update-ladder-reaches-flume`). The update kind is a
+statechart kind, so flume runs statechart kinds before it runs an
+update.
 
 ## What the MVP leaves for later
 
