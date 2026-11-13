@@ -626,10 +626,18 @@ redefine these.
       since the stage started, and the plan it names was written since
       then; the newest such plan is the stage's (163).
 25. A deliverable counts only when made since its stage started. A
-    commit was made since then when the branch's head reaches it and the
-    head the stage started at does not. A report was written since then
-    when its write time, by the host's clock, is after the stage's
-    start. flume reads every fact of one deliverable at one head of the
+    stage started, for this, at the first of its starts since it last
+    delivered, and a repetition (140) at the first start given its
+    group. So a retry or a carried start of a stage that has not
+    delivered since (49) counts what an earlier start of the stage
+    made, and an agent that finds its stage's work already committed
+    ends it delivered with no commit of its own. A fix round, by failed
+    submission or by finding (112, 131), and a retry of a stage that
+    has delivered, start it afresh, and count only what is made after.
+    A commit was made since then when the branch's head reaches it and
+    the head the stage started at does not. A report was written since
+    then when its write time, by the host's clock, is after that start.
+    flume reads every fact of one deliverable at one head of the
     place's branch, and never pairs a fact read at one head with a fact
     read at another.
 140. A stage whose declaration says it repeats per task group delivers
@@ -4961,6 +4969,16 @@ These are not requirements.
   name is known, and the next settle removes the document and lets go
   of its deliveries (43, 56, 62; weir 104 to 107; flume record 0061,
   accepted 2026-11-09).
+- **S124.** A fix place's code stage commits its fix, then stops short
+  asking whether the fix should also cover a second case. The caller
+  answers no with a retry of code. The fresh agent finds the fix
+  committed, makes no commit, and ends its turn, and the stage
+  delivers, since the commit was made after the first start of code
+  since code last delivered. Verify runs, and the place is submitted.
+  Its submission then fails, and the fix round's code agent, finding
+  nothing to change, makes no commit: the round has not delivered,
+  and the agent stops short for its caller, who retries the submission
+  (25, 49, 112, S52; flume record 0065).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
