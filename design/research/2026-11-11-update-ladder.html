@@ -1,0 +1,883 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Update Ladder</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* One column of diagram plates on a drafting-grey ground. Box colour = status: grey exists, amber an existing tool gains it, teal new. Blue = the cloud and what a launch carries. */
+:root {
+  --bg: #eef1f0;
+  --surface: #ffffff;
+  --ink: #16201c;
+  --muted: #5a6762;
+  --line: #c3ccc8;
+  --exists: #6f7d78;
+  --exists-soft: #f4f6f5;
+  --amend: #a8650f;
+  --amend-soft: #fbf1e3;
+  --new: #0b7a69;
+  --new-soft: #e2f3ef;
+  --cmd: #2f5fb3;
+  --cmd-soft: #e6edf9;
+  --code-bg: #f7f9f8;
+  --f-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1412; --surface: #172019; --ink: #e2e8e5; --muted: #95a39d; --line: #2e3a35;
+    --exists: #8d9b96; --exists-soft: #1b2420; --amend: #e3a64f; --amend-soft: #2c2213;
+    --new: #3fc7ad; --new-soft: #12302a; --cmd: #7fa6ee; --cmd-soft: #17233a; --code-bg: #131a17; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1412; --surface: #172019; --ink: #e2e8e5; --muted: #95a39d; --line: #2e3a35;
+  --exists: #8d9b96; --exists-soft: #1b2420; --amend: #e3a64f; --amend-soft: #2c2213;
+  --new: #3fc7ad; --new-soft: #12302a; --cmd: #7fa6ee; --cmd-soft: #17233a; --code-bg: #131a17; color-scheme: dark;
+}
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55; margin: 0; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 72px; display: grid; gap: 56px; }
+header { display: grid; gap: 14px; max-width: 78ch; }
+.eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: .04em; color: var(--muted); }
+h1 { font-family: var(--f-display); font-weight: 600; font-size: clamp(34px, 6vw, 52px); line-height: 1.02; margin: 0; letter-spacing: -.01em; }
+h2 { font-family: var(--f-display); font-weight: 600; font-size: 24px; margin: 0; text-wrap: balance; }
+h3 { font-family: var(--f-display); font-weight: 600; font-size: 17px; margin: 0; }
+p { margin: 0; }
+code { font-family: var(--f-mono); font-size: .9em; }
+.lede { font-size: 17px; }
+.muted { color: var(--muted); }
+section { display: grid; gap: 16px; }
+.sec-head { display: grid; gap: 6px; max-width: 80ch; }
+.num { font-family: var(--f-mono); font-size: 12px; color: var(--new); letter-spacing: .05em; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px 18px; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 7px; }
+.sw { width: 14px; height: 14px; border-radius: 3px; border: 2px solid; display: inline-block; }
+.sw.exists { border-color: var(--exists); background: var(--exists-soft); }
+.sw.amend { border-color: var(--amend); background: var(--amend-soft); }
+.sw.new { border-color: var(--new); background: var(--new-soft); }
+.sw.cloud { border-color: var(--cmd); background: var(--cmd-soft); border-style: dashed; }
+
+.fig { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; overflow-x: auto; padding: 8px; }
+.fig svg { display: block; width: 100%; min-width: 820px; height: auto; }
+.fig.small svg { min-width: 420px; }
+svg text { font-family: var(--f-body); fill: var(--ink); }
+svg .t { font-weight: 600; font-size: 15px; }
+svg .s { font-size: 12px; fill: var(--muted); }
+svg .lbl { font-family: var(--f-mono); font-size: 11px; fill: var(--muted); }
+svg .lbl-new { font-family: var(--f-mono); font-size: 11px; fill: var(--new); }
+svg .lbl-cmd { font-family: var(--f-mono); font-size: 11px; fill: var(--cmd); }
+svg .box { stroke-width: 2; }
+svg .exists .box { fill: var(--exists-soft); stroke: var(--exists); }
+svg .amend .box { fill: var(--amend-soft); stroke: var(--amend); }
+svg .new .box { fill: var(--new-soft); stroke: var(--new); }
+svg .dash .box { stroke-dasharray: 5 4; }
+svg .ar { fill: none; stroke: var(--muted); stroke-width: 1.6; }
+svg .ar-new { fill: none; stroke: var(--new); stroke-width: 2; }
+svg .ar-cmd { fill: none; stroke: var(--cmd); stroke-width: 1.8; }
+svg .dl { stroke-dasharray: 5 4; }
+svg .ah { fill: var(--muted); }
+svg .ah-new { fill: var(--new); }
+svg .ah-cmd { fill: var(--cmd); }
+svg .zone-cloud { fill: var(--cmd-soft); stroke: var(--cmd); stroke-width: 1.5; stroke-dasharray: 6 5; }
+svg .zone-host { fill: none; stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 6 5; }
+svg .zone-mp { fill: var(--surface); stroke: var(--exists); stroke-width: 1.5; }
+svg .zl { font-family: var(--f-mono); font-size: 11.5px; fill: var(--muted); letter-spacing: .04em; }
+svg .zl-cloud { font-family: var(--f-mono); font-size: 11.5px; fill: var(--cmd); letter-spacing: .04em; }
+svg .tick { stroke: var(--muted); stroke-width: 1.2; }
+svg .tick-new { stroke: var(--new); stroke-width: 2.4; }
+svg .dot { fill: var(--new); }
+svg .bracket { fill: var(--new-soft); stroke: var(--new); stroke-width: 1.5; }
+svg .bar { fill: var(--cmd-soft); stroke: var(--cmd); stroke-width: 1.5; }
+svg .wait { fill: var(--exists-soft); stroke: var(--exists); stroke-width: 1.2; stroke-dasharray: 3 3; }
+svg .axis { stroke: var(--line); stroke-width: 1; }
+svg .lane { fill: var(--exists-soft); stroke: none; }
+
+.reads { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 900px) { .reads { grid-template-columns: minmax(0, 1fr); } }
+.read { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; font-size: 14px; display: grid; gap: 4px; align-content: start; }
+.read b { font-family: var(--f-display); font-weight: 600; font-size: 15.5px; }
+
+.three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 960px) { .three { grid-template-columns: minmax(0, 1fr); } }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+@media (max-width: 900px) { .two { grid-template-columns: minmax(0, 1fr); } }
+.cfg { display: grid; gap: 6px; align-content: start; min-width: 0; }
+.cfg .h { font-family: var(--f-mono); font-size: 12px; color: var(--muted); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+pre.code { margin: 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; font-family: var(--f-mono); font-size: 12.5px; line-height: 1.6; overflow-x: auto; color: var(--ink); }
+pre.code .c { color: var(--muted); }
+pre.code .k { color: var(--new); }
+pre.code .p { color: var(--cmd); }
+pre.code .b { color: var(--amend); }
+.note { font-size: 13px; color: var(--muted); }
+
+.pill { font-family: var(--f-mono); font-size: 11.5px; padding: 2px 8px; border-radius: 999px; border: 1.5px solid; white-space: nowrap; }
+.pill.exists { color: var(--exists); border-color: var(--exists); }
+.pill.amend { color: var(--amend); border-color: var(--amend); }
+.pill.new { color: var(--new); border-color: var(--new); }
+.pill.cloud { color: var(--cmd); border-color: var(--cmd); }
+
+.anat { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; display: grid; }
+.ar-row { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; padding: 12px 14px; border-top: 1px solid var(--line); align-items: start; }
+.ar-row:first-child { border-top: 0; }
+.ar-row .key { font-family: var(--f-mono); font-size: 13px; color: var(--new); padding-top: 2px; }
+.ar-row .val { font-size: 14px; display: grid; gap: 6px; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px; }
+.facts .f { font-family: var(--f-mono); font-size: 12px; padding: 2px 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--code-bg); }
+.facts .never { text-decoration: line-through; color: var(--muted); }
+.outs { display: grid; gap: 6px; }
+.out { display: grid; grid-template-columns: minmax(0, 200px) minmax(0, 1fr); gap: 10px; font-size: 13.5px; align-items: baseline; }
+.out code { font-size: 12px; }
+@media (max-width: 560px) { .out { grid-template-columns: minmax(0, 1fr); gap: 2px; } .ar-row { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
+
+.kinds { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+@media (max-width: 900px) { .kinds { grid-template-columns: minmax(0, 1fr); } }
+.kind { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.kind .kh { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.chip { font-family: var(--f-mono); font-size: 12px; padding: 3px 9px; border-radius: 999px; border: 1.5px solid; white-space: nowrap; }
+.chip.update { color: var(--new); border-color: var(--new); background: var(--new-soft); }
+.chip.fix { color: var(--amend); border-color: var(--amend); background: var(--amend-soft); }
+
+.tbl-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: 13.5px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-top: 1px solid var(--line); }
+th { font-family: var(--f-mono); font-size: 11.5px; font-weight: 500; color: var(--muted); border-top: 0; letter-spacing: .03em; }
+td.seam { font-family: var(--f-mono); font-size: 12.5px; white-space: nowrap; }
+
+.mock { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.mock-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--line); gap: 10px; flex-wrap: wrap; }
+.mock-head .ttl { font-family: var(--f-display); font-weight: 600; font-size: 17px; display: flex; gap: 10px; align-items: center; }
+.live { width: 9px; height: 9px; border-radius: 50%; background: var(--new); display: inline-block; box-shadow: 0 0 0 4px var(--new-soft); }
+.mock-head .ph { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); }
+.tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-bottom: 1px solid var(--line); }
+@media (max-width: 820px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tile:nth-child(odd) { border-left: 0; } .tile { border-top: 1px solid var(--line); } }
+.tile { padding: 12px 16px; border-left: 1px solid var(--line); display: grid; gap: 2px; align-content: start; }
+.tile:first-child { border-left: 0; }
+.tile .v { font-family: var(--f-display); font-weight: 600; font-size: 26px; line-height: 1.1; }
+.tile .l { font-size: 12.5px; color: var(--muted); }
+.tile.warn .v { color: var(--amend); }
+.tile.ok .v { color: var(--new); }
+.sub { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); padding: 10px 16px 0; letter-spacing: .04em; }
+.run { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, .9fr) minmax(0, 1.3fr) auto; gap: 10px; padding: 10px 16px; border-top: 1px solid var(--line); align-items: center; font-size: 13.5px; }
+.runs .run:first-child { border-top: 0; }
+.run .nm { font-family: var(--f-mono); font-size: 12.5px; overflow-wrap: anywhere; }
+.run .st { color: var(--muted); }
+.run .stage { display: inline-flex; gap: 6px; align-items: center; }
+.btn { font-family: var(--f-mono); font-size: 12px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 4px; background: var(--code-bg); color: var(--ink); white-space: nowrap; }
+.btn.go { border-color: var(--amend); color: var(--amend); }
+@media (max-width: 720px) { .run { grid-template-columns: minmax(0, 1fr) auto; } .run .st, .run .rp { grid-column: 1 / -1; } }
+.byrule { display: grid; gap: 8px; padding: 12px 16px 14px; border-top: 1px solid var(--line); }
+.br { display: grid; grid-template-columns: 130px minmax(0, 1fr) 70px; gap: 10px; align-items: center; font-size: 13px; }
+.br .nm { font-family: var(--f-mono); font-size: 12px; }
+.br .track { height: 12px; background: var(--exists-soft); border-radius: 3px; overflow: hidden; display: flex; }
+.br .fill { height: 100%; background: var(--new); }
+.br .fill.agent { background: var(--amend); }
+.br .fill.you { background: var(--exists); }
+.br .ct { font-family: var(--f-mono); font-size: 12px; color: var(--muted); text-align: right; }
+.keyrow { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+.keyrow i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+
+.calls { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 92ch; }
+.calls li { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--new); border-radius: 6px; padding: 12px 16px; font-size: 14px; display: grid; gap: 3px; }
+.calls li b { font-family: var(--f-display); font-weight: 600; font-size: 15.5px; }
+footer { font-size: 12.5px; color: var(--muted); font-family: var(--f-mono); overflow-wrap: anywhere; }
+@media (max-width: 480px) { body { font-size: 14.5px; } .wrap { padding-block: 28px 56px; gap: 44px; } }
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">agentplot/blueprints &middot; research &middot; 2026-11-12</div>
+  <h1>Update Ladder</h1>
+  <p class="lede">Every event of a drive arrives in millpond. A policy of plain rules, with no model, gathers the ones it recognises into items over a window, and launches each item as a flume kind at a priority. A new version lands with no agent when its command and the gate pass. Everything the rules don't recognise goes to curation and to you. The same seam links drives: a version published in one drive arrives as a signal in another.</p>
+  <div class="legend" aria-label="Legend">
+    <span><i class="sw exists"></i>exists in the written design</span>
+    <span><i class="sw amend"></i>an existing tool gains it</span>
+    <span><i class="sw new"></i>new</span>
+    <span><i class="sw cloud"></i>the cloud</span>
+  </div>
+</header>
+
+<!-- 1 -->
+<section>
+  <div class="sec-head">
+    <span class="num">01</span>
+    <h2>The whole system</h2>
+    <p class="muted">The runner's pass is the host's clock: it runs millpond's tick, carries every record up to the cloud, and launches what the drive asks. millpond is the junction. The policy sits inside it, between signals and items.</p>
+  </div>
+  <div class="fig">
+    <svg viewBox="0 0 1080 610" role="img" aria-label="Cloud band on top with your queue, the drive, Construction and Operation. Host below: four adapters feed millpond's signals; the policy either joins a signal into its rule's item or leaves it for curation. The item goes up to the drive, which either puts it in your queue or has the runner launch a flume place; on its own, millpond launches directly. flume submits to sluice, timber publishes, machines follow; status goes up to Construction and versions to Operation; a publish loops back to headwater as the next release.">
+      <defs>
+        <marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0 L10 5 L0 10 z"/></marker>
+        <marker id="m1n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-new" d="M0 0 L10 5 L0 10 z"/></marker>
+        <marker id="m1c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-cmd" d="M0 0 L10 5 L0 10 z"/></marker>
+      </defs>
+
+      <!-- cloud -->
+      <rect class="zone-cloud" x="300" y="10" width="770" height="146" rx="8"/>
+      <text class="zl-cloud" x="316" y="32">CLOUD · the control plane (with Boomdrive)</text>
+      <g class="exists"><rect class="box" x="320" y="46" width="160" height="70" rx="5"/><text class="t" x="400" y="76" text-anchor="middle">your queue</text><text class="s" x="400" y="96" text-anchor="middle">items no rule launches</text></g>
+      <g class="exists"><rect class="box" x="530" y="46" width="160" height="70" rx="5"/><text class="t" x="610" y="76" text-anchor="middle">the drive</text><text class="s" x="610" y="96" text-anchor="middle">takes millpond's items</text></g>
+      <g class="amend"><rect class="box" x="720" y="46" width="160" height="70" rx="5"/><text class="t" x="800" y="76" text-anchor="middle">Construction</text><text class="s" x="800" y="96" text-anchor="middle">updates running now</text></g>
+      <g class="amend"><rect class="box" x="905" y="46" width="150" height="70" rx="5"/><text class="t" x="980" y="76" text-anchor="middle">Operation</text><text class="s" x="980" y="96" text-anchor="middle">versions on machines</text></g>
+      <path class="ar" d="M530 81 H484" marker-end="url(#m1)"/><text class="lbl" x="507" y="72" text-anchor="middle">no kind</text>
+
+      <!-- host -->
+      <rect class="zone-host" x="12" y="176" width="1056" height="424" rx="8"/>
+      <text class="zl" x="28" y="198">HOST · the runner's pass runs millpond's tick</text>
+
+      <g class="amend"><rect class="box" x="30" y="226" width="190" height="58" rx="5"/><text class="t" x="125" y="250" text-anchor="middle">headwater</text><text class="s" x="125" y="269" text-anchor="middle">registries · timber · drives</text></g>
+      <g class="exists"><rect class="box" x="30" y="298" width="190" height="58" rx="5"/><text class="t" x="125" y="322" text-anchor="middle">eddy</text><text class="s" x="125" y="341" text-anchor="middle">meetings</text></g>
+      <g class="exists"><rect class="box" x="30" y="370" width="190" height="58" rx="5"/><text class="t" x="125" y="394" text-anchor="middle">the intake</text><text class="s" x="125" y="413" text-anchor="middle">Boom's gaps · callers</text></g>
+      <g class="exists"><rect class="box" x="30" y="442" width="190" height="58" rx="5"/><text class="t" x="125" y="466" text-anchor="middle">the runner's watch</text><text class="s" x="125" y="485" text-anchor="middle">its own failing checks</text></g>
+      <path class="ar" d="M220 255 H240 M220 327 H240 M220 399 H240 M220 471 H240 M240 255 V471"/>
+      <path class="ar" d="M240 300 H276" marker-end="url(#m1)"/>
+
+      <rect class="zone-mp" x="258" y="214" width="356" height="310" rx="8"/>
+      <text class="t" x="274" y="240">millpond</text>
+      <g class="amend"><rect class="box" x="280" y="272" width="130" height="56" rx="5"/><text class="t" x="345" y="295" text-anchor="middle">signals</text><text class="s" x="345" y="314" text-anchor="middle">carry their facts</text></g>
+      <g class="new"><rect class="box" x="470" y="272" width="130" height="56" rx="5"/><text class="t" x="535" y="295" text-anchor="middle">policy</text><text class="s" x="535" y="314" text-anchor="middle">rules, first match</text></g>
+      <g class="new"><rect class="box" x="470" y="372" width="130" height="60" rx="5"/><text class="t" x="535" y="397" text-anchor="middle">the rule's item</text><text class="s" x="535" y="416" text-anchor="middle">open until its window</text></g>
+      <g class="exists"><rect class="box" x="280" y="440" width="130" height="60" rx="5"/><text class="t" x="345" y="465" text-anchor="middle">curation</text><text class="s" x="345" y="484" text-anchor="middle">a model, batches</text></g>
+      <path class="ar" d="M410 300 H466" marker-end="url(#m1)"/>
+      <path class="ar-new" d="M535 328 V368" marker-end="url(#m1n)"/><text class="lbl-new" x="543" y="353">matches</text>
+      <path class="ar" d="M480 328 L404 436" marker-end="url(#m1)"/><text class="lbl" x="432" y="382" text-anchor="end">no rule</text>
+
+      <!-- item up / launch down / on its own -->
+      <path class="ar-cmd" d="M600 382 H628 V120" marker-end="url(#m1c)"/><text class="lbl-cmd" x="622" y="240" text-anchor="end">item</text>
+      <path class="ar-cmd" d="M672 116 V366" marker-end="url(#m1c)"/><text class="lbl-cmd" x="680" y="240">launch</text>
+      <path class="ar dl" d="M600 420 H636" marker-end="url(#m1)"/><text class="lbl" x="618" y="452">on its own</text>
+
+      <g class="amend"><rect class="box" x="640" y="370" width="125" height="64" rx="5"/><text class="t" x="702" y="397" text-anchor="middle">flume place</text><text class="s" x="702" y="416" text-anchor="middle">the rule's kind</text></g>
+      <g class="exists"><rect class="box" x="800" y="370" width="110" height="64" rx="5"/><text class="t" x="855" y="397" text-anchor="middle">sluice</text><text class="s" x="855" y="416" text-anchor="middle">the gate</text></g>
+      <g class="exists"><rect class="box" x="945" y="370" width="110" height="64" rx="5"/><text class="t" x="1000" y="397" text-anchor="middle">timber</text><text class="s" x="1000" y="416" text-anchor="middle">publishes</text></g>
+      <g class="exists"><rect class="box" x="945" y="478" width="110" height="58" rx="5"/><text class="t" x="1000" y="502" text-anchor="middle">machines</text><text class="s" x="1000" y="521" text-anchor="middle">follow a channel</text></g>
+      <path class="ar" d="M765 402 H796" marker-end="url(#m1)"/>
+      <path class="ar" d="M910 402 H941" marker-end="url(#m1)"/>
+      <path class="ar" d="M1000 434 V474" marker-end="url(#m1)"/>
+      <path class="ar-cmd dl" d="M745 370 V120" marker-end="url(#m1c)"/><text class="lbl-cmd" x="753" y="250">status · terminal</text>
+      <path class="ar-cmd dl" d="M1030 370 V120" marker-end="url(#m1c)"/><text class="lbl-cmd" x="1022" y="250" text-anchor="end">versions</text>
+
+      <!-- loop back -->
+      <path class="ar-new" d="M945 420 H932 V572 H18 V255 H26" marker-end="url(#m1n)"/>
+      <text class="lbl-new" x="480" y="590" text-anchor="middle">a version published here is the next repository's, or the next drive's, new release</text>
+    </svg>
+  </div>
+  <div class="reads">
+    <div class="read"><b>On its own</b>millpond launches the item's kind itself (dashed). Items with no kind wait for you in millpond.</div>
+    <div class="read"><b>With Boomdrive</b>The item goes up. The drive puts it in your queue, or, when the rule named a kind, has the runner launch it. No decision is raised for a rule's launch.</div>
+    <div class="read"><b>Either way</b>The same rules run, from the same settings file. Only the launcher differs.</div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section>
+  <div class="sec-head">
+    <span class="num">02</span>
+    <h2>Three clocks: scan, window, room</h2>
+    <p class="muted">Scanning often is cheap: a lookup, no model. Acting is what costs: a launch, a gate run, a landing, a rebuild of every machine, and tokens when an agent steps in. The window separates the two. Four releases over an hour become two launches.</p>
+  </div>
+  <div class="fig">
+    <svg viewBox="0 0 1080 300" role="img" aria-label="Timeline over 60 minutes. Releases arrive at minutes 3, 11, 24 and 41. Scans every 5 minutes pick each up at the next tick. The rule's window closes at 30 and 60; the first item holds three releases, the second one. At minute 30 one place launches, waits briefly for room, then runs command, gate, landed.">
+      <defs><marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="ah-new" d="M0 0 L10 5 L0 10 z"/></marker></defs>
+      <text class="t" x="16" y="52">releases</text><text class="s" x="16" y="70">upstream publishes</text>
+      <text class="t" x="16" y="112">scan</text><text class="s" x="16" y="130">adapter schedule · 5 min</text>
+      <text class="t" x="16" y="176">window</text><text class="s" x="16" y="194">the rule's · 30 min</text>
+      <text class="t" x="16" y="240">room</text><text class="s" x="16" y="258">flume · priority, pace</text>
+
+      <line class="axis" x1="200" y1="276" x2="1040" y2="276"/>
+      <text class="lbl" x="200" y="293" text-anchor="middle">0</text><text class="lbl" x="410" y="293" text-anchor="middle">15 min</text><text class="lbl" x="620" y="293" text-anchor="middle">30</text><text class="lbl" x="830" y="293" text-anchor="middle">45</text><text class="lbl" x="1040" y="293" text-anchor="middle">60</text>
+
+      <!-- releases -->
+      <circle class="dot" cx="242" cy="50" r="6"/><text class="lbl" x="242" y="32" text-anchor="middle">flume 0.5.0</text>
+      <circle class="dot" cx="354" cy="50" r="6"/><text class="lbl" x="354" y="32" text-anchor="middle">sluice 0.9.1</text>
+      <circle class="dot" cx="536" cy="50" r="6"/><text class="lbl" x="536" y="32" text-anchor="middle">timber 0.3.2</text>
+      <circle class="dot" cx="774" cy="50" r="6"/><text class="lbl" x="774" y="32" text-anchor="middle">flume 0.5.1</text>
+
+      <!-- scan ticks -->
+      <g>
+        <line class="tick" x1="200" y1="100" x2="200" y2="124"/><line class="tick-new" x1="270" y1="100" x2="270" y2="124"/><line class="tick" x1="340" y1="100" x2="340" y2="124"/><line class="tick-new" x1="410" y1="100" x2="410" y2="124"/><line class="tick" x1="480" y1="100" x2="480" y2="124"/><line class="tick-new" x1="550" y1="100" x2="550" y2="124"/><line class="tick" x1="620" y1="100" x2="620" y2="124"/><line class="tick" x1="690" y1="100" x2="690" y2="124"/><line class="tick" x1="760" y1="100" x2="760" y2="124"/><line class="tick-new" x1="830" y1="100" x2="830" y2="124"/><line class="tick" x1="900" y1="100" x2="900" y2="124"/><line class="tick" x1="970" y1="100" x2="970" y2="124"/><line class="tick" x1="1040" y1="100" x2="1040" y2="124"/>
+      </g>
+      <path class="ar-new" d="M242 57 L268 96" marker-end="url(#m2)"/>
+      <path class="ar-new" d="M354 57 L407 96" marker-end="url(#m2)"/>
+      <path class="ar-new" d="M536 57 L548 96" marker-end="url(#m2)"/>
+      <path class="ar-new" d="M774 57 L827 96" marker-end="url(#m2)"/>
+
+      <!-- windows -->
+      <rect class="bracket" x="200" y="150" width="418" height="52" rx="5"/>
+      <text class="t" x="214" y="172">item family--0030</text><text class="s" x="214" y="191">flume 0.5.0 · sluice 0.9.1 · timber 0.3.2</text>
+      <rect class="bracket" x="622" y="150" width="418" height="52" rx="5"/>
+      <text class="t" x="636" y="172">item family--0100</text><text class="s" x="636" y="191">flume 0.5.1</text>
+
+      <!-- room -->
+      <rect class="wait" x="620" y="224" width="22" height="30" rx="3"/>
+      <rect class="bar" x="642" y="224" width="160" height="30" rx="3"/>
+      <text class="lbl-cmd" x="652" y="243">bump-set place</text>
+      <text class="s" x="812" y="236">one PR, one gate run,</text><text class="s" x="812" y="252">one rollout to each machine</text>
+      <text class="lbl" x="1034" y="243" text-anchor="end">launch &rarr;</text>
+    </svg>
+  </div>
+  <div class="three">
+    <div class="cfg">
+      <div class="h">scan &middot; <code>.config/millpond.toml</code> <span class="pill exists">exists</span></div>
+<pre class="code"><span class="k">[[adapter]]</span>
+name     = <span class="p">"headwater"</span>
+command  = <span class="p">"headwater capture"</span>
+host     = <span class="p">"mac-studio"</span>
+schedule = <span class="p">"*/5 * * * *"</span>   <span class="c"># every 5 minutes</span></pre>
+    </div>
+    <div class="cfg">
+      <div class="h">window &middot; <code>.config/millpond.toml</code> <span class="pill new">new</span></div>
+<pre class="code"><span class="k">[[rule]]</span>
+name     = <span class="p">"family"</span>
+when     = { dependency = <span class="p">"pkg:github/agentplot/*"</span> }
+kind     = <span class="p">"bump-set"</span>
+priority = <span class="p">"normal"</span>
+window   = <span class="p">"*/30 * * * *"</span>  <span class="c"># every 30 minutes</span></pre>
+    </div>
+    <div class="cfg">
+      <div class="h">room &middot; flume's config <span class="pill exists">exists</span></div>
+<pre class="code"><span class="k">[streams.work]</span>
+agents   = 5
+priority = 10
+pace     = { points = 40, per = <span class="p">"day"</span> }
+
+<span class="k">[streams.work.labels.operation]</span>
+owed     = 1   <span class="c"># updates' agents never wait</span>
+               <span class="c"># behind construction</span></pre>
+    </div>
+  </div>
+  <p class="note">Busy development: set the family window to <code>*/10 * * * *</code>. Quiet weeks: <code>0 6 * * *</code>, once a day at six. The scan stays at five minutes either way, so the queue always knows what's waiting.</p>
+</section>
+
+<!-- 3 -->
+<section>
+  <div class="sec-head">
+    <span class="num">03</span>
+    <h2>The policy, in full</h2>
+    <p class="muted">One file, the inbox's settings, kept by whoever keeps the inbox. Rules are read top to bottom and the first match wins. Every outcome is one of three: launch a kind, wait for you, or drop with a reason.</p>
+  </div>
+  <div class="two">
+    <div class="cfg">
+      <div class="h"><code>.config/millpond.toml</code> &middot; Boomdrive's family drive</div>
+<pre class="code"><span class="c"># Priority levels: name = flume's launch priority.
+# Higher starts first when a stream is full.</span>
+<span class="k">[priority]</span>
+low      = 10
+normal   = 20
+elevated = 30
+high     = 40
+urgent   = 50
+
+<span class="k">[[rule]]</span>
+name     = <span class="p">"advisory"</span>
+when     = { advisory = true }
+kind     = <span class="p">"update"</span>
+priority = <span class="p">"high"</span>
+window   = <span class="p">"now"</span>             <span class="c"># the next tick</span>
+
+<span class="k">[[rule]]</span>
+name     = <span class="p">"family"</span>
+when     = { repository = <span class="p">"boomdrive"</span>,
+             dependency = <span class="p">"pkg:github/agentplot/*"</span> }
+kind     = <span class="p">"bump-set"</span>        <span class="c"># Boomdrive's own kind</span>
+priority = <span class="p">"normal"</span>
+window   = <span class="p">"*/10 * * * *"</span>
+
+<span class="k">[[rule]]</span>
+name     = <span class="p">"point-releases"</span>
+when     = { source = <span class="p">"release"</span>, level = [<span class="p">"patch"</span>, <span class="p">"minor"</span>] }
+kind     = <span class="p">"update"</span>
+priority = <span class="p">"low"</span>
+window   = <span class="p">"*/30 * * * *"</span>
+
+<span class="k">[[rule]]</span>
+name     = <span class="p">"majors"</span>
+when     = { source = <span class="p">"release"</span>, level = <span class="p">"major"</span> }
+kind     = <span class="p">"fix"</span>             <span class="c"># an agent, with the notes</span>
+priority = <span class="p">"normal"</span>
+window   = <span class="p">"0 9 * * 1"</span>       <span class="c"># Mondays at nine</span>
+
+<span class="k">[[rule]]</span>
+name     = <span class="p">"prereleases"</span>
+when     = { level = <span class="p">"prerelease"</span> }
+drop     = <span class="p">"stable releases only"</span>
+
+<span class="c"># A signal no rule names goes to curation.
+# Meeting rules: see 05.</span></pre>
+    </div>
+    <div class="anat">
+      <div class="ar-row"><div class="key">name</div><div class="val">Names the rule's items: <code>&lt;rule&gt;--&lt;window close&gt;</code>, as <code>point-releases--20261112-1430</code>. The item names its launch, so one window is never launched twice.</div></div>
+      <div class="ar-row"><div class="key">when</div><div class="val">Facts only: stated by the source, joined from your people list, or read by a reader (05):
+        <div class="facts"><span class="f">source</span><span class="f">repository</span><span class="f">dependency</span><span class="f">ecosystem</span><span class="f">level</span><span class="f">advisory</span><span class="f">tier</span><span class="f">age</span><span class="f">drive</span><span class="f">tag</span><span class="f">nature</span><span class="f">assertion</span><span class="f">said_by.role</span><span class="f">client</span><span class="f">about</span><span class="f">title</span><span class="f never">the notes</span><span class="f never">any words</span></div>
+        A list matches any of its values; a <code>*</code> matches a family by its prefix.</div></div>
+      <div class="ar-row"><div class="key">outcome</div><div class="val"><div class="outs">
+        <div class="out"><code>kind = "update"</code><span>launch this flume kind when the window closes</span></div>
+        <div class="out"><code>kind = false</code><span>wait in your queue, at the rule's priority</span></div>
+        <div class="out"><code>drop = "reason"</code><span>millpond's drop move, with its reason</span></div>
+      </div></div></div>
+      <div class="ar-row"><div class="key">priority</div><div class="val">A level from <code>[priority]</code>. It becomes the launch's priority in flume, or the item's place in your queue. millpond carries it and orders nothing itself.</div></div>
+      <div class="ar-row"><div class="key">window</div><div class="val">Five-field cron, read by weir's cadence like an adapter's schedule, or <code>"now"</code>. A release that arrives after an item was sent joins the next one.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section>
+  <div class="sec-head">
+    <span class="num">04</span>
+    <h2>One item, launched</h2>
+    <p class="muted">When the window closes, millpond, or the runner at the drive's ask, makes one launch. The parameters are for the command; the brief is for an agent, if one is ever needed.</p>
+  </div>
+  <div class="two">
+    <div class="cfg">
+      <div class="h">the launch <span class="pill amend">flume gains <code>--params-file</code></span></div>
+<pre class="code">flume launch --repository swancloud --kind update \
+  --name point-releases--20261112-1430--1 \
+  --mark swancloud/point-releases--20261112-1430/1 \
+  --priority 10 \
+  <span class="p">--params-file item.json</span> \
+  <span class="b">--brief-file item.md</span></pre>
+      <div class="h"><code>item.json</code> &middot; read by the command</div>
+<pre class="code">{
+  <span class="p">"rule"</span>: "point-releases",
+  <span class="p">"updates"</span>: [
+    { "dependency": "pkg:npm/zod",  "from": "3.23.8",
+      "to": "3.23.9",  "level": "patch",
+      "move": "npm install zod@3.23.9" },
+    { "dependency": "pkg:npm/vite", "from": "5.4.10",
+      "to": "5.4.11", "level": "patch",
+      "move": "npm install vite@5.4.11" }
+  ]
+}</pre>
+      <div class="h"><code>item.md</code> &middot; read only by the agent stage</div>
+<pre class="code"><span class="b">The notes of every release between each pin and its new
+version, the advisories, and the declarations they touch,
+whole, as headwater captured them.</span></pre>
+    </div>
+    <div class="cfg">
+      <div class="h"><code>update@1</code> &middot; a statechart kind (sketch) <span class="pill new">new</span></div>
+<pre class="code">label          = <span class="p">"operation"</span>   <span class="c"># its share of agents</span>
+max_send_backs = 2             <span class="c"># then it waits for you</span>
+initial        = <span class="p">"move"</span>
+
+<span class="k">[states.move]</span>            <span class="c"># no agent</span>
+command = <span class="p">"run-moves item.json"</span>   <span class="c"># each move, one commit</span>
+on      = { ok = <span class="p">"submit"</span>, failed = <span class="p">"repair"</span> }
+
+<span class="k">[states.submit]</span>          <span class="c"># sluice's gate</span>
+on      = { landed = <span class="p">"done"</span>, refused = <span class="p">"repair"</span> }
+
+<span class="k">[states.repair]</span>          <span class="c"># reached only from a failure</span>
+agent   = true
+brief   = [<span class="p">"failure"</span>, <span class="p">"item.md"</span>]
+on      = { delivered = <span class="p">"submit"</span> }</pre>
+      <p class="note"><code>fix</code>, flume's own kind, is the same shape without the <code>move</code> state: it starts on the agent. That's the only difference between a patch and a major.</p>
+    </div>
+  </div>
+  <div class="kinds">
+    <div class="kind">
+      <div class="kh"><span class="chip update">update</span><span class="note">patches and minors</span></div>
+      <div class="fig small">
+        <svg viewBox="0 0 470 330" role="img" aria-label="update kind: command runs the moves; gate; passes to landed; command or gate failure goes to the agent; the agent resubmits; after the limit it waits for you.">
+          <defs><marker id="m4a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0 L10 5 L0 10 z"/></marker></defs>
+          <g class="new"><rect class="box" x="30" y="20" width="190" height="60" rx="5"/><text class="t" x="125" y="45" text-anchor="middle">move</text><text class="s" x="125" y="64" text-anchor="middle">runs each move, commits</text></g>
+          <g class="exists"><rect class="box" x="30" y="136" width="190" height="60" rx="5"/><text class="t" x="125" y="161" text-anchor="middle">submit</text><text class="s" x="125" y="180" text-anchor="middle">sluice's gate</text></g>
+          <g class="exists"><rect class="box" x="280" y="136" width="170" height="60" rx="5"/><text class="t" x="365" y="161" text-anchor="middle">landed</text><text class="s" x="365" y="180" text-anchor="middle">no agent ran</text></g>
+          <g class="exists"><rect class="box" x="30" y="252" width="190" height="60" rx="5"/><text class="t" x="125" y="277" text-anchor="middle">repair</text><text class="s" x="125" y="296" text-anchor="middle">an agent: failure + brief</text></g>
+          <g class="exists"><rect class="box" x="280" y="252" width="170" height="60" rx="5"/><text class="t" x="365" y="277" text-anchor="middle">waits for you</text><text class="s" x="365" y="296" text-anchor="middle">past max_send_backs</text></g>
+          <path class="ar" d="M125 80 V132" marker-end="url(#m4a)"/><text class="lbl" x="133" y="110">ok</text>
+          <path class="ar" d="M220 166 H276" marker-end="url(#m4a)"/><text class="lbl" x="248" y="157" text-anchor="middle">passes</text>
+          <path class="ar" d="M95 196 V248" marker-end="url(#m4a)"/><text class="lbl" x="87" y="226" text-anchor="end">refused</text>
+          <path class="ar" d="M165 252 V200" marker-end="url(#m4a)"/><text class="lbl" x="173" y="230">resubmit</text>
+          <path class="ar" d="M30 50 H12 V282 H26" marker-end="url(#m4a)"/><text class="lbl" x="16" y="128" text-anchor="start" transform="rotate(-90 16 128)">failed</text>
+          <path class="ar" d="M220 282 H276" marker-end="url(#m4a)"/><text class="lbl" x="248" y="273" text-anchor="middle">limit</text>
+        </svg>
+      </div>
+    </div>
+    <div class="kind">
+      <div class="kh"><span class="chip fix">fix</span><span class="note">majors · flume's own</span></div>
+      <div class="fig small">
+        <svg viewBox="0 0 470 330" role="img" aria-label="fix kind: agent with the brief; gate; passes to landed; gate refusal goes back to the agent; after the limit it waits for you.">
+          <defs><marker id="m4b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0 L10 5 L0 10 z"/></marker></defs>
+          <g class="exists"><rect class="box" x="30" y="20" width="190" height="60" rx="5"/><text class="t" x="125" y="45" text-anchor="middle">agent</text><text class="s" x="125" y="64" text-anchor="middle">reads the notes, upgrades</text></g>
+          <g class="exists"><rect class="box" x="30" y="136" width="190" height="60" rx="5"/><text class="t" x="125" y="161" text-anchor="middle">submit</text><text class="s" x="125" y="180" text-anchor="middle">sluice's gate</text></g>
+          <g class="exists"><rect class="box" x="280" y="136" width="170" height="60" rx="5"/><text class="t" x="365" y="161" text-anchor="middle">landed</text><text class="s" x="365" y="180" text-anchor="middle">the agent's change</text></g>
+          <g class="exists"><rect class="box" x="280" y="20" width="170" height="60" rx="5"/><text class="t" x="365" y="45" text-anchor="middle">waits for you</text><text class="s" x="365" y="64" text-anchor="middle">past max_send_backs</text></g>
+          <path class="ar" d="M95 80 V132" marker-end="url(#m4b)"/><text class="lbl" x="87" y="110" text-anchor="end">commits</text>
+          <path class="ar" d="M165 136 V84" marker-end="url(#m4b)"/><text class="lbl" x="173" y="114">refused</text>
+          <path class="ar" d="M220 166 H276" marker-end="url(#m4b)"/><text class="lbl" x="248" y="157" text-anchor="middle">passes</text>
+          <path class="ar" d="M220 50 H276" marker-end="url(#m4b)"/><text class="lbl" x="248" y="41" text-anchor="middle">limit</text>
+          <text class="s" x="30" y="250">A major starts here: the agent reads every</text>
+          <text class="s" x="30" y="268">release's notes in the brief and makes the</text>
+          <text class="s" x="30" y="286">change, or stops and asks you.</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section>
+  <div class="sec-head">
+    <span class="num">05</span>
+    <h2>One policy over facts, whoever gives them</h2>
+    <p class="muted">A meeting has facts as well as words. eddy states its details, millpond joins its people to the list you keep, and a reader writes each signal in a fixed schema. The rules match all three. Curation takes what no rule names, and the judgments that need more than one signal.</p>
+  </div>
+  <div class="fig">
+    <svg viewBox="0 0 1080 300" role="img" aria-label="Top lane: a release capture with stated facts becomes its own signal and goes to the policy. Bottom lane: a meeting capture with stated details goes through the people join, then a reader writes signals with read facts, then to the policy. A dashed path from the people join to the policy: rules on stated and joined facts run before any reading. From the policy: a rule matches, the rule's item; no rule, curation and a batch you accept.">
+      <defs>
+        <marker id="m5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0 L10 5 L0 10 z"/></marker>
+        <marker id="m5n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-new" d="M0 0 L10 5 L0 10 z"/></marker>
+      </defs>
+      <rect class="lane" x="8" y="12" width="604" height="100" rx="6"/>
+      <rect class="lane" x="8" y="152" width="604" height="100" rx="6"/>
+      <text class="zl" x="20" y="30">A RELEASE</text>
+      <text class="zl" x="20" y="170">A MEETING</text>
+
+      <g class="amend"><rect class="box" x="20" y="40" width="170" height="60" rx="5"/><text class="t" x="105" y="64" text-anchor="middle">release capture</text><text class="s" x="105" y="84" text-anchor="middle">stated: dependency, level</text></g>
+      <g class="exists"><rect class="box" x="215" y="40" width="170" height="60" rx="5"/><text class="t" x="300" y="64" text-anchor="middle">own signal</text><text class="s" x="300" y="84" text-anchor="middle">no reader needed</text></g>
+      <path class="ar" d="M190 70 H211" marker-end="url(#m5)"/>
+      <path class="ar" d="M385 70 H646" marker-end="url(#m5)"/>
+
+      <g class="amend"><rect class="box" x="20" y="180" width="170" height="60" rx="5"/><text class="t" x="105" y="204" text-anchor="middle">meeting capture</text><text class="s" x="105" y="224" text-anchor="middle">stated: title, attendees</text></g>
+      <g class="new"><rect class="box" x="215" y="180" width="170" height="60" rx="5"/><text class="t" x="300" y="204" text-anchor="middle">people</text><text class="s" x="300" y="224" text-anchor="middle">joined: role, org, client</text></g>
+      <g class="amend"><rect class="box" x="410" y="180" width="170" height="60" rx="5"/><text class="t" x="495" y="204" text-anchor="middle">reader</text><text class="s" x="495" y="224" text-anchor="middle">read: assertion, said by</text></g>
+      <path class="ar" d="M190 210 H211" marker-end="url(#m5)"/>
+      <path class="ar" d="M385 210 H406" marker-end="url(#m5)"/>
+      <path class="ar" d="M580 210 H646" marker-end="url(#m5)"/>
+
+      <path class="ar-new dl" d="M300 180 V132 H646" marker-end="url(#m5n)"/>
+      <text class="lbl-new" x="318" y="126">before reading: rules on stated and joined facts</text>
+
+      <g class="new"><rect class="box" x="650" y="40" width="130" height="200" rx="5"/><text class="t" x="715" y="128" text-anchor="middle">policy</text><text class="s" x="715" y="148" text-anchor="middle">rules over facts</text><text class="s" x="715" y="164" text-anchor="middle">no model</text></g>
+
+      <g class="new"><rect class="box" x="850" y="40" width="210" height="60" rx="5"/><text class="t" x="955" y="64" text-anchor="middle">the rule's item</text><text class="s" x="955" y="84" text-anchor="middle">a kind, your queue, or a drop</text></g>
+      <g class="exists"><rect class="box" x="850" y="180" width="210" height="60" rx="5"/><text class="t" x="955" y="204" text-anchor="middle">curation</text><text class="s" x="955" y="224" text-anchor="middle">a batch you accept</text></g>
+      <path class="ar" d="M780 70 H846" marker-end="url(#m5)"/>
+      <path class="ar" d="M780 210 H846" marker-end="url(#m5)"/>
+      <text class="lbl" x="813" y="62" text-anchor="middle">a rule</text>
+      <text class="lbl" x="813" y="202" text-anchor="middle">no rule</text>
+
+      <text class="lbl" x="540" y="284" text-anchor="middle">the same records either way: capture &rarr; signal &rarr; move &rarr; item &rarr; send</text>
+    </svg>
+  </div>
+
+  <div class="three">
+    <div class="read"><b>stated</b><span>The source gives it, as it recorded it: a release's level, a meeting's title, start, length and attendees from eddy's details. No model.</span></div>
+    <div class="read"><b>joined</b><span>millpond looks the attendees and speakers up in your people list: name, role, team, and the org their address belongs to. An org marked a client makes <code>client</code> a fact. No model.</span></div>
+    <div class="read"><b>read</b><span>A reader writes it, choosing from closed lists. millpond checks each fact: the excerpt stands in the transcript, the speaker is on it, the values are in their lists. A fact that fails stays in the signal's words, for curation.</span></div>
+  </div>
+
+  <div class="two">
+    <div class="cfg">
+      <div class="h">one meeting signal, as a rule sees it</div>
+<pre class="code">{
+  <span class="k">"source"</span>: <span class="p">"meeting"</span>,
+  <span class="c">// stated: eddy's details</span>
+  <span class="k">"title"</span>: <span class="p">"Acme demo prep"</span>,
+  <span class="k">"start"</span>: <span class="p">"2026-11-12T15:00Z"</span>,
+  <span class="k">"length"</span>: <span class="p">"45m"</span>,
+  <span class="k">"attendees"</span>: [<span class="p">"dana@acme.com"</span>, <span class="p">"robin@ourco.com"</span>,
+                <span class="p">"lee@ourco.com"</span>],
+  <span class="c">// joined: your people list</span>
+  <span class="k">"roles"</span>: [<span class="p">"client"</span>, <span class="p">"executive"</span>, <span class="p">"engineer"</span>],
+  <span class="k">"client"</span>: <span class="p">"acme"</span>,
+  <span class="k">"teams"</span>: [<span class="p">"web-app"</span>],
+  <span class="c">// read: the reader, checked by millpond</span>
+  <span class="k">"assertion"</span>: <span class="p">"request"</span>,
+  <span class="k">"said_by"</span>: { <span class="k">"name"</span>: <span class="p">"Robin Hale"</span>, <span class="k">"role"</span>: <span class="p">"executive"</span> },
+  <span class="k">"about"</span>: <span class="p">"web-app"</span>,
+  <span class="k">"due"</span>: <span class="p">"2026-11-14"</span>,
+  <span class="k">"excerpt"</span>: <span class="p">"Can we have the export flow ready
+              to show Acme on Friday?"</span>,
+  <span class="k">"at"</span>: <span class="p">"00:12:40"</span>
+}</pre>
+      <p class="note"><code>assertion</code> is one of decision, request, action, risk or question. <code>about</code> is one of the drive's teams or repositories. <code>said_by.role</code> is joined from the speaker the reader names, so the model never decides who is an executive.</p>
+    </div>
+    <div class="cfg">
+      <div class="h">people and meeting rules in <code>.config/millpond.toml</code></div>
+<pre class="code"><span class="c"># People. Joined by address, or by the name a
+# transcript gives a speaker. In the cloud, the
+# drive's members stand in for this list.</span>
+<span class="k">[[person]]</span>
+name    = <span class="p">"Robin Hale"</span>
+address = <span class="p">"robin@ourco.com"</span>
+role    = <span class="p">"executive"</span>
+
+<span class="k">[[person]]</span>
+name    = <span class="p">"Lee Park"</span>
+address = <span class="p">"lee@ourco.com"</span>
+role    = <span class="p">"engineer"</span>
+teams   = [<span class="p">"web-app"</span>]
+
+<span class="k">[[org]]</span>
+name     = <span class="p">"acme"</span>
+domains  = [<span class="p">"acme.com"</span>]
+relation = <span class="p">"client"</span>
+
+<span class="c"># Stated facts only: runs before any reading,
+# so a drop spends no tokens.</span>
+<span class="k">[[rule]]</span>
+name = <span class="p">"stand-ups"</span>
+when = { source = <span class="p">"meeting"</span>, title = <span class="p">"*stand-up*"</span> }
+drop = <span class="p">"status, not intent"</span>
+
+<span class="c"># Read facts: runs on each signal.</span>
+<span class="k">[[rule]]</span>
+name     = <span class="p">"client-ask-in-meeting"</span>
+when     = { assertion = <span class="p">"request"</span>, client = <span class="p">"*"</span>,
+             <span class="p">"said_by.role"</span> = [<span class="p">"executive"</span>, <span class="p">"client"</span>] }
+kind     = false            <span class="c"># top of your queue</span>
+priority = <span class="p">"urgent"</span>
+window   = <span class="p">"now"</span>
+
+<span class="k">[[rule]]</span>
+name     = <span class="p">"web-app-decisions"</span>
+when     = { assertion = <span class="p">"decision"</span>, about = <span class="p">"web-app"</span> }
+kind     = false            <span class="c"># one item a day</span>
+priority = <span class="p">"elevated"</span>
+window   = <span class="p">"0 17 * * 1-5"</span>
+
+<span class="c"># Anything else a meeting says: no rule.
+# Curation reads it.</span></pre>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th></th><th>the policy</th><th>curation</th></tr></thead>
+      <tbody>
+        <tr><td class="seam">decides with</td><td>written rules, no model</td><td>a model session</td></tr>
+        <tr><td class="seam">reads</td><td>facts: stated, joined or read</td><td>the signals' words, and Boom's claims</td></tr>
+        <tr><td class="seam">takes</td><td>whatever a rule names</td><td>what no rule names, and judgments across signals: one ask raised in two meetings, a decision that undoes an earlier one, a signal a claim already answers</td></tr>
+        <tr><td class="seam">groups by</td><td>rule and <b>window</b>: signals gathered over time into one item</td><td><b>batch</b>: the moves it proposes together, which you accept or change</td></tr>
+        <tr><td class="seam">its move stands</td><td>at once: the rule is your standing word</td><td>once you accept the batch</td></tr>
+        <tr><td class="seam">cost</td><td>none past the reading</td><td>tokens, per batch</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 6 -->
+<section>
+  <div class="sec-head">
+    <span class="num">06</span>
+    <h2>Drives, linked</h2>
+    <p class="muted">One seam joins two drives: a version published in one arrives as a signal in another. Teams publish versions up to the executive; the executive publishes strategy and requests down to the teams. The publisher states facts, and each drive's own policy decides what they mean there.</p>
+  </div>
+  <div class="fig">
+    <svg viewBox="0 0 1080 440" role="img" aria-label="The executive's drive at the top, in the cloud, publishing quarterly strategy and client requests and watching team releases weekly. Three team drives below, each with its own policy. Teal arrows carry intents down, grey arrows carry published versions up.">
+      <defs>
+        <marker id="m6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0 L10 5 L0 10 z"/></marker>
+        <marker id="m6n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-new" d="M0 0 L10 5 L0 10 z"/></marker>
+      </defs>
+      <rect class="zone-cloud" x="340" y="14" width="400" height="118" rx="8"/>
+      <text class="t" x="540" y="42" text-anchor="middle">the executive's drive</text>
+      <text class="s" x="540" y="62" text-anchor="middle">in the cloud, no runner, no repository of code</text>
+      <text class="lbl-new" x="540" y="86" text-anchor="middle">publishes: quarterly strategy · a client's request</text>
+      <text class="lbl" x="540" y="106" text-anchor="middle">watches: every team's releases, one digest a week</text>
+
+      <path class="ar-new" d="M430 132 L170 290" marker-end="url(#m6n)"/>
+      <path class="ar" d="M215 290 L470 136" marker-end="url(#m6)"/>
+      <path class="ar-new" d="M525 132 V290" marker-end="url(#m6n)"/>
+      <path class="ar" d="M560 290 V136" marker-end="url(#m6)"/>
+      <path class="ar-new" d="M615 132 L870 290" marker-end="url(#m6n)"/>
+      <path class="ar" d="M915 290 L650 136" marker-end="url(#m6)"/>
+      <text class="lbl-new" x="250" y="190" text-anchor="end">intents</text>
+      <text class="lbl" x="352" y="232">versions</text>
+
+      <g class="exists"><rect class="box" x="40" y="294" width="290" height="108" rx="6"/><text class="t" x="185" y="320" text-anchor="middle">team A · web app</text><text class="s" x="185" y="342" text-anchor="middle">millpond's policy decides</text><text class="lbl" x="185" y="364" text-anchor="middle">flume &rarr; sluice &rarr; timber</text><text class="lbl" x="185" y="384" text-anchor="middle">publishes v2.3, with notes</text></g>
+      <g class="exists"><rect class="box" x="395" y="294" width="290" height="108" rx="6"/><text class="t" x="540" y="320" text-anchor="middle">team B · mobile app</text><text class="s" x="540" y="342" text-anchor="middle">millpond's policy decides</text><text class="lbl" x="540" y="364" text-anchor="middle">flume &rarr; sluice &rarr; timber</text><text class="lbl" x="540" y="384" text-anchor="middle">publishes 4.1.0</text></g>
+      <g class="exists"><rect class="box" x="750" y="294" width="290" height="108" rx="6"/><text class="t" x="895" y="320" text-anchor="middle">platform team</text><text class="s" x="895" y="342" text-anchor="middle">millpond's policy decides</text><text class="lbl" x="895" y="364" text-anchor="middle">flume &rarr; sluice &rarr; timber</text><text class="lbl" x="895" y="384" text-anchor="middle">publishes 1.8.2</text></g>
+      <text class="lbl-new" x="540" y="430" text-anchor="middle">each arrow is one seam: timber publishes in one drive, headwater captures it in the other</text>
+    </svg>
+  </div>
+  <div class="two">
+    <div class="cfg">
+      <div class="h">a team's <code>.config/millpond.toml</code></div>
+<pre class="code"><span class="k">[[adapter]]</span>
+name     = <span class="p">"exec-drive"</span>
+command  = <span class="p">"headwater capture --drive acme/exec"</span>
+schedule = <span class="p">"*/15 * * * *"</span>
+
+<span class="k">[[rule]]</span>
+name     = <span class="p">"client-request"</span>
+when     = { drive = <span class="p">"acme/exec"</span>, tag = <span class="p">"client-request"</span> }
+kind     = false            <span class="c"># top of your queue</span>
+priority = <span class="p">"urgent"</span>
+window   = <span class="p">"now"</span>
+
+<span class="k">[[rule]]</span>
+name     = <span class="p">"strategy"</span>
+when     = { drive = <span class="p">"acme/exec"</span>, tag = <span class="p">"quarterly-strategy"</span> }
+kind     = false            <span class="c"># a proposed intent</span>
+priority = <span class="p">"elevated"</span>
+window   = <span class="p">"now"</span>
+
+<span class="c"># Meetings: people and rules as in 05.</span></pre>
+    </div>
+    <div class="cfg">
+      <div class="h">the executive's <code>.config/millpond.toml</code></div>
+<pre class="code"><span class="k">[[adapter]]</span>
+name     = <span class="p">"team-releases"</span>
+command  = <span class="p">"headwater capture --drive acme/web \
+            --drive acme/mobile --drive acme/platform"</span>
+schedule = <span class="p">"0 * * * *"</span>
+
+<span class="k">[[rule]]</span>
+name     = <span class="p">"team-releases"</span>
+when     = { source = <span class="p">"release"</span>, level = [<span class="p">"major"</span>, <span class="p">"minor"</span>] }
+kind     = <span class="p">"digest"</span>         <span class="c"># an agent reads the week's notes,</span>
+priority = <span class="p">"normal"</span>         <span class="c"># writes one page across teams</span>
+window   = <span class="p">"0 8 * * 1"</span>      <span class="c"># Monday at eight</span>
+
+<span class="k">[[rule]]</span>
+name     = <span class="p">"team-patches"</span>
+when     = { source = <span class="p">"release"</span>, level = <span class="p">"patch"</span> }
+drop     = <span class="p">"patches are the teams' business"</span></pre>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>what arrives</th><th>where</th><th>rule</th><th>priority</th><th>what happens</th></tr></thead>
+      <tbody>
+        <tr><td>a security advisory on a pin</td><td>any drive</td><td><code>advisory</code></td><td>high</td><td><code>update</code> at the next tick</td></tr>
+        <tr><td>a client's request or demo</td><td>a team</td><td><code>client-request</code></td><td>urgent</td><td>top of your queue at once</td></tr>
+        <tr><td>the quarterly strategy</td><td>a team</td><td><code>strategy</code></td><td>elevated</td><td>a proposed intent in your queue</td></tr>
+        <tr><td>one of the family's tools</td><td>Boomdrive</td><td><code>family</code></td><td>normal</td><td><code>bump-set</code>, every 10 minutes or daily</td></tr>
+        <tr><td>a major release</td><td>any drive</td><td><code>majors</code></td><td>normal</td><td><code>fix</code>: an agent, weekly</td></tr>
+        <tr><td>a team's minor or major</td><td>the executive</td><td><code>team-releases</code></td><td>normal</td><td><code>digest</code>: one page, Mondays</td></tr>
+        <tr><td>a stand-up's signals</td><td>a team</td><td>none</td><td>normal</td><td>curation, then you</td></tr>
+        <tr><td>a patch or minor</td><td>any drive</td><td><code>point-releases</code></td><td>low</td><td><code>update</code>, every 30 minutes</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 7 -->
+<section>
+  <div class="sec-head">
+    <span class="num">07</span>
+    <h2>Where Boom fits</h2>
+    <p class="muted">Boom keeps a drive's claims: what holds. It routes nothing and plans nothing. Its gaps, the places where a claim does not hold, enter millpond like any other event, and the same policy routes them. Claims themselves are never routed; curation reads them to answer or challenge a signal.</p>
+  </div>
+  <div class="fig">
+    <svg viewBox="0 0 1080 250" role="img" aria-label="Boom's claims store sends gaps to millpond's intake, which feeds the policy: one gap goes to a rule's kind as one task, many gaps gather in a window into one planning item. Separately, curation reads Boom's claims to answer or challenge a signal. Another drive's changed claim arrives at the intake as well.">
+      <defs>
+        <marker id="m7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0 L10 5 L0 10 z"/></marker>
+        <marker id="m7n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-new" d="M0 0 L10 5 L0 10 z"/></marker>
+      </defs>
+      <g class="exists"><rect class="box" x="20" y="80" width="200" height="90" rx="6"/><text class="t" x="120" y="112" text-anchor="middle">Boom</text><text class="s" x="120" y="132" text-anchor="middle">claims: what holds</text><text class="s" x="120" y="150" text-anchor="middle">one store per drive</text></g>
+      <g class="exists"><rect class="box" x="320" y="24" width="170" height="56" rx="5"/><text class="t" x="405" y="47" text-anchor="middle">the intake</text><text class="s" x="405" y="66" text-anchor="middle">a gap, with its facts</text></g>
+      <g class="new"><rect class="box" x="560" y="24" width="170" height="56" rx="5"/><text class="t" x="645" y="47" text-anchor="middle">policy</text><text class="s" x="645" y="66" text-anchor="middle">same rules</text></g>
+      <g class="new"><rect class="box" x="800" y="4" width="260" height="44" rx="5"/><text class="t" x="930" y="31" text-anchor="middle">one gap &rarr; a kind, one task</text></g>
+      <g class="new"><rect class="box" x="800" y="58" width="260" height="44" rx="5"/><text class="t" x="930" y="85" text-anchor="middle">many gaps &rarr; a window &rarr; a plan</text></g>
+      <g class="exists"><rect class="box" x="560" y="170" width="170" height="56" rx="5"/><text class="t" x="645" y="193" text-anchor="middle">curation</text><text class="s" x="645" y="212" text-anchor="middle">answered · challenge</text></g>
+      <path class="ar-new" d="M220 105 L316 60" marker-end="url(#m7n)"/><text class="lbl-new" x="24" y="64">gaps · boom gaps</text>
+      <path class="ar" d="M490 52 H556" marker-end="url(#m7)"/>
+      <path class="ar-new" d="M730 44 L796 28" marker-end="url(#m7n)"/>
+      <path class="ar-new" d="M730 60 L796 78" marker-end="url(#m7n)"/>
+      <path class="ar" d="M556 198 H300 L222 150" marker-end="url(#m7)"/><text class="lbl" x="420" y="190" text-anchor="middle">reads the claims it cites</text>
+      <text class="lbl" x="405" y="110" text-anchor="middle">also arrives here: another drive's changed claim</text>
+    </svg>
+  </div>
+</section>
+
+<!-- 8 -->
+<section>
+  <div class="sec-head">
+    <span class="num">08</span>
+    <h2>What you see in the cloud</h2>
+    <p class="muted">A panel in the board's Operation phase. You don't have to decide anything for it to run; you see that it is running, open any place's terminal, and see how much reached an agent, which is the risk measure. Every number is computed from records that already exist. The numbers below are a sample.</p>
+  </div>
+  <div class="mock" aria-label="Mockup of an updates panel, sample numbers">
+    <div class="mock-head">
+      <div class="ttl"><i class="live"></i>Updates &middot; this week</div>
+      <div class="ph">drive: family &middot; sample</div>
+    </div>
+    <div class="tiles">
+      <div class="tile"><div class="v">2</div><div class="l">running now</div></div>
+      <div class="tile ok"><div class="v">17</div><div class="l">landed, no agent</div></div>
+      <div class="tile warn"><div class="v">2</div><div class="l">needed an agent</div></div>
+      <div class="tile warn"><div class="v">1</div><div class="l">waiting on you</div></div>
+      <div class="tile"><div class="v">41 min</div><div class="l">publish &rarr; every machine, median</div></div>
+    </div>
+    <div class="sub">RUNNING NOW</div>
+    <div class="runs">
+      <div class="run"><span class="nm">point-releases--20261112-1430</span><span class="rp">swancloud</span><span class="st stage">move &middot; command &middot; 2 min</span><span class="btn">terminal</span></div>
+      <div class="run"><span class="nm">family--20261112-1420</span><span class="rp">boomdrive</span><span class="st stage">submit &middot; gate &middot; 6 min</span><span class="btn">terminal</span></div>
+      <div class="run"><span class="nm">majors--20261109-0900</span><span class="rp">swancloud</span><span class="st stage">react 19.0.0 &middot; sent back twice</span><span class="btn go">waits on you</span></div>
+    </div>
+    <div class="byrule">
+      <div class="keyrow"><span><i style="background:var(--new)"></i>landed, no agent</span><span><i style="background:var(--amend)"></i>an agent stepped in</span><span><i style="background:var(--exists)"></i>waiting on you</span></div>
+      <div class="br"><span class="nm">point-releases</span><div class="track"><div class="fill" style="width:93%"></div><div class="fill agent" style="width:7%"></div></div><span class="ct">14</span></div>
+      <div class="br"><span class="nm">family</span><div class="track"><div class="fill" style="width:20%"></div></div><span class="ct">3</span></div>
+      <div class="br"><span class="nm">advisory</span><div class="track"><div class="fill" style="width:7%"></div></div><span class="ct">1</span></div>
+      <div class="br"><span class="nm">majors</span><div class="track"><div class="fill agent" style="width:7%"></div><div class="fill you" style="width:7%"></div></div><span class="ct">2</span></div>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>number</th><th>computed from</th><th>standing</th></tr></thead>
+      <tbody>
+        <tr><td>running now, stage, since when</td><td>flume's place status, carried up by the runner</td><td><span class="pill exists">exists</span></td></tr>
+        <tr><td>terminal</td><td>the cloud's terminal relay, end to end through the runner</td><td><span class="pill exists">exists</span></td></tr>
+        <tr><td>landed this week, by rule</td><td>millpond's items, each naming the rule that sent it, and their landings</td><td><span class="pill amend">millpond: the rule as who asked</span></td></tr>
+        <tr><td>needed an agent</td><td>flume places that reached their agent stage</td><td><span class="pill amend">the update kind</span></td></tr>
+        <tr><td>waiting on you</td><td>flume places past <code>max_send_backs</code>, and items no rule launches</td><td><span class="pill exists">exists</span></td></tr>
+        <tr><td>publish &rarr; every machine</td><td>timber: the publish, the channel's move, each environment converged</td><td><span class="pill exists">exists</span></td></tr>
+        <tr><td>agents' points on updates</td><td>flume's points, over the last day and week, for the <code>operation</code> label</td><td><span class="pill exists">exists</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 9 -->
+<section>
+  <div class="sec-head">
+    <span class="num">09</span>
+    <h2>What each tool gains</h2>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>tool</th><th>gains</th><th></th></tr></thead>
+      <tbody>
+        <tr><td class="seam">weir</td><td>the policy's format and its evaluation, one copy for millpond and the cloud; the schema of a meeting's facts; offers that carry their source's facts; cadence reads a window</td><td><span class="pill new">new</span></td></tr>
+        <tr><td class="seam">eddy</td><td>its details, attendees among them, go in the offer as facts; still never reads a meeting</td><td><span class="pill amend">amend</span></td></tr>
+        <tr><td class="seam">millpond</td><td>runs the policy in its tick; joins attendees and speakers to your people list; checks a reading's facts against their closed lists; runs rules on stated facts before any reading; a rule's move stands beside curation's; rule-named items whose brief is their signals' own text; launches any kind with a priority and parameters</td><td><span class="pill amend">amend</span></td></tr>
+        <tr><td class="seam">headwater</td><td>a release's level; reads <code>flake.lock</code>; looks up timber's channels and another drive's publishes; still never acts</td><td><span class="pill amend">amend</span></td></tr>
+        <tr><td class="seam">flume</td><td>a command stage; <code>--params-file</code>; the <code>update</code> kind</td><td><span class="pill amend">amend</span></td></tr>
+        <tr><td class="seam">timber</td><td>nothing: it already publishes and moves channels; its publish is what the next drive watches</td><td><span class="pill exists">exists</span></td></tr>
+        <tr><td class="seam">Boom</td><td><code>boom gaps</code> offers at the intake, with each gap's facts</td><td><span class="pill amend">its design</span></td></tr>
+        <tr><td class="seam">the cloud</td><td>a rule's launch as a source of launches; the updates panel in Operation; a drive's publish as another drive's source; running a cloud-only drive's policy</td><td><span class="pill cloud">boomdrive-cloud</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 10 -->
+<section>
+  <div class="sec-head">
+    <span class="num">10</span>
+    <h2>Calls this design makes</h2>
+    <p class="muted">Each is my recommendation. Change any and the rest still hold.</p>
+  </div>
+  <ul class="calls">
+    <li><b>The policy lives in the inbox's settings.</b>One file per drive, kept by whoever keeps the inbox, and the same in every setup. Rules reach one repository with <code>repository = "&hellip;"</code>. A repository's pins stay in its own lock files.</li>
+    <li><b>Five named priority levels.</b>low, normal, elevated, high, urgent, each mapped to a number in flume's order. Rules name levels, never numbers.</li>
+    <li><b>Three outcomes: a kind, your queue, or a drop.</b>Every rule ends in exactly one. A drop is millpond's existing drop move, with the rule's reason.</li>
+    <li><b>Updates carry the <code>operation</code> label.</b>flume already shares a stream's agents by label, so an update's agent stage never waits behind construction work, and the cloud counts updates as Operation, outside the construction gauge.</li>
+    <li><b>A watching drive always sets its own priority.</b>A publisher's tag is a fact its rules can match; what the publisher thinks is urgent never sets the watcher's priority directly.</li>
+    <li><b>A meeting's facts come three ways.</b>Stated by eddy's details, joined from your people list, read by a reader. Rules match all three; curation takes what no rule names.</li>
+    <li><b>A reader picks from closed lists, and millpond checks it.</b>An assertion is one of five; a speaker is one the transcript gives; <code>about</code> is one of the drive's teams or repositories. A fact that fails the check stays in the signal's words.</li>
+    <li><b>People are a list, never a guess.</b><code>[[person]]</code> and <code>[[org]]</code> in the inbox's settings, or the drive's members in the cloud. Who is an executive or a client is joined, never read.</li>
+    <li><b>A rule on stated facts runs before reading.</b>A drop there means no reader is charged, so a stand-up costs no tokens.</li>
+    <li><b>A cloud-only drive runs the same policy in the cloud.</b>weir's evaluator runs there, and the cloud's clock stands in for the runner's tick.</li>
+  </ul>
+</section>
+
+<footer>Write-up: design/research/2026-11-11-a-new-version-reaches-every-machine.md &middot; branch research/a-new-version-reaches-every-machine</footer>
+</div>
+
+</body></html>
