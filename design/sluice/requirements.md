@@ -598,9 +598,12 @@ redefine these.
      of the first (45, 46): a landing's (122), a branch made or removed
      (104, 105), a session's branch or head pushed for a submit (C.5)
      and the records' refs (C.6) alike. A push the remote refused at the
-     ref, the lease stale or the branch protected, is the move refused
-     (24, 45), and one whose answer was not read is never made again
-     blind: the branch is read, and what the remote holds decides (122).
+     ref with its lease stale is the move refused, as 24 and 45 have
+     it. A landing the forge refused for a rule or a protection of its
+     own, the branch where the landing expected it, is held as 152 has
+     it. A push whose
+     answer was not read is never made again blind: the branch is
+     read, and what the remote holds decides (122).
      A write to the forge is tried again the same way: one that sets a
      state, a request's draft mark, is tried again, since the state read
      decides; one that makes or starts something, a check run, a
@@ -691,6 +694,26 @@ redefine these.
     (140) alone have made of it since. A landing that finds the branch
     elsewhere is refused, and the chain is formed again on the revision
     found. (record 0075, accepted 2026-10-30)
+152. The forge may refuse a landing's push for a rule or a protection
+     of its own, such as push protection finding what reads as a
+     secret. Where the branch, read after the refusal, is still at the
+     revision the landing expected, the forge refused the landing
+     itself, and forming the chain again would form the same tree.
+     sluice writes the refusal in the branch's records with the forge's
+     words whole before anything else acts on the branch. It logs the
+     refusal once, never once per round, and shows it on the branch and
+     on each entry the landing carries. Nothing is formed again for it,
+     no round pushes it again, and the entries behind it wait. Its
+     entries are no longer landing: each is withdrawn as 5 allows, by
+     its submitter, its planner or the operator, and by a submission
+     from its place (67). Once one leaves, sluice drops the landing, and
+     the rest go back to the queue and are formed again on the branch
+     (24). A wait on one of its entries ends saying the forge refused
+     its landing, in the forge's words. Its submitter is told as an
+     outcome is told (50), and the refusal decides no outcome. Once the
+     forge's rule has changed, the operator asks for the landing to be
+     pushed again, and it lands as the same landing where the forge
+     takes it (122). (Added 2026-11-13: sluice record 0124.)
 25. sluice releases every place it made for a candidate once that
     candidate's verdict is read, and never releases a session's place.
     A session learns its entry landed (50), and releasing its place is

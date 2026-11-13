@@ -483,7 +483,7 @@ life, not the run's duration. This is the answers' leaning on question
 | a dead executor | 4.2 | the run in flight |
 | the lead stops | taken after a lease; the taker's first step finishes any landing intent and re-opens nothing with a verdict (59, S14) | one lease of time |
 | two leads | 4.1; the fence | nothing |
-| the forge refuses sluice's push to the branch (rules changed, credential expired) | the landing is refused as a move elsewhere is (24); the chain is formed again and refused again; the branch stalls visibly in its records | time, until the operator fixes the credential |
+| the forge refuses sluice's push to the branch (rules changed, credential expired, push protection) | the forge refused the landing itself (152): sluice holds it with the forge's words and never pushes or forms it again by itself; the branch stalls visibly in its records | time, until the operator fixes the rule or the credential and asks for the push again, or a refused entry's submitter withdraws it or submits again from its place |
 | a session's user obtains the sluice user's credential on some host | clause 1 is broken on that host: it can move a branch | the design's guarantee; this is why the server is preferred for the shared branch |
 
 ---
