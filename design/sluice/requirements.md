@@ -281,7 +281,13 @@ redefine these.
     run of any instance takes its part of the bound between; a start
     that fails gives that part back at once, and an instance that stops
     before the run starts gives it back as it stops (record 0087,
-    proposed 2026-11-06). Each run is given the cores
+    proposed 2026-11-06). A part of the bound that frees goes to a
+    repository with a run ready that has the fewest runs under test on
+    the host, the one whose ready run has waited longest among equals,
+    each repository's own order of runs standing (13); so a repository
+    with a run ready and none under test takes the next part that
+    frees, and a run under test is never stopped to make room (record
+    0123). Each run is given the cores
     sluice may use divided by the bound, and its runner hands that share
     to the tools it runs, so the bound's runs together use what sluice
     may use and no more. What sluice may use is what the host gives it,
