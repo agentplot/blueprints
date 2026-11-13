@@ -768,7 +768,9 @@ redefine these.
      catalogued kind carries.
 109. A signer's run records are written only by that signer and only
      added to. One signer's write never refuses another's, and never
-     waits on the branch's records (62).
+     waits on the branch's records (62). A branch that lands or is
+     removed keeps every result it recorded, since a result is its
+     key's (69).
 86. A branch's gate names, for each check it requires, the systems a
     pass must come from. A candidate's verdict is read over every
     required check on every system named (15), and a pass on one system
@@ -894,10 +896,14 @@ redefine these.
      the means its deployment names; a wake that is lost delays the work
      and loses nothing (59).
 129. On one host, one process reads a repository's records, policy and
-     places for everyone watching its queues: a watch or a wait that
-     finds a live reader follows the document the reader last wrote and
-     reads nothing itself, and one that finds none starts sluice's host
-     process, which reads (135). A host process that stops is started
+     places for everyone watching its queues: a watch, a wait, a status,
+     an overview or a forecast that finds a live reader that has read
+     within its tick answers from the document the reader last wrote and
+     reads and fetches nothing itself, and one that finds none starts
+     sluice's host process, which reads (135). The reader reads each
+     recorded result and each signed run record once, verifying each
+     signature once, and answers by the keys asked for, so no read loads
+     or verifies the whole history again. A host process that stops is started
      again by the next watch or wait within a tick, its followers
      reading what it last wrote until then; a reader
      serves its own host alone (26, 80). A read the reader could not
