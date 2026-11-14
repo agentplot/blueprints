@@ -839,7 +839,11 @@ redefine these.
 72. An instance keeps a branch only by writing its records. Once the
     deployment's lease has passed with no write of that instance, any
     instance may take the branch; taking it is a write (62), after which
-    the former lead writes nothing more for the branch (58).
+    the former lead writes nothing more for the branch (58). While any
+    run of the branch is claimed or under test, the lead writes at least
+    once a lease, so the lead never lapses under a live run. An instance
+    whose signature the branch does not accept never takes it (137;
+    agentplot/sluice record 0122).
 73. Taking a branch needs no knowledge of the former lead: one that
     stopped and one that was quiet for a lease are treated alike, and
     the lease is measured by the taker's own observation of the
@@ -1366,16 +1370,37 @@ outlives them is the trailers each landing commit carries (23).
 | **local files**: one host | the documents under the repository's common git directory, one directory per branch and one log of check results per repository (69), readable by every place on the host with no process running, never tracked and never pushed, a version kept beside them; the live submissions under `submissions/`, the finished under `.finished/`, whose dot no branch name carries, their index in `finished.jsonl`, the current log in `log.jsonl` and the closed parts under `log/<n>.jsonl` (130 to 132); a write under the branch's lock, refused when the version moved, a move of a submission one write with its put, its removal and its index line |
 | **remote refs**: peers, for a branch with a `remote` whose policy names signers | one root commit under `refs/sluice/state/<branch>` on the shared remote, its tree the branch's documents (53), its id the version; a write a push with `--force-with-lease` from the commit read, by any instance that submits to or advances the branch; beside it `refs/sluice/runs/<signer>`, each signer's signed run records, added to only by that signer (109); `refs/sluice/heads/<oid>` for every submitted head; `refs/sluice/combinations/<branch>/<id>` for every candidate open to claims; `refs/sluice/logs/<branch>/<run>` for a run's output; and `refs/sluice/hosts/<host>`, rewritten by each host alone on a fixed cadence as its sign of life and its free room (77, 107) |
 
-Which profile holds a branch's records is read from the policy at the
-branch's head as its remote holds it, the revision its rounds read. So
-every process on a host reads one answer, and reads it again whenever
-the branch moves. A branch whose policy comes to name signers moves to
-the remote refs, its open entries carried by the first round that reads
-it so. One whose policy stops naming them comes back to the local files
-the same way. The first round that reads it so carries the remote
-state's open entries into the host's own files, each under a number of
-the host's. The remote state is left unread (agentplot/sluice record
-0116).
+A branch's queue has one home, the local files or the remote refs,
+written in the branch's records with the revision of the policy that
+chose it. Every process reads the home from the records and never works
+it out from a policy it read. The lock, the numbers and the entries live
+in the home alone.
+
+The policy at the branch's head, as its remote holds it, says where the
+queue should live: the remote refs once it names signers, the local
+files once it stops. A round that reads a home there other than the
+recorded one writes a move in the current home and opens no candidate
+meanwhile. Once no run of the branch is under test, it carries the open
+entries to the new home, writes the new home's record, and closes the
+old home with a pointer to the new. Each step is written before the next
+begins, so a round that stops halfway leaves the move written, and the
+next round finishes it.
+
+A carried entry keeps its number where the new home holds no entry of
+that number, live or finished, and the new home's count is raised past
+the highest number carried. A number the new home already holds is
+carried under its next number instead. The entry, the old home's pointer
+and the line that carried it name the number it had and the home it
+came from. So no home repeats a number, and a wait on the old number
+still finds it.
+
+The local files are one host's, so a branch coming home goes to each
+host's own files. Each host carries the open entries it submitted, the
+first time a round of its own reads the closed remote home. An entry
+whose host never returns stays readable there, and its status says it
+waits for its host. A wait and a status follow an entry to its home,
+through a closed home's pointer. A closed home keeps its history
+(agentplot/sluice records 0116 and 0122).
 
 A run record on a signer's ref is an in-toto statement in a DSSE
 envelope, of in-toto's Test Result kind: its subject the check's key and
