@@ -4087,8 +4087,9 @@ The rest of the stack, which a model builds on unless it says why not:
   `flume settle --every <bound>` once and awaits it. A host where no
   caller keeps watch runs attended. Its places move at its agents'
   quiet and its callers' commands, each command
-  settling every place first, and its queues by those settles' steps,
-  or by `sluice run` where the host runs it (124; sluice 135).
+  settling every place first, and its queues move in sluice's own host
+  process, which a submit and a settle's read start (124, C.6;
+  sluice 135).
 - The profiles of Part C: plain git worktrees, the kind format in
   `.config/flume.toml`, OpenSpec, Claude Code, herdr, sluice, the
   host's state directory, and Ghostty or Terminal.app as the window
@@ -4945,13 +4946,15 @@ These are not requirements.
   flume holds changes (57, 62, 63, 66, 70, 130, 200, 201).
 - **S109.** On a host whose runner keeps watch, each of its passes
   running `flume settle --every 2m`, a chore's code stage delivers, its
-  agent ends, and flume submits the place. No `sluice run` drives the
-  repository, and no caller asks anything else of flume. At each pass flume settles every place, the chore's among them
-  with no agent in it, and that settle runs one round of its base's
-  queue. The submission lands, and the next settle delivers the landing
-  to the chore's recipient and tidies the place. On another host whose
-  `sluice run` drives the repository, the same settles' steps do nothing
-  and the driver lands it (46, 124, 125, 208; sluice 135).
+  agent ends, and flume submits the place, which starts sluice's host
+  process. No caller asks anything else of flume. At each pass flume
+  settles every place, the chore's among them with no agent in it, and
+  reads its submission, driving no round of the queue, which sluice's
+  host process moves on its own. Where that process ended before the
+  submission was decided, the next settle's read starts it again. The
+  submission lands, and the next settle delivers the landing to the
+  chore's recipient and tidies the place (46, 124, 125, 208, C.6;
+  sluice 135).
 - **S110.** A caller launches a base place of its own kind with no
   stages on `main`. flume asks sluice to make its branch, makes no
   worktree, and starts no agent. The caller launches two changes on
