@@ -2533,6 +2533,76 @@ redefine these.
      first, which it hands to its own subagents and which it launches as
      places of the kinds its entry names are the role's (193). (flume record 0065, proposed)
 
+### A.15 Telemetry
+
+216. Where flume's telemetry goes is the host's own setting, the
+     managed layer's `[telemetry]` (C.7). It says whether flume sends,
+     the collector on the host it sends to, the service and host flume
+     names itself as with any attributes of the host's own, and which of
+     its traces, metrics and logs go. With no such table flume sends
+     nothing. OpenTelemetry's own variables in flume's environment may
+     turn telemetry or one signal off. They never turn one on or name
+     where it goes, so a caller's or an agent's settings for its own
+     tools never send flume's elsewhere. Nothing flume decides, answers
+     or delivers reads its telemetry back or waits on it. A signal that
+     can't be sent is lost, is never sent again, and changes no act and
+     no answer (57, 74). (flume record 0067; sluice 151.)
+217. Every place has one trace, which the held state names at its launch
+     with the place's own span.
+     - The place's span runs from its launch to its tidy, drop or done.
+     - Each start of a stage is a span beneath it, from the start to its
+       end. It names the stage, the start's number, the repetition where
+       the stage repeats, the agent's program and the id of the
+       conversation the agent runs, and how the start ended: delivered,
+       ended short and whether it needs an answer, finished, lost or
+       stopped.
+     - Each wait of the place is a span beneath it, from the moment
+       flume read the wait to the moment it ended. It names whom the
+       place waits on and for which move: its caller, for a hold, an
+       answer, a review, a lost stage, a prompt never begun, a readiness
+       that failed or a last stage that does not land (130), and whether
+       a hold stood over the wait and whether it stalled; the host, for
+       room (70); the merge queue, from a submission to its landing or
+       its refusal (111); or a person, while the agent is asking.
+     - A span goes when flume reads its end, with the times the held
+       state keeps, whichever command reads it, one run after a restart
+       among them (77).
+     - Each change, a start, an end, a wait begun or ended, a hold, a
+       stall or a stuck stage, also goes as a record in the place's
+       trace when flume reads it. A backend so shows a place as it
+       stands before its spans end.
+218. Every span and record names its place's repository, kind with its
+     version, name, base, stream, intent and mark, and the stage and
+     start it concerns; a start's span names its agent's account. None
+     names any words of a brief, a prompt, a stop-short, an answer, a
+     hold or a failure, nor a path or an agent's output. flume's own
+     warnings and errors go as records with their own words, each value
+     that reads as a secret replaced, as sluice's are (sluice record
+     0022).
+219. Each agent flume starts while flume sends gets its place's facts
+     (218) in OpenTelemetry's own variables, and, while traces go, its
+     start's trace context. An agent program that exports its own
+     telemetry so names the place in it, and a command the agent runs
+     that reads a trace context, such as sluice's (sluice 153), nests
+     under the start. flume sets nothing else of the agent's telemetry:
+     whether the program exports, where to and what, stay the host's
+     settings for that program. While flume sends nothing, an agent gets
+     none of it.
+220. flume's metrics name no place, intent, mark, conversation or
+     account. They name a repository, a kind, a stage, a stream, how a
+     start ended and whom a wait is on:
+     - each start's time to its end;
+     - each wait's time, by whom and which move;
+     - the stalls and stuck stages, counted;
+     - at a settle of every place on the host (121, 208), the places
+       standing, by kind, state and whom they wait on, and each
+       stream's agents running and its room.
+
+     A command sends what changed in them since it began, once, as it
+     ends, so a backend adds each command's share. The volume of
+     metrics grows with the kinds and stages a host runs, never with its
+     places (flume record 0067).
+
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
 ## Part B. Contracts across the seams
@@ -3804,6 +3874,25 @@ lives:
   multiplexer`, and a host that gives both is refused naming both. A
   host whose own names no profile refuses every command, naming it, as
   it did before.
+- The host's telemetry is a table of the managed layer, `[telemetry]`,
+  in sluice's words for its own (sluice C.7) (216 to 220):
+  - `send`, which turns it on;
+  - `collector`, an `http://` address of the host's own loopback, a
+    port and at most a path, which a table with `send` on must name;
+  - `service`, `flume` where it gives none;
+  - `traces`, `metrics` and `logs`, each on where it is not given;
+  - `[telemetry.attributes]`, the host's own attributes, which a
+    `host.name` among them overrides flume's reading of the host's
+    name.
+
+  flume sends OTLP over HTTP, protobuf, to the collector's
+  `/v1/traces`, `/v1/metrics` and `/v1/logs`, its metrics as what
+  changed since the command began. Of OpenTelemetry's own variables it
+  reads `OTEL_SDK_DISABLED` and `OTEL_<SIGNAL>_EXPORTER` at `none`, and
+  no other. An agent flume starts gets the place's facts in
+  `OTEL_RESOURCE_ATTRIBUTES` and, while traces go, its start's context
+  in `TRACEPARENT` (219). The trace and the place's span are named in
+  the place's document (217).
 - The settings a host gives its agents are tables of the same
   configuration, by kind, `[kinds.<kind>.agents]`, and by repository
   and kind, `[repos."<repository>".kinds.<kind>.agents]`, the
@@ -5142,6 +5231,20 @@ These are not requirements.
   hibernates again. When both deliver, their ends reach the role as one
   batch, and status gave the two places under the role while they ran
   (7, 132, 193, 213, 214, 56; flume record 0065, proposed).
+- **S129.** A host's managed layer sends flume's telemetry to the
+  collector on the host. A place of the intent `accounts` codes for an
+  hour, and its agent runs the tests in the place twice through sluice.
+  It stops short needing an answer, waits forty minutes on its caller,
+  is retried, delivers, and waits fifty minutes on the merge queue
+  before it lands. The backend holds one trace for the place:
+  - two spans for the code stage's starts, the first ended short;
+  - a wait of forty minutes on its caller for an answer;
+  - a wait of fifty minutes on the merge queue.
+
+  sluice's two test runs nest under the starts that ran them, and the
+  agent program's own spans and token counts name the place and its
+  intent. No span or record holds the stop-short's words, and no metric
+  names the place (216 to 220).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

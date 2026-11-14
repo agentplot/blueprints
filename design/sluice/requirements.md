@@ -992,6 +992,32 @@ redefine these.
      decides reads its telemetry back. (Added 2026-11-09: sluice record
      0106, the user's direction that day in agentplot-design's pane;
      records 0014 and 0022.)
+153. A sluice command started with a W3C trace context in its
+     environment, as an agent program gives each command it runs,
+     nests its own span under that context: `exec`, `submit`, `wait`
+     and every other command that sends. An `exec`'s span holds each
+     check it ran in the place, with its time and outcome, and hands its
+     checks what a round's run hands them (151). A submission keeps the
+     context it was submitted under, and each round that tests a
+     candidate holding it links to that context. A person so goes from
+     an agent's command to the rounds that tested its work, and back. A
+     context names only where sluice's spans nest. It never turns
+     telemetry on (151; flume 219).
+154. Each entry's life is a span of its own, from its submission to its
+     end: landed, refused, dropped for a conflict, blamed, or withdrawn.
+     It names how the entry ended, and holds the time it waited with no
+     candidate of it under test and the time one was under test. A run
+     that ended with no outcome is named so, and is never the entry's
+     failure (114). sluice's metrics add, by branch and how an entry
+     ended:
+     - each entry's time waiting and its time under test;
+     - the entries ended;
+     - the host's running checks against its bound, and how long a run
+       sluice chose waited for room under the bound (71).
+
+     No metric names an entry's head, its submitter or the context it
+     was submitted under: those go on spans alone, so the volume of
+     metrics grows with branches and not with submissions.
 137. A branch's requests are taken in only where its records are on
      its remote, by the instance that keeps the branch there (72):
      whatever executes the branch's queue, in one of four ways the

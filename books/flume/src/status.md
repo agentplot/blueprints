@@ -95,6 +95,37 @@ keeps the item:
 flume holds no history a caller needs later, and no caller reads one
 from it.
 
+## What flume reports off the host
+
+Where the host's managed configuration turns it on, flume reports each
+place to a collector on the host as one trace (216, 217). The trace
+holds a span for each start of a stage and a span for each wait. A
+wait names whom the place waited on: its caller for an answer or a
+review, the host for room, the merge queue, or a person the agent is
+asking. A
+record goes at each change, so a backend shows a place as it stands
+before its spans end.
+
+```
+place  a-deploy-…-request   intent accounts
+├─ construct, start 1   1h02   ended short, needs an answer
+├─ wait: caller, answer 0h40
+├─ construct, start 2   0h38   delivered
+└─ wait: merge queue    0h50   landed
+```
+
+flume hands each agent it starts the place's facts and its start's
+trace context (219). The agent program's own turns and token counts so
+name the place, and a test run the agent starts through sluice nests
+under the start. A backend joins a session, an intent or the merge
+queue from these alone.
+
+No word of a brief, prompt, stop-short or answer leaves the host. No
+metric names a place, so the metrics grow with the kinds a host runs
+and never with its places (218, 220). flume reads nothing back:
+a collector that is down loses the signals and changes nothing flume
+does (216).
+
 ## One reading per repository
 
 A flume command reads each repository once, however many of its places
