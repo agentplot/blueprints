@@ -41,8 +41,8 @@ the change is theirs.
 |---|---|---|
 | **the repository's authors** | what the repository depends on, which dependencies belong to which tier, each tier's cadence, which lookups to ask, and how a dependency's tags spell its versions | they never decide what upstream publishes, which of two versions is newer, or that a release is older than it is |
 | **an asker** (a person, a coding agent, a surface, a recorder, a scheduler) | which repository and which tiers to ask about, and when | it never changes an answer by who it is, and never supplies a release or a version order |
-| **upstream** (whoever publishes a dependency) | what is released, when, under which version, and what its notes say | it never learns anything of the repository beyond the identities and versions headwater asks about |
-| **headwater** | which releases are newer than each pin, as this statement fixes them, and what it keeps to answer again | it never changes a repository, never rewords or judges what upstream wrote, never acts on a release, and never keeps a credential |
+| **upstream** (whoever publishes a dependency) | what is released, when, under which version, what its notes say, and the facts it states of a release | it never learns anything of the repository beyond the identities and versions headwater asks about |
+| **headwater** | which releases are newer than each pin and at which level, as this statement fixes them, and what it keeps to answer again | it never changes a repository, never rewords or judges what upstream wrote, never acts on a release, and never keeps a credential |
 | **a fixer** (a coding agent or a person who makes changes) | whether and how to move a pin, given a brief | it never changes what headwater reports about upstream |
 | **a recorder** (a program that keeps what it hears as its own records) | how it records each release, and what its own judgment of one is | it never writes headwater's state, and never acknowledges a release |
 | **the operator** | which releases are dismissed or skipped, in their own word or through a person or session they let act for them; everything the repository's authors and an asker do not settle | |
@@ -91,9 +91,20 @@ redefine these.
   rules of where upstream publishes it.
 - **newer**: of a release against a pin, later in the dependency's
   version order.
+- **level**: of a release against a pin, which part of the version it
+  changes under the dependency's own version rules: **major**,
+  **minor** or **patch**, or **prerelease** for a prerelease. It is
+  **undecided** where those rules cannot say (70). A level names the
+  part that changed and nothing of what the release changes.
 - **notes**: what upstream wrote of a release, as upstream wrote it.
 - **advisory**: a published warning that names versions of a dependency
   as unsafe.
+- **facts**: of a release, what an answer states of it for a program to
+  match without reading its words. headwater's own are the dependency's
+  identity, label and tier, the pin and the version, the level, the
+  date, the advisories naming the dependency's pins, and the lookups
+  that list it (71). Upstream's are the facts it states of the release,
+  given apart (72).
 - **tier**: a named set of a repository's dependencies, with a cadence.
   The **default tier** holds every dependency no other tier names.
 - **tiers declaration**: the one place in a repository state that names
@@ -203,6 +214,30 @@ redefine these.
     dependency that gives a range, inside or outside that range. A
     release inside one declaration's range and outside another's
     carries both marks. The marks never leave a release out (8).
+70. Every release a report holds has a level against its dependency's
+    pin (4), read by the dependency's own version rules (6). A
+    prerelease's level is prerelease. Any other release's is the first
+    of the major, minor and patch parts in which its version differs
+    from the pin's, or patch where none does. A release whose order
+    against the pin is undecided (7), or whose version rules give its
+    version no such parts, has the level undecided, never a guessed one.
+    headwater reads a level from the two versions alone, never from
+    notes, a date or an advisory, so a level never judges what a release
+    changes (11; the update-ladder talk, 2026-11-12).
+71. Every report and every brief gives each release it holds with its
+    facts, so a program can match a release without reading its words.
+    They are its dependency's identity, label and tier; the pin and the
+    version; its level (70); its date; the advisories naming the
+    dependency's pins, or that they are unread (18); and the lookups
+    that list it (39). A program reads a release's age from its date.
+    headwater reads each fact from the repository state, a lookup's
+    answer or the version order, and none from notes (11, 19).
+72. A release lookup may give, beside a release's notes, facts its
+    upstream states of the release. headwater gives each as upstream
+    stated it, under upstream's name and apart from its own facts (71).
+    It never derives a fact of its own from one, and never lets one
+    stand for a fact of its own: a level upstream states never replaces
+    the level the version order gives (70).
 
 ### A.3 Tiers and cadence
 
@@ -377,16 +412,21 @@ redefine these.
 43. **list-releases**: given an identity, and its tag scheme where a
     declaration states one, every release the lookup lists for it. Each
     comes with its version, date and link, whether the lookup marks it a
-    prerelease, and whether it has been withdrawn. Or the answer is that
-    the lookup could not be reached.
+    prerelease, whether it has been withdrawn, and the facts its
+    upstream states of it where the lookup gives any (72). Or the answer
+    is that the lookup could not be reached.
 44. **order**: given an identity, its tag scheme where a declaration
     states one, and two versions, which is newer, that they are the
     same, or that their order cannot be decided.
 68. **locate**: given an identity, where upstream keeps its releases and
     notes, or that this is unknown. A declaration may state it too
     (40).
-45. The order is the version order (6). The same two versions of one
-    identity under one tag scheme always order the same way.
+73. **level**: given an identity, its tag scheme where a declaration
+    states one, a pin and a version, the version's level against the
+    pin, undecided where the version rules cannot say (70).
+45. The order is the version order (6), and the same rules give a level
+    (70). The same two versions of one identity under one tag scheme
+    always order the same way and give the same level.
 
 ### B.4 The notes lookup
 
@@ -459,9 +499,14 @@ the release's link: under a tag scheme whose prefix is `cli-v`, the tag
 | **GitHub Actions** | `uses:` in `.github/workflows` | the tag or version named; unknown for a branch | none |
 | **container images** | `FROM` in a `Dockerfile` | the tag named; unknown for `latest` | none |
 | **watch list** | a file of entries, each naming a dependency's Package URL, its label (the entry's name), its upstream repository, its tag scheme, its pin and its claims | as the entry gives it; swancloud's is generated from `lib/release-sources.nix` | none |
+| **Nix flake** | each input of the root of `flake.lock`, never one that follows another's, labelled by the input's name, its claim the input's URL in `flake.nix` | the version the ref the lock records for the input spells as a tag (C.1); unknown where that ref spells no version, as a branch does, or the input names a revision or no ref | none |
 
 A lockfile that does not parse makes every dependency it would pin
-unread (1), never of unknown pin.
+unread (1), never of unknown pin. The Nix flake profile reads the lock
+alone and evaluates no Nix. What a flake pins is a dependency like any
+other. The release lookups answer for it, and a report holds each of
+its releases newer than its pin (8; the update-ladder talk,
+2026-11-12).
 
 Each declaration's identity:
 
@@ -471,6 +516,7 @@ Each declaration's identity:
 | a mise tool on a GitHub backend, and every GitHub Action | `pkg:github/<owner>/<repo>` |
 | a mise core tool | `pkg:github/<owner>/<repo>` of its upstream's repository |
 | a watch-list entry | the Package URL the entry names outright |
+| a flake input the lock records on GitHub | `pkg:github/<owner>/<repo>`; an input of any other type is unread, naming its type (1) |
 
 The move a brief names (66):
 
@@ -481,7 +527,7 @@ The move a brief names (66):
 | **Cargo** | `cargo update -p <name>` |
 | **Go** | `go get <module>@<version>` |
 | **mise** | `mise use <tool>@<version>` |
-| **GitHub Actions**, **container images**, **watch list** | none; the brief names the declarations and their claims (26) |
+| **GitHub Actions**, **container images**, **watch list**, **Nix flake** | none; the brief names the declarations and their claims (26) |
 
 ### C.3 Release lookups
 
@@ -492,6 +538,8 @@ The move a brief names (66):
 | **a registry's own API** | the registry's packages | the registry's version list, for a release deps.dev has not seen yet; order as above |
 | **GitHub releases** | `pkg:github/*`, and any dependency whose upstream repository is on GitHub | the repository's releases through GraphQL, fifty repositories a query, with the asker's own `gh` sign-in (38); order by Semantic Versioning where the tags parse, by the declaration's tag scheme otherwise |
 | **ecosyste.ms** | GitHub Actions, container images, Homebrew, nixpkgs and the other registries it indexes | its packages API by Package URL |
+| **timber** | the identities the binding names for it (C.7), each a component its upstream repository publishes through timber | the head of the channel the binding names for the identity, the one accepted version it names (timber 31, 40), as timber answers on the asker's host with the asker's own sign-in (38); dated by the promotion that moved the channel to it, and linked to the version's tag; order and level as for GitHub tags |
+| **another drive's publish** | a component another Boomdrive drive publishes, by the Package URL a declaration of the watching repository names | the version the publishing drive publishes, with the facts its publisher states (72); what carries it from one drive to the other is open (section 10) |
 
 The package manager runs in the repository's own shell, so it sees the
 registries the repository is configured for, private ones among them.
@@ -502,6 +550,13 @@ deps.dev, GitHub and ecosyste.ms answer. deps.dev declines an identity a
 package manager answers for, so the two never give answers to choose
 between (39).
 
+Where the binding names the timber lookup for an identity, no other
+release lookup answers for it. A version its upstream publishes through
+timber reaches a report once a promotion puts it on the channel, and
+leaves the report once the channel moves away from it (timber 32, 34).
+The publishing repository's tags and GitHub releases never put a
+version of it in a report (the update-ladder talk, 2026-11-12).
+
 Order by ecosystem: Semantic Versioning 2.0.0 for npm, Cargo and
 GitHub tags that parse; PEP 440 for PyPI; Go's module rules; and a
 calendar version compared field by field where the declaration's tag
@@ -509,6 +564,12 @@ scheme says so. GitHub releases mark a prerelease with GitHub's own
 flag. Where a lookup gives no prerelease mark, the version's grammar
 gives it: Semantic Versioning's pre-release identifiers, and PEP 440's
 `a`, `b`, `rc` and `dev`.
+
+Level by ecosystem (70, 73): Semantic Versioning's major, minor and
+patch numbers, for npm, Cargo, Go's modules and GitHub tags that parse;
+and PEP 440's first three release numbers, where a missing number reads
+as zero and a changed epoch as major. Any other version, a calendar
+version among them, gives every release the level undecided.
 
 **locate** (68) answers with the upstream repository a declaration
 states, as a watch-list entry does, or else with the repository the
@@ -522,6 +583,7 @@ manager.
 | **GitHub release** | read-notes | the body of the GitHub release at the version's tag in the repository locate gives (68) |
 | **changelog** | read-notes | the section for the version in that repository's `CHANGELOG.md` at that tag, where no release body exists; a repository that binds it to answer always gets both, each named (39) |
 | **npm** | read-changes | `npm diff` between the published packages of the two versions, so a README or CHANGELOG change shows as upstream shipped it |
+| **timber** | read-notes, read-changes | for an identity the timber lookup answers for, the notes the version carries as an artifact of its index (timber 134); read-changes gives the notes of every version between the two, each as its index carries it |
 
 Every other notes lookup answers read-changes with "cannot say".
 
@@ -553,7 +615,7 @@ read from the repository state.
 | operation | how the file satisfies it |
 |---|---|
 | read-tiers | each tier's name, its cadence, the Package URLs it names outright or by a prefix, and whether it asks for prereleases; and the default tier's cadence, seven days where the file sets none |
-| read-binding | the profiles named for each seam, and whether the changelog profile answers always |
+| read-binding | the profiles named for each seam, whether the changelog profile answers always, and the identities the timber lookup answers for, outright or by a prefix, each with the channel it reads |
 
 A repository with no such file has the default tier alone, with a
 cadence of seven days, and binds every profile that recognises one of
@@ -585,7 +647,7 @@ accepted by the user on 2026-11-11).
   release (5, 36).
 - **I2.** The pin alone decides what is new (9).
 - **I3.** Upstream's words reach the asker as upstream wrote them, with
-  no model between (11, 19, 62).
+  no model between (11, 19, 62, 72).
 - **I4.** A release has one identity for ever, everywhere (10).
 - **I5.** Asking what headwater holds reaches no lookup and writes
   nothing (17).
@@ -605,6 +667,9 @@ accepted by the user on 2026-11-11).
   notes.
 - Recording releases as anyone's own records. A recorder does that,
   from what a surface hands it.
+- Deciding what a release's facts call for. A recorder's own rules
+  decide that, and nothing headwater answers depends on what they
+  decided (34, 36).
 - Telling anyone by itself. A surface tells, when its asker asks.
 - Hiding the asker from a lookup. A lookup reached with the asker's
   credentials knows who asked.
@@ -648,6 +713,11 @@ The rest of the stack, which a model builds on unless it says why not:
   - its source is `release`, and its event time the release's date;
   - its raw material holds the notes whole, and what the lookups
     answered;
+  - its facts, which a recorder's rules match, travel in the offer
+    (weir 2, 25): the release's facts (71), the move where the
+    ecosystem spells one (66), and, apart under upstream's name, the
+    facts upstream states (72); a rule reads the release's age from the
+    event time (weir 5);
   - it is its own excerpt: the notes, asserted by the upstream, of kind
     `ask`, saying that the release is out and what the repository pins,
     and arguing with the declarations a move changes.
@@ -663,6 +733,11 @@ These are not requirements.
 
 - What store profile shares one held state, its acknowledgements among
   it, between clones of one repository on several hosts (28, 50, 61)?
+- What carries a version one drive publishes to a repository of another
+  drive that declares it (72, C.3)? Two carriers stand open: timber's
+  channel read by the timber lookup, and the control plane's
+  subscriptions, which the Boomdrive context pack has push-based and
+  paid (the update-ladder talk, 2026-11-12).
 
 <!-- ANCHOR_END: questions -->
 <!-- ANCHOR: scenarios -->
@@ -715,6 +790,23 @@ These are not requirements.
 - **S15.** A favorite's release lookup answered yesterday and fails
   today. The report gives yesterday's answer and its time beside the
   failure, and the tier stays due.
+- **S16.** A favorite is pinned at 1.4.2, and 1.4.3, 1.5.0 and
+  2.0.0-rc.1 are newer. The report gives them the levels patch, minor
+  and prerelease, though the notes of 1.5.0 call it breaking. A
+  dependency whose releases carry calendar versions gets the level
+  undecided for each of its newer releases.
+- **S17.** A repository's flake pins one of the family's own tools by
+  its tag, 0.21.2, and binds the tool's stable channel as its release
+  lookup. The publisher has published 0.22.0 and 0.22.1, and the
+  channel names 0.22.0. The report holds 0.22.0, at level minor, and
+  not 0.22.1. Once a promotion moves the channel to 0.22.1, the next
+  scan reports 0.22.1 and no longer 0.22.0.
+- **S18.** A repository's watch list pins a component another drive
+  publishes at 2.3.1. Its newest version, 2.4.0, comes with the facts
+  its publisher states, one of them that the release is urgent. The
+  report gives the publisher's facts under the publisher's name, apart
+  from headwater's own, and the level minor, which the pin and the
+  version order decide.
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

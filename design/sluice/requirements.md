@@ -106,11 +106,14 @@ redefine these.
   given, a forge's runners or a self-hosted job runner.
 - **profile**: one way a contract of Part B is satisfied, as Part C
   describes.
-- **delivered**: an entry's outcome, once a carrier has put it before
-  the session that submitted it, recorded on the entry with when and to
-  which session; **pending** until then.
-- **collect**: a session's taking of every outcome pending for it, by
-  `sluice inbox`, which delivers each and marks it delivered.
+- **owed**: an entry's outcome, a delivery of weir's form (weir 100),
+  until the entry's work, its one reader, confirms it by its key;
+  **handed over** each time a carrier puts it before that reader, which
+  confirms nothing by itself (weir 102, 103); **expired** once owed past
+  its span (weir 104).
+- **collect**: a session's taking of every outcome owed to it, by
+  `sluice inbox`, which hands each over and confirms it only where the
+  session says it confirms on receipt.
 - **notice**: what a push carries into a session: a short message naming
   the entry to read, never a fact to act on blindly.
 
@@ -281,7 +284,13 @@ redefine these.
     run of any instance takes its part of the bound between; a start
     that fails gives that part back at once, and an instance that stops
     before the run starts gives it back as it stops (record 0087,
-    proposed 2026-11-06). Each run is given the cores
+    proposed 2026-11-06). A part of the bound that frees goes to a
+    repository with a run ready that has the fewest runs under test on
+    the host, the one whose ready run has waited longest among equals,
+    each repository's own order of runs standing (13); so a repository
+    with a run ready and none under test takes the next part that
+    frees, and a run under test is never stopped to make room (record
+    0123). Each run is given the cores
     sluice may use divided by the bound, and its runner hands that share
     to the tools it runs, so the bound's runs together use what sluice
     may use and no more. What sluice may use is what the host gives it,
@@ -348,7 +357,12 @@ redefine these.
      its engine no longer answering, or that the host changed under the
      run (84); or, for a check that passed, when the run kept nothing
      that proves it ran, the task runner's own record of it (108; agentplot/sluice
-     record 0105). Nothing a repository writes is
+     record 0105). A run whose task runner's report of it cannot be
+     found or read once the run has ended has no outcome for any of its
+     checks, since nothing then tells a pass from a fail: it is never
+     read as each check left without a result. Its record names where
+     the report was looked for (afterthought/swancloud's sluice #191
+     under 0.78.1, 2026-11-12). Nothing a repository writes is
      run to ask the host, before a run or after one (84). Its record
      says why
      (16). It is never recorded or read under its key, no entry is
@@ -519,7 +533,7 @@ redefine these.
      submission that names as its head a branch sluice lands on, run
      anywhere in the repository, from a worktree or from none, is of
      that branch the same way, and records no worktree and no session as
-     its submitter. Its outcome is pending in no inbox: it is read from
+     its submitter. Its outcome is owed to no reader: it is read from
      the branch's records, with the words an inbox would give, the
      checks that failed, the files contested and the revision it was
      tested on (51). So a branch with no worktree on it submits, as
@@ -598,9 +612,12 @@ redefine these.
      of the first (45, 46): a landing's (122), a branch made or removed
      (104, 105), a session's branch or head pushed for a submit (C.5)
      and the records' refs (C.6) alike. A push the remote refused at the
-     ref, the lease stale or the branch protected, is the move refused
-     (24, 45), and one whose answer was not read is never made again
-     blind: the branch is read, and what the remote holds decides (122).
+     ref with its lease stale is the move refused, as 24 and 45 have
+     it. A landing the forge refused for a rule or a protection of its
+     own, the branch where the landing expected it, is held as 152 has
+     it. A push whose
+     answer was not read is never made again blind: the branch is
+     read, and what the remote holds decides (122).
      A write to the forge is tried again the same way: one that sets a
      state, a request's draft mark, is tried again, since the state read
      decides; one that makes or starts something, a check run, a
@@ -691,6 +708,26 @@ redefine these.
     (140) alone have made of it since. A landing that finds the branch
     elsewhere is refused, and the chain is formed again on the revision
     found. (record 0075, accepted 2026-10-30)
+152. The forge may refuse a landing's push for a rule or a protection
+     of its own, such as push protection finding what reads as a
+     secret. Where the branch, read after the refusal, is still at the
+     revision the landing expected, the forge refused the landing
+     itself, and forming the chain again would form the same tree.
+     sluice writes the refusal in the branch's records with the forge's
+     words whole before anything else acts on the branch. It logs the
+     refusal once, never once per round, and shows it on the branch and
+     on each entry the landing carries. Nothing is formed again for it,
+     no round pushes it again, and the entries behind it wait. Its
+     entries are no longer landing: each is withdrawn as 5 allows, by
+     its submitter, its planner or the operator, and by a submission
+     from its place (67). Once one leaves, sluice drops the landing, and
+     the rest go back to the queue and are formed again on the branch
+     (24). A wait on one of its entries ends saying the forge refused
+     its landing, in the forge's words. Its submitter is told as an
+     outcome is told (50), and the refusal decides no outcome. Once the
+     forge's rule has changed, the operator asks for the landing to be
+     pushed again, and it lands as the same landing where the forge
+     takes it (122). (Added 2026-11-13: sluice record 0124.)
 25. sluice releases every place it made for a candidate once that
     candidate's verdict is read, and never releases a session's place.
     A session learns its entry landed (50), and releasing its place is
@@ -726,7 +763,12 @@ redefine these.
     the refused branch by, said once while the refusal stands (121);
     and an entry asked for by its number and found on no branch that
     could be read is said to be unfound among those, naming the
-    branches that could not be read, never said to be no entry. Any
+    branches that could not be read, never said to be no entry. A
+    number that entries on more than one branch hold names none of
+    them alone: a lookup by it is refused, naming each branch that
+    holds it, and the act that asked takes the branch to name one,
+    since a branch whose records are on its remote numbers its entries
+    apart from the host's own (agentplot/sluice record 0114). Any
     other failure of one branch's round is that branch's the same way:
     the run goes on to the other branches and says it once while it
     stands; and a run bounded to a number of rounds that passed a
@@ -768,7 +810,9 @@ redefine these.
      catalogued kind carries.
 109. A signer's run records are written only by that signer and only
      added to. One signer's write never refuses another's, and never
-     waits on the branch's records (62).
+     waits on the branch's records (62). A branch that lands or is
+     removed keeps every result it recorded, since a result is its
+     key's (69).
 86. A branch's gate names, for each check it requires, the systems a
     pass must come from. A candidate's verdict is read over every
     required check on every system named (15), and a pass on one system
@@ -839,7 +883,11 @@ redefine these.
 72. An instance keeps a branch only by writing its records. Once the
     deployment's lease has passed with no write of that instance, any
     instance may take the branch; taking it is a write (62), after which
-    the former lead writes nothing more for the branch (58).
+    the former lead writes nothing more for the branch (58). While any
+    run of the branch is claimed or under test, the lead writes at least
+    once a lease, so the lead never lapses under a live run. An instance
+    whose signature the branch does not accept never takes it (137;
+    agentplot/sluice record 0122).
 73. Taking a branch needs no knowledge of the former lead: one that
     stopped and one that was quiet for a lease are treated alike, and
     the lease is measured by the taker's own observation of the
@@ -894,10 +942,14 @@ redefine these.
      the means its deployment names; a wake that is lost delays the work
      and loses nothing (59).
 129. On one host, one process reads a repository's records, policy and
-     places for everyone watching its queues: a watch or a wait that
-     finds a live reader follows the document the reader last wrote and
-     reads nothing itself, and one that finds none starts sluice's host
-     process, which reads (135). A host process that stops is started
+     places for everyone watching its queues: a watch, a wait, a status,
+     an overview or a forecast that finds a live reader that has read
+     within its tick answers from the document the reader last wrote and
+     reads and fetches nothing itself, and one that finds none starts
+     sluice's host process, which reads (135). The reader reads each
+     recorded result and each signed run record once, verifying each
+     signature once, and answers by the keys asked for, so no read loads
+     or verifies the whole history again. A host process that stops is started
      again by the next watch or wait within a tick, its followers
      reading what it last wrote until then; a reader
      serves its own host alone (26, 80). A read the reader could not
@@ -992,6 +1044,32 @@ redefine these.
      decides reads its telemetry back. (Added 2026-11-09: sluice record
      0106, the user's direction that day in agentplot-design's pane;
      records 0014 and 0022.)
+153. A sluice command started with a W3C trace context in its
+     environment, as an agent program gives each command it runs,
+     nests its own span under that context: `exec`, `submit`, `wait`
+     and every other command that sends. An `exec`'s span holds each
+     check it ran in the place, with its time and outcome, and hands its
+     checks what a round's run hands them (151). A submission keeps the
+     context it was submitted under, and each round that tests a
+     candidate holding it links to that context. A person so goes from
+     an agent's command to the rounds that tested its work, and back. A
+     context names only where sluice's spans nest. It never turns
+     telemetry on (151; flume 219).
+154. Each entry's life is a span of its own, from its submission to its
+     end: landed, refused, dropped for a conflict, blamed, or withdrawn.
+     It names how the entry ended, and holds the time it waited with no
+     candidate of it under test and the time one was under test. A run
+     that ended with no outcome is named so, and is never the entry's
+     failure (114). sluice's metrics add, by branch and how an entry
+     ended:
+     - each entry's time waiting and its time under test;
+     - the entries ended;
+     - the host's running checks against its bound, and how long a run
+       sluice chose waited for room under the bound (71).
+
+     No metric names an entry's head, its submitter or the context it
+     was submitted under: those go on spans alone, so the volume of
+     metrics grows with branches and not with submissions.
 137. A branch's requests are taken in only where its records are on
      its remote, by the instance that keeps the branch there (72):
      whatever executes the branch's queue, in one of four ways the
@@ -1007,7 +1085,7 @@ redefine these.
      keeps in its own files takes no requests in, and a policy that gives
      such a branch a pull request table is refused for that branch
      alone, naming `[signers]` and the forge's workflow that would take
-     its requests in, as a word sluice no longer keeps is (56, S64), so
+     its requests in, as a word sluice no longer keeps is (56, S78), so
      no request is opened where nothing would take it in. (Amended
      2026-11-07 by agentplot-design, on the question of the change
      `pull-requests-are-queued-on-the-forge`.) A host's submit to a
@@ -1231,36 +1309,50 @@ redefine these.
 49. **state**: given an entry, its state and the verdicts read for it
     (26).
 50. **notify**: given an entry's session and an outcome, the outcome
-    delivered to that session and no other (20).
+    handed to that session and no other (20), with the way and whether
+    its reader confirmed it on receipt (weir 103).
 51. The guarantee: a notification reaches the submitter at least once
     and names its entry and outcome, so a repeat is known as one, and a
-    state read with sluice stopped is the state sluice last wrote. The
-    notification is pushed into the submitter's session through the
-    host's multiplexer where it has one (C.5), as a notice, and recorded
-    on the entry as delivered, with when and to which session (the
-    record's `delivered`, read under its former name `told` too); an
-    entry decided and not delivered keeps its outcome pending, and a
-    session that starts, after a restart or on another host, collects
-    every outcome pending for the entries it submitted, found by the
-    submitter the entry recorded, by `sluice inbox` before it does
-    anything else, so no wait need stand for an outcome to arrive
-    (135). An entry records the session that submitted it as
-    the host's multiplexer names it, where the submit ran in one, and
-    no session where it ran in none. sluice alone marks an entry
-    delivered, on the word of the carrier that delivered its outcome and
-    never on a notify that delivered nothing, and no carrier keeps a
-    list of its own of what was delivered. The round's push through the multiplexer is
-    the delivery where the entry recorded a session there; where it
-    recorded none, the submitter's own harness is the carrier, the
-    Claude Code board among them, which collects by the same `sluice
-    inbox` a session's start uses, and starts the turn with sluice's
-    words. An outcome is delivered once: whichever of the push, a
-    harness's collect and a reporting wait comes first marks it
-    delivered, a push is not made for an outcome already delivered,
-    `sluice inbox` answers nothing for an outcome already delivered, and
-    a wait that reads an outcome already delivered reports it as a read
-    and delivers nothing again. A toast or a row
-    the host shows its user is no delivery and marks nothing.
+    state read with sluice stopped is the state sluice last wrote. An
+    entry's outcome is a delivery of weir's form (weir 100 to 107,
+    C.8), recorded once in the branch's records when it is decided,
+    keyed by its entry and outcome, its one reader the entry's work as
+    the entry records it, a worktree's branch or a pull request, and its
+    message the notice; it stands owed to that reader until the reader
+    confirms it naming its key. An entry submitted by name, and a
+    withdrawal, record none (124). The notification is pushed into the
+    submitter's session through the host's multiplexer where it has one
+    (C.5), as a notice that names its key and how to confirm it. An
+    entry records the session that submitted it as the host's
+    multiplexer names it, where the submit ran in one, and no session
+    where it ran in none. The round's push, a post on the entry's pull
+    request, `sluice inbox` and a wait that reports the entry's outcome
+    are hand-overs, each recorded by sluice alone on the word of the
+    carrier that made it and never on a notify that handed nothing, and
+    none confirms the outcome by itself (weir 103). The reader confirms
+    by `sluice confirm` with the key, or says in the call that hands
+    the outcome over that it confirms on receipt: a pull request does on
+    its post, which the request keeps for whoever reads it, and a
+    caller that keeps the outcome for readers of its own may; a submit
+    from the entry's work that withdraws it blamed or in conflict
+    confirms its outcome, the reader having acted on it (67). No carrier
+    keeps a list of its own of what it handed over. A session that
+    starts, after a restart or on another host, collects every outcome
+    owed to its readers, found by the submitter the entry recorded, by
+    `sluice inbox` before it does anything else, so no wait need stand
+    for an outcome to arrive (135); where the entry recorded no session,
+    the submitter's own harness is the carrier, the Claude Code board
+    among them, which collects by the same `sluice inbox` and starts the
+    turn with sluice's words. The round pushes an outcome at most once,
+    and none already handed to its reader or confirmed; `sluice inbox`
+    hands over every outcome still owed each time it runs. An outcome
+    owed past the span the host sets is expired (weir 104), and is
+    shown with its reader, and whether any reader has confirmed under
+    that name (weir 106), wherever sluice shows what is owed, the inbox
+    and the branch's status, until its reader confirms it; nothing
+    expires out of the records, and a delivery is let go of only once
+    done (weir 107). A toast or a row the host shows its user is no
+    hand-over and records nothing.
 
 ### B.6 Binding the contracts
 
@@ -1348,12 +1440,12 @@ Parts A and B do not change to admit a profile.
 
 | profile | submit / withdraw / state / notify / forecast |
 |---|---|
-| **worktrunk**: a custom subcommand on the path | `wt submit`, the executable `wt-submit` on the path, waiting for the entry's outcome, which it reports as its exit, or with `--no-wait` returning the entry at once; `wt submit --withdraw`; `wt submit --status`; `sluice submit <branch> --worktree <a> --worktree <b> …` submits the worktrees' heads as one act in that order, and under pull requests pushes each branch and opens or updates each request in one act for intake to take in one pass, the answer naming every entry, or every request with what it waits for (125); the outcome of a waiting submit is its exit, of any other the session's pane prompted through the multiplexer; on landing, worktrunk removes the session's place; `wt submit --check`, the same forming as a submission with no entry written; a submission never need hold its session: with `--no-wait` the session goes on with its work and its messages, and `sluice wait`, run beside that work in whatever background its harness has, follows the host's driver, running rounds itself only where none lives (135), and reports the outcome when it comes (26, 50), the outcome also pushed into the session's pane as a notice and collected at a session's start by `sluice inbox` where it stood pending (51); a session waits in the foreground only where it has no background; a `wt submit` run again in a place whose submission stands, queued or landed and not yet removed, follows it as its waiting submit would, with the timeout and exit `sluice wait` has, and on landing releases and removes the place, so a session that submitted with `--no-wait` waits and tidies through the driver and removes nothing by hand, while `sluice wait`, the core's, removes no worktree (25); a standing submission is one at the revision a submit from that place would send, the remote's on a branch sluice lands on (124); run again with `--no-wait`, it answers with the standing entry at once and withdraws nothing, a new head alone submitting again; and `--timeout` is `wt submit`'s wherever it waits, a first submit included, which submits and then waits as `sluice wait` does under that limit, exiting 5 while the entry is undecided, so one command run in rounds serves a session from its submit to its landing |
+| **worktrunk**: a custom subcommand on the path | `wt submit`, the executable `wt-submit` on the path, waiting for the entry's outcome, which it reports as its exit, or with `--no-wait` returning the entry at once; `wt submit --withdraw`; `wt submit --status`; `sluice submit <branch> --worktree <a> --worktree <b> …` submits the worktrees' heads as one act in that order, and under pull requests pushes each branch and opens or updates each request in one act for intake to take in one pass, the answer naming every entry, or every request with what it waits for (125); the outcome of a waiting submit is its exit, of any other the session's pane prompted through the multiplexer; on landing, worktrunk removes the session's place; `wt submit --check`, the same forming as a submission with no entry written; a submission never need hold its session: with `--no-wait` the session goes on with its work and its messages, and `sluice wait`, run beside that work in whatever background its harness has, follows the host's driver, running rounds itself only where none lives (135), and reports the outcome when it comes (26, 50), the outcome also pushed into the session's pane as a notice and collected at a session's start by `sluice inbox` while it stands owed (51); a session waits in the foreground only where it has no background; a `wt submit` run again in a place whose submission stands, queued or landed and not yet removed, follows it as its waiting submit would, with the timeout and exit `sluice wait` has, and on landing releases and removes the place, so a session that submitted with `--no-wait` waits and tidies through the driver and removes nothing by hand, while `sluice wait`, the core's, removes no worktree (25); a standing submission is one at the revision a submit from that place would send, the remote's on a branch sluice lands on (124); run again with `--no-wait`, it answers with the standing entry at once and withdraws nothing, a new head alone submitting again; and `--timeout` is `wt submit`'s wherever it waits, a first submit included, which submits and then waits as `sluice wait` does under that limit, exiting 5 while the entry is undecided, so one command run in rounds serves a session from its submit to its landing |
 | **pull request**: a forge's request to merge a branch of the repository into a branch whose policy turns pull requests on | `submit` pushes the session's branch and opens a request, or updates the open one, and marks it ready at that head; a request sluice opens is titled by what lands, the subject the submit gives or the submitted branch's name where it gives none, never a commit's message, and a new head with a subject retitles a request sluice opened, while one a person opened keeps the title they gave it (118, 120); a submit that does not wait answers with the entry intake took for the request, taking it then where its conditions hold, and otherwise with the request and what it waits for, and `sluice wait` follows a request as it follows an entry; a request a person opened by hand is found by the branch's intake when it next asks for the open requests (136), by the instance that keeps the branch on its remote, on a forge its jobs (137); either is submitted when it is out of draft and every condition its branch's policy names holds on its head, and a request from a fork is never submitted; a request whose head the round cannot fetch, or whose state it cannot read, is named in the round's report with the failure, and the round goes on to the branch's other requests (128). A new head on a request the driver opened withdraws the entry, and the driver marks the request a draft, so it waits for the next `submit`, which marks it ready at the new head, or for a hand marking it ready (120); a new head on a request opened by hand withdraws the entry and the request waits for its conditions on the new head; a request opened by hand that the operator withdraws waits for a new head or for draft and ready again, as one removed as culprit does, its check naming the operator (120). A request moved to draft or closed is withdrawn; one removed as culprit or conflict is, when the driver opened it, marked a draft the same way, and otherwise waits for a new head or for draft and ready again (54, 120). The request's description carries sluice's marks and the commits' messages, each whole and in order, as many as the forge's limit holds; where it holds not all, the subjects of the rest with their count and the forge's compare view of the head against the branch, and no message is cut within itself. Its state is a check sluice's identity posts on its head, carrying the entry's state, what it waits for, the host that took it in, its number there and the entries ahead of it, each a field a program reads as well as the check's words (137), and the culprit or conflict with a comment when it is removed; the instance that reads the branch's records posts, on the request's head, one check per required check per system with its outcome and signer, and one for the entry's state, and in the conversation one report of the verdict, edited as it changes (118); a forecast is run for every waiting request whenever the branch or the request has moved, and posted when it changed (64, 136); the landing is sluice's push of the branch (C.4), after which the forge marks the request merged; the forge's merge button, merge queue and squash or rebase merges are not used on such a branch |
 | **crew**: a bolt team's stages | the unit's merge stage submits, and a bolt is submitted from its own place by its conductor; `sluice amend` sets an After the conductor adds; the conductor reads the entry's state as the stage; a red or a conflict re-charges the unit's slot; the conductor's wait runs a forecast for each unit in code and tells the unit's agent of a conflict when it is idle, and one for the bolt against the branch it lands on, whose conflict with what that branch has landed the team takes into the bolt by a fix it submits to the bolt, before the bolt is submitted |
 | **Boomdrive**: the machinery's effects | a session's done exit, once approved, is the submission; the entry's state is evidence; a forecast is evidence on the item, read each tick |
 | **branch**: `sluice branch` | not a session's: `sluice branch create <branch> --from <branch>` makes a branch at the other's current revision and prints it (104); `sluice branch delete <branch> --into <branch>` removes it, `main` when `--into` is omitted (105); `sluice branch accept <branch> <revision>` records the revision as the one the branch stands on when its reading and its records disagree (121), the operator's act and no session's; each exits 0 when done, 1 when a branch it names does not exist, and 2 on a refusal, naming it |
-| **remote submit**: a session on any host | the head pushed to `refs/sluice/heads/<oid>` on the shared remote and the entry written to the branch's records (C.6 remote refs), then a wake (111); withdrawal, amend, state and the forecast the same way; a waiting `wt submit` reads its entry's state, and that read is the delivery (51); it runs rounds only on a host that holds the branch's credential, which no session's host does (C.8); its host stopping loses nothing, and a `--no-wait` submission is prompted by whichever instance on the submitter's host next reads it |
+| **remote submit**: a session on any host | the head pushed to `refs/sluice/heads/<oid>` on the shared remote and the entry written to the branch's records (C.6 remote refs), then a wake (111); withdrawal, amend, state and the forecast the same way; a waiting `wt submit` reads its entry's state, and that read hands its outcome over (51); it runs rounds only on a host that holds the branch's credential, which no session's host does (C.8); its host stopping loses nothing, and a `--no-wait` submission is prompted by whichever instance on the submitter's host next reads it |
 
 ### C.6 The records
 
@@ -1365,6 +1457,38 @@ outlives them is the trailers each landing commit carries (23).
 |---|---|
 | **local files**: one host | the documents under the repository's common git directory, one directory per branch and one log of check results per repository (69), readable by every place on the host with no process running, never tracked and never pushed, a version kept beside them; the live submissions under `submissions/`, the finished under `.finished/`, whose dot no branch name carries, their index in `finished.jsonl`, the current log in `log.jsonl` and the closed parts under `log/<n>.jsonl` (130 to 132); a write under the branch's lock, refused when the version moved, a move of a submission one write with its put, its removal and its index line |
 | **remote refs**: peers, for a branch with a `remote` whose policy names signers | one root commit under `refs/sluice/state/<branch>` on the shared remote, its tree the branch's documents (53), its id the version; a write a push with `--force-with-lease` from the commit read, by any instance that submits to or advances the branch; beside it `refs/sluice/runs/<signer>`, each signer's signed run records, added to only by that signer (109); `refs/sluice/heads/<oid>` for every submitted head; `refs/sluice/combinations/<branch>/<id>` for every candidate open to claims; `refs/sluice/logs/<branch>/<run>` for a run's output; and `refs/sluice/hosts/<host>`, rewritten by each host alone on a fixed cadence as its sign of life and its free room (77, 107) |
+
+A branch's queue has one home, the local files or the remote refs,
+written in the branch's records with the revision of the policy that
+chose it. Every process reads the home from the records and never works
+it out from a policy it read. The lock, the numbers and the entries live
+in the home alone.
+
+The policy at the branch's head, as its remote holds it, says where the
+queue should live: the remote refs once it names signers, the local
+files once it stops. A round that reads a home there other than the
+recorded one writes a move in the current home and opens no candidate
+meanwhile. Once no run of the branch is under test, it carries the open
+entries to the new home, writes the new home's record, and closes the
+old home with a pointer to the new. Each step is written before the next
+begins, so a round that stops halfway leaves the move written, and the
+next round finishes it.
+
+A carried entry keeps its number where the new home holds no entry of
+that number, live or finished, and the new home's count is raised past
+the highest number carried. A number the new home already holds is
+carried under its next number instead. The entry, the old home's pointer
+and the line that carried it name the number it had and the home it
+came from. So no home repeats a number, and a wait on the old number
+still finds it.
+
+The local files are one host's, so a branch coming home goes to each
+host's own files. Each host carries the open entries it submitted, the
+first time a round of its own reads the closed remote home. An entry
+whose host never returns stays readable there, and its status says it
+waits for its host. A wait and a status follow an entry to its home,
+through a closed home's pointer. A closed home keeps its history
+(agentplot/sluice records 0116 and 0122).
 
 A run record on a signer's ref is an in-toto statement in a DSSE
 envelope, of in-toto's Test Result kind: its subject the check's key and
@@ -1756,7 +1880,7 @@ section asked is answered by a clause.
   three land in one move, in the order given. On another day the middle
   one conflicts with the first as the candidates form: the act's answer
   names it, it alone is set aside, and the other two land (125).
-- **S64.** The host's own ref of a bolt branch holds a policy this
+- **S78.** The host's own ref of a bolt branch holds a policy this
   sluice refuses, a table it no longer keeps; the remote's copy is
   clean. `sluice wait` on a submission to another branch finds it by
   its number and follows it to its verdict; the host process passes the
@@ -1848,6 +1972,18 @@ section asked is answered by a clause.
   starts. When the first combination's run ends, the next starts ahead
   of a fourth agent's check that waits (71, 150; record 0087,
   proposed).
+- **S76.** An entry from a worktree on `unit-a` lands. The round
+  pushes its notice into the session's pane, naming its key; the
+  session stops before it acts on it. Its next session's `sluice
+  inbox` hands the landing over again, owed, and once the agent has
+  acted on it, `sluice confirm` with the key confirms it, and no inbox
+  hands it over again (51; weir 102, 103).
+- **S77.** An entry from a worktree that is removed before anyone
+  collects its blame stands owed past the span its host sets. The
+  branch's status shows it expired, with its reader `unit-b` and
+  whether any reader has confirmed under that name; nothing drops it.
+  The operator confirms it for its reader, and the status shows it no
+  more (51; weir 104, 106).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

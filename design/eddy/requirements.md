@@ -35,7 +35,9 @@ needs another to use it. Listing is arithmetic: no language model runs
 inside eddy, and eddy never judges what a meeting says, never reads one
 into signals, and never keeps a list of what it handed on. A reader
 decides what a meeting asserts, and the capture host decides whether a
-meeting is new to its inbox.
+meeting is new to its inbox. A capture carries the meeting's details,
+its attendees among them, as facts the capture host's rules match, so
+a rule can act on a meeting before anyone reads it.
 
 <!-- ANCHOR_END: preamble -->
 <!-- ANCHOR: actors -->
@@ -124,6 +126,8 @@ redefine these.
 - **capture**: what a capture host keeps of one event an adapter handed
   it: what the event was, when it happened, and a pointer to its raw
   material.
+- **stated fact**: a detail of a meeting that its capture carries under
+  a name every capture host reads, for the host's rules to match.
 - **event time**: of a capture, when its event happened.
 - **pointer**: what a capture holds to say on which machine, and where
   on it, its raw material is kept.
@@ -260,8 +264,16 @@ redefine these.
 22. A capture holds a meeting's identity, that its source is a meeting,
     its start as the event time and the names of its raw material. It
     also holds the meeting's title and its address where the service
-    gives them, and nothing more: never an excerpt, and never a word
-    spoken in the meeting.
+    gives them, and states its length and attendees (79), and holds
+    nothing more: never an excerpt, and never a word spoken in the
+    meeting.
+79. The facts a capture states are the meeting's details as its
+    service gives them (6): its length, and its attendees, each as the
+    service gives them, with an address where it gives one, under the
+    names C.1 gives them. eddy reads no fact from a transcript, joins
+    no attendee to a person, and never reads a meeting: the capture
+    host joins, and a reader reads (42) (the update-ladder talk,
+    2026-11-12).
 23. A meeting that cannot be fetched, laid out or handed never stops the
     others. The run names each such meeting, with what failed and why,
     and hands every other. A meeting whose start or id its service does
@@ -533,6 +545,7 @@ Each line is one JSON object holding exactly one of `capture`,
 | `url` | the meeting's address on its service, where it gives one |
 | `raw` | the paths of C.4, relative to `<dir>` |
 | `excerpt` | never present |
+| `facts` | `length`, the meeting's length in seconds, and `attendee`, each attendee as the service gives them, an address where it gives one; each left out where the service gives none, under the names and in the spelling of weir C.9 (79) |
 
 The contract fixes these for every key: `/` separates its segments,
 and a key never starts with `/`, never holds a `..` segment, and never
@@ -545,15 +558,19 @@ rest; passes over a key the inbox already holds; banks each raw file in
 its raw bank, in its data directory on the machine, never in git, under
 the capture's name; writes the capture with a pointer of the form
 `<host>:<path>`; and marks a capture with no excerpt unread, which
-charges a reader. A run that exits without `done`, or with a status
+charges a reader, unless a rule of its inbox's policy matches the
+capture by its stated facts as it lands, which moves it with no reader
+(weir 125, 127). A run that exits without `done`, or with a status
 other than 0, keeps every capture already taken; its cursor is not
 kept, and the run is recorded failed.
 
 The conformance pack holds the meeting checks an adapter passes to
 count as a meeting adapter (44): every key of the form
 `meeting/<adapter>/<id>`, `source` `meeting`, `event_at` at the
-meeting's start, no excerpt, and `raw` naming the transcript as served
-and the plain copy. eddy's conformance suite (66) runs them.
+meeting's start, no excerpt, `raw` naming the transcript as served
+and the plain copy, and `facts` stating the length and the attendees
+where the service gives them (weir 66). eddy's conformance suite (66)
+runs them.
 
 ### C.2 Identity
 
@@ -836,6 +853,13 @@ These are not requirements.
   seeds eddy's own store from the secret and keeps the renewal there.
   The next run reads the renewal from that store and never the voided
   secret.
+- **S22.** The operator holds a forty-minute stand-up on Wispr Flow with
+  three attendees, the service giving two of them with an address. The
+  run hands its capture stating its length and the three attendees,
+  each as the service gave it, and no excerpt. The
+  capture host's rule drops the meeting by its title as it lands, and
+  no reader reads it. eddy read no word of the meeting and joined no
+  attendee to a person (22, 79).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->

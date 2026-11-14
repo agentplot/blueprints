@@ -17,8 +17,10 @@ work goes through, as a list or as a statechart; the engine, which
 ticks a statechart; cadence; the built-in adapters; the delivery, a message
 a tool owes a reader until the reader confirms it; the link, by which
 each step that carries a signal to a published version names the step
-before it; and the conformance pack that holds every host, every
-adapter and every deliverer's store to the rest. Part B is its
+before it; the facts a signal carries, stated by its source, joined
+from a people list or read by its reader; the policy, a keeper's rules
+that move a signal by its facts; and the conformance pack that holds
+every host, every adapter and every deliverer's store to the rest. Part B is its
 contracts: the operations weir needs across its six seams, an adapter, a host, a shared branch's keeper, a kind's
 reader, a clock and a deliverer's store, and the guarantee each must
 give. Part C is the profiles: the
@@ -47,7 +49,8 @@ is refused. A kind declared for flume is read by sounding without a
 format of its own. A message one tool owes a reader is done when that
 reader confirms it, whichever tool owes it. A published version traces
 back, one step at a time, to the signal behind it, whichever tools
-took the steps. And a conformance pack says, of any host, adapter or
+took the steps. A keeper's rule reads a signal's facts the same way
+under every host. And a conformance pack says, of any host, adapter or
 deliverer's store, whether it keeps the contract. weir judges nothing a capture says, moves no signal, hands no
 message over, starts no agent and lands no work: those are the tools'.
 weir fixes the forms they meet in.
@@ -58,8 +61,9 @@ weir fixes the forms they meet in.
 
 | actor | may decide | may not |
 |---|---|---|
-| **an adapter** (a program that knows one source) | how to list its source, how to key each event, what raw material to write, and whether an offer carries an own excerpt | write a record, keep a list of what it offered, cut an excerpt, read a capture into signals, or learn which host or machine ran it |
-| **a host** (a program that takes offers and keeps an inbox: millpond, Boomdrive) | which adapters to run and when, where its inbox lies, its limit, and what becomes of an item | change what an offer carries, write a record outside the forms weir fixes, or take a key the inbox holds |
+| **an adapter** (a program that knows one source) | how to list its source, how to key each event, what raw material to write, whether an offer carries an own excerpt, and the facts it states | write a record, keep a list of what it offered, cut an excerpt, read a capture into signals, state a fact read from what an event says (118), or learn which host or machine ran it |
+| **a host** (a program that takes offers and keeps an inbox: millpond, Boomdrive) | which adapters to run and when, where its inbox lies, its limit, and what becomes of an item | change what an offer carries, write a record outside the forms weir fixes, take a key the inbox holds, or move a signal by a rule but as its policy gives it (125) |
+| **a keeper** (whoever decides an inbox's settings) | the inbox's policy, its rules in order, and the people list its host joins from | write a rule that reads anything but facts (123) |
 | **a writer** (a host, a session or a tool writing a shared branch) | what to write, and when | apply a write to a tip it was not checked against, or stand in for that check with a lock |
 | **a kind's declarer** (a tool, a repository or a launch) | the stages work goes through, each stage's prompt, agents and deliverable, and any section of its own | make a reader run what the format does not say |
 | **a kind's reader** (flume, sounding, Boomdrive) | which sections of a declaration it reads, which templates and atoms it binds, and what it refuses | change a declaration, fail on a section it does not know, or decide a transition of a statechart kind the engine does not give (96) |
@@ -117,20 +121,21 @@ redefine these.
 - **own excerpt**: the excerpt an offer carries when the capture says
   one thing and that thing is its signal, as a release's notes are.
 - **own signal**: the one signal of a capture whose offer carried an
-  own excerpt.
+  own excerpt, or that a rule matched as it landed (127).
 - **limit**: the most bytes an excerpt may hold in an inbox's records.
 - **cut**: an own excerpt shortened at a line, with a closing line of
   the host's, to keep within the limit.
 - **reading**: the signals a reader writes for one capture, which may
   be none.
 - **unread**: of a capture, that it has no own signal and no reading.
-- **move**: curation's standing judgment on one signal.
+- **move**: curation's standing judgment on one signal, or a rule's
+  standing outcome for it.
 - **batch**: the moves curation proposes together, which stand together
   or not at all.
 - **claim**: a statement of what is true at the destination, kept
   beside an inbox by another tool.
-- **item**: a unit of work, made of the signals curation joined into
-  it, or of a piece of work an accepted conclusion proposed;
+- **item**: a unit of work, made of the signals curation or a rule
+  joined into it, or of a piece of work an accepted conclusion proposed;
   **proposed** until it is first sent, **sent** after.
 - **brief**: what whoever does an item's work needs, written for the
   item.
@@ -245,6 +250,22 @@ redefine these.
   the first.
 - **link**: the record of one step: what the step made, and the step
   before it.
+- **fact**: a name with one value or several, which a rule may match:
+  **stated** by a capture's source, **joined** by a host from its
+  people list, or **read** by a reader and checked by a host.
+- **people list**: the persons and orgs a host joins facts from, with
+  the teams and repositories a read fact picks from.
+- **keeper**: whoever decides an inbox's settings, its policy among
+  them.
+- **policy**: a keeper's rules for one inbox, in order.
+- **rule**: a match on facts with its outcome, a kind to launch, a
+  person's turn or a drop, and, but for a drop, a priority and a window
+  or none.
+- **priority**: of a rule, one of five levels, low, normal, elevated,
+  high and urgent: the rank its launch takes among the places waiting
+  to start, or the order in which a person meets its item.
+- **window**: of a rule, the schedule whose times close the item its
+  rule gathers.
 
 <!-- ANCHOR_END: glossary -->
 <!-- ANCHOR: part-a -->
@@ -256,8 +277,9 @@ redefine these.
    exactly one of three: an offer, a cursor or a completion. A line
    that is none, or more than one, is malformed.
 2. An offer carries a key, a source and an event time. It may carry a
-   title, a link, the raw material it names and an own excerpt, and
-   nothing else a host must read.
+   title, a link, the raw material it names, an own excerpt and the
+   facts its source states (118), and nothing else a host must read
+   (the update-ladder talk, 2026-11-12).
 3. One event has one key: the same from every run of every adapter
    that lists it, on every machine. Two events never share a key.
 4. A key is made of segments, and names nothing in an inbox but its
@@ -296,17 +318,18 @@ redefine these.
 
 13. A host takes an offer only when it carries a key, a source and an
     event time, when its key names nothing in the inbox but its own
-    capture (4), and when any own excerpt it carries holds every field
-    (7). Every other offer is refused.
+    capture (4), when any own excerpt it carries holds every field
+    (7), and when each fact it carries has a name and values of the
+    forms 117 gives. Every other offer is refused.
 14. An inbox holds at most one capture per key, whatever writes at
     once. An offer whose key the inbox holds writes nothing, banks
     nothing, and is counted as held.
 15. A refused offer is named, with its reason, in what the host reports
     of the run or intake, and never stops another offer from being
     taken.
-16. A capture's source, event time, title and link are as its offer
-    gave them, and a capture never changes once written. A later offer
-    under its key changes nothing, whatever it carries.
+16. A capture's source, event time, title, link and stated facts are as
+    its offer gave them, and a capture never changes once written. A
+    later offer under its key changes nothing, whatever it carries.
 17. Raw material never enters an inbox's records. A capture holds a
     pointer only where a machine banked raw material for it, and the
     pointer names that machine by the hostname the machine reports for
@@ -315,9 +338,10 @@ redefine these.
     banked, whole and unchanged, on the machine that took it. Only
     what a taken capture names is banked; nothing else an adapter
     wrote in its raw place outlives the run.
-19. A capture whose offer carried an own excerpt has exactly one
-    signal, its own signal, written in the same write as the capture,
-    and is never unread. Every other capture is unread when written.
+19. A capture whose offer carried an own excerpt, or that a rule
+    matches as it lands (127), has exactly one signal, its own signal,
+    written in the same write as the capture, and is never unread.
+    Every other capture is unread when written.
 20. An own signal's excerpt is the offered text, unchanged, from its
     start to the end of the last line that keeps it within the limit
     together with one line the host adds, which says how many lines
@@ -340,12 +364,17 @@ redefine these.
 ### A.3 Signals and readings
 
 25. A signal holds its excerpt and where it stands, its nature, who
-    asserted it, what it asserts, its subjects, and what it argues
-    with, which may be nothing. Its nature is one of five: constraint,
-    ask, question, commitment, reaction.
+    asserted it, what it asserts, its subjects, what it argues with,
+    which may be nothing, and the read facts its host took (120), which
+    may be none. Its nature is one of five: constraint, ask, question,
+    commitment, reaction, and an own signal a rule made has none (127).
+    A signal also carries its capture's stated facts, and the facts a
+    host joins to them (117, 119) (the update-ladder talk, 2026-11-12).
 26. A signal's excerpt stands verbatim in its capture's raw material,
-    or is the capture's own excerpt as cut (20). A signal whose excerpt
-    stands in neither is refused. An imported signal is exempt (37).
+    or is the capture's own excerpt as cut (20), or, for an own signal
+    a rule made, stands in the capture's offer (127). A signal whose
+    excerpt stands in none of them is refused. An imported signal is
+    exempt (37).
 27. A capture's signals are numbered in reading order, and a signal's
     identity is its capture's key with its number. A signal never
     changes once written.
@@ -366,7 +395,7 @@ redefine these.
     chore or the ask it offers. A move of any other word, or lacking
     its consequence, is refused.
 31. A move names who made it and when, and the batch it stood in where
-    there was one.
+    there was one. A rule's move names its rule as who made it (128).
 32. A batch is written whole or refused whole, naming each move that
     could not be taken. While a batch is proposed, its moves do not
     stand and its signals stay unmoved.
@@ -382,9 +411,12 @@ redefine these.
 35. An item's name is one no item of its inbox has ever had, and nests
     under no other item's name.
 36. An item holds its brief, written by curation or the operator and
-    never by a host, and every send made of it with what became of
-    each. A send keeps the brief as it was handed, whatever the item's
-    brief becomes later.
+    never by a host, but for a rule's item: its host writes that brief
+    when the window closes, of its signals' excerpts as they stand, in
+    the order of their event times, and adds no word of its own (128;
+    the update-ladder talk, 2026-11-12). An item holds every send made
+    of it with what became of each. A send keeps the brief as it was
+    handed, whatever the item's brief becomes later.
 
 ### A.6 The inbox's records and layout
 
@@ -524,8 +556,9 @@ redefine these.
     not the lock's, naming the kind and both hashes. Reading a lock
     changes nothing, and which locks a reader reads, and how it chooses
     among versions, are the reader's rule.
-94. A statechart kind's declaration holds its version, its label, the
-    words a person reads for it, and its statechart: one or more
+94. A statechart kind's declaration holds its version, its title, the
+    words a person reads for it, its label, its share of its stream's
+    agents where it declares one (flume 180), and its statechart: one or more
     regions side by side, each with its initial state and its states.
     It may hold how its places' branches are named, as a simple kind's
     does (52). A state may be final. It may carry a decision, with the
@@ -599,8 +632,9 @@ redefine these.
     when every capture it offers carries a key by its service and the
     meeting's own identity, the meeting's start as its event time, the
     transcript as served and a plain copy as raw material, and no own
-    excerpt, and when it leaves out a meeting too short to hold
-    anything and counts it in the completion.
+    excerpt, when it states the meeting's length and attendees where
+    its service gives them (118), and when it leaves out a meeting too
+    short to hold anything and counts it in the completion.
 67. Every case cites the clauses it exercises, and the pack's check
     fails when a cited number names no clause, or a clause of A.1 to
     A.10, of A.13, of A.14 or 71 is cited by no case. The pack's own clauses, 65, 67 and
@@ -624,9 +658,9 @@ redefine these.
     the call, the remote and the limit, so a remote that never answers
     holds no writer longer than that (C.3).
 70. weir never lists a source, never judges what a capture or a
-    delivery's message says, never chooses a move, never hands a
-    delivery over or confirms one, never starts an agent, never submits
-    and never lands work.
+    delivery's message says, never chooses a move, a rule's being its
+    keeper's (125), never hands a delivery over or confirms one, never
+    starts an agent, never submits and never lands work.
 71. No record weir defines holds a secret, and nothing weir writes
     includes one.
 
@@ -723,6 +757,116 @@ redefine these.
      another deciding for them (agentplot/strategy decision #46,
      accepted by the user on 2026-11-11).
 
+### A.16 Facts
+
+117. A fact is a name with one value or several, each a text, a
+     number, true or false, or a date. A signal carries facts of three
+     sorts: stated, which its capture's offer carries from the source;
+     joined, which a host joins from its people list; and read, which
+     its capture's reader gives it and a host checks. A rule reads a
+     capture's source, title and event time as facts its source stated,
+     under their own names (the update-ladder talk, 2026-11-12).
+118. A source states only what it holds of an event, without reading
+     what the event says: no stated fact is a model's reading or a
+     judgment. A source names the facts it states, but for a meeting's,
+     which weir names with the facts a host joins and a reader reads, so
+     every meeting adapter, every host and every reader meet in one set.
+     A meeting's stated facts are its length and its attendees, each
+     attendee as its service gives them, with an address where the
+     service gives one, beside its title and its start (the
+     update-ladder talk, 2026-11-12).
+119. A host joins facts from the people list it is given: each person
+     with their addresses, the names a transcript may give them, their
+     role and their teams, and each org with the domains of its
+     addresses and whether it is a client. An attendee joins the person
+     whose addresses hold its address, and the org whose domains hold
+     that address's domain. A speaker joins the person whose names hold
+     the name its reading gives, and the org whose domains hold one of
+     that person's addresses. An address or a name two persons hold
+     joins neither. A joined fact names whom it is of, an attendee or a
+     speaker, and gives the joined person's name, role or teams, the
+     joined org, or whether that org is a client, so who is an executive
+     or a client is looked up and never read (the update-ladder talk,
+     2026-11-12).
+120. A reader may give each signal it writes read facts, each picked
+     from a closed list: what the signal says, one of decision, request,
+     action, risk and question; who said it, a name that stands in the
+     capture's raw material; what it is about, among the teams and
+     repositories the people list gives; an owner, a person of the
+     people list or a name that stands in the raw material; and the
+     date it is due, a date. A host takes a read fact only where its
+     value is on its list, leaves off every other, naming each to the
+     reader, and takes the signal with the rest, its words standing for
+     curation. A fact left off never refuses a reading (28) (the
+     update-ladder talk, 2026-11-12).
+121. A host writes the stated facts with their capture (16) and the read
+     facts it took with their signal (27), and writes no joined fact: it
+     joins them from its people list as the list stands each time a
+     rule reads a signal or a capture (125) (the update-ladder talk,
+     2026-11-12).
+
+### A.17 The policy
+
+122. A policy is a keeper's rules for one inbox, in order. A rule has a
+     name no other rule of its policy has, a match (123), and one
+     outcome of three: a kind to launch, named as a launch names it,
+     with the repository it launches in; a person's turn; or a
+     drop, with its reason. A rule that launches or gives a person's
+     turn has a priority, one of the five levels, and may have a window
+     (129). A policy is checked whole, and one that breaks this clause
+     or 123 is refused, naming the field (the update-ladder talk,
+     2026-11-12).
+123. A rule's match combines, by all, any and not, a fact compared with
+     a value, with a list, with its existence or with a text its value
+     holds, and a capture's age compared with a span. A fact of several
+     values holds a comparison when any of its values holds it. A rule
+     reads facts alone, never a signal's excerpt, its other words or its
+     capture's raw material, so a host that runs a policy still judges
+     nothing a capture says (70) (the update-ladder talk, 2026-11-12).
+124. A rule's outcome, priority and window are its keeper's, and no fact
+     sets them. A fact a source states of its own priority is one a
+     rule matches like any other (the update-ladder talk, 2026-11-12).
+125. Reading a policy for a signal gives the first rule, in the
+     policy's order, whose match holds over the signal's stated, joined
+     and read facts at the time it is read, or none. Reading it for a
+     capture as the capture lands passes over every rule that names a
+     read fact, or a fact joined from one, and gives the first of the
+     others whose match holds over the capture's stated facts and those
+     joined from them, or none. The same policy, people list, facts and
+     time always give the same rule, and reading changes nothing (the
+     update-ladder talk, 2026-11-12).
+126. A host that keeps a policy reads it for the own signal of each
+     offer that carried an own excerpt, in its capture's write; for each
+     capture with no own excerpt, as it lands; and for each signal of a
+     reading, in the reading's write. It writes the move of the rule it
+     gives in that same write (128). A signal no rule matches stays
+     unmoved, for curation (33), and no rule reads an imported signal
+     (37) (the update-ladder talk, 2026-11-12).
+127. A capture with no own excerpt that a rule matches as it lands is
+     its own signal (19). The host writes that signal in the capture's
+     write: its excerpt and what it asserts are the capture's title as
+     offered, or its key where the offer gave none; the capture's
+     source is who asserted it; and it has no nature, subjects or
+     argument. No reader reads the capture, so a drop there spends no
+     reading (the update-ladder talk, 2026-11-12).
+128. A rule's move is a join, for a rule that launches or gives a
+     person's turn, or a drop with the rule's reason (30). A join goes
+     into the rule's current item, the item it made whose window has not
+     closed, or makes one where the rule has none. The move names its
+     rule as who made it (31), stands once written, and is in no batch
+     (32). A rule's item names its rule and its priority, takes a name
+     made of the rule's and its window's close, or its making where the
+     rule has no window (35), and records when its window closed, after
+     which it takes no more of its rule's joins (the update-ladder talk,
+     2026-11-12).
+129. A rule's window is a schedule. The rule's current item is due to
+     close when a time its window names has come since the item was
+     made, and the item of a rule with no window is due at once.
+     Cadence reads a window as it reads any schedule, with the item's
+     making in place of a last run (59), so a window missed while a
+     machine slept closes once (60) (the update-ladder talk,
+     2026-11-12).
+
 <!-- ANCHOR_END: part-a -->
 <!-- ANCHOR: part-b -->
 ## Part B. Contracts across the seams
@@ -788,7 +932,8 @@ redefine these.
 
 83. **now**: the present time on the machine.
 84. **last-run**: given a thing with a schedule, when it last ran, or
-    that it never has.
+    that it never has; for a rule's window, when its current item was
+    made (129).
 85. The guarantee: cadence asks the clock for these two and nothing
     else (59).
 
@@ -857,6 +1002,7 @@ A `capture` object is an offer (2):
 | `url` | no | where the event lives upstream |
 | `raw` | no | the raw material, as paths relative to the raw place (6) |
 | `excerpt` | no | present only for an own excerpt (7): `text`, verbatim and whole; `kind`, the nature, one of `constraint`, `ask`, `question`, `commitment`, `reaction`; `asserted_by`; `assertion`; `subjects`; `argues_with`; `position`. Each is present, and `subjects` and `argues_with` may be empty lists |
+| `facts` | no | the facts its source states (118): an object of each fact's name and its value or a list of values, spelled as C.9 spells them |
 
 A `cursor` object is a cursor (8). A `done` object is the completion
 (9): `listed`, how many events the listing held, and `failed`, each
@@ -896,12 +1042,12 @@ A host takes each line in seven steps, which the pack checks (75):
 
 | step | what the host does | clauses |
 |---|---|---|
-| 1. check it | refuses a malformed line, a bad key, a missing field or an excerpt with no text, and names it in the run | 13, 15 |
+| 1. check it | refuses a malformed line, a bad key, a missing field, an excerpt with no text or a fact C.9 does not spell, and names it in the run | 13, 15 |
 | 2. look up the key | passes over a key the inbox holds, and counts it | 14 |
 | 3. bank the raw files | on the machine, under the capture's name, byte for byte | 17, 18 |
 | 4. write the capture | with a pointer `<machine>:<path>` when anything was banked | 16, 17, 22 |
-| 5. write the own signal | cut at a line so the text and its closing line fit the limit; the closing line is `[cut: <n> lines and <b> bytes left out, banked whole with the capture]`, the one spelling every host writes (24); the whole text banked when cut; a limit too short to hold the closing line alone is refused | 19, 20, 21 |
-| 6. mark the capture unread | when it carries no excerpt | 19 |
+| 5. write the own signal | cut at a line so the text and its closing line fit the limit; the closing line is `[cut: <n> lines and <b> bytes left out, banked whole with the capture]`, the one spelling every host writes (24); the whole text banked when cut; a limit too short to hold the closing line alone is refused. A host that keeps a policy reads it for the own signal, or for a capture with no excerpt, writes the own signal of 127 where a rule matches such a capture, and writes the rule's move in the same write | 19, 20, 21, 125 to 128 |
+| 6. mark the capture unread | when it carries no excerpt and no rule matched it as it landed | 19 |
 | 7. record the run | what it took, held and refused, the failures, the cursor, complete or not | 23 |
 
 ### C.2 The records: recutils under `inbox/`
@@ -933,11 +1079,11 @@ fields:
 
 | record | fields |
 |---|---|
-| `weir-capture/1` | `key`, `source`, `event_at`, `title`, `url`, `pointer` (`<machine>:<path>`), `came_in` (`run:<adapter>`, `intake`, or `import:<body>`), `machine`, `taken_at`, `unread` |
-| `weir-signal/1` | `signal` (`<key>#<n>`), `kind` (the nature), `asserted_by`, `assertion`, `subjects`, `argues_with`, `excerpt`, `position`, `cut` (the lines and bytes left out, where cut) |
-| `weir-move/1` | `signal`, `move` (one of the six), `target` (the consequence: a reason, a claim or record, an item, a chore or an ask), `note` (a reason or note given with the move, as read; a drop's reason again), `by`, `at`, `batch`, `replaces` |
+| `weir-capture/1` | `key`, `source`, `event_at`, `title`, `url`, `pointer` (`<machine>:<path>`), `came_in` (`run:<adapter>`, `intake`, or `import:<body>`), `machine`, `taken_at`, `unread`, `fact` (each stated fact, C.9) |
+| `weir-signal/1` | `signal` (`<key>#<n>`), `kind` (the nature; left out of an own signal a rule made, 127), `asserted_by`, `assertion`, `subjects`, `argues_with`, `excerpt`, `position` (`title` for an own signal a rule made), `cut` (the lines and bytes left out, where cut), `fact` (each read fact taken, C.9) |
+| `weir-move/1` | `signal`, `move` (one of the six), `target` (the consequence: a reason, a claim or record, an item, a chore or an ask), `note` (a reason or note given with the move, as read; a drop's reason again), `by` (`rule:<name>` for a rule's move, 128), `at`, `batch`, `replaces` |
 | `weir-batch/1` | `batch`, `proposed_by`, `proposed_at`, `stands` (and who accepted it, when) |
-| `weir-item/1` | `item`, `made_by` (a join, or a conclusion), `conclusion`, `named_by`, `named_at` |
+| `weir-item/1` | `item`, `made_by` (a join, or a conclusion), `conclusion`, `named_by`, `named_at`; for a rule's item, `rule`, `priority` (its level's word) and `closed_at` (when its window closed, added then) (128) |
 | `weir-send/1` | `item`, `target` (a repository and kind, a planner, or an inquiry), `brief` (as handed), `sent_at`, `outcome` (a landing, a conclusion, abandoned, or open) |
 
 Every record of one capture is written in one write (19), and every
@@ -1127,7 +1273,7 @@ the kind's name and `version` as the statechart's own (81):
 ```toml
 [kinds.persona]
 version = 1
-label = "Persona test"    # the words a person reads for the kind (94)
+title = "Persona test"    # the words a person reads for the kind (94)
 branch = "persona"        # as a simple kind's (52)
 
 [kinds.persona.regions.stages]
@@ -1202,7 +1348,9 @@ reader's (95, 98).
 A schedule is five-field cron, read in the machine's local time, and
 cadence says due when a time it names has come since the last run, or
 there was none (59). A run missed while the machine slept is caught up
-once (60). The clock is the machine's (83).
+once (60). The clock is the machine's (83). A rule's window is
+five-field cron read the same way, the time its current item was made
+standing for the last run (129).
 
 ### C.6 The built-in adapters
 
@@ -1317,6 +1465,95 @@ readers a list, `readers`:
 The crate `weir-delivery` holds the records, both spellings and B.7's
 calls; a deliverer keeps its records where its own statement says.
 
+### C.9 Facts, the people list and the policy: TOML
+
+An offer's facts are its `facts` object (C.1): each key a fact's name,
+each value a string, a number, `true` or `false`, a date as RFC 3339's
+full-date in a string, or a list of them (117). A fact's name is
+lowercase letters, digits, `_` and `-`, and a joined fact's is the name
+of whom it is of and the fact's, joined by `.`, as `attendee.client`.
+At rest, a capture's stated facts and a signal's read facts are `fact`
+fields of `weir-capture/1` and `weir-signal/1` (C.2), one per value,
+each `<name> <value>`, the value as JSON. A meeting's facts (118 to
+120):
+
+| fact | sort | given by | its values |
+|---|---|---|---|
+| `source`, `title`, `event_at` | stated | every offer (C.1) | as the offer gives them (117) |
+| `length` | stated | a meeting adapter | the meeting's length, in seconds |
+| `attendee` | stated | a meeting adapter | each attendee as the service gives them, an address where it gives one |
+| `attendee.name`, `attendee.role`, `attendee.teams`, `attendee.org`, `attendee.client` | joined | the host | each attendee's person's name, role and teams, the org of its address, and whether that org is a client (119) |
+| `speaker.name`, `speaker.role`, `speaker.teams`, `speaker.org`, `speaker.client` | joined | the host, from `speaker` | as for an attendee |
+| `says` | read | a reader | `decision`, `request`, `action`, `risk` or `question` |
+| `speaker` | read | a reader | a name that stands in the capture's raw material |
+| `about` | read | a reader | a team or a repository of `[about]` |
+| `owner` | read | a reader | a `name` of the people list, or a name that stands in the raw material |
+| `due` | read | a reader | a date |
+
+The people list and the policy are TOML, in the file their host names.
+millpond's are its inbox's settings, `.config/millpond.toml` (millpond
+C.2), and Boomdrive gives a drive's members as the same people list.
+The crate `weir-policy` reads both, checks the facts a reader gives,
+joins, and reads a policy for a signal or a capture (119 to 125):
+
+```toml
+[about]                        # what a reader's `about` picks from (120)
+teams = ["web", "platform"]
+repositories = ["acme/web-app", "acme/infra"]
+
+[[person]]                     # (119)
+name = "Dana Reyes"
+addresses = ["dana@acme.com"]
+names = ["Dana", "Dana Reyes"] # the names a transcript may give her
+role = "executive"
+teams = ["web"]
+
+[[org]]
+name = "Globex"
+domains = ["globex.com"]
+client = true
+
+[[rules]]                      # in order; the first whose match holds gives the move (125)
+name = "stand-ups"
+when = { all = [{ fact = "source", is = "meeting" }, { fact = "title", contains = "stand-up" }] }
+drop = "a stand-up"            # a drop and its reason (122)
+
+[[rules]]
+name = "point-releases"
+when = { fact = "level", in = ["patch", "minor"] }
+kind = "update"                # the kind it launches, named as a launch names it
+repository = "~/Code/acme/web-app"   # where it launches, as a launch names it
+priority = "low"               # low, normal, elevated, high or urgent
+window = "*/30 * * * *"        # five-field cron (C.5); none when omitted, due at once (129)
+
+[[rules]]
+name = "a-clients-ask"
+when = { all = [{ fact = "says", is = "request" }, { fact = "attendee.client", is = true }, { any = [{ fact = "speaker.role", is = "executive" }, { fact = "speaker.client", is = true }] }] }
+person = "a client's ask"       # a person's turn, and what it waits on them for
+priority = "urgent"
+```
+
+A rule's `when` is a match, one of:
+
+- `{ all = [...] }`, `{ any = [...] }` and `{ not = ... }`;
+- `{ fact = "<name>", is = <value> }`, or with `in`, a list, `exists`,
+  `true` or `false`, or `contains`, a text the value holds, its
+  letters' case evened, in place of `is` (123);
+- `{ older = "<span>" }`, the capture's age past a span, a whole number
+  of `m`, `h` or `d`.
+
+A rule holds exactly one of `kind`, a kind's name; `person`, a
+person's turn and what it waits on them for; and `drop`, a reason.
+`repository` goes with `kind`, `priority` with `kind` or `person`, and
+`window` may go with either (principle 13). A
+rule's `name` is lowercase letters, digits and `-`. A policy that
+breaks any of these, names a rule twice, or holds a rule with a field
+this profile does not name, is refused naming the field (122). A
+rule's item is named `<rule>-<time>`, the time its window next names
+after the item was made, or for a rule with no window the time it was
+made, in UTC as `YYYYMMDDTHHMMSSZ`, so no two of a rule's items share a
+name and none nests under another (35, 128).
+
 <!-- ANCHOR_END: part-c -->
 <!-- ANCHOR: invariants -->
 ## 7. Global invariants
@@ -1336,6 +1573,8 @@ calls; a deliverer keeps its records where its own statement says.
 - I9. A delivery is done only on its readers' confirmations: no
   hand-over and no expiry confirms one, and nothing a reader has not
   confirmed leaves its store (102 to 104, 107).
+- I10. A rule reads facts alone, and the same policy, people list,
+  facts and time give the same rule under every host (123, 125).
 
 <!-- ANCHOR_END: invariants -->
 <!-- ANCHOR: non-goals -->
@@ -1344,7 +1583,8 @@ calls; a deliverer keeps its records where its own statement says.
 - Who curates, and how: a reader's and curation's instructions are the
   inbox's data and millpond's or Boomdrive's concern.
 - A host's settings: which adapters run, where, on what schedule, and
-  what becomes of an item.
+  what becomes of an item, but for the form and the reading of its
+  policy (A.17).
 - Planning across items, the inquiry, the place and the agent: crew's,
   Boomdrive's, sounding's and flume's.
 - Who may write a shared branch: the repository's own access rules.
@@ -1401,7 +1641,9 @@ The rest of the stack, which a model builds on unless it says why not:
   remote run to the family's limit for a try, ended with everything it
   started), `weir-kinds` (the kind format,
   read and checked, with its packages, their content hash and locks),
-  `weir-cadence` (five-field cron, caught up once) and `weir-delivery`
+  `weir-cadence` (five-field cron, caught up once), `weir-policy` (the
+  facts' names and lists, the people list's join, and the policy's
+  form and reading) and `weir-delivery`
   (the delivery records, both their spellings and B.7's calls), with
   the engine's crate beside `weir-kinds`, moved from the
   original Flywheel's flywheel-engine with its tests and its toy
@@ -1555,6 +1797,30 @@ rules; each ruling below is the user's, on their card of 2026-10-26.
 - **S25.** A deliverer's store drops the expired deliveries it reads.
   The pack fails it, naming the case and the record it did not read
   back (104, 113).
+- **S26.** A policy holds `stand-ups`, a drop for a meeting whose title
+  holds "stand-up", then `point-releases`, a join for a patch or minor
+  release with a thirty-minute window. A release adapter offers a patch
+  release with its level as a stated fact. The host writes the capture,
+  its own signal and the rule's join in one write, into an item named
+  for the rule and the window's next time, which records its rule and
+  its priority. A second patch ten minutes later joins the same item.
+  At the window's time the item is due, and its host closes it and
+  writes its brief of the two excerpts as they stand (36, 117, 125,
+  126, 128, 129).
+- **S27.** A meeting adapter offers "Daily stand-up" with no excerpt,
+  stating its length and three attendees. The `stand-ups` rule
+  matches it as it lands. In one write the host writes the capture, one
+  own signal whose excerpt is the title and which has no nature, and a
+  drop by `rule:stand-ups`. The capture is never unread, and no reading
+  is spent on it (19, 118, 125, 127).
+- **S28.** A reader reads a meeting and gives one signal `says =
+  "ruling"` and `about = "acme/web-app"`. The host leaves off `says`,
+  names it to the reader, and takes the signal with `about`. No rule
+  matches the signal, and it stays unmoved for curation (120, 126).
+- **S29.** A rule matches a signal whose speaker is an executive. The
+  name the reading gives its speaker is one two persons of the people
+  list hold, so the speaker joins neither, and the rule does not match
+  (119, 125).
 
 <!-- ANCHOR_END: scenarios -->
 <!-- ANCHOR: deliver -->
@@ -1565,7 +1831,8 @@ the seven steps a host takes; the records of a capture, a signal, a
 move, a batch, an item, a brief and a send, with the layout; the write
 protocol; the kind format, read and checked, and the engine's tick;
 cadence; the built-in adapters; the delivery records and B.7's calls;
-the link; and the pack, with fixed examples of each. A conformance
+the link; the facts, the people list's join and the policy's reading;
+and the pack, with fixed examples of each. A conformance
 pack whose cases each cite the clauses they exercise, failing when no
 case cites a clause. The profiles of Part C, each passing the pack,
 and millpond passing it as a host.

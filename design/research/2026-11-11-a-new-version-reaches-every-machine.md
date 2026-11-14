@@ -7,7 +7,9 @@ how the same mechanism links one drive to another. It works from the
 user's driving notes of 2026-11-11, kept unchanged beside this page
 (`2026-11-11-driving-notes/millpond-routing.md`,
 `timber-headwater-pocket-cd.md`, `README_1.md`), and from the
-statements on main. The pain behind it, in the notes' words: updating
+statements on main. The talk's page, *Update Ladder*, is kept beside this one
+(`2026-11-11-update-ladder.html`); its section 08 is the mockup of
+what the person sees, which every design and build of this reads. The pain behind it, in the notes' words: updating
 flume, bumping Boomdrive's flake input, building and deploying through
 clan "goes through agents for every step and can take hours. The naive
 bump needs no agent."
