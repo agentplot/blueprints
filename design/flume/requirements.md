@@ -2353,7 +2353,7 @@ redefine these.
      each place's label and where it came from (56), and a caller may
      read it for its own use, as a control plane shows a role under the
      column its label names; flume gives it no meaning of its own
-     (flume record 0069, proposed).
+     (flume record 0069).
 181. A stream may state, for each label, how many of the stream's
      agents its places are owed, `owed`, and how many of those are held
      for it alone, `reserved`, each a whole number of agents from zero.
@@ -2527,7 +2527,7 @@ redefine these.
      tip on no branch and moved to the tip at each resume (213), so
      nothing it holds is committed or lands; work that must commit, it
      launches as a place of a kind its entry names, in the repository
-     the work is in (214). (flume record 0069, proposed) The source also declares
+     the work is in (214). (flume record 0069) The source also declares
      the words of what the role answers, and may name the kinds its
      session launches its projects as with the words of when each
      serves, which a stage's prompt gives (28, 214), since a role finds
@@ -2614,7 +2614,7 @@ redefine these.
      agent, and an agent that is not quiet is hibernated only when
      forced (31). Hibernating is the agent's and never the stage's
      state machine: a retry, a stop, a drop and a done mean what they
-     mean of any stage (49 to 52, 114). (flume record 0069, proposed)
+     mean of any stage (49 to 52, 114). (flume record 0069)
 213. A resume goes on with a hibernating stage's own session. A caller's
      `flume resume`, a message to the place (53), a delivery to a role
      whose place hibernates (214), and the answer to the stop-short a
@@ -2636,7 +2636,7 @@ redefine these.
      118). A resume never begun, or whose agent is not the stage's, is
      read as 146 reads a carried start. A resume is no retry: it
      restarts no stage, carries no retry's words, and runs no later
-     stage again (49). (flume record 0069, proposed)
+     stage again (49). (flume record 0069)
 214. A message or an end for a role (132, 193) is a delivery pending at
      the role's address until the role's session takes it (43; weir 100
      to 107). The session takes every delivery pending for it at once,
@@ -2650,7 +2650,7 @@ redefine these.
      place's ends wait there with the role's other deliveries and resume
      the role where it hibernates. Which of a batch's items a role takes
      first, which it hands to its own subagents and which it launches as
-     places of the kinds its entry names are the role's (193). (flume record 0069, proposed)
+     places of the kinds its entry names are the role's (193). (flume record 0069)
 
 ### A.15 Telemetry
 
@@ -2882,7 +2882,7 @@ redefine these.
      prompt the next time it waits, by its program's own channel,
      leaving whatever a person typed in its input untouched; or that
      the program gives no way to, where the terminal hands them (43,
-     54, 95, 214; flume record 0069, proposed).
+     54, 95, 214; flume record 0069).
 93. The guarantee: each answer is what the agent's own record shows,
     and an answer the record does not give is unknown, never guessed
     from the terminal; but a part the profile declares degraded is
@@ -4345,7 +4345,7 @@ The rest of the stack, which a model builds on unless it says why not:
   - a Claude Code plugin that gives every session `/launch` and serves
     `launch`, `status`, `message`, `wake`, `hibernate` and `resume`
     over MCP, each
-    the same act as the command line's (60; flume record 0069, proposed). flume loads it into every agent it starts, and
+    the same act as the command line's (60; flume record 0069). flume loads it into every agent it starts, and
     its hooks hold the asking mark, the stop check and the guard, and
     settle the place the moment its agent goes quiet;
   - a herdr plugin whose popup gives every place in flight with its
@@ -5416,27 +5416,26 @@ These are not requirements.
   place. flume resumes it: a fresh agent under an identity of its own
   goes on with the session on the account it ran under, the message as
   its first prompt, and the conversation carries on until the operator
-  finishes it (109, 212, 213, 53; flume record 0069, proposed).
+  finishes it (109, 212, 213, 53; flume record 0069).
 - **S125.** A code stage's agent, of a kind that hibernates, stops short
   needing a person's answer. Kept open its hour (198), it is then
   hibernated in place of being let go, and the place still waits on its
   answer. Three hours later the answer comes as a message naming the
   stop-short's key; flume resumes the agent's session with the question
   and the answer as its prompt, and the stage delivers (42, 198, 212,
-  213; flume record 0069, proposed).
+  213; flume record 0069).
 - **S126.** A standing ops role is working a failed landing when two
   messages and an end arrive for its address. Nothing is typed into its
   session while it works, and the operator's half-typed words stay in
   its input box. When it goes quiet, flume hands the three as one
   prompt through the Claude Code plugin's deliver mod, and the role
-  takes them in its next turn (214, 215, 54, 121; flume record 0069,
-  proposed).
+  takes them in its next turn (214, 215, 54, 121; flume record 0069).
 - **S127.** A conversation hibernated forty days is resumed on a host
   whose account homes set no `cleanupPeriodDays`. Claude Code cleaned
   its transcript at thirty days, so carry answers that it is gone, and
   the stage starts afresh with flume's words that its conversation could
   not be carried and that what it committed is in the place (179, 213,
-  C.4; flume record 0069, proposed).
+  C.4; flume record 0069).
 - **S128.** A standing ops role is asked to roll a fix out to staging
   and to look into a failing nightly job. It launches each as a place of
   a kind its entry names by flume's MCP `launch`, naming no recipient,
@@ -5446,7 +5445,7 @@ These are not requirements.
   reaches the role's address and resumes it; the role answers and
   hibernates again. When both deliver, their ends reach the role as one
   batch, and status gave the two places under the role while they ran
-  (7, 132, 193, 213, 214, 56; flume record 0069, proposed).
+  (7, 132, 193, 213, 214, 56; flume record 0069).
 - **S129.** A host's managed layer sends flume's telemetry to the
   collector on the host. A place of the intent `accounts` codes for an
   hour, and its agent runs the tests in the place twice through sluice.
