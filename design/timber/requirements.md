@@ -876,7 +876,14 @@ redefine these.
     holds one: timber hands the path to the target's own tool, which
     alone reads it. An environment whose credential the file doesn't
     name is unread, naming the credential and the file (45, 64; timber
-    record 0033).
+    record 0033). On nix-darwin and NixOS, timber's own module,
+    `services.timber`, writes the file from `services.timber.settings`,
+    one option per key, each named as the file names it, so a host
+    names a credential as
+    `services.timber.settings.credentials.<name> = "<path>"`. Boomdrive's
+    set takes that module from timber's flake and writes no file of
+    timber's (boomdrive record 0023 as amended on 2026-11-13; boomdrive
+    rules core.18 and core.46).
     The same host's landing remote is
     the checkout's `origin`, or its one remote where it has no `origin`,
     and unreadable naming them where it has several and the file names
