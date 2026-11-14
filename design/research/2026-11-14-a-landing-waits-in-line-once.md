@@ -33,9 +33,46 @@ The same week sluice wrote a green round's 117 checks failed and
 blamed a submission (signal `2026-11-11-wldn-ops-be858325/01`). It wrote
 a finished passing run as timed out when the lead changed hosts
 (`2026-11-13-agentplot-ops-f42e2e42/01`), and it failed runs no host had
-claimed, blaming the tip (`2026-11-13-agentplot-planner-74fcda5d/01`). A
-reading of how many tries were real failures is asked of Willdan's
-drive. It goes here when it comes.
+claimed, blaming the tip (`2026-11-13-agentplot-planner-74fcda5d/01`).
+
+## What the numbers say
+
+wldn-ops read switchboard-kit's landings on main from 2026-11-06 to
+2026-11-13. It read GitHub's pull requests and check runs,
+chuck-herdr-alpha's own records of main, and crew's runs on that host. The gate box's own
+records were not readable from there. A try is a pull request opened or
+marked ready by anyone but sluice.
+
+134 bolts landed in 204 tries, and 96 of them on the first try. The 70
+tries that did not land ended this way:
+
+| What ended the try | Tries |
+|---|---|
+| A conflict with main | 28 |
+| A real check failure | 18 |
+| sluice or crew failing work that was fine | 16 |
+| A flaky end-to-end check, green later on the same head | 6 |
+| Withdrawn by the operator, no reason recorded | 2 |
+
+- **Conflicts are the loop.** They are two in five of the failed tries.
+  One bolt took ten tries, eight of them conflicts, and another five,
+  three of them conflicts. Some were submitted again on a head that had
+  not changed, which can only conflict again.
+- **Cheap checks failed in the slow line.** Format, lint and types ended
+  at least five tries, each after a round on main whose median is 16
+  minutes (p90 21, max 34).
+- **Nearly a third were not the code.** Sixteen were sluice's or crew's
+  own. Two green rounds were written failed, two runs were written timed
+  out, and five were lost to a change of lead. crew refused seven
+  resubmits, four of them over stale copies a landing left. Four of those sat about 16
+  hours before anyone submitted them again. Six more were the one
+  end-to-end check failing and then passing unchanged.
+- **Into a bolt, a try is cheap.** The one-runner bolt took 85
+  submissions from 72 branches, and 12 went in more than once. Its
+  gate's median run was 3.9 minutes (p90 12.8).
+
+So the line's waste is in the bolt's landing on main, not in its pieces'
+merges into the bolt, and most of it is conflicts with a moving main.
 
 ## How the line works today
 
@@ -56,29 +93,35 @@ is the exact revision that will land.
 ## Where a turn in line is not the best shot
 
 The operator's question: does waiting in line give an entry the best
-chance of passing when its turn comes? Today it does not, for five
-reasons.
+chance of passing when its turn comes? Today it does not, for six
+reasons, the first the costliest in the numbers above.
 
-1. **The slow checks run on candidates that would fail the fast ones.**
+1. **A bolt meets main only at its turn.** It is built for a day or two
+   while main moves under it, so its candidate conflicts when it is
+   formed. Its fix then waits for another turn, by which main has moved
+   again. Nothing stops a head that has not changed from being submitted
+   again after a conflict.
+2. **The slow checks run on candidates that would fail the fast ones.**
    A candidate's checks start together, so a lint or type error can
    hold a long slot until the gate reads the whole run.
-2. **One entry's failure throws away every candidate stacked on it.**
+3. **One entry's failure throws away every candidate stacked on it.**
    Each candidate behind the culprit held its entries plus the
    culprit's, so all of them form again and run again (10, 17).
-3. **A bolt's slow tests run twice for every try.** The bolt is proven
+4. **A bolt's slow tests run twice for every try.** The bolt is proven
    on its own head, then its candidate on main runs the same slow checks
    again. The two trees differ wherever main moved, so no key carries
    over.
-4. **A fix goes to the back of the line.** Its new submission waits
+5. **A fix goes to the back of the line.** Its new submission waits
    behind every entry submitted since, and by its turn main has moved
    further.
-5. **The long tests are one check.** An end-to-end check whose inputs
+6. **The long tests are one check.** An end-to-end check whose inputs
    are the whole tree has a new key after any change. Affected checks
    and reused passes help it only when it is split into checks with
    narrow inputs.
 
-On top of those five, sluice's own false failures cost full laps (the
-rebuild ends them), and one busy repository held every slot of the
+On top of those six, sluice's and crew's own false failures cost full
+laps, sixteen of seventy (the rebuild ends sluice's, and crew's refusals
+are crew's to mend). One busy repository also held every slot of the
 gate box (record 0123 ends that).
 
 ## The flow
@@ -153,6 +196,10 @@ is fixed and the fix keeps the entry's place, so it does not wait
 behind work submitted while it was being fixed. Its candidate runs only
 the checks whose keys the fix changed (15).
 
+An entry dropped for a conflict comes back only with a head that
+changed. A head submitted again unchanged would form the same conflict,
+so sluice refuses it, naming the conflict it still holds.
+
 ### The long tests have narrow inputs
 
 Affected checks and kept passes are worth what the checks' inputs
@@ -171,7 +218,9 @@ each repository's work in its own task runner, switchboard-kit's first.
 | A clean update at the next pause, a conflict at once | flume, crew | flume's change and base place kinds; crew record 0014, D2 and D3 |
 | A no-outcome run runs again in place; a fix keeps its place | sluice | the run-life unit |
 | Narrow inputs for the long tests | each repository | switchboard-kit's task runner |
+| A conflicting head is not submitted unchanged | sluice | the rebuild's submit |
 | The false failures | sluice | the rebuild and the run-life unit |
+| A resubmit crew refuses over a landing's stale copies | crew | a fix of crew's |
 
 ## What the talk settled
 
@@ -188,8 +237,10 @@ each repository's work in its own task runner, switchboard-kit's first.
 
 ## Still open
 
-- How many of switchboard-kit's landing tries failed for real, and how
-  many for sluice's own reasons. Willdan's drive is asked.
+- What a check that fails and then passes on the same key is. Six tries
+  ended on such an end-to-end failure. sluice could run a failed slow
+  check once more before it blames anyone, or record it flaky and leave
+  the check's owners to mend it; either changes what a verdict reads.
 - Whether a fix that keeps its place still has later entries stacked on
   it while it is unproven, or whether they are tested without it until
   it passes. The first keeps candidates as they stand (10). The second wastes
