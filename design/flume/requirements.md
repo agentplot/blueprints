@@ -4969,7 +4969,7 @@ These are not requirements.
   name is known, and the next settle removes the document and lets go
   of its deliveries (43, 56, 62; weir 104 to 107; flume record 0061,
   accepted 2026-11-09).
-- **S124.** A fix place's code stage commits its fix, then stops short
+- **S131.** A fix place's code stage commits its fix, then stops short
   asking whether the fix should also cover a second case. The caller
   answers no with a retry of code. The fresh agent finds the fix
   committed, makes no commit, and ends its turn, and the stage
