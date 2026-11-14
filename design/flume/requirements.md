@@ -2353,11 +2353,14 @@ redefine these.
      says where the address lives and why nothing went. The address
      stays the recipient a caller names, so which agent holds it is its
      source's alone, and `flume inbox` collects for it as for any
-     recipient; a role that moves from a standing agent to a run changes
-     its source's entry for the address and nothing of the host's. An
-     entry giving an address both a standing agent and a kind declares
-     nothing for it, and status names it, since the two are two agents
-     of one role (3, 193).
+     recipient. A command that names no recipient, run in the standing
+     agent's pane, acts as the address the agent holds, as a run's
+     command acts as its own (7); an agent standing for more than one
+     address names which with each command. A role that moves from a
+     standing agent to a run changes its source's entry for the address
+     and nothing of the host's. An entry giving an address both a
+     standing agent and a kind declares nothing for it, and status
+     names it, since the two are two agents of one role (3, 193).
 
 193. A source the host declares (191) may declare the roles it answers,
      each at its address on a stream the host declares (143). Each role
