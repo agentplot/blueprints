@@ -1007,7 +1007,7 @@ redefine these.
      keeps in its own files takes no requests in, and a policy that gives
      such a branch a pull request table is refused for that branch
      alone, naming `[signers]` and the forge's workflow that would take
-     its requests in, as a word sluice no longer keeps is (56, S64), so
+     its requests in, as a word sluice no longer keeps is (56, S78), so
      no request is opened where nothing would take it in. (Amended
      2026-11-07 by agentplot-design, on the question of the change
      `pull-requests-are-queued-on-the-forge`.) A host's submit to a
@@ -1756,7 +1756,7 @@ section asked is answered by a clause.
   three land in one move, in the order given. On another day the middle
   one conflicts with the first as the candidates form: the act's answer
   names it, it alone is set aside, and the other two land (125).
-- **S64.** The host's own ref of a bolt branch holds a policy this
+- **S78.** The host's own ref of a bolt branch holds a policy this
   sluice refuses, a table it no longer keeps; the remote's copy is
   clean. `sluice wait` on a submission to another branch finds it by
   its number and follows it to its verdict; the host process passes the
