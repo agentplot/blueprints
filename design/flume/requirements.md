@@ -987,7 +987,7 @@ redefine these.
      names none for it (143). flume opens,
      sends to and closes every agent's terminal, and no caller does any
      of them itself. A person's keys reach an agent at its terminal's
-     own view or through a relay (212), and either way they are a
+     own view or through a relay (221), and either way they are a
      person's at the keyboard, never a caller's send.
 186. A person may ask flume to show them a stream's agents, one
      session at a time, by the session's name: the stream's own part of
@@ -1020,10 +1020,10 @@ redefine these.
      two streams' own words give is refused naming both, each before
      anything is started; and a terminal that holds no part a person can be shown, or offers
      no such view, refuses in its own words (4).
-212. A person may reach a place's live agent from elsewhere through a
+221. A person may reach a place's live agent from elsewhere through a
      relay. A caller that carries a person's screen and keys, as
      Boomdrive's runner does for its cloud, asks flume to relay the
-     place's current agent (213). flume gives what the terminal shows of
+     place's current agent (222). flume gives what the terminal shows of
      that agent, again each time it changes, and delivers the person's
      keys as typed. The keys are the person's at the keyboard and never
      a caller's send (95, 107). flume clears nothing before them, waits
@@ -2650,12 +2650,12 @@ redefine these.
      person can be shown, or that it cannot read a part. The parts are
      read together, in one reading of the terminal. runs starts nothing,
      so a part that does not run stays so (200).
-213. **relay**: given an agent, what the terminal shows of it as a
+222. **relay**: given an agent, what the terminal shows of it as a
      person's view would, given again whenever it changes, within a
      bound the profile states. Keys given to it go in as a person typed
      them, with nothing cleared first and no wait for receipt, until
      the caller ends it or the agent's terminal goes. Or a refusal,
-     where the terminal offers no relay (212).
+     where the terminal offers no relay (221).
 98. The guarantee: open never runs a second agent under an identity
     already live, and close never reports an end that did not happen.
     Every operation answers within a bound the profile states, and one
@@ -3291,7 +3291,7 @@ herdr's refusal and its words:
 | close | `pane close <pane>`, `pane_not_found` read as already closed; then `pane get <pane>`, gone only on `pane_not_found` |
 | tidy | the place's recorded tab: `pane list --workspace <w>` read for panes in it, and a pane flume did not open there keeps it, named; else `tab close <tab>`, a tab already gone read as closed. Then the base's recorded workspace: where `tab list --workspace <w>` holds no tab but those of live places it made and `pane list` no pane it did not open, `workspace close <w>`; otherwise kept, and what holds it named |
 | attach | for a window, `<herdr> session attach <name>`, `<herdr>` the full path of the herdr the profile runs, so the window runs the same release whatever its `PATH`; the session's server first found or started headless as the server row says, flume's own session being `flume`; the command's environment is `XDG_CONFIG_HOME` where the profile's calls run under one, which herdr 0.9.5 reads its sessions' home from, and nothing otherwise. For the app, refused: herdr 0.9.5 has no app of its own, and the Herdr app runs on herdr-core, a backend apart with sessions of its own (187) |
-| relay | `pane read <pane> --source visible --format ansi`, read again at most every 250 milliseconds and given on only where it differs from the last read. The person's text goes by `pane send-text <pane> <text>` and their keys by `pane send-keys <pane> <keys>`, each as typed. It ends at the caller's word, or once state reads the pane stopped (212, 213) |
+| relay | `pane read <pane> --source visible --format ansi`, read again at most every 250 milliseconds and given on only where it differs from the last read. The person's text goes by `pane send-text <pane> <text>` and their keys by `pane send-keys <pane> <keys>`, each as typed. It ends at the caller's word, or once state reads the pane stopped (221, 222) |
 | runs | one `herdr session list --json` for every part asked, its `sessions[]` read by `name` and `running` for each, flume's own session being `flume`. A session listed running runs. One listed not running, or not listed, does not, and nothing is started. The call is bounded at one second, so the list answers within its second. A listing not read within it, or refused, is read as not read for every part asked, in herdr's words (201) |
 | standing | the agents of a session by name, for an address its source declares a standing agent for (132, 193, C.7). It is read at each delivery and each status, and nothing keeps it. One `herdr session list --json` finds the session by `name` and `running`, flume's own being `flume`. A session not listed running holds no agent, and nothing is started. Then `agent list` on its socket, its `agents[]` read by `name`, `pane_id` and `agent_status`, the status read as the state row reads it. An agent of the name is reached at `herdr:<pane_id>@<socket>`, by the send and state rows, as any recipient's session is. None of the name is said so, and so is more than one. herdr 0.9.5 refuses a second agent of one name on a server, as `agent_name_taken`. A listing refused, or not read within the bound, is not read, in herdr's words |
 | show | `pane report-metadata <pane> --source flume --title "<stage> · <state>" --display-agent <kind>--<name> --token flume=<line>`, the line's short form such as `code 1/2 · run 1 · tasks 2/5 · working`; `workspace report-metadata <w> --source flume --token flume=<summary>`, the summary such as `3 running · 1 asking · 1 waiting on caller · 0 stalled`, shown where the host's herdr sidebar rows name `$flume` |
@@ -3350,7 +3350,7 @@ words.
 
 The printed command tidies nothing and shows no clue, since it made
 nothing in a terminal. It refuses attach for either view, and relay, since it
-holds no part of a terminal a person can be shown (187, 213). Its runs
+holds no part of a terminal a person can be shown (187, 222). Its runs
 answers that it holds no part, for every part asked (201), and it finds
 no standing agent, since it holds no agent a name finds (132). It reads no tool: open prints the line `cd <place> &&`
 the command's environment, program, arguments and prompt, and marks it
